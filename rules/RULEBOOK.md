@@ -11,6 +11,8 @@ Rules learned from Westwood's maps (`corpus/out/nox_corpus.db`). Each rule carri
 5. [Decoration and furniture](#5-decoration-and-furniture)
 6. [Townsfolk and navigation](#6-townsfolk-and-navigation)
 7. [Rooms and buildings](#7-rooms-and-buildings)
+8. [Building shapes and styles](#8-building-shapes-and-styles)
+9. [Room types and furnishing](#9-room-types-and-furnishing)
 
 ## 1. Walls, doors and boundaries
 
@@ -1093,4 +1095,348 @@ use the verified rule (South: corner-(1,1); North: corner; East: corner-(1,0); W
   its bounding box.
 - Small rooms (<10 tiles) are mostly closets, corridors, stair landings and are often empty; furniture
   and lights scale with area.
+
+## 8. Building shapes and styles
+
+Source: `rules/buildings.py`, buildings from `rules/out/rooms.json` (rooms sharing a wall or door) in the 120 single-player maps, at most 900 floor tiles and 14 rooms (larger complexes are dungeons). Weighted by 1 / layout group size. Sizes are in lattice units along the wall axes (one wall segment = 2 in u or v, about one cell along the wall). Quartiles are [25%, median, 75%]. A building is *freestanding* when at least half of what lies outside its outer walls is open floor (towns, villages), as opposed to rooms inside larger structures.
+
+### JSON schema (`rules/out/buildings.json`)
+
+```
+{schema_version, units, shape_definitions{shape: text},
+ all|freestanding|styles{name}: {buildings, weighted, shapes{shape: share}, size_units{W (long side), H (short)}: quartiles,
+   tiles, rooms{n: share}, area_units_per_room, room_long_short_units{long, short}, hall_share (largest room / building),
+   corridor_share, interior_doors_per_extra_room, entrances{n: share}, entrance_sides{u_min|u_max|v_min|v_max: share},
+   room_floors, exterior_door_types, interior_door_types, interior_wall_materials, outside_floors{material: share},
+   nearest_gap_units (to the next freestanding building),
+   styles only: exterior_wall, freestanding_share, source (freestanding|all: which buildings the style was measured on),
+   wall_pieces_complete, missing_wall_facings}}
+```
+
+### All buildings
+
+- 917 buildings (438.33 weighted). Shapes: rect 48%, T 18%, L 12%, Z 9%, irregular 7%, cross 3%, U 2%, courtyard 0%.
+- Long side [7, 12, 22] units, short side [5, 8, 15]; floor tiles [22, 64, 171].
+- Rooms: 1 54%, 2 16%, 3 10%, 4 5%, 5 4%, 10 4%, 6 3%, 8 2%; lattice units per room in multi-room buildings [40.33, 66.0, 97.0].
+- Rooms measure long [5.0, 8.0, 13.0] x short [4.0, 6.0, 9.0] units; the largest room holds [0.42, 0.57, 0.74] of a multi-room building; 12% of multi-room buildings have a corridor.
+- Interior doors per additional room [0.0, 0.86, 1.0] (below 1 means some rooms join through archways or each other).
+- Entrances: 0 52%, 2 20%, 1 17%, 4 4%, 3 4%, 5 1%; sides: u_max 33%, u_min 25%, v_max 21%, v_min 21%.
+
+### Freestanding buildings (towns and villages)
+
+- 421 buildings (202.42 weighted). Shapes: rect 55%, L 16%, T 10%, irregular 9%, Z 5%, U 3%, courtyard 1%, cross 0%.
+- Long side [6, 10, 17] units, short side [5, 8, 12]; floor tiles [19, 51, 111]; rooms 1 53%, 2 18%, 3 11%, 4 6%, 5 4%, 6 2%.
+- Entrances 0 32%, 2 26%, 1 24%, 3 8%, 4 6%, 5 2%; sides u_max 32%, u_min 25%, v_min 22%, v_max 21%.
+- Gap to the nearest neighbouring building [3.0, 5.0, 15.0] units (0 = sharing walls / touching).
+- Outside them: GrassNorm 18%, GreenBrick 14%, GrassSparse2 7%, CaveHardBrown 7%, GalavaBrick2 6%, SwampGrass 5%.
+
+### Styles (by exterior wall material)
+
+| style | wall | buildings (w) | freestanding | shapes | long x short (median) | rooms | room floors | doors (ext) | partition walls | pieces complete |
+|---|---|---|---|---|---|---|---|---|---|---|
+| dungeon_block | DungeonStone | 69 (28.67) | 37% | rect 65%, L 21%, Z 7% | 9 x 6 | 1 69%, 2 21%, 3 7% | GreenBrick 83%, GalavaBrownMarble 7%, DirtDark2 5% | CryptDoor 73%, JailDoor 13% | DungeonStone 85%, DilapidatedShort 9% | yes |
+| lotd_crypt | LOTDBrick | 23 (8.67) | 12% | rect 88%, Z 12% | 5 x 3 | 1 88%, 4 12% | LOTDPitted 65%, DungeonStoneDark 26%, LOTDDark2 3% | CryptDoor 100% | LOTDBrick 100% | yes |
+| log_cabin | Log | 50 (24.0) | 66% | rect 65%, irregular 12%, L 8% | 10 x 5 | 1 60%, 3 21%, 2 6% | OakWoodFloor 32%, WoodGray 12%, DirtHard 10% | BandedPlankDoor 43%, WoodenDoor 13% | Log 78%, Cobblestone 6% | yes |
+| galava_townhouse | GalavaTownWall | 30 (17.67) | 52% | rect 51%, L 32%, Z 11% | 16 x 12 | 1 49%, 5 17%, 3 11% | GalavaBrick 33%, GalavaBrick2 26%, RugBlueNorm 15% | ArchedHalfDoor 33%, CryptDoor 20% | GalavaTownWall 85%, LOTDMagicOrnate 15% | yes |
+| cobble_house | Cobblestone | 20 (9.0) | 38% | L 33%, irregular 33%, rect 22% | 9 x 7 | 1 47%, 2 19%, 10 11% | GreenBrick 44%, BlueBrick7 22%, BrokenCobbleDirtWebs 11% | WoodAndSteelHalfDoor 67%, ArchedHalfDoor 19% | Cobblestone 91%, StoneGray 9% | yes |
+| lotd_ornate | LOTDOrnate | 34 (16.33) | 73% | rect 33%, T 31%, irregular 18% | 17 x 11 | 1 45%, 2 24%, 5 12% | LOTDPitted 43%, LOTDBlackMarble 22%, LOTDDark2 19% | LOTDHalfDoor 57%, LOTDSingleDoor 29% | LOTDOrnate 90%, IronFence 8% | yes |
+| blue_brick_house | BrickBlue | 3 (3.0) | 16% | rect 100% | 5 x 5 | 1 100% | TileDark 33%, TileStarBlack 33%, RugBlueNorm 33% | GalavaHalfDoor 100% | - | yes |
+| stucco_house | StuccoLightWood | 45 (17.0) | 94% | rect 74%, T 14%, Z 6% | 9 x 7 | 2 47%, 1 28%, 3 14% | RugTanLightNorm 31%, OakWoodFloor 22%, RedwoodFloor 12% | WoodenDoor 47%, ArchedHalfDoor 38% | StuccoLightWood 98%, StuccoLightWoodDamaged 1% | yes |
+| dunmir_hall | DunMirCathedral | 28 (14.5) | 85% | rect 45%, irregular 28%, L 14% | 19 x 11 | 2 34%, 1 31%, 4 14% | GreenBrick 60%, DunMirBrick1 30%, DunMirBrick2 7% | DunMirDoor 57%, DunMirHalfDoor 30% | DunMirCathedral 100% | yes |
+| ix_temple | IxTempleWall | 8 (3.0) | 20% | L 33%, rect 33%, Z 33% | 9 x 5 | 2 67%, 1 33% | IxBrickFancy 100% | - | IxTempleWall 100% | yes |
+| sewer | SewerWall | 2 (2.0) | 15% | rect 100% | 6 x 6 | 1 100% | GreenBrick 100% | BandedWoodenDoor 100% | - | yes |
+| ogre_hut | OgreWall | 20 (13.0) | 100% | rect 46%, L 31%, courtyard 8% | 10 x 8 | 1 54%, 2 23%, 3 15% | DirtDark2 63%, GalavaBrick 15%, AncientRuin 8% | SpikedDoor 100% | OgreWall 82%, OgreCage 18% | yes |
+| ruined_shack | Dilapidated | 24 (12.25) | 100% | rect 80%, L 8%, Z 8% | 6 x 5 | 1 80%, 3 16%, 2 4% | WoodGray 33%, WoodGray2 14%, WoodSlatFloor 12% | BandedPlankDoor 46%, Dilapidated 27% | Dilapidated 94%, DecidiousWallGreen 6% | yes |
+| ancient_ruin | AncientRuin | 14 (7.0) | 64% | rect 29%, T 29%, irregular 14% | 8 x 6 | 1 71%, 6 14%, 7 14% | AncientRuinRough 87%, AncientRuin 6%, DirtLight2 2% | AncientRuinDoor 100% | AncientRuin 98%, AncientRuinShort 2% | yes |
+| stone_house | StoneGray | 14 (7.33) | 76% | T 41%, rect 32%, L 27% | 14 x 11 | 1 32%, 10 27%, 2 27% | WoodGray2 39%, GreenBrick 14%, GalavaBrownMarble 14% | Gate 32%, ArchedHalfDoor 21% | StoneGray 100% | yes |
+| galava_tower | GalavaTowerWall | 12 (8.0) | 19% | T 31%, rect 25%, cross 25% | 17 x 14 | 1 38%, 3 19%, 10 12% | GalavaBrick3 29%, GalavaBrownMarble 22%, LOTDDark2 12% | GalavaDoor 40%, ArchedHalfDoor 40% | GalavaTowerWall 87%, IronFence 9% | yes |
+| blue_stone_house | StoneBlue | 9 (4.5) | 82% | Z 44%, rect 33%, U 22% | 16 x 13 | 1 33%, 6 22%, 2 22% | WoodLight 37%, DungeonStoneMuddy 30%, DungeonStoneDark 15% | BarredGate 40%, GalavaHalfDoor 40% | StoneBlue 48%, Dilapidated 22% | yes |
+| stucco_dark_house | StuccoDarkWood | 9 (4.0) | 100% | L 50%, rect 50% | 20 x 16 | 4 50%, 2 25%, 6 25% | RugTanLightNorm 75%, RedwoodFloor 8%, Water 4% | ArchedHalfDoor 50%, Gate 25% | StuccoDarkWood 84%, InvisibleWallSet 11% | yes |
+| red_brick_house | BrickRed | 4 (2.0) | 100% | rect 50%, irregular 50% | 18 x 15 | 3 50%, 5 50% | TileRed 53%, DirtRed 27%, DunMirBrick2 20% | DunMirDoor 100% | BrickRed 82%, DunMirCathedral 18% | yes |
+| brick_house | BrickPlain | 3 (2.0) | 0% | rect 50%, Z 50% | 14 x 12 | 1 50%, 6 50% | TileStarBlack 50%, IxBrickSmall 25%, IxBrickSmallRev 17% | CryptDoor 100% | BrickPlain 77%, IronFence 23% | yes |
+
+### Notes for generation
+
+- Footprints are unions of rectangles on the u/v wall lattice; rectangles dominate, then L and T/U shapes.
+- A style is only safe for multi-room interiors when its wall material has valid pieces for T-junctions and corners (`wall_pieces_complete`); otherwise use a different partition material (the style's `interior_wall_materials`) or keep the building single-roomed.
+- Freestanding buildings mostly have one entrance; place it on the side facing the street or square.
+
+## 9. Room types and furnishing
+
+Westwood's single-player building rooms classified by contents, with everything the furnisher needs to generate new rooms of each type. Distributions only: no stock layout is stored. Generated by `rules/room_types.py`.
+
+### JSON schema (`rules/out/room_types.json`)
+
+- `k_px_per_uv`: pixels per unit of the rotated coordinates u = x + y, v = x - y.
+- `types.<type>`: `rooms`, `weighted`, `maps`; `tiles`, `u_extent`, `v_extent` (quantiles); `floors`, `wall_materials` (shares); `doors`; `inventory.<family>`: `p_present` (share of rooms with it), `count`, `per100_tiles` (quantiles where present), `roles` (wall / corner / center), `wall_sides` (decoration.json side keys), `perp_px` (distance from the wall line when against a wall), `object_types` (which objects represent the family), `evidence`; `visible_lights`; `colorlights`; `npcs` (`p_npc`, `p_shopkeeper`).
+- `sets.<anchor>+<companion>`: companions within 60 px of anchors: `per_anchor` count quantiles, `distance_px`, `axis_share` (share placed along a u or v axis from the anchor).
+- `chair_facing.<chair family>.<direction>`: the variant used when the anchor (table/desk) lies in that uv direction from the chair (`+u` = down-right on screen, `-u` = up-left, `+v` = up-right, `-v` = down-left).
+
+Classification (first match): shop (trader desk, 2+ shop racks or a shopkeeper), tavern (bar counter), smithy, laboratory, throne room, chapel (altar), crypt (2+ tombs), kitchen (stove), barracks (3+ beds), bedroom, library (2+ shelves), dining hall (2+ tables, 4+ seats), study (desk + shelves), living room (table or desk), storeroom (3+ storage), hall (statues/columns), other, empty; rooms dominated by dungeon objects (spikes, bones, generators) are `dungeon`.
+
+### Types
+
+| type | rooms (weighted) | maps | tiles p25/p50/p75 | main floors | top furniture families (share of rooms) |
+|---|---|---|---|---|---|
+| empty | 1133 (597.1) | 109 | 5/10/33 | GreenBrick, LOTDPitted, DirtDark2 | wall_decor 2%, clutter 0% |
+| dungeon | 486 (239.7) | 64 | 45/81/149 | GreenBrick, LOTDPitted, LOTDDark2 | storage 24%, statue 13%, column 12%, tomb 12%, wall_decor 4%, shop_rack 2% |
+| other | 272 (124.8) | 81 | 9/23/49 | GreenBrick, LOTDPitted, GrassNorm | storage 62%, straw 18%, plant 10%, statue 6%, tomb 6%, wall_decor 5% |
+| hall | 218 (99.3) | 62 | 38/72/144 | GreenBrick, GalavaBrownMarble, IxBrick | statue 59%, column 54%, storage 17%, plant 7%, wall_decor 6%, bench 5% |
+| bedroom | 166 (84.3) | 38 | 12/20/35 | RugGreen, DunMirBrick1, RugTanLightNorm | bed 100%, storage 79%, shelves 52%, nightstand 51%, chair 50%, desk 38% |
+| shop | 144 (77.5) | 52 | 30/55/104 | GreenBrick, GalavaBrick, CobbleStone | shop_rack 65%, storage 48%, counter_shop 40%, table 27%, bench 24%, chair 24% |
+| storeroom | 131 (63.8) | 60 | 25/36/54 | GreenBrick, IxBrickFancy, GalavaBrick | storage 100%, column 5%, statue 5%, clutter 4%, chair 3%, wall_decor 2% |
+| crypt | 140 (61.5) | 28 | 64/100/150 | GreenBrick, LOTDPitted, DirtDark2 | tomb 100%, storage 35%, statue 15%, column 5%, plant 5%, wall_decor 3% |
+| laboratory | 104 (56.3) | 39 | 30/74/118 | GalavaBrick3, RugGreen, RugBlueNorm | lab 100%, chair 70%, shelves 64%, storage 44%, desk 40%, statue 28% |
+| barracks | 89 (44.3) | 39 | 13/42/96 | GreenBrick, RoughCobble, DunMirBrick1 | bed 68%, straw 67%, storage 53%, chair 38%, table 32%, clutter 16% |
+| smithy | 72 (37.8) | 31 | 32/48/72 | GalavaBrick, RugTanLightNorm, RugGreen | smithy 100%, chair 95%, table 79%, shelves 62%, storage 59%, bench 42% |
+| living_room | 58 (28.7) | 36 | 15/30/40 | GreenBrick, RugTanLightNorm, DunMirBrick1 | table 91%, chair 78%, storage 66%, bench 28%, desk 9%, shelves 8% |
+| library | 33 (21.8) | 24 | 35/63/81 | TileDark, RugGreen, ManaMineDirt | shelves 100%, chair 66%, table 66%, storage 34%, statue 20%, bench 9% |
+| kitchen | 32 (15.0) | 19 | 24/26/30 | OakWoodFloor, WoodLight2, DunMirBrick1 | stove 100%, table 80%, chair 73%, storage 68%, bed 53%, desk 27% |
+| dining_hall | 15 (8.3) | 15 | 55/86/208 | DunMirBrick1, GreenBrick, RugBlueDark | table 100%, chair 76%, bench 72%, storage 60%, wall_decor 48%, desk 24% |
+| tavern | 14 (8.3) | 13 | 147/166/216 | RugGreen, TileRed, GalavaBrick | counter_bar 100%, chair 76%, table 76%, storage 52%, shelves 48%, bench 40% |
+| throne_room | 10 (6.0) | 7 | 84/89/356 | LOTDBlackMarble, LOTDPitted, TileDark | throne 100%, tomb 67%, wall_decor 50%, column 17%, storage 17% |
+| chapel | 8 (4.0) | 2 | 79/219/239 | LOTDPitted, LOTDDark2 | altar 100%, storage 25% |
+| study | 4 (2.0) | 4 | 49/129/140 | GalavaBrownMarble, GalavaBrick2, GalavaBrick3 | desk 100%, shelves 100%, chair 75%, storage 75%, bench 25%, column 25% |
+
+### Placement roles of key families (all types)
+
+| type | family | roles | wall sides | perp px p50 |
+|---|---|---|---|---|
+| barracks | bed | wall 77%, corner 14%, center 10% | \|BL 51%, /|BR 37%, /|TL 6%, \|TR 6% | 30.4 |
+| barracks | bench | wall 70%, center 30% | \|BL 43%, /|BR 21%, \|TR 21%, /|TL 14% | 36.1 |
+| barracks | chair | center 81%, wall 19%, corner 1% | \|BL 43%, /|TL 20%, \|TR 20%, /|BR 18% | 33.9 |
+| barracks | clutter | center 92%, wall 5%, corner 3% | /|BR 60%, \|BL 40% | 24.4 |
+| barracks | desk | wall 100% | \|BL 56%, /|BR 44% | 17.7 |
+| barracks | nightstand | wall 100% | \|BL 84%, /|BR 12%, \|TR 3% | 18.4 |
+| barracks | shelves | wall 100% | \|BL 56%, /|BR 35%, /|TL 9% | 7.1 |
+| barracks | storage | wall 74%, center 19%, corner 6% | /|BR 44%, \|BL 29%, \|TR 23%, /|TL 4% | 20.5 |
+| barracks | straw | center 44%, wall 36%, corner 20% | \|TR 40%, \|BL 29%, /|BR 25%, /|TL 6% | 24.0 |
+| barracks | table | center 80%, wall 20% | \|BL 50%, /|TL 50% | 20.5 |
+| bedroom | bed | wall 68%, corner 21%, center 11% | \|BL 45%, /|BR 36%, \|TR 16%, /|TL 2% | 31.1 |
+| bedroom | bench | center 54%, wall 46% | /|BR 56%, \|BL 29%, /|TL 15% | 26.2 |
+| bedroom | chair | wall 48%, center 45%, corner 7% | \|BL 46%, /|BR 32%, \|TR 22% | 33.9 |
+| bedroom | desk | wall 83%, corner 17% | \|BL 49%, /|BR 42%, /|TL 9% | 15.6 |
+| bedroom | nightstand | wall 76%, corner 20%, center 4% | /|BR 51%, \|BL 30%, \|TR 17%, /|TL 2% | 12.0 |
+| bedroom | rug | center 100% |  | None |
+| bedroom | shelves | wall 80%, corner 17%, center 2% | /|BR 53%, \|TR 22%, \|BL 15%, /|TL 10% | 9.9 |
+| bedroom | shop_rack | wall 75%, corner 25% | /|BR 50%, \|BL 50% | 10.6 |
+| bedroom | statue | wall 81%, corner 19% | \|BL 62%, /|BR 19%, /|TL 9%, \|TR 9% | 36.1 |
+| bedroom | storage | wall 57%, center 24%, corner 19% | /|BR 51%, \|BL 42%, /|TL 6%, \|TR 1% | 16.3 |
+| bedroom | table | center 64%, wall 21%, corner 15% | /|BR 40%, \|BL 38%, /|TL 22% | 19.8 |
+| bedroom | wall_decor | wall 93%, center 7% | /|BR 93%, \|BL 7% | 7.1 |
+| chapel | altar | center 60%, wall 40% | /|BR 100% | 40.3 |
+| crypt | column | wall 85%, center 15% | \|BL 39%, \|TR 30%, /|BR 17%, /|TL 13% | 26.9 |
+| crypt | plant | wall 60%, center 31%, corner 9% | /|BR 42%, \|BL 23%, \|TR 22%, /|TL 13% | 23.3 |
+| crypt | statue | corner 35%, center 33%, wall 32% | /|BR 33%, \|BL 30%, \|TR 25%, /|TL 12% | 16.3 |
+| crypt | storage | center 52%, wall 39%, corner 9% | /|BR 41%, \|BL 40%, \|TR 10%, /|TL 9% | 26.2 |
+| crypt | tomb | center 56%, wall 35%, corner 9% | /|BR 31%, /|TL 26%, \|BL 25%, \|TR 18% | 32.5 |
+| dining_hall | bench | center 80%, wall 20% | \|BL 75%, /|TL 25% | 38.9 |
+| dining_hall | chair | center 91%, wall 9% | /|BR 44%, \|TR 33%, \|BL 22% | 21.9 |
+| dining_hall | storage | wall 89%, corner 9%, center 3% | /|BR 47%, \|BL 26%, /|TL 18%, \|TR 9% | 22.6 |
+| dining_hall | table | center 80%, wall 20% | \|BL 76%, \|TR 24% | 24.0 |
+| dining_hall | wall_decor | wall 90%, corner 10% | \|BL 90%, /|BR 10% | 9.9 |
+| hall | bench | center 83%, wall 17% | /|BR 100% | 13.4 |
+| hall | column | wall 62%, center 28%, corner 9% | /|BR 40%, /|TL 33%, \|BL 19%, \|TR 8% | 17.0 |
+| hall | plant | center 61%, wall 35%, corner 4% | /|BR 44%, \|BL 33%, /|TL 16%, \|TR 7% | 24.4 |
+| hall | statue | wall 56%, corner 30%, center 14% | /|BR 40%, \|BL 26%, /|TL 19%, \|TR 14% | 17.0 |
+| hall | storage | wall 63%, center 37% | /|BR 47%, \|BL 33%, /|TL 13%, \|TR 7% | 31.8 |
+| hall | tomb | wall 60%, center 40% | /|BR 67%, /|TL 33% | 28.3 |
+| hall | wall_decor | wall 81%, center 19% | /|BR 77%, \|BL 23% | 7.8 |
+| kitchen | bed | corner 62%, wall 38% | /|BR 38%, /|TL 25%, \|TR 25%, \|BL 12% | 30.4 |
+| kitchen | chair | center 47%, wall 45%, corner 8% | /|TL 58%, \|TR 29%, /|BR 12% | 24.7 |
+| kitchen | desk | wall 100% | \|BL 50%, /|BR 50% | 17.0 |
+| kitchen | storage | wall 66%, corner 23%, center 11% | \|BL 36%, /|BR 35%, \|TR 24%, /|TL 5% | 18.4 |
+| kitchen | stove | wall 55%, corner 46% | \|BL 68%, /|BR 19%, \|TR 8%, /|TL 4% | 16.3 |
+| kitchen | table | wall 46%, center 43%, corner 11% | \|BL 44%, /|TL 31%, /|BR 25% | 23.3 |
+| laboratory | bed | wall 64%, corner 36% | \|BL 39%, \|TR 39%, /|TL 18%, /|BR 4% | 32.5 |
+| laboratory | bench | center 65%, wall 35% | \|BL 30%, \|TR 25%, /|BR 24%, /|TL 20% | 26.2 |
+| laboratory | chair | center 81%, wall 18%, corner 1% | \|BL 42%, /|BR 37%, \|TR 21% | 36.1 |
+| laboratory | clutter | center 100% |  | None |
+| laboratory | column | center 73%, corner 27% | /|TL 50%, \|TR 25%, \|BL 25% | 26.9 |
+| laboratory | desk | wall 76%, center 20%, corner 4% | \|BL 56%, /|BR 44% | 19.1 |
+| laboratory | lab | wall 48%, center 47%, corner 5% | /|BR 32%, \|BL 29%, \|TR 21%, /|TL 17% | 21.9 |
+| laboratory | nightstand | wall 63%, corner 20%, center 16% | \|TR 46%, /|TL 34%, /|BR 20% | 12.0 |
+| laboratory | plant | center 63%, wall 29%, corner 8% | \|BL 70%, /|BR 18%, \|TR 12% | 25.5 |
+| laboratory | shelves | wall 87%, center 8%, corner 5% | /|TL 34%, /|BR 30%, \|BL 26%, \|TR 11% | 13.4 |
+| laboratory | statue | center 64%, wall 23%, corner 14% | /|BR 44%, \|BL 22%, \|TR 18%, /|TL 16% | 26.2 |
+| laboratory | storage | wall 48%, center 44%, corner 8% | /|BR 38%, \|BL 25%, /|TL 24%, \|TR 13% | 26.2 |
+| laboratory | table | center 68%, wall 32% | \|TR 46%, /|BR 38%, \|BL 15% | 21.2 |
+| laboratory | wall_decor | wall 100% | /|BR 68%, \|BL 32% | 8.5 |
+| library | chair | center 74%, wall 23%, corner 2% | /|BR 54%, /|TL 26%, \|TR 10%, \|BL 10% | 29.0 |
+| library | shelves | wall 88%, center 7%, corner 5% | /|BR 39%, \|BL 26%, \|TR 17%, /|TL 17% | 10.6 |
+| library | statue | center 92%, wall 8% | /|TL 50%, /|BR 50% | 17.7 |
+| library | storage | wall 53%, center 35%, corner 11% | \|BL 49%, \|TR 24%, /|BR 20%, /|TL 8% | 26.9 |
+| library | table | center 75%, wall 25% | /|TL 37%, \|TR 32%, \|BL 32% | 22.6 |
+| living_room | bench | wall 46%, center 46%, corner 8% | /|BR 43%, /|TL 29%, \|BL 29% | 18.4 |
+| living_room | chair | wall 43%, center 42%, corner 15% | /|BR 47%, \|BL 21%, \|TR 20%, /|TL 12% | 31.8 |
+| living_room | storage | wall 61%, center 26%, corner 13% | /|BR 36%, \|BL 30%, /|TL 18%, \|TR 16% | 20.5 |
+| living_room | table | wall 45%, center 42%, corner 13% | \|BL 41%, \|TR 29%, /|BR 18%, /|TL 12% | 32.5 |
+| shop | bed | wall 56%, corner 44% | \|BL 44%, /|TL 22%, \|TR 22%, /|BR 11% | 31.1 |
+| shop | bench | wall 50%, center 42%, corner 7% | \|TR 35%, \|BL 27%, /|BR 19%, /|TL 19% | 24.7 |
+| shop | chair | center 55%, wall 29%, corner 16% | \|BL 48%, \|TR 25%, /|TL 18%, /|BR 9% | 18.4 |
+| shop | column | center 70%, wall 30% | \|BL 62%, /|TL 19%, /|BR 19% | 17.0 |
+| shop | counter_bar | center 69%, wall 30%, corner 1% | /|BR 47%, \|BL 25%, \|TR 14%, /|TL 14% | 16.3 |
+| shop | counter_shop | center 80%, wall 20% | \|BL 86%, /|BR 14% | 41.7 |
+| shop | lab | wall 49%, corner 30%, center 21% | \|BL 45%, /|BR 42%, /|TL 13% | 21.2 |
+| shop | shelves | wall 70%, corner 21%, center 9% | /|BR 46%, \|BL 33%, \|TR 20% | 12.7 |
+| shop | shop_rack | wall 69%, center 19%, corner 12% | /|BR 45%, \|BL 38%, /|TL 10%, \|TR 7% | 16.3 |
+| shop | smithy | wall 50%, center 50% | /|BR 100% | 15.6 |
+| shop | statue | wall 80%, center 15%, corner 6% | /|BR 36%, \|BL 25%, /|TL 20%, \|TR 20% | 23.3 |
+| shop | storage | wall 71%, corner 15%, center 14% | /|BR 46%, \|BL 34%, /|TL 11%, \|TR 10% | 20.5 |
+| shop | stove | wall 50%, corner 34%, center 16% | /|BR 44%, \|BL 30%, \|TR 26% | 14.1 |
+| shop | table | center 54%, wall 45%, corner 1% | \|BL 40%, /|TL 25%, \|TR 25%, /|BR 9% | 24.7 |
+| shop | wall_decor | wall 100% | /|BR 58%, \|BL 42% | 5.4 |
+| smithy | bed | wall 94%, center 6% | /|BR 65%, \|TR 24%, /|TL 12% | 32.5 |
+| smithy | bench | center 74%, wall 26% | \|TR 31%, /|BR 31%, \|BL 23%, /|TL 15% | 22.6 |
+| smithy | chair | center 58%, wall 38%, corner 4% | \|TR 31%, /|BR 25%, \|BL 22%, /|TL 22% | 29.0 |
+| smithy | desk | wall 100% | \|BL 31%, /|BR 28%, \|TR 28%, /|TL 14% | 16.3 |
+| smithy | lab | wall 73%, corner 20%, center 8% | /|TL 47%, \|BL 30%, \|TR 15%, /|BR 8% | 19.1 |
+| smithy | nightstand | wall 83%, corner 17% | /|BR 67%, /|TL 33% | 16.3 |
+| smithy | rug | center 95%, wall 5% | /|TL 50% | 36.1 |
+| smithy | shelves | wall 97%, corner 3% | /|BR 39%, \|BL 25%, \|TR 22%, /|TL 15% | 12.0 |
+| smithy | smithy | wall 66%, center 23%, corner 11% | /|BR 58%, \|BL 36%, /|TL 6% | 27.6 |
+| smithy | statue | wall 69%, corner 28%, center 3% | /|BR 50%, \|BL 27%, /|TL 24% | 17.7 |
+| smithy | storage | wall 68%, corner 21%, center 11% | /|BR 39%, \|BL 32%, \|TR 22%, /|TL 6% | 17.0 |
+| smithy | stove | wall 100% | /|BR 100% | 13.4 |
+| smithy | table | center 73%, wall 20%, corner 7% | /|BR 42%, \|BL 25%, /|TL 17%, \|TR 17% | 19.8 |
+| smithy | wall_decor | wall 100% | \|BL 44%, /|BR 42%, \|TR 14% | 4.9 |
+| storeroom | column | wall 65%, center 20%, corner 15% | \|BL 56%, /|BR 31%, /|TL 12% | 21.2 |
+| storeroom | statue | center 96%, wall 4% | /|TL 100% | 23.3 |
+| storeroom | storage | wall 57%, center 29%, corner 14% | /|BR 36%, \|BL 33%, /|TL 19%, \|TR 12% | 22.6 |
+| tavern | bench | center 87%, wall 13% | /|TL 71%, /|BR 29% | 30.4 |
+| tavern | chair | center 80%, wall 20% | /|BR 35%, \|BL 25%, \|TR 24%, /|TL 16% | 35.4 |
+| tavern | counter_bar | center 80%, wall 20% | \|BL 86%, /|BR 14% | 19.1 |
+| tavern | lab | center 89%, wall 11% | /|TL 100% | 20.5 |
+| tavern | shelves | center 63%, wall 37% | \|BL 54%, \|TR 20%, /|BR 20%, /|TL 6% | 9.9 |
+| tavern | storage | wall 83%, corner 10%, center 7% | \|BL 42%, /|BR 28%, /|TL 26%, \|TR 4% | 19.8 |
+| tavern | table | center 93%, wall 7% | \|BL 100% | 17.7 |
+| throne_room | throne | center 65%, wall 35% | \|BL 100% | 21.9 |
+| throne_room | tomb | center 40%, wall 40%, corner 20% | \|BL 67%, /|BR 33% | 40.7 |
+| throne_room | wall_decor | wall 100% | \|BL 50%, /|BR 50% | 5.4 |
+
+### Furniture sets
+
+| anchor + companion | pairs | per anchor p50 | distance px p50 | along an axis |
+|---|---|---|---|---|
+| table+chair | 1000 | 3 | 36.5 | 52% |
+| counter_bar+counter_bar | 548 | 2 | 32.53 | 86% |
+| table+bench | 259 | 2 | 32.8 | 91% |
+| counter_bar+chair | 242 | 2 | 41.59 | 37% |
+| bed+nightstand | 208 | 1 | 34.53 | 0% |
+| bed+storage | 176 | 1 | 41.23 | 53% |
+| desk+chair | 131 | 1 | 23.43 | 85% |
+| table+light | 93 | 1 | 48.76 | 58% |
+| table+colorlight | 64 | 1 | 37.8 | 53% |
+| bed+bed | 90 | 1 | 55.23 | 93% |
+| bed+straw | 112 | 2 | 40.79 | 38% |
+| smithy+light | 74 | 1 | 42.8 | 35% |
+| table+table | 58 | 1 | 51.43 | 76% |
+| desk+light | 52 | 1 | 45.25 | 100% |
+| counter_bar+shopkeeper | 55 | 1 | 46.0 | 20% |
+| table+shelves | 41 | 1 | 45.54 | 32% |
+| counter_bar+storage | 53 | 1 | 51.16 | 43% |
+| counter_shop+shopkeeper | 47 | 1 | 30.48 | 100% |
+| desk+shelves | 39 | 1 | 53.15 | 85% |
+| smithy+chair | 38 | 1 | 50.22 | 82% |
+| bed+shelves | 40 | 1 | 53.45 | 12% |
+| bed+light | 31 | 1 | 43.57 | 10% |
+| counter_bar+light | 35 | 1 | 47.57 | 31% |
+| desk+storage | 30 | 1 | 51.62 | 63% |
+| counter_bar+npc | 42 | 1 | 45.18 | 31% |
+| stove+light | 26 | 1 | 50.48 | 73% |
+| desk+lab | 21 | 1 | 46.4 | 90% |
+| altar+altar | 24 | 1 | 0.0 | 100% |
+| table+npc | 23 | 1 | 50.36 | 52% |
+| counter_bar+colorlight | 21 | 1 | 41.88 | 43% |
+
+### Chair variant by direction to the table/desk
+
+| family | +u | -u | +v | -v |
+|---|---|---|---|---|
+| Bench | Bench1 (88%) | Bench5 (100%) | Bench4 (100%) | Bench2 (100%) |
+| CushionedBench | CushionedBench1 (70%) | CushionedBench1 (83%) | CushionedBench2 (100%) | CushionedBench2 (100%) |
+| CushionedBench1Immobile | CushionedBench1Immobile (100%) | CushionedBench1Immobile (100%) |  |  |
+| CushionedBench2Immobile |  |  | CushionedBench2Immobile (100%) | CushionedBench2Immobile (100%) |
+| CushionedStool | CushionedStool2 (47%) | CushionedStool4 (50%) | CushionedStool4 (25%) | CushionedStool2 (50%) |
+| DarkWoodenChair | DarkWoodenChair8 (49%) | DarkWoodenChair1 (56%) | DarkWoodenChair3 (67%) | DarkWoodenChair6 (72%) |
+| DarkWoodenChairFallen | DarkWoodenChairFallen3 (50%) | DarkWoodenChairFallen3 (52%) | DarkWoodenChairFallen3 (100%) | DarkWoodenChairFallen1 (23%) |
+| LightBench | LightBench2 (100%) | LightBench2 (100%) | LightBench1 (100%) | LightBench1 (100%) |
+| OgreStool | OgreStool2 (57%) | OgreStool1 (65%) | OgreStool1 (62%) | OgreStool2 (50%) |
+| OldDarkWoodenChair | OldDarkWoodenChair8 (58%) | OldDarkWoodenChair1 (73%) | OldDarkWoodenChair3 (83%) | OldDarkWoodenChair6 (76%) |
+| Stool | Stool1 (69%) | Stool1 (63%) | Stool1 (41%) | Stool1 (83%) |
+| WoodenChair | WoodenChair4 (57%) | WoodenChair1 (57%) | WoodenChair2 (74%) | WoodenChair3 (58%) |
+| WoodenChair4Immobile | WoodenChair4Immobile (100%) |  |  | WoodenChair4Immobile (100%) |
+| WoodenChair5Immobile | WoodenChair5Immobile (100%) |  | WoodenChair5Immobile (100%) | WoodenChair5Immobile (100%) |
+| WoodenChair6Immobile |  | WoodenChair6Immobile (100%) |  | WoodenChair6Immobile (100%) |
+
+### Bar counter assembly
+
+An L or U outline on the grid: v-runs use BarPiece1 (low-u side) / BarPiece3 (high-u side), u-runs use BarPiece2 (low-v side) / BarPiece4 (high-v side); corners join the arms listed in corner_arms.
+
+Spacing between neighbouring pieces: {'p10': 31.11, 'p25': 32.53, 'p50': 32.53, 'p75': 32.53, 'p90': 32.53} px.
+
+| piece series | runs along | share | pieces |
+|---|---|---|---|
+| BarHingedTop | v | 100% | 25 |
+| BarPiece1 | v | 100% | 103 |
+| BarPiece2 | u | 100% | 145 |
+| BarPiece3 | v | 100% | 182 |
+| BarPiece4 | u | 100% | 73 |
+
+| corner | arms | evidence |
+|---|---|---|
+| BarCorner1 | +u, +v | 36 |
+| BarCorner2 | +v, -u | 44 |
+| BarCorner3 | -v, -u | 28 |
+| BarCorner4 | -v, +u | 14 |
+
+### Wall side by object type (`type_wall_sides`)
+
+Which wall side each object type stood against, for orienting variant sets without paired rules (e.g. Bookcase1-4). Types with a clear (>= 90%) preference and at least 10 weighted placements:
+
+| type | side | share | weighted |
+|---|---|---|---|
+| AlchemistDesk4 | `/\|BR` | 100% | 13.5 |
+| Bed2 | `\\|TR` | 100% | 11.8 |
+| Bed3 | `\\|BL` | 95% | 36.8 |
+| Bed4 | `/\|BR` | 90% | 30.8 |
+| Bookcase1 | `/\|BR` | 100% | 145.5 |
+| Bookcase1Empty | `/\|BR` | 100% | 10.0 |
+| Bookcase1HalfFull | `/\|BR` | 100% | 41.0 |
+| Bookcase2 | `\\|BL` | 99% | 113.7 |
+| Bookcase2HalfFull | `\\|BL` | 100% | 12.0 |
+| Bookcase3 | `/\|TL` | 100% | 94.2 |
+| Bookcase4 | `\\|TR` | 100% | 89.5 |
+| Chest3 | `\\|BL` | 100% | 16.8 |
+| CryptChest1 | `\\|BL` | 94% | 16.3 |
+| CryptChest4 | `/\|BR` | 100% | 16.0 |
+| DarkWoodenChair7 | `\\|BL` | 100% | 11.0 |
+| Desk1 | `/\|BR` | 100% | 33.8 |
+| Desk2 | `\\|BL` | 100% | 40.0 |
+| DunMirChest3 | `\\|BL` | 96% | 74.5 |
+| DunMirChest4 | `/\|BR` | 98% | 101.3 |
+| DunMirTorchEast | `\\|BL` | 96% | 28.0 |
+| DunMirTorchNorth | `/\|BR` | 92% | 46.0 |
+| DunMirTorchWest | `\\|TR` | 100% | 13.0 |
+| Fireplace3 | `\\|BL` | 100% | 19.3 |
+| Fireplace4 | `/\|BR` | 100% | 22.5 |
+| Gargoyle3 | `\\|TR` | 95% | 19.0 |
+| Gargoyle6 | `\\|BL` | 96% | 25.0 |
+| Gargoyle8 | `/\|BR` | 100% | 58.0 |
+| LOTDTapestry1 | `\\|BL` | 100% | 21.0 |
+| LOTDTapestry2 | `/\|BR` | 100% | 29.0 |
+| LOTDWallSconse1 | `/\|BR` | 100% | 93.7 |
+| LOTDWallSconse2 | `\\|BL` | 98% | 44.0 |
+| Nightstand2 | `\\|TR` | 94% | 16.5 |
+| Nightstand3 | `\\|BL` | 100% | 31.5 |
+| Nightstand4 | `/\|BR` | 99% | 39.0 |
+| StatueDragon7 | `/\|BR` | 100% | 14.0 |
+| Stove03 | `\\|BL` | 100% | 10.0 |
+| Stove05 | `/\|BR` | 100% | 11.0 |
+| TraderBowRack2 | `/\|BR` | 100% | 11.0 |
+| TraderShelves2 | `/\|TL` | 100% | 11.0 |
+| VictorianLantern1 | `\\|BL` | 100% | 11.2 |
+| VictorianLantern2 | `/\|BR` | 100% | 16.0 |
+| VictorianLantern3 | `\\|TR` | 100% | 30.0 |
+| WizardWorkstation3b | `\\|BL` | 100% | 13.5 |
 

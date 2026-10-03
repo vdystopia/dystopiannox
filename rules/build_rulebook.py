@@ -9,10 +9,11 @@ Needs the corpus: py corpus/build_corpus.py --skip-images
 import os, subprocess, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MINERS = ["walls", "floors", "water", "lighting", "decoration", "life", "rooms"]
+MINERS = ["walls", "floors", "water", "lighting", "decoration", "life", "rooms", "buildings", "room_types"]
 TITLES = {"walls": "Walls, doors and boundaries", "floors": "Floors and edge blending",
           "water": "Water and crossings", "lighting": "Lighting", "decoration": "Decoration and furniture",
-          "life": "Townsfolk and navigation", "rooms": "Rooms and buildings"}
+          "life": "Townsfolk and navigation", "rooms": "Rooms and buildings",
+          "buildings": "Building shapes and styles", "room_types": "Room types and furnishing"}
 
 
 def run_miners():
