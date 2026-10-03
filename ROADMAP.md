@@ -9,7 +9,8 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 2. Rulebook mined from the corpus | done | `rules/RULEBOOK.md`, `rules/out/*.json` |
 | 3. Kit: original buildings, furnished rooms, water features | done | `mapgen/kit/` |
 | 4. Automatic checks (validator), calibrated on Westwood's maps | done | `validate/` |
-| 5. Visual review against Westwood references | next | |
+| 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
+| Generator v2: layout, vegetation and water planners (fixes review criteria 1–5) | next | |
 | 6. Package as a skill | | |
 | 7. Benchmark briefs and refinement loop | | |
 
@@ -54,3 +55,13 @@ Checks phase 4 must include, from this playtest (all implemented in `validate/`,
 - **Mossford v0.1** has 49 errors (black walls, 2 boundary holes, plank floor straight onto dirt at house doorsteps). It still needs a rebuild with the kit.
 - **Furnisher:** a desk was placed inside a wall in RoomTest (`kit/furnish.py`, wall-hugging placement).
 - **Style warnings on DysVale:** no creatures; few wall pieces per floor tile (an open layout); the tavern is small for its kind (55 tiles against Westwood's 166–269). These are for the layout planner (generator v2).
+
+## Visual review findings
+
+- **DysVale v0.2** (`review/reviews/DysVale-2026-10-03.md`) scores 1 on silhouette, flow and vegetation, and 2 on settlement, water and every-screen variety; interiors score 3. Generator v2 has to deliver:
+  - an organic walkable shape cut out of forest
+  - a road graph with buildings packed along it around a focal point
+  - deep tree lines, groves and single-type plant patches
+  - dressed water with bridges where roads cross
+
+  Each is measured in `review/design.py`.

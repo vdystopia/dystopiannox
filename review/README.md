@@ -1,0 +1,29 @@
+# Visual review (phase 5)
+
+Judges what the automatic checks can't: whether a map looks and plays like Westwood's.
+
+1. `py review/review.py <map>` renders the map and the 3 most similar Westwood maps (chosen by floor
+   mix, water and buildings) and writes `review/out/<map>/sheet.png`. Each column shows the whole map
+   at the same scale, then close-ups of about one game screen: a building entrance, woodland,
+   waterside, and paths or open ground.
+2. The same command measures the design qualities from the DysVale playtest and compares them with
+   Westwood's outdoor maps (`review.md`). These are paths and how they connect to doors, tree
+   clustering, trees lining edges, single-type plant clumps, and building spacing.
+3. Claude applies `RUBRIC.md` to the sheet (7 criteria, scored 1–5 against the Westwood columns) and
+   records the result in `reviews/<map>-<date>.md`. A map is ready for playtesting when every
+   criterion scores 3+ and the checker reports no errors.
+
+`py review/review.py --calibrate` re-measures Westwood's 51 outdoor single-player maps (25 distinct
+layouts) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for
+the path and building measures.
+
+## Calibration against the playtest
+
+The measurements reproduce the playtest verdict on DysVale without being told it:
+
+| Measure | Westwood (10th–90th percentile) | DysVale | Mossford v0.1 |
+|---|---|---|---|
+| Path share (towns) | 2.7–42% | **1.4%** | 18% |
+| Trees lining edges | 83–100% | **72%** | **70%** |
+| Small plants in single-type clumps | 23–62% | **6%** | **7%** |
+| Tree clustering (1 = random) | 0.29–1.07 | 1.06 (edge of the range) | **1.46** (artificially even) |
