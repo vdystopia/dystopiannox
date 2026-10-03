@@ -47,19 +47,31 @@ def export(maps):
     print(f"exported {res.stdout.count('OK') - 1} maps, {len(fails)} failures", *fails, res.stderr.strip(), sep="\n")
 
 
-def render(maps, size=2940):
+def render(maps, size=2940, workers=4):
+    """Renders maps with several editor processes at once; existing complete images are kept."""
+    from concurrent.futures import ThreadPoolExecutor
     from PIL import Image
     for d in ("images", "thumbs"): os.makedirs(os.path.join(OUT, d), exist_ok=True)
-    for i, path in enumerate(maps, 1):
+
+    def complete(png):
+        try:
+            Image.open(png).load(); return True
+        except Exception:
+            return False
+
+    def one(path):
         name = os.path.splitext(os.path.basename(path))[0]
         png = os.path.join(OUT, "images", name + ".png")
-        if not os.path.exists(png):
-            subprocess.run([EDITOR, path, "--render-image", png, str(size)], timeout=600)
-        if os.path.exists(png):
+        if not (os.path.exists(png) and complete(png)):
+            subprocess.run([EDITOR, path, "--render-image", png, str(size)], timeout=900)
+        if os.path.exists(png) and complete(png):
             im = Image.open(png); im.thumbnail((900, 900)); im.convert("RGB").save(os.path.join(OUT, "thumbs", name + ".jpg"), quality=85)
-        else:
-            print("render failed:", name)
-        if i % 10 == 0: print(f"rendered {i}/{len(maps)}", flush=True)
+            return None
+        return name
+
+    with ThreadPoolExecutor(workers) as pool:
+        failed = [n for n in pool.map(one, maps) if n]
+    print(f"rendered {len(maps) - len(failed)}/{len(maps)}", *(["failed: " + ", ".join(failed)] if failed else []), flush=True)
 
 
 SCHEMA = """
