@@ -289,3 +289,5 @@ $RECYCLE.BIN/
 # Round-trip test output
 tests/out/
 __pycache__/
+# Generated maps (mapgen\designs output)
+mapgen/out/
