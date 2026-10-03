@@ -124,6 +124,14 @@ namespace MapEditor
             LoadNewMap();
             if (args.Length > 0)
                 if (File.Exists(args[0])) MapInterface.SwitchMap(args[0]);
+            // Headless mode: MapEditor.exe <map> --render-image <out.png> [size]
+            // renders the whole map like the Map Image tab, saves it and exits.
+            if (args.Length >= 3 && args[1] == "--render-image")
+            {
+                Opacity = 0;
+                ShowInTaskbar = false;
+                Shown += (s, e) => RenderImageAndExit(args[2], args.Length > 3 ? int.Parse(args[3]) : 5880);
+            }
             spl.Close();
         }
 
@@ -1371,6 +1379,24 @@ namespace MapEditor
             mapView.MapRenderer.ColorLayout.Background = Color.Black;
             progBarImage.Value = 0;
             EditorSettings.Default.Reload();
+        }
+        private void RenderImageAndExit(string outFile, int size)
+        {
+            int code = 0;
+            try
+            {
+                SetImageRenderMode(false);
+                Bitmap image = ImageHelper.SmartCrop(mapView.MapToImage(), size, 20);
+                image.Save(outFile, System.Drawing.Imaging.ImageFormat.Png);
+                image.Dispose();
+            }
+            catch (Exception ex)
+            {
+                File.WriteAllText(outFile + ".error.txt", ex.ToString());
+                code = 1;
+            }
+            EditorSettings.Default.Reload();
+            Environment.Exit(code);
         }
         private void cmdImgExport_Click(object sender, EventArgs e)
         {
