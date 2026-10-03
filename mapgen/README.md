@@ -52,6 +52,9 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/furnish.py` | `furnish_room(spec, room, kind)`: furniture, sets and lighting for 12 learned room kinds (tavern, bedroom, shop, kitchen, smithy, library, ...), wall pieces turned to face away from their wall, doorways and walkways kept clear |
 | `kit/originality.py` | Compares a furnished room against all ~3,100 stock rooms; `furnish_original` re-rolls near copies |
 | `kit/water.py` | `Waterworks`: streams, ponds, lava flows, plank bridges, fords, docks, rope and lava bridges, shore walls and water dressing |
+| `kit/layout.py` | `Land` (generator v2): the walkable shape as areas joined by winding passages, cut out of forest walls; roads down every passage, a village square, and building lots along the roads with entrances facing them |
+| `kit/vegetation.py` | `Planter`: tree lines in front of the forest walls, groves, trees on the banks, and undergrowth and flowers in single-type patches |
+| `kit/village.py` | `Village`: fenced gardens, barrels and straw against outer walls, benches by the square, pebbles and bushes on open ground |
 
 Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, and
 `designs/dysvale.py`, a village combining all of them.

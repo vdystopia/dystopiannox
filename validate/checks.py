@@ -360,7 +360,7 @@ def check_floors(m, ctx, base):
             pair = frozenset((a, b))
             if pair in never: bad_touch[pair].append((x + 1, y + 1))
             r = blended.get(pair)
-            if r and r["edge_share_sp"] >= min_share and r["maps_sp"] >= 3:
+            if r and (r["edge_share_sp"] or 0) >= min_share and (r["maps_sp"] or 0) >= 3:
                 contacts[pair] += 1
                 if not edge_between(m, (x, y), n): harsh[pair].append((x + 1, y + 1))
     out = []

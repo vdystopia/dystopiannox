@@ -10,8 +10,8 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 3. Kit: original buildings, furnished rooms, water features | done | `mapgen/kit/` |
 | 4. Automatic checks (validator), calibrated on Westwood's maps | done | `validate/` |
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
-| Generator v2: layout, vegetation and water planners (fixes review criteria 1–5) | next | |
-| 6. Package as a skill | | |
+| Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
+| 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
@@ -65,3 +65,10 @@ Checks phase 4 must include, from this playtest (all implemented in `validate/`,
   - dressed water with bridges where roads cross
 
   Each is measured in `review/design.py`.
+
+- **DysVale v0.3** (generator v2, `review/reviews/DysVale-v0.3-2026-10-03.md`) scores 4 on silhouette, flow and vegetation and 3 on settlement, water, every-screen variety and interiors. The checker finds no errors and every design measurement is within Westwood's range. Open items:
+  - creatures and townsfolk (none yet)
+  - denser villages
+  - dressed stream banks
+  - corridor width variety
+  - the furnisher sometimes places furniture on a wall cell

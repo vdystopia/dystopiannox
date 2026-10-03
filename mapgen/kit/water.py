@@ -302,7 +302,9 @@ class Waterworks:
         tiles = self._rect_tiles(u0, u1, v0, v1)
         for c in tiles:
             self.spec.floor[c] = material
-            self.spec.remove_wall(*c)
+            # clear shore walls only: a visible wall here is the map's boundary and must stay
+            if self.spec.wallmap.get(c, {}).get("material", "Invisible").startswith("Invisible"):
+                self.spec.remove_wall(*c)
             self.no_walls.add(c)
         self.bridge_materials.add(material)
         return dict(kind="plank_bridge", tiles=tiles, rect=(u0, u1, v0, v1), across=across)
