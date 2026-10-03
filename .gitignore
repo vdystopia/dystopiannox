@@ -293,3 +293,5 @@ __pycache__/
 mapgen/out/
 # Reference corpus built from the game files (corpusuild_corpus.py)
 corpus/out/
+# Checker reports and exports (validate/validate.py)
+validate/out/

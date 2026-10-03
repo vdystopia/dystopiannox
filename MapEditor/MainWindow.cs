@@ -130,7 +130,12 @@ namespace MapEditor
             {
                 Opacity = 0;
                 ShowInTaskbar = false;
-                Shown += (s, e) => RenderImageAndExit(args[2], args.Length > 3 ? int.Parse(args[3]) : 5880);
+                // size "full:N" renders the whole 256x256 map uncropped at N pixels, so world positions
+                // map to image positions exactly (N / 5880 image pixels per world pixel)
+                string sizeArg = args.Length > 3 ? args[3] : "5880";
+                bool full = sizeArg.StartsWith("full:");
+                int size = int.Parse(full ? sizeArg.Substring(5) : sizeArg);
+                Shown += (s, e) => RenderImageAndExit(args[2], size, full);
             }
             spl.Close();
         }
@@ -1380,13 +1385,15 @@ namespace MapEditor
             progBarImage.Value = 0;
             EditorSettings.Default.Reload();
         }
-        private void RenderImageAndExit(string outFile, int size)
+        private void RenderImageAndExit(string outFile, int size, bool full)
         {
             int code = 0;
             try
             {
                 SetImageRenderMode(false);
-                Bitmap image = ImageHelper.SmartCrop(mapView.MapToImage(), size, 20);
+                Bitmap whole = mapView.MapToImage();
+                Bitmap image = full ? ImageHelper.ResizeImage(whole, new Size(size, size), true) : ImageHelper.SmartCrop(whole, size, 20);
+                if (full) whole.Dispose();
                 image.Save(outFile, System.Drawing.Imaging.ImageFormat.Png);
                 image.Dispose();
             }

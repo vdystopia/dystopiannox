@@ -8,8 +8,8 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 1. Reference corpus (all 157 stock maps, database, renders) | done | `corpus/` |
 | 2. Rulebook mined from the corpus | done | `rules/RULEBOOK.md`, `rules/out/*.json` |
 | 3. Kit: original buildings, furnished rooms, water features | done | `mapgen/kit/` |
-| 4. Automatic checks (validator) | next | |
-| 5. Visual review against Westwood references | | |
+| 4. Automatic checks (validator), calibrated on Westwood's maps | done | `validate/` |
+| 5. Visual review against Westwood references | next | |
 | 6. Package as a skill | | |
 | 7. Benchmark briefs and refinement loop | | |
 
@@ -33,7 +33,7 @@ Recorded for later phases (design level):
 1. **No flow or coherent design.** Buildings sit at random spots with no roads or paths connecting them; Westwood towns are compact, with streets, a square, and buildings facing the streets. This needs a layout planner: a district/road graph first, buildings placed along roads with entrances facing them, then paths to every door, bridges where roads cross water, and organic outer boundaries instead of a geometric diamond. *(Generator v2, before or alongside phase 5.)*
 2. **Trees and shrubs look random.** Uniform scatter instead of Westwood's structure: trees line edges and paths, groves and clearings, single-type clumps of flowers and mushrooms, undergrowth hugging walls and trees (`rules/out/decoration.json` has the measurements). This needs a vegetation planner driven by those rules. *(Generator v2.)*
 
-Checks phase 4 must include, from this playtest:
+Checks phase 4 must include, from this playtest (all implemented in `validate/`, each proven by a planted defect in `validate/selftest.py`):
 
 - wall pieces beside door openings shaped as if the opening were wall
 - double-door types only in 2-cell openings as matched pairs; single doors in 1-cell openings
@@ -48,3 +48,9 @@ Checks phase 4 must include, from this playtest:
 | Black walls (invalid wall pieces) | Fixed: valid-piece table |
 | See-through hole in the boundary | Rule recorded: invisible walls never on the boundary. The water kit follows it; Mossford itself still needs a rebuild |
 | Abrupt bridges | Fixed in the water kit (Con05A-style decks, narrow streams). Mossford still needs a rebuild |
+
+## Found by the checker (to fix in later phases)
+
+- **Mossford v0.1** has 49 errors (black walls, 2 boundary holes, plank floor straight onto dirt at house doorsteps). It still needs a rebuild with the kit.
+- **Furnisher:** a desk was placed inside a wall in RoomTest (`kit/furnish.py`, wall-hugging placement).
+- **Style warnings on DysVale:** no creatures; few wall pieces per floor tile (an open layout); the tavern is small for its kind (55 tiles against Westwood's 166–269). These are for the layout planner (generator v2).

@@ -263,8 +263,10 @@ class Spec:
         options, w = zip(*sorted(weights.items()))
         return int(self.rng.choices(options, w)[0])
 
-    def build(self, out_dir):
-        """Write the map (and .nxz unless d['nxz'] is False) into out_dir. Returns the report lines."""
+    def build(self, out_dir, check=True):
+        """Write the map (and .nxz unless d['nxz'] is False) into out_dir. Returns the report lines.
+        check=True then runs the automatic checks (validate/validate.py) and adds their summary line;
+        the full report is in validate/out/<name>/report.md."""
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
             json.dump(self._finalize(), f)
         try:
@@ -276,4 +278,8 @@ class Spec:
         lines = (res.stdout + res.stderr).strip().splitlines()
         if res.returncode or not any(l.startswith("OK") for l in lines):
             sys.exit("map build failed:\n" + "\n".join(lines))
+        if check:
+            chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
+                                  os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)
+            lines.append("CHECK " + (chk.stdout.strip().splitlines() or ["(checker produced no output)"])[-1])
         return lines
