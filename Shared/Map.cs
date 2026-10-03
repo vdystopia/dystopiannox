@@ -1792,6 +1792,10 @@ namespace NoxShared
                 }
             }
 
+            // Bit 7 of the facing byte. The game keeps it as wall flag 0x80 when loading and
+            // writes it back when saving, so preserve it instead of discarding it.
+            public bool FacingHighBit;
+
             internal Wall(Stream stream)
             {
                 Read(stream);
@@ -1811,7 +1815,9 @@ namespace NoxShared
             {
                 BinaryReader rdr = new BinaryReader(stream);
                 Location = new Point(rdr.ReadByte(), rdr.ReadByte());
-                Facing = (WallFacing)(rdr.ReadByte() & 0x7F);//I'm almost certain the sign bit is just garbage and does not signify anything about the wall
+                byte facing = rdr.ReadByte();
+                Facing = (WallFacing)(facing & 0x7F);
+                FacingHighBit = (facing & 0x80) != 0;
                 matId = rdr.ReadByte();
                 Variation = rdr.ReadByte();
                 Minimap = rdr.ReadByte();
@@ -1825,7 +1831,7 @@ namespace NoxShared
 
                 wtr.Write((byte)Location.X);
                 wtr.Write((byte)Location.Y);
-                wtr.Write((byte)Facing);
+                wtr.Write((byte)((byte)Facing | (FacingHighBit ? 0x80 : 0)));
                 wtr.Write((byte)matId);
                 wtr.Write((byte)Variation);
                 wtr.Write((byte)Minimap);
