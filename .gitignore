@@ -291,3 +291,5 @@ tests/out/
 __pycache__/
 # Generated maps (mapgen\designs output)
 mapgen/out/
+# Reference corpus built from the game files (corpusuild_corpus.py)
+corpus/out/
