@@ -22,6 +22,23 @@ py mapgen\designs\dyscrypt.py                            # writes mapgen\out\Dys
 
 To play or open it, copy both files to `<Nox>\maps\<Name>\`.
 
+## Maps
+
+| Design | Type | What it is |
+|---|---|---|
+| `designs/dyscrypt.py` | Arena (Deathmatch, Elimination, King of the Realm) | One crypt room, 2-8 players |
+| `designs/mossford.py` | Solo (single player) | Woodland river village: 8 furnished buildings, 2 bridges, square, gardens, 16 roaming/stationary townsfolk copied from Con07B |
+
+Single-player maps get no `.nxz` (only used to send maps to multiplayer clients). To test one in
+game: start a Solo game, press F1, type `racoiaws` (enables cheats), then `load <mapname>`.
+
+## What the builder supports
+
+Walls of any shape (facing derived from neighbours), windows, floor tiles with soft edge blending
+(rules learned from all stock maps), doors placed in wall gaps, objects, objects copied from a stock
+map by script name (e.g. configured townsfolk; their script names are cleared), waypoints with
+roaming links (flag 128), and room polygons.
+
 ## Rules the generator follows (verified against stock maps and the game engine)
 
 - Walls and floor tiles occupy cells where `x + y` is even. Rooms are rectangles in rotated
@@ -32,3 +49,8 @@ To play or open it, copy both files to `<Nox>\maps\<Name>\`.
 - An object's team is only saved when its extended-fields flag is set; the builder does this.
 - Arena maps (`type=0x34`) carry three Crowns (teams 0, 1, 2), like every stock arena map.
 - Map names are at most 8 characters.
+- A floor tile at (x, y) is drawn centred on grid corner (x+1, y+1); paint terrain by that centre.
+- Doors: a one-cell gap in a wall; in a `\` wall the door goes on the gap's bottom-right corner
+  facing South, in a `/` wall on its bottom-left corner facing West (64/67 of Con07B's doors).
+- Water is fenced by InvisibleWallSet walls on the shoreline cells, as in stock maps.
+- Single-player maps: type Solo (0x1), one PlayerStart, no teams/crowns/flags, no .nxz.
