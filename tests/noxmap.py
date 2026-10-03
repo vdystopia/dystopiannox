@@ -68,13 +68,17 @@ def _tile(r):
 
 
 def tiles(b):
+    """Floor tiles as (x, y, tile). Each entry is a pair of tiles: the first byte holds the
+    pair's Y and flags the left tile; the second holds X and flags the right tile; when both
+    are present the right tile comes first. This matches the game's writer (and the editor).
+    opennox-lib's maps package reads these bytes the other way round and misplaces tiles."""
     r = R(b, 18); out = []
     while True:
-        x, y = r.u8(), r.u8()
-        if x == 0xFF and y == 0xFF: return out
-        px, py = x & 0x7F, y & 0x7F
-        right = _tile(r) if x & 0x80 else None
-        left = _tile(r) if y & 0x80 else None
+        b1, b2 = r.u8(), r.u8()
+        if b1 == 0xFF and b2 == 0xFF: return out
+        px, py = b2 & 0x7F, b1 & 0x7F
+        right = _tile(r) if b2 & 0x80 else None
+        left = _tile(r) if b1 & 0x80 else None
         if left:  out.append((2 * px, 2 * py, left))
         if right: out.append((2 * px + 1, 2 * py - 1, right))
 
