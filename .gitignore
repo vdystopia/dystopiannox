@@ -283,3 +283,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Build tooling downloaded by build.ps1
+.tools/
+# Round-trip test output
+tests/out/
+__pycache__/

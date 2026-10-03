@@ -1,4 +1,29 @@
 # MapEditor
+
+## Building and testing (dystopiannox fork)
+
+No Visual Studio or Windows SDK needed; Windows 10/11 has everything except the C# compiler,
+which `build.ps1` downloads (Roslyn from nuget.org, pinned version and SHA-256).
+
+```
+powershell -ExecutionPolicy Bypass -File build.ps1
+```
+
+Output: `MapEditor\bin\Release\` (`MapEditor.exe`, `NoxShared.dll`). Targets .NET Framework 4.x.
+Korean/Dutch/en-GB dialog translations are skipped (`/p:SkipSatelliteResources=true`) because
+they need `al.exe` from the Windows SDK.
+
+Round-trip test: loads stock Nox maps with the built library, saves them, and checks with an
+independent parser that no walls, floor tiles, objects or waypoints were lost or changed.
+Needs Python 3 and `pip install pycryptodome`; finds Nox via the registry.
+
+```
+py tests\roundtrip.py          # 8 representative maps
+py tests\roundtrip.py --all    # every map in Nox\maps
+```
+
+Run it after every change to map reading or writing code.
+
 ## Nox Map Editor 1.2 by KITTY
 
 Improved map compression, nearly identical to original sizes!
