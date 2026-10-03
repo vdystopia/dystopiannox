@@ -1,4 +1,10 @@
-"""Layout planner (generator v2): the walkable shape, roads, a village square and building lots.
+"""Layout planner (generator v3): the walkable shape, roads, a village square and building lots.
+
+Order of work: from the centre outwards. The central feature (the square) is placed first, then the
+buildings around it, then the roads out to the other areas and their features, and only then does
+the land grow around everything that was placed (a margin of open ground with an irregular edge),
+ending in the forest wall. Working inward from fixed borders instead squeezes the village into
+whatever room is left.
 
 Westwood's outdoor maps (review/RUBRIC.md, criteria 1-3) are winding, branching corridors cut out of
 darkness by forest walls. Distinct areas (village, glades, clearings) are joined by narrower passages,
@@ -99,18 +105,25 @@ class Land:
         self.i_range = (u_range[0] // 2, u_range[1] // 2)
         self.j_range = (v_range[0] // 2, v_range[1] // 2)
         self.areas, self.links = {}, []
-        self.squares = set()
+        # before carve() the whole planning canvas is available; carve() shrinks it to the land
+        self.squares = {(i, j) for i in range(*self.i_range) for j in range(*self.j_range)
+                        if 3 <= i + j <= 250 and 3 <= i - j <= 250}
+        self.reserved = set()                 # squares kept for planned features (a stream and its banks)
         self.roads, self.plaza, self.water, self.taken = set(), set(), set(), set()
+        self.taken_strict = set()             # building footprints only (taken also holds margins)
         self.road_paths = []
 
     # ---- planning ------------------------------------------------------------------------------------
-    def area(self, name, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.26):
+    def area(self, name, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.26, clearing=True):
         """A rounded area (village, glade, clearing). radius in uv units; stretch elongates it along
         `angle` (radians, in uv space); roughness gives the outline its irregular bulges."""
         r = self.rng
         waves = [(k, r.uniform(0, 2 * math.pi), roughness * r.uniform(0.5, 1.0) / (1 + 0.5 * n))
                  for n, k in enumerate((2, 3, 5, 7, 11))]
-        self.areas[name] = dict(c=(centre_uv[0] / 2, centre_uv[1] / 2), r=radius_uv / 2, stretch=stretch, angle=angle, waves=waves)
+        # clearing=False: the area's extent comes from what is built in it (a village grows around its
+        # square and buildings); radius then only bounds where its lots may go
+        self.areas[name] = dict(c=(centre_uv[0] / 2, centre_uv[1] / 2), r=radius_uv / 2, stretch=stretch, angle=angle,
+                                waves=waves, clearing=clearing)
 
     def link(self, a, b, width_uv, bend=0.32, road=True, pockets=(1, 2)):
         """A curving passage between two areas (and, with road=True, a road along its middle)."""
@@ -144,31 +157,46 @@ class Land:
         R = ar["r"] * (1 + sum(a * math.sin(k * th + p) for k, p, a in ar["waves"]))
         return d <= R
 
-    def carve(self):
-        """Turns areas and passages into land squares, then smooths the outline so every wall line
-        is continuous and no passage is narrower than 3 squares."""
-        i0, i1 = self.i_range; j0, j1 = self.j_range
-        sq = set()
-        for i in range(i0, i1):
-            for j in range(j0, j1):
-                s = (i + 0.5, j - 0.5)
-                if any(self._in_area(s, ar) for ar in self.areas.values()):
-                    sq.add((i, j)); continue
-                for ln in self.links:
-                    d, k = dist_to_path(s, ln["path"])
-                    t = k / max(1, len(ln["path"]))
-                    half = ln["half"] * (1 + sum(0.16 * math.sin(f * 40 * t + p) for f, p in ln["waves"]))
-                    if d <= half:
-                        sq.add((i, j)); break
-        for _ in range(2):                                     # majority smoothing
+    def reserve_band(self, path_uv, half_squares):
+        """Keeps squares within `half_squares` of a uv polyline for a planned feature (a stream and its
+        banks), so buildings and roads placed before the water leave room for it."""
+        pts = _densify([(u / 2, v / 2) for u, v in path_uv], 0.5)
+        for si, sj in pts:
+            for i in range(int(si - half_squares - 1), int(si + half_squares + 2)):
+                for j in range(int(sj - half_squares - 1), int(sj + half_squares + 2)):
+                    if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half_squares: self.reserved.add((i, j))
+
+    def carve(self, margin=4.0, roughness=0.45):
+        """Grows the land around everything placed so far: squares within `margin` squares (varied
+        by smooth noise for an irregular edge) of the roads, the square, buildings, reserved water and
+        props, plus the clearing areas. Then smooths the outline so every wall line is continuous and
+        no passage is narrower than 3 squares; placed content is never cut away."""
+        canvas = self.squares
+        content = (set(self.roads) | self.plaza | self.taken | self.water | self.reserved) & canvas
+        r = self.rng
+        ph = [r.uniform(0, 6.3) for _ in range(6)]
+        noise = lambda i, j: (math.sin(i * 0.23 + ph[0]) + math.sin(j * 0.19 + ph[1]) + math.sin((i + j) * 0.11 + ph[2])
+                              + 0.6 * math.sin((i - j) * 0.37 + ph[3])) / 3.6
+        dist = bfs_distance(list(content), canvas, int(margin * (1 + roughness)) + 2)
+        sq = {s for s, d in dist.items() if d <= margin * (1 + roughness * noise(*s))}
+        for (i, j) in canvas:
+            s = (i + 0.5, j - 0.5)
+            if any(ar["clearing"] and self._in_area(s, ar) for ar in self.areas.values()):
+                sq.add((i, j)); continue
+            for ln in self.links:
+                if ln["road"]: continue                       # road passages grow from the road itself
+                d, k = dist_to_path(s, ln["path"])
+                if d <= ln["half"]: sq.add((i, j)); break
+        keep = content | {(i + a, j + b) for i, j in content for a, b in N8}
+        sq |= keep
+        for _ in range(2):                                     # majority smoothing (placed content stays)
             nxt = set()
-            for i in range(i0 - 1, i1 + 1):
-                for j in range(j0 - 1, j1 + 1):
-                    n = sum((i + a, j + b) in sq for a, b in N8)
-                    if n >= 5 or ((i, j) in sq and n >= 4): nxt.add((i, j))
-            sq = nxt
+            for (i, j) in {(i + a, j + b) for i, j in sq for a, b in N8}:
+                n = sum((i + a, j + b) in sq for a, b in N8)
+                if n >= 5 or ((i, j) in sq and n >= 4): nxt.add((i, j))
+            sq = nxt | keep
         for _ in range(3):                                     # no spurs or 1-2 square necks
-            sq = {s for s in sq if sum((s[0] + a, s[1] + b) in sq for a, b in N4) >= 3 or
+            sq = {s for s in sq if s in keep or sum((s[0] + a, s[1] + b) in sq for a, b in N4) >= 3 or
                   (sum((s[0] + a, s[1] + b) in sq for a, b in N4) == 2 and not self._neck(s, sq))}
         sq = self._largest(sq)
         sq |= self._holes(sq)
@@ -248,18 +276,22 @@ class Land:
     def apply(self, spec, wall, floor):
         """Floor tiles on every land square and the forest wall around them."""
         for s in self.squares:
-            spec.floor[square_tile(*s)] = floor
+            spec.floor.setdefault(square_tile(*s), floor)      # roads, the square and buildings stay
         for p in self.boundary_points():
             x, y = point_cell(*p)
             spec.wall(x, y, wall)
 
-    def ground_variety(self, spec, base="GrassNorm", sparse="GrassSparse2", dense="GrassDense", scale=1.0):
-        """Patches of sparse and dense grass on the base (smooth noise, as in Westwood's meadows)."""
+    def ground_variety(self, spec, base="GrassNorm", sparse="GrassSparse2", dense="GrassDense", scale=1.0, clear=3):
+        """Patches of sparse and dense grass on the base (smooth noise, as in Westwood's meadows).
+        Call it after roads, water and the square: patches keep `clear` squares away from them, so
+        every transition has room for its own blend (no three-way seams by a road or a bank)."""
         r = self.rng
         ph = [r.uniform(0, 6.3) for _ in range(4)]
+        features = [s for s in self.squares if spec.floor.get(square_tile(*s)) != base] + list(self.taken)
+        near = bfs_distance(features, self.squares, clear)
         for s in self.squares:
             t = square_tile(*s)
-            if spec.floor.get(t) != base: continue
+            if spec.floor.get(t) != base or near.get(s, 99) < clear: continue
             i, j = s
             n = math.sin(i * 0.17 * scale + ph[0]) + math.sin(j * 0.21 * scale + ph[1]) + 0.6 * math.sin((i - j) * 0.11 * scale + ph[2])
             if n > 1.05: spec.floor[t] = sparse
@@ -287,7 +319,7 @@ class Land:
                 half = width_squares / 2 * (1 + 0.15 * math.sin(k * nz[1] + nz[0]))
                 for i in range(int(si - half - 1), int(si + half + 2)):
                     for j in range(int(sj - half - 1), int(sj + half + 2)):
-                        if (i, j) not in self.squares or (i, j) in skip: continue
+                        if (i, j) not in self.squares or (i, j) in skip or (i, j) in self.plaza: continue
                         if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half:
                             t = square_tile(i, j)
                             if "Water" in spec.floor.get(t, "") or "WoodSlat" in spec.floor.get(t, ""): continue
@@ -320,7 +352,7 @@ class Land:
             tile = square_tile(*s)
             cur = spec.floor.get(tile, "")
             if "Water" in cur or "WoodSlat" in cur: break
-            if not cur.startswith("Grass") or square_tile(*s) in spec.wallmap: continue   # inside a building
+            if (cur and not cur.startswith("Grass")) or square_tile(*s) in spec.wallmap: continue   # inside a building
             spec.floor[tile] = material
             self.roads.add(s)
 
@@ -356,6 +388,24 @@ class Land:
             if (o, e) not in seen: seen.add((o, e)); res.append((o, e))
         return res
 
+    def square_lots(self, size_uv, margin=2):
+        """Lots around the village square, the building facing it across a clear margin.
+        Returns [(origin_uv, entrance_side)], the most central first."""
+        if not self.plaza: return []
+        pi0, pi1 = min(i for i, _ in self.plaza), max(i for i, _ in self.plaza)
+        pj0, pj1 = min(j for _, j in self.plaza), max(j for _, j in self.plaza)
+        ci, cj = (pi0 + pi1) / 2, (pj0 + pj1) / 2
+        w, h = size_uv[0] // 2, size_uv[1] // 2
+        out = []
+        for oj in range(pj0 - h + 1, pj1 + 1):              # east and west of the square
+            out.append(((pi1 + 1 + margin, oj), "u_min"))
+            out.append(((pi0 - margin - w, oj), "u_max"))
+        for oi in range(pi0 - w + 1, pi1 + 1):              # north and south
+            out.append(((oi, pj1 + margin), "v_min"))
+            out.append(((oi, pj0 - 1 - margin - h), "v_max"))
+        out.sort(key=lambda o: abs(o[0][0] + w / 2 - ci) + abs(o[0][1] + h / 2 + 0.5 - cj))
+        return [((2 * oi, 2 * oj), side) for (oi, oj), side in out]
+
     def lot_free(self, origin_uv, size_uv, margin=2):
         """The footprint is land clear of roads, the square, water and other lots; the margin around
         it is land clear of water and other lots (a road may pass through the margin)."""
@@ -364,9 +414,10 @@ class Land:
         for i in range(oi - margin, oi + w + margin):
             for j in range(oj + 1 - margin, oj + h + 1 + margin):
                 s = (i, j)
-                if s not in self.squares or s in self.water or s in self.taken: return False
+                if s not in self.squares or s in self.water or s in self.reserved or s in self.taken: return False
                 inside = oi <= i < oi + w and oj + 1 <= j < oj + h + 1
-                if inside and (s in self.roads or s in self.plaza): return False
+                if s in self.plaza: return False                  # the square keeps a clear margin
+                if inside and s in self.roads: return False
         return True
 
     def take_cells(self, cells, margin=1):

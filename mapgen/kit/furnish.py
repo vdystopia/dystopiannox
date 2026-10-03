@@ -20,6 +20,7 @@ from collections import Counter, deque
 
 from nox import load_rules, CELL
 from kit.model import Room
+from kit.identity import ROOMS as ROOM_IDENTITY
 
 K = CELL / math.sqrt(2)            # px per uv unit
 AGENT = 0.75                       # uv radius kept free for walking (~12 px)
@@ -52,6 +53,8 @@ STYLE_EXCLUDE = {
 }
 # Damaging flame objects (they hurt players; rules: lighting.visible_sources) are never used indoors.
 DANGEROUS = re.compile(r"Flame(?!Basin)")
+# Street lights stay outdoors.
+OUTDOOR_LIGHT = re.compile(r"^TorchPole|^Obelisk|StreetLamp")
 # At most this many of a family per room (one-off focal pieces; decorative families that look
 # odd when repeated in a small generated room).
 CAPS = {"fireplace": 1, "stove": 1, "altar": 1, "throne": 1, "counter_shop": 1, "statue": 2, "column": 4, "smithy": 3,
@@ -231,7 +234,7 @@ class Furnisher:
         self.spec, self.room, self.rng = spec, room, rng
         self.g = _Room(spec, room)
         self.kind = kind or next(k for lim, k in DEFAULT_KIND_BY_SIZE if self.g.area <= lim)
-        self.T = RT["types"][self.kind]
+        self.T = RT["types"][ROOM_IDENTITY.get(self.kind, {}).get("base", self.kind)]
         self.chair_facing = RT["chair_facing"]
         self.dirvar = DEC["directional_variants"]
         self.things = THINGS
@@ -305,11 +308,13 @@ class Furnisher:
 
     def types_of(self, fam):
         inv = self.T["inventory"].get(fam, {})
-        shares = {t: s for t, s in inv.get("object_types", {}).items() if self.ok_type(t)}
+        allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(fam)
+        ok = (lambda t: self.ok_type(t) and re.search(allow, t)) if allow else self.ok_type
+        shares = {t: s for t, s in inv.get("object_types", {}).items() if ok(t)}
         if not shares:   # fall back to the same family in any room type
             for d in _RT["types"].values():
                 for t, s in d["inventory"].get(fam, {}).get("object_types", {}).items():
-                    if self.ok_type(t): shares[t] = shares.get(t, 0) + s
+                    if ok(t): shares[t] = shares.get(t, 0) + s
         return shares
 
     def against_wall(self, fam, t_choice=None, side_pref=None, role="wall", tries=40):
@@ -431,12 +436,34 @@ class Furnisher:
             if fam == "bed": self.beds.append(res)
         return o, uv
 
+    def identity_plan(self):
+        """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at
+        its Westwood count clamped to the identity's range, optional families by their probability,
+        nothing else. Returns (plan, need) or None for kinds without an identity."""
+        ident = ROOM_IDENTITY.get(self.kind)
+        if not ident: return None
+        plan, need = {}, {}
+        for f, (lo, hi) in ident["core"].items():
+            n = self.count(f) or lo
+            if f in ident.get("per_tiles", {}):            # big rooms get more (a tavern: a table per 35 tiles)
+                n = max(n, int(len(self.room.tiles) / ident["per_tiles"][f]))
+            plan[f] = max(lo, min(hi, n)); need[f] = lo
+        for f, (p, hi) in ident["optional"].items():
+            if self.rng.random() < p:
+                plan[f] = max(1, min(hi, self.count(f) or 1))
+        return plan, {f: n for f, n in need.items() if n > 0 and (self.types_of(f) or f in ("counter_bar", "chair", "bench"))}
+
     def furnish(self):
         inv_all = self.T["inventory"]
-        plan = {f: self.count(f) for f in ORDER if f in inv_all and f not in VETO.get(self.kind, ())}
+        ip = self.identity_plan()
+        if ip:
+            plan, need = ip
+        else:
+            plan = {f: self.count(f) for f in ORDER if f in inv_all and f not in VETO.get(self.kind, ())}
         if self.style == "town" and self.kind not in GRAND_ROOMS:
             plan["statue"] = plan["column"] = 0
-        need = {f: n for f, n in REQUIRED.get(self.kind, {}).items() if self.types_of(f) or f == "counter_bar"}
+        if not ip:
+            need = {f: n for f, n in REQUIRED.get(self.kind, {}).items() if self.types_of(f) or f == "counter_bar"}
         for f, n in need.items():
             n = n if self.g.area >= 30 or n <= 1 else 1
             plan[f] = max(n, plan.get(f, 0))
@@ -502,6 +529,9 @@ class Furnisher:
             else:
                 seat = "bench" if plan.get("bench") and self.rng.random() < 0.5 else "chair"
                 k = max(1, int(round(_q(self.rng, (_RT["sets"].get(f"table+{seat}") or {}).get("per_anchor"), 1.0) or 2)))
+                # the room's identity sets a minimum (a living room's table has 2+ chairs)
+                lo = ROOM_IDENTITY.get(self.kind, {}).get("core", {}).get("chair", (0, 0))[0]
+                k = max(k, -(-lo // max(1, sum(1 for x in tables if x[2] == "table"))))
                 self.seats_around(uv, t, min(4, k), seat)
 
     def beside_bed(self):
@@ -577,7 +607,7 @@ class Furnisher:
         n = int(round(min(rate, 9.0) * tiles / 100 + self.rng.random() * 0.6))
         n = max(1 if tiles >= 12 else 0, min(n, max(1, tiles // 12)))
         types = {t: s for t, s in vl.get("types", {}).items()
-                 if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove")} or {"Candleabra1": 1}
+                 if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
         for _ in range(n):
             t = _pick(self.rng, types)
             base = _base(t)

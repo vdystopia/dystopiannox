@@ -8,6 +8,9 @@ Vegetation (structure, not scatter):
   tree_clustering     Clark-Evans index of trees: 1 = random scatter, below 1 = clumped (groves, lines)
   tree_edge_share     share of trees within 3 cells of a wall or the map's edge (tree lines)
   plant_same_type     share of small plants whose nearest small plant is the same type (single-type clumps)
+Spacing:
+  road_near_water     share of path tiles within 2 tiles of water (Westwood keeps roads clear of banks
+                      except where they cross; crowded bands of blends look messy)
 Buildings:
   building_spacing    median gap between neighbouring buildings, in cells (compact towns are close)
 
@@ -28,7 +31,8 @@ SIDES = ((1, -1), (-1, -1), (1, 1), (-1, 1))
 NAMES = dict(path_share="Path share of outdoor ground", path_connected="Paths joined into one network",
              doors_on_path="Outside doors with a path at the doorstep", tree_clustering="Tree clustering (1 = random scatter)",
              tree_edge_share="Trees lining walls and edges", plant_same_type="Small plants in single-type clumps",
-             building_spacing="Gap between neighbouring buildings (cells)")
+             building_spacing="Gap between neighbouring buildings (cells)",
+             road_near_water="Road tiles crowding the water (within 2 tiles)")
 
 
 def family(mat):
@@ -177,7 +181,14 @@ class Outdoor:
             tree_clustering=r3(self.clark_evans(trees)),
             tree_edge_share=r3(self.edge_share(trees)),
             plant_same_type=r3(self.same_type()),
-            building_spacing=r3(self.building_spacing()))
+            building_spacing=r3(self.building_spacing()),
+            road_near_water=r3(self.road_near_water()))
+
+    def road_near_water(self):
+        water = {t for t, d in self.m.tiles.items() if family(d["material"]) == "water"}
+        if len(self.paths) < 50 or len(water) < 50: return None
+        near = sum(1 for (x, y) in self.paths if any((x + a, y + b) in water for a in range(-2, 3) for b in range(-2, 3)))
+        return near / len(self.paths)
 
 
 def r3(v):

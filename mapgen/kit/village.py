@@ -7,7 +7,8 @@ Measured on Con05A, Con08a, Con03A, Con07B and Con02a (outdoor ground):
 - Benches by the square, bushes in yards, pebbles and small rocks scattered on open ground.
 """
 import math
-from kit.layout import N4, square_tile, square_px, point_cell, bfs_distance
+from kit.layout import N4, square_tile, square_px, point_cell, bfs_distance, px_square
+from kit.identity import SCENES
 
 CROPS = ["GardenCorn", "GardenTomatos", "GardenCabbage"]
 WALL_PROPS = {"Barrel2": 5, "WaterBarrel": 4, "Barrel": 3, "Straw2": 3, "Straw1": 2}
@@ -61,39 +62,78 @@ class Village:
             return True
         return False
 
-    def wall_props(self, building, n=(1, 3)):
-        """Barrels, water barrels and straw against the building's outside walls."""
-        L, rng = self.land, self.rng
+    def _entrance(self, building):
+        """(door square, outward step, sideways step) of the building's main entrance."""
         foot = _squares_of(building.footprint)
-        outside = [s for s in {(i + a, j + b) for i, j in foot for a, b in N4} - foot
-                   if s in L.squares and s not in L.roads and s not in L.plaza and s not in L.water and s not in self.used]
-        door_sq = set()
-        for d in building.entrances:
-            from kit.layout import px_square
-            di, dj = px_square(*d.px)
-            door_sq |= {(di + a, dj + b) for a in range(-2, 3) for b in range(-2, 3)}
-        outside = [s for s in outside if s not in door_sq]
-        rng.shuffle(outside)
-        k = rng.randint(*n)
-        for s in outside[:k]:
-            t = _pick(rng, WALL_PROPS)
-            for c in range(rng.randint(1, 2)):
-                self.spec.obj_px(t, *square_px(s[0] + 0.3 + 0.35 * c, s[1] - 0.5 + rng.uniform(-0.15, 0.15)))
-            self.used.add(s); L.taken.add(s)
+        if not building.entrances: return None
+        d = px_square(*building.entrances[0].px)
+        outs = [(a, b) for a, b in N4 if (d[0] + a, d[1] + b) not in foot and (d[0] + a, d[1] + b) in self.land.squares]
+        if not outs: return None
+        ci = sum(i for i, _ in foot) / len(foot); cj = sum(j for _, j in foot) / len(foot)
+        o = max(outs, key=lambda s: (d[0] + s[0] - ci) ** 2 + (d[1] + s[1] - cj) ** 2)
+        return d, o, (o[1], o[0])
+
+    def scene(self, building, name):
+        """An outdoor prop group with a reason (kit/identity.py SCENES), placed where it belongs:
+        beside the door, against a side wall away from the entrance, or in front of the entrance."""
+        sc, L, rng = SCENES[name], self.land, self.rng
+        ent = self._entrance(building)
+        if not ent: return False
+        (di, dj), (oi, oj), (pi, pj) = ent
+        foot = _squares_of(building.footprint)
+        doors = [px_square(*d.px) for r in building.rooms for d in r.doors] + [px_square(*d.px) for d in building.entrances]
+
+        def free(s):
+            if not (s in L.squares and s not in L.roads and s not in L.plaza and s not in L.water and
+                    s not in self.used and s not in foot and s not in L.taken_strict): return False
+            if any(abs(s[0] - d[0]) <= 3 and abs(s[1] - d[1]) <= 3 for d in doors): return False   # never at a door
+            x, y = square_tile(*s)
+            return not any((x + a, y + b) in self.spec.wallmap for a in (-1, 0, 1, 2) for b in (-1, 0, 1, 2))
+        # one square of clearance from the wall: props stand beside it, never in it
+        if sc["where"] == "door_side":
+            spots = [(di + 2 * oi + pi * k, dj + 2 * oj + pj * k) for side in (1, -1) for k in (side * 2, side * 3)]
+        elif sc["where"] == "front":
+            spots = [(di + 3 * oi + pi * k, dj + 3 * oj + pj * k) for k in (2, -2, 3, -3)]
+        else:   # side_wall: squares along an outside wall that does not hold the entrance
+            ring1 = {(i + a, j + b) for i, j in foot for a, b in N4} - foot
+            ring = {(i + a, j + b) for i, j in ring1 for a, b in N4} - foot - ring1
+            spots = [s for s in ring if not any((s[0] - a, s[1] - b) in foot for a, b in [(oi, oj)]) and
+                     abs((s[0] - di) * oi + (s[1] - dj) * oj) < 30 and (s[0] - di) * oi + (s[1] - dj) * oj <= 0]
+            rng.shuffle(spots)
+        spots = [s for s in spots if free(s)]
+        if not spots: return False
+        names = [t for t, w in sc["items"] for _ in range(w)]
+        n = rng.randint(*sc["pieces"])
+        s0 = spots[0]
+        # a tight group: pieces side by side along the wall (or around the spot)
+        along = (pi, pj) if sc["where"] != "side_wall" else next(((a, b) for a, b in N4 if
+                                                                  ((s0[0] + a, s0[1] + b) in foot) is False and
+                                                                  any((s0[0] + a + c, s0[1] + b + d) in foot for c, d in N4)), (pi, pj))
+        for k in range(n):
+            si = s0[0] + 0.5 + along[0] * 0.55 * k + rng.uniform(-0.1, 0.1)
+            sj = s0[1] - 0.5 + along[1] * 0.55 * k + rng.uniform(-0.1, 0.1)
+            if k and not free((int(si), int(sj) + 1)) and (int(si), int(sj) + 1) not in self.used: break
+            self.spec.obj_px(rng.choice(names), *square_px(si, sj))
+            self.used.add((int(si), int(sj) + 1))
+        self.used.add(s0); L.taken.add(s0)
+        return True
 
     def benches(self, area, n=2):
         """Benches facing the square."""
         L, rng = self.land, self.rng
-        edge = [s for s in {(i + a, j + b) for i, j in L.plaza for a, b in N4} - L.plaza if self._clear(s)]
+        edge = [s for s in {(i + a, j + b) for i, j in L.plaza for a, b in N4} - L.plaza if self._clear(s)
+                and not any((s[0] + a, s[1] + b) in L.taken_strict for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2))]
         rng.shuffle(edge)
         for s in edge[:n]:
             self.spec.obj_px("Bench4", *square_px(s[0] + 0.5, s[1] - 0.5))
             self.used.add(s); L.taken.add(s)
 
-    def ground_bits(self, per_100=4.0):
-        """Pebbles, small rocks and bushes on open ground (not on roads, never blocking doors)."""
+    def ground_bits(self, per_100=4.0, max_edge=4):
+        """Pebbles, small rocks and bushes where nature has them: toward the forest edge, never on
+        roads, in yards or in front of doors."""
         L, rng = self.land, self.rng
-        free = [s for s in L.squares if self._clear(s)]
+        edge = L.edge_distance()
+        free = [s for s in L.squares if self._clear(s) and edge.get(s, 99) <= max_edge]
         for s in rng.sample(free, min(len(free), int(len(L.squares) * per_100 / 100))):
             self.spec.obj_px(_pick(rng, GROUND_BITS), *square_px(s[0] + rng.random(), s[1] - rng.random()))
 

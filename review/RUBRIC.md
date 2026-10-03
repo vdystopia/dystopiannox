@@ -17,5 +17,6 @@ The close-ups are about one game screen each, so they show what a player sees at
 | 5 | **Water** | Streams vary in width, banks are dressed (trees, rocks, reeds down to the water), and crossings sit where paths meet the water at narrow points | — |
 | 6 | **Every screen** | Each close-up has something to look at (a focal point, variety, contrast between areas) without clutter. No empty screens, and no repeated stamped patterns | — |
 | 7 | **Interiors** | Visible rooms read as their purpose (tavern, smithy, bedroom) and are furnished like Westwood's rooms of that kind: against the walls, with clear walkways | checker: rooms |
+| 8 | **Identity** | Every area, building, room and prop group reads as what the map's identity says it is. The square is the village's centre, an inn looks like an inn, a bedroom holds a bed, rug, shelves and chest (never a barrel or a dining table), and every outdoor prop has a reason to be where it is | checker: rooms (furniture outside the room's identity) |
 
 Lighting and mood don't show in the editor's render; judge them in a playtest.

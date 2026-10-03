@@ -48,6 +48,13 @@
    "p50": 7.0,
    "p75": 11.0,
    "p90": 14.0
+  },
+  "road_near_water": {
+   "p10": 0.0,
+   "p25": 0.0,
+   "p50": 0.008,
+   "p75": 0.087,
+   "p90": 0.097
   }
  },
  "town_ranges": {
@@ -99,6 +106,455 @@
    "p50": 6.0,
    "p75": 10.0,
    "p90": 18.0
+  },
+  "road_near_water": {
+   "p10": 0.0,
+   "p25": 0.0,
+   "p50": 0.011,
+   "p75": 0.092,
+   "p90": 0.125
+  }
+ },
+ "env_ranges": {
+  "cave": {
+   "path_share": {
+    "p10": 0.004,
+    "p25": 0.05,
+    "p50": 0.088,
+    "p75": 0.213,
+    "p90": 0.378
+   },
+   "path_connected": {
+    "p10": 0.316,
+    "p25": 0.574,
+    "p50": 0.602,
+    "p75": 0.631,
+    "p90": 0.805
+   },
+   "doors_on_path": {
+    "p10": 0.051,
+    "p25": 0.2,
+    "p50": 0.5,
+    "p75": 0.625,
+    "p90": 0.938
+   },
+   "tree_clustering": {
+    "p10": 0.377,
+    "p25": 0.377,
+    "p50": 0.436,
+    "p75": 0.502,
+    "p90": 0.502
+   },
+   "tree_edge_share": {
+    "p10": 0.233,
+    "p25": 0.233,
+    "p50": 0.535,
+    "p75": 0.942,
+    "p90": 0.942
+   },
+   "plant_same_type": {
+    "p10": 0.322,
+    "p25": 0.615,
+    "p50": 0.638,
+    "p75": 0.852,
+    "p90": 1.0
+   },
+   "building_spacing": {
+    "p10": 4.0,
+    "p25": 5.5,
+    "p50": 6.0,
+    "p75": 6.0,
+    "p90": 12.0
+   },
+   "road_near_water": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.125,
+    "p75": 0.281,
+    "p90": 0.292
+   }
+  },
+  "town": {
+   "path_share": {
+    "p10": 0.0,
+    "p25": 0.056,
+    "p50": 0.181,
+    "p75": 0.352,
+    "p90": 0.356
+   },
+   "path_connected": {
+    "p10": 0.21,
+    "p25": 0.315,
+    "p50": 0.431,
+    "p75": 0.625,
+    "p90": 0.748
+   },
+   "doors_on_path": {
+    "p10": 0.0,
+    "p25": 0.128,
+    "p50": 0.733,
+    "p75": 0.875,
+    "p90": 0.909
+   },
+   "tree_clustering": {
+    "p10": 0.287,
+    "p25": 0.622,
+    "p50": 0.885,
+    "p75": 0.96,
+    "p90": 0.988
+   },
+   "tree_edge_share": {
+    "p10": 0.843,
+    "p25": 0.929,
+    "p50": 0.962,
+    "p75": 0.987,
+    "p90": 1.0
+   },
+   "plant_same_type": {
+    "p10": 0.405,
+    "p25": 0.434,
+    "p50": 0.552,
+    "p75": 0.583,
+    "p90": 0.62
+   },
+   "building_spacing": {
+    "p10": 3.0,
+    "p25": 4.0,
+    "p50": 5.0,
+    "p75": 12.0,
+    "p90": 34.0
+   },
+   "road_near_water": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.004,
+    "p75": 0.015,
+    "p90": 0.093
+   }
+  },
+  "forest": {
+   "path_share": {
+    "p10": 0.0,
+    "p25": 0.039,
+    "p50": 0.149,
+    "p75": 0.304,
+    "p90": 0.417
+   },
+   "path_connected": {
+    "p10": 0.182,
+    "p25": 0.259,
+    "p50": 0.296,
+    "p75": 0.544,
+    "p90": 0.726
+   },
+   "doors_on_path": {
+    "p10": 1.0,
+    "p25": 1.0,
+    "p50": 1.0,
+    "p75": 1.0,
+    "p90": 1.0
+   },
+   "tree_clustering": {
+    "p10": 0.887,
+    "p25": 0.887,
+    "p50": 0.901,
+    "p75": 1.133,
+    "p90": 1.142
+   },
+   "tree_edge_share": {
+    "p10": 0.86,
+    "p25": 0.86,
+    "p50": 0.948,
+    "p75": 0.99,
+    "p90": 0.99
+   },
+   "plant_same_type": {
+    "p10": 0.18,
+    "p25": 0.18,
+    "p50": 0.416,
+    "p75": 0.476,
+    "p90": 0.493
+   },
+   "building_spacing": {
+    "p10": 3.5,
+    "p25": 7.0,
+    "p50": 14.0,
+    "p75": 31.0,
+    "p90": 31.0
+   },
+   "road_near_water": {
+    "p10": 0.0,
+    "p25": 0.001,
+    "p50": 0.002,
+    "p75": 0.008,
+    "p90": 0.065
+   }
+  },
+  "dungeon": {
+   "path_share": {
+    "p10": 0.004,
+    "p25": 0.02,
+    "p50": 0.108,
+    "p75": 0.392,
+    "p90": 0.453
+   },
+   "path_connected": {
+    "p10": 0.065,
+    "p25": 0.158,
+    "p50": 0.359,
+    "p75": 0.471,
+    "p90": 0.52
+   },
+   "doors_on_path": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.625,
+    "p90": 0.893
+   },
+   "tree_clustering": {
+    "p10": 0.467,
+    "p25": 0.467,
+    "p50": 0.468,
+    "p75": 0.71,
+    "p90": 0.71
+   },
+   "tree_edge_share": {
+    "p10": 0.996,
+    "p25": 0.996,
+    "p50": 0.996,
+    "p75": 1.0,
+    "p90": 1.0
+   },
+   "plant_same_type": {
+    "p10": 0.333,
+    "p25": 0.333,
+    "p50": 0.335,
+    "p75": 0.407,
+    "p90": 0.407
+   },
+   "building_spacing": {
+    "p10": 5.0,
+    "p25": 7.0,
+    "p50": 8.0,
+    "p75": 28.0,
+    "p90": 58.0
+   },
+   "road_near_water": {}
+  },
+  "swamp": {
+   "path_share": {
+    "p10": 0.0,
+    "p25": 0.085,
+    "p50": 0.195,
+    "p75": 0.206,
+    "p90": 0.217
+   },
+   "path_connected": {
+    "p10": 0.112,
+    "p25": 0.112,
+    "p50": 0.468,
+    "p75": 0.525,
+    "p90": 0.604
+   },
+   "doors_on_path": {
+    "p10": 0.0,
+    "p25": 0.444,
+    "p50": 0.667,
+    "p75": 0.892,
+    "p90": 1.0
+   },
+   "tree_clustering": {
+    "p10": 0.054,
+    "p25": 0.054,
+    "p50": 0.753,
+    "p75": 0.763,
+    "p90": 1.193
+   },
+   "tree_edge_share": {
+    "p10": 0.92,
+    "p25": 0.92,
+    "p50": 1.0,
+    "p75": 1.0,
+    "p90": 1.0
+   },
+   "plant_same_type": {
+    "p10": 0.225,
+    "p25": 0.292,
+    "p50": 0.35,
+    "p75": 0.47,
+    "p90": 0.561
+   },
+   "building_spacing": {
+    "p10": 5.0,
+    "p25": 10.0,
+    "p50": 11.0,
+    "p75": 18.0,
+    "p90": 26.0
+   },
+   "road_near_water": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.011
+   }
+  },
+  "lava": {
+   "path_share": {
+    "p10": 0.0,
+    "p25": 0.275,
+    "p50": 0.316,
+    "p75": 0.336,
+    "p90": 0.481
+   },
+   "path_connected": {
+    "p10": 0.158,
+    "p25": 0.187,
+    "p50": 0.332,
+    "p75": 0.426,
+    "p90": 0.79
+   },
+   "doors_on_path": {
+    "p10": 0.087,
+    "p25": 0.5,
+    "p50": 0.636,
+    "p75": 0.947,
+    "p90": 1.0
+   },
+   "tree_clustering": {
+    "p10": 0.278,
+    "p25": 0.278,
+    "p50": 0.278,
+    "p75": 0.442,
+    "p90": 0.443
+   },
+   "tree_edge_share": {
+    "p10": 0.542,
+    "p25": 0.542,
+    "p50": 0.857,
+    "p75": 0.857,
+    "p90": 0.857
+   },
+   "plant_same_type": {
+    "p10": 0.2,
+    "p25": 0.2,
+    "p50": 0.736,
+    "p75": 0.852,
+    "p90": 0.852
+   },
+   "building_spacing": {
+    "p10": 5.5,
+    "p25": 6.0,
+    "p50": 6.0,
+    "p75": 10.0,
+    "p90": 44.0
+   },
+   "road_near_water": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.287,
+    "p75": 0.364,
+    "p90": 0.364
+   }
+  },
+  "castle": {
+   "path_share": {
+    "p10": 0.152,
+    "p25": 0.176,
+    "p50": 0.321,
+    "p75": 0.439,
+    "p90": 0.446
+   },
+   "path_connected": {
+    "p10": 0.219,
+    "p25": 0.249,
+    "p50": 0.507,
+    "p75": 0.608,
+    "p90": 0.872
+   },
+   "doors_on_path": {
+    "p10": 0.333,
+    "p25": 0.444,
+    "p50": 0.667,
+    "p75": 0.75,
+    "p90": 1.0
+   },
+   "tree_clustering": {
+    "p10": 0.641,
+    "p25": 0.644,
+    "p50": 0.928,
+    "p75": 0.976,
+    "p90": 1.166
+   },
+   "tree_edge_share": {
+    "p10": 0.938,
+    "p25": 0.939,
+    "p50": 0.95,
+    "p75": 0.952,
+    "p90": 1.0
+   },
+   "plant_same_type": {
+    "p10": 0.0,
+    "p25": 0.125,
+    "p50": 0.226,
+    "p75": 0.491,
+    "p90": 0.5
+   },
+   "building_spacing": {
+    "p10": 4.0,
+    "p25": 5.0,
+    "p50": 7.0,
+    "p75": 25.0,
+    "p90": 56.0
+   },
+   "road_near_water": {
+    "p10": 0.097,
+    "p25": 0.097,
+    "p50": 0.097,
+    "p75": 0.097,
+    "p90": 0.097
+   }
+  },
+  "ice": {
+   "path_share": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.009,
+    "p90": 0.009
+   },
+   "path_connected": {
+    "p10": 0.494,
+    "p25": 0.494,
+    "p50": 0.494,
+    "p75": 0.494,
+    "p90": 0.494
+   },
+   "doors_on_path": {},
+   "tree_clustering": {
+    "p10": 0.313,
+    "p25": 0.313,
+    "p50": 0.313,
+    "p75": 0.549,
+    "p90": 0.552
+   },
+   "tree_edge_share": {
+    "p10": 0.886,
+    "p25": 0.886,
+    "p50": 0.886,
+    "p75": 0.889,
+    "p90": 0.889
+   },
+   "plant_same_type": {},
+   "building_spacing": {
+    "p10": 12.0,
+    "p25": 12.0,
+    "p50": 12.0,
+    "p75": 12.0,
+    "p90": 12.0
+   },
+   "road_near_water": {}
   }
  },
  "references": [
@@ -128,8 +584,10 @@
     "tree_clustering": 0.377,
     "tree_edge_share": 0.942,
     "plant_same_type": 0.322,
-    "building_spacing": 6.0
-   }
+    "building_spacing": 6.0,
+    "road_near_water": null
+   },
+   "env": "cave"
   },
   {
    "map": "Con02a",
@@ -157,8 +615,10 @@
     "tree_clustering": 0.885,
     "tree_edge_share": 0.986,
     "plant_same_type": 0.62,
-    "building_spacing": 4.0
-   }
+    "building_spacing": 4.0,
+    "road_near_water": 0.0
+   },
+   "env": "town"
   },
   {
    "map": "Con03A",
@@ -186,8 +646,10 @@
     "tree_clustering": 1.074,
     "tree_edge_share": 0.996,
     "plant_same_type": 0.516,
-    "building_spacing": 47.0
-   }
+    "building_spacing": 47.0,
+    "road_near_water": 0.157
+   },
+   "env": "town"
   },
   {
    "map": "Con04a",
@@ -215,8 +677,10 @@
     "tree_clustering": 0.502,
     "tree_edge_share": 0.788,
     "plant_same_type": 0.581,
-    "building_spacing": 3.0
-   }
+    "building_spacing": 3.0,
+    "road_near_water": 0.0
+   },
+   "env": "town"
   },
   {
    "map": "Con05A",
@@ -244,8 +708,10 @@
     "tree_clustering": 0.927,
     "tree_edge_share": 0.855,
     "plant_same_type": 0.602,
-    "building_spacing": 12.0
-   }
+    "building_spacing": 12.0,
+    "road_near_water": 0.003
+   },
+   "env": "town"
   },
   {
    "map": "Con05B",
@@ -273,8 +739,10 @@
     "tree_clustering": 0.753,
     "tree_edge_share": 0.92,
     "plant_same_type": 0.561,
-    "building_spacing": 11.0
-   }
+    "building_spacing": 11.0,
+    "road_near_water": 0.0
+   },
+   "env": "swamp"
   },
   {
    "map": "Con06a",
@@ -302,8 +770,10 @@
     "tree_clustering": 0.442,
     "tree_edge_share": 0.542,
     "plant_same_type": 0.491,
-    "building_spacing": 6.0
-   }
+    "building_spacing": 6.0,
+    "road_near_water": 0.087
+   },
+   "env": "lava"
   },
   {
    "map": "Con07B",
@@ -331,8 +801,10 @@
     "tree_clustering": 0.976,
     "tree_edge_share": 0.952,
     "plant_same_type": 0.472,
-    "building_spacing": 6.0
-   }
+    "building_spacing": 6.0,
+    "road_near_water": null
+   },
+   "env": "castle"
   },
   {
    "map": "Con08a",
@@ -360,8 +832,10 @@
     "tree_clustering": 0.972,
     "tree_edge_share": 0.96,
     "plant_same_type": 0.593,
-    "building_spacing": 4.0
-   }
+    "building_spacing": 4.0,
+    "road_near_water": 0.014
+   },
+   "env": "town"
   },
   {
    "map": "Con08b",
@@ -389,8 +863,10 @@
     "tree_clustering": 1.133,
     "tree_edge_share": 0.948,
     "plant_same_type": 0.474,
-    "building_spacing": null
-   }
+    "building_spacing": null,
+    "road_near_water": 0.008
+   },
+   "env": "forest"
   },
   {
    "map": "Con09a",
@@ -418,8 +894,10 @@
     "tree_clustering": 0.112,
     "tree_edge_share": 0.962,
     "plant_same_type": 0.294,
-    "building_spacing": 10.0
-   }
+    "building_spacing": 10.0,
+    "road_near_water": null
+   },
+   "env": "swamp"
   },
   {
    "map": "Con09b",
@@ -447,8 +925,10 @@
     "tree_clustering": 0.054,
     "tree_edge_share": 1.0,
     "plant_same_type": 0.225,
-    "building_spacing": 18.0
-   }
+    "building_spacing": 18.0,
+    "road_near_water": 0.0
+   },
+   "env": "swamp"
   },
   {
    "map": "Con09d",
@@ -476,8 +956,10 @@
     "tree_clustering": 0.549,
     "tree_edge_share": 0.889,
     "plant_same_type": null,
-    "building_spacing": null
-   }
+    "building_spacing": null,
+    "road_near_water": null
+   },
+   "env": "ice"
   },
   {
    "map": "G_CastlD",
@@ -505,8 +987,10 @@
     "tree_clustering": 0.641,
     "tree_edge_share": 1.0,
     "plant_same_type": 0.226,
-    "building_spacing": 5.0
-   }
+    "building_spacing": 5.0,
+    "road_near_water": 0.097
+   },
+   "env": "castle"
   },
   {
    "map": "G_ForesD",
@@ -534,8 +1018,10 @@
     "tree_clustering": 0.903,
     "tree_edge_share": 0.987,
     "plant_same_type": 0.403,
-    "building_spacing": 4.0
-   }
+    "building_spacing": 4.0,
+    "road_near_water": 0.015
+   },
+   "env": "town"
   },
   {
    "map": "G_LOTD",
@@ -563,8 +1049,10 @@
     "tree_clustering": 0.467,
     "tree_edge_share": 0.996,
     "plant_same_type": null,
-    "building_spacing": 8.0
-   }
+    "building_spacing": 8.0,
+    "road_near_water": null
+   },
+   "env": "dungeon"
   },
   {
    "map": "G_Mines",
@@ -592,8 +1080,10 @@
     "tree_clustering": 0.287,
     "tree_edge_share": 1.0,
     "plant_same_type": 0.417,
-    "building_spacing": 5.0
-   }
+    "building_spacing": 5.0,
+    "road_near_water": 0.004
+   },
+   "env": "town"
   },
   {
    "map": "G_Swamp",
@@ -621,8 +1111,10 @@
     "tree_clustering": 1.193,
     "tree_edge_share": 1.0,
     "plant_same_type": 0.47,
-    "building_spacing": 5.0
-   }
+    "building_spacing": 5.0,
+    "road_near_water": 0.011
+   },
+   "env": "swamp"
   },
   {
    "map": "G_TemplD",
@@ -650,8 +1142,10 @@
     "tree_clustering": 0.71,
     "tree_edge_share": 1.0,
     "plant_same_type": 0.337,
-    "building_spacing": 7.0
-   }
+    "building_spacing": 7.0,
+    "road_near_water": null
+   },
+   "env": "dungeon"
   },
   {
    "map": "War03c",
@@ -679,8 +1173,10 @@
     "tree_clustering": 0.622,
     "tree_edge_share": 0.929,
     "plant_same_type": 0.58,
-    "building_spacing": 7.0
-   }
+    "building_spacing": 7.0,
+    "road_near_water": null
+   },
+   "env": "town"
   },
   {
    "map": "War07A",
@@ -708,8 +1204,10 @@
     "tree_clustering": 0.928,
     "tree_edge_share": 0.95,
     "plant_same_type": 0.491,
-    "building_spacing": 4.0
-   }
+    "building_spacing": 4.0,
+    "road_near_water": null
+   },
+   "env": "castle"
   },
   {
    "map": "Wiz01A",
@@ -737,8 +1235,10 @@
     "tree_clustering": 0.901,
     "tree_edge_share": 0.86,
     "plant_same_type": 0.416,
-    "building_spacing": 7.0
-   }
+    "building_spacing": 7.0,
+    "road_near_water": 0.0
+   },
+   "env": "forest"
   },
   {
    "map": "Wiz03b",
@@ -766,8 +1266,10 @@
     "tree_clustering": 0.887,
     "tree_edge_share": 0.99,
     "plant_same_type": 0.18,
-    "building_spacing": null
-   }
+    "building_spacing": null,
+    "road_near_water": null
+   },
+   "env": "forest"
   },
   {
    "map": "Wiz06b",
@@ -795,8 +1297,10 @@
     "tree_clustering": 0.502,
     "tree_edge_share": 0.233,
     "plant_same_type": 0.638,
-    "building_spacing": 12.0
-   }
+    "building_spacing": 12.0,
+    "road_near_water": 0.125
+   },
+   "env": "cave"
   },
   {
    "map": "Wiz11A",
@@ -824,8 +1328,10 @@
     "tree_clustering": 0.313,
     "tree_edge_share": 0.886,
     "plant_same_type": null,
-    "building_spacing": 12.0
-   }
+    "building_spacing": 12.0,
+    "road_near_water": null
+   },
+   "env": "ice"
   }
  ]
 }

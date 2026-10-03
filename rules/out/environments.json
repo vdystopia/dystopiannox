@@ -1,0 +1,1959 @@
+{
+ "descriptions": {
+  "castle": "castles, manors and temples: interior floors (wood, rug, tile, marble) and halls",
+  "cave": "caves and mines: cave floors and rock walls",
+  "dungeon": "dungeons, crypts and sewers: stone and brick floors, little or no outdoor ground",
+  "forest": "wilderness: outdoor ground with trees and few buildings",
+  "ice": "snow and ice",
+  "lava": "volcanic: lava and craggy rock",
+  "swamp": "swamps and marshes: swamp grass and swamp water",
+  "town": "villages and towns: several buildings on outdoor ground (grass, dirt, cobble)"
+ },
+ "maps": {
+  "Con01A": {
+   "buildings": 3,
+   "outdoor": 0.95,
+   "share": {
+    "cave": 0.164,
+    "cobble": 0.017,
+    "dirt": 0.602,
+    "grass": 0.181,
+    "interior_rug": 0.006,
+    "interior_wood": 0.028
+   },
+   "summary": "Second Warrior Mission ",
+   "swamp": 0.0,
+   "tiles": 4524,
+   "trees": 52,
+   "type": "cave"
+  },
+  "Con02a": {
+   "buildings": 12,
+   "outdoor": 0.822,
+   "share": {
+    "cave": 0.064,
+    "cobble": 0.046,
+    "dirt": 0.369,
+    "grass": 0.357,
+    "interior_wood": 0.061,
+    "water": 0.053
+   },
+   "summary": "Second Warrior Mission ",
+   "swamp": 0.0,
+   "tiles": 8688,
+   "trees": 69,
+   "type": "town"
+  },
+  "Con03A": {
+   "buildings": 8,
+   "outdoor": 0.839,
+   "share": {
+    "brick": 0.007,
+    "cave": 0.013,
+    "dirt": 0.161,
+    "grass": 0.666,
+    "interior_wood": 0.029,
+    "water": 0.123
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 8905,
+   "trees": 233,
+   "type": "town"
+  },
+  "Con03B": {
+   "buildings": 6,
+   "outdoor": 0.887,
+   "share": {
+    "brick": 0.0,
+    "dirt": 0.866,
+    "grass": 0.04,
+    "interior_rug": 0.01,
+    "interior_wood": 0.035,
+    "water": 0.049
+   },
+   "summary": "Conjurer Mission 03D - Deep in mana mines",
+   "swamp": 0.0,
+   "tiles": 7314,
+   "trees": 6,
+   "type": "town"
+  },
+  "Con04a": {
+   "buildings": 14,
+   "outdoor": 0.645,
+   "share": {
+    "brick": 0.392,
+    "cave": 0.06,
+    "dirt": 0.091,
+    "grass": 0.24,
+    "tile": 0.018,
+    "void": 0.164
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 5658,
+   "trees": 52,
+   "type": "town"
+  },
+  "Con04b": {
+   "buildings": 3,
+   "outdoor": 0.908,
+   "share": {
+    "brick": 0.152,
+    "cobble": 0.054,
+    "dirt": 0.682,
+    "dungeon_stone": 0.03,
+    "tile": 0.075,
+    "void": 0.004
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 6146,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Con04c": {
+   "buildings": 3,
+   "outdoor": 0.833,
+   "share": {
+    "brick": 0.569,
+    "cave": 0.074,
+    "cobble": 0.044,
+    "dirt": 0.137,
+    "tile": 0.04,
+    "void": 0.105
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 7942,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con05A": {
+   "buildings": 9,
+   "outdoor": 0.781,
+   "share": {
+    "brick": 0.037,
+    "cobble": 0.018,
+    "dirt": 0.1,
+    "grass": 0.647,
+    "interior_wood": 0.053,
+    "water": 0.121
+   },
+   "summary": "Conjurer Mission 5 Part A",
+   "swamp": 0.0,
+   "tiles": 8099,
+   "trees": 275,
+   "type": "town"
+  },
+  "Con05B": {
+   "buildings": 4,
+   "outdoor": 0.907,
+   "share": {
+    "brick": 0.049,
+    "cave": 0.068,
+    "dirt": 0.177,
+    "grass": 0.546,
+    "swamp": 0.085,
+    "water": 0.07
+   },
+   "summary": "",
+   "swamp": 0.146,
+   "tiles": 10991,
+   "trees": 112,
+   "type": "swamp"
+  },
+  "Con05C": {
+   "buildings": 2,
+   "outdoor": 0.909,
+   "share": {
+    "brick": 0.088,
+    "cave": 0.306,
+    "dirt": 0.553,
+    "grass": 0.033,
+    "interior_wood": 0.0,
+    "water": 0.02
+   },
+   "summary": "ConjurerMission5",
+   "swamp": 0.0,
+   "tiles": 6995,
+   "trees": 0,
+   "type": "cave"
+  },
+  "Con06a": {
+   "buildings": 11,
+   "outdoor": 0.626,
+   "share": {
+    "brick": 0.169,
+    "cave": 0.329,
+    "dirt": 0.089,
+    "facade": 0.129,
+    "grass": 0.092,
+    "lava": 0.081
+   },
+   "summary": "Conjurer Chapter 6a",
+   "swamp": 0.0,
+   "tiles": 9976,
+   "trees": 72,
+   "type": "lava"
+  },
+  "Con06b": {
+   "buildings": 8,
+   "outdoor": 0.679,
+   "share": {
+    "brick": 0.517,
+    "cave": 0.215,
+    "dirt": 0.053,
+    "interior_rug": 0.072,
+    "lava": 0.065,
+    "water": 0.036
+   },
+   "summary": "Wizard Chapter 6c",
+   "swamp": 0.0,
+   "tiles": 9049,
+   "trees": 0,
+   "type": "cave"
+  },
+  "Con07A": {
+   "buildings": 1,
+   "outdoor": 0.16,
+   "share": {
+    "cobble": 0.044,
+    "facade": 0.84,
+    "grass": 0.116
+   },
+   "summary": "First Wizard Mission",
+   "swamp": 0.0,
+   "tiles": 2958,
+   "trees": 29,
+   "type": "castle"
+  },
+  "Con07B": {
+   "buildings": 10,
+   "outdoor": 0.407,
+   "share": {
+    "brick": 0.217,
+    "dirt": 0.128,
+    "facade": 0.349,
+    "grass": 0.109,
+    "interior_rug": 0.052,
+    "interior_wood": 0.065
+   },
+   "summary": "Wizard Mission 2, Galava",
+   "swamp": 0.0,
+   "tiles": 8089,
+   "trees": 21,
+   "type": "castle"
+  },
+  "Con07C": {
+   "buildings": 3,
+   "outdoor": 0.769,
+   "share": {
+    "brick": 0.648,
+    "cave": 0.0,
+    "dungeon_stone": 0.148,
+    "interior_rug": 0.203,
+    "tile": 0.001
+   },
+   "summary": "Conjuror Mission 7",
+   "swamp": 0.0,
+   "tiles": 4087,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Con07D": {
+   "buildings": 2,
+   "outdoor": 0.684,
+   "share": {
+    "brick": 0.617,
+    "dungeon_stone": 0.148,
+    "interior_rug": 0.235,
+    "tile": 0.0
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 2454,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Con07E": {
+   "buildings": 1,
+   "outdoor": 0.399,
+   "share": {
+    "brick": 0.441,
+    "dirt": 0.011,
+    "dungeon_stone": 0.12,
+    "interior_rug": 0.329,
+    "interior_wood": 0.087,
+    "tile": 0.006
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 1598,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Con07F": {
+   "buildings": 3,
+   "outdoor": 0.739,
+   "share": {
+    "brick": 0.493,
+    "cobble": 0.05,
+    "dungeon_stone": 0.284,
+    "interior_rug": 0.174
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 1100,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Con07G": {
+   "buildings": 0,
+   "outdoor": 0.939,
+   "share": {
+    "brick": 0.493,
+    "dirt": 0.008,
+    "dungeon_stone": 0.438,
+    "interior_rug": 0.061
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 738,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con07H": {
+   "buildings": 2,
+   "outdoor": 0.829,
+   "share": {
+    "brick": 0.74,
+    "cobble": 0.036,
+    "dungeon_stone": 0.144,
+    "interior_rug": 0.048,
+    "tile": 0.029,
+    "void": 0.003
+   },
+   "summary": "Conjurer Mission 7",
+   "swamp": 0.0,
+   "tiles": 1231,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con08a": {
+   "buildings": 13,
+   "outdoor": 0.745,
+   "share": {
+    "cobble": 0.04,
+    "dirt": 0.101,
+    "grass": 0.593,
+    "interior_rug": 0.049,
+    "interior_wood": 0.087,
+    "water": 0.076
+   },
+   "summary": "Second Warrior Mission ",
+   "swamp": 0.0,
+   "tiles": 6199,
+   "trees": 125,
+   "type": "town"
+  },
+  "Con08b": {
+   "buildings": 2,
+   "outdoor": 0.49,
+   "share": {
+    "cave": 0.122,
+    "dirt": 0.073,
+    "facade": 0.161,
+    "grass": 0.295,
+    "void": 0.28,
+    "water": 0.066
+   },
+   "summary": "Eighth Conjurer mission part B",
+   "swamp": 0.0,
+   "tiles": 6968,
+   "trees": 97,
+   "type": "forest"
+  },
+  "Con08c": {
+   "buildings": 0,
+   "outdoor": 0.999,
+   "share": {
+    "brick": 0.378,
+    "cobble": 0.039,
+    "dirt": 0.583,
+    "void": 0.001
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 5013,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Con08d": {
+   "buildings": 4,
+   "outdoor": 0.93,
+   "share": {
+    "brick": 0.304,
+    "cobble": 0.032,
+    "dirt": 0.608,
+    "water": 0.056
+   },
+   "summary": "Eighth Conjurer Mission part D",
+   "swamp": 0.0,
+   "tiles": 7707,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Con08e": {
+   "buildings": 3,
+   "outdoor": 0.571,
+   "share": {
+    "brick": 0.186,
+    "dirt": 0.405,
+    "interior_wood": 0.013,
+    "void": 0.019,
+    "water": 0.377
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 4326,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Con09a": {
+   "buildings": 9,
+   "outdoor": 0.731,
+   "share": {
+    "cave": 0.082,
+    "grass": 0.11,
+    "interior_rug": 0.001,
+    "interior_wood": 0.035,
+    "swamp": 0.542,
+    "water": 0.23
+   },
+   "summary": "Con09a - Swamp part 1",
+   "swamp": 0.755,
+   "tiles": 6980,
+   "trees": 52,
+   "type": "swamp"
+  },
+  "Con09b": {
+   "buildings": 8,
+   "outdoor": 0.832,
+   "share": {
+    "brick": 0.023,
+    "cave": 0.161,
+    "cobble": 0.038,
+    "grass": 0.149,
+    "swamp": 0.447,
+    "water": 0.144
+   },
+   "summary": "Con09b - Swamp part 2",
+   "swamp": 0.551,
+   "tiles": 8939,
+   "trees": 45,
+   "type": "swamp"
+  },
+  "Con09c": {
+   "buildings": 7,
+   "outdoor": 0.938,
+   "share": {
+    "brick": 0.221,
+    "cave": 0.74,
+    "dirt": 0.001,
+    "interior_wood": 0.038
+   },
+   "summary": "Con09c - Ogre Dungeons and tunnels",
+   "swamp": 0.0,
+   "tiles": 5532,
+   "trees": 0,
+   "type": "cave"
+  },
+  "Con09d": {
+   "buildings": 0,
+   "outdoor": 0.911,
+   "share": {
+    "cave": 0.279,
+    "dirt": 0.004,
+    "dungeon_stone": 0.002,
+    "facade": 0.084,
+    "ice": 0.624,
+    "interior_wood": 0.004
+   },
+   "summary": "Con09d - Wastelands",
+   "swamp": 0.0,
+   "tiles": 10449,
+   "trees": 305,
+   "type": "ice"
+  },
+  "Con10a": {
+   "buildings": 2,
+   "outdoor": 0.989,
+   "share": {
+    "dirt": 0.015,
+    "dungeon_stone": 0.981,
+    "interior_rug": 0.004
+   },
+   "summary": "Land of the Dead, Level A",
+   "swamp": 0.0,
+   "tiles": 6097,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con10b": {
+   "buildings": 2,
+   "outdoor": 0.994,
+   "share": {
+    "dirt": 0.02,
+    "dungeon_stone": 0.979,
+    "void": 0.001
+   },
+   "summary": "Land of the Dead, Level B",
+   "swamp": 0.0,
+   "tiles": 6893,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con10c": {
+   "buildings": 4,
+   "outdoor": 0.912,
+   "share": {
+    "dirt": 0.023,
+    "dungeon_stone": 0.977
+   },
+   "summary": "Land of the Dead, Level C",
+   "swamp": 0.0,
+   "tiles": 5325,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con10d": {
+   "buildings": 4,
+   "outdoor": 0.958,
+   "share": {
+    "dirt": 0.004,
+    "dungeon_stone": 0.996
+   },
+   "summary": "Land of the Dead, Level D",
+   "swamp": 0.0,
+   "tiles": 4468,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Con11a": {
+   "buildings": 4,
+   "outdoor": 0.557,
+   "share": {
+    "brick": 0.418,
+    "dirt": 0.042,
+    "dungeon_stone": 0.083,
+    "grass": 0.026,
+    "swamp": 0.127,
+    "water": 0.303
+   },
+   "summary": "Conjurer Mission 11 Part A",
+   "swamp": 0.429,
+   "tiles": 4979,
+   "trees": 4,
+   "type": "swamp"
+  },
+  "G_CastlD": {
+   "buildings": 16,
+   "outdoor": 0.558,
+   "share": {
+    "brick": 0.125,
+    "dirt": 0.075,
+    "dungeon_stone": 0.354,
+    "grass": 0.072,
+    "interior_wood": 0.15,
+    "tile": 0.159
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 11824,
+   "trees": 19,
+   "type": "castle"
+  },
+  "G_Castle": {
+   "buildings": 16,
+   "outdoor": 0.558,
+   "share": {
+    "brick": 0.125,
+    "dirt": 0.075,
+    "dungeon_stone": 0.354,
+    "grass": 0.072,
+    "interior_wood": 0.15,
+    "tile": 0.159
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 11823,
+   "trees": 19,
+   "type": "castle"
+  },
+  "G_CryptD": {
+   "buildings": 20,
+   "outdoor": 0.882,
+   "share": {
+    "brick": 0.47,
+    "cobble": 0.022,
+    "dirt": 0.145,
+    "dungeon_stone": 0.264,
+    "grass": 0.077,
+    "tile": 0.013
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 12099,
+   "trees": 2,
+   "type": "dungeon"
+  },
+  "G_Crypts": {
+   "buildings": 20,
+   "outdoor": 0.882,
+   "share": {
+    "brick": 0.47,
+    "cobble": 0.022,
+    "dirt": 0.145,
+    "dungeon_stone": 0.264,
+    "grass": 0.077,
+    "tile": 0.013
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 12099,
+   "trees": 2,
+   "type": "dungeon"
+  },
+  "G_ForesD": {
+   "buildings": 26,
+   "outdoor": 0.718,
+   "share": {
+    "cave": 0.185,
+    "cobble": 0.078,
+    "dirt": 0.187,
+    "grass": 0.29,
+    "interior_wood": 0.137,
+    "water": 0.092
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 14916,
+   "trees": 150,
+   "type": "town"
+  },
+  "G_Forest": {
+   "buildings": 26,
+   "outdoor": 0.718,
+   "share": {
+    "cave": 0.185,
+    "cobble": 0.079,
+    "dirt": 0.185,
+    "grass": 0.292,
+    "interior_wood": 0.137,
+    "water": 0.092
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 14916,
+   "trees": 150,
+   "type": "town"
+  },
+  "G_LOTD": {
+   "buildings": 28,
+   "outdoor": 0.876,
+   "share": {
+    "dirt": 0.095,
+    "dungeon_stone": 0.698,
+    "ice": 0.179,
+    "interior_rug": 0.003,
+    "lava": 0.016,
+    "tile": 0.009
+   },
+   "summary": "Co-Op map in the Land of the Dead.",
+   "swamp": 0.0,
+   "tiles": 17950,
+   "trees": 234,
+   "type": "dungeon"
+  },
+  "G_LOTDD": {
+   "buildings": 28,
+   "outdoor": 0.876,
+   "share": {
+    "dirt": 0.095,
+    "dungeon_stone": 0.698,
+    "ice": 0.179,
+    "interior_rug": 0.003,
+    "lava": 0.016,
+    "tile": 0.009
+   },
+   "summary": "Co-Op map in the Land of the Dead.  Dark Version.",
+   "swamp": 0.0,
+   "tiles": 17950,
+   "trees": 234,
+   "type": "dungeon"
+  },
+  "G_Lava": {
+   "buildings": 18,
+   "outdoor": 0.577,
+   "share": {
+    "brick": 0.229,
+    "cave": 0.053,
+    "cobble": 0.015,
+    "dirt": 0.102,
+    "dungeon_stone": 0.282,
+    "lava": 0.299
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 15481,
+   "trees": 8,
+   "type": "lava"
+  },
+  "G_Mines": {
+   "buildings": 39,
+   "outdoor": 0.805,
+   "share": {
+    "brick": 0.014,
+    "dirt": 0.893,
+    "dungeon_stone": 0.01,
+    "grass": 0.034,
+    "interior_wood": 0.007,
+    "water": 0.039
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 12991,
+   "trees": 35,
+   "type": "town"
+  },
+  "G_Swamp": {
+   "buildings": 29,
+   "outdoor": 0.7,
+   "share": {
+    "cave": 0.191,
+    "dirt": 0.181,
+    "dungeon_stone": 0.01,
+    "interior_wood": 0.019,
+    "swamp": 0.396,
+    "water": 0.195
+   },
+   "summary": "",
+   "swamp": 0.56,
+   "tiles": 14387,
+   "trees": 50,
+   "type": "swamp"
+  },
+  "G_TemplD": {
+   "buildings": 9,
+   "outdoor": 0.888,
+   "share": {
+    "brick": 0.207,
+    "cave": 0.076,
+    "dirt": 0.144,
+    "dungeon_stone": 0.345,
+    "facade": 0.083,
+    "grass": 0.141
+   },
+   "summary": "Eighth Conjurer mission part B",
+   "swamp": 0.0,
+   "tiles": 11436,
+   "trees": 30,
+   "type": "dungeon"
+  },
+  "G_Temple": {
+   "buildings": 9,
+   "outdoor": 0.888,
+   "share": {
+    "brick": 0.207,
+    "cave": 0.076,
+    "dirt": 0.144,
+    "dungeon_stone": 0.345,
+    "facade": 0.083,
+    "grass": 0.141
+   },
+   "summary": "Eighth Conjurer mission part B",
+   "swamp": 0.0,
+   "tiles": 11436,
+   "trees": 30,
+   "type": "dungeon"
+  },
+  "War01A": {
+   "buildings": 10,
+   "outdoor": 0.401,
+   "share": {
+    "brick": 0.108,
+    "cave": 0.212,
+    "facade": 0.078,
+    "grass": 0.058,
+    "lava": 0.074,
+    "void": 0.389
+   },
+   "summary": "Warrior Chapter 1a",
+   "swamp": 0.0,
+   "tiles": 16085,
+   "trees": 71,
+   "type": "cave"
+  },
+  "War02A": {
+   "buildings": 6,
+   "outdoor": 0.668,
+   "share": {
+    "brick": 0.264,
+    "cave": 0.486,
+    "dirt": 0.017,
+    "interior_rug": 0.013,
+    "lava": 0.203,
+    "tile": 0.011
+   },
+   "summary": "Warrior Chapter 2a",
+   "swamp": 0.0,
+   "tiles": 5150,
+   "trees": 0,
+   "type": "lava"
+  },
+  "War02b": {
+   "buildings": 2,
+   "outdoor": 0.617,
+   "share": {
+    "brick": 0.441,
+    "cave": 0.041,
+    "dirt": 0.187,
+    "interior_wood": 0.001,
+    "lava": 0.211,
+    "water": 0.119
+   },
+   "summary": "War02b",
+   "swamp": 0.0,
+   "tiles": 4664,
+   "trees": 0,
+   "type": "lava"
+  },
+  "War03a": {
+   "buildings": 8,
+   "outdoor": 0.834,
+   "share": {
+    "brick": 0.005,
+    "cave": 0.016,
+    "dirt": 0.294,
+    "grass": 0.523,
+    "interior_wood": 0.03,
+    "water": 0.129
+   },
+   "summary": "Warrior Chapter 1a",
+   "swamp": 0.0,
+   "tiles": 11317,
+   "trees": 242,
+   "type": "town"
+  },
+  "War03b": {
+   "buildings": 13,
+   "outdoor": 0.72,
+   "share": {
+    "cobble": 0.032,
+    "dirt": 0.156,
+    "grass": 0.574,
+    "interior_rug": 0.039,
+    "interior_wood": 0.07,
+    "water": 0.062
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 7763,
+   "trees": 132,
+   "type": "town"
+  },
+  "War03c": {
+   "buildings": 9,
+   "outdoor": 0.938,
+   "share": {
+    "brick": 0.212,
+    "cave": 0.001,
+    "dirt": 0.58,
+    "dungeon_stone": 0.02,
+    "grass": 0.186,
+    "interior_wood": 0.002
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 8348,
+   "trees": 28,
+   "type": "town"
+  },
+  "War03d": {
+   "buildings": 13,
+   "outdoor": 0.918,
+   "share": {
+    "brick": 0.404,
+    "dirt": 0.448,
+    "grass": 0.145,
+    "interior_wood": 0.003
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 9670,
+   "trees": 9,
+   "type": "town"
+  },
+  "War04a": {
+   "buildings": 14,
+   "outdoor": 0.772,
+   "share": {
+    "brick": 0.466,
+    "cave": 0.072,
+    "dirt": 0.113,
+    "dungeon_stone": 0.019,
+    "grass": 0.287,
+    "tile": 0.021
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 4732,
+   "trees": 70,
+   "type": "town"
+  },
+  "War04b": {
+   "buildings": 4,
+   "outdoor": 0.906,
+   "share": {
+    "brick": 0.19,
+    "cobble": 0.052,
+    "dirt": 0.651,
+    "dungeon_stone": 0.027,
+    "tile": 0.076,
+    "void": 0.004
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 6275,
+   "trees": 0,
+   "type": "forest"
+  },
+  "War04c": {
+   "buildings": 3,
+   "outdoor": 0.833,
+   "share": {
+    "brick": 0.569,
+    "cave": 0.074,
+    "cobble": 0.044,
+    "dirt": 0.137,
+    "tile": 0.04,
+    "void": 0.105
+   },
+   "summary": "Warrior chapter 4, map C. The Guardian and Keeper",
+   "swamp": 0.0,
+   "tiles": 7942,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War05A": {
+   "buildings": 8,
+   "outdoor": 0.776,
+   "share": {
+    "brick": 0.034,
+    "dirt": 0.106,
+    "grass": 0.639,
+    "interior_rug": 0.016,
+    "interior_wood": 0.057,
+    "water": 0.131
+   },
+   "summary": "Conjurer Mission 5 Part A",
+   "swamp": 0.0,
+   "tiles": 7529,
+   "trees": 275,
+   "type": "town"
+  },
+  "War05B": {
+   "buildings": 4,
+   "outdoor": 0.904,
+   "share": {
+    "brick": 0.049,
+    "cave": 0.068,
+    "dirt": 0.16,
+    "grass": 0.559,
+    "swamp": 0.087,
+    "water": 0.071
+   },
+   "summary": "War05B.map (part 2 of 3)",
+   "swamp": 0.149,
+   "tiles": 10730,
+   "trees": 112,
+   "type": "swamp"
+  },
+  "War05C": {
+   "buildings": 2,
+   "outdoor": 0.905,
+   "share": {
+    "brick": 0.092,
+    "cave": 0.277,
+    "dirt": 0.575,
+    "grass": 0.034,
+    "interior_wood": 0.0,
+    "water": 0.021
+   },
+   "summary": "Warrior Mission 5 ",
+   "swamp": 0.0,
+   "tiles": 6685,
+   "trees": 0,
+   "type": "cave"
+  },
+  "War06a": {
+   "buildings": 11,
+   "outdoor": 0.627,
+   "share": {
+    "brick": 0.168,
+    "cave": 0.331,
+    "dirt": 0.088,
+    "facade": 0.129,
+    "grass": 0.093,
+    "lava": 0.081
+   },
+   "summary": "Warrior Chapter 6a",
+   "swamp": 0.0,
+   "tiles": 9934,
+   "trees": 72,
+   "type": "lava"
+  },
+  "War06b": {
+   "buildings": 6,
+   "outdoor": 0.672,
+   "share": {
+    "brick": 0.512,
+    "cave": 0.217,
+    "dirt": 0.051,
+    "interior_rug": 0.07,
+    "interior_wood": 0.036,
+    "lava": 0.065
+   },
+   "summary": "Wizard Chapter 6c",
+   "swamp": 0.0,
+   "tiles": 8984,
+   "trees": 0,
+   "type": "cave"
+  },
+  "War07A": {
+   "buildings": 11,
+   "outdoor": 0.398,
+   "share": {
+    "brick": 0.218,
+    "dirt": 0.151,
+    "facade": 0.348,
+    "grass": 0.111,
+    "interior_rug": 0.052,
+    "interior_wood": 0.063
+   },
+   "summary": "Warrior Mission 7, Galava",
+   "swamp": 0.0,
+   "tiles": 8114,
+   "trees": 20,
+   "type": "castle"
+  },
+  "War07B": {
+   "buildings": 3,
+   "outdoor": 0.768,
+   "share": {
+    "brick": 0.645,
+    "dungeon_stone": 0.155,
+    "interior_rug": 0.2
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 4108,
+   "trees": 0,
+   "type": "castle"
+  },
+  "War07C": {
+   "buildings": 2,
+   "outdoor": 0.677,
+   "share": {
+    "brick": 0.61,
+    "dungeon_stone": 0.151,
+    "interior_rug": 0.24,
+    "tile": 0.0
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 2405,
+   "trees": 0,
+   "type": "castle"
+  },
+  "War07D": {
+   "buildings": 1,
+   "outdoor": 0.421,
+   "share": {
+    "brick": 0.465,
+    "cobble": 0.005,
+    "dirt": 0.011,
+    "dungeon_stone": 0.12,
+    "interior_rug": 0.305,
+    "interior_wood": 0.087
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 1592,
+   "trees": 0,
+   "type": "castle"
+  },
+  "War07E": {
+   "buildings": 3,
+   "outdoor": 0.687,
+   "share": {
+    "brick": 0.48,
+    "cobble": 0.003,
+    "dungeon_stone": 0.296,
+    "interior_rug": 0.222
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 1055,
+   "trees": 0,
+   "type": "castle"
+  },
+  "War07F": {
+   "buildings": 0,
+   "outdoor": 0.935,
+   "share": {
+    "brick": 0.486,
+    "cobble": 0.003,
+    "dirt": 0.008,
+    "dungeon_stone": 0.438,
+    "interior_rug": 0.061,
+    "tile": 0.004
+   },
+   "summary": "Warrior Mission 7",
+   "swamp": 0.0,
+   "tiles": 733,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War07G": {
+   "buildings": 2,
+   "outdoor": 0.726,
+   "share": {
+    "brick": 0.697,
+    "cobble": 0.003,
+    "dungeon_stone": 0.225,
+    "interior_rug": 0.038,
+    "tile": 0.034,
+    "void": 0.003
+   },
+   "summary": "Conjurer Mission 7",
+   "swamp": 0.0,
+   "tiles": 1326,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War07H": {
+   "buildings": 1,
+   "outdoor": 0.16,
+   "share": {
+    "cobble": 0.044,
+    "facade": 0.84,
+    "grass": 0.116
+   },
+   "summary": "First Wizard Mission",
+   "swamp": 0.0,
+   "tiles": 2958,
+   "trees": 33,
+   "type": "castle"
+  },
+  "War08a": {
+   "buildings": 14,
+   "outdoor": 0.706,
+   "share": {
+    "cobble": 0.036,
+    "dirt": 0.096,
+    "grass": 0.622,
+    "interior_rug": 0.043,
+    "interior_wood": 0.078,
+    "water": 0.068
+   },
+   "summary": "Warrior Mission 8, Prelude",
+   "swamp": 0.0,
+   "tiles": 6958,
+   "trees": 125,
+   "type": "town"
+  },
+  "War08b": {
+   "buildings": 4,
+   "outdoor": 0.487,
+   "share": {
+    "cave": 0.119,
+    "dirt": 0.073,
+    "facade": 0.162,
+    "grass": 0.296,
+    "void": 0.282,
+    "water": 0.066
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 6935,
+   "trees": 97,
+   "type": "forest"
+  },
+  "War08c": {
+   "buildings": 0,
+   "outdoor": 0.999,
+   "share": {
+    "brick": 0.378,
+    "cobble": 0.039,
+    "dirt": 0.583,
+    "void": 0.001
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 5013,
+   "trees": 0,
+   "type": "forest"
+  },
+  "War08d": {
+   "buildings": 4,
+   "outdoor": 0.93,
+   "share": {
+    "brick": 0.304,
+    "cobble": 0.032,
+    "dirt": 0.608,
+    "water": 0.056
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 7707,
+   "trees": 0,
+   "type": "forest"
+  },
+  "War08e": {
+   "buildings": 3,
+   "outdoor": 0.571,
+   "share": {
+    "brick": 0.186,
+    "dirt": 0.405,
+    "interior_wood": 0.013,
+    "void": 0.019,
+    "water": 0.377
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 4326,
+   "trees": 0,
+   "type": "forest"
+  },
+  "War09a": {
+   "buildings": 9,
+   "outdoor": 0.731,
+   "share": {
+    "cave": 0.082,
+    "grass": 0.11,
+    "interior_rug": 0.001,
+    "interior_wood": 0.035,
+    "swamp": 0.542,
+    "water": 0.229
+   },
+   "summary": "Wiz09a - Swamp part 1",
+   "swamp": 0.755,
+   "tiles": 6975,
+   "trees": 51,
+   "type": "swamp"
+  },
+  "War09b": {
+   "buildings": 8,
+   "outdoor": 0.831,
+   "share": {
+    "cave": 0.161,
+    "cobble": 0.033,
+    "dirt": 0.025,
+    "grass": 0.149,
+    "swamp": 0.449,
+    "water": 0.145
+   },
+   "summary": "War09b - Swamp part 2",
+   "swamp": 0.553,
+   "tiles": 8914,
+   "trees": 45,
+   "type": "swamp"
+  },
+  "War09c": {
+   "buildings": 7,
+   "outdoor": 0.938,
+   "share": {
+    "brick": 0.221,
+    "cave": 0.74,
+    "dirt": 0.001,
+    "interior_wood": 0.038
+   },
+   "summary": "War09c - Ogre Dungeons and tunnels",
+   "swamp": 0.0,
+   "tiles": 5534,
+   "trees": 0,
+   "type": "cave"
+  },
+  "War09d": {
+   "buildings": 0,
+   "outdoor": 0.82,
+   "share": {
+    "cave": 0.25,
+    "dirt": 0.004,
+    "facade": 0.074,
+    "ice": 0.562,
+    "interior_wood": 0.003,
+    "void": 0.102
+   },
+   "summary": "War09d - Wastelands",
+   "swamp": 0.0,
+   "tiles": 11595,
+   "trees": 305,
+   "type": "ice"
+  },
+  "War10a": {
+   "buildings": 2,
+   "outdoor": 0.989,
+   "share": {
+    "dirt": 0.015,
+    "dungeon_stone": 0.981,
+    "interior_rug": 0.004
+   },
+   "summary": "Land of the Dead, Level A",
+   "swamp": 0.0,
+   "tiles": 6097,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War10b": {
+   "buildings": 2,
+   "outdoor": 0.994,
+   "share": {
+    "dirt": 0.02,
+    "dungeon_stone": 0.979,
+    "void": 0.001
+   },
+   "summary": "Land of the Dead, Level B",
+   "swamp": 0.0,
+   "tiles": 6893,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War10c": {
+   "buildings": 4,
+   "outdoor": 0.912,
+   "share": {
+    "dirt": 0.023,
+    "dungeon_stone": 0.977
+   },
+   "summary": "Land of the Dead, Level C",
+   "swamp": 0.0,
+   "tiles": 5325,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War10d": {
+   "buildings": 4,
+   "outdoor": 0.958,
+   "share": {
+    "dirt": 0.004,
+    "dungeon_stone": 0.996
+   },
+   "summary": "Warrior Chapter10",
+   "swamp": 0.0,
+   "tiles": 4420,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "War11a": {
+   "buildings": 1,
+   "outdoor": 0.473,
+   "share": {
+    "cave": 0.121,
+    "dungeon_stone": 0.353,
+    "lava": 0.453,
+    "tile": 0.073
+   },
+   "summary": "Wizard Mission 11",
+   "swamp": 0.0,
+   "tiles": 3782,
+   "trees": 0,
+   "type": "lava"
+  },
+  "Wiz01A": {
+   "buildings": 3,
+   "outdoor": 0.532,
+   "share": {
+    "cave": 0.028,
+    "dirt": 0.309,
+    "facade": 0.268,
+    "grass": 0.175,
+    "interior_wood": 0.026,
+    "water": 0.154
+   },
+   "summary": "First Wizard Mission",
+   "swamp": 0.0,
+   "tiles": 9252,
+   "trees": 114,
+   "type": "forest"
+  },
+  "Wiz02A": {
+   "buildings": 9,
+   "outdoor": 0.364,
+   "share": {
+    "brick": 0.202,
+    "dirt": 0.132,
+    "facade": 0.342,
+    "grass": 0.107,
+    "interior_rug": 0.059,
+    "interior_wood": 0.12
+   },
+   "summary": "Wizard Mission 2, Galava",
+   "swamp": 0.0,
+   "tiles": 8268,
+   "trees": 21,
+   "type": "castle"
+  },
+  "Wiz02B": {
+   "buildings": 3,
+   "outdoor": 0.304,
+   "share": {
+    "brick": 0.199,
+    "cobble": 0.024,
+    "dungeon_stone": 0.09,
+    "interior_rug": 0.236,
+    "interior_wood": 0.007,
+    "tile": 0.443
+   },
+   "summary": "Wiz02B: First floor of the forgotten library.",
+   "swamp": 0.0,
+   "tiles": 5028,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Wiz02C": {
+   "buildings": 2,
+   "outdoor": 0.236,
+   "share": {
+    "cobble": 0.009,
+    "dirt": 0.201,
+    "dungeon_stone": 0.026,
+    "interior_rug": 0.117,
+    "tile": 0.643,
+    "water": 0.003
+   },
+   "summary": "2nd Floor of the Lost Library",
+   "swamp": 0.0,
+   "tiles": 4862,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Wiz03a": {
+   "buildings": 2,
+   "outdoor": 0.852,
+   "share": {
+    "brick": 0.043,
+    "dirt": 0.764,
+    "grass": 0.024,
+    "interior_rug": 0.034,
+    "interior_wood": 0.029,
+    "water": 0.066
+   },
+   "summary": "Wiz03a",
+   "swamp": 0.0,
+   "tiles": 5391,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz03b": {
+   "buildings": 2,
+   "outdoor": 0.967,
+   "share": {
+    "cave": 0.006,
+    "dirt": 0.525,
+    "grass": 0.435,
+    "interior_rug": 0.007,
+    "interior_wood": 0.012,
+    "water": 0.011
+   },
+   "summary": "Wizard Mission3",
+   "swamp": 0.0,
+   "tiles": 8375,
+   "trees": 99,
+   "type": "forest"
+  },
+  "Wiz03c": {
+   "buildings": 0,
+   "outdoor": 0.856,
+   "share": {
+    "dirt": 0.846,
+    "facade": 0.002,
+    "grass": 0.011,
+    "interior_rug": 0.006,
+    "water": 0.136
+   },
+   "summary": "Wizard Mission 3",
+   "swamp": 0.0,
+   "tiles": 3947,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz04a": {
+   "buildings": 14,
+   "outdoor": 0.641,
+   "share": {
+    "brick": 0.391,
+    "cave": 0.061,
+    "dirt": 0.088,
+    "grass": 0.242,
+    "tile": 0.018,
+    "void": 0.166
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 5599,
+   "trees": 69,
+   "type": "town"
+  },
+  "Wiz04b": {
+   "buildings": 3,
+   "outdoor": 0.909,
+   "share": {
+    "brick": 0.153,
+    "cave": 0.004,
+    "cobble": 0.055,
+    "dirt": 0.683,
+    "dungeon_stone": 0.027,
+    "tile": 0.073
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 6088,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz04c": {
+   "buildings": 3,
+   "outdoor": 0.833,
+   "share": {
+    "brick": 0.569,
+    "cave": 0.074,
+    "cobble": 0.044,
+    "dirt": 0.137,
+    "tile": 0.04,
+    "void": 0.105
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 7942,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Wiz05A": {
+   "buildings": 8,
+   "outdoor": 0.779,
+   "share": {
+    "brick": 0.033,
+    "dirt": 0.104,
+    "grass": 0.639,
+    "interior_rug": 0.015,
+    "interior_wood": 0.055,
+    "water": 0.127
+   },
+   "summary": "Conjurer Mission 5 Part A",
+   "swamp": 0.0,
+   "tiles": 7778,
+   "trees": 286,
+   "type": "town"
+  },
+  "Wiz05B": {
+   "buildings": 4,
+   "outdoor": 0.905,
+   "share": {
+    "brick": 0.049,
+    "cave": 0.07,
+    "dirt": 0.159,
+    "grass": 0.558,
+    "swamp": 0.087,
+    "water": 0.071
+   },
+   "summary": "Wiz05B.map (part 2 of 3)",
+   "swamp": 0.149,
+   "tiles": 10760,
+   "trees": 112,
+   "type": "swamp"
+  },
+  "Wiz05C": {
+   "buildings": 2,
+   "outdoor": 0.905,
+   "share": {
+    "brick": 0.092,
+    "cave": 0.276,
+    "dirt": 0.576,
+    "grass": 0.035,
+    "interior_wood": 0.0,
+    "water": 0.021
+   },
+   "summary": "Wizard Chapter5",
+   "swamp": 0.0,
+   "tiles": 6695,
+   "trees": 0,
+   "type": "cave"
+  },
+  "Wiz06a": {
+   "buildings": 4,
+   "outdoor": 0.672,
+   "share": {
+    "brick": 0.318,
+    "cave": 0.174,
+    "dirt": 0.186,
+    "interior_wood": 0.007,
+    "lava": 0.139,
+    "water": 0.175
+   },
+   "summary": "Wizard Chapter 6a",
+   "swamp": 0.0,
+   "tiles": 7067,
+   "trees": 14,
+   "type": "lava"
+  },
+  "Wiz06b": {
+   "buildings": 10,
+   "outdoor": 0.837,
+   "share": {
+    "brick": 0.315,
+    "cave": 0.41,
+    "dirt": 0.082,
+    "grass": 0.121,
+    "tile": 0.028,
+    "water": 0.023
+   },
+   "summary": "Warrior Chapter 6a",
+   "swamp": 0.0,
+   "tiles": 6525,
+   "trees": 43,
+   "type": "cave"
+  },
+  "Wiz06c": {
+   "buildings": 6,
+   "outdoor": 0.643,
+   "share": {
+    "brick": 0.576,
+    "cave": 0.195,
+    "cobble": 0.014,
+    "interior_rug": 0.082,
+    "interior_wood": 0.037,
+    "lava": 0.082
+   },
+   "summary": "Wizard Chapter 6c",
+   "swamp": 0.0,
+   "tiles": 7000,
+   "trees": 0,
+   "type": "lava"
+  },
+  "Wiz07A": {
+   "buildings": 1,
+   "outdoor": 0.16,
+   "share": {
+    "cobble": 0.044,
+    "facade": 0.84,
+    "grass": 0.116
+   },
+   "summary": "First Wizard Mission",
+   "swamp": 0.0,
+   "tiles": 2958,
+   "trees": 32,
+   "type": "castle"
+  },
+  "Wiz07B": {
+   "buildings": 2,
+   "outdoor": 0.062,
+   "share": {
+    "brick": 0.0,
+    "cobble": 0.043,
+    "dungeon_stone": 0.021,
+    "lava": 0.936
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 9394,
+   "trees": 0,
+   "type": "lava"
+  },
+  "Wiz07C": {
+   "buildings": 2,
+   "outdoor": 0.443,
+   "share": {
+    "brick": 0.188,
+    "cave": 0.099,
+    "dirt": 0.016,
+    "dungeon_stone": 0.144,
+    "lava": 0.519,
+    "tile": 0.019
+   },
+   "summary": "Wizard Mission 7 - The Underworld",
+   "swamp": 0.0,
+   "tiles": 8687,
+   "trees": 0,
+   "type": "lava"
+  },
+  "Wiz07D": {
+   "buildings": 4,
+   "outdoor": 0.536,
+   "share": {
+    "brick": 0.238,
+    "cobble": 0.144,
+    "dirt": 0.001,
+    "dungeon_stone": 0.163,
+    "interior_rug": 0.195,
+    "tile": 0.258
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 6268,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Wiz07E": {
+   "buildings": 0,
+   "outdoor": 0.511,
+   "share": {
+    "brick": 0.433,
+    "cobble": 0.068,
+    "dungeon_stone": 0.01,
+    "interior_rug": 0.079,
+    "tile": 0.212,
+    "void": 0.198
+   },
+   "summary": "The Heart of Nox",
+   "swamp": 0.0,
+   "tiles": 605,
+   "trees": 0,
+   "type": "castle"
+  },
+  "Wiz07F": {
+   "buildings": 9,
+   "outdoor": 0.409,
+   "share": {
+    "brick": 0.216,
+    "dirt": 0.128,
+    "facade": 0.349,
+    "grass": 0.109,
+    "interior_rug": 0.054,
+    "interior_wood": 0.065
+   },
+   "summary": "Wizard Mission 2, Galava",
+   "swamp": 0.0,
+   "tiles": 8096,
+   "trees": 21,
+   "type": "castle"
+  },
+  "Wiz08a": {
+   "buildings": 15,
+   "outdoor": 0.763,
+   "share": {
+    "cobble": 0.036,
+    "dirt": 0.1,
+    "grass": 0.621,
+    "interior_rug": 0.043,
+    "interior_wood": 0.078,
+    "water": 0.068
+   },
+   "summary": "Eighth Wizard Mission",
+   "swamp": 0.0,
+   "tiles": 6959,
+   "trees": 120,
+   "type": "town"
+  },
+  "Wiz08b": {
+   "buildings": 2,
+   "outdoor": 0.482,
+   "share": {
+    "cave": 0.113,
+    "dirt": 0.071,
+    "facade": 0.164,
+    "grass": 0.298,
+    "void": 0.284,
+    "water": 0.067
+   },
+   "summary": "Flame Test (scratch map) ",
+   "swamp": 0.0,
+   "tiles": 6870,
+   "trees": 96,
+   "type": "forest"
+  },
+  "Wiz08c": {
+   "buildings": 0,
+   "outdoor": 0.999,
+   "share": {
+    "brick": 0.378,
+    "cobble": 0.039,
+    "dirt": 0.583,
+    "void": 0.001
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 5013,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz08d": {
+   "buildings": 4,
+   "outdoor": 0.93,
+   "share": {
+    "brick": 0.304,
+    "cobble": 0.032,
+    "dirt": 0.608,
+    "water": 0.056
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 7707,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz08e": {
+   "buildings": 3,
+   "outdoor": 0.571,
+   "share": {
+    "brick": 0.186,
+    "dirt": 0.405,
+    "interior_wood": 0.013,
+    "void": 0.019,
+    "water": 0.377
+   },
+   "summary": "",
+   "swamp": 0.0,
+   "tiles": 4326,
+   "trees": 0,
+   "type": "forest"
+  },
+  "Wiz09a": {
+   "buildings": 9,
+   "outdoor": 0.731,
+   "share": {
+    "cave": 0.082,
+    "grass": 0.11,
+    "interior_rug": 0.001,
+    "interior_wood": 0.035,
+    "swamp": 0.542,
+    "water": 0.229
+   },
+   "summary": "Wiz09a - Swamp part 1",
+   "swamp": 0.755,
+   "tiles": 6980,
+   "trees": 52,
+   "type": "swamp"
+  },
+  "Wiz09b": {
+   "buildings": 8,
+   "outdoor": 0.83,
+   "share": {
+    "cave": 0.162,
+    "cobble": 0.035,
+    "dirt": 0.024,
+    "grass": 0.15,
+    "swamp": 0.451,
+    "water": 0.146
+   },
+   "summary": "Wiz09b - Swamp part 2",
+   "swamp": 0.556,
+   "tiles": 8863,
+   "trees": 45,
+   "type": "swamp"
+  },
+  "Wiz09c": {
+   "buildings": 7,
+   "outdoor": 0.938,
+   "share": {
+    "brick": 0.22,
+    "cave": 0.741,
+    "dirt": 0.001,
+    "interior_wood": 0.038
+   },
+   "summary": "Wiz09c - tunnels",
+   "swamp": 0.0,
+   "tiles": 5570,
+   "trees": 0,
+   "type": "cave"
+  },
+  "Wiz09d": {
+   "buildings": 0,
+   "outdoor": 0.911,
+   "share": {
+    "cave": 0.279,
+    "dirt": 0.004,
+    "dungeon_stone": 0.002,
+    "facade": 0.084,
+    "ice": 0.624,
+    "interior_wood": 0.004
+   },
+   "summary": "Wiz09d - Wastelands",
+   "swamp": 0.0,
+   "tiles": 10451,
+   "trees": 304,
+   "type": "ice"
+  },
+  "Wiz10a": {
+   "buildings": 2,
+   "outdoor": 0.989,
+   "share": {
+    "dirt": 0.015,
+    "dungeon_stone": 0.981,
+    "interior_rug": 0.004
+   },
+   "summary": "Land of the Dead, Level A",
+   "swamp": 0.0,
+   "tiles": 6165,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Wiz10b": {
+   "buildings": 2,
+   "outdoor": 0.994,
+   "share": {
+    "dirt": 0.02,
+    "dungeon_stone": 0.979,
+    "void": 0.001
+   },
+   "summary": "Land of the Dead, Level B",
+   "swamp": 0.0,
+   "tiles": 6893,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Wiz10c": {
+   "buildings": 4,
+   "outdoor": 0.914,
+   "share": {
+    "dirt": 0.023,
+    "dungeon_stone": 0.977
+   },
+   "summary": "Land of the Dead, Level C",
+   "swamp": 0.0,
+   "tiles": 5337,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Wiz10d": {
+   "buildings": 4,
+   "outdoor": 0.958,
+   "share": {
+    "dirt": 0.004,
+    "dungeon_stone": 0.996
+   },
+   "summary": "Land of the Dead, Level C",
+   "swamp": 0.0,
+   "tiles": 4473,
+   "trees": 0,
+   "type": "dungeon"
+  },
+  "Wiz11A": {
+   "buildings": 3,
+   "outdoor": 0.79,
+   "share": {
+    "dungeon_stone": 0.582,
+    "facade": 0.193,
+    "ice": 0.223,
+    "interior_rug": 0.001
+   },
+   "summary": "Wiz11A - Finale",
+   "swamp": 0.0,
+   "tiles": 4520,
+   "trees": 35,
+   "type": "ice"
+  }
+ }
+}

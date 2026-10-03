@@ -78,7 +78,7 @@ class Planter:
         (self.trees if kind == "tree" else self.small).append((si, sj))
 
     # ---- planting ----------------------------------------------------------------------------------
-    def tree_lines(self, depth=(0.9, 0.55, 0.2), spacing=1.1):
+    def tree_lines(self, depth=(0.85, 0.45, 0.12), spacing=1.15):
         """Trees in front of the forest wall: dense in the first row, thinning inward."""
         rows = sorted(self.edge.items(), key=lambda kv: kv[1])
         order = [s for s, d in rows if d <= len(depth)]
@@ -90,9 +90,15 @@ class Planter:
             if self._ok_tree(si, sj) and self._free(si, sj, spacing, self.trees):
                 self._put("tree", self.tree_patches.type_at(si, sj), si, sj)
 
-    def groves(self, n=3, size=(6, 11), radius=3.0, spacing=1.2):
-        """A few single-species groves in open ground away from roads, buildings and the edge."""
-        open_sq = [s for s in self.land.squares if self.edge.get(s, 0) >= 6 and self.busy_d.get(s, 99) >= 4]
+    def groves(self, n=3, size=(6, 11), radius=3.0, spacing=1.2, avoid_areas=("village",)):
+        """A few single-species groves in open ground away from roads, buildings and the edge, and
+        outside settled areas (a village has yards and gardens, not groves)."""
+        def settled(s):
+            for a in avoid_areas:
+                ar = self.land.areas.get(a)
+                if ar and math.hypot(s[0] - ar["c"][0], s[1] - ar["c"][1]) < ar["r"] * ar["stretch"] * 1.1: return True
+            return False
+        open_sq = [s for s in self.land.squares if self.edge.get(s, 0) >= 6 and self.busy_d.get(s, 99) >= 4 and not settled(s)]
         centres = []
         for _ in range(n * 20):
             if len(centres) >= n or not open_sq: break

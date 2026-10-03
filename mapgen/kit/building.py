@@ -115,27 +115,35 @@ def _rects_of_part(units):
     return i0, i1, j0, j1
 
 
-def _split(rng, rect, target, min_side, rooms_out):
-    """Guillotine-split a rectangle into `target` rooms, each at least min_side units across."""
+def _split(rng, rect, target, min_side, rooms_out, weights=None):
+    """Guillotine-split a rectangle into `target` rooms, each at least min_side units across. With
+    `weights` (one per room) the cuts follow them, so a tavern can take most of an inn's floor."""
     i0, i1, j0, j1 = rect
     w, h = i1 - i0, j1 - j0
+    weights = weights or [1.0] * target
     if target <= 1 or (w < 2 * min_side and h < 2 * min_side):
         rooms_out.append(rect); return
     along_i = (w >= h) if (w >= 2 * min_side and h >= 2 * min_side) else (w >= 2 * min_side)
     n = w if along_i else h
-    k_left = max(1, round(target * rng.uniform(0.35, 0.65)))
-    k_left = min(k_left, target - 1)
-    cut = round(n * k_left / target + rng.uniform(-1, 1))
-    cut = max(min_side, min(n - min_side, cut))
-    if along_i:
-        _split(rng, (i0, i0 + cut, j0, j1), k_left, min_side, rooms_out)
-        _split(rng, (i0 + cut, i1, j0, j1), target - k_left, min_side, rooms_out)
+    if len(set(weights)) > 1:
+        weights = sorted(weights, reverse=True)
+        k_left = 1                                        # the largest room alone on one side
     else:
-        _split(rng, (i0, i1, j0, j0 + cut), k_left, min_side, rooms_out)
-        _split(rng, (i0, i1, j0 + cut, j1), target - k_left, min_side, rooms_out)
+        k_left = max(1, round(target * rng.uniform(0.35, 0.65)))
+    k_left = min(k_left, target - 1)
+    frac = sum(weights[:k_left]) / sum(weights)
+    cut = round(n * frac + rng.uniform(-1, 1))
+    cut = max(min_side, min(n - min_side, cut))
+    wl, wr = weights[:k_left], weights[k_left:]
+    if along_i:
+        _split(rng, (i0, i0 + cut, j0, j1), k_left, min_side, rooms_out, wl)
+        _split(rng, (i0 + cut, i1, j0, j1), target - k_left, min_side, rooms_out, wr)
+    else:
+        _split(rng, (i0, i1, j0, j0 + cut), k_left, min_side, rooms_out, wl)
+        _split(rng, (i0, i1, j0 + cut, j1), target - k_left, min_side, rooms_out, wr)
 
 
-def _assign_rooms(rng, U, target):
+def _assign_rooms(rng, U, target, weights=None):
     """Label units with room ids: each footprint part gets rooms in proportion to its area."""
     parts = defaultdict(set)
     for p, v in U.items():
@@ -161,7 +169,7 @@ def _assign_rooms(rng, U, target):
         rects = []
         r = _rects_of_part(s)
         min_side = 4 if min(r[1] - r[0], r[3] - r[2]) >= 8 else 3
-        _split(rng, r, alloc[k], min_side, rects)
+        _split(rng, r, alloc[k], min_side, rects, weights if len(parts) == 1 and weights and len(weights) == alloc[k] else None)
         for (i0, i1, j0, j1) in rects:
             for i in range(i0, i1):
                 for j in range(j0, j1):
@@ -263,7 +271,7 @@ def _kind_tiles(kind, q="p25"):
 
 
 def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, occupied=None,
-                      entrance_side=None, shape=None, rooms=None, building_id=None, tries=40):
+                      entrance_side=None, shape=None, rooms=None, building_id=None, tries=40, min_units=0):
     """Generate an original building into `spec`. Returns a kit.model.Building (with extra attribute
     `cells`: all grid cells it covers plus a 1-cell margin) or None if nothing fits.
 
@@ -296,6 +304,10 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         if shp in ("U",) and (W < 9 or H < 7): shp = "rect"
         if shp == "courtyard" and (W < 10 or H < 10): shp = "rect"
         if W < 4 or H < 4: continue
+        if W * H < min_units:                # the role needs this much floor (an inn's common room)
+            W, H = min(maxW, max(W, int(math.ceil(min_units / max(1, H))))), H
+            if W * H < min_units: H = min(maxH, int(math.ceil(min_units / max(1, W))))
+            if W * H < min_units: continue
         U = _footprint(rng, shp, W, H)
         U, (W, H) = _transform(rng, U, W, H)
         area = sum(1 for v in U.values() if v != COURT)
@@ -306,7 +318,7 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
             # small Westwood houses split ~60 units into 2-3 rooms (stucco: 47% two-room at 9x7);
             # the "10" bucket is large complexes, so cap by area
             n_rooms = max(1, min(n_rooms, area // 22))
-        labels = _assign_rooms(rng, U, n_rooms)
+        labels = _assign_rooms(rng, U, n_rooms, [float(_kind_tiles(k, 'p50')) for k in program] if program else None)
         if program and len({v for v in labels.values() if v != COURT}) != len(program):
             continue                     # footprint too small to hold the requested rooms: try again
         cells = _cells_of(U0, V0, labels)

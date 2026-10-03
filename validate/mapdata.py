@@ -23,6 +23,7 @@ DIAG = (TL, TR, BL, BR)
 
 sys.path.insert(0, os.path.join(REPO, "mapgen"))
 sys.path.insert(0, os.path.join(REPO, "rules"))
+sys.path.insert(0, os.path.join(REPO, "review"))
 from nox import FACING_BY_ARMS  # noqa: E402
 
 ARMS_OF = {f: arms for arms, f in FACING_BY_ARMS.items() if len(arms) >= 2}   # stubs also map to 0/1; skip them

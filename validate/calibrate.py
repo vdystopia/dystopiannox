@@ -86,6 +86,8 @@ def main():
     fired = collections.defaultdict(lambda: collections.Counter())
     examples = collections.defaultdict(list)
     met = collections.defaultdict(list)
+    met_env = collections.defaultdict(list)
+    ENV = {n: r["type"] for n, r in md.rules("environments")["maps"].items()}
     kinds = collections.defaultdict(lambda: dict(f=[], t=[]))
     sight = []
     for name, finds, mt, rooms, sight_sizes in results:
@@ -93,13 +95,17 @@ def main():
         for chk, sev, msg, x, y in finds:
             fired[(chk, sev)][name] += 1
             if len(examples[(chk, sev)]) < 6: examples[(chk, sev)].append((name, msg, x, y))
-        for k, v in mt.items(): met[k].append((v, w))
+        for k, v in mt.items():
+            met[k].append((v, w)); met_env[(ENV.get(name), k)].append((v, w))
         for (kind, furniture), tiles in rooms:
             kinds[kind]["f"].append((100 * furniture / max(1, tiles), w)); kinds[kind]["t"].append((tiles, w))
             kinds[kind].setdefault("s", set()).add((tiles, furniture))
         sight += [(s, w) for s in sight_sizes]
     out = dict(base)
     out["metrics"] = {k: wq(v) for k, v in met.items()}
+    out["metrics_by_env"] = collections.defaultdict(dict)
+    for (env, k), v in met_env.items():
+        if env and len(v) >= 4: out["metrics_by_env"][env][k] = wq(v)
     out["room_kinds"] = {}
     for kind, d in kinds.items():
         fq, tq = wq(d["f"]), wq(d["t"])

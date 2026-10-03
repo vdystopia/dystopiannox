@@ -11,6 +11,7 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 4. Automatic checks (validator), calibrated on Westwood's maps | done | `validate/` |
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
+| Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
@@ -49,6 +50,19 @@ Checks phase 4 must include, from this playtest (all implemented in `validate/`,
 | Black walls (invalid wall pieces) | Fixed: valid-piece table |
 | See-through hole in the boundary | Rule recorded: invisible walls never on the boundary. The water kit follows it; Mossford itself still needs a rebuild |
 | Abrupt bridges | Fixed in the water kit (Con05A-style decks, narrow streams). Mossford still needs a rebuild |
+
+### DysVale v0.3 (2026-10-03)
+
+The layout, trees and shrubs improved a lot. Fixed in generator v3:
+
+| Finding | Fix |
+|---|---|
+| The square was off-centre, and a building stood on one of its tiles | The square is placed first. Public buildings face it across a clear margin, and roads stop at its edge |
+| Paths near the river were hard to read because of stacked blends | Spacing comes first: the stream's band is reserved before anything is built, and the road stays 2.5 squares clear except at the bridge. Grass patches keep 3 squares from every transition. New review measure: road tiles crowding water (Westwood towns about 0.4%; v0.3 had 6.9%, v0.4 has 1.4%) |
+| Exterior objects felt random | Outdoor props are scenes with a reason, tied to a building's role: deliveries at the inn, a woodpile at the woodcutter's, a water barrel at the smithy, grain sacks at the mill |
+| Interiors were incoherent (a back room with four table sets) | Room identities list what each kind must, may and must never contain. The checker flags furniture outside a room's identity; on v0.3 it finds the barrels in bedrooms and the bookcases in the tavern |
+| Swamp densities were averaged with towns | Westwood's maps are classified into 8 environment types (`rules/environments.py`); the checker and the review compare only like with like |
+| The map needs an identity step | `MapIdentity` comes first (PROCESS.md, step 1). Generation runs from the centre outwards, and the land grows around what was placed (user direction) |
 
 ## Found by the checker (to fix in later phases)
 

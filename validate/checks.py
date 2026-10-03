@@ -79,7 +79,7 @@ class Context:
         # elevators and teleports join the areas they stand in (the object itself blocks its cell,
         # so "reached" means the player can get next to it)
         travel = [self.m.cell_of(o["x"], o["y"]) for o in self.m.objects if any(t in o["cls"] for t in TRAVEL)]
-        around = lambda c: [(c[0] + dx, c[1] + dy) for dx in range(-2, 3) for dy in range(-2, 3)]
+        around = lambda c: [c] + [(c[0] + dx, c[1] + dy) for dx, dy in N4]   # beside it, never across a wall
         if any(n in cells for t in travel for n in around(t)):
             seeds = [n for t in travel for n in around(t) if n not in blocked and n in self.m.cover]
             more, more_leaks = self._flood(seeds, blocked, cells)
@@ -427,6 +427,29 @@ def similar_rooms(samples, tiles):
     return sorted(n for _, n in samples)
 
 
+IDENTITY_ALIASES = {"bedroom": ("dwelling",), "living_room": ("dwelling",)}
+
+
+def identity_strays(kind, objects):
+    """Object types in a room that its kind's identity does not allow (blocking furniture only)."""
+    import re as _re
+    from kit.identity import ROOMS
+    kinds = [k for k in (kind,) + IDENTITY_ALIASES.get(kind, ()) if k in ROOMS]
+    if not kinds: return set()
+    out = set()
+    for o in objects:
+        fam = RT.family(o["type"])
+        if fam not in RT.BLOCKING_FAMILIES: continue
+        ok = False
+        for k in kinds:
+            ident = ROOMS[k]
+            if fam in ident["core"] or fam in ident["optional"] or (fam in ("chair", "bench") and "table" in ident["core"]):
+                pat = ident.get("types", {}).get(fam)
+                if not pat or _re.search(pat, o["type"]): ok = True
+        if not ok: out.add(o["type"])
+    return out
+
+
 def check_rooms(m, ctx, base):
     """Room size and furniture count against Westwood's rooms of the same kind and similar size."""
     out = []
@@ -445,6 +468,12 @@ def check_rooms(m, ctx, base):
         elif furniture < lo and furniture < 2:
             out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) is nearly bare ({furniture} pieces); "
                          f"Westwood's of a similar size hold at least {lo}.", x, y))
+        # identity: furniture that has no place in this kind of room (a barrel in a bedroom)
+        stray = identity_strays(kind, r["objects"])
+        if stray:
+            out.append(F("rooms", "warning", f"{kind} room holds {', '.join(sorted(stray))}, which "
+                         f"{'does' if len(stray) == 1 else 'do'} not belong in a {kind.replace('_', ' ')} "
+                         f"(room identities: mapgen/kit/identity.py).", x, y))
         tlo, thi = k["tiles"]
         if r["tiles"] < tlo:
             out.append(F("rooms", "warning", f"{kind} room is small for its kind: {r['tiles']} tiles "
@@ -473,26 +502,42 @@ def metrics(m, ctx):
             n = (x + d[0], y + d[1])
             if n in m.tiles and m.tiles[n]["material"] != t["material"]:
                 seams += 1; edged += edge_between(m, (x, y), n)
-    return dict(tiles=n_tiles, walls=len(m.walls), objects=len(m.objects),
+    # crowded transitions: a tile where three or more floor materials meet (itself and its sides)
+    junctions = sum(1 for (x, y), t in m.tiles.items()
+                    if len({t["material"]} | {m.tiles[(x + a, y + b)]["material"] for a, b in ((1, -1), (1, 1), (-1, 1), (-1, -1))
+                                              if (x + a, y + b) in m.tiles}) >= 3)
+    return dict(tiles=n_tiles, walls=len(m.walls), objects=len(m.objects), junctions_per100=per100(junctions),
                 lights_per100=per100(lights), colorlights_per100=per100(colorlights), decor_per100=per100(decor),
                 creatures_per100=per100(creatures), edge_coverage=round(edged / seams, 3) if seams else None,
                 walls_per100=per100(len(m.walls)))
 
 
+def environment(m):
+    """The map's environment type: declared in its description as [env:town], else classified the
+    same way as Westwood's maps (rules/environments.py)."""
+    mt = re.search(r"\[env:(\w+)\]", m.info.get("description") or "")
+    if mt: return mt.group(1)
+    import environments as E
+    return E.classify(E.features(m))
+
+
 def check_density(m, ctx, base):
     out = []
-    ranges = base.get("metrics", {})
+    env = environment(m)
+    ranges = base.get("metrics_by_env", {}).get(env) or base.get("metrics", {})
     mt = metrics(m, ctx)
     names = dict(lights_per100="lights per 100 floor tiles", colorlights_per100="coloured lights per 100 floor tiles",
                  decor_per100="decorations per 100 floor tiles", edge_coverage="share of floor seams with edge pieces",
-                 creatures_per100="creatures per 100 floor tiles", walls_per100="wall pieces per 100 floor tiles")
+                 creatures_per100="creatures per 100 floor tiles", walls_per100="wall pieces per 100 floor tiles",
+                 junctions_per100="crowded floor junctions (3+ materials meeting) per 100 floor tiles")
     for k, label in names.items():
         v, r = mt.get(k), ranges.get(k)
         if v is None or not r: continue
         if v < r["p5"]:
-            out.append(F("density", "warning", f"Few {label}: {v} (Westwood's maps: {r['p5']} to {r['p95']}, typical {r['p50']})."))
+            out.append(F("density", "warning", f"Few {label}: {v} (Westwood's {env} maps: {r['p5']} to {r['p95']}, typical {r['p50']})."))
         elif v > r["p95"]:
-            out.append(F("density", "warning", f"Many {label}: {v} (Westwood's maps: {r['p5']} to {r['p95']}, typical {r['p50']})."))
+            out.append(F("density", "warning", f"Many {label}: {v} (Westwood's {env} maps: {r['p5']} to {r['p95']}, typical {r['p50']})."))
+    out.append(F("density", "info", f"Environment: {env} (compared with Westwood's {env} maps)."))
     out.append(F("density", "info", "Measurements: " + ", ".join(f"{k}={v}" for k, v in mt.items()), metrics=mt))
     return out
 

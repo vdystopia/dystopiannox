@@ -30,7 +30,8 @@ TOWN_MEASURES = {"path_share", "path_connected", "doors_on_path", "building_spac
 FAMS = ["grass", "dirt", "cobble", "brick", "water", "swamp", "ice", "lava", "cave", "dungeon_stone", "interior_wood"]
 # direction of "better" for each design measurement (used for the wording only)
 HIGHER_IS_STRUCTURED = {"path_share": True, "path_connected": True, "doors_on_path": True, "tree_clustering": False,
-                        "tree_edge_share": True, "plant_same_type": True, "building_spacing": False}
+                        "tree_edge_share": True, "plant_same_type": True, "building_spacing": False,
+                        "road_near_water": False}
 
 
 def font(size):
@@ -78,21 +79,29 @@ def calibrate():
     ranges = ranges_of(outdoor)
     towns = [r for r in outdoor if r[1]["buildings"] >= TOWN_BUILDINGS]
     town_ranges = ranges_of(towns)
+    env_of = {n: r["type"] for n, r in md.rules("environments")["maps"].items()}
+    by_env = collections.defaultdict(list)
+    for r in res: by_env[env_of.get(r[0])].append(r)
+    env_ranges = {e: ranges_of(rs) for e, rs in by_env.items() if e and len(rs) >= 4}
     refs = {}
     for n, mt, pr in outdoor:
         g = group.get(n, n)
-        if g not in refs or n.startswith("Con"): refs[g] = dict(map=n, profile=pr, metrics=mt)
-    json.dump(dict(ranges=ranges, town_ranges=town_ranges, references=list(refs.values())), open(BASELINE, "w"), indent=1)
+        if g not in refs or n.startswith("Con"): refs[g] = dict(map=n, profile=pr, metrics=mt, env=env_of.get(n))
+    json.dump(dict(ranges=ranges, town_ranges=town_ranges, env_ranges=env_ranges, references=list(refs.values())),
+              open(BASELINE, "w"), indent=1)
     print(f"{len(outdoor)} Westwood outdoor maps ({len(refs)} distinct layouts), {len(towns)} with towns; ranges:")
     for k, q in ranges.items():
         print(f"  {k:18s} all   {q}")
         print(f"  {'':18s} towns {town_ranges[k]}")
 
 
-def references(prof, base, n=3):
+def references(prof, base, env=None, n=3):
+    """The most similar Westwood maps, from the same environment type when it has enough."""
     def cos(a, b):
         return sum(x * y for x, y in zip(a, b)) / (math.sqrt(sum(x * x for x in a)) * math.sqrt(sum(y * y for y in b)) or 1)
-    return sorted(base["references"], key=lambda r: -cos(prof, r["profile"]))[:n]
+    pool = [r for r in base["references"] if r.get("env") == env]
+    if len(pool) < n: pool = base["references"]
+    return sorted(pool, key=lambda r: -cos(prof, r["profile"]))[:n]
 
 
 # ---- pictures ----------------------------------------------------------------------------------------
@@ -195,7 +204,9 @@ def review(arg):
     m = md.load(path)
     od = DS.Outdoor(m)
     mt = od.metrics()
-    refs = references(profile(m, od), base)
+    import checks as CK
+    env = CK.environment(m)
+    refs = references(profile(m, od), base, env)
     out_dir = os.path.join(OUT, m.name); os.makedirs(out_dir, exist_ok=True)
     cols = [(m.name + " (generated)", render(path, m.name), m, views(m, od))]
     for r in refs:
@@ -206,15 +217,14 @@ def review(arg):
              f"Compared with the most similar Westwood maps: {', '.join(r['map'] for r in refs)}. "
              f"Picture: `sheet.png` (whole maps at the same scale, then close-ups of about one game screen).", "",
              "## Design measurements", "",
+             f"Environment: **{env}** (ranges and references from Westwood's {env} maps). "
              f"Outdoor ground {mt['outdoor_tiles']} tiles, {mt['trees']} trees, {mt['buildings']} buildings. "
-             "Westwood's range is the 10th to 90th percentile over their outdoor single-player maps "
-             f"(for maps with {TOWN_BUILDINGS}+ buildings, path and building measures use their towns only).", "",
+             "Westwood's range is the 10th to 90th percentile over their maps of the same environment.", "",
              "| Measure | This map | Westwood typical (range) | Verdict | " + " | ".join(r["map"] for r in refs) + " |",
              "|---|---|---|---|" + "---|" * len(refs)]
     flags = []
     for k, label in DS.NAMES.items():
-        town = mt["buildings"] >= TOWN_BUILDINGS and k in TOWN_MEASURES
-        q = (base["town_ranges"] if town else base["ranges"]).get(k)
+        q = (base.get("env_ranges", {}).get(env) or base["ranges"]).get(k)
         v = mt[k]
         verdict = judge(k, v, q)
         if "**" in verdict: flags.append(f"{label}: {v} ({verdict.replace('**', '')})")
