@@ -8,7 +8,7 @@ labelled with a room id, COURT (open courtyard) or nothing; walls stand on every
 lies on an edge between differently labelled units. Doors are one-point gaps in the middle of a
 straight wall run, placed with spec.door (Westwood's verified placement rule).
 
-    from kit.building import generate_building
+    from kit.building import math, generate_building
     b = generate_building(spec, rng, (u0, v0), (max_u_span, max_v_span), "log_cabin",
                           program=["main", "bedroom"], occupied=used_cells, entrance_side="v_min")
     used_cells |= b.cells        # every cell the building covers, plus a 1-cell margin
@@ -248,6 +248,20 @@ def _side_of_run(run, W, H):
 
 
 # ---------------------------------------------------------------------------------- main entry
+_ROOM_TYPES = None
+
+
+def _kind_tiles(kind, q="p25"):
+    """Typical floor area (tiles ~ footprint units) of a room kind in Westwood's maps."""
+    global _ROOM_TYPES
+    if _ROOM_TYPES is None:
+        import json, os
+        with open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                               "rules", "out", "room_types.json"), encoding="utf-8") as f:
+            _ROOM_TYPES = json.load(f)["types"]
+    return ((_ROOM_TYPES.get(kind) or {}).get("tiles") or {}).get(q) or 30
+
+
 def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, occupied=None,
                       entrance_side=None, shape=None, rooms=None, building_id=None, tries=40):
     """Generate an original building into `spec`. Returns a kit.model.Building (with extra attribute
@@ -269,6 +283,11 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         shp = shape or _pick(rng, {k: v for k, v in st["shapes"].items() if k in SUPPORTED_SHAPES}, default="rect")
         long_ = _sample_quartiles(rng, st["size_units"]["W"], lo=4)
         short = _sample_quartiles(rng, st["size_units"]["H"], lo=4, hi=long_)
+        if program:                      # big enough for the planned rooms at Westwood sizes
+            need = sum(_kind_tiles(k) for k in program)
+            if long_ * short < need:
+                grow = math.sqrt(need / max(1, long_ * short))
+                long_, short = int(math.ceil(long_ * grow)), int(math.ceil(short * grow))
         shrink = 1 - attempt / (tries * 1.5)
         long_, short = max(4, int(long_ * shrink)), max(4, int(short * shrink))
         W, H = (long_, short) if rng.random() < 0.5 else (short, long_)
@@ -404,7 +423,10 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
 
     def run_room(run):
         return next(x for x in run[3] if x not in (None, COURT))
-    ranked = sorted(ext_runs, key=lambda rn: (not _on_outer_side(rn, W, H, side), _side_of_run(rn, W, H) != side,
+    # with a program, the main (largest) room gets the entrance whenever it has an outside wall, so
+    # the program's first role (e.g. tavern) lands in the biggest room; otherwise prefer the side
+    main_first = (lambda rn: room_ids.index(run_room(rn)) > 0) if program else (lambda rn: False)
+    ranked = sorted(ext_runs, key=lambda rn: (main_first(rn), not _on_outer_side(rn, W, H, side), _side_of_run(rn, W, H) != side,
                                               room_ids.index(run_room(rn)) if run_room(rn) in room_ids else 99,
                                               -len(rn[2]), rng.random()))
     for rn in ranked:

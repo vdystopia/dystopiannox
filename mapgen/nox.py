@@ -21,6 +21,15 @@ def load_rules(name):
 
 
 _WALL_RULES = None
+_DOOR_RULES = None
+# Single door to use when a double door does not fit (same look family).
+SINGLE_DOOR_FOR = {"Arched": "ArchedDoor", "DunMir": "DunMirDoor", "LOTD": "LOTDSingleDoor", "Galava": "ArchedDoor"}
+
+
+def door_rules():
+    global _DOOR_RULES
+    if _DOOR_RULES is None: _DOOR_RULES = load_rules("doors")
+    return _DOOR_RULES
 
 
 def wall_rules():
@@ -100,6 +109,7 @@ class Spec:
         self.floor = {}       # (x, y) -> material
         self.blend = {}       # material -> (priority, edge type used when it spills onto others)
         self.edge_over = {}   # (overlay, base) -> edge type override
+        self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
         self.rng = random.Random(1)
 
     # ---- walls -------------------------------------------------------------------------
@@ -177,14 +187,39 @@ class Spec:
         types, weights = zip(*sorted(options.items()))
         return self.rng.choices(types, weights)[0]
 
+    def _plain_run(self, cell, line):
+        """True if `cell` is a wall whose only connections run along `line` (no junction or corner)."""
+        if cell not in self.wallmap: return False
+        along = {TL, BR} if line == "\\" else {TR, BL}
+        arms = {a for a in (TL, TR, BL, BR) if (cell[0] + a[0], cell[1] + a[1]) in self.wallmap
+                or (cell[0] + a[0], cell[1] + a[1]) in self.door_gaps}
+        return arms <= along
+
     def door(self, type_, gap, line):
-        """Door in a one-cell wall gap. line '\\' or '/' is the direction of the wall it sits in.
-        Placement follows Westwood's doors (98-100% of single-player doors). type_=None picks a
-        type that suits the wall material."""
-        gx, gy = gap
+        """Door at wall cell `gap`; line '\\' or '/' is the direction of the wall it sits in.
+        type_=None picks a type that suits the wall material. Follows Westwood's construction
+        (rules/out/doors.json): single doors fill a 1-cell opening; double doors (*HalfDoor, Gate,
+        CryptDoor, ...) are two halves hinged at the ends of a 2-cell opening, and fall back to the
+        matching single door where the wall has no room for two cells. Returns the (first) door object."""
         if type_ is None:
             type_ = self.door_type_for(self.wallmap.get(gap, {}).get("material", ""))
-        self.remove_wall(gx, gy)
+        step = (1, 1) if line == "\\" else (1, -1)
+        if door_rules()["types"].get(type_, {}).get("kind") == "double":
+            for a in (gap, (gap[0] - step[0], gap[1] - step[1])):
+                b = (a[0] + step[0], a[1] + step[1])
+                if self._plain_run(a, line) and self._plain_run(b, line):
+                    for cell in (a, b):
+                        self.remove_wall(*cell); self.door_gaps.add(cell)
+                    if line == "\\":
+                        first = self.obj_px(type_, a[0] * CELL, a[1] * CELL, door=16)                 # North
+                        self.obj_px(type_, (b[0] + 1) * CELL, (b[1] + 1) * CELL, door=0)              # South
+                    else:
+                        first = self.obj_px(type_, a[0] * CELL, (a[1] + 1) * CELL, door=8)            # West
+                        self.obj_px(type_, (b[0] + 1) * CELL, b[1] * CELL, door=24)                   # East
+                    return first
+            type_ = next((single for key, single in SINGLE_DOOR_FOR.items() if key in type_), "WoodenDoor")
+        gx, gy = gap
+        self.remove_wall(gx, gy); self.door_gaps.add(gap)
         if line == "\\":
             return self.obj_px(type_, (gx + 1) * CELL, (gy + 1) * CELL, door=0)    # South
         return self.obj_px(type_, gx * CELL, (gy + 1) * CELL, door=8)              # West
@@ -208,7 +243,9 @@ class Spec:
         for (x, y), w in sorted(self.wallmap.items()):
             facing = w["facing"]
             if facing is None:
-                arms = frozenset(a for a in (TL, TR, BL, BR) if (x + a[0], y + a[1]) in self.wallmap)
+                # door openings count as wall: Westwood shapes jamb pieces that way (rules/out/doors.json)
+                arms = frozenset(a for a in (TL, TR, BL, BR) if (x + a[0], y + a[1]) in self.wallmap
+                                 or (x + a[0], y + a[1]) in self.door_gaps)
                 facing = FACING_BY_ARMS[arms]
             walls.append(dict(x=x, y=y, facing=facing, material=w["material"],
                               variation=self._wall_variation(w["material"], facing, w["variation"]), window=w["window"]))

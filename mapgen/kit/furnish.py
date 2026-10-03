@@ -133,7 +133,8 @@ class _Room:
         seeds = {(x + 1, y + 1) for (x, y) in room.tiles} | {(x, y) for (x, y) in room.tiles}
         xs = [x for x, _ in room.tiles]; ys = [y for _, y in room.tiles]
         lo, hi = (min(xs) - 3, min(ys) - 3), (max(xs) + 4, max(ys) + 4)
-        blocked = set(walls) | {d.gap for d in room.doors}          # door gaps close the room
+        # door openings close the room; double doors open two cells (spec.door_gaps has all of them)
+        blocked = set(walls) | {d.gap for d in room.doors} | set(getattr(spec, "door_gaps", ()))
         cells, q = set(), deque(s for s in seeds if s not in blocked)
         while q:
             p = q.popleft()
@@ -237,6 +238,7 @@ class Furnisher:
         self.exclude = re.compile(STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"]))
         self.lighting = LIGHT
         self.objects, self.spots, self.beds = [], [], []
+        self.n_blocking, self.cap, self.in_required, self.placing_light = 0, 10 ** 6, False, False
         self.style = style
         self._seated = set()
 
@@ -252,12 +254,16 @@ class Furnisher:
     def put(self, t, u, v, blocking=True, layer="floor", **extra):
         hu, hv = self.half(t)
         self.g.placed.append((u, v, hu, hv, blocking, layer))
+        if blocking and not self.placing_light: self.n_blocking += 1
         x, y = _px(u, v)
         o = self.spec.obj_px(t, x, y, **extra)
         self.objects.append(o)
         return o
 
     def try_put(self, t, u, v, blocking=True, wall_ok=False, layer="floor", **extra):
+        # hard cap on furniture (Westwood density for the room kind); essentials and lights are exempt
+        if blocking and not self.placing_light and not self.in_required and self.n_blocking >= self.cap:
+            return None
         hu, hv = self.half(t)
         if not self.g.fits(u, v, hu, hv, blocking, wall_ok): return None
         if blocking and not self.g.reachable_ok((u, v, hu, hv, True, layer)): return None
@@ -353,12 +359,27 @@ class Furnisher:
         return None
 
     # ---- composition ---------------------------------------------------------------------
+    def scale(self):
+        """Room size relative to a typical Westwood room of this kind (no floor: small rooms get less).
+        g.area counts grid cells; floor tiles cover every other cell, so tiles = area / 2."""
+        return max(0.15, min(4.0, self.g.area / 2 / max(8, (self.T["tiles"] or {}).get("p50", 30))))
+
     def count(self, fam):
         inv = self.T["inventory"].get(fam)
         if not inv or self.rng.random() > inv["p_present"]: return 0
-        scale = max(0.6, min(4.0, self.g.area / max(8, (self.T["tiles"] or {}).get("p50", 30) * 2)))
-        n = _q(self.rng, inv.get("count"), scale) or 1
-        return min(CAPS.get(fam, 99), max(1, int(round(n))))
+        n = _q(self.rng, inv.get("count"), self.scale()) or 0
+        if n < 1:                                   # a fraction of a piece: present with that probability
+            return 1 if self.rng.random() < n else 0
+        return min(CAPS.get(fam, 99), int(round(n)))
+
+    def furniture_cap(self):
+        """Most furniture pieces this room should hold: the kind's typical Westwood density
+        (expected pieces per tile) times the room's area, with 25% headroom."""
+        inv = self.T["inventory"]
+        expected = sum(v.get("p_present", 0) * ((v.get("count") or {}).get("p50") or 1)
+                       for f, v in inv.items() if f not in NON_BLOCKING and f not in VETO.get(self.kind, ()))
+        per_tile = expected / max(8, (self.T["tiles"] or {}).get("p50", 30))
+        return max(2, int(round(1.25 * per_tile * self.g.area / 2)))
 
     def seats_around(self, anchor_uv, anchor_t, n, seat_fam="chair"):
         types = self.types_of(seat_fam)
@@ -419,9 +440,17 @@ class Furnisher:
         for f, n in need.items():
             n = n if self.g.area >= 30 or n <= 1 else 1
             plan[f] = max(n, plan.get(f, 0))
+        # keep the total within Westwood's density for this kind of room: trim the most numerous
+        # optional families first, never below what the room kind requires
+        cap = self.cap = self.furniture_cap()
+        while sum(n for f, n in plan.items() if f not in NON_BLOCKING) > cap:
+            trimmable = [f for f, n in plan.items() if f not in NON_BLOCKING and n > need.get(f, 0)]
+            if not trimmable: break
+            plan[max(trimmable, key=lambda f: plan[f])] -= 1
         tables, done = [], collections.Counter()
         # required anchors first (in ORDER), with more tries and role fallbacks; then everything else
         for phase in ("required", "rest"):
+            self.in_required = phase == "required"
             for fam in ORDER:
                 n = plan.get(fam, 0) - done[fam]
                 if phase == "required": n = min(n, need.get(fam, 0) - done[fam])
@@ -457,7 +486,10 @@ class Furnisher:
                     if res and fam in ("table", "desk"):
                         tables.append((res[1], res[0]["type"], fam))
                 if phase == "rest" and fam in ("table", "desk"): self.seat_tables(tables, plan)
+        self.in_required = False
+        self.placing_light = True
         self.add_lights()
+        self.placing_light = False
         return self.objects
 
     def seat_tables(self, tables, plan):

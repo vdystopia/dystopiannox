@@ -51,12 +51,12 @@ for (x, y), mat in m.floor.items():                  # keep buildings off water,
             for dy in range(-4, 5): occupied.add((x + dx, y + dy))
 
 # ---- buildings: north bank (v > 0) and south bank (v < 0)
-plans = [("stucco_house", ["tavern", "kitchen", "bedroom"], (196, 18), (34, 26), "v_min"),   # inn
-         ("cobble_house", ["shop", "storeroom"], (238, 22), (22, 20), "v_min"),
+plans = [("stucco_house", ["tavern", "kitchen", "bedroom"], (194, 16), (44, 34), "v_min"),   # inn
+         ("cobble_house", ["shop", "storeroom"], (242, 22), (26, 22), "v_min"),
          ("log_cabin", ["bedroom"], (272, 24), (16, 14), "v_min"),
          ("stone_house", ["smithy", "storeroom"], (196, -50), (24, 20), "v_max"),
          ("log_cabin", ["living_room", "bedroom"], (232, -48), (20, 18), "v_max"),
-         ("stucco_house", ["dining_hall", "bedroom"], (262, -52), (26, 22), "v_max"),
+         ("stucco_house", ["dining_hall", "bedroom"], (262, -56), (30, 28), "v_max"),
          ("log_cabin", ["bedroom"], (298, -40), (14, 14), "v_max")]
 buildings = []
 for k, (style, program, origin, size, side) in enumerate(plans):

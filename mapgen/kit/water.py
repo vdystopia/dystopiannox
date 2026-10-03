@@ -68,6 +68,32 @@ KITS = {
 }
 KIT_FLOORS = {k["floor"] for k in KITS.values() if k["floor"] != "VolcanicCraggy"}
 
+# Exact pixel steps between consecutive kit pieces (FarEnd -> ... -> NearEnd), measured on every
+# Westwood map that uses the kit (rules: corpus objects). Pieces are not on a pure diagonal: the
+# small sideways offsets are what make the planks line up. "back" = Back piece minus Front piece.
+KIT_STEPS = {
+    "DockDown": dict(first=(62, 53), mid=(75, 74), last=(36, 42)),
+    "DockUp": dict(first=(-42, 44), mid=None, last=(-45, 47)),          # only one centre piece is attested
+    "RopeBridge1": dict(first=(46, 38), mid=(46, 46), last=(45, 53), back=(0, -30)),
+    "RopeBridge2": dict(first=(-45, 38), mid=(-46, 46), last=(-44, 56), back=(0, -30)),
+    "LavaBridge1": dict(first=(28, 28), mid=(44, 44), last=(61, 61), back=(-1, -28)),
+    "LavaBridge2": dict(first=(-28, 27), mid=(-42, 45), last=(-62, 60), back=(1, -28)),
+}
+
+
+def chain_positions(kit, start_px, n_centres):
+    """Pixel positions of FarEnd, n centre pieces and NearEnd, using Westwood's exact steps."""
+    st = KIT_STEPS[kit]
+    x, y = start_px
+    pts = [(x, y)]
+    for i in range(n_centres):
+        dx, dy = st["first"] if i == 0 else st["mid"]
+        x, y = x + dx, y + dy; pts.append((x, y))
+    dx, dy = st["last"]
+    pts.append((x + dx, y + dy))
+    return pts
+
+
 
 def tile_centre_xy(x, y):
     return x + 1.0, y + 1.0
@@ -351,17 +377,18 @@ class Waterworks:
         else:
             lane = int(round((su - k["piece_side"]) / 2.0)) * 2
             pos, sign = sv - 1.0, -1
-        pieces = [("FarRamp" if kit == "DockDown" else "FarEnd", pos)]
-        pos += sign * st["first"]
-        for i in range(length):
-            pieces.append(("Center1", pos))
-            pos += sign * (st["mid"] if i < length - 1 else st["last"])
-        pieces.append(("NearEnd", pos))
+        if kit == "DockUp": length = 1                     # Westwood's DockUp has one centre piece
+        names = ["FarRamp" if kit == "DockDown" else "FarEnd"] + ["Center1"] * length + ["NearEnd"]
+        u0, v0 = (pos, lane + k["piece_side"]) if kit == "DockDown" else (lane + k["piece_side"], pos)
+        pts = chain_positions(kit, px_of_uv(u0, v0), length)
+        pieces = []
+        for name, (x, y) in zip(names, pts):
+            self.spec.obj_px(kit + name, x, y)
+            pu, pv = (x + y) / CELL, (x - y) / CELL         # back to u/v for the floor strip and barrels
+            pieces.append((name, pu if kit == "DockDown" else pv))
         far = pieces[0][1]
+        pos = pieces[-1][1]
         self._strip(kit, lane, far, pos + sign)
-        for name, p in pieces:
-            u, v = (p, lane + k["piece_side"]) if kit == "DockDown" else (lane + k["piece_side"], p)
-            self.spec.obj_px(kit + name, *px_of_uv(u, v))
         if barrels:                                    # Con05A docks carry a barrel or two near the tip
             for i in range(self.rng.choice((0, 1, 2))):
                 p = pos - sign * (2.0 + 1.6 * i)
@@ -432,14 +459,15 @@ class Waterworks:
             offs = [k["step"] * i for i in range(n)]
             names = ["FarEnd"] + [centres[i % len(centres)] for i in range(n - 2)] + ["NearEnd"]
         sgn = 1 if k["axis"] == "u" else -1
-        end = a0 + sgn * offs[-1]
-        self._strip(kit, lane, a0 - 2 * sgn, end + 2 * sgn)
-        for name, o in zip(names, offs):
-            pos = a0 + sgn * o
-            u, v = (pos, lane + k["piece_side"]) if k["axis"] == "u" else (lane + k["piece_side"], pos)
-            x, y = px_of_uv(u, v)
+        u0, v0 = (a0, lane + k["piece_side"]) if k["axis"] == "u" else (lane + k["piece_side"], a0)
+        pts = chain_positions(kit, px_of_uv(u0, v0), len(names) - 2)
+        bx, by = KIT_STEPS[kit]["back"]
+        for name, (x, y) in zip(names, pts):
             self.spec.obj_px(f"{kit}{name}Front", x, y)
-            self.spec.obj_px(f"{kit}{name}Back", x, y + k["back_px"])
+            self.spec.obj_px(f"{kit}{name}Back", x + bx, y + by)
+        lx, ly = pts[-1]
+        end = (lx + ly) / CELL if k["axis"] == "u" else (lx - ly) / CELL
+        self._strip(kit, lane, a0 - 2 * sgn, end + 2 * sgn)
         return dict(kind=kit, pieces=list(zip(names, offs)), lane=lane)
 
     # ------------------------------------------------------------------ finishing

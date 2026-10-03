@@ -5,14 +5,15 @@ Rules learned from Westwood's maps (`corpus/out/nox_corpus.db`). Each rule carri
 ## Contents
 
 1. [Walls, doors and boundaries](#1-walls-doors-and-boundaries)
-2. [Floors and edge blending](#2-floors-and-edge-blending)
-3. [Water and crossings](#3-water-and-crossings)
-4. [Lighting](#4-lighting)
-5. [Decoration and furniture](#5-decoration-and-furniture)
-6. [Townsfolk and navigation](#6-townsfolk-and-navigation)
-7. [Rooms and buildings](#7-rooms-and-buildings)
-8. [Building shapes and styles](#8-building-shapes-and-styles)
-9. [Room types and furnishing](#9-room-types-and-furnishing)
+2. [Door construction](#2-door-construction)
+3. [Floors and edge blending](#3-floors-and-edge-blending)
+4. [Water and crossings](#4-water-and-crossings)
+5. [Lighting](#5-lighting)
+6. [Decoration and furniture](#6-decoration-and-furniture)
+7. [Townsfolk and navigation](#7-townsfolk-and-navigation)
+8. [Rooms and buildings](#8-rooms-and-buildings)
+9. [Building shapes and styles](#9-building-shapes-and-styles)
+10. [Room types and furnishing](#10-room-types-and-furnishing)
 
 ## 1. Walls, doors and boundaries
 
@@ -267,7 +268,49 @@ Values used (weighted share): 100: 47.3%, 90: 14.6%, 80: 7.4%, 70: 6.8%, 110: 4.
 
 The minimap shows the wall groups of the polygon the player stands in; 100 is the default group, other values (90, 80, 70, 110...) separate areas (e.g. interiors, upper floors, secret areas) so they are hidden until entered.
 
-## 2. Floors and edge blending
+## 2. Door construction
+
+Schema (`rules/out/doors.json`): `types[name] = {kind: single|double, share_two_cell, share_one_cell, weighted_count, maps}`; `double_placement` / `single_placement` (hinge corners per wall direction); `jamb_facing` (how pieces beside an opening are shaped, with evidence).
+
+### Single and double doors
+
+Double doors are two half-door objects hinged at the two outer ends of a 2-cell opening (East + West in `/` walls, North + South in `\` walls). Single doors fill a 1-cell opening.
+
+| Door type | Kind | 2-cell share | 1-cell share | Weighted count | Maps |
+|---|---|---|---|---|---|
+| Gate | double | 96% | 1% | 163.7 | 70 |
+| WoodAndSteelHalfDoor | double | 100% | 0% | 141.7 | 48 |
+| DunMirDoor | single | 24% | 76% | 140.7 | 22 |
+| GalavaHalfDoor | double | 98% | 0% | 131.0 | 20 |
+| CryptDoor | double | 82% | 17% | 125.0 | 22 |
+| ArchedHalfDoor | double | 99% | 0% | 104.7 | 27 |
+| ArchedDoor | single | 0% | 100% | 89.2 | 26 |
+| JailDoor | single | 34% | 66% | 88.0 | 26 |
+| WoodenDoor | single | 28% | 72% | 79.0 | 16 |
+| BandedPlankDoor | double | 58% | 42% | 79.0 | 35 |
+| LOTDHalfDoor | double | 100% | 0% | 74.0 | 17 |
+| CryptGate | double | 80% | 17% | 73.0 | 19 |
+| LOTDSingleDoor | single | 17% | 83% | 71.0 | 14 |
+| DunMirHalfDoor | double | 100% | 0% | 70.0 | 10 |
+| SpikedDoor | double | 64% | 33% | 69.0 | 14 |
+| ThinWoodenDoor | double | 61% | 37% | 60.3 | 23 |
+| IronFenceGate | double | 56% | 44% | 43.3 | 25 |
+| OgreCageDoor | double | 86% | 14% | 37.0 | 13 |
+| GalavaDoor | single | 0% | 100% | 35.0 | 16 |
+| BandedWoodenDoor | single | 3% | 88% | 31.7 | 21 |
+| Dilapidated | double | 53% | 47% | 30.0 | 9 |
+| BarredGate | double | 61% | 37% | 29.5 | 27 |
+| WoodAndSteelDoor | single | 0% | 100% | 26.0 | 9 |
+| AncientRuinDoor | double | 82% | 18% | 22.0 | 2 |
+| ThickWoodenDoor | single | 0% | 100% | 14.5 | 15 |
+| AncientDungeonDoor | double | 60% | 40% | 10.0 | 2 |
+| SecretDoor | single | 0% | 100% | 2.0 | 2 |
+
+### Wall pieces beside an opening
+
+Facings of the walls next to a door opening are computed as if the opening were wall: 29.8% of jamb pieces match only that way, 0.7% only the other way (68.3% are the same either way). Computing them without the opening turns corners into straight pieces and Ts into corners, leaving see-through gaps.
+
+## 3. Floors and edge blending
 
 Schema of `rules/out/floors.json`:
 - `blend[]`: one entry per pair of materials that touch as side neighbours (>= 10 contacts in all maps): `a`, `b`, `contacts_all`, `maps_all`, `contacts_sp_weighted`, `maps_sp`, `edge_share_sp` (share of single-player contacts with an edge overlay on the touching side), `edge_share_all`, `overlay`/`base` (which material is drawn over which), `overlay_direction_share`, `edge_types` (share), `preferred_edge_type`.
@@ -395,7 +438,7 @@ RugRed +1.00, RugGreen +1.00, RedBrick +1.00, RugBlueLight +1.00, RugTan +0.98, 
 - GreenBrick / SwampGrass (both in 8 maps): between them WeedsSparse 100%
 - DunMirBrick1 / Lava (both in 8 maps): between them VolcanicCraggy 100%
 
-## 3. Water and crossings
+## 4. Water and crossings
 
 Schema of `rules/out/water.json`:
 - `water_materials{material: tiles_all, sp_weighted, maps, categories}`
@@ -516,7 +559,7 @@ Schema of `rules/out/water.json`:
 - Floor under: {'SwampGrass': 6, 'DirtDark2': 2, 'WaterSwampShallow': 1}. Walls near: {'InvisibleWallSet': 39}.
 - Direction NearEnd -> FarEnd (unit vector, screen x/y): {}.
 
-## 4. Lighting
+## 5. Lighting
 
 ### Lighting
 
@@ -632,7 +675,7 @@ Source: `rules/lighting.py` -> `rules/out/lighting.json`. Style figures are sing
 - Polygons tile essentially the whole floor: 92 of 120 maps have >= 99% of floor tiles inside a polygon (minimum 0.40). Every area needs a polygon carrying its ambient colour and minimap group.
 - Flames of type SmallFlame/MediumFlame/Flame/LargeFlame are DANGEROUS (they burn players); Westwood uses them mostly in lava areas. Use torches, TorchPole, candelabra, lanterns, basins and fireplaces as safe light.
 
-## 5. Decoration and furniture
+## 6. Decoration and furniture
 
 Mined by `rules/decoration.py` from the reference corpus. Style figures use the 120 single-player maps weighted so each distinct layout counts once (62 layouts); `observed_types` uses all 157 maps.
 
@@ -974,7 +1017,7 @@ Ambient sound emitters (Amb*) per 100 tiles of the floor they sit on; `no_floor`
 - interior: 0.249 per 100 tiles - AmbLeaves 13%, AmbWindCave3 12%, AmbSpiritsFOV 12%, AmbWindCave1 11%, AmbMineCreaks 10%
 - no_floor: 174.5 emitters (weighted) - AmbSpiritsLOTD 22%, AmbWindLOTD 9%, AmbHowls 6%, AmbMineCreaks 5%, AmbWindCave2 4%
 
-## 6. Townsfolk and navigation
+## 7. Townsfolk and navigation
 
 Source: `rules/life.py` over the 120 single-player maps; shares and quartiles ([25%, median, 75%])
 weighted by `1 / layout group size`. Roles: **civilian** = NPC object that is immortal or unarmed;
@@ -1042,7 +1085,7 @@ maidens and shopkeepers. Populated tiles = tiles within 12 cells of a townsperso
   that matches the link flags of a nearby waypoint network (128 for general paths).
 - Stationary townsfolk (GUARD/IDLE) stand indoors near doors, counters and shop shelves.
 
-## 7. Rooms and buildings
+## 8. Rooms and buildings
 
 Source: `rules/rooms.py` over the 120 single-player maps (campaign + quest); statistics weighted by
 `1 / layout group size` so a layout shared by the three class campaigns counts once. Quartiles are
@@ -1096,7 +1139,7 @@ use the verified rule (South: corner-(1,1); North: corner; East: corner-(1,0); W
 - Small rooms (<10 tiles) are mostly closets, corridors, stair landings and are often empty; furniture
   and lights scale with area.
 
-## 8. Building shapes and styles
+## 9. Building shapes and styles
 
 Source: `rules/buildings.py`, buildings from `rules/out/rooms.json` (rooms sharing a wall or door) in the 120 single-player maps, at most 900 floor tiles and 14 rooms (larger complexes are dungeons). Weighted by 1 / layout group size. Sizes are in lattice units along the wall axes (one wall segment = 2 in u or v, about one cell along the wall). Quartiles are [25%, median, 75%]. A building is *freestanding* when at least half of what lies outside its outer walls is open floor (towns, villages), as opposed to rooms inside larger structures.
 
@@ -1161,7 +1204,7 @@ Source: `rules/buildings.py`, buildings from `rules/out/rooms.json` (rooms shari
 - A style is only safe for multi-room interiors when its wall material has valid pieces for T-junctions and corners (`wall_pieces_complete`); otherwise use a different partition material (the style's `interior_wall_materials`) or keep the building single-roomed.
 - Freestanding buildings mostly have one entrance; place it on the side facing the street or square.
 
-## 9. Room types and furnishing
+## 10. Room types and furnishing
 
 Westwood's single-player building rooms classified by contents, with everything the furnisher needs to generate new rooms of each type. Distributions only: no stock layout is stored. Generated by `rules/room_types.py`.
 

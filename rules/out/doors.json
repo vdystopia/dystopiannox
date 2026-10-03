@@ -1,0 +1,210 @@
+{
+ "double_placement": {
+  "/": "2-cell opening a, b=a+(1,-1): East door at corner (b.x+1, b.y), West door at corner (a.x, a.y+1)",
+  "\\": "2-cell opening a, b=a+(1,1): North door at corner (a.x, a.y), South door at corner (b.x+1, b.y+1)"
+ },
+ "jamb_facing": {
+  "rule": "compute wall facings treating door openings as wall",
+  "shares": {
+   "gap_as_empty": 0.007,
+   "gap_as_wall": 0.298,
+   "neither": 0.012,
+   "same": 0.683
+  }
+ },
+ "single_placement": {
+  "/": "1-cell opening g: East at (g.x+1, g.y) or West at (g.x, g.y+1)",
+  "\\": "1-cell opening g: South at (g.x+1, g.y+1) or North at (g.x, g.y)"
+ },
+ "types": {
+  "AncientDungeonDoor": {
+   "kind": "double",
+   "maps": 2,
+   "share_one_cell": 0.4,
+   "share_two_cell": 0.6,
+   "weighted_count": 10.0
+  },
+  "AncientRuinDoor": {
+   "kind": "double",
+   "maps": 2,
+   "share_one_cell": 0.182,
+   "share_two_cell": 0.818,
+   "weighted_count": 22.0
+  },
+  "ArchedDoor": {
+   "kind": "single",
+   "maps": 26,
+   "share_one_cell": 1.0,
+   "share_two_cell": 0.0,
+   "weighted_count": 89.2
+  },
+  "ArchedHalfDoor": {
+   "kind": "double",
+   "maps": 27,
+   "share_one_cell": 0.0,
+   "share_two_cell": 0.994,
+   "weighted_count": 104.7
+  },
+  "BandedPlankDoor": {
+   "kind": "double",
+   "maps": 35,
+   "share_one_cell": 0.418,
+   "share_two_cell": 0.582,
+   "weighted_count": 79.0
+  },
+  "BandedWoodenDoor": {
+   "kind": "single",
+   "maps": 21,
+   "share_one_cell": 0.884,
+   "share_two_cell": 0.032,
+   "weighted_count": 31.7
+  },
+  "BarredGate": {
+   "kind": "double",
+   "maps": 27,
+   "share_one_cell": 0.373,
+   "share_two_cell": 0.61,
+   "weighted_count": 29.5
+  },
+  "CryptDoor": {
+   "kind": "double",
+   "maps": 22,
+   "share_one_cell": 0.168,
+   "share_two_cell": 0.816,
+   "weighted_count": 125.0
+  },
+  "CryptGate": {
+   "kind": "double",
+   "maps": 19,
+   "share_one_cell": 0.169,
+   "share_two_cell": 0.804,
+   "weighted_count": 73.0
+  },
+  "Dilapidated": {
+   "kind": "double",
+   "maps": 9,
+   "share_one_cell": 0.467,
+   "share_two_cell": 0.533,
+   "weighted_count": 30.0
+  },
+  "DunMirDoor": {
+   "kind": "single",
+   "maps": 22,
+   "share_one_cell": 0.765,
+   "share_two_cell": 0.235,
+   "weighted_count": 140.7
+  },
+  "DunMirHalfDoor": {
+   "kind": "double",
+   "maps": 10,
+   "share_one_cell": 0.0,
+   "share_two_cell": 1.0,
+   "weighted_count": 70.0
+  },
+  "GalavaDoor": {
+   "kind": "single",
+   "maps": 16,
+   "share_one_cell": 1.0,
+   "share_two_cell": 0.0,
+   "weighted_count": 35.0
+  },
+  "GalavaHalfDoor": {
+   "kind": "double",
+   "maps": 20,
+   "share_one_cell": 0.0,
+   "share_two_cell": 0.977,
+   "weighted_count": 131.0
+  },
+  "Gate": {
+   "kind": "double",
+   "maps": 70,
+   "share_one_cell": 0.006,
+   "share_two_cell": 0.963,
+   "weighted_count": 163.7
+  },
+  "IronFenceGate": {
+   "kind": "double",
+   "maps": 25,
+   "share_one_cell": 0.438,
+   "share_two_cell": 0.562,
+   "weighted_count": 43.3
+  },
+  "JailDoor": {
+   "kind": "single",
+   "maps": 26,
+   "share_one_cell": 0.659,
+   "share_two_cell": 0.341,
+   "weighted_count": 88.0
+  },
+  "LOTDHalfDoor": {
+   "kind": "double",
+   "maps": 17,
+   "share_one_cell": 0.0,
+   "share_two_cell": 1.0,
+   "weighted_count": 74.0
+  },
+  "LOTDSingleDoor": {
+   "kind": "single",
+   "maps": 14,
+   "share_one_cell": 0.831,
+   "share_two_cell": 0.169,
+   "weighted_count": 71.0
+  },
+  "OgreCageDoor": {
+   "kind": "double",
+   "maps": 13,
+   "share_one_cell": 0.135,
+   "share_two_cell": 0.865,
+   "weighted_count": 37.0
+  },
+  "SecretDoor": {
+   "kind": "single",
+   "maps": 2,
+   "share_one_cell": 1.0,
+   "share_two_cell": 0.0,
+   "weighted_count": 2.0
+  },
+  "SpikedDoor": {
+   "kind": "double",
+   "maps": 14,
+   "share_one_cell": 0.333,
+   "share_two_cell": 0.638,
+   "weighted_count": 69.0
+  },
+  "ThickWoodenDoor": {
+   "kind": "single",
+   "maps": 15,
+   "share_one_cell": 1.0,
+   "share_two_cell": 0.0,
+   "weighted_count": 14.5
+  },
+  "ThinWoodenDoor": {
+   "kind": "double",
+   "maps": 23,
+   "share_one_cell": 0.37,
+   "share_two_cell": 0.613,
+   "weighted_count": 60.3
+  },
+  "WoodAndSteelDoor": {
+   "kind": "single",
+   "maps": 9,
+   "share_one_cell": 1.0,
+   "share_two_cell": 0.0,
+   "weighted_count": 26.0
+  },
+  "WoodAndSteelHalfDoor": {
+   "kind": "double",
+   "maps": 48,
+   "share_one_cell": 0.0,
+   "share_two_cell": 1.0,
+   "weighted_count": 141.7
+  },
+  "WoodenDoor": {
+   "kind": "single",
+   "maps": 16,
+   "share_one_cell": 0.722,
+   "share_two_cell": 0.278,
+   "weighted_count": 79.0
+  }
+ }
+}
