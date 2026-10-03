@@ -98,6 +98,18 @@ def sealed_room(m):
     m.obj("Wolf", 244, -28)
 
 
+def dock_across_puddle(m):
+    ww = Waterworks(m, random.Random(5))
+    puddle = ww.pond((190, -24), radius=3)
+    ww.dock(puddle, "down", length=2, at=(183.0, -24.0))     # forced: the kit itself refuses a puddle
+    ww.finish()
+
+
+def lights_side_by_side(m):
+    for k in range(2):
+        m.obj("Candleabra1", 216 + 1.2 * k, 8)
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -116,6 +128,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STvoid", void_creature, "objects", "error", "creature standing in the void"),
     ("STseal", sealed_room, "reachability", "error", "creature in a room with no way in"),
     ("STnostrt", no_start, "setup", "error", "no player start"),
+    ("STpuddl", dock_across_puddle, "composition", "warning", "dock spanning a puddle to the far bank - DysVale v0.4 playtest"),
+    ("STlites", lights_side_by_side, "composition", "warning", "two candelabras side by side - DysVale v0.4 playtest"),
 ]
 
 

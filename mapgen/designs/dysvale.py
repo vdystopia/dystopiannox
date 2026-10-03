@@ -38,7 +38,7 @@ ID = MapIdentity(
     areas=[AreaIdentity("gate", "where the forest road enters the vale; travellers arrive here"),
            AreaIdentity("village", "the heart of the vale: a cobbled square with the well, the inn, the store and the smithy",
                         landmark="Well"),
-           AreaIdentity("mill", "the miller's glade by the pond the stream feeds"),
+           AreaIdentity("mill", "the miller's glade on the shore of the lake, with the mill's dock reaching out into it"),
            AreaIdentity("woodcut", "the woodcutter's clearing, stumps all around"),
            AreaIdentity("grove", "a quiet grove north of the village"),
            AreaIdentity("lookout", "an old standing stone at the far end of the loop road", landmark="ObeliskPrimitive")],
@@ -62,13 +62,13 @@ m.d["ambient"] = [150, 146, 120]
 land = Land(rng, u_range=(100, 446), v_range=(-160, 160))
 land.area("village", (222, 2), 50, clearing=False)    # the village's extent comes from what is built
 land.area("gate", (140, -46), 16)
-land.area("mill", (338, 88), 22)
+land.area("mill", (308, 66), 18)
 land.area("woodcut", (332, -100), 18)
 land.area("grove", (170, 110), 16)
-land.area("lookout", (408, -6), 14)
+land.area("lookout", (412, -40), 14)
 for a_, b_, w_ in (("gate", "village", 13), ("village", "mill", 14), ("village", "woodcut", 14),
                    ("village", "grove", 11), ("mill", "lookout", 11), ("woodcut", "lookout", 11)):
-    land.link(a_, b_, w_, bend=0.35 if (a_, b_) == ("woodcut", "lookout") else 0.25)
+    land.link(a_, b_, w_, bend={("woodcut", "lookout"): 0.35, ("mill", "lookout"): 0.08}.get((a_, b_), 0.25))
 land.blends(m)
 link = {(l["a"], l["b"]): l for l in land.links}
 
@@ -90,9 +90,11 @@ def along(path, t0, t1, offset, n=6):
 vm, vw = link[("village", "mill")]["path"], link[("village", "woodcut")]["path"]
 mid = vm[len(vm) // 2]
 STREAM = [(2 * mid[0] - 30, 2 * mid[1] + 70), (2 * mid[0], 2 * mid[1])] + along(vw, 0.35, 0.72, 5.5) + along(vw, 0.78, 0.8, 18, n=2)
-POND = ((346, 104), 6)
+# the lake lies east of the mill glade, where the mill road ends: big enough that the mill's dock
+# reaches out into open water (radius in tiles; the shore wanders up to 35% beyond it)
+LAKE = ((344, 72), 11)
 land.reserve_band(STREAM, 3.5)
-land.reserve_band([POND[0], (POND[0][0] + 0.1, POND[0][1])], POND[1] / 2 + 3)
+land.reserve_band([LAKE[0], (LAKE[0][0] + 0.1, LAKE[0][1])], LAKE[1] * 1.35 + 2)
 
 # ---- 2. the centre: the square and its well, and the streets leaving it -----------------------------------
 land.paint_square(m, "village", 10, "RoughCobble")
@@ -102,7 +104,7 @@ land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-1, 0, 1) for b in
 land.paint_roads(m, "DirtDark2", width_squares=2.6, skip=land.reserved)
 
 # ---- 3. buildings, from the square outwards: public buildings face the square, homes line the streets ----
-placed = []
+placed, door_paths = [], set()
 order = sorted(range(len(ID.buildings)), key=lambda k: (BUILDINGS[ID.buildings[k].role]["faces"] != "square", k))
 for k in order:
     bid = ID.buildings[k]
@@ -121,10 +123,28 @@ for k in order:
     if not b:
         print(f"could not place the {bid.role} ({bid.name or bid.occupant}) in the {bid.area}"); continue
     land.take_cells(b.cells, margin=1)
+    land.wall_cells |= {c for c in m.wallmap}
     land.taken_strict |= _squares_of(b.footprint)
     placed.append((bid, b))
+    foot = _squares_of(b.footprint)
+    # buildings that face the square must open onto it
+    if role["faces"] == "square" and bid.area == "village" and b.entrances:
+        out_sq = land.door_outside(b.entrances[0], foot)
+        ci = sum(i for i, _ in foot) / len(foot); cj = sum(j for _, j in foot) / len(foot)
+        dist = lambda a, b_: ((a[0] - b_[0]) ** 2 + (a[1] - b_[1]) ** 2) ** 0.5
+        if out_sq is None or dist(out_sq, vc) >= dist((ci, cj), vc) - 1:
+            print(f"  the {bid.role}'s door does not face the square")
+
+# streets keep clear of walls; then every door gets a path routed to the streets; then any road that
+# still runs into the side of a building is cut back
+land.clear_walls(m)
+for bid, b in placed:
+    foot = _squares_of(b.footprint)
     for d in b.entrances:
-        land.path_between(m, px_square(*d.px))
+        path = land.connect_door(m, d, foot)
+        if path is None: print(f"  no path from the {bid.role}'s door")
+        else: door_paths |= set(path)
+land.trim_dead_ends(m, keep=door_paths)
 
 furnished = []
 for bid, b in placed:
@@ -160,7 +180,7 @@ def crossing_t(body, link_path):
 
 ww = Waterworks(m, rng, inside=lambda x, y: m.floor.get((x, y), "").startswith(("Grass", "Dirt")))
 stream = ww.stream(STREAM, width=3.4, wiggle=0.8)
-pond = ww.pond(*POND)
+lake = ww.pond(*LAKE)
 ww.plank_bridge(stream, t=crossing_t(stream, vm))
 for b_ in ww.bodies:
     for t in b_.tiles:
@@ -172,35 +192,46 @@ for bid, b in placed:
     role = BUILDINGS[bid.role]
     for sc in role["scenes"]: vil.scene(b, sc)
     if rng.random() < role["garden"]: vil.garden(b, size=(rng.randint(3, 5), rng.randint(2, 4)))
-vil.benches("village", 2)
 
 presets = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "rules", "out", "lighting.json")))["colorlight"]["presets"]
 ORANGE = max((p for p in presets if p["family"] == "orange" and p["animation"] == "steady" and p["intensity_class"] == "full"),
              key=lambda p: p["weighted_share"])
 
 
-def torch_pole(si, sj):
+def torch_pole(si, sj, square=False):
     s = (int(si), int(sj) + 1)
-    if s not in land.squares or s in land.taken or s in land.roads or s in land.water: return
+    if s not in land.squares or s in land.water: return False
+    if not square and (s in land.taken or s in land.roads or s in land.plaza): return False
     x, y = square_px(si, sj)
     m.obj_px("TorchPole", x, y)
     m.obj_px("ColorLight", x, y - 5, xfer=dict(ORANGE["xfer"]))
     land.taken.add(s)
+    return True
 
 
-# torch poles light the square's corners and the village roads
-pi0, pi1 = min(i for i, _ in land.plaza), max(i for i, _ in land.plaza)
-pj0, pj1 = min(j for _, j in land.plaza), max(j for _, j in land.plaza)
-for si, sj in ((pi0 - 0.6, pj0 - 0.6), (pi1 + 1.6, pj0 - 0.6), (pi0 - 0.6, pj1 + 0.6), (pi1 + 1.6, pj1 + 0.6)):
-    torch_pole(si, sj)
-VR = land.areas["village"]["r"] * 1.25
+# the square is a composed set piece: the well at the centre, benches on all four sides facing it,
+# torch poles on the diagonals, all symmetric
+vil.square_piece(vc, 5, pole=lambda si, sj: torch_pole(si, sj, square=True), per_side=2)
+
+# street lights keep a steady rhythm: every 12 squares along each street leaving the square, always
+# on the same hand, until the street leaves the village
+VR = land.areas["village"]["r"] * 1.1
+lights = []
 for path in land.road_paths:
-    for i in range(10, len(path) - 6, 24):
-        si, sj = path[i]
-        if (si - vc[0]) ** 2 + (sj - vc[1]) ** 2 > VR ** 2: continue
-        ti, tj = path[i + 1][0] - path[i - 1][0], path[i + 1][1] - path[i - 1][1]
+    pts = path if (path[0][0] - vc[0]) ** 2 + (path[0][1] - vc[1]) ** 2 < (path[-1][0] - vc[0]) ** 2 + (path[-1][1] - vc[1]) ** 2 else path[::-1]
+    if (pts[0][0] - vc[0]) ** 2 + (pts[0][1] - vc[1]) ** 2 > 4: continue      # only streets from the square
+    walked = 0.0
+    nxt = 5 + 6                                    # first light just past the square's edge
+    for i in range(1, len(pts) - 1):
+        walked += ((pts[i][0] - pts[i - 1][0]) ** 2 + (pts[i][1] - pts[i - 1][1]) ** 2) ** 0.5
+        if (pts[i][0] - vc[0]) ** 2 + (pts[i][1] - vc[1]) ** 2 > VR ** 2: break
+        if walked < nxt: continue
+        ti, tj = pts[i + 1][0] - pts[i - 1][0], pts[i + 1][1] - pts[i - 1][1]
         L = (ti * ti + tj * tj) ** 0.5 or 1
-        torch_pole(si - tj / L * 2.2, sj + ti / L * 2.2)
+        qi, qj = pts[i][0] + tj / L * 2.4, pts[i][1] - ti / L * 2.4      # right-hand side
+        if all((qi - a) ** 2 + (qj - b) ** 2 > 36 for a, b in lights) and torch_pole(qi, qj):
+            lights.append((qi, qj))
+        nxt += 12
 
 # ---- 8. ground patches (after everything they must keep clear of), vegetation, water's finish -------------
 land.ground_variety(m, clear=3)
@@ -210,7 +241,14 @@ for bid, b in placed:
     for d in b.entrances:
         di, dj = px_square(*d.px)
         keep |= {(di + a, dj + b2) for a in range(-2, 3) for b2 in range(-2, 3)}
-ww.dock(pond, "down", length=2)
+# the mill's dock starts where the mill road reaches the lake and runs out into open water
+mill_end = link[("village", "mill")]["path"][-1]
+dock = ww.dock(lake, "down", length=2, beyond=5, near=(2 * mill_end[0], 2 * mill_end[1]))
+if dock:
+    du_, dv_ = dock["start"]
+    land.connect(m, px_square((du_ + dv_) / 2 * 23, (du_ - dv_) / 2 * 23))
+else:
+    print("no room for the mill's dock")
 for c in list(ww.no_walls): land.taken.add(cell_square(*c))
 vil.ground_bits(1.5)
 planter = Planter(m, rng, land, FOREST, keep_clear=keep)

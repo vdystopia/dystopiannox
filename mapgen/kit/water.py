@@ -28,7 +28,7 @@ Usage:
     ww.dock(p, direction="down")
     ww.finish()            # once, after all features: bank edges, shore walls, dressing
 """
-import math
+import math, re
 from dataclasses import dataclass, field
 from typing import List, Optional, Set, Tuple
 
@@ -37,6 +37,7 @@ from nox import CELL, load_rules
 Cell = Tuple[int, int]
 SQ2 = math.sqrt(2.0)
 TILE = SQ2                      # distance between side-neighbour tile centres, in cells
+REEDS = re.compile(r"Reed|Cattail|Rush|Grass|Plant", re.I)
 
 # Water families: (shallow, deep, land the water spills onto by default, edge type water->land)
 FAMILIES = {
@@ -361,7 +362,7 @@ class Waterworks:
         self.kit_lanes.append(lane_tiles)
         return lane_tiles
 
-    def dock(self, body, direction="down", length=2, at=None, barrels=True):
+    def dock(self, body, direction="down", length=2, at=None, barrels=True, beyond=0, near=None):
         """Dock into a pond/lake. direction 'down' = DockDown running down-right (along '\\'),
         'up' = DockUp running down-left (along '/'). length = number of centre pieces.
         at: land tile-centre (uv) on the shore to start from; default: picked on the shore."""
@@ -369,7 +370,7 @@ class Waterworks:
         k = KITS[kit]
         st = k["steps"]
         reach = st["first"] + st["mid"] * (length - 1) + st["last"]
-        start = at or self._shore_start(body, kit, reach)
+        start = at or self._shore_start(body, kit, reach, beyond, near)
         if start is None:
             return None
         su, sv = start
@@ -402,11 +403,14 @@ class Waterworks:
             self.kit_walls.add((int(cx), int(cy)))
         return dict(kind=kit, start=start, pieces=pieces, lane=lane)
 
-    def _shore_start(self, body, kit, reach):
-        """A land tile on the shore from which a dock can run `reach` uv units over water."""
+    def _shore_start(self, body, kit, reach, beyond=0, near=None):
+        """A land tile on the shore from which a dock can run `reach` uv units over water, with
+        `beyond` more tiles of open water past its tip (a dock reaches out into a lake; it never
+        spans a puddle to the far bank). near (uv): prefer the shore spot closest to it, e.g.
+        where the road arrives."""
         step = (1, 1) if kit == "DockDown" else (-1, 1)        # next tile along the dock direction
         side = ((1, -1), (-1, 1)) if kit == "DockDown" else ((1, 1), (-1, -1))
-        n = int(reach / 2) + 3
+        n = int(reach / 2) + 3 + beyond
         taken = [c for lane in self.kit_lanes for c in lane]
         cands = []
         for (x, y) in body.tiles:
@@ -423,6 +427,8 @@ class Waterworks:
             cands.append(xy_to_uv(*tile_centre_xy(*land)))
         if not cands:
             return None
+        if near:
+            return min(cands, key=lambda c: (c[0] - near[0]) ** 2 + (c[1] - near[1]) ** 2)
         cands.sort()
         return cands[len(cands) // 2]
 
@@ -552,10 +558,16 @@ class Waterworks:
             if not types: continue
             names, weights = zip(*types)
             n = int(len(tiles) * p["objects_per_100_tiles"] / 100 * 0.8)
+            # reeds and rushes grow in the shallows: within two tiles of the bank; ripples and lily
+            # pads may float anywhere
+            fluid = WATER_MATERIALS | LAVA_MATERIALS
+            shore = {c for c in tiles if any((c[0] + a, c[1] + b) in self.spec.floor and self.spec.floor[(c[0] + a, c[1] + b)] not in fluid
+                                             for a in range(-4, 5) for b in range(-4, 5) if (a + b) % 2 == 0 and abs(a) + abs(b) <= 4)}
             for c in self.rng.sample(tiles, min(n, len(tiles))):
+                t = self.rng.choices(names, weights)[0]
+                if REEDS.search(t) and c not in shore: continue
                 cx, cy = tile_centre_xy(*c)
-                self.spec.obj_px(self.rng.choices(names, weights)[0],
-                                 (cx + self.rng.uniform(-0.4, 0.4)) * CELL, (cy + self.rng.uniform(-0.4, 0.4)) * CELL)
+                self.spec.obj_px(t, (cx + self.rng.uniform(-0.4, 0.4)) * CELL, (cy + self.rng.uniform(-0.4, 0.4)) * CELL)
             if b.family != "lava":
                 for c in self.rng.sample(tiles, min(len(tiles), max(1, len(tiles) // 60))):
                     cx, cy = tile_centre_xy(*c)

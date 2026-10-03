@@ -39,14 +39,21 @@ def point_cell(p, q):
 
 
 def square_px(si, sj):
-    """World px of a point in square coordinates (square (i, j) spans si in [i, i+1], sj in [j-1, j])."""
-    return px(2 * si, 2 * sj)
+    """World px of a point in square coordinates (square (i, j) spans si in [i, i+1], sj in [j-1, j]).
+    The square's centre (i + 0.5, j - 0.5) is the centre of its tile (i + j, i - j), which the game
+    draws at grid corner (x + 1, y + 1)."""
+    return px(2 * si + 1, 2 * sj + 1)
 
 
 def px_square(x, y):
-    """Square containing a world-px point."""
+    """Square whose tile contains a world-px point (inverse of square_px)."""
     u, v = (x + y) / CELL, (x - y) / CELL
-    return int(math.floor(u / 2)), int(math.floor(v / 2)) + 1
+    return int(math.floor((u - 1) / 2)), int(math.floor((v - 1) / 2)) + 1
+
+
+def tile_square(x, y):
+    """Square of a floor tile (x, y) (x + y even): inverse of square_tile."""
+    return (x + y) // 2, (x - y) // 2
 
 
 def cell_square(x, y):
@@ -109,6 +116,7 @@ class Land:
         self.squares = {(i, j) for i in range(*self.i_range) for j in range(*self.j_range)
                         if 3 <= i + j <= 250 and 3 <= i - j <= 250}
         self.reserved = set()                 # squares kept for planned features (a stream and its banks)
+        self.wall_cells = set()               # grid cells of building walls (set by the design as it builds)
         self.roads, self.plaza, self.water, self.taken = set(), set(), set(), set()
         self.taken_strict = set()             # building footprints only (taken also holds margins)
         self.road_paths = []
@@ -340,21 +348,71 @@ class Land:
                     self.plaza.add((i, j))
         return self.plaza
 
-    def path_between(self, spec, a_sq, material="DirtDark2"):
-        """A short path from square a to the nearest road or plaza square (a doorstep path)."""
+    def door_outside(self, door, footprint):
+        """The square just outside a door: of the cells beside the door's wall cell (across its wall
+        line), the one whose square is not part of the building."""
+        gx, gy = door.gap
+        sides = [(gx + 1, gy), (gx - 1, gy), (gx, gy + 1), (gx, gy - 1)]
+        outs = [cell_square(*c) for c in sides if c not in self.wall_cells]
+        outs = [s for s in outs if s not in footprint]
+        if not outs: return None
+        ci = sum(i for i, _ in footprint) / max(1, len(footprint)); cj = sum(j for _, j in footprint) / max(1, len(footprint))
+        return max(outs, key=lambda s: (s[0] - ci) ** 2 + (s[1] - cj) ** 2)
+
+    def connect_door(self, spec, door, footprint, material="DirtDark2"):
+        """A path from the outside of a door to the road network, routed around buildings (never a
+        straight line to the nearest wall). Returns the path squares, or None if unreachable."""
+        return self.connect(spec, self.door_outside(door, footprint), footprint, material)
+
+    def connect(self, spec, start, footprint=frozenset(), material="DirtDark2"):
+        """Shortest path of `material` from square `start` to the nearest road or square tile."""
+        if start is None: return None
         targets = self.roads | self.plaza
-        if not targets: return
-        t = min(targets, key=lambda s: (s[0] - a_sq[0]) ** 2 + (s[1] - a_sq[1]) ** 2)
-        n = max(abs(t[0] - a_sq[0]), abs(t[1] - a_sq[1]))
-        for k in range(n + 1):
-            s = (round(a_sq[0] + (t[0] - a_sq[0]) * k / max(1, n)), round(a_sq[1] + (t[1] - a_sq[1]) * k / max(1, n)))
-            if s not in self.squares or s in self.plaza: continue
-            tile = square_tile(*s)
-            cur = spec.floor.get(tile, "")
-            if "Water" in cur or "WoodSlat" in cur: break
-            if (cur and not cur.startswith("Grass")) or square_tile(*s) in spec.wallmap: continue   # inside a building
-            spec.floor[tile] = material
+        if start in targets: return [start]
+        blocked = self.taken_strict | footprint | self.water | self.reserved
+        prev, q = {start: None}, collections.deque([start])
+        end = None
+        while q:
+            s = q.popleft()
+            if s in targets: end = s; break
+            for a, b in N4:
+                n = (s[0] + a, s[1] + b)
+                if n in prev or n not in self.squares or n in blocked: continue
+                prev[n] = s; q.append(n)
+        if end is None: return None
+        path, s = [], prev[end]
+        while s is not None:
+            path.append(s); s = prev[s]
+        for s in path:
+            t = square_tile(*s)
+            if not spec.floor.get(t, "").startswith(("RoughCobble",)):
+                spec.floor[t] = material
             self.roads.add(s)
+        return path
+
+    def clear_walls(self, spec):
+        """Streets keep a strip of ground along building walls (call once the buildings stand,
+        before routing the doors' paths)."""
+        near_building = {(i + a, j + b) for i, j in self.taken_strict for a in (-1, 0, 1) for b in (-1, 0, 1)}
+        for s in list(self.roads):
+            if s in near_building and s not in self.plaza:
+                self.roads.discard(s)
+                spec.floor.pop(square_tile(*s), None)
+
+    def trim_dead_ends(self, spec, keep=frozenset()):
+        """Roads that end against a building wall are cut back until they end in the open: a road
+        leads to a door (through that door's own path, kept in `keep`) or into a clearing, never
+        into the side of a building."""
+        near_building = {(i + a, j + b) for i, j in self.taken_strict for a in (-1, 0, 1) for b in (-1, 0, 1)}
+        changed = True
+        while changed:
+            changed = False
+            for s in list(self.roads):
+                if s in keep or s in self.plaza or s not in near_building: continue
+                if sum((s[0] + a, s[1] + b) in self.roads or (s[0] + a, s[1] + b) in self.plaza for a, b in N4) <= 1:
+                    self.roads.discard(s)
+                    spec.floor.pop(square_tile(*s), None)      # becomes ground again when the land is laid
+                    changed = True
 
     # ---- building lots --------------------------------------------------------------------------------
     def lots(self, area, size_uv, setback=(0, 4), reach=1.3):

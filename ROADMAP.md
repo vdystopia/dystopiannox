@@ -51,6 +51,19 @@ Checks phase 4 must include, from this playtest (all implemented in `validate/`,
 | See-through hole in the boundary | Rule recorded: invisible walls never on the boundary. The water kit follows it; Mossford itself still needs a rebuild |
 | Abrupt bridges | Fixed in the water kit (Con05A-style decks, narrow streams). Mossford still needs a rebuild |
 
+### DysVale v0.4 (2026-10-03)
+
+The theme of this playtest: every piece must make sense in relation to what is around it. Fixed in v0.5:
+
+| Finding | Fix |
+|---|---|
+| A dock across a puddle | The mill stands on a lake (radius 11 tiles) at the end of its road. The dock starts where the road meets the shore and needs open water past its tip (`Waterworks.dock(beyond=, near=)`). Reeds grow only in the shallows. The checker flags docks with no open water beyond them |
+| A path led to the side of a building with no door; the door had no path | Door paths start from the actual doorstep and are routed around buildings to the streets (`Land.connect_door`). Streets keep clear of walls, and roads that would run into a building are cut back. The checker flags short paths that end at a wall with no door. Root cause: the land-square helpers were half a tile out of register with the real tiles; fixed |
+| Random benches and torches around the square | The square is a composed set piece: the well in the centre, 8 benches in 4 pairs facing it, 4 torch poles on the diagonals. Street lights keep a steady rhythm along each street, always on the same side |
+| The inn's only door faced away from the square | Buildings that face the square get their door on the square side. The footprint is mirrored when needed so the main room touches that side, and the design checks the door faces the square |
+| Two candelabras side by side | Each light goes to the wall spot farthest from the room's other lights, at least 50 px apart. The checker flags lights standing side by side |
+| The bar did not meet the walls; the flap read as a window; the tavern felt empty | Bar runs end 1 unit from the wall line (Westwood: 1.0-1.3), with plain pieces at the ends and the flap mid-run with counter on both sides. Kegs stand behind the bar. The tavern identity follows Westwood's proportions: 3-8 tables, 6-24 stools and chairs, 3-6 barrels, a likely hearth, benches and wall decorations. The checker flags bars that stop short of a wall |
+
 ### DysVale v0.3 (2026-10-03)
 
 The layout, trees and shrubs improved a lot. Fixed in generator v3:

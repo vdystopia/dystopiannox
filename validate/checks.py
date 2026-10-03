@@ -19,7 +19,7 @@ MP_ONLY = re.compile(r"^(Flag|GameBall|Crown|TeamBase|.*FlagBase)$")
 NATURAL_WALL = re.compile(r"Cave|Rock|Dirt|Root|Tree|Decidious|Coni-|Aspen|Hedge|Shrub|Thorn|Volcano|IceWall|Shard|Mine", re.I)
 WATER_RE = re.compile(r"Water", re.I)
 TRAVEL = ("TRANSPORTER", "ELEVATOR", "ELEVATOR_SHAFT")
-FLOOR_FURNITURE = {"bed", "nightstand", "counter_bar", "counter_shop", "table", "chair", "bench", "desk", "stove", "storage"}
+FLOOR_FURNITURE = {"bed", "nightstand", "counter_shop", "table", "chair", "bench", "desk", "stove", "storage"}   # bar counters meet walls by design
 
 
 def F(check, severity, msg, x=None, y=None, **extra):
@@ -542,7 +542,128 @@ def check_density(m, ctx, base):
     return out
 
 
-ALL = [check_setup, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
+# ---- composition: how pieces relate to what is around them ------------------------------------------
+DOCK_DIR = {"DockDown": (1, 1), "DockUp": (-1, 1)}       # world-px direction a dock kit runs out over water
+BAR_RE = re.compile(r"^(BarPiece|BarCorner|BarHingedTop)")
+VISIBLE_LIGHT = re.compile(r"Candleabra|Candelabra|Lantern|Torch|Sconse|Sconce|Lamp|Brazier|Chandelier")
+
+
+def check_composition(m, ctx, base):
+    """Pieces that make no sense where they stand (the DysVale v0.4 playtest):
+    - a dock with no open water past its tip (spanning a puddle to the far bank);
+    - lights of one room standing side by side;
+    - a path that ends at a building wall with no door;
+    - a bar counter that stops short of the wall it runs toward."""
+    out = []
+    water = {t for t, d in m.tiles.items() if WATER_RE.search(d["material"])}
+
+    def tile_of(x, y):
+        return m.tile_at_cell(m.cell_of(x, y))
+
+    # docks: the tip piece must have water beyond it
+    chains = []
+    for kit, fronts, _ in kit_pieces(m):
+        if kit not in DOCK_DIR: continue
+        left = list(fronts)
+        while left:                                    # one chain = pieces within 120 px of each other
+            chain = [left.pop()]
+            grew = True
+            while grew:
+                grew = False
+                for o in list(left):
+                    if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < 120 for c in chain):
+                        chain.append(o); left.remove(o); grew = True
+            chains.append((kit, chain))
+    for kit, fronts in chains:
+        dx, dy = DOCK_DIR[kit]
+        L = math.hypot(dx, dy)
+        tip = max(fronts, key=lambda o: o["x"] * dx + o["y"] * dy)
+        open_water = 0
+        for k in range(1, 5):                              # 4 tiles past the tip (32 px each)
+            t = tile_of(tip["x"] + dx / L * 32 * k, tip["y"] + dy / L * 32 * k)
+            if t in water: open_water += 1
+            else: break
+        if open_water < base.get("dock_open_tiles", 2):
+            out.append(F("composition", "warning", f"{kit} dock ends {open_water} tile(s) from the far bank: a dock "
+                         f"reaches out into open water, it does not span a pond.", tip["x"], tip["y"]))
+
+    # lights side by side in a room
+    gap = base.get("light_gap_px", 30)
+    for r in find_rooms(m):
+        lights = [o for o in r["objects"] if VISIBLE_LIGHT.search(o["type"]) and "ColorLight" not in o["type"]]
+        for i, a in enumerate(lights):
+            for b in lights[i + 1:]:
+                if math.hypot(a["x"] - b["x"], a["y"] - b["y"]) < gap:
+                    out.append(F("composition", "warning", f"{a['type']} and {b['type']} stand side by side in one room; "
+                                 f"spread lights to different corners.", (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
+
+    # bar counters that stop short of a wall
+    bars = [o for o in m.objects if BAR_RE.match(o["type"])]
+    uv = lambda o: ((o["x"] + o["y"]) / CELL, (o["x"] - o["y"]) / CELL)
+    slash, back = collections.defaultdict(list), collections.defaultdict(list)
+    for (x, y), w in m.walls.items():
+        if w.invisible: continue
+        slash[x + y + 1].append(x - y); back[x - y].append(x + y + 1)
+    for o in bars:
+        if not o["type"].startswith("BarPiece"): continue
+        u, v = uv(o)
+        along_u = o["type"][8] in "24"
+        nb = [p for p in bars if p is not o and (
+            (abs(uv(p)[1] - v) < 0.6 and 1.2 < abs(uv(p)[0] - u) < 2.8) if along_u else
+            (abs(uv(p)[0] - u) < 0.6 and 1.2 < abs(uv(p)[1] - v) < 2.8))]
+        if len(nb) != 1: continue                          # only run ends
+        d = 1 if (uv(nb[0])[0] < u if along_u else uv(nb[0])[1] < v) else -1
+        if along_u:
+            dist = [abs(U - u) for U, vs in slash.items() if (U - u) * d > 0 and abs(U - u) < 6 and any(abs(V - v) < 1.6 for V in vs)]
+        else:
+            dist = [abs(V - v) for V, us in back.items() if (V - v) * d > 0 and abs(V - v) < 6 and any(abs(U - u) < 1.6 for U in us)]
+        if dist and 1.6 < min(dist) < 4.5:
+            out.append(F("composition", "warning", f"The bar counter stops {min(dist) * 16:.0f} px short of the wall: "
+                         f"a bar run meets the wall.", o["x"], o["y"]))
+
+    # paths that end at a building wall with no door
+    import design as DS
+    od = DS.Outdoor(m)
+    room_walls = set()
+    for r in find_rooms(m):
+        room_walls |= {(x + a, y + b) for x, y in r["cells"] for a, b in N4 if (x + a, y + b) in m.walls
+                       and m.walls[(x + a, y + b)].opaque and not NATURAL_WALL.search(m.walls[(x + a, y + b)].material)}
+    doors = [d["gap"] for d in m.doors]
+    SIDES = ((1, 1), (1, -1), (-1, 1), (-1, -1))
+    # only paths that belong to a road network (25+ connected tiles), not paved patches by a hearth
+    network, left = set(), set(od.paths)
+    while left:
+        st = left.pop(); comp = {st}; q = [st]
+        while q:
+            a = q.pop()
+            for dx, dy in SIDES:
+                n = (a[0] + dx, a[1] + dy)
+                if n in left: left.remove(n); comp.add(n); q.append(n)
+        if len(comp) >= 25: network |= comp
+    for (x, y) in network:
+        nb = [(x + a, y + b) for a, b in SIDES if (x + a, y + b) in od.paths]
+        if len(nb) != 1: continue                          # not the end of a path
+        # only thin paths (one tile wide, like a doorstep path); wide paved areas meet walls by design
+        n2 = nb[0]
+        if sum((n2[0] + a, n2[1] + b) in od.paths for a, b in SIDES) > 2: continue
+        if any((x + a, y + b) in od.paths for a, b in ((2, 0), (-2, 0), (0, 2), (0, -2))
+               if (x + a, y + b) != (n2[0] + (n2[0] - x), n2[1] + (n2[1] - y))): continue
+        # a spur: walk back along the thin path to where it joins the network; doorstep paths are short
+        prev, cur, length = (x, y), n2, 1
+        while length <= 9:
+            nxt = [(cur[0] + a, cur[1] + b) for a, b in SIDES if (cur[0] + a, cur[1] + b) in network and (cur[0] + a, cur[1] + b) != prev]
+            if len(nxt) != 1: break
+            prev, cur, length = cur, nxt[0], length + 1
+        if length > 8: continue
+        near_wall = any((x + a, y + b) in room_walls for a in range(-1, 3) for b in range(-1, 3))
+        near_door = any(abs(gx - x) <= 3 and abs(gy - y) <= 3 for gx, gy in doors)
+        if near_wall and not near_door:
+            out.append(F("composition", "warning", "A path ends at a building wall with no door; paths lead to doors.",
+                         (x + 1) * CELL, (y + 1) * CELL))
+    return out
+
+
+ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
        check_objects, check_doorways, check_floors, check_rooms, check_density]
 
 

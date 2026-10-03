@@ -37,6 +37,7 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | floors | error | Floor pairs Westwood never lets touch (e.g. rug on grass) |
 | floors | warning | Pairs Westwood blends left mostly as hard seams |
 | rooms | warning | Furniture count above Westwood's rooms of the same kind and similar size (DysVale playtest); nearly bare rooms; room size outside the kind's range |
+| composition | warning | Pieces that make no sense where they stand (DysVale v0.4 playtest): a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall |
 | density | warning | Lights, coloured lights, decorations, creatures, edge coverage and walls per 100 floor tiles outside Westwood's 5th–95th percentile |
 
 ## How it was calibrated
@@ -65,6 +66,13 @@ Westwood's own maps:
 | doors | 43 | 17 | Gates and crypt doors set at odd angles in natural walls (about 2% of their doors) |
 | doorways | 11 | 8 | Deliberate puzzle obstacles: powder barrels, boulders, spike blocks |
 | boundary | 5 | 5 | 1–3 cell gaps; three of them are one shared layout |
+
+Composition warnings on Westwood's maps (they are guidance, not errors):
+
+- 10 docks with under 2 tiles of open water (6 maps; some river piers);
+- 3 pairs of lights side by side;
+- 1 bar gap;
+- about 2 short paths per map ending at a wall with no door. Westwood's wide paved streets often run up to building sides.
 
 ### Our maps
 

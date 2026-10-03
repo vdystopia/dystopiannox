@@ -53,6 +53,8 @@ STYLE_EXCLUDE = {
 }
 # Damaging flame objects (they hurt players; rules: lighting.visible_sources) are never used indoors.
 DANGEROUS = re.compile(r"Flame(?!Basin)")
+# Lights in one room stand at least this far apart (uv units, ~50 px).
+MIN_LIGHT_GAP = 3.0
 # Street lights stay outdoors.
 OUTDOOR_LIGHT = re.compile(r"^TorchPole|^Obelisk|StreetLamp")
 # At most this many of a family per room (one-off focal pieces; decorative families that look
@@ -568,30 +570,56 @@ class Furnisher:
         for (us, vs, su, sv, corner, urun_side, vrun_side) in corners:
             if us not in runs or vs not in runs: continue
             ru, rv = runs[us], runs[vs]          # '/' wall (constant u) and '\' wall (constant v)
-            du = self.rng.choice([6, 8]); dv = self.rng.choice([6, 8])
-            U = 2 * round((ru["coord"] + su * du) / 2); V = 2 * round((rv["coord"] + sv * dv) / 2)
+            # odd offsets from the wall line put the last piece of each run 1 unit from the wall, so the
+            # counter meets the wall flush (Westwood's run ends: 1.0-1.3 units from the wall line)
+            long_bar = len(self.room.tiles) >= 100
+            du = self.rng.choice([7, 9] if long_bar else [5, 7]); dv = self.rng.choice([7, 9] if long_bar else [5, 7])
+            # each run is anchored on its own wall line ('/' walls lie on odd u, '' walls on even v), so
+            # with odd offsets the last piece always sits 1 unit from the wall
+            U = ru["coord"] + su * du; V = rv["coord"] + sv * dv
             pieces = [(corner, U, V)]
             u = U - su * 2                       # u-run back towards the '/' wall
-            while (u - ru["coord"]) * su >= 1.4:
+            while (u - ru["coord"]) * su >= 0.9:
                 pieces.append((series[urun_side], u, V)); u -= su * 2
             v = V - sv * 2                       # v-run back towards the '\' wall
-            while (v - rv["coord"]) * sv >= 1.4:
+            while (v - rv["coord"]) * sv >= 0.9:
                 pieces.append((series[vrun_side], U, v)); v -= sv * 2
             if len(pieces) < 4: continue
-            if self.rng.random() < 0.5 and len([p for p in pieces if p[0] == series[vrun_side]]) >= 2:
-                k = next(i for i, p in enumerate(pieces) if p[0] == series[vrun_side])
-                pieces[k] = ("BarHingedTop", pieces[k][1], pieces[k][2])   # pass-through flap
-            typed = [(t if t == "BarHingedTop" else pick(t), u, v) for t, u, v in pieces]
-            if not all(self.g.fits(u, v, *self.half(t)) for t, u, v in typed): continue
+            # the pass-through flap sits mid-run with counter on both sides (Westwood: 2-6 units from
+            # the corner, never at an end), on the v-run, the only axis Westwood uses for it
+            vrun = [i for i, p in enumerate(pieces) if p[0] == series[vrun_side]]
+            if len(vrun) >= 3:
+                k = vrun[1]
+                pieces[k] = ("BarHingedTop", pieces[k][1], pieces[k][2])
+            # the piece that meets a wall is a plain counter (A/B); panel-like variants read as a window
+            ends = {max((i for i, p in enumerate(pieces) if p[0] == series[urun_side]), default=-1),
+                    max((i for i, p in enumerate(pieces) if p[0] == series[vrun_side]), default=-1)}
+
+            def plain(prefix):
+                opts = {f"{prefix}{k}": n for k, n in letters.get(prefix, {"A": 1}).items()
+                        if k in "AB" and f"{prefix}{k}" in self.things}
+                return _pick(self.rng, opts) or f"{prefix}A"
+            typed = [(t if t == "BarHingedTop" else plain(t) if i in ends else pick(t), u, v) for i, (t, u, v) in enumerate(pieces)]
+            # pieces meet the walls: test a slightly reduced outline so touching a wall is allowed
+            if not all(self.g.fits(u, v, *(max(0.2, h - 0.35) for h in self.half(t))) for t, u, v in typed): continue
             before = len(self.g.placed)
-            for t, u, v in typed: self.g.placed.append((u, v, *self.half(t), True, "floor"))
+            # the flap lets the barkeep through: it does not block the way behind the bar
+            for t, u, v in typed: self.g.placed.append((u, v, *self.half(t), t != "BarHingedTop", "floor"))
             if not self.g.reachable_ok((U, V, 0.01, 0.01, True, "floor")):
                 del self.g.placed[before:]
                 continue
             del self.g.placed[before:]
-            for t, u, v in typed: self.put(t, u, v)
+            for t, u, v in typed: self.put(t, u, v, blocking=t != "BarHingedTop")
             inside = (U - su * du / 2, V - sv * dv / 2)
             self.spots.append(dict(role="barkeep", px=_px(*inside)))
+            # kegs behind the bar, against the back walls
+            kegs = [t for t in ("Barrel", "Barrel2", "LargeBarrel2", "PiledBarrels1") if self.ok_type(t)] or ["Barrel"]
+            n_kegs = self.rng.randint(2, 4)
+            for k in range(1, 6):
+                for (uu, vv) in ((ru["coord"] + su * 1.2, rv["coord"] + sv * (1.4 + 1.5 * k)),
+                                 (ru["coord"] + su * (1.4 + 1.5 * k), rv["coord"] + sv * 1.2)):
+                    if n_kegs > 0 and abs(uu - ru["coord"]) < du - 1.2 and abs(vv - rv["coord"]) < dv - 1.2:
+                        if self.try_put(self.rng.choice(kegs), uu, vv): n_kegs -= 1
             return True
         return False
 
@@ -605,17 +633,24 @@ class Furnisher:
         tiles = len(self.room.tiles)
         rate = _q(self.rng, vl.get("per100_tiles")) or 3.0          # learned lights per 100 tiles
         n = int(round(min(rate, 9.0) * tiles / 100 + self.rng.random() * 0.6))
-        n = max(1 if tiles >= 12 else 0, min(n, max(1, tiles // 12)))
+        n = max(1 if tiles >= 12 else 0, tiles // 40, min(n, max(1, tiles // 12)))
         types = {t: s for t, s in vl.get("types", {}).items()
                  if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
+        # lights spread through the room: each goes to the wall spot farthest from the lights already
+        # placed (two candelabras never stand side by side; a second one goes to another corner)
+        lights = []
+        t_room = _pick(self.rng, types)                # one style of light per room
         for _ in range(n):
-            t = _pick(self.rng, types)
+            t = t_room if self.rng.random() < 0.8 else _pick(self.rng, types)
             base = _base(t)
-            if base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side") and not t.startswith("Candleabra"):
-                self._wall_light(base)                 # wall-mounted: variant must match the wall side
-            else:
-                res = self.against_wall("light", t_choice=t, role=self.rng.choice(["corner", "wall"]))
-                if not res: self.free_spot("light", t, min_wall=1.2)
+            mounted = bool(base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side")
+                           and not t.startswith("Candleabra"))
+            spots = self._light_spots(t, base, mounted)
+            spots.sort(key=lambda c: -min([math.hypot(c[1] - a, c[2] - b) for a, b in lights] or [99.0]))
+            for tv, u, v in spots:
+                if lights and min(math.hypot(u - a, v - b) for a, b in lights) < MIN_LIGHT_GAP: break
+                if self.try_put(tv, u, v, blocking=not mounted, wall_ok=mounted, layer="wall" if mounted else "floor"):
+                    lights.append((u, v)); break
         cl = self.T.get("colorlights", {})
         if self.rng.random() < max(0.35, cl.get("p_any", 0)):
             presets = [p for p in self.lighting["colorlight"]["presets"]
@@ -628,6 +663,24 @@ class Furnisher:
                     x, y = _px(u, v)
                     self.objects.append(self.spec.obj_px("ColorLight", x, y, xfer=dict(p["xfer"])))
                     break
+
+    def _light_spots(self, t, base, mounted):
+        """Candidate light positions along the walls: both ends of every wall run (the corners) and
+        its middle. Wall-mounted lights use the variant for that wall side."""
+        out = []
+        for r in self.g.runs:
+            if r["hi"] - r["lo"] < 2: continue
+            tv = self.variant_for_side(base, r["side"]) if mounted else t
+            if not tv: continue
+            hu, hv = self.half(tv)
+            perp = (hu if r["line"] == "/" else hv) + (0.05 if mounted else 0.45)
+            coord = r["coord"] + r["sign"] * perp
+            n = max(2, int((r["hi"] - r["lo"] - 2.4) / 2.5) + 1)
+            for k in range(n):                          # both ends (the corners) and evenly between
+                a = r["lo"] + 1.2 + (r["hi"] - r["lo"] - 2.4) * k / max(1, n - 1)
+                out.append((tv,) + ((coord, a) if r["line"] == "/" else (a, coord)))
+        self.rng.shuffle(out)
+        return out
 
     def _wall_light(self, base):
         for _ in range(20):

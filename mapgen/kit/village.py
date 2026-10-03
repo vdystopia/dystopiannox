@@ -118,15 +118,26 @@ class Village:
         self.used.add(s0); L.taken.add(s0)
         return True
 
-    def benches(self, area, n=2):
-        """Benches facing the square."""
-        L, rng = self.land, self.rng
-        edge = [s for s in {(i + a, j + b) for i, j in L.plaza for a, b in N4} - L.plaza if self._clear(s)
-                and not any((s[0] + a, s[1] + b) in L.taken_strict for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2))]
-        rng.shuffle(edge)
-        for s in edge[:n]:
-            self.spec.obj_px("Bench4", *square_px(s[0] + 0.5, s[1] - 0.5))
-            self.used.add(s); L.taken.add(s)
+    # bench variant that faces each direction in uv (rules: room_types.chair_facing, "Bench")
+    BENCH_FACING = {"+u": "Bench1", "-u": "Bench5", "+v": "Bench4", "-v": "Bench2"}
+
+    def square_piece(self, centre, r_squares, pole=None, per_side=2):
+        """The square as a composed set piece around its centre feature (a well):
+        benches on the four sides facing the centre, `per_side` to a side, and four lights on the
+        diagonals, all symmetric. `pole(si, sj)` places a light (e.g. a torch pole with its glow)."""
+        ci, cj = centre
+        d_bench = 0.68 * r_squares                     # benches inside the paving, facing in
+        spread = (0.0,) if per_side == 1 else (-0.75, 0.75)
+        for (du, dv), face in (((-1, 0), "+u"), ((1, 0), "-u"), ((0, -1), "+v"), ((0, 1), "-v")):
+            for t in spread:
+                si = ci + du * d_bench + (t if dv else 0)
+                sj = cj + dv * d_bench + (t if du else 0)
+                self.spec.obj_px(self.BENCH_FACING[face], *square_px(si, sj))
+                self.used.add((int(si), int(sj) + 1))
+        if pole:
+            d_light = 0.5 * r_squares                  # on the diagonals, between the benches
+            for du, dv in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+                pole(ci + du * d_light, cj + dv * d_light)
 
     def ground_bits(self, per_100=4.0, max_edge=4):
         """Pebbles, small rocks and bushes where nature has them: toward the forest edge, never on
@@ -138,6 +149,7 @@ class Village:
             self.spec.obj_px(_pick(rng, GROUND_BITS), *square_px(s[0] + rng.random(), s[1] - rng.random()))
 
 
-def _squares_of(cells):
-    from kit.layout import cell_square
-    return {cell_square(x, y) for x, y in cells}
+def _squares_of(tiles):
+    """Squares of a building's floor tiles (Building.footprint holds tile coordinates)."""
+    from kit.layout import tile_square
+    return {tile_square(x, y) for x, y in tiles}

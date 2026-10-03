@@ -50,6 +50,15 @@ Never start from the borders and fit the village into what's left.
 3. Scenes, gardens, benches, street lights.
 4. Vegetation from the forest edge inward: tree lines, groves outside settled areas, undergrowth and flowers in single-type patches.
 
+## Relations: every piece makes sense where it stands
+
+- **Paths lead to doors.** Route each door's path from its doorstep to the streets. Streets keep clear of walls and never run into the side of a building.
+- **Buildings open toward what they serve.** Public buildings open onto the square, homes onto their street.
+- **Set pieces are composed.** The square is symmetric around its centre feature, with benches facing it and lights in balanced positions. Street lights follow a steady rhythm.
+- **Water features fit their water.** A dock starts where the road meets the shore and reaches out into open water on a lake, never across a puddle. Reeds grow in the shallows.
+- **Furniture assemblies are complete.** A bar meets the walls at both ends, its flap sits mid-run, and kegs stand behind it.
+- **Lights are spread.** Each goes to a different corner or wall of the room, never beside another.
+
 ## 7. Check, review, playtest
 
 - `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.

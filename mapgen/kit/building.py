@@ -249,6 +249,27 @@ def _on_outer_side(run, W, H, side):
             "v_min": kind == "v" and line == 0, "v_max": kind == "v" and line == H}[side]
 
 
+def _main_room_on_side(labels, side):
+    """Mirrors the footprint when needed so the main (largest) room touches `side`; the main room
+    takes the entrance, so a building facing the square gets its door on the square side.
+    Returns the labels, or None when neither orientation works."""
+    sizes = defaultdict(int)
+    for v in labels.values():
+        if v != COURT: sizes[v] += 1
+    main = max(sizes, key=lambda k: sizes[k])
+    i0 = min(i for i, _ in labels); i1 = max(i for i, _ in labels)
+    j0 = min(j for _, j in labels); j1 = max(j for _, j in labels)
+    edge = {"u_min": lambda i, j: i == i0, "u_max": lambda i, j: i == i1,
+            "v_min": lambda i, j: j == j0, "v_max": lambda i, j: j == j1}[side]
+    touches = lambda lb: any(edge(i, j) for (i, j), v in lb.items() if v == main)
+    if touches(labels): return labels
+    if side in ("u_min", "u_max"):
+        flipped = {(i0 + i1 - i, j): v for (i, j), v in labels.items()}
+    else:
+        flipped = {(i, j0 + j1 - j): v for (i, j), v in labels.items()}
+    return flipped if touches(flipped) else None
+
+
 def _side_of_run(run, W, H):
     kind, line, ps, pair = run
     if kind == "u": return "u_min" if line <= W / 2 else "u_max"
@@ -321,6 +342,9 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         labels = _assign_rooms(rng, U, n_rooms, [float(_kind_tiles(k, 'p50')) for k in program] if program else None)
         if program and len({v for v in labels.values() if v != COURT}) != len(program):
             continue                     # footprint too small to hold the requested rooms: try again
+        if program and entrance_side:
+            labels = _main_room_on_side(labels, entrance_side)
+            if labels is None: continue  # the main room cannot reach the entrance side: try again
         cells = _cells_of(U0, V0, labels)
         if cells & occupied: continue
         b = _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side,
@@ -448,6 +472,7 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         d = place_door(rn, _pick(rng, ext_types), (rooms[rid].id, "outside"))
         if d:
             rooms[rid].doors.append(d); b.entrances.append(d)
+            if len(b.entrances) == 1: b.entrance_side = _side_of_run(rn, W, H) if _on_outer_side(rn, W, H, _side_of_run(rn, W, H)) else "inner"
 
     # the room with the main entrance takes the program's first role (a tavern opens onto the street)
     if program and b.entrances:
