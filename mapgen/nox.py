@@ -59,6 +59,10 @@ FACING_BY_ARMS = {
     frozenset([TR]): 0, frozenset([BL]): 0, frozenset([TL]): 1, frozenset([BR]): 1, frozenset(): 0,
 }
 
+# Stand-ins for wall shapes a material lacks, when Westwood never joined it to anything (rules: walls.joins).
+WALL_FALLBACK = {"AspenSparse": ("DecidiousWallBrown",), "Hedge1": ("Shrub", "DecidiousWallGreen"),
+                 "CrystalCyan": ("CaveWall2",)}
+
 # Floor edge blending, learned from all stock maps (see mapgen/README.md):
 # side neighbours and "tip" neighbours two cells away, and the edge piece Westwood used.
 EDGE_SIDES = {"E": (1, -1), "N": (-1, -1), "S": (1, 1), "W": (-1, 1)}
@@ -102,7 +106,8 @@ def rect_wall_cells(u0, u1, v0, v1):
 
 class Spec:
     def __init__(self, name, **info):
-        assert len(name) <= 8, "map names are limited to 8 characters"
+        # Westwood kept map names to 8 characters; OpenNox loads longer ones (TreePlace was verified)
+        assert len(name) <= 15, "map names are limited to 15 characters here"
         self.d = dict(name=name, info=info, ambient=[150, 150, 150], walls=[], tiles=[], objects=[],
                       waypoints=[], polygons=[])
         self.wallmap = {}     # (x, y) -> dict(material, variation, window, facing or None)
@@ -207,7 +212,10 @@ class Spec:
         if type_ is None:
             type_ = self.door_type_for(self.wallmap.get(gap, {}).get("material", ""))
         step = (1, 1) if line == "\\" else (1, -1)
-        if door_rules()["types"].get(type_, {}).get("kind") == "double":
+        rule = door_rules()["types"].get(type_, {})
+        by_line = rule.get("by_line", {}).get(line)
+        kind = by_line["kind"] if by_line and by_line.get("weighted_count", 0) >= 5 else rule.get("kind")
+        if kind == "double":
             for a in (gap, (gap[0] - step[0], gap[1] - step[1])):
                 b = (a[0] + step[0], a[1] + step[1])
                 if self._plain_run(a, line) and self._plain_run(b, line):
@@ -220,7 +228,10 @@ class Spec:
                         first = self.obj_px(type_, a[0] * CELL, (a[1] + 1) * CELL, door=8)            # West
                         self.obj_px(type_, (b[0] + 1) * CELL, b[1] * CELL, door=24)                   # East
                     return first
-            type_ = next((single for key, single in SINGLE_DOOR_FOR.items() if key in type_), "WoodenDoor")
+            # no room for two halves: Westwood hangs the type alone in this wall direction often enough,
+            # or uses the matching single door
+            if not (by_line and by_line.get("share_one_cell", 0) >= 0.25):
+                type_ = next((single for key, single in SINGLE_DOOR_FOR.items() if key in type_), "WoodenDoor")
         gx, gy = gap
         self.remove_wall(gx, gy); self.door_gaps.add(gap)
         if line == "\\":
@@ -250,12 +261,26 @@ class Spec:
                 arms = frozenset(a for a in (TL, TR, BL, BR) if (x + a[0], y + a[1]) in self.wallmap
                                  or (x + a[0], y + a[1]) in self.door_gaps)
                 facing = FACING_BY_ARMS[arms]
-            walls.append(dict(x=x, y=y, facing=facing, material=w["material"],
-                              variation=self._wall_variation(w["material"], facing, w["variation"]), window=w["window"]))
+            mat = self._wall_material(w["material"], facing)
+            walls.append(dict(x=x, y=y, facing=facing, material=mat,
+                              variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         return dict(self.d, walls=walls, tiles=tiles)
+
+    def _wall_material(self, material, facing):
+        """The material itself, or, when Westwood never drew it in this shape (DecidiousWallRed has no
+        crossing piece, AspenSparse no T-junctions), the visible material Westwood joins it to most often
+        that has the shape (rules: walls.materials.joins), else WALL_FALLBACK."""
+        rules = wall_rules()
+        valid = rules["valid_variations"]
+        if valid.get(material, {}).get(str(facing)): return material
+        mats = rules["materials"]
+        joins = mats.get(material, {}).get("joins", {})
+        for other in sorted(joins, key=joins.get, reverse=True) + list(WALL_FALLBACK.get(material, ())):
+            if not mats.get(other, {}).get("invisible") and valid.get(other, {}).get(str(facing)): return other
+        return material
 
     def _wall_variation(self, material, facing, wanted):
         """A wall style that exists for this material and shape (rules: walls.valid_variations)."""

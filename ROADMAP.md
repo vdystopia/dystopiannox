@@ -12,10 +12,34 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
+| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | done, awaiting playtest | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
+
+### DysVale v0.6 (2026-10-03)
+
+Folded into the process. As asked, no DysVale v0.7: the fixes were proven on a new map, TreePlace v0.1
+(`review/reviews/TreePlace-v0.1-2026-10-03.md`).
+
+| Finding | Fix |
+|---|---|
+| A chest stood perpendicular to its wall | Westwood numbers chests, beds and nightstands 1-4 by wall (SE, SW, NE, NW), and bookcases and desks the other way round (NW, NE, SE, SW). The scheme is learned from Westwood's placements, and the furnisher picks the number for the wall (`Furnisher.along_variant`), now also for a room's preferred types. Chests, bookcases, desks and shelves lie along their wall; beds stand perpendicular. The checker flags pieces lying across their wall (allowing for corners) |
+| The candelabra beside the chest belonged in the other corner | Lights score spots by distance from other lights (weighted most) and from pieces, preferring free corners, at least 3 units apart. Pieces centre on a wall or between another piece and a wall |
+| Stumps clustered in one spot, with none elsewhere | Props spread out from where they belong with a falloff and spacing (`vegetation.scatter`). The checker flags 4 or more of a kind within 330 px when that is 85% or more of all of them |
+| Door halves slightly out of line | Both halves sit at exact multiples of 23 px, 46 px apart on each axis, as in Westwood. Door kinds are chosen per wall direction (`doors.json` `by_line`): BandedPlankDoor hangs as a pair only in '/' walls. The checker flags pairs whose halves do not line up, and pairs in a wall direction Westwood never uses |
+| The bridge was too wide for the stream and sat on a bend | Westwood's stream bridges are narrow rope-bridge kits. Crossings are planned with the road and get the kit for their axis. The stream is held straight and calm through the crossing (`stream(calm=)`). The checker flags bridges that cross at a slant, sit on a bend, or have decks wider than 2 tiles |
+
+Also found while building TreePlace, and fixed:
+- forest walls missing shapes (DecidiousWall has no corner 8; DecidiousWallRed and AspenSparse have no
+  T-junctions) now fall back to the material Westwood joins them to;
+- door paths no longer put packed dirt against marble (they use Westwood's buffer floor);
+- a desk could stand in a wall cell (cells are diamonds in uv). This was the RoomTest finding below;
+- gardens were blocked by their own building's clearance margin;
+- the torches flanking a door were placed from the square under the door object, which can be outside the
+  wall (`layout.door_frame`);
+- builds were not reproducible, because region borders used Python's per-run string `hash()`.
 
 ### DysVale v0.1 (2026-10-03)
 
@@ -96,7 +120,11 @@ The layout, trees and shrubs improved a lot. Fixed in generator v3:
 ## Found by the checker (to fix in later phases)
 
 - **Mossford v0.1** has 49 errors (black walls, 2 boundary holes, plank floor straight onto dirt at house doorsteps). It still needs a rebuild with the kit.
-- **Furnisher:** a desk was placed inside a wall in RoomTest (`kit/furnish.py`, wall-hugging placement).
+- **Furnisher:** a desk was placed inside a wall in RoomTest. Fixed: no piece may stand in a wall cell (`Room.fits`).
+- **RoomTest** (a sheet of standalone rooms) reports its outer doors as standing in the void, because its rooms
+  float in darkness with doors that lead nowhere. This happens on master too (21 errors). The test map should
+  give each room a doorstep.
+- **TreePlace v0.1:** no creatures; 16.9 wall pieces per 100 floor tiles (Westwood's forests: 21-52).
 - **Style warnings on DysVale:** no creatures; few wall pieces per floor tile (an open layout); the tavern is small for its kind (55 tiles against Westwood's 166–269). These are for the layout planner (generator v2).
 
 ## Visual review findings
@@ -114,4 +142,8 @@ The layout, trees and shrubs improved a lot. Fixed in generator v3:
   - denser villages
   - dressed stream banks
   - corridor width variety
-  - the furnisher sometimes places furniture on a wall cell
+  - the furnisher sometimes places furniture on a wall cell (fixed for TreePlace)
+
+- **TreePlace v0.1** (generator v3 with sections and a mine entrance, `review/reviews/TreePlace-v0.1-2026-10-03.md`)
+  scores 4 on every criterion and 5 on identity. The checker finds no errors. Design measurements are within
+  Westwood's forest range; paths and plant clumps are above it (more structured).

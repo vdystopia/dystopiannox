@@ -122,6 +122,30 @@ def bridge_into_wall(m):
     ww.finish()
 
 
+def chest_across_wall(m):
+    m.obj("Chest3", 202.1, 0)                                  # long side across the house NW wall
+
+
+def stumps_bunched(m):
+    for k in range(6):
+        m.obj("Stump%d" % (1 + k % 4), 230 + 1.6 * (k % 3), -26 + 1.8 * (k // 3))
+
+
+def wide_bridge(m):
+    ww = Waterworks(m, random.Random(9))
+    brook = ww.stream([(184, -30), (256, -30)], width=2.2, wiggle=0.0)
+    ww.plank_bridge(brook, at=(236.0, -30.0), along="v", deck_width=4)
+    ww.finish()
+
+
+def pair_on_wrong_line(m):
+    a, b = (110, 100), (111, 101)                              # the house's NE wall, a '\\' line
+    for c in (a, b):
+        m.remove_wall(*c); m.door_gaps.add(c)
+    m.obj_px("BandedPlankDoor", a[0] * CELL, a[1] * CELL, door=16)              # North half
+    m.obj_px("BandedPlankDoor", (b[0] + 1) * CELL, (b[1] + 1) * CELL, door=0)   # South half
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -144,6 +168,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STlites", lights_side_by_side, "composition", "warning", "two candelabras side by side - DysVale v0.4 playtest"),
     ("STchest", chest_blocked, "composition", "warning", "table standing right in front of a chest - DysVale v0.5 playtest"),
     ("STbridg", bridge_into_wall, "composition", "warning", "bridge ending against the boundary wall - DysVale v0.5 playtest"),
+    ("STchacr", chest_across_wall, "composition", "warning", "chest standing across the wall - DysVale v0.6 playtest"),
+    ("STstump", stumps_bunched, "composition", "warning", "stumps bunched in one spot - DysVale v0.6 playtest"),
+    ("STwideb", wide_bridge, "composition", "warning", "plank bridge 4 tiles wide on a narrow stream - DysVale v0.6 playtest"),
+    ("STpairl", pair_on_wrong_line, "doors", "error", "door pair whose halves do not line up - DysVale v0.6 playtest"),
 ]
 
 

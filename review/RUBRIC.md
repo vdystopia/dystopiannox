@@ -19,7 +19,14 @@ The close-ups are about one game screen each, so they show what a player sees at
 | 7 | **Interiors** | Visible rooms read as their purpose (tavern, smithy, bedroom) and are composed: anchors on their own walls (back walls first) and centred, a rug before the chest or hearth, the table set in the middle, nothing standing in front of a chest, hearth or stove, furniture spread rather than bunched in a corner. Use `py review/rooms.py <map>` for a sheet of every room | checker: rooms |
 | 8 | **Identity** | Every area, building, room and prop group reads as what the map's identity says it is. The square is the village's centre, an inn looks like an inn, a bedroom holds a bed, rug, shelves and chest (never a barrel or a dining table), and every outdoor prop has a reason to be where it is | checker: rooms (furniture outside the room's identity) |
 
-When scoring, also check relations (PROCESS.md): paths lead to doors, buildings open toward what they serve, the
-square is a composed set piece, docks reach into open water, bars meet the walls, and lights are spread.
+When scoring, also check relations (PROCESS.md):
+- paths lead to doors, and buildings open toward what they serve;
+- the square is a composed set piece;
+- docks reach into open water, and bridges are narrow and cross straight stretches at a right angle;
+- bars meet the walls;
+- chests, bookcases and desks lie along their walls;
+- lights and pieces balance a room (the free corner, never beside each other);
+- props are spread out, never bunched in one spot;
+- double doors line up.
 
 Lighting and mood don't show in the editor's render; judge them in a playtest.

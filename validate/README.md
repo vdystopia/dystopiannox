@@ -14,7 +14,7 @@ The full report goes to `validate/out/<map>/report.md`.
 |---|---|
 | `py validate/validate.py DysVale` | Checks a map: a `.map` path, a game map folder name, or a Westwood map name such as `Con07B` |
 | `py validate/validate.py DysVale --image` | Also writes `overview.png` (numbered markers: red = error, orange = warning) and `errors/error_NNN.png` close-ups |
-| `py validate/selftest.py` | Builds a clean test map and 12 maps with planted defects, and confirms each defect is caught |
+| `py validate/selftest.py` | Builds a clean test map and 21 maps with planted defects, and confirms each defect is caught |
 | `py validate/calibrate.py` | Re-measures Westwood's 120 single-player maps, rewrites `baseline.json`, and lists how often each check fires on them |
 
 The exit code of `validate.py` is 0 when there are no errors, 1 when there are errors, and 2 when the map can't be read.
@@ -28,7 +28,7 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | wall_shapes | error | A built wall piece that doesn't reach back to a neighbour reaching toward it: see-through gaps, including jamb pieces shaped as if the door opening were empty (DysVale playtest). Natural walls are exempt because they draw as overlapping blobs |
 | boundary | error | A short gap in an outer wall showing the void, including gaps closed only by invisible walls (Mossford playtest) |
 | boundary | warning | A long open edge, which Westwood uses only for cliffs |
-| doors | error | A half of a double door alone in a 1-cell opening, or with no matching half (DysVale playtest); a single door in an unpaired 2-cell opening; a door on a wall piece or with no wall beside it |
+| doors | error | A half of a double door alone in a 1-cell opening, or with no matching half (DysVale playtest); a single door in an unpaired 2-cell opening; a door on a wall piece or with no wall beside it; a pair whose halves do not line up, or a type hung as a pair in a wall direction Westwood never pairs it in (DysVale v0.6 playtest) |
 | kits | error | Dock and bridge pieces off every step offset Westwood uses (DysVale playtest); railing pieces off their deck piece |
 | objects | error | Creatures, items, doors or the start standing in the void (unscripted maps) |
 | objects | warning | Furniture inside a wall |
@@ -37,7 +37,7 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | floors | error | Floor pairs Westwood never lets touch (e.g. rug on grass) |
 | floors | warning | Pairs Westwood blends left mostly as hard seams |
 | rooms | warning | Furniture count above Westwood's rooms of the same kind and similar size (DysVale playtest); nearly bare rooms; room size outside the kind's range |
-| composition | warning | Pieces that make no sense where they stand (DysVale v0.4 and v0.5 playtests): a piece right in front of a chest, hearth or stove; chairs with no table; furniture bunched into one part of a room (beyond Westwood's 95th percentile); a bridge whose ends do not open onto ground. Also: a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall |
+| composition | warning | Pieces that make no sense where they stand (DysVale v0.4 and v0.5 playtests): a piece right in front of a chest, hearth or stove; chairs with no table; furniture bunched into one part of a room (beyond Westwood's 95th percentile); a bridge whose ends do not open onto ground. Also: a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall. From the v0.6 playtest: a chest, bookcase, desk or shelf lying across its wall instead of along it; 4 or more stumps, logs, rocks, boulders, crystals or mushrooms bunched in one spot (330 px) when that is most of them; a bridge crossing at a slant (under 60°), sitting on a bend, or with a plank deck wider than 2 tiles. Furniture outside a room's identity also counts the identity's aliases (an ore store is a storeroom, a mess hall a dining hall) |
 | density | warning | Lights, coloured lights, decorations, creatures, edge coverage and walls per 100 floor tiles outside Westwood's 5th–95th percentile |
 
 ## How it was calibrated
@@ -83,3 +83,5 @@ Composition warnings on Westwood's maps (they are guidance, not errors):
 | DysCrypt | 0 errors after a rebuild (the original had 2 black corner pieces from before the valid-style table) |
 | BldTest (all 20 building styles) | 0 errors |
 | TestWatr | 0 errors |
+| TreePlace v0.1 | 0 errors; warnings: no creatures, 16.9 wall pieces per 100 floor tiles (Westwood's forests 21-52) |
+| RoomTest | 20 doors standing in the void: the test sheet's rooms float in darkness (same on master) |

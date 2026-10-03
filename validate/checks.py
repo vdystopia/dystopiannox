@@ -206,11 +206,14 @@ def check_boundary(m, ctx, base):
     return out
 
 
-def door_kind(t):
-    """'double' (Westwood never puts it in a 1-cell opening), 'single' (never in an unpaired 2-cell
-    opening), 'either' (Westwood uses both), or None for types with no evidence."""
+def door_kind(t, line=None):
+    """'double' (Westwood never puts it in a 1-cell opening), 'single' (never in a 2-cell opening),
+    'either' (Westwood uses both), or None for types with no evidence. With `line` ('/' or '\\'),
+    Westwood's habit for that wall direction (BandedPlankDoor pairs only in '/' walls)."""
     r = rules("doors")["types"].get(t)
     if not r: return None
+    bl = r.get("by_line", {}).get(line) if line else None
+    if bl and bl.get("weighted_count", 0) >= 5: r = bl
     if r["share_one_cell"] < 0.05: return "double"
     if r["share_two_cell"] < 0.05: return "single"
     return "either"
@@ -228,7 +231,7 @@ def check_doors(m, ctx, base):
             continue
         prev, nxt = (g[0] - sx, g[1] - sy), (g[0] + sx, g[1] + sy)
         p_open, n_open = prev not in m.walls, nxt not in m.walls
-        kind = door_kind(o["type"])
+        kind = door_kind(o["type"], line)
         walled = lambda sign: any((g[0] + sign * k * sx, g[1] + sign * k * sy) in m.walls for k in (1, 2, 3))
         if not walled(-1) and not walled(1):
             out.append(F("doors", "error", f"{o['type']} is not set in a wall: no wall beside its opening on either side.",
@@ -247,7 +250,10 @@ def check_doors(m, ctx, base):
                                  f"2-cell opening.", o["x"], o["y"]))
         elif kind == "single" and (p_open or n_open):
             other = prev if p_open else nxt
-            if other not in gaps:
+            if other in gaps and gaps[other]["obj"]["type"] == o["type"]:
+                out.append(F("doors", "error", f"{o['type']} is hung as a pair in a '{line}' wall, which Westwood never "
+                             f"does: its halves do not line up in that direction.", o["x"], o["y"]))
+            elif other not in gaps:
                 out.append(F("doors", "error", f"{o['type']} (a single door) is in a 2-cell opening: one cell stays open.",
                              o["x"], o["y"]))
     return out
@@ -436,7 +442,9 @@ def similar_rooms(samples, tiles):
     return sorted(n for _, n in samples)
 
 
-IDENTITY_ALIASES = {"bedroom": ("dwelling",), "living_room": ("dwelling",)}
+IDENTITY_ALIASES = {"bedroom": ("dwelling",), "living_room": ("dwelling",), "storeroom": ("ore_store",),
+                    "kitchen": ("herbalist",), "study": ("herbalist",), "dining_hall": ("mess_hall",),
+                    "tavern": ("mess_hall",)}
 
 
 def identity_strays(kind, objects):
@@ -757,6 +765,24 @@ def check_room_composition(m, ctx, base):
                     out.append(F("composition", "warning", f"{p['type']} stands right in front of {o['type']}: keep the "
                                  f"space before it clear.", p["x"], p["y"]))
                     break
+        for o in objs:                                # chests, bookcases and desks lie along their wall
+            if not FRONTED.search(o["type"]) or o["ext"] != "BOX": continue
+            ex, ey = o["ex"] or 0, o["ey"] or 0
+            if min(ex, ey) <= 0 or max(ex, ey) / min(ex, ey) < 1.5: continue
+            u, v = uv_of(o)
+            near = []
+            for (line, coord), (lo, hi) in runs.items():
+                perp = abs(u - coord) if line == "/" else abs(v - coord)
+                along = v if line == "/" else u
+                if lo - 0.5 <= along <= hi + 0.5: near.append((perp, line))
+            if not near: continue
+            reach = max(ex, ey) / 2 / 16.26 + 0.9
+            if not any(pp <= reach for pp, _ in near): continue        # not against a wall
+            long_along_v = ey > ex                                     # '/' walls run along v
+            # near a corner the end wall can be the closer one: its back is against the wall it lies along
+            if not any(long_along_v == (ln == "/") and pp <= reach + 0.6 for pp, ln in near):
+                out.append(F("composition", "warning", f"{o['type']} stands across the wall instead of with its back "
+                             f"against it.", o["x"], o["y"]))
         chairs = [o for o in objs if RT.family(o["type"]) == "chair"]
         tables = [o for o in objs if RT.family(o["type"]) in ("table", "desk", "counter_bar", "counter_shop")]
         if len(chairs) >= 2 and not any(math.hypot(c["x"] - t["x"], c["y"] - t["y"]) < 70 for c in chairs for t in tables):
@@ -768,6 +794,116 @@ def check_room_composition(m, ctx, base):
                 out.append(F("composition", "warning", f"The furniture is bunched into one part of the room (offset {off:.2f}; "
                              f"Westwood's rooms stay under about {lim:.2f}).", x, y))
     out += bridge_landings(m)
+    out += bunched_props(m, base)
+    out += bridge_squareness(m)
+    return out
+
+
+FRONTED = re.compile(r"Chest\d|Bookcase|Shelves|^Desk\d")            # pieces with a front that faces the room
+BUNCH_RE = re.compile(r"^(Stump|ForestLog|CaveRocks|Boulder|MineCrystal|Mushroom)")
+
+
+def bunched_props(m, base):
+    """Props of one kind that all sit in one tight spot and nowhere else on the map (felled stumps
+    piled into one clearing): Westwood spreads such props with a falloff from where they belong."""
+    out = []
+    groups = collections.defaultdict(list)
+    for o in m.objects:
+        mt = BUNCH_RE.match(o["type"])
+        if mt: groups[mt.group(1)].append(o)
+    lim = base.get("bunch_share", 0.85)
+    for kind, objs in groups.items():
+        if len(objs) < 4: continue
+        best = max(objs, key=lambda o: sum(1 for p in objs if math.hypot(p["x"] - o["x"], p["y"] - o["y"]) <= 330))
+        close = [p for p in objs if math.hypot(p["x"] - best["x"], p["y"] - best["y"]) <= 330]
+        if len(close) >= 4 and len(close) / len(objs) >= lim:
+            out.append(F("composition", "warning", f"{len(close)} of the map's {len(objs)} {kind} props sit in one spot and "
+                         f"nowhere else: spread them out from where they belong.", best["x"], best["y"]))
+    return out
+
+
+def _axis(points):
+    """Principal direction (radians, in uv) and anisotropy of a point set."""
+    n = len(points)
+    mu = sum(p[0] for p in points) / n; mv = sum(p[1] for p in points) / n
+    cuu = sum((p[0] - mu) ** 2 for p in points) / n
+    cvv = sum((p[1] - mv) ** 2 for p in points) / n
+    cuv = sum((p[0] - mu) * (p[1] - mv) for p in points) / n
+    ang = 0.5 * math.atan2(2 * cuv, cuu - cvv)
+    tr, det = cuu + cvv, cuu * cvv - cuv * cuv
+    disc = math.sqrt(max(0.0, tr * tr / 4 - det))
+    l1, l2 = tr / 2 + disc, tr / 2 - disc
+    return ang, (l1 / l2 if l2 > 1e-6 else 99.0)
+
+
+def _angle_between(a, b):
+    d = abs(a - b) % math.pi
+    return math.degrees(min(d, math.pi - d))
+
+
+def bridge_squareness(m):
+    """A bridge crosses square to the water on a straight stretch, never at a slant or on a bend."""
+    out = []
+    water = [((x + y + 2), (x - y)) for (x, y), d in m.tiles.items() if WATER_RE.search(d["material"])]
+    if not water: return out
+    chains = collections.defaultdict(list)
+    for o in m.objects:
+        mt = re.match(r"^(RopeBridge[12])", o["type"])
+        if mt and "Back" not in o["type"]: chains[mt.group(1)].append(o)
+    decks = []
+    for kit, pieces in chains.items():
+        left = list(pieces)
+        while left:
+            ch = [left.pop()]; grew = True
+            while grew:
+                grew = False
+                for o in list(left):
+                    if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < 120 for c in ch):
+                        ch.append(o); left.remove(o); grew = True
+            if len(ch) >= 3:
+                cu = sum(uv_of(o)[0] for o in ch) / len(ch); cv = sum(uv_of(o)[1] for o in ch) / len(ch)
+                decks.append((cu, cv, 0.0 if kit == "RopeBridge1" else math.pi / 2))
+    # plank decks: floor components of planks touching water (Westwood's are 2 tiles wide)
+    waterset = {t for t, d in m.tiles.items() if WATER_RE.search(d["material"])}
+    planks = {t for t, d in m.tiles.items() if PLANK.match(d["material"])}
+    seen = set()
+    for st in planks:
+        if st in seen: continue
+        comp, q = {st}, [st]
+        while q:
+            a = q.pop()
+            for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+                n = (a[0] + dx, a[1] + dy)
+                if n in planks and n not in comp: comp.add(n); q.append(n)
+        seen |= comp
+        if sum(1 for t in comp if any((t[0] + dx, t[1] + dy) in waterset for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)))) < 3:
+            continue
+        us = [x + y + 2 for x, y in comp]; vs = [x - y for x, y in comp]
+        su, sv = (max(us) - min(us)) / 2 + 1, (max(vs) - min(vs)) / 2 + 1
+        cu, cv = sum(us) / len(us), sum(vs) / len(vs)
+        decks.append((cu, cv, 0.0 if su >= sv else math.pi / 2))
+        if min(su, sv) > 2:
+            out.append(F("composition", "warning", f"The plank bridge is {min(su, sv):.0f} tiles wide; Westwood's are 2 tiles "
+                         f"wide (a narrow deck across a narrow stream).", (cu + cv) / 2 * CELL, (cu - cv) / 2 * CELL))
+    for cu, cv, deck_ang in decks:
+        near = [(u, v) for u, v in water if 3.0 <= math.hypot(u - cu, v - cv) <= 16.0]
+        if len(near) < 12: continue
+        flow, aniso = _axis(near)
+        if aniso < 2.5: continue                                     # a lake or a wide pool: no flow direction
+        x, y = (cu + cv) / 2 * CELL, (cu - cv) / 2 * CELL
+        if _angle_between(flow, deck_ang) < 60:
+            out.append(F("composition", "warning", "The bridge crosses the water at a slant: lay the crossing square to "
+                         "a straight stretch of the stream.", x, y))
+            continue
+        # both banks of the crossing should run the same way (a straight stretch, not a bend)
+        nx, ny = math.cos(deck_ang), math.sin(deck_ang)
+        side_a = [(u, v) for u, v in near if (u - cu) * -ny + (v - cv) * nx > 0]
+        side_b = [(u, v) for u, v in near if (u - cu) * -ny + (v - cv) * nx <= 0]
+        if len(side_a) >= 8 and len(side_b) >= 8:
+            fa, aa = _axis(side_a); fb, ab = _axis(side_b)
+            if aa >= 2.5 and ab >= 2.5 and _angle_between(fa, fb) > 35:
+                out.append(F("composition", "warning", "The bridge sits on a bend of the stream: lay crossings on a "
+                             "straight stretch.", x, y))
     return out
 
 

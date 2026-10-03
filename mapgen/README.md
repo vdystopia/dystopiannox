@@ -29,6 +29,7 @@ To play or open it, copy both files to `<Nox>\maps\<Name>\`.
 | `designs/dyscrypt.py` | Arena (Deathmatch, Elimination, King of the Realm) | One crypt room, 2-8 players |
 | `designs/dysvale.py` | Solo (single player) | Phase 3 showcase village: generated buildings, furnished rooms, stream, bridges, ford, pond and dock |
 | `designs/mossford.py` | Solo (single player) | Woodland river village: 8 furnished buildings, 2 bridges, square, gardens, 16 roaming/stationary townsfolk copied from Con07B |
+| `designs/treeplace.py` | Solo (single player) | A sacred mana forest (16,168 tiles). A giant crystal cluster sits in a grove of standing stones and silver trees. Three themed woods (the grovelord's shack in the north, a lily pond in the west, a brook with a rope bridge in the south). A long winding path leads to a mining camp below a rock face, whose timbered mine tunnel is blocked by a cave-in |
 
 Single-player maps get no `.nxz` (only used to send maps to multiplayer clients). To test one in
 game: start a Solo game, press F1, type `racoiaws` (enables cheats), then `load <mapname>`.
@@ -55,6 +56,8 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/layout.py` | `Land` (generator v2): the walkable shape as areas joined by winding passages, cut out of forest walls; roads down every passage, a village square, and building lots along the roads with entrances facing them |
 | `kit/vegetation.py` | `Planter`: tree lines in front of the forest walls, groves, trees on the banks, and undergrowth and flowers in single-type patches |
 | `kit/village.py` | `Village`: fenced gardens, barrels and straw against outer walls, benches by the square, pebbles and bushes on open ground |
+| `kit/identity.py` | Map, area, building and room identities: purposes, room programs, furniture recipes (`compose`), outdoor scenes |
+| `kit/mine.py` | `MineEntrance`: a rock face along a yard with a timbered tunnel blocked by a cave-in (learned from Con01A and Con03B), planned with the yard before any building |
 
 Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, and
 `designs/dysvale.py`, a village combining all of them.
@@ -68,7 +71,8 @@ Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water
 - Weapons get Westwood's multiplayer durability values; wands get full charges.
 - An object's team is only saved when its extended-fields flag is set; the builder does this.
 - Arena maps (`type=0x34`) carry three Crowns (teams 0, 1, 2), like every stock arena map.
-- Map names are at most 8 characters.
+- Westwood kept map names to 8 characters; OpenNox loads longer ones (TreePlace, 9, verified in the game's
+  server). `Spec` allows up to 15.
 - A floor tile at (x, y) is drawn centred on grid corner (x+1, y+1); paint terrain by that centre.
 - Doors: a one-cell gap in a wall; in a `\` wall the door goes on the gap's bottom-right corner
   facing South, in a `/` wall on its bottom-left corner facing West (64/67 of Con07B's doors).

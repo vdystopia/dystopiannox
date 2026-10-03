@@ -17,7 +17,7 @@ Spec.room lays out tiles. Wall points (p, q) sit at uv (2p, 2q), grid cell (p + 
 gets a wall when the four squares touching it are partly land and partly void. Spec then shapes
 each piece from its neighbours, so staircase outlines draw as Westwood's zigzag forest walls.
 """
-import collections, math
+import collections, math, zlib
 from nox import CELL, px
 
 OUTDOOR_FLOORS = ("Grass", "Dirt", "RoughCobble", "Water", "WoodSlat")
@@ -49,6 +49,22 @@ def px_square(x, y):
     """Square whose tile contains a world-px point (inverse of square_px)."""
     u, v = (x + y) / CELL, (x - y) / CELL
     return int(math.floor((u - 1) / 2)), int(math.floor((v - 1) / 2)) + 1
+
+
+def door_frame(doors, footprint):
+    """Where a doorway is and which way it faces: (si, sj) of its middle on the wall line (the midpoint of
+    both halves of a double door), the unit step outward (away from the building) and the unit step
+    along the wall, in square coordinates. Uses the door's wall line, not the square under the door
+    object, which can lie on either side of the wall."""
+    doors = list(doors)
+    x = sum(d.px[0] for d in doors) / len(doors); y = sum(d.px[1] for d in doors) / len(doors)
+    u, v = (x + y) / CELL, (x - y) / CELL
+    si, sj = (u - 1) / 2, (v - 1) / 2
+    ci = sum(i for i, _ in footprint) / len(footprint) + 0.5
+    cj = sum(j for _, j in footprint) / len(footprint) - 0.5
+    if doors[0].line == "/":                      # a '/' wall runs along j: outward is across it, along i
+        return (si, sj), (1 if si > ci else -1, 0), (0, 1)
+    return (si, sj), (0, 1 if sj > cj else -1), (1, 0)
 
 
 def tile_square(x, y):
@@ -116,6 +132,7 @@ class Land:
         self.squares = {(i, j) for i in range(*self.i_range) for j in range(*self.j_range)
                         if 3 <= i + j <= 250 and 3 <= i - j <= 250}
         self.reserved = set()                 # squares kept for planned features (a stream and its banks)
+        self.forbidden = set()                # squares that must never become land (the rock behind a cliff)
         self.wall_cells = set()               # grid cells of building walls (set by the design as it builds)
         self.crossings = []                   # planned bridges and fords (plan_crossing)
         self.roads, self.plaza, self.water, self.taken = set(), set(), set(), set()
@@ -123,7 +140,7 @@ class Land:
         self.road_paths = []
 
     # ---- planning ------------------------------------------------------------------------------------
-    def area(self, name, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.26, clearing=True):
+    def area(self, name, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.26, clearing=True, region=None):
         """A rounded area (village, glade, clearing). radius in uv units; stretch elongates it along
         `angle` (radians, in uv space); roughness gives the outline its irregular bulges."""
         r = self.rng
@@ -131,10 +148,11 @@ class Land:
                  for n, k in enumerate((2, 3, 5, 7, 11))]
         # clearing=False: the area's extent comes from what is built in it (a village grows around its
         # square and buildings); radius then only bounds where its lots may go
+        # region: the map section the area belongs to (its wall, ground and forest come from the section)
         self.areas[name] = dict(c=(centre_uv[0] / 2, centre_uv[1] / 2), r=radius_uv / 2, stretch=stretch, angle=angle,
-                                waves=waves, clearing=clearing)
+                                waves=waves, clearing=clearing, region=region or name)
 
-    def link(self, a, b, width_uv, bend=0.32, road=True, pockets=(1, 2)):
+    def link(self, a, b, width_uv, bend=0.32, road=True, pockets=(1, 2), road_width=None, road_material=None):
         """A curving passage between two areas (and, with road=True, a road along its middle)."""
         ca, cb = self.areas[a]["c"], self.areas[b]["c"]
         dx, dy = cb[0] - ca[0], cb[1] - ca[1]
@@ -145,7 +163,8 @@ class Land:
                (ca[0] + 2 * dx / 3 + nx * k2, ca[1] + 2 * dy / 3 + ny * k2), cb]
         path = _densify(_chaikin(pts), 0.5)
         waves = [(self.rng.uniform(0.15, 0.9), self.rng.uniform(0, 6.3)) for _ in range(3)]
-        self.links.append(dict(a=a, b=b, half=width_uv / 4, path=path, waves=waves, road=road))
+        self.links.append(dict(a=a, b=b, half=width_uv / 4, path=path, waves=waves, road=road,
+                               road_width=road_width, road_material=road_material))
         # side pockets: small bays off the passage, as in Westwood's forest corridors
         for k in range(self.rng.randint(*pockets)):
             t = self.rng.uniform(0.25, 0.75)
@@ -193,7 +212,8 @@ class Land:
                 for j in range(int(s_[1]) - 2, int(s_[1]) + 4):
                     corridor.add((i, j))
         cross = dict(link=(a, b), centre=P, uv=(2 * P[0] + 1, 2 * P[1] + 1), axis=axis,
-                     flow=(0.0, 1.0) if axis == "u" else (1.0, 0.0), corridor=corridor)
+                     flow=(0.0, 1.0) if axis == "u" else (1.0, 0.0), corridor=corridor,
+                     kit="RopeBridge1" if axis == "u" else "RopeBridge2")
         self.crossings.append(cross)
         return cross
 
@@ -227,20 +247,20 @@ class Land:
                 if ln["road"]: continue                       # road passages grow from the road itself
                 d, k = dist_to_path(s, ln["path"])
                 if d <= ln["half"]: sq.add((i, j)); break
-        keep = content | {(i + a, j + b) for i, j in content for a, b in N8}
-        sq |= keep
+        keep = (content | {(i + a, j + b) for i, j in content for a, b in N8}) - self.forbidden
+        sq = (sq | keep) - self.forbidden
         for _ in range(2):                                     # majority smoothing (placed content stays)
             nxt = set()
             for (i, j) in {(i + a, j + b) for i, j in sq for a, b in N8}:
                 n = sum((i + a, j + b) in sq for a, b in N8)
                 if n >= 5 or ((i, j) in sq and n >= 4): nxt.add((i, j))
-            sq = nxt | keep
+            sq = (nxt | keep) - self.forbidden
         for _ in range(3):                                     # no spurs or 1-2 square necks
             sq = {s for s in sq if s in keep or sum((s[0] + a, s[1] + b) in sq for a, b in N4) >= 3 or
                   (sum((s[0] + a, s[1] + b) in sq for a, b in N4) == 2 and not self._neck(s, sq))}
         sq = self._largest(sq)
-        sq |= self._holes(sq)
-        sq = self._fix_pinches(sq)
+        sq |= self._holes(sq) - self.forbidden
+        sq = self._fix_pinches(sq, avoid=self.forbidden)
         # stay on the map grid with room for the boundary walls
         self.squares = {s for s in sq if 3 <= s[0] + s[1] <= 250 and 3 <= s[0] - s[1] <= 250}
         return self.squares
@@ -289,9 +309,9 @@ class Land:
         return holes
 
     @staticmethod
-    def _fix_pinches(sq):
+    def _fix_pinches(sq, avoid=frozenset()):
         """A wall point whose land squares touch only diagonally would draw a cross through the
-        passage; fill one of the void squares."""
+        passage; fill one of the void squares (one not in `avoid` when there is a choice)."""
         changed = True
         while changed:
             changed = False
@@ -300,7 +320,8 @@ class Land:
                 quad = [(p - 1, q), (p, q), (p - 1, q + 1), (p, q + 1)]
                 ins = [s in sq for s in quad]
                 if ins == [True, False, False, True] or ins == [False, True, True, False]:
-                    sq.add(quad[ins.index(False)]); changed = True
+                    gaps = [s for s, inside in zip(quad, ins) if not inside]
+                    sq.add(next((s for s in gaps if s not in avoid), gaps[0])); changed = True
         return sq
 
     # ---- writing ------------------------------------------------------------------------------------
@@ -313,15 +334,64 @@ class Land:
                 if 0 < n < 4: pts.add((p, q))
         return pts
 
-    def apply(self, spec, wall, floor):
-        """Floor tiles on every land square and the forest wall around them."""
-        for s in self.squares:
-            spec.floor.setdefault(square_tile(*s), floor)      # roads, the square and buildings stay
-        for p in self.boundary_points():
-            x, y = point_cell(*p)
-            spec.wall(x, y, wall)
+    def thickets(self, n, size=(1.2, 2.3), clear=3, regions=None, avoid=frozenset()):
+        """Islands of forest in the open, before apply(): small holes in the land that apply() rings with
+        the section's forest wall and the planter then fringes with trees. Westwood's forests break their
+        glades up this way (their maps carry 21 to 52 wall pieces per 100 floor tiles; a ring of forest
+        round open grass carries about 15). Each thicket keeps `clear` squares of open land around it,
+        clear of roads, buildings, water, other thickets and `avoid`, so no passage narrows and nothing
+        planned is blocked. Returns the thickets (sets of squares)."""
+        r = self.rng
+        busy = set(self.roads) | self.plaza | self.water | self.taken | self.reserved | set(avoid)
+        cands = [s for s in self.squares if regions is None or self.region_of(s) in regions]
+        cands.sort()
+        r.shuffle(cands)
+        made = []
+        for c in cands:
+            if len(made) >= n: break
+            rad, ph = r.uniform(*size), r.uniform(0, 6.3)
+            blob = {(c[0] + a, c[1] + b) for a in range(-3, 4) for b in range(-3, 4)
+                    if math.hypot(a, b) <= rad * (1 + 0.25 * math.sin(3 * math.atan2(b, a) + ph))}
+            ring = {(i + a, j + b) for i, j in blob for a in range(-clear, clear + 1) for b in range(-clear, clear + 1)}
+            if not ring <= self.squares or ring & busy: continue
+            self.squares -= blob
+            busy |= ring
+            made.append(blob)
+        self.squares = self._fix_pinches(self.squares)
+        return made
 
-    def ground_variety(self, spec, base="GrassNorm", sparse="GrassSparse2", dense="GrassDense", scale=1.0, clear=3):
+    def assign_regions(self, jitter=2.5):
+        """Square -> region: the nearest area's region, the border between regions wavering with smooth
+        noise so sections blend into each other instead of meeting on a straight line."""
+        r = self.rng
+        ph = [r.uniform(0, 6.3) for _ in range(4)]
+        cents = [(a["c"], a["r"] * max(1.0, a["stretch"]), a["region"]) for a in self.areas.values()]
+        self.region_map = {}
+        for (i, j) in self.squares:
+            n = jitter * (math.sin(i * 0.21 + ph[0]) + math.sin(j * 0.17 + ph[1]) + math.sin((i + j) * 0.13 + ph[2]))
+            best = min(cents, key=lambda c: math.hypot(i + 0.5 - c[0][0], j - 0.5 - c[0][1]) - 0.35 * c[1]
+                       + n * (zlib.crc32(str(c[2]).encode()) % 7 - 3) / 3.0)    # crc32: hash() of a str varies per run
+            self.region_map[(i, j)] = best[2]
+        return self.region_map
+
+    def region_of(self, s):
+        return getattr(self, "region_map", {}).get(s)
+
+    def apply(self, spec, wall, floor):
+        """Floor tiles on every land square and the forest wall around them. wall / floor: a material,
+        or a function of the region (each section has its own wall and ground)."""
+        wall_of = wall if callable(wall) else (lambda region: wall)
+        floor_of = floor if callable(floor) else (lambda region: floor)
+        for s in self.squares:
+            spec.floor.setdefault(square_tile(*s), floor_of(self.region_of(s)))   # roads, squares, buildings stay
+        for p in self.boundary_points():
+            q = p[1]
+            quad = [(p[0] - 1, q), (p[0], q), (p[0] - 1, q + 1), (p[0], q + 1)]
+            region = next((self.region_of(s) for s in quad if s in self.squares), None)
+            x, y = point_cell(*p)
+            spec.wall(x, y, wall_of(region))
+
+    def ground_variety(self, spec, base="GrassNorm", sparse="GrassSparse2", dense="GrassDense", scale=1.0, clear=3, region=None):
         """Patches of sparse and dense grass on the base (smooth noise, as in Westwood's meadows).
         Call it after roads, water and the square: patches keep `clear` squares away from them, so
         every transition has room for its own blend (no three-way seams by a road or a bank)."""
@@ -332,6 +402,7 @@ class Land:
         for s in self.squares:
             t = square_tile(*s)
             if spec.floor.get(t) != base or near.get(s, 99) < clear: continue
+            if region is not None and self.region_of(s) != region: continue
             i, j = s
             n = math.sin(i * 0.17 * scale + ph[0]) + math.sin(j * 0.21 * scale + ph[1]) + 0.6 * math.sin((i - j) * 0.11 * scale + ph[2])
             if n > 1.05: spec.floor[t] = sparse
@@ -358,15 +429,17 @@ class Land:
             path = ln["path"]
             self.road_paths.append(path)
             nz = (self.rng.uniform(0, 6.3), self.rng.uniform(0.2, 0.5))
+            mat = ln.get("road_material") or material
+            width = ln.get("road_width") or width_squares
             for k, (si, sj) in enumerate(path):
-                half = width_squares / 2 * (1 + 0.15 * math.sin(k * nz[1] + nz[0]))
+                half = width / 2 * (1 + 0.15 * math.sin(k * nz[1] + nz[0]))
                 for i in range(int(si - half - 1), int(si + half + 2)):
                     for j in range(int(sj - half - 1), int(sj + half + 2)):
                         if (i, j) not in self.squares or (i, j) in skip or (i, j) in self.plaza: continue
                         if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half:
                             t = square_tile(i, j)
                             if "Water" in spec.floor.get(t, "") or "WoodSlat" in spec.floor.get(t, ""): continue
-                            spec.floor[t] = material
+                            spec.floor[t] = mat
                             self.roads.add((i, j))
         return self.roads
 
@@ -396,7 +469,19 @@ class Land:
 
     def connect_door(self, spec, door, footprint, material="DirtDark2"):
         """A path from the outside of a door to the road network, routed around buildings (never a
-        straight line to the nearest wall). Returns the path squares, or None if unreachable."""
+        straight line to the nearest wall). Returns the path squares, or None if unreachable. When
+        Westwood never lets the path's floor touch the room's floor (packed dirt against marble), the
+        path uses the floor Westwood puts between them."""
+        inside = spec.floor.get(door.gap) or next((spec.floor.get((door.gap[0] + a, door.gap[1] + b))
+                                                   for a, b in ((1, 1), (1, -1), (-1, 1), (-1, -1))
+                                                   if spec.floor.get((door.gap[0] + a, door.gap[1] + b))), None)
+        if inside:
+            import json, os
+            nt = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+                                             "rules", "out", "floors.json")))["never_touch"]
+            for r in nt:
+                if {r["a"], r["b"]} == {material, inside} and r.get("buffer_materials"):
+                    material = max(r["buffer_materials"], key=r["buffer_materials"].get)
         return self.connect(spec, self.door_outside(door, footprint), footprint, material)
 
     def connect(self, spec, start, footprint=frozenset(), material="DirtDark2"):
@@ -513,7 +598,7 @@ class Land:
         for i in range(oi - margin, oi + w + margin):
             for j in range(oj + 1 - margin, oj + h + 1 + margin):
                 s = (i, j)
-                if s not in self.squares or s in self.water or s in self.reserved or s in self.taken: return False
+                if s not in self.squares or s in self.water or s in self.reserved or s in self.taken or                         s in self.forbidden: return False
                 inside = oi <= i < oi + w and oj + 1 <= j < oj + h + 1
                 if s in self.plaza: return False                  # the square keeps a clear margin
                 if inside and s in self.roads: return False

@@ -40,10 +40,15 @@ class Village:
         cands = [(i1 + 3, j0), (i1 + 3, j1 - h + 1), (i0 - 2 - w, j0), (i0 - 2 - w, j1 - h + 1),
                  (i0, j1 + 3), (i1 - w + 1, j1 + 3), (i0, j0 - 2 - h), (i1 - w + 1, j0 - 2 - h)]
         rng.shuffle(cands)
+        # the squares the building's own margin took are free for its garden (never its walls or others')
+        own = {(i + a, j + b) for i, j in foot for a in range(-2, 3) for b in range(-2, 3)} - foot
+        clear = lambda s: self._clear(s) or (s in own and s in L.taken and s not in L.taken_strict and
+                                             s in L.squares and s not in L.roads and s not in L.plaza and
+                                             s not in L.water and s not in self.used)
         for gi, gj in cands:
             plot = {(gi + a, gj + b) for a in range(w) for b in range(h)}
             ring = {(gi + a, gj + b) for a in range(-1, w + 1) for b in range(-1, h + 1)}
-            if not all(self._clear(s) for s in ring): continue
+            if not all(clear(s) for s in ring): continue
             crop = crop or rng.choice(CROPS)
             for s in plot:
                 self.spec.floor[square_tile(*s)] = "DirtDark2"
@@ -54,7 +59,7 @@ class Village:
                    if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)]
             gap = rng.choice([p for p in pts if p[0] == gi + w // 2 or p[1] == gj - 1 + h // 2] or pts)
             for p in pts:
-                if p == gap: continue
+                if p == gap or not fence: continue
                 x, y = point_cell(*p)
                 if (x, y) not in self.spec.wallmap: self.spec.wall(x, y, fence)
             self.used |= ring

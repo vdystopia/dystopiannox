@@ -171,8 +171,22 @@ class Waterworks:
         out.append(pts[-1])
         return out
 
-    def _smooth_path(self, path_uv, wiggle):
-        """Polyline (uv) -> dense, gently meandering centre line in cell coordinates."""
+    @staticmethod
+    def _calm(calm, x, y):
+        """0 at a calm point (a planned crossing), rising to 1 beyond its radius: the stream runs
+        straight and keeps its width where a bridge or ford crosses it."""
+        f = 1.0
+        for (cu, cv), r_uv in calm:
+            cx, cy = uv_to_xy(cu, cv)
+            r = r_uv / SQ2
+            d = math.hypot(x - cx, y - cy)
+            if d < r: f = min(f, 0.0)
+            elif d < 2 * r: f = min(f, (d - r) / r)
+        return f
+
+    def _smooth_path(self, path_uv, wiggle, calm=()):
+        """Polyline (uv) -> dense, gently meandering centre line in cell coordinates (straight within
+        the calm stretches)."""
         pts = [uv_to_xy(u, v) for u, v in path_uv]
         dense = self._densify(pts, 0.5)
         if wiggle <= 0 or len(dense) < 3: return dense
@@ -182,18 +196,20 @@ class Waterworks:
             a, b = dense[max(0, i - 1)], dense[min(len(dense) - 1, i + 1)]
             tx, ty = b[0] - a[0], b[1] - a[1]
             ln = math.hypot(tx, ty) or 1
-            off = wiggle * nz(i * 0.12)
+            off = wiggle * nz(i * 0.12) * self._calm(calm, x, y)
             out.append((x - ty / ln * off, y + tx / ln * off))
         return out
 
     # ------------------------------------------------------------------ bodies of water
-    def stream(self, path_uv, width=3.0, family="clear", wiggle=2.0, deep=None):
+    def stream(self, path_uv, width=3.0, family="clear", wiggle=2.0, deep=None, calm=()):
         """Natural stream along a uv polyline. width is in tiles (Westwood: typically 1-3, widest
-        about 5). Deep water only where at least 2 tiles from the bank (deep=None: automatic)."""
+        about 5). Deep water only where at least 2 tiles from the bank (deep=None: automatic).
+        calm: [(uv point, radius uv)] where the stream runs straight at its plain width (planned
+        crossings: a bridge goes on a straight stretch, square to the water, never on a bend)."""
         shallow_m, deep_m, _ = FAMILIES[family]
-        line = self._smooth_path(path_uv, wiggle)
+        line = self._smooth_path(path_uv, wiggle, calm)
         nz = self._noise(self.rng, 4)
-        half = [max(0.75, width * TILE / 2 * (1 + 0.28 * nz(i * 0.09))) for i in range(len(line))]
+        half = [max(0.75, width * TILE / 2 * (1 + 0.28 * nz(i * 0.09) * self._calm(calm, *line[i]))) for i in range(len(line))]
         body = Body("stream", family, path_xy=line, widths=half)
         xs, ys = [p[0] for p in line], [p[1] for p in line]
         pad = max(half) + 2
@@ -303,7 +319,7 @@ class Waterworks:
                     out.append((int(x), int(y)))
         return out
 
-    def plank_bridge(self, body, t=0.5, deck_width=3, landing=2, material="WoodSlatFloor", at=None, along=None):
+    def plank_bridge(self, body, t=0.5, deck_width=2, landing=1, material="WoodSlatFloor", at=None, along=None):
         """Square plank deck across a stream (Con05A style): planks spill onto the water and banks
         around them (WoodSlatEdge); shore walls beside the deck act as railings. at/along: a crossing
         planned with the road (Land.plan_crossing), so the deck runs in the road's direction."""

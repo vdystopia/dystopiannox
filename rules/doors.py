@@ -3,6 +3,9 @@ wall pieces beside an opening are shaped. Writes rules/out/doors.json and rules/
 
 Findings this encodes (single-player maps, layout-weighted):
 - Single doors (ArchedDoor, WoodenDoor, DunMirDoor, ...) fill a 1-cell opening.
+- Some types are double in one wall direction and single in the other: BandedPlankDoor pairs only
+  in '/' walls; in '\' walls Westwood always hangs it alone (its '\' halves do not line up as a
+  pair). types[t].by_line[line].kind gives the kind for each wall direction.
 - Double doors (all *HalfDoor types, Gate, CryptDoor, CryptGate, ...) are two door objects hinged
   at opposite ends of a 2-cell opening ('/' walls: East + West; '\\' walls: North + South).
 - Wall pieces next to an opening are shaped as if the opening were wall (a T beside a door stays
@@ -18,6 +21,7 @@ def main():
     sys.path.insert(0, c.os.path.join(c.REPO, "mapgen"))
     from nox import FACING_BY_ARMS, TL, TR, BL, BR
     width = collections.defaultdict(collections.Counter)
+    width_line = collections.defaultdict(collections.Counter)     # (type, '/' or '\') -> opening widths
     maps_of = collections.defaultdict(set)
     jamb = collections.Counter()
     for m in c.sp_maps():
@@ -31,7 +35,9 @@ def main():
             if g in W: continue
             gaps.add(g)
             prev, nxt = (g[0] - sx, g[1] - sy) not in W, (g[0] + sx, g[1] + sy) not in W
-            width[o["type"]][2 if prev != nxt else 1 if not (prev or nxt) else 3] += w
+            wd = 2 if prev != nxt else 1 if not (prev or nxt) else 3
+            width[o["type"]][wd] += w
+            width_line[(o["type"], "\\" if o["xfer"]["Direction"] in ("North", "South") else "/")][wd] += w
             maps_of[o["type"]].add(m)
         for g in gaps:
             for a in (TL, TR, BL, BR):
@@ -49,8 +55,16 @@ def main():
     for t, cnt in width.items():
         tot = sum(cnt.values())
         two = cnt[2] / tot
+        by_line = {}
+        for line in ("/", "\\"):
+            cl = width_line.get((t, line))
+            if not cl: continue
+            lt = sum(cl.values())
+            by_line[line] = dict(share_two_cell=round(cl[2] / lt, 3), share_one_cell=round(cl[1] / lt, 3), weighted_count=round(lt, 1),
+                                 kind="double" if cl[2] / lt >= 0.5 else "single")
         types[t] = dict(kind="double" if two >= 0.5 else "single", share_two_cell=round(two, 3),
-                        share_one_cell=round(cnt[1] / tot, 3), weighted_count=round(tot, 1), maps=len(maps_of[t]))
+                        share_one_cell=round(cnt[1] / tot, 3), weighted_count=round(tot, 1), maps=len(maps_of[t]),
+                        by_line=by_line)
     jt = sum(jamb.values())
     rules = dict(
         types=types,

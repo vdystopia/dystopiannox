@@ -48,6 +48,7 @@ def _rules():
 STYLE_EXCLUDE = {
     "town": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Mine|Galava|Teepee|Sewer|Pulley|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty|HalfFull",
     "dunmir": r"^(LOTD|Ogre|Urchin|Crypt|Lich|Horrendous|Mine|Teepee|Sewer|Pulley|Torture)|Immobile$|Fallen|Broken|Movable|Shadow$",
+    "mine": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Galava|Teepee|Sewer|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty|HalfFull",
     "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|Immobile$|Fallen|Movable|Shadow$",
     "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|Immobile$|Movable|Shadow$",
 }
@@ -57,6 +58,9 @@ DANGEROUS = re.compile(r"Flame(?!Basin)")
 # (fireplaces 87%, beds 79%, chests 74%, stoves 77%).
 BACK_SIDES = ("/|BR", "\\|BL")
 FOOD = ("Bread", "Meat", "RedApple", "Cider")
+# Pieces that only ever stand against a wall (never free in the room).
+WALL_PIECES = {"bed", "storage", "shelves", "fireplace", "stove", "desk", "nightstand", "shop_rack", "counter_shop",
+               "forge", "bellows", "wall_decor"}
 # Lights in one room stand at least this far apart (uv units, ~50 px).
 MIN_LIGHT_GAP = 3.0
 # Street lights stay outdoors.
@@ -151,6 +155,7 @@ class _Room:
             cells.add(p)
             for d in ((1, 0), (-1, 0), (0, 1), (0, -1)): q.append((p[0] + d[0], p[1] + d[1]))
         self.cells = cells
+        self.wall_cells = set(walls)
         cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
         self.centroid = (cu, cv)
         # wall runs adjacent to the room
@@ -201,6 +206,9 @@ class _Room:
         pts = [(u + a * hu, v + b * hv) for a in (-1, 0, 1) for b in (-1, 0, 1)]
         if not all(self.inside(*p) for p in pts): return False
         if not wall_ok and min(self.wall_dist(*p) for p in pts) < 0.25: return False
+        # the piece's own grid cell is never a wall cell (cells are diamonds in uv: a piece close to a wall
+        # can stand in the wall's cell between its neighbours, and the game then draws it in the wall)
+        if not wall_ok and (math.floor((u + v) / 2), math.floor((u - v) / 2)) in self.wall_cells: return False
         if blocking:
             for du, dv in self.doors:
                 if math.hypot(u - du, v - dv) < DOOR_CLEAR + max(hu, hv): return False
@@ -352,6 +360,7 @@ class Furnisher:
             if t is None:
                 base = _base(_pick(self.rng, types) or "")
                 t = self.variant_for_side(base, r["side"]) if base in self.dirvar else self.orient(_pick(self.rng, types), r["side"])
+                t = self.along_variant(t, r["side"])
                 if t is None:   # this family has no variant for that wall side
                     continue
             hu, hv = self.half(t)
@@ -571,18 +580,71 @@ class Furnisher:
             out += [(r, f0, f1) for f0, f1 in free if f1 - f0 >= 1.2]
         return out
 
+    # Westwood numbers the wall variants of many pieces by the wall they stand against: Bed, Chest and
+    # Nightstand 1-4 = SE, SW, NE, NW wall; Bookcase and Desk 1-4 = NW, NE, SE, SW wall (90-100% of their
+    # uses). Chests, bookcases and desks lie along the wall; beds stand with the headboard against it.
+    SCHEMES = ({"1": "/|TL", "2": "\\|TR", "3": "\\|BL", "4": "/|BR"},
+               {"1": "/|BR", "2": "\\|BL", "3": "/|TL", "4": "\\|TR"})
+    _scheme_cache = {}
+
+    def numbering(self, stem):
+        """{side: digit} for a numbered family, from Westwood's placements (room_types.type_wall_sides);
+        None when the family is not numbered by wall side."""
+        if stem in self._scheme_cache: return self._scheme_cache[stem]
+        tws = _RT.get("type_wall_sides", {})
+        votes = [0, 0]
+        for d in "1234":
+            rec = tws.get(f"{stem}{d}")
+            if not rec or rec.get("n", 0) < 2: continue
+            side = max((k for k in rec if k != "n"), key=lambda k: rec[k])
+            if rec[side] < 0.6: continue
+            for k, sch in enumerate(self.SCHEMES):
+                votes[k] += sch[d] == side
+        best = None
+        if max(votes) >= 2 and min(votes) == 0:
+            sch = self.SCHEMES[votes.index(max(votes))]
+            best = {side: d for d, side in sch.items()}
+        self._scheme_cache[stem] = best
+        return best
+
+    def along_variant(self, t, side):
+        """The variant of t for a wall on `side`: the numbered sibling for that wall when the family is
+        numbered by wall side; else t when it lies the right way (long side along the wall; a bed's
+        across it), else a sibling that does. None when no variant fits."""
+        if not t: return t
+        m = re.fullmatch(r"(.*?)(\d)([A-Za-z]*)", t)
+        if m:
+            stem, d, tail = m.groups()
+            num = self.numbering(stem)
+            if num:
+                want = num[side]
+                for cand in (f"{stem}{want}{tail}", f"{stem}{want}"):
+                    if self.ok_type(cand): return cand
+                return None
+        line = side.split("|")[0]
+        hu, hv = self.half(t)
+        if abs(hu - hv) < 0.05: return t
+        along = _family_of(t) != "bed"
+        fits = lambda x: self._along_wall(x, line) == along
+        if fits(t): return t
+        if not m: return None
+        stem, _, tail = m.groups()
+        sibs = [f"{stem}{d}{tail}" for d in "123456" if self.ok_type(f"{stem}{d}{tail}") and fits(f"{stem}{d}{tail}")]
+        return sibs[0] if sibs else None
+
     def side_variant(self, t0, r, fam=None):
         """The variant of t0 for wall run r: Westwood's own variant for that wall side when there is a
         rule; else, among the room identity's preferred types (a lit hearth, never an unlit sibling),
         one whose long side runs along the wall; else orient()."""
         base = _base(t0)
         if base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side"):
-            return self.variant_for_side(base, r["side"])
+            return self.along_variant(self.variant_for_side(base, r["side"]), r["side"])
         pref = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam) if fam else None
         if pref:
             along = [t for t in pref if self.ok_type(t) and self._along_wall(t, r["line"])]
-            if along: return t0 if t0 in along else self.rng.choice(along)
-        return self.orient(t0, r["side"])
+            if along:                     # and the numbered sibling for this wall (Desk4 is the NE wall's desk)
+                return self.along_variant(t0 if t0 in along else self.rng.choice(along), r["side"])
+        return self.along_variant(self.orient(t0, r["side"]), r["side"])
 
     def _along_wall(self, t, line):
         hu, hv = self.half(t)
@@ -834,7 +896,8 @@ class Furnisher:
         for f, n in need.items():                     # core pieces the composition could not fit
             for _ in range(max(0, n - done[f])):
                 if f in SEAT_FAMILIES: break
-                res = next((x for r_ in ("wall", "corner", "center") for x in [self.place_one(f, r_, tries=120)] if x), None)
+                roles = ("wall", "corner") if f in WALL_PIECES else ("wall", "corner", "center")
+                res = next((x for r_ in roles for x in [self.place_one(f, r_, tries=120)] if x), None)
                 if res: done[f] += 1
         return done
 
@@ -956,8 +1019,9 @@ class Furnisher:
         n = max(1 if tiles >= 12 else 0, tiles // 40, min(n, max(1, tiles // 12)))
         types = {t: s for t, s in vl.get("types", {}).items()
                  if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
-        # lights spread through the room: each goes to the wall spot farthest from the lights already
-        # placed (two candelabras never stand side by side; a second one goes to another corner)
+        # lights balance the room: each goes to the wall spot that is farthest from the lights already
+        # placed and from the furniture, preferring corners (with a chest centred on one wall and shelves
+        # on the next, the candelabra goes to the empty far corner, not between them)
         lights = []
         t_room = _pick(self.rng, types)                # one style of light per room
         for _ in range(n):
@@ -965,10 +1029,16 @@ class Furnisher:
             base = _base(t)
             mounted = bool(base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side")
                            and not t.startswith("Candleabra"))
-            spots = self._light_spots(t, base, mounted)
-            spots.sort(key=lambda c: -min([math.hypot(c[1] - a, c[2] - b) for a, b in lights] or [99.0]))
-            for tv, u, v in spots:
-                if lights and min(math.hypot(u - a, v - b) for a, b in lights) < MIN_LIGHT_GAP: break
+            pieces = [(p[0], p[1]) for p in self.g.placed if p[4] and p[5] != "wall"]
+
+            def score(c):
+                _, u, v, corner = c
+                dl = min([math.hypot(u - a, v - b) for a, b in lights] or [10.0])
+                dp = min([math.hypot(u - a, v - b) for a, b in pieces] or [6.0])
+                return 2.0 * min(dl, 10.0) / 10.0 + 1.6 * min(dp, 6.0) / 6.0 + (0.5 if corner else 0.0)
+            spots = sorted(self._light_spots(t, base, mounted), key=lambda c: -score(c))
+            for tv, u, v, _ in spots:
+                if lights and min(math.hypot(u - a, v - b) for a, b in lights) < MIN_LIGHT_GAP: continue
                 if self.try_put(tv, u, v, blocking=not mounted, wall_ok=mounted, layer="wall" if mounted else "floor"):
                     lights.append((u, v)); break
         cl = self.T.get("colorlights", {})
@@ -998,7 +1068,7 @@ class Furnisher:
             n = max(2, int((r["hi"] - r["lo"] - 2.4) / 2.5) + 1)
             for k in range(n):                          # both ends (the corners) and evenly between
                 a = r["lo"] + 1.2 + (r["hi"] - r["lo"] - 2.4) * k / max(1, n - 1)
-                out.append((tv,) + ((coord, a) if r["line"] == "/" else (a, coord)))
+                out.append((tv,) + ((coord, a) if r["line"] == "/" else (a, coord)) + (k in (0, n - 1),))
         self.rng.shuffle(out)
         return out
 
