@@ -411,6 +411,14 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
             if outer or p not in point_mat: point_mat[p] = ext_mat if outer else point_mat.get(p, int_mat)
     if not _pieces_ok(U0, V0, point_mat):
         return None                      # a junction this material has no piece for: try another layout
+    if program and entrance_side:
+        # the main room must be able to open on the requested side (a building facing the square opens
+        # onto it): otherwise try another layout before anything is written
+        main = room_ids[0]
+        ext = _runs(edges, lambda pr: (pr[0] in (None, COURT)) != (pr[1] in (None, COURT)))
+        if not any(main in rn[3] and _on_outer_side(rn, W, H, entrance_side) and _door_point(rng, rn, deg) is not None
+                   for rn in ext):
+            return None
     for p, mat in point_mat.items():
         spec.wall(*_xy(U0, V0, p), mat)
 
@@ -462,7 +470,8 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     # with a program, the main (largest) room gets the entrance whenever it has an outside wall, so
     # the program's first role (e.g. tavern) lands in the biggest room; otherwise prefer the side
     main_first = (lambda rn: room_ids.index(run_room(rn)) > 0) if program else (lambda rn: False)
-    ranked = sorted(ext_runs, key=lambda rn: (main_first(rn), not _on_outer_side(rn, W, H, side), _side_of_run(rn, W, H) != side,
+    ranked = sorted(ext_runs, key=lambda rn: (not _on_outer_side(rn, W, H, side) if entrance_side else False, main_first(rn),
+                                              not _on_outer_side(rn, W, H, side), _side_of_run(rn, W, H) != side,
                                               room_ids.index(run_room(rn)) if run_room(rn) in room_ids else 99,
                                               -len(rn[2]), rng.random()))
     for rn in ranked:

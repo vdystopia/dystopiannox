@@ -68,10 +68,12 @@ def one(args):
     m = md.load(md.corpus_json(name))
     findings, ctx = C.run_all(m, base)
     mt = next(f["metrics"] for f in findings if f.get("metrics"))
-    rooms = [(C.room_profile(r), r["tiles"]) for r in C.find_rooms(m)]
+    found = C.find_rooms(m)
+    rooms = [(C.room_profile(r), r["tiles"]) for r in found]
+    offsets = [o for o in (C.furniture_offset(m, r)[0] for r in found) if o is not None]
     sight_sizes = [len(g) for g in C.clusters(ctx.sight_leaks - ctx.walk_leaks, 3)]
     return name, [(f["check"], f["severity"], f["msg"][:90], f["x"], f["y"]) for f in findings if f["severity"] != "info"], \
-        mt, rooms, sight_sizes
+        mt, rooms, sight_sizes, offsets
 
 
 def main():
@@ -90,7 +92,9 @@ def main():
     ENV = {n: r["type"] for n, r in md.rules("environments")["maps"].items()}
     kinds = collections.defaultdict(lambda: dict(f=[], t=[]))
     sight = []
-    for name, finds, mt, rooms, sight_sizes in results:
+    offs = []
+    for name, finds, mt, rooms, sight_sizes, offsets in results:
+        offs += [(o, weight[name]) for o in offsets]
         w = weight[name]
         for chk, sev, msg, x, y in finds:
             fired[(chk, sev)][name] += 1
@@ -112,6 +116,7 @@ def main():
         out["room_kinds"][kind] = dict(n=len(d["t"]), furniture_per100=[fq["p5"], fq["p95"]], tiles=[tq["p5"], tq["p95"]],
                                        samples=sorted(d.get("s", ())))   # (tiles, furniture) per distinct room
     out["sight_leak_cell_sizes"] = wq(sight) if sight else None
+    out["furniture_offset_p95"] = wq(offs)["p95"] if offs else 0.85
     out.setdefault("sight_leak_cells", 0)
     with open(BASELINE, "w") as f: json.dump(out, f, indent=1, sort_keys=True)
     print(f"Westwood single-player maps checked: {len(results)}  (baseline written to {BASELINE})\n")

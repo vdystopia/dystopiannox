@@ -58,6 +58,11 @@ def build(seed=1):
     u_mid = sum(uu for (r, _) in rooms for (x, y) in r.tiles for uu in [x + y]) / sum(len(r.tiles) for r, _ in rooms)
     m.obj("PlayerStart", 166, -58)
     print("\n".join(l for l in m.build(OUT) if l.startswith(("OK", "ERROR"))))
+    import json                                 # room boxes for review/rooms.py (grid cells)
+    with open(os.path.join(OUT, "RoomTest.rooms.json"), "w") as f:
+        json.dump([dict(kind=k, tiles=len(r.tiles), box=[min(x for x, _ in r.tiles) - 1, min(y for _, y in r.tiles) - 1,
+                                                        max(x for x, _ in r.tiles) + 3, max(y for _, y in r.tiles) + 3])
+                   for r, k in rooms], f)
     for s in stats:
         print(f"{s[0]:12} tiles={s[1]:4} objects={s[2]:3} per100={100 * s[2] / s[1]:5.1f}  {s[3]}")
     return os.path.join(OUT, "RoomTest.map")

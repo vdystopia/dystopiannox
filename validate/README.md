@@ -37,7 +37,7 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | floors | error | Floor pairs Westwood never lets touch (e.g. rug on grass) |
 | floors | warning | Pairs Westwood blends left mostly as hard seams |
 | rooms | warning | Furniture count above Westwood's rooms of the same kind and similar size (DysVale playtest); nearly bare rooms; room size outside the kind's range |
-| composition | warning | Pieces that make no sense where they stand (DysVale v0.4 playtest): a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall |
+| composition | warning | Pieces that make no sense where they stand (DysVale v0.4 and v0.5 playtests): a piece right in front of a chest, hearth or stove; chairs with no table; furniture bunched into one part of a room (beyond Westwood's 95th percentile); a bridge whose ends do not open onto ground. Also: a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall |
 | density | warning | Lights, coloured lights, decorations, creatures, edge coverage and walls per 100 floor tiles outside Westwood's 5th–95th percentile |
 
 ## How it was calibrated

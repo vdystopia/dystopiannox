@@ -51,6 +51,22 @@ Checks phase 4 must include, from this playtest (all implemented in `validate/`,
 | See-through hole in the boundary | Rule recorded: invisible walls never on the boundary. The water kit follows it; Mossford itself still needs a rebuild |
 | Abrupt bridges | Fixed in the water kit (Con05A-style decks, narrow streams). Mossford still needs a rebuild |
 
+### DysVale v0.5 (2026-10-03)
+
+The tavern's main room and bar were a big improvement. Fixed in v0.6:
+
+| Finding | Fix |
+|---|---|
+| Bedroom behind the bar: chests and rugs not centred | Rooms are composed as a whole (`Furnisher.compose`, recipes in `kit/identity.py`). Each anchor piece gets its own wall stretch, the back walls the camera sees first (Westwood stands 74-87% of wall pieces there), centred where Westwood centres it. A rug is laid before the chest or hearth, or centred in the room |
+| The kitchen lacked any purpose | The kitchen identity follows Westwood's kitchens: a lit stone oven centred on a back wall with the cooking cauldron beside it, one work table in the middle with food set out, supplies (barrels, an apple crate, sacks) in a row from a corner. The smithy became a real forge (glowing coals, bellows, the anvil before the fire, water and tool barrels, weapon racks) |
+| The bridge ended against the forest wall | Crossings are planned with the roads (`Land.plan_crossing`): the road is straightened through the crossing, the stream is laid to flow across it at a right angle, and the deck runs in the road's direction and lands on the road at both ends. The checker flags bridges whose ends do not open onto ground |
+| Fourth room: the chest in the south corner behind a table and a lamp; everything bunched in one corner | Every anchor keeps the space in front of it clear (nothing blocking may stand there), the table set takes the open middle of the room, and pieces spread across the walls. The checker flags pieces standing in front of a chest, hearth or stove, chairs with no table, and furniture bunched into one part of a room. On v0.5 it finds exactly the chair before the chest and the bridge |
+
+Also fixed:
+- door paths blend into the doorway;
+- floor tiles straddling building walls no longer count as paths;
+- buildings facing the square are rejected before they are written if they cannot open onto it.
+
 ### DysVale v0.4 (2026-10-03)
 
 The theme of this playtest: every piece must make sense in relation to what is around it. Fixed in v0.5:

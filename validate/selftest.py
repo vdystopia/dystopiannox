@@ -110,6 +110,18 @@ def lights_side_by_side(m):
         m.obj("Candleabra1", 216 + 1.2 * k, 8)
 
 
+def chest_blocked(m):
+    m.obj("Chest4", 202, 4)                                    # a chest against the house's back wall...
+    m.obj("Table1", 204.2, 4)                                  # ...with a table right in front of it
+
+
+def bridge_into_wall(m):
+    ww = Waterworks(m, random.Random(7))
+    brook = ww.stream([(184, 30), (256, 30)], width=2.0, wiggle=0.0)
+    ww.plank_bridge(brook, at=(221.0, 30.0), along="v")       # the deck runs into the boundary wall
+    ww.finish()
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -130,6 +142,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STnostrt", no_start, "setup", "error", "no player start"),
     ("STpuddl", dock_across_puddle, "composition", "warning", "dock spanning a puddle to the far bank - DysVale v0.4 playtest"),
     ("STlites", lights_side_by_side, "composition", "warning", "two candelabras side by side - DysVale v0.4 playtest"),
+    ("STchest", chest_blocked, "composition", "warning", "table standing right in front of a chest - DysVale v0.5 playtest"),
+    ("STbridg", bridge_into_wall, "composition", "warning", "bridge ending against the boundary wall - DysVale v0.5 playtest"),
 ]
 
 

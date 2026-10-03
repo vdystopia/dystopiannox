@@ -274,12 +274,19 @@ class Waterworks:
         ln = math.hypot(tx, ty) or 1
         return (ax, ay), (tx / ln, ty / ln), body.widths[i]
 
-    def _crossing_rect(self, body, t, deck_width, landing):
-        """uv rectangle across the body at t: (axis along which the crossing runs, u0, u1, v0, v1)."""
-        (cx, cy), (tx, ty), h = self._crossing_frame(body, t)
-        cu, cv = xy_to_uv(cx, cy)
-        tu, tv = tx + ty, tx - ty                       # tangent in uv
-        across = "v" if abs(tu) >= abs(tv) else "u"      # cross perpendicular-ish to the flow
+    def _crossing_rect(self, body, t, deck_width, landing, at=None, along=None):
+        """uv rectangle across the body at t: (axis along which the crossing runs, u0, u1, v0, v1).
+        at (uv) and along ('u'/'v'): a crossing planned with the road (Land.plan_crossing)."""
+        if at is not None:
+            ax, ay = uv_to_xy(*at)
+            i = min(range(len(body.path_xy)), key=lambda k: (body.path_xy[k][0] - ax) ** 2 + (body.path_xy[k][1] - ay) ** 2)
+            h = body.widths[i]
+            (cu, cv), across = at, along
+        else:
+            (cx, cy), (tx, ty), h = self._crossing_frame(body, t)
+            cu, cv = xy_to_uv(cx, cy)
+            tu, tv = tx + ty, tx - ty                   # tangent in uv
+            across = "v" if abs(tu) >= abs(tv) else "u"  # cross perpendicular-ish to the flow
         span = h * SQ2 + landing * 2                     # half-length in uv units (+ landing tiles)
         half_w = deck_width                              # in uv units: 2 per tile
         r2 = lambda a: int(round(a / 2.0)) * 2
@@ -296,10 +303,11 @@ class Waterworks:
                     out.append((int(x), int(y)))
         return out
 
-    def plank_bridge(self, body, t=0.5, deck_width=3, landing=2, material="WoodSlatFloor"):
+    def plank_bridge(self, body, t=0.5, deck_width=3, landing=2, material="WoodSlatFloor", at=None, along=None):
         """Square plank deck across a stream (Con05A style): planks spill onto the water and banks
-        around them (WoodSlatEdge); shore walls beside the deck act as railings."""
-        across, u0, u1, v0, v1 = self._crossing_rect(body, t, deck_width, landing)
+        around them (WoodSlatEdge); shore walls beside the deck act as railings. at/along: a crossing
+        planned with the road (Land.plan_crossing), so the deck runs in the road's direction."""
+        across, u0, u1, v0, v1 = self._crossing_rect(body, t, deck_width, landing, at, along)
         tiles = self._rect_tiles(u0, u1, v0, v1)
         for c in tiles:
             self.spec.floor[c] = material

@@ -31,10 +31,12 @@ well). Then lay out the streets leaving it toward the other areas.
 
 Rooms are sized by kind (a tavern takes most of an inn's floor) and furnished only from their identity.
 
-## 4. Plan the water with room for its banks
+## 4. Plan the water with room for its banks, and its crossings with the roads
 
 Reserve the stream's and pond's bands before anything is built, keeping roads clear of them except
-at crossings. Every transition (road to grass, grass to bank, bank to water) needs room for its own
+at crossings. Connecting structures are planned in this phase, never fitted afterwards:
+- **Bridges and fords:** choose the crossing on the road (`Land.plan_crossing`), straighten the road through it, and lay the stream to cross at a right angle, so the deck lands on the road at both ends.
+- **Docks:** start where the road meets a lake's shore. Every transition (road to grass, grass to bank, bank to water) needs room for its own
 blend. Westwood's town roads almost never run within two tiles of water.
 
 ## 5. The land grows around what was placed
@@ -56,6 +58,13 @@ Never start from the borders and fit the village into what's left.
 - **Buildings open toward what they serve.** Public buildings open onto the square, homes onto their street.
 - **Set pieces are composed.** The square is symmetric around its centre feature, with benches facing it and lights in balanced positions. Street lights follow a steady rhythm.
 - **Water features fit their water.** A dock starts where the road meets the shore and reaches out into open water on a lake, never across a puddle. Reeds grow in the shallows.
+- **Rooms are composed as a whole** (`compose` recipes in `kit/identity.py`):
+  - each anchor (bed, chest, hearth, stove, shelves) gets its own wall stretch, back walls first, centred where Westwood centres it;
+  - a rug lies before the chest or hearth, or in the middle of the room;
+  - the table set takes the open middle;
+  - supplies stand in rows from a corner;
+  - the space in front of every anchor stays clear;
+  - companions come only with their anchor (a chair with its table or desk, food on the kitchen table, bellows beside the forge, the anvil before it).
 - **Furniture assemblies are complete.** A bar meets the walls at both ends, its flap sits mid-run, and kegs stand behind it.
 - **Lights are spread.** Each goes to a different corner or wall of the room, never beside another.
 

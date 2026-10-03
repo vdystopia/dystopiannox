@@ -109,6 +109,8 @@ class Spec:
         self.floor = {}       # (x, y) -> material
         self.blend = {}       # material -> (priority, edge type used when it spills onto others)
         self.edge_over = {}   # (overlay, base) -> edge type override
+        self.local_blend = {}  # (x, y) -> priority for one tile whose material does not blend elsewhere
+                               # (a doorway: the path outside spills onto the threshold tile)
         self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
         self.rng = random.Random(1)
 
@@ -141,8 +143,9 @@ class Spec:
     def _edges(self):
         out = {}
         for (x, y), base in self.floor.items():
-            if base not in self.blend: continue
-            bp = self.blend[base][0]
+            if base in self.blend: bp = self.blend[base][0]
+            elif (x, y) in self.local_blend: bp = self.local_blend[(x, y)]
+            else: continue
             near = {}
             for name, (dx, dy) in {**EDGE_SIDES, **EDGE_TIPS}.items():
                 m = self.floor.get((x + dx, y + dy))

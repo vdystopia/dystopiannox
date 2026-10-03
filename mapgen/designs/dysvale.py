@@ -70,6 +70,10 @@ for a_, b_, w_ in (("gate", "village", 13), ("village", "mill", 14), ("village",
                    ("village", "grove", 11), ("mill", "lookout", 11), ("woodcut", "lookout", 11)):
     land.link(a_, b_, w_, bend={("woodcut", "lookout"): 0.35, ("mill", "lookout"): 0.08}.get((a_, b_), 0.25))
 land.blends(m)
+# the mill road crosses the stream on a bridge. The crossing is planned now, with the road: the road runs
+# straight over it and the stream is laid to flow across the road there (a bridge fitted onto an existing
+# stream afterwards ends up jammed against the forest)
+cross = land.plan_crossing("village", "mill", t=0.5)
 link = {(l["a"], l["b"]): l for l in land.links}
 
 
@@ -85,11 +89,16 @@ def along(path, t0, t1, offset, n=6):
     return out
 
 
-# the stream is planned now (so nothing is built on it) and dug once the land exists; road half-width
-# 1.3 + 2.5 squares of bank + stream half-width 1.7: it runs 5.5 squares off the woodcutter's road
+# the stream is planned now (so nothing is built on it) and dug once the land exists. It comes out of
+# the forest, flows straight across the mill road at the planned crossing, then runs 5.5 squares off the
+# woodcutter's road (road half-width 1.3 + 2.5 squares of bank + stream half-width 1.7)
 vm, vw = link[("village", "mill")]["path"], link[("village", "woodcut")]["path"]
-mid = vm[len(vm) // 2]
-STREAM = [(2 * mid[0] - 30, 2 * mid[1] + 70), (2 * mid[0], 2 * mid[1])] + along(vw, 0.35, 0.72, 5.5) + along(vw, 0.78, 0.8, 18, n=2)
+C = cross["uv"]
+far = (C[0] - 30, C[1] + 70)                          # where the stream comes out of the forest
+fu, fv = cross["flow"]
+if (C[0] - far[0]) * fu + (C[1] - far[1]) * fv < 0: fu, fv = -fu, -fv
+STREAM = ([far, (C[0] - 16 * fu, C[1] - 16 * fv), (C[0] - 7 * fu, C[1] - 7 * fv), C, (C[0] + 7 * fu, C[1] + 7 * fv)]
+          + along(vw, 0.35, 0.72, 5.5) + along(vw, 0.78, 0.8, 18, n=2))
 # the lake lies east of the mill glade, where the mill road ends: big enough that the mill's dock
 # reaches out into open water (radius in tiles; the shore wanders up to 35% beyond it)
 LAKE = ((344, 72), 11)
@@ -168,20 +177,11 @@ for _ in range(10):                                  # felled trees: stumps and 
 land.carve(margin=4.5)
 land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
 
-# ---- 6. water dug into the land: the stream (bridge where the mill road crosses), the mill pond -----------
-def crossing_t(body, link_path):
-    best = None
-    for si, sj in link_path:
-        for k, (bx, by) in enumerate(body.path_xy):
-            d = (bx - si - sj) ** 2 + (by - si + sj) ** 2
-            if best is None or d < best[0]: best = (d, k)
-    return best[1] / max(1, len(body.path_xy) - 1)
-
-
+# ---- 6. water dug into the land: the stream with its planned bridge, the mill lake -------------------------
 ww = Waterworks(m, rng, inside=lambda x, y: m.floor.get((x, y), "").startswith(("Grass", "Dirt")))
 stream = ww.stream(STREAM, width=3.4, wiggle=0.8)
 lake = ww.pond(*LAKE)
-ww.plank_bridge(stream, t=crossing_t(stream, vm))
+ww.plank_bridge(stream, at=cross["uv"], along=cross["axis"])
 for b_ in ww.bodies:
     for t in b_.tiles:
         if "Water" in m.floor.get(t, ""): land.water.add(cell_square(*t))

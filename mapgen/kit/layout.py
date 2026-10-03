@@ -117,6 +117,7 @@ class Land:
                         if 3 <= i + j <= 250 and 3 <= i - j <= 250}
         self.reserved = set()                 # squares kept for planned features (a stream and its banks)
         self.wall_cells = set()               # grid cells of building walls (set by the design as it builds)
+        self.crossings = []                   # planned bridges and fords (plan_crossing)
         self.roads, self.plaza, self.water, self.taken = set(), set(), set(), set()
         self.taken_strict = set()             # building footprints only (taken also holds margins)
         self.road_paths = []
@@ -164,6 +165,37 @@ class Land:
         th = math.atan2(ry, rx)
         R = ar["r"] * (1 + sum(a * math.sin(k * th + p) for k, p, a in ar["waves"]))
         return d <= R
+
+    def plan_crossing(self, a, b, t=0.5, approach=7.0):
+        """Plans where the road between areas a and b crosses water, before anything is built: a bridge
+        fitted onto an existing stream ends up jammed against the forest. The road is straightened
+        through the crossing along the nearest grid axis for `approach` squares on each side, so the deck
+        runs in the road's direction and lands on the road at both ends. Returns the crossing: centre
+        (square coordinates), uv centre, axis ('u' or 'v': the way the deck runs) and the direction the
+        water must flow there (across the road)."""
+        ln = next(l for l in self.links if (l["a"], l["b"]) == (a, b))
+        path = ln["path"]
+        k = int(t * (len(path) - 1))
+        P = path[k]
+        pa, pb = path[max(0, k - 4)], path[min(len(path) - 1, k + 4)]
+        ti, tj = pb[0] - pa[0], pb[1] - pa[1]
+        axis = "u" if abs(ti) >= abs(tj) else "v"
+        d = (1.0 if ti >= 0 else -1.0, 0.0) if axis == "u" else (0.0, 1.0 if tj >= 0 else -1.0)
+        A = (P[0] - d[0] * approach, P[1] - d[1] * approach)
+        B = (P[0] + d[0] * approach, P[1] + d[1] * approach)
+        near = lambda pt, lo, hi: min(range(lo, hi), key=lambda i: (path[i][0] - pt[0]) ** 2 + (path[i][1] - pt[1]) ** 2)
+        i0, i1 = near(A, 0, k + 1), near(B, k, len(path))
+        ln["path"] = (path[:i0] + _densify([path[i0], A], 0.5)[:-1] + _densify([A, B], 0.5) +
+                      _densify([B, path[i1]], 0.5)[1:] + path[i1 + 1:])
+        corridor = set()
+        for s_ in _densify([A, B], 0.5):              # the straight road through the crossing
+            for i in range(int(s_[0]) - 2, int(s_[0]) + 3):
+                for j in range(int(s_[1]) - 2, int(s_[1]) + 4):
+                    corridor.add((i, j))
+        cross = dict(link=(a, b), centre=P, uv=(2 * P[0] + 1, 2 * P[1] + 1), axis=axis,
+                     flow=(0.0, 1.0) if axis == "u" else (1.0, 0.0), corridor=corridor)
+        self.crossings.append(cross)
+        return cross
 
     def reserve_band(self, path_uv, half_squares):
         """Keeps squares within `half_squares` of a uv polyline for a planned feature (a stream and its
@@ -317,7 +349,10 @@ class Land:
 
     # ---- roads and the square -------------------------------------------------------------------------
     def paint_roads(self, spec, material="DirtDark2", width_squares=2.4, skip=()):
-        """A dirt road down the middle of every passage, from area centre to area centre."""
+        """A dirt road down the middle of every passage, from area centre to area centre. Squares in
+        `skip` (reserved water) are left, except on a planned crossing, where the road runs on to meet
+        its bridge."""
+        skip = set(skip) - set().union(*(c["corridor"] for c in self.crossings)) if self.crossings else skip
         for ln in self.links:
             if not ln["road"]: continue
             path = ln["path"]
@@ -388,6 +423,12 @@ class Land:
             if not spec.floor.get(t, "").startswith(("RoughCobble",)):
                 spec.floor[t] = material
             self.roads.add(s)
+        # the threshold: building floor tiles touching the doorstep get the path's edge (dirt carried in)
+        x0, y0 = square_tile(*start)
+        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+            nb = (x0 + dx, y0 + dy)
+            if tile_square(*nb) in footprint and nb in spec.floor:
+                spec.local_blend[nb] = -50
         return path
 
     def clear_walls(self, spec):

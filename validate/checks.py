@@ -313,7 +313,9 @@ def check_objects(m, ctx, base):
         if RT.family(o["type"]) in FLOOR_FURNITURE and c in m.walls and m.walls[c].opaque and not m.walls[c].secret:
             out.append(F("objects", "warning", f"{o['type']} stands inside a wall piece.", o["x"], o["y"]))
         swims_or_flies = "AIRBORNE" in o["flags"] or WATER_RE.search(m.floor_at(o["x"], o["y"]) or "")
-        if important and not m.is_door(o) and not swims_or_flies and c not in ctx.walk and ctx.starts:
+        # an item on a table stands in the table's blocked cells: reachable when the player can stand beside it
+        beside = any((c[0] + a, c[1] + b) in ctx.walk for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2))
+        if important and not m.is_door(o) and not swims_or_flies and not beside and ctx.starts:
             unreach.append(o)
     if unreach:
         sev = "info" if scripted else "error"
@@ -357,6 +359,10 @@ def check_floors(m, ctx, base):
             if n not in m.tiles: continue
             a, b = t["material"], m.tiles[n]["material"]
             if a == b: continue
+            # side neighbours share one grid cell: a visible wall there hides the seam (a building's
+            # floor against the ground outside)
+            shared = (x + 1, y) if d == (1, -1) else (x + 1, y + 1)
+            if shared in m.walls and m.walls[shared].opaque: continue
             pair = frozenset((a, b))
             if pair in never: bad_touch[pair].append((x + 1, y + 1))
             r = blended.get(pair)
@@ -415,6 +421,9 @@ def room_profile(r):
     fam.pop(None, None)
     npcs = {"shopkeeper": sum(1 for o in r["objects"] if RT.SHOPKEEPER.match(o["type"]))}
     kind = RT.classify(fam, npcs)
+    if kind == "smithy" and not any(re.match(r"Anvil|CinderBin", o["type"]) for o in r["objects"]):
+        fam.pop("smithy", None)                      # bellows alone are hearth tools, not a forge
+        kind = RT.classify(fam, npcs)
     furniture = sum(n for f, n in fam.items() if f in RT.BLOCKING_FAMILIES)
     return kind, furniture
 
@@ -440,6 +449,11 @@ def identity_strays(kind, objects):
     for o in objects:
         fam = RT.family(o["type"])
         if fam not in RT.BLOCKING_FAMILIES: continue
+        if any(o["type"] in d for k in kinds for d in ROOMS[k].get("prefer", {}).values()):
+            continue                                  # chosen by the identity itself (an anvil in a forge)
+        if o["type"].startswith("Bellows") and any("fireplace" in ROOMS[k]["core"] or "fireplace" in ROOMS[k]["optional"]
+                                                   for k in kinds):
+            continue                                  # bellows are hearth tools: they go wherever a hearth does
         ok = False
         for k in kinds:
             ident = ROOMS[k]
@@ -621,13 +635,19 @@ def check_composition(m, ctx, base):
             out.append(F("composition", "warning", f"The bar counter stops {min(dist) * 16:.0f} px short of the wall: "
                          f"a bar run meets the wall.", o["x"], o["y"]))
 
+    out += check_room_composition(m, ctx, base)
+
     # paths that end at a building wall with no door
     import design as DS
     od = DS.Outdoor(m)
-    room_walls = set()
+    room_walls, room_floor = set(), {}
     for r in find_rooms(m):
-        room_walls |= {(x + a, y + b) for x, y in r["cells"] for a, b in N4 if (x + a, y + b) in m.walls
-                       and m.walls[(x + a, y + b)].opaque and not NATURAL_WALL.search(m.walls[(x + a, y + b)].material)}
+        walls_here = {(x + a, y + b) for x, y in r["cells"] for a, b in N4 if (x + a, y + b) in m.walls
+                      and m.walls[(x + a, y + b)].opaque and not NATURAL_WALL.search(m.walls[(x + a, y + b)].material)}
+        room_walls |= walls_here
+        mats = collections.Counter(m.tiles[c]["material"] for c in r["cells"] if c in m.tiles)
+        if mats:
+            for w in walls_here: room_floor[w] = mats.most_common(1)[0][0]
     doors = [d["gap"] for d in m.doors]
     SIDES = ((1, 1), (1, -1), (-1, 1), (-1, -1))
     # only paths that belong to a road network (25+ connected tiles), not paved patches by a hearth
@@ -655,11 +675,141 @@ def check_composition(m, ctx, base):
             if len(nxt) != 1: break
             prev, cur, length = cur, nxt[0], length + 1
         if length > 8: continue
-        near_wall = any((x + a, y + b) in room_walls for a in range(-1, 3) for b in range(-1, 3))
+        near = [(x + a, y + b) for a in range(-1, 3) for b in range(-1, 3) if (x + a, y + b) in room_walls]
+        if any(room_floor.get(w) == m.tiles[(x, y)]["material"] for w in near): continue   # the room's own floor
+        near_wall = bool(near)
         near_door = any(abs(gx - x) <= 3 and abs(gy - y) <= 3 for gx, gy in doors)
         if near_wall and not near_door:
             out.append(F("composition", "warning", "A path ends at a building wall with no door; paths lead to doors.",
                          (x + 1) * CELL, (y + 1) * CELL))
+    return out
+
+
+# ---- room composition and bridge landings (DysVale v0.5 playtest) ----------------------------------------
+# pieces that need the space in front of them (a chest to open, a hearth or stove to tend); Westwood puts
+# reading tables before bookcases, so shelves are not included
+NEEDS_FRONT = re.compile(r"^Chest\d|^Chest[NS][EW]$|^DunMirChest|Fireplace|^Stove|^Cauldron|^CinderBin")
+FRONT_BLOCKERS = {"table", "desk", "bed", "counter_bar", "counter_shop", "stove", "shelves", "chair", "bench"}
+FLOOR_LIGHT = re.compile(r"Candleabra|Candelabra|^TorchPole|Lantern\d$")
+PLANK = re.compile(r"^WoodSlatFloor")
+
+
+def room_runs(m, cells):
+    """Straight wall runs around a room: (line, coord) -> (lo, hi) along the run, in uv units."""
+    near = {(x + a, y + b) for x, y in cells for a, b in N4} & set(m.walls)
+    runs = collections.defaultdict(list)
+    for (x, y) in near:
+        w = m.walls[(x, y)]
+        for line, nbs, f in (("/", ((1, -1), (-1, 1)), 0), ("\\", ((1, 1), (-1, -1)), 1)):
+            if any((x + a, y + b) in m.walls for a, b in nbs) or w.facing == f:
+                runs[(line, x + y + 1 if line == "/" else x - y)].append(x - y if line == "/" else x + y + 1)
+    return {k: (min(v) - 1, max(v) + 1) for k, v in runs.items() if len(v) >= 2}
+
+
+def uv_of(o):
+    return (o["x"] + o["y"]) / CELL, (o["x"] - o["y"]) / CELL
+
+
+def furniture_offset(m, r):
+    """How far a room's furniture sits from the room's middle, relative to its size (None for rooms
+    with fewer than 5 pieces): Westwood's rooms: median 0.35, 90% under 0.70."""
+    cells = r["cells"]
+    furn = [o for o in r["objects"] if m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES]
+    if len(furn) < 5: return None, 0, 0
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    fu = sum(uv_of(o)[0] for o in furn) / len(furn); fv = sum(uv_of(o)[1] for o in furn) / len(furn)
+    return math.hypot(fu - cu, fv - cv) / (math.sqrt(len(cells)) / 1.4), fu, fv
+
+
+def check_room_composition(m, ctx, base):
+    """How a room's pieces relate: the space before a chest, hearth, shelf or stove stays clear (the
+    chest behind a table and a lamp); chairs stand at a table; furniture is not bunched into one part
+    of the room."""
+    out = []
+    lim = base.get("furniture_offset_p95", 0.85)
+    for r in find_rooms(m):
+        cells = r["cells"]
+        cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+        runs = room_runs(m, cells)
+        objs = r["objects"]
+        blockers = [o for o in objs if m.blocking(o) and (RT.family(o["type"]) in FRONT_BLOCKERS or FLOOR_LIGHT.search(o["type"]))]
+        for o in objs:
+            if not NEEDS_FRONT.search(o["type"]): continue
+            u, v = uv_of(o)
+            best = None
+            for (line, coord), (lo, hi) in runs.items():
+                perp = abs(u - coord) if line == "/" else abs(v - coord)
+                along = v if line == "/" else u
+                if perp <= 2.8 and lo - 0.5 <= along <= hi + 0.5 and (best is None or perp < best[0]):
+                    best = (perp, line, coord)
+            if not best: continue
+            _, line, coord = best
+            sgn = (1 if cu > coord else -1) if line == "/" else (1 if cv > coord else -1)
+            ha = max(0.8, m.radius(o) / 16.26) + 0.3          # half its width along the wall, plus a little
+            a0 = v if line == "/" else u
+            p0 = u if line == "/" else v
+            for p in blockers:
+                if p is o: continue
+                pu, pv = uv_of(p)
+                pa, pp = (pv, pu) if line == "/" else (pu, pv)
+                depth = (pp - p0) * sgn                          # how far into the room, in front of the piece
+                if abs(pa - a0) <= ha and 0.4 <= depth <= 2.6:
+                    out.append(F("composition", "warning", f"{p['type']} stands right in front of {o['type']}: keep the "
+                                 f"space before it clear.", p["x"], p["y"]))
+                    break
+        chairs = [o for o in objs if RT.family(o["type"]) == "chair"]
+        tables = [o for o in objs if RT.family(o["type"]) in ("table", "desk", "counter_bar", "counter_shop")]
+        if len(chairs) >= 2 and not any(math.hypot(c["x"] - t["x"], c["y"] - t["y"]) < 70 for c in chairs for t in tables):
+            out.append(F("composition", "warning", f"{len(chairs)} chairs and no table to sit at.", chairs[0]["x"], chairs[0]["y"]))
+        off, fu, fv = furniture_offset(m, r)
+        if off is not None:
+            if off > lim:
+                x, y = (fu + fv) / 2 * CELL, (fu - fv) / 2 * CELL
+                out.append(F("composition", "warning", f"The furniture is bunched into one part of the room (offset {off:.2f}; "
+                             f"Westwood's rooms stay under about {lim:.2f}).", x, y))
+    out += bridge_landings(m)
+    return out
+
+
+def bridge_landings(m):
+    """Each end of a plank bridge must open onto ground: a bridge is planned with its road, not jammed
+    against the forest."""
+    out = []
+    water = {t for t, d in m.tiles.items() if WATER_RE.search(d["material"])}
+    deck = {t for t, d in m.tiles.items() if PLANK.match(d["material"]) and
+            any((t[0] + a, t[1] + b) in water for a, b in ((1, 1), (1, -1), (-1, 1), (-1, -1)))}
+    # whole decks: plank tiles connected to a tile touching water
+    planks = {t for t, d in m.tiles.items() if PLANK.match(d["material"])}
+    seen = set()
+    for start in deck:
+        if start in seen: continue
+        comp, q = {start}, [start]
+        while q:
+            a = q.pop()
+            for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+                n = (a[0] + dx, a[1] + dy)
+                if n in planks and n not in comp: comp.add(n); q.append(n)
+        seen |= comp
+        us = [x + y for x, y in comp]; vs = [x - y for x, y in comp]
+        if len(comp) < 6: continue
+        axis_u = (max(us) - min(us)) >= (max(vs) - min(vs))
+        for end in (0, 1):
+            coord = (max(us) if end else min(us)) if axis_u else (max(vs) if end else min(vs))
+            mid = (sum(vs) / len(vs)) if axis_u else (sum(us) / len(us))
+            step = 2 if end else -2
+            bad = 0
+            for k in (1, 2):                              # the two tiles beyond this end of the deck
+                u, v = (coord + step * k, mid) if axis_u else (mid, coord + step * k)
+                x, y = int(round((u + v) / 2)), int(round((u - v) / 2))
+                if (x + y) % 2: x += 1
+                tile = (x, y)
+                cells = ((x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1))
+                if tile not in m.tiles or tile in water or any(c in m.walls and not m.walls[c].invisible for c in cells):
+                    bad += 1
+            if bad:
+                ex, ey = ((coord + mid) / 2 * CELL, (coord - mid) / 2 * CELL) if axis_u else ((mid + coord) / 2 * CELL, (mid - coord) / 2 * CELL)
+                out.append(F("composition", "warning", "A bridge ends against a wall or the forest instead of on open ground: "
+                             "plan the crossing with its road.", ex, ey))
     return out
 
 
