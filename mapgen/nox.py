@@ -11,6 +11,22 @@ Grid facts (verified against stock maps, the editor, and the engine):
 import json, os, random, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+RULES = os.path.join(os.path.dirname(HERE), "rules", "out")
+
+
+def load_rules(name):
+    """Machine-readable rules mined from Westwood's maps (rules/out/<name>.json)."""
+    with open(os.path.join(RULES, name + ".json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+_WALL_RULES = None
+
+
+def wall_rules():
+    global _WALL_RULES
+    if _WALL_RULES is None: _WALL_RULES = load_rules("walls")
+    return _WALL_RULES
 PS32 = os.path.join(os.environ["WINDIR"], "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
 CELL = 23
 SOLO, ARENA = 0x1, 0x34
@@ -87,18 +103,20 @@ class Spec:
         self.rng = random.Random(1)
 
     # ---- walls -------------------------------------------------------------------------
-    def wall(self, x, y, material, variation=0, window=False, facing=None):
+    def wall(self, x, y, material, variation=None, window=False, facing=None):
+        """Wall cell. variation=None (recommended) picks a valid style for the final wall shape in
+        Westwood's proportions; an explicit variation that is invalid for the shape is replaced."""
         assert (x + y) % 2 == 0, (x, y)
         self.wallmap[(x, y)] = dict(material=material, variation=variation, window=window, facing=facing)
 
     def remove_wall(self, x, y):
         self.wallmap.pop((x, y), None)
 
-    def room(self, u0, u1, v0, v1, wall, floor, variations=1, seed=0):
+    def room(self, u0, u1, v0, v1, wall, floor):
         """Walled rectangular room in u/v coordinates (all bounds even)."""
         assert all(n % 2 == 0 for n in (u0, u1, v0, v1))
-        for i, (x, y) in enumerate(sorted(rect_wall_cells(u0, u1, v0, v1))):
-            self.wall(x, y, wall, (i * 7 + seed) % variations)
+        for x, y in sorted(rect_wall_cells(u0, u1, v0, v1)):
+            self.wall(x, y, wall)
         for x, y in rect_tiles(u0, u1, v0, v1):
             self.floor[(x, y)] = floor
 
@@ -153,10 +171,19 @@ class Spec:
         self.d["objects"].append(o)
         return o
 
+    def door_type_for(self, wall_material):
+        """Door type Westwood uses in walls of this material, sampled by frequency (rules: walls.doors)."""
+        options = wall_rules()["doors"]["types_by_wall_material"].get(wall_material) or {"WoodenDoor": 1}
+        types, weights = zip(*sorted(options.items()))
+        return self.rng.choices(types, weights)[0]
+
     def door(self, type_, gap, line):
         """Door in a one-cell wall gap. line '\\' or '/' is the direction of the wall it sits in.
-        Placement follows Westwood's doors (verified on 64 of Con07B's 67 doors)."""
+        Placement follows Westwood's doors (98-100% of single-player doors). type_=None picks a
+        type that suits the wall material."""
         gx, gy = gap
+        if type_ is None:
+            type_ = self.door_type_for(self.wallmap.get(gap, {}).get("material", ""))
         self.remove_wall(gx, gy)
         if line == "\\":
             return self.obj_px(type_, (gx + 1) * CELL, (gy + 1) * CELL, door=0)    # South
@@ -184,11 +211,20 @@ class Spec:
                 arms = frozenset(a for a in (TL, TR, BL, BR) if (x + a[0], y + a[1]) in self.wallmap)
                 facing = FACING_BY_ARMS[arms]
             walls.append(dict(x=x, y=y, facing=facing, material=w["material"],
-                              variation=w["variation"], window=w["window"]))
+                              variation=self._wall_variation(w["material"], facing, w["variation"]), window=w["window"]))
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         return dict(self.d, walls=walls, tiles=tiles)
+
+    def _wall_variation(self, material, facing, wanted):
+        """A wall style that exists for this material and shape (rules: walls.valid_variations)."""
+        rules = wall_rules()
+        valid = rules["valid_variations"].get(material, {}).get(str(facing), {})
+        if wanted is not None and str(wanted) in valid: return wanted
+        weights = rules["variation_weights"].get(material, {}).get(str(facing)) or {"0": 1.0}
+        options, w = zip(*sorted(weights.items()))
+        return int(self.rng.choices(options, w)[0])
 
     def build(self, out_dir):
         """Write the map (and .nxz unless d['nxz'] is False) into out_dir. Returns the report lines."""

@@ -7,7 +7,7 @@
 #   ambient[r,g,b],
 #   walls[{x,y,facing,material[,variation][,window]}],
 #   tiles[{x,y,material[,edges[[overlayMaterial, edgeType, direction]]]}],
-#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}]}],
+#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}]}],
 #   waypoints[{id,x,y[,name][,links[id...]]}],
 #   polygons[{name,ambient[r,g,b],minimap,points[[x,y]...]}]
 param(
@@ -82,6 +82,22 @@ foreach ($t in $s.tiles) {
     $map.Tiles[$pt] = $tile
 }
 
+function Set-XferFields($obj, $fields) {
+    # Overrides an object's type-specific settings (e.g. a ColorLight preset, NPC behaviour).
+    if (-not $fields) { return }
+    $x = $xferField.GetValue($obj)
+    foreach ($p in $fields.PSObject.Properties) {
+        $f = $x.GetType().GetField($p.Name)
+        if (-not $f) { $errors.Add("$($obj.Name): no setting '$($p.Name)' on $($x.GetType().Name)"); continue }
+        $t = $f.FieldType; $v = $p.Value
+        if ($t -eq [Drawing.Color]) { $v = [Drawing.Color]::FromArgb([int]$v[0], [int]$v[1], [int]$v[2]) }
+        elseif ($t.IsEnum) { $v = if ($v -is [string]) { [Enum]::Parse($t, $v) } else { [Enum]::ToObject($t, $v) } }
+        elseif ($t.IsArray) { $v = [Array]::CreateInstance($t.GetElementType(), @($v).Count); $i = 0; foreach ($e in $p.Value) { $v[$i++] = [Convert]::ChangeType($e, $t.GetElementType()) } }
+        elseif ($null -ne $v) { $v = [Convert]::ChangeType($v, $t) }
+        $f.SetValue($x, $v)
+    }
+}
+
 $extent = 3   # 2 is reserved for the host player (see MapInterface.GetNextObjectExtent)
 function Set-Extents($obj) {
     $obj.Extent = $script:extent++
@@ -99,6 +115,7 @@ foreach ($o in $s.objects) {
         $obj.Location = New-Object Drawing.PointF([float]$o.x, [float]$o.y)
         $obj.Scr_Name = ''                    # no script in this map references it
         Set-Extents $obj
+        Set-XferFields $obj $o.xfer
         [void]$map.Objects.Add($obj)
         continue
     }
@@ -122,6 +139,7 @@ foreach ($o in $s.objects) {
     } elseif ($thing.Xfer -eq 'DoorXfer') {
         $x.Direction = [NoxShared.ObjDataXfer.DoorXfer+DOORS_DIR][int]$o.door
     }
+    Set-XferFields $obj $o.xfer
     [void]$map.Objects.Add($obj)
 }
 

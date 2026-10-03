@@ -37,7 +37,12 @@ public static class CorpusDump
         if (v is Color) { var c = (Color)v; return new object[] { c.R, c.G, c.B }; }
         if (v is PointF) { var p = (PointF)v; return new object[] { p.X, p.Y }; }
         if (v is Point) { var p = (Point)v; return new object[] { p.X, p.Y }; }
-        if (v is byte[]) return ((byte[])v).Length;          // raw blobs: keep only the size
+        if (v is byte[])                                      // keep byte tables whole (e.g. light animation
+        {                                                     // tables): copying a setting needs exact bytes
+            var bl = new List<object>();
+            foreach (var b in (byte[])v) bl.Add((int)b);
+            return bl;
+        }
         var en = v as IEnumerable;
         if (en != null)
         {

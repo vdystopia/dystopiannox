@@ -5486,7 +5486,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.357,
-     "variant": "Coffin1",
+     "variant": "Coffin3",
      "weighted": 37.3
     },
     "/|TL": {
@@ -6389,7 +6389,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.5,
-     "variant": "CushionedStool1",
+     "variant": "CushionedStool2",
      "weighted": 4.0
     },
     "/|TL": {
@@ -7592,7 +7592,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.4,
-     "variant": "DunMirWarPole3",
+     "variant": "DunMirWarPole1",
      "weighted": 10.0
     },
     "\\|BL": {
@@ -8625,7 +8625,7 @@
     },
     "/|TL": {
      "share": 0.4,
-     "variant": "LOTDTombstone4",
+     "variant": "LOTDTombstone1",
      "weighted": 10.0
     },
     "\\|BL": {
@@ -9505,7 +9505,7 @@
     },
     "\\|BL": {
      "share": 0.5,
-     "variant": "MiningTools1",
+     "variant": "MiningTools2",
      "weighted": 4.0
     }
    },
@@ -9733,7 +9733,7 @@
    "use_variant_for_wall_side": {
     "\\|BL": {
      "share": 0.5,
-     "variant": "MovableStatueVictory4NE",
+     "variant": "MovableStatueVictory4SE",
      "weighted": 2.0
     }
    },
@@ -9966,7 +9966,7 @@
     },
     "/|TL": {
      "share": 0.333,
-     "variant": "OgreBench2",
+     "variant": "OgreBench4",
      "weighted": 3.0
     },
     "\\|BL": {
@@ -10974,12 +10974,12 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.333,
-     "variant": "RedRug4",
+     "variant": "RedRug3",
      "weighted": 6.0
     },
     "/|TL": {
      "share": 0.333,
-     "variant": "RedRug1",
+     "variant": "RedRug2",
      "weighted": 3.0
     }
    },
@@ -11230,7 +11230,7 @@
     },
     "\\|BL": {
      "share": 0.25,
-     "variant": "RuinsColumnIndoor03",
+     "variant": "RuinsColumnIndoor01",
      "weighted": 8.0
     },
     "\\|TR": {
@@ -11473,7 +11473,7 @@
     },
     "\\|BL": {
      "share": 0.143,
-     "variant": "RuinsColumnOutdoor02",
+     "variant": "RuinsColumnOutdoor04",
      "weighted": 14.0
     },
     "\\|TR": {
@@ -11763,7 +11763,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.333,
-     "variant": "RuinsColumnOutdoorShort03",
+     "variant": "RuinsColumnOutdoorShort02",
      "weighted": 3.0
     },
     "\\|BL": {
@@ -11948,7 +11948,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.5,
-     "variant": "SackChestSmall1",
+     "variant": "SackChestSmall2",
      "weighted": 2.0
     }
    },
@@ -14370,7 +14370,7 @@
     },
     "/|TL": {
      "share": 0.5,
-     "variant": "TraderCrossedWeapons5",
+     "variant": "TraderCrossedWeapons6",
      "weighted": 4.0
     },
     "\\|BL": {
@@ -14719,7 +14719,7 @@
     },
     "/|TL": {
      "share": 0.5,
-     "variant": "TraderPoleArm1",
+     "variant": "TraderPoleArm2",
      "weighted": 4.0
     },
     "\\|BL": {
@@ -15144,7 +15144,7 @@
    "use_variant_for_wall_side": {
     "/|BR": {
      "share": 0.333,
-     "variant": "TraderTentShadowUP1",
+     "variant": "TraderTentShadowUP2",
      "weighted": 3.0
     },
     "\\|TR": {

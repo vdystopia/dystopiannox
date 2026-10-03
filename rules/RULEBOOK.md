@@ -524,7 +524,7 @@ Source: `rules/lighting.py` -> `rules/out/lighting.json`. Style figures are sing
 
 #### ColorLight (invisible light) settings
 
-- Fields that never vary across 13,145 lights in all maps (copy as-is): B2, B3, ChangeColors, ChangeRadius, ColorChangeIndex, G2, G3, IntensityChangeIndex, IsAntiLight, MaxRadius10, MaxRadius6, MaxRadius7, MaxRadius8, MinRadius10, MinRadius6, MinRadius7, MinRadius8, MinRadius9, NumOfColors, R2, R3, RadiusChangeIndex, Unknown11, Unknown2, Unknown3, Unknown30, Unknown4, Unknown5, Unknown6, Unknown9, UnknownB, UnknownB2, UnknownG, UnknownG2, UnknownR, UnknownR2, UnknownVal.
+- Fields that never vary across 13,145 lights in all maps (copy as-is): B2, B3, ChangeColors, ChangeRadius, ColorChangeIndex, G2, G3, IntensityChangeIndex, IsAntiLight, MaxRadius10, MaxRadius6, MaxRadius7, MaxRadius8, MinRadius10, MinRadius6, MinRadius7, MinRadius8, MinRadius9, NumOfColors, R2, R3, RadiusChangeIndex, Unknown11, Unknown30, Unknown4, Unknown5, Unknown6, Unknown9, UnknownB, UnknownB2, UnknownG, UnknownG2, UnknownR, UnknownR2.
 - R,G,B are the light colour; Color1 equals R,G,B in 90% of lights (set both). `ChangeIntensitySingle` equals `LightIntensity` in 90% of lights.
 - `LightRadius` and `Unknown7` are tied to `LightIntensity` (most common radius per intensity: 63->181, 50->144, 49->141, 45->129, 40->115, 25->66). The standard light is intensity 63 / radius 181-182 (about 90% of all lights); to make a light, copy a preset's `xfer` and change only the colour (R,G,B and Color1).
 
@@ -827,7 +827,7 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | LightBench | /|BR: LightBench2 (100%, 16.5); /|TL: LightBench2 (100%, 11.0); \|BL: LightBench2 (54%, 26.0); \|TR: LightBench1 (85%, 13.0) |
 | LogShelvesFull | /|BR: LogShelvesFull3 (92%, 40.0); /|TL: LogShelvesFull2 (55%, 20.0); \|BL: LogShelvesFull4 (96%, 48.0); \|TR: LogShelvesFull3 (33%, 12.0) |
 | DunMirHangingShield | /|BR: DunMirHangingShield13 (24%, 62.5); \|BL: DunMirHangingShield14 (32%, 68.5) |
-| Coffin | /|BR: Coffin1 (36%, 37.3); /|TL: Coffin3 (48%, 7.0); \|BL: Coffin1 (37%, 33.7); \|TR: Coffin3 (48%, 20.7) |
+| Coffin | /|BR: Coffin3 (36%, 37.3); /|TL: Coffin3 (48%, 7.0); \|BL: Coffin1 (37%, 33.7); \|TR: Coffin3 (48%, 20.7) |
 | Table | /|BR: Table1 (54%, 8.7); /|TL: Table3 (55%, 11.0); \|BL: Table2 (43%, 23.5); \|TR: Table1 (83%, 6.0) |
 | UrchinPainting | /|BR: UrchinPainting1 (95%, 56.0); /|TL: UrchinPainting1 (80%, 10.0); \|BL: UrchinPainting2 (93%, 60.0); \|TR: UrchinPainting1 (75%, 4.0) |
 | BarrelSteel | /|BR: BarrelSteel1 (54%, 37.0); /|TL: BarrelSteel1 (62%, 21.0); \|BL: BarrelSteel1 (70%, 30.0); \|TR: BarrelSteel1 (54%, 35.0) |
@@ -841,13 +841,13 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | Cot | /|BR: Cot1 (57%, 30.3); /|TL: Cot2 (56%, 9.0); \|BL: Cot1 (49%, 31.3); \|TR: Cot4 (59%, 15.3) |
 | Stool | /|BR: Stool2 (64%, 20.3); /|TL: Stool2 (60%, 5.0); \|BL: Stool1 (63%, 19.0); \|TR: Stool1 (45%, 6.7) |
 | Brick | /|BR: Brick1 (50%, 6.7); /|TL: Brick0 (56%, 5.3); \|BL: Brick2 (50%, 13.3); \|TR: Brick3 (33%, 12.0) |
-| LOTDTombstone | /|BR: LOTDTombstone1 (67%, 30.0); /|TL: LOTDTombstone4 (40%, 10.0); \|BL: LOTDTombstone1 (53%, 17.0); \|TR: LOTDTombstone2 (42%, 12.0) |
+| LOTDTombstone | /|BR: LOTDTombstone1 (67%, 30.0); /|TL: LOTDTombstone1 (40%, 10.0); \|BL: LOTDTombstone1 (53%, 17.0); \|TR: LOTDTombstone2 (42%, 12.0) |
 | SewerPipe | /|BR: SewerPipe01 (81%, 48.0); \|BL: SewerPipe04 (65%, 34.0) |
 | RoundTable | /|BR: RoundTable2 (53%, 9.5); /|TL: RoundTable2 (68%, 10.3); \|BL: RoundTable1 (50%, 10.0); \|TR: RoundTable1 (79%, 14.0) |
 | OldDarkWoodenChair | /|BR: OldDarkWoodenChair8 (38%, 12.0); /|TL: OldDarkWoodenChair2 (56%, 9.0); \|BL: OldDarkWoodenChair3 (42%, 16.5); \|TR: OldDarkWoodenChair5 (50%, 6.0) |
 | UrchinShelvesEmpty | /|BR: UrchinShelvesEmpty2 (100%, 28.0); /|TL: UrchinShelvesEmpty2 (67%, 9.0); \|BL: UrchinShelvesEmpty1 (100%, 19.0); \|TR: UrchinShelvesEmpty1 (100%, 9.0) |
 | PiledBarrels | /|BR: PiledBarrels1 (92%, 23.7); /|TL: PiledBarrels1 (89%, 9.0); \|BL: PiledBarrels2 (83%, 28.0); \|TR: PiledBarrels2 (100%, 11.0) |
-| TraderPoleArm | /|BR: TraderPoleArm3 (66%, 31.0); /|TL: TraderPoleArm1 (50%, 4.0); \|BL: TraderPoleArm2 (59%, 30.5); \|TR: TraderPoleArm3 (36%, 5.5) |
+| TraderPoleArm | /|BR: TraderPoleArm3 (66%, 31.0); /|TL: TraderPoleArm2 (50%, 4.0); \|BL: TraderPoleArm2 (59%, 30.5); \|TR: TraderPoleArm3 (36%, 5.5) |
 | AlchemistDesk | /|BR: AlchemistDesk4 (100%, 16.5); \|BL: AlchemistDesk3 (62%, 16.0); \|TR: AlchemistDesk1 (75%, 8.0) |
 | BarrelWithTools | /|BR: BarrelWithTools2 (67%, 22.3); /|TL: BarrelWithTools2 (55%, 11.0); \|BL: BarrelWithTools1 (55%, 22.0); \|TR: BarrelWithTools1 (65%, 5.7) |
 | Crate | /|BR: Crate2 (86%, 18.5); /|TL: Crate2 (79%, 12.0); \|BL: Crate1 (61%, 16.8); \|TR: Crate1 (63%, 8.1) |
@@ -856,15 +856,15 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | OgreStool | /|BR: OgreStool2 (67%, 4.0); /|TL: OgreStool1 (61%, 9.3); \|BL: OgreStool1 (75%, 5.3); \|TR: OgreStool2 (63%, 6.3) |
 | Fireplace | /|BR: Fireplace4 (100%, 25.5); /|TL: Fireplace1 (100%, 2.0); \|BL: Fireplace3 (100%, 31.5); \|TR: Fireplace2 (100%, 2.0) |
 | BlueTapestry | /|BR: BlueTapestry2 (100%, 26.0); \|BL: BlueTapestry4 (100%, 31.0); \|TR: BlueTapestry1 (100%, 2.0) |
-| RuinsColumnIndoor | /|BR: RuinsColumnIndoor01 (35%, 20.0); /|TL: RuinsColumnIndoor02 (35%, 17.0); \|BL: RuinsColumnIndoor03 (25%, 8.0); \|TR: RuinsColumnIndoor03 (43%, 7.0) |
+| RuinsColumnIndoor | /|BR: RuinsColumnIndoor01 (35%, 20.0); /|TL: RuinsColumnIndoor02 (35%, 17.0); \|BL: RuinsColumnIndoor01 (25%, 8.0); \|TR: RuinsColumnIndoor03 (43%, 7.0) |
 | Painting | /|BR: Painting1 (100%, 31.3); \|BL: Painting2 (100%, 23.5) |
 | MinePost | /|BR: MinePost4 (62%, 10.5); /|TL: MinePost3 (55%, 7.2); \|BL: MinePost3 (60%, 21.8); \|TR: MinePost4 (57%, 7.0) |
 | WoodBed | /|BR: WoodBed1 (58%, 12.0); /|TL: WoodBed3 (88%, 8.0); \|BL: WoodBed2 (78%, 22.3); \|TR: WoodBed1 (46%, 12.0) |
 | ChestLOTD | /|BR: ChestLOTD4 (86%, 16.7); /|TL: ChestLOTD1 (100%, 3.0); \|BL: ChestLOTD3 (90%, 17.0); \|TR: ChestLOTD2 (100%, 6.7) |
-| RuinsColumnOutdoor | /|BR: RuinsColumnOutdoor02 (23%, 13.0); /|TL: RuinsColumnOutdoor01 (30%, 10.0); \|BL: RuinsColumnOutdoor02 (14%, 14.0); \|TR: RuinsColumnOutdoor08 (25%, 8.0) |
+| RuinsColumnOutdoor | /|BR: RuinsColumnOutdoor02 (23%, 13.0); /|TL: RuinsColumnOutdoor01 (30%, 10.0); \|BL: RuinsColumnOutdoor04 (14%, 14.0); \|TR: RuinsColumnOutdoor08 (25%, 8.0) |
 | SquareTable | /|BR: SquareTable1 (52%, 15.5); /|TL: SquareTable1 (100%, 6.7); \|BL: SquareTable1 (59%, 21.8); \|TR: SquareTable1 (100%, 3.0) |
 | LargeBarrel | /|BR: LargeBarrel2 (58%, 14.3); /|TL: LargeBarrel2 (91%, 11.7); \|BL: LargeBarrel1 (54%, 13.8); \|TR: LargeBarrel1 (68%, 7.3) |
-| DunMirWarPole | /|BR: DunMirWarPole3 (40%, 10.0); \|BL: DunMirWarPole6 (40%, 15.0) |
+| DunMirWarPole | /|BR: DunMirWarPole1 (40%, 10.0); \|BL: DunMirWarPole6 (40%, 15.0) |
 | Bellows | /|BR: Bellows4 (36%, 23.5); /|TL: Bellows4 (100%, 2.0); \|BL: Bellows3 (38%, 13.0) |
 | ChestUrchin | /|BR: ChestUrchin4 (92%, 12.0); \|BL: ChestUrchin3 (96%, 24.0) |
 | DarkWoodenChairFallen | /|BR: DarkWoodenChairFallen3 (69%, 4.3); /|TL: DarkWoodenChairFallen2 (54%, 4.3); \|BL: DarkWoodenChairFallen1 (30%, 10.0) |
@@ -874,12 +874,12 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | Stove | /|BR: Stove05 (91%, 14.3); \|BL: Stove03 (65%, 23.0) |
 | OgreBed | /|BR: OgreBed2 (86%, 21.0); /|TL: OgreBed1 (67%, 3.0); \|BL: OgreBed1 (93%, 15.0) |
 | MineOreCart | /|BR: MineOreCart2 (64%, 11.0); /|TL: MineOreCart2 (100%, 3.0); \|BL: MineOreCart1 (78%, 9.0); \|TR: MineOreCart1 (70%, 10.0) |
-| CushionedStool | /|BR: CushionedStool1 (50%, 4.0); /|TL: CushionedStool4 (67%, 6.0); \|BL: CushionedStool2 (100%, 2.0); \|TR: CushionedStool1 (100%, 4.0) |
+| CushionedStool | /|BR: CushionedStool2 (50%, 4.0); /|TL: CushionedStool4 (67%, 6.0); \|BL: CushionedStool2 (100%, 2.0); \|TR: CushionedStool1 (100%, 4.0) |
 | CushionedBench | /|BR: CushionedBench1 (100%, 6.0); /|TL: CushionedBench2 (57%, 4.7); \|BL: CushionedBench2 (90%, 10.5); \|TR: CushionedBench1 (50%, 2.0) |
 | TraderShelves | /|TL: TraderShelves2 (100%, 16.0); \|BL: TraderShelves1 (100%, 8.0); \|TR: TraderShelves1 (100%, 3.0) |
 | TraderDesk | /|BR: TraderDesk1 (56%, 9.0); \|BL: TraderDesk3 (67%, 9.0) |
 | RedTapestry | /|BR: RedTapestry1 (100%, 14.0); \|BL: RedTapestry2 (100%, 14.0); \|TR: RedTapestry4 (100%, 3.0) |
-| OgreBench | /|BR: OgreBench2 (100%, 4.0); /|TL: OgreBench2 (33%, 3.0); \|BL: OgreBench1 (83%, 6.0); \|TR: OgreBench4 (50%, 4.0) |
+| OgreBench | /|BR: OgreBench2 (100%, 4.0); /|TL: OgreBench4 (33%, 3.0); \|BL: OgreBench1 (83%, 6.0); \|TR: OgreBench4 (50%, 4.0) |
 | PulleyGear | /|BR: PulleyGear3 (56%, 5.3); /|TL: PulleyGear6 (71%, 8.5); \|BL: PulleyGear3 (43%, 7.0); \|TR: PulleyGear1 (57%, 7.0) |
 | WhiteTapestry | /|BR: WhiteTapestry2 (100%, 15.5); \|BL: WhiteTapestry4 (100%, 13.5) |
 | TeepeeShelvesEmpty | /|BR: TeepeeShelvesEmpty2 (80%, 5.0); \|BL: TeepeeShelvesEmpty2 (50%, 8.0); \|TR: TeepeeShelvesEmpty2 (100%, 3.0) |
@@ -895,24 +895,24 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | ClothSign | /|BR: ClothSign2 (67%, 3.0); \|BL: ClothSign1 (100%, 4.0) |
 | TraderBowRack | /|BR: TraderBowRack2 (100%, 12.0); \|BL: TraderBowRack1 (100%, 5.0) |
 | StatueVictory1 | /|BR: StatueVictory1SE (100%, 12.0); /|TL: StatueVictory1NW (100%, 4.0); \|BL: StatueVictory1SW (100%, 4.0) |
-| TraderTentShadowUP | /|BR: TraderTentShadowUP1 (33%, 3.0); \|TR: TraderTentShadowUP1 (100%, 2.0) |
+| TraderTentShadowUP | /|BR: TraderTentShadowUP2 (33%, 3.0); \|TR: TraderTentShadowUP1 (100%, 2.0) |
 | LOTDCandleGroupLarge | /|BR: LOTDCandleGroupLarge2 (100%, 3.0) |
 | DunMirAltar | /|BR: DunMirAltar1 (80%, 5.0); /|TL: DunMirAltar1 (80%, 5.0); \|BL: DunMirAltar1 (100%, 4.0); \|TR: DunMirAltar1 (100%, 4.0) |
 | StreetLamp | /|BR: StreetLamp3 (60%, 5.0); /|TL: StreetLamp2 (75%, 8.0); \|BL: StreetLamp3 (100%, 2.0); \|TR: StreetLamp1 (100%, 3.0) |
 | CathedralColumn | \|BL: CathedralColumn1 (100%, 3.5); \|TR: CathedralColumn3 (50%, 8.0) |
 | LOTDBanner | /|BR: LOTDBanner1 (100%, 6.0) |
 | LOTDLichGodStatue | /|BR: LOTDLichGodStatue1 (50%, 6.0); \|BL: LOTDLichGodStatue2 (60%, 5.0); \|TR: LOTDLichGodStatue1 (100%, 3.0) |
-| RedRug | /|BR: RedRug4 (33%, 6.0); /|TL: RedRug1 (33%, 3.0) |
-| MovableStatueVictory4 | \|BL: MovableStatueVictory4NE (50%, 2.0) |
-| TraderCrossedWeapons | /|BR: TraderCrossedWeapons6 (56%, 4.5); /|TL: TraderCrossedWeapons5 (50%, 4.0); \|BL: TraderCrossedWeapons3 (100%, 8.0) |
+| RedRug | /|BR: RedRug3 (33%, 6.0); /|TL: RedRug2 (33%, 3.0) |
+| MovableStatueVictory4 | \|BL: MovableStatueVictory4SE (50%, 2.0) |
+| TraderCrossedWeapons | /|BR: TraderCrossedWeapons6 (56%, 4.5); /|TL: TraderCrossedWeapons6 (50%, 4.0); \|BL: TraderCrossedWeapons3 (100%, 8.0) |
 | StatueVase1 | /|BR: StatueVase1SE (100%, 2.7); \|BL: StatueVase1SW (93%, 9.7); \|TR: StatueVase1NE (100%, 3.0) |
 | StatueVictory4 | /|TL: StatueVictory4NW (50%, 2.0) |
 | TraderHangingCrossbow | /|BR: TraderHangingCrossbow2 (100%, 3.0); \|BL: TraderHangingCrossbow1 (100%, 13.0) |
-| MiningTools | /|BR: MiningTools2 (58%, 4.8); \|BL: MiningTools1 (50%, 4.0) |
+| MiningTools | /|BR: MiningTools2 (58%, 4.8); \|BL: MiningTools2 (50%, 4.0) |
 | WallTrophyBear | /|BR: WallTrophyBear1 (100%, 5.5); \|BL: WallTrophyBear2 (100%, 9.0) |
 | SackChestLarge | /|BR: SackChestLarge1 (65%, 5.7); \|BL: SackChestLarge2 (58%, 4.0) |
 | TraderHelmShelf | /|BR: TraderHelmShelf2 (100%, 4.0); \|BL: TraderHelmShelf1 (100%, 8.0); \|TR: TraderHelmShelf1 (100%, 2.0) |
-| RuinsColumnOutdoorShort | /|BR: RuinsColumnOutdoorShort03 (33%, 3.0); \|BL: RuinsColumnOutdoorShort02 (50%, 4.0) |
+| RuinsColumnOutdoorShort | /|BR: RuinsColumnOutdoorShort02 (33%, 3.0); \|BL: RuinsColumnOutdoorShort02 (50%, 4.0) |
 | SmallMirror | /|BR: SmallMirror2 (100%, 8.5); \|BL: SmallMirror1 (100%, 4.5) |
 | StatueVictory2 | /|BR: StatueVictory2SE (100%, 2.0); /|TL: StatueVictory2NW (100%, 2.0); \|BL: StatueVictory2SW (100%, 4.0); \|TR: StatueVictory2NE (60%, 5.0) |
 | SackChestMedium | /|BR: SackChestMedium2 (54%, 8.7); \|BL: SackChestMedium2 (67%, 2.0) |
@@ -924,7 +924,7 @@ line '/' = wall run along constant u (facing 0, T 3/5); side BR = towards +u (do
 | LOTDLichThrone | \|BL: LOTDLichThrone2 (100%, 4.0) |
 | TortureRack | /|BR: TortureRack6 (57%, 3.5); \|TR: TortureRack6 (100%, 3.0) |
 | OpenChest | /|BR: OpenChest4 (100%, 2.0); \|BL: OpenChest3 (100%, 4.0) |
-| SackChestSmall | /|BR: SackChestSmall1 (50%, 2.0) |
+| SackChestSmall | /|BR: SackChestSmall2 (50%, 2.0) |
 | StatueVase4 | \|TR: StatueVase4NE (100%, 2.0) |
 | WallTrophyMoose | /|BR: WallTrophyMoose1 (100%, 3.0); \|BL: WallTrophyMoose2 (100%, 3.0) |
 | MovableStatueVictory1 | \|BL: MovableStatueVictory1SW (100%, 3.0); \|TR: MovableStatueVictory1NE (100%, 2.0) |

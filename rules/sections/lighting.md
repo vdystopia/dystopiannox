@@ -6,7 +6,7 @@ Source: `rules/lighting.py` -> `rules/out/lighting.json`. Style figures are sing
 
 ### ColorLight (invisible light) settings
 
-- Fields that never vary across 13,145 lights in all maps (copy as-is): B2, B3, ChangeColors, ChangeRadius, ColorChangeIndex, G2, G3, IntensityChangeIndex, IsAntiLight, MaxRadius10, MaxRadius6, MaxRadius7, MaxRadius8, MinRadius10, MinRadius6, MinRadius7, MinRadius8, MinRadius9, NumOfColors, R2, R3, RadiusChangeIndex, Unknown11, Unknown2, Unknown3, Unknown30, Unknown4, Unknown5, Unknown6, Unknown9, UnknownB, UnknownB2, UnknownG, UnknownG2, UnknownR, UnknownR2, UnknownVal.
+- Fields that never vary across 13,145 lights in all maps (copy as-is): B2, B3, ChangeColors, ChangeRadius, ColorChangeIndex, G2, G3, IntensityChangeIndex, IsAntiLight, MaxRadius10, MaxRadius6, MaxRadius7, MaxRadius8, MinRadius10, MinRadius6, MinRadius7, MinRadius8, MinRadius9, NumOfColors, R2, R3, RadiusChangeIndex, Unknown11, Unknown30, Unknown4, Unknown5, Unknown6, Unknown9, UnknownB, UnknownB2, UnknownG, UnknownG2, UnknownR, UnknownR2.
 - R,G,B are the light colour; Color1 equals R,G,B in 90% of lights (set both). `ChangeIntensitySingle` equals `LightIntensity` in 90% of lights.
 - `LightRadius` and `Unknown7` are tied to `LightIntensity` (most common radius per intensity: 63->181, 50->144, 49->141, 45->129, 40->115, 25->66). The standard light is intensity 63 / radius 181-182 (about 90% of all lights); to make a light, copy a preset's `xfer` and change only the colour (R,G,B and Color1).
 

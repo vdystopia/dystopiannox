@@ -145,6 +145,33 @@ def build_db():
     print(f"database: {db_path} ({len(atlas)} maps)")
 
 
+def build_layout_groups(threshold=0.6):
+    """Groups single-player maps that share a layout (class campaigns reuse maps): wall-position
+    overlap above `threshold` counts as the same layout. Writes table layout_group and
+    layout_groups.json; rule mining weights maps by 1 / group size."""
+    import itertools
+    db = sqlite3.connect(os.path.join(OUT, "nox_corpus.db"))
+    names = [r[0] for r in db.execute("SELECT name FROM maps WHERE category IN ('campaign','quest') ORDER BY name")]
+    walls = {n: set(db.execute("SELECT x, y FROM walls WHERE map=?", (n,)).fetchall()) for n in names}
+    parent = {n: n for n in names}
+
+    def find(n):
+        while parent[n] != n: n = parent[n]
+        return n
+    for a, b in itertools.combinations(names, 2):
+        A, B = walls[a], walls[b]
+        if A and B and len(A & B) / len(A | B) > threshold:
+            parent[find(b)] = find(a)
+    groups = {}
+    for n in names: groups.setdefault(find(n), []).append(n)
+    db.execute("DROP TABLE IF EXISTS layout_group")
+    db.execute("CREATE TABLE layout_group(map TEXT PRIMARY KEY, rep TEXT, size INT)")
+    db.executemany("INSERT INTO layout_group VALUES(?,?,?)", [(m, rep, len(g)) for rep, g in groups.items() for m in g])
+    db.commit(); db.close()
+    json.dump(groups, open(os.path.join(OUT, "layout_groups.json"), "w"), indent=1)
+    print(f"layout groups: {len(names)} single-player maps -> {len(groups)} distinct layouts")
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--skip-images", action="store_true")
@@ -159,5 +186,6 @@ if __name__ == "__main__":
     maps.sort(key=lambda p: (category(os.path.splitext(os.path.basename(p))[0])[0] not in ("campaign", "quest"), p.lower()))
     export(maps)
     build_db()
+    build_layout_groups()
     if not a.skip_images:
         render(maps)

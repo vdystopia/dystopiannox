@@ -22,7 +22,7 @@ m = Spec("DysCrypt",
          minPlayers=2, maxPlayers=8)
 m.d["ambient"] = [120, 112, 128]
 
-m.room(U - 16, U + 16, V - 16, V + 16, wall="DungeonStone", floor="CryptFloor", variations=2)
+m.room(U - 16, U + 16, V - 16, V + 16, wall="DungeonStone", floor="CryptFloor")
 
 m.obj("Obelisk", U, V)
 
