@@ -1,0 +1,1210 @@
+{
+ "bodies": {
+  "lake_max_depth_tiles": {
+   "p10": 1,
+   "p25": 1,
+   "p50": 2,
+   "p75": 3,
+   "p90": 4
+  },
+  "note": "width = 2 * median ridge distance - 1, in tiles across (1 tile ~ 1.41 cells); stream = elongation > 6 and >= 40 tiles",
+  "pools_lakes": 601,
+  "size_tiles": {
+   "p10": 5,
+   "p25": 7,
+   "p50": 16,
+   "p75": 45,
+   "p90": 168
+  },
+  "sp_bodies": 631,
+  "stream_composition": {
+   "deep": 11,
+   "plain": 7,
+   "shallow": 10,
+   "swamp_deep": 1,
+   "swamp_shallow": 12
+  },
+  "stream_max_width_tiles": {
+   "p10": 3,
+   "p25": 3,
+   "p50": 5,
+   "p75": 5,
+   "p90": 9
+  },
+  "stream_sizes_tiles": {
+   "p10": 88,
+   "p25": 162,
+   "p50": 169,
+   "p75": 319,
+   "p90": 641
+  },
+  "stream_width_cells": {
+   "p10": 1.4,
+   "p25": 1.4,
+   "p50": 1.4,
+   "p75": 4.2,
+   "p90": 4.2
+  },
+  "stream_width_tiles": {
+   "p10": 1.0,
+   "p25": 1.0,
+   "p50": 1,
+   "p75": 3,
+   "p90": 3
+  },
+  "streams": 30
+ },
+ "crossings": {
+  "bridge": {
+   "count_sp": 131,
+   "edges_on_crossing": {
+    "DirtDark2|BlendEdge": 0.044,
+    "DirtDark|BlendEdge": 0.058,
+    "WaterDeep|BlendEdge": 0.048,
+    "WaterShallow|BrickEdgeBrown": 0.276,
+    "WaterSwampShallowNoTeleport|SwampEdge": 0.074,
+    "Water|DirtRidge": 0.358
+   },
+   "end_materials": {
+    "DirtDark2": 0.058,
+    "DunMirBrick1": 0.074,
+    "GalavaBrick2": 0.053,
+    "GalavaBrick3": 0.211,
+    "GreenBrick": 0.214,
+    "SwampGrass": 0.1
+   },
+   "examples": [
+    {
+     "length": 22,
+     "map": "G_Swamp",
+     "materials": {
+      "SwampGrass": 14,
+      "WoodDark": 38
+     },
+     "tiles": 52,
+     "width": 2
+    },
+    {
+     "length": 20,
+     "map": "G_Swamp",
+     "materials": {
+      "SwampGrass": 9,
+      "WoodDark2": 36
+     },
+     "tiles": 45,
+     "width": 2
+    },
+    {
+     "length": 13,
+     "map": "Con08e",
+     "materials": {
+      "DirtBlue": 2,
+      "DirtDark2": 7,
+      "WoodDark2": 24
+     },
+     "tiles": 33,
+     "width": 2
+    },
+    {
+     "length": 13,
+     "map": "War08e",
+     "materials": {
+      "DirtBlue": 2,
+      "DirtDark2": 7,
+      "WoodDark2": 24
+     },
+     "tiles": 33,
+     "width": 2
+    },
+    {
+     "length": 13,
+     "map": "Wiz08e",
+     "materials": {
+      "DirtBlue": 2,
+      "DirtDark2": 7,
+      "WoodDark2": 24
+     },
+     "tiles": 33,
+     "width": 2
+    },
+    {
+     "length": 16,
+     "map": "G_ForesD",
+     "materials": {
+      "WoodDark": 32
+     },
+     "tiles": 32,
+     "width": 2
+    }
+   ],
+   "length_tiles": {
+    "p10": 1,
+    "p25": 3,
+    "p50": 4,
+    "p75": 6,
+    "p90": 10
+   },
+   "materials": {
+    "DirtDark2": 0.021,
+    "DunMirBrick1": 0.032,
+    "GalavaBrick3": 0.183,
+    "GreenBrick": 0.216,
+    "SwampGrass": 0.076,
+    "WoodDark": 0.184,
+    "WoodDark2": 0.157,
+    "WoodGray": 0.047
+   },
+   "water_beside": {
+    "Water": 0.254,
+    "WaterDeep": 0.071,
+    "WaterShallow": 0.291,
+    "WaterSwampShallowNoTeleport": 0.235
+   },
+   "width_tiles": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 2,
+    "p75": 4,
+    "p90": 5
+   }
+  },
+  "ford": {
+   "count_sp": 696,
+   "edges_on_crossing": {
+    "DirtDark|BlendEdge": 0.059,
+    "WaterShallowNoTeleport|ShallowWaterAndGrass": 0.084,
+    "WaterShallow|GrassEdge": 0.028,
+    "WaterSwampShallowNoTeleport|SwampEdge": 0.162,
+    "WaterSwampShallow|SwampEdge": 0.294,
+    "Water|DirtRidge": 0.159
+   },
+   "end_materials": {
+    "CaveHardBrown": 0.155,
+    "DirtBlue": 0.04,
+    "DirtDark": 0.039,
+    "DirtDark2": 0.104,
+    "GrassNorm": 0.089,
+    "SwampGrass": 0.42
+   },
+   "examples": [
+    {
+     "length": 14,
+     "map": "Con09a",
+     "materials": {
+      "SwampGrass": 50
+     },
+     "tiles": 50,
+     "width": 3
+    },
+    {
+     "length": 14,
+     "map": "War09a",
+     "materials": {
+      "SwampGrass": 50
+     },
+     "tiles": 50,
+     "width": 3
+    },
+    {
+     "length": 14,
+     "map": "Wiz09a",
+     "materials": {
+      "SwampGrass": 50
+     },
+     "tiles": 50,
+     "width": 3
+    },
+    {
+     "length": 12,
+     "map": "G_Swamp",
+     "materials": {
+      "DirtDark": 11,
+      "SwampGrass": 34
+     },
+     "tiles": 45,
+     "width": 5
+    },
+    {
+     "length": 13,
+     "map": "Con08e",
+     "materials": {
+      "DirtDark2": 26,
+      "GreenBrick": 18
+     },
+     "tiles": 44,
+     "width": 3
+    },
+    {
+     "length": 13,
+     "map": "War08e",
+     "materials": {
+      "DirtDark2": 26,
+      "GreenBrick": 18
+     },
+     "tiles": 44,
+     "width": 3
+    }
+   ],
+   "length_tiles": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 2,
+    "p90": 4
+   },
+   "materials": {
+    "CaveHardBrown": 0.11,
+    "DirtBlue": 0.024,
+    "DirtCrackedLight": 0.065,
+    "DirtDark2": 0.085,
+    "GrassNorm": 0.098,
+    "SwampGrass": 0.504,
+    "WoodDark": 0.022,
+    "WoodDark2": 0.014
+   },
+   "water_beside": {
+    "Water": 0.215,
+    "WaterShallowNoTeleport": 0.104,
+    "WaterSwampShallow": 0.343,
+    "WaterSwampShallowNoTeleport": 0.218
+   },
+   "width_tiles": {
+    "p10": 2,
+    "p25": 3,
+    "p50": 4,
+    "p75": 5,
+    "p90": 6
+   }
+  }
+ },
+ "kit_examples": [
+  {
+   "floor_under": {
+    "GrassSparse2": 2
+   },
+   "front_back_offsets": [
+    [
+     0.0,
+     -30.0
+    ]
+   ],
+   "kit": "RopeBridgeBroken1",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 2,
+   "sequence": [
+    "FarEnd"
+   ],
+   "start": [
+    2366.0,
+    3899.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 9
+   }
+  },
+  {
+   "floor_under": {
+    "GrassNormYellow": 1,
+    "GrassSparse2": 1
+   },
+   "front_back_offsets": [
+    [
+     0.0,
+     -30.0
+    ]
+   ],
+   "kit": "RopeBridgeBroken1",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 2,
+   "sequence": [
+    "NearEnd"
+   ],
+   "start": [
+    2453.0,
+    3987.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 9
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "FarRamp"
+   ],
+   "start": [
+    2621.0,
+    1427.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 4
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "Center1"
+   ],
+   "start": [
+    2683.0,
+    1480.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 6
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 2
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 2,
+   "sequence": [
+    "Center1",
+    "NearEnd"
+   ],
+   "start": [
+    2758.0,
+    1554.0
+   ],
+   "steps": [
+    [
+     36.0,
+     42.0
+    ]
+   ],
+   "walls_near": {
+    "InvisibleWallSet": 12
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "FarRamp"
+   ],
+   "start": [
+    2966.0,
+    1266.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 4
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "Center1"
+   ],
+   "start": [
+    3028.0,
+    1319.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 7
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 2
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 2,
+   "sequence": [
+    "Center1",
+    "NearEnd"
+   ],
+   "start": [
+    3103.0,
+    1393.0
+   ],
+   "steps": [
+    [
+     36.0,
+     42.0
+    ]
+   ],
+   "walls_near": {
+    "InvisibleWallSet": 12
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "FarRamp"
+   ],
+   "start": [
+    3173.0,
+    1105.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 3
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 1
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 1,
+   "sequence": [
+    "Center1"
+   ],
+   "start": [
+    3235.0,
+    1158.0
+   ],
+   "steps": [],
+   "walls_near": {
+    "InvisibleWallSet": 6
+   }
+  },
+  {
+   "floor_under": {
+    "WoodGray": 2
+   },
+   "front_back_offsets": [],
+   "kit": "DockDown",
+   "map": "Con05A",
+   "near_to_far_direction": null,
+   "pieces": 2,
+   "sequence": [
+    "Center1",
+    "NearEnd"
+   ],
+   "start": [
+    3310.0,
+    1232.0
+   ],
+   "steps": [
+    [
+     36.0,
+     42.0
+    ]
+   ],
+   "walls_near": {
+    "InvisibleWallSet": 12
+   }
+  },
+  {
+   "floor_under": {
+    "DirtDark2": 3,
+    "WoodDark2": 13
+   },
+   "front_back_offsets": [
+    [
+     0.0,
+     -30.0
+    ],
+    [
+     0.0,
+     -31.0
+    ],
+    [
+     -2.0,
+     -28.0
+    ],
+    [
+     -1.0,
+     -28.0
+    ],
+    [
+     0.0,
+     -30.0
+    ],
+    [
+     -2.0,
+     -28.0
+    ],
+    [
+     -1.0,
+     -29.0
+    ],
+    [
+     0.0,
+     -30.0
+    ]
+   ],
+   "kit": "RopeBridge2",
+   "map": "Con08e",
+   "near_to_far_direction": [
+    0.7,
+    -0.7
+   ],
+   "pieces": 16,
+   "sequence": [
+    "FarEnd",
+    "Center",
+    "Center",
+    "Center2",
+    "Center2",
+    "Center",
+    "Center2",
+    "NearEnd"
+   ],
+   "start": [
+    3464.0,
+    4820.0
+   ],
+   "steps": [
+    [
+     -41.0,
+     36.0
+    ],
+    [
+     -44.0,
+     43.0
+    ],
+    [
+     -46.0,
+     46.0
+    ],
+    [
+     -45.0,
+     45.0
+    ],
+    [
+     -41.0,
+     42.0
+    ],
+    [
+     -47.0,
+     46.0
+    ],
+    [
+     -43.0,
+     57.0
+    ]
+   ],
+   "walls_near": {
+    "InvisibleWallSet": 80
+   }
+  }
+ ],
+ "kits": {
+  "DockDown": {
+   "chains": 45,
+   "floor_under": {
+    "WoodGray": 54
+   },
+   "front_back_offset_px": {},
+   "maps": [
+    "Con05A",
+    "G_ForesD",
+    "G_Forest",
+    "War05A",
+    "Wiz05A"
+   ],
+   "near_to_far_direction": {},
+   "sequences": {
+    "Center1": 15,
+    "Center1 > NearEnd": 9,
+    "FarRamp": 15,
+    "NearRamp": 6
+   },
+   "step_offsets_px": {
+    "35.0,41.0": 1,
+    "36.0,42.0": 8
+   },
+   "units_per_chain": {
+    "1": 36,
+    "2": 9
+   },
+   "walls_near": {
+    "Coni-Wall1": 1,
+    "InvisibleWallSet": 263
+   }
+  },
+  "DockUp": {
+   "chains": 9,
+   "floor_under": {
+    "DirtDark2": 2,
+    "GrassSparse2": 1,
+    "WoodGray2": 9
+   },
+   "front_back_offset_px": {},
+   "maps": [
+    "Con03A",
+    "G_ForesD",
+    "G_Forest",
+    "War03a"
+   ],
+   "near_to_far_direction": {
+    "0.7,-0.7": 1
+   },
+   "sequences": {
+    "Center1": 2,
+    "FarCenter2": 1,
+    "FarEnd > Center1": 1,
+    "FarEnd > Center1 > NearEnd": 1,
+    "FarRamp": 2,
+    "NearRamp": 2
+   },
+   "step_offsets_px": {
+    "-42.0,44.0": 2,
+    "-45.0,47.0": 1
+   },
+   "units_per_chain": {
+    "1": 7,
+    "2": 1,
+    "3": 1
+   },
+   "walls_near": {
+    "InvisibleWallSet": 55
+   }
+  },
+  "LavaBridge1": {
+   "chains": 10,
+   "floor_under": {
+    "CaveHardBrown": 14,
+    "GalavaBrick": 4,
+    "Lava": 14,
+    "VolcanicCraggy": 34
+   },
+   "front_back_offset_px": {
+    "-1.0,-28.0": 12,
+    "-2.0,-29.0": 2,
+    "0.0,-29.0": 6,
+    "0.0,-30.0": 7
+   },
+   "maps": [
+    "Con06a",
+    "Con06b",
+    "War01A",
+    "War06a",
+    "War06b",
+    "Wiz06c",
+    "Wiz07C"
+   ],
+   "near_to_far_direction": {
+    "-0.7,-0.7": 10
+   },
+   "sequences": {
+    "FarEnd > Center > Center > NearEnd": 3,
+    "FarEnd > Center > NearEnd": 7
+   },
+   "step_offsets_px": {
+    "26.0,29.0": 1,
+    "27.0,28.0": 1,
+    "28.0,28.0": 7,
+    "44.0,44.0": 2,
+    "60.0,61.0": 1,
+    "61.0,61.0": 8
+   },
+   "units_per_chain": {
+    "3": 7,
+    "4": 3
+   },
+   "walls_near": {
+    "InvisibleBlockingWallSet": 23,
+    "InvisibleWallSet": 677,
+    "IronFenceDamaged": 2
+   }
+  },
+  "LavaBridge2": {
+   "chains": 5,
+   "floor_under": {
+    "CaveHardBrown": 5,
+    "GalavaBrick": 8,
+    "GreenBrick": 10,
+    "Lava": 1,
+    "VolcanicCraggy": 14
+   },
+   "front_back_offset_px": {
+    "0.0,-30.0": 3,
+    "1.0,-28.0": 3,
+    "1.0,-29.0": 5,
+    "2.0,-27.0": 3
+   },
+   "maps": [
+    "Con06b",
+    "G_Lava",
+    "War06b",
+    "Wiz06c",
+    "Wiz07C"
+   ],
+   "near_to_far_direction": {
+    "0.7,-0.7": 5
+   },
+   "sequences": {
+    "FarEnd > Center > Center > NearEnd": 1,
+    "NearEnd > Center > Center > FarEnd": 3,
+    "NearEnd > Center > FarEnd": 1
+   },
+   "step_offsets_px": {
+    "-28.0,28.0": 1,
+    "-43.0,45.0": 1,
+    "-60.0,62.0": 1,
+    "28.0,-27.0": 3,
+    "42.0,-45.0": 2,
+    "62.0,-60.0": 2
+   },
+   "units_per_chain": {
+    "3": 1,
+    "4": 4
+   },
+   "walls_near": {
+    "InvisibleWallSet": 295,
+    "IronFence": 5,
+    "LOTDMagicOrnate": 13,
+    "Volcano": 1
+   }
+  },
+  "RopeBridge1": {
+   "chains": 24,
+   "floor_under": {
+    "DirtDark2": 14,
+    "GrassNorm": 6,
+    "SwampGrass": 25,
+    "WoodDark": 165,
+    "WoodDark2": 15
+   },
+   "front_back_offset_px": {
+    "-1.0,-31.0": 7,
+    "0.0,-29.3": 6,
+    "0.0,-30.0": 43,
+    "0.0,-30.7": 18
+   },
+   "maps": [
+    "Con03A",
+    "Con08e",
+    "Con09a",
+    "G_ForesD",
+    "G_Forest",
+    "G_Mines",
+    "G_Swamp",
+    "Kingdoms",
+    "War03a",
+    "War08e",
+    "War09a",
+    "Wiz08e",
+    "Wiz09a",
+    "treehaus"
+   ],
+   "near_to_far_direction": {
+    "-0.7,-0.7": 19,
+    "0.7,-0.7": 1
+   },
+   "sequences": {
+    "Center2 > Center > Center2 > Center > Center2 > Center > Center2 > Center": 2,
+    "FarEnd > Center > Center > Center > NearEnd": 4,
+    "FarEnd > Center > Center2 > Center > Center2 > NearEnd": 2,
+    "FarEnd > Center2 > Center > Center2 > Center > NearEnd": 4,
+    "FarEnd > Center2 > Center > NearEnd": 5,
+    "FarEndBack > CenterBack > CenterBack > NearEndBack": 2
+   },
+   "step_offsets_px": {
+    "36.0,37.0": 5,
+    "45.0,40.0": 5,
+    "45.0,45.0": 8,
+    "45.0,53.0": 7,
+    "46.0,45.0": 5,
+    "46.0,46.0": 11
+   },
+   "units_per_chain": {
+    "1": 1,
+    "2": 1,
+    "3": 1,
+    "4": 7,
+    "5": 4,
+    "6": 7,
+    "8": 2,
+    "16": 1
+   },
+   "walls_near": {
+    "DecidiousWallGreen": 30,
+    "DilapidatedShort": 8,
+    "InvisibleWallSet": 1242,
+    "Log": 18
+   }
+  },
+  "RopeBridge2": {
+   "chains": 45,
+   "floor_under": {
+    "DirtDark2": 21,
+    "SwampGrass": 37,
+    "WoodDark": 65,
+    "WoodDark2": 180,
+    "WoodThinSlatDarkREV": 27
+   },
+   "front_back_offset_px": {
+    "-1.0,-29.0": 20,
+    "-2.0,-28.0": 10,
+    "0.0,-30.0": 86,
+    "0.0,-31.0": 13
+   },
+   "maps": [
+    "Con02a",
+    "Con05B",
+    "Con08a",
+    "Con08b",
+    "Con08e",
+    "Con09a",
+    "Con09b",
+    "G_Mines",
+    "G_Swamp",
+    "Kingdoms",
+    "So_Ix",
+    "So_Swamp",
+    "War03b",
+    "War05B",
+    "War08a",
+    "War08b",
+    "War08e",
+    "War09a",
+    "War09b",
+    "Wiz05B",
+    "Wiz08a",
+    "Wiz08b",
+    "Wiz08e",
+    "Wiz09a",
+    "Wiz09b",
+    "treehaus"
+   ],
+   "near_to_far_direction": {
+    "0.7,-0.7": 30
+   },
+   "sequences": {
+    "Center > Center2 > Center > FarEnd": 3,
+    "FarEnd > Center > Center > Center > Center > NearEnd": 3,
+    "FarEnd > Center > Center > Center2 > Center2 > Center > Center2 > NearEnd": 3,
+    "FarEnd > Center > Center > NearEnd": 6,
+    "FarEnd > Center2 > Center2 > NearEnd": 5,
+    "NearEndBack": 5
+   },
+   "step_offsets_px": {
+    "-44.0,44.0": 6,
+    "-44.0,56.0": 8,
+    "-45.0,38.0": 8,
+    "-45.0,39.0": 12,
+    "-46.0,46.0": 28,
+    "-47.0,47.0": 6
+   },
+   "units_per_chain": {
+    "1": 6,
+    "2": 1,
+    "3": 4,
+    "4": 19,
+    "5": 5,
+    "6": 5,
+    "8": 4,
+    "10": 1
+   },
+   "walls_near": {
+    "DecidiousWallGreen": 32,
+    "Dilapidated": 8,
+    "InvisibleWallSet": 1916,
+    "RootLight": 7
+   }
+  },
+  "RopeBridgeBroken1": {
+   "chains": 12,
+   "floor_under": {
+    "GrassNormYellow": 6,
+    "GrassSparse2": 18
+   },
+   "front_back_offset_px": {
+    "0.0,-30.0": 12
+   },
+   "maps": [
+    "Con04a",
+    "Con05A",
+    "War04a",
+    "War05A",
+    "Wiz04a",
+    "Wiz05A"
+   ],
+   "near_to_far_direction": {},
+   "sequences": {
+    "FarEnd": 6,
+    "NearEnd": 6
+   },
+   "step_offsets_px": {},
+   "units_per_chain": {
+    "1": 12
+   },
+   "walls_near": {
+    "InvisibleWallSet": 144
+   }
+  },
+  "RopeBridgeBroken2": {
+   "chains": 5,
+   "floor_under": {
+    "DirtDark2": 2,
+    "SwampGrass": 6,
+    "WaterSwampShallow": 1
+   },
+   "front_back_offset_px": {
+    "0.0,-30.0": 4
+   },
+   "maps": [
+    "Con02a",
+    "Con11a",
+    "G_Swamp"
+   ],
+   "near_to_far_direction": {},
+   "sequences": {
+    "FarEnd": 2,
+    "NearEnd": 2,
+    "NearEndBack": 1
+   },
+   "step_offsets_px": {},
+   "units_per_chain": {
+    "1": 5
+   },
+   "walls_near": {
+    "InvisibleWallSet": 39
+   }
+  }
+ },
+ "shore_structure": {
+  "deep": {
+   "distance_from_land_weighted": {
+    "p10": 1,
+    "p25": 2,
+    "p50": 3,
+    "p75": 4,
+    "p90": 7
+   },
+   "mean": 3.41
+  },
+  "plain": {
+   "distance_from_land_weighted": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 2,
+    "p90": 2
+   },
+   "mean": 1.41
+  },
+  "shallow": {
+   "distance_from_land_weighted": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 2,
+    "p90": 3
+   },
+   "mean": 1.59
+  },
+  "swamp_deep": {
+   "distance_from_land_weighted": {
+    "p10": 1,
+    "p25": 2,
+    "p50": 3,
+    "p75": 4,
+    "p90": 5
+   },
+   "mean": 2.99
+  },
+  "swamp_shallow": {
+   "distance_from_land_weighted": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 2,
+    "p90": 3
+   },
+   "mean": 1.55
+  }
+ },
+ "walls_on_water": {
+  "counts_all": {
+   "invisible:on_water": 3801,
+   "invisible:shore_edge": 2860,
+   "invisible:water_by_void": 68,
+   "visible:on_water": 2536,
+   "visible:shore_edge": 684,
+   "visible:water_by_void": 4618
+  },
+  "counts_sp_weighted": {
+   "invisible:on_water": 1720.1,
+   "invisible:shore_edge": 1542.7,
+   "invisible:water_by_void": 68.0,
+   "visible:on_water": 1182.0,
+   "visible:shore_edge": 367.0,
+   "visible:water_by_void": 2167.2
+  },
+  "distance_from_land": {
+   "invisible": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 1,
+    "p90": 2
+   },
+   "visible": {
+    "p10": 1,
+    "p25": 1,
+    "p50": 1,
+    "p75": 1,
+    "p90": 1
+   }
+  },
+  "materials_on_water": {
+   "CaveWall": 66.0,
+   "CaveWall2": 712.0,
+   "Cobblestone": 9.0,
+   "Coni-Wall1": 210.0,
+   "DecidiousWall": 1.0,
+   "DecidiousWallGreen": 444.5,
+   "Dilapidated": 12.0,
+   "Dirt": 54.0,
+   "DungeonStone": 159.0,
+   "FieldStoneShort": 2.0,
+   "InvisibleBlockingWallSet": 80.0,
+   "InvisibleWallSet": 3250.8,
+   "IronFence": 16.0,
+   "IronFenceDamaged": 1.0,
+   "IxTempleWall": 13.0,
+   "LOTDMagicOrnate": 5.0,
+   "Log": 11.0,
+   "ManaMineWall": 177.0,
+   "Rock": 139.0,
+   "RootLight": 1069.0,
+   "SewerWall": 188.7,
+   "Shard": 419.0,
+   "Shrub": 7.0,
+   "StoneGray": 1.0
+  },
+  "note": "a wall cell (x,y) is covered by floor tiles (x,y) and (x-1,y-1); distance 1 = water tile touching land",
+  "shore_tiles_with_wall_share_sp": 0.682
+ },
+ "water_materials": {
+  "Water": {
+   "categories": {
+    "campaign": 7313,
+    "multiplayer": 238,
+    "quest": 840,
+    "social": 3172
+   },
+   "maps": 51,
+   "sp_weighted": 5257.5,
+   "tiles_all": 11563
+  },
+  "WaterDeep": {
+   "categories": {
+    "campaign": 8771,
+    "social": 258
+   },
+   "maps": 26,
+   "sp_weighted": 4062.3,
+   "tiles_all": 9029
+  },
+  "WaterDeepNoTeleport": {
+   "categories": {
+    "multiplayer": 815,
+    "quest": 1599
+   },
+   "maps": 4,
+   "sp_weighted": 1019.0,
+   "tiles_all": 2414
+  },
+  "WaterNoTeleport": {
+   "categories": {
+    "multiplayer": 207
+   },
+   "maps": 1,
+   "sp_weighted": 0.0,
+   "tiles_all": 207
+  },
+  "WaterShallow": {
+   "categories": {
+    "campaign": 7510,
+    "social": 89
+   },
+   "maps": 32,
+   "sp_weighted": 3098.0,
+   "tiles_all": 7599
+  },
+  "WaterShallowNoTeleport": {
+   "categories": {
+    "multiplayer": 634,
+    "quest": 1499
+   },
+   "maps": 4,
+   "sp_weighted": 771.0,
+   "tiles_all": 2133
+  },
+  "WaterSwampDeep": {
+   "categories": {
+    "campaign": 3131,
+    "social": 9
+   },
+   "maps": 11,
+   "sp_weighted": 1501.7,
+   "tiles_all": 3140
+  },
+  "WaterSwampShallow": {
+   "categories": {
+    "campaign": 7610,
+    "multiplayer": 158,
+    "social": 79
+   },
+   "maps": 12,
+   "sp_weighted": 3083.3,
+   "tiles_all": 7847
+  },
+  "WaterSwampShallowNoTeleport": {
+   "categories": {
+    "quest": 2361
+   },
+   "maps": 1,
+   "sp_weighted": 2361.0,
+   "tiles_all": 2361
+  }
+ }
+}

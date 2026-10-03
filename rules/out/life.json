@@ -1,0 +1,1811 @@
+{
+ "roaming": {
+  "flag_semantics": "ActionRoamPathFlag is a bitmask; a roaming creature follows waypoint links whose flag shares a bit with it (255 has every bit, so it uses any link). 128 is the editor's default link flag and carries 87% of links (general paths); the single-bit flags 1..64 appear on small separate networks, which reads as private patrol/escort routes (inferred, not verified in the engine).",
+  "monsters": {
+   "n": 262,
+   "nearest_waypoint_cells": [
+    0.76,
+    1.6,
+    3.04
+   ],
+   "roam_flag": {
+    "1": 0.3243,
+    "128": 0.2,
+    "132": 0.0405,
+    "2": 0.0432,
+    "255": 0.1405,
+    "32": 0.0649,
+    "64": 0.0486,
+    "8": 0.1135
+   },
+   "share_flag_matches_some_link": 0.984,
+   "share_matching_link_within_6_cells": 0.9
+  },
+  "townsfolk": {
+   "n": 73,
+   "nearest_waypoint_cells": [
+    1.02,
+    2.2,
+    5.27
+   ],
+   "roam_flag": {
+    "128": 0.5387,
+    "2": 0.0089,
+    "255": 0.1071,
+    "64": 0.0595,
+    "8": 0.2857
+   },
+   "share_flag_matches_some_link": 1.0,
+   "share_matching_link_within_6_cells": 0.705
+  }
+ },
+ "schema_version": 1,
+ "townsfolk": {
+  "clothing": {
+   "item_types": {
+    "Bow": 0.0101,
+    "Breastplate": 0.0215,
+    "ChainTunic": 0.0045,
+    "ConjurerHelm": 0.0076,
+    "LeatherArmbands": 0.0245,
+    "LeatherArmor": 0.0318,
+    "LeatherArmoredBoots": 0.0208,
+    "LeatherBoots": 0.1453,
+    "LeatherHelm": 0.0161,
+    "LeatherLeggings": 0.0312,
+    "Longsword": 0.0171,
+    "MedievalCloak": 0.0311,
+    "MedievalPants": 0.1697,
+    "MedievalShirt": 0.1661,
+    "OrnateHelm": 0.011,
+    "PlateArms": 0.0158,
+    "PlateBoots": 0.0155,
+    "PlateLeggings": 0.0158,
+    "Quiver": 0.0175,
+    "RedPotion": 0.0101,
+    "StaffWooden": 0.0127,
+    "SteelShield": 0.0133,
+    "Sword": 0.0083,
+    "WizardHelm": 0.0755,
+    "WizardRobe": 0.0821
+   },
+   "items_per_civilian": [
+    3.0,
+    5.0,
+    6.0
+   ],
+   "outfits": {
+    "Bow+LeatherArmbands+LeatherArmor+LeatherArmoredBoots+LeatherHelm+LeatherLeggings+Quiver+Quiver": 0.0203,
+    "Breastplate+LeatherArmbands+LeatherBoots+LeatherLeggings+Sword": 0.009,
+    "Breastplate+Longsword+MedievalCloak+MedievalPants+MedievalShirt+OrnateHelm+PlateArms+PlateBoots+PlateLeggings+SteelShield": 0.045,
+    "ConjurerHelm+LeatherArmbands+LeatherArmor+LeatherBoots+LeatherLeggings+MedievalCloak+MedievalPants+MedievalShirt+StaffWooden": 0.009,
+    "ConjurerHelm+LeatherArmor+LeatherBoots+LeatherLeggings+MedievalPants+MedievalShirt+StaffWooden": 0.009,
+    "LeatherArmbands+LeatherArmor+LeatherBoots+LeatherLeggings+Longsword+MedievalShirt": 0.0113,
+    "LeatherArmor+LeatherBoots+MedievalPants+MedievalShirt": 0.0113,
+    "LeatherBoots+LeatherHelm+MedievalPants": 0.0135,
+    "LeatherBoots+MedievalCloak+MedievalPants+MedievalShirt": 0.027,
+    "LeatherBoots+MedievalPants+MedievalShirt": 0.11,
+    "LeatherBoots+MedievalPants+MedievalShirt+RedPotion+WizardHelm+WizardRobe": 0.0495,
+    "LeatherBoots+MedievalPants+MedievalShirt+WizardHelm+WizardRobe": 0.28,
+    "LeatherBoots+MedievalPants+MedievalShirt+WizardRobe": 0.0214,
+    "MedievalPants": 0.0135,
+    "MedievalPants+MedievalShirt": 0.0691
+   }
+  },
+  "role_counts": {
+   "armed_npc": {
+    "maps": 38,
+    "objects": 155
+   },
+   "civilian": {
+    "maps": 56,
+    "objects": 448
+   },
+   "maiden": {
+    "maps": 17,
+    "objects": 78
+   },
+   "shopkeeper": {
+    "maps": 43,
+    "objects": 100
+   },
+   "special": {
+    "maps": 29,
+    "objects": 32
+   }
+  },
+  "settings": {
+   "armed_npc": {
+    "aggressiveness": {
+     "0": 0.1052,
+     "0.16": 0.0517,
+     "0.5": 0.2638,
+     "0.83": 0.5793
+    },
+    "default_action": {
+     "GUARD": 0.6293,
+     "IDLE": 0.3293,
+     "ROAM": 0.0414
+    },
+    "door_distance_cells": [
+     4.0,
+     7.81,
+     16.8
+    ],
+    "has_script_events": 0.876,
+    "has_script_name": 0.514,
+    "health": [
+     100.0,
+     150.0,
+     200.0
+    ],
+    "immortal": {
+     "False": 1.0
+    },
+    "indoors": 0.455,
+    "maps": 38,
+    "n": 155,
+    "npc_speed": {
+     "0.07": 0.0828,
+     "0.5": 0.4966,
+     "0.56": 0.0207,
+     "0.75": 0.2897,
+     "1": 0.0897
+    },
+    "retreat_ratio": {
+     "0": 0.3241,
+     "0.14": 0.0069,
+     "0.25": 0.669
+    },
+    "roam_path_flag": {
+     "1": 0.0103,
+     "128": 0.1034,
+     "2": 0.0414,
+     "255": 0.7293,
+     "32": 0.0172,
+     "4": 0.0621,
+     "64": 0.0172,
+     "8": 0.0103
+    },
+    "sight_range": {
+     "0": 0.081,
+     "150": 0.381,
+     "200": 0.0621,
+     "250": 0.3,
+     "350": 0.0776
+    },
+    "team": {
+     "0": 0.7879,
+     "1": 0.2017,
+     "2": 0.0103
+    }
+   },
+   "civilian": {
+    "aggressiveness": {
+     "0": 0.3622,
+     "0.16": 0.1374,
+     "0.5": 0.4095,
+     "0.83": 0.0908
+    },
+    "default_action": {
+     "GUARD": 0.723,
+     "IDLE": 0.2095,
+     "ROAM": 0.0676
+    },
+    "door_distance_cells": [
+     4.12,
+     7.0,
+     12.0
+    ],
+    "has_script_events": 0.354,
+    "has_script_name": 0.82,
+    "health": [
+     60.0,
+     150.0,
+     150.0
+    ],
+    "immortal": {
+     "False": 0.473,
+     "True": 0.527
+    },
+    "indoors": 0.606,
+    "maps": 56,
+    "n": 448,
+    "npc_speed": {
+     "0.07": 0.1959,
+     "0.5": 0.6715,
+     "0.56": 0.0248,
+     "0.75": 0.0511,
+     "1": 0.0327
+    },
+    "retreat_ratio": {
+     "0": 0.3731,
+     "0.25": 0.6224,
+     "0.37": 0.0045
+    },
+    "roam_path_flag": {
+     "0": 0.0173,
+     "1": 0.0214,
+     "128": 0.1209,
+     "129": 0.0169,
+     "16": 0.0135,
+     "255": 0.7245,
+     "32": 0.021,
+     "8": 0.027
+    },
+    "sight_range": {
+     "0": 0.3694,
+     "1": 0.0541,
+     "150": 0.2883,
+     "450": 0.0743,
+     "500": 0.0458
+    },
+    "team": {
+     "0": 0.6378,
+     "1": 0.2785,
+     "2": 0.0815,
+     "7": 0.0023
+    }
+   },
+   "maiden": {
+    "aggressiveness": {
+     "0": 0.7084,
+     "0.16": 0.1417,
+     "0.5": 0.1499
+    },
+    "default_action": {
+     "GUARD": 0.6185,
+     "IDLE": 0.0872,
+     "ROAM": 0.2943
+    },
+    "door_distance_cells": [
+     5.66,
+     8.54,
+     12.81
+    ],
+    "has_script_events": 0.431,
+    "has_script_name": 1.0,
+    "health": [
+     75.0,
+     75.0,
+     75.0
+    ],
+    "immortal": {
+     "False": 0.0545,
+     "True": 0.9455
+    },
+    "indoors": 0.338,
+    "maps": 17,
+    "n": 78,
+    "npc_speed": null,
+    "retreat_ratio": {
+     "0": 0.0654,
+     "0.25": 0.0872,
+     "0.5": 0.8474
+    },
+    "roam_path_flag": {
+     "128": 0.3243,
+     "2": 0.0082,
+     "255": 0.4823,
+     "64": 0.0545,
+     "8": 0.1308
+    },
+    "sight_range": {
+     "0": 0.564,
+     "150": 0.436
+    },
+    "team": {
+     "0": 0.8692,
+     "1": 0.1308
+    }
+   },
+   "shopkeeper": {
+    "aggressiveness": {
+     "0": 0.7265,
+     "0.16": 0.0403,
+     "0.5": 0.2332
+    },
+    "default_action": {
+     "GUARD": 1.0
+    },
+    "door_distance_cells": [
+     7.07,
+     9.43,
+     16.64
+    ],
+    "has_script_events": 0.013,
+    "has_script_name": 1.0,
+    "health": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "immortal": {
+     "False": 0.2567,
+     "True": 0.7433
+    },
+    "indoors": 0.624,
+    "maps": 43,
+    "n": 100,
+    "npc_speed": null,
+    "retreat_ratio": {
+     "0": 0.9396,
+     "0.25": 0.0604
+    },
+    "roam_path_flag": {
+     "128": 0.0738,
+     "255": 0.9262
+    },
+    "sight_range": {
+     "0": 0.8641,
+     "150": 0.1158,
+     "8": 0.0201
+    },
+    "team": {
+     "0": 0.9396,
+     "1": 0.0604
+    }
+   }
+  },
+  "shops": {
+   "buy_sell_multipliers": [
+    {
+     "buy": 1,
+     "sell": 0.33,
+     "share": 0.232
+    },
+    {
+     "buy": 1.5,
+     "sell": 0.05,
+     "share": 0.107
+    },
+    {
+     "buy": 3,
+     "sell": 0.05,
+     "share": 0.081
+    },
+    {
+     "buy": 1.2,
+     "sell": 0.15,
+     "share": 0.06
+    },
+    {
+     "buy": 1,
+     "sell": 1,
+     "share": 0.04
+    }
+   ],
+   "greeting_text": {
+    "empty": 0.0201,
+    "map:key string id": 0.9799
+   },
+   "item_lines_per_shop": [
+    4.0,
+    6.0,
+    11.0
+   ],
+   "item_units_per_shop": [
+    7.0,
+    13.0,
+    23.0
+   ],
+   "maps": 43,
+   "n": 100,
+   "note": "ShopItems lists are truncated at 64 entries by the corpus export; 'xN Type' means N units of Type.",
+   "objects_within_3_cells": {
+    "BarPiece2A": 0.0277,
+    "BarPiece2B": 0.0139,
+    "BarPiece3A": 0.0238,
+    "BarPiece3B": 0.0277,
+    "BarPiece3C": 0.0198,
+    "BarPiece3D": 0.0178,
+    "BarPiece4A": 0.0297,
+    "Candleabra3": 0.0238,
+    "FairyJar": 0.0238,
+    "MineBeam1": 0.0178,
+    "PiledBarrels1": 0.0158,
+    "PiledBarrels2": 0.0257,
+    "PlayerStart": 0.0386,
+    "Rock7": 0.0416,
+    "SmallFlameImmobile": 0.0297,
+    "StarChart3a": 0.0238,
+    "Straw2": 0.0238,
+    "TorchPole": 0.0139,
+    "TraderAppleCrate": 0.0317,
+    "TraderDesk1": 0.0416,
+    "TraderDesk3": 0.0475,
+    "TraderDesk5": 0.0178,
+    "TraderTentPoleDN1": 0.0257,
+    "TraderTentPoleUP1": 0.0158,
+    "TraderTentShadowDN2": 0.0198
+   },
+   "shopkeeper_types": {
+    "ShopkeeperConjurerRealm": 0.1342,
+    "ShopkeeperLandOfTheDead": 0.2617,
+    "ShopkeeperMagicShop": 0.1812,
+    "ShopkeeperPurple": 0.1275,
+    "ShopkeeperWarriorsRealm": 0.1409,
+    "ShopkeeperWizardRealm": 0.0671,
+    "ShopkeeperYellow": 0.0872
+   },
+   "top_items": {
+    "BattleAxe": 0.0096,
+    "BluePotion": 0.0408,
+    "Bow": 0.023,
+    "Breastplate": 0.0146,
+    "ChainCoif": 0.0104,
+    "ChainLeggings": 0.0104,
+    "ChainTunic": 0.0137,
+    "Cider": 0.0209,
+    "CurePoisonPotion": 0.0426,
+    "FanChakram": 0.0521,
+    "FieldGuide": 0.0667,
+    "GreatSword": 0.013,
+    "LeatherArmbands": 0.0287,
+    "LeatherArmor": 0.0439,
+    "LeatherArmoredBoots": 0.0265,
+    "LeatherBoots": 0.0498,
+    "LeatherHelm": 0.0311,
+    "LeatherLeggings": 0.0243,
+    "Longsword": 0.0115,
+    "Meat": 0.0209,
+    "MedievalCloak": 0.0354,
+    "Quiver": 0.0621,
+    "RedApple": 0.0313,
+    "RedPotion": 0.0582,
+    "SpellBook": 0.0604,
+    "StaffWooden": 0.038,
+    "Sword": 0.0161,
+    "WizardHelm": 0.0282,
+    "WizardRobe": 0.0215,
+    "WoodenShield": 0.0122
+   }
+  },
+  "town_quartiles": {
+   "buildings_near": [
+    1.0,
+    5.0,
+    12.0
+   ],
+   "per_100_populated_tiles": [
+    0.6,
+    0.8,
+    1.07
+   ],
+   "per_building": [
+    2.08,
+    2.95,
+    5.33
+   ],
+   "shopkeepers": [
+    0.0,
+    1.0,
+    3.0
+   ],
+   "town_maps": 29,
+   "townsfolk": [
+    8.25,
+    16.0,
+    26.0
+   ]
+  },
+  "towns": [
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 61,
+    "buildings_near": 13,
+    "civilians": 20,
+    "maidens": 14,
+    "map": "Wiz02A",
+    "per_100_populated_tiles": 0.91,
+    "per_building": 3.23,
+    "populated_tiles": 4611,
+    "shopkeepers": 8,
+    "townsfolk": 42
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 30,
+    "buildings_near": 1,
+    "civilians": 32,
+    "maidens": 0,
+    "map": "War07B",
+    "per_100_populated_tiles": 0.9,
+    "per_building": 32.0,
+    "populated_tiles": 3571,
+    "shopkeepers": 0,
+    "townsfolk": 32
+   },
+   {
+    "armed_npcs": 4,
+    "building_rooms_near": 20,
+    "buildings_near": 11,
+    "civilians": 23,
+    "maidens": 2,
+    "map": "Wiz05A",
+    "per_100_populated_tiles": 0.88,
+    "per_building": 2.55,
+    "populated_tiles": 3194,
+    "shopkeepers": 3,
+    "townsfolk": 28
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 34,
+    "buildings_near": 13,
+    "civilians": 17,
+    "maidens": 7,
+    "map": "Con02a",
+    "per_100_populated_tiles": 0.85,
+    "per_building": 2.08,
+    "populated_tiles": 3180,
+    "shopkeepers": 3,
+    "townsfolk": 27
+   },
+   {
+    "armed_npcs": 4,
+    "building_rooms_near": 18,
+    "buildings_near": 11,
+    "civilians": 22,
+    "maidens": 2,
+    "map": "Con05A",
+    "per_100_populated_tiles": 0.85,
+    "per_building": 2.45,
+    "populated_tiles": 3168,
+    "shopkeepers": 3,
+    "townsfolk": 27
+   },
+   {
+    "armed_npcs": 5,
+    "building_rooms_near": 19,
+    "buildings_near": 12,
+    "civilians": 21,
+    "maidens": 3,
+    "map": "War05A",
+    "per_100_populated_tiles": 0.8,
+    "per_building": 2.25,
+    "populated_tiles": 3373,
+    "shopkeepers": 3,
+    "townsfolk": 27
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 20,
+    "buildings_near": 1,
+    "civilians": 27,
+    "maidens": 0,
+    "map": "War07C",
+    "per_100_populated_tiles": 1.17,
+    "per_building": 27.0,
+    "populated_tiles": 2315,
+    "shopkeepers": 0,
+    "townsfolk": 27
+   },
+   {
+    "armed_npcs": 2,
+    "building_rooms_near": 16,
+    "buildings_near": 9,
+    "civilians": 16,
+    "maidens": 5,
+    "map": "War01A",
+    "per_100_populated_tiles": 0.63,
+    "per_building": 2.89,
+    "populated_tiles": 4150,
+    "shopkeepers": 5,
+    "townsfolk": 26
+   },
+   {
+    "armed_npcs": 4,
+    "building_rooms_near": 56,
+    "buildings_near": 12,
+    "civilians": 13,
+    "maidens": 1,
+    "map": "War07A",
+    "per_100_populated_tiles": 0.6,
+    "per_building": 2.17,
+    "populated_tiles": 4306,
+    "shopkeepers": 12,
+    "townsfolk": 26
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 34,
+    "buildings_near": 13,
+    "civilians": 17,
+    "maidens": 5,
+    "map": "Con08a",
+    "per_100_populated_tiles": 0.92,
+    "per_building": 1.92,
+    "populated_tiles": 2722,
+    "shopkeepers": 3,
+    "townsfolk": 25
+   },
+   {
+    "armed_npcs": 1,
+    "building_rooms_near": 55,
+    "buildings_near": 12,
+    "civilians": 13,
+    "maidens": 4,
+    "map": "Con07B",
+    "per_100_populated_tiles": 0.55,
+    "per_building": 2.0,
+    "populated_tiles": 4383,
+    "shopkeepers": 7,
+    "townsfolk": 24
+   },
+   {
+    "armed_npcs": 1,
+    "building_rooms_near": 34,
+    "buildings_near": 13,
+    "civilians": 16,
+    "maidens": 5,
+    "map": "War08a",
+    "per_100_populated_tiles": 0.8,
+    "per_building": 1.85,
+    "populated_tiles": 3012,
+    "shopkeepers": 3,
+    "townsfolk": 24
+   },
+   {
+    "armed_npcs": 1,
+    "building_rooms_near": 54,
+    "buildings_near": 12,
+    "civilians": 13,
+    "maidens": 4,
+    "map": "Wiz07F",
+    "per_100_populated_tiles": 0.53,
+    "per_building": 2.0,
+    "populated_tiles": 4548,
+    "shopkeepers": 7,
+    "townsfolk": 24
+   },
+   {
+    "armed_npcs": 1,
+    "building_rooms_near": 35,
+    "buildings_near": 14,
+    "civilians": 16,
+    "maidens": 5,
+    "map": "Wiz08a",
+    "per_100_populated_tiles": 0.78,
+    "per_building": 1.71,
+    "populated_tiles": 3084,
+    "shopkeepers": 3,
+    "townsfolk": 24
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 29,
+    "buildings_near": 11,
+    "civilians": 13,
+    "maidens": 2,
+    "map": "War03b",
+    "per_100_populated_tiles": 0.61,
+    "per_building": 1.64,
+    "populated_tiles": 2949,
+    "shopkeepers": 3,
+    "townsfolk": 18
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 20,
+    "buildings_near": 1,
+    "civilians": 18,
+    "maidens": 0,
+    "map": "War07D",
+    "per_100_populated_tiles": 1.15,
+    "per_building": 18.0,
+    "populated_tiles": 1569,
+    "shopkeepers": 0,
+    "townsfolk": 18
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 9,
+    "buildings_near": 3,
+    "civilians": 16,
+    "maidens": 0,
+    "map": "War02A",
+    "per_100_populated_tiles": 2.09,
+    "per_building": 5.33,
+    "populated_tiles": 765,
+    "shopkeepers": 0,
+    "townsfolk": 16
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 16,
+    "buildings_near": 2,
+    "civilians": 14,
+    "maidens": 0,
+    "map": "Wiz02B",
+    "per_100_populated_tiles": 1.09,
+    "per_building": 7.5,
+    "populated_tiles": 1372,
+    "shopkeepers": 1,
+    "townsfolk": 15
+   },
+   {
+    "armed_npcs": 5,
+    "building_rooms_near": 11,
+    "buildings_near": 5,
+    "civilians": 7,
+    "maidens": 6,
+    "map": "Con06a",
+    "per_100_populated_tiles": 0.72,
+    "per_building": 2.8,
+    "populated_tiles": 1946,
+    "shopkeepers": 1,
+    "townsfolk": 14
+   },
+   {
+    "armed_npcs": 5,
+    "building_rooms_near": 11,
+    "buildings_near": 5,
+    "civilians": 7,
+    "maidens": 6,
+    "map": "War06a",
+    "per_100_populated_tiles": 0.71,
+    "per_building": 2.8,
+    "populated_tiles": 1962,
+    "shopkeepers": 1,
+    "townsfolk": 14
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 11,
+    "buildings_near": 5,
+    "civilians": 9,
+    "maidens": 0,
+    "map": "War03a",
+    "per_100_populated_tiles": 0.56,
+    "per_building": 2.4,
+    "populated_tiles": 2139,
+    "shopkeepers": 3,
+    "townsfolk": 12
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 13,
+    "buildings_near": 6,
+    "civilians": 8,
+    "maidens": 0,
+    "map": "Con03A",
+    "per_100_populated_tiles": 0.52,
+    "per_building": 1.83,
+    "populated_tiles": 2104,
+    "shopkeepers": 3,
+    "townsfolk": 11
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 29,
+    "buildings_near": 1,
+    "civilians": 11,
+    "maidens": 0,
+    "map": "Con07C",
+    "per_100_populated_tiles": 0.51,
+    "per_building": 11.0,
+    "populated_tiles": 2136,
+    "shopkeepers": 0,
+    "townsfolk": 11
+   },
+   {
+    "armed_npcs": 4,
+    "building_rooms_near": 10,
+    "buildings_near": 1,
+    "civilians": 9,
+    "maidens": 0,
+    "map": "War07F",
+    "per_100_populated_tiles": 1.31,
+    "per_building": 9.0,
+    "populated_tiles": 689,
+    "shopkeepers": 0,
+    "townsfolk": 9
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 2,
+    "buildings_near": 2,
+    "civilians": 2,
+    "maidens": 6,
+    "map": "War05B",
+    "per_100_populated_tiles": 1.11,
+    "per_building": 4.0,
+    "populated_tiles": 718,
+    "shopkeepers": 0,
+    "townsfolk": 8
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 14,
+    "buildings_near": 7,
+    "civilians": 7,
+    "maidens": 0,
+    "map": "Con03B",
+    "per_100_populated_tiles": 0.76,
+    "per_building": 1.0,
+    "populated_tiles": 923,
+    "shopkeepers": 0,
+    "townsfolk": 7
+   },
+   {
+    "armed_npcs": 12,
+    "building_rooms_near": 18,
+    "buildings_near": 2,
+    "civilians": 6,
+    "maidens": 0,
+    "map": "War07E",
+    "per_100_populated_tiles": 0.72,
+    "per_building": 3.0,
+    "populated_tiles": 838,
+    "shopkeepers": 0,
+    "townsfolk": 6
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 3,
+    "buildings_near": 1,
+    "civilians": 4,
+    "maidens": 1,
+    "map": "Con01A",
+    "per_100_populated_tiles": 1.01,
+    "per_building": 5.0,
+    "populated_tiles": 495,
+    "shopkeepers": 0,
+    "townsfolk": 5
+   },
+   {
+    "armed_npcs": 0,
+    "building_rooms_near": 11,
+    "buildings_near": 1,
+    "civilians": 4,
+    "maidens": 0,
+    "map": "Wiz07D",
+    "per_100_populated_tiles": 0.58,
+    "per_building": 5.0,
+    "populated_tiles": 867,
+    "shopkeepers": 1,
+    "townsfolk": 5
+   }
+  ]
+ },
+ "waypoints": {
+  "bidirectional_link_share": [
+   0.89,
+   0.95,
+   0.98
+  ],
+  "context_method": "cell context from walls within 5 cells (built vs natural), floor material, building rooms, townsfolk within 30 cells; tiles sampled every 3rd",
+  "degree": {
+   "0": 0.1587,
+   "1": 0.183,
+   "2": 0.3745,
+   "3": 0.186,
+   "4": 0.0737,
+   "5": 0.0129,
+   "6": 0.0112
+  },
+  "density_per_100_tiles": {
+   "cave": 2.84,
+   "dungeon": 3.108,
+   "town": 1.942,
+   "wilderness": 1.607
+  },
+  "graphs": {
+   "components_per_map": [
+    15.0,
+    29.0,
+    49.0
+   ],
+   "cycles_per_map": [
+    9.0,
+    18.0,
+    30.0
+   ],
+   "maps_with_waypoints": 120,
+   "per_map": [
+    {
+     "components": 101,
+     "cycles": 6,
+     "edges": 64,
+     "map": "Con01A",
+     "waypoints": 159
+    },
+    {
+     "components": 49,
+     "cycles": 28,
+     "edges": 201,
+     "map": "Con02a",
+     "waypoints": 222
+    },
+    {
+     "components": 16,
+     "cycles": 50,
+     "edges": 241,
+     "map": "Con03A",
+     "waypoints": 207
+    },
+    {
+     "components": 88,
+     "cycles": 11,
+     "edges": 195,
+     "map": "Con03B",
+     "waypoints": 272
+    },
+    {
+     "components": 11,
+     "cycles": 13,
+     "edges": 69,
+     "map": "Con04a",
+     "waypoints": 67
+    },
+    {
+     "components": 52,
+     "cycles": 23,
+     "edges": 170,
+     "map": "Con04b",
+     "waypoints": 199
+    },
+    {
+     "components": 29,
+     "cycles": 17,
+     "edges": 155,
+     "map": "Con04c",
+     "waypoints": 167
+    },
+    {
+     "components": 39,
+     "cycles": 71,
+     "edges": 257,
+     "map": "Con05A",
+     "waypoints": 225
+    },
+    {
+     "components": 10,
+     "cycles": 9,
+     "edges": 137,
+     "map": "Con05B",
+     "waypoints": 138
+    },
+    {
+     "components": 73,
+     "cycles": 27,
+     "edges": 205,
+     "map": "Con05C",
+     "waypoints": 251
+    },
+    {
+     "components": 18,
+     "cycles": 26,
+     "edges": 126,
+     "map": "Con06a",
+     "waypoints": 118
+    },
+    {
+     "components": 20,
+     "cycles": 50,
+     "edges": 234,
+     "map": "Con06b",
+     "waypoints": 204
+    },
+    {
+     "components": 1,
+     "cycles": 0,
+     "edges": 0,
+     "map": "Con07A",
+     "waypoints": 1
+    },
+    {
+     "components": 8,
+     "cycles": 5,
+     "edges": 71,
+     "map": "Con07B",
+     "waypoints": 74
+    },
+    {
+     "components": 9,
+     "cycles": 19,
+     "edges": 86,
+     "map": "Con07C",
+     "waypoints": 76
+    },
+    {
+     "components": 5,
+     "cycles": 12,
+     "edges": 73,
+     "map": "Con07D",
+     "waypoints": 66
+    },
+    {
+     "components": 4,
+     "cycles": 4,
+     "edges": 51,
+     "map": "Con07E",
+     "waypoints": 51
+    },
+    {
+     "components": 7,
+     "cycles": 4,
+     "edges": 26,
+     "map": "Con07F",
+     "waypoints": 29
+    },
+    {
+     "components": 2,
+     "cycles": 2,
+     "edges": 15,
+     "map": "Con07G",
+     "waypoints": 15
+    },
+    {
+     "components": 16,
+     "cycles": 1,
+     "edges": 12,
+     "map": "Con07H",
+     "waypoints": 27
+    },
+    {
+     "components": 35,
+     "cycles": 28,
+     "edges": 148,
+     "map": "Con08a",
+     "waypoints": 155
+    },
+    {
+     "components": 11,
+     "cycles": 5,
+     "edges": 72,
+     "map": "Con08b",
+     "waypoints": 78
+    },
+    {
+     "components": 23,
+     "cycles": 11,
+     "edges": 57,
+     "map": "Con08c",
+     "waypoints": 69
+    },
+    {
+     "components": 37,
+     "cycles": 12,
+     "edges": 117,
+     "map": "Con08d",
+     "waypoints": 142
+    },
+    {
+     "components": 18,
+     "cycles": 3,
+     "edges": 38,
+     "map": "Con08e",
+     "waypoints": 53
+    },
+    {
+     "components": 18,
+     "cycles": 9,
+     "edges": 135,
+     "map": "Con09a",
+     "waypoints": 144
+    },
+    {
+     "components": 7,
+     "cycles": 35,
+     "edges": 214,
+     "map": "Con09b",
+     "waypoints": 186
+    },
+    {
+     "components": 41,
+     "cycles": 11,
+     "edges": 129,
+     "map": "Con09c",
+     "waypoints": 159
+    },
+    {
+     "components": 15,
+     "cycles": 25,
+     "edges": 171,
+     "map": "Con09d",
+     "waypoints": 161
+    },
+    {
+     "components": 44,
+     "cycles": 40,
+     "edges": 155,
+     "map": "Con10a",
+     "waypoints": 159
+    },
+    {
+     "components": 56,
+     "cycles": 41,
+     "edges": 301,
+     "map": "Con10b",
+     "waypoints": 316
+    },
+    {
+     "components": 20,
+     "cycles": 15,
+     "edges": 83,
+     "map": "Con10c",
+     "waypoints": 88
+    },
+    {
+     "components": 71,
+     "cycles": 30,
+     "edges": 91,
+     "map": "Con10d",
+     "waypoints": 132
+    },
+    {
+     "components": 53,
+     "cycles": 11,
+     "edges": 69,
+     "map": "Con11a",
+     "waypoints": 111
+    },
+    {
+     "components": 50,
+     "cycles": 79,
+     "edges": 530,
+     "map": "G_CastlD",
+     "waypoints": 501
+    },
+    {
+     "components": 50,
+     "cycles": 79,
+     "edges": 530,
+     "map": "G_Castle",
+     "waypoints": 501
+    },
+    {
+     "components": 45,
+     "cycles": 19,
+     "edges": 288,
+     "map": "G_CryptD",
+     "waypoints": 314
+    },
+    {
+     "components": 45,
+     "cycles": 19,
+     "edges": 288,
+     "map": "G_Crypts",
+     "waypoints": 314
+    },
+    {
+     "components": 50,
+     "cycles": 22,
+     "edges": 371,
+     "map": "G_ForesD",
+     "waypoints": 399
+    },
+    {
+     "components": 49,
+     "cycles": 22,
+     "edges": 370,
+     "map": "G_Forest",
+     "waypoints": 397
+    },
+    {
+     "components": 37,
+     "cycles": 260,
+     "edges": 1108,
+     "map": "G_LOTD",
+     "waypoints": 885
+    },
+    {
+     "components": 37,
+     "cycles": 260,
+     "edges": 1108,
+     "map": "G_LOTDD",
+     "waypoints": 885
+    },
+    {
+     "components": 108,
+     "cycles": 198,
+     "edges": 808,
+     "map": "G_Lava",
+     "waypoints": 718
+    },
+    {
+     "components": 69,
+     "cycles": 300,
+     "edges": 1130,
+     "map": "G_Mines",
+     "waypoints": 899
+    },
+    {
+     "components": 44,
+     "cycles": 30,
+     "edges": 340,
+     "map": "G_Swamp",
+     "waypoints": 354
+    },
+    {
+     "components": 39,
+     "cycles": 49,
+     "edges": 505,
+     "map": "G_TemplD",
+     "waypoints": 495
+    },
+    {
+     "components": 39,
+     "cycles": 49,
+     "edges": 505,
+     "map": "G_Temple",
+     "waypoints": 495
+    },
+    {
+     "components": 21,
+     "cycles": 21,
+     "edges": 150,
+     "map": "War01A",
+     "waypoints": 150
+    },
+    {
+     "components": 142,
+     "cycles": 18,
+     "edges": 74,
+     "map": "War02A",
+     "waypoints": 198
+    },
+    {
+     "components": 39,
+     "cycles": 3,
+     "edges": 53,
+     "map": "War02b",
+     "waypoints": 89
+    },
+    {
+     "components": 17,
+     "cycles": 48,
+     "edges": 281,
+     "map": "War03a",
+     "waypoints": 250
+    },
+    {
+     "components": 23,
+     "cycles": 45,
+     "edges": 231,
+     "map": "War03b",
+     "waypoints": 209
+    },
+    {
+     "components": 39,
+     "cycles": 17,
+     "edges": 172,
+     "map": "War03c",
+     "waypoints": 194
+    },
+    {
+     "components": 10,
+     "cycles": 69,
+     "edges": 285,
+     "map": "War03d",
+     "waypoints": 226
+    },
+    {
+     "components": 10,
+     "cycles": 13,
+     "edges": 70,
+     "map": "War04a",
+     "waypoints": 67
+    },
+    {
+     "components": 53,
+     "cycles": 22,
+     "edges": 164,
+     "map": "War04b",
+     "waypoints": 195
+    },
+    {
+     "components": 30,
+     "cycles": 18,
+     "edges": 152,
+     "map": "War04c",
+     "waypoints": 164
+    },
+    {
+     "components": 35,
+     "cycles": 68,
+     "edges": 232,
+     "map": "War05A",
+     "waypoints": 199
+    },
+    {
+     "components": 20,
+     "cycles": 32,
+     "edges": 173,
+     "map": "War05B",
+     "waypoints": 161
+    },
+    {
+     "components": 63,
+     "cycles": 27,
+     "edges": 200,
+     "map": "War05C",
+     "waypoints": 236
+    },
+    {
+     "components": 17,
+     "cycles": 26,
+     "edges": 129,
+     "map": "War06a",
+     "waypoints": 120
+    },
+    {
+     "components": 19,
+     "cycles": 45,
+     "edges": 229,
+     "map": "War06b",
+     "waypoints": 203
+    },
+    {
+     "components": 19,
+     "cycles": 6,
+     "edges": 65,
+     "map": "War07A",
+     "waypoints": 78
+    },
+    {
+     "components": 17,
+     "cycles": 23,
+     "edges": 81,
+     "map": "War07B",
+     "waypoints": 75
+    },
+    {
+     "components": 5,
+     "cycles": 11,
+     "edges": 62,
+     "map": "War07C",
+     "waypoints": 56
+    },
+    {
+     "components": 3,
+     "cycles": 4,
+     "edges": 44,
+     "map": "War07D",
+     "waypoints": 43
+    },
+    {
+     "components": 4,
+     "cycles": 5,
+     "edges": 26,
+     "map": "War07E",
+     "waypoints": 25
+    },
+    {
+     "components": 7,
+     "cycles": 2,
+     "edges": 15,
+     "map": "War07F",
+     "waypoints": 20
+    },
+    {
+     "components": 15,
+     "cycles": 2,
+     "edges": 117,
+     "map": "War07G",
+     "waypoints": 130
+    },
+    {
+     "components": 1,
+     "cycles": 0,
+     "edges": 0,
+     "map": "War07H",
+     "waypoints": 1
+    },
+    {
+     "components": 38,
+     "cycles": 28,
+     "edges": 155,
+     "map": "War08a",
+     "waypoints": 165
+    },
+    {
+     "components": 12,
+     "cycles": 5,
+     "edges": 72,
+     "map": "War08b",
+     "waypoints": 79
+    },
+    {
+     "components": 23,
+     "cycles": 11,
+     "edges": 57,
+     "map": "War08c",
+     "waypoints": 69
+    },
+    {
+     "components": 37,
+     "cycles": 12,
+     "edges": 113,
+     "map": "War08d",
+     "waypoints": 138
+    },
+    {
+     "components": 18,
+     "cycles": 3,
+     "edges": 36,
+     "map": "War08e",
+     "waypoints": 51
+    },
+    {
+     "components": 18,
+     "cycles": 9,
+     "edges": 135,
+     "map": "War09a",
+     "waypoints": 144
+    },
+    {
+     "components": 7,
+     "cycles": 34,
+     "edges": 213,
+     "map": "War09b",
+     "waypoints": 186
+    },
+    {
+     "components": 39,
+     "cycles": 11,
+     "edges": 131,
+     "map": "War09c",
+     "waypoints": 159
+    },
+    {
+     "components": 15,
+     "cycles": 25,
+     "edges": 171,
+     "map": "War09d",
+     "waypoints": 161
+    },
+    {
+     "components": 44,
+     "cycles": 39,
+     "edges": 154,
+     "map": "War10a",
+     "waypoints": 159
+    },
+    {
+     "components": 55,
+     "cycles": 42,
+     "edges": 302,
+     "map": "War10b",
+     "waypoints": 315
+    },
+    {
+     "components": 20,
+     "cycles": 9,
+     "edges": 65,
+     "map": "War10c",
+     "waypoints": 76
+    },
+    {
+     "components": 70,
+     "cycles": 33,
+     "edges": 98,
+     "map": "War10d",
+     "waypoints": 135
+    },
+    {
+     "components": 44,
+     "cycles": 12,
+     "edges": 82,
+     "map": "War11a",
+     "waypoints": 114
+    },
+    {
+     "components": 28,
+     "cycles": 26,
+     "edges": 103,
+     "map": "Wiz01A",
+     "waypoints": 105
+    },
+    {
+     "components": 13,
+     "cycles": 4,
+     "edges": 77,
+     "map": "Wiz02A",
+     "waypoints": 86
+    },
+    {
+     "components": 21,
+     "cycles": 12,
+     "edges": 94,
+     "map": "Wiz02B",
+     "waypoints": 103
+    },
+    {
+     "components": 30,
+     "cycles": 28,
+     "edges": 177,
+     "map": "Wiz02C",
+     "waypoints": 179
+    },
+    {
+     "components": 85,
+     "cycles": 15,
+     "edges": 86,
+     "map": "Wiz03a",
+     "waypoints": 156
+    },
+    {
+     "components": 29,
+     "cycles": 120,
+     "edges": 333,
+     "map": "Wiz03b",
+     "waypoints": 242
+    },
+    {
+     "components": 8,
+     "cycles": 7,
+     "edges": 56,
+     "map": "Wiz03c",
+     "waypoints": 57
+    },
+    {
+     "components": 12,
+     "cycles": 13,
+     "edges": 69,
+     "map": "Wiz04a",
+     "waypoints": 68
+    },
+    {
+     "components": 52,
+     "cycles": 22,
+     "edges": 164,
+     "map": "Wiz04b",
+     "waypoints": 194
+    },
+    {
+     "components": 28,
+     "cycles": 17,
+     "edges": 151,
+     "map": "Wiz04c",
+     "waypoints": 162
+    },
+    {
+     "components": 37,
+     "cycles": 69,
+     "edges": 237,
+     "map": "Wiz05A",
+     "waypoints": 205
+    },
+    {
+     "components": 8,
+     "cycles": 10,
+     "edges": 146,
+     "map": "Wiz05B",
+     "waypoints": 144
+    },
+    {
+     "components": 54,
+     "cycles": 29,
+     "edges": 204,
+     "map": "Wiz05C",
+     "waypoints": 229
+    },
+    {
+     "components": 32,
+     "cycles": 6,
+     "edges": 103,
+     "map": "Wiz06a",
+     "waypoints": 129
+    },
+    {
+     "components": 13,
+     "cycles": 25,
+     "edges": 99,
+     "map": "Wiz06b",
+     "waypoints": 87
+    },
+    {
+     "components": 22,
+     "cycles": 21,
+     "edges": 175,
+     "map": "Wiz06c",
+     "waypoints": 176
+    },
+    {
+     "components": 2,
+     "cycles": 0,
+     "edges": 0,
+     "map": "Wiz07A",
+     "waypoints": 2
+    },
+    {
+     "components": 83,
+     "cycles": 17,
+     "edges": 135,
+     "map": "Wiz07B",
+     "waypoints": 201
+    },
+    {
+     "components": 75,
+     "cycles": 25,
+     "edges": 132,
+     "map": "Wiz07C",
+     "waypoints": 182
+    },
+    {
+     "components": 26,
+     "cycles": 1,
+     "edges": 34,
+     "map": "Wiz07D",
+     "waypoints": 59
+    },
+    {
+     "components": 5,
+     "cycles": 0,
+     "edges": 0,
+     "map": "Wiz07E",
+     "waypoints": 5
+    },
+    {
+     "components": 9,
+     "cycles": 5,
+     "edges": 65,
+     "map": "Wiz07F",
+     "waypoints": 69
+    },
+    {
+     "components": 43,
+     "cycles": 28,
+     "edges": 165,
+     "map": "Wiz08a",
+     "waypoints": 180
+    },
+    {
+     "components": 11,
+     "cycles": 5,
+     "edges": 72,
+     "map": "Wiz08b",
+     "waypoints": 78
+    },
+    {
+     "components": 23,
+     "cycles": 11,
+     "edges": 57,
+     "map": "Wiz08c",
+     "waypoints": 69
+    },
+    {
+     "components": 37,
+     "cycles": 11,
+     "edges": 111,
+     "map": "Wiz08d",
+     "waypoints": 137
+    },
+    {
+     "components": 18,
+     "cycles": 3,
+     "edges": 36,
+     "map": "Wiz08e",
+     "waypoints": 51
+    },
+    {
+     "components": 18,
+     "cycles": 9,
+     "edges": 134,
+     "map": "Wiz09a",
+     "waypoints": 143
+    },
+    {
+     "components": 7,
+     "cycles": 35,
+     "edges": 214,
+     "map": "Wiz09b",
+     "waypoints": 186
+    },
+    {
+     "components": 39,
+     "cycles": 11,
+     "edges": 131,
+     "map": "Wiz09c",
+     "waypoints": 159
+    },
+    {
+     "components": 16,
+     "cycles": 25,
+     "edges": 171,
+     "map": "Wiz09d",
+     "waypoints": 162
+    },
+    {
+     "components": 44,
+     "cycles": 37,
+     "edges": 152,
+     "map": "Wiz10a",
+     "waypoints": 159
+    },
+    {
+     "components": 60,
+     "cycles": 40,
+     "edges": 300,
+     "map": "Wiz10b",
+     "waypoints": 320
+    },
+    {
+     "components": 21,
+     "cycles": 9,
+     "edges": 65,
+     "map": "Wiz10c",
+     "waypoints": 77
+    },
+    {
+     "components": 69,
+     "cycles": 34,
+     "edges": 99,
+     "map": "Wiz10d",
+     "waypoints": 134
+    },
+    {
+     "components": 8,
+     "cycles": 24,
+     "edges": 91,
+     "map": "Wiz11A",
+     "waypoints": 75
+    }
+   ],
+   "waypoints_per_map": [
+    78.0,
+    159.0,
+    207.0
+   ]
+  },
+  "link_flags": {
+   "1": 0.0269,
+   "128": 0.874,
+   "16": 0.0128,
+   "2": 0.0255,
+   "32": 0.0142,
+   "4": 0.0165,
+   "64": 0.003,
+   "8": 0.0271
+  },
+  "link_length_cells": [
+   5.1,
+   7.44,
+   11.29
+  ],
+  "named_waypoint_share": 0.18,
+  "on_road_floor_share_by_context": {
+   "cave": 0.641,
+   "dungeon": 0.552,
+   "town": 0.509,
+   "wilderness": 0.105
+  },
+  "road_floor_share_of_tiles_by_context": {
+   "cave": 0.536,
+   "dungeon": 0.501,
+   "town": 0.414,
+   "wilderness": 0.053
+  },
+  "wall_distance_cells_by_context": {
+   "cave": [
+    1.41,
+    2.24,
+    3.61
+   ],
+   "dungeon": [
+    1.41,
+    2.24,
+    3.61
+   ],
+   "town": [
+    2.0,
+    2.83,
+    4.24
+   ],
+   "wilderness": [
+    2.0,
+    2.83,
+    4.12
+   ]
+  },
+  "waypoint_share_by_context": {
+   "cave": 0.2993,
+   "dungeon": 0.5052,
+   "town": 0.0978,
+   "wilderness": 0.0978
+  }
+ }
+}
