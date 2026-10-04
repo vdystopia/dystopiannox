@@ -217,13 +217,60 @@ def _assign_rooms(rng, U, target, weights=None):
     least = _units_for(0.45 * min(weights)) if weights else 16
     stubs = {k for k in parts if len(parts[k]) < least} if len(parts) > 1 else set()
     if len(stubs) == len(parts): stubs = set()
-    _share_parts(rng, {k: s for k, s in parts.items() if k not in stubs}, target, weights, labels)
+    main = {k: s for k, s in parts.items() if k not in stubs}
+    hub = _hub_labels(rng, next(iter(main.values())), target, weights) if len(main) == 1 and target >= 5 and weights \
+        else None
+    if hub: labels.update(hub)
+    else: _share_parts(rng, main, target, weights, labels)
     for k in sorted(stubs, key=str):
         near = Counter(labels[n] for (i, j) in parts[k] for n in ((i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1))
                        if n not in parts[k] and labels.get(n, COURT) != COURT)
         lab = near.most_common(1)[0][0] if near else 0
         for p in parts[k]: labels[p] = lab
     return labels
+
+
+def _hub_labels(rng, units, target, weights):
+    """A great hall down the middle of a large building with the other rooms in a row along each side, each reaching
+    from the outer wall to the hall and opening onto it (the doors' spanning tree runs breadth first from the hall).
+    Westwood's multi-room buildings give their largest room half or more of the floor (rules/out/buildings.json
+    hall_share, medians 0.5-0.8) and reach the other rooms through it; few have corridors (0-22% by style). The hall
+    is about a third of the building's width; the side rooms take the program's other weights, the larger ones
+    alternating between the sides. Returns {unit: label} (the hall 0) or None when the part is too small."""
+    i0, i1, j0, j1 = _rects_of_part(units)
+    W, H = i1 - i0, j1 - j0
+    along_i = W >= H                                  # the hall runs along the longer side
+    L, S = (W, H) if along_i else (H, W)
+    hb = max(3, round(S * 0.34))
+    side = S - hb
+    n = target - 1
+    nA, nB = (n + 1) // 2, n // 2
+    if side < 6 or L < 3 * nA: return None
+    dA = side // 2
+    ws = sorted(weights[1:], reverse=True)[:n] if len(weights) > 1 else [1.0] * n
+    ws += [min(ws or [1.0])] * (n - len(ws))
+    wA, wB = ws[0::2], ws[1::2]
+    if rng.random() < 0.5: wA.reverse()               # the larger rooms not always at the same end
+    if rng.random() < 0.5: wB.reverse()
+
+    def cuts(ws_):
+        tot, acc, pos = sum(ws_), 0.0, [0]
+        for w in ws_[:-1]:
+            acc += w
+            pos.append(round(L * acc / tot))
+        pos.append(L)
+        for k in range(1, len(pos) - 1): pos[k] = max(pos[k], pos[k - 1] + 3)
+        for k in range(len(pos) - 2, 0, -1): pos[k] = min(pos[k], pos[k + 1] - 3)
+        return pos
+
+    pA, pB = cuts(wA), cuts(wB)
+    out = {}
+    for (i, j) in units:
+        a, c = (i - i0, j - j0) if along_i else (j - j0, i - i0)
+        if dA <= c < dA + hb: out[(i, j)] = 0
+        elif c < dA: out[(i, j)] = 1 + next(k for k in range(nA) if a < pA[k + 1])
+        else: out[(i, j)] = 1 + nA + next(k for k in range(nB) if a < pB[k + 1])
+    return out
 
 
 def _share_parts(rng, parts, target, weights, labels):
