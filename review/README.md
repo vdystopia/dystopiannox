@@ -37,7 +37,7 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
      A room passes at its coverage target, with no warnings and with its back walls 35% lined (25% under 40
      tiles).
    - The loop: build three seeds, score them, look at the failing rooms' pictures (`rooms.py --each`), fix the
-     furnisher or the recipe, and repeat. The first night took the lab from 23 to 35-37 of 42 rooms passing.
+     furnisher or the recipe, and repeat. The first night took the lab from 23 to 35-37 of 42 rooms passing, then added the tavern, shop, laboratory, chapel, crypt, hall and throne room (21 kinds, 63 rooms: 47-51 pass over three seeds).
 
 `py review/review.py --calibrate` re-measures Westwood's 51 outdoor single-player maps (25 distinct
 layouts) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for

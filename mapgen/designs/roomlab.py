@@ -37,7 +37,14 @@ LAB = {
     "storeroom": (25, 60, "Log", "WoodSlatFloor", "town"),
     "gear_store": (30, 70, "Log", "DirtHard", "mine"),
     "ore_store": (40, 90, "Log", "WoodLight2", "mine"),
-    "smithy": (35, 60, "BrickPlain", "DirtHard", "town"),
+    "smithy": (40, 60, "BrickPlain", "DirtHard", "town"),
+    "tavern": (170, 230, "StuccoLightWood", "WoodLight2", "town"),
+    "shop": (40, 90, "StuccoLightWood", "OakWoodFloor", "town"),
+    "laboratory": (35, 80, "BrickPlain", "OakWoodFloor", "town"),
+    "chapel": (78, 95, "BrickPlain", "GalavaBrownMarble", "dunmir"),
+    "crypt": (70, 130, "LOTDBrick", "LOTDPitted", "lotd"),
+    "hall": (90, 180, "BrickPlain", "GalavaBrownMarble", "dunmir"),
+    "throne_room": (60, 110, "BrickPlain", "GalavaBrownMarble", "dunmir"),
 }
 SIZES = (("typical", 0), ("large", 1), ("bigger", 1.5))
 FIELD = (130, 380, -120, 120)           # u0, u1, v0, v1 of the open ground (x and y stay within 0-255)

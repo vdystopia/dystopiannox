@@ -150,6 +150,13 @@ Then, in this order:
     - a freestanding hearth with benches;
     - ore carts.
     A group takes only pieces its room's identity allows (`Furnisher.belongs`).
+  - Set pieces for the grander rooms:
+    - a tavern's bar, with kegs behind it;
+    - a trader's counter set out from the wall, with the keeper's space behind it;
+    - a chapel's pews in rows facing the altar, split by an aisle;
+    - colonnades in halls and throne rooms;
+    - rows of coffins and sarcophagi side by side in crypts;
+    - Westwood's four-piece Dun Mir throne on a NE wall.
   - Each building keeps one palette of chairs, stools, benches, tables, carpets, hangings and plants, so its rooms
     belong together while the buildings of a map differ.
   - Some rooms on built floors get a carpet of floor tiles instead of a rug object, with Westwood's gold trim (Con07B

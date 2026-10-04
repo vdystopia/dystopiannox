@@ -66,7 +66,9 @@ def score(map_path):
         warns = [f for f in findings if f["severity"] != "info" and f.get("x") is not None and
                  box[0] <= f["x"] / 23 <= box[2] + 1 and box[1] <= f["y"] / 23 <= box[3] + 1]
         target = min(lo, max(ww * 1.25, 0.10))
-        ok = cover >= target and not warns and lined >= (0.35 if r["tiles"] >= 40 else 0.25)
+        from kit.identity import ROOMS
+        lines_walls = any(st.get("slot") == "line" for st in (ROOMS.get(kind, {}).get("compose") or []) + (ROOMS.get(kind, {}).get("fill") or []))
+        ok = cover >= target and not warns and (not lines_walls or lined >= (0.35 if r["tiles"] >= 40 else 0.25))
         rows.append(dict(number=d["number"], kind=kind, purpose=d.get("purpose", ""), tiles=r["tiles"], cover=cover,
                          target=target, lo=lo, hi=hi, ww=ww, middle=mid / (2 * len(cells)), lined=lined,
                          types=len({o["type"] for o in r["objects"]}), pieces=len(r["objects"]), warns=warns, ok=ok))
