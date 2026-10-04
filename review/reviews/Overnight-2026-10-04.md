@@ -32,8 +32,12 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   facing it and homes along the streets.
   - The square follows Westwood's own, measured round its 12 town wells and fountains: a fountain ringed by potted
     plants and flowers, benches facing in, ornate street lamps at the edge.
-  - Thirteen townsfolk walk between the square and the doorsteps, and wolves, bats and urchins keep to the woods
-    round the town, as in Westwood's towns. The server's self-check finds all 28 scripted creatures. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
+  - Thirteen villagers walk between the square and the doorsteps and run for a doorstep when a wolf comes near;
+    wolves, bats and urchins keep to the woods round the town, as in Westwood's towns. The server's self-check
+    finds all 39 scripted creatures.
+  - The store has a shopkeeper behind its counter selling potions, food and travel gear, set up the way Westwood
+    sets its traders. Please try buying from them: I could only check that the map loads. Their greeting text is
+    empty for now. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
   29-30 rooms passing. It found:
   - a U-shaped house whose living room came out as two closed-off halves;
   - a round cauldron in a corner crowded by shelves;
