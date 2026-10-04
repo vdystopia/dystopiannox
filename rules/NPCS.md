@@ -121,6 +121,7 @@ OpenNox runs every `.go` file in `maps/<Name>/` as the map's script. The package
 | `Skittish` | Wanders. When hit, it flees from the attacker for a few seconds, then wanders again. |
 | `Ambush` | A group waits unseen (disabled) until the player comes within reach, then appears and attacks. |
 | `Townsfolk` | Walks between named spots, lingers, and turns to look at a player passing by. |
+| `Villager` | A townsfolk who keeps an eye out: twice a second it looks for a living hostile creature within its fear radius; if one is near it runs to its home doorstep and waits there until eight quiet seconds have passed, then takes up its rounds again. The town's own people (Maidens, NPCs, shopkeepers) and the player are no threat. The town lab's 13 villagers use it. |
 
 **Generating a map's script.** `kit/npcs.py` writes a map's `behaviours.go` and its `config.go` (who does what). It also writes a `Diagnose` self-check that prints to the server log how many named creatures and waypoints the script can find. NpcLab: "creatures 25 of 25 - waypoints 8 of 8".
 

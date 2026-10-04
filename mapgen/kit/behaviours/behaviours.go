@@ -17,9 +17,14 @@ package PKG
 //   Skittish:   wanders; when hit it flees from its attacker for a few seconds, then wanders again.
 //   Ambush:     a group waits unseen (disabled) until the player comes within reach, then appears and attacks.
 //   Townsfolk:  walks between the town's named spots, lingers, and turns to look at the player passing by.
+//   Villager:   a townsfolk who keeps an eye out: when a hostile creature comes near, runs for its home doorstep and
+//               waits there until the danger has passed, then takes up its rounds again.
 
 import (
+	"strings"
+
 	"github.com/noxworld-dev/noxscript/ns/v4"
+	"github.com/noxworld-dev/opennox-lib/object"
 )
 
 func find(name string) ns.Obj {
@@ -224,6 +229,79 @@ func Townsfolk(name string, spots []string, lingerSec float64) {
 			o.LookAtObject(h)
 		}
 		ns.NewTimer(ns.Seconds(lingerSec+float64(ns.Random(0, 4))), next)
+	})
+	next()
+}
+
+// ---- Villager ----------------------------------------------------------------------------------------------------
+
+// friendlyType: the town's own people, who are no threat to a villager.
+func friendlyType(t string) bool {
+	return t == "Maiden" || t == "NPC" || t == "AirshipCaptain" || strings.HasPrefix(t, "Shopkeeper") ||
+		strings.HasPrefix(t, "Wounded")
+}
+
+// Villager walks between the town's spots like Townsfolk; twice a second it looks round, and when a living, hostile
+// creature is within fearR pixels it runs to its home waypoint (a doorstep) and stays there, out of the way, until
+// none has been near for a while.
+func Villager(name string, spots []string, lingerSec float64, home string, fearR float64) {
+	o := find(name)
+	if o == nil {
+		return
+	}
+	var wps []ns.WaypointObj
+	for _, s := range spots {
+		if w := ns.Waypoint(s); w != nil {
+			wps = append(wps, w)
+		}
+	}
+	hw := ns.Waypoint(home)
+	hiding, calm := false, 0
+	next := func() {
+		if hiding {
+			return
+		}
+		if len(wps) == 0 {
+			o.Wander()
+			return
+		}
+		o.Move(wps[ns.Random(0, len(wps)-1)])
+	}
+	o.OnEvent(ns.EventEndOfWaypoint, func() {
+		if hiding {
+			o.Idle()
+			return
+		}
+		if h := ns.GetHost(); h != nil && dist2(h.Pos(), o.Pos()) < 120*120 {
+			o.LookAtObject(h)
+		}
+		ns.NewTimer(ns.Seconds(lingerSec+float64(ns.Random(0, 4))), next)
+	})
+	threat := func() ns.Obj {
+		return ns.FindClosestObject(o, ns.HasClass(object.ClassMonster), ns.InCirclef{Center: o, R: fearR},
+			ns.ObjCondFunc(func(x ns.Obj) bool {
+				return x != o && x.IsEnabled() && x.CurrentHealth() > 0 && !friendlyType(x.Type().Name())
+			}))
+	}
+	ns.OnEachFrame(15, func() {
+		if o.CurrentHealth() <= 0 {
+			return
+		}
+		if t := threat(); t != nil {
+			calm = 0
+			if !hiding && hw != nil {
+				hiding = true
+				o.Move(hw)
+			}
+			return
+		}
+		if hiding {
+			calm++
+			if calm >= 16 { // eight quiet seconds: back to the rounds
+				hiding, calm = false, 0
+				next()
+			}
+		}
 	})
 	next()
 }

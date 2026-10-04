@@ -131,6 +131,10 @@ class Behaviours:
     def townsfolk(self, name, spots, linger=4.0):
         self.calls.append(f'Townsfolk({json.dumps(name)}, {self._s(spots)}, {linger:.1f})')
 
+    def villager(self, name, spots, home, linger=5.0, fear=180.0):
+        """Townsfolk who run for their home doorstep (waypoint `home`) while a hostile creature is within `fear` px."""
+        self.calls.append(f'Villager({json.dumps(name)}, {self._s(spots)}, {linger:.1f}, {json.dumps(home)}, {fear:.1f})')
+
     def harpoon_staff(self, staff, speed=26.0, reach=320.0, damage=20, reel=40, pull=6.0):
         """A named Lesser Fireball staff that throws harpoons (kit/behaviours/weapons.go, rules/WEAPONS.md)."""
         self.weapons = True

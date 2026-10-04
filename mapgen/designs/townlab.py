@@ -137,8 +137,8 @@ planter = Planter(m, rng, land, FOREST, keep_clear=keep)
 n_trees, n_small = planter.plant_all(groves=3)
 m.obj_px("PlayerStart", *square_px(gate[0], gate[1]))
 
-# ---- 5. townsfolk: walking between the square and the doorsteps, lingering, turning to look at a passer-by --------
-# (Westwood's towns hold 8-26 villagers each; kit/behaviours Townsfolk)
+# ---- 5. townsfolk: walking between the square and the doorsteps, lingering, turning to look at a passer-by, running
+# for a doorstep when a wolf comes into town (Westwood's towns hold 8-26 villagers each; kit/behaviours Villager)
 pop = Population(m, rng)
 B = pop.behaviours
 ring = [square_px(vc[0] + 6.5 * math.cos(a), vc[1] - 0.5 + 6.5 * math.sin(a)) for a in (k * math.pi / 4 for k in range(8))]
@@ -152,7 +152,8 @@ for k in range(max(6, len(placed))):
     name = f"Folk{k + 1}"
     x, y = ring[k % len(ring)]
     pop.creature("Maiden", x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), scr=name, aggr=0.0)
-    B.townsfolk(name, rng.sample(square_wps, 3) + rng.sample(door_wps, min(2, len(door_wps))), linger=5.0)
+    homes = rng.sample(door_wps, min(2, len(door_wps)))
+    B.villager(name, rng.sample(square_wps, 3) + homes, home=homes[0] if homes else square_wps[0], linger=5.0)
 
 # ---- 6. the woods round the town: Westwood's town maps keep their creatures out by the forest's edge (rules/NPCS.md:
 # most alone, about 2 squares from a wall, idle or on guard), well away from the square; wolves run in packs
@@ -161,10 +162,10 @@ far = [s for s, dd in sorted(edge.items()) if 1 <= dd <= 3 and math.hypot(s[0] -
        and s not in land.taken and s not in land.roads and s not in land.taken_strict]
 rng.shuffle(far)
 MIX = {"Urchin": 3, "Bat": 3, "Wolf": 2, "SmallAlbinoSpider": 2, "Bear": 1}
-n_wild, wild, centres = int(len(land.squares) * 0.55 / 100), 0, []
+n_wild, wild, centres = int(len(land.squares) * 0.7 / 100), 0, []
 for s_ in far:
     if wild >= n_wild: break
-    if any(math.hypot(s_[0] - a, s_[1] - b) < 8 for a, b in centres): continue
+    if any(math.hypot(s_[0] - a, s_[1] - b) < 6 for a, b in centres): continue
     t = rng.choices(list(MIX), list(MIX.values()))[0]
     k = rng.randint(3, 4) if t == "Wolf" else 1
     members = []
