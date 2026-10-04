@@ -178,6 +178,20 @@ for s_ in far:
         wild += 1
     if len(members) >= 2: B.pack(members[0], members[1:])
     centres.append(s_)
+
+# ---- 7. the shops: a shopkeeper behind each counter the furnisher set (its spot behind it), with wares as Westwood's
+# town traders sell them
+WARES = {"store": [(3, "RedPotion"), (2, "BluePotion"), (1, "CurePoisonPotion"), (4, "RedApple"), (2, "Meat"),
+                   (2, "Cider"), (1, "Quiver"), (1, "Bow"), (1, "LeatherBoots"), (1, "LeatherHelm")]}
+n_shops = 0
+for bid, b in placed:
+    for room in b.rooms:
+        for sp in getattr(room, "spots", []) or []:
+            if sp.get("role") != "shopkeeper" or bid.role not in WARES: continue
+            xs = [(x + 1) * 23 for x, _ in room.tiles]; ys = [(y + 1) * 23 for _, y in room.tiles]
+            pop.shopkeeper("ShopkeeperYellow", *sp["px"], WARES[bid.role],
+                           face=(sum(xs) / len(xs), sum(ys) / len(ys)))
+            n_shops += 1
 m.scripts.update(B.files(m.d["name"]))
 
 if __name__ == "__main__":
@@ -192,4 +206,4 @@ if __name__ == "__main__":
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK"))))
     print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(missed) or 'none'}) "
-          f"| trees {n_trees} | plants {n_small}")
+          f"| trees {n_trees} | plants {n_small} | shopkeepers {n_shops}")

@@ -82,19 +82,38 @@ foreach ($t in $s.tiles) {
     $map.Tiles[$pt] = $tile
 }
 
+function Convert-XferValue($t, $v) {
+    # A spec value as the field's type: a colour, an enum, an array, a structure given as a JSON object (its fields set
+    # by name, e.g. a shopkeeper's ShopkeeperInfo with its list of ShopItems), or a plain value.
+    if ($t -eq [Drawing.Color]) { return [Drawing.Color]::FromArgb([int]$v[0], [int]$v[1], [int]$v[2]) }
+    if ($t.IsEnum) { if ($v -is [string]) { return [Enum]::Parse($t, $v) } else { return [Enum]::ToObject($t, $v) } }
+    if ($t.IsArray) {
+        $et = $t.GetElementType()
+        $a = [Array]::CreateInstance($et, @($v).Count); $i = 0
+        foreach ($e in $v) { $a.SetValue((Convert-XferValue $et $e), $i); $i++ }
+        return ,$a
+    }
+    if ($v -is [System.Management.Automation.PSCustomObject]) {
+        $inst = [Activator]::CreateInstance($t)          # boxed: SetValue on it fills the structure in place
+        foreach ($q in $v.PSObject.Properties) {
+            $g = $t.GetField($q.Name)
+            if (-not $g) { $errors.Add("no setting '$($q.Name)' on $($t.Name)"); continue }
+            $g.SetValue($inst, (Convert-XferValue $g.FieldType $q.Value))
+        }
+        return $inst
+    }
+    if ($null -ne $v) { return [Convert]::ChangeType($v, $t) }
+    return $null
+}
+
 function Set-XferFields($obj, $fields) {
-    # Overrides an object's type-specific settings (e.g. a ColorLight preset, NPC behaviour).
+    # Overrides an object's type-specific settings (e.g. a ColorLight preset, NPC behaviour, a shop's wares).
     if (-not $fields) { return }
     $x = $xferField.GetValue($obj)
     foreach ($p in $fields.PSObject.Properties) {
         $f = $x.GetType().GetField($p.Name)
         if (-not $f) { $errors.Add("$($obj.Name): no setting '$($p.Name)' on $($x.GetType().Name)"); continue }
-        $t = $f.FieldType; $v = $p.Value
-        if ($t -eq [Drawing.Color]) { $v = [Drawing.Color]::FromArgb([int]$v[0], [int]$v[1], [int]$v[2]) }
-        elseif ($t.IsEnum) { $v = if ($v -is [string]) { [Enum]::Parse($t, $v) } else { [Enum]::ToObject($t, $v) } }
-        elseif ($t.IsArray) { $v = [Array]::CreateInstance($t.GetElementType(), @($v).Count); $i = 0; foreach ($e in $p.Value) { $v[$i++] = [Convert]::ChangeType($e, $t.GetElementType()) } }
-        elseif ($null -ne $v) { $v = [Convert]::ChangeType($v, $t) }
-        $f.SetValue($x, $v)
+        $f.SetValue($x, (Convert-XferValue $f.FieldType $p.Value))
     }
 }
 

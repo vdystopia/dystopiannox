@@ -69,6 +69,15 @@ class Population:
         self.placed.append(o)
         return o
 
+    def shopkeeper(self, t, x, y, items, greeting="", buy=1.0, sell=0.33, face=None, scr=None):
+        """A shopkeeper selling `items` ([(count, type)]) as Westwood sets one up (MonsterXfer ShopkeeperInfo, read from
+        its town maps: Con02a's mystic sells potions and a spell book, its barkeeper apples, meat and cider): immortal,
+        on guard behind the counter, buying at full value and paying a third when it buys."""
+        info = dict(BuyValueMultiplier=float(buy), SellValueMultiplier=float(sell), ShopkeeperGreetingText=greeting,
+                    ShopItems=[dict(Name=n, Count=int(c), SpellID="", Ench1="", Ench2="", Ench3="", Ench4="")
+                               for c, n in items])
+        return self.creature(t, x, y, action="guard", face=face, scr=scr, aggr=0.0, Immortal=True, ShopkeeperInfo=info)
+
     def waypoint_path(self, prefix, pts, link=False, loop=False):
         """Named waypoints <prefix>_1, _2, ... at world pixel points; linked in a chain (and closed into a loop) when
         asked. Linked connections carry flag 128, which roaming creatures follow (ActionRoamPathFlag 128 or 255)."""
