@@ -75,6 +75,15 @@ DANGEROUS = re.compile(r"Flame(?!Basin)")
 # The walls the camera looks at across a room (NW and NE): Westwood stands most wall pieces there
 # (fireplaces 87%, beds 79%, chests 74%, stoves 77%).
 BACK_SIDES = ("/|BR", "\\|BL")
+# pieces that line a wall, as the room score counts them (review/roomscore.py imports this list): shelves, desks, hearths,
+# stoves, chests, beds, benches, racks
+TALL_PIECES = re.compile(r"^(Bookcase|PotionShelves|LogShelves|TraderShelves|TraderHelmShelf|Desk\d|Fireplace|WallFireplace|"
+                  r"Stove0|Cauldron|CinderBin|Bellows|AlchemistDesk|WizardWorkstation|Chest\d|DunMirChest|Bed\d|WoodBed|Cot\d|Bench|"
+                  r"LightBench|CushionedBench|TraderPoleArm|TraderArmorRack|TraderBowRack|TraderClothesRack|TraderQuiverRack)")
+LINED_GOAL = 0.38            # share of the NE and NW walls to line (the room score asks 35%)
+# what may top a room up to its coverage target, one piece at a time against a wall: never shelves (a lone shelf breaks
+# a lined wall) or tables (a table stands with its seats)
+TOP_UP_FAMS = ("storage", "bench", "plant", "lab", "statue")      # not stoves: a hearth or stove is an anchor with room round it
 # The user's frame of reference (TreePlace v0.3 room review): the NE wall is the top right of a room on screen, the
 # NW wall the top left, the SE wall the bottom right and the SW wall the bottom left. In the code's terms
 # NW = '/|BR', NE = '\\|BL', SE = '/|TL', SW = '\\|TR'.
@@ -813,8 +822,10 @@ class Furnisher:
             self.composing = True                        # the room's coverage limit holds instead (ROOM_COVER)
             self.compose(plan, need)
             self.fill_room()
+            self.line_backs()
             for _ in range(self._deferred_decor): self.place_decor()
             if self.kind in DECORATED: self.decorate_walls()
+            while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
             self.audit_rugs()
             self.in_required = self.composing = False
             self.placing_light = True
@@ -1536,14 +1547,15 @@ class Furnisher:
         if row: self.wall_used.append(((r["line"], r["coord"]), a, edge))
         return got, edge
 
-    def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False):
+    def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False, grow_only=False):
         """Shelves end to end along a NE or NW wall (TreePlace v0.3 room review: fill whole walls with bookshelves and
         similar pieces rather than one here and there; not every wall). The wall is the one holding `near` (a placed
         anchor such as the hearth or the desk: the shelves then flank it on both sides, packed toward it and so
         mirrored, `around` units from it), else the back wall with the most free length. Every free stretch of that
         wall fills from end to end, or takes a centred group of up to max_n. With decor_every > 0 a hanging of the
         room's theme takes a gap after every that many shelves. Half-full bookcases mix in. Returns the shelves
-        placed."""
+        placed. grow_only: only lengthen the rows already on a wall, end to end (never a second row with bare wall
+        between)."""
         types = self.types_of(fam)
         if not types: return 0
         t0 = _pick(self.rng, types)
@@ -1555,13 +1567,14 @@ class Furnisher:
             runs = sorted((r for r in self.g.runs if r["side"] in BACK_SIDES), key=lambda r: -free[id(r)] - self.rng.uniform(0, 0.5))
         for r in runs:
             if other and (r["line"], r["coord"]) in self._lined: continue    # the back wall not lined yet
+            if grow_only and (r["line"], r["coord"]) not in self._line_blocks: continue
             t = self.side_variant(t0, r, fam)
             for alt in sorted(types, key=lambda k: -types[k]):   # t0 has no piece facing out of this wall (a
                 if t: break                                      # bookcase drawn for one wall only): another type
                 t = alt != t0 and self.side_variant(alt, r, fam)
             if not t: continue
             mix = [t] + ([t + "HalfFull"] if self.ok_type(t + "HalfFull") else [])
-            got = self._line_run(r, mix, near, max_n, decor_every, around, fam)
+            got = self._line_run(r, mix, near, max_n, decor_every, around, fam, grow_only)
             if got:
                 self._lined.add((r["line"], r["coord"]))
                 return got
@@ -1573,7 +1586,7 @@ class Furnisher:
         if self.composing and _family_of(t) in _blocking() and self.coverage(self.footprint(t)) > self.cover_max: return False
         return self.g.fits(u, v, hu, hv, True, False, wall_min=0.1 if snug else 0.25, touch=touch)
 
-    def _line_run(self, r, mix, near, max_n, decor_every, around, fam):
+    def _line_run(self, r, mix, near, max_n, decor_every, around, fam, grow_only=False):
         """Lines the free stretches of wall run r (see line_wall). Every spot of the run is tested first and only an
         unbroken stretch of it is laid (the one at the anchor, else the longest), so a run never has holes."""
         hu, hv = self.half(mix[0])
@@ -1594,6 +1607,7 @@ class Furnisher:
                 a0, a1 = near["along"] - near["ha"], near["along"] + near["ha"]
                 if abs(hi - (a0 - 0.25)) < 0.3: hi, toward = a0 - around, 1          # this stretch ends at the anchor
                 elif abs(lo - (a1 + 0.25)) < 0.3: lo, toward = a1 + around, -1      # this one starts at it
+            if grow_only and not toward: continue                # a stretch apart from the row: leave it
             length = lambda n: n * pitch - 0.04 + ((n - 1) // decor_every * dgap if decor_every and n > 1 else 0.0)
             n = 0
             while length(n + 1) <= hi - lo and (max_n is None or n < max_n): n += 1
@@ -1623,6 +1637,7 @@ class Furnisher:
             shelves = lambda b: sum(1 for k in b if slots[k][0] == "shelf")
             if toward == -1 and blocks[0][0] == 0: block = blocks[0]
             elif toward == 1 and blocks[-1][-1] == len(slots) - 1: block = blocks[-1]
+            elif grow_only: continue                     # the spot by the row is taken: a stretch apart would leave a gap
             else: block = max(blocks, key=shelves)
             if shelves(block) < (1 if near else 2): continue       # never one shelf alone against a long wall
             laid, placed_seq = [], []                    # placed_seq: (slot index, object or None) in order
@@ -2011,6 +2026,92 @@ class Furnisher:
                 if p and st.get("seats"): self.seats_around(p["uv"], p["obj"]["type"], 1)   # a desk and its chair
             added[i] += self.n_blocking - before
             misses = 0 if self.n_blocking > before else misses + 1
+        self.top_up()
+
+    def top_up(self):
+        """Pieces the room's identity allows (TOP_UP_FAMS among its core and optional families), one at a time against
+        the walls, until the room reaches its coverage target. The fill steps open with the room's size (min_area),
+        and a medium room of some kinds ran out of steps below its target (bedrooms of 32-48 tiles at 0.11-0.13
+        against 0.14, studies of 60-90 tiles at 0.08-0.10 against 0.11)."""
+        ident = ROOM_IDENTITY.get(self.kind, {})
+        # first the rows of shelves already lining the walls, grown end to end
+        fam = self.line_family()
+        while fam and self.coverage() < self.cover_target and self.line_wall(fam, grow_only=True): pass
+        # then single pieces, no more of a family than the identity allows a room of this size (7 potted plants in
+        # a study is clutter, not furniture)
+        p50 = (self.T.get("tiles") or {}).get("p50") or 30
+        grow = max(1.0, self.g.area / (2.4 * p50))
+        limits = {f: int(math.ceil(rng_[1] * grow)) + 1 for f, rng_ in list(ident.get("optional", {}).items()) +
+                  list(ident.get("core", {}).items()) if f in TOP_UP_FAMS and self.types_of(f)}
+        have = Counter(_family_of(t) for t, _ in self._typed)
+        misses = 0
+        while self.coverage() < self.cover_target:
+            fams = [f for f, n in limits.items() if have[f] < n]
+            if not fams or misses >= 2 * len(fams): break
+            f = fams[misses % len(fams)] if misses else self.rng.choice(fams)
+            before = self.n_blocking
+            self.place_on_wall(f, self.rng.choice(("corner", "center")), 1.0)
+            if self.n_blocking > before: have[f] += 1; misses = 0
+            else: misses += 1
+
+    def line_family(self):
+        """The family this room's identity lines its walls with (shelves, shop racks), or None."""
+        ident = ROOM_IDENTITY.get(self.kind, {})
+        return next((st["fam"] for st in (ident.get("compose") or []) + (ident.get("fill") or [])
+                     if st.get("slot") == "line"), None)
+
+    def back_lined(self):
+        """Share of the NE and NW walls lined, measured as the room score measures it: the stretches that tall pieces
+        and hangings stand against, over the back walls' length less 3 units for each doorway in them."""
+        backs = [r for r in self.g.runs if r["side"] in BACK_SIDES]
+        length = 0.0
+        for r in backs:
+            length += r["hi"] - r["lo"]
+            for du, dv in self.g.doors:
+                perp, along = (du, dv) if r["line"] == "/" else (dv, du)
+                if abs(perp - r["coord"]) < 1.6 and r["lo"] < along < r["hi"]: length -= 3.0
+        spans = collections.defaultdict(list)
+        for t, rec in self._typed:
+            if not (TALL_PIECES.match(t) or _family_of(t) == "wall_decor"): continue
+            u, v, hu, hv = rec[:4]
+            for r in backs:
+                perp, along = (u, v) if r["line"] == "/" else (v, u)
+                ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
+                if abs(perp - r["coord"]) - hp <= 1.0 and r["lo"] - ha <= along <= r["hi"] + ha:
+                    spans[(r["line"], r["coord"])].append((along - ha, along + ha)); break
+        used = 0.0
+        for sp in spans.values():
+            sp.sort(); end = -1e9
+            for a, b in sp:
+                if b <= end: continue
+                used += b - max(a, end); end = b
+        return used / length if length > 0 else 1.0
+
+    def line_backs(self, goal=LINED_GOAL):
+        """Lines the NE and NW walls until `goal` of their length is lined (TreePlace v0.3 review: shelves and wall
+        decoration go on the NE and NW walls, whole walls end to end): the back wall not lined yet first, then the rows
+        already there grown on. Hangings close what is left after the walls are decorated (furnish). A big room has
+        two long back walls, and its recipe's one or two lining steps had left it about 30% lined."""
+        fam = self.line_family()
+        if not fam: return
+        # shelves already standing against a back wall (one set there singly, beside a hearth or a desk) are that
+        # wall's row: the pass grows it end to end rather than starting a second row with bare wall between
+        for r in self.g.runs:
+            if r["side"] not in BACK_SIDES: continue
+            key = (r["line"], r["coord"])
+            for t, rec in self._typed:
+                if _family_of(t) != fam: continue
+                u, v, hu, hv = rec[:4]
+                perp, along = (u, v) if r["line"] == "/" else (v, u)
+                ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
+                if abs(perp - r["coord"]) - hp > 0.6 or not r["lo"] <= along <= r["hi"]: continue
+                blocks = self._line_blocks.setdefault(key, [])
+                if not any(b0 - 0.05 <= along - ha and along + ha <= b1 + 0.05 for b0, b1 in blocks):
+                    blocks.append((along - ha, along + ha))
+                self._lined.add(key)
+        for _ in range(4):
+            if self.back_lined() >= goal: return
+            if not (self.line_wall(fam, other=True) or self.line_wall(fam, grow_only=True)): return
 
     def decorate_walls(self):
         """Hangings on the NE and NW walls the camera sees (trophies, tapestries, paintings, shields), each centred on

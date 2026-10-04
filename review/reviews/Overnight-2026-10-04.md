@@ -77,6 +77,16 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   shows through the snow, and Frostfang has 81 rock outcrops. The checker: Darkdelve and Emberdeep have no errors or
   warnings; Frostfang has one warning (fewer cliff walls than Westwood's ice maps, which are cut by narrow passages).
 
+## Rooms: back walls lined, rooms filled (morning)
+
+- The building lab's misses were large rooms with two long back walls left about 30% lined, and medium bedrooms and
+  studies just under their coverage. The furnisher now lines the NE and NW walls to 38% (your top priority from the
+  v0.3 review) and tops a short room up with pieces its identity allows.
+- Building lab at the kit's scale, three seeds: 44 of 48 buildings pass (34 before). Room lab: 186 of 189 rooms
+  (180). TreePlace 11 of 11, the town lab 0 errors and 0 warnings.
+- DysVale, the old regression design, has three more warnings. It does not declare its rooms, so the checker judges
+  them by Westwood's piece counts, and the fuller rooms now hold one piece over.
+
 ## The town lab's outskirts (toward morning)
 
 - I measured where the walls of Westwood's towns stand (`rules/town_walls.py`, `rules/TOWNS.md`). Only a seventh are

@@ -154,6 +154,15 @@ Then, in this order:
   - With `decor=k`, a hanging takes a gap after every k shelves. A run never starts or ends with that gap.
   - Studies, living rooms and big bedrooms line their second back wall too (`other=True`). Line it before the
     hangings, or they take the wall.
+  - Every room whose identity lines walls is lined to 38% of its NE and NW walls (`Furnisher.line_backs`, measured
+    as the room score measures it: `TALL_PIECES` and hangings). It lines the back wall not yet lined, then grows the
+    rows already there end to end. It never starts a second row on a wall: a shelf set singly by a hearth counts as
+    that wall's row. Hangings close what is left. Big rooms have two long back walls, and their recipes had left
+    them about 30% lined.
+  - A room still short of its coverage target after its fill steps is topped up (`Furnisher.top_up`). First its
+    shelf rows grow, then single pieces its identity allows: chests, benches, plants, lab pieces, statues. Never
+    more than the identity's count for the room's size, plus one (7 potted plants in a study is clutter), and never
+    stoves, a hearth's anchor.
   - Rows stand unbroken too: gear racks down the middle of a storeroom, and library stacks of bookcases end to end
     in a big study (`rack_rows`, kinds gear, hunt, mine and books). A row slides across the room until it fits
     whole, or it is left out. Rows stay off carpets.

@@ -22,9 +22,7 @@ sys.path.insert(0, os.path.join(REPO, "rules"))
 import mapdata as MD, checks as C, validate as V
 from kit.identity import ROOM_COVER, ROOM_COVER_DEFAULT, WESTWOOD_KIND
 
-TALL = re.compile(r"^(Bookcase|PotionShelves|LogShelves|TraderShelves|TraderHelmShelf|Desk\d|Fireplace|WallFireplace|"
-                  r"Stove0|Cauldron|CinderBin|Bellows|AlchemistDesk|WizardWorkstation|Chest\d|DunMirChest|Bed\d|WoodBed|Cot\d|Bench|"
-                  r"LightBench|CushionedBench|TraderPoleArm|TraderArmorRack|TraderBowRack|TraderClothesRack)")
+from kit.furnish import TALL_PIECES as TALL        # one list: the furnisher lines walls by the same measure
 
 
 def score(map_path):
