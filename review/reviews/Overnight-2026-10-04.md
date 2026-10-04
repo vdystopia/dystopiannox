@@ -69,6 +69,10 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 - Three culture buildings: the **ogres' keep** (dungeon stone, in Darkdelve), the **dark temple** (Land of the Dead,
   in Frostfang) and the **demon forge** (Dun Mir hall, in Emberdeep).
 
+- Late in the night I calibrated the biome maps against Westwood's own densities: Frostfang is now an open
+  snowfield like Westwood's ice maps (4.9 decorations per 100 tiles, from 16.7; fewer coloured lights, more torches
+  by the walls). Emberdeep is thinned to Westwood's lava range.
+
 ## Tasks 3-5: NPCs
 
 - `rules/NPCS.md` covers where Westwood places its creatures, how many, how they stand and how they move (routes,

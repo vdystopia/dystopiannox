@@ -143,3 +143,4 @@ Lessons from the first three maps:
 - **Nothing on the rock.** An island's capped top is not land: no pillar or prop stands there (the checker reads a capped
   top holding pillars as a room of columns).
 - **Nothing in a building.** The planter, the props and the creatures keep off a structure's squares (`land.taken`).
+- **As sparse as Westwood's.** Westwood's ice maps are open snowfields: 3.4-5.2 decorations per 100 floor tiles (about 2.3 snow trees), 0.09-0.23 coloured lights and torches by the walls; its lava maps carry 2.9-13.6 decorations. The palettes' `tree_depth` and `undergrowth` keep the biome maps in those ranges (Frostfang went from 16.7 decorations per 100 tiles to 4.9).

@@ -107,7 +107,7 @@ furnished = d.furnish_structures()
 n_keep = d.garrison()
 
 # ---- the biome: snow trees thick along the cliffs and in groves, rocks, cold lights, wolves ----------------------
-n_trees, n_small = d.vegetate(keep_clear=keep | lake, groves=14)
+n_trees, n_small = d.vegetate(keep_clear=keep | lake, groves=4)
 d.scatter_open()
 d.rim()
 n_lights = d.lights()

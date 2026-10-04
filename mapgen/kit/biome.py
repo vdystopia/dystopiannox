@@ -61,15 +61,17 @@ BIOMES = {
                     undergrowth={"CaveRocksSmall": 10, "CaveRocksTiny": 8, "CaveRocksPebbles": 8, "IceCrack2": 3,
                                  "IceCrack4": 2, "IceCrack6": 2},
                     flowers={"CaveRocksPebbles": 1}),
-        tree_depth=(0.55, 0.25, 0.08),
+        # Westwood's ice maps are open snowfields: about 2.3 snow trees per 100 floor tiles and few other pieces (3.4-5.2
+        # decorations per 100 tiles in all), the trees lining the cliffs
+        tree_depth=(0.16, 0.04, 0.0), undergrowth=((0, 0), 0.03),
         open={"CaveRocksSmall": 0.2, "CaveRocksTiny": 0.2, "ArmBone": 0.2, "IceCrack2": 0.12, "IceCrack6": 0.06,
               "CaveRocksHuge": 0.1, "Skull": 0.08},
         wallside={"CaveRocksHuge": 0.6, "CaveRocksLarge": 0.35, "CaveBoulders": 0.25, "MineCrystal05": 0.2,
                   "MineCrystal02": 0.12, "CaveRockPillarTall1": 0.25, "CaveRockPillarShort2": 0.25},
         liquid=dict(floor="IceFloorDark", dress={}, edge=None),
-        light_colours=[(96, 128, 224), (160, 160, 224), (64, 96, 192)], light_per100=dict(open=0.35, wall=0.6),
+        light_colours=[(96, 128, 224), (160, 160, 224), (64, 96, 192)], light_per100=dict(open=0.12, wall=0.2),   # Westwood: 0.09-0.23 per 100 tiles in all
         light_radius=170, light_intensity=35,
-        sources=dict(wall={"Torch": 0.15}, open={}),
+        sources=dict(wall={"Torch": 0.6}, open={}),      # Westwood: torches 0.1 per 100 floor tiles, by the walls
         creatures={"BlackWolf": 6, "WhiteWolf": 3, "Ghost": 2, "Skeleton": 2, "SkeletonLord": 1, "Bear": 1},
         creatures_per100=0.8),
     "lava": dict(
@@ -85,7 +87,8 @@ BIOMES = {
                     undergrowth={"CaveRocksPebbles": 14, "CaveRocksSmall": 10, "LegBone": 8, "Skull": 5, "ArmBone": 4,
                                  "GrassTuft3": 3, "Mushroom4": 2},
                     flowers={"CaveRocksPebbles": 1}),
-        tree_depth=(0.45, 0.15, 0.03),
+        # Westwood's lava maps: 2.9-13.6 decorations per 100 floor tiles (typical 7.9)
+        tree_depth=(0.3, 0.08, 0.0), undergrowth=((0, 1), 0.05),
         open={"LegBone": 1.2, "Skull": 0.7, "ArmBone": 0.5, "Rock8": 0.5, "CaveRocksMedium": 0.55, "FireGrate": 0.6,
               "CaveRocksSmall": 0.25, "GrassTuft3": 0.3},
         wallside={"CaveRocksHuge": 0.5, "Brick": 0.4, "CaveRocksLarge": 0.25, "Rock4": 0.2},
@@ -207,7 +210,8 @@ class Dresser:
                     keep_clear=set(keep_clear) | self.taken | self.land.taken)
         p.tree_lines(depth=self.b["tree_depth"], spacing=1.25)
         if groves: p.groves(n=groves, size=(4, 8), radius=2.5, spacing=1.3, avoid_areas=())
-        p.undergrowth(per_tree=(0, 1), edge_p=0.12)
+        per_tree, edge_p = self.b.get("undergrowth", ((0, 1), 0.12))
+        p.undergrowth(per_tree=per_tree, edge_p=edge_p)
         if flowers: p.flower_patches(flowers, size=(3, 6))
         self.planter = p
         return len(p.trees), len(p.small)
