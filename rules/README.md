@@ -31,3 +31,9 @@ preset carries all 70 settings of a real ColorLight.
 `py rules/biomes.py` and `py rules/biome_places.py` measure what sets Westwood's cave, ice and lava maps apart
 (floors, walls, signature objects and where they stand, light, ambient, creatures). The findings and the way the kit
 builds each biome are in `BIOMES.md`.
+
+## Towns
+
+`py rules/town_walls.py` sorts every wall of Westwood's town maps by what it bounds (the map's edge, islands of
+forest and rock, buildings, gated yards, free-standing fences) and measures the islands and the yards. The findings,
+the yards Westwood builds and how the kit plants a town are in `TOWNS.md`.

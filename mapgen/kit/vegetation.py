@@ -21,6 +21,13 @@ from kit.layout import SQ, N4, N8, square_px, bfs_distance
 UNDERGROWTH = {"Plant4": 40, "Plant5": 20, "PlantForest1": 14, "Plant1": 7, "PlantBarren1": 5, "Plant2Flowered": 5, "Mushroom3": 6}
 FLOWERS = {"FlowersYellowSparse": 4, "FlowersPurpleSparse": 2, "FlowersWhiteSparse": 2, "FlowersBlueSparse": 1}
 
+# How much grows in a town (Westwood's 17 town maps, per 100 floor tiles): 1.7 trees (p75 2.2), three quarters of them
+# within 3 cells of the forest wall, the rest single trees in the open; 7.1 plants (Plant4, Plant5, Plant3, PlantForest1),
+# half at the wall's foot and a quarter out in the open; 3.2 flowers and mushrooms, most 1.5-3 cells out from the wall.
+# The forest wall is drawn as trees, so tree objects in a town are accents, not the forest (a forest map's planting
+# gave the town lab 11.3 trees per 100 tiles).
+TOWN_PLANTING = dict(depth=(0.16, 0.07, 0.02), per_tree=(0, 2), edge_p=0.2, open_p=0.03, flower_patches=(36, (4, 8)))
+
 FORESTS = {
     "deciduous": dict(wall="DecidiousWallGreen",
                       trees={"TreeForest01": 42, "TreeForest03": 37, "TreeForest02": 33, "TreeForest04": 23,
@@ -221,12 +228,33 @@ class Planter:
             x, y = square_px(s[0] + 0.5, s[1] - 0.5)
             self.spec.obj_px(self.rng.choice(["AmbBird1", "AmbBird2", "AmbCricket1"]), x, y)
 
-    def plant_all(self, groves=3, flowers=6, birds=8):
-        self.tree_lines()
-        self.waterside()
-        self.groves(groves)
-        self.undergrowth()
-        self.flower_patches(flowers)
+    def meadow(self, p=0.03, spacing=1.5):
+        """Single plants out in the open, away from the edge and from what is built (a quarter of a Westwood town's
+        plants stand 6 cells or more from any wall)."""
+        for s in sorted(self.land.squares):
+            if self.edge.get(s, 0) < 4 or self.busy_d.get(s, 0) < 2 or self.rng.random() >= p: continue
+            si, sj = s[0] + self.rng.random(), s[1] - self.rng.random()
+            if self._ok_small(si, sj) and self._free(si, sj, spacing, "small") and self._free(si, sj, 0.6, "tree"):
+                self._put("small", self._plant_type(si, sj), si, sj)
+
+    def plant_all(self, groves=3, flowers=6, birds=8, profile=None):
+        """Everything that grows. profile: a planting profile (TOWN_PLANTING) in place of the forest maps' density."""
+        if profile:
+            self.tree_lines(depth=profile["depth"])
+            self.waterside()
+            self.groves(groves)
+            self.undergrowth(per_tree=profile["per_tree"], edge_p=profile["edge_p"])
+            self.meadow(profile["open_p"])
+            # flowers and mushrooms a little way out from the forest wall
+            n, size = profile["flower_patches"]
+            near = [s for s, d in self.edge.items() if 2 <= d <= 3 and self.busy_d.get(s, 0) >= 1]
+            self.flower_patches(n, size, near=near)
+        else:
+            self.tree_lines()
+            self.waterside()
+            self.groves(groves)
+            self.undergrowth()
+            self.flower_patches(flowers)
         self.birds(birds)
         return len(self.trees), len(self.small)
 

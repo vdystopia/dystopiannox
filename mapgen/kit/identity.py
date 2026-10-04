@@ -666,10 +666,11 @@ def role_size(role):
     return (2 * round(w * BUILDING_SCALE / 2), 2 * round(h * BUILDING_SCALE / 2)), int(role.get("min_units", 0) * BUILDING_SCALE ** 2)
 
 
-def rooms_sidecar(placed, path):
+def rooms_sidecar(placed, path, yards=()):
     """Writes <map>.rooms.json next to a built map for review/rooms.py: every room numbered in building order,
     with its building, kind, purpose (from the building's room program), floor tiles and box (grid cells).
-    placed: [(BuildingIdentity, Building)] as the design placed them."""
+    placed: [(BuildingIdentity, Building)] as the design placed them. yards: kit/yards.py Yards, recorded after the
+    rooms with yard=True (the checker holds them to no indoor room's rules)."""
     import json
     out = []
     for bid, b in placed:
@@ -681,6 +682,13 @@ def rooms_sidecar(placed, path):
             out.append(dict(number=len(out) + 1, building=bid.name or bid.role, kind=r.kind, purpose=purpose,
                             tiles=len(r.tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3],
                             floor=sorted([x, y] for x, y in r.tiles)))
+    for y in yards:
+        from kit.yards import YARDS
+        tiles = sorted([i + j, i - j] for i, j in y.plot)
+        xs = [x for x, _ in tiles]; ys = [y_ for _, y_ in tiles]
+        out.append(dict(number=len(out) + 1, building="", kind=y.kind, purpose=YARDS[y.kind].get("purpose", ""),
+                        tiles=len(tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3], floor=tiles,
+                        yard=True))
     with open(path, "w", encoding="utf-8") as f: json.dump(out, f, indent=1)
     return out
 

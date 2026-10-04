@@ -467,8 +467,15 @@ def find_rooms(m):
                 num, n = votes.most_common(1)[0]
                 if n * 2 >= r["tiles"]:
                     r["declared"] = next(rec for rec in decl.values() if rec["number"] == num)
+            r["yard"] = bool(r.get("declared", {}).get("yard"))
             out.append(r)
     return out
+
+
+def indoor_rooms(m):
+    """find_rooms without the yards a design declared (kit/yards.py): a graveyard or a quarry is fenced, not a room,
+    and answers to none of the indoor rooms' rules."""
+    return [r for r in find_rooms(m) if not r.get("yard")]
 
 
 def piece_area(o):
@@ -550,7 +557,7 @@ def check_rooms(m, ctx, base):
     out = []
     kinds = base.get("room_kinds", {})
     from kit.identity import WESTWOOD_KIND
-    for r in find_rooms(m):
+    for r in indoor_rooms(m):
         kind, furniture = room_kind(r)
         wkind = WESTWOOD_KIND.get(kind, kind)
         k = kinds.get(wkind)
@@ -819,7 +826,7 @@ def check_room_composition(m, ctx, base):
     of the room."""
     out = []
     lim = base.get("furniture_offset_p95", 0.85)
-    for r in find_rooms(m):
+    for r in indoor_rooms(m):
         cells = r["cells"]
         cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
         runs = room_runs(m, cells)
@@ -920,7 +927,7 @@ def room_arrangement(m):
     - furniture filling only one end of a room;
     - open torches inside a house. This is the user's house rule; Westwood does it in 35 rooms."""
     out = []
-    for r in find_rooms(m):
+    for r in indoor_rooms(m):
         objs, cells = r["objects"], r["cells"]
         kind, _ = room_kind(r)
         x0, y0 = centre(cells)

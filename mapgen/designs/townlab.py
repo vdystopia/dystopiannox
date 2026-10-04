@@ -13,11 +13,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from nox import Spec, SOLO
 from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS, role_size, rooms_sidecar
 from kit.layout import Land, square_tile, square_px, px_square
-from kit.vegetation import Planter, FORESTS
+from kit.vegetation import Planter, FORESTS, TOWN_PLANTING
 from kit.village import Village, _squares_of
 from kit.building import generate_building
 from kit.originality import furnish_original
 from kit.npcs import Population
+from kit import yards as Y
 
 SCALE = float(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] != "-" else 1.0      # "-": plan only (the smoke test)
 SEED = int(sys.argv[2]) if len(sys.argv) > 2 else 3
@@ -116,9 +117,47 @@ for bid, b in placed:
         objs, res = furnish_original(m, room, kind=room.kind, rng=rng, style="town")
         furnished.append((bid.role, room.kind, len(objs)))
 
+# ---- the outskirts: a glade between each pair of roads, reached by forest paths from both, so the paths loop round
+# blocks of forest as in Westwood's towns (rules/town_walls.py: about 13 of their 37 wall pieces per 100 floor tiles
+# ring such islands); each glade holds a yard with a purpose (kit/yards.py), and the town has a park, cells by the
+# gate and fields by the mill and the southern homes. Planned after the buildings, which stay as they were.
+OUTSKIRTS = [("graveyard", 142.5, ("woods", "gate")), ("quarry", 51.5, ("mill", "woods")),
+             ("orchard", 325.5, ("south", "mill")), ("monument", 236.5, ("gate", "south"))]
+for k_, (purpose, ang, (a_, b_)) in enumerate(OUTSKIRTS):
+    g_ = f"glade{k_ + 1}"
+    land.area(g_, (250 + 140 * math.cos(math.radians(ang)), 140 * math.sin(math.radians(ang))), 20)
+    ar = land.areas[g_]
+    x_, y_ = ar["c"][0] + ar["c"][1], ar["c"][0] - ar["c"][1]
+    assert 12 + ar["r"] <= x_ <= 243 - ar["r"] and 12 + ar["r"] <= y_ <= 243 - ar["r"], (g_, x_, y_)
+    land.link(a_, g_, 11, bend=0.2, road=False, pockets=(1, 3))
+    land.link(g_, b_, 11, bend=0.2, road=False, pockets=(1, 3))
+yards = []
+for k_, (purpose, ang, _) in enumerate(OUTSKIRTS):
+    if purpose:
+        y_ = Y.plan(land, rng, purpose, land.areas[f"glade{k_ + 1}"]["c"])
+        if y_: yards.append(y_)
+        else: print(f"no room for the {purpose}")
+ring_ = lambda c, rs: [(c[0] + r_ * math.cos(a_ * math.pi / 6), c[1] + r_ * math.sin(a_ * math.pi / 6))
+                       for r_ in rs for a_ in range(12)]
+for kind_, near_ in (("park", ring_(vc, (30, 36, 42))),                       # benches round a tree, off the square
+                     ("jail", ring_(land.areas["gate"]["c"], (10, 14, 18))),  # cells where the road comes in
+                     ("field", ring_(land.areas["mill"]["c"], (12, 16, 20))),  # the miller's crop
+                     ("field", ring_(land.areas["south"]["c"], (12, 16, 20))),
+                     ("orchard", ring_(land.areas["south"]["c"], (10, 14, 18)))):  # the southern homes' fruit trees
+    y_ = Y.plan_any(land, rng, kind_, near_)
+    if y_: yards.append(y_)
+    else: print(f"no room for the {kind_}")
+
 # ---- 4. the land grows round everything, ending in the forest wall; the town's life ---------------------------------
 land.carve(margin=4.5)
+clumps = land.thickets(50, size=(0.9, 1.8), clear=2)        # clumps of forest standing in the open
 land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
+built = []
+for y_ in yards:
+    if not y_.plot <= land.squares:                         # cut off from the land: never built
+        print(f"the {y_.kind} lies off the land"); continue
+    Y.build(m, rng, land, y_)
+    built.append(y_.kind)
 vil = Village(m, rng, land)
 for bid, b in placed:
     role = BUILDINGS[bid.role]
@@ -132,9 +171,9 @@ for bid, b in placed:
     for d in b.entrances:
         di, dj = px_square(*d.px)
         keep |= {(di + a, dj + b2) for a in range(-2, 3) for b2 in range(-2, 3)}
-vil.ground_bits(0.8)
+vil.ground_bits(1.6)                               # rocks and bushes toward the edge (Westwood's towns: 2 rocks per 100 tiles)
 planter = Planter(m, rng, land, FOREST, keep_clear=keep)
-n_trees, n_small = planter.plant_all(groves=3)
+n_trees, n_small = planter.plant_all(groves=3, profile=TOWN_PLANTING)
 m.obj_px("PlayerStart", *square_px(gate[0], gate[1]))
 
 # ---- 5. townsfolk: walking between the square and the doorsteps, lingering, turning to look at a passer-by, running
@@ -172,6 +211,8 @@ for s_ in far:
     for q in range(k):
         x, y = square_px(s_[0] + 0.5 + (rng.uniform(-1.2, 1.2) if q else 0), s_[1] - 0.5 + (rng.uniform(-1.2, 1.2) if q else 0))
         if any((int(x // 23) + a, int(y // 23) + b) in m.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+        sq_ = px_square(x, y)                      # a pack member stands on the land, never past its edge or in a yard
+        if sq_ not in land.squares or sq_ in land.taken: continue
         name = pop.name(t) if t == "Wolf" else None
         pop.creature(t, x, y, action="guard" if rng.random() < 0.38 else "idle", scr=name)
         if name: members.append(name)
@@ -200,7 +241,7 @@ m.scripts.update(B.files(m.d["name"]))
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
-    rooms_sidecar(placed, os.path.join(OUT, "TownLab.rooms.json"))
+    rooms_sidecar(placed, os.path.join(OUT, "TownLab.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])
     meta = [dict(role=bid.role, style=b.style, shape=b.shape, units=list(b.size_units), footprint=len(b.footprint),
                  rooms=[dict(kind=r.kind, tiles=len(r.tiles), doors=len(r.doors)) for r in b.rooms],
                  entrances=len(b.entrances), unreachable=list(b.unreachable),
@@ -210,4 +251,5 @@ if __name__ == "__main__":
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK"))))
     print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(missed) or 'none'}) "
-          f"| trees {n_trees} | plants {n_small} | shopkeepers {n_shops}")
+          f"| trees {n_trees} | plants {n_small} | shopkeepers {n_shops} | yards {', '.join(built) or 'none'} "
+          f"| clumps {len(clumps)}")

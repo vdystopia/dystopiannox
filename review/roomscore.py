@@ -34,7 +34,7 @@ def score(map_path):
     rows = []
     for r in C.find_rooms(m):
         d = r.get("declared")
-        if not d: continue
+        if not d or d.get("yard"): continue              # yards (kit/yards.py) are not rooms
         kind = d["kind"]
         cells = r["cells"]
         cover = C.room_coverage(m, r)

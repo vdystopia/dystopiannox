@@ -77,6 +77,22 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   shows through the snow, and Frostfang has 81 rock outcrops. The checker: Darkdelve and Emberdeep have no errors or
   warnings; Frostfang has one warning (fewer cliff walls than Westwood's ice maps, which are cut by narrow passages).
 
+## The town lab's outskirts (toward morning)
+
+- I measured where the walls of Westwood's towns stand (`rules/town_walls.py`, `rules/TOWNS.md`). Only a seventh are
+  houses. Most ring blocks of forest that the paths loop round, and fenced plots with a purpose: graveyards,
+  orchards, parks, quarries, jail cells, monuments.
+- Westwood's towns also have far fewer tree objects than I planted: about 2 per 100 floor tiles against the town
+  lab's 11. The forest wall is itself drawn as trees.
+- The town lab now has outskirts: a glade between each pair of roads, reached by forest paths that loop round four
+  blocks of forest, and 26 small clumps of forest in the meadows.
+- New `kit/yards.py` builds nine yards, each fenced and gated the way Westwood does it: a graveyard, a quarry, two
+  orchards, a monument, a park of benches, two jail cells by the town gate, and fields by the mill and the southern
+  homes.
+- The checker now gives the town lab 0 errors and 0 warnings, the first time. Walls are 26.4 per 100 tiles (Westwood's
+  towns 25.9-49.2); decorations 20.4 (Westwood 7.9-23.7, typical 19). It loads in the server with all 41 creatures
+  and 21 waypoints found. It is installed as TownLab, and the new overview picture is in `review/out/TownLab/`.
+
 ## Tasks 3-5: NPCs
 
 - `rules/NPCS.md` covers where Westwood places its creatures, how many, how they stand and how they move (routes,
@@ -112,8 +128,8 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 - The dark chapel's colonnade of glowing obelisks is dense; you may like it or not.
 - Three of the building lab's 16 buildings still miss the bar on details: a back wall 31% lined against 35%,
   coverage a point under target. Odd-shaped smithies with short back walls are the most frequent case.
-- The town lab carries a little more decoration than Westwood's busiest town (24 per 100 tiles against 23.7), and
-  fewer wall pieces: it has no fences or hedges yet.
+- The town lab's yards are new and simple: the field's crops and the monument's torches are sparser than I meant, and
+  there is no trader's stall or flower garden yet.
 
 ## What I would do next, with your go-ahead
 

@@ -70,6 +70,15 @@ Only now draw the map's shape (`Land.carve`): a margin of open ground with an ir
 the square, buildings, roads, water and features, plus the clearings, ending in the forest wall.
 Never start from the borders and fit the village into what's left.
 
+A town is a web of forest corridors, not a clearing (`rules/TOWNS.md`). Most of a Westwood town's walls ring blocks
+of forest and fenced plots, not houses:
+- Give it outskirts: a glade between each pair of roads, joined to both by forest paths 11 uv wide or more, so the
+  paths loop round blocks of forest. Plan them after the buildings, so they do not change them.
+- Give the glades and the town yards with a purpose (`kit/yards.py`): a graveyard, a quarry, an orchard, a monument
+  plot, a park of benches, jail cells by the gate, fields by the mill. Each is fenced in Westwood's material for it,
+  with a gate facing the town.
+- Put clumps of forest in the open meadows (`Land.thickets`).
+
 Then, in this order:
 1. Cut the planned rock (`MineEntrance.cut()`).
 2. Assign the sections.
@@ -91,7 +100,10 @@ Then, in this order:
    and a timber set every 3 squares, a cave-in from wall to wall, the creak and glow beyond it, torches flanking
    the mouth, and a loaded cart on the track.
 5. Vegetation from the forest edge inward: tree lines, groves outside settled areas, and undergrowth and flowers
-   in single-type patches. Landmarks (waystones, standing stones) keep a clear space round them.
+   in single-type patches. Landmarks (waystones, standing stones) keep a clear space round them. A town is planted
+   as Westwood plants one (`vegetation.TOWN_PLANTING`): about 2 trees per 100 floor tiles, by the forest wall,
+   because the wall is itself drawn as trees; plants at the wall's foot and in the open; flowers and mushrooms a
+   little way out from the wall.
 6. Props that belong somewhere spread out from there with a falloff and spacing (`vegetation.scatter`): stumps
    round the woodcutter's, logs along wood edges, crystal shards out from the cluster. Never put 4 or more of a
    kind together in one spot when there are none elsewhere.

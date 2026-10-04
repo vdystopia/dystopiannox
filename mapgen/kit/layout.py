@@ -529,6 +529,32 @@ class Land:
         """Roads that end against a building wall are cut back until they end in the open: a road
         leads to a door (through that door's own path, kept in `keep`) or into a clearing, never
         into the side of a building."""
+        # a road whose end runs on past a door's path toward the building's wall (a satellite's road ending at its
+        # only building): walk back from the end until the road is in the open or meets the door's path, and cut
+        # the stretch beyond; a road two or three squares wide ends bluntly, so the one-neighbour rule below misses it
+        foot = list(self.taken_strict)
+        kept = [(i + 0.5, j - 0.5) for i, j in keep]
+        for path in self.road_paths:
+            for seq in (path[::-1], path):
+                near = 0                                        # path points from the end that are by a building
+                for pi_, pj_ in seq:
+                    if not foot or min(abs(pi_ - (i + 0.5)) + abs(pj_ - (j - 0.5)) for i, j in foot) >= 4.5: break
+                    near += 1
+                if not near or near >= len(seq) - 1: continue
+                # the junction: where a door's path meets this stretch; beyond it the road only leads to the wall
+                to_keep = [min((math.hypot(seq[k][0] - a, seq[k][1] - b) for a, b in kept), default=99.0) for k in range(near)]
+                cut = min(range(near), key=lambda k: to_keep[k]) if min(to_keep) <= 3.0 else near
+                if not cut: continue
+                spur, rest = seq[:cut], seq[cut:]
+                for s in list(self.roads):
+                    if s in keep or s in self.plaza: continue
+                    c = (s[0] + 0.5, s[1] - 0.5)
+                    d_spur = min(math.hypot(c[0] - a, c[1] - b) for a, b in spur)
+                    if d_spur > 2.5 or d_spur >= min(math.hypot(c[0] - a, c[1] - b) for a, b in rest): continue
+                    if any(other is not path and min(math.hypot(c[0] - a, c[1] - b) for a, b in other) < 2.5
+                           for other in self.road_paths): continue
+                    self.roads.discard(s)
+                    spec.floor.pop(square_tile(*s), None)
         near_building = {(i + a, j + b) for i, j in self.taken_strict for a in (-1, 0, 1) for b in (-1, 0, 1)}
         changed = True
         while changed:
