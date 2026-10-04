@@ -148,6 +148,52 @@ class Village:
             for du, dv in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
                 pole(ci + du * d_light, cj + dv * d_light)
 
+    # Westwood's fountain squares (12 measured round their wells and fountains): potted plants in a ring close round
+    # the fountain (median 2.5 cells; Plant4 at 10 of 12 squares, Plant5 at 7), blue flower beds just outside them
+    # (2.5-3 cells), light benches facing in (4 cells), ornate street lamps at the edge (10-11 cells), each with its
+    # shadow piece at a fixed offset, and bushes along the edge.
+    LAMP_SHADOW = {"StreetLampOrnate1": ("StreetLampOrnate1Shadow", -15, 10),
+                   "StreetLampOrnate3": ("StreetLampOrnate3Shadow", -15, 21),
+                   "StreetLamp2": ("StreetLamp2Shadow", -23, 0)}
+
+    def fountain_square(self, centre, r_squares, lamp="StreetLampOrnate3"):
+        """A town square in Westwood's manner round a fountain (call it in place of a well and square_piece).
+        r_squares: the paving's radius in squares (Land.paint_square takes uv units: half of them)."""
+        import math
+        ci, cj = centre
+        rng = self.rng
+
+        def put(t, si, sj):
+            x, y = square_px(si, sj)
+            self.spec.obj_px(t, x, y)
+            self.used.add((int(si), int(sj) + 1))
+            return x, y
+
+        put("Fountain", ci, cj)
+        r_pot = 1.35                                    # 2.7 cells: just round the basin
+        for k in range(8):
+            a = k * math.pi / 4 + math.pi / 8
+            put("Plant4" if k % 2 else "Plant5", ci + r_pot * math.cos(a), cj + r_pot * math.sin(a))
+        for k in range(4):                              # flower beds between the pots, on the axes
+            a = k * math.pi / 2
+            put(rng.choice(("FlowersBlueSparse", "FlowersBlueDense")), ci + 1.6 * math.cos(a), cj + 1.6 * math.sin(a))
+        d_bench = max(2.2, 0.36 * r_squares)            # benches facing in, on the four sides
+        for (du, dv), face in (((-1, 0), "+u"), ((1, 0), "-u"), ((0, -1), "+v"), ((0, 1), "-v")):
+            put(self.BENCH_FACING[face], ci + du * d_bench, cj + dv * d_bench)
+        d_lamp = 0.82 * r_squares / math.sqrt(2)        # lamps on the diagonals near the edge, with their shadows
+        shadow, sx, sy = self.LAMP_SHADOW[lamp]
+        for du, dv in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+            x, y = put(lamp, ci + du * d_lamp, cj + dv * d_lamp)
+            self.spec.obj_px(shadow, x + sx, y + sy)
+        L = self.land
+        for k in range(8):                              # bushes and flowers round the edge, between the streets, on
+            a = k * math.pi / 4 + rng.uniform(-0.2, 0.2)          # the paving clear of the buildings and their doors
+            si, sj = ci + 0.88 * r_squares * math.cos(a), cj + 0.88 * r_squares * math.sin(a)
+            s_ = (int(si), int(sj) + 1)
+            near = {(s_[0] + a_, s_[1] + b_) for a_ in (-2, -1, 0, 1, 2) for b_ in (-2, -1, 0, 1, 2)}
+            if s_ in L.roads or near & L.taken_strict or near & L.taken or s_ in self.used: continue
+            put(rng.choice(("Bush6", "Bush9", "Bush12", "FlowersPurpleDense", "FlowersYellowSparse")), si, sj)
+
     def ground_bits(self, per_100=4.0, max_edge=4):
         """Pebbles, small rocks and bushes where nature has them: toward the forest edge, never on
         roads, in yards or in front of doors."""

@@ -28,10 +28,10 @@ OUT = os.path.join(HERE, "..", "out", "townlab")
 
 ID = MapIdentity(
     name="TownLab",
-    theme="a market town: a cobbled square with its well, the lord's manor, the inn, the store and the smithy facing "
+    theme="a market town: a cobbled square with its fountain, the lord's manor, the inn, the store and the smithy facing "
           "it, homes and cottages along the streets, a mill and a woodcutter's hut out along the roads",
     environment="town", mood="busy, prosperous",
-    areas=[AreaIdentity("town", "the square and the streets round it", landmark="Well"),
+    areas=[AreaIdentity("town", "the square and the streets round it", landmark="Fountain"),
            AreaIdentity("gate", "where the road enters the town"),
            AreaIdentity("mill", "the mill out on the east road"),
            AreaIdentity("woods", "the woodcutter's clearing on the north road"),
@@ -69,8 +69,7 @@ land.blends(m)
 # ---- 2. the centre: the square and its well, the streets leaving it -----------------------------------------------
 land.paint_square(m, "town", 14, "RoughCobble")
 vc = land.areas["town"]["c"]
-m.obj_px("Well", *square_px(vc[0], vc[1]))
-land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
+land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2)}   # the fountain
 land.paint_roads(m, "DirtDark2", width_squares=2.8, skip=land.reserved)
 
 # ---- 3. buildings from the square outwards --------------------------------------------------------------------------
@@ -125,7 +124,7 @@ for bid, b in placed:
     role = BUILDINGS[bid.role]
     for sc in role["scenes"]: vil.scene(b, sc)
     if rng.random() < role["garden"]: vil.garden(b, size=(rng.randint(3, 5), rng.randint(2, 4)))
-vil.square_piece(vc, 6, per_side=2)
+vil.fountain_square(vc, 7)                         # the paving's radius: 14 uv, 7 squares
 land.ground_variety(m, clear=3)
 gate = land.areas["gate"]["c"]
 keep = {(int(gate[0]) + a, int(gate[1]) + b) for a in range(-3, 4) for b in range(-3, 4)}
