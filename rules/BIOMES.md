@@ -109,14 +109,34 @@ Cooled crusts away from the lava read as puddles of lava, so keep them on it.
 ```python
 d = Dresser(spec, rng, land, "lava")            # palette, ambient and blends
 d.reserve_pool(centre_uv, radius_uv)            # before land.carve(): the liquid behind cliffs
+d.structure("ogre_keep", "den", toward="heart") # before land.carve(): a building the cavern grows round
 land.carve(); outcrops = land.thickets(...)     # islands break up big open ground
 land.apply(spec, wall=d.wall, floor=d.base); d.cap_islands(outcrops)
 d.ground(); d.paint_pools()                     # patches of the other floors, then the liquid's tiles
 d.clusters(types, squares, n, ...)              # landmarks and scenes: crystal formations, crate stacks, bone heaps
+d.furnish_structures(); d.garrison()            # the building's rooms in its culture, its keepers on guard
 d.dress_liquid(); d.vegetate(); d.scatter_open(); d.rim(); d.lights(); d.creatures()
+d.declare_rooms(path)                           # <map>.rooms.json for the room review and scores
 ```
+
+## Built parts
+
+Westwood's biome maps hold buildings in their own styles (rules/out/buildings.json styles; rules/CULTURES.md for how
+their rooms are furnished):
+- **Caves:** dungeon stone (DungeonStone walls 0.12 of the caves' walls, GreenBrick floors 0.19 of their floors), Dun
+  Mir's cathedral walls, mine walls. The kit's structure: the ogres' keep (`dungeon_block`), its feasting hall, straw
+  beds and hoard furnished as Westwood's ogre lairs, an ogre warlord, brutes and grunts on guard.
+- **Ice:** the Land of the Dead's temples (LOTDOrnate walls 0.19 of the ice maps' walls; LOTDTempleFacade, LOTDPitted
+  and LOTDDark floors; the style's outside floor is blue ice, 0.39). The kit's structure: the dark temple
+  (`lotd_ornate`), its lich god's chapel, crypt and library, a skeleton lord, skeletons and ghosts on guard.
+- **Lava:** halls and town walls (GalavaTownWall 0.12, DunMirCathedral 0.06; GreenBrick, LOTDBlackMarble, GalavaBrick2
+  and DunMirBrick1 floors; the `dunmir_hall` style's outside floors include VolcanicCraggy, 0.10). The kit's
+  structure: the demon forge (`dunmir_hall`), its forge, hall of arms and store, demons and imps on guard.
 
 Lessons from the first three maps:
 - **Group everything.** Props spread evenly over an area read as a grid; group them (`clusters`). Crystals form formations around a tall one; crates stack in threes to fives; mushrooms grow in patches.
 - **Keep props out of walls.** Placement checks the cell and its neighbours (`wall_clear`).
 - **Stay inside the grid.** Every area stays inside the map with room for its walls: centre plus radius within cells 12-243.
+- **Nothing on the rock.** An island's capped top is not land: no pillar or prop stands there (the checker reads a capped
+  top holding pillars as a room of columns).
+- **Nothing in a building.** The planter, the props and the creatures keep off a structure's squares (`land.taken`).

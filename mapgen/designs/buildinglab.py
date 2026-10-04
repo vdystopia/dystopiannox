@@ -49,7 +49,8 @@ def build(scale=1.25, seed=1):
         row = max(row, W)
     for role, b in built:
         for room in b.rooms:
-            furnish_original(m, room, kind=room.kind, rng=random.Random(rng.random()), style=STYLE_OF.get(b.style, "town"))
+            furnish_original(m, room, kind=room.kind, rng=random.Random(rng.random()),
+                             style=BUILDINGS[role].get("furnish") or STYLE_OF.get(b.style, "town"))
             xs = [x for x, _ in room.tiles]; ys = [y for _, y in room.tiles]
             rooms_out.append(dict(number=len(rooms_out) + 1, building=role, kind=room.kind, purpose=f"{role} at scale {scale}",
                                   tiles=len(room.tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3],

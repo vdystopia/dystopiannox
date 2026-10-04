@@ -46,11 +46,11 @@ def _rules():
 # Object-name prefixes that belong to other cultures/areas; excluded per style so a town house
 # does not get Land-of-the-Dead sconces or ogre stools.
 STYLE_EXCLUDE = {
-    "town": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Mine|Galava|Teepee|Sewer|Pulley|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
-    "dunmir": r"^(LOTD|Ogre|Urchin|Crypt|Lich|Horrendous|Mine|Teepee|Sewer|Pulley|Torture)|Immobile$|Fallen|Broken|Movable|Shadow$",
-    "mine": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Galava|Teepee|Sewer|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
-    "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|Immobile$|Fallen|Movable|Shadow$",
-    "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|Immobile$|Movable|Shadow$",
+    "town": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Mine|Galava|Teepee|Sewer|Pulley|Torture|Coffin|Tomb)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
+    "dunmir": r"^(LOTD|Ogre|Urchin|Crypt|Lich|Horrendous|Mine|Teepee|Sewer|Pulley|Torture)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$",
+    "mine": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Galava|Teepee|Sewer|Torture|Coffin|Tomb)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
+    "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Movable|Shadow$",
+    "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|(?<!Bone)(?<!Skull)Immobile$|Movable|Shadow$",
 }
 # Damaging flame objects (they hurt players; rules: lighting.visible_sources) are never used indoors.
 DANGEROUS = re.compile(r"Flame(?!Basin)")
@@ -89,7 +89,8 @@ RACK_KINDS = {"gear": (r"^TraderArmorRack[12]$", r"^TraderPoleArm[1-4]$", r"^Tra
               "mine": (r"^TraderPoleArm[1-4]$", r"^TraderArmorRack[12]$"),
               "books": (r"^Bookcase[12]$", r"^Bookcase[12]HalfFull$"),   # library stacks: the variants whose front shows
               "columns": (r"^Column[5-8]$",), "cathedral": (r"^CathedralColumn[123]$",),
-              "tombs": (r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", r"^Coffin[1-4]$")}
+              "tombs": (r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", r"^Coffin[1-4]$"),
+              "lotd_tombs": (r"^LOTDTombstone[1-4]$",), "obelisks": (r"^LOTDManaObelisk$",)}
 # Each building keeps one furnishing palette (its chairs, stools, benches, tables, carpets, hangings and plants), so
 # its rooms belong together while the buildings of a map differ (TreePlace v0.3 used too few of the game's types).
 PALETTES = dict(chair=("WoodenChair", "DarkWoodenChair", "OldDarkWoodenChair"), stool=("Stool", "CushionedStool"),
@@ -135,6 +136,9 @@ DECORATED = {"living_room", "bedroom", "study", "herbalist", "mess_hall", "dinin
 DECOR_THEMES = {"trophies": r"^WallTrophy(Bear|Moose|MountainLion|Bull)[12]$", "blue": r"^BlueTapestry\d$",
                 "green": r"^GreenTapestry\d$", "red": r"^RedTapestry\d$", "white": r"^WhiteTapestry\d$",
                 "paintings": r"^Painting[12]$", "arms": r"^(TraderShieldWallHanging[1-6]|TraderCrossedWeapons[1-6])$"}
+# a culture's own hangings, before any of the themes above (rules/out/cultures.json: the Land of the Dead's tapestries on
+# the back walls, Dun Mir's shields, the skulls an ogre nails up)
+CULTURE_DECOR = {"lotd": r"^LOTDTapestry[12]$", "dunmir": r"^DunMirHangingShield\d+$", "ogre": r"^OgreHutWallSkull[1-4]$"}
 DECOR_GAP = 3.0
 # Free-standing groups for the open floor of bigger rooms (TreePlace v0.3/v0.4 room reviews: the middle of a room read
 # as empty; tables, chairs and other free pieces lean toward the room's front, its S and W corners). anchor: the
@@ -151,6 +155,11 @@ GROUPS = {
     "statues": dict(anchor=r"^Statue2[aceg]$", pair=True, clear=1.0),
     "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0),
     "carts": dict(anchor=r"^MineManaCart[12]$|^MineOreCart[12]$", clear=0.9, beside=(r"^BarrelWithTools[12]$|^DarkCrate[12]$", 1)),
+    # the cultures' rooms (rules/out/cultures.json): an ogre den's fire pit ringed by stools, an ogre feast's crude
+    # tables, the Land of the Dead's judgement balances standing in pairs
+    "firepit": dict(anchor=r"^OgreFirePit$", seats=(2, 4), seat="chair", clear=1.2),
+    "ogre_table": dict(anchor=r"^OgreTable[123]$", seats=(2, 3), seat="chair"),
+    "balances": dict(anchor=r"^LOTDJudgementBalance[12]$", pair=True, clear=1.0),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
 NEEDS_FRONT = re.compile(r"^Chest\d|^Chest[NS][EW]$|^DunMirChest|Fireplace|^Stove|^Cauldron|^CinderBin")
@@ -293,12 +302,26 @@ class _Room:
                     coord = x + y + 1 if line == "/" else x - y
                     along = x - y if line == "/" else x + y + 1
                     runs.setdefault((line, coord), []).append(along)
+        # a wall line broken by an opening into another part of the same room (an L or T room whose wing joins it) is
+        # two runs, not one across the opening; a doorway does not break its wall's run
+        door_cells = {d.gap for d in room.doors} | set(getattr(spec, "door_gaps", ()))
+        doors_on = collections.defaultdict(set)
+        for (x, y) in door_cells:
+            doors_on[("/", x + y + 1)].add(x - y)
+            doors_on[("\\", x - y)].add(x + y + 1)
         self.runs = []
         for (line, coord), alongs in runs.items():
             if line == "/": side = "BR" if cu > coord else "TL"
             else: side = "TR" if cv > coord else "BL"
-            self.runs.append(dict(line=line, coord=coord, lo=min(alongs) - 1, hi=max(alongs) + 1, side=f"{line}|{side}",
-                                  sign=1 if side in ("BR", "TR") else -1))
+            al = sorted(set(alongs))
+            segs, cur = [], [al[0]]
+            for a in al[1:]:
+                if a - cur[-1] <= 2 or all(g in doors_on[(line, coord)] for g in range(cur[-1] + 2, a, 2)): cur.append(a)
+                else: segs.append(cur); cur = [a]
+            segs.append(cur)
+            for seg in segs:
+                self.runs.append(dict(line=line, coord=coord, lo=seg[0] - 1, hi=seg[-1] + 1, side=f"{line}|{side}",
+                                      sign=1 if side in ("BR", "TR") else -1))
         self.doors = [(g[0] + g[1] + 1, g[0] - g[1]) for g in (d.gap for d in room.doors)]
         mats = Counter(walls[c].get("material") for c in near)
         self.wall_material = mats.most_common(1)[0][0] if mats else ""
@@ -1163,8 +1186,11 @@ class Furnisher:
         """The room's hangings: the identity's own choice, else one theme picked for the room."""
         if not hasattr(self, "_decor_types"):
             own = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get("wall_decor")
+            culture = CULTURE_DECOR.get(self.style)
             if own:
                 self._decor_types = {t: w for t, w in own.items() if self.ok_type(t)}
+            elif culture and any(re.match(culture, t) and self.ok_type(t) for t in self.things):
+                self._decor_types = {t: 1 for t in self.things if re.match(culture, t) and self.ok_type(t)}
             else:                                       # one of the building's two themes, as the room allows it
                 themes = list(self.palette["decor"]); self.rng.shuffle(themes)
                 for th in themes:
@@ -1840,6 +1866,28 @@ class Furnisher:
         return min([self.g.wall_dist(u, v) - max(hu, hv)] +
                    [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
 
+    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3):
+        """Pieces of `fam` strewn over the floor in small heaps (straw in an ogre den, bones and skulls in the Land of
+        the Dead: rules/out/cultures.json): about `per100` for every 100 floor tiles, `cluster` to a heap, `wall_gap`
+        units clear of the walls and clear of the doors and the spaces kept clear. Returns the pieces placed."""
+        types = self.types_of(fam)
+        if not types: return 0
+        n = max(1, int(round(per100 * len(self.room.tiles) / 100)))
+        cells = sorted(self.g.cells)
+        self.rng.shuffle(cells)
+        got = 0
+        for (x, y) in cells:
+            if got >= n: break
+            u0, v0 = x + y + 1.0, float(x - y)
+            if self.g.wall_dist(u0, v0) < wall_gap + spread: continue
+            for _ in range(self.rng.randint(*cluster)):
+                t = _pick(self.rng, types)
+                u, v = u0 + self.rng.uniform(-spread, spread), v0 + self.rng.uniform(-spread, spread)
+                if self.try_put(t, u, v, blocking=_family_of(t) in _blocking()):
+                    got += 1
+                    if got >= n: break
+        return got
+
     def place_group(self, name):
         """One free-standing group of GROUPS[name] at the best open spot of the floor (middle_spots: room round it, the
         front of the room first). Returns the pieces placed (0 when it does not fit)."""
@@ -1914,6 +1962,8 @@ class Furnisher:
                 self.rack_rows(st.get("kind", "gear"), st.get("aisle", 1.6), st.get("gap"), st.get("side_by_side", False))
             elif st["slot"] == "stack":
                 self.stack_middle(st.get("n", 4))
+            elif st["slot"] == "scatter":
+                self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
             elif st["slot"] == "group":                 # its `max` counts groups (a table and its chairs), not pieces
                 if self.place_group(st["group"]): added[i] += 1
                 misses = 0 if self.n_blocking > before else misses + 1
@@ -2014,6 +2064,9 @@ class Furnisher:
                     cu, cv = self.g.centroid
                     spot = (cu, cv) if self.g.fits(cu, cv, *self.half(t), blocking=False) else self.free_middle(*self.half(t))
                     if spot and self.try_put(t, *spot, blocking=False): done["rug"] += 1
+                continue
+            if st["slot"] == "scatter":               # strewn over the floor in heaps (straw, bones, meat)
+                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
                 continue
             if st["slot"] == "decor":                 # hangings go up last, once every wall is lined (fill_room)
                 self._deferred_decor += n
@@ -2214,7 +2267,10 @@ class Furnisher:
         n = max(1 if tiles >= 12 else 0, tiles // 40, min(n, max(1, tiles // 12)))
         types = {t: s for t, s in vl.get("types", {}).items()
                  if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
-        if HOUSE_WALLS.search(self.g.wall_material or ""):       # a house: candelabras, never torches
+        own = ROOM_IDENTITY.get(self.kind, {}).get("lights")
+        if own:                                                  # the culture's own lights (rules/out/cultures.json)
+            types = {t: s for t, s in own.items() if self.ok_type(t)} or types
+        elif HOUSE_WALLS.search(self.g.wall_material or ""):     # a house: candelabras, never torches
             types = {t: s for t, s in HOUSE_LIGHTS["stone" if STONE_WALLS.search(self.g.wall_material) else "wood"].items()
                      if self.ok_type(t)} or types
         # lights balance the room: each goes to the wall spot that is farthest from the lights already

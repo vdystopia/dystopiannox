@@ -300,9 +300,11 @@ ROOMS = {
                              dict(fam="table", slot="center", seats=True),
                              dict(fam="carpet", slot="carpet", where="under", chance=0.6),
                              dict(fam="wall_decor", slot="decor")],
-                    fill=[dict(fam="shelves", slot="racks", kind="books", max=16, min_area=150),
+                    fill=[dict(fam="shelves", slot="racks", kind="books", max=16, min_area=100),
+                          dict(fam="shelves", slot="line", other=True, max=8),
                           dict(fam="lab", slot="group", group="curio", max=1, min_area=120),
                           dict(fam="table", slot="group", group="sitting", max=1, min_area=200),
+                          dict(fam="shelves", slot="line", max=6),
                           dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
     "laboratory": dict(purpose="a wizard's laboratory: workstations and alchemist's desks lining a back wall end to end, "
                                "bookcases lining the other, curios (a telescope, an orrery, a crackling generator) standing "
@@ -392,6 +394,112 @@ ROOMS = {
                               dict(fam="wall_decor", slot="decor")],
                      fill=[dict(fam="shelves", slot="line", other=True, max=8, min_area=120), dict(fam="table", slot="group", group="dining", max=1, min_area=170), dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300), dict(fam="shelves", slot="line", n=6, max=6),
                            dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
+    # ---- the cultures' rooms (rules/cultures.py, rules/out/cultures.json): Westwood furnishes its ogre lairs and the
+    # Land of the Dead's temples with their own pieces. Ogre rooms (18 measured, median 42 tiles): straw heaped free on
+    # the floor in 72% of them, crude beds against the back walls, stools, round tables, meat and carcasses, barrels,
+    # torch poles. Land of the Dead rooms (47, median 45 tiles): sconces on the back walls (88-94%), mana obelisks and
+    # tombstones, tapestries on the back walls, bones and skulls strewn free (10 and 8 per 100 tiles).
+    "ogre_den": dict(purpose="where the ogres sleep: straw heaped over the floor, crude beds against the back walls, a "
+                             "fire pit ringed by stools, meat and carcasses left about, barrels by the walls",
+                     base="barracks",
+                     core={"straw": (4, 80), "fireplace": (1, 2)},
+                     optional={"bed": (0.8, 4), "chair": (1.0, 8), "storage": (1.0, 8), "clutter": (1.0, 16)},
+                     types={"straw": r"^OgreStraw\d$", "fireplace": r"^OgreFirePit$", "bed": r"^OgreBed\d$",
+                            "chair": r"^OgreStool\d$", "storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$",
+                            "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$"},
+                     prefer={"straw": {"OgreStraw1": 5, "OgreStraw2": 2, "OgreStraw3": 2, "OgreStraw4": 1, "OgreStraw5": 1},
+                             "fireplace": {"OgreFirePit": 1}, "bed": {"OgreBed1": 1, "OgreBed2": 1},
+                             "chair": {"OgreStool1": 2, "OgreStool2": 1},
+                             "storage": {"Barrel": 2, "Barrel2": 1, "OgreSack1": 1, "OgreSack2": 1},
+                             "clutter": {"OgreHutMeat": 4, "OgreHutCarcass": 1, "OgreHutCarcassBig": 1}},
+                     lights={"TorchPole": 1},
+                     compose=[dict(fam="fireplace", slot="groups", group="firepit", n=1),
+                              dict(fam="bed", slot="wall", at="any", clear=0.6, n=2),
+                              dict(fam="straw", slot="scatter", per100=14, cluster=(2, 4)),
+                              dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
+                              dict(fam="clutter", slot="scatter", per100=6, cluster=(1, 2))],
+                     fill=[dict(fam="fireplace", slot="group", group="firepit", max=1, min_area=260),
+                           dict(fam="straw", slot="scatter", per100=6, max=40),
+                           dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
+    "ogre_hall": dict(purpose="where the ogres feast: crude round tables ringed by stools, a fire pit, carcasses and meat "
+                              "on the floor, straw in the corners, barrels by the walls",
+                      base="dining_hall",
+                      core={"table": (2, 12), "fireplace": (1, 1)},
+                      optional={"chair": (1.0, 30), "storage": (1.0, 8), "clutter": (1.0, 12), "straw": (0.7, 12)},
+                      types={"table": r"^OgreTable[123]$", "chair": r"^OgreStool\d$|^OgreBench[34]$",
+                             "fireplace": r"^OgreFirePit$", "storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$",
+                             "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$", "straw": r"^OgreStraw\d$"},
+                      prefer={"table": {"OgreTable1": 2, "OgreTable2": 1, "OgreTable3": 2},
+                              "chair": {"OgreStool1": 3, "OgreStool2": 2, "OgreBench3": 1, "OgreBench4": 1},
+                              "fireplace": {"OgreFirePit": 1},
+                              "storage": {"Barrel": 2, "Barrel2": 1, "OgreSack1": 1, "PiledBarrels2": 1},
+                              "clutter": {"OgreHutMeat": 3, "OgreHutCarcass": 1, "OgreHutCarcassBig": 1},
+                              "straw": {"OgreStraw1": 3, "OgreStraw2": 1, "OgreStraw3": 1}},
+                      per_tiles={"table": 22},
+                      lights={"TorchPole": 1},
+                      compose=[dict(fam="fireplace", slot="groups", group="firepit", n=1),
+                               dict(fam="table", slot="groups", group="ogre_table"),
+                               dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
+                               dict(fam="clutter", slot="scatter", per100=5, cluster=(1, 2))],
+                      fill=[dict(fam="table", slot="group", group="ogre_table", max=4),
+                            dict(fam="straw", slot="scatter", per100=4, max=12),
+                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
+    "ogre_hoard": dict(purpose="the ogres' hoard: barrels, sacks and crates heaped along the walls, a chest at the back, "
+                               "carcasses hung to cure, bones about",
+                       base="storeroom",
+                       core={"storage": (6, 40)},
+                       optional={"clutter": (1.0, 8), "bones": (0.8, 12)},
+                       types={"storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$|^Crate[12]$|^DarkCrate[12]$|^Chest\d$",
+                              "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$"},
+                       prefer={"clutter": {"OgreHutCarcass": 2, "OgreHutCarcassBig": 1, "OgreHutMeat": 2},
+                               "bones": {"SkullImmobile": 1, "ArmBoneImmobile": 2, "LegBoneImmobile": 2}},
+                       lights={"TorchPole": 1},
+                       compose=[dict(fam="storage", slot="stock", coverage=0.8, kinds=("barrels", "sacks", "crates"), pad=1.0),
+                                dict(fam="clutter", slot="scatter", per100=4, cluster=(1, 2)),
+                                dict(fam="bones", slot="scatter", per100=6, cluster=(1, 3))],
+                       fill=[dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "crates"), pad=0.8, max=20),
+                             dict(fam="storage", slot="stack", n=3, once=True)]),
+    "dark_chapel": dict(purpose="the Land of the Dead's chapel: the lich god's statue on a back wall, mana obelisks and "
+                                "arks along the walls, judgement balances standing in a pair, tapestries and sconces on "
+                                "the back walls, bones and skulls strewn about",
+                        base="chapel",
+                        core={"altar": (1, 1), "statue": (4, 14)},
+                        optional={"wall_decor": (1.0, 6), "tomb": (0.5, 4), "bones": (1.0, 30)},
+                        types={"altar": r"^LOTDLichGodStatue[12]$",
+                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$",
+                               "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$", "tomb": r"^LOTDTombstone[1-4]$"},
+                        prefer={"altar": {"LOTDLichGodStatue1": 1, "LOTDLichGodStatue2": 1},
+                                "statue": {"LOTDManaObelisk": 3, "LOTDArk1": 1, "LOTDArk2": 1},
+                                "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1},
+                                "tomb": {"LOTDTombstone1": 2, "LOTDTombstone3": 1, "LOTDTombstone4": 1},
+                                "bones": {"SkullImmobile": 3, "ArmBoneImmobile": 3, "LegBoneImmobile": 2}},
+                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
+                        compose=[dict(fam="altar", slot="wall", at="center", clear=2.6),
+                                 dict(fam="statue", slot="wall", at="corner", clear=0.8, n=4),
+                                 dict(fam="statue", slot="groups", group="balances", n=1),
+                                 dict(fam="bones", slot="scatter", per100=10, cluster=(1, 3)),
+                                 dict(fam="wall_decor", slot="decor")],
+                        fill=[dict(fam="statue", slot="racks", kind="obelisks", gap=2.6, aisle=3.0, min_area=200, once=True),
+                              dict(fam="statue", slot="wall", at="center", clear=0.8, max=6),
+                              dict(fam="tomb", slot="wall", at="corner", clear=0.6, max=4, min_area=150),
+                              dict(fam="statue", slot="group", group="balances", max=1, min_area=260)]),
+    "dark_crypt": dict(purpose="the Land of the Dead's crypt: tombstones in rows with aisles between, mana obelisks at the "
+                               "walls, sconces and candles, bones and skulls strewn over the floor",
+                       base="crypt",
+                       core={"tomb": (4, 40)},
+                       optional={"statue": (0.8, 4), "wall_decor": (0.6, 3), "bones": (1.0, 40)},
+                       types={"tomb": r"^LOTDTombstone[1-4]$", "statue": r"^LOTDManaObelisk$",
+                              "wall_decor": r"^LOTDTapestry[12]$"},
+                       prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
+                               "bones": {"SkullImmobile": 3, "ArmBoneImmobile": 3, "LegBoneImmobile": 2}},
+                       lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
+                       compose=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8),
+                                dict(fam="statue", slot="wall", at="corner", clear=0.8, n=2),
+                                dict(fam="bones", slot="scatter", per100=12, cluster=(1, 3)),
+                                dict(fam="wall_decor", slot="decor")],
+                       fill=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, max=24),
+                             dict(fam="tomb", slot="wall", at="center", clear=0.6, max=8),
+                             dict(fam="statue", slot="wall", at="corner", clear=0.8, max=4)]),
 }
 
 # ---- buildings ---------------------------------------------------------------------------------------
@@ -437,6 +545,23 @@ BUILDINGS = {
     "woodcutter": dict(purpose="the woodcutter's hut", style="log_cabin", size=(14, 12),
                        rooms=[("dwelling", "the woodcutter's one room")],
                        scenes=["woodpile", "chopping_block"], garden=0.0, faces="road"),
+    # the biomes' structures (rules/BIOMES.md, rules/cultures.py): the built parts of Westwood's lava, ice and cave
+    # maps in their own building styles, furnished by their culture
+    "demon_forge": dict(purpose="a demon forge of black stone above the lava: the forge, the hall where its arms are "
+                                "racked, the store of iron and coal", style="dunmir_hall", furnish="dunmir",
+                        size=(40, 30), min_units=220,
+                        rooms=[("smithy", "the demon forge"), ("hall", "the hall of arms"), ("storeroom", "iron and coal")],
+                        scenes=[], garden=0.0, faces="road"),
+    "ice_temple": dict(purpose="a dark temple sunk in the ice: the lich god's chapel, the crypt of the frozen dead and the "
+                               "priests' library", style="lotd_ornate", furnish="lotd", size=(52, 40), min_units=380,
+                       rooms=[("dark_chapel", "the lich god's chapel"), ("dark_crypt", "the crypt of the frozen dead"),
+                              ("library", "the priests' library")],
+                       scenes=[], garden=0.0, faces="road"),
+    "ogre_keep": dict(purpose="an old keep of dungeon stone the ogres took over: their feasting hall, their straw beds and "
+                              "their hoard", style="dungeon_block", furnish="ogre", size=(38, 30), min_units=240,
+                      rooms=[("ogre_hall", "the ogres' feasting hall"), ("ogre_den", "their straw beds"),
+                             ("ogre_hoard", "their hoard")],
+                      scenes=[], garden=0.0, faces="road"),
 }
 
 # ---- outdoor scenes ------------------------------------------------------------------------------------
@@ -481,7 +606,8 @@ class BuildingIdentity:
 
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).
 WESTWOOD_KIND = {"herbalist": "laboratory", "mess_hall": "dining_hall", "ore_store": "storeroom", "study": "library",
-                 "dwelling": "living_room", "gear_store": "storeroom"}
+                 "dwelling": "living_room", "gear_store": "storeroom", "ogre_den": "barracks", "ogre_hall": "dining_hall",
+                 "ogre_hoard": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt"}
 # How much of a room's floor its furniture covers: (target, limit). The furnisher fills toward the target and never
 # past the limit, which the checker holds generated rooms to (TreePlace room reviews: rooms furnished to Westwood's
 # typical counts read as empty, and a store room holds more than any other room). Coverage grows with the room, so
@@ -491,7 +617,9 @@ ROOM_COVER = {"tavern": (0.20, 0.34), "dining_hall": (0.17, 0.32), "shop": (0.24
               "crypt": (0.18, 0.36), "hall": (0.03, 0.22), "throne_room": (0.04, 0.24),
               "smithy": (0.24, 0.38), "library": (0.17, 0.32), "storeroom": (0.30, 0.42), "gear_store": (0.30, 0.42), "ore_store": (0.28, 0.42), "kitchen": (0.21, 0.32),
               "barracks": (0.24, 0.34), "mess_hall": (0.24, 0.34), "living_room": (0.17, 0.30), "herbalist": (0.17, 0.30),
-              "study": (0.17, 0.30), "bedroom": (0.14, 0.28), "dwelling": (0.16, 0.30)}
+              "study": (0.17, 0.30), "bedroom": (0.14, 0.28), "dwelling": (0.16, 0.30),
+              "ogre_den": (0.14, 0.30), "ogre_hall": (0.14, 0.30), "ogre_hoard": (0.26, 0.42), "dark_chapel": (0.10, 0.26),
+              "dark_crypt": (0.16, 0.34)}
 ROOM_COVER_DEFAULT = (0.16, 0.30)
 # Buildings are larger than Westwood's (the user, during the TreePlace v0.3 review: "bias towards bigger rooms and
 # structures than westwood"): each role's size and floor below are scaled by this much in each direction.

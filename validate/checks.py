@@ -867,7 +867,8 @@ def check_room_composition(m, ctx, base):
                 out.append(F("composition", "warning", f"{o['type']} stands across the wall instead of with its back "
                              f"against it.", o["x"], o["y"]))
         chairs = [o for o in objs if RT.family(o["type"]) == "chair"]
-        tables = [o for o in objs if RT.family(o["type"]) in ("table", "desk", "counter_bar", "counter_shop")]
+        tables = [o for o in objs if RT.family(o["type"]) in ("table", "desk", "counter_bar", "counter_shop") or
+                  re.search(r"FirePit|^FreestandingFireplace", o["type"])]     # stools ring an ogre's fire pit too
         if len(chairs) >= 2 and not any(math.hypot(c["x"] - t["x"], c["y"] - t["y"]) < 70 for c in chairs for t in tables):
             out.append(F("composition", "warning", f"{len(chairs)} chairs and no table to sit at.", chairs[0]["x"], chairs[0]["y"]))
         off, fu, fv = furniture_offset(m, r)

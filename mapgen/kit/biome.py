@@ -17,7 +17,7 @@ A Dresser applies the palette to a carved Land:
 Densities are per 100 floor tiles of the context (open floor, along walls, on the liquid), as Westwood's.
 """
 import math, random
-from kit.layout import square_tile, square_px, bfs_distance, N4
+from kit.layout import square_tile, square_px, bfs_distance, tile_square, N4
 from kit.vegetation import FORESTS, Planter, Patches
 
 N8 = [(a, b) for a in (-1, 0, 1) for b in (-1, 0, 1) if a or b]
@@ -117,6 +117,7 @@ class Dresser:
         self.wall, self.base = self.b["wall"], self.b["base"]
         self.pools = set()                   # squares of liquid behind the cliffs (outside the land)
         self.taken = set()                   # squares holding props, lights and sources
+        self.structures = []                 # [(role, area, Building)]: the biome's built parts (structure())
         spec.d["ambient"] = list(self.b["ambient"])
         for mat, prio, edge in self.b["blends"]:
             spec.blending(mat, prio, edge=edge)
@@ -176,6 +177,8 @@ class Dresser:
             for s in blob:
                 i, j = s
                 if 3 <= i + j <= 250 and 3 <= i - j <= 250: self.spec.floor[square_tile(*s)] = mat
+            self.taken |= set(blob)              # nothing grows or stands on top of the rock (the checker would read
+                                                 # a capped island holding pillars as a room of columns)
 
     # ---- the ground -----------------------------------------------------------------------------------------------
     def ground(self, clear=2):
@@ -200,7 +203,8 @@ class Dresser:
     # ---- what grows or stands -------------------------------------------------------------------------------------
     def vegetate(self, keep_clear=(), groves=3, flowers=0):
         """Pillars, stalagmites or snow trees in front of the walls, thinning inward, and the biome's undergrowth."""
-        p = Planter(self.spec, self.rng, self.land, forest=self.biome, keep_clear=set(keep_clear) | self.taken)
+        p = Planter(self.spec, self.rng, self.land, forest=self.biome,     # never inside or against a structure
+                    keep_clear=set(keep_clear) | self.taken | self.land.taken)
         p.tree_lines(depth=self.b["tree_depth"], spacing=1.25)
         if groves: p.groves(n=groves, size=(4, 8), radius=2.5, spacing=1.3, avoid_areas=())
         p.undergrowth(per_tree=(0, 1), edge_p=0.12)
@@ -332,13 +336,98 @@ class Dresser:
     PACKS = {"BlackWolf": "Wolf", "WhiteWolf": "Wolf", "Wolf": "Wolf"}      # pack animals: a leader and its pack
     SKITTISH = {"Bat", "Rat"}
 
+    # ---- built parts: Westwood's biome maps hold buildings in their own styles (rules/BIOMES.md: dungeon stone in the
+    # caves, the Land of the Dead's ornate walls in the ice, Dun Mir's black halls by the lava), furnished by their
+    # culture (rules/cultures.py)
+    GARRISON = {"ogre_keep": {"OgreWarlord": 1, "OgreBrute": 2, "GruntAxe": 2},
+                "ice_temple": {"SkeletonLord": 1, "Skeleton": 2, "Ghost": 2},
+                "demon_forge": {"MeleeDemon": 1, "EmberDemon": 2, "Imp": 2}}
+
+    def structure(self, role, area, toward=None, scale=1.25, shrink=(1.0, 0.92, 0.84, 0.76), name=""):
+        """A building of kit/identity.py BUILDINGS[role] (the demon forge, the ice temple, the ogre keep) centred in
+        `area`, its entrance on the side facing area `toward`. Call it before land.carve(): the cavern then grows round
+        the building. Returns the building, or None when none fits."""
+        from kit.building import generate_building
+        from kit.identity import BUILDINGS
+        L = self.land
+        r = BUILDINGS[role]
+        cx, cy = L.areas[area]["c"]
+        side = None
+        if toward:
+            tx, ty = L.areas[toward]["c"]
+            dx, dy = tx - cx, ty - cy
+            side = ("u_max" if dx > 0 else "u_min") if abs(dx) >= abs(dy) else ("v_max" if dy > 0 else "v_min")
+        for k in shrink:
+            W, H = 2 * round(r["size"][0] * scale * k / 2), 2 * round(r["size"][1] * scale * k / 2)
+            origin = (2 * round(cx - W / 4), 2 * round(cy - H / 4))
+            b = generate_building(self.spec, self.rng, origin, (W, H), r["style"], program=[kd for kd, _ in r["rooms"]],
+                                  entrance_side=side, building_id=role, occupied=set(), tries=24,
+                                  shape=r.get("shape"), min_units=int(r.get("min_units", 0) * (scale * k) ** 2))
+            if b: break
+        else:
+            return None
+        L.take_cells(b.cells, margin=1)
+        L.taken_strict |= {tile_square(x, y) for x, y in b.footprint}
+        L.wall_cells |= set(self.spec.wallmap)
+        self.structures.append((role, area, b, name))
+        return b
+
+    def furnish_structures(self):
+        """Furnishes every room of the structures in its culture (BUILDINGS[role]["furnish"]). Returns
+        [(role, room kind, pieces)]."""
+        from kit.identity import BUILDINGS
+        from kit.originality import furnish_original
+        out = []
+        for role, area, b, name in self.structures:
+            style = BUILDINGS[role].get("furnish") or "town"
+            for room in b.rooms:
+                objs, res = furnish_original(self.spec, room, kind=room.kind, rng=random.Random(self.rng.random()),
+                                             style=style)
+                out.append((role, room.kind, len(objs)))
+        return out
+
+    def garrison(self, pop=None):
+        """The structures' keepers (GARRISON): on guard in their rooms, facing the way in, clear of the furniture and
+        the walls. Returns the creatures placed."""
+        from kit.npcs import Population
+        pop = pop or getattr(self, "population", None) or Population(self.spec, self.rng)
+        self.population = pop
+        placed = 0
+        for role, area, b, name in self.structures:
+            want = [t for t, n in self.GARRISON.get(role, {}).items() for _ in range(n)]
+            door = b.entrances[0].gap if b.entrances else None
+            spots = []
+            for room in b.rooms:
+                for (x, y) in sorted(room.tiles):
+                    px_, py_ = (x + 1) * 23, (y + 1) * 23
+                    if any((int(px_ // 23) + a, int(py_ // 23) + c) in self.spec.wallmap for a in (-1, 0, 1) for c in (-1, 0, 1)):
+                        continue
+                    if any(abs(o["x"] - px_) < 30 and abs(o["y"] - py_) < 30 for o in self.spec.d["objects"]):
+                        continue
+                    spots.append((px_, py_))
+            self.rng.shuffle(spots)
+            used = []
+            for t in want:
+                spot = next((p for p in spots if all(abs(p[0] - q[0]) + abs(p[1] - q[1]) > 70 for q in used)), None)
+                if spot is None: break
+                used.append(spot)
+                face = ((door[0] + 0.5) * 23, (door[1] + 0.5) * 23) if door else None
+                pop.creature(t, *spot, action="guard", face=face)
+                placed += 1
+        return placed
+
+    def declare_rooms(self, path):
+        """<map>.rooms.json for review/rooms.py and review/roomscore.py: the structures' rooms, numbered."""
+        from kit.identity import rooms_sidecar, BuildingIdentity
+        return rooms_sidecar([(BuildingIdentity(role, area, name), b) for role, area, b, name in self.structures], path)
+
     def creatures(self, scale=1.0, avoid=(), groups=None, pop=None, min_start=20):
         """The biome's creatures as Westwood places them (rules/NPCS.md): most alone (a few in twos and threes), about 2
         squares from a wall, at least `min_start` squares from the arrival (`avoid`); 62% idle and 38% on guard,
         Westwood's sight range for each type, aggressiveness 0.5. With `pop` (kit/npcs.Population) wolves run as a
         scripted pack and bats and rats are skittish (kit/behaviours). Returns the creatures placed."""
         from kit.npcs import Population
-        pop = pop or Population(self.spec, self.rng)
+        pop = pop or getattr(self, "population", None) or Population(self.spec, self.rng)
         edge = self.land.edge_distance()
         sq = [s for s, dd in edge.items() if 1 <= dd <= 3 and s not in self.taken and s not in self.land.taken
               and all(math.hypot(s[0] - a[0], s[1] - a[1]) >= min_start for a in avoid)]
