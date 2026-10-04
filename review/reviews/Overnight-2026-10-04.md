@@ -22,7 +22,7 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   passing to 59-61 of 63 over three seeds.
 - **Building lab** (`mapgen/designs/buildinglab.py`, scored by `review/buildingscore.py`): every building role,
   generated and furnished, scored on room sizes, reachability and the room scores. 16 roles now, including a manor
-  and the three culture buildings; 8-10 of 16 pass at Westwood's size and the kit's.
+  and the three culture buildings; 13 of 16 pass at the kit's scale (1.25 times Westwood's).
 - **Bigger buildings**: an 8-room **manor**. Westwood's multi-room buildings give their largest room half or more of
   the floor and reach the other rooms through it (few have corridors), so large buildings now use a **hub plan**: a
   great hall down the middle with the other rooms along both sides, every door opening onto the hall. The great hall
@@ -94,7 +94,7 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 ## Known weak spots (worth a look when you review)
 
 - The dark chapel's colonnade of glowing obelisks is dense; you may like it or not.
-- About a third of the building-lab buildings still miss the bar on details: a back wall 31% lined against 35%,
+- Three of the building lab's 16 buildings still miss the bar on details: a back wall 31% lined against 35%,
   coverage a point under target. Odd-shaped smithies with short back walls are the most frequent case.
 - The town lab carries a little more decoration than Westwood's busiest town (24 per 100 tiles against 23.7), and
   fewer wall pieces: it has no fences or hedges yet.
