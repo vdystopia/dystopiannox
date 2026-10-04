@@ -153,6 +153,19 @@ def _split(rng, rect, target, min_side, rooms_out, weights=None):
         _split(rng, (i0, i1, j0 + cut, j1), target - k_left, min_side, rooms_out, wr)
 
 
+def _connected(units):
+    """True when the units form one piece (edge neighbours)."""
+    if not units: return True
+    start = next(iter(units))
+    seen, q = {start}, deque([start])
+    while q:
+        i, j = q.popleft()
+        for n in ((i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1)):
+            if n in units and n not in seen:
+                seen.add(n); q.append(n)
+    return len(seen) == len(units)
+
+
 def _units_for(tiles):
     """Footprint units a room needs for `tiles` of the checker's floor tiles (Westwood's room sizes are in those): its
     walls take a strip around the edge, so a room of n units has about n - 2 sqrt(n) tiles (measured on the building
@@ -173,6 +186,9 @@ def _wing_labels(rng, parts, target, weights, base_labels):
         # one room for the other wings together (an L or T room), or as many as there are wings to share
         groups = [rest] if target - 1 == 1 else [[k] for k in rest[:target - 2]] + [rest[target - 2:]]
         if any(sum(len(parts[k]) for k in g) < _units_for(0.45 * w) for g, w in zip(groups, ws)): return None
+        # a room of several wings must hang together: a U's two arms meet only through its base, so they are not
+        # one room (TownLab: a home's living room in two closed-off halves either side of the bedroom)
+        if any(not _connected(set().union(*(parts[k] for k in g))) for g in groups): return None
         for g, k_ in enumerate(groups):
             for kk in k_:
                 for p in parts[kk]: labels[p] = 1 + g
