@@ -149,13 +149,82 @@ def _split(rng, rect, target, min_side, rooms_out, weights=None):
         _split(rng, (i0, i1, j0 + cut, j1), target - k_left, min_side, rooms_out, wr)
 
 
+def _units_for(tiles):
+    """Footprint units a room needs for `tiles` of the checker's floor tiles (Westwood's room sizes are in those): its
+    walls take a strip around the edge, so a room of n units has about n - 2 sqrt(n) tiles (measured on the building
+    lab and TreePlace: 12 units hold 6 tiles, 63 hold 48, 204 hold 176)."""
+    return (1 + math.sqrt(1 + tiles)) ** 2
+
+
+def _wing_labels(rng, parts, target, weights, base_labels):
+    """Labels giving the largest wing to the main room and the other wings to the other rooms, or None when the other
+    wings are too small for them: each room's floor at least 0.45 of its kind's typical size."""
+    labels = dict(base_labels)
+    keys = sorted(parts, key=lambda k: -len(parts[k]))
+    big, rest = keys[0], keys[1:]
+    ws = sorted(weights, reverse=True)[1:]
+    if sum(len(parts[k]) for k in rest) < sum(_units_for(0.45 * w) for w in ws): return None
+    for p in parts[big]: labels[p] = 0
+    if target - 1 == 1 or target - 1 < len(rest):
+        # one room for the other wings together (an L or T room), or as many as there are wings to share
+        groups = [rest] if target - 1 == 1 else [[k] for k in rest[:target - 2]] + [rest[target - 2:]]
+        if any(sum(len(parts[k]) for k in g) < _units_for(0.45 * w) for g, w in zip(groups, ws)): return None
+        for g, k_ in enumerate(groups):
+            for kk in k_:
+                for p in parts[kk]: labels[p] = 1 + g
+        return labels
+    area = {k: len(parts[k]) for k in rest}
+    tot = sum(area.values())
+    alloc = {k: max(1, round((target - 1) * area[k] / tot)) for k in rest}
+    while sum(alloc.values()) > target - 1:
+        k = max(rest, key=lambda k: alloc[k]); alloc[k] -= 1
+    while sum(alloc.values()) < target - 1:
+        k = max(rest, key=lambda k: area[k] / alloc[k]); alloc[k] += 1
+    rid, wi = 1, 0
+    for k in rest:
+        if area[k] < sum(_units_for(0.45 * w) for w in ws[wi:wi + alloc[k]]): return None
+        r = _rects_of_part(parts[k])
+        min_side = 4 if min(r[1] - r[0], r[3] - r[2]) >= 8 else 3
+        rects = []
+        _split(rng, r, alloc[k], min_side, rects, ws[wi:wi + alloc[k]] if alloc[k] > 1 else None)
+        wi += alloc[k]
+        for (i0, i1, j0, j1) in rects:
+            for i in range(i0, i1):
+                for j in range(j0, j1):
+                    if (i, j) in parts[k]: labels[(i, j)] = rid
+            rid += 1
+    return labels
+
+
 def _assign_rooms(rng, U, target, weights=None):
     """Label units with room ids: each footprint part gets rooms in proportion to its area."""
     parts = defaultdict(set)
     for p, v in U.items():
         if v != COURT: parts[v].add(p)
-    total = sum(len(s) for s in parts.values())
     labels = dict((p, COURT) for p, v in U.items() if v == COURT)
+    # a building with a room program on a multi-part footprint (T, L, U, Z): its main room (the largest weight) takes
+    # the largest wing whole and the other rooms share the other wings, so an inn's tavern is not left the size of its
+    # kitchen; only when the other wings hold the other rooms at a fair size (else the floor is shared as below)
+    wings = _wing_labels(rng, parts, target, weights, labels) if weights and len(parts) > 1 and target >= 2 and \
+        max(weights) >= 1.5 * sorted(weights)[-2] else None
+    if wings is not None: return wings
+    # a part too small to be a room of its own (a T's short stem, an L's stub) joins the room beside it, so that room is
+    # L or T shaped as Westwood's are, instead of a closet the checker calls small for its kind
+    least = _units_for(0.45 * min(weights)) if weights else 16
+    stubs = {k for k in parts if len(parts[k]) < least} if len(parts) > 1 else set()
+    if len(stubs) == len(parts): stubs = set()
+    _share_parts(rng, {k: s for k, s in parts.items() if k not in stubs}, target, weights, labels)
+    for k in sorted(stubs, key=str):
+        near = Counter(labels[n] for (i, j) in parts[k] for n in ((i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1))
+                       if n not in parts[k] and labels.get(n, COURT) != COURT)
+        lab = near.most_common(1)[0][0] if near else 0
+        for p in parts[k]: labels[p] = lab
+    return labels
+
+
+def _share_parts(rng, parts, target, weights, labels):
+    """Label the parts' units with rooms 0..target-1: each part gets rooms in proportion to its area."""
+    total = sum(len(s) for s in parts.values())
     rid = 0
     # few rooms in a multi-part footprint: merge parts into one L/T-shaped room (as Westwood does)
     if target < len(parts):
@@ -286,7 +355,7 @@ def _side_of_run(run, W, H):
 _ROOM_TYPES = None
 
 
-def _kind_tiles(kind, q="p25"):
+def _kind_tiles(kind, q="p25", default=30):
     """Typical floor area (tiles ~ footprint units) of a room kind in Westwood's maps."""
     global _ROOM_TYPES
     if _ROOM_TYPES is None:
@@ -294,7 +363,18 @@ def _kind_tiles(kind, q="p25"):
         with open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                                "rules", "out", "room_types.json"), encoding="utf-8") as f:
             _ROOM_TYPES = json.load(f)["types"]
-    return ((_ROOM_TYPES.get(kind) or {}).get("tiles") or {}).get(q) or 30
+    if kind not in _ROOM_TYPES:                 # the kit's own kinds take their Westwood kind's sizes (a herbalist's
+        from kit.identity import WESTWOOD_KIND, ROOMS   # room is a laboratory, a mess hall a dining hall)
+        kind = WESTWOOD_KIND.get(kind) or (ROOMS.get(kind) or {}).get("base") or kind
+    return ((_ROOM_TYPES.get(kind) or {}).get("tiles") or {}).get(q) or default
+
+
+def _rooms_fit(labels, program):
+    """True when the rooms, largest first, hold the program's kinds, largest first, at Westwood's 10th percentile size
+    or more."""
+    sizes = sorted(Counter(v for v in labels.values() if v != COURT).values(), reverse=True)
+    need = sorted((_units_for(_kind_tiles(k, "p10", default=8)) for k in program), reverse=True)
+    return all(s >= n for s, n in zip(sizes, need))
 
 
 def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, occupied=None,
@@ -337,6 +417,7 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
             if W * H < min_units: continue
         U = _footprint(rng, shp, W, H)
         U, (W, H) = _transform(rng, U, W, H)
+        if W > maxW or H > maxH: continue        # the transposition swapped the sides past the lot
         area = sum(1 for v in U.values() if v != COURT)
         if program: n_rooms = len(program)
         elif rooms: n_rooms = rooms
@@ -351,6 +432,8 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         if program and entrance_side:
             labels = _main_room_on_side(labels, entrance_side)
             if labels is None: continue  # the main room cannot reach the entrance side: try again
+        if program and attempt < tries * 3 // 4 and not _rooms_fit(labels, program):
+            continue                     # a room below Westwood's sizes for its kind (a closet bedroom): try again
         cells = _cells_of(U0, V0, labels)
         if cells & occupied: continue
         b = _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side,

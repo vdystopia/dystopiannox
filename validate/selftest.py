@@ -86,6 +86,7 @@ def doorway(m):
 
 
 def rug_on_grass(m):
+    m.raw_floors = True                        # the map writer would put a buffer floor between them
     for x, y in rect_tiles(186, 192, 20, 26): m.tile(x, y, "RugGreen")
 
 

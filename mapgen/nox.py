@@ -8,7 +8,7 @@ Grid facts (verified against stock maps, the editor, and the engine):
 - Wall facing is derived from which diagonal neighbours are walls (see FACING_BY_ARMS).
 - Objects, waypoints and polygons use world pixels: 23 px per grid cell.
 """
-import json, os, random, subprocess, sys, tempfile
+import json, os, random, re, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(os.path.dirname(HERE), "rules", "out")
@@ -268,10 +268,32 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+        self._buffer_never_touch()
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         return dict(self.d, walls=walls, tiles=tiles)
+
+    def _buffer_never_touch(self):
+        """Floors Westwood never lets touch (rules/out/floors.json never_touch: a stone floor against a sparse grass):
+        the ground tile of such a pair takes the floor Westwood puts between them (its buffer material), as at the inner
+        corner of an L or T building, where the house's floor meets the grass outside. Same sides as the checker
+        (validate/checks.py check_floors). A test map of the checker sets `raw_floors` to keep its bad floors."""
+        if getattr(self, "raw_floors", False): return
+        nt = {}
+        for r in load_rules("floors")["never_touch"]:
+            buf = max(r["buffer_materials"].items(), key=lambda kv: kv[1])[0] if r.get("buffer_materials") else None
+            if buf: nt[frozenset((r["a"], r["b"]))] = buf
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds")
+        for (x, y), a in list(self.floor.items()):
+            for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
+                n = (x + d[0], y + d[1])
+                b = self.floor.get(n)
+                if b is None or a == b or shared in self.wallmap: continue
+                buf = nt.get(frozenset((a, b)))
+                if not buf: continue
+                if ground.search(b) and not ground.search(a): self.floor[n] = buf
+                elif ground.search(a) and not ground.search(b): self.floor[(x, y)] = buf; a = buf
 
     def _wall_material(self, material, facing):
         """The material itself, or, when Westwood never drew it in this shape (DecidiousWallRed has no

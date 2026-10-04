@@ -422,6 +422,7 @@ class Furnisher:
         self.light_zones = []     # the space before chests, hearths and stoves: no candelabra stands there
         self._deferred_decor = 0  # hangings the composition called for, put up after the walls are lined
         self._line_blocks = {}    # (line, coord) -> [(along0, along1)] of the rows of shelves lining that wall
+        self._rack_centres = set()  # the rows of racks standing free: their centre lines across the room
         self.wall_used = []       # ((line, coord), a0, a1): wall stretches pieces already stand against
         self.wall_tall = []       # the same for tall pieces only (shelves, hearths): hangings keep off them
         self.carpet_plan = None   # the room's carpet step when it lays carpet tiles instead of rug objects
@@ -735,8 +736,9 @@ class Furnisher:
         plan, need = {}, {}
         for f, (lo, hi) in ident["core"].items():
             n = self.count(f) or lo
-            if f in ident.get("per_tiles", {}):            # big rooms get more (a tavern: a table per 35 tiles)
-                n = max(n, int(len(self.room.tiles) / ident["per_tiles"][f]))
+            if f in ident.get("per_tiles", {}):            # big rooms get more (a tavern: a table per 35 tiles), past
+                by_size = int(len(self.room.tiles) / ident["per_tiles"][f])   # Westwood's range in rooms bigger
+                n, hi = max(n, by_size), max(hi, by_size)                      # than Westwood's
             plan[f] = max(lo, min(hi, n)); need[f] = lo
         for f, (p, hi) in ident["optional"].items():
             if self.rng.random() < p:
@@ -1497,6 +1499,9 @@ class Furnisher:
         for r in runs:
             if other and (r["line"], r["coord"]) in self._lined: continue    # the back wall not lined yet
             t = self.side_variant(t0, r, fam)
+            for alt in sorted(types, key=lambda k: -types[k]):   # t0 has no piece facing out of this wall (a
+                if t: break                                      # bookcase drawn for one wall only): another type
+                t = alt != t0 and self.side_variant(alt, r, fam)
             if not t: continue
             mix = [t] + ([t + "HalfFull"] if self.ok_type(t + "HalfFull") else [])
             got = self._line_run(r, mix, near, max_n, decor_every, around, fam)
@@ -1671,8 +1676,9 @@ class Furnisher:
     def rack_rows(self, kind="gear", aisle=1.6, gap=None, side_by_side=False):
         """Rows of gear racks standing free down the middle of a storeroom (TreePlace v0.3 room review: a store room
         holds more than other rooms, racks of gear in the middle), along the room's long axis, with aisles to the
-        stocked walls and between the rows; one kind of rack to a row, its long side along the row. Returns the
-        racks placed."""
+        stocked walls and between the rows; one kind of rack to a row, its long side along the row. The first call sets
+        the middle pair of rows; a room wide enough takes more pairs further out, one pair a call (a study twice
+        Westwood's size holds several stacks). Returns the racks placed."""
         us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
         lo_a, hi_a = (min(us), max(us)) if long_u else (min(vs), max(vs))
@@ -1681,9 +1687,11 @@ class Furnisher:
         width = (hi_c - lo_c) - 2 * margin
         pats = list(RACK_KINDS.get(kind, RACK_KINDS["gear"]))
         self.rng.shuffle(pats)
-        n_rows = 2 if width >= 2 * 1.9 + aisle else 1 if width >= 1.2 else 0
+        p = 1.9 + aisle                                 # a row and the aisle beside it
+        n_fit = 0 if width < 1.2 else 1 if width < 2 * 1.9 + aisle else 2 + 2 * int((width - (2 * 1.9 + aisle)) / (2 * p))
         mid = (lo_c + hi_c) / 2
-        centres = [mid] if n_rows == 1 else [mid - (0.95 + aisle / 2), mid + (0.95 + aisle / 2)][:n_rows]
+        centres = [mid] if n_fit == 1 else [mid + sg * (p / 2 + j * p) for j in range(n_fit // 2) for sg in (-1, 1)]
+        centres = [c for c in centres if (long_u, round(c, 2)) not in self._rack_centres][:2]
         got = 0
         for k, c in enumerate(centres):
             types = [t for t in self.things if re.match(pats[k % len(pats)], t) and self.ok_type(t) and self.belongs(t)]
@@ -1708,7 +1716,9 @@ class Furnisher:
             row = []
             # the row slides across the room (the front holds the table) until it stands unbroken: the longest run of
             # free spots, at least half the row and 2 pieces; never a row with holes, never on a carpet
-            for shift in (0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0):
+            out = 1 if c > mid else -1                  # a row further out slides only outward, keeping its aisle
+            shifts = (0.0, -1.0, 1.0, -2.0, 2.0, -3.0, 3.0) if abs(c - mid) <= p else (0.0, out * 1.0, out * 2.0)
+            for shift in shifts:
                 cc = c + shift
                 spots = [((a, cc) if long_u else (cc, a)) for a in (start + i * pitch for i in range(n))]
                 ok = [off_carpet(*sp) and self._can_put(t, *sp, touch=tight) for sp in spots]
@@ -1728,6 +1738,7 @@ class Furnisher:
                 for o in row: self._remove(o)
                 continue
             got += len(row)
+            self._rack_centres.add((long_u, round(c, 2)))
             self.anchors.append((c, (span_lo + span_hi) / 2) if not long_u else ((span_lo + span_hi) / 2, c))
         return got
 
@@ -1880,10 +1891,15 @@ class Furnisher:
         than Westwood's get more)."""
         steps = ROOM_IDENTITY.get(self.kind, {}).get("fill") or []
         if not steps: return
+        # the steps' limits suit Westwood's rooms of the kind: a room bigger than its kind's median takes more of each
+        # in proportion (a study of 266 tiles, twice Westwood's median, two reading tables and two curios)
+        p50 = (self.T.get("tiles") or {}).get("p50") or 30
+        grow = max(1.0, self.g.area / (2.4 * p50))
+        cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 else int(math.ceil(st["max"] * grow - 0.25))
         k, misses, done_once, added = 0, 0, set(), collections.Counter()
         while self.coverage() < self.cover_target and misses < 2 * len(steps):
             i = k % len(steps); st = steps[i]; k += 1
-            if i in done_once or added[i] >= st.get("max", 99) or self.g.area < st.get("min_area", 0): misses += 1; continue
+            if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
             if st.get("once"): done_once.add(i)
             before = self.n_blocking
             fam = st["fam"]
@@ -1895,8 +1911,10 @@ class Furnisher:
                 self.rack_rows(st.get("kind", "gear"), st.get("aisle", 1.6), st.get("gap"), st.get("side_by_side", False))
             elif st["slot"] == "stack":
                 self.stack_middle(st.get("n", 4))
-            elif st["slot"] == "group":
-                self.place_group(st["group"])
+            elif st["slot"] == "group":                 # its `max` counts groups (a table and its chairs), not pieces
+                if self.place_group(st["group"]): added[i] += 1
+                misses = 0 if self.n_blocking > before else misses + 1
+                continue
             elif st["slot"] == "center":
                 res = self.place_center(fam)
                 if res and st.get("seats"):

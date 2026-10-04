@@ -556,7 +556,7 @@ class Waterworks:
             if n in sp.blend:
                 continue
             # rank it just above the existing materials it draws over in Westwood's maps
-            over = [sp.blend[b][0] for b in sp.blend if b not in prio and pairs.get((n, b), {}).get("overlay_direction_share", 0) >= 0.5]
+            over = [sp.blend[b][0] for b in sp.blend if b not in prio and ((pairs.get((n, b)) or {}).get("overlay_direction_share") or 0) >= 0.5]
             sp.blending(n, max(over) + 0.5 if over else -10)
         for m in prio:
             if m in self.bridge_materials:

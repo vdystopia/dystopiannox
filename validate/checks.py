@@ -1042,9 +1042,10 @@ def _wall_name(line, coord, cu, cv):
     return "SW" if cv > coord else "NE"
 
 
-def _against(o, runs, cu, cv, m, reach=1.4):
+def _against(o, runs, cu, cv, m, reach=1.4, across=False):
     """(wall name, gap from the wall line to the piece's back, along, line, coord) of the wall run a piece stands
-    against (its back within `reach` units of the line), or None."""
+    against (its back within `reach` units of the line), or None. A long piece lying across a wall (a bed with its head
+    to it) counts only `across`."""
     u, v = uv_of(o)
     hu, hv = _half_uv(o)
     long_box = o["ext"] == "BOX" and max(hu, hv) >= 1.3 * min(hu, hv) > 0
@@ -1054,7 +1055,7 @@ def _against(o, runs, cu, cv, m, reach=1.4):
         along = v if line == "/" else u
         depth = hu if line == "/" else hv
         if not (lo - 0.5 <= along <= hi + 0.5): continue
-        if long_box and depth > (hv if line == "/" else hu): continue     # it lies across this wall, not along it
+        if long_box and not across and depth > (hv if line == "/" else hu): continue   # it lies across this wall
         gap = perp - depth
         if gap <= reach and (best is None or gap < best[1]):
             best = (_wall_name(line, coord, cu, cv), gap, along, line, coord)
@@ -1107,11 +1108,20 @@ def wall_side_rules(m, r):
                 out.append(F("composition", "warning", f"{o['type']} stands {far[1]:.1f} units off the {far[0]} wall, alone in "
                              f"the room: set it against the wall (house rule from the TreePlace v0.3 room review).",
                              o["x"], o["y"]))
+    # what stands at each wall, a bed with its head to it too: wall between two shelves that a bed or a desk fills is
+    # not bare
+    at_wall = collections.defaultdict(list)
+    for o in objs:
+        if not (m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES): continue
+        hit = _against(o, runs, cu, cv, m, reach=1.4, across=True)
+        if hit:
+            ha = _half_uv(o)[1] if hit[3] == "/" else _half_uv(o)[0]
+            at_wall[(hit[3], hit[4])].append((hit[2] - ha, hit[2] + ha))
     doors = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors]
     for (line, coord), items in lines.items():
         items.sort(key=lambda it: it[0])
         for (a0, a1, s1, o1), (b0, b1, s2, o2) in zip(items, items[1:]):
-            if not (s1 and s2) or b0 - a1 <= 1.0: continue
+            if not (s1 and s2) or _bare(a1, b0, at_wall[(line, coord)]) <= 1.0: continue
             between = [dd for dd in doors if abs((dd[0] if line == "/" else dd[1]) - coord) < 1.6 and
                        a1 < (dd[1] if line == "/" else dd[0]) < b0]
             if between: continue
@@ -1119,6 +1129,16 @@ def wall_side_rules(m, r):
                          f"{_wall_name(line, coord, cu, cv)} wall with bare wall between them: line shelves end to end "
                          f"(house rule from the TreePlace v0.3 room review).", o2["x"], o2["y"]))
     return out
+
+
+def _bare(a, b, spans):
+    """The longest stretch of (a, b) that none of the spans covers."""
+    edge, longest = a, 0.0
+    for s0, s1 in sorted(spans):
+        if s1 <= edge or s0 >= b: continue
+        longest = max(longest, s0 - edge)
+        edge = max(edge, s1)
+    return max(longest, b - edge)
 
 
 def _room_baseline():

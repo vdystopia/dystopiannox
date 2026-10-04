@@ -37,7 +37,20 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
      A room passes at its coverage target, with no warnings and with its back walls 35% lined (25% under 40
      tiles).
    - The loop: build three seeds, score them, look at the failing rooms' pictures (`rooms.py --each`), fix the
-     furnisher or the recipe, and repeat. The first night took the lab from 23 to 35-37 of 42 rooms passing, then added the tavern, shop, laboratory, chapel, crypt, hall and throne room (21 kinds, 63 rooms: 47-51 pass over three seeds).
+     furnisher or the recipe, and repeat. The first night took the lab from 23 to 35-37 of 42 rooms passing, then added the tavern, shop, laboratory, chapel, crypt, hall and throne room (21 kinds, 63 rooms: 47-51 pass over three seeds, then 50-56 once big rooms scaled their fill).
+
+6. The building lab does the same for whole buildings.
+   - `py mapgen/designs/buildinglab.py [scale] [seed]` builds `mapgen/out/buildinglab/BldLab.map`: every building
+     role of the kit (`kit/identity.py` BUILDINGS) at one scale (1.0 is Westwood's size, 1.25 the kit's default,
+     1.6 the bigger scale our maps head for), generated from its room program and furnished. It writes
+     `BldLab.rooms.json` (so `roomscore.py` scores its rooms) and `BldLab.buildings.json`.
+   - `py review/buildingscore.py mapgen/out/buildinglab/BldLab.map` scores each building in
+     `review/out/BldLab/buildingscore.md`: its shape and size, each room against Westwood's sizes for its kind
+     (below the 5th percentile is small; above the 95th is big, which the bigger scale allows), rooms that cannot
+     be reached, the checker's findings inside it, and how many of its rooms pass `roomscore.py`. A building passes
+     with no errors, every room reachable, no room small for its kind and every room passing.
+   - Room sizes: a building's room of n footprint units has about n - 2 sqrt(n) of the checker's floor tiles (its
+     walls take a strip round the edge), and Westwood's sizes are in floor tiles (`building._units_for`).
 
 `py review/review.py --calibrate` re-measures Westwood's 51 outdoor single-player maps (25 distinct
 layouts) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for

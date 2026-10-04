@@ -13,7 +13,8 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
 | TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
-| Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 35-37 of 42 rooms pass over 3 seeds | `mapgen/designs/roomlab.py` |
+| Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 21 kinds: 50-56 of 63 rooms pass over 3 seeds | `mapgen/designs/roomlab.py` |
+| Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 4-6 of 12 buildings pass at scales 1.0, 1.25 and 1.6 | `mapgen/designs/buildinglab.py` |
 | Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.1 maps installed: Darkdelve (cave), Frostfang (ice), Emberdeep (lava) | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
 | NPCs: Westwood's placement and movement measured; behaviour sets scripted in Go for OpenNox | NpcLab test map installed; Darkdelve's bats skittish, Frostfang's wolves in packs | `rules/NPCS.md`, `mapgen/kit/npcs.py`, `mapgen/kit/behaviours/` |
 | Weapons: how each weapon fires its projectile (thing.bin USE lines, OpenNox's handlers); a fireball staff that throws harpoons | Harpoon test map installed | `rules/WEAPONS.md`, `mapgen/kit/behaviours/weapons.go` |

@@ -225,6 +225,9 @@ Then, in this order:
 - Between playtests, improve rooms in the room lab (`mapgen/designs/roomlab.py`, `review/roomscore.py`): every room
   kind at Westwood's typical and large sizes and half as big again, scored on coverage, an open middle, lined back
   walls and the checker's findings. Fix what fails in three seeds before the next playtest.
+- Then whole buildings in the building lab (`mapgen/designs/buildinglab.py`, `review/buildingscore.py`): every
+  building role at Westwood's size, the kit's 1.25 and the bigger 1.6, scored on room sizes for their kinds,
+  reachability, the checker's findings and the rooms' own scores.
 - Playtest in the game; log the findings in `ROADMAP.md`.
 
 Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on
