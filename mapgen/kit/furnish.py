@@ -43,6 +43,24 @@ def _rules():
     return _RT, _DEC, _LIGHT, _THINGS
 
 
+_SOLID = None
+
+
+def _solid_types():
+    """The object types that stop a walking player, as the checker counts them (validate/mapdata.py blocking): an
+    obstacle or immobile thing with a footprint that collides. Stools are SIMPLE things a player pushes aside, so
+    they cover no floor (a dining hall seated on stools read 17.7% full to the furnisher and 15% to the checker)."""
+    global _SOLID
+    if _SOLID is None:
+        import sqlite3, os
+        db = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "corpus", "out", "nox_corpus.db")
+        with sqlite3.connect(db) as con:
+            _SOLID = {n for n, e, ex, ey, cls, fl in con.execute("SELECT name, ext, ex, ey, class, flags FROM things")
+                      if e and e != "NULL" and max(ex or 0, ey or 0) > 0 and ("OBSTACLE" in (cls or "") or
+                      "IMMOBILE" in (cls or "")) and "NO_COLLIDE" not in (fl or "")}
+    return _SOLID
+
+
 # Object-name prefixes that belong to other cultures/areas; excluded per style so a town house
 # does not get Land-of-the-Dead sconces or ogre stools.
 STYLE_EXCLUDE = {
@@ -471,7 +489,8 @@ class Furnisher:
     def coverage(self, extra=0.0):
         """Share of the room's floor its furniture covers (as the checker measures it: blocking furniture families;
         a grid cell is 2 square uv units)."""
-        area = sum(self.footprint(t) for t, rec in self._typed if rec[4] and rec[5] != "wall" and _family_of(t) in _blocking())
+        area = sum(self.footprint(t) for t, rec in self._typed if rec[4] and rec[5] != "wall" and _family_of(t) in _blocking()
+                   and t in _solid_types())
         return (area + extra) / (2.0 * max(1, len(self.g.cells)))
 
     def put(self, t, u, v, blocking=True, layer="floor", **extra):

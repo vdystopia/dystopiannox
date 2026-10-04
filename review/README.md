@@ -23,7 +23,8 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
    purpose and floor; other maps fall back to the checker's room finder.
 
 5. The room lab improves the furnisher between playtests.
-   - `py mapgen/designs/roomlab.py [seed] [kind ...]` builds `mapgen/out/roomlab/RoomLab.map`: every composed room
+   - `py mapgen/designs/roomlab.py [seed] [kind ...]` builds `mapgen/out/roomlab/RoomLab.map` (and `RoomLab2.map`
+     for the rooms the first page's field cannot hold; score both): every composed room
      kind at three sizes. "Typical" and "large" are Westwood's, and "bigger" is half as big again, the scale our
      maps aim for. Each room is a one-room house on open ground with its door in a front wall, declared in
      `RoomLab.rooms.json`.
