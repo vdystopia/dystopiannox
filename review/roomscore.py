@@ -3,7 +3,8 @@
 - coverage: the share of the floor that furniture covers, against the kind's ROOM_COVER target (kit/identity.py)
   and Westwood's median for rooms of its kind and size;
 - middle: coverage by pieces standing free in the room (more than 2.5 units from every wall);
-- lined: the share of the back walls (NE and NW, the walls the camera sees) taken by tall pieces and hangings;
+- lined: the share of the back walls (NE and NW, the walls the camera sees) taken by tall pieces and hangings,
+  less 3 units for each doorway in them (the door and its clearance);
 - types: distinct object types in the room;
 - warnings: the checker's findings that fall in the room.
 
@@ -44,8 +45,13 @@ def score(map_path):
         cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
         mid = 0.0
         back_len, back_used = 0.0, collections.defaultdict(list)
+        doors = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors]
         for (line, coord), (a0, a1) in runs.items():
-            if C._wall_name(line, coord, cu, cv) in ("NE", "NW"): back_len += a1 - a0
+            if C._wall_name(line, coord, cu, cv) not in ("NE", "NW"): continue
+            back_len += a1 - a0
+            for du, dv in doors:                            # a doorway and its clearance cannot be lined
+                if abs((du if line == "/" else dv) - coord) < 1.6 and a0 < (dv if line == "/" else du) < a1:
+                    back_len -= 3.0
         for o in r["objects"]:
             u, v = C.uv_of(o)
             dist = min((abs(u - c) if l == "/" else abs(v - c)) for (l, c) in runs) if runs else 0
@@ -62,9 +68,9 @@ def score(map_path):
                 if b <= end: continue
                 used += b - max(a, end); end = b
         lined = used / back_len if back_len else 0.0
-        box = (min(x for x, _ in cells), min(y for _, y in cells), max(x for x, _ in cells), max(y for _, y in cells))
+        near = {(x + a, y + b) for x, y in cells for a in (-1, 0, 1) for b in (-1, 0, 1)}   # its floor and walls
         warns = [f for f in findings if f["severity"] != "info" and f.get("x") is not None and
-                 box[0] <= f["x"] / 23 <= box[2] + 1 and box[1] <= f["y"] / 23 <= box[3] + 1]
+                 (int(f["x"] // 23), int(f["y"] // 23)) in near]
         target = min(lo, max(ww * 1.25, 0.10))
         from kit.identity import ROOMS
         lines_walls = any(st.get("slot") == "line" for st in (ROOMS.get(kind, {}).get("compose") or []) + (ROOMS.get(kind, {}).get("fill") or []))

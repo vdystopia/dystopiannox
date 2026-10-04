@@ -56,7 +56,7 @@ ROOMS = {
                              dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                              dict(fam="carpet", slot="carpet", where="whole", chance=0.4),
                              dict(fam="wall_decor", slot="decor")],
-                    fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=100), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=140), dict(fam="table", slot="group", group="sitting", max=1, min_area=90), dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
+                    fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=100), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=70), dict(fam="table", slot="group", group="sitting", max=1, min_area=90), dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
                           dict(fam="table", slot="center", seats=True, once=True, rug=True),
                           dict(fam="shelves", slot="line", n=3, max=3),
                           dict(fam="bench", slot="wall", at="center", clear=0, once=True),
@@ -117,9 +117,10 @@ ROOMS = {
                              dict(fam="table", slot="center", seats=True),
                              dict(fam="storage", slot="stock", coverage=0.7, kinds=("sacks", "barrels", "apples", "crates"),
                                   pad=1.3)],
-                    fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=120), dict(fam="table", slot="group", group="worktable", max=2, min_area=170), dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "apples", "crates"),
+                    fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=120), dict(fam="table", slot="group", group="worktable", max=2, min_area=80), dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "apples", "crates"),
                                pad=1.0, max=10),
-                          dict(fam="storage", slot="stack", n=3, once=True)]),
+                          dict(fam="storage", slot="stack", n=3, once=True),
+                          dict(fam="shelves", slot="line", other=True, max=8)]),
     "herbalist": dict(purpose="an herb-lore room: one back wall lined end to end with shelves of potions and remedies, a "
                               "bubbling cauldron, a work table toward the front, sacks of herbs, herbs growing in pots",
                       base="study",
@@ -282,7 +283,7 @@ ROOMS = {
                            dict(fam="table", slot="center", seats=True),
                            dict(fam="carpet", slot="carpet", where="under", chance=0.7),
                            dict(fam="wall_decor", slot="decor")],
-                  fill=[dict(fam="table", slot="group", group="dining", max=1, min_area=160), dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=200), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
+                  fill=[dict(fam="table", slot="group", group="dining", max=1, min_area=140), dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=140), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                         dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
     "library": dict(purpose="books: bookcases lining both back walls end to end, stacks of bookcases in rows down the "
@@ -397,7 +398,7 @@ ROOMS = {
 # rooms: (kind, purpose) in order, the first is the largest and takes the entrance;
 # scenes: outdoor prop groups that show the building's trade.
 BUILDINGS = {
-    "inn": dict(purpose="food, drink and a bed for travellers", style="stucco_house", size=(40, 32), shape="rect", min_units=240,
+    "inn": dict(purpose="food, drink and a bed for travellers", style="stucco_house", size=(40, 32), shape="rect", min_units=300,
                 rooms=[("tavern", "the common room"), ("kitchen", "the inn's kitchen"), ("bedroom", "the innkeeper's room")],
                 scenes=["deliveries", "bench_by_door", "sign"], garden=0.0, faces="square"),
     "store": dict(purpose="the village's general store", style="cobble_house", size=(26, 22), min_units=100,

@@ -1852,7 +1852,10 @@ class Furnisher:
         cu, cv = self.g.centroid
         us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
-        for spot in self.middle_spots(hu + pad, hv + pad)[:30]:
+        spots = self.middle_spots(hu + pad, hv + pad)[:30]
+        if not spots and g.get("seats") and g["seats"][0] <= 2:    # a seat or two need not ring it: a narrower margin
+            spots = self.middle_spots(hu + 0.9, hv + 0.9)[:30]
+        for spot in spots:
             o = self.try_put(t, *spot)
             if not o: continue
             got = [o]
@@ -2076,7 +2079,9 @@ class Furnisher:
                     done["rug"] += 1
                 if st.get("seats"): self.seats_around(p["uv"], p["obj"]["type"], 1)   # a desk and its chair
             done[fam] += k
-        if plan.get("nightstand") and self.beds:
+            if fam == "bed" and k and plan.get("nightstand") and not done["nightstand"]:
+                self.beside_bed(); done["nightstand"] += 1      # at the bed's head before shelves line its wall
+        if plan.get("nightstand") and self.beds and not done["nightstand"]:
             self.beside_bed(); done["nightstand"] += 1
         for f, n in need.items():                     # core pieces the composition could not fit
             for _ in range(max(0, n - done[f])):

@@ -25,6 +25,8 @@ def build(scale=1.25, seed=1):
     m.d["nxz"] = False
     m.d["ambient"] = [165, 160, 155]
     u0, u1, v0, v1 = FIELD
+    for mat, prio in (("GrassNorm", 0), ("GrassSparse2", 1), ("GrassDense", 2), ("DirtDark2", 3), ("DirtHard", 4)):
+        m.blending(mat, prio)                       # the buildings' aprons and paths blend into the grass (TreePlace's order)
     for x, y in rect_tiles(u0, u1, v0, v1): m.tile(x, y, "GrassNorm")
     for x, y in rect_wall_cells(u0, u1, v0, v1): m.wall(x, y, "BrickPlain")
     roles = list(BUILDINGS)

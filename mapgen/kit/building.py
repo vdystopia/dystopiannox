@@ -369,11 +369,27 @@ def _kind_tiles(kind, q="p25", default=30):
     return ((_ROOM_TYPES.get(kind) or {}).get("tiles") or {}).get(q) or default
 
 
+_BASE_KINDS = None
+
+
+def _kind_min_tiles(kind):
+    """The fewest floor tiles a room of `kind` should have: Westwood's 10th percentile (rules/out/room_types.json), or
+    the checker's lower bound for the kind when that is higher (validate/baseline.json room_kinds: the 5th percentile
+    of the rooms it read, 166 tiles for a tavern), so the checker never calls a generated room small for its kind."""
+    global _BASE_KINDS
+    if _BASE_KINDS is None:
+        p = os.path.join(os.path.dirname(RULES), "..", "validate", "baseline.json")
+        _BASE_KINDS = json.load(open(p, encoding="utf-8")).get("room_kinds", {}) if os.path.exists(p) else {}
+    from kit.identity import WESTWOOD_KIND, ROOMS
+    wk = WESTWOOD_KIND.get(kind) or (ROOMS.get(kind) or {}).get("base") or kind
+    return max(_kind_tiles(kind, "p10", default=8), ((_BASE_KINDS.get(wk) or {}).get("tiles") or [0])[0])
+
+
 def _rooms_fit(labels, program):
-    """True when the rooms, largest first, hold the program's kinds, largest first, at Westwood's 10th percentile size
-    or more."""
+    """True when the rooms, largest first, hold the program's kinds, largest first, at their least size or more
+    (_kind_min_tiles)."""
     sizes = sorted(Counter(v for v in labels.values() if v != COURT).values(), reverse=True)
-    need = sorted((_units_for(_kind_tiles(k, "p10", default=8)) for k in program), reverse=True)
+    need = sorted((_units_for(_kind_min_tiles(k)) for k in program), reverse=True)
     return all(s >= n for s, n in zip(sizes, need))
 
 
