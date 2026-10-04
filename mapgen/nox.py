@@ -269,10 +269,27 @@ class Spec:
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
         self._buffer_never_touch()
+        self._blend_thresholds()
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         return dict(self.d, walls=walls, tiles=tiles)
+
+    def _blend_thresholds(self):
+        """Where an outdoor ground that blends (a dirt path, grass) meets a building's floor that blends with nothing
+        (boards, flagstones) with no wall between them, in a doorway, the ground spills onto the floor with edge
+        pieces, as Westwood draws a threshold (the checker counts a pair Westwood blends left unblended as a hard
+        seam). Same sides as _buffer_never_touch."""
+        if getattr(self, "raw_floors", False): return
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds")
+        for (x, y), a in list(self.floor.items()):
+            for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
+                n = (x + d[0], y + d[1])
+                b = self.floor.get(n)
+                if b is None or a == b or shared in self.wallmap: continue
+                for g, f, ft in ((a, b, n), (b, a, (x, y))):
+                    if g in self.blend and ground.search(g) and f not in self.blend and not ground.search(f)                             and ft not in self.local_blend:
+                        self.local_blend[ft] = -50
 
     def _buffer_never_touch(self):
         """Floors Westwood never lets touch (rules/out/floors.json never_touch: a stone floor against a sparse grass):

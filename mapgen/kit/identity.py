@@ -545,6 +545,14 @@ BUILDINGS = {
     "woodcutter": dict(purpose="the woodcutter's hut", style="log_cabin", size=(14, 12),
                        rooms=[("dwelling", "the woodcutter's one room")],
                        scenes=["woodpile", "chopping_block"], garden=0.0, faces="road"),
+    # large houses for the bigger maps (the user: "we are going to ultimately produce much larger maps and a larger
+    # scale than anything in the original game")
+    "manor": dict(purpose="a lord's manor: the great hall, the dining hall and its kitchen, the library and the lord's "
+                          "study, bedrooms and the stores", style="stone_house", size=(72, 56), min_units=760,
+                  rooms=[("hall", "the great hall"), ("dining_hall", "the lord's table"), ("kitchen", "the manor kitchen"),
+                         ("library", "the library"), ("study", "the lord's study"), ("bedroom", "the lord's chamber"),
+                         ("bedroom", "the guest chamber"), ("storeroom", "the stores")],
+                  scenes=["deliveries", "water_barrel"], garden=0.0, faces="square"),
     # the biomes' structures (rules/BIOMES.md, rules/cultures.py): the built parts of Westwood's lava, ice and cave
     # maps in their own building styles, furnished by their culture
     "demon_forge": dict(purpose="a demon forge of black stone above the lava: the forge, the hall where its arms are "

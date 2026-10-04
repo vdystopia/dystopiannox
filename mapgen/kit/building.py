@@ -25,6 +25,7 @@ COURT = "court"
 SIDES = ("u_min", "u_max", "v_min", "v_max")
 SUPPORTED_SHAPES = ("rect", "L", "T", "U", "Z", "courtyard")
 # floors that make no sense as a building's own room floor (stock rooms near water, mines, swamps)
+WORK_ROOMS = {"storeroom", "smithy", "ore_store", "gear_store", "barracks", "kitchen", "ogre_den", "ogre_hall", "ogre_hoard"}
 NOT_ROOM_FLOOR = ("Water", "Grass", "Lava", "Swamp", "Mine", "Black", "Weeds", "Ice",
                   "Rug")   # rugs: Westwood lays them as patches inside rooms (a furnisher's job)
 # door objects that are fence gates or cage doors rather than house doors
@@ -133,7 +134,10 @@ def _split(rng, rect, target, min_side, rooms_out, weights=None):
     n = w if along_i else h
     if len(set(weights)) > 1:
         weights = sorted(weights, reverse=True)
-        k_left = 1                                        # the largest room alone on one side
+        k_left = 1                                        # the largest room alone on one side (an inn's tavern)
+        if target >= 5:                                   # many rooms: two groups of about equal floor, so the rooms
+            half = sum(weights) / 2                       # stay near square (a manor's hall is not a strip across it)
+            k_left = min(range(1, target), key=lambda k: abs(sum(weights[:k]) - half))
     else:
         k_left = max(1, round(target * rng.uniform(0.35, 0.65)))
     k_left = min(k_left, target - 1)
@@ -205,8 +209,8 @@ def _assign_rooms(rng, U, target, weights=None):
     # a building with a room program on a multi-part footprint (T, L, U, Z): its main room (the largest weight) takes
     # the largest wing whole and the other rooms share the other wings, so an inn's tavern is not left the size of its
     # kitchen; only when the other wings hold the other rooms at a fair size (else the floor is shared as below)
-    wings = _wing_labels(rng, parts, target, weights, labels) if weights and len(parts) > 1 and target >= 2 and \
-        max(weights) >= 1.5 * sorted(weights)[-2] else None
+    wings = _wing_labels(rng, parts, target, weights, labels) if weights and len(parts) > 1 and 2 <= target <= 4 and \
+        max(weights) >= 1.5 * sorted(weights)[-2] else None          # a house's main room; a manor shares its wings
     if wings is not None: return wings
     # a part too small to be a room of its own (a T's short stem, an L's stub) joins the room beside it, so that room is
     # L or T shaped as Westwood's are, instead of a closet the checker calls small for its kind
@@ -506,7 +510,10 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     int_mat = _pick(rng, st["interior_wall_materials"], exclude=("Invisible", "IronFence", "Cage", "Damaged"), default=ext_mat)
     if int_mat != ext_mat and rng.random() < 0.7: int_mat = ext_mat
     floors = {k: v for k, v in st["room_floors"].items() if not any(b in k for b in NOT_ROOM_FLOOR)}
-    main_floor = _pick(rng, floors, default="OakWoodFloor")
+    # bare earth floors only a working room (Westwood's stone houses: 2.7% dirt, their barns and stores): a manor's
+    # great hall on packed dirt reads as a barn
+    clean = {k: v for k, v in floors.items() if not k.startswith("Dirt")} or floors
+    main_floor = _pick(rng, clean, default="OakWoodFloor")
 
     # walls: exterior material on points touching the outside or a courtyard, else interior material
     point_mat = {}
@@ -532,7 +539,8 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     rooms = {}
     for k, r in enumerate(room_ids):
         units = [p for p, v in labels.items() if v == r]
-        floor = main_floor if (k == 0 or rng.random() < 0.65) else _pick(rng, floors, default=main_floor)
+        work = program and k < len(program) and program[k] in WORK_ROOMS
+        floor = main_floor if (k == 0 or rng.random() < 0.65) else _pick(rng, floors if work else clean, default=main_floor)
         tiles = set()
         for (i, j) in units:
             t = _xy(U0, V0, (2 * i, 2 * j + 2))
