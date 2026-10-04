@@ -139,6 +139,8 @@ Then, in this order:
 
 - `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.
 - `review/review.py`: comparison sheet and design measurements (paths, vegetation structure, roads crowding water…). Apply `review/RUBRIC.md`, including criterion 8 (identity), and record the review in `review/reviews/`.
+- `review/rooms.py <map> --each`: one numbered close-up per room (building, kind, purpose). Check every room
+  against its purpose, and show the pictures to the playtester for numbered feedback.
 - Playtest in the game; log the findings in `ROADMAP.md`.
 
 Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on

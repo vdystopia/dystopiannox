@@ -290,6 +290,25 @@ class BuildingIdentity:
     occupant: str = ""                        # who lives or works there
 
 
+def rooms_sidecar(placed, path):
+    """Writes <map>.rooms.json next to a built map for review/rooms.py: every room numbered in building order,
+    with its building, kind, purpose (from the building's room program), floor tiles and box (grid cells).
+    placed: [(BuildingIdentity, Building)] as the design placed them."""
+    import json
+    out = []
+    for bid, b in placed:
+        program = list(BUILDINGS.get(bid.role, {}).get("rooms", []))
+        for r in b.rooms:
+            purpose = next((p for kind, p in program if kind == r.kind), "")
+            program = [kp for kp in program if kp != (r.kind, purpose)]
+            xs = [x for x, _ in r.tiles]; ys = [y for _, y in r.tiles]
+            out.append(dict(number=len(out) + 1, building=bid.name or bid.role, kind=r.kind, purpose=purpose,
+                            tiles=len(r.tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3],
+                            floor=sorted([x, y] for x, y in r.tiles)))
+    with open(path, "w", encoding="utf-8") as f: json.dump(out, f, indent=1)
+    return out
+
+
 @dataclass
 class MapIdentity:
     name: str

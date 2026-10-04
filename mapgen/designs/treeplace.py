@@ -15,7 +15,7 @@ Single player (Solo), one PlayerStart, no .nxz.
 import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO
-from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS
+from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS, rooms_sidecar
 from kit.layout import Land, square_tile, square_px, px_square, cell_square, point_cell, bfs_distance, N4, door_frame
 from kit.vegetation import Planter, FORESTS, scatter
 from kit.village import Village, _squares_of
@@ -404,6 +404,7 @@ m.polygon("TreePlace:Forest", tuple(m.d["ambient"]), [(min(x for x, _ in xs) - 4
 if __name__ == "__main__":
     out = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] != "-" else os.path.join(HERE, "..", "out")
     lines = m.build(os.path.abspath(out))
+    rooms_sidecar(placed, os.path.join(os.path.abspath(out), m.d["name"] + ".rooms.json"))   # for review/rooms.py
     print("\n".join(l for l in lines if not l.startswith("XFER")))
     print(ID.describe())
     print(f"land {len(land.squares)} tiles | buildings {len(placed)}/{len(ID.buildings)} | trees {n_trees} | plants {n_small}"
