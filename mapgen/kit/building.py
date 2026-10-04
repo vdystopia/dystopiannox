@@ -200,7 +200,7 @@ def _wing_labels(rng, parts, target, weights, base_labels):
     return labels
 
 
-def _assign_rooms(rng, U, target, weights=None):
+def _assign_rooms(rng, U, target, weights=None, side=None):
     """Label units with room ids: each footprint part gets rooms in proportion to its area."""
     parts = defaultdict(set)
     for p, v in U.items():
@@ -218,10 +218,10 @@ def _assign_rooms(rng, U, target, weights=None):
     stubs = {k for k in parts if len(parts[k]) < least} if len(parts) > 1 else set()
     if len(stubs) == len(parts): stubs = set()
     main = {k: s for k, s in parts.items() if k not in stubs}
-    hub = _hub_labels(rng, next(iter(main.values())), target, weights) if len(main) == 1 and target >= 5 and weights \
-        else None
+    hub = _hub_labels(rng, next(iter(main.values())), target, weights, side) if len(main) == 1 and target >= 5 and \
+        weights else None
     if hub: labels.update(hub)
-    else: _share_parts(rng, main, target, weights, labels)
+    else: _share_parts(rng, main, target, weights, labels, side)
     for k in sorted(stubs, key=str):
         near = Counter(labels[n] for (i, j) in parts[k] for n in ((i + 1, j), (i - 1, j), (i, j + 1), (i, j - 1))
                        if n not in parts[k] and labels.get(n, COURT) != COURT)
@@ -230,16 +230,17 @@ def _assign_rooms(rng, U, target, weights=None):
     return labels
 
 
-def _hub_labels(rng, units, target, weights):
+def _hub_labels(rng, units, target, weights, side=None):
     """A great hall down the middle of a large building with the other rooms in a row along each side, each reaching
     from the outer wall to the hall and opening onto it (the doors' spanning tree runs breadth first from the hall).
     Westwood's multi-room buildings give their largest room half or more of the floor (rules/out/buildings.json
     hall_share, medians 0.5-0.8) and reach the other rooms through it; few have corridors (0-22% by style). The hall
     is about a third of the building's width; the side rooms take the program's other weights, the larger ones
-    alternating between the sides. Returns {unit: label} (the hall 0) or None when the part is too small."""
+    alternating between the sides. The hall runs toward the entrance `side` (u_min ... v_max) so the door opens
+    into it, else along the longer side. Returns {unit: label} (the hall 0) or None when the part is too small."""
     i0, i1, j0, j1 = _rects_of_part(units)
     W, H = i1 - i0, j1 - j0
-    along_i = W >= H                                  # the hall runs along the longer side
+    along_i = side in ("u_min", "u_max") if side else W >= H
     L, S = (W, H) if along_i else (H, W)
     hb = max(3, round(S * 0.34))
     side = S - hb
@@ -273,7 +274,7 @@ def _hub_labels(rng, units, target, weights):
     return out
 
 
-def _share_parts(rng, parts, target, weights, labels):
+def _share_parts(rng, parts, target, weights, labels, side=None):
     """Label the parts' units with rooms 0..target-1: each part gets rooms in proportion to its area."""
     total = sum(len(s) for s in parts.values())
     rid = 0
@@ -292,6 +293,11 @@ def _share_parts(rng, parts, target, weights, labels):
     while sum(alloc.values()) > target:
         k = max(keys, key=lambda k: alloc[k]); alloc[k] -= 1
     for k, s in sorted(parts.items(), key=lambda kv: str(kv[0])):
+        hub = _hub_labels(rng, s, alloc[k], [1.0] * alloc[k], side) if alloc[k] >= 5 and weights else None
+        if hub:                                   # a wing holding many rooms: its own hall with rooms along it
+            for p, lab in hub.items(): labels[p] = rid + lab
+            rid += alloc[k]
+            continue
         rects = []
         r = _rects_of_part(s)
         min_side = 4 if min(r[1] - r[0], r[3] - r[2]) >= 8 else 3
@@ -493,7 +499,8 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
             # small Westwood houses split ~60 units into 2-3 rooms (stucco: 47% two-room at 9x7);
             # the "10" bucket is large complexes, so cap by area
             n_rooms = max(1, min(n_rooms, area // 22))
-        labels = _assign_rooms(rng, U, n_rooms, [float(_kind_tiles(k, 'p50')) for k in program] if program else None)
+        labels = _assign_rooms(rng, U, n_rooms, [float(_kind_tiles(k, 'p50')) for k in program] if program else None,
+                               entrance_side)
         if program and len({v for v in labels.values() if v != COURT}) != len(program):
             continue                     # footprint too small to hold the requested rooms: try again
         if program and entrance_side:
