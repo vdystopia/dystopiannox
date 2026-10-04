@@ -1121,15 +1121,18 @@ class Furnisher:
         spots = self.middle_spots(hu, hv)
         return spots[0] if spots else None
 
-    def place_center(self, fam):
+    def place_center(self, fam, small=False):
         """One piece standing free in the room, at the best open spot where it may stand (the next best when
         a rug or the room's density rules out the first). Tables come from the building's palette when the room
-        allows them."""
+        allows them; `small`: the smallest type the room allows (a table its seats fit round in a small room)."""
         types = self.types_of(fam)
         if fam == "table":
             own = {t: w for t, w in types.items() if re.match(self.palette["table"], t)}
             types = own or types
-        t = _pick(self.rng, types)
+        if small and types:
+            t = min(types, key=lambda k: (self.footprint(k), k))
+        else:
+            t = _pick(self.rng, types)
         if not t: return None
         hu, hv = self.half(t)
         pad = 1.4 if fam in ("table", "desk") else 0.0   # room around a table for its seats
@@ -2126,9 +2129,19 @@ class Furnisher:
                     o, uv = res
                     if st.get("seats"):                   # a table always has its seats, or it goes
                         want = max(2, plan.get("chair", 0) // max(1, n))
-                        if self.seats_around(uv, o["type"], min(4, want), "chair") < 2 and \
-                                self.seats_around(uv, o["type"], 2, "chair") < 2:
-                            self._remove(o); break
+                        n0 = len(self.objects)
+                        seated = self.seats_around(uv, o["type"], min(4, want), "chair") >= 2 or \
+                            self.seats_around(uv, o["type"], 2, "chair") >= 2
+                        if not seated:                    # no seats round it: the smallest table the room allows
+                            for x in self.objects[n0:]: self._remove(x)       # with the odd chair that did fit
+                            self._remove(o)
+                            res = self.place_center(fam, small=True)
+                            if not res: break
+                            o, uv = res
+                            n0 = len(self.objects)
+                            if self.seats_around(uv, o["type"], 2, "chair") < 2:
+                                for x in self.objects[n0:]: self._remove(x)
+                                self._remove(o); break
                         self._seated.add((uv, o["type"]))
                         if st.get("rug"): self.rug_under(o, uv)
                     done[fam] += 1

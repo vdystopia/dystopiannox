@@ -97,7 +97,7 @@ ROOMS = {
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.6),
                                  dict(fam="bench", slot="wall", at="center", clear=0),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="table", slot="group", group="dining", max=1, min_area=200), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=120), dict(fam="shelves", slot="line", other=True, decor=2, max=10, min_area=120), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="statue", slot="group", group="statues", max=1, min_area=240), dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
+                        fill=[dict(fam="table", slot="group", group="dining", max=1, min_area=200), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=70), dict(fam="shelves", slot="line", other=True, decor=2, max=10, min_area=80), dict(fam="table", slot="group", group="sitting", max=1, min_area=60), dict(fam="statue", slot="group", group="statues", max=1, min_area=240), dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                               dict(fam="bench", slot="wall", at="center", clear=0, max=1),
                               dict(fam="shelves", slot="line", n=3, max=3)]),
     "kitchen": dict(purpose="where food is cooked and kept: the hearth on a back wall with the cooking cauldron a step "
@@ -268,7 +268,7 @@ ROOMS = {
                             dict(fam="anvil", slot="before", of="forge", gap=2.4),
                             dict(fam="shop_rack", slot="line", other=True),
                             dict(fam="storage", slot="stock", coverage=0.5, kinds=("barrels", "crates", "tools"), pad=1.2)],
-                   fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=10, min_area=150),
+                   fill=[dict(fam="shop_rack", slot="line", other=True, max=8), dict(fam="shop_rack", slot="line", max=6), dict(fam="shop_rack", slot="racks", kind="gear", max=10, min_area=150),
                          dict(fam="table", slot="group", group="worktable", max=1, min_area=120),
                          dict(fam="storage", slot="stock", coverage=0.8, kinds=("barrels", "crates", "tools"), pad=1.0, max=6),
                          dict(fam="storage", slot="stack", n=3, once=True)]),
