@@ -74,7 +74,7 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   - townsfolk wandering between spots;
   - villagers who run for their doorstep when a wolf comes into town, then go back to their rounds (new, used by
     the town lab).
-- **NpcLab** is the test map with all of these.
+- **NpcLab** is the test map with the first six; the town lab has the villagers.
 - The culture buildings use them:
   - the ogre warlord, the skeleton lord and the demon are sentries;
   - grunts, ghosts and ember demons patrol through the rooms;
