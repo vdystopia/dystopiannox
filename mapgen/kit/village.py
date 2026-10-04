@@ -82,9 +82,17 @@ class Village:
         o = max(outs, key=lambda s: (d[0] + s[0] - ci) ** 2 + (d[1] + s[1] - cj) ** 2)
         return d, o, (o[1], o[0])
 
-    def scene(self, building, name):
+    # what a business's sign reads, by building role: keys of the game's text file (nox.csf) that fit any town
+    SIGN_TEXT = {"inn": "War03b:TavernSign",          # "Tavern"
+                 "store": "War02a.scr:Sign3",         # "General Store"
+                 "smithy": "War02a.scr:Sign1",        # "Blacksmith Shop"
+                 "foreman": "Con03C.scr:Sign3",       # "Foreman"
+                 "bunkhouse": "Con03C.scr:Sign2"}     # "Miner's Lodge"
+
+    def scene(self, building, name, role=None):
         """An outdoor prop group with a reason (kit/identity.py SCENES), placed where it belongs:
-        beside the door, against a side wall away from the entrance, or in front of the entrance."""
+        beside the door, against a side wall away from the entrance, or in front of the entrance. A sign reads what
+        the building is (SIGN_TEXT, by its `role`)."""
         sc, L, rng = SCENES[name], self.land, self.rng
         ent = self._entrance(building)
         if not ent: return False
@@ -95,7 +103,12 @@ class Village:
         def free(s):
             if not (s in L.squares and s not in L.roads and s not in L.plaza and s not in L.water and
                     s not in self.used and s not in foot and s not in L.taken_strict): return False
-            if any(abs(s[0] - d[0]) <= 3 and abs(s[1] - d[1]) <= 3 for d in doors): return False   # never at a door
+            # never in a doorway: the lane in front of the entrance (a square either side of it, four out) stays
+            # clear, and a square round every other door; beside the door is where a sign or a barrel stands (a
+            # three-square box round each door had ruled out every spot beside one: no sign was ever placed)
+            a_, o_ = (s[0] - di) * pi + (s[1] - dj) * pj, (s[0] - di) * oi + (s[1] - dj) * oj
+            if abs(a_) <= 1 and -1 <= o_ <= 4: return False
+            if any(abs(s[0] - d[0]) <= 1 and abs(s[1] - d[1]) <= 1 for d in doors): return False
             x, y = square_tile(*s)
             return not any((x + a, y + b) in self.spec.wallmap for a in (-1, 0, 1, 2) for b in (-1, 0, 1, 2))
         # one square of clearance from the wall: props stand beside it, never in it
@@ -122,7 +135,9 @@ class Village:
             si = s0[0] + 0.5 + along[0] * 0.55 * k + rng.uniform(-0.1, 0.1)
             sj = s0[1] - 0.5 + along[1] * 0.55 * k + rng.uniform(-0.1, 0.1)
             if k and not free((int(si), int(sj) + 1)) and (int(si), int(sj) + 1) not in self.used: break
-            self.spec.obj_px(rng.choice(names), *square_px(si, sj))
+            t = rng.choice(names)
+            text = self.SIGN_TEXT.get(role) if name == "sign" else None
+            self.spec.obj_px(t, *square_px(si, sj), **({"xfer": {"Text": text}} if text else {}))
             self.used.add((int(si), int(sj) + 1))
         self.used.add(s0); L.taken.add(s0)
         return True

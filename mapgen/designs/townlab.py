@@ -122,7 +122,7 @@ land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
 vil = Village(m, rng, land)
 for bid, b in placed:
     role = BUILDINGS[bid.role]
-    for sc in role["scenes"]: vil.scene(b, sc)
+    for sc in role["scenes"]: vil.scene(b, sc, role=bid.role)
     if rng.random() < role["garden"]: vil.garden(b, size=(rng.randint(3, 5), rng.randint(2, 4)))
 vil.fountain_square(vc, 7)                         # the paving's radius: 14 uv, 7 squares
 land.ground_variety(m, clear=3)
