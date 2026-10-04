@@ -81,7 +81,7 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   - skeletons lie in ambush in the crypt;
   - imps flee when hit.
 - The server's self-check finds every scripted creature and waypoint in every map: Darkdelve 46 of 46, Frostfang
-  74 of 74, Emberdeep 5 of 5, NpcLab 25 of 25, TownLab 39 of 39.
+  84 of 84, Emberdeep 5 of 5, NpcLab 25 of 25, TownLab 39 of 39.
 
 ## Task 6: a fireball staff that shoots a harpoon
 
