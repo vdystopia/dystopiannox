@@ -8,7 +8,7 @@ The rooms are declared (TownLab.rooms.json) so review/roomscore.py scores them, 
 
     py mapgen/designs/townlab.py [scale] [seed]          scale 1.0 = the kit's house scale (1.25 Westwood's)
 """
-import json, os, random, sys
+import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO
 from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS, role_size, rooms_sidecar
@@ -17,8 +17,9 @@ from kit.vegetation import Planter, FORESTS
 from kit.village import Village, _squares_of
 from kit.building import generate_building
 from kit.originality import furnish_original
+from kit.npcs import Population
 
-SCALE = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
+SCALE = float(sys.argv[1]) if len(sys.argv) > 1 and sys.argv[1] != "-" else 1.0      # "-": plan only (the smoke test)
 SEED = int(sys.argv[2]) if len(sys.argv) > 2 else 3
 rng = random.Random(SEED)
 FOREST = "deciduous"
@@ -136,6 +137,24 @@ vil.ground_bits(1.5)
 planter = Planter(m, rng, land, FOREST, keep_clear=keep)
 n_trees, n_small = planter.plant_all(groves=3)
 m.obj_px("PlayerStart", *square_px(gate[0], gate[1]))
+
+# ---- 5. townsfolk: walking between the square and the doorsteps, lingering, turning to look at a passer-by --------
+# (Westwood's towns hold 8-26 villagers each; kit/behaviours Townsfolk)
+pop = Population(m, rng)
+B = pop.behaviours
+ring = [square_px(vc[0] + 6.5 * math.cos(a), vc[1] - 0.5 + 6.5 * math.sin(a)) for a in (k * math.pi / 4 for k in range(8))]
+square_wps = pop.waypoint_path("Square", ring)
+door_wps = []
+for bid, b in placed:
+    for d in b.entrances[:1]:
+        o_ = land.door_outside(d, _squares_of(b.footprint))
+        if o_: door_wps += pop.waypoint_path(f"Door{len(door_wps) + 1}", [square_px(o_[0] + 0.5, o_[1] - 0.5)])
+for k in range(max(6, len(placed))):
+    name = f"Folk{k + 1}"
+    x, y = ring[k % len(ring)]
+    pop.creature("Maiden", x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), scr=name, aggr=0.0)
+    B.townsfolk(name, rng.sample(square_wps, 3) + rng.sample(door_wps, min(2, len(door_wps))), linger=5.0)
+m.scripts.update(B.files(m.d["name"]))
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
