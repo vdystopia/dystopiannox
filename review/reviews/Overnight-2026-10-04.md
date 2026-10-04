@@ -93,10 +93,11 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 
 ## Known weak spots (worth a look when you review)
 
-- Frostfang's temple library is a little sparse.
 - The dark chapel's colonnade of glowing obelisks is dense; you may like it or not.
-- About half the building-lab buildings still miss the bar on details: a back wall 31% lined against 35%, coverage a
-  point under target.
+- About a third of the building-lab buildings still miss the bar on details: a back wall 31% lined against 35%,
+  coverage a point under target. Odd-shaped smithies with short back walls are the most frequent case.
+- The town lab carries a little more decoration than Westwood's busiest town (24 per 100 tiles against 23.7), and
+  fewer wall pieces: it has no fences or hedges yet.
 
 ## What I would do next, with your go-ahead
 
