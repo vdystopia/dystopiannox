@@ -339,9 +339,16 @@ class Dresser:
     # ---- built parts: Westwood's biome maps hold buildings in their own styles (rules/BIOMES.md: dungeon stone in the
     # caves, the Land of the Dead's ornate walls in the ice, Dun Mir's black halls by the lava), furnished by their
     # culture (rules/cultures.py)
-    GARRISON = {"ogre_keep": {"OgreWarlord": 1, "OgreBrute": 2, "GruntAxe": 2},
-                "ice_temple": {"SkeletonLord": 1, "Skeleton": 2, "Ghost": 2},
-                "demon_forge": {"MeleeDemon": 1, "EmberDemon": 2, "Imp": 2}}
+    # Each structure's keepers and how they behave (kit/behaviours): (type, count, room kind, behaviour). A sentry
+    # faces the way in and rouses the others when it sees an intruder; patrollers walk a loop of waypoints through the
+    # rooms and their doorways; ambushers stand still until the player comes near, then all spring at once; skittish
+    # ones flee when hit; guards stand their ground (Westwood: 38% of its hostiles guard, rules/NPCS.md).
+    GARRISON = {"ogre_keep": [("OgreWarlord", 1, "ogre_hall", "sentry"), ("OgreBrute", 2, "ogre_den", "guard"),
+                              ("GruntAxe", 2, None, "patrol")],
+                "ice_temple": [("SkeletonLord", 1, "dark_chapel", "sentry"), ("Skeleton", 3, "dark_crypt", "ambush"),
+                               ("Ghost", 2, None, "patrol")],
+                "demon_forge": [("MeleeDemon", 1, "smithy", "sentry"), ("EmberDemon", 2, None, "patrol"),
+                                ("Imp", 2, "storeroom", "skittish")]}
 
     def structure(self, role, area, toward=None, scale=1.25, shrink=(1.0, 0.92, 0.84, 0.76), name=""):
         """A building of kit/identity.py BUILDINGS[role] (the demon forge, the ice temple, the ogre keep) centred in
@@ -386,34 +393,73 @@ class Dresser:
                 out.append((role, room.kind, len(objs)))
         return out
 
+    def _room_spots(self, room):
+        """Free standing spots in a room (world pixels): off the walls and clear of the furniture."""
+        objs = self.spec.d["objects"]
+        out = []
+        for (x, y) in sorted(room.tiles):
+            px_, py_ = (x + 1) * 23, (y + 1) * 23
+            if any((int(px_ // 23) + a, int(py_ // 23) + c) in self.spec.wallmap for a in (-1, 0, 1) for c in (-1, 0, 1)):
+                continue
+            if any(abs(o["x"] - px_) < 30 and abs(o["y"] - py_) < 30 for o in objs): continue
+            out.append((px_, py_))
+        return out
+
+    def _route(self, b):
+        """A loop through a building's rooms: each room's free spot nearest its middle, and the doorway into the next
+        room when they share one (world pixels)."""
+        pts = []
+        rooms = list(b.rooms)
+        for k, room in enumerate(rooms):
+            spots = self._room_spots(room)
+            if spots:
+                mx = sum(x for x, _ in spots) / len(spots); my = sum(y for _, y in spots) / len(spots)
+                pts.append(min(spots, key=lambda p: (p[0] - mx) ** 2 + (p[1] - my) ** 2))
+            nxt = rooms[(k + 1) % len(rooms)]
+            door = next((d for d in room.doors if nxt.id in d.connects), None)
+            if door and len(rooms) > 1: pts.append(((door.gap[0] + 0.5) * 23, (door.gap[1] + 0.5) * 23))
+        return pts
+
     def garrison(self, pop=None):
-        """The structures' keepers (GARRISON): on guard in their rooms, facing the way in, clear of the furniture and
-        the walls. Returns the creatures placed."""
+        """The structures' keepers (GARRISON) in their rooms, with their behaviours. Returns the creatures placed."""
         from kit.npcs import Population
         pop = pop or getattr(self, "population", None) or Population(self.spec, self.rng)
         self.population = pop
+        B = pop.behaviours
         placed = 0
         for role, area, b, name in self.structures:
-            want = [t for t, n in self.GARRISON.get(role, {}).items() for _ in range(n)]
             door = b.entrances[0].gap if b.entrances else None
-            spots = []
-            for room in b.rooms:
-                for (x, y) in sorted(room.tiles):
-                    px_, py_ = (x + 1) * 23, (y + 1) * 23
-                    if any((int(px_ // 23) + a, int(py_ // 23) + c) in self.spec.wallmap for a in (-1, 0, 1) for c in (-1, 0, 1)):
-                        continue
-                    if any(abs(o["x"] - px_) < 30 and abs(o["y"] - py_) < 30 for o in self.spec.d["objects"]):
-                        continue
-                    spots.append((px_, py_))
-            self.rng.shuffle(spots)
-            used = []
-            for t in want:
-                spot = next((p for p in spots if all(abs(p[0] - q[0]) + abs(p[1] - q[1]) > 70 for q in used)), None)
-                if spot is None: break
-                used.append(spot)
-                face = ((door[0] + 0.5) * 23, (door[1] + 0.5) * 23) if door else None
-                pop.creature(t, *spot, action="guard", face=face)
-                placed += 1
+            face = ((door[0] + 0.5) * 23, (door[1] + 0.5) * 23) if door else None
+            used, sentries, others = [], [], []
+            route = None
+            for t, n, kind, how in self.GARRISON.get(role, []):
+                rooms = [r for r in b.rooms if kind is None or r.kind == kind] or list(b.rooms)
+                spots = [p for r in rooms for p in self._room_spots(r)]
+                self.rng.shuffle(spots)
+                group = []
+                for _ in range(n):
+                    spot = next((p for p in spots if all(abs(p[0] - q[0]) + abs(p[1] - q[1]) > 60 for q in used)), None)
+                    if spot is None: break
+                    used.append(spot)
+                    scr = pop.name(t)
+                    if how == "patrol" and route is None:     # one loop through the rooms for the patrollers
+                        pts = self._route(b)
+                        route = pop.waypoint_path(pop.name(f"{t}Route"), pts) if len(pts) >= 2 else []
+                    pop.creature(t, *spot, action="idle" if how in ("patrol", "ambush", "skittish") else "guard",
+                                 face=face, scr=scr)
+                    group.append(scr)
+                    placed += 1
+                if how == "sentry": sentries += group
+                else: others += group
+                if how == "patrol" and route:
+                    for g in group: B.patrol(g, route, pause=2.0, loop=True)
+                elif how == "ambush" and group:
+                    ax = sum(p[0] for p in used[-len(group):]) / len(group); ay = sum(p[1] for p in used[-len(group):]) / len(group)
+                    B.ambush(group, (ax, ay), reach=150.0)
+                elif how == "skittish":
+                    for g in group: B.skittish(g, 3.0)
+            for snt in sentries:
+                B.sentry(snt, face or (0, 0), rouse=[o for o in others], shout="Intruders!")
         return placed
 
     def declare_rooms(self, path):

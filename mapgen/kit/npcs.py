@@ -106,12 +106,14 @@ class Behaviours:
 
     def __init__(self):
         self.calls = []
+        self.shouts = set()          # what sentries call out: text, not names
 
     @staticmethod
     def _s(names):
         return "[]string{" + ", ".join(json.dumps(n) for n in names) + "}"
 
     def sentry(self, name, face, rouse=(), shout="Intruder!"):
+        self.shouts.add(shout)
         self.calls.append(f'Sentry({json.dumps(name)}, {face[0]:.1f}, {face[1]:.1f}, {self._s(rouse)}, {json.dumps(shout)})')
 
     def patrol(self, name, route, pause=2.0, loop=True):
@@ -141,7 +143,7 @@ class Behaviours:
         for c in self.calls:
             for q in re.findall(r'"([^"]+)"', c):
                 (wps if re.search(r"_\d+$", q) else objs).add(q)
-        return sorted(objs - {"Intruder!"}), sorted(wps)
+        return sorted(objs - self.shouts), sorted(wps)
 
     def files(self, map_name):
         """{filename: Go source} for the map's folder, package named after the map (as OpenNox expects)."""

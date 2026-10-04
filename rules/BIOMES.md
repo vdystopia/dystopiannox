@@ -114,7 +114,7 @@ land.carve(); outcrops = land.thickets(...)     # islands break up big open grou
 land.apply(spec, wall=d.wall, floor=d.base); d.cap_islands(outcrops)
 d.ground(); d.paint_pools()                     # patches of the other floors, then the liquid's tiles
 d.clusters(types, squares, n, ...)              # landmarks and scenes: crystal formations, crate stacks, bone heaps
-d.furnish_structures(); d.garrison()            # the building's rooms in its culture, its keepers on guard
+d.furnish_structures(); d.garrison()            # the building's rooms in its culture; its keepers' behaviours
 d.dress_liquid(); d.vegetate(); d.scatter_open(); d.rim(); d.lights(); d.creatures()
 d.declare_rooms(path)                           # <map>.rooms.json for the room review and scores
 ```
@@ -125,13 +125,16 @@ Westwood's biome maps hold buildings in their own styles (rules/out/buildings.js
 their rooms are furnished):
 - **Caves:** dungeon stone (DungeonStone walls 0.12 of the caves' walls, GreenBrick floors 0.19 of their floors), Dun
   Mir's cathedral walls, mine walls. The kit's structure: the ogres' keep (`dungeon_block`), its feasting hall, straw
-  beds and hoard furnished as Westwood's ogre lairs, an ogre warlord, brutes and grunts on guard.
+  beds and hoard furnished as Westwood's ogre lairs; the ogre warlord a sentry who rouses the rest, brutes on
+  guard in the den, grunts patrolling a loop through the rooms.
 - **Ice:** the Land of the Dead's temples (LOTDOrnate walls 0.19 of the ice maps' walls; LOTDTempleFacade, LOTDPitted
   and LOTDDark floors; the style's outside floor is blue ice, 0.39). The kit's structure: the dark temple
-  (`lotd_ornate`), its lich god's chapel, crypt and library, a skeleton lord, skeletons and ghosts on guard.
+  (`lotd_ornate`), its lich god's chapel, crypt and library; the skeleton lord a sentry, skeletons lying in
+  ambush in the crypt until the player comes near, ghosts patrolling the rooms.
 - **Lava:** halls and town walls (GalavaTownWall 0.12, DunMirCathedral 0.06; GreenBrick, LOTDBlackMarble, GalavaBrick2
   and DunMirBrick1 floors; the `dunmir_hall` style's outside floors include VolcanicCraggy, 0.10). The kit's
-  structure: the demon forge (`dunmir_hall`), its forge, hall of arms and store, demons and imps on guard.
+  structure: the demon forge (`dunmir_hall`), its forge, hall of arms and store; a demon sentry, ember demons
+  patrolling, imps that flee when hit.
 
 Lessons from the first three maps:
 - **Group everything.** Props spread evenly over an area read as a grid; group them (`clusters`). Crystals form formations around a tall one; crates stack in threes to fives; mushrooms grow in patches.
