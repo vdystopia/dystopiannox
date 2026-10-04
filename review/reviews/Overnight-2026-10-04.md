@@ -13,7 +13,8 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
    behaviour. Open them the same way you opened TreePlace.
 3. **The numbered room pictures** I sent: three per biome map (`review/out/<map>/rooms/01.png` to `03.png`).
 4. **TreePlace v0.4** is still the installed version and still waits for your numbered room review. I did not change
-   the installed map. The design in the repository has kept improving: all 11 of its rooms now pass the room score.
+   the installed map. The design in the repository has kept improving: all 11 of its rooms now pass the room score,
+   and its doors get their signs and barrels. Your review notes will go into v0.5 with these.
 
 ## Task 1: generate and evaluate rooms and structures
 
@@ -51,7 +52,9 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   - beds without nightstands;
   - halls without hearths;
   - dirt floors in a manor;
-  - hard floor seams at doorways.
+  - hard floor seams at doorways;
+  - props meant to stand beside a door (signs, water barrels, goods on display) were never placed in any map,
+    TreePlace included. Signs now read what the building is ("Tavern", "General Store").
 
 ## Task 2: maps of different styles and what sets them apart
 
