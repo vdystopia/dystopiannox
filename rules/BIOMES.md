@@ -9,7 +9,7 @@ This file says what sets Westwood's cave, ice and lava maps apart, and how the k
 
 **Building.**
 - `mapgen/kit/biome.py` holds the palettes and the Dresser.
-- `mapgen/designs/gloomdelve.py` (cave), `frostfang.py` (ice) and `emberdeep.py` (lava) are the first maps.
+- `mapgen/designs/darkdelve.py` (cave), `frostfang.py` (ice) and `emberdeep.py` (lava) are the first maps.
 
 ## What all three share, and what sets them apart from the green world
 

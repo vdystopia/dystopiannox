@@ -106,6 +106,7 @@ d.scatter_open()
 d.rim()
 n_lights = d.lights()
 n_mon = d.creatures(avoid=[start], groups=(2, 4))
+m.scripts.update(d.population.behaviours.files(m.d['name']))     # packs and skittish creatures (kit/behaviours)
 x, y = square_px(start[0] + 0.5, start[1] - 0.5)
 m.obj_px("PlayerStart", x, y)
 

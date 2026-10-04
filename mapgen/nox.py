@@ -106,8 +106,9 @@ def rect_wall_cells(u0, u1, v0, v1):
 
 class Spec:
     def __init__(self, name, **info):
-        # Westwood kept map names to 8 characters; OpenNox loads longer ones (TreePlace was verified)
-        assert len(name) <= 15, "map names are limited to 15 characters here"
+        # Westwood kept map names to 8 characters. OpenNox loads 9 (TreePlace), but its map list cuts a 10-character
+        # name to 8 and then cannot find the map (Gloomdelve, 2026-10-03): 9 at most
+        assert len(name) <= 9, "map names are limited to 9 characters (OpenNox's map list cuts longer ones)"
         self.d = dict(name=name, info=info, ambient=[150, 150, 150], walls=[], tiles=[], objects=[],
                       waypoints=[], polygons=[])
         self.wallmap = {}     # (x, y) -> dict(material, variation, window, facing or None)
@@ -118,6 +119,7 @@ class Spec:
         self.local_from = {}   # (x, y) -> the only materials whose edge may spill onto that tile (a carpet's trim)
                                # (a doorway: the path outside spills onto the threshold tile)
         self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
+        self.scripts = {}       # filename -> Go source: the map's script (OpenNox runs the .go files in maps/<Name>/)
         self.rng = random.Random(1)
 
     # ---- walls -------------------------------------------------------------------------
@@ -308,6 +310,12 @@ class Spec:
         lines = (res.stdout + res.stderr).strip().splitlines()
         if res.returncode or not any(l.startswith("OK") for l in lines):
             sys.exit("map build failed:\n" + "\n".join(lines))
+        if self.scripts:                        # beside the map: install copies them into maps/<Name>/ with it
+            sd = os.path.join(out_dir, self.d["name"] + "_scripts")
+            os.makedirs(sd, exist_ok=True)
+            for fn, src in self.scripts.items():
+                with open(os.path.join(sd, fn), "w", encoding="utf-8", newline="\n") as f: f.write(src)
+            lines.append(f"SCRIPTS\t{sd}\t{len(self.scripts)} file(s)")
         if check:
             chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
                                   os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)

@@ -329,23 +329,45 @@ class Dresser:
             self._place(self.b["sources"].get(name, {}), [s for s in squares if s not in self.taken], scale, min_gap=5.0, jitter=0.2)
         return len(placed)
 
-    def creatures(self, scale=1.0, avoid=(), groups=(1, 3)):
-        """The biome's creatures in small groups across the open floor, away from `avoid` squares (the arrival)."""
-        opn, _ = self._contexts()
-        sq = [s for s in opn if s not in self.taken and all(math.hypot(s[0] - a[0], s[1] - a[1]) > 14 for a in avoid)]
+    PACKS = {"BlackWolf": "Wolf", "WhiteWolf": "Wolf", "Wolf": "Wolf"}      # pack animals: a leader and its pack
+    SKITTISH = {"Bat", "Rat"}
+
+    def creatures(self, scale=1.0, avoid=(), groups=None, pop=None, min_start=20):
+        """The biome's creatures as Westwood places them (rules/NPCS.md): most alone (a few in twos and threes), about 2
+        squares from a wall, at least `min_start` squares from the arrival (`avoid`); 62% idle and 38% on guard,
+        Westwood's sight range for each type, aggressiveness 0.5. With `pop` (kit/npcs.Population) wolves run as a
+        scripted pack and bats and rats are skittish (kit/behaviours). Returns the creatures placed."""
+        from kit.npcs import Population
+        pop = pop or Population(self.spec, self.rng)
+        edge = self.land.edge_distance()
+        sq = [s for s, dd in edge.items() if 1 <= dd <= 3 and s not in self.taken and s not in self.land.taken
+              and all(math.hypot(s[0] - a[0], s[1] - a[1]) >= min_start for a in avoid)]
         self.rng.shuffle(sq)
         n = int(round(len(self.land.squares) * self.b["creatures_per100"] * scale / 100))
         names = list(self.b["creatures"]); w = [self.b["creatures"][t] for t in names]
         placed, centres = 0, []
         for s in sq:
             if placed >= n: break
-            if any(math.hypot(s[0] - x, s[1] - y) < 9 for x, y in centres): continue
+            if any(math.hypot(s[0] - x, s[1] - y) < 8 for x, y in centres): continue
             t = self.rng.choices(names, w)[0]
-            k = self.rng.randint(*groups)
+            if t in self.PACKS: k = self.rng.randint(3, 5)
+            elif t in self.SKITTISH: k = self.rng.randint(1, 3)
+            else: k = self.rng.choices((1, 2, 3), (0.75, 0.17, 0.08))[0]
+            action = "guard" if self.rng.random() < 0.38 else "idle"
+            members = []
             for q in range(k):
-                si, sj = s[0] + 0.5 + self.rng.uniform(-1.2, 1.2), s[1] - 0.5 + self.rng.uniform(-1.2, 1.2)
+                si, sj = s[0] + 0.5 + (self.rng.uniform(-1.2, 1.2) if q else 0), s[1] - 0.5 + (self.rng.uniform(-1.2, 1.2) if q else 0)
                 if (int(math.floor(si)), int(math.floor(sj)) + 1) not in self.land.squares: continue
-                self.spec.obj_px(t, *square_px(si, sj))
+                x, y = square_px(si, sj)
+                if any((int(x // 23) + a, int(y // 23) + b) in self.spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+                tt = t if (q == 0 or t not in self.PACKS) else self.PACKS[t]
+                scr = pop.name(tt) if (t in self.PACKS or t in self.SKITTISH) else None
+                pop.creature(tt, x, y, action=action, scr=scr)
+                if scr: members.append(scr)
                 placed += 1
+            if t in self.PACKS and len(members) >= 2: pop.behaviours.pack(members[0], members[1:])
+            if t in self.SKITTISH:
+                for nme in members: pop.behaviours.skittish(nme, 3.0)
             centres.append(s)
+        self.population = pop
         return placed

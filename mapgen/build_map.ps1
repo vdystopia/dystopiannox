@@ -127,6 +127,11 @@ foreach ($o in $s.objects) {
         $obj.Team = [byte]$o.team
         $obj.Terminator = 0xFF
     }
+    if ($o.scr) {
+        # The script name (map scripts find the object by it) is written with the extended fields too.
+        $obj.Scr_Name = [string]$o.scr
+        $obj.Terminator = 0xFF
+    }
     # Same defaults the editor applies when placing equipment (XferGui\EquipmentEdit.SetDefaultData);
     # weapons with zero durability can crash the game.
     $thing = $things[$o.type]
@@ -138,6 +143,11 @@ foreach ($o in $s.objects) {
         $errors.Add("armor '$($o.type)' needs the editor's per-item durability table; not supported yet")
     } elseif ($thing.Xfer -eq 'DoorXfer') {
         $x.Direction = [NoxShared.ObjDataXfer.DoorXfer+DOORS_DIR][int]$o.door
+    } elseif ($thing.Xfer -eq 'MonsterXfer') {
+        # The editor's defaults for a placed creature (MonsterXfer.InitForMonsterName): its health from monster.bin,
+        # aggressiveness 0.83 when hostile, its retreat and resume ratios. Without them a creature has 1 health and
+        # no aggression. The spec's xfer (below) then sets its behaviour.
+        $x.InitForMonsterName($o.type)
     }
     Set-XferFields $obj $o.xfer
     [void]$map.Objects.Add($obj)

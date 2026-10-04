@@ -14,7 +14,8 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
 | TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 35-37 of 42 rooms pass over 3 seeds | `mapgen/designs/roomlab.py` |
-| Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.1 maps installed: Gloomdelve (cave), Frostfang (ice), Emberdeep (lava) | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
+| Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.1 maps installed: Darkdelve (cave), Frostfang (ice), Emberdeep (lava) | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
+| NPCs: Westwood's placement and movement measured; behaviour sets scripted in Go for OpenNox | NpcLab test map installed; Darkdelve's bats skittish, Frostfang's wolves in packs | `rules/NPCS.md`, `mapgen/kit/npcs.py`, `mapgen/kit/behaviours/` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
