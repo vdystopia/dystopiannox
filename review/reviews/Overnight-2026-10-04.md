@@ -6,12 +6,13 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 
 ## What to look at first
 
-1. **Three biome maps, version 0.2**, installed in `C:\GOG Games\Nox\maps\` and loaded without errors in the OpenNox
+1. **The town lab overview** I sent (`review/out/TownLab/overview.png` and `centre.png`): the bigger-scale village.
+2. **Three biome maps, version 0.2**, installed in `C:\GOG Games\Nox\maps\` and loaded without errors in the OpenNox
    server: **Darkdelve** (cave), **Frostfang** (ice) and **Emberdeep** (lava). Each now has a building in its own
    culture's style, furnished the way Westwood furnishes that culture, and guarded by creatures with scripted
    behaviour. Open them the same way you opened TreePlace.
-2. **The numbered room pictures** I sent: three per biome map (`review/out/<map>/rooms/01.png` to `03.png`).
-3. **TreePlace v0.4** is still the installed version and still waits for your numbered room review. I did not change
+3. **The numbered room pictures** I sent: three per biome map (`review/out/<map>/rooms/01.png` to `03.png`).
+4. **TreePlace v0.4** is still the installed version and still waits for your numbered room review. I did not change
    the installed map. The design in the repository has kept improving: all 11 of its rooms now pass the room score.
 
 ## Task 1: generate and evaluate rooms and structures
@@ -26,9 +27,11 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   the floor and reach the other rooms through it (few have corridors), so large buildings now use a **hub plan**: a
   great hall down the middle with the other rooms along both sides, every door opening onto the hall. The great hall
   has hearths, long tables with benches, statues and trophies, with the doorways kept clear.
-- **Town lab** (`mapgen/designs/townlab.py`): the whole village pipeline at the bigger scale. A market town of 13
-  buildings round a cobbled square, with the manor, inn, store and smithy facing it and homes along the streets. All
-  13 place at every scale tried, with 0 errors and 23-28 of 29-30 rooms passing. It found:
+- **Town lab** (`mapgen/designs/townlab.py`, installed as `maps/TownLab`): the whole village pipeline at the
+  bigger scale. A market town of 13 buildings round a cobbled square, with the manor, inn, store and smithy
+  facing it and homes along the streets. Thirteen townsfolk walk between the square and the doorsteps; the
+  server's self-check finds them all. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
+  29-30 rooms passing. It found:
   - a U-shaped house whose living room came out as two closed-off halves;
   - a round cauldron in a corner crowded by shelves;
   - small rooms that lost their only table because no chairs fit round it.
