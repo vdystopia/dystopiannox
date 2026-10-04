@@ -146,6 +146,28 @@ def pair_on_wrong_line(m):
     m.obj_px("BandedPlankDoor", (b[0] + 1) * CELL, (b[1] + 1) * CELL, door=0)   # South half
 
 
+def torch_in_house(m): m.obj("Torch", 206, -6)
+
+
+def food_by_table(m): m.obj("Meat", 215.6, -6)
+
+
+def seated_at_ends(m):
+    m.obj("WoodenChair2", 214, -8.7); m.obj("WoodenChair3", 214, -3.3)
+
+
+def mixed_bunks(m):
+    m.obj("Cot2", 205, 6); m.obj("Bed3", 210.5, 6)
+
+
+def table_no_seats(m):
+    m.obj("WoodBed2", 210, 6); m.obj("WoodBed2", 214, 6)       # with the house's own: a bunk room
+
+
+def lopsided(m):
+    for u, v in ((220, -2), (220, 0), (219.5, 2.5)): m.obj("Barrel", u, v)
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -172,6 +194,15 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STstump", stumps_bunched, "composition", "warning", "stumps bunched in one spot - DysVale v0.6 playtest"),
     ("STwideb", wide_bridge, "composition", "warning", "plank bridge 4 tiles wide on a narrow stream - DysVale v0.6 playtest"),
     ("STpairl", pair_on_wrong_line, "doors", "error", "door pair whose halves do not line up - DysVale v0.6 playtest"),
+    ("STtorch", torch_in_house, "composition", "warning", "open torch inside a house - TreePlace v0.1 playtest", "open torch"),
+    ("STfood", food_by_table, "composition", "warning", "meat lying by a table - TreePlace v0.1 playtest", "lies by"),
+    ("STends", seated_at_ends, "composition", "warning", "long table seated only at its ends - TreePlace v0.1 playtest",
+     "only at its ends"),
+    ("STbunks", mixed_bunks, "composition", "warning", "bunk room of mixed bed kinds - TreePlace v0.1 playtest", "kinds"),
+    ("STnoset", table_no_seats, "composition", "warning", "barracks table with no seats - TreePlace v0.1 playtest",
+     "has no seats"),
+    ("STlopsd", lopsided, "composition", "warning", "furniture packed into one end of a room - TreePlace v0.1 playtest",
+     "fills only"),
 ]
 
 
@@ -179,7 +210,7 @@ def main():
     base = V.baseline()
     ok = True
     print(f"{'map':9s} {'planted defect':66s} result")
-    for name, defect, check, sev, desc in CASES:
+    for name, defect, check, sev, desc, *contains in CASES:
         m = clean(name)
         if defect: defect(m)
         out_dir = os.path.join(OUT, name)
@@ -191,7 +222,8 @@ def main():
             passed = not errors
             got = "no errors" if passed else "; ".join(f"{f['check']}: {f['msg'][:70]}" for f in errors[:4])
         else:
-            hits = [f for f in findings if f["check"] == check and f["severity"] == sev]
+            hits = [f for f in findings if f["check"] == check and f["severity"] == sev and
+                    (not contains or contains[0] in f["msg"])]
             passed = bool(hits)
             got = f"caught ({check} {sev}): {hits[0]['msg'][:90]}" if hits else \
                 f"MISSED; got: {[(f['check'], f['severity']) for f in findings if f['severity'] != 'info']}"

@@ -98,7 +98,27 @@ Then, in this order:
   - the table set takes the open middle;
   - supplies stand in rows from a corner;
   - the space in front of every anchor stays clear;
-  - companions come only with their anchor (a chair with its table or desk, food on the kitchen table, bellows beside the forge, the anvil before it).
+  - companions come only with their anchor (a chair with its table or desk, bellows beside the forge, the anvil before it).
+- **A room's arrangement shows its purpose at a glance** (TreePlace v0.1 playtest). Lay out whole groups, not
+  single pieces:
+  - **Bunk room:** beds of one kind in a straight row, side by side along a back wall, headboards against it
+    (`Furnisher.bed_row`). Put a chest at each bed's foot, a rug along the row, and shelves for gear across the
+    room. All of Westwood's rooms with 3 or more beds use one kind, in a row.
+  - **Mess hall:** long tables in rows with a bench along each long side (`Furnisher.table_rows`), a hearth, and
+    a shelf of crockery. Barrels belong in the kitchen or storeroom.
+  - **Storeroom:** supplies stocked along the walls in tidy groups (`Furnisher.stock_walls`): stocked log shelves,
+    crates side by side, barrels, sacks. The middle stays clear. No bookcases, and no black-powder barrels in a
+    dwelling.
+  - **Kitchen:** the hearth and cauldron, a table with stools, and provisions along the other walls, so the whole
+    room is used.
+  - Seats stand along a table's long sides (Westwood: 75% of the chairs at its long tables). A table in a room for
+    sitting and eating always has its seats, or it is left out.
+  - Food is never set out as loose items. Nox draws items at floor level, so food reads as dropped on the floor;
+    use a table that carries its food (`RoundTableWithFood`).
+  - Furniture spreads through the room's whole length, never packed into one end (checker: under 35% of the length).
+- **Light houses with candelabras and the hearth.** Never use an open torch indoors: a flame on a stick by a wall
+  does not look mounted, and an open flame that size indoors is not believable. Use wood candelabras in log and
+  stucco houses, iron ones in stone houses. Torches belong outdoors, in dungeons and in mines.
 - **Pieces lie along their wall.**
   - Chests, bookcases, desks and potion shelves lie parallel to their wall with their back against it. Beds stand
     with the headboard against the wall.

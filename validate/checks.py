@@ -422,8 +422,13 @@ def find_rooms(m):
     return out
 
 
+# Shelves of goods and apple crates hold supplies: a room stocked with them is a storeroom or kitchen, not a
+# library or a shop (the rulebook files them under shelves and shop racks).
+SUPPLY_PIECES = re.compile(r"^(LogShelves|TeepeeShelves|UrchinShelves)|^TraderAppleCrate$")
+
+
 def room_profile(r):
-    fam = collections.Counter(RT.family(o["type"]) for o in r["objects"])
+    fam = collections.Counter("storage" if SUPPLY_PIECES.match(o["type"]) else RT.family(o["type"]) for o in r["objects"])
     fam.pop(None, None)
     npcs = {"shopkeeper": sum(1 for o in r["objects"] if RT.SHOPKEEPER.match(o["type"]))}
     kind = RT.classify(fam, npcs)
@@ -796,6 +801,95 @@ def check_room_composition(m, ctx, base):
     out += bridge_landings(m)
     out += bunched_props(m, base)
     out += bridge_squareness(m)
+    out += room_arrangement(m)
+    return out
+
+
+# ---- a room laid out as a whole (TreePlace v0.1 playtest) ---------------------------------------------------
+HOUSE_WALL = re.compile(r"^(Log|Stucco|Brick|StoneGray|StoneBlue|Galava|Cobblestone|FieldStone|Dilapidated)")
+OPEN_TORCH = re.compile(r"^(Torch|TorchPole|TorchPoleImmobile)$")
+FOOD_ITEM = re.compile(r"^(Meat|Bread|RedApple|Apple|Cider|Cheese|Ham|Drumstick|Mead|Wine|Soup|Pie|Cake|Fish|Grapes|Watermelon)$")
+DINING_TABLE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d)$")
+SEATED_ROOMS = {"dining_hall", "tavern", "barracks"}      # rooms whose tables are for sitting at
+SPREAD_MIN = 0.35   # share of a room's length its furniture spans; Westwood's rooms of 40+ tiles: p5 0.24, p10 0.45
+
+
+def _half_uv(o):
+    if o["ext"] == "BOX": return (o["ex"] or 0) / 2 / 16.26, (o["ey"] or 0) / 2 / 16.26
+    return (o["ex"] or 0) / 16.26, (o["ex"] or 0) / 16.26
+
+
+def room_arrangement(m):
+    """Whether a room is laid out as a whole, from the TreePlace v0.1 playtest. Westwood never does the
+    first four (0 cases on its 120 single-player maps):
+    - food lying by a table (Nox draws items at floor level: it reads as dropped);
+    - a long table seated only at its ends (75% of Westwood's chairs at long tables stand along the sides);
+    - a bunk room of mixed bed kinds;
+    - beds scattered instead of lined up (3 of Westwood's 14 rooms with 3+ beds).
+    Also checked:
+    - a table with no seats in a room for sitting and eating (dining hall, tavern, barracks);
+    - furniture filling only one end of a room;
+    - open torches inside a house. This is the user's house rule; Westwood does it in 35 rooms."""
+    out = []
+    for r in find_rooms(m):
+        objs, cells = r["objects"], r["cells"]
+        kind, _ = room_profile(r)
+        x0, y0 = centre(cells)
+        mats = collections.Counter()
+        for (x, y) in cells:
+            for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                w = m.walls.get((x + a, y + b))
+                if w and not w.invisible: mats[w.material] += 1
+        mat = mats.most_common(1)[0][0] if mats else ""
+        torches = [o for o in objs if OPEN_TORCH.match(o["type"])]
+        if torches and HOUSE_WALL.match(mat):
+            out.append(F("composition", "warning", f"{len(torches)} open torch{'es' if len(torches) > 1 else ''} inside a "
+                         f"house ({mat} walls): light houses with candelabras and a hearth (house rule from the TreePlace "
+                         f"playtest; Westwood does it in 35 rooms).", torches[0]["x"], torches[0]["y"]))
+        tables = [o for o in objs if DINING_TABLE.match(o["type"])]
+        seats = [o for o in objs if RT.family(o["type"]) in ("chair", "bench")]
+        for f in objs:
+            if not FOOD_ITEM.match(f["type"]): continue
+            fu, fv = uv_of(f)
+            t = next((t for t in tables if abs(fu - uv_of(t)[0]) <= _half_uv(t)[0] + 1.2 and
+                      abs(fv - uv_of(t)[1]) <= _half_uv(t)[1] + 1.2), None)
+            if t:
+                out.append(F("composition", "warning", f"{f['type']} lies by {t['type']}: Nox draws items at floor level, so "
+                             f"food set on a table reads as dropped on the floor (use RoundTableWithFood).", f["x"], f["y"]))
+        for t in tables:
+            hu, hv = _half_uv(t); tu, tv = uv_of(t)
+            near = [s for s in seats if abs(uv_of(s)[0] - tu) <= hu + 1.8 and abs(uv_of(s)[1] - tv) <= hv + 1.8]
+            if not near:
+                if kind in SEATED_ROOMS:
+                    out.append(F("composition", "warning", f"{t['type']} has no seats, in a room for sitting at tables "
+                                 f"({kind.replace('_', ' ')}).", t["x"], t["y"]))
+                continue
+            if abs(hu - hv) >= 0.3 and len(near) >= 2:
+                hl, hs = max(hu, hv), min(hu, hv)
+                ends = sum(1 for s in near if abs((uv_of(s)[0] - tu) if hu > hv else (uv_of(s)[1] - tv)) > hl and
+                           abs((uv_of(s)[1] - tv) if hu > hv else (uv_of(s)[0] - tu)) < hs + 0.4)
+                if ends == len(near):
+                    out.append(F("composition", "warning", f"{t['type']} is seated only at its ends: seat a long table along "
+                                 f"its sides (Westwood: 75% of the chairs at its long tables).", t["x"], t["y"]))
+        beds = [o for o in objs if RT.family(o["type"]) == "bed"]
+        if len(beds) >= 3:
+            stems = sorted({re.sub(r"\d+$", "", b["type"]) for b in beds})
+            us = [uv_of(b)[0] for b in beds]; vs = [uv_of(b)[1] for b in beds]
+            if len(stems) > 1:
+                out.append(F("composition", "warning", f"{len(beds)} beds of {len(stems)} kinds ({', '.join(stems)}): a bunk "
+                             f"room uses one kind (all of Westwood's rooms with 3 or more beds do).", x0, y0))
+            elif max(us) - min(us) > 1.2 and max(vs) - min(vs) > 1.2:
+                out.append(F("composition", "warning", f"{len(beds)} beds scattered about the room: line them up side by "
+                             f"side along one wall.", x0, y0))
+        furn = [o for o in objs if m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES]
+        if len(furn) >= 4 and r["tiles"] >= 40:
+            cu_ = [x + y + 1 for x, y in cells]; cv_ = [x - y for x, y in cells]
+            long_u = (max(cu_) - min(cu_)) >= (max(cv_) - min(cv_))
+            L = (max(cu_) - min(cu_)) if long_u else (max(cv_) - min(cv_))
+            fp = sorted((uv_of(o)[0] if long_u else uv_of(o)[1]) for o in furn)
+            if L >= 10 and (fp[-1] - fp[0]) / L < SPREAD_MIN:
+                out.append(F("composition", "warning", f"The furniture fills only {100 * (fp[-1] - fp[0]) / L:.0f}% of the "
+                             f"room's length and the rest stands empty: spread it through the room.", x0, y0))
     return out
 
 

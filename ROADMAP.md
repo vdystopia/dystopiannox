@@ -12,11 +12,28 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
-| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | done, awaiting playtest | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
+| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.2 (interiors), awaiting playtest | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
+
+### TreePlace v0.1 (2026-10-03)
+
+"Mostly very good." The outdoors stood; four camp rooms and the indoor lights did not. Fixed in v0.2, and
+written into the furnisher, the checker and PROCESS.md:
+
+| Finding | Fix |
+|---|---|
+| Kitchen: open space everywhere, everything clustered around the chimney, meat on the floor, no clear purpose | Loose food is gone: Nox draws items at floor level, so food on a table reads as dropped, and only 2 of Westwood's 520 food items lie at a table. Kitchens set a table that carries its food (`RoundTableWithFood`) or a work table with stools, and stock provisions along the other walls (`stock_walls`). The checker flags food lying by a table, and furniture that spans under 35% of a room's length (the v0.1 kitchen: 29%) |
+| Mess hall: chairs pulled up to the ends of the tables; two water barrels and a stack of barrels just sitting there | Seats go along a table's long sides (Westwood: 75%; never only at the ends). Mess halls lay long tables in rows with a matching bench along each side (`table_rows`), with a hearth and a crockery shelf, and no barrels. The checker flags long tables seated only at their ends, and barrels in a dining hall |
+| Bunkhouse: two cots and two beds in random places, a table with no chairs | Bunk rooms lay one bed kind in a straight row along a back wall (`bed_row`), as all of Westwood's rooms with 3+ beds do. Each bed gets a chest at its foot, a rug lies along the row, and gear shelves stand across the room. A table always gets its seats, or it is left out. The checker flags mixed bed kinds, scattered beds, and tables without seats where people sit to eat |
+| Storeroom: almost empty; a bookshelf, a crate, an explosive barrel and a barrel scattered at random | Storerooms stock their walls in tidy groups (stocked log shelves, crates, barrels, sacks), with the middle clear. No room recipe allows black-powder barrels, and storerooms take no bookcases. The checker flags both as outside the room's identity |
+| Torches indoors do not look attached to the wall, and an open flame that size indoors is unrealistic | Houses (log, stucco and stone walls) are lit with candelabras and the hearth; torches stay outdoors, in dungeons and in mines. Westwood's log cabins mostly use candelabras too (15 of 30 lights). The checker flags open torches inside a house |
+
+Also: log shelves are numbered by wall in a third way, measured on Westwood's maps (3 NW, 4 NE, 2 SE, 1 SW).
+The checker counts stocked shelves and apple crates as supplies, so a stocked storeroom no longer reads as a
+library and a kitchen no longer reads as a shop.
 
 ### DysVale v0.6 (2026-10-03)
 

@@ -27,6 +27,9 @@ When scoring, also check relations (PROCESS.md):
 - chests, bookcases and desks lie along their walls;
 - lights and pieces balance a room (the free corner, never beside each other);
 - props are spread out, never bunched in one spot;
-- double doors line up.
+- double doors line up;
+- a room's arrangement shows its purpose: bunks of one kind in a row, tables in rows with seats along their
+  sides, stocked walls in a storeroom, the whole room used;
+- no loose food on or by tables, and no open torches indoors in houses.
 
 Lighting and mood don't show in the editor's render; judge them in a playtest.
