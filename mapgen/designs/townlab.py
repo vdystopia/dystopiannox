@@ -184,13 +184,16 @@ for s_ in far:
 WARES = {"store": [(3, "RedPotion"), (2, "BluePotion"), (1, "CurePoisonPotion"), (4, "RedApple"), (2, "Meat"),
                    (2, "Cider"), (1, "Quiver"), (1, "Bow"), (1, "LeatherBoots"), (1, "LeatherHelm")],
          "inn": [(5, "RedApple"), (4, "Meat"), (3, "Cider"), (2, "RedPotion")]}          # the barkeeper, behind the bar
+# greetings: keys of the game's text file (nox.csf) that fit any town's trader
+GREETING = {"store": "Con05A.scr:ShopKeeperTalk1",     # "Welcome, Wanderer! We carry the finest wares in all of Nox!"
+            "inn": "Con02:BarkeeperDefault"}           # "I bet it's been a long day for you, aye mate?"
 n_shops = 0
 for bid, b in placed:
     for room in b.rooms:
         for sp in getattr(room, "spots", []) or []:
             if sp.get("role") not in ("shopkeeper", "barkeep") or bid.role not in WARES: continue
             xs = [(x + 1) * 23 for x, _ in room.tiles]; ys = [(y + 1) * 23 for _, y in room.tiles]
-            pop.shopkeeper("ShopkeeperYellow", *sp["px"], WARES[bid.role],
+            pop.shopkeeper("ShopkeeperYellow", *sp["px"], WARES[bid.role], greeting=GREETING.get(bid.role, ""),
                            face=(sum(xs) / len(xs), sum(ys) / len(ys)))
             n_shops += 1
 m.scripts.update(B.files(m.d["name"]))

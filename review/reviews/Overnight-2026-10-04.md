@@ -37,7 +37,8 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
     finds all 39 scripted creatures.
   - The store has a shopkeeper behind its counter (potions, food, travel gear) and the inn a barkeeper behind its
     bar (apples, meat, cider), set up the way Westwood sets its traders. Please try buying from them: I could only
-    check that the map loads. Their greeting text is empty for now. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
+    check that the map loads. They greet you with lines from the game's own text file that fit any town ("Welcome,
+    Wanderer! We carry the finest wares in all of Nox!", "I bet it's been a long day for you, aye mate?"). All 13 buildings place at every scale tried, with 0 errors and 23-28 of
   29-30 rooms passing. It found:
   - a U-shaped house whose living room came out as two closed-off halves;
   - a round cauldron in a corner crowded by shelves;
