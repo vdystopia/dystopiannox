@@ -1340,7 +1340,10 @@ class Furnisher:
         if ct and deep:
             chu, chv = self.half(ct)
             cp = chu if r["line"] == "/" else chv
-            got = [o for o in (self.try_put(ct, *self._uv_on(r, foot + 1.2 + cp, a)) for _, a in beds) if o]
+            # not beside another wall: a chest at the foot of the end bed would stand across the side wall
+            spots = [self._uv_on(r, foot + 1.2 + cp, a) for _, a in beds]
+            got = [o for o in (self.try_put(ct, *uv) for uv in spots if self.g.wall_dist(*uv) - max(chu, chv) >= 1.0)
+                   if o]
             if len(got) * 2 < len(beds):                # an odd chest here and there reads as clutter
                 for o in got: self._remove(o)
             else:
