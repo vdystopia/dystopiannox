@@ -17,7 +17,8 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 ## Task 1: generate and evaluate rooms and structures
 
 - **Room lab** (`mapgen/designs/roomlab.py`, scored by `review/roomscore.py`): every room kind (21 of them) at three
-  sizes. It went from 23 of 42 rooms passing to 50-56 of 63 rooms over three seeds.
+  sizes, now at Westwood's true sizes over two lab maps (`RoomLab` and `RoomLab2`). It went from 23 of 42 rooms
+  passing to 59-61 of 63 over three seeds.
 - **Building lab** (`mapgen/designs/buildinglab.py`, scored by `review/buildingscore.py`): every building role,
   generated and furnished, scored on room sizes, reachability and the room scores. 16 roles now, including a manor
   and the three culture buildings; 8-10 of 16 pass at Westwood's size and the kit's.
@@ -25,6 +26,12 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   the floor and reach the other rooms through it (few have corridors), so large buildings now use a **hub plan**: a
   great hall down the middle with the other rooms along both sides, every door opening onto the hall. The great hall
   has hearths, long tables with benches, statues and trophies, with the doorways kept clear.
+- **Town lab** (`mapgen/designs/townlab.py`): the whole village pipeline at the bigger scale. A market town of 13
+  buildings round a cobbled square, with the manor, inn, store and smithy facing it and homes along the streets. All
+  13 place at every scale tried, with 0 errors and 23-28 of 29-30 rooms passing. It found:
+  - a U-shaped house whose living room came out as two closed-off halves;
+  - a round cauldron in a corner crowded by shelves;
+  - small rooms that lost their only table because no chairs fit round it.
 - Fixes found along the way, among them:
   - rooms too small for their kind;
   - L- and T-shaped rooms where nothing could be placed;
