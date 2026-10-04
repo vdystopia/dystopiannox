@@ -29,8 +29,11 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   has hearths, long tables with benches, statues and trophies, with the doorways kept clear.
 - **Town lab** (`mapgen/designs/townlab.py`, installed as `maps/TownLab`): the whole village pipeline at the
   bigger scale. A market town of 13 buildings round a cobbled square, with the manor, inn, store and smithy
-  facing it and homes along the streets. Thirteen townsfolk walk between the square and the doorsteps; the
-  server's self-check finds them all. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
+  facing it and homes along the streets.
+  - The square follows Westwood's own, measured round its 12 town wells and fountains: a fountain ringed by potted
+    plants and flowers, benches facing in, ornate street lamps at the edge.
+  - Thirteen townsfolk walk between the square and the doorsteps, and wolves, bats and urchins keep to the woods
+    round the town, as in Westwood's towns. The server's self-check finds all 28 scripted creatures. All 13 buildings place at every scale tried, with 0 errors and 23-28 of
   29-30 rooms passing. It found:
   - a U-shaped house whose living room came out as two closed-off halves;
   - a round cauldron in a corner crowded by shelves;

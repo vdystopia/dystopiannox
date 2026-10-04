@@ -132,7 +132,7 @@ for bid, b in placed:
     for d in b.entrances:
         di, dj = px_square(*d.px)
         keep |= {(di + a, dj + b2) for a in range(-2, 3) for b2 in range(-2, 3)}
-vil.ground_bits(1.5)
+vil.ground_bits(0.8)
 planter = Planter(m, rng, land, FOREST, keep_clear=keep)
 n_trees, n_small = planter.plant_all(groves=3)
 m.obj_px("PlayerStart", *square_px(gate[0], gate[1]))
