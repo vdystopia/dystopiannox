@@ -652,7 +652,7 @@ ROOM_COVER = {"tavern": (0.20, 0.34), "dining_hall": (0.17, 0.32), "shop": (0.24
               "smithy": (0.24, 0.38), "library": (0.17, 0.32), "storeroom": (0.30, 0.42), "gear_store": (0.30, 0.42), "ore_store": (0.28, 0.42), "kitchen": (0.21, 0.32),
               "barracks": (0.24, 0.34), "mess_hall": (0.24, 0.34), "living_room": (0.17, 0.30), "herbalist": (0.17, 0.30),
               "study": (0.17, 0.30), "bedroom": (0.14, 0.28), "dwelling": (0.16, 0.30),
-              "ogre_den": (0.14, 0.30), "ogre_hall": (0.14, 0.30), "ogre_hoard": (0.26, 0.42), "dark_chapel": (0.10, 0.26),
+              "ogre_den": (0.14, 0.30), "ogre_hall": (0.17, 0.32), "ogre_hoard": (0.26, 0.42), "dark_chapel": (0.10, 0.26),
               "dark_crypt": (0.16, 0.34), "great_hall": (0.10, 0.26)}
 ROOM_COVER_DEFAULT = (0.16, 0.30)
 # Buildings are larger than Westwood's (the user, during the TreePlace v0.3 review: "bias towards bigger rooms and
