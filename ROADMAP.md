@@ -14,7 +14,7 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
 | TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 21 kinds at Westwood's true sizes (two lab pages): 56-60 of 63 rooms pass over 3 seeds | `mapgen/designs/roomlab.py` |
-| Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 16 roles (a manor of 8 rooms, 3 culture buildings): 8-9 pass at scales 1.0 and 1.25 | `mapgen/designs/buildinglab.py` |
+| Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 16 roles (a manor of 8 rooms, 3 culture buildings): 13 pass at the kit's scale (1.25) | `mapgen/designs/buildinglab.py` |
 | Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.2 maps installed with a structure each: Darkdelve's ogre keep, Frostfang's dark temple, Emberdeep's demon forge | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
 | Town lab: the village pipeline at the bigger scale, a market town of 13 buildings round a square (`townlab.py`) | 13 of 13 buildings placed; 28 of 30 rooms pass | `mapgen/designs/townlab.py` |
 | Cultures: how Westwood furnishes ogre lairs, the Land of the Dead and Dun Mir, room by room | ogre, Land of the Dead and Dun Mir room recipes; 3 culture buildings | `rules/CULTURES.md`, `rules/cultures.py` |

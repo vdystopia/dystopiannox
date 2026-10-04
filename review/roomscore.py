@@ -3,7 +3,8 @@
 - coverage: the share of the floor that furniture covers, against the kind's ROOM_COVER target (kit/identity.py)
   and Westwood's median for rooms of its kind and size;
 - middle: coverage by pieces standing free in the room (more than 2.5 units from every wall);
-- lined: the share of the back walls (NE and NW, the walls the camera sees) taken by tall pieces and hangings,
+- lined: the share of the back walls (NE and NW, the walls the camera sees) taken by tall pieces (a bed by the width
+  of its headboard) and hangings,
   less 3 units for each doorway in them (the door and its clearance);
 - types: distinct object types in the room;
 - warnings: the checker's findings that fall in the room.
@@ -57,7 +58,7 @@ def score(map_path):
             dist = min((abs(u - c) if l == "/" else abs(v - c)) for (l, c) in runs) if runs else 0
             if dist > 2.5 and m.blocking(o) and C.RT.family(o["type"]) in C.RT.BLOCKING_FAMILIES: mid += C.piece_area(o)
             if TALL.match(o["type"]) or C.RT.family(o["type"]) == "wall_decor":
-                hit = C._against(o, runs, cu, cv, m, reach=1.6)
+                hit = C._against(o, runs, cu, cv, m, reach=1.6, across=True)   # a bed's headboard uses its wall too
                 if hit and hit[0] in ("NE", "NW"):
                     ha = C._half_uv(o)[1] if hit[3] == "/" else C._half_uv(o)[0]
                     back_used[(hit[3], hit[4])].append((hit[2] - ha, hit[2] + ha))
