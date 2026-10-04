@@ -76,9 +76,9 @@ def dock_misaligned(m):
 
 
 def clutter(m):
-    for i in range(5):
-        for j in range(4):
-            m.obj("Table1", 204 + 3.5 * i, -7 + 4 * j)
+    for i in range(6):          # 30 tables: Westwood's bedrooms of this size hold up to about 23 pieces
+        for j in range(5):
+            m.obj("Table1", 203 + 3 * i, -8 + 3.3 * j)
 
 
 def doorway(m):
@@ -193,6 +193,19 @@ def sparse_room(m):
                             box=[0, 0, 0, 0], floor=[list(t) for t in rect_tiles(200, 222, -10, 10)])]
 
 
+def shelf_on_front_wall(m):
+    m.obj("Bookcase3", 222.38, 0)                              # against the SE wall: the camera sees only its back
+
+
+def scattered_shelves(m):
+    m.obj("Bookcase2", 205, 9.43)                              # two bookcases on the NE wall, bare wall between
+    m.obj("Bookcase2", 216, 9.43)
+
+
+def floating_chest(m):
+    m.obj("Chest3", 210, 8.09)                                 # 1.4 units off the NE wall, alone in the room
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -237,6 +250,12 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "sparse"),
     ("STdkind", mixed_doors, "doors", "warning", "three kinds of door in one building - TreePlace v0.2 room review",
      "kinds of door"),
+    ("STfront", shelf_on_front_wall, "composition", "warning", "bookcase against the SE wall - TreePlace v0.3 room review",
+     "SE wall"),
+    ("STscatr", scattered_shelves, "composition", "warning", "shelves scattered along a wall - TreePlace v0.3 room review",
+     "end to end"),
+    ("STfloat", floating_chest, "composition", "warning", "chest standing off its wall - TreePlace v0.3 room review",
+     "units off the")
 ]
 
 

@@ -116,15 +116,54 @@ Then, in this order:
   - Food is never set out as loose items. Nox draws items at floor level, so food reads as dropped on the floor;
     use a table that carries its food (`RoundTableWithFood`).
   - Furniture spreads through the room's whole length, never packed into one end (checker: under 35% of the length).
-- **Rooms are full** (TreePlace v0.2 room review: "too empty" in almost every room).
-  - Compose the anchors first, then fill the room toward the furniture count of Westwood's fuller rooms of the
-    same kind and size (the 80th percentile, `Furnisher.fill_room` with each recipe's `fill` steps). Stop at
-    Westwood's 95th percentile, which is the checker's limit.
-  - Each fill step has its own maximum, so a room gains variety rather than ten bookcases.
-  - Hang the back walls with one theme of hangings per room (hunting trophies, one colour of tapestry, or
-    paintings), at least 4.5 units apart.
-  - Put potted plants in the corners.
-  - The checker calls a generated room sparse when it holds fewer pieces than Westwood's median.
+- **Directions.** The user's frame of reference: the NE wall is a room's top right on screen, the NW wall its top
+  left, the SE wall its bottom right and the SW wall its bottom left (TreePlace v0.3 room review).
+- **What the camera sees** (TreePlace v0.3 room review, very high priority).
+  - Shelves, hangings (trophies, tapestries, banners, paintings), hearths, stoves, desks, chests and lab benches go
+    on the NE and NW walls, whose fronts face the camera. On the SE and SW walls the camera sees only a piece's
+    back, or nothing (Con07B: shelves NW 10, NE 2, SE 3, SW 0; hangings only on the NE and NW walls).
+  - Tables, chairs and other free-standing pieces lean toward the room's front, its S and W corners, nearer the SE
+    and SW walls (`FRONT_WEIGHT` in `middle_spots`). Benches, supplies and carts may stand against the front walls.
+- **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
+  of the wall").
+  - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
+    unbroken stretch: the one at the anchor (hearth or desk, flanked on both sides), or else the longest. There are
+    no holes, never a lone shelf against a long wall, and 1.3 units stay clear at the corners.
+  - With `decor=k`, a hanging takes a gap after every k shelves. A run never starts or ends with that gap.
+  - Studies, living rooms and big bedrooms line their second back wall too (`other=True`). Line it before the
+    hangings, or they take the wall.
+  - Rows stand unbroken too: gear racks down the middle of a storeroom, and library stacks of bookcases end to end
+    in a big study (`rack_rows`, kinds gear, hunt, mine and books). A row slides across the room until it fits
+    whole, or it is left out. Rows stay off carpets.
+- **Rooms are full, and fuller as they grow** (TreePlace v0.2-v0.4 room reviews).
+  - Fullness is the share of the floor that furniture covers (`ROOM_COVER` in `kit/identity.py`), not a piece
+    count. A wall of shelves is not clutter. Storerooms 0.30-0.42, kitchens 0.21-0.32, barracks and mess halls
+    0.24-0.34, living rooms, studies and herbalists 0.17-0.30, bedrooms 0.14-0.28.
+  - Compose the anchors first, then `fill_room` takes the recipe's `fill` steps in turn (each with its own `max`,
+    and `min_area` in grid cells, about 2.2 per floor tile) until the target is met.
+  - The open floor of a bigger room takes free-standing groups (`GROUPS`, `place_group`):
+    - a table and its seats, sometimes on a rug;
+    - a table that carries food;
+    - a work table with stools and crates beside it;
+    - a curio (telescope, orrery, globe);
+    - a pair of statues;
+    - a freestanding hearth with benches;
+    - ore carts.
+    A group takes only pieces its room's identity allows (`Furnisher.belongs`).
+  - Each building keeps one palette of chairs, stools, benches, tables, carpets, hangings and plants, so its rooms
+    belong together while the buildings of a map differ.
+  - Some rooms on built floors get a carpet of floor tiles instead of a rug object, with Westwood's gold trim (Con07B
+    lays them in 13 of its 28 rooms; `lay_carpet`).
+  - Late core pieces keep their front clear too: a hearth or cauldron placed by the fallback still gets its zone
+    (`FRONT_CLEAR`), so no candelabra stands before it.
+  - The checker calls a generated room sparse below Westwood's median coverage for its kind and size. Westwood's
+    rooms of 50 or more tiles are sparser (bedrooms: 0.117 overall, 0.078 large). It calls a room crammed above the
+    kind's `ROOM_COVER` maximum.
+- **Bigger than Westwood** (instruction during the v0.3 round: "we are going to ultimately produce much larger maps
+  and a larger scale than anything in the original game").
+  - Buildings are 1.25 times Westwood's size (`BUILDING_SCALE`, `role_size`). A building that does not fit is tried
+    again at 0.92 and 0.84 of that.
+  - A Nox map is 256 x 256 cells, so "larger" means bigger structures, rooms and groups within that grid.
 - **Spacing within the room.**
   - A cauldron stands about 2 units from the hearth (Westwood's typical gap; the closest is 0.87).
   - Supplies keep a unit or more from anything that is not a supply, on every side, not just along their own
@@ -153,7 +192,10 @@ Then, in this order:
   - Westwood numbers these pieces by wall: Chest, Bed and Nightstand 1-4 are the SE, SW, NE and NW walls; Bookcase
     and Desk 1-4 are the NW, NE, SE and SW walls. The furnisher picks the number for the wall
     (`Furnisher.along_variant`), including for a room identity's preferred types.
-  - No piece stands in a wall cell.
+  - Pieces stand snug against their wall (`SNUG_GAP`: Westwood's p25-p50 gap between a piece's back and the wall
+    line: shelves 0.18, chests 0.22, desks 0.25, hearths 0.15). Their centres may fall in the wall's cell in front of
+    a NE or NW wall, at least 0.3 units into the room, as Westwood's do (202 pieces). The checker credits such a
+    piece to the room on its side of the wall.
 - **Furniture assemblies are complete.** A bar meets the walls at both ends, its flap sits mid-run, and kegs stand behind it.
 - **Balance.** Lights go to the emptiest corners: away from other lights and from the pieces already there. A
   candelabra goes to the free corner, not beside the chest. Centre a piece on its wall, or between another
@@ -161,7 +203,8 @@ Then, in this order:
 - **Doors line up.** Both halves of a double door sit exactly on the grid, 46 px apart on each axis. A door type
   hangs as a pair only in a wall direction Westwood pairs it in (`rules/out/doors.json` `by_line`).
 - **Symmetry outside too.** Torches flank a door as a pair, on the outside of the wall line (`layout.door_frame`),
-  or not at all.
+  or not at all. A torch pole never stands in or against a wall. A yard's corner torch moves into the yard when a
+  bigger building reaches that corner.
 
 ## 7. Check, review, playtest
 

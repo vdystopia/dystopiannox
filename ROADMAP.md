@@ -12,11 +12,37 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
-| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.3 (fuller rooms), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
+| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
+
+### TreePlace v0.3 room review (2026-10-03)
+
+Numbered room pictures again. The user set the frame of reference: NE wall = top right, NW = top left,
+SE = bottom right, SW = bottom left. Fixed in v0.4:
+
+| # | Finding | Fix |
+|---|---|---|
+| all | Very high priority: shelves and hangings on the NE and NW walls (the camera sees their fronts); tables, chairs and free pieces toward the S and W corners | Facing pieces only on back walls (`FACING_FAMS`, `FACING_TYPES`); free pieces lean to the front (`FRONT_WEIGHT`). Checker: a facing piece on the SE or SW wall |
+| all | Fill whole walls with bookshelves end to end, not one here and there | `line_wall`: one unbroken run per wall, flanking its anchor; a second back wall in studies, living rooms and big bedrooms. Checker: two shelves on a wall with bare wall between them |
+| all | Use more of the game's objects | Building palettes (seats, tables, carpets, hangings, plants), free-standing groups (tables with food, work tables, lab benches, telescopes and orreries, statues, freestanding hearths), library stacks |
+| all | Study Con07B; use carpet floor tiles sometimes | Carpets of floor tiles with the gold trim in some rooms on built floors (Con07B: 13 of 28 rooms) |
+| all | Bigger rooms and structures than Westwood's | Buildings 1.25 times Westwood's size; fullness by floor coverage (`ROOM_COVER`), which grows with the room |
+| 1, 2 | Much better | Kept |
+| 3 | The chest should be closer to the NW wall; it sits in the middle | Pieces stand snug against their wall (Westwood's gaps, `SNUG_GAP`). Checker: a chest, shelf or desk 0.9-3 units off its wall |
+| 4, 5, 7 | A store room holds more than other rooms: racks of gear in the middle | `rack_rows`: unbroken rows of gear racks down the middle (gear, hunting and mining kinds); the gear store is its own room kind |
+| 6 | Carpets weirdly spaced; chests too close to the beds | One rug before each bed or none; the chests stand 1.2 units past each bed's foot |
+| 8 | Shelves along the wall with the hearth | Shelves line the hearth's wall on both sides of it |
+| 9 | Still too empty | A table with food, work tables with stools and crates |
+| 10 | More shelves, banners and trophies along the NE wall | Both back walls lined, hangings between groups of shelves, library stacks in the middle |
+| 11 | Best room of the group | Kept |
+
+Also:
+- the checker credits a piece whose centre falls in a wall's cell to the room on its side, as Westwood's maps need;
+- "sparse" compares a room with Westwood's rooms of its kind and size (rooms of 50+ tiles are sparser).
+
 
 ### TreePlace v0.2 room review (2026-10-03)
 

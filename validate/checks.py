@@ -300,6 +300,23 @@ def nearest_piece(o, pieces, max_px=100):
     return min(near, key=lambda p: math.hypot(p["x"] - o["x"], p["y"] - o["y"])) if near else None
 
 
+def wall_cell_side(m, c, o, depth=0.3):
+    """Where an object whose centre falls in wall cell c stands. "front" is in front of a NE or NW wall, at least
+    `depth` units on the room's side of the wall's line, and is drawn in front of the wall: Westwood's snug chests and
+    desks often stand so. "hidden" is behind a SE or SW wall, drawn under it. "inside" is on the line, or in a corner
+    or junction piece."""
+    w = m.walls[c]
+    u, v = uv_of(o)
+    x, y = c
+    if w.facing == 0:                       # a '/' wall: the room on its lower right has it as the NW wall
+        off = u - (x + y + 1)
+        return "front" if off >= depth else "hidden" if off <= -depth else "inside"
+    if w.facing == 1:                       # a '\' wall: the room on its lower left has it as the NE wall
+        off = v - (x - y)
+        return "front" if off <= -depth else "hidden" if off >= depth else "inside"
+    return "inside"
+
+
 def check_objects(m, ctx, base):
     out = []
     unreach = []
@@ -317,7 +334,12 @@ def check_objects(m, ctx, base):
                          f"{o['type']} stands in the void (no floor under it).", o["x"], o["y"]))
             continue
         if RT.family(o["type"]) in FLOOR_FURNITURE and c in m.walls and m.walls[c].opaque and not m.walls[c].secret:
-            out.append(F("objects", "warning", f"{o['type']} stands inside a wall piece.", o["x"], o["y"]))
+            side = wall_cell_side(m, c, o)
+            if side == "inside":
+                out.append(F("objects", "warning", f"{o['type']} stands inside a wall piece.", o["x"], o["y"]))
+            elif side == "hidden":
+                out.append(F("objects", "warning", f"{o['type']} stands in a SE or SW wall's cell: the wall is drawn over "
+                             f"it.", o["x"], o["y"]))
         swims_or_flies = "AIRBORNE" in o["flags"] or WATER_RE.search(m.floor_at(o["x"], o["y"]) or "")
         # an item on a table stands in the table's blocked cells: reachable when the player can stand beside it
         beside = any((c[0] + a, c[1] + b) in ctx.walk for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2))
@@ -426,7 +448,14 @@ def find_rooms(m):
                 comp[n] = cid; q.append(n)
         rooms.append(dict(cells=cells, enclosed=enclosed, objects=[]))
     for o in m.objects:
-        cid = comp.get(m.cell_of(o["x"], o["y"]))
+        c = m.cell_of(o["x"], o["y"])
+        cid = comp.get(c)
+        if cid is None and c in blocked:
+            # a piece set snug against a wall can have its centre in the wall's own cell (Westwood: 202 pieces of
+            # floor furniture): it belongs to the room on its side of the wall, the one with the nearest cell centre
+            near = [(math.hypot((n[0] + 0.5) * CELL - o["x"], (n[1] + 0.5) * CELL - o["y"]), comp[n])
+                    for a in (-1, 0, 1) for b in (-1, 0, 1) for n in [(c[0] + a, c[1] + b)] if n in comp]
+            if near: cid = min(near)[1]
         if cid is not None: rooms[cid]["objects"].append(o)
     out = []
     decl = declared_rooms(m)
@@ -440,6 +469,19 @@ def find_rooms(m):
                     r["declared"] = next(rec for rec in decl.values() if rec["number"] == num)
             out.append(r)
     return out
+
+
+def piece_area(o):
+    """Floor footprint of an object in square uv units (its collision box or circle; one uv unit is 16.26 px)."""
+    if o["ext"] == "BOX": return (o["ex"] or 0) * (o["ey"] or 0) / 264.4
+    return math.pi * (o["ex"] or 0) ** 2 / 264.4
+
+
+def room_coverage(m, r):
+    """Share of a room's floor its furniture covers (blocking furniture families; a grid cell is 2 square uv units).
+    Westwood's house rooms: p50 0.10-0.14, p75 0.15-0.19 (storerooms 0.23, barracks 0.25)."""
+    area = sum(piece_area(o) for o in r["objects"] if m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES)
+    return area / (2.0 * max(1, len(r["cells"])))
 
 
 def room_kind(r):
@@ -473,7 +515,7 @@ def similar_rooms(samples, tiles):
     return sorted(n for _, n in samples)
 
 
-IDENTITY_ALIASES = {"bedroom": ("dwelling",), "living_room": ("dwelling",), "storeroom": ("ore_store",),
+IDENTITY_ALIASES = {"bedroom": ("dwelling",), "living_room": ("dwelling",), "storeroom": ("ore_store", "gear_store"),
                     "kitchen": ("herbalist",), "study": ("herbalist",), "dining_hall": ("mess_hall",),
                     "tavern": ("mess_hall",)}
 
@@ -517,7 +559,15 @@ def check_rooms(m, ctx, base):
         near = similar_rooms(k["samples"], r["tiles"])
         hi = near[min(len(near) - 1, int(0.95 * len(near)))]
         lo = near[int(0.05 * len(near))]
-        if furniture > max(hi, 2):
+        if r.get("declared"):
+            # a generated room is furnished fuller than Westwood's (TreePlace room reviews), up to the share of its
+            # floor its kind may cover (kit/identity.py ROOM_COVER); counts would call a wall of shelves clutter
+            from kit.identity import ROOM_COVER, ROOM_COVER_DEFAULT
+            cover, cmax = room_coverage(m, r), ROOM_COVER.get(kind, ROOM_COVER_DEFAULT)[1]
+            if cover > cmax:
+                out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) is crammed: furniture covers "
+                             f"{100 * cover:.0f}% of its floor (at most {100 * cmax:.0f}% for its kind).", x, y))
+        elif furniture > max(hi, 2):
             out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) holds {furniture} pieces of furniture; "
                          f"Westwood's {wkind} rooms of a similar size hold at most about {hi}.", x, y))
         elif furniture < lo and furniture < 2:
@@ -533,7 +583,7 @@ def check_rooms(m, ctx, base):
         if r["tiles"] < tlo:
             out.append(F("rooms", "warning", f"{kind} room is small for its kind: {r['tiles']} tiles "
                          f"(Westwood's: {tlo:.0f} to {thi:.0f}).", x, y))
-        elif r["tiles"] > thi:
+        elif r["tiles"] > thi and not r.get("declared"):      # generated buildings are larger than Westwood's by design
             out.append(F("rooms", "warning", f"{kind} room is large for its kind: {r['tiles']} tiles "
                          f"(Westwood's: {tlo:.0f} to {thi:.0f}).", x, y))
     return out
@@ -846,6 +896,11 @@ HEARTH_GAP_MIN = 0.6   # units between a cauldron or stove and a fireplace; West
 TABLE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d)$")
 
 
+def _lines_of(coords, tol=1.2):
+    """How many straight lines sorted coordinates fall into (a gap over `tol` starts a new one)."""
+    return 1 + sum(1 for a, b in zip(coords, coords[1:]) if b - a > tol)
+
+
 def _half_uv(o):
     if o["ext"] == "BOX": return (o["ex"] or 0) / 2 / 16.26, (o["ey"] or 0) / 2 / 16.26
     return (o["ex"] or 0) / 16.26, (o["ex"] or 0) / 16.26
@@ -910,7 +965,7 @@ def room_arrangement(m):
             if len(stems) > 1:
                 out.append(F("composition", "warning", f"{len(beds)} beds of {len(stems)} kinds ({', '.join(stems)}): a bunk "
                              f"room uses one kind (all of Westwood's rooms with 3 or more beds do).", x0, y0))
-            elif max(us) - min(us) > 1.2 and max(vs) - min(vs) > 1.2:
+            elif not any(_lines_of(sorted(c)) <= 2 for c in (us, vs)):        # one row, or two facing rows
                 out.append(F("composition", "warning", f"{len(beds)} beds scattered about the room: line them up side by "
                              f"side along one wall.", x0, y0))
         furn = [o for o in objs if m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES]
@@ -960,14 +1015,92 @@ def room_arrangement(m):
         if r.get("declared"):                                      # generated rooms: at least as full as Westwood's median
             from kit.identity import WESTWOOD_KIND
             k = _room_baseline().get(WESTWOOD_KIND.get(kind, kind))
-            _, furniture = room_kind(r)
-            if k and "samples" in k:
-                near = similar_rooms(k["samples"], r["tiles"])
-                med = near[len(near) // 2]
-                if furniture < med:
-                    out.append(F("composition", "warning", f"{kind.replace('_', ' ')} room ({r['tiles']} tiles) is sparse: {furniture} "
-                                 f"pieces, fewer than half of Westwood's of a similar size ({med}) (house rule from the "
-                                 f"TreePlace room review: rooms at Westwood's median and below read as empty).", x0, y0))
+            band = "coverage_large" if r["tiles"] >= 50 and (k or {}).get("coverage_large") else "coverage"
+            med = ((k or {}).get(band) or {}).get("p50")       # against Westwood's rooms of its size (50+ tiles: large)
+            cover = room_coverage(m, r)
+            if med and cover < med:
+                out.append(F("composition", "warning", f"{kind.replace('_', ' ')} room ({r['tiles']} tiles) is sparse: furniture "
+                             f"covers {100 * cover:.0f}% of its floor, less than half of Westwood's rooms of its kind "
+                             f"({100 * med:.0f}%) (house rule from the TreePlace room review: rooms at Westwood's median and "
+                             f"below read as empty).", x0, y0))
+        out += wall_side_rules(m, r)
+    return out
+
+
+# ---- what the camera sees (TreePlace v0.3 room review) --------------------------------------------------------------
+# The user's frame of reference: the NE wall is the top right of a room on screen, the NW wall the top left, the SE
+# wall the bottom right and the SW wall the bottom left. The camera sees the front of what stands against the NE and
+# NW walls and only the back of what stands against the SE and SW walls, or nothing where the wall hides it.
+FACING_PIECE = re.compile(r"^(Bookcase\d|PotionShelves\d|LogShelves(Full|Empty)\d|TraderShelves\d|TraderHelmShelf\d|Desk\d|"
+                          r"Fireplace\d|WallFireplace\d|Stove0\d|Chest\d|Chest[NS][EW]|DunMirChest\d)")
+SHELF_PIECE = re.compile(r"^(Bookcase\d|PotionShelves\d|LogShelves(Full|Empty)\d|TraderShelves\d)")
+FLOAT_MIN, FLOAT_MAX = 0.9, 3.0    # a chest, shelf or desk this many units off its wall floats in the room
+
+
+def _wall_name(line, coord, cu, cv):
+    if line == "/": return "NW" if cu > coord else "SE"
+    return "SW" if cv > coord else "NE"
+
+
+def _against(o, runs, cu, cv, m, reach=1.4):
+    """(wall name, gap from the wall line to the piece's back, along, line, coord) of the wall run a piece stands
+    against (its back within `reach` units of the line), or None."""
+    u, v = uv_of(o)
+    hu, hv = _half_uv(o)
+    best = None
+    for (line, coord), (lo, hi) in runs.items():
+        perp = abs(u - coord) if line == "/" else abs(v - coord)
+        along = v if line == "/" else u
+        depth = hu if line == "/" else hv
+        if not (lo - 0.5 <= along <= hi + 0.5): continue
+        gap = perp - depth
+        if gap <= reach and (best is None or gap < best[1]):
+            best = (_wall_name(line, coord, cu, cv), gap, along, line, coord)
+    return best
+
+
+def wall_side_rules(m, r):
+    """House rules from the TreePlace v0.3 room review:
+    - pieces with a face (shelves, desks, hearths, stoves, chests, hangings) stand against the NE or NW wall, never
+      the SE or SW wall, where the camera sees only their back;
+    - shelves line a wall end to end: two shelves against one wall with bare wall between them are scattered;
+    - a chest, shelf or desk stands against its wall, not 0.9 to 3 units off it in the room."""
+    out = []
+    cells, objs = r["cells"], r["objects"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    runs = room_runs(m, cells)
+    beds = [o for o in objs if RT.family(o["type"]) == "bed"]
+    lines = collections.defaultdict(list)          # (line, coord) -> [(along0, along1, is_shelf, object)]
+    for o in objs:
+        decor = RT.family(o["type"]) == "wall_decor"
+        if not (FACING_PIECE.match(o["type"]) or decor or (m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES)):
+            continue
+        hit = _against(o, runs, cu, cv, m, reach=1.6 if decor else 1.4)
+        if hit:
+            name, gap, along, line, coord = hit
+            ha = _half_uv(o)[1] if line == "/" else _half_uv(o)[0]
+            lines[(line, coord)].append((along - ha, along + ha, bool(SHELF_PIECE.match(o["type"])), o))
+            if (FACING_PIECE.match(o["type"]) or decor) and name in ("SE", "SW"):
+                out.append(F("composition", "warning", f"{o['type']} stands against the {name} wall, where the camera sees only "
+                             f"its back: shelves, hangings and other pieces with a face go on the NE and NW walls (house "
+                             f"rule from the TreePlace v0.3 room review).", o["x"], o["y"]))
+        elif re.match(r"Chest\d|Bookcase|Shelves|^Desk\d", o["type"]) and o["ext"] == "BOX":
+            far = _against(o, runs, cu, cv, m, reach=FLOAT_MAX)
+            if far and far[1] >= FLOAT_MIN and not any(math.hypot(b["x"] - o["x"], b["y"] - o["y"]) < 60 for b in beds):
+                out.append(F("composition", "warning", f"{o['type']} stands {far[1]:.1f} units off the {far[0]} wall, alone in "
+                             f"the room: set it against the wall (house rule from the TreePlace v0.3 room review).",
+                             o["x"], o["y"]))
+    doors = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors]
+    for (line, coord), items in lines.items():
+        items.sort(key=lambda it: it[0])
+        for (a0, a1, s1, o1), (b0, b1, s2, o2) in zip(items, items[1:]):
+            if not (s1 and s2) or b0 - a1 <= 1.0: continue
+            between = [dd for dd in doors if abs((dd[0] if line == "/" else dd[1]) - coord) < 1.6 and
+                       a1 < (dd[1] if line == "/" else dd[0]) < b0]
+            if between: continue
+            out.append(F("composition", "warning", f"{o1['type']} and {o2['type']} stand {b0 - a1:.1f} units apart on the "
+                         f"{_wall_name(line, coord, cu, cv)} wall with bare wall between them: line shelves end to end "
+                         f"(house rule from the TreePlace v0.3 room review).", o2["x"], o2["y"]))
     return out
 
 

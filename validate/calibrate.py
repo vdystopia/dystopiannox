@@ -69,7 +69,7 @@ def one(args):
     findings, ctx = C.run_all(m, base)
     mt = next(f["metrics"] for f in findings if f.get("metrics"))
     found = C.find_rooms(m)
-    rooms = [(C.room_profile(r), r["tiles"]) for r in found]
+    rooms = [(C.room_profile(r), r["tiles"], C.room_coverage(m, r)) for r in found]
     offsets = [o for o in (C.furniture_offset(m, r)[0] for r in found) if o is not None]
     sight_sizes = [len(g) for g in C.clusters(ctx.sight_leaks - ctx.walk_leaks, 3)]
     return name, [(f["check"], f["severity"], f["msg"][:90], f["x"], f["y"]) for f in findings if f["severity"] != "info"], \
@@ -101,8 +101,10 @@ def main():
             if len(examples[(chk, sev)]) < 6: examples[(chk, sev)].append((name, msg, x, y))
         for k, v in mt.items():
             met[k].append((v, w)); met_env[(ENV.get(name), k)].append((v, w))
-        for (kind, furniture), tiles in rooms:
+        for (kind, furniture), tiles, cover in rooms:
             kinds[kind]["f"].append((100 * furniture / max(1, tiles), w)); kinds[kind]["t"].append((tiles, w))
+            if tiles >= 12: kinds[kind].setdefault("c", []).append((round(cover, 4), w))
+            if tiles >= 50: kinds[kind].setdefault("cl", []).append((round(cover, 4), w))     # large rooms
             kinds[kind].setdefault("s", set()).add((tiles, furniture))
         sight += [(s, w) for s in sight_sizes]
     out = dict(base)
@@ -114,7 +116,9 @@ def main():
     for kind, d in kinds.items():
         fq, tq = wq(d["f"]), wq(d["t"])
         out["room_kinds"][kind] = dict(n=len(d["t"]), furniture_per100=[fq["p5"], fq["p95"]], tiles=[tq["p5"], tq["p95"]],
-                                       samples=sorted(d.get("s", ())))   # (tiles, furniture) per distinct room
+                                       samples=sorted(d.get("s", ())),   # (tiles, furniture) per distinct room
+                                       coverage=wq(d.get("c", [])),      # share of the floor furniture covers
+                                       coverage_large=wq(d["cl"]) if len(d.get("cl", [])) >= 4 else None)   # rooms of 50+ tiles
     out["sight_leak_cell_sizes"] = wq(sight) if sight else None
     out["furniture_offset_p95"] = wq(offs)["p95"] if offs else 0.85
     out.setdefault("sight_leak_cells", 0)

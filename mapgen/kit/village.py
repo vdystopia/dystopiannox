@@ -40,6 +40,10 @@ class Village:
         cands = [(i1 + 3, j0), (i1 + 3, j1 - h + 1), (i0 - 2 - w, j0), (i0 - 2 - w, j1 - h + 1),
                  (i0, j1 + 3), (i1 - w + 1, j1 + 3), (i0, j0 - 2 - h), (i1 - w + 1, j0 - 2 - h)]
         rng.shuffle(cands)
+        # then anywhere along the four sides, a little further out (a bigger building fills its corners)
+        more = [(i1 + d, j) for d in (3, 4, 5) for j in range(j0 - h, j1 + 2)] +                [(i0 - 1 - w - d + 1, j) for d in (2, 3, 4) for j in range(j0 - h, j1 + 2)] +                [(i, j1 + d) for d in (3, 4, 5) for i in range(i0 - w, i1 + 2)] +                [(i, j0 - 1 - h - d + 1) for d in (2, 3, 4) for i in range(i0 - w, i1 + 2)]
+        rng.shuffle(more)
+        cands += [c for c in more if c not in cands]
         # the squares the building's own margin took are free for its garden (never its walls or others')
         own = {(i + a, j + b) for i, j in foot for a in range(-2, 3) for b in range(-2, 3)} - foot
         clear = lambda s: self._clear(s) or (s in own and s in L.taken and s not in L.taken_strict and
