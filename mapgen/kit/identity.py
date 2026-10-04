@@ -147,11 +147,11 @@ ROOMS = {
                       prefer={"cart": {"MineManaCart1": 2, "MineManaCart2": 2, "MineOreCart1": 1, "MineOreCart2": 1},
                               "storage": {"DarkCrate1": 2, "DarkCrate2": 2, "BarrelWithTools1": 1, "Barrel": 1},
                               "shop_rack": {"TraderShelves1": 1, "TraderShelves2": 1}},
-                      compose=[dict(fam="shop_rack", slot="line"),
+                      compose=[dict(fam="shop_rack", slot="line"), dict(fam="shop_rack", slot="line", other=True),
                                dict(fam="cart", slot="wall", at="any", clear=1.2),
                                dict(fam="shop_rack", slot="racks", kind="mine"),
                                dict(fam="storage", slot="stock", coverage=0.7, kinds=("crates", "tools", "barrels"), pad=1.2)],
-                      fill=[dict(fam="shop_rack", slot="line", other=True, max=8, min_area=120), dict(fam="cart", slot="group", group="carts", max=2), dict(fam="storage", slot="stock", coverage=1.0, kinds=("crates", "barrels", "sacks", "tools"), pad=1.0),
+                      fill=[dict(fam="shop_rack", slot="line", other=True, max=8, min_area=80), dict(fam="shop_rack", slot="line", max=6), dict(fam="cart", slot="group", group="carts", max=2), dict(fam="storage", slot="stock", coverage=1.0, kinds=("crates", "barrels", "sacks", "tools"), pad=1.0),
                             dict(fam="storage", slot="stack", n=3, once=True)]),
     "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables crowded with stools, "
                            "a hearth with shelves of tankards beside it, trophies on the walls, benches along the front "
@@ -197,7 +197,7 @@ ROOMS = {
                                   "plant": (0.8, 3), "statue": (0.5, 2), "storage": (0.5, 2)},
                         types={"table": r"^Table[1-4]$|^OvalTable[12]$|^RoundTableWithFood$|^RoundTable[123]$",
                                "shelves": r"^LogShelvesFull\d$|^Bookcase\d(HalfFull)?$", "statue": r"^Statue2[a-h]$",
-                               "storage": CHEST, "plant": PLANTS},
+                               "storage": CHEST, "plant": PLANTS, "chair": r"Chair"},
                         # Westwood's room statistics count hearths as lights, so a recipe names its own
                         prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
@@ -205,7 +205,7 @@ ROOMS = {
                                  dict(fam="table", slot="table_rows", seat="chair"),
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.5),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="table", slot="group", group="dining", max=2, min_area=140), dict(fam="table", slot="group", group="feast", max=1, min_area=90),
+                        fill=[dict(fam="table", slot="group", group="dining", max=2, min_area=90), dict(fam="table", slot="group", group="feast", max=1, min_area=90),
                               dict(fam="statue", slot="group", group="statues", max=1, min_area=260),
                               dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                               dict(fam="bench", slot="wall", max=2),
@@ -339,6 +339,9 @@ ROOMS = {
                             dict(fam="bench", slot="pews", toward="altar"),
                             dict(fam="wall_decor", slot="decor")],
                    fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120),
+                         dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
+                         dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
+                         dict(fam="bench", slot="wall", at="center", clear=0, max=2),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
                           "crypt chests, tapestries",
