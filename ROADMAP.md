@@ -13,13 +13,14 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
 | TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
-| Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 21 kinds at Westwood's true sizes (two lab pages): 56-60 of 63 rooms pass over 3 seeds | `mapgen/designs/roomlab.py` |
-| Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 16 roles (a manor of 8 rooms, 3 culture buildings): 13 pass at the kit's scale (1.25) | `mapgen/designs/buildinglab.py` |
+| Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 21 kinds at Westwood's true sizes (two lab pages): 62 of 63 rooms pass in each of 3 seeds (186 of 189) | `mapgen/designs/roomlab.py` |
+| Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 16 roles (a manor of 8 rooms, 3 culture buildings): 44 of 48 pass over 3 seeds at the kit's scale (1.25); 13 of 14 at 1.6 | `mapgen/designs/buildinglab.py` |
 | Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.2 maps installed with a structure each: Darkdelve's ogre keep, Frostfang's dark temple, Emberdeep's demon forge | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
-| Town lab: the village pipeline at the bigger scale, a market town of 13 buildings round a square (`townlab.py`) | 13 of 13 buildings placed; 28 of 30 rooms pass | `mapgen/designs/townlab.py` |
+| Town lab: the village pipeline at the bigger scale, a market town of 13 buildings round a square (`townlab.py`) | 13 of 13 buildings; outskirts with forest loops and nine yards; checker 0 errors, 0 warnings; 29 of 30 rooms pass | `mapgen/designs/townlab.py` |
 | Cultures: how Westwood furnishes ogre lairs, the Land of the Dead and Dun Mir, room by room | ogre, Land of the Dead and Dun Mir room recipes; 3 culture buildings | `rules/CULTURES.md`, `rules/cultures.py` |
 | NPCs: Westwood's placement and movement measured; behaviour sets scripted in Go for OpenNox | NpcLab test map installed; Darkdelve's bats skittish, Frostfang's wolves in packs | `rules/NPCS.md`, `mapgen/kit/npcs.py`, `mapgen/kit/behaviours/` |
 | Weapons: how each weapon fires its projectile (thing.bin USE lines, OpenNox's handlers); a fireball staff that throws harpoons | Harpoon test map installed | `rules/WEAPONS.md`, `mapgen/kit/behaviours/weapons.go` |
+| Towns: where a town's walls stand (edge, islands, buildings, yards); yards with a purpose; a town's planting | 7 yard kinds built (graveyard, quarry, orchard, park, field, monument, jail) | `rules/TOWNS.md`, `rules/town_walls.py`, `mapgen/kit/yards.py` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
