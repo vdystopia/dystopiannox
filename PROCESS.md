@@ -116,6 +116,34 @@ Then, in this order:
   - Food is never set out as loose items. Nox draws items at floor level, so food reads as dropped on the floor;
     use a table that carries its food (`RoundTableWithFood`).
   - Furniture spreads through the room's whole length, never packed into one end (checker: under 35% of the length).
+- **Rooms are full** (TreePlace v0.2 room review: "too empty" in almost every room).
+  - Compose the anchors first, then fill the room toward the furniture count of Westwood's fuller rooms of the
+    same kind and size (the 80th percentile, `Furnisher.fill_room` with each recipe's `fill` steps). Stop at
+    Westwood's 95th percentile, which is the checker's limit.
+  - Each fill step has its own maximum, so a room gains variety rather than ten bookcases.
+  - Hang the back walls with one theme of hangings per room (hunting trophies, one colour of tapestry, or
+    paintings), at least 4.5 units apart.
+  - Put potted plants in the corners.
+  - The checker calls a generated room sparse when it holds fewer pieces than Westwood's median.
+- **Spacing within the room.**
+  - A cauldron stands about 2 units from the hearth (Westwood's typical gap; the closest is 0.87).
+  - Supplies keep a unit or more from anything that is not a supply, on every side, not just along their own
+    wall. They keep 2.4 units from a fire, because fires are drawn far wider than their footprint.
+  - Shelves and desks face one way and have no corner pieces, so they keep 2.2 units out of corners.
+  - Bunks stand at least 0.9 units apart (Westwood's closest) with a nightstand between neighbours, spread evenly
+    along the wall. Each bed's head goes against the wall (the cot numbering comes from the pillows, not from
+    Westwood's sideways cots).
+  - Tables, desks and beds stay off rugs. Bearskins are drawn about 1.2 units past their footprint, so the
+    margin is 2 units for a bearskin and 0.8 for a woven rug.
+  - The exception is a woven rug laid centred under a round or square table (`Furnisher.rug_under`), which makes
+    the middle of a bedroom, study or living room one composed piece.
+  - Rugs try the other designs and slide a little before giving up.
+  - Potted plants go only into real corners of the room.
+  - Storerooms mix heaps in the corners with groups and single pieces, so they have both clusters and open
+    stretches.
+  - A herbalist's or library's shelves line one whole wall, side by side, but not every wall.
+- **One kind of door per building.** The main entrance takes the family's door; the doorways between rooms take
+  its single door. A double door into a bedroom is not believable.
 - **Light houses with candelabras and the hearth.** Never use an open torch indoors: a flame on a stick by a wall
   does not look mounted, and an open flame that size indoors is not believable. Use wood candelabras in log and
   stucco houses, iron ones in stone houses. Torches belong outdoors, in dungeons and in mines.
@@ -140,7 +168,10 @@ Then, in this order:
 - `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.
 - `review/review.py`: comparison sheet and design measurements (paths, vegetation structure, roads crowding water…). Apply `review/RUBRIC.md`, including criterion 8 (identity), and record the review in `review/reviews/`.
 - `review/rooms.py <map> --each`: one numbered close-up per room (building, kind, purpose). Check every room
-  against its purpose, and show the pictures to the playtester for numbered feedback.
+  against its purpose, and show the pictures to the playtester for numbered feedback. Walls in front of each room
+  show half see-through, as the game draws them when you are inside, so pieces against them are visible.
+- Generated maps write `<map>.rooms.json` beside the map. The checker then judges each room as what it was
+  meant to be (a study with two bookcases is not a library).
 - Playtest in the game; log the findings in `ROADMAP.md`.
 
 Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on

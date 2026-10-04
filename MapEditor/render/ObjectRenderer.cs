@@ -609,7 +609,7 @@ namespace MapEditor.render
                 }
             }
 
-            if (MainWindow.Instance.imgMode)
+            if (MainWindow.Instance.imgMode && EditorSettings.Default.Draw_Walls)   // walls sorted with the objects (left out for "nowalls" renders)
             {
                 int wallIndex = 0;
                 foreach (Map.Wall wall in mapRenderer.Map.Walls.Values)

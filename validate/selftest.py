@@ -168,6 +168,31 @@ def lopsided(m):
     for u, v in ((220, -2), (220, 0), (219.5, 2.5)): m.obj("Barrel", u, v)
 
 
+def packed_bunks(m):
+    for v in (-6.0, -3.0, 0.0): m.obj("WoodBed2", 204, v)              # 0.24 units apart (WoodBed2 is 2.76 long)
+
+
+def hearth_crowded(m):
+    m.obj("Fireplace3", 202.5, -4); m.obj("CauldronAnimated", 202.5, -2.14)    # 0.2 units from the hearth
+
+
+def table_half_on_rug(m): m.obj("RedRug2", 212.5, -6)
+
+
+def double_door_inside(m):
+    for x in range(100, 111): m.wall(x, 210 - x, "StuccoLightWood")     # a partition across the house (u = 210)
+    m.door("ArchedHalfDoor", (105, 105), "/")
+
+
+def mixed_doors(m):
+    m.door("WoodenDoor", (111, 101), "\\")                               # a third kind of door in the house
+
+
+def sparse_room(m):
+    m.declare_rooms = [dict(number=1, building="test house", kind="living_room", purpose="", tiles=0,
+                            box=[0, 0, 0, 0], floor=[list(t) for t in rect_tiles(200, 222, -10, 10)])]
+
+
 def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
@@ -203,6 +228,15 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "has no seats"),
     ("STlopsd", lopsided, "composition", "warning", "furniture packed into one end of a room - TreePlace v0.1 playtest",
      "fills only"),
+    ("STbeds", packed_bunks, "composition", "warning", "beds packed side by side - TreePlace v0.2 room review", "next bed"),
+    ("SThearth", hearth_crowded, "composition", "warning", "cauldron against the hearth - TreePlace v0.2 room review", "crowds"),
+    ("STrugtb", table_half_on_rug, "composition", "warning", "table half on a rug - TreePlace v0.2 room review", "half on"),
+    ("STddoor", double_door_inside, "doors", "warning", "double door between two rooms of a house - TreePlace v0.2 room review",
+     "between two rooms"),
+    ("STsparse", sparse_room, "composition", "warning", "a room sparser than Westwood's median - TreePlace v0.2 room review",
+     "sparse"),
+    ("STdkind", mixed_doors, "doors", "warning", "three kinds of door in one building - TreePlace v0.2 room review",
+     "kinds of door"),
 ]
 
 
@@ -214,6 +248,13 @@ def main():
         m = clean(name)
         if defect: defect(m)
         out_dir = os.path.join(OUT, name)
+        os.makedirs(out_dir, exist_ok=True)
+        side = os.path.join(out_dir, name + ".rooms.json")
+        if getattr(m, "declare_rooms", None):          # the rooms as a generator would declare them
+            import json
+            json.dump(m.declare_rooms, open(side, "w"))
+        elif os.path.exists(side):
+            os.remove(side)
         m.build(out_dir, check=False)
         data = md.load(os.path.join(out_dir, name + ".map"))
         findings, _ = C.run_all(data, base)

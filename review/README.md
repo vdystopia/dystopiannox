@@ -16,7 +16,9 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
 4. `py review/rooms.py <map> --each` shows the interiors. It writes a sheet of every room
    (`review/out/<map>/rooms.png`) and one close-up per room (`review/out/<map>/rooms/NN.png`). Each close-up is
    numbered and labelled with its building, kind and purpose, and lights its room while dimming the
-   neighbours. Show these to the playtester for numbered, room-by-room feedback. Generated maps write
+   neighbours. Over the room's floor the walls show half see-through (a second render without walls is blended
+   in, `MapEditor.exe <map> --render-image <png> full:5880 nowalls`), as the game draws the walls in front of the
+   player. Show these to the playtester for numbered, room-by-room feedback. Generated maps write
    `<map>.rooms.json` beside the map (`kit/identity.rooms_sidecar`) with each room's number, building, kind,
    purpose and floor; other maps fall back to the checker's room finder.
 

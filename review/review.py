@@ -105,11 +105,12 @@ def references(prof, base, env=None, n=3):
 
 
 # ---- pictures ----------------------------------------------------------------------------------------
-def render(map_file, name):
+def render(map_file, name, walls=True):
+    """Full-size render of a map (cached in review/out/renders/); walls=False leaves the walls out."""
     os.makedirs(os.path.join(OUT, "renders"), exist_ok=True)
-    png = os.path.join(OUT, "renders", name + ".png")
+    png = os.path.join(OUT, "renders", name + ("" if walls else ".nowalls") + ".png")
     if not os.path.exists(png) or os.path.getmtime(png) < os.path.getmtime(map_file):
-        subprocess.run([EDITOR, map_file, "--render-image", png, "full:5880"], timeout=900)
+        subprocess.run([EDITOR, map_file, "--render-image", png, "full:5880"] + ([] if walls else ["nowalls"]), timeout=900)
     if not os.path.exists(png): raise RuntimeError(f"render of {name} failed")
     return Image.open(png).convert("RGB")
 

@@ -29,6 +29,12 @@ NOT_ROOM_FLOOR = ("Water", "Grass", "Lava", "Swamp", "Mine", "Black", "Weeds", "
                   "Rug")   # rugs: Westwood lays them as patches inside rooms (a furnisher's job)
 # door objects that are fence gates or cage doors rather than house doors
 NOT_HOUSE_DOOR = ("Gate", "Barred", "Cage", "Jail", "Spiked", "Dilapidated")
+# One door family per building: Westwood's buildings use one door kind throughout (539 of 630; 11 use three).
+# The main entrance takes the family's door, the doorways between rooms its single door: a double door into
+# a bedroom is not believable (TreePlace v0.2 playtest).
+SINGLE_OF = {"ArchedHalfDoor": "ArchedDoor", "DunMirHalfDoor": "DunMirDoor", "GalavaHalfDoor": "GalavaDoor",
+             "LOTDHalfDoor": "LOTDSingleDoor", "WoodAndSteelHalfDoor": "WoodAndSteelDoor", "ThinWoodenDoor": "WoodenDoor",
+             "BandedPlankDoor": "BandedWoodenDoor"}
 
 _STYLES = None
 _THINGS = None
@@ -446,6 +452,11 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
 
     ext_types = {k: v for k, v in st["exterior_door_types"].items() if not any(x in k for x in NOT_HOUSE_DOOR)} or {"WoodenDoor": 1}
     int_types = {k: v for k, v in (st["interior_door_types"] or ext_types).items() if not any(x in k for x in NOT_HOUSE_DOOR)} or ext_types
+    from nox import door_rules
+    ext_type = _pick(rng, ext_types)
+    int_type = SINGLE_OF.get(ext_type, ext_type)
+    if door_rules()["types"].get(int_type, {}).get("kind") == "double":
+        int_type = "WoodenDoor"
     used_points = set()
 
     def place_door(run, dtype, connects):
@@ -478,7 +489,7 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         if len(b.entrances) >= n_entr: break
         if b.entrances and run_room(rn) == b.entrances[0].connects[0].split(":r")[-1]: continue
         rid = run_room(rn)
-        d = place_door(rn, _pick(rng, ext_types), (rooms[rid].id, "outside"))
+        d = place_door(rn, ext_type, (rooms[rid].id, "outside"))
         if d:
             rooms[rid].doors.append(d); b.entrances.append(d)
             if len(b.entrances) == 1: b.entrance_side = _side_of_run(rn, W, H) if _on_outer_side(rn, W, H, _side_of_run(rn, W, H)) else "inner"
@@ -502,12 +513,12 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         r = queue.popleft()
         for nb, rn in sorted(adj[r], key=lambda t: (-len(t[1][2]), rng.random())):
             if nb in seen: continue
-            d = place_door(rn, _pick(rng, int_types), (rooms[r].id, rooms[nb].id))
+            d = place_door(rn, int_type, (rooms[r].id, rooms[nb].id))
             if d is None:
                 # try any other run between the same two rooms
                 for nb2, rn2 in adj[r]:
                     if nb2 == nb and rn2 is not rn:
-                        d = place_door(rn2, _pick(rng, int_types), (rooms[r].id, rooms[nb].id))
+                        d = place_door(rn2, int_type, (rooms[r].id, rooms[nb].id))
                         if d: break
             if d is None: continue
             rooms[r].doors.append(d); rooms[nb].doors.append(d)
@@ -517,7 +528,7 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         if r in seen: continue
         for rn in ext_runs:
             if run_room(rn) == r:
-                d = place_door(rn, _pick(rng, ext_types), (rooms[r].id, "outside"))
+                d = place_door(rn, ext_type, (rooms[r].id, "outside"))
                 if d: rooms[r].doors.append(d); b.entrances.append(d); break
 
     b.rooms = [rooms[r] for r in room_ids]

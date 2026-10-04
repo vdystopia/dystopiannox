@@ -14,7 +14,7 @@ The full report goes to `validate/out/<map>/report.md`.
 |---|---|
 | `py validate/validate.py DysVale` | Checks a map: a `.map` path, a game map folder name, or a Westwood map name such as `Con07B` |
 | `py validate/validate.py DysVale --image` | Also writes `overview.png` (numbered markers: red = error, orange = warning) and `errors/error_NNN.png` close-ups |
-| `py validate/selftest.py` | Builds a clean test map and 27 maps with planted defects, and confirms each defect is caught (by its own message) |
+| `py validate/selftest.py` | Builds a clean test map and 34 maps with planted defects, and confirms each defect is caught (by its own message) |
 | `py validate/calibrate.py` | Re-measures Westwood's 120 single-player maps, rewrites `baseline.json`, and lists how often each check fires on them |
 
 The exit code of `validate.py` is 0 when there are no errors, 1 when there are errors, and 2 when the map can't be read.
@@ -39,6 +39,8 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | rooms | warning | Furniture count above Westwood's rooms of the same kind and similar size (DysVale playtest); nearly bare rooms; room size outside the kind's range |
 | composition | warning | Pieces that make no sense where they stand (DysVale v0.4 and v0.5 playtests): a piece right in front of a chest, hearth or stove; chairs with no table; furniture bunched into one part of a room (beyond Westwood's 95th percentile); a bridge whose ends do not open onto ground. Also: a dock with no open water past its tip, lights of one room side by side, a short path ending at a building wall with no door, a bar counter stopping short of the wall. From the v0.6 playtest: a chest, bookcase, desk or shelf lying across its wall instead of along it; 4 or more stumps, logs, rocks, boulders, crystals or mushrooms bunched in one spot (330 px) when that is most of them; a bridge crossing at a slant (under 60°), sitting on a bend, or with a plank deck wider than 2 tiles. Furniture outside a room's identity also counts the identity's aliases (an ore store is a storeroom, a mess hall a dining hall) |
 | composition | warning | From the TreePlace v0.1 playtest: food lying by a table (it reads as dropped: Westwood 0 cases); a long table seated only at its ends (Westwood 0); a bunk room of mixed bed kinds (Westwood 0) or with its beds scattered (3 of 14); a table with no seats in a dining hall, tavern or barracks; furniture spanning under 35% of a room's length (Westwood's rooms of 40+ tiles: p5 24%, p10 45%); an open torch inside a house (the user's house rule; Westwood does it in 35 rooms) |
+| composition | warning | From the TreePlace v0.2 room review: beds closer than 0.9 units (Westwood: never); a cauldron or stove within 0.6 units of a hearth (Westwood: at least 0.87); a table half on a rug; a generated room sparser than Westwood's median for its kind and size (house rule) |
+| doors | warning | A double door between two rooms of a house (house rule; Westwood keeps them to palaces and Galava's town houses); a building with 3 or more kinds of door (Westwood: 11 of 630) |
 | density | warning | Lights, coloured lights, decorations, creatures, edge coverage and walls per 100 floor tiles outside Westwood's 5th–95th percentile |
 
 ## How it was calibrated
@@ -85,5 +87,9 @@ Composition warnings on Westwood's maps (they are guidance, not errors):
 | BldTest (all 20 building styles) | 0 errors |
 | TestWatr | 0 errors |
 | TreePlace v0.1 | 0 errors at release. The arrangement checks added after its playtest flag all of that playtest's findings in it (6 rooms with torches, food by a table, tables seated at their ends, mixed bunks, a table without seats, a lopsided kitchen, barrels in the mess hall, a powder barrel and a bookcase in a storeroom) |
-| TreePlace v0.2 | 0 errors; warnings: no creatures, 16.9 wall pieces per 100 floor tiles (Westwood's forests 21-52) |
+| TreePlace v0.2 | 0 errors at release. The room-review rules flag its reviewed defects: tables half on rugs, bunks 0.5 units apart, the cauldron against the hearth, double doors between house rooms, three kinds of door in the foreman's house |
+| TreePlace v0.3 | 0 errors; warnings: no creatures, 16.8 wall pieces per 100 floor tiles |
+
+Generated maps declare their rooms in `<map>.rooms.json` beside the map, and the checker judges each room as its
+declared kind. Other maps' rooms are classified by their furniture.
 | RoomTest | 20 doors standing in the void: the test sheet's rooms float in darkness (same on master) |

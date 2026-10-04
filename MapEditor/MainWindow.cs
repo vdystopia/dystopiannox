@@ -124,8 +124,9 @@ namespace MapEditor
             LoadNewMap();
             if (args.Length > 0)
                 if (File.Exists(args[0])) MapInterface.SwitchMap(args[0]);
-            // Headless mode: MapEditor.exe <map> --render-image <out.png> [size]
-            // renders the whole map like the Map Image tab, saves it and exits.
+            // Headless mode: MapEditor.exe <map> --render-image <out.png> [size] [nowalls]
+            // renders the whole map like the Map Image tab, saves it and exits. "nowalls" leaves the walls
+            // out (review/rooms.py blends it in so walls in front of a room read as see-through, as in the game).
             if (args.Length >= 3 && args[1] == "--render-image")
             {
                 Opacity = 0;
@@ -135,7 +136,8 @@ namespace MapEditor
                 string sizeArg = args.Length > 3 ? args[3] : "5880";
                 bool full = sizeArg.StartsWith("full:");
                 int size = int.Parse(full ? sizeArg.Substring(5) : sizeArg);
-                Shown += (s, e) => RenderImageAndExit(args[2], size, full);
+                bool noWalls = args.Length > 4 && args[4] == "nowalls";
+                Shown += (s, e) => RenderImageAndExit(args[2], size, full, noWalls);
             }
             spl.Close();
         }
@@ -1385,12 +1387,13 @@ namespace MapEditor
             progBarImage.Value = 0;
             EditorSettings.Default.Reload();
         }
-        private void RenderImageAndExit(string outFile, int size, bool full)
+        private void RenderImageAndExit(string outFile, int size, bool full, bool noWalls = false)
         {
             int code = 0;
             try
             {
                 SetImageRenderMode(false);
+                if (noWalls) EditorSettings.Default.Draw_Walls = false;
                 Bitmap whole = mapView.MapToImage();
                 Bitmap image = full ? ImageHelper.ResizeImage(whole, new Size(size, size), true) : ImageHelper.SmartCrop(whole, size, 20);
                 if (full) whole.Dispose();

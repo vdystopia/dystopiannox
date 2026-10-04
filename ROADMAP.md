@@ -12,11 +12,35 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
-| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.2 (interiors), awaiting playtest | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
+| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.3 (fuller rooms), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | 6. Package as a skill | next | |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
+
+### TreePlace v0.2 room review (2026-10-03)
+
+The first review from numbered room pictures (`review/rooms.py --each`). The theme: almost every room was too
+empty. Fixed in v0.3:
+
+| # | Finding | Fix |
+|---|---|---|
+| 1 | Living room: very empty, lights uneven, the table half on a rug too small for it | Rooms fill toward Westwood's fuller rooms of the kind (85th percentile, never past the 95th) with what their identity calls for: shelves, a bench, plants, hangings in one theme. Lights go where they leave the darkest corner closest to a light. Tables stay off rugs, or stand centred on a woven rug of their own (checker: tables half on a rug) |
+| 2 | Herbalist: table on a rug, unbalanced; line whole walls with potion shelves (but not every wall) | `shelf_wall`: one whole back wall of shelves side by side; sacks of herbs, potted plants |
+| 3 | Bedroom: very empty; nightstand too close to the bed | The bedroom gets a desk and chair, shelves, a bench and a plant; the nightstand stands apart from the bed |
+| 4 | Storeroom: too empty; a shelf in a corner looked wrong (it faces one way; no corner piece) | Walls are stocked past blocked spots (stocking used to give up after four misses). Heaps go in the corners. Shelves and desks keep 2.2 units out of corners |
+| 5 | Ore shed: clusters and open spaces; spread things out | Carts keep room round them; crates and tool barrels stand along the walls with gaps |
+| 6 | Bunk room: beds too close; more shelves, objects and bigger rugs | Beds of one kind, evenly spaced at least 1.6 units apart, a nightstand between neighbours, a footlocker at each foot, rugs along the aisle, two shelves for gear, hangings. The cot heads are now at the wall (`NUMBERING_OVERRIDES`). Checker: beds closer than 0.9 units (Westwood never) |
+| 7 | Bunkhouse storeroom: too evenly spaced; balance clusters and spaced objects | Corner heaps, groups of 1-4 with varied gaps, single pieces |
+| 8 | Mess hall: good layout but needs more | More tables in rows, benches along the walls, crockery shelves, hangings |
+| 9 | Kitchen: cauldron too close to the hearth; apples crowding the cauldron | The cauldron stands 2 units from the hearth (Westwood's typical gap). Supplies keep clear of anything that is not a supply on every side, 2.4 units from a fire, since a fire is drawn far wider than its footprint. Checker: a cauldron or stove within 0.6 units of a hearth (Westwood: at least 0.87) |
+| 10 | Study: too small and empty; a double door into a bedroom; three kinds of door in one house | The foreman's house is bigger. Each building picks one door family: the entrance gets its door, the rooms its single door. Checker: double doors between house rooms; 3+ door kinds per building |
+| 11 | Foreman's bedroom: could use more | As 3 |
+
+Also:
+- the room pictures show front walls see-through (an editor `nowalls` render, blended);
+- the checker judges each generated room by its declared kind (`<map>.rooms.json`);
+- a room never goes past Westwood's 95th percentile for its kind.
 
 ### TreePlace v0.1 (2026-10-03)
 

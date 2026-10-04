@@ -46,18 +46,23 @@ def each(path, size=(1100, 820), margin=2):
     """One close-up per room, numbered: review/out/<map>/rooms/NN.png. Returns the file paths."""
     m = md.load(path)
     im = render(path, m.name)
+    bare = render(path, m.name, walls=False)       # the same without walls: front walls read see-through, as in game
     od = os.path.join(HERE, "out", m.name, "rooms")
     os.makedirs(od, exist_ok=True)
     files = []
     for r in rooms_of(path, m):
         x0, y0, x1, y1 = r["box"]
         ox, oy = (x0 - margin) * md.CELL, (y0 - margin) * md.CELL
-        c = im.crop((ox, oy, (x1 + margin) * md.CELL, (y1 + margin) * md.CELL))
+        box = (ox, oy, (x1 + margin) * md.CELL, (y1 + margin) * md.CELL)
+        c = im.crop(box)
         if r.get("floor"):                     # dim everything but this room: its floor, walls and what stands there
             mask = Image.new("L", c.size, 0)
             dm = ImageDraw.Draw(mask)
             for x, y in r["floor"]:            # a floor tile covers 2 x 2 cells
                 dm.rectangle((x * md.CELL - ox, y * md.CELL - oy, (x + 2) * md.CELL - ox, (y + 2) * md.CELL - oy), fill=255)
+            # over the room's own floor, walls show at half strength: the game draws the walls in front of
+            # the player see-through, so what stands against them is seen
+            c = Image.composite(Image.blend(c, bare.crop(box), 0.55), c, mask.filter(ImageFilter.GaussianBlur(2)))
             mask = mask.filter(ImageFilter.MaxFilter(25))            # the walls round the floor
             up = Image.new("L", c.size, 0)
             up.paste(mask, (0, -42))                                 # tall pieces and walls rise up the screen

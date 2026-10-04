@@ -8,7 +8,7 @@ Severities:
   info    - measurements, for the report.
 Thresholds come from validate/baseline.json (validate/calibrate.py measures Westwood's maps).
 """
-import collections, math, re
+import collections, json, math, os, re
 import mapdata as md
 import room_types as RT
 from mapdata import CELL, GRID, N4, DIAG, ARMS_OF, LINE_STEP, rules
@@ -396,8 +396,21 @@ def check_floors(m, ctx, base):
 
 
 # ---- rooms ------------------------------------------------------------------------------------------
+def declared_rooms(m):
+    """The design's own rooms, from <map>.rooms.json beside the map when the generator wrote one
+    (kit/identity.rooms_sidecar): floor tile -> room record (number, building, kind, purpose)."""
+    if getattr(m, "_declared", None) is not None: return m._declared
+    m._declared = {}
+    side = os.path.splitext(m.file or "")[0] + ".rooms.json"
+    if m.file and os.path.exists(side):
+        for rec in json.load(open(side, encoding="utf-8")):
+            for x, y in rec.get("floor", []): m._declared[(x, y)] = rec
+    return m._declared
+
+
 def find_rooms(m):
-    """Enclosed areas of 2..400 floor tiles (same definition as rules/rooms.py), with their objects."""
+    """Enclosed areas of 2..400 floor tiles (same definition as rules/rooms.py), with their objects. A
+    room the design declared (declared_rooms) carries its record as r["declared"]."""
     blocked = set(m.walls) | set(m.door_gaps)
     comp = {}; rooms = []
     for start in m.cover:
@@ -416,10 +429,23 @@ def find_rooms(m):
         cid = comp.get(m.cell_of(o["x"], o["y"]))
         if cid is not None: rooms[cid]["objects"].append(o)
     out = []
+    decl = declared_rooms(m)
     for r in rooms:
         r["tiles"] = sum(1 for p in r["cells"] if p in m.tiles)
-        if r["enclosed"] and 2 <= r["tiles"] <= 400: out.append(r)
+        if r["enclosed"] and 2 <= r["tiles"] <= 400:
+            votes = collections.Counter(decl[p]["number"] for p in r["cells"] if p in decl)
+            if votes:
+                num, n = votes.most_common(1)[0]
+                if n * 2 >= r["tiles"]:
+                    r["declared"] = next(rec for rec in decl.values() if rec["number"] == num)
+            out.append(r)
     return out
+
+
+def room_kind(r):
+    """(kind, furniture count): the kind the design declared for the room, else the kind its furniture reads as."""
+    kind, furniture = room_profile(r)
+    return (r["declared"]["kind"], furniture) if r.get("declared") else (kind, furniture)
 
 
 # Shelves of goods and apple crates hold supplies: a room stocked with them is a storeroom or kitchen, not a
@@ -481,9 +507,11 @@ def check_rooms(m, ctx, base):
     """Room size and furniture count against Westwood's rooms of the same kind and similar size."""
     out = []
     kinds = base.get("room_kinds", {})
+    from kit.identity import WESTWOOD_KIND
     for r in find_rooms(m):
-        kind, furniture = room_profile(r)
-        k = kinds.get(kind)
+        kind, furniture = room_kind(r)
+        wkind = WESTWOOD_KIND.get(kind, kind)
+        k = kinds.get(wkind)
         if not k or k["n"] < 4 or "samples" not in k or kind in ("other", "empty"): continue
         x, y = centre(r["cells"])
         near = similar_rooms(k["samples"], r["tiles"])
@@ -491,7 +519,7 @@ def check_rooms(m, ctx, base):
         lo = near[int(0.05 * len(near))]
         if furniture > max(hi, 2):
             out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) holds {furniture} pieces of furniture; "
-                         f"Westwood's {kind} rooms of a similar size hold at most about {hi}.", x, y))
+                         f"Westwood's {wkind} rooms of a similar size hold at most about {hi}.", x, y))
         elif furniture < lo and furniture < 2:
             out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) is nearly bare ({furniture} pieces); "
                          f"Westwood's of a similar size hold at least {lo}.", x, y))
@@ -802,6 +830,7 @@ def check_room_composition(m, ctx, base):
     out += bunched_props(m, base)
     out += bridge_squareness(m)
     out += room_arrangement(m)
+    out += building_doors(m)
     return out
 
 
@@ -812,6 +841,9 @@ FOOD_ITEM = re.compile(r"^(Meat|Bread|RedApple|Apple|Cider|Cheese|Ham|Drumstick|
 DINING_TABLE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d)$")
 SEATED_ROOMS = {"dining_hall", "tavern", "barracks"}      # rooms whose tables are for sitting at
 SPREAD_MIN = 0.35   # share of a room's length its furniture spans; Westwood's rooms of 40+ tiles: p5 0.24, p10 0.45
+BED_GAP_MIN = 0.9   # units between neighbouring beds; Westwood's rooms with 3+ beds: never under 0.92
+HEARTH_GAP_MIN = 0.6   # units between a cauldron or stove and a fireplace; Westwood: never under 0.87
+TABLE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d)$")
 
 
 def _half_uv(o):
@@ -833,7 +865,7 @@ def room_arrangement(m):
     out = []
     for r in find_rooms(m):
         objs, cells = r["objects"], r["cells"]
-        kind, _ = room_profile(r)
+        kind, _ = room_kind(r)
         x0, y0 = centre(cells)
         mats = collections.Counter()
         for (x, y) in cells:
@@ -890,6 +922,106 @@ def room_arrangement(m):
             if L >= 10 and (fp[-1] - fp[0]) / L < SPREAD_MIN:
                 out.append(F("composition", "warning", f"The furniture fills only {100 * (fp[-1] - fp[0]) / L:.0f}% of the "
                              f"room's length and the rest stands empty: spread it through the room.", x0, y0))
+        # TreePlace v0.2 room review
+        if len(beds) >= 3:                                         # bunks packed side by side
+            for b in beds:
+                bu, bv = uv_of(b); hu, hv = _half_uv(b)
+                for o in beds:
+                    if o is b: continue
+                    ou, ov = uv_of(o); ohu, ohv = _half_uv(o)
+                    gu, gv = abs(ou - bu) - hu - ohu, abs(ov - bv) - hv - ohv
+                    gap = gv if gu < 0.5 else gu if gv < 0.5 else None
+                    if gap is not None and -0.5 <= gap < BED_GAP_MIN:
+                        out.append(F("composition", "warning", f"{b['type']} stands {max(gap, 0):.1f} units from the next bed: "
+                                     f"space the beds out (Westwood leaves at least {BED_GAP_MIN} between them).", b["x"], b["y"]))
+                        break
+                else:
+                    continue
+                break
+        hearths = [o for o in objs if "Fireplace" in o["type"]]
+        for s in (o for o in objs if re.match(r"^(Cauldron|Stove)", o["type"])):
+            su, sv = uv_of(s); shu, shv = _half_uv(s)
+            for f in hearths:
+                fu, fv = uv_of(f); fhu, fhv = _half_uv(f)
+                gap = max(abs(su - fu) - shu - fhu, abs(sv - fv) - shv - fhv)
+                if gap < HEARTH_GAP_MIN:
+                    out.append(F("composition", "warning", f"{s['type']} crowds {f['type']} ({max(gap, 0):.1f} units apart): give the "
+                                 f"hearth room (Westwood: at least 0.87).", s["x"], s["y"]))
+        for g_ in (o for o in objs if RT.family(o["type"]) == "rug"):
+            gu, gv = uv_of(g_); ghu, ghv = _half_uv(g_)
+            for t in (o for o in objs if TABLE.match(o["type"])):
+                tu, tv = uv_of(t); thu, thv = _half_uv(t)
+                ou = min(gu + ghu, tu + thu) - max(gu - ghu, tu - thu); ov = min(gv + ghv, tv + thv) - max(gv - ghv, tv - thv)
+                inside = tu - thu >= gu - ghu - 0.05 and tu + thu <= gu + ghu + 0.05 and \
+                    tv - thv >= gv - ghv - 0.05 and tv + thv <= gv + ghv + 0.05
+                if ou > 0.05 and ov > 0.05 and not inside:
+                    out.append(F("composition", "warning", f"{t['type']} stands half on {g_['type']}: centre the table on its rug "
+                                 f"or keep it off (house rule from the TreePlace room review).", t["x"], t["y"]))
+        if r.get("declared"):                                      # generated rooms: at least as full as Westwood's median
+            from kit.identity import WESTWOOD_KIND
+            k = _room_baseline().get(WESTWOOD_KIND.get(kind, kind))
+            _, furniture = room_kind(r)
+            if k and "samples" in k:
+                near = similar_rooms(k["samples"], r["tiles"])
+                med = near[len(near) // 2]
+                if furniture < med:
+                    out.append(F("composition", "warning", f"{kind.replace('_', ' ')} room ({r['tiles']} tiles) is sparse: {furniture} "
+                                 f"pieces, fewer than half of Westwood's of a similar size ({med}) (house rule from the "
+                                 f"TreePlace room review: rooms at Westwood's median and below read as empty).", x0, y0))
+    return out
+
+
+def _room_baseline():
+    import validate as V
+    return V.baseline().get("room_kinds", {})
+
+
+def _door_kind_name(t):
+    return re.sub(r"(Half|Single)?Door$", "", t)
+
+
+def building_doors(m):
+    """Doors within a building (TreePlace v0.2 room review): a double door between two rooms of a house
+    (house rule; Westwood keeps them to palaces and Galava's town houses), and a building whose doors come in
+    3 or more kinds (Westwood: 11 of 630 buildings)."""
+    out = []
+    rooms = find_rooms(m)
+    cell_room = {}
+    for k, r in enumerate(rooms):
+        for c in r["cells"]: cell_room[c] = k
+    parent = list(range(len(rooms)))
+
+    def find(a):
+        while parent[a] != a: parent[a] = parent[parent[a]]; a = parent[a]
+        return a
+    door_rooms = []
+    for d in m.doors:
+        gx, gy = d["gap"]
+        near = sorted({cell_room.get((gx + a, gy + b)) for a in (-1, 0, 1) for b in (-1, 0, 1)} - {None})
+        door_rooms.append((d, near))
+        for a_ in near[1:]: parent[find(a_)] = find(near[0])
+    kinds = rules("doors")["types"]
+    groups = collections.defaultdict(set)
+    for d, near in door_rooms:
+        if not near: continue
+        groups[find(near[0])].add(_door_kind_name(d["obj"]["type"]))
+        if len(near) >= 2 and kinds.get(d["obj"]["type"], {}).get("kind") == "double":
+            mats = collections.Counter()
+            for k in near:
+                for (x, y) in rooms[k]["cells"]:
+                    for a, b in N4:
+                        w = m.walls.get((x + a, y + b))
+                        if w and not w.invisible: mats[w.material] += 1
+            mat = mats.most_common(1)[0][0] if mats else ""
+            if HOUSE_WALL.match(mat) and not mat.startswith("Galava"):
+                out.append(F("doors", "warning", f"{d['obj']['type']} is a double door between two rooms of a house: use the "
+                             f"single door of the same kind inside (house rule from the TreePlace room review).",
+                             d["obj"]["x"], d["obj"]["y"]))
+    for g, names in groups.items():
+        if len(names) >= 3:
+            r = rooms[g]
+            out.append(F("doors", "warning", f"One building uses {len(names)} kinds of door ({', '.join(sorted(names))}): keep "
+                         f"one kind throughout (Westwood: 11 of 630 buildings use three).", *centre(r["cells"])))
     return out
 
 
