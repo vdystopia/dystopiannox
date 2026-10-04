@@ -1,0 +1,3510 @@
+{
+ "ice": {
+  "maps": [
+   "Con09d",
+   "Wiz11A"
+  ],
+  "tiles": 14969,
+  "floors": [
+   [
+    "IceFloorDeepBlue",
+    0.218
+   ],
+   [
+    "IceFloorRough",
+    0.143
+   ],
+   [
+    "CaveHardBrown",
+    0.132
+   ],
+   [
+    "IceFloorDark",
+    0.118
+   ],
+   [
+    "LOTDTempleFacade",
+    0.117
+   ],
+   [
+    "LOTDPitted",
+    0.078
+   ],
+   [
+    "LOTDDark",
+    0.068
+   ],
+   [
+    "CaveHardTan",
+    0.052
+   ],
+   [
+    "IceFloorLight",
+    0.023
+   ],
+   [
+    "LOTDDark2",
+    0.016
+   ],
+   [
+    "LOTDBlackMarble",
+    0.014
+   ],
+   [
+    "CaveHardDark",
+    0.011
+   ],
+   [
+    "ManaMineDirt",
+    0.003
+   ],
+   [
+    "WoodGray",
+    0.002
+   ],
+   [
+    "StoneLight",
+    0.002
+   ]
+  ],
+  "walls": [
+   [
+    "IceWall",
+    0.423
+   ],
+   [
+    "CaveWall",
+    0.265
+   ],
+   [
+    "LOTDOrnate",
+    0.186
+   ],
+   [
+    "ManaMineWall",
+    0.052
+   ],
+   [
+    "BlackWall",
+    0.034
+   ],
+   [
+    "InvisibleBlockingWallSet",
+    0.017
+   ],
+   [
+    "InvisibleStoneWallSet",
+    0.011
+   ],
+   [
+    "IronFence",
+    0.006
+   ],
+   [
+    "LOTDMagicOrnate",
+    0.003
+   ],
+   [
+    "InvisibleWallSet",
+    0.001
+   ],
+   [
+    "LOTDBrick",
+    0.001
+   ]
+  ],
+  "objects": [
+   [
+    "Spike",
+    486,
+    3.247
+   ],
+   [
+    "BlackPowder",
+    392,
+    2.619
+   ],
+   [
+    "TreeSnowCovered3",
+    95,
+    0.635
+   ],
+   [
+    "TreeSnowCovered6",
+    69,
+    0.461
+   ],
+   [
+    "TreeSnowCovered5",
+    66,
+    0.441
+   ],
+   [
+    "LOTDManaObelisk",
+    52,
+    0.347
+   ],
+   [
+    "TreeSnowCovered4",
+    48,
+    0.321
+   ],
+   [
+    "TreeSnowCovered2",
+    43,
+    0.287
+   ],
+   [
+    "ColorLight",
+    27,
+    0.18
+   ],
+   [
+    "LOTDColumn1",
+    27,
+    0.18
+   ],
+   [
+    "BlackPowderBarrel",
+    22,
+    0.147
+   ],
+   [
+    "ExtentCylinderSmallStone",
+    22,
+    0.147
+   ],
+   [
+    "CaveRocksHuge",
+    19,
+    0.127
+   ],
+   [
+    "TreeSnowCovered1",
+    19,
+    0.127
+   ],
+   [
+    "CaveRocksSmall",
+    16,
+    0.107
+   ],
+   [
+    "LOTDTapestry2",
+    16,
+    0.107
+   ],
+   [
+    "Torch",
+    15,
+    0.1
+   ],
+   [
+    "CaveRocksTiny",
+    11,
+    0.073
+   ],
+   [
+    "Barrel",
+    11,
+    0.073
+   ],
+   [
+    "ObeliskPrimitive",
+    10,
+    0.067
+   ],
+   [
+    "Barrel2",
+    10,
+    0.067
+   ],
+   [
+    "CaveRocksPebbles",
+    10,
+    0.067
+   ],
+   [
+    "ArmBone",
+    10,
+    0.067
+   ],
+   [
+    "CaveRocksLarge",
+    9,
+    0.06
+   ],
+   [
+    "CaveRockPillarTall1",
+    8,
+    0.053
+   ],
+   [
+    "CaveBoulders",
+    8,
+    0.053
+   ],
+   [
+    "IceCrack2",
+    8,
+    0.053
+   ],
+   [
+    "LOTDBanner1",
+    8,
+    0.053
+   ],
+   [
+    "LOTDWallSconse1",
+    8,
+    0.053
+   ],
+   [
+    "LOTDIncenseBasinLit",
+    8,
+    0.053
+   ],
+   [
+    "CaveRockPillarShort2",
+    7,
+    0.047
+   ],
+   [
+    "Bookcase1",
+    7,
+    0.047
+   ],
+   [
+    "CaveRocksMedium",
+    6,
+    0.04
+   ],
+   [
+    "LOTDTombstone2",
+    6,
+    0.04
+   ],
+   [
+    "LOTDTombstone3",
+    6,
+    0.04
+   ],
+   [
+    "LOTDWallSconse2",
+    6,
+    0.04
+   ],
+   [
+    "Flame",
+    5,
+    0.033
+   ],
+   [
+    "MineCrystal05",
+    5,
+    0.033
+   ],
+   [
+    "CaveRockPillarShort1",
+    5,
+    0.033
+   ],
+   [
+    "CaveRockPillarTall2",
+    5,
+    0.033
+   ]
+  ],
+  "signature": [
+   {
+    "type": "Spike",
+    "n": 486,
+    "per100": 3.247,
+    "lift": 3.0,
+    "maps": [
+     "Con09d"
+    ]
+   },
+   {
+    "type": "BlackPowder",
+    "n": 392,
+    "per100": 2.619,
+    "lift": 15.9,
+    "maps": [
+     "Con09d"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered3",
+    "n": 95,
+    "per100": 0.635,
+    "lift": 59.2,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered6",
+    "n": 69,
+    "per100": 0.461,
+    "lift": 76.1,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered5",
+    "n": 66,
+    "per100": 0.441,
+    "lift": 41.1,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "LOTDManaObelisk",
+    "n": 52,
+    "per100": 0.347,
+    "lift": 3.9,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered4",
+    "n": 48,
+    "per100": 0.321,
+    "lift": 29.3,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered2",
+    "n": 43,
+    "per100": 0.287,
+    "lift": 28.0,
+    "maps": [
+     "Con09d"
+    ]
+   },
+   {
+    "type": "LOTDColumn1",
+    "n": 27,
+    "per100": 0.18,
+    "lift": 6.2,
+    "maps": [
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "ExtentCylinderSmallStone",
+    "n": 22,
+    "per100": 0.147,
+    "lift": 78.8,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "TreeSnowCovered1",
+    "n": 19,
+    "per100": 0.127,
+    "lift": 25.9,
+    "maps": [
+     "Con09d"
+    ]
+   },
+   {
+    "type": "LOTDTapestry2",
+    "n": 16,
+    "per100": 0.107,
+    "lift": 6.0,
+    "maps": [
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "IceCrack2",
+    "n": 8,
+    "per100": 0.053,
+    "lift": null,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "LOTDBanner1",
+    "n": 8,
+    "per100": 0.053,
+    "lift": 32.8,
+    "maps": [
+     "Con09d",
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "LOTDIncenseBasinLit",
+    "n": 8,
+    "per100": 0.053,
+    "lift": 7.9,
+    "maps": [
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "LOTDTombstone2",
+    "n": 6,
+    "per100": 0.04,
+    "lift": 57.3,
+    "maps": [
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "LOTDTombstone3",
+    "n": 6,
+    "per100": 0.04,
+    "lift": 17.2,
+    "maps": [
+     "Wiz11A"
+    ]
+   },
+   {
+    "type": "MineCrystal05",
+    "n": 5,
+    "per100": 0.033,
+    "lift": 4.9,
+    "maps": [
+     "Con09d"
+    ]
+   }
+  ],
+  "creatures": [
+   [
+    "BlackWolf",
+    30,
+    0.2
+   ],
+   [
+    "SkeletonLord",
+    27,
+    0.18
+   ],
+   [
+    "Ghost",
+    14,
+    0.094
+   ],
+   [
+    "Necromancer",
+    6,
+    0.04
+   ],
+   [
+    "Lich",
+    6,
+    0.04
+   ],
+   [
+    "Skeleton",
+    6,
+    0.04
+   ],
+   [
+    "Bat",
+    3,
+    0.02
+   ],
+   [
+    "Mimic",
+    2,
+    0.013
+   ],
+   [
+    "Rat",
+    2,
+    0.013
+   ],
+   [
+    "ShopkeeperPurple",
+    1,
+    0.007
+   ],
+   [
+    "WoundedConjurer",
+    1,
+    0.007
+   ],
+   [
+    "ShopkeeperLandOfTheDead",
+    1,
+    0.007
+   ],
+   [
+    "OgreWarlord",
+    1,
+    0.007
+   ],
+   [
+    "NPC",
+    1,
+    0.007
+   ],
+   [
+    "Hecubah",
+    1,
+    0.007
+   ]
+  ],
+  "creatures_per100": 0.68,
+  "lights_per100": 1.08,
+  "ambient": {
+   "Con09d": [
+    70,
+    70,
+    140
+   ],
+   "Wiz11A": [
+    70,
+    70,
+    140
+   ]
+  },
+  "light_colours": [
+   [
+    [
+     0,
+     0,
+     0
+    ],
+    18
+   ],
+   [
+    [
+     224,
+     0,
+     0
+    ],
+    2
+   ],
+   [
+    [
+     160,
+     160,
+     160
+    ],
+    1
+   ],
+   [
+    [
+     64,
+     0,
+     32
+    ],
+    1
+   ],
+   [
+    [
+     0,
+     32,
+     0
+    ],
+    1
+   ],
+   [
+    [
+     32,
+     64,
+     160
+    ],
+    1
+   ],
+   [
+    [
+     32,
+     32,
+     0
+    ],
+    1
+   ],
+   [
+    [
+     32,
+     192,
+     192
+    ],
+    1
+   ]
+  ],
+  "region_ambient": [
+   [
+    [
+     64,
+     64,
+     128
+    ],
+    40773
+   ],
+   [
+    [
+     64,
+     64,
+     144
+    ],
+    13062
+   ],
+   [
+    [
+     32,
+     32,
+     96
+    ],
+    9420
+   ],
+   [
+    [
+     48,
+     48,
+     96
+    ],
+    5776
+   ],
+   [
+    [
+     32,
+     48,
+     80
+    ],
+    2617
+   ],
+   [
+    [
+     32,
+     32,
+     64
+    ],
+    1639
+   ],
+   [
+    [
+     16,
+     16,
+     16
+    ],
+    1636
+   ],
+   [
+    [
+     16,
+     48,
+     64
+    ],
+    1139
+   ]
+  ]
+ },
+ "lava": {
+  "maps": [
+   "Con06a",
+   "G_Lava",
+   "War02A",
+   "War02b",
+   "War11a",
+   "Wiz06a",
+   "Wiz06c",
+   "Wiz07B",
+   "Wiz07C"
+  ],
+  "tiles": 71201,
+  "floors": [
+   [
+    "Lava",
+    0.196
+   ],
+   [
+    "VolcanicCraggy",
+    0.142
+   ],
+   [
+    "CaveHardBrown",
+    0.12
+   ],
+   [
+    "GreenBrick",
+    0.12
+   ],
+   [
+    "LOTDBlackMarble",
+    0.043
+   ],
+   [
+    "LOTDPitted",
+    0.04
+   ],
+   [
+    "GalavaBrick2",
+    0.035
+   ],
+   [
+    "DirtDark2",
+    0.035
+   ],
+   [
+    "DunMirBrick1",
+    0.033
+   ],
+   [
+    "GalavaBrick",
+    0.032
+   ],
+   [
+    "Water",
+    0.025
+   ],
+   [
+    "DirtDark",
+    0.023
+   ],
+   [
+    "CaveHardDark",
+    0.019
+   ],
+   [
+    "DunMirFacade",
+    0.018
+   ],
+   [
+    "GrassNorm",
+    0.01
+   ]
+  ],
+  "walls": [
+   [
+    "Volcano",
+    0.312
+   ],
+   [
+    "CaveWall2",
+    0.193
+   ],
+   [
+    "GalavaTownWall",
+    0.119
+   ],
+   [
+    "SewerWall",
+    0.113
+   ],
+   [
+    "DunMirCathedral",
+    0.062
+   ],
+   [
+    "StoneGray",
+    0.049
+   ],
+   [
+    "IronFence",
+    0.048
+   ],
+   [
+    "GalavaTowerWall",
+    0.016
+   ],
+   [
+    "DungeonStone",
+    0.014
+   ],
+   [
+    "InvisibleWallSet",
+    0.014
+   ],
+   [
+    "Dirt",
+    0.01
+   ],
+   [
+    "InvisibleBlockingWallSet",
+    0.009
+   ]
+  ],
+  "objects": [
+   [
+    "ColorLight",
+    2290,
+    3.216
+   ],
+   [
+    "SmallFlame",
+    1331,
+    1.869
+   ],
+   [
+    "MediumFlame",
+    496,
+    0.697
+   ],
+   [
+    "LegBone",
+    298,
+    0.419
+   ],
+   [
+    "Flame",
+    242,
+    0.34
+   ],
+   [
+    "ObeliskPrimitive",
+    204,
+    0.287
+   ],
+   [
+    "Spike",
+    199,
+    0.279
+   ],
+   [
+    "BlackPowder",
+    194,
+    0.272
+   ],
+   [
+    "SmallFlameImmobile",
+    189,
+    0.265
+   ],
+   [
+    "FireGrate",
+    178,
+    0.25
+   ],
+   [
+    "Skull",
+    177,
+    0.249
+   ],
+   [
+    "ExtentShortBoxSmall",
+    174,
+    0.244
+   ],
+   [
+    "GrassTuft3",
+    159,
+    0.223
+   ],
+   [
+    "CaveRocksPebbles",
+    152,
+    0.213
+   ],
+   [
+    "Brick",
+    146,
+    0.205
+   ],
+   [
+    "CaveRocksMedium",
+    132,
+    0.185
+   ],
+   [
+    "ArmBone",
+    122,
+    0.171
+   ],
+   [
+    "Mushroom3",
+    100,
+    0.14
+   ],
+   [
+    "SpikeBlock",
+    98,
+    0.138
+   ],
+   [
+    "LargeFlame",
+    98,
+    0.138
+   ],
+   [
+    "LavaBubble6",
+    95,
+    0.133
+   ],
+   [
+    "LavaBubble9",
+    93,
+    0.131
+   ],
+   [
+    "Mushroom4",
+    92,
+    0.129
+   ],
+   [
+    "CaveRocksSmall",
+    91,
+    0.128
+   ],
+   [
+    "Rock8",
+    91,
+    0.128
+   ],
+   [
+    "MediumFlameImmobile",
+    90,
+    0.126
+   ],
+   [
+    "CaveRocksHuge",
+    88,
+    0.124
+   ],
+   [
+    "LavaBubble4",
+    79,
+    0.111
+   ],
+   [
+    "LavaBubble5",
+    78,
+    0.11
+   ],
+   [
+    "LavaBubble8",
+    77,
+    0.108
+   ],
+   [
+    "Mushroom1",
+    72,
+    0.101
+   ],
+   [
+    "Torch",
+    70,
+    0.098
+   ],
+   [
+    "CaveRockPillarTall1",
+    66,
+    0.093
+   ],
+   [
+    "FlameImmobile",
+    62,
+    0.087
+   ],
+   [
+    "Mushroom2",
+    61,
+    0.086
+   ],
+   [
+    "DunMirFlameBasinLit",
+    61,
+    0.086
+   ],
+   [
+    "LavaFountain3",
+    59,
+    0.083
+   ],
+   [
+    "LavaBubble7",
+    58,
+    0.081
+   ],
+   [
+    "Mushroom5",
+    56,
+    0.079
+   ],
+   [
+    "CaveRocksLarge",
+    56,
+    0.079
+   ]
+  ],
+  "signature": [
+   {
+    "type": "SmallFlame",
+    "n": 1331,
+    "per100": 1.869,
+    "lift": 30.2,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MediumFlame",
+    "n": 496,
+    "per100": 0.697,
+    "lift": 18.4,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LegBone",
+    "n": 298,
+    "per100": 0.419,
+    "lift": 3.7,
+    "maps": [
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Flame",
+    "n": 242,
+    "per100": 0.34,
+    "lift": 24.4,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "SmallFlameImmobile",
+    "n": 189,
+    "per100": 0.265,
+    "lift": 16.5,
+    "maps": [
+     "G_Lava",
+     "War11a"
+    ]
+   },
+   {
+    "type": "FireGrate",
+    "n": 178,
+    "per100": 0.25,
+    "lift": 10.7,
+    "maps": [
+     "G_Lava",
+     "War02A",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Skull",
+    "n": 177,
+    "per100": 0.249,
+    "lift": 3.3,
+    "maps": [
+     "War11a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "ExtentShortBoxSmall",
+    "n": 174,
+    "per100": 0.244,
+    "lift": 11.0,
+    "maps": [
+     "War11a",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "GrassTuft3",
+    "n": 159,
+    "per100": 0.223,
+    "lift": 6.2,
+    "maps": [
+     "Con06a",
+     "G_Lava"
+    ]
+   },
+   {
+    "type": "Brick",
+    "n": 146,
+    "per100": 0.205,
+    "lift": 6.6,
+    "maps": [
+     "War02b",
+     "Wiz06a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "SpikeBlock",
+    "n": 98,
+    "per100": 0.138,
+    "lift": 3.1,
+    "maps": [
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "Wiz06a",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "LargeFlame",
+    "n": 98,
+    "per100": 0.138,
+    "lift": 64.2,
+    "maps": [
+     "War02A",
+     "War11a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaBubble6",
+    "n": 95,
+    "per100": 0.133,
+    "lift": 17.2,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaBubble9",
+    "n": 93,
+    "per100": 0.131,
+    "lift": 243.6,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Rock8",
+    "n": 91,
+    "per100": 0.128,
+    "lift": 6.4,
+    "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MediumFlameImmobile",
+    "n": 90,
+    "per100": 0.126,
+    "lift": 7.1,
+    "maps": [
+     "G_Lava",
+     "War11a"
+    ]
+   },
+   {
+    "type": "LavaBubble4",
+    "n": 79,
+    "per100": 0.111,
+    "lift": 37.6,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaBubble5",
+    "n": 78,
+    "per100": 0.11,
+    "lift": 21.5,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaBubble8",
+    "n": 77,
+    "per100": 0.108,
+    "lift": 100.8,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "FlameImmobile",
+    "n": 62,
+    "per100": 0.087,
+    "lift": 9.3,
+    "maps": [
+     "G_Lava",
+     "War11a"
+    ]
+   },
+   {
+    "type": "DunMirFlameBasinLit",
+    "n": 61,
+    "per100": 0.086,
+    "lift": 5.1,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "LavaFountain3",
+    "n": 59,
+    "per100": 0.083,
+    "lift": null,
+    "maps": [
+     "War11a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaBubble7",
+    "n": 58,
+    "per100": 0.081,
+    "lift": 151.9,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "ExtentCylinderLarge",
+    "n": 53,
+    "per100": 0.074,
+    "lift": 9.9,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "LavaHardened5",
+    "n": 49,
+    "per100": 0.069,
+    "lift": 42.8,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Rock6",
+    "n": 45,
+    "per100": 0.063,
+    "lift": 4.0,
+    "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "DunMirTorchNorth",
+    "n": 41,
+    "per100": 0.058,
+    "lift": 3.0,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "Rock4",
+    "n": 40,
+    "per100": 0.056,
+    "lift": 9.1,
+    "maps": [
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MineCrystal02",
+    "n": 38,
+    "per100": 0.053,
+    "lift": 5.2,
+    "maps": [
+     "Con06a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened7",
+    "n": 37,
+    "per100": 0.052,
+    "lift": 48.5,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened2",
+    "n": 36,
+    "per100": 0.051,
+    "lift": 47.1,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MineCrystal01",
+    "n": 35,
+    "per100": 0.049,
+    "lift": 3.8,
+    "maps": [
+     "Con06a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "DunMirTorchEast",
+    "n": 35,
+    "per100": 0.049,
+    "lift": 3.5,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "LargeStalagmite",
+    "n": 34,
+    "per100": 0.048,
+    "lift": 3.2,
+    "maps": [
+     "War11a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened6",
+    "n": 31,
+    "per100": 0.044,
+    "lift": 81.2,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Column7",
+    "n": 30,
+    "per100": 0.042,
+    "lift": 5.6,
+    "maps": [
+     "War02A",
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "LavaHardened4",
+    "n": 28,
+    "per100": 0.039,
+    "lift": 48.9,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened1",
+    "n": 28,
+    "per100": 0.039,
+    "lift": 48.9,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Gear3",
+    "n": 27,
+    "per100": 0.038,
+    "lift": 6.4,
+    "maps": [
+     "Con06a",
+     "War02b",
+     "Wiz06a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "SewerPipe01",
+    "n": 27,
+    "per100": 0.038,
+    "lift": 11.8,
+    "maps": [
+     "War02b",
+     "Wiz06a"
+    ]
+   },
+   {
+    "type": "LavaHardened3",
+    "n": 26,
+    "per100": 0.037,
+    "lift": 68.1,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Rock5",
+    "n": 26,
+    "per100": 0.037,
+    "lift": 3.5,
+    "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "StatueVictory3SE",
+    "n": 25,
+    "per100": 0.035,
+    "lift": 13.1,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War11a",
+     "Wiz06c",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Gear4",
+    "n": 24,
+    "per100": 0.034,
+    "lift": 3.9,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "Wiz06a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened10",
+    "n": 24,
+    "per100": 0.034,
+    "lift": 41.9,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "Brazier",
+    "n": 24,
+    "per100": 0.034,
+    "lift": 41.9,
+    "maps": [
+     "War11a"
+    ]
+   },
+   {
+    "type": "Rock3",
+    "n": 24,
+    "per100": 0.034,
+    "lift": 41.9,
+    "maps": [
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "SmallBlueFlame",
+    "n": 24,
+    "per100": 0.034,
+    "lift": null,
+    "maps": [
+     "Wiz06c"
+    ]
+   },
+   {
+    "type": "SmallRock",
+    "n": 23,
+    "per100": 0.032,
+    "lift": null,
+    "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened9",
+    "n": 22,
+    "per100": 0.031,
+    "lift": 28.8,
+    "maps": [
+     "Con06a",
+     "G_Lava",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "DunMirRocksSmall3",
+    "n": 21,
+    "per100": 0.029,
+    "lift": null,
+    "maps": [
+     "Con06a"
+    ]
+   },
+   {
+    "type": "TreeForest11",
+    "n": 21,
+    "per100": 0.029,
+    "lift": 4.1,
+    "maps": [
+     "Con06a"
+    ]
+   },
+   {
+    "type": "RockColumn",
+    "n": 21,
+    "per100": 0.029,
+    "lift": 27.5,
+    "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "StatueVictory3SW",
+    "n": 20,
+    "per100": 0.028,
+    "lift": 52.4,
+    "maps": [
+     "Con06a",
+     "War11a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "IronBlock",
+    "n": 20,
+    "per100": 0.028,
+    "lift": 4.2,
+    "maps": [
+     "War02A"
+    ]
+   },
+   {
+    "type": "DunMirTorchWest",
+    "n": 19,
+    "per100": 0.027,
+    "lift": 4.1,
+    "maps": [
+     "Con06a",
+     "War02A"
+    ]
+   },
+   {
+    "type": "Gear2",
+    "n": 19,
+    "per100": 0.027,
+    "lift": 11.1,
+    "maps": [
+     "Con06a",
+     "War02b",
+     "Wiz06a"
+    ]
+   },
+   {
+    "type": "StatueVictory3NW",
+    "n": 19,
+    "per100": 0.027,
+    "lift": 12.4,
+    "maps": [
+     "War02A",
+     "War11a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "ChestSE",
+    "n": 18,
+    "per100": 0.025,
+    "lift": 5.2,
+    "maps": [
+     "Con06a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "SewerPipe04",
+    "n": 18,
+    "per100": 0.025,
+    "lift": 23.6,
+    "maps": [
+     "War02b",
+     "Wiz06a"
+    ]
+   }
+  ],
+  "creatures": [
+   [
+    "MonsterGenerator",
+    116,
+    0.163
+   ],
+   [
+    "NPC",
+    65,
+    0.091
+   ],
+   [
+    "MeleeDemon",
+    35,
+    0.049
+   ],
+   [
+    "EmberDemon",
+    33,
+    0.046
+   ],
+   [
+    "Zombie",
+    28,
+    0.039
+   ],
+   [
+    "Imp",
+    26,
+    0.037
+   ],
+   [
+    "Skeleton",
+    24,
+    0.034
+   ],
+   [
+    "Bat",
+    13,
+    0.018
+   ],
+   [
+    "GiantLeech",
+    11,
+    0.015
+   ],
+   [
+    "SmallSpider",
+    11,
+    0.015
+   ],
+   [
+    "SmallAlbinoSpider",
+    8,
+    0.011
+   ],
+   [
+    "SkeletonLord",
+    7,
+    0.01
+   ],
+   [
+    "Maiden",
+    6,
+    0.008
+   ],
+   [
+    "Necromancer",
+    5,
+    0.007
+   ],
+   [
+    "Demon",
+    5,
+    0.007
+   ],
+   [
+    "Urchin",
+    5,
+    0.007
+   ],
+   [
+    "Spider",
+    5,
+    0.007
+   ],
+   [
+    "AlbinoSpider",
+    5,
+    0.007
+   ],
+   [
+    "FishSmall",
+    4,
+    0.006
+   ],
+   [
+    "GreenFrog",
+    4,
+    0.006
+   ],
+   [
+    "FishBig",
+    3,
+    0.004
+   ],
+   [
+    "Troll",
+    3,
+    0.004
+   ],
+   [
+    "Scorpion",
+    3,
+    0.004
+   ],
+   [
+    "AirshipCaptain",
+    2,
+    0.003
+   ],
+   [
+    "Horrendous",
+    2,
+    0.003
+   ]
+  ],
+  "creatures_per100": 0.62,
+  "lights_per100": 7.91,
+  "ambient": {
+   "Con06a": [
+    255,
+    252,
+    252
+   ],
+   "G_Lava": [
+    188,
+    133,
+    94
+   ],
+   "War02A": [
+    255,
+    252,
+    252
+   ],
+   "War02b": [
+    125,
+    178,
+    124
+   ],
+   "War11a": [
+    2,
+    1,
+    1
+   ],
+   "Wiz06a": [
+    25,
+    25,
+    25
+   ],
+   "Wiz06c": [
+    255,
+    252,
+    252
+   ],
+   "Wiz07B": [
+    29,
+    34,
+    45
+   ],
+   "Wiz07C": [
+    45,
+    16,
+    15
+   ]
+  },
+  "light_colours": [
+   [
+    [
+     64,
+     64,
+     64
+    ],
+    425
+   ],
+   [
+    [
+     96,
+     0,
+     0
+    ],
+    347
+   ],
+   [
+    [
+     224,
+     224,
+     224
+    ],
+    244
+   ],
+   [
+    [
+     64,
+     0,
+     0
+    ],
+    180
+   ],
+   [
+    [
+     128,
+     0,
+     0
+    ],
+    163
+   ],
+   [
+    [
+     224,
+     0,
+     0
+    ],
+    136
+   ],
+   [
+    [
+     128,
+     96,
+     64
+    ],
+    100
+   ],
+   [
+    [
+     224,
+     128,
+     96
+    ],
+    88
+   ]
+  ],
+  "region_ambient": [
+   [
+    [
+     128,
+     176,
+     112
+    ],
+    77382
+   ],
+   [
+    [
+     16,
+     0,
+     0
+    ],
+    57828
+   ],
+   [
+    [
+     112,
+     0,
+     0
+    ],
+    56140
+   ],
+   [
+    [
+     32,
+     0,
+     0
+    ],
+    23905
+   ],
+   [
+    [
+     160,
+     160,
+     160
+    ],
+    19891
+   ],
+   [
+    [
+     112,
+     112,
+     112
+    ],
+    19012
+   ],
+   [
+    [
+     32,
+     32,
+     32
+    ],
+    16230
+   ],
+   [
+    [
+     112,
+     112,
+     96
+    ],
+    15367
+   ]
+  ]
+ },
+ "cave": {
+  "maps": [
+   "Con01A",
+   "Con05C",
+   "Con06b",
+   "Con09c",
+   "Wiz06b"
+  ],
+  "tiles": 32625,
+  "floors": [
+   [
+    "CaveHardBrown",
+    0.282
+   ],
+   [
+    "GreenBrick",
+    0.185
+   ],
+   [
+    "DirtDark2",
+    0.114
+   ],
+   [
+    "CaveHardTan",
+    0.063
+   ],
+   [
+    "DunMirBrick1",
+    0.062
+   ],
+   [
+    "ManaMineDirt",
+    0.06
+   ],
+   [
+    "GrassNorm",
+    0.04
+   ],
+   [
+    "DirtHard",
+    0.026
+   ],
+   [
+    "DirtDark",
+    0.016
+   ],
+   [
+    "Water",
+    0.014
+   ],
+   [
+    "RugRed",
+    0.014
+   ],
+   [
+    "Lava",
+    0.011
+   ],
+   [
+    "DirtLight2",
+    0.011
+   ],
+   [
+    "CaveHardDark",
+    0.01
+   ],
+   [
+    "WoodDark2",
+    0.008
+   ]
+  ],
+  "walls": [
+   [
+    "CaveWall2",
+    0.362
+   ],
+   [
+    "CaveWall",
+    0.186
+   ],
+   [
+    "DungeonStone",
+    0.118
+   ],
+   [
+    "DunMirCathedral",
+    0.099
+   ],
+   [
+    "ManaMineWall",
+    0.089
+   ],
+   [
+    "SewerWall",
+    0.069
+   ],
+   [
+    "InvisibleWallSet",
+    0.016
+   ],
+   [
+    "DecidiousWallGreen",
+    0.016
+   ],
+   [
+    "Log",
+    0.014
+   ],
+   [
+    "IronFence",
+    0.011
+   ],
+   [
+    "BrickRed",
+    0.007
+   ],
+   [
+    "StuccoLightWood",
+    0.005
+   ]
+  ],
+  "objects": [
+   [
+    "ColorLight",
+    694,
+    2.127
+   ],
+   [
+    "Mushroom3",
+    585,
+    1.793
+   ],
+   [
+    "Spike",
+    414,
+    1.269
+   ],
+   [
+    "CaveRocksPebbles",
+    327,
+    1.002
+   ],
+   [
+    "PitCrumblingFloor",
+    242,
+    0.742
+   ],
+   [
+    "CaveRockPillarShort1",
+    234,
+    0.717
+   ],
+   [
+    "CaveRockPillarShort2",
+    213,
+    0.653
+   ],
+   [
+    "CaveRockPillarTall1",
+    203,
+    0.622
+   ],
+   [
+    "CaveRockPillarTall2",
+    148,
+    0.454
+   ],
+   [
+    "Torch",
+    143,
+    0.438
+   ],
+   [
+    "CaveRocksMedium",
+    135,
+    0.414
+   ],
+   [
+    "CaveRocksSmall",
+    125,
+    0.383
+   ],
+   [
+    "CaveRocksHuge",
+    119,
+    0.365
+   ],
+   [
+    "CaveBoulders",
+    112,
+    0.343
+   ],
+   [
+    "Barrel",
+    111,
+    0.34
+   ],
+   [
+    "Mushroom1",
+    106,
+    0.325
+   ],
+   [
+    "LegBone",
+    102,
+    0.313
+   ],
+   [
+    "Brick",
+    99,
+    0.303
+   ],
+   [
+    "Mushroom4",
+    86,
+    0.264
+   ],
+   [
+    "ArmBone",
+    81,
+    0.248
+   ],
+   [
+    "Straw2",
+    81,
+    0.248
+   ],
+   [
+    "SmallFlame",
+    77,
+    0.236
+   ],
+   [
+    "PeriodicSpike",
+    70,
+    0.215
+   ],
+   [
+    "Mushroom5",
+    68,
+    0.208
+   ],
+   [
+    "SpiderWebNorthEast",
+    68,
+    0.208
+   ],
+   [
+    "Mushroom2",
+    67,
+    0.205
+   ],
+   [
+    "SpiderWebEast",
+    66,
+    0.202
+   ],
+   [
+    "SpiderWebNorth",
+    65,
+    0.199
+   ],
+   [
+    "Barrel2",
+    63,
+    0.193
+   ],
+   [
+    "CaveRocksTiny",
+    62,
+    0.19
+   ],
+   [
+    "DunMirFlameBasinLit",
+    59,
+    0.181
+   ],
+   [
+    "CaveRocksLarge",
+    55,
+    0.169
+   ],
+   [
+    "Skull",
+    52,
+    0.159
+   ],
+   [
+    "TorchPole",
+    51,
+    0.156
+   ],
+   [
+    "Pit",
+    51,
+    0.156
+   ],
+   [
+    "MineBeam1",
+    50,
+    0.153
+   ],
+   [
+    "Plant5",
+    44,
+    0.135
+   ],
+   [
+    "Plant4",
+    43,
+    0.132
+   ],
+   [
+    "MineBeam2",
+    36,
+    0.11
+   ],
+   [
+    "SmallStalagmite",
+    33,
+    0.101
+   ]
+  ],
+  "signature": [
+   {
+    "type": "Mushroom3",
+    "n": 585,
+    "per100": 1.793,
+    "lift": 6.4,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "PitCrumblingFloor",
+    "n": 242,
+    "per100": 0.742,
+    "lift": 8.1,
+    "maps": [
+     "Con01A",
+     "Con06b",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "CaveRockPillarShort1",
+    "n": 234,
+    "per100": 0.717,
+    "lift": 6.8,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveRockPillarShort2",
+    "n": 213,
+    "per100": 0.653,
+    "lift": 7.5,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveRockPillarTall1",
+    "n": 203,
+    "per100": 0.622,
+    "lift": 4.4,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveRockPillarTall2",
+    "n": 148,
+    "per100": 0.454,
+    "lift": 5.5,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveRocksMedium",
+    "n": 135,
+    "per100": 0.414,
+    "lift": 3.9,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveRocksHuge",
+    "n": 119,
+    "per100": 0.365,
+    "lift": 3.2,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CaveBoulders",
+    "n": 112,
+    "per100": 0.343,
+    "lift": 5.6,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Mushroom1",
+    "n": 106,
+    "per100": 0.325,
+    "lift": 6.2,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Brick",
+    "n": 99,
+    "per100": 0.303,
+    "lift": 7.7,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Straw2",
+    "n": 81,
+    "per100": 0.248,
+    "lift": 7.7,
+    "maps": [
+     "Con05C"
+    ]
+   },
+   {
+    "type": "Mushroom2",
+    "n": 67,
+    "per100": 0.205,
+    "lift": 3.8,
+    "maps": [
+     "Con01A",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DunMirFlameBasinLit",
+    "n": 59,
+    "per100": 0.181,
+    "lift": 11.4,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "SmallStalagmite",
+    "n": 33,
+    "per100": 0.101,
+    "lift": 3.2,
+    "maps": [
+     "Con05C"
+    ]
+   },
+   {
+    "type": "LargeStalagmite",
+    "n": 31,
+    "per100": 0.095,
+    "lift": 6.6,
+    "maps": [
+     "Con05C"
+    ]
+   },
+   {
+    "type": "Straw1",
+    "n": 30,
+    "per100": 0.092,
+    "lift": 3.7,
+    "maps": [
+     "Con05C"
+    ]
+   },
+   {
+    "type": "RotatingSpikes",
+    "n": 28,
+    "per100": 0.086,
+    "lift": 4.7,
+    "maps": [
+     "Con05C",
+     "Con06b",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "OgreHutMeat",
+    "n": 27,
+    "per100": 0.083,
+    "lift": 7.0,
+    "maps": [
+     "Con05C",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "DunMirTorchNorth",
+    "n": 26,
+    "per100": 0.08,
+    "lift": 3.8,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "TreeForest11",
+    "n": 21,
+    "per100": 0.064,
+    "lift": 9.8,
+    "maps": [
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "IronBlock",
+    "n": 18,
+    "per100": 0.055,
+    "lift": 8.4,
+    "maps": [
+     "Con05C",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "TraderAppleCrate",
+    "n": 18,
+    "per100": 0.055,
+    "lift": 6.7,
+    "maps": [
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "TreeForest12",
+    "n": 17,
+    "per100": 0.052,
+    "lift": 10.7,
+    "maps": [
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Gear4",
+    "n": 15,
+    "per100": 0.046,
+    "lift": 4.6,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "MineCrystal02",
+    "n": 15,
+    "per100": 0.046,
+    "lift": 3.1,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DunMirTorch1",
+    "n": 14,
+    "per100": 0.043,
+    "lift": 11.8,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "OgreStool1",
+    "n": 12,
+    "per100": 0.037,
+    "lift": 5.6,
+    "maps": [
+     "Con05C",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "SewerPipe01",
+    "n": 12,
+    "per100": 0.037,
+    "lift": 5.6,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DarkCrate2",
+    "n": 12,
+    "per100": 0.037,
+    "lift": 3.0,
+    "maps": [
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Bed3",
+    "n": 12,
+    "per100": 0.037,
+    "lift": 4.9,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "MineCrystalDown01",
+    "n": 11,
+    "per100": 0.034,
+    "lift": 3.0,
+    "maps": [
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "MineCrystalDown03",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 3.2,
+    "maps": [
+     "Con01A",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Gear3",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 3.2,
+    "maps": [
+     "Con01A",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "PiledBarrels2",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 5.0,
+    "maps": [
+     "Con05C",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Cot1",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 4.7,
+    "maps": [
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Bench1",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 4.2,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "Bench5",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 3.1,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "Table1",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 3.2,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DunMirColumn1",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 12.6,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "ClothSign1",
+    "n": 10,
+    "per100": 0.031,
+    "lift": 12.6,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "MineCrystal05",
+    "n": 9,
+    "per100": 0.028,
+    "lift": 4.5,
+    "maps": [
+     "Con05C",
+     "Con06b",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "Table3",
+    "n": 9,
+    "per100": 0.028,
+    "lift": 9.5,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "MineCrystalDown05",
+    "n": 9,
+    "per100": 0.028,
+    "lift": 5.7,
+    "maps": [
+     "Con06b",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "Gear5",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 3.2,
+    "maps": [
+     "Con01A",
+     "Con09c",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseRibCageS",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 9.2,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "OgreStool2",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 7.2,
+    "maps": [
+     "Con05C",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "DunMirHangingShield14",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 7.8,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "OldDarkWoodenChair3",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 8.4,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "DunMirTorch2",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 12.6,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DunMirAltar1",
+    "n": 8,
+    "per100": 0.025,
+    "lift": 12.6,
+    "maps": [
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "MineOreCartWheel",
+    "n": 7,
+    "per100": 0.021,
+    "lift": 8.0,
+    "maps": [
+     "Con01A",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseRightUpperLegS",
+    "n": 7,
+    "per100": 0.021,
+    "lift": 8.0,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "DunMirHangingShield13",
+    "n": 7,
+    "per100": 0.021,
+    "lift": 11.0,
+    "maps": [
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "OldDarkWoodenChair8",
+    "n": 7,
+    "per100": 0.021,
+    "lift": 17.7,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "OldDarkWoodenChair1",
+    "n": 7,
+    "per100": 0.021,
+    "lift": 8.0,
+    "maps": [
+     "Con06b"
+    ]
+   },
+   {
+    "type": "CorpseRightLowerLegS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 9.5,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseRightLowerArmS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 5.8,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpsePelvisS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 5.8,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseLeftUpperLegS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 7.6,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   }
+  ],
+  "creatures": [
+   [
+    "Bat",
+    56,
+    0.172
+   ],
+   [
+    "GruntAxe",
+    33,
+    0.101
+   ],
+   [
+    "Zombie",
+    32,
+    0.098
+   ],
+   [
+    "NPC",
+    31,
+    0.095
+   ],
+   [
+    "Scorpion",
+    29,
+    0.089
+   ],
+   [
+    "SkeletonLord",
+    21,
+    0.064
+   ],
+   [
+    "Skeleton",
+    19,
+    0.058
+   ],
+   [
+    "Spider",
+    11,
+    0.034
+   ],
+   [
+    "OgreWarlord",
+    11,
+    0.034
+   ],
+   [
+    "Urchin",
+    10,
+    0.031
+   ],
+   [
+    "Mimic",
+    10,
+    0.031
+   ],
+   [
+    "GiantLeech",
+    9,
+    0.028
+   ],
+   [
+    "Rat",
+    8,
+    0.025
+   ],
+   [
+    "OgreBrute",
+    6,
+    0.018
+   ],
+   [
+    "SmallSpider",
+    6,
+    0.018
+   ],
+   [
+    "BlackWolf",
+    6,
+    0.018
+   ],
+   [
+    "SpittingSpider",
+    5,
+    0.015
+   ],
+   [
+    "BlackBear",
+    4,
+    0.012
+   ],
+   [
+    "Wolf",
+    4,
+    0.012
+   ],
+   [
+    "FishSmall",
+    4,
+    0.012
+   ],
+   [
+    "SmallAlbinoSpider",
+    3,
+    0.009
+   ],
+   [
+    "FishBig",
+    3,
+    0.009
+   ],
+   [
+    "Troll",
+    2,
+    0.006
+   ],
+   [
+    "Maiden",
+    1,
+    0.003
+   ],
+   [
+    "Bear",
+    1,
+    0.003
+   ]
+  ],
+  "creatures_per100": 1.01,
+  "lights_per100": 4.05,
+  "ambient": {
+   "Con01A": [
+    1,
+    1,
+    1
+   ],
+   "Con05C": [
+    29,
+    34,
+    45
+   ],
+   "Con06b": [
+    255,
+    252,
+    252
+   ],
+   "Con09c": [
+    37,
+    67,
+    94
+   ],
+   "Wiz06b": [
+    255,
+    252,
+    252
+   ]
+  },
+  "light_colours": [
+   [
+    [
+     128,
+     96,
+     32
+    ],
+    113
+   ],
+   [
+    [
+     96,
+     64,
+     32
+    ],
+    106
+   ],
+   [
+    [
+     96,
+     96,
+     64
+    ],
+    106
+   ],
+   [
+    [
+     128,
+     96,
+     64
+    ],
+    62
+   ],
+   [
+    [
+     96,
+     64,
+     64
+    ],
+    44
+   ],
+   [
+    [
+     224,
+     0,
+     0
+    ],
+    26
+   ],
+   [
+    [
+     0,
+     32,
+     96
+    ],
+    17
+   ],
+   [
+    [
+     224,
+     160,
+     64
+    ],
+    17
+   ]
+  ],
+  "region_ambient": [
+   [
+    [
+     32,
+     48,
+     48
+    ],
+    30847
+   ],
+   [
+    [
+     112,
+     112,
+     112
+    ],
+    20032
+   ],
+   [
+    [
+     112,
+     160,
+     0
+    ],
+    18666
+   ],
+   [
+    [
+     48,
+     128,
+     208
+    ],
+    18194
+   ],
+   [
+    [
+     240,
+     240,
+     160
+    ],
+    17872
+   ],
+   [
+    [
+     32,
+     32,
+     16
+    ],
+    17509
+   ],
+   [
+    [
+     16,
+     16,
+     32
+    ],
+    13811
+   ],
+   [
+    [
+     48,
+     80,
+     112
+    ],
+    7815
+   ]
+  ]
+ },
+ "_contrast": {
+  "town": {
+   "maps": 10,
+   "creatures_per100": 1.19,
+   "lights_per100": 2.79,
+   "ambient": [
+    [
+     [
+      1,
+      1,
+      1
+     ],
+     2
+    ],
+    [
+     [
+      229,
+      219,
+      188
+     ],
+     1
+    ],
+    [
+     [
+      85,
+      93,
+      112
+     ],
+     1
+    ]
+   ]
+  },
+  "forest": {
+   "maps": 9,
+   "creatures_per100": 0.86,
+   "lights_per100": 3.12,
+   "ambient": [
+    [
+     [
+      99,
+      98,
+      98
+     ],
+     3
+    ],
+    [
+     [
+      104,
+      119,
+      105
+     ],
+     1
+    ],
+    [
+     [
+      25,
+      25,
+      25
+     ],
+     1
+    ]
+   ]
+  },
+  "dungeon": {
+   "maps": 10,
+   "creatures_per100": 1.39,
+   "lights_per100": 4.58,
+   "ambient": [
+    [
+     [
+      82,
+      104,
+      119
+     ],
+     4
+    ],
+    [
+     [
+      2,
+      2,
+      2
+     ],
+     2
+    ],
+    [
+     [
+      104,
+      119,
+      105
+     ],
+     1
+    ]
+   ]
+  },
+  "castle": {
+   "maps": 12,
+   "creatures_per100": 0.83,
+   "lights_per100": 4.42,
+   "ambient": [
+    [
+     [
+      127,
+      109,
+      81
+     ],
+     3
+    ],
+    [
+     [
+      156,
+      156,
+      158
+     ],
+     2
+    ],
+    [
+     [
+      147,
+      114,
+      60
+     ],
+     2
+    ]
+   ]
+  },
+  "swamp": {
+   "maps": 5,
+   "creatures_per100": 1.16,
+   "lights_per100": 1.89,
+   "ambient": [
+    [
+     [
+      48,
+      117,
+      63
+     ],
+     2
+    ],
+    [
+     [
+      147,
+      121,
+      82
+     ],
+     1
+    ],
+    [
+     [
+      40,
+      40,
+      40
+     ],
+     1
+    ]
+   ]
+  }
+ }
+}

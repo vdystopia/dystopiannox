@@ -25,3 +25,9 @@ single-player maps so layouts shared by the class campaigns count once; validity
 Spot checks against independent measurements: the valid-wall table rejects exactly the 56 walls that
 rendered black in Mossford v0.1; outer boundaries are visible walls 98-99% of the time; every light
 preset carries all 70 settings of a real ColorLight.
+
+## Biomes
+
+`py rules/biomes.py` and `py rules/biome_places.py` measure what sets Westwood's cave, ice and lava maps apart
+(floors, walls, signature objects and where they stand, light, ambient, creatures). The findings and the way the kit
+builds each biome are in `BIOMES.md`.

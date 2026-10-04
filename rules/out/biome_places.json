@@ -1,0 +1,2647 @@
+{
+ "ice": {
+  "context_cells": {
+   "wall": 9432,
+   "open": 15240,
+   "liquid": 7376
+  },
+  "types": {
+   "ColorLight": {
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    },
+    "wall": {
+     "n": 14,
+     "per100": 0.594
+    },
+    "open": {
+     "n": 12,
+     "per100": 0.315
+    }
+   },
+   "TreeSnowCovered3": {
+    "open": {
+     "n": 18,
+     "per100": 0.472
+    },
+    "liquid": {
+     "n": 55,
+     "per100": 2.983
+    },
+    "wall": {
+     "n": 22,
+     "per100": 0.933
+    }
+   },
+   "LOTDManaObelisk": {
+    "open": {
+     "n": 20,
+     "per100": 0.525
+    },
+    "wall": {
+     "n": 32,
+     "per100": 1.357
+    }
+   },
+   "Flame": {
+    "open": {
+     "n": 5,
+     "per100": 0.131
+    }
+   },
+   "BlackPowderBarrel": {
+    "open": {
+     "n": 7,
+     "per100": 0.184
+    },
+    "wall": {
+     "n": 15,
+     "per100": 0.636
+    }
+   },
+   "BlackPowder": {
+    "wall": {
+     "n": 131,
+     "per100": 5.556
+    },
+    "open": {
+     "n": 261,
+     "per100": 6.85
+    }
+   },
+   "ObeliskPrimitive": {
+    "open": {
+     "n": 5,
+     "per100": 0.131
+    },
+    "wall": {
+     "n": 2,
+     "per100": 0.085
+    },
+    "liquid": {
+     "n": 3,
+     "per100": 0.163
+    }
+   },
+   "MineCrystal05": {
+    "wall": {
+     "n": 5,
+     "per100": 0.212
+    }
+   },
+   "MineCrystal01": {
+    "wall": {
+     "n": 2,
+     "per100": 0.085
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "MineCrystal02": {
+    "wall": {
+     "n": 3,
+     "per100": 0.127
+    }
+   },
+   "CaveRocksSmall": {
+    "wall": {
+     "n": 9,
+     "per100": 0.382
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.184
+    }
+   },
+   "CaveRocksHuge": {
+    "wall": {
+     "n": 15,
+     "per100": 0.636
+    },
+    "open": {
+     "n": 4,
+     "per100": 0.105
+    }
+   },
+   "OgreStraw1": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "OgreStraw2": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "CaveRocksTiny": {
+    "wall": {
+     "n": 4,
+     "per100": 0.17
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.184
+    }
+   },
+   "CaveRockPillarShort2": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    },
+    "wall": {
+     "n": 6,
+     "per100": 0.254
+    }
+   },
+   "CaveRockPillarTall1": {
+    "wall": {
+     "n": 7,
+     "per100": 0.297
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "CaveRockPillarShort1": {
+    "wall": {
+     "n": 3,
+     "per100": 0.127
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.052
+    }
+   },
+   "Torch": {
+    "wall": {
+     "n": 13,
+     "per100": 0.551
+    },
+    "void": {
+     "n": 2,
+     "per100": 800.0
+    }
+   },
+   "CaveRocksPebbles": {
+    "open": {
+     "n": 5,
+     "per100": 0.131
+    },
+    "wall": {
+     "n": 5,
+     "per100": 0.212
+    }
+   },
+   "CaveRocksMedium": {
+    "wall": {
+     "n": 3,
+     "per100": 0.127
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.079
+    }
+   },
+   "CaveRockPillarTall2": {
+    "wall": {
+     "n": 5,
+     "per100": 0.212
+    }
+   },
+   "CaveBoulders": {
+    "wall": {
+     "n": 6,
+     "per100": 0.254
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.052
+    }
+   },
+   "MineCrystalUp02": {
+    "wall": {
+     "n": 2,
+     "per100": 0.085
+    }
+   },
+   "IceCrack6": {
+    "open": {
+     "n": 2,
+     "per100": 0.052
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.054
+    }
+   },
+   "IceCrack2": {
+    "wall": {
+     "n": 3,
+     "per100": 0.127
+    },
+    "liquid": {
+     "n": 4,
+     "per100": 0.217
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "IceCrack4": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.108
+    }
+   },
+   "TreeSnowCovered5": {
+    "open": {
+     "n": 19,
+     "per100": 0.499
+    },
+    "liquid": {
+     "n": 37,
+     "per100": 2.007
+    },
+    "wall": {
+     "n": 10,
+     "per100": 0.424
+    }
+   },
+   "TreeSnowCovered6": {
+    "open": {
+     "n": 19,
+     "per100": 0.499
+    },
+    "wall": {
+     "n": 9,
+     "per100": 0.382
+    },
+    "liquid": {
+     "n": 41,
+     "per100": 2.223
+    }
+   },
+   "TreeSnowCovered4": {
+    "liquid": {
+     "n": 26,
+     "per100": 1.41
+    },
+    "wall": {
+     "n": 9,
+     "per100": 0.382
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.341
+    }
+   },
+   "MineCrystalUp03": {
+    "wall": {
+     "n": 1,
+     "per100": 0.042
+    }
+   },
+   "MineCrystal03": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "MineCrystalDown01": {
+    "wall": {
+     "n": 1,
+     "per100": 0.042
+    }
+   },
+   "MineCrystal04": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "CorpseSkullE": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "TorchPole": {
+    "wall": {
+     "n": 2,
+     "per100": 0.085
+    },
+    "liquid": {
+     "n": 2,
+     "per100": 0.108
+    }
+   },
+   "IceCrack3": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.054
+    }
+   },
+   "MediumFlame": {
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "TreeSnowCovered2": {
+    "liquid": {
+     "n": 22,
+     "per100": 1.193
+    },
+    "wall": {
+     "n": 11,
+     "per100": 0.466
+    },
+    "open": {
+     "n": 10,
+     "per100": 0.262
+    }
+   },
+   "TreeSnowCovered1": {
+    "liquid": {
+     "n": 9,
+     "per100": 0.488
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.131
+    },
+    "wall": {
+     "n": 5,
+     "per100": 0.212
+    }
+   },
+   "CaveRocksLarge": {
+    "wall": {
+     "n": 8,
+     "per100": 0.339
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.026
+    }
+   },
+   "IceCrack12": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.054
+    }
+   },
+   "ArmBone": {
+    "wall": {
+     "n": 2,
+     "per100": 0.085
+    },
+    "open": {
+     "n": 8,
+     "per100": 0.21
+    }
+   },
+   "Skull": {
+    "open": {
+     "n": 3,
+     "per100": 0.079
+    }
+   },
+   "LegBone": {
+    "open": {
+     "n": 2,
+     "per100": 0.052
+    }
+   },
+   "Spike": {
+    "open": {
+     "n": 344,
+     "per100": 9.029
+    },
+    "wall": {
+     "n": 140,
+     "per100": 5.937
+    },
+    "void": {
+     "n": 2,
+     "per100": 800.0
+    }
+   },
+   "FireGrate": {
+    "open": {
+     "n": 4,
+     "per100": 0.105
+    }
+   },
+   "IceCrack9": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.054
+    }
+   },
+   "ColorLightMovable": {
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   }
+  }
+ },
+ "lava": {
+  "context_cells": {
+   "open": 61758,
+   "wall": 54635,
+   "liquid": 33345
+  },
+  "types": {
+   "MineCrystalDown01": {
+    "open": {
+     "n": 5,
+     "per100": 0.032
+    },
+    "wall": {
+     "n": 7,
+     "per100": 0.051
+    }
+   },
+   "MineCrystal01": {
+    "wall": {
+     "n": 29,
+     "per100": 0.212
+    },
+    "open": {
+     "n": 6,
+     "per100": 0.039
+    }
+   },
+   "MineCrystal04": {
+    "wall": {
+     "n": 13,
+     "per100": 0.095
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.032
+    }
+   },
+   "MineCrystal02": {
+    "wall": {
+     "n": 30,
+     "per100": 0.22
+    },
+    "open": {
+     "n": 8,
+     "per100": 0.052
+    }
+   },
+   "MineCrystal03": {
+    "wall": {
+     "n": 27,
+     "per100": 0.198
+    },
+    "open": {
+     "n": 4,
+     "per100": 0.026
+    }
+   },
+   "MineCrystalDown03": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    },
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    }
+   },
+   "MineCrystalDown05": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    }
+   },
+   "MineCrystalDown04": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "MineCrystalUp02": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    },
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    }
+   },
+   "ColorLight": {
+    "open": {
+     "n": 964,
+     "per100": 6.244
+    },
+    "wall": {
+     "n": 528,
+     "per100": 3.866
+    },
+    "liquid": {
+     "n": 747,
+     "per100": 8.961
+    },
+    "void": {
+     "n": 51,
+     "per100": 20400.0
+    }
+   },
+   "DunMirTorchEast": {
+    "wall": {
+     "n": 35,
+     "per100": 0.256
+    }
+   },
+   "DunMirTorchNorth": {
+    "wall": {
+     "n": 41,
+     "per100": 0.3
+    }
+   },
+   "DunMirTorchWest": {
+    "wall": {
+     "n": 7,
+     "per100": 0.051
+    },
+    "void": {
+     "n": 12,
+     "per100": 4800.0
+    }
+   },
+   "DunMirTorchSouth": {
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "Mushroom2": {
+    "wall": {
+     "n": 22,
+     "per100": 0.161
+    },
+    "open": {
+     "n": 39,
+     "per100": 0.253
+    }
+   },
+   "Mushroom5": {
+    "open": {
+     "n": 39,
+     "per100": 0.253
+    },
+    "wall": {
+     "n": 15,
+     "per100": 0.11
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "Mushroom4": {
+    "open": {
+     "n": 60,
+     "per100": 0.389
+    },
+    "wall": {
+     "n": 32,
+     "per100": 0.234
+    }
+   },
+   "Mushroom3": {
+    "wall": {
+     "n": 46,
+     "per100": 0.337
+    },
+    "open": {
+     "n": 54,
+     "per100": 0.35
+    }
+   },
+   "MineCrystal05": {
+    "wall": {
+     "n": 6,
+     "per100": 0.044
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "CaveRocksLarge": {
+    "wall": {
+     "n": 34,
+     "per100": 0.249
+    },
+    "open": {
+     "n": 21,
+     "per100": 0.136
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "CaveRockPillarTall1": {
+    "wall": {
+     "n": 37,
+     "per100": 0.271
+    },
+    "open": {
+     "n": 28,
+     "per100": 0.181
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "CaveBoulders": {
+    "wall": {
+     "n": 35,
+     "per100": 0.256
+    },
+    "open": {
+     "n": 11,
+     "per100": 0.071
+    }
+   },
+   "CaveRockPillarShort1": {
+    "open": {
+     "n": 29,
+     "per100": 0.188
+    },
+    "wall": {
+     "n": 18,
+     "per100": 0.132
+    }
+   },
+   "CaveRockPillarShort2": {
+    "open": {
+     "n": 23,
+     "per100": 0.149
+    },
+    "wall": {
+     "n": 32,
+     "per100": 0.234
+    }
+   },
+   "CaveRockPillarTall2": {
+    "open": {
+     "n": 23,
+     "per100": 0.149
+    },
+    "wall": {
+     "n": 14,
+     "per100": 0.102
+    }
+   },
+   "GrassTuft3": {
+    "open": {
+     "n": 98,
+     "per100": 0.635
+    },
+    "wall": {
+     "n": 59,
+     "per100": 0.432
+    },
+    "void": {
+     "n": 2,
+     "per100": 800.0
+    }
+   },
+   "AmbLavaBubbles": {
+    "liquid": {
+     "n": 138,
+     "per100": 1.655
+    },
+    "open": {
+     "n": 28,
+     "per100": 0.181
+    },
+    "wall": {
+     "n": 13,
+     "per100": 0.095
+    }
+   },
+   "DunMirScaleTorch1": {
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.032
+    }
+   },
+   "DunMirFlameBasinLit": {
+    "wall": {
+     "n": 18,
+     "per100": 0.132
+    },
+    "open": {
+     "n": 43,
+     "per100": 0.279
+    }
+   },
+   "LavaBubble9": {
+    "liquid": {
+     "n": 79,
+     "per100": 0.948
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    },
+    "open": {
+     "n": 10,
+     "per100": 0.065
+    }
+   },
+   "LavaBubble7": {
+    "liquid": {
+     "n": 51,
+     "per100": 0.612
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.045
+    }
+   },
+   "LavaBubble8": {
+    "liquid": {
+     "n": 59,
+     "per100": 0.708
+    },
+    "open": {
+     "n": 15,
+     "per100": 0.097
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "LavaBubble4": {
+    "liquid": {
+     "n": 66,
+     "per100": 0.792
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.084
+    }
+   },
+   "LavaBubble5": {
+    "liquid": {
+     "n": 67,
+     "per100": 0.804
+    },
+    "open": {
+     "n": 10,
+     "per100": 0.065
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "LavaBubble6": {
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    },
+    "liquid": {
+     "n": 69,
+     "per100": 0.828
+    },
+    "open": {
+     "n": 23,
+     "per100": 0.149
+    }
+   },
+   "SmallFlame": {
+    "liquid": {
+     "n": 935,
+     "per100": 11.216
+    },
+    "open": {
+     "n": 307,
+     "per100": 1.988
+    },
+    "wall": {
+     "n": 89,
+     "per100": 0.652
+    }
+   },
+   "MediumFlame": {
+    "liquid": {
+     "n": 356,
+     "per100": 4.271
+    },
+    "open": {
+     "n": 111,
+     "per100": 0.719
+    },
+    "wall": {
+     "n": 29,
+     "per100": 0.212
+    }
+   },
+   "Flame": {
+    "liquid": {
+     "n": 181,
+     "per100": 2.171
+    },
+    "open": {
+     "n": 50,
+     "per100": 0.324
+    },
+    "wall": {
+     "n": 11,
+     "per100": 0.081
+    }
+   },
+   "LavaHardened6": {
+    "liquid": {
+     "n": 31,
+     "per100": 0.372
+    }
+   },
+   "LavaHardened5": {
+    "liquid": {
+     "n": 42,
+     "per100": 0.504
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.045
+    }
+   },
+   "LavaHardened8": {
+    "liquid": {
+     "n": 15,
+     "per100": 0.18
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "LavaHardened7": {
+    "liquid": {
+     "n": 36,
+     "per100": 0.432
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "LavaHardened3": {
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    },
+    "liquid": {
+     "n": 24,
+     "per100": 0.288
+    }
+   },
+   "LavaHardened2": {
+    "liquid": {
+     "n": 33,
+     "per100": 0.396
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.019
+    }
+   },
+   "LavaHardened10": {
+    "liquid": {
+     "n": 24,
+     "per100": 0.288
+    }
+   },
+   "LavaHardened4": {
+    "liquid": {
+     "n": 28,
+     "per100": 0.336
+    }
+   },
+   "LavaHardened9": {
+    "liquid": {
+     "n": 22,
+     "per100": 0.264
+    }
+   },
+   "LavaHardened1": {
+    "liquid": {
+     "n": 28,
+     "per100": 0.336
+    }
+   },
+   "CaveRocksHuge": {
+    "open": {
+     "n": 20,
+     "per100": 0.13
+    },
+    "wall": {
+     "n": 68,
+     "per100": 0.498
+    }
+   },
+   "CaveRocksPebbles": {
+    "open": {
+     "n": 66,
+     "per100": 0.427
+    },
+    "wall": {
+     "n": 85,
+     "per100": 0.622
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "CaveRocksMedium": {
+    "open": {
+     "n": 85,
+     "per100": 0.551
+    },
+    "wall": {
+     "n": 46,
+     "per100": 0.337
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "ColorLightMovable": {
+    "open": {
+     "n": 3,
+     "per100": 0.019
+    }
+   },
+   "Torch": {
+    "wall": {
+     "n": 70,
+     "per100": 0.512
+    }
+   },
+   "SpiderWebEast": {
+    "wall": {
+     "n": 35,
+     "per100": 0.256
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "SpiderWebNorthEast": {
+    "wall": {
+     "n": 35,
+     "per100": 0.256
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "CaveRocksSmall": {
+    "wall": {
+     "n": 51,
+     "per100": 0.373
+    },
+    "open": {
+     "n": 39,
+     "per100": 0.253
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "Mushroom1": {
+    "wall": {
+     "n": 39,
+     "per100": 0.286
+    },
+    "open": {
+     "n": 33,
+     "per100": 0.214
+    }
+   },
+   "DunMirTorch1": {
+    "wall": {
+     "n": 15,
+     "per100": 0.11
+    }
+   },
+   "DunMirTorch2": {
+    "wall": {
+     "n": 8,
+     "per100": 0.059
+    }
+   },
+   "FlameImmobile": {
+    "liquid": {
+     "n": 53,
+     "per100": 0.636
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.032
+    }
+   },
+   "CaveRocksSmallImmobile": {
+    "open": {
+     "n": 8,
+     "per100": 0.052
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    }
+   },
+   "CaveRocksPebblesImmobile": {
+    "open": {
+     "n": 22,
+     "per100": 0.142
+    },
+    "wall": {
+     "n": 7,
+     "per100": 0.051
+    }
+   },
+   "CaveRocksMediumImmobile": {
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    },
+    "open": {
+     "n": 4,
+     "per100": 0.026
+    }
+   },
+   "CaveRocksLargeImmobile": {
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "CaveRocksHugeImmobile": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "CaveRocksTinyImmobile": {
+    "open": {
+     "n": 14,
+     "per100": 0.091
+    },
+    "wall": {
+     "n": 7,
+     "per100": 0.051
+    }
+   },
+   "Spike": {
+    "liquid": {
+     "n": 6,
+     "per100": 0.072
+    },
+    "wall": {
+     "n": 112,
+     "per100": 0.82
+    },
+    "void": {
+     "n": 10,
+     "per100": 4000.0
+    },
+    "open": {
+     "n": 71,
+     "per100": 0.46
+    }
+   },
+   "SmallFlameImmobile": {
+    "open": {
+     "n": 38,
+     "per100": 0.246
+    },
+    "wall": {
+     "n": 25,
+     "per100": 0.183
+    },
+    "liquid": {
+     "n": 126,
+     "per100": 1.511
+    }
+   },
+   "MediumFlameImmobile": {
+    "wall": {
+     "n": 7,
+     "per100": 0.051
+    },
+    "open": {
+     "n": 14,
+     "per100": 0.091
+    },
+    "liquid": {
+     "n": 69,
+     "per100": 0.828
+    }
+   },
+   "FireGrate": {
+    "open": {
+     "n": 91,
+     "per100": 0.589
+    },
+    "wall": {
+     "n": 87,
+     "per100": 0.637
+    }
+   },
+   "SpikeBlock": {
+    "wall": {
+     "n": 83,
+     "per100": 0.608
+    },
+    "open": {
+     "n": 11,
+     "per100": 0.071
+    },
+    "liquid": {
+     "n": 4,
+     "per100": 0.048
+    }
+   },
+   "ObeliskPrimitive": {
+    "wall": {
+     "n": 181,
+     "per100": 1.325
+    },
+    "liquid": {
+     "n": 5,
+     "per100": 0.06
+    },
+    "open": {
+     "n": 18,
+     "per100": 0.117
+    }
+   },
+   "BlackPowderBarrel": {
+    "wall": {
+     "n": 20,
+     "per100": 0.146
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.084
+    }
+   },
+   "LargeFlameImmobile": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "RotatingSpikes": {
+    "wall": {
+     "n": 8,
+     "per100": 0.059
+    },
+    "void": {
+     "n": 4,
+     "per100": 1600.0
+    },
+    "open": {
+     "n": 22,
+     "per100": 0.142
+    }
+   },
+   "Skull2": {
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "SpikeBlockImmobile": {
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    }
+   },
+   "TalkingSkull": {
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "OgreStraw1": {
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    },
+    "open": {
+     "n": 6,
+     "per100": 0.039
+    }
+   },
+   "OgreStraw5": {
+    "open": {
+     "n": 6,
+     "per100": 0.039
+    }
+   },
+   "LargeFlame": {
+    "liquid": {
+     "n": 71,
+     "per100": 0.852
+    },
+    "open": {
+     "n": 23,
+     "per100": 0.149
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    }
+   },
+   "LavaBubble1": {
+    "liquid": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    }
+   },
+   "OgreStraw3": {
+    "open": {
+     "n": 3,
+     "per100": 0.019
+    }
+   },
+   "OgreStraw2": {
+    "open": {
+     "n": 3,
+     "per100": 0.019
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "OgreStraw4": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "Skull4": {
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "PitCrumblingFloor": {
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    }
+   },
+   "SpiderWebNorth": {
+    "wall": {
+     "n": 47,
+     "per100": 0.344
+    },
+    "liquid": {
+     "n": 3,
+     "per100": 0.036
+    }
+   },
+   "Brick": {
+    "open": {
+     "n": 30,
+     "per100": 0.194
+    },
+    "wall": {
+     "n": 112,
+     "per100": 0.82
+    },
+    "liquid": {
+     "n": 4,
+     "per100": 0.048
+    }
+   },
+   "TorchPole": {
+    "wall": {
+     "n": 32,
+     "per100": 0.234
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "CaveRocksTiny": {
+    "wall": {
+     "n": 12,
+     "per100": 0.088
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.084
+    }
+   },
+   "CorpseSkullS": {
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "SpikeBrazierImmobile": {
+    "wall": {
+     "n": 14,
+     "per100": 0.102
+    },
+    "liquid": {
+     "n": 2,
+     "per100": 0.024
+    }
+   },
+   "LOTDManaObelisk": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.024
+    },
+    "wall": {
+     "n": 5,
+     "per100": 0.037
+    }
+   },
+   "SmallStalagmite": {
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    },
+    "open": {
+     "n": 28,
+     "per100": 0.181
+    },
+    "liquid": {
+     "n": 5,
+     "per100": 0.06
+    }
+   },
+   "LavaFountain3": {
+    "open": {
+     "n": 13,
+     "per100": 0.084
+    },
+    "liquid": {
+     "n": 45,
+     "per100": 0.54
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "Skull": {
+    "wall": {
+     "n": 61,
+     "per100": 0.447
+    },
+    "open": {
+     "n": 113,
+     "per100": 0.732
+    },
+    "void": {
+     "n": 3,
+     "per100": 1200.0
+    }
+   },
+   "LegBone": {
+    "wall": {
+     "n": 108,
+     "per100": 0.791
+    },
+    "open": {
+     "n": 189,
+     "per100": 1.224
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "LargeStalagmite": {
+    "open": {
+     "n": 20,
+     "per100": 0.13
+    },
+    "liquid": {
+     "n": 9,
+     "per100": 0.108
+    },
+    "wall": {
+     "n": 5,
+     "per100": 0.037
+    }
+   },
+   "PeriodicSpike": {
+    "open": {
+     "n": 44,
+     "per100": 0.285
+    }
+   },
+   "Rock4": {
+    "void": {
+     "n": 9,
+     "per100": 3600.0
+    },
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    },
+    "open": {
+     "n": 27,
+     "per100": 0.175
+    }
+   },
+   "ArmBone": {
+    "open": {
+     "n": 80,
+     "per100": 0.518
+    },
+    "wall": {
+     "n": 42,
+     "per100": 0.307
+    }
+   },
+   "Rock3": {
+    "open": {
+     "n": 21,
+     "per100": 0.136
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "Rock2": {
+    "wall": {
+     "n": 6,
+     "per100": 0.044
+    },
+    "open": {
+     "n": 9,
+     "per100": 0.058
+    }
+   },
+   "MineCrystalUp04": {
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    }
+   },
+   "DunMirScaleTorch2": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.024
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.019
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "MineCrystalDown02": {
+    "wall": {
+     "n": 1,
+     "per100": 0.007
+    }
+   },
+   "SmallBlueFlame": {
+    "wall": {
+     "n": 24,
+     "per100": 0.176
+    }
+   },
+   "BlueFlame": {
+    "wall": {
+     "n": 8,
+     "per100": 0.059
+    }
+   },
+   "CorpseSkullNW": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "Rock8": {
+    "wall": {
+     "n": 15,
+     "per100": 0.11
+    },
+    "open": {
+     "n": 76,
+     "per100": 0.492
+    }
+   },
+   "Rock7": {
+    "wall": {
+     "n": 8,
+     "per100": 0.059
+    },
+    "open": {
+     "n": 28,
+     "per100": 0.181
+    }
+   },
+   "Rock5": {
+    "open": {
+     "n": 16,
+     "per100": 0.104
+    },
+    "wall": {
+     "n": 10,
+     "per100": 0.073
+    }
+   },
+   "Rock6": {
+    "open": {
+     "n": 40,
+     "per100": 0.259
+    },
+    "wall": {
+     "n": 5,
+     "per100": 0.037
+    }
+   },
+   "LavaFountain2": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "LavaFountain": {
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    }
+   },
+   "BlackPowder": {
+    "wall": {
+     "n": 30,
+     "per100": 0.22
+    },
+    "open": {
+     "n": 164,
+     "per100": 1.062
+    }
+   },
+   "Rock1": {
+    "open": {
+     "n": 7,
+     "per100": 0.045
+    }
+   },
+   "Obelisk": {
+    "wall": {
+     "n": 4,
+     "per100": 0.029
+    },
+    "open": {
+     "n": 16,
+     "per100": 0.104
+    }
+   },
+   "TorchUnlit2": {
+    "wall": {
+     "n": 3,
+     "per100": 0.022
+    }
+   },
+   "CorpseSkullW": {
+    "open": {
+     "n": 1,
+     "per100": 0.006
+    }
+   },
+   "TorchSpent": {
+    "open": {
+     "n": 2,
+     "per100": 0.013
+    }
+   },
+   "SpikedDoor": {
+    "wall": {
+     "n": 2,
+     "per100": 0.015
+    }
+   },
+   "TorchUnlit1": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.012
+    }
+   }
+  }
+ },
+ "cave": {
+  "context_cells": {
+   "wall": 32896,
+   "liquid": 2031,
+   "open": 35054
+  },
+  "types": {
+   "Torch": {
+    "wall": {
+     "n": 135,
+     "per100": 1.642
+    },
+    "void": {
+     "n": 8,
+     "per100": 3200.0
+    }
+   },
+   "Mushroom1": {
+    "open": {
+     "n": 68,
+     "per100": 0.776
+    },
+    "wall": {
+     "n": 38,
+     "per100": 0.462
+    }
+   },
+   "Mushroom2": {
+    "open": {
+     "n": 43,
+     "per100": 0.491
+    },
+    "wall": {
+     "n": 24,
+     "per100": 0.292
+    }
+   },
+   "Mushroom4": {
+    "open": {
+     "n": 54,
+     "per100": 0.616
+    },
+    "wall": {
+     "n": 32,
+     "per100": 0.389
+    }
+   },
+   "Mushroom5": {
+    "open": {
+     "n": 47,
+     "per100": 0.536
+    },
+    "wall": {
+     "n": 21,
+     "per100": 0.255
+    }
+   },
+   "Mushroom3": {
+    "open": {
+     "n": 360,
+     "per100": 4.108
+    },
+    "wall": {
+     "n": 225,
+     "per100": 2.736
+    }
+   },
+   "CaveRockPillarTall2": {
+    "wall": {
+     "n": 100,
+     "per100": 1.216
+    },
+    "open": {
+     "n": 48,
+     "per100": 0.548
+    }
+   },
+   "CaveRockPillarTall1": {
+    "wall": {
+     "n": 131,
+     "per100": 1.593
+    },
+    "open": {
+     "n": 71,
+     "per100": 0.81
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.197
+    }
+   },
+   "ColorLight": {
+    "wall": {
+     "n": 249,
+     "per100": 3.028
+    },
+    "open": {
+     "n": 393,
+     "per100": 4.485
+    },
+    "void": {
+     "n": 13,
+     "per100": 5200.0
+    },
+    "liquid": {
+     "n": 39,
+     "per100": 7.681
+    }
+   },
+   "MineCrystalUp02": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.197
+    },
+    "wall": {
+     "n": 2,
+     "per100": 0.024
+    }
+   },
+   "SpiderWebNorth": {
+    "wall": {
+     "n": 59,
+     "per100": 0.717
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    },
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "SpiderWebNorthEast": {
+    "wall": {
+     "n": 61,
+     "per100": 0.742
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.08
+    }
+   },
+   "SpiderWebEast": {
+    "wall": {
+     "n": 55,
+     "per100": 0.669
+    },
+    "open": {
+     "n": 11,
+     "per100": 0.126
+    }
+   },
+   "TorchPole": {
+    "wall": {
+     "n": 45,
+     "per100": 0.547
+    },
+    "open": {
+     "n": 6,
+     "per100": 0.068
+    }
+   },
+   "CaveRocksHuge": {
+    "wall": {
+     "n": 74,
+     "per100": 0.9
+    },
+    "open": {
+     "n": 45,
+     "per100": 0.513
+    }
+   },
+   "CaveRocksPebbles": {
+    "wall": {
+     "n": 147,
+     "per100": 1.787
+    },
+    "open": {
+     "n": 180,
+     "per100": 2.054
+    }
+   },
+   "CaveRocksTiny": {
+    "wall": {
+     "n": 36,
+     "per100": 0.438
+    },
+    "open": {
+     "n": 26,
+     "per100": 0.297
+    }
+   },
+   "CaveRockPillarShort1": {
+    "open": {
+     "n": 89,
+     "per100": 1.016
+    },
+    "wall": {
+     "n": 144,
+     "per100": 1.751
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "CaveRocksSmall": {
+    "open": {
+     "n": 68,
+     "per100": 0.776
+    },
+    "wall": {
+     "n": 57,
+     "per100": 0.693
+    }
+   },
+   "MineCrystalUp01": {
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    }
+   },
+   "CaveRocksLarge": {
+    "wall": {
+     "n": 31,
+     "per100": 0.377
+    },
+    "open": {
+     "n": 24,
+     "per100": 0.274
+    }
+   },
+   "CaveBoulders": {
+    "wall": {
+     "n": 75,
+     "per100": 0.912
+    },
+    "open": {
+     "n": 37,
+     "per100": 0.422
+    }
+   },
+   "PitCrumblingFloor": {
+    "wall": {
+     "n": 71,
+     "per100": 0.863
+    },
+    "open": {
+     "n": 171,
+     "per100": 1.951
+    }
+   },
+   "CorpseSkullS": {
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    }
+   },
+   "OgreStraw3": {
+    "wall": {
+     "n": 2,
+     "per100": 0.024
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    }
+   },
+   "OgreStraw2": {
+    "open": {
+     "n": 9,
+     "per100": 0.103
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "OgreStraw4": {
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "CaveRocksMedium": {
+    "wall": {
+     "n": 42,
+     "per100": 0.511
+    },
+    "open": {
+     "n": 93,
+     "per100": 1.061
+    }
+   },
+   "CaveRockPillarShort2": {
+    "wall": {
+     "n": 121,
+     "per100": 1.471
+    },
+    "open": {
+     "n": 92,
+     "per100": 1.05
+    }
+   },
+   "MineCrystalDown03": {
+    "wall": {
+     "n": 4,
+     "per100": 0.049
+    },
+    "open": {
+     "n": 6,
+     "per100": 0.068
+    }
+   },
+   "MineCrystalDown04": {
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "MineCrystalDown02": {
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "MineCrystal02": {
+    "wall": {
+     "n": 11,
+     "per100": 0.134
+    },
+    "open": {
+     "n": 4,
+     "per100": 0.046
+    }
+   },
+   "MineCrystal01": {
+    "wall": {
+     "n": 8,
+     "per100": 0.097
+    },
+    "open": {
+     "n": 4,
+     "per100": 0.046
+    }
+   },
+   "MediumFlame": {
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    },
+    "liquid": {
+     "n": 23,
+     "per100": 4.53
+    }
+   },
+   "SmallFlame": {
+    "open": {
+     "n": 11,
+     "per100": 0.126
+    },
+    "liquid": {
+     "n": 65,
+     "per100": 12.802
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "BlackPowderBarrel": {
+    "wall": {
+     "n": 13,
+     "per100": 0.158
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.148
+    }
+   },
+   "ArmBone": {
+    "open": {
+     "n": 43,
+     "per100": 0.491
+    },
+    "wall": {
+     "n": 38,
+     "per100": 0.462
+    }
+   },
+   "LegBone": {
+    "open": {
+     "n": 82,
+     "per100": 0.936
+    },
+    "wall": {
+     "n": 20,
+     "per100": 0.243
+    }
+   },
+   "Skull": {
+    "wall": {
+     "n": 17,
+     "per100": 0.207
+    },
+    "open": {
+     "n": 35,
+     "per100": 0.399
+    }
+   },
+   "MineCrystal04": {
+    "wall": {
+     "n": 12,
+     "per100": 0.146
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "ObeliskPrimitive": {
+    "wall": {
+     "n": 14,
+     "per100": 0.17
+    }
+   },
+   "CorpseSkullNW": {
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "Straw2": {
+    "wall": {
+     "n": 40,
+     "per100": 0.486
+    },
+    "open": {
+     "n": 41,
+     "per100": 0.468
+    }
+   },
+   "LargeStalagmite": {
+    "wall": {
+     "n": 10,
+     "per100": 0.122
+    },
+    "open": {
+     "n": 21,
+     "per100": 0.24
+    }
+   },
+   "SmallStalagmite": {
+    "wall": {
+     "n": 8,
+     "per100": 0.097
+    },
+    "open": {
+     "n": 25,
+     "per100": 0.285
+    }
+   },
+   "Straw1": {
+    "wall": {
+     "n": 19,
+     "per100": 0.231
+    },
+    "open": {
+     "n": 11,
+     "per100": 0.126
+    }
+   },
+   "MineCrystal03": {
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    },
+    "wall": {
+     "n": 10,
+     "per100": 0.122
+    }
+   },
+   "CorpseSkullE": {
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "CorpseSkullNE": {
+    "wall": {
+     "n": 2,
+     "per100": 0.024
+    }
+   },
+   "OgreStraw1": {
+    "wall": {
+     "n": 7,
+     "per100": 0.085
+    },
+    "open": {
+     "n": 14,
+     "per100": 0.16
+    }
+   },
+   "Rock7": {
+    "open": {
+     "n": 4,
+     "per100": 0.046
+    }
+   },
+   "MineCrystalUp03": {
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "MineCrystal05": {
+    "wall": {
+     "n": 9,
+     "per100": 0.109
+    }
+   },
+   "MineCrystalDown01": {
+    "wall": {
+     "n": 6,
+     "per100": 0.073
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    }
+   },
+   "OgrePostShadowSkull2": {
+    "wall": {
+     "n": 5,
+     "per100": 0.061
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "SpikedDoor": {
+    "wall": {
+     "n": 22,
+     "per100": 0.268
+    }
+   },
+   "Rock6": {
+    "open": {
+     "n": 4,
+     "per100": 0.046
+    }
+   },
+   "CorpseSkullSE": {
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "OgrePostSkull2": {
+    "wall": {
+     "n": 6,
+     "per100": 0.073
+    }
+   },
+   "CorpseSkullN": {
+    "open": {
+     "n": 2,
+     "per100": 0.023
+    }
+   },
+   "Rock5": {
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "Mushroom": {
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "Rock3": {
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "Rock4": {
+    "open": {
+     "n": 6,
+     "per100": 0.068
+    }
+   },
+   "Rock2": {
+    "open": {
+     "n": 4,
+     "per100": 0.046
+    }
+   },
+   "RotatingSpikes": {
+    "wall": {
+     "n": 20,
+     "per100": 0.243
+    },
+    "open": {
+     "n": 8,
+     "per100": 0.091
+    }
+   },
+   "DunMirTorchEast": {
+    "wall": {
+     "n": 10,
+     "per100": 0.122
+    }
+   },
+   "DunMirFlameBasinLit": {
+    "wall": {
+     "n": 18,
+     "per100": 0.219
+    },
+    "open": {
+     "n": 41,
+     "per100": 0.468
+    }
+   },
+   "DunMirScaleTorch1": {
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    },
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "DunMirTorchNorth": {
+    "wall": {
+     "n": 26,
+     "per100": 0.316
+    }
+   },
+   "SpikeBlock": {
+    "open": {
+     "n": 8,
+     "per100": 0.091
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "DunMirTorch2": {
+    "wall": {
+     "n": 8,
+     "per100": 0.097
+    }
+   },
+   "MineCrystalDown05": {
+    "wall": {
+     "n": 6,
+     "per100": 0.073
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "MineCrystalUp04": {
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "MineCrystalUp05": {
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "AmbLavaBubbles": {
+    "liquid": {
+     "n": 4,
+     "per100": 0.788
+    }
+   },
+   "LavaBubble6": {
+    "liquid": {
+     "n": 15,
+     "per100": 2.954
+    },
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    }
+   },
+   "LavaBubble4": {
+    "liquid": {
+     "n": 8,
+     "per100": 1.576
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.023
+    }
+   },
+   "LavaBubble5": {
+    "liquid": {
+     "n": 14,
+     "per100": 2.757
+    },
+    "open": {
+     "n": 2,
+     "per100": 0.023
+    }
+   },
+   "Flame": {
+    "liquid": {
+     "n": 9,
+     "per100": 1.773
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "LavaHardened5": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "LavaHardened2": {
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "LavaHardened7": {
+    "liquid": {
+     "n": 3,
+     "per100": 0.591
+    }
+   },
+   "LavaHardened1": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "LavaHardened6": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "LavaHardened4": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.197
+    }
+   },
+   "LavaHardened3": {
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "LavaHardened8": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.197
+    }
+   },
+   "LavaHardened10": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "LavaHardened9": {
+    "liquid": {
+     "n": 2,
+     "per100": 0.394
+    }
+   },
+   "Brick": {
+    "open": {
+     "n": 16,
+     "per100": 0.183
+    },
+    "wall": {
+     "n": 79,
+     "per100": 0.961
+    },
+    "liquid": {
+     "n": 3,
+     "per100": 0.591
+    },
+    "void": {
+     "n": 1,
+     "per100": 400.0
+    }
+   },
+   "DunMirScaleTorch2": {
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    }
+   },
+   "DunMirTorch1": {
+    "wall": {
+     "n": 14,
+     "per100": 0.17
+    }
+   },
+   "OgreStraw5": {
+    "open": {
+     "n": 5,
+     "per100": 0.057
+    }
+   },
+   "BlackPowderBarrel2": {
+    "wall": {
+     "n": 3,
+     "per100": 0.036
+    },
+    "open": {
+     "n": 1,
+     "per100": 0.011
+    }
+   },
+   "Spike": {
+    "open": {
+     "n": 279,
+     "per100": 3.184
+    },
+    "wall": {
+     "n": 135,
+     "per100": 1.642
+    }
+   },
+   "PeriodicSpike": {
+    "wall": {
+     "n": 45,
+     "per100": 0.547
+    },
+    "open": {
+     "n": 25,
+     "per100": 0.285
+    }
+   },
+   "DunMirTorchWest": {
+    "wall": {
+     "n": 2,
+     "per100": 0.024
+    },
+    "void": {
+     "n": 4,
+     "per100": 1600.0
+    }
+   },
+   "DunMirTorchSouth": {
+    "wall": {
+     "n": 1,
+     "per100": 0.012
+    }
+   },
+   "ColorLightMovable": {
+    "open": {
+     "n": 3,
+     "per100": 0.034
+    }
+   },
+   "GrassTuft3": {
+    "wall": {
+     "n": 2,
+     "per100": 0.024
+    }
+   }
+  }
+ }
+}

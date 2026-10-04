@@ -1,0 +1,351 @@
+"""Biomes beyond the green world: caves, snow and ice, lava (rules/BIOMES.md, measured by rules/biomes.py and
+rules/biome_places.py on Westwood's maps).
+
+Each biome is a palette:
+- its floors, with the patches that break them up and how they blend;
+- its natural wall;
+- what stands along the walls and in the open (Planter "forests": pillars or snow trees);
+- what lies on its liquid (lava's flames and bubbles);
+- its lights, ambient and region colours;
+- its creatures.
+
+A Dresser applies the palette to a carved Land:
+    d = Dresser(spec, rng, land, "cave")
+    d.reserve_pool(centre_uv, radius_uv)      # before land.carve(): liquid behind cliffs (lava, an underground lake)
+    land.carve(...); land.apply(spec, wall=d.wall, floor=d.base)
+    d.ground(); d.paint_pools(); d.vegetate(); d.dress_liquid(); d.scatter_open(); d.rim(); d.lights()
+Densities are per 100 floor tiles of the context (open floor, along walls, on the liquid), as Westwood's.
+"""
+import math, random
+from kit.layout import square_tile, square_px, bfs_distance, N4
+from kit.vegetation import FORESTS, Planter, Patches
+
+N8 = [(a, b) for a in (-1, 0, 1) for b in (-1, 0, 1) if a or b]
+
+# ---- the palettes ------------------------------------------------------------------------------------------------
+BIOMES = {
+    "cave": dict(
+        env="cave", ambient=(29, 34, 45), region_ambient=(32, 48, 48),
+        wall="CaveWall2", base="CaveHardBrown",
+        patches=[("CaveHardTan", 0.95), ("CaveHardDark", -1.15), ("DirtDark2", 1.55)],
+        blends=[("CaveHardBrown", 0, "BlendEdge"), ("CaveHardDark", 1, "BlendEdge"), ("CaveHardTan", 2, "BlendEdge"),
+                ("DirtDark2", 3, "DirtRidge"), ("ManaMineDirt", 4, "DirtRidge"), ("Water", 6, "DirtRidge")],
+        forest=dict(wall="CaveWall2",
+                    trees={"CaveRockPillarShort1": 30, "CaveRockPillarShort2": 26, "CaveRockPillarTall1": 26,
+                           "CaveRockPillarTall2": 20, "LargeStalagmite": 5, "SmallStalagmite": 5},
+                    undergrowth={"Mushroom3": 40, "CaveRocksPebbles": 22, "Mushroom1": 8, "Mushroom4": 6, "Mushroom5": 6,
+                                 "Mushroom2": 6, "CaveRocksSmall": 8, "CaveRocksTiny": 5},
+                    flowers={"Mushroom3": 3, "Mushroom5": 2, "Mushroom1": 2}),
+        tree_depth=(0.75, 0.25, 0.05),
+        open={"CaveRocksMedium": 1.0, "CaveRocksSmall": 0.7, "CaveRocksHuge": 0.45, "CaveBoulders": 0.4, "LegBone": 0.9,
+              "ArmBone": 0.45, "Skull": 0.4, "SmallStalagmite": 0.28, "LargeStalagmite": 0.24, "CaveRocksLarge": 0.27},
+        wallside={"SpiderWebNorthEast": 0.7, "SpiderWebEast": 0.65, "SpiderWebNorth": 0.7, "CaveRocksHuge": 0.9,
+                  "CaveBoulders": 0.9, "CaveRocksLarge": 0.38, "Straw2": 0.3},
+        liquid=dict(floor="Water", dress={}, edge=None),
+        light_colours=[(128, 96, 32), (96, 64, 32), (96, 96, 64), (128, 96, 64)], light_per100=dict(open=3.0, wall=2.2),
+        light_radius=150, light_intensity=40,
+        sources=dict(wall={"TorchPole": 0.35}, open={"DunMirFlameBasinLit": 0.3}),
+        creatures={"Bat": 6, "Spider": 2, "SmallSpider": 2, "Scorpion": 3, "GiantLeech": 1, "Urchin": 2},
+        creatures_per100=1.0),
+    "ice": dict(
+        env="ice", ambient=(70, 70, 140), region_ambient=(64, 64, 128),
+        # in the game's art IceFloorDeepBlue is the pale snowfield (where Westwood's snow trees stand), IceFloorRough
+        # blue speckled ice, IceFloorDark dark slate ice (a frozen lake)
+        wall="IceWall", base="IceFloorDeepBlue",
+        patches=[("IceFloorRough", -0.9), ("IceFloorLight", 1.35), ("CaveHardTan", 1.95)],
+        blends=[("IceFloorRough", 0, "BlendEdge"), ("IceFloorDeepBlue", 1, "BlendEdge"), ("IceFloorDark", 2, "BlendEdge"),
+                ("IceFloorLight", 3, "BlendEdge"), ("CaveHardBrown", 4, "IceRidge"), ("CaveHardTan", 5, "IceRidge")],
+        forest=dict(wall="IceWall",
+                    trees={"TreeSnowCovered3": 28, "TreeSnowCovered6": 20, "TreeSnowCovered5": 19, "TreeSnowCovered4": 14,
+                           "TreeSnowCovered2": 13, "TreeSnowCovered1": 6},
+                    undergrowth={"CaveRocksSmall": 10, "CaveRocksTiny": 8, "CaveRocksPebbles": 8, "IceCrack2": 3,
+                                 "IceCrack4": 2, "IceCrack6": 2},
+                    flowers={"CaveRocksPebbles": 1}),
+        tree_depth=(0.55, 0.25, 0.08),
+        open={"CaveRocksSmall": 0.2, "CaveRocksTiny": 0.2, "ArmBone": 0.2, "IceCrack2": 0.12, "IceCrack6": 0.06,
+              "CaveRocksHuge": 0.1, "Skull": 0.08},
+        wallside={"CaveRocksHuge": 0.6, "CaveRocksLarge": 0.35, "CaveBoulders": 0.25, "MineCrystal05": 0.2,
+                  "MineCrystal02": 0.12, "CaveRockPillarTall1": 0.25, "CaveRockPillarShort2": 0.25},
+        liquid=dict(floor="IceFloorDark", dress={}, edge=None),
+        light_colours=[(96, 128, 224), (160, 160, 224), (64, 96, 192)], light_per100=dict(open=0.35, wall=0.6),
+        light_radius=170, light_intensity=35,
+        sources=dict(wall={"Torch": 0.15}, open={}),
+        creatures={"BlackWolf": 6, "WhiteWolf": 3, "Ghost": 2, "Skeleton": 2, "SkeletonLord": 1, "Bear": 1},
+        creatures_per100=0.8),
+    "lava": dict(
+        env="lava", ambient=(45, 16, 15), region_ambient=(112, 0, 0),
+        wall="Volcano", base="VolcanicCraggy",
+        patches=[("CaveHardDark", 0.95), ("CaveHardBrown", -1.2), ("DirtDark2", 1.6)],
+        blends=[("VolcanicCraggy", 0, "BlendEdge"), ("CaveHardBrown", 1, "BlendEdge"), ("CaveHardDark", 2, "BlendEdge"),
+                ("DirtDark2", 3, "BlendEdge"), ("Lava", 6, "LavaEdgeBlackDirt")],
+        edge_over={("Lava", "CaveHardBrown"): "LavaEdgeBrownDirt", ("Lava", "DirtDark2"): "LavaEdgeBrownDirt"},
+        forest=dict(wall="Volcano",
+                    trees={"CaveRockPillarTall1": 10, "CaveRockPillarShort1": 8, "Rock8": 6, "Rock6": 6, "Rock4": 5,
+                           "CaveRocksHuge": 8},           # cooled-lava crusts read as puddles of lava: on the lava only
+                    undergrowth={"CaveRocksPebbles": 14, "CaveRocksSmall": 10, "LegBone": 8, "Skull": 5, "ArmBone": 4,
+                                 "GrassTuft3": 3, "Mushroom4": 2},
+                    flowers={"CaveRocksPebbles": 1}),
+        tree_depth=(0.45, 0.15, 0.03),
+        open={"LegBone": 1.2, "Skull": 0.7, "ArmBone": 0.5, "Rock8": 0.5, "CaveRocksMedium": 0.55, "FireGrate": 0.6,
+              "CaveRocksSmall": 0.25, "GrassTuft3": 0.3},
+        wallside={"CaveRocksHuge": 0.5, "Brick": 0.4, "CaveRocksLarge": 0.25, "Rock4": 0.2},
+        liquid=dict(floor="Lava",
+                    dress={"SmallFlame": 11.2, "MediumFlame": 4.3, "Flame": 2.2, "LargeFlame": 0.85, "SmallFlameImmobile": 1.5,
+                           "LavaBubble4": 0.8, "LavaBubble5": 0.8, "LavaBubble6": 0.83, "LavaBubble7": 0.6, "LavaBubble8": 0.7,
+                           "LavaBubble9": 0.95, "LavaFountain3": 0.5, "LavaHardened5": 0.45, "LavaHardened7": 0.35},
+                    edge="LavaEdgeBlackDirt"),
+        light_colours=[(224, 64, 0), (192, 32, 0), (128, 0, 0), (224, 96, 32)],
+        light_per100=dict(open=5.0, wall=3.0, liquid=6.0), light_radius=180, light_intensity=60,
+        sources=dict(wall={"Torch": 0.3}, open={"DunMirFlameBasinLit": 0.25}),
+        creatures={"Imp": 5, "EmberDemon": 3, "MeleeDemon": 2, "Skeleton": 3, "Zombie": 2, "SkeletonLord": 1},
+        creatures_per100=0.7),
+}
+
+
+def register_forests():
+    """The biomes' wall plants (pillars, snow trees, volcanic rocks) as Planter forests: cave, ice, lava."""
+    for k, b in BIOMES.items():
+        FORESTS.setdefault(k, b["forest"])
+
+
+class Dresser:
+    def __init__(self, spec, rng, land, biome):
+        register_forests()
+        self.spec, self.rng, self.land = spec, rng, land
+        self.b = BIOMES[biome]
+        self.biome = biome
+        self.wall, self.base = self.b["wall"], self.b["base"]
+        self.pools = set()                   # squares of liquid behind the cliffs (outside the land)
+        self.taken = set()                   # squares holding props, lights and sources
+        spec.d["ambient"] = list(self.b["ambient"])
+        for mat, prio, edge in self.b["blends"]:
+            spec.blending(mat, prio, edge=edge)
+        for (ov, base), edge in self.b.get("edge_over", {}).items():
+            spec.edge_over[(ov, base)] = edge
+
+    # ---- liquid behind cliffs --------------------------------------------------------------------------------------
+    def reserve_pool(self, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.3):
+        """A pool of the biome's liquid (a lava lake, an underground lake) the land keeps out of: the cliffs of the
+        biome's wall ring it, and the liquid shows beyond them. Call before land.carve(). Returns its squares."""
+        r = self.rng
+        waves = [(k, r.uniform(0, 2 * math.pi), roughness * r.uniform(0.5, 1.0) / (1 + 0.5 * n))
+                 for n, k in enumerate((2, 3, 5, 7))]
+        ci, cj = centre_uv[0] / 2, centre_uv[1] / 2
+        R0 = radius_uv / 2
+        ca, sa = math.cos(-angle), math.sin(-angle)
+        out = set()
+        for i in range(int(ci - R0 * stretch - 3), int(ci + R0 * stretch + 4)):
+            for j in range(int(cj - R0 * stretch - 3), int(cj + R0 * stretch + 4)):
+                dx, dy = i + 0.5 - ci, j - 0.5 - cj
+                rx, ry = dx * ca - dy * sa, dx * sa + dy * ca
+                rx /= stretch
+                th = math.atan2(ry, rx)
+                R = R0 * (1 + sum(a * math.sin(k * th + p) for k, p, a in waves))
+                if math.hypot(rx, ry) <= R: out.add((i, j))
+        self.pools |= out
+        self.land.forbidden |= out
+        return out
+
+    def reserve_channel(self, path_uv, half_squares):
+        """A river of the liquid between cliffs, along a uv polyline (lava flowing between pools)."""
+        from kit.layout import _densify
+        pts = _densify([(u / 2, v / 2) for u, v in path_uv], 0.5)
+        out = set()
+        for si, sj in pts:
+            for i in range(int(si - half_squares - 1), int(si + half_squares + 2)):
+                for j in range(int(sj - half_squares - 1), int(sj + half_squares + 2)):
+                    if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half_squares: out.add((i, j))
+        self.pools |= out
+        self.land.forbidden |= out
+        return out
+
+    def paint_pools(self):
+        """The liquid's tiles: the pools plus one square under the cliffs all round (the liquid runs under them)."""
+        mat = self.b["liquid"]["floor"]
+        ring = {(i + a, j + b) for i, j in self.pools for a, b in N8} - self.land.squares
+        for s in self.pools | ring:
+            i, j = s
+            if 3 <= i + j <= 250 and 3 <= i - j <= 250:
+                self.spec.floor[square_tile(*s)] = mat
+
+    def cap_islands(self, islands, material=None):
+        """Floor on top of the islands the land rings with cliffs (ice outcrops, rock pillars): seen from above they
+        read as the top of the rock, not as a pit into the void."""
+        mat = material or self.base
+        for blob in islands:
+            for s in blob:
+                i, j = s
+                if 3 <= i + j <= 250 and 3 <= i - j <= 250: self.spec.floor[square_tile(*s)] = mat
+
+    # ---- the ground -----------------------------------------------------------------------------------------------
+    def ground(self, clear=2):
+        """Patches of the biome's other floors on its base (smooth noise, each material in its own band), keeping
+        `clear` squares from what is already painted (paths, yards, buildings) so every seam has room to blend."""
+        r = self.rng
+        ph = [r.uniform(0, 6.3) for _ in range(6)]
+        L = self.land
+        features = [s for s in L.squares if self.spec.floor.get(square_tile(*s)) not in (None, self.base)] + list(L.taken)
+        near = bfs_distance(features, L.squares, clear)
+        for s in L.squares:
+            t = square_tile(*s)
+            if self.spec.floor.get(t) != self.base or near.get(s, 99) < clear: continue
+            i, j = s
+            n = (math.sin(i * 0.15 + ph[0]) + math.sin(j * 0.19 + ph[1]) + 0.6 * math.sin((i - j) * 0.1 + ph[2])
+                 + 0.4 * math.sin((i + j) * 0.27 + ph[3]))
+            for mat, th in self.b["patches"]:
+                if (th > 0 and n > th) or (th < 0 and n < th):
+                    self.spec.floor[t] = mat
+                    break
+
+    # ---- what grows or stands -------------------------------------------------------------------------------------
+    def vegetate(self, keep_clear=(), groves=3, flowers=0):
+        """Pillars, stalagmites or snow trees in front of the walls, thinning inward, and the biome's undergrowth."""
+        p = Planter(self.spec, self.rng, self.land, forest=self.biome, keep_clear=set(keep_clear) | self.taken)
+        p.tree_lines(depth=self.b["tree_depth"], spacing=1.25)
+        if groves: p.groves(n=groves, size=(4, 8), radius=2.5, spacing=1.3, avoid_areas=())
+        p.undergrowth(per_tree=(0, 1), edge_p=0.12)
+        if flowers: p.flower_patches(flowers, size=(3, 6))
+        self.planter = p
+        return len(p.trees), len(p.small)
+
+    def _contexts(self):
+        L = self.land
+        edge = [s for s in L.squares if any((s[0] + a, s[1] + b) not in L.squares for a, b in N8)]
+        wall = set(edge)
+        busy = set(L.roads) | L.plaza | L.water | L.taken
+        opn = {s for s in L.squares if s not in wall and s not in busy}
+        return opn, wall
+
+    def _place(self, types, squares, per100, min_gap=1.6, jitter=0.35, wall_clear=1):
+        """types {name: per 100 floor tiles} spread over `squares` (a square is one floor tile), each keeping
+        `min_gap` squares from the other props placed here. wall_clear=1 keeps a prop's cell and the cells beside it
+        free of walls (a crate never stands in a wall piece); 0 only its own cell (a web hung on the wall)."""
+        sq = list(squares)
+        self.rng.shuffle(sq)
+        placed = []
+        total = sum(types.values())
+        if not sq or total <= 0: return 0
+        n = int(round(len(sq) * total / 100 * per100))
+        names = list(types); w = [types[t] for t in names]
+        grid = {}
+        for s in sq:
+            if len(placed) >= n: break
+            if s in self.taken: continue
+            si, sj = s[0] + self.rng.uniform(0.5 - jitter, 0.5 + jitter), s[1] - self.rng.uniform(0.5 - jitter, 0.5 + jitter)
+            cell = (int(si // 3), int(sj // 3))
+            if any((si - x) ** 2 + (sj - y) ** 2 < min_gap ** 2 for a in (-1, 0, 1) for b in (-1, 0, 1)
+                   for x, y in grid.get((cell[0] + a, cell[1] + b), ())): continue
+            x, y = square_px(si, sj)
+            cx, cy = int(x // 23), int(y // 23)
+            near = [(cx, cy)] + ([(cx + a, cy + b) for a, b in N8] if wall_clear else [])
+            if any(c in self.spec.wallmap for c in near): continue
+            t = self.rng.choices(names, w)[0]
+            self.spec.obj_px(t, x, y)
+            grid.setdefault(cell, []).append((si, sj)); placed.append(t)
+            self.taken.add(s)
+        return len(placed)
+
+    def clusters(self, types, squares, n, size=(3, 7), radius=1.8, gap=0.9, spacing=7.0, core=None):
+        """n groups of props (a crystal formation, a stack of crates, a mushroom patch) with open floor between
+        them: group centres keep `spacing` squares apart; each holds size[0]-size[1] pieces within `radius` squares,
+        `gap` apart, the `core` type (a big crystal, a cart) at its middle. Returns the centres (si, sj)."""
+        sq = [s for s in squares if s not in self.taken]
+        self.rng.shuffle(sq)
+        names = list(types); w = [types[t] for t in names]
+        centres = []
+        for s in sq:
+            if len(centres) >= n: break
+            si, sj = s[0] + 0.5, s[1] - 0.5
+            if any(math.hypot(si - x, sj - y) < spacing for x, y in centres): continue
+            pts = []
+            k = self.rng.randint(*size)
+            for t_ in range(k * 6):
+                if len(pts) >= k: break
+                if not pts and core: a, b = si, sj
+                else:
+                    r_ = radius * math.sqrt(self.rng.random()); th = self.rng.uniform(0, 2 * math.pi)
+                    a, b = si + r_ * math.cos(th), sj + r_ * math.sin(th)
+                q = (int(math.floor(a)), int(math.floor(b)) + 1)
+                if q not in self.land.squares or any(math.hypot(a - x, b - y) < gap for x, y in pts): continue
+                x, y = square_px(a, b)
+                cx, cy = int(x // 23), int(y // 23)
+                if any((cx + c, cy + e) in self.spec.wallmap for c in (-1, 0, 1) for e in (-1, 0, 1)): continue
+                t = core if (core and not pts) else self.rng.choices(names, w)[0]
+                self.spec.obj_px(t, x, y)
+                pts.append((a, b)); self.taken.add(q)
+            if pts: centres.append((si, sj))
+        return centres
+
+    def scatter_open(self, scale=1.0):
+        opn, _ = self._contexts()
+        return self._place(self.b["open"], opn, scale, min_gap=1.8)
+
+    def rim(self, scale=1.0):
+        _, wall = self._contexts()
+        return self._place(self.b["wallside"], wall, scale, min_gap=1.5, jitter=0.25, wall_clear=0)
+
+    def dress_liquid(self, scale=1.0):
+        """Flames, bubbles, fountains and crusts on the liquid (Westwood: 11 small flames per 100 lava tiles)."""
+        d = self.b["liquid"]["dress"]
+        if not d: return 0
+        visible = {s for s in self.pools if all((s[0] + a, s[1] + b) in self.pools for a, b in N4)}
+        return self._place(d, visible, scale, min_gap=0.9, jitter=0.45)
+
+    # ---- light ----------------------------------------------------------------------------------------------------
+    def _light_xfer(self, rgb, radius=None, intensity=None):
+        import json, os
+        here = os.path.dirname(os.path.abspath(__file__))
+        presets = json.load(open(os.path.join(here, "..", "..", "rules", "out", "lighting.json")))["colorlight"]["presets"]
+        base = dict(max((p for p in presets if p["animation"] == "steady" and p["intensity_class"] == "full"),
+                        key=lambda p: p["weighted_share"])["xfer"])
+        base.update(R=rgb[0], G=rgb[1], B=rgb[2])
+        if "Color1" in base: base["Color1"] = list(rgb)
+        if radius: base["LightRadius"] = radius
+        if intensity: base["LightIntensity"] = intensity
+        return base
+
+    def lights(self, scale=1.0):
+        """Coloured lights in the biome's colours (lava glows red over its liquid; caves amber; ice cold blue) and the
+        visible sources (torch poles, flame basins). Lights keep 4 squares apart."""
+        opn, wall = self._contexts()
+        per = self.b["light_per100"]
+        cols = self.b["light_colours"]
+        placed = []
+        ctx = [("open", opn), ("wall", wall), ("liquid", {s for s in self.pools if all((s[0] + a, s[1] + b) in self.pools for a, b in N4)})]
+        for name, squares in ctx:
+            k = per.get(name, 0) * scale
+            if not k: continue
+            sq = list(squares); self.rng.shuffle(sq)
+            n = int(round(len(sq) * k / 100))
+            for s in sq:
+                if n <= 0: break
+                si, sj = s[0] + 0.5, s[1] - 0.5
+                if any((si - x) ** 2 + (sj - y) ** 2 < 16 for x, y in placed): continue
+                rgb = self.rng.choice(cols)
+                x, y = square_px(si, sj)
+                self.spec.obj_px("ColorLight", x, y, xfer=self._light_xfer(rgb, self.b["light_radius"], self.b["light_intensity"]))
+                placed.append((si, sj)); n -= 1
+        for name, squares in (("wall", wall), ("open", opn)):
+            self._place(self.b["sources"].get(name, {}), [s for s in squares if s not in self.taken], scale, min_gap=5.0, jitter=0.2)
+        return len(placed)
+
+    def creatures(self, scale=1.0, avoid=(), groups=(1, 3)):
+        """The biome's creatures in small groups across the open floor, away from `avoid` squares (the arrival)."""
+        opn, _ = self._contexts()
+        sq = [s for s in opn if s not in self.taken and all(math.hypot(s[0] - a[0], s[1] - a[1]) > 14 for a in avoid)]
+        self.rng.shuffle(sq)
+        n = int(round(len(self.land.squares) * self.b["creatures_per100"] * scale / 100))
+        names = list(self.b["creatures"]); w = [self.b["creatures"][t] for t in names]
+        placed, centres = 0, []
+        for s in sq:
+            if placed >= n: break
+            if any(math.hypot(s[0] - x, s[1] - y) < 9 for x, y in centres): continue
+            t = self.rng.choices(names, w)[0]
+            k = self.rng.randint(*groups)
+            for q in range(k):
+                si, sj = s[0] + 0.5 + self.rng.uniform(-1.2, 1.2), s[1] - 0.5 + self.rng.uniform(-1.2, 1.2)
+                if (int(math.floor(si)), int(math.floor(sj)) + 1) not in self.land.squares: continue
+                self.spec.obj_px(t, *square_px(si, sj))
+                placed += 1
+            centres.append(s)
+        return placed
