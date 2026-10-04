@@ -150,6 +150,9 @@ GROUPS = {
     "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0),
     "carts": dict(anchor=r"^MineManaCart[12]$|^MineOreCart[12]$", clear=0.9, beside=(r"^BarrelWithTools[12]$|^DarkCrate[12]$", 1)),
 }
+# Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
+NEEDS_FRONT = re.compile(r"^Chest\d|^Chest[NS][EW]$|^DunMirChest|Fireplace|^Stove|^Cauldron|^CinderBin")
+FRONT_BLOCKERS = {"table", "desk", "bed", "counter_bar", "counter_shop", "stove", "shelves", "chair", "bench"}
 FRONT_CLEAR = {"stove": 1.4, "fireplace": 2.0}   # the space a core piece keeps clear before it when it is placed late
 # Supplies stocked along a storeroom's or kitchen's walls, in tidy groups: (types, fewest, most pieces in a group).
 SUPPLIES = {"shelves": (r"^LogShelvesFull[1-4]$", 1, 2),
@@ -414,6 +417,9 @@ class Furnisher:
         self._rug_under = {}      # id(rug record) -> the table record it is centred under
         self._lined = set()       # (line, coord) of the wall runs lined with shelves
         self.carpet_boxes = []    # uv boxes of the carpets laid
+        self.light_zones = []     # the space before chests, hearths and stoves: no candelabra stands there
+        self._deferred_decor = 0  # hangings the composition called for, put up after the walls are lined
+        self._line_blocks = {}    # (line, coord) -> [(along0, along1)] of the rows of shelves lining that wall
         self.wall_used = []       # ((line, coord), a0, a1): wall stretches pieces already stand against
         self.wall_tall = []       # the same for tall pieces only (shelves, hearths): hangings keep off them
         self.carpet_plan = None   # the room's carpet step when it lays carpet tiles instead of rug objects
@@ -761,6 +767,7 @@ class Furnisher:
             self.composing = True                        # the room's coverage limit holds instead (ROOM_COVER)
             self.compose(plan, need)
             self.fill_room()
+            for _ in range(self._deferred_decor): self.place_decor()
             if self.kind in DECORATED: self.decorate_walls()
             self.audit_rugs()
             self.in_required = self.composing = False
@@ -931,9 +938,18 @@ class Furnisher:
             side_score = (3.0 if back else 0.0) if facing else (0.0 if back else 3.0) if fam in FRONT_FAMS else (1.5 if back else 0.0)
             coord = r["coord"] + r["sign"] * d
             mid = (lo + hi) / 2
-            ends = [lo + ha + 0.1, hi - ha - 0.1]
+            # a stretch can start past the line of the wall across its end (a run reaches one unit beyond the room's
+            # corner): pieces keep 0.3 units clear of that wall
+            c0, c1 = r["lo"] + 1 + 0.3 + ha, r["hi"] - 1 - 0.3 - ha
+            ends = [max(lo + ha + 0.1, c0), min(hi - ha - 0.1, c1)]
+            if fam == "wall_decor":                    # a hanging stays well clear of the corners
+                k0, k1 = r["lo"] + 1 + 0.8 + ha, r["hi"] - 1 - 0.8 - ha
+                if k0 > k1 or hi - ha < k0 or lo + ha > k1: continue
+                mid = min(max(mid, k0, lo + ha), k1, hi - ha)
+                ends = [min(max(e, k0), k1) for e in ends]
             if at == "room_corner":                    # only where the stretch meets the next wall
-                ends = [e for e, edge in ((lo + ha + 0.1, lo - r["lo"]), (hi - ha - 0.1, r["hi"] - hi)) if edge < 1.6]
+                ends = [e for e, edge in ((ends[0], lo - r["lo"]), (ends[1], r["hi"] - hi)) if edge < 1.6]
+                ends = [e for e in ends if lo + ha - 0.05 <= e <= hi - ha + 0.05]
                 if not ends: continue
             if fam in ("shelves", "desk", "shop_rack"):        # they face one way and are no corner pieces
                 ends = [max(lo, r["lo"] + CORNER_CLEAR) + ha, min(hi, r["hi"] - CORNER_CLEAR) - ha]
@@ -958,6 +974,17 @@ class Furnisher:
         f0, f1 = v + s * hp, v + s * (hp + clear)
         return (u - ha, u + ha, min(f0, f1), max(f0, f1))
 
+    def _front_crowded(self, r, u, v, ha, hp):
+        """True if a table, desk, bed, counter, stove, shelf, seat or floor light already stands in the space before a
+        piece at (u, v) that needs it (a chest, hearth, stove or cauldron): 2.6 units deep from its centre, as the
+        checker looks (validate/checks.py NEEDS_FRONT)."""
+        z = self.front_zone(r, u, v, max(0.8, ha) + 0.3, 0.4, 2.2)
+        for tt, (pu, pv, phu, phv, pb, layer) in self._typed:
+            if not pb or layer == "wall": continue
+            if _family_of(tt) in FRONT_BLOCKERS or re.search(r"Candleabra|Candelabra|^TorchPole|Lantern\d$", tt):
+                if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
+        return False
+
     def place_on_wall(self, fam, at="center", clear=1.6, t0=None):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
         front of it (nothing blocking may stand there later; it must be free now)."""
@@ -966,9 +993,11 @@ class Furnisher:
         for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
             if zone and self.g.zone_blocked(zone): continue
+            if NEEDS_FRONT.search(t) and self._front_crowded(r, u, v, ha, hp): continue
             o = self.try_put(t, u, v, blocking=fam not in NON_BLOCKING, snug=True)
             if not o: continue
             if zone: self.g.zones.append(zone)
+            if NEEDS_FRONT.search(t): self.light_zones.append(self.front_zone(r, u, v, ha + 0.3, hp, 2.6))
             self.anchors.append((u, v))
             self.wall_used.append(((r["line"], r["coord"]), a - ha, a + ha))
             if fam in TALL_FAMS: self.wall_tall.append(((r["line"], r["coord"]), a - ha, a + ha))
@@ -1102,6 +1131,7 @@ class Furnisher:
             o = self.try_put(t, u, v, blocking=fam not in NON_BLOCKING)
             if o:
                 if zone: self.g.zones.append(zone)
+                if NEEDS_FRONT.search(t): self.light_zones.append(self.front_zone(r, u, v, ta + 0.3, tp, 2.6))
                 self.wall_used.append(((r["line"], r["coord"]), a - ta, a + ta))
                 return dict(obj=o, run=r, uv=(u, v), along=a, ha=ta, hp=tp)
         return None
@@ -1493,6 +1523,9 @@ class Furnisher:
             if rr is not r: continue
             lo, hi = max(lo, r["lo"] + 1.3), min(hi, r["hi"] - 1.3)     # clear of the walls at the corners
             toward = 0
+            for b0_, b1_ in self._line_blocks.get(key, ()):     # a row already on this wall: grow it end to end
+                if abs(lo - b1_) < 0.3: lo, toward = b1_ + 0.04, -1
+                elif abs(hi - b0_) < 0.3: hi, toward = b0_ - 0.04, 1
             if near:
                 a0, a1 = near["along"] - near["ha"], near["along"] + near["ha"]
                 if abs(hi - (a0 - 0.25)) < 0.3: hi, toward = a0 - around, 1          # this stretch ends at the anchor
@@ -1528,32 +1561,56 @@ class Furnisher:
             elif toward == 1 and blocks[-1][-1] == len(slots) - 1: block = blocks[-1]
             else: block = max(blocks, key=shelves)
             if shelves(block) < (1 if near else 2): continue       # never one shelf alone against a long wall
-            laid = []
+            laid, placed_seq = [], []                    # placed_seq: (slot index, object or None) in order
             for k in block:
                 kind, a0 = slots[k]
                 if kind == "decor":
-                    self._hang(r, a0 + dgap / 2)
+                    if not self._hang(r, a0 + dgap / 2):        # no hanging fits: close the gap with shelves instead
+                        k_fit = max(1, int((dgap + 0.04) / pitch))
+                        st0 = a0 + (dgap - (k_fit * pitch - 0.04)) / 2
+                        for q in range(k_fit):
+                            if self.try_put(mix[0], *self._uv_on(r, d, st0 + q * pitch + ha), snug=True, touch=True):
+                                laid.append(st0 + q * pitch)
                     continue
                 t = mix[0] if len(mix) == 1 or self.rng.random() < 0.65 else mix[1]
-                if self.try_put(t, *self._uv_on(r, d, a0 + ha), snug=True, touch=True): laid.append(a0)
+                o = self.try_put(t, *self._uv_on(r, d, a0 + ha), snug=True, touch=True)
+                placed_seq.append((k, o))
+                if o: laid.append(a0)
+            # a shelf that failed after all (the walkability test) leaves a hole: keep the longest unbroken part
+            runs_, cur = [], []
+            for k, o in placed_seq:
+                if o: cur.append((k, o))
+                else:
+                    if cur: runs_.append(cur)
+                    cur = []
+            if cur: runs_.append(cur)
+            if len(runs_) > 1:
+                keep = max(runs_, key=len)
+                for run_ in runs_:
+                    if run_ is keep: continue
+                    for k, o in run_:
+                        self._remove(o); laid.remove(slots[k][1])
             if not laid: continue
             got += len(laid)
             b0, b1 = min(laid), max(laid) + 2 * ha
             self.wall_used.append((key, b0, b1)); self.wall_tall.append((key, b0, b1))
+            self._line_blocks.setdefault(key, []).append((b0, b1))
             u, v = self._uv_on(r, d, (b0 + b1) / 2)
             self.g.zones.append(self.front_zone(r, u, v, (b1 - b0) / 2, hp, 1.2))
             self.anchors.append((u, v))
         return got
 
     def _hang(self, r, a):
-        """One hanging of the room's theme on wall run r, centred at `a` along it."""
-        t0 = _pick(self.rng, self.decor_theme())
-        t = t0 and self.side_variant(t0, r, "wall_decor")
-        if not t: return False
-        d = self.perp_for(t, self.T["inventory"].get("wall_decor", {}).get("perp_px"))
-        if self.try_put(t, *self._uv_on(r, d, a), blocking=False, wall_ok=True, layer="wall"):
-            self._decor_at.append(((r["line"], r["coord"]), a))
-            return True
+        """One hanging of the room's theme on wall run r, centred at `a` along it: the theme's types in turn until one
+        has a variant for that wall and fits."""
+        types = sorted(self.decor_theme()); self.rng.shuffle(types)
+        for t0 in types[:10]:
+            t = self.side_variant(t0, r, "wall_decor")
+            if not t: continue
+            d = self.perp_for(t, self.T["inventory"].get("wall_decor", {}).get("perp_px"))
+            if self.try_put(t, *self._uv_on(r, d, a), blocking=False, wall_ok=True, layer="wall"):
+                self._decor_at.append(((r["line"], r["coord"]), a))
+                return True
         return False
 
     def shelf_wall(self, fam, cover=1.0):
@@ -1625,7 +1682,9 @@ class Furnisher:
         centres = [mid] if n_rows == 1 else [mid - (0.95 + aisle / 2), mid + (0.95 + aisle / 2)][:n_rows]
         got = 0
         for k, c in enumerate(centres):
-            types = [t for t in self.things if re.match(pats[k % len(pats)], t) and self.ok_type(t)]
+            types = [t for t in self.things if re.match(pats[k % len(pats)], t) and self.ok_type(t) and self.belongs(t)]
+            if not types:
+                types = [t for p_ in pats for t in self.things if re.match(p_, t) and self.ok_type(t) and self.belongs(t)]
             if not types: continue
             along = lambda t: self.half(t)[0] if long_u else self.half(t)[1]
             across = lambda t: self.half(t)[1] if long_u else self.half(t)[0]
@@ -1828,9 +1887,9 @@ class Furnisher:
                     spot = (cu, cv) if self.g.fits(cu, cv, *self.half(t), blocking=False) else self.free_middle(*self.half(t))
                     if spot and self.try_put(t, *spot, blocking=False): done["rug"] += 1
                 continue
-            if st["slot"] == "decor":
-                for _ in range(n):
-                    if self.place_decor(): done[fam] += 1
+            if st["slot"] == "decor":                 # hangings go up last, once every wall is lined (fill_room)
+                self._deferred_decor += n
+                done[fam] += n
                 continue
             if st["slot"] == "bed_row":
                 beds = self.bed_row(n)
@@ -2051,6 +2110,9 @@ class Furnisher:
                 dp = min([math.hypot(u - a, v - b) for a, b in pieces] or [3.0])
                 ranked.append((reach - 0.2 * min(dp, 2.0) - (0.15 if corner else 0.0), c))
             for _, (tv, u, v, _c) in sorted(ranked, key=lambda r: r[0]):
+                if not mounted and any(u + 0.5 > z[0] and u - 0.5 < z[1] and v + 0.5 > z[2] and v - 0.5 < z[3]
+                                       for z in self.light_zones):
+                    continue                              # never right before a chest, hearth or stove
                 if self.try_put(tv, u, v, blocking=not mounted, wall_ok=mounted, layer="wall" if mounted else "floor"):
                     lights.append((u, v)); break
             else:

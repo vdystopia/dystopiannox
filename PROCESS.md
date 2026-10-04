@@ -215,6 +215,9 @@ Then, in this order:
   show half see-through, as the game draws them when you are inside, so pieces against them are visible.
 - Generated maps write `<map>.rooms.json` beside the map. The checker then judges each room as what it was
   meant to be (a study with two bookcases is not a library).
+- Between playtests, improve rooms in the room lab (`mapgen/designs/roomlab.py`, `review/roomscore.py`): every room
+  kind at Westwood's typical and large sizes and half as big again, scored on coverage, an open middle, lined back
+  walls and the checker's findings. Fix what fails in three seeds before the next playtest.
 - Playtest in the game; log the findings in `ROADMAP.md`.
 
 Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on

@@ -1047,16 +1047,33 @@ def _against(o, runs, cu, cv, m, reach=1.4):
     against (its back within `reach` units of the line), or None."""
     u, v = uv_of(o)
     hu, hv = _half_uv(o)
+    long_box = o["ext"] == "BOX" and max(hu, hv) >= 1.3 * min(hu, hv) > 0
     best = None
     for (line, coord), (lo, hi) in runs.items():
         perp = abs(u - coord) if line == "/" else abs(v - coord)
         along = v if line == "/" else u
         depth = hu if line == "/" else hv
         if not (lo - 0.5 <= along <= hi + 0.5): continue
+        if long_box and depth > (hv if line == "/" else hu): continue     # it lies across this wall, not along it
         gap = perp - depth
         if gap <= reach and (best is None or gap < best[1]):
             best = (_wall_name(line, coord, cu, cv), gap, along, line, coord)
     return best
+
+
+def _in_row(o, objs):
+    """True if a shelf or rack is one of a row of its kind standing end to end (library stacks, rows of racks down the
+    middle of a storeroom), which stands free on purpose."""
+    u, v = uv_of(o)
+    hu, hv = _half_uv(o)
+    along_u = hu >= hv
+    for p in objs:
+        if p is o or not SHELF_PIECE.match(p["type"]) and not p["type"].startswith("Trader"): continue
+        pu, pv = uv_of(p)
+        phu, phv = _half_uv(p)
+        if along_u and abs(pv - v) < 0.3 and abs(pu - u) <= hu + phu + 0.6: return True
+        if not along_u and abs(pu - u) < 0.3 and abs(pv - v) <= hv + phv + 0.6: return True
+    return False
 
 
 def wall_side_rules(m, r):
@@ -1084,7 +1101,7 @@ def wall_side_rules(m, r):
                 out.append(F("composition", "warning", f"{o['type']} stands against the {name} wall, where the camera sees only "
                              f"its back: shelves, hangings and other pieces with a face go on the NE and NW walls (house "
                              f"rule from the TreePlace v0.3 room review).", o["x"], o["y"]))
-        elif re.match(r"Chest\d|Bookcase|Shelves|^Desk\d", o["type"]) and o["ext"] == "BOX":
+        elif re.match(r"Chest\d|Bookcase|Shelves|^Desk\d", o["type"]) and o["ext"] == "BOX" and not _in_row(o, objs):
             far = _against(o, runs, cu, cv, m, reach=FLOAT_MAX)
             if far and far[1] >= FLOAT_MIN and not any(math.hypot(b["x"] - o["x"], b["y"] - o["y"]) < 60 for b in beds):
                 out.append(F("composition", "warning", f"{o['type']} stands {far[1]:.1f} units off the {far[0]} wall, alone in "
