@@ -153,6 +153,30 @@ for k in range(max(6, len(placed))):
     x, y = ring[k % len(ring)]
     pop.creature("Maiden", x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), scr=name, aggr=0.0)
     B.townsfolk(name, rng.sample(square_wps, 3) + rng.sample(door_wps, min(2, len(door_wps))), linger=5.0)
+
+# ---- 6. the woods round the town: Westwood's town maps keep their creatures out by the forest's edge (rules/NPCS.md:
+# most alone, about 2 squares from a wall, idle or on guard), well away from the square; wolves run in packs
+edge = land.edge_distance()
+far = [s for s, dd in sorted(edge.items()) if 1 <= dd <= 3 and math.hypot(s[0] - vc[0], s[1] - vc[1]) > 30
+       and s not in land.taken and s not in land.roads and s not in land.taken_strict]
+rng.shuffle(far)
+MIX = {"Urchin": 3, "Bat": 3, "Wolf": 2, "SmallAlbinoSpider": 2, "Bear": 1}
+n_wild, wild, centres = int(len(land.squares) * 0.55 / 100), 0, []
+for s_ in far:
+    if wild >= n_wild: break
+    if any(math.hypot(s_[0] - a, s_[1] - b) < 8 for a, b in centres): continue
+    t = rng.choices(list(MIX), list(MIX.values()))[0]
+    k = rng.randint(3, 4) if t == "Wolf" else 1
+    members = []
+    for q in range(k):
+        x, y = square_px(s_[0] + 0.5 + (rng.uniform(-1.2, 1.2) if q else 0), s_[1] - 0.5 + (rng.uniform(-1.2, 1.2) if q else 0))
+        if any((int(x // 23) + a, int(y // 23) + b) in m.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+        name = pop.name(t) if t == "Wolf" else None
+        pop.creature(t, x, y, action="guard" if rng.random() < 0.38 else "idle", scr=name)
+        if name: members.append(name)
+        wild += 1
+    if len(members) >= 2: B.pack(members[0], members[1:])
+    centres.append(s_)
 m.scripts.update(B.files(m.d["name"]))
 
 if __name__ == "__main__":
