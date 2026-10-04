@@ -752,6 +752,7 @@ def check_composition(m, ctx, base):
                 if n in left: left.remove(n); comp.add(n); q.append(n)
         if len(comp) >= 25: network |= comp
     for (x, y) in network:
+        if (x + 1, y + 1) in m.walls: continue             # a building's own floor, half under its wall
         nb = [(x + a, y + b) for a, b in SIDES if (x + a, y + b) in od.paths]
         if len(nb) != 1: continue                          # not the end of a path
         # only thin paths (one tile wide, like a doorstep path); wide paved areas meet walls by design

@@ -211,6 +211,16 @@ def no_start(m):
     m.d["objects"] = [o for o in m.d["objects"] if o.get("type") != "PlayerStart"]
 
 
+def path_to_wall(m):
+    # a dirt road along the meadow, and a thin spur from it that ends against the house's north wall, far from both
+    # of its doors (the house's own floor half under its walls is no such path: town lab)
+    for u in range(186, 254, 2):
+        for v in (24, 26):
+            m.tile((u + v) // 2, (u - v) // 2, "DirtDark2")
+    for k in range(6):                               # u = 216, v from 12 up to 22, one tile wide
+        m.tile(114 + k, 102 - k, "DirtDark2")
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -256,7 +266,9 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STscatr", scattered_shelves, "composition", "warning", "shelves scattered along a wall - TreePlace v0.3 room review",
      "end to end"),
     ("STfloat", floating_chest, "composition", "warning", "chest standing off its wall - TreePlace v0.3 room review",
-     "units off the")
+     "units off the"),
+    ("STspur", path_to_wall, "composition", "warning", "a path ending at a house wall with no door - town lab",
+     "paths lead to doors")
 ]
 
 

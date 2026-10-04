@@ -1024,11 +1024,17 @@ class Furnisher:
         """True if a table, desk, bed, counter, stove, shelf, seat or floor light already stands in the space before a
         piece at (u, v) that needs it (a chest, hearth, stove or cauldron): 2.6 units deep from its centre, as the
         checker looks (validate/checks.py NEEDS_FRONT)."""
-        z = self.front_zone(r, u, v, max(0.8, ha) + 0.3, 0.4, 2.2)
-        for tt, (pu, pv, phu, phv, pb, layer) in self._typed:
-            if not pb or layer == "wall": continue
-            if _family_of(tt) in FRONT_BLOCKERS or re.search(r"Candleabra|Candelabra|^TorchPole|Lantern\d$", tt):
-                if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
+        # in a corner a piece stands against two walls, and the checker may take either as its back (a cauldron is
+        # round): the space before it is kept clear from both
+        walls = [r] + [rr for rr in self.g.runs if rr is not r and
+                       abs((u - rr["coord"]) if rr["line"] == "/" else (v - rr["coord"])) <= hp + 0.6 and
+                       rr["lo"] - 0.5 <= (v if rr["line"] == "/" else u) <= rr["hi"] + 0.5]
+        for w in walls:
+            z = self.front_zone(w, u, v, max(0.8, ha) + 0.3, 0.4, 2.2)
+            for tt, (pu, pv, phu, phv, pb, layer) in self._typed:
+                if not pb or layer == "wall": continue
+                if _family_of(tt) in FRONT_BLOCKERS or re.search(r"Candleabra|Candelabra|^TorchPole|Lantern\d$", tt):
+                    if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
     def place_on_wall(self, fam, at="center", clear=1.6, t0=None):
