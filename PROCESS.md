@@ -45,6 +45,14 @@ Features that shape the land around a centre are planned with it, before any bui
 
 Rooms are sized by kind (a tavern takes most of an inn's floor) and furnished only from their identity.
 
+- Westwood's room sizes are in floor tiles inside the walls: a room of n footprint units holds about n - 2 sqrt(n)
+  of them. No room comes out below Westwood's smallest for its kind.
+- A building of five or more rooms is a hub, as Westwood's large buildings are (their largest room holds half or
+  more of the floor; few have corridors): a great hall down the middle, running toward the entrance, with the
+  other rooms along both sides and every door opening onto it.
+- A building in a culture's style is furnished in that culture (`rules/CULTURES.md`): an ogre keep with straw,
+  fire pits and crude tables; a Land of the Dead temple with sconces, obelisks and tombstones.
+
 ## 4. Plan the water with room for its banks, and its crossings with the roads
 
 Reserve the stream's and pond's bands before anything is built, keeping roads clear of them except
@@ -77,7 +85,9 @@ Then, in this order:
 2. Route a path from each door. Where Westwood never lets the path's floor touch the room's floor (packed dirt
    against marble), the path uses Westwood's buffer floor (`Land.connect_door`).
 3. Grass variety patches, kept clear of roads, banks and buildings.
-4. Scenes, gardens, benches, street lights, and the features' dressing. `MineEntrance.dress()` adds the portal
+4. Scenes, gardens, benches, street lights, and the features' dressing. A town square in Westwood's manner
+   (`Village.fountain_square`): a fountain ringed by potted plants and flowers, benches facing in, ornate street
+   lamps at the edge. Signs by the doors read what the building is. `MineEntrance.dress()` adds the portal
    and a timber set every 3 squares, a cave-in from wall to wall, the creak and glow beyond it, torches flanking
    the mouth, and a loaded cart on the track.
 5. Vegetation from the forest edge inward: tree lines, groves outside settled areas, and undergrowth and flowers
@@ -228,6 +238,11 @@ Then, in this order:
 - Then whole buildings in the building lab (`mapgen/designs/buildinglab.py`, `review/buildingscore.py`): every
   building role at Westwood's size, the kit's 1.25 and the bigger 1.6, scored on room sizes for their kinds,
   reachability, the checker's findings and the rooms' own scores.
+- Then a whole town in the town lab (`mapgen/designs/townlab.py`): the village pipeline at the bigger scale, with
+  traders behind their counters, villagers on their rounds and creatures in the woods round it, scored by the
+  checker, the room score and the design review.
+- Load every map with scripts in the OpenNox server before installing it: the behaviours' self-check must find every
+  named creature and waypoint.
 - Playtest in the game; log the findings in `ROADMAP.md`.
 
 Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on
