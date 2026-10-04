@@ -182,12 +182,13 @@ for s_ in far:
 # ---- 7. the shops: a shopkeeper behind each counter the furnisher set (its spot behind it), with wares as Westwood's
 # town traders sell them
 WARES = {"store": [(3, "RedPotion"), (2, "BluePotion"), (1, "CurePoisonPotion"), (4, "RedApple"), (2, "Meat"),
-                   (2, "Cider"), (1, "Quiver"), (1, "Bow"), (1, "LeatherBoots"), (1, "LeatherHelm")]}
+                   (2, "Cider"), (1, "Quiver"), (1, "Bow"), (1, "LeatherBoots"), (1, "LeatherHelm")],
+         "inn": [(5, "RedApple"), (4, "Meat"), (3, "Cider"), (2, "RedPotion")]}          # the barkeeper, behind the bar
 n_shops = 0
 for bid, b in placed:
     for room in b.rooms:
         for sp in getattr(room, "spots", []) or []:
-            if sp.get("role") != "shopkeeper" or bid.role not in WARES: continue
+            if sp.get("role") not in ("shopkeeper", "barkeep") or bid.role not in WARES: continue
             xs = [(x + 1) * 23 for x, _ in room.tiles]; ys = [(y + 1) * 23 for _, y in room.tiles]
             pop.shopkeeper("ShopkeeperYellow", *sp["px"], WARES[bid.role],
                            face=(sum(xs) / len(xs), sum(ys) / len(ys)))
