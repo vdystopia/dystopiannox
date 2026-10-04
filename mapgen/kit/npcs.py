@@ -129,6 +129,11 @@ class Behaviours:
     def townsfolk(self, name, spots, linger=4.0):
         self.calls.append(f'Townsfolk({json.dumps(name)}, {self._s(spots)}, {linger:.1f})')
 
+    def harpoon_staff(self, staff, speed=26.0, reach=320.0, damage=20, reel=40, pull=6.0):
+        """A named Lesser Fireball staff that throws harpoons (kit/behaviours/weapons.go, rules/WEAPONS.md)."""
+        self.weapons = True
+        self.calls.append(f'HarpoonStaff({json.dumps(staff)}, {speed:.1f}, {reach:.1f}, {int(damage)}, {int(reel)}, {pull:.1f})')
+
     def names(self):
         """Every creature and waypoint name the calls use (for the self-check): waypoints end in _<number>."""
         import re
@@ -148,4 +153,8 @@ class Behaviours:
                'import "github.com/noxworld-dev/noxscript/ns/v4"\n\nfunc init() {\n'
                "\tns.OnMapEvent(ns.MapInitialize, func() {\n" + "".join(f"\t\t{c}\n" for c in self.calls) + "\t})\n"
                f"\tDiagnose({self._s(objs)}, {self._s(wps)})\n}}\n")
-        return {"behaviours.go": lib, "config.go": cfg}
+        out = {"behaviours.go": lib, "config.go": cfg}
+        if getattr(self, "weapons", False):
+            out["weapons.go"] = open(os.path.join(HERE, "behaviours", "weapons.go"), encoding="utf-8").read().replace(
+                "package PKG", f"package {pkg}", 1)
+        return out

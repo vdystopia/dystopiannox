@@ -1,0 +1,357 @@
+{
+ "weapons": {
+  "LesserFireballWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_FIREBALL",
+   "use": "WandUse 20 Fireball 3.0 SINGLE_SHOT SmallFireballWand 10",
+   "damage": "WeaponDamage",
+   "handler": "WandUse",
+   "fires": "Fireball",
+   "delay": "20",
+   "mode": "SINGLE_SHOT",
+   "projectile": {
+    "cls": "MISSILE+LIGHT+COMPLEX",
+    "speed": "192",
+    "update": "ProjectileUpdate",
+    "collide": "SparkExplosionCollide 128",
+    "subclass": "MISSILE_COUNTERSPELL",
+    "mass": "10.0"
+   }
+  },
+  "DeathRayWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_DEATH_RAY",
+   "use": "WandCastUse 5 1.0 SPELL_DEATH_RAY",
+   "damage": "WeaponDamage",
+   "handler": "WandCastUse",
+   "casts": "SPELL_DEATH_RAY",
+   "charges": "5"
+  },
+  "InfinitePainWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_FORCE_OF_NATURE",
+   "use": "WandCastUse 3 0.2 SPELL_FORCE_OF_NATURE",
+   "damage": "WeaponDamage",
+   "handler": "WandCastUse",
+   "casts": "SPELL_FORCE_OF_NATURE",
+   "charges": "3"
+  },
+  "OblivionOrb": {
+   "cls": "WAND+NOT_STACKABLE+WEAPON+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_OBLIVION_ORB",
+   "use": "WandCastUse 250 1.0 SPELL_PLASMA",
+   "damage": "WeaponDamage",
+   "handler": "WandCastUse",
+   "casts": "SPELL_PLASMA",
+   "charges": "250"
+  },
+  "SulphorousFlareWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_SULPHOROUS_FLARE",
+   "use": "WandUse 200 YellowStarShot 0 SINGLE_SHOT FlareWand 0",
+   "damage": "WeaponDamage",
+   "handler": "WandUse",
+   "fires": "YellowStarShot",
+   "delay": "200",
+   "mode": "SINGLE_SHOT",
+   "projectile": {
+    "cls": "MISSILE+LIGHT+SIMPLE",
+    "speed": "350",
+    "update": "ProjectileUpdate",
+    "collide": "YellowStarShotCollide 2",
+    "subclass": "MISSILE_COUNTERSPELL",
+    "mass": "10.0"
+   }
+  },
+  "SulphorousShowerWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_SULPHOROUS_SHOWER",
+   "use": "WandUse 100 YellowStarShot 0 MULTI_SHOT FlareWand 0",
+   "damage": "WeaponDamage",
+   "handler": "WandUse",
+   "fires": "YellowStarShot",
+   "delay": "100",
+   "mode": "MULTI_SHOT",
+   "projectile": {
+    "cls": "MISSILE+LIGHT+SIMPLE",
+    "speed": "350",
+    "update": "ProjectileUpdate",
+    "collide": "YellowStarShotCollide 2",
+    "subclass": "MISSILE_COUNTERSPELL",
+    "mass": "10.0"
+   }
+  },
+  "FireStormWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_TRIPLE_FIREBALL",
+   "use": "WandUse 10 Fireball 1.0 MULTI_SHOT SmallFireballWand 6",
+   "damage": "WeaponDamage",
+   "handler": "WandUse",
+   "fires": "Fireball",
+   "delay": "10",
+   "mode": "MULTI_SHOT",
+   "projectile": {
+    "cls": "MISSILE+LIGHT+COMPLEX",
+    "speed": "192",
+    "update": "ProjectileUpdate",
+    "collide": "SparkExplosionCollide 128",
+    "subclass": "MISSILE_COUNTERSPELL",
+    "mass": "10.0"
+   }
+  },
+  "ForceWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "STAFF_LIGHTNING",
+   "use": "WandCastUse 60 1.0 SPELL_CHAIN_LIGHTNING",
+   "damage": "WeaponDamage",
+   "handler": "WandCastUse",
+   "casts": "SPELL_CHAIN_LIGHTNING",
+   "charges": "60"
+  },
+  "WebWand": {
+   "cls": "WAND+NOT_STACKABLE+LIGHT+SIMPLE",
+   "subclass": "",
+   "use": "FireWandUse",
+   "damage": "WeaponDamage",
+   "handler": "FireWandUse"
+  },
+  "Bow": {
+   "cls": "SIMPLE+WEAPON+NOT_STACKABLE+LIGHT",
+   "subclass": "BOW",
+   "use": "BowUse",
+   "damage": "WeaponDamage",
+   "handler": "BowUse"
+  },
+  "Quiver": {
+   "cls": "SIMPLE+WEAPON+NOT_STACKABLE+LIGHT",
+   "subclass": "QUIVER",
+   "use": "AmmoUse",
+   "damage": "WeaponDamage",
+   "handler": "AmmoUse"
+  },
+  "FanChakram": {
+   "cls": "SIMPLE+WEAPON+NOT_STACKABLE+LIGHT",
+   "subclass": "SHURIKEN",
+   "use": "AmmoUse",
+   "damage": "WeaponDamage",
+   "handler": "AmmoUse"
+  },
+  "CrossBow": {
+   "cls": "SIMPLE+WEAPON+NOT_STACKABLE+LIGHT",
+   "subclass": "CROSSBOW",
+   "use": "BowUse",
+   "damage": "WeaponDamage",
+   "handler": "BowUse"
+  }
+ },
+ "missiles": {
+  "SpiderSpit": {
+   "cls": "MISSILE+SIMPLE",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SpiderSpitCollide",
+   "subclass": "",
+   "mass": "10.0"
+  },
+  "ThrowingStone": {
+   "cls": "MISSILE+SIMPLE",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "ProjectileCollide 1",
+   "subclass": "",
+   "mass": "10.0"
+  },
+  "HarpoonBolt": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "HarpoonUpdate",
+   "collide": "HarpoonCollide",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  },
+  "ArcherArrow": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "ProjectileUpdate",
+   "collide": "ArrowCollide",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  },
+  "MercArcherArrow": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "ProjectileUpdate",
+   "collide": "MonsterArrowCollide 10 10",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  },
+  "GolemArrow": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "ProjectileUpdate",
+   "collide": "MonsterArrowCollide 3 10",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  },
+  "CherubArrow": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "ProjectileUpdate",
+   "collide": "MonsterArrowCollide 10 15",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  },
+  "ArcherBolt": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "1000",
+   "update": "ProjectileUpdate",
+   "collide": "ArrowCollide",
+   "subclass": "BOLT",
+   "mass": "10.0"
+  },
+  "Pixie": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "40",
+   "update": "PixieUpdate",
+   "collide": "PixieCollide 8",
+   "subclass": "MISSILE_COUNTERSPELL+MAGIC",
+   "mass": "10.0"
+  },
+  "TitanFireball": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SparkExplosionCollide 255",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "StrongFireball": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SparkExplosionCollide 192",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "Fireball": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SparkExplosionCollide 128",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "WeakFireball": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SparkExplosionCollide 64",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "PitifulFireball": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "ProjectileUpdate",
+   "collide": "SparkExplosionCollide 10",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "SmallEnergyBolt": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "192",
+   "update": "HomingProjectileUpdate",
+   "collide": "ProjectileCollide 2",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "MagicMissile": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "32",
+   "update": "MagicMissileUpdate",
+   "collide": "BoomCollide",
+   "subclass": "MISSILE_COUNTERSPELL+MAGIC",
+   "mass": "10.0"
+  },
+  "DeathBall": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "200",
+   "update": "DeathBallUpdate",
+   "collide": "DeathBallCollide",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "DeathBallFragment": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "250",
+   "update": "DeathBallFragmentUpdate",
+   "collide": "DeathBallFragmentCollide",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "ImpShot": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "400",
+   "update": "ProjectileUpdate",
+   "collide": "ProjectileCollide 5",
+   "subclass": "",
+   "mass": "10.0"
+  },
+  "YellowStarShot": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "350",
+   "update": "ProjectileUpdate",
+   "collide": "YellowStarShotCollide 2",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "LightningBolt": {
+   "cls": "MISSILE+LIGHT+COMPLEX",
+   "speed": "400",
+   "update": "ProjectileUpdate",
+   "collide": "ProjectileCollide 8",
+   "subclass": "MISSILE_COUNTERSPELL",
+   "mass": "10.0"
+  },
+  "Magic": {
+   "cls": "MISSILE+LIGHT+SIMPLE",
+   "speed": "64",
+   "update": "SpellProjectileUpdate",
+   "collide": "SpellProjectileCollide",
+   "subclass": "MISSILE_COUNTERSPELL+MAGIC",
+   "mass": "10.0"
+  },
+  "RoundChakramInMotion": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "300",
+   "update": "ChakramInMotionUpdate",
+   "collide": "ChakramInMotionCollide",
+   "subclass": "CHAKRAM",
+   "mass": "10.0"
+  },
+  "FanChakramInMotion": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "400",
+   "update": "ProjectileUpdate",
+   "collide": "ArrowCollide",
+   "subclass": "SHURIKEN",
+   "mass": "10.0"
+  },
+  "OgreShuriken": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "400",
+   "update": "ProjectileUpdate",
+   "collide": "MonsterArrowCollide 15 20",
+   "subclass": "SHURIKEN",
+   "mass": "10.0"
+  },
+  "WeakArcherArrow": {
+   "cls": "MISSILE+COMPLEX+WEAPON+NOT_STACKABLE",
+   "speed": "800",
+   "update": "ProjectileUpdate",
+   "collide": "ArrowCollide",
+   "subclass": "ARROW",
+   "mass": "10.0"
+  }
+ }
+}

@@ -134,6 +134,6 @@ spec.scripts.update(pop.behaviours.files(spec.d["name"]))  # built beside the ma
 ```
 
 **Testing.**
-- `go vet` against `ns/v4` checks the code compiles: `scratchpad/gocheck`.
+- `py tests/check_scripts.py <map>_scripts --go <go.exe>` checks the code compiles with `go vet` against `ns/v4` v4.16.1, the version the installed OpenNox v1.9.0-alpha13 bundles. A newer method fails at load ("undefined method").
 - The dedicated server loads the scripts ("go scripts loaded") and the self-check runs.
 - The behaviours themselves start at MapInitialize, which needs a player in the game. Load NpcLab in a Solo game (F1, `racoiaws`, `load NpcLab`) and walk through the sections.
