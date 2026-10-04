@@ -198,6 +198,8 @@ ROOMS = {
                         types={"table": r"^Table[1-4]$|^OvalTable[12]$|^RoundTableWithFood$|^RoundTable[123]$",
                                "shelves": r"^LogShelvesFull\d$|^Bookcase\d(HalfFull)?$", "statue": r"^Statue2[a-h]$",
                                "storage": CHEST, "plant": PLANTS},
+                        # Westwood's room statistics count hearths as lights, so a recipe names its own
+                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
                                  dict(fam="shelves", slot="line", near="fireplace", decor=2),
                                  dict(fam="table", slot="table_rows", seat="chair"),
@@ -361,10 +363,30 @@ ROOMS = {
                         "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
                  compose=[dict(fam="column", slot="racks", kind="columns", gap=3.4, aisle=2.6),
                           dict(fam="wall_decor", slot="decor")],
-                 fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120),
+                 fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120, fixed=True),
                        dict(fam="bench", slot="wall", max=4),
                        dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                        dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+    "great_hall": dict(purpose="a lord's great hall, the heart of the house every other room opens onto: the hearth on a "
+                               "back wall, long tables with benches down the middle, banners and trophies on the back "
+                               "walls, statues in pairs, benches along the walls, aisles clear along the doors",
+                       base="hall",
+                       core={"table": (2, 10), "bench": (4, 40), "fireplace": (1, 2)},
+                       per_tiles={"table": 30},
+                       optional={"statue": (0.8, 4), "wall_decor": (1.0, 12), "plant": (0.8, 4), "storage": (0.5, 2),
+                                 "column": (0.5, 12), "chair": (0.5, 4)},
+                       types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
+                              "column": r"^Column[5-8]$", "statue": r"^Statue2[a-h]$", "storage": CHEST,
+                              "plant": PLANTS},
+                       prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
+                       compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
+                                dict(fam="table", slot="table_rows", seat="bench"),
+                                dict(fam="wall_decor", slot="decor")],
+                       fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
+                             dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
+                             dict(fam="bench", slot="wall", max=6),
+                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
+                             dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     "throne_room": dict(purpose="a throne room: the throne centred on the NE wall facing the doors, a colonnade down the "
                                 "room, statues flanking the way, banners, a carpet runner",
                         core={"throne": (1, 4), "column": (2, 16)},
@@ -549,7 +571,7 @@ BUILDINGS = {
     # scale than anything in the original game")
     "manor": dict(purpose="a lord's manor: the great hall, the dining hall and its kitchen, the library and the lord's "
                           "study, bedrooms and the stores", style="stone_house", size=(72, 56), min_units=760,
-                  rooms=[("hall", "the great hall"), ("dining_hall", "the lord's table"), ("kitchen", "the manor kitchen"),
+                  rooms=[("great_hall", "the great hall"), ("dining_hall", "the lord's table"), ("kitchen", "the manor kitchen"),
                          ("library", "the library"), ("study", "the lord's study"), ("bedroom", "the lord's chamber"),
                          ("bedroom", "the guest chamber"), ("storeroom", "the stores")],
                   scenes=["deliveries", "water_barrel"], garden=0.0, faces="square"),
@@ -615,7 +637,7 @@ class BuildingIdentity:
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).
 WESTWOOD_KIND = {"herbalist": "laboratory", "mess_hall": "dining_hall", "ore_store": "storeroom", "study": "library",
                  "dwelling": "living_room", "gear_store": "storeroom", "ogre_den": "barracks", "ogre_hall": "dining_hall",
-                 "ogre_hoard": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt"}
+                 "ogre_hoard": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt", "great_hall": "hall"}
 # How much of a room's floor its furniture covers: (target, limit). The furnisher fills toward the target and never
 # past the limit, which the checker holds generated rooms to (TreePlace room reviews: rooms furnished to Westwood's
 # typical counts read as empty, and a store room holds more than any other room). Coverage grows with the room, so
@@ -627,7 +649,7 @@ ROOM_COVER = {"tavern": (0.20, 0.34), "dining_hall": (0.17, 0.32), "shop": (0.24
               "barracks": (0.24, 0.34), "mess_hall": (0.24, 0.34), "living_room": (0.17, 0.30), "herbalist": (0.17, 0.30),
               "study": (0.17, 0.30), "bedroom": (0.14, 0.28), "dwelling": (0.16, 0.30),
               "ogre_den": (0.14, 0.30), "ogre_hall": (0.14, 0.30), "ogre_hoard": (0.26, 0.42), "dark_chapel": (0.10, 0.26),
-              "dark_crypt": (0.16, 0.34)}
+              "dark_crypt": (0.16, 0.34), "great_hall": (0.10, 0.26)}
 ROOM_COVER_DEFAULT = (0.16, 0.30)
 # Buildings are larger than Westwood's (the user, during the TreePlace v0.3 review: "bias towards bigger rooms and
 # structures than westwood"): each role's size and floor below are scaled by this much in each direction.

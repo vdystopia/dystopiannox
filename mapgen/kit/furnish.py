@@ -1946,7 +1946,8 @@ class Furnisher:
         # in proportion (a study of 266 tiles, twice Westwood's median, two reading tables and two curios)
         p50 = (self.T.get("tiles") or {}).get("p50") or 30
         grow = max(1.0, self.g.area / (2.4 * p50))
-        cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 else int(math.ceil(st["max"] * grow - 0.25))
+        cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 or st.get("fixed") else \
+            int(math.ceil(st["max"] * grow - 0.25))           # `fixed`: a set piece (a pair of statues) does not multiply
         k, misses, done_once, added = 0, 0, set(), collections.Counter()
         while self.coverage() < self.cover_target and misses < 2 * len(steps):
             i = k % len(steps); st = steps[i]; k += 1
