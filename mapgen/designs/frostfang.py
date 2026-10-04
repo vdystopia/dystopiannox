@@ -66,7 +66,7 @@ lake = {s for s in land.squares if land._in_area((s[0] + 0.5, s[1] - 0.5), dict(
 gate_c = land.areas["gate"]["c"]
 calm = lake | {s for s in land.squares if math.hypot(s[0] - gate_c[0], s[1] - gate_c[1]) < 12}
 land.assign_regions()
-outcrops = land.thickets(46, size=(1.3, 3.0), clear=3, avoid=calm)
+outcrops = land.thickets(150, size=(1.3, 3.0), clear=2, avoid=calm)
 land.apply(m, wall=d.wall, floor=d.base)
 d.cap_islands(outcrops)                                          # snow on the outcrops' tops
 for s in lake: m.floor[square_tile(*s)] = "IceFloorDark"          # dark slate ice: the frozen lake

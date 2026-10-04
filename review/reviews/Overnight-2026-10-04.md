@@ -72,6 +72,10 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
 - Late in the night I calibrated the biome maps against Westwood's own densities: Frostfang is now an open
   snowfield like Westwood's ice maps (4.9 decorations per 100 tiles, from 16.7; fewer coloured lights, more torches
   by the walls). Emberdeep is thinned to Westwood's lava range.
+- Then the ground: the snow's patches of other floors had formed rings round each other, where Westwood's ground is a
+  patchwork (about two spots per 100 tiles where three floors meet). Each floor now has a pattern of its own, rock
+  shows through the snow, and Frostfang has 81 rock outcrops. The checker: Darkdelve and Emberdeep have no errors or
+  warnings; Frostfang has one warning (fewer cliff walls than Westwood's ice maps, which are cut by narrow passages).
 
 ## Tasks 3-5: NPCs
 
@@ -92,8 +96,8 @@ and pushed to GitHub (`master`, from `b7a88bd` to the latest commit).
   - grunts, ghosts and ember demons patrol through the rooms;
   - skeletons lie in ambush in the crypt;
   - imps flee when hit.
-- The server's self-check finds every scripted creature and waypoint in every map: Darkdelve 46 of 46, Frostfang
-  84 of 84, Emberdeep 5 of 5, NpcLab 25 of 25, TownLab 39 of 39.
+- The server's self-check finds every scripted creature and waypoint in every map: Darkdelve 45 of 45, Frostfang
+  79 of 79, Emberdeep 5 of 5, NpcLab 25 of 25, TownLab 39 of 39.
 
 ## Task 6: a fireball staff that shoots a harpoon
 

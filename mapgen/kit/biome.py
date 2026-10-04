@@ -52,7 +52,8 @@ BIOMES = {
         # in the game's art IceFloorDeepBlue is the pale snowfield (where Westwood's snow trees stand), IceFloorRough
         # blue speckled ice, IceFloorDark dark slate ice (a frozen lake)
         wall="IceWall", base="IceFloorDeepBlue",
-        patches=[("IceFloorRough", -0.9), ("IceFloorLight", 1.35), ("CaveHardTan", 1.95)],
+        patches=[("IceFloorRough", -0.9), ("IceFloorLight", 1.35), ("CaveHardBrown", 1.45), ("CaveHardTan", 1.95)],   # Westwood: rock 0.13 of its ice maps' floors
+        patch_scale=1.35,                                # a finer patchwork of ice, snow and rock than the other biomes
         blends=[("IceFloorRough", 0, "BlendEdge"), ("IceFloorDeepBlue", 1, "BlendEdge"), ("IceFloorDark", 2, "BlendEdge"),
                 ("IceFloorLight", 3, "BlendEdge"), ("CaveHardBrown", 4, "IceRidge"), ("CaveHardTan", 5, "IceRidge")],
         forest=dict(wall="IceWall",
@@ -63,7 +64,7 @@ BIOMES = {
                     flowers={"CaveRocksPebbles": 1}),
         # Westwood's ice maps are open snowfields: about 2.3 snow trees per 100 floor tiles and few other pieces (3.4-5.2
         # decorations per 100 tiles in all), the trees lining the cliffs
-        tree_depth=(0.16, 0.04, 0.0), undergrowth=((0, 0), 0.03),
+        tree_depth=(0.11, 0.03, 0.0), undergrowth=((0, 0), 0.03),
         open={"CaveRocksSmall": 0.2, "CaveRocksTiny": 0.2, "ArmBone": 0.2, "IceCrack2": 0.12, "IceCrack6": 0.06,
               "CaveRocksHuge": 0.1, "Skull": 0.08},
         wallside={"CaveRocksHuge": 0.6, "CaveRocksLarge": 0.35, "CaveBoulders": 0.25, "MineCrystal05": 0.2,
@@ -71,7 +72,7 @@ BIOMES = {
         liquid=dict(floor="IceFloorDark", dress={}, edge=None),
         light_colours=[(96, 128, 224), (160, 160, 224), (64, 96, 192)], light_per100=dict(open=0.12, wall=0.2),   # Westwood: 0.09-0.23 per 100 tiles in all
         light_radius=170, light_intensity=35,
-        sources=dict(wall={"Torch": 0.6}, open={}),      # Westwood: torches 0.1 per 100 floor tiles, by the walls
+        sources=dict(wall={"Torch": 0.8}, open={}),      # Westwood: torches 0.1 per 100 floor tiles, by the walls
         creatures={"BlackWolf": 6, "WhiteWolf": 3, "Ghost": 2, "Skeleton": 2, "SkeletonLord": 1, "Bear": 1},
         creatures_per100=0.8),
     "lava": dict(
@@ -185,20 +186,24 @@ class Dresser:
 
     # ---- the ground -----------------------------------------------------------------------------------------------
     def ground(self, clear=2):
-        """Patches of the biome's other floors on its base (smooth noise, each material in its own band), keeping
-        `clear` squares from what is already painted (paths, yards, buildings) so every seam has room to blend."""
+        """Patches of the biome's other floors on its base (smooth noise, each material with a field of its own, so
+        patches of different floors overlap and meet as Westwood's do: its ice maps have 1.85-2.65 spots per 100 floor
+        tiles where three floors meet; one shared field nested the patches in bands, and a patch whose threshold lay
+        beyond an earlier one's was never laid), keeping `clear` squares from what is already painted (paths, yards,
+        buildings) so every seam has room to blend."""
         r = self.rng
-        ph = [r.uniform(0, 6.3) for _ in range(6)]
+        phs = [[r.uniform(0, 6.3) for _ in range(4)] for _ in self.b["patches"]]
         L = self.land
         features = [s for s in L.squares if self.spec.floor.get(square_tile(*s)) not in (None, self.base)] + list(L.taken)
         near = bfs_distance(features, L.squares, clear)
+        k = self.b.get("patch_scale", 1.0)
         for s in L.squares:
             t = square_tile(*s)
             if self.spec.floor.get(t) != self.base or near.get(s, 99) < clear: continue
-            i, j = s
-            n = (math.sin(i * 0.15 + ph[0]) + math.sin(j * 0.19 + ph[1]) + 0.6 * math.sin((i - j) * 0.1 + ph[2])
-                 + 0.4 * math.sin((i + j) * 0.27 + ph[3]))
-            for mat, th in self.b["patches"]:
+            i, j = s[0] * k, s[1] * k
+            for (mat, th), ph in zip(self.b["patches"], phs):
+                n = (math.sin(i * 0.15 + ph[0]) + math.sin(j * 0.19 + ph[1]) + 0.6 * math.sin((i - j) * 0.1 + ph[2])
+                     + 0.4 * math.sin((i + j) * 0.27 + ph[3]))
                 if (th > 0 and n > th) or (th < 0 and n < th):
                     self.spec.floor[t] = mat
                     break

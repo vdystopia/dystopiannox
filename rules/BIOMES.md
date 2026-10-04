@@ -77,7 +77,12 @@ They blend with BlendEdge. Rock (CaveHardBrown or Tan) meets ice with an IceRidg
 
 **Lights.** Few, about 0.3 coloured lights per 100 tiles, plus torches by the walls. The cold ambient does most of the work.
 
-**Walls per 100 tiles.** 28-33. The plateaus are cut by many cliffs, so an ice map needs outcrops: Frostfang has 46.
+**Walls per 100 tiles.** 28-33. The plateaus are cut by many cliffs, so an ice map needs outcrops: Frostfang has 81
+and reaches 22 wall pieces per 100 tiles. The rest of the gap would take Westwood's layout of narrow passages
+between the cliffs, not more islands (bigger outcrops left room for fewer of them: 54).
+
+**Floor junctions.** 1.85-2.65 spots per 100 floor tiles where three floors meet: a patchwork, not bands. Rock
+(CaveHardBrown, Tan) shows through the snow in patches.
 
 ## Lava
 
@@ -143,4 +148,8 @@ Lessons from the first three maps:
 - **Nothing on the rock.** An island's capped top is not land: no pillar or prop stands there (the checker reads a capped
   top holding pillars as a room of columns).
 - **Nothing in a building.** The planter, the props and the creatures keep off a structure's squares (`land.taken`).
+- **Patches overlap.** Each patch floor has a noise field of its own (`Dresser.ground`), so patches of different floors
+  meet and overlap as Westwood's do. One shared field nested them in bands round each other: Frostfang had 1.0
+  junctions per 100 tiles against Westwood's 1.85-2.65, and a floor whose threshold lay beyond an earlier one's was
+  never laid at all. Now 1.94. A palette's `patch_scale` sets how small the patches are (ice 1.35).
 - **As sparse as Westwood's.** Westwood's ice maps are open snowfields: 3.4-5.2 decorations per 100 floor tiles (about 2.3 snow trees), 0.09-0.23 coloured lights and torches by the walls; its lava maps carry 2.9-13.6 decorations. The palettes' `tree_depth` and `undergrowth` keep the biome maps in those ranges (Frostfang went from 16.7 decorations per 100 tiles to 4.9).
