@@ -56,8 +56,20 @@ class Village:
             crop = crop or rng.choice(CROPS)
             for s in plot:
                 self.spec.floor[square_tile(*s)] = "DirtDark2"
-                for k in range(2):                              # two plants per tile, in rows
-                    self.spec.obj_px(crop, *square_px(s[0] + 0.3 + 0.4 * k, s[1] - 0.5))
+            # the crop in rows centred inside the fence, a walkable strip between the outer rows and the fence on every
+            # side (Ambermere playtest, 2026-10-05: "the northeast stretch of fence overlaps with the row of crops ...
+            # this fence is literally on top of this row of plants"). The fence's points (p, q) are drawn at square
+            # coordinates (p, q - 0.5) (kit/yards Yard.centre), so the fenced ground runs gi..gi + w across i and
+            # gj - 1.5..gj + h - 1.5 across j; the rows had been laid on the squares' middles, the last under the fence.
+            from kit.yards import _spread
+            from kit.spacing import off_walls
+            fence_cells = {point_cell(p, q) for p in range(gi, gi + w + 1) for q in range(gj - 1, gj + h)
+                           if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)}
+            walls = dict(self.spec.wallmap); walls.update({c: {} for c in fence_cells})
+            for sj in _spread(gj - 1.5 + 0.8, gj + h - 1.5 - 0.8, 1.0):
+                for si in _spread(gi + 0.65, gi + w - 0.65, 0.42):
+                    x, y = square_px(si, sj)
+                    if off_walls(walls, crop, x, y, margin=6): self.spec.obj_px(crop, x, y)
             # fence on the wall points around the plot, with a gap for the gardener
             pts = [(p, q) for p in range(gi, gi + w + 1) for q in range(gj - 1, gj + h)
                    if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)]
@@ -131,11 +143,21 @@ class Village:
         along = (pi, pj) if sc["where"] != "side_wall" else next(((a, b) for a, b in N4 if
                                                                   ((s0[0] + a, s0[1] + b) in foot) is False and
                                                                   any((s0[0] + a + c, s0[1] + b + d) in foot for c, d in N4)), (pi, pj))
+        # each piece its Westwood gap after the one before (kit/spacing; Starwell playtest, 2026-10-05: "Many object
+        # clusters like these crates are simply too close to each other"): they had stood 0.55 squares (18 px) apart
+        # (the step is the widest gap the next piece may need, so the generator's draws stay as they were)
+        from kit.spacing import gap as _gap
+        off, prev = 0.0, None
         for k in range(n):
-            si = s0[0] + 0.5 + along[0] * 0.55 * k + rng.uniform(-0.1, 0.1)
-            sj = s0[1] - 0.5 + along[1] * 0.55 * k + rng.uniform(-0.1, 0.1)
+            if prev: off += (max([_gap(prev, x) for x in names] + [20.0]) + 3) / 32.5
+            si = s0[0] + 0.5 + along[0] * off + rng.uniform(-0.05, 0.05)
+            sj = s0[1] - 0.5 + along[1] * off + rng.uniform(-0.05, 0.05)
             if k and not free((int(si), int(sj) + 1)) and (int(si), int(sj) + 1) not in self.used: break
+            qx, qy = square_px(si, sj)                  # never into any doorway (a woodpile's log had run into one)
+            if k and any(abs(o["x"] - qx) < 56 and abs(o["y"] - qy) < 56 and math.hypot(o["x"] - qx, o["y"] - qy) < 56
+                         for o in self.spec.d["objects"] if "Door" in (o.get("type") or "")): break
             t = rng.choice(names)
+            prev = t
             text = self.SIGN_TEXT.get(role) if name == "sign" else None
             self.spec.obj_px(t, *square_px(si, sj), **({"xfer": {"Text": text}} if text else {}))
             self.used.add((int(si), int(sj) + 1))
@@ -215,8 +237,11 @@ class Village:
         L, rng = self.land, self.rng
         edge = L.edge_distance()
         free = [s for s in L.squares if self._clear(s) and edge.get(s, 99) <= max_edge]
+        from kit.spacing import wall_clearance
         for s in rng.sample(free, min(len(free), int(len(L.squares) * per_100 / 100))):
-            self.spec.obj_px(_pick(rng, GROUND_BITS), *square_px(s[0] + rng.random(), s[1] - rng.random()))
+            t, x, y = _pick(rng, GROUND_BITS), *square_px(s[0] + rng.random(), s[1] - rng.random())
+            if wall_clearance(self.spec.wallmap, x, y, reach=2) >= 16:     # never on a wall's line (a bush in a curtain)
+                self.spec.obj_px(t, x, y)
 
 
 def _squares_of(tiles):

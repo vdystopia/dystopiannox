@@ -236,6 +236,27 @@ def route_cuts_doorway(m):
     m.routes = [dict(who="Folk", kind="tour", waypoints=["Cut_1", "Cut_2"], loop=False, pauses=[20, 20])]
 
 
+def barrels_overlap(m):
+    m.obj("Barrel", 190, -20)                                  # two barrels outdoors, their sprites run together
+    m.obj("Barrel2", 190.8, -20)
+
+
+def crop_on_fence(m):
+    for k in range(4):                                         # a stretch of iron fence in the meadow, crops on its line
+        m.wall(80 + k, 104 - k, "IronFence")
+    for k in range(3):
+        m.obj_px("GardenTomatos", (80.5 + k + 0.5) * CELL, (104.5 - k - 0.5) * CELL)
+
+
+def candle_outdoors(m):
+    m.obj("Candle1", 186, 12)                                  # a candle as a wayside light
+
+
+def camp_swarm(m):
+    for k in range(5):                                         # five men round one spot
+        m.obj("Swordsman", 186 + 1.2 * (k % 3), -30 + 1.3 * (k // 3))
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -287,7 +308,11 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STfloat", floating_chest, "composition", "warning", "chest standing off its wall - TreePlace v0.3 room review",
      "units off the"),
     ("STspur", path_to_wall, "composition", "warning", "a path ending at a house wall with no door - town lab",
-     "paths lead to doors")
+     "paths lead to doors"),
+    ("STbarrl", barrels_overlap, "exterior", "warning", "barrels overlapping outdoors - Starwell playtest", "overlap"),
+    ("STcrop", crop_on_fence, "exterior", "warning", "crops on a fence line - Ambermere playtest", "fence"),
+    ("STcandl", candle_outdoors, "exterior", "warning", "a candle as an outdoor light - Starwell playtest", "pick it up"),
+    ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
 ]
 
 

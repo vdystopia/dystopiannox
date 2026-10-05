@@ -1,8 +1,9 @@
 """Yards (generator v3): gated outdoor plots with a purpose, as Westwood fences them in its towns
 (rules/town_walls.py; measured on Con02a, Con08a, War03b, War03c, War03d, War04a and Wiz08a):
 
-- graveyard: an iron fence and its gate (IronFence, Gate) round 63-110 floor tiles of dirt; tombstones about three
-  squares apart in loose rows, of mixed types (Tombstone1 the most), torch poles, a few bones;
+- graveyard: an iron fence and its gate (IronFence, Gate) round 63-110 floor tiles; graves in rows, each a headstone
+  (mixed types, Tombstone1 the most) at the head of its tile of dug earth; a gravedigger's corner (an open grave, the
+  coffin, spade, pick and tool barrel), a cross between urns, a mourners' bench, torch poles (`_graveyard`);
 - orchard: a log fence (Log, BarredGate) round 22-28 tiles of grass: fruit bushes (Plant5, Plant4), one tree,
   flowers, an apple on the ground;
 - park: low ruined walls (DilapidatedShort, Gate) round 92-112 tiles: eight benches facing in, bushes and flowers,
@@ -22,9 +23,10 @@ the land's walls are laid (`build`): the fence on the wall points round the plot
 """
 import math
 from kit.layout import square_tile, square_px, point_cell
+from kit import spacing as SP
 
 YARDS = {
-    "graveyard": dict(fence="IronFence", gate="Gate", floor="DirtDark2", size=[(8, 7), (9, 8), (9, 7)],
+    "graveyard": dict(fence="IronFence", gate="Gate", floor=None, size=[(8, 7), (9, 8), (9, 7)],
                       purpose="where the town buries its dead"),
     "orchard": dict(fence="Log", gate="BarredGate", floor=None, size=[(5, 5), (6, 5)], purpose="the town's fruit trees"),
     "park": dict(fence="DilapidatedShort", gate="Gate", floor=None, size=[(9, 9), (10, 9)],
@@ -53,7 +55,12 @@ class Yard:
 
     @property
     def centre(self):
-        return self.gi + self.w / 2, self.gj - 1 + self.h / 2          # continuous square coordinates
+        """The middle of the plot as drawn, in continuous square coordinates. The fence's wall points (p, q) are drawn
+        at square coordinates (p, q - 0.5), half a square toward -j of the squares' own numbering (a tile is drawn at
+        its grid corner (x + 1, y + 1), a wall at its cell's middle): so the drawn plot runs gi..gi + w across i and
+        gj - 1.5..gj + h - 1.5 across j (Ambermere playtest, 2026-10-05: a garden's last row of crops stood right
+        under its NE fence)."""
+        return self.gi + self.w / 2, self.gj - 1.5 + self.h / 2
 
 
 def _pick(rng, w):
@@ -148,28 +155,31 @@ def build(spec, rng, land, y):
             back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
             # the cot against the back wall, straw on the floor
             if along_i:
-                bj = y.gj + y.h - 1.75 if back == "j1" else y.gj - 0.25
+                bj = y.gj + y.h - 2.3 if back == "j1" else y.gj - 0.7
                 spec.obj_px("Cot2", *square_px(y.gi + lo + (hi - lo) / 2, bj))
                 for _ in range(rng.randint(1, 2)):
-                    spec.obj_px("Straw2", *square_px(y.gi + lo + rng.uniform(0.6, hi - lo - 0.6), y.gj - 1 + rng.uniform(1.0, y.h - 1.0)))
+                    spec.obj_px("Straw2", *square_px(y.gi + lo + rng.uniform(0.6, hi - lo - 0.6), y.gj - 1.5 + rng.uniform(1.0, y.h - 1.0)))
             else:
                 bi = y.gi + y.w - 0.75 if back == "i1" else y.gi + 0.75
-                spec.obj_px("Cot2", *square_px(bi, y.gj - 1 + lo + (hi - lo) / 2))
+                spec.obj_px("Cot2", *square_px(bi, y.gj - 1.5 + lo + (hi - lo) / 2))
                 for _ in range(rng.randint(1, 2)):
-                    spec.obj_px("Straw2", *square_px(y.gi + rng.uniform(1.0, y.w - 1.0), y.gj - 1 + lo + rng.uniform(0.6, hi - lo - 0.6)))
+                    spec.obj_px("Straw2", *square_px(y.gi + rng.uniform(1.0, y.w - 1.0), y.gj - 1.5 + lo + rng.uniform(0.6, hi - lo - 0.6)))
         return placed
     # the gate: a two-cell opening in the middle of its side (a double gate hangs a half at each end)
     k = len(pts) // 2
     a, b = point_cell(*pts[k - 1]), point_cell(*pts[k])
     line = "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/"
     y.gate = spec.door(rec["gate"], a, line)
-    gm = ((pts[k - 1][0] + pts[k][0]) / 2, (pts[k - 1][1] + pts[k][1]) / 2)     # the gate's middle, in squares
+    gm = ((pts[k - 1][0] + pts[k][0]) / 2, (pts[k - 1][1] + pts[k][1]) / 2 - 0.5)  # the gate's middle, as drawn
     ci, cj = y.centre
     lane = (gm, (ci, cj))
     placed = []
 
-    def free_spot(si, sj, pad=0.9, lane_w=1.3):
-        if not (y.gi + pad <= si <= y.gi + y.w - pad and y.gj - 1 + pad <= sj <= y.gj + y.h - 1 - pad): return False
+    yj = y.gj - 0.5                     # the drawn plot's j, half a square below the squares' (Yard.centre)
+
+    def free_spot(si, sj, pad=0.9, lane_w=1.3, t=None):
+        if not (y.gi + pad <= si <= y.gi + y.w - pad and yj - 1 + pad <= sj <= yj + y.h - 1 - pad): return False
+        if t is not None and not SP.off_walls(spec.wallmap, t, *square_px(si, sj), margin=6): return False
         (ax, ay), (bx, by) = lane
         dx, dy = bx - ax, by - ay
         t = max(0.0, min(1.0, ((si - ax) * dx + (sj - ay) * dy) / (dx * dx + dy * dy or 1)))
@@ -182,26 +192,18 @@ def build(spec, rng, land, y):
 
     jit = lambda: rng.uniform(-0.25, 0.25)
     if y.kind == "graveyard":
-        # loose rows of tombstones about three squares apart (Westwood's spacing: 4.2 cells)
-        for si in _spread(y.gi + 1.3, y.gi + y.w - 1.3, 2.3):
-            for sj in _spread(y.gj - 1 + 1.3, y.gj + y.h - 2.3, 2.2):
-                s = (si + jit() * 0.8, sj + jit() * 0.8)
-                if free_spot(*s, pad=1.0, lane_w=1.4): put(_pick(rng, TOMBSTONES), *s, room=1.6)
-        for c in ((y.gi + 0.9, y.gj - 0.1), (y.gi + y.w - 0.9, y.gj + y.h - 1.9)):      # torch poles in two corners
-            if free_spot(*c, pad=0.8, lane_w=1.2): put("TorchPole", *c, room=1.0)
-        for _ in range(rng.randint(1, 3)):
-            s = (rng.uniform(y.gi + 1, y.gi + y.w - 1), rng.uniform(y.gj, y.gj + y.h - 2))
-            if free_spot(*s, pad=0.8, lane_w=1.2): put(rng.choice(BONES), *s, room=0.5)
+        _graveyard(spec, rng, y, yj, free_spot, put, gm, lambda si, sj, room: placed.append((si, sj, room)))
     elif y.kind == "orchard":
-        tree = (y.gi + y.w - 1.4, y.gj + y.h - 2.4) if y.side in ("i0", "j0") else (y.gi + 1.4, y.gj + 0.4)
+        tree = (y.gi + y.w - 1.4, yj + y.h - 2.4) if y.side in ("i0", "j0") else (y.gi + 1.4, yj + 0.4)
         put("TreeForest11", *tree, room=1.6)
         for si in [y.gi + 1.0 + 1.4 * k for k in range(int((y.w - 1.6) / 1.4) + 1)]:
-            for sj in [y.gj - 1 + 1.0 + 1.4 * k for k in range(int((y.h - 1.6) / 1.4) + 1)]:
+            for sj in [yj - 1 + 1.0 + 1.4 * k for k in range(int((y.h - 1.6) / 1.4) + 1)]:
                 s = (si + jit() * 0.5, sj + jit() * 0.5)
                 if free_spot(*s, pad=0.8, lane_w=0.9): put(rng.choice(("Plant5", "Plant5", "Plant4")), *s, room=1.1)
-        for t in ("FlowersYellowSparse", "FlowersYellowSparse", "RedApple"):
+        for t in ("FlowersYellowSparse", "FlowersYellowSparse", "FlowersWhiteSparse"):     # no apples: food on the
+                                                                                     # ground can be picked up
             for _ in range(20):
-                s = (rng.uniform(y.gi + 0.7, y.gi + y.w - 0.7), rng.uniform(y.gj - 0.3, y.gj + y.h - 1.7))
+                s = (rng.uniform(y.gi + 0.7, y.gi + y.w - 0.7), rng.uniform(yj - 0.3, yj + y.h - 1.7))
                 if free_spot(*s, pad=0.6, lane_w=0.8): put(t, *s, room=0.5); break
     elif y.kind == "park":
         # eight benches facing a tree in the middle, two to a side; bushes in the corners, flowers along the walls
@@ -210,25 +212,28 @@ def build(spec, rng, land, y):
             for off in (-1.0, 1.0):
                 s = (ci + 2.6 * di + off * abs(dj), cj + 2.6 * dj + off * abs(di))
                 if free_spot(*s, pad=0.8, lane_w=0.9): put(BENCH_ON[side], *s, room=0.9)
-        for c in ((y.gi + 1.0, y.gj), (y.gi + y.w - 1.0, y.gj), (y.gi + 1.0, y.gj + y.h - 2), (y.gi + y.w - 1.0, y.gj + y.h - 2)):
+        for c in ((y.gi + 1.0, yj), (y.gi + y.w - 1.0, yj), (y.gi + 1.0, yj + y.h - 2), (y.gi + y.w - 1.0, yj + y.h - 2)):
             if free_spot(*c, pad=0.7, lane_w=1.1): put(rng.choice(("Bush6", "Plant5", "Plant4")), *c, room=1.0)
         for _ in range(10):
-            s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.choice((y.gj - 0.2, y.gj + y.h - 1.8)))
+            s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.choice((yj - 0.2, yj + y.h - 1.8)))
             if free_spot(*s, pad=0.6, lane_w=1.1): put(rng.choice(("FlowersBlueSparse", "FlowersPurpleSparse", "FlowersWhiteSparse")), *s, room=0.7)
     elif y.kind == "field":
-        # one crop in rows across the plot, a row of bare earth between rows (the lane from the gate stays open)
+        # one crop in rows, the rows centred in the fence with a walkable strip all round (Ambermere playtest,
+        # 2026-10-05: "the northeast stretch of fence overlaps with the row of crops"), bare earth between the rows; the
+        # rows run away from the gate, so the lane from it runs between them
         crop = rng.choice(CROPS)
-        rows_i = y.side in ("j0", "j1")             # rows run away from the gate, so the lane runs between them
-        for a in range(y.w):
-            for b in range(y.h):
-                if (a if rows_i else b) % 2: continue
-                for t in (0.3, 0.7):
-                    s = (y.gi + a + (t if not rows_i else 0.5), y.gj - 1 + b + (0.5 if not rows_i else t))
-                    if free_spot(*s, pad=0.5, lane_w=0.8): put(crop, *s, room=0.3)
+        rows_i = y.side in ("j0", "j1")
+        I0, I1, J0, J1 = y.gi, y.gi + y.w, yj - 1, yj - 1 + y.h
+        across = (I0, I1) if not rows_i else (J0, J1)
+        along = (J0, J1) if not rows_i else (I0, I1)
+        for r in _spread(across[0] + 0.85, across[1] - 0.85, 1.25):
+            for a in _spread(along[0] + 0.75, along[1] - 0.75, 0.42):
+                si, sj = (r, a) if not rows_i else (a, r)
+                if free_spot(si, sj, pad=0.6, lane_w=0.7, t=crop): put(crop, si, sj, room=0.3)
     elif y.kind == "monument":
         put("Monument1", ci, cj, room=2.2)
-        for c in ((y.gi + 1.3, y.gj + 0.3), (y.gi + y.w - 1.3, y.gj + 0.3), (y.gi + 1.3, y.gj + y.h - 2.3),
-                  (y.gi + y.w - 1.3, y.gj + y.h - 2.3)):
+        for c in ((y.gi + 1.3, yj + 0.3), (y.gi + y.w - 1.3, yj + 0.3), (y.gi + 1.3, yj + y.h - 2.3),
+                  (y.gi + y.w - 1.3, yj + y.h - 2.3)):
             if free_spot(*c, pad=1.0, lane_w=1.3): put("Statue2a", *c, room=1.4)
         for d in (-1.6, 1.6):                       # torch poles flanking the way in, and the monument
             dx, dy = cj - gm[1], -(ci - gm[0])
@@ -240,8 +245,8 @@ def build(spec, rng, land, y):
         # the rock face at the back: big rocks and pillars along the walls away from the gate, rubble in the open
         back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
         bx = {"i0": y.gi + 1.2, "i1": y.gi + y.w - 1.2}.get(back)
-        by_ = {"j0": y.gj - 1 + 1.2, "j1": y.gj + y.h - 2.2}.get(back)
-        along = [y.gj - 1 + 1.3 + 1.6 * k for k in range(int((y.h - 2) / 1.6) + 1)] if bx is not None else \
+        by_ = {"j0": yj - 1 + 1.2, "j1": yj + y.h - 2.2}.get(back)
+        along = [yj - 1 + 1.3 + 1.6 * k for k in range(int((y.h - 2) / 1.6) + 1)] if bx is not None else \
                 [y.gi + 1.3 + 1.6 * k for k in range(int((y.w - 2) / 1.6) + 1)]
         for t in along:
             s = (bx + jit(), t + jit()) if bx is not None else (t + jit(), by_ + jit())
@@ -254,6 +259,87 @@ def build(spec, rng, land, y):
                      ("MiningShovelInGround", 1)):
             for _ in range(n):
                 for _try in range(15):
-                    s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.uniform(y.gj - 0.2, y.gj + y.h - 1.8))
+                    s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.uniform(yj - 0.2, yj + y.h - 1.8))
                     if free_spot(*s, pad=0.7, lane_w=1.2): put(t, *s, room=0.6 if "Pebbles" in t else 0.9); break
     return placed
+
+
+def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
+    """A graveyard as Westwood lays one, and as a place that is used (Starwell playtest, 2026-10-05: "Graveyards mostly
+    look good, but it would look better if there were actually some graves. Maybe a bucket of tools. More diversity of
+    objects"). Westwood has no grave-mound object: its graves are headstones on patches of bare earth among the grass
+    (War03d: 19 of its 100 headstones on GrassSparse2, 9 on DirtLight2, the earth round them dirt), torch poles at the
+    ends of the rows (21 within 70 px of a headstone), flowers, bones, a spade left in the ground (War03d), statues.
+    - graves in rows, each a headstone at the head of its plot of earth (a floor tile: old graves DirtLight2, newer
+      DirtDark2), flowers laid on some, headstones about 2.2 squares apart (Westwood p25 83 px), a path between rows;
+    - the gravedigger's corner, away from the gate: a fresh open grave (dark earth) with the coffin waiting beside it,
+      the spade stuck in the spoil heaped by it, the pick, the bucket of tools;
+    - a little shrine at the back: a cross between two urns on pedestals;
+    - a bench by the gate for mourners, torch poles at two corners for light, a bone or two."""
+    I0, I1, J0, J1 = y.gi, y.gi + y.w, yj - 1, yj - 1 + y.h
+    ci, cj = y.centre
+    back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
+    # the gravedigger's corner: the back corner on the side away from the gate's lane
+    corners = [(I0 + 1.4, J0 + 1.4), (I1 - 1.4, J0 + 1.4), (I0 + 1.4, J1 - 1.4), (I1 - 1.4, J1 - 1.4)]
+    far = max(corners, key=lambda c: math.hypot(c[0] - gm[0], c[1] - gm[1]))
+    dug = None
+    gi_, gj_ = int(math.floor(far[0])), int(math.floor(far[1])) + 1             # its square
+    oi, oj = gi_ + 0.5, gj_ - 0.5                                               # the open grave's middle
+    if free_spot(oi, oj, pad=0.8, lane_w=1.2):
+        spec.floor[square_tile(gi_, gj_)] = "DirtDark2"
+        dug = (oi, oj)
+        dx = 1 if oi < ci else -1
+        dy = 1 if oj < cj else -1
+        for t, (a, b), room in (("Coffin1", (0.0, 1.05 * dy), 0.9), ("MiningShovelInGround", (0.7 * dx, -0.2 * dy), 0.4),
+                                ("CaveRocksMedium", (0.75 * dx, 0.3 * dy), 0.4), ("CaveRocksSmall", (0.55 * dx, 0.6 * dy), 0.3),
+                                ("MiningPickAxeOnGround1", (1.3 * dx, 0.6 * dy), 0.5),
+                                ("BarrelWithTools1", (1.25 * dx, -0.45 * dy), 0.7)):
+            si, sj = oi + a, oj + b
+            if free_spot(si, sj, pad=0.6, lane_w=1.1, t=t):
+                put(t, si, sj, room=room)
+        reserve(oi, oj, 1.3)                                              # the open grave keeps its square
+    # torch poles in the corners for light (not the gravedigger's), first, so the graves keep off them
+    lit = 0
+    for c in ((I0 + 0.8, J0 + 0.8), (I1 - 0.8, J1 - 0.8), (I1 - 0.8, J0 + 0.8), (I0 + 0.8, J1 - 0.8)):
+        if lit >= 2 or (dug and math.hypot(c[0] - dug[0], c[1] - dug[1]) < 2.0): continue
+        if free_spot(*c, pad=0.7, lane_w=1.2, t="TorchPole"): put("TorchPole", *c, room=0.9); lit += 1
+    # the shrine by the back fence: a cross between two urns, slid along the fence clear of the gravedigger
+    ui, uj = (0.0, 1.0) if back in ("i0", "i1") else (1.0, 0.0)
+    bi0 = {"i0": I0 + 1.1, "i1": I1 - 1.1}.get(back, ci)
+    bj0 = {"j0": J0 + 1.1, "j1": J1 - 1.1}.get(back, cj)
+    for d0 in (0.0, 1.2, -1.2, 2.2, -2.2):
+        bi, bj = bi0 + ui * d0, bj0 + uj * d0
+        if dug and math.hypot(bi - dug[0], bj - dug[1]) < 2.2: continue
+        if not all(free_spot(bi + ui * d, bj + uj * d, pad=0.75, lane_w=1.0, t="StatueVase1S") for d in (-0.9, 0, 0.9)):
+            continue
+        put(rng.choice(("Cross1", "Cross2", "Statue2a")), bi, bj, room=1.0)
+        for d in (-0.9, 0.9):
+            put(rng.choice(("StatueVase1S", "StatueVase2S")), bi + ui * d, bj + uj * d, room=0.7)
+        break
+    # a bench by the gate for mourners, facing in
+    gi2, gj2 = gm[0] + (ci - gm[0]) * 0.35, gm[1] + (cj - gm[1]) * 0.35
+    side = (-(cj - gm[1]), ci - gm[0])
+    L = math.hypot(*side) or 1
+    for d in (1.4, -1.4, 2.0, -2.0):
+        si, sj = gi2 + side[0] / L * d, gj2 + side[1] / L * d
+        if free_spot(si, sj, pad=0.8, lane_w=1.0, t="Bench1"):
+            put(BENCH_ON[y.side], si, sj, room=1.0); break
+    # the graves: rows across the plot, 2 squares (65 px) apart each way (Westwood: p10 63, p25 83 px between headstones);
+    # each grave is a floor tile of earth, its headstone at the tile's head (its upper left edge): a tile (a, b) is
+    # drawn over squares a..a+1 across i, its stone at (a + 0.1, b - 0.5)
+    for a in range(int(math.ceil(I0 + 1.0)), int(math.floor(I1 - 1.6)) + 1, 2):
+        for b in range(int(math.ceil(J0 + 1.5)), int(math.floor(J1 - 0.5)) + 1, 2):
+            hi, hj = a + 0.1, b - 0.5 + rng.uniform(-0.08, 0.08)
+            pi_, pj_ = a + 0.55, b - 0.5                                # the plot's middle
+            if not (free_spot(hi, hj, pad=0.8, lane_w=1.1, t="Tombstone1") and free_spot(pi_, pj_, pad=0.7, lane_w=1.1)
+                    and free_spot(a + 0.9, pj_, pad=0.6, lane_w=1.0)):
+                continue
+            put(_pick(rng, TOMBSTONES), hi, hj, room=1.2)
+            spec.floor[square_tile(a, b)] = rng.choice(("DirtDark2", "DirtDark2", "DirtLight2"))
+            if rng.random() < 0.4:
+                put(rng.choice(("FlowersWhiteSparse", "FlowersYellowSparse", "FlowersPurpleSparse")), a + 0.75, pj_, room=0.8)
+            reserve(pi_, pj_, 0.8)                                     # the plot stays clear
+    # a bone or two
+    for _ in range(rng.randint(1, 2)):
+        s_ = (rng.uniform(I0 + 1, I1 - 1), rng.uniform(J0 + 1, J1 - 1))
+        if free_spot(*s_, pad=0.8, lane_w=1.2): put(rng.choice(BONES), *s_, room=0.5)

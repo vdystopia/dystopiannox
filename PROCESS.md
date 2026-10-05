@@ -155,6 +155,57 @@ Then, in this order:
      hand in a design.
    - Every building role calls for its scenes; a role missing from `ROLE_SCENES` stands bare (Ambermere's fishers'
      houses, the herbwife's hut and the moot hall called for nothing).
+   - **A camp is laid in zones** (Starwell playtest, 2026-10-05: "another absolute mess of randomly placed things and
+     overly clustered NPCs ... It needs a lot of refinement and a lot more purpose and organization"). Westwood's camps
+     measured (Con03A, Con04a, War05A, Wiz02C, Wiz03b, Wiz03c): stones ringed 17-30 px round the fire; one or two seats
+     52-64 px out (Stool1, the ogres' benches; never a ring of seats); pup tents 112-120 px out; the store 75-140 px out on
+     one side (barrels in threes 25-29 px apart, steel crates, the cart); racks in a row 26-30 px apart 200-225 px out.
+     `camps.bandit_camp` now lays: the hearth (fire, stones, two crude log benches `OgreBench` and a stool, the pot); the
+     sleeping row behind it (tents in an arc, two bedrolls before each); the store on one flank (one tidy row of sacks,
+     crates, barrels and the water barrel, each its Westwood gap from the next, the cart behind); the arms corner on the
+     other (racks in a row, a straw dummy), or the dig (`trade="dig"`: spades and picks in the ground, the tool barrel,
+     the spoil heaped, `finds` set out); the lookout at the way in (a torch pole, the watchman's stool, his quivers).
+     Zones keep clear ground between them and the layout scales with the clearing (0.75-1.25, `_clearing`).
+   - **Seats round a fire are benches, stools and logs, never stumps** (same playtest: "the stumps around the fires in
+     bandit camps arent the right object for that use case").
+   - **A camp's people stand at their own posts** (same playtest: "These NPCs are all on top of each other like a
+     swarm"; ten round the Scar's fire). Westwood: at most two at a fire (War05A's grunts 47 and 56 px out), the rest
+     120-270 px out. `posts.camp_posts(..., sit, tents, watch, work)`: the leader by his tent and the take, at most two
+     at the fire, the others by their tents, at the store, the racks, the pot or the dig (`work`), the watch at the way
+     in; 64 px apart, 28 px clear of every piece (a man had stood on a bedroll). A digger camp's workers work. A person's
+     disabled twin stands exactly on his spot.
+   - **Outdoor pieces keep Westwood's gaps** (same playtest: "Many object clusters like these crates are simply too close
+     to each other"; barrels overlapping). `kit/spacing.py`: Westwood's closest pairs (p05 of each piece's nearest of the
+     other family): barrels 25 px, big barrels 31, barrel and big barrel 33, crates 31, barrel and crate 38, sacks 20,
+     sack and crate 33, sack and barrel 30, racks 27, bedrolls 35, benches 45, headstones 39, a cart 48 from anything,
+     a fire 50; other pairs 0.8 of both footprints. The dressing, the camps, the wreck and the houses' door scenes place
+     by it, and the catalogue's layouts were respaced to it.
+   - **No candles outdoors** (same playtest: "candle objects are not appropriate for placement in random exterior
+     locations. these items can actually be picked up by the player"). Outdoors a light is a torch pole, a brazier, a
+     street lamp or a fire (Westwood's outdoor lights: TorchPole 497, Torch 974 on walls, flames and fires; no candles).
+     The waystone takes flowers, the shrine two torch poles, the graveside a torch pole; no apple lies in the orchard.
+   - **Graveyards have graves** (same playtest: "it would look better if there were actually some graves. Maybe a bucket
+     of tools. More diversity of objects"). Westwood has no grave-mound object: its headstones stand on patches of bare
+     earth among the grass (War03d). `yards._graveyard`: graves in rows 2 squares apart, each a tile of dug earth with its
+     headstone at the head, flowers on some; the gravedigger's corner away from the gate (an open grave of dark earth,
+     the coffin waiting, the spade in the spoil, the pick, the bucket of tools); a cross between two urns by the back
+     fence; a mourners' bench by the gate; torch poles in two corners.
+   - **Nothing on a fence line** (Ambermere playtest, 2026-10-05: "The northeast stretch of fence overlaps with the row of
+     crops ... this fence is literally on top of this row of plants"). A wall point (p, q) is drawn at square coordinates
+     (p, q - 0.5), half a square toward -j of the squares' numbering, so a plot's fence runs gi..gi + w across i and
+     gj - 1.5..gj + h - 1.5 across j (`Yard.centre` is that middle). Yards and gardens lay their contents inside that,
+     every piece its drawn half-width plus a margin off the line (`spacing.off_walls`); crop rows are centred with a
+     walkable strip to the fence all round. Ground bits keep off every wall line too (a bush had stood in a curtain).
+   - **A dock runs out square to its shore** (Ambermere playtest, 2026-10-05: "the dock is way too close to the shore and
+     does not extend out into the middle of the pond"; it had run along the shore, half on the grass: one tile of water
+     beside it had been enough). `Waterworks._shore_start` takes a landing only where the dock's run is within 30
+     degrees of the way out over the water from the bank, with water two tiles to either side all along it and three
+     tiles round its tip; `dock(body, "best")` takes whichever kit fits nearest the road.
+   - The checker proves all of it (`check_exterior`, and `validate/selftest.py` plants each defect): outdoor pieces
+     nearer than 0.85 of Westwood's gap, a piece on a fence or built wall's line, a pickable thing outdoors as decor
+     (candles, lanterns, food without a script name), two creatures under 30 px apart or five within 90 px of a spot
+     (route walkers and a twin on his person's spot aside), and a dock off square to its shore, with the bank beside
+     it, or ending near a shore.
 
 ## Relations: every piece makes sense where it stands
 

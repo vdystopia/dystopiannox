@@ -276,15 +276,11 @@ for k_ in (1, 2, 3):
     bc_ = off_road(C[f"bind{k_}"], clear=1.5, reach=4)
     bind_xy.append(camps.stone_ring(m, rng, land, bc_, n=4, radius=1.8, stone="ObeliskPrimitive", core="MineCrystal01",
                                     light=preset("purple"), light_name=f"Binding{k_}", clear=3))
-# the Scar: the diggers' camp on the crater's floor, their diggings among the star's shards
+# the Scar: the diggers' camp on the crater's floor, laid in zones (kit/camps): their fire, their tents, the store by
+# the cart, and the dig on the flank toward the way in, its tools in the ground and the star-iron they have cut heaped
 scar_camp = camps.bandit_camp(m, rng, land, off_road(scar_c, clear=4.5, reach=10), vc,
                               loot=[("Gold", {"Amount": 70}), "RedPotion", "RedPotion", "BluePotion", "Quiver"],
-                              sleepers=4, tents=2)
-dig = camps.Scene(m, rng, land, scar_c)
-for k_, (r_, a_, t_) in enumerate(((9.0, 3.6, "MiningPickAxeInGround1"), (9.5, 4.2, "MineCrystal03"),
-                                   (8.5, 4.8, "MiningShovelInGround"), (10.0, 5.3, "MineCrystal05"),
-                                   (9.0, 2.9, "MineCrystal01"), (10.5, 3.2, "BarrelWithTools1"))):
-    dig.put(t_, *dig.at(r_, a_))
+                              sleepers=4, tents=2, trade="dig", finds=("MineCrystal03", "MineCrystal05", "MineCrystal01"))
 # caches in the wood, off the ways
 caches = []
 for near_, loot_, stump_ in ((herb_c, [("Gold", {"Amount": 45}), "CurePoisonPotion", "RedPotion"], True),
@@ -353,19 +349,20 @@ gq_ = square_px(gate_sq[0] + 0.5, gate_sq[1] - 0.5)
 gdx, gdy = vx - gq_[0], vy - gq_[1]
 gl = math.hypot(gdx, gdy) or 1
 person("Con02a", "IxGuard1", gq_[0] + 70 * gdx / gl + 26, gq_[1] + 70 * gdy / gl, "GateWarden", face=(vx, vy))
-# Vask's diggers in the Scar: men at their posts round the camp, each with the fighter he turns into hidden at his spot
-dig_posts = camp_posts(m, scar_camp, (vx, vy), sit=2, tents=1, watch=1)
+# Vask's diggers in the Scar: each at his own post in the camp (kit/posts): Vask by his tent and the take, one at the
+# fire, two at work at the dig, one watching the way in; the fighter each turns into hidden exactly on his spot
+dig_posts = camp_posts(m, scar_camp, (vx, vy), sit=1, tents=0, watch=1, work=2)
 diggers, digger_foes = ["Vask"], ["VaskFoe"]
 person("Con03A", "Rastur", *dig_posts["leader"], "Vask", face=(vx, vy))
-pop.creature("Swordsman", dig_posts["leader"][0] + 6, dig_posts["leader"][1] + 6, action="guard", scr="VaskFoe",
+pop.creature("Swordsman", dig_posts["leader"][0], dig_posts["leader"][1], action="guard", scr="VaskFoe",
              aggr=0.83, HealthMultiplier=2.5, spread=False)
-for k, ((x, y), donor_, foe_) in enumerate(zip(dig_posts["sit"] + dig_posts["tent"] + dig_posts["watch"],
+for k, ((x, y), donor_, foe_) in enumerate(zip(dig_posts["sit"] + dig_posts["work"] + dig_posts["watch"],
                                               (("War01A", "Jesse"), ("War01A", "Daniel"), ("War01A", "Eric"),
                                                ("War01A", "Tyler")),
                                               ("Swordsman", "Swordsman", "Swordsman", "Archer"))):
     n = f"Digger{k + 1}"
     person(donor_[0], donor_[1], x, y, n, face=scar_camp["fire"])
-    pop.creature(foe_, x + 6, y + 6, action="guard", scr=f"DiggerFoe{k + 1}", aggr=0.83, spread=False)
+    pop.creature(foe_, x, y, action="guard", scr=f"DiggerFoe{k + 1}", aggr=0.83, spread=False)
     diggers.append(n); digger_foes.append(f"DiggerFoe{k + 1}")
 # shopkeepers
 WARES = {"apothecary": [(5, "RedPotion"), (4, "BluePotion"), (3, "CurePoisonPotion"), (1, "LesserFireballWand"),
