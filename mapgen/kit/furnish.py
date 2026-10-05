@@ -2594,4 +2594,6 @@ def furnish_room(spec, room: Room, kind=None, rng=None, style="town"):
     objs = f.furnish()
     room.kind = f.kind
     room.spots = f.spots
+    from kit import loot
+    loot.tag(spec, objs, f.kind)          # where its containers stand: their loot (kit/loot.py)
     return objs

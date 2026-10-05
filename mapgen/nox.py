@@ -375,7 +375,17 @@ class Spec:
     def build(self, out_dir, check=True):
         """Write the map (and .nxz unless d['nxz'] is False) into out_dir. Returns the report lines.
         check=True then runs the automatic checks (validate/validate.py) and adds their summary line;
-        the full report is in validate/out/<name>/report.md."""
+        the full report is in validate/out/<name>/report.md.
+        Containers left empty get Westwood's loot first (kit/loot.py; a test map sets `loot = False` to keep them
+        empty); the tally goes to <name>.loot.json beside the map."""
+        loot_lines = []
+        if getattr(self, "loot", True):
+            from kit import loot
+            rep = loot.fill(self)
+            loot_lines.append(loot.summary(rep))
+            os.makedirs(out_dir, exist_ok=True)
+            with open(os.path.join(out_dir, self.d["name"] + ".loot.json"), "w", encoding="utf-8") as f:
+                json.dump(rep, f, indent=1)
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False, encoding="utf-8") as f:
             json.dump(self._finalize(), f)
         try:
@@ -387,6 +397,7 @@ class Spec:
         lines = (res.stdout + res.stderr).strip().splitlines()
         if res.returncode or not any(l.startswith("OK") for l in lines):
             sys.exit("map build failed:\n" + "\n".join(lines))
+        lines += loot_lines
         if self.scripts:                        # beside the map: install copies them into maps/<Name>/ with it
             sd = os.path.join(out_dir, self.d["name"] + "_scripts")
             os.makedirs(sd, exist_ok=True)

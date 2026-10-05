@@ -16,6 +16,13 @@ Containers hold few things: 1 item at the median, 4 at p90, 15 at most (917 cont
 Gold, RewardMarker (a random reward the game rolls), bones, red and blue potions, food, quivers, chakrams, spell
 books, field guides, keys.
 
+By container (2026-10-05, the campaign maps; `mapgen/kit/loot.py` has the places and what each holds): chests 1461,
+97% hold something (all of them indoors); sacks 77, 88%; Barrel, Barrel2 and BarrelLOTD 1956, 42%; crates 285, 51%;
+coffins 407, 41%; large and piled barrels 15%; water, black-powder, steel and tool barrels, steel crates and apple
+crates never. Barrels hold food (apples, meat) above all, crates potions, quivers, clothes and cider, coffins bones,
+chests gold (43%) and potions. Per map Westwood's containers hold 6 potions at the median (p90 14), 2 arms or armour
+(p90 9) and 9 food (p90 26). Chests and sacks are opened; barrels, crates and coffins are smashed and drop it.
+
 ## Rewards from quest givers
 
 Westwood's scripts almost never pay quest gold: `ChangeGold` appears 18 times, nearly all negative (the player
