@@ -63,6 +63,8 @@ total: Emberhollow's three vents).
    (`Dresser.garrison`) joins the map's script when you set `d.population = sm.pop` first. Signs over the doors:
    `Village.SIGN_TEXT` by role, with keys from `q.text`. A different house style for a role:
    `BuildingIdentity(..., style="stone_house")`.
+   Last, after the people: `kit/dressing.Exterior(m, land, biome).dress()` fills the empty outdoor ground with
+   composed prop groups (PROCESS.md step 6.7).
 8. The story in `QuestBook` (`kit/quests.py`): talkers (later stages first), events (`q.on_death`, `q.on_all_dead`,
    `q.near`, `q.on_pickup`, `q.when_true`), `q.start` (lock the gate, disable the exit, the first journal entry),
    portraits. Conditions read the world where possible (`q.dead`, `has=`): the script's stages and flags (and so

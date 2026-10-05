@@ -49,6 +49,7 @@ from kit.quests import QuestBook, A, QUEST, COMPLETED, HINT, NOTE
 from kit import yards as Y
 from kit import camps
 from kit.story import StoryMap, Curtain
+from kit.dressing import Exterior
 
 SEED = int(sys.argv[1]) if len(sys.argv) > 1 else 5
 rng = random.Random(SEED)
@@ -601,6 +602,9 @@ for k_ in range(2):
 m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
+# ---- 9. the exteriors' dressing: the empty ground between the walls filled with the castle's and the hamlet's things
+dressed = Exterior(m, land, "green", martial=True).dress()
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     rooms_sidecar(placed, os.path.join(OUT, f"{NAME}.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])
@@ -609,4 +613,4 @@ if __name__ == "__main__":
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))
     print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(sm.missed) or 'none'}) "
           f"| trees {n_trees} | shops {n_shops} | caches {len(caches)} | opened {len(opened)} | lines {len(q.strings)} "
-          f"| yards {', '.join(built) or 'none'}")
+          f"| yards {', '.join(built) or 'none'} | dressing {sum(dressed.values())} groups")

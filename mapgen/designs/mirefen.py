@@ -307,6 +307,10 @@ for who_, pic_ in (("Haska", "AldwynPic"), ("Wenna", "MaidenPic2"), ("Orrin", "T
 m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
+# the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
+from kit.dressing import Exterior
+dressed = Exterior(m, land, "swamp").dress()
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     rooms_sidecar(placed + [(BuildingIdentity(role, area, nm, "Morvane"), b) for role, area, b, nm in d.structures],

@@ -79,6 +79,10 @@ q.start([q.journal("I passed Thornwick's north gate onto the King's Road. The Re
          A.print("The King's Road, north of Thornwick.")])
 m.scripts.update(q.files())
 
+# the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
+from kit.dressing import Exterior
+dressed = Exterior(m, land, "green").dress()
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     q.write_strings(OUT)
