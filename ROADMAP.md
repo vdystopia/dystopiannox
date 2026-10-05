@@ -12,7 +12,7 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | 5. Visual review against Westwood references (sheets, design measurements, rubric) | done | `review/` |
 | Generator v2: layout, vegetation, village and water planners (fixes review criteria 1–5) | done | `mapgen/kit/layout.py`, `vegetation.py`, `village.py` |
 | Generator v3: identity first, centre outwards (PROCESS.md) | done | `mapgen/kit/identity.py`, `PROCESS.md` |
-| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | v0.4 (rooms the camera reads, bigger scale), awaiting review | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
+| TreePlace: a new map from scratch with the refined process (sections, a mine entrance, thickets) | retired 2026-10-04 (with DysVale): new maps with the new process instead | `mapgen/designs/treeplace.py`, `mapgen/kit/mine.py` |
 | Room lab: every room kind at three sizes, scored (`roomlab.py`, `review/roomscore.py`) | 21 kinds at Westwood's true sizes (two lab pages): 62 of 63 rooms pass in each of 3 seeds (186 of 189) | `mapgen/designs/roomlab.py` |
 | Building lab: every building role at a scale, scored (`buildinglab.py`, `review/buildingscore.py`) | 16 roles (a manor of 8 rooms, 3 culture buildings): 44 of 48 pass over 3 seeds at the kit's scale (1.25); 13 of 14 at 1.6 | `mapgen/designs/buildinglab.py` |
 | Biomes: caves, snow and ice, lava, measured on Westwood's maps and built by a palette kit | v0.2 maps installed with a structure each: Darkdelve's ogre keep, Frostfang's dark temple, Emberdeep's demon forge | `rules/BIOMES.md`, `mapgen/kit/biome.py` |
@@ -21,10 +21,19 @@ Westwood's maps. Generated structures must be original (never copy-pasted stock 
 | NPCs: Westwood's placement and movement measured; behaviour sets scripted in Go for OpenNox | NpcLab test map installed; Darkdelve's bats skittish, Frostfang's wolves in packs | `rules/NPCS.md`, `mapgen/kit/npcs.py`, `mapgen/kit/behaviours/` |
 | Weapons: how each weapon fires its projectile (thing.bin USE lines, OpenNox's handlers); a fireball staff that throws harpoons | Harpoon test map installed | `rules/WEAPONS.md`, `mapgen/kit/behaviours/weapons.go` |
 | Towns: where a town's walls stand (edge, islands, buildings, yards); yards with a purpose; a town's planting | 7 yard kinds built (graveyard, quarry, orchard, park, field, monument, jail) | `rules/TOWNS.md`, `rules/town_walls.py`, `mapgen/kit/yards.py` |
-| 6. Package as a skill | next | |
+| Story maps: quests, dialogue (the map's own text in `nox.csf.json`), loot, shops, purposeful NPCs, gates and exits | Thornwick (chapter one) and Rimehold (chapter two) with TNorth and RimePass between and after; each 0 errors, 0 warnings, loaded in the server with every story object found | `mapgen/kit/quests.py`, `kit/story.py`, `kit/camps.py`, `mapgen/strings.py`, `PROCESS.md` "Story" |
+| 6. Package as a skill | first draft, being tested by a fresh agent building chapter three | `skills/nox-story-map/SKILL.md` |
 | 7. Benchmark briefs and refinement loop | | |
 
 ## Playtest feedback log
+
+### Room and exterior review (2026-10-04, TownLab and the labs)
+
+TownLab "excellent, way better than treeplace or dysvale". Rooms: small improvements, progress good.
+1. Storeroom racks a little too dense and numerous: spread out, fewer. Done (5 a row, 1.2 apart, 2.2 aisles).
+2. A wall with one bookcase should usually be full of bookcases; shelves tight into corners. Done.
+3. Great hall: 4-6 fewer table sets; a large floor-tile carpet. Done.
+4. Exterior: layout and planting excellent; more object variety (rock piles); fewer aspens on the map edge. Done.
 
 ### TreePlace v0.3 room review (2026-10-03)
 
