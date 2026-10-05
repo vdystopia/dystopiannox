@@ -1,162 +1,191 @@
-"""Scores every declared room of a generated map (its <map>.rooms.json) on what the room reviews asked for:
+"""Scores every declared room of a generated map (its <map>.rooms.json) against its own room type.
 
-- coverage: the share of the floor that furniture covers, against the kind's ROOM_COVER target (kit/identity.py)
-  and Westwood's median for rooms of its kind and size;
-- middle: coverage by pieces standing free in the room (more than 2.5 units from every wall);
-- lined: the share of the back walls (NE and NW, the walls the camera sees) taken by tall pieces (a bed by the width
-  of its headboard) and hangings,
-  less 3 units for each doorway in them (the door and its clearance);
-- types: distinct object types in the room;
-- walls: how many of its four walls have a purpose (a piece other than a light stands against it);
-- repeat: the most pieces of one kind against one wall, of the kinds that stand alone (not bookcases, shelves, a bench of
-  workstations, racks, beds, pews, the pieces Westwood lines walls with: kit/furnish.py NEVER_LINED and the rest);
-- identity: what reads as a room with no identity (Starwell playtest, 2026-10-05: the college laboratory "almost looks
-  like some sort of shoddy mess hall with random objects stuffed in it"): a showpiece repeated (an alchemist's desk,
-  a generator, a telescope: kit/furnish.py SHOWPIECES), four or more of one stand-alone kind along one wall, more
-  free-standing tables than its kind sets, pieces outside the room's identity;
+There is no one yardstick for a good room (Starwell playtest, 2026-10-05: "A throne room, however, is very different
+than a study and should, by its nature, be more open with less object density ... There is really no one-size-fits-all
+approach for room design"). Each room's kind maps to a type (mapgen/kit/roomtypes.py: bedroom, study, throne room,
+chapel...), whose brief is rules/rooms/<type>.md and whose profile sets what the room is judged on:
+
+- cover: the share of the floor furniture covers, in the type's range (a throne room 0.03-0.12, a storeroom 0.15-0.42);
+- open: the share of the floor clear of every blocking piece, in the type's range (review/roommeasure.py);
+- per tile: furnishings per floor tile, in range; types: distinct object types, at least the type's least (fewer in a
+  small room);
+- repeat: the most pieces of one stand-alone kind, under the type's cap for the room's size; caps: the repeated sets
+  (columns, pews, benches, tables, racks) under the type's caps (the furnisher holds the same caps);
+- must / never: the families the type needs, and those that never belong in it;
+- focal: the piece the room is arranged round is there and where the type puts it (a desk on a back wall, a throne
+  or an altar on the wall across from a door);
+- walls: walls with a purpose; lined: the back walls lined, for the types that line them;
+- reads as: what the contents read as (kit/roomtypes.py reads_as). A room that reads as another type, not its kin, is
+  flagged (the college laboratory that read as "some sort of shoddy mess hall"), a room that reads strongly as a second,
+  unrelated type too (two rooms in one), and a room whose type is unclear (its defining piece missing);
 - warnings: the checker's findings that fall in the room.
 
-The reference for a good room is the playtester's own (Starwell seed 4, room 9, the archmagister's study, 66 tiles:
-"This is an example of a very, very good room"): coverage 0.11, 17 types, 26 pieces, all four walls used, back walls
-51% lined, the most of one stand-alone kind on a wall 2 (statues between candelabras), one group in the middle (a round
-table and two chairs on a carpet), a curio standing free. PROCESS.md, "What a good room is".
+A room passes when every check holds. The score is the share of checks that hold.
 
     py review/roomscore.py <map> [--md out.md]
 
-Writes review/out/<map>/roomscore.md and prints the table. A room passes when its coverage reaches the kind's target
-(or Westwood's median for its size, whichever is higher, capped at the target), it has no warnings, and its back walls
-are at least 35% lined (25% in rooms under 40 tiles).
+Writes review/out/<map>/roomscore.md and prints it: every room, then a table by type.
 """
 import collections, math, os, re, sys
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO, "validate")); sys.path.insert(0, os.path.join(REPO, "mapgen"))
-sys.path.insert(0, os.path.join(REPO, "rules"))
+sys.path.insert(0, os.path.join(REPO, "rules")); sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import mapdata as MD, checks as C, validate as V
-from kit.identity import ROOM_COVER, ROOM_COVER_DEFAULT, WESTWOOD_KIND, ROOMS
+import roommeasure as RM
+from kit.roomtypes import profile, reads_as, TYPES
 
-from kit.furnish import TALL_PIECES as TALL        # one list: the furnisher lines walls by the same measure
-from kit.furnish import SHOWPIECES, SHOWPIECE_LIMIT, SHOWPIECE_BIG
-
-# kinds that stand in rows or line walls by design: not counted as a piece repeated along a wall
-LINED = re.compile(r"^(Bookcase|MovableBookcase|LogShelves|PotionShelves|WizardWorkstation|Trader|Bed|WoodBed|Cot|Bench|"
-                   r"LightBench|CushionedBench|Crypt|Coffin|Column|CathedralColumn|LOTD|Barrel|Crate|DarkCrate|Sack|"
-                   r"PiledBarrels|LargeBarrel|WaterBarrel|BarrelWithTools|Candleabra|Nightstand|Chest|OgreStraw)")
-TABLES = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d)$")
+OPPOSITE = {"NE": "SW", "SW": "NE", "NW": "SE", "SE": "NW"}
 
 
-def _kind(t):
-    return re.sub(r"(\d+[a-z]?|HalfFull|Empty|NE|NW|SE|SW|N|S|E|W)$", "", t)
+def room_doors(m, r, cu, cv):
+    """Names of the walls (NE, NW, SE, SW) the room's doorways stand in."""
+    cells = set(r["cells"])
+    out = []
+    for d in m.doors:
+        gx, gy = d["gap"]
+        if not any((gx + a, gy + b) in cells for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+        coord = gx + gy + 1 if d["line"] == "/" else gx - gy
+        out.append(C._wall_name(d["line"], coord, cu, cv))
+    return out
 
 
-def identity_flags(r, kind, runs, cu, cv, m):
-    """What makes a room read as having no identity (see the module's notes). Returns (walls used, repeat, flags)."""
-    flags, per_wall, used = [], collections.defaultdict(collections.Counter), set()
-    show = collections.Counter()
-    for o in r["objects"]:
-        t = o["type"]
-        hit = C._against(o, runs, cu, cv, m, reach=1.6, across=True)
-        if hit and C.RT.family(t) not in (None, "light") and not t.startswith("Candleabra"): used.add(hit[0])
-        if hit and not LINED.match(t) and C.RT.family(t) not in (None, "wall_decor", "light"): per_wall[hit[0]][_kind(t)] += 1
-        sm = SHOWPIECES.match(t)
-        if sm: show[sm.group(1)] += 1
-    big = r["tiles"] >= SHOWPIECE_BIG
-    for base, n in show.items():
-        if n > SHOWPIECE_LIMIT.get(base, 1) + (1 if big else 0): flags.append(f"{n} {base}")
-    rep_ = max((n for c in per_wall.values() for n in c.values()), default=0)
-    if rep_ >= 4:
-        w, (k, n) = max(((w, c.most_common(1)[0]) for w, c in per_wall.items()), key=lambda x: x[1][1])
-        flags.append(f"{n} {k} on the {w} wall")
-    ident = ROOMS.get(kind, {})
-    tables = sum(1 for o in r["objects"] if TABLES.match(o["type"]))
-    most = (ident.get("repeat", {}).get("table") or (None, None))[1]
-    if most is not None and tables > most: flags.append(f"{tables} tables")
-    pats = ident.get("types", {})
-    strays = sorted({o["type"] for o in r["objects"] if (C.RT.family(o["type"]) in pats and
-                     not re.search(pats[C.RT.family(o["type"])], o["type"]))})
-    if strays: flags.append("outside its identity: " + ", ".join(strays[:3]))
-    return len(used), rep_, flags
+def cap_for(spec, tiles, least=0):
+    per, most = spec
+    return max(least, min(most, int(tiles / per)))
+
+
+def judge(m, r, kind, tiles_declared, warns):
+    """[(check, ok, detail)] for room r of kit kind `kind` against its type's profile, and the measure."""
+    p = profile(kind)
+    me = RM.measure(m, r)
+    tiles = me["tiles"]
+    fam, kinds = me["fam"], me["kinds"]
+    out = []
+    if not p:
+        return [("type", False, f"no room type for kind {kind}")], me, None
+    lo, _, hi = p["cover"]
+    out.append(("cover", lo <= me["cover"] <= hi, f"{me['cover']:.2f} (wants {lo:.2f}-{hi:.2f})"))
+    olo, ohi = p["open"]
+    out.append(("open", olo <= me["open"] <= ohi, f"{me['open']:.2f} (wants {olo:.2f}-{ohi:.2f})"))
+    plo, phi = p["per_tile"]
+    out.append(("per tile", plo <= me["per_tile"] <= phi, f"{me['per_tile']:.2f} (wants {plo:.2f}-{phi:.2f})"))
+    tmin = min(p["types_min"], round(2 + tiles / 6))          # a small room has room for fewer kinds of piece
+    out.append(("types", me["types"] >= tmin, f"{me['types']} (wants {tmin}+)"))
+    least, per = p["free_most"]
+    skip = set(p.get("free_skip", ("chair",))) | set(p.get("caps", {}))
+    free = collections.Counter(RM.kind_of(o["type"]) for o in r["objects"]
+                               if C.RT.family(o["type"]) and not RM.LINED.match(o["type"]) and
+                               C.RT.family(o["type"]) not in {"wall_decor", "rug"} | skip)
+    fk, fn = free.most_common(1)[0] if free else ("", 0)
+    fcap = max(least, int(tiles / per))
+    out.append(("repeat", fn <= fcap, f"{fn} {fk} (at most {fcap})"))
+    over = []
+    for f, spec in p.get("caps", {}).items():
+        c = cap_for(spec, tiles_declared, p["must"].get(f, 0))
+        n = fam.get(f, 0)
+        if f == "throne": n = min(n, 1)
+        if n > c: over.append(f"{n} {f} (cap {c})")
+    out.append(("caps", not over, "; ".join(over)))
+    short = [f"{f} {fam.get(f, 0)}/{n}" for f, n in p["must"].items() if fam.get(f, 0) < n and
+             not (f == "smithy" and fam.get(f, 0) >= 1)]
+    out.append(("must", not short, "; ".join(short)))
+    bad = sorted({f for f in p.get("never", ()) if fam.get(f)})
+    if p.get("never_types"):
+        rx = re.compile(p["never_types"])
+        bad += sorted({o["type"] for o in r["objects"] if C.RT.family(o["type"]) and rx.search(o["type"])})
+    out.append(("never", not bad, ", ".join(bad[:4])))
+    fo = p.get("focal")
+    if fo:
+        rx = re.compile(fo["types"])
+        foc = [o for o in r["objects"] if rx.search(o["type"])]
+        cu, cv = me["centre"]
+        if not foc:
+            out.append(("focal", False, f"no {fo['types'].strip('^')}"))
+        elif fo["where"] in ("back", "door"):
+            walls = {(C._against(o, me["runs"], cu, cv, m, reach=fo.get("reach", 1.8), across=True) or (None,))[0]
+                     for o in foc}
+            walls.discard(None)
+            if fo["where"] == "back":
+                ok = bool(walls & {"NE", "NW"})
+                out.append(("focal", ok, f"{foc[0]['type']} on {'/'.join(sorted(walls)) or 'no wall'} (wants a back wall)"))
+            else:
+                doors = room_doors(m, r, cu, cv)
+                ok = any(OPPOSITE.get(w) in doors for w in walls)
+                out.append(("focal", ok, f"{foc[0]['type']} on {'/'.join(sorted(walls)) or 'no wall'}, doors "
+                                         f"{'/'.join(sorted(set(doors))) or 'none'} (wants the wall across from a door)"))
+        else:
+            out.append(("focal", True, foc[0]["type"]))
+    wmin = p["walls_min"] - (1 if tiles < 32 else 0)          # a small room's door and its way in take a wall
+    out.append(("walls", me["walls"] >= wmin, f"{me['walls']} (wants {wmin}+)"))
+    if p.get("lined") is not None:
+        want = p["lined"] - (0.10 if tiles < 40 else 0.0)
+        out.append(("lined", me["lined"] >= want, f"{me['lined']:.2f} (wants {want:.2f}+)"))
+    ranked = reads_as(fam, me["all_kinds"], kind)
+    mine = next((s for t, s in ranked if t == p["type"]), 0.0)
+    top, ts = ranked[0] if ranked else (None, 0.0)
+    if mine == 0:
+        out.append(("reads as", False, f"unclear: reads as {top or 'nothing'}, not a {p['type'].replace('_', ' ')}"))
+    elif top != p["type"] and top not in p.get("kin", ()) and ts >= 1.25 * mine:
+        out.append(("reads as", False, f"{top.replace('_', ' ')} ({ts} against {mine})"))
+    elif any(t != p["type"] and t not in p.get("kin", ()) and s_ >= max(8.0, 0.6 * mine) for t, s_ in ranked):
+        # two rooms in one: the old college laboratory's tesla coils with a mess hall's tables and chairs down its middle
+        t, s_ = next((t, s_) for t, s_ in ranked if t != p["type"] and t not in p.get("kin", ()) and s_ >= max(8.0, 0.6 * mine))
+        out.append(("reads as", False, f"mixed: a {p['type'].replace('_', ' ')} ({mine}) and a {t.replace('_', ' ')} ({s_})"))
+    else:
+        out.append(("reads as", True, p["type"] if top == p["type"] else f"{p['type']} (or its kin {top})"))
+    out.append(("warnings", not warns, "; ".join(w["msg"][:70] for w in warns[:2])))
+    return out, me, p
 
 
 def score(map_path):
     m = MD.load(map_path)
     _, findings, _ = V.validate(map_path)
-    base = V.baseline().get("room_kinds", {})
     rows = []
     for r in C.find_rooms(m):
         d = r.get("declared")
         if not d or d.get("yard"): continue              # yards (kit/yards.py) are not rooms
-        kind = d["kind"]
         cells = r["cells"]
-        cover = C.room_coverage(m, r)
-        lo, hi = ROOM_COVER.get(kind, ROOM_COVER_DEFAULT)
-        k = base.get(WESTWOOD_KIND.get(kind, kind)) or {}
-        band = "coverage_large" if r["tiles"] >= 50 and k.get("coverage_large") else "coverage"
-        ww = ((k.get(band) or {}).get("p50")) or 0.0
-        runs = C.room_runs(m, cells)
-        cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
-        mid = 0.0
-        back_len, back_used = 0.0, collections.defaultdict(list)
-        doors = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors]
-        for (line, coord), (a0, a1) in runs.items():
-            if C._wall_name(line, coord, cu, cv) not in ("NE", "NW"): continue
-            back_len += a1 - a0
-            for du, dv in doors:                            # a doorway and its clearance cannot be lined
-                if abs((du if line == "/" else dv) - coord) < 1.6 and a0 < (dv if line == "/" else du) < a1:
-                    back_len -= 3.0
-        for o in r["objects"]:
-            u, v = C.uv_of(o)
-            dist = min((abs(u - c) if l == "/" else abs(v - c)) for (l, c) in runs) if runs else 0
-            if dist > 2.5 and m.blocking(o) and C.RT.family(o["type"]) in C.RT.BLOCKING_FAMILIES: mid += C.piece_area(o)
-            if TALL.match(o["type"]) or C.RT.family(o["type"]) == "wall_decor":
-                hit = C._against(o, runs, cu, cv, m, reach=1.6, across=True)   # a bed's headboard uses its wall too
-                if hit and hit[0] in ("NE", "NW"):
-                    ha = C._half_uv(o)[1] if hit[3] == "/" else C._half_uv(o)[0]
-                    back_used[(hit[3], hit[4])].append((hit[2] - ha, hit[2] + ha))
-        used = 0.0
-        for spans in back_used.values():                    # union of the stretches along each wall
-            spans.sort(); end = -1e9
-            for a, b in spans:
-                if b <= end: continue
-                used += b - max(a, end); end = b
-        lined = used / back_len if back_len else 0.0
         near = {(x + a, y + b) for x, y in cells for a in (-1, 0, 1) for b in (-1, 0, 1)}   # its floor and walls
         warns = [f for f in findings if f["severity"] != "info" and f.get("x") is not None and
                  (int(f["x"] // 23), int(f["y"] // 23)) in near]
-        target = min(lo, max(ww * 1.25, 0.10))
-        from kit.identity import ROOMS
-        lines_walls = any(st.get("slot") == "line" for st in (ROOMS.get(kind, {}).get("compose") or []) + (ROOMS.get(kind, {}).get("fill") or []))
-        ok = cover >= target and not warns and (not lines_walls or lined >= (0.35 if r["tiles"] >= 40 else 0.25))
-        walls, rep_, flags = identity_flags(r, kind, runs, cu, cv, m)
-        ok = ok and not flags
-        rows.append(dict(number=d["number"], kind=kind, purpose=d.get("purpose", ""), tiles=r["tiles"], cover=cover,
-                         target=target, lo=lo, hi=hi, ww=ww, middle=mid / (2 * len(cells)), lined=lined,
-                         types=len({o["type"] for o in r["objects"]}), pieces=len(r["objects"]), warns=warns, ok=ok,
-                         walls=walls, repeat=rep_, flags=flags))
+        checks, me, p = judge(m, r, d["kind"], d.get("tiles") or r["tiles"], warns)
+        ok = all(c[1] for c in checks)
+        rows.append(dict(number=d["number"], kind=d["kind"], type=(p or {}).get("type", "?"),
+                         family=(p or {}).get("family", "?"), purpose=d.get("purpose", ""), tiles=r["tiles"],
+                         cover=me["cover"], open=me["open"], per_tile=me["per_tile"], types=me["types"],
+                         pieces=me["pieces"], walls=me["walls"], lined=me["lined"], middle=me["middle"],
+                         score=sum(c[1] for c in checks) / len(checks), ok=ok, checks=checks, warns=warns,
+                         flags=[f"{c[0]}: {c[2]}" for c in checks if not c[1]]))
     rows.sort(key=lambda x: x["number"])
     return rows
 
 
 def report(map_path, rows):
     name = os.path.splitext(os.path.basename(map_path))[0]
-    out = [f"# Room scores: {name}", "",
-           f"{sum(r['ok'] for r in rows)} of {len(rows)} rooms pass (coverage at target, no warnings, back walls 35% "
-           f"lined, an identity: no showpiece repeated, no stand-alone piece four times along a wall, no stray tables or "
-           f"pieces). The reference room (Starwell's study): coverage 0.11, 17 types, 4 walls, repeat 2.", "",
-           "| # | Kind | Size | Tiles | Coverage | Target | Westwood | Middle | Lined | Types | Walls | Repeat | Pieces | "
-           "Identity | Warnings |",
-           "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+    out = [f"# Room scores by type: {name}", "",
+           f"{sum(r['ok'] for r in rows)} of {len(rows)} rooms pass their type's profile (mapgen/kit/roomtypes.py; the "
+           f"briefs: rules/rooms/<type>.md). Score: the share of the type's checks that hold.", "",
+           "| # | Type (kind) | Room | Tiles | Cover | Open | Per tile | Types | Walls | Lined | Score | Falls short |",
+           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         mark = "" if r["ok"] else " **x**"
-        out.append(f"| {r['number']}{mark} | {r['kind']} | {r['purpose'].split(',')[0]} | {r['tiles']} | {r['cover']:.2f} | "
-                   f"{r['target']:.2f} | {r['ww']:.2f} | {r['middle']:.2f} | {r['lined']:.2f} | {r['types']} | "
-                   f"{r['walls']} | {r['repeat']} | {r['pieces']} | {'; '.join(r['flags'])} | "
-                   f"{'; '.join(w['msg'][:70] for w in r['warns'])} |")
-    by_kind = collections.defaultdict(list)
-    for r in rows: by_kind[r["kind"]].append(r)
-    out += ["", "## By kind", "", "| Kind | Rooms | Pass | Mean coverage | Mean middle | Mean lined |", "|---|---|---|---|---|---|"]
-    for k, rs in sorted(by_kind.items()):
-        out.append(f"| {k} | {len(rs)} | {sum(r['ok'] for r in rs)} | {sum(r['cover'] for r in rs) / len(rs):.2f} | "
-                   f"{sum(r['middle'] for r in rs) / len(rs):.2f} | {sum(r['lined'] for r in rs) / len(rs):.2f} |")
+        kind = r["type"].replace("_", " ") + ("" if r["kind"] == r["type"] else f" ({r['kind'].replace('_', ' ')})")
+        out.append(f"| {r['number']}{mark} | {kind} | {r['purpose'].split(',')[0]} | {r['tiles']} | {r['cover']:.2f} | "
+                   f"{r['open']:.2f} | {r['per_tile']:.2f} | {r['types']} | {r['walls']} | {r['lined']:.2f} | "
+                   f"{r['score']:.2f} | {'; '.join(r['flags'])} |")
+    out += ["", "## By type", "",
+            "| Family | Type | Rooms | Pass | Mean score | Cover | Open | Wants cover | Wants open |",
+            "|---|---|---|---|---|---|---|---|---|"]
+    by = collections.defaultdict(list)
+    for r in rows: by[r["type"]].append(r)
+    order = {t: i for i, t in enumerate(TYPES)}
+    for t, rs in sorted(by.items(), key=lambda kv: order.get(kv[0], 99)):
+        p = TYPES.get(t, {})
+        n = len(rs)
+        out.append(f"| {p.get('family', '?')} | {t} | {n} | {sum(r['ok'] for r in rs)} | {sum(r['score'] for r in rs) / n:.2f} | "
+                   f"{sum(r['cover'] for r in rs) / n:.2f} | {sum(r['open'] for r in rs) / n:.2f} | "
+                   f"{p.get('cover', (0, 0, 0))[0]:.2f}-{p.get('cover', (0, 0, 0))[2]:.2f} | "
+                   f"{p.get('open', (0, 0))[0]:.2f}-{p.get('open', (0, 0))[1]:.2f} |")
     return "\n".join(out) + "\n"
 
 
@@ -167,5 +196,6 @@ if __name__ == "__main__":
     name = os.path.splitext(os.path.basename(path))[0]
     od = os.path.join(REPO, "review", "out", name)
     os.makedirs(od, exist_ok=True)
-    with open(os.path.join(od, "roomscore.md"), "w", encoding="utf-8") as f: f.write(text)
+    md_out = sys.argv[sys.argv.index("--md") + 1] if "--md" in sys.argv else os.path.join(od, "roomscore.md")
+    with open(md_out, "w", encoding="utf-8") as f: f.write(text)
     print(text)

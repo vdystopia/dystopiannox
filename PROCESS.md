@@ -322,21 +322,11 @@ Then, in this order:
     colonnade in pairs from 5 units ahead of the altar (a barrow's god statue had stood among a block of 8 columns).
   - A piece drawn facing one way takes the variant of its wall (`WALL_SIDE_TYPE`): LOTDLichGodStatue1 on a NW wall
     facing SE, Statue2 on a NE wall facing SW (Westwood 8 of 10, 5 of 6), and only on the back walls.
-- **What a good room is** (Starwell playtest, 2026-10-05: "The room in the fifth screenshot is exceptional. It feels very
-  full, balanced, and themed. This is an example of a very, very good room"; the smaller offices and bedrooms are good
-  too). The reference is Starwell's room 9 (seed 4), the archmagister's study (`study` recipe; 66 tiles declared, 50 as the
-  checker counts them):
-  - the NW wall: the desk centred with its chair, bookcases either side of it to the corners (`line near=desk`);
-  - the NE wall: bookcases end to end with a trophy between and the chest (`line other`, `storage at=center`);
-  - the middle: one group that shows the use, a round table and two chairs on a carpet of floor tiles (`table center
-    seats`, `carpet under`), and one curio standing free (a telescope, `group curio`);
-  - the front walls: statues between candelabras, plants in the two front corners;
-  - pieces of one theme (books, a desk, a meeting table, a telescope, statues: a scholar's room), nothing repeated that
-    stands alone.
-  - Its numbers (`py review/roomscore.py`): coverage 0.11, 26 pieces of 17 types, all four walls used, back walls 51%
-    lined, the most of one stand-alone kind against one wall 2, middle 0.03. The room score holds every room to that
-    yardstick (`identity`: no showpiece repeated, no stand-alone piece four times along a wall, no more free tables
-    than the kind sets, nothing outside the identity) and prints its walls used and its repeat.
+- **What a good room is depends on its type** (Starwell playtest, 2026-10-05: "Different rooms have different dynamics
+  and identities ... A throne room, however, is very different than a study and should, by its nature, be more open with
+  less object density ... There is really no one-size-fits-all approach for room design"). Each room type has its brief
+  in `rules/rooms/<type>.md` (the study's exemplar, Starwell seed 4 room 9, is in `rules/rooms/study.md`), its profile in
+  `mapgen/kit/roomtypes.py`, and `review/roomscore.py` judges every room against its own type.
 - **A room has an identity** (same playtest, the college laboratory: "It almost looks like some sort of shoddy mess hall
   with random objects stuffed in it. This room has no sense of identity or purpose. No continuity of theme or real
   feel"; eight tesla coils end to end down its long wall, five dining and reading tables with their chairs down the

@@ -21,6 +21,7 @@ from collections import Counter, deque
 from nox import load_rules, CELL
 from kit.model import Room
 from kit.identity import WESTWOOD_KIND, ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM_COVER_DEFAULT
+from kit.roomtypes import profile as room_profile
 
 K = CELL / math.sqrt(2)            # px per uv unit
 AGENT = 0.75                       # uv radius kept free for walking (~12 px)
@@ -89,12 +90,12 @@ DANGEROUS = re.compile(r"Flame(?!Basin)")
 # The walls the camera looks at across a room (NW and NE): Westwood stands most wall pieces there
 # (fireplaces 87%, beds 79%, chests 74%, stoves 77%).
 BACK_SIDES = ("/|BR", "\\|BL")
-# pieces that line a wall, as the room score counts them (review/roomscore.py imports this list): shelves, desks, hearths,
+# pieces that line a wall, as the room score counts them (review/roommeasure.py imports this list): shelves, desks, hearths,
 # stoves, chests, beds, benches, racks
 TALL_PIECES = re.compile(r"^(Bookcase|PotionShelves|LogShelves|TraderShelves|TraderHelmShelf|Desk\d|Fireplace|WallFireplace|"
                   r"Stove0|Cauldron|CinderBin|Bellows|AlchemistDesk|WizardWorkstation|Chest\d|DunMirChest|Bed\d|WoodBed|Cot\d|Bench|"
                   r"LightBench|CushionedBench|TraderPoleArm|TraderArmorRack|TraderBowRack|TraderClothesRack|TraderQuiverRack)")
-LINED_GOAL = 0.38            # share of the NE and NW walls to line (the room score asks 35%)
+LINED_GOAL = 0.38            # share of the NE and NW walls to line (the room score asks each type its own: kit/roomtypes.py lined)
 # Pieces that stand alone, and pieces that line a wall (Starwell playtest, 2026-10-05: "The shelves on the NE wall in this
 # room are more of a single instance object. These are not repeatable shelves that should line a whole wall"; six
 # alchemist's desks in two runs of three). Westwood (corpus, single-player maps, a piece within 1.15 of its width of
@@ -191,7 +192,10 @@ def _rug_margin(t):
 SUPPLY_FAMS = {"storage", "shelves", "shop_rack"}
 # Rooms that get hangings on their back walls (trophies, tapestries, paintings).
 DECORATED = {"living_room", "bedroom", "study", "herbalist", "mess_hall", "dining_hall", "tavern", "barracks", "dwelling",
-             "library", "shop", "laboratory", "throne_room"}
+             "library", "shop", "laboratory", "throne_room",
+             # the ceremonial rooms' walls carry their character (rules/rooms/great_hall.md, chapel.md, hall.md): with
+             # few pieces on the floor, their banners and tapestries are what the eye meets
+             "great_hall", "chapel", "hall"}
 # One theme of hangings per room (a room of mixed trophies, tapestries and paintings reads as random): hunting
 # trophies, tapestries of one colour, or paintings. Stone houses lean to tapestries and paintings, wooden ones to
 # trophies. Hangings keep DECOR_GAP units apart along a wall.
@@ -210,6 +214,10 @@ DECOR_GAP = 3.0
 GROUPS = {
     "dining": dict(anchor=r"^RoundTableWithFood$|^RoundTable[123]$|^OvalTable[12]$", seats=(2, 4), seat="chair", rug=0.35),
     "feast": dict(anchor=r"^RoundTableWithFood$", seats=(2, 4), seat="chair"),
+    # a tavern's round table ringed by stools (rules/rooms/tavern.md; 2026-10-05 playtest: "too many of the same object
+    # (... tavern tables and chairs)": 24-29 of the building's one chair in a common room): stools or cushioned stools,
+    # whichever each table draws, beside the chairs at the tables of food and the benches of the long tables
+    "round": dict(anchor=r"^RoundTable[123]$", seats=(2, 4), seat="chair", seat_pat=r"Stool", rug=0.2),
     "worktable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair",
                       beside=(r"^TraderAppleCrate$|^Barrel2?$|^SackChestMedium[12]$|^Crate[12]$", 2)),
     "sitting": dict(anchor=r"^SmallTable2$|^SquareTable[12]$|^RoundTable[12]$", seats=(2, 3), seat="chair", rug=0.8),
@@ -2183,10 +2191,19 @@ class Furnisher:
         half_fit = fit(mid, aisle)
         rows_fit = int(max(0.0, depth_max - hp - first) / gap) + 1 if depth_max - hp >= first else 0
         cap = self.repeat_cap(fam)
+        sides = (-1, 1)
+        if min(half_fit, 3) < 1 and not carpet:
+            # a nave too narrow for a split row (Thornwick's: its altar on a short end wall): one pew to a row, on the
+            # side with more room, the aisle beside them still in line with the altar (rules/rooms/chapel.md)
+            alongs = [(x - y if r["line"] == "/" else x + y + 1) for x, y in self.g.cells]    # the nave's own width
+            lo, hi, aisle = max(r["lo"], min(alongs) - 0.5) + 0.9, min(r["hi"], max(alongs) + 0.5) - 0.9, max(aisle, 2.6)
+            room_ = {-1: mid - aisle / 2 - lo, 1: hi - mid - aisle / 2}
+            side = max(room_, key=room_.get)
+            if room_[side] >= 2 * ha: sides, half_fit = (side,), 1
         if min(half_fit, 3) < 1 or rows_fit < 1: return 0
         k, rows = min(half_fit, 3), rows_fit
         if cap is not None:                             # the most pews under the cap; more, shorter rows on a tie
-            k, rows = max(((kk, min(rows_fit, cap // (2 * kk))) for kk in range(1, min(half_fit, 3) + 1)),
+            k, rows = max(((kk, min(rows_fit, cap // (len(sides) * kk))) for kk in range(1, min(half_fit, 3) + 1)),
                           key=lambda kr: (kr[0] * kr[1], -abs(kr[0] - 2)))      # pews of two to a side read best
             if rows < 1: return 0
         if tombs:                                       # room behind the pews for the tombs (about 6 units of the nave)
@@ -2207,7 +2224,7 @@ class Furnisher:
         got = 0
         for i in range(rows):
             d = start + i * gap
-            for side in (-1, 1):                         # each half of the row, from the aisle outward
+            for side in sides:                           # each half of the row, from the aisle outward
                 a = mid + side * (aisle / 2 + ha)
                 for _ in range(k):
                     if not lo + ha <= a <= hi - ha: break
@@ -2641,7 +2658,12 @@ class Furnisher:
         grow = max(1.0, self.g.area / (2.4 * p50))
         # plants and statues have their places (the room's corners, pairs): a bigger room does not take more of them
         # (2026-10-05: with its benches capped, Thornwick's 264-tile great hall was topped up with 15 of each)
-        limits = {f: int(math.ceil(rng_[1] * (1.0 if f in ("plant", "statue") else grow))) + 1
+        # nor, in a private room, chests and benches (Thornwick's 105-tile lord's chamber was topped up with five chests:
+        # kit/roomtypes.py fixed_top_up, rules/rooms/bedroom.md)
+        fixed = {"plant", "statue"}
+        if len(self.room.tiles) >= 60:                  # a chamber, not the small rooms the user praised as they are
+            fixed |= set((room_profile(self.kind) or {}).get("fixed_top_up", ()))
+        limits = {f: int(math.ceil(rng_[1] * (1.0 if f in fixed else grow))) + 1
                   for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items())
                   if f in ident.get("top_up", TOP_UP_FAMS) and self.types_of(f)}
         limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()}

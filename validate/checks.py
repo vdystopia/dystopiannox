@@ -522,9 +522,10 @@ def declared_rooms(m):
     return m._declared
 
 
-def find_rooms(m):
+def find_rooms(m, max_tiles=400):
     """Enclosed areas of 2..400 floor tiles (same definition as rules/rooms.py), with their objects. A
-    room the design declared (declared_rooms) carries its record as r["declared"]."""
+    room the design declared (declared_rooms) carries its record as r["declared"]. rules/rooms/westwood.py reads
+    Westwood's grandest rooms with a larger max_tiles."""
     blocked = set(m.walls) | set(m.door_gaps)
     comp = {}; rooms = []
     for start in m.cover:
@@ -553,7 +554,7 @@ def find_rooms(m):
     decl = declared_rooms(m)
     for r in rooms:
         r["tiles"] = sum(1 for p in r["cells"] if p in m.tiles)
-        if r["enclosed"] and 2 <= r["tiles"] <= 400:
+        if r["enclosed"] and 2 <= r["tiles"] <= max_tiles:
             votes = collections.Counter(decl[p]["number"] for p in r["cells"] if p in decl)
             if votes:
                 num, n = votes.most_common(1)[0]
