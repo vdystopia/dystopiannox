@@ -6,8 +6,8 @@ Usage:
              Westwood map in the reference corpus (e.g. Con07B)
     --image  also draws the problems on a picture of the map (needs the built editor): an overview
              with numbered markers (red = error, orange = warning) and a close-up per error
-    --only   run only the named checks (setup, wall_pieces, wall_shapes, boundary, doors, kits,
-             objects, doorways, floors, rooms, density)
+    --only   run only the named checks (setup, minimap, composition, wall_pieces, wall_shapes, boundary, doors,
+             kits, objects, doorways, routes, story_gates, floors, thresholds, rooms, identity, density, exterior)
 
 Writes validate/out/<map>/report.md and report.json (plus overview.png and errors/*.png with
 --image). Exit code: 0 when there are no errors, 1 when there are errors, 2 when the map can't be read.
@@ -24,7 +24,7 @@ ORDER = {"error": 0, "warning": 1, "info": 2}
 LABEL = dict(setup="Map setup", wall_pieces="Wall pieces", wall_shapes="Wall shapes", boundary="Outer boundary",
              doors="Doors", kits="Bridges and docks", objects="Object placement", reachability="Reachability",
              doorways="Doorways", routes="Where creatures walk", floors="Floor transitions", rooms="Rooms", density="Density and style",
-             exterior="The outdoor ground")
+             exterior="The outdoor ground", minimap="Minimap", identity="Room identity", story="Story gates")
 
 
 def resolve(arg):
@@ -72,7 +72,7 @@ def report_md(m, findings):
         for f in fs: by.setdefault(f["check"], []).append(f)
         for chk, items in by.items():
             lines += [f"### {LABEL.get(chk, chk)} ({len(items)})", ""]
-            lines += [f"{f['n']}. {f['msg']} ({where(f)})" for f in items]
+            lines += [f"{f['n']}. [{f.get('rule', chk)}] {f['msg']} ({where(f)})" for f in items]
             lines.append("")
     info = [f for f in findings if f["severity"] == "info"]
     if info:

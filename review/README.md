@@ -9,7 +9,7 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
 2. The same command measures the design qualities from the DysVale playtest and compares them with
    Westwood's outdoor maps (`review.md`). These are paths and how they connect to doors, tree
    clustering, trees lining edges, single-type plant clumps, and building spacing.
-3. Claude applies `RUBRIC.md` to the sheet (7 criteria, scored 1–5 against the Westwood columns) and
+3. Claude applies `RUBRIC.md` to the sheet (8 criteria, scored 1–5 against the Westwood columns) and
    records the result in `reviews/<map>-<date>.md`. A map is ready for playtesting when every
    criterion scores 3+ and the checker reports no errors.
 
@@ -35,8 +35,11 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
      - the share of the back walls lined;
      - distinct types;
      - the checker's findings inside the room.
-     A room passes at its coverage target, with no warnings and with its back walls 35% lined (25% under 40
-     tiles).
+     - its identity (Starwell playtest): walls with a purpose, no showpiece repeated, no stand-alone piece four
+       times along one wall, no more free tables than its kind sets, nothing outside its identity, against the
+       reference room (Starwell's study; PROCESS.md section 3).
+     A room passes at its coverage target, with no warnings, its back walls 35% lined (25% under 40 tiles) where its
+     recipe lines walls, and no identity flag.
    - The loop: build three seeds, score them, look at the failing rooms' pictures (`rooms.py --each`), fix the
      furnisher or the recipe, and repeat. The first night took the lab from 23 to 35-37 of 42 rooms passing, then added the tavern, shop, laboratory, chapel, crypt, hall and throne room (21 kinds, 63 rooms: 47-51 pass over three seeds, then 50-56 once big rooms scaled their fill).
 
@@ -52,6 +55,15 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
      with no errors, every room reachable, no room small for its kind and every room passing.
    - Room sizes: a building's room of n footprint units has about n - 2 sqrt(n) of the checker's floor tiles (its
      walls take a strip round the edge), and Westwood's sizes are in floor tiles (`building._units_for`).
+
+7. Story maps have their own pictures, all of which the QA gate (`py tests/qa.py <design>`, PROCESS.md section 9)
+   renders into `review/out/<Name>/qa/` with an index:
+   - `py review/storymap.py <map> [--routes]`: the whole map with every named story object labelled; with `--routes`,
+     every route people walk, each stop's dwell and the way it faces (red where a leg or a facing is faulted);
+   - `py review/spots.py <map> <script names...>`: close-ups of the story's places (camps, givers, gates, bosses);
+   - `py review/exteriors.py <map> --holes`: the outdoor ground with no prop within 4 cells shaded, against
+     Westwood's maps of the same environment (`--westwood` measures Westwood's);
+   - `py review/catalog.py <name or regex>`: look up a thing's name in the game's catalogue.
 
 `py review/review.py --calibrate` re-measures Westwood's 51 outdoor single-player maps (25 distinct
 layouts) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for

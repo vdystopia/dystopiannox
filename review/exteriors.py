@@ -2,6 +2,8 @@
 
     py review/exteriors.py <map or json> [...]        our maps
     py review/exteriors.py --westwood [type ...]      Westwood's single-player maps by environment (town, castle...)
+    py review/exteriors.py --westwood --save          ...and write review/exteriors_baseline.json (each environment's
+                                                      median, p75 and p90 of every measure), which tests/qa.py reads
     py review/exteriors.py <map> --holes [--out png]  also draws the empty ground over the map's render
 
 Open ground: outdoor floor tiles (review/design.Outdoor: outside rooms, no water, lava or void) that are not a road
@@ -21,6 +23,7 @@ import mapdata as md
 import decoration as D
 import design as DS
 
+BASELINE = os.path.join(HERE, "exteriors_baseline.json")      # Westwood's measures by environment (--westwood --save)
 TRIVIAL = {"CaveRocksPebbles", "CaveRocksTiny", "CaveRocksSmall"}
 NATURE = {"tree", "plant", "flower_tuft"}
 SKIP = {None, "ambient_sound", "blocker"}
@@ -119,7 +122,7 @@ def main():
     if args and args[0] == "--westwood":
         import json
         env = json.load(open(os.path.join(REPO, "rules", "out", "environments.json")))["maps"]
-        types = args[1:] or ["town", "castle", "forest", "swamp", "cave", "ice", "lava"]
+        types = [a for a in args[1:] if not a.startswith("--")] or ["town", "castle", "forest", "swamp", "cave", "ice", "lava"]
         groups = {}
         for t in types:
             names = sorted(n for n, v in env.items() if v["type"] == t)
@@ -135,10 +138,16 @@ def main():
                 for k in ("props", "made", "types", "made_types", "empty4", "empty6"): agg[k].append(r[k])
                 for k in place: place[k].update(r["place"][k])
             if not agg: continue
-            med = {k: sorted(v)[len(v) // 2] for k, v in agg.items()}
+            q = lambda v, f: sorted(v)[min(len(v) - 1, int(f * len(v)))]
+            med = {k: q(v, 0.5) for k, v in agg.items()}
             print(f"== {t}: {len(agg['props'])} maps, median " + "  ".join(f"{k} {v}" for k, v in med.items()))
             for k in place: print(f"   {k}: " + ", ".join(f"{a} {b}" for a, b in place[k].most_common(24)))
-            groups[t] = med
+            groups[t] = {k: dict(n=len(v), p25=q(v, 0.25), p50=q(v, 0.5), p75=q(v, 0.75), p90=q(v, 0.9))
+                         for k, v in agg.items()}
+        if "--save" in args:
+            import json
+            with open(BASELINE, "w") as f: json.dump(groups, f, indent=1, sort_keys=True)
+            print(f"written: {BASELINE}")
         return
     holes = "--holes" in args
     out = args[args.index("--out") + 1] if "--out" in args else None

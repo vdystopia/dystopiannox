@@ -6,6 +6,9 @@ furniture ranges. It also prints how often each check fires on Westwood's own ma
 (close to) zero there, otherwise the check is miscalibrated.
 
 Run: py validate/calibrate.py            (needs corpus/out/json from corpus/build_corpus.py)
+     py validate/calibrate.py --dry      only report how often each check fires on Westwood's maps; baseline.json
+                                         is left as it is (use this to calibrate a new check)
+     py validate/calibrate.py --json     also write validate/out/calibration.json (check|severity -> map -> count)
 """
 import collections, json, os, sys
 from concurrent.futures import ProcessPoolExecutor
@@ -122,15 +125,20 @@ def main():
     out["sight_leak_cell_sizes"] = wq(sight) if sight else None
     out["furniture_offset_p95"] = wq(offs)["p95"] if offs else 0.85
     out.setdefault("sight_leak_cells", 0)
-    with open(BASELINE, "w") as f: json.dump(out, f, indent=1, sort_keys=True)
-    print(f"Westwood single-player maps checked: {len(results)}  (baseline written to {BASELINE})\n")
+    if "--dry" not in sys.argv:
+        with open(BASELINE, "w") as f: json.dump(out, f, indent=1, sort_keys=True)
+    print(f"Westwood single-player maps checked: {len(results)}  "
+          f"({'baseline left as it is' if '--dry' in sys.argv else 'baseline written to ' + BASELINE})\n")
     print("Findings on Westwood's own maps (check / severity: maps affected, total findings):")
     for (chk, sev), per_map in sorted(fired.items()):
         print(f"  {chk:13s} {sev:8s} {len(per_map):3d} maps, {sum(per_map.values()):5d} findings   "
               f"worst: {', '.join(f'{n} {c}' for n, c in per_map.most_common(4))}")
         for ex in examples[(chk, sev)][:3]: print(f"        e.g. {ex[0]} @ {ex[2]},{ex[3]}: {ex[1]}")
     if "--json" in sys.argv:
-        json.dump({f"{k[0]}|{k[1]}": dict(v) for k, v in fired.items()}, open(os.path.join(md.OUT, "calibration.json"), "w"), indent=1)
+        os.makedirs(md.OUT, exist_ok=True)
+        with open(os.path.join(md.OUT, "calibration.json"), "w") as f:
+            json.dump({"maps": len(results), "fired": {f"{k[0]}|{k[1]}": dict(v) for k, v in fired.items()},
+                       "examples": {f"{k[0]}|{k[1]}": v for k, v in examples.items()}}, f, indent=1, default=str)
 
 
 if __name__ == "__main__":

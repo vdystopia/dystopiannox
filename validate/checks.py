@@ -435,13 +435,20 @@ def outdoor_on_floors(m):
     blocked = set(m.walls) | set(m.door_gaps)
     room_cells = set().union(*(set(r["cells"]) for r in rooms))
     cells = lambda t: ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
-    inside, outdoor, indoor_mats = [], set(), set()
+    inside, outdoor = [], set()
+    room_of = {c: k for k, r in enumerate(rooms) for c in r["cells"]}
+    per_room = collections.defaultdict(collections.Counter)
     for t, rec in m.tiles.items():
         cs = cells(t)
         if all(c in room_cells or c in blocked for c in cs) and any(c in room_cells for c in cs):
-            inside.append(t); indoor_mats.add(rec["material"])
+            inside.append(t)
+            per_room[next(room_of[c] for c in cs if c in room_of)][rec["material"]] += 1
         elif not any(c in room_cells for c in cs):
             outdoor.add(rec["material"])
+    # a room's own floors (those that make up a fifth or more of some room: its boards, its carpet of floor tiles) are
+    # never outdoor ground, though a doorstep takes them; one grass tile laid inside a room is (it had cancelled itself
+    # out of the outdoor materials, so a floor of ground inside a room was never found)
+    indoor_mats = {mat for cnt in per_room.values() for mat, n in cnt.items() if n >= 0.2 * sum(cnt.values())}
     outdoor -= indoor_mats
     out = []
     for t in inside:
@@ -674,7 +681,9 @@ def check_rooms(m, ctx, base):
             out.append(F("rooms", "warning", f"{kind} room ({r['tiles']} tiles) is nearly bare ({furniture} pieces); "
                          f"Westwood's of a similar size hold at least {lo}.", x, y))
         # identity: furniture that has no place in this kind of room (a barrel in a bedroom)
-        stray = identity_strays(kind, r["objects"])
+        # (a generated room only: Westwood's rooms, read by their furniture, answer to no identity of ours; calibrate:
+        # 471 findings on 87 of its 120 maps)
+        stray = identity_strays(kind, r["objects"]) if r.get("declared") else set()
         if stray:
             out.append(F("rooms", "warning", f"{kind} room holds {', '.join(sorted(stray))}, which "
                          f"{'does' if len(stray) == 1 else 'do'} not belong in a {kind.replace('_', ' ')} "
@@ -1525,6 +1534,8 @@ def bridge_landings(m):
     return out
 
 
+PERSON_CLEAR = 18.0       # px between a route's leg and a person standing still (AMR-7); a body is about 24 across
+TOUR_STOPS_MIN, TOUR_PAUSE_MIN = 4, 15.0     # a townsperson's tour: stops, and seconds at each (TW-9)
 STOP_GAP = 32.0      # px between two stops of the scripted routes: more than a body's width (24) and a little
 
 
@@ -1605,6 +1616,36 @@ def check_routes(m, ctx, base):
                 facing_bad += 1
                 bad.append(F("routes", sev, f"{r.get('who', '?')}'s stop {short(n)} {why} (within {FACE_REACH:.0f} px "
                              f"it should face open ground).", w["x"], w["y"]))
+    # nobody's walk runs through a person standing still (AMR-7: Morwen waiting at her door stood in Pip's way home): a
+    # creature that stands where it was placed (not a walker of these routes) within PERSON_CLEAR px of a route's leg
+    walkers = {r.get("who") for r in routes}
+    standing = [o for o in m.objects if "MONSTER" in o["cls"] and (o.get("scr") or "").split(":")[-1] not in walkers
+                and not (o["xfer"] or {}).get("ShopkeeperInfo", {}).get("ShopItems")
+                and (o["type"] in ("NPC", "Maiden") or (o["xfer"] or {}).get("Aggressiveness", 1) < 0.1)]
+    blocked = set()
+    for a, b, who in legs.values():
+        if who == "link": continue
+        ax, ay, bx, by = a["x"], a["y"], b["x"], b["y"]
+        L2 = (bx - ax) ** 2 + (by - ay) ** 2 or 1.0
+        for o in standing:
+            t = max(0.0, min(1.0, ((o["x"] - ax) * (bx - ax) + (o["y"] - ay) * (by - ay)) / L2))
+            d = math.hypot(ax + t * (bx - ax) - o["x"], ay + t * (by - ay) - o["y"])
+            if d < PERSON_CLEAR and 0.0 < t < 1.0 and (who, o["id"]) not in blocked:
+                blocked.add((who, o["id"]))
+                out.append(F("routes", "warning", f"{who}'s route passes {d:.0f} px from {o['scr'] or o['type']}, who "
+                             f"stands there: a person waiting stands beside the way, not in it (StoryMap.doorside).",
+                             o["x"], o["y"]))
+    # a townsperson walks a tour of real places and stands a while at each (TW-9: "their patrol routes are often too
+    # short and repetitive ... stand still for longer (20 seconds)"): StoryMap.townsfolk lays 5-7 stops, 16-24 s each
+    for r in routes:
+        if r.get("kind") != "tour": continue
+        ps = [p for p in (r.get("pauses") or []) if p > 0]
+        if len(ps) < TOUR_STOPS_MIN or (ps and min(ps) < TOUR_PAUSE_MIN):
+            w = by_name.get(r["waypoints"][0]) if r.get("waypoints") else None
+            out.append(F("routes", "warning", f"{r.get('who', '?')} walks a townsperson's tour of {len(ps)} stops, the "
+                         f"shortest pause {min(ps) if ps else 0:.0f} s: a tour has {TOUR_STOPS_MIN} or more stops and "
+                         f"{TOUR_PAUSE_MIN:.0f} s or more at each (StoryMap.townsfolk).",
+                         w["x"] if w else None, w["y"] if w else None))
     out += bad[:40]
     if len(bad) > 40: out.append(F("routes", sev, f"... and {len(bad) - 40} more waypoint and route problems."))
     out.append(F("routes", "info", f"Routes: {len(m.waypoints)} waypoints, {len(legs)} legs walked, {len(stops)} stops, "
@@ -1618,10 +1659,16 @@ CROWD_PAIR = 30.0         # px: two creatures nearer than this stand on each oth
 CROWD_R, CROWD_N = 90.0, 5      # px, creatures: five round one spot is a swarm ("ten people packed round the fire")
 SKIP_PROP = re.compile(r"^(Dock|RopeBridge|LavaBridge|TraderTent|ColorLight|Invisible|Amb|PlayerStart|Extent|Torch$|Boulder|"
                        r"DunMirTorch|LOTDWallSconse|Sconse|Sign|Plank|Waypoint)|Shadow|Door|Gate|Window")
-ON_LINE = re.compile(r"^(Garden|Plant[45]|Bush|Tombstone|Cross\d|Barrel|LargeBarrel|PiledBarrels|WaterBarrel|Crate|"
-                     r"DarkCrate|TraderAppleCrate|SackChest|Bench|Stool|OutdoorTrader|TraderPoleArm|TraderBowRack|"
-                     r"TraderQuiverRack|TargetBarrel|Cot\d|UrchinBed|Statue|TorchPole|Brazier|Well$|Anvil|Cauldron|"
-                     r"CampFire|MiningShovel|MiningPickAxe|SmallStoneBlock|Monument)")
+# (calibrated on Westwood's maps: plants, bushes, torch poles and statues stand at a wall's or fence's foot there, 553
+# findings on 66 maps; what the playtest saw was crops and goods on the line)
+ON_LINE = re.compile(r"^(Garden|Tombstone|Cross\d|Well$|Anvil|Cauldron|CampFire|MiningShovel|MiningPickAxe|"
+                     r"SmallStoneBlock|Brazier)")
+# (calibrated a second time: goods and racks stand snug to building and dungeon walls in Westwood's maps, 147 findings
+# on 45 maps, most where find_rooms sees no room; what the playtest saw was a crop row under a fence)
+# creatures that come in swarms in Westwood's maps (spiders, bats, wasps, fish, rats, imps, the dead): two bodies on one
+# spot or five round one are a camp's people standing badly, not these (calibrated: 229 findings on 51 maps)
+SWARMERS = re.compile(r"Spider|Bat$|Wasp|Fish|Rat$|Imp$|Zombie|Frog|Leech|Wisp|Beetle|Scorpion|Ghost|Skeleton|Urchin$|"
+                      r"Mimic|Wolf|Bear|Lizard|Shade")
 
 
 def _indoor_cells(m):
@@ -1664,7 +1711,9 @@ def check_exterior(m, ctx, base):
                     if p["id"] <= o["id"]: continue
                     g = SP.gap(o["type"], p["type"]) * 0.85
                     d = math.hypot(o["x"] - p["x"], o["y"] - p["y"])
-                    if g and d < g:
+                    # pieces of the spacing families only (a bench at its table, a bench of workstations stand close
+                    # by design: calibrated, 147 findings on 38 Westwood maps)
+                    if g and d < g and SP.family(o["type"]) and SP.family(p["type"]):
                         bad.append(F("exterior", "warning", f"{o['type']} and {p['type']} stand {d:.0f} px apart (Westwood "
                                      f"keeps them {g / 0.85:.0f}): outdoor pieces overlap.", (o["x"] + p["x"]) / 2,
                                      (o["y"] + p["y"]) / 2))
@@ -1685,7 +1734,7 @@ def check_exterior(m, ctx, base):
     # pickable things as decor
     for o in outdoor:
         if o.get("scr") or "MONSTER" in o["cls"]: continue
-        if SP.PICK_TYPES.match(o["type"]) or "FOOD" in o["cls"]:
+        if SP.PICK_TYPES.match(o["type"]):            # Westwood lays potions and food outdoors as pickups, never lights
             out.append(F("exterior", "warning", f"A {o['type']} lies outdoors as decor: the player can pick it up. Light "
                          f"the ground with a torch pole, a brazier, a lamp or a fire.", o["x"], o["y"]))
     # creatures on each other, and swarms
@@ -1693,7 +1742,7 @@ def check_exterior(m, ctx, base):
     # sets out from its start at once and is not counted
     side = os.path.splitext(m.file or "")[0] + ".routes.json"
     walkers = {r.get("who") for r in json.load(open(side, encoding="utf-8"))} if m.file and os.path.exists(side) else set()
-    cr = [o for o in outdoor if "MONSTER" in o["cls"] and "Shopkeeper" not in o["type"] and
+    cr = [o for o in outdoor if "MONSTER" in o["cls"] and "Shopkeeper" not in o["type"] and not SWARMERS.search(o["type"]) and
           (o.get("scr") or "").split(":")[-1] not in walkers]
     for i, a in enumerate(cr):
         for b in cr[i + 1:]:
@@ -1708,6 +1757,7 @@ def check_exterior(m, ctx, base):
             flagged.append((a["x"], a["y"]))
             out.append(F("exterior", "warning", f"{len(near)} creatures stand within {CROWD_R:.0f} px of one spot: a swarm. "
                          f"Give each its own post (kit/posts.camp_posts).", a["x"], a["y"]))
+    out += outdoor_groups(m)
     out += dock_reach(m)
     return out
 
@@ -1767,9 +1817,376 @@ def dock_reach(m):
     return out
 
 
-ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
-       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds, check_rooms,
-       check_density, check_exterior]
+# ---- the minimap (TW-5, GW-3) -----------------------------------------------------------------------------------------
+MAP_EDGE = 5888.0
+
+
+def _seg_cross(p, q, a, b):
+    """Segments pq and ab meet, ends included (as the game counts them: a line through a vertex crosses both edges)."""
+    def orient(p, q, r):
+        v = (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0]); return (v > 0) - (v < 0)
+    def on(p, q, r): return min(p[0], q[0]) <= r[0] <= max(p[0], q[0]) and min(p[1], q[1]) <= r[1] <= max(p[1], q[1])
+    o1, o2, o3, o4 = orient(p, q, a), orient(p, q, b), orient(a, b, p), orient(a, b, q)
+    if o1 != o2 and o3 != o4: return True
+    return (o1 == 0 and on(p, q, a)) or (o2 == 0 and on(p, q, b)) or (o3 == 0 and on(a, b, p)) or (o4 == 0 and on(a, b, q))
+
+
+def in_polygon_as_game(pts, x, y):
+    """The game's test (nox_xxx_polygon_421660): count the polygon's edges crossed by a line from the point to the
+    map's corner (0, 0), and again to (5888, 5888); odd both ways is inside. A corner on either map corner, or on the
+    diagonal those lines follow, puts every point outside (no minimap: TW-5, GW-3)."""
+    for corner in ((0.0, 0.0), (MAP_EDGE, MAP_EDGE)):
+        n = sum(_seg_cross((x, y), corner, tuple(pts[i]), tuple(pts[(i + 1) % len(pts)])) for i in range(len(pts)))
+        if n % 2 == 0: return False
+    return True
+
+
+MINIMAP_SHARE_MIN = 0.25     # Westwood: median 100% of the floor inside a minimap polygon; lowest 28% (Con06a, War06a)
+
+
+def minimap_cover(m):
+    """Share of a sample of the floor (and whether the PlayerStart is) inside a polygon with a minimap group."""
+    import random as _r
+    polys = [p for p in m.polygons if p.get("mm") and len(p.get("pts") or []) >= 3]
+    cells = sorted(m.cover)
+    sample = _r.Random(1).sample(cells, min(300, len(cells))) if cells else []
+    inside = lambda x, y: any(in_polygon_as_game(p["pts"], x, y) for p in polys)
+    share = sum(inside(cx * CELL + 11.5, cy * CELL + 11.5) for cx, cy in sample) / max(1, len(sample))
+    starts = [o for o in m.objects if o["type"] == "PlayerStart"]
+    return share, all(inside(o["x"], o["y"]) for o in starts), len(polys)
+
+
+def check_minimap(m, ctx, base):
+    out = []
+    if not m.cover: return out
+    share, start_in, n = minimap_cover(m)
+    if not start_in:
+        out.append(F("minimap", "error", f"The player starts outside every minimap polygon ({n} with a minimap group): "
+                     f"the minimap draws nothing there. One polygon over the whole map, inset from its edges, its corners "
+                     f"off the (0,0)-(5888,5888) diagonal (Spec.build does this)."))
+    elif share < MINIMAP_SHARE_MIN:
+        out.append(F("minimap", "warning", f"Only {share:.0%} of the floor lies inside a minimap polygon: the minimap "
+                     f"is blank over the rest."))
+    return out
+
+
+# ---- a room with an identity (SW-6, SWR-1, SWR-2, GW-7, TW-8, AMR-4) ---------------------------------------------
+# kinds that stand in rows or line walls by design: not counted as a piece repeated along a wall
+LINED = re.compile(r"^(Plant|Bush|Obelisk|CaveRockPillar|RuinsColumn|Tombstone|LOTDTombstone|Flower|"
+                   r"Bookcase|MovableBookcase|LogShelves|PotionShelves|WizardWorkstation|Trader|Bed|WoodBed|Cot|Bench|"
+                   r"LightBench|CushionedBench|Crypt|Coffin|Column|CathedralColumn|LOTD|Barrel|Crate|DarkCrate|Sack|"
+                   r"PiledBarrels|LargeBarrel|WaterBarrel|BarrelWithTools|Candleabra|Nightstand|Chest|OgreStraw)")
+TABLES_RE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d)$")
+SUPPLY_RE = re.compile(r"^(Barrel|Barrel2|LargeBarrel\d|PiledBarrels\d|WaterBarrel|BarrelWithTools\d|BarrelSteel\d|Crate\d|"
+                       r"DarkCrate\d|CrateSteel\d|SackChest|TraderAppleCrate|BlackPowderBarrel)")
+STORE_KINDS = {"storeroom", "ore_store", "gear_store", "kitchen", "cellar", "warehouse"}
+SUPPLY_WALL_MAX = 0.6        # share of one wall's length supplies may take outside a store (Westwood: see calibrate)
+MONOTONY_MIN_PIECES, MONOTONY_SHARE = 16, 0.6
+MONOTONY_EXEMPT = re.compile(r"^(Bookcase|MovableBookcase|LogShelves|PotionShelves|TraderShelves|LOTDTombstone|Coffin|"
+                             r"Sarcophagus|Crypt)")     # a room of 16+ pieces of furniture where one kind is 60%+ of them
+COUNTER_RE = re.compile(r"^(TraderDesk|BarPiece|BarCorner|BarHingedTop)")
+KEEPER_REACH = 90.0          # px from a keeper to the counter he stands behind (Westwood: 25-49 px for 54 of 94 keepers)
+THRONE_RE = re.compile(r"^DunMirThroneBase")
+
+
+def _kind_stem(t):
+    return re.sub(r"(\d+[a-z]?|HalfFull|Empty|NE|NW|SE|SW|N|S|E|W)$", "", t)
+
+
+def identity_flags(m, r, kind):
+    """What makes a room read as having no identity: (walls used, the most of one stand-alone kind on a wall, flags),
+    each flag (rule, text, object). Shared by check_identity and review/roomscore.py."""
+    from kit.furnish import SHOWPIECES, SHOWPIECE_LIMIT, SHOWPIECE_BIG
+    from kit.identity import ROOMS
+    cells = r["cells"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    runs = room_runs(m, cells)
+    flags, per_wall, used, show = [], collections.defaultdict(collections.Counter), set(), collections.defaultdict(list)
+    wall_obj, supplies = {}, collections.defaultdict(list)
+    for o in r["objects"]:
+        t = o["type"]
+        hit = _against(o, runs, cu, cv, m, reach=1.6, across=True)
+        fam = RT.family(t)
+        if hit and fam not in (None, "light") and not t.startswith("Candleabra"): used.add(hit[0])
+        if hit and not LINED.match(t) and fam not in (None, "wall_decor", "light"):
+            per_wall[hit[0]][_kind_stem(t)] += 1; wall_obj[(hit[0], _kind_stem(t))] = o
+        if hit and SUPPLY_RE.match(t):
+            ha = _half_uv(o)[1] if hit[3] == "/" else _half_uv(o)[0]
+            supplies[(hit[3], hit[4])].append((hit[2] - ha, hit[2] + ha, o))
+        sm = SHOWPIECES.match(t)
+        if sm: show[sm.group(1)].append(o)
+    big = r["tiles"] >= SHOWPIECE_BIG
+    for base_, os_ in show.items():
+        if len(os_) > SHOWPIECE_LIMIT.get(base_, 1) + (1 if big else 0):
+            flags.append(("showpiece", f"{len(os_)} {base_}", os_[0]))
+    rep_ = max((n for c in per_wall.values() for n in c.values()), default=0)
+    if rep_ >= 4:
+        w, (k, n) = max(((w, c.most_common(1)[0]) for w, c in per_wall.items()), key=lambda x: x[1][1])
+        flags.append(("repeat_wall", f"{n} {k} on the {w} wall", wall_obj[(w, k)]))
+    ident = ROOMS.get(kind, {})
+    tables = [o for o in r["objects"] if TABLES_RE.match(o["type"])]
+    most = (ident.get("repeat", {}).get("table") or (None, None))[1]
+    if r.get("declared") and most is not None and len(tables) > most:
+        flags.append(("tables", f"{len(tables)} tables (its kind sets at most {most})", tables[0]))
+    from kit.roomtypes import profile as _type_profile         # the room's type sets what may line a wall and repeat
+    tp = _type_profile(kind) or {}
+    if kind not in STORE_KINDS and not tp.get("supplies_line"):
+        for (line, coord), sp in supplies.items():
+            lo, hi = runs.get((line, coord), (0, 0))
+            length = hi - lo
+            if length < 6: continue
+            sp.sort(key=lambda s: s[0]); covered, end = 0.0, -1e9
+            for a, b, _ in sp:
+                if b > end: covered += b - max(a, end); end = b
+            if covered / length > SUPPLY_WALL_MAX and len(sp) >= 5:
+                flags.append(("supplies_wall", f"{len(sp)} barrels, crates or sacks take {covered / length:.0%} of the "
+                              f"{_wall_name(line, coord, cu, cv)} wall", sp[0][2]))
+    furn = [o for o in r["objects"] if m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES]
+    if len(furn) >= MONOTONY_MIN_PIECES:
+        # shelves lining walls are a store's or a library's walls, and a crypt is rows of its dead: not one kind filling
+        # the floor (calibrated: Ambermere's crypt and storeroom)
+        stems = collections.Counter(_kind_stem(o["type"]) for o in furn if not MONOTONY_EXEMPT.match(o["type"]))
+        k, n = stems.most_common(1)[0] if stems else ("", 0)
+        if n / len(furn) >= tp.get("monotony", MONOTONY_SHARE):
+            flags.append(("monotony", f"{n} of its {len(furn)} pieces are {k}",
+                          next(o for o in furn if _kind_stem(o["type"]) == k)))
+    return len(used), rep_, flags
+
+
+IDENTITY_TEXT = {
+    "showpiece": "a showpiece stands once in a room (kit/furnish.py SHOWPIECES; SWR-1)",
+    "repeat_wall": "a piece that stands alone is not repeated along a wall; walls are lined only with the kinds Westwood "
+                   "lines walls with (SW-6, SWR-1)",
+    "tables": "more free-standing tables than the room's kind sets (ROOMS repeat; SW-6, TW-8)",
+    "supplies_wall": "supplies line a wall corner to corner only in a store (stock_walls per_wall; AMR-4)",
+    "monotony": "one kind fills a big room: cap the repeated set and mix composed groups (ROOMS repeat; TW-8, SW-6)",
+}
+
+
+def check_identity(m, ctx, base):
+    """A room reads as what it is (Starwell playtest: the laboratory "almost looks like some sort of shoddy mess hall
+    with random objects stuffed in it"; the NE wall's showpiece shelves repeated; Greywatch's chapel of 46 pews): the
+    identity flags above, a shop's keeper behind his counter (SWR-2), a throne facing its door (GW-7)."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        _, _, flags = identity_flags(m, r, kind)
+        for rule, text, o in flags:
+            out.append(F("identity", "warning", f"{kind.replace('_', ' ')} room: {text}: {IDENTITY_TEXT[rule]}.",
+                         o["x"], o["y"], rule=f"identity.{rule}"))
+        objs = r["objects"]
+        counters = [o for o in objs if COUNTER_RE.match(o["type"])]
+        cells = r["cells"]
+        cx, cy = centre(cells)
+        for k in objs:
+            if "MONSTER" not in k["cls"] or not ((k["xfer"].get("ShopkeeperInfo") or {}).get("ShopItems")): continue
+            if not counters: continue
+            near = min(counters, key=lambda c: math.hypot(c["x"] - k["x"], c["y"] - k["y"]))
+            d = math.hypot(near["x"] - k["x"], near["y"] - k["y"])
+            behind = math.hypot(cx - near["x"], cy - near["y"]) < math.hypot(cx - k["x"], cy - k["y"])
+            if d > KEEPER_REACH or not behind:
+                out.append(F("identity", "warning", f"The shopkeeper {k['scr'] or k['type']} stands "
+                             f"{'away from' if d > KEEPER_REACH else 'in front of'} the counter ({d:.0f} px): a keeper "
+                             f"stands behind his counter, between it and the wall (StoryMap.shops; SWR-2).",
+                             k["x"], k["y"], rule="identity.keeper"))
+        for t in objs:
+            if not THRONE_RE.match(t["type"]): continue
+            u, v = uv_of(t)
+            cs = set(cells)
+            doors = [d for d in m.doors if any((d["gap"][0] + a, d["gap"][1] + b) in cs for a, b in N4)]
+            ahead = []
+            for d in doors:
+                du, dv = d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]
+                if du - u > 2 and abs(dv - v) <= max(2.5, 0.25 * (du - u)): ahead.append(d)
+            if doors and not ahead:
+                out.append(F("identity", "warning", "The throne does not face a door: Dun Mir's throne faces SE, so it "
+                             "stands on the NW wall in line with the room's door in the SE wall, down a clear aisle "
+                             "(place_throne, building._seat_throne; GW-7).", t["x"], t["y"], rule="identity.throne"))
+    return out
+
+
+# ---- camps and outdoor groups (GW-2, GW-4, SW-1, SW-3, SW-9) ------------------------------------------------------
+STUMP_RE = re.compile(r"^Stump\d+$")
+FIRE_RE = re.compile(r"^(CampFire|CampFireUnused)$")
+CAMP_SEAT_R = 90.0           # px: a stump this near a camp fire reads as its seat (SW-3)
+COT_RE = re.compile(r"^(Cot\d|UrchinBed(Flat)?\d)$")
+TENT_RE = re.compile(r"^(OutdoorTraderPupTent|TraderTent)")
+BEDROLL_REACH = 120.0
+CAMP_REACH = 400.0           # px from a camp fire: the camp's ground        # px: a bedroll lies before a tent or beside another in a row
+PILE_RE = re.compile(r"^(Barrel|Barrel2|LargeBarrel\d|PiledBarrels\d|Crate\d|DarkCrate\d|CrateSteel\d|SackChest\d?)$")
+PILE_LINK, PILE_MIN, PILE_KINDS = 45.0, 5, 2     # five or more crates and barrels of at most two kinds, bunched
+PILE_COMPANY = 90.0          # ...with nothing else of a scene (a cart, a rack, a bench, a tool) within this of them
+GRAVES_MIN = 3
+
+
+def outdoor_groups(m):
+    """Camp and scene faults on the outdoor ground: stumps as seats round a fire, bedrolls strewn in the open, a pile of
+    crates and barrels with no purpose about it, a graveyard with no graves."""
+    out = []
+    indoor = _indoor_cells(m)
+    outdoor = [o for o in m.objects if m.cell_of(o["x"], o["y"]) not in indoor]
+    fires = [o for o in outdoor if FIRE_RE.match(o["type"])]
+    for o in outdoor:
+        if STUMP_RE.match(o["type"]):
+            f = min(fires, key=lambda f: math.hypot(f["x"] - o["x"], f["y"] - o["y"]), default=None)
+            if f is not None and math.hypot(f["x"] - o["x"], f["y"] - o["y"]) < CAMP_SEAT_R:
+                out.append(F("exterior", "warning", f"{o['type']} stands by a camp fire as a seat: a fire's seats are "
+                             f"log benches, stools or logs, never stumps (camps.bandit_camp; SW-3).", o["x"], o["y"],
+                             rule="exterior.camp_seat"))
+    cots = [o for o in outdoor if COT_RE.match(o["type"])]
+    tents = [o for o in outdoor if TENT_RE.match(o["type"])]
+    for o in cots:
+        # a camp's bedrolls: a fire within CAMP_REACH (Westwood's barracks and dens lay cots on their floors, many in
+        # buildings find_rooms does not close: 105 findings on 30 maps before this)
+        if not any(math.hypot(f["x"] - o["x"], f["y"] - o["y"]) < CAMP_REACH for f in fires): continue
+        by_tent = any(math.hypot(t["x"] - o["x"], t["y"] - o["y"]) < BEDROLL_REACH for t in tents)
+        fam = o["type"][:3]                                   # Cot / Urc(hinBed): a row of one family
+        in_row = any(p is not o and p["type"][:3] == fam and math.hypot(p["x"] - o["x"], p["y"] - o["y"]) < 80
+                     for p in cots)
+        if not by_tent and not in_row:
+            out.append(F("exterior", "warning", f"{o['type']} lies alone in the open: a camp's bedrolls lie before their "
+                         f"tents, two to a tent, or side by side in a row (camps.bandit_camp, camps.urchin_camp; GW-4, "
+                         f"SW-1).", o["x"], o["y"], rule="exterior.bedroll"))
+    pile = [o for o in outdoor if PILE_RE.match(o["type"])]
+    left = list(pile)
+    others = [o for o in outdoor if not PILE_RE.match(o["type"]) and (SKIP_PROP.search(o["type"]) is None) and
+              "MONSTER" not in o["cls"] and m.blocking(o) and not re.match(r"^(Tree|Rock|Boulder|Stump|Bush|Plant)", o["type"])]
+    while left:
+        g = [left.pop()]; grew = True
+        while grew:
+            grew = False
+            for o in list(left):
+                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < PILE_LINK for c in g):
+                    g.append(o); left.remove(o); grew = True
+        if len(g) < PILE_MIN or len({_kind_stem(o["type"]) for o in g}) > PILE_KINDS: continue
+        gx, gy = sum(o["x"] for o in g) / len(g), sum(o["y"] for o in g) / len(g)
+        if any(math.hypot(o["x"] - gx, o["y"] - gy) < PILE_COMPANY for o in others): continue
+        out.append(F("exterior", "warning", f"{len(g)} {' and '.join(sorted({_kind_stem(o['type']) for o in g}))} stand "
+                     f"heaped with nothing else about them: an outdoor group is a scene with a purpose (a cart, barrels, a "
+                     f"crate, a rack...; kit/scenes.py CATALOGUE; GW-2).", gx, gy, rule="exterior.pile"))
+    side = os.path.splitext(m.file or "")[0] + ".rooms.json"
+    if m.file and os.path.exists(side):
+        for rec in json.load(open(side, encoding="utf-8")):
+            if not rec.get("yard") or "grave" not in (rec.get("kind") or ""): continue
+            fl = {tuple(c) for c in rec.get("floor", [])}
+            graves = [o for o in m.objects if re.match(r"^(Tombstone|LOTDTombstone|Cross\d)", o["type"]) and
+                      (lambda c: any((c[0] + a, c[1] + b) in fl for a in (-1, 0) for b in (-1, 0)))(m.cell_of(o["x"], o["y"]))]
+            if len(graves) < GRAVES_MIN and fl:
+                x, y = centre(list(fl))
+                out.append(F("exterior", "warning", f"The graveyard holds {len(graves)} graves: a graveyard has graves "
+                             f"in rows, headstones on dug earth (yards._graveyard; SW-9).", x, y, rule="exterior.graveyard"))
+    return out
+
+
+# ---- every finding has a rule: (rule, check, message pattern, feedback it answers) ----------------------------------
+# Feedback IDs are those of review/FEEDBACK.md. A finding whose message matches no pattern is "<check>.other": the
+# self-test fails on one, so a new message gets its rule here.
+RULES = [
+    ("setup.no_start", "setup", r"^No PlayerStart", ""),
+    ("setup.mp_object", "setup", r"^Multiplayer-only", ""),
+    ("setup.type_flags", "setup", r"^Map type flags", ""),
+    ("minimap.start", "minimap", r"^The player starts outside every minimap", "TW-5 GW-3"),
+    ("minimap.cover", "minimap", r"of the floor lies inside a minimap", "TW-5 GW-3"),
+    ("wall_pieces.black", "wall_pieces", r"never appear in", "MF-1"),
+    ("wall_shapes.jamb", "wall_shapes", r"^Wall piece beside a door opening", "DV1-2"),
+    ("wall_shapes.gap", "wall_shapes", r"does not connect to the neighbouring", "DV1-2"),
+    ("boundary.hole", "boundary", r"^Hole in the outer wall", "MF-2"),
+    ("boundary.open_edge", "boundary", r"^Open edge", "MF-2"),
+    ("doors.on_wall", "doors", r"stands on a wall piece instead", "DV1-3"),
+    ("doors.no_wall", "doors", r"is not set in a wall", "DV1-3"),
+    ("doors.half_single", "doors", r"is half of a double door but fills", "DV1-3"),
+    ("doors.no_half", "doors", r"has no matching half", "DV1-3"),
+    ("doors.pair_line", "doors", r"is hung as a pair in", "DV6-4"),
+    ("doors.single_in_pair", "doors", r"\(a single door\) is in a 2-cell", "DV1-3"),
+    ("doors.double_inside", "doors", r"is a double door between two rooms", "TP2-10"),
+    ("doors.kinds", "doors", r"kinds of door", "TP2-10"),
+    ("kits.step", "kits", r"off every step Westwood uses", "DV1-1"),
+    ("kits.back", "kits", r"offsets from its front piece", "DV1-1"),
+    ("objects.void", "objects", r"stands in the void", ""),
+    ("objects.in_wall", "objects", r"stands inside a wall piece", ""),
+    ("objects.hidden", "objects", r"SE or SW wall's cell", ""),
+    ("reachability.unreachable", "reachability", r"cannot be reached|more unreachable", ""),
+    ("story.gate", "story", r"story's gates locked", ""),
+    ("doorways.blocked", "doorways", r"blocks the doorway", ""),
+    ("floors.threshold", "floors", r"^The outdoor .* a room's", "SW-4"),
+    ("floors.never_touch", "floors", r"touch directly", "MF-3"),
+    ("floors.hard_seam", "floors", r"^Hard seam", "DV3-2"),
+    ("floors.unblended", "floors", r"of floor seams that Westwood blends", "DV3-2"),
+    ("rooms.crammed", "rooms", r"is crammed", "DV1-4"),
+    ("rooms.count", "rooms", r"pieces of furniture; Westwood", "DV1-4"),
+    ("rooms.bare", "rooms", r"is nearly bare", "TP2-1"),
+    ("rooms.stray", "rooms", r"not belong in a", "DV3-4 TP1-4"),
+    ("rooms.small", "rooms", r"is small for its kind", "DV1-4"),
+    ("rooms.large", "rooms", r"is large for its kind", ""),
+    ("identity.showpiece", "identity", r"a showpiece stands once", "SWR-1"),
+    ("identity.repeat_wall", "identity", r"is not repeated along a wall", "SW-6 SWR-1"),
+    ("identity.tables", "identity", r"free-standing tables than", "SW-6 TW-8"),
+    ("identity.supplies_wall", "identity", r"supplies line a wall", "AMR-4"),
+    ("identity.monotony", "identity", r"one kind fills a big room", "TW-8 SW-6"),
+    ("identity.keeper", "identity", r"stands behind his counter", "SWR-2"),
+    ("identity.throne", "identity", r"throne does not face a door", "GW-7"),
+    ("density.range", "density", r"^(Few|Many) ", "DV3-5 TL-4"),
+    ("composition.dock_puddle", "composition", r"dock ends .* from the far bank", "DV4-1"),
+    ("composition.lights_pair", "composition", r"side by side in one room", "DV4-5 DV6-2"),
+    ("composition.bar_gap", "composition", r"bar counter stops", "DV4-6"),
+    ("composition.path_to_wall", "composition", r"^A path ends at a building wall", "DV4-2"),
+    ("composition.anchor_blocked", "composition", r"right in front of", "DV5-4"),
+    ("composition.across_wall", "composition", r"across the wall instead", "DV6-1"),
+    ("composition.chairs_no_table", "composition", r"chairs and no table", "DV5-4"),
+    ("composition.bunched", "composition", r"bunched into one part", "DV5-4"),
+    ("composition.torch_indoors", "composition", r"open torch", "TP1-5"),
+    ("composition.food", "composition", r"Nox draws items at floor level", "TP1-1"),
+    ("composition.table_no_seats", "composition", r"has no seats", "TP1-3"),
+    ("composition.ends_only", "composition", r"seated only at its ends", "TP1-2"),
+    ("composition.mixed_beds", "composition", r"beds of \d+ kinds", "TP1-3"),
+    ("composition.scattered_beds", "composition", r"beds scattered", "TP1-3"),
+    ("composition.short_span", "composition", r"furniture fills only", "TP1-1"),
+    ("composition.beds_close", "composition", r"from the next bed", "TP2-6"),
+    ("composition.hearth_crowded", "composition", r"crowds .*hearth room", "TP2-9"),
+    ("composition.table_on_rug", "composition", r"stands half on", "TP2-1"),
+    ("composition.sparse", "composition", r"is sparse: furniture", "TP2-1 TP3-9"),
+    ("composition.front_wall", "composition", r"where the camera sees only", "TP3-a"),
+    ("composition.off_wall", "composition", r"units off the .* wall, alone", "TP3-3"),
+    ("composition.shelves_gap", "composition", r"with bare wall between them", "TP3-b TL-2"),
+    ("composition.way_in", "composition", r"in the way in from the door", "GW-7"),
+    ("composition.statue_wall", "composition", r"a statue faces into the room", "GW-7"),
+    ("composition.props_bunched", "composition", r"props sit in one spot", "DV6-3"),
+    ("composition.bridge_wide", "composition", r"plank bridge is", "DV6-5 MF-3"),
+    ("composition.bridge_slant", "composition", r"crosses the water at a slant", "DV6-5"),
+    ("composition.bridge_bend", "composition", r"sits on a bend", "DV6-5"),
+    ("composition.bridge_landing", "composition", r"^A bridge ends against", "DV5-3"),
+    ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
+    ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
+    ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
+    ("routes.facing", "routes", r"should face open ground", "SW-2"),
+    ("routes.tour", "routes", r"a townsperson's tour", "TW-9"),
+    ("routes.through_person", "routes", r"who stands there", "AMR-7"),
+    ("routes.more", "routes", r"more waypoint and route problems", ""),
+    ("exterior.overlap", "exterior", r"outdoor pieces overlap|more overlapping outdoor", "SW-5"),
+    ("exterior.on_fence", "exterior", r"fence or wall line", "AM-1"),
+    ("exterior.pickable", "exterior", r"lies outdoors as decor", "SW-8"),
+    ("exterior.two_bodies", "exterior", r"two bodies on one", "GW-5 SW-1"),
+    ("exterior.swarm", "exterior", r"a swarm", "GW-5 SW-1"),
+    ("exterior.dock", "exterior", r"dock does not reach out", "DV4-1 AM-2"),
+    ("exterior.camp_seat", "exterior", r"never stumps", "SW-3"),
+    ("exterior.bedroll", "exterior", r"lies alone in the open", "GW-4 SW-1"),
+    ("exterior.pile", "exterior", r"heaped with nothing else", "GW-2"),
+    ("exterior.graveyard", "exterior", r"The graveyard holds", "SW-9"),
+]
+_RULE_RX = [(r, c, re.compile(p), fb) for r, c, p, fb in RULES]
+
+
+def rule_of(f):
+    """The rule a finding comes under (RULES), or '<check>.other'."""
+    if f.get("rule"): return f["rule"]
+    for r, c, rx, _ in _RULE_RX:
+        if c == f["check"] and rx.search(f["msg"]): return r
+    return f["check"] + ".other"
+
+
+ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
+       check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds,
+       check_rooms, check_identity, check_density, check_exterior]
 
 
 def run_all(m, base, only=None):
@@ -1778,4 +2195,6 @@ def run_all(m, base, only=None):
     for chk in ALL:
         if only and chk.__name__.replace("check_", "") not in only: continue
         findings += chk(m, ctx, base)
+    for f in findings:
+        if f["severity"] != "info": f["rule"] = rule_of(f)
     return findings, ctx

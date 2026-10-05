@@ -31,6 +31,9 @@ A profile holds:
   reads as another type (the college laboratory that looked like "some sort of shoddy mess hall");
 - kin: types it may read as without losing its identity (a study rich in books reads as a library);
 - westwood: rules/rooms/westwood.json types its numbers were measured on (n rooms each, in the brief);
+- supplies_line: True where barrels, crates and sacks may line a wall corner to corner (a store); monotony: the
+  share of a big room's furniture one kind may be before the checker calls it monotonous (validate/checks.py
+  identity_flags reads both; default 0.6);
 - fixed_top_up: families the furnisher's top-up does not multiply with the room's size (a lord's chamber takes one or
   two chests, not five);
 - variants: kit kind -> overrides for a culture or a smaller sibling (an ogre den is a barracks of straw).
@@ -101,7 +104,7 @@ TYPES = {
                                    cover=(0.12, 0.16, 0.30), open=(0.22, 0.80))}),
     # ---- work ----------------------------------------------------------------------------------------------------
     "kitchen": dict(
-        family="work", feel="full", kinds=("kitchen",), westwood=("kitchen",),
+        family="work", feel="full", supplies_line=True, kinds=("kitchen",), westwood=("kitchen",),
         focal=dict(fam="fireplace", types=r"Fireplace", where="back", with_="stove"),
         must={"stove": 1, "storage": 4, "table": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
                                                             "counter_shop", "smithy", "statue", "column"),
@@ -169,7 +172,7 @@ TYPES = {
         needs=("smithy",), kin=("shop", "armoury")),
     # ---- stores --------------------------------------------------------------------------------------------------
     "storeroom": dict(
-        family="stores", feel="full", kinds=("storeroom", "ore_store", "ogre_hoard"), westwood=("storeroom",),
+        family="stores", feel="full", supplies_line=True, kinds=("storeroom", "ore_store", "ogre_hoard"), westwood=("storeroom",),
         focal=None,
         must={"storage": 4}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
                                     "counter_shop", "fireplace", "stove", "statue"),
@@ -201,7 +204,7 @@ TYPES = {
                                    must={"straw": 4, "fireplace": 1}, lined=None, walls_min=2, types_min=6,
                                    cover=(0.10, 0.14, 0.30), needs=("straw",))}),
     "armoury": dict(
-        family="martial", feel="balanced", kinds=("gear_store",), westwood=("armoury",),
+        family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),
         must={"shop_rack": 3}, never=("bed", "desk", "table", "altar", "throne", "tomb", "lab", "counter_bar",
                                       "counter_shop", "stove", "fireplace"),

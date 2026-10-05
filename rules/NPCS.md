@@ -111,17 +111,19 @@ OpenNox runs every `.go` file in `maps/<Name>/` as the map's script. The package
   - `ns.NewTimer(ns.Seconds(n), fn)` and `ns.OnEachFrame(n, fn)`;
   - `ns.OnMapEvent(ns.MapInitialize, fn)`, which fires once a player is in the game.
 
-`kit/behaviours/behaviours.go` holds six behaviour sets built from these:
+`kit/behaviours/behaviours.go` holds the behaviour sets built from these (how townsfolk and the watch move today, and
+why, is PROCESS.md section 6):
 
 | Set | What it does |
 |---|---|
 | `Sentry` | Guards its post facing out. On sighting an enemy it calls out and rouses the allies listed, who hunt. When the enemy is lost it walks back to its post. |
-| `Patrol` | Walks a route of waypoints in turn (round, or there and back), pausing at each. It fights what it meets and takes up the route again when the enemy is lost. |
-| `Pack` | The leader wanders and the others follow. When any of them sees or is hit by an enemy, all hunt. When the leader dies, the rest flee. |
+| `Patrol` | Walks a route of waypoints in turn (round, or there and back), pausing at each, facing its stop's way. It fights what it meets and takes up the route again when the enemy is lost. A garrison's and the watch's rounds (`Dresser._route`, `StoryMap.beat`). |
+| `Pack` | The pack lies up spread about its den, each on its own spot. When any of them sees or is hit by an enemy, all come at it from their own sides (`spreadOn`); when it is lost they go back to their spots; when the leader dies, the rest flee. |
 | `Skittish` | Wanders. When hit, it flees from the attacker for a few seconds, then wanders again. |
 | `Ambush` | A group waits unseen (disabled) until the player comes within reach, then appears and attacks. |
-| `Townsfolk` | Walks between named spots, lingers, and turns to look at a player passing by. |
-| `Villager` | A townsfolk who keeps an eye out: twice a second it looks for a living hostile creature within its fear radius; if one is near it runs to its home doorstep and waits there until eight quiet seconds have passed, then takes up its rounds again. The town's own people (Maidens, NPCs, shopkeepers) and the player are no threat. The town lab's 13 villagers use it. |
+| `Tour` | A townsperson's tour (`StoryMap.townsfolk`, `Behaviours.tour`): 5-7 real places in a loop along the roads, a waypoint at each bend, doorways square-on, 16-24 s at each stop facing what is there; turns to the player within 110 px; never pushes (a shared ticker judges progress). `Behaviours.townsfolk` and `Behaviours.villager` are tours (without and with a home to run to). |
+| `Journey` | A long walk the story starts (`StoryMap.journey`, `A.walk`): leg by leg along the roads, staying at its end. |
+| `Villager` (a `Tour` with a home) | Twice a second it looks for a living hostile creature within its fear radius; if one is near it runs to its home doorstep along its own route and waits there until eight quiet seconds have passed, then takes up its rounds again. The town's own people and the player are no threat. |
 
 **Shops.** A shopkeeper's wares are map data, not script: MonsterXfer `ShopkeeperInfo` holds the buy and sell multipliers (Westwood: 1.0 and 0.31-0.33), a greeting text key and the items (`x2 RedPotion`). Westwood's shopkeepers are immortal and on guard. `Population.shopkeeper(type, x, y, items)` writes one; the map writer fills nested structures like this from the spec. The town lab's store has one behind its counter, and its inn a barkeeper behind the bar. A greeting is a key into the game's text file (`nox.csf`: a 24-byte header, then ` LBL` records, each with ` rtS` or `WrtS` strings stored as inverted UTF-16); some fit any town's trader: `Con05A.scr:ShopKeeperTalk1` ("Welcome, Wanderer! We carry the finest wares in all of Nox!"), `Con02:BarkeeperDefault`, `Con02a:Mystic`.
 

@@ -4,6 +4,11 @@ third chapter.
 
     py mapgen/designs/ashroad.py [seed]
 """
+QA_ACCEPT = [   # (tests/qa.py) a short road between two maps, judged against whole lava maps
+    ("density", r"^Few lights", "a daylight road out of the caldera; the lava's glow lights it"),
+    ("density", r"^Many decorations", "a short road lined with rocks: few open tiles to divide by"),
+    ("density", r"^Many share of floor seams with edge pieces", "every seam blended, as the kit always blends them"),
+]
 import math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO

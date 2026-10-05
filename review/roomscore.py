@@ -154,6 +154,7 @@ def score(map_path):
                          family=(p or {}).get("family", "?"), purpose=d.get("purpose", ""), tiles=r["tiles"],
                          cover=me["cover"], open=me["open"], per_tile=me["per_tile"], types=me["types"],
                          pieces=me["pieces"], walls=me["walls"], lined=me["lined"], middle=me["middle"],
+                         target=(p or {}).get("cover", (0.0,))[0],     # the least its type covers (tests/qa.py)
                          score=sum(c[1] for c in checks) / len(checks), ok=ok, checks=checks, warns=warns,
                          flags=[f"{c[0]}: {c[2]}" for c in checks if not c[1]]))
     rows.sort(key=lambda x: x["number"])

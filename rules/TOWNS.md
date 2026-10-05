@@ -55,7 +55,8 @@ Westwood fences plots with a purpose and a gate (127 gated outdoor plots in the 
 | ogre pen | Dirt cliff, OgreCageDoor | 48-129 dirt | ogre straw, corpses, urchin chests |
 | mine compound | Log palisade, WoodenDoor | 20-286 dirt | mining tools, barrels, crates, carts, torch poles |
 
-The kit builds the graveyard, orchard, park, quarry, field (a Log fence round a crop in rows), monument and jail. A
+The kit builds the graveyard (graves on dug earth in rows, a gravedigger's corner: PROCESS.md section 2), orchard,
+park, quarry, field (a Log fence round a crop in rows, kept inside the fence as drawn), monument and jail. A
 yard is planned before the land is carved (`yards.plan`, `yards.plan_any`: its plot and two squares round it are
 taken, so the land grows round it and the forest's trees stay off its fence) and built after the land's walls are
 laid (`yards.build`: floor, fence, gate facing the town, a clear lane from the gate, the contents).

@@ -4,6 +4,10 @@ is the next map's to write.
 
     py mapgen/designs/tnorth.py [seed]
 """
+QA_ACCEPT = [   # (tests/qa.py) a short road between two maps, judged against whole forest maps
+    ("density", r"^Many decorations", "a short forest road lined with its planting: few open tiles to divide by"),
+    ("density", r"^Many share of floor seams with edge pieces", "every seam blended, as the kit always blends them"),
+]
 import math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO

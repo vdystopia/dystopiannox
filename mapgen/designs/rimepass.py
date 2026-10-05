@@ -3,6 +3,12 @@ cairn where travellers rest, with a view north; a sign closes the second chapter
 
     py mapgen/designs/rimepass.py [seed]
 """
+QA_ACCEPT = [   # (tests/qa.py) a short pass road between two maps, judged against Westwood's two ice maps
+    ("density", r"^Many decorations", "a short road lined with snow rocks: few open tiles to divide by"),
+    ("density", r"^Many share of floor seams with edge pieces", "every seam blended, as the kit always blends them"),
+    ("density", r"^Many wall pieces", "a narrow pass between rock walls; Westwood's ice maps are open caverns"),
+    ("density", r"^Many crowded floor junctions", "snow, ice and the road meet in a narrow pass"),
+]
 import math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO

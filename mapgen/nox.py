@@ -110,6 +110,58 @@ def rect_wall_cells(u0, u1, v0, v1):
     return {tuple(int(c) for c in uv_to_xy(u, v)) for u, v in cells}
 
 
+def _poly_area(pts):
+    return abs(sum(pts[i][0] * pts[(i + 1) % len(pts)][1] - pts[(i + 1) % len(pts)][0] * pts[i][1]
+                   for i in range(len(pts)))) / 2
+
+
+def _covers_map(pts, share=0.25):
+    """A polygon big enough to be a map's minimap polygon (a quarter of the map or more), not one room's light."""
+    return _poly_area(pts) >= share * (256 * CELL) ** 2
+
+
+def _world_polygon(others, edge=256 * CELL, pad=23):
+    """The map-wide minimap polygon: inset from the map's edges, its corners off the (0,0)-(5888,5888) diagonal
+    (validate check_minimap), with a rectangular bite from the nearest edge round the bounding box of each other polygon
+    so no spot lies in two. With no others it is the four corners it has always been."""
+    A, B, Cc, D = (46, 23), (edge - 23, 69), (edge - 46, edge - 23), (23, edge - 69)
+    sides = {"top": (A, B), "right": (B, Cc), "bottom": (Cc, D), "left": (D, A)}
+    bites = {k: [] for k in sides}
+    for pts in others:
+        if not pts or _covers_map(pts): continue
+        x0, x1 = min(p[0] for p in pts) - pad, max(p[0] for p in pts) + pad
+        y0, y1 = min(p[1] for p in pts) - pad, max(p[1] for p in pts) + pad
+        side = min((("top", y0), ("right", edge - x1), ("bottom", edge - y1), ("left", x0)), key=lambda s: s[1])[0]
+        bites[side].append((x0, x1, y0, y1))
+
+    def on_side(side, t):                       # the point of a side at parameter t (x for top/bottom, y for left/right)
+        (ax, ay), (bx, by) = sides[side]
+        if side in ("top", "bottom"): return (t, ay + (by - ay) * (t - ax) / (bx - ax))
+        return (ax + (bx - ax) * (t - ay) / (by - ay), t)
+
+    out = []
+    for side in ("top", "right", "bottom", "left"):
+        a, b = sides[side]
+        out.append(list(a))
+        horiz = side in ("top", "bottom")
+        forward = (b[0] > a[0]) if horiz else (b[1] > a[1])
+        lo_t, hi_t = sorted((a[0], b[0]) if horiz else (a[1], b[1]))
+        used = []
+        for x0, x1, y0, y1 in sorted(bites[side], key=lambda r: (r[0] if horiz else r[2]), reverse=not forward):
+            t0, t1 = (x0, x1) if horiz else (y0, y1)
+            if t0 <= lo_t + pad or t1 >= hi_t - pad or any(t0 < u1 and u0 < t1 for u0, u1 in used): continue
+            used.append((t0, t1))
+            first, last = (t0, t1) if forward else (t1, t0)
+            depth = {"top": y1, "bottom": y0, "left": x1, "right": x0}[side]
+            p1, p4 = on_side(side, first), on_side(side, last)
+            p2 = (first, depth) if horiz else (depth, first)
+            p3 = (last, depth) if horiz else (depth, last)
+            out += [list(p1), list(p2), list(p3), list(p4)]
+    for p in out:                                # off the diagonal the game's lines follow
+        if abs(p[0] - p[1]) < 1: p[0] += 2
+    return [[round(x, 1), round(y, 1)] for x, y in out]
+
+
 class Spec:
     def __init__(self, name, **info):
         # Westwood kept map names to 8 characters. OpenNox loads 9 (TreePlace), but its map list cuts a 10-character
@@ -314,7 +366,7 @@ class Spec:
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         polygons = list(self.d["polygons"])
-        if not any(p["minimap"] == 100 for p in polygons):
+        if not any(p["minimap"] == 100 and _covers_map(p["points"]) for p in polygons):
             # The minimap draws only the walls of the group of the polygon the player stands in (Westwood's
             # Con02a:Town is group 100, like every wall we write); with no polygon it shows nothing but doors. One
             # polygon over the whole map, lit as the map is lit, so the light does not change.
@@ -323,9 +375,13 @@ class Spec:
             # (or on the diagonal those lines follow) makes the line end on a vertex, counts two crossings and calls
             # the player outside, and the minimap stays empty: so the polygon stands inside the map, its corners off
             # the diagonal.
-            edge = 256 * CELL
+            # The design's own polygons (Rimehold's ice cave, with its own light) keep their ground: the game keeps a
+            # player in the polygon he stands in while it still holds him, and otherwise takes the first that does, so
+            # two polygons over one spot would leave the cave lit as the world. The world polygon is bitten round each
+            # of them from the nearest edge of the map (_world_polygon). A design polygon alone had left Rimehold
+            # without a minimap outside the cave (validate check_minimap).
             polygons.append(dict(name=f"{self.d['name']}:World", ambient=list(self.d["ambient"]), minimap=100,
-                                 points=[[46, 23], [edge - 23, 69], [edge - 46, edge - 23], [23, edge - 69]]))
+                                 points=_world_polygon([p["points"] for p in polygons])))
         return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
 
     def _wall_line_floors(self):
