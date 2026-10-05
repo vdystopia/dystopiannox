@@ -52,8 +52,8 @@ sc.put("DunMirFlameBasinLit", *sc.at(2.8, 2.2))
 sc.put("Chest1", *sc.at(3.2, 4.0), items=[("Gold", {"Amount": 40}), "RedPotion", "Meat"])
 road = min(land.roads, key=lambda s: math.hypot(s[0] - cc[0], s[1] - cc[1]))
 camps.signpost(m, land, (road[0] - 1.5, road[1] + 1.5),
-               q.text("THE RIME PASS\nRimehold lies below you. The flame on the lake burns again, and the north is "
-                      "open.\n\n(The end of the second chapter. The road goes on.)", "Sign"))
+               q.text("THE RIME PASS\nRimehold lies below you, its shrine burning again. Ahead, the road drops "
+                      "into the smoking country round Emberhollow.", "Sign"))
 d.vegetate(groves=1)
 d.scatter_open(scale=0.3)
 d.rim(scale=0.4)
@@ -62,6 +62,7 @@ d.planter.rock_piles(3)
 sc0 = land.areas["saddle"]["c"]
 m.obj_px("PlayerStart", *square_px(sc0[0] + 0.5, sc0[1] - 0.5))
 from kit.story import StoryMap
+StoryMap(m, rng, land, None).exit_to("on", "Emberhol", prefix="PassExit")      # down into chapter three
 StoryMap(m, rng, land, None).wild({"WhiteWolf": 2, "BlackWolf": 1}, away_from=sc0, min_away=8, per100=0.4,
                                   avoid=[(cc[0] + 4, cc[1])])
 q.start([q.journal("I crossed the Rime Pass. Behind me the shrine's flame shows on the lake below Rimehold.", 1),

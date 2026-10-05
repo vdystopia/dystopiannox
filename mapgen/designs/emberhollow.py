@@ -23,7 +23,7 @@ The story
   will bless the player; Corvin, a gem dealer waiting at the inn, will buy it for a lot of gold. One gets it.
 - The smithy, the trading post and the inn buy and sell; the forge's storeroom and the temple hold chests; three
   caches lie in the ash by the cliffs.
-- The exit leads to TNorth for now: a PLACEHOLDER until chapter four's map exists.
+- The exit leads to AshRoad, the road out of the caldera, which closes chapter three.
 
     py mapgen/designs/emberhollow.py [seed]
 """
@@ -43,7 +43,7 @@ rng = random.Random(SEED)
 NAME = "Emberhol"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "out", "emberhollow")
-NEXT_MAP = "TNorth"                  # PLACEHOLDER: chapter four's map does not exist yet
+NEXT_MAP = "AshRoad"                 # the road out of the caldera (mapgen/designs/ashroad.py)
 PATH = "CaveHardBrown"               # the trodden ways: packed brown rock through the black crags
 
 
