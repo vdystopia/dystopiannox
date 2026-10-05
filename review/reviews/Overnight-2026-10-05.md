@@ -6,7 +6,7 @@ loot; shops that buy and sell. The loop: create, audit, fix, repeat.
 
 ## What is installed and ready to play
 
-A campaign of eight linked maps, five chapters, each exit putting you at the next map's start, the last leading home:
+A campaign of nine linked maps, six chapters, each exit putting you at the next map's start, the last leading home:
 
 1. **Thornwick**: chapter one, a forest market town at a ford.
 2. **TNorth**: the King's Road north of Thornwick, a waystation.
@@ -15,14 +15,14 @@ A campaign of eight linked maps, five chapters, each exit putting you at the nex
 5. **Emberhol** (Emberhollow): chapter three, a volcanic caldera town, built by a fresh agent from the skill alone.
 6. **AshRoad**: the road out of the caldera, down into the mountain.
 7. **Deepvault**: chapter four, a mining town in great caverns, built by a second fresh agent from the improved skill.
-8. **Mirefen**: chapter five, an eel-fishers' village in the Black Fen (the new swamp palette). Its exit leads home to
-   Thornwick.
+8. **Mirefen**: chapter five, an eel-fishers' village in the Black Fen (the new swamp palette).
+9. **Greywatch**: chapter six, a border castle, built by a third fresh agent. Its exit leads home to Thornwick.
 
-All eight: 0 errors, loaded in the OpenNox server with every creature, waypoint and story object found
+All nine: 0 errors, loaded in the OpenNox server with every creature, waypoint and story object found
 (`py tests/campaign.py`).
 
 How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`. The exits carry you on. Any chapter
-can also be started directly: `load rimehold`, `load emberhol`, `load deepvault`, `load mirefen`.
+can also be started directly: `load rimehold`, `load emberhol`, `load deepvault`, `load mirefen`, `load greywatch`.
 
 ### Thornwick: the Red Hand
 
@@ -93,7 +93,18 @@ can also be started directly: `load rimehold`, `load emberhol`, `load deepvault`
 - **The Great Leech** of the deep pool, for Brask the eel-catcher. Two shops, five townsfolk with rumours.
 - Its exit leads home to Thornwick.
 
-## The skill, tested twice
+### Greywatch: the turncoat (chapter six)
+
+- A real castle: a curtain wall with corner towers and gatehouses round a courtyard, the keep, a chapel, barracks
+  and an armoury inside, the cells, a training ground; a village outside the walls (new kit: `StoryMap.Curtain`).
+- **Start:** wounded Sergeant Brom at the foot of the hill road; reivers in the gully above fall on passers-by.
+- **Main quest, an investigation:** someone sells the watch rota. The reivers' captain carries a letter signed "C";
+  three men in the castle sign with a C. The townsfolk's rumours are the clues; accuse the right one and the traitor
+  shows himself. Lord Castellan Osric then opens the north gate.
+- **The Gauntlet:** bouts against prisoners in the cells, one door at a time, for the master-at-arms.
+- **The Deserter:** a mother's son hides in the beacon tower among bears; send him back to the barracks or let him go.
+
+## The skill, tested three times
 
 The first draft of the phase 6 skill (`skills/nox-story-map/SKILL.md`) was handed to a fresh agent that knew
 nothing of tonight's work. Following the skill and the two example maps, it built Emberhollow: a new biome and new
@@ -107,6 +118,9 @@ A second fresh agent then built Deepvault from the improved skill: 0 errors and 
 on the first try ("the examples, the checklist order and the gotchas ... made the first build work"). Most of its
 time went on keeping every place reachable, which led to `StoryMap.open_ways` and a walkability test that matches
 the checker's; its techniques (a summoned boss, two gates, lakes, cave floors) are in the skill now.
+
+A third agent built Greywatch, a castle, which the kit had never made: it added the curtain wall and gatehouse kit,
+keep and barracks roles and a training ground, and its notes on the grid's geometry and on castles are in the skill.
 
 Balance: Westwood's maps hold about 500 gold in all (median; at most 2,570), a chest about 40, and quest givers
 reward with experience and items, almost never gold (`rules/QUESTS.md`). The maps' rewards were trimmed toward that,
