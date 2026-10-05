@@ -6,18 +6,23 @@ loot; shops that buy and sell. The loop: create, audit, fix, repeat.
 
 ## What is installed and ready to play
 
-A campaign of six linked maps, each exit putting you at the next map's start:
+A campaign of eight linked maps, five chapters, each exit putting you at the next map's start, the last leading home:
 
 1. **Thornwick**: chapter one, a forest market town at a ford.
 2. **TNorth**: the King's Road north of Thornwick, a waystation.
 3. **Rimehold**: chapter two, a snow outpost under the Rime Pass.
 4. **RimePass**: the far side of the pass, where the road drops toward the volcanic country.
-5. **Emberhol** (Emberhollow): chapter three, a volcanic caldera town. Built by a fresh agent following the
-   skill alone (see below).
-6. **AshRoad**: the road out of the caldera; it closes chapter three.
+5. **Emberhol** (Emberhollow): chapter three, a volcanic caldera town, built by a fresh agent from the skill alone.
+6. **AshRoad**: the road out of the caldera, down into the mountain.
+7. **Deepvault**: chapter four, a mining town in great caverns, built by a second fresh agent from the improved skill.
+8. **Mirefen**: chapter five, an eel-fishers' village in the Black Fen (the new swamp palette). Its exit leads home to
+   Thornwick.
+
+All eight: 0 errors, loaded in the OpenNox server with every creature, waypoint and story object found
+(`py tests/campaign.py`).
 
 How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`. The exits carry you on. Any chapter
-can also be started directly: `load rimehold`, `load emberhol`.
+can also be started directly: `load rimehold`, `load emberhol`, `load deepvault`, `load mirefen`.
 
 ### Thornwick: the Red Hand
 
@@ -26,7 +31,7 @@ can also be started directly: `load rimehold`, `load emberhol`.
   road. When you pass the bend they come out of the trees. Tobin pays you for them.
 - **Main quest:** Reeve Aldric (in his hall, the big stone manor) has barred the north gate until the Red Hand is
   broken. Their camp is in the old pines north-west, past the graveyard; Garrick the Red leads them (a sentry archer
-  rouses the camp). Garrick dead, Aldric pays 300 gold and opens the gate. The road north is the exit.
+  rouses the camp). Garrick dead, Aldric pays the bounty and opens the gate. The road north is the exit.
 - **The Varn Emerald:** Mirela at the Lantern (the inn) gives you a copy of Father Odo's key to the Varn crypt
   behind the chapel. The restless dead are inside (skeletons, ghosts, a skeleton lord) and the emerald is in the
   family's chest. Choose: Mirela pays 300 gold; Father Odo lays the dead to rest and blesses you.
@@ -65,6 +70,18 @@ can also be started directly: `load rimehold`, `load emberhol`.
   breaks it and blesses you, or Corvin at the inn buys it.
 - Three shops (smithy, trading post, inn), caches, six townsfolk with rumours.
 
+### Deepvault: the Lamp-Eater (chapter four)
+
+- **Start:** the Ash Road ends at a lamp station; Pell the lamplighter says spiders came up from the deeps and ate his
+  lamps. Spiders hidden in webbed rocks beside the road fall on you.
+- **The town:** miners' houses round an ore-dust yard under a mine head; the overseer's hall, a company store, a
+  smithy and the Lamp & Pick inn (all three shops), a bunkhouse, Orla's infirmary.
+- **Main quest, a summoning:** Overseer Dagna unbars the gallery gate for you; kill the brood round a broken dwarf
+  vault, light the vault's great lamp, and the brood mother wakes. She dies, Dagna opens the Underway Gate.
+- **The Antidote:** carry Orla's antidote to Gunnar's crew, stranded at the far camp by leeches; they walk home.
+- **The Wage Diamond:** paymaster Wendel blames Ketil for the stolen payroll diamond; the urchin shaman in the west
+  warren has it.
+
 ### Mirefen: the drowned chapel (chapter five, the new swamp palette)
 
 - A swamp palette measured on Westwood's swamps (swamp grass and weeds, shallow water with deep hearts, root walls,
@@ -76,7 +93,7 @@ can also be started directly: `load rimehold`, `load emberhol`.
 - **The Great Leech** of the deep pool, for Brask the eel-catcher. Two shops, five townsfolk with rumours.
 - Its exit leads home to Thornwick.
 
-## The skill, tested
+## The skill, tested twice
 
 The first draft of the phase 6 skill (`skills/nox-story-map/SKILL.md`) was handed to a fresh agent that knew
 nothing of tonight's work. Following the skill and the two example maps, it built Emberhollow: a new biome and new
@@ -85,6 +102,11 @@ missing became tonight's last round of kit fixes: a checker rule that proves a s
 `when_true` event, counted objectives, a building-style override, biome floors buffered as Westwood buffers them,
 creatures only where the player can walk, nothing planted inside buildings. Seeds that failed with up to 10 errors
 now build clean. The skill now says what the agent had to work out alone.
+
+A second fresh agent then built Deepvault from the improved skill: 0 errors and 0 warnings, its first build working
+on the first try ("the examples, the checklist order and the gotchas ... made the first build work"). Most of its
+time went on keeping every place reachable, which led to `StoryMap.open_ways` and a walkability test that matches
+the checker's; its techniques (a summoned boss, two gates, lakes, cave floors) are in the skill now.
 
 Balance: Westwood's maps hold about 500 gold in all (median; at most 2,570), a chest about 40, and quest givers
 reward with experience and items, almost never gold (`rules/QUESTS.md`). The maps' rewards were trimmed toward that,
