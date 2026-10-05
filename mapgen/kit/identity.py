@@ -397,7 +397,9 @@ ROOMS = {
                            "storage": (0.4, 2), "table": (0.4, 1), "chair": (0.4, 4)},
                  types={"column": r"^Column[5-8]$|^CathedralColumn\d", "statue": r"^Statue2[a-h]$",
                         "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
-                 compose=[dict(fam="column", slot="racks", kind="columns", gap=3.4, aisle=2.6),
+                 # 2026-10-05 playtest (Greywatch's keep): paired rows of columns flanking a clear aisle, never a row
+                 # down the middle in line with the door
+                 compose=[dict(fam="column", slot="colonnade", gap=3.4, aisle=2.6),
                           dict(fam="wall_decor", slot="decor")],
                  fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120, fixed=True),
                        dict(fam="bench", slot="wall", max=4),
@@ -432,14 +434,20 @@ ROOMS = {
                              dict(fam="bench", slot="wall", max=6),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
-    "throne_room": dict(purpose="a throne room: the throne centred on the NE wall facing the doors, a colonnade down the "
-                                "room, statues flanking the way, banners, a carpet runner",
+    # 2026-10-05 playtest (Greywatch's keep: the throne "facing sideways towards the store room", "the pillars are in the
+    # dead center of the room", statues facing the wall): Westwood's Dun Mir throne faces SE only, so it stands on the NW
+    # wall across the room from the door in the SE wall (kit/building.py puts that door there), a runner and a clear aisle
+    # between them, columns in pairs of rows either side, statues flanking the throne and lining the aisle facing in
+    "throne_room": dict(purpose="a throne room: the throne centred on the NW wall facing the door across the room, a clear "
+                                "aisle and a carpet runner from the door to the throne, a colonnade in pairs either side of "
+                                "it, statues flanking the throne and the way, banners",
                         core={"throne": (1, 4), "column": (2, 16)},
                         optional={"statue": (0.8, 4), "wall_decor": (1.0, 8), "storage": (0.5, 2), "plant": (0.6, 4)},
                         types={"throne": r"^DunMirThrone", "column": r"^Column[5-8]$|^CathedralColumn\d",
                                "statue": r"^Statue2[a-h]$", "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
                         compose=[dict(fam="throne", slot="throne"),
-                                 dict(fam="column", slot="racks", kind="columns", gap=3.4, aisle=3.0),
+                                 dict(fam="statue", slot="flank", of="throne", gap=0.8),
+                                 dict(fam="column", slot="colonnade", gap=3.4, aisle=3.0),
                                  dict(fam="wall_decor", slot="decor")],
                         fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=100),
                               dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),

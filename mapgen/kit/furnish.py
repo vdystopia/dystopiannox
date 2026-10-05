@@ -25,6 +25,16 @@ from kit.identity import WESTWOOD_KIND, ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM
 K = CELL / math.sqrt(2)            # px per uv unit
 AGENT = 0.75                       # uv radius kept free for walking (~12 px)
 DOOR_CLEAR = 2.4                   # uv radius kept free around each door gap
+# The straight way in from every door stays clear (2026-10-05 playtest, Greywatch's keep: "The pillars are in the dead
+# center of the room, making walking straight in through the door impossible"): a lane DOOR_WAY_HALF either side of the
+# opening's middle, DOOR_WAY_DEPTH into the room (at most 0.4 of its depth that way); columns and statues keep out of it
+# to DOOR_WAY_FAR (at most 3/4 of the depth). The checker looks the same way (validate/checks.py room_ways).
+DOOR_WAY_HALF, DOOR_WAY_DEPTH, DOOR_WAY_FAR = 1.15, 4.1, 12.1
+WAY_TALL = {"column", "statue"}
+# Statues by the way they face, as Westwood stands them with their back to a wall (corpus: Statue2a 35 of 50 at the NW
+# wall, 2c 39 of 55 at the SW, 2e 49 of 73 at the SE, 2g 48 of 58 at the NE): a faces SE (+u), c NE (+v), e NW (-u),
+# g SW (-v). The 2026-10-05 playtest found two statues "that mysteriously face directly against the wall".
+STATUE_FACING = {"a": (1, 0), "c": (0, 1), "e": (-1, 0), "g": (0, -1)}
 
 _RT = _DEC = _LIGHT = _THINGS = None
 
@@ -497,6 +507,40 @@ class Furnisher:
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
         prng = random.Random(zlib.crc32(f"{spec.d.get('name')}:{getattr(room, 'building', '')}".encode()))
         self.palette = {k: prng.choice(v) for k, v in PALETTES.items()}
+        self.aisle = None         # a throne room's or hall's aisle: dict(run, mid, half, first), its way kept clear
+        self.far_ways = []        # the ways in from the doors further in, where columns and statues never stand
+        self.openings = self._openings()
+        for op in self.openings:
+            self.g.zones.append(self._way_box(op, 0.5, min(DOOR_WAY_DEPTH, 0.4 * op["extent"] + 0.3)))
+            self.far_ways.append(self._way_box(op, 0.5, min(DOOR_WAY_FAR, 0.75 * op["extent"] + 0.3)))
+
+    def _openings(self):
+        """The room's doorways: dict(line, coord, along, half, sign, extent), a double door as one opening of two cells;
+        sign is the way into the room across the wall line, extent the room's depth that way."""
+        cells = self.g.cells
+        gaps = set(getattr(self.spec, "door_gaps", ())) | {d.gap for d in self.room.doors}
+        out = []
+        for d in self.room.doors:
+            gx, gy = d.gap
+            step = (1, -1) if d.line == "/" else (1, 1)
+            both = [d.gap] + [c for c in ((gx + step[0], gy + step[1]), (gx - step[0], gy - step[1])) if c in gaps][:1]
+            us = [x + y + 1 for x, y in both]; vs = [x - y for x, y in both]
+            coord, along = (us[0], sum(vs) / len(vs)) if d.line == "/" else (vs[0], sum(us) / len(us))
+            cen = self.g.centroid[0] if d.line == "/" else self.g.centroid[1]
+            sign = 1 if cen > coord else -1
+            extent = max(((x + y + 1 if d.line == "/" else x - y) - coord) * sign for x, y in cells)
+            if any(abs(o["along"] - along) < 0.6 and o["coord"] == coord and o["line"] == d.line for o in out): continue
+            out.append(dict(line=d.line, coord=coord, along=along, half=DOOR_WAY_HALF + (len(both) - 1), sign=sign,
+                            extent=extent, double=len(both) > 1, outside="outside" in d.connects))
+        return out
+
+    @staticmethod
+    def _way_box(op, d0, d1):
+        """uv box of an opening's straight way in, from d0 to d1 units into the room."""
+        p0, p1 = op["coord"] + op["sign"] * d0, op["coord"] + op["sign"] * d1
+        a0, a1 = op["along"] - op["half"], op["along"] + op["half"]
+        if op["line"] == "/": return (min(p0, p1), max(p0, p1), a0, a1)
+        return (a0, a1, min(p0, p1), max(p0, p1))
 
     # ---- helpers -----------------------------------------------------------------------
     def half(self, t):
@@ -562,6 +606,9 @@ class Furnisher:
         hu, hv = self.half(t)
         if blocking and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.runner_boxes):
             return None
+        if blocking and _family_of(t) in WAY_TALL and \
+                any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.far_ways):
+            return None                                 # never a column or statue in line with a door
         if not self.g.fits(u, v, hu, hv, blocking, wall_ok, wall_min=0.1 if snug else 0.25, touch=touch): return None
         fam = _family_of(t)
         if fam in RUG_WHOLE or fam == "rug":           # tables, desks and beds stay off rugs
@@ -866,6 +913,7 @@ class Furnisher:
             while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
             self.audit_rugs()
             self.audit_tables()
+            self.face_statues()
             self.in_required = self.composing = False
             self.placing_light = True
             self.add_lights()
@@ -911,6 +959,7 @@ class Furnisher:
                         tables.append((res[1], res[0]["type"], fam))
                 if phase == "rest" and fam in ("table", "desk"): self.seat_tables(tables, plan)
         self.in_required = False
+        self.face_statues()
         self.placing_light = True
         self.add_lights()
         self.placing_light = False
@@ -2066,14 +2115,14 @@ class Furnisher:
             if o1: self._remove(o1)
         return 0
 
-    def nave_columns(self, r, mid, off, first, depth_max, step):
+    def nave_columns(self, r, mid, off, first, depth_max, step, t=None):
         """A colonnade down a nave: columns in pairs `off` units either side of the middle aisle at `mid` along wall run
         r, from the first row of pews every `step` units to the far end (Westwood's halls with benches stand them among
         colonnades: Wiz07F's 8 benches and 6 columns, Wiz07D's 8 benches and 16). One type of column to the room.
         Returns the columns placed."""
         types = self.types_of("column")
         if not types: return 0
-        t = _pick(self.rng, types)
+        t = t or _pick(self.rng, types)
         ch = max(self.half(t))
         if not (r["lo"] + 1.6 + ch <= mid - off - ch and mid + off + ch <= r["hi"] - 1.6 - ch): return 0
         got, d = 0, first
@@ -2092,23 +2141,173 @@ class Furnisher:
     THRONE = (("DunMirThroneShadow", -61, -30), ("DunMirThroneBack", -4, -26), ("DunMirThroneBase", 0, 0),
               ("DunMirThroneFront", -33, 3))            # Westwood's assembly (the Kingdoms map), px from the base
 
-    def place_throne(self, depth=2.6, clear=3.0):
-        """The throne of a throne room: Westwood's Dun Mir throne in its four pieces at the Kingdoms map's offsets,
-        centred on the NE wall (the one way it faces: into the room, toward the SW corner)."""
-        runs = sorted((rr for rr in self.g.runs if rr["side"] == "\\|BL"), key=lambda rr: rr["lo"] - rr["hi"])
+    def place_throne(self, depth=2.9, clear=3.0, aisle=2.0):
+        """The throne of a throne room: Westwood's Dun Mir throne in its four pieces at the Kingdoms map's offsets. Its
+        picture faces one way only, SE (Hecubah's throne in Con06b looks down a runner to the doors on its SE; the back
+        piece lies along a NW wall), so it stands against the NW wall, straight across the room from the main door in
+        the SE wall and centred on it, facing it down the room (2026-10-05 playtest, Greywatch: on the NE wall it had
+        faced "sideways towards the store room"; kit/building.py gives a throne room its door in the SE wall).
+        An aisle `aisle` units either side of that line runs from the throne to the door and stays clear (a carpet
+        runner on built floors); the colonnade and statues line it (colonnade, aisle_pair)."""
+        runs = sorted((rr for rr in self.g.runs if rr["side"] == "/|BR"), key=lambda rr: rr["lo"] - rr["hi"])
+        # the doors across the room from a NW wall: openings in a SE wall, the outer door (the entrance) first
+        doors = sorted((op for op in self.openings if op["line"] == "/" and op["sign"] < 0),
+                       key=lambda op: (not op["outside"], not op["double"], -op["extent"]))
         for r in runs:
-            a = (r["lo"] + r["hi"]) / 2
-            u, v = self._uv_on(r, depth, a)
-            if not self.g.fits(u, v, 2.0, 2.0) or not self.g.reachable_ok((u, v, 2.0, 2.0, True, "floor")): continue
-            x0, y0 = _px(u, v)
-            for typ, dx, dy in self.THRONE:
-                if typ in self.things:
-                    self.put(typ, *_uv(x0 + dx, y0 + dy), blocking=typ != "DunMirThroneShadow")
-            self.g.zones.append(self.front_zone(r, u, v, 1.6, 1.4, clear))
-            self.wall_used.append(((r["line"], r["coord"]), a - 2.2, a + 2.2)); self.wall_tall.append(((r["line"], r["coord"]), a - 2.2, a + 2.2))
-            self.anchors.append((u, v))
-            return dict(run=r, uv=(u, v), along=a, ha=2.0, hp=1.6)
+            lo, hi = r["lo"] + 2.6, r["hi"] - 2.6
+            cands = []                                  # in line with the door, else as near it as the wall allows
+            for op in doors + [None]:
+                a0 = op["along"] if op else (r["lo"] + r["hi"]) / 2
+                if not lo - 3.0 <= a0 <= hi + 3.0: continue
+                cands += [(a, op if abs(a - a0) <= 1.0 else None) for k in range(13)
+                          for a in [min(hi, max(lo, a0 + (k + 1) // 2 * (1 if k % 2 else -1)))]]
+            for a, op in cands:
+                u, v = self._uv_on(r, depth, a)
+                if not self.g.fits(u, v, 2.0, 2.0) or not self.g.reachable_ok((u, v, 2.0, 2.0, True, "floor")): continue
+                x0, y0 = _px(u, v)
+                for typ, dx, dy in self.THRONE:
+                    su, sv = _uv(x0 + dx, y0 + dy)
+                    if typ == "DunMirThroneShadow" and not self.g.inside(su, sv):
+                        continue                        # cast through the wall onto the ground outside: left out
+                    if typ in self.things:
+                        self.put(typ, su, sv, blocking=typ != "DunMirThroneShadow")
+                self.g.zones.append(self.front_zone(r, u, v, 1.6, 1.4, clear))
+                self.wall_used.append(((r["line"], r["coord"]), a - 2.2, a + 2.2)); self.wall_tall.append(((r["line"], r["coord"]), a - 2.2, a + 2.2))
+                self.anchors.append((u, v))
+                far = self._depth_of(r)
+                self.aisle = dict(run=r, mid=a, half=aisle, first=depth + 1.6, far=far, door=op)
+                (u0, v0), (u1, v1) = self._uv_on(r, depth + 1.4, a - aisle), self._uv_on(r, far + 1.0, a + aisle)
+                self.g.zones.append((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)))
+                self.lay_runner(r, a, depth + 1.0, far)
+                return dict(run=r, uv=(u, v), along=a, ha=2.0, hp=1.6)
         return None
+
+    def _depth_of(self, r):
+        """How deep the room runs from wall run r (its floor's furthest cell across the wall line)."""
+        return max(abs(((x + y + 1) if r["line"] == "/" else (x - y)) - r["coord"]) for x, y in self.g.cells)
+
+    def lay_runner(self, r, mid, near, far):
+        """A carpet runner two squares wide down an aisle at `mid` along wall run r, from `near` to `far` units off it
+        (built floors only), stopping short of a door's threshold at either end. Nothing stands on it. Returns True
+        when laid."""
+        if not CARPET_FLOORS.search(self.room.floor or ""): return False
+        m2 = 2 * round((mid - 1) / 2) + 1                  # the squares' seam nearest the aisle's middle
+        for n0, f0 in ((near, far), (near, far - 2.0), (near + 2.0, far), (near + 2.0, far - 2.0), (near + 2.0, far - 4.0)):
+            if f0 - n0 < 6: continue
+            (u0, v0), (u1, v1) = self._uv_on(r, n0, m2 - 1.5), self._uv_on(r, f0, m2 + 1.5)
+            if self.lay_carpet((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)), margin=0.0):
+                self.runner_boxes.append(self.carpet_boxes[-1])
+                return True
+        return False
+
+    def colonnade(self, gap=3.4, aisle=3.0):
+        """Columns in pairs of rows flanking a clear aisle down the room, set back from the side walls (Westwood: the
+        Kingdoms throne stands among four columns, Hecubah's runner is lined by flame basins in pairs with a pair of
+        columns at the doors; never a row down the middle). A throne room's aisle runs from the throne to its door; a
+        hall's down its long axis, in line with a door in an end wall when there is one. One type of column to the room.
+        Returns the columns placed."""
+        if self.aisle:
+            r, mid, first, half = self.aisle["run"], self.aisle["mid"], self.aisle["first"] - 1.0, self.aisle["half"]
+        else:
+            us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
+            long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
+            line = "/" if long_u else "\\"                  # the end walls lie across the long axis
+            ends = sorted((rr for rr in self.g.runs if rr["line"] == line),
+                          key=lambda rr: (rr["side"] not in BACK_SIDES, rr["lo"] - rr["hi"]))
+            if not ends: return 0
+            r = ends[0]
+            mid = (r["lo"] + r["hi"]) / 2
+            for op in self.openings:                         # a door in an end wall: the aisle runs from it
+                if op["line"] == line and r["lo"] + 3 <= op["along"] <= r["hi"] - 3 and \
+                        abs(op["along"] - mid) < 0.25 * (r["hi"] - r["lo"]):
+                    mid = op["along"]; break
+            first, half = 2.4, aisle / 2
+            self.aisle = dict(run=r, mid=mid, half=half, first=first, far=self._depth_of(r), door=None)
+        types = self.types_of("column")
+        if not types: return 0
+        t = _pick(self.rng, types)
+        ch = max(self.half(t))
+        room_ = min(mid - r["lo"], r["hi"] - mid) - 1.6 - 2 * ch        # from the aisle's middle to the set-back line
+        lo_off = half + 0.4
+        if room_ < lo_off: return 0
+        off = min(room_, max(lo_off, (half + room_) / 2))              # halfway between the aisle and the side walls
+        depth_max = self._depth_of(r) - 2.0
+        got = 0
+        for o_ in sorted({off, lo_off, min(room_, off + 1.0)}, key=lambda x: abs(x - off)):
+            got = self.nave_columns(r, mid, o_, first, depth_max, gap, t=t)
+            if got >= 2: break
+        return got
+
+    def flank(self, fam, p, gap=0.8):
+        """A pair of `fam` (statues) against the wall either side of placed anchor p (the throne), `gap` units clear of
+        it, as Hecubah's wolf statues flank his throne (Con06b). Both or neither. Returns the pieces placed."""
+        types = self.types_of(fam)
+        t = _pick(self.rng, types) if types else None
+        if not t: return 0
+        r, h = p["run"], max(self.half(t))
+        for g_ in (gap, gap + 0.6, gap + 1.2):
+            a1, a2 = p["along"] - p["ha"] - g_ - h, p["along"] + p["ha"] + g_ + h
+            o1 = self.try_put(t, *self._uv_on(r, h + 0.35, a1), snug=True)
+            o2 = o1 and self.try_put(t, *self._uv_on(r, h + 0.35, a2), snug=True)
+            if o1 and o2:
+                for a in (a1, a2): self.wall_used.append(((r["line"], r["coord"]), a - h, a + h))
+                return 2
+            if o1: self._remove(o1)
+        return 0
+
+    def aisle_pair(self, t):
+        """A pair of statues facing each other across the aisle, just beside it, at the first depth from the throne
+        where both fit. Returns the pieces placed."""
+        r, mid, half = self.aisle["run"], self.aisle["mid"], self.aisle["half"]
+        h = max(self.half(t))
+        depth_max = self._depth_of(r) - 2.0
+        d = self.aisle["first"]
+        while d <= depth_max:
+            for off in (half + 0.6 + h, half + 1.6 + h):
+                o1 = self.try_put(t, *self._uv_on(r, d, mid - off))
+                o2 = o1 and self.try_put(t, *self._uv_on(r, d, mid + off))
+                if o1 and o2:
+                    self.anchors.append(self._uv_on(r, d, mid))
+                    return 2
+                if o1: self._remove(o1)
+            d += 1.0
+        return 0
+
+    def face_statues(self):
+        """Every statue faces into the room (2026-10-05 playtest: "two statues that mysteriously face directly against
+        the wall"), as Westwood stands them: against a wall, its back to it (to a NE or NW wall in a corner, so the
+        camera sees its front); beside an aisle, toward the aisle; else toward its twin across the room, or the room's
+        middle. Statue2a faces SE, c NE, e NW, g SW (STATUE_FACING)."""
+        cu, cv = self.g.centroid
+        statues = [(o, rec) for o in self.objects for rec in [self._placed_of.get(id(o))]
+                   if rec and re.fullmatch(r"Statue2[a-h]", o["type"])]
+        for o, rec in statues:
+            u, v, hu, hv = rec[:4]
+            backs = []
+            for r in self.g.runs:
+                along = v if r["line"] == "/" else u
+                if not r["lo"] - 0.5 <= along <= r["hi"] + 0.5: continue
+                gap = abs((u if r["line"] == "/" else v) - r["coord"]) - max(hu, hv)
+                if gap <= 1.2: backs.append((r["side"] not in BACK_SIDES, gap, r))
+            if backs:
+                r = min(backs, key=lambda b: (b[0], b[1]))[2]
+                want = (r["sign"], 0) if r["line"] == "/" else (0, r["sign"])
+            elif self.aisle:
+                r, mid = self.aisle["run"], self.aisle["mid"]
+                along = v if r["line"] == "/" else u
+                s = 1 if mid > along else -1
+                want = (0, s) if r["line"] == "/" else (s, 0)
+            else:
+                twins = [(p_rec[0], p_rec[1]) for p, p_rec in statues if p is not o and
+                         (abs(p_rec[0] - u) < 0.6 or abs(p_rec[1] - v) < 0.6) and math.hypot(p_rec[0] - u, p_rec[1] - v) < 16]
+                tu, tv = min(twins, key=lambda q: math.hypot(q[0] - u, q[1] - v)) if twins else (cu, cv)
+                du, dv = tu - u, tv - v
+                want = ((1 if du > 0 else -1), 0) if abs(du) >= abs(dv) else (0, (1 if dv > 0 else -1))
+            letter = next(k for k, f in STATUE_FACING.items() if f == want)
+            t2 = o["type"][:-1] + letter
+            if t2 != o["type"] and self.ok_type(t2):
+                self._typed = [(t2 if r_ is rec else tt, r_) for tt, r_ in self._typed]
+                o["type"] = t2
 
     def belongs(self, t):
         """True if the room's identity has a place for type t (its family among the core or optional ones, matching the
@@ -2156,6 +2355,9 @@ class Furnisher:
         types = sorted(t for t in self.things if re.match(g["anchor"], t) and self.ok_type(t) and self.belongs(t))
         if not types: return 0
         t = self.rng.choice(types)
+        if g.get("pair") and self.aisle and _family_of(t) == "statue":
+            got = self.aisle_pair(t)                    # a room with an aisle: the pair lines it, facing across it
+            if got: return got
         hu, hv = self.half(t)
         pad = 1.4 if g.get("seats") else g.get("clear", 0.6)
         cu, cv = self.g.centroid
@@ -2397,7 +2599,7 @@ class Furnisher:
                     if spot: self.try_put(t, *spot, blocking=False)
                 continue
             n = plan.get(fam, 0) - done[fam]
-            if n <= 0 and st["slot"] not in ("racks", "line", "pews") and not st.get("extra"):
+            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade") and not st.get("extra"):
                 continue                                # rows and lined walls are sized by the room; `extra` sets too
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
@@ -2422,6 +2624,12 @@ class Furnisher:
             if st["slot"] == "throne":
                 q = self.place_throne()
                 if q: done[fam] += 1; placed[fam] = q
+                continue
+            if st["slot"] == "flank":                  # a pair against the wall either side of an anchor (the throne)
+                if placed.get(st["of"]): done[fam] += self.flank(fam, placed[st["of"]], st.get("gap", 0.8))
+                continue
+            if st["slot"] == "colonnade":
+                done[fam] += self.colonnade(st.get("gap", 3.4), st.get("aisle", 3.0))
                 continue
             if st["slot"] == "pews":
                 done[fam] += self.pew_rows(fam, placed.get(st.get("toward")), st.get("gap", 2.6),
@@ -2670,12 +2878,15 @@ class Furnisher:
         for _ in range(n):
             ranked = []
             for c in spots:
-                tv, u, v, corner = c
+                tv, u, v, corner, front = c
                 if lights and min(math.hypot(u - a, v - b) for a, b in lights) < MIN_LIGHT_GAP: continue
                 reach = max(min(math.hypot(cu - a, cv - b) for a, b in lights + [(u, v)]) for cu, cv in cells)
                 dp = min([math.hypot(u - a, v - b) for a, b in pieces] or [3.0])
-                ranked.append((reach - 0.2 * min(dp, 2.0) - (0.15 if corner else 0.0), c))
-            for _, (tv, u, v, _c) in sorted(ranked, key=lambda r: r[0]):
+                # a floor light before a SE or SW wall stands loose in the open when that wall is drawn see-through
+                # (2026-10-05 playtest, Greywatch's keep: "two candelabras stand loose on the floor"): those walls
+                # take one only when the back walls and the columns have no spot left
+                ranked.append((reach - 0.2 * min(dp, 2.0) - (0.15 if corner else 0.0) + (100.0 if front and not mounted else 0.0), c))
+            for _, (tv, u, v, _c, _f) in sorted(ranked, key=lambda r: r[0]):
                 if not mounted and any(u + 0.5 > z[0] and u - 0.5 < z[1] and v + 0.5 > z[2] and v - 0.5 < z[3]
                                        for z in self.light_zones):
                     continue                              # never right before a chest, hearth or stove
@@ -2710,7 +2921,15 @@ class Furnisher:
             n = max(2, int((r["hi"] - r["lo"] - 2.4) / 2.5) + 1)
             for k in range(n):                          # both ends (the corners) and evenly between
                 a = r["lo"] + 1.2 + (r["hi"] - r["lo"] - 2.4) * k / max(1, n - 1)
-                out.append((tv,) + ((coord, a) if r["line"] == "/" else (a, coord)) + (k in (0, n - 1),))
+                out.append((tv,) + ((coord, a) if r["line"] == "/" else (a, coord)) + (k in (0, n - 1), r["side"] not in BACK_SIDES))
+        if not mounted and self.aisle:                  # beside the columns, in line with their row (Hecubah's flame
+            r = self.aisle["run"]                       # basins line his runner in pairs)
+            hu, hv = self.half(t)
+            for tt, (pu, pv, phu, phv, pb, layer) in self._typed:
+                if _family_of(tt) != "column": continue
+                for s_ in (-1, 1):
+                    gap = max(phu, phv) + max(hu, hv) + 0.35
+                    out.append((t, pu + s_ * gap, pv, False, False) if r["line"] == "/" else (t, pu, pv + s_ * gap, False, False))
         self.rng.shuffle(out)
         return out
 
