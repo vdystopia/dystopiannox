@@ -319,11 +319,13 @@ class StoryMap:
         floor = m.floor
         cover = lambda c: any(t in floor for t in ((c[0], c[1]), (c[0] - 1, c[1]), (c[0], c[1] - 1), (c[0] - 1, c[1] - 1)))
         blocked = set(m.wallmap)
-        for o in m.d["objects"]:
+        for o in m.d["objects"]:                 # cells within a piece's radius, as the checker blocks them
             t = o.get("type", "")
-            if t.startswith("Tree") or t in ("CaveRocksHuge", "CaveBoulders", "CaveRocksLarge") or "Pillar" in t:
-                cx, cy = int(o["x"] // CELL), int(o["y"] // CELL)
-                blocked |= {(cx + a, cy + b) for a in (-1, 0) for b in (-1, 0)}
+            r = self.WAY_BLOCKERS.get(t, 20 if t.startswith("Tree") else 0)
+            if not r: continue
+            cx, cy = int(o["x"] // CELL), int(o["y"] // CELL)
+            blocked |= {(x, y) for x in range(cx - 2, cx + 3) for y in range(cy - 2, cy + 3)
+                        if math.hypot(x * CELL + 11.5 - o["x"], y * CELL + 11.5 - o["y"]) <= r}
         s0 = (int(st["x"] // CELL), int(st["y"] // CELL))
         seen, q = {s0}, collections.deque([s0])
         while q:

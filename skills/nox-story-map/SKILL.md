@@ -90,6 +90,24 @@ Results depend on the seed: when a build has errors the kit does not explain, tr
 in the kit if it recurs. Commit and push at checkpoints when the task is yours to finish; when someone will review
 the work first, leave it uncommitted and report.
 
+## Techniques (from the test builds)
+
+- A boss that appears only when summoned: `A.disable(name)` in `q.start`, then `A.hunt(name)` when the moment comes
+  (Deepvault's brood mother wakes when the vault's lamp is lit).
+- More than one gate: `gate_across` works on any link made with `road=True`; give each its own prefix (Deepvault
+  opens a gallery gate early and the exit gate last).
+- After planting, `StoryMap.open_ways([...story targets in px])` takes out the fewest pillars, trees or rocks that
+  wall a target off.
+- A lake belongs in its own dead-end area, its radius well under the area's: lanes run to an area's centre, so a pool
+  centred where links meet walls the way off, and a pool bigger than its area hangs into the void.
+- In a cave or other biome, house floors (WoodGray2...) meet the cave floor under the walls: `m.blending(mat, -1)`
+  on the house floors lets the ground spill over them, as Westwood's edges do.
+- The mine kit lays its own cart track: pass `track=` your road material, or its DirtHard meets the yard's cobble.
+- `camps.Scene.put` returns None and places nothing on a road, water, a building or against a wall: check what
+  matters (a quest object) and move it.
+- Cloned people are not drawn by the editor's render: `review/spots.py` shows their spot but not them; the server's
+  self-check proves they exist.
+
 ## Gotchas (each cost an evening once)
 
 - Never place a `Zombie`: OpenNox cannot read the map back (the server stops at "cannot read next section: EOF").
