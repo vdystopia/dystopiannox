@@ -107,6 +107,19 @@ Then, in this order:
 6. Props that belong somewhere spread out from there with a falloff and spacing (`vegetation.scatter`): stumps
    round the woodcutter's, logs along wood edges, crystal shards out from the cluster. Never put 4 or more of a
    kind together in one spot when there are none elsewhere.
+7. Last, after the people and their routes: fill the empty ground (`kit/dressing.Exterior(m, land, biome).dress()`;
+   2026-10-05 playtest: "exterior areas are way too empty", a castle alley held one bush and two pebbles).
+   - Westwood's towns (`py review/exteriors.py --westwood`; per 100 open tiles, roads left out, pebbles not counted)
+     carry about 25 props, 6 of them made things, and only 16% of the open ground lies over 4 cells from a prop
+     (6% over 6). Our maps had 33-55% (Greywatch, Rimehold); `py review/exteriors.py <map> --holes` draws it.
+   - The dresser puts a group at the emptiest free ground until none lies over 4 cells from a prop. Every group is a
+     scene with a reason, matched to the wall it stands against and to the biome: supplies, barrels, a woodpile,
+     hay or a cart against a house, rubble at the foot of masonry, a guard's brazier and stool or a rack of arms by a
+     town or curtain wall, deadfall and boulders by the forest, pillars and stalagmites in a cave, fire grates and
+     bones on lava, boulders and ice cracks in snow; a wagon, a chopping block or goods in the open near houses.
+   - Never two of a family (carts, stores, logs...) side by side, carts few to a map, nothing tall against a front
+     wall (the camera looks over it). Groups keep off roads, lanes, water, yards, story places, doors, gates, exits,
+     creatures and waypoint routes, and a group that would cut the walkable ground apart is taken back.
 
 ## Relations: every piece makes sense where it stands
 

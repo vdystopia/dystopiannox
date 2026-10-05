@@ -536,6 +536,10 @@ for who_, pic_ in (("Tobin", "MalePic5"), ("Aldric", "TheogrinPic"), ("Mirela", 
 m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
+# the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
+from kit.dressing import Exterior
+dressed = Exterior(m, land, "green").dress()
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     rooms_sidecar(placed, os.path.join(OUT, f"{NAME}.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])

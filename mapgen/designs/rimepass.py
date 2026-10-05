@@ -69,6 +69,10 @@ q.start([q.journal("I crossed the Rime Pass. Behind me the shrine's flame shows 
          A.print("The Rime Pass.")])
 m.scripts.update(q.files())
 
+# the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
+from kit.dressing import Exterior
+dressed = Exterior(m, land, "ice").dress()
+
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     q.write_strings(OUT)
