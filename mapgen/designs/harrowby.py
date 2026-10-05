@@ -137,7 +137,7 @@ def section(r):
 land = Land(rng, u_range=(24, 488), v_range=(-232, 232))
 AREAS = {"south": ((128, 232), 14), "steading": ((88, 210), 16), "town": ((122, 140), 80), "mill": ((196, 192), 32),
          "wood": ((40, 150), 18), "den": ((36, 100), 16), "tower": ((44, 206), 16), "ashby": ((220, 120), 28),
-         "foot": ((158, 72), 30), "fort": ((184, 34), 36), "gate": ((72, 78), 12), "west": ((32, 48), 12)}
+         "foot": ((160, 70), 38), "fort": ((184, 34), 36), "gate": ((72, 78), 12), "west": ((32, 48), 12)}
 for k_, ((X_, Y_), r_) in AREAS.items():
     land.area(k_, uv(X_, Y_), r_, clearing=k_ != "town", region=SECTION[k_])
     ar = land.areas[k_]
@@ -164,7 +164,7 @@ land.paint_roads(m, "DirtDark2", width_squares=2.8,
 
 # ---- 3. buildings from the square outwards; none on the wild places ---------------------------------------------------
 sm = StoryMap(m, rng, land, ID)
-placed = sm.place_buildings(no_build={"south": 8, "steading": 11, "den": 10, "tower": 11, "ashby": 16, "foot": 16},
+placed = sm.place_buildings(no_build={"south": 8, "steading": 11, "den": 10, "tower": 11, "ashby": 16, "foot": 19},
                             first=("mill", "wood"), centred={"fort": "foot"})
 by_role = sm.by_role
 sm.connect_and_furnish(path_material="DirtDark2")
@@ -177,19 +177,26 @@ def ring_of(c, radii):
     return [(c[0] + r * math.cos(a * math.pi / 6), c[1] + r * math.sin(a * math.pi / 6)) for r in radii for a in range(12)]
 
 
+from kit.village import _squares_of
+ch_sq = _squares_of(by_role["chapel"].footprint) if "chapel" in by_role else None
+chapel_c = (sum(i for i, _ in ch_sq) / len(ch_sq), sum(j for _, j in ch_sq) / len(ch_sq)) if ch_sq else None
 for kind_, area_, rs_, toward_ in (("field", "steading", (0, 3, 6), "south"), ("field", "mill", (9, 12, 15), "mill"),
                                    ("field", "mill", (10, 13, 16, 19), "mill"),
                                    ("orchard", "town", (22, 26, 30, 34), "town"),
-                                   ("graveyard", "town", (26, 30, 34, 38, 42), "town"),
+                                   ("graveyard", "chapel", (10, 12, 14, 16, 18, 20, 24), "town"),
                                    ("field", "town", (30, 34, 38, 42, 46), "town")):
-    y_ = Y.plan_any(land, rng, kind_, ring_of(land.areas[area_]["c"], rs_), toward=land.areas[toward_]["c"])
+    near_c = chapel_c if area_ == "chapel" and chapel_c else land.areas["town" if area_ == "chapel" else area_]["c"]
+    wild_ = [land.areas[k]["c"] for k in ("foot", "ashby", "steading")]       # the town's yards keep off the foes'
+    cands_ = [p for p in ring_of(near_c, rs_) if kind_ != "field" or area_ != "town" or  # ground (a field had
+              all(math.hypot(p[0] - w[0], p[1] - w[1]) > 24 for w in wild_)]          # hemmed the ogres' camp in)
+    y_ = Y.plan_any(land, rng, kind_, cands_, toward=land.areas[toward_]["c"])
     if y_: yards.append(y_)
     else: print(f"no room for the {kind_} by the {area_}")
 corn = next((y_ for y_ in yards if y_.kind == "field"), None)
 
 # ---- 4. the land grows round everything, ending in the forest wall ---------------------------------------------------
 land.carve(margin=3.5)
-lane_ = sm.keep_open({"south": 4, "steading": 6, "den": 6, "tower": 7, "ashby": 10, "foot": 11, "wood": 4})
+lane_ = sm.keep_open({"south": 4, "steading": 6, "den": 6, "tower": 7, "ashby": 10, "foot": 14, "wood": 4})
 land.assign_regions()
 clumps = land.thickets(240, size=(0.9, 1.8), clear=1, avoid=frozenset(lane_ & land.squares))
 clumps += land.thickets(120, size=(0.6, 1.1), clear=1, avoid=frozenset(lane_ & land.squares))   # copses in the glades
@@ -410,7 +417,8 @@ RUMOURS = [
     "Hamon at the mill won't grind past dusk. Says the ogres can smell flour.",
     "There's a harvest fire on the square every year when the last sheaf is in. Not this year, the reeve says. Not yet.",
 ]
-for c_, r_ in ((foot_c, 18), (fort_c, 16), (ashby_c, 14), (den_c, 12), (tower_c, 11), (steading_c, 10)):
+for c_, r_ in ((foot_c, 18), (fort_c, 16), (ashby_c, 14), (den_c, 12), (tower_c, 11), (steading_c, 12), (south_c, 10),
+               (track, 10)):
     sm.keep_folk_away(c_, r_)                                        # folk keep off foes' ground
 ring = sm.townsfolk(FOLK, vc, q=q, rumours=RUMOURS,
                     after=("harvest_lit", "The harvest fire's lit! First time I've slept since the ogres came. The "

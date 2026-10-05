@@ -190,7 +190,9 @@ ROOMS = {
                             dict(fam="table", slot="groups", group="longtable", n=1),
                             dict(fam="table", slot="groups", group="feast", n=1),
                             dict(fam="table", slot="groups", group="round", n=4),
-                            dict(fam="table", slot="groups", group="dining", n=2),
+                            # one dining set composed, a second only by the fill in a big room (Harrowby's 324-tile common
+                            # room seated 19 of one chair at three: rules/rooms/tavern.md, seats counted)
+                            dict(fam="table", slot="groups", group="dining", n=1),
                             dict(fam="wall_decor", slot="decor")],
                    fill=[dict(fam="table", slot="group", group="longtable", max=1, min_area=300),
                          dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=300),
@@ -272,6 +274,17 @@ ROOMS = {
                                dict(fam="storage", slot="stock", coverage=0.8, kinds=("crates", "barrels", "sacks"))],
                       fill=[dict(fam="storage", slot="stack", n=3, once=True),
                             dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "crates"), pad=0.3)]),
+    # a mill's or a farm's grain store (Harrowby): a storeroom of sacks, never racks of arms (the mill's first
+    # storeroom held a row of axe racks down its middle: rules/rooms/storeroom.md)
+    "granary": dict(base="storeroom", purpose="grain kept dry: sacks heaped in the corners and stacked down the middle, shelves of "
+                            "provisions on a back wall, barrels and crates along the walls, an aisle to walk",
+                    core={"storage": (5, 28), "shelves": (1, 8)}, optional={},
+                    types={"storage": SUPPLY, "shelves": r"^LogShelvesFull\d$"},
+                    compose=[dict(fam="shelves", slot="line"),
+                             dict(fam="storage", slot="stack", n=3, once=True),
+                             dict(fam="storage", slot="stock", coverage=0.9, kinds=("sacks", "barrels", "crates"))],
+                    fill=[dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, max=8),
+                          dict(fam="storage", slot="stock", coverage=1.0, kinds=("sacks", "crates", "barrels"), pad=0.3)]),
     "gear_store": dict(purpose="a crew's gear in good order: armour stands and racks of pole arms, clothes and bows in "
                                "rows down the middle, a back wall lined with shelves, barrels, crates and tool barrels "
                                "along the front walls",
@@ -329,7 +342,9 @@ ROOMS = {
                            dict(fam="table", slot="center", seats=True),
                            dict(fam="carpet", slot="carpet", where="under", chance=0.7),
                            dict(fam="wall_decor", slot="decor")],
-                  fill=[dict(fam="table", slot="group", group="dining", max=1, min_area=140), dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=140), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
+                  # (no dining set: a second table group turns a study toward a dining room, rules/rooms/study.md;
+                  # Harrowby's 143-tile reeve's study had three)
+                  fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=140), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                         dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
     "library": dict(purpose="books: bookcases lining both back walls end to end, stacks of bookcases in rows down the "
@@ -436,7 +451,7 @@ ROOMS = {
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          # a founder's tomb against a side wall where no pair lay behind the pews (a stone nave with
                          # no runner: Harrowby's, 5% covered, 12 of its 20 pieces pews)
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=2),
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1),
                          dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
@@ -498,7 +513,9 @@ ROOMS = {
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
                                 dict(fam="table", slot="table_rows", seat="bench"),
                                 dict(fam="carpet", slot="carpet", where="under", margin=3.0, chance=1.0),
-                                dict(fam="wall_decor", slot="decor")],
+                                # hangings either side of the hearth: two at least, the walls carry an open hall
+                                # (rules/rooms/great_hall.md; Harrowby's moot hall had one)
+                                dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
                        fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
                              dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
                              dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
@@ -692,7 +709,7 @@ BUILDINGS = {
                     rooms=[("dwelling", "bed, hearth and table in one room")],
                     scenes=["woodpile"], garden=0.5, faces="road"),
     "mill": dict(purpose="the miller's house by the pond", style="log_cabin", size=(22, 18), min_units=80,
-                 rooms=[("living_room", "the miller's hearth room"), ("storeroom", "sacks of grain")],
+                 rooms=[("living_room", "the miller's hearth room"), ("granary", "sacks of grain")],
                  scenes=["grain_sacks", "water_barrel"], garden=0.0, faces="road"),
     "grovelord": dict(purpose="the grovelord's large shack in the heart of the north wood", style="log_cabin",
                       size=(36, 30), min_units=200,
@@ -845,7 +862,7 @@ class BuildingIdentity:
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).
 WESTWOOD_KIND = {"herbalist": "laboratory", "mess_hall": "dining_hall", "ore_store": "storeroom", "study": "library",
                  "dwelling": "living_room", "gear_store": "storeroom", "ogre_den": "barracks", "ogre_hall": "dining_hall",
-                 "ogre_hoard": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt", "great_hall": "hall"}
+                 "ogre_hoard": "storeroom", "granary": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt", "great_hall": "hall"}
 # How much of a room's floor its furniture covers: (target, limit). The furnisher fills toward the target and never
 # past the limit, which the checker holds generated rooms to (TreePlace room reviews: rooms furnished to Westwood's
 # typical counts read as empty, and a store room holds more than any other room). Coverage grows with the room, so

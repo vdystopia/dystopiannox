@@ -75,7 +75,7 @@ PLACE = {
     "bedroom": "home", "dwelling": "home", "living_room": "home", "barracks": "home", "study": "home",
     "library": "home", "herbalist": "home", "laboratory": "hall", "great_hall": "hall", "hall": "hall",
     "throne_room": "hall", "dining_hall": "kitchen", "kitchen": "kitchen", "tavern": "kitchen", "mess_hall": "kitchen",
-    "storeroom": "store", "gear_store": "store", "ore_store": "store", "shop": "store", "smithy": "store",
+    "storeroom": "store", "granary": "store", "gear_store": "store", "ore_store": "store", "shop": "store", "smithy": "store",
     "crypt": "crypt", "dark_crypt": "crypt", "chapel": "crypt", "dark_chapel": "crypt",
     "ogre_den": "ogre", "ogre_hall": "ogre", "ogre_hoard": "ogre", "camp": "camp", "outdoor": "outdoor",
 }

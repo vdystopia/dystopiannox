@@ -173,7 +173,7 @@ TYPES = {
         needs=("smithy",), kin=("shop", "armoury")),
     # ---- stores --------------------------------------------------------------------------------------------------
     "storeroom": dict(
-        family="stores", feel="full", supplies_line=True, kinds=("storeroom", "ore_store", "ogre_hoard"), westwood=("storeroom",),
+        family="stores", feel="full", supplies_line=True, kinds=("storeroom", "ore_store", "ogre_hoard", "granary"), westwood=("storeroom",),
         focal=None,
         must={"storage": 4}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
                                     "counter_shop", "fireplace", "stove", "statue"),
@@ -319,7 +319,7 @@ TYPES = {
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
-        caps={"bench": (13, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
+        caps={"bench": (16, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall",),
         variants={"dark_chapel": dict(must={"altar": 1, "statue": 4}, types_min=6,
                                       caps={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},

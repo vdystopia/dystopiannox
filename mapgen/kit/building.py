@@ -25,7 +25,7 @@ COURT = "court"
 SIDES = ("u_min", "u_max", "v_min", "v_max")
 SUPPORTED_SHAPES = ("rect", "L", "T", "U", "Z", "courtyard")
 # floors that make no sense as a building's own room floor (stock rooms near water, mines, swamps)
-WORK_ROOMS = {"storeroom", "smithy", "ore_store", "gear_store", "barracks", "kitchen", "ogre_den", "ogre_hall", "ogre_hoard"}
+WORK_ROOMS = {"storeroom", "smithy", "ore_store", "gear_store", "barracks", "kitchen", "ogre_den", "ogre_hall", "ogre_hoard", "granary"}
 NOT_ROOM_FLOOR = ("Water", "Grass", "Lava", "Swamp", "Mine", "Black", "Weeds", "Ice",
                   "Rug")   # rugs: Westwood lays them as patches inside rooms (a furnisher's job)
 # door objects that are fence gates or cage doors rather than house doors

@@ -1429,13 +1429,18 @@ class Furnisher:
         types = self.decor_theme()
         t0 = _pick(self.rng, types) or _pick(self.rng, self.types_of("wall_decor"))
         if not t0: return False
-        for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", t0, "center"):
-            if r["side"] not in BACK_SIDES: continue
-            if any(k == (r["line"], r["coord"]) and abs(a - a2) < DECOR_GAP for k, a2 in self._decor_at): continue
-            if self.try_put(t, u, v, blocking=False, wall_ok=True, layer="wall"):
-                self.wall_used.append(((r["line"], r["coord"]), a - ha, a + ha))
-                self._decor_at.append(((r["line"], r["coord"]), a))
-                return True
+        # the picked hanging first, then the theme's others: a trophy drawn for one wall only would leave the other
+        # back wall bare (Harrowby's moot hall: one bull's head in a 273-tile hall)
+        rest = sorted(t for t in types if t != t0)
+        self.rng.shuffle(rest)
+        for tt in [t0] + rest:
+            for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt, "center"):
+                if r["side"] not in BACK_SIDES: continue
+                if any(k == (r["line"], r["coord"]) and abs(a - a2) < DECOR_GAP for k, a2 in self._decor_at): continue
+                if self.try_put(t, u, v, blocking=False, wall_ok=True, layer="wall"):
+                    self.wall_used.append(((r["line"], r["coord"]), a - ha, a + ha))
+                    self._decor_at.append(((r["line"], r["coord"]), a))
+                    return True
         return False
 
     # Nox draws items at floor level, so food set on a table reads as food dropped on the floor (TreePlace
