@@ -6,14 +6,18 @@ loot; shops that buy and sell. The loop: create, audit, fix, repeat.
 
 ## What is installed and ready to play
 
-A small campaign, each map's exit leading to the next:
+A campaign of six linked maps, each exit putting you at the next map's start:
 
-1. **Thornwick** (chapter one, a forest market town at a ford). Start: `load thornwick`.
-2. **TNorth** (the King's Road north of Thornwick, a waystation).
-3. **Rimehold** (chapter two, a snow outpost under the Rime Pass).
-4. **RimePass** (the far side of the pass; closes chapter two).
+1. **Thornwick**: chapter one, a forest market town at a ford.
+2. **TNorth**: the King's Road north of Thornwick, a waystation.
+3. **Rimehold**: chapter two, a snow outpost under the Rime Pass.
+4. **RimePass**: the far side of the pass, where the road drops toward the volcanic country.
+5. **Emberhol** (Emberhollow): chapter three, a volcanic caldera town. Built by a fresh agent following the
+   skill alone (see below).
+6. **AshRoad**: the road out of the caldera; it closes chapter three.
 
-How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`. The exits carry you on.
+How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`. The exits carry you on. Any chapter
+can also be started directly: `load rimehold`, `load emberhol`.
 
 ### Thornwick: the Red Hand
 
@@ -47,6 +51,34 @@ How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`
 - **The Great Bear:** Torvald of the hunters' lodge pays for the bear of the west pines.
 - **Shops:** the trading post and the Frozen Kettle inn. Seven townsfolk with rumours.
 
+### Emberhollow: the three vents (chapter three)
+
+- **Start:** down from the Rime Pass into a smoking caldera. Tamsin the ash-runner, at the milestone, points the way
+  and warns of imps; a nest of fire imps beside the road swarms whoever passes.
+- **Main quest:** demons from the forge capped the mountain's three vents, and Warden Kael has shut the Cinder Gate.
+  Open the vents in any order: one in the western ashfield (imps, an ember demon), one on the crater lake's rim
+  (demons), one before the demon forge (its garrison). A vent opens once its keepers are dead. All three open: the
+  gate unlocks and the road out is the exit.
+- **Rescue:** Brin is trapped at the obsidian diggings, ringed by scorpions; clear them and he walks home to his
+  sister Maren, who pays.
+- **A choice:** the Ember Eye in the ash cult's ruined temple (an undead high priest and his acolytes): Sister Ilsa
+  breaks it and blesses you, or Corvin at the inn buys it.
+- Three shops (smithy, trading post, inn), caches, six townsfolk with rumours.
+
+## The skill, tested
+
+The first draft of the phase 6 skill (`skills/nox-story-map/SKILL.md`) was handed to a fresh agent that knew
+nothing of tonight's work. Following the skill and the two example maps, it built Emberhollow: a new biome and new
+quest shapes, 0 errors, loaded in the server with all 40 story objects found. Its list of what was unclear or
+missing became tonight's last round of kit fixes: a checker rule that proves a story gate seals the exit, a
+`when_true` event, counted objectives, a building-style override, biome floors buffered as Westwood buffers them,
+creatures only where the player can walk, nothing planted inside buildings. Seeds that failed with up to 10 errors
+now build clean. The skill now says what the agent had to work out alone.
+
+Balance: Westwood's maps hold about 500 gold in all (median; at most 2,570), a chest about 40, and quest givers
+reward with experience and items, almost never gold (`rules/QUESTS.md`). The maps' rewards were trimmed toward that,
+with items as the main reward.
+
 ## How it works (new tonight)
 
 - **Custom text without audio.** OpenNox reads `nox.csf.json` in place of the game's string table when it exists.
@@ -60,7 +92,8 @@ How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`
 - **`kit/story.py`**: the steps every story map shares; **`kit/camps.py`**: bandit camps, a wagon wreck, a wolf den,
   a ruined tower, caches, signposts.
 - **Checks:** every map compiles its scripts against the game's NoxScript, loads in the OpenNox server, and its
-  self-checks find every creature, waypoint and story object. `review/storymap.py` draws the labelled overviews.
+  self-checks find every creature, waypoint and story object; the checker proves each story gate seals its exit.
+  `py tests/campaign.py` does all of it for the whole chain. `review/storymap.py` draws the labelled overviews.
 - **The skill:** `skills/nox-story-map/SKILL.md`, the first draft of phase 6.
 
 ## Your four points from yesterday
