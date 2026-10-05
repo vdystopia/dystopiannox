@@ -50,7 +50,7 @@ fire = (wc[0] + 4, wc[1])
 sc = camps.Scene(m, rng, land, fire)
 sc.put("CampFire", *fire)
 for k in range(4):
-    sc.put(rng.choice(("Stump3", "Stump4", "Stump5")), *sc.at(1.6, k * math.pi / 2 + 0.4))
+    sc.put(("ForestLog01", "ForestLog02", "ForestLog03", "ForestLog04")[k], *sc.at(1.6, k * math.pi / 2 + 0.4))   # logs to sit on
 sc.put("OutdoorTraderPupTent", *sc.at(3.2, math.pi * 0.25))
 sc.put("Chest2", *sc.at(3.4, math.pi * 0.8), items=[("Gold", {"Amount": 25}), "RedApple", "Cider"])
 road = min(land.roads, key=lambda s: math.hypot(s[0] - wc[0], s[1] - wc[1]))
@@ -59,11 +59,22 @@ camps.signpost(m, land, (road[0] - 1.5, road[1] + 1.5),
                q.text("THE KING'S ROAD\nThornwick lies south. North, the road climbs to Rimehold and the Rime "
                       "Pass.", "Sign"))
 planter = Planter(m, rng, land, "deciduous")
-planter.plant_all(groves=2)
+from kit.vegetation import TOWN_PLANTING
+planter.plant_all(groves=2, profile=TOWN_PLANTING)      # a roadside wood, not deep forest
 planter.rock_piles(3)
 gc = land.areas["gate"]["c"]
 m.obj_px("PlayerStart", *square_px(gc[0] + 0.5, gc[1] - 0.5))
-StoryMap(m, rng, land, None).exit_to("on", "Rimehold", prefix="RoadExit")       # the road on north
+sm = StoryMap(m, rng, land, None)
+sm.exit_to("on", "Rimehold", prefix="RoadExit")       # the road on north
+# torches by the waystation's fire, and the wood's creatures keeping off the road
+import json
+presets = json.load(open(os.path.join(HERE, "..", "..", "rules", "out", "lighting.json")))["colorlight"]["presets"]
+ORANGE = max((p for p in presets if p["family"] == "orange" and p["animation"] == "steady" and p["intensity_class"] == "full"),
+             key=lambda p: p["weighted_share"])
+for a in (1.2, 4.3):
+    x_, y_ = sc.px(4.0, a)
+    m.obj_px("TorchPole", x_, y_); m.obj_px("ColorLight", x_, y_ - 5, xfer=dict(ORANGE["xfer"]))
+sm.wild({"Bat": 2, "Urchin": 2, "Wolf": 1}, away_from=gc, min_away=6, per100=0.5, avoid=[fire])
 q.start([q.journal("I passed Thornwick's north gate onto the King's Road. The Red Hand will not trouble it again.", 1),
          A.print("The King's Road, north of Thornwick.")])
 m.scripts.update(q.files())

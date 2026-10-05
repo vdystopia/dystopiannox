@@ -1218,9 +1218,13 @@ def bunched_props(m, base):
     piled into one clearing): Westwood spreads such props with a falloff from where they belong."""
     out = []
     groups = collections.defaultdict(list)
+    # seats round a campfire are one composed set piece, as on Westwood's camps (Con03A's bandit camp: stumps round
+    # its CampFire), not props bunched in one spot
+    fires = [o for o in m.objects if re.match(r"^(CampFire|OgreFirePit|DunMirFlameBasinLit)$", o["type"])]
     for o in m.objects:
         mt = BUNCH_RE.match(o["type"])
-        if mt: groups[mt.group(1)].append(o)
+        if not mt or any(math.hypot(o["x"] - f["x"], o["y"] - f["y"]) <= 110 for f in fires): continue
+        groups[mt.group(1)].append(o)
     lim = base.get("bunch_share", 0.85)
     for kind, objs in groups.items():
         if len(objs) < 4: continue

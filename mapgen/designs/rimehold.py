@@ -149,6 +149,10 @@ osk.put("Quiver", *osk.at(1.4, 1.8))
 d.clusters({"MineCrystal05": 4, "MineCrystal02": 2, "MineCrystal04": 2},
            [s for s in land.squares if land._in_area((s[0] + 0.5, s[1] - 0.5), land.areas["icecave"]) and s not in land.taken],
            5, size=(4, 7), radius=1.6, gap=0.8, spacing=5.0, core="MineCrystalUp03")
+# the cave's own dim blue light, as Westwood darkens the cave of its Wastelands ([35, 35, 71] against 70, 70, 140)
+rc_ = land.areas["icecave"]["r"] * 1.15
+m.polygon(f"{NAME}:IceCave", (35, 35, 71),
+          [square_px(cc[0] + rc_ * math.cos(a), cc[1] + rc_ * math.sin(a)) for a in (k * math.pi / 8 for k in range(16))])
 camps.signpost(m, land, (cc[0] - 5, cc[1] + 1), q.text("Crystal here. Good seam. Back before dark. - O.", "Sign"), kind="PlankSign2")
 # the bear's ground in the pines: a den of rock and bones
 pc = land.areas["pines"]["c"]

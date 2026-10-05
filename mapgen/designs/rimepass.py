@@ -38,7 +38,7 @@ land.paint_roads(m, "CaveHardTan", width_squares=2.4)
 cc = land.areas["cairn"]["c"]
 land.taken |= {s for s in land.squares if math.hypot(s[0] - cc[0] - 4, s[1] - cc[1]) <= 4}
 land.carve(margin=4.0)
-outcrops = land.thickets(40, size=(1.2, 2.4), clear=1)
+outcrops = land.thickets(16, size=(1.2, 2.4), clear=1)
 land.open_links()
 land.apply(m, wall=d.wall, floor=d.base)
 d.cap_islands(outcrops)
@@ -55,12 +55,15 @@ camps.signpost(m, land, (road[0] - 1.5, road[1] + 1.5),
                q.text("THE RIME PASS\nRimehold lies below you. The flame on the lake burns again, and the north is "
                       "open.\n\n(The end of the second chapter. The road goes on.)", "Sign"))
 d.vegetate(groves=1)
-d.scatter_open(scale=0.6)
-d.rim(scale=0.6)
-d.lights(scale=0.6)
+d.scatter_open(scale=0.3)
+d.rim(scale=0.4)
+d.lights(scale=1.2)
 d.planter.rock_piles(3)
 sc0 = land.areas["saddle"]["c"]
 m.obj_px("PlayerStart", *square_px(sc0[0] + 0.5, sc0[1] - 0.5))
+from kit.story import StoryMap
+StoryMap(m, rng, land, None).wild({"WhiteWolf": 2, "BlackWolf": 1}, away_from=sc0, min_away=8, per100=0.4,
+                                  avoid=[(cc[0] + 4, cc[1])])
 q.start([q.journal("I crossed the Rime Pass. Behind me the shrine's flame shows on the lake below Rimehold.", 1),
          A.print("The Rime Pass.")])
 m.scripts.update(q.files())
