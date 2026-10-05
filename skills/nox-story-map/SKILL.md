@@ -53,7 +53,8 @@ total: Emberhollow's three vents).
 3. `StoryMap.place_buildings(no_build={wild places})`, `connect_and_furnish(path_material=...)`.
 4. Yards; `land.carve`; `StoryMap.keep_open({story places})`; thickets avoiding the lanes; `land.open_links()`;
    `land.apply`; water dug and bridged; the gate; the exit.
-5. The story's places (`kit/camps.py`: bandit camp, wreck, wolf den, ruined tower, cache, signpost).
+5. The story's places (`kit/camps.py`: bandit camp, wreck, wolf den, ruined tower, stone ring (a shrine, a vent),
+   cache, signpost), and the woods' small scenes (`Planter.forest_floor`, `rock_piles`).
 6. Planting, rocks (`rock_piles`), lights; the PlayerStart.
 7. People: givers cloned from Westwood's townsfolk in their clothes (`StoryMap.person`, immortal), shops, townsfolk
    with rumours, the fights, the wood's creatures (`StoryMap.wild` with your own mix). A biome structure's garrison

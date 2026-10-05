@@ -183,3 +183,20 @@ def ruined_tower(spec, rng, land, centre, toward, loot, size=(7, 7), material="A
     boss = square_px(ci + (bx - ci) * 0.25, cj + (by - cj) * 0.25)
     inside = [sc.px(1.6, a) for a in (0.5, 2.6, 4.4)]
     return dict(inside=inside, chest=chest, boss=boss, front=front)
+
+
+def stone_ring(spec, rng, land, centre, n=7, radius=2.6, stone="ObeliskPrimitive", core=None, core_name=None,
+               light=None, light_name=None, clear=4):
+    """A ring of standing stones round a centre (squares): a shrine, a vent's ring, a circle in the woods. `core`: an
+    object at the middle (a crystal, a fire basin), named `core_name` for the story's scripts; `light`: a ColorLight
+    xfer at the middle, named `light_name` (A.enable lights it when the story says). The ring and `clear` squares
+    round it are taken, so nothing grows into it. Returns the centre in world px."""
+    ci, cj = centre
+    for k in range(n):
+        a = k * 2 * math.pi / n
+        spec.obj_px(stone, *square_px(ci + radius * math.cos(a), cj + radius * math.sin(a)))
+    x, y = square_px(ci, cj)
+    if core: spec.obj_px(core, x, y, **({"scr": core_name} if core_name else {}))
+    if light: spec.obj_px("ColorLight", x, y - 5, xfer=dict(light), **({"scr": light_name} if light_name else {}))
+    land.taken |= {(int(ci) + a, int(cj) + 1 + b) for a in range(-clear, clear + 1) for b in range(-clear, clear + 1)}
+    return x, y

@@ -121,12 +121,8 @@ sm.exit_to("north", NEXT_MAP, prefix="PassExit")
 
 # ---- 5. the places of the story ------------------------------------------------------------------------------------
 # the dark shrine: a ring of standing stones on the lake's north shore, the empty socket of the heartstone at its middle
-for k in range(7):
-    a = k * 2 * math.pi / 7
-    m.obj_px("ObeliskPrimitive", *square_px(shrine[0] + 2.6 * math.cos(a), shrine[1] + 2.6 * math.sin(a)))
-sx, sy = square_px(*shrine)
-m.obj_px("MineCrystal05", sx, sy, scr="ShrineStone")
-m.obj_px("ColorLight", sx, sy - 5, scr="ShrineLight", xfer=d._light_xfer((255, 170, 90), 260, 70))
+sx, sy = camps.stone_ring(m, rng, land, shrine, core="MineCrystal05", core_name="ShrineStone",
+                          light=d._light_xfer((255, 170, 90), 260, 70), light_name="ShrineLight")
 d.taken |= {(int(shrine[0]) + a, int(shrine[1]) + 1 + b) for a in range(-4, 5) for b in range(-4, 5)}
 # the yard: a fire basin at its middle, benches round it
 vil = Village(m, rng, land)
