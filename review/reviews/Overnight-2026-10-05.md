@@ -136,6 +136,15 @@ with items as the main reward.
 3. Great halls: fewer table sets, on a big floor-tile carpet.
 4. Outdoors: rock piles in Westwood's manner; few aspens right against the boundary.
 
+## Rooms and buildings, also improved tonight
+
+- Narrow storerooms keep a row of racks down the middle (your armoury formula) instead of an empty middle.
+- No room drawn out into a corridor: a manor's rooms had come out 2-3 tiles wide and five times as long.
+- No closet rooms: a room's least size grows with the kit's bigger scale.
+- Chests and hearths keep the space before them clear; tables never stand without seats in a dining room.
+- Crypts in town buildings get their coffins and sarcophagi (the town style had banned them).
+- Building lab over three seeds: 43 of 48 buildings pass (40 before tonight).
+
 ## Things to know
 
 - The quest state lives in the script: a saved game that is reloaded restarts the scripts. Deaths and carried items
