@@ -307,9 +307,14 @@ class Spec:
             # The minimap draws only the walls of the group of the polygon the player stands in (Westwood's
             # Con02a:Town is group 100, like every wall we write); with no polygon it shows nothing but doors. One
             # polygon over the whole map, lit as the map is lit, so the light does not change.
+            # The game tests "inside" by counting the edges crossed by a line from the player to the map's corner
+            # (0, 0) or (5888, 5888), alternately (nox_xxx_polygon_421660). A polygon with a corner on either point
+            # (or on the diagonal those lines follow) makes the line end on a vertex, counts two crossings and calls
+            # the player outside, and the minimap stays empty: so the polygon stands inside the map, its corners off
+            # the diagonal.
             edge = 256 * CELL
             polygons.append(dict(name=f"{self.d['name']}:World", ambient=list(self.d["ambient"]), minimap=100,
-                                 points=[[0, 0], [edge, 0], [edge, edge], [0, edge]]))
+                                 points=[[46, 23], [edge - 23, 69], [edge - 46, edge - 23], [23, edge - 69]]))
         return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
 
     def _blend_thresholds(self):
