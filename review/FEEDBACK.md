@@ -193,7 +193,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | AMR-4 | 17 piled barrels end to end along the Amber Eel's wall | P§3 a room reads as what it is (`stock_walls(per_wall=)`) | `identity.supplies_wall` (STsupw) | none | check |
 | AMR-5 | fishers' houses, the herbwife's hut and the moot hall called for no scenes | P§4 every role calls for its scenes (`ROLE_SCENES`) | look:empty | review | review |
 | AMR-6 | a flower patch grew in the west gate | P§4 gardens keep off doors | look:spots | review | review |
-| AMR-7 | Morwen at her door stood in Pip's walk home | P§6 a person waiting at a door | `routes.through_person` (STpers) | none | check |
+| AMR-7 | Morwen at her door stood in Pip's walk home | P§6 a person waiting at a door; routes keep clear of people standing still by construction (`Ground.add_people`) | `routes.through_person` (STpers) | none | check |
 
 ## Totals
 
