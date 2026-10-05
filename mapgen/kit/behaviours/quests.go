@@ -50,6 +50,7 @@ type Cond struct {
 	Has   string
 	Flag  string
 	Not   string
+	Gold  int // the player carries at least this much gold (a toll, a bribe, a ransom)
 }
 
 // Line is one thing a talker says (Text: a string key), when Cond holds; Do runs when the talk ends (on "yes" if Ask),
@@ -82,6 +83,11 @@ func holds(c Cond) bool {
 	}
 	if c.Has != "" && carries(player(), c.Has) == nil {
 		return false
+	}
+	if c.Gold > 0 {
+		if p := player(); p == nil || p.GetGold() < c.Gold {
+			return false
+		}
 	}
 	if c.Flag != "" && !flagOn(c.Flag) {
 		return false
@@ -157,6 +163,15 @@ func run(acts []Act, at ns.Positioner) {
 		case "chat": // A object, B plain text over its head
 			if o := ns.Object(a.A); o != nil {
 				o.ChatStrTimer(a.B, ns.Seconds(4))
+			}
+		case "turn": // A person steps aside and B, the creature hidden at their spot, turns on the player
+			if o := ns.Object(a.A); o != nil {
+				o.Enable(false)
+			}
+			if f := ns.Object(a.B); f != nil && p != nil {
+				f.Enable(true)
+				f.AggressionLevel(0.83)
+				f.Attack(p)
 			}
 		case "unlock":
 			if o := ns.Object(a.A); o != nil {

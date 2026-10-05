@@ -112,9 +112,11 @@ the work first, leave it uncommitted and report.
   gates, and keeps the land outside its closed faces so the gates seal the exit; `place_buildings(square_area=)`
   makes the public buildings face a courtyard; roles `keep` and `barracks`; `camps.training_ground`
   (`mapgen/designs/greywatch.py`).
-- A person who turns on the player: a cloned person cannot be made hostile, so hide a disabled creature at the same
-  spot and swap them (`A.disable(person)`, `A.enable(foe)` + `A.hunt(foe)`): Greywatch's traitor.
-- Fights in turn (an arena, cells): open one door at a time with `A.unlock` as each bout's foes die (`q.dead`).
+- A person who turns on the player: a cloned person cannot be made hostile, so place a creature disabled at the same
+  spot and swap them with `A.turn(person, foe)`: Greywatch's traitor.
+- Fights in turn (an arena, cells): open one door at a time with `A.unlock` as each bout's foes die (`q.dead`); a
+  jail yard's cell doors are `yard.cells`.
+- A toll, a bribe, a ransom: `q.when(gold=n)` holds while the player carries n gold; `A.gold(-n)` takes it.
 
 ## Geometry, in short
 

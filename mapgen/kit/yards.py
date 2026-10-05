@@ -141,6 +141,7 @@ def build(spec, rng, land, y):
             line = "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/"
             doors.append(spec.door(rec["gate"], a, line))
         y.gate = doors[0]
+        y.cells = doors                 # every cell's door (a gauntlet opens them one at a time)
         placed = []
         for c in range(n_cells):
             lo, hi = c * L // n_cells, (c + 1) * L // n_cells

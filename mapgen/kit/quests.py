@@ -48,6 +48,11 @@ class A:
     @staticmethod
     def spawn(t, at_obj): return ("spawn", t, at_obj, 0)
     @staticmethod
+    def turn(person, foe):
+        """`person` (a cloned townsperson, who cannot be made hostile) steps aside and `foe`, a creature placed
+        disabled at the same spot, turns on the player: a traitor unmasked (Greywatch)."""
+        return ("turn", person, foe, 0)
+    @staticmethod
     def gold(n): return ("gold", "", "", n)
     @staticmethod
     def print(text): return ("print", text, "", 0)
@@ -97,12 +102,13 @@ class QuestBook:
         return "dead:" + ",".join(names)
 
     @staticmethod
-    def at(quest, stage, has="", flag="", not_=""):
-        return dict(Quest=quest, Stage=stage, Has=has, Flag=flag, Not=not_)
+    def at(quest, stage, has="", flag="", not_="", gold=0):
+        return dict(Quest=quest, Stage=stage, Has=has, Flag=flag, Not=not_, Gold=gold)
 
     @staticmethod
-    def when(has="", flag="", not_=""):
-        return dict(Quest="", Stage=-1, Has=has, Flag=flag, Not=not_)
+    def when(has="", flag="", not_="", gold=0):
+        """A condition: carrying an item (`has`), a flag set or not, at least `gold` gold (a toll, a bribe)."""
+        return dict(Quest="", Stage=-1, Has=has, Flag=flag, Not=not_, Gold=gold)
 
     # ---- declarations ------------------------------------------------------------------------------------------
     def say(self, text, when=None, do=(), ask=False, else_=(), who="Line"):
@@ -145,12 +151,13 @@ class QuestBook:
     @staticmethod
     def _cond(c):
         return (f"Cond{{Quest: {_go(c['Quest'])}, Stage: {int(c['Stage'])}, Has: {_go(c['Has'])}, "
-                f"Flag: {_go(c['Flag'])}, Not: {_go(c['Not'])}}}")
+                f"Flag: {_go(c['Flag'])}, Not: {_go(c['Not'])}, Gold: {int(c.get('Gold', 0))}}}")
 
     def _acts(self, acts):
         out = []
         for k, a, b, n in acts:
-            if k in ("unlock", "lock", "enable", "disable", "hunt", "walk", "chat"): self.names.add(a)
+            if k in ("unlock", "lock", "enable", "disable", "hunt", "walk", "chat", "turn"): self.names.add(a)
+            if k == "turn": self.names.add(b)
             if k == "spawn": self.names.add(b)
             out.append(f"{{Kind: {_go(k)}, A: {_go(a)}, B: {_go(b)}, N: {int(n)}}}")
         return "[]Act{" + ", ".join(out) + "}"
