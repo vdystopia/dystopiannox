@@ -3,7 +3,11 @@ variant per known defect (each planted on purpose, including every playtest find
 the checks on each, and confirms: the clean map has no errors, and every variant raises the
 expected finding.
 
-    py validate/selftest.py          (builds into validate/out/selftest/, takes a few minutes)
+    py validate/selftest.py              (builds into validate/out/selftest/, about three minutes)
+    py validate/selftest.py STkeep ...   only these cases (and the clean map)
+
+Each case's caught finding names its rule (checks.RULES); the rules with a planted case are written to
+validate/out/selftest/rules.json for validate/checkcheck.py. A finding no rule names fails the self-test.
 """
 import os, random, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -257,6 +261,135 @@ def camp_swarm(m):
         m.obj("Swordsman", 186 + 1.2 * (k % 3), -30 + 1.3 * (k // 3))
 
 
+def _declare(m, kind="bedroom", extra=()):
+    m.declare_rooms = [dict(number=1, building="test house", kind=kind, purpose="", tiles=0, box=[0, 0, 0, 0],
+                            floor=[list(t) for t in rect_tiles(200, 222, -10, 10)])] + list(extra)
+
+
+def ground_in_room(m):
+    # a tile of the meadow's grass laid on the boards just inside the door (SW-4: "Tile blending on the inside of doors
+    # seems consistently off")
+    _declare(m)
+    m.raw_floors = True
+    t = min(rect_tiles(200, 222, -10, 10), key=lambda t: (abs(t[0] - t[1]), t[0] + t[1]))   # by the door, inside
+    m.tile(t[0], t[1], "GrassNorm")
+
+
+def piece_in_way(m):
+    m.obj("Table1", 203.6, 0.5)                                # straight in from the double door in the NW wall
+
+
+def statue_at_wall(m):
+    m.obj("Statue2a", 221.0, 4.0)                              # faces SE, a unit from the SE wall (GW-7)
+
+
+def _tour(m, who, pts, pauses, looks=None, kind="tour"):
+    names = []
+    for k, (x, y) in enumerate(pts):
+        names.append(f"{who}_{k + 1}"); m.waypoint(x, y, name=names[-1])
+    r = dict(who=who, kind=kind, waypoints=names, loop=True, pauses=pauses)
+    if looks is not None: r["looks"] = looks; r["features"] = [None] * len(pts)
+    m.routes = getattr(m, "routes", []) + [r]
+
+
+def shared_stop(m):
+    a, b = px(186, 20), px(190, -30)                           # Ann's and Bob's stops 14 px apart (GW-6)
+    _tour(m, "Ann", [a, px(192, 30)], [20, 20], kind="beat")
+    _tour(m, "Bob", [(a[0] + 10, a[1] + 10), b], [20, 20], kind="beat")
+
+
+def facing_wall(m):
+    # a stop just outside the house's NW wall, turned to face it (SW-2: "If an NPC is standing next to a building, have
+    # them face away from the building")
+    a = px(198.6, 3)
+    _tour(m, "Cid", [a, px(188, 3)], [20, 20], looks=[list(px(213.4, 3)), list(px(173, 3))], kind="beat")
+
+
+def short_tour(m):
+    _tour(m, "Dot", [px(186, 25), px(192, 25)], [8, 8])        # two stops of 8 s (TW-9)
+
+
+def dock_on_bank(m):
+    for o in m.d["objects"]:                                   # the pond's dock moved up onto the meadow (AM-2)
+        if str(o.get("type", "")).startswith("DockDown"): o["x"] -= 170; o["y"] -= 170
+
+
+def minimap_on_corners(m):
+    m.polygon("ST:World", (150, 150, 140), [(0, 0), (5888, 0), (5888, 5888), (0, 5888)])   # corners on the diagonal
+
+
+def showpieces(m):
+    for u, v in ((206, -6), (216, 4), (210, 6)): m.obj("Telescope1a", u, v)   # three telescopes in one room (SWR-1)
+
+
+def statues_along_wall(m):
+    for u in (204, 208, 212, 216): m.obj("Statue2g", u, 9.2)       # four statues lining the NE wall (SW-6)
+
+
+def barrels_along_wall(m):
+    _declare(m)                                                # a bedroom with barrels from corner to corner (AMR-4)
+    for k in range(10): m.obj("Crate1", 202.0 + 1.9 * k, -9.0)
+
+
+def one_kind_fills(m):
+    for i in range(4):                                         # a hall of pews: 18 benches and the house's two pieces
+        for j in range(5): m.obj("Bench1", 204 + 3.6 * i, -7 + 3.2 * j)
+
+
+def keeper_off_counter(m):
+    from kit.npcs import Population
+    m.obj("TraderDesk1", 204, 6)                               # the counter by the NE wall...
+    Population(m, random.Random(1)).shopkeeper("ShopkeeperYellow", *px(214, -4), [(1, "RedApple")])   # ...keeper mid-room
+
+
+def throne_from_door(m):
+    m.obj("DunMirThroneBase", 219.5, -2)                      # by the SE wall, its back to the room's doors (GW-7)
+
+
+def stump_by_fire(m):
+    m.obj("CampFire", 186, -30); m.obj("Stump1", 189.5, -30)   # a stump as a seat by a camp fire (SW-3)
+
+
+def lone_bedroll(m):
+    m.obj("CampFire", 236, 26); m.obj("Cot2", 230, 32)         # a bedroll strewn in a camp, no tent, no row (GW-4)
+
+
+def heap_of_crates(m):
+    for k, t in enumerate(("Crate1", "Crate1", "Barrel", "Crate1", "Barrel", "Barrel")):   # a purposeless heap (GW-2)
+        m.obj(t, 235 + 2.4 * (k % 3), -32 + 2.4 * (k // 3))
+
+
+def empty_graveyard(m):
+    _declare(m, "bedroom", [dict(number=2, building="", kind="graveyard", purpose="", tiles=0, box=[0, 0, 0, 0],
+                                 yard=True, floor=[list(t) for t in rect_tiles(232, 250, 20, 34)])])
+    m.obj("Tombstone1", 240, 26)                               # one headstone in a graveyard (SW-9)
+
+
+def mp_object(m): m.obj("Crown", 190, 10)                      # an arena's crown in a single-player map
+
+
+def crammed_room(m):
+    _declare(m, "living_room"); clutter(m)                     # a declared room furnished past its kind's cover
+
+
+def tavern_tables(m):
+    _declare(m, "tavern"); clutter(m)                          # 30 tables where a tavern of this size sets at most 4
+
+
+def scattered_beds(m):
+    for u, v in ((204, -6), (212, 2), (208, 7)): m.obj("WoodBed2", u, v)   # three beds of one kind at random spots
+
+
+def stray_in_bedroom(m):
+    _declare(m); m.obj("BlackPowderBarrel", 216, 8)            # a powder barrel in a bedroom (TP1-4, DV3-4)
+
+
+def person_in_the_way(m):
+    _tour(m, "Eve", [px(184, -20), px(196, -20)], [20, 20])
+    from kit.npcs import Population                            # a townswoman standing on Eve's way (AMR-7)
+    Population(m, random.Random(2)).creature("Maiden", *px(190, -20.3), action="guard", scr="Ida", aggr=0.0)
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -313,21 +446,51 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STcrop", crop_on_fence, "exterior", "warning", "crops on a fence line - Ambermere playtest", "fence"),
     ("STcandl", candle_outdoors, "exterior", "warning", "a candle as an outdoor light - Starwell playtest", "pick it up"),
     ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
+    ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
+    ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
+    ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),
+    ("STshare", shared_stop, "routes", "error", "two walkers' stops 14 px apart - GW-6", "one spot for two"),
+    ("STface", facing_wall, "routes", "error", "a stop facing the house wall beside it - SW-2", "face open ground"),
+    ("STtour", short_tour, "routes", "warning", "a tour of two stops of 8 s - TW-9", "townsperson's tour"),
+    ("STdockb", dock_on_bank, "exterior", "warning", "a dock lying on the bank, not over the water - AM-2", "reach out"),
+    ("STmmap", minimap_on_corners, "minimap", "error", "the minimap polygon's corners on the map's corners - TW-5",
+     "starts outside"),
+    ("STshow", showpieces, "identity", "warning", "three telescopes in one room - SWR-1", "showpiece"),
+    ("STrepw", statues_along_wall, "identity", "warning", "four statues lining one wall - SW-6", "repeated along"),
+    ("STsupw", barrels_along_wall, "identity", "warning", "crates from corner to corner in a bedroom - AMR-4",
+     "supplies line"),
+    ("STmono", one_kind_fills, "identity", "warning", "a room filled with benches - TW-8", "one kind fills"),
+    ("STkeep", keeper_off_counter, "identity", "warning", "a shopkeeper in the middle of his shop - SWR-2", "counter"),
+    ("STthron", throne_from_door, "identity", "warning", "a throne with its back to the doors - GW-7", "throne"),
+    ("STseat", stump_by_fire, "exterior", "warning", "a stump as a seat by a camp fire - SW-3", "never stumps"),
+    ("STroll", lone_bedroll, "exterior", "warning", "a bedroll alone in the open - GW-4", "alone in the open"),
+    ("STheap", heap_of_crates, "exterior", "warning", "a heap of crates and barrels with no purpose - GW-2", "heaped"),
+    ("STgrave", empty_graveyard, "exterior", "warning", "a graveyard of one headstone - SW-9", "graveyard"),
+    ("STmpobj", mp_object, "setup", "warning", "an arena's crown in a single-player map", "Multiplayer-only"),
+    ("STcram", crammed_room, "rooms", "warning", "a declared room furnished past its cover - DysVale playtest", "crammed"),
+    ("STtabl", tavern_tables, "identity", "warning", "a tavern of 30 tables - TW-8", "free-standing tables"),
+    ("STscbed", scattered_beds, "composition", "warning", "three beds of one kind at random spots - TreePlace v0.1",
+     "beds scattered"),
+    ("STstray", stray_in_bedroom, "rooms", "warning", "a powder barrel in a declared bedroom - TP1-4", "not belong"),
+    ("STpers", person_in_the_way, "routes", "warning", "a person standing on a townsperson's way - AMR-7", "stands there"),
 ]
 
 
-def main():
+def main(argv=()):
+    import json
     base = V.baseline()
     ok = True
+    planted, other = {}, []
+    only = set(argv)
     print(f"{'map':9s} {'planted defect':66s} result")
     for name, defect, check, sev, desc, *contains in CASES:
+        if only and name not in only and name != "STclean": continue
         m = clean(name)
         if defect: defect(m)
         out_dir = os.path.join(OUT, name)
         os.makedirs(out_dir, exist_ok=True)
         side = os.path.join(out_dir, name + ".rooms.json")
         if getattr(m, "declare_rooms", None):          # the rooms as a generator would declare them
-            import json
             json.dump(m.declare_rooms, open(side, "w"))
         elif os.path.exists(side):
             os.remove(side)
@@ -335,20 +498,30 @@ def main():
         data = md.load(os.path.join(out_dir, name + ".map"))
         findings, _ = C.run_all(data, base)
         errors = [f for f in findings if f["severity"] == "error"]
+        other += [f"{name}: {f['msg'][:80]}" for f in findings if f.get("rule", "").endswith(".other")]
         if defect is None:
             passed = not errors
-            got = "no errors" if passed else "; ".join(f"{f['check']}: {f['msg'][:70]}" for f in errors[:4])
+            warns = sorted({f["rule"] for f in findings if f["severity"] == "warning"})
+            got = ("no errors" if passed else "; ".join(f"{f['check']}: {f['msg'][:70]}" for f in errors[:4]))
+            got += f"; warnings: {', '.join(warns)}" if warns else ""
         else:
             hits = [f for f in findings if f["check"] == check and f["severity"] == sev and
                     (not contains or contains[0] in f["msg"])]
             passed = bool(hits)
-            got = f"caught ({check} {sev}): {hits[0]['msg'][:90]}" if hits else \
-                f"MISSED; got: {[(f['check'], f['severity']) for f in findings if f['severity'] != 'info']}"
+            if hits: planted.setdefault(hits[0]["rule"], name)
+            got = (f"caught [{hits[0]['rule']}]: {hits[0]['msg'][:90]}" if hits else
+                   f"MISSED; got: {[(f['check'], f['severity']) for f in findings if f['severity'] != 'info']}")
         ok &= passed
         print(f"{name:9s} {desc:66s} {'PASS' if passed else 'FAIL'}\n          {got}")
+    if not only:
+        json.dump(planted, open(os.path.join(OUT, "rules.json"), "w"), indent=1)
+        print(f"\nRules with a planted case: {len(planted)} (written to validate/out/selftest/rules.json)")
+    if other:
+        ok = False
+        print("\nFindings no rule in checks.RULES names (give each message a rule):\n  " + "\n  ".join(other[:20]))
     print("\nAll checks behave as expected." if ok else "\nSOME CHECKS DID NOT BEHAVE AS EXPECTED.")
     return 0 if ok else 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main(sys.argv[1:]))

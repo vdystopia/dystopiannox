@@ -5,7 +5,8 @@ sees exactly what the game loads. It reports **errors** (defects a player will s
 **warnings** (departures from the range Westwood's single-player maps stay within), each with its
 position. It can also draw them on a picture of the map.
 
-Every map build runs it: `Spec.build()` ends with a `CHECK <map>: N error(s), M warning(s)` line.
+Every map build runs it (and the QA gate, `py tests/qa.py <design>`, runs it with everything else a map must pass:
+PROCESS.md section 9): `Spec.build()` ends with a `CHECK <map>: N error(s), M warning(s)` line.
 The full report goes to `validate/out/<map>/report.md`.
 
 ## Commands
@@ -14,8 +15,10 @@ The full report goes to `validate/out/<map>/report.md`.
 |---|---|
 | `py validate/validate.py DysVale` | Checks a map: a `.map` path, a game map folder name, or a Westwood map name such as `Con07B` |
 | `py validate/validate.py DysVale --image` | Also writes `overview.png` (numbered markers: red = error, orange = warning) and `errors/error_NNN.png` close-ups |
-| `py validate/selftest.py` | Builds a clean test map and 34 maps with planted defects, and confirms each defect is caught (by its own message) |
+| `py validate/checkcheck.py [--sample N]` | Checks the checks: per rule (`checks.RULES`), its findings on our 11 campaign maps and on Westwood's 120, and its planted case; flags dead rules, rules Westwood trips on more than a quarter of its maps, and findings no rule names. Writes `validate/out/checkcheck.md` |
+| `py validate/selftest.py` | Builds a clean test map and one map per planted defect (every playtest finding a check covers), and confirms each defect is caught (by its own message) |
 | `py validate/calibrate.py` | Re-measures Westwood's 120 single-player maps, rewrites `baseline.json`, and lists how often each check fires on them |
+| `py validate/calibrate.py --dry [--json]` | Only lists how often each check fires on Westwood's maps (`--json`: also `validate/out/calibration.json`); `baseline.json` is left as it is. Run it for every new or changed check |
 
 The exit code of `validate.py` is 0 when there are no errors, 1 when there are errors, and 2 when the map can't be read.
 
@@ -43,6 +46,17 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 | composition | warning | From the TreePlace v0.3 room review: a shelf, hanging, hearth, desk or chest against the SE or SW wall, where the camera sees only its back; shelves on one wall with bare wall between them (line them end to end); a chest, shelf or desk standing 0.9-3 units off its wall, alone in the room. A generated room is sparse below Westwood's median floor coverage for its kind (its rooms of 50+ tiles when the room is that big) and crammed above its kind's `ROOM_COVER` maximum. A piece whose centre falls in a wall's cell counts for the room on its side |
 | doors | warning | A double door between two rooms of a house (house rule; Westwood keeps them to palaces and Galava's town houses); a building with 3 or more kinds of door (Westwood: 11 of 630) |
 | density | warning | Lights, coloured lights, decorations, creatures, edge coverage and walls per 100 floor tiles outside Westwood's 5th–95th percentile |
+| minimap | error / warning | The PlayerStart in no minimap polygon by the game's own test (edges crossed to (0,0) and (5888,5888)): the minimap draws nothing (TW-5, GW-3; found Rimehold's cave polygon suppressing the map's own); under 25% of the floor covered |
+| identity | warning | A room that does not read as what it is (SW-6, SWR-1, SWR-2, TW-8, GW-7, AMR-4): a showpiece repeated; a stand-alone kind 4+ times along one wall; supplies over 60% of a wall outside a store; one kind 60%+ of a 16+ piece room (shelves and crypt rows aside); more free tables than the type sets; a shopkeeper away from or in front of his counter; a throne facing no door |
+| routes | error / warning | Also: a tour of under 4 stops or a pause under 15 s (TW-9); a route passing within 18 px of a peaceful person standing still (AMR-7) |
+| exterior | warning | Also: a stump within 90 px of a camp fire (SW-3); a bedroll away from any tent and any row (GW-4, SW-1); 5+ crates and barrels of at most two kinds heaped with nothing else of a scene near (GW-2); a declared graveyard with under 3 graves (SW-9) |
+
+Every finding carries its rule (`rule` in `report.json`, `[rule]` in `report.md`); `checks.RULES` lists each rule with
+its message pattern and the feedback it answers (`review/FEEDBACK.md`). Calibration on Westwood (2026-10-05): the
+exterior rules were narrowed where Westwood does the thing on purpose (plants and torch poles at a fence's foot, potions
+and food as outdoor pickups, swarming creatures, a bench at its table); `rooms.stray` judges only a design's declared
+rooms; `composition.way_in`, `composition.front_wall` and `composition.torch_indoors` stay house rules that Westwood
+breaks (see `validate/out/checkcheck.md`).
 
 ## How it was calibrated
 
@@ -90,7 +104,7 @@ Composition warnings on Westwood's maps (they are guidance, not errors):
 | TreePlace v0.1 | 0 errors at release. The arrangement checks added after its playtest flag all of that playtest's findings in it (6 rooms with torches, food by a table, tables seated at their ends, mixed bunks, a table without seats, a lopsided kitchen, barrels in the mess hall, a powder barrel and a bookcase in a storeroom) |
 | TreePlace v0.2 | 0 errors at release. The room-review rules flag its reviewed defects: tables half on rugs, bunks 0.5 units apart, the cauldron against the hearth, double doors between house rooms, three kinds of door in the foreman's house |
 | TreePlace v0.3 | 0 errors; warnings: no creatures, 16.8 wall pieces per 100 floor tiles |
+| RoomTest | 20 doors standing in the void: the test sheet's rooms float in darkness (same on master) |
 
 Generated maps declare their rooms in `<map>.rooms.json` beside the map, and the checker judges each room as its
 declared kind. Other maps' rooms are classified by their furniture.
-| RoomTest | 20 doors standing in the void: the test sheet's rooms float in darkness (same on master) |
