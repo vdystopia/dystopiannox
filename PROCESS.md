@@ -93,6 +93,27 @@ Then, in this order:
 1. Dig the water into the land, with a bridge where the road crosses.
 2. Route a path from each door. Where Westwood never lets the path's floor touch the room's floor (packed dirt
    against marble), the path uses Westwood's buffer floor (`Land.connect_door`).
+   - **The threshold** (Starwell playtest, 2026-10-05: "Tile blending on the inside of doors seems consistently off", a
+     strip of grass and dirt spilt onto the boards just inside an arched door). Westwood's town doorways (corpus,
+     exterior doors of the single-player maps): the inside floor runs right up to the door, under it and onto the
+     doorstep; the ground's edge lies on the doorstep or beyond, never on a tile that reaches into the room (about 1
+     door in 10 carries it inside). The kit had laid it there twice: `Land.connect_door` gave the room's tiles by the
+     doorstep the path's edge ("dirt carried in"), and `_blend_thresholds` gave every room tile that met the ground
+     through an open cell the ground's edge, at the doors and along every NW-SE wall, whose line tiles the house had
+     left to the land (half a tile of grass inside the room, blended onto the boards). Now (`mapgen/nox.py`):
+     - `_wall_line_floors`: a tile meeting a room's tile through an open cell by a wall takes the room's floor (the floor
+       runs under its walls);
+     - `_door_thresholds`: at each door between a room (`Spec.indoor`, the rooms' tiles from `kit/building.py`) and the
+       ground, the tiles over the opening or straight out from it that lie wholly outside the wall line take the room's
+       floor (the doorstep: two tiles in a NW-SE wall, where tiles sit on the line; one in a NE-SW wall, where they
+       straddle it) and the ground blends onto them; the tiles that reach inside take the room's floor and no outdoor
+       edge (`sheltered`). The room's own floor, never a carpet laid on it (a runner to the door had carried RugBlueNorm
+       onto Ambermere's dirt path), and never where it would meet a floor Westwood keeps from it (`_may_take`: Mirefen's
+       stone stilt houses by swamp grass and water);
+     - `_edges`: a room's tile takes no edge from outside across its wall, nor at a tip.
+     The checker warns of any outdoor ground lying on, or blending onto, a room's tile (`checks.check_thresholds`,
+     generated rooms only). Starwell had 206 such tiles (46 at doors), Ambermere 198, Greywatch 137, Thornwick 171; now
+     none.
 3. Grass variety patches, kept clear of roads, banks and buildings.
 4. Scenes, gardens, benches, street lights, and the features' dressing. A town square in Westwood's manner
    (`Village.fountain_square`): a fountain ringed by potted plants and flowers, benches facing in, ornate street
@@ -301,6 +322,58 @@ Then, in this order:
     colonnade in pairs from 5 units ahead of the altar (a barrow's god statue had stood among a block of 8 columns).
   - A piece drawn facing one way takes the variant of its wall (`WALL_SIDE_TYPE`): LOTDLichGodStatue1 on a NW wall
     facing SE, Statue2 on a NE wall facing SW (Westwood 8 of 10, 5 of 6), and only on the back walls.
+- **What a good room is** (Starwell playtest, 2026-10-05: "The room in the fifth screenshot is exceptional. It feels very
+  full, balanced, and themed. This is an example of a very, very good room"; the smaller offices and bedrooms are good
+  too). The reference is Starwell's room 9 (seed 4), the archmagister's study (`study` recipe; 66 tiles declared, 50 as the
+  checker counts them):
+  - the NW wall: the desk centred with its chair, bookcases either side of it to the corners (`line near=desk`);
+  - the NE wall: bookcases end to end with a trophy between and the chest (`line other`, `storage at=center`);
+  - the middle: one group that shows the use, a round table and two chairs on a carpet of floor tiles (`table center
+    seats`, `carpet under`), and one curio standing free (a telescope, `group curio`);
+  - the front walls: statues between candelabras, plants in the two front corners;
+  - pieces of one theme (books, a desk, a meeting table, a telescope, statues: a scholar's room), nothing repeated that
+    stands alone.
+  - Its numbers (`py review/roomscore.py`): coverage 0.11, 26 pieces of 17 types, all four walls used, back walls 51%
+    lined, the most of one stand-alone kind against one wall 2, middle 0.03. The room score holds every room to that
+    yardstick (`identity`: no showpiece repeated, no stand-alone piece four times along a wall, no more free tables
+    than the kind sets, nothing outside the identity) and prints its walls used and its repeat.
+- **A room has an identity** (same playtest, the college laboratory: "It almost looks like some sort of shoddy mess hall
+  with random objects stuffed in it. This room has no sense of identity or purpose. No continuity of theme or real
+  feel"; eight tesla coils end to end down its long wall, five dining and reading tables with their chairs down the
+  middle). Each wall has a purpose, one group in the middle shows the room's use, the pieces keep to one theme, the
+  room is full but balanced. A long room is used in zones along its length, never lined with one repeated piece.
+  - The laboratory (Westwood's Wiz07D: bookcases with a desk among them, a work island of workstations, the tesla coils
+    apart; 104 laboratories hold 1-9 lab pieces, a table in a quarter of them): the study end (the desk on the back wall
+    with the most room before it, near a corner, bookcases either side); the work wall (a bench of wizards'
+    workstations of the three kinds with a hanging between, one alchemist's desk, a pair of potion shelves, a chest);
+    in the middle the alchemist's work table with its stools, glowing jars and a bubbling cauldron (`GROUPS alchemy`)
+    and a conjuring circle, an orrery ringed by four candelabras (`conjuring`); a pair of generators apart
+    (`generators`, mirrored down the length); statues by the front walls; tapestries. Never a dining table
+    (`types table ^Table[1-4]$`, `repeat table (1, 1)`); topped up only with a chest or a plant (`top_up`).
+  - **Showpieces stand once** (same playtest: "The shelves on the NE wall in this room are more of a single instance
+    object. These are not repeatable shelves that should line a whole wall ... The shelving on the northwest wall, by
+    contrast, is the kind that can be repeated"). Westwood (corpus, a piece within 1.15 of its width of another of its
+    kind): bookcases stand beside their kind 88% of the time, two thirds mid-run; wizards' workstations 64% (a bench
+    of mixed kinds); potion shelves 60%, but three in a run only 9%; alchemist's desks, generators, telescopes,
+    orreries, crystal balls and desks 0-5%. So `kit/furnish.py SHOWPIECES` stand once in a room (twice, 10 units
+    apart, in a room of 120 tiles or more; a pair of generators), potion shelves once as a pair (`PAIRED_PIECES`), and
+    neither ever lines a wall (`NEVER_LINED`: `line_wall`, `line_backs`, `top_up` and `complete_bookcase_walls` repeat
+    only the kinds that line walls). A herbalist's potion shelves are a pair among the bookcases of remedies.
+- **A throne room has character** (same playtest: the Hall of the Star "is also kind of empty and barren. It's just a
+  long room with tons of the same exact pillars"; 22 columns 3.4 units apart down both sides of the runner, hunting
+  trophies on the walls). Westwood's halls hold 6 columns at the median, 4 statues, tapestries. The throne still faces
+  its door down a clear aisle on a runner (the keep's rules above), and now: braziers before the dais
+  (`flank_lights`), statues flanking the throne against its wall, a few pairs of columns spread down the whole length
+  (`repeat column (26, 8)`: the pairs set the step), pairs of statues facing across the aisle halfway between them
+  (`aisle_pair`), tapestries of one colour on the back walls (`decor_themes`, never trophies), a bench or two by the
+  walls, plants in the corners; no chests or benches to fill the floor (`top_up` plants only). Halls cap their columns
+  too (`repeat column (18, 10)`).
+- **A shop's keeper stands behind a counter** (same playtest: "The shopkeeper is standing in the middle of the shop,
+  surrounded by a random scattering of objects ... He needs to be standing somewhere that makes sense, like behind a
+  desk. Instead of six armor racks, use three armor racks and three weapon racks"). Every shop room, the smithy too, sets
+  its counter out from a back wall with the keeper's spot behind it (`counter`; `StoryMap.shops` stands the keeper
+  there). Racks for show stand three to a row in a shop or a smithy (`SHOP_RACKS_PER_ROW`), each row its own kind and
+  the rows taking the kinds the room allows in turn (`rack_rows`: a row of armour stands, a row of weapon racks).
 - **Nothing lines a wall from corner to corner unless it is a store** (same review: 17 piled barrels end to end along
   the Amber Eel's SW wall). `stock_walls(per_wall=)` caps the share of each wall the supplies take, counting what
   stands there; a tavern's kegs take at most 40% of a wall, heaped toward its corners.
@@ -564,7 +637,10 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   meant to be (a study with two bookcases is not a library).
 - Between playtests, improve rooms in the room lab (`mapgen/designs/roomlab.py`, `review/roomscore.py`): every room
   kind at Westwood's typical and large sizes and half as big again, scored on coverage, an open middle, lined back
-  walls and the checker's findings. Fix what fails in three seeds before the next playtest.
+  walls and the checker's findings. The score also asks for an identity (Starwell playtest, 2026-10-05): no showpiece repeated, no
+  stand-alone piece four times along one wall, no more free tables than the kind sets, nothing outside the identity;
+  it prints how many walls have a purpose and the most of one stand-alone kind on a wall, beside the reference room's
+  numbers ("What a good room is"). Fix what fails in three seeds before the next playtest.
 - Then whole buildings in the building lab (`mapgen/designs/buildinglab.py`, `review/buildingscore.py`): every
   building role at Westwood's size, the kit's 1.25 and the bigger 1.6, scored on room sizes for their kinds,
   reachability, the checker's findings and the rooms' own scores.

@@ -423,6 +423,45 @@ def check_doorways(m, ctx, base):
     return out
 
 
+def outdoor_on_floors(m):
+    """The tiles of a generated map's rooms that carry the outdoor ground, as their floor or as an edge spilt onto them
+    (Starwell playtest, 2026-10-05: "Tile blending on the inside of doors seems consistently off", the path's dirt and
+    the grass drawn on the boards just inside the door). A room's tile is one whose cells all lie in the room or in its
+    walls and doorways; an outdoor material is one that lies on the ground outside and on no room's tiles (a doorstep
+    takes the room's floor, so the room's floor is never outdoor). Only the rooms a design declared (Westwood's own
+    doorways carry the ground's edge inside at about 1 in 10). Returns [(tile, material, how)]."""
+    rooms = [r for r in find_rooms(m) if r.get("declared") and not r.get("yard")]
+    if not rooms: return []
+    blocked = set(m.walls) | set(m.door_gaps)
+    room_cells = set().union(*(set(r["cells"]) for r in rooms))
+    cells = lambda t: ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
+    inside, outdoor, indoor_mats = [], set(), set()
+    for t, rec in m.tiles.items():
+        cs = cells(t)
+        if all(c in room_cells or c in blocked for c in cs) and any(c in room_cells for c in cs):
+            inside.append(t); indoor_mats.add(rec["material"])
+        elif not any(c in room_cells for c in cs):
+            outdoor.add(rec["material"])
+    outdoor -= indoor_mats
+    out = []
+    for t in inside:
+        rec = m.tiles[t]
+        if rec["material"] in outdoor: out.append((t, rec["material"], "floor"))
+        for e in rec["edges"]:
+            if e[0] in outdoor: out.append((t, e[0], "edge")); break
+    return out
+
+
+def check_thresholds(m, ctx, base):
+    """No outdoor ground lies on a room's floor, nor blends onto it (outdoor_on_floors)."""
+    out = []
+    for t, mat, how in outdoor_on_floors(m):
+        out.append(F("floors", "warning", f"The outdoor {mat} {'lies on' if how == 'floor' else 'blends onto'} a room's "
+                     f"floor: a doorway's ground stops at the wall line (Westwood's doorstep takes the room's floor).",
+                     (t[0] + 1) * CELL, (t[1] + 1) * CELL))
+    return out
+
+
 def edge_between(m, a, b):
     ta, tb = m.tiles[a], m.tiles[b]
     return any(e[0] == tb["material"] for e in ta["edges"]) or any(e[0] == ta["material"] for e in tb["edges"])
@@ -1728,8 +1767,8 @@ def dock_reach(m):
 
 
 ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
-       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_rooms, check_density,
-       check_exterior]
+       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds, check_rooms,
+       check_density, check_exterior]
 
 
 def run_all(m, base, only=None):
