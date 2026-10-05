@@ -65,6 +65,17 @@ can also be started directly: `load rimehold`, `load emberhol`.
   breaks it and blesses you, or Corvin at the inn buys it.
 - Three shops (smithy, trading post, inn), caches, six townsfolk with rumours.
 
+### Mirefen: the drowned chapel (chapter five, the new swamp palette)
+
+- A swamp palette measured on Westwood's swamps (swamp grass and weeds, shallow water with deep hearts, root walls,
+  two-part swamp trees, polyps, frogs and flies, carnivorous plants, leeches, wasps, wisps), tried on a lab map until
+  every measure sat in Westwood's swamp ranges.
+- **Main quest:** the necromancer Morvane holds the old chapel, sunk in black water in the east fen, and raises the
+  drowned; Elder Haska keeps the north causeway shut until he dies.
+- **The Lost Boy:** Tam hides between the wasp nests in the west reeds; kill the wasps and he runs home to his father.
+- **The Great Leech** of the deep pool, for Brask the eel-catcher. Two shops, five townsfolk with rumours.
+- Its exit leads home to Thornwick.
+
 ## The skill, tested
 
 The first draft of the phase 6 skill (`skills/nox-story-map/SKILL.md`) was handed to a fresh agent that knew
