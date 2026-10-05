@@ -131,8 +131,18 @@ func run(acts []Act, at ns.Positioner) {
 				n = 1
 			}
 			for i := 0; i < n && p != nil; i++ {
+				// A new object waits on the server's pending list until the frame ends. Picking it up at once
+				// unlinks it from the wrong list and the frame's end links it into the world too: it is then in
+				// the world and the pack at once, and the next walk through either loops forever (the game froze
+				// whenever a talk gave an item). So it lands at the player's feet and is picked up a few frames
+				// later, as the player would pick it up; if that fails it simply stays there.
 				if it := ns.CreateObject(a.A, p); it != nil {
-					p.Pickup(it)
+					holder, item := p, it
+					ns.NewTimer(ns.Frames(3), func() {
+						if holder != nil && item != nil && item.GetHolder() == nil {
+							holder.Pickup(item)
+						}
+					})
 				}
 			}
 		case "drop": // A item type at the spot (where the creature fell)
