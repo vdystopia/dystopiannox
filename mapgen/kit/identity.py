@@ -349,7 +349,7 @@ ROOMS = {
                   optional={"column": (0.8, 12), "statue": (0.6, 4), "storage": (0.6, 3), "wall_decor": (0.7, 4),
                             "plant": (0.3, 3)},
                   types={"tomb": r"^Crypt\d+$|^Coffin\d$", "column": r"^CathedralColumn\d|^Column\d$",
-                         "statue": r"^Statue2[a-h]$|^Gargoyle\d$", "storage": r"^Chest\d$",
+                         "statue": r"^Statue2[a-h]$|^Gargoyle\d$", "storage": r"^Chest\d$|^CryptChest\d$",
                          "plant": r"^PlantBarren\d$|^Plant[15]$"},
                   compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.6, side_by_side=True, aisle=1.8),
                            dict(fam="storage", slot="wall", at="corner", clear=1.2),
@@ -374,8 +374,10 @@ ROOMS = {
                                "back wall, long tables with benches down the middle, banners and trophies on the back "
                                "walls, statues in pairs, benches along the walls, aisles clear along the doors",
                        base="hall",
-                       core={"table": (2, 10), "bench": (4, 40), "fireplace": (1, 2)},
-                       per_tiles={"table": 30},
+                       # 2026-10-04 review: "the sheer number of tables and chairs was too much", 4-6 sets fewer;
+                       # a table per 48 tiles (was 30), at most 6, and a carpet of floor tiles over the open floor
+                       core={"table": (2, 6), "bench": (4, 24), "fireplace": (1, 2)},
+                       per_tiles={"table": 48},
                        optional={"statue": (0.8, 4), "wall_decor": (1.0, 12), "plant": (0.8, 4), "storage": (0.5, 2),
                                  "column": (0.5, 12), "chair": (0.5, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
@@ -384,6 +386,7 @@ ROOMS = {
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
                                 dict(fam="table", slot="table_rows", seat="bench"),
+                                dict(fam="carpet", slot="carpet", where="under", margin=3.0, chance=1.0),
                                 dict(fam="wall_decor", slot="decor")],
                        fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
                              dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
@@ -579,6 +582,10 @@ BUILDINGS = {
                          ("library", "the library"), ("study", "the lord's study"), ("bedroom", "the lord's chamber"),
                          ("bedroom", "the guest chamber"), ("storeroom", "the stores")],
                   scenes=["deliveries", "water_barrel"], garden=0.0, faces="square"),
+    "chapel": dict(purpose="the town's chapel: the nave with its altar and pews, and behind it the crypt where an old "
+                           "family lies", style="stone_house", size=(40, 30), min_units=220,
+                   rooms=[("chapel", "the nave: the altar, the pews facing it"), ("crypt", "the family crypt behind the nave")],
+                   scenes=["sign"], garden=0.0, faces="square"),
     # the biomes' structures (rules/BIOMES.md, rules/cultures.py): the built parts of Westwood's lava, ice and cave
     # maps in their own building styles, furnished by their culture
     "demon_forge": dict(purpose="a demon forge of black stone above the lava: the forge, the hall where its arms are "

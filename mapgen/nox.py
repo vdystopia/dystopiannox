@@ -46,6 +46,12 @@ STOCK_DURABILITY = {
     "BattleAxe": 300, "Bow": 1000, "CrossBow": 500, "ForceWand": 500, "GreatSword": 400,
     "LesserFireballWand": 100, "Longsword": 180, "MorningStar": 200, "RoundChakram": 300,
     "Sword": 200, "WarHammer": 350,
+    # armour, from the editor's table of Westwood's values (MapEditor/XferGui/EquipmentEdit.GetDurability)
+    "OrnateHelm": 850, "SteelHelm": 675, "Breastplate": 800, "PlateLeggings": 700, "PlateArms": 600,
+    "PlateBoots": 700, "MedievalCloak": 200, "ChainCoif": 325, "ChainLeggings": 325, "ChainTunic": 400,
+    "ConjurerHelm": 500, "LeatherHelm": 200, "LeatherArmbands": 200, "LeatherArmoredBoots": 300,
+    "LeatherLeggings": 200, "LeatherArmor": 300, "LeatherBoots": 200, "WizardRobe": 325, "WizardHelm": 350,
+    "SteelShield": 300, "WoodenShield": 200, "OgreAxe": 50,
 }
 
 # Diagonal neighbours of a wall cell, named by screen direction.
@@ -180,16 +186,38 @@ class Spec:
         x, y = px(u, v)
         return self.obj_px(type_, x, y, team)
 
-    def obj_px(self, type_, x, y, team=None, **extra):
-        o = dict(type=type_, x=round(x, 1), y=round(y, 1), **extra)
+    def obj_px(self, type_, x, y, team=None, items=None, **extra):
+        """An object at world pixel (x, y). items: what it holds (a chest's loot), each a type name, (type, xfer)
+        or (type, xfer, count); Gold takes its amount as xfer {"Amount": n}."""
+        o = self.item(type_, x, y, **extra)
         if team is not None: o["team"] = team
-        if type_ in STOCK_DURABILITY: o["durability"] = STOCK_DURABILITY[type_]
+        if items: o["items"] = self.items_at(items, x, y)
         self.d["objects"].append(o)
         return o
 
-    def clone(self, donor_map, scr, x, y):
-        """Copy a configured object (e.g. a townsperson) from a stock map by its script name."""
+    @staticmethod
+    def item(type_, x, y, **extra):
+        o = dict(type=type_, x=round(x, 1), y=round(y, 1), **extra)
+        if type_ in STOCK_DURABILITY and "durability" not in o: o["durability"] = STOCK_DURABILITY[type_]
+        return o
+
+    def items_at(self, items, x, y):
+        """Inventory objects for a holder at (x, y), set a little off it as Westwood's are (about 25 px)."""
+        out = []
+        for k, it in enumerate(items):
+            t, xfer, n = (it, None, 1) if isinstance(it, str) else (tuple(it) + (None, 1))[:3]
+            for _ in range(n or 1):
+                o = self.item(t, x + 18 + 3 * (k % 4), y + 20 + 2 * (k // 4))
+                if xfer: o["xfer"] = dict(xfer)
+                out.append(o)
+        return out
+
+    def clone(self, donor_map, scr, x, y, name=None, xfer=None):
+        """Copy a configured object (e.g. a townsperson in its clothes) from a stock map by its script name; `name`
+        gives it a script name in this map, `xfer` overrides its settings (facing, default action)."""
         o = dict(clone=dict(map=donor_map, scr=scr), x=round(x, 1), y=round(y, 1))
+        if name: o["scr"] = name
+        if xfer: o["xfer"] = dict(xfer)
         self.d["objects"].append(o)
         return o
 

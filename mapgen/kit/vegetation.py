@@ -19,6 +19,20 @@ import collections, math
 from kit.layout import SQ, N4, N8, square_px, bfs_distance
 
 UNDERGROWTH = {"Plant4": 40, "Plant5": 20, "PlantForest1": 14, "Plant1": 7, "PlantBarren1": 5, "Plant2Flowered": 5, "Mushroom3": 6}
+# Aspens (the yellow TreeForest13-17) read as a bright fringe when they stand right against the boundary wall: the first
+# row before the wall takes few of them (2026-10-04 review: "use fewer aspen trees on the map edges").
+ASPEN = ("TreeForest13", "TreeForest14", "TreeForest15", "TreeForest16", "TreeForest17")
+EDGE_ASPEN_KEEP = 0.25
+
+# Rock piles as Westwood heaps them outdoors (its 35 town and forest maps hold 582 clusters of 4 or more rocks within
+# 50 px of each other): one big anchor (huge rocks, boulders or a rock pillar), large and medium rocks against it,
+# small ones and pebbles round the rim. Each size by its share in those piles.
+ROCK_PILE = {"anchor": {"CaveRocksHuge": 5, "CaveBoulders": 4, "CaveRockPillarTall1": 2, "CaveRockPillarTall2": 2,
+                        "CaveRockPillarShort1": 2, "CaveRockPillarShort2": 1},
+             "large": {"CaveRocksLarge": 3, "CaveRocksMedium": 2},
+             "small": {"CaveRocksSmall": 3, "CaveRocksTiny": 1},
+             "rim": {"CaveRocksPebbles": 4, "CaveRocksTiny": 1}}
+
 FLOWERS = {"FlowersYellowSparse": 4, "FlowersPurpleSparse": 2, "FlowersWhiteSparse": 2, "FlowersBlueSparse": 1}
 
 # How much grows in a town (Westwood's 17 town maps, per 100 floor tiles): 1.7 trees (p75 2.2), three quarters of them
@@ -160,7 +174,12 @@ class Planter:
             if self.rng.random() > p: continue
             si, sj = s[0] + self.rng.uniform(0.15, 0.85), s[1] - self.rng.uniform(0.15, 0.85)
             if self._ok_tree(si, sj) and self._free(si, sj, spacing, "tree"):
-                self._put("tree", self._tree_type(si, sj), si, sj)
+                t = self._tree_type(si, sj)
+                if self.edge[s] == 1 and t in ASPEN and self.rng.random() > EDGE_ASPEN_KEEP:
+                    others = {k: w for k, w in FORESTS[self._forest(si, sj)]["trees"].items() if k not in ASPEN}
+                    if not others: continue               # an aspen wood: thinner at the wall instead
+                    t = _pick(self.rng, others)
+                self._put("tree", t, si, sj)
 
     def groves(self, n=3, size=(6, 11), radius=3.0, spacing=1.2, avoid_areas=None):
         """A few single-species groves in open ground away from roads, buildings and the edge, and
@@ -236,6 +255,34 @@ class Planter:
             si, sj = s[0] + self.rng.random(), s[1] - self.rng.random()
             if self._ok_small(si, sj) and self._free(si, sj, spacing, "small") and self._free(si, sj, 0.6, "tree"):
                 self._put("small", self._plant_type(si, sj), si, sj)
+
+    def rock_piles(self, n, min_edge=1, max_edge=6, gap=12.0, avoid=()):
+        """n heaps of rock in Westwood's manner (ROCK_PILE): an anchor, then large rocks against it, small ones and
+        pebbles further out, about 1.5 squares across; on open ground near the forest wall (the edge distance in
+        [min_edge, max_edge]), clear of roads, doors, water and what is built, `gap` squares apart (2026-10-04 review:
+        "a concentrated pile of rocks here and there"). avoid: squares to keep clear too. Returns the pile centres."""
+        avoid = set(avoid)
+        cands = [s for s, d in self.edge.items() if min_edge <= d <= max_edge and self.busy_d.get(s, 99) >= 3
+                 and self.water_d.get(s, 99) >= 2 and s not in avoid]
+        self.rng.shuffle(cands)
+        centres = []
+        for s in cands:
+            if len(centres) >= n: break
+            if any((s[0] - a) ** 2 + (s[1] - b) ** 2 < gap * gap for a, b in centres): continue
+            ci, cj = s[0] + 0.5, s[1] - 0.5
+            if not self._free(ci, cj, 1.4, "tree"): continue
+            centres.append(s)
+            rings = [("anchor", 0.0, 1)] + [("large", 0.55, self.rng.randint(1, 3)), ("small", 0.95, self.rng.randint(2, 4)),
+                                           ("rim", 1.35, self.rng.randint(3, 6))]
+            a0 = self.rng.uniform(0, 2 * math.pi)
+            for kind, r, k in rings:
+                for q in range(k):
+                    a = a0 + 2 * math.pi * (q + self.rng.uniform(-0.3, 0.3)) / max(1, k) + (0.6 if kind == "small" else 0)
+                    rr = r * self.rng.uniform(0.75, 1.15)
+                    si, sj = ci + rr * math.cos(a), cj + rr * math.sin(a)
+                    if not self._ok_small(si, sj): continue
+                    self._put("small", _pick(self.rng, ROCK_PILE[kind]), si, sj)
+        return centres
 
     def plant_all(self, groves=3, flowers=6, birds=8, profile=None):
         """Everything that grows. profile: a planting profile (TOWN_PLANTING) in place of the forest maps' density."""

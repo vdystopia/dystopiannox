@@ -1,4 +1,4 @@
-# Builds a Nox map from a JSON spec using the editor's own library (NoxShared.dll), so the
+﻿# Builds a Nox map from a JSON spec using the editor's own library (NoxShared.dll), so the
 # result is written exactly the way the editor writes maps and opens cleanly in it.
 # Must run in 32-bit PowerShell (NoxShared targets x86); mapgen\nox.py handles that.
 #
@@ -7,7 +7,7 @@
 #   ambient[r,g,b],
 #   walls[{x,y,facing,material[,variation][,window]}],
 #   tiles[{x,y,material[,edges[[overlayMaterial, edgeType, direction]]]}],
-#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}]}],
+#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}][,items[object...]]}],
 #   waypoints[{id,x,y[,name][,links[id...]]}],
 #   polygons[{name,ambient[r,g,b],minimap,points[[x,y]...]}]
 param(
@@ -124,23 +124,11 @@ function Set-Extents($obj) {
 }
 $things = [NoxShared.ThingDb]::Things
 $donors = @{}
-foreach ($o in $s.objects) {
-    if ($o.clone) {
-        # Copy a fully configured object (e.g. a townsperson with clothes) from a stock map.
-        if (-not $donors.ContainsKey($o.clone.map)) { $donors[$o.clone.map] = Read-Map $o.clone.map }
-        $src = $donors[$o.clone.map].Objects | Where-Object { $_.Scr_Name -eq $o.clone.scr } | Select-Object -First 1
-        if (-not $src) { $errors.Add("clone source '$($o.clone.scr)' not found in $($o.clone.map)"); continue }
-        $obj = $src.Clone()
-        $obj.Location = New-Object Drawing.PointF([float]$o.x, [float]$o.y)
-        $obj.Scr_Name = ''                    # no script in this map references it
-        Set-Extents $obj
-        Set-XferFields $obj $o.xfer
-        [void]$map.Objects.Add($obj)
-        continue
-    }
-    if (-not $things.ContainsKey($o.type)) { $errors.Add("unknown object type '$($o.type)'"); continue }
+function New-SpecObject($o) {
+    # One object of the spec, with what it holds (o.items: a chest's loot, a creature's carried things) as inventory
+    # objects, the way Westwood stores them (each with the extended fields, a little off its holder's position).
+    if (-not $things.ContainsKey($o.type)) { $errors.Add("unknown object type '$($o.type)'"); return $null }
     $obj = New-Object NoxShared.Map+Object($o.type, (New-Object Drawing.PointF([float]$o.x, [float]$o.y)))
-    Set-Extents $obj
     if ($null -ne $o.team) {
         # Team is only written when the extended-fields flag is set (editor: "extra" checkbox).
         $obj.Team = [byte]$o.team
@@ -152,14 +140,16 @@ foreach ($o in $s.objects) {
         $obj.Terminator = 0xFF
     }
     # Same defaults the editor applies when placing equipment (XferGui\EquipmentEdit.SetDefaultData);
-    # weapons with zero durability can crash the game.
+    # weapons and armour with zero durability can crash the game.
     $thing = $things[$o.type]
     $x = $xferField.GetValue($obj)
     if ($thing.Xfer -eq 'WeaponXfer') {
         $x.Durability = if ($null -ne $o.durability) { [int16]$o.durability } else { [int16]$thing.Health }
         $x.DefaultsFor($thing)
     } elseif ($thing.Xfer -eq 'ArmorXfer') {
-        $errors.Add("armor '$($o.type)' needs the editor's per-item durability table; not supported yet")
+        # the editor's table of Westwood's armour durabilities (mapgen/nox.py STOCK_DURABILITY carries it)
+        if ($null -eq $o.durability) { $errors.Add("armor '$($o.type)' has no durability (add it to STOCK_DURABILITY)") }
+        else { $x.Durability = [int16]$o.durability }
     } elseif ($thing.Xfer -eq 'DoorXfer') {
         $x.Direction = [NoxShared.ObjDataXfer.DoorXfer+DOORS_DIR][int]$o.door
     } elseif ($thing.Xfer -eq 'MonsterXfer') {
@@ -169,6 +159,35 @@ foreach ($o in $s.objects) {
         $x.InitForMonsterName($o.type)
     }
     Set-XferFields $obj $o.xfer
+    if ($o.items) {
+        $obj.Terminator = 0xFF                # the inventory is written with the extended fields
+        foreach ($it in $o.items) {
+            $c = New-SpecObject $it
+            if ($c) { $c.Terminator = 0xFF; $obj.InventoryList.Add($c) }
+        }
+    }
+    return $obj
+}
+
+foreach ($o in $s.objects) {
+    if ($o.clone) {
+        # Copy a fully configured object (e.g. a townsperson with clothes) from a stock map.
+        if (-not $donors.ContainsKey($o.clone.map)) { $donors[$o.clone.map] = Read-Map $o.clone.map }
+        $src = $donors[$o.clone.map].Objects | Where-Object { $_.Scr_Name -eq $o.clone.scr } | Select-Object -First 1
+        if (-not $src) { $errors.Add("clone source '$($o.clone.scr)' not found in $($o.clone.map)"); continue }
+        $obj = $src.Clone()
+        $obj.Location = New-Object Drawing.PointF([float]$o.x, [float]$o.y)
+        # its script name in this map (a quest giver the scripts talk through), or none
+        $obj.Scr_Name = if ($o.scr) { [string]$o.scr } else { '' }
+        if ($o.scr) { $obj.Terminator = 0xFF }
+        Set-Extents $obj
+        Set-XferFields $obj $o.xfer
+        [void]$map.Objects.Add($obj)
+        continue
+    }
+    $obj = New-SpecObject $o
+    if (-not $obj) { continue }
+    Set-Extents $obj
     [void]$map.Objects.Add($obj)
 }
 

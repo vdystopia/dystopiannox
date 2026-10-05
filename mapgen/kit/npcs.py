@@ -19,6 +19,8 @@ Movement beyond that is scripted: Move along waypoints, Wander, Guard, Hunt, Fol
 import json, math, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+UNPLACEABLE = {"Zombie": "OpenNox cannot read the map back; Westwood keeps zombies inside coffins",
+               "VileZombie": "as Zombie"}
 ACTION = dict(idle=0, wait=1, escort=3, guard=4, hunt=5, roam=10)
 # DirectionId: the editor's names for the 8 facings (MonsterXfer.NOX_DIRECT_NAMES), by screen direction
 DIRECTION = dict(N=0, S=1, E=2, NW=3, SW=4, W=5, NE=6, SE=7)
@@ -57,6 +59,9 @@ class Population:
         """One creature at world pixel (x, y): its default action, its facing (a point to look toward, or random),
         Westwood's sight range for its type (or `sight`), aggressiveness 0.5 like Westwood's (or `aggr`), roam flags
         and escort target. Returns the object dict."""
+        # a Zombie written as a placed creature makes OpenNox misread the map's object section (the server stops at
+        # "cannot read next section: EOF" and panics; 2026-10-04): Westwood only ever puts zombies inside coffins
+        assert t not in UNPLACEABLE, f"{t} cannot be placed as a creature ({UNPLACEABLE[t]})"
         ww = self.ww.get(t, {})
         x_ = dict(DefaultAction=ACTION.get(action, action),
                   DirectionId=facing(face[0] - x, face[1] - y) if face else self.rng.randrange(8),

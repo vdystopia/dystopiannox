@@ -111,6 +111,7 @@ SNUG_GAP = {"shelves": 0.18, "storage": 0.22, "desk": 0.25, "fireplace": 0.15, "
 CARPET_EDGE = "RugTanLightEdge"
 CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone")
 # Gear racks that stand in rows down the middle of a storeroom, one kind to a row (TreePlace v0.3 room review).
+RACKS_PER_ROW = 5
 RACK_KINDS = {"gear": (r"^TraderArmorRack[12]$", r"^TraderPoleArm[1-4]$", r"^TraderClothesRack[12]$", r"^TraderBowRack[12]$"),
               "hunt": (r"^TraderBowRack[12]$", r"^TraderQuiverRack$", r"^TraderClothesRack[12]$"),
               "mine": (r"^TraderPoleArm[1-4]$", r"^TraderArmorRack[12]$"),
@@ -200,9 +201,10 @@ SUPPLIES = {"shelves": (r"^LogShelvesFull[1-4]$", 1, 2),
             "apples": (r"^TraderAppleCrate$", 1, 2),
             "tools": (r"^BarrelWithTools[12]$", 1, 2)}
 PILE = r"^(Barrel|Barrel2|WaterBarrel|SackChest(Large|Medium)[12])$"     # round pieces that heap in a corner
-# Shelves and desks face one way and have no corner pieces: they keep this far (uv units) from a corner
-# (TreePlace v0.2 playtest: a shelf in a corner looked wrong).
-CORNER_CLEAR = 2.2
+# Shelves and desks face one way and have no corner pieces: they stop at the corner, tight against the wall across
+# its end, whose line is 1 unit past the run's end (2026-10-04 review: "make sure bookcases and shelves fit tight
+# against corners"; TreePlace v0.2 had kept them 2.2 units out, which left a gap in every corner).
+CORNER_CLEAR = 1.05
 # Pieces that only ever stand against a wall (never free in the room).
 WALL_PIECES = {"bed", "storage", "shelves", "fireplace", "stove", "desk", "nightstand", "shop_rack", "counter_shop",
                "forge", "bellows", "wall_decor"}
@@ -823,6 +825,7 @@ class Furnisher:
             self.compose(plan, need)
             self.fill_room()
             self.line_backs()
+            self.complete_bookcase_walls()
             for _ in range(self._deferred_decor): self.place_decor()
             if self.kind in DECORATED: self.decorate_walls()
             while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
@@ -1598,7 +1601,7 @@ class Furnisher:
         got = 0
         for rr, lo, hi in self.segments():
             if rr is not r: continue
-            lo, hi = max(lo, r["lo"] + 1.3), min(hi, r["hi"] - 1.3)     # clear of the walls at the corners
+            lo, hi = max(lo, r["lo"] + CORNER_CLEAR), min(hi, r["hi"] - CORNER_CLEAR)     # tight into the corners
             toward = 0
             for b0_, b1_ in self._line_blocks.get(key, ()):     # a row already on this wall: grow it end to end
                 if abs(lo - b1_) < 0.3: lo, toward = b1_ + 0.04, -1
@@ -1613,14 +1616,39 @@ class Furnisher:
             while length(n + 1) <= hi - lo and (max_n is None or n < max_n): n += 1
             if n == 0: continue
             span = length(n)
+            # a whole wall (no anchor, no row to grow) packs into the corner it shares with the other back wall, so
+            # the two rows meet there with no gap; the slack goes to the front corner
+            if not toward and not near and max_n is None:
+                toward = self._back_corner_end(r, lo, hi)
+
+            def lay_out(a, n):
+                out = []                                 # ("shelf" | "decor", where it starts along the wall)
+                for i in range(n):
+                    if decor_every and i and i % decor_every == 0:
+                        out.append(("decor", a)); a += dgap
+                    out.append(("shelf", a)); a += pitch
+                return out
+
+            def fits_all(sl):
+                return [kind == "decor" or self._can_put(mix[0], *self._uv_on(r, d, a0 + ha), snug=True, touch=True)
+                        for kind, a0 in sl]
             a = lo if toward == -1 else hi - span if toward == 1 else (lo + hi) / 2 - span / 2
-            slots = []                                   # ("shelf" | "decor", where it starts along the wall)
-            for i in range(n):
-                if decor_every and i and i % decor_every == 0:
-                    slots.append(("decor", a)); a += dgap
-                slots.append(("shelf", a)); a += pitch
-            ok = [kind == "decor" or self._can_put(mix[0], *self._uv_on(r, d, a0 + ha), snug=True, touch=True)
-                  for kind, a0 in slots]
+            slots = lay_out(a, n); ok = fits_all(slots)
+            # packed into a corner whose first spot is taken (the other wall's row stands in that corner): slide out
+            # a tenth of a unit at a time until the row starts tight against it, instead of a whole shelf's gap
+            end = 0 if toward == -1 else -1
+            if toward and ok and not ok[end]:
+                for step in range(1, 30):
+                    shift = step * 0.1 * (1 if toward == -1 else -1)
+                    if abs(shift) > pitch + 0.05: break
+                    n_ = n
+                    while n_ > 1 and (a + shift < lo - 0.01 or a + shift + length(n_) > hi + 0.01): n_ -= 1
+                    a_ = a + shift if toward == -1 else hi - length(n_) + shift
+                    if toward == 1 and n_ < n: a_ = a + shift + (length(n) - length(n_))
+                    sl = lay_out(a_, n_)
+                    ok_ = fits_all(sl)
+                    if ok_ and ok_[end]:
+                        slots, ok = sl, ok_; break
             blocks, cur = [], []
             for k, (kind, a0) in enumerate(slots):
                 if ok[k]: cur.append(k)
@@ -1680,6 +1708,46 @@ class Furnisher:
             self.g.zones.append(self.front_zone(r, u, v, (b1 - b0) / 2, hp, 1.2))
             self.anchors.append((u, v))
         return got
+
+    def _back_corner_end(self, r, lo, hi):
+        """-1 if wall run r's low end is the corner it shares with the other back wall (the room's top corner on
+        screen), 1 if its high end is, else 0."""
+        for rr in self.g.runs:
+            if rr is r or rr["side"] not in BACK_SIDES or rr["line"] == r["line"]: continue
+            if not rr["lo"] - 0.5 <= r["coord"] <= rr["hi"] + 0.5: continue
+            if abs(rr["coord"] - (r["lo"] + 1)) < 1.6 and lo - r["lo"] < 2.5: return -1
+            if abs(rr["coord"] - (r["hi"] - 1)) < 1.6 and r["hi"] - hi < 2.5: return 1
+        return 0
+
+    def complete_bookcase_walls(self):
+        """A back wall holding a bookcase is filled with bookcases end to end (2026-10-04 review: "when a wall has
+        one bookcase, it should usually be full of bookcases"). The row on the wall grows both ways with its own
+        type until no more fit; a wall of shelves is not clutter, so the room's coverage limit is lifted for it."""
+        keep_max, self.cover_max = self.cover_max, 9.9
+        try:
+            for r in self.g.runs:
+                if r["side"] not in BACK_SIDES: continue
+                key = (r["line"], r["coord"])
+                mine = []
+                for t, rec in self._typed:
+                    if not t.startswith("Bookcase"): continue
+                    u, v, hu, hv = rec[:4]
+                    perp, along = (u, v) if r["line"] == "/" else (v, u)
+                    ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
+                    if abs(perp - r["coord"]) - hp > 0.6 or not r["lo"] <= along <= r["hi"]: continue
+                    mine.append((t, along, ha))
+                if not mine: continue
+                blocks = self._line_blocks.setdefault(key, [])
+                for t, along, ha in mine:
+                    if not any(b0 - 0.05 <= along - ha and along + ha <= b1 + 0.05 for b0, b1 in blocks):
+                        blocks.append((along - ha, along + ha))
+                base = re.sub(r"HalfFull$", "", mine[0][0])
+                mix = [base] + ([base + "HalfFull"] if self.ok_type(base + "HalfFull") else [])
+                for _ in range(6):
+                    if not self._line_run(r, mix, None, None, 0, 0.9, "shelves", grow_only=True): break
+                self._lined.add(key)
+        finally:
+            self.cover_max = keep_max
 
     def _hang(self, r, a):
         """One hanging of the room's theme on wall run r, centred at `a` along it: the theme's types in turn until one
@@ -1745,12 +1813,16 @@ class Furnisher:
         return (min(r[0] - r[2] for r in recs) - 1.3, max(r[0] + r[2] for r in recs) + 1.3,
                 min(r[1] - r[3] for r in recs) - 1.3, max(r[1] + r[3] for r in recs) + 1.3)
 
-    def rack_rows(self, kind="gear", aisle=1.6, gap=None, side_by_side=False):
+    def rack_rows(self, kind="gear", aisle=None, gap=None, side_by_side=False):
         """Rows of gear racks standing free down the middle of a storeroom (TreePlace v0.3 room review: a store room
         holds more than other rooms, racks of gear in the middle), along the room's long axis, with aisles to the
         stocked walls and between the rows; one kind of rack to a row, its long side along the row. The first call sets
         the middle pair of rows; a room wide enough takes more pairs further out, one pair a call (a study twice
         Westwood's size holds several stacks). Returns the racks placed."""
+        # gear racks stand a step apart with wide aisles, at most RACKS_PER_ROW to a row (2026-10-04 review: the
+        # storerooms' racks were "a little bit too dense and numerous"); books and tombs keep their own spacing
+        gear = kind in ("gear", "hunt", "mine")
+        if aisle is None: aisle = 2.2 if gear else 1.6
         us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
         lo_a, hi_a = (min(us), max(us)) if long_u else (min(vs), max(vs))
@@ -1777,9 +1849,10 @@ class Furnisher:
             else:
                 t = max(types, key=lambda t: (along(t) >= across(t) - 0.01, self.rng.random()))
             tight = kind == "books"                     # library stacks stand end to end, racks a step apart
-            pitch = 2 * along(t) + (gap if gap is not None else 0.04 if tight else 0.5)
+            pitch = 2 * along(t) + (gap if gap is not None else 0.04 if tight else 1.2 if gear else 0.5)
             span_lo, span_hi = lo_a + margin, hi_a - margin
             n = int((span_hi - span_lo + pitch - 2 * along(t)) / pitch)
+            if gear: n = min(n, RACKS_PER_ROW)
             if n < 2: continue
             start = (span_lo + span_hi) / 2 - (n * pitch - (pitch - 2 * along(t))) / 2 + along(t)
             hu, hv = self.half(t)
@@ -2006,7 +2079,7 @@ class Furnisher:
             elif st["slot"] == "line":
                 self.line_wall(fam, max_n=st.get("n"), decor_every=st.get("decor", 0), other=st.get("other", False))
             elif st["slot"] == "racks":
-                self.rack_rows(st.get("kind", "gear"), st.get("aisle", 1.6), st.get("gap"), st.get("side_by_side", False))
+                self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
             elif st["slot"] == "stack":
                 self.stack_middle(st.get("n", 4))
             elif st["slot"] == "scatter":
@@ -2156,7 +2229,7 @@ class Furnisher:
             if st["slot"] == "carpet":
                 if self.carpet_plan:
                     box = self._table_box() if st.get("where") == "under" else None
-                    if (st.get("where") != "under" or box) and self.lay_carpet(box, margin=0.4 if box else 0.8):
+                    if (st.get("where") != "under" or box) and self.lay_carpet(box, margin=st.get("margin", 0.4) if box else 0.8):
                         continue
                     self.carpet_plan = None             # no carpet fitted: a rug in the middle instead
                     t = _pick(self.rng, self.types_of("rug"))
@@ -2170,7 +2243,7 @@ class Furnisher:
                                             decor_every=st.get("decor", 0), other=st.get("other", False))
                 continue
             if st["slot"] == "racks":
-                done[fam] += self.rack_rows(st.get("kind", "gear"), st.get("aisle", 1.6), st.get("gap"), st.get("side_by_side", False))
+                done[fam] += self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
                 continue
             if st["slot"] == "bar":
                 if self.build_bar(): done[fam] += 1

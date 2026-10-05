@@ -1051,7 +1051,7 @@ def _wall_name(line, coord, cu, cv):
     return "SW" if cv > coord else "NE"
 
 
-def _against(o, runs, cu, cv, m, reach=1.4, across=False):
+def _against(o, runs, cu, cv, m, reach=1.4, across=False, prefer_back=False):
     """(wall name, gap from the wall line to the piece's back, along, line, coord) of the wall run a piece stands
     against (its back within `reach` units of the line), or None. A long piece lying across a wall (a bed with its head
     to it) counts only `across`."""
@@ -1066,9 +1066,14 @@ def _against(o, runs, cu, cv, m, reach=1.4, across=False):
         if not (lo - 0.5 <= along <= hi + 0.5): continue
         if long_box and not across and depth > (hv if line == "/" else hu): continue   # it lies across this wall
         gap = perp - depth
-        if gap <= reach and (best is None or gap < best[1]):
-            best = (_wall_name(line, coord, cu, cv), gap, along, line, coord)
-    return best
+        if gap > reach: continue
+        name = _wall_name(line, coord, cu, cv)
+        # a piece tight in a corner touches both walls (2026-10-04: shelves fit tight into corners): its back is to
+        # the NE or NW wall it was set against, not to the front wall across the corner
+        key = (name not in ("NE", "NW"), gap) if prefer_back else (gap,)
+        if best is None or key < best[0]:
+            best = (key, (name, gap, along, line, coord))
+    return best and best[1]
 
 
 def _in_row(o, objs):
@@ -1102,7 +1107,7 @@ def wall_side_rules(m, r):
         decor = RT.family(o["type"]) == "wall_decor"
         if not (FACING_PIECE.match(o["type"]) or decor or (m.blocking(o) and RT.family(o["type"]) in RT.BLOCKING_FAMILIES)):
             continue
-        hit = _against(o, runs, cu, cv, m, reach=1.6 if decor else 1.4)
+        hit = _against(o, runs, cu, cv, m, reach=1.6 if decor else 1.4, prefer_back=True)
         if hit:
             name, gap, along, line, coord = hit
             ha = _half_uv(o)[1] if line == "/" else _half_uv(o)[0]
