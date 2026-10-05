@@ -624,6 +624,10 @@ class StoryMap:
         if w: return w
         m, land = self.m, self.land
         g = Ground.from_spec(m)
+        # people standing still (a giver at a door, the gate's guard, a man on the road) are obstacles to every route
+        # laid here: tours, beats and journeys pass them PERSON_ROOM px off and never through them (AMR-7; the checker's
+        # routes.through_person measures 18 px), and the stops keep off them (validate/checks.py PERSON_CLEAR)
+        g.add_people(self.standing())
         roads = set()
         for i, j in land.roads | land.plaza:
             x, y = square_tile(i, j)
@@ -633,6 +637,24 @@ class StoryMap:
         self._world_ = (g, Router(g, roads), locked)
         self.B.ground = g                    # the stops' facings are judged on this ground (Behaviours._facings)
         return self._world_
+
+    def _plain_ground(self):
+        """The ground without the people standing on it: the last resort for a walk no way round them reaches."""
+        g = self.__dict__.get("_plain_")
+        if g is None: g = self._plain_ = Ground.from_spec(self.m)
+        return g
+
+    def standing(self):
+        """World px of everyone who stands where they were placed and is in the way of a walker: people (clones and
+        creatures that are not hostile), not walked by the scripts (tours, beats, journeys), not a shopkeeper behind
+        his counter. As validate/checks.py check_routes picks the people a route must not pass through."""
+        out = []
+        for o in self.m.d["objects"]:
+            xf = o.get("xfer") or {}
+            if "DefaultAction" not in xf or o.get("scr") in self._movers or "ShopkeeperInfo" in xf: continue
+            if "clone" in o or o.get("type") in ("NPC", "Maiden") or xf.get("Aggressiveness", 1) < 0.1:
+                out.append((o["x"], o["y"]))
+        return out
 
     def _claims(self):
         """Standing spots taken so far: every creature standing where it was placed (a shopkeeper, a guard at the
@@ -740,8 +762,25 @@ class StoryMap:
                 (int(p[0] // WCELL), int(p[1] // WCELL)))
             cands = [to] + [(to[0] + r * math.cos(k * math.pi / 8), to[1] + r * math.sin(k * math.pi / 8))
                             for r in (20, 34, 48, 64, 80, 100, 124, 150) for k in range(16)]
-            end = self._free_spot(cands, clear) or to
-            route = router.route_far(start, end, shut=locked)
+            # the first free spot the walk reaches without passing through anyone standing still (AMR-7); a spot cut off
+            # by someone standing in a narrow way is passed over for the next
+            route, end, tried = None, to, 0
+            claims = self._claims()
+            for p in cands:
+                if tried >= 8: break
+                if not clear(p) or any(math.dist(p, q_) < self.SPOT_GAP for q_ in claims) or \
+                        any(math.dist(p, q_) < self.DOORWAY_CLEAR for q_ in self._doorways): continue
+                tried += 1
+                r_ = router.route_far(start, p, shut=locked)
+                if r_ is not None:
+                    route, end = r_, p
+                    break
+            if route is None:                # no way round the people: the plain ground (the checker will say so)
+                plain = Router(self._plain_ground(), router.roads)
+                end = self._free_spot(cands, lambda p: plain.ok((int(p[0] // WCELL), int(p[1] // WCELL)))) or to
+                route = plain.route_far(start, end, shut=locked)
+            else:
+                claims.append(end)
             if route is None:
                 print(f"  journey {key}: no way from {name}'s place to ({end[0]:.0f}, {end[1]:.0f})")
                 route = [end]

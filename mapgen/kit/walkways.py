@@ -121,6 +121,22 @@ class Ground:
                             (o["x"], o["y"], "BOX", o["ex"] / 2, o["ey"] / 2))
         return cls(walls, m.cover, wet, doors, blockers)
 
+    PERSON_ROOM = 14          # px: a standing person's radius as an obstacle to routes (a leg passes 14 + 8 = 22 px
+                              # off, over the checker's PERSON_CLEAR of 18; a route's cell 14 + 12 = 26 px)
+
+    def add_people(self, pts, r=None):
+        """People standing still at pts (world px) as round obstacles, so routes laid on this ground keep clear of
+        them by construction (AMR-7: a route through a person waiting at a door). Only the kit's own ground for
+        laying routes takes them; the checker's ground does not."""
+        r = self.PERSON_ROOM if r is None else r
+        for x, y in pts:
+            b = (x, y, "CIRCLE", r, 0)
+            self.blockers.append(b)
+            for i in range(int((x - r - 40) // 92), int((x + r + 40) // 92) + 1):
+                for j in range(int((y - r - 40) // 92), int((y + r + 40) // 92) + 1):
+                    self._obj[(i, j)].append(b)
+        return self
+
     # ---- measuring ---------------------------------------------------------------------------------------------------
     def wall_dist(self, x, y, reach=2):
         """Distance (px) from (x, y) to the nearest wall piece within `reach` cells (reach * 23 + if none)."""
