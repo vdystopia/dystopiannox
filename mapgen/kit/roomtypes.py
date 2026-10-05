@@ -29,7 +29,8 @@ A profile holds:
 - signature: what the room reads as from its contents: family or ^type-regex -> (weight per piece, most counted), and
   needs: the families without which it is not this type at all. reads_as() ranks the types; the score flags a room that
   reads as another type (the college laboratory that looked like "some sort of shoddy mess hall");
-- kin: types it may read as without losing its identity (a study rich in books reads as a library);
+- kin: types it may read as without losing its identity (a study rich in books reads as a library); a store is never
+  the second room of a mixed one, since kegs, sacks and chests support most types;
 - westwood: rules/rooms/westwood.json types its numbers were measured on (n rooms each, in the brief);
 - supplies_line: True where barrels, crates and sacks may line a wall corner to corner (a store); monotony: the
   share of a big room's furniture one kind may be before the checker calls it monotonous (validate/checks.py
@@ -71,7 +72,7 @@ TYPES = {
         cover=(0.08, 0.14, 0.28), open=(0.30, 0.80), per_tile=(0.25, 1.0), types_min=8, free_most=(3, 20),
         caps={"table": (12, 3)}, walls_min=3, lined=0.25, tiles=(14, 60),
         signature={"bed": (6, 2), "nightstand": (1, 2), "^Chest": (0.5, 1), "desk": (0.5, 1)}, needs=("bed",),
-        kin=("living_room", "study")),
+        kin=("living_room", "study", "library")),
     "study": dict(
         family="private", feel="full", fixed_top_up=("storage", "bench"), kinds=("study",), westwood=("study", "library"),
         focal=dict(fam="desk", types=r"^Desk\d$", where="back"),
@@ -116,7 +117,7 @@ TYPES = {
         cover=(0.15, 0.21, 0.32), open=(0.22, 0.65), per_tile=(0.3, 1.0), types_min=8, free_most=(3, 15),
         caps={}, walls_min=3, lined=0.30, tiles=(20, 80),
         signature={"stove": (5, 2), "storage": (0.3, 12), "table": (0.5, 1), "fireplace": (1, 1)}, needs=("stove",),
-        kin=("storeroom", "herbalist")),
+        kin=("storeroom", "herbalist", "living_room")),
     "laboratory": dict(
         family="work", feel="balanced", kinds=("laboratory",), westwood=("laboratory",),
         focal=dict(fam="lab", types=r"^WizardWorkstation|^AlchemistDesk", where="back"),
@@ -155,7 +156,7 @@ TYPES = {
                                                        "table on a carpet; a curio"),
         cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.25, 0.9), types_min=8, free_most=(3, 40),
         caps={}, walls_min=3, lined=0.50, tiles=(30, 200),
-        signature={"shelves": (0.6, 30), "table": (1, 2), "desk": (1, 1)}, needs=("shelves",),
+        signature={"^Bookcase|^MovableBookcase": (0.6, 30), "table": (1, 2), "desk": (1, 1)}, needs=("shelves",),
         kin=("study", "laboratory")),
     "smithy": dict(
         family="work", feel="balanced", kinds=("smithy",), westwood=("smithy",),
@@ -243,7 +244,7 @@ TYPES = {
         cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(10, 18), free_skip=(),
         caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(100, 360),
         signature={"counter_bar": (1, 10), "table": (0.5, 10), "chair": (0.1, 30), "storage": (0.2, 8)},
-        needs=("counter_bar",), kin=("dining_hall",)),
+        needs=("counter_bar",), kin=("dining_hall", "great_hall")),
     "dining_hall": dict(
         family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"), westwood=("dining_hall",),
         focal=dict(fam="table", types=r"^(Table[1-4]|OvalTable\d|OgreTable\d)$", where="rows", with_="fireplace"),
@@ -258,7 +259,7 @@ TYPES = {
         signature={"table": (1.5, 12), "chair": (0.3, 40), "bench": (0.3, 20)}, needs=("table",),
         kin=("great_hall", "tavern", "living_room"),
         variants={"mess_hall": dict(caps={"table": (17, 10)}, never_types=r"PowderBarrel|^RoundTable",
-                                    cover=(0.12, 0.24, 0.34)),
+                                    cover=(0.12, 0.24, 0.34), open=(0.25, 0.80)),
                   "ogre_hall": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
                                     lined=None, walls_min=2, types_min=6, cover=(0.12, 0.17, 0.32), free_most=(6, 20),
                                     caps={"table": (22, 8)})}),
@@ -372,7 +373,7 @@ def reads_as(fam, kinds, kind=None):
     for t in TYPES:
         s = strength(t, fam, kinds, kind)
         if t == "barracks" and fam.get("bed", 0) < 3 and fam.get("straw", 0) < 3: s = 0.0
-        if t == "library" and fam.get("shelves", 0) < 6: s = 0.0
+        if t == "library" and sum(n for k, n in kinds.items() if k.startswith(("Bookcase", "MovableBookcase"))) < 6: s = 0.0
         if t == "laboratory" and fam.get("lab", 0) < 2: s = 0.0
         if t == "storeroom" and fam.get("storage", 0) < 4: s = 0.0
         if t == "armoury" and (fam.get("shop_rack", 0) < 2 or fam.get("counter_shop")): s = 0.0

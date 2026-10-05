@@ -2203,7 +2203,9 @@ class Furnisher:
         if min(half_fit, 3) < 1 or rows_fit < 1: return 0
         k, rows = min(half_fit, 3), rows_fit
         if cap is not None:                             # the most pews under the cap; more, shorter rows on a tie
-            k, rows = max(((kk, min(rows_fit, cap // (len(sides) * kk))) for kk in range(1, min(half_fit, 3) + 1)),
+            # a one-sided nave takes three quarters of the pews, so they do not fill it (validate/checks.py identity.monotony)
+            k, rows = max(((kk, min(rows_fit, (cap // (2 * kk)) if len(sides) == 2 else (3 * cap) // (4 * kk)))
+                           for kk in range(1, min(half_fit, 3) + 1)),
                           key=lambda kr: (kr[0] * kr[1], -abs(kr[0] - 2)))      # pews of two to a side read best
             if rows < 1: return 0
         if tombs:                                       # room behind the pews for the tombs (about 6 units of the nave)
@@ -2232,8 +2234,17 @@ class Furnisher:
                     a += side * pitch
         if got and not self.aisle:                      # the aisle the statues face and the colonnade lines
             self.aisle = dict(run=r, mid=mid, half=aisle / 2, first=first, far=self._depth_of(r), door=None)
-        if columns and got:
+        if columns and got and len(sides) == 2:
             self.nave_columns(r, mid, aisle / 2 + k * pitch + 0.9, first, depth_max, 2 * gap)
+        elif columns and got:                           # a one-sided nave: an arcade on the open side of the aisle
+            ct = _pick(self.rng, self.types_of("column"))
+            if ct:
+                ch = max(self.half(ct))
+                a = mid - sides[0] * (aisle / 2 + 0.6 + ch)
+                d = first + gap
+                while d <= depth_max - 1.0:
+                    self.try_put(ct, *self._uv_on(r, d, a))
+                    d += 2 * gap
         if tombs and got:                               # behind the last pews, either side of the runner
             self.nave_tombs(r, mid, aisle / 2 + 0.5, start + (rows - 1) * gap + hp + 1.8, depth_max + 2.0)
         return got
@@ -2612,6 +2623,7 @@ class Furnisher:
             i = k % len(steps); st = steps[i]; k += 1
             if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
             if st.get("once"): done_once.add(i)
+            if st.get("missing") and self._fam_n[st["fam"]]: misses += 1; continue     # only where none stands yet
             before = self.n_blocking
             fam = st["fam"]
             if st["slot"] == "stock":

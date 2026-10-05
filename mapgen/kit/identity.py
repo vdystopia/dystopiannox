@@ -395,7 +395,7 @@ ROOMS = {
                                 dict(fam="lab", slot="groups", group="conjuring", n=1, extra=True, min_area=100),
                                 dict(fam="carpet", slot="carpet", where="under", chance=0.5),
                                 dict(fam="wall_decor", slot="decor")],
-                       fill=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
+                       fill=[dict(fam="desk", slot="wall", at="any", clear=0, seats=True, once=True, missing=True),
                              dict(fam="lab", slot="group", group="generators", max=1, min_area=150, fixed=True),
                              dict(fam="lab", slot="line", n=3, max=3),     # a second short bench where a wall is free
                              dict(fam="shelves", slot="line", other=True, decor=2, max=12),
@@ -433,7 +433,6 @@ ROOMS = {
                               fixed=True),
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
-                         dict(fam="bench", slot="wall", at="center", clear=0, max=2, fixed=True),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
                           "crypt chests, tapestries",

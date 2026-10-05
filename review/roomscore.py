@@ -127,9 +127,9 @@ def judge(m, r, kind, tiles_declared, warns):
         out.append(("reads as", False, f"unclear: reads as {top or 'nothing'}, not a {p['type'].replace('_', ' ')}"))
     elif top != p["type"] and top not in p.get("kin", ()) and ts >= 1.25 * mine:
         out.append(("reads as", False, f"{top.replace('_', ' ')} ({ts} against {mine})"))
-    elif any(t != p["type"] and t not in p.get("kin", ()) and s_ >= max(8.0, 0.6 * mine) for t, s_ in ranked):
+    elif any(t != p["type"] and t not in p.get("kin", ()) + ("storeroom",) and s_ >= max(8.0, 0.6 * mine) for t, s_ in ranked):
         # two rooms in one: the old college laboratory's tesla coils with a mess hall's tables and chairs down its middle
-        t, s_ = next((t, s_) for t, s_ in ranked if t != p["type"] and t not in p.get("kin", ()) and s_ >= max(8.0, 0.6 * mine))
+        t, s_ = next((t, s_) for t, s_ in ranked if t != p["type"] and t not in p.get("kin", ()) + ("storeroom",) and s_ >= max(8.0, 0.6 * mine))
         out.append(("reads as", False, f"mixed: a {p['type'].replace('_', ' ')} ({mine}) and a {t.replace('_', ' ')} ({s_})"))
     else:
         out.append(("reads as", True, p["type"] if top == p["type"] else f"{p['type']} (or its kin {top})"))
