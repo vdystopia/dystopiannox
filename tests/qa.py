@@ -363,7 +363,8 @@ def main():
 def finish(gate, qa_dir, extra, t0=None):
     if qa_dir and extra:
         name, pics, room_rows = extra
-        write_index(qa_dir, name, gate, pics, room_rows)
+        if pics or not os.path.exists(os.path.join(qa_dir, "index.html")):   # --no-render keeps the last pictures' index
+            write_index(qa_dir, name, gate, pics, room_rows)
         json.dump([dict(step=s, status=st, text=t, details=d) for s, st, t, d in gate.rows],
                   open(os.path.join(qa_dir, "qa.json"), "w"), indent=1)
     print()

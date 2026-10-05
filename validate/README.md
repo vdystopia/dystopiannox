@@ -53,8 +53,8 @@ The exit code of `validate.py` is 0 when there are no errors, 1 when there are e
 
 Every finding carries its rule (`rule` in `report.json`, `[rule]` in `report.md`); `checks.RULES` lists each rule with
 its message pattern and the feedback it answers (`review/FEEDBACK.md`). Calibration on Westwood (2026-10-05): the
-exterior rules were narrowed where Westwood does the thing on purpose (plants and torch poles at a fence's foot, potions
-and food as outdoor pickups, swarming creatures, a bench at its table); `rooms.stray` judges only a design's declared
+exterior rules were narrowed where Westwood does the thing on purpose (plants, torch poles, goods and racks snug to a wall or fence, potions
+and food as outdoor pickups, swarming creatures, a bench at its table, cots in barracks away from any camp fire); `rooms.stray` judges only a design's declared
 rooms; `composition.way_in`, `composition.front_wall` and `composition.torch_indoors` stay house rules that Westwood
 breaks (see `validate/out/checkcheck.md`).
 
