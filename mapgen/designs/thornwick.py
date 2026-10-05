@@ -208,7 +208,7 @@ ambush_camp = camps.bandit_camp(m, rng, land, (grove_c[0], grove_c[1]), fork_c,
 # the Red Hand's camp
 camp_c = land.areas["camp"]["c"]; pines_c = land.areas["pines"]["c"]
 red_camp = camps.bandit_camp(m, rng, land, (camp_c[0], camp_c[1]), pines_c,
-                             loot=[("Gold", {"Amount": 400}), "BluePotion", "RedPotion", "RedPotion", "ChainCoif",
+                             loot=[("Gold", {"Amount": 150}), "BluePotion", "RedPotion", "RedPotion", "ChainCoif",
                                    "Longsword"], sleepers=6, tents=3)
 # the wolves' den, its mouth toward the mill path
 den_c = land.areas["den"]["c"]; mill_c = land.areas["mill"]["c"]
@@ -388,7 +388,7 @@ q.talker("Aldric", [
     q.say("Garrick is dead? Then the Red Hand is finished, and Thornwick owes you. Here is the bounty, as promised. "
           "I have sent word to the gate: the north road is yours.",
           when=q.when(flag=q.dead("Garrick"), not_="bounty_paid"),
-          do=[A.gold(300), A.give("BluePotion", 2), A.flag("bounty_paid"), A.stage("main", 4),
+          do=[A.gold(200), A.give("BluePotion", 2), A.give("ChainTunic"), A.flag("bounty_paid"), A.stage("main", 4),
               A.unlock("NorthGate1"), A.unlock("NorthGate2"), A.enable("NorthExit1"), A.enable("NorthExit2"),
               A.enable("NorthExit3"),
               q.journal("Garrick the Red is dead. Reeve Aldric paid the bounty and opened the north gate. The King's "
@@ -400,10 +400,10 @@ q.talker("Aldric", [
     q.say("A traveller? From the south? Then you've seen what the Red Hand does to honest folk. I have barred the "
           "north gate: no one goes up that road while those butchers hold it. Their camp is in the old pines to the "
           "north-west, past the graveyard. Their leader is Garrick the Red. Bring me word that he's dead and I will "
-          "pay you three hundred gold, and open the gate myself.",
+          "pay you two hundred gold, and open the gate myself.",
           do=[A.stage("main", 2),
               q.journal("Reeve Aldric has barred the north gate until the Red Hand is broken. Their camp lies in the old "
-                        "pines north-west of town, past the graveyard. He will pay 300 gold for Garrick the Red's "
+                        "pines north-west of town, past the graveyard. He will pay 200 gold for Garrick the Red's "
                         "death and open the gate.")], who="Aldric")])
 q.on_death("Garrick", [A.flag("garrick_dead"), A.print("Garrick the Red falls, and the Red Hand with him."),
                        q.journal("Garrick the Red is dead. I should tell Reeve Aldric.", QUEST)])
@@ -421,10 +421,10 @@ q.talker("Mirela", [
           when=q.at("gem", 4), who="Mirela"),
     q.say("It's beautiful. Just as she wore it. You've done me a kindness I can't repay. But I'll try.",
           when=q.at("gem", 3), who="Mirela"),
-    q.say("You have it! The Varn emerald! Give it to me and the three hundred gold is yours. Will you?",
+    q.say("You have it! The Varn emerald! Give it to me and the two hundred gold is yours. Will you?",
           when=q.when(has="Emerald", not_="gem_done"), ask=True,
-          do=[A.flag("gem_done"), A.take("Emerald"), A.gold(300), A.stage("gem", 3),
-              q.journal("I gave the Varn emerald to Mirela. She paid 300 gold.", COMPLETED)],
+          do=[A.flag("gem_done"), A.take("Emerald"), A.gold(200), A.stage("gem", 3),
+              q.journal("I gave the Varn emerald to Mirela. She paid 200 gold.", COMPLETED)],
           else_=[A.chat("Mirela", "Then what good are you?")], who="Mirela"),
     q.say("You had it, didn't you? I can see it in your face. Where is my grandmother's emerald?",
           when=q.at("gem", 2), who="Mirela"),
@@ -432,10 +432,10 @@ q.talker("Mirela", [
           "notices it's gone.", when=q.at("gem", 1), who="Mirela"),
     q.say("You look like someone who can handle themselves. My grandmother was a Varn. She was buried with the family "
           "emerald, and now Father Odo has sealed the crypt and says the dead walk there. Walk! I have a copy of his "
-          "key. Bring me the emerald and I will give you three hundred gold. Will you do it?",
+          "key. Bring me the emerald and I will give you two hundred gold. Will you do it?",
           ask=True, do=[A.stage("gem", 1), A.give("SilverKey"),
                         q.journal("Mirela at the Lantern gave me a copy of Father Odo's key to the Varn crypt behind "
-                                  "the chapel. She will pay 300 gold for her grandmother's emerald.")],
+                                  "the chapel. She will pay 200 gold for her grandmother's emerald.")],
           else_=[A.chat("Mirela", "Then forget I asked.")], who="Mirela")])
 q.on_pickup("Emerald", [A.stage("gem", 2), q.journal("I have the Varn emerald. Mirela is waiting at the Lantern, but "
                                                      "Father Odo might want it back where it belongs.")],

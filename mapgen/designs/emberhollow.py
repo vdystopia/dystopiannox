@@ -404,8 +404,8 @@ q.talker("Ilsa", [
 q.talker("Corvin", [
     q.say("Is that it? The Ember Eye? Four hundred gold, right now, in your hand. What do you say?",
           when=q.when(has="Ruby", not_="eye_done"), ask=True,
-          do=[A.flag("eye_done"), A.take("Ruby"), A.gold(400),
-              q.journal("I sold the Ember Eye to Corvin for 400 gold.", COMPLETED)],
+          do=[A.flag("eye_done"), A.take("Ruby"), A.gold(250),
+              q.journal("I sold the Ember Eye to Corvin for 250 gold.", COMPLETED)],
           else_=[A.chat("Corvin", "Your loss. The offer stands.")], who="Corvin"),
     q.say("A pleasure doing business.", when=q.when(flag="eye_done"), who="Corvin"),
     q.say("Corvin, dealer in rare stones. The ash-cult's temple, south-west, holds a ruby they called the Ember Eye. "
