@@ -45,6 +45,10 @@ The rows of tombs.
 
 ## Common mistakes
 
+- Sarcophagi side by side in two rows head to head with no aisle: a block of 16 (Harrowby): a row's depth is the
+  deepest tomb's across the row (`Furnisher.rack_rows`), so the aisle stands between the rows. Statues of the dead go on
+  a back wall in the compose step.
+
 - One sarcophagus in a 58-tile crypt, 5% covered (Thornwick v0.1).
 - Only coffins: a crypt with nothing but its rows and no wall used reads as a store of coffins (the room score flags a
   crypt with under 3 kinds of piece and no wall used).

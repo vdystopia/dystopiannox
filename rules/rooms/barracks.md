@@ -48,6 +48,9 @@ The row of bunks, headboards against a wall.
 
 ## Common mistakes
 
+- An ogre den of 26 straw heaps in 32 pieces (Harrowby; `identity.monotony`): the straw scatter's per100 counts heaps of
+  2-3, so 4 heaps per 100 tiles gives Westwood's 8.6 straw per 100; three crude beds; meat and carcasses 3 per 100.
+
 - Beds of mixed kinds, or scattered: "All of Westwood's rooms with 3 or more beds use one kind, in a row."
 - Cots read sideways (the cot numbering comes from the pillows).
 

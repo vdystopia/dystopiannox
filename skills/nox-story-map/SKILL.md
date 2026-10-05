@@ -18,7 +18,8 @@ recipe: what to call, in which order.
 building, a bribe-or-law choice, a culture's scenes) or `mapgen/designs/ambermere.py` (a lake town: `camp_site`,
 `urchin_camp`, a journey home, `doorside`). `greywatch.py` shows a castle (`Curtain`), `deepvault.py` a cave town,
 `emberhollow.py` a lava biome, `mirefen.py` a swamp; `tnorth.py` and `rimepass.py` are small linking maps.
-`thornwick.py` and `rimehold.py` are the oldest and predate several rules: do not copy their camps or movement.
+`harrowby.py` shows a farming town with an ogre culture (`ogre_camp`, an `ogre_keep` lair, two cultures' scenes, a
+law-or-mercy choice ending in a journey home). `thornwick.py` and `rimehold.py` are the oldest and predate several rules: do not copy their camps or movement.
 
 ## 1. Write the story first (in the design's docstring)
 
@@ -60,7 +61,7 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
    `Y.build(m, rng, land, yard)`; water dug and bridged; `sm.gate_across(link, prefix=)`.
 5. **Town life**: `vil = Village(m, rng, land)`; door scenes `vil.scene(b, sc, role=)` and gardens per
    `BUILDINGS[role]`; the square (`vil.square_piece` or `vil.fountain_square`); `land.ground_variety(...)`.
-6. **Story places** (`kit/camps.py`): `camp_site` then `bandit_camp(..., trade=, finds=)` or `urchin_camp`;
+6. **Story places** (`kit/camps.py`): `camp_site` then `bandit_camp(..., trade=, finds=)`, `urchin_camp` or `ogre_camp`;
    `stone_ring`, `ruined_tower`, `wolf_den`, `wagon_wreck`, `training_ground`; caches (`sm.hidden_spot` +
    `camps.cache`); signposts (`camps.signpost` with `q.text`).
 7. **Planting and the start**: `vil.ground_bits`; `Planter(m, rng, land, forest, keep_clear=, settled=,
@@ -80,7 +81,8 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
     events (`q.on_death`, `q.on_all_dead`, `q.near`, `q.on_pickup`, `q.when_true`), `q.start([...])` (lock the gate,
     disable the exit, the first journal entry), `q.portrait`. Conditions read the world (`q.dead`, `has=`).
     `m.scripts.update(B.files(m.d["name"])); m.scripts.update(q.files())`.
-11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()`. Add a theme
+11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()` (`culture` may
+    be a tuple: Harrowby's `("farm", "ogre")`). Add a theme
     to `kit/scenes.py` when a map needs one; never lay loose props by hand.
 12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)`, `m.build(OUT)`.
 

@@ -53,6 +53,9 @@ ledger desk, a chest, trophies or tapestries.
 
 ## Common mistakes
 
+- Three round-table groups in a 143-tile reeve's study (Harrowby): a study takes its meeting table and at most one
+  sitting group; no dining set.
+
 - "Study: too small and empty" (DysVale review): too small a room for its kind, and too few pieces.
 - Single-instance shelves lining a wall: potion shelves and showpieces stand once.
 - A second table set beside the meeting table: it turns the study toward a dining room.

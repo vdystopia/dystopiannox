@@ -147,7 +147,8 @@ Rules that hold for every type:
   (except a woven rug centred under a table); potted plants only in real corners; furniture spreads through the room's
   length (under 35% is bunched) [TP1-1].
 - **Lights** [TP1-5, DV4-5, DV6-2]: houses are lit with candelabras and the hearth, never an open torch; lights go to the
-  emptiest corners, at least 3 units apart.
+  emptiest corners, at least 3 units apart, never before a chest, hearth or stove however it was placed
+  (`Furnisher._before_anchor`, measured as `composition.anchor_blocked` measures it) [DV5-4].
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
 - **A room reads as what it is** [SW-6, SWR-1, TW-8, AMR-4] whatever its type: the checker's room-identity warnings
   (`check_identity`) catch a showpiece repeated, a stand-alone piece four or more times along one wall, supplies lining
@@ -188,7 +189,10 @@ placed=placed, culture=, martial=).dress()`.
   story places, doors (3 squares), gates, exits, creatures and route legs (`spec.routes`), and never cut the walkable
   ground. Tall scenes keep off front walls. The dressing and the camps draw from their own generators
   (`camps.own_rng`), so nothing after them shifts.
-- A culture's scenes (`culture=` themes) are laid only on a map that names that culture.
+- A culture's scenes (`culture=` themes) are laid only on a map that names that culture. A map may name several
+  (`Exterior(..., culture=("farm", "ogre"))`: Harrowby's farmers' threshing floors, harvest wains and wind-mills in
+  town, the ogres' middens and cooking pits only within 24 squares of their keep, `ROLE_SCENES["ogre_keep"]`);
+  each theme still keeps to its own places and buildings.
 
 ### Spacing outdoors [SW-5]
 Outdoor pieces keep Westwood's closest gaps (`kit/spacing.py`, p05 of each family's nearest): barrels 25 px, big
@@ -222,6 +226,13 @@ pictures show every camp for the rest.
   holds its ground: planting and dressing keep off it.
 - **Urchins** squat as Westwood furnishes their dens (Con02a, War03c): `camps.urchin_camp` (beds of one kind side by
   side, a table ringed by stools, the pickings heaped) [AMR-2].
+- **Ogres** lay their village as Westwood's Con05B: `camps.ogre_camp` (the fire pit with meat and a carcass, log
+  benches and stools, straw bedding in an arc behind with the warlord's bearskin and chest, barrels and ogre sacks in
+  a row with a big carcass, and the gate: two wings of tusk palisade along a screen diagonal, 33 px apart, every tusk
+  and skull post with its shadow at Westwood's offset, the gate set where both wings stand whole off the road). It
+  returns the bandit camp's record, so `posts.camp_posts` stands the ogres at their posts.
+- Yards planned round the town keep off the foes' ground (a town field had hemmed Harrowby's ogre camp against the
+  forest, AMR-1): filter their candidate centres away from the camps' areas.
 - **The wagon wreck** (`camps.wagon_wreck`): a wheel off, the load thrown out in a fan, heavy things near.
 - **Posts** [GW-5, SW-1]: `posts.camp_posts(spec, camp, toward, sit=, tents=, watch=, work=)` returns spots for the
   leader (by his tent and the take), at most two at the fire (Westwood: War05A's grunts 47 and 56 px out), the others by

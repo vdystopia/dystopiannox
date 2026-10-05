@@ -51,6 +51,9 @@ The user wants stores fuller than Westwood's ("a store room holds more than any 
 
 ## Common mistakes
 
+- A mill's grain store with a row of axe racks down its middle (Harrowby): the `granary` kind (a storeroom of sacks,
+  barrels, crates and provisions shelves, heaps in the corners, never racks) for a mill or a farm.
+
 - "Storeroom: almost empty; a bookshelf, a crate, an explosive barrel and a barrel scattered at random" (TreePlace).
 - "Bunkhouse storeroom: too evenly spaced; balance clusters and spaced objects" (TreePlace).
 - "Storeroom racks a little too dense and numerous: spread out, fewer" (2026-10-04 review).

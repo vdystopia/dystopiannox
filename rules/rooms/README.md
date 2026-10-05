@@ -32,7 +32,7 @@ Ranked within each family by how often they occur (Westwood's building rooms / o
 | work | [library](library.md) | 9 | 3 | library | books end to end on both back walls, stacks in rows in a big one, a reading table on a carpet |
 | work | [smithy](smithy.md) | 3 | 7 | smithy | the forge's coals, the bellows beside them, the anvil before them, water to quench; the smith behind his counter |
 | work | [herbalist](herbalist.md) | 2 | 3 | herbalist | the cauldron bubbling, one pair of potion shelves, books of remedies end to end, herbs in sacks and pots |
-| stores | [storeroom](storeroom.md) | 28 | 21 | storeroom, ore_store, ogre_hoard | supplies in good order: stocked shelves, heaps in the corners, crates side by side, an aisle to walk |
+| stores | [storeroom](storeroom.md) | 28 | 21 | storeroom, ore_store, ogre_hoard, granary | supplies in good order: stocked shelves, heaps in the corners, crates side by side, an aisle to walk |
 | martial | [barracks](barracks.md) | 26 | 5 | barracks, ogre_den | bunks of one kind in a row, a chest at each foot, gear shelves end to end, a table: orderly |
 | martial | [armoury](armoury.md) | 29 | 4 | gear_store | racks in rows of one kind each with aisles between, shelves on the back wall, the stock by the front walls |
 | public | [shop](shop.md) | 25 | 8 | shop | the counter out from a back wall with the keeper behind it, goods lining the walls, racks for show three to a row, open floor before the counter |

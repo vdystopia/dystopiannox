@@ -46,6 +46,9 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 
 ## Common mistakes
 
+- 19 of one chair in a 324-tile common room (Harrowby): one dining set composed, a second only from the fill in a big
+  room; seats count toward the most of one piece.
+
 - "way too many benches and not enough object diversity ... too many of the same object (chapel benches, tavern tables
   and chairs)" (Greywatch, 2026-10-05: 24-28 tables and 76-83 chairs; then 24-29 of the building's one chair after the
   tables were capped: now round tables take stools).

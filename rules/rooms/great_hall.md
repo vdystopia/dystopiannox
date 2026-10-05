@@ -50,6 +50,9 @@ keeps': stone, banners, a carpet of floor tiles with the gold trim.
 
 ## Common mistakes
 
+- One bull's head in a 273-tile hall (Harrowby): a hanging tries every type of the room's theme, not only the one drawn
+  (a trophy drawn for one wall left the other back wall bare), and the compose step lays two.
+
 - "the sheer number of tables and chairs was too much" (2026-10-04 review: 4-6 fewer table sets, a large floor-tile
   carpet).
 - Benches along every wall and eight chests beside the tables' benches (Thornwick, 2026-10-05), and a top-up of 15

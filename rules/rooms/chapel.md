@@ -54,6 +54,11 @@ Statues stand either side of it.
 
 ## Common mistakes
 
+- A nave far over its size (Harrowby's first chapel, 288-323 tiles: 4% covered): the chapel building is 36 x 28 units
+  (`BUILDINGS["chapel"]`), so its nave stays near 100-260 tiles. Pews 1 per 16 tiles (the cap that held 108 tiles at 8
+  pews with open floor 0.55+); no free group of statues (a pair had stood among the pews); a founder's tomb against a
+  side wall where no pair lies behind the pews; a colonnade from 100 tiles.
+
 - "way too many benches and not enough object diversity ... too many of the same object (chapel benches, tavern tables
   and chairs)" (Greywatch, 2026-10-05: 46 pews wall to wall).
 - The altar beside the door instead of across from it, the aisle off the door's line, half the nave bare (Ambermere
