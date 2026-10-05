@@ -338,12 +338,17 @@ ROOMS = {
                        types={"lab": r"^AlchemistDesk\d$|^WizardWorkstation\d[a-d]?$|^Telescope2[a-g]$|^Orrery2$|"
                                      r"^SentryGlobeMovable$|^VandegrafSmall$",
                               "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "storage": r"^Chest\d", "plant": PLANTS},
-                       compose=[dict(fam="lab", slot="line"),
+                       # 2026-10-05 (Starwell's college laboratory: sixteen like workstations end to end down a long
+                       # wall): the benches stand in threes with a hanging between, a piece per 12 tiles, at most 8
+                       repeat={"lab": (12, 8)},
+                       compose=[dict(fam="lab", slot="line", decor=3),
                                 dict(fam="shelves", slot="line", other=True, decor=2),
                                 dict(fam="table", slot="center", seats=True),
                                 dict(fam="carpet", slot="carpet", where="under", chance=0.6),
                                 dict(fam="wall_decor", slot="decor")],
                        fill=[dict(fam="lab", slot="group", group="curio", max=2, min_area=90),
+                             dict(fam="shelves", slot="line", other=True, decor=2, max=12),
+                             dict(fam="table", slot="group", group="worktable", max=1, min_area=100),
                              dict(fam="shelves", slot="racks", kind="books", max=10, min_area=220),
                              dict(fam="table", slot="group", group="sitting", max=1, min_area=160),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),

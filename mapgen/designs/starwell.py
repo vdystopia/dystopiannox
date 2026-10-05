@@ -479,7 +479,7 @@ q.start([A.lock("NorthGate1"), A.lock("NorthGate2"), A.disable("NorthExit1"), A.
                    "once fell.", HINT)])
 
 # the ward-ring: the imps come for whoever passes on the road
-q.near(*ward_xy, 190, [A.hunt(n) for n in ward_imps] + [A.print("Sparks scatter from the dark stones: imps!")])
+q.near(*ward_xy, 120, [A.hunt(n) for n in ward_imps] + [A.print("Sparks scatter from the dark stones: imps!")])
 q.on_all_dead(ward_imps, [A.flag("ward_clear"), A.print("The last imp winks out among the stones.")])
 q.talker("Edda", [
     q.say("Gone, all of them? Then I can work in peace, for what good it does. Take these, and my thanks; a "
