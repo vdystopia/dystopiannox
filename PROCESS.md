@@ -267,7 +267,9 @@ in the design's docstring before building anything, then plan the areas from it:
 4. **Fights with a reason:** an ambush from a camp off the road (a `near` event sets them hunting), a camp with a
    sentry who rouses the rest, a pack round its den, the restless dead in a crypt, a boss guarding a chest.
 5. **Rewards:** gold and items from the givers (`A.gold`, `A.give`), loot in chests (`items=`), caches hidden at the
-   forest's edge, a shop for each trade that buys and sells.
+   forest's edge, a shop for each trade that buys and sells. Every other container is filled at build time in
+   Westwood's manner (`kit/loot.py`): every chest, about 40% of barrels, half the crates, coffins in crypts, within
+   the map's gold budget after the story's own gold and the quests' payments.
 6. **Everyone talks:** quest givers, guards, the watch and every townsperson, each with a line that points at a quest
    (rumours), and a new line once the main quest is done. A portrait for each (`q.portrait`, Westwood's names).
 

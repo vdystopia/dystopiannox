@@ -28,7 +28,9 @@ Decide, in this order:
 6. **Rewards**: givers pay in items first (armour, a weapon, potions) and some gold; chests hold loot (`items=`);
    2-3 caches hidden by the forest's edge (`StoryMap.hidden_spot` + `camps.cache`); one or two shops that buy and
    sell (`StoryMap.shops`). Keep a map's gold, chests and rewards together, near Westwood's 500-1500
-   (`rules/QUESTS.md`: a chest holds about 40 gold, rarely over 130). Item names must exist in the game: look them
+   (`rules/QUESTS.md`: a chest holds about 40 gold, rarely over 130). The build fills every other container
+   (`kit/loot.py`: every chest, Westwood's share of barrels, crates, sacks and coffins) with what is left of the
+   budget, and leaves a container that has `items=` as it is. Item names must exist in the game: look them
    up with `py review/catalog.py <name or regex>` or in `corpus/out/nox_corpus.db` table `things`.
 7. **Everyone talks**: givers, guards, every townsperson (a rumour pointing at a quest, and a line once the main
    quest is done), each with a Westwood portrait.

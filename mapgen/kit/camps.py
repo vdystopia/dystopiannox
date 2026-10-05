@@ -13,6 +13,7 @@ Every piece goes only on the land, off squares already taken, and marks its squa
 """
 import math
 from kit.layout import square_px
+from kit import loot
 
 CRATES = ("Crate1", "Crate2", "DarkCrate1", "DarkCrate2")
 BARRELS = ("Barrel", "Barrel2")
@@ -39,6 +40,7 @@ class Scene:
     def put(self, t, si, sj, **extra):
         if not self.ok(si, sj): return None
         o = self.spec.obj_px(t, *square_px(si, sj), **extra)
+        loot.tag(self.spec, [o], "camp")      # a camp's goods hold a camp's loot (kit/loot.py)
         self.placed.append((si, sj))
         self.land.taken.add((int(math.floor(si)), int(math.floor(sj)) + 1))
         return o
