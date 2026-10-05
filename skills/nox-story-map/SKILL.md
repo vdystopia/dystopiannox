@@ -25,13 +25,24 @@ Decide, in this order:
    or a pack; a choice between two givers who want the same item.
 5. **Fights with a reason**: an ambush off a road (`q.near` + `A.hunt`), a camp with a sentry, a pack at its den, a
    room's keepers (`StoryMap.keepers`), a boss who drops the quest item (`q.on_death` + `A.drop`).
-6. **Rewards**: givers pay gold and items; chests hold loot (`items=`); 2-3 caches hidden by the forest's edge
-   (`StoryMap.hidden_spot` + `camps.cache`); one or two shops that buy and sell (`StoryMap.shops`).
+6. **Rewards**: givers pay in items first (armour, a weapon, potions) and some gold; chests hold loot (`items=`);
+   2-3 caches hidden by the forest's edge (`StoryMap.hidden_spot` + `camps.cache`); one or two shops that buy and
+   sell (`StoryMap.shops`). Keep a map's gold, chests and rewards together, near Westwood's 500-1500
+   (`rules/QUESTS.md`: a chest holds about 40 gold, rarely over 130). Item names must exist in the game: look them
+   up with `py review/catalog.py <name or regex>` or in `corpus/out/nox_corpus.db` table `things`.
 7. **Everyone talks**: givers, guards, every townsperson (a rumour pointing at a quest, and a line once the main
    quest is done), each with a Westwood portrait.
 
-Then the map plan: areas (screen squares X, Y in 0..255; `uv(X, Y) = (X + Y, X - Y)`), with radius, and links
-(roads between settled places, forest paths to the wild ones).
+Then the map plan: areas and links (roads between settled places, forest paths to the wild ones). Units: the map
+is 256 x 256 squares as seen on screen (X right, Y down); `land.area(name, uv(X, Y), radius_uv)` takes its centre in
+uv (`uv(X, Y) = (X + Y, X - Y)`) and its radius in uv units, two to a square: radius 20 is 10 squares. The area's
+centre (`land.areas[name]["c"]`) and everything else in the kit are in squares (i, j) = uv / 2. An area must stay
+12 + radius squares inside the edges (the examples assert it).
+
+Quest shapes that worked: an heirloom from a guarded ruin (Thornwick's greatsword); what happened to someone (Rimehold's
+trapper); a bounty (wolves, a bear); a choice between two givers (the Varn emerald, the Ember Eye); a rescue where the
+rescued walks home (`A.walk`); a count of things done in any order (`A.advance` per vent, `q.when_true` on the
+total: Emberhollow's three vents).
 
 ## 2. Build it, in this order (see the examples)
 
@@ -44,11 +55,17 @@ Then the map plan: areas (screen squares X, Y in 0..255; `uv(X, Y) = (X + Y, X -
    `land.apply`; water dug and bridged; the gate; the exit.
 5. The story's places (`kit/camps.py`: bandit camp, wreck, wolf den, ruined tower, cache, signpost).
 6. Planting, rocks (`rock_piles`), lights; the PlayerStart.
-7. People: givers cloned from Westwood's townsfolk in their clothes (`StoryMap.person`), shops, townsfolk with
-   rumours, the fights, the wood's creatures (`StoryMap.wild`).
-8. The story in `QuestBook` (`kit/quests.py`): talkers (later stages first), events, `q.start` (lock the gate,
-   disable the exit, the first journal entry), portraits. Conditions read the world where possible (`q.dead`,
-   `has=`).
+7. People: givers cloned from Westwood's townsfolk in their clothes (`StoryMap.person`, immortal), shops, townsfolk
+   with rumours, the fights, the wood's creatures (`StoryMap.wild` with your own mix). A biome structure's garrison
+   (`Dresser.garrison`) joins the map's script when you set `d.population = sm.pop` first. Signs over the doors:
+   `Village.SIGN_TEXT` by role, with keys from `q.text`. A different house style for a role:
+   `BuildingIdentity(..., style="stone_house")`.
+8. The story in `QuestBook` (`kit/quests.py`): talkers (later stages first), events (`q.on_death`, `q.on_all_dead`,
+   `q.near`, `q.on_pickup`, `q.when_true`), `q.start` (lock the gate, disable the exit, the first journal entry),
+   portraits. Conditions read the world where possible (`q.dead`, `has=`): the script's stages and flags (and so
+   `advance` counts) do not survive a saved game being loaded.
+   Objects a script names must be ones the game registers by name: creatures, doors, exits, `ColorLight`, crystals,
+   chests and signs work; a `FireGrate` did not. The server's quest self-check lists any it cannot find.
 
 ## 3. Check, fix, repeat
 
@@ -62,9 +79,14 @@ py review/rooms.py mapgen/out/<map>/<Name>.map --each        # one picture per r
 py review/roomscore.py mapgen/out/<map>/<Name>.map
 ```
 
-Aim for 0 errors and 0 warnings. Look at every story place in close-up: is the camp open ground and secluded, can
-the player reach it, does the gate cross the road, is the boss's chest where the boss is? Commit and push at each
-checkpoint (the repo's git workflow).
+Aim for 0 errors and 0 warnings. The checker also proves the story gates seal the exit (`check_story_gates`). Look
+at every story place in close-up: is the camp open ground and secluded, can the player reach it, is the boss's
+chest where the boss is? `py review/storymap.py <map>` draws the whole map with every named object labelled.
+
+Results depend on the seed: when a build has errors the kit does not explain, try two or three seeds
+(`py mapgen/designs/<map>.py <seed>`; `NOX_NOCHECK=1` skips the 30-second check while trying), then fix the cause
+in the kit if it recurs. Commit and push at checkpoints when the task is yours to finish; when someone will review
+the work first, leave it uncommitted and report.
 
 ## Gotchas (each cost an evening once)
 
