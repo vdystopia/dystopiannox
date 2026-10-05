@@ -19,7 +19,10 @@ A campaign of nine linked maps, six chapters, each exit putting you at the next 
 9. **Greywatch**: chapter six, a border castle, built by a third fresh agent. Its exit leads home to Thornwick.
 
 All nine: 0 errors, loaded in the OpenNox server with every creature, waypoint and story object found
-(`py tests/campaign.py`).
+(`py tests/campaign.py`). Rerun at 06:50 after the setup fix (`de7bff1`): every map's story and behaviours now start
+themselves in the server (`quests: started` on all nine). The 01:49 run of this check was cut off when the pc1 guard
+shut the PC down at 01:54 (the session was idle, waiting on it); the guard now counts a session's own background job
+as working.
 
 How to play: start a Solo game, press F1, type `racoiaws`, then `load thornwick`. The exits carry you on. Any chapter
 can also be started directly: `load rimehold`, `load emberhol`, `load deepvault`, `load mirefen`, `load greywatch`.
