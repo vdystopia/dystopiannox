@@ -466,6 +466,24 @@ def _rooms_fit(labels, program):
     return all(s >= n for s, n in zip(sizes, need))
 
 
+ROOM_ASPECT_MAX = 3.2       # Westwood's rooms: long side over short side rarely past 3 (Thornwick v0.2's manor had
+                            # its library, study and bedrooms 2-3 tiles wide and five times as long)
+
+
+def _rooms_proportioned(labels, hall=0):
+    """True when no room but the hall (label `hall`, a great hall may run long) is a strip: its box's long side at
+    most ROOM_ASPECT_MAX times its short side."""
+    boxes = {}
+    for (i, j), v in labels.items():
+        if v == COURT or v == hall: continue
+        b = boxes.setdefault(v, [i, i, j, j])
+        b[0], b[1], b[2], b[3] = min(b[0], i), max(b[1], i), min(b[2], j), max(b[3], j)
+    for i0, i1, j0, j1 in boxes.values():
+        a, c = i1 - i0 + 1, j1 - j0 + 1
+        if max(a, c) > ROOM_ASPECT_MAX * min(a, c): return False
+    return True
+
+
 def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, occupied=None,
                       entrance_side=None, shape=None, rooms=None, building_id=None, tries=40, min_units=0):
     """Generate an original building into `spec`. Returns a kit.model.Building (with extra attribute
@@ -524,6 +542,8 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
             if labels is None: continue  # the main room cannot reach the entrance side: try again
         if program and attempt < tries * 3 // 4 and not _rooms_fit(labels, program):
             continue                     # a room below Westwood's sizes for its kind (a closet bedroom): try again
+        if program and attempt < tries * 3 // 4 and not _rooms_proportioned(labels):
+            continue                     # a room drawn out into a corridor: try again
         cells = _cells_of(U0, V0, labels)
         if cells & occupied: continue
         b = _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side,

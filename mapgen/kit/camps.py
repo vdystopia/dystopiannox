@@ -105,7 +105,11 @@ def wagon_wreck(spec, rng, land, centre, road_dir):
         sc.put(rng.choice(CRATES + BARRELS + SACKS), *sc.at(r, a))
     for k in range(3):
         sc.put(rng.choice(("ArmBone", "LegBone")), *sc.at(rng.uniform(1.5, 2.5), off + math.pi + rng.uniform(-0.6, 0.6)))
-    return dict(cart=square_px(sc.ci, sc.cj), carter=sc.px(1.3, road_dir + math.pi))
+    # the carter stands by his cart on open ground: behind it toward the road first, then round it
+    for r, da in ((1.3, math.pi), (1.3, math.pi - 0.8), (1.3, math.pi + 0.8), (1.6, math.pi / 2), (1.6, -math.pi / 2),
+                  (1.8, 0.0), (2.2, math.pi)):
+        if sc.ok(*sc.at(r, road_dir + da)): return dict(cart=square_px(sc.ci, sc.cj), carter=sc.px(r, road_dir + da))
+    return dict(cart=square_px(sc.ci, sc.cj), carter=square_px(sc.ci, sc.cj + 1.0))
 
 
 def wolf_den(spec, rng, land, centre, mouth):
