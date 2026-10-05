@@ -942,6 +942,7 @@ def check_room_composition(m, ctx, base):
     out += bunched_props(m, base)
     out += bridge_squareness(m)
     out += room_arrangement(m)
+    out += room_ways(m)
     out += building_doors(m)
     return out
 
@@ -1195,6 +1196,74 @@ def wall_side_rules(m, r):
             out.append(F("composition", "warning", f"{o1['type']} and {o2['type']} stand {b0 - a1:.1f} units apart on the "
                          f"{_wall_name(line, coord, cu, cv)} wall with bare wall between them: line shelves end to end "
                          f"(house rule from the TreePlace v0.3 room review).", o2["x"], o2["y"]))
+    return out
+
+
+# ---- the way in and the way pieces face (2026-10-05 playtest, Greywatch's keep: "The pillars are in the dead center of
+# the room, making walking straight in through the door impossible. There are also two statues that mysteriously face
+# directly against the wall.") --------------------------------------------------------------------------------------
+DOOR_WAY_HALF = 1.0     # half the width of the straight way in from a door (a door's opening is about 2 units)
+DOOR_WAY_DEPTH = 4.0    # how far into the room it runs (at most 0.4 of the room's depth that way)
+DOOR_WAY_FAR = 12.0     # columns and statues keep out of it further in (at most 3/4 of the room's depth that way): a
+                        # pillar in line with the door blocks the walk in and the view down the hall
+TALL_IN_WAY = {"column", "statue"}
+# Statues by the way they face, as Westwood stands them (corpus: a statue with its back to one wall, Statue2a 35 of 50 at
+# the NW wall, 2c 39 of 55 at the SW, 2e 49 of 73 at the SE, 2g 48 of 58 at the NE): a faces SE (+u), c NE (+v), e NW
+# (-u), g SW (-v)
+STATUE_FACING = {"a": (1, 0), "c": (0, 1), "e": (-1, 0), "g": (0, -1)}
+STATUE = re.compile(r"^Statue[12]([a-h])$")
+FACE_WALL_MAX = 3.0     # a statue this near the wall it faces stares at it
+
+
+def room_ways(m):
+    """House rules from the Greywatch keep (2026-10-05 playtest):
+    - the straight way in from every door stays clear: no piece stands in the opening's path for the first
+      DOOR_WAY_DEPTH units (a column in line with the door, a statue before it);
+    - a statue faces into the room, never at a wall it stands against or near."""
+    out = []
+    for r in indoor_rooms(m):
+        cells, objs = r["cells"], r["objects"]
+        cs = set(cells)
+        cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+        runs = room_runs(m, cells)
+        pieces = [o for o in objs if m.blocking(o) and not m.is_door(o) and
+                  (RT.family(o["type"]) in RT.BLOCKING_FAMILIES or FLOOR_LIGHT.search(o["type"]))]
+        for d in m.doors:
+            gx, gy = d["gap"]
+            if not any((gx + a, gy + b) in cs for a, b in N4): continue
+            du, dv = gx + gy + 1, gx - gy
+            across_u = d["line"] == "/"                         # a door in a '/' wall (u constant) opens along u
+            p0, a0 = (du, dv) if across_u else (dv, du)
+            sgn = 1 if ((cu if across_u else cv) > p0) else -1
+            extent = max(((x + y + 1 if across_u else x - y) - p0) * sgn for x, y in cells)
+            for o in pieces:
+                tall = RT.family(o["type"]) in TALL_IN_WAY
+                depth_max = min(DOOR_WAY_FAR, 0.75 * extent) if tall else min(DOOR_WAY_DEPTH, 0.4 * extent)
+                u, v = uv_of(o)
+                hu, hv = _half_uv(o)
+                pp, pa = (u, v) if across_u else (v, u)
+                hp, ha = (hu, hv) if across_u else (hv, hu)
+                depth = (pp - p0) * sgn
+                if abs(pa - a0) < DOOR_WAY_HALF + ha and depth - hp < depth_max and depth + hp > 0.6:
+                    out.append(F("composition", "warning", f"{o['type']} stands in the way in from the door, {max(0.0, depth - hp):.1f} "
+                                 f"units inside it: keep the straight way in from every door clear (house rule from the "
+                                 f"2026-10-05 playtest, Greywatch's keep).", o["x"], o["y"]))
+                    break
+        for o in objs:
+            mm = STATUE.match(o["type"])
+            if not mm or mm.group(1) not in STATUE_FACING: continue
+            fu, fv = STATUE_FACING[mm.group(1)]
+            u, v = uv_of(o)
+            for (line, coord), (lo, hi) in runs.items():
+                if (line == "/") != bool(fu): continue           # the walls across the way it faces
+                along = v if line == "/" else u
+                if not (lo - 0.5 <= along <= hi + 0.5): continue
+                ahead = (coord - u) * fu if fu else (coord - v) * fv
+                if 0 < ahead <= FACE_WALL_MAX:
+                    out.append(F("composition", "warning", f"{o['type']} faces the {_wall_name(line, coord, cu, cv)} wall "
+                                 f"{ahead:.1f} units in front of it: a statue faces into the room, its back to the wall "
+                                 f"(house rule from the 2026-10-05 playtest, Greywatch's keep).", o["x"], o["y"]))
+                    break
     return out
 
 

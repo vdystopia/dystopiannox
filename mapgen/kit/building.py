@@ -554,7 +554,7 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         cells = _cells_of(U0, V0, labels)
         if cells & occupied: continue
         b = _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side,
-                   building_id or f"b{len(spec.d['objects'])}_{U0}_{V0}", cells, shp)
+                   building_id or f"b{len(spec.d['objects'])}_{U0}_{V0}", cells, shp, strict=attempt < tries * 3 // 4)
         if b is not None: return b
     return None
 
@@ -599,7 +599,7 @@ def _xy(U0, V0, pt):
     return (u + v) // 2, (u - v) // 2
 
 
-def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, bid, cells, shp):
+def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, bid, cells, shp, strict=True):
     edges = _boundary(labels)
     deg = _point_degree(edges)
     room_ids = sorted({v for v in labels.values() if v != COURT}, key=lambda r: -sum(1 for v in labels.values() if v == r))
@@ -663,8 +663,12 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         int_type = "WoodenDoor"
     used_points = set()
 
-    def place_door(run, dtype, connects):
+    def place_door(run, dtype, connects, centre=None):
         pt = _door_point(rng, run, deg)
+        if pt is not None and centre:    # the middle of the whole wall instead (the random draw is made all the same,
+            c = _wall_middle(centre, deg)                # so the rest of the map comes out as before)
+            if c and c not in used_points and not any(abs(c[0] - q[0]) + abs(c[1] - q[1]) <= 4 for q in used_points):
+                pt = c
         if pt is None or pt in used_points: return None
         # keep doors apart and off points next to another door
         if any(abs(pt[0] - q[0]) + abs(pt[1] - q[1]) <= 4 for q in used_points): return None
@@ -705,8 +709,17 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         for k, r in enumerate(order):
             rooms[r].kind = program[k] if k < len(program) else None
 
+    # a throne room is entered through its SE wall, so its throne can face the door (_seat_throne)
+    throne = None
+    if program and "throne_room" in program and b.entrances:
+        throne = _seat_throne(rooms, room_ids, program, labels, b)
+        if throne is False:
+            if strict: return None       # no room can face its throne down to its door: try another layout
+            throne = None
+
     # interior doors: spanning tree from the entrance room, plus occasional extra loops
     int_runs = _runs(edges, lambda pr: pr[0] not in (None, COURT) and pr[1] not in (None, COURT))
+    throne_wall = throne and [rn for rn in int_runs if rn[0] == "u" and rn[1] == throne[1] and frozenset(rn[3]) == throne[0]]
     adj = defaultdict(list)
     for rn in int_runs:
         a, c = rn[3]
@@ -717,7 +730,8 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         r = queue.popleft()
         for nb, rn in sorted(adj[r], key=lambda t: (-len(t[1][2]), rng.random())):
             if nb in seen: continue
-            d = place_door(rn, int_type, (rooms[r].id, rooms[nb].id))
+            d = place_door(rn, int_type, (rooms[r].id, rooms[nb].id),
+                           centre=throne_wall if throne and frozenset((r, nb)) == throne[0] else None)
             if d is None:
                 # try any other run between the same two rooms
                 for nb2, rn2 in adj[r]:
@@ -735,12 +749,77 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
                 d = place_door(rn, ext_type, (rooms[r].id, "outside"))
                 if d: rooms[r].doors.append(d); b.entrances.append(d); break
 
+    if program and "throne_room" in program and strict:
+        # the throne room's way in came out in its SE wall, and the NW wall across from it is free of doors where the
+        # throne goes (in line with that door)
+        tr = next(r for r in room_ids if rooms[r].kind == "throne_room")
+        ins = [d for d in rooms[tr].doors if d in b.entrances][:1] or rooms[tr].doors[:1]
+        if not ins or not _in_se_wall(rooms[tr], ins[0]): return None
+        a0 = ins[0].gap[0] - ins[0].gap[1]
+        cu = sum(x + y for x, y in rooms[tr].tiles) / len(rooms[tr].tiles)
+        if any(d.line == "/" and d.gap[0] + d.gap[1] + 1 < cu and abs((d.gap[0] - d.gap[1]) - a0) < 5.5
+               for d in rooms[tr].doors): return None
     b.rooms = [rooms[r] for r in room_ids]
     b.footprint = set().union(*(r.tiles for r in b.rooms))
     b.cells = cells
     b.shape, b.size_units = shp, (W, H)
     b.unreachable = [rooms[r].id for r in room_ids if not rooms[r].doors]
     return b
+
+
+def _in_se_wall(room, d):
+    """True if door d lies in the room's SE wall (a '/' wall on the room's high-u side)."""
+    cu = sum(x + y for x, y in room.tiles) / len(room.tiles)
+    return d.line == "/" and d.gap[0] + d.gap[1] + 1 > cu
+
+
+def _seat_throne(rooms, room_ids, program, labels, b):
+    """Puts the throne room where its throne can face its door. Westwood's Dun Mir throne faces SE only (kit/furnish.py
+    place_throne), so a throne room needs its way in through its SE wall, across the room from the NW wall the throne
+    stands on (2026-10-05 playtest, Greywatch: the keep's throne room was entered from its SW end and its throne faced
+    "sideways towards the store room"). The entrance room keeps the throne when the entrance is in its SE wall (a keep
+    entered from the SE, its hall running from the door to the throne). Else the throne goes to the largest room on the
+    entrance room's NW side (a hall entered from the SW or NE has rooms along its NW side, each reached through its SE
+    wall), roomier the deeper it runs from that wall, and the entrance room takes the program's next role (the great
+    hall). Returns None when the entrance room keeps it, (rooms, wall line) of the wall between the entrance room and
+    the throne room, whose door the caller centres on it (_merge_wall), or False when no room will do."""
+    entry = next(r for r in room_ids if rooms[r].id == b.entrances[0].connects[0])
+    if rooms[entry].kind == "throne_room" and _in_se_wall(rooms[entry], b.entrances[0]): return None
+    shared = defaultdict(list)           # room -> unit lines L where it lies against the entrance room's NW side
+    for (i, j), lab in labels.items():
+        if lab == entry and labels.get((i - 1, j)) not in (None, COURT, entry):
+            shared[labels[(i - 1, j)]].append(i)
+
+    def depth(r):                        # how far it runs from its SE wall to its NW wall, against its width
+        us = [x + y for x, y in rooms[r].tiles]; vs = [x - y for x, y in rooms[r].tiles]
+        return (max(us) - min(us) + 2) / max(2, max(vs) - min(vs) + 2)
+
+    least = _kind_min_tiles("throne_room", scaled=False)
+    cands = [r for r, ls in shared.items() if len(ls) >= 3 and len(rooms[r].tiles) >= least]
+    if not cands: return False
+    best = max(cands, key=lambda r: (min(depth(r), 1.0) * len(rooms[r].tiles), len(rooms[r].tiles)))
+    others = [r for r in dict.fromkeys([entry] + list(room_ids)) if r != best]
+    roles = list(program)
+    roles.remove("throne_room")
+    plan = {best: "throne_room"}
+    for r, k in zip(others, roles + [None] * len(others)): plan[r] = k
+    if any(k and len(rooms[r].tiles) < _kind_min_tiles(k, scaled=False) for r, k in plan.items()): return False
+    for r, k in plan.items(): rooms[r].kind = k
+    return frozenset((entry, best)), Counter(shared[best]).most_common(1)[0][0]
+
+
+def _wall_middle(runs, deg):
+    """The lattice point nearest the middle of the wall the runs make together (the wall between a throne room and the
+    room it is entered from), where a door may go (not a junction); None when they do not make one unbroken wall.
+    _boundary keeps an edge's room pair in the order it met them, and a mirrored footprint meets them both ways, so one
+    wall comes out as several runs (the keep's wall between its hall and the throne room as six runs of 1-3 edges, and
+    the door near the room's end, 2026-10-05 playtest)."""
+    if not runs: return None
+    line = runs[0][1]
+    ps = sorted(p for rn in runs for p in rn[2])
+    if ps != list(range(ps[0], ps[-1] + 1)) or len(ps) < 2: return None
+    cands = [(abs(k - len(ps) / 2), k, (2 * line, 2 * ps[k])) for k in range(1, len(ps)) if deg[(2 * line, 2 * ps[k])] == 2]
+    return min(cands)[2] if cands else None
 
 
 def _default_kinds(rooms, room_ids):

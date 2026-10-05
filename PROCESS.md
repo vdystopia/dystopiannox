@@ -209,6 +209,28 @@ Then, in this order:
   - A capped set must not hand its space to one other piece: plants and statues do not multiply with a room's size
     in the fill and top-up (with its benches capped, Thornwick's great hall had been topped up with 15 of each), and
     a top-up plant goes only into a real corner.
+- **Throne rooms and halls face their door** (2026-10-05 playtest, Greywatch's keep: "The throne at the end of the
+  room is facing sideways towards the store room. The pillars are in the dead center of the room, making walking
+  straight in through the door impossible. There are also two statues that mysteriously face directly against the
+  wall.").
+  - Westwood's Dun Mir throne faces SE only (Hecubah's in Con06b looks down a runner to his doors, wolf statues
+    flanking it, flame basins in pairs along the runner). So it stands on the NW wall, in line with the throne room's
+    door in the SE wall, facing it down the room (`place_throne`). The building gives the throne room that door
+    (`building._seat_throne`): the entrance room keeps the throne when the entrance is in its SE wall; else the throne
+    goes to the room on the hall's NW side, entered through its SE wall, its door centred on that wall, and the
+    entrance room becomes the great hall. A keep entered from the NW has no such room (none in the campaign).
+  - A clear aisle and a carpet runner run from the throne to the door; statues flank the throne against its wall
+    (`flank`) and line the aisle in pairs facing across it (`aisle_pair`); columns stand in pairs of rows either side,
+    set back from the walls (`colonnade`, halls too), never a row down the middle.
+  - The straight way in from every door stays clear (`_openings`, `DOOR_WAY_*`): nothing within 4 units (0.4 of the
+    room's depth), no column or statue within 12 (3/4 of the depth).
+  - Statues face into the room (`face_statues`): with their back to the wall they stand by, else toward the aisle or
+    their twin. Statue2a faces SE, 2c NE, 2e NW, 2g SW (Westwood: 35 of 50 2a at a NW wall, 39 of 55 2c at a SW, 49 of
+    73 2e at a SE, 48 of 58 2g at a NE).
+  - Floor candelabras go by the back walls or beside the columns; before a SE or SW wall, drawn see-through, they read
+    as loose on the floor.
+  - The checker warns of a piece in the way in from a door and of a statue facing a wall within 3 units
+    (`checks.room_ways`; Westwood: 31 such pieces in 218 rooms, 4 statues).
 - **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
   of the wall").
   - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
