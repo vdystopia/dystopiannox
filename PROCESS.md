@@ -146,6 +146,13 @@ Then, in this order:
     back, or nothing (Con07B: shelves NW 10, NE 2, SE 3, SW 0; hangings only on the NE and NW walls).
   - Tables, chairs and other free-standing pieces lean toward the room's front, its S and W corners, nearer the SE
     and SW walls (`FRONT_WEIGHT` in `middle_spots`). Benches, supplies and carts may stand against the front walls.
+- **2026-10-04 review** (TownLab and the labs):
+  - Storerooms: free-standing armour and weapon racks in the middle, crates, barrels and wall shelves round them,
+    but at most 5 racks to a row, 1.2 units apart, with 2.2-unit aisles.
+  - A wall with one bookcase is filled with bookcases end to end (`complete_bookcase_walls`), and shelves sit tight
+    into the corners (`CORNER_CLEAR` 1.05; a whole wall packs into the corner it shares with the other back wall).
+  - Great halls: a table per 48 tiles (at most 6) on a large carpet of floor tiles.
+  - Outdoors: rock piles in Westwood's manner (`Planter.rock_piles`); few aspens right against the boundary.
 - **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
   of the wall").
   - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
@@ -243,6 +250,41 @@ Then, in this order:
 - **Symmetry outside too.** Torches flank a door as a pair, on the outside of the wall line (`layout.door_frame`),
   or not at all. A torch pole never stands in or against a wall. A yard's corner torch moves into the yard when a
   bigger building reaches that corner.
+
+## Story: a map with a start, missions, fights, rewards and an exit (Thornwick, 2026-10-04)
+
+A finished map is a story the player walks through, and every creature in it is placed for a reason. Write the story
+in the design's docstring before building anything, then plan the areas from it: each quest needs its places.
+
+1. **The start and the hook.** The player arrives somewhere that shows what is wrong (Thornwick: a plundered wagon
+   on the road, the carter beside it) and someone tells them where to go.
+2. **The main quest locks the exit.** The way out is barred until the main quest is done: a wall across the road
+   with a double gate, LockType Mechanism, unlocked by the quest giver's last line (`A.unlock`). The exit area
+   (`InvisibleExitArea`, xfer MapName) lies beyond it and leads to the next map, which must exist (TNorth).
+3. **Side quests, each with its own place, giver and reward**, chosen to send the player through the whole map: a
+   crypt behind a key-locked door (LockType Silver; the giver hands over the key), a wolf den up a side path, a ruin
+   with a boss and an heirloom. One quest may offer a choice (two givers want the same item).
+4. **Fights with a reason:** an ambush from a camp off the road (a `near` event sets them hunting), a camp with a
+   sentry who rouses the rest, a pack round its den, the restless dead in a crypt, a boss guarding a chest.
+5. **Rewards:** gold and items from the givers (`A.gold`, `A.give`), loot in chests (`items=`), caches hidden at the
+   forest's edge, a shop for each trade that buys and sells.
+6. **Everyone talks:** quest givers, guards, the watch and every townsperson, each with a line that points at a quest
+   (rumours), and a new line once the main quest is done. A portrait for each (`q.portrait`, Westwood's names).
+
+The tools:
+- `kit/quests.py` (`QuestBook`) declares it all; `kit/behaviours/quests.go` runs it. Lines are tried in order, the
+  later stages first. Conditions read the world where they can: `q.dead(names)` for deaths, `has=` for carried
+  items, so a saved game loaded with fresh scripts strands nothing (the script's own flags do not survive it).
+- Text goes in the map's string table (`<Map>.strings.json`), merged into the game's by `mapgen/strings.py` as
+  `nox.csf.json`, which OpenNox reads in place of nox.csf. Keys are at most 31 characters. No audio yet.
+- `kit/camps.py` lays the story's places: bandit camp, wreck, wolf den, cache, ruined tower, signpost.
+- Keep the story's places open before the forest is placed (reserve them in `land.taken`); the planter keeps forest
+  paths free of trees itself, and `Land.open_links` keeps every passage open.
+- Creatures: never place a Zombie (OpenNox cannot read the map back); clone townsfolk from Westwood's maps in their
+  clothes (`spec.clone(..., name=)`).
+- Check: `tests/check_scripts.py` (compiles against the game's NoxScript), `mapgen/install.py`, then
+  `tests/server_smoke.py <design>`: the map loads, and the self-checks find every creature, waypoint and story
+  object. `review/spots.py <map> <names>` renders close-ups of the story's places.
 
 ## 7. Check, review, playtest
 
