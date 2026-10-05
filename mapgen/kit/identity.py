@@ -590,6 +590,17 @@ BUILDINGS = {
                            "family lies", style="stone_house", size=(40, 30), min_units=220,
                    rooms=[("chapel", "the nave: the altar, the pews facing it"), ("crypt", "the family crypt behind the nave")],
                    scenes=["sign"], garden=0.0, faces="square"),
+    # a castle's buildings (Greywatch): the keep in Galava's tower stone, the garrison's barracks
+    "keep": dict(purpose="a castle's keep: the throne room where its lord holds court, the great hall, the steward's "
+                         "study, the lord's chamber and the stores", style="galava_tower", size=(44, 32), min_units=360,
+                 rooms=[("throne_room", "the throne room"), ("great_hall", "the great hall"), ("study", "the steward's study"),
+                        ("bedroom", "the lord's chamber"), ("storeroom", "the keep's stores")],
+                 scenes=["deliveries"], garden=0.0, faces="square"),
+    "barracks": dict(purpose="the garrison's barracks: the soldiers' bunks, their mess and the armoury of their gear",
+                     style="stone_house", size=(38, 28), min_units=230,
+                     rooms=[("barracks", "the soldiers' bunks"), ("mess_hall", "the garrison's mess"),
+                            ("gear_store", "racks of arms and armour")],
+                     scenes=["water_barrel", "woodpile"], garden=0.0, faces="square"),
     # the biomes' structures (rules/BIOMES.md, rules/cultures.py): the built parts of Westwood's lava, ice and cave
     # maps in their own building styles, furnished by their culture
     "demon_forge": dict(purpose="a demon forge of black stone above the lava: the forge, the hall where its arms are "

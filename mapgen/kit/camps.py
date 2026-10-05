@@ -185,6 +185,46 @@ def ruined_tower(spec, rng, land, centre, toward, loot, size=(7, 7), material="A
     return dict(inside=inside, chest=chest, boss=boss, front=front)
 
 
+def training_ground(spec, rng, land, centre, toward, r=4.5, floor="DirtLight2"):
+    """A garrison's training ground (Greywatch's courtyard): a square of trodden sand round `centre` (squares), target
+    barrels in a row along the far side from `toward` (where the watchers come from), racks of arms at its back
+    corners, straw heaped by the targets, benches for the watchers by the way in. The sand goes only on land, off
+    roads and buildings; lay it after land.apply. Returns dict(centre, spots: four points on the open sand where
+    fighters stand, watch: by the benches, all world px)."""
+    ci, cj = centre
+    sc = Scene(spec, rng, land, centre)
+    from kit.layout import square_tile
+    for i in range(int(ci - r) - 1, int(ci + r) + 2):
+        for j in range(int(cj - r), int(cj + r) + 3):
+            if max(abs(i + 0.5 - ci), abs(j - 0.5 - cj)) > r: continue
+            s = (i, j)
+            if s in land.squares and s not in land.roads and s not in land.taken_strict and s not in land.water:
+                spec.floor[square_tile(*s)] = floor
+                land.taken.add(s)
+    a_in = math.atan2(toward[1] - cj, toward[0] - ci)
+    back = a_in + math.pi
+    # the targets: a row across the back, square to the way in
+    ux, uy = math.cos(back), math.sin(back)
+    px_, py_ = -uy, ux
+    for k in (-1.5, -0.5, 0.5, 1.5):
+        sc.put(rng.choice(("TargetBarrel1", "TargetBarrel2")), ci + ux * (r - 1.2) + px_ * k * 1.3,
+               cj + uy * (r - 1.2) + py_ * k * 1.3)
+    for k in (-1, 1):                                          # racks at the back corners, straw beside the targets
+        sc.put(rng.choice(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3", "OutdoorTraderArmorRack5")),
+               ci + ux * (r - 1.0) + px_ * k * (r - 0.8), cj + uy * (r - 1.0) + py_ * k * (r - 0.8))
+        sc.put(rng.choice(("Straw1", "Straw2")), ci + ux * (r - 2.4) + px_ * k * 3.4, cj + uy * (r - 2.4) + py_ * k * 3.4)
+    # benches for the watchers either side of the way in, facing across the sand
+    for k in (-1, 1):
+        si, sj = ci + math.cos(a_in) * (r - 0.9) + px_ * k * 2.6, cj + math.sin(a_in) * (r - 0.9) + py_ * k * 2.6
+        bench = {"+u": "Bench1", "-u": "Bench5", "+v": "Bench4", "-v": "Bench2"}
+        f = (-math.cos(a_in), -math.sin(a_in))                 # facing in
+        key = ("+u" if f[0] > 0 else "-u") if abs(f[0]) >= abs(f[1]) else ("+v" if f[1] > 0 else "-v")
+        sc.put(bench[key], si, sj)
+    spots = [sc.px(1.6, a_in + math.pi / 2 * k + math.pi / 4) for k in range(4)]
+    watch = sc.px(r - 1.6, a_in)
+    return dict(centre=square_px(ci, cj), spots=spots, watch=watch)
+
+
 def stone_ring(spec, rng, land, centre, n=7, radius=2.6, stone="ObeliskPrimitive", core=None, core_name=None,
                light=None, light_name=None, clear=4):
     """A ring of standing stones round a centre (squares): a shrine, a vent's ring, a circle in the woods. `core`: an

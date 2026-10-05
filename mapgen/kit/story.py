@@ -33,9 +33,11 @@ class StoryMap:
         self.B = self.pop.behaviours
 
     # ---- buildings -------------------------------------------------------------------------------------------------
-    def place_buildings(self, no_build=None, scale=1.0):
+    def place_buildings(self, no_build=None, scale=1.0, square_area="town"):
         """Every building of the identity, public ones on the square first, then by size; none within the radius
-        (squares) of the named areas in `no_build` (the story's wild places), which stay free for the forest after."""
+        (squares) of the named areas in `no_build` (the story's wild places), which stay free for the forest after.
+        square_area: the area whose paved square (Land.paint_square) the public buildings face (a castle's
+        courtyard)."""
         m, land, rng = self.m, self.land, self.rng
         held = set()
         for k_, r_ in (no_build or {}).items():
@@ -54,7 +56,7 @@ class StoryMap:
             # a house too small for its rooms at their least sizes is tried a size up before a size down
             for shrink in (1.0, 1.12, 0.92, 1.25, 0.84):
                 size = (2 * round(size0[0] * scale * shrink / 2), 2 * round(size0[1] * scale * shrink / 2))
-                lots = land.square_lots(size) if role["faces"] == "square" and bid.area == "town" else []
+                lots = land.square_lots(size) if role["faces"] == "square" and bid.area == square_area else []
                 lots += land.lots(bid.area, size)
                 for origin, side in lots:
                     if not land.lot_free(origin, size, margin=1): continue
@@ -456,3 +458,161 @@ class StoryMap:
                 if o.get("door") is not None and math.hypot(o["x"] - d.px[0], o["y"] - d.px[1]) < 40:
                     o.setdefault("xfer", {})["LockType"] = lock; n += 1
         return n
+
+
+class Curtain:
+    """A castle's curtain wall round its courtyard (Greywatch): a rectangle of wall points on the square grid (a
+    diamond on screen, as Westwood's buildings stand), a tower over each corner, a gatehouse (a tower either side of a
+    double gate) where a road crosses one of the `gates` faces. The courtyard is all land however far it lies from
+    what is built in it, and a band of forest is kept outside the wall (Land.forbidden) except before the gate faces,
+    so the gates are the only ways in: a gate locked to a mechanism seals the road beyond it (check_story_gates).
+
+        cw = Curtain(land, centre=(ci, cj), half=(24, 22), gates=("j0", "j1"))   # after the links, before the roads
+        land.paint_roads(m, ..., skip=land.reserved | land.forbidden)
+        cw.plan_gates(m)            # after the roads: where they cross the gate faces; the gatehouse towers
+        cw.hold()                   # before place_buildings: the wall's band and the gate passages stay free
+        sm.place_buildings(...); cw.release()
+        land.carve(...); cw.fill()  # the courtyard all land, the towers and the band forest
+        land.apply(...)
+        gates = cw.build(m, prefix={"j0": "SouthGate", "j1": "NorthGate"}, lock={"j1": "Mechanism"})
+
+    Faces, as a building's sides in square coordinates: i0 upper left, i1 lower right, j0 lower left, j1 upper
+    right. Material: GalavaTownWall, the town wall of Westwood's Galava castle (G_Lava, War07A, Wiz07F); its double
+    gate GalavaHalfDoor."""
+
+    def __init__(self, land, centre, half, gates=("j0", "j1"), band=7, tower=3):
+        self.land = land
+        ci, cj = centre
+        hi, hj = half
+        self.gi, self.gj = int(round(ci - hi)), int(round(cj - hj + 1))
+        self.w, self.h = 2 * hi, 2 * hj
+        self.gates, self.t = tuple(gates), tower
+        gi, gj, w, h, t = self.gi, self.gj, self.w, self.h, tower
+        self.plot = {(gi + a, gj + b) for a in range(w) for b in range(h)}
+        # corner towers: a t x t block over each corner, one square of it inside the courtyard
+        self.blocks = [{(i0 + a, j0 + b) for a in range(t) for b in range(t)}
+                       for i0 in (gi - t + 1, gi + w - 1) for j0 in (gj - t + 1, gj + h - 1)]
+        forb = set()
+        for i in range(gi - band, gi + w + band):
+            for j in range(gj - band, gj + h + band):
+                if (i, j) in self.plot: continue
+                out_i = i < gi or i >= gi + w
+                out_j = j < gj or j >= gj + h
+                face = ("i0" if i < gi else "i1") if out_i else ("j0" if j < gj else "j1")
+                if (out_i and out_j) or face not in self.gates: forb.add((i, j))      # beyond a corner or a closed face
+        for b in self.blocks: forb |= b
+        self.forb = forb
+        land.forbidden |= forb
+        self.gate_at, self.held = {}, set()
+
+    def points(self, face):
+        """The face's wall points in order along it."""
+        gi, gj, w, h = self.gi, self.gj, self.w, self.h
+        return {"i0": [(gi, q) for q in range(gj - 1, gj + h)], "i1": [(gi + w, q) for q in range(gj - 1, gj + h)],
+                "j0": [(p, gj - 1) for p in range(gi, gi + w + 1)], "j1": [(p, gj + h - 1) for p in range(gi, gi + w + 1)]}[face]
+
+    @staticmethod
+    def touching(pt):
+        p, q = pt
+        return [(p - 1, q), (p, q), (p - 1, q + 1), (p, q + 1)]
+
+    def _across(self, face):
+        """The rows (squares across the face) a gatehouse tower covers: t-1 outside and one inside."""
+        gi, gj, w, h, t = self.gi, self.gj, self.w, self.h, self.t
+        return {"j0": range(gj - t + 1, gj + 1), "j1": range(gj + h - 1, gj + h + t - 1),
+                "i0": range(gi - t + 1, gi + 1), "i1": range(gi + w - 1, gi + w + t - 1)}[face]
+
+    @staticmethod
+    def _sq(face, along, across):
+        return (across, along) if face in ("i0", "i1") else (along, across)
+
+    def plan_gates(self, spec):
+        """Where the roads cross the gate faces: the gate in the middle of each crossing, a tower either side of it
+        clear of the road. Road squares that fall under a tower go back to ground. Returns {face: gate index}."""
+        land = self.land
+        for face in self.gates:
+            pts = self.points(face)
+            hits = [k for k, p in enumerate(pts[1:-2], 1) if any(s in land.roads for s in self.touching(p))]
+            if not hits:
+                print(f"  curtain: no road crosses the {face} face"); continue
+            k = hits[len(hits) // 2]
+            self.gate_at[face] = k
+            a0 = pts[k][1] if face in ("i0", "i1") else pts[k][0]
+            if face in ("j0", "j1"): lo, hi = a0 - 1, a0 + 2           # the open squares between the jambs
+            else: lo, hi = a0, a0 + 3
+            for side in (-1, 1):
+                for off in range(0, 4):
+                    al = range(lo - off - self.t, lo - off) if side < 0 else range(hi + off, hi + off + self.t)
+                    block = {self._sq(face, a, c) for a in al for c in self._across(face)}
+                    if block & (land.roads | land.plaza): continue
+                    self.blocks.append(block); self.forb |= block; land.forbidden |= block
+                    break
+            # the passage through the gate: kept free of buildings, yards and trees
+            acr = self._across(face)
+            self.held |= {self._sq(face, a, c) for a in range(lo, hi) for c in range(min(acr) - 4, max(acr) + 5)}
+        for s in list(land.roads):
+            if s in self.forb:
+                land.roads.discard(s); spec.floor.pop(square_tile(*s), None)
+        return self.gate_at
+
+    def hold(self, inside=2):
+        """Squares the buildings keep off while they are placed: `inside` rows within the wall, the gate passages and
+        everything outside near the wall. release() gives them back (the passages stay taken)."""
+        gi, gj, w, h = self.gi, self.gj, self.w, self.h
+        ring = {s for s in self.plot if min(s[0] - gi, gi + w - 1 - s[0], s[1] - gj, gj + h - 1 - s[1]) < inside}
+        near = {(i, j) for i in range(gi - 8, gi + w + 8) for j in range(gj - 8, gj + h + 8)} - self.plot
+        self._hold = (ring | near) - self.land.taken
+        self.land.taken |= self._hold | self.held
+        return self._hold
+
+    def release(self):
+        self.land.taken -= getattr(self, "_hold", set()) - self.held
+
+    def fill(self):
+        """After carve: the courtyard all land, the towers and the band outside the closed faces void."""
+        land = self.land
+        land.squares |= self.plot
+        land.squares -= self.forb
+        return land.squares
+
+    def courtyard(self):
+        """The courtyard's land squares (not the towers)."""
+        return self.plot - self.forb
+
+    def build(self, spec, material="GalavaTownWall", gate="GalavaHalfDoor", prefix=None, lock=None):
+        """After land.apply: the wall on every point of the faces and round every tower that touches land (laid over
+        the forest's edge where the courtyard meets the band), and the double gates. prefix: {face: script name
+        prefix} for the gate halves (<prefix>1, <prefix>2); lock: {face: LockType}. Returns {face: [halves]}."""
+        land = self.land
+        prefix, lock = prefix or {}, lock or {}
+        cells = set()
+        for face in ("i0", "i1", "j0", "j1"):
+            for p in self.points(face):
+                if any(s in land.squares for s in self.touching(p)): cells.add(point_cell(*p))
+        for b in self.blocks:
+            # a tower is solid stone: every point of its block (an outline alone shows the void inside as a pit)
+            pts = {(i + a, j + c) for i, j in b for a in (0, 1) for c in (-1, 0)}
+            if any(s in land.squares for p in pts for s in self.touching(p)):
+                cells |= {point_cell(*p) for p in pts}
+        for c in cells: spec.wall(*c, material)
+        out = {}
+        for face, k in self.gate_at.items():
+            pts = self.points(face)
+            a, b = point_cell(*pts[k]), point_cell(*pts[k + 1])
+            line = "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/"
+            n0 = len(spec.d["objects"])
+            spec.door(gate, a, line)
+            halves = [o for o in spec.d["objects"][n0:] if o["type"] == gate]
+            for n, o in enumerate(halves):
+                if face in prefix: o["scr"] = f"{prefix[face]}{n + 1}"
+                if face in lock: o.setdefault("xfer", {})["LockType"] = lock[face]
+            out[face] = halves
+        return out
+
+    def gate_px(self, face, outward=0.0):
+        """World px of a gate's middle, `outward` squares out from the wall (negative: into the courtyard)."""
+        pts = self.points(face)
+        k = self.gate_at[face]
+        p = ((pts[k][0] + pts[k + 1][0]) / 2, (pts[k][1] + pts[k + 1][1]) / 2)
+        d = {"i0": (-1, 0), "i1": (1, 0), "j0": (0, -1), "j1": (0, 1)}[face]
+        return square_px(p[0] + d[0] * outward, p[1] + d[1] * outward)
