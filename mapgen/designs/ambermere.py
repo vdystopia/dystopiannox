@@ -250,6 +250,20 @@ for c in list(ww.no_walls): land.taken.add(cell_square(*c))
 C = {k: land.areas[k]["c"] for k in AREAS}
 south_c, cairn_c, pits_c, barrows_c, barrow_c, reeds_c, shrine_c, west_c = (
     C[k] for k in ("south", "cairn", "pits", "barrows", "barrow", "reeds", "shrine", "west"))
+
+
+def off_road(c, clear=4.5, reach=12):
+    """The square nearest `c` with no road within `clear` squares, on open land: a camp beside its way, not on it."""
+    from kit.layout import bfs_distance
+    near_road = bfs_distance(list(land.roads), land.squares, int(clear) + 1)
+    fenced = set().union(*({(y_.gi + a, y_.gj + b) for a in range(-2, y_.w + 2) for b in range(-2, y_.h + 2)}
+                           for y_ in yards))
+    cands = [s for s in land.squares if near_road.get(s, 99) >= clear and s not in land.taken_strict and
+             s not in fenced and s not in land.water and math.hypot(s[0] - c[0], s[1] - c[1]) <= reach]
+    s = min(cands, key=lambda s: math.hypot(s[0] - c[0], s[1] - c[1])) if cands else (int(c[0]), int(c[1]))
+    return (s[0] + 0.5, s[1] - 0.5)
+
+
 # the pilgrims' cart, overturned on the verge where the cairn's path leaves the road
 cairn_road = sm.road_near(((cairn_c[0] + south_c[0]) / 2, (cairn_c[1] + south_c[1]) / 2))
 road_dir = math.atan2(vc[1] - south_c[1], vc[0] - south_c[0])
@@ -270,7 +284,7 @@ for k_ in range(3):
 for k_ in range(4):
     csc.put(rng.choice(("Skull", "ArmBone", "LegBone")), *csc.at(rng.uniform(1.8, 3.6), rng.uniform(0, 6.28)))
 # the diggers' camp in the barrow-field, open toward the town road
-barrows_camp = camps.bandit_camp(m, rng, land, barrows_c, vc,
+barrows_camp = camps.bandit_camp(m, rng, land, off_road(barrows_c), vc,
                                  loot=[("Gold", {"Amount": 80}), "RedPotion", "RedPotion", "Quiver", "LeatherHelm"],
                                  sleepers=4, tents=2)
 for k_ in range(3):                                   # their spades in the opened barrows
@@ -291,9 +305,10 @@ for k_, t_ in enumerate(("UrchinBed1", "UrchinBedFlat1", "UrchinHammock1", "Urch
 for k_ in range(6):
     urchin_spots.append(pits_sc.px(rng.uniform(3.0, 6.5), k_ * 1.05 + 0.5))
 # the old smokehouse on the reed shore, its door toward the town path; the spiders' webs round it
-smokehouse = camps.ruined_tower(m, rng, land, reeds_c, vc, loot=[("Gold", {"Amount": 40}), "RedPotion", "Bread"],
+smoke_c = off_road(reeds_c, clear=6.5)
+smokehouse = camps.ruined_tower(m, rng, land, smoke_c, reeds_c, loot=[("Gold", {"Amount": 40}), "RedPotion", "Bread"],
                                 size=(7, 7), material="Log")
-rsc = camps.Scene(m, rng, land, reeds_c)
+rsc = camps.Scene(m, rng, land, smoke_c)
 for k_ in range(4):
     rsc.put(rng.choice(("SpiderWebNorth", "SpiderWebEast", "SpiderWebNorthEast")), *rsc.at(5.2, k_ * 1.57 + 0.6))
 # the shrine of the mere on the north-east point: standing stones round the empty socket of the Heart
@@ -415,7 +430,7 @@ RUMOURS = [
     "There's an ogre in the old shrine on the north-east point. Rue says the fish went when the Heart was taken.",
     "The pilgrims are late with the autumn candles. They should have come up the south road yesterday.",
 ]
-for c_, r_ in ((barrows_c, 16), (pits_c, 14), (cairn_c, 10), (reeds_c, 12)):    # the folk keep away from the foes
+for c_, r_ in ((barrows_c, 16), (pits_c, 14), (cairn_c, 10), (cairn_road, 9), (reeds_c, 12)):    # the folk keep away from the foes
     sm.keep_folk_away(c_, r_)
 ring = sm.townsfolk(FOLK, vc, q=q, rumours=RUMOURS,
                     after=("crown_laid", "The dead are quiet again, and the west gate's open. You'll be off to "
@@ -594,7 +609,8 @@ q.on_death("Malvo", [A.drop(CROWN), A.drop("OrnateHelm"), A.flag("malvo_dead"),
 q.on_pickup(CROWN, [q.journal("I have the Drowned Crown. It is cold as lake water. The altar is in the barrow's hall, "
                               "under the old god's statue.", QUEST)], when=q.when(not_="crown_laid"))
 q.near(ax_, ay_, 80, [A.take(CROWN), A.flag("crown_laid"), A.enable("AltarLight"), A.spawn("DunMirFlameBasinLit",
-                                                                                         "AltarBasin"),
+                                                                                         "AltarBasin")] +
+       [A.disable(n) for n in kings_guard + crypt_dead] + [          # the risen still standing sink down: gone
                       A.print("You lay the Drowned Crown on the altar. A flame leaps up in the cold basin, and all "
                               "through the barrow the dead sink down and are still."),
                       q.journal("I laid the Drowned Crown back on the barrow's altar. The dead sleep again. Reeve "
