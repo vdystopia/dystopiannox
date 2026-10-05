@@ -347,11 +347,44 @@ def check_objects(m, ctx, base):
             unreach.append(o)
     if unreach:
         sev = "info" if scripted else "error"
-        for o in unreach[:25]:
-            out.append(F("reachability", sev, f"{o['type']} cannot be reached from the player start.", o["x"], o["y"]))
+        for k, o in enumerate(unreach[:25]):
+            why = _what_blocks(m, ctx, o) if k < 6 else ""
+            out.append(F("reachability", sev, f"{o['type']} cannot be reached from the player start{why}.", o["x"], o["y"]))
         if len(unreach) > 25:
             out.append(F("reachability", sev, f"... and {len(unreach) - 25} more unreachable objects."))
     return out
+
+
+def _what_blocks(m, ctx, o):
+    """The objects standing in the way of an unreachable object (Deepvault's review: finding the pillars that shut
+    off a camp took a hand-written min-cut): the shortest way to it with objects ignored, walls not, and the blocking
+    objects on that way. Returns ': blocked by Type at (x, y), ...' or ''."""
+    import collections
+    target = m.cell_of(o["x"], o["y"])
+    walls = {c for c, w in m.walls.items() if not (w.secret or w.destructible or c in m.scripted_walls)}
+    prev = {s: None for s in ctx.starts}
+    q = collections.deque(ctx.starts)
+    end = None
+    while q:
+        c = q.popleft()
+        if abs(c[0] - target[0]) <= 1 and abs(c[1] - target[1]) <= 1: end = c; break
+        for dx, dy in N4:
+            n = (c[0] + dx, c[1] + dy)
+            if n in prev or n in walls or n not in m.cover: continue
+            prev[n] = c; q.append(n)
+    if end is None: return ": walled off (no way even past the objects)"
+    path = set()
+    while end is not None: path.add(end); end = prev[end]
+    hits = []
+    for p in m.objects:
+        if p is o or not m.blocking(p) or "TRIGGER" in p["cls"]: continue
+        r = m.radius(p)
+        if r < 10: continue
+        pc = m.cell_of(p["x"], p["y"])
+        if any(abs(pc[0] - c[0]) <= 1 and abs(pc[1] - c[1]) <= 1 for c in path):
+            hits.append(p)
+    if not hits: return ""
+    return ": blocked by " + ", ".join(f"{p['type']} at ({p['x']:.0f}, {p['y']:.0f})" for p in hits[:3])
 
 
 def check_story_gates(m, ctx, base):
