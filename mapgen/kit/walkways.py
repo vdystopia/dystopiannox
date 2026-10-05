@@ -412,3 +412,109 @@ class Router:
             if legs is None: return None
             out += legs
         return out
+
+
+# ---- which way a body faces where it stands (playtest 2026-10-05, Starwell: "a lot of NPCs seem to face random
+# directions when they get to stopping points ... if an NPC is standing next to a building, have them face away from
+# the building") -------------------------------------------------------------------------------------------------------
+FACE_REACH = 40.0     # px straight ahead a standing body keeps open: no wall, building, tree or obstacle (a stride and a half)
+FACE_SIDE = 22.0      # degrees either side of straight ahead also kept open, to FACE_REACH * 0.7
+NEAR_WALL = 34.0      # px: a body this near a wall or building stands beside it, and faces away from it
+AWAY_SLACK = 80.0     # degrees off straight away from that wall a body beside it may face
+FACE_FAR = 240.0      # px out along a facing to the point the game is told to face (one the walker cannot reach)
+
+
+def _unit(a):
+    return math.cos(a), math.sin(a)
+
+
+def facing_problem(g, p, look, feature=None, reach=FACE_REACH, step=4.0):
+    """Why a body standing at p (world px) and facing toward `look` faces into something within `reach` px straight
+    ahead, or None: the void, a wall (a building, a fence, a forest wall), or an obstacle (a tree, a rock, a stall)
+    other than the feature it stands there for (an obstacle centred within 10 px of `feature`: the well it looks at)."""
+    dx, dy = look[0] - p[0], look[1] - p[1]
+    L = math.hypot(dx, dy)
+    if L < 1: return "faces nowhere"
+    ux, uy = dx / L, dy / L
+    for k in range(1, int(reach / step) + 1):
+        d = k * step
+        x, y = p[0] + ux * d, p[1] + uy * d
+        c = (int(x // CELL), int(y // CELL))
+        if c not in g.cover: return f"faces the void {d:.0f} px ahead"
+        if c in g.walls or g.wall_dist(x, y) < 3: return f"faces a wall {d:.0f} px ahead"
+        if feature and math.hypot(x - feature[0], y - feature[1]) < 6: return None    # reached what it looks at
+        o = g.obstacle_at(x, y, 2)
+        if o and not (feature and math.hypot(o[0] - feature[0], o[1] - feature[1]) < 10):
+            return f"faces an obstacle {d:.0f} px ahead at ({o[0]:.0f}, {o[1]:.0f})"
+    return None
+
+
+def _open_ahead(g, p, a, feature=None):
+    """True when the facing at angle a (radians) from p is open: straight ahead to FACE_REACH and a little either side."""
+    q = lambda b, r: (p[0] + r * math.cos(b), p[1] + r * math.sin(b))
+    if facing_problem(g, p, q(a, FACE_FAR), feature) is not None: return False
+    side = math.radians(FACE_SIDE)
+    return all(facing_problem(g, p, q(a + s, FACE_FAR), feature, reach=FACE_REACH * 0.7) is None for s in (-side, side))
+
+
+def wall_away(g, p, near=NEAR_WALL):
+    """The direction (radians) straight away from the walls within `near` px of p, or None when none is that near:
+    the sum, over 32 directions, of each one that meets a wall (or the void) within `near`, weighted by how near."""
+    sx = sy = 0.0
+    for k in range(32):
+        a = k * math.pi / 16
+        ux, uy = _unit(a)
+        for d in range(4, int(near) + 1, 3):
+            x, y = p[0] + ux * d, p[1] + uy * d
+            c = (int(x // CELL), int(y // CELL))
+            if c not in g.cover or c in g.walls or g.wall_dist(x, y) < 3:
+                sx -= ux * (near - d + 3); sy -= uy * (near - d + 3)
+                break
+    if math.hypot(sx, sy) < 1e-6: return None
+    return math.atan2(sy, sx)
+
+
+def _run(g, p, a, reach):
+    """How far (px, to `reach`) the ground runs open from p at angle a: no void, wall or obstacle."""
+    ux, uy = _unit(a)
+    for d in range(4, int(reach) + 1, 4):
+        x, y = p[0] + ux * d, p[1] + uy * d
+        c = (int(x // CELL), int(y // CELL))
+        if c not in g.cover or c in g.walls or g.wall_dist(x, y) < 3 or g.obstacle_at(x, y, 2): return d
+    return reach
+
+
+def _open_way(g, p, reach=120.0):
+    """The direction (radians) of the most open ground about p: each of 32 directions weighted by how far it runs
+    open (to `reach`)."""
+    sx = sy = 0.0
+    for k in range(32):
+        a = k * math.pi / 16
+        r = _run(g, p, a, reach)
+        sx += math.cos(a) * r; sy += math.sin(a) * r
+    return math.atan2(sy, sx) if math.hypot(sx, sy) > 1e-6 else 0.0
+
+
+def stop_facing(g, p, prefer=None, feature=None):
+    """Where a body standing at stop p faces (a point the game turns it toward): toward `prefer` (a point: the
+    feature it is there for, the square's middle, a point straight out from a door), turned as little as it takes
+    to face open ground (facing_problem: nothing within FACE_REACH ahead, nor a little either side), and, beside a
+    wall or building (within NEAR_WALL), within AWAY_SLACK degrees of straight away from it. With no preference, the
+    most open way. Returns the feature itself when the body faces it unturned, else a point FACE_FAR px out."""
+    if prefer is not None and math.hypot(prefer[0] - p[0], prefer[1] - p[1]) >= 1:
+        base = math.atan2(prefer[1] - p[1], prefer[0] - p[0])
+    else:
+        base, prefer, feature = _open_way(g, p), None, None
+    away = wall_away(g, p)
+    out = lambda a: (p[0] + FACE_FAR * math.cos(a), p[1] + FACE_FAR * math.sin(a))
+    away_ok = lambda a: away is None or math.degrees(abs((a - away + math.pi) % (2 * math.pi) - math.pi)) <= AWAY_SLACK
+    ahead_ok = lambda a: facing_problem(g, p, out(a), feature) is None
+    # turning 11.25 degrees at a time, the nearer way first; each test tried over every turn before the next, looser
+    turns = [base] + [base + s * k * math.pi / 16 for k in range(1, 16) for s in (1, -1)] + [base + math.pi]
+    for fits in (lambda a: away_ok(a) and _open_ahead(g, p, a, feature),
+                 lambda a: away_ok(a) and ahead_ok(a),
+                 ahead_ok):
+        for k, a in enumerate(turns):
+            if fits(a):
+                return tuple(prefer) if k == 0 and feature is not None and prefer is not None else out(a)
+    return out(max((k * math.pi / 16 for k in range(32)), key=lambda a: _run(g, p, a, FACE_REACH + 8)))

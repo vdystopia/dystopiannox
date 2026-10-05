@@ -459,6 +459,28 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   their tents, the watch well apart at the approach. When roused (sentry, pack, ambush) melee fighters come at the
   player from their own sides, fanned 50 degrees apart, archers keeping their ground (`spreadOn`); a pack lies up
   spread about its den, each on its own spot, rather than trailing its leader.
+- 2026-10-05, a stop faces somewhere that makes sense (Starwell playtest: "a lot of NPCs seem to face random
+  directions when they get to stopping points ... if an NPC is standing next to a building, have them face away from
+  the building"). Two causes. At build time a doorstep stop faced its own door, and once `_spots` moved it beside the
+  doorstep it faced along or into the wall; a third of all stops faced a wall, tree or obstacle within 40 px, and over
+  half of those beside a building faced toward it (garrison patrols' stops faced nothing at all). In the game the
+  facing was set once, on arrival: the player standing near at that moment left them staring at where the player
+  had been, and the game's own idling (OpenNox `AIActionIdle`: a creature of aggression under 0.08, as all townsfolk
+  are, pushes `ACTION_FACE_LOCATION` toward where it stood a frame before whenever it is bumped) turned anyone a
+  passer-by brushed, with nothing turning them back.
+  The rule (`kit/walkways.stop_facing`, applied to every stop of every tour, beat, patrol and journey's end in
+  `Behaviours._facings`): what the stop is for gives the preferred way (`StoryMap._stop_face`): a feature (well,
+  statue, bench, stall, barrel, the gate a watchman keeps) is faced; a doorstep faces straight out, away from the door
+  and its building; a place on the square faces the square's middle; a step inside a shop faces on into the room; a
+  stop with nothing to face (a garrison patrol's) faces the most open way. Then it is turned the least it takes so
+  that nothing (wall, building, tree, obstacle, void) stands within 40 px straight ahead nor 22 degrees either side,
+  and, within 34 px of a wall or building, to within 80 degrees of straight away from it. The game is told a point
+  240 px out (or the feature itself), so a walker settled a little aside still faces the same way.
+  In the game (behaviours `walker.face`) the walker is turned on arrival and again by the ticker twice a second while
+  it stands its pause (after settling aside too): toward the player while they are within 110 px, back to the stop's
+  way when they leave; only when more than 20 degrees off, and a townsperson is first set Idle so the game's own turn
+  toward a bump is dropped. `check_routes` faults any stop whose facing has something within 40 px straight ahead
+  (the feature it stands at excepted); `review/storymap.py --routes` draws each stop's facing as an arrow.
 
 **A culture's own pieces** (Starwell, 2026-10-05: a wizards' college town, the third map of the one-map loop).
 - A map with a culture of its own gets its own outdoor scenes without touching the others: a theme with `culture=`

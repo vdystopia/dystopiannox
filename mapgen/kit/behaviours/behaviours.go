@@ -283,21 +283,22 @@ func Ambush(names []string, x, y, reach float32) {
 // there; near a bend or doorway point, it goes on to the next; anywhere else (a doorway or gate someone else is in)
 // it gives way, standing a second or two, then tries again, and after two tries goes on to the next waypoint.
 type walker struct {
-	o       ns.Obj
-	wps     []ns.WaypointObj
-	pause   []float32
-	look    []ns.Pointf
-	loop    bool
-	once    bool // a journey: walked once, and at its last waypoint the walker stays
-	done    bool // finished, or taken over by a journey: the ticker leaves it be
-	i, step int
-	gen     int     // bumped whenever the walk changes hands
-	moving  bool    // on a leg, between Move and its end
-	held    bool    // hiding or fighting: the route waits
-	waiting bool    // giving way: standing a moment before trying the leg again
-	best    float32 // the nearest it has come to its waypoint on this leg (px)
-	still   int     // ticker rounds without coming nearer
-	tries   int     // times it has given way on this leg
+	o        ns.Obj
+	wps      []ns.WaypointObj
+	pause    []float32
+	look     []ns.Pointf
+	loop     bool
+	once     bool // a journey: walked once, and at its last waypoint the walker stays
+	done     bool // finished, or taken over by a journey: the ticker leaves it be
+	i, step  int
+	gen      int     // bumped whenever the walk changes hands
+	moving   bool    // on a leg, between Move and its end
+	held     bool    // hiding or fighting: the route waits
+	waiting  bool    // giving way: standing a moment before trying the leg again
+	standing bool    // standing its pause at a stop: the ticker keeps it facing the stop's way (or the player)
+	best     float32 // the nearest it has come to its waypoint on this leg (px)
+	still    int     // ticker rounds without coming nearer
+	tries    int     // times it has given way on this leg
 	// Tour: running home from danger, along the route
 	homeIdx int
 	fleeing bool
@@ -366,7 +367,7 @@ func (w *walker) leg() {
 		return
 	}
 	w.gen++
-	w.moving, w.waiting, w.still = true, false, 0
+	w.moving, w.waiting, w.standing, w.still = true, false, false, 0
 	w.best = dist(w.o.Pos(), w.wps[w.i].Pos())
 	w.o.Move(w.wps[w.i])
 }
@@ -415,7 +416,7 @@ func (w *walker) isStop() bool {
 
 // finish: a journey's end. The walker stays where it is, facing on.
 func (w *walker) finish() {
-	w.done, w.moving, w.waiting = true, false, false
+	w.done, w.moving, w.waiting, w.standing = true, false, false, false
 	w.gen++
 	if !w.alive() {
 		return
@@ -451,17 +452,53 @@ func (w *walker) arrived() {
 		w.later(ns.Frames(2), w.next)
 		return
 	}
-	if h := ns.GetHost(); h != nil && dist2(h.Pos(), w.o.Pos()) < 120*120 {
-		w.o.LookAtObject(h)
-	} else if lp := w.look[w.i]; lp.X != 0 || lp.Y != 0 {
-		w.o.LookAtObject(lp)
-	}
+	w.standing = true
+	w.face()
 	w.later(ns.Seconds(float64(p)+float64(ns.Random(0, 4))), w.next)
+}
+
+// face keeps a walker standing at a stop turned the stop's way (laid at build time toward open ground: away from a
+// building it stands beside, toward the well it stands at, out from a door; kit/walkways stop_facing), or toward the
+// player while they are within nearPlayer px, turning back when they leave. Called on arrival and by the ticker twice
+// a second: the game's own idling turns a body bumped by a passer-by toward where it was pushed from, and nothing
+// else turns it back (Starwell playtest 2026-10-05: "NPCs seem to face random directions when they get to stopping
+// points"). It turns only a body more than 20 degrees off, so it does nothing most rounds.
+const nearPlayer = 110
+
+func (w *walker) face() {
+	o := w.o
+	if o == nil || w.i < 0 || w.i >= len(w.look) {
+		return
+	}
+	p := o.Pos()
+	t := w.look[w.i]
+	if h := ns.GetHost(); h != nil && dist2(h.Pos(), p) < nearPlayer*nearPlayer {
+		t = h.Pos()
+	} else if t.X == 0 && t.Y == 0 {
+		return
+	}
+	dx, dy := t.X-p.X, t.Y-p.Y
+	if dx*dx+dy*dy < 4 {
+		return
+	}
+	// the game's own measure: 256 steps to a turn, 0 along +x (server DirFromVec)
+	want := int(math.Atan2(float64(dy), float64(dx))*40.743664+0.5) & 255
+	off := (want - int(o.Direction())) & 255
+	if off > 128 {
+		off = 256 - off
+	}
+	if off <= 14 {
+		return
+	}
+	if w.fear > 0 {
+		o.Idle() // a townsperson: drop any turn the game is making toward a bump, and stand
+	}
+	o.LookAtObject(t)
 }
 
 // hold suspends the route (a fight, waiting at home); resume takes it up again after d.
 func (w *walker) hold() {
-	w.held, w.moving, w.waiting = true, false, false
+	w.held, w.moving, w.waiting, w.standing = true, false, false, false
 	w.gen++
 }
 
@@ -533,6 +570,10 @@ func tickWalkers() {
 			continue
 		}
 		w.heldFor = 0
+		if w.standing && !w.held && !w.moving {
+			w.face()
+			continue
+		}
 		if !w.moving || w.held || w.waiting {
 			continue
 		}

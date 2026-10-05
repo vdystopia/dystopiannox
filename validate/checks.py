@@ -1494,7 +1494,8 @@ def check_routes(m, ctx, base):
     not on water), and every leg walked between waypoints - each waypoint link, and each step of the routes the
     scripts walk (<map>.routes.json beside a generated map) - runs straight without crossing the void, a wall (fences
     and forest walls are walls), a building or an obstacle, sampled along the segment, and passes any doorway
-    square-on through its middle (kit/walkways). Errors on generated maps, notes on Westwood's."""
+    square-on through its middle (kit/walkways); every stop faces open ground. Errors on generated maps, notes on
+    Westwood's."""
     out = []
     if not m.waypoints: return out
     from kit.walkways import Ground
@@ -1545,10 +1546,30 @@ def check_routes(m, ctx, base):
                 bad.append(F("routes", sev, f"{wa}'s stop {short(a['name'])} and {wb}'s stop {short(b['name'])} stand "
                              f"{d:.0f} px apart (under {STOP_GAP:.0f}): one spot for two.",
                              (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
+    # every stop faces open ground (Starwell playtest 2026-10-05: "NPCs seem to face random directions when they get
+    # to stopping points"): the point it is turned toward at each stop (routes.json "looks", laid by kit/walkways
+    # stop_facing) with no wall, building, tree, obstacle or void within FACE_REACH px straight ahead (the feature it
+    # stands at excepted)
+    from kit.walkways import facing_problem, FACE_REACH
+    faced = facing_bad = 0
+    for r in routes:
+        looks, feats = r.get("looks"), r.get("features") or []
+        if looks is None: continue
+        for k, n in enumerate(r["waypoints"]):
+            w = by_name.get(n)
+            if w is None or k >= len(r.get("pauses") or []) or r["pauses"][k] <= 0: continue
+            lk = looks[k] if k < len(looks) else None
+            faced += 1
+            why = "faces nowhere" if not lk else facing_problem(g, (w["x"], w["y"]), lk, feats[k] if k < len(feats) else None)
+            if why:
+                facing_bad += 1
+                bad.append(F("routes", sev, f"{r.get('who', '?')}'s stop {short(n)} {why} (within {FACE_REACH:.0f} px "
+                             f"it should face open ground).", w["x"], w["y"]))
     out += bad[:40]
     if len(bad) > 40: out.append(F("routes", sev, f"... and {len(bad) - 40} more waypoint and route problems."))
     out.append(F("routes", "info", f"Routes: {len(m.waypoints)} waypoints, {len(legs)} legs walked, {len(stops)} stops, "
-                                   f"{len(bad)} problems ({close} stops sharing a spot)."))
+                                   f"{len(bad)} problems ({close} stops sharing a spot, {facing_bad} of {faced} stops "
+                                   f"facing into something)."))
     return out
 
 

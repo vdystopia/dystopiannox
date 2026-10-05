@@ -214,41 +214,80 @@ class Behaviours:
     def _f(vals):
         return "[]float32{" + ", ".join(f"{v:.1f}" for v in vals) + "}"
 
-    def _record(self, name, kind, route, loop, pauses):
+    def _record(self, name, kind, route, loop, pauses, looks=None, features=None):
         if self.spec is not None:
             if not hasattr(self.spec, "routes"): self.spec.routes = []
+            pt = lambda p: [round(p[0], 1), round(p[1], 1)] if p else None
             self.spec.routes.append(dict(who=name, kind=kind, waypoints=list(route), loop=bool(loop),
-                                         pauses=[round(p, 1) for p in pauses]))
+                                         pauses=[round(p, 1) for p in pauses],
+                                         looks=[pt(p) for p in (looks or [None] * len(route))],
+                                         features=[pt(p) for p in (features or [None] * len(route))]))
+
+    def _ground(self):
+        """The ground the stops' facings are judged on: the story's (StoryMap._world sets it), else built from the
+        map as it stands when the first route is laid."""
+        g = getattr(self, "ground", None)
+        if g is None and self.spec is not None:
+            from kit.walkways import Ground
+            g = self.ground = Ground.from_spec(self.spec)
+        return g
+
+    def _facings(self, route, pauses, looks=None, features=None):
+        """The point each stop of a route (a waypoint with a pause) is faced toward, turned to open ground by
+        kit/walkways stop_facing: away from a building or wall it stands beside, never into a tree, a wall or the
+        void; looks[k] (a point: the feature, the square's middle, straight out from a door) is what it would face,
+        features[k] the feature it stands at (faced unturned when it is open). A stop with no look faces the most
+        open way. Bends and doorway points face nothing (None). (Starwell playtest 2026-10-05.)"""
+        from kit.walkways import stop_facing
+        looks = list(looks or [None] * len(route)); features = list(features or [None] * len(route))
+        g = self._ground()
+        if g is None or self.spec is None: return looks, features
+        pos = {w["name"]: (w["x"], w["y"]) for w in self.spec.d.get("waypoints", [])}
+        out = []
+        for k, n in enumerate(route):
+            lk = looks[k] if k < len(looks) else None
+            if k < len(pauses) and pauses[k] > 0 and n in pos:
+                lk = stop_facing(g, pos[n], lk, features[k] if k < len(features) else None)
+            out.append(lk)
+        return out, features
 
     def sentry(self, name, face, rouse=(), shout="Intruder!"):
         self.shouts.add(shout)
         self.calls.append(f'Sentry({json.dumps(name)}, {face[0]:.1f}, {face[1]:.1f}, {self._s(rouse)}, {json.dumps(shout)})')
 
-    def patrol(self, name, route, pause=2.0, loop=True, looks=None):
+    def patrol(self, name, route, pause=2.0, loop=True, looks=None, features=None):
         """Walks `route` (waypoint names) in turn, round when loop, else there and back. pause: seconds at every
-        waypoint, or a list (0 = a bend passed through); looks: an (x, y) per waypoint to face there, or None."""
+        waypoint, or a list (0 = a bend passed through); looks: an (x, y) per waypoint to face there, or None;
+        features: the feature (x, y) a stop stands at, or None. Every stop's facing is turned to open ground
+        (_facings)."""
         pauses = list(pause) if isinstance(pause, (list, tuple)) else [pause] * len(route)
-        look = [c for p in (looks or [None] * len(route)) for c in (p or (0.0, 0.0))]
-        self._record(name, "patrol", route, loop, pauses)
+        looks, features = self._facings(route, pauses, looks, features)
+        look = [c for p in looks for c in (p or (0.0, 0.0))]
+        self._record(name, "patrol", route, loop, pauses, looks, features)
         self.calls.append(f'Patrol({json.dumps(name)}, {self._s(route)}, {self._f(pauses)}, {self._f(look)}, '
                           f'{"true" if loop else "false"})')
 
-    def tour(self, name, route, pauses, looks=None, home="", fear=180.0):
+    def tour(self, name, route, pauses, looks=None, home="", fear=180.0, features=None):
         """A townsperson's tour (kit/behaviours Tour): `route` waypoint names walked round in order, standing
         pauses[k] seconds at each stop (0 = a bend or doorway point), facing looks[k]; runs for the `home` waypoint
-        (one of the route's) while a hostile creature is within `fear` px (0: never)."""
-        look = [c for p in (looks or [None] * len(route)) for c in (p or (0.0, 0.0))]
-        self._record(name, "tour", route, True, pauses)
+        (one of the route's) while a hostile creature is within `fear` px (0: never). Every stop's facing is turned to
+        open ground (_facings)."""
+        looks, features = self._facings(route, pauses, looks, features)
+        look = [c for p in looks for c in (p or (0.0, 0.0))]
+        self._record(name, "tour", route, True, pauses, looks, features)
         self.calls.append(f'Tour({json.dumps(name)}, {self._s(route)}, {self._f(pauses)}, {self._f(look)}, '
                           f'{json.dumps(home)}, {fear:.1f})')
 
-    def journey(self, key, name, route, look=None):
+    def journey(self, key, name, route, look=None, feature=None):
         """A long walk `name` takes when the story says (quests A.walk(name, key)): `route` waypoint names from where
         it stands to where it ends, a waypoint at each bend of the roads and paths and three square-on through each
         doorway (StoryMap.journey lays them), walked leg by leg as a tour is; at the last it stays, facing `look`."""
         self.keys.add(key)
         pauses = [0.0] * (len(route) - 1) + [1.0]
-        self._record(name, "journey", route, False, pauses)
+        looks, features = self._facings(route, pauses, [None] * (len(route) - 1) + [look],
+                                        [None] * (len(route) - 1) + [feature])
+        look = looks[-1] if looks else look
+        self._record(name, "journey", route, False, pauses, looks, features)
         lx, ly = look or (0.0, 0.0)
         self.calls.append(f'Journey({json.dumps(key)}, {json.dumps(name)}, {self._s(route)}, {lx:.1f}, {ly:.1f})')
 

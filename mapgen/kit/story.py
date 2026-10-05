@@ -416,9 +416,9 @@ class StoryMap:
                 if not laid:
                     self.B.tour(name, [], [], fear=0.0)      # nowhere to walk: stands where it is
                     continue
-                route, pauses, looks, home_wp = laid
+                route, pauses, (looks, feats), home_wp = laid
                 o["x"], o["y"] = self._at(route[0])          # starts the day at its first stop: home
-                self.B.tour(name, route, pauses, looks, home=home_wp or "", fear=180.0)
+                self.B.tour(name, route, pauses, looks, home=home_wp or "", fear=180.0, features=feats)
         self.B.later(lay)
         return ring
 
@@ -446,10 +446,10 @@ class StoryMap:
             used |= {id(s) for s in pick}
             laid = self._lay_route(town, name + "Beat", self._spots(town, self._order(pick, pick[0])), trng, pause)
             if not laid: return
-            route, pauses, looks, _ = laid
+            route, pauses, (looks, feats), _ = laid
             o = next((o for o in self.m.d["objects"] if o.get("scr") == name), None)
             if o is not None: o["x"], o["y"] = self._at(route[0])
-            self.B.patrol(name, route, pauses, loop=True, looks=looks)
+            self.B.patrol(name, route, pauses, loop=True, looks=looks, features=feats)
         self.B.later(lay)
 
     # ---- the town's places, and routes between them (kit/walkways) -----------------------------------------------
@@ -575,7 +575,7 @@ class StoryMap:
         """Waypoints for a loop through the tour's stops: each leg routed along the roads (Router), the stop itself
         stood on for `pause` seconds facing its look point, a visit going square-on through the doorway (out, the
         opening's middle, in) and back. Stops whose legs cannot be routed are dropped. Returns (waypoint names,
-        pauses, looks, home waypoint name) or None."""
+        pauses, (looks, features), home waypoint name) or None; Behaviours turns each stop's look to open ground."""
         router = town["router"]
         tour = list(tour)
         while len(tour) >= 2:
@@ -588,29 +588,30 @@ class StoryMap:
             if bad is None: break
             tour.remove(bad)
         if len(tour) < 2: return None
-        pts, pauses, looks, home_at = [], [], [], None
+        pts, pauses, looks, feats, home_at = [], [], [], [], None
+
+        def at(p, stay=0.0, look=None, feat=None):
+            pts.append(p); pauses.append(stay); looks.append(look); feats.append(feat)
         for k, s in enumerate(tour):
             stay = rng.uniform(*pause)
             v = s.get("visit")
             if v:
-                pts.append(s["p"]); pauses.append(0.0); looks.append(None)
-                if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
+                at(s["p"])
+                if v["mid"]: at(v["mid"])
                 spot = v.get("spot")
                 if spot and math.dist(spot, v["inn"]) > 4:       # in past the threshold, then to its own spot
-                    pts.append(v["inn"]); pauses.append(0.0); looks.append(None)
-                    pts.append(spot); pauses.append(stay); looks.append(v["look"])
-                    pts.append(v["inn"]); pauses.append(0.0); looks.append(None)
+                    at(v["inn"]); at(spot, stay, v.get("face") or v["look"]); at(v["inn"])
                 else:
-                    pts.append(v["inn"]); pauses.append(stay); looks.append(v["look"])
-                if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
-                pts.append(s["p"]); pauses.append(0.0); looks.append(None)
+                    at(v["inn"], stay, v.get("face") or v["look"])
+                if v["mid"]: at(v["mid"])
+                at(s["p"])
             else:
                 if home_kind and k == 0: home_at = len(pts)
-                pts.append(s["p"]); pauses.append(stay); looks.append(s["look"])
+                at(s["p"], stay, s.get("face") or s["look"], s.get("feature"))
             for p in legs[k][:-1]:
-                pts.append(p); pauses.append(0.0); looks.append(None)
+                at(p)
         names = self.pop.waypoint_path(prefix, pts)
-        return names, pauses, looks, (names[home_at] if home_at is not None else None)
+        return names, pauses, (looks, feats), (names[home_at] if home_at is not None else None)
 
     # ---- standing spots: nobody shares one (playtest 2026-10-05: two people pushing each other off one stop) ---------
     SPOT_GAP = 40.0       # px between any two standing spots: a body is 24 px across
@@ -630,6 +631,7 @@ class StoryMap:
         locked = [(o["x"], o["y"]) for o in m.d["objects"]
                   if o.get("door") is not None and (o.get("xfer") or {}).get("LockType")]
         self._world_ = (g, Router(g, roads), locked)
+        self.B.ground = g                    # the stops' facings are judged on this ground (Behaviours._facings)
         return self._world_
 
     def _claims(self):
@@ -683,7 +685,8 @@ class StoryMap:
                 inside = lambda q: g.point_ok(q[0], q[1], wall_clear=15, obj_clear=12) and g.leg_problem(inn, q) is None
                 spot = self._free_spot(cands, inside)
                 if spot:
-                    out.append(dict(s, visit=dict(v, spot=spot)))
+                    # inside a shop or the inn: facing on into the room, away from the door it came in by
+                    out.append(dict(s, visit=dict(v, spot=spot, face=(spot[0] + n[0] * 100, spot[1] + n[1] * 100))))
                     continue
                 s = dict(s, visit=None)            # no room inside: they stand by the doorstep instead
             if s["kind"] in ("landmark", "gate"):
@@ -700,8 +703,22 @@ class StoryMap:
                 cands = [p] + [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4))
                                for r in (22, 36, 50) for k in range(8)]
             spot = self._free_spot(cands, clear)
-            if spot: out.append(dict(s, p=spot))
+            if spot: out.append(dict(s, p=spot, **self._stop_face(s, spot)))
         return out
+
+    @staticmethod
+    def _stop_face(s, spot):
+        """What a stop's standing spot faces, before kit/walkways stop_facing turns it to open ground (Starwell
+        playtest 2026-10-05: people at their stops faced doors and walls): a feature (the well, a statue, a bench, a
+        stall, the gate the watch keeps) is faced; a doorstep faces out, straight away from the door and its
+        building; a place on the square faces the square's middle. {"face": point, "feature": point or None}."""
+        p, look = s["p"], s["look"]
+        if s["kind"] in ("landmark", "gate"):
+            return dict(face=look, feature=look)
+        if s["kind"] in ("home", "door", "shop"):
+            L = math.dist(p, look) or 1.0          # p: the doorstep straight out in front of the door; look: the door
+            return dict(face=(spot[0] + (p[0] - look[0]) / L * 100, spot[1] + (p[1] - look[1]) / L * 100), feature=None)
+        return dict(face=look, feature=None)
 
     def journey(self, name, key, to, look=None):
         """A long walk for person `name` that the story starts with A.walk(name, key) (a rescued man walking home,
@@ -734,7 +751,7 @@ class StoryMap:
             if lk is None and len(pts) >= 2:
                 a, b = pts[-2], pts[-1]
                 lk = (b[0] + (b[0] - a[0]) * 3, b[1] + (b[1] - a[1]) * 3)
-            self.B.journey(key, name, names, lk)
+            self.B.journey(key, name, names, lk, feature=look)
         self.B.later(lay)
         return key
 
