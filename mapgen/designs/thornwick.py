@@ -238,6 +238,7 @@ vil.ground_bits(1.6)
 planter = Planter(m, rng, land, FOREST, keep_clear=keep | lane_)      # no tree stands in a forest path
 n_trees, n_small = planter.plant_all(groves=4, profile=TOWN_PLANTING)
 piles = planter.rock_piles(max(4, len(land.squares) // 900))
+vignettes = planter.forest_floor(max(6, len(land.squares) // 700))
 start_xy = square_px(south_c[0] + 0.5, south_c[1] - 0.5)
 m.obj_px("PlayerStart", *start_xy)
 
@@ -353,7 +354,7 @@ if crypt:
     m.obj_px("CryptChest3", *gpx, items=["Emerald", ("Gold", {"Amount": 120}), "SpellBook", "CurePoisonPotion"])
     sm.lock_room(crypt, "Silver")                 # the door from the nave: Father Odo's lock
 # the woods' own creatures by the forest's edge, well away from the town and the story's places
-sm.wild({"SmallAlbinoSpider": 3, "Bat": 3, "Urchin": 2, "Spider": 1, "Bear": 1}, away_from=vc,
+sm.wild({"SmallAlbinoSpider": 3, "Bat": 3, "Urchin": 2, "Spider": 1, "Bear": 1}, away_from=vc, per100=0.55, gap=6, min_away=32,
         avoid=(camp_c, grove_c, den_c, south_c, fork_c, tower_c, gate_sq, land.areas["north"]["c"]))
 
 # ---- 9. the story ----------------------------------------------------------------------------------------------------

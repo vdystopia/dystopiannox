@@ -292,6 +292,43 @@ class Planter:
                     self._put("small", _pick(self.rng, ROCK_PILE[kind]), si, sj)
         return centres
 
+    # small scenes of the forest floor, each a few pieces composed round one (2026-10-04 review: the exterior needs
+    # more variety of objects): a fallen log grown with mushrooms, a stump with the log split from it, a boulder in
+    # ferns; the pieces as Westwood strews them along its woods' edges (ForestLog, Stump, Mushroom, Plant*)
+    VIGNETTES = {
+        "fallen_log": [("ForestLog01|ForestLog02|ForestLog03|ForestLog04", 0.0, 1),
+                       ("Mushroom1|Mushroom2|Mushroom3|Mushroom4|Mushroom5", 0.9, (2, 4)), ("PlantFern1|Plant4|Plant5", 1.2, (0, 2))],
+        "stump": [("Stump1|Stump2|Stump9", 0.0, 1), ("ForestLog01|ForestLog03", 1.1, 1), ("Mushroom3|Mushroom4", 0.7, (1, 2))],
+        "boulder": [("CaveRocksHuge|CaveBoulders", 0.0, 1), ("PlantFern1|PlantFern2|FoliageDense1|Plant4", 1.0, (2, 3)),
+                    ("CaveRocksPebbles|CaveRocksSmall", 1.3, (1, 3))],
+    }
+
+    def forest_floor(self, n, kinds=("fallen_log", "stump", "boulder"), min_edge=2, max_edge=4, gap=9.0):
+        """n vignettes of the forest floor (VIGNETTES) near the forest's edge, off roads, doors and what is built,
+        `gap` squares apart. Returns their centres."""
+        import re as _re
+        cands = [s for s, d in self.edge.items() if min_edge <= d <= max_edge and self.busy_d.get(s, 99) >= 3
+                 and self.water_d.get(s, 99) >= 2]
+        self.rng.shuffle(cands)
+        done = []
+        for s in cands:
+            if len(done) >= n: break
+            if any((s[0] - a) ** 2 + (s[1] - b) ** 2 < gap * gap for a, b in done): continue
+            ci, cj = s[0] + 0.5, s[1] - 0.5
+            if not (self._free(ci, cj, 1.6, "tree") and self._free(ci, cj, 1.0, "small")): continue
+            kind = kinds[len(done) % len(kinds)]
+            a0 = self.rng.uniform(0, 2 * math.pi)
+            for pat, r, k in self.VIGNETTES[kind]:
+                types = pat.split("|")
+                cnt = k if isinstance(k, int) else self.rng.randint(*k)
+                for q in range(cnt):
+                    a = a0 + 2 * math.pi * q / max(1, cnt) + self.rng.uniform(-0.4, 0.4)
+                    si, sj = ci + r * math.cos(a), cj + r * math.sin(a)
+                    if not self._ok_small(si, sj): continue
+                    self._put("small", self.rng.choice(types), si, sj)
+            done.append(s)
+        return done
+
     def plant_all(self, groves=3, flowers=6, birds=8, profile=None):
         """Everything that grows. profile: a planting profile (TOWN_PLANTING) in place of the forest maps' density."""
         if profile:

@@ -340,7 +340,10 @@ class StoryMap:
         land, rng, m = self.land, self.rng, self.m
         edge = land.edge_distance()
         walk = self.walkable()
+        from kit.layout import bfs_distance
+        homes = bfs_distance(list(land.taken_strict), land.squares, 10) if land.taken_strict else {}
         far = [s for s, dd in sorted(edge.items()) if 2 <= dd <= 3 and s not in land.taken and s not in land.roads
+               and homes.get(s, 99) >= 10          # no spider at a house's door: the wood's creatures keep to the wood
                and (walk is None or all((int(square_px(s[0] + 0.5, s[1] - 0.5)[0] // CELL) + a,
                                          int(square_px(s[0] + 0.5, s[1] - 0.5)[1] // CELL) + b) in walk
                                         for a in (-1, 0, 1) for b in (-1, 0, 1)))
