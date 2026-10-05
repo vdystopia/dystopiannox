@@ -7,7 +7,19 @@
   of its headboard) and hangings,
   less 3 units for each doorway in them (the door and its clearance);
 - types: distinct object types in the room;
+- walls: how many of its four walls have a purpose (a piece other than a light stands against it);
+- repeat: the most pieces of one kind against one wall, of the kinds that stand alone (not bookcases, shelves, a bench of
+  workstations, racks, beds, pews, the pieces Westwood lines walls with: kit/furnish.py NEVER_LINED and the rest);
+- identity: what reads as a room with no identity (Starwell playtest, 2026-10-05: the college laboratory "almost looks
+  like some sort of shoddy mess hall with random objects stuffed in it"): a showpiece repeated (an alchemist's desk,
+  a generator, a telescope: kit/furnish.py SHOWPIECES), four or more of one stand-alone kind along one wall, more
+  free-standing tables than its kind sets, pieces outside the room's identity;
 - warnings: the checker's findings that fall in the room.
+
+The reference for a good room is the playtester's own (Starwell seed 4, room 9, the archmagister's study, 66 tiles:
+"This is an example of a very, very good room"): coverage 0.11, 17 types, 26 pieces, all four walls used, back walls
+51% lined, the most of one stand-alone kind on a wall 2 (statues between candelabras), one group in the middle (a round
+table and two chairs on a carpet), a curio standing free. PROCESS.md, "What a good room is".
 
     py review/roomscore.py <map> [--md out.md]
 
@@ -20,9 +32,49 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(REPO, "validate")); sys.path.insert(0, os.path.join(REPO, "mapgen"))
 sys.path.insert(0, os.path.join(REPO, "rules"))
 import mapdata as MD, checks as C, validate as V
-from kit.identity import ROOM_COVER, ROOM_COVER_DEFAULT, WESTWOOD_KIND
+from kit.identity import ROOM_COVER, ROOM_COVER_DEFAULT, WESTWOOD_KIND, ROOMS
 
 from kit.furnish import TALL_PIECES as TALL        # one list: the furnisher lines walls by the same measure
+from kit.furnish import SHOWPIECES, SHOWPIECE_LIMIT, SHOWPIECE_BIG
+
+# kinds that stand in rows or line walls by design: not counted as a piece repeated along a wall
+LINED = re.compile(r"^(Bookcase|MovableBookcase|LogShelves|PotionShelves|WizardWorkstation|Trader|Bed|WoodBed|Cot|Bench|"
+                   r"LightBench|CushionedBench|Crypt|Coffin|Column|CathedralColumn|LOTD|Barrel|Crate|DarkCrate|Sack|"
+                   r"PiledBarrels|LargeBarrel|WaterBarrel|BarrelWithTools|Candleabra|Nightstand|Chest|OgreStraw)")
+TABLES = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d)$")
+
+
+def _kind(t):
+    return re.sub(r"(\d+[a-z]?|HalfFull|Empty|NE|NW|SE|SW|N|S|E|W)$", "", t)
+
+
+def identity_flags(r, kind, runs, cu, cv, m):
+    """What makes a room read as having no identity (see the module's notes). Returns (walls used, repeat, flags)."""
+    flags, per_wall, used = [], collections.defaultdict(collections.Counter), set()
+    show = collections.Counter()
+    for o in r["objects"]:
+        t = o["type"]
+        hit = C._against(o, runs, cu, cv, m, reach=1.6, across=True)
+        if hit and C.RT.family(t) not in (None, "light") and not t.startswith("Candleabra"): used.add(hit[0])
+        if hit and not LINED.match(t) and C.RT.family(t) not in (None, "wall_decor", "light"): per_wall[hit[0]][_kind(t)] += 1
+        sm = SHOWPIECES.match(t)
+        if sm: show[sm.group(1)] += 1
+    big = r["tiles"] >= SHOWPIECE_BIG
+    for base, n in show.items():
+        if n > SHOWPIECE_LIMIT.get(base, 1) + (1 if big else 0): flags.append(f"{n} {base}")
+    rep_ = max((n for c in per_wall.values() for n in c.values()), default=0)
+    if rep_ >= 4:
+        w, (k, n) = max(((w, c.most_common(1)[0]) for w, c in per_wall.items()), key=lambda x: x[1][1])
+        flags.append(f"{n} {k} on the {w} wall")
+    ident = ROOMS.get(kind, {})
+    tables = sum(1 for o in r["objects"] if TABLES.match(o["type"]))
+    most = (ident.get("repeat", {}).get("table") or (None, None))[1]
+    if most is not None and tables > most: flags.append(f"{tables} tables")
+    pats = ident.get("types", {})
+    strays = sorted({o["type"] for o in r["objects"] if (C.RT.family(o["type"]) in pats and
+                     not re.search(pats[C.RT.family(o["type"])], o["type"]))})
+    if strays: flags.append("outside its identity: " + ", ".join(strays[:3]))
+    return len(used), rep_, flags
 
 
 def score(map_path):
@@ -74,9 +126,12 @@ def score(map_path):
         from kit.identity import ROOMS
         lines_walls = any(st.get("slot") == "line" for st in (ROOMS.get(kind, {}).get("compose") or []) + (ROOMS.get(kind, {}).get("fill") or []))
         ok = cover >= target and not warns and (not lines_walls or lined >= (0.35 if r["tiles"] >= 40 else 0.25))
+        walls, rep_, flags = identity_flags(r, kind, runs, cu, cv, m)
+        ok = ok and not flags
         rows.append(dict(number=d["number"], kind=kind, purpose=d.get("purpose", ""), tiles=r["tiles"], cover=cover,
                          target=target, lo=lo, hi=hi, ww=ww, middle=mid / (2 * len(cells)), lined=lined,
-                         types=len({o["type"] for o in r["objects"]}), pieces=len(r["objects"]), warns=warns, ok=ok))
+                         types=len({o["type"] for o in r["objects"]}), pieces=len(r["objects"]), warns=warns, ok=ok,
+                         walls=walls, repeat=rep_, flags=flags))
     rows.sort(key=lambda x: x["number"])
     return rows
 
@@ -85,14 +140,17 @@ def report(map_path, rows):
     name = os.path.splitext(os.path.basename(map_path))[0]
     out = [f"# Room scores: {name}", "",
            f"{sum(r['ok'] for r in rows)} of {len(rows)} rooms pass (coverage at target, no warnings, back walls 35% "
-           f"lined).", "",
-           "| # | Kind | Size | Tiles | Coverage | Target | Westwood | Middle | Lined | Types | Pieces | Warnings |",
-           "|---|---|---|---|---|---|---|---|---|---|---|---|"]
+           f"lined, an identity: no showpiece repeated, no stand-alone piece four times along a wall, no stray tables or "
+           f"pieces). The reference room (Starwell's study): coverage 0.11, 17 types, 4 walls, repeat 2.", "",
+           "| # | Kind | Size | Tiles | Coverage | Target | Westwood | Middle | Lined | Types | Walls | Repeat | Pieces | "
+           "Identity | Warnings |",
+           "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         mark = "" if r["ok"] else " **x**"
         out.append(f"| {r['number']}{mark} | {r['kind']} | {r['purpose'].split(',')[0]} | {r['tiles']} | {r['cover']:.2f} | "
                    f"{r['target']:.2f} | {r['ww']:.2f} | {r['middle']:.2f} | {r['lined']:.2f} | {r['types']} | "
-                   f"{r['pieces']} | {'; '.join(w['msg'][:70] for w in r['warns'])} |")
+                   f"{r['walls']} | {r['repeat']} | {r['pieces']} | {'; '.join(r['flags'])} | "
+                   f"{'; '.join(w['msg'][:70] for w in r['warns'])} |")
     by_kind = collections.defaultdict(list)
     for r in rows: by_kind[r["kind"]].append(r)
     out += ["", "## By kind", "", "| Kind | Rooms | Pass | Mean coverage | Mean middle | Mean lined |", "|---|---|---|---|---|---|"]

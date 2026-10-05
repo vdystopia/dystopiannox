@@ -526,12 +526,9 @@ class Land:
             if not spec.floor.get(t, "").startswith(("RoughCobble",)):
                 spec.floor[t] = material
             self.roads.add(s)
-        # the threshold: building floor tiles touching the doorstep get the path's edge (dirt carried in)
-        x0, y0 = square_tile(*start)
-        for dx, dy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
-            nb = (x0 + dx, y0 + dy)
-            if tile_square(*nb) in footprint and nb in spec.floor:
-                spec.local_blend[nb] = -50
+        # the threshold is drawn as Westwood draws it, the room's floor out onto the doorstep and the path's edge on that,
+        # never on the floor inside (nox.Spec._door_thresholds; Starwell playtest, 2026-10-05: this had laid the dirt's
+        # edge on the boards just inside every door)
         return path
 
     def clear_walls(self, spec):

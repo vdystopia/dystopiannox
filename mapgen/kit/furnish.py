@@ -95,6 +95,19 @@ TALL_PIECES = re.compile(r"^(Bookcase|PotionShelves|LogShelves|TraderShelves|Tra
                   r"Stove0|Cauldron|CinderBin|Bellows|AlchemistDesk|WizardWorkstation|Chest\d|DunMirChest|Bed\d|WoodBed|Cot\d|Bench|"
                   r"LightBench|CushionedBench|TraderPoleArm|TraderArmorRack|TraderBowRack|TraderClothesRack|TraderQuiverRack)")
 LINED_GOAL = 0.38            # share of the NE and NW walls to line (the room score asks 35%)
+# Pieces that stand alone, and pieces that line a wall (Starwell playtest, 2026-10-05: "The shelves on the NE wall in this
+# room are more of a single instance object. These are not repeatable shelves that should line a whole wall"; six
+# alchemist's desks in two runs of three). Westwood (corpus, single-player maps, a piece within 1.15 of its width of
+# another of its kind): bookcases stand beside their kind 88% of the time and two thirds in the middle of a run; wizards'
+# workstations 64% (a bench of mixed pieces, 1, 2 and 3 together); potion shelves 60%, but in a run of three only 9% (a
+# pair); alchemist's desks, generators, telescopes, orreries, crystal balls and desks 0-5%. A showpiece stands once in a
+# room (once on each of two walls in a room of SHOWPIECE_BIG tiles or more, SHOWPIECE_GAP units apart at least); a
+# pair stands once in a room; neither ever lines a wall (line_wall).
+SHOWPIECES = re.compile(r"^(AlchemistDesk|Vandegraf|Telescope|Orrery|SentryGlobe|CrystalBall|Desk)(?=\d|Small|Large|Movable|$)")
+SHOWPIECE_LIMIT = {"Vandegraf": 2}          # generators stand as a pair, never side by side (a group: GROUPS "generators")
+PAIRED_PIECES = re.compile(r"^(PotionShelves)\d")
+NEVER_LINED = re.compile(SHOWPIECES.pattern + r"|^PotionShelves\d|^FairyJar")
+SHOWPIECE_BIG, SHOWPIECE_GAP = 120, 10.0
 # what may top a room up to its coverage target, one piece at a time against a wall: never shelves (a lone shelf breaks
 # a lined wall) or tables (a table stands with its seats)
 TOP_UP_FAMS = ("storage", "bench", "plant", "lab", "statue")      # not stoves: a hearth or stove is an anchor with room round it
@@ -130,6 +143,8 @@ CARPET_EDGE = "RugTanLightEdge"
 CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone")
 # Gear racks that stand in rows down the middle of a storeroom, one kind to a row (TreePlace v0.3 room review).
 RACKS_PER_ROW = 5
+# a trader's or a smith's racks are wares on show, not a store: three to a row, a row of armour and a row of weapons
+SHOP_KINDS, SHOP_RACKS_PER_ROW = ("shop", "smithy"), 3
 RACK_KINDS = {"gear": (r"^TraderArmorRack[12]$", r"^TraderPoleArm[1-4]$", r"^TraderClothesRack[12]$", r"^TraderBowRack[12]$"),
               "hunt": (r"^TraderBowRack[12]$", r"^TraderQuiverRack$", r"^TraderClothesRack[12]$"),
               "mine": (r"^TraderPoleArm[1-4]$", r"^TraderArmorRack[12]$"),
@@ -176,7 +191,7 @@ def _rug_margin(t):
 SUPPLY_FAMS = {"storage", "shelves", "shop_rack"}
 # Rooms that get hangings on their back walls (trophies, tapestries, paintings).
 DECORATED = {"living_room", "bedroom", "study", "herbalist", "mess_hall", "dining_hall", "tavern", "barracks", "dwelling",
-             "library", "shop"}
+             "library", "shop", "laboratory", "throne_room"}
 # One theme of hangings per room (a room of mixed trophies, tapestries and paintings reads as random): hunting
 # trophies, tapestries of one colour, or paintings. Stone houses lean to tapestries and paintings, wooden ones to
 # trophies. Hangings keep DECOR_GAP units apart along a wall.
@@ -212,6 +227,15 @@ GROUPS = {
     "firepit": dict(anchor=r"^OgreFirePit$", seats=(2, 4), seat="chair", clear=1.2),
     "ogre_table": dict(anchor=r"^OgreTable[123]$", seats=(2, 3), seat="chair"),
     "balances": dict(anchor=r"^LOTDJudgementBalance[12]$", pair=True, clear=1.0),
+    # a wizard's laboratory's middle (Starwell playtest, 2026-10-05: the college laboratory "looks like some sort of
+    # shoddy mess hall with random objects stuffed in it"; Westwood's Wiz07D laboratory: a work island of workstations in
+    # the middle, a desk among the bookcases, tesla coils apart): the alchemist's work table with its stools and glowing
+    # jars and a bubbling cauldron beside it; a conjuring circle, a crystal globe or an orrery ringed by four candelabras; a
+    # pair of generators
+    "alchemy": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", seat_pat=r"Stool",
+                    beside=[(r"^CauldronAnimated$", 1, 1.0), (r"^FairyJar$", 2)]),
+    "conjuring": dict(anchor=r"^SentryGlobeMovable$|^Orrery2$", ring=4, ring_r=1.9, clear=0.6),
+    "generators": dict(anchor=r"^Vandegraf(Small|Large)$", pair=True, clear=1.2),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
 NEEDS_FRONT = re.compile(r"^Chest\d|^Chest[NS][EW]$|^DunMirChest|Fireplace|^Stove|^Cauldron|^CinderBin")
@@ -505,9 +529,13 @@ class Furnisher:
         self._deferred_decor = 0  # hangings the composition called for, put up after the walls are lined
         self._line_blocks = {}    # (line, coord) -> [(along0, along1)] of the rows of shelves lining that wall
         self._rack_centres = set()  # the rows of racks standing free: their centre lines across the room
+        self._rack_rows_laid = 0  # rows of racks laid so far: the next takes the next kind
+        self._rack_order = {}     # rack_rows kind -> its kinds of rack in the order this room takes them
         self.wall_used = []       # ((line, coord), a0, a1): wall stretches pieces already stand against
         self.wall_tall = []       # the same for tall pieces only (shelves, hearths): hangings keep off them
         self.carpet_plan = None   # the room's carpet step when it lays carpet tiles instead of rug objects
+        self._light_t = None      # the room's one style of floor light, once a composed group has called for one
+        self.ring_lights = []     # (u, v) of the candelabras composed with a group (a conjuring circle, a throne)
         self.cover_target, self.cover_max = ROOM_COVER.get(self.kind, ROOM_COVER_DEFAULT)
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
         prng = random.Random(zlib.crc32(f"{spec.d.get('name')}:{getattr(room, 'building', '')}".encode()))
@@ -608,6 +636,7 @@ class Furnisher:
         if blocking and not self.placing_light and self.composing and _family_of(t) in _blocking() and \
                 self.coverage(self.footprint(t)) > self.cover_max:
             return None
+        if not self.placing_light and not self._one_of_a_kind_ok(t, u, v): return None
         hu, hv = self.half(t)
         if blocking and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.runner_boxes):
             return None
@@ -625,6 +654,22 @@ class Furnisher:
                 if self._overlap(u, v, hu + mg, hv + mg, rec): return None
         if blocking and not self.g.reachable_ok((u, v, hu, hv, True, layer)): return None
         return self.put(t, u, v, blocking, layer, **extra)
+
+    def _one_of_a_kind_ok(self, t, u, v):
+        """A showpiece (an alchemist's desk, a generator, a telescope, a desk) stands once in a room, or twice in a big one
+        well apart, never beside its like; a pair piece (potion shelves) once, as a pair (SHOWPIECES, PAIRED_PIECES)."""
+        big = len(self.room.tiles) >= SHOWPIECE_BIG
+        m = SHOWPIECES.match(t)
+        if m:
+            base = m.group(1)
+            same = [rec for tt, rec in self._typed if (SHOWPIECES.match(tt) or [None, None])[1] == base]
+            if len(same) >= SHOWPIECE_LIMIT.get(base, 1) + (1 if big else 0): return False
+            return all(math.hypot(u - rec[0], v - rec[1]) >= SHOWPIECE_GAP for rec in same)
+        m = PAIRED_PIECES.match(t)
+        if m:
+            same = sum(1 for tt, _ in self._typed if (PAIRED_PIECES.match(tt) or [None, None])[1] == m.group(1))
+            return same < 2
+        return True
 
     @staticmethod
     def _overlap(u, v, hu, hv, rec):
@@ -769,15 +814,19 @@ class Furnisher:
         per_tile = expected / max(8, (self.T["tiles"] or {}).get("p50", 30))
         return max(2, int(round(1.25 * per_tile * self.g.area / 2)))
 
-    def seats_around(self, anchor_uv, anchor_t, n, seat_fam="chair", base=None, gap=0.2):
+    def seats_around(self, anchor_uv, anchor_t, n, seat_fam="chair", base=None, gap=0.2, pat=None):
         """Seats facing a table or desk. A long table is seated along its two long sides, spread evenly;
         Westwood seats 75% of the chairs at its rectangular tables there (TreePlace playtest: chairs only at
         the ends looked wrong). A bench takes a whole side. A round or square table is seated all round,
         opposite pairs first. A single seat (a desk's) goes on whichever long side has room. Returns the
         seats placed."""
         types = self.types_of(seat_fam)
+        if pat:                                         # a work table's stools, whatever the room's own seats are
+            allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(seat_fam)
+            types = {t: 1 for t in sorted(self.things) if re.search(pat, t) and self.ok_type(t) and
+                     _family_of(t) == seat_fam and (not allow or re.search(allow, t))}
         if not types or n <= 0: return 0
-        base = base or self.palette_seat(seat_fam, types) or _base(_pick(self.rng, types))
+        base = base or (None if pat else self.palette_seat(seat_fam, types)) or _base(_pick(self.rng, types))
         facing = self.chair_facing.get(base, {})
         ahu, ahv = self.half(anchor_t)
         au, av = anchor_uv
@@ -1159,10 +1208,12 @@ class Furnisher:
                     if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
-    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False):
+    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False, only=None):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
-        front of it (nothing blocking may stand there later; it must be free now)."""
-        t0 = t0 or _pick(self.rng, self.types_of(fam))
+        front of it (nothing blocking may stand there later; it must be free now). only: a pattern the piece matches."""
+        types = self.types_of(fam)
+        if only: types = {t: w for t, w in types.items() if re.search(only, t)}
+        t0 = t0 or _pick(self.rng, types)
         if not t0: return None
         for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
@@ -1354,6 +1405,9 @@ class Furnisher:
                 self._decor_types = {t: 1 for t in self.things if re.match(culture, t) and self.ok_type(t)}
             else:                                       # one of the building's two themes, as the room allows it
                 themes = list(self.palette["decor"]); self.rng.shuffle(themes)
+                allowed = ROOM_IDENTITY.get(self.kind, {}).get("decor_themes")
+                if allowed:                             # the kind's own (a throne room's tapestries, never trophies)
+                    themes = [th for th in themes if th in allowed] or                         [allowed[zlib.crc32(f"{getattr(self.room, 'building', '')}".encode()) % len(allowed)]]
                 for th in themes:
                     self._decor_types = {t: 1 for t in self.things if re.match(DECOR_THEMES[th], t) and self.ok_type(t)
                                          and self.belongs(t)}
@@ -1679,7 +1733,7 @@ class Furnisher:
         if row: self.wall_used.append(((r["line"], r["coord"]), a, edge))
         return got, edge
 
-    def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False, grow_only=False):
+    def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False, grow_only=False, only=None):
         """Shelves end to end along a NE or NW wall (TreePlace v0.3 room review: fill whole walls with bookshelves and
         similar pieces rather than one here and there; not every wall). The wall is the one holding `near` (a placed
         anchor such as the hearth or the desk: the shelves then flank it on both sides, packed toward it and so
@@ -1687,8 +1741,18 @@ class Furnisher:
         wall fills from end to end, or takes a centred group of up to max_n. With decor_every > 0 a hanging of the
         room's theme takes a gap after every that many shelves. Half-full bookcases mix in. Returns the shelves
         placed. grow_only: only lengthen the rows already on a wall, end to end (never a second row with bare wall
-        between)."""
+        between). only: a pattern the pieces must match (a recipe's own choice: a pair of potion shelves).
+
+        Only pieces Westwood lines walls with line them (NEVER_LINED: Starwell playtest, 2026-10-05): bookcases, log
+        shelves, a bench of wizards' workstations of mixed kinds; potion shelves stand as a pair at most; a showpiece
+        never lines a wall."""
         types = self.types_of(fam)
+        if only: types = {t: w for t, w in types.items() if re.search(only, t)}
+        lineable = {t: w for t, w in types.items() if not NEVER_LINED.match(t)}
+        if lineable: types = lineable
+        else:
+            types = {t: w for t, w in types.items() if PAIRED_PIECES.match(t)}
+            max_n, decor_every = min(max_n or 2, 2), 0
         if not types: return 0
         t0 = _pick(self.rng, types)
         if near and near["run"]["side"] in BACK_SIDES:
@@ -1706,6 +1770,13 @@ class Furnisher:
                 t = alt != t0 and self.side_variant(alt, r, fam)
             if not t: continue
             mix = [t] + ([t + "HalfFull"] if self.ok_type(t + "HalfFull") else [])
+            if t.startswith("WizardWorkstation"):        # a bench of the three kinds together, as Westwood's (Wiz07D)
+                kinds = [next((k for k in sorted(self.things) if re.fullmatch(rf"WizardWorkstation{n}[a-d]?", k)
+                               and self.ok_type(k)), None) for n in "123"]
+                # each kind's own variant for this wall (the learned rule names one variant for them all)
+                mix = sorted({v for v in (self.orient(k, r["side"]) for k in kinds if k) if v and self._along_wall(v, r["line"])},
+                             key=lambda k: (-max(self.half(k)), k))
+                if not mix: continue
             got = self._line_run(r, mix, near, max_n, decor_every, around, fam, grow_only)
             if got:
                 self._lined.add((r["line"], r["coord"]))
@@ -1810,8 +1881,13 @@ class Furnisher:
                                 laid.append(st0 + q * pitch); filled += 1
                         if not filled: placed_seq.append((k, None))     # a hole: the run is cut here (below)
                     continue
-                t = mix[0] if len(mix) == 1 or self.rng.random() < 0.65 else mix[1]
-                o = self.try_put(t, *self._uv_on(r, d, a0 + ha), snug=True, touch=True)
+                if len(mix) > 2 or (len(mix) == 2 and not mix[1].endswith("HalfFull")):
+                    prev = placed_seq[-1][1]["type"] if placed_seq and placed_seq[-1][1] else None
+                    t = self.rng.choice([x for x in mix if x != prev] or mix)     # a bench of mixed pieces
+                else:
+                    t = mix[0] if len(mix) == 1 or self.rng.random() < 0.65 else mix[1]
+                dt = (self.half(t)[0] if r["line"] == "/" else self.half(t)[1]) + SNUG_GAP.get(fam, 0.2)   # its own depth
+                o = self.try_put(t, *self._uv_on(r, dt, a0 + ha), snug=True, touch=True)
                 placed_seq.append((k, o))
                 if o: laid.append(a0)
             # a shelf that failed after all (the walkability test) leaves a hole: keep the longest unbroken part
@@ -1964,18 +2040,24 @@ class Furnisher:
             aisle = 1.6                                 # middle (the racks among the stores are the room's formula)
             margin = 1.6 + aisle
             width = (hi_c - lo_c) - 2 * margin
-        pats = list(RACK_KINDS.get(kind, RACK_KINDS["gear"]))
-        self.rng.shuffle(pats)
+        if kind not in self._rack_order:                # the room's order of kinds, kept from call to call
+            pats = list(RACK_KINDS.get(kind, RACK_KINDS["gear"]))
+            self.rng.shuffle(pats)
+            self._rack_order[kind] = pats
+        pats = self._rack_order[kind]
         p = 1.9 + aisle                                 # a row and the aisle beside it
         n_fit = 0 if width < 1.2 else 1 if width < 2 * 1.9 + aisle else 2 + 2 * int((width - (2 * 1.9 + aisle)) / (2 * p))
         mid = (lo_c + hi_c) / 2
         centres = [mid] if n_fit == 1 else [mid + sg * (p / 2 + j * p) for j in range(n_fit // 2) for sg in (-1, 1)]
         centres = [c for c in centres if (long_u, round(c, 2)) not in self._rack_centres][:2]
         got = 0
+        # one kind to a row, and the rows take the kinds the room allows in turn (Starwell playtest, 2026-10-05: "Instead
+        # of six armor racks, use three armor racks and three weapon racks"; the forge's two rows had both fallen back
+        # to armour stands)
+        kinds = [p_ for p_ in pats if any(re.match(p_, t) and self.ok_type(t) and self.belongs(t) for t in self.things)]
         for k, c in enumerate(centres):
-            types = [t for t in self.things if re.match(pats[k % len(pats)], t) and self.ok_type(t) and self.belongs(t)]
-            if not types:
-                types = [t for p_ in pats for t in self.things if re.match(p_, t) and self.ok_type(t) and self.belongs(t)]
+            pat_ = kinds[self._rack_rows_laid % len(kinds)] if kinds else None
+            types = [t for t in self.things if pat_ and re.match(pat_, t) and self.ok_type(t) and self.belongs(t)]
             if not types: continue
             along = lambda t: self.half(t)[0] if long_u else self.half(t)[1]
             across = lambda t: self.half(t)[1] if long_u else self.half(t)[0]
@@ -1987,7 +2069,7 @@ class Furnisher:
             pitch = 2 * along(t) + (gap if gap is not None else 0.04 if tight else 1.2 if gear else 0.5)
             span_lo, span_hi = lo_a + margin, hi_a - margin
             n = int((span_hi - span_lo + pitch - 2 * along(t)) / pitch)
-            if gear: n = min(n, RACKS_PER_ROW)
+            if gear: n = min(n, RACKS_PER_ROW if self.kind not in SHOP_KINDS else SHOP_RACKS_PER_ROW)
             if n < 2: continue
             start = (span_lo + span_hi) / 2 - (n * pitch - (pitch - 2 * along(t))) / 2 + along(t)
             hu, hv = self.half(t)
@@ -2018,6 +2100,7 @@ class Furnisher:
                 for o in row: self._remove(o)
                 continue
             got += len(row)
+            self._rack_rows_laid += 1
             self._rack_centres.add((long_u, round(c, 2)))
             self.anchors.append((c, (span_lo + span_hi) / 2) if not long_u else ((span_lo + span_hi) / 2, c))
         return got
@@ -2025,33 +2108,40 @@ class Furnisher:
     # ---- set pieces: a trader's counter, pews, a throne ---------------------------------------------------------
     def place_counter(self, fam="counter_shop", depth=2.2, clear=1.8):
         """A trader's counter set out from a back wall, `depth` units into the room, along the wall and centred on its
-        free stretch: the keeper stands in the space behind it (kept clear) and the customer before it."""
+        free stretch: the keeper stands in the space behind it (kept clear) and the customer before it. Where no back
+        wall has room (an L-shaped forge), a stretch nearer its end or a front wall: a keeper always stands behind his
+        counter, never among the wares (Starwell playtest, 2026-10-05: "The shopkeeper is standing in the middle of the
+        shop ... He needs to be standing somewhere that makes sense, like behind a desk")."""
         t0 = _pick(self.rng, self.types_of(fam))
         if not t0: return None
-        best = None
+        cands = []
         for r, lo, hi in self.segments():
-            if r["side"] not in BACK_SIDES: continue
             t = self.side_variant(t0, r, fam) or t0
             hu, hv = self.half(t)
             ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
-            if ha < hp or hi - lo < 2 * ha + 2.0: continue
-            score = (hi - lo) + self.rng.uniform(0, 1)
-            if best is None or score > best[0]: best = (score, t, r, lo, hi, ha, hp)
-        if not best: return None
-        _, t, r, lo, hi, ha, hp = best
-        a = (lo + hi) / 2
-        u, v = self._uv_on(r, depth + hp, a)
-        zone = self.front_zone(r, u, v, ha, hp, clear)
-        if self.g.zone_blocked(zone): return None
-        o = self.try_put(t, u, v)
-        if not o: return None
-        self.g.zones.append(zone)
-        wu, wv = self._uv_on(r, 0.0, a)
-        self.g.zones.append(self.front_zone(r, wu, wv, ha, 0.0, depth - 0.1))     # the keeper's space
-        self.spots.append(dict(role="shopkeeper", px=_px(*self._uv_on(r, depth / 2 + 0.2, a))))
-        self.anchors.append((u, v))
-        self.wall_used.append(((r["line"], r["coord"]), a - ha - 0.6, a + ha + 0.6))
-        return dict(obj=o, run=r, uv=(u, v), along=a, ha=ha, hp=hp)
+            if ha < hp or hi - lo < 2 * ha + 0.6: continue
+            back = r["side"] in BACK_SIDES
+            score = (100.0 if back else 0.0) + (10.0 if hi - lo >= 2 * ha + 2.0 else 0.0) + (hi - lo) + self.rng.uniform(0, 1)
+            mid = (lo + hi) / 2
+            spots = [mid] + [a for a in (lo + ha + 0.3, hi - ha - 0.3) if abs(a - mid) > 0.2]
+            cands.append((score, t, r, ha, hp, spots))
+        for _, t, r, ha, hp, spots in sorted(cands, key=lambda c: -c[0]):
+            for a in spots:
+                u, v = self._uv_on(r, depth + hp, a)
+                zone = self.front_zone(r, u, v, ha, hp, clear)
+                if self.g.zone_blocked(zone): continue
+                wu, wv = self._uv_on(r, 0.0, a)
+                keeper = self.front_zone(r, wu, wv, ha, 0.0, depth - 0.1)
+                if self.g.zone_blocked(keeper): continue
+                o = self.try_put(t, u, v)
+                if not o: continue
+                self.g.zones.append(zone)
+                self.g.zones.append(keeper)                    # the keeper's space
+                self.spots.append(dict(role="shopkeeper", px=_px(*self._uv_on(r, depth / 2 + 0.2, a))))
+                self.anchors.append((u, v))
+                self.wall_used.append(((r["line"], r["coord"]), a - ha - 0.6, a + ha + 0.6))
+                return dict(obj=o, run=r, uv=(u, v), along=a, ha=ha, hp=hp)
+        return None
 
     def pew_rows(self, fam="bench", toward=None, gap=2.6, aisle=2.4, first=3.4, runner=False, columns=False, tombs=False):
         """Rows of benches facing the altar wall (a chapel's pews): parallel to it from `first` units off it, `gap`
@@ -2273,6 +2363,12 @@ class Furnisher:
         if room_ < lo_off: return 0
         off = min(room_, max(lo_off, (half + room_) / 2))              # halfway between the aisle and the side walls
         depth_max = self._depth_of(r) - 2.0
+        # a few pairs spread down the whole length, not a column every few steps (Starwell playtest, 2026-10-05: the Hall
+        # of the Star was "just a long room with tons of the same exact pillars"; Westwood's halls hold 6 columns at the
+        # median): the room's cap (ROOMS[kind]["repeat"]) sets the pairs, and the pairs set the step
+        cap = self.repeat_cap("column")
+        if cap and cap // 2 >= 2:
+            gap = max(gap, (depth_max - 1.0 - first) / (cap // 2 - 1) - 0.01)
         got = 0
         for o_ in sorted({off, lo_off, min(room_, off + 1.0)}, key=lambda x: abs(x - off)):
             got = self.nave_columns(r, mid, o_, first, depth_max, gap, t=t)
@@ -2297,13 +2393,19 @@ class Furnisher:
         return 0
 
     def aisle_pair(self, t):
-        """A pair of statues facing each other across the aisle, just beside it, at the first depth from the throne
-        where both fit. Returns the pieces placed."""
+        """A pair of statues facing each other across the aisle, just beside it: halfway between two pairs of columns
+        where there are columns (the hall's rhythm: columns, statues, columns), else at the first depth from the throne
+        where both fit, and never at the depth of another pair. Returns the pieces placed."""
         r, mid, half = self.aisle["run"], self.aisle["mid"], self.aisle["half"]
         h = max(self.half(t))
         depth_max = self._depth_of(r) - 2.0
-        d = self.aisle["first"]
-        while d <= depth_max:
+        depth = lambda rec: abs((rec[0] if r["line"] == "/" else rec[1]) - r["coord"])
+        cols = sorted({round(depth(rec), 1) for tt, rec in self._typed if _family_of(tt) == "column"})
+        taken = [depth(rec) for tt, rec in self._typed if _family_of(tt) == "statue"]
+        between = [(a + b) / 2 + s_ for a, b in zip(cols, cols[1:]) for s_ in (0.0, -1.5, 1.5, -3.0, 3.0)]
+        scan = [self.aisle["first"] + k for k in range(int(max(0, depth_max - self.aisle["first"])) + 1)]
+        for d in between + scan:
+            if d > depth_max or any(abs(d - d2) < 6.0 for d2 in taken): continue      # pairs spread down the hall
             for off in (half + 0.6 + h, half + 1.6 + h):
                 o1 = self.try_put(t, *self._uv_on(r, d, mid - off))
                 o2 = o1 and self.try_put(t, *self._uv_on(r, d, mid + off))
@@ -2311,7 +2413,27 @@ class Furnisher:
                     self.anchors.append(self._uv_on(r, d, mid))
                     return 2
                 if o1: self._remove(o1)
-            d += 1.0
+        return 0
+
+    def flank_lights(self, p, gap=0.9):
+        """A pair of braziers (else the room's candelabras) before an anchor (the throne), one at each front corner of it,
+        beside the aisle (Hecubah's flame basins flank the way to his throne, Con06b). Both or neither. Returns the pieces
+        placed."""
+        r = p["run"]
+        lt = "Brazier" if self.ok_type("Brazier") else self.light_type()      # braziers by the dais, else candelabras
+        d = abs((p["uv"][0] if r["line"] == "/" else p["uv"][1]) - r["coord"]) + p["hp"] + 0.6
+        self.placing_light = True
+        try:
+            for off in (p["ha"] + gap, p["ha"] + gap + 0.8, p["ha"] + gap + 1.6):
+                a1, a2 = self._uv_on(r, d, p["along"] - off), self._uv_on(r, d, p["along"] + off)
+                o1 = self.try_put(lt, *a1)
+                o2 = o1 and self.try_put(lt, *a2)
+                if o1 and o2:
+                    self.ring_lights += [a1, a2]
+                    return 2
+                if o1: self._remove(o1)
+        finally:
+            self.placing_light = False
         return 0
 
     def face_statues(self):
@@ -2400,7 +2522,7 @@ class Furnisher:
             got = self.aisle_pair(t)                    # a room with an aisle: the pair lines it, facing across it
             if got: return got
         hu, hv = self.half(t)
-        pad = 1.4 if g.get("seats") else g.get("clear", 0.6)
+        pad = 1.4 if g.get("seats") else g.get("clear", 0.6) + (g.get("ring_r", 0) + 0.5 if g.get("ring") else 0.0)
         cu, cv = self.g.centroid
         us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
@@ -2420,19 +2542,35 @@ class Furnisher:
             n_seats = 0
             if g.get("seats"):
                 lo, hi = g["seats"]
-                n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2))
+                n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2),
+                                            pat=g.get("seat_pat"))
                 if n_seats < lo:
                     for x in got: self._remove(x)
                     continue                            # seats_around removes nothing: the seats it placed stay
                 self._seated.add((spot, t))
+            if g.get("ring"):                           # candelabras round it, on the four sides: all or none
+                lt, ring, rr = self.light_type(), [], g.get("ring_r", 1.9)
+                self.placing_light = True
+                try:
+                    for du, dv in ((rr, 0), (-rr, 0), (0, rr), (0, -rr)):
+                        x = self.try_put(lt, spot[0] + du, spot[1] + dv)
+                        if not x: break
+                        ring.append(x)
+                finally:
+                    self.placing_light = False
+                if len(ring) < g["ring"]:
+                    for x in ring + got: self._remove(x)
+                    continue
+                self.ring_lights += [(spot[0] + du, spot[1] + dv) for du, dv in ((rr, 0), (-rr, 0), (0, rr), (0, -rr))]
             if g.get("rug") and self.rng.random() < g["rug"]: self.rug_under(o, spot)
-            if g.get("beside"):
-                pat, n = g["beside"]
+            besides = g.get("beside")
+            for pat, n, *gap_ in ([besides] if besides and isinstance(besides[0], str) else besides or []):
+                gap_ = gap_[0] if gap_ else 0.35         # pieces set close by (a cauldron a step off: fires draw wide)
                 bt = sorted(x for x in self.things if re.match(pat, x) and self.ok_type(x) and self.belongs(x))
                 for _ in range(n if bt else 0):
                     b = self.rng.choice(bt); bhu, bhv = self.half(b)
                     for du, dv in self.rng.sample([(1, 0), (-1, 0), (0, 1), (0, -1)], 4):
-                        uu, vv = spot[0] + du * (hu + bhu + 0.35), spot[1] + dv * (hv + bhv + 0.35)
+                        uu, vv = spot[0] + du * (hu + bhu + gap_), spot[1] + dv * (hv + bhv + gap_)
                         x = self.try_put(b, uu, vv)
                         if x: got.append(x); break
             self.anchors.append(spot)
@@ -2463,7 +2601,8 @@ class Furnisher:
                 self.stock_walls(st.get("coverage", 0.3), st.get("kinds", ("crates", "barrels", "sacks")), pad=st.get("pad", 1.0),
                                  per_wall=st.get("per_wall"))
             elif st["slot"] == "line":
-                self.line_wall(fam, max_n=st.get("n"), decor_every=st.get("decor", 0), other=st.get("other", False))
+                self.line_wall(fam, max_n=st.get("n"), decor_every=st.get("decor", 0), other=st.get("other", False),
+                               only=st.get("only"))
             elif st["slot"] == "racks":
                 self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
             elif st["slot"] == "stack":
@@ -2481,7 +2620,7 @@ class Furnisher:
                     if self.seats_around(uv, o["type"], 2, "chair") < 2: self._remove(o)
                     elif st.get("rug"): self.rug_under(o, uv)
             else:
-                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2))
+                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2), only=st.get("only"))
                 if p and st.get("seats"): self.seats_around(p["uv"], p["obj"]["type"], 1)   # a desk and its chair
             added[i] += self.n_blocking - before
             misses = 0 if self.n_blocking > before else misses + 1
@@ -2504,7 +2643,7 @@ class Furnisher:
         # (2026-10-05: with its benches capped, Thornwick's 264-tile great hall was topped up with 15 of each)
         limits = {f: int(math.ceil(rng_[1] * (1.0 if f in ("plant", "statue") else grow))) + 1
                   for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items())
-                  if f in TOP_UP_FAMS and self.types_of(f)}
+                  if f in ident.get("top_up", TOP_UP_FAMS) and self.types_of(f)}
         limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()}
         have = Counter(_family_of(t) for t, _ in self._typed)
         misses = 0
@@ -2641,11 +2780,12 @@ class Furnisher:
                     if spot: self.try_put(t, *spot, blocking=False)
                 continue
             n = plan.get(fam, 0) - done[fam]
-            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade") and not st.get("extra"):
+            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights") and not st.get("extra"):
                 continue                                # rows and lined walls are sized by the room; `extra` sets too
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
-                                            decor_every=st.get("decor", 0), other=st.get("other", False))
+                                            decor_every=st.get("decor", 0), other=st.get("other", False),
+                                            only=st.get("only"))
                 continue
             if st["slot"] == "racks":
                 done[fam] += self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
@@ -2669,6 +2809,9 @@ class Furnisher:
                 continue
             if st["slot"] == "flank":                  # a pair against the wall either side of an anchor (the throne)
                 if placed.get(st["of"]): done[fam] += self.flank(fam, placed[st["of"]], st.get("gap", 0.8))
+                continue
+            if st["slot"] == "flank_lights":           # a pair of candelabras before it
+                if placed.get(st["of"]): self.flank_lights(placed[st["of"]], st.get("gap", 0.9))
                 continue
             if st["slot"] == "colonnade":
                 done[fam] += self.colonnade(st.get("gap", 3.4), st.get("aisle", 3.0))
@@ -2754,7 +2897,7 @@ class Furnisher:
                     k += got
                     continue
                 p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False),
-                                       door=st.get("door", False))
+                                       door=st.get("door", False), only=st.get("only"))
                 if not p: break
                 k += 1
                 placed.setdefault(fam, p)
@@ -2890,6 +3033,29 @@ class Furnisher:
         coord = r["coord"] + r["sign"] * 0.9
         self.spots.append(dict(role="shopkeeper", px=_px(*((coord, v) if r["line"] == "/" else (u, coord)))))
 
+    def _light_types(self):
+        """The kinds of light this room may take: the culture's own, a house's candelabras (never torches), else
+        Westwood's for the room's kind."""
+        vl = self.T.get("visible_lights", {})
+        types = {t: s for t, s in vl.get("types", {}).items()
+                 if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
+        own = ROOM_IDENTITY.get(self.kind, {}).get("lights")
+        if own:                                                  # the culture's own lights (rules/out/cultures.json)
+            types = {t: s for t, s in own.items() if self.ok_type(t)} or types
+        elif HOUSE_WALLS.search(self.g.wall_material or ""):     # a house: candelabras, never torches
+            types = {t: s for t, s in HOUSE_LIGHTS["stone" if STONE_WALLS.search(self.g.wall_material) else "wood"].items()
+                     if self.ok_type(t)} or types
+        return types
+
+    def light_type(self):
+        """The room's one style of floor light (a candelabra), chosen once: the conjuring circle's ring and the throne's
+        candelabras are the room's lights too."""
+        if self._light_t is None:
+            types = {t: s for t, s in self._light_types().items() if not (_base(t) in self.dirvar and
+                     self.dirvar[_base(t)].get("use_variant_for_wall_side") and not t.startswith("Candleabra"))}
+            self._light_t = _pick(self.rng, types) or "Candleabra1"
+        return self._light_t
+
     def add_lights(self):
         vl = self.T.get("visible_lights", {})
         tiles = len(self.room.tiles)
@@ -2909,8 +3075,9 @@ class Furnisher:
         # on the next, the candelabra goes to the empty far corner, not between them)
         # lights cover the room evenly: each goes to the wall spot that leaves the farthest corner of the
         # floor closest to a light (TreePlace v0.2 playtest: lights bunched on one side), never beside another
-        lights = []
-        t = _pick(self.rng, types)                     # one style of light per room
+        lights = list(self.ring_lights)                # a conjuring circle's or a throne's candelabras light it already
+        n = max(1 if tiles >= 12 and not lights else 0, n - len(lights) // 2)
+        t = self._light_t or _pick(self.rng, types)   # one style of light per room
         base = _base(t)
         mounted = bool(base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side")
                        and not t.startswith("Candleabra"))

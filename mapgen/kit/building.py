@@ -649,6 +649,7 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         for (i, j) in units:
             t = _xy(U0, V0, (2 * i, 2 * j + 2))
             spec.tile(*t, floor); tiles.add(t)
+            if hasattr(spec, "indoor"): spec.indoor[t] = floor    # its doorways' thresholds (nox.Spec._door_thresholds)
         walls = set()
         for e, pair in edges.items():
             if r in pair:

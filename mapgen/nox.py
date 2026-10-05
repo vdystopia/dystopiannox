@@ -125,6 +125,8 @@ class Spec:
         self.local_from = {}   # (x, y) -> the only materials whose edge may spill onto that tile (a carpet's trim)
                                # (a doorway: the path outside spills onto the threshold tile)
         self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
+        self.indoor = {}        # floor tile of a building's room -> the room's floor (kit/building.py), for its thresholds
+        self.sheltered = set()  # tiles inside a doorway: no outdoor ground spills onto them (_door_thresholds)
         self.scripts = {}       # filename -> Go source: the map's script (OpenNox runs the .go files in maps/<Name>/)
         self.routes = []        # routes the scripts walk (kit/npcs.Behaviours): <map>.routes.json for the checker
         self.rng = random.Random(1)
@@ -163,8 +165,15 @@ class Spec:
             else: continue
             near = {}
             only = self.local_from.get((x, y))
+            sheltered, indoor = (x, y) in self.sheltered, (x, y) in self.indoor
             for name, (dx, dy) in {**EDGE_SIDES, **EDGE_TIPS}.items():
                 m = self.floor.get((x + dx, y + dy))
+                if (x + dx, y + dy) not in self.indoor:
+                    # the outdoor ground stops at the wall line (Starwell playtest, 2026-10-05): a room's tile takes no
+                    # edge from outside across its wall (the wall hides that seam; a tip always lies across it), nor in
+                    # a doorway (_door_thresholds); a tile on the wall line still takes the ground's edge on its outer side
+                    if sheltered: continue
+                    if indoor and (name in EDGE_TIPS or (x + max(dx, 0), y + max(dy, 0)) in self.wallmap): continue
                 if m in self.blend and self.blend[m][0] > bp and (only is None or m in only):
                     near.setdefault(m, set()).add(name)
             edges = []
@@ -297,6 +306,8 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+        self._wall_line_floors()
+        self._door_thresholds()
         for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
         self._blend_thresholds()
         edges = self._edges()
@@ -317,6 +328,85 @@ class Spec:
                                  points=[[46, 23], [edge - 23, 69], [edge - 46, edge - 23], [23, edge - 69]]))
         return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
 
+    def _wall_line_floors(self):
+        """The room's floor runs under its walls (Starwell playtest, 2026-10-05: the grass and the path's dirt showed on
+        the boards inside). In a NW-SE wall the floor tiles sit on the wall line, half in the room; where the house left
+        such a tile to the land (one wall of each room), the ground lay half a tile into the room along the whole wall
+        and blended onto the boards. Each tile that meets a room's tile through an open cell by a wall takes that room's
+        floor; the ground then meets it outside the wall line, as in Westwood's houses."""
+        if getattr(self, "raw_floors", False) or not self.indoor: return
+        for (x, y) in sorted(self.indoor):
+            f = self.indoor[(x, y)]                      # the room's own floor, never a carpet laid on it
+            if (x, y) not in self.floor: continue
+            for (dx, dy) in EDGE_SIDES.values():
+                n = (x + dx, y + dy)
+                if n in self.indoor or n not in self.floor: continue
+                shared = (x + max(dx, 0), y + max(dy, 0))
+                if shared in self.wallmap or shared in self.door_gaps: continue
+                if any((shared[0] + a, shared[1] + b) in self.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)) and                         self._may_take(n, f):
+                    self.floor[n] = f
+
+    def _may_take(self, t, floor):
+        """Whether tile t may take a room's floor: no neighbour of a floor Westwood never lets touch it that the buffer
+        pass (_buffer_never_touch) could not settle, its buffer meeting water or another floor it never touches (a stone
+        floor against swamp grass by the water: Mirefen's stilt houses)."""
+        if not hasattr(self, "_never_touch"):
+            self._never_touch = {}
+            for r in load_rules("floors")["never_touch"]:
+                bm = r.get("buffer_materials")
+                self._never_touch[frozenset((r["a"], r["b"]))] = max(bm.items(), key=lambda kv: kv[1])[0] if bm else None
+        near = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
+        for dx, dy in near:
+            n = (t[0] + dx, t[1] + dy)
+            m = self.floor.get(n)
+            if not m or m == floor or frozenset((m, floor)) not in self._never_touch: continue
+            buf = self._never_touch[frozenset((m, floor))]      # the buffer pass turns that neighbour to buf: unless
+            if not buf: return False                            # buf itself would meet a floor it never touches
+            if any(frozenset((k, buf)) in self._never_touch for k in
+                   (self.floor.get((n[0] + a, n[1] + b)) for a, b in near) if k and k not in (buf, floor)):
+                return False
+        return True
+
+    def _door_thresholds(self):
+        """A building's doorway as Westwood draws it (Starwell playtest, 2026-10-05: "Tile blending on the inside of doors
+        seems consistently off", the path's dirt and the grass spilt onto the boards just inside the door). In
+        Westwood's town doorways the inside floor runs right up to the door, under it, and out onto the doorstep; the
+        ground outside blends onto that doorstep tile, never onto a tile that reaches into the room (corpus, exterior
+        doors of the single-player maps: the tiles inside the wall line carry the ground's edge at about 1 door in 10).
+        So for each door between a room's floor (`indoor`) and the ground: the tiles covering the opening or the cell
+        straight out from it that lie wholly outside the wall line take the room's floor (the doorstep: two tiles in a
+        NW-SE (backslash) wall, where the floor tiles sit on the wall line; one in a NE-SW (/) wall, where they straddle it) and
+        let the ground spill onto them; the tiles that reach inside take no outdoor edge at all (`sheltered`)."""
+        if getattr(self, "raw_floors", False) or not self.indoor: return
+        def covering(c):
+            return [t for t in ((c[0], c[1]), (c[0] - 1, c[1] - 1), (c[0] - 1, c[1]), (c[0], c[1] - 1)) if t in self.floor]
+        def cells(t):
+            return ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
+        for g in sorted(self.door_gaps):
+            along = {(1, 1), (-1, -1)}
+            ln = "\\" if any((g[0] + a, g[1] + b) in self.wallmap or (g[0] + a, g[1] + b) in self.door_gaps
+                              for a, b in along) else "/"
+            p = (1, -1) if ln == "\\" else (1, 1)
+            sides = []
+            for sgn in (1, -1):
+                c = (g[0] + 3 * sgn * p[0], g[1] + 3 * sgn * p[1])
+                ts = covering(c)
+                sides.append((any(t in self.indoor for t in ts), ts))
+            if sides[0][0] == sides[1][0]: continue                         # between two rooms, or two yards (a gate)
+            o = p if sides[1][0] else (-p[0], -p[1])                       # toward the outside
+            inside = next(t for t in sides[0 if sides[0][0] else 1][1] if t in self.indoor)
+            floor = self.indoor[inside]                  # the room's own floor (a carpet stops inside the door)
+            for c in (g, (g[0] + o[0], g[1] + o[1])):
+                for t in covering(c):
+                    side = [(cx - g[0]) * o[0] + (cy - g[1]) * o[1] for cx, cy in cells(t)]
+                    if min(side) < 0:                                      # reaches into the room: the room's floor
+                        self.sheltered.add(t)
+                        self.local_blend.pop(t, None)
+                        if t not in self.indoor and self._may_take(t, floor): self.floor[t] = floor
+                    elif t not in self.indoor and self._may_take(t, floor):
+                        self.floor[t] = floor
+                        if floor not in self.blend: self.local_blend[t] = -50
+
     def _blend_thresholds(self):
         """Where an outdoor ground that blends (a dirt path, grass) meets a building's floor that blends with nothing
         (boards, flagstones) with no wall between them, in a doorway, the ground spills onto the floor with edge
@@ -331,7 +421,8 @@ class Spec:
                 b = self.floor.get(n)
                 if b is None or a == b or shared in self.wallmap: continue
                 for g, f, ft in ((a, b, n), (b, a, (x, y))):
-                    if g in self.blend and ground.search(g) and f not in self.blend and not ground.search(f)                             and ft not in self.local_blend:
+                    if g in self.blend and ground.search(g) and f not in self.blend and not ground.search(f) \
+                            and ft not in self.local_blend and ft not in self.sheltered:
                         self.local_blend[ft] = -50
 
     def _buffer_never_touch(self):
