@@ -85,6 +85,11 @@ class QuestBook:
         return ("journal", self.text(text, "Journal"), "", typ)
 
     # ---- conditions --------------------------------------------------------------------------------------------
+    def dead(self, *names):
+        """A flag that holds when every named creature is dead (read from the world, so it survives a saved game)."""
+        self.names |= set(names)
+        return "dead:" + ",".join(names)
+
     @staticmethod
     def at(quest, stage, has="", flag="", not_=""):
         return dict(Quest=quest, Stage=stage, Has=has, Flag=flag, Not=not_)

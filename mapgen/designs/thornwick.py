@@ -570,7 +570,7 @@ q.on_all_dead(ambushers, [A.flag("lookouts_dead"), A.print("The lookouts are dea
 # Tobin: the hook, then thanks for the lookouts
 q.talker("Tobin", [
     q.say("You killed them! The ones in the grove! Bless you, stranger. It isn't much, but take these, and the coin "
-          "I had sewn in my boot.", when=q.when(flag="lookouts_dead", not_="tobin_paid"),
+          "I had sewn in my boot.", when=q.when(flag=q.dead(*ambushers), not_="tobin_paid"),
           do=[A.give("RedPotion", 3), A.gold(40), A.flag("tobin_paid"),
               q.journal("Tobin the carter paid me for killing the Red Hand's lookouts.", COMPLETED)], who="Tobin"),
     q.say("Thornwick is up the road. Tell Reeve Aldric what happened here. Somebody has to do something about the "
@@ -587,7 +587,7 @@ q.talker("Tobin", [
 q.talker("Aldric", [
     q.say("Garrick is dead? Then the Red Hand is finished, and Thornwick owes you. Here is the bounty, as promised. "
           "I have sent word to the gate: the north road is yours.",
-          when=q.when(flag="garrick_dead", not_="bounty_paid"),
+          when=q.when(flag=q.dead("Garrick"), not_="bounty_paid"),
           do=[A.gold(300), A.give("BluePotion", 2), A.flag("bounty_paid"), A.stage("main", 4),
               A.unlock("NorthGate1"), A.unlock("NorthGate2"), A.enable("NorthExit1"), A.enable("NorthExit2"),
               A.enable("NorthExit3"),
@@ -622,10 +622,12 @@ q.talker("Mirela", [
     q.say("It's beautiful. Just as she wore it. You've done me a kindness I can't repay. But I'll try.",
           when=q.at("gem", 3), who="Mirela"),
     q.say("You have it! The Varn emerald! Give it to me and the three hundred gold is yours. Will you?",
-          when=q.at("gem", 2, has="Emerald"), ask=True,
-          do=[A.take("Emerald"), A.gold(300), A.stage("gem", 3),
+          when=q.when(has="Emerald", not_="gem_done"), ask=True,
+          do=[A.flag("gem_done"), A.take("Emerald"), A.gold(300), A.stage("gem", 3),
               q.journal("I gave the Varn emerald to Mirela. She paid 300 gold.", COMPLETED)],
           else_=[A.chat("Mirela", "Then what good are you?")], who="Mirela"),
+    q.say("You had it, didn't you? I can see it in your face. Where is my grandmother's emerald?",
+          when=q.at("gem", 2), who="Mirela"),
     q.say("The key fits the crypt door behind the nave. Grandmother lies at the back. Please, be quick, before Odo "
           "notices it's gone.", when=q.at("gem", 1), who="Mirela"),
     q.say("You look like someone who can handle themselves. My grandmother was a Varn. She was buried with the family "
@@ -642,8 +644,8 @@ q.talker("FatherOdo", [
     q.say("The Varn dead are quiet now. You did a good thing, whatever Mirela tells you.", when=q.at("gem", 4), who="Odo"),
     q.say("You opened the crypt? And you carry the Varn emerald... Mirela put you up to this. It was buried with old "
           "Agna Varn, and the dead will not rest while it is gone. Give it to me and I will lay it back with her. Will "
-          "you?", when=q.at("gem", 2, has="Emerald"), ask=True,
-          do=[A.take("Emerald"), A.give("CurePoisonPotion", 2), A.give("RedPotion", 2), A.gold(80), A.stage("gem", 4),
+          "you?", when=q.when(has="Emerald", not_="gem_done"), ask=True,
+          do=[A.flag("gem_done"), A.take("Emerald"), A.give("CurePoisonPotion", 2), A.give("RedPotion", 2), A.gold(80), A.stage("gem", 4),
               q.journal("I gave the Varn emerald to Father Odo, who laid it back in the crypt. He blessed me with "
                         "potions and the chapel's alms.", COMPLETED)],
           else_=[A.chat("FatherOdo", "Then the dead will come for it.")], who="Odo"),
@@ -654,7 +656,7 @@ q.talker("FatherOdo", [
 q.on_all_dead(wolves, [A.flag("wolves_dead"), A.print("The last of the wolf pack lies dead.")])
 q.talker("Hobb", [
     q.say("The pack's gone? All of them? Ha! Here, for your trouble, and a loaf and a jug from the mill.",
-          when=q.when(flag="wolves_dead", not_="hobb_paid"),
+          when=q.when(flag=q.dead(*wolves), not_="hobb_paid"),
           do=[A.gold(120), A.give("Meat"), A.give("Cider"), A.flag("hobb_paid"), A.stage("wolves", 2),
               q.journal("I killed the wolves of the east wood. Hobb the miller paid me 120 gold.", COMPLETED)],
           who="Hobb"),
@@ -668,11 +670,13 @@ q.talker("Hobb", [
 q.talker("Brannoc", [
     q.say("My grandfather's sword, back in the forge where it was made. You've given an old man his family back. "
           "Take this breastplate. My son made it; he'd want it worn by someone who earned it.",
-          when=q.at("sword", 2, has="GreatSword"), ask=True,
-          do=[A.take("GreatSword"), A.give("Breastplate"), A.gold(150), A.stage("sword", 3),
+          when=q.when(has="GreatSword", not_="sword_done"), ask=True,
+          do=[A.flag("sword_done"), A.take("GreatSword"), A.give("Breastplate"), A.gold(150), A.stage("sword", 3),
               q.journal("I returned the Brannoc greatsword. Old Brannoc gave me a breastplate and 150 gold.", COMPLETED)],
           else_=[A.chat("Brannoc", "Then keep it. Use it well.")], who="Brannoc"),
     q.say("Every time I hear the forge ring I think of that sword. Thank you, friend.", when=q.at("sword", 3), who="Brannoc"),
+    q.say("You found it and then lost it? Go back and look, friend. That sword has been lost once already.",
+          when=q.at("sword", 2), who="Brannoc"),
     q.say("The tower's up past the wolves' den, in the east wood. Mind the brute who lives there now.",
           when=q.at("sword", 1), who="Brannoc"),
     q.say("Forty years I worked that forge before my son took it. My grandfather's greatsword hung over it, until it "
@@ -694,9 +698,28 @@ q.talker("Pell", [
 # the town watch
 for w_ in ("Watch1", "Watch2"):
     q.talker(w_, [
-        q.say("Red Hand's broken, they say. Quiet watch tonight, then.", when=q.when(flag="garrick_dead"), who="Watch"),
+        q.say("Red Hand's broken, they say. Quiet watch tonight, then.", when=q.when(flag=q.dead("Garrick")), who="Watch"),
         q.say("Keep your blade sheathed in town. If you're after trouble, the Red Hand's out in the north-west pines, "
               "and the reeve pays for heads.", who="Watch")])
+
+# the folk of the square: each knows one thing worth hearing
+RUMOURS = [
+    "The reeve's barred the north gate. Merchants are stuck here, eating the inn bare.",
+    "Mirela at the Lantern has been asking after hired swords. Something about her grandmother.",
+    "Father Odo locked the Varn crypt in the spring. My cousin swears she heard knocking from inside.",
+    "Hobb's lost three goats to the wolves this month. He'd pay to be rid of them.",
+    "Old Brannoc sits outside the forge all day, staring east. Ask him about his grandfather's sword.",
+    "The Red Hand camp is out past the graveyard, in the old pines. Nobody who's gone looking has come back.",
+    "Tobin the carter came through last week with a full wagon. I hope he made it.",
+    "There's an ogre in the old watchtower. You can hear it on still nights, east of the mill.",
+]
+for k_, text_ in enumerate(RUMOURS):
+    q.talker(f"Folk{k_ + 1}", [q.say("The Red Hand's finished? Then the road's open again. Thank you!",
+                                     when=q.when(flag="bounty_paid"), who="Folk"),
+                               q.say(text_, who="Folk")])
+for k_, pic_ in enumerate(("MaidenPic", "MaidenPic3", "MaidenPic2", "MalePic1", "MorganPic", "Townsman3Pic",
+                           "MalePic7", "MaidenPic")):
+    q.portrait(f"Folk{k_ + 1}", pic_)
 
 # the reeve's hint at the camp's way, and a hint from the folk of the square
 q.near(*square_px(*land.areas["pines"]["c"]), 160, [A.print("Old pines close in. Somewhere ahead, smoke.")],

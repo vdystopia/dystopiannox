@@ -21,6 +21,8 @@ package PKG
 //   Actions:  stage, flag, give, take, gold, journal, print, chat, unlock, lock, enable, disable, hunt, open.
 
 import (
+	"strings"
+
 	"github.com/noxworld-dev/noxscript/ns/v4"
 	"github.com/noxworld-dev/noxscript/ns/v4/audio"
 )
@@ -81,13 +83,27 @@ func holds(c Cond) bool {
 	if c.Has != "" && carries(player(), c.Has) == nil {
 		return false
 	}
-	if c.Flag != "" && !flags[c.Flag] {
+	if c.Flag != "" && !flagOn(c.Flag) {
 		return false
 	}
-	if c.Not != "" && flags[c.Not] {
+	if c.Not != "" && flagOn(c.Not) {
 		return false
 	}
 	return true
+}
+
+// flagOn: a flag set by the story, or "dead:Name1,Name2", true when every one of those creatures is dead. Deaths are
+// read from the world, not remembered, so they hold after a saved game is loaded and the script starts afresh.
+func flagOn(f string) bool {
+	if strings.HasPrefix(f, "dead:") {
+		for _, n := range strings.Split(f[5:], ",") {
+			if o := ns.Object(n); o != nil && o.CurrentHealth() > 0 {
+				return false
+			}
+		}
+		return true
+	}
+	return flags[f]
 }
 
 // run performs the actions in turn. at: where something dropped should land (a creature that died), or nil.
