@@ -324,12 +324,11 @@ for k in range(2):
     pop.creature("Archer", lx + (k * 2 - 1) * 40, ly, action="guard", face=square_px(*pines_c), scr=n, aggr=0.83)
     redhand.append(n)
 B.sentry("RedArcher1", square_px(*pines_c), rouse=["Garrick"] + redhand[:4], shout="The Red Hand! To arms!")
-# the town watch walking the square
-watch_route = pop.waypoint_path("Watch", [ring[k] for k in (0, 2, 4, 6)])
+# the town watch, each on a beat of its own through the town (laid along the roads once the map is placed)
 for k_, donor_ in enumerate(("Contest_Guard", "IxGuard2")):
     wx_, wy_ = ring[k_ * 4]
     person("Con02a", donor_, wx_, wy_, f"Watch{k_ + 1}", action=0)
-    B.patrol(f"Watch{k_ + 1}", watch_route[k_ * 2:] + watch_route[:k_ * 2], pause=3.0)
+    sm.beat(f"Watch{k_ + 1}", vc, stops=7)
 # the ogre warlord in the old watchtower, two grunts at the breach
 pop.creature("OgreWarlord", *tower["boss"], action="guard", face=square_px(*land.areas["den"]["c"]), scr="TowerOgre", aggr=0.83)
 for k_, (x_, y_) in enumerate(tower["inside"][:2]):

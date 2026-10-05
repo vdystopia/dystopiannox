@@ -221,6 +221,21 @@ def path_to_wall(m):
         m.tile(114 + k, 102 - k, "DirtDark2")
 
 
+def waypoint_at_jamb(m):
+    # a doorstep waypoint pressed against the jamb beside the double door (the 2026-10-05 playtest: an NPC stuck on the
+    # frame beside a door)
+    a = m.waypoint(99 * CELL - 2, 101 * CELL + 11.5, name="Step_1")
+    b = m.waypoint(97 * CELL, 101 * CELL, name="Step_2")
+    m.routes = [dict(who="Folk", kind="tour", waypoints=["Step_1", "Step_2"], loop=False, pauses=[20, 20])]
+
+
+def route_cuts_doorway(m):
+    # a leg through the double door at 45 degrees to its opening: walkers cut the corner into the jamb
+    cx, cy = 100.5 * CELL + 11.5, 99.5 * CELL + 11.5
+    m.waypoint(cx - 40, cy, name="Cut_1"); m.waypoint(cx + 40, cy, name="Cut_2")
+    m.routes = [dict(who="Folk", kind="tour", waypoints=["Cut_1", "Cut_2"], loop=False, pauses=[20, 20])]
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -230,6 +245,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STjamb", jamb, "wall_shapes", "error", "corner beside a door shaped as a straight piece - DysVale playtest"),
     ("STdock", dock_misaligned, "kits", "error", "dock pieces off Westwood's steps - DysVale playtest"),
     ("STclutr", clutter, "rooms", "warning", "room crammed with furniture - DysVale playtest"),
+    ("STwpjmb", waypoint_at_jamb, "routes", "error", "waypoint pressed against a door's jamb - 2026-10-05 playtest",
+     "against a wall"),
+    ("STwpcut", route_cuts_doorway, "routes", "error", "route cutting through a doorway at an angle - 2026-10-05 playtest",
+     "doorway"),
     ("STdoorw", doorway, "doorways", "error", "barrel standing in a doorway"),
     ("STrug", rug_on_grass, "floors", "error", "rug laid straight onto grass"),
     ("STvoid", void_creature, "objects", "error", "creature standing in the void"),

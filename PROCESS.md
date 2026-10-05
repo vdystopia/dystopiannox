@@ -286,6 +286,30 @@ The tools:
   `tests/server_smoke.py <design>`: the map loads, and the self-checks find every creature, waypoint and story
   object. `review/spots.py <map> <names>` renders close-ups of the story's places.
 
+**How people move** (playtest 2026-10-05: "npcs wander around too sporadically. they walk into walls ... they look like
+ants"; "npc trying to walk through the door but getting stuck on the frame").
+- Townsfolk never Wander. Each walks a tour of the town's real places (`StoryMap.townsfolk`): their home door, a spot
+  on the square, a shop, then the well, statues, benches, gardens, yard gates and neighbours' doors, 5-7 stops in a
+  loop, different for each person (`_pick_tour`, its own generator per name). They stand 16-24 s at each stop (plus up
+  to 4 s in the script), facing what is there, or the player when near.
+- Legs follow the roads and paths: `kit/walkways.Router` routes over the cells a body stands clear on, road cells
+  cheaper than grass, then pulls the path straight into legs within 16 px of it (a waypoint at each bend, legs under
+  230 px). Tours stay outdoors and within reach of the square; they are laid when the scripts are written
+  (`Behaviours.later`), once every wall, tree and bench stands.
+- Doorways are passed square-on, or not at all: a point straight out in front of the opening, its centre, a point
+  straight in behind it (`Ground.passage`, single and double doors, both wall lines). The router itself never routes
+  through a door cell. Townsfolk step inside only shops, inns, chapels and smithies whose door is not locked; elsewhere
+  they stop on the doorstep, 34-64 px out, never against the jamb. Garrison patrols go room to room through shared
+  doorways the same way (`Dresser._route`).
+- The watch walks a beat (`StoryMap.beat`): 6-7 stops spread across the town, 8-12 s at each.
+- In the game, one ticker looks after every walker twice a second: a walker that has not moved for 6 s on a leg is
+  sent on again, after 12 s it skips to the next waypoint. Waypoints on a tour are never linked (a linked waypoint
+  makes Move roam the links).
+- The checker proves it (`check_routes`, on every build): every waypoint on floor, off walls (11 px), out of
+  obstacles and water; every link and every leg of `<map>.routes.json` sampled every 4 px, clear of the void, wall
+  pieces (as thin lines, 10 px), obstacles, and through doorways within 25 degrees of square-on and near the middle.
+  `review/storymap.py <map> --routes` draws them.
+
 ## 7. Check, review, playtest
 
 - `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.

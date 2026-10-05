@@ -13,7 +13,7 @@
 
 Coordinates: squares (i, j) for the land, world pixels for objects, as in kit/layout.py.
 """
-import math, os, random, zlib
+import math, os, random, re, zlib
 from nox import CELL
 from kit.identity import BUILDINGS, role_size
 from kit.layout import square_tile, square_px, px_square, point_cell
@@ -21,6 +21,7 @@ from kit.village import _squares_of
 from kit.building import generate_building
 from kit.originality import furnish_original
 from kit.npcs import Population, facing
+from kit.walkways import Ground, Router, CELL as WCELL
 
 STOCK = r"C:\GOG Games\Nox\maps"
 
@@ -298,38 +299,241 @@ class StoryMap:
                 break
         return n
 
-    def townsfolk(self, folk, centre, q=None, rumours=(), after=None, pics=(), radius=6.5, prefix="Folk"):
-        """Townspeople (clones [(donor, scr)]) walking between the square round `centre` (squares) and the doorsteps,
-        running home when a creature comes near (kit/behaviours Villager). With a QuestBook q, each says its rumour
-        (and `after`: (flag, line) once the main quest is done), with its portrait. Returns the square's ring (px)."""
+    def townsfolk(self, folk, centre, q=None, rumours=(), after=None, pics=(), radius=6.5, prefix="Folk", stops=(5, 7),
+                  pause=(16.0, 24.0)):
+        """Townspeople (clones [(donor, scr)]), each on a tour of the town's real places in Westwood's manner and the
+        playtester's (2026-10-05: "walk from point a to point b and then stand still for longer"): from their home
+        door to the square, a shop, the well, a garden, a neighbour's door..., `stops` places in all, along the roads
+        and paths (a waypoint at each bend, three square-on through a shop's doorway), standing `pause` seconds at
+        each, facing what is there; running home when a creature comes near (kit/behaviours Tour). Different people
+        get different tours. The tours are laid when the scripts are written (Behaviours.files), once every wall,
+        tree and bench stands. With a QuestBook q, each says its rumour (and `after`: (flag, line) once the main
+        quest is done), with its portrait. Returns the square's ring (px)."""
         rng = self.rng
         ring = [square_px(centre[0] + radius * math.cos(a), centre[1] - 0.5 + radius * math.sin(a))
                 for a in (k * math.pi / 4 for k in range(8))]
-        square_wps = self.pop.waypoint_path("Square", ring)
-        door_wps = []
-        for bid, b in self.placed:
-            for d in b.entrances[:1]:
-                o_ = self.land.door_outside(d, _squares_of(b.footprint))
-                if o_: door_wps += self.pop.waypoint_path(f"Door{len(door_wps) + 1}", [square_px(o_[0] + 0.5, o_[1] - 0.5)])
         # given names from their own generator, so naming them leaves the map's other draws (and its layout) unchanged
         name_rng = random.Random(zlib.crc32(self.m.d["name"].encode()))
         taken = {o.get("scr") for o in self.m.d["objects"] if o.get("scr")}
         self.folk_names = []
+        people = []
+        # the draws the earlier rounds-between-spots scheme made, made still, so everything placed after the townsfolk
+        # (the fights, the wood's creatures) stands where it stood
+        n_doors = sum(1 for bid, b in self.placed for d in b.entrances[:1]
+                      if self.land.door_outside(d, _squares_of(b.footprint)))
         for k, (donor, src) in enumerate(folk):
             pool = [n for n in NAMES["f" if src in WOMEN_DONORS else "m"] if n not in taken]
             name = name_rng.choice(pool) if pool else f"{prefix}{k + 1}"
             taken.add(name); self.folk_names.append(name)
             x, y = ring[k % len(ring)]
-            self.person(donor, src, x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), name)
-            homes = rng.sample(door_wps, min(2, len(door_wps)))
-            self.B.villager(name, rng.sample(square_wps, 3) + homes, home=homes[0] if homes else square_wps[0], linger=5.0)
+            people.append(self.person(donor, src, x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), name))
+            rng.sample(range(n_doors), min(2, n_doors)); rng.sample(range(8), 3)
             if q and k < len(rumours):
                 lines = []
                 if after: lines.append(q.say(after[1], when=q.when(flag=after[0]), who=prefix))
                 lines.append(q.say(rumours[k], who=prefix))
                 q.talker(name, lines)
                 if k < len(pics): q.portrait(name, pics[k])
+
+        def lay():
+            town = self._town(centre, radius)
+            homes = [s for s in town["stops"] if s["kind"] == "home"] or [s for s in town["stops"] if s["kind"] in ("door", "shop")]
+            for k, o in enumerate(people):
+                name = o["scr"]
+                trng = random.Random(zlib.crc32(f"{self.m.d['name']}:{name}:tour".encode()))
+                home = homes[k % len(homes)] if homes else None
+                tour = self._pick_tour(town, trng, home, trng.randint(*stops), indoors=True)
+                laid = self._lay_route(town, name + "Way", tour, trng, pause, home_kind=True)
+                if not laid:
+                    self.B.tour(name, [], [], fear=0.0)      # nowhere to walk: stands where it is
+                    continue
+                route, pauses, looks, home_wp = laid
+                o["x"], o["y"] = self._at(route[0])          # starts the day at its first stop: home
+                self.B.tour(name, route, pauses, looks, home=home_wp or "", fear=180.0)
+        self.B.later(lay)
         return ring
+
+    def beat(self, name, centre, radius=6.5, stops=6, pause=(8.0, 12.0)):
+        """A watchman's beat (kit/behaviours Patrol): a loop through `stops` of the town's places spread wide (the
+        gate, the square, far doorsteps, the yards), along the roads, standing `pause` seconds at each. The named
+        person is moved to the beat's first stop. Laid when the scripts are written, as the townsfolk's tours."""
+        def lay():
+            town = self._town(centre, radius)
+            trng = random.Random(zlib.crc32(f"{self.m.d['name']}:{name}:beat".encode()))
+            cand = [s for s in town["stops"] if s["kind"] != "square" or trng.random() < 0.3]
+            if not cand: return
+            # spread: the first stop by the gate or the far edge, then each next the farthest from those taken
+            first = max(cand, key=lambda s: (s["kind"] == "gate", math.dist(s["p"], town["c"]) * trng.uniform(0.8, 1.0)))
+            pick = [first]
+            while len(pick) < min(stops, len(cand)):
+                pick.append(max((s for s in cand if s not in pick),
+                                key=lambda s: min(math.dist(s["p"], t["p"]) for t in pick) * trng.uniform(0.75, 1.0)))
+            laid = self._lay_route(town, name + "Beat", self._order(pick, pick[0]), trng, pause)
+            if not laid: return
+            route, pauses, looks, _ = laid
+            o = next((o for o in self.m.d["objects"] if o.get("scr") == name), None)
+            if o is not None: o["x"], o["y"] = self._at(route[0])
+            self.B.patrol(name, route, pauses, loop=True, looks=looks)
+        self.B.later(lay)
+
+    # ---- the town's places, and routes between them (kit/walkways) -----------------------------------------------
+    LANDMARK = re.compile(r"^(Well|Fountain|Statue|Bench|LightBench|Garden|Gate$|IronFenceGate|BarredGate|Sign|"
+                          r"OutdoorTrader|WaterBarrel|Anvil|Stump|WoodPile|Tombstone|Grave|Wagon|Cart|Shrine|Obelisk)")
+    VISIT = ("store", "inn", "tavern", "chapel", "smithy")      # roles a townsperson steps inside
+    HOMES = ("home", "cottage", "house", "farm", "hut", "mill", "woodcutter", "hunter", "fisher")
+
+    def _at(self, wp_name):
+        w = next(w for w in self.m.d["waypoints"] if w["name"] == wp_name)
+        return w["x"], w["y"]
+
+    def _town(self, centre, radius, reach=95.0):
+        """The places townsfolk go, reachable from the square along the ground (never through a doorway) within
+        `reach` (road cells cost 1, open ground 2.6): {"stops": [dict(p, look, kind, visit)], "router", "ground"}.
+        Built once per centre, when the map is placed."""
+        key = (round(centre[0], 2), round(centre[1], 2))
+        cache = self.__dict__.setdefault("_towns", {})
+        if key in cache: return cache[key]
+        m, land = self.m, self.land
+        g = Ground.from_spec(m)
+        roads = set()
+        for i, j in land.roads | land.plaza:
+            x, y = square_tile(i, j)
+            roads |= {(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)}
+        router = Router(g, roads)
+        c = square_px(centre[0], centre[1] - 0.5)
+        costs = router.costs_from(c, reach)
+        if len(costs) < 50:                          # the centre itself is cluttered (a well): from the nearest clear cell
+            near = [(c[0] + dx * WCELL, c[1] + dy * WCELL) for dx in range(-5, 6) for dy in range(-5, 6)]
+            for p in sorted(near, key=lambda p: math.dist(p, c)):
+                more = router.costs_from(p, reach)
+                if len(more) > len(costs): costs = more
+                if len(costs) >= 50: break
+        reach_ok = lambda p: (int(p[0] // WCELL), int(p[1] // WCELL)) in costs
+        stops = []
+        clear = lambda p: g.point_ok(p[0], p[1], wall_clear=15, obj_clear=12)
+
+        def add(p, look, kind, visit=None, gap=60.0):
+            if not p or not reach_ok(p) or not clear(p): return False
+            if any(math.dist(p, s["p"]) < gap for s in stops): return False
+            stops.append(dict(p=p, look=look, kind=kind, visit=visit))
+            return True
+        # doorsteps (and, for the shops, the inn and the chapel, a step inside)
+        locked = [(o["x"], o["y"]) for o in m.d["objects"] if o.get("door") is not None and (o.get("xfer") or {}).get("LockType")]
+        for bid, b in self.placed:
+            foot = list(b.footprint)
+            bx = sum(square_px(i + 0.5, j - 0.5)[0] for i, j in _squares_of(foot)) / max(1, len(_squares_of(foot)))
+            by = sum(square_px(i + 0.5, j - 0.5)[1] for i, j in _squares_of(foot)) / max(1, len(_squares_of(foot)))
+            for d in b.entrances:
+                dd = g.gap_door.get(d.gap)
+                if not dd: continue
+                (ox, oy) = dd[0]
+                ps = g.passage(d.gap, (2 * ox - bx, 2 * oy - by))
+                if not ps or not ps[0]: continue
+                out, mid, inn = ps
+                kind = "home" if bid.role in self.HOMES else "shop" if bid.role in self.VISIT else "door"
+                visit = None
+                if bid.role in self.VISIT and inn and not any(math.dist(dd[0], q_) < 50 for q_ in locked) and \
+                        g.leg_problem(out, inn) is None:
+                    deep = (inn[0] + (inn[0] - out[0]) * 1.5, inn[1] + (inn[1] - out[1]) * 1.5)
+                    visit = dict(mid=mid, inn=inn, look=deep)
+                add(out, (ox, oy), kind, visit, gap=30.0)
+        # the square: a ring round its middle, facing in
+        for a in range(8):
+            ang = a * math.pi / 4 + 0.39
+            p = square_px(centre[0] + radius * 0.8 * math.cos(ang), centre[1] - 0.5 + radius * 0.8 * math.sin(ang))
+            add(p, c, "square", gap=70.0)
+        # the town's features: the well, statues, benches, gardens, yard gates, graves, stalls
+        for o in m.d["objects"]:
+            t = o.get("type") or ""
+            if not self.LANDMARK.match(t) or math.dist((o["x"], o["y"]), c) > reach * WCELL: continue
+            best = None
+            for r_ in (30, 38, 46):
+                for k_ in range(12):
+                    ang = k_ * math.pi / 6
+                    p = (o["x"] + r_ * math.cos(ang), o["y"] + r_ * math.sin(ang))
+                    cell = (int(p[0] // WCELL), int(p[1] // WCELL))
+                    if cell not in costs or not clear(p): continue
+                    if best is None or costs[cell] < best[0]: best = (costs[cell], p)
+                if best: break
+            if best: add(best[1], (o["x"], o["y"]), "gate" if "Gate" in t else "landmark", gap=90.0)
+        town = dict(stops=stops, router=router, ground=g, c=c, start={})
+        cache[key] = town
+        return town
+
+    @staticmethod
+    def _order(stops, first):
+        """A short loop through the stops from `first`: nearest next, then untangled (2-opt), on straight distance."""
+        rest, order = [s for s in stops if s is not first], [first]
+        while rest:
+            nxt = min(rest, key=lambda s: math.dist(s["p"], order[-1]["p"]))
+            order.append(nxt); rest.remove(nxt)
+        n = len(order)
+        better = True
+        while better and n > 3:
+            better = False
+            for i in range(1, n - 1):
+                for j in range(i + 1, n):
+                    a, b, c_, d = order[i - 1]["p"], order[i]["p"], order[j]["p"], order[(j + 1) % n]["p"]
+                    if math.dist(a, c_) + math.dist(b, d) < math.dist(a, b) + math.dist(c_, d) - 1e-6:
+                        order[i:j + 1] = order[i:j + 1][::-1]; better = True
+        return order
+
+    def _pick_tour(self, town, rng, home, n, indoors=True):
+        """`n` stops for one person: home first, a place on the square, a shop, then the town's other places, in a
+        loop. Different draws give different people different tours."""
+        stops = [s for s in town["stops"] if s is not home]
+        used = self.__dict__.setdefault("_square_used", set())
+        pick = [home] if home else []
+        sq = [s for s in stops if s["kind"] == "square" and id(s) not in used] or [s for s in stops if s["kind"] == "square"]
+        if sq:
+            s = rng.choice(sq); used.add(id(s)); pick.append(s)
+        shops = [s for s in stops if s["kind"] == "shop"]
+        if shops: pick.append(rng.choice(shops))
+        others = [s for s in stops if s not in pick and s["kind"] != "square"]
+        rng.shuffle(others)
+        others.sort(key=lambda s: s["kind"] not in ("landmark", "gate"))      # the town's features before doorsteps
+        k = 0
+        while len(pick) < n and k < len(others):
+            if rng.random() < 0.8: pick.append(others[k])
+            k += 1
+        if not pick: return []
+        order = self._order(pick, pick[0])
+        return [dict(s, visit=s["visit"] if indoors and s["visit"] and rng.random() < 0.6 else None) for s in order]
+
+    def _lay_route(self, town, prefix, tour, rng, pause, home_kind=False):
+        """Waypoints for a loop through the tour's stops: each leg routed along the roads (Router), the stop itself
+        stood on for `pause` seconds facing its look point, a visit going square-on through the doorway (out, the
+        opening's middle, in) and back. Stops whose legs cannot be routed are dropped. Returns (waypoint names,
+        pauses, looks, home waypoint name) or None."""
+        router = town["router"]
+        tour = list(tour)
+        while len(tour) >= 2:
+            legs, bad = [], None
+            for k, s in enumerate(tour):
+                nxt = tour[(k + 1) % len(tour)]
+                leg = router.route(s["p"], nxt["p"])
+                if leg is None: bad = nxt if (k + 1) % len(tour) else s; break
+                legs.append(leg)
+            if bad is None: break
+            tour.remove(bad)
+        if len(tour) < 2: return None
+        pts, pauses, looks, home_at = [], [], [], None
+        for k, s in enumerate(tour):
+            stay = rng.uniform(*pause)
+            v = s.get("visit")
+            if v:
+                pts.append(s["p"]); pauses.append(0.0); looks.append(None)
+                if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
+                pts.append(v["inn"]); pauses.append(stay); looks.append(v["look"])
+                if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
+                pts.append(s["p"]); pauses.append(0.0); looks.append(None)
+            else:
+                if home_kind and k == 0: home_at = len(pts)
+                pts.append(s["p"]); pauses.append(stay); looks.append(s["look"])
+            for p in legs[k][:-1]:
+                pts.append(p); pauses.append(0.0); looks.append(None)
+        names = self.pop.waypoint_path(prefix, pts)
+        return names, pauses, looks, (names[home_at] if home_at is not None else None)
 
     def walkable(self):
         """Grid cells the player can walk to from the PlayerStart, flooded as the checker floods them

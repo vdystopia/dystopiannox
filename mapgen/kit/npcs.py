@@ -46,7 +46,8 @@ class Population:
     def __init__(self, spec, rng):
         self.spec, self.rng = spec, rng
         self.ww = westwood_types()
-        self.behaviours = Behaviours()
+        self.behaviours = Behaviours(spec)
+        self.behaviours.last(self.settle_waypoints)
         self.placed = []
         self._n = {}
 
@@ -105,6 +106,26 @@ class Population:
             if loop and len(wps) > 2: self.spec.link(wps[-1], wps[0])
         return [w["name"] for w in wps]
 
+    def settle_waypoints(self, reach=3):
+        """Every waypoint off the walls and obstacles, on floor a body can stand on (validate check_routes): one set
+        against a wall, in a tree or on water moves to the nearest clear point within `reach` cells. Run once the map
+        is placed (Behaviours.files runs it last)."""
+        from kit.walkways import Ground, CELL as C_
+        wps = self.spec.d["waypoints"]
+        if not wps: return 0
+        g = Ground.from_spec(self.spec)
+        moved = 0
+        for w in wps:
+            if g.point_ok(w["x"], w["y"], wall_clear=14, obj_clear=12): continue
+            cx, cy = int(w["x"] // C_), int(w["y"] // C_)
+            cand = [((cx + a) * C_ + C_ / 2, (cy + b) * C_ + C_ / 2) for a in range(-reach, reach + 1) for b in range(-reach, reach + 1)]
+            cand = [p for p in cand if g.point_ok(p[0], p[1], wall_clear=14, obj_clear=12)]
+            if not cand: continue
+            x, y = min(cand, key=lambda p: (p[0] - w["x"]) ** 2 + (p[1] - w["y"]) ** 2)
+            w["x"], w["y"] = round(x, 1), round(y, 1)
+            moved += 1
+        return moved
+
     def roam_loop(self, pts, t, n=1, prefix=None):
         """Westwood's unscripted patrol: creatures with the roam action on a loop of linked waypoints (4% of its
         creatures; they start on a waypoint, 1.6 cells away at the median)."""
@@ -129,22 +150,57 @@ class Population:
 
 class Behaviours:
     """Scripted behaviour sets for named creatures (kit/behaviours/behaviours.go); files() gives the Go sources for
-    the map's folder."""
+    the map's folder. Routes walked (tours, patrols) are also recorded on the spec (spec.routes), which the build
+    writes beside the map as <map>.routes.json for the checker (validate check_routes)."""
 
-    def __init__(self):
+    def __init__(self, spec=None):
+        self.spec = spec
         self.calls = []
         self.shouts = set()          # what sentries call out: text, not names
+        self._later, self._last = [], []
+
+    def later(self, fn):
+        """fn() runs when files() is called, once the map is placed (routes need every wall, tree and bench)."""
+        self._later.append(fn)
+
+    def last(self, fn):
+        self._last.append(fn)
 
     @staticmethod
     def _s(names):
         return "[]string{" + ", ".join(json.dumps(n) for n in names) + "}"
 
+    @staticmethod
+    def _f(vals):
+        return "[]float32{" + ", ".join(f"{v:.1f}" for v in vals) + "}"
+
+    def _record(self, name, kind, route, loop, pauses):
+        if self.spec is not None:
+            if not hasattr(self.spec, "routes"): self.spec.routes = []
+            self.spec.routes.append(dict(who=name, kind=kind, waypoints=list(route), loop=bool(loop),
+                                         pauses=[round(p, 1) for p in pauses]))
+
     def sentry(self, name, face, rouse=(), shout="Intruder!"):
         self.shouts.add(shout)
         self.calls.append(f'Sentry({json.dumps(name)}, {face[0]:.1f}, {face[1]:.1f}, {self._s(rouse)}, {json.dumps(shout)})')
 
-    def patrol(self, name, route, pause=2.0, loop=True):
-        self.calls.append(f'Patrol({json.dumps(name)}, {self._s(route)}, {pause:.1f}, {"true" if loop else "false"})')
+    def patrol(self, name, route, pause=2.0, loop=True, looks=None):
+        """Walks `route` (waypoint names) in turn, round when loop, else there and back. pause: seconds at every
+        waypoint, or a list (0 = a bend passed through); looks: an (x, y) per waypoint to face there, or None."""
+        pauses = list(pause) if isinstance(pause, (list, tuple)) else [pause] * len(route)
+        look = [c for p in (looks or [None] * len(route)) for c in (p or (0.0, 0.0))]
+        self._record(name, "patrol", route, loop, pauses)
+        self.calls.append(f'Patrol({json.dumps(name)}, {self._s(route)}, {self._f(pauses)}, {self._f(look)}, '
+                          f'{"true" if loop else "false"})')
+
+    def tour(self, name, route, pauses, looks=None, home="", fear=180.0):
+        """A townsperson's tour (kit/behaviours Tour): `route` waypoint names walked round in order, standing
+        pauses[k] seconds at each stop (0 = a bend or doorway point), facing looks[k]; runs for the `home` waypoint
+        (one of the route's) while a hostile creature is within `fear` px (0: never)."""
+        look = [c for p in (looks or [None] * len(route)) for c in (p or (0.0, 0.0))]
+        self._record(name, "tour", route, True, pauses)
+        self.calls.append(f'Tour({json.dumps(name)}, {self._s(route)}, {self._f(pauses)}, {self._f(look)}, '
+                          f'{json.dumps(home)}, {fear:.1f})')
 
     def pack(self, leader, members):
         self.calls.append(f'Pack({json.dumps(leader)}, {self._s(members)})')
@@ -156,11 +212,12 @@ class Behaviours:
         self.calls.append(f'Ambush({self._s(names)}, {at[0]:.1f}, {at[1]:.1f}, {reach:.1f})')
 
     def townsfolk(self, name, spots, linger=4.0):
-        self.calls.append(f'Townsfolk({json.dumps(name)}, {self._s(spots)}, {linger:.1f})')
+        """Walks between `spots` in turn, standing `linger` seconds at each (a Tour without a home)."""
+        self.tour(name, spots, [linger] * len(spots), fear=0.0)
 
     def villager(self, name, spots, home, linger=5.0, fear=180.0):
         """Townsfolk who run for their home doorstep (waypoint `home`) while a hostile creature is within `fear` px."""
-        self.calls.append(f'Villager({json.dumps(name)}, {self._s(spots)}, {linger:.1f}, {json.dumps(home)}, {fear:.1f})')
+        self.tour(name, spots, [linger] * len(spots), home=home, fear=fear)
 
     def harpoon_staff(self, staff, speed=26.0, reach=320.0, damage=20, reel=40, pull=6.0):
         """A named Lesser Fireball staff that throws harpoons (kit/behaviours/weapons.go, rules/WEAPONS.md)."""
@@ -178,6 +235,9 @@ class Behaviours:
 
     def files(self, map_name):
         """{filename: Go source} for the map's folder, package named after the map (as OpenNox expects)."""
+        while self._later: self._later.pop(0)()
+        for fn in self._last: fn()
+        self._last = []
         if not self.calls: return {}
         pkg = map_name.lower()
         lib = open(os.path.join(HERE, "behaviours", "behaviours.go"), encoding="utf-8").read().replace("package PKG", f"package {pkg}", 1)
