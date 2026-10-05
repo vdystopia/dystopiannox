@@ -1836,6 +1836,10 @@ class Furnisher:
         lo_c, hi_c = (min(vs), max(vs)) if long_u else (min(us), max(us))
         margin = 1.6 + aisle                            # the pieces along the walls, then an aisle
         width = (hi_c - lo_c) - 2 * margin
+        if gear and width < 1.2 and aisle > 1.6:        # a narrow storeroom: a row with the old aisles beats an empty
+            aisle = 1.6                                 # middle (the racks among the stores are the room's formula)
+            margin = 1.6 + aisle
+            width = (hi_c - lo_c) - 2 * margin
         pats = list(RACK_KINDS.get(kind, RACK_KINDS["gear"]))
         self.rng.shuffle(pats)
         p = 1.9 + aisle                                 # a row and the aisle beside it
