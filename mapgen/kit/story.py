@@ -51,14 +51,16 @@ class StoryMap:
             size0, min_units0 = role_size(role)
             program = [kind for kind, _ in role["rooms"]]
             b = None
-            for shrink in (1.0, 0.92, 0.84):
+            # a house too small for its rooms at their least sizes is tried a size up before a size down
+            for shrink in (1.0, 1.12, 0.92, 1.25, 0.84):
                 size = (2 * round(size0[0] * scale * shrink / 2), 2 * round(size0[1] * scale * shrink / 2))
                 lots = land.square_lots(size) if role["faces"] == "square" and bid.area == "town" else []
                 lots += land.lots(bid.area, size)
                 for origin, side in lots:
                     if not land.lot_free(origin, size, margin=1): continue
                     b = generate_building(m, rng, origin, size, bid.style or role["style"], program=program, entrance_side=side,
-                                          building_id=f"B{k}", occupied={square_tile(*s) for s in land.taken}, tries=12,
+                                          building_id=f"B{k}", occupied={square_tile(*s) for s in land.taken},
+                                          tries=24 if size[0] <= 30 else 12,       # small houses: more layouts to try
                                           shape=role.get("shape"), min_units=int(min_units0 * (scale * shrink) ** 2))
                     if b: break
                 if b: break

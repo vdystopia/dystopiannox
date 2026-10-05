@@ -1749,6 +1749,8 @@ class Furnisher:
                     if not any(b0 - 0.05 <= along - ha and along + ha <= b1 + 0.05 for b0, b1 in blocks):
                         blocks.append((along - ha, along + ha))
                 base = re.sub(r"HalfFull$", "", mine[0][0])
+                base = self.side_variant(base, r, "shelves") or base      # this wall's own variant (it faces out)
+                if not base.startswith("Bookcase"): continue
                 mix = [base] + ([base + "HalfFull"] if self.ok_type(base + "HalfFull") else [])
                 for _ in range(6):
                     if not self._line_run(r, mix, None, None, 0, 0.9, "shelves", grow_only=True): break

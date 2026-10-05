@@ -445,7 +445,7 @@ def _kind_tiles(kind, q="p25", default=30):
 _BASE_KINDS = None
 
 
-def _kind_min_tiles(kind):
+def _kind_min_tiles(kind, scaled=True):
     """The fewest floor tiles a room of `kind` should have: Westwood's 10th percentile (rules/out/room_types.json), or
     the checker's lower bound for the kind when that is higher (validate/baseline.json room_kinds: the 5th percentile
     of the rooms it read, 166 tiles for a tavern), so the checker never calls a generated room small for its kind."""
@@ -458,14 +458,16 @@ def _kind_min_tiles(kind):
     # at the kit's scale (identity.BUILDING_SCALE, 1.25 Westwood's) a room's least floor grows with the square of it:
     # Westwood's 10th percentile bedroom is 12 tiles, a cramped closet at our scale (2026-10-05 room audit)
     from kit.identity import BUILDING_SCALE
-    return max(_kind_tiles(kind, "p10", default=8) * BUILDING_SCALE ** 2, ((_BASE_KINDS.get(wk) or {}).get("tiles") or [0])[0])
+    # (the scale once, not squared: squared, a mill's two rooms fitted its lot 4 times in 10)
+    return max(_kind_tiles(kind, "p10", default=8) * (BUILDING_SCALE if scaled else 1.0),
+               ((_BASE_KINDS.get(wk) or {}).get("tiles") or [0])[0])
 
 
-def _rooms_fit(labels, program):
+def _rooms_fit(labels, program, scaled=True):
     """True when the rooms, largest first, hold the program's kinds, largest first, at their least size or more
     (_kind_min_tiles)."""
     sizes = sorted(Counter(v for v in labels.values() if v != COURT).values(), reverse=True)
-    need = sorted((_units_for(_kind_min_tiles(k)) for k in program), reverse=True)
+    need = sorted((_units_for(_kind_min_tiles(k, scaled)) for k in program), reverse=True)
     return all(s >= n for s, n in zip(sizes, need))
 
 
@@ -543,8 +545,10 @@ def generate_building(spec, rng, origin_uv, max_size_uv, style, program=None, oc
         if program and entrance_side:
             labels = _main_room_on_side(labels, entrance_side)
             if labels is None: continue  # the main room cannot reach the entrance side: try again
-        if program and attempt < tries * 3 // 4 and not _rooms_fit(labels, program):
-            continue                     # a room below Westwood's sizes for its kind (a closet bedroom): try again
+        # a room below its least size (a closet bedroom): try again; at the kit's scale for most tries, then at
+        # Westwood's own least size, never below it (a fallback with no check at all gave 6-tile rooms)
+        if program and not _rooms_fit(labels, program, scaled=attempt < tries * 3 // 4):
+            continue
         if program and attempt < tries * 3 // 4 and not _rooms_proportioned(labels):
             continue                     # a room drawn out into a corridor: try again
         cells = _cells_of(U0, V0, labels)
