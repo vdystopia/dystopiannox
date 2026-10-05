@@ -101,7 +101,7 @@ BIOMES = {
         light_colours=[(224, 64, 0), (192, 32, 0), (128, 0, 0), (224, 96, 32)],
         light_per100=dict(open=5.0, wall=3.0, liquid=6.0), light_radius=180, light_intensity=60,
         sources=dict(wall={"Torch": 0.3}, open={"DunMirFlameBasinLit": 0.25}),
-        creatures={"Imp": 5, "EmberDemon": 3, "MeleeDemon": 2, "Skeleton": 3, "Zombie": 2, "SkeletonLord": 1},
+        creatures={"Imp": 5, "EmberDemon": 3, "MeleeDemon": 2, "Skeleton": 5, "SkeletonLord": 1},   # no Zombie: OpenNox cannot read a placed one back
         creatures_per100=0.7),
 }
 

@@ -134,6 +134,10 @@ class QuestBook:
     def on_pickup(self, t, acts, when=None):
         self.calls.append(f"OnPickup({_go(t)}, {self._cond(when or self.when())}, {self._acts(acts)})")
 
+    def when_true(self, when, acts):
+        """Acts once, the first time `when` holds (all three vents open; every keeper dead), wherever the player is."""
+        self.calls.append(f"WhenTrue({self._cond(when)}, {self._acts(acts)})")
+
     def start(self, acts):
         self.calls.append(f"Start({self._acts(acts)})")
 

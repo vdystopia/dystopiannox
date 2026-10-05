@@ -383,7 +383,7 @@ class Spec:
             for fn, src in self.scripts.items():
                 with open(os.path.join(sd, fn), "w", encoding="utf-8", newline="\n") as f: f.write(src)
             lines.append(f"SCRIPTS\t{sd}\t{len(self.scripts)} file(s)")
-        if check:
+        if check and not os.environ.get("NOX_NOCHECK"):      # NOX_NOCHECK=1: skip the checker (trying seeds)
             chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
                                   os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)
             lines.append("CHECK " + (chk.stdout.strip().splitlines() or ["(checker produced no output)"])[-1])

@@ -353,6 +353,11 @@ func Near(x, y, r float32, when Cond, acts []Act) {
 	watches = append(watches, &watch{kind: "near", x: x, y: y, r: r, when: when, acts: acts})
 }
 
+// WhenTrue runs acts once, the first time `when` holds, wherever the player is.
+func WhenTrue(when Cond, acts []Act) {
+	watches = append(watches, &watch{kind: "when", when: when, acts: acts})
+}
+
 // OnPickup runs acts once, the first time the player carries an item of type typ while `when` holds.
 func OnPickup(typ string, when Cond, acts []Act) {
 	watches = append(watches, &watch{kind: "pickup", typ: typ, when: when, acts: acts})

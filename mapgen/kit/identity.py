@@ -647,6 +647,7 @@ class BuildingIdentity:
     area: str                                 # area it stands in
     name: str = ""                            # e.g. "The Mossy Tankard"
     occupant: str = ""                        # who lives or works there
+    style: str = ""                           # a building style in place of the role's (stone houses in a volcanic town)
 
 
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).

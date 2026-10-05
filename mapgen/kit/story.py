@@ -57,7 +57,7 @@ class StoryMap:
                 lots += land.lots(bid.area, size)
                 for origin, side in lots:
                     if not land.lot_free(origin, size, margin=1): continue
-                    b = generate_building(m, rng, origin, size, role["style"], program=program, entrance_side=side,
+                    b = generate_building(m, rng, origin, size, bid.style or role["style"], program=program, entrance_side=side,
                                           building_id=f"B{k}", occupied={square_tile(*s) for s in land.taken}, tries=12,
                                           shape=role.get("shape"), min_units=int(min_units0 * (scale * shrink) ** 2))
                     if b: break
@@ -72,7 +72,20 @@ class StoryMap:
         self.by_role = {}
         for bid, b in self.placed: self.by_role.setdefault(bid.role, b)
         land.taken -= held
+        self._blend_outside_floors()
         return self.placed
+
+    def _blend_outside_floors(self, priority=8):
+        """Floors laid outside the buildings (the paving a building style puts round its walls) blend into the land
+        in whatever palette: a biome's blend list knows its own floors, not the houses' paving (Emberhollow:
+        GalavaBrownMarble against VolcanicCraggy, a hard seam; Rimehold: GreenBrick against the rock paths)."""
+        m = self.m
+        inside = set()
+        for bid, b in self.placed:
+            inside |= set(b.footprint)
+            for r in b.rooms: inside |= set(r.tiles)
+        for mat in {mat for t, mat in m.floor.items() if t not in inside}:
+            if mat not in m.blend: m.blending(mat, priority)
 
     def connect_and_furnish(self, style="town", path_material="DirtDark2"):
         """Paths from every door to the roads (dead ends trimmed), then every room furnished by its identity."""

@@ -354,6 +354,26 @@ def check_objects(m, ctx, base):
     return out
 
 
+def check_story_gates(m, ctx, base):
+    """A story gate seals what it guards: with every door locked to a mechanism (a gate only a script opens) shut,
+    no exit can be reached from the start (Emberhollow's review: nothing else proved the Cinder Gate crossed the
+    whole road). Doors locked to a key are left open here: the key is in the map."""
+    out = []
+    sealed = {d["gap"] for d in m.doors if (d["obj"].get("xfer") or {}).get("LockType") == "Mechanism"}
+    exits = [o for o in m.objects if "EXIT" in o["cls"]]
+    if not sealed or not exits or not ctx.starts: return out
+    walk_block = {c for c, w in m.walls.items() if not (w.secret or w.destructible or c in m.scripted_walls)}
+    cells, _ = ctx._reach(walk_block | ctx.object_cells() | sealed)
+    for o in exits:
+        c = m.cell_of(o["x"], o["y"])
+        # the exit area blocks its own cells (an immobile object): standing beside it is reaching it
+        if any((c[0] + a, c[1] + b) in cells for a in range(-3, 4) for b in range(-3, 4)):
+            out.append(F("story", "error", f"{o['type']} can be reached with the story's gates locked: the gate does not "
+                         f"seal the way out.", o["x"], o["y"]))
+            break
+    return out
+
+
 def check_doorways(m, ctx, base):
     """Furniture, trees or rocks standing in a door opening or right in front of it."""
     out = []
@@ -1364,7 +1384,7 @@ def bridge_landings(m):
 
 
 ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
-       check_objects, check_doorways, check_floors, check_rooms, check_density]
+       check_objects, check_doorways, check_story_gates, check_floors, check_rooms, check_density]
 
 
 def run_all(m, base, only=None):
