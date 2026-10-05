@@ -444,6 +444,38 @@ class Dresser:
             out.append((px_, py_))
         return out
 
+    def _own_rounds(self, pts, stays, n, gap=40.0):
+        """The patrol loop for each of `n` patrollers, so no two share a stop (playtest 2026-10-05: two creatures on
+        one stop push each other off it for ever): the k-th starts k/n of the way round, and stands at each stop on a
+        spot of its own, 40 px or more from the others' (and its legs to the points either side still clear); the
+        bends and doorway points between are shared, walked through. Returns [(points, pauses)]."""
+        from kit.walkways import Ground
+        g = Ground.from_spec(self.spec)
+        L = len(pts)
+        taken = [p for p, s in zip(pts, stays) if s > 0]
+        out = [(list(pts), list(stays))]
+        for j in range(1, n):
+            ps, ss = list(pts), list(stays)
+            for i in range(L):
+                if ss[i] <= 0: continue
+                a, c = ps[i - 1], ps[(i + 1) % L]
+                best = None
+                for r in (40, 48, 56, 66):
+                    for k in range(16):
+                        q = (pts[i][0] + r * math.cos(k * math.pi / 8), pts[i][1] + r * math.sin(k * math.pi / 8))
+                        if any(math.hypot(q[0] - t[0], q[1] - t[1]) < gap for t in taken): continue
+                        if not g.point_ok(q[0], q[1], wall_clear=15, obj_clear=12): continue
+                        if g.leg_problem(a, q) or g.leg_problem(q, c): continue
+                        best = q; break
+                    if best: break
+                if best:
+                    ps[i] = best; taken.append(best)
+                else:
+                    ss[i] = 0.0                     # no room for a second spot here: it walks on through
+            shift = (j * L) // n
+            out.append((ps[shift:] + ps[:shift], ss[shift:] + ss[:shift]))
+        return out
+
     def _route(self, b, stay=6.0):
         """A loop through a building's rooms for its patrollers: room to room through the doorways they share (depth
         first, and back the same way), standing `stay` seconds at each room's free spot nearest its middle, each doorway
@@ -532,8 +564,9 @@ class Dresser:
                     def lay(b=b, prefix=route, group=tuple(group)):
                         pts, stays = self._route(b)
                         if len(pts) < 2: return               # no walkable loop: the patrollers keep their posts
-                        wps = pop.waypoint_path(prefix, pts)
-                        for g in group: B.patrol(g, wps, pause=stays, loop=True)
+                        for j, (ps, ss) in enumerate(self._own_rounds(pts, stays, len(group))):
+                            wps = pop.waypoint_path(prefix if j == 0 else f"{prefix}_{chr(97 + j)}", ps)
+                            B.patrol(group[j], wps, pause=ss, loop=True)
                     B.later(lay)
                 elif how == "ambush" and group:
                     ax = sum(p[0] for p in used[-len(group):]) / len(group); ay = sum(p[1] for p in used[-len(group):]) / len(group)

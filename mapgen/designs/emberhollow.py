@@ -236,7 +236,7 @@ person("Con02a", "Contest_Guard", gx + 70 * gdx / gl, gy + 70 * gdy / gl, "GateG
 # Brin, in his rock shelter at the diggings
 bx_, by_ = mine_sc.px(0.0, 0.0)
 person("Con03A", "Millard", bx_, by_, "Brin")
-home_wp = pop.waypoint_path("BrinHome", [(mx_ - 20, my_ + 25)])
+home_wp = [sm.journey("Brin", "BrinHome", (mx_ - 20, my_ + 25))]
 WARES = {"store": [(4, "RedPotion"), (3, "BluePotion"), (3, "CurePoisonPotion"), (2, "Meat"), (2, "Quiver"),
                    (1, "Bow"), (1, "LeatherArmoredBoots"), (1, "ChainCoif"), (1, "MedievalCloak")],
          "inn": [(5, "Meat"), (4, "Cider"), (3, "RedApple"), (2, "RedPotion")],

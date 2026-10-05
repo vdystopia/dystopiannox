@@ -1416,6 +1416,9 @@ def bridge_landings(m):
     return out
 
 
+STOP_GAP = 32.0      # px between two stops of the scripted routes: more than a body's width (24) and a little
+
+
 def check_routes(m, ctx, base):
     """Where creatures walk (playtest 2026-10-05: townsfolk walking into walls and sticking on a door's frame):
     every waypoint stands on floor a body can stand on (off the walls, out of trees, rocks, benches and furniture,
@@ -1454,9 +1457,29 @@ def check_routes(m, ctx, base):
             what = "Link" if who == "link" else f"{who}'s route"
             bad.append(F("routes", sev, f"{what} from {short(a['name'])} to "
                          f"{short(b['name'])} {why}.", (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
+    # nobody shares a standing spot (playtest 2026-10-05: two people landing on one stop push each other off it for
+    # ever): every stop of every route (a waypoint with a pause, a journey's end) STOP_GAP px from every other
+    stops = []
+    for r in routes:
+        for k, n in enumerate(r["waypoints"]):
+            w = by_name.get(n)
+            if w is not None and k < len(r.get("pauses") or []) and r["pauses"][k] > 0:
+                stops.append((w, r.get("who", "?")))
+    close = 0
+    for i in range(len(stops)):
+        for j in range(i + 1, len(stops)):
+            (a, wa), (b, wb) = stops[i], stops[j]
+            if a is b or wa == wb: continue            # one walker back at its own spot shares it with no one
+            d = math.hypot(a["x"] - b["x"], a["y"] - b["y"])
+            if d < STOP_GAP:
+                close += 1
+                bad.append(F("routes", sev, f"{wa}'s stop {short(a['name'])} and {wb}'s stop {short(b['name'])} stand "
+                             f"{d:.0f} px apart (under {STOP_GAP:.0f}): one spot for two.",
+                             (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
     out += bad[:40]
     if len(bad) > 40: out.append(F("routes", sev, f"... and {len(bad) - 40} more waypoint and route problems."))
-    out.append(F("routes", "info", f"Routes: {len(m.waypoints)} waypoints, {len(legs)} legs walked, {len(bad)} problems."))
+    out.append(F("routes", "info", f"Routes: {len(m.waypoints)} waypoints, {len(legs)} legs walked, {len(stops)} stops, "
+                                   f"{len(bad)} problems ({close} stops sharing a spot)."))
     return out
 
 

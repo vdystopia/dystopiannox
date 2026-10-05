@@ -49,6 +49,7 @@ from kit.quests import QuestBook, A, QUEST, COMPLETED, HINT, NOTE
 from kit import yards as Y
 from kit import camps
 from kit.story import StoryMap, Curtain
+from kit.posts import camp_posts
 from kit.dressing import Exterior
 
 SEED = int(sys.argv[1]) if len(sys.argv) > 1 else 5
@@ -311,10 +312,10 @@ person("Con02a", "Heckler", wx_, wy_, "Wil", face=square_px(*farm_c))
 for face_, nm_, donor_ in (("j0", "SouthGuard", "IxGuard1"), ("j1", "NorthGuard", "IxGuard2")):
     gx_, gy_ = cw.gate_px(face_, -2.2)
     person("Con02a", donor_, gx_ + 22, gy_ + 22, nm_, face=(vx, vy))
-# waypoints: Wil's way home to the barracks, or away east
+# Wil's walks, home to the barracks or away east: laid along the roads and paths once the map stands (StoryMap.journey)
 bar_door = sm.outside_door("barracks") or (vx - 60, vy)
 far_east = square_px(beacon_c[0] + 9.0, beacon_c[1] - 0.5)
-wil_wps = pop.waypoint_path("WilHome", [bar_door]) + pop.waypoint_path("WilAway", [far_east])
+wil_wps = [sm.journey("Wil", "WilHome", bar_door), sm.journey("Wil", "WilAway", far_east)]
 # shopkeepers
 WARES = {"store": [(4, "RedPotion"), (3, "BluePotion"), (2, "CurePoisonPotion"), (3, "RedApple"), (2, "Bread"),
                    (2, "Quiver"), (1, "Bow"), (1, "LeatherBoots"), (1, "LeatherHelm"), (1, "LeatherArmor")],
@@ -357,24 +358,25 @@ for k_, donor_ in enumerate(("Contest_Guard", "IxGuard2")):
 # ---- 9. the fights ----------------------------------------------------------------------------------------------------
 # the reivers in the gully, who come down on whoever passes on the road below
 ambushers = []
-for k, (x, y) in enumerate(gully_camp["seats"][:3] + [gully_camp["lookout"]]):
+gully_posts = camp_posts(m, gully_camp, square_px(*foot_c), sit=3, tents=0, watch=1)      # spaced round the fire
+for k, (x, y) in enumerate(gully_posts["sit"] + gully_posts["watch"]):
     n = f"Reiver{k + 1}"
     pop.creature("Archer" if k == 3 else "Swordsman", x, y, action="idle", face=square_px(*foot_c), scr=n, aggr=0.5,
                  sight=60 if k < 3 else 150)
     ambushers.append(n)
-# Ottar's band in the Hollow: Ottar by his fire, his men round it, archers at the way in
+# Ottar's band in the Hollow, spread about the camp (kit/posts): Ottar at its head by the chest, two men by the fire,
+# two by their tents, archers well apart at the way in
 hollow_band = []
-ox2, oy2 = hollow_camp["fire"]
-pop.creature("Swordsman", ox2 + 30, oy2 - 10, action="guard", face=square_px(*wood_c), scr="Ottar", aggr=0.83,
+hollow_posts = camp_posts(m, hollow_camp, square_px(*wood_c), sit=2, tents=2, watch=2)
+pop.creature("Swordsman", *hollow_posts["leader"], action="guard", face=square_px(*wood_c), scr="Ottar", aggr=0.83,
              HealthMultiplier=3.0)
-for k, (x, y) in enumerate(hollow_camp["seats"][:4]):
+for k, (x, y) in enumerate(hollow_posts["sit"] + hollow_posts["tent"]):
     n = f"HollowReiver{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=hollow_camp["fire"], scr=n, aggr=0.83)
     hollow_band.append(n)
-lx, ly = hollow_camp["lookout"]
-for k in range(2):
+for k, (x, y) in enumerate(hollow_posts["watch"]):
     n = f"HollowArcher{k + 1}"
-    pop.creature("Archer", lx + (k * 2 - 1) * 40, ly, action="guard", face=square_px(*wood_c), scr=n, aggr=0.83)
+    pop.creature("Archer", x, y, action="guard", face=square_px(*wood_c), scr=n, aggr=0.83)
     hollow_band.append(n)
 B.sentry("HollowArcher1", square_px(*wood_c), rouse=["Ottar"] + hollow_band[:4], shout="Greywatch men! Up, up!")
 # the prisoners in the cells: one in the first, the brothers in the second
@@ -395,7 +397,7 @@ if jail and len(cells) >= 2:
         for k in range(1 if c == 0 else 2):
             n = f"Prisoner{len(prisoners) + 1}"
             pop.creature("Swordsman", x + (k * 2 - 1) * 9 * c, y + (k * 2 - 1) * 9 * c, action="idle", scr=n, aggr=0.0,
-                         sight=40, face=(vx, vy))
+                         sight=40, face=(vx, vy), spread=False)
             prisoners.append(n)
 assert len(prisoners) == 3, "the cells were not built"
 # the bears round the beacon crag

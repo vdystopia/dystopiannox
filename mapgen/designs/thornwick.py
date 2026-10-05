@@ -31,6 +31,7 @@ from kit.village import Village, _squares_of
 from kit.building import generate_building
 from kit.originality import furnish_original
 from kit.npcs import Population
+from kit.posts import camp_posts
 from kit.quests import QuestBook, A, QUEST, COMPLETED, HINT
 from kit import yards as Y
 from kit import camps
@@ -303,25 +304,26 @@ ring = sm.townsfolk(FOLK, vc)
 # ---- 8. the fights ------------------------------------------------------------------------------------------------
 # the grove's lookouts round their fire, who come out of the trees when the player passes on the road
 ambushers = []
-for k, (x, y) in enumerate(ambush_camp["seats"][:3] + [ambush_camp["lookout"]]):
+look_posts = camp_posts(m, ambush_camp, square_px(*fork_c), sit=3, tents=0, watch=1)     # spaced round the fire
+for k, (x, y) in enumerate(look_posts["sit"] + look_posts["watch"]):
     t = "Archer" if k == 3 else "Swordsman"
     n = f"Lookout{k + 1}"
     pop.creature(t, x, y, action="idle", face=ambush_camp["fire"] if k < 3 else square_px(*fork_c), scr=n, aggr=0.5,
                  sight=60 if k < 3 else 150)
     ambushers.append(n)
-# the Red Hand at their camp: Garrick by his fire, his men round it, archers watching the way in
+# the Red Hand at their camp, spread about it as a camp is lived in (kit/posts): Garrick at its head by the chest,
+# two of his men sitting by the fire, two by their tents, archers well apart watching the way in
 redhand = []
-gx_, gy_ = red_camp["fire"]
-pop.creature("Swordsman", gx_ + 30, gy_ - 10, action="guard", face=square_px(*pines_c), scr="Garrick", aggr=0.83,
+red_posts = camp_posts(m, red_camp, square_px(*pines_c), sit=2, tents=2, watch=2)
+pop.creature("Swordsman", *red_posts["leader"], action="guard", face=square_px(*pines_c), scr="Garrick", aggr=0.83,
              HealthMultiplier=3.0)
-for k, (x, y) in enumerate(red_camp["seats"][:4]):
+for k, (x, y) in enumerate(red_posts["sit"] + red_posts["tent"]):
     n = f"RedHand{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=red_camp["fire"], scr=n, aggr=0.83)
     redhand.append(n)
-lx, ly = red_camp["lookout"]
-for k in range(2):
+for k, (x, y) in enumerate(red_posts["watch"]):
     n = f"RedArcher{k + 1}"
-    pop.creature("Archer", lx + (k * 2 - 1) * 40, ly, action="guard", face=square_px(*pines_c), scr=n, aggr=0.83)
+    pop.creature("Archer", x, y, action="guard", face=square_px(*pines_c), scr=n, aggr=0.83)
     redhand.append(n)
 B.sentry("RedArcher1", square_px(*pines_c), rouse=["Garrick"] + redhand[:4], shout="The Red Hand! To arms!")
 # the town watch, each on a beat of its own through the town (laid along the roads once the map is placed)
