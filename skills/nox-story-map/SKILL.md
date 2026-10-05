@@ -78,4 +78,6 @@ checkpoint (the repo's git workflow).
   screen's.
 - Long water running to the map's edge drags thin strips of land with it: end streams inside the forest near the
   settled land.
+- An exit drops the player at its ExitX/ExitY in the next map: `exit_to` reads the next map's PlayerStart, so build
+  the chain from its end (the next map first). 0, 0 is the map's corner: the player would arrive in the void.
 - Map names are at most 9 characters. Builds are reproducible: never Python `hash()` on strings.

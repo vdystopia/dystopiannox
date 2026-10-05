@@ -206,9 +206,28 @@ class StoryMap:
                 return res[0], res[1], sq
         raise AssertionError(f"no place for a gate on the {link} road")
 
-    def exit_to(self, area, map_name, prefix="Exit", n=3):
-        """Exit areas (InvisibleExitArea) where the road reaches `area` near the forest's edge, leading to map_name.
+    @staticmethod
+    def arrival(map_name):
+        """Where a player arriving in map_name stands: its PlayerStart (world px), read from the built map
+        (mapgen/out/*/<map_name>.map) or the installed one. In solo play an exit drops the player at its ExitX/ExitY
+        in the next map (opennox save.go nox_xxx_saveMakePlayerLocation_4DB600); 0, 0 is the map's corner, the void."""
+        import glob, sys
+        here = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        cands = glob.glob(os.path.join(here, "out", "*", map_name + ".map")) +             [os.path.join(STOCK, map_name, map_name + ".map")]
+        sys.path.insert(0, os.path.join(os.path.dirname(here), "validate"))
+        import mapdata as MD
+        for p in cands:
+            if not os.path.exists(p): continue
+            st = next((o for o in MD.load(p).objects if o["type"] == "PlayerStart"), None)
+            if st: return (st["x"], st["y"])
+        raise AssertionError(f"no built {map_name}.map with a PlayerStart: build the next map first (the exit needs "
+                             f"its arrival point)")
+
+    def exit_to(self, area, map_name, prefix="Exit", n=3, arrive=None):
+        """Exit areas (InvisibleExitArea) where the road reaches `area` near the forest's edge, leading to map_name,
+        the player arriving at `arrive` (world px; default the next map's PlayerStart, which must be built).
         Script names <prefix>1..n (A.disable/A.enable)."""
+        ax, ay = arrive or self.arrival(map_name)
         land = self.land
         edge = land.edge_distance()
         c = land.areas[area]["c"]
@@ -218,7 +237,7 @@ class StoryMap:
         for k in range(n):
             off = 18 * (k - (n - 1) / 2)
             self.m.obj_px("InvisibleExitArea", ex + off, ey + off, scr=f"{prefix}{k + 1}",
-                          xfer={"MapName": f"{map_name}.map", "ExitX": 0, "ExitY": 0})
+                          xfer={"MapName": f"{map_name}.map", "ExitX": float(ax), "ExitY": float(ay)})
             names.append(f"{prefix}{k + 1}")
         return names
 
