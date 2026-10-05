@@ -75,6 +75,34 @@ BIOMES = {
         sources=dict(wall={"Torch": 0.8}, open={}),      # Westwood: torches 0.1 per 100 floor tiles, by the walls
         creatures={"BlackWolf": 6, "WhiteWolf": 3, "Ghost": 2, "Skeleton": 2, "SkeletonLord": 1, "Bear": 1},
         creatures_per100=0.8),
+    # swamps (measured 2026-10-04 on Con05B, Con09a, Con09b, Con11a: SwampGrass 29% of the floor, WeedsSparse 19%,
+    # shallow swamp water 10%, deep 5%; RootLight walls; swamp trees in two parts, trunk and top; polyps, Plant3-5 and
+    # mushrooms; carnivorous plants, leeches, wasps, ghosts and wisps; green ambient 48, 117, 63)
+    "swamp": dict(
+        env="swamp", ambient=(48, 117, 63), region_ambient=(40, 90, 50),
+        wall="RootLight", base="SwampGrass",
+        patches=[("WeedsSparse", 0.35), ("GrassSparseYellow", -1.35), ("DirtLight2", 1.65)],
+        blends=[("SwampGrass", 0, "BlendEdge"), ("WeedsSparse", 1, "BlendEdge"), ("GrassSparseYellow", 2, "BlendEdge"),
+                ("DirtLight2", 3, "BlendEdge"), ("CaveHardBrown", 4, "BlendEdge"), ("WaterSwampShallow", 5, "SwampEdge"),
+                ("WaterSwampDeep", 6, "BlendEdge")],
+        forest=dict(wall="RootLight",
+                    trees={"TreeSwampTrunk2": 32, "TreeSwampTrunk1": 28},       # each with its top (TREE_TOPS)
+                    undergrowth={"Plant3": 30, "Plant4": 20, "Plant5": 17, "Mushroom3": 14, "Polyp": 12, "Mushroom2": 5,
+                                 "PlantBarren1": 5, "GrassTuft2": 4},
+                    flowers={"Mushroom4": 2, "Mushroom5": 2}),
+        # Westwood's swamps: 7.3-14.9 decorations per 100 floor tiles (typical 11.1); the first lab carried 26.8
+        tree_depth=(0.2, 0.06, 0.0), undergrowth=((0, 1), 0.1),
+        open={"Polyp": 0.2, "Plant3": 0.25, "Mushroom3": 0.15, "ArmBone": 0.05, "CaveRocksSmall": 0.05, "GrassTuft1": 0.05},
+        wallside={"Polyp": 0.2, "Plant3": 0.15, "CaveRocksHuge": 0.1},
+        patch_scale=0.75,                                # broad patches: few spots where three floors meet
+        liquid=dict(floor="WaterSwampShallow", dress={"WaterBubbles": 2.0, "AmbFrogSwamp1": 0.5, "AmbFrogSwamp4": 0.5,
+                                                      "AmbFliesSwamp": 0.8}, edge="SwampEdge"),
+        light_colours=[(96, 160, 64), (64, 128, 64), (128, 160, 96)], light_per100=dict(open=0.45, wall=0.55),
+        light_radius=160, light_intensity=45,
+        sources=dict(wall={"Torch": 0.4}, open={}),
+        creatures={"CarnivorousPlant": 3, "GiantLeech": 3, "Wasp": 2, "Ghost": 2, "WillOWisp": 1, "Bat": 2,
+                   "SpittingSpider": 1},
+        creatures_per100=0.8),
     "lava": dict(
         env="lava", ambient=(45, 16, 15), region_ambient=(112, 0, 0),
         wall="Volcano", base="VolcanicCraggy",

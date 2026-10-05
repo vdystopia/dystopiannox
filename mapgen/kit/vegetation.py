@@ -33,6 +33,10 @@ ROCK_PILE = {"anchor": {"CaveRocksHuge": 5, "CaveBoulders": 4, "CaveRockPillarTa
              "small": {"CaveRocksSmall": 3, "CaveRocksTiny": 1},
              "rim": {"CaveRocksPebbles": 4, "CaveRocksTiny": 1}}
 
+# trees drawn in two parts, the trunk and its crown, stacked as Westwood stacks them (Con09a: the top 1 px right and
+# 4-8 px down of its trunk)
+TREE_TOPS = {"TreeSwampTrunk1": "TreeSwampTop1", "TreeSwampTrunk2": "TreeSwampTop2"}
+
 FLOWERS = {"FlowersYellowSparse": 4, "FlowersPurpleSparse": 2, "FlowersWhiteSparse": 2, "FlowersBlueSparse": 1}
 
 # How much grows in a town (Westwood's 17 town maps, per 100 floor tiles): 1.7 trees (p75 2.2), three quarters of them
@@ -168,6 +172,7 @@ class Planter:
     def _put(self, kind, t, si, sj):
         x, y = square_px(si, sj)
         self.spec.obj_px(t, x, y)
+        if t in TREE_TOPS: self.spec.obj_px(TREE_TOPS[t], x + 1, y + 6)     # a swamp tree is a trunk and its top
         (self.trees if kind == "tree" else self.small).append((si, sj))
         self._grid[kind][(int(si // 2), int(sj // 2))].append((si, sj))
 
