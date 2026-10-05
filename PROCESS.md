@@ -1,655 +1,368 @@
 # How a map is made
 
-This is the repeatable process, the basis of the phase 6 skill. Each step names its tools. Order
-matters: work from the centre outwards and from identity to detail.
+**How to use this document.** Read it top to bottom once before starting a map: it is the process, organised by
+topic, each rule stated once as it stands today, with the kit function that carries it out. `skills/nox-story-map/SKILL.md`
+is the recipe (what to call, in which order); this is the rulebook (what a good result is). Section 9 is the gate a map
+passes before the user sees it.
+
+Each rule is tagged with the feedback that set it, e.g. **[SW-3]**; the IDs, the user's words and how each is
+enforced are in `review/FEEDBACK.md`. **Recurring:** marks a fault that came back after a fix, with the check that now
+catches it. The dated history of how each rule came about is kept verbatim in `review/history/PROCESS-2026-10-05.md`
+and in the ROADMAP's playtest log.
+
+Work from identity to detail and from the centre outwards. Builds are reproducible: a design and its seed always give
+the same map. Never use Python's `hash()` on strings (it changes from run to run); use `zlib.crc32`.
 
 ## 1. Identity: what the place is
 
-Write a `MapIdentity` (`mapgen/kit/identity.py`) before anything is built:
+Write a `MapIdentity` (`kit/identity.py`) before anything is built [DV3-6]:
 
-- **Theme**: one sentence on what this place is and what happens there ("a logging and milling village in a deep forest vale…").
-- **Environment type**: town, forest, swamp, cave, dungeon, castle, ice or lava (`rules/environments.py`). Statistics are only ever compared with Westwood's maps of the same type.
-- **Areas**: each with its purpose (the village heart, the miller's glade, the woodcutter's clearing…) and landmark.
-- **Buildings**: each with a role (inn, store, smithy, home, cottage, mill, woodcutter), a name and an occupant. A role fixes:
-  - the room program (an inn is a tavern, a kitchen and the innkeeper's bedroom);
-  - the wall style and minimum size;
-  - whether it faces the square or the road;
-  - the outdoor scenes that show the trade (deliveries at the inn, a woodpile at the woodcutter's).
-- **Rooms**: each kind has an identity (`ROOMS`): what it is for, what it must contain, what it may contain, and the allowed object types (a bedroom's storage is a chest, never a barrel). Nothing else goes in.
-- **Outdoor scenes** (`SCENES`): every prop group has a reason and a place (beside the door, against a side wall, in front).
-- **Sections** (larger maps): give each section its own character, in its walls, trees, undergrowth, flowers and
-  ground (`FORESTS` in `kit/vegetation.py`; a `REGIONS` table in the design). For example: an ancient green
-  north wood, a golden aspen west wood, a pine south wood. Every area names its section
-  (`Land.area(..., region=)`). `Land.assign_regions()` gives each square to a section, with wavering borders, and
-  `Land.apply()` takes a function of the section for walls and floors. Pick forest walls that have every shape;
-  any missing shape falls back to the material Westwood joins it to (`Spec._wall_material`).
+- **Theme**: one sentence on what the place is and what happens there.
+- **Environment**: town, forest, swamp, cave, dungeon, castle, ice or lava (`rules/environments.py`). Statistics are
+  only ever compared with Westwood's maps of the same environment [DV3-5]. A town in snow is a town with the ice
+  palette.
+- **Areas** (`AreaIdentity`): each with its purpose and landmark; on larger maps each names its section
+  (`Land.area(..., region=)`).
+- **Buildings** (`BuildingIdentity`): a role (`BUILDINGS`: inn, store, smithy, home, mill, keep, barracks, college,
+  apothecary, observatory, townhall, fisher, herbwife, barrow...), a name and an occupant. The role fixes the room
+  program, wall style and size, whether it faces the square or the road, and the scenes that show its trade outside.
+  `style=` gives a house another culture's walls (Ix's `stucco_dark_house` for a wizards' town).
+- **Rooms** (`ROOMS`): each kind lists what it is for, what it must and may contain, the allowed types (a bedroom's
+  storage is a chest, never a barrel), and its composition recipe. Nothing else goes in [DV3-4].
+- **Sections** (larger maps): each its own walls, trees, undergrowth, flowers and ground (`FORESTS` in
+  `kit/vegetation.py`, a `REGIONS` table in the design). Pick forest walls that have every shape; a missing shape falls
+  back to the material Westwood joins it to (`Spec._wall_material`).
+- **Culture**: a map with a culture of its own (Starwell's wizards) names it once, for its outdoor scenes
+  (`Exterior(..., culture=)`) and its roles; buildings in a culture's style are furnished in it (`rules/CULTURES.md`).
 
-## 2. The centre first
+## 2. Layout
 
-Place the central feature at the heart of the main area. Examples: the village square and its landmark (a
-well); the sacred grove's crystal cluster with a ring path round it; a mining camp's work yard. Then lay out the
-streets leaving it toward the other areas.
+### The centre first [DV1-5, DV3-1]
+Place the central feature at the heart of the main area (the square and its well or fountain, a grove's crystal, a
+work yard), then the streets leaving it toward the other areas. A town square is a set piece
+(`Village.fountain_square` or `Village.square_piece`): symmetric round its feature, benches facing in, lights in
+balanced positions [DV4-3]. Street lights keep a steady rhythm along each street, on one side. Public buildings face it across a clear margin; roads stop at its edge.
 
-Features that shape the land around a centre are planned with it, before any building. A mine entrance
-(`kit/mine.MineEntrance`) is planned together with its yard:
-- `plan()` reserves the forecourt and tunnel, and forbids land behind the rock face (`Land.forbidden`), so no
-  building goes there and the land never grows into the rock;
-- the face must be on the yard's north-west or north-east side, because Nox only shows a wall's face toward the
-  bottom of the screen; on the other sides it reads as a drop.
+Features that shape the land round a centre are planned with it, before any building: a mine entrance
+(`kit/mine.MineEntrance.plan()`) reserves its forecourt and tunnel and forbids the land behind its rock face
+(`Land.forbidden`); the face is on the yard's north-west or north-east side, since Nox shows a wall's face only toward
+the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face, tunnel and cart track and
+`MineEntrance.dress()` the portal, timbers every 3 squares, the cave-in, torches flanking the mouth and a loaded cart.
 
-## 3. Buildings, from the centre outwards
+### Water and its crossings [DV3-2, DV5-3, DV6-5, MF-3]
+- Reserve each stream's and pond's band before anything is built (`Land.reserve_band`); roads stay clear of water
+  except at crossings. Westwood's town roads almost never run within two tiles of water.
+- A crossing is chosen on the road (`Land.plan_crossing`), the road straightened through it, and the stream laid to
+  cross it at a right angle, straight and calm (`Waterworks.stream(calm=[(crossing, 16)])`), never on a bend, so the
+  deck lands on the road at both ends.
+- Stream bridges are Westwood's rope-bridge kits (`Waterworks.rope_bridge`, the crossing's `kit`) over a 2-row deck.
+  A plank deck is never more than 2 tiles wide. Kit pieces stand at Westwood's exact step offsets (`KIT_STEPS`) [DV1-1].
+- A lake belongs in its own dead-end area, its radius well under the area's.
+- **Docks** [DV4-1, AM-2]: a dock stands on a lake, on the shore nearest the road, and runs out square to the shore
+  (within 30 degrees of straight out from the bank) into open water: water two tiles to either side all along it and
+  three tiles round its tip (`Waterworks._shore_start`; `dock(body, "best")` takes whichever kit fits nearest the
+  road). Reeds grow only in the shallows.
+  **Recurring:** caught by `checks.dock_reach` (run by `check_exterior`).
 
-1. Public buildings face the square across a clear margin.
-2. Homes line the streets, entrances facing them.
-3. The outlying areas get their own features: the mill house and pond, the woodcutter's hut and stumps, the standing stone.
+### The land grows round what was placed [DV1-5, DV1-6]
+Only now draw the map's shape (`Land.carve`): open ground with an irregular edge round the square, buildings, roads,
+water, yards and features, ending in the forest wall. Never start from the borders and fit the village into what is
+left. Then, in order:
+1. Cut planned rock (`MineEntrance.cut()`); keep the story's places open (`StoryMap.keep_open`).
+2. Assign the sections (`Land.assign_regions()`; wavering borders).
+3. Break up broad glades with thickets (`Land.thickets`), small islands of forest with open ground round them, kept off
+   the story's lanes. Westwood's forests carry 21-52 wall pieces per 100 floor tiles; a single ring of forest carries
+   about 15.
+4. Keep every passage open (`Land.open_links()`), then lay walls and floors (`Land.apply`, a function of the section),
+   then `MineEntrance.ground()`.
 
-Rooms are sized by kind (a tavern takes most of an inn's floor) and furnished only from their identity.
+A town is a web of forest corridors, not a clearing (`rules/TOWNS.md`): give it outskirts, a glade between each pair of
+roads joined to both by forest paths 11 uv wide or more (`Land.link(..., road=False)`), so paths loop round blocks of
+forest; put clumps of forest in the open meadows.
 
-- Westwood's room sizes are in floor tiles inside the walls: a room of n footprint units holds about n - 2 sqrt(n)
-  of them. No room comes out below Westwood's smallest for its kind.
-- A building of five or more rooms is a hub, as Westwood's large buildings are (their largest room holds half or
-  more of the floor; few have corridors): a great hall down the middle, running toward the entrance, with the
-  other rooms along both sides and every door opening onto it.
-- A building in a culture's style is furnished in that culture (`rules/CULTURES.md`): an ogre keep with straw,
-  fire pits and crude tables; a Land of the Dead temple with sconces, obelisks and tombstones.
+### Yards [AM-1, SW-9]
+Yards with a purpose (`kit/yards.py`: graveyard, quarry, orchard, park, field, monument, jail) are planned before the
+land is carved (`yards.plan`, `yards.plan_any`) and built after its walls (`yards.build`), each fenced in Westwood's
+material for it with a gate facing the town.
+- A fence point (p, q) is drawn at square (p, q - 0.5): a plot's fence runs gi..gi + w across i and
+  gj - 1.5..gj + h - 1.5 across j (`Yard.centre` is its middle). Everything in a yard or garden stands inside that,
+  its drawn half-width plus a margin off the line (`spacing.off_walls`); crop rows are centred with a walkable strip
+  to the fence all round. Nothing stands on a fence or wall line, ground bits included.
+- A graveyard has graves (`yards._graveyard`): rows 2 squares apart, each a tile of dug earth with its headstone at the
+  head, flowers on some; the gravedigger's corner away from the gate (an open grave, the coffin, the spade, the pick,
+  a bucket of tools); a cross between two urns by the back fence; a mourners' bench by the gate; torch poles in two
+  corners. Westwood has no grave-mound object: its headstones stand on bare earth (War03d).
 
-## 4. Plan the water with room for its banks, and its crossings with the roads
+## 3. Buildings and rooms
 
-Reserve the stream's and pond's bands before anything is built, keeping roads clear of them except
-at crossings. Connecting structures are planned in this phase, never fitted afterwards:
-- **Bridges and fords:** choose the crossing on the road (`Land.plan_crossing`), straighten the road through it, and lay the stream to cross at a right angle, so the deck lands on the road at both ends.
-  - The bridge fits its stream. Westwood's stream bridges are rope-bridge kits (`Waterworks.rope_bridge`, using
-    the crossing's `kit`) over a 2-row deck. Plank decks are never more than 2 tiles wide.
-  - The stream runs straight and calm through the crossing (`stream(calm=[(crossing, 16)])`), never on a bend.
-- **Docks:** start where the road meets a lake's shore. Every transition (road to grass, grass to bank, bank to water) needs room for its own
-blend. Westwood's town roads almost never run within two tiles of water.
+### Buildings [DV4-4, DV1-4, TP3-e]
+1. Public buildings face the square (`StoryMap.place_buildings(square_area=)`), homes their street, entrances toward
+   what they serve; a building that faces the square has its door on that side (the footprint mirrors to put it there).
+2. Outlying areas get their own features (the mill and pond, the woodcutter's hut and stumps).
+3. Buildings are 1.25 times Westwood's size (`BUILDING_SCALE`, `role_size`), tried again at 0.92 and 0.84 of that if
+   they do not fit; buildings grow to fit their room program. A Nox map is 256 x 256 cells, so "larger" means bigger
+   structures and rooms within that grid.
+4. A room of n footprint units holds about n - 2 sqrt(n) floor tiles (`building._units_for`). No room comes out below
+   Westwood's 10th percentile for its kind times the kit's scale, never below Westwood's own.
+5. A building of five or more rooms is a hub, as Westwood's large buildings are: a great hall down the middle toward
+   the entrance, every other room opening onto it.
+6. One kind of door per building [TP2-10]: the entrance takes the family's door, the doorways between rooms its single
+   door. Never a double door into a bedroom. A door type hangs as a pair only in a wall direction Westwood pairs it in
+   (`rules/out/doors.json` `by_line`); both halves sit exactly on the grid, 46 px apart on each axis [DV6-4]. Half-door
+   types are always pairs in a 2-cell opening [DV1-3]; wall pieces beside an opening are shaped as if it were wall
+   [DV1-2].
+7. Signs by the doors read what the building is (`Village.SIGN_TEXT`, by role); torches flank a door as a pair outside
+   the wall line (`layout.door_frame`) or not at all; a torch pole never stands in or against a wall, and a yard's
+   corner torch moves into the yard when a building reaches that corner.
 
-## 5. The land grows around what was placed
+### Thresholds [SW-4]
+A room's floor runs under its walls and out onto the doorstep; the ground blends onto the doorstep, never onto a tile
+that reaches into the room (`Spec._wall_line_floors`, `Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are
+`Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
+(`Spec._may_take`). Door paths use Westwood's buffer floor where a path may not touch the room's floor
+(`Land.connect_door`).
 
-Only now draw the map's shape (`Land.carve`): a margin of open ground with an irregular edge around
-the square, buildings, roads, water and features, plus the clearings, ending in the forest wall.
-Never start from the borders and fit the village into what's left.
+### Rooms: per type in `rules/rooms/`
+There is no one-size-fits-all room: each room type has its own rules, Westwood's measures and good examples in
+`rules/rooms/<type>.md`, indexed by `rules/rooms/README.md` (the room recipes are `ROOMS` in `kit/identity.py`, the
+furnishing `kit/furnish.py`). Starwell's archmagister's study [SW-7] is the good example of a study
+(`rules/rooms/study.md`), not the yardstick for every room. Read the type's file before composing or changing a room.
 
-A town is a web of forest corridors, not a clearing (`rules/TOWNS.md`). Most of a Westwood town's walls ring blocks
-of forest and fenced plots, not houses:
-- Give it outskirts: a glade between each pair of roads, joined to both by forest paths 11 uv wide or more, so the
-  paths loop round blocks of forest. Plan them after the buildings, so they do not change them.
-- Give the glades and the town yards with a purpose (`kit/yards.py`): a graveyard, a quarry, an orchard, a monument
-  plot, a park of benches, jail cells by the gate, fields by the mill. Each is fenced in Westwood's material for it,
-  with a gate facing the town.
-- Put clumps of forest in the open meadows (`Land.thickets`).
+Rules that hold for every type:
+- **Directions** [TP3-a]: the user's frame: the NE wall is a room's top right on screen, NW top left, SE bottom right,
+  SW bottom left.
+- **What the camera sees** [TP3-a]: shelves, hangings, hearths, stoves, desks, chests and lab benches go on the NE and
+  NW walls, whose fronts face the camera (Con07B: shelves NW 10, NE 2, SE 3, SW 0; hangings only NE and NW).
+  Free-standing pieces lean toward the S and W corners (`FRONT_WEIGHT`). Benches, supplies and carts may stand against
+  the front walls.
+- **Pieces along their wall** [DV6-1, TP3-3]: chests, bookcases, desks and shelves lie along their wall, back against it,
+  snug (`SNUG_GAP`); beds stand headboard to the wall. Westwood numbers these by wall and the furnisher picks the number
+  (`Furnisher.along_variant`). A piece drawn facing one way takes its wall's variant (`WALL_SIDE_TYPE`); statues face
+  into the room (`face_statues`) [GW-7].
+- **The clear way in** [GW-7]: the straight way in from every door stays clear (`DOOR_WAY_*`): nothing within 4 units
+  (0.4 of the depth), no column or statue within 12 (3/4 of the depth). The space before every anchor (chest, hearth,
+  stove, shelf) stays clear (`FRONT_CLEAR`) [DV5-4].
+- **Spacing** [TP2-*, DV6-*]: supplies keep a unit from anything that is not a supply and 2.4 units from a fire; beds
+  never closer than 0.9 units; a cauldron or stove at least 0.87 from a hearth; tables, desks and beds stay off rugs
+  (except a woven rug centred under a table); potted plants only in real corners; furniture spreads through the room's
+  length (under 35% is bunched) [TP1-1].
+- **Lights** [TP1-5, DV4-5, DV6-2]: houses are lit with candelabras and the hearth, never an open torch; lights go to the
+  emptiest corners, at least 3 units apart.
+- **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
+- **A room reads as what it is** [SW-6, SWR-1, TW-8, AMR-4] whatever its type: the checker's room-identity warnings
+  (`check_identity`) catch a showpiece repeated, a stand-alone piece four or more times along one wall, supplies lining
+  a wall outside a store, one kind filling a big room, more free tables than the type sets, a shopkeeper not behind his
+  counter and a throne that does not face its door.
+  **Recurring:** repeated pieces lining walls came back after a fix; these warnings now fail the QA gate unless the
+  design accepts them with a reason.
 
-Then, in this order:
-1. Cut the planned rock (`MineEntrance.cut()`).
-2. Assign the sections.
-3. Break up broad glades with thickets: `Land.thickets()`, small islands of forest that keep open ground round
-   them. Westwood's forests carry 21 to 52 wall pieces per 100 floor tiles; a single ring of forest round open
-   grass carries about 15.
-4. Apply the walls and floors, then `MineEntrance.ground()` (rock face and tunnel walls, ore-dust floor, the
-   cart track).
+## 4. Outdoors and scenes
 
-## 6. Ground, water, life
+### Ground, paths and planting [DV1-6, DV4-2, TL-4]
+- Route a path from each door's doorstep to the streets (`Land.connect_door`); streets keep clear of walls and never
+  run into the side of a building.
+- Grass variety patches (`Land.ground_variety`) kept clear of roads, banks and buildings.
+- Vegetation from the forest edge inward (`Planter.plant_all`): tree lines, groves outside settled areas, undergrowth
+  and flowers in single-type patches; landmarks keep a clear space. A town is planted as Westwood plants one
+  (`TOWN_PLANTING`: about 2 trees per 100 floor tiles by the forest wall, plants at the wall's foot and in the open,
+  flowers a little way out). Few aspens right against the boundary; rock piles in Westwood's manner
+  (`Planter.rock_piles`), small scenes in the woods (`Planter.forest_floor`).
+- Gardens and flowers keep two squares off every door and gate (`Planter`) [AMR-6].
+- Props that belong somewhere spread out from it with a falloff (`vegetation.scatter`): never 4 or more of a kind in
+  one spot when there are none elsewhere [DV6-3].
 
-1. Dig the water into the land, with a bridge where the road crosses.
-2. Route a path from each door. Where Westwood never lets the path's floor touch the room's floor (packed dirt
-   against marble), the path uses Westwood's buffer floor (`Land.connect_door`).
-   - **The threshold** (Starwell playtest, 2026-10-05: "Tile blending on the inside of doors seems consistently off", a
-     strip of grass and dirt spilt onto the boards just inside an arched door). Westwood's town doorways (corpus,
-     exterior doors of the single-player maps): the inside floor runs right up to the door, under it and onto the
-     doorstep; the ground's edge lies on the doorstep or beyond, never on a tile that reaches into the room (about 1
-     door in 10 carries it inside). The kit had laid it there twice: `Land.connect_door` gave the room's tiles by the
-     doorstep the path's edge ("dirt carried in"), and `_blend_thresholds` gave every room tile that met the ground
-     through an open cell the ground's edge, at the doors and along every NW-SE wall, whose line tiles the house had
-     left to the land (half a tile of grass inside the room, blended onto the boards). Now (`mapgen/nox.py`):
-     - `_wall_line_floors`: a tile meeting a room's tile through an open cell by a wall takes the room's floor (the floor
-       runs under its walls);
-     - `_door_thresholds`: at each door between a room (`Spec.indoor`, the rooms' tiles from `kit/building.py`) and the
-       ground, the tiles over the opening or straight out from it that lie wholly outside the wall line take the room's
-       floor (the doorstep: two tiles in a NW-SE wall, where tiles sit on the line; one in a NE-SW wall, where they
-       straddle it) and the ground blends onto them; the tiles that reach inside take the room's floor and no outdoor
-       edge (`sheltered`). The room's own floor, never a carpet laid on it (a runner to the door had carried RugBlueNorm
-       onto Ambermere's dirt path), and never where it would meet a floor Westwood keeps from it (`_may_take`: Mirefen's
-       stone stilt houses by swamp grass and water);
-     - `_edges`: a room's tile takes no edge from outside across its wall, nor at a tip.
-     The checker warns of any outdoor ground lying on, or blending onto, a room's tile (`checks.check_thresholds`,
-     generated rooms only). Starwell had 206 such tiles (46 at doors), Ambermere 198, Greywatch 137, Thornwick 171; now
-     none.
-3. Grass variety patches, kept clear of roads, banks and buildings.
-4. Scenes, gardens, benches, street lights, and the features' dressing. A town square in Westwood's manner
-   (`Village.fountain_square`): a fountain ringed by potted plants and flowers, benches facing in, ornate street
-   lamps at the edge. Signs by the doors read what the building is. `MineEntrance.dress()` adds the portal
-   and a timber set every 3 squares, a cave-in from wall to wall, the creak and glow beyond it, torches flanking
-   the mouth, and a loaded cart on the track.
-5. Vegetation from the forest edge inward: tree lines, groves outside settled areas, and undergrowth and flowers
-   in single-type patches. Landmarks (waystones, standing stones) keep a clear space round them. A town is planted
-   as Westwood plants one (`vegetation.TOWN_PLANTING`): about 2 trees per 100 floor tiles, by the forest wall,
-   because the wall is itself drawn as trees; plants at the wall's foot and in the open; flowers and mushrooms a
-   little way out from the wall.
-6. Props that belong somewhere spread out from there with a falloff and spacing (`vegetation.scatter`): stumps
-   round the woodcutter's, logs along wood edges, crystal shards out from the cluster. Never put 4 or more of a
-   kind together in one spot when there are none elsewhere.
-7. Last, after the people and their routes: fill the empty ground (`kit/dressing.Exterior(m, land, biome).dress()`;
-   2026-10-05 playtest: "exterior areas are way too empty", a castle alley held one bush and two pebbles).
-   - Westwood's towns (`py review/exteriors.py --westwood`; per 100 open tiles, roads left out, pebbles not counted)
-     carry about 25 props, 6 of them made things, and only 16% of the open ground lies over 4 cells from a prop
-     (6% over 6). Our maps had 33-55% (Greywatch, Rimehold); `py review/exteriors.py <map> --holes` draws it.
-   - **Scenes with a purpose, not piles** (2026-10-05 Greywatch playtest, scene review: "exterior objects are very
-     random and purposeless ... instead of 3 crates and 2 barrels, try a cart, 2 barrels, a crate, a weapon stand,
-     and a box"; a lone stone block by a wall's corner). Every outdoor group is a theme from the catalogue
-     (`kit/scenes.py CATALOGUE`), each with a purpose, where it belongs (against a house, fence, masonry, curtain or
-     the wild wall; in the open by a road, the square, a gate, water, the garrison's ground, town or wild; beside
-     which buildings and on which side of them; the biomes), its anchor, its must-have and may-have pieces at set
-     offsets, and its variance (one of its layouts, counts in ranges, types swapped, chance pieces, mirrored, turned
-     to face its road). Cart loading, a wagon on the verge, a broken wagon, a market awning, a household's stores,
-     a woodpile, a chopping yard, a hay store, a midden, a smith's yard, a well, a washing place, a drying line, a
-     bench by the wall, an unhitched cart, a timber stack, a sparring ring, archery butts, an archers' mark, a watch
-     fire, a guard post, an arms store, masons at work, a waystone, a shrine, a graveside, a hunter's rack, a cold
-     fire with logs, a felling; the wood's, the cave's, the lava's and the snow's own heaps.
-   - The buildings call for their scenes first (`ROLE_SCENES`: a sparring ring by the barracks, the smith's yard by
-     the smithy, a midden behind the inn, a cart loading at the store or mill; a guard post by each gate). Then the
-     emptiest ground takes a scene that belongs there, until none lies over 4.5 cells from a prop or nothing fits.
-   - A scene is laid whole or not at all: its must-have pieces fit, 70% of what it means to lay, at least 3 kinds of
-     thing and 4 pieces. Each theme has a cap to a map (the wood's heaps grow with the ground), a spacing from its
-     family (carts, arms, wood...) and from like things already there (a camp's cart, a training ground's
-     targets), a family cap (3 carts to a map), and scenes keep 6 squares and their footprints apart, so some open
-     ground stays open. Tall scenes keep off front walls; a building's own door scenes are not repeated by it.
-   - Groups keep off roads, lanes, water, yards, story places, doors (3 squares), gates, exits, creatures and the
-     legs of the routes already laid (`spec.routes`), and a group whose bodies would cut the walkable ground apart
-     is taken back. The dressing draws from its own generator; so do the camps (`camps.own_rng`), which replay the
-     first camps' draws on the design's generator so nothing after them shifts.
-   - **Camps are composed** (same review: "The bandit camp looks terrible ... Beds randomly strewn across an open
-     clearing"). `camps.bandit_camp` as Westwood lays its camps: tents in an arc behind a fire ringed with stones,
-     on the side away from the way in and toward the top of the screen (a pup tent faces the camera); each bedroll
-     before its tent, head to the tent, foot to the fire, two to a tent; with no tents, the bedrolls side by side in
-     a row; the leader's awning in the middle with the take before it; the store (cart, crates side by side,
-     barrels in a three, sacks) on one flank, the racks in a row on the other, the cooking pot by the fire, a
-     lookout post toward the way in. It returns the leader's spot and posts by the store and the racks, so the band
-     is not bunched round the fire. The wagon wreck: a wheel off, its load thrown out in a fan, heavy things near.
-   - A camp goes where it has room (Ambermere review, 2026-10-05: the diggers' camp, on the square nearest the
-     barrow-field's middle off the road, was squeezed against the graveyard fence and the forest, shrunk to 0.7 of
-     itself): `camps.camp_site` takes the square with the most open ground clear all round, near the place, off its
-     road, and the camp is laid open toward the road beside it (`sm.road_near(site)`), not toward the far town. Each
-     camp holds its ground (`_hold_ground`): the planting and the dressing keep off it.
-   - Urchins squat as Westwood furnishes their dens (Con02a, War03c: beds of one kind side by side, a table ringed by
-     stools, the pickings heaped): `camps.urchin_camp`, with the same returns as `bandit_camp` so `camp_posts` spreads
-     the band (Ambermere's pit urchins had stood among 8 beds strewn at random angles). Never strew a camp's pieces by
-     hand in a design.
-   - Every building role calls for its scenes; a role missing from `ROLE_SCENES` stands bare (Ambermere's fishers'
-     houses, the herbwife's hut and the moot hall called for nothing).
-   - **A camp is laid in zones** (Starwell playtest, 2026-10-05: "another absolute mess of randomly placed things and
-     overly clustered NPCs ... It needs a lot of refinement and a lot more purpose and organization"). Westwood's camps
-     measured (Con03A, Con04a, War05A, Wiz02C, Wiz03b, Wiz03c): stones ringed 17-30 px round the fire; one or two seats
-     52-64 px out (Stool1, the ogres' benches; never a ring of seats); pup tents 112-120 px out; the store 75-140 px out on
-     one side (barrels in threes 25-29 px apart, steel crates, the cart); racks in a row 26-30 px apart 200-225 px out.
-     `camps.bandit_camp` now lays: the hearth (fire, stones, two crude log benches `OgreBench` and a stool, the pot); the
-     sleeping row behind it (tents in an arc, two bedrolls before each); the store on one flank (one tidy row of sacks,
-     crates, barrels and the water barrel, each its Westwood gap from the next, the cart behind); the arms corner on the
-     other (racks in a row, a straw dummy), or the dig (`trade="dig"`: spades and picks in the ground, the tool barrel,
-     the spoil heaped, `finds` set out); the lookout at the way in (a torch pole, the watchman's stool, his quivers).
-     Zones keep clear ground between them and the layout scales with the clearing (0.75-1.25, `_clearing`).
-   - **Seats round a fire are benches, stools and logs, never stumps** (same playtest: "the stumps around the fires in
-     bandit camps arent the right object for that use case").
-   - **A camp's people stand at their own posts** (same playtest: "These NPCs are all on top of each other like a
-     swarm"; ten round the Scar's fire). Westwood: at most two at a fire (War05A's grunts 47 and 56 px out), the rest
-     120-270 px out. `posts.camp_posts(..., sit, tents, watch, work)`: the leader by his tent and the take, at most two
-     at the fire, the others by their tents, at the store, the racks, the pot or the dig (`work`), the watch at the way
-     in; 64 px apart, 28 px clear of every piece (a man had stood on a bedroll). A digger camp's workers work. A person's
-     disabled twin stands exactly on his spot.
-   - **Outdoor pieces keep Westwood's gaps** (same playtest: "Many object clusters like these crates are simply too close
-     to each other"; barrels overlapping). `kit/spacing.py`: Westwood's closest pairs (p05 of each piece's nearest of the
-     other family): barrels 25 px, big barrels 31, barrel and big barrel 33, crates 31, barrel and crate 38, sacks 20,
-     sack and crate 33, sack and barrel 30, racks 27, bedrolls 35, benches 45, headstones 39, a cart 48 from anything,
-     a fire 50; other pairs 0.8 of both footprints. The dressing, the camps, the wreck and the houses' door scenes place
-     by it, and the catalogue's layouts were respaced to it.
-   - **No candles outdoors** (same playtest: "candle objects are not appropriate for placement in random exterior
-     locations. these items can actually be picked up by the player"). Outdoors a light is a torch pole, a brazier, a
-     street lamp or a fire (Westwood's outdoor lights: TorchPole 497, Torch 974 on walls, flames and fires; no candles).
-     The waystone takes flowers, the shrine two torch poles, the graveside a torch pole; no apple lies in the orchard.
-   - **Graveyards have graves** (same playtest: "it would look better if there were actually some graves. Maybe a bucket
-     of tools. More diversity of objects"). Westwood has no grave-mound object: its headstones stand on patches of bare
-     earth among the grass (War03d). `yards._graveyard`: graves in rows 2 squares apart, each a tile of dug earth with its
-     headstone at the head, flowers on some; the gravedigger's corner away from the gate (an open grave of dark earth,
-     the coffin waiting, the spade in the spoil, the pick, the bucket of tools); a cross between two urns by the back
-     fence; a mourners' bench by the gate; torch poles in two corners.
-   - **Nothing on a fence line** (Ambermere playtest, 2026-10-05: "The northeast stretch of fence overlaps with the row of
-     crops ... this fence is literally on top of this row of plants"). A wall point (p, q) is drawn at square coordinates
-     (p, q - 0.5), half a square toward -j of the squares' numbering, so a plot's fence runs gi..gi + w across i and
-     gj - 1.5..gj + h - 1.5 across j (`Yard.centre` is that middle). Yards and gardens lay their contents inside that,
-     every piece its drawn half-width plus a margin off the line (`spacing.off_walls`); crop rows are centred with a
-     walkable strip to the fence all round. Ground bits keep off every wall line too (a bush had stood in a curtain).
-   - **A dock runs out square to its shore** (Ambermere playtest, 2026-10-05: "the dock is way too close to the shore and
-     does not extend out into the middle of the pond"; it had run along the shore, half on the grass: one tile of water
-     beside it had been enough). `Waterworks._shore_start` takes a landing only where the dock's run is within 30
-     degrees of the way out over the water from the bank, with water two tiles to either side all along it and three
-     tiles round its tip; `dock(body, "best")` takes whichever kit fits nearest the road.
-   - The checker proves all of it (`check_exterior`, and `validate/selftest.py` plants each defect): outdoor pieces
-     nearer than 0.85 of Westwood's gap, a piece on a fence or built wall's line, a pickable thing outdoors as decor
-     (candles, lanterns, food without a script name), two creatures under 30 px apart or five within 90 px of a spot
-     (route walkers and a twin on his person's spot aside), and a dock off square to its shore, with the bank beside
-     it, or ending near a shore.
+### Scenes with a purpose, not piles [DV3-3, GW-2, TW-10]
+The outdoor ground is dressed last, after the people and their routes: `kit/dressing.Exterior(m, land, biome,
+placed=placed, culture=, martial=).dress()`.
+- Every outdoor group is a theme from the catalogue (`kit/scenes.py CATALOGUE`): a purpose, where it belongs (against a
+  house, fence, masonry, curtain or the wild wall; in the open by a road, the square, a gate, water, the garrison's
+  ground; beside which buildings and on which side; the biomes), its anchor, must-have and may-have pieces at set
+  offsets, and its variance (layouts, count ranges, swapped types, chance pieces, mirroring, facing its road). Add a
+  theme there when a map needs one; never lay loose piles in a design.
+- The buildings call for their scenes first (`ROLE_SCENES`; every role must call for some [AMR-5]; a guard post by each
+  gate), then the emptiest ground takes a scene that belongs there until none lies over 4.5 cells from a prop or nothing
+  fits. Westwood's towns carry about 25 props per 100 open tiles and leave 16% of open ground over 4 cells from a prop
+  (`py review/exteriors.py <map> --holes`).
+- A scene is laid whole or not at all (its must-haves, 70% of it, 3 kinds and 4 pieces at least), within its cap, its
+  family's spacing and cap (3 carts to a map), 6 squares from other scenes. Groups keep off roads, lanes, water, yards,
+  story places, doors (3 squares), gates, exits, creatures and route legs (`spec.routes`), and never cut the walkable
+  ground. Tall scenes keep off front walls. The dressing and the camps draw from their own generators
+  (`camps.own_rng`), so nothing after them shifts.
+- A culture's scenes (`culture=` themes) are laid only on a map that names that culture.
 
-## Relations: every piece makes sense where it stands
+### Spacing outdoors [SW-5]
+Outdoor pieces keep Westwood's closest gaps (`kit/spacing.py`, p05 of each family's nearest): barrels 25 px, big
+barrels 31, barrel and big barrel 33, crates 31, barrel and crate 38, sacks 20, sack and crate 33, sack and barrel 30,
+racks 27, bedrolls 35, benches 45, headstones 39, a cart 48 from anything, a fire 50; other pairs 0.8 of both
+footprints. The dressing, camps, wreck, door scenes and yards all place by it.
 
-- **Paths lead to doors.** Route each door's path from its doorstep to the streets. Streets keep clear of walls and never run into the side of a building.
-- **Buildings open toward what they serve.** Public buildings open onto the square, homes onto their street.
-- **Set pieces are composed.** The square is symmetric around its centre feature, with benches facing it and lights in balanced positions. Street lights follow a steady rhythm.
-- **Water features fit their water.** A dock starts where the road meets the shore and reaches out into open water on a lake, never across a puddle. Reeds grow in the shallows.
-- **Rooms are composed as a whole** (`compose` recipes in `kit/identity.py`):
-  - each anchor (bed, chest, hearth, stove, shelves) gets its own wall stretch, back walls first, centred where Westwood centres it;
-  - a rug lies before the chest or hearth, or in the middle of the room;
-  - the table set takes the open middle;
-  - supplies stand in rows from a corner;
-  - the space in front of every anchor stays clear;
-  - companions come only with their anchor (a chair with its table or desk, bellows beside the forge, the anvil before it).
-- **A room's arrangement shows its purpose at a glance** (TreePlace v0.1 playtest). Lay out whole groups, not
-  single pieces:
-  - **Bunk room:** beds of one kind in a straight row, side by side along a back wall, headboards against it
-    (`Furnisher.bed_row`). Put a chest at each bed's foot, a rug along the row, and shelves for gear across the
-    room. All of Westwood's rooms with 3 or more beds use one kind, in a row.
-  - **Mess hall:** long tables in rows with a bench along each long side (`Furnisher.table_rows`), a hearth, and
-    a shelf of crockery. Barrels belong in the kitchen or storeroom.
-  - **Storeroom:** supplies stocked along the walls in tidy groups (`Furnisher.stock_walls`): stocked log shelves,
-    crates side by side, barrels, sacks. The middle stays clear. No bookcases, and no black-powder barrels in a
-    dwelling.
-  - **Kitchen:** the hearth and cauldron, a table with stools, and provisions along the other walls, so the whole
-    room is used.
-  - Seats stand along a table's long sides (Westwood: 75% of the chairs at its long tables). A table in a room for
-    sitting and eating always has its seats, or it is left out.
-  - Food is never set out as loose items. Nox draws items at floor level, so food reads as dropped on the floor;
-    use a table that carries its food (`RoundTableWithFood`).
-  - Furniture spreads through the room's whole length, never packed into one end (checker: under 35% of the length).
-- **Directions.** The user's frame of reference: the NE wall is a room's top right on screen, the NW wall its top
-  left, the SE wall its bottom right and the SW wall its bottom left (TreePlace v0.3 room review).
-- **What the camera sees** (TreePlace v0.3 room review, very high priority).
-  - Shelves, hangings (trophies, tapestries, banners, paintings), hearths, stoves, desks, chests and lab benches go
-    on the NE and NW walls, whose fronts face the camera. On the SE and SW walls the camera sees only a piece's
-    back, or nothing (Con07B: shelves NW 10, NE 2, SE 3, SW 0; hangings only on the NE and NW walls).
-  - Tables, chairs and other free-standing pieces lean toward the room's front, its S and W corners, nearer the SE
-    and SW walls (`FRONT_WEIGHT` in `middle_spots`). Benches, supplies and carts may stand against the front walls.
-- **2026-10-04 review** (TownLab and the labs):
-  - Storerooms: free-standing armour and weapon racks in the middle, crates, barrels and wall shelves round them,
-    but at most 5 racks to a row, 1.2 units apart, with 2.2-unit aisles.
-  - A wall with one bookcase is filled with bookcases end to end (`complete_bookcase_walls`), and shelves sit tight
-    into the corners (`CORNER_CLEAR` 1.05; a whole wall packs into the corner it shares with the other back wall).
-  - Great halls: a table per 48 tiles (at most 6) on a large carpet of floor tiles.
-  - Outdoors: rock piles in Westwood's manner (`Planter.rock_piles`); few aspens right against the boundary.
-- **Large rooms mix their pieces** (2026-10-05 playtest, Greywatch: "way too many benches and not enough object
-  diversity ... too many of the same object (chapel benches, tavern tables and chairs)").
-  - A big room's repeated set stops at a cap, a piece per so many floor tiles (`repeat` in `ROOMS`, held in
-    `try_put`, the plan, the fill steps and the top-up). The space left takes other composed groups of the room's
-    identity, or stays open floor: Westwood's big rooms are sparser than its small ones.
-  - Westwood: taverns hold a table per 27-42 tiles (Con07B 8 in 216 tiles, Con06a 4 in 166) in mixed kinds; halls
-    and temples with benches hold 6-8 (2-6.5 per 100 tiles) among columns, statues, tapestries and plants.
-  - Taverns: a table per 28 tiles, at most 12, in three kinds of set (round tables with stools, long tables with a
-    bench each side, tables of food), with the wall hearth and a rug before it, open hearths with benches round them
-    in a big common room, a cask with barrels by it, kegs along the walls (was 24-28 tables and 76-83 chairs).
-  - Chapels: the altar (Dun Mir's; the town style had left it out) on the back wall facing the longest run of the
-    nave, between statues; a pew per 10 tiles, at most 16, two to a side in rows nearest the altar; a carpet runner
-    up the aisle; a colonnade either side of the pews and on down the nave; a pair of sarcophagi behind the pews
-    (was 30-46 pews wall to wall).
-  - Great halls: a bench per 11 tiles in all (the tables' and the hearths' included), at most 24; a chest per 80
-    tiles; open hearths with benches at the ends of a long hall (Thornwick's had 26 benches and 8 chests).
-  - A capped set must not hand its space to one other piece: plants and statues do not multiply with a room's size
-    in the fill and top-up (with its benches capped, Thornwick's great hall had been topped up with 15 of each), and
-    a top-up plant goes only into a real corner.
-- **Throne rooms and halls face their door** (2026-10-05 playtest, Greywatch's keep: "The throne at the end of the
-  room is facing sideways towards the store room. The pillars are in the dead center of the room, making walking
-  straight in through the door impossible. There are also two statues that mysteriously face directly against the
-  wall.").
-  - Westwood's Dun Mir throne faces SE only (Hecubah's in Con06b looks down a runner to his doors, wolf statues
-    flanking it, flame basins in pairs along the runner). So it stands on the NW wall, in line with the throne room's
-    door in the SE wall, facing it down the room (`place_throne`). The building gives the throne room that door
-    (`building._seat_throne`): the entrance room keeps the throne when the entrance is in its SE wall; else the throne
-    goes to the room on the hall's NW side, entered through its SE wall, its door centred on that wall, and the
-    entrance room becomes the great hall. A keep entered from the NW has no such room (none in the campaign).
-  - A clear aisle and a carpet runner run from the throne to the door; statues flank the throne against its wall
-    (`flank`) and line the aisle in pairs facing across it (`aisle_pair`); columns stand in pairs of rows either side,
-    set back from the walls (`colonnade`, halls too), never a row down the middle.
-  - The straight way in from every door stays clear (`_openings`, `DOOR_WAY_*`): nothing within 4 units (0.4 of the
-    room's depth), no column or statue within 12 (3/4 of the depth).
-  - Statues face into the room (`face_statues`): with their back to the wall they stand by, else toward the aisle or
-    their twin. Statue2a faces SE, 2c NE, 2e NW, 2g SW (Westwood: 35 of 50 2a at a NW wall, 39 of 55 2c at a SW, 49 of
-    73 2e at a SE, 48 of 58 2g at a NE).
-  - Floor candelabras go by the back walls or beside the columns; before a SE or SW wall, drawn see-through, they read
-    as loose on the floor.
-  - The checker warns of a piece in the way in from a door and of a statue facing a wall within 3 units
-    (`checks.room_ways`; Westwood: 31 such pieces in 218 rooms, 4 statues).
-  - Chapels face their door too (Ambermere review, 2026-10-05: the nave's crypt door sat mid-wall where the altar
-    belonged, the altar beside it, the pews' aisle off the door's line and half the nave bare at 6% covered). The
-    altar takes the wall straight across from the main door, in line with it (`door=True` in the compose step,
-    `Furnisher.main_door`); an inner door keeps 6 units off that line (`building.ALTAR_ROOMS`, `ALTAR_AXIS`). An altar
-    so placed sets the room's aisle: a clear way to the door, the pews either side of it, the statues lining it, the
-    colonnade in pairs from 5 units ahead of the altar (a barrow's god statue had stood among a block of 8 columns).
-  - A piece drawn facing one way takes the variant of its wall (`WALL_SIDE_TYPE`): LOTDLichGodStatue1 on a NW wall
-    facing SE, Statue2 on a NE wall facing SW (Westwood 8 of 10, 5 of 6), and only on the back walls.
-- **What a good room is** (Starwell playtest, 2026-10-05: "The room in the fifth screenshot is exceptional. It feels very
-  full, balanced, and themed. This is an example of a very, very good room"; the smaller offices and bedrooms are good
-  too). The reference is Starwell's room 9 (seed 4), the archmagister's study (`study` recipe; 66 tiles declared, 50 as the
-  checker counts them):
-  - the NW wall: the desk centred with its chair, bookcases either side of it to the corners (`line near=desk`);
-  - the NE wall: bookcases end to end with a trophy between and the chest (`line other`, `storage at=center`);
-  - the middle: one group that shows the use, a round table and two chairs on a carpet of floor tiles (`table center
-    seats`, `carpet under`), and one curio standing free (a telescope, `group curio`);
-  - the front walls: statues between candelabras, plants in the two front corners;
-  - pieces of one theme (books, a desk, a meeting table, a telescope, statues: a scholar's room), nothing repeated that
-    stands alone.
-  - Its numbers (`py review/roomscore.py`): coverage 0.11, 26 pieces of 17 types, all four walls used, back walls 51%
-    lined, the most of one stand-alone kind against one wall 2, middle 0.03. The room score holds every room to that
-    yardstick (`identity`: no showpiece repeated, no stand-alone piece four times along a wall, no more free tables
-    than the kind sets, nothing outside the identity) and prints its walls used and its repeat.
-- **A room has an identity** (same playtest, the college laboratory: "It almost looks like some sort of shoddy mess hall
-  with random objects stuffed in it. This room has no sense of identity or purpose. No continuity of theme or real
-  feel"; eight tesla coils end to end down its long wall, five dining and reading tables with their chairs down the
-  middle). Each wall has a purpose, one group in the middle shows the room's use, the pieces keep to one theme, the
-  room is full but balanced. A long room is used in zones along its length, never lined with one repeated piece.
-  - The laboratory (Westwood's Wiz07D: bookcases with a desk among them, a work island of workstations, the tesla coils
-    apart; 104 laboratories hold 1-9 lab pieces, a table in a quarter of them): the study end (the desk on the back wall
-    with the most room before it, near a corner, bookcases either side); the work wall (a bench of wizards'
-    workstations of the three kinds with a hanging between, one alchemist's desk, a pair of potion shelves, a chest);
-    in the middle the alchemist's work table with its stools, glowing jars and a bubbling cauldron (`GROUPS alchemy`)
-    and a conjuring circle, an orrery ringed by four candelabras (`conjuring`); a pair of generators apart
-    (`generators`, mirrored down the length); statues by the front walls; tapestries. Never a dining table
-    (`types table ^Table[1-4]$`, `repeat table (1, 1)`); topped up only with a chest or a plant (`top_up`).
-  - **Showpieces stand once** (same playtest: "The shelves on the NE wall in this room are more of a single instance
-    object. These are not repeatable shelves that should line a whole wall ... The shelving on the northwest wall, by
-    contrast, is the kind that can be repeated"). Westwood (corpus, a piece within 1.15 of its width of another of its
-    kind): bookcases stand beside their kind 88% of the time, two thirds mid-run; wizards' workstations 64% (a bench
-    of mixed kinds); potion shelves 60%, but three in a run only 9%; alchemist's desks, generators, telescopes,
-    orreries, crystal balls and desks 0-5%. So `kit/furnish.py SHOWPIECES` stand once in a room (twice, 10 units
-    apart, in a room of 120 tiles or more; a pair of generators), potion shelves once as a pair (`PAIRED_PIECES`), and
-    neither ever lines a wall (`NEVER_LINED`: `line_wall`, `line_backs`, `top_up` and `complete_bookcase_walls` repeat
-    only the kinds that line walls). A herbalist's potion shelves are a pair among the bookcases of remedies.
-- **A throne room has character** (same playtest: the Hall of the Star "is also kind of empty and barren. It's just a
-  long room with tons of the same exact pillars"; 22 columns 3.4 units apart down both sides of the runner, hunting
-  trophies on the walls). Westwood's halls hold 6 columns at the median, 4 statues, tapestries. The throne still faces
-  its door down a clear aisle on a runner (the keep's rules above), and now: braziers before the dais
-  (`flank_lights`), statues flanking the throne against its wall, a few pairs of columns spread down the whole length
-  (`repeat column (26, 8)`: the pairs set the step), pairs of statues facing across the aisle halfway between them
-  (`aisle_pair`), tapestries of one colour on the back walls (`decor_themes`, never trophies), a bench or two by the
-  walls, plants in the corners; no chests or benches to fill the floor (`top_up` plants only). Halls cap their columns
-  too (`repeat column (18, 10)`).
-- **A shop's keeper stands behind a counter** (same playtest: "The shopkeeper is standing in the middle of the shop,
-  surrounded by a random scattering of objects ... He needs to be standing somewhere that makes sense, like behind a
-  desk. Instead of six armor racks, use three armor racks and three weapon racks"). Every shop room, the smithy too, sets
-  its counter out from a back wall with the keeper's spot behind it (`counter`; `StoryMap.shops` stands the keeper
-  there). Racks for show stand three to a row in a shop or a smithy (`SHOP_RACKS_PER_ROW`), each row its own kind and
-  the rows taking the kinds the room allows in turn (`rack_rows`: a row of armour stands, a row of weapon racks).
-- **Nothing lines a wall from corner to corner unless it is a store** (same review: 17 piled barrels end to end along
-  the Amber Eel's SW wall). `stock_walls(per_wall=)` caps the share of each wall the supplies take, counting what
-  stands there; a tavern's kegs take at most 40% of a wall, heaped toward its corners.
-- **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
-  of the wall").
-  - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
-    unbroken stretch: the one at the anchor (hearth or desk, flanked on both sides), or else the longest. There are
-    no holes, never a lone shelf against a long wall, and 1.3 units stay clear at the corners.
-  - With `decor=k`, a hanging takes a gap after every k shelves. A run never starts or ends with that gap.
-  - Studies, living rooms and big bedrooms line their second back wall too (`other=True`). Line it before the
-    hangings, or they take the wall.
-  - Every room whose identity lines walls is lined to 38% of its NE and NW walls (`Furnisher.line_backs`, measured
-    as the room score measures it: `TALL_PIECES` and hangings). It lines the back wall not yet lined, then grows the
-    rows already there end to end. It never starts a second row on a wall: a shelf set singly by a hearth counts as
-    that wall's row. Hangings close what is left. Big rooms have two long back walls, and their recipes had left
-    them about 30% lined.
-  - A room still short of its coverage target after its fill steps is topped up (`Furnisher.top_up`). First its
-    shelf rows grow, then single pieces its identity allows: chests, benches, plants, lab pieces, statues. Never
-    more than the identity's count for the room's size, plus one (7 potted plants in a study is clutter), and never
-    stoves, a hearth's anchor.
-  - Rows stand unbroken too: gear racks down the middle of a storeroom, and library stacks of bookcases end to end
-    in a big study (`rack_rows`, kinds gear, hunt, mine and books). A row slides across the room until it fits
-    whole, or it is left out. Rows stay off carpets.
-- **Rooms are full, and fuller as they grow** (TreePlace v0.2-v0.4 room reviews).
-  - Fullness is the share of the floor that furniture covers (`ROOM_COVER` in `kit/identity.py`), not a piece
-    count. A wall of shelves is not clutter. Storerooms 0.30-0.42, kitchens 0.21-0.32, barracks and mess halls
-    0.24-0.34, living rooms, studies and herbalists 0.17-0.30, bedrooms 0.14-0.28.
-  - Compose the anchors first, then `fill_room` takes the recipe's `fill` steps in turn (each with its own `max`,
-    and `min_area` in grid cells, about 2.2 per floor tile) until the target is met.
-  - The open floor of a bigger room takes free-standing groups (`GROUPS`, `place_group`):
-    - a table and its seats, sometimes on a rug;
-    - a table that carries food;
-    - a work table with stools and crates beside it;
-    - a curio (telescope, orrery, globe);
-    - a pair of statues;
-    - a freestanding hearth with benches;
-    - ore carts.
-    A group takes only pieces its room's identity allows (`Furnisher.belongs`).
-  - Set pieces for the grander rooms:
-    - a tavern's bar, with kegs behind it;
-    - a trader's counter set out from the wall, with the keeper's space behind it;
-    - a chapel's pews in rows facing the altar, split by an aisle;
-    - colonnades in halls and throne rooms;
-    - rows of coffins and sarcophagi side by side in crypts;
-    - Westwood's four-piece Dun Mir throne on a NE wall.
-  - Each building keeps one palette of chairs, stools, benches, tables, carpets, hangings and plants, so its rooms
-    belong together while the buildings of a map differ.
-  - Some rooms on built floors get a carpet of floor tiles instead of a rug object, with Westwood's gold trim (Con07B
-    lays them in 13 of its 28 rooms; `lay_carpet`).
-  - Late core pieces keep their front clear too: a hearth or cauldron placed by the fallback still gets its zone
-    (`FRONT_CLEAR`), so no candelabra stands before it.
-  - The checker calls a generated room sparse below Westwood's median coverage for its kind and size. Westwood's
-    rooms of 50 or more tiles are sparser (bedrooms: 0.117 overall, 0.078 large). It calls a room crammed above the
-    kind's `ROOM_COVER` maximum.
-- **Bigger than Westwood** (instruction during the v0.3 round: "we are going to ultimately produce much larger maps
-  and a larger scale than anything in the original game").
-  - Buildings are 1.25 times Westwood's size (`BUILDING_SCALE`, `role_size`). A building that does not fit is tried
-    again at 0.92 and 0.84 of that.
-  - A Nox map is 256 x 256 cells, so "larger" means bigger structures, rooms and groups within that grid.
-- **Spacing within the room.**
-  - A cauldron stands about 2 units from the hearth (Westwood's typical gap; the closest is 0.87).
-  - Supplies keep a unit or more from anything that is not a supply, on every side, not just along their own
-    wall. They keep 2.4 units from a fire, because fires are drawn far wider than their footprint.
-  - Shelves and desks face one way and have no corner pieces, so they keep 2.2 units out of corners.
-  - Bunks stand at least 0.9 units apart (Westwood's closest) with a nightstand between neighbours, spread evenly
-    along the wall. Each bed's head goes against the wall (the cot numbering comes from the pillows, not from
-    Westwood's sideways cots).
-  - Tables, desks and beds stay off rugs. Bearskins are drawn about 1.2 units past their footprint, so the
-    margin is 2 units for a bearskin and 0.8 for a woven rug.
-  - The exception is a woven rug laid centred under a round or square table (`Furnisher.rug_under`), which makes
-    the middle of a bedroom, study or living room one composed piece.
-  - Rugs try the other designs and slide a little before giving up.
-  - Potted plants go only into real corners of the room.
-  - Storerooms mix heaps in the corners with groups and single pieces, so they have both clusters and open
-    stretches.
-  - A herbalist's or library's shelves line one whole wall, side by side, but not every wall.
-- **One kind of door per building.** The main entrance takes the family's door; the doorways between rooms take
-  its single door. A double door into a bedroom is not believable.
-- **Light houses with candelabras and the hearth.** Never use an open torch indoors: a flame on a stick by a wall
-  does not look mounted, and an open flame that size indoors is not believable. Use wood candelabras in log and
-  stucco houses, iron ones in stone houses. Torches belong outdoors, in dungeons and in mines.
-- **Pieces lie along their wall.**
-  - Chests, bookcases, desks and potion shelves lie parallel to their wall with their back against it. Beds stand
-    with the headboard against the wall.
-  - Westwood numbers these pieces by wall: Chest, Bed and Nightstand 1-4 are the SE, SW, NE and NW walls; Bookcase
-    and Desk 1-4 are the NW, NE, SE and SW walls. The furnisher picks the number for the wall
-    (`Furnisher.along_variant`), including for a room identity's preferred types.
-  - Pieces stand snug against their wall (`SNUG_GAP`: Westwood's p25-p50 gap between a piece's back and the wall
-    line: shelves 0.18, chests 0.22, desks 0.25, hearths 0.15). Their centres may fall in the wall's cell in front of
-    a NE or NW wall, at least 0.3 units into the room, as Westwood's do (202 pieces). The checker credits such a
-    piece to the room on its side of the wall.
-- **Furniture assemblies are complete.** A bar meets the walls at both ends, its flap sits mid-run, and kegs stand behind it.
-- **Balance.** Lights go to the emptiest corners: away from other lights and from the pieces already there. A
-  candelabra goes to the free corner, not beside the chest. Centre a piece on its wall, or between another
-  piece and a wall.
-- **Doors line up.** Both halves of a double door sit exactly on the grid, 46 px apart on each axis. A door type
-  hangs as a pair only in a wall direction Westwood pairs it in (`rules/out/doors.json` `by_line`).
-- **Symmetry outside too.** Torches flank a door as a pair, on the outside of the wall line (`layout.door_frame`),
-  or not at all. A torch pole never stands in or against a wall. A yard's corner torch moves into the yard when a
-  bigger building reaches that corner.
+### Outdoor lights [SW-8]
+Outdoors a light is a torch pole, a brazier, a street lamp or a fire (Westwood: TorchPole 497, wall Torch 974; no
+candles). Nothing the player can pick up lies outdoors as decor (candles, lanterns, loose food without a script name).
 
-## Story: a map with a start, missions, fights, rewards and an exit (Thornwick, 2026-10-04)
+## 5. Camps
 
-A finished map is a story the player walks through, and every creature in it is placed for a reason. Write the story
-in the design's docstring before building anything, then plan the areas from it: each quest needs its places.
+**Recurring:** "a scattered mess" three rounds running [GW-4, SW-1, SW-3, AMR-1, AMR-2]. Never strew a camp's pieces by
+hand in a design: use `kit/camps.py`. The checker's camp warnings (`check_exterior`: `exterior.camp_seat`, a stump by
+a fire; `exterior.bedroll`, a bedroll away from any tent or row; `exterior.pile`, a heap of crates and barrels with no
+purpose) and the crowd rules (`exterior.swarm`, `exterior.two_bodies`) catch what can be measured; the QA gate's spots
+pictures show every camp for the rest.
 
-1. **The start and the hook.** The player arrives somewhere that shows what is wrong (Thornwick: a plundered wagon
-   on the road, the carter beside it) and someone tells them where to go.
-2. **The main quest locks the exit.** The way out is barred until the main quest is done: a wall across the road
-   with a double gate, LockType Mechanism, unlocked by the quest giver's last line (`A.unlock`). The exit area
-   (`InvisibleExitArea`, xfer MapName) lies beyond it and leads to the next map, which must exist (TNorth).
-3. **Side quests, each with its own place, giver and reward**, chosen to send the player through the whole map: a
-   crypt behind a key-locked door (LockType Silver; the giver hands over the key), a wolf den up a side path, a ruin
-   with a boss and an heirloom. One quest may offer a choice (two givers want the same item).
-4. **Fights with a reason:** an ambush from a camp off the road (a `near` event sets them hunting), a camp with a
-   sentry who rouses the rest, a pack round its den, the restless dead in a crypt, a boss guarding a chest.
-5. **Rewards:** gold and items from the givers (`A.gold`, `A.give`), loot in chests (`items=`), caches hidden at the
-   forest's edge, a shop for each trade that buys and sells. Every other container is filled at build time in
-   Westwood's manner (`kit/loot.py`): every chest, about 40% of barrels, half the crates, coffins in crypts, within
-   the map's gold budget after the story's own gold and the quests' payments.
-6. **Everyone talks:** quest givers, guards, the watch and every townsperson, each with a line that points at a quest
-   (rumours), and a new line once the main quest is done. A portrait for each (`q.portrait`, Westwood's names).
+- **Zones** (`camps.bandit_camp(spec, rng, land, centre, toward, loot, sleepers=, tents=, trade=, finds=)`), as
+  Westwood lays its camps (Con03A, Con04a, War05A, Wiz02C, Wiz03b, Wiz03c): the hearth (fire, stones ringed 17-30 px
+  round it, two log benches `OgreBench` and a stool 52-64 px out, the pot); the sleeping row behind it toward the top of
+  the screen (tents in an arc 112-120 px out, two bedrolls before each, head to the tent); the store on one flank (one
+  tidy row of sacks, crates, barrels and the water barrel at Westwood's gaps, the cart behind); the arms corner on the
+  other (racks in a row 26-30 px apart, a straw dummy) or the dig (`trade="dig"`: tools in the ground, the tool barrel,
+  spoil, `finds`); the lookout at the way in (a torch pole, a stool, quivers). Zones keep clear ground between them;
+  the layout scales with the clearing (0.75-1.25).
+- **Seats round a fire** are benches, stools and logs, never stumps [SW-3].
+- **The site** [AMR-1]: `camps.camp_site(spec, land, near, ...)` takes the square with the most open ground clear all
+  round, near the place, off its road; lay the camp open toward the road beside it (`StoryMap.road_near(site)`). A camp
+  holds its ground: planting and dressing keep off it.
+- **Urchins** squat as Westwood furnishes their dens (Con02a, War03c): `camps.urchin_camp` (beds of one kind side by
+  side, a table ringed by stools, the pickings heaped) [AMR-2].
+- **The wagon wreck** (`camps.wagon_wreck`): a wheel off, the load thrown out in a fan, heavy things near.
+- **Posts** [GW-5, SW-1]: `posts.camp_posts(spec, camp, toward, sit=, tents=, watch=, work=)` returns spots for the
+  leader (by his tent and the take), at most two at the fire (Westwood: War05A's grunts 47 and 56 px out), the others by
+  their tents, the store, the racks, the pot or the dig, the watch at the way in; 64 px apart, 28 px clear of every
+  piece. A digger camp's workers work.
 
-The tools:
-- `kit/quests.py` (`QuestBook`) declares it all; `kit/behaviours/quests.go` runs it. Lines are tried in order, the
-  later stages first. Conditions read the world where they can: `q.dead(names)` for deaths, `has=` for carried
-  items, so a saved game loaded with fresh scripts strands nothing (the script's own flags do not survive it).
-- Text goes in the map's string table (`<Map>.strings.json`), merged into the game's by `mapgen/strings.py` as
-  `nox.csf.json`, which OpenNox reads in place of nox.csf. Keys are at most 31 characters. No audio yet.
-- `kit/camps.py` lays the story's places: bandit camp, wreck, wolf den, cache, ruined tower, signpost; `kit/scenes.py` holds the outdoor scene catalogue.
-- Keep the story's places open before the forest is placed (reserve them in `land.taken`); the planter keeps forest
-  paths free of trees itself, and `Land.open_links` keeps every passage open.
-- Creatures: never place a Zombie (OpenNox cannot read the map back); clone townsfolk from Westwood's maps in their
-  clothes (`spec.clone(..., name=)`).
-- Check: `tests/check_scripts.py` (compiles against the game's NoxScript), `mapgen/install.py`, then
-  `tests/server_smoke.py <design>`: the map loads, and the self-checks find every creature, waypoint and story
-  object. `review/spots.py <map> <names>` renders close-ups of the story's places.
+## 6. People and movement
 
-**What the engine needs** (Thornwick and Greywatch playtests, 2026-10-05: freezes, "MISSING:NPC:Hedda", no minimap).
-The kit does all of it; know why before changing it:
-- A gift (`A.give`) is made at the player's feet and picked up three frames later. A new object waits on the server's
-  pending list until the frame ends; picking it up at once left it in the world and the pack together, and the next
-  walk through either list looped forever: the game froze after a talk gave an item, and later on death or in fights.
-- The dialogue window titles a creature with the string `NPC:<script name>` (Westwood's `NPC:Horst`). Every talker
-  gets one; townsfolk get given names (Westwood's donors' names stay theirs). The string table is shared by all maps,
-  so one script name in two maps carries one title (`mapgen/strings.py` refuses a clash).
-- The minimap draws only the walls of the group of the polygon the player stands in, and the game finds that polygon
-  by counting edges crossed on a line to the map's corner (0, 0) or (5888, 5888). Each map gets one polygon over the
-  whole map, group 100 as every wall, inset from the edges with its corners off that diagonal; corners on the map's
-  corners put the player "outside" everywhere.
-- Clones lose their donor map's script hooks (ScriptEvents naming its functions, KeeperDie, MonsterGoHome).
-- Playtest builds start from `Nox Map Test` (the Nox folder): when the game stops responding it saves a dump of what
-  it was doing to `logs\freezes\<time>\`.
+- **Townsfolk never wander** [TW-9]: each walks a tour of the town's real places (`StoryMap.townsfolk`): home door,
+  the square, a shop, the well, statues, benches, gardens, yard gates, neighbours' doors, 5-7 stops in a loop, different
+  for each person, 16-24 s at each (plus up to 4 s). Tours stay outdoors and near the square and are laid when the
+  scripts are written (`Behaviours.later`), once everything stands.
+- **Legs follow the roads** [TW-9, GW-1]: `kit/walkways.Router` routes over cells a body stands clear on, road cheaper
+  than grass, pulled straight into legs within 16 px of it (a waypoint at each bend, legs under 230 px). Waypoints on a
+  tour are never linked (a linked waypoint makes Move roam).
+- **Doorways square-on** [TW-1]: a point straight out, the opening's centre, a point straight in (`Ground.passage`);
+  the router never routes through a door cell. Townsfolk step inside only unlocked shops, inns, chapels and smithies;
+  elsewhere they stop beside the doorstep, 34-64 px out, never against the jamb. Garrison patrols go room to room the
+  same way (`Dresser._route`).
+- **The watch walks a beat** (`StoryMap.beat`): 6-7 stops across the town, 8-12 s at each.
+- **Long walks are journeys** [GW-1]: the game's own path search gives up on a far goal and walks straight at it, so a
+  story never sends anyone far with one Move. `StoryMap.journey(name, key, to, look=)` lays the walk along roads and
+  paths and through unlocked doorways and gates square-on (`Router.route_far`); `A.walk(name, key)` starts it.
+- **Nobody shares a spot** [GW-6]: every stop of every tour, beat and journey gets its own standing spot
+  (`StoryMap._spots`), 40 px from every other spot and from every creature, 26 px clear of every doorway's passage
+  points; beats prefer places no other beat takes; garrison patrollers get their own stops (`Dresser._own_rounds`).
+- **A person waiting at a door** stands beside the doorstep, off the door's way: `StoryMap.doorside(role or building,
+  toward=)`, never `outside_door` plus an offset [AMR-7]. Keep townsfolk's stops off a foe's ground with
+  `StoryMap.keep_folk_away(centre, r)`.
+- **Facing** [SW-2]: every stop faces somewhere that makes sense (`kit/walkways.stop_facing`, applied by
+  `Behaviours._facings`): a feature (well, statue, bench, stall, the gate a watchman keeps) is faced; a doorstep faces
+  straight out, away from its building; a place on the square faces its middle; a step inside a shop faces into the
+  room; otherwise the most open way. Then it is turned the least so nothing stands within 40 px straight ahead (22
+  degrees either side), and within 34 px of a wall or building to within 80 degrees of straight away from it. In the
+  game (`walker.face`) the walker turns on arrival and twice a second while it stands: toward the player within 110 px,
+  back to the stop's way when they leave (townsfolk set Idle first, so the game's turn toward a bump is dropped).
+- **In the game a walker never pushes**: the ticker (twice a second) judges progress toward the waypoint. Not nearer for
+  1.5 s: at a stop it stands aside and takes its pause; at a bend or doorway point it goes on; elsewhere it gives way 1-3
+  s and retries, twice. Townsfolk set out a few frames apart and run home along their own route.
+- **Hostile groups stand apart** [GW-5, SW-1]: Westwood's grouped creatures stand 49 px from their nearest at p25, 70 at
+  the median: `Population.creature` keeps every hostile creature 48 px from the others (`spread=False` for two
+  prisoners in a cell, or a person's disabled twin, which stands exactly on his spot). Roused groups come at the player
+  from their own sides, fanned 50 degrees apart, archers holding their ground (`spreadOn`); a pack lies up spread about
+  its den.
+- Townsfolk names follow the donor's body: Maiden clones are women (`story.is_woman`).
 
-**How people move** (playtest 2026-10-05: "npcs wander around too sporadically. they walk into walls ... they look like
-ants"; "npc trying to walk through the door but getting stuck on the frame").
-- Townsfolk never Wander. Each walks a tour of the town's real places (`StoryMap.townsfolk`): their home door, a spot
-  on the square, a shop, then the well, statues, benches, gardens, yard gates and neighbours' doors, 5-7 stops in a
-  loop, different for each person (`_pick_tour`, its own generator per name). They stand 16-24 s at each stop (plus up
-  to 4 s in the script), facing what is there, or the player when near.
-- Legs follow the roads and paths: `kit/walkways.Router` routes over the cells a body stands clear on, road cells
-  cheaper than grass, then pulls the path straight into legs within 16 px of it (a waypoint at each bend, legs under
-  230 px). Tours stay outdoors and within reach of the square; they are laid when the scripts are written
-  (`Behaviours.later`), once every wall, tree and bench stands.
-- Doorways are passed square-on, or not at all: a point straight out in front of the opening, its centre, a point
-  straight in behind it (`Ground.passage`, single and double doors, both wall lines). The router itself never routes
-  through a door cell. Townsfolk step inside only shops, inns, chapels and smithies whose door is not locked; elsewhere
-  they stop on the doorstep, 34-64 px out, never against the jamb. Garrison patrols go room to room through shared
-  doorways the same way (`Dresser._route`).
-- The watch walks a beat (`StoryMap.beat`): 6-7 stops spread across the town, 8-12 s at each.
-- In the game, one ticker looks after every walker twice a second: a walker that has not moved for 6 s on a leg is
-  sent on again, after 12 s it skips to the next waypoint. Waypoints on a tour are never linked (a linked waypoint
-  makes Move roam the links).
-- The checker proves it (`check_routes`, on every build): every waypoint on floor, off walls (11 px), out of
-  obstacles and water; every link and every leg of `<map>.routes.json` sampled every 4 px, clear of the void, wall
-  pieces (as thin lines, 10 px), obstacles, and through doorways within 25 degrees of square-on and near the middle.
-  `review/storymap.py <map> --routes` draws them.
-- 2026-10-05, long walks (playtest: Greywatch's Wil, sent home by `A.walk` as one `Move` to the barracks, pressed
-  into the trees at the end of a forest strip). The game's own path search gives up on a far goal and walks
-  straight at it, so a story never sends anyone far with one Move. `StoryMap.journey(name, key, to)` lays the walk
-  once the map stands: `Router.route_far`, along roads and paths and through any unlocked doorway or gate square-on
-  (each doorway a portal of its three passage points), a waypoint at each bend; `A.walk(name, key)` starts it and
-  the walker goes leg by leg (behaviours `Journey`), staying at its end. Journeys are in `routes.json`, so the route
-  check walks them too. Wil, Gunnar and Pip, Brin and Tam walk home so.
-- 2026-10-05, nobody shares a spot (playtest: a townswoman and a guard pushing each other off one stop by a gate for
-  ever; the old builds had 30-45 stops exactly shared on each town). Every stop of every tour, beat and journey gets
-  a standing spot of its own (`StoryMap._spots`): another side of the well or statue, beside a doorstep rather than
-  in front of the door, its own place on the square, its own spot past a shop's threshold; 40 px from every other
-  spot and from every creature standing where it was placed, 26 px clear of every doorway's passage points. Beats
-  prefer places no other beat takes; a garrison's patrollers each get their own stops, starting apart round the
-  loop (`Dresser._own_rounds`). `check_routes` faults two walkers' stops under 32 px apart.
-- A person who waits by a door stands beside the doorstep, never in the door's way (Ambermere, 2026-10-05: Morwen at
-  her door's +16,+16 stood 34 px out from it, and Pip's walk home ran through her): `StoryMap.doorside(role or
-  building, toward=)`, not `outside_door` plus an offset. A rescued walker's journey ends at that door, beside them.
-- Gardens and flowers keep two squares off every door and gate already standing (`Planter`; a flower patch had grown
-  in Ambermere's west gate).
-- In the game a walker never pushes: the ticker watches whether it gets nearer its waypoint, not whether it moves
-  (two pushing each other jostle without getting anywhere). Not nearer for 1.5 s: at a stop it stands where it is,
-  a little aside, and takes its pause; at a bend or doorway point it goes on to the next; elsewhere (someone in the
-  doorway or gate) it gives way 1-3 s and tries again, and after two tries goes on. Townsfolk set out a few frames
-  apart, and run home along their own route (the shorter way round), never with one Move.
-- 2026-10-05, hostile groups stand apart (playtest: Thornwick's bandits bunched round the fire "like a swarm").
-  Westwood's grouped creatures stand 49 px from their nearest at p25, 70 at the median (corpus, 3,091 creatures):
-  `Population.creature` keeps every hostile creature 48 px from the others (`spread=False` for two prisoners in a
-  cell). A camp's men take posts as a camp is lived in (`kit/posts.camp_posts`, from what `bandit_camp` returns and
-  the tents and bedrolls round the fire): the leader by the chest, some on every other seat round the fire, some by
-  their tents, the watch well apart at the approach. When roused (sentry, pack, ambush) melee fighters come at the
-  player from their own sides, fanned 50 degrees apart, archers keeping their ground (`spreadOn`); a pack lies up
-  spread about its den, each on its own spot, rather than trailing its leader.
-- 2026-10-05, a stop faces somewhere that makes sense (Starwell playtest: "a lot of NPCs seem to face random
-  directions when they get to stopping points ... if an NPC is standing next to a building, have them face away from
-  the building"). Two causes. At build time a doorstep stop faced its own door, and once `_spots` moved it beside the
-  doorstep it faced along or into the wall; a third of all stops faced a wall, tree or obstacle within 40 px, and over
-  half of those beside a building faced toward it (garrison patrols' stops faced nothing at all). In the game the
-  facing was set once, on arrival: the player standing near at that moment left them staring at where the player
-  had been, and the game's own idling (OpenNox `AIActionIdle`: a creature of aggression under 0.08, as all townsfolk
-  are, pushes `ACTION_FACE_LOCATION` toward where it stood a frame before whenever it is bumped) turned anyone a
-  passer-by brushed, with nothing turning them back.
-  The rule (`kit/walkways.stop_facing`, applied to every stop of every tour, beat, patrol and journey's end in
-  `Behaviours._facings`): what the stop is for gives the preferred way (`StoryMap._stop_face`): a feature (well,
-  statue, bench, stall, barrel, the gate a watchman keeps) is faced; a doorstep faces straight out, away from the door
-  and its building; a place on the square faces the square's middle; a step inside a shop faces on into the room; a
-  stop with nothing to face (a garrison patrol's) faces the most open way. Then it is turned the least it takes so
-  that nothing (wall, building, tree, obstacle, void) stands within 40 px straight ahead nor 22 degrees either side,
-  and, within 34 px of a wall or building, to within 80 degrees of straight away from it. The game is told a point
-  240 px out (or the feature itself), so a walker settled a little aside still faces the same way.
-  In the game (behaviours `walker.face`) the walker is turned on arrival and again by the ticker twice a second while
-  it stands its pause (after settling aside too): toward the player while they are within 110 px, back to the stop's
-  way when they leave; only when more than 20 degrees off, and a townsperson is first set Idle so the game's own turn
-  toward a bump is dropped. `check_routes` faults any stop whose facing has something within 40 px straight ahead
-  (the feature it stands at excepted); `review/storymap.py --routes` draws each stop's facing as an arrow.
+## 7. Story and scripts
 
-**A culture's own pieces** (Starwell, 2026-10-05: a wizards' college town, the third map of the one-map loop).
-- A map with a culture of its own gets its own outdoor scenes without touching the others: a theme with `culture=`
-  (`kit/scenes.py`: the wizards' `alchemists_yard`, `stargazers_post`, `star_shards`, `shard_wall`) is laid only when
-  the design names that culture (`Exterior(..., culture="wizard")`); every other map draws exactly as before.
-- New building roles for it (`kit/identity.py`): `college` (the archmagister's hall of state, a throne room so the seat
-  faces its door down a runner; library, laboratory, study, chamber), `apothecary` (shop and brewing room), `observatory`
-  (a hall, workroom and chart library in blue stone). Houses take the culture's style by `BuildingIdentity(style=)`:
-  Ix's dark-timbered stucco (`stucco_dark_house`, Wiz01A) for a wizards' town.
-- A sealed building the story opens: `StoryMap.seal_entrance(building, prefix)` names its entrance door(s) and locks
-  them to a mechanism; `A.unlock` opens them (the observatory, when the three binding-stones' keepers are dead).
-- A dark ward or a dead stone the story relights is a ring of standing stones round a crystal with a named
-  `ColorLight` disabled in `q.start` and enabled by the story (Starwell's south ward-ring and the Starwell); the
-  binding-stones' purple lights go out as their keepers die. Westwood's stones are drawn crystalline either way, so
-  the light is what tells lit from dark: confirm it in the game.
-- A choice between a bribe and the law: the band are cloned people (they can talk, and one of them offers the purse)
-  with a disabled fighter hidden at each one's spot; refusing turns them all (`A.turn`), taking the purse leaves them
-  digging and the captain's reward unpaid.
-- Townsfolk names follow the donor's body: Westwood's Maiden clones (Wiz02A's Maiden1-9, TowerMaiden, Con06a's
-  Townswoman) are women (`story.is_woman`; Con02a's Joyce had been given a man's name).
+A finished map is a story the player walks through; every creature is placed for a reason. Write the story in the
+design's docstring before building, then plan the areas from it: each quest needs its places.
 
-## 7. Check, review, playtest
+1. **The start and the hook**: the player arrives somewhere that shows what is wrong, and someone says where to go.
+2. **The main quest locks the exit**: a wall across the road with a double gate (`StoryMap.gate_across`, LockType
+   Mechanism), opened by the quest's end (`A.unlock`); the exit area beyond (`StoryMap.exit_to`) leads to the next map,
+   which must exist (the exit reads its PlayerStart; build the chain from its end).
+3. **Side quests**, each with its own place, giver and reward, sending the player across the whole map; one may offer a
+   choice.
+4. **Fights with a reason**: an ambush off a road (`q.near` + `A.hunt`), a camp with a sentry (`B.sentry`), a pack at its
+   den, a room's keepers (`StoryMap.keepers`), a boss guarding a chest or dropping the quest item.
+5. **Rewards** [TW-7]: items first, some gold (`A.give`, `A.gold`); story chests hold their loot (`items=`); 2-3 caches
+   (`StoryMap.hidden_spot` + `camps.cache`); shops that buy and sell (`StoryMap.shops`). Every other container is filled
+   at build time in Westwood's manner (`kit/loot.py`: every chest, about 40% of barrels, half the crates, coffins in
+   crypts), within the map's gold budget of about 500-1500 (`rules/QUESTS.md`); the tally is `<map>.loot.json`.
+6. **Everyone talks**: givers, guards, the watch and every townsperson, each with a line pointing at a quest and a new
+   line once the main quest is done, with a Westwood portrait (`q.portrait`).
 
-- `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.
-- `review/review.py`: comparison sheet and design measurements (paths, vegetation structure, roads crowding water…). Apply `review/RUBRIC.md`, including criterion 8 (identity), and record the review in `review/reviews/`.
-- `review/rooms.py <map> --each`: one numbered close-up per room (building, kind, purpose). Check every room
-  against its purpose, and show the pictures to the playtester for numbered feedback. Walls in front of each room
-  show half see-through, as the game draws them when you are inside, so pieces against them are visible.
-- Generated maps write `<map>.rooms.json` beside the map. The checker then judges each room as what it was
-  meant to be (a study with two bookcases is not a library).
-- Between playtests, improve rooms in the room lab (`mapgen/designs/roomlab.py`, `review/roomscore.py`): every room
-  kind at Westwood's typical and large sizes and half as big again, scored on coverage, an open middle, lined back
-  walls and the checker's findings. The score also asks for an identity (Starwell playtest, 2026-10-05): no showpiece repeated, no
-  stand-alone piece four times along one wall, no more free tables than the kind sets, nothing outside the identity;
-  it prints how many walls have a purpose and the most of one stand-alone kind on a wall, beside the reference room's
-  numbers ("What a good room is"). Fix what fails in three seeds before the next playtest.
-- Then whole buildings in the building lab (`mapgen/designs/buildinglab.py`, `review/buildingscore.py`): every
-  building role at Westwood's size, the kit's 1.25 and the bigger 1.6, scored on room sizes for their kinds,
-  reachability, the checker's findings and the rooms' own scores.
-- Then a whole town in the town lab (`mapgen/designs/townlab.py`): the village pipeline at the bigger scale, with
-  traders behind their counters, villagers on their rounds and creatures in the woods round it, scored by the
-  checker, the room score and the design review.
-- Load every map with scripts in the OpenNox server before installing it: the behaviours' self-check must find every
-  named creature and waypoint.
-- Playtest in the game; log the findings in `ROADMAP.md`.
+The tools: `kit/quests.py` (`QuestBook`, actions `A`) declares it all and `kit/behaviours/quests.go` runs it. Lines are
+tried in order, later stages first. Conditions read the world where they can (`q.dead(names)`, `has=`), since a saved
+game loaded with fresh scripts loses the script's own flags. Text goes in the map's string table
+(`<Map>.strings.json`, written by `q.write_strings`), merged by `mapgen/strings.py` into `nox.csf.json`, which OpenNox
+reads in place of nox.csf; keys are at most 31 characters; no audio. Objects a script names must be ones the game
+registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, signs; a `FireGrate` did not). Keep the
+story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
+the fewest trees or rocks that wall a target off.
 
-Builds are reproducible: a design and its seed always give the same map. Never use Python's `hash()` on
-strings, because it changes from run to run; use `zlib.crc32`.
+## 8. What the engine needs
+
+The kit does all of this; know why before changing it.
+- **Gifts** [TW-11, TW-2, TW-3, TW-4]: `A.give` makes the item at the player's feet and picks it up three frames later.
+  An object waits on the server's pending list until the frame ends; picking it up at once left it in the world and the
+  pack together, and the next walk through either list looped forever (the freezes on a gift, on death and in fights).
+- **Dialogue titles** [TW-6]: the dialogue window titles a creature with the string `NPC:<script name>`; every talker
+  gets one (townsfolk get given names; `q.talker(..., title=)` overrides). The string table is shared by all maps, so a
+  script name used in two maps carries one title (`mapgen/strings.py` refuses a clash).
+- **The minimap** [TW-5, GW-3]: the game draws only the walls of the group of the polygon the player stands in, found
+  by counting edges crossed on a line to the map's corner (0, 0) or (5888, 5888); it keeps the player in the polygon he
+  stands in while it still holds him, else takes the first that does. `Spec.build` gives each map one polygon over the
+  whole map, group 100, inset from the edges with its corners off that diagonal, bitten round any polygon the design
+  lays itself (Rimehold's ice cave), so no spot lies in two (`nox._world_polygon`). **Recurring** (Greywatch had none;
+  Rimehold's cave polygon had left it a minimap only inside the cave): `check_minimap` errs when the start lies in no
+  minimap polygon.
+- **Clones** lose their donor map's script hooks (ScriptEvents naming its functions).
+- **Never place a `Zombie`**: OpenNox cannot read the map back. Map names are at most 9 characters.
+- OpenNox alpha13 leaves TellStoryStr, quest status, JournalEntryStr/Edit, MakeFriendly and GiveXp unimplemented; the
+  kit uses TellStory and JournalEntry by key with the map's own string table.
+- The dedicated server never fires MapInitialize without a player, so a map's setup runs once, from MapInitialize or
+  the 30th frame.
+- When the game stops responding in a playtest build it saves a dump to `logs\freezes\<time>\` in the Nox folder.
+
+## 9. Checks and review
+
+**The gate.** A map goes to the user only after `py tests/qa.py <design> [seed]` passes. It runs, in order:
+1. the build (builds run one at a time);
+2. the checker (`validate/checks.py`, also run by every build): 0 errors, and every warning either fixed or accepted by
+   the design with a reason in `QA_ACCEPT = [("<rule or check>", "<regex on the message>", "<why>")]`;
+3. the scripts' compile against the game's NoxScript (`tests/check_scripts.py`);
+4. the story: every talker's dialogue title, string keys of 31 characters or less, gifts picked up on a timer, the exit
+   leading to a built map, every chest holding loot, the gold in budget, no Zombie, a name of 9 characters or less;
+5. the room score (`review/roomscore.py`, by room type): rooms that miss it are listed to look at;
+6. the exterior's empty ground (`review/exteriors.py`): over Westwood's 90th percentile for the map's environment fails
+   (`review/exteriors_baseline.json`, from `py review/exteriors.py --westwood --save`), over the 75th is a look;
+7. the pictures, in `review/out/<Name>/qa/` with `index.html`: the story map, the routes with each stop's facing,
+   close-ups of every named story place, every room, the empty ground. Each comes with what to look for (the
+   "review only" items of `review/FEEDBACK.md`); look at every one.
+
+It never installs the map nor starts the game or the server. After it passes, the main session installs the map
+(`mapgen/install.py`) and runs the server smoke test (`tests/server_smoke.py`), then the user playtests.
+
+**The checker's rules.** Every finding names its rule (`checks.RULES`: `exterior.camp_seat`, `routes.facing`,
+`identity.showpiece`, ...) and the feedback it answers. Errors are defects a player will see or hit; warnings are
+departures from Westwood's range or from a house rule the playtests set. The rules by topic:
+- walls, doors, kits, floors, the boundary, reachability and the story's gates (the engine and Westwood's construction);
+- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4];
+- `rooms.*` (size, cover, identity strays), `composition.*` (the cross-type room rules, bridges, docks across puddles)
+  and `identity.*` (a room reads as what it is) [section 3];
+- `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every
+  stop facing open ground, tours of 4+ stops of 15+ s, nobody's route through a person standing still;
+- `exterior.*` [section 4-5]: overlapping pieces, pieces on a fence line, pickable lights, crowds and swarms, docks,
+  stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves.
+
+**Keeping the checks honest.**
+- A new rule gets a planted defect in `validate/selftest.py` (`py validate/selftest.py [case ...]`); a finding no rule
+  names fails the self-test.
+- A new rule is calibrated on Westwood's maps: `py validate/calibrate.py --dry` (how often each check fires there) and
+  `py validate/checkcheck.py` (per rule: our 11 maps, Westwood's 120, the planted case; flags dead rules, rules firing
+  on more than a quarter of Westwood's maps, unnamed findings). A rule that fires a lot on Westwood is either narrowed
+  or kept as a stated house rule (the playtest's word over Westwood's habit, as with torches indoors).
+- A new piece of feedback gets a line in `review/FEEDBACK.md`: the rule here that answers it, and the check, or the
+  picture and what to look for when it can only be judged by eye.
+
+**Review and playtest.** `review/review.py` (the sheet beside the 3 most similar Westwood maps, scored with
+`review/RUBRIC.md`, recorded in `review/reviews/`), the room lab (`mapgen/designs/roomlab.py`) and building lab
+(`mapgen/designs/buildinglab.py`) between playtests; then the user's playtest, whose numbered feedback goes into
+`review/FEEDBACK.md` with its date and map.
