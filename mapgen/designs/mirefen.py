@@ -14,7 +14,7 @@ The story
   Brask's eel traps. Brask pays for it.
 - The trading post and the Eel and Lantern inn buy and sell; caches lie hidden in the reeds; the villagers each know
   something.
-- The exit (the north causeway) leads back to Thornwick: the campaign comes home.
+- The exit (the north causeway) leads to Greywatch, the border castle on the hill road (chapter six).
 
     py mapgen/designs/mirefen.py [seed]
 """
@@ -34,7 +34,7 @@ rng = random.Random(SEED)
 NAME = "Mirefen"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "out", "mirefen")
-NEXT_MAP = "Thornwick"
+NEXT_MAP = "Greywatch"
 PATH = "DirtLight2"                 # the trodden ways of the fen (a floor of the swamp palette)
 
 
