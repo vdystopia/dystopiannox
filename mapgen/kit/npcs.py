@@ -183,8 +183,12 @@ class Behaviours:
         lib = open(os.path.join(HERE, "behaviours", "behaviours.go"), encoding="utf-8").read().replace("package PKG", f"package {pkg}", 1)
         objs, wps = self.names()
         cfg = (f"package {pkg}\n\n// Who does what on {map_name} (written by dystopiannox mapgen/kit/npcs.py).\n\n"
-               'import "github.com/noxworld-dev/noxscript/ns/v4"\n\nfunc init() {\n'
-               "\tns.OnMapEvent(ns.MapInitialize, func() {\n" + "".join(f"\t\t{c}\n" for c in self.calls) + "\t})\n"
+               'import "github.com/noxworld-dev/noxscript/ns/v4"\n\n'
+               # set up once, on MapInitialize or after a second of frames if it never fires (as kit/quests.py)
+               "var behavioursSetUp bool\n\nfunc setUpBehaviours() {\n\tif behavioursSetUp {\n\t\treturn\n\t}\n"
+               "\tbehavioursSetUp = true\n" + "".join(f"\t{c}\n" for c in self.calls) +
+               "\tprintln(\"behaviours: started\")\n}\n\nfunc init() {\n\tns.OnMapEvent(ns.MapInitialize, setUpBehaviours)\n"
+               "\tbframes := 0\n\tns.OnEachFrame(1, func() {\n\t\tif bframes++; bframes == 30 {\n\t\t\tsetUpBehaviours()\n\t\t}\n\t})\n"
                f"\tDiagnose({self._s(objs)}, {self._s(wps)})\n}}\n")
         out = {"behaviours.go": lib, "config.go": cfg}
         if getattr(self, "weapons", False):

@@ -171,10 +171,14 @@ class QuestBook:
         if not self.calls: return {}
         pkg = self.map.lower()
         lib = open(os.path.join(HERE, "behaviours", "quests.go"), encoding="utf-8").read().replace("package PKG", f"package {pkg}", 1)
+        # the story is set up once, on MapInitialize or, if that never fires (the dedicated server with no player in
+        # it does not fire it), after a second of frames: the quests never hang on one event alone
         cfg = (f"package {pkg}\n\n// The story of {self.map}: who says what, and what happens (written by dystopiannox "
-               f"mapgen/kit/quests.py).\n\nimport \"github.com/noxworld-dev/noxscript/ns/v4\"\n\nfunc init() {{\n"
-               "\tns.OnMapEvent(ns.MapInitialize, func() {\n" + "".join(f"\t\t{c}\n" for c in self.calls) +
-               "\t\tQuests()\n\t})\n"
+               f"mapgen/kit/quests.py).\n\nimport \"github.com/noxworld-dev/noxscript/ns/v4\"\n\n"
+               "var storySetUp bool\n\nfunc setUpStory() {\n\tif storySetUp {\n\t\treturn\n\t}\n\tstorySetUp = true\n" +
+               "".join(f"\t{c}\n" for c in self.calls) + "\tQuests()\n}\n\nfunc init() {\n"
+               "\tns.OnMapEvent(ns.MapInitialize, setUpStory)\n"
+               "\tframes := 0\n\tns.OnEachFrame(1, func() {\n\t\tif frames++; frames == 30 {\n\t\t\tsetUpStory()\n\t\t}\n\t})\n"
                f"\tlineKeys = []string{{{', '.join(_go(k) for k in self.strings)}}}\n"
                f"\tQuestCheck([]string{{{', '.join(_go(n) for n in sorted(self.names))}}})\n}}\n")
         return {"quests.go": lib, "quests_config.go": cfg}

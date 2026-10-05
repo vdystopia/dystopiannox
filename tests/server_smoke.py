@@ -72,6 +72,8 @@ def main():
     for l in bad[:30]: print("  !", l.strip())
     for l in text.splitlines():
         if "self-check" in l or "quests:" in l or "go scripts" in l: print("   ", l.strip())
+    if "quests self-check" in text and "quests: started" not in text:
+        print("  ! the quests never started: MapInitialize did not fire in the server")
     os.makedirs(os.path.join(REPO, "tests", "out"), exist_ok=True)
     shutil.copy2(log, os.path.join(REPO, "tests", "out", f"{name}_server.log"))
     shutil.rmtree(tmp, ignore_errors=True)

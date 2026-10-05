@@ -381,6 +381,7 @@ func OnPickup(typ string, when Cond, acts []Act) {
 // Quests starts the watchers: twice a second the spots and the player's pack are checked, and each talker's dialog
 // is re-armed (what the player carries can change which line comes next).
 func Quests() {
+	println("quests: started, talkers", len(talkers), "- watches", len(watches))
 	ns.OnEachFrame(15, func() {
 		p := player()
 		if p == nil {
