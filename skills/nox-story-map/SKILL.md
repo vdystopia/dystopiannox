@@ -129,6 +129,11 @@ the work first, leave it uncommitted and report.
 - Fights in turn (an arena, cells): open one door at a time with `A.unlock` as each bout's foes die (`q.dead`); a
   jail yard's cell doors are `yard.cells`.
 - A toll, a bribe, a ransom: `q.when(gold=n)` holds while the player carries n gold; `A.gold(-n)` takes it.
+- A sealed building (Starwell's observatory): `StoryMap.seal_entrance(building, prefix)` locks its entrance to a
+  mechanism under script names; break the seal with `A.unlock` (`q.on_all_dead` of the binding-stones' keepers).
+- A culture's own outdoor scenes: themes with `culture=` in `kit/scenes.py`, laid only with
+  `Exterior(..., culture=)` (Starwell's wizards: alchemist's yard, stargazer's post, star shards). Roles `college`,
+  `apothecary`, `observatory` (`mapgen/designs/starwell.py`).
 - Done by the kit, nothing to write (2026-10-05 playtests): every talker's name over its dialogue window
   (`NPC:<script name>`; townsfolk get given names; `q.talker(..., title=)` overrides); the minimap's polygon; loot in
   containers; gifts (`A.give`) are picked up a few frames after they are made (at once froze the game); clones lose

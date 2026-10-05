@@ -340,12 +340,17 @@ ROOMS = {
                        types={"lab": r"^AlchemistDesk\d$|^WizardWorkstation\d[a-d]?$|^Telescope2[a-g]$|^Orrery2$|"
                                      r"^SentryGlobeMovable$|^VandegrafSmall$",
                               "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "storage": r"^Chest\d", "plant": PLANTS},
-                       compose=[dict(fam="lab", slot="line"),
+                       # 2026-10-05 (Starwell's college laboratory: sixteen like workstations end to end down a long
+                       # wall): the benches stand in threes with a hanging between, a piece per 12 tiles, at most 8
+                       repeat={"lab": (12, 8)},
+                       compose=[dict(fam="lab", slot="line", decor=3),
                                 dict(fam="shelves", slot="line", other=True, decor=2),
                                 dict(fam="table", slot="center", seats=True),
                                 dict(fam="carpet", slot="carpet", where="under", chance=0.6),
                                 dict(fam="wall_decor", slot="decor")],
                        fill=[dict(fam="lab", slot="group", group="curio", max=2, min_area=90),
+                             dict(fam="shelves", slot="line", other=True, decor=2, max=12),
+                             dict(fam="table", slot="group", group="worktable", max=1, min_area=100),
                              dict(fam="shelves", slot="racks", kind="books", max=10, min_area=220),
                              dict(fam="table", slot="group", group="sitting", max=1, min_area=160),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
@@ -671,6 +676,26 @@ BUILDINGS = {
                      rooms=[("barracks", "the soldiers' bunks"), ("mess_hall", "the garrison's mess"),
                             ("gear_store", "racks of arms and armour")],
                      scenes=["water_barrel", "woodpile"], garden=0.0, faces="square"),
+    # a wizards' town's buildings (Starwell, in Ix's manner: rules/out/buildings.json stucco_dark_house is Ix's
+    # dark-timbered stucco, Wiz01A): the college on the square, the alchemist's shop, the old observatory on its crag
+    "college": dict(purpose="a wizards' college: the hall where the archmagister sits in state, the library, the "
+                            "laboratory, the archmagister's study and chamber",
+                    style="galava_townhouse", size=(56, 42), min_units=420,
+                    rooms=[("throne_room", "the Hall of the Star, where the archmagister sits in state"),
+                           ("library", "the college library"),
+                           ("laboratory", "the college laboratory"), ("study", "the archmagister's study"),
+                           ("bedroom", "the archmagister's chamber")],
+                    scenes=["sign"], garden=0.0, faces="square"),
+    "apothecary": dict(purpose="an alchemist's shop: the shop floor with its counter, and the herb room where the "
+                               "potions are brewed", style="stucco_dark_house", size=(28, 22), min_units=110,
+                       rooms=[("shop", "the shop floor"), ("herbalist", "the brewing room")],
+                       scenes=["goods_display", "sign"], garden=0.0, faces="square"),
+    "observatory": dict(purpose="an old observatory of blue stone on a crag: the star-chamber where the sky was "
+                                "watched, the workroom, the library of star charts", style="blue_stone_house",
+                        size=(40, 30), min_units=240,
+                        rooms=[("hall", "the star-chamber"), ("laboratory", "the workroom"),
+                               ("library", "the star charts")],
+                        scenes=[], garden=0.0, faces="road"),
     # the biomes' structures (rules/BIOMES.md, rules/cultures.py): the built parts of Westwood's lava, ice and cave
     # maps in their own building styles, furnished by their culture
     "demon_forge": dict(purpose="a demon forge of black stone above the lava: the forge, the hall where its arms are "

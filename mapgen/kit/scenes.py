@@ -57,6 +57,8 @@ TARGETS = ("TargetBarrel1", "TargetBarrel2")
 STOOLS = ("Stool1", "Stool2", "Stool3")
 GRAVES = ("Tombstone1", "Tombstone1", "Tombstone11", "Tombstone17", "Tombstone5")
 PELTS = ("WolfPelt1", "WolfPelt2", "WolfPelt3", "WolfPelt4")
+CRYSTALS = ("MineCrystal01", "MineCrystal02", "MineCrystal03", "MineCrystal04", "MineCrystal05")
+TELESCOPES = ("Telescope1a", "Telescope1c", "Telescope1e", "Telescope1g")
 ALL = ("green", "ice", "lava", "cave", "swamp")
 TOWNISH = ("green", "ice", "swamp")
 
@@ -95,6 +97,8 @@ class Theme:
     size: int = 75                               # about how far its pieces reach from its anchor (px)
     scales: bool = False                         # its cap grows with the map's open ground (the wood's own heaps)
     mirror: bool = True
+    culture: str = ""                            # a culture's own scene: laid only when the map names it
+                                                 # (Exterior(culture=...): Starwell's wizards), never elsewhere
 
     def __post_init__(self):
         self.family = self.family or self.name
@@ -300,6 +304,32 @@ CATALOGUE = [
           [[P(BIG_ROCKS, 0, 0, must=True), P(ROCKS, -26, 14, n=2, step=(-12, 14), must=True), P(FERNS, 26, 16, must=True),
             P(("CaveRocksSmall",), 6, -30)]],
           places=("wild",), biomes=("green", "swamp"), cap=10, spacing=12, family="rock", weight=2.0, scales=True),
+    # ---- a wizards' town (culture "wizard": Starwell) ---------------------------------------------------------------
+    Theme("alchemists_yard", "the alchemist's yard: the brewing kettle against the wall, sacks of herbs and roots, the "
+          "water barrel, a crate of empty flasks, the stool she sits on to stir", "wall",
+          [[P(("Cauldron",), 0, 40, must=True), P(SMALL_SACKS, -38, 30, n=(1, 2), step=(-20, 12), must=True),
+            P(("WaterBarrel",), 40, 30, must=True), P(DARK_CRATES, 68, 34, orient="line", p=0.8),
+            P(STOOLS, 6, 78, p=0.6)]],
+          walls=("house",), roles=("apothecary", "herbwife", "college"), need=True, near=6, sides=("side", "back"),
+          biomes=("green",), cap=2, spacing=30, family="brew", tall=True, weight=3.0, culture="wizard"),
+    Theme("stargazers_post", "a stargazer's post: the telescope on its stand turned to the sky, a bench for the night's "
+          "watch, the crate the charts are kept in, a candle", "open",
+          [[P(TELESCOPES, 0, 0, must=True), P(("Bench1", "Bench2", "Bench4", "Bench5"), -8, 62, orient="face", must=True),
+            P(DARK_CRATES, 46, 24, orient="line", must=True), P(("Candle1",), -40, 20, p=0.7),
+            P(("CaveRocksSmall",), 30, -30, p=0.4)]],
+          places=("town", "wild"), roles=("college", "observatory"), biomes=("green",), cap=2, spacing=40,
+          family="stars", weight=1.5, min_types=3, min_pieces=3, culture="wizard"),
+    Theme("star_shards", "shards of the fallen star broken up through the turf round a boulder, as they lie all "
+          "through the wood", "open",
+          [[P(BIG_ROCKS, 0, 0, must=True), P(CRYSTALS, -28, 14, n=2, step=(-12, 16), must=True),
+            P(CRYSTALS, 28, 18, must=True), P(("CaveRocksSmall", "CaveRocksMedium"), 6, -30, p=0.7)]],
+          places=("wild",), biomes=("green",), cap=6, spacing=14, family="crystal", weight=1.6, scales=True,
+          min_types=2, culture="wizard"),
+    Theme("shard_wall", "star crystals grown out of the rock at the wood's foot, stones fallen round them", "wall",
+          [[P(CRYSTALS, 0, 30, must=True), P(CRYSTALS, -30, 34, p=0.7), P(ROCKS, 30, 30, must=True),
+            P(FERNS, -8, 62, must=True)]],
+          walls=("wild",), biomes=("green",), cap=6, spacing=14, family="crystal", weight=1.6, scales=True,
+          min_types=3, culture="wizard"),
     # ---- caves and mines -----------------------------------------------------------------------------------------
     Theme("mine_cache", "an ore cart left by the wall with the miners' steel crates, tools and a spare wheel", "wall",
           [[P(("MineOreCart1", "MineOreCartBroken1"), 0, 38, must=True), P(STEEL_CRATES, -50, 28, must=True,
@@ -377,6 +407,9 @@ ROLE_SCENES = {
     "fisher": [("drying_line", 0.7), ("woodpile", 0.5), ("supply_corner", 0.4)],
     "herbwife": [("drying_line", 0.6), ("woodpile", 0.4)],
     "townhall": [("cart_loading", 0.5), ("loafers_bench", 0.6)],
+    "college": [("stargazers_post", 0.8), ("cart_loading", 0.4)],
+    "apothecary": [("alchemists_yard", 1.0)],
+    "observatory": [("stargazers_post", 0.7)],
 }
 
 # at most so many scenes of a family to a map, whatever their themes (carts are memorable: a few to a map)

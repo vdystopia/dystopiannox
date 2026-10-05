@@ -28,7 +28,14 @@ STOCK = r"C:\GOG Games\Nox\maps"
 # Townsfolk's given names: the dialogue window titles a creature with the string "NPC:<script name>". None of these
 # is in Westwood's table (nox.csf NPC:...) or given to a story character in a design. The donor's body picks the
 # list: Westwood's Maiden clones are women.
-WOMEN_DONORS = {"Lydia", "Tanya", "Julie", "Gretchen", "Maiden", "Kayla", "Kristine", "Melissa", "Shari"}
+WOMEN_DONORS = {"Lydia", "Tanya", "Julie", "Gretchen", "Maiden", "Kayla", "Kristine", "Melissa", "Shari", "Joyce",
+                "Eowynn", "Jennifer", "Evelyn"}
+
+
+def is_woman(src):
+    """Whether a donor's body is a woman's: Westwood's Maiden clones (Wiz02A's Maiden1-9, TowerMaiden, Con06a's
+    Townswoman1-6) and the named ones."""
+    return src in WOMEN_DONORS or src.startswith(("Maiden", "TowerMaiden", "Townswoman"))
 NAMES = {
     "f": ["Aelis", "Brida", "Cerys", "Dagny", "Elswyth", "Fenna", "Gisla", "Hild", "Ide", "Jorunn", "Ketta", "Leofa",
           "Nesta", "Odile", "Petra", "Rowena", "Sabine", "Tilde", "Una", "Ysolde", "Alys", "Berta", "Clemence",
@@ -383,7 +390,7 @@ class StoryMap:
         n_doors = sum(1 for bid, b in self.placed for d in b.entrances[:1]
                       if self.land.door_outside(d, _squares_of(b.footprint)))
         for k, (donor, src) in enumerate(folk):
-            pool = [n for n in NAMES["f" if src in WOMEN_DONORS else "m"] if n not in taken]
+            pool = [n for n in NAMES["f" if is_woman(src) else "m"] if n not in taken]
             name = name_rng.choice(pool) if pool else f"{prefix}{k + 1}"
             taken.add(name); self.folk_names.append(name)
             self._movers.add(name)
@@ -867,6 +874,20 @@ class StoryMap:
             objs.append(p)
             self.pop.creature(t, *p, action="guard", scr=f"{prefix}{k + 1}", aggr=aggr)
             names.append(f"{prefix}{k + 1}")
+        return names
+
+    def seal_entrance(self, building, prefix, lock="Mechanism"):
+        """A building's main entrance locked (by default to a mechanism: only the story opens it, A.unlock) and named
+        <prefix>1, <prefix>2 (one name for a single door): a sealed door the story breaks (Starwell's observatory).
+        Returns the names."""
+        d = building.entrances[0]
+        names = []
+        for o in self.m.d["objects"]:
+            if o.get("door") is not None and math.hypot(o["x"] - d.px[0], o["y"] - d.px[1]) < 40:
+                o["scr"] = f"{prefix}{len(names) + 1}"
+                o.setdefault("xfer", {})["LockType"] = lock
+                names.append(o["scr"])
+        assert names, "no door at the building's entrance"
         return names
 
     def lock_room(self, room, lock="Silver"):
