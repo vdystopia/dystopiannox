@@ -236,10 +236,8 @@ for r_ in REGIONS:
 
 # the dock: where the shore road reaches the mere, out into open water; a path from it to the road
 shore_c = land.areas["shore"]["c"]
-dock = None
-for dir_ in ("down", "up"):
-    dock = ww.dock(lake, dir_, length=2, beyond=4, near=(2 * shore_c[0], 2 * shore_c[1]))
-    if dock: break
+# either kit, square to its own stretch of shore and out over open water, nearest where the shore road comes down
+dock = ww.dock(lake, "best", length=2, beyond=4, near=(2 * shore_c[0], 2 * shore_c[1]))
 if dock:
     du_, dv_ = dock["start"]
     land.connect(m, px_square((du_ + dv_) / 2 * CELL, (du_ - dv_) / 2 * CELL))
@@ -291,11 +289,19 @@ dig_site = camps.camp_site(m, land, barrows_c, reach=16, road_clear=3.0, room=8,
 dig_way = sm.road_near(dig_site)                       # the kings' way beside it: where the way in comes from
 barrows_camp = camps.bandit_camp(m, rng, land, dig_site, dig_way,
                                  loot=[("Gold", {"Amount": 80}), "RedPotion", "RedPotion", "Quiver", "LeatherHelm"],
-                                 sleepers=4, tents=2)
+                                 sleepers=4, tents=2, trade="dig")
 grave_yard = next((y_ for y_ in yards if y_.kind == "graveyard"), None)
 dsc = camps.Scene(m, rng, land, grave_yard.centre if grave_yard and "graveyard" in built else barrows_c)
+
+
+def clear_of_things(x, y, r=30):
+    """Nothing already standing within r px (the graveyard's headstones, its plots and its gravedigger's corner)."""
+    return all(math.hypot(o["x"] - x, o["y"] - y) >= r for o in m.d["objects"] if abs(o["x"] - x) < r and abs(o["y"] - y) < r)
+
+
 for k_ in range(3):                                   # their spades left in the opened graves
     for r_ in (1.6, 2.4, 3.2, 5.5):
+        if not clear_of_things(*dsc.px(r_, k_ * 2.1 + 0.7)): continue
         if dsc.put(("MiningShovelInGround", "MiningPickAxeInGround1", "MiningShovelInGround")[k_],
                    *dsc.at(r_, k_ * 2.1 + 0.7)): break
 # the amber pits: the urchins' squat beside the diggers' quarry, open toward the pit road; the shaman's hoard in it
@@ -463,12 +469,12 @@ for k, (x, y) in enumerate(graves + [csc.px(2.0, 3.6)]):
                  sight=90)
     risen.append(n)
 # the diggers spread about their camp in the barrow-field as a camp is lived in (kit/posts): their foreman at its head by
-# the chest, two by the fire, two by their tents, archers well apart at the way in from the town road
+# the chest, one by the fire, one by the tents, two at work at the dig, archers well apart at the way in from the road
 diggers = []
-dig_posts = camp_posts(m, barrows_camp, square_px(*dig_way), sit=2, tents=2, watch=2)
+dig_posts = camp_posts(m, barrows_camp, square_px(*dig_way), sit=1, tents=1, watch=2, work=2)
 pop.creature("Swordsman", *dig_posts["leader"], action="guard", face=square_px(*vc), scr="DiggerBoss", aggr=0.83,
              HealthMultiplier=2.0)
-for k, (x, y) in enumerate(dig_posts["sit"] + dig_posts["tent"]):
+for k, (x, y) in enumerate(dig_posts["sit"] + dig_posts["tent"] + dig_posts["work"]):
     n = f"Digger{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=barrows_camp["fire"], scr=n, aggr=0.83)
     diggers.append(n)

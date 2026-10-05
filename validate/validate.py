@@ -23,7 +23,8 @@ NOX = os.path.dirname(md.REPO)
 ORDER = {"error": 0, "warning": 1, "info": 2}
 LABEL = dict(setup="Map setup", wall_pieces="Wall pieces", wall_shapes="Wall shapes", boundary="Outer boundary",
              doors="Doors", kits="Bridges and docks", objects="Object placement", reachability="Reachability",
-             doorways="Doorways", routes="Where creatures walk", floors="Floor transitions", rooms="Rooms", density="Density and style")
+             doorways="Doorways", routes="Where creatures walk", floors="Floor transitions", rooms="Rooms", density="Density and style",
+             exterior="The outdoor ground")
 
 
 def resolve(arg):

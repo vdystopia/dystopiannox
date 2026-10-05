@@ -23,6 +23,7 @@ the dressing draws from its own generator (zlib.crc32 of the map's name), so the
 import collections, math, os, random, re, sqlite3, zlib
 from kit.layout import N4, N8, square_px, px_square, cell_square
 from kit import scenes as S
+from kit import spacing as SP
 from nox import CELL
 
 _DB = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "corpus", "out",
@@ -151,6 +152,7 @@ class Exterior:
                         avoid=self.avoid, routes=self._route_squares())
         no = set().union(*self.why.values())
         self.props, self.colliders, self.gates = [], [], []
+        self.tgrid = collections.defaultdict(list)            # (type, x, y) of every thing, for Westwood's spacing
         self.signs = collections.defaultdict(list)          # family -> px of things already on the map
         for o in spec.d["objects"]:
             t, x, y = o.get("type", "NPC"), o["x"], o["y"]        # a clone is a person
@@ -163,6 +165,7 @@ class Exterior:
             elif "MONSTER" in cls or o.get("scr"):
                 no |= self._dilate({px_square(x, y)}, 1)
             self.colliders.append((x, y))
+            if "type" in o and not NOT_A_PROP.search(t): self.tgrid[(int(x // 92), int(y // 92))].append((t, x, y))
             if not NOT_A_PROP.search(t): self.props.append((x, y))
             for fam, stems in S.FAMILY_SIGNS.items():
                 if t.startswith(stems): self.signs[fam].append((x, y))
@@ -291,6 +294,16 @@ class Exterior:
         if self._near(self.cgrid, x, y, max(20, r + 8)):
             if dbg is not None: dbg["collider"] += 1
             return False
+        # Westwood's closest pairs (kit/spacing; Starwell playtest: "these crates are simply too close to each
+        # other"), with the scene's own pieces and with what already stands round it; and off every wall line
+        near = [p for a in (-1, 0, 1) for b in (-1, 0, 1)
+                for p in self.tgrid.get((int(x // 92) + a, int(y // 92) + b), ())]
+        if not SP.spaced(t, x, y, near + getattr(self, "_typed", [])):
+            if dbg is not None: dbg["spacing"] += 1
+            return False
+        if SP.wall_clearance(self.walls, x, y, reach=2) < max(14.0, 0.8 * SP.sprite_half(t)):
+            if dbg is not None: dbg["wall line"] += 1
+            return False
         return not any((x - a) ** 2 + (y - b) ** 2 < max(14, 0.7 * (r + rb)) ** 2 for a, b, rb in mine)
 
     def _cuts(self, F):
@@ -369,6 +382,7 @@ class Exterior:
         mir = -1 if (th.mirror and rng.random() < 0.5) else 1
         line = S.line_of(*tdir)
         plan, mine, want = [], [], 0
+        self._typed = []
         for k, pc in enumerate(layout):
             if pc["p"] < 1 and rng.random() >= pc["p"]:
                 continue
@@ -409,7 +423,7 @@ class Exterior:
                 elif pc["orient"] == "cot":
                     t = S.COT_FOOT[S.axis_of(ox - x, oy - y)]
                 if not self._ok(t, x, y, mine): continue
-                plan.append((t, x, y)); mine.append((x, y, radius(t))); got += 1
+                plan.append((t, x, y)); mine.append((x, y, radius(t))); self._typed.append((t, x, y)); got += 1
             if (pc["must"] or k == 0) and got == 0:
                 why[(th.name, "must", k)] += 1; return None
         kinds = {base(t) for t, _, _ in plan if "Shadow" not in t}
@@ -429,6 +443,8 @@ class Exterior:
         for t, x, y in plan:
             spec.obj_px(t, x, y)
             self.cgrid[(int(x // 92), int(y // 92))].append((x, y))
+            self.tgrid[(int(x // 92), int(y // 92))].append((t, x, y))
+        self._typed = []
         self.walk -= F
         return plan
 

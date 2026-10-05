@@ -390,6 +390,17 @@ class Waterworks:
         """Dock into a pond/lake. direction 'down' = DockDown running down-right (along '\\'),
         'up' = DockUp running down-left (along '/'). length = number of centre pieces.
         at: land tile-centre (uv) on the shore to start from; default: picked on the shore."""
+        if direction in ("best", "any"):
+            # either kit, whichever starts nearest `near` (or the first that fits) square to its own stretch of shore
+            opts = []
+            for d_ in ("down", "up"):
+                kit_ = "DockDown" if d_ == "down" else "DockUp"
+                st_ = KITS[kit_]["steps"]
+                n_ = 1 if kit_ == "DockUp" else length
+                c_ = self._shore_start(body, kit_, st_["first"] + st_["mid"] * (n_ - 1) + st_["last"], beyond, near)
+                if c_: opts.append((((c_[0] - near[0]) ** 2 + (c_[1] - near[1]) ** 2) if near else 0, d_, c_))
+            if not opts: return None
+            _, direction, at = min(opts)
         kit = "DockDown" if direction == "down" else "DockUp"
         k = KITS[kit]
         st = k["steps"]
@@ -436,15 +447,34 @@ class Waterworks:
         side = ((1, -1), (-1, 1)) if kit == "DockDown" else ((1, 1), (-1, -1))
         n = int(reach / 2) + 3 + beyond
         taken = [c for lane in self.kit_lanes for c in lane]
+        wet = lambda c: self.spec.floor.get(c) in WATER_MATERIALS
         cands = []
         for (x, y) in body.tiles:
             land = (x - step[0], y - step[1])
             if not self._land(land) or land in self.no_walls:
                 continue
             path = [(land[0] + step[0] * i, land[1] + step[1] * i) for i in range(1, n)]
-            if not all(self.spec.floor.get(c) in WATER_MATERIALS for c in path):
+            if not all(wet(c) for c in path):
                 continue
-            if not all(self.spec.floor.get((c[0] + sx, c[1] + sy)) in WATER_MATERIALS for c in path[1:] for sx, sy in side):
+            # open water two tiles to either side all along it (Ambermere playtest, 2026-10-05: "the dock is way too
+            # close to the shore and does not extend out into the middle of the pond": one tile of water beside it had
+            # let it run along the shore, half on the grass)
+            if not all(wet((c[0] + sx * k_, c[1] + sy * k_)) for c in path[1:] for sx, sy in side for k_ in (1, 2)):
+                continue
+            # square to its own stretch of shore: the way out over the water from the bank (the mean direction to the
+            # water round the landing) within 30 degrees of the dock's run
+            vx = vy = 0.0
+            for a_ in range(-6, 7):
+                for b_ in range(-6, 7):
+                    if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 36 and wet((land[0] + a_, land[1] + b_)):
+                        vx += a_; vy += b_
+            nv = math.hypot(vx, vy)
+            if not nv or (vx * step[0] + vy * step[1]) / (nv * math.hypot(*step)) < math.cos(math.radians(30)):
+                continue
+            # its far end in open water: water three tiles round the tip every way
+            tip = path[min(len(path) - 1, int(reach / 2) + 1)]
+            if not all(wet((tip[0] + a_, tip[1] + b_)) for a_ in range(-3, 4) for b_ in range(-3, 4)
+                       if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 9):
                 continue
             if any(abs(c[0] - t[0]) + abs(c[1] - t[1]) < 12 for c in [land] + path for t in taken):
                 continue                               # keep docks well apart

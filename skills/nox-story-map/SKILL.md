@@ -65,9 +65,11 @@ total: Emberhollow's three vents).
    `Village.SIGN_TEXT` by role, with keys from `q.text`. A different house style for a role:
    `BuildingIdentity(..., style="stone_house")`.
    The watch walks beats (`sm.beat(name, centre, radius=, stops=)`); camps' men stand at spaced posts
-   (`kit/posts.camp_posts(m, camp, toward_way_in, sit=, tents=, watch=)`: a leader, men by the fire and the tents,
-   archers apart at the approach); a camp is laid where it has room (`camps.camp_site`), open toward the road beside
-   it, and urchins squat in `camps.urchin_camp`, never pieces strewn by hand; a person waiting at a door stands at
+   (`kit/posts.camp_posts(m, camp, toward_way_in, sit=, tents=, watch=, work=)`: a leader, at most two at the fire,
+   others by the tents, the store and the racks, workers at the dig, archers apart at the approach); a camp is laid in
+   zones where it has room (`camps.camp_site`; `bandit_camp(..., trade="dig", finds=)` for diggers), open toward the
+   road beside it, and urchins squat in `camps.urchin_camp`, never pieces strewn by hand; a cloned person's hidden
+   fighter twin stands exactly on his spot; a person waiting at a door stands at
    `sm.doorside(role or building)`, off the door's way; `sm.keep_folk_away(centre, r)` keeps townsfolk's stops off a foe's ground.
    Last, after the people: `kit/dressing.Exterior(m, land, biome, placed=placed).dress()` (`martial=True` for a
    garrison) dresses the outdoor ground with whole scenes from the catalogue in `kit/scenes.py` (a wagon on the

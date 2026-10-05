@@ -1573,8 +1573,163 @@ def check_routes(m, ctx, base):
     return out
 
 
+# ---- the outdoor ground (Starwell and Ambermere playtests, 2026-10-05) -----------------------------------------
+CROWD_PAIR = 30.0         # px: two creatures nearer than this stand on each other (Westwood: 2.5% of its creatures)
+CROWD_R, CROWD_N = 90.0, 5      # px, creatures: five round one spot is a swarm ("ten people packed round the fire")
+SKIP_PROP = re.compile(r"^(Dock|RopeBridge|LavaBridge|TraderTent|ColorLight|Invisible|Amb|PlayerStart|Extent|Torch$|Boulder|"
+                       r"DunMirTorch|LOTDWallSconse|Sconse|Sign|Plank|Waypoint)|Shadow|Door|Gate|Window")
+ON_LINE = re.compile(r"^(Garden|Plant[45]|Bush|Tombstone|Cross\d|Barrel|LargeBarrel|PiledBarrels|WaterBarrel|Crate|"
+                     r"DarkCrate|TraderAppleCrate|SackChest|Bench|Stool|OutdoorTrader|TraderPoleArm|TraderBowRack|"
+                     r"TraderQuiverRack|TargetBarrel|Cot\d|UrchinBed|Statue|TorchPole|Brazier|Well$|Anvil|Cauldron|"
+                     r"CampFire|MiningShovel|MiningPickAxe|SmallStoneBlock|Monument)")
+
+
+def _indoor_cells(m):
+    """Cells inside buildings: the enclosed rooms' (find_rooms, yards left out), the design's own rooms' floors
+    (<map>.rooms.json: a hall too big for find_rooms), and the wall cells beside them (a piece snug to a wall)."""
+    if getattr(m, "_indoor", None) is None:
+        cells = {c for r in indoor_rooms(m) for c in r["cells"]}
+        for (x, y), rec in declared_rooms(m).items():
+            if not rec.get("yard"): cells |= {(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)}
+        cells |= {(x + a, y + b) for x, y in cells for a in (-1, 0, 1) for b in (-1, 0, 1) if (x + a, y + b) in m.walls}
+        m._indoor = cells
+    return m._indoor
+
+
+def check_exterior(m, ctx, base):
+    """The outdoor ground, as the playtests read it:
+    - props of a scene, a camp or a yard that overlap (Starwell: "barrels of several sizes overlapping one another"):
+      two pieces nearer than Westwood's closest pairs allow (kit/spacing.gap);
+    - a piece on a fence or wall line (Ambermere: "this fence is literally on top of this row of plants");
+    - a pickable thing as ground decor (Starwell: candles as outdoor lights, which the player can pick up);
+    - creatures standing on each other or swarming one spot (Starwell: "NPCs are all on top of each other like a
+      swarm"); a person's disabled twin, on the person's own spot, is one body;
+    - a dock that does not run out from the shore into open water (Ambermere: "the dock is way too close to the
+      shore and does not extend out into the middle of the pond")."""
+    from kit import spacing as SP
+    out = []
+    indoor = _indoor_cells(m)
+    outdoor = [o for o in m.objects if m.cell_of(o["x"], o["y"]) not in indoor]
+    # overlapping props
+    props = [o for o in outdoor if not SKIP_PROP.search(o["type"]) and "MONSTER" not in o["cls"] and
+             not SP.LOOSE.match(o["type"]) and (SP.family(o["type"]) or (m.blocking(o) and "OBSTACLE" in o["cls"]))]
+    grid = collections.defaultdict(list)
+    for o in props: grid[(int(o["x"] // 80), int(o["y"] // 80))].append(o)
+    bad = []
+    for o in props:
+        gx, gy = int(o["x"] // 80), int(o["y"] // 80)
+        for a in (-1, 0, 1):
+            for b in (-1, 0, 1):
+                for p in grid.get((gx + a, gy + b), ()):
+                    if p["id"] <= o["id"]: continue
+                    g = SP.gap(o["type"], p["type"]) * 0.85
+                    d = math.hypot(o["x"] - p["x"], o["y"] - p["y"])
+                    if g and d < g:
+                        bad.append(F("exterior", "warning", f"{o['type']} and {p['type']} stand {d:.0f} px apart (Westwood "
+                                     f"keeps them {g / 0.85:.0f}): outdoor pieces overlap.", (o["x"] + p["x"]) / 2,
+                                     (o["y"] + p["y"]) / 2))
+    out += bad[:25]
+    if len(bad) > 25: out.append(F("exterior", "warning", f"... and {len(bad) - 25} more overlapping outdoor pieces."))
+    # pieces on a fence or a built wall's line
+    built = {c: w for c, w in m.walls.items() if not w.invisible and not NATURAL_WALL.search(w.material)}
+    online = []
+    for o in outdoor:
+        if not ON_LINE.match(o["type"]): continue
+        d = SP.wall_clearance(built, o["x"], o["y"], reach=2)
+        lim = 0.5 * SP.sprite_half(o["type"]) + 6
+        if d < lim:
+            online.append(F("exterior", "warning", f"{o['type']} stands {d:.0f} px from a fence or wall line: nothing is "
+                            f"placed on top of a fence (keep it {lim:.0f} px or more inside).", o["x"], o["y"]))
+    out += online[:25]
+    if len(online) > 25: out.append(F("exterior", "warning", f"... and {len(online) - 25} more pieces on a fence or wall line."))
+    # pickable things as decor
+    for o in outdoor:
+        if o.get("scr") or "MONSTER" in o["cls"]: continue
+        if SP.PICK_TYPES.match(o["type"]) or "FOOD" in o["cls"]:
+            out.append(F("exterior", "warning", f"A {o['type']} lies outdoors as decor: the player can pick it up. Light "
+                         f"the ground with a torch pole, a brazier, a lamp or a fire.", o["x"], o["y"]))
+    # creatures on each other, and swarms
+    # those who stand where they are placed: a walker of the scripted routes (a townsperson's tour, the watch's beat)
+    # sets out from its start at once and is not counted
+    side = os.path.splitext(m.file or "")[0] + ".routes.json"
+    walkers = {r.get("who") for r in json.load(open(side, encoding="utf-8"))} if m.file and os.path.exists(side) else set()
+    cr = [o for o in outdoor if "MONSTER" in o["cls"] and "Shopkeeper" not in o["type"] and
+          (o.get("scr") or "").split(":")[-1] not in walkers]
+    for i, a in enumerate(cr):
+        for b in cr[i + 1:]:
+            d = math.hypot(a["x"] - b["x"], a["y"] - b["y"])
+            if 2.0 < d < CROWD_PAIR:
+                out.append(F("exterior", "warning", f"{a['type']} and {b['type']} stand {d:.0f} px apart: two bodies on one "
+                             f"spot.", (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
+    flagged = []
+    for a in cr:
+        near = {(round(b["x"]), round(b["y"])) for b in cr if math.hypot(a["x"] - b["x"], a["y"] - b["y"]) < CROWD_R}
+        if len(near) >= CROWD_N and not any(math.hypot(a["x"] - x, a["y"] - y) < CROWD_R for x, y in flagged):
+            flagged.append((a["x"], a["y"]))
+            out.append(F("exterior", "warning", f"{len(near)} creatures stand within {CROWD_R:.0f} px of one spot: a swarm. "
+                         f"Give each its own post (kit/posts.camp_posts).", a["x"], a["y"]))
+    out += dock_reach(m)
+    return out
+
+
+def dock_reach(m):
+    """A dock runs out from its shore, square to it, over open water: its axis within 35 degrees of the shore's
+    normal at its root, most of its length over water, and open water on every side of its far end."""
+    out = []
+    # a dock's own deck (kit/water._strip lays WoodGray planks over the water it spans) counts as water
+    water = {t for t, d in m.tiles.items() if WATER_RE.search(d["material"]) or re.match(r"^WoodGray2?$", d["material"])}
+    wet = lambda x, y: m.tile_at_cell(m.cell_of(x, y)) in water
+    pieces = collections.defaultdict(list)
+    for o in m.objects:
+        mt = re.match(r"^(DockDown|DockUp)", o["type"])
+        if mt: pieces[mt.group(1)].append(o)
+    for kit, ps in pieces.items():
+        left = list(ps)
+        while left:
+            ch = [left.pop()]; grew = True
+            while grew:
+                grew = False
+                for o in list(left):
+                    if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < 120 for c in ch):
+                        ch.append(o); left.remove(o); grew = True
+            dx, dy = DOCK_DIR[kit]; L = math.hypot(dx, dy); ux, uy = dx / L, dy / L
+            root = min(ch, key=lambda o: o["x"] * ux + o["y"] * uy)
+            tip = max(ch, key=lambda o: o["x"] * ux + o["y"] * uy)
+            # the shore's normal at the root: toward the water round it
+            sx = sy = 0.0
+            for a in range(-10, 11):
+                for b in range(-10, 11):
+                    x, y = root["x"] + a * 23, root["y"] + b * 23
+                    if math.hypot(a, b) <= 10 and wet(x, y): sx += a; sy += b
+            nl = math.hypot(sx, sy)
+            ang = math.degrees(math.acos(max(-1, min(1, (sx * ux + sy * uy) / nl)))) if nl else 180
+            length = math.hypot(tip["x"] - root["x"], tip["y"] - root["y"])
+            steps = max(2, int(length / 12))
+            over = sum(wet(root["x"] + ux * length * k / steps, root["y"] + uy * length * k / steps)
+                       for k in range(steps + 1)) / (steps + 1)
+            # water on both sides of it, along its outer three quarters (one that runs along its shore has the bank
+            # beside it all the way)
+            px_, py_ = -uy, ux
+            sides = [all(wet(root["x"] + ux * length * k / steps + px_ * e, root["y"] + uy * length * k / steps + py_ * e)
+                         for e in (56, -56)) for k in range(steps + 1) if k >= steps / 4]
+            flank = sum(sides) / max(1, len(sides))
+            ring = [wet(tip["x"] + 70 * math.cos(q * math.pi / 4), tip["y"] + 70 * math.sin(q * math.pi / 4))
+                    for q in range(8)]
+            why = []
+            if ang > 35: why.append(f"it runs {ang:.0f} degrees off square to its shore")
+            if over < 0.6: why.append(f"only {over:.0%} of it lies over water")
+            if flank < 0.6: why.append(f"the bank runs beside it ({flank:.0%} of it has water on both sides)")
+            if sum(ring) < 7: why.append("its far end lies near a shore")
+            if why:
+                out.append(F("exterior", "warning", f"The {kit} dock does not reach out into the water: " + "; ".join(why) +
+                             ". A dock starts on the bank and runs out square to the shore toward open water.",
+                             tip["x"], tip["y"]))
+    return out
+
+
 ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
-       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_rooms, check_density]
+       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_rooms, check_density,
+       check_exterior]
 
 
 def run_all(m, base, only=None):

@@ -388,15 +388,18 @@ if jail and len(cells) >= 2:
     centres = []
     for c in range(2):
         lo, hi = c * L_ // 2, (c + 1) * L_ // 2
-        if along_i: centres.append(square_px(jail.gi + (lo + hi) / 2, jail.gj - 1 + jail.h / 2))
-        else: centres.append(square_px(jail.gi + jail.w / 2, jail.gj - 1 + (lo + hi) / 2))
+        # the cell's middle as drawn (kit/yards Yard.centre: the fence stands half a square toward -j of the squares)
+        if along_i: centres.append(square_px(jail.gi + (lo + hi) / 2, jail.centre[1]))
+        else: centres.append(square_px(jail.centre[0], jail.gj - 1.5 + (lo + hi) / 2))
     for c, (x, y) in enumerate(centres):
         door = min(cells, key=lambda o: math.hypot(o["x"] - x, o["y"] - y))
         door["scr"] = f"Cell{c + 1}"
         door.setdefault("xfer", {})["LockType"] = "Mechanism"
         for k in range(1 if c == 0 else 2):
             n = f"Prisoner{len(prisoners) + 1}"
-            pop.creature("Swordsman", x + (k * 2 - 1) * 9 * c, y + (k * 2 - 1) * 9 * c, action="idle", scr=n, aggr=0.0,
+            # the brothers side by side across the cell, 40 px apart (they had stood 25 px apart, on each other)
+            ox_, oy_ = ((14, 14) if along_i else (14, -14)) if c else (0, 0)
+            pop.creature("Swordsman", x + (k * 2 - 1) * ox_, y + (k * 2 - 1) * oy_, action="idle", scr=n, aggr=0.0,
                          sight=40, face=(vx, vy), spread=False)
             prisoners.append(n)
 assert len(prisoners) == 3, "the cells were not built"
