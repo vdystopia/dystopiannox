@@ -82,6 +82,7 @@ for a_, b_, w_, road_ in (("south", "town", 14, True), ("town", "lake", 14, Fals
     land.link(a_, b_, w_, bend=0.24, road=road_, road_material=PATH, pockets=(1, 2) if road_ else (0, 1))
 d = Dresser(m, rng, land, "ice")
 m.blending("RoughCobble", 7, edge="BlendEdge")
+m.blending("GreenBrick", 8, edge="BlendEdge")         # paving round the stone houses
 
 # the ogres' keep in the north-west, its door toward the pines path (placed before the land grows round it)
 keep_b = d.structure("ogre_keep", "keep", toward="pines", scale=1.0, name="the old keep")
