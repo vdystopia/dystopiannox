@@ -42,6 +42,8 @@ class A:
     @staticmethod
     def take(t): return ("take", t, "", 0)
     @staticmethod
+    def spawn(t, at_obj): return ("spawn", t, at_obj, 0)
+    @staticmethod
     def gold(n): return ("gold", "", "", n)
     @staticmethod
     def print(text): return ("print", text, "", 0)
@@ -141,6 +143,7 @@ class QuestBook:
         out = []
         for k, a, b, n in acts:
             if k in ("unlock", "lock", "enable", "disable", "hunt", "walk", "chat"): self.names.add(a)
+            if k == "spawn": self.names.add(b)
             out.append(f"{{Kind: {_go(k)}, A: {_go(a)}, B: {_go(b)}, N: {int(n)}}}")
         return "[]Act{" + ", ".join(out) + "}"
 

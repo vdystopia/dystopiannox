@@ -74,7 +74,7 @@ class StoryMap:
         land.taken -= held
         return self.placed
 
-    def connect_and_furnish(self, style="town"):
+    def connect_and_furnish(self, style="town", path_material="DirtDark2"):
         """Paths from every door to the roads (dead ends trimmed), then every room furnished by its identity."""
         m, land = self.m, self.land
         land.clear_walls(m)
@@ -82,7 +82,7 @@ class StoryMap:
         for bid, b in self.placed:
             foot = _squares_of(b.footprint)
             for d in b.entrances:
-                path = land.connect_door(m, d, foot)
+                path = land.connect_door(m, d, foot, material=path_material)
                 if path is None: print(f"  no path from the {bid.role}'s door")
                 else: door_paths |= set(path)
         land.trim_dead_ends(m, keep=door_paths)

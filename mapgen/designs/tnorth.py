@@ -11,6 +11,7 @@ from kit.layout import Land, square_px
 from kit.vegetation import Planter, FORESTS
 from kit.quests import QuestBook, A
 from kit import camps
+from kit.story import StoryMap
 
 SEED = int(sys.argv[1]) if len(sys.argv) > 1 else 3
 rng = random.Random(SEED)
@@ -55,13 +56,14 @@ sc.put("Chest2", *sc.at(3.4, math.pi * 0.8), items=[("Gold", {"Amount": 25}), "R
 road = min(land.roads, key=lambda s: math.hypot(s[0] - wc[0], s[1] - wc[1]))
 sc.put("DunMirMileStone", road[0] + 2.2, road[1] - 2.0)
 camps.signpost(m, land, (road[0] - 1.5, road[1] + 1.5),
-               q.text("THE KING'S ROAD\nThornwick lies south. The north is open again, thanks to you.\n\n"
-                      "(The end of Thornwick. The road goes on.)", "Sign"))
+               q.text("THE KING'S ROAD\nThornwick lies south. North, the road climbs to Rimehold and the Rime "
+                      "Pass.", "Sign"))
 planter = Planter(m, rng, land, "deciduous")
 planter.plant_all(groves=2)
 planter.rock_piles(3)
 gc = land.areas["gate"]["c"]
 m.obj_px("PlayerStart", *square_px(gc[0] + 0.5, gc[1] - 0.5))
+StoryMap(m, rng, land, None).exit_to("on", "Rimehold", prefix="RoadExit")       # the road on north
 q.start([q.journal("I passed Thornwick's north gate onto the King's Road. The Red Hand will not trouble it again.", 1),
          A.print("The King's Road, north of Thornwick.")])
 m.scripts.update(q.files())

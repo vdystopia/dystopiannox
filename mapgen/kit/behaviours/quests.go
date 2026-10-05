@@ -134,6 +134,10 @@ func run(acts []Act, at ns.Positioner) {
 			if at != nil {
 				ns.CreateObject(a.A, at)
 			}
+		case "spawn": // A object type at the place of object B (a flame on a relit shrine)
+			if o := ns.Object(a.B); o != nil {
+				ns.CreateObject(a.A, o)
+			}
 		case "take": // A item type out of the player's pack
 			if it := carries(p, a.A); it != nil {
 				it.Delete()
