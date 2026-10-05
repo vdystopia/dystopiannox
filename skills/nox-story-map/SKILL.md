@@ -43,7 +43,8 @@ centre (`land.areas[name]["c"]`) and everything else in the kit are in squares (
 
 Quest shapes that worked: an heirloom from a guarded ruin (Thornwick's greatsword); what happened to someone (Rimehold's
 trapper); a bounty (wolves, a bear); a choice between two givers (the Varn emerald, the Ember Eye); a rescue where the
-rescued walks home (`A.walk`); a count of things done in any order (`A.advance` per vent, `q.when_true` on the
+rescued walks home (`sm.journey(name, key, to_px)` lays the walk along the roads, `A.walk(name, key)` starts it;
+never a single far Move, which the game walks straight at, into the trees); a count of things done in any order (`A.advance` per vent, `q.when_true` on the
 total: Emberhollow's three vents).
 
 ## 2. Build it, in this order (see the examples)
@@ -63,8 +64,13 @@ total: Emberhollow's three vents).
    (`Dresser.garrison`) joins the map's script when you set `d.population = sm.pop` first. Signs over the doors:
    `Village.SIGN_TEXT` by role, with keys from `q.text`. A different house style for a role:
    `BuildingIdentity(..., style="stone_house")`.
-   Last, after the people: `kit/dressing.Exterior(m, land, biome).dress()` fills the empty outdoor ground with
-   composed prop groups (PROCESS.md step 6.7).
+   The watch walks beats (`sm.beat(name, centre, radius=, stops=)`); camps' men stand at spaced posts
+   (`kit/posts.camp_posts(m, camp, toward_way_in, sit=, tents=, watch=)`: a leader, men by the fire and the tents,
+   archers apart at the approach); `sm.keep_folk_away(centre, r)` keeps townsfolk's stops off a foe's ground.
+   Last, after the people: `kit/dressing.Exterior(m, land, biome, placed=placed).dress()` (`martial=True` for a
+   garrison) dresses the outdoor ground with whole scenes from the catalogue in `kit/scenes.py` (a wagon on the
+   verge, a sparring ring by the barracks, a midden behind the inn...): add a theme there when a map needs one, never
+   loose piles (PROCESS.md, 2026-10-05 Greywatch playtest).
 8. The story in `QuestBook` (`kit/quests.py`): talkers (later stages first), events (`q.on_death`, `q.on_all_dead`,
    `q.near`, `q.on_pickup`, `q.when_true`), `q.start` (lock the gate, disable the exit, the first journal entry),
    portraits. Conditions read the world where possible (`q.dead`, `has=`): the script's stages and flags (and so
@@ -121,6 +127,10 @@ the work first, leave it uncommitted and report.
 - Fights in turn (an arena, cells): open one door at a time with `A.unlock` as each bout's foes die (`q.dead`); a
   jail yard's cell doors are `yard.cells`.
 - A toll, a bribe, a ransom: `q.when(gold=n)` holds while the player carries n gold; `A.gold(-n)` takes it.
+- Done by the kit, nothing to write (2026-10-05 playtests): every talker's name over its dialogue window
+  (`NPC:<script name>`; townsfolk get given names; `q.talker(..., title=)` overrides); the minimap's polygon; loot in
+  containers; gifts (`A.give`) are picked up a few frames after they are made (at once froze the game); clones lose
+  their donor map's script hooks; throne rooms are entered through their SE wall with the throne facing the door.
 
 ## Geometry, in short
 

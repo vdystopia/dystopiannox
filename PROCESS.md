@@ -366,6 +366,22 @@ The tools:
   `tests/server_smoke.py <design>`: the map loads, and the self-checks find every creature, waypoint and story
   object. `review/spots.py <map> <names>` renders close-ups of the story's places.
 
+**What the engine needs** (Thornwick and Greywatch playtests, 2026-10-05: freezes, "MISSING:NPC:Hedda", no minimap).
+The kit does all of it; know why before changing it:
+- A gift (`A.give`) is made at the player's feet and picked up three frames later. A new object waits on the server's
+  pending list until the frame ends; picking it up at once left it in the world and the pack together, and the next
+  walk through either list looped forever: the game froze after a talk gave an item, and later on death or in fights.
+- The dialogue window titles a creature with the string `NPC:<script name>` (Westwood's `NPC:Horst`). Every talker
+  gets one; townsfolk get given names (Westwood's donors' names stay theirs). The string table is shared by all maps,
+  so one script name in two maps carries one title (`mapgen/strings.py` refuses a clash).
+- The minimap draws only the walls of the group of the polygon the player stands in, and the game finds that polygon
+  by counting edges crossed on a line to the map's corner (0, 0) or (5888, 5888). Each map gets one polygon over the
+  whole map, group 100 as every wall, inset from the edges with its corners off that diagonal; corners on the map's
+  corners put the player "outside" everywhere.
+- Clones lose their donor map's script hooks (ScriptEvents naming its functions, KeeperDie, MonsterGoHome).
+- Playtest builds start from `Nox Map Test` (the Nox folder): when the game stops responding it saves a dump of what
+  it was doing to `logs\freezes\<time>\`.
+
 **How people move** (playtest 2026-10-05: "npcs wander around too sporadically. they walk into walls ... they look like
 ants"; "npc trying to walk through the door but getting stuck on the frame").
 - Townsfolk never Wander. Each walks a tour of the town's real places (`StoryMap.townsfolk`): their home door, a spot
