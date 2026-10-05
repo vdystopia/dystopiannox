@@ -196,7 +196,7 @@ corn = next((y_ for y_ in yards if y_.kind == "field"), None)
 
 # ---- 4. the land grows round everything, ending in the forest wall ---------------------------------------------------
 land.carve(margin=3.5)
-lane_ = sm.keep_open({"south": 4, "steading": 6, "den": 6, "tower": 7, "ashby": 10, "foot": 14, "wood": 4})
+lane_ = sm.keep_open({"south": 4, "steading": 6, "den": 6, "tower": 7, "ashby": 10, "foot": 13, "wood": 4})
 land.assign_regions()
 clumps = land.thickets(240, size=(0.9, 1.8), clear=1, avoid=frozenset(lane_ & land.squares))
 clumps += land.thickets(120, size=(0.6, 1.1), clear=1, avoid=frozenset(lane_ & land.squares))   # copses in the glades
