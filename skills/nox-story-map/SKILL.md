@@ -14,8 +14,8 @@ outpost, chapter two). Start a new map by copying the one closest in kind.
 ## 1. Write the story first (in the design's docstring)
 
 Decide, in this order:
-1. **Theme and environment** (town, forest, cave, ice, lava...) and the biome palette (`kit/biome.py BIOMES`, or
-   the green world's `FORESTS`). A town in snow is judged as a town (`environment="town"`) with the ice palette.
+1. **Theme and environment** (town, forest, cave, ice, lava, swamp...) and the biome palette (`kit/biome.py BIOMES`:
+   cave, ice, lava, swamp; or the green world's `FORESTS`; `mapgen/designs/swamplab.py` shows a swamp's pools). A town in snow is judged as a town (`environment="town"`) with the ice palette.
 2. **The start and the hook**: where the player arrives, what is wrong, who tells them where to go.
 3. **The main quest, which locks the exit**: a gate across the road out (`StoryMap.gate_across`, Mechanism lock)
    opened by the quest's end (`A.unlock`), and the exit area beyond (`StoryMap.exit_to`) leading to the next map,
