@@ -34,6 +34,7 @@ from kit.npcs import Population
 from kit.quests import QuestBook, A, QUEST, COMPLETED, HINT
 from kit import yards as Y
 from kit import camps
+from kit.story import StoryMap
 
 SEED = int(sys.argv[1]) if len(sys.argv) > 1 else 7
 rng = random.Random(SEED)
@@ -123,56 +124,11 @@ vc = land.areas["town"]["c"]
 land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2)}
 land.paint_roads(m, "DirtDark2", width_squares=2.8, skip=land.reserved)
 
-# the grove and the bend stay wild: no house is built beside the bandits' fire or the wreck
-no_build = set()
-for k_, r_ in (("grove", 13), ("fork", 9), ("south", 8)):
-    c_ = land.areas[k_]["c"]
-    no_build |= {s for s in land.squares if math.hypot(s[0] - c_[0], s[1] - c_[1]) <= r_} - land.taken
-land.taken |= no_build                     # released once the buildings stand: the forest may grow there
-
-# ---- 3. buildings from the square outwards ---------------------------------------------------------------------------
-placed, door_paths, missed = [], set(), []
-order = sorted(range(len(ID.buildings)), key=lambda k: (BUILDINGS[ID.buildings[k].role]["faces"] != "square",
-                                                        -BUILDINGS[ID.buildings[k].role]["size"][0], k))
-for k in order:
-    bid = ID.buildings[k]
-    role = BUILDINGS[bid.role]
-    size0, min_units0 = role_size(role)
-    program = [kind for kind, _ in role["rooms"]]
-    b = None
-    for shrink in (1.0, 0.92, 0.84):
-        size = (2 * round(size0[0] * shrink / 2), 2 * round(size0[1] * shrink / 2))
-        lots = land.square_lots(size) if role["faces"] == "square" and bid.area == "town" else []
-        lots += land.lots(bid.area, size)
-        for origin, side in lots:
-            if not land.lot_free(origin, size, margin=1): continue
-            b = generate_building(m, rng, origin, size, role["style"], program=program, entrance_side=side,
-                                  building_id=f"B{k}", occupied={square_tile(*s) for s in land.taken}, tries=12,
-                                  shape=role.get("shape"), min_units=int(min_units0 * shrink ** 2))
-            if b: break
-        if b: break
-    if not b:
-        missed.append(bid.role)
-        print(f"could not place the {bid.role} in the {bid.area}"); continue
-    land.take_cells(b.cells, margin=1)
-    land.wall_cells |= {c for c in m.wallmap}
-    land.taken_strict |= _squares_of(b.footprint)
-    placed.append((bid, b))
-by_role = {bid.role: b for bid, b in placed}
-land.taken -= no_build
-
-land.clear_walls(m)
-for bid, b in placed:
-    foot = _squares_of(b.footprint)
-    for d in b.entrances:
-        path = land.connect_door(m, d, foot)
-        if path is None: print(f"  no path from the {bid.role}'s door")
-        else: door_paths |= set(path)
-land.trim_dead_ends(m, keep=door_paths)
-
-for bid, b in placed:
-    for room in b.rooms:
-        furnish_original(m, room, kind=room.kind, rng=rng, style="town")
+# ---- 3. buildings from the square outwards, never beside the bandits' grove or the wreck; doors, paths, rooms -----
+sm = StoryMap(m, rng, land, ID)
+placed = sm.place_buildings(no_build={"grove": 13, "fork": 9, "south": 8})
+by_role = sm.by_role
+sm.connect_and_furnish()
 
 # ---- the graveyard beside the chapel's road, a field by the mill ---------------------------------------------------
 yards = []
@@ -186,17 +142,8 @@ for kind_, area_, rs_ in (("graveyard", "graves", (0, 4, 8)), ("field", "mill", 
 
 # ---- 4. the land grows round everything, ending in the forest wall ---------------------------------------------------
 land.carve(margin=3.5)
-# the story's places stay open ground: no clump of forest or tree goes on the camps, the den or the wreck's verge
-STAGES = {"grove": 6, "camp": 8, "den": 5, "fork": 3, "tower": 7}
-for k_, r_ in STAGES.items():
-    c_ = land.areas[k_]["c"]
-    land.taken |= {s for s in land.squares if math.hypot(s[0] - c_[0], s[1] - c_[1]) <= r_}
-# the side paths stay open too: no clump of forest plugs the way to the grove, the camp or the den
-lane_ = set()
-for l_ in land.links:
-    if l_["road"]: continue
-    for pi_, pj_ in l_["path"]:
-        lane_ |= {(int(round(pi_)) + a, int(round(pj_)) + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
+# the story's places stay open ground, and the side paths stay open: no clump of forest on them
+lane_ = sm.keep_open({"grove": 6, "camp": 8, "den": 5, "fork": 3, "tower": 7})
 clumps = land.thickets(160, size=(0.9, 1.8), clear=1, avoid=frozenset(lane_ & land.squares))
 land.open_links()
 land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
@@ -226,71 +173,8 @@ def road_square_near(X, Y):
     return min(land.roads, key=lambda s: (s[0] - tx) ** 2 + (s[1] - ty) ** 2)
 
 
-def wall_across(at_sq, along, material="Cobblestone", gate="WoodAndSteelHalfDoor", dry=False):
-    """A wall along a constant i (along='j') or constant j (along='i') line of square corners through at_sq, out
-    to the forest on both sides, with a double gate in the middle. Returns (the two gate halves, the wall's points),
-    or None where a building stands in the way (dry=True: only whether it fits)."""
-    i0, j0 = at_sq
-    pts = []
-    for sgn in (-1, 1):
-        k = 0 if sgn > 0 else -1
-        while abs(k) < 40:
-            p = (i0, j0 + k) if along == "j" else (i0 + k, j0)
-            # the corner point stands between squares; stop where the land ends on that side
-            nb = [(p[0] - 1, p[1]), (p[0], p[1])] if along == "j" else [(p[0], p[1]), (p[0], p[1] + 1)]
-            if not any(s in land.squares for s in nb): break
-            # never into a building or its margin: the road between the buildings is the town's, not the gate's
-            if any((s[0] + a, s[1] + b) in land.taken_strict for s in nb for a in (-1, 0, 1) for b in (-1, 0, 1)):
-                return None
-            pts.append(p); k += sgn
-            if abs(k) > 1 and point_cell(*p) in m.wallmap: break        # it meets the forest: no further
-    pts = sorted(set(pts), key=lambda p: p[1] if along == "j" else p[0])
-    if not 4 <= len(pts) <= 40: return None
-    if dry: return True
-    for p in pts:
-        c = point_cell(*p)
-        if c not in m.wallmap: m.wall(*c, material)
-    mid = min(range(len(pts) - 1), key=lambda n: abs((pts[n][1] if along == "j" else pts[n][0]) - (j0 if along == "j" else i0)))
-    a, b2 = point_cell(*pts[mid]), point_cell(*pts[mid + 1])
-    line = "\\" if (b2[0] - a[0], b2[1] - a[1]) == (1, 1) else "/"
-    n0 = len(m.d["objects"])
-    m.door(gate, a, line)
-    halves = [o for o in m.d["objects"][n0:] if o["type"] == gate]
-    for k_, o in enumerate(halves):
-        o["scr"] = f"NorthGate{k_ + 1}"
-        o.setdefault("xfer", {})["LockType"] = "Mechanism"
-    return halves, pts
-
-
 # the gate stands on the forest road beyond the gate clearing, the wall square across the road
-lk_ = next(l for l in land.links if {l["a"], l["b"]} == {"gate", "north"})     # in the forest past the clearing
-pth_ = lk_["path"] if lk_["a"] == "gate" else lk_["path"][::-1]
-gp_ = pth_[int(0.8 * (len(pth_) - 1))]
-gate_sq = min(land.roads, key=lambda s: (s[0] - gp_[0]) ** 2 + (s[1] - gp_[1]) ** 2)
-d_ = (pth_[-1][0] - pth_[int(0.6 * (len(pth_) - 1))][0], pth_[-1][1] - pth_[int(0.6 * (len(pth_) - 1))][1])
-def across(t_):
-    """The wall direction most nearly square to the road at t_ along the path, measured on screen: a wall of points
-    stepping along j or along i, against the road's own direction there."""
-    k_ = int(t_ * (len(pth_) - 1))
-    a_, b_ = pth_[max(0, k_ - 4)], pth_[min(len(pth_) - 1, k_ + 4)]
-    ax_, ay_ = square_px(*a_); bx2_, by2_ = square_px(*b_)
-    rx_, ry_ = bx2_ - ax_, by2_ - ay_
-    def cos_(d):
-        c0, c1 = point_cell(0, 0), point_cell(*d)
-        wx_, wy_ = c1[0] - c0[0], c1[1] - c0[1]
-        return abs(rx_ * wx_ + ry_ * wy_) / ((math.hypot(rx_, ry_) or 1) * (math.hypot(wx_, wy_) or 1))
-    return "j" if cos_((0, 1)) <= cos_((1, 0)) else "i"
-
-
-for t_ in (0.35, 0.45, 0.25, 0.55, 0.15, 0.65):
-    gp_ = pth_[int(t_ * (len(pth_) - 1))]
-    gate_sq = min(land.roads, key=lambda s: (s[0] - gp_[0]) ** 2 + (s[1] - gp_[1]) ** 2)
-    trial = wall_across(gate_sq, across(t_), dry=True)
-    if trial: break
-res_ = wall_across(gate_sq, across(t_))
-assert res_, "no place for the north gate"
-gate_halves, gate_pts = res_
-for p in gate_pts: land.taken.add(p)
+gate_halves, gate_pts, gate_sq = sm.gate_across(("gate", "north"), prefix="NorthGate")
 
 # ---- the old watchtower in the north-east wood --------------------------------------------------------------------
 tower_c = land.areas["tower"]["c"]
@@ -331,10 +215,7 @@ den_c = land.areas["den"]["c"]; mill_c = land.areas["mill"]["c"]
 den_spots = camps.wolf_den(m, rng, land, (den_c[0], den_c[1]), mill_c)
 # caches hidden in the woods, off the ways: by the pine path, in the east wood, behind the graveyard
 edge = land.edge_distance()
-def hidden_spot(near, r=(4, 9)):
-    c = [s for s, d in edge.items() if 1 <= d <= 2 and s not in land.taken and s not in land.roads
-         and r[0] <= math.hypot(s[0] - near[0], s[1] - near[1]) <= r[1]]
-    return rng.choice(c) if c else None
+hidden_spot = sm.hidden_spot
 caches = []
 for near_, loot_, stump_ in ((pines_c, [("Gold", {"Amount": 45}), "CurePoisonPotion", "RedPotion"], True),
                              (den_c, [("Gold", {"Amount": 70}), "LeatherBoots", "RedPotion"], False),
@@ -361,49 +242,12 @@ start_xy = square_px(south_c[0] + 0.5, south_c[1] - 0.5)
 m.obj_px("PlayerStart", *start_xy)
 
 # the exit: beyond the gate where the road leaves the map
-nc_ = land.areas["north"]["c"]
-exit_sq = min(land.roads, key=lambda s: math.hypot(s[0] - nc_[0], s[1] - nc_[1]) + 0.2 * edge.get(s, 0))
-ex, ey = square_px(exit_sq[0] + 0.5, exit_sq[1] - 0.5)
-for k_ in range(-1, 2):
-    m.obj_px("InvisibleExitArea", ex + 18 * k_, ey + 18 * k_, scr=f"NorthExit{k_ + 2}",
-             xfer={"MapName": f"{NEXT_MAP}.map", "ExitX": 0, "ExitY": 0})
+sm.exit_to("north", NEXT_MAP, prefix="NorthExit")
 
 # ---- 7. the people, each with a reason to be where they stand ---------------------------------------------------------
-pop = Population(m, rng)
-B = pop.behaviours
-
-
-def room_of(role, kind):
-    b = by_role.get(role)
-    return next((r for r in (b.rooms if b else []) if r.kind == kind), None)
-
-
-def free_px(room, prefer=None, clear=30.0):
-    """A floor point of the room with nothing within `clear` px, nearest `prefer` (default the room's middle)."""
-    pts = [((x + 1) * CELL, (y + 1) * CELL) for x, y in room.tiles]
-    cx = prefer or (sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts))
-    objs = [(o["x"], o["y"]) for o in m.d["objects"]]
-    off_wall = lambda p: not any((int(p[0] // CELL) + a, int(p[1] // CELL) + b2) in m.wallmap
-                                 for a in (-1, 0, 1) for b2 in (-1, 0, 1))
-    for p in sorted(pts, key=lambda p: (p[0] - cx[0]) ** 2 + (p[1] - cx[1]) ** 2):
-        if off_wall(p) and all((p[0] - a) ** 2 + (p[1] - b2) ** 2 > clear * clear for a, b2 in objs): return p
-    return pts[0]
-
-
-def outside_door(role):
-    b = by_role.get(role)
-    if not b: return None
-    o_ = land.door_outside(b.entrances[0], _squares_of(b.footprint))
-    return o_ and square_px(o_[0] + 0.5, o_[1] - 0.5)
-
-
-def person(donor, scr, x, y, name, face=None, action=4):
-    """A townsperson cloned in their clothes from a stock map, given a name in this map; on guard (standing) by
-    default, facing `face`."""
-    from kit.npcs import facing
-    xf = dict(DefaultAction=action, Aggressiveness=0.0)
-    if face: xf["DirectionId"] = facing(face[0] - x, face[1] - y)
-    return m.clone(os.path.join(STOCK, donor, donor + ".map"), f"{donor}:{scr}", x, y, name=name, xfer=xf)
+pop, B = sm.pop, sm.B
+room_of, free_px, person = sm.room_of, sm.free_px, sm.person
+outside_door = lambda role: sm.outside_door(role)
 
 
 # Tobin the carter, beside his wagon
@@ -435,13 +279,8 @@ person("Con02a", "IxGuard1", gx + 70 * gdx / gl - 30, gy + 70 * gdy / gl, "GateG
 bx_, by_ = outside_door("smithy") or square_px(vc[0] + 4, vc[1])
 person("Con02a", "Jacob", bx_ - 25, by_ + 15, "Brannoc", face=(vx, vy))
 # Pell the farmer by his door
-px_, py_ = outside_door("home") if False else (None, None)
-farm_home = next((b for bid, b in placed if bid.area == "farm"), None)
-if farm_home:
-    o_ = land.door_outside(farm_home.entrances[0], _squares_of(farm_home.footprint))
-    px_, py_ = square_px(o_[0] + 0.5, o_[1] - 0.5) if o_ else square_px(*land.areas["farm"]["c"])
-else:
-    px_, py_ = square_px(*land.areas["farm"]["c"])
+farm_home = sm.building_in("farm")
+px_, py_ = (sm.outside_door(building=farm_home) if farm_home else None) or square_px(*land.areas["farm"]["c"])
 person("Con03A", "Millard", px_ + 20, py_ + 15, "Pell")
 # shopkeepers behind their counters (the spots the furnisher left), and the smith at his forge
 WARES = {"store": [(4, "RedPotion"), (3, "BluePotion"), (2, "CurePoisonPotion"), (4, "RedApple"), (2, "Meat"),
@@ -453,35 +292,12 @@ GREET = {"store": q.text("Welcome to my shop! Potions, food and gear for the roa
                          "I sell more arrows than apples.", "Shop"),
          "inn": q.text("Welcome to the Lantern. Sit, eat. If you are going north you'll have a long wait.", "Shop"),
          "smithy": q.text("Steel for sale. Good steel, too: you'll want it if you mean to go after the Red Hand.", "Shop")}
-n_shops = 0
-for bid, b in placed:
-    if bid.role not in WARES: continue
-    for room in b.rooms:
-        spots = [sp for sp in (getattr(room, "spots", []) or []) if sp.get("role") in ("shopkeeper", "barkeep")]
-        if not spots and room.kind != "smithy": continue
-        at = spots[0]["px"] if spots else free_px(room)
-        xs = [(x + 1) * CELL for x, _ in room.tiles]; ys = [(y + 1) * CELL for _, y in room.tiles]
-        pop.shopkeeper("ShopkeeperYellow" if bid.role != "smithy" else "ShopkeeperWarriorsRealm", *at, WARES[bid.role],
-                       greeting=GREET[bid.role], face=(sum(xs) / len(xs), sum(ys) / len(ys)))
-        n_shops += 1
-        break
+n_shops = sm.shops(WARES, GREET, keeper={"smithy": "ShopkeeperWarriorsRealm"})
 
 # townsfolk on their rounds between the square and the doorsteps
-ring = [square_px(vc[0] + 6.5 * math.cos(a), vc[1] - 0.5 + 6.5 * math.sin(a)) for a in (k * math.pi / 4 for k in range(8))]
-square_wps = pop.waypoint_path("Square", ring)
-door_wps = []
-for bid, b in placed:
-    for d in b.entrances[:1]:
-        o_ = land.door_outside(d, _squares_of(b.footprint))
-        if o_: door_wps += pop.waypoint_path(f"Door{len(door_wps) + 1}", [square_px(o_[0] + 0.5, o_[1] - 0.5)])
 FOLK = [("Con02a", "Lydia"), ("Con02a", "Tanya"), ("Con02a", "Julie"), ("Con02a", "Heckler"), ("Con02a", "Morgan"),
         ("Con03A", "Millard"), ("Con02a", "Clyde"), ("Con08a", "Gretchen")]
-for k, (donor, src) in enumerate(FOLK):
-    name = f"Folk{k + 1}"
-    x, y = ring[k % len(ring)]
-    person(donor, src, x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), name)
-    homes = rng.sample(door_wps, min(2, len(door_wps)))
-    B.villager(name, rng.sample(square_wps, 3) + homes, home=homes[0] if homes else square_wps[0], linger=5.0)
+ring = sm.townsfolk(FOLK, vc)
 
 # ---- 8. the fights ------------------------------------------------------------------------------------------------
 # the grove's lookouts round their fire, who come out of the trees when the player passes on the road
@@ -530,39 +346,15 @@ dead = []
 if crypt:
     cx_, cy_ = free_px(crypt)
     pts_ = sorted(((x + 1) * CELL, (y + 1) * CELL) for x, y in crypt.tiles)
-    rng.shuffle(pts_)
-    objs_ = [(o["x"], o["y"]) for o in m.d["objects"]]
-    for k, t in enumerate(("Skeleton", "Skeleton", "Ghost", "Ghost", "Skeleton")):
-        p = next((p for p in pts_ if all((p[0] - a) ** 2 + (p[1] - b2) ** 2 > 28 ** 2 for a, b2 in objs_)
-                  and not any((int(p[0] // CELL) + a, int(p[1] // CELL) + b2) in m.wallmap for a in (-1, 0, 1) for b2 in (-1, 0, 1))), None)
-        if not p: break
-        objs_.append(p)
-        pop.creature(t, *p, action="guard", scr=f"VarnDead{k + 1}", aggr=0.83)
-        dead.append(f"VarnDead{k + 1}")
+    dead = sm.keepers(crypt, ("Skeleton", "Skeleton", "Ghost", "Ghost", "Skeleton"), "VarnDead")
     pop.creature("SkeletonLord", cx_, cy_, action="guard", scr="VarnGuardian", aggr=0.83)
     # the grave goods: the emerald in the family's chest, at the back of the crypt
     gpx = free_px(crypt, prefer=max(pts_, key=lambda p: -p[1] + p[0] * 0.0), clear=26)
     m.obj_px("CryptChest3", *gpx, items=["Emerald", ("Gold", {"Amount": 120}), "SpellBook", "CurePoisonPotion"])
-    # the door from the nave into the crypt: Father Odo's lock
-    for d in crypt.doors:
-        for o in m.d["objects"]:
-            if o.get("door") is not None and math.hypot(o["x"] - d.px[0], o["y"] - d.px[1]) < 40:
-                o.setdefault("xfer", {})["LockType"] = "Silver"
-# the woods' own creatures by the forest's edge, well away from the town
-far = [s for s, dd in sorted(edge.items()) if 2 <= dd <= 3 and math.hypot(s[0] - vc[0], s[1] - vc[1]) > 40
-       and s not in land.taken and s not in land.roads and s not in land.taken_strict
-       and all(math.hypot(s[0] - a[0], s[1] - a[1]) > 14 for a in (camp_c, grove_c, den_c, south_c, fork_c, tower_c,
-                                                                   gate_sq, land.areas["north"]["c"]))]
-rng.shuffle(far)
-MIX = {"SmallAlbinoSpider": 3, "Bat": 3, "Urchin": 2, "Spider": 1, "Bear": 1}
-centres_, wild = [], 0
-for s_ in far:
-    if wild >= int(len(land.squares) * 0.35 / 100): break
-    if any(math.hypot(s_[0] - a, s_[1] - b2) < 8 for a, b2 in centres_): continue
-    x, y = square_px(s_[0] + 0.5, s_[1] - 0.5)
-    if any((int(x // 23) + a, int(y // 23) + b2) in m.wallmap for a in (-1, 0, 1) for b2 in (-1, 0, 1)): continue
-    pop.creature(rng.choices(list(MIX), list(MIX.values()))[0], x, y, action="guard" if rng.random() < 0.38 else "idle")
-    centres_.append(s_); wild += 1
+    sm.lock_room(crypt, "Silver")                 # the door from the nave: Father Odo's lock
+# the woods' own creatures by the forest's edge, well away from the town and the story's places
+sm.wild({"SmallAlbinoSpider": 3, "Bat": 3, "Urchin": 2, "Spider": 1, "Bear": 1}, away_from=vc,
+        avoid=(camp_c, grove_c, den_c, south_c, fork_c, tower_c, gate_sq, land.areas["north"]["c"]))
 
 # ---- 9. the story ----------------------------------------------------------------------------------------------------
 fx, fy = square_px(*fork_c)
@@ -749,6 +541,6 @@ if __name__ == "__main__":
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))
-    print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(missed) or 'none'}) "
+    print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(sm.missed) or 'none'}) "
           f"| trees {n_trees} | plants {n_small} | rock piles {len(piles)} | shopkeepers {n_shops} | caches {len(caches)} "
           f"| lines {len(q.strings)} | yards {', '.join(built) or 'none'}")
