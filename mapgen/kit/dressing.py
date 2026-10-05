@@ -80,6 +80,9 @@ class Exterior:
         building)] (StoryMap.place_buildings), so scenes find the buildings they belong to. culture: the map's own
         scenes (kit/scenes.py Theme.culture: "wizard" for Starwell's) join the catalogue's common ones."""
         self.spec, self.land, self.biome, self.martial = spec, land, biome, martial
+        # one culture (Starwell's "wizard") or several (Harrowby's farmers and the ogres of its hill-fort: each theme
+        # still keeps to the buildings and places it belongs to)
+        self.cultures = {culture} if isinstance(culture, str) else set(culture or ())
         self.culture = culture
         self.rng = random.Random(zlib.crc32(f"{spec.d['name']}:exterior:{seed}".encode()))
         self.avoid = set(avoid)
@@ -342,7 +345,7 @@ class Exterior:
     def _fits(self, th, tags, bld, dist, kinds=None, side=None, front=False):
         """Whether theme th belongs at a place: its biome, walls, places, buildings and sides."""
         if self.biome not in th.biomes or self.placed[th.name] >= self._cap(th): return False
-        if th.culture and th.culture != self.culture: return False
+        if th.culture and th.culture not in self.cultures: return False
         if th.family in S.FAMILY_CAP and                 sum(1 for k2, _, _ in self.where if S.THEMES[k2].family == th.family) >= S.FAMILY_CAP[th.family]:
             return False
         if kinds is not None and not (kinds & set(th.walls)): return False
@@ -569,7 +572,7 @@ class Exterior:
         for bld in self.B:
             for name, chance in S.ROLE_SCENES.get(bld["role"], ()):
                 th = S.THEMES[name]
-                if self.biome not in th.biomes or (th.culture and th.culture != self.culture) or                         self.rng.random() >= chance: continue
+                if self.biome not in th.biomes or (th.culture and th.culture not in self.cultures) or                         self.rng.random() >= chance: continue
                 ring = {(i + a, j + b) for i, j in bld["foot"] for a in range(-th.near, th.near + 1)
                         for b in range(-th.near, th.near + 1)} & self.free
                 if th.stand == "wall":

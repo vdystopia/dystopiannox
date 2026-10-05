@@ -427,11 +427,16 @@ ROOMS = {
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="bench", slot="pews", toward="altar", runner=True, columns=True, tombs=True),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120),
-                         # a nave whose pews left half its floor bare (Ambermere seed 7: 6% covered) takes a colonnade
-                         dict(fam="column", slot="racks", kind="cathedral", gap=2.6, aisle=3.0, min_area=180, max=8,
+                   # (no free group of statues: Harrowby's nave set a pair among its pews; the statues flank the
+                   # altar and stand in the corners, rules/rooms/chapel.md)
+                   fill=[# a nave whose pews left half its floor bare (Ambermere seed 7: 6% covered; Harrowby's 108-tile
+                         # nave 5%) takes a colonnade
+                         dict(fam="column", slot="racks", kind="cathedral", gap=2.6, aisle=3.0, min_area=100, max=8,
                               fixed=True),
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
+                         # a founder's tomb against a side wall where no pair lay behind the pews (a stone nave with
+                         # no runner: Harrowby's, 5% covered, 12 of its 20 pieces pews)
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=2),
                          dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
@@ -444,6 +449,9 @@ ROOMS = {
                          "plant": r"^PlantBarren\d$|^Plant[15]$"},
                   compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.6, side_by_side=True, aisle=1.8),
                            dict(fam="storage", slot="wall", at="corner", clear=1.2),
+                           # statues of the dead on a back wall (rules/rooms/crypt.md; Harrowby's crypt was a block of
+                           # sarcophagi and nothing else)
+                           dict(fam="statue", slot="wall", at="center", clear=1.0),
                            dict(fam="wall_decor", slot="decor")],
                   # an L-shaped or narrow crypt has no room for rows: its dead lie along the walls instead
                   # (Thornwick v0.1: one sarcophagus in a 58-tile crypt, 5% covered)
@@ -567,12 +575,14 @@ ROOMS = {
                              "clutter": {"OgreHutMeat": 4, "OgreHutCarcass": 1, "OgreHutCarcassBig": 1}},
                      lights={"TorchPole": 1},
                      compose=[dict(fam="fireplace", slot="groups", group="firepit", n=1),
-                              dict(fam="bed", slot="wall", at="any", clear=0.6, n=2),
-                              dict(fam="straw", slot="scatter", per100=14, cluster=(2, 4)),
+                              dict(fam="bed", slot="wall", at="any", clear=0.6, n=3),
+                              # Westwood's ogre rooms: straw 8.6 per 100 tiles where it lies (rules/CULTURES.md); per100
+                              # counts heaps of 2-3: Harrowby's 80-tile den had 26 of its 32 pieces straw (TW-8)
+                              dict(fam="straw", slot="scatter", per100=4, cluster=(2, 3)),
                               dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
-                              dict(fam="clutter", slot="scatter", per100=6, cluster=(1, 2))],
+                              dict(fam="clutter", slot="scatter", per100=3, cluster=(1, 2))],
                      fill=[dict(fam="fireplace", slot="group", group="firepit", max=1, min_area=260),
-                           dict(fam="straw", slot="scatter", per100=6, max=40),
+                           dict(fam="straw", slot="scatter", per100=1, max=12),
                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
     "ogre_hall": dict(purpose="where the ogres feast: crude round tables ringed by stools, a fire pit, carcasses and meat "
                               "on the floor, straw in the corners, barrels by the walls",
@@ -681,7 +691,7 @@ BUILDINGS = {
     "cottage": dict(purpose="a small one-room house", style="log_cabin", size=(16, 14),
                     rooms=[("dwelling", "bed, hearth and table in one room")],
                     scenes=["woodpile"], garden=0.5, faces="road"),
-    "mill": dict(purpose="the miller's house by the pond", style="log_cabin", size=(18, 16),
+    "mill": dict(purpose="the miller's house by the pond", style="log_cabin", size=(22, 18), min_units=80,
                  rooms=[("living_room", "the miller's hearth room"), ("storeroom", "sacks of grain")],
                  scenes=["grain_sacks", "water_barrel"], garden=0.0, faces="road"),
     "grovelord": dict(purpose="the grovelord's large shack in the heart of the north wood", style="log_cabin",
@@ -720,7 +730,7 @@ BUILDINGS = {
                             ("bedroom", "the reeve's chamber"), ("storeroom", "the town's stores")],
                      scenes=["deliveries", "sign"], garden=0.0, faces="square"),
     "chapel": dict(purpose="the town's chapel: the nave with its altar and pews, and behind it the crypt where an old "
-                           "family lies", style="stone_house", size=(40, 30), min_units=220,
+                           "family lies", style="stone_house", size=(36, 28), min_units=200,
                    rooms=[("chapel", "the nave: the altar, the pews facing it"), ("crypt", "the family crypt behind the nave")],
                    scenes=["sign"], garden=0.0, faces="square"),
     # a lake town's houses (Ambermere): the fisher's house on the shore, the herbwife's hut

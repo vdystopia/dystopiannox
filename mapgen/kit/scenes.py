@@ -334,6 +334,37 @@ CATALOGUE = [
             P(FERNS, -8, 62, must=True)]],
           walls=("wild",), biomes=("green",), cap=6, spacing=14, family="crystal", weight=1.6, scales=True,
           min_types=3, culture="wizard"),
+    # ---- a farming town's (Harrowby, culture "farm"): the harvest brought in -------------------------------------
+    Theme("threshing_floor", "where the sheaves are threshed: the straw heaped, the grain sacked in a row, the flails "
+          "and forks in the tool barrel", "open",
+          [[P(HAY, 0, 0, must=True), P(HAY, 44, 12, p=0.7), P(SACKS, -24, 52, n=(2, 3), step=(26, 6), must=True),
+            P(TOOLS, 62, -24, must=True), P(STRAW, -54, -8, p=0.5)]],
+          places=("town",), biomes=("green",), cap=3, spacing=26, family="harvest", weight=2.0, culture="farm"),
+    Theme("harvest_wain", "a wain come in from the fields: the hay it brought heaped by it, the grain sacks unloaded, "
+          "apples from the orchard", "open",
+          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(HAY, -54, 30, must=True),
+            P(SACKS, 18, 52, n=(2, 3), step=(24, 6), must=True), P(("TraderAppleCrate",), 64, 18, p=0.7),
+            P(TOOLS, -14, -48, p=0.5)]],
+          places=("town", "road"), biomes=("green",), cap=2, spacing=34, family="cart", face="road", size=100,
+          weight=1.5, culture="farm"),
+    Theme("windmill", "a little wind-mill pumping by the fields, the sacks waiting at its foot", "open",
+          [[P(("Windmill2", "Windmill1"), 0, 0, must=True), P(SACKS, -40, 34, n=2, step=(-22, 8), must=True),
+            P(HAY, 42, 30, must=True), P(TOOLS, 6, 64, p=0.6)]],
+          places=("town", "wild"), biomes=("green",), cap=2, spacing=50, family="windmill", weight=1.0,
+          culture="farm"),
+    # ---- the ogres' (culture "ogre", by their lair: Westwood's ogre village, Con05B) --------------------------------
+    Theme("ogre_midden", "the ogres' refuse: old straw, gnawed bones, a carcass picked clean, a broken barrel", "open",
+          [[P(HAY, 0, 0, must=True), P(BONES, -34, 22, n=2, step=(-16, 18), must=True),
+            P(("OgreHutCarcass", "OgreHutCarcassBig"), 36, 16, must=True), P(("Barrel2",), 10, 54, p=0.6)]],
+          roles=("ogre_keep",), need=True, near=12, biomes=ALL, cap=3, spacing=20, family="ogre", weight=4.0,
+          culture="ogre"),
+    Theme("ogre_cookpit", "a cold cooking pit where the ogres roast what they take: stools round it, meat waiting, bones",
+          "open",
+          [[P(("OgreFirePitUnlit",), 0, 0, must=True), P(("OgreStool1", "OgreStool2"), -62, 12, must=True),
+            P(("OgreStool1", "OgreStool2"), 54, 34, p=0.7), P(("OgreHutMeat",), 12, 60, must=True),
+            P(BONES, 44, -40, n=(1, 2), step=(16, -10))]],
+          roles=("ogre_keep",), need=True, near=12, biomes=ALL, cap=2, spacing=24, family="ogre", weight=3.0,
+          culture="ogre"),
     # ---- caves and mines -----------------------------------------------------------------------------------------
     Theme("mine_cache", "an ore cart left by the wall with the miners' steel crates, tools and a spare wheel", "wall",
           [[P(("MineOreCart1", "MineOreCartBroken1"), 0, 38, must=True), P(STEEL_CRATES, -50, 28, must=True,
@@ -395,7 +426,7 @@ ROLE_SCENES = {
     "demon_forge": [("smithy_yard", 0.8)],
     "inn": [("midden", 0.8), ("cart_loading", 0.6), ("market_stall", 0.3)],
     "store": [("market_stall", 0.6), ("cart_loading", 0.5)],
-    "mill": [("hay_store", 0.8), ("cart_loading", 0.6)],
+    "mill": [("hay_store", 0.8), ("cart_loading", 0.6), ("threshing_floor", 0.6), ("windmill", 0.5)],
     "woodcutter": [("chopping_yard", 0.9)],
     "home": [("woodpile", 0.3), ("supply_corner", 0.3)],
     "cottage": [("hay_store", 0.3), ("supply_corner", 0.3)],
@@ -414,6 +445,8 @@ ROLE_SCENES = {
     "college": [("stargazers_post", 0.8), ("cart_loading", 0.4)],
     "apothecary": [("alchemists_yard", 1.0)],
     "observatory": [("stargazers_post", 0.7)],
+    # the ogres' lair (Harrowby's hill-fort; a biome map's ogre keep took none, AMR-5)
+    "ogre_keep": [("ogre_midden", 0.9), ("ogre_cookpit", 0.8)],
 }
 
 # at most so many scenes of a family to a map, whatever their themes (carts are memorable: a few to a map)

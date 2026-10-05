@@ -2053,8 +2053,14 @@ class Furnisher:
             self.rng.shuffle(pats)
             self._rack_order[kind] = pats
         pats = self._rack_order[kind]
-        p = 1.9 + aisle                                 # a row and the aisle beside it
-        n_fit = 0 if width < 1.2 else 1 if width < 2 * 1.9 + aisle else 2 + 2 * int((width - (2 * 1.9 + aisle)) / (2 * p))
+        # a row's depth: a rack's, or the deepest piece of the kind lying across the row (sarcophagi side by side are
+        # far deeper than a rack: Harrowby's crypt laid its two rows head to head with no aisle between, a block of 16)
+        row_d = 1.9
+        if side_by_side:
+            ts = [t for t in self.things if any(re.match(p_, t) for p_ in pats) and self.ok_type(t) and self.belongs(t)]
+            if ts: row_d = max(row_d, 2 * max(self.half(t)[1] if long_u else self.half(t)[0] for t in ts) + 0.2)
+        p = row_d + aisle                               # a row and the aisle beside it
+        n_fit = 0 if width < 1.2 else 1 if width < 2 * row_d + aisle else 2 + 2 * int((width - (2 * row_d + aisle)) / (2 * p))
         mid = (lo_c + hi_c) / 2
         centres = [mid] if n_fit == 1 else [mid + sg * (p / 2 + j * p) for j in range(n_fit // 2) for sg in (-1, 1)]
         centres = [c for c in centres if (long_u, round(c, 2)) not in self._rack_centres][:2]
@@ -3134,6 +3140,8 @@ class Furnisher:
                 if not mounted and any(u + 0.5 > z[0] and u - 0.5 < z[1] and v + 0.5 > z[2] and v - 0.5 < z[3]
                                        for z in self.light_zones):
                     continue                              # never right before a chest, hearth or stove
+                if not mounted and self._before_anchor(u, v):
+                    continue                              # nor before one placed by a path that set no zone
                 if self.try_put(tv, u, v, blocking=not mounted, wall_ok=mounted, layer="wall" if mounted else "floor"):
                     lights.append((u, v)); break
             else:
@@ -3150,6 +3158,33 @@ class Furnisher:
                     x, y = _px(u, v)
                     self.objects.append(self.spec.obj_px("ColorLight", x, y, xfer=dict(p["xfer"])))
                     break
+
+    def _before_anchor(self, u, v):
+        """Whether a floor piece at (u, v) would stand right before a chest, hearth or stove of the room, measured as
+        the checker measures it (validate/checks.py composition.anchor_blocked: along its wall within its half width
+        and a little, 0.4-2.6 units out into the room). Harrowby's reeve's study: a candelabra before the chest a
+        late fill had set, which recorded no light zone."""
+        cu, cv = self.g.centroid
+        for tt, rec in self._typed:
+            if not NEEDS_FRONT.search(tt): continue
+            pu, pv = rec[0], rec[1]
+            best = None
+            for r in self.g.runs:
+                perp = abs(pu - r["coord"]) if r["line"] == "/" else abs(pv - r["coord"])
+                along = pv if r["line"] == "/" else pu
+                if perp <= 2.8 and r["lo"] - 0.5 <= along <= r["hi"] + 0.5 and (best is None or perp < best[0]):
+                    best = (perp, r)
+            if not best: continue
+            r = best[1]
+            if r["line"] == "/":
+                sgn = 1 if cu > r["coord"] else -1
+                a, a0, depth = v, pv, (u - pu) * sgn
+            else:
+                sgn = 1 if cv > r["coord"] else -1
+                a, a0, depth = u, pu, (v - pv) * sgn
+            ha = max(0.8, max(rec[2], rec[3])) + 0.3 + 0.4
+            if abs(a - a0) <= ha and 0.2 <= depth <= 2.9: return True
+        return False
 
     def _light_spots(self, t, base, mounted):
         """Candidate light positions along the walls: both ends of every wall run (the corners) and
