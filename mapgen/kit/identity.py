@@ -368,6 +368,9 @@ ROOMS = {
                             dict(fam="bench", slot="pews", toward="altar", runner=True, columns=True, tombs=True),
                             dict(fam="wall_decor", slot="decor")],
                    fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120),
+                         # a nave whose pews left half its floor bare (Ambermere seed 7: 6% covered) takes a colonnade
+                         dict(fam="column", slot="racks", kind="cathedral", gap=2.6, aisle=3.0, min_area=300, max=8,
+                              fixed=True),
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
                          dict(fam="bench", slot="wall", at="center", clear=0, max=2),
@@ -531,10 +534,14 @@ ROOMS = {
                                 "the back walls, bones and skulls strewn about",
                         base="chapel",
                         core={"altar": (1, 1), "statue": (4, 14)},
-                        optional={"wall_decor": (1.0, 6), "tomb": (0.5, 4), "bones": (1.0, 30)},
+                        # 2026-10-05 playtest rule (large rooms mix their pieces): Ambermere's 300-tile barrow hall held
+                        # a block of 20 obelisks and arks down its middle
+                        repeat={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},
+                        optional={"wall_decor": (1.0, 6), "tomb": (0.5, 4), "bones": (1.0, 30), "column": (0.6, 8)},
                         types={"altar": r"^LOTDLichGodStatue[12]$",
                                "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$",
-                               "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$", "tomb": r"^LOTDTombstone[1-4]$"},
+                               "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$", "tomb": r"^LOTDTombstone[1-4]$",
+                               "column": r"^LOTDColumn1$"},
                         prefer={"altar": {"LOTDLichGodStatue1": 1, "LOTDLichGodStatue2": 1},
                                 "statue": {"LOTDManaObelisk": 3, "LOTDArk1": 1, "LOTDArk2": 1},
                                 "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1},
@@ -546,8 +553,9 @@ ROOMS = {
                                  dict(fam="statue", slot="groups", group="balances", n=1),
                                  dict(fam="bones", slot="scatter", per100=10, cluster=(1, 3)),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="statue", slot="racks", kind="obelisks", gap=2.6, aisle=3.0, min_area=200, max=20),
-                              dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, min_area=400, max=12),
+                        fill=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, min_area=400, max=12),
+                              dict(fam="column", slot="racks", kind="lotd_columns", gap=2.8, aisle=3.2, min_area=360, max=8),
+                              dict(fam="statue", slot="racks", kind="obelisks", gap=2.6, aisle=3.0, min_area=200, max=20),
                               dict(fam="statue", slot="wall", at="center", clear=0.8, max=6),
                               dict(fam="tomb", slot="wall", at="corner", clear=0.6, max=4, min_area=150),
                               dict(fam="statue", slot="group", group="balances", max=1, min_area=260)]),
@@ -621,10 +629,25 @@ BUILDINGS = {
                          ("library", "the library"), ("study", "the lord's study"), ("bedroom", "the lord's chamber"),
                          ("bedroom", "the guest chamber"), ("storeroom", "the stores")],
                   scenes=["deliveries", "water_barrel"], garden=0.0, faces="square"),
+    # a town's hall (Ambermere's moot hall): smaller than a lord's manor, for a town of a reeve or a mayor
+    "townhall": dict(purpose="the town's hall: the hall where the reeve holds the moot, his study and ledgers, his "
+                             "chamber and the town's stores", style="stone_house", size=(46, 34), min_units=320,
+                     rooms=[("great_hall", "the moot hall"), ("study", "the reeve's study and the town's ledgers"),
+                            ("bedroom", "the reeve's chamber"), ("storeroom", "the town's stores")],
+                     scenes=["deliveries", "sign"], garden=0.0, faces="square"),
     "chapel": dict(purpose="the town's chapel: the nave with its altar and pews, and behind it the crypt where an old "
                            "family lies", style="stone_house", size=(40, 30), min_units=220,
                    rooms=[("chapel", "the nave: the altar, the pews facing it"), ("crypt", "the family crypt behind the nave")],
                    scenes=["sign"], garden=0.0, faces="square"),
+    # a lake town's houses (Ambermere): the fisher's house on the shore, the herbwife's hut
+    "fisher": dict(purpose="a fisher's house on the shore: the hearth room, and the loft where the nets, oars, salt and "
+                           "the day's catch are kept", style="log_cabin", size=(20, 18),
+                   rooms=[("living_room", "the fisher's hearth room"), ("storeroom", "nets, oars, salt and the catch")],
+                   scenes=["catch", "woodpile"], garden=0.3, faces="road"),
+    "herbwife": dict(purpose="a herbwife's hut: her herb room with the cauldron and the shelves of remedies, and her bed",
+                     style="log_cabin", size=(20, 16), min_units=70,
+                     rooms=[("herbalist", "herbs, the cauldron and remedies"), ("bedroom", "the herbwife's bed")],
+                     scenes=["water_barrel"], garden=1.0, faces="road"),
     # a castle's buildings (Greywatch): the keep in Galava's tower stone, the garrison's barracks
     "keep": dict(purpose="a castle's keep: the throne room where its lord holds court, the great hall, the steward's "
                          "study, the lord's chamber and the stores", style="galava_tower", size=(44, 32), min_units=360,
@@ -648,6 +671,12 @@ BUILDINGS = {
                        rooms=[("dark_chapel", "the lich god's chapel"), ("dark_crypt", "the crypt of the frozen dead"),
                               ("library", "the priests' library")],
                        scenes=[], garden=0.0, faces="road"),
+    "barrow": dict(purpose="a barrow-hall of the old kings in the Land of the Dead's manner: the hall of the dead god "
+                           "where the kings' seal lay on the altar, and the crypt of their tombs", style="lotd_ornate",
+                   furnish="lotd", size=(44, 34), min_units=260,
+                   rooms=[("dark_chapel", "the hall of the dead kings, the old god's statue over the altar"),
+                          ("dark_crypt", "the tombs of the kings")],
+                   scenes=[], garden=0.0, faces="road"),
     "ogre_keep": dict(purpose="an old keep of dungeon stone the ogres took over: their feasting hall, their straw beds and "
                               "their hoard", style="dungeon_block", furnish="ogre", size=(38, 30), min_units=240,
                       rooms=[("ogre_hall", "the ogres' feasting hall"), ("ogre_den", "their straw beds"),
@@ -675,6 +704,9 @@ SCENES = {
     "mine_carts": dict(reason="ore carts waiting by the shed to be loaded", where="door_side",
                        items=[("MineOreCart1", 1), ("MineOreCart2", 1), ("MineOreCartWheel", 1)], pieces=(1, 2)),
     "bench_by_door": dict(reason="a seat outside the inn", where="door_side", items=[("Bench4", 1)], pieces=(1, 1)),
+    "catch": dict(reason="the day's catch in barrels and crates by the fisher's door, a water barrel to wash it",
+                  where="door_side", items=[("Barrel", 2), ("Barrel2", 1), ("Crate1", 1), ("WaterBarrel", 1)],
+                  pieces=(2, 4)),
     "sign": dict(reason="the business shows its sign", where="door_side", items=[("Sign1", 1), ("Sign2", 1)], pieces=(1, 1)),
 }
 
