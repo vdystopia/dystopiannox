@@ -301,7 +301,15 @@ class Spec:
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
-        return dict(self.d, walls=walls, tiles=tiles)
+        polygons = list(self.d["polygons"])
+        if not any(p["minimap"] == 100 for p in polygons):
+            # The minimap draws only the walls of the group of the polygon the player stands in (Westwood's
+            # Con02a:Town is group 100, like every wall we write); with no polygon it shows nothing but doors. One
+            # polygon over the whole map, lit as the map is lit, so the light does not change.
+            edge = 256 * CELL
+            polygons.append(dict(name=f"{self.d['name']}:World", ambient=list(self.d["ambient"]), minimap=100,
+                                 points=[[0, 0], [edge, 0], [edge, edge], [0, edge]]))
+        return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
 
     def _blend_thresholds(self):
         """Where an outdoor ground that blends (a dirt path, grass) meets a building's floor that blends with nothing

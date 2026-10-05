@@ -515,12 +515,12 @@ RUMOURS = [
     "There's an ogre in the old watchtower. You can hear it on still nights, east of the mill.",
 ]
 for k_, text_ in enumerate(RUMOURS):
-    q.talker(f"Folk{k_ + 1}", [q.say("The Red Hand's finished? Then the road's open again. Thank you!",
+    q.talker(sm.folk_names[k_], [q.say("The Red Hand's finished? Then the road's open again. Thank you!",
                                      when=q.when(flag="bounty_paid"), who="Folk"),
                                q.say(text_, who="Folk")])
 for k_, pic_ in enumerate(("MaidenPic", "MaidenPic3", "MaidenPic2", "MalePic1", "MorganPic", "Townsman3Pic",
                            "MalePic7", "MaidenPic")):
-    q.portrait(f"Folk{k_ + 1}", pic_)
+    q.portrait(sm.folk_names[k_], pic_)
 
 # the reeve's hint at the camp's way, and a hint from the folk of the square
 q.near(*square_px(*land.areas["pines"]["c"]), 160, [A.print("Old pines close in. Somewhere ahead, smoke.")],

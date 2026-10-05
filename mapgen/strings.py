@@ -10,7 +10,9 @@ plus the lines of each installed generated map (maps/<Name>/<Name>.strings.json:
     py mapgen/strings.py [--nox "C:\\GOG Games\\Nox"] [--check]       write nox.csf.json (--check: only report)
     py mapgen/strings.py --remove                                      delete it: the game reads nox.csf again
 
-The original nox.csf is never changed. Keys are case-insensitive in the game; each map's keys start with its name.
+The original nox.csf is never changed. Keys are case-insensitive in the game; each map's keys start with its name,
+except creatures' titles ("NPC:<script name>"), which are shared: a title Westwood already has stays Westwood's, and
+two maps may share one only with the same text.
 """
 import argparse, glob, json, os, struct, sys
 
@@ -61,10 +63,13 @@ def read_csf(path):
 
 def map_lines(nox):
     """{key: text} from every installed map's <Name>.strings.json."""
-    out = {}
+    out, where = {}, {}
     for p in sorted(glob.glob(os.path.join(nox, "maps", "*", "*.strings.json"))):
         for k, v in json.load(open(p, encoding="utf-8")).items():
-            out[k] = v
+            # shared keys (a creature's title, "NPC:<script name>") must read the same in every map that has them
+            if k in out and out[k] != v:
+                sys.exit(f"{k} is {out[k]!r} in {where[k]} but {v!r} in {os.path.basename(p)}: rename one creature")
+            out[k], where[k] = v, os.path.basename(p)
     return out
 
 
@@ -81,6 +86,8 @@ def main():
     lang, entries = read_csf(os.path.join(a.nox, "nox.csf"))
     ours = map_lines(a.nox)
     have = {e["id"].lower() for e in entries}
+    # a title Westwood already has ("NPC:Clyde") stays Westwood's
+    ours = {k: v for k, v in ours.items() if not (k.lower().startswith("npc:") and k.lower() in have)}
     clash = [k for k in ours if k.lower() in have]
     if clash: sys.exit(f"keys already in nox.csf: {clash[:5]}")
     entries += [{"id": k, "vals": [{"str": v}]} for k, v in ours.items()]

@@ -13,7 +13,7 @@
 
 Coordinates: squares (i, j) for the land, world pixels for objects, as in kit/layout.py.
 """
-import math, os
+import math, os, random, zlib
 from nox import CELL
 from kit.identity import BUILDINGS, role_size
 from kit.layout import square_tile, square_px, px_square, point_cell
@@ -23,6 +23,19 @@ from kit.originality import furnish_original
 from kit.npcs import Population, facing
 
 STOCK = r"C:\GOG Games\Nox\maps"
+
+# Townsfolk's given names: the dialogue window titles a creature with the string "NPC:<script name>". None of these
+# is in Westwood's table (nox.csf NPC:...) or given to a story character in a design. The donor's body picks the
+# list: Westwood's Maiden clones are women.
+WOMEN_DONORS = {"Lydia", "Tanya", "Julie", "Gretchen", "Maiden", "Kayla", "Kristine", "Melissa", "Shari"}
+NAMES = {
+    "f": ["Aelis", "Brida", "Cerys", "Dagny", "Elswyth", "Fenna", "Gisla", "Hild", "Ide", "Jorunn", "Ketta", "Leofa",
+          "Nesta", "Odile", "Petra", "Rowena", "Sabine", "Tilde", "Una", "Ysolde", "Alys", "Berta", "Clemence",
+          "Dorcas", "Elin", "Frida", "Greta", "Helga", "Isolde", "Liesel", "Marta", "Norah", "Runa"],
+    "m": ["Aldo", "Bram", "Cedric", "Dunstan", "Egil", "Fulk", "Godric", "Hamon", "Ivo", "Jory", "Kester", "Leofric",
+          "Merek", "Nils", "Oswin", "Piers", "Randal", "Sigurd", "Ulric", "Wat", "Yvain", "Alard", "Bennet", "Colm",
+          "Drogo", "Emrys", "Fergus", "Ingram", "Joss", "Lambert", "Mabon", "Rolf"],
+}
 
 
 class StoryMap:
@@ -298,8 +311,14 @@ class StoryMap:
             for d in b.entrances[:1]:
                 o_ = self.land.door_outside(d, _squares_of(b.footprint))
                 if o_: door_wps += self.pop.waypoint_path(f"Door{len(door_wps) + 1}", [square_px(o_[0] + 0.5, o_[1] - 0.5)])
+        # given names from their own generator, so naming them leaves the map's other draws (and its layout) unchanged
+        name_rng = random.Random(zlib.crc32(self.m.d["name"].encode()))
+        taken = {o.get("scr") for o in self.m.d["objects"] if o.get("scr")}
+        self.folk_names = []
         for k, (donor, src) in enumerate(folk):
-            name = f"{prefix}{k + 1}"
+            pool = [n for n in NAMES["f" if src in WOMEN_DONORS else "m"] if n not in taken]
+            name = name_rng.choice(pool) if pool else f"{prefix}{k + 1}"
+            taken.add(name); self.folk_names.append(name)
             x, y = ring[k % len(ring)]
             self.person(donor, src, x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), name)
             homes = rng.sample(door_wps, min(2, len(door_wps)))

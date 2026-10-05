@@ -27,6 +27,16 @@ def _go(s):
     return json.dumps(s, ensure_ascii=False)
 
 
+# script-name stems that read better as a role than split apart
+_ROLE_TITLES = {"Watch": "Watchman", "Folk": "Townsfolk", "Guard": "Guard", "Keeper": "Keeper"}
+
+
+def display_name(scr):
+    """A title for a script name: "NorthGuard" -> "North Guard", "Watch2" -> "Watchman", "FatherOdo" -> "Father Odo"."""
+    stem = re.sub(r"\d+$", "", scr)
+    return _ROLE_TITLES.get(stem) or re.sub(r"(?<=[a-z])(?=[A-Z])", " ", stem)
+
+
 class A:
     """Actions (kit/behaviours/quests.go run)."""
     @staticmethod
@@ -114,12 +124,20 @@ class QuestBook:
     def say(self, text, when=None, do=(), ask=False, else_=(), who="Line"):
         return dict(When=when or self.when(), Text=self.text(text, who), Ask=ask, Do=list(do), Else=list(else_))
 
-    def talker(self, name, lines, pic=None):
-        """An NPC who talks: the first of `lines` whose condition holds. pic: its portrait (Westwood's names)."""
+    def talker(self, name, lines, pic=None, title=None):
+        """An NPC who talks: the first of `lines` whose condition holds. pic: its portrait (Westwood's names). title:
+        the name over its dialogue window (default: from the script name, "NorthGuard" -> "North Guard")."""
         self.names.add(name)
+        self.title(name, title or display_name(name))
         if pic: self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
         body = ",\n\t\t\t".join(self._line(l) for l in lines)
         self.calls.append(f"Talker({_go(name)}, []Line{{\n\t\t\t{body},\n\t\t}})")
+
+    def title(self, name, text):
+        """The name the dialogue window shows for creature `name`: the game reads the string "NPC:<script name>" (as
+        Westwood's "NPC:Horst"), else it shows MISSING:NPC:<name>. The table is shared by every map, so a script name
+        used in two maps must carry the same title (mapgen/strings.py refuses a clash)."""
+        self.strings[f"NPC:{name}"] = text
 
     def portrait(self, name, pic):
         """The face in an NPC's dialogue window (Westwood's portraits: TheogrinPic, MaidenPic2, GalavaPriestPic...)."""

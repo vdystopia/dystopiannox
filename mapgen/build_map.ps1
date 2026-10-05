@@ -180,6 +180,10 @@ foreach ($o in $s.objects) {
         # its script name in this map (a quest giver the scripts talk through), or none
         $obj.Scr_Name = if ($o.scr) { [string]$o.scr } else { '' }
         if ($o.scr) { $obj.Terminator = 0xFF }
+        # Drop the donor map's script hooks (OnHit, OnDeath, OnLostEnemy... naming its own functions, KeeperDie,
+        # MonsterGoHome): this map has no such functions, and the game crashes when one fires (an arrow hits the clone).
+        $cx = $xferField.GetValue($obj)
+        if ($cx -and $cx.GetType().GetField('ScriptEvents')) { $cx.ScriptEvents = [string[]](@('') * 10) }
         Set-Extents $obj
         Set-XferFields $obj $o.xfer
         [void]$map.Objects.Add($obj)
