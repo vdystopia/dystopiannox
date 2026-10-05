@@ -455,7 +455,10 @@ def _kind_min_tiles(kind):
         _BASE_KINDS = json.load(open(p, encoding="utf-8")).get("room_kinds", {}) if os.path.exists(p) else {}
     from kit.identity import WESTWOOD_KIND, ROOMS
     wk = WESTWOOD_KIND.get(kind) or (ROOMS.get(kind) or {}).get("base") or kind
-    return max(_kind_tiles(kind, "p10", default=8), ((_BASE_KINDS.get(wk) or {}).get("tiles") or [0])[0])
+    # at the kit's scale (identity.BUILDING_SCALE, 1.25 Westwood's) a room's least floor grows with the square of it:
+    # Westwood's 10th percentile bedroom is 12 tiles, a cramped closet at our scale (2026-10-05 room audit)
+    from kit.identity import BUILDING_SCALE
+    return max(_kind_tiles(kind, "p10", default=8) * BUILDING_SCALE ** 2, ((_BASE_KINDS.get(wk) or {}).get("tiles") or [0])[0])
 
 
 def _rooms_fit(labels, program):
