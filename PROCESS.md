@@ -166,6 +166,25 @@ Then, in this order:
     into the corners (`CORNER_CLEAR` 1.05; a whole wall packs into the corner it shares with the other back wall).
   - Great halls: a table per 48 tiles (at most 6) on a large carpet of floor tiles.
   - Outdoors: rock piles in Westwood's manner (`Planter.rock_piles`); few aspens right against the boundary.
+- **Large rooms mix their pieces** (2026-10-05 playtest, Greywatch: "way too many benches and not enough object
+  diversity ... too many of the same object (chapel benches, tavern tables and chairs)").
+  - A big room's repeated set stops at a cap, a piece per so many floor tiles (`repeat` in `ROOMS`, held in
+    `try_put`, the plan, the fill steps and the top-up). The space left takes other composed groups of the room's
+    identity, or stays open floor: Westwood's big rooms are sparser than its small ones.
+  - Westwood: taverns hold a table per 27-42 tiles (Con07B 8 in 216 tiles, Con06a 4 in 166) in mixed kinds; halls
+    and temples with benches hold 6-8 (2-6.5 per 100 tiles) among columns, statues, tapestries and plants.
+  - Taverns: a table per 28 tiles, at most 12, in three kinds of set (round tables with stools, long tables with a
+    bench each side, tables of food), with the wall hearth and a rug before it, open hearths with benches round them
+    in a big common room, a cask with barrels by it, kegs along the walls (was 24-28 tables and 76-83 chairs).
+  - Chapels: the altar (Dun Mir's; the town style had left it out) on the back wall facing the longest run of the
+    nave, between statues; a pew per 10 tiles, at most 16, two to a side in rows nearest the altar; a carpet runner
+    up the aisle; a colonnade either side of the pews and on down the nave; a pair of sarcophagi behind the pews
+    (was 30-46 pews wall to wall).
+  - Great halls: a bench per 11 tiles in all (the tables' and the hearths' included), at most 24; a chest per 80
+    tiles; open hearths with benches at the ends of a long hall (Thornwick's had 26 benches and 8 chests).
+  - A capped set must not hand its space to one other piece: plants and statues do not multiply with a room's size
+    in the fill and top-up (with its benches capped, Thornwick's great hall had been topped up with 15 of each), and
+    a top-up plant goes only into a real corner.
 - **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
   of the wall").
   - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
