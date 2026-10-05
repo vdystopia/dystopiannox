@@ -195,7 +195,7 @@ wx, wy = square_px(south_c[0] + 1.5, south_c[1] - 4)
 person("Con02a", "Julie2", wx, wy, "Wenna", face=start_xy)
 ox, oy = sm.outside_door("home") or square_px(vc[0] - 3, vc[1])
 person("Con03A", "Osborn", ox + 20, oy + 10, "Orrin", face=(vx, vy))
-home_wp = pop.waypoint_path("TamHome", [(ox + 30, oy + 20)])
+home_wp = [sm.journey("Tam", "TamHome", (ox + 30, oy + 20))]
 person("Con02a", "Bryan", *tam_xy, "Tam", action=0)
 brask_home = next((b for bid, b in placed if bid.occupant.startswith("Brask")), None)
 bx_, by_ = (sm.outside_door(building=brask_home) if brask_home else None) or square_px(vc[0], vc[1] + 3)

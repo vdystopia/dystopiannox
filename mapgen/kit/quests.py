@@ -79,7 +79,10 @@ class A:
     @staticmethod
     def hunt(obj): return ("hunt", obj, "", 0)
     @staticmethod
-    def walk(obj, waypoint): return ("walk", obj, waypoint, 0)
+    def walk(obj, journey):
+        """`obj` sets off on a long walk laid along the roads and paths (StoryMap.journey's key), leg by leg; never
+        a single Move to a far waypoint, which the game walks straight at, into the trees (Greywatch's Wil)."""
+        return ("walk", obj, journey, 0)
 
 
 class QuestBook:

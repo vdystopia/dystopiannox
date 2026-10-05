@@ -43,6 +43,7 @@ class StoryMap:
     def __init__(self, spec, rng, land, identity):
         self.m, self.rng, self.land, self.ID = spec, rng, land, identity
         self.placed, self.by_role, self.missed = [], {}, []
+        self._movers = set()          # people the scripts walk: where they were placed is no one's standing spot
         self.pop = Population(spec, rng)
         self.B = self.pop.behaviours
 
@@ -325,6 +326,7 @@ class StoryMap:
             pool = [n for n in NAMES["f" if src in WOMEN_DONORS else "m"] if n not in taken]
             name = name_rng.choice(pool) if pool else f"{prefix}{k + 1}"
             taken.add(name); self.folk_names.append(name)
+            self._movers.add(name)
             x, y = ring[k % len(ring)]
             people.append(self.person(donor, src, x + rng.uniform(-10, 10), y + rng.uniform(-10, 10), name))
             rng.sample(range(n_doors), min(2, n_doors)); rng.sample(range(8), 3)
@@ -342,7 +344,7 @@ class StoryMap:
                 name = o["scr"]
                 trng = random.Random(zlib.crc32(f"{self.m.d['name']}:{name}:tour".encode()))
                 home = homes[k % len(homes)] if homes else None
-                tour = self._pick_tour(town, trng, home, trng.randint(*stops), indoors=True)
+                tour = self._spots(town, self._pick_tour(town, trng, home, trng.randint(*stops), indoors=True))
                 laid = self._lay_route(town, name + "Way", tour, trng, pause, home_kind=True)
                 if not laid:
                     self.B.tour(name, [], [], fear=0.0)      # nowhere to walk: stands where it is
@@ -357,18 +359,25 @@ class StoryMap:
         """A watchman's beat (kit/behaviours Patrol): a loop through `stops` of the town's places spread wide (the
         gate, the square, far doorsteps, the yards), along the roads, standing `pause` seconds at each. The named
         person is moved to the beat's first stop. Laid when the scripts are written, as the townsfolk's tours."""
+        self._movers.add(name)
+
         def lay():
             town = self._town(centre, radius)
             trng = random.Random(zlib.crc32(f"{self.m.d['name']}:{name}:beat".encode()))
             cand = [s for s in town["stops"] if s["kind"] != "square" or trng.random() < 0.3]
             if not cand: return
             # spread: the first stop by the gate or the far edge, then each next the farthest from those taken
-            first = max(cand, key=lambda s: (s["kind"] == "gate", math.dist(s["p"], town["c"]) * trng.uniform(0.8, 1.0)))
+            # places another watchman's beat already takes count for less: two beats share as little as they can
+            used = self.__dict__.setdefault("_beat_used", set())
+            fresh = lambda s: 1.0 if id(s) not in used else 0.45
+            first = max(cand, key=lambda s: (s["kind"] == "gate" and id(s) not in used,
+                                             math.dist(s["p"], town["c"]) * trng.uniform(0.8, 1.0) * fresh(s)))
             pick = [first]
             while len(pick) < min(stops, len(cand)):
                 pick.append(max((s for s in cand if s not in pick),
-                                key=lambda s: min(math.dist(s["p"], t["p"]) for t in pick) * trng.uniform(0.75, 1.0)))
-            laid = self._lay_route(town, name + "Beat", self._order(pick, pick[0]), trng, pause)
+                                key=lambda s: min(math.dist(s["p"], t["p"]) for t in pick) * trng.uniform(0.75, 1.0) * fresh(s)))
+            used |= {id(s) for s in pick}
+            laid = self._lay_route(town, name + "Beat", self._spots(town, self._order(pick, pick[0])), trng, pause)
             if not laid: return
             route, pauses, looks, _ = laid
             o = next((o for o in self.m.d["objects"] if o.get("scr") == name), None)
@@ -394,12 +403,7 @@ class StoryMap:
         cache = self.__dict__.setdefault("_towns", {})
         if key in cache: return cache[key]
         m, land = self.m, self.land
-        g = Ground.from_spec(m)
-        roads = set()
-        for i, j in land.roads | land.plaza:
-            x, y = square_tile(i, j)
-            roads |= {(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)}
-        router = Router(g, roads)
+        g, router, locked = self._world()
         c = square_px(centre[0], centre[1] - 0.5)
         costs = router.costs_from(c, reach)
         if len(costs) < 50:                          # the centre itself is cluttered (a well): from the nearest clear cell
@@ -418,7 +422,6 @@ class StoryMap:
             stops.append(dict(p=p, look=look, kind=kind, visit=visit))
             return True
         # doorsteps (and, for the shops, the inn and the chapel, a step inside)
-        locked = [(o["x"], o["y"]) for o in m.d["objects"] if o.get("door") is not None and (o.get("xfer") or {}).get("LockType")]
         for bid, b in self.placed:
             foot = list(b.footprint)
             bx = sum(square_px(i + 0.5, j - 0.5)[0] for i, j in _squares_of(foot)) / max(1, len(_squares_of(foot)))
@@ -456,7 +459,7 @@ class StoryMap:
                     if best is None or costs[cell] < best[0]: best = (costs[cell], p)
                 if best: break
             if best: add(best[1], (o["x"], o["y"]), "gate" if "Gate" in t else "landmark", gap=90.0)
-        town = dict(stops=stops, router=router, ground=g, c=c, start={})
+        town = dict(stops=stops, router=router, ground=g, c=c, start={}, costs=costs)
         cache[key] = town
         return town
 
@@ -524,7 +527,13 @@ class StoryMap:
             if v:
                 pts.append(s["p"]); pauses.append(0.0); looks.append(None)
                 if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
-                pts.append(v["inn"]); pauses.append(stay); looks.append(v["look"])
+                spot = v.get("spot")
+                if spot and math.dist(spot, v["inn"]) > 4:       # in past the threshold, then to its own spot
+                    pts.append(v["inn"]); pauses.append(0.0); looks.append(None)
+                    pts.append(spot); pauses.append(stay); looks.append(v["look"])
+                    pts.append(v["inn"]); pauses.append(0.0); looks.append(None)
+                else:
+                    pts.append(v["inn"]); pauses.append(stay); looks.append(v["look"])
                 if v["mid"]: pts.append(v["mid"]); pauses.append(0.0); looks.append(None)
                 pts.append(s["p"]); pauses.append(0.0); looks.append(None)
             else:
@@ -534,6 +543,132 @@ class StoryMap:
                 pts.append(p); pauses.append(0.0); looks.append(None)
         names = self.pop.waypoint_path(prefix, pts)
         return names, pauses, looks, (names[home_at] if home_at is not None else None)
+
+    # ---- standing spots: nobody shares one (playtest 2026-10-05: two people pushing each other off one stop) ---------
+    SPOT_GAP = 40.0       # px between any two standing spots: a body is 24 px across
+    DOORWAY_CLEAR = 26.0  # px a standing spot keeps from a doorway's passage points (out in front, middle, in behind)
+
+    def _world(self):
+        """(Ground, Router along the roads, locked doors' points): the map as it stands once everything is placed,
+        built once, when the first route is laid (Behaviours.later)."""
+        w = self.__dict__.get("_world_")
+        if w: return w
+        m, land = self.m, self.land
+        g = Ground.from_spec(m)
+        roads = set()
+        for i, j in land.roads | land.plaza:
+            x, y = square_tile(i, j)
+            roads |= {(x, y), (x + 1, y), (x, y + 1), (x + 1, y + 1)}
+        locked = [(o["x"], o["y"]) for o in m.d["objects"]
+                  if o.get("door") is not None and (o.get("xfer") or {}).get("LockType")]
+        self._world_ = (g, Router(g, roads), locked)
+        return self._world_
+
+    def _claims(self):
+        """Standing spots taken so far: every creature standing where it was placed (a shopkeeper, a guard at the
+        gate, a quest giver), then each stop given out. Built once, with the doorways' passage points kept clear."""
+        c = self.__dict__.get("_claims_")
+        if c is None:
+            g = self._world()[0]
+            c = self._claims_ = [(o["x"], o["y"]) for o in self.m.d["objects"]
+                                 if "DefaultAction" in (o.get("xfer") or {}) and o.get("scr") not in self._movers]
+            self._doorways = []
+            for (cx, cy), (nx, ny), half in sorted({v[0]: v for v in g.gap_door.values()}.values()):
+                self._doorways += [(cx, cy), (cx + nx * 40, cy + ny * 40), (cx - nx * 40, cy - ny * 40)]
+        return c
+
+    def _free_spot(self, cands, clear):
+        """The first candidate (world px) a body stands clear on that is SPOT_GAP from every spot taken and out of the
+        doorways; taken. None if none is."""
+        claims = self._claims()
+        for p in cands:
+            if not clear(p): continue
+            if any(math.dist(p, q) < self.SPOT_GAP for q in claims): continue
+            if any(math.dist(p, q) < self.DOORWAY_CLEAR for q in self._doorways): continue
+            claims.append(p)
+            return p
+        return None
+
+    def _spots(self, town, tour):
+        """Each stop of a tour or beat on a standing spot of its own: round a feature (another side of the well,
+        another bench), beside a doorstep rather than in front of the door, a place of its own on the square, a spot
+        of its own past a shop's threshold. Stops with no spot left are dropped."""
+        g, costs, router = town["ground"], town["costs"], town["router"]
+
+        def reach(p):            # on the ground the town reaches, or a clear step off its edge (never over a fence)
+            c = (int(p[0] // WCELL), int(p[1] // WCELL))
+            if c in costs: return True
+            return router.ok(c) and any(g.leg_problem(p, (q[0] * WCELL + WCELL / 2, q[1] * WCELL + WCELL / 2)) is None
+                                        for q in ((c[0] + a, c[1] + b) for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2))
+                                        if q in costs)
+        clear = lambda p: reach(p) and g.point_ok(p[0], p[1], wall_clear=15, obj_clear=12)
+        out = []
+        for s in tour:
+            p, look, v = s["p"], s["look"], s.get("visit")
+            if v:
+                inn = v["inn"]
+                L = math.dist(p, inn) or 1.0
+                n = ((inn[0] - p[0]) / L, (inn[1] - p[1]) / L); t = (-n[1], n[0])
+                cands = [(inn[0] + n[0] * d + t[0] * l, inn[1] + n[1] * d + t[1] * l)
+                         for d, l in ((16, 0), (26, 26), (26, -26), (34, 0), (18, 44), (18, -44), (44, 30), (44, -30),
+                                      (52, 0), (30, 60), (30, -60))]
+                inside = lambda q: g.point_ok(q[0], q[1], wall_clear=15, obj_clear=12) and g.leg_problem(inn, q) is None
+                spot = self._free_spot(cands, inside)
+                if spot:
+                    out.append(dict(s, visit=dict(v, spot=spot)))
+                    continue
+                s = dict(s, visit=None)            # no room inside: they stand by the doorstep instead
+            if s["kind"] in ("landmark", "gate"):
+                fx, fy = look
+                cands = [p] + sorted(((fx + r * math.cos(k * math.pi / 8), fy + r * math.sin(k * math.pi / 8))
+                                      for r in (30, 38, 46, 56, 66) for k in range(16)), key=lambda q: math.dist(q, p))
+            elif s["kind"] in ("home", "door", "shop"):
+                L = math.dist(p, look) or 1.0
+                n = ((p[0] - look[0]) / L, (p[1] - look[1]) / L); t = (-n[1], n[0])
+                cands = [(p[0] + n[0] * d + t[0] * l, p[1] + n[1] * d + t[1] * l)
+                         for d, l in ((0, 0), (0, 34), (0, -34), (12, 46), (12, -46), (26, 30), (26, -30), (30, 0),
+                                      (14, 64), (14, -64), (40, 46), (40, -46))]
+            else:
+                cands = [p] + [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4))
+                               for r in (22, 36, 50) for k in range(8)]
+            spot = self._free_spot(cands, clear)
+            if spot: out.append(dict(s, p=spot))
+        return out
+
+    def journey(self, name, key, to, look=None):
+        """A long walk for person `name` that the story starts with A.walk(name, key) (a rescued man walking home,
+        a deserter going back to face his captain): laid once the map is placed, from where the person stands to a
+        standing spot of its own near `to` (world px), along the roads and paths and through any open doorway or
+        gate square-on (Router.route_far), as a chain of waypoints <key>_1, _2... walked leg by leg (kit/behaviours
+        Journey). The game's own path search gives up on a far goal and walks straight at it, into the trees
+        (Greywatch's Wil, 2026-10-05). At its end the person stays, facing `look` (default: on along the last leg).
+        Returns key."""
+        self._movers.add(name)
+
+        def lay():
+            g, router, locked = self._world()
+            o = next((o for o in self.m.d["objects"] if o.get("scr") == name), None)
+            if o is None:
+                print(f"  journey {key}: no {name}"); return
+            start = (o["x"], o["y"])
+            clear = lambda p: g.point_ok(p[0], p[1], wall_clear=15, obj_clear=12) and router.ok(
+                (int(p[0] // WCELL), int(p[1] // WCELL)))
+            cands = [to] + [(to[0] + r * math.cos(k * math.pi / 8), to[1] + r * math.sin(k * math.pi / 8))
+                            for r in (20, 34, 48, 64, 80, 100, 124, 150) for k in range(16)]
+            end = self._free_spot(cands, clear) or to
+            route = router.route_far(start, end, shut=locked)
+            if route is None:
+                print(f"  journey {key}: no way from {name}'s place to ({end[0]:.0f}, {end[1]:.0f})")
+                route = [end]
+            pts = ([start] if g.point_ok(start[0], start[1], wall_clear=14, obj_clear=12) else []) + route
+            names = self.pop.waypoint_path(key, pts)
+            lk = look
+            if lk is None and len(pts) >= 2:
+                a, b = pts[-2], pts[-1]
+                lk = (b[0] + (b[0] - a[0]) * 3, b[1] + (b[1] - a[1]) * 3)
+            self.B.journey(key, name, names, lk)
+        self.B.later(lay)
+        return key
 
     def walkable(self):
         """Grid cells the player can walk to from the PlayerStart, flooded as the checker floods them

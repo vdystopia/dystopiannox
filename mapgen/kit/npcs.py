@@ -42,13 +42,19 @@ def westwood_types():
         return {}
 
 
+# Hostile creatures of a group stand apart (playtest 2026-10-05: "they cluster too tightly on a central point like a
+# swarm"): Westwood's grouped creatures (another of the kind within 6 cells) stand 49 px from their nearest at p25,
+# 70 at the median (corpus, 3,091 creatures); none of ours closer than GROUP_GAP.
+GROUP_GAP = 48.0
+
+
 class Population:
     def __init__(self, spec, rng):
         self.spec, self.rng = spec, rng
         self.ww = westwood_types()
         self.behaviours = Behaviours(spec)
         self.behaviours.last(self.settle_waypoints)
-        self.placed = []
+        self.placed, self.hostiles = [], []
         self._n = {}
 
     def name(self, prefix):
@@ -56,14 +62,18 @@ class Population:
         return f"{prefix}{self._n[prefix]}"
 
     def creature(self, t, x, y, action="idle", face=None, scr=None, sight=None, aggr=None, roamflag=None, escort=None,
-                 **xfer):
+                 spread=True, **xfer):
         """One creature at world pixel (x, y): its default action, its facing (a point to look toward, or random),
         Westwood's sight range for its type (or `sight`), aggressiveness 0.5 like Westwood's (or `aggr`), roam flags
-        and escort target. Returns the object dict."""
+        and escort target. A hostile creature stands at least GROUP_GAP px from every hostile one placed before it
+        (moved to the nearest clear point that is, within 72 px; spread=False keeps it where it is: two prisoners
+        in one cell). Returns the object dict."""
         # a Zombie written as a placed creature makes OpenNox misread the map's object section (the server stops at
         # "cannot read next section: EOF" and panics; 2026-10-04): Westwood only ever puts zombies inside coffins
         assert t not in UNPLACEABLE, f"{t} cannot be placed as a creature ({UNPLACEABLE[t]})"
         x, y = self._on_floor(x, y)
+        hostile = (0.5 if aggr is None else aggr) > 0 and "ShopkeeperInfo" not in xfer
+        if hostile and spread: x, y = self._spaced(x, y)
         ww = self.ww.get(t, {})
         x_ = dict(DefaultAction=ACTION.get(action, action),
                   DirectionId=facing(face[0] - x, face[1] - y) if face else self.rng.randrange(8),
@@ -73,8 +83,37 @@ class Population:
         if escort: x_["EscortObjName"] = escort
         x_.update(xfer)
         o = self.spec.obj_px(t, x, y, xfer=x_, **({"scr": scr} if scr else {}))
+        if hostile: self.hostiles.append(o)
         self.placed.append(o)
         return o
+
+    def _spaced(self, x, y, gap=GROUP_GAP, reach=72):
+        """(x, y), or the nearest point within `reach` px that stands GROUP_GAP px from every hostile creature placed
+        so far, on floor, off the walls (a cell's clearance) and out of obstacles (tents, stumps, rocks, trees)."""
+        others = [(o["x"], o["y"]) for o in self.hostiles]
+        far = lambda p: all((p[0] - a) ** 2 + (p[1] - b) ** 2 >= gap * gap for a, b in others)
+        if far((x, y)): return x, y
+        from kit.walkways import thing_shapes, blocks
+        shapes = thing_shapes()
+        near = []
+        for o in self.spec.d["objects"]:
+            if abs(o["x"] - x) > reach + 60 or abs(o["y"] - y) > reach + 60: continue
+            sh = shapes.get(o.get("type"))
+            if not sh or not blocks(*sh): continue
+            r = sh[1] if sh[0] != "BOX" else math.hypot(sh[1], sh[2]) / 2
+            near.append((o["x"], o["y"], r))
+        fl, wm, C = self.spec.floor, self.spec.wallmap, 23
+        def ok(p):
+            cx, cy = int(p[0] // C), int(p[1] // C)
+            if not any(t in fl for t in ((cx, cy), (cx - 1, cy), (cx, cy - 1), (cx - 1, cy - 1))): return False
+            if any((cx + a, cy + b) in wm for a in (-1, 0, 1) for b in (-1, 0, 1)): return False
+            return all(math.hypot(p[0] - a, p[1] - b) >= r + 12 for a, b, r in near)
+        for r in range(8, reach + 1, 8):
+            for k in range(16):
+                a = k * math.pi / 8
+                p = (x + r * math.cos(a), y + r * math.sin(a))
+                if far(p) and ok(p): return p
+        return x, y
 
     def _on_floor(self, x, y, reach=4):
         """(x, y), or the nearest point within `reach` cells that has floor under it and no wall: a creature set in
@@ -157,6 +196,7 @@ class Behaviours:
         self.spec = spec
         self.calls = []
         self.shouts = set()          # what sentries call out: text, not names
+        self.keys = set()            # journeys' keys: names of walks, not of creatures
         self._later, self._last = [], []
 
     def later(self, fn):
@@ -202,6 +242,16 @@ class Behaviours:
         self.calls.append(f'Tour({json.dumps(name)}, {self._s(route)}, {self._f(pauses)}, {self._f(look)}, '
                           f'{json.dumps(home)}, {fear:.1f})')
 
+    def journey(self, key, name, route, look=None):
+        """A long walk `name` takes when the story says (quests A.walk(name, key)): `route` waypoint names from where
+        it stands to where it ends, a waypoint at each bend of the roads and paths and three square-on through each
+        doorway (StoryMap.journey lays them), walked leg by leg as a tour is; at the last it stays, facing `look`."""
+        self.keys.add(key)
+        pauses = [0.0] * (len(route) - 1) + [1.0]
+        self._record(name, "journey", route, False, pauses)
+        lx, ly = look or (0.0, 0.0)
+        self.calls.append(f'Journey({json.dumps(key)}, {json.dumps(name)}, {self._s(route)}, {lx:.1f}, {ly:.1f})')
+
     def pack(self, leader, members):
         self.calls.append(f'Pack({json.dumps(leader)}, {self._s(members)})')
 
@@ -231,7 +281,7 @@ class Behaviours:
         for c in self.calls:
             for q in re.findall(r'"([^"]+)"', c):
                 (wps if re.search(r"_\d+$", q) else objs).add(q)
-        return sorted(objs - self.shouts), sorted(wps)
+        return sorted(objs - self.shouts - self.keys), sorted(wps)
 
     def files(self, map_name):
         """{filename: Go source} for the map's folder, package named after the map (as OpenNox expects)."""
@@ -246,7 +296,9 @@ class Behaviours:
                'import "github.com/noxworld-dev/noxscript/ns/v4"\n\n'
                # set up once, on MapInitialize or after a second of frames if it never fires (as kit/quests.py)
                "var behavioursSetUp bool\n\nfunc setUpBehaviours() {\n\tif behavioursSetUp {\n\t\treturn\n\t}\n"
-               "\tbehavioursSetUp = true\n" + "".join(f"\t{c}\n" for c in self.calls) +
+               "\tbehavioursSetUp = true\n" +
+               # the story's A.walk starts a journey (quests.go declares the hook; journeys come only with a story)
+               ("\tjourneyStart = startJourney\n" if self.keys else "") + "".join(f"\t{c}\n" for c in self.calls) +
                "\tprintln(\"behaviours: started\")\n}\n\nfunc init() {\n\tns.OnMapEvent(ns.MapInitialize, setUpBehaviours)\n"
                "\tbframes := 0\n\tns.OnEachFrame(1, func() {\n\t\tif bframes++; bframes == 30 {\n\t\t\tsetUpBehaviours()\n\t\t}\n\t})\n"
                f"\tDiagnose({self._s(objs)}, {self._s(wps)})\n}}\n")

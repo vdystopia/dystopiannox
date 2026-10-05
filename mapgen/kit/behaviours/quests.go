@@ -34,6 +34,11 @@ var (
 	flags  = map[string]bool{}
 )
 
+// journeyStart starts a long walk laid along the roads (behaviours.go startJourney, hooked up by the behaviours'
+// config when the map has journeys): a single Move to a far waypoint leaves the walk to the game's path search,
+// which gives up on far goals and walks straight at them, into the trees.
+var journeyStart func(name, key string) bool
+
 // Act is one thing that happens: Kind with its arguments (see run).
 type Act struct {
 	Kind string
@@ -205,7 +210,10 @@ func run(acts []Act, at ns.Positioner) {
 				o.AggressionLevel(0.83)
 				o.Attack(p)
 			}
-		case "walk": // A creature walks to waypoint B
+		case "walk": // A creature sets off on journey B (behaviours.go Journey), or else walks to waypoint B
+			if journeyStart != nil && journeyStart(a.A, a.B) {
+				break
+			}
 			if o, w := ns.Object(a.A), ns.Waypoint(a.B); o != nil && w != nil {
 				o.Move(w)
 			}

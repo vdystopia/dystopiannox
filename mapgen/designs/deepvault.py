@@ -299,7 +299,7 @@ gux, guy = far_sc.px(1.2, a_lake + 2.9)
 person("Con03A", "Millard", gux, guy, "Gunnar", face=square_px(*far_c))
 pix, piy = far_sc.px(1.3, a_lake + 4.0)
 person("Con02a", "Heckler", pix, piy, "Pip", face=square_px(*far_c))
-home_wp = pop.waypoint_path("CrewHome", [(ox_ - 25, oy_ + 30), (ox_ - 45, oy_ + 15)])
+home_wp = [sm.journey("Gunnar", "GunnarHome", (ox_ - 25, oy_ + 30)), sm.journey("Pip", "PipHome", (ox_ - 45, oy_ + 15))]
 WARES = {"store": [(4, "RedPotion"), (3, "BluePotion"), (3, "CurePoisonPotion"), (2, "Meat"), (2, "Quiver"),
                    (1, "Bow"), (1, "LeatherBoots"), (1, "ChainCoif"), (1, "LeatherArmor")],
          "inn": [(5, "Meat"), (4, "Cider"), (3, "Bread"), (2, "RedPotion")],

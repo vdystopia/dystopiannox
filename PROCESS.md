@@ -343,6 +343,33 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   obstacles and water; every link and every leg of `<map>.routes.json` sampled every 4 px, clear of the void, wall
   pieces (as thin lines, 10 px), obstacles, and through doorways within 25 degrees of square-on and near the middle.
   `review/storymap.py <map> --routes` draws them.
+- 2026-10-05, long walks (playtest: Greywatch's Wil, sent home by `A.walk` as one `Move` to the barracks, pressed
+  into the trees at the end of a forest strip). The game's own path search gives up on a far goal and walks
+  straight at it, so a story never sends anyone far with one Move. `StoryMap.journey(name, key, to)` lays the walk
+  once the map stands: `Router.route_far`, along roads and paths and through any unlocked doorway or gate square-on
+  (each doorway a portal of its three passage points), a waypoint at each bend; `A.walk(name, key)` starts it and
+  the walker goes leg by leg (behaviours `Journey`), staying at its end. Journeys are in `routes.json`, so the route
+  check walks them too. Wil, Gunnar and Pip, Brin and Tam walk home so.
+- 2026-10-05, nobody shares a spot (playtest: a townswoman and a guard pushing each other off one stop by a gate for
+  ever; the old builds had 30-45 stops exactly shared on each town). Every stop of every tour, beat and journey gets
+  a standing spot of its own (`StoryMap._spots`): another side of the well or statue, beside a doorstep rather than
+  in front of the door, its own place on the square, its own spot past a shop's threshold; 40 px from every other
+  spot and from every creature standing where it was placed, 26 px clear of every doorway's passage points. Beats
+  prefer places no other beat takes; a garrison's patrollers each get their own stops, starting apart round the
+  loop (`Dresser._own_rounds`). `check_routes` faults two walkers' stops under 32 px apart.
+- In the game a walker never pushes: the ticker watches whether it gets nearer its waypoint, not whether it moves
+  (two pushing each other jostle without getting anywhere). Not nearer for 1.5 s: at a stop it stands where it is,
+  a little aside, and takes its pause; at a bend or doorway point it goes on to the next; elsewhere (someone in the
+  doorway or gate) it gives way 1-3 s and tries again, and after two tries goes on. Townsfolk set out a few frames
+  apart, and run home along their own route (the shorter way round), never with one Move.
+- 2026-10-05, hostile groups stand apart (playtest: Thornwick's bandits bunched round the fire "like a swarm").
+  Westwood's grouped creatures stand 49 px from their nearest at p25, 70 at the median (corpus, 3,091 creatures):
+  `Population.creature` keeps every hostile creature 48 px from the others (`spread=False` for two prisoners in a
+  cell). A camp's men take posts as a camp is lived in (`kit/posts.camp_posts`, from what `bandit_camp` returns and
+  the tents and bedrolls round the fire): the leader by the chest, some on every other seat round the fire, some by
+  their tents, the watch well apart at the approach. When roused (sentry, pack, ambush) melee fighters come at the
+  player from their own sides, fanned 50 degrees apart, archers keeping their ground (`spreadOn`); a pack lies up
+  spread about its den, each on its own spot, rather than trailing its leader.
 
 ## 7. Check, review, playtest
 

@@ -313,17 +313,102 @@ class Router:
         """World px points from a to b (a excluded, b included): straight legs along the cell path, or None."""
         cells = self.cells(a, b)
         if cells is None: return None
-        pts = [a] + [(c[0] * CELL + CELL / 2, c[1] * CELL + CELL / 2) for c in cells[1:-1]] + [b]
+        return self._pull([a] + [(c[0] * CELL + CELL / 2, c[1] * CELL + CELL / 2) for c in cells[1:-1]] + [b])
+
+    def _pull(self, pts):
+        """The points pts[1:] pulled straight: from each point the farthest later one whose leg stays within `bend`
+        px of the path between, is clear and under `max_leg`. None if even a single step is not clear."""
         out, i = [], 0
         while i < len(pts) - 1:
             j = i + 1
             for k in range(len(pts) - 1, i, -1):
                 if math.hypot(pts[k][0] - pts[i][0], pts[k][1] - pts[i][1]) > self.max_leg: continue
-                if all(_seg_dist(p[0], p[1], *pts[i], *pts[k]) <= self.bend for p in pts[i + 1:k]) and \
-                        self.g.leg_problem(pts[i], pts[k]) is None:
+                if all(_seg_dist(p[0], p[1], *pts[i], *pts[k]) <= self.bend for p in pts[i + 1:k]) and                         self.g.leg_problem(pts[i], pts[k]) is None:
                     j = k
                     break
             if self.g.leg_problem(pts[i], pts[j]) is not None: return None
             out.append(pts[j])
             i = j
+        return out
+
+    # ---- far: across the map, through doorways and gates -------------------------------------------------------------
+    def portals(self, shut=()):
+        """{cell: [(other cell, cost, (out, mid, in))]}: every doorway a walker can pass, both ways, as the three
+        square-on points (Ground.passage) between a clear cell before it and one behind it. Doors within 40 px of a
+        point of `shut` (locked doors and gates) are left out."""
+        key = tuple(sorted(shut))
+        if getattr(self, "_portals", None) and self._portals[0] == key: return self._portals[1]
+        out, seen = {}, set()
+        for gap, (c, n, half) in sorted(self.g.gap_door.items()):
+            if c in seen: continue
+            seen.add(c)
+            if any(math.hypot(c[0] - q[0], c[1] - q[1]) < 40 for q in shut): continue
+            ps = self.g.passage(gap, (c[0] + n[0] * 60, c[1] + n[1] * 60))
+            if not ps or not ps[0] or not ps[2]: continue
+            a, mid, b = ps
+            if self.g.leg_problem(a, b) is not None: continue
+            ca, cb = self._start(a), self._start(b)
+            if ca is None or cb is None or ca == cb: continue
+            cost = math.hypot(b[0] - a[0], b[1] - a[1]) / CELL + 2.0
+            out.setdefault(ca, []).append((cb, cost, (a, mid, b)))
+            out.setdefault(cb, []).append((ca, cost, (b, mid, a)))
+        self._portals = (key, out)
+        return out
+
+    def route_far(self, a, b, shut=(), limit=600000):
+        """World px points from a to b (a excluded, b included) anywhere on the map: along the roads and paths, and
+        through any doorway or gate on the way square-on (out in front, its middle, in behind: Ground.passage),
+        never through one within 40 px of a point of `shut`. A long walk (a rescued man going home) is walked leg by
+        leg on these points, as the tours are: the game's own path search gives up on far goals and walks
+        straight at them, into the trees. None when there is no way."""
+        s, t = self._start(a), self._start(b)
+        if s is None or t is None: return None
+        doors = self.portals(shut)
+        h = lambda c: math.hypot(c[0] - t[0], c[1] - t[1])
+        dist, prev = {s: 0.0}, {s: None}
+        pq = [(h(s), 0.0, s)]
+        n = 0
+        while pq:
+            f, d, c = heapq.heappop(pq)
+            if c == t: break
+            if d > dist.get(c, 1e18): continue
+            n += 1
+            if n > limit: return None
+            steps = []
+            for a_, b_ in ((1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)):
+                nb = (c[0] + a_, c[1] + b_)
+                if not self.ok(nb): continue
+                if a_ and b_ and not (self.ok((c[0] + a_, c[1])) and self.ok((c[0], c[1] + b_))): continue
+                steps.append((nb, (1.414 if a_ and b_ else 1.0) * (1.0 if nb in self.roads else self.off_road), None))
+            steps += doors.get(c, [])
+            for nb, w, via in steps:
+                nd = d + w
+                if nd < dist.get(nb, 1e18):
+                    dist[nb], prev[nb] = nd, (c, via)
+                    heapq.heappush(pq, (nd + h(nb), nd, nb))
+        if t not in prev: return None
+        # the cell path back from t, cut at each doorway into pieces walked on the ground
+        pieces, cur, c = [], [t], t
+        while prev[c] is not None:
+            p_, via = prev[c]
+            if via is not None:
+                pieces.append((cur[::-1], via)); cur = [p_]       # cells after the doorway, the doorway before them
+            else:
+                cur.append(p_)
+            c = p_
+        pieces.append((cur[::-1], None))
+        pieces.reverse()                  # [(cells, the doorway passed before them or None)], the first from a
+        centre = lambda c: (c[0] * CELL + CELL / 2, c[1] * CELL + CELL / 2)
+        out, start = [], a
+        for k, (cells, via) in enumerate(pieces):
+            if via:
+                if via[1]: out.append(via[1])
+                out.append(via[2])
+                start = via[2]
+            end = pieces[k + 1][1][0] if k + 1 < len(pieces) else b
+            pts = [start] + [centre(c) for c in cells] + [end]
+            pts = [p for j, p in enumerate(pts) if j == 0 or math.hypot(p[0] - pts[j - 1][0], p[1] - pts[j - 1][1]) > 1]
+            legs = self._pull(pts) if len(pts) > 1 else []
+            if legs is None: return None
+            out += legs
         return out
