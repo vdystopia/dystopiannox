@@ -296,7 +296,7 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
-        self._buffer_never_touch()
+        for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
         self._blend_thresholds()
         edges = self._edges()
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
@@ -310,7 +310,7 @@ class Spec:
         seam). Same sides as _buffer_never_touch."""
         if getattr(self, "raw_floors", False): return
         # the land's own floors, the biomes' too (Emberhollow: marble paving against VolcanicCraggy, an error)
-        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")       # SwampGrass matches "Grass"
         for (x, y), a in list(self.floor.items()):
             for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
                 n = (x + d[0], y + d[1])
@@ -331,7 +331,7 @@ class Spec:
             buf = max(r["buffer_materials"].items(), key=lambda kv: kv[1])[0] if r.get("buffer_materials") else None
             if buf: nt[frozenset((r["a"], r["b"]))] = buf
         # the land's own floors, the biomes' too (Emberhollow: marble paving against VolcanicCraggy, an error)
-        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")       # SwampGrass matches "Grass"
         for (x, y), a in list(self.floor.items()):
             for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
                 n = (x + d[0], y + d[1])
