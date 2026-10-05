@@ -108,6 +108,23 @@ the work first, leave it uncommitted and report.
 - Cloned people are not drawn by the editor's render: `review/spots.py` shows their spot but not them; the server's
   self-check proves they exist.
 
+- A castle: `StoryMap.Curtain` lays a curtain wall with corner towers and gatehouses round a courtyard, named locked
+  gates, and keeps the land outside its closed faces so the gates seal the exit; `place_buildings(square_area=)`
+  makes the public buildings face a courtyard; roles `keep` and `barracks`; `camps.training_ground`
+  (`mapgen/designs/greywatch.py`).
+- A person who turns on the player: a cloned person cannot be made hostile, so hide a disabled creature at the same
+  spot and swap them (`A.disable(person)`, `A.enable(foe)` + `A.hunt(foe)`): Greywatch's traitor.
+- Fights in turn (an arena, cells): open one door at a time with `A.unlock` as each bout's foes die (`q.dead`).
+
+## Geometry, in short
+
+- The square grid's axes run along the screen's diagonals: a rectangle in squares (i, j) is a diamond on screen.
+  Building sizes are in uv units (two to a square) at the kit's scale (1.25 Westwood's); a role's footprint in
+  squares is about `size * 1.25 / 2` each way. Leave room for that when you plan a courtyard or a lot.
+- The land grows only round what is placed in it (areas, buildings, yards, links): open ground far from anything
+  becomes forest. Fill a courtyard or a field yourself (`land.squares |= ...`), and use `land.forbidden` for ground
+  that must never become land (the outside of a castle wall, the rock behind a cliff).
+
 ## Gotchas (each cost an evening once)
 
 - Never place a `Zombie`: OpenNox cannot read the map back (the server stops at "cannot read next section: EOF").
