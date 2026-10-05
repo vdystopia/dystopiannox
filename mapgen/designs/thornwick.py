@@ -123,6 +123,13 @@ vc = land.areas["town"]["c"]
 land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2)}
 land.paint_roads(m, "DirtDark2", width_squares=2.8, skip=land.reserved)
 
+# the grove and the bend stay wild: no house is built beside the bandits' fire or the wreck
+no_build = set()
+for k_, r_ in (("grove", 13), ("fork", 9), ("south", 8)):
+    c_ = land.areas[k_]["c"]
+    no_build |= {s for s in land.squares if math.hypot(s[0] - c_[0], s[1] - c_[1]) <= r_} - land.taken
+land.taken |= no_build                     # released once the buildings stand: the forest may grow there
+
 # ---- 3. buildings from the square outwards ---------------------------------------------------------------------------
 placed, door_paths, missed = [], set(), []
 order = sorted(range(len(ID.buildings)), key=lambda k: (BUILDINGS[ID.buildings[k].role]["faces"] != "square",
@@ -152,6 +159,7 @@ for k in order:
     land.taken_strict |= _squares_of(b.footprint)
     placed.append((bid, b))
 by_role = {bid.role: b for bid, b in placed}
+land.taken -= no_build
 
 land.clear_walls(m)
 for bid, b in placed:

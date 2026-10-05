@@ -97,7 +97,9 @@ def wagon_wreck(spec, rng, land, centre, road_dir):
     from the road. road_dir: angle (radians, squares) along the road. Returns dict(cart, carter) in world px."""
     sc = Scene(spec, rng, land, centre)
     sc.put("OutdoorTraderCart", sc.ci, sc.cj)
-    off = road_dir + math.pi / 2
+    # the load spills on the side with open ground (thrown against the forest wall, nothing would land)
+    free = lambda o: sum(sc.ok(*sc.at(r, o + d)) for r in (1.0, 1.8, 2.4) for d in (-0.6, 0.0, 0.6))
+    off = max((road_dir + math.pi / 2, road_dir - math.pi / 2), key=free)
     for k in range(rng.randint(5, 8)):
         r, a = rng.uniform(0.8, 2.4), off + rng.uniform(-1.0, 1.0)
         sc.put(rng.choice(CRATES + BARRELS + SACKS), *sc.at(r, a))
