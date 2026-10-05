@@ -54,10 +54,10 @@ Statues stand either side of it.
 
 ## Common mistakes
 
-- A nave far over its size (Harrowby's first chapel, 288-323 tiles: 4% covered): the chapel building is 36 x 28 units
-  (`BUILDINGS["chapel"]`), so its nave stays near 100-260 tiles. Pews 1 per 16 tiles (the cap that held 108 tiles at 8
-  pews with open floor 0.55+); no free group of statues (a pair had stood among the pews); a founder's tomb against a
-  side wall where no pair lies behind the pews; a colonnade from 100 tiles.
+- A nave far over its size (Harrowby's first chapel, 288-323 tiles: 4-6% covered): a village takes the
+  `village_chapel` role (34 x 26 units, its nave about 100-130 tiles); the town's `chapel` keeps its size (shrinking it
+  moved every other map's layout). Pews 1 per 14 tiles; a free group of statues only in a nave of 180 or more (a pair
+  had stood among a small nave's pews); a founder's tomb against a side wall from 140, a second from 200.
 
 - "way too many benches and not enough object diversity ... too many of the same object (chapel benches, tavern tables
   and chairs)" (Greywatch, 2026-10-05: 46 pews wall to wall).

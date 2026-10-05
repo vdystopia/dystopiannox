@@ -275,7 +275,7 @@ TYPES = {
                    middle="long tables with benches down the middle on a great carpet, open floor round them and a "
                           "clear way from every door; open hearths at the ends of a long hall"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.90), per_tile=(0.08, 0.35), types_min=10, free_most=(6, 40), free_skip=("chair", "bench"),
-        caps={"bench": (11, 24), "table": (48, 6), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
+        caps={"bench": (16, 24), "table": (48, 6), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
         signature={"table": (1, 6), "bench": (0.3, 24), "fireplace": (2, 2), "statue": (0.5, 4), "wall_decor": (0.2, 10)},
         needs=("table", "fireplace"), kin=("dining_hall", "hall")),
     "hall": dict(
@@ -319,7 +319,7 @@ TYPES = {
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
-        caps={"bench": (16, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
+        caps={"bench": (14, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall",),
         variants={"dark_chapel": dict(must={"altar": 1, "statue": 4}, types_min=6,
                                       caps={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},

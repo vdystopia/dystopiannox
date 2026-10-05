@@ -37,7 +37,7 @@ The hearth, centred on a back wall (a second one on the far wall of a long hall)
 | open floor | 0.59 | 0.55-0.90 |
 | pieces per tile | 0.21 | 0.08-0.35 |
 | distinct types | 12 | 10+ |
-| caps | 12 tables, 16 benches | tables 1 per 48 tiles, at most 6; benches 1 per 11 tiles in all, at most 24; chests 1 per 80, at most 3 |
+| caps | 12 tables, 16 benches | tables 1 per 48 tiles, at most 6; benches 1 per 16 tiles in all (Harrowby: 20 of 32 pieces at 1 per 11), at most 24; chests 1 per 80, at most 3 |
 
 ## Size
 

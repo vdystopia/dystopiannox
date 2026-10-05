@@ -96,7 +96,7 @@ ID = MapIdentity(
                BuildingIdentity("home", "mill", "", "the Hawkins family"),
                BuildingIdentity("woodcutter", "wood", "Osric's hut", "Osric the woodcutter and his son"),
                BuildingIdentity("townhall", "town", "the Moot Hall", "Reeve Aldwin"),
-               BuildingIdentity("chapel", "town", "the chapel of the Sheaf", "Sister Maud"),
+               BuildingIdentity("village_chapel", "town", "the chapel of the Sheaf", "Sister Maud"),
                BuildingIdentity("inn", "town", "The Golden Sheaf", "the innkeeper"),
                BuildingIdentity("store", "town", "Corbet's chandlery", "Corbet the chandler"),
                BuildingIdentity("smithy", "town", "the forge", "the smith"),
@@ -178,7 +178,7 @@ def ring_of(c, radii):
 
 
 from kit.village import _squares_of
-ch_sq = _squares_of(by_role["chapel"].footprint) if "chapel" in by_role else None
+ch_sq = _squares_of(by_role["village_chapel"].footprint) if "village_chapel" in by_role else None
 chapel_c = (sum(i for i, _ in ch_sq) / len(ch_sq), sum(j for _, j in ch_sq) / len(ch_sq)) if ch_sq else None
 for kind_, area_, rs_, toward_ in (("field", "steading", (0, 3, 6), "south"), ("field", "mill", (9, 12, 15), "mill"),
                                    ("field", "mill", (10, 13, 16, 19), "mill"),
@@ -218,7 +218,7 @@ vil = Village(m, rng, land)
 vil.SIGN_TEXT = dict(vil.SIGN_TEXT, inn=q.text("The Golden Sheaf\nAle, bread and a bed of clean straw", "Sign"),
                      store=q.text("Corbet's Chandlery\nRope, candles, seed and goods for the road", "Sign"),
                      smithy=q.text("The Forge\nBlades, mail, scythes ground sharp", "Sign"),
-                     chapel=q.text("The Chapel of the Sheaf", "Sign"), townhall=q.text("The Moot Hall", "Sign"),
+                     village_chapel=q.text("The Chapel of the Sheaf", "Sign"), townhall=q.text("The Moot Hall", "Sign"),
                      mill=q.text("Harrowby Mill\nYour grain ground for a tenth", "Sign"))
 for bid, b in placed:
     role = BUILDINGS[bid.role]
@@ -341,7 +341,7 @@ gh = room_of("townhall", "great_hall")
 ax_, ay_ = free_px(gh) if gh else (vx, vy)
 person("Con02a", "Mayor_Theogrin", ax_, ay_, "Aldwin")
 # Sister Maud beside her altar, off the aisle
-ch = room_of("chapel", "chapel")
+ch = room_of("village_chapel", "chapel")
 ch_cells = {(x + a, y + b) for x, y in ch.tiles for a in (-1, 0, 1) for b in (-1, 0, 1)} if ch else set()
 ch_altar = next((o for o in m.d["objects"] if o.get("type", "").startswith("DunMirAltar") and
                  (int(o["x"] // CELL), int(o["y"] // CELL)) in ch_cells), None)

@@ -455,7 +455,7 @@ class StoryMap:
     # ---- the town's places, and routes between them (kit/walkways) -----------------------------------------------
     LANDMARK = re.compile(r"^(Well|Fountain|Statue|Bench|LightBench|Garden|Gate$|IronFenceGate|BarredGate|Sign|"
                           r"OutdoorTrader|WaterBarrel|Anvil|Stump|WoodPile|Tombstone|Grave|Wagon|Cart|Shrine|Obelisk)")
-    VISIT = ("store", "inn", "tavern", "chapel", "smithy")      # roles a townsperson steps inside
+    VISIT = ("store", "inn", "tavern", "chapel", "village_chapel", "smithy")      # roles a townsperson steps inside
     HOMES = ("home", "cottage", "house", "farm", "hut", "mill", "woodcutter", "hunter", "fisher", "herbwife")
 
     def _at(self, wp_name):

@@ -344,7 +344,7 @@ ROOMS = {
                            dict(fam="wall_decor", slot="decor")],
                   # (no dining set: a second table group turns a study toward a dining room, rules/rooms/study.md;
                   # Harrowby's 143-tile reeve's study had three)
-                  fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=140), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
+                  fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=12), dict(fam="lab", slot="wall", at="center", clear=1.2, max=1), dict(fam="shelves", slot="racks", kind="books", max=8, min_area=120), dict(fam="lab", slot="group", group="curio", max=1, min_area=90), dict(fam="table", slot="group", group="sitting", max=1, min_area=120), dict(fam="shelves", slot="line", n=4, max=4),
                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                         dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
     "library": dict(purpose="books: bookcases lining both back walls end to end, stacks of bookcases in rows down the "
@@ -442,16 +442,18 @@ ROOMS = {
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="bench", slot="pews", toward="altar", runner=True, columns=True, tombs=True),
                             dict(fam="wall_decor", slot="decor")],
-                   # (no free group of statues: Harrowby's nave set a pair among its pews; the statues flank the
-                   # altar and stand in the corners, rules/rooms/chapel.md)
-                   fill=[# a nave whose pews left half its floor bare (Ambermere seed 7: 6% covered; Harrowby's 108-tile
+                   # a free group of statues only in a big nave, where the open floor toward the door holds it (Harrowby's
+                   # 108-tile nave had set a pair among its pews)
+                   fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=180),
+                         # a nave whose pews left half its floor bare (Ambermere seed 7: 6% covered; Harrowby's 108-tile
                          # nave 5%) takes a colonnade
-                         dict(fam="column", slot="racks", kind="cathedral", gap=2.6, aisle=3.0, min_area=100, max=8,
+                         dict(fam="column", slot="racks", kind="cathedral", gap=2.6, aisle=3.0, min_area=180, max=8,
                               fixed=True),
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          # a founder's tomb against a side wall where no pair lay behind the pews (a stone nave with
                          # no runner: Harrowby's, 5% covered, 12 of its 20 pieces pews)
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1),
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=140),
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=200),
                          dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
@@ -474,6 +476,9 @@ ROOMS = {
                         dict(fam="tomb", slot="wall", at="center", clear=1.0, max=4),
                         dict(fam="column", slot="racks", kind="cathedral", gap=3.2, aisle=1.2, min_area=180),
                         dict(fam="statue", slot="group", group="statues", max=1, min_area=150),
+                        # statues of the dead in the corners where the centre took none (Ambermere's 119-tile crypt
+                        # held tombs and one other kind)
+                        dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2),
                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
     "hall": dict(purpose="a great hall: a colonnade down its length, statues facing each other, benches along the walls, "
                          "shields and banners on the back walls, plants in the corners",
@@ -520,7 +525,9 @@ ROOMS = {
                              dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
                              dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
                              dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=500, fixed=True),
-                             dict(fam="bench", slot="wall", max=6),
+                             # a few benches by the front walls, no more: the tables' benches already make up most of
+                             # the hall's pieces (Harrowby's moot hall: 20 of 32, identity.monotony)
+                             dict(fam="bench", slot="wall", max=3),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     # 2026-10-05 playtest (Greywatch's keep: the throne "facing sideways towards the store room", "the pillars are in the
@@ -747,9 +754,16 @@ BUILDINGS = {
                             ("bedroom", "the reeve's chamber"), ("storeroom", "the town's stores")],
                      scenes=["deliveries", "sign"], garden=0.0, faces="square"),
     "chapel": dict(purpose="the town's chapel: the nave with its altar and pews, and behind it the crypt where an old "
-                           "family lies", style="stone_house", size=(36, 28), min_units=200,
+                           "family lies", style="stone_house", size=(40, 30), min_units=220,
                    rooms=[("chapel", "the nave: the altar, the pews facing it"), ("crypt", "the family crypt behind the nave")],
                    scenes=["sign"], garden=0.0, faces="square"),
+    # a village's chapel (Harrowby): the town's chapel at a village's size, so its nave stays within the chapel brief's
+    # 60-260 tiles (the town chapel's nave came out 288-323 tiles in Harrowby, 4-6% covered: rules/rooms/chapel.md)
+    "village_chapel": dict(purpose="a village's chapel: a small nave with its altar and pews, and behind it the crypt "
+                                   "of its old families", style="stone_house", size=(34, 26), min_units=180,
+                           rooms=[("chapel", "the nave: the altar, the pews facing it"),
+                                  ("crypt", "the crypt of the old families behind the nave")],
+                           scenes=["sign"], garden=0.0, faces="square"),
     # a lake town's houses (Ambermere): the fisher's house on the shore, the herbwife's hut
     "fisher": dict(purpose="a fisher's house on the shore: the hearth room, and the loft where the nets, oars, salt and "
                            "the day's catch are kept", style="log_cabin", size=(20, 18),
