@@ -32,6 +32,10 @@ class A:
     @staticmethod
     def stage(quest, n): return ("stage", quest, "", n)
     @staticmethod
+    def advance(quest, n=1):
+        """The quest's stage moves on by n: a count of things done in any order (three vents opened)."""
+        return ("advance", quest, "", n)
+    @staticmethod
     def flag(name): return ("flag", name, "", 0)
     @staticmethod
     def unflag(name): return ("unflag", name, "", 0)

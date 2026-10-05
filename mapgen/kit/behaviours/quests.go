@@ -113,6 +113,8 @@ func run(acts []Act, at ns.Positioner) {
 		switch a.Kind {
 		case "stage": // A quest, N stage
 			stages[a.A] = a.N
+		case "advance": // A quest, N steps on (things done in any order, counted)
+			stages[a.A] += a.N
 		case "flag":
 			flags[a.A] = true
 		case "unflag":
