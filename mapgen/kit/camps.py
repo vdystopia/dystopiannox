@@ -134,3 +134,46 @@ def signpost(spec, land, at_sq, key, kind="PlankSign1"):
     """A plank sign at a square whose text is `key` in the map's string table."""
     sc = Scene(spec, None, land, at_sq)
     return sc.put(kind, sc.ci, sc.cj, xfer={"Text": key})
+
+
+def ruined_tower(spec, rng, land, centre, toward, loot, size=(7, 7), material="AncientRuin"):
+    """The stump of an old tower: a square of ruined wall round a plot (square coordinates), broken through on the
+    side facing `toward` (the way in) and breached here and there elsewhere, rubble fallen inside and out, a chest at
+    the back. Lay it after the land's walls, before the planting. Returns dict(inside: world px spots for its
+    keepers, chest, boss: the spot at the back by the chest)."""
+    from kit.layout import point_cell
+    w, h = size
+    gi, gj = int(round(centre[0] - w / 2)), int(round(centre[1] - h / 2 + 1))
+    sides = {"i0": [(gi, q) for q in range(gj - 1, gj + h)], "i1": [(gi + w, q) for q in range(gj - 1, gj + h)],
+             "j0": [(p, gj - 1) for p in range(gi, gi + w + 1)], "j1": [(p, gj + h - 1) for p in range(gi, gi + w + 1)]}
+    mids = {"i0": (gi, gj - 1 + h / 2), "i1": (gi + w, gj - 1 + h / 2), "j0": (gi + w / 2, gj - 1), "j1": (gi + w / 2, gj + h - 1)}
+    front = min(mids, key=lambda s: math.hypot(mids[s][0] - toward[0], mids[s][1] - toward[1]))
+    back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[front]
+    for side, pts in sides.items():
+        n = len(pts)
+        gaps = set()
+        if side == front:                                  # the way in: the middle of the wall is down
+            gaps |= set(range(n // 2 - 1, n // 2 + 2))
+        elif side != back and rng.random() < 0.7:         # a breach in a side wall
+            k = rng.randint(2, n - 3)
+            gaps |= {k, k + 1}
+        for k, p in enumerate(pts):
+            if k in gaps: continue
+            c = point_cell(*p)
+            if c not in spec.wallmap: spec.wall(*c, material)
+        for k in gaps:                                     # the fallen stones lie where the wall came down
+            si, sj = pts[k][0] + rng.uniform(-0.6, 0.6), pts[k][1] + rng.uniform(-0.6, 0.6)
+            sc = Scene(spec, rng, land, (si, sj))
+            sc.put(rng.choice(("CaveRocksMedium", "CaveRocksSmall", "CaveRocksPebbles")), si, sj)
+    land.taken |= {(gi + a, gj + b) for a in range(-1, w + 1) for b in range(-1, h + 1)}
+    ci, cj = gi + w / 2, gj - 1 + h / 2
+    sc = Scene(spec, rng, land, (ci, cj))
+    for k in range(rng.randint(4, 6)):                     # rubble against the inside of the walls
+        a = rng.uniform(0, 2 * math.pi)
+        sc.put(rng.choice(("CaveRocksLarge", "CaveRocksMedium", "CaveRocksSmall")), *sc.at(min(w, h) / 2 - 1.2, a))
+    bx, by = mids[back]
+    bi, bj = ci + (bx - ci) * 0.6, cj + (by - cj) * 0.6
+    chest = sc.put("Chest4", bi, bj, items=loot)
+    boss = square_px(ci + (bx - ci) * 0.25, cj + (by - cj) * 0.25)
+    inside = [sc.px(1.6, a) for a in (0.5, 2.6, 4.4)]
+    return dict(inside=inside, chest=chest, boss=boss, front=front)

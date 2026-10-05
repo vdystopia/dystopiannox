@@ -354,7 +354,11 @@ ROOMS = {
                   compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.6, side_by_side=True, aisle=1.8),
                            dict(fam="storage", slot="wall", at="corner", clear=1.2),
                            dict(fam="wall_decor", slot="decor")],
-                  fill=[dict(fam="column", slot="racks", kind="cathedral", gap=3.2, aisle=1.2, min_area=180),
+                  # an L-shaped or narrow crypt has no room for rows: its dead lie along the walls instead
+                  # (Thornwick v0.1: one sarcophagus in a 58-tile crypt, 5% covered)
+                  fill=[dict(fam="tomb", slot="wall", at="corner", clear=1.0, max=8),
+                        dict(fam="tomb", slot="wall", at="center", clear=1.0, max=4),
+                        dict(fam="column", slot="racks", kind="cathedral", gap=3.2, aisle=1.2, min_area=180),
                         dict(fam="statue", slot="group", group="statues", max=1, min_area=150),
                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
     "hall": dict(purpose="a great hall: a colonnade down its length, statues facing each other, benches along the walls, "

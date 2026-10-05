@@ -113,7 +113,15 @@ class Planter:
         self.forest_key = forest_of or (lambda s: forest)
         self.settled = tuple(settled) or ("village",)
         self.edge = land.edge_distance()
-        busy = set(land.roads) | land.plaza | land.water | land.taken | set(keep_clear)
+        # forest paths (passages without a road) stay walkable: trees lining both edges of a narrow path meet in the
+        # middle and close it (Thornwick v0.2: the bandit camp cut off by its own tree line)
+        lanes = set()
+        for ln in getattr(land, "links", []):
+            if ln.get("road"): continue
+            for si, sj in ln["path"]:
+                ci, cj = int(math.floor(si)), int(math.floor(sj)) + 1
+                lanes |= {(ci + a, cj + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
+        busy = set(land.roads) | land.plaza | land.water | land.taken | set(keep_clear) | (lanes & land.squares)
         self.road_d = bfs_distance(list(set(land.roads) | land.plaza), land.squares, 12)
         self.busy_d = bfs_distance(list(busy), land.squares, 12)
         self.water_d = bfs_distance(list(land.water), land.squares, 6)

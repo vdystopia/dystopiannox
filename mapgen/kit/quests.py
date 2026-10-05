@@ -76,6 +76,8 @@ class QuestBook:
         stem = re.sub(r"[^A-Za-z0-9]", "", stem) or "Line"
         self._n[stem] = self._n.get(stem, 0) + 1
         key = f"{self.map}:{stem}{self._n[stem]}"
+        # the dialogue message carries the key in 32 bytes (opennox nox_xxx_startShopDialog_548DE0)
+        assert len(key) <= 31, f"string key too long for the game's dialogue message: {key}"
         self.strings[key] = text
         return key
 
@@ -95,10 +97,17 @@ class QuestBook:
     def say(self, text, when=None, do=(), ask=False, else_=(), who="Line"):
         return dict(When=when or self.when(), Text=self.text(text, who), Ask=ask, Do=list(do), Else=list(else_))
 
-    def talker(self, name, lines):
+    def talker(self, name, lines, pic=None):
+        """An NPC who talks: the first of `lines` whose condition holds. pic: its portrait (Westwood's names)."""
         self.names.add(name)
+        if pic: self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
         body = ",\n\t\t\t".join(self._line(l) for l in lines)
         self.calls.append(f"Talker({_go(name)}, []Line{{\n\t\t\t{body},\n\t\t}})")
+
+    def portrait(self, name, pic):
+        """The face in an NPC's dialogue window (Westwood's portraits: TheogrinPic, MaidenPic2, GalavaPriestPic...)."""
+        self.names.add(name)
+        self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
 
     def on_death(self, name, acts):
         self.names.add(name)

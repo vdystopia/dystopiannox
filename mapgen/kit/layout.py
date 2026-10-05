@@ -360,6 +360,24 @@ class Land:
         self.squares = self._fix_pinches(self.squares)
         return made
 
+    def open_links(self, half=1.7):
+        """Every passage open end to end, `half` squares either side of its centre line (call after carve and
+        thickets, before apply): an area the carve or a clump pinched off is no longer cut off from the rest
+        (Thornwick v0.2: the Red Hand's camp unreachable behind a pinch of forest). Returns the squares added."""
+        add = set()
+        k = int(math.ceil(half))
+        for ln in self.links:
+            for si, sj in ln["path"]:
+                ci, cj = int(math.floor(si)), int(math.floor(sj)) + 1
+                for a in range(-k, k + 1):
+                    for b in range(-k, k + 1):
+                        s = (ci + a, cj + b)
+                        if math.hypot(a, b) <= half and s not in self.forbidden and 3 <= s[0] + s[1] <= 250                                 and 3 <= s[0] - s[1] <= 250:
+                            add.add(s)
+        add -= self.squares
+        self.squares |= add
+        return add
+
     def assign_regions(self, jitter=2.5):
         """Square -> region: the nearest area's region, the border between regions wavering with smooth
         noise so sections blend into each other instead of meeting on a straight line."""

@@ -20,7 +20,7 @@ from collections import Counter, deque
 
 from nox import load_rules, CELL
 from kit.model import Room
-from kit.identity import ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM_COVER_DEFAULT
+from kit.identity import WESTWOOD_KIND, ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM_COVER_DEFAULT
 
 K = CELL / math.sqrt(2)            # px per uv unit
 AGENT = 0.75                       # uv radius kept free for walking (~12 px)
@@ -70,6 +70,7 @@ STYLE_EXCLUDE = {
     "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Movable|Shadow$",
     "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|(?<!Bone)(?<!Skull)Immobile$|Movable|Shadow$",
 }
+SACRED_KINDS = {"crypt"}
 # Damaging flame objects (they hurt players; rules: lighting.visible_sources) are never used indoors.
 DANGEROUS = re.compile(r"Flame(?!Basin)")
 # The walls the camera looks at across a room (NW and NE): Westwood stands most wall pieces there
@@ -457,7 +458,10 @@ class Furnisher:
         self.chair_facing = RT["chair_facing"]
         self.dirvar = DEC["directional_variants"]
         self.things = THINGS
-        self.exclude = re.compile(STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"]))
+        ex = STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"])
+        if kind in SACRED_KINDS:                 # a town's own crypt holds its coffins and sarcophagi (Thornwick v0.1)
+            ex = ex.replace("Crypt|", "").replace("|Coffin|Tomb", "")
+        self.exclude = re.compile(ex)
         self.lighting = LIGHT
         self.objects, self.spots, self.beds = [], [], []
         self.n_blocking, self.cap, self.in_required, self.placing_light = 0, 10 ** 6, False, False
@@ -830,6 +834,7 @@ class Furnisher:
             if self.kind in DECORATED: self.decorate_walls()
             while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
             self.audit_rugs()
+            self.audit_tables()
             self.in_required = self.composing = False
             self.placing_light = True
             self.add_lights()
@@ -2203,6 +2208,20 @@ class Furnisher:
         own = self._rug_under.get(id(rec))
         return not any(self._overlap(p[0], p[1], p[2] + mg, p[3] + mg, rec) for tt, p in self._typed
                        if p is not rec and p is not own and _family_of(tt) in RUG_WHOLE)
+
+    def audit_tables(self):
+        """Takes out any table left without a seat in a room for sitting at tables (the checker's rule: a chair or
+        bench within 1.8 units of its edge; validate/checks.py SEATED_ROOMS). Thornwick v0.1: a dining hall's round
+        table stood alone after its group's seats went elsewhere."""
+        if WESTWOOD_KIND.get(self.kind, self.kind) not in ("dining_hall", "tavern", "barracks"): return
+        seats = [rec for t, rec in self._typed if _family_of(t) in ("chair", "bench")]
+        for o in list(self.objects):
+            if not re.match(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d)$", o["type"]):
+                continue
+            rec = self._placed_of.get(id(o))
+            if not rec: continue
+            u, v, hu, hv = rec[:4]
+            if not any(abs(p[0] - u) <= hu + 1.8 and abs(p[1] - v) <= hv + 1.8 for p in seats): self._remove(o)
 
     def audit_rugs(self):
         """Takes up any rug that lies half under a piece of furniture (TreePlace v0.2 playtest: a table and

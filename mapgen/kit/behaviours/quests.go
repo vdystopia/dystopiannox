@@ -402,3 +402,11 @@ func QuestCheck(names []string) {
 		println("quests self-check: objects", found, "of", len(names), "- lines", len(lineKeys))
 	})
 }
+
+// Portrait sets the face shown in the creature's dialogue window (Westwood's: TheogrinPic, MaidenPic2,
+// GalavaPriestPic, Warrior2Pic, MalePic1-9, Townsman2Pic-4Pic, ...).
+func Portrait(name, pic string) {
+	if o := ns.Object(name); o != nil {
+		ns.StoryPic(o, pic)
+	}
+}
