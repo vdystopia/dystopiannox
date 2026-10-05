@@ -54,7 +54,7 @@ sc.put("Chest2", *sc.at(3.0, 4.2), items=[("Gold", {"Amount": 35}), "RedPotion",
 road = min(land.roads, key=lambda s: math.hypot(s[0] - lc[0], s[1] - lc[1]))
 camps.signpost(m, land, (road[0] - 1.5, road[1] + 1.5),
                q.text("THE ASH ROAD\nBehind you the vents breathe again and Emberhollow's gate stands open.\n\n"
-                      "(The end of the third chapter. The road goes on.)", "Sign"))
+                      "(The end of the third chapter. Below, the road goes into the mountain.)", "Sign"))
 d.vegetate(groves=1)
 d.scatter_open(scale=0.4)
 d.rim(scale=0.5)
@@ -62,6 +62,7 @@ d.lights(scale=1.0)
 d.planter.rock_piles(3)
 gc = land.areas["gate"]["c"]
 m.obj_px("PlayerStart", *square_px(gc[0] + 0.5, gc[1] - 0.5))
+StoryMap(m, rng, land, None).exit_to("on", "Deepvault", prefix="RoadExit")      # the road goes underground: chapter four
 StoryMap(m, rng, land, None).wild({"Imp": 3}, away_from=gc, min_away=8,
                                   per100=0.4, avoid=[(lc[0] + 4, lc[1])])
 q.start([q.journal("I came out through the Cinder Gate onto the Ash Road. Emberhollow breathes easier behind me.", 1),

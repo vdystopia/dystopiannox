@@ -27,7 +27,7 @@ The story
   to Wendel: he pays, and Ketil, his name cleared, gives the player his own reward.
 - The company store, the smithy and the inn buy and sell. The vault's hoard, the urchins' chest and three caches
   (in the crystal grotto, by the lake and the warren) hold loot.
-- The exit leads to Thornwick for now: the campaign loops back to its first chapter until chapter five exists.
+- The exit leads to Mirefen, chapter five, in the Black Fen beyond the caverns.
 
     py mapgen/designs/deepvault.py [seed]
 """
@@ -48,7 +48,7 @@ rng = random.Random(SEED)
 NAME = "Deepvault"
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "out", "deepvault")
-NEXT_MAP = "Thornwick"               # the campaign loops to chapter one until chapter five exists
+NEXT_MAP = "Mirefen"                 # chapter five (mapgen/designs/mirefen.py)
 PATH = "ManaMineDirt"                # the trodden ways: ore dust tramped into the cave floor
 
 

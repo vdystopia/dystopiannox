@@ -3,13 +3,14 @@ map's PlayerStart from that map's build: kit/story.StoryMap.arrival).
 
     py tests/campaign.py [--go path\\to\\go.exe] [--no-smoke] [design ...]
 
-Default chain: thornwick > tnorth > rimehold > rimepass > emberhollow > ashroad (built in reverse). Prints one line
+Default chain: thornwick > tnorth > rimehold > rimepass > emberhollow > ashroad > deepvault > mirefen (> thornwick),
+built in reverse. Mirefen leads home to Thornwick: build Thornwick once before a clean first run. Prints one line
 per map: the checker's result, the scripts' compile, the server's load and self-checks.
 """
 import argparse, os, re, subprocess, sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CHAIN = ["thornwick", "tnorth", "rimehold", "rimepass", "emberhollow", "ashroad"]
+CHAIN = ["thornwick", "tnorth", "rimehold", "rimepass", "emberhollow", "ashroad", "deepvault", "mirefen"]
 GO = os.environ.get("GO", r"C:/Users/DYSTOP~1/AppData/Local/Temp/claude/C--GOG-Games-Nox/2ef10e66-3ba1-4500-9040-634cb857884d/scratchpad/tools/go/bin/go.exe")
 
 
