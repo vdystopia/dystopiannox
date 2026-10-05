@@ -444,20 +444,58 @@ class Dresser:
             out.append((px_, py_))
         return out
 
-    def _route(self, b):
-        """A loop through a building's rooms: each room's free spot nearest its middle, and the doorway into the next
-        room when they share one (world pixels)."""
-        pts = []
+    def _route(self, b, stay=6.0):
+        """A loop through a building's rooms for its patrollers: room to room through the doorways they share (depth
+        first, and back the same way), standing `stay` seconds at each room's free spot nearest its middle, each doorway
+        passed square-on (a point in front, the opening's middle, a point behind: kit/walkways), and a bend wherever
+        furniture stands between two points. Returns (world px points, pauses), or ([], []) when the rooms cannot be
+        walked so (the patrollers then keep their posts)."""
+        from kit.walkways import Ground, Router
+        g = Ground.from_spec(self.spec)
+        router = Router(g)
         rooms = list(b.rooms)
-        for k, room in enumerate(rooms):
-            spots = self._room_spots(room)
+        by_id = {r.id: r for r in rooms}
+        spot = {}
+        for room in rooms:
+            spots = [p for p in self._room_spots(room) if g.point_ok(p[0], p[1], wall_clear=15, obj_clear=12)]
             if spots:
                 mx = sum(x for x, _ in spots) / len(spots); my = sum(y for _, y in spots) / len(spots)
-                pts.append(min(spots, key=lambda p: (p[0] - mx) ** 2 + (p[1] - my) ** 2))
-            nxt = rooms[(k + 1) % len(rooms)]
-            door = next((d for d in room.doors if nxt.id in d.connects), None)
-            if door and len(rooms) > 1: pts.append(((door.gap[0] + 0.5) * 23, (door.gap[1] + 0.5) * 23))
-        return pts
+                spot[room.id] = min(spots, key=lambda p: (p[0] - mx) ** 2 + (p[1] - my) ** 2)
+        root = next((r.id for r in rooms if r.id in spot), None)
+        if root is None or len(spot) < 2: return [], []
+        seq, seen = [], set()
+        def visit(rid):
+            seen.add(rid)
+            seq.append(("room", rid))
+            for d in by_id[rid].doors:
+                other = next((x for x in d.connects if x != rid), None)
+                if other in spot and other not in seen:
+                    seq.append(("door", d, rid)); visit(other); seq.append(("door", d, other)); seq.append(("room", rid))
+        visit(root)
+        seq.pop()                                   # back in the first room: the loop closes on its first spot
+        pts, pauses = [], []
+        def go(p, pause):
+            if pts and g.leg_problem(pts[-1], p) is not None:
+                via = router.route(pts[-1], p)
+                if via is None: raise ValueError
+                for q in via[:-1]: pts.append(q); pauses.append(0.0)
+            pts.append(p); pauses.append(pause)
+        try:
+            for item in seq:
+                if item[0] == "room":
+                    go(spot[item[1]], stay)
+                    continue
+                d, frm = item[1], item[2]
+                ps = g.passage(d.gap, spot[frm])
+                if not ps or not ps[0] or not ps[2]: return [], []
+                go(ps[0], 0.0)
+                if ps[1]: go(ps[1], 0.0)
+                go(ps[2], 0.0)
+            go(pts[0], 0.0)                         # the closing leg, checked and bent like the others
+            pts.pop(); pauses.pop()
+        except ValueError:
+            return [], []
+        return pts, pauses
 
     def garrison(self, pop=None):
         """The structures' keepers (GARRISON) in their rooms, with their behaviours. Returns the creatures placed."""
@@ -482,16 +520,21 @@ class Dresser:
                     used.append(spot)
                     scr = pop.name(t)
                     if how == "patrol" and route is None:     # one loop through the rooms for the patrollers
-                        pts = self._route(b)
-                        route = pop.waypoint_path(pop.name(f"{t}Route"), pts) if len(pts) >= 2 else []
+                        route = pop.name(f"{t}Route")
                     pop.creature(t, *spot, action="idle" if how in ("patrol", "ambush", "skittish") else "guard",
                                  face=face, scr=scr)
                     group.append(scr)
                     placed += 1
                 if how == "sentry": sentries += group
                 else: others += group
-                if how == "patrol" and route:
-                    for g in group: B.patrol(g, route, pause=2.0, loop=True)
+                if how == "patrol" and route and group:
+                    # laid when the scripts are written, round the furniture and chests placed after the garrison
+                    def lay(b=b, prefix=route, group=tuple(group)):
+                        pts, stays = self._route(b)
+                        if len(pts) < 2: return               # no walkable loop: the patrollers keep their posts
+                        wps = pop.waypoint_path(prefix, pts)
+                        for g in group: B.patrol(g, wps, pause=stays, loop=True)
+                    B.later(lay)
                 elif how == "ambush" and group:
                     ax = sum(p[0] for p in used[-len(group):]) / len(group); ay = sum(p[1] for p in used[-len(group):]) / len(group)
                     B.ambush(group, (ax, ay), reach=150.0)

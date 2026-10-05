@@ -1416,8 +1416,52 @@ def bridge_landings(m):
     return out
 
 
+def check_routes(m, ctx, base):
+    """Where creatures walk (playtest 2026-10-05: townsfolk walking into walls and sticking on a door's frame):
+    every waypoint stands on floor a body can stand on (off the walls, out of trees, rocks, benches and furniture,
+    not on water), and every leg walked between waypoints - each waypoint link, and each step of the routes the
+    scripts walk (<map>.routes.json beside a generated map) - runs straight without crossing the void, a wall (fences
+    and forest walls are walls), a building or an obstacle, sampled along the segment, and passes any doorway
+    square-on through its middle (kit/walkways). Errors on generated maps, notes on Westwood's."""
+    out = []
+    if not m.waypoints: return out
+    from kit.walkways import Ground
+    g = Ground.from_mapdata(m)
+    side = os.path.splitext(m.file or "")[0] + ".routes.json"
+    routes = json.load(open(side, encoding="utf-8")) if m.file and os.path.exists(side) else []
+    sev = "error" if routes or "mapgen" in (m.file or "").replace("\\", "/").lower() else "info"
+    short = lambda n: (n or "").split(":")[-1]
+    bad = []
+    for w in m.waypoints:
+        why = g.point_problem(w["x"], w["y"], wall_clear=11, obj_clear=9)
+        if why: bad.append(F("routes", sev, f"Waypoint {short(w['name']) or w.get('n')} stands {why}.", w["x"], w["y"]))
+    by_n = {w.get("n"): w for w in m.waypoints}
+    by_name = {short(w["name"]): w for w in m.waypoints if w.get("name")}
+    legs = {}
+    for w in m.waypoints:
+        for l in w.get("links") or []:
+            o = by_n.get(l if isinstance(l, int) else (l.get("n") if isinstance(l, dict) else None))
+            if o is not None and (id(o), id(w)) not in legs: legs[(id(w), id(o))] = (w, o, "link")
+    for r in routes:
+        ws = [by_name.get(n) for n in r["waypoints"]]
+        ws = [w for w in ws if w is not None]
+        pairs = list(zip(ws, ws[1:])) + ([(ws[-1], ws[0])] if r.get("loop") and len(ws) > 2 else [])
+        for a, b in pairs:
+            if (id(a), id(b)) not in legs and (id(b), id(a)) not in legs: legs[(id(a), id(b))] = (a, b, r.get("who", "?"))
+    for a, b, who in legs.values():
+        why = g.leg_problem((a["x"], a["y"]), (b["x"], b["y"]))
+        if why:
+            what = "Link" if who == "link" else f"{who}'s route"
+            bad.append(F("routes", sev, f"{what} from {short(a['name'])} to "
+                         f"{short(b['name'])} {why}.", (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2))
+    out += bad[:40]
+    if len(bad) > 40: out.append(F("routes", sev, f"... and {len(bad) - 40} more waypoint and route problems."))
+    out.append(F("routes", "info", f"Routes: {len(m.waypoints)} waypoints, {len(legs)} legs walked, {len(bad)} problems."))
+    return out
+
+
 ALL = [check_setup, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors, check_kits,
-       check_objects, check_doorways, check_story_gates, check_floors, check_rooms, check_density]
+       check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_rooms, check_density]
 
 
 def run_all(m, base, only=None):

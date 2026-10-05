@@ -10,15 +10,20 @@ package PKG
 // The sets:
 //   Sentry:     guards its post facing out; on sighting an enemy it calls out and rouses the allies listed, who hunt;
 //               when the enemy is lost it walks back to its post.
-//   Patrol:     walks a route of waypoints in turn (and back, or round), pausing at each; fights what it meets and
-//               takes up the route again when the enemy is lost.
+//   Patrol:     walks a route of waypoints in turn (round, or there and back), standing a while at each stop; fights
+//               what it meets and takes up the route again when the enemy is lost.
 //   Pack:       a leader wanders, the others follow it; when any of them sees or is hit by an enemy, all hunt; when
 //               the leader dies, the rest flee.
 //   Skittish:   wanders; when hit it flees from its attacker for a few seconds, then wanders again.
 //   Ambush:     a group waits unseen (disabled) until the player comes within reach, then appears and attacks.
-//   Townsfolk:  walks between the town's named spots, lingers, and turns to look at the player passing by.
-//   Villager:   a townsfolk who keeps an eye out: when a hostile creature comes near, runs for its home doorstep and
-//               waits there until the danger has passed, then takes up its rounds again.
+//   Tour:       a townsperson's day: walks a long route of waypoints round the town in order, along the roads (a
+//               waypoint at each bend, three square-on through each doorway), and at each stop (a doorstep, the well,
+//               a bench, a garden) stands still for its pause, about twenty seconds, facing what is there or the
+//               player passing by; when a hostile creature comes near, runs for its home doorstep and waits there
+//               until the danger has passed, then takes up its tour again from home.
+//
+// Every route walker is looked after by one shared ticker (twice a second): one that has not moved for six seconds
+// on a leg is sent on again, and after twelve it skips to the next waypoint, so nobody stands stuck against a wall.
 
 import (
 	"strings"
@@ -67,43 +72,6 @@ func Sentry(name string, faceX, faceY float32, rouse []string, shout string) {
 		o.WalkTo(post)
 		ns.NewTimer(ns.Seconds(4), func() { o.Guard(post, face, 160) })
 	})
-}
-
-// ---- Patrol ------------------------------------------------------------------------------------------------------
-
-func Patrol(name string, route []string, pauseSec float64, loop bool) {
-	o := find(name)
-	if o == nil {
-		return
-	}
-	var wps []ns.WaypointObj
-	for _, r := range route {
-		if w := ns.Waypoint(r); w != nil {
-			wps = append(wps, w)
-		}
-	}
-	if len(wps) == 0 {
-		o.Wander()
-		return
-	}
-	i, step := 0, 1
-	walk := func() { o.Move(wps[i]) }
-	o.OnEvent(ns.EventEndOfWaypoint, func() {
-		if len(wps) > 1 {
-			if loop {
-				i = (i + 1) % len(wps)
-			} else {
-				if i+step < 0 || i+step >= len(wps) {
-					step = -step
-				}
-				i += step
-			}
-		}
-		o.Pause(ns.Seconds(pauseSec))
-		ns.NewTimer(ns.Seconds(pauseSec+0.5), walk)
-	})
-	o.OnEvent(ns.EventLostEnemy, func() { ns.NewTimer(ns.Seconds(2), walk) })
-	walk()
 }
 
 // ---- Pack --------------------------------------------------------------------------------------------------------
@@ -206,34 +174,204 @@ func Ambush(names []string, x, y, reach float32) {
 	})
 }
 
-// ---- Townsfolk ---------------------------------------------------------------------------------------------------
+// ---- Route walkers (Tour, Patrol) ---------------------------------------------------------------------------------
 
-func Townsfolk(name string, spots []string, lingerSec float64) {
-	o := find(name)
-	if o == nil {
-		return
-	}
-	var wps []ns.WaypointObj
-	for _, s := range spots {
-		if w := ns.Waypoint(s); w != nil {
-			wps = append(wps, w)
-		}
-	}
-	if len(wps) == 0 {
-		o.Wander()
-		return
-	}
-	next := func() { o.Move(wps[ns.Random(0, len(wps)-1)]) }
-	o.OnEvent(ns.EventEndOfWaypoint, func() {
-		if h := ns.GetHost(); h != nil && dist2(h.Pos(), o.Pos()) < 120*120 {
-			o.LookAtObject(h)
-		}
-		ns.NewTimer(ns.Seconds(lingerSec+float64(ns.Random(0, 4))), next)
-	})
-	next()
+// walker walks one creature round a route: Move to each waypoint in turn (the waypoints are never linked, so each
+// Move ends at its waypoint and the game reports it). A waypoint with a pause is a stop, where it stands for the pause
+// (and up to four seconds more) facing its look point; the others are bends and doorway points, passed straight
+// through. Every callback is short: a stale timer (one set before the walk was taken over) does nothing.
+type walker struct {
+	o       ns.Obj
+	wps     []ns.WaypointObj
+	pause   []float32
+	look    []ns.Pointf
+	loop    bool
+	i, step int
+	gen     int  // bumped whenever the walk changes hands
+	moving  bool // on a leg, between Move and its end
+	held    bool // hiding or fighting: the route waits
+	last    ns.Pointf
+	still   int // ticker rounds without moving on a leg
+	// Tour: running home from danger
+	home    ns.WaypointObj
+	homeIdx int
+	fear    float32
+	calm    int
+	heldFor int // ticker rounds a patrol has been held by a fight
+	k       int // the walker's number, for staggering the threat checks
 }
 
-// ---- Villager ----------------------------------------------------------------------------------------------------
+var walkers []*walker
+var walkTicks int
+
+func newWalker(name string, route []string, pause []float32, look []float32, loop bool) *walker {
+	o := find(name)
+	if o == nil {
+		return nil
+	}
+	w := &walker{o: o, loop: loop, step: 1, homeIdx: -1}
+	for k, r := range route {
+		wp := ns.Waypoint(r)
+		if wp == nil {
+			continue
+		}
+		w.wps = append(w.wps, wp)
+		p := float32(0)
+		if k < len(pause) {
+			p = pause[k]
+		}
+		w.pause = append(w.pause, p)
+		lp := ns.Ptf(0, 0)
+		if 2*k+1 < len(look) {
+			lp = ns.Ptf(look[2*k], look[2*k+1])
+		}
+		w.look = append(w.look, lp)
+	}
+	if len(w.wps) == 0 {
+		o.Idle() // no route: stand still rather than wander
+		return nil
+	}
+	w.k = len(walkers)
+	walkers = append(walkers, w)
+	if len(walkers) == 1 {
+		ns.OnEachFrame(15, tickWalkers)
+	}
+	o.OnEvent(ns.EventEndOfWaypoint, w.arrived)
+	return w
+}
+
+func (w *walker) alive() bool {
+	return w.o != nil && w.o.IsEnabled() && w.o.CurrentHealth() > 0
+}
+
+func (w *walker) walk() {
+	if w.held || !w.alive() {
+		return
+	}
+	w.gen++
+	w.moving, w.still, w.last = true, 0, w.o.Pos()
+	w.o.Move(w.wps[w.i])
+}
+
+func (w *walker) advance() {
+	n := len(w.wps)
+	if n < 2 {
+		return
+	}
+	if w.loop {
+		w.i = (w.i + 1) % n
+		return
+	}
+	if w.i+w.step < 0 || w.i+w.step >= n {
+		w.step = -w.step
+	}
+	w.i += w.step
+}
+
+// later runs f after d unless the walk has changed hands meanwhile.
+func (w *walker) later(d ns.Duration, f func()) {
+	g := w.gen
+	ns.NewTimer(d, func() {
+		if g == w.gen {
+			f()
+		}
+	})
+}
+
+func (w *walker) next() {
+	w.advance()
+	w.walk()
+}
+
+func (w *walker) arrived() {
+	if w.held || !w.moving {
+		return
+	}
+	w.moving = false
+	p := w.pause[w.i]
+	if p <= 0 {
+		w.later(ns.Frames(2), w.next)
+		return
+	}
+	if h := ns.GetHost(); h != nil && dist2(h.Pos(), w.o.Pos()) < 120*120 {
+		w.o.LookAtObject(h)
+	} else if lp := w.look[w.i]; lp.X != 0 || lp.Y != 0 {
+		w.o.LookAtObject(lp)
+	}
+	w.later(ns.Seconds(float64(p)+float64(ns.Random(0, 4))), w.next)
+}
+
+// hold suspends the route (a fight, a run for home); resume takes it up again after d.
+func (w *walker) hold() {
+	w.held, w.moving = true, false
+	w.gen++
+}
+
+func (w *walker) resume(d ns.Duration) {
+	w.held = false
+	w.gen++
+	w.later(d, w.walk)
+}
+
+func (w *walker) threat() ns.Obj {
+	o := w.o
+	return ns.FindClosestObject(o, ns.HasClass(object.ClassMonster), ns.InCirclef{Center: o, R: float64(w.fear)},
+		ns.ObjCondFunc(func(x ns.Obj) bool {
+			return x != o && x.IsEnabled() && x.CurrentHealth() > 0 && !friendlyType(x.Type().Name())
+		}))
+}
+
+// tickWalkers: twice a second, every walker. A walker that has not moved on a leg for six seconds is sent on again,
+// and after twelve it skips to the next waypoint; a townsperson looks round once a second for danger.
+func tickWalkers() {
+	walkTicks++
+	for _, w := range walkers {
+		if w == nil || !w.alive() {
+			continue
+		}
+		if w.fear > 0 && (walkTicks+w.k)%2 == 0 {
+			if t := w.threat(); t != nil {
+				w.calm = 0
+				if w.home != nil && !w.held {
+					w.hold()
+					w.o.Move(w.home)
+				}
+			} else if w.held {
+				w.calm++
+				if w.calm >= 10 { // ten quiet seconds: back on the tour, from home
+					w.calm = 0
+					if w.homeIdx >= 0 {
+						w.i = w.homeIdx
+					}
+					w.resume(ns.Frames(2))
+				}
+			}
+		}
+		if w.held && w.fear <= 0 {
+			// a patrol whose fight never reported its end (the enemy gone some other way): back on its beat
+			if w.heldFor++; w.heldFor >= 60 {
+				w.heldFor = 0
+				w.resume(ns.Frames(2))
+			}
+			continue
+		}
+		w.heldFor = 0
+		if !w.moving || w.held {
+			continue
+		}
+		p := w.o.Pos()
+		if dist2(p, w.last) > 9 {
+			w.last, w.still = p, 0
+			continue
+		}
+		w.still++
+		if w.still == 12 {
+			w.o.Move(w.wps[w.i])
+		} else if w.still >= 24 {
+			w.next()
+		}
+	}
+}
 
 // friendlyType: the town's own people, who are no threat to a villager.
 func friendlyType(t string) bool {
@@ -241,69 +379,42 @@ func friendlyType(t string) bool {
 		strings.HasPrefix(t, "Wounded")
 }
 
-// Villager walks between the town's spots like Townsfolk; twice a second it looks round, and when a living, hostile
-// creature is within fearR pixels it runs to its home waypoint (a doorstep) and stays there, out of the way, until
-// none has been near for a while.
-func Villager(name string, spots []string, lingerSec float64, home string, fearR float64) {
-	o := find(name)
-	if o == nil {
+// Tour walks a townsperson round its route (see the walker); pause[k] > 0 makes waypoint k a stop, look holds an
+// x, y pair per waypoint to face there. With a home waypoint and fearR > 0, it runs home from hostile creatures.
+func Tour(name string, route []string, pause []float32, look []float32, home string, fearR float32) {
+	w := newWalker(name, route, pause, look, true)
+	if w == nil {
 		return
 	}
-	var wps []ns.WaypointObj
-	for _, s := range spots {
-		if w := ns.Waypoint(s); w != nil {
-			wps = append(wps, w)
-		}
-	}
-	hw := ns.Waypoint(home)
-	hiding, calm := false, 0
-	next := func() {
-		if hiding {
-			return
-		}
-		if len(wps) == 0 {
-			o.Wander()
-			return
-		}
-		o.Move(wps[ns.Random(0, len(wps)-1)])
-	}
-	o.OnEvent(ns.EventEndOfWaypoint, func() {
-		if hiding {
-			o.Idle()
-			return
-		}
-		if h := ns.GetHost(); h != nil && dist2(h.Pos(), o.Pos()) < 120*120 {
-			o.LookAtObject(h)
-		}
-		ns.NewTimer(ns.Seconds(lingerSec+float64(ns.Random(0, 4))), next)
-	})
-	threat := func() ns.Obj {
-		return ns.FindClosestObject(o, ns.HasClass(object.ClassMonster), ns.InCirclef{Center: o, R: fearR},
-			ns.ObjCondFunc(func(x ns.Obj) bool {
-				return x != o && x.IsEnabled() && x.CurrentHealth() > 0 && !friendlyType(x.Type().Name())
-			}))
-	}
-	ns.OnEachFrame(15, func() {
-		if o.CurrentHealth() <= 0 {
-			return
-		}
-		if t := threat(); t != nil {
-			calm = 0
-			if !hiding && hw != nil {
-				hiding = true
-				o.Move(hw)
-			}
-			return
-		}
-		if hiding {
-			calm++
-			if calm >= 16 { // eight quiet seconds: back to the rounds
-				hiding, calm = false, 0
-				next()
+	if home != "" {
+		w.home = ns.Waypoint(home)
+		for k, wp := range w.wps {
+			if w.home != nil && wp == w.home {
+				w.homeIdx = k
+				break
 			}
 		}
-	})
-	next()
+	}
+	w.fear = fearR
+	w.walk()
+}
+
+// Patrol walks a route of waypoints (round when loop, else there and back), standing pause[k] seconds at each stop
+// facing look[k]; it fights what it meets and takes up the route again two seconds after the enemy is lost.
+func Patrol(name string, route []string, pause []float32, look []float32, loop bool) {
+	w := newWalker(name, route, pause, look, loop)
+	if w == nil {
+		return
+	}
+	fight := func() {
+		if !w.held {
+			w.hold()
+		}
+	}
+	w.o.OnEvent(ns.EventEnemySighted, fight)
+	w.o.OnEvent(ns.EventIsHit, fight)
+	w.o.OnEvent(ns.EventLostEnemy, func() { w.resume(ns.Seconds(2)) })
+	w.walk()
 }
 
 // ---- Self-check --------------------------------------------------------------------------------------------------

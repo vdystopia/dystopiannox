@@ -2,6 +2,11 @@
 gates, exits, the start) marked and labelled, and a legend of who they are.
 
     py review/storymap.py <map> [--size 1800] [--out file.png]
+    py review/storymap.py <map> --routes [--who Name,Name]   # the routes people walk (<map>.routes.json), close up
+
+With --routes it draws, cropped to the town, every route the scripts walk: a line per person through its waypoints
+(legs that the checker faults in red), a dot at each stop sized by how long they stand there, and the person's name
+at the start. Writes review/out/<map>/routes.png.
 
 Labels come from the script names in the map (Tobin, Garrick, NorthGate1, ...); numbered groups (Lookout1-4,
 Folk1-8) are marked once each, labelled by their stem. Writes review/out/<map>/storymap.png and prints its path.
@@ -32,7 +37,9 @@ def kind_of(o):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("map"); ap.add_argument("--size", type=int, default=1800); ap.add_argument("--out")
+    ap.add_argument("--routes", action="store_true"); ap.add_argument("--who")
     a = ap.parse_args()
+    if a.routes: return routes(a)
     m = MD.load(a.map)
     name = os.path.splitext(os.path.basename(a.map))[0]
     out_dir = os.path.join(HERE, "out", name); os.makedirs(out_dir, exist_ok=True)
@@ -71,6 +78,63 @@ def main():
     d.rectangle((0, 0, 560, 30), fill=(12, 12, 14))
     d.text((10, 6), f"{name}: green start, gold people, red foes, blue gates/exits", fill=(230, 230, 230), font=font)
     out = a.out or os.path.join(out_dir, "storymap.png")
+    im.save(out)
+    print(out)
+
+
+ROUTE_COLOURS = [(255, 255, 255), (90, 200, 255), (255, 210, 60), (150, 255, 120), (230, 120, 255), (255, 150, 60),
+                 (80, 255, 220), (255, 120, 190), (180, 180, 255), (220, 255, 90)]
+
+
+def routes(a):
+    sys.path.insert(0, os.path.join(REPO, "mapgen"))
+    from kit.walkways import Ground
+    import json
+    m = MD.load(a.map)
+    name = os.path.splitext(os.path.basename(a.map))[0]
+    side = os.path.splitext(a.map)[0] + ".routes.json"
+    rs = json.load(open(side, encoding="utf-8"))
+    if a.who: rs = [r for r in rs if r["who"] in a.who.split(",")]
+    wp = {w["name"].split(":")[-1]: (w["x"], w["y"]) for w in m.waypoints}
+    g = Ground.from_mapdata(m)
+    out_dir = os.path.join(HERE, "out", name); os.makedirs(out_dir, exist_ok=True)
+    full = os.path.join(out_dir, "full.png")
+    if not os.path.exists(full) or os.path.getmtime(full) < os.path.getmtime(a.map):
+        subprocess.run([EDITOR, a.map, "--render-image", full, "full:5880"], timeout=900)
+    im = Image.open(full).convert("RGB")
+    pts = [wp[n] for r in rs for n in r["waypoints"] if n in wp]
+    xs, ys = [p[0] for p in pts], [p[1] for p in pts]
+    pad = 120
+    x0, y0 = max(0, int(min(xs)) - pad), max(0, int(min(ys)) - pad)
+    x1, y1 = min(im.width, int(max(xs)) + pad), min(im.height, int(max(ys)) + pad)
+    im = im.crop((x0, y0, x1, y1))
+    k = a.size / max(im.size)
+    im = im.resize((int(im.width * k), int(im.height * k)))
+    d = ImageDraw.Draw(im)
+    try: font = ImageFont.truetype("arialbd.ttf", 15)
+    except OSError: font = ImageFont.load_default()
+    P = lambda p: ((p[0] - x0) * k, (p[1] - y0) * k)
+    for ri, r in enumerate(rs):
+        col = ROUTE_COLOURS[ri % len(ROUTE_COLOURS)]
+        ps = [wp[n] for n in r["waypoints"] if n in wp]
+        pauses = r.get("pauses") or [0] * len(ps)
+        legs = list(zip(ps, ps[1:])) + ([(ps[-1], ps[0])] if r.get("loop") and len(ps) > 2 else [])
+        for p, q in legs:
+            bad = g.leg_problem(p, q)
+            d.line([P(p), P(q)], fill=(0, 0, 0), width=6)
+            d.line([P(p), P(q)], fill=(255, 0, 0) if bad else col, width=3)       # red is kept for faults
+        for p, s in zip(ps, pauses):
+            x, y = P(p)
+            rr = 3 + s / 3 if s else 2
+            d.ellipse((x - rr, y - rr, x + rr, y + rr), fill=col if s else (0, 0, 0), outline=(0, 0, 0), width=2)
+        x, y = P(ps[0])
+        for dx, dy in ((-1, -1), (1, 1), (-1, 1), (1, -1)):
+            d.text((x + 9 + dx, y - 20 + dy), r["who"], fill=(0, 0, 0), font=font)
+        d.text((x + 9, y - 20), r["who"], fill=col, font=font)
+    d.rectangle((0, 0, 900, 26), fill=(12, 12, 14))
+    d.text((8, 5), f"{name}: routes walked (dots: stops, size = seconds standing; red: a leg the checker faults)",
+           fill=(230, 230, 230), font=font)
+    out = a.out or os.path.join(out_dir, "routes.png")
     im.save(out)
     print(out)
 

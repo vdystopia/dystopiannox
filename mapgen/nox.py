@@ -126,6 +126,7 @@ class Spec:
                                # (a doorway: the path outside spills onto the threshold tile)
         self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
         self.scripts = {}       # filename -> Go source: the map's script (OpenNox runs the .go files in maps/<Name>/)
+        self.routes = []        # routes the scripts walk (kit/npcs.Behaviours): <map>.routes.json for the checker
         self.rng = random.Random(1)
 
     # ---- walls -------------------------------------------------------------------------
@@ -404,6 +405,12 @@ class Spec:
             for fn, src in self.scripts.items():
                 with open(os.path.join(sd, fn), "w", encoding="utf-8", newline="\n") as f: f.write(src)
             lines.append(f"SCRIPTS\t{sd}\t{len(self.scripts)} file(s)")
+        # the routes the scripts walk, waypoint by waypoint, for the checker's leg check (validate check_routes)
+        rp = os.path.join(out_dir, self.d["name"] + ".routes.json")
+        if self.routes:
+            with open(rp, "w", encoding="utf-8") as f: json.dump(self.routes, f)
+        elif os.path.exists(rp):
+            os.remove(rp)
         if check and not os.environ.get("NOX_NOCHECK"):      # NOX_NOCHECK=1: skip the checker (trying seeds)
             chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
                                   os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)

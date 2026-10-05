@@ -348,11 +348,10 @@ ring = sm.townsfolk(FOLK, castle_c, q=q, rumours=RUMOURS,
 inset = 5.0
 corners = [square_px(cw.gi + inset, cw.gj - 1 + inset), square_px(cw.gi + inset, cw.gj + cw.h - 1 - inset),
            square_px(cw.gi + cw.w - inset, cw.gj + cw.h - 1 - inset), square_px(cw.gi + cw.w - inset, cw.gj - 1 + inset)]
-watch_route = pop.waypoint_path("Watch", corners)
 for k_, donor_ in enumerate(("Contest_Guard", "IxGuard2")):
     wx2, wy2 = corners[k_ * 2]
     person("Con02a", donor_, wx2, wy2, f"Watch{k_ + 1}", action=0)
-    B.patrol(f"Watch{k_ + 1}", watch_route[k_ * 2:] + watch_route[:k_ * 2], pause=3.0)
+    sm.beat(f"Watch{k_ + 1}", castle_c, radius=7.0, stops=6)      # a beat round the courtyard, along its paths
 
 # ---- 9. the fights ----------------------------------------------------------------------------------------------------
 # the reivers in the gully, who come down on whoever passes on the road below
