@@ -334,6 +334,70 @@ class StoryMap:
                 seen.add(n); q.append(n)
         return seen
 
+    # radii (px) of the pieces the planting stands in the way, as the checker measures them (corpus things table)
+    WAY_BLOCKERS = {"CaveRockPillarShort1": 18, "CaveRockPillarTall1": 18, "CaveRockPillarTall2": 18,
+                    "CaveRockPillarShort2": 12, "LargeStalagmite": 12, "CaveRocksHuge": 12, "CaveBoulders": 12,
+                    "CaveRocksLarge": 10}
+
+    def open_ways(self, targets, rounds=12):
+        """After the planting: every target (world px: quest givers, creatures, chests) the player cannot walk to from
+        the PlayerStart gets a way opened, by taking out the fewest pillars, trees and big rocks between it and the
+        walkable ground. Cells are blocked as the checker blocks them (validate/checks.py Context.object_cells: a cell
+        whose centre lies within the piece's radius), which walkable() only approximates (Deepvault: pillars either side
+        of a narrow cave neck shut off a far camp, and a wild spider). Walls are left alone. Returns the objects removed."""
+        import collections
+        m = self.m
+        st = next((o for o in m.d["objects"] if o.get("type") == "PlayerStart"), None)
+        if not st: return []
+        floor = m.floor
+        cover = lambda c: any(t in floor for t in ((c[0], c[1]), (c[0] - 1, c[1]), (c[0], c[1] - 1), (c[0] - 1, c[1] - 1)))
+        s0 = (int(st["x"] // CELL), int(st["y"] // CELL))
+        removed = []
+        for _ in range(rounds):
+            by_cell = collections.defaultdict(list)
+            for o in m.d["objects"]:
+                t = o.get("type", "")
+                r = self.WAY_BLOCKERS.get(t, 20 if t.startswith("Tree") else 0)
+                if not r: continue
+                cx, cy = int(o["x"] // CELL), int(o["y"] // CELL)
+                for x in range(cx - 2, cx + 3):
+                    for y in range(cy - 2, cy + 3):
+                        if math.hypot(x * CELL + 11.5 - o["x"], y * CELL + 11.5 - o["y"]) <= r: by_cell[(x, y)].append(o)
+            walk, q = {s0}, collections.deque([s0])
+            while q:
+                x, y = q.popleft()
+                for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    n = (x + a, y + b)
+                    if n in walk or n in m.wallmap or n in by_cell or not cover(n): continue
+                    walk.add(n); q.append(n)
+            near = lambda c: any((c[0] + a, c[1] + b) in walk for a in range(-2, 3) for b in range(-2, 3))
+            todo = [c for c in ((int(x // CELL), int(y // CELL)) for x, y in targets) if not near(c)]
+            if not todo: break
+            # fewest blocked cells from the target to the walkable ground (0-1 breadth first search)
+            c0 = todo[0]
+            dist, prev, dq, end = {c0: 0}, {c0: None}, collections.deque([c0]), None
+            while dq:
+                c = dq.popleft()
+                if c in walk: end = c; break
+                for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    n = (c[0] + a, c[1] + b)
+                    if n in m.wallmap or not cover(n): continue
+                    w = dist[c] + (1 if n in by_cell else 0)
+                    if w < dist.get(n, 1 << 30):
+                        dist[n], prev[n] = w, c
+                        (dq.append if n in by_cell else dq.appendleft)(n)
+            if end is None:                           # walled off: not something taking out a pillar can fix
+                targets = [p for p in targets if (int(p[0] // CELL), int(p[1] // CELL)) != c0]
+                continue
+            gone = set()
+            c = end
+            while c:
+                for o in by_cell.get(c, ()):
+                    if id(o) not in gone: gone.add(id(o)); removed.append(o)
+                c = prev[c]
+            m.d["objects"][:] = [o for o in m.d["objects"] if id(o) not in gone]
+        return removed
+
     def wild(self, mix, avoid=(), per100=0.35, away_from=None, min_away=40, gap=8):
         """The wood's own creatures, alone, 2-3 squares in from the forest wall, away from the town (away_from,
         squares) and from the story's places (`avoid`: square points kept 14 squares clear). Returns how many."""
