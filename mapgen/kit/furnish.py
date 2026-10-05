@@ -1068,6 +1068,8 @@ class Furnisher:
             o = self.try_put(t, u, v, blocking=fam not in NON_BLOCKING, snug=True)
             if not o: continue
             if zone: self.g.zones.append(zone)
+            if NEEDS_FRONT.search(t):            # the checker's depth before a chest or hearth, whatever `clear` was
+                self.g.zones.append(self.front_zone(r, u, v, max(0.8, ha) + 0.3, hp, 2.3))
             if NEEDS_FRONT.search(t): self.light_zones.append(self.front_zone(r, u, v, ha + 0.3, hp, 2.6))
             self.anchors.append((u, v))
             self.wall_used.append(((r["line"], r["coord"]), a - ha, a + ha))
