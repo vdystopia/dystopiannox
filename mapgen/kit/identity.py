@@ -34,6 +34,12 @@ from typing import Dict, List, Optional, Tuple
 #                 sets food out on a kitchen table)
 #   slot "decor"  hangings centred on free stretches of the back walls
 #   fam "rug"     a rug no anchor called for lies in the middle of the room
+# repeat: family -> (floor tiles per piece, most pieces): a large room's repeated set (pews, tables, benches) stops
+# there, whatever the plan, the fill steps or the top-up ask, and the room fills with a mix of other pieces instead
+# (2026-10-05 playtest: "way too many benches and not enough object diversity ... too many of the same object
+# (chapel benches, tavern tables and chairs)"). Westwood's big rooms: its taverns hold 4-8 tables (one per 27-42
+# tiles, Con07B 8 in 216, Con06a 4 in 166); its halls and temples with benches 6-8 (2-6.5 per 100 tiles: Wiz07F 8
+# in 123, Wiz07D 8 in 304, Con07C 8 in 383) among columns, statues, tapestries and plants; no room past 16 benches.
 # Westwood: fireplaces stand centred on a back wall and nothing ever blocks them; beds, chests and
 # shelves stand mostly on the back walls; stoves toward a corner; rugs lie near the middle; 88% of
 # chairs stand at a table.
@@ -153,25 +159,39 @@ ROOMS = {
                                dict(fam="storage", slot="stock", coverage=0.7, kinds=("crates", "tools", "barrels"), pad=1.2)],
                       fill=[dict(fam="shop_rack", slot="line", other=True, max=8, min_area=80), dict(fam="shop_rack", slot="line", max=6), dict(fam="cart", slot="group", group="carts", max=2), dict(fam="storage", slot="stock", coverage=1.0, kinds=("crates", "barrels", "sacks", "tools"), pad=1.0),
                             dict(fam="storage", slot="stack", n=3, once=True)]),
-    "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables crowded with stools, "
-                           "a hearth with shelves of tankards beside it, trophies on the walls, benches along the front "
-                           "walls, a table laid with food",
-                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 48), "storage": (3, 10), "fireplace": (1, 1)},
-                   per_tiles={"table": 20},
-                   optional={"bench": (0.8, 4), "wall_decor": (1.0, 8), "rug": (0.3, 1), "shelves": (0.9, 10),
-                             "plant": (0.6, 2)},
+    "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables with stools, a long "
+                           "table with benches, a table laid with food, the hearth with a rug before it and shelves of "
+                           "tankards beside it, kegs heaped by the walls, trophies on the walls, benches along the front "
+                           "walls, open floor between",
+                   # 2026-10-05 playtest: 24 tables and 76 chairs in a 342-tile common room were too many; Westwood's
+                   # taverns hold a table per 27-42 tiles, so a table per 28 tiles, at most 12, in three kinds of set
+                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 34), "storage": (3, 10), "fireplace": (1, 1)},
+                   per_tiles={"table": 28},
+                   repeat={"table": (28, 12)},
+                   optional={"bench": (0.9, 4), "wall_decor": (1.0, 8), "rug": (1.0, 2), "shelves": (0.9, 10),
+                             "plant": (0.8, 2)},
                    types={"storage": r"(?<!Powder)Barrel$|(?<!Powder)Barrel\d|PiledBarrels|LargeBarrel",
                           "table": r"RoundTable|^Table\d$|SquareTable", "chair": r"Stool|Chair",
+                          "bench": r"^LightBench\d$|^CushionedBench\d$|^Bench\d$",
                           "shelves": r"^LogShelvesFull\d$|^Bookcase\d(HalfFull)?$", "plant": PLANTS},
+                   # Westwood's room statistics count hearths as lights: the tavern names its own (it had stood without)
+                   prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                    compose=[dict(fam="counter_bar", slot="bar"),
-                            dict(fam="fireplace", slot="wall", at="center", clear=2.4),
+                            dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
                             dict(fam="shelves", slot="line", near="fireplace", decor=2),
-                            dict(fam="table", slot="groups", group="dining"),
+                            dict(fam="fireplace", slot="groups", group="hearth", n=1, min_area=500, extra=True),
+                            dict(fam="table", slot="groups", group="longtable", n=1),
+                            dict(fam="table", slot="groups", group="feast", n=1),
+                            dict(fam="table", slot="groups", group="dining", n=6),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="table", slot="group", group="feast", max=2, min_area=200),
-                         dict(fam="table", slot="group", group="dining", max=4, min_area=60),
-                         dict(fam="bench", slot="wall", max=3),
-                         dict(fam="storage", slot="stock", coverage=0.25, kinds=("barrels",), pad=1.2, max=2),
+                   fill=[dict(fam="table", slot="group", group="longtable", max=1, min_area=300),
+                         dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=300),
+                         dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
+                         dict(fam="storage", slot="stock", coverage=0.65, kinds=("barrels",), pad=1.2, max=3),
+                         dict(fam="bench", slot="wall", max=4),
+                         dict(fam="storage", slot="group", group="kegs", max=1, min_area=400),
+                         dict(fam="table", slot="group", group="feast", max=1, min_area=400),
+                         dict(fam="table", slot="group", group="dining", max=2, min_area=60),
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
     "mess_hall": dict(purpose="where a crew eats together: long tables in rows with a bench along each side, the hearth "
                               "on a back wall flanked end to end by shelves of crockery, benches along the front walls, "
@@ -179,6 +199,7 @@ ROOMS = {
                       base="dining_hall",
                       core={"fireplace": (1, 1), "table": (2, 8), "bench": (4, 20), "shelves": (2, 12)},
                       per_tiles={"table": 14},
+                      repeat={"table": (17, 10)},        # Westwood's mess (Con06b): 12 tables in 208 tiles
                       optional={"wall_decor": (1.0, 6)},
                       types={"table": r"^Table[1-4]$", "bench": r"^Bench\d$|^LightBench\d$|^CushionedBench\d$",
                              "chair": r"Stool|Chair", "shelves": r"^LogShelvesFull\d$"},
@@ -327,16 +348,24 @@ ROOMS = {
                              dict(fam="table", slot="group", group="sitting", max=1, min_area=160),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
-    "chapel": dict(purpose="a chapel: the altar centred on a back wall between statues, pews in rows facing it with an "
-                           "aisle down the middle, tapestries on the walls, plants in the corners",
-                   core={"altar": (1, 1), "bench": (4, 40)},
-                   optional={"statue": (0.8, 4), "wall_decor": (1.0, 6), "plant": (0.6, 4), "storage": (0.4, 1)},
+    "chapel": dict(purpose="a chapel: the altar centred on a back wall between statues, a few rows of pews facing it "
+                           "split by a carpeted aisle, a colonnade down the nave, a pair of statues, tapestries on the "
+                           "walls, plants in the corners, open floor toward the doors",
+                   # 2026-10-05 playtest: 46 pews filled the Greywatch nave wall to wall; a pew per 10 tiles, at most 16
+                   core={"altar": (1, 1), "bench": (4, 16), "statue": (2, 4)},
+                   repeat={"bench": (10, 16), "tomb": (60, 2)},
+                   optional={"column": (1.0, 8), "tomb": (0.7, 2), "wall_decor": (1.0, 6), "plant": (0.8, 4),
+                             "storage": (0.4, 1)},
                    types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
+                          "column": r"^CathedralColumn[123]$|^Column[5-8]$", "tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$",
                           "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
-                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6),
+                   # the game's altars (Westwood stands them outside its rooms, so the room statistics hold none)
+                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1},
+                           "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "LightBench1": 1, "LightBench2": 1}},
+                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
-                            dict(fam="bench", slot="pews", toward="altar"),
+                            dict(fam="bench", slot="pews", toward="altar", runner=True, columns=True, tombs=True),
                             dict(fam="wall_decor", slot="decor")],
                    fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120),
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
@@ -382,6 +411,10 @@ ROOMS = {
                        # a table per 48 tiles (was 30), at most 6, and a carpet of floor tiles over the open floor
                        core={"table": (2, 6), "bench": (4, 24), "fireplace": (1, 2)},
                        per_tiles={"table": 48},
+                       # 2026-10-05 playtest: benches along every wall and 8 chests (Thornwick) beside the tables'
+                       # benches; a bench per 11 tiles in all (the tables' and the hearths' with them), at most 24, a chest
+                       # per 80 tiles; open hearths with benches round them fill the ends of a long hall
+                       repeat={"bench": (11, 24), "storage": (80, 3)},
                        optional={"statue": (0.8, 4), "wall_decor": (1.0, 12), "plant": (0.8, 4), "storage": (0.5, 2),
                                  "column": (0.5, 12), "chair": (0.5, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
@@ -394,6 +427,8 @@ ROOMS = {
                                 dict(fam="wall_decor", slot="decor")],
                        fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
                              dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
+                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
+                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=500, fixed=True),
                              dict(fam="bench", slot="wall", max=6),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),

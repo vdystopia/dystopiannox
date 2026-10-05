@@ -71,6 +71,9 @@ STYLE_EXCLUDE = {
     "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|(?<!Bone)(?<!Skull)Immobile$|Movable|Shadow$",
 }
 SACRED_KINDS = {"crypt"}
+# A chapel's altar is Dun Mir's (DunMirAltar1-2, the only altars in the game), which the town style had excluded with the
+# rest of Dun Mir's pieces: the chapels stood without their altar until 2026-10-05.
+SACRED_PIECES = {"chapel": ("DunMir|", "Crypt|")}
 # Damaging flame objects (they hurt players; rules: lighting.visible_sources) are never used indoors.
 DANGEROUS = re.compile(r"Flame(?!Basin)")
 # The walls the camera looks at across a room (NW and NE): Westwood stands most wall pieces there
@@ -182,7 +185,12 @@ GROUPS = {
     "sitting": dict(anchor=r"^SmallTable2$|^SquareTable[12]$|^RoundTable[12]$", seats=(2, 3), seat="chair", rug=0.8),
     "curio": dict(anchor=r"^Telescope2[a-g]$|^Orrery2$|^SentryGlobeMovable$", clear=1.0),
     "statues": dict(anchor=r"^Statue2[aceg]$", pair=True, clear=1.0),
-    "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0),
+    "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0, seat_gap=1.1),   # fires draw wide
+    # a long table with a bench along each side (Westwood's taverns mix them with the round tables: Con07B's 4 Tables
+    # and 8 LightBenches beside its 4 tables of food)
+    "longtable": dict(anchor=r"^Table[1-4]$", seats=(2, 2), seat="bench"),
+    # a cask on the floor with barrels stacked by it (Westwood's taverns keep barrels in the room: Con07B's 5 and a pile)
+    "kegs": dict(anchor=r"^LargeBarrel[12]$", clear=0.9, beside=(r"^Barrel2?$|^PiledBarrels[1-4]$", 2)),
     "carts": dict(anchor=r"^MineManaCart[12]$|^MineOreCart[12]$", clear=0.9, beside=(r"^BarrelWithTools[12]$|^DarkCrate[12]$", 1)),
     # the cultures' rooms (rules/out/cultures.json): an ogre den's fire pit ringed by stools, an ogre feast's crude
     # tables, the Land of the Dead's judgement balances standing in pairs
@@ -461,6 +469,7 @@ class Furnisher:
         ex = STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"])
         if kind in SACRED_KINDS:                 # a town's own crypt holds its coffins and sarcophagi (Thornwick v0.1)
             ex = ex.replace("Crypt|", "").replace("|Coffin|Tomb", "")
+        for lift in SACRED_PIECES.get(kind, ()): ex = ex.replace(lift, "")
         self.exclude = re.compile(ex)
         self.lighting = LIGHT
         self.objects, self.spots, self.beds = [], [], []
@@ -472,9 +481,11 @@ class Furnisher:
         self.anchors = []         # (u, v) of the pieces composed so far (to spread the next ones)
         self._placed_of = {}      # id(object) -> its footprint record in g.placed
         self._typed = []          # (type, footprint record) of every piece placed
+        self._fam_n = Counter()   # pieces placed of each family (the room's repeat caps count them)
         self._rug_under = {}      # id(rug record) -> the table record it is centred under
         self._lined = set()       # (line, coord) of the wall runs lined with shelves
         self.carpet_boxes = []    # uv boxes of the carpets laid
+        self.runner_boxes = []    # uv boxes of the runners down an aisle (a chapel's): nothing stands on them
         self.light_zones = []     # the space before chests, hearths and stoves: no candelabra stands there
         self._deferred_decor = 0  # hangings the composition called for, put up after the walls are lined
         self._line_blocks = {}    # (line, coord) -> [(along0, along1)] of the rows of shelves lining that wall
@@ -518,11 +529,13 @@ class Furnisher:
         self.objects.append(o)
         self._placed_of[id(o)] = rec
         self._typed.append((t, rec))
+        self._fam_n[_family_of(t)] += 1
         return o
 
     def _remove(self, o):
         """Takes a placed piece out again (part of a group that could not be completed)."""
         rec = self._placed_of.pop(id(o), None)
+        if rec is not None: self._fam_n[_family_of(o["type"])] -= 1
         self._typed = [tr for tr in self._typed if tr[1] is not rec]
         if rec is not None:
             for k in range(len(self.g.placed) - 1, -1, -1):
@@ -538,11 +551,17 @@ class Furnisher:
             return None
         if blocking and not self.placing_light and self.ceiling and self.n_blocking >= self.ceiling:
             return None
+        # composed rooms: no more of the room's repeated set than its kind allows (kit/identity.py ROOMS[kind]["repeat"])
+        if self.composing and not self.placing_light:
+            cap = self.repeat_cap(_family_of(t))
+            if cap is not None and self._fam_n[_family_of(t)] >= cap: return None
         # composed rooms: never past the share of the floor the room's kind may cover (kit/identity.py ROOM_COVER)
         if blocking and not self.placing_light and self.composing and _family_of(t) in _blocking() and \
                 self.coverage(self.footprint(t)) > self.cover_max:
             return None
         hu, hv = self.half(t)
+        if blocking and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.runner_boxes):
+            return None
         if not self.g.fits(u, v, hu, hv, blocking, wall_ok, wall_min=0.1 if snug else 0.25, touch=touch): return None
         fam = _family_of(t)
         if fam in RUG_WHOLE or fam == "rug":           # tables, desks and beds stay off rugs
@@ -698,7 +717,7 @@ class Furnisher:
         per_tile = expected / max(8, (self.T["tiles"] or {}).get("p50", 30))
         return max(2, int(round(1.25 * per_tile * self.g.area / 2)))
 
-    def seats_around(self, anchor_uv, anchor_t, n, seat_fam="chair", base=None):
+    def seats_around(self, anchor_uv, anchor_t, n, seat_fam="chair", base=None, gap=0.2):
         """Seats facing a table or desk. A long table is seated along its two long sides, spread evenly;
         Westwood seats 75% of the chairs at its rectangular tables there (TreePlace playtest: chairs only at
         the ends looked wrong). A bench takes a whole side. A round or square table is seated all round,
@@ -736,9 +755,9 @@ class Furnisher:
                 hu, hv = self.half(t)
                 sgn = 1 if d[0] == "+" else -1
                 if d[1] == "u":
-                    u, v = au + sgn * (ahu + hu + 0.2), av + off
+                    u, v = au + sgn * (ahu + hu + gap), av + off
                 else:
-                    u, v = au + off, av + sgn * (ahv + hv + 0.2)
+                    u, v = au + off, av + sgn * (ahv + hv + gap)
                 if self.try_put(t, u, v): placed += 1
             if n == 1 and placed: break
         return placed
@@ -784,6 +803,16 @@ class Furnisher:
             if fam == "bed": self.beds.append(res)
         return o, uv
 
+    def repeat_cap(self, fam):
+        """Most pieces of `fam` this room may hold (kit/identity.py ROOMS[kind]["repeat"]: a piece per so many floor
+        tiles, at most so many), or None when the kind sets no cap. A large room fills with a mix of pieces, not with
+        more of one (2026-10-05 playtest: the Greywatch chapel's 46 pews, the taverns' 24 tables and 76 chairs)."""
+        rp = ROOM_IDENTITY.get(self.kind, {}).get("repeat", {}).get(fam)
+        if not rp: return None
+        per, most = rp
+        lo = ROOM_IDENTITY[self.kind].get("core", {}).get(fam, (0, 0))[0]
+        return max(lo, min(most, int(len(self.room.tiles) / per)))
+
     def identity_plan(self):
         """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at
         its Westwood count clamped to the identity's range, optional families by their probability,
@@ -797,6 +826,8 @@ class Furnisher:
                 by_size = int(len(self.room.tiles) / ident["per_tiles"][f])   # Westwood's range in rooms bigger
                 n, hi = max(n, by_size), max(hi, by_size)                      # than Westwood's
             plan[f] = max(lo, min(hi, n)); need[f] = lo
+            cap = self.repeat_cap(f)
+            if cap is not None: plan[f] = min(plan[f], cap)
         for f, (p, hi) in ident["optional"].items():
             if self.rng.random() < p:
                 plan[f] = max(1, min(hi, self.count(f) or 1))
@@ -983,12 +1014,14 @@ class Furnisher:
         hu, hv = self.half(t)
         return abs(hu - hv) < 0.05 or (hv >= hu) == (line == "/")
 
-    def wall_candidates(self, fam, t0, at):
+    def wall_candidates(self, fam, t0, at, deep=False):
         """Positions for a piece against a wall, best first: a back wall, away from the pieces already
         composed (one anchor per wall where the room allows), centred on its free stretch (at="center")
-        or toward an end of it (at="corner")."""
+        or toward an end of it (at="corner"). deep: the wall with the most room before it first (a chapel's altar at
+        the end of a long nave, not halfway along its side)."""
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
+        depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
         out = []
         for r, lo, hi in self.segments(tall_only=fam == "wall_decor"):
             back = r["side"] in BACK_SIDES
@@ -1026,6 +1059,7 @@ class Furnisher:
                 spacing = min([math.hypot(u - au, v - av) for au, av in self.anchors] or [8.0])
                 score = side_score + 2.0 * min(spacing, 8.0) / 8.0 + 0.05 * (hi - lo) + self.rng.uniform(0, 0.4)
                 if at != "corner": score += 1.0 - abs(a - mid) / max(1.0, (hi - lo) / 2)
+                if deep: score += 0.4 * depth_of(r)
                 out.append((score, t, r, u, v, a, ha, hp))
         out.sort(key=lambda c: -c[0])
         return out
@@ -1056,12 +1090,12 @@ class Furnisher:
                     if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
-    def place_on_wall(self, fam, at="center", clear=1.6, t0=None):
+    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
         front of it (nothing blocking may stand there later; it must be free now)."""
         t0 = t0 or _pick(self.rng, self.types_of(fam))
         if not t0: return None
-        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at):
+        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
             if zone and self.g.zone_blocked(zone): continue
             if NEEDS_FRONT.search(t) and self._front_crowded(r, u, v, ha, hp): continue
@@ -1931,10 +1965,16 @@ class Furnisher:
         self.wall_used.append(((r["line"], r["coord"]), a - ha - 0.6, a + ha + 0.6))
         return dict(obj=o, run=r, uv=(u, v), along=a, ha=ha, hp=hp)
 
-    def pew_rows(self, fam="bench", toward=None, gap=2.6, aisle=2.4, first=3.4):
-        """Rows of benches facing the altar wall (a chapel's pews): parallel to it from `first` units off it to 2 units
-        short of the far wall, `gap` apart, every row split by a middle aisle. toward: the placed anchor (the altar)
-        whose wall they face, else the back wall with the most length. Returns the benches placed."""
+    def pew_rows(self, fam="bench", toward=None, gap=2.6, aisle=2.4, first=3.4, runner=False, columns=False, tombs=False):
+        """Rows of benches facing the altar wall (a chapel's pews): parallel to it from `first` units off it, `gap`
+        apart, every row split by a middle aisle. toward: the placed anchor (the altar) whose wall they face, else the
+        back wall with the most length. Returns the benches placed.
+
+        The pews are a set piece, not a floor covering (2026-10-05 playtest: "way too many benches and not enough
+        object diversity"): no more than the room's repeat cap (kit/identity.py ROOMS["chapel"]["repeat"]), at most
+        3 to each half of a row, the rows in the middle of the nave; side aisles stay open along the walls. runner: a carpet
+        down the middle aisle from the altar to the far end; columns: a colonnade in pairs either side of the pews
+        and on down the nave; tombs: a pair of sarcophagi behind the pews."""
         types = self.types_of(fam)
         if not types: return 0
         r = toward["run"] if toward else max((rr for rr in self.g.runs if rr["side"] in BACK_SIDES),
@@ -1944,20 +1984,109 @@ class Furnisher:
         back = next((rr for rr in self.g.runs if rr["side"] == opp), None)
         t0 = _pick(self.rng, types)
         t = (self.side_variant(t0, back, fam) if back else None) or t0     # a bench set against the far wall faces the altar
+        along = lambda x: self.half(x)[1] if r["line"] == "/" else self.half(x)[0]     # half-length along the altar wall
+        across = lambda x: self.half(x)[0] if r["line"] == "/" else self.half(x)[1]
+        if along(t) < across(t) + 0.3:                  # a pew lies long along the altar's wall (Bench3 is a round seat)
+            long_ = sorted(x for x in types if along(x) >= across(x) + 0.3)
+            if not long_: return 0
+            t = t if t in long_ else max(long_, key=lambda x: (_base(x) == _base(t0), types[x]))
         hu, hv = self.half(t)
         ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
         depth_max = max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells) - 2.0
         mid = toward["along"] if toward else (r["lo"] + r["hi"]) / 2
         lo, hi = r["lo"] + 1.6, r["hi"] - 1.6
         pitch = 2 * ha + 0.15
-        got, d = 0, first
-        while d + hp <= depth_max:
+        fit = lambda m, w: int(max(0.0, min(m - w / 2 - lo, hi - m - w / 2) + 0.15) / pitch)
+        carpet = runner and CARPET_FLOORS.search(self.room.floor or "")
+        if carpet:                                      # two squares of carpet, so the aisle sits on the squares' seam
+            m2 = 2 * round((mid - 1) / 2) + 1
+            if fit(m2, max(aisle, 4.4)) >= 1: mid, aisle = m2, max(aisle, 4.4)
+            else: carpet = False                        # a narrow nave keeps its pews, not the runner
+        half_fit = fit(mid, aisle)
+        rows_fit = int(max(0.0, depth_max - hp - first) / gap) + 1 if depth_max - hp >= first else 0
+        cap = self.repeat_cap(fam)
+        if min(half_fit, 3) < 1 or rows_fit < 1: return 0
+        k, rows = min(half_fit, 3), rows_fit
+        if cap is not None:                             # the most pews under the cap; more, shorter rows on a tie
+            k, rows = max(((kk, min(rows_fit, cap // (2 * kk))) for kk in range(1, min(half_fit, 3) + 1)),
+                          key=lambda kr: (kr[0] * kr[1], -abs(kr[0] - 2)))      # pews of two to a side read best
+            if rows < 1: return 0
+        if tombs:                                       # room behind the pews for the tombs (about 6 units of the nave)
+            rows = max(min(rows, 2), min(rows, int((depth_max - 6.2 - first - hp) / gap) + 1))
+        # the rows stand in the middle of the free nave, not packed against the altar: a long nave keeps open floor
+        # before the altar and by the doors, and the room is used its whole length (the checker's offset rule)
+        free = depth_max - hp - (6.2 if tombs else 0.0) - first
+        start = first + max(0.0, (free - (rows - 1) * gap) / 2)
+        if carpet:                                      # the runner first: the pews keep to either side of it
+            a_lo, a_hi = mid - 1.5, mid + 1.5
+            for near, far in ((first - 1.6, depth_max + 1.0), (first - 1.6, depth_max - 1.0), (first + 0.4, depth_max + 1.0),
+                              (first + 0.4, depth_max - 1.0), (first + 0.4, depth_max - 3.0)):
+                if far - near < 6: continue             # a door's threshold at either end: the runner stops short of it
+                (u0, v0), (u1, v1) = self._uv_on(r, near, a_lo), self._uv_on(r, far, a_hi)
+                if self.lay_carpet((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)), margin=0.0):
+                    self.runner_boxes.append(self.carpet_boxes[-1])
+                    break
+        got = 0
+        for i in range(rows):
+            d = start + i * gap
             for side in (-1, 1):                         # each half of the row, from the aisle outward
                 a = mid + side * (aisle / 2 + ha)
-                while lo + ha <= a <= hi - ha:
+                for _ in range(k):
+                    if not lo + ha <= a <= hi - ha: break
                     if self.try_put(t, *self._uv_on(r, d, a)): got += 1
                     a += side * pitch
-            d += gap
+        if columns and got:
+            self.nave_columns(r, mid, aisle / 2 + k * pitch + 0.9, first, depth_max, 2 * gap)
+        if tombs and got:                               # behind the last pews, either side of the runner
+            self.nave_tombs(r, mid, aisle / 2 + 0.5, start + (rows - 1) * gap + hp + 1.8, depth_max + 2.0)
+        return got
+
+    def nave_tombs(self, r, mid, off, d0, depth_max):
+        """A pair of sarcophagi lying in the nave, `off` units either side of the aisle at `mid` along wall run r, their
+        long sides along the aisle, halfway between `d0` units off the altar wall (behind the pews) and the far end (a
+        lord's family buried before the altar, as the chapel's crypt holds the rest of them). Both or neither. Returns
+        the pieces placed."""
+        types = [t for t in self.types_of("tomb") if re.match(r"^Crypt\d+$", t)]
+        if r["line"] == "/":                            # depth runs along u: the long side along u
+            types = [t for t in types if self.half(t)[0] > self.half(t)[1] + 0.3]
+        else:
+            types = [t for t in types if self.half(t)[1] > self.half(t)[0] + 0.3]
+        if not types: return 0
+        t = self.rng.choice(sorted(types))
+        hu, hv = self.half(t)
+        ta, tp = (hv, hu) if r["line"] == "/" else (hu, hv)
+        far = depth_max - 2.4 - tp                      # the furthest a tomb lies: a walkway before the far wall
+        if d0 + tp > far: return 0
+        half_way = (d0 + tp + far) / 2                  # halfway down the open nave, so the room is used its whole length
+        for d in sorted({half_way + k * 1.3 for k in range(-8, 9) if d0 + tp <= half_way + k * 1.3 <= far},
+                        key=lambda x: abs(x - half_way)):        # else the nearest depth clear of doors and pieces
+            o1 = self.try_put(t, *self._uv_on(r, d, mid - off - ta))
+            o2 = o1 and self.try_put(t, *self._uv_on(r, d, mid + off + ta))
+            if o1 and o2: return 2
+            if o1: self._remove(o1)
+        return 0
+
+    def nave_columns(self, r, mid, off, first, depth_max, step):
+        """A colonnade down a nave: columns in pairs `off` units either side of the middle aisle at `mid` along wall run
+        r, from the first row of pews every `step` units to the far end (Westwood's halls with benches stand them among
+        colonnades: Wiz07F's 8 benches and 6 columns, Wiz07D's 8 benches and 16). One type of column to the room.
+        Returns the columns placed."""
+        types = self.types_of("column")
+        if not types: return 0
+        t = _pick(self.rng, types)
+        ch = max(self.half(t))
+        if not (r["lo"] + 1.6 + ch <= mid - off - ch and mid + off + ch <= r["hi"] - 1.6 - ch): return 0
+        got, d = 0, first
+        while d <= depth_max - 1.0:
+            a1, a2 = self._uv_on(r, d, mid - off - ch), self._uv_on(r, d, mid + off + ch)
+            if any(abs(p[0] - (b[0] + b[1]) / 2) < (b[1] - b[0]) / 2 + ch and abs(p[1] - (b[2] + b[3]) / 2) < (b[3] - b[2]) / 2 + ch
+                   for p in (a1, a2) for b in self.carpet_boxes):
+                d += step; continue                     # columns stay off the carpets
+            o1 = self.try_put(t, *a1)
+            o2 = o1 and self.try_put(t, *a2)
+            if o1 and o2: got += 2
+            elif o1: self._remove(o1)
+            d += step
         return got
 
     THRONE = (("DunMirThroneShadow", -61, -30), ("DunMirThroneBack", -4, -26), ("DunMirThroneBase", 0, 0),
@@ -2048,7 +2177,7 @@ class Furnisher:
             n_seats = 0
             if g.get("seats"):
                 lo, hi = g["seats"]
-                n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"])
+                n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2))
                 if n_seats < lo:
                     for x in got: self._remove(x)
                     continue                            # seats_around removes nothing: the seats it placed stay
@@ -2078,7 +2207,7 @@ class Furnisher:
         # in proportion (a study of 266 tiles, twice Westwood's median, two reading tables and two curios)
         p50 = (self.T.get("tiles") or {}).get("p50") or 30
         grow = max(1.0, self.g.area / (2.4 * p50))
-        cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 or st.get("fixed") else \
+        cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 or st.get("fixed") or st["fam"] == "plant" else \
             int(math.ceil(st["max"] * grow - 0.25))           # `fixed`: a set piece (a pair of statues) does not multiply
         k, misses, done_once, added = 0, 0, set(), collections.Counter()
         while self.coverage() < self.cover_target and misses < 2 * len(steps):
@@ -2127,8 +2256,12 @@ class Furnisher:
         # a study is clutter, not furniture)
         p50 = (self.T.get("tiles") or {}).get("p50") or 30
         grow = max(1.0, self.g.area / (2.4 * p50))
-        limits = {f: int(math.ceil(rng_[1] * grow)) + 1 for f, rng_ in list(ident.get("optional", {}).items()) +
-                  list(ident.get("core", {}).items()) if f in TOP_UP_FAMS and self.types_of(f)}
+        # plants and statues have their places (the room's corners, pairs): a bigger room does not take more of them
+        # (2026-10-05: with its benches capped, Thornwick's 264-tile great hall was topped up with 15 of each)
+        limits = {f: int(math.ceil(rng_[1] * (1.0 if f in ("plant", "statue") else grow))) + 1
+                  for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items())
+                  if f in TOP_UP_FAMS and self.types_of(f)}
+        limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()}
         have = Counter(_family_of(t) for t, _ in self._typed)
         misses = 0
         while self.coverage() < self.cover_target:
@@ -2136,7 +2269,7 @@ class Furnisher:
             if not fams or misses >= 2 * len(fams): break
             f = fams[misses % len(fams)] if misses else self.rng.choice(fams)
             before = self.n_blocking
-            self.place_on_wall(f, self.rng.choice(("corner", "center")), 1.0)
+            self.place_on_wall(f, "room_corner" if f == "plant" else self.rng.choice(("corner", "center")), 1.0)
             if self.n_blocking > before: have[f] += 1; misses = 0
             else: misses += 1
 
@@ -2264,7 +2397,8 @@ class Furnisher:
                     if spot: self.try_put(t, *spot, blocking=False)
                 continue
             n = plan.get(fam, 0) - done[fam]
-            if n <= 0 and st["slot"] not in ("racks", "line", "pews"): continue      # rows and lined walls are sized by the room
+            if n <= 0 and st["slot"] not in ("racks", "line", "pews") and not st.get("extra"):
+                continue                                # rows and lined walls are sized by the room; `extra` sets too
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
                                             decor_every=st.get("decor", 0), other=st.get("other", False))
@@ -2276,7 +2410,8 @@ class Furnisher:
                 if self.build_bar(): done[fam] += 1
                 continue
             if st["slot"] == "groups":                  # n free-standing groups (a tavern's tables with their stools)
-                for _ in range(min(n, st.get("n", n))):
+                if self.g.area < st.get("min_area", 0): continue
+                for _ in range(st["n"] if st.get("extra") else min(n, st.get("n", n))):
                     if not self.place_group(st["group"]): break
                     done[fam] += 1
                 continue
@@ -2289,7 +2424,9 @@ class Furnisher:
                 if q: done[fam] += 1; placed[fam] = q
                 continue
             if st["slot"] == "pews":
-                done[fam] += self.pew_rows(fam, placed.get(st.get("toward")), st.get("gap", 2.6))
+                done[fam] += self.pew_rows(fam, placed.get(st.get("toward")), st.get("gap", 2.6),
+                                           runner=st.get("runner", False), columns=st.get("columns", False),
+                                           tombs=st.get("tombs", False))
                 continue
             if fam == "rug":                          # a rug no anchor called for: the middle of the room
                 t = None if self.carpet_plan else _pick(self.rng, self.types_of("rug"))
@@ -2366,7 +2503,7 @@ class Furnisher:
                     if not got: break
                     k += got
                     continue
-                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6))
+                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False))
                 if not p: break
                 k += 1
                 placed.setdefault(fam, p)
