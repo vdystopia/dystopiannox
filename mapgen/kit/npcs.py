@@ -62,6 +62,7 @@ class Population:
         # a Zombie written as a placed creature makes OpenNox misread the map's object section (the server stops at
         # "cannot read next section: EOF" and panics; 2026-10-04): Westwood only ever puts zombies inside coffins
         assert t not in UNPLACEABLE, f"{t} cannot be placed as a creature ({UNPLACEABLE[t]})"
+        x, y = self._on_floor(x, y)
         ww = self.ww.get(t, {})
         x_ = dict(DefaultAction=ACTION.get(action, action),
                   DirectionId=facing(face[0] - x, face[1] - y) if face else self.rng.randrange(8),
@@ -73,6 +74,18 @@ class Population:
         o = self.spec.obj_px(t, x, y, xfer=x_, **({"scr": scr} if scr else {}))
         self.placed.append(o)
         return o
+
+    def _on_floor(self, x, y, reach=4):
+        """(x, y), or the nearest point within `reach` cells that has floor under it and no wall: a creature set in
+        the void or in a wall piece is an error and never moves (Emberhollow seed 2: a demon off the lake's rim)."""
+        fl, wm, C = self.spec.floor, self.spec.wallmap, 23
+        def ok(cx, cy):
+            return (cx, cy) not in wm and any(t in fl for t in ((cx, cy), (cx - 1, cy), (cx, cy - 1), (cx - 1, cy - 1)))
+        cx, cy = int(x // C), int(y // C)
+        if ok(cx, cy) or not fl: return x, y
+        best = min(((a, b) for a in range(-reach, reach + 1) for b in range(-reach, reach + 1) if ok(cx + a, cy + b)),
+                   key=lambda d: d[0] * d[0] + d[1] * d[1], default=None)
+        return (x, y) if best is None else ((cx + best[0]) * C + C / 2, (cy + best[1]) * C + C / 2)
 
     def shopkeeper(self, t, x, y, items, greeting="", buy=1.0, sell=0.33, face=None, scr=None):
         """A shopkeeper selling `items` ([(count, type)]) as Westwood sets one up (MonsterXfer ShopkeeperInfo, read from

@@ -243,7 +243,7 @@ class Dresser:
         grid = {}
         for s in sq:
             if len(placed) >= n: break
-            if s in self.taken: continue
+            if s in self.taken or s in self.land.taken_strict: continue     # never inside a building (a forge's hall)
             si, sj = s[0] + self.rng.uniform(0.5 - jitter, 0.5 + jitter), s[1] - self.rng.uniform(0.5 - jitter, 0.5 + jitter)
             cell = (int(si // 3), int(sj // 3))
             if any((si - x) ** 2 + (sj - y) ** 2 < min_gap ** 2 for a in (-1, 0, 1) for b in (-1, 0, 1)
@@ -377,7 +377,9 @@ class Dresser:
             W, H = 2 * round(r["size"][0] * scale * k / 2), 2 * round(r["size"][1] * scale * k / 2)
             origin = (2 * round(cx - W / 4), 2 * round(cy - H / 4))
             b = generate_building(self.spec, self.rng, origin, (W, H), r["style"], program=[kd for kd, _ in r["rooms"]],
-                                  entrance_side=side, building_id=role, occupied=set(), tries=24,
+                                  entrance_side=side, building_id=role, tries=24,
+                                  # never over a pool or the rock behind a cliff (Emberhollow seed 2: lava in a hall)
+                                  occupied={square_tile(*s_) for s_ in self.pools | L.forbidden},
                                   shape=r.get("shape"), min_units=int(r.get("min_units", 0) * (scale * k) ** 2))
             if b: break
         else:

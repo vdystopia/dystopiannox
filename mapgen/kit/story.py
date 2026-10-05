@@ -308,12 +308,42 @@ class StoryMap:
                 if k < len(pics): q.portrait(name, pics[k])
         return ring
 
+    def walkable(self):
+        """Grid cells the player can walk to from the PlayerStart, flooded as the checker floods them
+        (validate/checks.py Context): cells under a floor tile, not a wall's, not under a tree, a big rock or a
+        building (Emberhollow's review: creatures set in pockets closed off by trees). None without a PlayerStart."""
+        import collections
+        m = self.m
+        st = next((o for o in m.d["objects"] if o.get("type") == "PlayerStart"), None)
+        if not st: return None
+        floor = m.floor
+        cover = lambda c: any(t in floor for t in ((c[0], c[1]), (c[0] - 1, c[1]), (c[0], c[1] - 1), (c[0] - 1, c[1] - 1)))
+        blocked = set(m.wallmap)
+        for o in m.d["objects"]:
+            t = o.get("type", "")
+            if t.startswith("Tree") or t in ("CaveRocksHuge", "CaveBoulders", "CaveRocksLarge") or "Pillar" in t:
+                cx, cy = int(o["x"] // CELL), int(o["y"] // CELL)
+                blocked |= {(cx + a, cy + b) for a in (-1, 0) for b in (-1, 0)}
+        s0 = (int(st["x"] // CELL), int(st["y"] // CELL))
+        seen, q = {s0}, collections.deque([s0])
+        while q:
+            x, y = q.popleft()
+            for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                n = (x + a, y + b)
+                if n in seen or n in blocked or not cover(n): continue
+                seen.add(n); q.append(n)
+        return seen
+
     def wild(self, mix, avoid=(), per100=0.35, away_from=None, min_away=40, gap=8):
         """The wood's own creatures, alone, 2-3 squares in from the forest wall, away from the town (away_from,
         squares) and from the story's places (`avoid`: square points kept 14 squares clear). Returns how many."""
         land, rng, m = self.land, self.rng, self.m
         edge = land.edge_distance()
+        walk = self.walkable()
         far = [s for s, dd in sorted(edge.items()) if 2 <= dd <= 3 and s not in land.taken and s not in land.roads
+               and (walk is None or all((int(square_px(s[0] + 0.5, s[1] - 0.5)[0] // CELL) + a,
+                                         int(square_px(s[0] + 0.5, s[1] - 0.5)[1] // CELL) + b) in walk
+                                        for a in (-1, 0, 1) for b in (-1, 0, 1)))
                and s not in land.taken_strict
                and (away_from is None or math.hypot(s[0] - away_from[0], s[1] - away_from[1]) > min_away)
                and all(math.hypot(s[0] - a[0], s[1] - a[1]) > 14 for a in avoid)]

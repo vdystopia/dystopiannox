@@ -121,7 +121,7 @@ class Planter:
             for si, sj in ln["path"]:
                 ci, cj = int(math.floor(si)), int(math.floor(sj)) + 1
                 lanes |= {(ci + a, cj + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
-        busy = set(land.roads) | land.plaza | land.water | land.taken | set(keep_clear) | (lanes & land.squares)
+        busy = set(land.roads) | land.plaza | land.water | land.taken | set(keep_clear) | (lanes & land.squares) |             set(getattr(land, "taken_strict", ()))                    # never a tree (or a biome's pillar) in a building
         self.road_d = bfs_distance(list(set(land.roads) | land.plaza), land.squares, 12)
         self.busy_d = bfs_distance(list(busy), land.squares, 12)
         self.water_d = bfs_distance(list(land.water), land.squares, 6)

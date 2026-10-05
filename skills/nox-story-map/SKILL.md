@@ -77,6 +77,7 @@ py tests/server_smoke.py mapgen/designs/<map>.py             # loads in the serv
 py review/spots.py mapgen/out/<map>/<Name>.map <names...>    # close-ups of the story's places: look at them
 py review/rooms.py mapgen/out/<map>/<Name>.map --each        # one picture per room
 py review/roomscore.py mapgen/out/<map>/<Name>.map
+py tests/campaign.py                                         # the whole chain, end first: build, compile, install, load
 ```
 
 Aim for 0 errors and 0 warnings. The checker also proves the story gates seal the exit (`check_story_gates`). Look

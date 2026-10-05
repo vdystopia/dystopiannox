@@ -309,7 +309,8 @@ class Spec:
         pieces, as Westwood draws a threshold (the checker counts a pair Westwood blends left unblended as a hard
         seam). Same sides as _buffer_never_touch."""
         if getattr(self, "raw_floors", False): return
-        ground = re.compile(r"Grass|Dirt|Sand|Weeds")
+        # the land's own floors, the biomes' too (Emberhollow: marble paving against VolcanicCraggy, an error)
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")
         for (x, y), a in list(self.floor.items()):
             for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
                 n = (x + d[0], y + d[1])
@@ -329,7 +330,8 @@ class Spec:
         for r in load_rules("floors")["never_touch"]:
             buf = max(r["buffer_materials"].items(), key=lambda kv: kv[1])[0] if r.get("buffer_materials") else None
             if buf: nt[frozenset((r["a"], r["b"]))] = buf
-        ground = re.compile(r"Grass|Dirt|Sand|Weeds")
+        # the land's own floors, the biomes' too (Emberhollow: marble paving against VolcanicCraggy, an error)
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor")
         for (x, y), a in list(self.floor.items()):
             for d, shared in (((1, -1), (x + 1, y)), ((1, 1), (x + 1, y + 1))):
                 n = (x + d[0], y + d[1])
