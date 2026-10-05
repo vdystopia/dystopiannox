@@ -45,13 +45,23 @@ class StoryMap:
         self.placed, self.by_role, self.missed = [], {}, []
         self.pop = Population(spec, rng)
         self.B = self.pop.behaviours
+        self.unsafe = []                     # [(world px, radius px)]: places townsfolk and the watch never stop at
+
+    def keep_folk_away(self, centre, r):
+        """No townsperson's or watchman's stop within `r` squares of `centre` (squares): a camp of foes at the town's
+        edge (Ambermere: a graveyard's gate by the diggers' camp had become a stop on the watch's beat). Call it before
+        townsfolk() and beat()."""
+        self.unsafe.append((square_px(*centre), r * 32.5))
 
     # ---- buildings -------------------------------------------------------------------------------------------------
-    def place_buildings(self, no_build=None, scale=1.0, square_area="town"):
+    def place_buildings(self, no_build=None, scale=1.0, square_area="town", first=(), centred=None):
         """Every building of the identity, public ones on the square first, then by size; none within the radius
         (squares) of the named areas in `no_build` (the story's wild places), which stay free for the forest after.
         square_area: the area whose paved square (Land.paint_square) the public buildings face (a castle's
-        courtyard)."""
+        courtyard). first: areas whose buildings are placed before all others (a hamlet down a road from the town,
+        whose few lots the town's houses would otherwise take: Ambermere's fishers). centred: {area: toward area}:
+        the area's building stands centred on the area's middle, its door on the side toward the other area (a
+        lone structure at the end of its road, as kit/biome.Dresser.structure places one: Ambermere's barrow)."""
         m, land, rng = self.m, self.land, self.rng
         held = set()
         for k_, r_ in (no_build or {}).items():
@@ -59,7 +69,9 @@ class StoryMap:
             held |= {s for s in land.squares if math.hypot(s[0] - c_[0], s[1] - c_[1]) <= r_} - land.taken
         land.taken |= held
         B_ = self.ID.buildings
-        order = sorted(range(len(B_)), key=lambda k: (BUILDINGS[B_[k].role]["faces"] != "square",
+        centred = centred or {}
+        order = sorted(range(len(B_)), key=lambda k: (B_[k].area not in first, B_[k].area not in centred,
+                                                      BUILDINGS[B_[k].role]["faces"] != "square",
                                                       -BUILDINGS[B_[k].role]["size"][0], k))
         for k in order:
             bid = B_[k]
@@ -71,7 +83,10 @@ class StoryMap:
             for shrink in (1.0, 1.12, 0.92, 1.25, 0.84):
                 size = (2 * round(size0[0] * scale * shrink / 2), 2 * round(size0[1] * scale * shrink / 2))
                 lots = land.square_lots(size) if role["faces"] == "square" and bid.area == square_area else []
-                lots += land.lots(bid.area, size)
+                if bid.area in centred:
+                    lots = self._centred_lots(bid.area, centred[bid.area], size)
+                else:
+                    lots += land.lots(bid.area, size)
                 for origin, side in lots:
                     if not land.lot_free(origin, size, margin=1): continue
                     b = generate_building(m, rng, origin, size, bid.style or role["style"], program=program, entrance_side=side,
@@ -92,6 +107,23 @@ class StoryMap:
         land.taken -= held
         self._blend_outside_floors()
         return self.placed
+
+    def _centred_lots(self, area, toward, size):
+        """Origins (uv) for a building centred on `area`'s middle, nudged a little either way, its entrance on the
+        side facing `toward`."""
+        land = self.land
+        cx, cy = land.areas[area]["c"]
+        tx, ty = land.areas[toward]["c"]
+        dx, dy = tx - cx, ty - cy
+        side = ("u_max" if dx > 0 else "u_min") if abs(dx) >= abs(dy) else ("v_max" if dy > 0 else "v_min")
+        W, H = size
+        out = []
+        for r in range(0, 5):
+            for a in range(-r, r + 1):
+                for b in range(-r, r + 1):
+                    if max(abs(a), abs(b)) != r: continue
+                    out.append(((2 * round(cx - W / 4) + 2 * a, 2 * round(cy - H / 4) + 2 * b), side))
+        return out
 
     def _blend_outside_floors(self, priority=8):
         """Floors laid outside the buildings (the paving a building style puts round its walls) blend into the land
@@ -118,8 +150,8 @@ class StoryMap:
                 else: door_paths |= set(path)
         land.trim_dead_ends(m, keep=door_paths)
         for bid, b in self.placed:
-            for room in b.rooms:
-                furnish_original(m, room, kind=room.kind, rng=self.rng, style=style)
+            for room in b.rooms:        # a role in a culture's style is furnished in that culture (a barrow: lotd)
+                furnish_original(m, room, kind=room.kind, rng=self.rng, style=BUILDINGS[bid.role].get("furnish") or style)
 
     def room_of(self, role, kind):
         b = self.by_role.get(role)
@@ -380,7 +412,7 @@ class StoryMap:
     LANDMARK = re.compile(r"^(Well|Fountain|Statue|Bench|LightBench|Garden|Gate$|IronFenceGate|BarredGate|Sign|"
                           r"OutdoorTrader|WaterBarrel|Anvil|Stump|WoodPile|Tombstone|Grave|Wagon|Cart|Shrine|Obelisk)")
     VISIT = ("store", "inn", "tavern", "chapel", "smithy")      # roles a townsperson steps inside
-    HOMES = ("home", "cottage", "house", "farm", "hut", "mill", "woodcutter", "hunter", "fisher")
+    HOMES = ("home", "cottage", "house", "farm", "hut", "mill", "woodcutter", "hunter", "fisher", "herbwife")
 
     def _at(self, wp_name):
         w = next(w for w in self.m.d["waypoints"] if w["name"] == wp_name)
@@ -414,6 +446,7 @@ class StoryMap:
 
         def add(p, look, kind, visit=None, gap=60.0):
             if not p or not reach_ok(p) or not clear(p): return False
+            if any(math.dist(p, c_) < r_ for c_, r_ in self.unsafe): return False
             if any(math.dist(p, s["p"]) < gap for s in stops): return False
             stops.append(dict(p=p, look=look, kind=kind, visit=visit))
             return True

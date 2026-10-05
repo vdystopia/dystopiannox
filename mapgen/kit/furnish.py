@@ -122,7 +122,8 @@ RACK_KINDS = {"gear": (r"^TraderArmorRack[12]$", r"^TraderPoleArm[1-4]$", r"^Tra
               "books": (r"^Bookcase[12]$", r"^Bookcase[12]HalfFull$"),   # library stacks: the variants whose front shows
               "columns": (r"^Column[5-8]$",), "cathedral": (r"^CathedralColumn[123]$",),
               "tombs": (r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", r"^Coffin[1-4]$"),
-              "lotd_tombs": (r"^LOTDTombstone[1-4]$",), "obelisks": (r"^LOTDManaObelisk$",)}
+              "lotd_tombs": (r"^LOTDTombstone[1-4]$",), "obelisks": (r"^LOTDManaObelisk$",),
+              "lotd_columns": (r"^LOTDColumn1$",)}
 # Each building keeps one furnishing palette (its chairs, stools, benches, tables, carpets, hangings and plants), so
 # its rooms belong together while the buildings of a map differ (TreePlace v0.3 used too few of the game's types).
 PALETTES = dict(chair=("WoodenChair", "DarkWoodenChair", "OldDarkWoodenChair"), stool=("Stool", "CushionedStool"),
