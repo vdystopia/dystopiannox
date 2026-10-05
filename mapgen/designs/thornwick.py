@@ -311,10 +311,10 @@ for k, (x, y) in enumerate(ambush_camp["seats"][:3] + [ambush_camp["lookout"]]):
     ambushers.append(n)
 # the Red Hand at their camp: Garrick by his fire, his men round it, archers watching the way in
 redhand = []
-gx_, gy_ = red_camp["fire"]
-pop.creature("Swordsman", gx_ + 30, gy_ - 10, action="guard", face=square_px(*pines_c), scr="Garrick", aggr=0.83,
+gx_, gy_ = red_camp["leader"]                  # before his awning, where the take is
+pop.creature("Swordsman", gx_, gy_, action="guard", face=square_px(*pines_c), scr="Garrick", aggr=0.83,
              HealthMultiplier=3.0)
-for k, (x, y) in enumerate(red_camp["seats"][:4]):
+for k, (x, y) in enumerate((red_camp["seats"][:2] + red_camp["posts"] + red_camp["seats"][2:])[:4]):
     n = f"RedHand{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=red_camp["fire"], scr=n, aggr=0.83)
     redhand.append(n)
@@ -537,7 +537,7 @@ m.scripts.update(q.files())
 
 # the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
 from kit.dressing import Exterior
-dressed = Exterior(m, land, "green").dress()
+dressed = Exterior(m, land, "green", placed=placed).dress()
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)

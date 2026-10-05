@@ -364,10 +364,10 @@ for k, (x, y) in enumerate(gully_camp["seats"][:3] + [gully_camp["lookout"]]):
     ambushers.append(n)
 # Ottar's band in the Hollow: Ottar by his fire, his men round it, archers at the way in
 hollow_band = []
-ox2, oy2 = hollow_camp["fire"]
-pop.creature("Swordsman", ox2 + 30, oy2 - 10, action="guard", face=square_px(*wood_c), scr="Ottar", aggr=0.83,
+ox2, oy2 = hollow_camp["leader"]               # before his awning, where the take is
+pop.creature("Swordsman", ox2, oy2, action="guard", face=square_px(*wood_c), scr="Ottar", aggr=0.83,
              HealthMultiplier=3.0)
-for k, (x, y) in enumerate(hollow_camp["seats"][:4]):
+for k, (x, y) in enumerate((hollow_camp["seats"][:2] + hollow_camp["posts"] + hollow_camp["seats"][2:])[:4]):
     n = f"HollowReiver{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=hollow_camp["fire"], scr=n, aggr=0.83)
     hollow_band.append(n)
@@ -603,7 +603,7 @@ m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
 # ---- 9. the exteriors' dressing: the empty ground between the walls filled with the castle's and the hamlet's things
-dressed = Exterior(m, land, "green", martial=True).dress()
+dressed = Exterior(m, land, "green", martial=True, placed=placed).dress()
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
