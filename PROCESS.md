@@ -144,6 +144,17 @@ Then, in this order:
      barrels in a three, sacks) on one flank, the racks in a row on the other, the cooking pot by the fire, a
      lookout post toward the way in. It returns the leader's spot and posts by the store and the racks, so the band
      is not bunched round the fire. The wagon wreck: a wheel off, its load thrown out in a fan, heavy things near.
+   - A camp goes where it has room (Ambermere review, 2026-10-05: the diggers' camp, on the square nearest the
+     barrow-field's middle off the road, was squeezed against the graveyard fence and the forest, shrunk to 0.7 of
+     itself): `camps.camp_site` takes the square with the most open ground clear all round, near the place, off its
+     road, and the camp is laid open toward the road beside it (`sm.road_near(site)`), not toward the far town. Each
+     camp holds its ground (`_hold_ground`): the planting and the dressing keep off it.
+   - Urchins squat as Westwood furnishes their dens (Con02a, War03c: beds of one kind side by side, a table ringed by
+     stools, the pickings heaped): `camps.urchin_camp`, with the same returns as `bandit_camp` so `camp_posts` spreads
+     the band (Ambermere's pit urchins had stood among 8 beds strewn at random angles). Never strew a camp's pieces by
+     hand in a design.
+   - Every building role calls for its scenes; a role missing from `ROLE_SCENES` stands bare (Ambermere's fishers'
+     houses, the herbwife's hut and the moot hall called for nothing).
 
 ## Relations: every piece makes sense where it stands
 
@@ -231,6 +242,17 @@ Then, in this order:
     as loose on the floor.
   - The checker warns of a piece in the way in from a door and of a statue facing a wall within 3 units
     (`checks.room_ways`; Westwood: 31 such pieces in 218 rooms, 4 statues).
+  - Chapels face their door too (Ambermere review, 2026-10-05: the nave's crypt door sat mid-wall where the altar
+    belonged, the altar beside it, the pews' aisle off the door's line and half the nave bare at 6% covered). The
+    altar takes the wall straight across from the main door, in line with it (`door=True` in the compose step,
+    `Furnisher.main_door`); an inner door keeps 6 units off that line (`building.ALTAR_ROOMS`, `ALTAR_AXIS`). An altar
+    so placed sets the room's aisle: a clear way to the door, the pews either side of it, the statues lining it, the
+    colonnade in pairs from 5 units ahead of the altar (a barrow's god statue had stood among a block of 8 columns).
+  - A piece drawn facing one way takes the variant of its wall (`WALL_SIDE_TYPE`): LOTDLichGodStatue1 on a NW wall
+    facing SE, Statue2 on a NE wall facing SW (Westwood 8 of 10, 5 of 6), and only on the back walls.
+- **Nothing lines a wall from corner to corner unless it is a store** (same review: 17 piled barrels end to end along
+  the Amber Eel's SW wall). `stock_walls(per_wall=)` caps the share of each wall the supplies take, counting what
+  stands there; a tavern's kegs take at most 40% of a wall, heaped toward its corners.
 - **Whole walls, not single pieces** (TreePlace v0.3 room review: "put bookshelves end to end for the entire length
   of the wall").
   - `Furnisher.line_wall` lines a back wall end to end. It tests every spot of the wall first and lays only one
@@ -419,6 +441,11 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   spot and from every creature standing where it was placed, 26 px clear of every doorway's passage points. Beats
   prefer places no other beat takes; a garrison's patrollers each get their own stops, starting apart round the
   loop (`Dresser._own_rounds`). `check_routes` faults two walkers' stops under 32 px apart.
+- A person who waits by a door stands beside the doorstep, never in the door's way (Ambermere, 2026-10-05: Morwen at
+  her door's +16,+16 stood 34 px out from it, and Pip's walk home ran through her): `StoryMap.doorside(role or
+  building, toward=)`, not `outside_door` plus an offset. A rescued walker's journey ends at that door, beside them.
+- Gardens and flowers keep two squares off every door and gate already standing (`Planter`; a flower patch had grown
+  in Ambermere's west gate).
 - In the game a walker never pushes: the ticker watches whether it gets nearer its waypoint, not whether it moves
   (two pushing each other jostle without getting anywhere). Not nearer for 1.5 s: at a stop it stands where it is,
   a little aside, and takes its pause; at a bend or doorway point it goes on to the next; elsewhere (someone in the

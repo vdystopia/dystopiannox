@@ -109,7 +109,11 @@ WALL_NAME = {"/|BR": "NW", "\\|BL": "NE", "/|TL": "SE", "\\|TR": "SW"}
 # walls first; free-standing furniture leans toward the SE and SW walls, leaving the back walls to what faces the room.
 FACING_FAMS = {"shelves", "wall_decor", "fireplace", "stove", "desk", "counter_shop", "forge", "bellows", "lab"}
 FACING_TYPES = re.compile(r"^(Chest\d|Chest[NS][EW]|DunMirChest\d|TraderShelves\d|TraderHelmShelf\d|TraderHanging|"
-                          r"TraderShieldWallHanging|TraderCrossedWeapons|ClothSign)")
+                          r"TraderShieldWallHanging|TraderCrossedWeapons|ClothSign|LOTDLichGodStatue)")
+# Pieces drawn facing one way, whose variant is fixed by the back wall they stand on (Westwood: LOTDLichGodStatue1 on
+# NW walls, facing SE, in 8 of 10 places; Statue2 on NE walls, facing SW, in 5 of 6. Ambermere's barrow had Statue1 on
+# a NE wall, looking sideways along it)
+WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"}}
 FRONT_FAMS = {"bench", "storage", "shop_rack", "cart"}
 FRONT_WEIGHT = 1.8                # how strongly free-standing furniture leans toward the SE and SW walls
 # Pieces that stand tall against their wall: hangings never go above them (above a chest, a bed or a bench they may).
@@ -1051,6 +1055,9 @@ class Furnisher:
         rule; else, among the room identity's preferred types (a lit hearth, never an unlit sibling),
         one whose long side runs along the wall; else orient()."""
         base = _base(t0)
+        if base in WALL_SIDE_TYPE:
+            t = WALL_SIDE_TYPE[base].get(r["side"])
+            return t if t and self.ok_type(t) else None
         if base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side"):
             return self.along_variant(self.variant_for_side(base, r["side"]), r["side"])
         pref = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam) if fam else None
@@ -1064,11 +1071,19 @@ class Furnisher:
         hu, hv = self.half(t)
         return abs(hu - hv) < 0.05 or (hv >= hu) == (line == "/")
 
-    def wall_candidates(self, fam, t0, at, deep=False):
+    def main_door(self):
+        """The room's main doorway (the one from outside, else the widest, else the one facing the deepest run of
+        the room), or None."""
+        return min(self.openings, key=lambda op: (not op["outside"], not op["double"], -op["extent"]), default=None)
+
+    def wall_candidates(self, fam, t0, at, deep=False, door=False):
         """Positions for a piece against a wall, best first: a back wall, away from the pieces already
         composed (one anchor per wall where the room allows), centred on its free stretch (at="center")
         or toward an end of it (at="corner"). deep: the wall with the most room before it first (a chapel's altar at
-        the end of a long nave, not halfway along its side)."""
+        the end of a long nave, not halfway along its side). door: the wall straight across the room from the main
+        door first, in line with it (a chapel's altar faces the way in down its aisle, as a throne does: Ambermere's
+        altar had stood on the NW wall of a nave entered through its SW wall, its pews side-on to the door)."""
+        op = self.main_door() if door else None
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
         depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
@@ -1104,12 +1119,16 @@ class Furnisher:
                 if ends[0] > ends[1]: continue
                 mid = min(max(mid, ends[0]), ends[1])
             spots = [mid] if at == "center" else ends if at in ("corner", "room_corner") else [mid] + ends
+            facing_door = op is not None and r["line"] == op["line"] and r["sign"] == -op["sign"]
+            if facing_door and lo + ha + 0.1 <= op["along"] <= hi - ha - 0.1:
+                spots = [op["along"]] + spots
             for a in spots:
                 u, v = (coord, a) if r["line"] == "/" else (a, coord)
                 spacing = min([math.hypot(u - au, v - av) for au, av in self.anchors] or [8.0])
                 score = side_score + 2.0 * min(spacing, 8.0) / 8.0 + 0.05 * (hi - lo) + self.rng.uniform(0, 0.4)
                 if at != "corner": score += 1.0 - abs(a - mid) / max(1.0, (hi - lo) / 2)
                 if deep: score += 0.4 * depth_of(r)
+                if facing_door: score += 20.0 - 0.5 * min(abs(a - op["along"]), 6.0)
                 out.append((score, t, r, u, v, a, ha, hp))
         out.sort(key=lambda c: -c[0])
         return out
@@ -1140,12 +1159,12 @@ class Furnisher:
                     if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
-    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False):
+    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
         front of it (nothing blocking may stand there later; it must be free now)."""
         t0 = t0 or _pick(self.rng, self.types_of(fam))
         if not t0: return None
-        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep):
+        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
             if zone and self.g.zone_blocked(zone): continue
             if NEEDS_FRONT.search(t) and self._front_crowded(r, u, v, ha, hp): continue
@@ -1158,6 +1177,15 @@ class Furnisher:
             self.anchors.append((u, v))
             self.wall_used.append(((r["line"], r["coord"]), a - ha, a + ha))
             if fam in TALL_FAMS: self.wall_tall.append(((r["line"], r["coord"]), a - ha, a + ha))
+            op = self.main_door() if door else None
+            if op and r["line"] == op["line"] and r["sign"] == -op["sign"] and abs(a - op["along"]) < 1.5 and \
+                    not self.aisle:
+                # it faces the way in: the aisle from it to the door stays clear, and the colonnade, the pews and
+                # the statues line it (as a throne room's, place_throne)
+                far = self._depth_of(r)
+                self.aisle = dict(run=r, mid=a, half=1.2, first=hp + 5.5, far=far, door=op)
+                (u0, v0), (u1, v1) = self._uv_on(r, hp + clear, a - 1.2), self._uv_on(r, far + 1.0, a + 1.2)
+                self.g.zones.append((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)))
             return dict(obj=o, run=r, uv=(u, v), along=a, ha=ha, hp=hp)
         return None
 
@@ -1540,7 +1568,8 @@ class Furnisher:
                 tables.append((o, uv))
         return tables
 
-    def stock_walls(self, coverage=0.65, kinds=("shelves", "crates", "barrels", "sacks"), pad=1.0, limit=None):
+    def stock_walls(self, coverage=0.65, kinds=("shelves", "crates", "barrels", "sacks"), pad=1.0, limit=None,
+                    per_wall=None):
         """Supplies along the free wall stretches: a heap two deep where a stretch starts in a corner, then
         groups of different sizes and single pieces with varied gaps, so the room has both clusters and
         open stretches (TreePlace v0.2 playtest: evenly spaced supplies looked mechanical, packed ones
@@ -1548,18 +1577,27 @@ class Furnisher:
         `coverage` of the free wall length holds something. Pieces
         already standing keep `pad` units round them (the cauldron is not crowded by apple crates); shelves
         keep a unit off the corners (they face one way: no corner pieces); doors keep their clearance; the
-        middle stays open. Returns the pieces placed."""
+        middle stays open. per_wall: the most of any one wall's length the supplies take, counting what stands
+        there already (a tavern's kegs heaped by the walls, not a wall lined with them from corner to corner:
+        Ambermere's common room, 2026-10-05, had 17 piled barrels end to end along its SW wall). Returns the pieces
+        placed."""
         segs = sorted(self.segments(pad=pad), key=lambda s: (s[0]["side"] in BACK_SIDES, -(s[2] - s[1])))
         total = sum(hi - lo for _, lo, hi in segs) or 1.0
         used, placed, k = 0.0, 0, self.rng.randrange(len(kinds))
         for r, lo, hi in segs:
             a = lo + 0.15
+            wk = (r["line"], r["coord"])
+            room_ = None
+            if per_wall is not None:            # what this wall can still take
+                room_ = per_wall * (r["hi"] - r["lo"]) - sum(h_ - l_ for k_, l_, h_ in self.wall_used if k_ == wk)
+                if room_ < 1.0: continue
+            a_wall = a
             if a - r["lo"] < 1.6 and used < coverage * total:          # the stretch starts in a corner: a heap
                 got, edge = self._pile(r, a, hi, pad)
                 if got: placed += got; used += edge - a; a = edge + self.rng.uniform(0.9, 2.0)
             tries = 0                          # a blocked spot (a piece in the corner) moves us along, not off the wall
             while used < coverage * total and a < hi - 0.8 and tries < 120 and \
-                    (limit is None or self.n_blocking < limit):
+                    (limit is None or self.n_blocking < limit) and (room_ is None or a - a_wall < room_):
                 tries += 1
                 kind = kinds[k % len(kinds)]; k += 1
                 pat, n0, n1 = SUPPLIES[kind]
@@ -2085,6 +2123,8 @@ class Furnisher:
                     if not lo + ha <= a <= hi - ha: break
                     if self.try_put(t, *self._uv_on(r, d, a)): got += 1
                     a += side * pitch
+        if got and not self.aisle:                      # the aisle the statues face and the colonnade lines
+            self.aisle = dict(run=r, mid=mid, half=aisle / 2, first=first, far=self._depth_of(r), door=None)
         if columns and got:
             self.nave_columns(r, mid, aisle / 2 + k * pitch + 0.9, first, depth_max, 2 * gap)
         if tombs and got:                               # behind the last pews, either side of the runner
@@ -2420,7 +2460,8 @@ class Furnisher:
             before = self.n_blocking
             fam = st["fam"]
             if st["slot"] == "stock":
-                self.stock_walls(st.get("coverage", 0.3), st.get("kinds", ("crates", "barrels", "sacks")), pad=st.get("pad", 1.0))
+                self.stock_walls(st.get("coverage", 0.3), st.get("kinds", ("crates", "barrels", "sacks")), pad=st.get("pad", 1.0),
+                                 per_wall=st.get("per_wall"))
             elif st["slot"] == "line":
                 self.line_wall(fam, max_n=st.get("n"), decor_every=st.get("decor", 0), other=st.get("other", False))
             elif st["slot"] == "racks":
@@ -2663,7 +2704,7 @@ class Furnisher:
                 continue
             if st["slot"] == "stock":
                 done[fam] += self.stock_walls(st.get("coverage", 0.65), st.get("kinds", ("shelves", "crates", "barrels", "sacks")),
-                                              pad=st.get("pad", 1.0))
+                                              pad=st.get("pad", 1.0), per_wall=st.get("per_wall"))
                 continue
             if st["slot"] == "shelf_wall":
                 got = self.shelf_wall(fam, st.get("cover", 0.9))
@@ -2712,7 +2753,8 @@ class Furnisher:
                     if not got: break
                     k += got
                     continue
-                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False))
+                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False),
+                                       door=st.get("door", False))
                 if not p: break
                 k += 1
                 placed.setdefault(fam, p)

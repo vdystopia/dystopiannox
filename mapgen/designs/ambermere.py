@@ -50,6 +50,7 @@ from kit import yards as Y
 from kit import camps
 from kit.story import StoryMap
 from kit.dressing import Exterior
+from kit.posts import camp_posts
 
 SEED = int(sys.argv[1]) if len(sys.argv) > 1 else 7
 rng = random.Random(SEED)
@@ -252,12 +253,14 @@ south_c, cairn_c, pits_c, barrows_c, barrow_c, reeds_c, shrine_c, west_c = (
     C[k] for k in ("south", "cairn", "pits", "barrows", "barrow", "reeds", "shrine", "west"))
 
 
+fenced = set().union(*({(y_.gi + a, y_.gj + b) for a in range(-2, y_.w + 2) for b in range(-2, y_.h + 2)}
+                       for y_ in yards))         # the yards and a margin round their fences
+
+
 def off_road(c, clear=4.5, reach=12):
     """The square nearest `c` with no road within `clear` squares, on open land: a camp beside its way, not on it."""
     from kit.layout import bfs_distance
     near_road = bfs_distance(list(land.roads), land.squares, int(clear) + 1)
-    fenced = set().union(*({(y_.gi + a, y_.gj + b) for a in range(-2, y_.w + 2) for b in range(-2, y_.h + 2)}
-                           for y_ in yards))
     cands = [s for s in land.squares if near_road.get(s, 99) >= clear and s not in land.taken_strict and
              s not in fenced and s not in land.water and math.hypot(s[0] - c[0], s[1] - c[1]) <= reach]
     s = min(cands, key=lambda s: math.hypot(s[0] - c[0], s[1] - c[1])) if cands else (int(c[0]), int(c[1]))
@@ -283,27 +286,24 @@ for k_ in range(3):
         if o_: graves.append(csc.px(1.3, a_)); break
 for k_ in range(4):
     csc.put(rng.choice(("Skull", "ArmBone", "LegBone")), *csc.at(rng.uniform(1.8, 3.6), rng.uniform(0, 6.28)))
-# the diggers' camp in the barrow-field, open toward the town road
-barrows_camp = camps.bandit_camp(m, rng, land, off_road(barrows_c), vc,
+# the diggers' camp in the barrow-field, where it has room beside the kings' way, open toward the town road
+dig_site = camps.camp_site(m, land, barrows_c, reach=16, road_clear=3.0, room=8, avoid=fenced)
+dig_way = sm.road_near(dig_site)                       # the kings' way beside it: where the way in comes from
+barrows_camp = camps.bandit_camp(m, rng, land, dig_site, dig_way,
                                  loot=[("Gold", {"Amount": 80}), "RedPotion", "RedPotion", "Quiver", "LeatherHelm"],
                                  sleepers=4, tents=2)
-for k_ in range(3):                                   # their spades in the opened barrows
-    camps.Scene(m, rng, land, barrows_c).put(rng.choice(("MiningShovelInGround", "MiningPickAxeInGround1")),
-                                             *camps.Scene(m, rng, land, barrows_c).at(5.5, k_ * 2.1 + 0.7))
-# the amber pits: the urchins' squat among the diggers' heaps
-pits_sc = camps.Scene(m, rng, land, pits_c)
-urchin_spots = []
-pit_c = pit_yard.centre if pit_yard and "quarry" in built else pits_c
-psc = camps.Scene(m, rng, land, (pit_c[0], pit_c[1]))
-hoard = None
-for r_, a_ in ((1.2, 0.3), (1.6, 2.2), (2.0, 4.0)):
-    hoard = psc.put("Chest2", *psc.at(r_, a_), items=[("Gold", {"Amount": 60}), "BluePotion", "LeatherArmoredBoots"])
-    if hoard: break
-for k_, t_ in enumerate(("UrchinBed1", "UrchinBedFlat1", "UrchinHammock1", "UrchinStool1", "UrchinTableSmall",
-                         "UrchinStool2", "UrchinBed3", "UrchinBedFlat2")):
-    pits_sc.put(t_, *pits_sc.at(rng.uniform(6.0, 8.5), k_ * 0.785 + rng.uniform(-0.2, 0.2)))
-for k_ in range(6):
-    urchin_spots.append(pits_sc.px(rng.uniform(3.0, 6.5), k_ * 1.05 + 0.5))
+grave_yard = next((y_ for y_ in yards if y_.kind == "graveyard"), None)
+dsc = camps.Scene(m, rng, land, grave_yard.centre if grave_yard and "graveyard" in built else barrows_c)
+for k_ in range(3):                                   # their spades left in the opened graves
+    for r_ in (1.6, 2.4, 3.2, 5.5):
+        if dsc.put(("MiningShovelInGround", "MiningPickAxeInGround1", "MiningShovelInGround")[k_],
+                   *dsc.at(r_, k_ * 2.1 + 0.7)): break
+# the amber pits: the urchins' squat beside the diggers' quarry, open toward the pit road; the shaman's hoard in it
+pit_site = camps.camp_site(m, land, pits_c, reach=12, road_clear=3.5, room=6, avoid=fenced)
+pit_way = sm.road_near(pit_site)
+pits_camp = camps.urchin_camp(m, rng, land, pit_site, pit_way,
+                              loot=[("Gold", {"Amount": 60}), "BluePotion", "LeatherArmoredBoots"], sleepers=6)
+hoard = pits_camp["chest"]
 # the old smokehouse on the reed shore, its door toward the town path; the spiders' webs round it
 smoke_c = off_road(reeds_c, clear=6.5)
 smokehouse = camps.ruined_tower(m, rng, land, smoke_c, reeds_c, loot=[("Gold", {"Amount": 40}), "RedPotion", "Bread"],
@@ -372,11 +372,20 @@ ox_, oy_ = free_px(gh) if gh else (vx, vy)
 person("Con02a", "Mayor_Theogrin", ox_, oy_, "Osmund")
 # Prioress Hildreth before her altar
 ch = room_of("chapel", "chapel")
-hx_, hy_ = free_px(ch) if ch else (vx, vy + 40)
-person("Con02a", "Gretchen", hx_, hy_, "Hildreth")
+ch_cells = {(x + a, y + b) for x, y in ch.tiles for a in (-1, 0, 1) for b in (-1, 0, 1)} if ch else set()
+ch_altar = next((o for o in m.d["objects"] if o.get("type", "").startswith("DunMirAltar") and
+                 (int(o["x"] // CELL), int(o["y"] // CELL)) in ch_cells), None)
+if ch_altar:                                        # beside the altar, off the aisle: the nave's middle stays clear
+    ccx = sum(x for x, _ in ch.tiles) / len(ch.tiles) * CELL; ccy = sum(y for _, y in ch.tiles) / len(ch.tiles) * CELL
+    dl_ = math.hypot(ccx - ch_altar["x"], ccy - ch_altar["y"]) or 1
+    ux_, uy_ = (ccx - ch_altar["x"]) / dl_, (ccy - ch_altar["y"]) / dl_
+    hx_, hy_ = free_px(ch, prefer=(ch_altar["x"] + ux_ * 40 - uy_ * 50, ch_altar["y"] + uy_ * 40 + ux_ * 50), clear=26)
+else:
+    hx_, hy_ = free_px(ch) if ch else (vx, vy + 40)
+person("Con02a", "Gretchen", hx_, hy_, "Hildreth", face=(ccx, ccy) if ch_altar else None)
 # Severin outside his amber house
-sv_ = sm.outside_door("store") or (vx + 60, vy)
-person("Con07B", "Dorian", sv_[0] + 18, sv_[1] + 14, "Severin", face=(vx, vy))
+sv_ = sm.doorside("store", toward=(vx, vy)) or (vx + 60, vy)
+person("Con07B", "Dorian", sv_[0], sv_[1], "Severin", face=(vx, vy))
 # Garth on the pit road at the edge of town, by the diggers' handcart
 gr_ = sm.road_near(((pits_c[0] + vc[0] * 2) / 3, (pits_c[1] + vc[1] * 2) / 3))
 gsc = camps.Scene(m, rng, land, (gr_[0], gr_[1]))
@@ -390,7 +399,8 @@ person("Con03A", "Kenneth", gx_, gy_, "Garth", face=square_px(*pits_c))
 # Morwen at her door on the shore, Rue in her herb room
 fishers = [b for bid, b in placed if bid.role == "fisher"]
 mw_ = (sm.outside_door(building=fishers[0]) if fishers else None) or square_px(*shore_c)
-person("Con02a", "Lydia", mw_[0] + 16, mw_[1] + 16, "Morwen", face=square_px(*mere_c))
+mo_ = (sm.doorside(building=fishers[0], toward=square_px(*reeds_c)) if fishers else None) or mw_
+person("Con02a", "Lydia", mo_[0], mo_[1], "Morwen", face=square_px(*reeds_c))     # watching the way her boy went
 hr = room_of("herbwife", "herbalist")
 rx_, ry_ = free_px(hr) if hr else square_px(shore_c[0] + 3, shore_c[1])
 person("Con02a", "Julie", rx_, ry_, "Rue")
@@ -402,8 +412,8 @@ gq_ = square_px(gate_sq[0] + 0.5, gate_sq[1] - 0.5)
 gdx, gdy = vx - gq_[0], vy - gq_[1]
 gl = math.hypot(gdx, gdy) or 1
 person("Con02a", "Mayor's_Guard", gq_[0] + 70 * gdx / gl + 26, gq_[1] + 70 * gdy / gl, "GateGuard", face=(vx, vy))
-# Pip's way home, to his mother's door
-pip_wps = pop.waypoint_path("PipHome", [(mw_[0] - 14, mw_[1] + 26)])
+# Pip's walk home to his mother's door: laid along the paths and the shore road once the map stands (StoryMap.journey)
+pip_home = sm.journey("Pip", "PipHome", mw_, look=mo_)
 # shopkeepers
 WARES = {"store": [(4, "RedPotion"), (3, "BluePotion"), (2, "CurePoisonPotion"), (3, "RedApple"), (2, "Bread"),
                    (3, "Quiver"), (1, "Bow"), (1, "CrossBow"), (1, "LeatherBoots"), (1, "LeatherHelm"),
@@ -452,18 +462,21 @@ for k, (x, y) in enumerate(graves + [csc.px(2.0, 3.6)]):
     pop.creature("Ghost" if k == 3 else "Skeleton", x, y, action="idle", face=square_px(*south_c), scr=n, aggr=0.5,
                  sight=90)
     risen.append(n)
-# the diggers round their fire in the barrow-field, archers at the way in
+# the diggers spread about their camp in the barrow-field as a camp is lived in (kit/posts): their foreman at its head by
+# the chest, two by the fire, two by their tents, archers well apart at the way in from the town road
 diggers = []
-for k, (x, y) in enumerate(barrows_camp["seats"][:4]):
+dig_posts = camp_posts(m, barrows_camp, square_px(*dig_way), sit=2, tents=2, watch=2)
+pop.creature("Swordsman", *dig_posts["leader"], action="guard", face=square_px(*vc), scr="DiggerBoss", aggr=0.83,
+             HealthMultiplier=2.0)
+for k, (x, y) in enumerate(dig_posts["sit"] + dig_posts["tent"]):
     n = f"Digger{k + 1}"
     pop.creature("Swordsman", x, y, action="idle", face=barrows_camp["fire"], scr=n, aggr=0.83)
     diggers.append(n)
-lx_, ly_ = barrows_camp["lookout"]
-for k in range(2):
+for k, (x, y) in enumerate(dig_posts["watch"]):
     n = f"DiggerArcher{k + 1}"
-    pop.creature("Archer", lx_ + (k * 2 - 1) * 40, ly_, action="guard", face=square_px(*vc), scr=n, aggr=0.83)
+    pop.creature("Archer", x, y, action="guard", face=square_px(*vc), scr=n, aggr=0.83)
     diggers.append(n)
-B.sentry("DiggerArcher1", square_px(*vc), rouse=diggers[:4], shout="Someone's on the kings' way! Up!")
+B.sentry("DiggerArcher1", square_px(*vc), rouse=["DiggerBoss"] + diggers[:4], shout="Someone's on the kings' way! Up!")
 # the barrow: the kings' risen guard in the hall, Malvo among the tombs with his raised dead
 hall = room_of("barrow", "dark_chapel")
 crypt = room_of("barrow", "dark_crypt")
@@ -483,14 +496,17 @@ dl_ = math.hypot(hcx - ax_, hcy - ay_) or 1
 flame_xy = free_px(hall, prefer=(ax_ + (hcx - ax_) / dl_ * 46, ay_ + (hcy - ay_) / dl_ * 46), clear=24)
 m.obj_px("ColorLight", flame_xy[0], flame_xy[1] - 5, xfer=dict(preset("orange")), scr="AltarLight")
 m.obj_px("DunMirFlameBasinUnlit", *flame_xy, scr="AltarBasin")
-# the urchins on the amber pits and their shaman on the heaps
+# the urchins about their squat on the amber pits (kit/posts): the shaman by his hoard, some by the fire, some by
+# their beds, two watching the pit road
 urchins = []
-for k, (x, y) in enumerate(urchin_spots):
+pit_posts = camp_posts(m, pits_camp, square_px(*pit_way), sit=2, tents=2, watch=2)
+pop.creature("UrchinShaman", *pit_posts["leader"], action="guard", scr="PitShaman", aggr=0.83, HealthMultiplier=2.0,
+             face=square_px(*vc))
+for k, (x, y) in enumerate(pit_posts["sit"] + pit_posts["tent"] + pit_posts["watch"]):
     n = f"PitUrchin{k + 1}"
-    pop.creature("Urchin", x, y, action="guard" if k % 2 else "idle", scr=n, aggr=0.83, face=square_px(*vc))
+    pop.creature("Urchin", x, y, action="guard" if k >= 4 else "idle", scr=n, aggr=0.83,
+                 face=pits_camp["fire"] if k < 4 else square_px(*vc))
     urchins.append(n)
-shx_, shy_ = square_px(pit_c[0], pit_c[1] - 0.5)
-pop.creature("UrchinShaman", shx_, shy_, action="guard", scr="PitShaman", aggr=0.83, HealthMultiplier=2.0)
 urchins.append("PitShaman")
 # the spiders round the smokehouse
 spiders = []
@@ -656,7 +672,7 @@ q.talker("Pip", [
     q.say("I'm going home! Mam's going to kill me.", when=q.when(flag="pip_home"), who="Pip"),
     q.say("Are they dead? The big black one too? ...I'm going home. Thank you! Tell Mam I'm coming!",
           when=q.when(flag=q.dead(*spiders)),
-          do=[A.flag("pip_home"), A.walk("Pip", pip_wps[0]),
+          do=[A.flag("pip_home"), A.walk("Pip", pip_home),
               q.journal("Pip is walking home to his mother Morwen on the shore.", QUEST)], who="Pip"),
     q.say("Don't go out there! Spiders, big ones, all round the hut. I've been in here two days. I'm so hungry.",
           who="Pip")])
@@ -729,7 +745,7 @@ m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
 # ---- 11. the exteriors' dressing: the empty ground filled with the town's and the wood's things --------------------------
-dressed = Exterior(m, land, "green").dress()
+dressed = Exterior(m, land, "green", placed=placed).dress()
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
@@ -741,3 +757,4 @@ if __name__ == "__main__":
           f"| trees {n_trees} | shops {n_shops} | caches {len(caches)} | opened {len(opened)} | lines {len(q.strings)} "
           f"| yards {', '.join(built) or 'none'} | fish {fish} | dock {'yes' if dock else 'no'} "
           f"| dressing {sum(dressed.values())} groups")
+    print("dressing:", dict(dressed))

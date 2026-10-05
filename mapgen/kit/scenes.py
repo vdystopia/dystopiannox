@@ -110,7 +110,7 @@ CATALOGUE = [
            [P(("OutdoorTraderCart",), 0, 80, must=True), P(BIG_BARRELS, -44, 32, must=True),
             P(CRATES, -6, 30, must=True, orient="line"), P(("TraderAppleCrate",), 30, 30, n=(1, 2), step=(24, 0)),
             P(SMALL_SACKS, 70, 32, p=0.7)]],
-          walls=("house",), roles=("store", "mill", "inn", "keep", "manor", "mess", "barracks"), sides=("side", "back"),
+          walls=("house",), roles=("store", "mill", "inn", "keep", "manor", "mess", "barracks", "townhall"), sides=("side", "back"),
           cap=2, spacing=30, size=100, family="cart", tall=True, weight=2.5),
     Theme("wagon_verge", "a wagon pulled off the road to rest the horse: barrels and a crate down at its tail, the "
           "carter's spear stood by, straw for the horse", "open",
@@ -141,7 +141,7 @@ CATALOGUE = [
           [[P(LOGS, -30, 30, n=3, step=(30, 0), must=True), P(STUMPS, 6, 70, must=True),
             P(TOOLS + ("Barrel", "SackChestMedium1"), 66, 30, must=True), P(STRAW, -30, 64, p=0.4)]],
           walls=("house", "fence"), roles=("home", "cottage", "woodcutter", "inn", "mess", "bunkhouse", "grovelord",
-                                           "barracks", "smithy"),
+                                           "barracks", "smithy", "fisher", "herbwife"),
           sides=("side", "back"), places=("town",), biomes=("green", "swamp", "ice"), cap=3, spacing=18, family="wood",
           tall=True, weight=2.0),
     Theme("chopping_yard", "where wood is split: the block, logs waiting, the tools", "open",
@@ -243,12 +243,12 @@ CATALOGUE = [
     Theme("drying_line", "washing hung out to dry against the house, the basket and the tub beside it", "wall",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 40, must=True), P(SMALL_SACKS, -40, 30, must=True),
             P(("WaterBarrel",), 40, 30, must=True), P(STOOLS, 18, 70, p=0.6)]],
-          walls=("house",), roles=("home", "cottage", "inn"), need=True, near=4, sides=("side", "back"),
-          biomes=("green", "swamp"), cap=2, spacing=36, family="wash", tall=True, weight=1.2),
+          walls=("house",), roles=("home", "cottage", "inn", "fisher", "herbwife"), need=True, near=4,
+          sides=("side", "back"), biomes=("green", "swamp"), cap=2, spacing=36, family="wash", tall=True, weight=1.2),
     Theme("loafers_bench", "a bench against the wall in the sun, a barrel for a table, a stool pulled up", "wall",
           [[P(("Bench1", "Bench2", "Bench4", "Bench5"), 0, 34, orient="out", must=True), P(BARRELS, 40, 34, must=True),
             P(STOOLS, 44, 66, must=True), P(("TraderAppleCrate", "SackChestSmall1"), -40, 32, p=0.5)]],
-          walls=("house",), roles=("inn", "store", "home", "barracks", "mess"), places=("town",),
+          walls=("house",), roles=("inn", "store", "home", "barracks", "mess", "fisher", "townhall"), places=("town",),
           sides=("front", "side"), biomes=ALL, cap=3, spacing=24, family="bench", weight=1.5, min_pieces=3),
     # ---- the road and the wilds ------------------------------------------------------------------------------------
     Theme("waystone", "a waystone by the road, travellers' offerings at its foot", "open",
@@ -372,6 +372,11 @@ ROLE_SCENES = {
     "ore_shed": [("mine_cache", 0.9)],
     "foreman": [("mine_stores", 0.6)],
     "manor": [("cart_loading", 0.6), ("well_side", 0.4)],
+    # a shore town's (Ambermere, 2026-10-05: its fishers' houses, the herbwife's hut and the moot hall had called for
+    # nothing, and stood bare among the town's scenes)
+    "fisher": [("drying_line", 0.7), ("woodpile", 0.5), ("supply_corner", 0.4)],
+    "herbwife": [("drying_line", 0.6), ("woodpile", 0.4)],
+    "townhall": [("cart_loading", 0.5), ("loafers_bench", 0.6)],
 }
 
 # at most so many scenes of a family to a map, whatever their themes (carts are memorable: a few to a map)

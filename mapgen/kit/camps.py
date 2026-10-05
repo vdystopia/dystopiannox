@@ -4,6 +4,8 @@ the spots its people stand on so the design can put them there.
 - bandit_camp: tents in an arc behind a stone-ringed fire, each bedroll before its tent, the leader's awning in the
   middle with the take before it, the store (cart, crates, barrels, sacks) on one flank, the racks on the other, a
   lookout post toward the way in (Westwood's camps on Con03A, Con04a, War05A).
+- camp_site: where a camp has room, near a place and off its road.
+- urchin_camp: urchins squatting round a fire: their beds in a row, a table ringed by stools, their pickings heaped.
 - wagon_wreck: a trader's cart stopped on the road and plundered, a wheel off, its load thrown out in a fan, the
   carter's place beside it.
 - wolf_den: a heap of rock with bones strewn before it, where a pack lies up.
@@ -103,6 +105,15 @@ def _replay(rng, kind):
 
 def _ang(a):
     return math.atan2(math.sin(a), math.cos(a))
+
+
+def _hold_ground(land, centre, r):
+    """The camp's ground stays open: squares within r of its centre are taken, so the planting keeps its trees off and
+    the dressing its scenes (Ambermere, 2026-10-05: the trees grew up to the diggers' tents, the camp read as a heap at
+    the forest's edge). Scene.ok tests only taken_strict, so the camp's own pieces are not stopped by it."""
+    ci, cj = centre
+    land.taken |= {(int(ci) + a, int(cj) + 1 + b) for a in range(-r, r + 1) for b in range(-r, r + 1)
+                   if a * a + b * b <= r * r and (int(ci) + a, int(cj) + 1 + b) in land.squares}
 
 
 def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2):
@@ -271,6 +282,120 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2):
                     goods.append(t)
             break
     if leader is None: leader = sc.p(R_t * 0.6, ca)
+    _hold_ground(land, centre, 7)
+    return dict(fire=(fx, fy), seats=seats, lookout=lookout, chest=chest, goods=goods, leader=leader, posts=posts)
+
+
+def camp_site(spec, land, near, reach=14, road_clear=4.5, room=7, avoid=()):
+    """Where a camp goes near `near` (squares): the square within `reach` with the most open ground round it (land off
+    roads, water, buildings, walls and `avoid` within `room` squares), no road within `road_clear`, a little nearer
+    `near` on a tie. Ambermere, 2026-10-05: the diggers' camp, laid on the square nearest the barrow-field's middle
+    off the road, was squeezed between the graveyard's fence and the forest, its tents, racks and pot in a heap.
+    Returns continuous square coordinates (the square's middle), as bandit_camp takes them."""
+    from kit.layout import bfs_distance
+    avoid = set(avoid)
+    near_road = bfs_distance(list(land.roads), land.squares, int(road_clear) + 1)
+    probe = Scene(spec, None, land, near)
+    free = {s for s in land.squares if s not in avoid and probe.ok(s[0] + 0.5, s[1] - 0.5)
+            and math.hypot(s[0] - near[0], s[1] - near[1]) <= reach + room}
+    best = None
+    for s in free:
+        d = math.hypot(s[0] - near[0], s[1] - near[1])
+        if d > reach or near_road.get(s, 99) < road_clear: continue
+        disc = [(a, b) for a in range(-room, room + 1) for b in range(-room, room + 1) if a * a + b * b <= room * room]
+        n = sum((s[0] + a, s[1] + b) in free for a, b in disc)
+        # clear all round first: the nearest ground that is not open (a camp's tents stand ~4 squares out)
+        clear = min([math.hypot(a, b) for a, b in disc if (s[0] + a, s[1] + b) not in free] or [room + 1.0])
+        key = (min(clear, room - 1.0), n - 1.5 * d, -s[0], -s[1])
+        if best is None or key > best[0]: best = (key, s)
+    s = best[1] if best else (int(near[0]), int(near[1]))
+    return (s[0] + 0.5, s[1] - 0.5)
+
+
+def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5):
+    """Urchins squatting in the open, composed as Westwood furnishes their dens (Con02a, War03c: beds and hammocks of
+    one kind side by side, a table ringed by stools, their pickings heaped together) round a fire, open toward
+    `toward` (squares: the way in). The beds in a row behind the fire, their feet to it; the table and stools on one
+    flank; the pickings on the other: crates side by side, sacks, the hoard's chest (loot), the shaman's place before
+    it; stools round the fire; a lookout's stool toward the way in. Returns dict(fire, seats, lookout, chest, goods,
+    leader, posts) in world px, as bandit_camp, for kit/posts.camp_posts."""
+    rng = own_rng(spec, "urchin_camp", centre)
+    fx, fy = square_px(*centre)
+    tx, ty = square_px(*toward)
+    a_in = math.atan2(ty - fy, tx - fx)
+    sc = Camp(spec, rng, land, centre)
+    best = None
+    for q in range(24):                                   # the back: away from the way in, with room for the beds
+        b = -math.pi + q * math.pi / 12
+        off_in = abs(_ang(b - a_in))
+        if off_in < math.pi * 0.55: continue
+        room = sum(sc.free(*sc.p(r, b + d)) for r in (80, 110, 140) for d in (-0.6, -0.3, 0, 0.3, 0.6))
+        side = sum(sc.free(*sc.p(r, b + d)) for r in (100, 140) for d in (1.6, -1.6))
+        score = room * 2 + side + 2 * math.cos(b + math.pi / 2) + 2 * off_in / math.pi
+        if best is None or score > best[0]: best = (score, b)
+    b = best[1] if best else a_in + math.pi
+    sc.put_px("CampFire", fx, fy)
+    ph = rng.uniform(0, 1)
+    for q in range(6):
+        sc.put_px("CaveRocksSmall", *sc.p(22, ph + q * 2 * math.pi / 6))
+    # the beds side by side in a row behind the fire, all one kind, their feet to it; a second row behind if need be
+    x0, y0 = sc.p(92, b)
+    bed = S.COT_FOOT[S.axis_of(fx - x0, fy - y0)].replace("Cot", "UrchinBed")
+    ux, uy = -math.sin(b), math.cos(b)
+    per_row = min(sleepers, 4)
+    laid = 0
+    for row, r in enumerate((92, 128)):
+        n = per_row if row == 0 else sleepers - laid
+        if n <= 0: break
+        x0, y0 = sc.p(r, b)
+        for j in range(n):
+            o = (j - (n - 1) / 2) * 34
+            if sc.put_px(bed, x0 + ux * o, y0 + uy * o, gap=24): laid += 1
+    left = 1 if rng.random() < 0.5 else -1
+    # the table on one flank, its stools round it
+    ta = b + left * 1.45
+    tbx, tby = sc.p(100, ta)
+    if sc.put_px(rng.choice(("UrchinTableLarge", "UrchinTableSmall")), tbx, tby, gap=30):
+        for q in range(rng.randint(3, 4)):
+            a = ta + math.pi / 2 + q * 2 * math.pi / 4 + rng.uniform(-0.15, 0.15)
+            sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), tbx + 26 * math.cos(a), tby + 26 * math.sin(a))
+    # the pickings on the other flank: crates side by side, sacks, the hoard's chest before them
+    pa = b - left * 1.45
+    gx, gy = sc.p(118, pa)
+    vx, vy = math.cos(pa + math.pi / 2), math.sin(pa + math.pi / 2)
+    line = S.line_of(vx, vy)
+    goods = []
+    for j in range(rng.randint(2, 3)):
+        t = S.ALONG[line][rng.choice(("Crate1", "DarkCrate1"))]
+        if sc.put_px(t, gx + vx * (j - 1) * 30, gy + vy * (j - 1) * 30, gap=22): goods.append(t)
+    for j in range(2):
+        t = rng.choice(SACKS)
+        if sc.put_px(t, gx + vx * (60 + 20 * j) - math.cos(pa) * 10, gy + vy * (60 + 20 * j) - math.sin(pa) * 10,
+                     gap=18): goods.append(t)
+    chest = None
+    for r, d in ((80, 0.0), (80, 0.25), (80, -0.25), (70, 0.4), (95, 0.35)):
+        chest = sc.put_px("Chest2", *sc.p(r, pa + d), gap=24, items=loot)
+        if chest: break
+    leader = sc.p(62, pa + 0.5 * left) if chest else sc.p(60, b)
+    # stools round the fire, the way in to it left open
+    seats = []
+    for a in (b + 0.9, b - 0.9, b + math.pi + 0.7, b + math.pi - 0.7):
+        if abs(_ang(a - a_in)) < 0.35: continue
+        if sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), *sc.p(54, a), gap=22):
+            seats.append(sc.p(34, a))
+    # the lookout toward the way in
+    lookout = None
+    for r in (170, 145, 120):
+        x, y = sc.p(r, a_in)
+        if sc.free(x, y, 30):
+            lookout = (x, y)
+            sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), *sc.p(r + 20, a_in + 0.3), gap=18)
+            for q in range(2):
+                sc.put_px(rng.choice(("CaveRocksMedium", "CaveRocksSmall")), *sc.p(r + 40, a_in + (q - 0.5) * 0.4))
+            break
+    if lookout is None: lookout = sc.p(110, a_in)
+    posts = [sc.p(90, ta + left * 0.5), sc.p(96, pa - left * 0.6)]
+    _hold_ground(land, centre, 6)
     return dict(fire=(fx, fy), seats=seats, lookout=lookout, chest=chest, goods=goods, leader=leader, posts=posts)
 
 

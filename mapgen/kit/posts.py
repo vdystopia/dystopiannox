@@ -57,7 +57,7 @@ def camp_posts(spec, camp, toward, sit=2, tents=2, watch=2, gap=GAP):
     homes = []
     for o in spec.d["objects"]:
         t = o.get("type") or ""
-        if ("Tent" in t or t.startswith("Cot")) and math.hypot(o["x"] - fx, o["y"] - fy) < 260:
+        if ("Tent" in t or t.startswith(("Cot", "UrchinBed", "UrchinHammock"))) and math.hypot(o["x"] - fx, o["y"] - fy) < 260:
             homes.append((0 if "Tent" in t else 1, math.hypot(o["x"] - fx, o["y"] - fy), o["x"], o["y"], "Tent" in t))
     by_tents = []
     for _, _, x, y, tent in sorted(homes):

@@ -16,7 +16,7 @@ Props spread from where they belong (scatter): density falls off with distance f
 and they keep their spacing, so no kind of prop sits bunched in one spot and nowhere else.
 """
 import collections, math
-from kit.layout import SQ, N4, N8, square_px, bfs_distance
+from kit.layout import SQ, N4, N8, square_px, px_square, bfs_distance
 
 UNDERGROWTH = {"Plant4": 40, "Plant5": 20, "PlantForest1": 14, "Plant1": 7, "PlantBarren1": 5, "Plant2Flowered": 5, "Mushroom3": 6}
 # Aspens (the yellow TreeForest13-17) read as a bright fringe when they stand right against the boundary wall: the first
@@ -127,6 +127,12 @@ class Planter:
                 lanes |= {(ci + a, cj + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
         busy = set(land.roads) | land.plaza | land.water | land.taken | set(keep_clear) | (lanes & land.squares) |             set(getattr(land, "taken_strict", ()))                    # never a tree (or a biome's pillar) in a building
         self.road_d = bfs_distance(list(set(land.roads) | land.plaza), land.squares, 12)
+        # every doorway and gate already standing, two squares round (Ambermere, 2026-10-05: a patch of flowers grew
+        # in the west gate's opening, which the checker counts as a blocked doorway)
+        for o in spec.d["objects"]:
+            if o.get("door") is None: continue
+            i0, j0 = px_square(o["x"], o["y"])
+            busy |= {(i0 + a, j0 + b) for a in range(-2, 3) for b in range(-2, 3)}
         self.busy_d = bfs_distance(list(busy), land.squares, 12)
         self.water_d = bfs_distance(list(land.water), land.squares, 6)
         self.trees, self.small = [], []           # (si, sj)

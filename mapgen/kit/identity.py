@@ -187,7 +187,9 @@ ROOMS = {
                    fill=[dict(fam="table", slot="group", group="longtable", max=1, min_area=300),
                          dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=300),
                          dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
-                         dict(fam="storage", slot="stock", coverage=0.65, kinds=("barrels",), pad=1.2, max=3),
+                         # kegs heaped by the walls, never a wall lined with them (per_wall)
+                         dict(fam="storage", slot="stock", coverage=0.65, kinds=("barrels",), pad=1.2, max=3,
+                              per_wall=0.4),
                          dict(fam="bench", slot="wall", max=4),
                          dict(fam="storage", slot="group", group="kegs", max=1, min_area=400),
                          dict(fam="table", slot="group", group="feast", max=1, min_area=400),
@@ -362,7 +364,7 @@ ROOMS = {
                    # the game's altars (Westwood stands them outside its rooms, so the room statistics hold none)
                    prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1},
                            "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "LightBench1": 1, "LightBench2": 1}},
-                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True),
+                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="bench", slot="pews", toward="altar", runner=True, columns=True, tombs=True),
@@ -556,13 +558,15 @@ ROOMS = {
                                 "tomb": {"LOTDTombstone1": 2, "LOTDTombstone3": 1, "LOTDTombstone4": 1},
                                 "bones": {"SkullImmobile": 3, "ArmBoneImmobile": 3, "LegBoneImmobile": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
-                        compose=[dict(fam="altar", slot="wall", at="center", clear=2.6),
+                        # the god's statue across the hall from the way in, looking down it; columns in pairs either
+                        # side of the aisle, never a block in the middle (2026-10-05 playtest rule, the keep's throne)
+                        compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, door=True),
+                                 dict(fam="column", slot="colonnade", gap=3.4, aisle=3.0),
                                  dict(fam="statue", slot="wall", at="corner", clear=0.8, n=4),
                                  dict(fam="statue", slot="groups", group="balances", n=1),
                                  dict(fam="bones", slot="scatter", per100=10, cluster=(1, 3)),
                                  dict(fam="wall_decor", slot="decor")],
                         fill=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, min_area=400, max=12),
-                              dict(fam="column", slot="racks", kind="lotd_columns", gap=2.8, aisle=3.2, min_area=360, max=8),
                               dict(fam="statue", slot="racks", kind="obelisks", gap=2.6, aisle=3.0, min_area=200, max=20),
                               dict(fam="statue", slot="wall", at="center", clear=0.8, max=6),
                               dict(fam="tomb", slot="wall", at="corner", clear=0.6, max=4, min_area=150),

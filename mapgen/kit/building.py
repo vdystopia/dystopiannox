@@ -375,15 +375,22 @@ def _point_degree(edges):
     return deg
 
 
-def _door_point(rng, run, deg):
-    """A lattice point inside a straight run (not an end, not a junction), preferring the middle."""
+def _door_points(run, deg):
+    """[(distance from the run's middle, lattice point)] of the points inside a straight run (not an end, not a
+    junction), nearest the middle first."""
     kind, line, ps, _ = run
-    if len(ps) < 2: return None
     cands = []
     for k in range(1, len(ps)):              # interior points between edge k-1 and edge k
         pos = ps[k]
         pt = (2 * line, 2 * pos) if kind == "u" else (2 * pos, 2 * line)
         if deg[pt] == 2: cands.append((abs(k - len(ps) / 2), pt))
+    return sorted(cands)
+
+
+def _door_point(rng, run, deg):
+    """A lattice point inside a straight run (not an end, not a junction), preferring the middle."""
+    if len(run[2]) < 2: return None
+    cands = _door_points(run, deg)
     if not cands: return None
     cands.sort()
     best = [c for c in cands if c[0] <= cands[0][0] + 1.0]
@@ -663,8 +670,15 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         int_type = "WoodenDoor"
     used_points = set()
 
-    def place_door(run, dtype, connects, centre=None):
+    def along(gap, line):                # a door's place along its wall line, in the furnisher's units
+        return gap[0] - gap[1] if line == "/" else gap[0] + gap[1] + 1
+
+    def place_door(run, dtype, connects, centre=None, avoid=()):
         pt = _door_point(rng, run, deg)
+        line_ = "/" if run[0] == "u" else "\\"
+        bad = lambda p: any(l_ == line_ and abs(along(_xy(U0, V0, p), line_) - a0) < ALTAR_AXIS for l_, a0 in avoid)
+        if pt is not None and bad(pt):       # off the altar's axis (the draw is made all the same)
+            pt = next((q for _, q in _door_points(run, deg) if not bad(q) and q not in used_points), None)
         if pt is not None and centre:    # the middle of the whole wall instead (the random draw is made all the same,
             c = _wall_middle(centre, deg)                # so the rest of the map comes out as before)
             if c and c not in used_points and not any(abs(c[0] - q[0]) + abs(c[1] - q[1]) <= 4 for q in used_points):
@@ -717,6 +731,13 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
             if strict: return None       # no room can face its throne down to its door: try another layout
             throne = None
 
+    # a chapel's altar stands across the nave from its main door, in line with it: no inner door takes that place
+    # (Ambermere, 2026-10-05: the crypt's door sat in the middle of the altar's wall, the altar beside it, the pews'
+    # aisle off the door's line and half the nave bare)
+    axes = {}
+    for d in b.entrances:
+        rr = next((r for r in room_ids if rooms[r].id == d.connects[0]), None)
+        if rr is not None and rooms[rr].kind in ALTAR_ROOMS and rr not in axes: axes[rr] = (d.line, along(d.gap, d.line))
     # interior doors: spanning tree from the entrance room, plus occasional extra loops
     int_runs = _runs(edges, lambda pr: pr[0] not in (None, COURT) and pr[1] not in (None, COURT))
     throne_wall = throne and [rn for rn in int_runs if rn[0] == "u" and rn[1] == throne[1] and frozenset(rn[3]) == throne[0]]
@@ -731,7 +752,8 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         for nb, rn in sorted(adj[r], key=lambda t: (-len(t[1][2]), rng.random())):
             if nb in seen: continue
             d = place_door(rn, int_type, (rooms[r].id, rooms[nb].id),
-                           centre=throne_wall if throne and frozenset((r, nb)) == throne[0] else None)
+                           centre=throne_wall if throne and frozenset((r, nb)) == throne[0] else None,
+                           avoid=[axes[x] for x in (r, nb) if x in axes])
             if d is None:
                 # try any other run between the same two rooms
                 for nb2, rn2 in adj[r]:
@@ -765,6 +787,10 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     b.shape, b.size_units = shp, (W, H)
     b.unreachable = [rooms[r].id for r in room_ids if not rooms[r].doors]
     return b
+
+
+ALTAR_ROOMS = ("chapel", "dark_chapel")
+ALTAR_AXIS = 6.0         # units an inner door keeps from the line of an altar room's main door
 
 
 def _in_se_wall(room, d):

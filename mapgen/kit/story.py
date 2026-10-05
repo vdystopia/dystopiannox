@@ -168,6 +168,34 @@ class StoryMap:
         o_ = self.land.door_outside(b.entrances[0], _squares_of(b.footprint))
         return o_ and square_px(o_[0] + 0.5, o_[1] - 0.5)
 
+    def doorside(self, role=None, building=None, toward=None):
+        """World px where a person waits by a building's main door: beside the doorstep, off the door's straight way
+        (Ambermere, 2026-10-05: Morwen stood 34 px out from her door, square in its way, and Pip's walk home ran
+        through her). The side nearer `toward` (world px) first; on open ground, off walls, 30 px from every object.
+        Falls back to the doorstep (outside_door)."""
+        b = building or self.by_role.get(role)
+        if not b: return None
+        out = self.outside_door(building=b)
+        if not out: return None
+        dx, dy = b.entrances[0].px
+        L = math.hypot(out[0] - dx, out[1] - dy) or 1.0
+        nx, ny = (out[0] - dx) / L, (out[1] - dy) / L            # straight out of the door
+        tx, ty = -ny, nx                                          # along the wall
+        m = self.m
+        objs = [(o["x"], o["y"]) for o in m.d["objects"]]
+        land_ok = lambda p: px_square(*p) in self.land.squares and px_square(*p) not in self.land.water
+        off_wall = lambda p: not any((int(p[0] // CELL) + a_, int(p[1] // CELL) + b_) in m.wallmap
+                                     for a_ in (-1, 0, 1) for b_ in (-1, 0, 1))
+        sides = (1, -1)
+        if toward:
+            sides = sorted(sides, key=lambda k: math.hypot(dx + tx * k * 50 - toward[0], dy + ty * k * 50 - toward[1]))
+        for d, l in ((30, 50), (40, 56), (24, 62), (50, 48), (36, 72), (56, 64)):
+            for k in sides:
+                p = (dx + nx * d + tx * k * l, dy + ny * d + ty * k * l)
+                if land_ok(p) and off_wall(p) and all(math.hypot(p[0] - a_, p[1] - b_) >= 30 for a_, b_ in objs):
+                    return p
+        return out
+
     def free_px(self, room, prefer=None, clear=30.0):
         """A floor point of the room off the walls with nothing within `clear` px, nearest `prefer` (default the
         room's middle)."""
