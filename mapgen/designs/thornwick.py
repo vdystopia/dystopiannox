@@ -539,7 +539,7 @@ m.scripts.update(q.files())
 
 # the exteriors' dressing: composed groups of the place's things on the empty ground (kit/dressing.py)
 from kit.dressing import Exterior
-dressed = Exterior(m, land, "green").dress()
+dressed = Exterior(m, land, "green", placed=placed).dress()
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)

@@ -37,7 +37,9 @@ def camp_posts(spec, camp, toward, sit=2, tents=2, watch=2, gap=GAP):
         return p
     # the leader at the head of the camp, by the chest of the take, facing the way in
     ch = camp.get("chest")
-    if ch and "x" in ch:
+    if camp.get("leader"):                                    # the camp's own spot: before the leader's awning
+        leader = take(tuple(camp["leader"]))
+    elif ch and "x" in ch:
         cx, cy = ch["x"], ch["y"]
         ux, uy = _unit(fx - cx, fy - cy)
         leader = take((cx + ux * 30, cy + uy * 30))

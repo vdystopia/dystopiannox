@@ -605,7 +605,7 @@ m.scripts.update(B.files(m.d["name"]))
 m.scripts.update(q.files())
 
 # ---- 9. the exteriors' dressing: the empty ground between the walls filled with the castle's and the hamlet's things
-dressed = Exterior(m, land, "green", martial=True).dress()
+dressed = Exterior(m, land, "green", martial=True, placed=placed).dress()
 
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)

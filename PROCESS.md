@@ -112,14 +112,38 @@ Then, in this order:
    - Westwood's towns (`py review/exteriors.py --westwood`; per 100 open tiles, roads left out, pebbles not counted)
      carry about 25 props, 6 of them made things, and only 16% of the open ground lies over 4 cells from a prop
      (6% over 6). Our maps had 33-55% (Greywatch, Rimehold); `py review/exteriors.py <map> --holes` draws it.
-   - The dresser puts a group at the emptiest free ground until none lies over 4 cells from a prop. Every group is a
-     scene with a reason, matched to the wall it stands against and to the biome: supplies, barrels, a woodpile,
-     hay or a cart against a house, rubble at the foot of masonry, a guard's brazier and stool or a rack of arms by a
-     town or curtain wall, deadfall and boulders by the forest, pillars and stalagmites in a cave, fire grates and
-     bones on lava, boulders and ice cracks in snow; a wagon, a chopping block or goods in the open near houses.
-   - Never two of a family (carts, stores, logs...) side by side, carts few to a map, nothing tall against a front
-     wall (the camera looks over it). Groups keep off roads, lanes, water, yards, story places, doors, gates, exits,
-     creatures and waypoint routes, and a group that would cut the walkable ground apart is taken back.
+   - **Scenes with a purpose, not piles** (2026-10-05 Greywatch playtest, scene review: "exterior objects are very
+     random and purposeless ... instead of 3 crates and 2 barrels, try a cart, 2 barrels, a crate, a weapon stand,
+     and a box"; a lone stone block by a wall's corner). Every outdoor group is a theme from the catalogue
+     (`kit/scenes.py CATALOGUE`), each with a purpose, where it belongs (against a house, fence, masonry, curtain or
+     the wild wall; in the open by a road, the square, a gate, water, the garrison's ground, town or wild; beside
+     which buildings and on which side of them; the biomes), its anchor, its must-have and may-have pieces at set
+     offsets, and its variance (one of its layouts, counts in ranges, types swapped, chance pieces, mirrored, turned
+     to face its road). Cart loading, a wagon on the verge, a broken wagon, a market awning, a household's stores,
+     a woodpile, a chopping yard, a hay store, a midden, a smith's yard, a well, a washing place, a drying line, a
+     bench by the wall, an unhitched cart, a timber stack, a sparring ring, archery butts, an archers' mark, a watch
+     fire, a guard post, an arms store, masons at work, a waystone, a shrine, a graveside, a hunter's rack, a cold
+     fire with logs, a felling; the wood's, the cave's, the lava's and the snow's own heaps.
+   - The buildings call for their scenes first (`ROLE_SCENES`: a sparring ring by the barracks, the smith's yard by
+     the smithy, a midden behind the inn, a cart loading at the store or mill; a guard post by each gate). Then the
+     emptiest ground takes a scene that belongs there, until none lies over 4.5 cells from a prop or nothing fits.
+   - A scene is laid whole or not at all: its must-have pieces fit, 70% of what it means to lay, at least 3 kinds of
+     thing and 4 pieces. Each theme has a cap to a map (the wood's heaps grow with the ground), a spacing from its
+     family (carts, arms, wood...) and from like things already there (a camp's cart, a training ground's
+     targets), a family cap (3 carts to a map), and scenes keep 6 squares and their footprints apart, so some open
+     ground stays open. Tall scenes keep off front walls; a building's own door scenes are not repeated by it.
+   - Groups keep off roads, lanes, water, yards, story places, doors (3 squares), gates, exits, creatures and the
+     legs of the routes already laid (`spec.routes`), and a group whose bodies would cut the walkable ground apart
+     is taken back. The dressing draws from its own generator; so do the camps (`camps.own_rng`), which replay the
+     first camps' draws on the design's generator so nothing after them shifts.
+   - **Camps are composed** (same review: "The bandit camp looks terrible ... Beds randomly strewn across an open
+     clearing"). `camps.bandit_camp` as Westwood lays its camps: tents in an arc behind a fire ringed with stones,
+     on the side away from the way in and toward the top of the screen (a pup tent faces the camera); each bedroll
+     before its tent, head to the tent, foot to the fire, two to a tent; with no tents, the bedrolls side by side in
+     a row; the leader's awning in the middle with the take before it; the store (cart, crates side by side,
+     barrels in a three, sacks) on one flank, the racks in a row on the other, the cooking pot by the fire, a
+     lookout post toward the way in. It returns the leader's spot and posts by the store and the racks, so the band
+     is not bunched round the fire. The wagon wreck: a wheel off, its load thrown out in a fan, heavy things near.
 
 ## Relations: every piece makes sense where it stands
 
@@ -311,7 +335,7 @@ The tools:
   items, so a saved game loaded with fresh scripts strands nothing (the script's own flags do not survive it).
 - Text goes in the map's string table (`<Map>.strings.json`), merged into the game's by `mapgen/strings.py` as
   `nox.csf.json`, which OpenNox reads in place of nox.csf. Keys are at most 31 characters. No audio yet.
-- `kit/camps.py` lays the story's places: bandit camp, wreck, wolf den, cache, ruined tower, signpost.
+- `kit/camps.py` lays the story's places: bandit camp, wreck, wolf den, cache, ruined tower, signpost; `kit/scenes.py` holds the outdoor scene catalogue.
 - Keep the story's places open before the forest is placed (reserve them in `land.taken`); the planter keeps forest
   paths free of trees itself, and `Land.open_links` keeps every passage open.
 - Creatures: never place a Zombie (OpenNox cannot read the map back); clone townsfolk from Westwood's maps in their
