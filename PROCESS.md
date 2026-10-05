@@ -443,9 +443,10 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   Ix's dark-timbered stucco (`stucco_dark_house`, Wiz01A) for a wizards' town.
 - A sealed building the story opens: `StoryMap.seal_entrance(building, prefix)` names its entrance door(s) and locks
   them to a mechanism; `A.unlock` opens them (the observatory, when the three binding-stones' keepers are dead).
-- A dark ward or a dead stone the story relights is a ring of plain stones (`ObeliskPrimitive`) round a crystal with a
-  named `ColorLight` disabled in `q.start` and enabled by the story; Westwood's `Obelisk` glows of itself and reads as
-  lit when the story says it is dark.
+- A dark ward or a dead stone the story relights is a ring of standing stones round a crystal with a named
+  `ColorLight` disabled in `q.start` and enabled by the story (Starwell's south ward-ring and the Starwell); the
+  binding-stones' purple lights go out as their keepers die. Westwood's stones are drawn crystalline either way, so
+  the light is what tells lit from dark: confirm it in the game.
 - A choice between a bribe and the law: the band are cloned people (they can talk, and one of them offers the purse)
   with a disabled fighter hidden at each one's spot; refusing turns them all (`A.turn`), taking the purse leaves them
   digging and the captain's reward unpaid.
