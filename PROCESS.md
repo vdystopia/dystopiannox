@@ -433,6 +433,25 @@ ants"; "npc trying to walk through the door but getting stuck on the frame").
   player from their own sides, fanned 50 degrees apart, archers keeping their ground (`spreadOn`); a pack lies up
   spread about its den, each on its own spot, rather than trailing its leader.
 
+**A culture's own pieces** (Starwell, 2026-10-05: a wizards' college town, the third map of the one-map loop).
+- A map with a culture of its own gets its own outdoor scenes without touching the others: a theme with `culture=`
+  (`kit/scenes.py`: the wizards' `alchemists_yard`, `stargazers_post`, `star_shards`, `shard_wall`) is laid only when
+  the design names that culture (`Exterior(..., culture="wizard")`); every other map draws exactly as before.
+- New building roles for it (`kit/identity.py`): `college` (the archmagister's hall of state, a throne room so the seat
+  faces its door down a runner; library, laboratory, study, chamber), `apothecary` (shop and brewing room), `observatory`
+  (a hall, workroom and chart library in blue stone). Houses take the culture's style by `BuildingIdentity(style=)`:
+  Ix's dark-timbered stucco (`stucco_dark_house`, Wiz01A) for a wizards' town.
+- A sealed building the story opens: `StoryMap.seal_entrance(building, prefix)` names its entrance door(s) and locks
+  them to a mechanism; `A.unlock` opens them (the observatory, when the three binding-stones' keepers are dead).
+- A dark ward or a dead stone the story relights is a ring of plain stones (`ObeliskPrimitive`) round a crystal with a
+  named `ColorLight` disabled in `q.start` and enabled by the story; Westwood's `Obelisk` glows of itself and reads as
+  lit when the story says it is dark.
+- A choice between a bribe and the law: the band are cloned people (they can talk, and one of them offers the purse)
+  with a disabled fighter hidden at each one's spot; refusing turns them all (`A.turn`), taking the purse leaves them
+  digging and the captain's reward unpaid.
+- Townsfolk names follow the donor's body: Westwood's Maiden clones (Wiz02A's Maiden1-9, TowerMaiden, Con06a's
+  Townswoman) are women (`story.is_woman`; Con02a's Joyce had been given a man's name).
+
 ## 7. Check, review, playtest
 
 - `validate/validate.py`: errors must be zero. Warnings compare with Westwood's maps of the same environment, including furniture outside a room's identity.
