@@ -251,6 +251,11 @@ pictures show every camp for the rest.
 - **A person waiting at a door** stands beside the doorstep, off the door's way: `StoryMap.doorside(role or building,
   toward=)`, never `outside_door` plus an offset [AMR-7]. Keep townsfolk's stops off a foe's ground with
   `StoryMap.keep_folk_away(centre, r)`.
+- **Routes keep clear of people standing still, by construction** [AMR-7]: every tour, beat and journey is laid on a
+  ground where each person who stands where they were placed (a giver, the gate's guard, a man on the road; not a
+  shopkeeper, not a walker) is an obstacle (`StoryMap.standing`, `Ground.add_people`: legs pass 22 px off, over the
+  checker's 18), so a route goes round them, and a journey ends at the first free spot it reaches round them. Only a
+  walk with no way round at all falls back to the plain ground (and `routes.through_person` says so).
 - **Facing** [SW-2]: every stop faces somewhere that makes sense (`kit/walkways.stop_facing`, applied by
   `Behaviours._facings`): a feature (well, statue, bench, stall, the gate a watchman keeps) is faced; a doorstep faces
   straight out, away from its building; a place on the square faces its middle; a step inside a shop faces into the
