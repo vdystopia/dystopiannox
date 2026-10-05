@@ -242,10 +242,11 @@ class StoryMap:
         return names
 
     # ---- people ------------------------------------------------------------------------------------------------------
-    def person(self, donor, scr, x, y, name, face=None, action=4):
+    def person(self, donor, scr, x, y, name, face=None, action=4, immortal=True):
         """A person cloned in their clothes from a stock map (maps/<donor>/<donor>.map, script name <donor>:<scr>), named
-        in this map; standing on guard (action 4) by default, facing `face`."""
-        xf = dict(DefaultAction=action, Aggressiveness=0.0)
+        in this map; standing on guard (action 4) by default, facing `face`. Immortal by default, as Westwood's quest
+        townsfolk are (Con02a's guards): a giver killed by a passing wolf would strand the quest."""
+        xf = dict(DefaultAction=action, Aggressiveness=0.0, Immortal=bool(immortal))
         if face: xf["DirectionId"] = facing(face[0] - x, face[1] - y)
         return self.m.clone(os.path.join(STOCK, donor, donor + ".map"), f"{donor}:{scr}", x, y, name=name, xfer=xf)
 
