@@ -1,0 +1,33 @@
+{
+  "packet": "f0eabd",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The opening 'Ooooh' and the plain urgency are Nox-like, but the bell boys, the clapper and the hand-off to a commander make a tidy set-piece chain. The offer also never says where the Ogre went."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The breathless exclamations and short thanks are close to Nox. Naming the ram and the slightly overbuilt clause 'came down out of the [Place], behind my fold' read like an imitation of the voice."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "It opens mid-conversation with 'Good!', has the petition mechanic, hands over a 'ruby key' item and has a bluntly redundant thanks ('You've killed the Urchin'). All of this is Westwood's plain functional style."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "It starts with 'Actually, business has been somewhat slow', names an exact gold reward with an ellipsis ('100 in gold!') and has the innkeeper bluster about 'filthy paws'. This is classic Nox."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The 'Heaps and heaps of gold?' joke is in the Nox spirit, but the comic setup (a pig named like a person, shut in a coal cellar) reads like a deliberate pastiche. The '?!' punctuation is also used a bit too knowingly."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It has the grumpy opener ('What took you so long'), the overwrought 'Nox's vital interests', the mechanical journal ('Charm or kill all the monsters... Rescue the 6 trapped mine workers') and a hand-off to the Captain. This is Westwood's chapter plumbing."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The unseen speaker who shows up ('Ho, there! The priest told me of strange sounds'), the hammy 'despicable scoundrel' and the exact '500 in gold' all match Westwood's long, slightly clumsy reward speeches."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "It is too literary for Nox: the self-introduction 'I am [Person] the shepherd', the melancholy collar discovery, the reflective 'Hmmm... Maybe' and the nostalgic bow on the wall. The journal also frames a mystery rather than a task."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The repeated 'mate', the mild swearing ('damn fine spell'), the comic detail (boots stolen while bathing) and the plain, long journal line are Westwood to the letter."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The archivist, students, porters and 'earned the friendship of the [Thing]' build an institution in the way new-map writing does. 'I must insist' and 'for your pains' are a register too genteel for Nox's townsfolk."}
+  ],
+  "tells": [
+    "Westwood's rewards are concrete and blunt: an exact sum ('100 in gold', '500 in gold'), a named key or scroll, or a plain hand-off to the next chapter character. The new texts give vaguer or more sentimental rewards (an old bow off the wall, 'friendship', an honorary right of entry).",
+    "Westwood's openers are often mid-conversation or cranky ('Good!', 'Actually,...', 'What took you so long'). The new texts open with a scene-setting cry and then explain the situation in full.",
+    "The new texts add emotional or reflective beats (a lost dog's collar, a musing 'Hmmm... Maybe') and gentle literary phrasing. Westwood's speakers stay functional and hammy, not wistful.",
+    "Westwood's journal lines are mechanical and sometimes clunky ('Charm or kill all the monsters', 'Rescue the 6 trapped mine workers'). The new journal lines are neater and more uniformly phrased, sometimes framed as a mystery ('Find out what became of...').",
+    "The new texts over-specify invented local colour (bell boys, a named ram, a pig with a person's name, porters and students). Westwood's quests keep the world detail thinner and lean on a single comic touch."
+  ]
+}

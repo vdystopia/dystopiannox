@@ -1,0 +1,33 @@
+{
+  "packet": "0ad951",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The plain exposition about necromancers being gone for fifty years, followed by a flat non-sequitur about the weather, is Nox's townsfolk rhythm exactly. The missing comma in the last line reads authentic too."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'May your lamp stay lit through this long night, friend of [Place]!' is a crafted benediction that Nox's plain townsfolk never use. The first line also stacks an instruction and a farewell into one speech, which is too much for one villager."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Short, slightly sour lines and a curt 'I'm very busy.' brush-off. The forest-creatures rumour is stated with Nox's bluntness."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The mad-bunkmate anecdote piles up vivid detail (walking the walls, howling, eating snow by the handful) that reads composed rather than tossed off. The capitalized 'Bats' and the brewhouse alarm feel built to order."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Three bare one-liners: a warning about taverns with a mild joke, a stock 'Beware of the rising undead', and a rumour about fire-walking boots. This is the flat, useful hint-dropping of Nox's villagers."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The offhand remark about a woman in charge and 'Only fools and warriors are staying' carry Nox's dry, slightly cheeky voice. The exclamations are short and unadorned."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "The caps-and-ellipsis 'WHAT? The [Place] is... COLD?' and the invented epithet 'hammer-man' with a scripted 'Hah, hah, hah...!' feel like pastiche. The ore order also reads like a quest brief put into a villager's mouth."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The 'Out of the way!' and stepped-on-foot gags are Nox-like. But 'Keep your chin up, stranger, [Person]'s dead will crumble under our picks!' is a rousing, comma-spliced flourish, and 'stranger' is used as a stock address."},
+    {"label": "I", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "The plain directions and 'I've got cows to milk, sorry.' are very Nox. The post-quest bats line with 'stranger' gives some doubt, but its gossip shape ('I hear [Person] is telling everybody!') fits Westwood's after-quest chatter."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The directions are plain enough, but 'Breakdowns in the city' and a 'Chief Engineer' sound off-register for Nox. The longer explanatory sentences read like world-building more than villager talk."}
+  ],
+  "tells": [
+    "Generated lines reach for crafted flourishes: benedictions, rousing battle-cheer metaphors, epithets like 'hammer-man'. Westwood's townsfolk speak flatly and often trail into a non-sequitur or a curt brush-off.",
+    "New texts lean on a stock address word ('stranger', 'friend of [Place]') to stand in for the class; Westwood's lines mostly do without any address.",
+    "Generated villagers pack a quest instruction plus flavour into one line; Westwood's townsfolk lines usually carry one idea each: a rumour, a warning, a complaint.",
+    "Composed anecdotes with stacked vivid details, or typographic gimmicks (CAPS, ellipses, scripted laughter), read as pastiche. Westwood's humour is drier and shorter.",
+    "Westwood's punctuation is a little careless (a missing comma before 'don't you think'); generated text is either tidy or uses deliberate comma splices for effect."
+  ]
+}

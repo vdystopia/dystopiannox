@@ -1,0 +1,33 @@
+{
+  "packet": "36fcc1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lively and plain, but the pedlar-who-was-an-Urchin twist is an over-built premise with a tidy punchline, and the journal's '... before it's sold again' adds a quip Westwood's journals rarely have."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The goat-husband gag is Nox-ish in spirit, but the joke is set up and paid off too neatly ('chewed up half the laundry'), and the amulet-stolen-by-Urchins-to-their-caves frame repeats a template seen across the packet."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Abrupt, slightly odd premise (a pet frog in a burning house), loose punctuation ('?!'), and the player-voiced joke 'Loads and loads of money?' is exactly Westwood's off-hand humour."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The startled 'Gahhhhhh!', the clumsy ellipsis 'Oh....', a reminder that gives the location only after the fact, and a reward tied to a class skill (a scroll on bats for a conjurer) all read as the original."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff, functional exposition with oddities ('located East of here', lower-case 'urchins' then capitalised) and a thank-you that turns into routing the player to the Captain: a campaign-chapter quest, not a self-contained vignette."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Earnest plot-quest voice ('for the darkest purposes, indeed!', 'foul demoness'), bare journal 'Retrieve the [Thing].', and a reward that winks at what comes next; weak but authentic."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Clean and plain, but the motivating detail (garrison waiting on winter coats, can't pay till the coats are sold) is a writer's careful causal chain; every beat is neatly tied, with no rough edge."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Starts mid-conversation ('Good!'), hands over a key in the offer, and the reward is a plot gate (the petition to the next area); blunt 'Go kill the urchin' is how Westwood wrote."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The cheating-at-the-fishing-contest wink and the secrecy callback in the thanks are a crafted comic arc; the shape (Urchins took my amulet, caves to the north, 'token of my appreciation') is the same template as A, B and J."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A teenage-voice comedy setup ('scrubbing pig pens till I'm ninety') with a paid-off secrecy line; the long narrative journal entry ending in '...' is unlike Westwood's terse imperative journals."}
+  ],
+  "tells": [
+    "The new texts build a complete comic premise with a setup and a callback in the thanks (secrecy, cheating, a cursed husband); Westwood's humour is a single off-hand line or an odd non-sequitur, not a planned arc.",
+    "The new texts repeat one template: thing stolen by Urchins/rogues, hideout in a named direction, 'Will you get it back for me, kind sir?', 'Here, take this ... as a token of my appreciation'. Westwood's quests vary more in shape and often tie into the campaign (a key handed over in the offer, a petition, routing to the Captain, a class-specific scroll).",
+    "Westwood's lines carry small roughnesses: '?!' and '....', inconsistent capitalisation, stiff phrases ('located East of here', 'May all that is great bless you'), information arriving out of order. The new texts are uniformly tidy.",
+    "Journal entries: Westwood's are terse imperatives ('Retrieve the [Thing].'); new ones sometimes add a quip, an exclamation or a narrative sentence with an ellipsis.",
+    "New texts motivate the request with a carefully causal everyday detail (the garrison's winter coats, Mother home tomorrow, the contest in a few days); Westwood motivates by stakes or plot."
+  ]
+}

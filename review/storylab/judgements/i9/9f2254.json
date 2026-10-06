@@ -1,0 +1,34 @@
+{
+  "packet": "9f2254",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The soup-pot-and-crows gag is a crafted comic image, and an opening line spent on another man's madness is a writer's setup, not a guard's bark. The closing summary of the Ogres and their lord reads like a recap written to tie the quest off."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The stray comma in 'gone, yet?' and the 'Phewwwww!' are both Westwood-like quirks. Still, a farmer's lament filling a guard slot, set beside two other Ogre texts, looks like a pastiche that collected the quirks on purpose."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat alarm exposition that names the villain and her power outright, the 'look out' spacing slip, and 'come to haunt Nox again' are all the campaign's chapter-start barks."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "'Will any of us live to see the spring?' and 'honor the men who fell up in the pass today' are a touch too elegiac and literary for a Nox guard. 'Zombies! Ugh!' is closer to the real thing."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The capitalised 'WANT' and the 'cold and rattly cage all set to drop you' are a writer's flourishes. Its offer/refusal/permission shape mirrors J, which suggests both follow one template."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A cackling jailer, the 'a week, or a two' typo, and the deadpan release ('on a drinking binge again. Sorry for the trouble. Have a nice day.') are Westwood's anachronistic humour exactly."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Bare, functional and a little clumsy ('very grateful for your deeds', 'Welcome back!' as the second line), the way Westwood's minor NPCs are. Nothing in it is decorated."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The list of petty city rules, 'don't even think about wizardry', the 'no loitering' afterthought, and the trailing 'huh...' are pure Nox bureaucrat comedy."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A stiff, over-formal welcome ('open warm arms of aid and hospitality') followed by the curt 'The road to [Place] is closed.' is Westwood's uneven, genuine register."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Fancy gear, stranger', 'Mind the nets!', and a last speech that recaps the deed, cites proof, opens the gate and offers a boat all at once is a writer explaining the quest rather than a guard barking."}
+  ],
+  "tells": [
+    "The new texts reach for vivid, invented comic images (a soup pot on the head, a 'cold and rattly cage') where Westwood's humour comes from deadpan modern banality (a drinking binge, 'Have a nice day', 'no loitering').",
+    "The new texts address the player as 'stranger' or 'lad' and add local colour (nets, docks, cider). Westwood's guards say 'Adventurer' or nothing, and rarely set a scene.",
+    "The new 'later' lines tend to recap the quest and its proof in one long speech. Westwood's later lines are short and often unconnected to the earlier ones.",
+    "Elegiac or literary sentiment ('live to see the spring', 'honor the men who fell') is off-register. Westwood's soldiers state the threat flatly.",
+    "Several new texts share one tight three-beat template (refuse, warn, grant passage with a question). Westwood's barks are lopsided and uneven in length.",
+    "Deliberate imitations of Westwood's quirks (a stray comma, 'Phewwwww', capitals for emphasis) appear together in one text, while in Westwood they turn up only now and then."
+  ]
+}

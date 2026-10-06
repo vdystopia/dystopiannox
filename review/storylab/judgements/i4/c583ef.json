@@ -1,0 +1,32 @@
+{
+  "packet": "c583ef",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Loose, chatty, slightly sloppy ('as token of my gratitude', 'ya'), a smuggler's aside about responsibilities; uneven lengths between the two asks read like real map text."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Two neatly parallel asks, the second the stock 'Psst! Hey, you!' rogue with a 'Never been used! Well... hardly.' gag and 'Heh, heh, heh!' payoff; too tidy and symmetrical."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same template as B: solemn elder plus 'Psst' smuggler, 'quiet-like', 'Heh, heh, heh...'; the '--' scene description and polished setting exposition feel composed rather than Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The stocks and the pig line are charming, but again the 'Psst' prisoner, 'A deal's a deal', 'Heh, heh, heh... Now you never saw me!' formula repeated across the packet."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless, run-on, comma-missing ('[Place], the village north of here and kidnapped'), generic thanks lines; exactly Westwood's Ogre-raid register."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Wordy-yet-plain innkeeper voice, 'I surmise', exact gold sums (250, 100), 'savage scum'; the uneven structure and genial digressions are Westwood's."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tithe-chest ask is neat, but the 'Psst! Goin' up the hill, are ye?' informant with a cheese joke and 'Heh, heh...' is the repeated rogue template; the outcome cites a cellar door never set up."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Escort quest with accept/refuse branches, the hungry-Ogre stomach joke and 'the menfolk cannot live without us': classic Nox broad humour and plain mechanics talk."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Parallel garrison ask and 'Psst! Over here by the bars!' prisoner, pie gag, 'a deal's a deal', 'Heh, heh, heh'; 'Soldiers without pay are surly soldiers' is a writerly aphorism."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse functional opener, sponsorship/petition mechanics, a ruby key handed over in-line, a 'foul little urchin' aggravating bats: the odd specific quest logic of Westwood's campaign."}
+  ],
+  "tells": [
+    "The new texts reuse one template: a solemn civic ask plus a 'Psst! Hey, you!' rogue offering a sword or shield, ending 'Heh, heh, heh' and 'a deal's a deal'. Westwood's pairs are not built in parallel.",
+    "New texts are symmetrical and tidy: matched lengths, a gag in every second ask, clean punctuation. Westwood's are uneven, sometimes very short, with small grammar slips and run-ons.",
+    "Westwood's quests carry game mechanics plainly (accept/refuse branches, keys, petitions, exact gold sums like 250 or 100), while the new ones lean on atmosphere ('our boats come home blind in the fog') and aphorisms.",
+    "Westwood's thanks lines are often generic ('Please accept this as a token of my appreciation!'); the new outcomes always pay off the setup's joke."
+  ]
+}

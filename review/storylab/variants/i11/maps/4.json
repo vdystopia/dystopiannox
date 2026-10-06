@@ -1,0 +1,263 @@
+{
+ "iter": "i11",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Korlen",
+  "setting": "a castle town with a garrison",
+  "trouble": "Gruttock the Ogre warlord has taken Skarn Tower and his Ogres raid the lands around the castle of Korlen. The player was sent on by Lord Ambrel.",
+  "names": {
+   "Korlen": "place",
+   "Gruttock": "person",
+   "Ogres": "group",
+   "Urchins": "group",
+   "Skarn Tower": "place",
+   "Dunwood": "place",
+   "Keep": "place",
+   "Gorrow": "place",
+   "Broken Pike": "place",
+   "Lord Ambrel": "person",
+   "Dorvik": "person",
+   "Haskin": "person",
+   "Fisk": "person",
+   "Hobb": "person",
+   "Agna": "person",
+   "Orvel": "person",
+   "Gorlick": "person",
+   "Bellamar": "person",
+   "Gisla": "person",
+   "Fennick": "person",
+   "Marga": "person",
+   "Orrin": "person",
+   "Tobb": "person",
+   "Ulda": "person",
+   "Chain Tunic": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Corporal Fisk at the castle gate, later sent to fetch the player to Commander Dorvik after Skarn Tower is taken.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Fisk",
+     "text": "Hey, you could do with a proper helmet."
+    },
+    "again": {
+     "speaker": "Fisk",
+     "text": "Utterly hopeless! Off with you, worm!"
+    },
+    "later": {
+     "speaker": "Fisk",
+     "text": "Stand where you are, stranger! Commander Dorvik hears you threw the Ogres out of Skarn Tower and half the garrison swears to it! Come along. He's got a hot supper and a soft bed all ready for you! Will you come quietly, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Hobb the bell-ringer: an Ogre beat his two bell boys and ran off with the clapper of the great bell.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Hobb",
+     "text": "Ooooh, how could this happen? That Ogre beat both of my bell boys black and blue. There's no time to fetch the guard. Hurry, you must catch him before the clapper of the great bell is gone for good."
+    },
+    "reminder": {
+     "speaker": "Hobb",
+     "text": "Please, I'm begging you. Run down that thieving brute and bring back my clapper."
+    },
+    "completion": {
+     "speaker": "Hobb",
+     "text": "The clapper is saved! Commander Dorvik will need it to ring the alarm on the walls. Here, take my Bow and bring the clapper to him."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the bell's clapper stolen by the Ogre thief."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Agna: the Urchins of the old quarry ran off with her cane.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Agna",
+     "text": "Aiieee! Stay away! Don't hurt me!\n\nEh? Only a young fellow?! I can't get up to see you properly. But you're surely no Urchin, not like those nasty little things that ran off with my cane! I can barely take a step without it.\n\nWill you fetch it back for me? You'd save an old woman and I'd never forget it."
+    },
+    "refusal": {
+     "speaker": "Agna",
+     "text": "Oh.... Then I'll just sit here and wait, I suppose."
+    },
+    "reminder": {
+     "speaker": "Agna",
+     "text": "Have you found my cane?! Oh.... Well, the Urchins who took it hide in the old quarry east of town."
+    },
+    "completion": {
+     "speaker": "Agna",
+     "text": "My cane! You found it! May all that is great bless you! And please, take this potion. It draws the poison out of any bite. It would be a godsend to anyone who walks the wilds."
+    },
+    "after": {
+     "speaker": "Agna",
+     "text": "Bless you again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve old Agna's cane from the Urchins in the quarry."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve old Agna's cane from the Urchins in the quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["CurePoisonPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Gisla, an old townswoman; Fennick, a townsman; Marga, a flirt.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Gisla",
+     "text": "I sense a dark storm gathering over Korlen! Can anyone save us now?"
+    },
+    "rumour2": {
+     "speaker": "Fennick",
+     "text": "Gruttock's Ogres are burning the farms outside the walls! Hurry, they need you out there!"
+    },
+    "rumour3": {
+     "speaker": "Marga",
+     "text": "My, my! You're a sight better looking than the lads in the garrison! Come and see me once you've finished with the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Orrin of the Broken Pike inn, Tobb the armourer, Ulda of the magic shop.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Orrin",
+     "text": "You look like you could use a bath, friend."
+    },
+    "arms": {
+     "speaker": "Tobb",
+     "text": "Pssst! Hey! You there! Want a helmet? Cheapest in Korlen and they're off real Ogre heads!"
+    },
+    "magic": {
+     "speaker": "Ulda",
+     "text": "What'll it be fer you?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Paymaster Orvel wants the garrison's pay chest back from Gruttock's Ogres; Sergeant Gorlick wants to sell his stripes and his post at the gate.",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Orvel",
+     "text": "Truthfully, the men's spirits have sunk pretty low, with Gruttock's Ogres on the prowl. They carried off the garrison's pay chest and I want it back."
+    },
+    "offer_b": {
+     "speaker": "Gorlick",
+     "text": "You ready to take over my stripes and my post at the gate? Just 30,000 gold pieces for the lot!"
+    },
+    "outcome_a": {
+     "speaker": "Orvel",
+     "text": "Wonderful! You've earned this Chain Tunic, lad! I hope you live through this whole war. Now if you'll excuse me, I've a garrison of hungry soldiers to pay. Good luck and keep clear of Gruttock's Ogres if you want to keep your head!"
+    },
+    "outcome_b": {
+     "speaker": "Gorlick",
+     "text": "Eh, no harm done, lad. I'm certain some young recruit will snap up my stripes and my post. If you think it over though, I'm always at the Broken Pike!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from Gruttock's Ogres."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Sergeant Gorlick's stripes and post at the gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Commander Dorvik: the Ogres dragged off Bellamar, the castle's wizard, to the Ogre caves of Gorrow.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Dorvik",
+     "text": "Blast! What kept you, lad!? Gruttock's Ogres broke through the east wall last night and the castle would be theirs now if Bellamar's mighty magic had not been hurled at them in the final hour!\n\nBut in all the confusion, the brutes dragged Bellamar off, leaving the mending of the wall the least of our worries! All of Korlen will fall if Bellamar is lost!\n\nYou must follow where they carried him, east to the Ogre caves of Gorrow! Bring Bellamar home or Korlen is done for!"
+    },
+    "reminder": {
+     "speaker": "Dorvik",
+     "text": "I just know Bellamar's in terrible trouble! Hurry!"
+    },
+    "found": {
+     "speaker": "Bellamar",
+     "text": "Thank the stars! Quickly, find some way to break me loose! It was Gruttock himself who led the attack and he means to make Korlen his own stronghold. Sadly, my strength was spent when they seized me and I haven't enough left to get out of here by myself. Their shaman laid a binding spell on me, so no magic of mine can set me free."
+    },
+    "following": {
+     "speaker": "Bellamar",
+     "text": "Quickly now! The Ogres won't sleep forever!"
+    },
+    "completion": {
+     "speaker": "Dorvik",
+     "text": "In better more peaceful days, all Korlen would turn out to feast Bellamar's return! Good work! But now we must finish Gruttock once and for all.\n\nTake these as small tokens of our thanks for your brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the caves of Gorrow and free Bellamar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fennick points the player to Commander Dorvik in the Keep, who sends him out through the cellar passage to find his scout Haskin in the Dunwood, near Gruttock's Skarn Tower.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "You can find Commander Dorvik in the Keep. He holds the key to the old cellar passage."
+    },
+    "opening": {
+     "speaker": "Dorvik",
+     "text": "I can spare you no soldiers, lad. Too many Ogre eyes the nearer one goes to Skarn Tower.\n\nTake the old cellar passage which comes out in the Dunwood.\n\nFind my scout Haskin. He'll show you the way if he can.\n\nTake this shield. Ogre clubs will glance off it should they swing at you. Watch yourself out there."
+    },
+    "reminder": {
+     "speaker": "Dorvik",
+     "text": "Go! Why are you still standing here? Off with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Haskin's camp in the Dunwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield"]
+   }
+  }
+ }
+}

@@ -1,0 +1,299 @@
+{
+ "iter": "i11",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varrow",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Krull's bandits hold the old watchtower on Crag Hill and the north road is shut, while wolves come out of the Grimwood and Urchins raid from their caves.",
+  "names": {
+   "Varrow": "place",
+   "Gilded Boar": "place",
+   "Grimwood": "place",
+   "Crag Hill": "place",
+   "Potions Aplenty": "place",
+   "Krull": "person",
+   "Druvan": "person",
+   "Grumwald": "person",
+   "Brannoc": "person",
+   "Hobbin": "person",
+   "Olla": "person",
+   "Varnus": "person",
+   "Fennick": "person",
+   "Pella": "person",
+   "Jory": "person",
+   "Dorrit": "person",
+   "Garrock": "person",
+   "Mirabel": "person",
+   "Hosk": "person",
+   "Ebba": "person",
+   "Quilp": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brannoc keeps the north gate, shut by Mayor Grumwald while Krull's bandits rob the north road; later the wolves come into town.",
+   "names": {
+    "Brannoc": "person",
+    "Krull": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannoc",
+     "text": "Greetings! My name is Brannoc. I guard this gate so nobody wanders up the north road and gets robbed blind."
+    },
+    "again": {
+     "speaker": "Brannoc",
+     "text": "Krull's thugs are prowling all along the north road! You'd best stay inside!"
+    },
+    "later": {
+     "speaker": "Brannoc",
+     "text": "Aiieee! Wolves! Wolves! Everybody inside!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Hobbin the shepherd has lost sheep and his dog to the wolves of the Grimwood and wants their den cleared.",
+   "names": {
+    "Hobbin": "person",
+    "Grimwood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hobbin",
+     "text": "Snarling, filthy brutes! The wolves only just came out of the Grimwood and already they've eaten a good part of my flock!\n\nI am Hobbin the shepherd. I am searching for my old dog. I'm afraid the wolves have carried him off to their den in the wood.\n\nShould you find my dog and chase off those wolves, I would pay you handsomely. Come along, I'll lead you to the trail into that miserable den beyond my fields."
+    },
+    "reminder": {
+     "speaker": "Hobbin",
+     "text": "Did you find my dog yet? Oh no, I just know he's been eaten."
+    },
+    "completion": {
+     "speaker": "Hobbin",
+     "text": "My dog's collar! Something dreadful must have happened to him.\n\nYou have shown those wolves who's master in these hills. Maybe you would make a fine shepherd yourself. Hmmm... Maybe.\n\nCome along to my hut. When you are ready, just take my old bow and arrows down from the wall and they are yours. I have a whole flock to build up again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what became of Hobbin's dog."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow", "Quiver"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Widow Olla's son was bitten by an Urchin when they raided the mill, and they ran off with her healing amulet.",
+   "names": {
+    "Olla": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Olla",
+     "text": "Hello, brave Adventurer! Oh, please help me, a dreadful fever has struck my son!\n\nNot long ago, a pack of Urchins broke into the mill. One of the little beasts bit my boy, and now he burns with fever! I could heal him with my healing amulet, but they ran off with it to their caves east of the mill. I dare not leave his bedside, or he may get worse!\n\nWill you get my amulet back from those thieves? I will pay a worthy reward for its safe return."
+    },
+    "refusal": {
+     "speaker": "Olla",
+     "text": "Very well, let those Urchins keep my amulet!"
+    },
+    "reminder": {
+     "speaker": "Olla",
+     "text": "Why are you dawdling? My boy needs that amulet!"
+    },
+    "completion": {
+     "speaker": "Olla",
+     "text": "Oh, thank you, thank you! I can't ever repay you enough for this kindness... But please, accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Olla",
+     "text": "Bless you again, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Widow Olla's healing amulet from the Urchin caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Widow Olla's healing amulet from the Urchin caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Hosk, Ebba and Quilp, townsfolk of Varrow, on the Urchins, Krull and the wolves.",
+   "names": {
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Krull": "person",
+    "Crag Hill": "place",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hosk",
+     "text": "Somebody must deal with those Urchins! Smoke out their caves and bring back what they stole."
+    },
+    "rumour2": {
+     "speaker": "Ebba",
+     "text": "There is a bandit chief -- Krull -- hiding up on Crag Hill. He is said to keep a whole chest of stolen gold under his bed!"
+    },
+    "rumour3": {
+     "speaker": "Quilp",
+     "text": "Don't give up hope yet, friend, the wolves will run from our torches!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Dorrit of the Gilded Boar inn, Garrock the smith, Mirabel of Potions Aplenty.",
+   "names": {
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Gilded Boar": "place",
+    "Potions Aplenty": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Dorrit",
+     "text": "Hello traveler. You know there's not one bed left, what with the north road shut."
+    },
+    "arms": {
+     "speaker": "Garrock",
+     "text": "Better be quick about it the forge is going cold."
+    },
+    "magic": {
+     "speaker": "Mirabel",
+     "text": "Welcome to Potions Aplenty. I believe I still have a couple of spell books in the back."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master-at-Arms Varnus sells a place in the town watch with its sword and mail; Fennick, once one of Krull's men, sells boots in the Gilded Boar.",
+   "names": {
+    "Varnus": "person",
+    "Druvan": "person",
+    "Fennick": "person",
+    "Krull": "person",
+    "Varrow": "place",
+    "Gilded Boar": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Varnus",
+     "text": "Greetings. I am Master-at-Arms Varnus. And it was Druvan who sent you, eh? Well, the town watch can always use another blade, but the sword and mail will cost you 50 in gold.\n\nDo you agree to my terms?"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Hail, Wanderer! Could I interest you in some fine boots to wear on your travels? These boots are the same as Krull's scouts wear and worth every bit of the 150 gold I'm asking.\n\nYa want 'em?"
+    },
+    "outcome_a": {
+     "speaker": "Varnus",
+     "text": "Very well! This sword is from the watch's own armory. The tunic is good iron chain, which will turn most bandit arrows."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "There you go, I'm sure those boots will carry you far.\n\nCome find me again if you ever need another pair."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Master-at-Arms Varnus to join the watch of Varrow."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a pair of boots from Fennick at the Gilded Boar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "ChainTunic", "LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Pella's brother Jory was dragged off with the carters when Krull's bandits robbed the wool carts by the old quarry.",
+   "names": {
+    "Pella": "person",
+    "Jory": "person",
+    "Krull": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Pella",
+     "text": "Sir! Help us please! A gang of Krull's bandits just robbed the wool carts on the west road, the one past the old quarry and dragged off almost every carter! One of them is my big brother, Jory!\n\nPlease bring him home and you'll have a reward!"
+    },
+    "reminder": {
+     "speaker": "Pella",
+     "text": "Oh, why do you wait? Jory is in terrible trouble!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Who's out there? Please, get me away from these bandits!"
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "I'll follow you. Just get me home!"
+    },
+    "completion": {
+     "speaker": "Pella",
+     "text": "Thank you, kind sir! Please accept these as tokens of my gratitude!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Pella's brother from the bandit camp in the quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Ebba points the newcomer to Mayor Grumwald, who sends him up Crag Hill after Krull, whose bandits hold the old watchtower and shut the north road.",
+   "names": {
+    "Ebba": "person",
+    "Grumwald": "person",
+    "Krull": "person",
+    "Garrock": "person",
+    "Crag Hill": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ebba",
+     "text": "Go stranger! Go! Mayor Grumwald needs you!"
+    },
+    "opening": {
+     "speaker": "Grumwald",
+     "text": "Dark times have come to the crossroads. I need you to go north to Crag Hill. Up there you must find the bandit chief, Krull.\n\nHe and his cutthroats have seized the old watchtower and shut the north road to all honest folk.\n\nTake these potions -- and some coin. See Garrock the smith for anything else you need. Then be quick about it.\n\nThe road past the north gate climbs straight to the watchtower."
+    },
+    "reminder": {
+     "speaker": "Grumwald",
+     "text": "There's nothing more I can tell you, stranger. Now go and put an end to Krull!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Pass through the north gate and climb to the old watchtower."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["RedPotion"]
+   }
+  }
+ }
+}

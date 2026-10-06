@@ -1,0 +1,658 @@
+{
+ "scenario": "two_givers",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Mayor Halvard wants the tithe chest back from Crow Hill; Wat, a turncoat of Corwin's, wants his friend Dobbs sprung from the watchtower cellar.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Who's there?! Oh.... It's you. Thank goodness. I thought Corwin's men had come back. Those thieves took the town's tithe chest up to Crow Hill. Bring it back and you'll have the town's thanks, and more. Will you do it?"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Here's to Red Corwin, may he choke on his supper! Ha! Now, you look like someone who can open a lock. My pal Dobbs is locked up in the cellar of the old watchtower. Get him out and I'll see you right. Just don't tell the Mayor, eh?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Well done, stranger! Here, take this steel shield.\n\nAnd go see Brother Anselm at the Chapel of the Ford. He has been asking for help."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Dobbs is out and drinking already! You're all right, stranger. Here, take this sword. It's a good one, hardly a scratch on it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from Red Corwin's bandits for Mayor Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Dobbs from the cellar of the old watchtower for Wat."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Guildmistress Ottilie wants the ore lift's crank back from the Deep Halls; Varn wants her signature on his claim to the Old Shaft.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmistress Ottilie",
+     "text": "Greetings, brave Adventurer! Oh, thank goodness you've come, because ever since Vorga's Golems came up out of the Deep Halls the great ore lift has stood still and the crank was carried off below, and nobody in this whole town will go down after it, not the miners, not the guards, not even Warlord Gorran's own men, and without the lift there is no ore and without ore Thrumm is finished, finished I tell you! So here is my bargain. Take this key to the lower lift gate, bring me back the crank, and I will teach you the Light spell. Do we have a deal?"
+    },
+    "offer_b": {
+     "speaker": "Varn",
+     "text": "You there. The Guildmistress likes you, doesn't she? She won't sign my claim to the Old Shaft. Put in a good word, get her name on this paper, and these boots are yours. What do you say?"
+    },
+    "outcome_a": {
+     "speaker": "Guildmistress Ottilie",
+     "text": "My crank! The lift will run again! Thank you, thank you! Here is the Light spell, as I promised."
+    },
+    "outcome_b": {
+     "speaker": "Varn",
+     "text": "She signed it! The Old Shaft is mine at last! Here, take the boots."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the lift crank back to Guildmistress Ottilie."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Guildmistress Ottilie to sign Varn's claim to the Old Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Warden Brakk orders the player to shut the floodgate in the Pump House and gives the key at once; Gribble wants Mayor Dremmel's name on his petition asking the Witch to leave.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Brakk",
+     "text": "Attention! You there! By order of the Hamlet of Tharn, and by the authority given to me as Warden of the Floodgates, I call upon you to serve this hamlet in its darkest hour!\n\nThe Zombies of the Witch Vuldra have come up through the lower walkways and broken into the Pump House and opened the great floodgate and now the water is rising under our stilts by the hour and if it keeps on rising every hut in Tharn will be standing in the bog up to its windows, the Mayor's Long House too, and all of us will be washed away into the Blackwater!\n\nTake this key. It opens the Pump House, south of here. Destroy whatever you find inside, turn the wheel until the floodgate is shut, and report back to me at once."
+    },
+    "offer_b": {
+     "speaker": "Gribble",
+     "text": "Hey! Hey, you! You can write your name, can't ya? Good!\n\nThis here is a petition. It asks the Witch Vuldra, real nice, to take her Zombies and get out of our swamp. Enough names and she has to go. That's the law!\n\nI got everybody but Mayor Dremmel. He won't even open his door for me. Get him to sign it and I'll make it worth your while. What do you say?"
+    },
+    "outcome_a": {
+     "speaker": "Warden Brakk",
+     "text": "The water is going down! Well done! Tharn will not forget this.\n\nI will see to it that every gate in the hamlet is open to you. Now go to Mayor Dremmel. He must hear of this at once."
+    },
+    "outcome_b": {
+     "speaker": "Gribble",
+     "text": "The Mayor's name! Right there! Ha-ha! Now she has to go! Here, take these boots, and thank you, thank you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Shut the floodgate in the Pump House for Warden Brakk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Mayor Dremmel to sign Gribble's petition."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Lady Orwenna orders the player to find the lost Horn of Durnath; Dobbs, a drunk soldier at the Black Boar, bets the player won't come back from the bell tower with it.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Orwenna",
+     "text": "Aaah! Oh! Oh, it's only you. Thank goodness, I thought one of those Imps had gotten in again! Now you listen to me, because nobody in this castle ever listens to me, not my husband and not the guards and certainly not that drunken innkeeper, the Horn of Durnath is gone, the great silver horn that calls the garrison to the walls, and if Ostrigan comes in the night and nobody blows it then nobody wakes up and we will all be murdered in our beds, every one of us, the soldiers and the cooks and the little children too, and all because some fool left it lying around after the feast instead of putting it back where it belongs! Find the Horn of Durnath and bring it to me at once!"
+    },
+    "offer_b": {
+     "speaker": "Dobbs",
+     "text": "Heh, heh. Looking for her Ladyship's horn, are you? It's up in the old bell tower. The Ghosts took it up there, everybody knows that. I'll bet you 50 gold you don't come back down alive. Go on, shake on it!"
+    },
+    "outcome_a": {
+     "speaker": "Orwenna",
+     "text": "The Horn! Oh, you found it! Here, take my husband's pass. The guards at the north gate will let you through now."
+    },
+    "outcome_b": {
+     "speaker": "Dobbs",
+     "text": "Well, look at that. You came back. Alright, alright, I lost. Here's your 50 gold."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Horn of Durnath for Lady Orwenna."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the Horn down from the bell tower to win Dobbs' bet."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Priest Umbrin fled the shrine and orders the player to fetch his staff; Warden Gubb posts a dead-or-alive bounty on Snell the eel thief.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Priest Umbrin",
+     "text": "...and I ran! Right out the back door and all the way down the hill! The dead have taken the shrine!\n\nI left my staff on the altar. Go to the shrine north of here and bring it back to me. And watch yourself in there."
+    },
+    "offer_b": {
+     "speaker": "Warden Gubb",
+     "text": "Wanted, dead or alive! Snell the eel thief! That's him on the poster. Well, it's supposed to be him. It looks more like a fish. I can't draw.\n\nHe broke out of my jail again while I was busy with those Zombies. He's hiding somewhere in the marsh. Bring him back alive and it's 150 gold. Dead, 75. Alive is better!"
+    },
+    "outcome_a": {
+     "speaker": "Priest Umbrin",
+     "text": "My staff! Oh, thank goodness! Take this shield, brave Adventurer, with my blessing."
+    },
+    "outcome_b": {
+     "speaker": "Warden Gubb",
+     "text": "Ha! Got you, Snell! Back in the cell you go!\n\nHere's your reward, 150 in gold!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring Priest Umbrin his staff from the shrine."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Snell the eel thief in the marsh and bring him to Warden Gubb."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Dean Mavrell wants the Ghosts driven from the old dormitory; Ollo charges twenty gold to fight his Golem in the dueling yard for a shield.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mavrell",
+     "text": "Disgrace! Disgrace upon the Academy! Ghosts walk the halls of the old dormitory!\n\nMy students cannot sleep for the wailing. They are sleeping in the library, on the floor, among the books! Never in all my years as Dean have I seen such a thing.\n\nIf you can drive those Ghosts out, I shall give you a token of my appreciation. The dormitory is east of here. Malgrith shall not have the Academy while I draw breath!"
+    },
+    "offer_b": {
+     "speaker": "Ollo",
+     "text": "Hey, you! Want some practice before you go off to the Bone Hills? Twenty gold and you can fight my Golem in the dueling yard. Knock him down and the shield on the wall is yours."
+    },
+    "outcome_a": {
+     "speaker": "Mavrell",
+     "text": "Can it be? The halls are quiet at last! The Academy is in your debt, brave Adventurer. Accept this as a token of my appreciation."
+    },
+    "outcome_b": {
+     "speaker": "Ollo",
+     "text": "Down he goes! Ha! Haven't seen that in a while. The shield's yours."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Drive the Ghosts out of the old dormitory for Dean Mavrell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Defeat Ollo's Golem in the dueling yard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Master Vellis bargains a spell for the Skull of Varl before Grisla gets it; Fitch sells a used Longsword cheap in the Frozen Boot.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Vellis",
+     "text": "Hold, stranger! You are the one Marshal Tobrin sent, yes? Then hear me. Grisla the Frost Witch seeks the Skull of Varl, which lies in the crypt below the fort, and if she gets her hands on it every dead man on this mountain will rise and march on Tor Vessa and not one of us will live to see the spring! Bring me the Skull before she does, and I will teach you to Turn Undead. That is my bargain."
+    },
+    "offer_b": {
+     "speaker": "Fitch",
+     "text": "Hey, friend! Yes, you! Need a Longsword for the road? Barely used and still sharp! Only 60 gold. Haskel would charge you twice that."
+    },
+    "outcome_a": {
+     "speaker": "Master Vellis",
+     "text": "The Skull of Varl! You have done it! Grisla shall not have it now. As I promised, I will teach you to Turn Undead.\n\nNow go to Lord Kessick in the Great Hall. He must hear of this at once!"
+    },
+    "outcome_b": {
+     "speaker": "Fitch",
+     "text": "Sold! Best deal on the mountain, friend. Come back anytime."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the Skull of Varl from the crypt to Master Vellis."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the Longsword from Fitch at the Frozen Boot."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Tallyman Pell wants the Guild strongbox back from Ozzle the Coin-Clipper; Warden Krugg wants Ozzle himself, dead or alive.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tallyman Pell",
+     "text": "Ahem! Good day, young sir. As if the Ember Demons weren't trouble enough, the Guild has suffered a most irregular loss. Our strongbox is gone, and every coin in it was counted and written in my ledger!\n\nThat scoundrel Ozzle the Coin-Clipper has it hidden in the slag heaps south of town. The Guild will see that you are properly rewarded. Can you bring back the strongbox?"
+    },
+    "offer_b": {
+     "speaker": "Warden Krugg",
+     "text": "You there! Ozzle the Coin-Clipper has slipped out of my lockup again, and every guard I have is down in the Lower Forges. Bring him back alive and I'll pay 150 gold. Dead, 75. Either way, I want that rat off my streets!"
+    },
+    "outcome_a": {
+     "speaker": "Tallyman Pell",
+     "text": "The strongbox! Oh, and not a single coin missing! The ledger balances!\n\nPlease accept this shield with the thanks of the Guild."
+    },
+    "outcome_b": {
+     "speaker": "Warden Krugg",
+     "text": "Well, well! Ozzle, back in my lockup where he belongs! Here's 150 gold, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Return the Guild strongbox to Tallyman Pell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Ozzle the Coin-Clipper to Warden Krugg, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Father Ambry wants the chapel candles lit against the Undead and then sends the player to Warden Krell, who pays for Dobbs the grave robber dead or alive.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Father Ambry",
+     "text": "The candles have gone out! All the candles in the chapel, every last one! And the Undead are scratching at the crypt door!\n\nI would do it myself, but look at my hands! I can't hold a flint like this.\n\nGo to the chapel and light the candles again. Left to right, mind you, the proper way! The tinderbox is on the shelf by the door."
+    },
+    "offer_b": {
+     "speaker": "Warden Krell",
+     "text": "Looking for work? Dobbs the grave robber broke out of my jail last night. I hear he's hiding in the cemetery on Gallows Hill, the fool.\n\nBring him back alive and it's 150 gold. Dead, 75. That's the deal."
+    },
+    "outcome_a": {
+     "speaker": "Father Ambry",
+     "text": "The candles are lit! Left to right, I hope? Bless you, my son! Take this scroll, it holds the Dispel Undead spell.\n\nNow go and see Warden Krell at the jail. He has need of a brave soul too."
+    },
+    "outcome_b": {
+     "speaker": "Warden Krell",
+     "text": "Dobbs! Back in his cell, and still breathing! Here's your 150 gold, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the candles in the chapel of Harrow Cross."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Dobbs the grave robber back to Warden Krell, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Fodric, a nervous scholar, needs the signal fire lit for the Mayor; Gubbin sells his farm for 30,000 gold.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Fodric",
+     "text": "Who's there? Stay back! Stay back, I say!\n\nOh. Oh my. You're no Ogre at all. Thank goodness! Forgive me, my nerves are in tatters since the last raid.\n\nMayor Brumhold wants the old signal fire lit on the watch hill west of here. But that hill is crawling with Ogres, and I am a scholar, not a fighter! Would you light it in my place?"
+    },
+    "offer_b": {
+     "speaker": "Gubbin",
+     "text": "Looking to buy a farm, stranger? Mine's for sale. Good house and a fine barn. Yours for only 30,000 gold. Interested?"
+    },
+    "outcome_a": {
+     "speaker": "Fodric",
+     "text": "You lit it! I could see the flames from my window! Here are 150 gold pieces. Mayor Brumhold will be most pleased!"
+    },
+    "outcome_b": {
+     "speaker": "Gubbin",
+     "text": "That's not 30,000 gold. Come back when you have all of it. The farm isn't going anywhere."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the signal fire on the watch hill for Fodric."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find 30,000 gold to buy Gubbin's farm."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

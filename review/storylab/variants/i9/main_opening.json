@@ -1,0 +1,569 @@
+{
+ "scenario": "main_opening",
+ "iter": "i9",
+ "writer": "one writer a town (variants/i9/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman sends the player to Halvard in the Moot Hall, who gives him a pass for the north gate and sends him against Red Corwin on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Spell Book": "thing",
+    "Red Potions": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "No, nobody in this town will rest easy while Red Corwin holds Crow Hill -- go and see Halvard at the Moot Hall!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "It's a dark day for Brackenford! Red Corwin and his cutthroats are now the masters of the old watchtower on Crow Hill, north of town. If we strike quickly we may drive them out before the north road is lost to us for good. I shall be waiting here in the Moot Hall for news of his defeat. Bandits tend to fight dirty, so see Dunstan the smith before you go. Here is a pass with my seal -- show it to Garrick at the north gate when you're ready."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "It isn't every day a stranger offers to face Red Corwin for us."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take Halvard's pass to Garrick and drive out Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Varrhold: Tamsk sends the player to Mayor Haldrek, who sends him down the Great Lift to the Deep after the Necromancer Ozrath; Garvus sent the player here.",
+   "names": {
+    "Varrhold": "place",
+    "Ozrath": "person",
+    "Garvus": "person",
+    "Haldrek": "person",
+    "Brask": "person",
+    "Nella": "person",
+    "Bruddock": "person",
+    "Gimbrel": "person",
+    "Skabb": "person",
+    "Gudra": "person",
+    "Durbin": "person",
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person",
+    "Tamsk": "person",
+    "Pibbet": "person",
+    "Orla": "person",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "east tunnel": "place",
+    "north shaft": "place",
+    "copper shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "magic pick": "thing",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tamsk",
+     "text": "The forges went cold last night -- Mayor Haldrek's been asking for you."
+    },
+    "opening": {
+     "speaker": "Haldrek",
+     "text": "Welcome to Varrhold, young sir -- Garvus wrote that you were coming to deal with Ozrath the Necromancer. Take the Great Lift down to the Deep and find him before his Undead climb any higher, because believe me, you'd rather not see them up close, lad."
+    },
+    "reminder": {
+     "speaker": "Haldrek",
+     "text": "Did you get down to the Deep?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ride the Great Lift down to the Deep and stop Ozrath."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skeel: Ludo the raftman points the player to Warden Hobbe, who sends him to smash Morvane's Bone Totem on the burial isles.",
+   "names": {
+    "Skeel": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Grell": "person",
+    "Hobbe": "person",
+    "Pellam": "person",
+    "Nubbin": "person",
+    "Quimby": "person",
+    "Snub": "person",
+    "Nella": "person",
+    "Tobb": "person",
+    "Ludo": "person",
+    "Wilka": "person",
+    "Orra": "person",
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Watch Hut": "place",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "north bog": "place",
+    "Corvale": "place",
+    "Bone Totem": "thing",
+    "Amulet of Healing": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ludo",
+     "text": "Hello there! My name is Ludo. I pole the ferry raft between the huts so folks don't have to wade through the leech water. Warden Hobbe is waiting for you in the Watch Hut."
+    },
+    "opening": {
+     "speaker": "Hobbe",
+     "text": "Good day, stranger! The burial isles have been defiled -- the dead called up out of the mud by the Necromancer Morvane! Grrrrrrrrrr. Find his Bone Totem out on the isles and smash it, lad!"
+    },
+    "reminder": {
+     "speaker": "Hobbe",
+     "text": "Get going! Fendrick swore you were quick on your feet."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Smash the Bone Totem to break the Necromancer's spell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Gorst: Hask points the player to Lord Dravus, who sends him to take the Kell Moor watchtower back from Zarrow's Undead.",
+   "names": {
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Great Hall": "place",
+    "Blades Galore": "place",
+    "Zarrow": "person",
+    "Pelgrim": "person",
+    "Lord Dravus": "person",
+    "Brunk": "person",
+    "Gribbin": "person",
+    "Hulda": "person",
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Steward Oswin": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Pell": "person",
+    "Orlo": "person",
+    "Hask": "person",
+    "Mirabel": "person",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Rats": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hask",
+     "text": "Shouldn't you be off to see Lord Dravus in the Great Hall?"
+    },
+    "opening": {
+     "speaker": "Lord Dravus",
+     "text": "So, Pelgrim's friend has come at last. Gorst is nothing without the old watchtower on Kell Moor. Zarrow's Undead have taken it, and every night they creep closer to our walls! Go out by the east gate and drive them from that tower, lad."
+    },
+    "reminder": {
+     "speaker": "Lord Dravus",
+     "text": "Make haste, young sir! There's precious little time left to stop Zarrow!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Zarrow's Undead out of the watchtower on Kell Moor."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ombry: Fennick points the player to Mayor Varrow, who, warned by Pellandor, sends him to drive Gurlok's Ogres out of the Lamp Tower on Gull Isle.",
+   "names": {
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Lamp Tower": "place",
+    "Rat Island": "place",
+    "Washing Cove": "place",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Mayor Varrow": "person",
+    "Varrow": "person",
+    "Brosk": "person",
+    "Grella": "person",
+    "Quimby": "person",
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person",
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "Hey who put out the big lamp? Go ask Mayor Varrow!"
+    },
+    "opening": {
+     "speaker": "Mayor Varrow",
+     "text": "Pellandor sent word of you, lad -- and not a day too soon, for the Ogres of Gurlok have plagued Ombry long enough. I think the brutes who took the Lamp Tower out on Gull Isle came over from the north shore, so take this key to the causeway gate and throw them out! Ogres love nothing better than a boat on the rocks!"
+    },
+    "reminder": {
+     "speaker": "Mayor Varrow",
+     "text": "Why aren't you on the water yet?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Gurlok's Ogres out of the Lamp Tower on Gull Isle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Merinth: Hobbe points the player to Guildmaster Pellidor, who sends him east after Zorvan at the Black Spire; Varrus sent the player.",
+   "names": {
+    "Merinth": "place",
+    "College": "place",
+    "Black Spire": "place",
+    "old kiln": "place",
+    "old foundry": "place",
+    "old quarry": "place",
+    "College lockup": "place",
+    "Zorvan": "person",
+    "Varrus": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Fennick": "person",
+    "Oswick": "person",
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "Mimics": "group",
+    "Imps": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "Zorvan's Downfall": "thing",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hobbe",
+     "text": "Merinth will not fall to Zorvan and his Golems. Get up to the College and stand with Guildmaster Pellidor!"
+    },
+    "opening": {
+     "speaker": "Pellidor",
+     "text": "I'm the one Varrus wrote to about you. Just follow the east road out of Merinth and you will come to the Black Spire, where Zorvan waits."
+    },
+    "reminder": {
+     "speaker": "Pellidor",
+     "text": "The ward is down! The ward is down! Um... After you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rendezvous with Guildmaster Pellidor at the foot of the Black Spire."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vosk: Orwin points the player to Warden Brask in the keep, who sends him up to the old Watchtower to stop Morvayne the Necromancer.",
+   "names": {
+    "Fort Vosk": "place",
+    "Frostgate": "place",
+    "Watchtower": "place",
+    "Ice Caves": "place",
+    "Frozen Field": "place",
+    "Morvayne": "person",
+    "Dorvin": "person",
+    "Brask": "person",
+    "Holm": "person",
+    "Gorbo": "person",
+    "Gosk": "person",
+    "Hesk": "person",
+    "Snib": "person",
+    "Yselde": "person",
+    "Dolf": "person",
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Horn of Calling": "thing",
+    "Bats": "group",
+    "Urchins": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orwin",
+     "text": "I hope nothing else goes wrong around here. Warden Brask is up in the keep, he's the one to see."
+    },
+    "opening": {
+     "speaker": "Brask",
+     "text": "Take the north road up to the old Watchtower, where Morvayne the Necromancer has made his lair. I can't deny it any longer -- too many dead men have climbed out of the ice since the first snows. Yes, Dorvin wrote to me about you. Go and stop him... From this day you are my scout. Zenka sells potions by the gate, I'd go see her before anything else if I was you. Once you reach the Watchtower Morvayne will throw everything he has at you, since the old battlefield beneath it holds the biggest army of frozen soldiers a Necromancer could wish for -- far more than the stragglers that come knocking at our walls."
+    },
+    "reminder": {
+     "speaker": "Brask",
+     "text": "The north road starts behind the barracks, you'll spot it right away."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Warden Brask proof that Morvayne has fallen."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Durgal: A townsman sends the player to Guildmaster Krell at the Great Forge, an old friend of Orvald, who sends him against Bargul in the Smelting Pits.",
+   "names": {
+    "Durgal": "place",
+    "Bargul": "person",
+    "Orvald": "person",
+    "Krell": "person",
+    "Brannock": "person",
+    "Zeck": "person",
+    "Mirva": "person",
+    "Dagny": "person",
+    "Ulda": "person",
+    "Fennick": "person",
+    "Krenshaw": "person",
+    "Rudgar": "person",
+    "Brisba": "person",
+    "Grimble": "person",
+    "Smelting Pits": "place",
+    "Great Forge": "place",
+    "Hot Coal": "place",
+    "lava caves": "place",
+    "slag caves": "place",
+    "north gate": "place",
+    "Fireproof Gloves": "thing",
+    "Guild Hammer": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "How can a town of smiths fight off Ogres? This is a disaster! Will you go see Guildmaster Krell at the Great Forge?"
+    },
+    "opening": {
+     "speaker": "Krell",
+     "text": "Friend of Orvald, a thousand thanks for answering my call... I hear the Ogre chief Bargul has seized the Smelting Pits north of town and put our ore-men to the sword, so you must be the one to drive him out!"
+    },
+    "reminder": {
+     "speaker": "Krell",
+     "text": "That is all I can tell you. Until the Pits are ours again..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Bargul in the Smelting Pits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellor's Cross: Wuzzle the drunk points the player to Mayor Tull, who sends him against Bludgor in the old toll fort on Gallows Hill.",
+   "names": {
+    "Pellor's Cross": "place",
+    "Four Roads Inn": "place",
+    "Gallows Hill": "place",
+    "Stony Hollow": "place",
+    "Hamley Farm": "place",
+    "Bludgor": "person",
+    "Captain Vell": "person",
+    "Mayor Tull": "person",
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Fennick": "person",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Wila": "person",
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Master Odric": "person",
+    "Snig": "person",
+    "Brisa": "person",
+    "Orlo": "person",
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Wuzzle": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wuzzle",
+     "text": "Go on, Wanderer! Go flex your big hero muscles for Mayor Tull!"
+    },
+    "opening": {
+     "speaker": "Mayor Tull",
+     "text": "Please... come in and shut the door! I know Captain Vell has sent us a worthy hero at last. The Ogre Lord Bludgor is still up in the old toll fort on Gallows Hill, north of the crossroads -- throw him out and open our roads again!\n\nWelcome to Pellor's Cross! Take these potions. They may serve you well against his brutes."
+    },
+    "reminder": {
+     "speaker": "Mayor Tull",
+     "text": "Here, have another healing potion. Head north to the fort as soon as you're set to go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Win back the toll fort on Gallows Hill from Bludgor the Ogre Lord."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5"
+  },
+  {
+   "id": 10,
+   "specifics": "Vellin: Tobber points the player to Mayor Bodrick in the Town Hall, who sends him to Krudd Hollow, north of town, to defeat Gorlag, chief of the Ogres raiding the valley.",
+   "names": {
+    "Vellin": "place",
+    "Kaldor": "person",
+    "Bodrick": "person",
+    "Tobber": "person",
+    "Kestrin": "person",
+    "Fennick": "person",
+    "Ysmay": "person",
+    "Marwold": "person",
+    "Snibb": "person",
+    "Ostra": "person",
+    "Grebb": "person",
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Town Hall": "place",
+    "Harvest Amulet": "thing",
+    "Ogres": "group",
+    "Krudd Ogres": "group",
+    "Urchins": "group",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tobber",
+     "text": "Step lively, brave Adventurer. Mayor Bodrick in the Town Hall will know how to rout these foul brutes."
+    },
+    "opening": {
+     "speaker": "Bodrick",
+     "text": "You've come at last! Every farm in the valley has lost a crop to Gorlag and his Ogres from Krudd Hollow. Will you, can you, run them off for us?"
+    },
+    "reminder": {
+     "speaker": "Bodrick",
+     "text": "When you pass the north gate, you'll reach the Ogres' fence. Behind it waits Gorlag -- Chief of the Krudd Ogres."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Krudd Hollow and defeat Gorlag."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), claude-opus-5-5"
+  }
+ ]
+}

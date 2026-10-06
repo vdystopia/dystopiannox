@@ -1,0 +1,336 @@
+{
+ "iter": "i7",
+ "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Castle Tarbek",
+  "setting": "a castle town with a garrison",
+  "trouble": "Morvane the Necromancer's Undead have taken Fort Grenn on Gallows Hill, and Commander Brask has shut the east road.",
+  "names": {
+   "Castle Tarbek": "place",
+   "Tarbek": "place",
+   "Morvane": "person",
+   "Ostrik": "person",
+   "Commander Brask": "person",
+   "Brask": "person",
+   "Brogan": "person",
+   "East Gate": "place",
+   "Fort Grenn": "place",
+   "Gallows Hill": "place",
+   "Sergeant Pell": "person",
+   "Pell": "person",
+   "Fennick": "person",
+   "Thornwood": "place",
+   "Black Bears": "group",
+   "Vossel": "person",
+   "Crystal Spyglass": "thing",
+   "Bell Tower": "place",
+   "Imps": "group",
+   "Tibbet": "person",
+   "Gorry": "person",
+   "Bessa": "person",
+   "Hennet": "person",
+   "Broken Pike": "place",
+   "Varnholm": "place",
+   "Thudd": "person",
+   "Morvane's Misery": "thing",
+   "Quilla": "person",
+   "Scrolls Galore": "place",
+   "Paymaster Orrin": "person",
+   "Grey Hoods": "group",
+   "salt cellars": "place",
+   "Jarl": "person",
+   "Gromm": "person",
+   "Sister Maudra": "person",
+   "Sisters of the Lamp": "group",
+   "Ludo": "person",
+   "Skeletons": "group",
+   "Undead": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brogan keeps the East Gate, shut by Commander Brask while Morvane's Undead hold the east road.",
+   "names": {
+    "Brogan": "person",
+    "Commander Brask": "person",
+    "East Gate": "place",
+    "Morvane": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brogan",
+     "text": "Hold it right there, stranger! Commander Brask has shut the East Gate to all travelers and Morvane's Undead on the east road are reason enough for it.\n\nBack you go! I've got a cold and lonely post to keep here.\n\nWill you move along quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Brogan",
+     "text": "What are you still doing here? The gate is shut tight! You'd better report to the barracks if you hope to get past me. Commander Brask awaits."
+    },
+    "later": {
+     "speaker": "Brogan",
+     "text": "Through the gate, lad! Unless you WANT to stand here all day!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, Master of Hounds, wants the Black Bears of the Thornwood driven off his hounds.",
+   "names": {
+    "Fennick": "person",
+    "Castle Tarbek": "place",
+    "Ostrik": "person",
+    "Commander Brask": "person",
+    "Brask": "person",
+    "Black Bears": "group",
+    "Thornwood": "place",
+    "Tarbek": "place",
+    "Morvane": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Hello, I am Fennick, the Master of Hounds for Castle Tarbek.\n\nWhat might a traveler be doing so far from the high road? Hmm, let me guess... Ostrik has sent you to help Commander Brask with some garrison business.\n\nWell, I've no great love for Brask and his endless marching drills, but let me put you to better use, stranger.\n\nThe Black Bears of the Thornwood, west of the castle, keep killing my hounds. Drive them off and I'll see you rewarded. Take this bow. It might help when they charge."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "They got another! They got another! Um... You'd best hurry."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "Marvelous! Tarbek owes you a debt it can never repay.\n\nBut no time to fuss over my poor hounds now! Morvane's dead men are stirring! Take this quiver and go after them, if you want to see an end to his wicked doings!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Battle your way through the Thornwood and drive off the Black Bears for Fennick."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow", "Quiver"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Vossel the stargazer wants back the Crystal Spyglass the Imps carried off to the old Bell Tower.",
+   "names": {
+    "Vossel": "person",
+    "Crystal Spyglass": "thing",
+    "Morvane": "person",
+    "Undead": "group",
+    "Bell Tower": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vossel",
+     "text": "With the Crystal Spyglass stolen and the night watch blind, the castle is no longer able to see Morvane's Undead on the march.\n\nThe Spyglass is now hidden in the old Bell Tower north of the castle, snatched by the Imps and hoarded with the rest of their shiny trinkets.\n\nGo up to the tower and find it. Take this key. It opens the small north gate on the way. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Vossel",
+     "text": "Come back when you have the nerve."
+    },
+    "reminder": {
+     "speaker": "Vossel",
+     "text": "I've got my charts. You get the glass."
+    },
+    "completion": {
+     "speaker": "Vossel",
+     "text": "Thanks for the Spyglass and good luck against the Necromancer. Here, take this Ankh."
+    },
+    "after": {
+     "speaker": "Vossel",
+     "text": "Thank you for helping a half-blind old stargazer."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get back the Crystal Spyglass the Imps stole from Vossel."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Get back the Crystal Spyglass the Imps stole from Vossel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Tibbet the ratcatcher, Gorry the drunk and Bessa the kitchen maid.",
+   "names": {
+    "Tibbet": "person",
+    "Gorry": "person",
+    "Bessa": "person",
+    "Skeletons": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tibbet",
+     "text": "Hello there! My name is Tibbet. I catch and cage the castle rats to keep the granary safe for the garrison."
+    },
+    "rumour2": {
+     "speaker": "Gorry",
+     "text": "Are you gonna run home? Little lamb scared of a few Skeletons?"
+    },
+    "rumour3": {
+     "speaker": "Bessa",
+     "text": "I'm late for my shift in the kitchens, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hennet of the Broken Pike inn, Thudd the smith, Quilla of Scrolls Galore.",
+   "names": {
+    "Hennet": "person",
+    "Broken Pike": "place",
+    "Varnholm": "place",
+    "Thudd": "person",
+    "Morvane's Misery": "thing",
+    "Quilla": "person",
+    "Scrolls Galore": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hennet",
+     "text": "Wanna buy a meat pie? They're carted up from the great smokehouses down in Varnholm."
+    },
+    "arms": {
+     "speaker": "Thudd",
+     "text": "Wanna see a new blade?\n\nI call it 'Morvane's Misery.'"
+    },
+    "magic": {
+     "speaker": "Quilla",
+     "text": "Welcome to Scrolls Galore. I believe I still have a few good spell books on the shelf."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Paymaster Orrin wants the garrison's pay chest back from the Grey Hoods; Jarl, a Grey Hood turned coat, will get the player past the lookouts to Gromm the fence.",
+   "names": {
+    "Paymaster Orrin": "person",
+    "Grey Hoods": "group",
+    "Commander Brask": "person",
+    "salt cellars": "place",
+    "Jarl": "person",
+    "Gromm": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Paymaster Orrin",
+     "text": "Please, help me! If the Grey Hoods don't come back for my neck, Commander Brask will hang me anyway. The garrison's pay chest was stolen two nights ago and the empty strongroom is a cold and dreadful reminder of my coming doom. The thieves hole up in the old salt cellars south of the market."
+    },
+    "offer_b": {
+     "speaker": "Jarl",
+     "text": "Ahh, so you're the one! I've been watching for you. You've got a nasty job coming. I can get you past the Grey Hood lookouts, but you'll need more than my word once you're down in the salt cellars.\n\nDown there a fence named Gromm keeps the loot under lock and key. His room is right past the stairs when you go in. Talk to him before anybody, if I was you. I hope your purse is fat. Gromm's prices run high for strangers.\n\nWell, what are we waiting for! Let's go."
+    },
+    "outcome_a": {
+     "speaker": "Paymaster Orrin",
+     "text": "You got it!? The pay chest? Really the pay chest? I'll call the men in. And here, this Steel Shield is yours."
+    },
+    "outcome_b": {
+     "speaker": "Jarl",
+     "text": "I'm in an awful rush just now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fight your way into the salt cellars and recover the garrison's pay chest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the vault key from Gromm to recover the pay chest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Sister Maudra begs the player to bring back her lamp-boy Ludo, shut in the castle crypt with the Skeletons.",
+   "names": {
+    "Sister Maudra": "person",
+    "Sisters of the Lamp": "group",
+    "Ludo": "person",
+    "Skeletons": "group",
+    "Morvane": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sister Maudra",
+     "text": "We have been praying for your arrival. The Sisters of the Lamp are the keepers and faithful wardens of the castle crypt.\n\nWhen our lamp-boy Ludo went down after the Skeletons the dead sealed the door behind him, since the bones of the old lords hold the richest store of the power Morvane craves -- far more than the poor bones in the churchyard. Will you go below and bring him back?"
+    },
+    "reminder": {
+     "speaker": "Sister Maudra",
+     "text": "Oh, you're back. Have you made up your mind to help us?"
+    },
+    "found": {
+     "speaker": "Ludo",
+     "text": "Aaaaaaagh! It can't end down here! I want to go home!"
+    },
+    "following": {
+     "speaker": "Ludo",
+     "text": "Let's find Sister Maudra?"
+    },
+    "completion": {
+     "speaker": "Sister Maudra",
+     "text": "Our heartfelt thanks. The chapel is poor, but you may take the 50 gold from our alms box. Then I must see Ludo safely to his bed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ludo from the castle crypt."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Bessa points the player to Commander Brask, who sends him to take back Fort Grenn from Morvane's Undead.",
+   "names": {
+    "Bessa": "person",
+    "Commander Brask": "person",
+    "Fort Grenn": "place",
+    "Sergeant Pell": "person",
+    "Pell": "person",
+    "Gallows Hill": "place",
+    "Skeletons": "group",
+    "Morvane": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Bessa",
+     "text": "Ugh! I saw a whole cart of dead soldiers roll right up to Commander Brask's barracks!"
+    },
+    "opening": {
+     "speaker": "Commander Brask",
+     "text": "Plain, ugly truth, lad. You must take back Fort Grenn before the east road can be opened again. The man who held it was Sergeant Pell, an old comrade of mine.\n\nI know Pell is still holding out in the cellars, if he lives. But are you the man for it, lad? heh, heh, heh...\n\nTake the east road. Find the old fort on Gallows Hill. And beware of the Skeletons. They are the least of Morvane's servants, by far. Believe me, you don't want to meet his finest, lad."
+    },
+    "reminder": {
+     "speaker": "Commander Brask",
+     "text": "The Necromancer draws his strength from the dead, which he raises out of the grave pits in the deep cellars of that cursed fort."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Commander Brask has shut the east road, but Fort Grenn has fallen to the Undead. Perhaps Sergeant Pell still lives somewhere inside..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

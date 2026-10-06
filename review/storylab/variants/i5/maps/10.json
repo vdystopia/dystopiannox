@@ -1,0 +1,332 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Hestle",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Ogres have taken the old granary fort on Kroth Hill and come down every night to rob the farms of Hestle.",
+  "names": {
+   "Hestle": "place",
+   "Vellis": "person",
+   "Mayor Dulvane": "person",
+   "Dulvane": "person",
+   "Tobb": "person",
+   "Hoskin": "person",
+   "Orlo": "person",
+   "Sister Alwen": "person",
+   "Ebbin": "person",
+   "Bramwell": "person",
+   "Sabble": "person",
+   "Rook": "person",
+   "Hulda": "person",
+   "Gorrick": "person",
+   "Pidwick": "person",
+   "Greda": "person",
+   "Marl": "person",
+   "Kroth Hill": "place",
+   "the granary fort": "place",
+   "the Town Hall": "place",
+   "the north gate": "place",
+   "the well house": "place",
+   "the windmill": "place",
+   "the Ogre camp": "place",
+   "the river": "place",
+   "the Sleepy Ox": "place",
+   "the Ogres": "group",
+   "the Imps": "group",
+   "the giant leeches": "group",
+   "Orlo's amulet": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb keeps the north gate of Hestle barred until Mayor Dulvane sends the player against the Ogres on Kroth Hill.",
+   "names": {
+    "Tobb": "person",
+    "Hestle": "place",
+    "the north gate": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "This is the north gate of Hestle, and it stays shut."
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Still shut."
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "The gate is open! Off with you, and hurry!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Hoskin, a goat farmer, wants the giant leeches out of his well house and pays with the key to his boat on the river.",
+   "names": {
+    "Hoskin": "person",
+    "the well house": "place",
+    "the giant leeches": "group",
+    "the river": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hoskin",
+     "text": "Sir! Over here, quick! Giant leeches have crawled up out of my well house south of the farm, and they've had my goats! Here, drink this if they bite you. Now get in there and kill the lot of them."
+    },
+    "reminder": {
+     "speaker": "Hoskin",
+     "text": "Why are you still standing about? My goats are thirsty!"
+    },
+    "completion": {
+     "speaker": "Hoskin",
+     "text": "Gone? Truly gone? Oh, thank goodness! Here, take the key to my boat. It's tied up down at the river. Use it whenever you like."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant leeches in Hoskin's well house."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Orlo, a stiff and grand old townsman, has had his amulet stolen by the Imps that nest in the ruined windmill.",
+   "names": {
+    "Orlo": "person",
+    "the Imps": "group",
+    "the Ogres": "group",
+    "the windmill": "place",
+    "Orlo's amulet": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orlo",
+     "text": "Greetings, Wanderer. I find myself besieged by misfortune. Nefarious Imps have absconded with my amulet, and without it I am wholly defenceless against these abominable Ogres. Will you liberate it from those wretched creatures?"
+    },
+    "refusal": {
+     "speaker": "Orlo",
+     "text": "How very disappointing. I had thought better of you."
+    },
+    "reminder": {
+     "speaker": "Orlo",
+     "text": "The Imps? I am told they nest in the old windmill west of town."
+    },
+    "completion": {
+     "speaker": "Orlo",
+     "text": "My amulet! Splendid! Simply splendid! You have my most profound gratitude, brave Adventurer. Take these boots, with my compliments."
+    },
+    "after": {
+     "speaker": "Orlo",
+     "text": "Thanks again! I shall not let it out of my sight again, I assure you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Orlo's amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Orlo's amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Hestle: Greda grumbles about the Mayor, Marl gives a tip about Ogre clubs, Hoskin warns of the north road.",
+   "names": {
+    "Greda": "person",
+    "Marl": "person",
+    "Hoskin": "person",
+    "Mayor Dulvane": "person",
+    "the Town Hall": "place",
+    "the Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Greda",
+     "text": "Mayor Dulvane? The old windbag hasn't poked his nose out of the Town Hall since the Ogres came!"
+    },
+    "rumour2": {
+     "speaker": "Marl",
+     "text": "I've heard an Ogre's club will split a wooden shield clean in two. Get yourself something sturdier."
+    },
+    "rumour3": {
+     "speaker": "Hoskin",
+     "text": "Beware of the north road after dark! The Ogres come down off the hill with torches."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hulda of the Sleepy Ox inn, Gorrick the smith, and Pidwick the potion seller.",
+   "names": {
+    "Hulda": "person",
+    "the Sleepy Ox": "place",
+    "Gorrick": "person",
+    "Pidwick": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hulda",
+     "text": "You want a room? Pay first. And wipe your boots, I just did the floors."
+    },
+    "arms": {
+     "speaker": "Gorrick",
+     "text": "Welcome! I make armor for heroes and horseshoes for everybody else. What'll it be?"
+    },
+    "magic": {
+     "speaker": "Pidwick",
+     "text": "Ahhh! A customer! Come in, come in! Everything's priced to sell, and what doesn't sell, I drink myself! Hee, hee, hee!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Bramwell, a farmer, wants the Ogres run out of his barn; Sabble, a cider smuggler, wants his partner Rook broken out of the cellar under the Town Hall.",
+   "names": {
+    "Bramwell": "person",
+    "Sabble": "person",
+    "Rook": "person",
+    "Mayor Dulvane": "person",
+    "Hestle": "place",
+    "the Town Hall": "place",
+    "the Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Bramwell",
+     "text": "Help! Ogres! There's Ogres in my barn!\n\nThey broke in last night. They've eaten the hay and now they're sleeping on what's left. I can't get near the place.\n\nI'll tell you what. Run them off and I'll give you the old shield off my wall. Here's the key, the barn's west of the well. Go round the back."
+    },
+    "offer_b": {
+     "speaker": "Sabble",
+     "text": "Ahhh, now there's a face I can do business with! My partner Rook is locked up in Mayor Dulvane's cellar for carrying a few barrels of cider past the Ogres without paying the Mayor his tax, which is only a crime in Hestle and only since last spring and anyway somebody had to bring the cider in because nobody else would go near that road.\n\nThe cellar window at the back of the Town Hall has a loose bar. Pull it out and Rook can squeeze through.\n\nYou get him out, I'll find you something nice from the last load. No questions asked."
+    },
+    "outcome_a": {
+     "speaker": "Bramwell",
+     "text": "My barn! They're gone! Thank you, thank you!\n\nHere's the shield, as I promised. It came up out of my turnip field one spring. Never did find out whose it was."
+    },
+    "outcome_b": {
+     "speaker": "Sabble",
+     "text": "Rook's out?! Hah! Good work, friend! Here, this chain tunic is yours. Now I'd best go find him before the Mayor does."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Drive the Ogres out of Bramwell's barn."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Rook the smuggler out of the cellar under the Town Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Sister Alwen's novices were carried off to the Ogre camp across the river; the novice Ebbin, found first, gives the key to the other's pen.",
+   "names": {
+    "Sister Alwen": "person",
+    "Ebbin": "person",
+    "Mayor Dulvane": "person",
+    "the Ogre camp": "place",
+    "the river": "place",
+    "the Town Hall": "place",
+    "the Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sister Alwen",
+     "text": "Oh, it's dreadful! The Ogres have carried off my novices! They're locked in the pens at the Ogre camp across the river. Go and bring them home!"
+    },
+    "reminder": {
+     "speaker": "Sister Alwen",
+     "text": "Please, hurry! The Ogres will eat them!"
+    },
+    "found": {
+     "speaker": "Ebbin",
+     "text": "Who's there?... Oh, thank goodness! One of the Ogres dropped this key. It opens the other pen. Take it, quick!"
+    },
+    "following": {
+     "speaker": "Ebbin",
+     "text": "Lead on! I'm right behind you!"
+    },
+    "completion": {
+     "speaker": "Sister Alwen",
+     "text": "My novices! Home safe! Bless you, kind sir, bless you! Take this as a token of my appreciation.\n\nMayor Dulvane has been asking after you. Go and see him at the Town Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Sister Alwen's novices from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Greda points the player to Mayor Dulvane in the Town Hall, who hands him a sword and sends him to drive the Ogres from the granary fort on Kroth Hill.",
+   "names": {
+    "Greda": "person",
+    "Mayor Dulvane": "person",
+    "Vellis": "person",
+    "Tobb": "person",
+    "the Town Hall": "place",
+    "the granary fort": "place",
+    "Kroth Hill": "place",
+    "the north gate": "place",
+    "the Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Greda",
+     "text": "Mayor Dulvane has been calling for help all morning! The Town Hall is in the middle of the village."
+    },
+    "opening": {
+     "speaker": "Mayor Dulvane",
+     "text": "So Vellis sent you. Good. There's no time for talk.\n\nThe Ogres have taken the old granary fort on Kroth Hill -- our own grain, in our own fort! Every night they come down and rob the farms.\n\nTake this sword. Go up the hill and drive them out. Tobb will open the north gate for you."
+    },
+    "reminder": {
+     "speaker": "Mayor Dulvane",
+     "text": "The fort, lad! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ogres out of the granary fort on Kroth Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   }
+  }
+ }
+}

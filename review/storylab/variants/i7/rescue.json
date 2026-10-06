@@ -1,0 +1,689 @@
+{
+ "scenario": "rescue",
+ "iter": "i7",
+ "writer": "one writer a town (variants/i7/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip went into the old barrow after the Urchins and has not come back.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Look there, lad -- the old barrow, east of the ford. My novice Pip went down after the Urchins and never came back up.\n\nThose Urchins have overrun every tunnel of the barrow. Nobody has seen Pip since he went in. You'll have to go alone.\n\nOnce you find Pip, bring him home to the Chapel of the Ford as fast as you can. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "You must go back down to the barrow. Pip grows weaker with every hour he spends down there."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Follow me. I will show you the way up."
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Wonderful! I'll lift the bar on the door now. Take this key, it's for the iron gate up above."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "I hope you gave those Urchins a thrashing they'll long remember! I don't know that I believe Pip's tales about ghosts in the barrow though. Please, take this ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Escort Brother Anselm's novice Pip out of the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 2,
+   "specifics": "Kal Vorra: Merra begs the player to bring back her husband Orvo, trapped by the Undead in the Sunken Shaft.",
+   "names": {
+    "Kal Vorra": "place",
+    "Deep Shafts": "place",
+    "Glimmer Pit": "place",
+    "Sunken Shaft": "place",
+    "Old Guild Hall": "place",
+    "Ulmac": "place",
+    "Scrolls-Galore": "place",
+    "Ruby Amulet": "thing",
+    "Gezra": "person",
+    "Ozric": "person",
+    "Korvald": "person",
+    "Torg": "person",
+    "Pellam": "person",
+    "Fennick": "person",
+    "Wenk": "person",
+    "Hessa": "person",
+    "Dobb": "person",
+    "Gorlo": "person",
+    "Brokka": "person",
+    "Grudd": "person",
+    "Ilva": "person",
+    "Ulda Coppernose": "person",
+    "Snig": "person",
+    "Merra": "person",
+    "Orvo": "person",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Merra",
+     "text": "Greetings, kind stranger. You're a long way down from the sun. I've spent all my savings and all my strength, to get my husband Orvo out of the Sunken Shaft. The Undead have him trapped down there. Please, bring him home!"
+    },
+    "reminder": {
+     "speaker": "Merra",
+     "text": "Now that you heard where he is, you need to go bring him back!"
+    },
+    "found": {
+     "speaker": "Orvo",
+     "text": "I shouted 'help me'! Now get me out of here before my lamp gives out with my nerve."
+    },
+    "following": {
+     "speaker": "Orvo",
+     "text": "Grab whatever potions you can find in these old crates and lead me out once you're ready."
+    },
+    "completion": {
+     "speaker": "Merra",
+     "text": "I'm sure the children will be thrilled to have their father back home. Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Orvo home alive."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Velk: Fenna's boy Tibbalt went reed-gathering at the Drowned Chapel and is cornered by Zombies.",
+   "names": {
+    "Velk": "place",
+    "Marsh Folk": "group",
+    "Vethra": "person",
+    "Tolver": "person",
+    "Quillon": "person",
+    "Murrow": "person",
+    "Brask": "person",
+    "Hobb": "person",
+    "Orvane": "person",
+    "Grudd": "person",
+    "Snibb": "person",
+    "Hesper": "person",
+    "Dremmel": "person",
+    "Gorbo": "person",
+    "Fenna": "person",
+    "Tibbalt": "person",
+    "Pell": "person",
+    "Sodge": "person",
+    "Minna": "person",
+    "Bog Mother": "thing",
+    "Sunken Graves": "place",
+    "Stilt House": "place",
+    "Long Walk": "place",
+    "Black Fen": "place",
+    "Hollow Stump": "place",
+    "Drowned Chapel": "place",
+    "Leaky Tub": "place",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fenna",
+     "text": "Follow the west planks to the Drowned Chapel. There you must look for my boy, Tibbalt. He went to gather reeds in spite of the recent rising of the dead in the old chapel yard."
+    },
+    "reminder": {
+     "speaker": "Fenna",
+     "text": "Stranger! Get on out to the chapel!"
+    },
+    "found": {
+     "speaker": "Tibbalt",
+     "text": "The Zombies! The Zombies! Keep the Zombies off me!"
+    },
+    "following": {
+     "speaker": "Tibbalt",
+     "text": "Hooray for my new friend the Zombie Slayer! Your reward is a hot supper at home."
+    },
+    "completion": {
+     "speaker": "Fenna",
+     "text": "Thank you! You brought my boy home! Please, go and see Mayor Quillon. I'm certain he'll have a good reward for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead Tibbalt out of the Drowned Chapel and over the Long Walk to take him home to Fenna."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Tarbek: Sister Maudra begs the player to bring back her lamp-boy Ludo, shut in the castle crypt with the Skeletons.",
+   "names": {
+    "Castle Tarbek": "place",
+    "Tarbek": "place",
+    "Morvane": "person",
+    "Ostrik": "person",
+    "Commander Brask": "person",
+    "Brask": "person",
+    "Brogan": "person",
+    "East Gate": "place",
+    "Fort Grenn": "place",
+    "Gallows Hill": "place",
+    "Sergeant Pell": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Thornwood": "place",
+    "Black Bears": "group",
+    "Vossel": "person",
+    "Crystal Spyglass": "thing",
+    "Bell Tower": "place",
+    "Imps": "group",
+    "Tibbet": "person",
+    "Gorry": "person",
+    "Bessa": "person",
+    "Hennet": "person",
+    "Broken Pike": "place",
+    "Varnholm": "place",
+    "Thudd": "person",
+    "Morvane's Misery": "thing",
+    "Quilla": "person",
+    "Scrolls Galore": "place",
+    "Paymaster Orrin": "person",
+    "Grey Hoods": "group",
+    "salt cellars": "place",
+    "Jarl": "person",
+    "Gromm": "person",
+    "Sister Maudra": "person",
+    "Sisters of the Lamp": "group",
+    "Ludo": "person",
+    "Skeletons": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sister Maudra",
+     "text": "We have been praying for your arrival. The Sisters of the Lamp are the keepers and faithful wardens of the castle crypt.\n\nWhen our lamp-boy Ludo went down after the Skeletons the dead sealed the door behind him, since the bones of the old lords hold the richest store of the power Morvane craves -- far more than the poor bones in the churchyard. Will you go below and bring him back?"
+    },
+    "reminder": {
+     "speaker": "Sister Maudra",
+     "text": "Oh, you're back. Have you made up your mind to help us?"
+    },
+    "found": {
+     "speaker": "Ludo",
+     "text": "Aaaaaaagh! It can't end down here! I want to go home!"
+    },
+    "following": {
+     "speaker": "Ludo",
+     "text": "Let's find Sister Maudra?"
+    },
+    "completion": {
+     "speaker": "Sister Maudra",
+     "text": "Our heartfelt thanks. The chapel is poor, but you may take the 50 gold from our alms box. Then I must see Ludo safely to his bed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ludo from the castle crypt."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kelm: Gilm begs the player to bring back Father Orrin, dragged into the Sunken Chapel by Vaskor's Zombies, who want the Black Pearl from him.",
+   "names": {
+    "Kelm": "place",
+    "Lake Kelm": "place",
+    "Gull Isle": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Sunken Chapel": "place",
+    "Vaskor": "person",
+    "Emmerik": "person",
+    "Gundrel": "person",
+    "Torvik": "person",
+    "Mott": "person",
+    "Gisla": "person",
+    "Brannoc": "person",
+    "Dulcie": "person",
+    "Hobb": "person",
+    "Bolo": "person",
+    "Harg": "person",
+    "Odra": "person",
+    "Fesk": "person",
+    "Skiv": "person",
+    "Gilm": "person",
+    "Orrin": "person",
+    "Black Pearl": "thing",
+    "Zombies": "group",
+    "Bears": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gilm",
+     "text": "The old hatred between the living and the drowned runs deep on this lake, lad. So go carefully as you climb down into the Sunken Chapel, because I doubt the Zombies will be glad to see a warm body. Bring Father Orrin home. Kelm is lost without him. Go on now... And watch your feet! Zombies love to grab a man from below!"
+    },
+    "reminder": {
+     "speaker": "Gilm",
+     "text": "It's rare that a stranger comes to the aid of our village."
+    },
+    "found": {
+     "speaker": "Orrin",
+     "text": "My strength may be failing, but you'll never get the Black Pearl from me, Vaskor. There is another, wiser than me, who will stand in your way."
+    },
+    "following": {
+     "speaker": "Orrin",
+     "text": "Young sir! Please lead me out!"
+    },
+    "completion": {
+     "speaker": "Orrin",
+     "text": "Thanks for bringing me back. Take this Ankh with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Follow the shore to the Sunken Chapel and find Father Orrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Thule's student Merrit went down into the Sunken Library and is trapped among Vaskar's Imps.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Vaskar": "person",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Wisps": "group",
+    "Bats": "group",
+    "Urchins": "group",
+    "Ebbard": "person",
+    "Master Orlund": "person",
+    "Great Hall": "place",
+    "Tobb": "person",
+    "Pellow": "person",
+    "Fennick": "person",
+    "Healer Mossa": "person",
+    "Doddrick": "person",
+    "Spyglass": "thing",
+    "Ankh": "thing",
+    "Kester": "person",
+    "Brunna": "person",
+    "Gussa": "person",
+    "Margle": "person",
+    "Gorrum": "person",
+    "Nelda": "person",
+    "Ismay": "person",
+    "Founder's Staff": "thing",
+    "Founders": "group",
+    "Mire Caves": "place",
+    "Steel Shield": "thing",
+    "Nibbs": "person",
+    "Thule": "person",
+    "Merrit": "person",
+    "Sunken Library": "place",
+    "Alchemy Hall": "place",
+    "Wizard Robe": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Thule",
+     "text": "Curiosity, mischief, foolishness, say what you like, the girl has too much of it. But scolding her now will not bring her back. You must find Merrit in the Sunken Library before Vaskar's Imps carry her off, or she is lost.\n\nGo down the old stair under the west wing, find her and bring her home! I will pay you what I can!... I fear I am too old for this, lad."
+    },
+    "reminder": {
+     "speaker": "Thule",
+     "text": "Why aren't you gone yet?"
+    },
+    "found": {
+     "speaker": "Merrit",
+     "text": "Thank the stars you found me!"
+    },
+    "following": {
+     "speaker": "Merrit",
+     "text": "Stay close, kind sir, I can't find the way alone. Take me to Master Thule at the Alchemy Hall -- just past the fountain. He'll look after me from there."
+    },
+    "completion": {
+     "speaker": "Thule",
+     "text": "Courage, luck, stubbornness, whatever it was, it brought our Merrit home. But thanking you with words is not enough. You must take this Wizard Robe, for I have nothing finer to give.\n\nWear the robe, go to Master Orlund and help him stop Vaskar!... I am forever in your debt, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Merrit from the Sunken Library! Bring her back to Master Thule!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Code subagent (general-purpose), claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vestrin: Gundry the winchman's apprentice Pell is trapped by skeletons at the Signal Hut.",
+   "names": {
+    "Fort Vestrin": "place",
+    "Vestrin": "place",
+    "Morlak": "person",
+    "Ice Tower": "place",
+    "Undead": "group",
+    "Fennick": "person",
+    "Orla": "person",
+    "Bell Tower": "place",
+    "Hulgar": "person",
+    "Brokk": "person",
+    "Tolmar": "person",
+    "Ottmar": "person",
+    "White Wolves": "group",
+    "Grunda": "person",
+    "Urchins": "group",
+    "Bearskin Cloak": "thing",
+    "Dagna": "person",
+    "Ulfa": "person",
+    "Gorrin": "person",
+    "Bodvar": "person",
+    "Fitch": "person",
+    "Brannoc": "person",
+    "Torgal": "person",
+    "Pugg": "person",
+    "Halbrin": "person",
+    "Warhorn of Vestrin": "thing",
+    "Old Watch": "place",
+    "Skeevo": "person",
+    "Gundry": "person",
+    "Pell": "person",
+    "Hessa": "person",
+    "Signal Hut": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gundry",
+     "text": "Arrgh!! Now it's frozen again! I've been out here trying to free this blasted gate winch since dawn! (Sigh)... I bet that fool Pell is stuck up at the Signal Hut where I sent him for oil. Somebody has to bring him down!\n\nIf you do go up to the Signal Hut, watch out for the skeletons. The whole slope is crawling with them."
+    },
+    "reminder": {
+     "speaker": "Gundry",
+     "text": "I still can't budge this winch. You find Pell yet?"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Over here, stranger!\n\nYou're just in time. Those skeletons have been banging on this door all night and my lamp just went out!\n\nCome on, let's run."
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Can I hold the torch, sir?"
+    },
+    "completion": {
+     "speaker": "Gundry",
+     "text": "When you pass the storehouse, you'll be handed a fine robe by my wife Hessa. She will see that it fits -- best seamstress in Fort Vestrin."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Pell down from the Signal Hut... in one piece."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Ostrak: Dagny begs the player to bring back her husband Rhun, a stoker cut off by the lava in the lowest tunnels of the Deep Shaft.",
+   "names": {
+    "Ostrak": "place",
+    "Mount Krell": "place",
+    "Old Foundry": "place",
+    "Great Furnace": "place",
+    "Fire Pools": "place",
+    "Slag Gate": "place",
+    "Ash Caves": "place",
+    "Deep Shaft": "place",
+    "Cracked Anvil": "place",
+    "Malgrath": "person",
+    "Gavrik": "person",
+    "Brugo": "person",
+    "Yorga": "person",
+    "Quilla": "person",
+    "Gorvane": "person",
+    "Magra": "person",
+    "Toller": "person",
+    "Fennick": "person",
+    "Orsk": "person",
+    "Grisp": "person",
+    "Dagny": "person",
+    "Rhun": "person",
+    "Torvic": "person",
+    "Hobb": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Guild": "group",
+    "Fire Cloak": "thing",
+    "Guild Hammer": "thing",
+    "Spell Book": "thing",
+    "Steel Shield": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dagny",
+     "text": "Thank goodness you're here, lad! With the lava up in the Deep Shaft, my husband Rhun is cut off down there. But if I know Rhun, he's too stubborn to leave his tools behind. And it falls to you to climb down to the lowest tunnels -- where you must find him before the heat does and bring him home to his wife."
+    },
+    "reminder": {
+     "speaker": "Dagny",
+     "text": "Hurry to the Deep Shaft!"
+    },
+    "found": {
+     "speaker": "Rhun",
+     "text": "My tools are lost, lad, but the Guild will forge me new ones! The ladder up is over here.\n\nLead on, with the blessings of every stoker in Ostrak."
+    },
+    "following": {
+     "speaker": "Rhun",
+     "text": "Good. Just a bit farther."
+    },
+    "completion": {
+     "speaker": "Rhun",
+     "text": "I'm home. Thanks, lad! Take this."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Rhun in the lowest tunnels of the Deep Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow Crossing: Dorlise, wife of Gundar the smith, sent her boy Corby to hide in the old mine, where the Spiders nest.",
+   "names": {
+    "Tarrow Crossing": "place",
+    "Tarrow": "place",
+    "Copper Kettle": "place",
+    "Town Hall": "place",
+    "Fort Grimmock": "place",
+    "Thistle Wood": "place",
+    "Gorbash": "person",
+    "Vardis": "person",
+    "Pellam": "person",
+    "Thurl": "person",
+    "Ottmar": "person",
+    "Marga": "person",
+    "Bodrick": "person",
+    "Gundar": "person",
+    "Grizelda": "person",
+    "Hobart": "person",
+    "Fitch": "person",
+    "Dorlise": "person",
+    "Corby": "person",
+    "Fenna": "person",
+    "Pimm": "person",
+    "Jory": "person",
+    "Ogres": "group",
+    "Bears": "group",
+    "Grizzly": "group",
+    "Imps": "group",
+    "Spiders": "group",
+    "Troll": "group",
+    "Ankh": "thing",
+    "Longsword": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorlise",
+     "text": "Ah, there you are. This is the blackest day in all of Tarrow -- my boy Corby is missing!\n\nI sent him to hide in the old mine in case the Ogres came through the crossroads. That mine will prove his doom should he wander into the Spiders' nest. Please, bring him home!"
+    },
+    "reminder": {
+     "speaker": "Dorlise",
+     "text": "Hmmm... don't say a word to his father. I'll try to keep him busy at the forge."
+    },
+    "found": {
+     "speaker": "Corby",
+     "text": "Let's go home to Mother!"
+    },
+    "following": {
+     "speaker": "Corby",
+     "text": "No matter if the Spiders come after us! The tunnel goes up to the light. Even Spiders won't follow us out into the sun!"
+    },
+    "completion": {
+     "speaker": "Dorlise",
+     "text": "My Corby has been found and brought home safe and sound! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the old mine and bring Corby home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tullin: Old Bartolf's son-in-law Pottle is held in the Ogres' larder in the caves under Skarr Ridge.",
+   "names": {
+    "Tullin": "place",
+    "Skarr Ridge": "place",
+    "Grange Hall": "place",
+    "Muddy Boot": "place",
+    "Ogres": "group",
+    "Imps": "group",
+    "Tullin Watch": "group",
+    "Gorrumph": "person",
+    "Brannoch": "person",
+    "Gromwell": "person",
+    "Hessa": "person",
+    "Barlo": "person",
+    "Fendra": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Joss": "person",
+    "Wobbin": "person",
+    "Dorrick": "person",
+    "Mirrin": "person",
+    "Sneed": "person",
+    "Bartolf": "person",
+    "Pottle": "person",
+    "Nella": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bartolf",
+     "text": "Excellent timing, lad! I can only guess that Gorrumph must be getting a bit hungry by now, what with my son-in-law Pottle sitting in his larder. But hurry! You must get up to the caves under Skarr Ridge, not only because that is where the Ogres keep their prisoners, but I'm sure the poor fool is driving them all mad with his complaining...he he he."
+    },
+    "reminder": {
+     "speaker": "Bartolf",
+     "text": "Well -- go on!"
+    },
+    "found": {
+     "speaker": "Pottle",
+     "text": "Go on and cut me loose, my hands are still bound up behind my back."
+    },
+    "following": {
+     "speaker": "Pottle",
+     "text": "Stop poking at those barrels! You'll bring the whole cave down on us!"
+    },
+    "completion": {
+     "speaker": "Bartolf",
+     "text": "Sit yourself down, young sir. I'll go and fetch you some potions."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pottle in the Ogres' larder."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  }
+ ]
+}

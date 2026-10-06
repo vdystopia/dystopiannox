@@ -1,0 +1,525 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i11",
+ "writer": "one writer a town (variants/i11/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Garrick keeps the north gate, shut by Halvard against Red Corwin's bandits.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Tobin": "person",
+    "Barley": "thing",
+    "Amulet of Plenty": "thing",
+    "Horn of the Watch": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Brothers": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Hardly anybody comes up to this gate these days."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Back to town with you, stranger! Have a pleasant day!"
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Very well. It's open. Go on."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Dolgar: Durm guards the way down to the Old Shaft, shut by Foreman Brask since Krell's Trolls took the Deep Gate.",
+   "names": {
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Brask": "person",
+    "Durm": "person",
+    "Krell": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Old Shaft": "place",
+    "the Deep": "place",
+    "Great Lift": "place",
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "Imps": "group",
+    "Orla": "person",
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Kessa": "person",
+    "Ottick": "person",
+    "Brewhouse": "place",
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Durm",
+     "text": "I'd go see Foreman Brask first...\nunless you'd like to feel his boot."
+    },
+    "again": {
+     "speaker": "Durm",
+     "text": "Foreman Brask, I've brought you another volunteer who hopes to make a name for himself in the Deep!"
+    },
+    "later": {
+     "speaker": "Durm",
+     "text": "Brask sent you down after the Trolls!? You're doomed! Go on, then! I won't miss you!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Pellmire: Tobb at the Causeway gate, shut while Mogrut's Ogres hold the Sluice Tower.",
+   "names": {
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Sluice Tower": "place",
+    "Sunken Causeway": "place",
+    "Causeway": "place",
+    "Rotten Pilings": "place",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Mayor Dobbet": "person",
+    "Dobbet": "person",
+    "Captain Vell": "person",
+    "Mogrut": "person",
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Gummet": "person",
+    "Nella": "person",
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Tobb": "person",
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Elsbet": "person",
+    "Moggs": "person",
+    "Bog Wardens": "group",
+    "Ogres": "group",
+    "Leeches": "group",
+    "Urchins": "group",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "What's this? The Causeway gate is shut by order! You'd better go see Mayor Dobbet if you mean to cross. The Ogres are out there."
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Wanna spend a night in the stocks?"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Fair work at the Sluice Tower. But that don't make you one of the Bog Wardens! Now move along!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Korlen: Corporal Fisk at the castle gate, later sent to fetch the player to Commander Dorvik after Skarn Tower is taken.",
+   "names": {
+    "Korlen": "place",
+    "Gruttock": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Skarn Tower": "place",
+    "Dunwood": "place",
+    "Keep": "place",
+    "Gorrow": "place",
+    "Broken Pike": "place",
+    "Lord Ambrel": "person",
+    "Dorvik": "person",
+    "Haskin": "person",
+    "Fisk": "person",
+    "Hobb": "person",
+    "Agna": "person",
+    "Orvel": "person",
+    "Gorlick": "person",
+    "Bellamar": "person",
+    "Gisla": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Orrin": "person",
+    "Tobb": "person",
+    "Ulda": "person",
+    "Chain Tunic": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Fisk",
+     "text": "Hey, you could do with a proper helmet."
+    },
+    "again": {
+     "speaker": "Fisk",
+     "text": "Utterly hopeless! Off with you, worm!"
+    },
+    "later": {
+     "speaker": "Fisk",
+     "text": "Stand where you are, stranger! Commander Dorvik hears you threw the Ogres out of Skarn Tower and half the garrison swears to it! Come along. He's got a hot supper and a soft bed all ready for you! Will you come quietly, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ondel: Tobb, the warden at the jetty gate, shut since the Undead rose, and Maudie accuses the player of untying her boat.",
+   "names": {
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Gull Rock": "place",
+    "Sunken Crypt": "place",
+    "Net Hall": "place",
+    "Rusty Hook": "place",
+    "Tavarin": "place",
+    "Rain Staff": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Leech": "group",
+    "Vulmar": "person",
+    "Brannoc": "person",
+    "Mayor Wendrel": "person",
+    "Tobb": "person",
+    "Maudie": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ishmar": "person",
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Tully": "person",
+    "Brusk": "person",
+    "Moll": "person",
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Only fishermen go down to the boats!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Hold it right there! Maudie swears you tried to untie her boat and the cut rope proves it.\n\nCome along! I've got a damp and snug little cellar waiting for you.\n\nWill you come quietly, stranger?"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Up out of that cellar, lad! Unless you'd RATHER stay down there!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Brusk, the guard at the College gate, shut since the Ghosts came.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "the Archive": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Murkfen": "place",
+    "the Inkwell": "place",
+    "Olvane": "person",
+    "Pellimore": "person",
+    "Umbrik": "person",
+    "Ezzard": "person",
+    "Nib": "person",
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "Brusk": "person",
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group",
+    "the Imps": "group",
+    "the Trolls": "group",
+    "the Rats": "group",
+    "the bats": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brusk",
+     "text": "Have it your way."
+    },
+    "again": {
+     "speaker": "Brusk",
+     "text": "Sergeant! Sergeant! Somebody's bothering me!"
+    },
+    "later": {
+     "speaker": "Brusk",
+     "text": "I hear Archivist Umbrik's reading room was full of bats till just lately. Funny business all over town nowadays."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarra: Haddo, guard at the north gate of Fort Skarra, before and after the Undead attack on the wall.",
+   "names": {
+    "Fort Skarra": "place",
+    "Vaskor": "person",
+    "Ulvane": "person",
+    "Ostrag": "person",
+    "Tombs of Gol Varra": "place",
+    "Undead": "group",
+    "Haddo": "person",
+    "Grubb": "person",
+    "Imps": "group",
+    "Imp caves": "place",
+    "Vardis": "person",
+    "Ebbet": "person",
+    "Ebbet's hut": "place",
+    "Silver Horn": "thing",
+    "Ankh": "thing",
+    "Mirta": "person",
+    "Bettra": "person",
+    "Dolgo": "person",
+    "Gunnet": "person",
+    "Brakka": "person",
+    "Brakka's forge": "place",
+    "Yselda": "person",
+    "Gimble": "person",
+    "Kolb": "person",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Haddo",
+     "text": "You're mighty thin for these mountains."
+    },
+    "again": {
+     "speaker": "Haddo",
+     "text": "Move stranger! Move!"
+    },
+    "later": {
+     "speaker": "Haddo",
+     "text": "Vaskor must have found a way to wake the frozen dead. One night the east wall was quiet and by morning it was overrun with skeletons and zombies! They want the pass."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "general-purpose subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 8,
+   "specifics": "Vurn: Durk, the guard at the Hall of Anvils, before and after the Helm of Far Sight is brought back.",
+   "names": {
+    "Vurn": "place",
+    "Vargoth": "person",
+    "Brannoc": "person",
+    "Kolbrin": "person",
+    "Durk": "person",
+    "Grenna": "person",
+    "Gubbin": "person",
+    "Ambrel": "person",
+    "Brog": "person",
+    "Lissa": "person",
+    "Marga": "person",
+    "Torbek": "person",
+    "Zelphine": "person",
+    "Kragg": "person",
+    "Pibble": "person",
+    "Orsk": "person",
+    "Nessa": "person",
+    "Grisold": "person",
+    "Tarvel": "place",
+    "Hall of Anvils": "place",
+    "Deep Forge": "place",
+    "Cinder Caves": "place",
+    "Ash Gate": "place",
+    "Helm of Far Sight": "thing",
+    "Imps": "group",
+    "Ember Demons": "group",
+    "Rats": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Durk",
+     "text": "No time, sorry."
+    },
+    "again": {
+     "speaker": "Durk",
+     "text": "Welcome to the Hall of Anvils. Master Kolbrin's workshop is at the back."
+    },
+    "later": {
+     "speaker": "Durk",
+     "text": "Word is you got the Helm back from those thieving Imps! Bless you, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Varrow: Brannoc keeps the north gate, shut by Mayor Grumwald while Krull's bandits rob the north road; later the wolves come into town.",
+   "names": {
+    "Varrow": "place",
+    "Gilded Boar": "place",
+    "Grimwood": "place",
+    "Crag Hill": "place",
+    "Potions Aplenty": "place",
+    "Krull": "person",
+    "Druvan": "person",
+    "Grumwald": "person",
+    "Brannoc": "person",
+    "Hobbin": "person",
+    "Olla": "person",
+    "Varnus": "person",
+    "Fennick": "person",
+    "Pella": "person",
+    "Jory": "person",
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannoc",
+     "text": "Greetings! My name is Brannoc. I guard this gate so nobody wanders up the north road and gets robbed blind."
+    },
+    "again": {
+     "speaker": "Brannoc",
+     "text": "Krull's thugs are prowling all along the north road! You'd best stay inside!"
+    },
+    "later": {
+     "speaker": "Brannoc",
+     "text": "Aiieee! Wolves! Wolves! Everybody inside!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 10,
+   "specifics": "Tolm: Dorrik keeps the east gate, shut by Mayor Corbel while the Ogres raid the fields.",
+   "names": {
+    "Tolm": "place",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Ondrel": "person",
+    "Corbel": "person",
+    "Dorrik": "person",
+    "Fulk": "person",
+    "Hobb": "person",
+    "Zelna": "person",
+    "Brunn": "person",
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Tamm": "person",
+    "Hulda": "person",
+    "Nella": "person",
+    "Olm": "person",
+    "Pella": "person",
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Ogres": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dorrik",
+     "text": "Mayor Corbel has shut the east gate until somebody chases the Ogres out of the bean fields. Somebody ought to go and get Zelna. She usually just puts the Ogres to sleep instead of fighting them."
+    },
+    "again": {
+     "speaker": "Dorrik",
+     "text": "I'm afraid old Hobb has finally lost his wits. They've put me on his gate now that he's taken up sleeping in the hayloft and hooting at the moon all night."
+    },
+    "later": {
+     "speaker": "Dorrik",
+     "text": "We must save the granary! Drive back the Ogres and shut the east gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

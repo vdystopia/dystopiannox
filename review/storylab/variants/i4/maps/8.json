@@ -1,0 +1,313 @@
+{
+ "iter": "i4",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Vulmar",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Ogres under the brute Thrugg have seized the Old Foundry on the mountain and dammed the lava, so the forges of Vulmar go cold while the Ogres forge weapons of their own.",
+  "names": {
+   "Vulmar": "place",
+   "Ezrin": "person",
+   "Mayor Dravik": "person",
+   "Thrugg": "person",
+   "Hulgar": "person",
+   "Mott": "person",
+   "Thessa": "person",
+   "Pell": "person",
+   "Orla": "person",
+   "Brom": "person",
+   "Tobb": "person",
+   "Kraddock": "person",
+   "Sibba": "person",
+   "Guildmaster Orvald": "person",
+   "Grubb": "person",
+   "Marga": "person",
+   "Wim": "person",
+   "Old Foundry": "place",
+   "Slag Pits": "place",
+   "Cinder Caves": "place",
+   "Red Bucket": "place",
+   "Town Hall": "place",
+   "Guild": "group",
+   "Ogres": "group",
+   "Scorpions": "group",
+   "Imps": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hulgar keeps the mountain gate of Vulmar, shut by Mayor Dravik while the Ogres hold the Old Foundry.",
+   "names": {
+    "Hulgar": "person",
+    "Mayor Dravik": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hulgar",
+     "text": "Halt! Nobody goes up the mountain road. Mayor Dravik's orders. The Ogres would have you for supper!"
+    },
+    "again": {
+     "speaker": "Hulgar",
+     "text": "I said nobody goes up. Go pester somebody else."
+    },
+    "later": {
+     "speaker": "Hulgar",
+     "text": "Mayor Dravik has opened the road for you. Watch your head up there -- the Ogres have been throwing rocks."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Mott the carter wants the Scorpions cleared out of the Slag Pits east of town so his mules will haul ore again.",
+   "names": {
+    "Mott": "person",
+    "Slag Pits": "place",
+    "Scorpions": "group",
+    "Old Foundry": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mott",
+     "text": "Bah! Scorpions! The Slag Pits east of town are crawling with them. Ever since the Ogres took the Old Foundry, every kind of vermin is coming down off the mountain!\n\nMy mules won't go near the pits, and I've got ore to haul. Kill those Scorpions and I'll make it worth your while. That's fair, isn't it?"
+    },
+    "reminder": {
+     "speaker": "Mott",
+     "text": "Are those Scorpions dead yet? I can't haul a thing!"
+    },
+    "completion": {
+     "speaker": "Mott",
+     "text": "Dead? All of 'em? Ha! Wait till my mules hear about this! Here's 100 gold for you, stranger. You earned every piece."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Scorpions in the Slag Pits for Mott."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Thessa the smith's magic gloves were stolen down her chimney by Imps, who nest in the Cinder Caves north of town.",
+   "names": {
+    "Thessa": "person",
+    "Imps": "group",
+    "Cinder Caves": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thessa",
+     "text": "Thieves! Nasty little flying thieves! The Imps came down my chimney and stole my magic gloves right off the anvil!\n\nWithout them I can't touch the hot iron, and the whole town needs swords with the Ogres on the mountain. The Imps nest in the Cinder Caves, north of the town wall.\n\nWill you bring my gloves back, kind sir? I'll make it worth your trouble."
+    },
+    "refusal": {
+     "speaker": "Thessa",
+     "text": "Oh, fine! I'll just burn my fingers then!"
+    },
+    "reminder": {
+     "speaker": "Thessa",
+     "text": "My gloves! Have you got my gloves?"
+    },
+    "completion": {
+     "speaker": "Thessa",
+     "text": "My gloves! Oh, you found them! Now I can get back to work at last! Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Thessa",
+     "text": "Thanks again for my gloves, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Thessa's magic gloves from the Imps in the Cinder Caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Thessa's magic gloves from the Imps in the Cinder Caves."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": ["RedPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Vulmar: Pell at the bellows, Orla, and old Brom.",
+   "names": {
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Mayor Dravik": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Pell",
+     "text": "Can't talk now. These bellows won't pump themselves!"
+    },
+    "rumour2": {
+     "speaker": "Orla",
+     "text": "Mayor Dravik hasn't slept a wink since the Ogres came down off the mountain. I hear him pacing up and down all night long!"
+    },
+    "rumour3": {
+     "speaker": "Brom",
+     "text": "Keep your purse tied tight, stranger. The Imps will grab anything that shines."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Tobb of the Red Bucket tavern, Kraddock the armourer, and old Sibba who sells potions and scrolls.",
+   "names": {
+    "Tobb": "person",
+    "Red Bucket": "place",
+    "Kraddock": "person",
+    "Vulmar": "place",
+    "Sibba": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tobb",
+     "text": "Sit down, sit down! The ale's cold, and in this town that's a miracle! What'll ya have?"
+    },
+    "arms": {
+     "speaker": "Kraddock",
+     "text": "Welcome to Kraddock's! Finest steel in Vulmar. Better buy now. With the forges going cold, there won't be much more of it."
+    },
+    "magic": {
+     "speaker": "Sibba",
+     "text": "Heh, heh... A customer! Come in, come in! Potions, scrolls, spell books... just don't touch the green jar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Orvald wants the jammed lava sluice west of town opened; Grubb the scrapper sells a chain tunic of doubtful origin.",
+   "names": {
+    "Guildmaster Orvald": "person",
+    "Guild": "group",
+    "Ogres": "group",
+    "Grubb": "person",
+    "Mayor Dravik": "person",
+    "Vulmar": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmaster Orvald",
+     "text": "Greetings, Wanderer. The Ogres have jammed the great lava sluice west of town. Without the lava, our furnaces languish and the Guild cannot arm the town against these abominable brutes.\n\nGo to the sluice and pull the great lever. The Guild will reward you handsomely."
+    },
+    "offer_b": {
+     "speaker": "Grubb",
+     "text": "Psst! You there! Need some armor? I got a chain tunic here, hardly used. It fell in the lava twice and didn't even melt!\n\nYours for 100 gold. Can't say fairer than that, eh?"
+    },
+    "outcome_a": {
+     "speaker": "Guildmaster Orvald",
+     "text": "The lava flows again! Listen to those hammers ring! The Guild is in your debt, lad. Take this longsword, fresh from our own forge.\n\nNow go and see Mayor Dravik. The Ogres will not like this one bit!"
+    },
+    "outcome_b": {
+     "speaker": "Grubb",
+     "text": "Sold! Pleasure doing business with you, friend. And if the Mayor's men come asking, you never saw me."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Open the lava sluice west of Vulmar for Guildmaster Orvald."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the chain tunic from Grubb for 100 gold."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Marga's boy Wim was dragged off by the Ogres to work the bellows of the Old Foundry.",
+   "names": {
+    "Marga": "person",
+    "Wim": "person",
+    "Ogres": "group",
+    "Old Foundry": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marga",
+     "text": "Please, help me! The Ogres came down in the night and dragged off my boy Wim! They took him up to the Old Foundry to work their bellows!\n\nHe's only a lad. I haven't much, but it's yours if you bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "Why are you standing here? My Wim is up there with those brutes!"
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "You came for me! Get me out of here, before they come back!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Hurry! Don't let them catch us again!"
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wim! My Wim! Oh, thank you, thank you, kind stranger! Here, it isn't much, but take it with my blessing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Wim from the Ogres in the Old Foundry."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Brom points the player to Mayor Dravik in the Town Hall, who sends him to drive Thrugg's Ogres out of the Old Foundry.",
+   "names": {
+    "Brom": "person",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Town Hall": "place",
+    "Thrugg": "person",
+    "Ogres": "group",
+    "Old Foundry": "place",
+    "Vulmar": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Brom",
+     "text": "You must be the one Ezrin sent! Mayor Dravik's waiting for you in the Town Hall, up past the big furnace."
+    },
+    "opening": {
+     "speaker": "Mayor Dravik",
+     "text": "Ah, at last! Ezrin said he would send help, and not a moment too soon!\n\nThe Ogres have seized the Old Foundry up on the mountain, and that brute Thrugg leads them. They have dammed the lava and turned our own great forge to the making of Ogre weapons! If they are not stopped, Vulmar is finished, and every village in the valley after it.\n\nGo up the mountain road, lad, and drive Thrugg out of the Old Foundry. The gate guard will let you pass."
+    },
+    "reminder": {
+     "speaker": "Mayor Dravik",
+     "text": "Go, lad! Every hour you tarry, our forges grow colder!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Thrugg and his Ogres out of the Old Foundry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

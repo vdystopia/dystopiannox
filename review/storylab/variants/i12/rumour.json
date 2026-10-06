@@ -1,0 +1,516 @@
+{
+ "scenario": "rumour",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Three townsfolk: a worry, a pointer, a word about Halvard.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "My wagon... robbed... all robbed."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "There is a healer next to the Chapel of the Ford."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "We will hold the ford, but you must see Halvard in the Moot Hall. Thanks for your help, brave Adventurer!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Three townsfolk: a tip about Mobb and the Lift Key, a tease, and a word about the Trolls",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tarn",
+     "text": "You can find Mobb the Tallyman in the Counting House. He has the Lift Key."
+    },
+    "rumour2": {
+     "speaker": "Ysolt",
+     "text": "Duck, stranger, duck! Hee, hee, hee...!"
+    },
+    "rumour3": {
+     "speaker": "Garn",
+     "text": "We have held the Counting House! Now we must drive the Trolls out of all of Skarn Delve!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Three townsfolk of Gorrow: one pestered by leeches, one brushing the player off, one with something on his leg",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Yarrin",
+     "text": "Help! The leeches are in my bed!"
+    },
+    "rumour2": {
+     "speaker": "Sallow",
+     "text": "Eh? Sorry, no time."
+    },
+    "rumour3": {
+     "speaker": "Tuk",
+     "text": "Blaaargh! Get this thing off my leg!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Three townsfolk of Karth Vael: Nessa asks about the pass, Crull gossips about the Troll King, Tam brushes the player off.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Nessa",
+     "text": "Hello again. Has the Troll King been stopped, yet?"
+    },
+    "rumour2": {
+     "speaker": "Crull",
+     "text": "I hear that the Troll King has finally lost his patience. He's massing an army below Mount Dreg! Everyone must watch out for Troll scouts!"
+    },
+    "rumour3": {
+     "speaker": "Tam",
+     "text": "I've been told to keep away from newcomers."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Three townsfolk: a warning, gossip about the pirates, a taunt from a drunk.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Pim",
+     "text": "Hide, stranger! Hide!"
+    },
+    "rumour2": {
+     "speaker": "Sedda",
+     "text": "The river-rats of Sedge Landing are a crooked and shameless band of smugglers! The worst is their boss, Joh Skarn!"
+    },
+    "rumour3": {
+     "speaker": "Crodd",
+     "text": "Can't swim? Not so clever, eh?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Three townsfolk: Fenn on the Observatory, Tessik on Pellam's lost wits, Hendry brushing the player off.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fenn",
+     "text": "Maldrek must have found some way past our wards. At noon the Observatory was quiet, by dusk it was swarming with Gargoyles and Imps! They want the Orrery."
+    },
+    "rumour2": {
+     "speaker": "Tessik",
+     "text": "I'm afraid Pellam finally lost his wits. They've given me his study since he's taken to roaming the cloisters honking like a goose and chasing pigeons."
+    },
+    "rumour3": {
+     "speaker": "Hendry",
+     "text": "Shouldn't you be out chasing Gargoyles?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: three townsfolk of Kell Varn: Ogres at the pass, the Warden, a spy",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hobb",
+     "text": "Kell Varn will never fall to the Ogres. Stand firm for the honor of Warden Odrin!"
+    },
+    "rumour2": {
+     "speaker": "Vessa",
+     "text": "No, we dare not sleep while the Ogres hold the pass!"
+    },
+    "rumour3": {
+     "speaker": "Ketra",
+     "text": "A spy from the Hold just ran past me! Be fast! He's heading for the gate!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Three townsfolk: Fenn on a slug at Maldrek's door, Yara teasing, Odo on a missing ore cart.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fenn",
+     "text": "Ew! I watched that huge lava slug ooze right under Maldrek's door!"
+    },
+    "rumour2": {
+     "speaker": "Yara",
+     "text": "You're pretty puny for a hammer-boy. Hah, hah, hah...!"
+    },
+    "rumour3": {
+     "speaker": "Odo",
+     "text": "Did you see where the ore cart went? It couldn't have just rolled away!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Lorna flirts, Wick the drunk taunts, Dray wants the Troll chief dead.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Lorna",
+     "text": "Hello stranger! Look me up when you're done with the Trolls."
+    },
+    "rumour2": {
+     "speaker": "Wick",
+     "text": "Watcha gonna do? Throw me out?"
+    },
+    "rumour3": {
+     "speaker": "Dray",
+     "text": "Get that Troll chief and tear his tusks out!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Three townsfolk of Tosk: praise after the boar hunt, a word on the Ogre chief's raids, a farmer's shout.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dobb",
+     "text": "They say you're the one who chased those pesky boars off our fields! Thank you, kind sir!"
+    },
+    "rumour2": {
+     "speaker": "Lorra",
+     "text": "That brute Brakk has left the east fields in ruins. Find his scouts before they reach the mill."
+    },
+    "rumour3": {
+     "speaker": "Tamsin",
+     "text": "Hey! Get out of my barn!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

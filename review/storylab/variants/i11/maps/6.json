@@ -1,0 +1,329 @@
+{
+ "iter": "i11",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrel",
+  "setting": "a wizards' college town",
+  "trouble": "Malgrith, a Wizard cast out of the College, has raised the Ghosts of the hills and sent them against Ostrel to take the Orb of Seeing.",
+  "names": {
+   "Ostrel": "place",
+   "the College": "place",
+   "the Archive": "place",
+   "the Town Hall": "place",
+   "the old quarry": "place",
+   "the herb gardens": "place",
+   "the mill pond": "place",
+   "the Rat warrens": "place",
+   "the old granary": "place",
+   "the Observatory": "place",
+   "Crane Hill": "place",
+   "the Murkfen": "place",
+   "the Inkwell": "place",
+   "Olvane": "person",
+   "Pellimore": "person",
+   "Umbrik": "person",
+   "Ezzard": "person",
+   "Nib": "person",
+   "Odalie": "person",
+   "Tobble": "person",
+   "Jessop": "person",
+   "Yalda": "person",
+   "Malgrith": "person",
+   "Brusk": "person",
+   "Bolgar": "person",
+   "Drogg": "person",
+   "Quenby": "person",
+   "the Orb of Seeing": "thing",
+   "the Ghosts": "group",
+   "the Wisps": "group",
+   "the Imps": "group",
+   "the Trolls": "group",
+   "the Rats": "group",
+   "the bats": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brusk, the guard at the College gate, shut since the Ghosts came.",
+   "names": {
+    "Brusk": "person",
+    "Umbrik": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brusk",
+     "text": "Have it your way."
+    },
+    "again": {
+     "speaker": "Brusk",
+     "text": "Sergeant! Sergeant! Somebody's bothering me!"
+    },
+    "later": {
+     "speaker": "Brusk",
+     "text": "I hear Archivist Umbrik's reading room was full of bats till just lately. Funny business all over town nowadays."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Archivist Umbrik has shut himself in a closet while bats roost in his reading room at the Archive.",
+   "names": {
+    "Umbrik": "person",
+    "the Archive": "place",
+    "the bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Umbrik",
+     "text": "These filthy bats are a curse on my house! My students tried to smoke them out, but back they come every night! You are my last hope of getting the vermin out!\n\nThe bats are up in my reading room, there, at the top of the stairs. Please, watch yourself."
+    },
+    "reminder": {
+     "speaker": "Umbrik",
+     "text": "I won't come out of this closet till those bats are gone! Swat them, burn them, I don't care how! Just get rid of them! Hurry before more of them roost!"
+    },
+    "completion": {
+     "speaker": "Umbrik",
+     "text": "Brave Adventurer, you have my heartfelt thanks! You have earned the friendship of the College. The porters will be told that you may enter the Archive whenever you like.\n\nHere is some gold for your pains. I must insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bats out of Archivist Umbrik's reading room."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Mayor Pellimore's silver staff was stolen from the Town Hall by the Imps of the old quarry.",
+   "names": {
+    "Pellimore": "person",
+    "Olvane": "person",
+    "Ostrel": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the College": "place",
+    "the Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellimore",
+     "text": "Welcome to Ostrel, brave Wanderer! Master Olvane told us you would come!\n\nThe Imps who live in the old quarry have gone wild! They crept into the Town Hall and stole my silver staff! One of the guards ran after the little thieves into the quarry, but hasn't come back.\n\nWill you go into the quarry pits, West of town, and win back my staff from those Imps? When you come back, please find me. I will be at the Town Hall on the square."
+    },
+    "refusal": {
+     "speaker": "Pellimore",
+     "text": "Hmph! Well, I suppose I'll ask someone else, then."
+    },
+    "reminder": {
+     "speaker": "Pellimore",
+     "text": "Those pesky Imps are getting far too bold these days."
+    },
+    "completion": {
+     "speaker": "Pellimore",
+     "text": "My silver staff! Thank you, kind sir! Every soul in Ostrel is grateful for the great deed you have done.\n\nHere, accept this small gift from the town. Master Olvane is waiting for you up at the College. Stock up at the shops before you go, then see him at once."
+    },
+    "after": {
+     "speaker": "Pellimore",
+     "text": "I have only my thanks left to give you. Go and find Master Olvane. He has been asking for you up at the College."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pellimore's silver staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mayor Pellimore's silver staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a woman teasing the player, a student on the Ghosts, an old man on the times.",
+   "names": {
+    "Malgrith": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townswoman",
+     "text": "You're awful skinny for a monster-slayer. Hee, hee, hee...!"
+    },
+    "rumour2": {
+     "speaker": "Student",
+     "text": "Malgrith must have learned how to call up the dead. One night the hill stood empty, then the very next night it was crawling with Ghosts and Wisps! They were after the Orb of Seeing."
+    },
+    "rumour3": {
+     "speaker": "Old Man",
+     "text": "No, we must not sleep while Malgrith's Ghosts walk the hills!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bolgar the innkeeper, Drogg the smith, Quenby of the Inkwell magic shop.",
+   "names": {
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "Ostrel": "place",
+    "the Inkwell": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bolgar",
+     "text": "A stranger, eh? Most folks here won't trust an outsider, but they've never been past the town gate and I've been clear to the coast! What do they know about anything!? Eh? Heh, heh, heh...\n\nYou're always welcome under my roof, friend."
+    },
+    "arms": {
+     "speaker": "Drogg",
+     "text": "Psst! Hey, you! Want a good sword? A shield, perhaps?"
+    },
+    "magic": {
+     "speaker": "Quenby",
+     "text": "Welcome to the Inkwell!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Odalie's little brother Tobble was carried off by Trolls from the herb gardens; the apprentice Jessop lost his master's best hat to the same Trolls.",
+   "names": {
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "the College": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odalie",
+     "text": "Sir! Please, help me! A band of ugly Trolls just stormed the herb gardens, south of the College and carried off nearly every one of the young students! One of them is my little brother, Tobble!\n\nPlease bring him home safe and you shall be rewarded!"
+    },
+    "offer_b": {
+     "speaker": "Jessop",
+     "text": "The Trolls just ran off with my master's best hat! If he finds it gone, he'll have my hide. He's due home any time now!\n\nPlease, help me, stranger! I saw them carry it off toward the mill pond.\n\nWould you... could you bring it back for me?"
+    },
+    "outcome_a": {
+     "speaker": "Odalie",
+     "text": "Bless you, kind sir! Please, take these as tokens of my gratitude!"
+    },
+    "outcome_b": {
+     "speaker": "Jessop",
+     "text": "Oh, thank you, stranger! Here, take this as a token of my appreciation!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue Tobble from the Trolls and bring him home to Odalie."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Jessop's master's hat back from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Ezzard's apprentice Nib went down into the Rat warrens behind the old granary and has not come out.",
+   "names": {
+    "Ezzard": "person",
+    "Nib": "person",
+    "Olvane": "person",
+    "the College": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Rats": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ezzard",
+     "text": "Filthy, gnawing vermin! The Rats only came up from the cellars last week and they've already chewed through half the town!\n\nI am Master Ezzard of the College. I am searching for my apprentice, Nib. I fear he went down into the Rat warrens and has not come out.\n\nIf you can bring the boy back to me safe, I will see that you are rewarded. Follow me, and I'll take you to the foul hole behind the old granary."
+    },
+    "reminder": {
+     "speaker": "Ezzard",
+     "text": "Have you any news of Nib? Oh dear, oh dear..."
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Thank you for coming for me, but my leg is hurt badly and I can barely stand. The Rats... somebody was leading them! A man in a grey... grey hood..."
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "Help me home to Master Ezzard, please."
+    },
+    "completion": {
+     "speaker": "Ezzard",
+     "text": "Nib! Alive and whole! Fortune smiles on us today.\n\nThose Rats were no match for you, that much is plain. Perhaps you have the makings of a student. Hmmm... Yes.\n\nTake this robe as your reward. When you are ready, go up to the College and tell Master Olvane I sent you. There is a great deal of work to be done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what became of Nib, Master Ezzard's apprentice."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "A cauldron-scrubber points the player to Master Olvane, who sends him to Yalda the Stargazer after the Orb of Seeing the Ghosts stole.",
+   "names": {
+    "Olvane": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "the College": "place",
+    "the Murkfen": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "I make a fair living scrubbing cauldrons. Master Olvane is up at the College, asking after you."
+    },
+    "opening": {
+     "speaker": "Olvane",
+     "text": "The road through the Murkfen has put you to the test, lad. But there's no time to put your feet up. You must now win back the Orb of Seeing, which the Ghosts stole from Yalda the Stargazer when they overran the Observatory on Crane Hill!\n\nWith Ghosts on the loose and the Orb in their keeping, Malgrith is certainly behind all of this. Yalda is waiting for you in the town square. Now, be off with you!"
+    },
+    "reminder": {
+     "speaker": "Olvane",
+     "text": "Go and find Yalda, quickly! She has much to tell you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Orb of Seeing from the Ghosts."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

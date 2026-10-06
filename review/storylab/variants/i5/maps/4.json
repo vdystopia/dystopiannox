@@ -1,0 +1,302 @@
+{
+ "iter": "i5",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Castle Brask",
+  "setting": "a castle town with a garrison",
+  "trouble": "The Necromancer Vessk raises the Undead from the old barrows north of Castle Brask, and every night they come at the north wall. Ostric the Wizard sent the player to Belloc the War-Mage.",
+  "names": {
+   "Castle Brask": "place",
+   "Brask": "place",
+   "Vessk": "person",
+   "Ostric": "person",
+   "Belloc": "person",
+   "Brunn": "person",
+   "Fennig": "person",
+   "Haskel": "person",
+   "Ferrol": "person",
+   "Gondrel": "person",
+   "Krell": "person",
+   "Velka": "person",
+   "Tibbet": "person",
+   "Hulda": "person",
+   "Bortho": "person",
+   "Quigg": "person",
+   "Iron Kettle": "place",
+   "Quigg's Magic and Goat Rental": "place",
+   "Gallow Crag": "place",
+   "Split Rock": "place",
+   "north postern": "place",
+   "old barrows": "place",
+   "marsh road": "place",
+   "old toll house": "place",
+   "Undead": "group",
+   "Imps": "group",
+   "Urchins": "group",
+   "Zombie": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brunn at the south gate of Castle Brask.",
+   "names": {
+    "Brunn": "person",
+    "marsh road": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunn",
+     "text": "Good day, stranger. If you go out again, keep off the marsh road. A cart went missing on it only yesterday."
+    },
+    "again": {
+     "speaker": "Brunn",
+     "text": "Oh, I nearly forgot. No fires in the lower town after dark. Move along."
+    },
+    "later": {
+     "speaker": "Brunn",
+     "text": "Looks like rain again. I hate the rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Paymaster Fennig wants the Imps driven out of the garrison's granary by the old mill.",
+   "names": {
+    "Fennig": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Paymaster Fennig",
+     "text": "Good day. I presume you are here about the notice on the gate. Imps have got into the garrison's granary, south of the castle by the old mill, and they are eating our winter stores! If you could drive them out, you'd save my position! I am held to account for every sack. There is a reward, of course."
+    },
+    "reminder": {
+     "speaker": "Paymaster Fennig",
+     "text": "Have you dealt with the Imps? Every hour I lose another sack!"
+    },
+    "completion": {
+     "speaker": "Paymaster Fennig",
+     "text": "The Imps are gone? Splendid! The winter stores are saved!\n\nAs promised, here is your reward. A deserter left this bow behind when he ran off in the night. It is a perfectly good bow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Imps out of the garrison's granary."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Haskel the lookout lost his spyglass to the Urchins of Split Rock.",
+   "names": {
+    "Haskel": "person",
+    "Urchins": "group",
+    "Split Rock": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskel",
+     "text": "Greetings, Wanderer. Those blasted Urchins crept up the watchtower stair last night and stole my spyglass! I can't watch the north wall without it! They hide in the caves under Split Rock, east of the castle. Do me a favor and get it back, and I'll do you one. There's a pair of boots in the watch house that nobody's come for. Will you go?"
+    },
+    "refusal": {
+     "speaker": "Haskel",
+     "text": "Then I'll find someone who will. Good day."
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "No spyglass yet? I've been squinting at that wall all morning!"
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "My spyglass! Not even scratched! Here, the boots are yours, as I promised. A courier left them here and never came back for them."
+    },
+    "after": {
+     "speaker": "Haskel",
+     "text": "I can see clear to the barrows now. Thanks again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Haskel's spyglass from the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Haskel's spyglass from the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Castle Brask: a pointer to the inn, a grumble about the new wall, the night's news again.",
+   "names": {
+    "Iron Kettle": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townswoman",
+     "text": "If it's news you want, go to the Iron Kettle. Soldiers can't keep their mouths shut after a cup or two."
+    },
+    "rumour2": {
+     "speaker": "Old Man",
+     "text": "We never should have dug the new wall right through the old barrows. My mother said so and nobody listened"
+    },
+    "rumour3": {
+     "speaker": "Soldier",
+     "text": "Did you hear? The dead came over the north wall again last night!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hulda of the Iron Kettle, Bortho the armourer, Quigg of the magic shop.",
+   "names": {
+    "Iron Kettle": "place",
+    "Castle Brask": "place",
+    "Quigg's Magic and Goat Rental": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hulda",
+     "text": "Welcome to the Iron Kettle, victuallers to the garrison of Castle Brask. Soldiers eat first."
+    },
+    "arms": {
+     "speaker": "Bortho",
+     "text": "A customer! Half the street's packed up and gone since the dead started walking. I'll be next if business doesn't pick up."
+    },
+    "magic": {
+     "speaker": "Quigg",
+     "text": "Hello, hello! Welcome to Quigg's Magic and Goat Rental! Potions in the front, goats out back! You look like a fella who needs a goat!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Armsmaster Krell wants the beacon on Gallow Crag lit again; Velka the smuggler wants her friend Tibbet broken out of the castle cells.",
+   "names": {
+    "Krell": "person",
+    "Gallow Crag": "place",
+    "Velka": "person",
+    "Tibbet": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Armsmaster Krell",
+     "text": "Greetings, Wanderer. Here's my offer. You do a job for me, and I'll find you something good in the armoury. The beacon on Gallow Crag, west across the river, has gone dark. The men I sent up to light it haven't come back. Light it again. Will you?"
+    },
+    "offer_b": {
+     "speaker": "Velka",
+     "text": "You! Yes, you. Come over here, and keep your voice down. My friend Tibbet is locked in the castle cells and they mean to hang him on market day. The jailer sleeps after his supper and leaves his keys on a nail by the door. Get Tibbet out and I'll give you a steel shield. A good one."
+    },
+    "outcome_a": {
+     "speaker": "Armsmaster Krell",
+     "text": "The beacon's burning! I saw it from the wall. Good work. Here, take this sword. We pulled it out of the moat last spring and nobody ever claimed it."
+    },
+    "outcome_b": {
+     "speaker": "Velka",
+     "text": "Tibbet! Ha! Look at you, all skin and bones!\n\nHere's your shield, as I promised. If the guards ask, you never saw us."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the beacon on Gallow Crag for Armsmaster Krell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Break Tibbet out of the castle cells."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Ferrol the scribe begs the player to find his master Gondrel, a merchant taken on the road and found dying in the old toll house.",
+   "names": {
+    "Ferrol": "person",
+    "Gondrel": "person",
+    "Zombie": "group",
+    "old toll house": "place",
+    "marsh road": "place",
+    "north postern": "place",
+    "Castle Brask": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ferrol",
+     "text": "Kind sir! Help me, please! Master Gondrel's wagon came back without him! The horses were all lathered and the seat was... oh, there was blood on it! And I have his ledgers and nobody to sign them! I'm no fighter, I'd faint at the first sight of a Zombie. Will you find him?"
+    },
+    "reminder": {
+     "speaker": "Ferrol",
+     "text": "Have you found him? Oh.... One of the soldiers said he saw lights in the old toll house on the marsh road. Maybe that's something?"
+    },
+    "found": {
+     "speaker": "Gondrel",
+     "text": "Is... is someone there? Please... they left me for dead... Get me home."
+    },
+    "following": {
+     "speaker": "Gondrel",
+     "text": "Slower... please... I can't keep up."
+    },
+    "completion": {
+     "speaker": "Ferrol",
+     "text": "Master Gondrel! Oh, he's so pale! Someone fetch the healer, quick!\n\nYou've done all anyone could, kind sir. Take this pass, it has his seal on it. The guards at the north postern will let you come and go as you please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the merchant Gondrel and bring him back to Castle Brask."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Belloc the War-Mage in the keep, who sends him after the Necromancer Vessk in the old barrows.",
+   "names": {
+    "Belloc": "person",
+    "Ostric": "person",
+    "Vessk": "person",
+    "Undead": "group",
+    "old barrows": "place",
+    "north postern": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The Undead came over the north wall again last night! Belloc the War-Mage wants anyone who can fight. He's up in the keep."
+    },
+    "opening": {
+     "speaker": "Belloc",
+     "text": "So Ostric sent you. Good.\n\nA Necromancer called Vessk is raising the dead from the old barrows north of the castle. Every night more of them come over the wall. Go out through the north postern, find Vessk and destroy him.\n\nTake these spells. You'll need them. Now go, lad."
+    },
+    "reminder": {
+     "speaker": "Belloc",
+     "text": "Are you still here?! Go! The wall won't hold forever!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Necromancer Vessk in the old barrows north of the castle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

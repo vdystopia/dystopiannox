@@ -1,0 +1,34 @@
+{
+  "packet": "6445c9",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The missing full stop and the number slip ('the last [Group] who went after... is still missing') look like real shipped text, and the plain fatalism ('He'll never get it back') sounds like Nox. The third line runs a little long."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The first two barks have an odd, lively Nox feel, but the third is a self-introduction that sets up lore ('to keep the high road safe for traders'), which Westwood's idle townsfolk rarely do."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Gossip that takes sides, a dry joke about a woman in charge, and a short closing exclamation ('Only fools and warriors...'). Plain speech with real character, very much the campaign's voice."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The scream gag copies a known Nox pattern too neatly, and 'Topsider! Bah! ...your lot cheat us miners' tries to build the world through a slur. That reads as a writer working from a template."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "These lines read as quest hooks with explicit instructions ('Smoke out their caves and bring back what they stole') and a planted lead with dashes and treasure detail. Nox's townsfolk are vaguer, and 'friend, the wolves will run from our torches' sounds stock."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The hair joke and the 'not the miller' brush-off imitate Nox's non-sequitur humour, but they feel built to order. The middle line is a tidy post-quest acknowledgement with 'old [Person]'."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "These are short and plain enough to pass, but the opening names the player's class, which the packet says Westwood's text never does. 'I'm very busy' is a generic filler bark."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, slightly naive advice and a rumour that points to an in-game item (fire-walking boots). Unpolished and unforced, typical of Westwood's filler townsfolk."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A random comic scream, then 'Have the Ogres been beaten, yet?' with its stray comma, then a half-finished rumour question. These are authentic quirks of the shipped text."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "There is repetition ('If you're smart you'll leave [Place], too') and cynical defeatism ('Let them take it, I say'). Plain, slightly clumsy, and tied to the main plot, as in the campaign."}
+  ],
+  "tells": [
+    "New texts turn townsfolk into quest dispensers: explicit instructions, locations and loot details ('hiding up on X', 'a whole chest of gold under his bed'), where Westwood's barks are vague rumours or moods.",
+    "New texts give a speaker a self-introduction with a lore purpose ('My name is X. I hunt... to keep the road safe'). Westwood's idle townsfolk seldom introduce themselves.",
+    "Comic barks in new texts reuse a Westwood formula (the scream plus a body-part or object gag, the deadpan brush-off) a little too exactly, and several stack up in one place.",
+    "Westwood's lines keep small mechanical flaws: missing full stops, stray commas, number mismatches, repetition. New texts are cleaner and use em-dash asides.",
+    "World-building slang or epithets ('Topsider', 'your lot') and stock fantasy cheer ('the wolves will run from our torches') read as another writer's voice.",
+    "Naming the player's class in a townsperson's line contradicts the class-free masking of Westwood's text."
+  ]
+}

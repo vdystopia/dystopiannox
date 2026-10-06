@@ -1,0 +1,32 @@
+{
+  "packet": "f1d63c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and short, but 'Ogres or no Ogres, the [Place] stays open!' and the list-of-wares pattern ('Swords, axes, shields.') match the other new sets."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Snow-in-the-door bit, hot cider, and a magic-shop pitch tied to the local threat ('the Undead don't care for fire') is a polished sales gag."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Best ale on the river, and the only ale on the river!' and the 'Don't touch the jars' curmudgeon are crafted comic beats, too neat for Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Fish stew, fish pie, or fish. Heh, heh...' is a constructed joke; the wares list and threat-tied potion pitch repeat the packet's template."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain shop introductions with a rival-inn comparison and the odd 'sir [Group]' address; functional and slightly stiff like Westwood's."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'aye mate?' oddity, 'Ya need some new weapons and armor? This is the place!', and an expository magic-shop line naming which guild it supplies: unpolished Westwood."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'pig-headed armored sheep marching up and down' is Westwood's cranky class-ribbing humour, and the drawn-out 'Ahhhhhhhh...' is typical."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Brusque 'be quick about it', the class-aware 'Don't see many [Group] in my shop'; shares the Keep with E, which suggests a Westwood class variant."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The undertaker-merchant offering 'funerary services' or goods and the pushy 'Let's get to know each other! Buy something!' are odd, specific Westwood touches."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "'Pull up a stool and I'll pour you somethin' warm' is cosy stock inn phrasing; the class-aware arms line is close to Westwood, but the set is smooth."}
+  ],
+  "tells": [
+    "The new shopkeepers list their wares in threes ('Swords, axes, shields', 'Potions, scrolls, spell books') and tie the magic shop's pitch to the local monster; Westwood's rarely list stock.",
+    "New inn lines are built around a cosy or comic hook (snow at the door, a fish menu, best-and-only ale, a warm drink); Westwood's greetings are often flat, stiff, or oddly specific to the player's class and the plot.",
+    "Westwood's shopkeepers react to the player's class and situation (mocking armored 'sheep', noting rare visitors, spotting a key item), with eccentric word choices ('funerary services', 'aye mate'); the new ones are generic and clean.",
+    "Dialect spellings ('yer', 'fer', 'somethin'') used decoratively mark the new texts; Westwood's informality is in syntax more than spelling."
+  ]
+}

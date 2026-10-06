@@ -1,0 +1,30 @@
+{
+  "packet": "98ca60",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The bathing and stolen-boots gag and the cell-guard line read like Nox, but 'mate' three times in one offer and 'a damn fine spell' push the dialect too hard. The shopkeeper's 'I'm here if you need anything' is generic modern filler."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The offer copies Westwood's 'Where were you, lad!?' opening, but it packs in too much backstory (pikemen, winter stores, war-horses) and its thanks turns literary ('In calmer times... would ring with cheers'). The townsfolk lines are short, flat filler, and one is missing a comma."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Casual, comic and plain: 'Tell you what...', 'ya', and a cackling jailer with 'or a two!'. The single-clause journal and the odd 'Grunt if you agree!' have Westwood's offhand humour."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The offer is too quiet and modern ('My luck has been rotten of late', 'There's coin for anyone'), and the thanks lists an exact '90 in gold' with barley colour. The townsperson thanks the player for chasing off boars while the quest was about Ogres, and 'Wanna buy a scythe?' reads like a copy of the Wanna-shopkeeper pattern."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The offer has an earnest, slightly overwrought melodrama ('raving demoness', 'kind sir', 'timely return'), and the guard gives long expository warnings, which is true to Nox. The cider joke is a little knowing, but Westwood did do that."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The offer has too many beats (late, bats and Imps, clerks, plea, key, spell book) and leans on Westwood's set phrases ('Why are you so late!?', 'for your trouble'). 'Dire news indeed!' and 'At noon... by dusk it was swarming' are writerly, and the journal uses a digit for the clerks."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Gruff, abrupt and a little clumsy ('Follow me to the counter', 'You are braver than you look. Perhaps you might make a fine student'). The rallying townsfolk line and the frantic spy alert sound authentic."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'Worse than the pox!' and 'charm the spiders' are plain and directive, with Westwood's typo ('off you back') and a stiff guard line ('The wilds hold far too many perils for the common man'). The journal is terse and functional."}
+  ],
+  "tells": [
+    "New offers try to fit too many story beats (backstory, a plea, a key, a bonus item, a named ally) into one speech; Westwood's offers state the problem, the place and the reward, then stop.",
+    "New texts borrow Westwood's set openers ('Blast! Where were you, lad!?', 'Why are you so late!?', 'Wanna ...') and use them more often than Westwood did, so they read as a copy.",
+    "New thanks and townsfolk lines turn literary or reflective ('In calmer times... would ring with cheers', 'At noon... by dusk', 'Dire news indeed!'), where Westwood stays blunt and a bit clumsy.",
+    "New towns slip in their own continuity (boars where the quest had Ogres, a captain stopping by) and give exact amounts or digits in rewards and journals.",
+    "Dialect markers ('mate', 'lad', 'damn') come too often in the new texts; Westwood uses them once and moves on.",
+    "Westwood's townsfolk filler is odd and specific (a grunting ogre joke, a spy running past, stolen clothes); the new filler is generic ('I've been told to keep away from newcomers', 'I'm here if you need anything')."
+  ]
+}

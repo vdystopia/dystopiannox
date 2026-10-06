@@ -1,0 +1,32 @@
+{
+  "packet": "f3a9ed",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The 'old goat' jab at the Elder, the rumour that dismisses itself ('I don't know who spreads these insane rumors') and a bare direction line. Classic Westwood town talk."},
+    {"label": "B", "verdict": "generated", "confidence": 1, "score": 7,
+     "critique": "The warrior quip is very Nox, and so is 'I'm very busy.' The vague forest-creatures line is generic enough to be imitation. This one is close to a coin flip."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "There is a missing final period, a fatalistic 'He'll never get it back', and a long run-on taunt about the missing [Group]. Westwood's unpolished townsfolk."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'You have to admit that [Person] has style' and the remark about a woman in charge are a modern, opinionated aside. 'There's no denying it... They're here!' is dramatic in a way that is close to Nox but not quite it."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Three very short generic warnings ('Beware of the rising undead.'). They read like an imitation of terse NPC lines rather than particular people."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Hail traveler' with no comma, a clumsy 'can't keep track of it anymore', and a landmark-statue direction. Plain and slightly awkward, as the originals are."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Rumor has it that the dead have begun to awaken from their graves!' and the over-explained inn direction sound tidier and more written. The 'madman' line is near Nox."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Practical trade-route and Ogre-caravan rumours with a 'Young sir!' warning. These are the campaign's informational townsfolk."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A double-dash aside, the typo 'off you back' and the fearful-mayor running joke. Unmistakably original."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The '50 years' lore exposition across three sentences sounds like lore summarised for the player, and the throwaway weather line seems placed to imitate Nox's non-sequiturs."}
+  ],
+  "tells": [
+    "Westwood townsfolk keep small slips (missing periods, typos such as 'you back', no comma after 'Hail'). Imitations are cleanly punctuated.",
+    "Westwood's rumour lines are concrete and personal (a spider by the mayor's house, a scepter that won't come back, an insult to the Elder). Imitations lean on generic dread ('the dead', 'rising undead', 'dark times ahead').",
+    "Imitations summarise lore across several sentences ('not seen for nearly 50 years... dark times ahead'). Westwood states one fact and moves on.",
+    "Opinion asides in a modern voice ('has style', 'a woman in charge') read as another writer."
+  ]
+}

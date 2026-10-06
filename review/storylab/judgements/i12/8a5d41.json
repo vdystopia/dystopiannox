@@ -1,0 +1,29 @@
+{
+  "packet": "8a5d41",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Breathless plea and short thanks are Nox-shaped, but the comic ducks with a pet name feel like a deliberate joke imitating Westwood's humour, and the run-on 'the hamlet south of here and dragged off' is a careless clause rather than Westwood's plain sentences."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The '90 in gold!' payout and 'rest easier' read like borrowed Westwood fixtures; the opening 'My luck has been rotten of late' and the wistful 'I don't expect I'll see them again, but I'd love to' is more conversational and reflective than Nox's quest-givers."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Exclamatory, slightly theatrical ('worse than the pox!'), concrete directions ('there, through the double doors'), and the thanks ties the quest to a story consequence (new title, guards informed) exactly as the campaign does."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Long multi-page offer that hands over a key and a spell book, a plot hook to the Captain in the thanks, and a numerical journal ('Rescue the 4 trapped clerks'): the functional, item-dispensing shape of Westwood's quest scripts."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Lively and plain, but the dialect tic 'mate' is repeated four times as a voice marker, which reads as a writer leaning on one device; the journal is wordier than Nox's usual terse entries."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Opens mid-conversation with 'Good!', gives the cause chain (urchin aggravates bats), a ruby key, and ties the reward to a plot gate (signed petition shown to a Master); flat 'Excellent! You've killed the Urchin.' is typical Westwood bluntness."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Self-introduction ('I am Master [Person].'), the dry 'Hmmm... Yes.', the robe as the only trace and the teleporter onward are the campaign's own chapter-opening voice and structure."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Westwood-like fixtures ('young sir', '100 in gold!', 'rest easier') are stacked, and the thanks is crowded with exclamations; 'Ho, there! [Person] complained of squeaking down this tunnel, so I came to look' is an awkward contrivance to get the giver on site."}
+  ],
+  "tells": [
+    "Westwood's quests carry plot machinery: a key or spell book handed over, a gate or title unlocked, a next NPC to visit; the new texts more often end on a plain cash payout.",
+    "New texts stack the campaign's stock phrases ('rest easier', 'N in gold!', 'brave sir', 'young sir') in one speech; Westwood uses one at most.",
+    "A single voice device repeated (a dialect word every sentence, a comic pet name) reads as imitation; Westwood's comedy is incidental and brief.",
+    "Reflective or wistful asides ('my luck has been rotten', 'I don't expect I'll see them again') are not Nox's register; Westwood's givers state the trouble and the task.",
+    "Contrived arrivals and run-on clauses give the new texts away; Westwood's sentences are short and the giver's presence is never explained."
+  ]
+}

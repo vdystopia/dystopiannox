@@ -5,26 +5,28 @@ Westwood's Nox campaign (1999) and not be told apart.
 
 ## What the judge gets
 
-One packet per scenario and iteration: `review/out/storylab/<scenario>/<iter>/packet.md`, written by
-`py tests/storylab.py <scenario> --iter <iter>`. It holds ten texts labelled A to J, each the lines of one quest or one
-place (an offer, a reminder, the thanks when it is done, the journal entry; or three townsfolk; or three shopkeepers).
-**Exactly five** are from Westwood's campaign and five were written for new maps. The order is shuffled by a seed.
-Proper nouns are masked on both sides: `[Person]`, `[Place]`, `[Thing]`, `[Group]`; a player's class (Warrior,
-Wizard, Conjurer) is `[Class]`. Page breaks inside a long speech show as ` / `.
+One packet at a time: `review/out/storylab/_blind/<iter>/<id>.md` (the id is opaque), written by
+`py tests/storylab.py all --iter <iter>`. It holds ten texts labelled A to J, each the lines of one quest or one place
+(an offer, a reminder, the thanks when it is done, the journal entry; or three townsfolk; or three shopkeepers; or a
+cross-section of one town). **Exactly half** are from Westwood's campaign (five of ten, unless the packet says otherwise) and the others were written for new maps. The order
+is shuffled by a seed. Proper nouns are masked on both sides: `[Person]`, `[Place]`, `[Thing]`, `[Group]`. The player
+is never addressed by class on either side: where Westwood's line named the class, it reads as Westwood's class-free
+chapter does ("brave Adventurer", "young sir"). Page breaks inside a long speech show as ` / `.
 
-The key (which text is which) is written apart, to `review/out/storylab/_keys/<iter>/<scenario>.json`.
+The key (which text is which) is written apart, where the judge does not look.
 
 ## Rules for the judge
 
-- Read only this file and the packet(s) you are given. Do not open the key, `review/storylab/variants/`,
-  `review/storylab/scenarios.json`, `rules/DIALOGUE.md`, `rules/QUESTS.md`, the game's string table, or any other
-  file of the repository. Use what you know of Nox and of game writing of its time.
+- Read only this file and the packet(s) you are given. Do not open the keys (`review/out/storylab/_keys/`), anything
+  else under `review/` (variants, judgements, exemplars, briefs, scorecards), `rules/`, `skills/`, the game's string
+  table, or any other file of the repository, and do not search the web. Use what you know of Nox and of game writing
+  of its time.
 - Judge each text on its own and then against the others: voice and register, how plainly people speak, sentence
   length and rhythm, punctuation, what a line tells the player (who, what, where, what to do, the reward), humour,
   how the journal is phrased, and the shape of the quest.
-- Topic is no evidence: the new texts were written for one kind of situation on one invented map, Westwood's come from
-  different chapters. Judge the writing.
-- Guess exactly five as generated.
+- Topic is no evidence: each new text was written for another invented town, and Westwood's come from different
+  chapters. Judge the writing.
+- Guess exactly half as generated (five of ten, unless the packet says otherwise).
 
 ## The score (1-10): "reads like Nox's campaign"
 
@@ -40,11 +42,11 @@ Score Westwood's texts by the same scale: some of Westwood's lines are weak too.
 
 ## The answer (fixed JSON)
 
-Write one file per packet to `review/storylab/judgements/<iter>/<scenario>.json`:
+Write one file per packet to `review/storylab/judgements/<iter>/<id>.json` (the packet's id):
 
 ```json
 {
-  "packet": "<scenario>/<iter>",
+  "packet": "<id>",
   "judge": "<who judged: agent and model>",
   "items": [
     {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
@@ -54,13 +56,13 @@ Write one file per packet to `review/storylab/judgements/<iter>/<scenario>.json`
 }
 ```
 
-- `items`: all ten, A to J. `verdict`: `"westwood"` or `"generated"`, five of each. `confidence`: 1 (a guess) to 5
+- `items`: every text of the packet (A to J for ten). `verdict`: `"westwood"` or `"generated"`, half of each. `confidence`: 1 (a guess) to 5
   (certain). `score`: 1-10 by the table above.
 - `tells`: the cues you used, general enough to fix a style guide by (not "Text C mentions a mill").
 
 ## What the lab computes
 
-`py tests/storylab.py <scenario> --iter <iter>` reads the judgement and the key and writes the scorecard
+`py tests/storylab.py all --iter <iter>` reads the judgements and the keys and writes the scorecards
 (`review/out/storylab/<scenario>/<iter>/scorecard.md`):
 
 - **accuracy**: the share of the ten the judge placed right. 50% is chance; the target is near 50%.

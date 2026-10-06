@@ -1,0 +1,33 @@
+{
+  "packet": "475fe1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plea and thanks are close to Nox's breathless pet-owner register, but the three-page plea is built on the same 'My X! / brutes / kind stranger, bring him home' frame as the other suspects, and the journal line reads oddly assembled."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The parrot gag is fun, but 'the dead men came ashore last night' and 'west end of the lake' are directions given as scene-setting prose; the 'Mama's been worried sick' thanks and potion reward echo a template rather than a single voice."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Short, punchy, exclamation-heavy lines, the '?!' punctuation and the deadpan 'Loads and loads of money?' joke are pure Westwood; the captive frog's grumpy 'Fine! I will follow you!' is the kind of throwaway humour Nox uses."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The parrot reciting a guard's directions is a clever idea but overworked; the reminder ('Your trip down that cliff will show whether you have any heart at all') is a literary turn Nox's NPCs rarely take, and the plea is long and over-detailed."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Main-plot rescue with the '--' dash, 'We best go', 'lad', key handed over mid-rescue and a secret passage: functional, slightly clumsy, very much the campaign's story-quest voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'What took you so long to get here!?', 'Nox's vital interests', mechanical journal ('Charm or kill all the monsters... Rescue the 6 trapped mine workers') and a hand-off to the next plot beat read exactly like Westwood's quest-giver boilerplate."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Missing comma in 'north of here and kidnapped', 'brave Adventurer', the slightly silly 'menfolk cannot live without us' and generic 'tokens of my appreciation' are characteristic of the campaign's quick side-quest writing."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The fireproof-apron premise has Nox's humour and the lines are plain, but the captive's 'Can't have the two of us wandering around in here getting cooked, can we?' is a mechanic-explaining quip polished beyond Nox's norm, and 'You great oaf, you're home!' mirrors J."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Terse to the point of bare ('Help us!', 'I'm so glad you're here!'), 'my boy', 'damsels' and a multi-group objective: unpolished in the way real campaign filler is, with no invented colour."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Pot-seller caught again is a nice running-gag idea, but the reminder 'Good evening, young sir' is a non-sequitur, and the 'You big oaf, you're home! / Bless you, kind stranger... token of my appreciation' closing is the same template seen in A, D and H."}
+  ],
+  "tells": [
+    "The new texts share one rescue template: 'My X! My poor X!' opening, a three-beat plea with a comic stake (stew, pie, pluck him bald), and a closing 'X! You're home! ... take this as a token of my appreciation'; Westwood's rescues vary their shape and often skip the emotional reunion line.",
+    "New pleas carry concrete directional colour (past the slag heaps, west end of the lake, camp below the south cliff) woven into the speech; Westwood states the location flatly or leaves it to the journal.",
+    "New captive lines are written as jokes or character bits; Westwood's escorted NPCs mostly say functional lines ('I'll follow you.', 'Help us!', 'Hurry! Lead me to safety!').",
+    "Westwood's texts show small mechanical roughness (missing commas, '!?' and '?!', '--', '6' as a numeral, plot hand-offs to the next location); the new texts are cleaner and more evenly literary.",
+    "Repeated stock phrases across several texts in one packet ('kind stranger', 'you big/great oaf', 'token of my appreciation', 'bring him home') point to one generator's habits."
+  ]
+}

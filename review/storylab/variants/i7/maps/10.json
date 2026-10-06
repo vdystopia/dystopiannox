@@ -1,0 +1,315 @@
+{
+ "iter": "i7",
+ "writer": "Claude Agent SDK subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tullin",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Chief Gorrumph's Ogres have come down off Skarr Ridge to raid the farms of Tullin, and Brannoch has sent the player to stand against them.",
+  "names": {
+   "Tullin": "place",
+   "Skarr Ridge": "place",
+   "Grange Hall": "place",
+   "Muddy Boot": "place",
+   "Ogres": "group",
+   "Imps": "group",
+   "Tullin Watch": "group",
+   "Gorrumph": "person",
+   "Brannoch": "person",
+   "Gromwell": "person",
+   "Hessa": "person",
+   "Barlo": "person",
+   "Fendra": "person",
+   "Fennick": "person",
+   "Marga": "person",
+   "Joss": "person",
+   "Wobbin": "person",
+   "Dorrick": "person",
+   "Mirrin": "person",
+   "Sneed": "person",
+   "Bartolf": "person",
+   "Pottle": "person",
+   "Nella": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hessa keeps the south gate of Tullin and points the player to Mayor Gromwell.",
+   "names": {
+    "Hessa": "person",
+    "Gromwell": "person",
+    "Grange Hall": "place",
+    "Ogres": "group",
+    "Tullin": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hessa",
+     "text": "Well, well! You sure look tougher than the last few heroes! Come find me at the gate once you're done chasing off Ogres."
+    },
+    "again": {
+     "speaker": "Hessa",
+     "text": "You'll find Mayor Gromwell in the Grange Hall. He has the key to the north gate."
+    },
+    "later": {
+     "speaker": "Hessa",
+     "text": "You're the one who drove off the Ogres, aren't you? It's a shame you can't stay on in Tullin. I just love a hero!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Barlo of the Tullin Watch boasts of beating the Ogres but pays the player to burn out a wasp nest in the old orchard.",
+   "names": {
+    "Barlo": "person",
+    "Ogres": "group",
+    "Tullin Watch": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Barlo",
+     "text": "Fear not, I have this whole business well in hand. I shall meet those Ogres wherever they dare to come down, it makes no difference to me.\n\nBut first there is a nest of wasps in the old orchard which none of my men will go near.\n\nOnce you burn it out, the Ogres shall learn the true might of the Tullin Watch! I'll pay you 80 gold for it."
+    },
+    "reminder": {
+     "speaker": "Barlo",
+     "text": "Hail, brave Adventurer! I am glad you have come back to me!"
+    },
+    "completion": {
+     "speaker": "Barlo",
+     "text": "Wasp stings will swell up something awful, but this potion will help with that. Here's your 80 gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the wasp nest."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Fendra's magic staff was taken by the Imps down into the old well west of the barns.",
+   "names": {
+    "Fendra": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fendra",
+     "text": "My eyes may be going, but I still know who robbed me, those wretched Imps. They took my magic staff, older than me, down into the old well west of the barns.\n\nWill you fetch it back for me, lad?"
+    },
+    "refusal": {
+     "speaker": "Fendra",
+     "text": "The well is out past the barns. Just follow the cart track."
+    },
+    "reminder": {
+     "speaker": "Fendra",
+     "text": "Well... I see you came back with empty hands. Keep looking, lad."
+    },
+    "completion": {
+     "speaker": "Fendra",
+     "text": "Thank you. I never could have got it back on my own. Please, take this Ankh for your trouble."
+    },
+    "after": {
+     "speaker": "Fendra",
+     "text": "Thanks again, young sir. You have done an old woman a great kindness, one I won't soon forget..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fendra's magic staff from the Imps in the old well."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Fendra's magic staff from the Imps in the old well."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tullin: Fennick on the Imps, Marga on the rats, Joss on the Ogres.",
+   "names": {
+    "Fennick": "person",
+    "Marga": "person",
+    "Joss": "person",
+    "Imps": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fennick",
+     "text": "They say you're the one who drove the Imps out of the old well! Thank you, stranger!"
+    },
+    "rumour2": {
+     "speaker": "Marga",
+     "text": "Help! These rats are all over the barn!"
+    },
+    "rumour3": {
+     "speaker": "Joss",
+     "text": "I fear the Ogres will take every last sack of grain! Will we have anything left for winter?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Wobbin of the Muddy Boot inn, Dorrick the smith, Mirrin who sells potions and spell books.",
+   "names": {
+    "Wobbin": "person",
+    "Dorrick": "person",
+    "Mirrin": "person",
+    "Muddy Boot": "place",
+    "Ogres": "group",
+    "Tullin": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Wobbin",
+     "text": "You'd better eat quick the Ogres were seen down by the mill this morning."
+    },
+    "arms": {
+     "speaker": "Dorrick",
+     "text": "You don't belong back here. You need to go round to the front of the forge."
+    },
+    "magic": {
+     "speaker": "Mirrin",
+     "text": "You're the bold one to come shopping in Tullin with Ogres at the gates."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Gromwell wants his plough oxen back from the Ogres; Sneed at the Muddy Boot has bet the farmers the stranger can bring back an Ogre's helmet.",
+   "names": {
+    "Gromwell": "person",
+    "Dorrick": "person",
+    "Sneed": "person",
+    "Muddy Boot": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Gromwell",
+     "text": "Good work! Now you must bring back my two plough oxen. When that's done I'll have Dorrick at the forge make you a new sword."
+    },
+    "offer_b": {
+     "speaker": "Sneed",
+     "text": "I've already placed my bet. Just head up the hill road and I'd wager you'll have no bother taking a helmet off one of those great, stinking, thick-headed Ogres.\n\nGood luck. I hope to collect my winnings soon."
+    },
+    "outcome_a": {
+     "speaker": "Gromwell",
+     "text": "They're safe in the barn. Go and see Dorrick about your sword."
+    },
+    "outcome_b": {
+     "speaker": "Sneed",
+     "text": "Congratulations to the winner of the great helmet wager! Your share is 120 gold pieces."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find and bring back Mayor Gromwell's plough oxen in order to earn a sword.\nThe oxen are probably penned near the Ogre camp."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring an Ogre's helmet to Sneed at the Muddy Boot. This wins the wager he made with the farmers and gets you a share."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Old Bartolf's son-in-law Pottle is held in the Ogres' larder in the caves under Skarr Ridge.",
+   "names": {
+    "Bartolf": "person",
+    "Pottle": "person",
+    "Gorrumph": "person",
+    "Skarr Ridge": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bartolf",
+     "text": "Excellent timing, lad! I can only guess that Gorrumph must be getting a bit hungry by now, what with my son-in-law Pottle sitting in his larder. But hurry! You must get up to the caves under Skarr Ridge, not only because that is where the Ogres keep their prisoners, but I'm sure the poor fool is driving them all mad with his complaining...he he he."
+    },
+    "reminder": {
+     "speaker": "Bartolf",
+     "text": "Well -- go on!"
+    },
+    "found": {
+     "speaker": "Pottle",
+     "text": "Go on and cut me loose, my hands are still bound up behind my back."
+    },
+    "following": {
+     "speaker": "Pottle",
+     "text": "Stop poking at those barrels! You'll bring the whole cave down on us!"
+    },
+    "completion": {
+     "speaker": "Bartolf",
+     "text": "Sit yourself down, young sir. I'll go and fetch you some potions."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pottle in the Ogres' larder."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Nella points the player to Mayor Gromwell in the Grange Hall, who sends him up Skarr Ridge against Chief Gorrumph's Ogres.",
+   "names": {
+    "Nella": "person",
+    "Gromwell": "person",
+    "Brannoch": "person",
+    "Gorrumph": "person",
+    "Skarr Ridge": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Nella",
+     "text": "Hello, stranger. Has Mayor Gromwell spoken to you, yet?"
+    },
+    "opening": {
+     "speaker": "Gromwell",
+     "text": "We were cutting barley in the east fields when the Ogres came down off Skarr Ridge. Brannoch sent word that you would come to stand against Chief Gorrumph and drive back his raiders.\n\nPlease, if you will go up the ridge and break that camp of theirs, I can perhaps open the north gate for you in return."
+    },
+    "reminder": {
+     "speaker": "Gromwell",
+     "text": "Thanks, my son. Hurry now. I know of a goat trail up the back of the ridge."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Chief Gorrumph in the Ogre camp on Skarr Ridge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

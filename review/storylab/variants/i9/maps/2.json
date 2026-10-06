@@ -1,0 +1,332 @@
+{
+ "iter": "i9",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varrhold",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "The Necromancer Ozrath has raised the Undead in the Deep below Varrhold, and they are climbing the shafts toward the town.",
+  "names": {
+   "Varrhold": "place",
+   "Ozrath": "person",
+   "Garvus": "person",
+   "Haldrek": "person",
+   "Brask": "person",
+   "Nella": "person",
+   "Bruddock": "person",
+   "Gimbrel": "person",
+   "Skabb": "person",
+   "Gudra": "person",
+   "Durbin": "person",
+   "Grobbin": "person",
+   "Kettrick": "person",
+   "Mizzra": "person",
+   "Tamsk": "person",
+   "Pibbet": "person",
+   "Orla": "person",
+   "Great Lift": "place",
+   "the Deep": "place",
+   "bathhouse": "place",
+   "west tunnel": "place",
+   "east tunnel": "place",
+   "north shaft": "place",
+   "copper shaft": "place",
+   "market": "place",
+   "Urchin den": "place",
+   "magic pick": "thing",
+   "crank handle": "thing",
+   "lamp oil": "thing",
+   "Undead": "group",
+   "Zombies": "group",
+   "Skeletons": "group",
+   "Imps": "group",
+   "Urchins": "group",
+   "Giant Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brask guards the gate of the Great Lift, shut by Mayor Haldrek while the Undead hold the Deep; later the Mayor orders it opened for the player.",
+   "names": {
+    "Brask": "person",
+    "Haldrek": "person",
+    "Great Lift": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "Lift's shut. Sorry. Move along."
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "Back away from the lift, lad! Unless you WANT a ride down to the dead!"
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "Hold it right there, stranger! Mayor Haldrek orders the Great Lift opened for you, and his seal on this paper says so.\n\nStep in! I've got a cold and rattly cage all set to drop you.\n\nWill you go down quietly, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Nella's bathhouse pool has filled with Giant Leeches and she pays to have them killed.",
+   "names": {
+    "Nella": "person",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nella",
+     "text": "Eeeeeek!\n\nGiant Leeches have filled my bath pool, and I think my strongbox can spare a fair bit of gold to anyone who gets rid of them.\n\nI can keep the miners out, but you'll have to wade in yourself when you reach the pool down the west tunnel. I can't swat them away with this broom much longer!"
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "One of the old miners -- the one with the bad cough -- said Leeches can't stand fire. Maybe that will chase them out of the water!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Oh, thank you, thank you! You've saved my bathhouse! How will I ever pay you back for such courage?! Here, take this purse. Now I'll go heat up the water."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Nella's bathhouse and kill the Giant Leeches."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Imps snatched Bruddock's magic pick and carried it to their nest in the old east tunnel.",
+   "names": {
+    "Bruddock": "person",
+    "magic pick": "thing",
+    "Imps": "group",
+    "east tunnel": "place",
+    "Great Lift": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bruddock",
+     "text": "Hail, tunnel-brother! The Imps snatched my magic pick right out of my hands! If they don't snap it in half, they'll lose it down some pit anyway. Their nest is over in the old east tunnel! Will you get it back for me?"
+    },
+    "refusal": {
+     "speaker": "Bruddock",
+     "text": "Not quite up to it yet, eh? No matter, I'll hold the job for you. If you change your mind later, just come find me."
+    },
+    "reminder": {
+     "speaker": "Bruddock",
+     "text": "Those Imps love anything shiny, which they pile in a heap at the far end of their stinking nest."
+    },
+    "completion": {
+     "speaker": "Bruddock",
+     "text": "Thank you, friend, thank you! Well, I can't pay much, but please take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Bruddock",
+     "text": "The Great Lift is to the north. Just follow the cart tracks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Bruddock's magic pick... from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Bruddock's magic pick... from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Tamsk the ore-hauler, Orla, and Pibbet.",
+   "names": {
+    "Tamsk": "person",
+    "Orla": "person",
+    "Pibbet": "person",
+    "Ozrath": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tamsk",
+     "text": "Out of the way! I've got ore to haul!"
+    },
+    "rumour2": {
+     "speaker": "Orla",
+     "text": "Keep your chin up, stranger, Ozrath's dead will crumble under our picks!"
+    },
+    "rumour3": {
+     "speaker": "Pibbet",
+     "text": "Oh, pardon me. That was my foot."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Grobbin keeps the tavern, Kettrick the forge, Mizzra the magic shop.",
+   "names": {
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Grobbin",
+     "text": "Sorry friend, the miners have drunk me dry! I haven't a drop of ale left to pour you."
+    },
+    "arms": {
+     "speaker": "Kettrick",
+     "text": "Anyone who fights the dead is welcome at my forge. What can I get you?"
+    },
+    "magic": {
+     "speaker": "Mizzra",
+     "text": "Topsiders aren't trusted in my shop. But for a few coins more, I'll look the other way."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Gimbrel the lift-master wants the crank handle the Skeletons dragged down the north shaft; Skabb the smuggler wants his lamp oil back from the Urchin den.",
+   "names": {
+    "Gimbrel": "person",
+    "Haldrek": "person",
+    "Ozrath": "person",
+    "Skabb": "person",
+    "Varrhold": "place",
+    "Great Lift": "place",
+    "north shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Skeletons": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Gimbrel",
+     "text": "Ohhh, what am I to do? I know Mayor Haldrek needs the Great Lift running again. My crank handle hasn't been seen since the Skeletons came up the shaft last night. They dragged it down to the bottom of the north shaft. The lower galleries are overrun -- dead miners called up by that cursed Necromancer Ozrath! But I'll tell you this... Without that handle my lift is just a big iron cage, and the rattle of those bones coming up the shaft is a horrid reminder of what waits below."
+    },
+    "offer_b": {
+     "speaker": "Skabb",
+     "text": "The old bad blood between the Mayor's men and smugglers like me runs deep here in Varrhold, lad, so nobody lifts a finger when the Urchins roll off with my lamp oil. Bring my barrels back from their den south of the market and there's a cut in it for you -- you can't miss it."
+    },
+    "outcome_a": {
+     "speaker": "Gimbrel",
+     "text": "You have come back! Here, take this sword, then go straight to Mayor Haldrek and tell him the Great Lift will run again. If anyone rides it before I grease the gears, the cable will snap! We must get it moving if we're to have any hope of stopping Ozrath and his dead!"
+    },
+    "outcome_b": {
+     "speaker": "Skabb",
+     "text": "Ha! Thank you! But no time to go hugging these lovely barrels now! With them back, I can finally sell this whole dark town its lamp oil at my price, once and for all!\n\nYou've brought back nearly every barrel!\n\nI'm sure this chain tunic will be fine pay for your trouble."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fetch the lift crank for Gimbrel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Raid the Urchin den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Gudra's husband Durbin went back down the old copper shaft for his lunch pail and Ozrath's Zombies have him cornered.",
+   "names": {
+    "Gudra": "person",
+    "Durbin": "person",
+    "Ozrath": "person",
+    "copper shaft": "place",
+    "market": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gudra",
+     "text": "Greetings, kind sir! My husband Durbin went back down the old copper shaft for his lunch pail, and now Ozrath's Zombies have him cornered! Every miner carries a horn, and I've heard his tooting all morning.\n\nYou must go down the copper shaft, east of the market, and bring him home. The last time he went down there alone, I had to send half the town after him... Take this key -- it opens the gate that closes off the shaft."
+    },
+    "reminder": {
+     "speaker": "Gudra",
+     "text": "I am afraid to think of Durbin alone in the dark, with those dead things shuffling all around him."
+    },
+    "found": {
+     "speaker": "Durbin",
+     "text": "Oh! My knees aren't quite steady yet. You'll have to lead me slow."
+    },
+    "following": {
+     "speaker": "Durbin",
+     "text": "Good. A little further now."
+    },
+    "completion": {
+     "speaker": "Gudra",
+     "text": "Wonderful! Durbin and I can never thank you enough -- here, take the gold from our savings jar. The Zombies didn't bite him? Ozrath's rotting servants have a nasty knack for grabbing anyone who wanders too far below."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Escort the trapped miner Durbin out of the copper shaft."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Tamsk sends the player to Mayor Haldrek, who sends him down the Great Lift to the Deep after the Necromancer Ozrath; Garvus sent the player here.",
+   "names": {
+    "Tamsk": "person",
+    "Haldrek": "person",
+    "Garvus": "person",
+    "Ozrath": "person",
+    "Varrhold": "place",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tamsk",
+     "text": "The forges went cold last night -- Mayor Haldrek's been asking for you."
+    },
+    "opening": {
+     "speaker": "Haldrek",
+     "text": "Welcome to Varrhold, young sir -- Garvus wrote that you were coming to deal with Ozrath the Necromancer. Take the Great Lift down to the Deep and find him before his Undead climb any higher, because believe me, you'd rather not see them up close, lad."
+    },
+    "reminder": {
+     "speaker": "Haldrek",
+     "text": "Did you get down to the Deep?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ride the Great Lift down to the Deep and stop Ozrath."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

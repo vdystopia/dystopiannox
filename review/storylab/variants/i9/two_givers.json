@@ -1,0 +1,676 @@
+{
+ "scenario": "two_givers",
+ "iter": "i9",
+ "writer": "one writer a town (variants/i9/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest Red Corwin's bandits stole; Wat, a turncoat of Corwin's, hands over the watchtower's cellar key if Corwin is got out of his way.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Spell Book": "thing",
+    "Red Potions": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Ho there! I've heard that Red Corwin's bandits carried our tithe chest off to their tower on Crow Hill, and this town wants it back!"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "With this cellar key, the back door of Corwin's watchtower will swing open right in front of you. Go on, then... Get Corwin out of my way and I'll have something nicer to give you when you come back."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "Thank you! I hope the bandits didn't give you too much grief. Now there's only Corwin himself left to deal with. Here, take this shield and these Red Potions, you'll be glad of them before long."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Wonderful! Go on and tell Halvard, he'll want to hear it. Now if you don't mind, I'll be off down the south road before anybody asks me questions.\n\nIs he truly finished?\n\nOnce you put on this tunic, a bandit's blade will hardly scratch you."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Carry the stolen tithe chest back to Halvard at the Moot Hall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Slip in by Wat's cellar door!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "RedPotion",
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Varrhold: Gimbrel the lift-master wants the crank handle the Skeletons dragged down the north shaft; Skabb the smuggler wants his lamp oil back from the Urchin den.",
+   "names": {
+    "Varrhold": "place",
+    "Ozrath": "person",
+    "Garvus": "person",
+    "Haldrek": "person",
+    "Brask": "person",
+    "Nella": "person",
+    "Bruddock": "person",
+    "Gimbrel": "person",
+    "Skabb": "person",
+    "Gudra": "person",
+    "Durbin": "person",
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person",
+    "Tamsk": "person",
+    "Pibbet": "person",
+    "Orla": "person",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "east tunnel": "place",
+    "north shaft": "place",
+    "copper shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "magic pick": "thing",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Gimbrel",
+     "text": "Ohhh, what am I to do? I know Mayor Haldrek needs the Great Lift running again. My crank handle hasn't been seen since the Skeletons came up the shaft last night. They dragged it down to the bottom of the north shaft. The lower galleries are overrun -- dead miners called up by that cursed Necromancer Ozrath! But I'll tell you this... Without that handle my lift is just a big iron cage, and the rattle of those bones coming up the shaft is a horrid reminder of what waits below."
+    },
+    "offer_b": {
+     "speaker": "Skabb",
+     "text": "The old bad blood between the Mayor's men and smugglers like me runs deep here in Varrhold, lad, so nobody lifts a finger when the Urchins roll off with my lamp oil. Bring my barrels back from their den south of the market and there's a cut in it for you -- you can't miss it."
+    },
+    "outcome_a": {
+     "speaker": "Gimbrel",
+     "text": "You have come back! Here, take this sword, then go straight to Mayor Haldrek and tell him the Great Lift will run again. If anyone rides it before I grease the gears, the cable will snap! We must get it moving if we're to have any hope of stopping Ozrath and his dead!"
+    },
+    "outcome_b": {
+     "speaker": "Skabb",
+     "text": "Ha! Thank you! But no time to go hugging these lovely barrels now! With them back, I can finally sell this whole dark town its lamp oil at my price, once and for all!\n\nYou've brought back nearly every barrel!\n\nI'm sure this chain tunic will be fine pay for your trouble."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fetch the lift crank for Gimbrel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Raid the Urchin den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skeel: Mayor Pellam wants the Undead driven out of his bell tower. Snub the smuggler wants his boat of Ogre brandy pushed off the mud by the burial isles.",
+   "names": {
+    "Skeel": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Grell": "person",
+    "Hobbe": "person",
+    "Pellam": "person",
+    "Nubbin": "person",
+    "Quimby": "person",
+    "Snub": "person",
+    "Nella": "person",
+    "Tobb": "person",
+    "Ludo": "person",
+    "Wilka": "person",
+    "Orra": "person",
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Watch Hut": "place",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "north bog": "place",
+    "Corvale": "place",
+    "Bone Totem": "thing",
+    "Amulet of Healing": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Pellam",
+     "text": "Ahhhh! The dead have climbed into my bell tower and nobody dares ring the alarm! Here are some Red Potions for you. They should see you to the top of the stairs."
+    },
+    "offer_b": {
+     "speaker": "Snub",
+     "text": "I was rowing a load of Ogre brandy past the burial isles when the dead came up out of the water at me. And they bit a hole in my boat! You'll be my new business partner. You're a long way from home, so I know you need the gold. My boat is sitting in the mud just off the isles. Once you've pushed it loose, row it back here as fast as you can. We'll be rich!!!!"
+    },
+    "outcome_a": {
+     "speaker": "Pellam",
+     "text": "Go up the ladder to the Town Hall armory and pick out a Longsword. It seems there's no task in Skeel too big for you!"
+    },
+    "outcome_b": {
+     "speaker": "Snub",
+     "text": "Yippee! It's not much, but here's your cut, like I promised. Much obliged, partner. I'm still not sure those dead men didn't drink a bottle or two, though."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Drive the Undead out of Pellam's bell tower."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Reach the burial isles and free Snub's boat."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "RedPotion",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Gorst: Steward Oswin wants the clapper of the great bell back from the Skeletons; Lorkin wants his brother Gubb sprung from the castle dungeon.",
+   "names": {
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Great Hall": "place",
+    "Blades Galore": "place",
+    "Zarrow": "person",
+    "Pelgrim": "person",
+    "Lord Dravus": "person",
+    "Brunk": "person",
+    "Gribbin": "person",
+    "Hulda": "person",
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Steward Oswin": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Pell": "person",
+    "Orlo": "person",
+    "Hask": "person",
+    "Mirabel": "person",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Rats": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Steward Oswin",
+     "text": "Welcome to Gorst, the mightiest castle in all of Nox!\n\nSkeletons climbed the wall in the night and made off with the clapper of our great bell! Brunk at the gate knows where they went and will point you to it.\n\nA castle with a silent bell is most troublesome in these dark times. Bring back the clapper, and you'll find me generous."
+    },
+    "offer_b": {
+     "speaker": "Lorkin",
+     "text": "There's an old drain under the castle dungeon where the guards never bother to look. My brother Gubb is locked up down there, and our dice game is nothing without him. He's asked me to find somebody to get him out before Lord Dravus remembers he's there. I'll make it worth your trouble."
+    },
+    "outcome_a": {
+     "speaker": "Steward Oswin",
+     "text": "You must ring the first peal yourself, stranger! A reward? Why, of course! Here is the longsword I promised, though I'm afraid our coffers hold little else.\n\nI thought I'd never hear that old bell again."
+    },
+    "outcome_b": {
+     "speaker": "Lorkin",
+     "text": "Thank goodness, you got him out! You should go see Krugg the smith -- he owes me a chain tunic, and it's yours now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the clapper of the great bell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Spring Lorkin's brother Gubb from the castle dungeon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ombry: Nebb, a hiccupping pedlar, trades a chain tunic for an Ogre's tusk; Harbormaster Dunmott wants the harbor strongbox back from the Ogres on Gull Isle.",
+   "names": {
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Lamp Tower": "place",
+    "Rat Island": "place",
+    "Washing Cove": "place",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Mayor Varrow": "person",
+    "Varrow": "person",
+    "Brosk": "person",
+    "Grella": "person",
+    "Quimby": "person",
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person",
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Nebb",
+     "text": "Hiccup! Hiccup! I've rowed this fine chain tunic all the way across the lake, at great risk and my own expense, for the poor frightened folk of Ombry -- and it's yours for one Ogre's tusk off Gull Isle!"
+    },
+    "offer_b": {
+     "speaker": "Harbormaster Dunmott",
+     "text": "The harbor strongbox is the pride of Ombry. If the Ogres truly carried it off to Gull Isle, then we're lucky there was only a little fish money in it.\n\nI've worked long and hard, and paid out of my own purse, to keep this harbor open for these hard-pressed fishermen -- bring that strongbox back to me and you'll be well rewarded."
+    },
+    "outcome_a": {
+     "speaker": "Nebb",
+     "text": "Marvelous! That tunic's the deal of the century, friend! I can't say I believe those stories about Gurlok eating whole boats though."
+    },
+    "outcome_b": {
+     "speaker": "Harbormaster Dunmott",
+     "text": "Thanks again Wanderer, and take this Longsword for your trouble. What's that you say? Gurlok's rafts are on the water! Good luck!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring an Ogre's tusk from Gull Isle to Nebb at the inn."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Recover the harbor strongbox! Return it to Dunmott!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Merinth: Warden Halvane wants the Orb of Merinth back from the Golems of the old foundry; Quib the peddler wants his brother Pibb broken out of the College lockup.",
+   "names": {
+    "Merinth": "place",
+    "College": "place",
+    "Black Spire": "place",
+    "old kiln": "place",
+    "old foundry": "place",
+    "old quarry": "place",
+    "College lockup": "place",
+    "Zorvan": "person",
+    "Varrus": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Fennick": "person",
+    "Oswick": "person",
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "Mimics": "group",
+    "Imps": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "Zorvan's Downfall": "thing",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvane",
+     "text": "It's a catastrophe! Zorvan's Golems smashed the College vault and carried the Orb of Merinth off to the old foundry south of town! Guildmaster Pellidor is counting on you."
+    },
+    "offer_b": {
+     "speaker": "Quib",
+     "text": "Here's my trouble, lad -- my brother Pibb. And mind Brannock at the gate. You must get him out of the College lockup before the Masters turn him into a toad!"
+    },
+    "outcome_a": {
+     "speaker": "Halvane",
+     "text": "Thanks for your help! You have saved the College! Take this purse from the vault, then go see Guildmaster Pellidor -- his study is up in the north tower."
+    },
+    "outcome_b": {
+     "speaker": "Quib",
+     "text": "My humble thanks -- the shield is yours. Now Pibb and I had better slip out of Merinth before the Masters notice!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take back the Orb of Merinth from Zorvan's Golems!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Quib's brother Pibb from the College lockup."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vosk: Hesk the Quartermaster wants the winter stores saved from Zombies in the ice house (Gundar has the other key); Snib the trader swaps a longsword for a dead soldier's helmet from the Frozen Field.",
+   "names": {
+    "Fort Vosk": "place",
+    "Frostgate": "place",
+    "Watchtower": "place",
+    "Ice Caves": "place",
+    "Frozen Field": "place",
+    "Morvayne": "person",
+    "Dorvin": "person",
+    "Brask": "person",
+    "Holm": "person",
+    "Gorbo": "person",
+    "Gosk": "person",
+    "Hesk": "person",
+    "Snib": "person",
+    "Yselde": "person",
+    "Dolf": "person",
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Horn of Calling": "thing",
+    "Bats": "group",
+    "Urchins": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hesk",
+     "text": "Thank goodness you've come, stranger! What brings a traveler all the way up to our fort? But never mind that, the ice house has been overrun by a new and dreadful evil -- frozen Zombies!\n\nIf we're quick we can still save most of the winter stores. Someone must go down to the ice house below the south wall! I'm sure it's that Necromancer's doing.\n\nAnd pick up some potions in town first. A smith named Gundar lives by the east wall, he made the lock and keeps the other key. You may tell him Hesk sent you. You'll get a steel shield from our armory for your trouble."
+    },
+    "offer_b": {
+     "speaker": "Snib",
+     "text": "Hello, I'm Snib, the most honest trader on this side of the mountain, and I'll trade you a fine sword for a helmet off one of those frozen dead men out on the Frozen Field. The soldiers of the old war in the pass have risen to plague us all over again."
+    },
+    "outcome_a": {
+     "speaker": "Hesk",
+     "text": "You're back! You've saved nearly all of the winter stores! Here, this steel shield is yours, as promised. Good luck, and keep well clear of Morvayne if you mean to stay alive!"
+    },
+    "outcome_b": {
+     "speaker": "Snib",
+     "text": "You got one!? Here's the sword -- you've made yourself quite a deal, lad! Folks down the mountain pay a fortune for a real helmet from the old war."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Clear the Zombies out of the ice house and save the winter stores.\n(Hint: Gundar the smith has a key.)"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Enter the Frozen Field and bring Snib a helmet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Durgal: Ulda the Treasurer wants the Guild Hammer the Ogres carried off to the slag caves. Fennick, jailed in town, wants the key to his cell and offers help in return.",
+   "names": {
+    "Durgal": "place",
+    "Bargul": "person",
+    "Orvald": "person",
+    "Krell": "person",
+    "Brannock": "person",
+    "Zeck": "person",
+    "Mirva": "person",
+    "Dagny": "person",
+    "Ulda": "person",
+    "Fennick": "person",
+    "Krenshaw": "person",
+    "Rudgar": "person",
+    "Brisba": "person",
+    "Grimble": "person",
+    "Smelting Pits": "place",
+    "Great Forge": "place",
+    "Hot Coal": "place",
+    "lava caves": "place",
+    "slag caves": "place",
+    "north gate": "place",
+    "Fireproof Gloves": "thing",
+    "Guild Hammer": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulda",
+     "text": "Our smiths and our miners alike have paid dearly to put an end to Bargul's raids. Hmm, I suppose Guildmaster Krell has already sent you up to the Smelting Pits after him. All of Durgal is counting on you, lad.\n\nBut the Ogres also carried off our Guild Hammer, and if I don't get it back, the guild is finished. So keep your wits about you as you climb to the slag caves east of town, because the brutes won't take kindly to strangers. Look at you, not a speck of fear!"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Greetings, young sir. Bargul's Ogres have already carried off half the iron in Durgal. Fetch the cell key from the guard room. Quickly! The jailer's gone to his supper. I'd wager the brutes who took Ulda's hammer have it in the slag caves. Please, if you bring me that key and let me out of this cell, I may just be able to help you in return."
+    },
+    "outcome_a": {
+     "speaker": "Ulda",
+     "text": "Thank goodness, the hammer is home! Once it rests on the anvil again, you may wear this Chain Tunic into battle, or sell it to Krenshaw for a good price."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "You must keep well clear of the jailer for a while. You will meet scores of Ogres up in those caves, so take this Longsword of mine. I'm sure Ulda will reward you well for the hammer."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Guild Hammer from the slag caves for Ulda the Treasurer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Fennick from his cell in the town jail."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellor's Cross: Master Odric the wool merchant is wedged in his own window and needs Dagny's axle grease; Snig, a pedlar in the inn, wants an Ogre's tooth for his lucky charms.",
+   "names": {
+    "Pellor's Cross": "place",
+    "Four Roads Inn": "place",
+    "Gallows Hill": "place",
+    "Stony Hollow": "place",
+    "Hamley Farm": "place",
+    "Bludgor": "person",
+    "Captain Vell": "person",
+    "Mayor Tull": "person",
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Fennick": "person",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Wila": "person",
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Master Odric": "person",
+    "Snig": "person",
+    "Brisa": "person",
+    "Orlo": "person",
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Wuzzle": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Odric",
+     "text": "Who's that down there? Heh, heh, heh... I'm wedged in my own window and I can't budge...\n\nFetch the pot of axle grease from Dagny's smithy. She charges a fortune to any merchant of Pellor's Cross, but I will reward you well.\n\nOnce the grease is on the frame and you've got a firm hold of my boots, I'll slide right out of this cursed thing. Pull whenever you're ready."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "My dear friend, a thousand thanks for sitting down with old Snig... Pull me one tooth out of an Ogre up on Gallows Hill. I promise you, nothing sells to caravan folk like a lucky Ogre's tooth, lad."
+    },
+    "outcome_a": {
+     "speaker": "Master Odric",
+     "text": "I never should have leaned out to watch those Ogres march by. I am most impressed with your quick thinking! How can I possibly repay such a kindness?! Wait here -- I'll fetch my old steel shield."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "Oh, thank you ever so much! Only one more tooth and my string of charms is full. Now slip out through the kitchen door before Fennick sees us dealing.\n\nWhat's that? Pay?\n\nWell, if gold is what you're after, please take this as a token of my thanks."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find Dagny's pot of axle grease."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Snig one big tooth from an Ogre of Gallows Hill."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5"
+  },
+  {
+   "id": 10,
+   "specifics": "Vellin: Marwold, keeper of the town granary, needs help holding it against the Ogres; Snibb, locked up for stealing chickens, offers his sword for the key to his cell.",
+   "names": {
+    "Vellin": "place",
+    "Kaldor": "person",
+    "Bodrick": "person",
+    "Tobber": "person",
+    "Kestrin": "person",
+    "Fennick": "person",
+    "Ysmay": "person",
+    "Marwold": "person",
+    "Snibb": "person",
+    "Ostra": "person",
+    "Grebb": "person",
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Town Hall": "place",
+    "Harvest Amulet": "thing",
+    "Ogres": "group",
+    "Krudd Ogres": "group",
+    "Urchins": "group",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Marwold",
+     "text": "Mayor Bodrick told me you'd be coming. I can't keep these Ogres out of the granary much longer!"
+    },
+    "offer_b": {
+     "speaker": "Snibb",
+     "text": "Ooooh, all this over a few chickens? The key's in the guardhouse, west across the square, on a nail by the door. I'll give you my sword, just let me out of here!"
+    },
+    "outcome_a": {
+     "speaker": "Marwold",
+     "text": "You must keep a good shield up when fighting Ogres -- here, take mine! Now, let's haul this grain back to town."
+    },
+    "outcome_b": {
+     "speaker": "Snibb",
+     "text": "Hooray! I'm out of that cell and back in the sunshine at last! Here, the sword, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fight your way to the granary and help Marwold hold it against the Ogres."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Go to the guardhouse and take the key to Snibb's cell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), claude-opus-5-5"
+  }
+ ]
+}

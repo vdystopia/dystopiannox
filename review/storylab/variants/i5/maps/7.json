@@ -1,0 +1,309 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Fort Kholm",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Necromancer Ulvana has woken the dead of the Glacier Crypts above Wyrmtooth Pass; her Undead come down on the fort every night and the pass is shut.",
+  "names": {
+   "Fort Kholm": "place",
+   "Wyrmtooth Pass": "place",
+   "Glacier Crypts": "place",
+   "Snow Caves": "place",
+   "Ice Bridge": "place",
+   "Snowbound Inn": "place",
+   "Thudd's Armory": "place",
+   "Ulvana": "person",
+   "Faldrin": "person",
+   "Marshal Odric": "person",
+   "Brunn": "person",
+   "Fennick": "person",
+   "Gorrin": "person",
+   "Gelbrand": "person",
+   "Wendric": "person",
+   "Lucky Skiv": "person",
+   "Olva": "person",
+   "Thudd": "person",
+   "Yeva": "person",
+   "Hagen": "person",
+   "Mag": "person",
+   "Lissa": "person",
+   "Sledge crew": "group",
+   "Undead": "group",
+   "Imps": "group",
+   "Urchins": "group",
+   "Trolls": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brunn keeps the north gate of Fort Kholm, shut by Marshal Odric while Ulvana's Undead hold the pass.",
+   "names": {
+    "Brunn": "person",
+    "Marshal Odric": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunn",
+     "text": "This is the north gate, Marshal Odric's post. The pass beyond is closed to all."
+    },
+    "again": {
+     "speaker": "Brunn",
+     "text": "Oh, one more thing. Keep off the wall walk. It's solid ice up there."
+    },
+    "later": {
+     "speaker": "Brunn",
+     "text": "The gate is open! Up the pass with you, and hurry! The Marshal is counting on you!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, a fussy mapmaker, pays a bounty to be rid of the Imps nesting in the fort's chimney flues.",
+   "names": {
+    "Fennick": "person",
+    "Fort Kholm": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Ah. Good day. I take it you have read my notice? Imps! The wretched creatures have got into everything. They spill my ink and gnaw my maps, and the noise! I cannot work at all! I will pay a proper bounty to whoever rids Fort Kholm of them. Well? Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Still Imps! I hear them scratching in the chimney flues every night. Please hurry!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "Gone? Truly gone? Oh, what a relief! At last I can return to my maps. Here is your bounty, 100 gold pieces, and well earned."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rid Fort Kholm of the Imps and collect Fennick's bounty."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Gorrin, the signal keeper, wants back the spyglass the Urchins of the Snow Caves stole from his tower.",
+   "names": {
+    "Gorrin": "person",
+    "Ulvana": "person",
+    "Urchins": "group",
+    "Undead": "group",
+    "Snow Caves": "place",
+    "Ice Bridge": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorrin",
+     "text": "Bother and blast! Robbed again?! Those nefarious little Urchins crept into the signal tower in the night and pilfered my spyglass! Without it I cannot keep watch on the pass. Ulvana's Undead could march right up to the gate and I would be none the wiser!\n\nThe thieves keep a den in the Snow Caves, west of the Ice Bridge. If you could get my spyglass back, the whole fort would sleep easier. Will you go after it?"
+    },
+    "refusal": {
+     "speaker": "Gorrin",
+     "text": "Then I shall keep the watch with these poor old eyes. Hmph."
+    },
+    "reminder": {
+     "speaker": "Gorrin",
+     "text": "Any sign of my spyglass? I've been squinting at that pass all day!"
+    },
+    "completion": {
+     "speaker": "Gorrin",
+     "text": "My spyglass! Splendid! Now I can resume my vigil.\n\nHere, take this spell book. A traveling Wizard left it with me years ago to pay for his supper. I never could make sense of a word in it."
+    },
+    "after": {
+     "speaker": "Gorrin",
+     "text": "Thanks again, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Gorrin's spyglass from the Urchins in the Snow Caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Gorrin's spyglass from the Urchins in the Snow Caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Fort Kholm: Hagen warns of the pass, old Mag frets over the stores, Lissa flirts.",
+   "names": {
+    "Hagen": "person",
+    "Mag": "person",
+    "Lissa": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hagen",
+     "text": "Stay away from the high pass after dark! The dead walk up there!"
+    },
+    "rumour2": {
+     "speaker": "Mag",
+     "text": "No sledges... no bread... and the dead at the gate."
+    },
+    "rumour3": {
+     "speaker": "Lissa",
+     "text": "Ooh, a new face in the fort! Come warm yourself by my fire some night, when you're done with all that fighting."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Olva of the Snowbound Inn, Thudd of Thudd's Armory, Yeva who sells potions and scrolls.",
+   "names": {
+    "Olva": "person",
+    "Snowbound Inn": "place",
+    "Thudd": "person",
+    "Thudd's Armory": "place",
+    "Yeva": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Olva",
+     "text": "Welcome to the Snowbound Inn. Not a single guest since the pass was closed. I'm thinking of packing up and going down the mountain myself."
+    },
+    "arms": {
+     "speaker": "Thudd",
+     "text": "Welcome to Thudd's Armory! Best steel on the mountain! And if it won't kill the Undead, you can always use it to chip the ice off your beard!"
+    },
+    "magic": {
+     "speaker": "Yeva",
+     "text": "Ah, a customer! I do hope your purse is heavy, Wanderer. Everything costs a little more this far up the mountain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Wendric the Priest gives the key to the chapel vault the Undead have desecrated; Lucky Skiv bets the player won't come back up.",
+   "names": {
+    "Wendric": "person",
+    "Lucky Skiv": "person",
+    "Marshal Odric": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Wendric",
+     "text": "Good day. I trust you are here regarding the chapel vault. The Undead broke into the vault beneath this chapel and desecrated the tombs of the fort's honored dead. I have barred the door, but I lack the strength to purge the abominable things myself.\n\nHere, take this iron key, it opens the vault door behind the altar. Will you go down and cleanse the vault?"
+    },
+    "offer_b": {
+     "speaker": "Lucky Skiv",
+     "text": "Going down into Wendric's vault, are you? Ha! I'll wager you 100 gold you don't come back up. Do we have a bet?"
+    },
+    "outcome_a": {
+     "speaker": "Wendric",
+     "text": "The vault is quiet once more! Our honored dead may rest in peace. Take this shield, with the blessing of the chapel. And go see Marshal Odric, he will want to hear of this."
+    },
+    "outcome_b": {
+     "speaker": "Lucky Skiv",
+     "text": "You?! Back from the vault, and not a scratch?! Well, I never welsh on a wager. Here's your 100 gold. Don't tell the others."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Cleanse the chapel vault of the Undead for Wendric."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Come back alive from the chapel vault and collect on Skiv's bet."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gelbrand the provisioner's sledge crew, robbed by the Trolls, are locked in the old salt store; he hands over the key.",
+   "names": {
+    "Gelbrand": "person",
+    "Sledge crew": "group",
+    "Trolls": "group",
+    "Fort Kholm": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gelbrand",
+     "text": "Thieving, lumbering brutes! The Trolls fell upon my supply sledges and plundered every barrel!\n\nMy sledge crew escaped with their lives and barricaded themselves in behind a stout door. But now the abominable creatures have them besieged, and the cold will finish what the Trolls began. I fear for them.\n\nI'll make you a bargain, stranger. Liberate my men and bring them home, and you will not find me ungrateful. Here is the key to their door. Go swiftly!"
+    },
+    "reminder": {
+     "speaker": "Gelbrand",
+     "text": "My men are holed up in the old salt store under the north wall. Please, hurry!"
+    },
+    "found": {
+     "speaker": "Sledge crew",
+     "text": "The key! You've got the key! Get us out of here, quick!"
+    },
+    "following": {
+     "speaker": "Sledge crew",
+     "text": "Lead the way. We'll stay right behind you."
+    },
+    "completion": {
+     "speaker": "Gelbrand",
+     "text": "My sledge crew, home safe! You have done a noble deed for Fort Kholm this day. Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Gelbrand's sledge crew from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hagen points the player to Marshal Odric on the wall; Odric, Faldrin's old friend, gives him a sword and sends him up to the Glacier Crypts after Ulvana.",
+   "names": {
+    "Hagen": "person",
+    "Marshal Odric": "person",
+    "Faldrin": "person",
+    "Ulvana": "person",
+    "Glacier Crypts": "place",
+    "Wyrmtooth Pass": "place",
+    "Fort Kholm": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hagen",
+     "text": "Marshal Odric's been pacing the wall all morning, waiting on somebody from the lowlands. That'd be you, I expect."
+    },
+    "opening": {
+     "speaker": "Marshal Odric",
+     "text": "So, you have arrived at last, lad! Faldrin's letter came up the pass ahead of you. He speaks well of you.\n\nHear me. The Necromancer Ulvana -- curse her name -- has woken the dead of the Glacier Crypts, high above the fort. Every night her Undead come down Wyrmtooth Pass and every night we drive them back. My men grow cold and weary.\n\nTake this sword, it served me well in younger days. Climb to the Crypts and put an end to Ulvana, or Fort Kholm will not see the spring!"
+    },
+    "reminder": {
+     "speaker": "Marshal Odric",
+     "text": "The Crypts, lad! Go! My men cannot hold the wall forever!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb to the Glacier Crypts and destroy the Necromancer Ulvana."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  }
+ }
+}

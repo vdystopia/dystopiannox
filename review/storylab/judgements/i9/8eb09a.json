@@ -1,0 +1,34 @@
+{
+  "packet": "8eb09a",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The sponsorship petition, the urchin that stirred up the bats, the ruby key to the orchard gate: plain, concrete, slightly comic, and a clean offer/accept/refuse shape. Reads exactly like the campaign."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The rowing-partner bit has real Nox humour ('Yippee!', 'We'll be rich!!!!', the dead drinking the brandy), but the bell-tower line hands over items with no setup and the outcome jumps to an armory ladder. The two halves read as a pastiche of Westwood's exclamations."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Compressed and elliptical ('Here's my trouble, lad -- my brother [Person]. And mind [Person] at the gate.'), and it leans on spaced double dashes. Each line packs who, where and what into one breath instead of letting the speaker talk."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The innkeeper fleeing the villain and selling inn and home for 50,000 gold is a known campaign gag. It has the chatty 'lad', the shrugging refusal line and the 'you know where to find me'."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "The lines don't follow from each other: the second ask presumes a key and a plot nobody set up, and the second outcome is three fragments stitched together ('Is he truly finished?' in the giver's own mouth). Item rewards are named in a templated way."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'I surmise you might be here about the reward', 'savage scum', 'I'll lose no sleep fretting about his soul': it has the period gentility, exact gold sums and paged rhythm of Westwood's town bounties."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A jailbreak for a smuggler who 'does this just to get away from his responsibilities': dry humour, a casual 'ya', and a reward line that adds a warning about wizards reacting to a [Group]. Unmistakably the campaign."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "The first ask is overloaded: greeting, a question it then dismisses, the threat, the location, the culprit, potions, a smith, a key and the reward all in one speech. Its outcomes borrow stock phrases ('quite a deal, lad', 'keep well clear of [Person] if you mean to stay alive')."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 3,
+     "critique": "Long, run-on asks with literary flourishes ('a horrid reminder of what waits below', 'the old bad blood ... runs deep'). The outcome talks about greasing gears and snapping cables, and the barrel speech ends on a disjointed tag ('You've brought back nearly every barrel!' after already thanking)."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The kidnapped women's escort, with its 'the menfolk ... cannot live without us' and 'their stomachs grumbling', is classic Westwood deadpan; the slightly stiff 'be our savior' is in period too."}
+  ],
+  "tells": [
+    "Westwood's speakers have one idea per line and let personality carry it (a gag, an aside, a stated price); the new texts cram setup, location, culprit, side errand and reward into one speech.",
+    "New texts reuse stock Westwood tags ('lad', 'quite a bargain/deal', 'stay out of X's way if you want to stay alive') as connective tissue, sometimes in the wrong slot.",
+    "Coherence between the four lines: Westwood's offer, reminder and outcome follow one situation; the new texts often presume objects, keys or people never introduced, or splice fragments (a question from the player, a line from another speaker) into one outcome.",
+    "Literary or atmospheric phrasing ('a horrid reminder of what waits below', 'bad blood runs deep') stands out against Westwood's plain, slightly comic, conversational register.",
+    "Heavy use of spaced double dashes and ellipses to join clauses; Westwood uses them sparingly and prefers short separate sentences with exclamation marks.",
+    "Westwood names exact gold sums and concrete small comic details (apples and bats, a 50,000-gold inn, a smuggler who gets arrested on purpose); new texts reward with generically named gear (steel shield, chain tunic, a sword)."
+  ]
+}

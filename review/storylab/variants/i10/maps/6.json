@@ -1,0 +1,322 @@
+{
+ "iter": "i10",
+ "writer": "Claude Code agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Olvane",
+  "setting": "a wizards' college town",
+  "trouble": "Grelvin, a renegade wizard thrown out of the College, has raised the Undead and holds the old Observatory on the hill above Olvane.",
+  "names": {
+   "Olvane": "place",
+   "the College": "place",
+   "the Observatory": "place",
+   "the Bell Tower": "place",
+   "the Brass Owl": "place",
+   "the summoning hall": "place",
+   "the College cellars": "place",
+   "the College library": "place",
+   "the north gate": "place",
+   "Grelvin": "person",
+   "Haskel": "person",
+   "Tibald": "person",
+   "Brunt": "person",
+   "Dobbo": "person",
+   "Vashti": "person",
+   "Pumbric": "person",
+   "Vimbly": "person",
+   "Ostrigan": "person",
+   "Ursin": "person",
+   "Fennick": "person",
+   "Wendle": "person",
+   "Ebbo": "person",
+   "Hulda": "person",
+   "the Undead": "group",
+   "the Imps": "group",
+   "the guards": "group",
+   "the porters": "group",
+   "the Golem Trial": "thing",
+   "Friend of the College": "thing",
+   "magic spectacles": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brunt, the guard at the College library gate, first takes the player for Dobbo's thief, later lets him through.",
+   "names": {
+    "Brunt": "person",
+    "Dobbo": "person",
+    "Grelvin": "person",
+    "the Undead": "group",
+    "the Observatory": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunt",
+     "text": "Stand where you are, stranger! Dobbo says you snatched a dagger off his counter and the bare hook on his wall proves it! Come along. I've got a cold and musty cell waiting just for you! Will you go quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Brunt",
+     "text": "We must drive out Grelvin! Smash his Undead and take back the Observatory."
+    },
+    "later": {
+     "speaker": "Brunt",
+     "text": "Hello Scholar! Come see me when you make Master."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Chancellor Vimbly has fled his bedchamber, which is full of bats, and pays to have them driven out.",
+   "names": {
+    "Vimbly": "person",
+    "Brunt": "person",
+    "the College library": "place",
+    "Friend of the College": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vimbly",
+     "text": "These wretched bats are the bane of my life! The porters swung brooms at them, but they keep flying back in! My last hope is that you can somehow chase the bats out for good!\n\nThe bats are in my bedchamber, up there, behind the green door. Please, do be careful."
+    },
+    "reminder": {
+     "speaker": "Vimbly",
+     "text": "I will not set foot in there till the bats are gone! Swat them! Squash them! Hurry before they breed again!"
+    },
+    "completion": {
+     "speaker": "Vimbly",
+     "text": "Brave Adventurer, you have my deepest gratitude! You have earned the title of Friend of the College. Brunt and the other guards will be told that you may enter the College library as you please.\n\nTake this gold for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bats out of Chancellor Vimbly's bedchamber."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Master Ostrigan's magic spectacles were carried off by Imps loose from the summoning hall to their nest in the old Bell Tower.",
+   "names": {
+    "Ostrigan": "person",
+    "the Imps": "group",
+    "the summoning hall": "place",
+    "the Bell Tower": "place",
+    "magic spectacles": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrigan",
+     "text": "Sneaky little devils! Those Imps got loose from the summoning hall and they're already making a dreadful nuisance of themselves!\n\nI am Master Ostrigan. My magic spectacles have gone missing. I fear the Imps carried them off to their nest in the old Bell Tower.\n\nIf you bring them back to me, I will gladly take you on as a student of the College. The Bell Tower is just across the square. Will you help a half-blind old man?"
+    },
+    "refusal": {
+     "speaker": "Ostrigan",
+     "text": "Oh dear... Then I suppose I shall sit here and squint."
+    },
+    "reminder": {
+     "speaker": "Ostrigan",
+     "text": "Have you got my spectacles yet? Oh my, I can't read a single page without them."
+    },
+    "completion": {
+     "speaker": "Ostrigan",
+     "text": "My spectacles! Those wretched Imps must have chewed on them.\n\nYou have shown the Imps were no match for you. Maybe you would make a fine student here after all. Hmmm... Quite so.\n\nTake this spell book. When you have the time, come up to my study and we shall begin your lessons. There is a great deal to cover."
+    },
+    "after": {
+     "speaker": "Ostrigan",
+     "text": "Whenever you're ready, just come up to my study and we'll begin."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Master Ostrigan's magic spectacles from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Visit Master Ostrigan's study to begin your lessons."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Fennick, drunk in the square; Hulda, a townswoman; Ursin, the College registrar.",
+   "names": {
+    "Fennick": "person",
+    "Hulda": "person",
+    "Ursin": "person",
+    "Grelvin": "person",
+    "the Undead": "group",
+    "Olvane": "place",
+    "the College": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fennick",
+     "text": "What're ya gonna do? Hex me?"
+    },
+    "rumour2": {
+     "speaker": "Hulda",
+     "text": "Grelvin's Undead are at the College gate! They need every hand up there!"
+    },
+    "rumour3": {
+     "speaker": "Ursin",
+     "text": "Olvane must not fall to Grelvin. Hold fast for the honor of the College!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Pumbric of the Brass Owl inn, Dobbo the arms dealer (who thinks the player robbed him), Vashti of the potion shop.",
+   "names": {
+    "Pumbric": "person",
+    "Dobbo": "person",
+    "Vashti": "person",
+    "Brunt": "person",
+    "Grelvin": "person",
+    "the Brass Owl": "place",
+    "the College": "place",
+    "the Observatory": "place",
+    "the Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pumbric",
+     "text": "Not from around here, eh? Most folks up at the College turn their noses up at outsiders, but they've never set foot outside these walls and I've been everywhere! What do they know!? Huh? Heh, heh, heh...\n\nYou're welcome at the Brass Owl anytime, sir."
+    },
+    "arms": {
+     "speaker": "Dobbo",
+     "text": "Get out THIEF! Before I fetch Brunt!"
+    },
+    "magic": {
+     "speaker": "Vashti",
+     "text": "I hear Grelvin's Undead are coming down from the Observatory. Might be time for me to pack up my potions and find another town."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Ursin, the registrar, enters candidates for the College's Golem Trial. Fennick sells a sword for it in the Brass Owl.",
+   "names": {
+    "Ursin": "person",
+    "Fennick": "person",
+    "the Golem Trial": "thing",
+    "the College": "place",
+    "the Brass Owl": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ursin",
+     "text": "Are you entering the Golem Trial? Then you must bring your own sword and pay 25 gold to enter. We provide the Golem.\n\nWell? Shall I write you down or not?"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Here for the Golem Trial, I bet. I've got a lovely sword for sale.\n\nSeeing as you have an honest face, I'll let you have it for 100 gold. Are you interested?"
+    },
+    "outcome_a": {
+     "speaker": "Ursin",
+     "text": "Right. Everything seems to be in order. In you go. The judge will go over the rules with you. Good luck."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "There ya go! That blade was made for your hand. No Golem stands a chance against a sword like that."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Enter the Golem Trial at the College."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Fennick's sword before the Golem Trial."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Wendle's students went down for a lesson in the College cellars, now overrun by giant rats and Ghosts. Ebbo is the first one found.",
+   "names": {
+    "Wendle": "person",
+    "Ebbo": "person",
+    "Haskel": "person",
+    "the College cellars": "place",
+    "the north gate": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wendle",
+     "text": "Where in the world have you been!? We have a terrible problem!\n\nMonstrous rats and wailing Ghosts have overrun the cellars beneath the College. Students have been lost in the noble pursuit of knowledge!\n\nPlease, I beg of you! Drive the vermin out, bring my students back up and I shall reward you well.\n\nTake this key. It opens the room where my first student is shut in. He will show you where the rest are.\n\nI also have a cure poison potion which may prove handy."
+    },
+    "reminder": {
+     "speaker": "Wendle",
+     "text": "Bring my students back to me and you will be well rewarded."
+    },
+    "found": {
+     "speaker": "Ebbo",
+     "text": "Thank goodness you found me! Please lead me back to the stairs."
+    },
+    "following": {
+     "speaker": "Ebbo",
+     "text": "I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Wendle",
+     "text": "You are a true hero! A thousand thanks.\n\nWhile you were down in the cellars, saving my students, Haskel came by asking for you. He's waiting at the north gate -- at the foot of the hill road.\n\nBefore you go, take this gold as your reward."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the monsters in the College cellars. Rescue Master Wendle's students."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": ["CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Haskel brings the player to Olvane and sends him up to Provost Tibald at the College, while Grelvin's Undead hold the Observatory.",
+   "names": {
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tibald": "person",
+    "Grelvin": "person",
+    "Olvane": "place",
+    "the College": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hulda",
+     "text": "Hurry stranger! Up the steps!"
+    },
+    "opening": {
+     "speaker": "Haskel",
+     "text": "Here we are, lad -- Olvane. I can take you no farther than this.\n\nUp these steps you'll find the College, and Provost Tibald, an old friend of mine. He knows you're coming. I must be off, and you'd best hurry too!\n\nOnly you can stop Grelvin now."
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "Enough talk, lad. Get going!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Provost Tibald, Haskel's old friend, at the College."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

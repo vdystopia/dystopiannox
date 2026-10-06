@@ -1,0 +1,22 @@
+{
+  "packet": "b97838",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "A smuggling ring needing its boss broken out of jail, 'give ya', a gloating guard with 'Heh, heh, heh...!' and 'Grunt if you agree!' are Westwood's irreverent, loose voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "Charming spiders out of a frightened Mayor's study, a typo ('off you back') and townsfolk lines that state a fact or a faction quip read like the original."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Every line is tied to one siege theme (Undead coming, Imps, the bog) and each townsperson has a neat hook; competent but more unified and crafted than Westwood's towns."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6, "critique": "'Bah! Scorpions!' / 'Dead? All of 'em? Ha!' formula and a 'Halt! ... [Person]'s orders.' guard; 'just don't touch the green jar' is a polished joke of the modern kind."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Leech quest built on the exclamation-and-backstory template, a 'Halt! ... by order of' guard and a 'Pull up a stool' innkeeper, all shared with other new texts."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Another 'Bah! [pest]!' offer with 'I'll make it worth your while' and 'You earned every piece of it!'; the busy townsperson ('I've got bread in the oven') repeats the new towns' pattern."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "The bathing bridge guard and townsfolk gossiping about the spider-frightened Mayor, plus a bland shopkeeper and guard, have Westwood's mix of flat and silly."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Mushroom-cave scorpions, 'when the dead started walking' threaded through quest, guard and shopkeeper; 'This cart won't push itself!' echoes D's bellows line exactly."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "Long tutorial-style mayor briefing with directions ('East of here', 'I should be in my house'), a handoff to the Captain, a missing full stop and bland townsfolk: the opening town's voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "The frog rescue joke, a 'Greetings, Wanderer' guard with semicolon and ellipsis, 'Oh no...I've lost everything.' and 'Well good luck to ya' carry Westwood's loose punctuation and folksy tone."}
+  ],
+  "tells": [
+    "New towns reuse one stock of ambient lines: 'Halt! ... [Person]'s orders / by order of', 'Pull up a stool', 'X won't pump/push itself!', 'Not now, I've got my own troubles', the shopkeeper's 'Heh, heh' price joke.",
+    "New towns thread one menace (Undead, the dead walking) through every voice; Westwood's townsfolk talk about local, unrelated or flat things and some lines carry no information at all ('This is the home of [Person].').",
+    "Westwood's text has small errors and loose punctuation (missing full stops, 'you back', '...I've', 'a week, or a two!'); the new text is clean.",
+    "The new quest offers share the exclamation-pest-backstory-pay template with 'Ha!' thanks and an exact gold sum; Westwood's quests are stranger in premise (jailbreak for smugglers, charming spiders, a pet frog)."
+  ]
+}

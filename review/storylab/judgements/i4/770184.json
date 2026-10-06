@@ -1,0 +1,33 @@
+{
+  "packet": "770184",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The exclamation-heavy plea is right, but 'rescuing' an artifact, the tacked-on 'indeed!' and the 'thwart her plans once and for all' stakes line read like someone imitating Westwood's breathlessness rather than having it."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The deadpan 'vital interests' joke and the key-then-scroll handout are Nox-like. But '!?' in place of Westwood's usual '?!', the digit in the journal and a five-page offer that walks through every step feel built to a checklist."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clumsy in the way the campaign is clumsy ('fetching my staff for me', a comma splice in the opening cry), with a nagging one-line reminder and a plain place-and-person journal."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A terse offer, a reminder that piles on warnings with '--' and 'Unsavory elements dwell in the shadows!', and a thanks that drops the death in one breath. It reads like a class variant of H's quest."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and functional, with the right shape (offer, where to go, where to find me, the Captain waits). Some of it may still be Westwood's ('valiant Adventurer of [Place]'), but it reads a touch too orderly and complete."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The pet frog and the 'Loads and loads of money?' answer to a question the player never speaks are pure Nox. The lines are short and the journal is plain."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A grumbling opener, a fussy master, the found robe and the 'Hmmm... Yes.' that turns into an apprenticeship. The rhythm and the dry humour are the campaign's own."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A long, specific briefing (how to open the tunnel, what to tell the colleague) with 'Good luck, Adventurer!' and a curt, impatient reminder: typical of a mentor's chapter in the campaign."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The 'Gahhhhhh!' entrance and the half-blind hermit are well-chosen comedy, but 'May all that is great bless you!' and the bat-lore reward line sound composed, and the reminder that gives away the hideout is too convenient."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Smoothly written chore-for-a-favour quest ('Have faith, one little urchin is no threat'). Its plausibility is tidy rather than odd, and the journal 'terrorizing the [Place] [Thing]' is more polished than Westwood's flat entries."}
+  ],
+  "tells": [
+    "Westwood's lines are lumpy: comma splices, redundant words ('fetching my staff for me'), inconsistent capitals (Urchins/urchins, East). The new texts are grammatically cleaner and evenly paced.",
+    "Westwood's humour is deadpan and comes in one beat, often an answer to an unspoken line from the player. The new texts stage their jokes ('Gahhhhhh!', 'vital interests') more deliberately and keep returning to them.",
+    "New texts tend to state the stakes in full ('thwart her plans once and for all', 'invaluable to any conjurer'). Westwood leaves them implied or blurts them out.",
+    "Westwood reminders are often impatient one-liners ('What are you waiting for?', 'Now!'). New reminders more often add helpful information.",
+    "Journal entries: Westwood's are flat imperatives naming a person and place; new ones add a descriptive modifier or a count."
+  ]
+}

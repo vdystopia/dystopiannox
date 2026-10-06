@@ -1,0 +1,33 @@
+{
+  "packet": "dc8ec5",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The crude simile with the dialect contraction ('fresher'n a monkey's butt') and the deadpan magic-shop guarantee are Westwood's cheap-gag humour. The arms line is a stock boast."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Three flat lines of news (a shut gate, ferry fares) with no welcome and no joke, and a polite, generic potion offer. They read as atmosphere filler, not as a Nox shopkeeper."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "'Ya need some new weapons and armor? This is the place!' is plausible, but 'aye mate' feels pasted on, and the magic-shop line is a lore summary rather than a greeting. It could go either way."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The inn line is a reflective, writerly compliment ('You look like someone with plenty left to do') that Nox's blunt keepers never give. 'Pssst! Hey! Pal!' copies Nox's huckster shtick a little too hard, and the bare 'Welcome to [Place]!' is filler."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "These are competent, courteous welcomes with a mild rivalry jab, but they lack the bite or oddity of Westwood's keepers. They are tidy and evenly polite across all three."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The rambling, self-pleased innkeeper with a '!?' and 'Heh, heh, heh...' over a page break, the shouted 'Get out THIEF!' that reacts to player state, and the timid potion seller about to flee: all of it is Nox texture."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The arms line echoes a plot development in a Nox-like way, but the set reads assembled: a gruff inn, a gruff magic shop ('I have work to do') and 'A sorry business indeed!' all share one even tone of grimness."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'Let's get to know each other! Buy something!' and the funerary-services upsell are Westwood's dark, absurd shop humour, with the odd formality of 'might you desire to purchase goods'."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The inn reacts to concrete quest tokens (a captain's letter, a monster's ear), the arms dealer makes a cartoon threat, and the potion's name is a joke. All are short and punchy, typical of Nox."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The lines are tied to a live plot event, with a regional boast ('finest assortment of arms in the South!') and a price cut offered for reclaiming something: the game-state-aware shop talk Westwood used."}
+  ],
+  "tells": [
+    "Westwood's keepers react to concrete game state (items the player carries, being branded a thief, a quest underway) and tie it to buying. The new texts more often give ambient news or rumour with no hook to the shop.",
+    "Westwood's humour is broad and absurd (crude similes, threats to the customer, funerary upsells, punning potion names). Imitations either skip the joke or reproduce the huckster tic ('Pssst! Hey! Pal!') too self-consciously.",
+    "New texts lean toward reflective or polished sentences (complimenting the player's destiny, even politeness across all three keepers). Westwood's lines are uneven: one keeper rambles, the next is a single shouted line.",
+    "Westwood uses messy punctuation ('!?', trailing '...', capitals for shouting, dialect contractions) more freely than the cleaner new lines.",
+    "Filler lines like a bare 'Welcome to [Place]!' or 'Perhaps you'd care for a potion or a spell book?' read as placeholders, not Nox's voice."
+  ]
+}

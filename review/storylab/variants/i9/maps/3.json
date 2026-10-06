@@ -1,0 +1,316 @@
+{
+ "iter": "i9",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Skeel",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "The Necromancer Morvane has raised the dead of the burial isles with his Bone Totem, and Zombies climb into Skeel at night.",
+  "names": {
+   "Skeel": "place",
+   "Morvane": "person",
+   "Fendrick": "person",
+   "Grell": "person",
+   "Hobbe": "person",
+   "Pellam": "person",
+   "Nubbin": "person",
+   "Quimby": "person",
+   "Snub": "person",
+   "Nella": "person",
+   "Tobb": "person",
+   "Ludo": "person",
+   "Wilka": "person",
+   "Orra": "person",
+   "Bettik": "person",
+   "Durgan": "person",
+   "Zeela": "person",
+   "Watch Hut": "place",
+   "Town Hall": "place",
+   "burial isles": "place",
+   "north bog": "place",
+   "Corvale": "place",
+   "Bone Totem": "thing",
+   "Amulet of Healing": "thing",
+   "Undead": "group",
+   "Zombies": "group",
+   "Giant Leeches": "group",
+   "Troll": "group",
+   "Ogre": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Grell guards the landing gate of Skeel and sends visitors to Warden Hobbe.",
+   "names": {
+    "Grell": "person",
+    "Hobbe": "person",
+    "Zombies": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Grell",
+     "text": "I'd speak to Warden Hobbe first... unless you'd like a swim with the leeches."
+    },
+    "again": {
+     "speaker": "Grell",
+     "text": "Hey, you ought to find yourself some proper boots."
+    },
+    "later": {
+     "speaker": "Grell",
+     "text": "Dead men on the ladders! Stand aside, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Old Nubbin's bathhouse has been taken over by a nest of Giant Leeches and he wants them squashed.",
+   "names": {
+    "Nubbin": "person",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nubbin",
+     "text": "Please, help an old man! The leeches have come back! I won't put up with it any longer -- a whole nest of them is living under my bathhouse, west of here! I don't know when I'll get a proper bath again unless somebody goes down there and squashes every last one of them, and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Nubbin",
+     "text": "That nest must be under the floor somewhere!"
+    },
+    "completion": {
+     "speaker": "Nubbin",
+     "text": "They're dead!? I could never pay you what a hot bath is worth, but please take these boots as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Nubbin's bathhouse has been overrun by Giant Leeches, but the hatch down to their nest is stuck fast. Perhaps the nest can be reached from the water..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "A Troll snatched Quimby the healer's Amulet of Healing and waded off toward the north bog.",
+   "names": {
+    "Quimby": "person",
+    "Nubbin": "person",
+    "Troll": "group",
+    "Amulet of Healing": "thing",
+    "north bog": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quimby",
+     "text": "I'm the healer in this village. Quickly, a Troll snatched my Amulet of Healing right off my neck, and you must catch him before he wades off into the north bog! Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Quimby",
+     "text": "Return to me when you've found some courage."
+    },
+    "reminder": {
+     "speaker": "Quimby",
+     "text": "The Amulet of Healing is a treasure without equal and can close a dying man's wounds overnight."
+    },
+    "completion": {
+     "speaker": "Quimby",
+     "text": "Wonderful! That was a brave deed, one this old healer won't soon forget -- take this Ankh, with my thanks."
+    },
+    "after": {
+     "speaker": "Quimby",
+     "text": "Word is you cleaned the leeches out of Nubbin's bathhouse too! Good work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the lair of the Troll who took Quimby's Amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the lair of the Troll who took Quimby's Amulet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Wilka, Orra and Nella talk to the player in the walkways of Skeel.",
+   "names": {
+    "Wilka": "person",
+    "Orra": "person",
+    "Nella": "person",
+    "Pellam": "person",
+    "Town Hall": "place",
+    "Skeel": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wilka",
+     "text": "We'll hold the ladders here, but you must report to Mayor Pellam in the Town Hall. May your lamp stay lit through this long night, friend of Skeel!"
+    },
+    "rumour2": {
+     "speaker": "Orra",
+     "text": "Oh, it's you. Has the swamp been drained, yet?"
+    },
+    "rumour3": {
+     "speaker": "Nella",
+     "text": "I smell the stink of the grave on the wind! Will the dead ever leave us in peace?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bettik keeps the inn, Durgan sells arms and armor, Zeela sells potions and scrolls.",
+   "names": {
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Corvale": "place",
+    "Skeel": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bettik",
+     "text": "Wanna try the stew? The turnips are snuck in by barge from the big farms over in Corvale."
+    },
+    "arms": {
+     "speaker": "Durgan",
+     "text": "Something tells me we're going to get along just fine! As long as you keep on buying, that is!"
+    },
+    "magic": {
+     "speaker": "Zeela",
+     "text": "Haven't had many shoppers lately. Skeel isn't anybody's idea of a holiday right now, what with Zombies climbing the ladders every night."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Pellam wants the Undead driven out of his bell tower. Snub the smuggler wants his boat of Ogre brandy pushed off the mud by the burial isles.",
+   "names": {
+    "Pellam": "person",
+    "Snub": "person",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "Skeel": "place",
+    "Undead": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Pellam",
+     "text": "Ahhhh! The dead have climbed into my bell tower and nobody dares ring the alarm! Here are some Red Potions for you. They should see you to the top of the stairs."
+    },
+    "offer_b": {
+     "speaker": "Snub",
+     "text": "I was rowing a load of Ogre brandy past the burial isles when the dead came up out of the water at me. And they bit a hole in my boat! You'll be my new business partner. You're a long way from home, so I know you need the gold. My boat is sitting in the mud just off the isles. Once you've pushed it loose, row it back here as fast as you can. We'll be rich!!!!"
+    },
+    "outcome_a": {
+     "speaker": "Pellam",
+     "text": "Go up the ladder to the Town Hall armory and pick out a Longsword. It seems there's no task in Skeel too big for you!"
+    },
+    "outcome_b": {
+     "speaker": "Snub",
+     "text": "Yippee! It's not much, but here's your cut, like I promised. Much obliged, partner. I'm still not sure those dead men didn't drink a bottle or two, though."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Drive the Undead out of Pellam's bell tower."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Reach the burial isles and free Snub's boat."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": ["RedPotion", "Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Nella's husband Tobb, the gravedigger, was dragged down into the crypt on the burial isle by the dead.",
+   "names": {
+    "Nella": "person",
+    "Tobb": "person",
+    "Skeel": "place",
+    "burial isles": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nella",
+     "text": "Welcome to Skeel, stranger, though it's a sorry place to visit now! My husband Tobb went digging on the burial isle and the dead dragged him down into the crypt! This key is yours -- it opens the crypt gate. I'll watch the water for Zombies while you go find him."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Oh, and Tobb always said that crypt had a back way out..."
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Let's go home to Nella?"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Please get me out of this hole."
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Hmmm. I'm back home and still among the living! Nella, fetch the stranger our purse!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Tobb back from the crypt."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Ludo the raftman points the player to Warden Hobbe, who sends him to smash Morvane's Bone Totem on the burial isles.",
+   "names": {
+    "Ludo": "person",
+    "Hobbe": "person",
+    "Watch Hut": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Bone Totem": "thing",
+    "burial isles": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ludo",
+     "text": "Hello there! My name is Ludo. I pole the ferry raft between the huts so folks don't have to wade through the leech water. Warden Hobbe is waiting for you in the Watch Hut."
+    },
+    "opening": {
+     "speaker": "Hobbe",
+     "text": "Good day, stranger! The burial isles have been defiled -- the dead called up out of the mud by the Necromancer Morvane! Grrrrrrrrrr. Find his Bone Totem out on the isles and smash it, lad!"
+    },
+    "reminder": {
+     "speaker": "Hobbe",
+     "text": "Get going! Fendrick swore you were quick on your feet."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Smash the Bone Totem to break the Necromancer's spell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

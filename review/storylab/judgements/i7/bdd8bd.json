@@ -1,0 +1,33 @@
+{
+  "packet": "bdd8bd",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Brisk, slightly stiff mentor speech ('no time to rest on laurels', 'Now, off with you!') and a reminder that points at a person rather than the goal: the small mismatch reads as real campaign text."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The 'beware of the Troll' warning is Nox-like, but 'the east road stays shut for good' is a stake made up for the map, and the reminder hands over a secret drain as a neat level hint, which is designer writing. The doubled 'this' typo is the only rough edge."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too much local colour ('up these stilts', 'old [Person] the ferryman pulled under by a dead man's hand') and a journal written as an exclamation. Westwood's journals are flat imperatives, and its openings are less atmospheric."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Piles up Nox tics ('lad', 'Adventurer', 'Heh, heh, heh...') in the first line. The missing-students setup reads like a pastiche of a mentor's welcome rather than the real thing."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Plain, ugly truth, lad' and the lower-case 'heh, heh, heh...' feel imitated. The reminder is lore, not a nudge, and the journal hedges with a speculative clause ('Perhaps ... still lives'), which Westwood's terse journals do not."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "A quiet, plain, grounded farmer voice ('cutting barley in the east fields'), a reward bargain, and a 'goat trail' shortcut in the reminder. It is competent, but its sentences are evener and gentler than Westwood's exclamatory urgency."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Stilted, fragmentary self-introduction ('I am [Person]. The Master for the [Place].'), a capitalised 'YOU' and 'Our time grows short': this is Westwood's awkward late-campaign exposition."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The mentor's opening to the apprenticeship, with its agreement slip ('incursions ... is on a steady rise'), bureaucratic diction ('antiquated records', 'furnish the answers') and an empty page break. These are authentic quirks."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Damn! Where have you been, lad!?', the run-on panic, and the clumsy 'leaving rebuilding the village our smallest concern' are the real campaign's breathless, slightly ungrammatical urgency."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Short, choppy orders split over pages, an odd turn ('heed its bite') and a gruff reminder ('Don't just stand there. Get a move on.'). This is a plain Westwood hand-off."}
+  ],
+  "tells": [
+    "Westwood's journal entries are short, flat imperatives ('Retrieve the X.', 'Go to X and rescue Y.'). The new texts sometimes turn the journal into narration or exclamation, or add hedging clauses.",
+    "The new texts load Nox signature tics ('lad', 'Heh, heh, heh', 'Adventurer') into a single speech. Westwood uses them sparingly, and they are not always in the first line.",
+    "The new reminders tend to give a secret route as a tidy level hint (drain, goat trail, back way). Westwood's reminders are mostly bare urgency ('Go quickly!', 'Get a move on.') or point at a person.",
+    "The new openings carry more local, sensory colour (fields, stilts, ferrymen) and invented regional stakes ('the east road stays shut'). Westwood's are terser and more generic, and they tie to the campaign-wide threat.",
+    "Westwood's lines have real grammatical slips and stiff, odd phrasing ('incursions ... is', 'The Master for the', 'leaving rebuilding the village our smallest concern'). The new texts are cleaner and rhythmically even."
+  ]
+}

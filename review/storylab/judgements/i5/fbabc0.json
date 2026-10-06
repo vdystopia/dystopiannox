@@ -1,0 +1,32 @@
+{
+  "packet": "fbabc0",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The missing final period, the flat 'He'll never get it back.' and a third line that hands the player plot context ('the last [Group] who went after those crazed urchins is still missing') are Westwood's town chatter."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "These are random, disconnected one-liners (taverns, undead, fire boots) of very uneven weight, a hint dropped as gossip. That is how Westwood's townsfolk sound."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The quirky political aside ('It might be nice to have a woman in charge around here'), the blunt 'They're here!' and the 'Only fools and warriors' quip are Westwood's off-kilter humour."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line is a well-formed hint (Ogre clubs split wooden shields, so buy something sturdier; the north road after dark), more purposeful and polished than Westwood's random chatter."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The barrow-wall line with 'My mother said so and nobody listened' is a written character beat, and the 'Did you hear? ... again last night!' shape repeats in J. The missing period looks imitated."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "These are tidy, useful tips (ask the innkeeper, wolves worse this year, smash barrels), each a gameplay pointer in clean prose rather than Westwood's mix of nonsense and lore."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "'My crucible's about to spill' is a nice trade flavour line, but the set of three (a busy excuse, a consequence for the economy, a panicked repeat) is too well balanced."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Nice neighborhood -- 'till the ogres moved in', 'Maybe we shouldn't have built so close to the ogre village' and 'Well good luck to ya' carry Westwood's deadpan suburban humour and lower-case 'ogres'."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The typo 'off you back', the mayor who is 'deathly afraid of spiders' and two lines that repeat the same news are Westwood's unpolished, redundant town talk."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "'Like sensible folk' and 'green and dripping! Hee, hee, hee!' are crafted jokes, and its 'Did you hear? The dead ... again last night!' shares a template with E. It is a polished imitation of H's 'shouldn't have built' line."}
+  ],
+  "tells": [
+    "Westwood's townsfolk lines are uneven, often redundant (two people saying the same news), sometimes typo-ridden, and as often random flavour as a hint; the new lines are each purposeful, balanced and clean.",
+    "New sets reuse templates across towns ('Did you hear? X ... again last night!', 'We should have built...'), which a set-wide reading exposes.",
+    "New hints are causal and specific (a club splits wooden shields, so buy sturdier; Urchins stuff loot into barrels, so smash them); Westwood's are vaguer ('Beware of the rising undead').",
+    "Westwood's humour is deadpan and situational ('nice neighborhood -- 'till the ogres moved in', the spider-phobic mayor); the new humour is a more written character beat (a nagging mother, 'green and dripping')."
+  ]
+}

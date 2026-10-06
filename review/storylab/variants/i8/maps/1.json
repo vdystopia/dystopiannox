@@ -1,0 +1,296 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so the north gate is shut.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Chapel of the Ford": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Ulric": "person",
+   "Wenna": "person",
+   "Tobin": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick at the shut north gate, then the gate open again.",
+   "names": {
+    "Garrick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Brave enough to walk right up to my gate. But that won't get you through it! Now move along!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "I don't see many carts on this road lately."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "All honest travelers may pass north again!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric the shepherd blew a peddler's sheep horn and called every wolf in the Ashwood down on his fold.",
+   "names": {
+    "Ulric": "person",
+    "Ashwood": "place",
+    "Halvard": "person",
+    "Moot Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Oh, what have I done?! What have I done!\n\nA peddler sold me a horn for calling my sheep home. I blew it once, and every wolf in the Ashwood came running down on my fold! These wolves will be the death of me!\n\nKill them, young sir. They lurk in the trees just behind my house. I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "I still hear that howling. You going?"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Not a howl out there! They're really gone?! Bless you!\n\nHere, take this bow. And if you're headed north, see Halvard in the Moot Hall. He has worse trouble than mine."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the wolves at Ulric's fold and drive them off."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna the miller's widow: the Urchins stole the mill key and locked her out, and Tobin went after them with her frying pan and never came back.",
+   "names": {
+    "Wenna": "person",
+    "Tobin": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Oh, it's hopeless! Hopeless!\n\nThe Urchins from the old barrow east of the ford got into my mill and ran off with the mill key! Now I'm locked out of my own mill! Those wretched Urchins are a plague on honest folk!\n\nTobin went after them with my good frying pan, and he hasn't come back. Will you go into the barrow and bring back my key? I will offer a worthy reward."
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Don't play coy with me stranger. You're scared, that's all. Tobin went with a frying pan, nothing more. Come back when you've found your nerve."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "It is high time you were on your way. Poor Tobin grows hungrier with every hour he's gone."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My key! You found my key! Now the wheel can turn again!\n\nMay all that is great bless you! Please, take this ankh as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "My endless thanks for your trouble!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the key to Wenna's mill in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the key to Wenna's mill in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a tease, a worry about Corwin, a jab at the player.",
+   "names": {
+    "Corwin": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "You're mighty scrawny for a bandit-chaser. Hah, hah, hah...!"
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "I hope Corwin stays up on his hill."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Well you sure don't look like much. I'm glad you aren't the one guarding our gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian at the inn, Dunstan the smith, Mabry the magic shop.",
+   "names": {
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Hello traveler. You know you're tracking mud all over my floor."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "I hear the wolves are bold this year. Good for business, friend!"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Strangers aren't usually welcome in my shop. But for a little extra gold, I'll overlook it this once."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest back from Corwin's tower, and Sly Wat wants back the wig Corwin's men took off his head when he deserted.",
+   "names": {
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Sly Wat": "person",
+    "Brackenford": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "This is an outrage! Red Corwin's bandits have carried off the tithe chest of Brackenford -- the very coffers of this town!\n\nThey took it up to the old watchtower on Crow Hill, north of here. Recover the chest and you shall be handsomely rewarded."
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "Don't stare! I know, I know...\n\nWhen I ran out on Corwin, his boys caught me at the bottom of the hill and took my wig! My beautiful wig! Now Corwin wears it himself, and the whole north road is laughing at Sly Wat!\n\nGet it back for me and this chain tunic is yours."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Safe and sound, and Corwin none the richer! Brackenford is in your debt.\n\nHere is 150 gold, with the thanks of the whole town."
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "My wig! Oh, my beautiful wig! It smells of Corwin, but I don't care!\n\nHere, the tunic's yours. Now let 'em laugh!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Carry the tithe chest from Corwin's tower to the Moot Hall to give the town's money back to Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Fight your way up Crow Hill and win back Sly Wat's wig from Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Anselm's novice Pip followed the Urchins into the old barrow and their shaman turned him into an Urchin.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Kind sir! Please, help us!\n\nMy novice Pip went into the old barrow across the ford after those Urchins, and he never came back. Last night an Urchin came scratching at the chapel door, crying my name in Pip's voice! Their shaman has turned the poor boy into one of them!\n\nBring him back to the Chapel of the Ford and I can lift the curse. Will you go?"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "I've got my prayers to say. You fetch the boy."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Here's a human face at last and someone besides Urchins who might take me home!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "No matter if the Urchins chase us clear to the ford! The chapel is holy ground. Even Urchins wouldn't dare set foot in the Chapel of the Ford!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! Hold still, boy...\n\nThere! He's himself again! Not a whisker of Urchin left on him! Bless you, brave Adventurer!\n\nPlease, take this spell book. You have done the chapel a great service."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pip among the Urchins in the tunnels beneath the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Halvard in the Moot Hall, who sends him up Crow Hill after Red Corwin.",
+   "names": {
+    "Halvard": "person",
+    "Moot Hall": "place",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Crow Hill": "place",
+    "Brackenford": "place",
+    "Garrick": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Halvard is looking for someone brave! Hurry! The Moot Hall is just up the road!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Ah, at last! Someone who isn't afraid to walk the roads!\n\nThat villain Red Corwin and his bandits have seized the old watchtower on Crow Hill, north of town. They rob every cart and traveler on the north road, and I have had no choice but to shut the north gate. Brackenford cannot live long without its trade!\n\nGo up Crow Hill and drive Corwin out of that tower. I will tell Garrick to open the gate for you. Off with you, lad, and good luck!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Wanderer! Get up that hill at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the watchtower on Crow Hill and defeat Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

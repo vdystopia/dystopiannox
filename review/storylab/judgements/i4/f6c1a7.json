@@ -1,0 +1,33 @@
+{
+  "packet": "f6c1a7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short like Nox, but it stacks stock pieces (a mob of foul Ogres, kidnapped maidens, my sweet sister, tokens of my appreciation) without a single odd detail; the journal naming the sister through the speaker is clumsy."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The drawn-out 'Ooooh', the hurried urgency and the thanks that hands the hero on to the next errand with two items read like campaign connective tissue rather than a self-contained quest."},
+    {"label": "C", "verdict": "generated", "confidence": 1, "score": 7,
+     "critique": "Voice is close (young sir, double dashes, '500 in gold!'), but the bounty-and-scoundrel register is evenly polished and repeats 'for weeks' in both halves; a near guess."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The 'Hmmm... Yes.' musing, the inconsistent capitalisation of urchins, and the turn from a lost apprentice into a teleporter hand-off feel like a real chapter opening, not a designed side quest."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Awkward, breathless sentences ('At happier other times', 'leaving rebuilding the village our smallest concern') and 'Damn! Where have you been, lad!?' are the slightly ungainly exclamatory Westwood voice."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The 'What's that you say? Loads and loads of money?' gag is in Nox's spirit, but the setup is neat and generic and the joke feels engineered to tick the humour box."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Worse than the pox, the double doors, the new title that lets you pass the guards, 'I insist': specific, plain and tied to the game's charm mechanic."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Mirrors the bounty template (brought to justice, Well done lad, young sir, a gold sum in the line) almost phrase for phrase, and 'laying their filthy paws on our belongings' is a stock flourish."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Died in defense of Nox's vital interests', the key and beast scroll handed over, the Captain waiting east: the mechanical, slightly bureaucratic hand-holding of the real campaign, with a precise journal count."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Mate' three times in four lines overplays the dialect, and the journal spells out who, what and to whom at a length Nox's terse journal lines rarely reach."}
+  ],
+  "tells": [
+    "Westwood's lines are tied to campaign mechanics and the next step (a key, a scroll, a teleporter, someone waiting elsewhere); the new texts close themselves off as tidy, self-contained favours.",
+    "Westwood's sentences are often a little ungainly or oddly worded; the new texts are smoother and assemble stock phrases (foul Ogres, filthy paws, sweet sister, tokens of appreciation).",
+    "New texts overuse a single colour marker (a dialect word repeated, a gag placed for humour) instead of letting it appear once.",
+    "New journal entries tend to be longer and spell out every party; Westwood's are a short imperative with one object.",
+    "Where a Westwood template exists (bounty, rescue), a new text echoing its exact formula and reward phrasing is the likelier imitation."
+  ]
+}

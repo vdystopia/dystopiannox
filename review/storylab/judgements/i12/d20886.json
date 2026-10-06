@@ -1,0 +1,33 @@
+{
+  "packet": "d20886",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Flat functional pointer ('He has the [Thing].'), an odd non-sequitur giggler and a short rallying shout: the uneven, plain mix of a real town. The giggle line is strange but in the game's goofy register."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Three short, unconnected rumours, one a gameplay hint about fire boots, one a mild joke about taverns: exactly the throwaway plainness of Nox's townsfolk."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Generic fantasy-rumour boilerplate (trade routes, caravans, 'more brazen'), longer and smoother sentences than Nox uses; 'Young sir!' feels bolted on."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Terse, slightly rude and blunt ('I'm very busy.'), with a plain statement of the local threat; very Westwood in rhythm and economy."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too crafted: a noon/dusk comma-splice build-up, an elaborate comic image (honking like a goose, chasing pigeons) and exposition about wards; Nox's townsfolk rarely spend this many clauses on one joke."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Imitates the shape well ('Hello again... yet?'), but an invented 'Troll King' massing an army and the stacked exclamations read like a pastiche of a Nox rumour set."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Short comic exclamations fit Nox's slapstick, but the set is all gag with no information, and 'Blaaargh!' reads like a writer reaching for the game's silliness."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Plain fear and cynicism ('Let them take it, I say.'), a repeated-word joke about smart people leaving: the dry, simple humour of the campaign's siege chatter."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Lava slug and runaway ore cart feel invented for a mining town, and the class-tinged taunt 'hammer-boy' with 'Hah, hah, hah...!' copies the Nox laugh pattern a little too deliberately."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Short, opinionated gossip and a punchy closer ('Only fools and warriors...'); the slightly clumsy 'There's no denying it... They're here!' is authentic Westwood plainness."}
+  ],
+  "tells": [
+    "Westwood's townsfolk lines are short and often flat or off-hand (a rude brush-off, a one-clause rumour, a hint about an item); generated sets aim for a polished mix of threat, gossip and gag in every set.",
+    "Generated lines pack more clauses and scene-setting (time progressions, 'disturbing stories from merchants', 'more brazen in their attacks') where Westwood states the fact once and stops.",
+    "Elaborate comic images (goose-honking scholars, lava slugs under doors) betray a writer constructing a joke; Westwood's humour is drier and blunter (a cynical aside, a repeated word).",
+    "Invented threats with grand titles (a 'Troll King' massing armies) and generic caravan/trade-route rumours read as stock fantasy rather than Nox's specific, plain-spoken world.",
+    "Over-imitation of signature tics (laughs written 'Hah, hah, hah...!', 'Young sir!', 'yet?') appears in the generated texts more densely than in the originals."
+  ]
+}

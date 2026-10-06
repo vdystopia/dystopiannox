@@ -1,0 +1,316 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Karth Vael",
+  "setting": "a castle town with a garrison",
+  "trouble": "Skorn, the Troll King of Mount Dreg, sends his trolls against the garrison of Karth Vael; Marshal Hesk sent the player to Commander Ostrag to stop him.",
+  "names": {
+   "Karth Vael": "place",
+   "Ostrag": "person",
+   "Dorrik": "person",
+   "Zibbet": "person",
+   "Hulm": "person",
+   "Grolm": "person",
+   "Skorn": "person",
+   "Mount Dreg": "place",
+   "Orm": "place",
+   "Pemmick": "person",
+   "Odlin": "person",
+   "Brindle": "person",
+   "Gorlick": "person",
+   "Vexel": "person",
+   "Nessa": "person",
+   "Crull": "person",
+   "Tam": "person",
+   "Joss": "person",
+   "Granary Yard": "place",
+   "the Keep": "place",
+   "Troll Den": "place",
+   "Grain Vault": "place",
+   "Trolls": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hulm, a guard at the north gate of Karth Vael; later, once Grolm is dead.",
+   "names": {
+    "Hulm": "person",
+    "Ostrag": "person",
+    "Grolm": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hulm",
+     "text": "Hey, you ought to get a proper cloak."
+    },
+    "again": {
+     "speaker": "Hulm",
+     "text": "Wanna try the stocks for size?"
+    },
+    "later": {
+     "speaker": "Hulm",
+     "text": "Commander Ostrag, here is the stranger who finished off Grolm and now seeks to serve the garrison!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Commander Ostrag wants Grolm, the Troll chief who raided the Granary Yard, dead in the Troll Den on Mount Dreg.",
+   "names": {
+    "Ostrag": "person",
+    "Grolm": "person",
+    "Dorrik": "person",
+    "Granary Yard": "place",
+    "Karth Vael": "place",
+    "Troll Den": "place",
+    "Mount Dreg": "place",
+    "Skorn": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrag",
+     "text": "Blast! Where were you, lad!? The Trolls stormed the Granary Yard and we'd have lost the winter stores to them if Dorrik's pikemen had not charged in at the last moment!\n\nBut in the confusion, their chief Grolm got away with a dozen of our war-horses, leaving the burnt stores our smallest worry! All of Karth Vael is now at risk if Grolm lives!\n\nYou must follow his trail, northeast to the Troll Den on Mount Dreg! Kill Grolm or we are doomed!"
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "I'm sure Grolm is still out there! Go quickly!"
+    },
+    "completion": {
+     "speaker": "Ostrag",
+     "text": "In calmer times, the barracks of Karth Vael would ring with cheers for the death of Grolm! Well done! But now we must stop the Troll King Skorn once and for all.\n\nPlease accept these with our deepest thanks for your fine work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Troll Den and kill Grolm."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "WoodenShield",
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Odlin lost his fur cloak to an imp in the loft above the kennels, and the hounds now bite anyone who enters the yard.",
+   "names": {
+    "Odlin": "person",
+    "Karth Vael": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Odlin",
+     "text": "Good! My family keeps the finest hounds in Karth Vael. Unfortunately, a nasty little imp has moved into the loft above our kennel and run off with my fur cloak. He has stirred up the hounds and now they snap at anyone who enters the yard.\n\nGo get the cloak back from the imp, and I'll make it worth your while. Will you go?\n\nHere, take this whistle, it will calm the hounds."
+    },
+    "refusal": {
+     "speaker": "Odlin",
+     "text": "Too bad, nobody else will go near that yard.\n\nCome and find me if you think better of it, I'm at the kennels by the stables."
+    },
+    "reminder": {
+     "speaker": "Odlin",
+     "text": "Don't fret, one little imp is no match for you. Come back with my cloak."
+    },
+    "completion": {
+     "speaker": "Odlin",
+     "text": "Excellent! You've got my cloak back.\n\nHere is your reward. The red potion will put you back on your feet. Good luck!"
+    },
+    "after": {
+     "speaker": "Odlin",
+     "text": "Thanks again for getting my cloak back."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Odlin's fur cloak from the Imp in the kennel loft."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "NOTE: Odlin has his cloak back and the hounds are quiet."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Karth Vael: Nessa asks about the pass, Crull gossips about the Troll King, Tam brushes the player off.",
+   "names": {
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Mount Dreg": "place",
+    "Karth Vael": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Nessa",
+     "text": "Hello again. Has the Troll King been stopped, yet?"
+    },
+    "rumour2": {
+     "speaker": "Crull",
+     "text": "I hear that the Troll King has finally lost his patience. He's massing an army below Mount Dreg! Everyone must watch out for Troll scouts!"
+    },
+    "rumour3": {
+     "speaker": "Tam",
+     "text": "I've been told to keep away from newcomers."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gorlick keeps the inn, Zibbet the arms shop, Vexel the magic shop in Karth Vael.",
+   "names": {
+    "Gorlick": "person",
+    "Zibbet": "person",
+    "Vexel": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gorlick",
+     "text": "Are you here to join the garrison?"
+    },
+    "arms": {
+     "speaker": "Zibbet",
+     "text": "You'd better be quick the garrison's buying up all my steel."
+    },
+    "magic": {
+     "speaker": "Vexel",
+     "text": "Yes, what is it, stranger? I'm rather occupied."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Sergeant Dorrik demands written clearance to enter the Keep; Zibbet the smith offers to speak for the player if wasps are cleared from his coal store.",
+   "names": {
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Karth Vael": "place",
+    "the Keep": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dorrik",
+     "text": "I am the Gate Sergeant of Karth Vael. If you wish to enter the Keep you'll need written clearance."
+    },
+    "offer_b": {
+     "speaker": "Zibbet",
+     "text": "Hello. I am Zibbet, Master Smith of Karth Vael. The Keep is strict and Sergeant Dorrik is the worst of it.\n\nHere's the deal, do me a favor and I'll have a word with him for you. Interested?"
+    },
+    "outcome_a": {
+     "speaker": "Zibbet",
+     "text": "Good! My forge sits at the bottom of the Keep stair. Unfortunately, a swarm of giant wasps has moved into the coal store next door. They have stung my apprentices and now nobody will fetch the coal.\n\nGo kill the wasps and I'll speak to Sergeant Dorrik once you're back.\n\nHere, take this iron key, it will open the coal store."
+    },
+    "outcome_b": {
+     "speaker": "Zibbet",
+     "text": "Pity, I doubt anyone else will vouch for you.\n\nShould you change your mind, I'll be at my forge below the Keep stair."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find someone to speak for you with Sergeant Dorrik."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Kill the wasps in Zibbet's coal store."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brindle, the garrison cook, is trapped in the Grain Vault below the Keep when the portcullis jams; Hulm begs the player to go and find her.",
+   "names": {
+    "Hulm": "person",
+    "Brindle": "person",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "the Keep": "place",
+    "Grain Vault": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulm",
+     "text": "While you were out on the north road, the portcullis jammed -- trapping Brindle in the Grain Vault deep below the Keep! Ostrag is worried for our cook.\n\nWe had best go down under the Keep and find Brindle."
+    },
+    "reminder": {
+     "speaker": "Hulm",
+     "text": "Why are you standing about? We must hurry to the cellar stair! Brindle may be in real danger!"
+    },
+    "found": {
+     "speaker": "Brindle",
+     "text": "Hey, it's you! You got past the portcullis!\n\nThere are huge rats out there. I had to bar myself in while I was counting sacks.\n\nHere, take this key and unlock the gate behind you."
+    },
+    "following": {
+     "speaker": "Brindle",
+     "text": "Thanks again. I believe there are spare torches in that crate. Quick, follow me! I know a back stair up to the kitchens!"
+    },
+    "completion": {
+     "speaker": "Dorrik",
+     "text": "Praise be, you're both alive! You'll make a fine pikeman, lad. Ostrag will be glad you brought his cook back in one piece."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Brindle from the Grain Vault below the Keep."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Joss points the player to Commander Ostrag, who sends him to Pemmick in Orm against the Troll King Skorn of Mount Dreg.",
+   "names": {
+    "Joss": "person",
+    "Ostrag": "person",
+    "Pemmick": "person",
+    "Orm": "place",
+    "Mount Dreg": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "WHAT? Ostrag is... EXPECTING you?"
+    },
+    "opening": {
+     "speaker": "Ostrag",
+     "text": "I'll go no further. Too many Troll eyes the closer we get to Mount Dreg.\n\nFollow the river path to Orm.\n\nFind my old comrade Pemmick. He'll lend you a hand if he can.\n\nStay on the path. Cliff beasts will bite hard should you stray. Watch yourself out there, lad."
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "Go on! Don't stand around gawking. Look lively."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pemmick's hut in the Village of Orm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

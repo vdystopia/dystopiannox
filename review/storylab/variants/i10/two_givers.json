@@ -1,0 +1,645 @@
+{
+ "scenario": "two_givers",
+ "iter": "i10",
+ "writer": "one writer a town (variants/i10/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest back from Corwin's bandits; Sly Wat sells keys to the watchtower's side door.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Tobin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Cloak of Mists": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Greetings. So you are the one Ossian spoke of, eh? Well, I could use one more pair of hands, but first you must fetch back the tithe chest Red Corwin's bandits stole.\n\nWill you take on this task?"
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "Hey there, Traveler! Can I interest you in a key to the side door of the old watchtower? These keys are freshly cut and well worth the paltry sum of 50 gold.\n\nYa want one?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "Very well! This purse holds your share of the tithe. The shield is from the town armory, which ought to keep Corwin's arrows off you."
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "There you go, I'm sure that key will open the door just fine.\n\nDrop by again if you ever need a spare."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the watchtower key from Sly Wat."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Ostrum: Warden Krell's bounty on the outlaw Varlo Blackpick, dead or alive. Varlo surrenders if cornered: taken alive, 200 gold from Krell; killed, a steel shield.",
+   "names": {
+    "Ostrum": "place",
+    "the Copper Deep": "place",
+    "Grummox": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ulmar": "person",
+    "Dagrim": "person",
+    "Kettrig": "person",
+    "Pellox": "person",
+    "Ottla": "person",
+    "Krell": "person",
+    "Varlo Blackpick": "person",
+    "Lissel": "person",
+    "Tobb": "person",
+    "Gubbin": "person",
+    "Tarsk": "person",
+    "Zephrin": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Krell",
+     "text": "Good day, young sir. I presume you have come about the bounty.\n\nThere's a fat price on Varlo Blackpick's head -- dead or alive. He and his pack of cutthroats have been robbing our ore carts for a month.\n\nMind yourself, you don't want to be taken unawares by those vicious dogs."
+    },
+    "offer_b": {
+     "speaker": "Varlo Blackpick",
+     "text": "I give up! Don't kill me, please! I'll come along quiet!"
+    },
+    "outcome_a": {
+     "speaker": "Krell",
+     "text": "Hold, there! Foreman Dagrim told me of a racket down in these tunnels, so I came to have a look.\n\nYou've taken the infamous Varlo Blackpick all by yourself! Most impressive! You have my deepest respect, young sir! Blackpick's gang has plagued Ostrum for a month! I'll take charge of him now. We'll all rest easier with this rotten villain locked away!\n\nHere's the bounty -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Krell",
+     "text": "You killed Varlo, eh? Well, I'd rather have seen him stand trial, but I won't shed a tear for the likes of him!\n\nHere's your reward -- this fine steel shield! Ostrum's tunnels are a safer place thanks to you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Varlo Blackpick for the bounty, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the captured Varlo Blackpick to Warden Krell."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Vell: Vasko sells a used sword for Mayor Pellig's Trial of Blades, and Pellig sends entrants to Kessik's forge.",
+   "names": {
+    "Vell": "place",
+    "Black Fen": "place",
+    "Sunken Keep": "place",
+    "Troll caves": "place",
+    "Kessik's forge": "place",
+    "Grulga": "person",
+    "Trolls": "group",
+    "Marsh Guard": "group",
+    "Ulmar": "person",
+    "Pellig": "person",
+    "Tansy": "person",
+    "Torvic": "person",
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Oswig": "person",
+    "Dagny": "person",
+    "Vasko": "person",
+    "Kessik": "person",
+    "Bodo": "person",
+    "Ystra": "person",
+    "Fisk": "person",
+    "Brena": "person",
+    "Staff of Binding": "thing",
+    "Trial of Blades": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Vasko",
+     "text": "Now this sword is a real beauty. Its last owner was a little old granny who only used it to slice cheese.\n\nAt Kessik's forge a blade like this would cost you 250 gold, easy. But I like the look of you, so I'll part with it for 90. Well, do you want it?"
+    },
+    "offer_b": {
+     "speaker": "Pellig",
+     "text": "You'll need a sword of your own for the Trial of Blades. Kessik sells them at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Vasko",
+     "text": "Here ya go! That sword was meant for your hand. Nobody could lose the Trial holding a blade like that."
+    },
+    "outcome_b": {
+     "speaker": "Vasko",
+     "text": "Big mistake, friend. Go on over to Kessik's and look at his swords. Then hurry on back -- there's another fellow asking after this one too."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy a sword for the Trial of Blades."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a sword at Kessik's forge for the Trial of Blades."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Tarnhold: Quartermaster Ostrick wants the garrison's pay chest back from the Ogres; Nebbick, who drinks in the Rusty Helm, offers to sell the old north tower.",
+   "names": {
+    "Tarnhold": "place",
+    "Vargoth": "person",
+    "Hadrim": "person",
+    "Rusk": "person",
+    "Orlo": "person",
+    "Brunwick": "person",
+    "Wendle": "person",
+    "Ottla": "person",
+    "Ostrick": "person",
+    "Nebbick": "person",
+    "Grimwald": "person",
+    "Pobbin": "person",
+    "Brokk": "person",
+    "Quilla": "person",
+    "Dask": "person",
+    "Yorra": "person",
+    "Mott": "person",
+    "Grael Gorge": "place",
+    "Rusty Helm": "place",
+    "Ogre-Be-Gone": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrick",
+     "text": "I'm afraid the men are in a foul mood, with Vargoth's Ogres raiding our supply wagons. They took the garrison's pay chest on the south road. Get it back for me and I'll open the armory to you."
+    },
+    "offer_b": {
+     "speaker": "Nebbick",
+     "text": "So, you ready to buy the old north tower and its dungeon? Only 30,000 in gold for the pair of them!"
+    },
+    "outcome_a": {
+     "speaker": "Ostrick",
+     "text": "Excellent! You got the pay chest back, lad! Here, take this shield from the armory. I hope you live through this whole business. Now if you'll excuse me, I've got soldiers to pay. Good luck, and keep clear of Vargoth's Ogres if you want to keep your head!"
+    },
+    "outcome_b": {
+     "speaker": "Nebbick",
+     "text": "Ah, never mind, friend. I'm sure somebody else will want a tower and a dungeon. Should you reconsider, you know where I'll be!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the Ogres for Quartermaster Ostrick."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the old north tower from Nebbick."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tolvin: Fennick the Harbor Master wants a pass sealed by Mayor Gorvane before he lends a boat, and Dobbs, who rowed for Black Varrick, offers a way to get one: fetch the tithe chest he hid in a net shed and take it to the Mayor.",
+   "names": {
+    "Tolvin": "place",
+    "Gorvane": "person",
+    "Mayor Gorvane": "person",
+    "Quillan": "person",
+    "Master Quillan": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Tobb": "person",
+    "Grella": "person",
+    "Ysolde": "person",
+    "Corm": "person",
+    "Fennick": "person",
+    "Tibbet": "person",
+    "Dobbs": "person",
+    "Porley": "person",
+    "Hobb": "person",
+    "Esmolde": "person",
+    "Heron Rock": "place",
+    "Gull Isle": "place",
+    "Fenwood": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Orb of Calling": "thing",
+    "Staff of Mending": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Imp": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Fennick",
+     "text": "I am the Harbor Master of Tolvin. If you want to take a boat out on the lake you'll need a pass with the Mayor's seal."
+    },
+    "offer_b": {
+     "speaker": "Dobbs",
+     "text": "Hello. Name's Dobbs, I used to row for Black Varrick's crew. Boats are scarce around here, and getting a pass sealed by the Mayor is the hardest part.\n\nTell you what, you do me a little favor and I'll see that you get your pass. How about it?"
+    },
+    "outcome_a": {
+     "speaker": "Dobbs",
+     "text": "Good! When I quit Varrick's crew I hid the Mayor's tithe chest in the old net shed on the south shore. Trouble is, a nasty little Imp has settled in the shed. He has stirred up the rats and now they bite anyone who goes near it.\n\nKill the Imp and take the chest back to Mayor Gorvane. Tell him Dobbs kept it safe for him, and he'll seal your pass!\n\nHere, take this iron key, it opens the shed."
+    },
+    "outcome_b": {
+     "speaker": "Dobbs",
+     "text": "Suit yourself, I doubt the Mayor will seal a pass for a stranger.\n\nShould you think better of it, I'll be at the Bent Hook, in the back."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get a boat pass sealed by Mayor Gorvane."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take the tithe chest from the net shed to Mayor Gorvane."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Olvane: Ursin, the registrar, enters candidates for the College's Golem Trial. Fennick sells a sword for it in the Brass Owl.",
+   "names": {
+    "Olvane": "place",
+    "the College": "place",
+    "the Observatory": "place",
+    "the Bell Tower": "place",
+    "the Brass Owl": "place",
+    "the summoning hall": "place",
+    "the College cellars": "place",
+    "the College library": "place",
+    "the north gate": "place",
+    "Grelvin": "person",
+    "Haskel": "person",
+    "Tibald": "person",
+    "Brunt": "person",
+    "Dobbo": "person",
+    "Vashti": "person",
+    "Pumbric": "person",
+    "Vimbly": "person",
+    "Ostrigan": "person",
+    "Ursin": "person",
+    "Fennick": "person",
+    "Wendle": "person",
+    "Ebbo": "person",
+    "Hulda": "person",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the guards": "group",
+    "the porters": "group",
+    "the Golem Trial": "thing",
+    "Friend of the College": "thing",
+    "magic spectacles": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ursin",
+     "text": "Are you entering the Golem Trial? Then you must bring your own sword and pay 25 gold to enter. We provide the Golem.\n\nWell? Shall I write you down or not?"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Here for the Golem Trial, I bet. I've got a lovely sword for sale.\n\nSeeing as you have an honest face, I'll let you have it for 100 gold. Are you interested?"
+    },
+    "outcome_a": {
+     "speaker": "Ursin",
+     "text": "Right. Everything seems to be in order. In you go. The judge will go over the rules with you. Good luck."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "There ya go! That blade was made for your hand. No Golem stands a chance against a sword like that."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Enter the Golem Trial at the College."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Fennick's sword before the Golem Trial."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Ostkar: Brisa begs for her husband Pell, taken by the Trolls from the woodcutters' camp. Tibbet needs his uncle Gorm's lucky helm back from the Trolls before Gorm gets home.",
+   "names": {
+    "Fort Ostkar": "place",
+    "Ostkar": "place",
+    "Kragan": "person",
+    "Trolls": "group",
+    "Brannoc": "person",
+    "Thrane": "person",
+    "Tolvar": "person",
+    "Fenna": "person",
+    "Haskel": "person",
+    "Osk": "person",
+    "Brisa": "person",
+    "Pell": "person",
+    "Tibbet": "person",
+    "Gorm": "person",
+    "Hobb": "person",
+    "Bornik": "person",
+    "Gribb": "person",
+    "Zell": "person",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Upper Gate": "place",
+    "Howling Crag": "place",
+    "Signal Tower": "place",
+    "Lower Vaults": "place",
+    "Keep": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brisa",
+     "text": "Kind sir! Please help me! A band of Kragan's Trolls just raided the woodcutters' camp, the camp below the fort and carried off nearly every cutter! One of them is my dear husband, Pell!\n\nPlease bring him home and I swear you'll be rewarded!"
+    },
+    "offer_b": {
+     "speaker": "Tibbet",
+     "text": "The Trolls just made off with my uncle's lucky helm! If it isn't back by tonight, he'll have my hide. He's due home off the wall any time now!\n\nPlease, help me, young sir! I think the Trolls who grabbed it went to the old chapel.\n\nWould you... could you fetch it back for me?"
+    },
+    "outcome_a": {
+     "speaker": "Brisa",
+     "text": "Oh, bless you, brave Adventurer! Please take these as tokens of my gratitude!"
+    },
+    "outcome_b": {
+     "speaker": "Tibbet",
+     "text": "Phew! Thanks a lot! Here, take this as a token of my appreciation!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue Pell and the woodcutters from Kragan's Trolls."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Recover Gorm's lucky helm from the Trolls at the old chapel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "RedPotion",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Orvak: Warden Holgarth offers a bounty on the outlaw Vesk Blackthumb, and Fenwick the armour dealer, robbed by Vesk's cutthroats, will reward whoever stops them.",
+   "names": {
+    "Orvak": "place",
+    "Mayor Dunbrak": "person",
+    "Wendril": "person",
+    "Tolvar": "person",
+    "Foreman Kessick": "person",
+    "Master Haggarth": "person",
+    "Pell": "person",
+    "Elsbeth": "person",
+    "Bram": "person",
+    "Warden Holgarth": "person",
+    "Fenwick": "person",
+    "Vesk Blackthumb": "person",
+    "Murdo": "person",
+    "Grondel": "person",
+    "Zarna": "person",
+    "Dibble": "person",
+    "Corla": "person",
+    "Ebbe": "person",
+    "Nissa": "person",
+    "the Cinder Caves": "place",
+    "the Great Forge": "place",
+    "the Ironvein Mine": "place",
+    "the Old Smelter": "place",
+    "the Slag Heaps": "place",
+    "the Sooty Mug": "place",
+    "Fenwick's": "place",
+    "the Forge Hammer": "thing",
+    "the Imps": "group",
+    "the Ember Demons": "group",
+    "the Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Holgarth",
+     "text": "Good day, young sir. I presume you've come about the bounty.\n\nThere's a fat purse waiting for whoever brings in Vesk Blackthumb -- dead or alive. He and his miserable gang of cutthroats have been robbing our ore wagons for a month now.\n\nWatch yourself. You don't want those vicious brutes sneaking up on you."
+    },
+    "offer_b": {
+     "speaker": "Fenwick",
+     "text": "To tell the truth, trade has been rather poor lately. Last month, cutthroats smashed in my door and emptied the shop.\n\nI doubt I'll ever see my goods again, but I'd dearly love to see those villains punished.\n\nI'll gladly reward anyone who puts a stop to them."
+    },
+    "outcome_a": {
+     "speaker": "Warden Holgarth",
+     "text": "Vesk is dead, eh? Well, I'd hoped to see him hang, but I won't shed a tear over that scoundrel!\n\nHere's your reward -- 150 in gold! Orvak owes you a great debt!"
+    },
+    "outcome_b": {
+     "speaker": "Fenwick",
+     "text": "So those cutthroats finally got what they deserved! Well done, lad! We'll all rest easier knowing those villains won't be getting their grubby hands on our goods again!\n\nAnd here's your reward... my finest steel shield! You're always welcome at Fenwick's!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Vesk Blackthumb and collect the Warden's bounty."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the thieves who robbed Fenwick's shop to justice."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel Cross: Women of Torvel Cross kidnapped in an Ogre raid and held in the pens of Fort Ulm: Ysolde asks to be led home, sharp-tongued Grizzel asks again and sulks at a no.",
+   "names": {
+    "Torvel Cross": "place",
+    "Fort Ulm": "place",
+    "the Lame Mule": "place",
+    "the old drain": "place",
+    "the north road": "place",
+    "the north gate": "place",
+    "the toll gate": "place",
+    "Morlo's farm": "place",
+    "Urgoth": "person",
+    "Oberik": "person",
+    "Ambrin": "person",
+    "Tobb": "person",
+    "Morlo": "person",
+    "Hask": "person",
+    "Hulda": "person",
+    "Duvic": "person",
+    "Fenna": "person",
+    "Ysolde": "person",
+    "Grizzel": "person",
+    "Gulliam": "person",
+    "Brodd": "person",
+    "Ysmay": "person",
+    "Ogres": "group",
+    "Imp": "group",
+    "Invisibility potion": "thing",
+    "Haste potion": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ysolde",
+     "text": "Hail, brave Adventurer! We are honest women, snatched from Torvel Cross in a vicious Ogre raid!\n\nWill you please lead us safely home? If you do, I'm sure a fine reward will be yours, since the men of Torvel Cross can't even cook their own supper without us!"
+    },
+    "offer_b": {
+     "speaker": "Grizzel",
+     "text": "Oh, it's you again. Have you thought it over? Will you be our hero and take us home?"
+    },
+    "outcome_a": {
+     "speaker": "Ysolde",
+     "text": "Then it's agreed! We'll follow you home!\n\nWe have to be quick. Time is short!\n\nThe Ogres barred the door of this pen, but I heard one of those smelly Ogre cooks talk about a hole behind the woodpile. If we poke around here, perhaps we can find it!"
+    },
+    "outcome_b": {
+     "speaker": "Grizzel",
+     "text": "Well, that's a shame. I hope you think it over soon, for I fear it's nearly supper time. I heard the big one sharpening his cleaver a little while ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Lead the kidnapped women out of the Ogre pens in Fort Ulm."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "NOTE: The Ogres have barred the way out. Search the pens for another way."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Corvale: Sergeant Krell sells a sword lesson for 100 gold; Muddock wants a rope pulled by the barn door on his signal.",
+   "names": {
+    "Corvale": "place",
+    "Gorbrak": "person",
+    "Captain Brannoc": "person",
+    "Master Ebbrin": "person",
+    "Mayor Pudrick": "person",
+    "Mobb": "person",
+    "Bodger": "person",
+    "Warden Grisholm": "person",
+    "Tibbet": "person",
+    "Haldo": "person",
+    "Sergeant Krell": "person",
+    "Muddock": "person",
+    "Tamsy": "person",
+    "Grobbel": "person",
+    "Quillda": "person",
+    "Hettie": "person",
+    "Darvel": "person",
+    "Pella": "person",
+    "Town Hall": "place",
+    "Old Quarry": "place",
+    "Thistle Hill": "place",
+    "Skarrow Hills": "place",
+    "North Gate": "place",
+    "Muddy Boot": "place",
+    "Horn of Corvale": "thing",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Sergeant Krell",
+     "text": "Ready for your lesson in swordplay? That will be 100 gold for the sword you'll train with."
+    },
+    "offer_b": {
+     "speaker": "Muddock",
+     "text": "Hello, stranger. Could you pull that rope by the barn door when I wave my hat? I'd be ever so grateful.\n\nJust let me climb up into the hayloft first."
+    },
+    "outcome_a": {
+     "speaker": "Sergeant Krell",
+     "text": "Hmmm, pity. Swordplay isn't for everyone."
+    },
+    "outcome_b": {
+     "speaker": "Muddock",
+     "text": "It worked! It actually worked! Thank you! You must be my lucky star!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Sergeant Krell for a lesson in swordplay."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pull the barn rope when Muddock gives the signal."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "2b874b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The plea's 'calling out for help that will never come' is too literary, and the reward (a book on Skeletons) plus a pointer to the next quest-giver is too tidy. Opening on 'Calamity! Calamity!' reads as borrowed flavour, and the 'dark days indeed' reminder feels like a mood line where Nox would put a nudge."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and short, close to Nox. But the key-to-the-lift setup, 'whatever he has is yours, I swear it' and the closing hook to tell someone else follow the same template as the other generated rescues."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Uneven in a way that feels authentic: the casual 'We best go', 'some really big bugs', the double-dash punctuation and the fussy mechanical detail (express elevator, gears, secret passage). It sounds like Westwood's slightly clumsy, chatty campaign writing."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Very compressed and built on a formula: key, apprentices further down, 'Lead the way. I'm right behind you.', then 'go and see [Person], he must hear what...'. It is the same scaffold as A and B and has no personality of its own."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The breathless run-on plea reads as deliberate imitation of Westwood's excitable townsfolk, and it is too long and has too much logistics (winch, pass, '[Person] can't spare a single man'). The weather-spellbook joke is fine but tacked on."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Pure Nox: absurd stakes (a pet frog in a burning house), the '?!' punctuation, and the fourth-wall gag 'Loads and loads of money?'. The journal entry is flat and literal."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Very short, crude stakes ('before the Ogres eat them'), 'lovely women' and 'damsels' in the dated tongue-in-cheek register, and one-line captives. It sounds exactly like Nox's Ogre-raid filler."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The over-the-top 'airborne demons from the underworld', 'Nox's vital interests', 'What took you so long to get here!?' and a journal with a count and 'Charm or kill' are all Westwood's game-mechanical voice."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Melodramatic exclamations, missing commas ('Hurry, kind sir and find'), 'the menfolk cannot live without us' as a joke and 'tokens of my appreciation' fit Westwood's rough, comic campaign prose."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "The jokes are good and Nox-shaped (the customer/rescuer slip, the soap, 'Hardly worn at all!'), but the joke density is too even and the 'Calamity!' opener and key handoff repeat the generated template seen in A."}
+  ],
+  "tells": [
+    "The new texts share one scaffold: the giver hands over a key, the captive says 'Lead on / Lead the way. I'm right behind you.', and the thanks ends by sending the player to another named person who 'must hear' something. Westwood's rescues vary their structure from quest to quest.",
+    "Repeated pet exclamations across different givers ('Calamity!', 'Please, hurry!') show a single writer working from a style sheet.",
+    "Westwood's lines are rougher and more uneven: missing commas, '!?' and '?!', double dashes, odd specifics (express elevator, 'Nox's vital interests'), and journal entries that state mechanics ('Charm or kill', 'the 6 trapped').",
+    "The new texts are better crafted: humour placed evenly in every slot, literary flourishes ('help that will never come'), and rewards that are neatly justified. Westwood's humour is cruder and comes in bursts (a frog, 'Loads and loads of money', Ogres eating women).",
+    "Westwood's captives often speak in generic, interchangeable lines ('Help us!', 'I'll follow you.'). The new captives each get a characterful line."
+  ]
+}

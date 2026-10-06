@@ -1,0 +1,22 @@
+{
+  "packet": "984c4c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Neat 'Oh, this is terrible! Terrible!' opener and a clean plea / found / follow / thanks arc, but it follows the same beat sheet as B, E, I and J, down to 'Please, kind sir, bring him home'."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Parent-loses-child-to-curiosity premise and 'Oh, my boy! You're safe!' match A and I closely; 'May all that is great bless you!' is a nice touch but the shape is templated."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "Specific mechanical plot (express elevator jammed, gears, a key to circle back to the gate, a secret passage), awkward 'We best go' and 'You'll make a fine [Group], lad' are the original's mission-briefing register."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "'Hail, brave Adventurer! We are innocent victims...' and 'the menfolk ... cannot live without us!' carry Westwood's tongue-in-cheek humour and slightly clumsy punctuation."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6, "critique": "'You great oaf, you're alive!' and the hot bowl at the inn are warm but over-crafted; 'I can hear them rattling!' and 'before they come back' recur across the new rescue texts."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "Long multi-page briefing with a key, a scroll, 'Nox's vital interests', a count in the journal ('Rescue the 6 trapped mine workers') and a captain handoff: Westwood's practical, slightly bureaucratic quest shape."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "The frog in the burning house, 'Anything you find in that room you may keep!' and the 'Loads and loads of money?' joke are unmistakably Nox."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 7, "critique": "Very terse lines ('Help us!'), 'before the Ogres eat them!' and 'go find the other two groups of damsels' fit Westwood's blunt, slightly comic campaign dialogue."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Same parent-and-son template ('My boy! You're safe! Oh, thank you, thank you') with an over-explained setup ('I'm too old to fight, and nobody else will go'); the two-name journal is careful but generic."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6, "critique": "'The boy has the brains of a goose, may the heavens forgive me' is an added flourish; 'Did [Person] send you?' and 'Hurry! I think they're coming back!' repeat other new texts almost word for word."}
+  ],
+  "tells": [
+    "The new rescue texts all follow one family drama (a parent or master's boy wanders off out of curiosity or is dragged off), with the same lines in each slot: 'Please, kind sir, bring him home', 'Please, hurry!', 'Did X send you?', 'I think they're coming back!', '[Person]! You're safe!'.",
+    "Westwood's rescues are tied to campaign mechanics: elevators, keys, scrolls, a count of captives, a handoff to the next NPC or mission; the new ones end with a small personal gift and a blessing.",
+    "Westwood's captive lines are often curt or flat ('I'll follow you.', 'Help us!'); the new ones are evenly emotive and polished.",
+    "Westwood's humour is broad and situational (menfolk who cannot live without the maidens, 'Loads and loads of money?'); the new texts' humour is a small character aside ('brains of a goose', 'You great oaf')."
+  ]
+}

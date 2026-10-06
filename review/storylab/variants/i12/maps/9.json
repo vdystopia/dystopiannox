@@ -1,0 +1,303 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tolmar Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "The Trolls of Glumm Hollow have overrun the North Bridge and dragged off the wizard Quillon, and the north road is cut until he is brought back. Brannoch, an old road captain, sent the player here to Warden Orsk.",
+  "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gurm, a guard at the crossroads post, talks of the Trolls at the North Bridge.",
+   "names": {
+    "Gurm": "person",
+    "Trolls": "group",
+    "North Bridge": "place",
+    "Glumm Hollow": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Gurm",
+     "text": "Keep your chin up, stranger, the Trolls will break on our spears!"
+    },
+    "again": {
+     "speaker": "Gurm",
+     "text": "We must hold the line and repay those who were lost on the bridge!"
+    },
+    "later": {
+     "speaker": "Gurm",
+     "text": "I feel a strange hope on the road today! Is there any news at all from the Hollow?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Bessa Tuck, a cider brewer, wants a bear out of the shed by her hop yard; the hornets sting everyone. She pays in a ferry pass.",
+   "names": {
+    "Bessa Tuck": "person",
+    "Tolmar Cross": "place",
+    "Ibb": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bessa Tuck",
+     "text": "Good! My family brews the finest cider in Tolmar Cross. Unfortunately, a foul great bear has moved into the shed near our hop yard. He has stirred up the hornets and now they sting anyone who goes into the yard.\n\nGo and kill the bear, then come back and I'll sign your ferry pass.\n\nHere, take this iron key, it opens the yard gate."
+    },
+    "reminder": {
+     "speaker": "Bessa Tuck",
+     "text": "Don't fret, one old bear is no great threat. Come back when it's been put down."
+    },
+    "completion": {
+     "speaker": "Bessa Tuck",
+     "text": "Excellent! The bear is dead.\n\nHere is your ferry pass. Show it to Ibb and he'll put you on the ferry. Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Bear troubling Tuck's hop yard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hessel, the stablemaster, lost his Cloak of Warding to crows and imps that overran the stable loft.",
+   "names": {
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Orsk": "person",
+    "Glumm Hollow": "place",
+    "Warden's Post": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hessel",
+     "text": "Why did you take so long!? We have a terrible problem!\n\nHideous overgrown crows and flying imps from the Hollow have overrun the stable loft. Two of my stablehands were hurt in defense of the inn's good name!\n\nPlease, I beg you! Will you drive off the beasts and fetch back my Cloak of Warding? I'll pay you handsomely.\n\nThis key will open the loft door.\n\nI also have a potion that might come in handy."
+    },
+    "refusal": {
+     "speaker": "Hessel",
+     "text": "No? Well, the cloak is still up there. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Hessel",
+     "text": "Come back to me once the loft is clear and the cloak is mine again, and you'll be paid well."
+    },
+    "completion": {
+     "speaker": "Hessel",
+     "text": "You are a true champion! My deepest thanks.\n\nWhile you were up in the loft, fighting those crows, Orsk came by, looking for you. He's waiting for you at the Warden's Post -- north of here.\n\nTake this gold and potion for your trouble, before you go."
+    },
+    "after": {
+     "speaker": "Hessel",
+     "text": "Orsk is no fool. Best do as he says."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the crows and imps in Hessel's stable loft. Recover the Cloak of Warding."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Go to the Warden's Post and speak with Orsk."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": ["RedPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Lorna flirts, Wick the drunk taunts, Dray wants the Troll chief dead.",
+   "names": {
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Lorna",
+     "text": "Hello stranger! Look me up when you're done with the Trolls."
+    },
+    "rumour2": {
+     "speaker": "Wick",
+     "text": "Watcha gonna do? Throw me out?"
+    },
+    "rumour3": {
+     "speaker": "Dray",
+     "text": "Get that Troll chief and tear his tusks out!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Pegg keeps the inn, Kolb the arms shop, Zillah the magic shop.",
+   "names": {
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Tolmar Cross": "place",
+    "Glumm Hollow": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pegg",
+     "text": "Maybe you'd like a hot meal or a room?"
+    },
+    "arms": {
+     "speaker": "Kolb",
+     "text": "Stranger from the south, eh? Most folk around here don't trust your sort, but they've never even been to the Hollow and I have! What do they know!? Eh? Heh, heh, heh...\n\nYou're always welcome here, sir."
+    },
+    "magic": {
+     "speaker": "Zillah",
+     "text": "Watch your step in my shop, stranger! I've got plenty of scrolls here that'll singe your eyebrows off."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Tarn, the mule race marshal, takes entries for a fee. Odo Grubb sells a mule to anyone going in the race.",
+   "names": {
+    "Tarn": "person",
+    "Odo Grubb": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tarn",
+     "text": "Are you entering the mule race? If so, you'll want your own mule and an entry fee of 30 gold pieces. We provide the saddle.\n\nWell? Shall I put your name down?"
+    },
+    "offer_b": {
+     "speaker": "Odo Grubb",
+     "text": "I guess you're after the mule race, eh. I've got a real fine mule for sale.\n\nSeeing as I like your face, I'll let her go for 90 gold. Are you interested?"
+    },
+    "outcome_a": {
+     "speaker": "Tarn",
+     "text": "Alright. The fee is paid. Go on to the start. The marshal will explain how it works. Good luck."
+    },
+    "outcome_b": {
+     "speaker": "Odo Grubb",
+     "text": "There ya go! That mule was made for you. You can't lose the race on a mule like that."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Tarn the entry fee for the mule race."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the mule from Odo Grubb."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Dessa's boy Tibb is trapped in the root cellar with wolves at the door.",
+   "names": {
+    "Dessa": "person",
+    "Tibb": "person",
+    "The Split Post": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dessa",
+     "text": "These cursed wolves are worse than the mange! My husband tried to chase them off, but they always return! My only hope is that you somehow drive the wolves off and get my boy out!\n\nTibb is in the root cellar, there, past the barn doors. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Dessa",
+     "text": "I shall not leave this door till my boy is out! Pull him out of there! And drive them off! Hurry before they get through!"
+    },
+    "found": {
+     "speaker": "Tibb",
+     "text": "Is somebody there? Please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Tibb",
+     "text": "Please take me home to Ma!"
+    },
+    "completion": {
+     "speaker": "Dessa",
+     "text": "Kind sir, my warmest thanks! You have earned a bed at the Split Post. The innkeeper will be told that you are now free to stay there as you please.\n\nTake this gold and potion for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive off the wolves and free Tibb in Dessa's cellar."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": ["CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fitch points the player to Orsk, who sends him to Glumm Hollow to rescue Quillon from the Trolls.",
+   "names": {
+    "Fitch": "person",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Trolls": "group",
+    "North Bridge": "place",
+    "Glumm Hollow": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fitch",
+     "text": "Welcome! I hear you're the one Orsk has been waiting for!"
+    },
+    "opening": {
+     "speaker": "Orsk",
+     "text": "Blast! Where have you been, lad!? The Trolls swarmed the North Bridge and we'd have lost it to them if Quillon's fiery spells had not been hurled in at the last moment!\n\nBut in the thick of it, the brutes dragged Quillon off, leaving the broken bridge our smallest worry! The whole north road is in peril if Quillon is lost!\n\nYou must go where Quillon was taken, north to the Troll Den of Glumm Hollow! Bring Quillon back or we are doomed!"
+    },
+    "reminder": {
+     "speaker": "Orsk",
+     "text": "I'm sure Quillon's in deep trouble! Move fast!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Glumm Hollow and free Quillon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

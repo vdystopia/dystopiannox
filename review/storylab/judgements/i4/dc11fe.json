@@ -1,0 +1,32 @@
+{
+  "packet": "dc11fe",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Flat, offhand gossip about politics and necromancers; short exclamations with no punchline structure, typical of Westwood's ambient lines."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Missing final period, plain statement of the quest hook (a stolen scepter), a sardonic aside about the last one sent; unpolished in Westwood's way."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Repetitive phrasing ('If you're smart you'll leave [Place], too'), defeatist bluntness ('Let them take it, I say'); plot-tied and unjokey."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The brush-off opener is plausible, but the merchants-on-the-east-road lament and 'Imps will take anything that shines' read as composed regional flavour."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Typo ('off you back'), the same spider/mayor content repeated by two speakers, plain worry; this redundancy and roughness is Westwood's."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every line is a crafted quip ('Poor man looks worse than they do!'); 'hasn't slept a wink' recurs across several texts in the packet."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Cow, pitchfork-under-the-bed rumour, turnip brush-off: a neat one-joke-per-line set built on the same phrases seen in F, I and J."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Lowercase 'ogres', the self-own 'Maybe we shouldn't have built so close to the ogre village', 'Well good luck to ya' without a comma: dry Westwood humour."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Busy brush-off, foreboding bog line and pitchfork rumour follow the same three-slot recipe as G and J."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Hero-worship anecdote, 'haven't slept a wink', 'bread in the oven' brush-off; the praise/dread/busy formula is the new texts' signature."}
+  ],
+  "tells": [
+    "The new sets follow a fixed recipe of three slots (a comic brush-off like 'I've got bread in the oven', a dread line, a gossip line about a named person), and stock phrases recur across sets: 'hasn't slept a wink', 'pitchfork under his bed'.",
+    "Each new line is a finished joke with a punchline; Westwood's ambient lines are flatter, often a plain statement of the plot or a worry, sometimes redundant between speakers.",
+    "Westwood's lines carry small errors (missing periods, 'you back', lowercase 'ogres', missing commas); the new ones are clean.",
+    "Westwood ties townsfolk to the chapter's actual events (a stolen scepter, spiders in the mayor's house, the necromancers); the new ones lean on generic regional colour (roads, bogs, imps, weather)."
+  ]
+}

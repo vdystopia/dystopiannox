@@ -1,0 +1,29 @@
+{
+  "packet": "60059c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Brisk comic offer with a stray 'ya', blunt 'Grunt if you agree!', 'in to' typo and a terse shopkeeper: Westwood's offhand humour and looseness."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Four-page offer that walks the player through the secret way in ('stand beside the barrels at the back of this room'), plus a grief beat in the thanks; too much plotting and stage direction for a side quest."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Offer and thanks are close to Nox's breathless 'brave Adventurer' register, but the cider punchline is a polished modern quip and 'ogres'/'Ogres' wavers; a hard call."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Exclamatory panic, 'Where in blazes', items handed over page by page and the 'stopped by asking after you' hand-off fit Westwood; the lava jab is in its manner."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "'Mate' three times, 'damn fine spell', a long literal journal entry and the running gag about the mayor's spider fear read like Westwood's town chatter."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Shaped well, but the 'Haw, haw, haw' guard and the comma-less shopkeeper line look like copied Westwood tics; the 'Hmmm... Yes.' shepherd beat and closing set-up feel built rather than tossed off."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Short, plain offer with an odd verb pair ('charm and banish'), a 'you back' typo and the [Group] joke; reward explained as a title and freedom to leave, exactly Westwood's town-gate logic."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A beat-for-beat rewording of D's structure ('Where were you all this time!?', 'Good men have bled in defense of the fort's precious stores'), wordier and stiffer, with an extra item-theft subplot squeezed in."}
+  ],
+  "tells": [
+    "Generated offers over-explain logistics (where a hidden entrance is, how to trigger it, where the nest lies) where Westwood names the task and the reward in a line or two.",
+    "Generated texts reuse Westwood's tics in clumps (laugh strings like 'Haw, haw, haw', missing commas, 'Hmmm...') as decoration; in Westwood they turn up unevenly and unplanned.",
+    "Paraphrase of a known quest skeleton (same page order, same reward hand-off) with the nouns swapped and the phrasing inflated ('bled in defense of', 'precious stores') is a strong tell.",
+    "Westwood's humour is blunt and silly ('Grunt if you agree!', the mayor afraid of a little spider); the generated humour tends toward neat, set-up-and-punchline quips.",
+    "Westwood's thanks are short and transactional; generated thanks add emotional beats (grief, a career suggestion) and plot set-up for the next scene."
+  ]
+}

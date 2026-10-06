@@ -1,0 +1,29 @@
+{
+  "packet": "d775ae",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "The bounty frame, the surrender line and the 'won't be losing any sleep' payoff are very close to Nox, but they read as a reskin of a known template ('dropouts' raiding a 'college's libraries'). An unmasked invented name (Quickquill) and a killed bandit masked as [Thing] give it away."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A used-car salesman's patter ('only used it on weekends', 'since I like your face') in short, plain lines with a hard price. This is Westwood's dry shopkeeper humour."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The speakers are terse, the prices are blunt ('Ya want one?'), and the explanation of the spellbook and the field-guide scroll is practical and slightly clumsy, the way the campaign explains its mechanics."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The bounty speech is copied almost word for word with boars swapped in, and the outcome mirrors the original's beats ('lose no sleep over a pig's soul'). The bat-cellar ask and the 'drink easier' echo feel assembled rather than written."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "An absurd 50,000-gold offer for an inn delivered deadpan, with 'lad' and a long, rambling farewell sentence. That loose, joking register fits Westwood."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The structure is tidy and modern: a gatekeeper who needs 'written clearance', a smith who trades a favour, and wasps in the coal store, with every location and key spelled out. The voice is functional and has none of Nox's humour or colloquial bite."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Exasperated humour ('does this just to get away from his responsibilities. It's not easy running a smuggling ring'), a slightly ungrammatical 'as token of my gratitude', and 'Adventurer' as a form of address. It reads like the campaign."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The goat-herder plea is plausibly Nox, but the second ask stacks dramatic beats ('he'll skin me. He's due any minute!', 'Could you... would you') and the two thank-you lines are near duplicates, which suggests imitation."}
+  ],
+  "tells": [
+    "New texts reuse a recognisable Westwood template (the bounty speech, the 'lose no sleep' payoff) nearly word for word and swap only the nouns. Westwood rarely repeats a whole speech pattern.",
+    "Invented names left unmasked, or masking that does not fit what is masked (a person masked as [Thing]), point to new text.",
+    "Westwood's merchants and quest-givers carry a comic personality (salesman patter, exasperation, absurd prices). New texts tend to be functional and list the location, key and task in order.",
+    "New texts over-explain logistics (where the forge is, what the key opens, who will vouch) in complete, tidy sentences. Westwood is looser and leaves small grammatical slips.",
+    "Stacked dramatic beats and stammering ('Could you... would you') in one plea read as imitation. Westwood's pleas are short and direct."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "fe930d",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Brisk airship-captain drop-off with a concrete objective and spells handed over; 'Good luck and good speed' and 'This may get very ugly, lad' have Westwood's plain, slightly stagey ring."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Exclamatory fanfare with double dashes and a three-step goal list compressed into one line; the one-line reminder 'You need to press on now, lad' is typical Westwood minimalism."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clipped fragments ('You'll know. And careful.') and a reminder that repeats the opening almost verbatim, a Westwood habit; journal phrased flatly."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Short, functional, with the idiosyncratic 'No more time for chit-chat' reminder and the melodramatic 'You remain our only hope'; reads like shipped Nox."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Smoothly crafted with motivated details (why the ship can't fly closer, why the potions); 'Mind how you go' and 'Down the road with you' feel like a modern writer doing a gruff captain."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Long, expository speech that explains backstory step by step ('My attempts to send for help have come to nothing'); the agreement slip is plausible either side, but the length and tidy causality read new."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Sentences pack several clauses and plot links ('I'm certain [Person] is behind the Urchin raids too'); more connective tissue than Westwood's terse briefings."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "Overloaded exclamation ('What kept you, lad!?') and run-on causal chain about trade and hunger; stakes are spelled out economically in a way Nox rarely bothers with."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Stiff, slightly odd phrasing ('The Master for the [Place]', 'convey the [Thing]') and capitalised 'YOU' are authentic Westwood quirks; reads as a real, unpolished campaign line."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Competent but list-like set-up (go here, find him, take potions and gold, visit the forge, take the road) that reads as a designer's checklist turned into speech; reminder is generic."}
+  ],
+  "tells": [
+    "Westwood's openings are terse and functional, often with fragments and one-line reminders; the new texts explain motivation and backstory (why the ship stops here, why the road matters, who stole what) in longer, well-joined sentences.",
+    "New texts chain cause and consequence across several clauses ('with the gate shut, no cart can get down... leaving... the least of our troubles'); Westwood rarely builds stakes so logically.",
+    "Westwood lines carry small oddities of phrasing and emphasis (capitalised YOU, 'The Master for the', a reminder that repeats the opening); the new texts are cleaner and more idiomatically 'gruff', using stock folksy phrases ('Mind how you go', 'Down the road with you').",
+    "New texts bundle several errands into one briefing (find a person, collect items, visit a shop, take a road); Westwood's opening gives one clear objective.",
+    "Recurring generic set pieces across the new texts (an old watchtower held by raiders, a closed north road, Ogre raids on farms) suggest a shared template rather than distinct chapters."
+  ]
+}

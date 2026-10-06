@@ -1,0 +1,653 @@
+{
+ "scenario": "rescue",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip went into the old barrow after the Urchins.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Thieving little creatures! The Urchins have dug in by the old barrow and already robbed half the town!\n\nI am Brother Anselm. I am looking for my novice. I fear he has gone down into that barrow after them.\n\nIf you could find him and fetch him back to me, I would be willing to reward you well. Come, follow me to the dreadful barrow east of the ford."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Have you found Pip yet? Oh dear, I dread the worst."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Thank you for coming to find me, but I am too scared to walk. The Urchins... they weren't digging alone! It was Cor... Cor... Corwin's men..."
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Please take me back to Brother Anselm."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! Thank goodness, you are safe. Dark things must have been waiting down there.\n\nThe Urchins were no match for you, it seems. Perhaps you might make a good brother yourself. Hmmm... Yes.\n\nCome to the chapel. When you are ready, just take the ankh from the altar and go your way. There is much to mend here now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Discover the fate of Brother Anselm's novice."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Bessa begs the player to rescue her brother Tam, carried off by Trolls into the Lower Shafts",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bessa",
+     "text": "Sir! Help me please! A pack of foul Trolls just broke into the Lower Shafts, the diggings below us, and carried off almost all of the crew! One of them is my dear brother, Tam!\n\nPlease rescue him and I promise you a reward!"
+    },
+    "reminder": {
+     "speaker": "Bessa",
+     "text": "Oh why haven't you gone? My brother is in terrible danger!"
+    },
+    "found": {
+     "speaker": "Tam",
+     "text": "Hail, brave Adventurer! We are innocent diggers, hauled off from our shaft during a ruthless Troll attack!\n\nWill you please lead us up to the surface? If you do, you will surely have a handsome reward, because the ore carts cannot roll without us!"
+    },
+    "following": {
+     "speaker": "Tam",
+     "text": "Hurry, kind sir and get us out of these tunnels!"
+    },
+    "completion": {
+     "speaker": "Bessa",
+     "text": "Thanks so much, kind stranger! Please take these as tokens of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Bessa's brother from the Trolls in the Lower Shafts."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Ketta's pet goose Fergus, who can talk, is trapped on the tipping floor of her shed after the Mudmen chopped the posts",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ketta",
+     "text": "Help, please, kind sir! The Mudmen have chopped away the posts of my shed and my poor goose, Fergus, is stuck on the tipping floor of the back room!\n\nSave him and I'll owe you for life!"
+    },
+    "reminder": {
+     "speaker": "Ketta",
+     "text": "Whatever you find in that shed is yours! Just hurry and save Fergus!"
+    },
+    "found": {
+     "speaker": "Fergus",
+     "text": "Fine! I'll come with you! Just get me off this tipping floor!"
+    },
+    "following": {
+     "speaker": "Fergus",
+     "text": "Hurry! Lead me to Ketta!"
+    },
+    "completion": {
+     "speaker": "Ketta",
+     "text": "Thank goodness, he's safe! How could I ever thank you enough?!\n\nWhat's that you say? A heap of gold? Well, if that is what you wish, please take this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Fergus the Talking Goose from a flooding hut in Gorrow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Brindle, the garrison cook, is trapped in the Grain Vault below the Keep when the portcullis jams; Hulm begs the player to go and find her.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulm",
+     "text": "While you were out on the north road, the portcullis jammed -- trapping Brindle in the Grain Vault deep below the Keep! Ostrag is worried for our cook.\n\nWe had best go down under the Keep and find Brindle."
+    },
+    "reminder": {
+     "speaker": "Hulm",
+     "text": "Why are you standing about? We must hurry to the cellar stair! Brindle may be in real danger!"
+    },
+    "found": {
+     "speaker": "Brindle",
+     "text": "Hey, it's you! You got past the portcullis!\n\nThere are huge rats out there. I had to bar myself in while I was counting sacks.\n\nHere, take this key and unlock the gate behind you."
+    },
+    "following": {
+     "speaker": "Brindle",
+     "text": "Thanks again. I believe there are spare torches in that crate. Quick, follow me! I know a back stair up to the kitchens!"
+    },
+    "completion": {
+     "speaker": "Dorrik",
+     "text": "Praise be, you're both alive! You'll make a fine pikeman, lad. Ostrag will be glad you brought his cook back in one piece."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Brindle from the Grain Vault below the Keep."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Wenda begs the player to rescue her husband Jorn, a boatman trapped in a boathouse on the Long Pier.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wenda",
+     "text": "What took you so long to get here!? We have a horrible problem!\n\nGiant leeches and drowned things from the deep have overrun the Long Pier. Boatmen have died in defense of Orlmere's vital nets!\n\nPlease, I beg you! Clear the beasts from the pier, rescue my husband and I shall reward you handsomely.\n\nThis key will unlock the door to Jorn, trapped in the boathouse.\n\nI also have a healing potion which should be quite useful."
+    },
+    "reminder": {
+     "speaker": "Wenda",
+     "text": "Return to me after you rescue Jorn and I will pay you well."
+    },
+    "found": {
+     "speaker": "Jorn",
+     "text": "Thank you for finding me. Please take me back to the dock."
+    },
+    "following": {
+     "speaker": "Jorn",
+     "text": "I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Wenda",
+     "text": "You are a true hero! My deepest thanks.\n\nWhile you were out on the pier, rescuing Jorn, Rudge came by looking for you. He's waiting at the Mooring Stones -- west of here.\n\nBefore you leave, please accept this gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Long Pier of monsters. Rescue the trapped boatman Jorn."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: The Captain begs the player to rescue the Archmage Brannoch, taken by Maldrek's Gargoyles to Spire Crag.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Captain",
+     "text": "Blast! What kept you, lad!? The Gargoyles stormed Zorreth and we'd have lost the college to them if Brannoch's mighty sorcery had not rallied us at the last moment!\n\nBut in the thick of it, the beasts snatched Brannoch, leaving the damage to the halls our smallest concern! Everything we teach here is in peril if Brannoch is lost!\n\nYou must go where Brannoch was taken, north to the Gargoyle roost at Spire Crag! Bring Brannoch back or we are finished!"
+    },
+    "reminder": {
+     "speaker": "Captain",
+     "text": "I'm sure Brannoch is in dreadful danger! Please hurry!"
+    },
+    "found": {
+     "speaker": "Brannoch",
+     "text": "You there! Quickly, find some way to get me out of here! Maldrek was indeed the sorcerer behind the Gargoyle attack and he has dark plans for the Orrery of Zorreth. Unfortunately, I was taken with my mana spent and I haven't the strength to break out of here by myself. Maldrek laid a strong ward on these bars, ending all hope of casting my way out."
+    },
+    "following": {
+     "speaker": "Brannoch",
+     "text": "Let's get moving! There's no time to lose!"
+    },
+    "completion": {
+     "speaker": "Captain",
+     "text": "In better times, the bells of Zorreth would ring all night for the return of Brannoch! Well done! But now we must stop the wicked Maldrek once and for all.\n\nPlease take these as tokens of our thanks for such a brave rescue!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Spire Crag and rescue Brannoch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: The Captain begs the player to free Tolly and the drovers of Hald Rock from the Ogres of Zhurg's Hold",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Captain",
+     "text": "Hurry, lad! The drovers don't have much time. You must rescue all of them before the Ogres roast them!"
+    },
+    "reminder": {
+     "speaker": "Captain",
+     "text": "Every minute counts. Get moving!"
+    },
+    "found": {
+     "speaker": "Tolly",
+     "text": "Get us out!"
+    },
+    "following": {
+     "speaker": "Tolly",
+     "text": "We thought no one would come!"
+    },
+    "completion": {
+     "speaker": "Captain",
+     "text": "Good work, my son! All these hardy drovers owe you their lives!\n\nNow go find the other drovers!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Tolly and the drovers of Hald Rock held captive in Zhurg's Hold."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Ketta's apprentice Pell was dragged off by Trolls and must be brought home.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ketta",
+     "text": "Actually, work has been rather quiet at my forge. Two weeks ago, Trolls broke in and dragged off my apprentice, Pell.\n\nI don't expect she's alive, but I'd like nothing better than to see her home.\n\nI'll happily pay anyone who brings her back."
+    },
+    "reminder": {
+     "speaker": "Ketta",
+     "text": "Please, bring Pell back!"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Is somebody there? Please, help me!"
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Take me to the forge!"
+    },
+    "completion": {
+     "speaker": "Ketta",
+     "text": "So Pell is home safe! Well done, lad! We shall all breathe easier knowing those Trolls won't be laying a hand on her again!\n\nAnd here's your reward... 80 in gold! You're welcome at Ketta's anytime!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Pell back from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Dessa's boy Tibb is trapped in the root cellar with wolves at the door.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dessa",
+     "text": "These cursed wolves are worse than the mange! My husband tried to chase them off, but they always return! My only hope is that you somehow drive the wolves off and get my boy out!\n\nTibb is in the root cellar, there, past the barn doors. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Dessa",
+     "text": "I shall not leave this door till my boy is out! Pull him out of there! And drive them off! Hurry before they get through!"
+    },
+    "found": {
+     "speaker": "Tibb",
+     "text": "Is somebody there? Please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Tibb",
+     "text": "Please take me home to Ma!"
+    },
+    "completion": {
+     "speaker": "Dessa",
+     "text": "Kind sir, my warmest thanks! You have earned a bed at the Split Post. The innkeeper will be told that you are now free to stay there as you please.\n\nTake this gold and potion for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive off the wolves and free Tibb in Dessa's cellar."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Wenda begs the player to bring back Odrin the miller, dragged off by Ogres to Ulm Gorra.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wenda",
+     "text": "Damn! Where have you been, lad!? The Ogres stormed into Tosk and they'd have burned every barn if Odrin had not rung the alarm bell at the last moment!\n\nBut in the confusion, the brutes dragged Odrin off, leaving the burned barns our smallest concern! All of Tosk will starve if Odrin is lost!\n\nYou must go where the Ogres were headed, northwest to the Ogre camp of Ulm Gorra! Bring Odrin home or we are done for!"
+    },
+    "reminder": {
+     "speaker": "Wenda",
+     "text": "I'm sure Odrin's in a bad way! Go quickly!"
+    },
+    "found": {
+     "speaker": "Odrin",
+     "text": "Is someone there? Please, let me out of this cage!"
+    },
+    "following": {
+     "speaker": "Odrin",
+     "text": "Hurry! Take me back to Tosk!"
+    },
+    "completion": {
+     "speaker": "Wenda",
+     "text": "At gladder other times, the fields of Tosk would ring with cheers at the return of Odrin! Well done, lad! But now we must put an end to Brakk and his raiders.\n\nPlease accept these as tokens of our thanks for such a brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Ulm Gorra and rescue Odrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

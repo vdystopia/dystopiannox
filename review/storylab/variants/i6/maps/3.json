@@ -1,0 +1,326 @@
+{
+ "iter": "i6",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Tharn",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "The Witch Vuldra, out in the Blackwater, has raised the drowned dead, and her Zombies climb onto Tharn's walkways at night.",
+  "names": {
+   "Tharn": "place",
+   "Vuldra": "person",
+   "Witch Vuldra": "person",
+   "Blackwater": "place",
+   "Gundar the Ferryman": "person",
+   "Gundar": "person",
+   "Mayor Dremmel": "person",
+   "Long House": "place",
+   "Pelk": "person",
+   "Priest Hollin": "person",
+   "Giant Leeches": "group",
+   "Leeches": "group",
+   "Zombies": "group",
+   "Imps": "group",
+   "Ebbard the Herbalist": "person",
+   "Ebbard": "person",
+   "Yarra": "person",
+   "Mulch": "person",
+   "old smokehouse": "place",
+   "Warden Brakk": "person",
+   "Pump House": "place",
+   "Gribble": "person",
+   "Morla": "person",
+   "Green Lamp": "place",
+   "Harrok": "person",
+   "Nimm": "person",
+   "Nimm's": "place",
+   "Osk": "person",
+   "Fenna": "person",
+   "Brug": "person",
+   "Wilk": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Pelk keeps the north gate of Tharn, shut until Mayor Dremmel hands the player its key.",
+   "names": {
+    "Pelk": "person",
+    "Mayor Dremmel": "person",
+    "Zombies": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Pelk",
+     "text": "Watch your step out on the walkways, stranger! The planks are rotten past the gate, and the Zombies come up out of the bog at night."
+    },
+    "again": {
+     "speaker": "Pelk",
+     "text": "Oh, and don't drink the water."
+    },
+    "later": {
+     "speaker": "Pelk",
+     "text": "The Mayor gave you his key? Then the north gate is open. Get going, and hurry!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Priest Hollin, bled weak by Giant Leeches that nest under the drying racks, offers a boatman's token for the way on.",
+   "names": {
+    "Priest Hollin": "person",
+    "Tharn": "place",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Witch Vuldra": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Priest Hollin",
+     "text": "Ohhh... Woe to me! Woe to all of Tharn! The Giant Leeches have come up out of the bog, and I have paid for it in my own blood!\n\nEvery night they come for us, and every night I drive them back with nothing but a candle and my prayers. But I am weak now, stranger, too weak. And I am sure the Witch Vuldra is laughing at us!\n\nRid us of these vile creatures and you shall have a worthy reward. Will you do this thing, brave Adventurer?"
+    },
+    "reminder": {
+     "speaker": "Priest Hollin",
+     "text": "The Leeches nest in the mud under the drying racks. Go now, before they come again tonight!"
+    },
+    "completion": {
+     "speaker": "Priest Hollin",
+     "text": "The Leeches are destroyed? Then my prayers have been answered! Tharn owes you a great debt, stranger.\n\nTake this token. Show it to any boatman in the hamlet, and he will take you wherever you wish to go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rid Tharn of the Giant Leeches for Priest Hollin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ebbard the Herbalist, fussy and nervous, wants back the magic lantern the Imps stole; they live in the hollow trees west of town.",
+   "names": {
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Imps": "group",
+    "Vuldra": "person",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "Thieves! Rotten little thieves! The Imps got into my hut and ran off with my magic lantern! I can't go out picking herbs without it, not with Vuldra's Zombies all over the bog at night. If you bring it back to me, I'll pay you well, I swear it! Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "No?! Well, fine. I'll just sit here in the dark, then."
+    },
+    "reminder": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "The Imps live out in the hollow trees, west of here. Bring me my lantern!"
+    },
+    "completion": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "My lantern! You found my lantern! Oh, thank you, thank you! Here's your reward, 80 gold pieces."
+    },
+    "after": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "Thanks again, kind sir! Stay off the bog after dark."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ebbard's magic lantern from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ebbard's magic lantern from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Tharn: Osk the net-mender brushes the player off, Fenna flirts, Brug thinks the Mayor too soft.",
+   "names": {
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Mayor Dremmel": "person",
+    "Gundar the Ferryman": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Osk",
+     "text": "Leave me be. I've got nets to mend."
+    },
+    "rumour2": {
+     "speaker": "Fenna",
+     "text": "My, my! We don't get many like you out here. Come and see me when you're done with that witch"
+    },
+    "rumour3": {
+     "speaker": "Brug",
+     "text": "Mayor Dremmel is a good man, but he's too soft! Gundar the Ferryman would have run that witch out of the swamp long ago!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Morla of the Green Lamp inn, Harrok the smith, Nimm the potion seller.",
+   "names": {
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Tharn": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Morla",
+     "text": "Welcome to the Green Lamp, stranger! I saved my best room just for you. It costs a little extra, of course!"
+    },
+    "arms": {
+     "speaker": "Harrok",
+     "text": "Welcome. Nobody's buying much these days. Folks are too scared to leave their huts. Take a look, anyway."
+    },
+    "magic": {
+     "speaker": "Nimm",
+     "text": "Welcome to Nimm's! The finest potions in all the swamp! Well... the finest in Tharn, anyway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Brakk orders the player to shut the floodgate in the Pump House and gives the key at once; Gribble wants Mayor Dremmel's name on his petition asking the Witch to leave.",
+   "names": {
+    "Warden Brakk": "person",
+    "Gribble": "person",
+    "Tharn": "place",
+    "Witch Vuldra": "person",
+    "Zombies": "group",
+    "Pump House": "place",
+    "Long House": "place",
+    "Blackwater": "place",
+    "Mayor Dremmel": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Brakk",
+     "text": "Attention! You there! By order of the Hamlet of Tharn, and by the authority given to me as Warden of the Floodgates, I call upon you to serve this hamlet in its darkest hour!\n\nThe Zombies of the Witch Vuldra have come up through the lower walkways and broken into the Pump House and opened the great floodgate and now the water is rising under our stilts by the hour and if it keeps on rising every hut in Tharn will be standing in the bog up to its windows, the Mayor's Long House too, and all of us will be washed away into the Blackwater!\n\nTake this key. It opens the Pump House, south of here. Destroy whatever you find inside, turn the wheel until the floodgate is shut, and report back to me at once."
+    },
+    "offer_b": {
+     "speaker": "Gribble",
+     "text": "Hey! Hey, you! You can write your name, can't ya? Good!\n\nThis here is a petition. It asks the Witch Vuldra, real nice, to take her Zombies and get out of our swamp. Enough names and she has to go. That's the law!\n\nI got everybody but Mayor Dremmel. He won't even open his door for me. Get him to sign it and I'll make it worth your while. What do you say?"
+    },
+    "outcome_a": {
+     "speaker": "Warden Brakk",
+     "text": "The water is going down! Well done! Tharn will not forget this.\n\nI will see to it that every gate in the hamlet is open to you. Now go to Mayor Dremmel. He must hear of this at once."
+    },
+    "outcome_b": {
+     "speaker": "Gribble",
+     "text": "The Mayor's name! Right there! Ha-ha! Now she has to go! Here, take these boots, and thank you, thank you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Shut the floodgate in the Pump House for Warden Brakk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Mayor Dremmel to sign Gribble's petition."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Yarra's pet pig Mulch is shut in the old smokehouse west of town with Zombies all around; Yarra locked the door and gives the player the key.",
+   "names": {
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Zombies": "group",
+    "Mayor Dremmel": "person",
+    "Long House": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yarra",
+     "text": "Help! Somebody help me! They've got my pig!\n\nMy Mulch ran into the old smokehouse, west of here, and now those Zombies are all around it! I locked the door so they can't get in. Here's the key. If you get him out, I'll give you anything I have!"
+    },
+    "reminder": {
+     "speaker": "Yarra",
+     "text": "Oh.... My poor Mulch. He must be so scared. Please hurry!"
+    },
+    "found": {
+     "speaker": "Mulch",
+     "text": "Squeeeeee! Oink! Oink! Oink!"
+    },
+    "following": {
+     "speaker": "Mulch",
+     "text": "Oink! Oink!"
+    },
+    "completion": {
+     "speaker": "Yarra",
+     "text": "Mulch! My Mulch, you came home! Oh, thank you, thank you!\n\nPlease take this spell book. I can't read a word of it, but maybe you can. And go see Mayor Dremmel in the Long House. He needs everybody who can fight!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Yarra's pig from the old smokehouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Wilk points the player to Mayor Dremmel in the Long House; the Mayor gives the key to the north gate and sends him after the Witch Vuldra in the Blackwater.",
+   "names": {
+    "Wilk": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Witch Vuldra": "person",
+    "Vuldra": "person",
+    "Zombies": "group",
+    "Gundar": "person",
+    "Blackwater": "place",
+    "Morla": "person",
+    "Harrok": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wilk",
+     "text": "Did you hear? The Zombies came up out of the bog again last night! Mayor Dremmel is in the Long House. Go see him!"
+    },
+    "opening": {
+     "speaker": "Mayor Dremmel",
+     "text": "Grave news, lad, grave news. The Witch Vuldra's Zombies climbed up onto the walkways again last night, and this time they carried off the whole night watch!\n\nGundar says you can handle yourself. Good, because there is nobody left here who can. Take this key. It opens the north gate. Go out into the Blackwater, find Vuldra's hut and put an end to her!\n\nAnd get some supplies first. Morla's inn and Harrok's shop are just down the walkway. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Mayor Dremmel",
+     "text": "Those Zombies get bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Witch Vuldra's hut in the Blackwater and destroy her."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

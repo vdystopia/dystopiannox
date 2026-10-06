@@ -1,0 +1,548 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i4",
+ "writer": "one writer a town (variants/i4/maps)",
+ "guide": "WRITER.md v4 + exemplars",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Garrick at the north gate, shut by Reeve Halvard because of Red Corwin's bandits.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "tithe chest": "thing",
+    "Wenna's amulet": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Halt! The north gate stays shut till Halvard says otherwise. Red Corwin's bandits own that road now."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "You again? The gate's still shut, lad."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "The north gate is open again! Brackenford owes you a great deal, brave Adventurer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Kroth: Hask keeps the Deep Gate, shut by Guildmaster Brummel while Ulgrim's dead walk the Old Deeps.",
+   "names": {
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Guild Hall": "place",
+    "Gloom Hole": "place",
+    "Shrine of Stone": "place",
+    "Rat Run": "place",
+    "Flooded Shaft": "place",
+    "Molehole": "place",
+    "Brakka's Armory": "place",
+    "Ulgrim": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Hask": "person",
+    "Grenda": "person",
+    "Edda": "person",
+    "Odo": "person",
+    "Snig": "person",
+    "Wilna": "person",
+    "Jory": "person",
+    "Grubb": "person",
+    "Brakka": "person",
+    "Yorla": "person",
+    "Olf": "person",
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Undead": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Zombies": "group",
+    "Dowsing Rod": "thing",
+    "Mountain Brew": "thing",
+    "Spell Book": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hask",
+     "text": "Halt! The Deep Gate is shut by order of Guildmaster Brummel. The dead are walking down there!"
+    },
+    "again": {
+     "speaker": "Hask",
+     "text": "Move along. I've got my orders."
+    },
+    "later": {
+     "speaker": "Hask",
+     "text": "Guildmaster Brummel has given you leave to go below. Open the gate! Good luck, Adventurer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Gloam: Tobbin at the Plank Gate on the north boardwalk, shut by Mayor Grimbol because the Undead come up out of the bog.",
+   "names": {
+    "Gloam": "place",
+    "Plank Gate": "place",
+    "Sunken Graves": "place",
+    "Rotten Oak": "place",
+    "Healing House": "place",
+    "Town Hall": "place",
+    "Soggy Toad": "place",
+    "Hodd's Arms and Armor": "place",
+    "Ulgor": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Tobbin": "person",
+    "Haskin": "person",
+    "Fennick": "person",
+    "Ysolde the Healer": "person",
+    "Mudge": "person",
+    "Hessa": "person",
+    "Wim": "person",
+    "Bulmer": "person",
+    "Hodd": "person",
+    "Quorra": "person",
+    "Nell": "person",
+    "Hollis": "person",
+    "Spyglass": "thing",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobbin",
+     "text": "Halt! No one passes the Plank Gate. Mayor Grimbol's orders! There's Undead out in that bog, stranger, and plenty of 'em."
+    },
+    "again": {
+     "speaker": "Tobbin",
+     "text": "I said the gate is shut. Now move along!"
+    },
+    "later": {
+     "speaker": "Tobbin",
+     "text": "The Mayor says you may pass. Watch your step out there -- some of those planks are rotten clean through!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnhelm: Tobin, guard at the east gate, shut by Commander Holgrim until the main quest opens it.",
+   "names": {
+    "Durnhelm": "place",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Old Chapel": "place",
+    "Rookery": "place",
+    "Broken Pike": "place",
+    "Brunwald's Arms and Armor": "place",
+    "Iron Watch": "group",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Giant Leeches": "group",
+    "Ogre": "group",
+    "Commander Holgrim": "person",
+    "Master Quell": "person",
+    "Malgrith": "person",
+    "Tobin": "person",
+    "Bodric": "person",
+    "Yorrin": "person",
+    "Mungo": "person",
+    "Brunwald": "person",
+    "Orsolya": "person",
+    "Lumpy Dorn": "person",
+    "Merriwen": "person",
+    "Jory": "person",
+    "Gaspar": "person",
+    "Agna": "person",
+    "Spyglass": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobin",
+     "text": "Welcome to Durnhelm, stranger! No Undead has ever set foot inside these walls, and none ever will while the Iron Watch stands guard! The east gate stays shut, though. Commander Holgrim's orders."
+    },
+    "again": {
+     "speaker": "Tobin",
+     "text": "Move along. I'm on watch."
+    },
+    "later": {
+     "speaker": "Tobin",
+     "text": "Commander Holgrim says you may pass. The gate is open. Watch yourself out on the moor, lad!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ostra: Brannoc keeps the causeway gate out to Gorm Isle, shut by Mayor Odrick because the dead walk the causeway at night.",
+   "names": {
+    "Ostra": "place",
+    "Lake Vell": "place",
+    "Gorm Isle": "place",
+    "Black Cliff": "place",
+    "Heron Point": "place",
+    "Drowned Chapel": "place",
+    "long pier": "place",
+    "Wet Herring": "place",
+    "Haldo's": "place",
+    "Skarn": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "Brannoc": "person",
+    "Gubby": "person",
+    "Hulda": "person",
+    "Pell": "person",
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Mag": "person",
+    "Haldo": "person",
+    "Zebulin": "person",
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Agna": "person",
+    "Wim": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Undead": "group",
+    "Hulda's amulet": "thing",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannoc",
+     "text": "Sorry, stranger. Nobody crosses the causeway without Mayor Odrick's say-so. The dead walk it after dark."
+    },
+    "again": {
+     "speaker": "Brannoc",
+     "text": "I said the gate's shut. Off with you!"
+    },
+    "later": {
+     "speaker": "Brannoc",
+     "text": "Mayor Odrick has given his word. The causeway is open to you. Good luck!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ardoth: Brannoc at the west gate, shut by Archmaster Quellan while Malgor's Skeletons walk the road.",
+   "names": {
+    "Ardoth": "place",
+    "College": "place",
+    "Star Tower": "place",
+    "Malgor": "person",
+    "Mazrel": "person",
+    "Quellan": "person",
+    "Brannoc": "person",
+    "Fennick": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Pim": "person",
+    "Grisella": "person",
+    "Bodkin": "person",
+    "Singed Owl": "place",
+    "Krell": "person",
+    "Krell's Arms and Armor": "place",
+    "Olwen": "person",
+    "Olwen's Potions and Scrolls": "place",
+    "Tullan": "person",
+    "Nubbin": "person",
+    "Fenwold": "person",
+    "Orrick": "person",
+    "west gate": "place",
+    "lily pond": "place",
+    "old quarry": "place",
+    "mill road": "place",
+    "lockup": "place",
+    "old well": "place",
+    "old chapel": "place",
+    "catacombs": "place",
+    "crystal ball": "thing",
+    "Skeletons": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Leeches": "group",
+    "watchmen": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannoc",
+     "text": "Halt! The west gate is shut by order of Archmaster Quellan. Skeletons walk the road out there."
+    },
+    "again": {
+     "speaker": "Brannoc",
+     "text": "Still here? Move along. Nobody passes."
+    },
+    "later": {
+     "speaker": "Brannoc",
+     "text": "So you're the one the Archmaster was talking about! The gate is open. Off you go, and watch yourself on the road!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarn: Tormod at the East Gate, shut by Warden Brannoc while Kolgrath's Undead walk the pass.",
+   "names": {
+    "Fort Skarn": "place",
+    "Kel Dorran": "place",
+    "East Gate": "place",
+    "Keep": "place",
+    "Iron Kettle": "place",
+    "Bodmar's Armory": "place",
+    "Ice Caves": "place",
+    "Kolgrath": "person",
+    "Ormund": "person",
+    "Warden Brannoc": "person",
+    "Tormod": "person",
+    "Fitch": "person",
+    "Dagny": "person",
+    "Elko": "person",
+    "Ulla": "person",
+    "Grindle": "person",
+    "Hobb": "person",
+    "Bodmar": "person",
+    "Ysmay": "person",
+    "Brother Ennick": "person",
+    "Nibbs": "person",
+    "Hulda": "person",
+    "Ansgar": "person",
+    "Undead": "group",
+    "Urchins": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tormod",
+     "text": "Halt! The East Gate is shut by order of Warden Brannoc. Nobody goes up the pass while the Undead are on it."
+    },
+    "again": {
+     "speaker": "Tormod",
+     "text": "You again? The gate's shut. Go and get warm by the fire in the Iron Kettle."
+    },
+    "later": {
+     "speaker": "Tormod",
+     "text": "The Warden says you may pass. Go on through. And mind the ice!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulmar: Hulgar keeps the mountain gate of Vulmar, shut by Mayor Dravik while the Ogres hold the Old Foundry.",
+   "names": {
+    "Vulmar": "place",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Thrugg": "person",
+    "Hulgar": "person",
+    "Mott": "person",
+    "Thessa": "person",
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Tobb": "person",
+    "Kraddock": "person",
+    "Sibba": "person",
+    "Guildmaster Orvald": "person",
+    "Grubb": "person",
+    "Marga": "person",
+    "Wim": "person",
+    "Old Foundry": "place",
+    "Slag Pits": "place",
+    "Cinder Caves": "place",
+    "Red Bucket": "place",
+    "Town Hall": "place",
+    "Guild": "group",
+    "Ogres": "group",
+    "Scorpions": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hulgar",
+     "text": "Halt! Nobody goes up the mountain road. Mayor Dravik's orders. The Ogres would have you for supper!"
+    },
+    "again": {
+     "speaker": "Hulgar",
+     "text": "I said nobody goes up. Go pester somebody else."
+    },
+    "later": {
+     "speaker": "Hulgar",
+     "text": "Mayor Dravik has opened the road for you. Watch your head up there -- the Ogres have been throwing rocks."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Kesrin: Dalt at the east gate of Kesrin, shut by Mayor Fennick against Ravek's Undead on the east road.",
+   "names": {
+    "Kesrin": "place",
+    "Broken Wheel": "place",
+    "Fort Karn": "place",
+    "Gallow Rock": "place",
+    "Ravek": "person",
+    "Ambrus": "person",
+    "Fennick": "person",
+    "Dalt": "person",
+    "Ossrik": "person",
+    "Thurl": "person",
+    "Wenzel": "person",
+    "Bettrin": "person",
+    "Lumm": "person",
+    "Ebb": "person",
+    "Bodger": "person",
+    "Hargis": "person",
+    "Hargis' Forge": "place",
+    "Fizwick": "person",
+    "Calvo": "person",
+    "Gimble": "person",
+    "Nell": "person",
+    "Gorm": "person",
+    "Undead": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Ogres": "group",
+    "Ghost": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dalt",
+     "text": "Halt! No one goes out the east gate. Mayor Fennick's orders! Ravek's Undead walk that road after dark."
+    },
+    "again": {
+     "speaker": "Dalt",
+     "text": "Still shut. Move along!"
+    },
+    "later": {
+     "speaker": "Dalt",
+     "text": "Mayor Fennick gave the word. The gate is open, brave Adventurer -- you may pass. Watch yourself out there."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Ostrel: Dobbs keeps the north gate, shut by Mayor Bellock's order since the Ogres came.",
+   "names": {
+    "Ostrel": "place",
+    "Nox": "place",
+    "Kragmoor": "place",
+    "Ulgor": "person",
+    "Haskar": "person",
+    "Bellock": "person",
+    "Dobbs": "person",
+    "Gaffer Rudd": "person",
+    "Granny Orla": "person",
+    "Dalbrek": "person",
+    "Mungo": "person",
+    "Gedge": "person",
+    "Wil": "person",
+    "Harl": "person",
+    "Brask": "person",
+    "Yselda": "person",
+    "Nettie": "person",
+    "Bram": "person",
+    "Joss": "person",
+    "Rusty Plough": "place",
+    "Brask's Forge": "place",
+    "Dowsing Rod": "thing",
+    "Ankh": "thing",
+    "Chain Tunic": "thing",
+    "Longsword": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dobbs",
+     "text": "Halt! Nobody goes out the north gate. Mayor Bellock's orders. The Ogres would have you for supper before you got past the turnip fields!"
+    },
+    "again": {
+     "speaker": "Dobbs",
+     "text": "Move along, lad. The gate stays shut."
+    },
+    "later": {
+     "speaker": "Dobbs",
+     "text": "The Mayor says you may go. Open the gate! And good luck to you, brave Adventurer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

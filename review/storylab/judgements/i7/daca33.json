@@ -1,0 +1,33 @@
+{
+  "packet": "daca33",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Flat, functional setup (sponsorship, a favor, a petition) with a homely concrete detail (apples, an urchin that riled the bats) and the key handed over in the same breath. The decline line points to a place to find him again, which is very Nox."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exclamation-heavy melodrama with a sly joke ('the menfolk cannot live without us', the Ogres' grumbling stomachs). The escort shape and the 'secret passage' hint read as authentic Westwood."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'A cold and dreadful reminder of my coming doom' is a written-up flourish, and the second speaker piles up directions, a fence, prices and 'if I was you' in one dense speech. The thanks ('Really the pay chest?') imitates the excitement but sounds forced."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Hello, young sir', the double dash, 'dead or alive', the exact gold sums and the gruff joke about losing no sleep over his soul are the period voice exactly. Two linked bounties with different payouts fit the campaign's quest design."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "A Mayor's toll box carried off by Zombies, then a smuggler's cellar with 'related cargo' and the tax men: clauses are stacked and the logic is a bit muddled. The outcomes are cryptic fragments that don't say what was done or what was given."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Short, breathless pleas ('Could you... would you get it back for us?') and near-identical stock thanks ('token of my appreciation'). Simple and a little repetitive, the way Westwood's minor quests are."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'For here, shame never washes off' is an aphorism Nox's townsfolk don't use. The shady key seller borrows Westwood tics ('heh, heh, heh', exact gold price) but reads like a pastiche, and the thanks leans on the stock 'token of my appreciation'."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The wagon logistics (two crates first, then drivers for the third, watching the crossroads) are oddly bookkept and give no flavour. The boot salesman's backstory is passable, but 'mind what I told you about the old bridge' points to nothing the player was told."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Awkward syntax ('As these hard times have made you the one to bring back...'), the instruction to shop first, and a second speaker who mixes a tab, a 'fine secret' and an escort. The outcomes are tangled, with no clear beat and no humour."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Casual, comic voice ('Oh, bah!', 'Sometimes I think he does this just to get away from his responsibilities', 'give ya'), a clear reward, and a closing warning about the wizards. Classic Westwood."}
+  ],
+  "tells": [
+    "Westwood's speakers say one plain thing at a time and give the reward or next step in direct terms. The new texts cram several logistics clauses (who, where, which door, what to buy first) into one speech, often in tangled syntax.",
+    "Westwood's humour is light and character-driven (a gruff aside, a joke about the speaker's own world). The new texts reach for literary or aphoristic flourishes ('cold and dreadful reminder of my coming doom', 'shame never washes off') or have no humour at all.",
+    "In the new texts, outcome lines are often cryptic fragments, or refer back to things the player was never told, instead of a clear thanks plus the reward.",
+    "The new texts recycle Westwood tics ('heh, heh, heh', 'token of my appreciation', 'Yours for N gold', 'young sir') as decoration, without the simple emotional logic behind them.",
+    "Westwood's quests have a clean shape (a plea, the problem, one concrete instruction, a payoff with an exact sum or item). The new ones set up multi-stage or odd mechanics (partial crates, paying off a tab, haul crates to a boat) that read as designed rather than spoken."
+  ]
+}

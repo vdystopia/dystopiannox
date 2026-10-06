@@ -1,0 +1,32 @@
+{
+  "packet": "25f84b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The pitchfork gag and 'Hard times, lad' sound right, but 'what with the harvest coming in and all' and the stacked 'Dark days indeed! Best buy...' feel like added local colour and a commercial push."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "'Ogres ate my pony. Buy a sword?' is terse Nox-style humour, but the inn line runs long with invented detail (pies baked by mother up at a place), which reads like flavour written to order."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The ellipses and 'damn cheap' have the right rhythm. 'You're a bold one, poking your nose into...' is a familiar fantasy stock phrase, a shade too polished for Westwood's shop barks."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain, functional greetings: name the shop, offer service, a mild comparison to a rival inn. The awkward 'sir [Group]' address is typical of the original."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Uneven register ('aye mate', 'Ya need') next to a flat, informational line about who supplies whom: the unpolished, expository mix of the campaign."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Very bland, slightly odd lines with a missing comma ('New here aren't you?') and no local colour. A new writer rarely goes this flat on purpose."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Turn-into-a-newt joke, 'Heh, heh...', and a causal explanation for bare racks: jokey and over-built. 'Word gets around quick' has no setup."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Same template as D ('This is X's', '[Group]'s Keep'), like a class variant of the same town. Curt and functional, with a touch of gruffness ('be quick about it')."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The overlong arms-shop sales pitch with a dropped article ('during [Place] run') and the dry 'main supplier of potions to the region' line are vintage Westwood roughness."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Dense invented worldbuilding (turnips snuck in by barge, Zombies climbing ladders every night) and the 'what with...' construction: richer and more novelistic than Nox's shop barks."}
+  ],
+  "tells": [
+    "Generated greetings pack in concrete invented local detail (where food comes from, what the monsters do nightly) to explain the situation. Westwood's mostly name the shop and offer service, or state a flat fact.",
+    "Repeated conversational tics in the new texts: 'what with ... (and all)', 'Heh, heh...', and stock fantasy jokes (turn you into a newt).",
+    "Westwood's lines are uneven and slightly clumsy (missing commas or articles, odd flat remarks, an expository 'X supplies Y to Z'). The new lines are tidier and every one has a punchline or a hook.",
+    "Westwood's shop greetings use a 'Welcome to X's / This is X's' template. The new texts seldom open by naming the shop."
+  ]
+}

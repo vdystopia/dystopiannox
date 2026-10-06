@@ -1,0 +1,333 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Thrumm",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Vorga the Stone Witch has woken the Golems of the Deep Halls, and the mines of Thrumm have gone silent.",
+  "names": {
+   "Thrumm": "place",
+   "Vorga": "person",
+   "Stone Witch": "person",
+   "Golems": "group",
+   "Deep Halls": "place",
+   "Great Hall": "place",
+   "Warlord Gorran": "person",
+   "Ulgrim": "person",
+   "Tullis": "person",
+   "Dask": "person",
+   "Dask's Armory": "place",
+   "Foreman Kessick": "person",
+   "Miners' Guild": "group",
+   "Giant Leeches": "group",
+   "Sump": "place",
+   "Hargo": "person",
+   "Imps": "group",
+   "Chimney": "place",
+   "Crystal Lens": "thing",
+   "Varn": "person",
+   "Nella": "person",
+   "Fobb": "person",
+   "Deep Mug": "place",
+   "Bulgo": "person",
+   "Yselde": "person",
+   "Guildmistress Ottilie": "person",
+   "Old Shaft": "place",
+   "Light spell": "thing",
+   "Master Quill": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tullis at the town gate of Thrumm; the Golems of the Deep Halls are the trouble.",
+   "names": {
+    "Tullis": "person",
+    "Thrumm": "place",
+    "Warlord Gorran": "person",
+    "Great Hall": "place",
+    "Deep Halls": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tullis",
+     "text": "Welcome to Thrumm, stranger! Mind your head. Warlord Gorran is waiting for you in the Great Hall, straight ahead."
+    },
+    "again": {
+     "speaker": "Tullis",
+     "text": "You call that armor? You won't last a day in the Deep Halls."
+    },
+    "later": {
+     "speaker": "Tullis",
+     "text": "Hail, brave Adventurer! All of Thrumm honors your valor!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Foreman Kessick posts the Miners' Guild bounty on the Giant Leeches of the Sump and hands over the Sump gate key.",
+   "names": {
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Golems": "group",
+    "Vorga": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Foreman Kessick",
+     "text": "Attention! By order of the Miners' Guild, a bounty has been posted on the Giant Leeches of the Sump! These loathsome creatures have bled my finest diggers nearly dry. As if the Golems of Vorga were not horror enough!\n\nThe Sump is east of the lift. Here is the key to its gate. Will you go down there and destroy them?"
+    },
+    "reminder": {
+     "speaker": "Foreman Kessick",
+     "text": "Are the Leeches dead yet? My men refuse to go below until they are."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "The Leeches are dead? Excellent work! The Miners' Guild always pays its debts. Here is your bounty, 100 gold pieces."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Giant Leeches in the Sump for Foreman Kessick."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hargo the assayer, a grumbling old man; the Imps of the Chimney stole his Crystal Lens.",
+   "names": {
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Stone Witch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hargo",
+     "text": "Oh, what now? Can't a man grieve in peace?\n\nVery well, since you insist. Those miserable Imps from the Chimney have stolen my Crystal Lens! My life's work is finished! These are the darkest of times, with the Stone Witch beneath our feet, and now this!\n\nIf you were to bring back my Lens, I would be forever in your debt. Take this potion. Those Imps bite. Well? Will you help a ruined old man?"
+    },
+    "refusal": {
+     "speaker": "Hargo",
+     "text": "Then go! Leave an old man to his misery!"
+    },
+    "reminder": {
+     "speaker": "Hargo",
+     "text": "Those wretched Imps get bolder every day."
+    },
+    "completion": {
+     "speaker": "Hargo",
+     "text": "My Lens! You found it?! Oh, happy day! Please accept this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Hargo",
+     "text": "Thanks again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hargo's Crystal Lens from the Imps of the Chimney."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hargo's Crystal Lens from the Imps of the Chimney."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Thrumm: Varn teases, Nella points to the inn, Fobb worries about the Golems.",
+   "names": {
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Great Hall": "place",
+    "Golems": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Varn",
+     "text": "Well, look at you, all shiny and clean. Come see me when you've got some dirt on your face, hero."
+    },
+    "rumour2": {
+     "speaker": "Nella",
+     "text": "If you want a hot meal and a bed, the Deep Mug is just past the Great Hall"
+    },
+    "rumour3": {
+     "speaker": "Fobb",
+     "text": "Oh.... The Golems come up the shafts every night now. What will become of us?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bulgo of the Deep Mug inn (and coffins), Dask the armorer, Yselde of the magic shop.",
+   "names": {
+    "Bulgo": "person",
+    "Deep Mug": "place",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Yselde": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bulgo",
+     "text": "Welcome to the Deep Mug, friend! Beds upstairs, coffins out back. Either way ya get a good long rest! Heh, heh, heh..."
+    },
+    "arms": {
+     "speaker": "Dask",
+     "text": "Welcome to Dask's Armory! The finest steel under the mountain. How can I help you?"
+    },
+    "magic": {
+     "speaker": "Yselde",
+     "text": "Don't touch the scrolls with those filthy hands. Buy something or get out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmistress Ottilie wants the ore lift's crank back from the Deep Halls; Varn wants her signature on his claim to the Old Shaft.",
+   "names": {
+    "Guildmistress Ottilie": "person",
+    "Varn": "person",
+    "Vorga": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Warlord Gorran": "person",
+    "Thrumm": "place",
+    "Light spell": "thing",
+    "Old Shaft": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmistress Ottilie",
+     "text": "Greetings, brave Adventurer! Oh, thank goodness you've come, because ever since Vorga's Golems came up out of the Deep Halls the great ore lift has stood still and the crank was carried off below, and nobody in this whole town will go down after it, not the miners, not the guards, not even Warlord Gorran's own men, and without the lift there is no ore and without ore Thrumm is finished, finished I tell you! So here is my bargain. Take this key to the lower lift gate, bring me back the crank, and I will teach you the Light spell. Do we have a deal?"
+    },
+    "offer_b": {
+     "speaker": "Varn",
+     "text": "You there. The Guildmistress likes you, doesn't she? She won't sign my claim to the Old Shaft. Put in a good word, get her name on this paper, and these boots are yours. What do you say?"
+    },
+    "outcome_a": {
+     "speaker": "Guildmistress Ottilie",
+     "text": "My crank! The lift will run again! Thank you, thank you! Here is the Light spell, as I promised."
+    },
+    "outcome_b": {
+     "speaker": "Varn",
+     "text": "She signed it! The Old Shaft is mine at last! Here, take the boots."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the lift crank back to Guildmistress Ottilie."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Guildmistress Ottilie to sign Varn's claim to the Old Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Foreman Kessick begs the player to bring back Master Quill, held by the Golems in the Deep Halls; Quill gives the key to his apprentices' cell.",
+   "names": {
+    "Foreman Kessick": "person",
+    "Master Quill": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Warlord Gorran": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Foreman Kessick",
+     "text": "Stranger! Master Quill is trapped down in the Deep Halls with the Golems! Bring him back alive and the best scroll in the Guild is yours! Go! Hurry!"
+    },
+    "reminder": {
+     "speaker": "Foreman Kessick",
+     "text": "Please hurry!"
+    },
+    "found": {
+     "speaker": "Master Quill",
+     "text": "You came for me? Ha! Good. Here, take this key. My apprentices are locked up further down. Get them out too, lad."
+    },
+    "following": {
+     "speaker": "Master Quill",
+     "text": "Lead the way. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "Master Quill! You brought him back alive! The Guild thanks you. This scroll is yours.\n\nNow go and see Warlord Gorran. He must hear what Master Quill saw down there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Master Quill from the Golems in the Deep Halls."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fobb sends the player to Warlord Gorran in the Great Hall; Gorran, sent word by Ulgrim, orders the player down to destroy Vorga the Stone Witch and gives gold and potions.",
+   "names": {
+    "Fobb": "person",
+    "Warlord Gorran": "person",
+    "Great Hall": "place",
+    "Ulgrim": "person",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Thrumm": "place",
+    "Dask": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fobb",
+     "text": "Warlord Gorran has been shouting for you all morning! He's in the Great Hall. I'd hurry if I was you."
+    },
+    "opening": {
+     "speaker": "Warlord Gorran",
+     "text": "So! Ulgrim finally sent me somebody. About time! Stand up straight, lad, and listen well.\n\nVorga the Stone Witch has woken the Golems of the Deep Halls. Every night they march up the shafts and crush anything in their path! The mines of Thrumm have gone silent. This cannot stand!\n\nYou must go down into the Deep Halls and destroy Vorga. Take this gold and these potions. Dask can sell you a decent sword. Now go, and do not come back until the Witch is dead!"
+    },
+    "reminder": {
+     "speaker": "Warlord Gorran",
+     "text": "What are you waiting for, lad? Vorga grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down into the Deep Halls and destroy Vorga the Stone Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

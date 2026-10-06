@@ -1,0 +1,33 @@
+{
+  "packet": "866be7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Exclamation-heavy greeting, 'little pests', a slightly clumsy 'cemetery located East of here', and the shopkeeper's 'Ya need some new weapons and armor?' are pure early-chapter Nox; the thanks hands off to the next quest-giver in the plain Westwood way."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The put-upon smuggler's 'Oh, bah!', the jailer's 'in a week, or a two! ... Heh, heh, heh...!', and 'Grunt if you agree!' have Westwood's broad, slightly sloppy comic voice; the journal is a bare imperative."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The mule joke is Nox-like, but the clipped, laconic offer and the three-waypoint route ('out past the ore carts, over the rope bridge') feel built to a brief, and the journal over-specifies who and where; the two townsfolk refusals are filler."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The frog in the burning house and the self-answering 'Loads and loads of money?' gag are Westwood's silliness; the guard's run-on warning with a semicolon and trailing ellipsis is typical of the campaign's loose punctuation."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Dense invented setting texture (slag road, cooling pools, stokers, furnaces) in every line, a thanks that explains the reward's backstory, and a stray 'Welcome to [Place]!' after the instructions read as written to evoke a place rather than to steer the player."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The thanks borrows Westwood's 'Thank you kindly, young sir', but 'can only repeat you the warning my husband gave me, long ago' is a literary, slightly foreign construction, and the drowned/nets mood pieces are more atmospheric than Nox's townsfolk."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The repeated 'mate', 'a damn fine spell', boots stolen while bathing, and townsfolk gossiping about the mayor's fear of spiders are exactly Westwood's cheeky small-town humour; the journal is long and literal in their manner."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Worse than the pox!', 'You are worthy of your new title', and the typo 'off you back' have the unpolished authenticity of the campaign; the guard's paternalistic 'for the common man' line fits the opening town."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A boastful captain whose speech pivots to a side errand, an exact '80 gold' stated twice, and a thanks that opens with folk advice about wasp stings feel assembled; the townsfolk lines are generic worry about grain and winter."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The offer's 'It is all settled. You may take any path you like' is oddly formal and unmotivated, the thanks is a list of household chores before the reward, and 'what with the dead climbing up the stilts at night' is a writerly flourish Nox's shopkeepers do not use."}
+  ],
+  "tells": [
+    "Westwood's texts lean on broad, slightly goofy humour (frogs, boots stolen while bathing, 'Grunt if you agree') and loose punctuation (?!, trailing ellipses, typos); the new texts are cleaner and more measured.",
+    "New texts pack invented setting nouns (slag road, cooling pools, reed caves, stilts, orchard) into nearly every line to build atmosphere; Westwood's townsfolk mostly comment on the plot, the player, or each other.",
+    "New quest offers give route directions as a chain of landmarks and state exact reward sums; Westwood's directions are vaguer ('East of here') and rewards are often a promised item or 'a humble gift'.",
+    "New thanks lines explain the reward's backstory or give chores/advice; Westwood's thanks are exclamatory gratitude plus a hand-off to the next step.",
+    "Literary or slightly unidiomatic phrasing ('repeat you the warning', 'It is all settled') and mournful mood fragments ('My nets... torn') mark the new texts; Westwood's register is plainer and more cartoonish."
+  ]
+}

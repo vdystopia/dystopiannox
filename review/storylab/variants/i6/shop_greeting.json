@@ -1,0 +1,522 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ossian is rude at the Drowned Lantern, Dunstan makes coffins for the Chapel on the side, Mabry says business is bad.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern. You want a room or a drink? Make up your mind, I haven't got all day."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Welcome! Arms and armor, and coffins for the Chapel when there's call for them. What do you need?"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "A customer! Times are hard, stranger. Please, buy something. Anything!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Bulgo of the Deep Mug inn (and coffins), Dask the armorer, Yselde of the magic shop.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bulgo",
+     "text": "Welcome to the Deep Mug, friend! Beds upstairs, coffins out back. Either way ya get a good long rest! Heh, heh, heh..."
+    },
+    "arms": {
+     "speaker": "Dask",
+     "text": "Welcome to Dask's Armory! The finest steel under the mountain. How can I help you?"
+    },
+    "magic": {
+     "speaker": "Yselde",
+     "text": "Don't touch the scrolls with those filthy hands. Buy something or get out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Morla of the Green Lamp inn, Harrok the smith, Nimm the potion seller.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Morla",
+     "text": "Welcome to the Green Lamp, stranger! I saved my best room just for you. It costs a little extra, of course!"
+    },
+    "arms": {
+     "speaker": "Harrok",
+     "text": "Welcome. Nobody's buying much these days. Folks are too scared to leave their huts. Take a look, anyway."
+    },
+    "magic": {
+     "speaker": "Nimm",
+     "text": "Welcome to Nimm's! The finest potions in all the swamp! Well... the finest in Tharn, anyway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Brumbo of the Black Boar inn, Hulgar of the castle armory, Zelpha the potion seller.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brumbo",
+     "text": "Welcome to the Black Boar! A bed's only 10 gold, and I throw in the fleas fer free! Har, har, har!"
+    },
+    "arms": {
+     "speaker": "Hulgar",
+     "text": "Welcome to the Armory of Castle Durnath. Arms and armor for the loyal subjects of Lord Tavrin."
+    },
+    "magic": {
+     "speaker": "Zelpha",
+     "text": "Hmph. Don't touch anything. Buy something or leave."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Tam Rooke of the Blue Heron inn, Orlo the armorer, Sabeth the potion seller.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tam Rooke",
+     "text": "Welcome to the Blue Heron! Fresh fish and a warm bed, every night!"
+    },
+    "arms": {
+     "speaker": "Orlo",
+     "text": "This is Orlo's Lakeside Armory. Swords and shields of the finest quality. What is your business?"
+    },
+    "magic": {
+     "speaker": "Sabeth",
+     "text": "Oh my, you look half drowned! Come in, come in. I have just the potion for you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Bodge keeps the inn, Brack the arms shop, Hulda the potion and scroll shop.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodge",
+     "text": "What?! Can't you see I'm busy? Ugh. Fine. A bed or a drink?"
+    },
+    "arms": {
+     "speaker": "Brack",
+     "text": "Welcome to Brack's Arms and Armor, Official Supplier to the Academy Watch. How may I serve you?"
+    },
+    "magic": {
+     "speaker": "Hulda",
+     "text": "Come in, come in! I can tell by the jingle you've got gold to spend. Have a look around!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Rudd of the Frozen Boot inn, Haskel the smith, Brunna who sells potions and makes coffins.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Rudd",
+     "text": "Welcome to the Frozen Boot! Warm yer bones by the fire, lad. The ale's colder'n a dead Troll's toes!"
+    },
+    "arms": {
+     "speaker": "Haskel",
+     "text": "What? You want a blade, buy a blade. I don't have all day."
+    },
+    "magic": {
+     "speaker": "Brunna",
+     "text": "Greetings, stranger. Potions and spell books are on the shelf. If you need a coffin, I make those too. Lots of folks do this winter."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Mott of the Bellows inn, Brannoc the armorer, Imbra of the magic shop.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mott",
+     "text": "Welcome to the Bellows! Best ale this side of the mountain!"
+    },
+    "arms": {
+     "speaker": "Brannoc",
+     "text": "Well, look at you! You've seen some fighting, I can tell. Come in and have a look around."
+    },
+    "magic": {
+     "speaker": "Imbra",
+     "text": "Ah, a customer! My prices went up this morning. Don't ask me why. Heh, heh."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Gilly keeps the Cartwheel Inn and makes coffins, Brask sells arms, Sabrine sells potions and does not like browsers.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gilly",
+     "text": "Welcome to the Cartwheel Inn! Beds are upstairs. I make coffins out back too, if things go bad for you."
+    },
+    "arms": {
+     "speaker": "Brask",
+     "text": "Come in, come in! I hope you brought plenty of gold. Prices went up when the dead started walking. Heh, heh."
+    },
+    "magic": {
+     "speaker": "Sabrine",
+     "text": "Hmmph. Don't touch the bottles unless you're buying."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Bessa keeps the inn, Krell the armory, Zenna the potion shop.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bessa",
+     "text": "Pay first, drink after. That's the rule in this house."
+    },
+    "arms": {
+     "speaker": "Krell",
+     "text": "Welcome to Krell's Armory! Good steel at a fair price!"
+    },
+    "magic": {
+     "speaker": "Zenna",
+     "text": "Hmmm. You look like you've been in a fight or two. I have just the potions for you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "1973e2",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The offer is one long breathless sentence built around a comic premise (scorpions nesting in boots), with an aside set off by dashes. Nox offers are shorter and plainer. The thanks lands a neat joke, and both greetings ('young sir', 'brave Adventurer') are stock forms dropped in."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The two-page offer runs on stacked exclamation marks, and the thanks has the deadpan 'Loads and loads of money?' turn and the '?!' punctuation. The guard's warning trails off in an ellipsis, and the townsfolk say plain one-liners ('Oh no...I've lost everything.'). This is the original voice."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The offer is a patchwork: it points the player to a potion seller, then pivots to a cynical speech about heroes and coin that has nothing to do with the bats. The townsfolk lines copy Nox's cackles and capital-letter shouts without the setup that makes them funny there. The journal's second page is padding."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The panicked mayor with his 'worse than the pox' simile, the formal thanks that hands over a new title and the run of the town, and the guard's 'for the common man' all read true. The typo ('off you back') and the joke that sets the three classes against each other are period-authentic."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Directions are spelled out flatly ('located East of here', 'I should be in my house at the center of town'). The thanks hands off to the Captain and tells the player to shop first, which is classic hub-quest scaffolding. A full stop is missing ('help us'), and the guard line is purely functional."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The voice is close, but the lines lean on borrowed Nox tics: '!?', 'Heh, heh, heh...', 'You're a menace!'. The offer packs where, what and the danger into a single tidy sentence, and the thanks closes with a quip, as if every line has to be a joke or a pointer."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Atmospheric touches ('Warm yourself... don't linger by the fire', 'eating snow by the handful') are more literary than Nox's townsfolk. In the thanks, 'it' has no clear antecedent, and the closing 'I thought I'd hidden it so well' contradicts the theft. The journal entry is clipped and drops its article."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The offer is a long, earnest multi-page briefing with an exact count of miners, a key and a scroll handed over. Its lofty, slightly clumsy phrasing ('airborne demons from the underworld', 'Nox's vital interests') is unpolished in a way a modern writer would smooth out. The shopkeeper's 'Let's get to know each other! Buy something!' is pure Westwood."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The repeated 'mate', 'a damn fine spell', and the plain journal sentence that names who stole what from whom all read true. The townsfolk pair sets up the cowardly mayor across two lines, and the guard points at his own cells. It is unforced and of its time."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The wooden-leg gag and 'Yeah, I know how it sounds' are a self-aware, modern comic beat. The offer stacks clauses ('guarded by the whole thieving pack and kept for who knows what'), and 'Will you, won't you' is a literary flourish. The short townsfolk lines are passable Nox."}
+  ],
+  "tells": [
+    "Westwood's offers are plain and functional: they state what happened, where to go, and sometimes exact counts or items handed over (a key, a scroll, the number of trapped workers). They read unpolished, with typos, a missing full stop, and mixed '?!' or '!?'. The new texts are tidier and pack the setup into one long, clause-heavy sentence.",
+    "The new texts build every quest around a whimsical premise and end lines on a punchline. Westwood's humour is rarer and more deadpan (one twist such as 'Loads and loads of money?'), and most lines just inform.",
+    "The new texts over-use borrowed Nox tics ('Heh, heh, heh...', 'Hee, hee, hee...!', capital-letter shouts, 'brave Adventurer', 'young sir', 'stranger') as if they were house style. Westwood uses them sparingly.",
+    "Westwood's townsfolk lines link to each other and to the quest (the cowardly mayor across two lines, the Captain waiting, a class rivalry). The new texts' townsfolk are standalone colour, sometimes literary ('eating snow by the handful', a dark shadow creeping over the pass).",
+    "Westwood's journal entries are full, plain imperative sentences ('Find the boots stolen from the bridge guard by the Urchins and return them to him.'). The new ones are either clipped (dropping articles) or padded with a second page of advice.",
+    "The new texts have internal logic slips (a pronoun with no clear antecedent, a thanks line that contradicts the offer, an offer that drifts off its own topic). Westwood's lines are clumsy but consistent."
+  ]
+}

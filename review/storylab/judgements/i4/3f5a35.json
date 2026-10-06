@@ -1,0 +1,32 @@
+{
+  "packet": "3f5a35",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Short alarm barks with a native slip ('look out' for lookout) and the plain 'curse of the necromancer come to haunt Nox again'; reads like a siege-chapter guard."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The over-courteous welcome with 'fairest of all villages in the land of Nox' and 'open warm arms of aid' is the campaign's earnest, slightly stilted gate speech; the flat closing line fits."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clipped 'Sorry.' then a reason, a curt 'Move on!' and a one-line release; plain and functional in the Nox way."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Faction-hostile checkpoint with an unpunctuated vocative ('Be gone [Group], before I blast you') and a terse closing; native roughness."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Stacks three exclamations and reuses another guard's direction line word for word; the 'boy' farewell with a bandit warning feels assembled from parts rather than spoken."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Two lines that say the same thing (foreman waits at the mines) and a grand 'Your valor knows no peer' thanks; more a quest-briefing relay than a guard's bark."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plausible jailer barks with an escalation gag, but the page break after a four-word welcome and the neat three-step build feel designed."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Functional directions, but the 'spoken to again' and 'later' lines are near-duplicates with added routing detail, which reads like a writer filling slots."},
+    {"label": "I", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The rule-list joke and the 'Oh, I forgot to mention' afterthought are a little too polished as comedy; Nox's guard humour is usually blunter."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Lore-proud civic lines with a dropped article ('can be dangerous place') typical of the shipped text; no attempt at a joke."}
+  ],
+  "tells": [
+    "Westwood's guards carry small native slips (missing commas before a vocative, a dropped article, 'look out' split) and rarely restate the same information twice; the new texts are clean and tend to repeat a direction across the 'again' and 'later' slots.",
+    "New texts cluster several exclamations and a quest-giver's urgency into a guard ('Lives are at stake!', 'Your valor knows no peer'), where Westwood's guards stay in a narrow gatekeeper role.",
+    "Comedy in the new texts is built as a setup and a tidy afterthought; Westwood's humour is flatter and incidental.",
+    "Lines lifted verbatim from one text into another (same sentence frame for directions) suggest imitation of exemplars."
+  ]
+}

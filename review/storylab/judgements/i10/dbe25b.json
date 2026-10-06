@@ -1,0 +1,34 @@
+{
+  "packet": "dbe25b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Plain merchant talk with an odd, game-shaped deal (50,000 for two buildings) and the cheerful 'lad' plus a warning to stay out of the villain's way; the loose, slightly clumsy phrasing ('I'll need to be starting on') reads like Westwood's."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Two unrelated, very short tutorial-style asks; the deadpan 'Basic training isn't for everyone' and the giddy 'You must be good luck!' have Nox's light, unpolished humour."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The register is close (exclamations, 'tokens of my gratitude'), but 'the woodcutters' camp, the camp below the fort' and 'nearly every cutter' are over-built, and the helm ask piles up stage business ('due home off the wall') in a careful imitation."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The smuggler's put-upon aside ('he does this just to get away from his responsibilities') and the practical key-and-warning payoff are typical Westwood: plain, a little comic, and every line says what to do."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A near-paraphrase of I's sword seller: the granny-and-cheese joke tries too hard, 'Nobody could lose the [Thing] holding a blade like that' is a stiff rewording of a natural line, and the double hyphen with a made-up second buyer feels written to order."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Overwrought rescue pleas with dry, silly humour ('the menfolk cannot live without us', the ogres' stomachs grumbling) and a hint about a secret passage: very much Nox."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "An unmasked invented name ('Vesk') gives it away, and the double-hyphen dashes, the 'fat purse... dead or alive' bounty cliche and the stacked villain epithets (cutthroats, brutes, scoundrel, villains) are generic fantasy writing."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A bureaucratic sponsor and an absurd errand (an urchin who has aggravated the bats in an apple orchard) with a coloured key; the dry, oddly specific setup is Westwood's."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Brisk clerk lines ('We provide the Golem') and a salesman's flattery in short sentences; 'That blade was made for your hand' is the natural original of E's reworded version."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Hey there, Traveler!' and 'Ya want one?' try for folksiness; 'the paltry sum of 50 gold', 'your share of the tithe' and the armory shield explained against arrows read as tidy invented world-building rather than Nox's plain asks."}
+  ],
+  "tells": [
+    "Double hyphens ('--') used as dashes showed up only in the suspected new texts; Westwood's use '...', exclamations and short sentences.",
+    "New texts reword a known Westwood template (a sword seller, a bounty) and make the line stiffer ('Nobody could lose the X holding a blade like that') instead of keeping it plain.",
+    "Stacked villain epithets and stock fantasy phrases ('fat purse', 'dead or alive', 'paltry sum', 'grubby hands') read as generic game writing; Westwood's villains are named once and its humour is dry and odd.",
+    "Over-specified place description inside a plea ('the camp below the fort', 'off the wall', 'from the town armory') explains the world more than Westwood's speakers do.",
+    "Unmasked invented proper nouns are a hard giveaway.",
+    "Westwood's humour comes from deadpan or absurd specifics (aggravated bats, hungry ogres' stomachs, a smuggler skipping work); the new texts' jokes are set up more deliberately (granny who sliced cheese)."
+  ]
+}

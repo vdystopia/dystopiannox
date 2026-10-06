@@ -1,0 +1,580 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i11",
+ "writer": "one writer a town (variants/i11/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric, an old shepherd at the edge of the Ashwood, wants the Wolves that took his sheep killed.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Tobin": "person",
+    "Barley": "thing",
+    "Amulet of Plenty": "thing",
+    "Horn of the Watch": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Brothers": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Help! Please, help me! A pack of grey Wolves just came down out of the Ashwood, behind my fold and dragged off nearly half of my sheep! One of them was my fine old ram, Barley!\n\nPlease put an end to those Wolves and you'll have a reward!"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Oh why are you still standing here? My flock gets smaller every night!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Oh, bless you, brave Adventurer! Here, these are for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Wolves raiding Ulric's flock at the edge of the Ashwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Dolgar: Brunna, who keeps the mushroom farms, wants the leeches and bats driven out and her trapped pickers saved.",
+   "names": {
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Brask": "person",
+    "Durm": "person",
+    "Krell": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Old Shaft": "place",
+    "the Deep": "place",
+    "Great Lift": "place",
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "Imps": "group",
+    "Orla": "person",
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Kessa": "person",
+    "Ottick": "person",
+    "Brewhouse": "place",
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunna",
+     "text": "Where have you been all this time!? Something terrible has happened!\n\nMonstrous leeches and shrieking bats from the Deep have swarmed the mushroom farms. Brave pickers have perished in the service of Dolgar's dinner tables!\n\nPlease, I implore you! Drive the vermin from the farms, save my pickers and I'll pay you generously.\n\nThis key opens the shed where my first picker is hiding. She knows where the rest of them are.\n\nI also have a spell book that may come in handy."
+    },
+    "reminder": {
+     "speaker": "Brunna",
+     "text": "Come back once my pickers are safe and you'll have your pay."
+    },
+    "completion": {
+     "speaker": "Brunna",
+     "text": "You're a hero through and through! I can't thank you enough.\n\nWhile you were down in the farms, chasing off those leeches, Haskel stopped in, asking after you. He'll meet you at the Great Lift -- west of here.\n\nBut first, please take this gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill or charm every beast in the mushroom farms. Save the 4 pickers trapped there."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Pellmire: Gummet, an old walkway-dweller, wants the Leech nest under the Rotten Pilings burned out.",
+   "names": {
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Sluice Tower": "place",
+    "Sunken Causeway": "place",
+    "Causeway": "place",
+    "Rotten Pilings": "place",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Mayor Dobbet": "person",
+    "Dobbet": "person",
+    "Captain Vell": "person",
+    "Mogrut": "person",
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Gummet": "person",
+    "Nella": "person",
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Tobb": "person",
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Elsbet": "person",
+    "Moggs": "person",
+    "Bog Wardens": "group",
+    "Ogres": "group",
+    "Leeches": "group",
+    "Urchins": "group",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gummet",
+     "text": "Blast it! Where were you, lad!? The Leeches swarmed up out of the water onto the lower walkways and we'd have lost every one of them if Mayor Dobbet's torchmen were not rushed down the ladders at the very last!\n\nBut in all the commotion, the slimy things laid a nest under the pilings, leaving the walkways our smallest worry! All Pellmire is in danger if that nest hatches!\n\nYou must go where the Leeches crawled off to, south to the Rotten Pilings! Burn out that nest or we are finished!"
+    },
+    "reminder": {
+     "speaker": "Gummet",
+     "text": "I just know that nest is about to hatch! Hurry!"
+    },
+    "completion": {
+     "speaker": "Gummet",
+     "text": "In happier days, the whole of Pellmire would turn out to celebrate the end of those Leeches! Fine work! But now we must deal with Mogrut and his Ogres once and for all.\n\nTake these as a small thanks from all of us for a brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Rotten Pilings and destroy the Leech nest."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Korlen: Hobb the bell-ringer: an Ogre beat his two bell boys and ran off with the clapper of the great bell.",
+   "names": {
+    "Korlen": "place",
+    "Gruttock": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Skarn Tower": "place",
+    "Dunwood": "place",
+    "Keep": "place",
+    "Gorrow": "place",
+    "Broken Pike": "place",
+    "Lord Ambrel": "person",
+    "Dorvik": "person",
+    "Haskin": "person",
+    "Fisk": "person",
+    "Hobb": "person",
+    "Agna": "person",
+    "Orvel": "person",
+    "Gorlick": "person",
+    "Bellamar": "person",
+    "Gisla": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Orrin": "person",
+    "Tobb": "person",
+    "Ulda": "person",
+    "Chain Tunic": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hobb",
+     "text": "Ooooh, how could this happen? That Ogre beat both of my bell boys black and blue. There's no time to fetch the guard. Hurry, you must catch him before the clapper of the great bell is gone for good."
+    },
+    "reminder": {
+     "speaker": "Hobb",
+     "text": "Please, I'm begging you. Run down that thieving brute and bring back my clapper."
+    },
+    "completion": {
+     "speaker": "Hobb",
+     "text": "The clapper is saved! Commander Dorvik will need it to ring the alarm on the walls. Here, take my Bow and bring the clapper to him."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the bell's clapper stolen by the Ogre thief."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ondel: Warden Tobb posts a bounty on the outlaw Jory Blackgill and his crew of net cutters.",
+   "names": {
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Gull Rock": "place",
+    "Sunken Crypt": "place",
+    "Net Hall": "place",
+    "Rusty Hook": "place",
+    "Tavarin": "place",
+    "Rain Staff": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Leech": "group",
+    "Vulmar": "person",
+    "Brannoc": "person",
+    "Mayor Wendrel": "person",
+    "Tobb": "person",
+    "Maudie": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ishmar": "person",
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Tully": "person",
+    "Brusk": "person",
+    "Moll": "person",
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobb",
+     "text": "Greetings, Wanderer. I presume you have come about the bounty.\n\nThere's a fat reward for Jory Blackgill -- dead or alive. He and his rotten crew of net cutters have been robbing our village all season.\n\nWatch yourself, those slimy cutthroats will stab you in the back."
+    },
+    "reminder": {
+     "speaker": "Tobb",
+     "text": "What are you waiting for? Blackgill is still out there!"
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Hallo there! Fennick heard a terrible racket out this way, so I came running to have a look.\n\nYou have caught the infamous Jory Blackgill all by your lonesome! Most remarkable! You have earned my highest regard! Blackgill's crew has plagued Ondel all season! I'll handle things from here. We will all sleep easier with this low-down villain locked in my cellar!\n\nAnd here is the bounty -- 150 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the outlaw Jory Blackgill."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Archivist Umbrik has shut himself in a closet while bats roost in his reading room at the Archive.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "the Archive": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Murkfen": "place",
+    "the Inkwell": "place",
+    "Olvane": "person",
+    "Pellimore": "person",
+    "Umbrik": "person",
+    "Ezzard": "person",
+    "Nib": "person",
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "Brusk": "person",
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group",
+    "the Imps": "group",
+    "the Trolls": "group",
+    "the Rats": "group",
+    "the bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Umbrik",
+     "text": "These filthy bats are a curse on my house! My students tried to smoke them out, but back they come every night! You are my last hope of getting the vermin out!\n\nThe bats are up in my reading room, there, at the top of the stairs. Please, watch yourself."
+    },
+    "reminder": {
+     "speaker": "Umbrik",
+     "text": "I won't come out of this closet till those bats are gone! Swat them, burn them, I don't care how! Just get rid of them! Hurry before more of them roost!"
+    },
+    "completion": {
+     "speaker": "Umbrik",
+     "text": "Brave Adventurer, you have my heartfelt thanks! You have earned the friendship of the College. The porters will be told that you may enter the Archive whenever you like.\n\nHere is some gold for your pains. I must insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bats out of Archivist Umbrik's reading room."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarra: Grubb, sentry at the frozen rope lift, wants back the fur cap the Imps of the Imp caves stole while he napped on watch.",
+   "names": {
+    "Fort Skarra": "place",
+    "Vaskor": "person",
+    "Ulvane": "person",
+    "Ostrag": "person",
+    "Tombs of Gol Varra": "place",
+    "Undead": "group",
+    "Haddo": "person",
+    "Grubb": "person",
+    "Imps": "group",
+    "Imp caves": "place",
+    "Vardis": "person",
+    "Ebbet": "person",
+    "Ebbet's hut": "place",
+    "Silver Horn": "thing",
+    "Ankh": "thing",
+    "Mirta": "person",
+    "Bettra": "person",
+    "Dolgo": "person",
+    "Gunnet": "person",
+    "Brakka": "person",
+    "Brakka's forge": "place",
+    "Yselda": "person",
+    "Gimble": "person",
+    "Kolb": "person",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grubb",
+     "text": "Sorry, pal, the rope lift is frozen stiff! Only way down to the lower pass is the long way, through the Imp caves. But, if you go that way, keep your eyes open! Those Imps swiped my fur cap while I was napping on watch!\n\nIf you get it back for me, pal, I'll show you a mighty handy spell."
+    },
+    "reminder": {
+     "speaker": "Grubb",
+     "text": "Any sign of my cap? My ears are turning blue!"
+    },
+    "completion": {
+     "speaker": "Grubb",
+     "text": "My cap! I figured it was gone for good! I owe you one, pal. Here's that Spell, like I said."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the fur cap the Imps stole from Grubb and return it."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "general-purpose subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 8,
+   "specifics": "Vurn: Grenna's coal cellar is overrun by Rats and her pig Gubbin is shut in with them.",
+   "names": {
+    "Vurn": "place",
+    "Vargoth": "person",
+    "Brannoc": "person",
+    "Kolbrin": "person",
+    "Durk": "person",
+    "Grenna": "person",
+    "Gubbin": "person",
+    "Ambrel": "person",
+    "Brog": "person",
+    "Lissa": "person",
+    "Marga": "person",
+    "Torbek": "person",
+    "Zelphine": "person",
+    "Kragg": "person",
+    "Pibble": "person",
+    "Orsk": "person",
+    "Nessa": "person",
+    "Grisold": "person",
+    "Tarvel": "place",
+    "Hall of Anvils": "place",
+    "Deep Forge": "place",
+    "Cinder Caves": "place",
+    "Ash Gate": "place",
+    "Helm of Far Sight": "thing",
+    "Imps": "group",
+    "Ember Demons": "group",
+    "Rats": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenna",
+     "text": "Oh please, kind sir, help me! The Rats have overrun my coal cellar and my poor pig, Gubbin, is shut in down there with them!\n\nGet rid of them and fetch him out and I'll owe you my life!"
+    },
+    "reminder": {
+     "speaker": "Grenna",
+     "text": "Whatever you find down in the cellar is yours! Just hurry and save Gubbin!"
+    },
+    "completion": {
+     "speaker": "Grenna",
+     "text": "Oh, thank heavens, you've got him! How will I ever pay you back for such courage?!\n\nWhat's that, now? Heaps and heaps of gold? Well, if that's your price, here, accept this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Gubbin the Pig from a Rat-infested cellar in Vurn."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Varrow: Hobbin the shepherd has lost sheep and his dog to the wolves of the Grimwood and wants their den cleared.",
+   "names": {
+    "Varrow": "place",
+    "Gilded Boar": "place",
+    "Grimwood": "place",
+    "Crag Hill": "place",
+    "Potions Aplenty": "place",
+    "Krull": "person",
+    "Druvan": "person",
+    "Grumwald": "person",
+    "Brannoc": "person",
+    "Hobbin": "person",
+    "Olla": "person",
+    "Varnus": "person",
+    "Fennick": "person",
+    "Pella": "person",
+    "Jory": "person",
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hobbin",
+     "text": "Snarling, filthy brutes! The wolves only just came out of the Grimwood and already they've eaten a good part of my flock!\n\nI am Hobbin the shepherd. I am searching for my old dog. I'm afraid the wolves have carried him off to their den in the wood.\n\nShould you find my dog and chase off those wolves, I would pay you handsomely. Come along, I'll lead you to the trail into that miserable den beyond my fields."
+    },
+    "reminder": {
+     "speaker": "Hobbin",
+     "text": "Did you find my dog yet? Oh no, I just know he's been eaten."
+    },
+    "completion": {
+     "speaker": "Hobbin",
+     "text": "My dog's collar! Something dreadful must have happened to him.\n\nYou have shown those wolves who's master in these hills. Maybe you would make a fine shepherd yourself. Hmmm... Maybe.\n\nCome along to my hut. When you are ready, just take my old bow and arrows down from the wall and they are yours. I have a whole flock to build up again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what became of Hobbin's dog."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 10,
+   "specifics": "Tolm: Brunn, a pig farmer, has lost his pigs to Bears and wants them hunted down.",
+   "names": {
+    "Tolm": "place",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Ondrel": "person",
+    "Corbel": "person",
+    "Dorrik": "person",
+    "Fulk": "person",
+    "Hobb": "person",
+    "Zelna": "person",
+    "Brunn": "person",
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Tamm": "person",
+    "Hulda": "person",
+    "Nella": "person",
+    "Olm": "person",
+    "Pella": "person",
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Ogres": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunn",
+     "text": "Truth be told, my farm's been doing rather poorly of late. Ten nights back, Bears broke into the sty and dragged off my pigs.\n\nI don't suppose I'll ever get my pigs back, but I'd like nothing better than to see those Bears hunted down.\n\nI'll gladly pay whoever puts an end to them."
+    },
+    "reminder": {
+     "speaker": "Brunn",
+     "text": "Any luck with those Bears? They had another pig last night!"
+    },
+    "completion": {
+     "speaker": "Brunn",
+     "text": "So those Bears are finished! Good work, lad! My pigs can rest easy knowing those brutes won't be shoving their big hairy snouts in my sty!\n\nAnd here's what I promised... 90 gold pieces! You're welcome at my farm anytime!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Bears that have been stealing Brunn's pigs."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

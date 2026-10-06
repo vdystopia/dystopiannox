@@ -1,0 +1,33 @@
+{
+  "packet": "8681c7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Over-the-top panic ('airborne demons from the underworld', 'Nox's vital interests'), a flat functional captive ('Please take me back to the elevator.') and a mechanical journal with a count: Westwood throughout."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Well-shaped and sentimental, with a second captive conveniently revealed and a precise location ('past the old ore chutes, on the east side'); the emotional coherence is tidier than Westwood's."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Elevated diction ('Thieving, lumbering brutes!', 'abominable creatures', 'you will not find me ungrateful', 'Liberate my men') and a 'cold will finish what the Trolls began' flourish are a novelist's, not Nox's."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The rescued pet frog and the 'Loads and loads of money?' gag are Westwood's dry slapstick; the captive's grumpy 'Fine! I will follow you!' seals it."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Story-chaining exposition ('While you were running [Place], the express elevator jammed'), stilted 'We best go' and an over-chatty captive with a secret passage: authentic campaign connective tissue."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse, crude stakes ('before the Ogres eat them'), 'my boy', 'damsels', and a thanks that immediately sends you to the next groups: Westwood's brisk, slightly dated tone."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Laconic, characterful voice ('Worth your while. Deal?'), a talking crow and a wistful backstory for the reward robe; charming but modern indie-game minimalism, not Nox."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Mannered priest ('I fear some abominable fate has befallen them', 'Let us make an arrangement, you and I') and a hint-giving reminder ('east of the ford'); same 'Liberate ... bring them home' formula as C."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Run-on plea with missing comma, a captive speaking in exclamatory exposition and the 'menfolk cannot live without us' joke: Westwood's period humour."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Whimsical comic old master ('He never misses his supper!', Imps that tickle, 'lost half my beard', 'I'm free!!!'): the gags are too cosy and written-up for Nox."}
+  ],
+  "tells": [
+    "New texts give every character a crafted personality and a distinct comic or sentimental bit (the crow's 'Rawk!', the beard, the reward's backstory); Westwood's captives speak in flat function lines ('I'll follow you.', 'Help us!').",
+    "New plea-givers use elevated or mannered diction ('Liberate', 'abominable', 'you will not find me ungrateful', 'Let us make an arrangement'); Westwood's speak plainly and loudly, with exclamation marks and run-ons.",
+    "New reminders add a precise location hint (the old well behind the smokehouse, east of the ford, the cellars); Westwood's reminders just urge haste or restate the reward.",
+    "Westwood's rescues link to the wider plot (the Captain is waiting, go find the other groups, the Chief Engineer) and carry blunt, dated humour; new ones are self-contained vignettes with tidy emotional closure.",
+    "New texts reuse a formula across quests ('Liberate ... and bring them home', 'take this ... as a token of my appreciation')."
+  ]
+}

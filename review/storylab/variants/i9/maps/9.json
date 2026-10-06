@@ -1,0 +1,325 @@
+{
+ "iter": "i9",
+ "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Pellor's Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "The Ogre Lord Bludgor and his Ogres hold the old toll fort on Gallows Hill and no cart gets through the crossroads.",
+  "names": {
+   "Pellor's Cross": "place",
+   "Four Roads Inn": "place",
+   "Gallows Hill": "place",
+   "Stony Hollow": "place",
+   "Hamley Farm": "place",
+   "Bludgor": "person",
+   "Captain Vell": "person",
+   "Mayor Tull": "person",
+   "Ruddock": "person",
+   "Tobbe": "person",
+   "Fennick": "person",
+   "Dagny": "person",
+   "Mother Quill": "person",
+   "Wila": "person",
+   "Tibbald": "person",
+   "Dobbin": "person",
+   "Master Odric": "person",
+   "Snig": "person",
+   "Brisa": "person",
+   "Orlo": "person",
+   "Moll": "person",
+   "Gimbo": "person",
+   "Hask": "person",
+   "Wuzzle": "person",
+   "Ogres": "group",
+   "Imps": "group",
+   "Ghosts": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Ruddock keeps the north gate of Pellor's Cross while Bludgor's Ogres hold Gallows Hill.",
+   "names": {
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Ogres": "group",
+    "Gallows Hill": "place",
+    "Bludgor": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Ruddock",
+     "text": "I'm afraid old Tobbe has gone soft in the head. They've put me on the north gate since he took to wearing a soup pot on his head and saluting the crows."
+    },
+    "again": {
+     "speaker": "Ruddock",
+     "text": "Well, well! You look a good deal tougher than the last hero they sent us! Come by the gate for a mug of cider when you're done with the Ogres."
+    },
+    "later": {
+     "speaker": "Ruddock",
+     "text": "The Ogres of Gallows Hill were a filthy and greedy pack of brutes! The worst was their lord, Bludgor!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Wila's bathhouse behind the inn is haunted by Ghosts and she pays to have them banished.",
+   "names": {
+    "Wila": "person",
+    "Ghosts": "group",
+    "Four Roads Inn": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wila",
+     "text": "It is the most dreadful of hauntings! I heard them in my bathhouse behind the inn, moaning by the big tub in an old man's voice. Ghosts love to catch a man with his trousers off! Get rid of them and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Wila",
+     "text": "I still have your reward put by."
+    },
+    "completion": {
+     "speaker": "Wila",
+     "text": "Thank you! Here, this gold and these leather boots will be of use -- more than you'd guess."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Banish the Ghosts in Wila's bathhouse."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Imps from the old well west of the inn stole old Tibbald's wooden leg while he dozed.",
+   "names": {
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Imps": "group",
+    "Pellor's Cross": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tibbald",
+     "text": "Bad news, plain and simple, lad. Once I'd dozed off in my chair the Imps came up out of the old well west of the inn and made off with my wooden leg, since they'll steal anything that isn't nailed down -- and now I can't get past my own front step! Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Tibbald",
+     "text": "Dobbin the carter was by this morning offering to whittle me a new leg. I suppose I'll sit and wait on him by the woodpile till winter, then."
+    },
+    "reminder": {
+     "speaker": "Tibbald",
+     "text": "I'm one leg short, I can't chase them."
+    },
+    "completion": {
+     "speaker": "Tibbald",
+     "text": "Strap it on right here, below the knee. I haven't much to give, but at least I can walk you to the inn door now! The Imps -- they're gone? Please accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Tibbald",
+     "text": "Thanks once more for the leg! Pellor's Cross will talk of your daring deed for years and years!\n\nBless you, young sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Tibbald's wooden leg."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Tibbald's wooden leg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of the hamlet: Moll on the Ogre Lord, Gimbo in her kitchen, Hask the wheelwright.",
+   "names": {
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Bludgor": "person",
+    "Captain Vell": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Moll",
+     "text": "Bludgor would never have come down off his hills if Captain Vell had still been in town!"
+    },
+    "rumour2": {
+     "speaker": "Gimbo",
+     "text": "Hey! Don't you track mud through my kitchen!"
+    },
+    "rumour3": {
+     "speaker": "Hask",
+     "text": "I earn a fair living mending cart wheels."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Fennick of the Four Roads Inn, Dagny the smith, Mother Quill the potion-seller.",
+   "names": {
+    "Fennick": "person",
+    "Four Roads Inn": "place",
+    "Hamley Farm": "place",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Ogres": "group",
+    "Bludgor": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Fennick",
+     "text": "Pssst! Hey! You! Want a room? Lowest price for miles and the pies are baked by my own mother up at Hamley Farm!"
+    },
+    "arms": {
+     "speaker": "Dagny",
+     "text": "Ogres ate my pony. Buy a sword?"
+    },
+    "magic": {
+     "speaker": "Mother Quill",
+     "text": "I hear you're off after Bludgor. Good luck, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Odric the wool merchant is wedged in his own window and needs Dagny's axle grease; Snig, a pedlar in the inn, wants an Ogre's tooth for his lucky charms.",
+   "names": {
+    "Master Odric": "person",
+    "Dagny": "person",
+    "Pellor's Cross": "place",
+    "Ogres": "group",
+    "Snig": "person",
+    "Gallows Hill": "place",
+    "Fennick": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Odric",
+     "text": "Who's that down there? Heh, heh, heh... I'm wedged in my own window and I can't budge...\n\nFetch the pot of axle grease from Dagny's smithy. She charges a fortune to any merchant of Pellor's Cross, but I will reward you well.\n\nOnce the grease is on the frame and you've got a firm hold of my boots, I'll slide right out of this cursed thing. Pull whenever you're ready."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "My dear friend, a thousand thanks for sitting down with old Snig... Pull me one tooth out of an Ogre up on Gallows Hill. I promise you, nothing sells to caravan folk like a lucky Ogre's tooth, lad."
+    },
+    "outcome_a": {
+     "speaker": "Master Odric",
+     "text": "I never should have leaned out to watch those Ogres march by. I am most impressed with your quick thinking! How can I possibly repay such a kindness?! Wait here -- I'll fetch my old steel shield."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "Oh, thank you ever so much! Only one more tooth and my string of charms is full. Now slip out through the kitchen door before Fennick sees us dealing.\n\nWhat's that? Pay?\n\nWell, if gold is what you're after, please take this as a token of my thanks."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find Dagny's pot of axle grease."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Snig one big tooth from an Ogre of Gallows Hill."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "The Ogres carried off Orlo, the inn's lute player, to sing at their supper in Stony Hollow, and his wife Brisa begs for him.",
+   "names": {
+    "Brisa": "person",
+    "Orlo": "person",
+    "Ogres": "group",
+    "Bludgor": "person",
+    "Stony Hollow": "place",
+    "Mayor Tull": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brisa",
+     "text": "Please... The Ogres dragged my Orlo off to sing at Bludgor's supper table! Their camp is in Stony Hollow, east of the crossroads, and the cookhouse door at the back should still be unlatched. Bring him home! Good luck!"
+    },
+    "reminder": {
+     "speaker": "Brisa",
+     "text": "Oh, it's only you! No Orlo yet?"
+    },
+    "found": {
+     "speaker": "Orlo",
+     "text": "Psst...in here, under the big kettle, stranger..."
+    },
+    "following": {
+     "speaker": "Orlo",
+     "text": "Thank you. I wouldn't have lasted another night in that place."
+    },
+    "completion": {
+     "speaker": "Brisa",
+     "text": "Orlo! My heartfelt thanks, kind sir! Here, take this purse. You should go see Mayor Tull -- his house is right across from the inn."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Ogre camp in Stony Hollow and free Orlo."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Wuzzle the drunk points the player to Mayor Tull, who sends him against Bludgor in the old toll fort on Gallows Hill.",
+   "names": {
+    "Wuzzle": "person",
+    "Mayor Tull": "person",
+    "Captain Vell": "person",
+    "Bludgor": "person",
+    "Gallows Hill": "place",
+    "Pellor's Cross": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wuzzle",
+     "text": "Go on, Wanderer! Go flex your big hero muscles for Mayor Tull!"
+    },
+    "opening": {
+     "speaker": "Mayor Tull",
+     "text": "Please... come in and shut the door! I know Captain Vell has sent us a worthy hero at last. The Ogre Lord Bludgor is still up in the old toll fort on Gallows Hill, north of the crossroads -- throw him out and open our roads again!\n\nWelcome to Pellor's Cross! Take these potions. They may serve you well against his brutes."
+    },
+    "reminder": {
+     "speaker": "Mayor Tull",
+     "text": "Here, have another healing potion. Head north to the fort as soon as you're set to go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Win back the toll fort on Gallows Hill from Bludgor the Ogre Lord."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  }
+ }
+}

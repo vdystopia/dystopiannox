@@ -1,0 +1,33 @@
+{
+  "packet": "c565d3",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless exclamations, the odd '!?' and a slightly clumsy subjunctive ('were not thrown into the fray') are pure Westwood; the plot stakes are loud and the journal entry is bare."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clipped modern fragments ('Very grim.', 'Not all of them.') read as deliberate literary craft; the 'X tells me you are the one' hand-off and 'get what you need in town' shape is a template."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Far too long and too well-furnished with economic cause and effect (millers, ferrymen, farmers' sons); Westwood's quest-givers rarely world-build this densely, and the 'Never in all my years' line imitates rather than is."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Practical, specific, slightly awkward ('safest way in for a [Group]'), with a reminder that explains the spells' use; the low-key 'Good luck and good speed' sounds like the original."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Same skeleton as B and H: 'Grave news, lad', a named person vouching for you, a key/gate, a shopping reminder, and the reminder 'Those Zombies get bolder every night' is nearly verbatim from B."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The drill-sergeant bluster is lively, but 'This cannot stand!' and the gold-potions-sword kit plus 'do not come back until' feel assembled from the same opening template."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff, formal, oddly punctuated ('The Master for the [Place].') and a capitalised 'YOU' in the reminder; the plain procedural journal is Westwood's habit."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy three-beat setup (vouched-for arrival, disaster, take this item and go) with an evocative 'every furnace has gone cold' image; polished and symmetrical in a way Westwood's openings are not."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Wordy, Latinate ('transpiring', 'antiquated records', 'furnish the answers'), with a grammar slip ('incursions ... is') and an empty page break; exactly the original's uneven mentor voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Idioms used a little loosely ('rest on laurels'), 'Now, off with you!', and a plot-linking reminder that points to another person rather than restating the danger."}
+  ],
+  "tells": [
+    "The new texts share one opening template: a greeting of bad news ('Grave news, lad'), a third party who vouched for the hero, a concrete disaster with a night-time escalation, an item handed over, and a pointer to shops or supplies.",
+    "Reminders in the new texts restate atmosphere ('X get bolder every night', 'grows colder') and even repeat each other almost word for word; Westwood's reminders give a practical tip, a next person to find, or a plain 'Go quickly!'.",
+    "Westwood's prose is uneven: grammar slips, '!?', capitalised emphasis, stiff formal fragments, Latinate words in a mentor's mouth, and blank page breaks. The new texts are cleaner and more controlled, with crafted short fragments and vivid sensory images.",
+    "The new texts over-explain consequences (economy, guards' backgrounds, furnaces, mines falling silent); Westwood states the threat and the order with little texture beyond exclamation.",
+    "Westwood's journal entries are terse and sometimes vaguer than the dialogue ('Retrieve the [Thing].'); the new ones tend to restate the full objective with location and verb."
+  ]
+}

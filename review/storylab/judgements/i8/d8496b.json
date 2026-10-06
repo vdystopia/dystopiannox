@@ -1,0 +1,32 @@
+{
+  "packet": "d8496b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Plain shop-sign greetings with a small boast about a rival inn and an exclamatory 'at your service!'; the flat, functional register matches Nox's merchants."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The inn line has the right run-on, plot-aware feel, but bandits stealing iron and potions 'carried up from the deep mushroom caves' read like local colour planted for an invented town, and the potion pitch echoes another seller's shape."},
+    {"label": "C", "verdict": "westwood", "confidence": 2, "score": 7,
+     "critique": "Loose dialect ('aye mate', 'Ya need') and a dry, informational guild line feel like Westwood's mixed, slightly uneven voices."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Short, generic sales patter ('what's the good word?', 'better prices') and the stiff 'hallowed shop' line are the bland, practical greetings Nox actually used."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The em-dash punchline ('my favorite smell -- a stranger with a full purse') and the moody 'damp has gotten into every scroll' are too crafted and atmospheric for Nox's shopkeepers."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Phonetic dialect ('fer'), ellipses, and the hawker's 'Pssst! Hey! Stranger!' with a goofy lava-brewed boast are Westwood's comic shopkeeper voice exactly."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Signboard exclamations, a sloppy possessive apostrophe and the jokey 'one stop shop for all your literary needs' are the light, slightly unpolished humour of the campaign."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Every line is hooked to a mining setting ('down the shafts', 'new hire for the mines'), and the hostile 'hex the beard off your chin' is a crafted quip rather than a shop greeting."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Mud on the floor, bold wolves and a grudging stranger-surcharge give each shopkeeper a small characterisation beat; it reads like a modern writer building mood, not Nox's plain sales talk."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Repeats 'new around here' twice and 'Your money is still good with me' hints at a backstory the line never earns; flat in a modern retail way ('I'm here if you need anything')."}
+  ],
+  "tells": [
+    "New texts tie every shopkeeper line to an invented local detail (mines, damp, wolves, bandits) to build atmosphere; Westwood's greetings mostly just name the shop and offer service.",
+    "New texts favour crafted punchlines and characterisation beats (em-dash jokes, grudging hostility, wry asides); Westwood's humour is broader and sillier, often a sales boast or a pun on the shop.",
+    "Westwood's lines carry small sloppiness (missing commas, odd apostrophes, phonetic dialect like 'fer', 'Ya') and exclamation-heavy sign-board phrasing; the new texts are cleaner and more literary.",
+    "New texts lean on the word 'stranger' and on the player being an outsider, often repeating the idea within one packet."
+  ]
+}

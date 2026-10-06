@@ -1,0 +1,32 @@
+{
+  "packet": "cecc10",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 1, "score": 7,
+     "critique": "Short, plain warnings in the right register; the tavern joke is Nox-like, but the fire-walking boots rumour reads like a planted item hint and the set feels assembled to sound generic."},
+    {"label": "B", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "The goat gag with the double-dash aside and the out-of-context riddle taunt have Westwood's odd, uncurated feel; three unrelated voices pulled from different moments."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The stuck-tongue gag is a modern sitcom joke, and 'due up on the wall at noon, sorry' is a too-tidy world-building detail; all three lines serve one invented town too neatly."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Try following the lanterns' is navigation help dressed as banter, and the frog-legs seller is quirky colour written to order; reads as a pastiche of Nox's humour."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The foreman who 'keeps the keys to every shaft' is an explicit quest pointer; the panicked lines imitate Westwood's exclamations (even the 'Oh No!' capital) but the town is too coherently a mining town."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Terse, slightly rude, uninformative ('I'm very busy.') and a suspicious-of-strangers remark; exactly Westwood's throwaway townsfolk chatter."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Plain doom-saying with flat repetition ('smart... smart', the place named twice) and a cynical 'Let them take it, I say'; true to the campaign's war-time townsfolk."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The spider-in-the-mayor's-house worry, the 'you back' typo and 'alright' have the unpolished texture of the original string table."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Gossip about a woman in charge, a breathless 'They're here!', and 'Only fools and warriors' - blunt, period-typical, slightly off-colour."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Each line is a crafted character beat (bloodthirsty, flirt who adores soldiers, cart mystery hook); 'You've only just come to [Place], haven't you?' is a smoother, longer cadence than Nox's townsfolk."}
+  ],
+  "tells": [
+    "Generated sets are coherent around one invented town (a wall watch, a mine, a garrison); Westwood's three lines often come from unrelated moments and contexts.",
+    "Generated lines plant explicit pointers or hooks (who holds keys, follow the lanterns, a missing cart, an item rumour); Westwood's townsfolk mostly fret, gossip or brush the player off.",
+    "Generated humour is a crafted gag (tongue stuck to a railing, frog legs, 'I just adore soldiers'); Westwood's is blunter and cruder, often cynical about the war.",
+    "Westwood's text carries small roughness (typos like 'you back', 'alright', odd capitals, repeated words); generated text is cleaner and more evenly rhythmed even when it imitates exclamations."
+  ]
+}

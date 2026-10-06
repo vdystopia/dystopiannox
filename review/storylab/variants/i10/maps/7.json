@@ -1,0 +1,131 @@
+{
+ "iter": "i10",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Ostkar",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The warlock Kragan and his Trolls hold the Upper Gate at the top of the pass, and no one can cross the mountains.",
+  "names": {
+   "Fort Ostkar": "place",
+   "Ostkar": "place",
+   "Kragan": "person",
+   "Trolls": "group",
+   "Brannoc": "person",
+   "Thrane": "person",
+   "Tolvar": "person",
+   "Fenna": "person",
+   "Haskel": "person",
+   "Osk": "person",
+   "Brisa": "person",
+   "Pell": "person",
+   "Tibbet": "person",
+   "Gorm": "person",
+   "Hobb": "person",
+   "Bornik": "person",
+   "Gribb": "person",
+   "Zell": "person",
+   "White Wolves": "group",
+   "Imps": "group",
+   "Upper Gate": "place",
+   "Howling Crag": "place",
+   "Signal Tower": "place",
+   "Lower Vaults": "place",
+   "Keep": "place"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tolvar, the guard at the fort's main gate.",
+   "names": {"Tolvar": "person", "Brannoc": "person", "Trolls": "group"},
+   "parts": {
+    "first": {"speaker": "Tolvar", "text": "Aren't you supposed to be off fighting Trolls?"},
+    "again": {"speaker": "Tolvar", "text": "There is a smithy right behind Brannoc's hall."},
+    "later": {"speaker": "Tolvar", "text": "I've been ordered not to leave the wall."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Haskel the goatherd wants the White Wolves of the Howling Crag killed after they raided the goat pens.",
+   "names": {"Haskel": "person", "Tolvar": "person", "White Wolves": "group", "Howling Crag": "place", "Kragan": "person"},
+   "parts": {
+    "offer": {"speaker": "Haskel", "text": "Damn! Where were you, lad!? The White Wolves came down on the goat pens and we'd have lost every last goat to them if Tolvar's archers hadn't opened fire from the wall at the final moment!\n\nBut in all the confusion, the pack dragged off half my herd, leaving a smashed fence the least of my worries! The whole fort will starve this winter if the herd is lost!\n\nYou must go where the pack ran off to, west to the Howling Crag! Kill those wolves or we are finished!"},
+    "reminder": {"speaker": "Haskel", "text": "I'm sure those wolves will be back for more! Hurry!"},
+    "completion": {"speaker": "Haskel", "text": "In better other days, the whole fort would feast in honor of the slaying of that pack! Well done, lad! But now we must stop the wicked Kragan once and for all.\n\nHere, accept these as a token of my thanks for your brave deed!"},
+    "journal": {"speaker": "", "text": "Climb the Howling Crag and kill the White Wolves."}
+   },
+   "reward": {"gold": 0, "items": ["Bow", "Quiver"]}
+  },
+  "heirloom_fetch": {
+   "specifics": "Osk the healer lost his healing staff to the Imps that overran the cellars under his infirmary.",
+   "names": {"Osk": "person", "Imps": "group", "Brannoc": "person", "Keep": "place"},
+   "parts": {
+    "offer": {"speaker": "Osk", "text": "Where were you all this time!? We have a dreadful problem!\n\nOvergrown bats and screeching Imps from deep inside the mountain have overrun the cellars under my infirmary. Good men have bled in defense of the fort's precious stores!\n\nAnd one of those Imps flew off with my healing staff! Please, I beg of you! Get my staff back from the beasts and you'll be handsomely rewarded.\n\nThis key opens the cellar door behind the infirmary. The Imps' nest lies somewhere beyond.\n\nI also have a potion which might prove quite handy. Will you help me?"},
+    "refusal": {"speaker": "Osk", "text": "Very well. I suppose the wounded must suffer without it, then."},
+    "reminder": {"speaker": "Osk", "text": "Come back to me once you have my staff and I'll pay you as promised."},
+    "completion": {"speaker": "Osk", "text": "You are a true hero! A thousand thanks.\n\nWhile you were down in the cellars, fighting the Imps, Brannoc came by, asking after you. He wants to see you in the Keep -- at the top of the hill.\n\nBefore you leave, please take this gold for your efforts."},
+    "after": {"speaker": "Osk", "text": "Brannoc is a fine Warden. You'd do well to heed his counsel."},
+    "journal": {"speaker": "", "text": "Clear the Imps from the infirmary cellars and recover Osk's staff."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Clear the Imps from the infirmary cellars and recover Osk's staff."}
+   },
+   "reward": {"gold": 100, "items": ["RedPotion"]}
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Tibbet, Gorm and Fenna.",
+   "names": {"Tibbet": "person", "Gorm": "person", "Fenna": "person", "Kragan": "person", "Trolls": "group", "Upper Gate": "place", "Haskel": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Tibbet", "text": "We must drive out Kragan! Smash his Trolls and take back the Upper Gate."},
+    "rumour2": {"speaker": "Gorm", "text": "Not today, thanks."},
+    "rumour3": {"speaker": "Fenna", "text": "There is a good inn next to Haskel's goat pens."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Bornik the innkeeper, Gribb the smith, Zell of the magic shop.",
+   "names": {"Bornik": "person", "Gribb": "person", "Zell": "person", "Fort Ostkar": "place"},
+   "parts": {
+    "inn": {"speaker": "Bornik", "text": "I trust you won't need a bed here for long, stranger. You look like someone with plenty left to do."},
+    "arms": {"speaker": "Gribb", "text": "Pssst! Hey! Pal! Need a sword? Lowest price in the pass and they're forged right here in Fort Ostkar!"},
+    "magic": {"speaker": "Zell", "text": "Welcome to Fort Ostkar!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Brisa begs for her husband Pell, taken by the Trolls from the woodcutters' camp. Tibbet needs his uncle Gorm's lucky helm back from the Trolls before Gorm gets home.",
+   "names": {"Brisa": "person", "Pell": "person", "Tibbet": "person", "Gorm": "person", "Kragan": "person", "Trolls": "group"},
+   "parts": {
+    "offer_a": {"speaker": "Brisa", "text": "Kind sir! Please help me! A band of Kragan's Trolls just raided the woodcutters' camp, the camp below the fort and carried off nearly every cutter! One of them is my dear husband, Pell!\n\nPlease bring him home and I swear you'll be rewarded!"},
+    "offer_b": {"speaker": "Tibbet", "text": "The Trolls just made off with my uncle's lucky helm! If it isn't back by tonight, he'll have my hide. He's due home off the wall any time now!\n\nPlease, help me, young sir! I think the Trolls who grabbed it went to the old chapel.\n\nWould you... could you fetch it back for me?"},
+    "outcome_a": {"speaker": "Brisa", "text": "Oh, bless you, brave Adventurer! Please take these as tokens of my gratitude!"},
+    "outcome_b": {"speaker": "Tibbet", "text": "Phew! Thanks a lot! Here, take this as a token of my appreciation!"},
+    "journal_a": {"speaker": "", "text": "Rescue Pell and the woodcutters from Kragan's Trolls."},
+    "journal_b": {"speaker": "", "text": "Recover Gorm's lucky helm from the Trolls at the old chapel."}
+   },
+   "reward": {"gold": 0, "items": ["SteelShield", "RedPotion", "LeatherBoots"]}
+  },
+  "rescue": {
+   "specifics": "Tolvar sends the player after Hobb, the Master Builder, trapped in the Lower Vaults when the lift froze.",
+   "names": {"Tolvar": "person", "Hobb": "person", "Brannoc": "person", "Thrane": "person", "Lower Vaults": "place", "Keep": "place", "Fort Ostkar": "place", "Ostkar": "place"},
+   "parts": {
+    "plea": {"speaker": "Tolvar", "text": "While you were up on the battlements, the old lift froze in its shaft -- trapping Hobb in the Lower Vaults far beneath the fort! Brannoc is worried sick for our Master Builder.\n\nWe best get down under the fort and find Hobb."},
+    "reminder": {"speaker": "Tolvar", "text": "Why are you standing about? We must hurry to the lift shaft! Hobb could be freezing to death!"},
+    "found": {"speaker": "Hobb", "text": "Hey, it's you! The one Thrane sent!\n\nThere are some awfully big spiders down here. I had to bar myself in while I was patching the vault walls.\n\nHere's the key. Go back around to the barred door."},
+    "following": {"speaker": "Hobb", "text": "Thanks again. There ought to be potions in that crate. Come on, stay close! I know an old stair that comes out by the Keep!"},
+    "completion": {"speaker": "Tolvar", "text": "Thank goodness you're both safe! You'd make a fine sentry of Ostkar, lad. Brannoc will be pleased you brought his Master Builder home in one piece.\n\nHere, take this Ankh for your trouble."},
+    "journal": {"speaker": "", "text": "Rescue Hobb from the Lower Vaults beneath Fort Ostkar."}
+   },
+   "reward": {"gold": 0, "items": ["AnkhTradable"]}
+  },
+  "main_opening": {
+   "specifics": "Fenna points the player to Brannoc, Warden of Fort Ostkar, who sends him to the Signal Tower against Kragan.",
+   "names": {"Fenna": "person", "Brannoc": "person", "Thrane": "person", "Kragan": "person", "Trolls": "group", "Fort Ostkar": "place", "Upper Gate": "place", "Signal Tower": "place"},
+   "parts": {
+    "herald": {"speaker": "Fenna", "text": "Aiiieee! Trolls! Trolls! Run to Brannoc!"},
+    "opening": {"speaker": "Brannoc", "text": "Greetings. I am Brannoc. The Warden of Fort Ostkar. Thrane writes that you are the one to break Kragan's hold on the pass. The warlock sits behind the Upper Gate, guarded by his brutish Trolls.\n\nYou must climb to the Signal Tower and speak to the lookouts. Take this key. It opens the postern door that leads up to the tower."},
+    "reminder": {"speaker": "Brannoc", "text": "Kragan must be driven out! YOU are the one Thrane trusts to open this pass.\n\nGo now! The snows will not wait."},
+    "journal": {"speaker": "", "text": "Speak to the lookouts in the Signal Tower."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

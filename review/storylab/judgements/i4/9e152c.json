@@ -1,0 +1,32 @@
+{
+  "packet": "9e152c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Three rumour lines that each point at the wider plot (the dead waking, mages banned, where the inn is); plain exclamations and a direction, exactly the campaign's town chatter."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The tall tale of fending off 40 wizards bare-handed and the child proud of a brother running the trial have the campaign's broad, cheerful humour and short sentences."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Ogre-neighbourhood joke and 'good luck to ya' are Nox-like, but the three lines form a neat comic arc about one subject, which feels composed for the slot."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'The old goat' gossip about a master taking an apprentice and the dismissed skeleton rumour are dry, character-first and lightly ironic, as Westwood's townsfolk are."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Two of three lines restate the same spider-in-the-mayor's-house beat, the comic aside about the mayor's fear is explained, and the typo ('off you back') reads planted."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Quest-hook townsfolk who name the stolen item, the thieves and the player's role, with a missing period; more briefing than gossip."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "'Breakdowns in the city' and a 'Chief Engineer' who can't keep track are out of Nox's register, and the news line copies a stock Westwood frame."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Panicked siege lines with a cynical closer ('Let them take it, I say'); short, plain, the campaign's crowd under threat."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The aside that the villainess 'has style' and 'only fools and warriors' are staying is Westwood's dry, slightly cheeky crowd voice."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Bandits on trade routes and brazen ogres on caravans are generic travel warnings; the 'strange noises' from alleys is vague filler rather than a Nox rumour with a hook."}
+  ],
+  "tells": [
+    "Westwood's townsfolk each say one different thing, usually about the larger plot or a named character, with a quick character opinion; new texts tend to make all three lines circle one local quest (spiders, scepter, ogres) and repeat its facts.",
+    "New texts lean on generic fantasy-travel warnings (trade routes, caravans, strange noises) and occasionally out-of-world nouns (engineer, breakdowns).",
+    "Westwood's humour comes as a flat, unexplained opinion ('the old goat', 'has style'); new texts explain or set up the joke.",
+    "Reused Westwood frames ('If you want the latest news, go to...') in a new town are a sign of imitation."
+  ]
+}

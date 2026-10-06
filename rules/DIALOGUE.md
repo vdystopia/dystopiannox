@@ -6,6 +6,34 @@ Measured 2026-10-05 on the campaign's own text (the string table `nox.csf`, keys
 decompiled scripts. Never the quest maps (G_*) or multiplayer. Check a map's story with
 `py tests/storylab.py --check mapgen/designs/<map>.py`; the lab that tunes this guide is `review/storylab/`.
 
+## Write from Westwood's own lines: frames
+
+What the story lab (`review/storylab/`, RESULTS.md) found over eleven rounds of blind judging, with fresh judges that
+know Nox: rules alone (i0-i3) and imitation of exemplars (i4-i6) left every packet told apart (100%); any feature a
+brief asks writers to add ("one run-on speech", "an afterthought", "an absurd premise") is written by every writer
+and becomes the template; **only frames moved the judges**. A frame is one of Westwood's own lines, dealt to one line
+of one map and rewritten line for line, so its quirks arrive spread as unevenly as Westwood spread them. Townsfolk,
+guards and shopkeepers written from frames pass alone (i8: 0 of 5 townsfolk caught); whole quests rewritten from a
+dealt Westwood quest brought the long texts below 100% for the first time (i10: 89% side by side, 79% alone).
+
+For every map:
+
+1. `py tests/storylab.py frames --seed <MapName> [--parts "who:part,part; who:part"]` deals the map its frames
+   (`review/out/storylab/frames/<MapName>.md`): a Westwood quest for each quest (offer, reminder, thanks, journal by
+   one speaker) and a Westwood line for every short line (guards, shopkeepers, townsfolk, reminders, refusals,
+   afterwards, captives, journal entries). The default parts are a town with a main quest, three errands, a rescue,
+   two guards, three shops and eight townsfolk.
+2. Rewrite each quest part for part and each line from its frame: the same size (as many sentences), punctuation,
+   opening and ending, register and quirks; change the matter and every name; transpose the trouble too (judges
+   who know Nox recognise a famous quest under new nouns). Never five words of a frame in a row (stock phrases
+   excepted). **Add nothing**: no explanation, logistics, backstory for a reward, closing sentiment, joke, persona,
+   or address word the frame does not have. Where the map needs a fact the frame lacks, put it in place of one of
+   the frame's facts.
+3. Read the exemplars (`review/storylab/exemplars/<situation>.md`) for the voice, and `review/storylab/WRITER.md`
+   for the tells the judges found.
+4. Check by the rules below and `py tests/storylab.py --check mapgen/designs/<map>.py` (it flags phrases every writer
+   reaches for, copied lines, semicolons, first-person journals, and more address words than Westwood uses).
+
 ## The numbers
 
 Words per line by situation (p10 / median / p90), and how the lines sound (share of lines):

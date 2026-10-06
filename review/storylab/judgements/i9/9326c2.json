@@ -1,0 +1,34 @@
+{
+  "packet": "9326c2",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The offer is plain and Nox-like, but the reminder skips the nagging and gives lore about smiths and worthiness at the anvil. The ' -- ' dash and the two-page journal with a 'most likely hidden' hint read like a writer following a template."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The opening wail, the short urgent sentences and the hand-off of both items to the next NPC feel authentic. The journal is a terse one-liner that names the villain, which is Westwood's habit."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The pet frog and the reply to a greedy hero you never hear ('Loads and loads of money?') are Nox's goofy humour, and the '?!' punctuation is too. The journal is plain and functional."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "It has a period-typical run of exclamation marks, archaic flourishes ('indeed!', 'foul demoness'') and a teasing 'sooner than you think'. Long-winded, but it is that era's earnest exposition, and the journal is a bare 'Retrieve the [Thing].'"},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "The reminder 'Cold day, stranger.' has nothing to do with the quest. The thanks contradicts the offer ('I thought I'd hidden it so well' after it was stolen), and the scene-setting about the fire and the sledge is padded."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A plain task with a concrete item hand-off (ruby key, petition, show it to the Master) and the dry 'one little urchin is no threat'. The quest shape is a gate to the next area, as in the campaign."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The startled 'Gahhhhhh!', the elongated 'Oh....' in the reminder and an odd reward (a scroll of everything he knows about bats) all have Westwood's quirky texture. The reminder both nags and gives the location, as Westwood's do."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It is short and plain, close to Nox, but 'No amulet yet. Hurry, please!' is clipped and too neat. The comic opener 'Urchins? In my kitchen?!' feels engineered, and the journal follows the pattern of the other new texts."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "It recycles the 'Gold, and lots of it?' gag and runs a stack of thank-you pages. It also uses ' -- ' and a casual-modern journal ('find it and bring it back!'), and the sentence structure ('As those thieving Imps have run off...') is stiffer than Westwood's."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The self-aware 'Yeah, I know how it sounds' and the sing-song 'Will you, won't you' are a modern comic voice. The offer packs location, guards and a key into one dense line."}
+  ],
+  "tells": [
+    "New texts used ' -- ' dashes inside speech, where Westwood's lines use '!', '?!' or '...'.",
+    "New reminders often failed as reminders: they were ambient flavour lines ('Cold day, stranger.') or lore not tied to the task. Westwood's reminders nag and repeat the goal or the location.",
+    "New texts reused one comic beat (the greedy hero's unheard reply about money) and modern self-aware humour ('I know how it sounds'). Westwood's humour is broader and more naive.",
+    "New offers crammed setting detail (sledges, kilns, piers, burrows by compass direction) into one speech. Westwood's offers state the trouble and the ask with less scene-painting.",
+    "New journal entries carried extra hints or exclamations. Westwood's journals are bare imperatives ('Retrieve the [Thing].').",
+    "New thanks pages sometimes contradicted the setup or ran several pages of gratitude. Westwood's thanks are a single burst plus the reward and a pointer onward."
+  ]
+}

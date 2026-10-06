@@ -1,0 +1,300 @@
+{
+ "iter": "i11",
+ "writer": "Claude Agent SDK subagent, Claude Opus 5.5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Dolgar",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Krell, king of the Trolls, has come up out of the Deep with his brutes and holds the Deep Gate, and the road through the mountain is shut.",
+  "names": {
+   "Dolgar": "place",
+   "Haskel": "person",
+   "Brask": "person",
+   "Durm": "person",
+   "Krell": "person",
+   "Trolls": "group",
+   "Deep Gate": "place",
+   "Old Shaft": "place",
+   "the Deep": "place",
+   "Great Lift": "place",
+   "Brunna": "person",
+   "mushroom farms": "place",
+   "Imps": "group",
+   "Orla": "person",
+   "Ostrel": "person",
+   "Snade the Claim-Jumper": "person",
+   "Pibble": "person",
+   "Kessa": "person",
+   "Ottick": "person",
+   "Brewhouse": "place",
+   "Bodric": "person",
+   "Thrum": "person",
+   "Ozwick": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Durm guards the way down to the Old Shaft, shut by Foreman Brask since Krell's Trolls took the Deep Gate.",
+   "names": {
+    "Durm": "person",
+    "Brask": "person",
+    "Trolls": "group",
+    "the Deep": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Durm",
+     "text": "I'd go see Foreman Brask first...\nunless you'd like to feel his boot."
+    },
+    "again": {
+     "speaker": "Durm",
+     "text": "Foreman Brask, I've brought you another volunteer who hopes to make a name for himself in the Deep!"
+    },
+    "later": {
+     "speaker": "Durm",
+     "text": "Brask sent you down after the Trolls!? You're doomed! Go on, then! I won't miss you!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Brunna, who keeps the mushroom farms, wants the leeches and bats driven out and her trapped pickers saved.",
+   "names": {
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "the Deep": "place",
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Great Lift": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunna",
+     "text": "Where have you been all this time!? Something terrible has happened!\n\nMonstrous leeches and shrieking bats from the Deep have swarmed the mushroom farms. Brave pickers have perished in the service of Dolgar's dinner tables!\n\nPlease, I implore you! Drive the vermin from the farms, save my pickers and I'll pay you generously.\n\nThis key opens the shed where my first picker is hiding. She knows where the rest of them are.\n\nI also have a spell book that may come in handy."
+    },
+    "reminder": {
+     "speaker": "Brunna",
+     "text": "Come back once my pickers are safe and you'll have your pay."
+    },
+    "completion": {
+     "speaker": "Brunna",
+     "text": "You're a hero through and through! I can't thank you enough.\n\nWhile you were down in the farms, chasing off those leeches, Haskel stopped in, asking after you. He'll meet you at the Great Lift -- west of here.\n\nBut first, please take this gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill or charm every beast in the mushroom farms. Save the 4 pickers trapped there."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": ["SpellBook"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Widow Orla's magic lantern was carried off by the Imps to their nest under the old smelter.",
+   "names": {
+    "Orla": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orla",
+     "text": "Oh, please help, kind stranger! The Imps have raided my kitchen and run off with my magic lantern, down into their nest under the old smelter!\n\nWill you bring it back? I'd owe you everything!"
+    },
+    "refusal": {
+     "speaker": "Orla",
+     "text": "Oh dear! Then I'll just sit here in the dark!"
+    },
+    "reminder": {
+     "speaker": "Orla",
+     "text": "Anything else you find in that nest is yours! Just hurry and fetch my lantern!"
+    },
+    "completion": {
+     "speaker": "Orla",
+     "text": "Oh, bless you, you found it! What could I ever give you for such courage?!\n\nWhat's that? Heaps and heaps of gold? Well, if gold is what you're after, please accept this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Orla",
+     "text": "Bless you again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fetch Orla's magic lantern from the Imps' nest in Dolgar."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fetch Orla's magic lantern from the Imps' nest in Dolgar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Dolgar: one fleeing leeches, one guarding his ore shed, one who distrusts surface folk.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Townswoman",
+     "text": "Aaaagh! Leeches! Leeches! Somebody help!"
+    },
+    "rumour2": {
+     "speaker": "Miner",
+     "text": "Hey! Keep out of my ore shed!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Topsider! Bah! I've heard all about how your lot cheat us miners! Leave me be!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodric keeps the tavern, Thrum the forge, Ozwick the potion shop.",
+   "names": {
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person",
+    "the Deep": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodric",
+     "text": "Call yer drink! What'll it be fer you, then?"
+    },
+    "arms": {
+     "speaker": "Thrum",
+     "text": "Strangers don't get served in my forge. But for a few coins more, I'll bend the rules for you."
+    },
+    "magic": {
+     "speaker": "Ozwick",
+     "text": "Welcome, Wanderer! I hope you'll bring me a few bat wings from the Deep. I wouldn't mind grinding some into potions myself!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Ostrel posts a bounty on Snade the Claim-Jumper, dead or alive; Pibble the gem-trader, robbed by Snade's gang, wants them brought in.",
+   "names": {
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Dolgar": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrel",
+     "text": "Good day, lad. I presume you've come about the notice.\n\nThere's a fat purse for Snade the Claim-Jumper -- dead or alive. He and his rotten crew have been robbing our ore carts for some time now.\n\nWatch yourself, you'd hate to be ambushed by those mangy dogs."
+    },
+    "offer_b": {
+     "speaker": "Pibble",
+     "text": "Actually, trade has been pretty poor lately. Last month, those claim-jumpers broke in and cleaned out my stall.\n\nI don't suppose I'll get my gems back, but nothing would make me happier than to see those crooks get what's coming to them.\n\nI'll gladly pay whoever brings them in."
+    },
+    "outcome_a": {
+     "speaker": "Ostrel",
+     "text": "Snade's dead, eh? Well, I'd wanted him alive for the gallows, but I won't be shedding any tears for him!\n\nHere's your bounty -- 150 in gold! Dolgar is a safer town thanks to you!"
+    },
+    "outcome_b": {
+     "speaker": "Pibble",
+     "text": "So the claim-jumpers have got what they deserved! Good work, lad! We'll all rest easier knowing those crooks won't be sticking their greedy fingers in our pockets!\n\nAnd here's your reward... a fine steel shield! Pibble's stall is always open to you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Snade the Claim-Jumper, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Snade's gang of claim-jumpers to justice for Pibble."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Kessa begs the player to bring back her brother Ottick, one of the brewers the Trolls dragged off from the Brewhouse.",
+   "names": {
+    "Kessa": "person",
+    "Ottick": "person",
+    "Trolls": "group",
+    "Brewhouse": "place",
+    "Dolgar": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Kessa",
+     "text": "Please, sir! You must help me! A gang of brutish Trolls just stormed the Brewhouse, the cave under the market and hauled off nearly every brewer! One of them is my dear brother, Ottick!\n\nPlease bring him back and I swear you'll be rewarded!"
+    },
+    "reminder": {
+     "speaker": "Kessa",
+     "text": "Oh, why do you just stand there? My poor brother is in mortal peril!"
+    },
+    "found": {
+     "speaker": "Ottick",
+     "text": "Over here, sir! We're honest brewers, carried off from our vats by those savage Trolls!\n\nCould you please lead us safely back to Dolgar? Do that and you'll surely be rewarded, because the miners would die of thirst without us!"
+    },
+    "following": {
+     "speaker": "Ottick",
+     "text": "Quick, lead us out of these awful tunnels!"
+    },
+    "completion": {
+     "speaker": "Kessa",
+     "text": "Oh, thank you a thousand times! Please accept these as tokens of my gratitude!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Kessa's brother from the Troll tunnels."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A miner points the player to Foreman Brask, who sends him down the Old Shaft to drive Krell and his Trolls from the Deep Gate.",
+   "names": {
+    "Brask": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Dolgar": "place",
+    "Old Shaft": "place",
+    "Krell": "person",
+    "Haskel": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Old miner",
+     "text": "Those Trolls would never have got past the Deep Gate if Foreman Brask had kept a proper watch!"
+    },
+    "opening": {
+     "speaker": "Brask",
+     "text": "So you've made it at last, lad, to Dolgar. Not one of my miners will go a step deeper than this.\n\nFar down the Old Shaft you'll find the Deep Gate, where Krell, king of the Trolls, has made his lair. Haskel told me all about you. I must get back to my men and you must get going!\n\nYou are the last hope we have."
+    },
+    "reminder": {
+     "speaker": "Brask",
+     "text": "Enough idle talk. Get moving!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Krell, king of the Trolls, out of the Deep Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

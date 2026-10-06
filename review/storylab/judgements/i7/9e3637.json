@@ -1,0 +1,34 @@
+{
+  "packet": "9e3637",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Lively opener and a guessing aside feel Nox-like, but the plot is overloaded (garrison business, rival's marching drills, hounds, then a second hook about dead men) and two rewards stacked in one quest; Westwood's quests are plainer and single-minded."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain cause-and-effect setup (urchin aggravates bats), concrete item ('ruby key'), the petition as reward, and the inconsistent capital on 'Urchin' are all Westwood's slightly loose house style."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Exclamatory panic ('worse than the pox!'), the blunt stage direction 'there, through the double doors', and a title-plus-gold reward with 'I insist' read like the campaign."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Comic repetition of 'mate', the bathing joke, and the mild 'damn fine spell' are Westwood's broad, cheeky humour; short exclamatory lines."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Mixed casing of Urchins, the 'Hmmm... Yes.' beat, and the teleporter hand-off to the next chapter are characteristic; the dark twist told only through a found robe is Westwood's economy."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Digits ('3 nights out of 4'), the bounty-season framing, a missing comma in 'Thanks again Wanderer', and 'done the whole shore a great service' sound like a modern writer's flat procedural tone rather than Nox's exclamatory voice."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Boastful captain is a fair archetype, but the sidequest-before-the-real-threat logic is contrived, the fixed '80 gold' is repeated, and the thanks is an oddly practical remark about stings with no exclamation or warmth."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The pet frog, the '?!' punctuation and the 'Loads and loads of money?' gag answering the silent hero are pure Westwood humour."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "Backstory comes in the wrong order (the attack, then who sent him), the reward promise is vague, and 'Yay!' plus 'safe in the fold again' is an off register for a Nox villager."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Tactical setup (staked goat, barring stable doors, waiting for a signal) is more fiddly than any Nox quest, the bow is promised then handed over with a redundant line, and 'let the mules out to graze' is a writerly flourish."}
+  ],
+  "tells": [
+    "Westwood's offers are exclamatory and emotional (panic, outrage, pleading) with a single clear goal; the new texts are calmer, more procedural, and pile on circumstantial setup (seasons, schedules, tactics, rivalries).",
+    "Westwood leans on broad, slightly silly humour (pet frogs, stolen boots while bathing, the hero's implied demand for money); the new texts have little or only dry humour.",
+    "Westwood's thanks lines are short bursts ('My boots!', 'Excellent! You've killed the Urchin.') followed by the reward and often a pointer to the next place; generated thanks drift into flat remarks or redundant restatements of the reward.",
+    "Numerals and exact sums ('3 nights out of 4', '80 gold' twice) and modern-feeling words ('Yay', 'bounty this season') mark the new texts.",
+    "Westwood's quests use concrete gate items and progression rewards (keys, petitions, titles, access, teleporters); the new texts tend to reward with generic bows and gold.",
+    "Overloaded quests (two hooks, two rewards, sidequest-before-the-real-quest logic) read as generated; Westwood keeps one trouble, one fix."
+  ]
+}

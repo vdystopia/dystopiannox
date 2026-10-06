@@ -1,0 +1,646 @@
+{
+ "scenario": "two_givers",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard offers pay for the stolen tithe chest; Sly Wat offers a back way up Crow Hill for a price.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "That tithe chest is a beauty. Red Corwin's lot took it off the cart on market day.\n\nThe town would pay 300 gold or more to see it again. But since you look honest, I'll pay you 100 to fetch it. You want it?"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "You need your own man on Crow Hill to get that chest. Wat knows a back way up, at a fair price."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "There it is! That chest was made for you to find. You can't lose a Reeve's favour with a deed like that."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "You're making a mistake. Go up the hill and see what Halvard pays you. Then come back quick -- Corwin's lot are asking after that chest as well."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the tithe chest back to Reeve Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Sly Wat's back way up Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Master Gruntle sells a blasting lesson for gold, and the odd Wick wants a lever pulled at his signal",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Gruntle",
+     "text": "Are you ready for your Blasting lesson? That will be 100 gold for the powder and fuses."
+    },
+    "offer_b": {
+     "speaker": "Wick",
+     "text": "Hello, stranger. Could you pull that long lever by the door when I wave my lamp? That would help me a great deal.\n\nWait until I'm in place first."
+    },
+    "outcome_a": {
+     "speaker": "Master Gruntle",
+     "text": "Hmmm, a pity. Blasting isn't for everyone."
+    },
+    "outcome_b": {
+     "speaker": "Wick",
+     "text": "It worked! I was sure the cart would stay stuck! Thank you! You must be lucky!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Master Gruntle 100 gold for a blasting lesson."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pull Wick's lever when he waves his lamp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Odo wants the ferry rafts the Mudmen took brought back to the dock; Gubb wants his brother Rudge sneaked out of the stocks past Thoss",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odo",
+     "text": "Hail, brave Adventurer! The Mudmen have snatched our poor ferry rafts during a ruthless raid!\n\nWill you please tow them back to the dock? If you do, a fine reward awaits you, because the folk of Gorrow cannot cross the water without them!"
+    },
+    "offer_b": {
+     "speaker": "Gubb",
+     "text": "Hello, friend. Will you be my partner, slip my brother Rudge out of the stocks and lead him to the east dock?"
+    },
+    "outcome_a": {
+     "speaker": "Odo",
+     "text": "It's done then! The rafts are home again!\n\nWe must be quick, though. The fog is rising!\n\nThe Mudmen took most of our coin. One of those greedy Mudmen left a purse behind. Take it, it's yours!"
+    },
+    "outcome_b": {
+     "speaker": "Gubb",
+     "text": "That's a relief to hear. I hope you spend your share wisely, for I fear Thoss is getting suspicious. I heard his boots squeaking a moment ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring Odo's stolen rafts back to the dock."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sneak Rudge out of the stocks for Gubb."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Sergeant Dorrik demands written clearance to enter the Keep; Zibbet the smith offers to speak for the player if wasps are cleared from his coal store.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dorrik",
+     "text": "I am the Gate Sergeant of Karth Vael. If you wish to enter the Keep you'll need written clearance."
+    },
+    "offer_b": {
+     "speaker": "Zibbet",
+     "text": "Hello. I am Zibbet, Master Smith of Karth Vael. The Keep is strict and Sergeant Dorrik is the worst of it.\n\nHere's the deal, do me a favor and I'll have a word with him for you. Interested?"
+    },
+    "outcome_a": {
+     "speaker": "Zibbet",
+     "text": "Good! My forge sits at the bottom of the Keep stair. Unfortunately, a swarm of giant wasps has moved into the coal store next door. They have stung my apprentices and now nobody will fetch the coal.\n\nGo kill the wasps and I'll speak to Sergeant Dorrik once you're back.\n\nHere, take this iron key, it will open the coal store."
+    },
+    "outcome_b": {
+     "speaker": "Zibbet",
+     "text": "Pity, I doubt anyone else will vouch for you.\n\nShould you change your mind, I'll be at my forge below the Keep stair."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find someone to speak for you with Sergeant Dorrik."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Kill the wasps in Zibbet's coal store."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Brisa sells her boat and net shed before leaving for her sister's; Nubb pitches his boat and pond.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brisa",
+     "text": "Actually, business has fallen off quite a bit, with the drowned dead about. I'm leaving for my sister's, so you can have my boat and net shed for 100 in gold!"
+    },
+    "offer_b": {
+     "speaker": "Nubb",
+     "text": "You ready to buy up my boat and pond? Only 200 in gold for the both of them!"
+    },
+    "outcome_a": {
+     "speaker": "Brisa",
+     "text": "Excellent! You got yourself a real bargain, lad! I hope you live through all this. Now if you'll excuse me, I have a long road ahead. Good luck and keep away from Zorvane if you want to live!"
+    },
+    "outcome_b": {
+     "speaker": "Nubb",
+     "text": "Ah, that's all right, lad. I'm sure someone else will want my boat and pond. If you change your mind, I'll be around!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy Brisa's boat and net shed."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Nubb's boat and pond."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Hendry offers a bounty on Zigg Quickquill, dead or alive, and Zigg offers to surrender; Gorvo pays for the capture, Hendry for the kill.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hendry",
+     "text": "Good day, young sir. I gather you have come about the bounty.\n\nThere's a fat bounty on Zigg Quickquill -- dead or alive. He and his sorry gang of dropouts have been raiding our fair college's libraries for weeks.\n\nWatch yourself, you don't want to be caught napping by those rowdy scoundrels."
+    },
+    "offer_b": {
+     "speaker": "Zigg Quickquill",
+     "text": "I give up! Don't zap me, please! I'll come along without a fuss!"
+    },
+    "outcome_a": {
+     "speaker": "Gorvo",
+     "text": "Hold it! The gardener heard odd noises coming from here, so I came to look.\n\nYou have caught the notorious Zigg Quickquill all by yourself! Very impressive! You have my deepest respect! Quickquill's gang has plagued Zorreth for weeks! I'll handle him from here. We will all sleep easier with this wretched rascal in the cellar!\n\nAnd now for your reward -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Hendry",
+     "text": "So you killed Zigg, eh? Well, I wanted him brought in alive, but I won't be losing any sleep over it!\n\nTake your reward -- 100 in gold! Thanks for cleaning up our streets!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Zigg Quickquill, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Zigg Quickquill in to the town guard."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: Tam wants his goat Gruff back from the Ogres of Hald Rock raid; Pell, a smuggler's runner, lost his boss's crate to the Urchins",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tam",
+     "text": "Sir! Help me please! A mob of foul Ogres just raided Hald Rock, the camp north of here and carried off almost all of the goats! One of them is my favorite billy, Gruff!\n\nPlease bring him back and I promise you a reward!"
+    },
+    "offer_b": {
+     "speaker": "Pell",
+     "text": "The Urchins just made off with my boss's precious crate! If I come back without it, he'll skin me. He's due any minute!\n\nPlease, kind sir, you have to help me! I think the Urchins went toward the lower gate.\n\nCould you... would you fetch it for us?"
+    },
+    "outcome_a": {
+     "speaker": "Tam",
+     "text": "Thank you so much, kind stranger! Take these as tokens of my appreciation!"
+    },
+    "outcome_b": {
+     "speaker": "Pell",
+     "text": "Oh, thank goodness! Please take this as a token of our appreciation!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue Tam's goat Gruff from the Ogre pens."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Pell's crate back from the Urchins by the lower gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Rusk Tinker is locked in the stockade and offers a vault key. Hilde, who runs a foundry, wants him back at the molds and offers a steel shield.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Rusk Tinker",
+     "text": "Hi there. Name's Rusk Tinker. Think you could spring me from this cell? If you do, I'll let you into the Crucible Vault."
+    },
+    "offer_b": {
+     "speaker": "Hilde",
+     "text": "Oh, bah! Rusk's in the stockade again?! Sometimes I swear he gets locked up to dodge the night shift. Running a foundry is no easy job, you know. We've got a big pour on today and we really need Rusk at the molds.\n\nTell you what... Spring Rusk from the stockade and you get a steel shield off today's pour!"
+    },
+    "outcome_a": {
+     "speaker": "Rusk Tinker",
+     "text": "Thanks for getting me out. Take this gold as a token of my thanks. Ah, yes! And here's a key to the Crucible Vault. Watch yourself when you go in. The furnace wardens won't take well to the sight of a stranger down there. Thanks again!"
+    },
+    "outcome_b": {
+     "speaker": "Hilde",
+     "text": "Rusk! What were you thinking, getting yourself thrown in the stockade again? Thanks for springing him, stranger! Here's the shield I promised. Good luck with whatever it is you're doing!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get Rusk Tinker out of the stockade and win his key to the Crucible Vault."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Rusk Tinker for Hilde and collect a steel shield."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Tarn, the mule race marshal, takes entries for a fee. Odo Grubb sells a mule to anyone going in the race.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tarn",
+     "text": "Are you entering the mule race? If so, you'll want your own mule and an entry fee of 30 gold pieces. We provide the saddle.\n\nWell? Shall I put your name down?"
+    },
+    "offer_b": {
+     "speaker": "Odo Grubb",
+     "text": "I guess you're after the mule race, eh. I've got a real fine mule for sale.\n\nSeeing as I like your face, I'll let her go for 90 gold. Are you interested?"
+    },
+    "outcome_a": {
+     "speaker": "Tarn",
+     "text": "Alright. The fee is paid. Go on to the start. The marshal will explain how it works. Good luck."
+    },
+    "outcome_b": {
+     "speaker": "Odo Grubb",
+     "text": "There ya go! That mule was made for you. You can't lose the race on a mule like that."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Tarn the entry fee for the mule race."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the mule from Odo Grubb."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Warden Orsk puts a bounty on Tusker, a boar ruining the fields. Mugg of the Plow and Pitcher wants bats cleared out of his cellar.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Orsk",
+     "text": "Good day, young sir. I suppose you have come about the bounty.\n\nThere's a fat purse waiting for Tusker -- dead or alive. He and his sorry herd of boars have been ruining the fields of our fair town for weeks.\n\nTake care, one charge from those savage swine will break your legs."
+    },
+    "offer_b": {
+     "speaker": "Mugg",
+     "text": "Actually, trade has been rather poor lately. Two weeks ago, bats took over the cellar and fouled the barrels.\n\nI doubt I'll save a drop of that ale, but I'd be delighted to see those rotten pests cleared out.\n\nI'll gladly pay whoever clears them out."
+    },
+    "outcome_a": {
+     "speaker": "Warden Orsk",
+     "text": "You finished Tusker, eh? Well, I had hoped to see him hauled in alive, but I'll lose no sleep over a pig's soul!\n\nHere's your reward -- 150 in gold! Thanks for keeping Tosk safe!"
+    },
+    "outcome_b": {
+     "speaker": "Mugg",
+     "text": "So the bats are gone! Well done! We shall all drink easier now that those pests aren't fouling the barrels!\n\nAnd here's your reward... a Red Potion! You're welcome at the Plow and Pitcher anytime, young sir!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Tusker the boar for Warden Orsk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the bats out of Mugg's cellar at the Plow and Pitcher."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}
