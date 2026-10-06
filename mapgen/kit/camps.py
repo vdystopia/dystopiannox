@@ -180,7 +180,7 @@ def _clearing(probe, n=24):
 # within two cells of a wall (the forest's, the cliff's); nearest-piece gap 33 px (tight little clusters, open ground
 # between them); a cauldron in one camp, no straw dummies; the men 47-56 px from the fire at most two (War05A's
 # grunts), the rest 120-270 px out (Con03A's swordsmen 194-273, its archer 226).
-CAMP_R = dict(seat=62, sit=40, cook=78, cot=146, tent=200, store=200, arms=196, lookout=214)
+CAMP_R = dict(seat=62, sit=40, cook=78, cot=146, tent=200, store=200, arms=196, lookout=190)
 PAIR_GAP = 44          # px between the two bedrolls of a pair: side by side with a gap, not a block (SP.gap's 35)
 SLOT = 80              # px between the sleeping row's slots along the back wall (a tent, a pair of bedrolls)
 
@@ -313,10 +313,12 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
     leader, tent_spots, spare, torch_by = None, [], 0, None
     pos = -(width - 1) / 2
     ends = []
-    for kind, n, w in slots:
-        a = b + (pos + (w - 1) / 2) * step
-        pos += w
-        (x, y), _ = _snug(sc, *sc.p(R_back, a), math.cos(a), math.sin(a), want=44, reach=56)
+    gaps_ = [rng.uniform(0.85, 1.3) for _ in slots]                # never an even rhythm: each gap its own
+    scale_ = width / (sum(g * w for g, (_, _, w) in zip(gaps_, slots)) or 1)      # (no sleepers: no row)
+    for (kind, n, w), g in zip(slots, gaps_):
+        a = b + (pos + (w * g * scale_ - 1) / 2) * step
+        pos += w * g * scale_
+        (x, y), _ = _snug(sc, *sc.p(R_back + rng.uniform(-14, 10), a), math.cos(a), math.sin(a), want=44, reach=56)
         ca = math.atan2(y - fy, x - fx)
         if kind == "awning":
             way = "DN" if math.cos(a) < 0 else "UP"
@@ -439,9 +441,11 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
 
     # ---- the take: the chest before the leader's tent, the stolen goods beside it --------------------------------------
     chest = None
+    # (the take keeps off the fire's bench: at the sleeping row's end, by the leader's bed)
     ca = b
-    for r, d in ((R["tent"] - 70, 0.0), (R["tent"] - 70, 0.25), (R["tent"] - 70, -0.25), (R["tent"] - 90, 0.4),
-                 (R["tent"] - 90, -0.4), (R["cot"] - 30, 0.6), (R["cot"] - 30, -0.6)):
+    e_ = (width / 2 + 0.4) * step
+    for r, d in ((R["tent"] - 46, e_), (R["tent"] - 46, -e_), (R["tent"] - 60, e_ + 0.15), (R["tent"] - 60, -e_ - 0.15),
+                 (R["tent"] - 70, 0.4), (R["tent"] - 70, -0.4), (R["cot"] - 30, 0.6), (R["cot"] - 30, -0.6)):
         chest = sc.put_px("Chest3", *sc.p(r, ca + d), items=loot)
         if chest:
             if n_t >= 3 and sc.put_px("TraderAppleCrate", *sc.p(r + 4, ca + d + math.copysign(0.2, d or 1))):

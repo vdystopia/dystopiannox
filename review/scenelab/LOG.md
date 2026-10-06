@@ -44,9 +44,15 @@ and spread their beds one by one." One camp backed its cart into the pond.
 | r2-backed | `camp_site` prefers a site whose nearest wall is just beyond the camp (a camp backs onto the wood's edge or cliff); the back faces a wall 150-300 px off; typed pieces may stand snug to a wall by `spacing.off_walls` (they had kept a whole cell off); a rock outcrop it shelters by; the wood may come up to the beds (`_hold_ground` 8.5 -> 6 squares) | 0.98 | | | 0 |
 | r3-wallrow | the sleeping row runs along the back wall: tent, its bedrolls beside it, tent...; a lone sleeper's bedroll joins a pair (never alone, GW-4), pairs laid whole or not at all; one kind of barrel, crate, rack and boulder to a camp; the lookout nearer, mostly without stool and quiver; awning parts count as one kind in the lab (both sides) | 0.97-1.00 | 100% | 5.4 / 6.6 | 0 |
 
+| r4-irregular | the sleeping row's gaps uneven (0.85-1.3 of a slot, a little in and out from the wall); the take (chest) at the row's end by the leader's bed, off the fire's bench; the lookout nearer (190 px); a camp with no sleepers lays no row (Greywatch's gully camp) | 0.98 | 100% | 6.0 / 6.8 | 0 |
+
 r3 judge: "Much better: clear zones and the user's structure. Still given away by the sleeping row laid tent-pair-tent-pair
 in a perfectly even line, the bench and chest crowding the fire's back, and a lookout set far off across empty grass."
 The classifier's own floor (Westwood against Westwood, random halves) is 0.56 +/- 0.2 for camps.
+r4 judge: "The generated camps now have Westwood's bones (things against the edge, beds in ones and twos, a sparse
+hearth); still given away by an open forest glade with empty grass in the middle, more people and more kinds of thing
+than Westwood's sparse hideouts." Westwood's camp evidence mixes cave hideouts without fires (Wiz03a, Wiz03b) and town
+fire rings: an AUC under 0.6 would need the camp to be one of those, not the camp the user asked for.
 
 Westwood's evidence was deduplicated after graveyard r3 (the same place in two layout groups, Galava's yard in Con07B
 and War07A, counted once): bandit camps 20, graveyards 16 -> 13. Numbers after that are on the deduplicated set.
