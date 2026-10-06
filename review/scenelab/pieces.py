@@ -13,7 +13,7 @@ families, and the scene itself: the pieces grown out from its anchor.
 import math, re
 
 NATURE = re.compile(r"^(Tree|Coni|Decid|Aspen|Plant(?!Barren)|Bush|Flower|Foliage|Grass|Weed|Fern|PlantFern|Mushroom|"
-                    r"Reed|Cattail|Rush|Lily|Ripple|WaterRipples|Puddle|Vine|Ivy|Moss|Hedge)", re.I)
+                    r"Reed|Cattail|Rush|Lily|Ripple|WaterRipples|WaterBubbles|Bubble|Puddle|Vine|Ivy|Moss|Hedge)", re.I)
 TRIVIAL = re.compile(r"^(ColorLight|Amb|Invisible|PlayerStart|CaveRocksPebbles|CaveRocksTiny|Extent|Waypoint|"
                      r"Polygon|.*Shadow|.*ShadowDN\d|.*ShadowUP\d|SmallFlame|MediumFlame|LargeFlame|Flame$|"
                      r"BlackPowder|Arrow|Fist|Glyph|Rune|Spell|Ability|.*Potion|Gold|.*Key$|.*Wand$|Book|Scroll|"

@@ -398,7 +398,10 @@ class Waterworks:
                 st_ = KITS[kit_]["steps"]
                 n_ = 1 if kit_ == "DockUp" else length
                 c_ = self._shore_start(body, kit_, st_["first"] + st_["mid"] * (n_ - 1) + st_["last"], beyond, near)
-                if c_: opts.append((((c_[0] - near[0]) ** 2 + (c_[1] - near[1]) ** 2) if near else 0, d_, c_))
+                # the long DockDown run is Westwood's usual dock (Con05A's three; Con03A's DockUp the one other):
+                # DockUp only when it lands much nearer the road
+                pen = 0 if kit_ == "DockDown" else 24 ** 2
+                if c_: opts.append(((((c_[0] - near[0]) ** 2 + (c_[1] - near[1]) ** 2) if near else 0) + pen, d_, c_))
             if not opts: return None
             _, direction, at = min(opts)
         kit = "DockDown" if direction == "down" else "DockUp"
@@ -432,11 +435,56 @@ class Waterworks:
                 p = pos - sign * (2.0 + 1.6 * i)
                 u, v = (p, lane + k["piece_side"] + 0.4) if kit == "DockDown" else (lane + k["piece_side"] + 0.4, p)
                 self.spec.obj_px(self.rng.choice(("Barrel", "Barrel2")), *px_of_uv(u, v))
+        self._dock_gear(kit, pts)
         tip = int(round(pos / 2.0)) * 2 + 4 * sign      # wall closing the end of the dock
         cx, cy = uv_to_xy(tip - 2, lane) if kit == "DockDown" else uv_to_xy(lane - 2, tip)
         if cx == int(cx):
             self.kit_walls.add((int(cx), int(cy)))
         return dict(kind=kit, start=start, pieces=pieces, lane=lane)
+
+    def _dock_gear(self, kit, pts):
+        """The fishers' gear on the bank by a dock's root (the scene lab, review/scenelab: Westwood's docks on Con03A and
+        Con05A keep barrels, a crate or a water barrel and a rock or two on the shore beside the dock, a fifth of their
+        pieces each): two or three barrels touching on one side of the landing, a crate or a rock on the other, on land,
+        off the dock's lane. Its own generator (crc32 of the map and the dock), so nothing after it shifts."""
+        import random as _random, zlib
+        from kit import spacing as SP
+        (x0, y0), (x1, y1) = pts[0], pts[-1]
+        L = math.hypot(x1 - x0, y1 - y0) or 1
+        ux, uy = (x1 - x0) / L, (y1 - y0) / L               # out along the dock
+        sx, sy = -uy, ux                                    # across it
+        rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:dock:{int(x0)},{int(y0)}".encode()))
+        lane = {c for ln in self.kit_lanes for c in ln}
+        placed = []
+
+        def land_at(x, y):
+            c = tile_at_uv((x + y) / CELL, (x - y) / CELL)
+            cell = (int(x // CELL), int(y // CELL))
+            return self._land(c) and c not in lane and c not in self.no_walls and                 not any((cell[0] + a, cell[1] + b) in self.spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1))
+
+        def put(t, x, y):
+            if not land_at(x, y) or not SP.spaced(t, x, y, placed): return False
+            self.spec.obj_px(t, x, y); placed.append((t, x, y)); return True
+        side = rng.choice((1, -1))
+        barrel = rng.choice(("Barrel", "Barrel2"))
+        n_b = rng.randint(2, 3)
+        got = 0
+        for sd in (side, -side):                            # the bank on one side of the landing, else the other
+            for back in (34, 50, 66, 84):                   # a little back from the water
+                bx, by = x0 - ux * back, y0 - uy * back
+                for k, (along, out) in enumerate(((0, 0), (0, 27), (-23, 13))[:n_b]):
+                    t = barrel if k < 2 else "WaterBarrel"
+                    px_, py_ = bx + sx * sd * (52 + out) - ux * along, by + sy * sd * (52 + out) - uy * along
+                    got += put(t, px_, py_)
+                if got: break
+            if got:
+                side = sd; break
+        for back in (30, 46, 62):
+            bx, by = x0 - ux * back, y0 - uy * back
+            t = rng.choice(("Crate1", "CaveRocksLarge", "CaveRocksMedium"))
+            if put(t, bx - sx * side * 54, by - sy * side * 54):
+                if rng.random() < 0.5: put("CaveRocksSmall", bx - sx * side * 74 - ux * 12, by - sy * side * 74 - uy * 12)
+                break
 
     def _shore_start(self, body, kit, reach, beyond=0, near=None):
         """A land tile on the shore from which a dock can run `reach` uv units over water, with
@@ -463,13 +511,15 @@ class Waterworks:
                 continue
             # square to its own stretch of shore: the way out over the water from the bank (the mean direction to the
             # water round the landing) within 30 degrees of the dock's run
+            # (the checker, checks.dock_reach, reads the shore's normal over ten cells round the root and allows 35
+            # degrees: the kit reads it over the same ring and keeps within 20, so a DockUp on a curved shore passes)
             vx = vy = 0.0
-            for a_ in range(-6, 7):
-                for b_ in range(-6, 7):
-                    if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 36 and wet((land[0] + a_, land[1] + b_)):
+            for a_ in range(-10, 11):
+                for b_ in range(-10, 11):
+                    if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 100 and wet((land[0] + a_, land[1] + b_)):
                         vx += a_; vy += b_
             nv = math.hypot(vx, vy)
-            if not nv or (vx * step[0] + vy * step[1]) / (nv * math.hypot(*step)) < math.cos(math.radians(30)):
+            if not nv or (vx * step[0] + vy * step[1]) / (nv * math.hypot(*step)) < math.cos(math.radians(20)):
                 continue
             # its far end in open water: water three tiles round the tip every way
             tip = path[min(len(path) - 1, int(reach / 2) + 1)]

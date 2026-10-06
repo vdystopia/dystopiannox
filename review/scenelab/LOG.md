@@ -84,3 +84,18 @@ its guesses (recorded unchanged). r3 judge: "Kitchen gardens beside houses now r
 fence is the clearest giveaway, and the gardens are still smaller and barer round the edges than Westwood's." The
 town field (`yards` "field", Log fence) is outside this round. Ambermere, Starwell, Harrowby, Greywatch, Thornwick: 0
 errors.
+
+## pond_dock (mapgen/kit/water.py `Waterworks.dock`, `_shore_start`, `_dock_gear`)
+
+Westwood's docks (Con05A's three DockDown runs, Con03A's DockUp; War03a's DockUp is three pieces too): out into a big
+lake, barrels, a crate, rocks on the bank by the root (store 0.22, rock 0.14 of the pieces).
+
+| Round | What changed | AUC | Blind acc. | Blind gen / WW | Hard |
+|---|---|---|---|---|---|
+| baseline | | 0.68 | (not judged) | | 0 |
+| r1-gear | the fishers' gear on the bank by the root (`_dock_gear`, its own generator): barrels touching on one side, a crate or a rock on the other; the lab's ponds at a lake's scale (6-8 tiles) | 0.80 | | | 2 (AM-2: DockUp 35-40 degrees off square) |
+| r2-square | the shore's normal read over the checker's ring (ten cells) and held within 20 degrees; `dock("best")` prefers the long DockDown run (Westwood's usual dock) unless DockUp lands much nearer the road | 0.76 | 100% | 6.0 / 6.75 | 0 |
+| r3-bank | the gear tries the other bank when one side has no room; water bubbles count as nature in the lab (both sides) | 0.77 | 100% | 6.6 / 6.75 | 0 |
+
+r3: generated mean within 0.5 of Westwood's. The judge knows Westwood's four dock scenes by heart, so blind accuracy is
+not meaningful for this type. Ambermere (dock yes) and DysVale build with 0 errors, warnings unchanged.

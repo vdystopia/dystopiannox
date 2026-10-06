@@ -174,7 +174,7 @@ def _garden_build(ctx):
 
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
-POND_R = {"small": 5.0, "typical": 6.0, "large": 7.0}
+POND_R = {"small": 6.0, "typical": 7.0, "large": 8.0}       # tiles: a lake a dock reaches out into (Con05A)
 
 
 def _pond_plan(ctx):
