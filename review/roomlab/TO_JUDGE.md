@@ -16,3 +16,4 @@ One line per round worth judging: type, iteration, the blind folder. The key sta
 - mausoleum, r6 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\mausoleum\r6\blind\
 - laboratory, r17 (answers the judge of r11; r13's island had been one piece), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\laboratory\r17\blind\
 - shop, r11 (answers the judge of r8), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\shop\r11\blind\
+- library, c1 (r3 recipe; best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\library\c1\blind\

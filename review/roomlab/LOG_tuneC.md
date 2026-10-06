@@ -366,3 +366,8 @@ Storeroom r19-r21: dropping a heap that stayed one piece and capping great casks
 The AUC counts the island against the laboratory (Westwood's measured middles are bare), the judges for it ("Westwood's
 labs fill the room as one working space"); r16 is queued for the judge.
 | r17 | more fill for the checker's sparse rule (bookcases from 38 tiles, gargoyles from 62, a chest): sparse rooms 5 -> 3 | 0.983 | 0.943 | 6 (3 sparse, 3 door shells) |
+
+| Type | Round | Change | AUC (pool) | Cross | Hard rooms |
+|---|---|---|---|---|---|
+| herbalist | r3 | more bookcases and a sitting group for the sparse rule: no effect (the back walls hold the shelves and the desk; a door on each left the fill nowhere) | 0.997 | 0.923 | 6 |
+| herbalist | r4 | the stores in a heap or two (`store_heaps`: crates or barrels, an apple crate) | 1.000 | 0.899 | 5 (4 sparse) |

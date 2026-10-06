@@ -137,13 +137,17 @@ ROOMS = {
                       # potion shelves (a pair), a few bookcases, glowing jars, a square table with chairs, a crate or an
                       # apple crate; no plants, no hangings, no sacks along the walls; coverage 0.07-0.12
                       core={"shelves": (3, 10), "stove": (1, 1), "table": (1, 1), "chair": (1, 3), "desk": (1, 1)},
-                      optional={"lab": (0.8, 2), "storage": (0.8, 2)},
+                      optional={"lab": (0.8, 2), "storage": (0.9, 8)},
                       types={"lab": r"^FairyJar$", "shelves": r"^PotionShelves\d$|^Bookcase\d(HalfFull)?$", "stove": r"^Cauldron",
-                             "storage": r"^DarkCrate[12]$|^TraderAppleCrate$|^Barrel$", "table": r"^SquareTable[12]$|^Table[1-4]$"},
+                             "storage": r"^DarkCrate[12]$|^Crate[12]$|^TraderAppleCrate$|^Barrel2?$", "table": r"^SquareTable[12]$|^Table[1-4]$"},
                       prefer={"shelves": {"PotionShelves1": 1, "PotionShelves2": 1, "PotionShelves3": 1, "PotionShelves4": 1,
                                           "Bookcase1": 1, "Bookcase2": 1, "Bookcase3": 1, "Bookcase4": 1},
                               "stove": {"CauldronAnimated": 1}, "table": {"SquareTable1": 1, "Table4": 1}},
                       top_up=(), decor_max=0, lined_goal=0.2,
+                      # herbs and stores in a heap or two (store_heaps): the back walls hold the shelves and the desk, and
+                      # a door on each of them had left the fill nowhere to go (the checker's sparse rule)
+                      store=dict(lead={"crates": 1, "barrels": 1}, second={"apples": 1, "barrels": 1}, second_p=0.8,
+                                 accent={}, accent_p=0.0),
                       # potion shelves stand in a pair, never a wall of them (2026-10-05 Starwell playtest; kit/furnish.py
                       # PAIRED_PIECES): the pair first, then the desk among a few books
                       compose=[dict(fam="shelves", slot="line", n=2, only=r"^PotionShelves"),
@@ -154,11 +158,14 @@ ROOMS = {
                                dict(fam="lab", slot="wall", at="corner", clear=0.6, n=1)],
                       # (Westwood's herbalists stand their pieces off the walls: wall_gap)
                       wall_gap={"desk": 0.3, "stove": 0.3, "storage": 0.3, "lab": 0.3},
-                      fill=[dict(fam="storage", slot="wall", at="corner", clear=0.6, max=3),
+                      fill=[dict(fam="storage", slot="heaps", max=2),
                             dict(fam="lab", slot="wall", at="any", clear=0.6, max=2),
                             dict(fam="stove", slot="wall", at="any", clear=1.2, max=1, missing=True),
                             dict(fam="table", slot="group", group="sitting", max=1, min_area=170),
-                            dict(fam="shelves", slot="line", other=True, n=2, max=4, only=r"^Bookcase", min_area=100)]),
+                            dict(fam="shelves", slot="line", other=True, n=2, max=4, only=r"^Bookcase", min_area=100),
+                            # (the checker's sparse rule: Westwood's labs' median 0.097; the fill had run out at 0.06-0.08)
+                            dict(fam="shelves", slot="line", n=2, max=4, only=r"^Bookcase"),
+                            dict(fam="table", slot="group", group="sitting", max=1, min_area=110)]),
     "ore_store": dict(purpose="mana ore and the miners' gear: loaded carts with room to move them, racks of gear in rows "
                               "down the middle, trader shelves of tools and helmets along a back wall, crates and barrels of "
                               "tools along the front walls",
