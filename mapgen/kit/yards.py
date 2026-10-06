@@ -416,8 +416,11 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
     tx_, ty_ = end_
     # (the blind judge, 2026-10-05: "the bare-earth walk barely shows on sparse grass"; War03c paves its walk)
     walk_mat = "RoughCobble"          # (bare earth did not show on the sparse grass in the lab's pictures)
+    # (not every yard: the judge, 2026-10-06, read "a cobbled path straight from the gate down the middle, often ending
+    # at a small crypt" in every one; War03c paves one, Westwood's others have none)
+    walk_on = rng.random() < (0.6 if steps else 0.3)
     n_ = int(math.hypot(tx_ - gm[0], ty_ - gm[1]) / 0.4) + 1
-    for k_ in range(n_ + 1):
+    for k_ in range(n_ + 1 if walk_on else 0):
         si_, sj_ = gm[0] + (tx_ - gm[0]) * k_ / n_, gm[1] + (ty_ - gm[1]) * k_ / n_
         for o_ in (-0.5, 0.5):
             sqr = (int(math.floor(si_ + (o_ if abs(ey_) >= abs(ex_) else 0))),
@@ -460,13 +463,15 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
         # the gravedigger by his grave, facing it (the design stands him: Yard.people)
         mx_, my_ = square_px(oi - 0.9 * dx, oj + 0.2 * dy)
         y.people.append((("Con03A", "Kenneth"), (mx_, my_), square_px(oi, oj)))      # (donor map, script name)
-    # a stone pillar either side of the gate, just inside it
+    # a stone pillar either side of the gate, outside it, as gateposts (War03b, War03c, Con09b: Monument1 in pairs; the
+    # judge, 2026-10-06: "monument pillars inside the yard instead of a gatepost pair")
     side = (-(cj - gm[1]), ci - gm[0])
     L = math.hypot(*side) or 1
     inw = ((ci - gm[0]) / (math.hypot(ci - gm[0], cj - gm[1]) or 1), (cj - gm[1]) / (math.hypot(ci - gm[0], cj - gm[1]) or 1))
-    for d in ((1.5, -1.5) if rng.random() < 0.2 else (rng.choice((1.5, -1.5)),) if rng.random() < 0.3 else ()):
-        si, sj = gm[0] + side[0] / L * d + inw[0] * 0.7, gm[1] + side[1] / L * d + inw[1] * 0.7
-        if free_spot(si, sj, pad=0.5, lane_w=0.9, t="Monument1"): put("Monument1", si, sj, room=0.8)
+    rng.random(); rng.random()                                          # (the draws the old choice made)
+    for d in ((1.5, -1.5) if rng.random() < 0.35 else ()):
+        si, sj = gm[0] + side[0] / L * d - inw[0] * 0.8, gm[1] + side[1] / L * d - inw[1] * 0.8
+        spec.obj_px("Monument1", *square_px(si, sj))
     # the graves: rows across the plot on the grid's lines, 2.7-2.8 squares (90 px) apart (Westwood: nearest 88-97 px,
     # the steps along the screen's diagonals), a little out of true; a headstone at the head of each plot (a tile (a, b)
     # is drawn over squares a..a+1 across i, its stone at its upper-left edge, (a + 0.1, b - 0.5))
@@ -489,7 +494,7 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
                   (rng.uniform(2.3, 2.6) if fam_left > 0 else rng.uniform(2.9, 3.8))
             if rng.random() < 0.12: continue                                 # a plot not yet used
             lw = 0.5                                                         # (the walk is the way through)
-            if not (free_spot(hi, hj, pad=1.1 if big else 0.85, lane_w=lw, t="Tombstone1") and
+            if not (free_spot(hi, hj, pad=1.4 if big else 1.1, lane_w=lw, t="Tombstone1") and
                     free_spot(hi + 0.45, hj, pad=0.9 if big else 0.7, lane_w=lw)):
                 continue
             put(_pick(rng, TOMBSTONES), hi, hj, room=1.2)
@@ -500,9 +505,8 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
                 a_ = int(math.floor(hi - 0.1)), int(math.floor(hj + 0.5))
                 for sq_ in (a_, (a_[0] + 1, a_[1])):
                     if sq_ in y.plot: spec.floor[square_tile(*sq_)] = "DirtDark2"
-                if rng.random() < 0.5:
-                    put(rng.choice(("FlowersWhiteSparse", "FlowersYellowSparse", "FlowersPurpleSparse")), hi + 0.65, hj,
-                        room=0.6)
+                if rng.random() < 0.5:                      # (no flowers: Westwood's graveyards have none)
+                    rng.choice((0, 1, 2))
             reserve(hi + 0.45, hj, 0.8)                               # the plot stays clear
         r_ += rng.uniform(2.7, 3.1) if big else rng.uniform(2.4, 2.7)
         k += 1

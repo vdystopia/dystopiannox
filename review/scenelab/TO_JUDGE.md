@@ -7,17 +7,20 @@ then `py review/scenelab/blind.py score <scene> <iter>`. Paths are under this wo
 
 | Scene | Iteration | Sheet | Previous independent verdict |
 |---|---|---|---|
-| bandit_camp | r5-small | `bandit_camp/r5-small/blind/` | r5-edge: 10/10, 4.6 / 6.2 |
-| graveyard | r5-small | `graveyard/r5-small/blind/` | r8-own: 10/10, 5.6 / 7.4 |
-| garden | r3-far | `garden/r3-far/blind/` | r6-town: 10/10, 5.4 / 7.8 |
-| pond_dock | r4-fisher | `pond_dock/r4-fisher/blind/` | r4-shore: 9/9, 5.6 / 7.8 |
-| market_stall | r5-under | `market_stall/r5-under/blind/` | (first sheet; Westwood has 3 stalls) |
-| urchin_camp | r3-close | `urchin_camp/r3-close/blind/` | (first sheet) |
-| shrine | r3-lights | `shrine/r3-lights/blind/` | (first sheet) |
-| ogre_camp | r2-hut | `ogre_camp/r2-hut/blind/` | (first sheet; Westwood has 5 ogre fires) |
-| well | r1-alone | `well/r1-alone/blind/` | (first sheet; Westwood has 4 wells) |
+| bandit_camp | r8-upper | `bandit_camp/r8-upper/blind/` | r5-small (round 4, critiques in LOG round 5) |
+| graveyard | r6-loose | `graveyard/r6-loose/blind/` | r5-small (round 4) |
+| garden | r4-knot | `garden/r4-knot/blind/` | r3-far (round 4) |
+| pond_dock | r5-knots | `pond_dock/r5-knots/blind/` | r4-fisher (round 4) |
+| market_stall | r6-trades | `market_stall/r6-trades/blind/` | r5-under: 3.6 / 8.0 |
+| urchin_camp | r5-knots | `urchin_camp/r5-knots/blind/` | r3-close (round 4) |
+| shrine | r4-chapel | `shrine/r4-chapel/blind/` | r3-lights (round 4) |
+| ogre_camp | r4-fewbones | `ogre_camp/r4-fewbones/blind/` | r2-hut (round 4) |
+| jail | r3-torch | `jail/r3-torch/blind/` | (first sheet) |
+| well | r2-road | `well/r2-road/blind/` | r1-alone (round 4: "the restraint is right") |
 
 Every sheet was rendered after the fairness merge (no creatures, the ground outside the scene black); judges read
 `review/scenelab/judging/`, not the briefs. Half the bandit camps are hideouts in a rock pocket, eight of ten urchin
 camps are dens in the earth, every ogre camp stands in a swamp pocket; the town scenes stand in the hamlet (README
 "The setting").
+
+Round 5 (after the judge's round-4 critiques): the sheets above replace round 4's; what changed is in LOG.md "Round 5".

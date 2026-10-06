@@ -23,3 +23,10 @@ pieces, median 13. The ogres sleep in their huts (OgreBed, bearskins, straw insi
 
 Five Westwood scenes: the classifier separates everything (AUC 1.0) on where the fire lies (Westwood's by a path) and
 the open ground; by eye the swamp pocket, the pit and its benches read as Con05B's.
+
+## Round 5 (2026-10-06)
+
+The judge: "one fire layout stamped every time; the torch pole a step from the fire ring or alone; the bearskin behind
+a bench; a chest (Westwood's ogre camps never have one)". The meat one of four sets; one to three seats from six places,
+each turned a little; bones none in two camps of five, else two to six mostly to one side; no bearskin by the fire; the
+chest 25%; without the gate the torch pole stands by the store at the camp's edge.

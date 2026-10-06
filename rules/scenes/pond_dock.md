@@ -79,3 +79,8 @@ Con03A's dock a few steps from the fisher's hut, the fisher on the bank, a cold 
 - **The lab**: a town lake 11-14 tiles; two docks on a typical lake and three on a large one (Con05A), each with its
   walk; the fisher's hut on the bank beside the first landing (Con03A); the fisher standing at the landing, clear of the
   gear, looking out (80%).
+
+## Round 5 (2026-10-06)
+
+The judge: "the same pier with a lone crate squared on its last plank; two squeezed close together; a barrel on the
+cobbled road". No crate on a dock's tip (none, one or two barrels); docks 18 tiles apart; the bank's gear never on a road.

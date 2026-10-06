@@ -399,3 +399,23 @@ racks and table before the cells (not attempted: Greywatch places its prisoners 
 | r3-torch | a wall torch on a cell's back wall (60%) | 0.905 | 0 / 0 |
 
 Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+## Round 5 (night-scenes4, 2026-10-06): the independent judge on the round-4 sheets
+
+The judge's critiques (scores in the main session's log). Common thread: "singles at even spacing, one template per
+scene, too sparse; Westwood's scenes are clustered knots of mixed pieces leaning on terrain". What each scene changed:
+
+| Scene | Round | The judge said | What changed | AUC (round 4 -> 5) |
+|---|---|---|---|---|
+| market_stall | r6-trades | near-empty (4-5 pieces against 11-16); barrels in an even line; nothing says what is sold; red/blue and yellow/green awnings Westwood never uses | three trades (a provisioner: apple crates, a knot of barrels, sacks, the cart; an armourer: three armour racks and helm poles; a potion seller: cauldron, stool, ore cart); the awning always Westwood's UP kind (purple and orange, green and red); 9-13 pieces | 0.692 -> 0.962 (3 stalls; 7 of 10 laid) |
+| urchin_camp | r5-knots | far too sparse; the table's stools spread wide; beds at even intervals; no barrel corners, no shelf runs | two or three shelf runs, three to five pictures, barrels in a corner knot (75%), stools packed 29 px round the table (three to five), straw more often | 0.75 -> 0.651 |
+| bandit_camp | r6-knots, r7-hollows, r8-upper | the same hollow and straight corridor; cots at even steps; the fire stones a wide even hexagon; stores in one strip; a bench right beside the fire | a tight, uneven fire ring (17-23 px, angles jittered); the hideout's crates set before the barrels' end (a knot); cot steps 54-70 px; the bench 70 px out; the lab's pockets stretched and turned, their passages winding; cots on an upper wall where they can (a cot under the near rock is hidden) | 0.967 -> 0.862 |
+| ogre_camp | r3-varied, r4-fewbones | one fire layout stamped every time; a torch pole by the fire or alone; the bearskin behind a bench; a chest Westwood never has | the meat one of four sets, one to three seats from six places, bones (none in two of five camps) mostly to one side; the bearskin gone, the chest 25%; without the gate the torch pole stands by the store at the camp's edge | 1.0 -> 0.992 (5 Westwood fires) |
+| garden | r4-knot | equal ruler-straight bands; crops under the fence; barrels, crates, a sack and a spade each alone round the beds | bed lengths uneven (each end 0-0.7 squares in); crops 12 px off a fence; no spade (Westwood's gardens keep no tools); the household's goods in one knot by the water barrel, each at Westwood's gap | 0.062 -> 0.448 (5 gardens) |
+| graveyard | r6-loose | a cobbled path down the middle to a crypt every time; stones on the fence line; pillars inside; flower patches | the walk in 60% of yards with a crypt, 30% without; stones 1.4 squares off the fence (1.1 in a small yard); the gate pillars a pair outside the gate (35%); no flowers | 0.811 -> 0.814 |
+| pond_dock | r5-knots | the same lone crate squared on the last plank; two piers squeezed together; goods split into singles; a barrel on the cobbled road | no crate on a dock's tip; docks 18 tiles apart (was 12); the bank's gear never on a road | 0.47 -> 0.443 |
+| shrine | r4-chapel | set against wooden cabins or floating in a glade; statues cramped or strewn | the lab sets the shrine by the village chapel (its stone_house style) | 0.836 -> 0.788 |
+| well | r2-road | no road or square: not a public landmark; placed by geometry | the lab sets the well 3.5 squares in from the hamlet's road | 0.761 -> 0.761 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby, DysVale: 0 errors after round 5 (warnings: room rules only). The
+round-5 sheets are queued in TO_JUDGE.md.

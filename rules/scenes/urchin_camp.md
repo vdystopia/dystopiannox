@@ -32,3 +32,10 @@ ChestUrchin4 up-left, ChestUrchin3 up-right.
 
 Westwood's dens are fuller on their walls (wall share 0.88 against ours 0.63) and their pieces closer (closest gaps 22
 px against 32); two open-air camps of the ten (the kit's old camp) still stand in glades.
+
+## Round 5 (2026-10-06)
+
+The judge: "far too sparse ... bare walls and empty floor; the table's stools spread wide; beds strung at even
+intervals; almost no corner groups of barrels, no runs of mixed shelves or paintings". Two or three shelf runs, three
+to five pictures or scrolls, barrels in a corner knot (two against the rock, one or two before them; 75%), three to five
+stools packed 29 px round the table, straw in half the dens.

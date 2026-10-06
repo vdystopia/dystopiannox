@@ -86,3 +86,10 @@ Plant5, Bush6); Con09a a WishingWell and a crate of apples.
 - The side goods (a crate, barrel or sack) on the long side away from the house.
 - **The lab**: gardens asked a size larger (4 x 3, 5 x 4, 6 x 5: Westwood's run 6-9 squares); a gardener standing at
   the beds' end (60%; renders leave people out since the fairness fixes).
+
+## Round 5 (2026-10-06)
+
+The judge: "crop bands equal in length and ruler-straight; crops right under the fence; barrels, apple crates, a sack
+and a spade each alone round the beds instead of a knot at one corner (Westwood's gardens have no tools)". Each bed's
+ends 0-0.7 squares in (uneven bands); crops 12 px off a fence; no spade; the household's goods (a barrel, crates of
+apples, a sack) in one knot by the water barrel, each at Westwood's gap (kit/spacing).

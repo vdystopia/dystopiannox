@@ -435,7 +435,8 @@ class Waterworks:
             q_ = self.rng.choice((0, 1, 2))            # (the design's generator draws as it always has)
             import random as _random, zlib
             own = _random.Random(zlib.crc32(f"{self.spec.d['name']}:docktip:{lane},{int(pos)}".encode()))
-            load = own.choice(((), (), ("Crate1",), ("Barrel",), ("Barrel", "Barrel")))
+            # (no lone crate squared on the last plank: the judge, 2026-10-06, read it in four docks of ten)
+            load = own.choice(((), (), (), ("Barrel",), ("Barrel", "Barrel")))
             for i, t_ in enumerate(load):
                 p = pos - sign * (2.0 + 1.6 * i)
                 u, v = (p, lane + k["piece_side"] + 0.4) if kit == "DockDown" else (lane + k["piece_side"] + 0.4, p)
@@ -469,6 +470,7 @@ class Waterworks:
             # on firm ground: the tiles a step round it land too (a barrel had stood half in the water)
             if not all(self._land(tile_at_uv((x + dx + y + dy) / CELL, (x + dx - y - dy) / CELL))
                        for dx, dy in ((18, 0), (-18, 0), (0, 18), (0, -18))): return False
+            if self.spec.floor.get(c) in ("RoughCobble", "DirtDark2"): return False      # never on a road
             return self._land(c) and c not in lane and c not in self.no_walls and                 not any((cell[0] + a, cell[1] + b) in self.spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1))
 
         def put(t, x, y):
@@ -583,7 +585,7 @@ class Waterworks:
             if not all(wet((tip[0] + a_, tip[1] + b_)) for a_ in range(-3, 4) for b_ in range(-3, 4)
                        if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 9):
                 continue
-            if any(abs(c[0] - t[0]) + abs(c[1] - t[1]) < 12 for c in [land] + path for t in taken):
+            if any(abs(c[0] - t[0]) + abs(c[1] - t[1]) < 18 for c in [land] + path for t in taken):
                 continue                               # keep docks well apart
             # a bank behind the landing to stand on: land five tiles back and two to each side (the blind judge,
             # 2026-10-06: "the root jammed against the tree line")

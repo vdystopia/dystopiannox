@@ -96,3 +96,10 @@ two-cell crypt block in two variants". Westwood's graveyards (War03c, Con07B): a
 
 Still: Westwood has no digger's corner (tool share 0); the user asked for one (SW-9), so it stays and the classifier
 reads it.
+
+## Round 5 (2026-10-06)
+
+The judge: "a cobbled path straight from the gate down the middle, often ending at a small crypt; headstones along both
+sides of the path, some on the fence line; monument pillars inside the yard instead of a gatepost pair; flower
+patches". The walk in 60% of yards with a crypt and 30% without; headstones 1.4 squares off the fence (1.1 in a small
+yard); the pillars a pair outside the gate (35%); no flowers.

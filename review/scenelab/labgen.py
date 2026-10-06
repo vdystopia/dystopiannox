@@ -164,7 +164,8 @@ def lay_land(m, rng, plots, recipe):
     carved: the recipe's planning goes first)."""
     land = Land(rng, u_range=(40, 470), v_range=(-205, 205))
     for p in plots:
-        land.area(p.name, (2 * p.c[0], 2 * p.c[1]), 2 * p.r, roughness=0.3 if p.cave else 0.18, region=p.name)
+        land.area(p.name, (2 * p.c[0], 2 * p.c[1]), 2 * p.r, roughness=0.45 if p.cave else 0.18, region=p.name,
+                  stretch=p.rng.uniform(1.0, 1.5) if p.cave else 1.0, angle=p.rng.uniform(0, 3.1) if p.cave else 0.0)
     if any(p.cave for p in plots):
         # a spine of forest path between the rows, each clearing on its own spur off it: a hideout's pocket has one
         # mouth, as Westwood's have (a pocket off a cave's passage)
@@ -173,7 +174,8 @@ def lay_land(m, rng, plots, recipe):
             land.area(f"spine{q}", (2 * x, 0.0), 6, roughness=0.1, region="spine")
             if q: land.link(f"spine{q - 1}", f"spine{q}", 8, bend=0.05, road=False, pockets=(0, 0))
         for p in plots:
-            land.link(p.name, f"spine{cols.index(p.c[0])}", 6 if p.cave else 8, bend=0.08, road=False, pockets=(0, 0))
+            land.link(p.name, f"spine{cols.index(p.c[0])}", 6 if p.cave else 8, bend=0.3 if p.cave else 0.08, road=False,
+                      pockets=(0, 0))            # (a winding passage: the judge read one straight corridor in every hideout)
     elif plots and plots[0].town:
         # a hamlet's paths join it at its edges, never through its middle (the dressing keeps a forest path's lane
         # clear, two squares either side: a path through the hamlet's middle had left a market no room for its

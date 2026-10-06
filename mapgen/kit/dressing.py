@@ -392,6 +392,8 @@ class Exterior:
             got = 0
             if pc["types"] == ("@tent",):
                 way = "DN" if line == "\\" else "UP"
+                if th.name == "market_stall": way = "UP"      # (Westwood's three stalls: UP awnings, purple and orange
+                #                                              or green and red; the judge read red/blue as not theirs)
                 # the awning's open side faces the camera: its wares go before it (DN: south-west, UP: south-east)
                 n = (-1 / math.sqrt(2), 1 / math.sqrt(2)) if way == "DN" else (1 / math.sqrt(2), 1 / math.sqrt(2))
                 tdir = (-n[1], n[0])

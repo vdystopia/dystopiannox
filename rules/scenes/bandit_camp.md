@@ -117,3 +117,12 @@ CaveWall2 on DirtDark2 off a cave's passage, every piece against the rock. Measu
 The hideouts read as Westwood's (wall share 0.5-1.0 against Westwood's 0.5); the classifier still separates the batch
 (AUC ~0.93-0.97) on the open-air half: a fire in every one (fire share 0.04 against 0.01), 11-14 kinds against 9, the
 diagonal shape.
+
+## Round 5 (2026-10-06)
+
+The judge: "the same cliff hollow with the same straight corridor exit; the fire near the middle, the other pieces along
+the walls at even steps; fire stones a wide, evenly spaced hexagon; stores in one strip along the back wall; a bench
+right beside the fire". The fire ring tight and uneven (17-23 px, each stone's angle jittered); the hideout's crates set
+before the barrels' end, a knot; cot steps 54-70 px; the bench 70 px out (Westwood's stool 59); cots on an upper wall
+where the pocket allows (a cot under the near rock is hidden); the lab's pockets stretched and turned, their passages
+winding.

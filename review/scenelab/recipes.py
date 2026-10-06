@@ -410,7 +410,9 @@ RECIPES = {
     "jail": dict(plan=_yard_plan("jail"), build=lambda c: (_jail_court(c), _yard_build(c))),
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
-    "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"])),
+    # the well by the road, a public landmark (the judge, 2026-10-06: "no road ... placed by geometry rather than use")
+    "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"]),
+                 by_road=3.5),
     "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
                          after_plant=_theme_after(["market_stall"])),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
@@ -420,7 +422,10 @@ RECIPES = {
                             after_plant=_theme_after(["sparring_ring", "archers_mark"])),
     "woodpile": dict(plan=_house_plan(["home", "cottage", "woodcutter"]), build=_house_build,
                      after_plant=_theme_after(["woodpile", "chopping_yard", "timber_stack"])),
-    "shrine": dict(plan=_nothing, build=_nothing, after_plant=_theme_after(["waystone", "shrine"])),
+    # the shrine by the village's chapel: masonry to stand against (the judge, 2026-10-06: "shrines set against wooden
+    # peasant cabins")
+    "shrine": dict(plan=_house_plan(["village_chapel"]), build=_house_build,
+                   after_plant=_theme_after(["waystone", "shrine"])),
     "farmyard": dict(plan=_house_plan(["mill", "home", "cottage"]), build=_house_build,
                      after_plant=_theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")),
     "wolf_den": dict(plan=_nothing, build=_wolf_build),

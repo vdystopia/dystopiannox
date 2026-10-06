@@ -113,6 +113,7 @@ class Village:
             n_long, n_short = (w, h) if long_i else (h, w)
             beds = list(range(0, n_short, 2)) if n_short > 2 else list(range(n_short))     # narrow: a row to a bed
             rows = (0.3, 0.7) if n_short > 2 else (0.5,)
+            knot = None
             dug = own_rng.random() < 0.4              # Westwood's beds are dug earth now and then, mostly grass
             step_ = own_rng.choice((0.52, 0.58, 0.62, 0.62))   # the plants' spacing along a row (Wiz01A close, Con09a apart)
             kinds = [one] * len(beds) if one else ([crop] + own_rng.sample([c for c in CROPS if c != crop], 2))[:len(beds)]
@@ -121,34 +122,56 @@ class Village:
                 for s_ in range(n_long if dug else 0):
                     sq = (gi + s_, gj + k) if long_i else (gi + k, gj + s_)
                     self.spec.floor[square_tile(*sq)] = "DirtDark2"
-                start, end = 0.42, n_long - 0.42
+                start, end = 0.42 + own_rng.uniform(0, 0.7), n_long - 0.42 - own_rng.uniform(0, 0.7)
                 n = max(2, int((end - start) / step_) + 1)
                 for row in rows:
                     for q in range(n):
                         a = start + (end - start) * q / (n - 1) + own_rng.uniform(-0.04, 0.04)
                         si, sj = (gi + a, gj - 1.5 + k + row) if long_i else (gi + k + row, gj - 1.5 + a)
                         x, y = square_px(si, sj)
-                        if not fence or off_walls(walls, kind, x, y, margin=6):
+                        if not fence or off_walls(walls, kind, x, y, margin=12):
                             self.spec.obj_px(kind, x, y); laid += 1
             # the water barrel at a path's end, a spade left in the ground at the other
             path = beds[0] + 1 if n_short > 2 else None
             if path is not None and path < n_short:
-                ends = [(0.35, "WaterBarrel", 0.85), (n_long - 0.35, "MiningShovelInGround", 0.5)]
-                if own_rng.random() < 0.5: ends = [(n_long - 0.35, "WaterBarrel", 0.85), (0.35, "MiningShovelInGround", 0.5)]
+                # (no spade: Westwood's gardens keep no tools, the judge 2026-10-06; the draws kept)
+                ends = [(0.35, "WaterBarrel", 0.85), (n_long - 0.35, "MiningShovelInGround", 0.0)]
+                if own_rng.random() < 0.5: ends = [(n_long - 0.35, "WaterBarrel", 0.85), (0.35, "MiningShovelInGround", 0.0)]
                 for a, t, p in ends:
                     if own_rng.random() >= p: continue
                     a += own_rng.uniform(-0.15, 0.25) * (1 if a > 1 else -1)        # set down, not on a mark
                     si, sj = (gi + a, gj - 1.5 + path + 0.5 + own_rng.uniform(-0.2, 0.2)) if long_i else                         (gi + path + 0.5 + own_rng.uniform(-0.2, 0.2), gj - 1.5 + a)
                     x, y = square_px(si, sj)
-                    if not fence or off_walls(walls, t, x, y, margin=6): self.spec.obj_px(t, x, y)
+                    if not fence or off_walls(walls, t, x, y, margin=6):
+                        self.spec.obj_px(t, x, y)
+                        knot = (x, y)
             elif own_rng.random() < 0.85:              # a narrow plot: the barrel beside the bed's end, off the rows
                 si, sj = (gi + n_long + 0.35, gj - 1.5 + n_short / 2) if long_i else (gi + n_short / 2, gj - 1.5 + n_long + 0.35)
                 x, y = square_px(si, sj)
-                if not fence: self.spec.obj_px("WaterBarrel", x, y)
+                if not fence:
+                    self.spec.obj_px("WaterBarrel", x, y)
+                    knot = (x, y)
             # the household round it (Westwood's gardens come with a crate of the crop, sacks, barrels: Con05A, Con09a):
             # a crate, a barrel or a sack on the long side now and then (flowers beyond a bed's end stood where a
             # townsman's walk stops to tend it: Ambermere, routes.facing)
-            if own_rng.random() < 0.35 and not fence:
+            if knot and not fence and own_rng.random() < 0.6:
+                # the household's goods in a knot by the water barrel (the judge: "barrels, apple crates, a sack ...
+                # each alone round the beds instead of a knot at one corner")
+                gc_ = square_px(gi + w / 2, gj - 1.5 + h / 2)
+                ox_, oy_ = knot[0] - gc_[0], knot[1] - gc_[1]
+                L_ = math.hypot(ox_, oy_) or 1
+                ox_, oy_ = ox_ / L_, oy_ / L_
+                from kit import spacing as SP_
+                members = [("WaterBarrel", knot[0], knot[1])]
+                for t in own_rng.sample(("Barrel", "TraderAppleCrate", "SackChestLarge1", "TraderAppleCrate"),
+                                        own_rng.randint(1, 3)):
+                    for a_ in (0.0, 1.1, -1.1, 2.0, -2.0):          # each its Westwood gap from the knot's others
+                        r_ = SP_.gap("WaterBarrel", t) + 2
+                        x_ = knot[0] + r_ * (ox_ * math.cos(a_) - oy_ * math.sin(a_))
+                        y_ = knot[1] + r_ * (ox_ * math.sin(a_) + oy_ * math.cos(a_))
+                        if SP_.spaced(t, x_, y_, members):
+                            self.spec.obj_px(t, x_, y_); members.append((t, x_, y_)); break
+            if own_rng.random() < 0.0 and not fence:         # (the lone goods on a long side: now the knot above)
                 u_ = n_long * own_rng.uniform(0.35, 0.65)                  # mid-way along a long side, off the ends
                 # on the long side away from the house (the blind judge, 2026-10-06: "a sack leaning on a cabin corner")
                 hi_ = sum(i for i, _ in foot) / len(foot); hj_ = sum(j for _, j in foot) / len(foot)
@@ -223,7 +246,7 @@ class Village:
                     put_at(rng.choice(("Plant4", "Plant5", "Bush6")), s_, rng.uniform(-0.2, 0.2), rng.uniform(-0.2, 0.2))
                     take(s_)
         # another water barrel by the beds (Con05A keeps six about its garden)
-        if rng.random() < 0.4:
+        if rng.random() < 0.0:                          # (now in the knot by the first barrel)
             by_beds = [s_ for s_ in band if free(s_, 0) and
                        any((s_[0] + a, s_[1] + b) in ring for a in (-1, 0, 1) for b in (-1, 0, 1))]
             if by_beds:
