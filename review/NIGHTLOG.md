@@ -180,3 +180,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   side by side (5.7-5.9 vs 8.1-8.3); blends, quest parts from different quests, and deliberate roughness all failed.
   Controls: 53%. Short lines pass. Map agents now must pass the originality section of --check. The dialogue lab pauses here:
   original long quests that read as Westwood's are the user's call (pastiche vs closeness).
+- 00:52 Track B finished (night-tuneB, 42 commits): tavern AUC 0.99->0.877 (bar of 9-14 pieces in a back corner, stools,
+  kegs behind), throne room 0.999->0.86 (braziers in pairs down the runner, three compositions instead of one template),
+  great hall, chapel, dining hall, hall, shrine and gallery tuned; the classifier now finds 6 taverns and 3 dining halls
+  (Con02a's barman is a Shopkeeper object). Its merge with master conflicts in 7 furnish.py and 2 identity.py hunks, so the
+  merge was aborted and an agent is merging master into night-tuneB, resolving both sides and testing a sample of every
+  track's types before it comes to master. B's sheets wait for the lab-fairness fixes before judging.
