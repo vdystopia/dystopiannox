@@ -850,6 +850,31 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         cu = sum(x + y for x, y in rooms[tr].tiles) / len(rooms[tr].tiles)
         if any(d.line == "/" and d.gap[0] + d.gap[1] + 1 < cu and abs((d.gap[0] - d.gap[1]) - a0) < 5.5
                for d in rooms[tr].doors): return None
+    if shell and program:
+        # each room's floor in a material Westwood lays in rooms of its type, now its type is settled (the entrance
+        # room and the throne room take theirs after the doors): throne rooms, crypts and chapels in stone or marble,
+        # never planks (independent judges, 2026-10-06: "wooden plank floors, so they read like a town hall"); from its
+        # own generator, so the rest of the building draws as before
+        import random as _r, zlib as _z
+        for k, r in enumerate(room_ids):
+            room = rooms[r]
+            work = room.kind in WORK_ROOMS
+            new = SH.fit_floor(_r.Random(_z.crc32(f"fit:{bid}:{U0}:{V0}:{k}".encode())), room.kind, room.floor,
+                               floors if work else clean)
+            if new == room.floor: continue
+            old = room.floor
+            frng = _r.Random(_z.crc32(f"fit2:{bid}:{U0}:{V0}:{k}".encode()))
+            # its second floor (a wing, a border) redrawn in what Westwood lays with the new floor, else dropped
+            sec = SH.second_floor(frng, new, "region", floors if work else clean, work) if patterned.get(r) else None
+            for t in room.tiles:
+                f = spec.floor.get(t)
+                if f == old or f == new or not sec:
+                    spec.tile(*t, new)
+                    if r in patterned: patterned[r].discard(t)
+                else:
+                    spec.tile(*t, sec)
+                if hasattr(spec, "indoor"): spec.indoor[t] = new
+            room.floor = new
     # a doorway's floor is the room's own: a second floor stays two tiles clear of every door, so it never meets the
     # ground or the next room's floor through the opening
     for r, ts in patterned.items():

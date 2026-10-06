@@ -2773,8 +2773,9 @@ class Furnisher:
                 cs = min(a, crng.choice((2, 3, 3, 4, 4, 5)))
                 cl = min(b, max(cs, cs + crng.choice((0, 1, 1, 2, 3))))
                 ci, cj = (cs, cl) if (i1 - i0) <= (j1 - j0) else (cl, cs)
-                oi = (i1 - i0 + 1 - ci) // 2 + crng.choice((-1, 0, 0, 1))
-                oj = (j1 - j0 + 1 - cj) // 2 + crng.choice((-1, 0, 0, 1))
+                # laid where the room's pieces make it purposeful (kit/shells.py carpet_offset: before the bed,
+                # under the seating), else in the middle
+                oi, oj = _SH.carpet_offset(crng, self.kind, self._typed, (i0, i1, j0, j1), (ci, cj))
                 oi = max(0, min(i1 - i0 + 1 - ci, oi)); oj = max(0, min(j1 - j0 + 1 - cj, oj))
                 i0, j0 = i0 + oi, j0 + oj
                 i1, j1 = i0 + ci - 1, j0 + cj - 1

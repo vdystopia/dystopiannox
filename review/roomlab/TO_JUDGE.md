@@ -68,3 +68,17 @@ the final round. The builder has not judged them. After judging, write `blind/ju
 | shop | g3m | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\shop\g3m\blind | lights by the counter or shelves, none loose; lone barrels and crates heaped | |
 | tavern | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\tavern\g3\blind | no plants; lights by walls (two to a wall at most, none side by side); table sets anchored; no twin sets, rings of stools or stepped rows | |
 | guardroom | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\guardroom\g3\blind | no barrel to each corner, no lights side by side on the floor, chairs drawn up, tables by a wall or rug | |
+
+## Queued (shells2: purposeful second floors and carpets, one sheet per type)
+
+Before: `fair1` (main) and `sh0` here, the judges' faults: brick squares scattered with no relation to the tombs, corner patches,
+a brick band along one wall, plank floors in throne rooms.
+
+| Type | Iteration | Blind folder | What changed | Result |
+|---|---|---|---|---|
+| crypt | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\crypt\sh3\blind | GreenBrick floors (Westwood's crypt floor); a stone plinth under each tomb (a band under a row); no scattered brick squares | |
+| chapel | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\chapel\sh3\blind | stone floors (no planks); no scattered patches; the carpet down the aisle as before | |
+| throne_room | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\throne_room\sh3\blind | stone floors, never planks; no strips along the walls | |
+| bedroom | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\bedroom\sh3\blind | the carpet at the bed's foot; no stray second floors | |
+| living_room | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\living_room\sh3\blind | a brick hearthstone before the fireplace; carpets under the seating; no strips, corner patches or inlaid squares | |
+| great_hall | sh3 | C:\GOG Games\Nox\dystopiannox-wt\shells2\review\out\roomlab\great_hall\sh3\blind | a hearthstone before the fireplace; carpets under the tables; second floors only as a border or a wing | |

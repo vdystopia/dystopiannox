@@ -137,15 +137,48 @@ from its own generator, so the rest of a building draws as before (`NOX_SHELLS=0
 - **Partial partitions** (`spur_points`): a wall spur 1-3 points long from the middle of a wall, two units of floor
   beyond its tip: 5% of rooms, 15% of those of 80-200 tiles, a third over 200. Free-standing wall pillars: 1% (none
   generated; pillars are furniture).
-- **Floors** (`floor_pattern`): half of Westwood's rooms carry a second floor on 3% of their floor or more (bedrooms
-  10%, storerooms 55%, living rooms 60%, halls 82%, crypts 97%), a median 16% of it: a region (a wing, a bay, a strip
-  along a wall, one end), a border, worn patches of dirt, inlaid panels. The partner is the one Westwood lays with the
-  main floor; never one it keeps apart from it or from the town's grass (`ground_shy`); two tiles clear of every door
-  (a doorway's floor is the room's own); blended where Westwood blends the pair (`blend_pattern`,
-  `nox.Spec.pattern_tiles`).
+- **Floors with a purpose** (2026-10-06, after independent judges read our second floors as "brick squares scattered
+  with no relation to the tombs", "corner patches that serve no purpose", "a brick band along one wall" and our throne
+  rooms' planks as "a town hall"). `py rules/rooms/shells.py` now measures only the curated rooms
+  (`rules/rooms/curated.json`: 179, the void-bounded throne halls included) and, for every second-floor piece and
+  carpet, what stands on it and beside it, how far it lies from a door, its share on the edge ring and in a wing
+  (`zone_measure`, `zone_of`; `second_purpose`, `carpet_purpose`, `focal_rate`, `focal_pairs`, `main_family` in
+  shells.json). What Westwood's are for:
+  - **a hearthstone** under the fireplace or stove: 27 of the 33 rooms with one (living rooms 12 of 14, studies,
+    kitchens, dining and great halls), 1-3 squares along the wall, RedBrick on planks, Redbrick3 on GalavaBrick;
+  - **a plinth under each tomb**: 25 of 29 rooms with tombs (crypts 23 of 25): 1 by 2 squares of GalavaBrownMarble or
+    BlueBrick3 under each sarcophagus on GreenBrick, a band under a row of them, or dirt worn round them;
+  - **the throne's dais and the aisle to it** (throne rooms: the runner from the door, 93% of their carpet; the Lich's
+    dais); **the floor under the bar** (2 of 5 taverns);
+  - **carpets under the seating and the tables** (great halls 88%, taverns 90%, living rooms 56%) and **at the bed**
+    (bedroom carpets 81% at the bed: 23 of 46 rooms with a bed); a chapel's under its pews;
+  - a wing or alcove on its own floor (living rooms 15%), a border round the room (crypts 15%, cellars); worn floor by
+    the doors of cells and guardrooms (not laid yet).
+  - **Main floors by type**: crypts stone (GreenBrick 23 of 25), cells stone, chapels and throne rooms stone or
+    marble, bedrooms half stone half wood, living rooms two thirds wood. Never planks in a throne room, a crypt or a
+    chapel.
+  The kit now: `building._build` gives each room, once its type is settled, a floor of a family Westwood lays in that
+  type (`shells.fit_floor`: the style's fitting floors, else Westwood's own; the type's floor where Westwood lays one
+  in 60% of its rooms, GreenBrick in crypts, unless the style's floor is a culture's own, LOTD or Dun Mir), its second
+  floor redrawn for the new floor; `floor_pattern` lays before furnishing only the zones that follow the shape (a wing
+  two units deep or more, a border; `zone_odds`: the type's floor_touched times the share of its second floors that
+  are those); after furnishing `originality.furnish_original` calls `shells.lay_zones`, which lays the hearthstones (the square under the fireplace and the one before it, where Westwood's lies: ours stand on
+  the ring, Westwood's in the wall line; one along the wall more often than not),
+  tomb plinths, the throne's dais and the bar's floor at Westwood's rates, in what Westwood lays there
+  (`zone_material`), on the main floor only, three cells off every door, never on a carpet or its trim; and
+  `furnish.lay_carpet`'s middle carpet goes where `shells.carpet_offset` puts it (at the bed's foot in a bedroom, under
+  the seating and tables elsewhere). The strips along one wall, the scattered patches and the inlaid squares are laid
+  nowhere. The partner is never one Westwood keeps apart from the main floor or from the town's grass (`ground_shy`);
+  two tiles clear of every door; blended where Westwood blends the pair (`blend_pattern`, `nox.Spec.pattern_tiles`).
+  The shapes and partitions still draw from the numbers of 2026-10-05 (`rules/rooms/shells_shape.json`): measured on
+  the curated rooms they reshape every map's rooms, and Thornwick's north gate could then be walked round (the forest
+  beside it moved); re-measuring them is left to the shells owner. A floor refitted to GreenBrick leaves two hard
+  GrassNorm/GreenBrick seams (warnings) at Thornwick's chapel crypt.
+  The shell AUC (`--lab`) reads three more features: the share of the floor in purposeless zones, a zone at a focal
+  piece, a plank main floor.
 - **Carpets** (`furnish.lay_carpet`, `CARPET_FULL`): never on the room's outer ring; a small room's carpet is its floor
-  less that ring (4 squares across: 3 in 4), a larger room's 2-5 by 3-8 squares in its middle (8 or more across: 1 in
-  10 wall to wall); a quarter to a third of the floor.
+  less that ring (4 squares across: 3 in 4), a larger room's 2-5 by 3-8 squares placed by `shells.carpet_offset` (8 or
+  more across: 1 in 10 wall to wall); a quarter to a third of the floor.
 - Doors: Westwood's rooms have one door in two (bedrooms 70%, storerooms 77%), placed 0.3-0.45 of the way along their
   wall, one in seven a unit from a corner.
 Measure a lab iteration's shells against Westwood's: `py rules/rooms/shells.py --lab <type> <iter>` (side by side and

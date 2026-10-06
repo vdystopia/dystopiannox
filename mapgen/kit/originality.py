@@ -136,6 +136,14 @@ def furnish_original(spec, room, kind=None, rng=None, style="town", tries=6, thr
     of a stock room. Returns (objects, check result). engine: "recipe" (kit/furnish.py) or "motifs" (kit/motifs.py,
     the experimental engine composing from Westwood's mined arrangements); None: the room type's own
     (kit/motifs.py engine_for: the recipe engine unless the type is in ENGINE_TYPES)."""
+    objs, res = _furnish_original(spec, room, kind, rng, style, tries, threshold, engine)
+    # the second floors Westwood lays under a room's pieces: a tomb's plinth, a hearthstone, a dais (kit/shells.py)
+    from kit import shells as SH
+    SH.lay_zones(spec, room, objs, kind or getattr(room, "kind", None))
+    return objs, res
+
+
+def _furnish_original(spec, room, kind, rng, style, tries, threshold, engine):
     from kit import motifs as MOT
     if (engine or MOT.engine_for(kind)) == "motifs":
         return MOT.furnish_original(spec, room, kind, rng, style, tries, threshold)
