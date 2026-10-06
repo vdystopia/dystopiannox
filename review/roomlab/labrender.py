@@ -15,7 +15,7 @@ the picture itself:
 """
 import os, subprocess
 import labenv as E
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 CANVAS = (960, 720)
 BG = (12, 12, 14)
@@ -77,10 +77,15 @@ def picture(full, bare, cells, scale, canvas=CANVAS):
         d.rectangle((x * C - ox, y * C - oy, (x + 1) * C - ox - 1, (y + 1) * C - oy - 1), fill=255)
     # over the room's floor the walls show at half strength: the game draws the walls in front of the player see-through
     c = Image.composite(Image.blend(c, b, 0.55), c, floor.filter(ImageFilter.GaussianBlur(2)))
-    near = floor.filter(ImageFilter.MaxFilter(25))               # the walls round the floor
+    # Kept bright: the floor, what rises from it up the screen, and the room's own wall pixels (where the render with
+    # walls differs from the one without). Not a band of ground round the walls: in the lab that band is a building's
+    # sunlit field and drew a glowing rim round every generated room (an independent judge's tell, 2026-10-05 night),
+    # where Westwood's rooms sit among dark neighbours.
     up = Image.new("L", c.size, 0)
-    up.paste(near, (0, -42))                                     # walls and tall pieces rise up the screen
-    keep = Image.composite(Image.new("L", c.size, 255), near, up).filter(ImageFilter.GaussianBlur(4))
+    up.paste(floor, (0, -42))                                    # tall pieces and back walls rise up the screen
+    walls = ImageChops.difference(full.crop(box), b).convert("L").point(lambda p: 255 if p > 24 else 0)
+    walls = ImageChops.multiply(walls, floor.filter(ImageFilter.MaxFilter(61)))   # this room's walls only
+    keep = ImageChops.lighter(ImageChops.lighter(floor, up), walls).filter(ImageFilter.GaussianBlur(1.5))
     c = Image.composite(c, c.point(lambda p: int(p * OUTSIDE)), keep)
     s = min(scale, canvas[0] / c.width, canvas[1] / c.height)
     c = c.resize((max(1, int(c.width * s)), max(1, int(c.height * s))), Image.LANCZOS)
