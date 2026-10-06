@@ -101,9 +101,58 @@ class Theme:
                                                  # (Exterior(culture=...): Starwell's wizards), never elsewhere
     loose: float = 0.0                           # px each piece (a row: its first) is set off its mark by hand
     loose_step: float = 0.0                      # a row's steps stretched or shrunk by up to this share, as it drifts
+    archs: Tuple[str, ...] = ()                  # each layout's archetype (a lab or a design may ask for one)
+    keep_layout: bool = False                    # its layout drawn once and kept until laid (the small layouts fit more
+                                                 # easily: drawn afresh at every spot tried they win out of turn)
+    screen: bool = False                         # an open scene drawn in the screen's own frame (o: down the screen,
+                                                 # a: to the left), as Westwood's stand toward the camera (a well's sign)
 
     def __post_init__(self):
         self.family = self.family or self.name
+
+
+def _shrine_layouts():
+    """The shrine's layouts [(archetype, layout)], each as often as Westwood's (see the shrine theme). Every piece's
+    step to its nearest along a screen diagonal or axis, as Westwood's (metrics diag: 1.0 of their steps; round 8's
+    first try had wall torches 16 px nearer the wall than the statues, the steps between them 18-30 degrees off)."""
+    out = []
+    for k in ("a", "b", "c", "e", "g", "h"):
+        out += [("castle_row", [P((f"Statue2{k}",), -97, 28, n=3, step=(97, 0), must=True),
+                                P(("Torch",), -48, 21, n=2, step=(97, 0), must=True), P(("Torch",), 145, 21, p=0.4)])] * 4
+        out += [("tight_row", [P((f"Statue2{k}",), -30, 28, n=3, step=(49, 0), must=True),
+                               P(("CryptChest1",), -82, 34, p=0.8, orient="line"),
+                               P(("Torch",), -64, 22, p=0.8), P(("Torch",), 104, 22, p=0.5),
+                               P(("TorchPole",), -50, 44, p=0.6), P(("Monument1",), -116, 20, p=0.5)])] * 2
+        out += [("alt_row", [P((f"Statue2{k}",), -92, 28, n=3, step=(92, 0), must=True),
+                             P(("StatueVictory1SW",), -46, 22, n=2, step=(92, 0), must=True, orient="line"),
+                             P(("Monument1",), -150, 20, p=0.8)])] * 2
+        out += [("pair", lay) for lay in (
+            [P((f"Statue2{k}",), -44, 30, n=2, step=(88, 0), must=True), P(("Torch",), 0, 22, p=0.4)],
+            [P((f"Statue2{k}",), -24, 26, must=True), P(("StatueVictory1SW",), 24, 23, must=True, orient="line")],
+            [P((f"Statue2{k}",), -60, 33, n=2, step=(118, 12), must=True),
+             P(("CryptChest1",), 6, 52, must=True, orient="line")],
+            [P((f"Statue2{k}",), -70, 34, n=2, step=(120, -6), must=True),
+             P(("CryptChest1",), -34, 60, p=0.7, orient="line"), P(("Torch",), -6, 20, n=2, step=(46, 2), p=0.8)],
+            [P((f"Statue2{k}",), -30, 24, n=2, step=(62, 12), must=True), P(("TorchPole",), -52, 42, must=True)])]
+        out += [("lone", [P((f"Statue2{k}",), -12, 31, must=True), P(("Torch",), 12, 15, must=True)])] * 2
+        out += [("lone", [P((f"Statue2{k}",), -9, 24, must=True), P(("TorchPole",), 9, 27, must=True)])] * 2
+        out += [("lone", [P((f"Statue2{k}",), -21, 28, must=True), P(("DunMirFlameBasinLit",), 21, 22, must=True)])]
+    # the crypt court (Con04b's: two or three sarcophagi side by side along the wall, a stone pillar hugging the wall at
+    # either end ~105 px out, a cross before them, ~93 px out, or a statue among them, torch poles or a wall torch)
+    out += [("crypt", [P(("Crypt1", "Crypt4"), -58, 50, must=True), P(("Crypt4", "Crypt2"), 0, 46, must=True),
+                       P(("Crypt3",), 58, 52, p=0.7), P(("Cross2", "Statue2b", "Statue2d"), 0, 94, must=True),
+                       P(("Monument1",), -106, 14, n=2, step=(212, 0), p=0.85),
+                       P(("TorchPole",), -30, 26, n=2, step=(64, -4), p=0.5), P(("Torch",), 0, 13, p=0.4)])] * 30
+    # the chapel nave (a roofless chapel: Con07B, War07A)
+    out += [("nave", [P(("WhiteTapestry2", "WhiteTapestry2", "BlueTapestry2"), -120, 12, n=(2, 4), step=(60, 0),
+                        must=True, orient="line"),
+                      P(("Column8",), -60, 60, n=(1, 2), step=(110, 4), must=True), P(("Statue1a",), 40, 34, must=True),
+                      P(("Candleabra5",), -160, 16, p=0.8), P(("Candleabra2",), 70, 22, p=0.5),
+                      P(("Bench5",), 20, 82, n=(0, 3), step=(36, 8), orient="face")])] * 18
+    return out
+
+
+SHRINE_LAYOUTS = _shrine_layouts()
 
 
 CATALOGUE = [
@@ -214,16 +263,18 @@ CATALOGUE = [
     # (a sign a little apart in two of three: Con02a's SignIx, Con07B's and War07A's Sign1; the judge, 2026-10-06: "no
     # road or path, no sign")
     Theme("well_side", "a draw well where water is fetched, standing clear", "open",
-          # (round 7: the judges, "the sign at the same short step every time": the sign anywhere round the well at
-          # 60-110 px, set down by hand)
+          # (round 8: Westwood's four wells, rules/scenes/well.md, measured in the screen's own frame: the sign 50-56 px
+          # before the well, straight down the screen (Con07B, War07A: -2, 56) or down and to the right (Con02a: 35,
+          # 36), never behind it; one well bare (Con09a); one a market well (Con07B: the sign, and a street lamp 190 px
+          # before it; its trader's racks stand inside the shop beside it, not round the well). Round 7's sign anywhere
+          # round the well at 60-110 px read as "the same pair" with no reason to it; the layouts in Westwood's
+          # frequencies)
           [[P(("Well",), 0, 0, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), 78, 30, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), -70, 46, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), 34, -74, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), -96, -12, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), 18, 98, must=True)]],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), 2, 56, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), -35, 36, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), 2, 56, must=True), P(("StreetLampOrnate3",), -4, 190, p=0.8)]],
           places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
-          min_types=1, min_pieces=1, clear=60, loose=16),
+          min_types=1, min_pieces=1, clear=60, loose=4, screen=True),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],
@@ -319,31 +370,27 @@ CATALOGUE = [
     # screen diagonal ~49 px apart (or two ~160 px apart flanking a way), a torch pole by them, a pair of stone pillars
     # (Monument1) ~100 px either side of a lone statue; flowers never
     Theme("shrine", "a shrine against a wall: statues of one kind in a row, a torch pole by them", "wall",
-          # (round 7, the judges: "the same obelisk, torch pole, statue kit every time"; Westwood's are mostly rows of
-          # statues along the wall, lights between them: the rows two of five, the lights-between row one, the pair and
-          # the lone statue one each, the pillars less often; every piece set down by hand)
-          [lay for k in ("a", "b", "c", "e", "g", "h") for lay in (
-              [P((f"Statue2{k}",), -49, 34, n=(2, 4), step=(49, 0), must=True), P(("TorchPole",), -100, 36, p=0.6),
-               P(("TorchPole",), 100, 36, p=0.3), P(("Monument1",), 150, 36, p=0.2)],
-              [P((f"Statue2{k}",), -60, 34, n=3, step=(52, 0), must=True), P(("TorchPole",), 112, 38, p=0.5)],
-              [P((f"Statue2{k}",), -100, 34, n=3, step=(100, 0), must=True),
-               P(("TorchPole",), -50, 38, n=2, step=(100, 0), must=True)],
-              [P((f"Statue2{k}",), -80, 34, n=2, step=(160, 0), must=True), P(("TorchPole",), 0, 40, must=True),
-               P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.25)],
-              [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), p=0.5),
-               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.3)])] +
-          # the crypt court (Con04b's six: three sarcophagi in a cluster, a stone cross or a statue among them, a pillar
-          # either side ~105 px out, torch poles by them)
-          [[P(("Crypt1",), -2, 92, must=True), P(("Crypt4",), 0, 40, must=True), P(("Crypt3",), 2, -12, p=0.7),
-            P(("Cross2", "Statue2b", "Statue2d"), 38, 44, must=True), P(("Monument1",), -110, 40, n=2, step=(220, 0), must=True),
-            P(("TorchPole",), -40, 80, p=0.6), P(("TorchPole",), 40, 10, p=0.5)]] * 6,
+          # (round 8, the judges on round 7: "the same statue, torch pole and obelisk trio every time". Westwood's 26
+          # shrines against walls clustered by their pieces, each layout as often as Westwood's (rules/scenes/shrine.md
+          # "Structures", measured from the wall's centre line: statues 16-51 px out, median 29; the stone pillars
+          # hugging the wall, 11-22; wall torches 10-20; torch poles 20-47; sarcophagi 41-67; benches 67-121):
+          #   castle row 4 (Con07C, Wiz02B: three statues ~97 px apart, wall torches between them);
+          #   tight row 2 (Con04b: three ~49 px apart, a chest at one end, wall torches and a torch pole, a pillar);
+          #   alternating row 2 (Con04b: three statues ~92 px apart, victory statues between, a pillar at one end);
+          #   pair 5 (Con04b, Con05A, War04a, War04b: two statues 48-88 px apart, now and then a crypt chest or a
+          #   torch);
+          #   lone statue 5 (a wall torch beside it 2, a torch pole 2: War03c, a flame basin 1: Con07E);
+          #   crypt court 5 (Con04b: sarcophagi along the wall, pillars at both ends, a cross before them);
+          #   chapel nave 3 (Con07B, War07A: tapestries on the wall, columns, candelabra, a statue, benches facing it)
+          [lay for _, lay in SHRINE_LAYOUTS], archs=tuple(arch for arch, _ in SHRINE_LAYOUTS),
           # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
           # (masonry, a castle's walls, or a stone house: the judge, 2026-10-06, "set against wooden peasant cabins")
           walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),
           house_roles=("chapel", "village_chapel", "shrine", "mausoleum", "keep", "manor", "townhall", "barracks", "tower",
                        "gatehouse", "gaol", "observatory"),
           roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
-          family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True, loose=5, loose_step=0.15),
+          family="shrine", weight=0.8, min_types=2, min_pieces=2, tall=True, loose=2, loose_step=0.04,
+          keep_layout=True),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
           "torch pole at the end of the row", "open",
           [[P(GRAVES, -48, 0, n=3, step=(48, 0), must=True), P(FLOWERS, -48, 34, n=3, step=(48, 0), p=0.8),
@@ -563,6 +610,14 @@ ALONG = {"\\": {"Crate1": "Crate1", "Crate2": "Crate1", "DarkCrate1": "DarkCrate
          "/": {"Crate1": "Crate2", "Crate2": "Crate2", "DarkCrate1": "DarkCrate2", "DarkCrate2": "DarkCrate2",
                "CrateSteel1": "CrateSteel2", "CrateSteel2": "CrateSteel2",
                "TraderPoleArm1": "TraderPoleArm3", "TraderPoleArm2": "TraderPoleArm4"}}
+# pieces a wall scene stands on its back wall, by the line the wall runs (a "\\" wall: the room's NE wall, the piece
+# below and left of it; "/": the NW wall, below and right; furnish.WALL_SIDE_TYPE; Westwood's victory statues face out
+# from their wall, its tapestries hang 2 on a "/" wall)
+for _l, _v in (("\\", dict(CryptChest1="CryptChest1", StatueVictory1SW="StatueVictory1SW", WhiteTapestry2="WhiteTapestry4",
+                            BlueTapestry2="BlueTapestry4")),
+               ("/", dict(CryptChest1="CryptChest4", StatueVictory1SW="StatueVictory1SE", WhiteTapestry2="WhiteTapestry2",
+                          BlueTapestry2="BlueTapestry2"))):
+    ALONG[_l].update(_v)
 # a bench by the way it faces, in squares (Village.BENCH_FACING): +i, -i, +j, -j
 BENCH_FACING = {"+i": "Bench1", "-i": "Bench5", "+j": "Bench4", "-j": "Bench2"}
 # a bedroll by the square axis its foot points along (the pillow at the other end; kit/furnish NUMBERING_OVERRIDES:
