@@ -8,18 +8,42 @@ by the picture itself:
 - the ground away from the scene dimmed (to DIM of its brightness, softly, beyond REACH px of every piece), so
   neither a Westwood town round it nor the lab's glade gives the picture away, while the fence, the wall, the shore
   or the road it stands by still shows;
+- no creatures: both are rendered from a creature-free copy of the map (review/roomlab/nocreatures.ps1: monsters,
+  NPCs and players removed with the editor's own library), since Westwood's maps have their monsters and the lab its
+  posts (an independent blind judge's tell, review/roomlab/FAIRNESS.md);
 - no labels in the image.
 """
-import os, subprocess
+import os, subprocess, tempfile
 import labenv as E
 from PIL import Image, ImageDraw, ImageFilter
 
-VERSION = 2
+VERSION = 3              # 3: drawn without creatures
 CANVAS = (960, 720)
 DIM = 0.42
 REACH = 110
 EDITOR = os.path.join(E.REPO, "MapEditor", "bin", "Release", "MapEditor.exe")
+NOXSHARED = os.path.join(E.REPO, "MapEditor", "bin", "Release", "NoxShared.dll")
+STRIP = os.path.join(E.REPO, "review", "roomlab", "nocreatures.ps1")
+PS32 = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
+CLEAN = os.path.join(E.OUT, "_clean")          # creature-free copies of Westwood's maps and their renders
 _cache = {}
+
+
+def creature_free(src, dst):
+    """Writes `dst`, a copy of the map `src` without creatures (as review/roomlab/labrender.py creature_free)."""
+    if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src): return dst
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as f:
+        f.write(f"{os.path.abspath(src)}\t{os.path.abspath(dst)}\n")
+        jobs = f.name
+    try:
+        res = subprocess.run([PS32, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", STRIP, "-Dll", NOXSHARED,
+                              "-JobList", jobs], capture_output=True, text=True, timeout=300)
+    finally:
+        os.remove(jobs)
+    if not res.stdout.startswith("OK") or not os.path.exists(dst):
+        raise RuntimeError(f"creature-free copy of {src} failed: {res.stdout.strip()} {res.stderr.strip()[:300]}")
+    return dst
 
 
 def render_full(map_path, png):
@@ -37,11 +61,14 @@ def render_full(map_path, png):
 
 
 def westwood_render(m):
-    return render_full(m.file, os.path.join(E.RENDERS, m.name + ".png"))
+    clean = creature_free(m.file, os.path.join(CLEAN, m.name + ".map"))
+    return render_full(clean, os.path.join(CLEAN, m.name + ".png"))
 
 
 def lab_render(map_path):
-    return render_full(map_path, os.path.splitext(map_path)[0] + ".png")
+    d, fn = os.path.split(map_path)
+    clean = creature_free(map_path, os.path.join(d, "clean", fn))
+    return render_full(clean, os.path.splitext(clean)[0] + ".png")
 
 
 def centre_of(s):

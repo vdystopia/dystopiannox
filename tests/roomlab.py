@@ -10,8 +10,8 @@ review/roomlab/README.md and the metric judge.
 
 Each run:
 1. generates N variants of the type (review/roomlab/labgen.py): each the main room of its own building shell, built
-   and furnished by the kit, varying size (Westwood's small, typical and large), shape (square, long), doors (1-3),
-   culture and building style, and seed; the map goes to review/out/roomlab/<type>/<iter>/map/;
+   and furnished by the kit, varying size (Westwood's small, typical and large), shape (square, long), doors (Westwood's
+   own counts for the type), culture and building style, and seed; the map goes to review/out/roomlab/<type>/<iter>/map/;
 2. renders each room as Westwood's rooms are rendered (labrender.py), to renders/NN.png, and Westwood's rooms of the
    type into the cached gallery (review/out/roomlab/_westwood/<type>/);
 3. measures and judges every room against Westwood's campaign rooms of the type (metrics.py: features, percentiles,

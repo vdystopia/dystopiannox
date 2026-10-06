@@ -8,9 +8,11 @@ Each variant varies, on a fixed schedule so a batch always covers the range:
   profile range (kit/roomtypes.py tiles);
 - shape: square (1.0-1.25 long side over short) or long (1.6-2.2), either way round (a throne room always runs from its
   door to its throne);
-- doors: 1, 2 or 3: the entrance, plus a neighbouring room on 0-2 sides (the host role's other rooms, furnished too),
-  each reached through its own door in the main room's wall; the kit places every door (_door_point) and sometimes adds
-  a second entrance, as in a map;
+- doors: drawn from Westwood's own door counts for the type (door_plan: its campaign rooms as the metric judge counts
+  their doors, its pool's when it is thin; half of all Westwood's rooms have one door): the entrance, plus a
+  neighbouring room (the host role's other rooms, furnished too) for each further door, each reached through its own
+  door in the main room's wall; the kit places every door (_door_point) and sometimes adds a second entrance, as in a
+  map. (Until 2026-10-06 a fixed 1, 2 or 3 doors, a third each: an independent judge's tell, FAIRNESS.md);
 - culture and style: the type's kit kinds (a chapel or the Land of the Dead's dark chapel) in proportion to Westwood's
   campaign rooms of the type by culture, and the building roles that host the kind (kit/identity.py BUILDINGS: a
   bedroom in an inn, a home, a manor, a keep...), round-robin;
@@ -34,10 +36,10 @@ GAP = 8                                # uv units between buildings
 STYLE_FURNISH = {"lotd_ornate": "lotd", "lotd_crypt": "lotd", "dunmir_hall": "dunmir", "dungeon_block": "ogre",
                  "ogre_hut": "ogre"}
 FURNISH_CULTURE = {"lotd": "lotd", "ogre": "ogre", "dunmir": "dunmir"}       # westwood.json's culture of a furnishing
-# (size class, shape, neighbouring rooms): the schedule every batch walks, so ten variants cover the range
-SCHEDULE = [("typical", "square", 0), ("small", "long", 1), ("large", "square", 2), ("typical", "long", 1),
-            ("small", "square", 0), ("large", "long", 1), ("typical", "square", 2), ("large", "square", 0),
-            ("small", "square", 1), ("typical", "long", 2)]
+# (size class, shape): the schedule every batch walks, so ten variants cover the range
+SCHEDULE = [("typical", "square"), ("small", "long"), ("large", "square"), ("typical", "long"), ("small", "square"),
+            ("large", "long"), ("typical", "square"), ("large", "square"), ("small", "square"), ("typical", "long")]
+MAX_DOORS = 4                          # the entrance and a neighbour on each of the other three sides
 SIZE_Q = {"small": "p25", "typical": "p50", "large": "p90"}
 
 
@@ -81,6 +83,19 @@ def kind_plan(typ, n, ww):
     # interleave so a short batch (--n 3) still mixes cultures
     order = sorted(range(len(plan)), key=lambda i: (plan[:i + 1].count(plan[i]) / max(1, plan.count(plan[i])), i))
     return [plan[i] for i in order]
+
+
+def door_plan(typ, n, seed):
+    """The door count of each variant: Westwood's campaign rooms of the type (metrics.pool: its own, or its pool's when
+    it has under metrics.MIN_WW), their doors as the metric judge counts them (westwood_features.json), drawn by
+    quantile so a batch follows the distribution (bedroom: 19 of 28 with one door), then put in a seeded order. A room
+    Westwood enters through an open arch (0 doors) counts as one door; over MAX_DOORS as MAX_DOORS."""
+    import metrics
+    rooms, _ = metrics.pool(typ)
+    counts = sorted(min(MAX_DOORS, max(1, int(r["features"].get("doors") or 0))) for r in rooms) or [1]
+    picks = [counts[min(len(counts) - 1, int((k + 0.5) * len(counts) / n))] for k in range(n)]
+    random.Random(E.seed_of("doors", typ, seed)).shuffle(picks)
+    return picks
 
 
 def target_tiles(typ, size, ww, rng):
@@ -141,10 +156,11 @@ def plan(typ, n=10, seed=1):
     neighbours, sides, entrance, seed)]."""
     ww = _ww_types()
     kinds = kind_plan(typ, n, ww)
+    doors = door_plan(typ, n, seed)
     host_turn = {}
     out = []
     for i in range(n):
-        size, shape, nb = SCHEDULE[i % len(SCHEDULE)]
+        size, shape = SCHEDULE[i % len(SCHEDULE)]
         vseed = E.seed_of("roomlab", typ, seed, i)
         rng = random.Random(vseed)
         kind = kinds[i]
@@ -165,11 +181,12 @@ def plan(typ, n=10, seed=1):
             entrance = rng.choices(keys, [ent[k] for k in keys])[0]
             free = [s for s in ("u_min", "u_max", "v_min", "v_max") if s != entrance]
         rng.shuffle(free)
+        nb = min(len(free), doors[i] - 1)
         others = [k for k, _ in BUILDINGS.get(role, {}).get("rooms", []) if k != kind] or ["storeroom"]
         nkinds = [others[k % len(others)] for k in range(nb)]
         out.append(dict(index=i + 1, kind=kind, type=typ, role=role, style=style, furnish=furnish,
                         culture=culture_of(furnish), size=size, shape=shape, tiles_target=tiles, W=W, H=H,
-                        neighbours=nb, sides=free[:nb], neighbour_kinds=nkinds, entrance=entrance, seed=vseed))
+                        doors_planned=nb + 1, neighbours=nb, sides=free[:nb], neighbour_kinds=nkinds, entrance=entrance, seed=vseed))
     return out
 
 
