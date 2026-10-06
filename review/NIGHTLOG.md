@@ -122,3 +122,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   the system clock.) 16 more sheets sent to four fresh judges (13 room types, 3 scenes; one sheet per type per judge).
   Four sheets rendered before the renderer fix (tavern r10, study r3, solar r3, chapel r3) were sent back for
   re-rendering. Track commits so far: A 7, B 13, C 13, scenes 5.
+- 00:03 First room type to pass the independent blind test: **storeroom r16, 5/10 (chance)**, generated 5.2 vs
+  Westwood 5.8 (track C: supplies heaped as Westwood heaps them, fuller rooms after the curated references). Still told
+  apart 10/10: cell r4 (3.8/7.2), infirmary r2 (4.6/4.0; no Westwood infirmaries), dining hall r8 (4.0/6.4), hall r3
+  (4.4/6.0), shrine r9 (4.6/6.8), gallery r3 (3.6/6.0), laboratory r11 (4.4/6.8). The judges agree on one diagnosis
+  across types: one set stamped at equal spacing, a lone group dead centre, large bare floor, where Westwood's rooms
+  have "one strong idea placed with small irregularities". Note for the method: the briefs describe our generator's
+  rules (caps per wall), and a judge used that to tell rooms apart; judges should get a type description without the
+  generator's rules.
