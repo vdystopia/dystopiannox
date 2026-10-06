@@ -2116,7 +2116,7 @@ class Furnisher:
             return got
         if step == 2 and accent:                        # the odd piece: by the heap
             r, a0, d = (rA, aA, dA) if self.rng.random() < 0.5 else (rB, aB, dB)
-            start = self._store_ends.get(id(r), a0 + d * 2.6) + d * self.rng.uniform(0.3, 1.5)
+            start = self._store_ends.get(id(r), a0 + d * 2.6) + d * self._heap_gap()      # touching the heap
             row, e = self._heap_row(r, start, d, accent, 1)
             if row: self._store_ends[id(r)] = e
             return len(row)
@@ -2143,7 +2143,12 @@ class Furnisher:
             crates = crates or self.supply_types(r"^(DarkCrate|Crate)[12]$")[:1]
             if crates:                                  # a stack standing free
                 t = crates[0]; hu, hv = self.half(t)
-                spot = self.free_middle(2 * hu + 2.0, 2 * hv + 2.0)
+                # free of the walls with an aisle round it, as near the heaps as that allows (never dead centre of a
+                # bare floor: the independent judge)
+                sup = [rec for tt, rec in self._typed if rec[4] and rec[5] != "wall"]
+                spots = self.middle_spots(2 * hu + 1.6, 2 * hv + 1.6)[:40]
+                spot = min(spots, key=lambda p_: min([math.hypot(p_[0] - x[0], p_[1] - x[1]) for x in sup] or [0]) +
+                           self.rng.uniform(0, 1.0)) if spots else None
                 if spot:
                     u, v = spot
                     long_u = hu > hv
@@ -2166,6 +2171,25 @@ class Furnisher:
         blocks = [(rec[0], rec[1]) for tt, rec in self._typed if rec[4] and rec[5] != "wall"]
         if not blocks: return 0
         fu = sum(b[0] for b in blocks) / len(blocks); fv = sum(b[1] for b in blocks) / len(blocks)
+        # most often a heap grows: the next pieces touch the end of one already standing (the independent judge of
+        # the storeroom lab: "clusters of sacks strung down a whole wall at regular gaps"; Westwood's stores pack stock
+        # into heaps and stacks that touch)
+        if self.rng.random() < 0.65:
+            sup = [rec for tt, rec in self._typed if rec[4] and rec[5] != "wall" and _family_of(tt) == "storage"]
+            grow = []
+            for r, lo, hi in self.segments(pad=0.0):
+                if not (r is rA or r is rB): continue
+                for end, d in ((lo, 1), (hi, -1)):
+                    pu, pv = self._uv_on(r, 0.9, end)
+                    if any(math.hypot(pu - x[0], pv - x[1]) < x[2] + 1.0 for x in sup) and hi - lo >= 1.6:
+                        grow.append((r, end, d))
+            self.rng.shuffle(grow)
+            for r, end, d in grow:
+                kinds = [t for t in (lead if self.rng.random() < 0.6 or not second else second) if self.orient(t, r["side"])]
+                if not kinds: continue
+                is_crates = all(re.search(self.STORE_POOLS["crates"], t) for t in kinds)
+                g, _ = self._heap(r, end + d * 0.1, d, kinds, self.rng.randint(1, 2), not is_crates)
+                if g: return g
         rC = next((r for r in self.g.runs if r["line"] == rB["line"] and r is not rB and
                    r["lo"] - 1.5 <= rA["coord"] <= r["hi"] + 1.5 and abs(r["coord"] - rB["coord"]) > 3), None)
         cands = []

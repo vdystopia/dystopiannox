@@ -49,6 +49,10 @@ Its tells: clusters of sacks strung down a whole wall at regular gaps; single cr
 three barrels in an evenly spaced row; an under-stocked middle lit by candelabras in the open corners. (Westwood lights
 its stores with torches; the house rule [TP1-5] keeps candelabras indoors, so the lights stay candelabras.)
 
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| r9 | answering the judge: two fills in three grow a heap already standing (the next pieces touch its end) instead of a new cluster down the wall; the odd piece touches the heap; the stack of crates stands free as near the heaps as an aisle allows, never dead centre; lights 2 per 100 tiles | 0.761 | 0.908 | 0 | queued |
+
 ## Laboratory (Westwood: 19 rooms)
 
 What Westwood's look like: nothing in the middle (0-0.02 covered more than 2.5 units from a wall); no cauldron, plant
