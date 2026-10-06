@@ -79,7 +79,9 @@ def _yard_plan(kind):
         land = ctx["land"]
         ctx["yards"] = {}
         for p in ctx["plots"]:
-            y = Y.plan(land, p.rng, kind, p.scene_c, toward=p.toward)
+            ring = [(p.c[0] + r * math.cos(k * math.pi / 4), p.c[1] + r * math.sin(k * math.pi / 4))
+                    for r in (3, 5) for k in range(8)]
+            y = Y.plan_any(land, p.rng, kind, [p.scene_c, p.c] + ring, toward=p.toward)      # as the designs plan
             if y: ctx["yards"][p.k] = y
             else: ctx["log"](f"  plot {p.k + 1}: no room for the {kind}")
     return plan

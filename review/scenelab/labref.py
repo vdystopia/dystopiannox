@@ -116,8 +116,11 @@ def build_index(log=print):
     for name, env in maps:
         for s in found[name]:
             key = (rep.get(name, name), s["type"], round(s["anchor"][0] / 60), round(s["anchor"][1] / 60))
-            if key in seen:
-                seen[key]["also"].append(name); continue
+            # the same place in two layout groups (Galava's yard in Con07B and War07A): its anchor and pieces match
+            twin = next((t for t in scenes if t["type"] == s["type"] and abs(len(t["pieces"]) - len(s["pieces"])) <= 4 and
+                         math.hypot(t["anchor"][0] - s["anchor"][0], t["anchor"][1] - s["anchor"][1]) < 60), None)
+            if key in seen or twin:
+                (seen.get(key) or twin)["also"].append(name); continue
             s["also"] = []
             seen[key] = s
             scenes.append(s)

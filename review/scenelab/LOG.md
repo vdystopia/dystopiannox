@@ -47,3 +47,21 @@ and spread their beds one by one." One camp backed its cart into the pond.
 r3 judge: "Much better: clear zones and the user's structure. Still given away by the sleeping row laid tent-pair-tent-pair
 in a perfectly even line, the bench and chest crowding the fire's back, and a lookout set far off across empty grass."
 The classifier's own floor (Westwood against Westwood, random halves) is 0.56 +/- 0.2 for camps.
+
+Westwood's evidence was deduplicated after graveyard r3 (the same place in two layout groups, Galava's yard in Con07B
+and War07A, counted once): bandit camps 20, graveyards 16 -> 13. Numbers after that are on the deduplicated set.
+
+## graveyard (mapgen/kit/yards.py `_graveyard`, YARDS, `plan`)
+
+| Round | What changed | AUC | Blind acc. | Blind gen / WW | Hard |
+|---|---|---|---|---|---|
+| baseline | | 1.00 | (not judged) | | 1 missing |
+| r1-sparse | the yard's ground sparse grass (Westwood's GrassSparse2); graves in rows 2.4 squares apart, a third on dug earth; stone pillars by the gate (Monument1); a dead tree or two; no bench, no cross between urns, no corner torches; the gravedigger's corner kept (the user: "a bucket of tools") in 65% of yards, with a torch pole to work by; `plan` falls back to a smaller plot rather than dropping the yard; the lab plans with `plan_any` as the designs do | 0.96 | 100% | 6.0 / 7.2 | 0 |
+| r2-loose | graves a little out of true, an unused plot now and then; trees only by the fence, inside it (dead or leafy), never among the graves | 0.93 | | | 0 |
+| r3-spaced | graves 2.7-2.8 squares apart (Westwood's nearest 88-97 px); the digger's corner lighter (no spoil, no pick) | 0.94 | 100% | 6.0 / 7.6 | 0 |
+| r4-larger | yard sizes up to 14 x 11 (Westwood's big yards are 16 x 16): AUC 0.80 on the deduplicated evidence, but Harrowby's bigger yard cut off a corner of the map (2 unreachable creatures), so reverted | 0.80 | 100% | 6.0 / 6.8 | 0 |
+| r5-kept | the kit as kept (r3 with the sizes 10 x 9 to 11 x 10) | 0.87 | | | 0 |
+
+r4 judge: "Inside the fence the generated yards hold Westwood's headstones, spacing and ground; they still read as one
+shape (a small square box in a glade) where Westwood's are long or large and set against buildings and crypts."
+Ambermere, Starwell and Harrowby build with 0 errors.
