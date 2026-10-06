@@ -379,25 +379,28 @@ ROOMS = {
                         dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
     "library": dict(purpose="books: bookcases lining both back walls end to end, stacks of bookcases in rows down the "
                             "middle of a big library, a reading table on a carpet, a desk, a curio",
+                    # the room lab (2026-10-05): Westwood's 7 campaign libraries keep the middle bare (0-0.03 covered
+                    # more than 2.5 units from a wall), hold no plants and no curios, line their back walls 0.04-0.29
+                    # and warm themselves at a hearth (3 of 7: Con02a's two, War07A, Wiz01A): bookcases along a wall or
+                    # two, a round or an oval table with its chairs, a desk. Our stacks of bookcases down the middle,
+                    # plants, telescopes and statues gave every one away (AUC 0.99). The user wants a lined wall lined
+                    # end to end (HB-4), so one back wall is, the other only near the desk
                     core={"shelves": (4, 40), "table": (1, 2)},
-                    optional={"desk": (0.7, 1), "chair": (0.8, 6), "rug": (0.6, 1),
-                              "fireplace": (0.25, 1), "lab": (0.5, 1), "plant": (0.5, 2), "statue": (0.3, 2),
-                              "wall_decor": (0.8, 4)},
-                    types={"shelves": r"^Bookcase\d(HalfFull)?$", "lab": r"^Telescope2[a-g]$|^Orrery2$",
-                           "statue": r"^Statue2[a-h]$", "plant": PLANTS},
-                    compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
+                    optional={"desk": (0.7, 1), "chair": (0.8, 6), "rug": (0.3, 1), "fireplace": (0.45, 1),
+                              "statue": (0.3, 2), "wall_decor": (0.6, 2), "storage": (0.5, 1)},
+                    types={"shelves": r"^Bookcase\d(HalfFull)?$", "statue": r"^Statue2[a-h]$", "storage": r"^Chest\d",
+                           "table": r"^RoundTable[12]$|^OvalTable[12]$|^SquareTable[12]$"},
+                    lined_goal=0.3, decor_max=1, top_up=("storage",),
+                    compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.0),
+                             dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                              dict(fam="shelves", slot="line", near="desk"),
-                             dict(fam="shelves", slot="line", other=True),
                              dict(fam="table", slot="center", seats=True),
-                             dict(fam="carpet", slot="carpet", where="under", chance=0.6),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0),
-                             dict(fam="wall_decor", slot="decor")],
-                    fill=[dict(fam="shelves", slot="racks", kind="books", max=16, min_area=80),
-                          dict(fam="shelves", slot="line", other=True, max=8),
-                          dict(fam="lab", slot="group", group="curio", max=1, min_area=120),
-                          dict(fam="table", slot="group", group="sitting", max=1, min_area=200),
-                          dict(fam="shelves", slot="line", max=6),
-                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                             dict(fam="carpet", slot="carpet", where="under", chance=0.3)],
+                    fill=[dict(fam="shelves", slot="line", other=True, max=12),
+                          dict(fam="table", slot="center", seats=True, max=2, min_area=150),
+                          dict(fam="storage", slot="wall", at="center", clear=2.0, max=1, min_area=150),
+                          dict(fam="shelves", slot="racks", kind="books", max=8, min_area=250),
+                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=300, fixed=True)]),
     # 2026-10-05, Starwell playtest: the college laboratory "almost looks like some sort of shoddy mess hall with random
     # objects stuffed in it. This room has no sense of identity or purpose" (eight tesla coils end to end down its long
     # wall, five dining and reading tables with their chairs scattered down the middle). Westwood's laboratories (Wiz07D:

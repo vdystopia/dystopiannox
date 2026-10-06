@@ -161,8 +161,10 @@ TYPES = {
         walls=dict(back="bookcases end to end, the desk among them", other_back="bookcases end to end",
                    front="a statue or a plant", middle="stacks of bookcases in rows in a big library; the reading "
                                                        "table on a carpet; a curio"),
-        cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.25, 0.9), types_min=8, free_most=(3, 40),
-        caps={}, walls_min=3, lined=0.50, tiles=(30, 200),
+        # the room lab: Westwood's 7 libraries cover 0.06-0.12-0.19, lined 0.04-0.29; the user's lined wall (HB-4) keeps
+        # one back wall lined end to end
+        cover=(0.07, 0.13, 0.28), open=(0.30, 0.85), per_tile=(0.12, 0.9), types_min=5, free_most=(3, 40),
+        caps={}, walls_min=2, lined=0.25, tiles=(30, 200),
         signature={"^Bookcase|^MovableBookcase": (0.6, 30), "table": (1, 2), "desk": (1, 1)}, needs=("shelves",),
         kin=("study", "laboratory")),
     "smithy": dict(

@@ -104,3 +104,20 @@ three, the stock crowding (median gap 0.36 against 1.0).
 
 Shared (kit/furnish.py), a no-op unless a recipe sets `trades`: `Furnisher._trade` filters `types_of`,
 `supply_types` and the top-up and skips steps (`_skipped`); SUPPLIES gains "steel" (used only by the shop recipe).
+
+## Library (Westwood: 7 rooms)
+
+What Westwood's look like: the middle bare (0-0.03), no plants or curios, back walls 0.04-0.29 lined, a hearth in 3
+of 7, a round or oval table with chairs (0.22 tables per 10 tiles), bookcases 2-17 (160 in Con07D's 494-tile hall).
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: stacks of bookcases down the middle from 33 tiles, plants, telescopes and orreries, statues, both back walls lined) | 0.991 | 0.996 | 1 | - |
+| r1 | no plants, curios or rugs mostly; a hearth (0.45); one back wall lined by the desk, the other filled; stacks only past 175 tiles; `lined_goal` 0.3; cover target 0.17 -> 0.13 | 0.871 | 0.993 | 8 (sparse) | - |
+| r2 | a chest, two reading tables from 62 tiles | 0.884 | 0.986 | 7 (sparse) | - |
+| r3 | the second back wall lined end to end (the user's HB-4), stacks from 100 tiles | 0.886 | 0.992 | 4 (3 sparse, 1 door shell) | - |
+
+The tension: Westwood's libraries line their back walls 0.11 and keep the middle bare at 0.12 covered (their
+bookcases stand on every wall, the front ones too); the checker forbids bookcases on the front walls and wants the room
+as covered as Westwood's median, and the user wants a lined wall lined end to end. What gives ours away: lined back
+walls (0.65), the desk on its back wall (Westwood's libraries have no desk), pieces touching end to end (nn 0.04).
