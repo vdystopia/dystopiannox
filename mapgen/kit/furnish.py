@@ -1482,7 +1482,7 @@ class Furnisher:
             if not self.g.fits(u, v, hu, hv): continue
             room = min([self.g.wall_dist(u, v) - max(hu, hv)] +
                        [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
-            out.append((min(room, 3.0 if not jit else 1.6) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
+            out.append((min(room, 3.0 if not jit else 0.6) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
         return [(u, v) for _, u, v in out]
 
@@ -2854,8 +2854,8 @@ class Furnisher:
         n = max(1, int(round(per100 * len(self.room.tiles) / 100)))
         cells = sorted(self.g.cells)
         self.rng.shuffle(cells)
-        if by_bed and self.beds:                     # heaped by the cot, as Westwood strews a cell's straw (War07A)
-            bu, bv = self.beds[0][2]
+        if by_bed and (self.beds or self.anchors):   # heaped by the cot (War07A) or the stocks (Con11a's pens)
+            bu, bv = self.beds[0][2] if self.beds else self.anchors[0]
             cells.sort(key=lambda c: math.hypot(c[0] + c[1] + 1.0 - bu, c[0] - c[1] - bv) + self.rng.uniform(0, 1.5))
         got = 0
         for (x, y) in cells:

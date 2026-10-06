@@ -15,15 +15,26 @@ overwrite or set them aside.
 | kitchen | ref | before | 10/10, 5.0 / 5.8 |
 | kitchen | r8 | Westwood's pieces (dropped) | 10/10, 3.4 / 5.8 |
 
-## Queued (after the renderer fix and the curated references; one sheet per type, the best round)
+## Judged, second batch (after the renderer fix)
 
-| Type | Iteration | Blind folder | Note | Result |
+| Type | Iteration | Result (accuracy, generated / Westwood) |
+|---|---|---|
+| bedroom | r10 | 8/10, 5.6 / 7.4 |
+| kitchen | r11 | 10/10, 5.0 / 4.2 (thin pool) |
+| living_room | r10 | 10/10, 4.6 / 6.6 |
+| guardroom | r8 | 9/10, 5.4 / 5.4 |
+| cell | r4 | 10/10, 3.8 / 7.2 |
+| infirmary | r2 | 10/10, 4.6 / 4.0 (kin rooms) |
+
+## Queued (third batch: the judge's faults from the second batch taken out; one sheet per type)
+
+| Type | Iteration | Blind folder | What changed since the judged round | Result |
 |---|---|---|---|---|
-| bedroom | r10 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\bedroom\r10\blind | the kit's recipe; one rug, the table off the rug, single bookcases | |
-| kitchen | r11 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\kitchen\r11\blind | the kit's kitchen; the pot by the hearth or apart, cauldron or stove; stores heaped; table off centre | |
-| living_room | r10 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\living_room\r10\blind | bellows, a stove in some, two tables, table off centre | |
-| guardroom | r8 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\guardroom\r8\blind | the watch's table, one cot, single arms pieces | |
-| cell | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\cell\r4\blind | straw heaped by the cot; ogre pens with straw and an obelisk | |
-| study | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\study\r3\blind | the user's praised composition; chest always (Westwood side is the pool: libraries) | |
-| solar | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\solar\r3\blind | no plants, bench by the hearth (Westwood side partly the pool) | |
-| infirmary | r2 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\infirmary\r2\blind | no Westwood infirmaries: the Westwood side is the pool | |
+| bedroom | j3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\bedroom\j3\blind | the bed centred on a back wall, the desk on a back wall, the table drawn off the centre (a whole carpet still holds a table at its centre) | |
+| kitchen | j2 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\kitchen\j2\blind | the pot always beside the hearth, stores fewer and heaped, provision shelves on the second back wall | |
+| living_room | j6 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\living_room\j6\blind | barrels heaped by the stock pass 2.4 off the fire, a bench drawn up before the hearth, no stamped benches, no second set on a rug | |
+| guardroom | j3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\guardroom\j3\blind | two cots side by side on a back wall, no pennants, the table off the corner | |
+| cell | j1 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\cell\j1\blind | pens: the stocks with one straw heap before them (Westwood's Con11a), the obelisk; fewer straw mats | |
+| infirmary | j1 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\infirmary\j1\blind | (only the off-centre fix; the judge's cot and cauldron faults remain) | |
+| study | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\study\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |
+| solar | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\solar\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |

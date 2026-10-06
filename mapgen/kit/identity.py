@@ -61,10 +61,13 @@ ROOMS = {
                            "table": r"^RoundTable[12]$|^SquareTable[12]$"},
                     # three tables at most, however big the chamber (kit/roomtypes.py caps: Thornwick's 105-tile lord's chamber
                     # took five round tables with their chairs and read as a dining room: rules/rooms/bedroom.md)
-                    compose=[dict(fam="bed", slot="wall", at="any", clear=1.0),
+                    # (independent judge r10: "the bed pushed into the N corner, so it is not the focus", "a round
+                    # table dead centre of a huge empty carpet", "a desk on the SW front wall showing its back")
+                    middle_jitter=5.0,
+                    compose=[dict(fam="bed", slot="wall", at="center", clear=1.0, back=True),
                              dict(fam="storage", slot="wall", at="center", clear=2.3, rug=True),
                              dict(fam="shelves", slot="line", n=3),
-                             dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
+                             dict(fam="desk", slot="wall", at="center", clear=0, seats=True, back=True),
                              dict(fam="carpet", slot="carpet", where="whole", chance=0.4),
                              dict(fam="wall_decor", slot="decor")],
                     fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=100), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=70), dict(fam="table", slot="group", group="sitting", max=1, min_area=90), dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
@@ -78,25 +81,27 @@ ROOMS = {
     "dwelling": dict(purpose="a one-room home: the hearth on a back wall with shelves beside it, the bed against a wall, "
                              "a table to eat at toward the front, a chest for belongings, a pot on the fire",
                      base="living_room",
-                     core={"bed": (1, 1), "table": (1, 1), "chair": (2, 4), "storage": (1, 2), "fireplace": (1, 1)},
-                     optional={"rug": (0.4, 1), "shelves": (0.9, 4), "wall_decor": (0.3, 1), "bench": (0.6, 1)},
-                     decorate=False, lined_goal=0.1, top_up=("bench",), middle_jitter=3.0,
+                     core={"bed": (1, 1), "table": (1, 1), "chair": (2, 4), "storage": (1, 5), "fireplace": (1, 1)},
+                     optional={"rug": (0.4, 1), "shelves": (0.9, 4), "wall_decor": (0.3, 1), "bench": (0.8, 2)},
+                     decorate=False, lined_goal=0.1, top_up=(), middle_jitter=3.0,
                      types={"storage": CHEST + r"|^Barrel$|^WaterBarrel$", "stove": r"^Cauldron", "plant": PLANTS,
                             "table": r"^RoundTableWithFood$|^RoundTable[12]$|^Table[1-4]$"},
                      table_palette=False,
                      prefer={"fireplace": {"Fireplace4": 1, "Fireplace3": 1}},
                      compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
                               dict(fam="bed", slot="wall", at="any", clear=1.0),
-                              dict(fam="shelves", slot="line", near="fireplace", n=2, chance=0.4),
-                              dict(fam="storage", slot="wall", at="center", clear=1.4),
+                              dict(fam="shelves", slot="line", near="fireplace", n=2, chance=0.5),
+                              dict(fam="bench", slot="before", of="fireplace", gap=2.6),
+                              dict(fam="storage", slot="wall", at="center", clear=1.4, only=r"Chest"),
                               dict(fam="table", slot="groups", group="family_table", n=1),
                               dict(fam="table", slot="center", seats=True),
                               dict(fam="carpet", slot="carpet", where="under", chance=0.4),
                               dict(fam="wall_decor", slot="decor")],
                      fill=[                           dict(fam="table", slot="group", group="sitting", max=1, min_area=150),
                            dict(fam="shelves", slot="line", other=True, max=4, min_area=140),
-                           dict(fam="bench", slot="wall", max=1),
-                           dict(fam="storage", slot="wall", at="corner", clear=0.6, only=r"Barrel", max=2)]),
+                           dict(fam="bench", slot="wall", max=1, fixed=True),
+                           dict(fam="storage", slot="stock", coverage=0.25, kinds=("barrels", "sacks"), pad=1.2, per_wall=0.3, max=5),
+                           dict(fam="shelves", slot="line", n=1, max=2)]),
     # Westwood's living rooms (15 campaign rooms, room lab tuneA): a round table (with its food in 7) ringed by three to
     # five chairs, the hearth in 6 with a bench by it, a chest, a barrel or a water barrel, a spittoon, a rug or a
     # tapestry or two; no bookcases (one movable bookcase in 15), no plants, back walls bare (lined 0.05)
@@ -106,9 +111,9 @@ ROOMS = {
                         # (curated Westwood set, 14 households of 15-128 tiles: the hearth with its bellows in 7, bookcases
                         # in 7, an iron stove in 5, two tables, a spittoon in 4)
                         core={"fireplace": (1, 1), "table": (1, 2), "chair": (4, 7)},
-                        optional={"shelves": (1.0, 3), "storage": (0.8, 2), "bench": (0.4, 1), "rug": (0.35, 1),
+                        optional={"shelves": (1.0, 3), "storage": (1.0, 5), "bench": (0.8, 2), "rug": (0.35, 1),
                                   "wall_decor": (0.3, 2), "clutter": (0.4, 1), "smithy": (0.5, 1), "stove": (0.35, 1)},
-                        types={"statue": r"^StatueVase\d*$|^Statue2[a-h]$", "storage": CHEST + r"|^Barrel$|^WaterBarrel$",
+                        types={"statue": r"^StatueVase\d*$|^Statue2[a-h]$", "storage": CHEST + r"|^Barrel2?$|^WaterBarrel$",
                                "shelves": r"^Bookcase\d(HalfFull)?$|^LogShelvesFull\d$",
                                "table": r"^RoundTableWithFood$|^RoundTable[12]$|^Table[1-4]$",
                                "rug": r"^RedRug\d$|^BearskinRug\d$", "clutter": r"^Spitoon$",
@@ -116,21 +121,24 @@ ROOMS = {
                                "stove": r"^Stove0[1-5]$"},
                         prefer={"fireplace": {"Fireplace4": 1, "Fireplace3": 1},
                                 "table": {"RoundTableWithFood": 4, "RoundTable1": 1, "RoundTable2": 1, "Table1": 1}},
-                        decorate=False, lined_goal=0.05, top_up=("bench",), table_palette=False, middle_jitter=3.0,
+                        decorate=False, lined_goal=0.05, top_up=(), table_palette=False, middle_jitter=3.0,
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
                                  dict(fam="smithy", slot="wall", beside="fireplace", gap=0.2, clear=0),
-                                 dict(fam="shelves", slot="line", near="fireplace", n=2, chance=0.5),
+                                 dict(fam="shelves", slot="line", near="fireplace", n=2, chance=0.7),
+                                 dict(fam="bench", slot="before", of="fireplace", gap=2.6),
                                  dict(fam="stove", slot="wall", at="corner", clear=1.4),
                                  dict(fam="table", slot="groups", group="family_table", n=1),
                                  dict(fam="table", slot="center", seats=True),
                                  dict(fam="storage", slot="wall", at="center", clear=2.3, only=r"Chest"),
+                                 # barrels heaped in a corner by the stock pass, which keeps them 2.4 off the fire (an
+                                 # independent judge: "barrels touching both sides of the hearth ... evenly spaced")
+                                 dict(fam="storage", slot="stock", coverage=0.2, kinds=("barrels",), pad=1.2, per_wall=0.3),
                                  dict(fam="bench", slot="wall", at="center", clear=0),
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.3),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="storage", slot="wall", at="corner", clear=0.6, only=r"Barrel", max=1),
-                              dict(fam="clutter", slot="wall", at="corner", clear=0, max=1),
-                              dict(fam="bench", slot="wall", at="center", clear=0, max=1, min_area=70),
-                              dict(fam="table", slot="group", group="sitting", max=1, min_area=50),
+                        fill=[dict(fam="clutter", slot="wall", at="corner", clear=0, max=1),
+                              dict(fam="table", slot="group", group="side_table", max=1, min_area=50, fixed=True),
+                              dict(fam="storage", slot="wall", at="corner", clear=1.0, only=r"Chest", max=1, min_area=60),
                               dict(fam="shelves", slot="line", other=True, n=3, max=3)]),
     # Westwood's kitchens (10 campaign rooms, room lab tuneA): the iron stove in every one (on a back wall toward a corner;
     # Stove01-05, never a cauldron: the animated cauldron stands in two shops), a table set or two with dark wooden
@@ -156,16 +164,17 @@ ROOMS = {
                             "storage": {"Barrel": 3, "Barrel2": 2, "TraderAppleCrate": 2, "SackChestLarge1": 1, "Crate1": 1}},
                     lined_goal=0.2, middle_jitter=3.0,
                     compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
-                             dict(fam="stove", slot="wall", at="corner", clear=1.4, beside="fireplace", gap=2.0, chance=0.5),
-                             dict(fam="stove", slot="wall", at="any", clear=1.4),
+                             # (independent judge r11: "the hearth and the cauldron far apart": the pot by the fire)
+                             dict(fam="stove", slot="wall", at="corner", clear=1.4, beside="fireplace", gap=2.0),
                              dict(fam="shelves", slot="line", n=3),
                              dict(fam="table", slot="center", seats=True),
-                             dict(fam="storage", slot="stock", coverage=0.45, kinds=("sacks", "barrels", "apples", "crates"),
+                             dict(fam="storage", slot="stock", coverage=0.3, kinds=("sacks", "barrels", "apples", "crates"),
                                   pad=1.3, per_wall=0.5)],
                     fill=[dict(fam="table", slot="group", group="worktable", max=1, min_area=80),
                           dict(fam="storage", slot="stock", coverage=0.6, kinds=("barrels", "sacks", "apples", "crates"),
-                               pad=1.0, max=6, per_wall=0.5),
-                          dict(fam="shelves", slot="line", other=True, n=3, max=3)]),
+                               pad=1.0, max=10, per_wall=0.5),
+                          dict(fam="table", slot="group", group="feast", max=1, min_area=70, fixed=True),
+                          dict(fam="shelves", slot="line", other=True, n=4, max=4, fixed=True)]),
     "herbalist": dict(purpose="an herb-lore room: a pair of potion shelves on a back wall, books of remedies lining a back "
                               "wall end to end, a bubbling cauldron, a work table toward the front, sacks of herbs, herbs "
                               "growing in pots",
@@ -949,7 +958,7 @@ ROOMS = {
                       # back walls bare but for the arms)
                       per_tiles={"table": 60},
                       core={"table": (1, 1), "chair": (3, 6), "bed": (1, 3), "shop_rack": (1, 2), "storage": (1, 4)},
-                      optional={"bench": (0.4, 1), "wall_decor": (0.2, 1), "rug": (0.5, 1)},
+                      optional={"bench": (0.4, 1), "rug": (0.5, 1)},
                       types={"table": r"^RoundTableWithFood$|^RoundTable[12]$|^SquareTable[12]$",
                              "chair": r"Chair|Stool", "bed": r"^Cot\d$",
                              "shop_rack": r"^Trader(HangingSwords[12]|PoleArm[1-4]|BowRack[12]|QuiverRack|"
@@ -961,17 +970,21 @@ ROOMS = {
                                             "TraderPoleArm3": 1, "TraderBowRack2": 1, "TraderQuiverRack": 1},
                               "table": {"RoundTableWithFood": 3, "RoundTable1": 1, "SquareTable1": 1},
                               "bed": {"Cot1": 2, "Cot4": 1}},
-                      decor_themes=("arms",), table_palette=False, wall_gap=0.25,
+                      decor_themes=("arms",), table_palette=False,
                       top_up=("storage", "bench"),
-                      compose=[dict(fam="bed", slot="wall", at="corner", clear=1.0, n=1),
+                      # (independent judge r8: "only one cot, in a corner or on the SW front wall, where it should be
+                      # two or three on a back wall with chests"; "a lone chest a tile out from the wall"; "pennants
+                      # evenly along the NW wall")
+                      middle_jitter=1.5,
+                      compose=[dict(fam="bed", slot="wall", at="corner", clear=1.0, n=1, back=True),
+                               dict(fam="bed", slot="wall", beside="bed", gap=0.9, clear=1.0, n=1),
                                dict(fam="storage", slot="wall", at="center", clear=2.3, only=r"^Chest"),
                                dict(fam="shop_rack", slot="wall", at="center", clear=0.6, n=1),
                                dict(fam="table", slot="groups", group="dining", n=1),
                                dict(fam="table", slot="center", seats=True),
                                dict(fam="storage", slot="stock", coverage=0.25, kinds=("barrels",), pad=1.2, per_wall=0.4),
-                               dict(fam="wall_decor", slot="decor")],
+                      ],
                       fill=[dict(fam="shop_rack", slot="wall", at="center", clear=0.6, max=1, min_area=80),
-                            dict(fam="bed", slot="wall", at="corner", clear=1.0, max=1, min_area=120),
                             dict(fam="bench", slot="wall", at="center", clear=0, max=1),
                             # a second table only in a big watch room, and on a wall stretch of its own, not beside the
                             # first (two sets side by side read as a tavern)
@@ -999,20 +1012,22 @@ ROOMS = {
                      # (room lab tuneA: Con11a's six pens: 4-7 heaps of ogre straw, a crude obelisk in four, a stool or a
                      # bench in two, a barrel; no stocks. The pieces are the ogres' whatever the building's style: `lift`)
                      core={"straw": (4, 12), "totem": (1, 1)},
-                     optional={"bones": (0.5, 4), "stocks": (0.15, 1), "chair": (0.2, 1),
+                     optional={"bones": (0.3, 2), "stocks": (0.7, 1), "chair": (0.2, 1),
                                "storage": (0.2, 1)},
                      lift=("Ogre|",), dark=True,
                      types={"straw": r"^OgreStraw\d$", "stocks": r"^Stocks[1-5]$", "chair": r"^OgreStool\d$",
                             "storage": r"^Barrel$"},
-                     prefer={"straw": {"OgreStraw1": 4, "OgreStraw2": 1, "OgreStraw3": 1, "OgreStraw5": 1},
+                     prefer={"straw": {"OgreStraw1": 3, "OgreStraw2": 2, "OgreStraw3": 1, "OgreStraw4": 1, "OgreStraw5": 1},
                              "stocks": {"Stocks3": 1, "Stocks4": 1}, "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2},
                              "totem": {"ObeliskPrimitive": 1}, "chair": {"OgreStool1": 1, "OgreStool2": 1}},
                      top_up=(),
-                     compose=[dict(fam="totem", slot="wall", at="corner", clear=0.6),
-                              dict(fam="stocks", slot="wall", at="center", clear=1.0),
+                     # (independent judge: "straw laid as big mats ... a sheet across the middle"; Westwood heaps it
+                     # in one pile before the stocks, the obelisk glowing in a corner)
+                     compose=[dict(fam="stocks", slot="wall", at="center", clear=0.4, far=True),
+                              dict(fam="totem", slot="wall", at="corner", clear=0.6),
                               dict(fam="chair", slot="wall", at="any", clear=0),
                               dict(fam="storage", slot="wall", at="corner", clear=0),
-                              dict(fam="straw", slot="scatter", per100=16, cluster=(1, 3), wall_gap=0.8),
+                              dict(fam="straw", slot="scatter", per100=14, cluster=(2, 4), wall_gap=0.3, spread=1.3, by_bed=True),
                               dict(fam="bones", slot="scatter", per100=5, cluster=(1, 2))],
                      fill=[]),
     # the torture room (Wiz07C, 40 tiles: a rack, a body's remains, a chest, a candelabra; Con08d: remains and a chest)

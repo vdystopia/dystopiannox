@@ -216,3 +216,25 @@ No Westwood rooms (design judgement); pool comparison only.
 
 Shared in this stretch: `add_lights` honours a recipe's `dark`; `scatter` takes `spread` and `by_bed` from a step
 (inert by default).
+
+## Third stretch: the second batch of independent judgements
+
+Judge (second batch, renderer fixed): bedroom r10 8/10 (5.6 / 7.4), kitchen r11 10/10 (5.0 / 4.2), living room r10
+10/10 (4.6 / 6.6), guardroom r8 9/10 (5.4 / 5.4), cell r4 10/10 (3.8 / 7.2), infirmary r2 10/10 (4.6 / 4.0). Its
+summary: "one piece in each slot, large evenly empty floor round each group, and spacing faults". Rounds since:
+
+| Type | Round | Change | AUC | Cross | Hard |
+|---|---|---|---|---|---|
+| kitchen | r12-r13 | the kitchen profile back to the kit's (focal the hearth, must storage 4) with the kit's recipe; more stores in the fill | 0.996-0.992 | 0.97 | 2 |
+| kitchen | j1-j2 | the pot always beside the hearth; stores 0.3 of the walls, heaped; provision shelves on the second back wall | 0.993-0.992 | 0.96 | 2 (sparse) |
+| cell | r5-r7, j1 | pens: the stocks (Westwood: 3 of 6 pens; the measure had missed them, no furniture family) with the straw heaped before them (`scatter by_bed` falls back to the first anchor); fewer, wider heaps (fewer still tripped the checker's bunched and short-span rules) | 0.895-0.868 | 0.97 | 3-5 |
+| guardroom | j1-j3 | two cots side by side on a back wall (`back`, profile cap 1 per 8 tiles: Westwood's 2 cots in 12 tiles), no hangings theme, no fill cot, the table drawn off the corner | 0.774-0.754 | 0.85-0.88 | 2-0 |
+| living_room | j1-j6 | barrels by the stock pass (2.4 off the fire; place_on_wall had stood them against the hearth), a bench drawn up before the hearth, no top-up benches, a side table (no rug) in rooms of 50+, dwellings' chests and barrels the same way | 0.888-0.859 | 0.86-0.91 | 9-6 (the checker's sparse line) |
+| bedroom | j1-j3 | the bed centred on a back wall, the desk on a back wall, `middle_jitter` | 0.976-0.985 | 0.89 | 7 |
+| infirmary | j1 | (off-centre fix only) | 0.944 | 0.987 | 2 |
+
+Shared: `middle_spots` caps its clearance term at 0.6 when a recipe sets `middle_jitter` (else the one spot with the
+most room, the dead centre, always won); inert for other kinds. Tavern and storeroom checks unchanged (check6).
+
+Found: in a bedroom laid with a whole carpet the table can only stand centred on it (tables keep off carpets but for
+centred), so the judge's "table dead centre of the carpet" needs the carpet or the table dropped, not moved.

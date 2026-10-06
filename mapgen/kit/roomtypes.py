@@ -112,17 +112,16 @@ TYPES = {
     # ---- work ----------------------------------------------------------------------------------------------------
     "kitchen": dict(
         family="work", feel="full", supplies_line=True, kinds=("kitchen",), westwood=("kitchen",),
-        # the stove, not the hearth (room lab tuneA: Westwood's 10 kitchens all have the iron stove, three a hearth)
-        focal=dict(fam="stove", types=r"^Stove|^Cauldron", where="back"),
-        must={"stove": 1, "storage": 2, "table": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
+        focal=dict(fam="fireplace", types=r"Fireplace", where="back", with_="stove"),
+        must={"stove": 1, "storage": 4, "table": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
                                                             "counter_shop", "smithy", "statue", "column"),
-        never_types=r"PowderBarrel",                # (bookcases: in 4 of Westwood's 10 kitchens)
+        never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="the hearth centred, the cauldron two units from it toward a corner",
                    other_back="log shelves of provisions end to end",
                    front="sacks, barrels, crates and apples in heaps and rows",
                    middle="a work table with its food and stools; a clear way from the hearth to the door"),
-        cover=(0.12, 0.17, 0.30), open=(0.30, 0.82), per_tile=(0.2, 1.0), types_min=6, free_most=(3, 15),
-        caps={}, walls_min=3, lined=0.10, tiles=(20, 80),           # (Westwood: 0.05-0.15-0.20 cover, 4-9-13 kinds)
+        cover=(0.15, 0.21, 0.32), open=(0.22, 0.65), per_tile=(0.3, 1.0), types_min=8, free_most=(3, 15),
+        caps={}, walls_min=3, lined=0.15, tiles=(20, 80),           # log shelves in ones and twos (HB-5)
         signature={"stove": (5, 2), "storage": (0.3, 12), "table": (0.5, 1), "fireplace": (1, 1)}, needs=("stove",),
         kin=("storeroom", "herbalist", "living_room")),
     "laboratory": dict(
@@ -492,7 +491,7 @@ TYPES.update({
                    front="a barrel or two of water and ale; a bench",
                    middle="the watch's table with its chairs (a meal on it), a clear way from the door past it"),
         cover=(0.10, 0.18, 0.32), open=(0.30, 0.80), per_tile=(0.15, 0.9), types_min=8, free_most=(3, 20),
-        caps={"bed": (12, 4), "table": (30, 2)}, walls_min=2, lined=0.20, tiles=(20, 90),
+        caps={"bed": (8, 4), "table": (30, 2)}, walls_min=2, lined=0.20, tiles=(20, 90),   # (Westwood: 2 cots in 12-63 tiles)
         signature={"shop_rack": (1, 6), "bed": (1.5, 3), "table": (2, 1), "chair": (0.3, 6)},
         needs=("bed", "table", "shop_rack"), kin=("barracks", "armoury", "bedroom", "living_room")),
     # ---- confinement ---------------------------------------------------------------------------------------------
@@ -509,8 +508,8 @@ TYPES.update({
         cover=(0.02, 0.10, 0.25), open=(0.25, 0.98), per_tile=(0.05, 1.0), types_min=2, free_most=(12, 2),
         caps={}, walls_min=1, lined=None, tiles=(8, 40),
         signature={"straw": (1, 10), "^Stocks": (3, 1), "bed": (1, 1)}, needs=("straw",), kin=("barracks", "bedroom"),
-        # (room lab tuneA: Con11a's six pens hold straw, a crude obelisk in four, never the stocks)
-        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^ObeliskPrimitive", where="any"), tiles=(20, 50),
+        # (room lab tuneA: Con11a's six pens hold straw heaped before the stocks (3 of 6) and a crude obelisk (4))
+        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^Stocks|^ObeliskPrimitive", where="any"), tiles=(20, 50),
                                    cover=(0.0, 0.06, 0.25), walls_min=0,
                                    never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne",
                                           "tomb", "lab", "smithy", "stove", "fireplace", "rug", "plant", "wall_decor"))}),
