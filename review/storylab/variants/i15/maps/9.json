@@ -1,0 +1,224 @@
+{
+ "iter": "i15",
+ "writer": "Claude Agent SDK subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Pellamar",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Hurgg, an Ogre chief, has taken Thornspur Fort north of Pellamar with his Ogres and wolves and shut the north road. Dorvan sent the player to Mayor Corvane.",
+  "names": {
+   "Pellamar": "place",
+   "Lucky Boar": "place",
+   "Thornspur Fort": "place",
+   "Town Hall": "place",
+   "Hurgg": "person",
+   "Dorvan": "person",
+   "Mayor Corvane": "person",
+   "Tobb": "person",
+   "Moggin": "person",
+   "Hask": "person",
+   "Orla": "person",
+   "Vesk the Fox": "person",
+   "Gubbo": "person",
+   "Nib": "person",
+   "Ogres": "group",
+   "Urchins": "group",
+   "Imp": "thing"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Moggin the goatherd wants the Imp in the well behind his barn killed, the Imp having stirred up the rats.",
+   "names": {
+    "Moggin": "person",
+    "Pellamar": "place",
+    "Hask": "person",
+    "Lucky Boar": "place",
+    "Imp": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Moggin",
+     "text": "Good! There's a wicked little Imp nesting in the old well behind our barn, and he's driven the rats wild. Now they bite anyone who comes near my goats -- the sweetest milkers in Pellamar!\n\nKill the Imp for me. My bow is yours when he's dead.\n\nThis iron key opens the barn door."
+    },
+    "reminder": {
+     "speaker": "Moggin",
+     "text": "It's just one little Imp! Go on and finish him off."
+    },
+    "completion": {
+     "speaker": "Moggin",
+     "text": "The Imp's dead? Wonderful!\n\nTake my bow, as promised, and show it to Hask at the Lucky Boar. He'll fill a quiver for you. Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Imp nesting in the well behind Moggin's barn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Orla the healer lost her healing staff to Urchins and giant bats from the caves east of town.",
+   "names": {
+    "Orla": "person",
+    "Pellamar": "place",
+    "Mayor Corvane": "person",
+    "Town Hall": "place",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orla",
+     "text": "Where have you been all this time!? Something terrible has happened!\n\nThieving Urchins and giant bats from the caves east of town have broken into my house. They made off with my healing staff, and now the sick of Pellamar go without!\n\nPlease, kind sir! Will you get my staff back from those vermin? I will see you well paid.\n\nThis key opens the gate in front of the caves. The Urchins' den lies somewhere beyond it.\n\nTake this potion as well, it may come in handy."
+    },
+    "refusal": {
+     "speaker": "Orla",
+     "text": "Then the sick must suffer, I suppose! I'll find someone with more heart."
+    },
+    "reminder": {
+     "speaker": "Orla",
+     "text": "Come back with my staff and I'll pay you what I promised."
+    },
+    "completion": {
+     "speaker": "Orla",
+     "text": "My staff! You've brought it back! Bless you!\n\nMayor Corvane was here asking for you while you were off in those caves. You'll find him waiting at the Town Hall -- across the square.\n\nHere is some gold for your trouble before you go."
+    },
+    "after": {
+     "speaker": "Orla",
+     "text": "Mayor Corvane is an honest man. You'd do well to heed him."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Urchins from the caves east of town. Recover Orla's healing staff."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Orla's healing staff."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Corvane posts a bounty on the outlaw Vesk the Fox; Gubbo the pedlar, robbed by Vesk's cutthroats, wants the gang in irons.",
+   "names": {
+    "Mayor Corvane": "person",
+    "Vesk the Fox": "person",
+    "Gubbo": "person",
+    "Pellamar": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Corvane",
+     "text": "Greetings, brave Adventurer. You'll be here for the bounty, I take it.\n\nVesk the Fox and his cutthroats have robbed every cart on the crossroads since spring. Bring him in dead or alive, and the town will pay a fine price.\n\nWatch yourself. Those rats stab a man the moment he turns his back."
+    },
+    "offer_b": {
+     "speaker": "Gubbo",
+     "text": "To tell the truth, nobody's buying much these days. Last week, cutthroats jumped my cart and took every pot I had.\n\nI'll never lay eyes on those pots again, but I'd love nothing better than to see that gang in irons.\n\nAnybody who puts them there gets a prize from me!"
+    },
+    "outcome_a": {
+     "speaker": "Mayor Corvane",
+     "text": "Dead, is he? I'd wanted Vesk to stand trial, but nobody in Pellamar will shed a tear for that scoundrel!\n\nYour bounty -- 100 gold! The crossroads are safer for your work!"
+    },
+    "outcome_b": {
+     "speaker": "Gubbo",
+     "text": "The cutthroats are in irons at last! Good work, lad! Every honest trader on the road can rest easy knowing those thugs won't be grabbing at our carts anymore!\n\nAnd here's your prize... the finest boots on my cart! Drop by anytime!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Vesk the Fox and collect Mayor Corvane's bounty."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Vesk's cutthroats to justice for Gubbo the pedlar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Hask, keeper of the Lucky Boar, begs the player to rescue his potboy Nib from the Ogre camp west of the crossroads.",
+   "names": {
+    "Hask": "person",
+    "Nib": "person",
+    "Lucky Boar": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hask",
+     "text": "Business? What business! The Ogres have scared every traveler off the road. Yesterday they grabbed my potboy Nib right off the woodpile!\n\nI fear the worst for the boy, but I'd give anything to have him back in my kitchen. They dragged him off to their camp west of the crossroads.\n\nAnyone who brings him home gets a fine reward!"
+    },
+    "reminder": {
+     "speaker": "Hask",
+     "text": "Why are you standing around? Those Ogres have my Nib!"
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Is someone there? Please, get me out of this cage before they come back!"
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "Quick! Take me home before they wake up!"
+    },
+    "completion": {
+     "speaker": "Hask",
+     "text": "Nib's home! Thank goodness, lad! Not a soul at the Lucky Boar could eat or sleep while those brutes had him!\n\nHere's your reward... 60 gold! And your room is free here any night you like!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Hask's potboy Nib home from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Tobb points the player to Mayor Corvane in the Town Hall, who sends him north to Thornspur Fort to face Hurgg and his Ogres.",
+   "names": {
+    "Tobb": "person",
+    "Hurgg": "person",
+    "Mayor Corvane": "person",
+    "Thornspur Fort": "place",
+    "Gubbo": "person",
+    "Pellamar": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tobb",
+     "text": "Hurgg must have tamed the wolves of the hills! The fort was quiet one night, and by morning Ogres and wolves were crawling all over it. Mayor Corvane wants to see you."
+    },
+    "opening": {
+     "speaker": "Mayor Corvane",
+     "text": "Dark days have come upon the crossroads. Hurgg, chief of the Ogres, holds Thornspur Fort, and his brutes plunder every caravan on the north road.\n\nYou must go up there and face him.\n\nHere are potions and some gold -- buy whatever else you need at Gubbo's cart, then hurry. The road north over the hill leads straight to the fort."
+    },
+    "reminder": {
+     "speaker": "Mayor Corvane",
+     "text": "There is no more to say, kind sir. Go on up to the fort and deal with Hurgg!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go north from Pellamar to Thornspur Fort and defeat Hurgg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

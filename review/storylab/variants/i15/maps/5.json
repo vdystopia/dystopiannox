@@ -1,0 +1,223 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varn",
+  "setting": "a lake village of fishermen",
+  "trouble": "Vosker's pirates hold the old lighthouse on Gull Rock, and no boat crosses the lake.",
+  "names": {
+   "Varn": "place",
+   "Vosker": "person",
+   "Vosker's pirates": "group",
+   "Gull Rock": "place",
+   "Odwald": "person",
+   "Mayor Ostrin": "person",
+   "Haskel": "person",
+   "Eel Caves": "place",
+   "Father Dunstal": "person",
+   "Imps": "group",
+   "Bodley": "person",
+   "Skeeve": "person",
+   "Nella": "person",
+   "Old Mott": "person",
+   "Marra": "person",
+   "Great Lake": "place",
+   "Nox": "place"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Haskel, head of Varn's fishermen: leeches and bats have taken the Eel Caves and trapped his men.",
+   "names": {
+    "Haskel": "person",
+    "Eel Caves": "place",
+    "Odwald": "person",
+    "Varn": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskel",
+     "text": "At last! Something horrible has happened here!\n\nThe Eel Caves are crawling with monstrous leeches and shrieking bats out of the black depths. Good fishermen have died down there keeping Varn fed!\n\nI beg you, clear out the vermin and get my men home. I'll pay you well for it!\n\nOne of my men locked himself in the first grotto. This key opens it, and he can lead you to the others.\n\nTake this potion against poison too."
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "Bring my men back safe and you'll get your pay."
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "Ha! The caves are clear! You're a real hero!\n\nTake your gold before you go. Oh -- and Odwald came looking for you while you were underground. He's waiting at the boat landing, south of here."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the leeches and bats out of the Eel Caves. Free the 4 trapped fishermen."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Father Dunstal, Varn's priest: the Imps of the marsh stole his amulet from the chapel.",
+   "names": {
+    "Father Dunstal": "person",
+    "Imps": "group",
+    "Varn": "place",
+    "Odwald": "person",
+    "Mayor Ostrin": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Father Dunstal",
+     "text": "Ah, the brave Adventurer Odwald promised us! Welcome to Varn!\n\nThose Imps out in the reed marsh have lost their wits. My amulet is gone -- they snatched it right out of the chapel! A fisherman went rowing after them and still hasn't come back.\n\nThe marsh lies west of here. Would you fetch my amulet from the Imps? I'll be at the chapel by the shore when you're done."
+    },
+    "refusal": {
+     "speaker": "Father Dunstal",
+     "text": "Very well. I shall pray for someone with more courage."
+    },
+    "reminder": {
+     "speaker": "Father Dunstal",
+     "text": "Bolder and bolder, those Imps. Wicked creatures!"
+    },
+    "completion": {
+     "speaker": "Father Dunstal",
+     "text": "Bless you, you found my amulet! For such courage the whole village is in your debt.\n\nMayor Ostrin is waiting on the long pier, so buy what you need in the shops and hurry to him. And here is a small gift from all of us."
+    },
+    "after": {
+     "speaker": "Father Dunstal",
+     "text": "My blessing is all I have left to give. Mayor Ostrin is still out on the long pier waiting for you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Father Dunstal's amulet from the Imps of the marsh."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Father Dunstal's amulet from the Imps of the marsh."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Bodley signs up entrants for the log-rolling contest on the docks; Skeeve sells boots for it.",
+   "names": {
+    "Bodley": "person",
+    "Skeeve": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Bodley",
+     "text": "Fifteen gold to enter the log-rolling contest, and you bring your own boots. We supply the log.\n\nYou want in or not?"
+    },
+    "offer_b": {
+     "speaker": "Skeeve",
+     "text": "Bet you're here for the log-rolling. I've got a lovely pair of boots for sale.\n\nSeeing as you've got an honest face, they're yours for 60 gold. Want 'em?"
+    },
+    "outcome_a": {
+     "speaker": "Bodley",
+     "text": "Right, you're all set. Out onto the dock with you, and the judge will explain how it works. Good luck to you!"
+    },
+    "outcome_b": {
+     "speaker": "Skeeve",
+     "text": "Here ya go! Those boots were made for your feet. Nobody falls off a log in boots like these."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay the entry fee and enter the log-rolling contest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a pair of boots from Skeeve before the contest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Nella's grandfather, Old Mott, was dragged off by Vosker's pirates to their wreck in the reeds.",
+   "names": {
+    "Nella": "person",
+    "Old Mott": "person",
+    "Vosker": "person",
+    "Varn": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nella",
+     "text": "Stranger! Oh, please! Those pirates of Vosker's grabbed my grandfather, Old Mott, and hauled him off to their wreck in the reeds! He's tied up below deck!\n\nI'll be in your debt forever if you bring him back!"
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Whatever's on that wreck is yours to keep! But please, hurry to Grandpa!"
+    },
+    "found": {
+     "speaker": "Old Mott",
+     "text": "Bah! Fine, I'll come along! Just get me off this rotten tub!"
+    },
+    "following": {
+     "speaker": "Old Mott",
+     "text": "Quick! Get me home!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Grandpa's back! Thank goodness! I don't know how I'll ever pay you back!\n\nGold, you say? Heaps of it? Well... if you insist. Here, a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Old Mott from the pirates' wreck in the reeds near Varn."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Marra points the player to Mayor Ostrin, who sends him against Vosker's pirates at the lighthouse on Gull Rock.",
+   "names": {
+    "Marra": "person",
+    "Odwald": "person",
+    "Mayor Ostrin": "person",
+    "Varn": "place",
+    "Great Lake": "place",
+    "Nox": "place",
+    "Vosker": "person",
+    "Gull Rock": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Marra",
+     "text": "So you're the one Odwald sent to deal with those filthy pirates! Go and see Mayor Ostrin, stranger!"
+    },
+    "opening": {
+     "speaker": "Mayor Ostrin",
+     "text": "Ah, there you are, lad! Welcome to Varn, proudest fishing village on the Great Lake and home of the finest boatmen in all of Nox!\n\nRow past the pirate boats and take back the old lighthouse on Gull Rock. Then the fight of your life awaits -- Vosker himself, who has drowned better men than you."
+    },
+    "reminder": {
+     "speaker": "Mayor Ostrin",
+     "text": "Off to the pirates with you, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way out to the lighthouse on Gull Rock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

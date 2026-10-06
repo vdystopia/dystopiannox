@@ -1,0 +1,494 @@
+{
+ "scenario": "main_opening",
+ "iter": "i14",
+ "writer": "one writer a town (variants/i14/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points to Halvard in the Moot Hall, who sends the player against Red Corwin on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Eek! I saw Halvard storm right into the Moot Hall in a fury!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Stranger! Thank goodness, help us! Rotten bandits have seized the watchtower on Crow Hill, north of town, and no traveler on the road gets by them with his purse! Red Corwin leads that whole wicked rabble!\n\nDrive him off, and a fine reward is yours!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The bandits still hold Crow Hill!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin off Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Vurn: Pob the miner points the player to Mayor Durvin, who sends him after Grutt's Trolls and the stolen Hammer of the Mountain.",
+   "names": {
+    "Vurn": "place",
+    "Ossric": "person",
+    "Durvin": "person",
+    "Pob": "person",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Kettrin": "person",
+    "Scorpions": "group",
+    "West Gallery": "place",
+    "Bram": "person",
+    "Imps": "group",
+    "Flooded Seam": "place",
+    "Hulda": "person",
+    "Great Forge": "place",
+    "Fire Crystal": "thing",
+    "Lower Galleries": "place",
+    "Fesk": "person",
+    "Marra": "person",
+    "Tobb": "person",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Great Hall": "place",
+    "Hammer of the Mountain": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pob",
+     "text": "We'll hold the upper tunnels, but Mayor Durvin wants you in the Great Hall. Thanks for coming, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Durvin",
+     "text": "Welcome, stranger! Ossric told me you would come, and none too soon, for we need your help badly. Grutt's Trolls came up from the deep shafts not long ago and stole the Hammer of the Mountain! Please go down to the Troll den below the East Shaft and bring back the sacred hammer at once!"
+    },
+    "reminder": {
+     "speaker": "Durvin",
+     "text": "Keep whatever you find down there! Just hurry and bring back the hammer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Hammer of the Mountain from Grutt's den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tarrow: Pibb points the player to Warden Ostrick, who sends him after Grisla the Bog Witch in the Black Mire.",
+   "names": {
+    "Tarrow": "place",
+    "Black Mire": "place",
+    "Mire": "place",
+    "Grisla": "person",
+    "Jessop": "person",
+    "Ostrick": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Brannoch": "person",
+    "Ombrel": "person",
+    "Gudge": "person",
+    "Dorla": "person",
+    "Wick": "person",
+    "Hollow Oak": "place",
+    "Drowned Chapel": "place",
+    "Sunken Crypt": "place",
+    "Eel Landing": "place",
+    "Moonstone": "thing",
+    "Ankh": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Bog Toads": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibb",
+     "text": "I'm late for Warden Ostrick's muster, sorry."
+    },
+    "opening": {
+     "speaker": "Ostrick",
+     "text": "It's a calamity! Tarrow fears nothing like the drowned dead and a horde has risen from the Black Mire! Each night they climb our stilts, and no boat will leave till they're gone!\n\nOut in the Mire, to the North, dwells a witch named Grisla. Someone must break her spell and free our besieged hamlet."
+    },
+    "reminder": {
+     "speaker": "Ostrick",
+     "text": "Is the witch beaten yet?! Oh.... Well, they say her hut stands on stilts deep in the Mire."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the witch Grisla in the Mire."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varnhold: Jask points the newcomer to Warden Ostrik in the keep, who sends him against Skarn's Trolls in the Old Gatehouse.",
+   "names": {
+    "Varnhold": "place",
+    "Tobrin": "person",
+    "Jask": "person",
+    "Ostrik": "person",
+    "Skarn": "person",
+    "Hesk": "person",
+    "Sibba": "person",
+    "Brannock": "person",
+    "Wezzle": "person",
+    "Crull": "person",
+    "Hulda": "person",
+    "Tib": "person",
+    "Old Gatehouse": "place",
+    "North Pass": "place",
+    "Gloomwood": "place",
+    "Cistern": "place",
+    "Granary": "place",
+    "Blackrock Mine": "place",
+    "Grey Quarry": "place",
+    "Healing Stone": "thing",
+    "Trolls": "group",
+    "Wolves": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Jask",
+     "text": "Tobrin sent you, eh? Then welcome to Varnhold, friend! We soldiers have our hands full with trouble these days. Go up to the keep and see our Warden."
+    },
+    "opening": {
+     "speaker": "Ostrik",
+     "text": "Stranger! You've come in the nick of time! Our garrison is in dire peril!\n\nA hulking Troll called Skarn came down from the hills only days ago with his raiders. The Old Gatehouse is theirs now, and the North Pass is shut! With more men I would drive them out myself, but half the garrison lies wounded in the barracks. Should I march out with the rest, Varnhold would be left to fall!\n\nWill you clear those brutes out of the Gatehouse, young sir? Do it and the garrison shall pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Ostrik",
+     "text": "Skarn still holds the Gatehouse! Beat him and your reward is waiting here."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear Skarn's Trolls from the Old Gatehouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Skarra: Lomm points the player to Mayor Ottrick, who sends him after Vashk the Necromancer on Heron Isle.",
+   "names": {
+    "Skarra": "place",
+    "Heron Isle": "place",
+    "Vashk": "person",
+    "Dreyhaus": "person",
+    "Ottrick": "person",
+    "Lomm": "person",
+    "Torvy": "person",
+    "Dobrin": "person",
+    "Brannoc": "person",
+    "Tamsk": "person",
+    "Nim": "person",
+    "Gorm": "person",
+    "Nella": "person",
+    "Warding Lantern": "thing",
+    "Urchins": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Lomm",
+     "text": "I ferry all newcomers to Mayor Ottrick."
+    },
+    "opening": {
+     "speaker": "Ottrick",
+     "text": "Good day, young sir. I take it you've heard about our troubles.\n\nThere's a fat purse for whoever stops Vashk the Necromancer -- by any means. He and his Undead have been crawling out of the lake by Heron Isle for weeks.\n\nWatch yourself, nobody wants to be pulled under by those rotting wretches."
+    },
+    "reminder": {
+     "speaker": "Ottrick",
+     "text": "So you're the one Dreyhaus sent us? He must think highly of your talents, seeing as the last fellow who rowed out after those Undead never came back!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the lake to Heron Isle and destroy Vashk the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 6,
+   "specifics": "Zanthis: Wendle points the player to Master Ombrel, who sends him up the hill to drive Grelloch's Golems out of the Observatory.",
+   "names": {
+    "Zanthis": "place",
+    "Academy": "place",
+    "Observatory": "place",
+    "Archive": "place",
+    "Tipsy Owl": "place",
+    "Grelloch": "person",
+    "Jorvan": "person",
+    "Ombrel": "person",
+    "Wendle": "person",
+    "Tibba": "person",
+    "Bastel": "person",
+    "Fennick": "person",
+    "Hestra": "person",
+    "Tobb": "person",
+    "Rook": "person",
+    "Oona": "person",
+    "Nib": "person",
+    "Star Charts": "thing",
+    "Golems": "group",
+    "Wasps": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wendle",
+     "text": "No, Master Ombrel can't wait while the Golems hold our Observatory!"
+    },
+    "opening": {
+     "speaker": "Ombrel",
+     "text": "Greetings, brave Adventurer! Grelloch and his stone Golems have driven every scholar out of the Observatory!\n\nWill you climb up there and smash those brutes to rubble? The Masters of Zanthis will pay a fine purse of gold, for no wizard here can read the stars until they're gone!"
+    },
+    "reminder": {
+     "speaker": "Ombrel",
+     "text": "Up the hill path behind the Academy! Hurry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Grelloch from the Observatory."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kessry: Fennick points the player to Commander Haldrek in the keep, who sends him against Gorrak's Ogres at the high gate.",
+   "names": {
+    "Fort Kessry": "place",
+    "Haldrek": "person",
+    "Gorrak": "person",
+    "Belgard": "person",
+    "Fennick": "person",
+    "Brunko Tallow": "person",
+    "Yorla": "person",
+    "Ostrik": "person",
+    "Grubbin": "person",
+    "Tessaly": "person",
+    "Dobbin": "person",
+    "Amulet of Warmth": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "Ogres hold the high gate and the pass is shut! Have you spoken to Commander Haldrek in the keep?"
+    },
+    "opening": {
+     "speaker": "Haldrek",
+     "text": "Hello. I am Haldrek, Commander of Fort Kessry. Gorrak's Ogres hold the high gate and breaking through them is no easy task.\n\nI'll make you a promise, if you'll drive Gorrak from the gate I'll send word of your deeds to Belgard. How about it?"
+    },
+    "reminder": {
+     "speaker": "Haldrek",
+     "text": "Go and break the Ogres' hold! Please make haste, for if left alone, Gorrak could bring his horde down on our walls, to be sure!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the high gate and defeat Gorrak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Ferrik: Mirta points the player to Mayor Thurgo, who sends him against Magrok's Imps in the Great Furnace, and Holk keeps the gate shut.",
+   "names": {
+    "Ferrik": "place",
+    "Magrok": "person",
+    "Grenn": "person",
+    "Imps": "group",
+    "Great Furnace": "place",
+    "Mayor Thurgo": "person",
+    "Holk": "person",
+    "Mirta": "person",
+    "Dobrin": "person",
+    "Slag Pits": "place",
+    "Fire Bats": "group",
+    "Tobb": "person",
+    "Master Hollin": "person",
+    "Rune Hammer": "thing",
+    "Guild": "group",
+    "Guild Hall": "place",
+    "Nibbs": "person",
+    "Rusty Bellows": "place",
+    "Gretta": "person",
+    "Pell": "person",
+    "Ash Caverns": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirta",
+     "text": "I was told to send strangers on to Mayor Thurgo."
+    },
+    "opening": {
+     "speaker": "Mayor Thurgo",
+     "text": "Quick, lad! Our forges are failing fast. You must clear the Imps from the Great Furnace before Magrok burns us all!"
+    },
+    "reminder": {
+     "speaker": "Holk",
+     "text": "Sorry, stranger. The gate stays shut until Mayor Thurgo says otherwise. We do it to keep folks safe. The roads beyond Ferrik are far too dangerous for plain folk."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Magrok's Imps out of the Great Furnace."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Vellin Cross: Pibbet points the player to Warden Brusk, who sends him against Thrungar's Ogres in the Old Toll Fort.",
+   "names": {
+    "Vellin Cross": "place",
+    "Gold Goose": "place",
+    "Gray Quarry": "place",
+    "Mire Caves": "place",
+    "Scraggle Wood": "place",
+    "Hagg Hollow": "place",
+    "Old Toll Fort": "place",
+    "Gormley": "person",
+    "Grenna": "person",
+    "Tullock": "person",
+    "Bramble": "person",
+    "Dalbo": "person",
+    "Fennick": "person",
+    "Pell": "person",
+    "Brusk": "person",
+    "Thrungar": "person",
+    "Pibbet": "person",
+    "Garamond": "person",
+    "Elixir of Mighty Strength": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibbet",
+     "text": "Aaaaiiieee! Go find Warden Brusk!"
+    },
+    "opening": {
+     "speaker": "Brusk",
+     "text": "Big, stinking brutes! Down from the hills came the Ogres, and now not one road through the crossroads is open!\n\nWarden Brusk, at your service. A brave champion is what I need. Their chief, Thrungar, holds the Old Toll Fort, I fear.\n\nDrive him out, open our roads, and you'll ride north with the next caravan. Come along, and I'll point you down the east road to that cursed fort."
+    },
+    "reminder": {
+     "speaker": "Brusk",
+     "text": "Hurry! Drive those Ogres out!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Help Warden Brusk drive Thrungar from the fort."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tarrow: Pell sends the player to Mayor Brannoch, who sends him against Gorlak's Ogres in the old fort on Blackstump Hill.",
+   "names": {
+    "Tarrow": "place",
+    "Kervan": "person",
+    "Gorlak": "person",
+    "Blackstump Hill": "place",
+    "Mott": "person",
+    "Grisk Hollow": "place",
+    "Marga": "person",
+    "Silver Sickle": "thing",
+    "Mossback Cave": "place",
+    "Brannoch": "person",
+    "Dorrin": "person",
+    "Nebbit": "person",
+    "Hobb": "person",
+    "Tam": "person",
+    "Pell": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "Quick! Mayor Brannoch is waiting!"
+    },
+    "opening": {
+     "speaker": "Brannoch",
+     "text": "We were cutting barley when the Ogres came down from the hills. Kervan said you would come to fight their chief Gorlak, who holds the old fort on Blackstump Hill.\n\nPlease, if you drive Gorlak from that fort and open the north road, Tarrow will reward you as best it can."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "You again! Still here!? Gorlak holds the fort. Why do you tarry?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Blackstump Hill and defeat Gorlak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  }
+ ]
+}

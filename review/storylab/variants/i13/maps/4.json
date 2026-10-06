@@ -1,0 +1,196 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Thrane",
+  "setting": "a castle town with a garrison",
+  "trouble": "Gruthak's Trolls have come down from the mountains and taken the old Beacon on Gallow Hill, shutting the only road north. Fennick sent the player to Lord Ostric.",
+  "names": {
+   "Thrane": "place",
+   "Lord Ostric": "person",
+   "Fennick": "person",
+   "Gruthak": "person",
+   "Dalric": "person",
+   "Warden Krell": "person",
+   "Skell the Poisoner": "person",
+   "Edda": "person",
+   "Steward Ambrel": "person",
+   "Harl": "person",
+   "Wizzle": "person",
+   "Dunk": "person",
+   "Maudra": "person",
+   "Tobin": "person",
+   "Brusk": "person",
+   "Gallow Hill": "place",
+   "the Beacon": "place",
+   "the Great Hall": "place",
+   "the Thornwood": "place",
+   "the Urchin Hollow": "place",
+   "Lowmarket": "place",
+   "the Bent Spoon": "place",
+   "Trolls": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Warden Krell wants Skell the Poisoner, bought out of the castle dungeon by a crooked turnkey and now guiding the Trolls, put down in the Thornwood.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Warden Krell",
+     "text": "Greetings, Wanderer! I'm glad you've come at last, for the dungeon of Thrane has been disgraced! My own turnkey sold Skell the Poisoner his freedom for a sack of gold, and now the villain is guiding Gruthak's Trolls against our patrols! Please seek him out in the Thornwood south of the walls and put an end to him as swiftly as you can!"
+    },
+    "reminder": {
+     "speaker": "Warden Krell",
+     "text": "Hurry to the Thornwood! Don't let him slip away! For if Skell lives, Gruthak will have the cruelest poisoner in the land at his side, I fear!"
+    },
+    "completion": {
+     "speaker": "Warden Krell",
+     "text": "Well done! So Skell is slain! I'd hoped to see him back in irons, truth be told... but no one in Thrane will mourn him! At last our patrols can ride out again!\n\nHere, take this purse and these potions. They'll be needed... and soon, I'd wager."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Put an end to Skell the Poisoner!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["CurePoisonPotion", "RedPotion"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Edda, the old woman who keeps watch from the east tower, wants her spyglass back from the Urchins of the Hollow.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Edda",
+     "text": "Ohh... is that another Urchin? No... a new face in Thrane, and a sturdy one.\n\nWhat brings a young sir up all these stairs to a cranky old woman? Hmm, don't tell me... Lord Ostric wants you counting Trolls on his walls.\n\nWell, I've no patience for Ostric and his walls, but you may as well make yourself useful. The Urchins of the Hollow crept in here last night and made off with my spyglass, and I'd wager my last tooth Gruthak paid them to do it!\n\nWill you fetch it back for me? Here, take these potions. The Hollow is no place to go without them."
+    },
+    "refusal": {
+     "speaker": "Edda",
+     "text": "You haven't the nerve for Urchins. Come back when you've found some."
+    },
+    "reminder": {
+     "speaker": "Edda",
+     "text": "That was the last of my potions, I'm afraid. Mind yourself in the Hollow. Those Urchins are quick and spiteful lot."
+    },
+    "completion": {
+     "speaker": "Edda",
+     "text": "My spyglass! Lord Ostric will be glad to know the east tower can see again. Here, a little gold for your trouble."
+    },
+    "after": {
+     "speaker": "Edda",
+     "text": "Brusk was up here asking after you. He said Lord Ostric would see you in the Great Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Edda's spyglass from the Urchin Hollow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Edda's spyglass from the Urchin Hollow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Steward Ambrel wants the garrison's pay chest that Harl the paymaster never brought in; Wizzle, a pedlar who sold charms to the Trolls, wants his wand to undo a hex on his partner.",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Steward Ambrel",
+     "text": "Where have you been!? The garrison's pay is late and the men are grumbling on the walls!\n\nHarl the paymaster set out from Lowmarket with the pay chest days ago. He ought to have come through the south gate long before now.\n\nTake the south road toward Lowmarket and find Harl and the chest. Bring the chest back here and you'll be rewarded handsomely."
+    },
+    "offer_b": {
+     "speaker": "Wizzle",
+     "text": "Hello? Is somebody up there? Down here, in the cellar!\n\nOh, it's you! The one who walked in right under Gruthak's nose!\n\nI took a cartload of charms up to the Beacon to sell to the Trolls. Their shaman didn't think much of them -- he turned my partner Dunk into a goose! I've kept him shut down here with me ever since, so he can't waddle off.\n\nMy wand would set him right, but it's still in my cart at the foot of Gallow Hill. Hmmm... Yes. You'll do. Here's the key to the cart."
+    },
+    "outcome_a": {
+     "speaker": "Steward Ambrel",
+     "text": "The pay chest! You found it! Wonderful!\n\nBut poor Harl... so the Trolls got him after all. I'll miss the old miser, but there's no time to grieve now. Lord Ostric has been asking for you in the Great Hall.\n\nHere's 120 gold out of the chest. Good luck!"
+    },
+    "outcome_b": {
+     "speaker": "Wizzle",
+     "text": "Hah! My wand! Dunk's nearly himself again! Just the feathers left to go now.\n\nKeep these boots, and good luck!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay chest missing! Find it for Steward Ambrel!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find a way to get Wizzle's wand back from Gallow Hill."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Maudra of the Bent Spoon begs the player to bring home her nephew Tobin, who bought a sword off Wizzle and went after the Urchins.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Maudra",
+     "text": "Business? Oh, business is the least of my worries this week. My nephew Tobin paid that pedlar Wizzle good money for a sword that 'never misses', and off he went to the Urchin Hollow to try it out!\n\nI doubt the thing could cut butter, but nothing would make me happier than seeing that boy back in my kitchen.\n\nTake this key, it opens the postern gate by the Hollow. Bring Tobin home and you'll be well rewarded."
+    },
+    "reminder": {
+     "speaker": "Maudra",
+     "text": "The Hollow? Through the postern gate and follow the ditch down to the left.."
+    },
+    "found": {
+     "speaker": "Tobin",
+     "text": "Well... I guess you came all this way for me. Nice work, friend."
+    },
+    "following": {
+     "speaker": "Tobin",
+     "text": "For Thrane and the Bent Spoon! -- Yaaaaaarrrrggghh!! ...Um. You go first."
+    },
+    "completion": {
+     "speaker": "Maudra",
+     "text": "So the boy's home in one piece! Bless you! He'll not touch a sword again while I've breath in me!\n\nNow, your reward... 75 gold, as promised! And I'll tell my brother Brusk at the north gate to let you pass whenever you please!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Use Maudra's key on the postern gate in order to reach Tobin.\n\nThe boy is probably lost somewhere in the Urchin Hollow."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Lord Ostric in the Great Hall, who sends him after Gruthak's Trolls on Gallow Hill and his son Dalric.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The Trolls on Gallow Hill are a stinking, thieving rabble! Only Lord Ostric in the Great Hall has the stomach to stand up to them!"
+    },
+    "opening": {
+     "speaker": "Lord Ostric",
+     "text": "You must be Fennick's friend! Thank goodness you've come! Gruthak's Trolls swarmed over Gallow Hill and took the old Beacon, and with it the only road north! My son Dalric was on watch up there when it fell!\n\nDrive the brutes off that hill and bring my boy home, and Thrane will reward you well!"
+    },
+    "reminder": {
+     "speaker": "Lord Ostric",
+     "text": "What, still here? Dalric could be in a Troll's stewpot by now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Lord Ostric proof that the Trolls are gone from the Beacon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "562011",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short, but the stock 'kidnapped almost all of the maidens' plus 'my sweet sister' reads like a template of a rescue plea; the thanks borrows the 'tokens of my appreciation' formula without any local colour."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The pox simile, the directions 'there, through the double doors', the title and free passage as reward, and 'I insist' have Westwood's mix of melodrama and practical instruction."},
+    {"label": "C", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Over-the-top 'airborne demons from the underworld', a key and a scroll handed over with mechanics spelled out, and the Captain hand-off to the next place: a campaign-plot quest with Westwood's double dash and '!?'."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The finding of the robe, the musing 'Hmmm... Yes.', and the teleporter instructions tie the quest into the chapter's progression in a way new side-quests rarely do."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Tidy and plausible, but 'Good!' as an opening and the neat petition-signing chain feel built to a brief; the urchin-aggravated-bats cause is a little over-explained."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Mate' four times in a few lines is a pushed dialect tic; the boots-stolen-while-bathing gag and 'damn fine spell' feel like an imitation of Westwood's comic peasants rather than the thing itself."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Mirrors the bounty-and-justice shape and the '100 in gold' reward line almost formulaically; 'lad' and 'young sir' mixed in one breath, and the opening 'Actually' presumes a missing prompt."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The surprise arrival 'The priest told me of strange sounds', 'single handedly' unhyphenated, the gushing exclamations and '-- 500 in gold!' are Westwood's slightly clumsy, hearty voice."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "Overloaded sentences ('leaving rebuilding the village our smallest concern') and the garbled 'At happier other times' read as strained epic plotting; the rescue shape copies A's ogre template."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The trapped pet frog and the 'Loads and loads of money?' joke where the NPC answers the silent hero are exactly Nox's dry humour, in short plain lines."}
+  ],
+  "tells": [
+    "Westwood's quests hand over concrete objects and mechanics (keys, scrolls, teleporters, passes) and hook into the next plot step; new texts tend to be self-contained errands with a single reward.",
+    "Westwood's humour comes from one odd specific (a frog, the silent hero's imagined reply); new texts lean on a repeated dialect tic or a stock gag.",
+    "New texts reuse campaign formulas wholesale ('tokens of my appreciation', 'N in gold', 'brought to justice') so a near-duplicate of another text's shape is a giveaway.",
+    "Overpacked, grammatically strained sentences trying for epic stakes read as generated; Westwood's excess is in exclamation and adjectives, not in syntax.",
+    "Mixed forms of address in one speech ('lad' and 'young sir') and openings that presume an unseen prompt ('Actually', 'Good!') hint at stitched lines."
+  ]
+}

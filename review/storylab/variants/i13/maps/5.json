@@ -1,0 +1,228 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Skellow",
+  "setting": "a lake village of fishermen",
+  "trouble": "Hulvo's lake raiders hold the lighthouse on Gannet Rock, have seized the ferry and its ferrywoman, and no boat dares leave the harbor.",
+  "names": {
+   "Skellow": "place",
+   "Lake Ommel": "place",
+   "Gannet Rock": "place",
+   "Town Hall": "place",
+   "Guild Hall": "place",
+   "Reed Island": "place",
+   "Leech marsh": "place",
+   "Hulvo": "person",
+   "Mayor Oskelt": "person",
+   "Talboth": "person",
+   "Gorrick": "person",
+   "Jebba": "person",
+   "Harbor Master Pell": "person",
+   "Pell": "person",
+   "Guildmaster Fennick": "person",
+   "Grubbin": "person",
+   "Dorrin": "person",
+   "Kett": "person",
+   "Tamsin": "person",
+   "Nubb": "person",
+   "Urchins": "group",
+   "Leeches": "group",
+   "Fishers' Guild": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Gorrick the net-mender wants Hulvo's raiders thrown out of his boathouse.",
+   "names": {
+    "Gorrick": "person",
+    "Mayor Oskelt": "person",
+    "Hulvo": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorrick",
+     "text": "Good day. Gorrick's the name. And Mayor Oskelt sent you over, eh? Well, Hulvo's raiders have moved into my boathouse up the shore, boat and all, and they've nailed the doors shut behind them!\n\nWill you throw them out for me?"
+    },
+    "reminder": {
+     "speaker": "Gorrick",
+     "text": "Not many folks would stand up to raiders for an old net-mender."
+    },
+    "completion": {
+     "speaker": "Gorrick",
+     "text": "They're gone?! Wonderful! Take this purse -- 80 gold pieces. And these boots too. You'll want them out on the mudflats."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear out Gorrick's boathouse."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Jebba the fisherwoman's lantern was stolen by the Urchins, and Harbor Master Pell lets no boat out at night without a light.",
+   "names": {
+    "Jebba": "person",
+    "Pell": "person",
+    "Urchins": "group",
+    "Gannet Rock": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Jebba",
+     "text": "The Urchins have a cave behind the smokehouse. They stole my lantern last night! Pell says no boat goes out after dark without a light. Not mine, not anybody's. And watch yourself. The little pests bite.\n\nWill you bring it back?"
+    },
+    "refusal": {
+     "speaker": "Jebba",
+     "text": "You haven't the nerve for Urchins, then."
+    },
+    "reminder": {
+     "speaker": "Jebba",
+     "text": "Off to the cave, lad! I can't fish without that lantern. Hurry! Pell won't bend his rule, not for me, not for anybody."
+    },
+    "completion": {
+     "speaker": "Jebba",
+     "text": "My lantern!? From the Urchins? Truly? Take this, 60 in gold!"
+    },
+    "after": {
+     "speaker": "Jebba",
+     "text": "The best fishing is out past the reeds. Just keep clear of Gannet Rock."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the stolen lantern from the Urchin cave behind the smokehouse and return it to Jebba."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the stolen lantern from the Urchin cave behind the smokehouse and return it to Jebba."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Fennick wants the Guild strongbox carried out of the hall the raiders set burning; Grubbin, thrown off Hulvo's crew, wants his spyglass and compass from the raiders' camp and offers the back way to the lighthouse.",
+   "names": {
+    "Guildmaster Fennick": "person",
+    "Guild Hall": "place",
+    "Lake Ommel": "place",
+    "Fishers' Guild": "group",
+    "Grubbin": "person",
+    "Hulvo": "person",
+    "Reed Island": "place",
+    "Gannet Rock": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmaster Fennick",
+     "text": "There it burns, lad. The Guild Hall -- proudest building on all of Lake Ommel! Home of the honored Fishers' Guild!\n\nGet inside, find the strongbox in the counting room and carry it out -- before the roof falls in. Every coin this village owns is in it."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Double-crossing bilge rats! Hulvo threw me off his crew and kept my share of the loot!\n\nGrubbin. I rowed for Hulvo for years. I hid my spyglass and my compass in the raiders' camp on Reed Island before they dumped me.\n\nBring me both of them and I'll row you out to the lighthouse by the back way, the one only Hulvo's men know. I'll be right here, drinking."
+    },
+    "outcome_a": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Thanks for saving the strongbox! Now all we need is a new roof! Take 100 in gold out of it, with the Guild's blessing."
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "My spyglass! And the compass too! Hulvo must be fuming.\n\nSo you got past the raiders, did you? Maybe you'd make a decent oarsman. Hmmm... maybe.\n\nMeet me at the end of the old jetty. When you're ready, climb in the boat and keep your head down. It's a long row to Gannet Rock."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Carry the Guild strongbox out of the burning hall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Grubbin's hidden spyglass and compass."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Dorrin the boatwright's apprentice Kett is trapped in the old mill by wasps an Urchin stirred up.",
+   "names": {
+    "Dorrin": "person",
+    "Kett": "person",
+    "Urchins": "group",
+    "Skellow": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorrin",
+     "text": "Rotten wasps! My apprentice Kett went to the old mill for the eel traps, but some Urchin had already gone and stirred up their nest! You're all I've got now. Get him out of there!\n\nThe mill stands at the water's edge, west of the jetty. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Dorrin",
+     "text": "I won't rest till Kett is back! Kill those wasps if you must! Just get him out! Hurry, before he tries something foolish!"
+    },
+    "found": {
+     "speaker": "Kett",
+     "text": "Lead me home. I will keep my head down."
+    },
+    "following": {
+     "speaker": "Kett",
+     "text": "Bless you for coming. Let's go before more wasps show up."
+    },
+    "completion": {
+     "speaker": "Dorrin",
+     "text": "Brave Adventurer, you have my thanks! Kett owes you his life. Every ferryman in Skellow will hear of this, and they'll row you anywhere on the lake for nothing.\n\nTake these potions for your stings. Go on, take them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the old mill and bring Kett home to Dorrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Nubb points the player to Mayor Oskelt in the Town Hall, who sends him to drive Hulvo from the lighthouse on Gannet Rock and bring back Tamsin the ferrywoman.",
+   "names": {
+    "Nubb": "person",
+    "Hulvo": "person",
+    "Gannet Rock": "place",
+    "Mayor Oskelt": "person",
+    "Town Hall": "place",
+    "Tamsin": "person",
+    "Talboth": "person",
+    "Skellow": "place",
+    "Leech marsh": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Nubb",
+     "text": "I'm sure I saw Hulvo's sail off Gannet Rock this morning. Better see Mayor Oskelt in the Town Hall!"
+    },
+    "opening": {
+     "speaker": "Mayor Oskelt",
+     "text": "Oh, blast it! Hulvo again?! Sometimes I think that pirate wakes up just to ruin us. It's no easy thing keeping a village fed, I'll tell you. His raiders hold the lighthouse on Gannet Rock, they've taken the ferry and old Tamsin with it, and not one boat dares leave the harbor! And with the causeway under water, the only way out there is through the Leech marsh.\n\nListen... Get out to Gannet Rock, drive Hulvo out of that lighthouse and bring Tamsin home. Do that and Skellow will open its treasury to you! Talboth said you were the one for it!"
+    },
+    "reminder": {
+     "speaker": "Mayor Oskelt",
+     "text": "Off with you! Off! Um... Mind the Leeches."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Hulvo from the lighthouse on Gannet Rock and rescue Tamsin the ferrywoman.\n\n(Hint: The causeway is flooded.)"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

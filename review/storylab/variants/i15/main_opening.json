@@ -1,0 +1,495 @@
+{
+ "scenario": "main_opening",
+ "iter": "i15",
+ "writer": "one writer a town (variants/i15/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points the player to Halvard in the Moot Hall, who sends him after Red Corwin in the watchtower on Crow Hill and hands over the north gate key.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Find Halvard in the Moot Hall and send Corwin packing!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Sorry about the crowd, lad, but half the north road has fled in here since Red Corwin took the old watchtower. His bandits watch Crow Hill day and night and rob anyone on the road.\n\nYou must drive Corwin out of that tower, and he won't go quietly. It could come to blood. Here is the key to the north gate."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Keep that key safe, the north gate is locked to everyone else. Corwin's men will see you coming up the hill, so stay off the road. Good luck to you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin from the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Khelm: Haddrick drives the player's cart to the edge of Khelm and sends him to Foreman Orvek, as Gorrak's Trolls raid the mountain road; Mirra points the way.",
+   "names": {
+    "Khelm": "place",
+    "Haddrick": "person",
+    "Mirra": "person",
+    "Orvek": "person",
+    "Gorrak": "person",
+    "Elka": "person",
+    "Jorrin": "person",
+    "Gundra": "person",
+    "Pellam": "person",
+    "Nibbs": "person",
+    "Ulla": "person",
+    "Tobb": "person",
+    "Wash Pools": "place",
+    "Troll caves": "place",
+    "Crystal Caves": "place",
+    "Great Lift": "place",
+    "Miners' Guild": "group",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirra",
+     "text": "Hello Newcomer! Come find me after Foreman Orvek makes you a Master Miner."
+    },
+    "opening": {
+     "speaker": "Haddrick",
+     "text": "This is where my cart stops, lad. The deeper we roll toward Khelm, the more Trolls come sniffing.\n\nWalk the ore track the rest of the way down.\n\nAsk after Foreman Orvek. He's an old friend and he'll do what he can for you.\n\nHere, this sword is yours. Any Troll who tries you will feel its edge. Mind your step on the way down."
+    },
+    "reminder": {
+     "speaker": "Haddrick",
+     "text": "What, still here? Off with you. Down the track!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Foreman Orvek at the Great Lift in Khelm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Kesh: Pell points the player to Mayor Ottrick in the Stilt Hall, who sends him to drive Skarn's Trolls off the Long Causeway from their camp on Gallow Mound.",
+   "names": {
+    "Kesh": "place",
+    "Stilt Hall": "place",
+    "Long Causeway": "place",
+    "Gallow Mound": "place",
+    "Sunk Boathouse": "place",
+    "Drowned Mill": "place",
+    "Mayor Ottrick": "person",
+    "Pell": "person",
+    "Tavlin": "person",
+    "Skarn": "person",
+    "Dunstav": "person",
+    "Wezzel": "person",
+    "Yselda": "person",
+    "Pothar": "person",
+    "Warden Hask": "person",
+    "Bartol Quickhook": "person",
+    "Hennet": "person",
+    "Tobb": "person",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Boots of Speed": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "The boatmen will wait at the landing, but you must go and see Mayor Ottrick in the Stilt Hall. Glad you came, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Mayor Ottrick",
+     "text": "Blast! What kept you so long, lad!? Skarn's Trolls came up out of the reeds, and Kesh would have burned if Tavlin's boatmen hadn't rowed in with torches at the very end!\n\nBut while we fought them off the walkways, the brutes seized the Long Causeway, which makes mending our roofs the least of our troubles! Every hamlet in the fen will starve if the Causeway is lost!\n\nYou must go where they carried off their wounded, south to Skarn's camp on Gallow Mound! Drive Skarn out or Kesh is finished!"
+    },
+    "reminder": {
+     "speaker": "Mayor Ottrick",
+     "text": "Skarn means to keep that Causeway for good, I'm sure of it! Off with you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Gallow Mound and drive Skarn from the Long Causeway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Vorne: Commander Dorvik sends the player to the Ogre watchtower on Blackstone Rise to take back the Horn of Vorne.",
+   "names": {
+    "Castle Vorne": "place",
+    "Vorne": "place",
+    "the Keep": "place",
+    "Blackstone Rise": "place",
+    "the Gloamwood": "place",
+    "Grashnak": "person",
+    "Galdric": "person",
+    "Commander Dorvik": "person",
+    "Venn": "person",
+    "Magistrate Quillon": "person",
+    "Priestess Ombrel": "person",
+    "Armsmaster Brodric": "person",
+    "Snitt": "person",
+    "Sergeant Krell": "person",
+    "Jorrin": "person",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the Horn of Vorne": "thing",
+    "the Lantern of Warding": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Venn",
+     "text": "Chin up, stranger, Commander Dorvik will have those Ogres running from our walls!"
+    },
+    "opening": {
+     "speaker": "Commander Dorvik",
+     "text": "So you're Galdric's friend! Welcome to Castle Vorne! We hoped you would come!\n\nLast night Grashnak's Ogres climbed our north wall and made off with the Horn of Vorne! They grow bolder every day! A scout of mine went after the brutes and is still missing.\n\nThe Ogres hold the old watchtower on Blackstone Rise, north of the castle. Bring back the Horn, then come to me in the great hall of the Keep."
+    },
+    "reminder": {
+     "speaker": "Commander Dorvik",
+     "text": "Still no Horn? Those Ogres won't wait for us."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the Horn of Vorne from Grashnak's Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Varn: Marra points the player to Mayor Ostrin, who sends him against Vosker's pirates at the lighthouse on Gull Rock.",
+   "names": {
+    "Varn": "place",
+    "Vosker": "person",
+    "Vosker's pirates": "group",
+    "Gull Rock": "place",
+    "Odwald": "person",
+    "Mayor Ostrin": "person",
+    "Haskel": "person",
+    "Eel Caves": "place",
+    "Father Dunstal": "person",
+    "Imps": "group",
+    "Bodley": "person",
+    "Skeeve": "person",
+    "Nella": "person",
+    "Old Mott": "person",
+    "Marra": "person",
+    "Great Lake": "place",
+    "Nox": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Marra",
+     "text": "So you're the one Odwald sent to deal with those filthy pirates! Go and see Mayor Ostrin, stranger!"
+    },
+    "opening": {
+     "speaker": "Mayor Ostrin",
+     "text": "Ah, there you are, lad! Welcome to Varn, proudest fishing village on the Great Lake and home of the finest boatmen in all of Nox!\n\nRow past the pirate boats and take back the old lighthouse on Gull Rock. Then the fight of your life awaits -- Vosker himself, who has drowned better men than you."
+    },
+    "reminder": {
+     "speaker": "Mayor Ostrin",
+     "text": "Off to the pirates with you, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way out to the lighthouse on Gull Rock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorra: Orlo points the player to Archmage Thule in the Amber Tower, who sends him after Malgrith in the Ossuary.",
+   "names": {
+    "Quorra": "place",
+    "the Amber Tower": "place",
+    "the Ossuary": "place",
+    "the Observatory": "place",
+    "the Sealed Library": "place",
+    "the Sunken Archive": "place",
+    "the Ferry Landing": "place",
+    "Proctor Hamble's cells": "place",
+    "Malgrith": "person",
+    "Dravik": "person",
+    "Archmage Thule": "person",
+    "Orlo": "person",
+    "Grummet": "person",
+    "Magister Fennick": "person",
+    "Nim Halfpenny": "person",
+    "Bessaly": "person",
+    "Proctor Hamble": "person",
+    "Tamsin": "person",
+    "the Star Lens": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Spiders": "group",
+    "the Ghosts": "group",
+    "the Giant Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orlo",
+     "text": "I thought heroes never needed directions. Try Archmage Thule at the top of the Amber Tower."
+    },
+    "opening": {
+     "speaker": "Archmage Thule",
+     "text": "Ah, lad, you've come -- and to Quorra in its darkest hour. The Amber Tower can do no more for itself.\n\nPast the north gate lies the old Ossuary, where Malgrith, once a Master of this college, has woken the Undead. She knows you are coming. I must hold the wards here, and you must go at once!\n\nQuorra has no one else."
+    },
+    "reminder": {
+     "speaker": "Archmage Thule",
+     "text": "Enough idle talk. Go, quickly!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Seek out Malgrith, the outcast Master, in the old Ossuary."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarrow: Dobbe points the player to Warden Brolth, who sends him up to the Northgate to learn whether Grakkus leads the Trolls himself.",
+   "names": {
+    "Fort Skarrow": "place",
+    "Northgate": "place",
+    "Hrimgar": "place",
+    "Warden Brolth": "person",
+    "Brolth": "person",
+    "Ottla": "person",
+    "Hildy": "person",
+    "Brisa": "person",
+    "Fennick": "person",
+    "Snivvet": "person",
+    "Vorna": "person",
+    "Elbin": "person",
+    "Master Elbin": "person",
+    "Grakkus": "person",
+    "Dobbe": "person",
+    "Ember Stone": "thing",
+    "White Wolves": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobbe",
+     "text": "No, Warden Brolth won't rest while the Trolls sit on the Northgate!"
+    },
+    "opening": {
+     "speaker": "Warden Brolth",
+     "text": "Find out whether Grakkus himself is up on the Northgate. If he is, you'll smell him before you see him! The stair behind the barracks takes you there, but watch your step, because the Trolls have rigged it with rockfalls."
+    },
+    "reminder": {
+     "speaker": "Warden Brolth",
+     "text": "Up to the Northgate, lad! We have to know whether Grakkus leads them himself. Go! Climb the stair and find out if the shaman's up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb to the Northgate and look for signs of Grakkus."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulkir: Ostrid points the player to Forgemaster Odrik, who sends him with the Ember Blade to the Keepers of the Anvil in the Old Kiln.",
+   "names": {
+    "Vulkir": "place",
+    "Mount Skarn": "place",
+    "Malgrith": "person",
+    "Ember Witch": "person",
+    "Fire Imps": "group",
+    "Imps": "group",
+    "Kessick": "person",
+    "Ostrid": "person",
+    "Odrik": "person",
+    "Ember Blade": "thing",
+    "Keepers of the Anvil": "group",
+    "Old Kiln": "place",
+    "Dagrun": "person",
+    "Pellock": "person",
+    "Beetles": "group",
+    "Beetle Nest": "place",
+    "Muldo": "person",
+    "Cinder Gang": "group",
+    "Thorva": "person",
+    "Grubble": "person",
+    "Red Bellows": "place",
+    "Bolgrim": "person",
+    "Tobble": "person",
+    "North Bridge": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ostrid",
+     "text": "I've heard Forgemaster Odrik is waiting on some stranger Kessick sent him. Odd times we're living in."
+    },
+    "opening": {
+     "speaker": "Odrik",
+     "text": "Ah, Kessick's friend. Odrik, Forgemaster to the smiths of Vulkir. At last my Ember Blade is ready to meet the Ember Witch! Only the Keepers of the Anvil can bless it, and they keep to the Old Kiln.\n\nThis key will open the iron gate on the mountain road. Take the blade to the kiln and talk with the Keepers."
+    },
+    "reminder": {
+     "speaker": "Odrik",
+     "text": "Malgrith has to be beaten! It's YOU who holds the blade that can finish her!\n\nOff you go! There's no time to lose."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Keepers of the Anvil in the Old Kiln."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellamar: Tobb points the player to Mayor Corvane in the Town Hall, who sends him north to Thornspur Fort to face Hurgg and his Ogres.",
+   "names": {
+    "Pellamar": "place",
+    "Lucky Boar": "place",
+    "Thornspur Fort": "place",
+    "Town Hall": "place",
+    "Hurgg": "person",
+    "Dorvan": "person",
+    "Mayor Corvane": "person",
+    "Tobb": "person",
+    "Moggin": "person",
+    "Hask": "person",
+    "Orla": "person",
+    "Vesk the Fox": "person",
+    "Gubbo": "person",
+    "Nib": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Imp": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tobb",
+     "text": "Hurgg must have tamed the wolves of the hills! The fort was quiet one night, and by morning Ogres and wolves were crawling all over it. Mayor Corvane wants to see you."
+    },
+    "opening": {
+     "speaker": "Mayor Corvane",
+     "text": "Dark days have come upon the crossroads. Hurgg, chief of the Ogres, holds Thornspur Fort, and his brutes plunder every caravan on the north road.\n\nYou must go up there and face him.\n\nHere are potions and some gold -- buy whatever else you need at Gubbo's cart, then hurry. The road north over the hill leads straight to the fort."
+    },
+    "reminder": {
+     "speaker": "Mayor Corvane",
+     "text": "There is no more to say, kind sir. Go on up to the fort and deal with Hurgg!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go north from Pellamar to Thornspur Fort and defeat Hurgg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Wendrel: A townsman sends the player to Mayor Dunstrel, who sends him to take back the watchtower on Ketter Hill from Grumvak's Ogres.",
+   "names": {
+    "Wendrel": "place",
+    "Dunstrel": "person",
+    "Orvane": "person",
+    "Grumvak": "person",
+    "Ketter Hill": "place",
+    "Town Hall": "place",
+    "Bortle": "person",
+    "Gaskin": "person",
+    "Ethra": "person",
+    "Dobbin": "person",
+    "Bodkin": "person",
+    "Squabble": "person",
+    "Gorrow Wood": "place",
+    "Grisk": "person",
+    "Tobble": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Mayor Dunstrel just ran off to the Town Hall shouting for you!"
+    },
+    "opening": {
+     "speaker": "Dunstrel",
+     "text": "Orvane tells me the road here put you to the test, lad. Well, there's no rest to be had in Wendrel. The Ogres have seized the old watchtower on Ketter Hill, and with it the only road north out of the valley!\n\nWith the tower in their claws and our harvest at their mercy, Grumvak the Ogre Lord must be the one giving the orders. Bortle and the farmhands wait for you at the north gate. Go, and be quick!"
+    },
+    "reminder": {
+     "speaker": "Dunstrel",
+     "text": "Off to the north gate with you! Bortle is expecting you there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the watchtower on Ketter Hill from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

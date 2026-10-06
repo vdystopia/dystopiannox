@@ -1,0 +1,33 @@
+{
+  "packet": "129d60",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Stock-phrase bounty speech ('dead or alive', 'savage scum', 'lose no sleep fretting about his soul'), double-dash punctuation and exact gold sums: pure Westwood melodrama with easy humour."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Long first speech packs in a back-story, a deduction ('You'll know if he has') and a trap warning. The comic student ('second year, maybe third', the broom) is a modern, knowing kind of whimsy."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Plain enough, but the second asker's family plot, with several persons, a hostage and a back-door key, is too intricate. The muted 'cap' outcome ('Well... thanks for going up there for him') is an understated grief Westwood never writes."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Earnest kidnapped-maiden pleading, 'the menfolk cannot live without us', the hungry-Ogre stomach joke and the accept/decline pair are Westwood's simple yes/no quest shape."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Breathless exclamations, a slightly awkward comma ('[Place], the village north of here and kidnapped') and near-identical generic thanks ('token of my appreciation'): flat, but typical of Westwood's filler NPCs."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Vivid setting detail (reed-cutters, cutting platform, frog-boys, a fine paid in frogs) and long run-on comic speeches. Westwood's quirk is broader and shorter, with less invented local colour."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Pay-chest-plus-dead-courier and a partner-turned-animal with a wand left in a cart: elaborate setup, 'Hmmm... Yes. You'll do.' theatre and a hand-off to another NPC, all built to the same template as J."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse officialdom ('you'll need official sponsorship'), a non-sequitur apple-orchard urchin errand, 'ruby key' and a sulky refusal line read as authentic Westwood quest-chain dialogue."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Short, breezy smuggler talk ('Oh, bah!', 'give ya one of the enchanted shields'), reward and key named plainly, a light joke about dodging responsibilities: Westwood's chapter-town voice."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Mirrors G's pay-chest and enchanted-partner template. Grammar slips ('Ambushes ... is a daily occurrence', 'they're mean and hungry lot') look like editing seams rather than Westwood's breathlessness, and the flue-key wry ending is too knowing."}
+  ],
+  "tells": [
+    "The new quests lean on templates (a stolen pay or tithe chest with a missing courier; a partner turned into an animal, the wand left elsewhere) and give side quests more named people and plot links than Westwood does.",
+    "The new first speeches pack setting detail, back-story, a deduction and a warning into one breath. Westwood's asks are shorter, state the trouble and the reward plainly, and often split accept and decline into separate replies.",
+    "The new humour is dry and specific (dialectal craft words, invented local customs, deadpan asides). Westwood's is broad, exclamatory and stock-phrased ('savage scum', 'lose no sleep', 'token of my appreciation').",
+    "The new outcomes add quiet grief or understatement ('Well... thanks for going up there') and hand-offs to the next NPC. Westwood's thanks are effusive, generic and name the gold sum.",
+    "Westwood's flaws are naive (repetitive thanks, a clumsy comma). The new flaws are agreement slips and stacked clauses inside otherwise polished prose."
+  ]
+}

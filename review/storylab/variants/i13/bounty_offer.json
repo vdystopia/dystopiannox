@@ -1,0 +1,544 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i13",
+ "writer": "one writer a town (variants/i13/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric, an old shepherd at the edge of the Ashwood, pays his bow and quiver to have the wolves cleared from his flock.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Who's that? Is somebody out there? Good. I don't dare leave the fold. The wolves from the Ashwood have been at my sheep every night!\n\nClear them off and my old bow and quiver are yours. Their den is east of here. You'll smell it. And mind yourself. They're bold and they're hungry."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Get up into the Ashwood, lad! Every night I lose another one. Hurry! Find their den and finish them off before dark."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Wonderful! Every sheep I have left owes you its life.\n\nTake the bow and quiver, as promised! But I can't stand about now! The flock's scattered all over the hills! I must round them up before dark if I'm to keep any of them at all!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go into the Ashwood and kill the wolves raiding Ulric's flock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Druvak: Grizzick, an old ore carter, wants the Bears driven out of the North Drift, where Pudd keeps leaving his supper.",
+   "names": {
+    "Druvak": "place",
+    "Odrik": "person",
+    "Dalmor": "person",
+    "Grizzick": "person",
+    "Pudd": "person",
+    "Morva": "person",
+    "Tolbrek": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Snib": "person",
+    "Brakka": "person",
+    "Ottar": "person",
+    "Skarn": "person",
+    "Yorvan": "person",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "North Drift": "place",
+    "Old Shaft": "place",
+    "Old Shrine": "place",
+    "Smelter": "place",
+    "Deep Gate": "place",
+    "Troll Warrens": "place",
+    "Sunken Hall": "place",
+    "Lower Mines": "place",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Spider": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grizzick",
+     "text": "Huff... huff... The Bears... they're back in the North Drift!\n\nHuff... That lump Pudd left his supper down there again... and the ore carts are due through today!\n\nWill you get rid of them for a poor old carter?"
+    },
+    "reminder": {
+     "speaker": "Grizzick",
+     "text": "Mind the claws!"
+    },
+    "completion": {
+     "speaker": "Grizzick",
+     "text": "Thank you! Here's a bow and a bit of gold for your trouble. I'd help more, but these old legs would only get in your way. Skarn's Trolls have a nasty habit of picking off the slow ones."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bears out of the North Drift for Grizzick the carter."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Okkum: Fennick the punt-man wants the Troll on the old sluice gate driven off, but the player must sign Ebbin's bounty book first.",
+   "names": {
+    "Okkum": "place",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Kelso": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Grumm": "person",
+    "Dilla": "person",
+    "Ysmay": "person",
+    "Bodrick": "person",
+    "Pella": "person",
+    "Black Reeds": "place",
+    "Drowned Chapel": "place",
+    "Moon Amulet": "thing",
+    "Frog Horn": "thing",
+    "Troll": "group",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Ahoy there! My punt goes no farther than the last stilts, not while a Troll is squatting on the old sluice gate!\n\nWill you go and drive the brute off? Put your mark in Ebbin's bounty book first, and I know there's a fat purse waiting for you, because no eel boat in Okkum can get past him!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Evening, stranger."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "The Troll is gone? Gone for good? Then the eel boats go out tonight!\n\nYour mark is in the book, so the bounty's yours. Here, 100 in gold!\n\nEbbin says the Witch's lights were burning over the Black Reeds again last night. Keep this potion handy... you may want it before long."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Sign the bounty book and drive off the sluice Troll."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Thrane: Warden Krell wants Skell the Poisoner, bought out of the castle dungeon by a crooked turnkey and now guiding the Trolls, put down in the Thornwood.",
+   "names": {
+    "Thrane": "place",
+    "Lord Ostric": "person",
+    "Fennick": "person",
+    "Gruthak": "person",
+    "Dalric": "person",
+    "Warden Krell": "person",
+    "Skell the Poisoner": "person",
+    "Edda": "person",
+    "Steward Ambrel": "person",
+    "Harl": "person",
+    "Wizzle": "person",
+    "Dunk": "person",
+    "Maudra": "person",
+    "Tobin": "person",
+    "Brusk": "person",
+    "Gallow Hill": "place",
+    "the Beacon": "place",
+    "the Great Hall": "place",
+    "the Thornwood": "place",
+    "the Urchin Hollow": "place",
+    "Lowmarket": "place",
+    "the Bent Spoon": "place",
+    "Trolls": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Warden Krell",
+     "text": "Greetings, Wanderer! I'm glad you've come at last, for the dungeon of Thrane has been disgraced! My own turnkey sold Skell the Poisoner his freedom for a sack of gold, and now the villain is guiding Gruthak's Trolls against our patrols! Please seek him out in the Thornwood south of the walls and put an end to him as swiftly as you can!"
+    },
+    "reminder": {
+     "speaker": "Warden Krell",
+     "text": "Hurry to the Thornwood! Don't let him slip away! For if Skell lives, Gruthak will have the cruelest poisoner in the land at his side, I fear!"
+    },
+    "completion": {
+     "speaker": "Warden Krell",
+     "text": "Well done! So Skell is slain! I'd hoped to see him back in irons, truth be told... but no one in Thrane will mourn him! At last our patrols can ride out again!\n\nHere, take this purse and these potions. They'll be needed... and soon, I'd wager."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Put an end to Skell the Poisoner!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Skellow: Gorrick the net-mender wants Hulvo's raiders thrown out of his boathouse.",
+   "names": {
+    "Skellow": "place",
+    "Lake Ommel": "place",
+    "Gannet Rock": "place",
+    "Town Hall": "place",
+    "Guild Hall": "place",
+    "Reed Island": "place",
+    "Leech marsh": "place",
+    "Hulvo": "person",
+    "Mayor Oskelt": "person",
+    "Talboth": "person",
+    "Gorrick": "person",
+    "Jebba": "person",
+    "Harbor Master Pell": "person",
+    "Pell": "person",
+    "Guildmaster Fennick": "person",
+    "Grubbin": "person",
+    "Dorrin": "person",
+    "Kett": "person",
+    "Tamsin": "person",
+    "Nubb": "person",
+    "Urchins": "group",
+    "Leeches": "group",
+    "Fishers' Guild": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorrick",
+     "text": "Good day. Gorrick's the name. And Mayor Oskelt sent you over, eh? Well, Hulvo's raiders have moved into my boathouse up the shore, boat and all, and they've nailed the doors shut behind them!\n\nWill you throw them out for me?"
+    },
+    "reminder": {
+     "speaker": "Gorrick",
+     "text": "Not many folks would stand up to raiders for an old net-mender."
+    },
+    "completion": {
+     "speaker": "Gorrick",
+     "text": "They're gone?! Wonderful! Take this purse -- 80 gold pieces. And these boots too. You'll want them out on the mudflats."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear out Gorrick's boathouse."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Mabeth, the College cook, pays to have the Imps' nest in the old cistern burned out.",
+   "names": {
+    "Ostrel": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Chapter House": "place",
+    "Proving Vaults": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Vorlath": "person",
+    "Yarrick": "person",
+    "Dorvanis": "person",
+    "Krumm": "person",
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "Quillan": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Zabble": "person",
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Ysolde": "person",
+    "Golems": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Shades": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Ward Stone": "thing",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mabeth",
+     "text": "Pardon the mess, lad, but the Imps were through my kitchen again last night. They come up out of the old cistern under the College, and every time there's more of them.\n\nThat nest has to be burned out, but the little devils have blocked the cistern stair behind them. Gorwin the porter knows another way down. Take this shield. Imps throw whatever they can lift."
+    },
+    "reminder": {
+     "speaker": "Mabeth",
+     "text": "That shield will come in handy once the Imps start throwing pots. Gorwin can show you the way down. Good luck and be careful!"
+    },
+    "completion": {
+     "speaker": "Mabeth",
+     "text": "I'm sure the Masters will be glad to have their suppers back on the table. Here's 100 gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Imps are raiding the College kitchen -- find their nest and burn it out!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Krell: Ostrik, who keeps the fort's beacon, pays to have the Imps cleared out of the Beacon Tower.",
+   "names": {
+    "Fort Krell": "place",
+    "High Gate": "place",
+    "Beacon Tower": "place",
+    "Ghrulg": "person",
+    "Brannoc": "person",
+    "Hadrik": "person",
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ulvek": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Fenn": "person",
+    "Trolls": "group",
+    "Imps": "group",
+    "Wolves": "group",
+    "Grey Hoods": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrik",
+     "text": "There you are. Good. What I need of you now cannot wait.\n\nImps have overrun the old Beacon Tower on the north wall. Nobody has lit the fire up there in days. If it isn't burning, they'll walk right past us. They're due any day!\n\nMy watchmen have gone up twice and come down twice. Not one of them will try it again. You may do better.\n\nTobbe the lamp-man is still up at the top. Look for him. Here's a bow, too. Imps don't care much for an arrow in the hide.\n\nClear those Imps out of my tower, quickly, and I will see you are well paid."
+    },
+    "reminder": {
+     "speaker": "Ostrik",
+     "text": "Still at it? Then back up those stairs with you! The fire must be lit before dark!"
+    },
+    "completion": {
+     "speaker": "Ostrik",
+     "text": "I hope those Imps never show their ugly faces on our wall again! I'm still not convinced Ghrulg sent them, though. Here's 100 in gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Imps from the Beacon Tower."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Varnok: Hask, the Guild's bounty clerk, pays to clear the Imps from the slag pits where old Tobb is cut off in his hut.",
+   "names": {
+    "Varnok": "place",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guildhall": "place",
+    "Guild": "group",
+    "Ozmand": "person",
+    "Dravic": "person",
+    "Pell": "person",
+    "Hask": "person",
+    "Tobb": "person",
+    "Ottla": "person",
+    "Frost Tongs": "thing",
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Varga": "person",
+    "Nib": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hask",
+     "text": "Here for the Imp bounty? If so, you'll want a stout blade. Old Tobb is cut off in his hut at the slag pits east of town, and he can't hold the Imps off much longer!\n\nWell? Shall I put your name down or not?"
+    },
+    "reminder": {
+     "speaker": "Hask",
+     "text": "The bounty still stands. Those Imps grow bolder by the hour."
+    },
+    "completion": {
+     "speaker": "Hask",
+     "text": "Alright. Tobb's home and the pits are quiet. Here is your bounty. Tobb will show you the goat track up Slag Ridge, but no farther. Gorlak's lookouts miss nothing up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear out the Imps and free old Tobb."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow: Gammel, an old shepherd at the edge of the Thornwood, has lost sheep to the Bears and hides in his loft.",
+   "names": {
+    "Tarrow": "place",
+    "Town Hall": "place",
+    "Crooked Mule": "place",
+    "Rook Hill": "place",
+    "Thornwood": "place",
+    "Knobble caves": "place",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Gammel": "person",
+    "Widow Brisa": "person",
+    "Skeff": "person",
+    "Dorrit": "person",
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Hobbe": "person",
+    "Warding Bell": "thing",
+    "Bears": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gammel",
+     "text": "Hello? Is somebody down there? Up here, in the loft!\n\nOh, it's a person! Thank goodness, I took you for one of them Bears!\n\nThe Bears out of the Thornwood come down for my sheep every night now. I'd go after them myself, only my knees, and that big black one would have me.\n\nHere, take the key to the high pasture and see to those Bears. I'll pay what I can when they're gone."
+    },
+    "reminder": {
+     "speaker": "Gammel",
+     "text": "I'm staying up here till they're gone.\n\nGo on, then! Get after 'em!"
+    },
+    "completion": {
+     "speaker": "Gammel",
+     "text": "Ha! Not a Bear left! Here's your pay, and Mayor Quillon has been asking for you at the Town Hall!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bears out of Gammel's high pasture."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Belvik: Grenwold, a herdsman leaving Belvik because of the Ogres, wants the bears of Bramble Gully killed before they eat his flock.",
+   "names": {
+    "Belvik": "place",
+    "Grimfell": "place",
+    "Krell": "place",
+    "Town Hall": "place",
+    "Bramble Gully": "place",
+    "Cairn of Olm": "place",
+    "Muddy Boot": "place",
+    "Gristle Hill": "place",
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Grenwold": "person",
+    "Hesta": "person",
+    "Gimble": "person",
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Orrick": "person",
+    "Amulet of Warding": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenwold",
+     "text": "Ogres on every road and bears in my pens! There's no living left for a herdsman around here. I'm taking my flock south, but I need you to rid me of those bears first.\n\nThey've lost all fear of men, and they come for my ewes every night.\n\nTake this potion, and I'll pay the rest when they're dead. Hurry, lad! They'll have eaten every sheep I own before long!\n\nThe sheep track behind my pens goes straight up to Bramble Gully."
+    },
+    "reminder": {
+     "speaker": "Grenwold",
+     "text": "That's all I know. Now get up there and kill those bears!"
+    },
+    "completion": {
+     "speaker": "Grenwold",
+     "text": "Thank you! Now my flock and I can make it as far as the south road, but past that, we're on our own. Here's your gold and my old bow. The Ogres of the Grimfell hills have a big appetite for mutton and herdsmen alike."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the bears of Bramble Gully."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "Bow"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "7a6c26",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Brisk mentor voice with 'lad', the clipped 'rest on laurels' and 'Now, off with you!'; the reminder and three-word journal are plain the way Nox's are."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Exclamatory travel-guide arrival with double-dash asides and the dry 'It weeds out the weak recruits.' This sounds like Westwood's guide character, and the reminder is suitably bare."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and clear with Nox-like capitalisation quirks ('East', 'Urchins'), but the comic 'little pests' and 'nettlesome' read as someone working at the tone. The opening spells out every step a little too neatly."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Concrete logistics (two guards, sewers, stench) with 'This may get very ugly, lad.' The reminder repeats practical spell advice and signs off 'Good luck and good speed', which is very much Westwood."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stiff, slightly pompous mentor prose with a grammar slip ('incursions ... is'), an empty page break and 'antiquated records'. It has the rough unpolished texture of the original."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Short, hurried handoff with 'chit-chat' in the reminder and a journal entry that carries the full who and where. It is economical without straining for flavour."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "'Something is deeply amiss in our land' and 'the recent surge of violence in the local creatures' are generic fantasy abstraction. The supplies-and-shop instruction is plausible, but the voice is flat and lacks a personality."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Pushes the excitement ('Damn!', '!?', 'we are doomed!') and has tangled logic ('leaving rebuilding the village our smallest concern', 'go where [Person] was headed'). It reads like an imitation of the guide's urgency."},
+    {"label": "I", "verdict": "generated", "confidence": 2, "score": 5,
+     "critique": "Fragmentary self-introduction ('The Master for the [Place].') and odd phrasing ('convey the [Thing]', 'The beast is housed'). The capitalised 'YOU' and 'Our time grows short' feel assembled from stock parts."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "The modern, clipped fragments ('You'll know. And careful.') aren't Nox's rhythm. The reminder is longer than the opening and restates it twice, and 'reports of [Person]'s acts' is vague."}
+  ],
+  "tells": [
+    "Generic abstractions ('deeply amiss', 'surge of violence', 'reports of acts') stand in for the concrete nouns and logistics Westwood gives (guards, sewers, supplies, a house at the centre of town).",
+    "Modern clipped sentence fragments ('You'll know. And careful.') fall outside Nox's somewhat formal, full-sentence mentor register.",
+    "Imitated urgency is overdone: stacked exclamations, oaths and 'we are doomed' where Westwood's urgency is one plain 'Hurry!' or 'Now, off with you!'.",
+    "Reminders that grow longer than the opening or restate the task twice. Westwood's reminders are a single short nudge or one piece of practical advice.",
+    "Awkward logic or idiom in a key sentence (who was headed where, what is 'our smallest concern') points to generation. Westwood's slips are in grammar, not in the sense of the sentence."
+  ]
+}

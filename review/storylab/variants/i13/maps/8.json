@@ -1,0 +1,232 @@
+{
+ "iter": "i13",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varnok",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Gorlak the Ogre Warlord and his Ogres have seized the Old Smelter on Slag Ridge, and the forges of Varnok are going cold.",
+  "names": {
+   "Varnok": "place",
+   "Gorlak": "person",
+   "Ogres": "group",
+   "Imps": "group",
+   "Old Smelter": "place",
+   "Slag Ridge": "place",
+   "Guildhall": "place",
+   "Guild": "group",
+   "Ozmand": "person",
+   "Dravic": "person",
+   "Pell": "person",
+   "Hask": "person",
+   "Tobb": "person",
+   "Ottla": "person",
+   "Frost Tongs": "thing",
+   "Brannoc": "person",
+   "Kessick": "person",
+   "Fennick": "person",
+   "Dobb": "person",
+   "Varga": "person",
+   "Nib": "person"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Hask, the Guild's bounty clerk, pays to clear the Imps from the slag pits where old Tobb is cut off in his hut.",
+   "names": {
+    "Hask": "person",
+    "Tobb": "person",
+    "Imps": "group",
+    "Guild": "group",
+    "Slag Ridge": "place",
+    "Gorlak": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hask",
+     "text": "Here for the Imp bounty? If so, you'll want a stout blade. Old Tobb is cut off in his hut at the slag pits east of town, and he can't hold the Imps off much longer!\n\nWell? Shall I put your name down or not?"
+    },
+    "reminder": {
+     "speaker": "Hask",
+     "text": "The bounty still stands. Those Imps grow bolder by the hour."
+    },
+    "completion": {
+     "speaker": "Hask",
+     "text": "Alright. Tobb's home and the pits are quiet. Here is your bounty. Tobb will show you the goat track up Slag Ridge, but no farther. Gorlak's lookouts miss nothing up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear out the Imps and free old Tobb."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ottla the toolsmith wants the Frost Tongs back from the Ogres who broke into her shop.",
+   "names": {
+    "Ottla": "person",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Frost Tongs": "thing",
+    "Dravic": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "Gorlak's brutes kicked in my door, broke my apprentice's fingers one by one, and carried the Frost Tongs off to their camp west of town! Are you up to knocking some Ogre heads and getting them back?"
+    },
+    "refusal": {
+     "speaker": "Ottla",
+     "text": "Fine, the Tongs are lost then."
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Stranger! Get after those Ogres!"
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "Hmmm, the Frost Tongs, back where they belong. Take this ankh, it's the least I can do."
+    },
+    "after": {
+     "speaker": "Ottla",
+     "text": "Thank you. I suppose Dravic has found you work by now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Frost Tongs from the Ogre camp."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Frost Tongs from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Brannoc the armourer wants the Guild's pay chest the Ogres took from his runner Kessick; Fennick, who hauled ore for Gorlak, wants his wand fetched to turn his partner Dobb back from a pig.",
+   "names": {
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Guild": "group",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Old Smelter": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "Please, help me, brave Adventurer! Gorlak's Ogres fell on my runner Kessick on the mine road and took the Guild's pay chest! Ambushes on that road is a daily occurrence now.\n\nBring back the chest, and Kessick if you can, and the Guild will be in your debt!"
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "The pay chest! Thank goodness! And Kessick crawled home an hour ago, half starved but breathing!\n\nThe Guild owes you a great deal. Please take this chain tunic as a sign of our appreciation."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Guild's pay chest from the Ogres on the mine road."
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Keep it down, lad! I hauled ore for Gorlak till his shaman turned my partner Dobb into a pig. That's him under the table. Ogres at the camp want my hide now, and they're mean and hungry lot.\n\nI need my wand to turn Dobb back, but it's under my bunk in their camp south of the ridge. Fetch it and I'll show you the back way into the Old Smelter. Gorlak will never see you coming."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "I never should've hauled iron for that big lout Gorlak. Here, take the flue key -- I wonder if he even knows the old flue is there."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sneak into the Ogre camp and fetch Fennick's wand."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Varga the smith begs the player to bring back his apprentice Nib, who chased an Imp into the old kiln and is cut off by bats.",
+   "names": {
+    "Varga": "person",
+    "Nib": "person",
+    "Imps": "group",
+    "Dravic": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Varga",
+     "text": "While I keep the forge fires lit, I have a favor to ask of you.\n\nMy apprentice Nib chased an Imp into the old kiln north of town this morning. The little pest stirred up the bats in there, and now they go after anyone who comes near.\n\nHmmm. I was sure I'd barred the kiln gate. Here's my key, you'll need it.\n\nFind Nib and get him home safe, before the bats get the best of him.\n\nGood luck, Wanderer!"
+    },
+    "reminder": {
+     "speaker": "Varga",
+     "text": "Into the kiln with you! Now!"
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Bat bites swell up something awful, so a Cure Poison potion would do me a world of good."
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "Watch the lava. Quickly! The bats are coming back!"
+    },
+    "completion": {
+     "speaker": "Varga",
+     "text": "Nib! You found him! Excellent!\n\nA few burns, but the boy will mend. There's no time to fuss over him, though. Dravic says the Ogres are on the move again.\n\nHere, take these. You'll be needing them soon enough... trust me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Nib home from the kiln... alive."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pell points the player to Forgemaster Dravic in the Guildhall, who sends him up Slag Ridge against Gorlak.",
+   "names": {
+    "Pell": "person",
+    "Dravic": "person",
+    "Guildhall": "place",
+    "Ozmand": "person",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guild": "group",
+    "Varnok": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "I'm wanted at the furnace, sorry. Try Forgemaster Dravic in the Guildhall."
+    },
+    "opening": {
+     "speaker": "Dravic",
+     "text": "Hail, Wanderer! So Ozmand sent you at last! Gorlak's Ogres have seized the Old Smelter on Slag Ridge, with our whole furnace crew shut inside!\n\nWill you go up there and get them out? The Guild has a fat bounty on Gorlak's head, dead or alive, and not a forge in Varnok will light again till the Smelter is ours!"
+    },
+    "reminder": {
+     "speaker": "Dravic",
+     "text": "Gorlak's hammer is a brute of a weapon and will even split a good steel shield at one blow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb Slag Ridge to the Old Smelter and free the furnace crew."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

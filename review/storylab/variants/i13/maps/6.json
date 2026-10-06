@@ -1,0 +1,247 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrel",
+  "setting": "a wizards' college town",
+  "trouble": "Vorlath, a renegade wizard, holds the Observatory above the College of Ostrel and has turned the College's Stone Golems on the town.",
+  "names": {
+   "Ostrel": "place",
+   "College": "place",
+   "Observatory": "place",
+   "Chapter House": "place",
+   "Proving Vaults": "place",
+   "Sinkholes": "place",
+   "Library": "place",
+   "Vorlath": "person",
+   "Yarrick": "person",
+   "Dorvanis": "person",
+   "Krumm": "person",
+   "Mabeth": "person",
+   "Gorwin": "person",
+   "Quillan": "person",
+   "Hobb": "person",
+   "Tessaly": "person",
+   "Fennick": "person",
+   "Zabble": "person",
+   "Orlo": "person",
+   "Nimrel": "person",
+   "Ysolde": "person",
+   "Golems": "group",
+   "Imps": "group",
+   "Urchins": "group",
+   "Shades": "group",
+   "Bats": "group",
+   "Masters": "group",
+   "Ward Stone": "thing",
+   "Focus Crystal": "thing"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Mabeth, the College cook, pays to have the Imps' nest in the old cistern burned out.",
+   "names": {
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "College": "place",
+    "Imps": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mabeth",
+     "text": "Pardon the mess, lad, but the Imps were through my kitchen again last night. They come up out of the old cistern under the College, and every time there's more of them.\n\nThat nest has to be burned out, but the little devils have blocked the cistern stair behind them. Gorwin the porter knows another way down. Take this shield. Imps throw whatever they can lift."
+    },
+    "reminder": {
+     "speaker": "Mabeth",
+     "text": "That shield will come in handy once the Imps start throwing pots. Gorwin can show you the way down. Good luck and be careful!"
+    },
+    "completion": {
+     "speaker": "Mabeth",
+     "text": "I'm sure the Masters will be glad to have their suppers back on the table. Here's 100 gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Imps are raiding the College kitchen -- find their nest and burn it out!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["WoodenShield"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Master Quillan wants the Ward Stone back from the Urchins who broke into the College vault.",
+   "names": {
+    "Quillan": "person",
+    "Yarrick": "person",
+    "Hobb": "person",
+    "Vorlath": "person",
+    "College": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Urchins": "group",
+    "Ward Stone": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quillan",
+     "text": "Thunder and blazes! Are you the help Yarrick promised us?! Urchins got into the College vault in the storm, and they'd have carried off the whole of it if old Hobb hadn't come down with his lamp and screamed the house awake!\n\nBut in all the noise the thieves made off with the Ward Stone! Without it every ward on this town is down, and Vorlath can walk right in!\n\nNever mind the silver they took, I want the Stone, and those Urchins made to pay! They've gone south, into the Sinkholes. Will you go after them, lad?"
+    },
+    "refusal": {
+     "speaker": "Quillan",
+     "text": "Then return when you've found your nerve."
+    },
+    "reminder": {
+     "speaker": "Quillan",
+     "text": "That Stone is all that stands between us and Vorlath! Hurry!"
+    },
+    "completion": {
+     "speaker": "Quillan",
+     "text": "In better times the bells of the College would ring all night for a deed like this! Well done! But Vorlath is still out there, and he won't wait for us.\n\nThis gold and this Spell Book are yours, with the thanks of the whole College! And the Library is open to you from now on. Tell the porter I said so."
+    },
+    "after": {
+     "speaker": "Quillan",
+     "text": "Fine work."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Ward Stone from the Urchins in the Sinkholes."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Ward Stone from the Urchins in the Sinkholes."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": ["SpellBook"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Tessaly sends the player to Fennick's workshop for her Focus Crystal. Zabble, a student, pays to have his summoned Bats cleared before the Masters find out.",
+   "names": {
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Vorlath": "person",
+    "Zabble": "person",
+    "College": "place",
+    "Golems": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tessaly",
+     "text": "Wanderer! You must hurry to Fennick's workshop by the east wall! Fennick was making me a Focus Crystal, and I haven't had a word from him since Vorlath's Golems came over the bridge. I would go myself, but I spent the last of my mana holding them off and I can't so much as light a candle. Bring me the Crystal, and see if Vorlath has been there. You'll know if he has.\n\nAnd careful! Fennick keeps traps for thieves."
+    },
+    "outcome_a": {
+     "speaker": "Tessaly",
+     "text": "The Crystal! Oh, wonderful! Thank you, I didn't think anyone could get past Fennick's traps!\n\nSo Vorlath was there first. Poor Fennick... We have no time to mourn him. Take these potions, they'll do you more good than me. Now, I must get to work."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go to Fennick's workshop and bring back the Focus Crystal."
+    },
+    "offer_b": {
+     "speaker": "Zabble",
+     "text": "Psst! Greetings. I am Zabble. Student of Summoning at the College, second year, maybe third. I tried a little summoning in my room and now it's full of Bats. I chased them out with a broom and they flew right back in!\n\nYou must get them out before the Masters make their rounds. Here is the key to my room, top of the east stair. Don't let any into the hall!"
+    },
+    "outcome_b": {
+     "speaker": "Zabble",
+     "text": "Many thanks friend. You've done me a kindness, one the Masters will never hear about, I hope. Take this gold. I insist."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the Bats out of Zabble's room in the College."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": ["BluePotion", "BluePotion"]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Orlo begs the player to bring his pupil Nimrel up from the Proving Vaults, where Vorlath's Shades have got in.",
+   "names": {
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Vorlath": "person",
+    "Ysolde": "person",
+    "Dorvanis": "person",
+    "Ostrel": "place",
+    "Proving Vaults": "place",
+    "College": "place",
+    "Chapter House": "place",
+    "Shades": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Orlo",
+     "text": "Welcome to Ostrel, kind sir! We've been hoping for a stout pair of arms for days!\n\nMy pupil Nimrel, a fine singer too, went down into the Proving Vaults for her final trial and never came up! No student has ever been kept down there this long. Vorlath's Shades must have got in.\n\nGo down into the Vaults under the west court and bring Nimrel out. Then come and find me. I'll be in the lecture hall, as always."
+    },
+    "reminder": {
+     "speaker": "Orlo",
+     "text": "Those wretched Shades get bolder every week."
+    },
+    "found": {
+     "speaker": "Nimrel",
+     "text": "Keep back, or I'll burn you!"
+    },
+    "following": {
+     "speaker": "Nimrel",
+     "text": "Filthy Shades! You'll never hold me down here again!"
+    },
+    "completion": {
+     "speaker": "Orlo",
+     "text": "Nimrel! Back safe! Thank you! The whole College owes you a debt it won't forget.\n\nHere, take this robe. Ysolde sells them for 200 gold or more, but you've earned it twice over. Archmage Dorvanis has been asking for you. Go and see him in the Chapter House straight away."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Nimrel back up from the Proving Vaults"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WizardRobe"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Krumm points the player to Archmage Dorvanis, barred in the Chapter House, who hands over the Observatory key and sends him after Vorlath.",
+   "names": {
+    "Krumm": "person",
+    "Dorvanis": "person",
+    "Yarrick": "person",
+    "Vorlath": "person",
+    "Chapter House": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Golems": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Krumm",
+     "text": "We must get help to Archmage Dorvanis in the Chapter House and drive these Golems out of our College!"
+    },
+    "opening": {
+     "speaker": "Dorvanis",
+     "text": "Yarrick's friend? Thank goodness! Vorlath's Golems are loose in the courts and I've had to bar myself in. Here, I'll push the Observatory key under the door. Stop Vorlath before he wakes every Golem we own!"
+    },
+    "reminder": {
+     "speaker": "Dorvanis",
+     "text": "Every Golem he wakes is another one at my door. Off you go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter the Observatory and stop Vorlath."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

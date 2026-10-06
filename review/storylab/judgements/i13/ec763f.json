@@ -1,0 +1,34 @@
+{
+  "packet": "ec763f",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Plain enough and the reward line is Nox-shaped, but character asides ('the great lump', 'climbed down to look', 'since the rains began') and a reminder that adds a hint invented for flavour read like a modern writer padding the voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exclamatory opener, awkward stiff phrasing ('I would be willing to bring you along with us'), 'Hmmm... Yes.' and a mechanical teleporter instruction: true Westwood plainness with its clumsiness intact."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Overheated nouns ('airborne demons from the underworld', 'Nox's vital interests'), '!?' punctuation, gameplay-literal journal ('Charm or kill all the monsters... Rescue the 6 trapped mine workers') are all Westwood tells."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Long, crafted characterisation ('I'd wager my last tooth', 'a cranky old woman', counting Trolls on walls), a town-politics subplot and a grammatical slip ('quick and spiteful lot'); too knowing and too wordy for Nox."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Dense backstory in run-on sentences, 'Thunder and blazes!', bells-would-ring flourish and a stacked reward list; the scene-setting is novelistic rather than Nox's blunt quest-giver speech."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Brief and blunt like Nox, but 'broke my apprentice's fingers one by one' is a grimmer, more vivid detail than Westwood used, and 'knocking some Ogre heads' feels engineered to sound terse."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Brusque persona sustained through every line ('Enough standing about', 'no time to talk just now') reads as a deliberate characterisation exercise; precise geography ('old barrow east of the ford', sluice gate) is more worldbuilt than Westwood's."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Ooooh, how can this be?', 'that evil one', 'cowardly madman' and a hand-off to the next quest-giver: short, melodramatic and functional exactly in Westwood's way."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Wordy, formal exposition with odd syntax ('an amulet I requested he create', 'stand next to the bookcases'), a curt shouted reminder and 'Good luck, Adventurer!' twice: genuine Westwood unevenness."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Naive exclamations ('he'll be destroyed'), 'kind sir', hesitant 'Could you... would you', and a generic token-of-appreciation thanks are the simple, slightly flat register of Westwood's townsfolk."}
+  ],
+  "tells": [
+    "Westwood's lines are functional and slightly clumsy: stiff or odd syntax, overheated stock nouns ('evil one', 'demons from the underworld'), and thanks that are generic ('token of my appreciation'); the new texts are smoother and more crafted.",
+    "New texts give quest-givers a sustained, distinctive personality (cranky, brusque, gossiping about a named rival) with idioms like 'I'd wager my last tooth' or 'Thunder and blazes'; Westwood's NPCs rarely have more than one note.",
+    "New texts pack backstory, local politics and precise geography (barrows, fords, towers, vaults, porters) into the offer; Westwood states the problem and the place in a sentence or two.",
+    "Westwood's reminders are bare repeats or nags; new reminders often add a fresh hint or flavour detail.",
+    "Westwood's journal entries can be gameplay-literal (counts, 'charm or kill'); the new ones are uniformly tidy 'Recover the X from the Y in the Z'.",
+    "Vivid violence or wry asides (fingers broken one by one, 'the great lump') are beyond Westwood's tone, which stays melodramatic but bloodless."
+  ]
+}

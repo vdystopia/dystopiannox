@@ -1,0 +1,63 @@
+{
+ "_doc": "Westwood against Westwood (review/storylab/originality.py): per length band of words, the percentiles of each distinct line's closest *other* campaign line; quests: each Westwood quest against its nearest other one.",
+ "bands": {
+  "0": {
+   "words": "1-5",
+   "n": 142,
+   "ngram_p50": 0.0,
+   "ngram_p90": 1.0,
+   "ngram_p95": 1.0,
+   "ngram_p99": 1.0,
+   "edit_p50": 0.444,
+   "edit_p90": 0.667,
+   "edit_p95": 0.667,
+   "edit_p99": 0.695
+  },
+  "1": {
+   "words": "6-12",
+   "n": 341,
+   "ngram_p50": 0.125,
+   "ngram_p90": 0.429,
+   "ngram_p95": 0.5,
+   "ngram_p99": 0.92,
+   "edit_p50": 0.364,
+   "edit_p90": 0.571,
+   "edit_p95": 0.636,
+   "edit_p99": 0.75
+  },
+  "2": {
+   "words": "13-25",
+   "n": 266,
+   "ngram_p50": 0.083,
+   "ngram_p90": 0.24,
+   "ngram_p95": 0.356,
+   "ngram_p99": 0.651,
+   "edit_p50": 0.308,
+   "edit_p90": 0.455,
+   "edit_p95": 0.575,
+   "edit_p99": 0.727
+  },
+  "3": {
+   "words": "26-",
+   "n": 187,
+   "ngram_p50": 0.045,
+   "ngram_p90": 0.152,
+   "ngram_p95": 0.214,
+   "ngram_p99": 0.455,
+   "edit_p50": 0.226,
+   "edit_p90": 0.373,
+   "edit_p95": 0.455,
+   "edit_p99": 0.545
+  }
+ },
+ "lines": 936,
+ "lines_sharing_a_5word_run_with_another_line (Westwood's stock phrases)": 210,
+ "quests": {
+  "n": 69,
+  "p50": 0.364,
+  "p90": 0.42,
+  "p95": 0.434,
+  "p99": 0.548,
+  "max": 0.591
+ }
+}

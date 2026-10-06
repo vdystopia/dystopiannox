@@ -1,0 +1,33 @@
+{
+  "packet": "7d2c9f",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The opening ('Where were you this morning!?') and the line about the villain 'still out there' copy Westwood's shapes closely. Eel pens, salt pots, walkways and 'which makes the lost eels the least of it' are local colour and wordplay piled into breathless exclamations, so the texture is too dense for Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The '[Person]'s leather cap!' reveal and the 'Hmmm... Could be.' aside are good Nox touches. The world-building nouns (cinder caves, slag heaps, ore-carter, the guild) and the stacked hooks for later work feel written for a brief."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Short and plain, close to Nox. Still, 'up the stairs past the red curtain', 'Do watch yourself' and 'No, I insist' are a shade too polished and courtly for Westwood's flatter thanks."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The repeated 'mate', 'damn fine spell' and the stolen-boots-while-bathing gag are pure Westwood comic register: brief, a bit clumsy, with a journal that spells everything out."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The frog in the burning house and 'Loads and loads of money?' are Westwood's deadpan, slightly silly humour, with ?! punctuation and a flat journal line."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The causal chain (the imp drives the rats wild, the rats bite near the goats, 'the sweetest milkers') is too worked out, and the bow-to-quiver handoff is neat design. Westwood gives a reason in one blunt line."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Terse, a bit stiff ('Ooooh, how can this be?'), little scene-setting and a plain handoff to the next person: the shape of Westwood's plot-critical quests."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The overwrought, slightly comic officialese ('in defense of Nox's vital interests', 'airborne demons from the underworld'), the key handed over and a numbered journal ('Rescue the 6 trapped mine workers') are unmistakably Westwood."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The breathless plea, the run-on 'the village north of here and kidnapped' without a comma, a reward that stays vague and a one-line thanks are classic Westwood."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The thanks is too long: it narrates how he found out ('the howling went quiet, so I walked out') and stacks exclamations and idioms ('take my hat off', 'eat you as soon as look at you'). Westwood's thanks are a line or two."}
+  ],
+  "tells": [
+    "Generated texts pack in concrete local colour (trade jobs, invented landmarks, livestock details) that Westwood rarely bothers with; Westwood names the monster and the place and moves on.",
+    "Generated thanks speeches run longer and narrate how the speaker found out, or set up future work; Westwood's thanks are one or two short lines plus the reward.",
+    "Generated texts build tidy cause-and-effect chains and neat reward handoffs; Westwood's motivations are blunt and sometimes absurd (a pet frog, stolen boots while bathing).",
+    "Generated texts use English idioms and colloquial asides ('as soon as look at you', 'the least of it', 'No, I insist'); Westwood's humour is broader and more deadpan, with odd officialese or a repeated verbal tic.",
+    "Westwood's punctuation is sloppier: run-on clauses with missing commas, '!?' and '?!', and journal lines with bare numbers and plain imperatives."
+  ]
+}

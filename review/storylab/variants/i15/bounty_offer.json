@@ -1,0 +1,515 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i15",
+ "writer": "one writer a town (variants/i15/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric, an old shepherd at the edge of the Ashwood, pays for the death of Greyjaw, the wolf taking his sheep.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Good day, stranger. I take it you've come about the reward?\n\nI'll pay well for the pelt of Greyjaw, the big grey wolf. Since the thaw he and his hungry pack have been carrying off my sheep.\n\nMind yourself out in the Ashwood -- those brutes would eat you as soon as look at you."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Is Greyjaw dead yet? I've hardly any sheep left!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Well, well! The howling up in the woods went quiet, so I walked out to have a look.\n\nYou've done in that monster Greyjaw all on your own! Amazing! I take my hat off to you! That beast has been at my flock since spring! I'll skin him myself. My sheep can graze in peace now that the wicked brute is gone!\n\nNow here's what I promised -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the wolf Greyjaw for Ulric."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Khelm: Elka, an ore washer, wants the Giant Leeches that bit her brother Jorrin killed out of the Wash Pools.",
+   "names": {
+    "Khelm": "place",
+    "Haddrick": "person",
+    "Mirra": "person",
+    "Orvek": "person",
+    "Gorrak": "person",
+    "Elka": "person",
+    "Jorrin": "person",
+    "Gundra": "person",
+    "Pellam": "person",
+    "Nibbs": "person",
+    "Ulla": "person",
+    "Tobb": "person",
+    "Wash Pools": "place",
+    "Troll caves": "place",
+    "Crystal Caves": "place",
+    "Great Lift": "place",
+    "Miners' Guild": "group",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Elka",
+     "text": "Somebody help me, please! My poor brother Jorrin was bitten half to death at the Wash Pools east of here! Filthy Giant Leeches crawled up into the basins and got nearly every ore washer in Khelm!\n\nIf you kill them off, there's a reward in it for you!"
+    },
+    "reminder": {
+     "speaker": "Elka",
+     "text": "You're still here?! Jorrin gets worse every hour!"
+    },
+    "completion": {
+     "speaker": "Elka",
+     "text": "Bless you a thousand times, brave Adventurer! Here, these are for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Giant Leeches out of the Wash Pools for Elka."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Kesh: Dunstav the eel-catcher pays to have the Giant Leech nest in the Sunk Boathouse burned out.",
+   "names": {
+    "Kesh": "place",
+    "Stilt Hall": "place",
+    "Long Causeway": "place",
+    "Gallow Mound": "place",
+    "Sunk Boathouse": "place",
+    "Drowned Mill": "place",
+    "Mayor Ottrick": "person",
+    "Pell": "person",
+    "Tavlin": "person",
+    "Skarn": "person",
+    "Dunstav": "person",
+    "Wezzel": "person",
+    "Yselda": "person",
+    "Pothar": "person",
+    "Warden Hask": "person",
+    "Bartol Quickhook": "person",
+    "Hennet": "person",
+    "Tobb": "person",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Boots of Speed": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dunstav",
+     "text": "Curses! Where were you this morning, stranger!? The Giant Leeches swarmed up onto the eel pens, and we'd have lost every pen in Kesh if old Wezzel hadn't flung her salt pots at them just in time!\n\nBut in all the fuss, the slimy things crept off into the Sunk Boathouse and laid their eggs there, which makes the lost eels the least of it! The whole hamlet will be crawling with them if that nest is left!\n\nGo down into the Boathouse, west along the lower walkway! Burn out that nest or we're finished!"
+    },
+    "reminder": {
+     "speaker": "Dunstav",
+     "text": "Those leeches are breeding while you stand there! Hurry!"
+    },
+    "completion": {
+     "speaker": "Dunstav",
+     "text": "In better days, all of Kesh would be dancing on the walkways over this! Good work! But Skarn and his Trolls are still out there in the reeds.\n\nPlease accept these with the thanks of every eel-catcher in the hamlet!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Burn out the Giant Leech nest in the Sunk Boathouse."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Vorne: Magistrate Quillon has fled his chambers, where wasps have nested, and pays to have them killed.",
+   "names": {
+    "Castle Vorne": "place",
+    "Vorne": "place",
+    "the Keep": "place",
+    "Blackstone Rise": "place",
+    "the Gloamwood": "place",
+    "Grashnak": "person",
+    "Galdric": "person",
+    "Commander Dorvik": "person",
+    "Venn": "person",
+    "Magistrate Quillon": "person",
+    "Priestess Ombrel": "person",
+    "Armsmaster Brodric": "person",
+    "Snitt": "person",
+    "Sergeant Krell": "person",
+    "Jorrin": "person",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the Horn of Vorne": "thing",
+    "the Lantern of Warding": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Magistrate Quillon",
+     "text": "These blasted wasps will be the death of me! My servants swatted at them, but more just fly in! I can only pray that you smoke out the nest and kill every last one!\n\nThe nest is in my chambers, up the stairs past the red curtain. Do watch yourself."
+    },
+    "reminder": {
+     "speaker": "Magistrate Quillon",
+     "text": "I won't set foot in there while those wasps live! Smoke out the nest! Then squash them all! Be quick before it grows any bigger!"
+    },
+    "completion": {
+     "speaker": "Magistrate Quillon",
+     "text": "Brave Adventurer, you have my heartfelt gratitude! You have earned a place among the friends of the Keep. I shall tell the gatesmen to let you in and out of Castle Vorne whenever you wish.\n\nHere is your fee, in gold. No, I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the wasps in Magistrate Quillon's chambers."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Varn: Haskel, head of Varn's fishermen: leeches and bats have taken the Eel Caves and trapped his men.",
+   "names": {
+    "Varn": "place",
+    "Vosker": "person",
+    "Vosker's pirates": "group",
+    "Gull Rock": "place",
+    "Odwald": "person",
+    "Mayor Ostrin": "person",
+    "Haskel": "person",
+    "Eel Caves": "place",
+    "Father Dunstal": "person",
+    "Imps": "group",
+    "Bodley": "person",
+    "Skeeve": "person",
+    "Nella": "person",
+    "Old Mott": "person",
+    "Marra": "person",
+    "Great Lake": "place",
+    "Nox": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskel",
+     "text": "At last! Something horrible has happened here!\n\nThe Eel Caves are crawling with monstrous leeches and shrieking bats out of the black depths. Good fishermen have died down there keeping Varn fed!\n\nI beg you, clear out the vermin and get my men home. I'll pay you well for it!\n\nOne of my men locked himself in the first grotto. This key opens it, and he can lead you to the others.\n\nTake this potion against poison too."
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "Bring my men back safe and you'll get your pay."
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "Ha! The caves are clear! You're a real hero!\n\nTake your gold before you go. Oh -- and Odwald came looking for you while you were underground. He's waiting at the boat landing, south of here."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the leeches and bats out of the Eel Caves. Free the 4 trapped fishermen."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorra: Grummet, the college gate porter, wants his best hat back from the Imps in the Amber Tower cellars.",
+   "names": {
+    "Quorra": "place",
+    "the Amber Tower": "place",
+    "the Ossuary": "place",
+    "the Observatory": "place",
+    "the Sealed Library": "place",
+    "the Sunken Archive": "place",
+    "the Ferry Landing": "place",
+    "Proctor Hamble's cells": "place",
+    "Malgrith": "person",
+    "Dravik": "person",
+    "Archmage Thule": "person",
+    "Orlo": "person",
+    "Grummet": "person",
+    "Magister Fennick": "person",
+    "Nim Halfpenny": "person",
+    "Bessaly": "person",
+    "Proctor Hamble": "person",
+    "Tamsin": "person",
+    "the Star Lens": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Spiders": "group",
+    "the Ghosts": "group",
+    "the Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grummet",
+     "text": "Sorry, pal, the front gate's jammed shut! Only other road into the Amber Tower is round the side, down through the cellars where the Imps roost. And if you go that way, watch yourself down there! Them Imps snatched my best hat right off my head while I was dozing in the lodge!\n\nGet it back for me and I'll hand over a cracking good spellbook."
+    },
+    "reminder": {
+     "speaker": "Grummet",
+     "text": "Got my hat yet? Them Imps won't give it up easy."
+    },
+    "completion": {
+     "speaker": "Grummet",
+     "text": "My hat! I'd given it up for good! I owe you a big one. There's your spellbook, like I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Grummet's hat back from the Imps in the Amber Tower cellars."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarrow: Ottla, the fort's cook, wants the White Wolves out of her cellar, where her goose Hildy is cornered.",
+   "names": {
+    "Fort Skarrow": "place",
+    "Northgate": "place",
+    "Hrimgar": "place",
+    "Warden Brolth": "person",
+    "Brolth": "person",
+    "Ottla": "person",
+    "Hildy": "person",
+    "Brisa": "person",
+    "Fennick": "person",
+    "Snivvet": "person",
+    "Vorna": "person",
+    "Elbin": "person",
+    "Master Elbin": "person",
+    "Grakkus": "person",
+    "Dobbe": "person",
+    "Ember Stone": "thing",
+    "White Wolves": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "Stranger, please! My poor goose, Hildy, is down in the larder with White Wolves all around her! They dug their way in under the cellar wall!\n\nI'll owe you to the end of my days if you chase them out!"
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Hurry, get Hildy out of there! And anything down in that larder, you keep!"
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "She's safe! Bless you, she's safe! Such courage, and how am I ever to pay for it?!\n\nGold, you say? Lots of it? Well then, if that's your price, here, with my thanks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Hildy the Singing Goose from the wolves in Ottla's cellar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulkir: Dagrun the armorer wants the Beetles of the Beetle Nest gone and her lost ore-carter Pellock found.",
+   "names": {
+    "Vulkir": "place",
+    "Mount Skarn": "place",
+    "Malgrith": "person",
+    "Ember Witch": "person",
+    "Fire Imps": "group",
+    "Imps": "group",
+    "Kessick": "person",
+    "Ostrid": "person",
+    "Odrik": "person",
+    "Ember Blade": "thing",
+    "Keepers of the Anvil": "group",
+    "Old Kiln": "place",
+    "Dagrun": "person",
+    "Pellock": "person",
+    "Beetles": "group",
+    "Beetle Nest": "place",
+    "Muldo": "person",
+    "Cinder Gang": "group",
+    "Thorva": "person",
+    "Grubble": "person",
+    "Red Bellows": "place",
+    "Bolgrim": "person",
+    "Tobble": "person",
+    "North Bridge": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dagrun",
+     "text": "Filthy chewing pests! The Beetles crawled up out of the cinder caves only this month and they're already into everything!\n\nI'm Dagrun the armorer. It's my ore-carter Pellock I'm after. I'm afraid that Beetle Nest has swallowed him up.\n\nFind him for me and I'll see you're well paid. Follow me, I'll point you to that miserable nest beside the slag heaps."
+    },
+    "reminder": {
+     "speaker": "Dagrun",
+     "text": "Any sign of Pellock? Oh my, I can't bear to think of it."
+    },
+    "completion": {
+     "speaker": "Dagrun",
+     "text": "Pellock's leather cap! The poor fellow must have met a bad end.\n\nThose Beetles didn't stand a chance against you, that's plain. Maybe you've got the arms for smithing. Hmmm... Could be.\n\nCome by my shop. There's a pair of boots on the bench with your name on it, and some gold too. The guild will have more work for you before long."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Learn what happened to Pellock in the Beetle Nest."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellamar: Moggin the goatherd wants the Imp in the well behind his barn killed, the Imp having stirred up the rats.",
+   "names": {
+    "Pellamar": "place",
+    "Lucky Boar": "place",
+    "Thornspur Fort": "place",
+    "Town Hall": "place",
+    "Hurgg": "person",
+    "Dorvan": "person",
+    "Mayor Corvane": "person",
+    "Tobb": "person",
+    "Moggin": "person",
+    "Hask": "person",
+    "Orla": "person",
+    "Vesk the Fox": "person",
+    "Gubbo": "person",
+    "Nib": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Imp": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Moggin",
+     "text": "Good! There's a wicked little Imp nesting in the old well behind our barn, and he's driven the rats wild. Now they bite anyone who comes near my goats -- the sweetest milkers in Pellamar!\n\nKill the Imp for me. My bow is yours when he's dead.\n\nThis iron key opens the barn door."
+    },
+    "reminder": {
+     "speaker": "Moggin",
+     "text": "It's just one little Imp! Go on and finish him off."
+    },
+    "completion": {
+     "speaker": "Moggin",
+     "text": "The Imp's dead? Wonderful!\n\nTake my bow, as promised, and show it to Hask at the Lucky Boar. He'll fill a quiver for you. Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Imp nesting in the well behind Moggin's barn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Wendrel: Gaskin the shepherd wants the Ogre that beat his boys and stole his Bow hunted down.",
+   "names": {
+    "Wendrel": "place",
+    "Dunstrel": "person",
+    "Orvane": "person",
+    "Grumvak": "person",
+    "Ketter Hill": "place",
+    "Town Hall": "place",
+    "Bortle": "person",
+    "Gaskin": "person",
+    "Ethra": "person",
+    "Dobbin": "person",
+    "Bodkin": "person",
+    "Squabble": "person",
+    "Gorrow Wood": "place",
+    "Grisk": "person",
+    "Tobble": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gaskin",
+     "text": "Ohhhh, not again! Both of my shepherd boys lie beaten senseless, and a great hulking Ogre has run off with my Bow! With Mayor Dunstrel's men up at the north gate, nobody else can go. Run him down before he reaches Ketter Hill, quick!"
+    },
+    "reminder": {
+     "speaker": "Gaskin",
+     "text": "That big lout still has my Bow! After him, please!"
+    },
+    "completion": {
+     "speaker": "Gaskin",
+     "text": "Ha! My Bow, safe and sound! It's no good without arrows, so have my Quiver as well. Both are yours."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Ogre who stole Gaskin's Bow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}
