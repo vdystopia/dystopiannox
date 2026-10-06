@@ -28,6 +28,9 @@ sys.path.insert(0, LAB)
 import metrics, westwood  # noqa: E402
 
 LETTERS = "ABCDEFGHIJ"
+SETTINGS = ("a cave town of miners under a mountain; a swamp hamlet on stilts; a castle town with a garrison; a lake "
+            "village of fishermen; a wizards' college town; a frozen fort on a mountain pass; a lava-forge town of "
+            "smiths; a crossroads inn and its hamlet; a farming town troubled by Ogres.")
 
 
 def scenarios():
@@ -133,6 +136,28 @@ def blind_results(key, jd):
                 score_gen=sc(gen), score_ww=sc(ww), items=items, tells=jd.get("tells", []))
 
 
+def sameness(vs):
+    """How alike the variants read: the share of word 3-grams of each variant's lines that recur in three or more
+    other variants, and how many open the same way. Westwood's units of one scenario share almost none."""
+    def grams(v):
+        w = [x.lower() for p, x in v["parts"].items() if not p.startswith("journal")
+             for x in metrics.words(x["text"] if isinstance(x, dict) else x)]
+        return {tuple(w[i:i + 3]) for i in range(len(w) - 2)}
+    gs = [grams(v) for v in vs]
+    cnt = collections.Counter(g for s in gs for g in s)
+    shared = statistics.mean(sum(1 for g in s if cnt[g] >= 4) / max(1, len(s)) for s in gs) if gs else 0
+    openers = collections.Counter(" ".join(metrics.words((list(v["parts"].values())[0]["text"] if isinstance(list(v["parts"].values())[0], dict) else list(v["parts"].values())[0]))[:2]).lower() for v in vs)
+    top, k = openers.most_common(1)[0] if openers else ("", 0)
+    pen, flags = 0.0, []
+    if shared > 0.04:
+        p = min(1.5, 15 * (shared - 0.04)); pen += p
+        flags.append(f"-{p:.1f} sameness: {shared:.0%} of the variants' 3-word phrases recur in four or more of them")
+    if k >= 3:
+        p = min(1.0, 0.25 * (k - 2)); pen += p
+        flags.append(f"-{p:.1f} sameness: {k} variants open with \"{top}\"")
+    return pen, flags
+
+
 def run(world, sc, it, n):
     vd = variants_of(it, sc["id"])
     if not vd:
@@ -146,11 +171,13 @@ def run(world, sc, it, n):
     kd = os.path.join(OUT, "_keys", it); os.makedirs(kd, exist_ok=True)
     json.dump(key, open(os.path.join(kd, f"{sc['id']}.json"), "w", encoding="utf-8"), indent=1)
     br = blind_results(key, judgement_of(it, sc["id"]))
-    m_gen = statistics.mean(r["score"] for _, r in res)
+    same, same_flags = sameness(vs)
+    m_gen = statistics.mean(r["score"] for _, r in res) - same
     m_ww = statistics.mean(r["score"] for _, r in wres)
     # the scorecard
     L = [f"# {sc['title']}: {it}", "", f"Writer: {vd.get('writer', '?')}; guide: {vd.get('guide', '?')}", "",
          f"**Metric judge:** ours {m_gen:.2f} / 10 (n={len(res)}), Westwood's units {m_ww:.2f} (n={len(wres)}).", ""]
+    L += [f"- {f}" for f in same_flags] + ([""] if same_flags else [])
     if br:
         L += [f"**Blind judge:** accuracy {br['accuracy']:.0%} (chance 50%), ours detected {br['detected']:.0%}; "
               f"score ours {br['score_gen']:.1f}, Westwood {br['score_ww']:.1f}.", ""]
@@ -242,10 +269,11 @@ def brief(it, baseline=False):
     L += ["## The map", "", world["summary"], "",
           "Names already on the map: " + ", ".join(f"{k} ({v})" for k, v in world["names"].items()), "",
           "## The variants", "",
-          "Variant 1 takes the scenario as written. Variants 2-10 each change its specifics (who asks, which beast, "
-          "item, captive or place, and why) within Brackenford's world and the same kind of situation, so that no two "
-          "read alike. Every person, place or named thing a variant mentions that is not on the map's list goes in "
-          "the variant's `names` ({name: person|place|thing|group}). Rewards: gold within the scenario's budget, items "
+          "Variant 1 takes the scenario as written, in Brackenford. Variants 2-10 are the same kind of situation on "
+          "other generated maps, one each: " + SETTINGS + " Each changes who asks, the beast, item, captive or place, "
+          "and why, so that no two read alike, and the ten do not share one skeleton (vary length, opening, ending). "
+          "Every person, place or named thing a variant mentions that is not on Brackenford's list goes in the "
+          "variant's `names` ({name: person|place|thing|group}). Rewards: gold within the scenario's budget, items "
           "only from its list.", "",
           "```json", json.dumps({"scenario": "<id>", "iter": it, "writer": "<who wrote it>", "guide": "<the guide you followed>",
                                  "variants": [{"id": 1, "specifics": "<one line: who, what, where>",

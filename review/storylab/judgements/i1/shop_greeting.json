@@ -1,0 +1,33 @@
+{
+  "packet": "shop_greeting/i1",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lively and plain, but all three keepers tell the same local news (the Urchins robbed me last night) and each line ends on a crafted beat; Westwood's keepers rarely share one plot point."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'[Person]'s the name, and iron's the trade!' and the wolves punchline are neatly built quips; every shop routes the player to the same threat, which reads designed rather than incidental."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Flat, slogan-like 'Welcome to X! How can I help you?' and the shop-jingle 'one stop shop for all your literary needs' is exactly Nox's tongue-in-cheek blandness."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Generic courteous greetings ('at your service! What can I do for you, sir [Class]?') with a small rival-inn aside; no plot exposition, typical of the campaign's shop lines."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line stacks wares, local threat and a joke ('Well... the only ones, anyway!'); the precise geography ('east of the ford', 'from the barrow') in a shop greeting is a tell."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Three variations on 'nobody comes since the bandits'; the triad 'Potions, scrolls and spell books' and the inviting rhetorical question are tidy but too uniformly themed."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Ties into a chapter event but in Nox's boastful salesman way ('finest assortment of arms in the South!'), with a longer, slightly clumsy magic-shop line that feels authentic."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'fresher'n a monkey's butt' is Nox's crude humour; 'Welcome, Wanderer!' and the deadpan guarantee line are short and unpolished in the campaign's way."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every keeper explains an absence or emptiness with a wink ('there's nobody else in them!'); consistent three-beat joke construction across all three shops."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Uneven register ('aye mate', 'Ya need', then a dry institutional sentence about the [Group]) is the inconsistency of the real campaign, not a designed voice."}
+  ],
+  "tells": [
+    "Westwood's shop greetings are short, generic and sales-slogan flat ('Welcome to X! How can I help you?'); the new ones always carry local plot news.",
+    "In the new texts all three keepers of a place share one topic (the same raiders or monster), which feels designed; Westwood's keepers are unrelated to each other.",
+    "New texts build each line to a punchline or tag joke; Westwood's humour is rarer, cruder and more random.",
+    "New texts give precise geography (east of the ford, north road) even in a shop greeting.",
+    "New texts favour the triad list 'Potions, scrolls and spell books' and the ' -- ' dash aside in nearly every line."
+  ]
+}

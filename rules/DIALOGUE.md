@@ -32,42 +32,73 @@ Words per line by situation (p10 / median / p90), and how the lines sound (share
 - **A long speech is split into pages** by a blank line (`"\n\n"`): offers 1-3 pages (p90 3), completions 1-2, all the
   rest one.
 
-## The voice, in twelve rules
+## The voice, in sixteen rules
 
-1. **Plain and loud.** People say what they feel, at once, with `!`: "My boots! I never thought I'd see them again!"
-   "It's a disaster!" "Thank goodness, you saved him!" Understatement, irony, subtext and literary restraint mark
-   another writer. Our maps' house style ("Forty years I worked beside him. He'd hand me the stones before I
-   asked.") is good prose and not Nox.
+1. **Plain and loud, but not every sentence.** People say what they feel, at once: "My boots! I never thought I'd see
+   them again!" "It's a disaster!" Understatement, irony, subtext and literary restraint mark another writer; our
+   maps' house style ("Forty years I worked beside him. He'd hand me the stones before I asked.") is good prose and
+   not Nox. But only about **half** of Westwood's lines exclaim: a line of "!" after "!" reads as an imitation. Mix in
+   calm statements ("The Mana Mines are to the west of the Crossroads.") and the odd longer clause.
 2. **Short sentences, one idea each:** 7 words at the median, rarely over 15. No semicolons, no colons inside a
-   line; use ` -- ` or start a new sentence.
+   line; use ` -- ` or start a new sentence, and not in every line.
 3. **Feelings named, not shown:** "I'm inconsolable." "I fear the worst." "I'm eternally grateful, mate." "These
    cursed arachnids are worse than the pox!"
-4. **Address the player** as a stranger would, in one line in seven (a third of the offers): *lad*, *kind sir*,
-   *brave Adventurer*, *kind stranger*, *Wanderer*, *friend*, *mate*, *my son*, *young sir*. **Never name the
-   player's class**: our maps are played by Warriors, Wizards and Conjurers alike. Westwood's own class-free chapter
-   (Brin, the same text in all three campaigns) speaks exactly so.
-5. **Everyday words.** Potions, not philtres; a garden, not a herbarium; a cart, not a wain. Name a thing by what it
-   is. A word a farmer would not say needs a reason.
-6. **The genre's stock phrases are Nox's texture**, used straight, not winked at: "a token of my appreciation", "I
+4. **The register swings.** Westwood's voice is not evenly plain: the same giver goes from plain to bombast ("All
+   Nox is now in peril if he is lost!") to stiff, formal, slightly Latinate words ("I surmise you might be here about
+   the reward", "liberate our besieged Mayor", "these abominable creatures", "that despicable scoundrel", "valiant",
+   "nefarious", "Your valor knows no peer"). Mayors, wizards and wardens talk grand; farmers and barmen talk plain.
+5. **Address the player** as a stranger would, in one line in seven (a third of the offers): *lad*, *kind sir*,
+   *brave Adventurer*, *kind stranger*, *Wanderer*, *young sir*, *my son*. **Never name the player's class**: our
+   maps are played by Warriors, Wizards and Conjurers alike. Westwood's own class-free chapter (Brin, the same text in
+   all three campaigns) speaks exactly so. Not every line, and not "stranger" and "friend" everywhere.
+6. **Everyday words for things.** Potions, not philtres; a garden, not a herbarium; a cart, not a wain. Name a
+   thing by what it is. (The grand words of rule 4 are for how people talk, not for what things are called.)
+7. **The genre's stock phrases are Nox's texture**, used straight, not winked at: "a token of my appreciation", "I
    will offer a worthy reward", "Please, help me!", "Hurry!", "Thank goodness!", "May all that is great bless you!",
    "Good luck!", "Thanks again, brave Adventurer!". Vary them across a map; do not avoid them.
-7. **Capitalise creature kinds, peoples and titles** as Westwood does: the Ogres, the Urchins, the Undead, the
-   Necromancer, the Mayor, the Captain, the Foreman.
-8. **Say where, by compass and landmark:** "in my house northwest of here", "east out of town, across the bridge",
-   "the Ogre village in the northeast", "Go into the cemetery located East of here". A quest line that sends the
-   player somewhere says where it is.
-9. **Humour is broad, and in a corner:** the frog ("You know, I've been thinking... being a frog isn't half bad!"),
-   the con man's bow ("The previous owner only used it on weekends."), the barkeeper ("The ale's fresher'n a monkey's
-   butt!"), the archery judge ("Maybe we should get bigger barrels for you."), a shopkeeper who takes back his boast
-   ("Well... Maybe not the finest exactly... But damn good nonetheless!"). One or two comic lines a town, from minor
-   people; never in the journal, rarely in a quest giver's plea.
-10. **Spoken sounds are written out:** "Heh, heh, heh...", "Hmmm.", "Psst...over here", "Ahhhh!", "Gahhhhhh! No!
-    Don't kill me!", "Arf, Arf! Grrrrrrrrrr.", "*RIBBIT*", "Hiccup!". Townsfolk and odd characters use them; givers
-    sometimes.
-11. **Dialect is light and rare:** "C'mon in, lad!", "Name yer poison! What can I get fer you?", "What 'dat noise?"
-    (Ogres), "mate" (a bridge guard). One or two characters a map, not everyone.
-12. **Repeat freely.** Westwood reuses a line across people ("Thanks again, brave Adventurer!" from three villagers)
-    and across maps. A town's after-lines may say the same thing in the same words.
+8. **Capitalise creature kinds, peoples and titles** as Westwood does: the Ogres, the Urchins, the Undead, the
+   Necromancer, the Mayor, the Captain, the Foreman. Westwood's titles are Mayor, Captain, Warden, Foreman, Master,
+   Guildmaster, Priest, Archivist, Chief Engineer; "reeve", "moot" and the English-village words of our first maps
+   are a tell when every map uses them.
+9. **Say where once.** The offer says where, by compass and landmark: "in my house northwest of here", "the Ogre
+   village in the northeast". The reminder does not repeat it (Westwood's reminders are mood: "Oh why aren't you
+   going? My sister is in the worst danger!", "Go! Don't just stand there."), and the journal names the place only
+   when the goal needs it ("Retrieve the Amulet of Teleportation." is a whole entry).
+10. **Less information a line.** One fact a line for townsfolk and guards; one or two names, never three. An offer
+    gives just enough to act on, not a history: no "for forty years", no "three generations", no family chronicle.
+11. **Speakers assume the scene.** Westwood's people rarely introduce themselves by name and title ("I'm Halvard,
+    Reeve of ..." is our tell); they start in the middle of their trouble ("It's a disaster!", "Gahhhhhh! No! Don't
+    kill me!", "Thieving little creatures!") or with a greeting ("Greetings, Wanderer.").
+12. **Humour is rare, crude and odd:** a pet frog, the con man's bow ("The previous owner only used it on
+    weekends."), the barkeeper ("The ale's fresher'n a monkey's butt!"), the archery judge ("Maybe we should get
+    bigger barrels for you."), a shopkeeper who takes back his boast. One or two comic lines a town, from minor people.
+    Not a punchline at the end of every line, and never the same joke shape twice (the captive who shrieks and then
+    sees it is a person).
+13. **Spoken sounds are written out:** "Heh, heh, heh...", "Hmmm.", "Psst...over here", "Ahhhh!", "Arf, Arf!
+    Grrrrrrrrrr.", "*RIBBIT*", "Hiccup!". Odd characters use them; not every scoundrel says "Heh, heh".
+14. **Dialect is light and rare:** "C'mon in, lad!", "Name yer poison! What can I get fer you?", "What 'dat
+    noise?" (Ogres), "mate" (a bridge guard). One or two characters a map, not everyone.
+15. **Repeat freely, vary the shape.** Westwood reuses a line across people ("Thanks again, brave Adventurer!" from
+    three villagers). But its quests do not share one skeleton: lengths, openings and endings differ (one offer is two
+    lines, the next three pages; not every offer ends "Will you...?", not every beast has a leader "we call him X").
+16. **Rewards, said plainly:** a sum ("Here's your reward -- 100 in gold!"), "take this as a token of my
+    appreciation", a spell, a key, the way on. Do not itemise the payment ("gold, and this ankh, and two potions").
+    A big quest's thanks point onward ("The Captain awaits you at the front gates.").
+
+## What gave our lines away (the lab's blind judges, i0-i1)
+
+- **One template, one map:** the same beats in every quest (hail, self-introduction, named beast leader,
+  compass-precise place, sum plus item plus joke, "Will you...?"), the same village words (reeve, ford, north road,
+  barrow), the three shopkeepers of a town all talking about the same raiders.
+- **Too much said:** backstory and sentiment in every line, places repeated in plea, reminder and journal, rumours
+  that are all quest signposts dense with names, journals that name person, item, place and direction.
+- **Too even:** every sentence short and exclaiming, or (before the guide) every sentence quiet, literary and
+  semicoloned. Westwood swings between plain, bombast and stiff formality, and leaves its people odd.
+- **Crafted flourishes:** "I'll be plain about it", "I won't waste your time", "nothing comes in, and nothing goes
+  out", similes ("white as milk", "wrapped up like parcels"). Westwood is cornier and less clever.
+- **Sentimental heirlooms:** Westwood's stolen things are useful or magic (spectacles, boots, a scepter, a staff, an
+  amulet); its choices are odd or comic deals (a used bow, an inn for 50,000 gold, dead or alive), not moral forks
+  with a stock turncoat.
 
 ## The situations
 
@@ -101,7 +132,7 @@ and lead us to the surface?").
 
 ### The reminder (while the quest is open)
 
-One or two short sentences: the ask again, with urgency; sometimes the way again.
+One or two short sentences: the ask again, with urgency or worry. Rarely the way again (that was in the offer).
 
 > What are you waiting for? I need my magical staff! -- Please hurry, kind sir! My father will be home soon! -- Have
 > you recovered my spectacles?! Oh.... Well, the rogues who took them have a hideout in the woods nearby. -- Hurry and
@@ -126,8 +157,9 @@ thanks again for rescuing my sister!", "A thousand thanks for your kindness!".
 
 ### Townsfolk: rumours and barks
 
-One or two sentences. A rumour names a person or a place and carries the hook of a quest; a bark is flavour, a
-brush-off or gossip with a sting. A town mixes both, and they change after the quest ("Nice job with the spiders,
+One or two sentences. Most townsfolk lines are colour: a brush-off, a worry, gossip with a sting, a dry joke at the
+town's own expense ("Maybe we shouldn't have built so close to the ogre village."). One line in three at most is a
+rumour that points at a quest, and it names one person or place, not three. A town mixes both, and they change after the quest ("Nice job with the spiders,
 Conjurer! I hear the Mayor is very impressed!").
 
 > I saw a huge spider crawl towards the mayor's house! I hope he's alright -- he's deathly afraid of spiders! -- Most
@@ -147,7 +179,9 @@ Rules, warnings and directions, in short imperatives; a guard is curt and proud 
 
 ### Shopkeepers
 
-The shop's name or wares and a pitch, often with a wink at the price or the times.
+The shop's name or wares and a pitch: often a flat slogan ("Welcome to the shop of Bright Blades! How can I help
+you?"), sometimes a wink at the price or the times. A town's keepers have nothing to do with each other; at most one
+of them mentions the town's trouble.
 
 > This is Kincaid's. I can sell you armor, but be quick about it. -- Welcome to the Griffon's Nest. My inn may not be
 > as fancy as Maximillian's, but I guarantee you a peaceful rest. -- Welcome, Wanderer! We carry the finest wares in
@@ -161,7 +195,7 @@ Following: one line, urgent ("Hurry! Lead me to safety!", "Let's hurry, lad! Tim
 
 ### The journal
 
-An order, one sentence, 5-14 words (median 9): the goal and where. 30 of Westwood's 82 entries send the player
+An order, one sentence, 5-14 words (median 9): the goal, and where only when the goal needs it. 30 of Westwood's 82 entries send the player
 somewhere or to someone (Find, Go, Locate, Meet, Speak, Return), 18 fetch (Retrieve, Recover, Bring), 13 fight or
 clear (Defeat, Charm, Survive, Chase), 11 rescue or escort.
 
@@ -187,8 +221,10 @@ fresher out here and the sun is bright.", "This cave is dank and smells of Ogre.
 ## Checklist for a map's story
 
 - [ ] Every line's length in its situation's range (the table above); offers paged by blank lines.
-- [ ] Two lines in three exclaim or ask; no semicolons; `--` and `...`, never `—` or `…`.
+- [ ] About half the lines exclaim, two in three exclaim or ask, not more; no semicolons; `--` and `...`, never `—` or `…`.
 - [ ] Offers: trouble, who, where (compass or landmark), the ask, the reward; a yes/no question for side quests.
+- [ ] The place said once (in the offer); reminders are mood; journals short.
+- [ ] No two quests of a map on one skeleton; townsfolk mostly colour; shopkeepers unrelated.
 - [ ] Each giver: offer, refusal (if asked), reminder, completion with a handover, an afterwards line.
 - [ ] Journal entries: orders, 5-14 words, naming the goal and place; done entries with the same words.
 - [ ] The player addressed as lad / stranger / kind sir / Adventurer now and then; never by class.

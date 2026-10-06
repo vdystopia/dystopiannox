@@ -1,0 +1,33 @@
+{
+  "packet": "rescue/i0",
+  "judge": "Claude Code subagent (blind judge), claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Damn! Where have you been, lad!?', 'All Nox is now in peril', 'Time waits for no man!' and a terse imperative journal: melodramatic campaign plot voice, a little long in the captive's speech."},
+    {"label": "B", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Eerie marsh lights that laugh, a lost shoe, a child quoting 'Da': atmospheric literary fiction; the journal is a long first-person narrative summary."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Jammed express elevator, 'really big bugs', key and secret passage, 'Thank the stars you're both alive!': plain, gameplay-led, upbeat Westwood rescue."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "A ten-year-old up a tree with comic-tender asides ('Not really. Nearly.'), a choked-up mother; affecting but far more literary than Nox, with a narrative-summary journal."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Sir! Help me please! A mob of foul Ogres...', 'Hail, brave Adventurer!', 'tokens of my appreciation' and 'Rescue [Person]'s sister from the Ogre dungeons.': stock Westwood."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Clipped emotional fragments ('Is he...?', 'stiff as oars'), savings for a new boat; quiet domestic drama and a long journal that 'begs me' are not the campaign's style."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Mine workers have died in defense of Nox's vital interests!', a beast scroll, 'Rescue the 6 trapped mine workers.' and a numeric, imperative journal: Westwood quest design."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Whimsical half-blind gran who 'just doesn't know where the tree is', potions that 'taste of feet': gentle literary humour and characterisation well beyond Nox's."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A frog in a burning house and 'What's that you say? Loads and loads of money?': Westwood's goofy fourth-wall humour, short imperative journal."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Guilt-ridden herbalist, grave-moss, an apprentice who 'won't drop the moss', 'Do you, love?': literary tenderness and a long narrative journal."}
+  ],
+  "tells": [
+    "Journal entries: Westwood's are short imperatives ('Rescue X from Y.', 'Go to [Place] and rescue [Person].'); the new ones are multi-sentence past-tense summaries ending in '[Person] begs me to find her'.",
+    "The new pleas are all quiet domestic emergencies told in broken, emotional fragments ('Please.', 'Is he...?') with sensory detail; Westwood's are loud, exclamatory and plot- or gameplay-driven ('Ogres overran...', '!?').",
+    "The new captives each get a whimsical or poignant characterising line (lost shoe, 'Not really. Nearly.', 'taste of feet'); Westwood's captives say functional lines ('I'll follow you.', 'Hurry! Lead me to safety!').",
+    "Westwood's rewards and mechanics are explicit (keys, scrolls, gold, counts of NPCs, an elevator); the new ones give modest, sentimental rewards ('what was in the jar', 'put by for the new boat').",
+    "Punctuation: Westwood uses '!', '!?', double-dashes and 'lad'/'kind sir'; the new texts use ellipses, semicolons and 'traveller'."
+  ]
+}

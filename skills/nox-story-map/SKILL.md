@@ -39,6 +39,11 @@ law-or-mercy choice ending in a journey home). `thornwick.py` and `rimehold.py` 
 5. **Fights with a reason**, **rewards** (items first, gold within about 500-1500 per map, `rules/QUESTS.md`), **shops**,
    and **everyone talks** (a rumour each, a line after the main quest, a portrait). Item names must exist:
    `py review/catalog.py <name or regex>`.
+6. **Write every line by `rules/DIALOGUE.md`** (Westwood's voice, measured: plain and loud, short sentences, two
+   lines in three exclaim or ask, no semicolons, the player addressed as lad / stranger / kind sir and never by
+   class, journal entries as short orders) and each side quest by `rules/QUESTS.md`'s five beats (offer with a yes/no
+   question, refusal, reminder, completion with the reward handed over, afterwards; `q.errand`). Score the story with
+   `py tests/storylab.py --check mapgen/designs/<map>.py` (aim: 8 or more, no line below 6).
 
 Then the map plan: areas and links. Units: the map is 256 x 256 squares on screen (X right, Y down);
 `land.area(name, uv(X, Y), radius_uv)` takes its centre in uv (`uv(X, Y) = (X + Y, X - Y)`) and its radius in uv
@@ -82,6 +87,9 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
 10. **The story** (`kit/quests.py`): `q.talker(name, [q.say(text, when=, do=, ask=, else_=)])` (later stages first),
     events (`q.on_death`, `q.on_all_dead`, `q.near`, `q.on_pickup`, `q.when_true`), `q.start([...])` (lock the gate,
     disable the exit, the first journal entry), `q.portrait`. Conditions read the world (`q.dead`, `has=`).
+    A side quest's five beats in one call: `q.talker(giver, q.errand(giver, quest, offer, reminder, thanks, after,
+    objective, done=q.when(has=item), reward=[A.give(...)], refusal=...) + other_lines)`; a quest's done entry is
+    `q.done(objective)` (the same words, COMPLETED), news is `q.note(text)`. The text by `rules/DIALOGUE.md`.
     `m.scripts.update(B.files(m.d["name"])); m.scripts.update(q.files())`.
 11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()` (`culture` may
     be a tuple: Harrowby's `("farm", "ogre")`). Add a theme
@@ -100,6 +108,7 @@ py review/spots.py mapgen/out/<map>/<Name>.map <names...>     # close-ups of the
 py review/rooms.py mapgen/out/<map>/<Name>.map --each         # one picture per room
 py review/roomscore.py mapgen/out/<map>/<Name>.map            # each room scored for its type (rules/rooms/)
 py review/exteriors.py mapgen/out/<map>/<Name>.map --holes    # empty outdoor ground
+py tests/storylab.py --check mapgen/designs/<map>.py          # the story's lines against Westwood's (no build needed)
 ```
 
 **The last step before handing a map over** is the QA gate:

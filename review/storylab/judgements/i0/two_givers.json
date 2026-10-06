@@ -1,0 +1,33 @@
+{
+  "packet": "two_givers/i0",
+  "judge": "Claude Code subagent (blind judge), claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "An absurd 50,000-gold offer to buy an inn, 'lad', breezy exclamations and 'stay out of [Person]'s way if you want to stay alive!': the campaign's comic merchant voice."},
+    {"label": "B", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Moral dilemma between chapel and a debtor with literary touches ('The saints have other cups', 'You never spoke to me'); colon and semicolon usage and the hushed tone are not Nox's."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Sentimental heirloom ('Thirty years of her hand in it', 'receipt and charm'), a collector rival, and an escape by barge: tidy, symmetrical two-giver dilemma in a literary register."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Used-car-salesman joke ('only used it on weekends'), '300 gold or more', 'There ya go!' and a double-dash: unmistakably Westwood's humour and pricing."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Official sponsorship, a Chief Engineer, a foul little urchin bothering bats near an apple orchard, a ruby key: plain, quest-mechanical exposition with concrete items and locations."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Charter, tolls, a bailiff of a rival lord: political-legal intrigue phrased in measured, balanced sentences with no exclamations or jokes."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Hail, brave Adventurer!', 'the menfolk of [Place] cannot live without us!' and hungry Ogres with grumbling stomachs: Westwood's hammy, tongue-in-cheek damsels."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Eloping lovers and a stolen dowry, a draught 'for the morning after': warm romantic-folk storytelling, quiet and economical, unlike Nox's broad quest-giver lines."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Dead-or-alive bounty with a 500 vs 250 gold split, 'despicable scoundrel behind bars!', an unmasked gang nickname and double-dashes: the campaign's bounty shape and voice."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A drowned ferryman's widow and an unpaid guild, 'I'll light a candle for you': grief-tinged social realism and semicolon rhythm, not Westwood's register."}
+  ],
+  "tells": [
+    "Westwood's choices are mechanical and comic (buy or don't, kill or capture for different gold sums, accept or refuse); the new ones are symmetrical moral dilemmas between two sympathetic claimants for one object.",
+    "Westwood names exact gold rewards ('500 in gold', '50,000 in gold'); the new texts pay in vague 'silver', 'a share', 'what's in the box'.",
+    "Westwood uses exclamations, double-dashes, 'lad', 'young [Class]', 'Hail, brave Adventurer!' and broad jokes; the new texts are quiet, wry and use colons and semicolons.",
+    "The new texts load each line with backstory and sentiment (heirlooms, debts, dowries, widows, saints) and literary closing beats; Westwood gives just enough plot to act on.",
+    "All five new texts share one invented setting's vocabulary (ford, north road, watchtower, barge, reeve, chapel), which makes them read as a set."
+  ]
+}

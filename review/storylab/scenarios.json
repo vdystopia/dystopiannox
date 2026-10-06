@@ -496,7 +496,7 @@
   {
    "id": "rumour",
    "title": "Rumours pointing at quests",
-   "situation": "Three townsfolk of Brackenford each tell the player one rumour; each rumour points at one of the map's quests: the wolves of the Ashwood (Ulric the shepherd's bounty), Wenna's seal stolen by the Urchins of the old barrow, and Red Corwin's bandits in the watchtower on Crow Hill.",
+   "situation": "Three townsfolk of Brackenford each say one line to the player. Two of them point at a quest of the map (the wolves of the Ashwood and Ulric the shepherd's bounty; Wenna's seal stolen by the Urchins of the old barrow; Red Corwin's bandits in the watchtower on Crow Hill), the third is ordinary town talk: gossip, a complaint, a brush-off, a joke.",
    "parts": [
     [
      "rumour1",
@@ -628,7 +628,7 @@
   {
    "id": "shop_greeting",
    "title": "Shopkeepers' greetings",
-   "situation": "Three shops in Brackenford, each keeper greeting the player when the shop opens: Ossian, who keeps the Drowned Lantern inn by the ford; Dunstan the smith (arms and armour); Mabry, who sells potions, scrolls and spell books. Bandits rob the north road, so trade is thin.",
+   "situation": "Three shops in Brackenford, each keeper greeting the player when the shop opens: Ossian, who keeps the Drowned Lantern inn by the ford; Dunstan the smith (arms and armour); Mabry, who sells potions, scrolls and spell books. Each greets and sells; at most one of the three mentions the town's troubles.",
    "parts": [
     [
      "inn",
@@ -1114,7 +1114,7 @@
   {
    "id": "main_opening",
    "title": "The main quest's opening, from a reeve",
-   "situation": "The player arrives in Brackenford by the south road. A townsman at the south gate sends the player to Reeve Halvard in the Moot Hall. Halvard opens the main quest: Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road; he has shut the north gate; kill Corwin and the gate opens. Write the townsman's pointer, Halvard's opening, his reminder, and the journal entry.",
+   "situation": "The player arrives in Brackenford by the south road. A townsman at the south gate sends the player to Reeve Halvard in the Moot Hall. Halvard opens the main quest: Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, and the way on is shut until Corwin is dealt with. Write the townsman's pointer, Halvard's opening, his reminder, and the journal entry. Variants may change who opens the quest (a reeve, a captain of the watch, a priest, an old friend of the player's patron) and the threat, as long as it is the map's main quest.",
    "parts": [
     [
      "herald",

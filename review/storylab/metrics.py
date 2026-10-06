@@ -36,7 +36,7 @@ CLASSES = ["Fire Knights", "Fire Knight", "Warriors", "Warrior", "Conjurers", "C
 # Westwood's own names, with a kind (person, place, thing, group) for the blind packets' masks
 WW_NAMES = {
     "person": """Hecubah Horrendous Horvath Aldwyn Aldwin Theogrin Jandor Mordwyn Lewis Gerard Thavius Matilda Ingrid
-        Glynda Gearhart Byzanti Maximillian Max Stravas Morgan Lightfingers Kalen Gavin Kincaid Grillf Mlurgh Henrick
+        Glynda Gearhart Byzanti Maximillian Max Stravas Morgan Lightfingers Lightfinger Kalen Gavin Kincaid Grillf Mlurgh Henrick
         Delwin Brenneth Aidan Cain Lydia Daniel Marik Belfor Halric Loproc Garret Bing Ganem Jorgan Grunbar Albi Dorian
         Valkor Alark Kylerean Vows Allistor Grendel Azeruth Perlas Chump Gearhead Lucky Isabella Gustavius Balthorak
         Rust Bull Fenton Booth Hight Fulton Mystic Googinado Glurgin""".split(),
@@ -151,7 +151,8 @@ def features(t, known=None):
              numbers=len(NUMBER.findall(t)), first_person=len(re.findall(r"\b(I|me|my|mine|I'm|I've|I'll)\b", t)),
              second_person=len(re.findall(r"\b(you|your|yours|you're|you'll|you've)\b", t, re.I)),
              imperatives=sum(1 for x in s if words(x) and words(x)[0].lower() in IMPERATIVE),
-             caps_shout=len(re.findall(r"\b[A-Z]{3,}\b", t)))
+             caps_shout=len(re.findall(r"\b[A-Z]{3,}\b", t)),
+             excl_share=sum(1 for x in s if x.rstrip(" .'\"").endswith("!") or "!" in x[-3:]) / len(s))
     f["info"] = (f["names"] + f["direction"] + min(f["numbers"], 2) + f["imperatives"]) * 10.0 / nw
     f["rare"] = rare_share(t, known)
     return f
@@ -366,6 +367,15 @@ def voice(fs):
     if lively < ww_lively - slack:
         p = min(4.0, 12 * (ww_lively - slack - lively)); pen += p
         out.append(f"-{p:.1f} voice: {lively:.0%} of the lines exclaim or ask (Westwood's {ww_lively:.0%})")
+    # and not every sentence: Westwood's lines exclaim in about half their sentences, at most
+    sent = [s for f in talk for s in [f.get("excl_share", None)] if s is not None]
+    ns = sum(f["sentences"] for f in talk)
+    if ns >= 6 and sent:
+        ex = sum(s * f["sentences"] for s, f in zip(sent, talk)) / ns
+        lim = 0.37 + 0.12 + 0.5 / math.sqrt(ns)       # Westwood: 37% of the sentences of its dialogue exclaim
+        if ex > lim:
+            p = min(3.0, 10 * (ex - lim)); pen += p
+            out.append(f"-{p:.1f} voice: {ex:.0%} of the sentences exclaim (Westwood's 37%)")
     ad = sum(f["address"] for f in talk) / n
     if n >= 6 and ad < 0.04:
         pen += 1.0; out.append(f"-1.0 voice: no line addresses the player (lad, stranger, friend, kind sir; Westwood {st['address']['mean']:.0%})")
