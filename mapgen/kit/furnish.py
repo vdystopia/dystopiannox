@@ -143,6 +143,10 @@ SNUG_GAP = {"shelves": 0.18, "storage": 0.22, "desk": 0.25, "fireplace": 0.15, "
 # floors only: Westwood never lets carpet touch dirt, grass or cobbles (floors.json never_touch).
 CARPET_EDGE = "RugTanLightEdge"
 CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone")
+# a carpet laid over a room's whole floor less a ring: Westwood's share of carpeted rooms whose carpet is that, by the
+# room's short side in squares (rules/rooms/shells.json: 4 across 19 of 26, 5 across 5 of 13, 6 across 6 of 19, 7
+# across 2 of 9, 8 or more 2 of 19); the others' carpets are 2-5 by 3-8 squares (lay_carpet)
+CARPET_FULL = {3: 0.75, 4: 0.75, 5: 0.4, 6: 0.3, 7: 0.2}
 # Gear racks that stand in rows down the middle of a storeroom, one kind to a row (TreePlace v0.3 room review).
 RACKS_PER_ROW = 5
 # a trader's or a smith's racks are wares on show, not a store: three to a row, a row of armour and a row of weapons
@@ -2288,6 +2292,24 @@ class Furnisher:
             if i0 > i1 or j0 > j1: return []
             rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
         if i1 - i0 < 1 or j1 - j0 < 1: return []        # at least 2 x 2 squares
+        from kit import shells as _SH
+        if not box and _SH.ENABLED:
+            # Westwood's carpets (rules/rooms/shells.json, 2026-10-05): a small room's carpet is its floor less a ring
+            # of one square (rooms 4 squares across: 3 in 4 of them), a larger room's a carpet of 2-5 by 3-8 squares
+            # in its middle (8 squares across or more: 1 in 10 carpeted wall to wall); a third of the floor at the
+            # median. Its own generator, so the furnisher draws as before.
+            crng = random.Random(zlib.crc32(f"carpet:{self.room.id}".encode()))
+            a, b = sorted((i1 - i0 + 1, j1 - j0 + 1))
+            if crng.random() >= CARPET_FULL.get(a + 2, 0.1):
+                cs = min(a, crng.choice((2, 3, 3, 4, 4, 5)))
+                cl = min(b, max(cs, cs + crng.choice((0, 1, 1, 2, 3))))
+                ci, cj = (cs, cl) if (i1 - i0) <= (j1 - j0) else (cl, cs)
+                oi = (i1 - i0 + 1 - ci) // 2 + crng.choice((-1, 0, 0, 1))
+                oj = (j1 - j0 + 1 - cj) // 2 + crng.choice((-1, 0, 0, 1))
+                oi = max(0, min(i1 - i0 + 1 - ci, oi)); oj = max(0, min(j1 - j0 + 1 - cj, oj))
+                i0, j0 = i0 + oi, j0 + oj
+                i1, j1 = i0 + ci - 1, j0 + cj - 1
+                rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
         ring = {(s[0] + a, s[1] + b) for s in rect for a, b in nb8} - rect
         if any(tile(s) in self.spec.local_blend for s in rect | ring): return []     # a door's threshold
         mat = material or self.rng.choice(self.palette["carpet"])
