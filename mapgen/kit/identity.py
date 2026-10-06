@@ -205,7 +205,7 @@ ROOMS = {
                          dict(fam="table", slot="group", group="longtable", max=1, min_area=220),
                          dict(fam="table", slot="group", group="round", max=1, min_area=300),
                          dict(fam="table", slot="group", group="feast", max=1, min_area=200),
-                         dict(fam="bench", slot="wall", max=4),
+                         dict(fam="bench", slot="wall", max=2),
                          # a few barrels heaped on a front wall, never lining it (Con02a's by its door)
                          dict(fam="storage", slot="stock", coverage=0.3, kinds=("kegs",), pad=1.2, max=3, per_wall=0.25)]),
     "mess_hall": dict(purpose="where a crew eats together: long tables in rows with a bench along each side, the hearth "

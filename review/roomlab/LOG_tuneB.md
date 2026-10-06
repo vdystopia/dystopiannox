@@ -211,3 +211,22 @@ or well in the middle, benches, a statue pair, plants in the corners and in clum
 r1 tried beds of 4-6 plants instead of clumps (per 100 tiles 5): the clearances thinned them to a sparser, emptier
 garden (AUC 0.995); reverted. Not queued for judging (nothing to tell it from). Still giving it away by eye: clumps
 dotted evenly, benches not turned to the fountain.
+
+## Second pass
+
+Independent judge (main session), every sheet 10/10 picked: dining hall r8 (generated 4.0 / Westwood 6.4), hall r3
+(4.4 / 6.0), shrine r9 (4.6 / 6.8), gallery r3 (3.6 / 6.0). Their summary: "one set stamped at equal spacing, a lone
+group dead centre, and large bare stretches of floor. Westwood's rooms tend to have one strong idea placed with small
+irregularities."
+
+### Tavern against its own six rooms (the curated pool)
+
+| round | change | AUC | cross AUC | hard-rule rooms |
+|---|---|---|---|---|
+| r11 | r10's kit on the curated pool (6 taverns: no fallback) | 0.993 | 0.983 | 4 (sparse) |
+| r12 | kegs behind the bar snug to the wall; bars of 11-13 pieces past 220 tiles; two benches along the walls | 0.965 | 0.983 | 3 |
+| r13 | the kegs and casks 0.15 off the wall (Westwood's median 0.16; they had stood 0.35-0.66 off) | 0.952 | 0.985 | 3 |
+| r14 | spittoons scattered (2): per tile unchanged, the bar came out short; reverted | 0.997 | 0.987 | 5 |
+| r15 | r13 re-run (its sheet re-rendered after the renderer fix): queued | 0.952 | 0.985 | 3 |
+
+Chapel r3 re-run as r4 (re-rendered): AUC 0.959, 1 hard-rule room; queued in its place.

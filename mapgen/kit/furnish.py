@@ -3476,7 +3476,7 @@ class Furnisher:
         # wall flush (Westwood's run ends: 1.0-1.3 units from the wall line). Westwood's bars run 9-14 pieces (Con02a 9,
         # Con06a 11, Con07B 14): a long L in a common room (g.area counts half-tile cells), shorter where it must
         tiles = self.g.area / 2
-        arms = [9, 11] if tiles >= 140 else [7, 9] if tiles >= 90 else [5, 7]
+        arms = [11, 13] if tiles >= 220 else [9, 11] if tiles >= 140 else [7, 9] if tiles >= 90 else [5, 7]
         first = (self.rng.choice(arms), self.rng.choice(arms))
         sizes = [first] + [(a, b) for a, b in ((first[0] - 2, first[1]), (first[0], first[1] - 2),
                                                (first[0] - 2, first[1] - 2), (5, 7), (5, 5)) if a >= 5 and b >= 5]
@@ -3534,10 +3534,12 @@ class Furnisher:
             kegs = [t for t in ("Barrel", "Barrel2", "PiledBarrels1") if self.ok_type(t)] or ["Barrel"]
             n_kegs = self.rng.randint(2, 4)
             for k in range(1, 6):
-                for (uu, vv) in ((ru["coord"] + su * 1.2, rv["coord"] + sv * (1.4 + 1.5 * k)),
-                                 (ru["coord"] + su * (1.4 + 1.5 * k), rv["coord"] + sv * 1.2)):
+                kt = self.rng.choice(kegs)
+                w = max(self.half(kt)) + 0.15               # snug to the wall, as Westwood's (0.16 off it at the median)
+                for (uu, vv) in ((ru["coord"] + su * w, rv["coord"] + sv * (1.4 + 1.5 * k)),
+                                 (ru["coord"] + su * (1.4 + 1.5 * k), rv["coord"] + sv * w)):
                     if n_kegs > 0 and abs(uu - ru["coord"]) < du - 1.2 and abs(vv - rv["coord"]) < dv - 1.2:
-                        if self.try_put(self.rng.choice(kegs), uu, vv): n_kegs -= 1
+                        if self.try_put(kt, uu, vv, snug=True): n_kegs -= 1
             return True
         return False
 
@@ -3586,8 +3588,8 @@ class Furnisher:
                 pts = []
                 for k in range(2):
                     off = k0 + hc + 2 * hc * k + 0.1 * k
-                    if wall is ru: pts.append((ru["coord"] + su * (hc + 0.25), end + sv * off))
-                    else: pts.append((end + su * off, rv["coord"] + sv * (hc + 0.25)))
+                    if wall is ru: pts.append((ru["coord"] + su * (hc + 0.15), end + sv * off))
+                    else: pts.append((end + su * off, rv["coord"] + sv * (hc + 0.15)))
                 got = []
                 for (u, v) in pts:
                     o = self.try_put(t, u, v, snug=True)
