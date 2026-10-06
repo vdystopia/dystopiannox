@@ -70,6 +70,7 @@ DOOR_CUT = F.DOOR_CLEAR + 0.5
 # focal families a room holds once (a bedroom's one bed, a hearth, a bar): once the focal is in, later motifs leave
 # theirs out; the types whose focal repeats (a barracks' beds, a laboratory's benches) are not listed
 ONCE = {"bed": ("bedroom", "solar"), "fireplace": ("living_room", "kitchen", "tavern", "study", "solar"),
+        "stove": ("living_room",),
         "counter_bar": ("tavern",)}
 OPEN_TORCH = re.compile(r"^(Torch|TorchPole|TorchPoleImmobile)$")
 
@@ -982,6 +983,18 @@ class MotifFurnisher(F.Furnisher):
         door = self._main_door_wall()
         backs = [n for n in ("NE", "NW") if any(st["name"] == n and st["L"] >= 3.0 for st in self.stretches)]
         if not backs: return None
+        # where Westwood's rooms of the type stand it from their door (rules/out/motifs.json stats focal: a bedroom's
+        # bed across from the door, a living room's hearth on a wall beside it), drawn by their counts
+        rels = collections.Counter()
+        for k, n in ((self.lib["stats"].get(self.rtype) or {}).get("focal") or {}).items():
+            w, rel = k.split(":")
+            if w in ("NE", "NW") and rel in ("opposite", "beside"): rels[rel] += n   # on the door's own wall it
+            # stood beside the door, which our walls' door cuts rarely leave room for
+        if door and rels:
+            want_rel = self._choose([(n, r) for r, n in sorted(rels.items())])
+            for w in backs:
+                r2 = "door" if w == door else "opposite" if OPP.get(door) == w else "beside"
+                if r2 == want_rel: return w
         if door in ("SW", "SE"):
             want = OPP[door]
             if want in backs: return want
@@ -1016,7 +1029,7 @@ class MotifFurnisher(F.Furnisher):
         if any(F._family_of(x["t"]) in self.never and F._family_of(x["t"]) not in SEATS for x in bl): return 0.0
         if self.never_rx and any(self.never_rx.search(x["t"]) for x in bl): return 0.0
         if any(self._capped(x["t"]) for x in bl if F._family_of(x["t"]) not in SEATS): return 0.0
-        if bl and all(F._family_of(x["t"]) in SEATS for x in bl) and                 not (c["kind"] == "wall" and self.rtype in LOOSE_SEATS):
+        if bl and all(F._family_of(x["t"]) in SEATS for x in bl) and                 not (c["kind"] == "wall" and self.rtype in LOOSE_SEATS and self._seat_anchor_in_room()):
             return 0.0                                  # never a lone chair facing nothing (a bench on a hall's wall)
         if c["kind"] == "free":
             if not bl and not any(PELT.search(x["t"]) for x in c["items"]): return 0.0
@@ -1071,11 +1084,17 @@ class MotifFurnisher(F.Furnisher):
                     return None
                 continue
             out.append((x, t))
+        if not any(x["cat"] in SEAT_AT for x, _ in out) and self.rtype not in LOOSE_SEATS:   # a seat with its table
+            out = [(x, t) for x, t in out if F._family_of(t) not in SEATS]
+            if not out: return None
         return out
 
     def _plan_wall(self, c, st, at, flip):
         run = st["run"]
-        typed = self._types_for(c, lambda x: run if (x.get("att") or x["hang"]) else None)
+        # a piece of the group standing within reach of the wall takes the wall's variant too (a desk beside the bed
+        # it was grouped with): the checker counts it against that wall
+        typed = self._types_for(c, lambda x: run if (x.get("att") or x["hang"] or (
+            x["d"] - x["hp"] <= 1.0 and F._family_of(x["t"]) not in SEATS)) else None)
         if not typed: return None
         pos = {}
         for x, t in typed:
@@ -1211,7 +1230,7 @@ class MotifFurnisher(F.Furnisher):
         else: at = ref.get("rel", 0.5) * L - span / 2 + self.rng.uniform(-0.6, 0.6)
         return min(max(0.0, at), L - span)
 
-    def _try_wall(self, c, sts, like=None, where="", ordered=False):
+    def _try_wall(self, c, sts, like=None, where="", ordered=False, far=False):
         """Cluster c on one of stretches sts (longest first, or as given), at its own place along the wall, shifted a
         little when that fails."""
         for st in (sts if ordered else sorted(sts, key=lambda s: -s["L"])):
@@ -1220,6 +1239,20 @@ class MotifFurnisher(F.Furnisher):
             flip = (like or c).get("g0", 9) > 1.3 and (like or c).get("g1", 9) > 1.3 and self.rng.random() < 0.35
             room = st["L"] - c["span"]
             tries = [at + dx for dx in (0.0, 0.35, -0.35, 0.8, -0.8, 1.4, -1.4)] + [room / 2, 0.0, room]
+            if far and self.main_door():
+                # the focal well into the room from its door (Westwood's beds stand 0.6-0.8 of the room's diagonal
+                # from the door): its own place first when that is far enough, else toward the far end of the wall
+                op = self.main_door()
+                du, dv = (op["coord"], op["along"]) if op["line"] == "/" else (op["along"], op["coord"])
+                run = st["run"]
+
+                def dist(a):
+                    m = a + c["span"] / 2
+                    al = (st["s1"] - m) if st["from_hi"] else (st["s0"] + m)
+                    u, v = (run["coord"], al) if run["line"] == "/" else (al, run["coord"])
+                    return math.hypot(u - du, v - dv)
+                diag = math.hypot(self.U1 - self.U0, self.V1 - self.V0)
+                tries.sort(key=lambda a: abs(dist(min(max(0.0, a), room)) / max(1.0, diag) - 0.72))
             seen = set()
             for a in tries:
                 a2 = round(min(max(0.0, a), room), 2)
@@ -1352,7 +1385,7 @@ class MotifFurnisher(F.Furnisher):
                 for _ in range(12):
                     c = self._choose(cands)
                     if not c: break
-                    got = self._try_wall(c, sts, ordered=True)
+                    got = self._try_wall(c, sts, ordered=True, far=True)
                     if got:
                         self.focal_zone = z
                         return got
@@ -1681,7 +1714,10 @@ class MotifFurnisher(F.Furnisher):
             fam = F._family_of(o["type"])
             # a seat at a table or desk, or by the hearth; in a room with a table, a seat may stand loose (Westwood's
             # chair pulled out by a wall), never in a room with nothing to sit at
-            loose_ok = fam in SEATS and (near(rec, hearths, 3.0) or (tables and self.rtype in LOOSE_SEATS)) if rec else False
+            # a loose seat (Westwood's chair pulled out by a wall) only within reach of a table or the hearth: never a
+            # chair facing nothing across the room (the judges' first fault with round 1)
+            loose_ok = fam in SEATS and (near(rec, hearths, 3.0) or (self.rtype in LOOSE_SEATS and
+                                                                     near(rec, tables, 3.0))) if rec else False
             if rec and ((fam in SEATS and not near(rec, tables, 1.2) and not loose_ok) or
                         (fam == "nightstand" and not near(rec, beds, 1.6))):
                 self._remove(o); continue
