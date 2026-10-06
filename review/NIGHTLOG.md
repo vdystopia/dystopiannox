@@ -414,3 +414,31 @@ great hall 2, chapel 1) need their own protocol: judge each generated room again
 rooms (fewer pictures), or score them by rubric alone, never against a kin-filled pool.
     ../dystopiannox-wt/grammar2/review/out/roomlab/bedroom/q7: accuracy 8/10, generated 5.4 vs Westwood 7.4, confidence 0.62
     ../dystopiannox-wt/grammar2/review/out/roomlab/storeroom/q7: accuracy 6/10, generated 5.8 vs Westwood 6.2, confidence 0.62
+
+## 05:26 Scene round 7 merged (night-scenes7) and judged: framing vs kit, 20 sheets, 10 judges
+
+Round 7 crops both sides' scene pictures to the scene's footprint (+40 px, +90 px for the walls it leans on), adds an
+irregularity metric (gap/step/run variation, row drift, odd share, stamp), and changes the kit (uneven jail cells,
+piers of different lengths, ragged garden rows, no ogre bench ring, fuller stalls and dens, `Theme.loose`). Each
+judge got the round-6 kit under the new framing (base7) of one scene and round 7 of another.
+
+| Scene | Round 6 (old framing) | base7: round-6 kit, new framing | round7: new kit |
+|---|---|---|---|
+| urchin camp | 10/10 | **3/10, 5.8 / 5.8** | 10/10, 4.4 / 7.4 |
+| graveyard | 10/10 | **6/10, 6.0 / 6.8** | 8/10, 5.0 / 5.8 |
+| pond dock | 9/9 | 8/9, 3.8 / 6.2 | **6/9, 6.0 / 6.0** |
+| garden | 9/10 | 8/10, 4.2 / 6.6 | **6/10, 5.0 / 6.4** |
+| market stall | 7/8 | 6/8, 4.4 / 6.3 | 6/8, 5.0 / 7.3 |
+| well | 9/9 | 7/9, 5.0 / 7.0 | 9/9, 4.8 / 6.8 |
+| bandit camp | 6/10 | 7/10, 5.4 / 6.6 | 8/10, 4.8 / 6.8 (same code as base7: noise is +-1-2) |
+| jail | 10/10 | 9/10, 5.8 / 7.4 | 8/10, 5.4 / 6.2 |
+| ogre camp | 8/10 | 9/10, 4.8 / 6.6 | 10/10, 4.4 / 6.0 |
+| shrine | 10/10 | 10/10, 4.0 / 6.8 | 10/10, 4.8 / 7.8 |
+
+The framing was a real part of the gap: under it the round-6 urchin den passes (3/10, the judge inverted) and the
+graveyard is near chance. Round 7's kit helped the dock and the garden and hurt the urchin den (all of round 7's den
+changes - three archetypes, more pieces - are what the judges now name: beds in a ruler row, six stools in a perfect
+hexagon, two dining tables side by side) and probably the well. Keep: framing, metric, dock, garden. Revert: urchin
+den to round 6. Still caught everywhere: one kit per scene (shrine: statue+torch+obelisk on an L-shaped brick wall
+every time; jail: the same free-standing block; bandit war camp: fire+chest right+crates/barrels left+racks right),
+symmetric pairs, evenly strewn pebbles, ogre camps without a meat rack.
