@@ -11,9 +11,19 @@ from kit import camps, yards as Y
 from kit.layout import square_px, px_square, tile_square, square_tile, cell_square
 
 LOOT = [("Gold", {"Amount": 40}), "RedPotion"]
-# Westwood's five ogre fires: three hut yards, a bone pit, a cave fire (kit/camps.OGRE_ARCH), in a fixed order
-OGRE_ORDER = ("hut_yard", "bone_pit", "hut_yard", "cave_fire", "hut_yard", "hut_yard", "bone_pit", "hut_yard",
-              "cave_fire", "hut_yard")
+# Westwood's five ogre fires, each its own structure (kit/camps.OGRE_ARCH), in a fixed order, and the ground each stands
+# on (round 8: Con05B's cage yard and cold pit on a trodden patch of DirtLight2 in the swamp grass, Con09b's hut camp on sparse weeds, the bone
+# pit on swamp grass and weeds in its root hollow, Wiz02C's cave fire on DirtHard in Dirt walls)
+OGRE_ORDER = ("cage_yard", "bone_pit", "hut_camp", "cave_fire", "cold_pit", "cage_yard", "bone_pit", "hut_camp",
+              "cave_fire", "cold_pit")
+OGRE_GROUND = dict(cage_yard=("SwampGrass", "RootLight"), cold_pit=("SwampGrass", "RootLight"),
+                   hut_camp=("WeedsSparse", "RootLight"), bone_pit=("SwampGrass", "RootLight"),
+                   cave_fire=("DirtHard", "Dirt"))
+
+
+def _ogre_plan(ctx):
+    for p in ctx["plots"]:
+        p.cave_floor, p.cave_wall = OGRE_GROUND[OGRE_ORDER[p.k % len(OGRE_ORDER)]]
 
 
 def _pop(ctx):
@@ -99,6 +109,15 @@ def _camp_build(kind):
                     for o in (-0.5, 0.5):
                         sq = (int(math.floor(ci_ + o)), int(math.floor(cj_ - o)))
                         if sq in land.squares: m.floor[square_tile(*sq)] = "DirtLight2"
+            if kind == "ogre_camp" and camp.get("arch") in ("cage_yard", "cold_pit"):
+                # (the ground round the fire trodden bare: DirtLight2, 2.5-3.5 squares out, Con05B)
+                ci_, cj_ = px_square(fx, fy)
+                R_ = rng.uniform(2.5, 3.5)
+                for a_ in range(-4, 5):
+                    for b_ in range(-4, 5):
+                        sq = (ci_ + a_, cj_ + b_)
+                        if sq in land.squares and math.hypot(a_, b_) <= R_ * (1 + 0.15 * math.sin(3 * a_ + b_)):
+                            m.floor[square_tile(*sq)] = "DirtLight2"
             pop.creature(kinds["leader"], *posts["leader"], action="guard", face=square_px(*toward), aggr=0.5)
             for role in ("sit", "tent", "work", "watch"):
                 for x, y in posts[role]:
@@ -113,8 +132,8 @@ def _camp_build(kind):
 # a batch's graveyards by Westwood's archetypes (13 scenes: 6 fields, 4 crypt yards, 3 pens), in a fixed order so a
 # batch of ten follows the frequencies (as the room lab's door counts do, FAIRNESS 3)
 GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
-JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cell_row", "cell_row", "cell_row", "guardhouse",
-              "cell_row", "cell_row")      # Westwood's 11 jails: 9 rows of cells, 2 guardhouses
+JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cave_cell", "cell_row", "cell_row", "guardhouse",
+              "cell_row", "cell_row")      # Westwood's 11 jails: 8 castle cell rows, a cave cell, 2 guardhouses
 WALL_RUN = 7                 # a town wall runs on this many squares past a yard's back corners (Westwood's War03 yards)
 
 
@@ -192,17 +211,21 @@ def _yard_build(ctx):
 
 def _jail_court(ctx):
     """Westwood's jails stand in paved town courts (Con07B's castle, Con02a's and War03b's guardhouse yards, all on
-    RoughCobble): the lab paves a court round the jail in two clearings of three, so the jail's floor is not read as a
-    path laid through the grass."""
+    RoughCobble): the lab paves a court round every jail (a cave cell's of dark earth), so the jail's floor is not read
+    as a path laid through the grass."""
     m, land = ctx["m"], ctx["land"]
     for p in ctx["plots"]:
         y = ctx["yards"].get(p.k)
-        if not y or p.k % 3 == 2: continue
-        for a in range(-3, y.w + 3):
-            for b in range(-3, y.h + 3):
+        if not y: continue
+        mat = "DirtDark2" if getattr(y, "arch", "") == "cave_cell" else "RoughCobble"     # (War03c's in the earth)
+        # (round 8: every jail, and wide enough that the paving is the ground round it, not a path through grass:
+        # Westwood's stand in castles and paved guardhouse yards; metrics path_share, path_d)
+        E_ = 7
+        for a in range(-E_, y.w + E_):
+            for b in range(-E_, y.h + E_):
                 sq = (y.gi + a, y.gj + b)
                 if sq in land.squares and sq not in land.water and sq not in land.taken_strict:
-                    m.floor[square_tile(*sq)] = "RoughCobble"
+                    m.floor[square_tile(*sq)] = mat
 
 
 # ---------------------------------------------------------------------------------------------------- gardens
@@ -561,7 +584,7 @@ RECIPES = {
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8),
                         site_map={"glade": "cliff", "shore": "cliff"}),
     # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
-    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
+    "ogre_camp": dict(plan=_ogre_plan, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
                       cave_scale=1.7, cave_floor="SwampGrass", path_in=True),
     # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
     # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens

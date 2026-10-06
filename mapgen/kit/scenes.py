@@ -618,6 +618,8 @@ for _l, _v in (("\\", dict(CryptChest1="CryptChest1", StatueVictory1SW="StatueVi
                ("/", dict(CryptChest1="CryptChest4", StatueVictory1SW="StatueVictory1SE", WhiteTapestry2="WhiteTapestry2",
                           BlueTapestry2="BlueTapestry2"))):
     ALONG[_l].update(_v)
+ALONG["\\"].update(TraderBowRack1="TraderBowRack1", TraderBowRack2="TraderBowRack1")    # (Westwood's guardhouses: the
+ALONG["/"].update(TraderBowRack1="TraderBowRack2", TraderBowRack2="TraderBowRack2")      # bow rack 2 on a "/" wall)
 # a bench by the way it faces, in squares (Village.BENCH_FACING): +i, -i, +j, -j
 BENCH_FACING = {"+i": "Bench1", "-i": "Bench5", "+j": "Bench4", "-j": "Bench2"}
 # a bedroll by the square axis its foot points along (the pillow at the other end; kit/furnish NUMBERING_OVERRIDES:
