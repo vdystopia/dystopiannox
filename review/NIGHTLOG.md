@@ -192,3 +192,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   and review/scenelab/judging/ (Westwood descriptions without our generator's rules). Found on the way: scale was a tell
   (ours always drawn larger), and culture was (the lab built no Dun Mir bedrooms). All blind results before this point
   were under less fair renders. From now on judges get the new protocol.
+- 01:42 All of tonight's room work is now in master: motif round 2 merged (night-motifs2: whole Westwood groups,
+  zones of Westwood's room sizes, a placed centrepiece; storeroom AUC 0.64 with 0 hard-rule rooms, bedroom 0.71), and track
+  B (merged into its own branch first: 10 conflicts resolved keeping both sides; a postmerge run reproduced each
+  track's last numbers; reference counts after rebuild: bedroom 28, crypt 25, living room 14, guardroom 11, cell 10,
+  shop 8, storeroom 7, barracks 7, tavern 6...). Fair head-to-head now with two judges: motif vs recipe engine on
+  bedroom and storeroom. Generating fair baseline sheets for 12 more types from master.
