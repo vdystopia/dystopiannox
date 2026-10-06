@@ -442,3 +442,41 @@ hexagon, two dining tables side by side) and probably the well. Keep: framing, m
 den to round 6. Still caught everywhere: one kit per scene (shrine: statue+torch+obelisk on an L-shaped brick wall
 every time; jail: the same free-standing block; bandit war camp: fire+chest right+crates/barrels left+racks right),
 symmetric pairs, evenly strewn pebbles, ogre camps without a meat rack.
+
+## 05:31 Motif engine round 3 merged (night-motifs3) and judged: every type on motifs, 16 sheets, 8 judges
+
+Motifs now the default for bedroom, throne room, crypt, storeroom (`ENGINE_TYPES`; `NOX_MOTIF_TYPES` overrides). New:
+axis set pieces (throne and chapel mined in their axis frame, pairs placed both-or-neither), rows and bars mined whole,
+long boards for halls, variety of bed groups across a map. Lab bug fixed: parallel runs of different types shared one
+export list (validate/mapdata.py), so a run's *metrics* could come from another run's map (blind sheets are rendered
+from each iteration's own maps and are not affected). QA: 0 errors; warnings up (Starwell 19 -> 31: sparse 16 -> 20,
+bunched 1 -> 5, all in the motif bedrooms).
+
+| Type | Best before (engine) | m12, all on motifs (accuracy, generated / Westwood) |
+|---|---|---|
+| storeroom | 6/10 (recipe q7) | 6/10, 5.4 / 6.0 |
+| guardroom | 8/10 (recipe q7) | 6/10, 5.6 / 6.4 |
+| kitchen | 10/10 (kin-filled sheet) | 4/6, 5.0 / 6.7 (own-type sheet, first fair one) |
+| dining hall | - | 4/6, 4.3 / 8.0 |
+| study | - | 5/6, 4.7 / 7.3 |
+| bedroom | 6/10 (motifs m2) | 7/10, 5.4 / 7.0 |
+| barracks | - | 8/10, 4.2 / 7.8 |
+| crypt | 8/10 (recipe v3) | 9/10, 5.0 / 8.0 |
+| chapel | 9/10 (recipe) | 9/10, 4.2 / 8.6 |
+| throne room | 10/10 | 8/8, 4.5 / 9.2 |
+| great hall | 10/10 | 4/4, 4.5 / 9.0 |
+| tavern | 6/10 (recipe q7) | 10/10, 3.6 / 8.0 |
+| shop | 7/10 (motifs q7) | 10/10, 4.6 / 7.6 |
+| laboratory | 9/10 | 10/10, 4.0 / 6.8 |
+| living room | 7/10 | 10/10, 3.8 / 7.0 |
+| cell | - | 10/10, 4.4 / 6.8 |
+
+Neither engine wins across the board; differences of one or two pictures are noise. The judges' most repeated fault
+on every type and both engines is now **density**: "a lone piece in the middle of a huge bare floor", "everything
+bunched in one corner, the rest bare", "one or two table sets in a big room", "nine tenths of the floor empty". Our lab
+rooms are larger than Westwood's of the type (the kit's scale, ~1.25x) while their piece counts follow Westwood's,
+and the QA's composition.sparse warnings say the same on the story maps. Next room wave: density and fill.
+
+Fairness, found: for thin types (throne room 4 rooms, great hall 2), the judging description names Westwood's actual
+rooms, so a judge recognises them ("D, F and H match the campaign rooms described"). Descriptions for thin types must
+describe qualities, not the rooms.
