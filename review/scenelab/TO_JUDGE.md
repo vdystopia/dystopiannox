@@ -8,3 +8,4 @@ then `py review/scenelab/blind.py score <scene> <iter>`. Paths are under this wo
 | Scene | Iteration | Sheet | Previous independent verdict |
 |---|---|---|---|
 | bandit_camp | r5-edge | `bandit_camp/r5-edge/blind/` | r4-irregular: 10/10, 5.2 / 6.8 |
+| graveyard | r4-small | `graveyard/r4-small/blind/` | r3-spaced: 10/10, 4.2 / 7.4 |
