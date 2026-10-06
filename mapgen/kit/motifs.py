@@ -1765,6 +1765,7 @@ class MotifFurnisher(F.Furnisher):
         else: self.compose_room()
         self.composing = False
         self.face_statues()
+        self.grammar_audit(self.prof.get("must", {}))
         # the room's ambient light, as the recipe engine adds it (not drawn; it lights what is there)
         self.placing_light = True
         cl = self.T.get("colorlights", {})
@@ -1790,6 +1791,7 @@ def furnish_room(spec, room, kind=None, rng=None, style="town"):
     room.spots = f.spots
     room.kb_refused = dict(f.kb_refused)
     room.motif_log = list(f.log)
+    room.grammar_log = dict(getattr(f, "grammar_log", None) or {})
     from kit import loot
     loot.tag(spec, objs, f.kind)
     return objs

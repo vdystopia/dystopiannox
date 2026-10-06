@@ -429,6 +429,66 @@ def two_bellows(m):
     for u in (205, 211): m.obj("Bellows1", u, 9.0)             # a showpiece twice (HB-1: one of a kind)
 
 
+# ---- Westwood's placement grammar (kit/grammar.py; the blind judges' faults, 2026-10-06) ---------------------------
+def g_free_lights(m):
+    _declare(m)
+    m.obj("Bed1", 206, 8.6)
+    for u, v in ((209, -3), (214, 3), (215, -5)): m.obj("Candleabra1", u, v)   # candelabras loose on the floor
+
+
+def g_floating_tables(m):
+    _declare(m, "living_room")
+    for u, v in ((209, -3), (214, 4)): m.obj("RoundTable1", u, v)        # two tables out in the open, no carpet
+
+
+def g_lone_chairs(m):
+    _declare(m)
+    for u, v in ((207, -4), (212, 2), (208, 4)): m.obj("WoodenChair1", u, v)    # chairs drawn up to nothing
+
+
+def g_lone_stock(m):
+    _declare(m, "storeroom")
+    for u, v in ((206, -3), (211, 3), (207, 4)): m.obj("Barrel", u, v)   # three barrels alone in the open
+
+
+def g_even_rows(m):
+    _declare(m, "storeroom")
+    for u in (203, 207, 211, 215): m.obj("Crate1", u, 9.2)               # crates at equal gaps on two walls
+    for v in (-6, -3, 0, 3): m.obj("Barrel", 221.9, v)
+
+
+def g_plant(m):
+    _declare(m)
+    m.obj("Plant1", 220.5, 8.5)                                          # a plant in a bedroom (Westwood: none in 28)
+
+
+def g_twins(m):
+    _declare(m, "storeroom")
+    for u in (203, 209, 215): m.obj("Barrel", u, 9.2); m.obj("Barrel", u + 1.3, 9.2)   # three stamped pairs
+
+
+def g_ring(m):
+    _declare(m, "living_room")
+    for c in ((207, -4), (215, 4)):                                       # four chairs at each table's quarter points
+        m.obj("RoundTable1", c[0], c[1])
+        for du, dv in ((-1.6, 0), (1.6, 0), (0, 1.6), (0, -1.6)): m.obj("WoodenChair1", c[0] + du, c[1] + dv)
+
+
+def g_corners(m):
+    _declare(m, "storeroom")
+    for u, v in ((220.6, -8.6), (202.4, 8.4)): m.obj("Barrel", u, v)    # one barrel to a corner
+
+
+def g_stepped(m):
+    _declare(m, "storeroom")
+    for k in range(3): m.obj("Barrel", 207 + 1.6 * k, -5 + 1.6 * k)      # barrels in an evenly stepped diagonal
+
+
+def g_mixed_beds(m):
+    _declare(m, "barracks")
+    for k, t in enumerate(("Cot1", "WoodBed1", "Cot1", "WoodBed1", "Cot1")): m.obj(t, 203 + 3.6 * k, 8.4)   # two kinds
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -520,6 +580,17 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("SThung", trophy_over_statue, "pieces", "warning", "a trophy hung above a statue - HB-2", "bare wall"),
     ("STcand", candelabras, "pieces", "warning", "nine candelabras in a small house - HB-4", "candelabras by"),
     ("STshw2", two_bellows, "pieces", "warning", "two bellows in one room - HB-1", "showpiece stands once"),
+    ("STgLite", g_free_lights, "composition", "warning", "three candelabras loose on a bedroom floor - judges 10-06", "[grammar light"),
+    ("STgTabl", g_floating_tables, "composition", "warning", "two table sets floating mid-floor - judges 10-06", "[grammar table]"),
+    ("STgChr", g_lone_chairs, "composition", "warning", "three chairs drawn up to nothing - judges 10-06", "[grammar chair]"),
+    ("STgLone", g_lone_stock, "composition", "warning", "three barrels alone in the open - judges 10-06", "[grammar lone]"),
+    ("STgEven", g_even_rows, "composition", "warning", "crates and barrels at equal gaps along walls - judges 10-06", "[grammar even]"),
+    ("STgPlnt", g_plant, "composition", "warning", "a plant in a bedroom - judges 10-06", "[grammar plant]"),
+    ("STgTwin", g_twins, "composition", "warning", "three stamped barrel pairs - judges 10-06", "[grammar twin]"),
+    ("STgRing", g_ring, "composition", "warning", "four chairs at two tables' quarter points - judges 10-06", "[grammar ring]"),
+    ("STgCorn", g_corners, "composition", "warning", "one barrel to a corner - judges 10-06", "[grammar corners]"),
+    ("STgStep", g_stepped, "composition", "warning", "barrels in an evenly stepped row - judges 10-06", "[grammar stepped]"),
+    ("STgMix", g_mixed_beds, "composition", "warning", "cots and wooden beds in one room - judges 10-06", "[grammar mixed]"),
 ]
 
 

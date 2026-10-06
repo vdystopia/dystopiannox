@@ -188,9 +188,42 @@ Rules that hold for every type:
   never closer than 0.9 units; a cauldron or stove at least 0.87 from a hearth; tables, desks and beds stay off rugs
   (except a woven rug centred under a table); potted plants only in real corners; furniture spreads through the room's
   length (under 35% is bunched) [TP1-1].
-- **Lights** [TP1-5, DV4-5, DV6-2]: houses are lit with candelabras and the hearth, never an open torch; lights go to the
-  emptiest corners, at least 3 units apart, never before a chest, hearth or stove however it was placed
-  (`Furnisher._before_anchor`, measured as `composition.anchor_blocked` measures it) [DV5-4].
+- **Lights** [TP1-5, DV4-5, DV6-2]: houses are lit with candelabras and the hearth, never an open torch; lights stand
+  where Westwood's do (the placement grammar below), at least 3 units apart, never before a chest, hearth or stove
+  however it was placed (`Furnisher._before_anchor`, measured as `composition.anchor_blocked` measures it) [DV5-4].
+- **The placement grammar** (2026-10-06; the fair blind judges' faults across ~40 sheets, every type, both engines:
+  `review/NIGHTLOG.md`). `py rules/grammar.py` measures Westwood's curated campaign rooms (176 rooms, seen as the checker
+  sees ours) into `rules/out/grammar.json`; `mapgen/kit/grammar.py` holds the rules, and both furnishing engines run its
+  `audit` as their last pass (each fault moved into place, else dropped; must pieces never dropped). Westwood's numbers
+  (house rooms):
+  - *lights*: 86% within a unit of a wall; 43% beside a piece they light (shelves 27, supplies 9, chairs 8, benches,
+    tables, desks), 39% in a room corner, 7% beside a free piece, 6% alone along a wall, 4% free; none at a bed's foot,
+    4 of 140 on a carpet; nearest pair p10 6 units; 37% of house rooms have a floor light at all (bedrooms p50 0, p90 3).
+    Rule: a floor light stands by a wall, in a corner or beside what it lights (or flanking a door); never free, on or at
+    the edge of a carpet, at a bed's foot, within 3 units of another, or third along one wall; at most the type's p90.
+  - *table sets*: 59% within 2 units of a wall, 23% on a carpet, 2% by the hearth, 17% free (mostly great halls,
+    barracks, libraries in rows). Rule: a table more than 2 units from every wall stands on a carpet or rug, within 3 of
+    the hearth or bar, or in a hall's row; never at a bed's foot or square before the hearth (in the way to the fire).
+    A floating set moves whole to a back wall, else a carpet is laid to it, else it goes. Chairs: 9% of Westwood's stand
+    away from a table, desk or hearth (bedrooms 0 of 23): a chair is drawn up to something.
+  - *lone pieces* (no piece within 0.9 units): exposed (in the open or on a front wall) supplies 15%, chests 2%. Past
+    that share a barrel, crate, chest or clutter piece joins a group of its kind by a back wall, or goes.
+    Benches: 22% of Westwood's stand alone in the open; past that a bench goes back to a back wall. A column alone
+    (no other within 6 units) goes. Stock heaped wholly off the walls only in stores of 60 tiles or more.
+  - *gaps along walls*: walls of 3+ pieces with real gaps have a CV of the gaps p50 0.66 (22% under 0.2). Rule: no wall
+    of standing pieces or of hangings at even gaps (CV under 0.2), no three of a kind in an evenly stepped diagonal, no
+    kind alone one to a corner, no pieces ringing a centre at one radius and even angles (four chairs at a table's
+    quarter points, straw round a fire); a stock piece slides against its neighbour (a heap).
+  - *wrong pieces*: plants only in types whose Westwood rooms hold them (a gallery; none in 175 other rooms). A face
+    (hearth, stove, shelf, desk, chest, workbench) on a front wall moves to a back wall.
+  - *stamps*: no two knots (small pieces, or a table with its seats) of the same kinds in the same shape in one room
+    (a twin loses a seat or a piece); beds and tombs of one kind to a room.
+  - *the way to the fire*: no table or bench square before a hearth within 3.4 units (a bench is drawn up beside it).
+  What the audit drops is made up against the walls by the recipe's top-up, then audited again. `NOX_GRAMMAR=0` turns
+  the audit off (for comparisons). The checker warns (`composition.grammar_*`) only where Westwood's own curated rooms
+  almost never reach (`checks.GRAMMAR_MIN`; each rule fires on 0.6-6.8% of Westwood's 176 rooms, any of them on 22%);
+  planted cases `STg*` in `validate/selftest.py`. Not covered here: one template repeated across variants of a type
+  (a recipe's or the motif library's matter), and the shells' floor patches.
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
 - **Every piece by what Westwood does with it** [HB-1..HB-5] (2026-10-05, the Harrowby playtest: "Do a pass over all
   objects and try to understand better how they fit in the world"). `py rules/objects.py` measures every kind of piece on

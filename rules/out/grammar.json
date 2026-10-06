@@ -1,0 +1,2972 @@
+{
+ "types": {
+  "armoury": {
+   "rooms": 4,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "rack": {
+     "n": 13,
+     "alone": 0.615,
+     "open": 0.077,
+     "front": 0.077
+    },
+    "supply": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.333,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "rack": 0.154
+   },
+   "wall_cv_p10": 0.25,
+   "wall_cv_p25": 0.25,
+   "wall_cv_p50": 0.25,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "barracks": {
+   "rooms": 7,
+   "lights_p50": 2.0,
+   "lights_p75": 3.0,
+   "lights_p90": 3.4,
+   "lights_max": 4,
+   "lights_per100_p50": 2.94,
+   "lights_per100_p90": 6.07,
+   "rooms_lit": 0.71,
+   "light_class": {
+    "served": 0.357,
+    "corner": 0.214,
+    "served-free": 0.214,
+    "wall-alone": 0.143,
+    "free": 0.071
+   },
+   "light_n": 14,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "straw": 3,
+    "bench": 2,
+    "rack": 1,
+    "table": 1,
+    "supply": 1
+   },
+   "tables": {
+    "wall": 0.556,
+    "floating": 0.444
+   },
+   "table_n": 9,
+   "table_wall_p50": 1.95,
+   "table_wall_p90": 9.088,
+   "chairs": 21,
+   "lone_chair_share": 0.19,
+   "lone": {
+    "straw": {
+     "n": 26,
+     "alone": 0.115,
+     "open": 0.115,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 22,
+     "alone": 0.364,
+     "open": 0.227,
+     "front": 0.045
+    },
+    "chair": {
+     "n": 21,
+     "alone": 0.143,
+     "open": 0.143,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 18,
+     "alone": 0.556,
+     "open": 0.0,
+     "front": 0.167
+    },
+    "table": {
+     "n": 9,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 8,
+     "alone": 0.25,
+     "open": 0.125,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 7,
+     "alone": 0.143,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "rack": {
+     "n": 4,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bench": {
+     "n": 4,
+     "alone": 0.25,
+     "open": 0.25,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "table": 0.0,
+    "chair": 0.143,
+    "bed": 0.167,
+    "straw": 0.115,
+    "supply": 0.273,
+    "clutter": 0.125
+   },
+   "wall_cv_p10": 0.174,
+   "wall_cv_p25": 0.274,
+   "wall_cv_p50": 0.594,
+   "walls_3plus": 6,
+   "walls_even": 0.333,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 1
+  },
+  "bedroom": {
+   "rooms": 28,
+   "lights_p50": 0.0,
+   "lights_p75": 2.0,
+   "lights_p90": 3.0,
+   "lights_max": 4,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 16.67,
+   "rooms_lit": 0.36,
+   "light_class": {
+    "corner": 0.64,
+    "served": 0.32,
+    "wall-alone": 0.04
+   },
+   "light_n": 25,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 4,
+    "supply": 1,
+    "statue": 1,
+    "bed": 1,
+    "desk": 1
+   },
+   "tables": {
+    "wall": 0.5,
+    "floating": 0.375,
+    "carpet": 0.125
+   },
+   "table_n": 8,
+   "table_wall_p50": 1.27,
+   "table_wall_p90": 3.833,
+   "chairs": 23,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "shelf": {
+     "n": 44,
+     "alone": 0.114,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "nightstand": {
+     "n": 31,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 30,
+     "alone": 0.133,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 25,
+     "alone": 0.32,
+     "open": 0.04,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 23,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 17,
+     "alone": 0.118,
+     "open": 0.0,
+     "front": 0.059
+    },
+    "supply": {
+     "n": 11,
+     "alone": 0.455,
+     "open": 0.0,
+     "front": 0.091
+    },
+    "table": {
+     "n": 8,
+     "alone": 0.25,
+     "open": 0.25,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 4,
+     "alone": 0.25,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bench": {
+     "n": 4,
+     "alone": 0.75,
+     "open": 0.25,
+     "front": 0.25
+    },
+    "statue": {
+     "n": 4,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.25
+    },
+    "lab": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "table": 0.25,
+    "chair": 0.0,
+    "shelf": 0.0,
+    "nightstand": 0.0,
+    "bed": 0.0,
+    "chest": 0.04,
+    "desk": 0.059,
+    "supply": 0.091
+   },
+   "wall_cv_p10": 0.05,
+   "wall_cv_p25": 0.147,
+   "wall_cv_p50": 0.455,
+   "walls_3plus": 16,
+   "walls_even": 0.312,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "cell": {
+   "rooms": 10,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 1,
+   "lone_chair_share": 1.0,
+   "lone": {
+    "straw": {
+     "n": 53,
+     "alone": 0.264,
+     "open": 0.264,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 4,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 4,
+     "alone": 0.25,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 3,
+     "alone": 0.667,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "bench": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "straw": 0.264
+   },
+   "wall_cv_p10": null,
+   "wall_cv_p25": null,
+   "wall_cv_p50": null,
+   "walls_3plus": 0,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 1
+  },
+  "cellar": {
+   "rooms": 4,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "supply": {
+     "n": 33,
+     "alone": 0.03,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.0
+   },
+   "wall_cv_p10": 0.571,
+   "wall_cv_p25": 0.571,
+   "wall_cv_p50": 0.571,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "chapel": {
+   "rooms": 1,
+   "lights_p50": 8.0,
+   "lights_p75": 8.0,
+   "lights_p90": 8.0,
+   "lights_max": 8,
+   "lights_per100_p50": 6.5,
+   "lights_per100_p90": 6.5,
+   "rooms_lit": 1.0,
+   "light_class": {
+    "corner": 0.75,
+    "wall-alone": 0.125,
+    "free": 0.125
+   },
+   "light_n": 8,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "bench": {
+     "n": 8,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "column": {
+     "n": 6,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 0.5,
+     "front": 0.5
+    },
+    "lab": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "bench": 0.0
+   },
+   "wall_cv_p10": 0.509,
+   "wall_cv_p25": 0.509,
+   "wall_cv_p50": 0.509,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "crypt": {
+   "rooms": 25,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 1.6,
+   "lights_max": 4,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 2.53,
+   "rooms_lit": 0.16,
+   "light_class": {
+    "served": 0.667,
+    "corner": 0.333
+   },
+   "light_n": 9,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "statue": 6
+   },
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "tomb": {
+     "n": 93,
+     "alone": 0.43,
+     "open": 0.28,
+     "front": 0.086
+    },
+    "statue": {
+     "n": 14,
+     "alone": 0.286,
+     "open": 0.286,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 8,
+     "alone": 0.625,
+     "open": 0.5,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "tomb": 0.366,
+    "statue": 0.286,
+    "chest": 0.5
+   },
+   "wall_cv_p10": 0.026,
+   "wall_cv_p25": 0.054,
+   "wall_cv_p50": 0.102,
+   "walls_3plus": 2,
+   "walls_even": 1.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 2,
+   "rooms_stepped": 0
+  },
+  "dining_hall": {
+   "rooms": 3,
+   "lights_p50": 0.0,
+   "lights_p75": 2.0,
+   "lights_p90": 3.2,
+   "lights_max": 4,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 2.96,
+   "rooms_lit": 0.33,
+   "light_class": {
+    "corner": 0.5,
+    "served": 0.25,
+    "wall-alone": 0.25
+   },
+   "light_n": 4,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "smithy": 1
+   },
+   "tables": {
+    "wall": 0.5,
+    "carpet": 0.375,
+    "floating": 0.125
+   },
+   "table_n": 8,
+   "table_wall_p50": 2.525,
+   "table_wall_p90": 5.269,
+   "chairs": 12,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "supply": {
+     "n": 14,
+     "alone": 0.571,
+     "open": 0.0,
+     "front": 0.429
+    },
+    "chair": {
+     "n": 12,
+     "alone": 0.083,
+     "open": 0.0,
+     "front": 0.083
+    },
+    "bench": {
+     "n": 10,
+     "alone": 0.2,
+     "open": 0.2,
+     "front": 0.0
+    },
+    "table": {
+     "n": 8,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "shelf": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.429,
+    "table": 0.0,
+    "bench": 0.2,
+    "chair": 0.083
+   },
+   "wall_cv_p10": 0.166,
+   "wall_cv_p25": 0.216,
+   "wall_cv_p50": 0.299,
+   "walls_3plus": 3,
+   "walls_even": 0.333,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 2,
+   "rooms_stepped": 0
+  },
+  "gallery": {
+   "rooms": 1,
+   "lights_p50": 2.0,
+   "lights_p75": 2.0,
+   "lights_p90": 2.0,
+   "lights_max": 2,
+   "lights_per100_p50": 0.95,
+   "lights_per100_p90": 0.95,
+   "rooms_lit": 1.0,
+   "light_class": {
+    "corner": 1.0
+   },
+   "light_n": 2,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "plant": {
+     "n": 9,
+     "alone": 0.333,
+     "open": 0.333,
+     "front": 0.0
+    },
+    "lab": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.333,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "plant": 0.333
+   },
+   "wall_cv_p10": null,
+   "wall_cv_p25": null,
+   "wall_cv_p50": null,
+   "walls_3plus": 0,
+   "walls_even": 0.0,
+   "plants": 9,
+   "rooms_with_plants": 1,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "great_hall": {
+   "rooms": 2,
+   "lights_p50": 5.0,
+   "lights_p75": 7.5,
+   "lights_p90": 9.0,
+   "lights_max": 10,
+   "lights_per100_p50": 3.25,
+   "lights_per100_p90": 5.84,
+   "rooms_lit": 0.5,
+   "light_class": {
+    "served": 0.8,
+    "corner": 0.1,
+    "served-free": 0.1
+   },
+   "light_n": 10,
+   "light_bedfoot": 0,
+   "light_carpet": 1,
+   "light_serves": {
+    "chair": 3,
+    "bench": 3,
+    "table": 2,
+    "desk": 1
+   },
+   "tables": {
+    "wall": 0.562,
+    "carpet": 0.438
+   },
+   "table_n": 32,
+   "table_wall_p50": 1.85,
+   "table_wall_p90": 6.78,
+   "chairs": 35,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "chair": {
+     "n": 35,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "table": {
+     "n": 32,
+     "alone": 0.062,
+     "open": 0.031,
+     "front": 0.031
+    },
+    "bench": {
+     "n": 27,
+     "alone": 0.074,
+     "open": 0.037,
+     "front": 0.037
+    },
+    "hearth": {
+     "n": 4,
+     "alone": 1.0,
+     "open": 0.75,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "counter_shop": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "table": 0.062,
+    "bench": 0.074,
+    "chair": 0.0
+   },
+   "wall_cv_p10": 0.428,
+   "wall_cv_p25": 0.464,
+   "wall_cv_p50": 0.954,
+   "walls_3plus": 5,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 1
+  },
+  "guardroom": {
+   "rooms": 11,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 1.0,
+   "lights_max": 1,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 1.59,
+   "rooms_lit": 0.18,
+   "light_class": {
+    "free": 0.5,
+    "corner": 0.5
+   },
+   "light_n": 2,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {
+    "wall": 0.615,
+    "carpet": 0.231,
+    "floating": 0.154
+   },
+   "table_n": 13,
+   "table_wall_p50": 1.71,
+   "table_wall_p90": 3.314,
+   "chairs": 29,
+   "lone_chair_share": 0.103,
+   "lone": {
+    "chair": {
+     "n": 29,
+     "alone": 0.069,
+     "open": 0.034,
+     "front": 0.034
+    },
+    "rack": {
+     "n": 13,
+     "alone": 0.231,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "table": {
+     "n": 13,
+     "alone": 0.077,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 13,
+     "alone": 0.308,
+     "open": 0.077,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 10,
+     "alone": 0.6,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 7,
+     "alone": 0.143,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bench": {
+     "n": 4,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "straw": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "rack": 0.0,
+    "table": 0.0,
+    "supply": 0.077,
+    "chair": 0.069,
+    "chest": 0.0
+   },
+   "wall_cv_p10": 0.026,
+   "wall_cv_p25": 0.064,
+   "wall_cv_p50": 0.148,
+   "walls_3plus": 4,
+   "walls_even": 0.5,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "hall": {
+   "rooms": 3,
+   "lights_p50": 0.0,
+   "lights_p75": 4.0,
+   "lights_p90": 6.4,
+   "lights_max": 8,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 5.0,
+   "rooms_lit": 0.33,
+   "light_class": {
+    "served": 1.0
+   },
+   "light_n": 8,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "statue": 8
+   },
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "statue": {
+     "n": 32,
+     "alone": 0.25,
+     "open": 0.188,
+     "front": 0.0
+    },
+    "column": {
+     "n": 26,
+     "alone": 0.154,
+     "open": 0.077,
+     "front": 0.077
+    },
+    "supply": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "column": 0.154,
+    "statue": 0.188
+   },
+   "wall_cv_p10": 0.075,
+   "wall_cv_p25": 0.188,
+   "wall_cv_p50": 0.376,
+   "walls_3plus": 2,
+   "walls_even": 0.5,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 1,
+   "rooms_stepped": 0
+  },
+  "herbalist": {
+   "rooms": 2,
+   "lights_p50": 2.0,
+   "lights_p75": 3.0,
+   "lights_p90": 3.6,
+   "lights_max": 4,
+   "lights_per100_p50": 4.08,
+   "lights_per100_p90": 7.35,
+   "rooms_lit": 0.5,
+   "light_class": {
+    "served": 1.0
+   },
+   "light_n": 4,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 3,
+    "supply": 1
+   },
+   "tables": {
+    "wall": 0.5,
+    "floating": 0.5
+   },
+   "table_n": 2,
+   "table_wall_p50": 1.355,
+   "table_wall_p90": 2.263,
+   "chairs": 4,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "shelf": {
+     "n": 10,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 4,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.333,
+     "front": 0.0
+    },
+    "lab": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "table": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "shelf": 0.0
+   },
+   "wall_cv_p10": 0.892,
+   "wall_cv_p25": 0.955,
+   "wall_cv_p50": 1.06,
+   "walls_3plus": 2,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "kitchen": {
+   "rooms": 3,
+   "lights_p50": 0.0,
+   "lights_p75": 1.0,
+   "lights_p90": 1.6,
+   "lights_max": 2,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 6.67,
+   "rooms_lit": 0.33,
+   "light_class": {
+    "served": 0.5,
+    "door": 0.5
+   },
+   "light_n": 2,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "chair": 1
+   },
+   "tables": {
+    "wall": 0.857,
+    "hearth": 0.143
+   },
+   "table_n": 7,
+   "table_wall_p50": 0.56,
+   "table_wall_p90": 2.448,
+   "chairs": 1,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "supply": {
+     "n": 9,
+     "alone": 0.111,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "table": {
+     "n": 7,
+     "alone": 0.143,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 5,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 3,
+     "alone": 1.0,
+     "open": 0.667,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.0
+   },
+   "wall_cv_p10": 0.94,
+   "wall_cv_p25": 0.95,
+   "wall_cv_p50": 0.967,
+   "walls_3plus": 2,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 1,
+   "rooms_stepped": 0
+  },
+  "laboratory": {
+   "rooms": 6,
+   "lights_p50": 3.0,
+   "lights_p75": 4.0,
+   "lights_p90": 5.5,
+   "lights_max": 7,
+   "lights_per100_p50": 5.67,
+   "lights_per100_p90": 8.89,
+   "rooms_lit": 0.67,
+   "light_class": {
+    "corner": 0.529,
+    "served": 0.353,
+    "free": 0.059,
+    "served-free": 0.059
+   },
+   "light_n": 17,
+   "light_bedfoot": 0,
+   "light_carpet": 2,
+   "light_serves": {
+    "shelf": 3,
+    "lab": 2,
+    "table": 1,
+    "desk": 1
+   },
+   "tables": {
+    "floating": 0.333,
+    "carpet": 0.333,
+    "wall": 0.333
+   },
+   "table_n": 3,
+   "table_wall_p50": 2.03,
+   "table_wall_p90": 2.39,
+   "chairs": 11,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "lab": {
+     "n": 23,
+     "alone": 0.565,
+     "open": 0.174,
+     "front": 0.087
+    },
+    "shelf": {
+     "n": 18,
+     "alone": 0.167,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 11,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 5,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.0,
+     "front": 0.333
+    },
+    "table": {
+     "n": 3,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 3,
+     "alone": 1.0,
+     "open": 0.667,
+     "front": 0.333
+    }
+   },
+   "lone_exposed": {
+    "lab": 0.261,
+    "chair": 0.0,
+    "shelf": 0.0
+   },
+   "wall_cv_p10": 0.063,
+   "wall_cv_p25": 0.094,
+   "wall_cv_p50": 0.649,
+   "walls_3plus": 5,
+   "walls_even": 0.4,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "library": {
+   "rooms": 2,
+   "lights_p50": 4.5,
+   "lights_p75": 4.75,
+   "lights_p90": 4.9,
+   "lights_max": 5,
+   "lights_per100_p50": 3.73,
+   "lights_per100_p90": 5.91,
+   "rooms_lit": 1.0,
+   "light_class": {
+    "served": 0.444,
+    "corner": 0.444,
+    "served-free": 0.111
+   },
+   "light_n": 9,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 5
+   },
+   "tables": {
+    "floating": 0.8,
+    "carpet": 0.2
+   },
+   "table_n": 5,
+   "table_wall_p50": 4.83,
+   "table_wall_p90": 5.662,
+   "chairs": 15,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "shelf": {
+     "n": 177,
+     "alone": 0.011,
+     "open": 0.0,
+     "front": 0.006
+    },
+    "chair": {
+     "n": 15,
+     "alone": 0.133,
+     "open": 0.133,
+     "front": 0.0
+    },
+    "table": {
+     "n": 5,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 4,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "shelf": 0.006,
+    "chair": 0.133
+   },
+   "wall_cv_p10": 1.799,
+   "wall_cv_p25": 1.799,
+   "wall_cv_p50": 1.799,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 1,
+   "rooms_stepped": 0
+  },
+  "living_room": {
+   "rooms": 14,
+   "lights_p50": 0.0,
+   "lights_p75": 1.75,
+   "lights_p90": 3.4,
+   "lights_max": 8,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 4.47,
+   "rooms_lit": 0.36,
+   "light_class": {
+    "corner": 0.588,
+    "served": 0.176,
+    "free": 0.118,
+    "wall-alone": 0.059,
+    "served-free": 0.059
+   },
+   "light_n": 17,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 2,
+    "statue": 1,
+    "supply": 1
+   },
+   "tables": {
+    "wall": 0.76,
+    "carpet": 0.16,
+    "floating": 0.04,
+    "hearth": 0.04
+   },
+   "table_n": 25,
+   "table_wall_p50": 0.54,
+   "table_wall_p90": 2.868,
+   "chairs": 57,
+   "lone_chair_share": 0.158,
+   "lone": {
+    "chair": {
+     "n": 57,
+     "alone": 0.123,
+     "open": 0.088,
+     "front": 0.0
+    },
+    "table": {
+     "n": 25,
+     "alone": 0.16,
+     "open": 0.04,
+     "front": 0.04
+    },
+    "shelf": {
+     "n": 24,
+     "alone": 0.083,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 10,
+     "alone": 0.3,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 9,
+     "alone": 0.111,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 8,
+     "alone": 0.125,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bench": {
+     "n": 8,
+     "alone": 0.5,
+     "open": 0.125,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 7,
+     "alone": 0.143,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 7,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.286
+    },
+    "stove": {
+     "n": 5,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 4,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 4,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.25
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "hearth": 0.0,
+    "chair": 0.088,
+    "table": 0.08,
+    "shelf": 0.0,
+    "supply": 0.0,
+    "chest": 0.0,
+    "bench": 0.125
+   },
+   "wall_cv_p10": 0.049,
+   "wall_cv_p25": 0.262,
+   "wall_cv_p50": 0.663,
+   "walls_3plus": 14,
+   "walls_even": 0.214,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "mausoleum": {
+   "rooms": 6,
+   "lights_p50": 0.0,
+   "lights_p75": 1.5,
+   "lights_p90": 4.0,
+   "lights_max": 6,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 7.67,
+   "rooms_lit": 0.33,
+   "light_class": {
+    "served": 1.0
+   },
+   "light_n": 8,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "statue": 8
+   },
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "statue": {
+     "n": 28,
+     "alone": 0.357,
+     "open": 0.143,
+     "front": 0.107
+    },
+    "column": {
+     "n": 7,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 6,
+     "alone": 0.833,
+     "open": 0.667,
+     "front": 0.0
+    },
+    "tomb": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "statue": 0.25
+   },
+   "wall_cv_p10": 0.838,
+   "wall_cv_p25": 0.838,
+   "wall_cv_p50": 0.838,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 2,
+   "rooms_stepped": 0
+  },
+  "powder_store": {
+   "rooms": 1,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "supply": {
+     "n": 13,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.0
+   },
+   "wall_cv_p10": null,
+   "wall_cv_p25": null,
+   "wall_cv_p50": null,
+   "walls_3plus": 0,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 1
+  },
+  "shop": {
+   "rooms": 8,
+   "lights_p50": 0.0,
+   "lights_p75": 0.5,
+   "lights_p90": 2.3,
+   "lights_max": 3,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 4.09,
+   "rooms_lit": 0.25,
+   "light_class": {
+    "wall-alone": 0.4,
+    "served": 0.4,
+    "served-free": 0.2
+   },
+   "light_n": 5,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 2,
+    "rack": 1
+   },
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 3,
+   "lone_chair_share": 0.667,
+   "lone": {
+    "rack": {
+     "n": 36,
+     "alone": 0.611,
+     "open": 0.194,
+     "front": 0.111
+    },
+    "supply": {
+     "n": 24,
+     "alone": 0.083,
+     "open": 0.0,
+     "front": 0.083
+    },
+    "shelf": {
+     "n": 17,
+     "alone": 0.235,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "counter_shop": {
+     "n": 8,
+     "alone": 0.625,
+     "open": 0.25,
+     "front": 0.0
+    },
+    "lab": {
+     "n": 6,
+     "alone": 0.833,
+     "open": 0.167,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 3,
+     "alone": 0.667,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "cauldron": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "counter_shop": 0.25,
+    "shelf": 0.0,
+    "supply": 0.083,
+    "rack": 0.306
+   },
+   "wall_cv_p10": 0.049,
+   "wall_cv_p25": 0.064,
+   "wall_cv_p50": 0.464,
+   "walls_3plus": 10,
+   "walls_even": 0.4,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "shrine": {
+   "rooms": 5,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 2.4,
+   "lights_max": 4,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 5.71,
+   "rooms_lit": 0.2,
+   "light_class": {
+    "corner": 1.0
+   },
+   "light_n": 4,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "statue": {
+     "n": 16,
+     "alone": 1.0,
+     "open": 0.5,
+     "front": 0.062
+    },
+    "chest": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "statue": 0.562
+   },
+   "wall_cv_p10": null,
+   "wall_cv_p25": null,
+   "wall_cv_p50": null,
+   "walls_3plus": 0,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "smithy": {
+   "rooms": 1,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 2,
+   "lone_chair_share": 0.5,
+   "lone": {
+    "supply": {
+     "n": 5,
+     "alone": 0.2,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 0.5,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {},
+   "wall_cv_p10": 0.768,
+   "wall_cv_p25": 0.768,
+   "wall_cv_p50": 0.768,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "solar": {
+   "rooms": 4,
+   "lights_p50": 0.0,
+   "lights_p75": 2.75,
+   "lights_p90": 7.7,
+   "lights_max": 11,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 7.55,
+   "rooms_lit": 0.25,
+   "light_class": {
+    "served": 0.727,
+    "corner": 0.182,
+    "served-free": 0.091
+   },
+   "light_n": 11,
+   "light_bedfoot": 0,
+   "light_carpet": 1,
+   "light_serves": {
+    "shelf": 6,
+    "table": 2,
+    "supply": 1
+   },
+   "tables": {
+    "floating": 0.556,
+    "wall": 0.222,
+    "carpet": 0.222
+   },
+   "table_n": 9,
+   "table_wall_p50": 4.22,
+   "table_wall_p90": 6.616,
+   "chairs": 11,
+   "lone_chair_share": 0.091,
+   "lone": {
+    "shelf": {
+     "n": 20,
+     "alone": 0.2,
+     "open": 0.0,
+     "front": 0.1
+    },
+    "bench": {
+     "n": 13,
+     "alone": 0.615,
+     "open": 0.615,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 11,
+     "alone": 0.364,
+     "open": 0.364,
+     "front": 0.0
+    },
+    "table": {
+     "n": 9,
+     "alone": 0.111,
+     "open": 0.111,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 7,
+     "alone": 0.143,
+     "open": 0.143,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 5,
+     "alone": 0.8,
+     "open": 0.6,
+     "front": 0.0
+    },
+    "bed": {
+     "n": 5,
+     "alone": 0.2,
+     "open": 0.2,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 4,
+     "alone": 0.75,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "column": {
+     "n": 4,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "nightstand": {
+     "n": 2,
+     "alone": 0.5,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "chair": 0.364,
+    "bench": 0.615,
+    "table": 0.111,
+    "shelf": 0.1
+   },
+   "wall_cv_p10": 0.227,
+   "wall_cv_p25": 0.414,
+   "wall_cv_p50": 0.854,
+   "walls_3plus": 4,
+   "walls_even": 0.25,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 1
+  },
+  "storeroom": {
+   "rooms": 7,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {
+    "wall": 1.0
+   },
+   "table_n": 1,
+   "table_wall_p50": 0.34,
+   "table_wall_p90": 0.34,
+   "chairs": 3,
+   "lone_chair_share": 0.333,
+   "lone": {
+    "supply": {
+     "n": 55,
+     "alone": 0.218,
+     "open": 0.091,
+     "front": 0.018
+    },
+    "shelf": {
+     "n": 11,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "statue": {
+     "n": 5,
+     "alone": 0.6,
+     "open": 0.2,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 4,
+     "alone": 0.75,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 3,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "lab": {
+     "n": 3,
+     "alone": 0.333,
+     "open": 0.333,
+     "front": 0.0
+    },
+    "table": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.109,
+    "shelf": 0.0
+   },
+   "wall_cv_p10": 0.299,
+   "wall_cv_p25": 0.505,
+   "wall_cv_p50": 0.664,
+   "walls_3plus": 5,
+   "walls_even": 0.2,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "study": {
+   "rooms": 3,
+   "lights_p50": 1.0,
+   "lights_p75": 2.0,
+   "lights_p90": 2.6,
+   "lights_max": 3,
+   "lights_per100_p50": 5.0,
+   "lights_per100_p90": 6.0,
+   "rooms_lit": 0.67,
+   "light_class": {
+    "served": 0.75,
+    "corner": 0.25
+   },
+   "light_n": 4,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "shelf": 2,
+    "chair": 1
+   },
+   "tables": {
+    "wall": 1.0
+   },
+   "table_n": 1,
+   "table_wall_p50": 0.8,
+   "table_wall_p90": 0.8,
+   "chairs": 7,
+   "lone_chair_share": 0.143,
+   "lone": {
+    "shelf": {
+     "n": 14,
+     "alone": 0.071,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 7,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "desk": {
+     "n": 3,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 1.0
+    },
+    "table": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "shelf": 0.0
+   },
+   "wall_cv_p10": 0.409,
+   "wall_cv_p25": 0.521,
+   "wall_cv_p50": 0.707,
+   "walls_3plus": 3,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "tavern": {
+   "rooms": 6,
+   "lights_p50": 2.5,
+   "lights_p75": 3.75,
+   "lights_p90": 4.0,
+   "lights_max": 4,
+   "lights_per100_p50": 3.04,
+   "lights_per100_p90": 10.67,
+   "rooms_lit": 0.83,
+   "light_class": {
+    "served": 0.467,
+    "corner": 0.4,
+    "wall-alone": 0.067,
+    "free": 0.067
+   },
+   "light_n": 15,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "chair": 3,
+    "supply": 3,
+    "bench": 1
+   },
+   "tables": {
+    "wall": 0.682,
+    "carpet": 0.182,
+    "floating": 0.091,
+    "hearth": 0.045
+   },
+   "table_n": 22,
+   "table_wall_p50": 1.39,
+   "table_wall_p90": 3.122,
+   "chairs": 69,
+   "lone_chair_share": 0.087,
+   "lone": {
+    "chair": {
+     "n": 69,
+     "alone": 0.159,
+     "open": 0.116,
+     "front": 0.014
+    },
+    "counter_bar": {
+     "n": 47,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "supply": {
+     "n": 28,
+     "alone": 0.321,
+     "open": 0.107,
+     "front": 0.071
+    },
+    "table": {
+     "n": 22,
+     "alone": 0.045,
+     "open": 0.0,
+     "front": 0.045
+    },
+    "bench": {
+     "n": 21,
+     "alone": 0.238,
+     "open": 0.19,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 5,
+     "alone": 0.6,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "hearth": {
+     "n": 3,
+     "alone": 0.667,
+     "open": 0.667,
+     "front": 0.0
+    },
+    "shelf": {
+     "n": 2,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "smithy": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "chest": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "chair": 0.13,
+    "bench": 0.19,
+    "supply": 0.179,
+    "table": 0.045,
+    "counter_bar": 0.0
+   },
+   "wall_cv_p10": 0.266,
+   "wall_cv_p25": 0.522,
+   "wall_cv_p50": 0.908,
+   "walls_3plus": 11,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 2,
+   "rooms_stepped": 0
+  },
+  "throne_room": {
+   "rooms": 4,
+   "lights_p50": 3.0,
+   "lights_p75": 4.5,
+   "lights_p90": 5.4,
+   "lights_max": 6,
+   "lights_per100_p50": 1.28,
+   "lights_per100_p90": 2.07,
+   "rooms_lit": 1.0,
+   "light_class": {
+    "free": 0.643,
+    "corner": 0.214,
+    "wall-alone": 0.143
+   },
+   "light_n": 14,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "statue": {
+     "n": 24,
+     "alone": 0.583,
+     "open": 0.208,
+     "front": 0.167
+    },
+    "throne": {
+     "n": 11,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    },
+    "column": {
+     "n": 8,
+     "alone": 1.0,
+     "open": 0.25,
+     "front": 0.375
+    },
+    "tomb": {
+     "n": 4,
+     "alone": 0.75,
+     "open": 0.0,
+     "front": 0.25
+    },
+    "supply": {
+     "n": 2,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "statue": 0.375,
+    "throne": 0.0,
+    "column": 0.625
+   },
+   "wall_cv_p10": 0.0,
+   "wall_cv_p25": 0.0,
+   "wall_cv_p50": 0.423,
+   "walls_3plus": 5,
+   "walls_even": 0.4,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 2,
+   "rooms_stepped": 0
+  },
+  "treasury": {
+   "rooms": 1,
+   "lights_p50": 1.0,
+   "lights_p75": 1.0,
+   "lights_p90": 1.0,
+   "lights_max": 1,
+   "lights_per100_p50": 1.85,
+   "lights_per100_p90": 1.85,
+   "rooms_lit": 1.0,
+   "light_class": {
+    "served-free": 1.0
+   },
+   "light_n": 1,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {
+    "supply": 1
+   },
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 0,
+   "lone_chair_share": 0.0,
+   "lone": {
+    "supply": {
+     "n": 5,
+     "alone": 0.4,
+     "open": 0.4,
+     "front": 0.0
+    },
+    "clutter": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {},
+   "wall_cv_p10": null,
+   "wall_cv_p25": null,
+   "wall_cv_p50": null,
+   "walls_3plus": 0,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  },
+  "winch_room": {
+   "rooms": 4,
+   "lights_p50": 0.0,
+   "lights_p75": 0.0,
+   "lights_p90": 0.0,
+   "lights_max": 0,
+   "lights_per100_p50": 0.0,
+   "lights_per100_p90": 0.0,
+   "rooms_lit": 0.0,
+   "light_class": {},
+   "light_n": 0,
+   "light_bedfoot": 0,
+   "light_carpet": 0,
+   "light_serves": {},
+   "tables": {},
+   "table_n": 0,
+   "table_wall_p50": null,
+   "table_wall_p90": null,
+   "chairs": 1,
+   "lone_chair_share": 1.0,
+   "lone": {
+    "supply": {
+     "n": 21,
+     "alone": 0.333,
+     "open": 0.095,
+     "front": 0.0
+    },
+    "stove": {
+     "n": 4,
+     "alone": 1.0,
+     "open": 0.0,
+     "front": 0.25
+    },
+    "chest": {
+     "n": 1,
+     "alone": 1.0,
+     "open": 1.0,
+     "front": 0.0
+    },
+    "chair": {
+     "n": 1,
+     "alone": 0.0,
+     "open": 0.0,
+     "front": 0.0
+    }
+   },
+   "lone_exposed": {
+    "supply": 0.095
+   },
+   "wall_cv_p10": 0.912,
+   "wall_cv_p25": 0.912,
+   "wall_cv_p50": 0.912,
+   "walls_3plus": 1,
+   "walls_even": 0.0,
+   "plants": 0,
+   "rooms_with_plants": 0,
+   "rooms_twins": 0,
+   "rooms_stepped": 0
+  }
+ },
+ "house": {
+  "rooms": 116,
+  "lights_p50": 0.0,
+  "lights_p75": 2.0,
+  "lights_p90": 4.0,
+  "lights_max": 11,
+  "lights_per100_p50": 0.0,
+  "lights_per100_p90": 8.33,
+  "rooms_lit": 0.37,
+  "light_class": {
+   "served": 0.429,
+   "corner": 0.393,
+   "served-free": 0.071,
+   "wall-alone": 0.057,
+   "free": 0.043,
+   "door": 0.007
+  },
+  "light_n": 140,
+  "light_bedfoot": 0,
+  "light_carpet": 4,
+  "light_serves": {
+   "shelf": 27,
+   "supply": 9,
+   "chair": 8,
+   "bench": 6,
+   "table": 6,
+   "straw": 3,
+   "desk": 3,
+   "rack": 2,
+   "lab": 2,
+   "statue": 2,
+   "smithy": 1,
+   "bed": 1
+  },
+  "tables": {
+   "wall": 0.586,
+   "carpet": 0.228,
+   "floating": 0.166,
+   "hearth": 0.021
+  },
+  "table_n": 145,
+  "table_wall_p50": 1.71,
+  "table_wall_p90": 5.648,
+  "chairs": 303,
+  "lone_chair_share": 0.092,
+  "lone": {
+   "shelf": {
+    "n": 338,
+    "alone": 0.062,
+    "open": 0.0,
+    "front": 0.009
+   },
+   "chair": {
+    "n": 303,
+    "alone": 0.112,
+    "open": 0.079,
+    "front": 0.01
+   },
+   "supply": {
+    "n": 245,
+    "alone": 0.249,
+    "open": 0.09,
+    "front": 0.057
+   },
+   "table": {
+    "n": 145,
+    "alone": 0.083,
+    "open": 0.034,
+    "front": 0.021
+   },
+   "bench": {
+    "n": 91,
+    "alone": 0.275,
+    "open": 0.198,
+    "front": 0.022
+   },
+   "rack": {
+    "n": 66,
+    "alone": 0.5,
+    "open": 0.121,
+    "front": 0.076
+   },
+   "bed": {
+    "n": 64,
+    "alone": 0.25,
+    "open": 0.016,
+    "front": 0.047
+   },
+   "chest": {
+    "n": 63,
+    "alone": 0.381,
+    "open": 0.016,
+    "front": 0.0
+   },
+   "counter_bar": {
+    "n": 47,
+    "alone": 0.0,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "lab": {
+    "n": 38,
+    "alone": 0.553,
+    "open": 0.158,
+    "front": 0.053
+   },
+   "nightstand": {
+    "n": 33,
+    "alone": 0.03,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "desk": {
+    "n": 33,
+    "alone": 0.061,
+    "open": 0.0,
+    "front": 0.03
+   },
+   "statue": {
+    "n": 32,
+    "alone": 0.719,
+    "open": 0.25,
+    "front": 0.125
+   },
+   "straw": {
+    "n": 28,
+    "alone": 0.107,
+    "open": 0.107,
+    "front": 0.0
+   },
+   "hearth": {
+    "n": 27,
+    "alone": 0.519,
+    "open": 0.259,
+    "front": 0.0
+   },
+   "clutter": {
+    "n": 26,
+    "alone": 0.385,
+    "open": 0.115,
+    "front": 0.038
+   },
+   "smithy": {
+    "n": 15,
+    "alone": 0.267,
+    "open": 0.133,
+    "front": 0.0
+   },
+   "stove": {
+    "n": 15,
+    "alone": 0.933,
+    "open": 0.0,
+    "front": 0.067
+   },
+   "counter_shop": {
+    "n": 9,
+    "alone": 0.556,
+    "open": 0.222,
+    "front": 0.0
+   },
+   "column": {
+    "n": 4,
+    "alone": 0.0,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "cauldron": {
+    "n": 1,
+    "alone": 1.0,
+    "open": 1.0,
+    "front": 0.0
+   }
+  },
+  "lone_exposed": {
+   "supply": 0.147,
+   "chest": 0.016,
+   "table": 0.055,
+   "chair": 0.089,
+   "shelf": 0.009,
+   "nightstand": 0.0,
+   "bed": 0.062,
+   "desk": 0.03,
+   "rack": 0.197,
+   "hearth": 0.259,
+   "smithy": 0.133,
+   "stove": 0.067,
+   "bench": 0.22,
+   "counter_shop": 0.222,
+   "lab": 0.211,
+   "clutter": 0.154,
+   "counter_bar": 0.0,
+   "straw": 0.107,
+   "statue": 0.375
+  },
+  "wall_cv_p10": 0.062,
+  "wall_cv_p25": 0.221,
+  "wall_cv_p50": 0.657,
+  "walls_3plus": 94,
+  "walls_even": 0.223,
+  "plants": 0,
+  "rooms_with_plants": 0,
+  "rooms_twins": 6,
+  "rooms_stepped": 3
+ },
+ "all": {
+  "rooms": 176,
+  "lights_p50": 0.0,
+  "lights_p75": 2.0,
+  "lights_p90": 4.0,
+  "lights_max": 11,
+  "lights_per100_p50": 0.0,
+  "lights_per100_p90": 7.79,
+  "rooms_lit": 0.32,
+  "light_class": {
+   "served": 0.425,
+   "corner": 0.378,
+   "free": 0.083,
+   "wall-alone": 0.057,
+   "served-free": 0.052,
+   "door": 0.005
+  },
+  "light_n": 193,
+  "light_bedfoot": 0,
+  "light_carpet": 4,
+  "light_serves": {
+   "shelf": 27,
+   "statue": 24,
+   "supply": 9,
+   "chair": 8,
+   "bench": 6,
+   "table": 6,
+   "straw": 3,
+   "desk": 3,
+   "rack": 2,
+   "lab": 2,
+   "smithy": 1,
+   "bed": 1
+  },
+  "tables": {
+   "wall": 0.586,
+   "carpet": 0.228,
+   "floating": 0.166,
+   "hearth": 0.021
+  },
+  "table_n": 145,
+  "table_wall_p50": 1.71,
+  "table_wall_p90": 5.648,
+  "chairs": 305,
+  "lone_chair_share": 0.098,
+  "lone": {
+   "shelf": {
+    "n": 338,
+    "alone": 0.062,
+    "open": 0.0,
+    "front": 0.009
+   },
+   "chair": {
+    "n": 305,
+    "alone": 0.115,
+    "open": 0.082,
+    "front": 0.01
+   },
+   "supply": {
+    "n": 287,
+    "alone": 0.254,
+    "open": 0.091,
+    "front": 0.049
+   },
+   "statue": {
+    "n": 154,
+    "alone": 0.539,
+    "open": 0.273,
+    "front": 0.084
+   },
+   "table": {
+    "n": 145,
+    "alone": 0.083,
+    "open": 0.034,
+    "front": 0.021
+   },
+   "bench": {
+    "n": 100,
+    "alone": 0.26,
+    "open": 0.19,
+    "front": 0.02
+   },
+   "tomb": {
+    "n": 99,
+    "alone": 0.455,
+    "open": 0.283,
+    "front": 0.091
+   },
+   "straw": {
+    "n": 81,
+    "alone": 0.21,
+    "open": 0.21,
+    "front": 0.0
+   },
+   "chest": {
+    "n": 79,
+    "alone": 0.456,
+    "open": 0.127,
+    "front": 0.0
+   },
+   "bed": {
+    "n": 67,
+    "alone": 0.269,
+    "open": 0.015,
+    "front": 0.045
+   },
+   "rack": {
+    "n": 66,
+    "alone": 0.5,
+    "open": 0.121,
+    "front": 0.076
+   },
+   "column": {
+    "n": 51,
+    "alone": 0.235,
+    "open": 0.078,
+    "front": 0.098
+   },
+   "counter_bar": {
+    "n": 47,
+    "alone": 0.0,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "lab": {
+    "n": 42,
+    "alone": 0.548,
+    "open": 0.19,
+    "front": 0.048
+   },
+   "nightstand": {
+    "n": 33,
+    "alone": 0.03,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "desk": {
+    "n": 33,
+    "alone": 0.061,
+    "open": 0.0,
+    "front": 0.03
+   },
+   "hearth": {
+    "n": 27,
+    "alone": 0.519,
+    "open": 0.259,
+    "front": 0.0
+   },
+   "clutter": {
+    "n": 26,
+    "alone": 0.385,
+    "open": 0.115,
+    "front": 0.038
+   },
+   "stove": {
+    "n": 19,
+    "alone": 0.947,
+    "open": 0.0,
+    "front": 0.105
+   },
+   "smithy": {
+    "n": 15,
+    "alone": 0.267,
+    "open": 0.133,
+    "front": 0.0
+   },
+   "throne": {
+    "n": 11,
+    "alone": 0.0,
+    "open": 0.0,
+    "front": 0.0
+   },
+   "counter_shop": {
+    "n": 9,
+    "alone": 0.556,
+    "open": 0.222,
+    "front": 0.0
+   },
+   "plant": {
+    "n": 9,
+    "alone": 0.333,
+    "open": 0.333,
+    "front": 0.0
+   },
+   "cauldron": {
+    "n": 1,
+    "alone": 1.0,
+    "open": 1.0,
+    "front": 0.0
+   }
+  },
+  "lone_exposed": {
+   "supply": 0.139,
+   "chest": 0.127,
+   "table": 0.055,
+   "chair": 0.092,
+   "shelf": 0.009,
+   "nightstand": 0.0,
+   "bed": 0.06,
+   "desk": 0.03,
+   "rack": 0.197,
+   "hearth": 0.259,
+   "smithy": 0.133,
+   "stove": 0.105,
+   "bench": 0.21,
+   "counter_shop": 0.222,
+   "lab": 0.238,
+   "clutter": 0.154,
+   "counter_bar": 0.0,
+   "straw": 0.21,
+   "tomb": 0.374,
+   "statue": 0.357,
+   "column": 0.176,
+   "throne": 0.0,
+   "plant": 0.333
+  },
+  "wall_cv_p10": 0.047,
+  "wall_cv_p25": 0.209,
+  "wall_cv_p50": 0.569,
+  "walls_3plus": 106,
+  "walls_even": 0.245,
+  "plants": 9,
+  "rooms_with_plants": 1,
+  "rooms_twins": 13,
+  "rooms_stepped": 5
+ },
+ "source": "rules/rooms/westwood.json index with rules/rooms/curated.json applied (campaign maps Con/War/Wiz, kept and retyped rooms only), each room as validate/checks.py finds it",
+ "made_by": "rules/grammar.py",
+ "westwood_fires": {
+  "winch_room": {
+   "lone": 0.5,
+   "chair": 0.25,
+   "front": 0.25
+  },
+  "*": {
+   "lone": 0.21,
+   "front": 0.148,
+   "light": 0.136,
+   "even": 0.136,
+   "table": 0.131,
+   "chair": 0.108,
+   "twin": 0.074,
+   "corners": 0.068,
+   "ring": 0.051,
+   "mixed": 0.045,
+   "lights": 0.04,
+   "stepped": 0.028
+  },
+  "bedroom": {
+   "front": 0.286,
+   "light": 0.25,
+   "lone": 0.143,
+   "table": 0.107,
+   "even": 0.071,
+   "lights": 0.071,
+   "chair": 0.036,
+   "corners": 0.036
+  },
+  "house": {
+   "front": 0.216,
+   "light": 0.207,
+   "lone": 0.207,
+   "table": 0.198,
+   "even": 0.155,
+   "chair": 0.155,
+   "ring": 0.069,
+   "lights": 0.06,
+   "twin": 0.052,
+   "corners": 0.034,
+   "stepped": 0.026
+  },
+  "living_room": {
+   "table": 0.286,
+   "chair": 0.286,
+   "light": 0.214,
+   "even": 0.214,
+   "front": 0.214,
+   "lone": 0.143,
+   "ring": 0.071,
+   "lights": 0.071,
+   "corners": 0.071
+  },
+  "shop": {
+   "even": 0.375,
+   "light": 0.25,
+   "chair": 0.25,
+   "lights": 0.125,
+   "lone": 0.125,
+   "front": 0.125
+  },
+  "study": {
+   "front": 0.667,
+   "ring": 0.333,
+   "chair": 0.333
+  },
+  "tavern": {
+   "lone": 0.5,
+   "ring": 0.5,
+   "light": 0.333,
+   "table": 0.333,
+   "chair": 0.333,
+   "twin": 0.333,
+   "front": 0.167
+  },
+  "guardroom": {
+   "chair": 0.273,
+   "even": 0.182,
+   "table": 0.182,
+   "light": 0.091,
+   "lone": 0.091,
+   "ring": 0.091
+  },
+  "dining_hall": {
+   "twin": 0.667,
+   "light": 0.333,
+   "lone": 0.333,
+   "corners": 0.333,
+   "even": 0.333,
+   "table": 0.333,
+   "ring": 0.333
+  },
+  "storeroom": {
+   "front": 0.143,
+   "even": 0.143,
+   "lone": 0.143,
+   "corners": 0.143,
+   "chair": 0.143
+  },
+  "crypt": {
+   "mixed": 0.32,
+   "lone": 0.12,
+   "twin": 0.08,
+   "even": 0.08,
+   "corners": 0.04
+  },
+  "mausoleum": {
+   "lone": 0.5,
+   "twin": 0.333,
+   "corners": 0.167
+  },
+  "hall": {
+   "even": 0.333,
+   "twin": 0.333,
+   "lone": 0.333,
+   "corners": 0.333
+  },
+  "laboratory": {
+   "front": 0.5,
+   "lights": 0.333,
+   "light": 0.333,
+   "lone": 0.333,
+   "table": 0.167,
+   "even": 0.167
+  },
+  "treasury": {
+   "light": 1.0,
+   "lone": 1.0
+  },
+  "barracks": {
+   "table": 0.571,
+   "even": 0.429,
+   "light": 0.286,
+   "chair": 0.286,
+   "lone": 0.286,
+   "stepped": 0.143
+  },
+  "great_hall": {
+   "stepped": 0.5,
+   "table": 0.5,
+   "lone": 0.5,
+   "ring": 0.5,
+   "front": 0.5
+  },
+  "kitchen": {
+   "twin": 0.333
+  },
+  "smithy": {
+   "chair": 1.0
+  },
+  "solar": {
+   "table": 0.75,
+   "lone": 0.75,
+   "even": 0.5,
+   "front": 0.5,
+   "stepped": 0.25,
+   "light": 0.25,
+   "chair": 0.25
+  },
+  "throne_room": {
+   "lone": 0.5,
+   "twin": 0.5,
+   "even": 0.5,
+   "corners": 0.5
+  },
+  "chapel": {
+   "even": 1.0
+  },
+  "armoury": {
+   "lone": 0.25
+  },
+  "herbalist": {
+   "lights": 0.5,
+   "front": 0.5,
+   "table": 0.5,
+   "lone": 0.5
+  },
+  "library": {
+   "light": 1.0,
+   "front": 1.0,
+   "table": 0.5,
+   "twin": 0.5
+  },
+  "powder_store": {
+   "lone": 1.0,
+   "stepped": 1.0
+  },
+  "cell": {
+   "lone": 0.1,
+   "ring": 0.1,
+   "stepped": 0.1
+  },
+  "shrine": {
+   "corners": 0.6
+  }
+ }
+}

@@ -298,6 +298,7 @@ WALL_PIECES = {"bed", "storage", "shelves", "fireplace", "stove", "desk", "night
                "forge", "bellows", "wall_decor"}
 # Lights in one room stand at least this far apart (uv units, ~50 px).
 MIN_LIGHT_GAP = 3.0
+GRAMMAR = os.environ.get("NOX_GRAMMAR", "1") == "1"   # kit/grammar.py audit as both engines' last pass (NOX_GRAMMAR=0: the engines as before, for comparison)
 # Street lights stay outdoors.
 OUTDOOR_LIGHT = re.compile(r"^TorchPole|^Obelisk|StreetLamp")
 # At most this many of a family per room (one-off focal pieces; decorative families that look
@@ -1185,6 +1186,7 @@ class Furnisher:
             self.placing_light = True
             self.add_lights()
             self.placing_light = False
+            self.grammar_audit(need)
             return self.objects
         tables, done = [], collections.Counter()
         # required anchors first (in ORDER), with more tries and role fallbacks; then everything else
@@ -1230,7 +1232,30 @@ class Furnisher:
         self.placing_light = True
         self.add_lights()
         self.placing_light = False
+        self.grammar_audit(need)
         return self.objects
+
+    def grammar_audit(self, need=None):
+        """The last pass of both engines (kit/grammar.py audit): lights by a wall in a corner or beside what they light,
+        table sets anchored, chairs drawn up, no lone stock or chests in the open, no even gaps, no plants where
+        Westwood has none, no twin knots; each fault moved into place or dropped (must pieces stay). Its own
+        generator, so the composition before it draws as it did."""
+        from kit import grammar as GR
+        if not GRAMMAR: return
+        self._need = dict(need or {})
+        grng = random.Random(zlib.crc32(f"grammar:{self.spec.d.get('name')}:{self.room.id}".encode()))
+        before = self.coverage()
+        self.grammar_log = GR.audit(self, grng)
+        # what the audit dropped is made up against the walls (the identity's own pieces), then audited again
+        if self.coverage() < min(before, self.cover_target) - 0.005:
+            saved = (self.composing, self.in_required, self.rng)
+            self.composing, self.in_required, self.rng = True, False, grng
+            try:
+                self.top_up()
+            finally:
+                self.composing, self.in_required, self.rng = saved
+            self.grammar_log.update(GR.audit(self, grng))
+            self.grammar_log["refilled"] += 1
 
     # ---- composition: one plan for the whole room (kit/identity.py ROOMS[kind]["compose"]) ----------
     def segments(self, pad=0.0, tall_only=False):
@@ -4237,6 +4262,7 @@ def furnish_room(spec, room: Room, kind=None, rng=None, style="town"):
     room.kind = f.kind
     room.spots = f.spots
     room.kb_refused = dict(f.kb_refused)  # what the object knowledge base refused, by rule (the labs print it)
+    room.grammar_log = dict(getattr(f, "grammar_log", None) or {})   # what kit/grammar.py's audit moved or dropped
     from kit import loot
     loot.tag(spec, objs, f.kind)          # where its containers stand: their loot (kit/loot.py)
     return objs
