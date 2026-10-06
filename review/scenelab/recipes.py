@@ -11,9 +11,19 @@ from kit import camps, yards as Y
 from kit.layout import square_px, px_square, tile_square, square_tile, cell_square
 
 LOOT = [("Gold", {"Amount": 40}), "RedPotion"]
-# Westwood's five ogre fires: three hut yards, a bone pit, a cave fire (kit/camps.OGRE_ARCH), in a fixed order
-OGRE_ORDER = ("hut_yard", "bone_pit", "hut_yard", "cave_fire", "hut_yard", "hut_yard", "bone_pit", "hut_yard",
-              "cave_fire", "hut_yard")
+# Westwood's five ogre fires, each its own structure (kit/camps.OGRE_ARCH), in a fixed order, and the ground each stands
+# on (round 8: Con05B's cage yard and cold pit on a trodden patch of DirtLight2 in the swamp grass, Con09b's hut camp on sparse weeds, the bone
+# pit on swamp grass and weeds in its root hollow, Wiz02C's cave fire on DirtHard in Dirt walls)
+OGRE_ORDER = ("cage_yard", "bone_pit", "hut_camp", "cave_fire", "cold_pit", "cage_yard", "bone_pit", "hut_camp",
+              "cave_fire", "cold_pit")
+OGRE_GROUND = dict(cage_yard=("SwampGrass", "RootLight"), cold_pit=("SwampGrass", "RootLight"),
+                   hut_camp=("WeedsSparse", "RootLight"), bone_pit=("SwampGrass", "RootLight"),
+                   cave_fire=("DirtHard", "Dirt"))
+
+
+def _ogre_plan(ctx):
+    for p in ctx["plots"]:
+        p.cave_floor, p.cave_wall = OGRE_GROUND[OGRE_ORDER[p.k % len(OGRE_ORDER)]]
 
 
 def _pop(ctx):
@@ -99,6 +109,15 @@ def _camp_build(kind):
                     for o in (-0.5, 0.5):
                         sq = (int(math.floor(ci_ + o)), int(math.floor(cj_ - o)))
                         if sq in land.squares: m.floor[square_tile(*sq)] = "DirtLight2"
+            if kind == "ogre_camp" and camp.get("arch") in ("cage_yard", "cold_pit"):
+                # (the ground round the fire trodden bare: DirtLight2, 2.5-3.5 squares out, Con05B)
+                ci_, cj_ = px_square(fx, fy)
+                R_ = rng.uniform(2.5, 3.5)
+                for a_ in range(-4, 5):
+                    for b_ in range(-4, 5):
+                        sq = (ci_ + a_, cj_ + b_)
+                        if sq in land.squares and math.hypot(a_, b_) <= R_ * (1 + 0.15 * math.sin(3 * a_ + b_)):
+                            m.floor[square_tile(*sq)] = "DirtLight2"
             pop.creature(kinds["leader"], *posts["leader"], action="guard", face=square_px(*toward), aggr=0.5)
             for role in ("sit", "tent", "work", "watch"):
                 for x, y in posts[role]:
@@ -113,8 +132,8 @@ def _camp_build(kind):
 # a batch's graveyards by Westwood's archetypes (13 scenes: 6 fields, 4 crypt yards, 3 pens), in a fixed order so a
 # batch of ten follows the frequencies (as the room lab's door counts do, FAIRNESS 3)
 GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
-JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cell_row", "cell_row", "cell_row", "guardhouse",
-              "cell_row", "cell_row")      # Westwood's 11 jails: 9 rows of cells, 2 guardhouses
+JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cave_cell", "cell_row", "cell_row", "guardhouse",
+              "cell_row", "cell_row")      # Westwood's 11 jails: 8 castle cell rows, a cave cell, 2 guardhouses
 WALL_RUN = 7                 # a town wall runs on this many squares past a yard's back corners (Westwood's War03 yards)
 
 
@@ -192,17 +211,21 @@ def _yard_build(ctx):
 
 def _jail_court(ctx):
     """Westwood's jails stand in paved town courts (Con07B's castle, Con02a's and War03b's guardhouse yards, all on
-    RoughCobble): the lab paves a court round the jail in two clearings of three, so the jail's floor is not read as a
-    path laid through the grass."""
+    RoughCobble): the lab paves a court round every jail (a cave cell's of dark earth), so the jail's floor is not read
+    as a path laid through the grass."""
     m, land = ctx["m"], ctx["land"]
     for p in ctx["plots"]:
         y = ctx["yards"].get(p.k)
-        if not y or p.k % 3 == 2: continue
-        for a in range(-3, y.w + 3):
-            for b in range(-3, y.h + 3):
+        if not y: continue
+        mat = "DirtDark2" if getattr(y, "arch", "") == "cave_cell" else "RoughCobble"     # (War03c's in the earth)
+        # (round 8: every jail, and wide enough that the paving is the ground round it, not a path through grass:
+        # Westwood's stand in castles and paved guardhouse yards; metrics path_share, path_d)
+        E_ = 7
+        for a in range(-E_, y.w + E_):
+            for b in range(-E_, y.h + E_):
                 sq = (y.gi + a, y.gj + b)
                 if sq in land.squares and sq not in land.water and sq not in land.taken_strict:
-                    m.floor[square_tile(*sq)] = "RoughCobble"
+                    m.floor[square_tile(*sq)] = mat
 
 
 # ---------------------------------------------------------------------------------------------------- gardens
@@ -384,6 +407,7 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
             cx, cy = square_px(*p.scene_c)
             R = p.r * 32.5
             ex.signs = {f: [q for q in pts if math.hypot(q[0] - cx, q[1] - cy) < R] for f, pts in ex.signs.items()}
+            if ctx["scene"] == "shrine": ex.want_arch = {"shrine": SHRINE_ARCH[p.k % len(SHRINE_ARCH)]}
             names = [themes[(p.k + q) % len(themes)] for q in range(len(themes))]
             cands = sorted((s for s in ex.free if math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]) < p.r - 1),
                            key=lambda s: (math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]), s))
@@ -395,6 +419,8 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
                     if th.stand == "wall":
                         x, y = square_px(s[0] + 0.5, s[1] - 0.5)
                         w = ex._nearest_wall(x, y, 2)
+                        own = ctx.get("shrines", {}).get(p.k, {}).get("cells")     # (a shrine: against its own wall)
+                        if own is not None and w not in own: continue
                         ok = w is not None and ex._try_wall(s, w, only={name})
                     else:
                         ok = ex._try_open(s, only={name})
@@ -447,6 +473,84 @@ def _house_build(ctx):
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
 
 
+# ---------------------------------------------------------------------------------------------------- shrines
+# Westwood's 26 shrines against walls stand in five settings (rules/scenes/shrine.md "Sites"): a ruined castle garden's
+# DungeonStone walls on DirtDark2 or broken cobbles (Con04b, War04a-b: 12), a Galava tower's wall on its brick paving
+# (Con07C, Con07E, Wiz02B: 7), a town's Cobblestone wall on grass (Con05A, War03c, War04b: 4; a fence to the kit, which
+# stands no shrine on one: laid as the castle garden), a roofless chapel's StoneGray walls on GalavaBrick2 (Con07B,
+# War07A: 3). Round 8 (the judges on round 7: "the same short L-shaped brick wall every time", the lab's stone shrine
+# house): a straight run of one of these walls, nine to thirteen squares, the ground before it paved as Westwood's, in
+# a batch's order by their frequencies
+SHRINE_SITES = ("court", "galava", "court", "nave", "court", "galava", "court", "court", "galava", "court")
+# and the archetype laid on each, a batch of ten in Westwood's frequencies (rows 4: castle 1, tight 1, alternating 1, and
+# pairs 2; lone statues 2; crypt courts 2; a nave 1), the castle rows and lone statues on Galava walls as Westwood's
+SHRINE_ARCH = ("crypt", "castle_row", "pair", "nave", "alt_row", "lone", "tight_row", "crypt", "lone", "pair")
+SHRINE_WALL = dict(court="DungeonStone", galava="GalavaTowerWall", nave="StoneGray")
+SHRINE_FLOOR = dict(court=("DirtDark2", "BrokenCobbleDirtWebs", "DirtDark2"), galava=("GalavaBrick3",),
+                    nave=("GalavaBrick2",))
+
+
+def _shrine_plan(ctx):
+    land = ctx["land"]
+    ctx["shrines"] = {}
+    for p in ctx["plots"]:
+        kind = SHRINE_SITES[p.k % len(SHRINE_SITES)]
+        axis = p.rng.choice("ij")
+        L = p.rng.randint(9, 13)
+        depth = p.rng.randint(4, 6)                 # how far the paving reaches out before the wall
+        ci, cj = p.scene_c
+        got = None
+        for di, dj in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (2, 0), (0, 2), (-2, 0), (0, -2), (3, 3), (-3, -3)):
+            # (the scene below the wall on screen: an i-run is a "\\" wall with the ground on its lower q side, a
+            # j-run a "/" wall with the ground on its higher p side; a tall shrine never stands before a front wall)
+            if axis == "i":
+                q0, p0 = int(round(cj + dj)) + 2, int(round(ci + di))
+                pts = [(p0 + t, q0) for t in range(-(L // 2), L - L // 2)]
+                court = {(i, j) for i in range(pts[0][0], pts[-1][0]) for j in range(q0 - depth + 1, q0 + 1)}
+            else:
+                p0, q0 = int(round(ci + di)) - 2, int(round(cj + dj))
+                pts = [(p0, q0 + t) for t in range(-(L // 2), L - L // 2)]
+                court = {(i, j) for i in range(p0, p0 + depth) for j in range(pts[0][1] + 1, pts[-1][1] + 1)}
+            sqs = {s for pt in pts for s in _around(pt)}
+            if all(s in land.squares and s not in land.water and s not in land.roads and s not in land.taken and
+                   s not in land.reserved for s in sqs | court):
+                got = (pts, court, sqs); break
+        if not got:
+            ctx["log"](f"  plot {p.k + 1}: no room for the shrine's wall"); continue
+        pts, court, sqs = got
+        land.taken.update(sqs)
+        land.reserved.update(court)                 # (no neighbour's house on the shrine's ground)
+        ctx["shrines"][p.k] = dict(kind=kind, axis=axis, pts=pts, court=court, sqs=sqs,
+                                   floor=p.rng.choice(SHRINE_FLOOR[kind]))
+        mi = sum(i for i, _ in court) / len(court) + 0.5
+        mj = sum(j for _, j in court) / len(court) - 0.5
+        p.scene_c = (mi, mj)
+        p.notes.update(scene_sq=[round(mi, 1), round(mj, 1)], site_kind=kind, wall=SHRINE_WALL[kind], axis=axis)
+
+
+def _shrine_build(ctx):
+    from kit.layout import point_cell
+    m, land = ctx["m"], ctx["land"]
+    for p in ctx["plots"]:
+        sh = ctx["shrines"].get(p.k)
+        if not sh: continue
+        land.reserved -= sh["court"]
+        land.taken -= sh["sqs"]                     # (the squares along its foot free for its torches and pillars;
+        ctx.setdefault("keep", set()).update(sh["sqs"])      # no tree on them)
+        for pt in sh["pts"]:
+            m.wall(*point_cell(*pt), SHRINE_WALL[sh["kind"]])
+        # the ground paved round it as Westwood's castle gardens and towers are, far enough that the paving is the
+        # ground and not a path through grass (metrics: path_d, Westwood's 400)
+        R = p.rng.uniform(7.0, 8.5)
+        ci, cj = p.scene_c
+        for sq in land.squares:
+            if sq in land.water or sq in land.roads or sq in land.taken_strict: continue
+            if sq in sh["court"] or math.hypot(sq[0] + 0.5 - ci, sq[1] - 0.5 - cj) < R:
+                m.floor[square_tile(*sq)] = sh["floor"]
+        sh["cells"] = {point_cell(*pt) for pt in sh["pts"]}
+        _keep(ctx, p.scene_c, 4)
+
+
 def _nothing(ctx):
     pass
 
@@ -480,7 +584,7 @@ RECIPES = {
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8),
                         site_map={"glade": "cliff", "shore": "cliff"}),
     # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
-    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
+    "ogre_camp": dict(plan=_ogre_plan, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
                       cave_scale=1.7, cave_floor="SwampGrass", path_in=True),
     # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
     # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens
@@ -511,8 +615,8 @@ RECIPES = {
                      after_plant=_theme_after(["woodpile", "chopping_yard", "timber_stack"])),
     # the shrine by the village's chapel: masonry to stand against (the judge, 2026-10-06: "shrines set against wooden
     # peasant cabins")
-    "shrine": dict(plan=_house_plan(["shrine", "mausoleum"]), build=_house_build,
-                   after_plant=_theme_after(["waystone", "shrine"])),
+    # (since round 8 against a run of Westwood's own shrine walls, not the lab's shrine house: _shrine_plan)
+    "shrine": dict(plan=_shrine_plan, build=_shrine_build, after_plant=_theme_after(["shrine"])),
     "farmyard": dict(plan=_house_plan(["mill", "home", "cottage"]), build=_house_build,
                      after_plant=_theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")),
     "wolf_den": dict(plan=_nothing, build=_wolf_build),

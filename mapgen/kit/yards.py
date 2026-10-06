@@ -145,7 +145,9 @@ def plan(land, rng, kind, centre, toward=None, margin=2, arch=None):
         mids = {s: p for s, p in mids.items() if (s in ("j0", "j1")) == (w >= h)}
     side = min(mids, key=lambda s: math.hypot(mids[s][0] - tx, mids[s][1] - ty))
     y = Yard(kind, gi, gj, w, h, side)
-    if kind == "jail": y.arch = arch
+    if kind == "jail":
+        y.arch = arch
+        if arch == "cave_cell": y.walls = {f: "Dirt" for f in ("i0", "i1", "j0", "j1")}
     if kind == "graveyard":
         import random as _random, zlib
         y.arch = arch
@@ -313,13 +315,20 @@ def build(spec, rng, land, y):
 
 
 
-# Westwood's eleven campaign jails are of two kinds (rules/scenes/jail.md "Archetypes"):
-# - cell_row (9 of 11: Con07B x7, War07A, War03c's pit): a row of two to four cells side by side along a wall, a barred
-#   door into each with a wall torch beside it outside; inside, variety: one cell bare, one with a cot, one deep in straw;
+# Westwood's eleven campaign jails, by structure (rules/scenes/jail.md "Structures", round 8; the judges on round 7:
+# "one free-standing rectangular block every time", "straw as one neat clump mid-cell", "racks standing off the wall"):
+# - cell_row (8 of 11: Con07B x7, War07A): cells off a corridor inside the castle's masonry, the corridor walled with
+#   its own wooden door (ThickWoodenDoor), a barred door into each cell and a wall torch by it in the corridor; inside,
+#   variety: many cells bare, one with a cot in a back corner and a mat of straw (7-10 Straw2 8-16 px apart, a streak
+#   or a blob reaching out from the cot), one with a few straws;
+# - cave_cell (1 of 11: War03c): one cell dug in the earth (Dirt walls, DirtDark2), four ogre straws in a heap, a torch
+#   by its barred door;
 # - guardhouse (2 of 11: Con02a, War03b): two cells at the back of a stone house, the guardroom before them with the
-#   guards' racks along its walls, a table and a water barrel, its own door.
+#   guards' racks against its walls, a table and a water barrel, its own door.
+# (A corridor needs five squares' depth: a jail planned smaller is the open row of rounds 6-7. A cave cell is laid only
+# where it is asked for, `arch="cave_cell"`: one cell holds one prisoner, and Westwood's is in a cave.)
 JAIL_ARCH = (("cell_row", 9), ("guardhouse", 2))
-JAIL_SIZE = {"cell_row": [(6, 3), (9, 3), (9, 3)], "guardhouse": [(6, 6)]}
+JAIL_SIZE = {"cell_row": [(6, 5), (9, 5), (8, 5)], "cave_cell": [(4, 3), (3, 3)], "guardhouse": [(6, 6)]}
 GUARD_RACKS = ("TraderBowRack2", "TraderQuiverRack", "TraderPoleArm1", "TraderPoleArm2")
 
 
@@ -359,10 +368,13 @@ def _jail(spec, rng, y, rec, pts):
     for c in range(rec.get("cells", 2)):           # (the draws the first jails made)
         for _ in range(rng.randint(1, 2)): rng.uniform(0, 1); rng.uniform(0, 1)
     own = _random.Random(zlib.crc32(f"{spec.d['name']}:jail:{y.gi},{y.gj}".encode()))
-    n = 2 if arch == "guardhouse" else max(2, L // 3)
-    v_cells = 3 if arch == "guardhouse" else 0     # where the cells' front wall stands
+    n = 2 if arch == "guardhouse" else 1 if arch == "cave_cell" else max(2, L // 3)
+    # where the cells' front wall stands: a guardroom before them, a corridor (a castle's cell row, five squares deep)
+    v_cells = 3 if arch == "guardhouse" else 2 if (arch == "cell_row" and D >= 5) else 0
     if v_cells:
         for u in range(0, L + 1): spec.wall(*point_cell(*pt(u, v_cells)), rec["fence"])
+    if arch == "cave_cell":                        # (War03c: a cell dug in the earth)
+        for s_ in y.plot: spec.floor[square_tile(*s_)] = "DirtDark2"
     # (round 7, the judges: "doors and torches at exact even spacing; the cells bare, straw, cot in strict order"):
     # the cells of uneven widths, each door where it falls in its cell, the torch on either side of it a step or so off
     # (one door in six without), the cells furnished each by its own draw (two alike now and then), from the jail's
@@ -371,6 +383,7 @@ def _jail(spec, rng, y, rec, pts):
     widths = [2] * n
     for _ in range(L - 2 * n): widths[hand.randrange(n)] += 1
     if arch == "guardhouse": widths = [L // 2, L - L // 2]
+    if arch == "cave_cell": widths = [L]
     bounds = [sum(widths[:k]) for k in range(n + 1)]
     for u_k in bounds[1:-1]:                       # the walls between the cells
         for v in range(v_cells, D + 1): spec.wall(*point_cell(*pt(u_k, v)), rec["fence"])
@@ -385,34 +398,50 @@ def _jail(spec, rng, y, rec, pts):
         tu = du_ + 0.5 + sd_ * hand.uniform(0.85, 1.35)
         if not (lo + 0.3 < tu < hi - 0.3) and arch != "cell_row":
             tu = du_ + 0.5 - sd_ * hand.uniform(0.85, 1.1)
-        if (lo + 0.3 < tu < hi - 0.3 or arch == "cell_row") and (c == 0 or hand.random() >= 1 / 6):
+        if (lo + 0.3 < tu < hi - 0.3 or arch != "guardhouse") and (c == 0 or hand.random() >= 1 / 6):
             spec.obj_px("Torch", *square_px(*at(tu, v_cells - 0.3 - hand.uniform(0, 0.12))))
     y.gate, y.cells, y.cell_mids = doors[0], doors, mids
-    # the cells' furnishing: bare, a cot or deep in straw, each cell its own draw, never all alike
+    if arch == "cell_row" and v_cells:
+        # the corridor's own wooden door near one end of its outer wall (Con07B, War07A: ThickWoodenDoor)
+        y.gate = door(hand.choice((1, L - 2)), 0, "ThickWoodenDoor")
+    # the cells' furnishing, each cell its own draw, never all alike (Westwood's: Con07B's cells mostly bare or a few
+    # straws; a cot in a back corner with a mat of straw reaching out from it, Con07B, War07A; straw alone; War03c's
+    # heap of ogre straw)
     kinds = ["bare", "cot", "straw"]
     own.shuffle(kinds)
-    kinds = [hand.choices(("straw", "cot", "bare"), (0.45, 0.3, 0.25))[0] for _ in range(n)]
+    kinds = [hand.choices(("bare", "cot", "straw"), (0.4, 0.35, 0.25))[0] for _ in range(n)]
     if len(set(kinds)) == 1 and n > 1: kinds[hand.randrange(n)] = hand.choice([k for k in ("straw", "cot", "bare")
                                                                               if k != kinds[0]])
     if arch == "guardhouse": kinds = ["cot", own.choice(("straw", "cot"))]       # (Con02a, War03b: a cot in each)
+    elif arch == "cave_cell": kinds = ["ogre"]
     else: own.choice(("bare", "straw"))
     for c, kind in enumerate(kinds):
         lo, hi = bounds[c], bounds[c + 1]
         laid = []
+        back_u = hand.choice((lo + 0.75, hi - 0.75))          # the cot's back corner
         if kind == "cot":
-            cu = (lo + hi) / 2 + own.uniform(-0.4, 0.4)
+            cu = back_u + hand.uniform(-0.15, 0.15)
             spec.obj_px(own.choice(("Cot2", "Cot2", "Cot1")), *square_px(*at(cu, D - 0.8)))
             laid.append((cu, D - 0.8))
-        n_s = {"cot": own.choice((0, 1, 2, 3)), "straw": own.randint(6, 10)}.get(kind, 0)
-        fu, fv = own.uniform(lo + 0.9, hi - 0.9), own.uniform(v_cells + 1.0, D - 0.9)     # a drift, not a carpet
-        for _ in range(n_s):
-            for _try in range(12):
-                su = min(hi - 0.5, max(lo + 0.5, own.gauss(fu, 0.6)))
-                sv = min(D - 0.45, max(v_cells + 0.6, own.gauss(fv, 0.5)))
-                if all(math.hypot(su - a, sv - b) >= (0.9 if (a, b) == laid[0] and kind == "cot" else 0.45)
-                       for a, b in laid):
-                    spec.obj_px("Straw2" if own.random() < 0.85 else "Straw1", *square_px(*at(su, sv)))
-                    laid.append((su, sv))
+            if hand.random() < 0.3:                            # a candelabrum by the far wall (Con07B)
+                spec.obj_px("Candleabra3", *square_px(*at(lo + hi - back_u, D - 0.55)))
+        n_s = {"cot": hand.randint(5, 10), "straw": hand.randint(6, 10), "bare": hand.choice((0, 0, 0, 2)),
+               "ogre": 4}.get(kind, 0)
+        if kind == "cot" and own.random() < 0.15: n_s = 0
+        # a mat: from the cot (or a back corner) out toward the door, each straw 8-16 px on from the last, a little to
+        # either side: a streak or a blob, not a clump in the cell's middle
+        su, sv = (laid[0][0], D - 1.5) if laid else (hand.uniform(lo + 0.6, hi - 0.6), D - hand.uniform(0.6, 1.2))
+        ang = math.atan2(v_cells + 0.8 - sv, (lo + hi) / 2 - su) + hand.uniform(-0.7, 0.7)
+        for k in range(n_s):
+            for _try in range(8):
+                step_ = hand.uniform(0.25, 0.5) if k else 0.0
+                a_ = ang + hand.uniform(-1.1, 1.1)
+                nu = min(hi - 0.45, max(lo + 0.45, su + step_ * math.cos(a_)))
+                nv = min(D - 0.4, max(v_cells + 0.55, sv + step_ * math.sin(a_)))
+                if not laid or kind != "cot" or math.hypot(nu - laid[0][0], nv - laid[0][1]) >= 0.8:
+                    t = "OgreStraw1" if kind == "ogre" else ("Straw2" if own.random() < 0.85 else "Straw1")
+                    spec.obj_px(t, *square_px(*at(nu, nv)))
+                    su, sv = nu, nv
                     break
     if arch == "guardhouse":
         # the guardroom: its door in the front wall off the middle, the racks along its side walls, the table, the
@@ -425,7 +454,9 @@ def _jail(spec, rng, y, rec, pts):
         line_v = "/" if line_u == "\\" else "\\"
         racks = list(GUARD_RACKS)
         own.shuffle(racks)
-        spots = [(0.6, 1.0, line_v), (0.6, 2.2, line_v), (L - 0.6, 1.0, line_v), (L - 0.6, 2.2, line_v)]
+        # (round 8, "racks standing off the wall": snug to the side walls, 16 px, as Westwood's 16-27; the bow rack the
+        # variant for its wall's line, S.ALONG, as the pole arms were)
+        spots = [(0.5, 1.0, line_v), (0.5, 2.2, line_v), (L - 0.5, 1.0, line_v), (L - 0.5, 2.2, line_v)]
         for (u, v, ln), t in zip(spots[:own.randint(3, 4)], racks):
             t = S.ALONG[ln].get(t, t)
             spec.obj_px(t, *square_px(*at(u, v)))

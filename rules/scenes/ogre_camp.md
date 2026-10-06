@@ -47,3 +47,13 @@ the trodden path in from the mouth to the fire (DirtLight2). The batch: six hut 
 (`recipes.OGRE_ORDER`).
 
 AUC: 0.997 -> 0.854 (round6).
+
+## Structures (round 8, 2026-10-06)
+
+`kit/camps.OGRE_ARCH`: cage_yard (Con05B: meat, carcass, meat in a row 17-19 px apart ~70 px off the fire, two sack
+chests side by side, an unlit torch and a tusk mound against the wall, a barren plant), cold_pit (Con05B: an unlit pit,
+two racks touching, one bench), hut_camp (Con09b: one rack, two benches on one side, torch poles, a barrel, a table and
+a stool along the wall), bone_pit (Con05B: the rack and carcass touching, bones in two drifts, two stools apart, two
+barrels, a big sack chest, rocks in one clump by the wall), cave_fire (Wiz02C: benches on opposite sides, barrels and
+water barrels in a knot at the wall, torch poles at the wall). The fire 108-212 px from the wall; never a gate, straw,
+bed or bearskin in the open (Con09b's beds are inside its hut). AUC 0.828 -> 0.558.

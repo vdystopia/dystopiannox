@@ -49,3 +49,15 @@ The kit (`scenes.THEMES["shrine"]`): the row, the pair and the lone statue for s
 crypt court (Crypt1, Crypt4, Crypt3 70%, a cross or statue, Monument1 either side, torch poles). AUC 0.917 -> 0.874
 (round6). The lab still builds the same small stone shrine or mausoleum each time (the judge: "the same chapel box"):
 a town-wall site for the shrine is the next step.
+
+## Structures and sites (round 8, 2026-10-06)
+
+Westwood's 26 shrines against walls, clustered by their pieces (`kit/scenes.SHRINE_LAYOUTS`, each as often as
+Westwood's): castle row 4 (Con07C, Wiz02B: three statues ~97 px apart, wall torches between), tight row 2 (Con04b:
+three ~49 px apart, a chest, torches, a pillar), alternating row 2 (Con04b: victory statues between), pair 5, lone
+statue 5 (a wall torch, a torch pole or a flame basin beside it), crypt court 5 (sarcophagi side by side along the wall,
+pillars at both ends, a cross ~93 px out), chapel nave 3 (Con07B, War07A: tapestries, columns, candelabra, a statue,
+benches). Distances from the wall's centre line: statues 16-51 (median 29), pillars 11-22, wall torches 10-20, torch
+poles 20-47, sarcophagi 41-67, benches 67-121. Sites: DungeonStone on DirtDark2 or broken cobbles 12 (Con04b, War04),
+GalavaTowerWall on GalavaBrick3 7 (Con07C/E, Wiz02B), Cobblestone on grass 4, StoneGray on GalavaBrick2 3 (the naves).
+The lab stands each on a straight run of one of these walls on its paving (`recipes._shrine_plan`). AUC 0.846 -> 0.389.

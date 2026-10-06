@@ -70,6 +70,7 @@ NATURAL_WALL = re.compile(r"Coni|Decidious|Aspen|Cave|Ice|Volcano|Root|Dirt|Rock
 MASONRY_WALL = re.compile(r"Stone|Galava|Brick|Cobble|Town|Castle|Dungeon|DunMir|Ruin|LOTD|Marble|Ix", re.I)
 MARTIAL_WALL = re.compile(r"TownWall|Galava", re.I)
 MARTIAL_ROLES = ("barracks", "keep")
+WALL_HUGGERS = re.compile(r"^(Torch|Monument1|WhiteTapestry\d|BlueTapestry\d)$")
 GAP = 6.0                                   # squares between any two scenes' anchors
 
 
@@ -290,8 +291,11 @@ class Exterior:
         if s not in self.free:
             if dbg is not None: dbg["notfree"] += 1
             return False
-        if self._wall_near(x, y):
-            if dbg is not None: dbg["wall"] += 1
+        # (pieces made to stand against a wall: a wall torch, a stone pillar, a tapestry; Westwood's shrines have them
+        # 10-22 px from the wall's centre line, scene lab round 8)
+        hug = WALL_HUGGERS.match(t)
+        if self._wall_near(x, y, clear=8.0 if hug else 22.0) or (hug and not self._wall_near(x, y, clear=30.0)):
+            if dbg is not None: dbg["wall"] += 1       # (and a wall torch or a tapestry on a wall, never past its end)
             return False
         r = radius(t)
         if self._near(self.cgrid, x, y, max(20, r + 8)):
@@ -304,7 +308,7 @@ class Exterior:
         if not SP.spaced(t, x, y, near + getattr(self, "_typed", [])):
             if dbg is not None: dbg["spacing"] += 1
             return False
-        if SP.wall_clearance(self.walls, x, y, reach=2) < max(14.0, 0.8 * SP.sprite_half(t)):
+        if SP.wall_clearance(self.walls, x, y, reach=2) < (8.0 if hug else max(14.0, 0.8 * SP.sprite_half(t))):
             if dbg is not None: dbg["wall line"] += 1
             return False
         return not any((x - a) ** 2 + (y - b) ** 2 < max(14, 0.7 * (r + rb)) ** 2 for a, b, rb in mine)
@@ -381,7 +385,17 @@ class Exterior:
                          any(px_square(ox + th.clear * math.cos(a), oy + th.clear * math.sin(a)) not in self.free
                              for a in [k * math.pi / 4 for k in range(8)])):
             return None
-        layout = rng.choice(th.layouts)
+        if th.keep_layout:
+            kept = self.__dict__.setdefault("_kept_layout", {})
+            k_ = kept.get(th.name)
+            if k_ is None or k_[1] >= 60:                    # (one that never fits: another after 60 spots)
+                want = getattr(self, "want_arch", {}).get(th.name)    # (an archetype asked for: one of its layouts)
+                pool = [l for l, a_ in zip(th.layouts, th.archs) if a_ == want] or th.layouts
+                k_ = kept[th.name] = [rng.choice(pool), 0]
+            k_[1] += 1
+            layout = k_[0]
+        else:
+            layout = rng.choice(th.layouts)
         # a loose theme's pieces set down by hand (scene lab round 7: "the sign at the same step every time", "every
         # piece at a fixed offset"): each piece off its mark by up to th.loose px, a row's steps stretched or shrunk by
         # up to th.loose_step; from the scene's own generator, so the dressing's draws are as before
@@ -442,6 +456,10 @@ class Exterior:
                     t = S.COT_FOOT[S.axis_of(ox - x, oy - y)]
                 if not self._ok(t, x, y, mine): continue
                 plan.append((t, x, y)); mine.append((x, y, radius(t))); self._typed.append((t, x, y)); got += 1
+                if t.startswith("StreetLamp"):              # a street lamp's shadow piece at its fixed offset
+                    from kit.village import Village
+                    sh = Village.LAMP_SHADOW.get(t)
+                    if sh: plan.append((sh[0], x + sh[1], y + sh[2]))
             if (pc["must"] or k == 0) and got == 0:
                 why[(th.name, "must", k)] += 1; return None
         kinds = {base(t) for t, _, _ in plan if "Shadow" not in t}
@@ -472,6 +490,7 @@ class Exterior:
             self.tgrid[(int(x // 92), int(y // 92))].append((t, x, y))
         self._typed = []
         self.walk -= F
+        if th.keep_layout: self.__dict__.get("_kept_layout", {}).pop(th.name, None)
         return plan
 
     def _frames_open(self, th, s):
@@ -492,6 +511,7 @@ class Exterior:
         else:
             opts = diag[:]
             self.rng.shuffle(opts)
+        if th.screen: opts = [(0.0, 1.0)]                 # (its pieces placed as seen: a sign before the well)
         out = []
         for di, dj in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)):
             if (s[0] + di, s[1] + dj) not in self.free: continue

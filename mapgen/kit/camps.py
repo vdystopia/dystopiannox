@@ -76,7 +76,7 @@ class Camp(Scene):
     def p(self, r, a):
         return self.fx + r * math.cos(a), self.fy + r * math.sin(a)
 
-    def free(self, x, y, gap=0.0, t=None):
+    def free(self, x, y, gap=0.0, t=None, snug=False):
         # a piece of a known type may stand snug to a wall, its drawn half-width and a margin off the wall's line
         # (kit/spacing.off_walls; Westwood's hideouts stack their barrels and lay their cots against the rock); a bare
         # point keeps a cell clear of every wall
@@ -84,11 +84,12 @@ class Camp(Scene):
             if not self.ok(*_sq(x, y), walls=False) or not SP.off_walls(self.spec.wallmap, t, x, y, margin=12):
                 return False
         elif not self.ok(*_sq(x, y)): return False
-        if t is not None and not SP.spaced(t, x, y, self.typed): return False
+        if t is not None and not snug and not SP.spaced(t, x, y, self.typed): return False
         return all(math.hypot(x - a, y - b) >= gap for a, b in self.mine)
 
-    def put_px(self, t, x, y, gap=0.0, **extra):
-        if not self.free(x, y, gap, t): return None
+    def put_px(self, t, x, y, gap=0.0, snug=False, **extra):
+        # snug: a piece of a knot Westwood packs closer than its pairs elsewhere (an ogre camp's meat racks, 5-18 px)
+        if not self.free(x, y, gap, t, snug): return None
         o = self.put(t, *_sq(x, y), walls=False, **extra)              # free() held it to its walls
         if o is not None:
             self.mine.append((x, y)); self.typed.append((t, x, y))
@@ -808,15 +809,24 @@ POST_SHADOW = {"OgrePostSkull1": ("OgrePostShadowSkull1", (-18, 4)), "OgrePostSk
 OGRE_R = dict(seat=82, sit=50, meat=62, straw=138, store=205, gate=250, back=196)
 
 
-# Westwood's five campaign ogre fires are of three kinds (rules/scenes/ogre_camp.md "Archetypes"):
-# - hut_yard (3 of 5: Con05B x2, Con09b): the fire in the yard before the huts: two meat racks and a carcass at the
-#   cook's side, a log bench or two, the take in sack chests by the fire, the warlord's bearskin bed (OgreBed and
-#   OgreBearskin) at the back, a torch, a tusk mound at the yard's edge;
-# - bone_pit (1 of 5: Con05B's swamp hollow): the fire ringed by a mess of bones (arm and leg bones, skulls: a dozen),
-#   the meat and carcass, two stools, a couple of barrels and a big sack chest, boulders and rock pillars round the rim;
-# - cave_fire (1 of 5: Wiz02C): the fire in a cave, two log benches, a knot of barrels and water barrels, torch poles
-#   round the walls, rock pillars.
-OGRE_ARCH = (("hut_yard", 3), ("bone_pit", 1), ("cave_fire", 1))
+# Westwood's five campaign ogre fires, each its own structure (rules/scenes/ogre_camp.md "Structures", round 8; the
+# judges on round 7: "a lone tusk, a pair of sacks and a stool spread round a central fire", "boulders evenly round the
+# rim", "mirrored stool and bench pairs", "a hide tent", "too often no meat rack"). Measured from the fire and from the
+# hollow's wall: the fire 108-212 px from the wall; the meat in a knot or a short row, its pieces touching, 55-75 px off
+# the fire, in four of five; torch poles and barrels 18-50 px from the wall; rocks in one clump by the wall:
+# - cage_yard (Con05B, by the ogres' cage): two racks and a carcass in a row 18 px apart, the take in two sack chests
+#   side by side, an unlit ogre torch and a tusk mound against the wall, a barren plant;
+# - cold_pit (Con05B): an unlit pit, two racks touching, one bench a step off, a barren plant;
+# - hut_camp (Con09b, before the hut): one rack, two benches on the same side, the hut's things along the wall (two
+#   torch poles, a barrel, an ogre table and a stool);
+# - bone_pit (Con05B's swamp hollow): the rack and the carcass touching, a dozen bones in two drifts, two stools apart, two
+#   barrels together, a big sack chest, huge rocks and rock pillars in one clump by the wall;
+# - cave_fire (Wiz02C): no meat, two benches on opposite sides, barrels and water barrels in a knot at the wall, torch
+#   poles at the wall, two rock pillars together.
+# Never a chest, a tent, straw or a bed in the open (Con09b's beds stand inside its hut). "hut_yard" (rounds 6-7) is
+# one of the first three.
+OGRE_ARCH = (("cage_yard", 1), ("cold_pit", 1), ("hut_camp", 1), ("bone_pit", 1), ("cave_fire", 1))
+HUT_YARDS = ("cage_yard", "cold_pit", "hut_camp")
 
 
 def ogre_arch(centre, weights=OGRE_ARCH):
@@ -862,83 +872,138 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
             for _try in range(6):
                 if ring(rng.choice(types), rng.uniform(r0, r1) * s, b + rng.uniform(-spread, spread), gap=34): break
 
-    # ---- the meat: racks and the carcass by the fire on the cook's side (all but the cave's) ------------------------------
-    # (round 7, the judges: "one ring stamped round the pit: benches in a V, a stool, the bearskin and the rack against
-    # the fire"; "a cold pit, one bench and a single meat spill: the anchor missing"): the meat set back from the fire
-    # (70-105 px) at uneven angles, tried again further round where it does not fit; the seats two or three, each at an
-    # angle and distance of its own; the sacks and the bearskin bed well apart from the fire
-    if arch != "cave_fire" or rng.random() < 0.6:
-        meat = ["OgreHutMeat", "OgreHutMeat"] + (["OgreHutCarcass"] if rng.random() < (0.5 if arch == "hut_yard" else 0.9) else [])
-        if arch == "bone_pit": meat = ["OgreHutMeat", "OgreHutCarcass"]
-        if arch == "cave_fire": meat = ["OgreHutMeat"]
-        a_m = cook
-        for k, t in enumerate(meat):
-            a_m += rng.uniform(0.35, 0.8) * (1 if k else 0)
-            for d_ in (0, 0.5, -0.5, 1.0, -1.0):
-                if ring(t, rng.uniform(70, 105), a_m + d_, gap=26):
-                    goods.append(t); break
-    beds_at = []
-    if arch == "hut_yard":
-        n_seat, tried = rng.choice((2, 2, 3)), 0
-        while tried < 14 and n_seat > 0:
-            tried += 1
-            a = b + rng.uniform(-2.6, 2.6)
-            if abs(_ang(a - cook)) < 0.7: continue                    # not on the meat
-            r0 = rng.uniform(84, 122)
-            t = _seat(-math.sin(a), math.cos(a)) if rng.random() < 0.6 else rng.choice(("OgreStool1", "OgreStool2"))
-            if ring(t, r0, a, gap=34):
-                n_seat -= 1
-                if len(seats) < 2: seats.append(sc.p(r0 - 32, a + 0.35))
-        # the take in sack chests, opposite the meat (Con05B), a step further out
-        for k, t in enumerate(("SackChestMedium1", "SackChestSmall2")[:rng.randint(1, 2)]):
-            o = ring(t, rng.uniform(88, 125), cook + math.pi + (k - 0.5) * rng.uniform(0.3, 0.7), gap=24,
-                     **({"items": loot} if k == 0 else {}))
-            if o is not None and k == 0: chest = o
-        # the warlord's bearskin bed at the back (Con09b: OgreBed by OgreBearskin), straw now and then
-        ux, uy = -math.sin(b), math.cos(b)
-        n_bed = rng.randint(1, 2)
-        sk_side = rng.choice((1, -1))
-        for r_, d_ in sorted(((r_, d_) for r_ in (215, 195, 175, 155) for d_ in (0, 0.3, -0.3, 0.6, -0.6)),
-                             key=lambda t: (abs(t[1]), -t[0]) if rng.random() < 0.5 else (-t[0], abs(t[1]))):
-            bx, by = sc.p(r_ * s, b + d_)
-            spots_ = [(bx + ux * (k * 2 - 1) * 22 * (n_bed > 1), by + uy * (k * 2 - 1) * 22 * (n_bed > 1)) for k in range(n_bed)]
-            # the bearskin beside the bed, not before it toward the fire
-            sk = (bx + ux * sk_side * (40 + 22 * (n_bed > 1)) - math.cos(b) * 16,
-                  by + uy * sk_side * (40 + 22 * (n_bed > 1)) - math.sin(b) * 16)
-            if all(sc.free(x, y, 26, "OgreBed1") for x, y in spots_) and sc.free(*sk, 24, "OgreBearskin3"):
-                for k, (x, y) in enumerate(spots_):
-                    if sc.put_px(("OgreBed1", "OgreBed2")[k], x, y, gap=26): beds_at.append((x, y))
-                sc.put_px(rng.choice(("OgreBearskin3", "OgreBearskin1")), *sk)       # (its spot held above)
+    if arch == "hut_yard": arch = HUT_YARDS[zlib.crc32(f"hut:{centre[0]:.1f},{centre[1]:.1f}".encode()) % 3]
+    if arch == "cold_pit":                                   # (the pit laid above, cold)
+        o_ = next((o for o in reversed(spec.d["objects"]) if o.get("type") == "OgreFirePit"), None)
+        if o_ is not None: o_["type"] = "OgreFirePitUnlit"
+
+    def edge(a, r0=50, r1=340):
+        """How far the open ground runs from the fire at angle a (px): a cell short of the hollow's wall."""
+        r = r0
+        while r < r1 and sc.free(*sc.p(r, a)): r += 8
+        return r
+
+    angs = [a_in + math.pi * (0.25 + 1.5 * k / 23) for k in range(24)]        # all round but the way in
+    walls_ = sorted(angs, key=edge)
+    a_wall = walls_[0]                                        # the wall the camp leans on
+
+    def by_wall(t, a, off, gap=24, **extra):
+        """A piece `off` px out from the wall at angle a (Westwood: torches and barrels 18-50 px)."""
+        for d_ in (0, 0.15, -0.15, 0.3, -0.3):
+            o = sc.put_px(t, *sc.p(edge(a + d_) + 23 - off, a + d_), gap=gap, **extra)
+            if o is not None: return o
+        return None
+
+    def knot(types, a, r, along=None, step=18, gap=10):
+        """Pieces side by side in a short row along a screen diagonal, touching (Westwood's racks: 18 px apart)."""
+        cx_, cy_ = sc.p(r, a)
+        # (across the screen or along a diagonal, each a step of its own and a little off the line: Con05B's three
+        # racks run across the screen 17 and 19 px apart, 2-3 px off true)
+        ux_, uy_ = along or rng.choice(((1.0, 0.0), (0.7071, 0.7071), (0.7071, -0.7071)))
+        got, o = [], -(len(types) - 1) / 2 * step
+        for k, t in enumerate(types):
+            w_ = rng.uniform(-3.5, 3.5)
+            if sc.put_px(t, cx_ + ux_ * o - uy_ * w_, cy_ + uy_ * o + ux_ * w_, gap=gap, snug=bool(got)): got.append(t)
+            o += step * rng.uniform(0.75, 1.25)
+        return got
+
+    def meat_knot(types, r0, r1):
+        """The meat in one knot 55-75 px off the fire, tried round the fire till it fits."""
+        a0 = rng.uniform(-math.pi, math.pi)
+        for k in range(16):
+            a = a0 + k * 0.7
+            if not off_way(a) or not all(sc.free(*sc.p(r, a), 20, "OgreHutMeat") for r in (r0, r1)): continue
+            got = knot(types, a, rng.uniform(r0, r1), step=rng.uniform(15, 20))
+            if got: goods.extend(got); return a
+        return a0
+
+    def seat_at(kind, r, a):
+        t = _seat(-math.sin(a), math.cos(a)) if kind == "bench" else rng.choice(("OgreStool1", "OgreStool2"))
+        for d_ in (0, 0.3, -0.3, 0.6, -0.6):
+            if ring(t, r, a + d_, gap=30):
+                if len(seats) < 2: seats.append(sc.p(r - 32, a + d_ + 0.35))
+                return True
+        return False
+
+    def tusk(a):
+        t = rng.choice(tuple(TUSK_SHADOW))
+        for d_ in (0, 0.2, -0.2, 0.4, -0.4):
+            x, y = sc.p(edge(a + d_) + 23 - rng.uniform(10, 18), a + d_)
+            if sc.put_px(t, x, y, gap=30):
+                sh = TUSK_SHADOW[t]
+                spec.obj_px(t.replace("Tusk", "TuskShadow"), x + sh[0], y + sh[1])
+                return True
+        return False
+
+    side = rng.choice((1, -1))
+    if arch == "cage_yard":
+        a_m = meat_knot(["OgreHutMeat", "OgreHutCarcass", "OgreHutMeat"][:rng.choice((2, 3, 3))], 62, 75)
+        a_s = a_m + side * rng.uniform(1.4, 2.0)              # the sacks a little round from the meat, side by side
+        for k_ in range(6):
+            c_ = sc.put_px("SackChestMedium1", *sc.p(rng.uniform(78, 95), a_s), gap=10, items=loot)
+            if c_ is not None:
+                chest = c_
+                sc.put_px("SackChestSmall2", *sc.p(rng.uniform(78, 95), a_s + 0.22 * side), gap=10, snug=True)
                 break
-        if rng.random() < 0.4: rim(("OgreStraw1", "OgreStraw2"), 1, 150, 190, 1.0)
-        bones(rng.choice((0, 1, 2)), 70, 110, [cook + rng.uniform(-0.6, 0.6)])
-        ring(rng.choice(("OgreTorchUnlit", "TorchPole")), rng.uniform(140, 190) * s, b - left * rng.uniform(1.0, 1.6), gap=40)
-        if rng.random() < 0.3: ring("PlantBarren1", rng.uniform(170, 220) * s, b + left * rng.uniform(0.5, 1.5), gap=30)
+            a_s += 0.4 * side
+        by_wall("OgreTorchUnlit", a_wall + side * rng.uniform(0.3, 0.8), rng.uniform(26, 40), gap=40)
+        tusk(a_wall - side * rng.uniform(0.2, 0.7))
+        if rng.random() < 0.7: by_wall("PlantBarren1", rng.choice(walls_[3:9]), rng.uniform(14, 40), gap=30)
+        if rng.random() < 0.6 and ring("LegBone", rng.uniform(40, 60), a_m + rng.uniform(-0.6, 0.6), gap=12):
+            goods.append("bone")
+    elif arch == "cold_pit":
+        a_m = meat_knot(["OgreHutMeat", "OgreHutMeat"], 55, 65)
+        seat_at("bench", rng.uniform(88, 110), a_m + side * rng.uniform(1.6, 2.4))
+        by_wall("PlantBarren1", rng.choice(walls_[2:8]), rng.uniform(14, 50), gap=30)
+        if rng.random() < 0.8:
+            chest = ring("SackChestMedium1", rng.uniform(90, 120), a_m - side * rng.uniform(1.4, 2.2), gap=30, items=loot)
+        if rng.random() < 0.5 and ring("LegBone", rng.uniform(40, 60), a_m + rng.uniform(-0.6, 0.6), gap=12):
+            goods.append("bone")
+    elif arch == "hut_camp":
+        a_m = meat_knot(["OgreHutMeat"] + (["OgreHutMeat"] if rng.random() < 0.4 else []), 62, 72)
+        a_b = a_m + side * rng.uniform(0.9, 1.3)              # two benches on the same side, each its own way
+        seat_at("bench", rng.uniform(88, 100), a_b)
+        seat_at("bench", rng.uniform(90, 102), a_b + side * rng.uniform(1.0, 1.3))
+        # the hut's things along the wall it leans on
+        for k_ in range(2):
+            by_wall("TorchPole", a_wall + (k_ - 0.5) * rng.uniform(0.8, 1.2), rng.uniform(19, 26), gap=50)
+        if by_wall("Barrel", a_wall + rng.uniform(-0.2, 0.2), rng.uniform(22, 30), gap=24): goods.append("Barrel")
+        a_t = a_wall - side * rng.uniform(0.5, 0.8)
+        if by_wall("OgreTable2", a_t, rng.uniform(40, 60), gap=30):
+            by_wall(rng.choice(("OgreStool1", "OgreStool2")), a_t + side * 0.25, rng.uniform(70, 90), gap=26)
+        chest = ring("SackChestSmall2", rng.uniform(100, 130), a_m - side * rng.uniform(0.8, 1.4), gap=26, items=loot)
     elif arch == "bone_pit":
-        for a in (b - left * 1.0, b + left * 0.5):
-            seat("stool", rng.uniform(73, 90), a + rng.uniform(-0.2, 0.2))
+        a_m = meat_knot(["OgreHutMeat", "OgreHutCarcass"], 58, 70)
+        seat_at("stool", rng.uniform(72, 82), a_m + side * rng.uniform(1.6, 2.0))
+        seat_at("stool", rng.uniform(88, 100), a_m + side * rng.uniform(2.9, 3.4))
         # the bone mess: a dozen bones and skulls in two drifts round the pit (Con05B: 66-120 px out)
-        heads = [rng.uniform(-math.pi, math.pi) for _ in range(2)]
-        bones(rng.randint(9, 13), 58, 120, heads)
-        for k in range(2):
-            if ring(rng.choice(("Barrel", "Barrel2")), rng.uniform(85, 117), b + left * (1.6 + 0.35 * k), gap=22):
-                goods.append("Barrel")
-        chest = ring("SackChestLarge2", rng.uniform(110, 125), b + left * 2.4, gap=26, items=loot)
-        rim(("CaveRocksHuge",), rng.randint(2, 3), 120, 235)
-        rim(("CaveRockPillarShort1", "CaveRockPillarShort2", "CaveRockPillarTall1", "CaveRockPillarTall2"),
-            rng.randint(2, 4), 155, 250)
-        rim(("CaveRocksSmall",), 2, 140, 200)
+        heads = [a_m + side * rng.uniform(2.0, 2.6), a_m - side * rng.uniform(1.6, 2.2)]
+        bones(rng.randint(9, 13), 40, 120, heads)
+        a_k = a_m - side * rng.uniform(2.4, 2.9)
+        kx, ky = sc.p(rng.uniform(85, 110), a_k)
+        for k_, t in enumerate(rng.sample(("Barrel", "Barrel2"), 2)):
+            if sc.put_px(t, kx + 0.6 * 34 * k_, ky + 0.8 * 34 * k_, gap=18): goods.append("Barrel")
+        chest = ring("SackChestLarge2", rng.uniform(110, 130), a_m - side * rng.uniform(1.0, 1.6), gap=26, items=loot)
+        # the rocks in one clump by the wall it leans on, huge rocks and pillars
+        for t in ["CaveRocksHuge"] * rng.randint(2, 3) + [rng.choice(("CaveRockPillarShort1", "CaveRockPillarShort2",
+                                                                       "CaveRockPillarTall1", "CaveRockPillarTall2"))
+                                                          for _ in range(rng.randint(2, 4))]:
+            by_wall(t, a_wall + rng.gauss(0, 0.35), rng.uniform(16, 50), gap=26)
+        for _ in range(2): by_wall("CaveRocksSmall", rng.choice(walls_[1:5]), rng.uniform(20, 40), gap=24)
     else:                                                    # cave_fire
-        for a in (b + rng.uniform(-0.3, 0.3), a_in + left * rng.uniform(1.2, 1.7)):
-            seat("bench", rng.uniform(90, 112), a)
-        ka = b - left * rng.uniform(1.5, 2.1)                # the barrels' knot, off to one side (round 7: "five
-        kx, ky = sc.p(rng.uniform(128, 150), ka)            # barrels bunched in front of the fire")
-        for k, (t, r) in enumerate((("Barrel", 0), ("Barrel", 26), ("Barrel", 26), ("WaterBarrel", 48), ("WaterBarrel", 50))):
-            a = ka + k * 1.9
-            if sc.put_px(t, kx + r * math.cos(a), ky + r * math.sin(a), gap=18): goods.append(t)
-        for k in range(rng.randint(2, 3)):
-            ring("TorchPole", rng.uniform(125, 190) * s, b + (k - 1) * 1.3 + rng.uniform(-0.2, 0.2), gap=50)
-        rim(("CaveRockPillarShort1", "CaveRockPillarShort2"), 2, 130, 150, 2.4)
+        a_1 = rng.uniform(-math.pi, math.pi)
+        seat_at("bench", rng.uniform(88, 100), a_1)
+        seat_at("bench", rng.uniform(100, 115), a_1 + math.pi + rng.uniform(-0.5, 0.5))
+        # the barrels' knot at the wall (Wiz02C: 18-58 px off it), three barrels and two water barrels
+        a_k = walls_[rng.randint(0, 3)]
+        for k_, (t, off, d_) in enumerate((("Barrel", 30, 0), ("Barrel", 34, 0.16), ("WaterBarrel", 36, -0.16),
+                                           ("Barrel", 58, 0.08), ("WaterBarrel", 60, -0.1))):
+            if by_wall(t, a_k + d_, off, gap=18): goods.append(t)
+        for k_ in range(rng.randint(2, 3)):
+            by_wall("TorchPole", rng.choice(walls_[2:12]), rng.uniform(19, 26), gap=60)
+        a_p = rng.choice(walls_[4:12])
+        by_wall("CaveRockPillarShort1", a_p, rng.uniform(25, 39), gap=12)
+        by_wall("CaveRockPillarShort2", a_p + 0.12, rng.uniform(25, 39), gap=12)
     zones["sleep"] = (sc.p(190 * s, b), 70.0)
     leader = sc.stand([sc.p(r, b + d) for r in (140, 120, 160) for d in (0.0, 0.25, -0.25, 0.5, -0.5)], clear=30) or \
         sc.p(140, b)
@@ -957,7 +1022,7 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
     gr = max((R_gate, R_gate - 20, R_gate + 20, R_gate - 40, R_gate + 40, R_gate - 60),
              key=lambda r: (wings_at(r), -abs(r - R_gate)))
     gx, gy = sc.p(gr, a_in)
-    gate = arch == "hut_yard" and rng.random() < 0.4
+    gate = False              # (round 8: Westwood's five fires have no palisade gate; their palisades ring the village)
     for side in ((1, -1) if gate else ()):
         for k in range(wing):
             o = side * (58 + 33 * k)
@@ -971,12 +1036,6 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
         if sc.put_px(post, x, y):
             shn, sh = POST_SHADOW[post]
             spec.obj_px(shn, x + sh[0], y + sh[1])
-    if arch == "hut_yard" and not gate and rng.random() < 0.5:           # a lone tusk mound at the yard's edge (Con05B)
-        t = rng.choice(tuple(TUSK_SHADOW))
-        x, y = sc.p(rng.uniform(170, 200) * s, a_in + left * rng.uniform(0.6, 1.0))
-        if sc.put_px(t, x, y, gap=30):
-            sh = TUSK_SHADOW[t]
-            spec.obj_px(t.replace("Tusk", "TuskShadow"), x + sh[0], y + sh[1])
     ix, iy = math.cos(a_in), math.sin(a_in)
     lookout = sc.stand([(gx - ix * d + dx_ * o, gy - iy * d + dy_ * o) for d in (46, 60, 34) for o in (-40, 40, -60, 60)],
                        clear=30) or (gx - ix * 50, gy - iy * 50)
@@ -987,7 +1046,7 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
         ring_ = [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4)) for r in (20, 36) for k in range(8)]
         return sc.stand([p] + ring_, clear=32) or p
     posts = [spot(p) for p in posts]
-    tents = [spot((x + math.cos(a_in) * 50, y + math.sin(a_in) * 50)) for x, y in beds_at[:1]] or [spot(sc.p(160 * s, b + 0.6))]
+    tents = [spot(sc.p(160 * s, b + 0.6))]
     _hold_ground(land, centre, int(round(9 * s)))
     return dict(fire=(fx, fy), seats=seats, lookout=lookout, chest=chest, goods=goods, leader=leader, posts=posts,
                 tents=tents, work=[], zones=zones, scale=s, gate=(gx, gy), arch=arch)
@@ -1062,17 +1121,9 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
         return {(True, True): "UrchinBed1", (True, False): "UrchinBed2", (False, False): "UrchinBed3",
                 (False, True): "UrchinBed4"}[(up, left)]
 
-    # one of Westwood's three dens (rules/scenes/urchin_camp.md "Archetypes": hall 19, mixed den 17, dormitory 6 of 42),
-    # as full as theirs (round 7, the judges: "a near-empty hollow"; Westwood's median 19 pieces, ours had been 9): a
-    # hall's tables ringed by stools and few beds, a mixed den's beds, shelf runs, chests and barrels, a dormitory's
-    # rows of beds. From the den's own hand-generator, so its other draws are as before
-    hand = random.Random(zlib.crc32(f"{spec.d['name']}:urchin-arch:{centre[0]:.1f},{centre[1]:.1f}".encode()))
-    arch = hand.choices(("hall", "mixed", "dormitory"), (19, 17, 6))[0]
     # ---- the beds: of one kind, side by side along the rock in twos and threes
     hammocks = rng.random() < 0.3
     n_beds = max(2, min(7, sleepers + rng.choice((0, 1, 1, 2))))
-    if arch == "hall": n_beds = hand.choice((3, 3, 4))
-    elif arch == "dormitory": n_beds = hand.randint(6, 9)
     groups, left_ = [], n_beds
     while left_ > 0:
         g = min(left_, rng.choice((2, 2, 3)))
@@ -1097,20 +1148,15 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
     # ---- the shelves of the den's stores on the upper walls, a picture or a hanging between them
     log = rng.random() < 0.4
 
-    run_log = [log]
-
     def shelf_of(a):
         up, left = _wall_side(a)
-        log = run_log[0]
         t = (("LogShelvesFull3" if left else "LogShelvesFull4") if log else
              ("UrchinShelvesFull2" if up == left else "UrchinShelvesFull1"))
         return t.replace("Full", "Empty") if rng.random() < 0.15 else t
-    for _ in range(rng.choice((2, 2, 3)) + (hand.choice((1, 1, 2)) if arch != "dormitory" else -1)):    # shelves
-        #                                                       two or three side by side along the upper rock
+    for _ in range(rng.choice((2, 2, 3))):        # shelves two or three side by side along the upper rock
         k = next((k for k in upper if P.free_k(k, 1)), None)
         if k is None: break
         got = 0
-        run_log[0] = hand.random() < 0.4                         # (Westwood's dens mix log and urchin shelf runs)
         for kk, p in P.along(k, 26, DEN_OFF["shelf"], rng.choice((2, 2, 3)), rng.choice((1, -1)), jitter=3, most=40):
             if P.put(shelf_of(A(kk)), *p): got += 1; P.claim(kk, 1)
         P.claim(k, 1 if got else 0)
@@ -1140,21 +1186,10 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
         if p:
             chest = P.put("ChestUrchin4" if left else "ChestUrchin3", *p, items=loot)
             if chest: P.claim(k, 2); break
-    if arch != "dormitory" and hand.random() < 0.45:             # a second chest along the rock
-        for k in [k for k in order if P.free_k(k, 1)][2:]:
-            up, left = _wall_side(A(k))
-            p = P.wall_pt(A(k), DEN_OFF["chest"])
-            if p and P.put("ChestUrchin4" if left else "ChestUrchin3", *p):
-                P.claim(k, 2); break
-    if arch != "dormitory" and hand.random() < 0.5:              # a torch pole standing free (Con02a's)
-        for k in [k for k in range(N) if P.free_k(k, 1)][::3]:
-            p = P.wall_pt(A(k), 40)
-            if p and P.put("TorchPole", *p):
-                P.claim(k, 1); break
     goods = []
     # barrels in a corner knot: two against the rock, one or two before them (the judge, 2026-10-06: "almost no corner
     # groups of barrels")
-    if rng.random() < 0.75 or (arch != "dormitory" and hand.random() < 0.6):
+    if rng.random() < 0.75:
         k0 = next((k for k in reversed(order) if P.free_k(k, 2) and k not in P.mouth), None)
         if k0 is not None:
             bk = rng.choice(("Barrel", "Barrel2"))
@@ -1170,30 +1205,17 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
                              my_ + (cy - my_) / L * 23 + (q2[1] - q1[1]) * (j - 0.5) * 0.9): goods.append(bk)
     # ---- the table in the open, stools round it
     table, seats = None, []
-    want_t = rng.random() < 0.65
-    want_t = (want_t or arch == "hall") and arch != "dormitory"
-    for r, d in ((0, 0), (40, 1.0), (40, -1.0), (60, 2.4), (60, -2.4), (30, 3.1)) if want_t else ():
+    for r, d in ((0, 0), (40, 1.0), (40, -1.0), (60, 2.4), (60, -2.4), (30, 3.1)) if rng.random() < 0.65 else ():
         x, y = cx + r * math.cos(b + d), cy + r * math.sin(b + d)
         t = "UrchinTableLarge" if rng.random() < 0.75 else "UrchinTableSmall"
         if P.can(t, x, y, gap=50) and P.put(t, x, y):
             table = (x, y)
             ph, n = rng.uniform(0, 6.3), rng.randint(3, 5)       # packed close round it (Westwood: three to five)
-            if arch == "hall": n = hand.randint(4, 6)
             for j in range(n):
-                a = ph + j * 2 * math.pi / n + rng.uniform(-0.15, 0.15) + hand.uniform(-0.2, 0.2)
-                r_ = 29 + hand.uniform(-3, 4)                    # pulled up by hand, not on a ring
-                P.put(rng.choice(("UrchinStool1", "UrchinStool2")), x + r_ * math.cos(a), y + r_ * math.sin(a))
+                a = ph + j * 2 * math.pi / n + rng.uniform(-0.15, 0.15)
+                P.put(rng.choice(("UrchinStool1", "UrchinStool2")), x + 29 * math.cos(a), y + 29 * math.sin(a))
             seats = [(x + 60 * math.cos(ph + 0.5), y + 60 * math.sin(ph + 0.5))]
             break
-    if table and arch == "hall" and hand.random() < 0.5:         # a hall's second table (Con02a, War03c: two)
-        for r, d in ((110, 1.4), (110, -1.4), (100, 2.2), (100, -2.2), (120, 0.6), (120, -0.6)):
-            x, y = table[0] + r * math.cos(b + d), table[1] + r * math.sin(b + d)
-            if P.can("UrchinTableLarge", x, y, gap=50) and P.put("UrchinTableLarge", x, y):
-                ph, n = hand.uniform(0, 6.3), hand.randint(3, 5)
-                for j in range(n):
-                    a = ph + j * 2 * math.pi / n + hand.uniform(-0.15, 0.15)
-                    P.put(hand.choice(("UrchinStool1", "UrchinStool2")), x + 29 * math.cos(a), y + 29 * math.sin(a))
-                break
     if rng.random() < 0.5:
         for _ in range(rng.randint(1, 3)):
             a, r = rng.uniform(0, 6.3), rng.uniform(60, 140)

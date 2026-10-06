@@ -46,3 +46,10 @@ Westwood's four campaign wells:
 The kit (`scenes.THEMES["well_side"]`): three layouts, the well alone, the well with a Sign1 78 px off to one side, or 70
 px off to the other. The lab sets it 3.5 squares from the hamlet's road. AUC 0.75 -> 0.75 (round6; four Westwood wells:
 the classifier cannot move far).
+
+## Round 8 (2026-10-06)
+
+`well_side` in the screen's own frame (`Theme.screen`), the layouts in Westwood's frequencies: bare (Con09a); the sign
+2, 56 px before the well (War07A, Con07B); the sign 35, 36 px (Con02a); the market well's sign and a street lamp
+(StreetLampOrnate3 with its shadow) 190 px before it (Con07B; its trader's racks stand inside the shop, so not laid).
+AUC 0.582 -> 0.142.
