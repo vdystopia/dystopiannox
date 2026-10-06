@@ -252,7 +252,8 @@ TYPES = {
         # a hearth, tables and benches read as a living room too: Westwood's Con02a tavern does (13.7 against 8.4)
         needs=("counter_bar",), kin=("dining_hall", "great_hall", "living_room")),
     "dining_hall": dict(
-        family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"), westwood=("dining_hall",),
+        family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"),
+        westwood=("dining_hall", "tavern", "great_hall"),      # its kin before the shops (room lab, tuneB)
         focal=dict(fam="table", types=r"^(Table[1-4]|OvalTable\d|OgreTable\d)$", where="rows", with_="fireplace"),
         must={"table": 2, "fireplace": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "smithy",
                                                   "counter_shop", "shop_rack"),
@@ -261,10 +262,10 @@ TYPES = {
                                                                                          "sideboard of food",
                    front="benches; plants in the corners", middle="long tables in rows, seated along both sides"),
         cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.2, 0.7), types_min=8, free_most=(4, 30), free_skip=("chair", "bench"),
-        caps={"table": (16, 8)}, walls_min=3, lined=0.25, tiles=(50, 220),
+        caps={"table": (30, 6)}, walls_min=3, lined=0.25, tiles=(50, 220),
         signature={"table": (1.5, 12), "chair": (0.3, 40), "bench": (0.3, 20)}, needs=("table",),
         kin=("great_hall", "tavern", "living_room"),
-        variants={"mess_hall": dict(caps={"table": (17, 10)}, never_types=r"PowderBarrel|^RoundTable",
+        variants={"mess_hall": dict(caps={"table": (22, 8)}, never_types=r"PowderBarrel|^RoundTable",
                                     cover=(0.12, 0.24, 0.34), open=(0.25, 0.80)),
                   "ogre_hall": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
                                     lined=None, walls_min=2, types_min=6, cover=(0.12, 0.17, 0.32), free_most=(6, 20),
