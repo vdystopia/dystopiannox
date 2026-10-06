@@ -42,6 +42,8 @@ def summarise(scene, it):
              hard_rules=m["hard_rules"],
              findings_per_scene=round(sum(len(r["findings"]) for r in sc) / max(1, len(sc)), 2),
              worst=[w["example"] for w in m["worst"][:3]],
+             too_regular=[k for k, r in (m.get("regularity") or {}).items() if r["flag"]],
+             regularity={k: r["ours"] for k, r in (m.get("regularity") or {}).items()},
              blind_accuracy=b and b["accuracy"], blind_generated=b and b["score_generated"],
              blind_westwood=b and b["score_westwood"])
     ok = dict(auc=s["auc"] is not None and s["auc"] <= STOP["auc"],
@@ -98,13 +100,31 @@ def write(scene, it):
            f"{bad(s['stop']['blind_score']) if b else 'not judged'}</td></tr>",
            f"<tr><td>scenes with hard-rule findings</td><td>{s['scenes_with_hard']} of {s['scenes']} "
            f"{e(json.dumps(s['hard_rules']))}</td><td>0</td><td class={bad(s['stop']['hard'])}>{bad(s['stop']['hard'])}</td></tr>",
-           "</table>", "<h2>Findings</h2><ul>" + "".join(f"<li>{e(x)}</li>" for x in plain) + "</ul>"]
+           "</table>",
+           (f"<p class=no><b>Too regular</b> against Westwood's scenes of the type on: {e(', '.join(s['too_regular']))} "
+            f"(the regularity table below).</p>" if s["too_regular"] else ""),
+           "<h2>Findings</h2><ul>" + "".join(f"<li>{e(x)}</li>" for x in plain) + "</ul>"]
     if prev:
         out.append("<h2>Against the previous iteration</h2><table><tr><th></th><th>" + e(prev["iter"]) + "</th><th>"
                    + e(it) + "</th></tr>")
         for k in ("auc", "scenes_with_hard", "findings_per_scene", "missing", "blind_accuracy", "blind_generated",
                   "blind_westwood"):
             out.append(f"<tr><td>{k}</td><td>{prev.get(k)}</td><td>{s.get(k)}</td></tr>")
+        out.append("</table>")
+    reg = m.get("regularity") or {}
+    if reg:
+        out.append("<h2>Regularity</h2><p><small>How irregular the scenes are, against Westwood's scenes of the type "
+                   "(metrics.irregularity, stamp_scores). Too regular: a low gap, step, drift, run or odd-piece measure, "
+                   "a high stamp. Flagged when our median is past Westwood's quartile on that side and 40% of our scenes "
+                   "past Westwood's range.</small></p><table><tr><th>measure</th><th>too regular when</th><th>Westwood "
+                   "p10 / median / p90 (n)</th><th>ours (median)</th><th>our scenes past Westwood's range</th>"
+                   "<th>flag</th></tr>")
+        for k, r in reg.items():
+            w = r["westwood"]
+            ww = f"{w['p10']} / {w['median']} / {w['p90']} ({w['n']})" if w else "-"
+            out.append(f"<tr><td>{e(metrics.TEXT[k][0])} ({k})</td><td>{r['side']}</td><td>{ww}</td><td>{r['ours']}</td>"
+                       f"<td>{r['past']} of {r['of']}</td><td class={'no' if r['flag'] else 'ok'}>"
+                       f"{'too regular' if r['flag'] else 'ok'}</td></tr>")
         out.append("</table>")
     out.append("<h2>What gives the batch away</h2><p><small>Each feature's own AUC (1.0: it alone separates them), "
                "the generated median against Westwood's.</small></p><table><tr><th>feature</th><th>AUC</th>"
@@ -137,7 +157,8 @@ def write(scene, it):
         facts = (f"<b>#{r['index']}</b> {e(vv['size'])}, {e(vv['site'])}, {e(vv['forest'])} wood"
                  + (f"; {e(str(vv.get('theme') or vv.get('kind') or vv.get('trade') or ''))}") + "<br>"
                  + (f"{f['n']} pieces, {f['types']} kinds, reach {f['reach']:.0f} px, {f['groups']} zones, open "
-                    f"{f['open']:.2f}, nn {f['nn_med']:.0f} px, creatures {f['cr_n']}" if f else "missing"))
+                    f"{f['open']:.2f}, nn {f['nn_med']:.0f} px, creatures {f['cr_n']}" if f else "missing")
+                 + (f"<br><span class=no>too regular: {e(', '.join(r['too_regular']))}</span>" if r.get("too_regular") else ""))
         hard = "".join(f"<li class=hard>{e(h['text'])}</li>" for h in r["hard"])
         finds = "".join(f"<li class=find>{e(x['text'])}</li>" for x in r["findings"][:8])
         st = "".join(f"<li class=cross>Westwood never puts a {e(k)} in a scene of the type</li>" for k in r.get("strangers", [])[:4])

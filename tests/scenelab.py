@@ -37,10 +37,10 @@ def render(scene, it, log=print):
     win = tuple(labref.gallery(scene, log=lambda *_: None)["window"])
     rd = os.path.join(d, "renders")
     os.makedirs(rd, exist_ok=True)
-    full = labrender.lab_render(os.path.abspath(os.path.join(d, "map", batch["variants"][0]["map"] + ".map")))
+    full, bare = labrender.lab_render(os.path.abspath(os.path.join(d, "map", batch["variants"][0]["map"] + ".map")))
     for r in m["scenes"]:
         s = r.get("scene") or dict(anchor=r["variant"]["anchor"], pieces=[])
-        labrender.picture(full, s, win).save(os.path.join(rd, f"{r['index']:02d}.png"))
+        labrender.picture(full, bare, s, win).save(os.path.join(rd, f"{r['index']:02d}.png"))
 
 
 def rejudge(scene, it, log=print):
@@ -93,15 +93,15 @@ def run(scene, n=10, seed=1, it="scratch", log=print):
 
 def summary_table(rows, it):
     lines = [f"# Scene lab: iteration {it}", "",
-             "| Scene | Westwood scenes | AUC | Blind acc. | Blind gen/WW | Hard-rule scenes | Missing | Worst findings |",
-             "|---|---|---|---|---|---|---|---|"]
+             "| Scene | Westwood scenes | AUC | Blind acc. | Blind gen/WW | Hard-rule scenes | Missing | Too regular | Worst findings |",
+             "|---|---|---|---|---|---|---|---|---|"]
     for s in rows:
         auc = "-" if s["auc"] is None else f"{s['auc']:.2f}"
         acc = "-" if s.get("blind_accuracy") is None else f"{s['blind_accuracy']:.0%}"
         bs = "-" if s.get("blind_generated") is None else f"{s['blind_generated']}/{s['blind_westwood']}"
         worst = "; ".join(w.split(" (Westwood")[0] for w in s["worst"][:2])
         lines.append(f"| {s['scene']} | {s['westwood_scenes']} | {auc} | {acc} | {bs} | {s['scenes_with_hard']}/{s['scenes']} "
-                     f"{json.dumps(s['hard_rules']) if s['hard_rules'] else ''} | {s['missing']} | {worst} |")
+                     f"{json.dumps(s['hard_rules']) if s['hard_rules'] else ''} | {s['missing']} | {', '.join(s.get('too_regular') or []) or '-'} | {worst} |")
     return "\n".join(lines) + "\n"
 
 

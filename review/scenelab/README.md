@@ -43,6 +43,14 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
   lights, swarms, a dock that does not reach out, stumps by a fire, strewn bedrolls, purposeless heaps, graveyards
   without graves; a scene the kit failed to lay).
 
+**Regularity** (since round 7; not a stop criterion, a warning): the scorecard's regularity table measures how
+irregular the scenes are against Westwood's own scenes of the type (`metrics.irregularity`, `stamp_scores`): the
+variation of the gaps between pieces (gap_cv), how evenly rows are stepped (step_cv) and how straight they run (drift),
+how much the runs of one kind differ in length (run_cv: crop bands, rows of stones, piers), the share of odd pieces
+(odd), and how much of a scene's layout other scenes of the batch repeat to the pixel (stamp; an awning's or a dock's
+own parts left out). A batch is flagged **too regular** on a measure when its median is past Westwood's quartile on the
+regular side and 40% of its scenes lie past Westwood's range; each scene's card names the measures it is too regular on.
+
 ## How it works
 
 | File | What it does |
@@ -80,11 +88,15 @@ a Dirt den. A recipe can fix a batch's archetypes in Westwood's frequencies (`GR
 **Fairness** (review/roomlab/FAIRNESS.md lists every known tell that is not design and how it is handled). A
 generated scene is found on the lab map by the same signature search that finds Westwood's (`labref.find_scenes`), its
 pieces grown the same way, measured by the same `metrics.features`, drawn by the same `labrender.picture` (one window
-per type, the ground away from the scene dimmed) from a creature-free copy of the map (no monsters, NPCs, players or
+per type; since round 7 only the scene's own footprint, its pieces plus a small margin and the walls it leans on, the
+rest the canvas colour) from a creature-free copy of the map (no monsters, NPCs, players or
 the kit's posts in either picture; the metrics still count creatures on the real map). The blind sheets rotate through
 Westwood's scenes of the type (`review/out/scenelab/<scene>/westwood_shown.json`), and judges read
-`review/scenelab/judging/` (what real scenes are like, from Westwood's evidence), never the design briefs. What still
-differs: Westwood's scenes stand in its towns, castles and caves, ours in a hamlet's ground or a forest glade.
+`review/scenelab/judging/` (what real scenes are like, from Westwood's evidence), never the design briefs. Westwood's
+scenes stand in its towns, castles and caves, ours in a hamlet's ground or a forest glade: since round 7 the pictures cut
+that setting away for both (FAIRNESS.md 6), so **the lab judges a scene's own arrangement; whether a scene sits well in
+its town (a well on its square, a jail in its castle, a stall on a market) is judged on whole maps** (tests/qa.py's
+pictures, the playtests), not here.
 
 **Westwood's evidence** is from the campaign maps only (Con/War/Wiz). Some types are thin or absent there (a brazier
 guard post, target barrels, woodpiles, smithy yards: 0-3 scenes); their numbers are read loosely and the brief leans on

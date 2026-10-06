@@ -323,7 +323,10 @@ def _pond_build(ctx):
         if body is None: continue
         n0 = len(m.d["objects"])
         t = p.toward
-        dock = ww.dock(body, "best", length=2, beyond=4, near=(2 * t[0] + 2, 2 * t[1]))
+        # (round 7, the judges: "three parallel piers of the same length evenly spaced", "stubs that barely leave the
+        # bank"): the first pier two or three planks long, the others each their own length, set along the shore at
+        # uneven gaps
+        dock = ww.dock(body, "best", length=p.rng.choice((2, 2, 3)), beyond=4, near=(2 * t[0] + 2, 2 * t[1]))
         pcs = _new_objects(m, n0, r"^Dock")
         if dock and pcs:
             p.notes.update(anchor=_mean(pcs), kit=dock["kind"])
@@ -335,8 +338,10 @@ def _pond_build(ctx):
             (pci, pcj), _ = p.pond
             n_more = DOCKS[p.size] - 1 if p.town else 0
             for q in range(n_more):
-                d2 = ww.dock(body, "best", length=2 if p.rng.random() < 0.6 else 1, beyond=3,
-                             near=(du + (14 + 6 * q) * (1 if q % 2 == 0 else -1), dv + (10 + 4 * q) * (1 if q % 2 else -1)))
+                g_ = p.rng.uniform(11, 24) + 7 * q
+                d2 = ww.dock(body, "best", length=p.rng.choice((1, 2, 3, 3)), beyond=3,
+                             near=(du + g_ * (1 if q % 2 == 0 else -1),
+                                   dv + p.rng.uniform(6, 16) * (1 if q % 2 else -1)))
                 if not d2: continue
                 eu, ev = d2["start"]
                 land.connect(m, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23))

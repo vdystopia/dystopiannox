@@ -18,7 +18,16 @@ of the same type, and whether a classifier can tell ours from Westwood's.
   from the middle to the nearest water), path_share (pieces on a path), path_d (px to the nearest path);
 - people: cr_n (creatures within the scene's reach), cr_nn (their median nearest neighbour, px), cr_rel (their median
   distance from the middle over the scene's reach);
-- overlap: pairs of solid pieces nearer than 0.85 of kit/spacing's gap, per piece.
+- overlap: pairs of solid pieces nearer than 0.85 of kit/spacing's gap, per piece;
+- irregularity (since round 7; irregularity() and stamp_scores(), the regularity table on the scorecard): gap_cv (the
+  coefficient of variation of the solid pieces' nearest-neighbour gaps: low, every gap alike), step_cv (in every three
+  pieces roughly in line, the difference of the two steps over their mean, median: low, rows evenly stepped), drift
+  (in those threes, the middle piece's offset from the line over half the span, median: low, rows ruler-straight),
+  run_cv (the coefficient of variation of the lengths of the runs one kind of piece makes, where it makes two or more:
+  low, crop bands, rows of stones or piers all one length), odd (the share of pieces whose kind is alone in the scene:
+  low, no odd piece placed with intent), stamp (the share of a scene's piece-to-nearest-piece offsets, by kind, that
+  another scene of the batch repeats within 4 px, averaged over the other scenes, an awning's or a dock's own parts left
+  out: high, one template stamped; Westwood's scenes are measured against each other the same way).
 
 Needs numpy and scikit-learn (py -m pip install --user numpy scikit-learn).
 """
@@ -31,7 +40,7 @@ NATURAL_WALL = re.compile(r"Coni|Decidious|Aspen|Cave|Ice|Volcano|Root|Dirt|Rock
 WATER = re.compile(r"^Water|Swamp(Deep|Shallow)|WaterSwamp")
 CORE = ["n", "types", "most_share", "entropy", "reach", "spread", "aniso", "groups", "grp_size", "grp_gap", "open",
         "nn_med", "nn_p10", "rows", "diag", "wall_near", "built_near", "water_d", "path_share", "path_d", "cr_n", "cr_nn",
-        "cr_rel", "overlap"]
+        "cr_rel", "overlap", "gap_cv", "step_cv", "drift", "run_cv", "odd", "stamp"]
 CAMP = ["bed_fire", "seat_fire"]
 NOT_CLASSIFIED = {"cr_n", "cr_nn", "cr_rel"}       # Westwood's scenes have their monsters; ours their posts: shown, not
                                                    # classified (the lab's people stand where the kit's posts put them)
@@ -68,10 +77,25 @@ TEXT = {   # feature: (name, low text, high text, where to change it)
     "cr_rel": ("people's places", "people huddled at the middle ({v} of the reach)", "people out at the edge ({v})",
                "kit/posts.py"),
     "overlap": ("overlaps", "", "{v} overlapping pairs per piece", "kit/spacing.py (pieces nearer than Westwood's gaps)"),
+    "gap_cv": ("variation of the gaps", "the gaps between pieces all alike (CV {v}): too regular",
+               "the gaps vary widely (CV {v})", "the recipe's steps: jitter them, leave gaps"),
+    "step_cv": ("evenness of rows", "rows evenly stepped (step difference {v}): too regular",
+                "rows unevenly stepped ({v})", "the rows' steps"),
+    "drift": ("straightness of rows", "rows ruler-straight (drift {v}): too regular", "rows wander ({v})",
+              "let rows drift off their line"),
+    "run_cv": ("run lengths", "runs of one kind all one length (CV {v}): too regular",
+               "runs of very different lengths (CV {v})", "vary the bands', rows' and piers' lengths"),
+    "odd": ("odd pieces", "only {v} of the pieces a kind of their own: no odd piece", "{v} of the pieces odd ones",
+            "an odd piece placed with intent (a lone barrel, a sack, a torch)"),
+    "stamp": ("one template", "", "{v} of its piece-to-neighbour offsets repeated in other scenes: a stamped template",
+              "draw the layout's offsets afresh each time"),
     "bed_fire": ("bedrolls to the fire", "only {v} of the bedrolls point their foot at the fire", "", "kit/camps.py beds"),
     "seat_fire": ("seats round the fire", "only {v} of the seats sit round the fire", "", "kit/camps.py hearth"),
 }
 MIN_WW = 5
+KIT_PARTS = re.compile(r"^(TraderTent|Dock)")      # the parts of one built thing (stamp_sig)
+# the irregularity measures and the side that reads as too regular (the scorecard's regularity table)
+REGULAR = {"gap_cv": "low", "step_cv": "low", "drift": "low", "run_cv": "low", "odd": "low", "stamp": "high"}
 
 
 def _pct(vals, p):
@@ -141,6 +165,123 @@ def _groups(pts, link=48.0):
     g = collections.defaultdict(list)
     for i in range(n): g[f(i)].append(i)
     return list(g.values())
+
+
+def irregularity(pieces):
+    """The per-scene irregularity measures (gap_cv, step_cv, drift, run_cv, odd: see the module's docstring) of
+    pieces [(type, x, y)]. None where a scene has too few pieces to say."""
+    pcs = [(t, float(x), float(y)) for t, x, y in pieces]
+    solid = [(t, x, y) for t, x, y in pcs if not P.LOOSE.match(t)] or pcs
+    sp = [(x, y) for _, x, y in solid]
+    out = dict(gap_cv=None, step_cv=None, drift=None, run_cv=None, odd=None)
+    if not pcs: return out
+    nn = []
+    for i, (x, y) in enumerate(sp):
+        ds = [math.hypot(x2 - x, y2 - y) for j, (x2, y2) in enumerate(sp) if j != i]
+        if ds: nn.append(min(ds))
+    if len(nn) >= 3 and statistics.mean(nn) > 0:
+        out["gap_cv"] = round(statistics.pstdev(nn) / statistics.mean(nn), 3)
+    R = max(70.0, 1.8 * (statistics.median(nn) if nn else 40.0))
+    sd, dr = [], []
+    for i, (x, y) in enumerate(sp):
+        nb = [(x2 - x, y2 - y) for j, (x2, y2) in enumerate(sp) if j != i and 12 < math.hypot(x2 - x, y2 - y) < R]
+        for a in range(len(nb)):
+            for b in range(a + 1, len(nb)):
+                (ax, ay), (bx, by) = nb[a], nb[b]
+                la, lb = math.hypot(ax, ay), math.hypot(bx, by)
+                if (ax * bx + ay * by) / (la * lb) < -0.87 and max(la, lb) < 1.7 * min(la, lb):
+                    sd.append(abs(la - lb) / (la + lb) * 2)
+                    ux, uy = bx - ax, by - ay
+                    L = math.hypot(ux, uy)
+                    dr.append(abs(ax * uy - ay * ux) / L / (L / 2))
+    if sd:
+        out["step_cv"] = round(statistics.median(sd), 3)
+        out["drift"] = round(statistics.median(dr), 3)
+    # runs: each kind's pieces linked at 1.5 times their own nearest gap; the lengths of its runs of two or more
+    byk = collections.defaultdict(list)
+    for t, x, y in pcs: byk[P.base(t)].append((x, y))
+    ext = []
+    for q in byk.values():
+        if len(q) < 3: continue
+        L = 1.5 * statistics.median(min(math.hypot(a[0] - b[0], a[1] - b[1]) for j, b in enumerate(q) if j != i)
+                                    for i, a in enumerate(q))
+        comps = [[q[k] for k in g] for g in _groups(q, L)]
+        comps = [c for c in comps if len(c) >= 2]
+        if len(comps) >= 2:
+            ext += [max(math.hypot(a[0] - b[0], a[1] - b[1]) for a in c for b in c) for c in comps]
+    if len(ext) >= 2 and statistics.mean(ext) > 0:
+        out["run_cv"] = round(statistics.pstdev(ext) / statistics.mean(ext), 3)
+    kinds = collections.Counter(P.base(t) for t, _, _ in pcs)
+    out["odd"] = round(sum(1 for t, _, _ in pcs if kinds[P.base(t)] == 1) / len(pcs), 3)
+    return out
+
+
+def stamp_sig(pieces):
+    """[(kind, nearest piece's kind, dx, dy)] of a scene's solid pieces: what stamp_scores compares. The parts of one
+    built thing (an awning's poles and cloths, a dock's planks) are left out: they stand at the same offsets in every
+    awning and dock, Westwood's as ours, and had made every market stall read as a stamped template."""
+    pcs = [(P.base(t), float(x), float(y)) for t, x, y in pieces if not P.LOOSE.match(t) and not KIT_PARTS.match(t)]
+    out = []
+    for i, (t, x, y) in enumerate(pcs):
+        best = None
+        for j, (t2, x2, y2) in enumerate(pcs):
+            if i == j: continue
+            dd = math.hypot(x2 - x, y2 - y)
+            if best is None or dd < best[0]: best = (dd, t2, x2 - x, y2 - y)
+        if best: out.append((t, best[1], best[2], best[3]))
+    return out
+
+
+def stamp_scores(sigs, tol=4.0):
+    """Per scene: the share of its offsets (stamp_sig) another scene repeats within `tol` px, averaged over the others."""
+    out = []
+    for i, a in enumerate(sigs):
+        sh = []
+        for j, b in enumerate(sigs):
+            if i == j or not a: continue
+            hit = sum(1 for k1, k2, dx, dy in a if any(k1 == q1 and k2 == q2 and abs(dx - ex) < tol and abs(dy - ey) < tol
+                                                      for q1, q2, ex, ey in b))
+            sh.append(hit / len(a))
+        out.append(round(statistics.mean(sh), 3) if sh else None)
+    return out
+
+
+def _ww_range(k, typ):
+    wv = sorted(v for v in (s["features"].get(k) for s in westwood(typ)) if v is not None)
+    if not wv: return wv, None, None
+    return (wv,) + ((_pct(wv, 10), _pct(wv, 90)) if len(wv) >= 10 else (wv[0], wv[-1]))
+
+
+def regularity(gen_feats, typ):
+    """The regularity table: for each irregularity measure, Westwood's range, our median, how many of our scenes lie
+    past Westwood's range (its 10th-90th percentile, or min-max under ten scenes) on the too-regular side, and whether
+    the batch is too regular there (our median past Westwood's quartile on that side and at least 40% of our scenes past
+    its range)."""
+    rows = {}
+    for k, side in REGULAR.items():
+        wv, lo, hi = _ww_range(k, typ)
+        gv = [f.get(k) for f in gen_feats if f.get(k) is not None]
+        if not wv or not gv:
+            rows[k] = dict(side=side, westwood=None, ours=None, past=0, of=len(gv), flag=False); continue
+        q1, q3 = _pct(wv, 25), _pct(wv, 75)
+        med = statistics.median(gv)
+        past = sum(1 for v in gv if (v < lo - 1e-9 if side == "low" else v > hi + 1e-9))
+        flag = (med < q1 - 1e-9 if side == "low" else med > q3 + 1e-9) and past >= 0.4 * len(gv)
+        rows[k] = dict(side=side, westwood=dict(p10=round(lo, 3), p25=round(q1, 3), median=round(_pct(wv, 50), 3),
+                                                p75=round(q3, 3), p90=round(hi, 3), n=len(wv)),
+                       ours=round(med, 3), past=past, of=len(gv), flag=flag)
+    return rows
+
+
+def too_regular(f, typ):
+    """The measures on which one scene lies past Westwood's range on the too-regular side."""
+    out = []
+    for k, side in REGULAR.items():
+        v = f.get(k)
+        wv, lo, hi = _ww_range(k, typ)
+        if v is None or not wv: continue
+        if (v < lo - 1e-9) if side == "low" else (v > hi + 1e-9): out.append(k)
+    return out
 
 
 COT_FOOT = {"Cot1": (1, 1), "Cot2": (-1, 1), "Cot3": (-1, -1), "Cot4": (1, -1)}      # screen direction of the foot
@@ -271,6 +412,8 @@ def features(m, s):
             if best is None or dd < best[0]: best = (dd, P.family(t2))
         if best: pairs["-".join(sorted((P.family(t), best[1])))].append(best[0])
     d["pairs"] = {k: round(statistics.median(v), 1) for k, v in pairs.items()}
+    f.update(irregularity(pcs))
+    f["stamp"] = None                     # set over the batch (judge_batch), over Westwood's scenes (labref.westwood)
     d["kinds"] = dict(kinds)
     d["families"] = dict(fams)
     d["centre"] = [round(cx, 1), round(cy, 1)]
@@ -444,14 +587,18 @@ def judge_batch(typ, it, log=print):
             cx, cy = det["centre"]
             R = max(f["reach"], 100) + 50
             warns = [w for w in warns_all if math.hypot(w["x"] - cx, w["y"] - cy) <= R]
-            cmp_ = compare(f, typ)
             hard = hard_rules(m, s, f, warns, typ)
             st = strangers(det["kinds"], typ)
             out.append(dict(index=v["index"], variant=v, scene=dict(anchor=s["anchor"], pieces=s["pieces"]),
-                            features=f, details=det, pct=cmp_["pct"], findings=cmp_["findings"], hard=hard,
-                            strangers=st))
+                            features=f, details=det, hard=hard, strangers=st))
     out.sort(key=lambda x: x["index"])
-    gen = [x["features"] for x in out if x.get("features")]
+    found = [x for x in out if x.get("features")]
+    for x, st_ in zip(found, stamp_scores([stamp_sig(x["scene"]["pieces"]) for x in found])):
+        x["features"]["stamp"] = st_
+    for x in found:
+        cmp_ = compare(x["features"], typ)
+        x.update(pct=cmp_["pct"], findings=cmp_["findings"], too_regular=too_regular(x["features"], typ))
+    gen = [x["features"] for x in found]
     cls = classify(gen, typ, seed=E.seed_of(typ) % 1000)
     tally = collections.defaultdict(list)
     for x in out:
@@ -461,6 +608,7 @@ def judge_batch(typ, it, log=print):
                   where=v[0]["where"]) for k, v in worst[:10]]
     hard_tally = collections.Counter(h["rule"] for x in out for h in x["hard"])
     res = dict(type=typ, iter=it, classifier=cls, westwood_scenes=len(westwood(typ)), worst=worst,
+               regularity=regularity(gen, typ),
                hard_rules=dict(hard_tally), scenes_with_hard=sum(1 for x in out if x["hard"]),
                missing=sum(1 for x in out if x.get("missing")), scenes=out)
     with open(os.path.join(d, "metrics.json"), "w", encoding="utf-8") as fh:
@@ -479,6 +627,12 @@ def findings_text(res, n=6):
             lines.append(f"- {nm}: ours {_fmt(g)} against Westwood's {_fmt(w)} (alone it separates them at {a:.2f})")
     for w in res["worst"][:n]:
         lines.append(f"- {w['scenes']} of {len(res['scenes'])} scenes: {w['example']}. Where: {w['where']}")
+    reg = [k for k, r in (res.get("regularity") or {}).items() if r["flag"]]
+    if reg:
+        lines.append("Too regular: " + "; ".join(
+            f"{TEXT[k][0]} (ours {_fmt(res['regularity'][k]['ours'])}, Westwood's median "
+            f"{_fmt(res['regularity'][k]['westwood']['median'])}; {res['regularity'][k]['past']} of "
+            f"{res['regularity'][k]['of']} scenes past Westwood's range)" for k in reg))
     if res["hard_rules"]:
         lines.append("Hard rules broken: " + ", ".join(f"{k} x{v}" for k, v in res["hard_rules"].items()))
     return lines

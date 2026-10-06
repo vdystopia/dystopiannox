@@ -18,12 +18,15 @@ how to judge it. Judge honestly: the loop only improves if the judge catches wha
 
 Open each picture `review/out/scenelab/<scene>/<iter>/blind/A.png` ... with the Read tool, one at a time (the
 `sheet.png` overview is too small to judge by). The pictures are drawn alike on purpose (review/roomlab/FAIRNESS.md):
-the editor's render without lighting, one window and scale per scene type, the ground away from the scene dimmed, no
+the editor's render without lighting, one window and scale per scene type, only the scene's own footprint shown (its
+pieces, a small margin round them and the walls it leans on; everything further out is the canvas colour), no
 creatures or people in any picture. So do not judge by:
 
 - framing, the dimming, the scale;
-- the setting round the scene: Westwood's scenes stand in its towns, castles and woods; the lab's in a hamlet's ground
-  or a forest glade. Judge the setting only where the scene meets it: a camp against a cliff, a dock and its shore, a
+- the setting round the scene, which the pictures cut away on purpose (Westwood's scenes stand in its towns, castles
+  and woods; the lab's in a hamlet's ground or a forest glade): do not mark a scene down for what is not in the picture
+  (no square round a well, no castle round a jail). Whether a scene sits well in its town is judged on whole maps, not
+  here. Judge the setting only where the scene meets it, inside the picture: a camp against a cliff, a dock and its shore, a
   garden and its house and fence, a graveyard and its fence;
 - the forest's art or the ground's material alone;
 - a scene you think you have seen before (the sheets rotate through Westwood's scenes).

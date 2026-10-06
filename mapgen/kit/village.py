@@ -128,16 +128,30 @@ class Village:
             third_ = "GardenCabbage" if crop_rng.random() < 0.6 else crop_rng.choice(pair_)
             kinds = [one] * len(beds) if one else (pair_ + [third_] + pair_)[:len(beds)]
             laid = 0
+            # the rows as a hand plants them (scene lab round 7, the judges: "bands of equal length with squared ends,
+            # sparse"; Westwood's run lengths vary widely, CV 0.5): one bed in two cut short (a third to a half of it
+            # not yet sown), each row its own ends, the plants closer and a little out of line, now and then a gap
+            # where one failed; from the rows' own generator, so the garden's other draws are as before
+            hand = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden-rows:{gi},{gj}".encode()))
+            step_h = step_ * hand.uniform(0.78, 0.9)
             for k, kind in zip(beds, kinds):
                 for s_ in range(n_long if dug else 0):
                     sq = (gi + s_, gj + k) if long_i else (gi + k, gj + s_)
                     self.spec.floor[square_tile(*sq)] = "DirtDark2"
                 start, end = 0.42 + own_rng.uniform(0, 0.7), n_long - 0.42 - own_rng.uniform(0, 0.7)
-                n = max(2, int((end - start) / step_) + 1)
+                if len(beds) > 1 and hand.random() < 0.5:            # a bed cut short at one end
+                    cut = (end - start) * hand.uniform(0.25, 0.5)
+                    if hand.random() < 0.5: start += cut
+                    else: end -= cut
                 for row in rows:
+                    s0 = start + hand.uniform(0, 0.45); e0 = end - hand.uniform(0, 0.45)
+                    n = max(2, int((e0 - s0) / step_h) + 1)
+                    drift = hand.uniform(-0.06, 0.06)                 # the row wanders a little off its line
                     for q in range(n):
-                        a = start + (end - start) * q / (n - 1) + own_rng.uniform(-0.04, 0.04)
-                        si, sj = (gi + a, gj - 1.5 + k + row) if long_i else (gi + k + row, gj - 1.5 + a)
+                        a = s0 + (e0 - s0) * q / (n - 1) + own_rng.uniform(-0.04, 0.04) + hand.uniform(-0.07, 0.07)
+                        if 0 < q < n - 1 and hand.random() < 0.06: continue          # a plant that failed
+                        off = drift * (q / max(1, n - 1) - 0.5) * 2 + hand.uniform(-0.05, 0.05)
+                        si, sj = (gi + a, gj - 1.5 + k + row + off) if long_i else (gi + k + row + off, gj - 1.5 + a)
                         x, y = square_px(si, sj)
                         if not fence or off_walls(walls, kind, x, y, margin=12):
                             self.spec.obj_px(kind, x, y); laid += 1
