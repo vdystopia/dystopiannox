@@ -2964,12 +2964,12 @@
   },
   "*": {
    "front": 0.341,
-   "lone": 0.273,
-   "light": 0.205,
+   "lone": 0.267,
+   "light": 0.153,
    "even": 0.136,
    "table": 0.131,
-   "seats": 0.114,
    "chair": 0.108,
+   "seats": 0.074,
    "twin": 0.074,
    "corners": 0.068,
    "string": 0.057,
@@ -2978,13 +2978,12 @@
    "lights": 0.04,
    "carpet": 0.034,
    "stepped": 0.028,
-   "hall": 0.017
+   "hall": 0.011
   },
   "bedroom": {
-   "light": 0.357,
    "front": 0.357,
+   "light": 0.286,
    "lone": 0.179,
-   "seats": 0.107,
    "table": 0.107,
    "even": 0.071,
    "lights": 0.071,
@@ -2993,12 +2992,12 @@
   },
   "house": {
    "front": 0.405,
-   "light": 0.31,
-   "lone": 0.284,
+   "lone": 0.276,
+   "light": 0.233,
    "table": 0.198,
-   "seats": 0.172,
    "even": 0.155,
    "chair": 0.155,
+   "seats": 0.112,
    "ring": 0.069,
    "string": 0.06,
    "lights": 0.06,
@@ -3006,7 +3005,7 @@
    "carpet": 0.043,
    "corners": 0.034,
    "stepped": 0.026,
-   "hall": 0.026
+   "hall": 0.017
   },
   "guardroom": {
    "seats": 0.364,
@@ -3020,9 +3019,9 @@
    "ring": 0.091
   },
   "living_room": {
-   "seats": 0.571,
    "front": 0.429,
-   "light": 0.357,
+   "seats": 0.357,
+   "light": 0.286,
    "table": 0.286,
    "chair": 0.286,
    "even": 0.214,
@@ -3034,8 +3033,8 @@
    "corners": 0.071
   },
   "shop": {
-   "lone": 0.625,
    "front": 0.5,
+   "lone": 0.5,
    "even": 0.375,
    "light": 0.25,
    "chair": 0.25,
@@ -3052,13 +3051,12 @@
   "study": {
    "front": 0.667,
    "ring": 0.333,
-   "light": 0.333,
    "chair": 0.333
   },
   "tavern": {
-   "light": 0.833,
    "lone": 0.5,
    "ring": 0.5,
+   "light": 0.333,
    "seats": 0.333,
    "front": 0.333,
    "table": 0.333,
@@ -3102,10 +3100,10 @@
    "corners": 0.333
   },
   "barracks": {
-   "light": 0.571,
    "table": 0.571,
    "front": 0.429,
    "even": 0.429,
+   "light": 0.286,
    "chair": 0.286,
    "lone": 0.286,
    "stepped": 0.143,
@@ -3140,10 +3138,9 @@
    "front": 0.75
   },
   "great_hall": {
-   "hall": 1.0,
    "stepped": 0.5,
+   "hall": 0.5,
    "table": 0.5,
-   "seats": 0.5,
    "lone": 0.5,
    "ring": 0.5,
    "front": 0.5

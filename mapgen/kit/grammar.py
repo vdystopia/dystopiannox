@@ -783,6 +783,13 @@ def string_faults(view):
     return out
 
 
+def _near(x):
+    """A budget rounded to the nearest piece (halves up): for the shares Westwood keeps often (bare tables in half its
+    bedrooms, 29% of its lights by a front wall, a fifth of its seat sets stamped), so a room of one or two keeps its
+    own Westwood rate instead of none."""
+    return int(math.floor(x + 0.5))
+
+
 def front_budget(cat, n):
     share = (_r2("front_share", {}) or {}).get(cat)
     if share is None: return n
@@ -814,7 +821,7 @@ def light_front_faults(view):
     if view.rtype in CEREMONIAL: return []
     L = floor_lights(view)
     fr = [p for p in L if front_only(view, p, CORNER_REACH)]
-    allow = int(math.floor((_r2("light_front", 0.0) or 0.0) * len(L) + 1e-9))
+    allow = _near((_r2("light_front", 0.0) or 0.0) * len(L))
     return [dict(rule="light", p=p, msg="stands by a front wall, lighting nothing the eye sees") for p in fr[allow:]]
 
 
@@ -823,11 +830,11 @@ def seat_faults(view):
     tables = [p for p in view.pieces if p["cat"] == "table" and view.floor(p)]
     bare = [p for p in tables if not seats_of(view, p)]
     share = (_r2("table_bare", {}) or {}).get(view.rtype)      # only the types with their own Westwood evidence
-    allow = len(tables) if share is None else int(math.floor(share * len(tables) + 1e-9))
+    allow = len(tables) if share is None else _near(share * len(tables))
     for p in bare[allow:]:
         out.append(dict(rule="seats", p=p, msg="is a table with no chair, stool or bench drawn up to it"))
     stamped = [(t, s) for t, s in seat_sets(view) if stamped_set(view, t, s)]
-    allow = int(math.floor((_r2("set_stamped", 0.0) or 0.0) * len(seat_sets(view)) + 1e-9))
+    allow = _near((_r2("set_stamped", 0.0) or 0.0) * len(seat_sets(view)))
     for t, s in stamped[allow:]:
         out.append(dict(rule="seats", p=s[0], msg=f"is one of {len(s)} matching chairs set the same distance round a "
                         f"table (Westwood mixes them and pulls one out)"))
@@ -958,7 +965,7 @@ def _move_group(f, view, grp, spots, log, why):
             for (q, du, dv), (_, t, ex, rec) in zip(offs[1:], recs[1:]):
                 m_ = f.try_put(t, u + du, v + dv, blocking=rec[4] if rec else True, **ex)
                 if m_ is not None: placed.append((q, m_, u + du, v + dv))
-            if len(grp) > 1 and len(placed) == 1:
+            if len(placed) < len(grp):
                 f._remove(n); continue
             for q, o2, uu, vv in placed: q["o"], q["u"], q["v"] = o2, uu, vv
             for q, *_ in recs:
@@ -1133,6 +1140,21 @@ def _drop(f, p, log, why):
     return True
 
 
+FIRE_GAP = 0.87     # a stove or cauldron at least this from a hearth (Westwood; validate/checks.py hearth_crowded)
+
+
+def _crowds_fire(f, t, u, v, hu, hv):
+    """Whether a piece t at (u, v) would stand within FIRE_GAP of a fire it must keep apart from (a stove or cauldron by
+    the hearth, or the hearth by one), as the checker measures it."""
+    c = OBJ.category(t)
+    if c not in ("stove", "cauldron", "hearth"): return False
+    for tt, rec in f._typed:
+        c2 = OBJ.category(tt)
+        if c2 not in ("stove", "cauldron", "hearth") or (c == "hearth") == (c2 == "hearth"): continue
+        if max(abs(u - rec[0]) - hu - rec[2], abs(v - rec[1]) - hv - rec[3]) < FIRE_GAP: return True
+    return False
+
+
 def _try_at(f, p, spots, light=False, newt=None):
     """Moves piece p to the first of spots (u, v) the furnisher's gate takes (as type newt when given); True if moved.
     On failure it stays as it was."""
@@ -1148,7 +1170,9 @@ def _try_at(f, p, spots, light=False, newt=None):
     f.placing_light = light
     f.composing = False
     try:
+        hu_, hv_ = f.half(t)
         for (u, v) in spots:
+            if ROUND2 and _crowds_fire(f, t, u, v, hu_, hv_): continue
             n = f.try_put(t, u, v, blocking=blocking, layer=layer, **extra)
             if n is not None:
                 p["o"], p["u"], p["v"], p["t"] = n, u, v, t
@@ -1362,6 +1386,15 @@ def fix_spacing(f, view, log, rng):
 def fix_twins(f, view, log, rng):
     for a, b in twins(view):
         seats = [p for p in b if p["cat"] in ("chair", "bench")]
+        table = next((p for p in b if p["cat"] == "table"), None)
+        if ROUND2 and table is not None and seats:
+            q = rng.choice(seats)
+            if q["o"] in f.objects:
+                spots = [x for x in _beside(q, table, gap=rng.choice((0.1, 0.25, 0.4)))
+                         if math.hypot(x[0] - q["u"], x[1] - q["v"]) > 0.5]
+                rng.shuffle(spots)
+                if _try_at(f, q, spots):
+                    log["twin set's seat moved round"] += 1; continue
         small = seats[:1] if len(seats) >= 2 else sorted(b, key=lambda p: p["hu"] * p["hv"])
         for p in small:
             if p.get("gone") or p["o"] not in f.objects: continue
@@ -1540,12 +1573,13 @@ def _rehome(f, view, p, log, rng, drop=True):
     for (u, v) in spots:
         ws = view.walls_of(dict(p, u=u, v=v), WALL_REACH)
         if not ws or all(w["name"] in FRONT for w, _ in ws): continue     # by a back wall, in a group
+        if ROUND2 and ws[0][0]["name"] in FRONT: continue                    # nearest a front wall: seen from behind
         good.append((u, v))
     if DEBUG: print(f"    rehome {p['t']} at {p['u']:.1f},{p['v']:.1f}: {len(spots)} spots, {len(good)} by a back wall; "
                     f"same {[(q['t'], round(q['u'], 1), round(q['v'], 1)) for q in same]}")
     if good and _try_at(f, p, good):
         log[f"lone {p['cat']} joined a group"] += 1
-    elif ROUND2 and p["cat"] in ("supply", "chest", "clutter") and _to_back_wall(f, view, p, rng):
+    elif ROUND2 and p["cat"] in ("supply", "clutter") and _to_back_wall(f, view, p, rng):
         log[f"lone {p['cat']} to a back wall"] += 1      # the first of a heap there (round two: stock off the front)
     elif drop and _drop(f, p, log, f"lone {p['cat']} dropped"):
         p["gone"] = True
@@ -1563,6 +1597,8 @@ def _to_back_wall(f, view, p, rng, near_kind=True, tries=40):
     spots = []
     for (u, v, w) in _wall_spots(f, view, p["hu"], p["hv"], step=0.5):
         if w["name"] in FRONT: continue
+        ws = view.walls_of(dict(p, u=u, v=v), CORNER_REACH)
+        if ws and ws[0][0]["name"] in FRONT: continue
         d = math.hypot(u - p["u"], v - p["v"])
         if near_kind and kin:
             dk = min(edge(dict(p, u=u, v=v), q) for q in kin)
@@ -1585,6 +1621,9 @@ def _to_back_wall(f, view, p, rng, near_kind=True, tries=40):
             p["hu"], p["hv"] = hu, hv
             return True
     return False
+
+
+NO_SLIDE = {"chair", "bench", "table", "desk", "hearth", "stove", "cauldron", "counter_bar", "counter_shop", "bed"}
 
 
 def fix_strings(f, view, log, rng):
@@ -1611,7 +1650,10 @@ def fix_strings(f, view, log, rng):
         for i in order:
             p = run[i]["main"]
             if p is None or p.get("gone") or p["o"] not in f.objects: continue
-            nbs = [j for j in (i - 1, i + 1) if 0 <= j < len(run)]
+            if p["cat"] in NO_SLIDE or any(edge(p, q) <= SEAT_REACH for q in view.pieces
+                                           if q is not p and q["cat"] in SEATS + ("table", "desk")): continue
+            nbs = [j for j in (i - 1, i + 1) if 0 <= j < len(run)
+                   and not any(q["cat"] in OBJ.FIRES or q["cat"] == "hearth" for q in run[j]["ps"])]
             nbs.sort(key=lambda j: (not kin(i, j), rng.random()))
             for j in nbs:
                 nb = run[j]
@@ -1649,6 +1691,9 @@ def fix_front2(f, view, log, rng):
         elif p["cat"] in ("statue", "straw") and _drop(f, p, log, f"{p['cat']} on a front wall dropped"): p["gone"] = True
 
 
+PULL_MAX = 1.0      # a chair pulled out of a set stands at most this far off its table (edge to edge)
+
+
 def fix_seats(f, view, log, rng):
     """A table with no seat (past Westwood's share for the type) gets one or two drawn up (the room's own seat kind);
     a set of matching chairs at one distance has one pulled out (Westwood: 11 of 54 sets so stamped)."""
@@ -1680,7 +1725,8 @@ def fix_seats(f, view, log, rng):
             du, dv = q["u"] - table["u"], q["v"] - table["v"]
             d = math.hypot(du, dv) or 1.0
             spots = []
-            for k in (0.45, 0.6, 0.35, 0.75):
+            e0 = edge(q, table)
+            for k in [k for k in (0.45, 0.6, 0.35, 0.25) if e0 + k <= PULL_MAX]:
                 for s_ in (0.0, 0.25, -0.25):
                     spots.append((q["u"] + du / d * k - dv / d * s_, q["v"] + dv / d * k + du / d * s_))
             if _try_at(f, q, spots): moved += 1
@@ -1799,7 +1845,7 @@ def audit(f, rng=None):
     log = collections.Counter()
     steps = (fix_plants, fix_trades, fix_mixed, fix_chairs, fix_tables, fix_halls, fix_seats, fix_twins, fix_rings,
              fix_corners, fix_lone, fix_front, fix_front2, fix_spacing, fix_strings, fix_hung, fix_lone, fix_carpet,
-             fix_lights)
+             fix_seats, fix_lights)
     if not ROUND2:
         steps = (fix_plants, fix_mixed, fix_twins, fix_chairs, fix_tables, fix_rings, fix_corners, fix_lone, fix_front,
                  fix_spacing, fix_hung, fix_lone, fix_lights)
