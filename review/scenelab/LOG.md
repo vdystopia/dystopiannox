@@ -384,3 +384,18 @@ same code, as the lab's maps do, so it is not this change's.)
 | r2-hut | the warlord's bearskin by the fire 30% (Westwood's lie in the huts) | 1.0 | 0 / 0 |
 
 Five Westwood scenes: the AUC cannot move far (its top features: the fire by a path, open ground). Queued: r2-hut.
+
+### jail: straw and torches (kit/yards.py jail cells; the lab's paved court)
+
+Westwood's eleven jail scenes (Con02a, Con07B, War03b, War03c, War07A): cells on RoughCobble behind Cobblestone, a cot in
+one cell, straw strewn thick (seven to twelve tufts to a jail), a wall torch to a cell; Con02a's and War03b's guardroom
+racks and table before the cells (not attempted: Greywatch places its prisoners by the cells' geometry).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged (a cot and one or two straw in every cell) | 0.974 | 0 / 1 |
+| r1-straw | the cells' bedding from the jail's own generator (the design's draws replayed): a cot in one cell (80%), three to six tufts of straw a cell, 0.6 squares apart | 0.977 | 0 / 1 |
+| r2-court | the lab paves a court round the jail in two clearings of three (Westwood's jails stand in paved courts) | 0.927 | 0 / 0 |
+| r3-torch | a wall torch on a cell's back wall (60%) | 0.905 | 0 / 0 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.

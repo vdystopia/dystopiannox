@@ -117,6 +117,21 @@ def _yard_build(ctx):
             _person(ctx, donor, x, yy, face, f"Yard{p.k}_{k_}")
 
 
+def _jail_court(ctx):
+    """Westwood's jails stand in paved town courts (Con07B's castle, Con02a's and War03b's guardhouse yards, all on
+    RoughCobble): the lab paves a court round the jail in two clearings of three, so the jail's floor is not read as a
+    path laid through the grass."""
+    m, land = ctx["m"], ctx["land"]
+    for p in ctx["plots"]:
+        y = ctx["yards"].get(p.k)
+        if not y or p.k % 3 == 2: continue
+        for a in range(-3, y.w + 3):
+            for b in range(-3, y.h + 3):
+                sq = (y.gi + a, y.gj + b)
+                if sq in land.squares and sq not in land.water and sq not in land.taken_strict:
+                    m.floor[square_tile(*sq)] = "RoughCobble"
+
+
 # ---------------------------------------------------------------------------------------------------- gardens
 HOME_ROLES = ("home", "cottage", "home", "fisher", "herbwife")
 GARDENERS = (("Con02a", "Gretchen"), ("Con03A", "Kenneth"), ("Con02a", "Julie"))
@@ -392,7 +407,7 @@ RECIPES = {
                         cave_wall="Dirt", cave_scale=1.3),
     "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5),
     "quarry": dict(plan=_yard_plan("quarry"), build=_yard_build),
-    "jail": dict(plan=_yard_plan("jail"), build=_yard_build),
+    "jail": dict(plan=_yard_plan("jail"), build=lambda c: (_jail_court(c), _yard_build(c))),
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
     "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"])),

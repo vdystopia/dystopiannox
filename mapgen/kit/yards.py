@@ -175,20 +175,44 @@ def build(spec, rng, land, y):
         y.gate = doors[0]
         y.cells = doors                 # every cell's door (a gauntlet opens them one at a time)
         placed = []
+        # the cells' bedding, as Westwood's jails hold it (Con02a, Con07B, War03b, War07A: a cot in one cell, straw
+        # strewn thick on the floors, seven to twelve tufts to a jail); from the jail's own generator, the design's
+        # drawn as before so nothing after it shifts
+        import random as _random, zlib
+        for c in range(n_cells):
+            for _ in range(rng.randint(1, 2)): rng.uniform(0, 1); rng.uniform(0, 1)
+        own = _random.Random(zlib.crc32(f"{spec.d['name']}:jail:{y.gi},{y.gj}".encode()))
+        back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
+        cot_in = own.randrange(n_cells) if own.random() < 0.8 else None
         for c in range(n_cells):
             lo, hi = c * L // n_cells, (c + 1) * L // n_cells
-            back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
-            # the cot against the back wall, straw on the floor
-            if along_i:
-                bj = y.gj + y.h - 2.3 if back == "j1" else y.gj - 0.7
-                spec.obj_px("Cot2", *square_px(y.gi + lo + (hi - lo) / 2, bj))
-                for _ in range(rng.randint(1, 2)):
-                    spec.obj_px("Straw2", *square_px(y.gi + lo + rng.uniform(0.6, hi - lo - 0.6), y.gj - 1.5 + rng.uniform(1.0, y.h - 1.0)))
-            else:
-                bi = y.gi + y.w - 0.75 if back == "i1" else y.gi + 0.75
-                spec.obj_px("Cot2", *square_px(bi, y.gj - 1.5 + lo + (hi - lo) / 2))
-                for _ in range(rng.randint(1, 2)):
-                    spec.obj_px("Straw2", *square_px(y.gi + rng.uniform(1.0, y.w - 1.0), y.gj - 1.5 + lo + rng.uniform(0.6, hi - lo - 0.6)))
+            if c == cot_in:                     # the cot against the back wall
+                if along_i:
+                    bj = y.gj + y.h - 2.3 if back == "j1" else y.gj - 0.7
+                    cot = (y.gi + lo + (hi - lo) / 2 + own.uniform(-0.4, 0.4), bj)
+                else:
+                    bi = y.gi + y.w - 0.75 if back == "i1" else y.gi + 0.75
+                    cot = (bi, y.gj - 1.5 + lo + (hi - lo) / 2 + own.uniform(-0.4, 0.4))
+                spec.obj_px(own.choice(("Cot2", "Cot2", "Cot1")), *square_px(*cot))
+            if own.random() < 0.6:              # a torch on the cell's back wall (Con07B: a torch to a cell)
+                f_ = own.uniform(0.3, 0.7)
+                if along_i:
+                    tj = y.gj + y.h - 1.75 if back == "j1" else y.gj - 1.25
+                    spec.obj_px("Torch", *square_px(y.gi + lo + (hi - lo) * f_, tj))
+                else:
+                    ti = y.gi + y.w - 0.25 if back == "i1" else y.gi + 0.25
+                    spec.obj_px("Torch", *square_px(ti, y.gj - 1.5 + lo + (hi - lo) * f_))
+            laid = []
+            for _ in range(own.randint(3, 6)):
+                for _try in range(8):
+                    if along_i:
+                        si, sj = y.gi + lo + own.uniform(0.6, hi - lo - 0.6), y.gj - 1.5 + own.uniform(1.0, y.h - 1.0)
+                    else:
+                        si, sj = y.gi + own.uniform(1.0, y.w - 1.0), y.gj - 1.5 + lo + own.uniform(0.6, hi - lo - 0.6)
+                    if c == cot_in and math.hypot(si - cot[0], sj - cot[1]) < 1.0: continue
+                    if all(math.hypot(si - p_, sj - q_) >= 0.6 for p_, q_ in laid):
+                        spec.obj_px("Straw2" if own.random() < 0.85 else "Straw1", *square_px(si, sj))
+                        laid.append((si, sj)); break
         return placed
     # the gate: a two-cell opening in the middle of its side (a double gate hangs a half at each end)
     k = len(pts) // 2
