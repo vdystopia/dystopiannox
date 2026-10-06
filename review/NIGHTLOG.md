@@ -69,3 +69,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   AUC 0.89 -> 0.16-0.42 (Westwood has only 5 gardens); graveyard 1.00 -> 0.87 (graves in Westwood's rows and spacing,
   sparse grass, pillars at the gate; the blind judge still sees one small square box where Westwood's yards are long or
   large and set against buildings); bandit camp r3 judged "much better: clear zones and the user's structure".
+- 22:40 Scene lab round 1 merged (`night-scenes`): 159 Westwood campaign scenes of 18 types catalogued
+  (`rules/scenes/`). Bandit camp AUC 1.00->0.98 (score 3.6->6.0 vs Westwood 6.8), graveyard 1.00->0.87, garden
+  0.89->0.30, pond with dock 0.68->0.77 (6.6 vs 6.75). Kit: camps back onto a wall with a sleeping row; graveyards in
+  Westwood's rows; gardens with mixed beds and a low wooden fence; docks square with barrels on the bank. Caveat: the
+  tuning agent judged its own sheets, so an independent blind judge (a fresh agent that sees only the pictures, never
+  the key) is now judging them. From here on, every blind result in this log is marked "independent" or "self".
+  Scene lab round 2 (`night-scenes3`) started: camp sub-types (hideout and fire camp), graveyards fitted to the site,
+  then the other 13 scene types.
