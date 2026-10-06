@@ -1,0 +1,314 @@
+{
+ "iter": "i10",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Vell",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Grulga the Swamp Witch and her Trolls hold the Sunken Keep and raid Vell for captives and plunder.",
+  "names": {
+   "Vell": "place",
+   "Black Fen": "place",
+   "Sunken Keep": "place",
+   "Troll caves": "place",
+   "Kessik's forge": "place",
+   "Grulga": "person",
+   "Trolls": "group",
+   "Marsh Guard": "group",
+   "Ulmar": "person",
+   "Pellig": "person",
+   "Tansy": "person",
+   "Torvic": "person",
+   "Hesper": "person",
+   "Mortimer": "person",
+   "Oswig": "person",
+   "Dagny": "person",
+   "Vasko": "person",
+   "Kessik": "person",
+   "Bodo": "person",
+   "Ystra": "person",
+   "Fisk": "person",
+   "Brena": "person",
+   "Staff of Binding": "thing",
+   "Trial of Blades": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Torvic of the Marsh Guard keeps the causeway gate of Vell.",
+   "names": {
+    "Torvic": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torvic",
+     "text": "Lookin' to spend a night in the stocks?"
+    },
+    "again": {
+     "speaker": "Torvic",
+     "text": "Have it your way."
+    },
+    "later": {
+     "speaker": "Torvic",
+     "text": "Fair work with the Trolls. But that doesn't make you a hero! Now move along!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "The Trolls broke into Hesper's hut and her pet turtle Mortimer is shut in the back room with them.",
+   "names": {
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Trolls": "group",
+    "Vell": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesper",
+     "text": "Oh, please help me, stranger! The Trolls have broken into my hut and my poor turtle, Mortimer, is stuck in the back room with them!\n\nSave him and I'll be grateful to you for the rest of my days!"
+    },
+    "reminder": {
+     "speaker": "Hesper",
+     "text": "Whatever you find in there is yours to keep! Only hurry and save Mortimer!"
+    },
+    "completion": {
+     "speaker": "Hesper",
+     "text": "Oh, thank heavens, he's alive! However can I thank you for your courage?!\n\nEh? What's that? Heaps and heaps of gold? Well... if gold is what you want, then please accept this as a token of my gratitude."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Mortimer the Talking Turtle from Hesper's hut in Vell."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Oswig the Sage lost the Staff of Binding to Grulga's Trolls, who took it to the Troll caves.",
+   "names": {
+    "Oswig": "person",
+    "Grulga": "person",
+    "Trolls": "group",
+    "Vell": "place",
+    "Troll caves": "place",
+    "Staff of Binding": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Oswig",
+     "text": "Greetings, Wanderer! Thank goodness you've come at last, for we sorely need your help. Grulga's Trolls swept through Vell only days ago and carried off the Staff of Binding! Will you go to the Troll caves to the southwest and bring the precious Staff back to me as quickly as you can?"
+    },
+    "refusal": {
+     "speaker": "Oswig",
+     "text": "No?! Then I fear Vell is doomed! Please reconsider."
+    },
+    "reminder": {
+     "speaker": "Oswig",
+     "text": "Make haste and recover the Staff! Go quickly, please! For if she keeps it, Grulga will turn the Staff to the foulest of ends, for certain!"
+    },
+    "completion": {
+     "speaker": "Oswig",
+     "text": "Well done, brave Wanderer! My deepest thanks for bringing back the Staff! Now that we have it again, we can at last put an end to that wicked witch's schemes for good!\n\nHere, these blue potions and this spell book should prove useful... more useful than you know."
+    },
+    "after": {
+     "speaker": "Oswig",
+     "text": "My thanks once more, Wanderer, for everything you've done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Staff of Binding."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the Staff of Binding."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion", "SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Fisk, Brena and Tansy, folk of Vell.",
+   "names": {
+    "Fisk": "person",
+    "Brena": "person",
+    "Tansy": "person",
+    "Pellig": "person",
+    "Bodo": "person",
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Vell": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fisk",
+     "text": "Hurry! Mayor Pellig is expecting you in his house across the village. There's a little boat behind the inn that can carry you over to him."
+    },
+    "rumour2": {
+     "speaker": "Brena",
+     "text": "Welcome to Vell. Bodo's inn is just there on your left."
+    },
+    "rumour3": {
+     "speaker": "Tansy",
+     "text": "Good work saving Mortimer, stranger! I hear Hesper is telling everyone about it!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodo keeps the inn, Kessik the forge, Ystra the potion and spell shop.",
+   "names": {
+    "Bodo": "person",
+    "Kessik": "person",
+    "Ystra": "person",
+    "Marsh Guard": "group",
+    "Grulga": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodo",
+     "text": "You've no business back here. Best get out of my kitchen."
+    },
+    "arms": {
+     "speaker": "Kessik",
+     "text": "Sorry, stranger, the Marsh Guard bought up the lot! I haven't a single shield left to sell you."
+    },
+    "magic": {
+     "speaker": "Ystra",
+     "text": "Hello, stranger. You know Grulga's Trolls have been asking after you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Vasko sells a used sword for Mayor Pellig's Trial of Blades, and Pellig sends entrants to Kessik's forge.",
+   "names": {
+    "Vasko": "person",
+    "Pellig": "person",
+    "Kessik": "person",
+    "Kessik's forge": "place",
+    "Trial of Blades": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Vasko",
+     "text": "Now this sword is a real beauty. Its last owner was a little old granny who only used it to slice cheese.\n\nAt Kessik's forge a blade like this would cost you 250 gold, easy. But I like the look of you, so I'll part with it for 90. Well, do you want it?"
+    },
+    "offer_b": {
+     "speaker": "Pellig",
+     "text": "You'll need a sword of your own for the Trial of Blades. Kessik sells them at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Vasko",
+     "text": "Here ya go! That sword was meant for your hand. Nobody could lose the Trial holding a blade like that."
+    },
+    "outcome_b": {
+     "speaker": "Vasko",
+     "text": "Big mistake, friend. Go on over to Kessik's and look at his swords. Then hurry on back -- there's another fellow asking after this one too."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy a sword for the Trial of Blades."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a sword at Kessik's forge for the Trial of Blades."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Ulmar begs the player to free Dagny and the boatmen of Vell from the Trolls in the Sunken Keep.",
+   "names": {
+    "Ulmar": "person",
+    "Dagny": "person",
+    "Trolls": "group",
+    "Vell": "place",
+    "Sunken Keep": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ulmar",
+     "text": "Quickly, lad! The boatmen haven't got long. You've got to free every last one of them before the Trolls cook them!"
+    },
+    "reminder": {
+     "speaker": "Ulmar",
+     "text": "There's no time to lose. Get moving!"
+    },
+    "found": {
+     "speaker": "Dagny",
+     "text": "Save us, please!"
+    },
+    "following": {
+     "speaker": "Dagny",
+     "text": "Oh, thank goodness you came!"
+    },
+    "completion": {
+     "speaker": "Ulmar",
+     "text": "Good work, lad! Every one of these brave boatmen owes you his life!\n\nTake these potions with you. Now go and find the rest of them!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Dagny and the boatmen of Vell held captive in the Sunken Keep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Ulmar brings the player to Vell and sends him to Mayor Pellig and on against Grulga's Sunken Keep.",
+   "names": {
+    "Tansy": "person",
+    "Ulmar": "person",
+    "Pellig": "person",
+    "Grulga": "person",
+    "Vell": "place",
+    "Black Fen": "place",
+    "Sunken Keep": "place",
+    "Marsh Guard": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tansy",
+     "text": "My, my! You're a lot nicer to look at than the usual fellows Ulmar drags in! Come and see me once Mayor Pellig is done with you."
+    },
+    "opening": {
+     "speaker": "Ulmar",
+     "text": "Here we are, lad. Vell -- last stronghold of the free folk of the Black Fen! Home of the stout-hearted Marsh Guard!\n\nGet yourself into Vell, find Mayor Pellig and then be ready for the fight of your life -- Grulga's Sunken Keep. Only the bravest come back out."
+    },
+    "reminder": {
+     "speaker": "Ulmar",
+     "text": "Off you go now, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way into the Village of Vell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

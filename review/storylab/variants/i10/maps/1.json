@@ -1,0 +1,302 @@
+{
+ "iter": "i10",
+ "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5), writer 1",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so Halvard has shut the north gate.",
+  "names": {
+   "Brackenford": "place",
+   "Bracken": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Tobin": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Greyjaw": "person",
+   "Cloak of Mists": "thing",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick at the north gate, shut by Halvard because of Red Corwin's bandits.",
+   "names": {
+    "Garrick": "person",
+    "Halvard": "person",
+    "Tobin": "person",
+    "Red Corwin": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Only Halvard's own men may pass this gate!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Tobin, here is one more traveler who wants to try his luck against Red Corwin!"
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Hey, you should get through before Halvard shuts the gate again."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, puts a price on Greyjaw, the wolf taking his sheep.",
+   "names": {
+    "Ulric": "person",
+    "Greyjaw": "person",
+    "Ashwood": "place",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Good day, kind sir. I presume you've come about the reward.\n\nThere's a fine purse on the head of Greyjaw -- the biggest wolf in the Ashwood. He and his ragged pack have been taking my sheep for weeks.\n\nMind yourself, you wouldn't want to be jumped by those snarling brutes."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "That Greyjaw is still loose! I lost another lamb last night!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Ho, there! My dogs started barking, so I came out to look.\n\nYou have single handed slain the dreaded Greyjaw! Most impressive! You have my deepest respect, kind sir! That old wolf has been raiding Brackenford for weeks! I'll take his hide from here. We will all sleep sounder with that savage brute gone for good!\n\nAnd here is your reward, kind sir -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rid the Ashwood of the wolf Greyjaw."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, wants the Cloak of Mists back from the Urchins who raided the mill.",
+   "names": {
+    "Wenna": "person",
+    "Urchins": "group",
+    "Cloak of Mists": "thing",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Ooooh, how could this happen? Those nasty Urchins knocked down both of my millhands. There's no time to run for help. Quickly, will you go after them before my Cloak of Mists is lost in the old barrow east of the ford?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Ooooh... Then the Cloak is as good as gone. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Please, I'm begging you. Chase down those sneaky Urchins and bring back my Cloak of Mists."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My Cloak of Mists is saved! You'll need good boots for the climb up Crow Hill. Here, take these with you."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "You may well have saved the whole mill with your courage. Well done, young sir! Now, hurry on to Crow Hill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Cloak of Mists stolen by the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Cloak of Mists stolen by the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: the ferry at the mill, a grumble about Red Corwin, a jeer at the player.",
+   "names": {
+    "Wenna": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "The ferry below Wenna's mill will take you to the far bank."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "That greedy Red Corwin has left the north road empty of honest folk. Chase his wretched bandits off Crow Hill before they come south."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "You look awful scrawny for a wolf-hunter. Hah, hah, hah...!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian of the Drowned Lantern, Dunstan the smith, Mabry the potion seller.",
+   "names": {
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "It's awful quiet tonight, with the north gate shut and all."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "The ferrymen have doubled the fare across the river."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Perhaps you'd care for a potion or a spell book?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest back from Corwin's bandits; Sly Wat sells keys to the watchtower's side door.",
+   "names": {
+    "Halvard": "person",
+    "Ossian": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Sly Wat": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Greetings. So you are the one Ossian spoke of, eh? Well, I could use one more pair of hands, but first you must fetch back the tithe chest Red Corwin's bandits stole.\n\nWill you take on this task?"
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "Hey there, Traveler! Can I interest you in a key to the side door of the old watchtower? These keys are freshly cut and well worth the paltry sum of 50 gold.\n\nYa want one?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "Very well! This purse holds your share of the tithe. The shield is from the town armory, which ought to keep Corwin's arrows off you."
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "There you go, I'm sure that key will open the door just fine.\n\nDrop by again if you ever need a spare."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the watchtower key from Sly Wat."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm begs the player to bring back his novice Pip from the Urchins' barrow.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, kind stranger, you must help! The Urchins have dug into the old barrow east of the ford and my poor novice, Pip, went in after them and never came out!\n\nBring him back and I'll pray for you every day of my life!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Whatever you find down in that barrow is yours to keep! Only hurry and bring Pip home!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "All right! I'll stay close behind you! Only get me out of this hole!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Quick! Take me back to Brother Anselm!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Thank goodness, you found him! How will I ever thank you for your courage?!\n\nWhat's that you say? Heaps and heaps of gold? Well, if that's your price, then please accept this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Pip the Novice from the Urchin barrow east of the ford."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Halvard in the Moot Hall, who sends him to drive Red Corwin out of the watchtower on Crow Hill.",
+   "names": {
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Crow Hill": "place",
+    "Urchins": "group",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Help! Help! We're being robbed! Hurry to the Moot Hall and see Halvard!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Damn! What kept you, lad!? Red Corwin's bandits stormed the old watchtower and they'd have had the whole north road too if I hadn't shut the gate on them at the very last moment!\n\nBut with the gate shut, no cart or trader can get down from the north, leaving the wolves and the Urchins the least of our troubles! All Brackenford will go hungry if the road stays closed!\n\nYou must go where the bandits are holed up, north to the watchtower on Crow Hill! Throw Corwin out or we are ruined!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "I'm sure Corwin grows bolder by the hour! Go quickly!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Crow Hill and drive out Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

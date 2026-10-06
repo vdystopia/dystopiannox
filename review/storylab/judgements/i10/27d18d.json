@@ -1,0 +1,29 @@
+{
+  "packet": "27d18d",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The repeated 'mate' (three times in one offer) is a costume, not Nox's plain speech, and 'damn fine spell book' pushes the slang too hard. The structure (problem, warning, reward) is right, but the voice is overdone."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Bane of my life' and the porters swinging brooms are invented domestic colour that Westwood rarely bothers with. 'Please, do be careful' and 'I insist' read as polite modern filler. The title and the library reward fit Nox well."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The flat backstory ('Two weeks ago, thieves broke in'), the ellipsis before '100 in gold!', 'lad' and 'young sir', and the stiff capitalised 'Rogues' in the journal all ring true to the campaign's shopkeepers."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The breathless, ungrammatical plea (a missing comma after the place name, 'almost all of the maidens') and the bare 'Take these as tokens of my appreciation!' are Westwood's terse, slightly clumsy register."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It is functional and plain, but the chain of cider, Imp in the well, riled rats and an iron key packs in more invented cause and effect than Westwood's offers usually do. 'Wonderful! The Imp is dead!' is serviceable. The quest shape (letter to the ferryman) is Nox-like."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "'Ooooh, how can this be?' and 'That evil one' have the campaign's theatrical oddness. The handoff of an item to an unseen character and the bare journal entry with a capitalised 'Necromancer' feel authentic."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "It is too long, with three pages per section, and gives the NPC a self-introduction, a sentimental lost-dog turn and a 'Hmmm... Yes.' beat that read as constructed character work. The closing Ogre foreshadowing feels grafted on."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "The '!?' punctuation, 'All Nox is now in peril', and the clumsy 'At happier other times' and 'leaving rebuilding the village our smallest concern' are Westwood's own awkward grandiosity, which no imitator would write on purpose."}
+  ],
+  "tells": [
+    "Westwood's lines carry unpolished grammar (missing commas, odd word order like 'At happier other times', '!?'), while the new texts are grammatically clean.",
+    "The new texts add invented local colour and causal chains (porters with brooms, riled rats, a named sheepdog) where Westwood states the problem in one flat sentence.",
+    "Dialect markers in the new texts are applied over and over ('mate' three times). Westwood uses 'lad' or 'young sir' once or twice and moves on.",
+    "The new texts run longer and give the NPC character beats (self-introduction, musing 'Hmmm... Yes.', 'I insist'). Westwood's thanks are short: a cry, 'Well done', then the reward.",
+    "Westwood's rewards are bare and functional ('100 in gold!', 'Take these as tokens'), while the new texts tend to flavour them ('damn fine spell book', 'my old bow')."
+  ]
+}

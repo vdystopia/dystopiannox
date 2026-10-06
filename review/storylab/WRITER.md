@@ -1,4 +1,4 @@
-# The story lab's writer brief (v10: a Westwood quest frame for each quest, a line frame for each short line)
+# The story lab's writer brief (v11: a Westwood quest frame for each quest, a line frame for each short line, nothing added)
 
 You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
 Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
@@ -15,8 +15,12 @@ tell your town from one of Westwood's.
    register and quirks, the same kind of trouble and of reward, transposed to your town. The coherence comes with
    it. In i7 a frame a line from mixed situations and in i9 a frame a sentence gave speeches that read as
    assembled (things never introduced, a tag in the wrong slot); in i8 a dealt "absurd premise" became the template.
-3. **Keep the frame's plainness.** Westwood's errands are plain, its humour incidental and broad; add no premise
-   twist, backstory, aside or punchline the frame does not have.
+3. **Keep the frame's size and plainness.** Each part has as many sentences as its frame part, and no clause the
+   frame lacks. Where your scenario needs a fact the frame does not carry (a place, a reward), put it in the place of
+   one of the frame's own facts, never as an extra clause. No explanation of why, no logistics (where the hidden door
+   is, how to open it), no closing sentiment, no foreshadowing; Westwood ends abruptly on the reward or an order.
+   Its humour is blunt and silly, never a set-up and a punchline. One address word ("lad" or "young sir") a quest at
+   most, and only where the frame has one.
 4. **Every short line from its frame.** Reminders, afterwards, refusals, townsfolk, guards, shopkeepers, captives
    and journal entries each have a frame: one of Westwood's own lines, dealt to you alone. Rewrite it line for line:
    keep its shape (about as many sentences, its punctuation where it falls, its opening and ending, its stock words,
@@ -53,6 +57,12 @@ tell your town from one of Westwood's.
   callback punchline in the thanks; "X is worse than a plague!" similes; "My X! My poor X!"; thanks that open by
   naming the returned thing and close on a quip. Westwood's thanks are often generic ("Please accept this as a token
   of my appreciation!").
+- **(i10) Quest frames, padded.** Written from Westwood quests, ours were caught by what was added to them:
+  logistics ("the camp below the fort", how to work the hidden entrance), cause and consequence, warm closing
+  sentiments ("His father will sleep better tonight"), comic self-introductions ("Hmmm... Quite so"), pseudo-archaic
+  ornament ("sorely", "foulest of ends"), "young sir" three times, `--`, several errands in one briefing, Westwood
+  tics in clumps ("Haw, haw, haw"). And judges who know Nox recognise a famous quest under new nouns: keep the
+  skeleton, change the trouble as well as the names.
 - **(i9) Assembled speeches.** Built a sentence at a time from frames of different speeches, offers read as
   spliced: stock beats ("How will I ever repay you", a cackle) that do not follow from what came before, objects and
   people never introduced, two address words ("lad", "young sir") in one quest, a briefing crammed into one long

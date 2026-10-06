@@ -1,0 +1,637 @@
+{
+ "scenario": "town",
+ "iter": "i10",
+ "writer": "one writer a town (variants/i10/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Tobin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Cloak of Mists": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Ooooh, how could this happen? Those nasty Urchins knocked down both of my millhands. There's no time to run for help. Quickly, will you go after them before my Cloak of Mists is lost in the old barrow east of the ford?"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My Cloak of Mists is saved! You'll need good boots for the climb up Crow Hill. Here, take these with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Cloak of Mists stolen by the Urchins."
+    },
+    "guard": {
+     "speaker": "Garrick",
+     "text": "Only Halvard's own men may pass this gate!"
+    },
+    "shop": {
+     "speaker": "Dunstan",
+     "text": "The ferrymen have doubled the fare across the river."
+    },
+    "townsfolk1": {
+     "speaker": "Townsman",
+     "text": "The ferry below Wenna's mill will take you to the far bank."
+    },
+    "townsfolk2": {
+     "speaker": "Townsman",
+     "text": "You look awful scrawny for a wolf-hunter. Hah, hah, hah...!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Ostrum: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Ostrum": "place",
+    "the Copper Deep": "place",
+    "Grummox": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ulmar": "person",
+    "Dagrim": "person",
+    "Kettrig": "person",
+    "Pellox": "person",
+    "Ottla": "person",
+    "Krell": "person",
+    "Varlo Blackpick": "person",
+    "Lissel": "person",
+    "Tobb": "person",
+    "Gubbin": "person",
+    "Tarsk": "person",
+    "Zephrin": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellox",
+     "text": "Truth is, trade has been rather poor lately. Ten days ago, thieves broke into my shop and emptied the strongbox.\n\nI don't suppose my silver will ever come back, but I'd like nothing better than seeing those crooks pay for what they did.\n\nI'll gladly reward whoever puts a stop to them."
+    },
+    "completion": {
+     "speaker": "Pellox",
+     "text": "So the thieves have got what was coming to them! Good work, lad! The whole town can rest easier knowing those crooks won't be sneaking their grubby hands into our strongboxes!\n\nAnd here's your reward... 150 in gold! You'll always be welcome at Pellox's shop!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the thieves who robbed Pellox."
+    },
+    "guard": {
+     "speaker": "Kettrig",
+     "text": "What are you doing here? The lift is shut by order! You'd best go see Foreman Dagrim if you hope to get below. The Ogres hold the Copper Deep."
+    },
+    "shop": {
+     "speaker": "Zephrin",
+     "text": "What is it you want, Wanderer? I have work to do."
+    },
+    "townsfolk1": {
+     "speaker": "Old Miner",
+     "text": "Dig, stranger, dig! Hee, hee, hee...!"
+    },
+    "townsfolk2": {
+     "speaker": "Townswoman",
+     "text": "Good day, friend Wanderer."
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Vell: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Vell": "place",
+    "Black Fen": "place",
+    "Sunken Keep": "place",
+    "Troll caves": "place",
+    "Kessik's forge": "place",
+    "Grulga": "person",
+    "Trolls": "group",
+    "Marsh Guard": "group",
+    "Ulmar": "person",
+    "Pellig": "person",
+    "Tansy": "person",
+    "Torvic": "person",
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Oswig": "person",
+    "Dagny": "person",
+    "Vasko": "person",
+    "Kessik": "person",
+    "Bodo": "person",
+    "Ystra": "person",
+    "Fisk": "person",
+    "Brena": "person",
+    "Staff of Binding": "thing",
+    "Trial of Blades": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Oswig",
+     "text": "Greetings, Wanderer! Thank goodness you've come at last, for we sorely need your help. Grulga's Trolls swept through Vell only days ago and carried off the Staff of Binding! Will you go to the Troll caves to the southwest and bring the precious Staff back to me as quickly as you can?"
+    },
+    "completion": {
+     "speaker": "Oswig",
+     "text": "Well done, brave Wanderer! My deepest thanks for bringing back the Staff! Now that we have it again, we can at last put an end to that wicked witch's schemes for good!\n\nHere, these blue potions and this spell book should prove useful... more useful than you know."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Staff of Binding."
+    },
+    "guard": {
+     "speaker": "Torvic",
+     "text": "Lookin' to spend a night in the stocks?"
+    },
+    "shop": {
+     "speaker": "Bodo",
+     "text": "You've no business back here. Best get out of my kitchen."
+    },
+    "townsfolk1": {
+     "speaker": "Fisk",
+     "text": "Hurry! Mayor Pellig is expecting you in his house across the village. There's a little boat behind the inn that can carry you over to him."
+    },
+    "townsfolk2": {
+     "speaker": "Tansy",
+     "text": "Good work saving Mortimer, stranger! I hear Hesper is telling everyone about it!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Tarnhold: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Tarnhold": "place",
+    "Vargoth": "person",
+    "Hadrim": "person",
+    "Rusk": "person",
+    "Orlo": "person",
+    "Brunwick": "person",
+    "Wendle": "person",
+    "Ottla": "person",
+    "Ostrick": "person",
+    "Nebbick": "person",
+    "Grimwald": "person",
+    "Pobbin": "person",
+    "Brokk": "person",
+    "Quilla": "person",
+    "Dask": "person",
+    "Yorra": "person",
+    "Mott": "person",
+    "Grael Gorge": "place",
+    "Rusty Helm": "place",
+    "Ogre-Be-Gone": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wendle",
+     "text": "Sorry, mate, the drawbridge is jammed! Only way to the south road is under the wall, through the Urchin den. But, if you go that way, mate, stay sharp! The Urchins swiped my helmet while I was napping on watch!\n\nIf you get it back, mate, I'll give you a damn fine spell book."
+    },
+    "completion": {
+     "speaker": "Wendle",
+     "text": "My helmet! I figured it was gone for good! I owe you one, mate. Here's the spell book, like I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the drawbridge sentry's helmet from the Urchins and give it back."
+    },
+    "guard": {
+     "speaker": "Brunwick",
+     "text": "Sorry. Gate's barred. Turn around."
+    },
+    "shop": {
+     "speaker": "Brokk",
+     "text": "Times are bad. Buy something, before I test this new mace on your skull!"
+    },
+    "townsfolk1": {
+     "speaker": "Dask",
+     "text": "March on, Wanderer. Your strength and the garrison's spears will drive back these foul Ogres."
+    },
+    "townsfolk2": {
+     "speaker": "Mott",
+     "text": "Shouldn't you be off to Grael Gorge by now?"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tolvin: cross-section: heirloom_fetch, the magic, a guard, two townsfolk",
+   "names": {
+    "Tolvin": "place",
+    "Gorvane": "person",
+    "Mayor Gorvane": "person",
+    "Quillan": "person",
+    "Master Quillan": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Tobb": "person",
+    "Grella": "person",
+    "Ysolde": "person",
+    "Corm": "person",
+    "Fennick": "person",
+    "Tibbet": "person",
+    "Dobbs": "person",
+    "Porley": "person",
+    "Hobb": "person",
+    "Esmolde": "person",
+    "Heron Rock": "place",
+    "Gull Isle": "place",
+    "Fenwood": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Orb of Calling": "thing",
+    "Staff of Mending": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Imp": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysolde",
+     "text": "While I tend to the fishermen hurt in these raids, there's another errand I need run.\n\nCorm, my brother, has sent word that he has finished the Staff of Mending I asked him to make. But nobody has heard a peep from him since the Urchins started prowling the east shore.\n\nUnder this house there is an old tunnel which we used to hide from raiders. It comes out at Corm's hut. Just stand beside the barrels at the back of this room and you'll find the way in.\n\nWill you fetch the Staff for me and see how Corm is faring?"
+    },
+    "completion": {
+     "speaker": "Ysolde",
+     "text": "You have the Staff of Mending! Wonderful!\n\nBut my fears for poor Corm have come true, I see. I will miss him, but there's no time for grieving now. Mayor Gorvane needs every able hand and he has asked to see you.\n\nTake this Ankh for your trouble. Good luck, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Staff of Mending which Corm has made."
+    },
+    "guard": {
+     "speaker": "Tobb",
+     "text": "No way through! Shove off, pest!"
+    },
+    "shop": {
+     "speaker": "Esmolde",
+     "text": "Hmm... Not the cheapest potions, I admit... But mighty strong all the same!"
+    },
+    "townsfolk1": {
+     "speaker": "Fisherman",
+     "text": "You're thinking of my brother, sorry."
+    },
+    "townsfolk2": {
+     "speaker": "Maiden",
+     "text": "Ew! I saw one of those Urchins sneak right into the Mayor Gorvane's boathouse!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Olvane: cross-section: bounty_offer, the inn, a guard, two townsfolk",
+   "names": {
+    "Olvane": "place",
+    "the College": "place",
+    "the Observatory": "place",
+    "the Bell Tower": "place",
+    "the Brass Owl": "place",
+    "the summoning hall": "place",
+    "the College cellars": "place",
+    "the College library": "place",
+    "the north gate": "place",
+    "Grelvin": "person",
+    "Haskel": "person",
+    "Tibald": "person",
+    "Brunt": "person",
+    "Dobbo": "person",
+    "Vashti": "person",
+    "Pumbric": "person",
+    "Vimbly": "person",
+    "Ostrigan": "person",
+    "Ursin": "person",
+    "Fennick": "person",
+    "Wendle": "person",
+    "Ebbo": "person",
+    "Hulda": "person",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the guards": "group",
+    "the porters": "group",
+    "the Golem Trial": "thing",
+    "Friend of the College": "thing",
+    "magic spectacles": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vimbly",
+     "text": "These wretched bats are the bane of my life! The porters swung brooms at them, but they keep flying back in! My last hope is that you can somehow chase the bats out for good!\n\nThe bats are in my bedchamber, up there, behind the green door. Please, do be careful."
+    },
+    "completion": {
+     "speaker": "Vimbly",
+     "text": "Brave Adventurer, you have my deepest gratitude! You have earned the title of Friend of the College. Brunt and the other guards will be told that you may enter the College library as you please.\n\nTake this gold for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bats out of Chancellor Vimbly's bedchamber."
+    },
+    "guard": {
+     "speaker": "Brunt",
+     "text": "Stand where you are, stranger! Dobbo says you snatched a dagger off his counter and the bare hook on his wall proves it! Come along. I've got a cold and musty cell waiting just for you! Will you go quietly, stranger?"
+    },
+    "shop": {
+     "speaker": "Pumbric",
+     "text": "Not from around here, eh? Most folks up at the College turn their noses up at outsiders, but they've never set foot outside these walls and I've been everywhere! What do they know!? Huh? Heh, heh, heh...\n\nYou're welcome at the Brass Owl anytime, sir."
+    },
+    "townsfolk1": {
+     "speaker": "Fennick",
+     "text": "What're ya gonna do? Hex me?"
+    },
+    "townsfolk2": {
+     "speaker": "Ursin",
+     "text": "Olvane must not fall to Grelvin. Hold fast for the honor of the College!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Ostkar: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Fort Ostkar": "place",
+    "Ostkar": "place",
+    "Kragan": "person",
+    "Trolls": "group",
+    "Brannoc": "person",
+    "Thrane": "person",
+    "Tolvar": "person",
+    "Fenna": "person",
+    "Haskel": "person",
+    "Osk": "person",
+    "Brisa": "person",
+    "Pell": "person",
+    "Tibbet": "person",
+    "Gorm": "person",
+    "Hobb": "person",
+    "Bornik": "person",
+    "Gribb": "person",
+    "Zell": "person",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Upper Gate": "place",
+    "Howling Crag": "place",
+    "Signal Tower": "place",
+    "Lower Vaults": "place",
+    "Keep": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Osk",
+     "text": "Where were you all this time!? We have a dreadful problem!\n\nOvergrown bats and screeching Imps from deep inside the mountain have overrun the cellars under my infirmary. Good men have bled in defense of the fort's precious stores!\n\nAnd one of those Imps flew off with my healing staff! Please, I beg of you! Get my staff back from the beasts and you'll be handsomely rewarded.\n\nThis key opens the cellar door behind the infirmary. The Imps' nest lies somewhere beyond.\n\nI also have a potion which might prove quite handy. Will you help me?"
+    },
+    "completion": {
+     "speaker": "Osk",
+     "text": "You are a true hero! A thousand thanks.\n\nWhile you were down in the cellars, fighting the Imps, Brannoc came by, asking after you. He wants to see you in the Keep -- at the top of the hill.\n\nBefore you leave, please take this gold for your efforts."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Imps from the infirmary cellars and recover Osk's staff."
+    },
+    "guard": {
+     "speaker": "Tolvar",
+     "text": "Aren't you supposed to be off fighting Trolls?"
+    },
+    "shop": {
+     "speaker": "Gribb",
+     "text": "Pssst! Hey! Pal! Need a sword? Lowest price in the pass and they're forged right here in Fort Ostkar!"
+    },
+    "townsfolk1": {
+     "speaker": "Tibbet",
+     "text": "We must drive out Kragan! Smash his Trolls and take back the Upper Gate."
+    },
+    "townsfolk2": {
+     "speaker": "Fenna",
+     "text": "There is a good inn next to Haskel's goat pens."
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Orvak: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Orvak": "place",
+    "Mayor Dunbrak": "person",
+    "Wendril": "person",
+    "Tolvar": "person",
+    "Foreman Kessick": "person",
+    "Master Haggarth": "person",
+    "Pell": "person",
+    "Elsbeth": "person",
+    "Bram": "person",
+    "Warden Holgarth": "person",
+    "Fenwick": "person",
+    "Vesk Blackthumb": "person",
+    "Murdo": "person",
+    "Grondel": "person",
+    "Zarna": "person",
+    "Dibble": "person",
+    "Corla": "person",
+    "Ebbe": "person",
+    "Nissa": "person",
+    "the Cinder Caves": "place",
+    "the Great Forge": "place",
+    "the Ironvein Mine": "place",
+    "the Old Smelter": "place",
+    "the Slag Heaps": "place",
+    "the Sooty Mug": "place",
+    "Fenwick's": "place",
+    "the Forge Hammer": "thing",
+    "the Imps": "group",
+    "the Ember Demons": "group",
+    "the Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Foreman Kessick",
+     "text": "Where in blazes have you been!? We're in dreadful trouble!\n\nMonstrous giant wasps and shrieking bats from the deep tunnels have swarmed the Ironvein Mine. Good miners have perished defending the ore of Orvak!\n\nPlease, I'm begging you! Drive those beasts out of my mine and I promise you a generous reward.\n\nThis key opens the gate at the mine entrance.\n\nI also have a spell book which might come in handy."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "Now that's what I call a hero! My sincerest thanks.\n\nWhile you were down in the mine, driving out the beasts, Wendril stopped by asking after you. He said he'd wait for you at the Great Forge -- just south of here.\n\nAnd before you go, here's some gold as your reward."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill or drive off all the beasts in the Ironvein Mine."
+    },
+    "guard": {
+     "speaker": "Tolvar",
+     "text": "The Imps are pouring out of the Cinder Caves! Mayor Dunbrak wants you at once!"
+    },
+    "shop": {
+     "speaker": "Zarna",
+     "text": "Not many travelers come through lately. Orvak isn't much of a holiday spot these days, what with cutthroats robbing every wagon on the road."
+    },
+    "townsfolk1": {
+     "speaker": "Corla",
+     "text": "I thought heroes didn't mind a little heat. Try keeping out of the lava."
+    },
+    "townsfolk2": {
+     "speaker": "Nissa",
+     "text": "I hear Warden Holgarth's jail got overrun with rats last week. Odd things happening around here lately."
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel Cross: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Torvel Cross": "place",
+    "Fort Ulm": "place",
+    "the Lame Mule": "place",
+    "the old drain": "place",
+    "the north road": "place",
+    "the north gate": "place",
+    "the toll gate": "place",
+    "Morlo's farm": "place",
+    "Urgoth": "person",
+    "Oberik": "person",
+    "Ambrin": "person",
+    "Tobb": "person",
+    "Morlo": "person",
+    "Hask": "person",
+    "Hulda": "person",
+    "Duvic": "person",
+    "Fenna": "person",
+    "Ysolde": "person",
+    "Grizzel": "person",
+    "Gulliam": "person",
+    "Brodd": "person",
+    "Ysmay": "person",
+    "Ogres": "group",
+    "Imp": "group",
+    "Invisibility potion": "thing",
+    "Haste potion": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Please, help me, kind stranger! The Ogres have smashed up my house and one of the brutes is asleep on my magic cloak in the back room!\n\nBring it back to me and I'll be in your debt forever! Will you do it?"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Thank goodness, you found it! How will I ever pay back such courage?!\n\nWhat's that? A big sack of gold? Well, if that's what you want, please accept this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Hulda's magic cloak from the Ogre in her house."
+    },
+    "guard": {
+     "speaker": "Tobb",
+     "text": "Those Ogres never would have taken Fort Ulm if Oberik had been here!"
+    },
+    "shop": {
+     "speaker": "Gulliam",
+     "text": "Sorry, friend, but my cellar's run a bit low. Ogres on the road always make folks thirsty. Heh, heh, heh..."
+    },
+    "townsfolk1": {
+     "speaker": "Townswoman",
+     "text": "No, I won't go out to market while those Ogres hold the north road!"
+    },
+    "townsfolk2": {
+     "speaker": "Barmaid",
+     "text": "Hello, stranger! Come see me again once you're famous."
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Corvale: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Corvale": "place",
+    "Gorbrak": "person",
+    "Captain Brannoc": "person",
+    "Master Ebbrin": "person",
+    "Mayor Pudrick": "person",
+    "Mobb": "person",
+    "Bodger": "person",
+    "Warden Grisholm": "person",
+    "Tibbet": "person",
+    "Haldo": "person",
+    "Sergeant Krell": "person",
+    "Muddock": "person",
+    "Tamsy": "person",
+    "Grobbel": "person",
+    "Quillda": "person",
+    "Hettie": "person",
+    "Darvel": "person",
+    "Pella": "person",
+    "Town Hall": "place",
+    "Old Quarry": "place",
+    "Thistle Hill": "place",
+    "Skarrow Hills": "place",
+    "North Gate": "place",
+    "Muddy Boot": "place",
+    "Horn of Corvale": "thing",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mobb",
+     "text": "Filthy, greedy beasts! The wolves just moved into the woods by my pasture and are already making a terrible nuisance of themselves!\n\nMy name is Mobb. I am looking for my sheepdog, Bodger. I fear he ran off into a wolf den near here.\n\nIf you can find Bodger and bring him home, I would gladly give you my old bow. Come along, I'll take you as far as that miserable den past the north pasture."
+    },
+    "completion": {
+     "speaker": "Mobb",
+     "text": "Bodger's collar! Something dreadful must have happened to him.\n\nWell, you have shown those wolves who is master. Maybe you would make a fine shepherd yourself. Hmmm... Yes.\n\nFollow me back to my cottage. When you are ready, take the bow and quiver by the door. They are yours. We have a great deal to do before the Ogres come down from the hills."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what became of Mobb's sheepdog."
+    },
+    "guard": {
+     "speaker": "Haldo",
+     "text": "You're awful scrawny for an Ogre hunter. Haw, haw, haw...!"
+    },
+    "shop": {
+     "speaker": "Grobbel",
+     "text": "You'd better be quick the Ogres could come back any minute."
+    },
+    "townsfolk1": {
+     "speaker": "Hettie",
+     "text": "An Ogre just went by my gate! Watch out! He can't be far off!"
+    },
+    "townsfolk2": {
+     "speaker": "Pella",
+     "text": "You're not from these parts, are you? Too bad you're not one of Captain Brannoc's soldiers. I just adore soldiers!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

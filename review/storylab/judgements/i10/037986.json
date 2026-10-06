@@ -1,0 +1,32 @@
+{
+  "packet": "037986",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A plain jailer's welcome with a dry threat, then two short escalating warnings; flat, functional and unfussy in the Westwood way."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Bare statement of whose house it is, then generic exclamatory gratitude; bland and slightly repetitive ('deeds'/'deed') the way Westwood's filler NPCs are."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The mocking 'Haw, haw, haw...!' is Nox-like, but the second line belongs to a farmer, not a guard, and the set feels stitched from separate characters to fill slots."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Clipped staccato ('Gate's barred. Turn around.') and a directive with an ellipsis aside read like modern terse barks, not Westwood's fuller, more naive sentences."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Overlong, slightly stilted ceremonial welcome ('open warm arms of aid and hospitality') with 'young sir' and a curt later line; unmistakably the campaign's register."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Bureaucratic checkpoint phrasing, a missing vocative comma and a hammy 'blast you to oblivion'; the slightly awkward plural-place closing line feels authentic."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Three tidy one-liners each doing a job (reminder, shop pointer, excuse); competent but too neatly designed as hint-barks."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Lore-proud, stiff declarations with a dropped article ('can be dangerous place'), the kind of small slip Westwood shipped."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Too long and too busy for a guard: capitalised 'WANT', 'lad'/'stranger', a multi-page payoff with a lift 'oiled and ready'; over-written stage business."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The beard joke and 'dark storm gathering' line read as deliberate attempts at Nox whimsy and portent, each line pitched a bit too knowingly."}
+  ],
+  "tells": [
+    "Westwood's guards speak in flat, sometimes stilted full sentences, with occasional small grammar slips (dropped articles, missing commas) and ceremonial over-politeness; the new texts are cleaner and more crafted.",
+    "New texts favour clipped fragments and ellipses ('Gate's barred. Turn around.', '...unless you want to...') and modern colloquial address ('lad', 'stranger').",
+    "New texts make every bark carry a hint or directive (go see X, smithy is behind Y), while Westwood's barks are often pure flavour or bare statements of fact.",
+    "Over-built scenes (multi-page lift dialogue, all-caps emphasis) and self-conscious humour/portent lines mark the generated ones; Westwood's humour is blunter and less placed."
+  ]
+}

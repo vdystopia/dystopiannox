@@ -1,0 +1,291 @@
+{
+ "iter": "i10",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrum",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "The Ogre warlord Grummox and his Ogres have broken up into the Copper Deep, the lower mines under Ostrum, and carry off the miners.",
+  "names": {
+   "Ostrum": "place",
+   "the Copper Deep": "place",
+   "Grummox": "person",
+   "Ogres": "group",
+   "Imps": "group",
+   "Ulmar": "person",
+   "Dagrim": "person",
+   "Kettrig": "person",
+   "Pellox": "person",
+   "Ottla": "person",
+   "Krell": "person",
+   "Varlo Blackpick": "person",
+   "Lissel": "person",
+   "Tobb": "person",
+   "Gubbin": "person",
+   "Tarsk": "person",
+   "Zephrin": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Kettrig keeps the lift down to the Copper Deep, shut until Foreman Dagrim gives the word.",
+   "names": {
+    "Kettrig": "person",
+    "Dagrim": "person",
+    "the Copper Deep": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Kettrig",
+     "text": "What are you doing here? The lift is shut by order! You'd best go see Foreman Dagrim if you hope to get below. The Ogres hold the Copper Deep."
+    },
+    "again": {
+     "speaker": "Kettrig",
+     "text": "Step away from that lift, lad! Unless you WANT to meet an Ogre!"
+    },
+    "later": {
+     "speaker": "Kettrig",
+     "text": "Hold it right there, stranger! Foreman Dagrim says the way below is yours and his word is good enough for me.\n\nStep in! I've got the lift oiled and ready to go down.\n\nWill you be going below now, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Pellox, who buys ore, had his strongbox emptied by a gang of thieves and pays to see them stopped.",
+   "names": {
+    "Pellox": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellox",
+     "text": "Truth is, trade has been rather poor lately. Ten days ago, thieves broke into my shop and emptied the strongbox.\n\nI don't suppose my silver will ever come back, but I'd like nothing better than seeing those crooks pay for what they did.\n\nI'll gladly reward whoever puts a stop to them."
+    },
+    "reminder": {
+     "speaker": "Pellox",
+     "text": "Are those thieves still running loose? I won't rest easy till they're caught!"
+    },
+    "completion": {
+     "speaker": "Pellox",
+     "text": "So the thieves have got what was coming to them! Good work, lad! The whole town can rest easier knowing those crooks won't be sneaking their grubby hands into our strongboxes!\n\nAnd here's your reward... 150 in gold! You'll always be welcome at Pellox's shop!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the thieves who robbed Pellox."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Ottla, nearly deaf, had her ear horn stolen by the Imps that nest in the old shafts.",
+   "names": {
+    "Ottla": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "Aaaieee! Mercy! Don't hurt me!\n\nEh? Just a stranger?! I didn't hear you come in. Well, you're not one of those wretched Imps who ran off with my ear horn! I'm nearly deaf without it.\n\nIf you'd fetch it back, you'd be saving my life. I'd never forget it! Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Ottla",
+     "text": "Fine then, go! I didn't hear a word you said anyway!"
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Have you got my ear horn?! Eh.... Well, those Imps keep a nest down in the old shafts below the lift."
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "My ear horn! You found it! Bless you, kind sir, bless you! And please, take this book. It holds every spell I learned when I was young. It would serve any adventurer well."
+    },
+    "after": {
+     "speaker": "Ottla",
+     "text": "Thank you again, kind sir! I can hear every word now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ottla's ear horn from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ottla's ear horn from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a cackling old miner, a townsman packing up for the surface, a townswoman's greeting.",
+   "names": {
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Old Miner",
+     "text": "Dig, stranger, dig! Hee, hee, hee...!"
+    },
+    "rumour2": {
+     "speaker": "Townsman",
+     "text": "That does it! First the Ogres take the deep shafts then they come for the town. I'm heading for the surface!"
+    },
+    "rumour3": {
+     "speaker": "Townswoman",
+     "text": "Good day, friend Wanderer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gubbin keeps the inn, Tarsk the arms and armour, Zephrin the potions and spell books.",
+   "names": {
+    "Gubbin": "person",
+    "Tarsk": "person",
+    "Zephrin": "person",
+    "Ostrum": "place",
+    "Ogres": "group",
+    "the Copper Deep": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gubbin",
+     "text": "You're a bold one, poking your nose around Ostrum."
+    },
+    "arms": {
+     "speaker": "Tarsk",
+     "text": "Hard times, lad. I never thought the Ogres would break through into the Copper Deep. A sorry business indeed! Best buy what you need while I still have it!"
+    },
+    "magic": {
+     "speaker": "Zephrin",
+     "text": "What is it you want, Wanderer? I have work to do."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Krell's bounty on the outlaw Varlo Blackpick, dead or alive. Varlo surrenders if cornered: taken alive, 200 gold from Krell; killed, a steel shield.",
+   "names": {
+    "Krell": "person",
+    "Varlo Blackpick": "person",
+    "Dagrim": "person",
+    "Ostrum": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Krell",
+     "text": "Good day, young sir. I presume you have come about the bounty.\n\nThere's a fat price on Varlo Blackpick's head -- dead or alive. He and his pack of cutthroats have been robbing our ore carts for a month.\n\nMind yourself, you don't want to be taken unawares by those vicious dogs."
+    },
+    "offer_b": {
+     "speaker": "Varlo Blackpick",
+     "text": "I give up! Don't kill me, please! I'll come along quiet!"
+    },
+    "outcome_a": {
+     "speaker": "Krell",
+     "text": "Hold, there! Foreman Dagrim told me of a racket down in these tunnels, so I came to have a look.\n\nYou've taken the infamous Varlo Blackpick all by yourself! Most impressive! You have my deepest respect, young sir! Blackpick's gang has plagued Ostrum for a month! I'll take charge of him now. We'll all rest easier with this rotten villain locked away!\n\nHere's the bounty -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Krell",
+     "text": "You killed Varlo, eh? Well, I'd rather have seen him stand trial, but I won't shed a tear for the likes of him!\n\nHere's your reward -- this fine steel shield! Ostrum's tunnels are a safer place thanks to you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Varlo Blackpick for the bounty, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the captured Varlo Blackpick to Warden Krell."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Lissel's brother Tobb was carried off with the night shift by Grummox's Ogres into the Copper Deep.",
+   "names": {
+    "Lissel": "person",
+    "Tobb": "person",
+    "Ogres": "group",
+    "the Copper Deep": "place",
+    "Ostrum": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Lissel",
+     "text": "Sir! Please help me! A band of filthy Ogres just broke into the Copper Deep, under the town, and dragged off nearly all the night shift! My little brother, Tobb, was with them!\n\nPlease bring him back and you'll have a reward, I swear it!"
+    },
+    "reminder": {
+     "speaker": "Lissel",
+     "text": "Oh, what are you waiting for? Tobb is in terrible danger!"
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Hail, brave Adventurer! We're just honest miners, carried off from Ostrum when the Ogres broke through!\n\nCan you lead us back up to the town? Do that, and there's a fine reward waiting for you, I'm sure of it, because Ostrum can't dig an ounce of ore without us!"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Quickly, kind sir and lead us up out of this pit!"
+    },
+    "completion": {
+     "speaker": "Lissel",
+     "text": "Tobb's home! Thank you, thank you, kind stranger! Please accept these as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Lissel's brother from the Ogres in the Copper Deep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Ulmar sets the player down off his airship above Ostrum and sends him to his old friend Foreman Dagrim, while Grummox's Ogres hold the deep.",
+   "names": {
+    "Ulmar": "person",
+    "Dagrim": "person",
+    "Grummox": "person",
+    "Ogres": "group",
+    "Ostrum": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Help! The Ogres are in the lower shafts! Somebody fetch Foreman Dagrim!"
+    },
+    "opening": {
+     "speaker": "Ulmar",
+     "text": "I'll set you down here, lad. Grummox's Ogres keep too close a watch on the mountain to fly any nearer.\n\nTake the mine road down to Ostrum.\n\nSeek out my old friend Dagrim, the Foreman. He'll lend you a hand if he can.\n\nAnd take these potions. Should the Ogres corner you, they'll keep you on your feet. Mind how you go, lad."
+    },
+    "reminder": {
+     "speaker": "Ulmar",
+     "text": "Go on! Don't dawdle here. Down the road with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Foreman Dagrim's house in the Village of Ostrum."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion"]
+   }
+  }
+ }
+}

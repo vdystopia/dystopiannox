@@ -1,0 +1,309 @@
+{
+ "iter": "i10",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Torvel Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Chief Urgoth's Ogres have taken Fort Ulm above the crossroads, shut the north road and carried off women of the hamlet.",
+  "names": {
+   "Torvel Cross": "place",
+   "Fort Ulm": "place",
+   "the Lame Mule": "place",
+   "the old drain": "place",
+   "the north road": "place",
+   "the north gate": "place",
+   "the toll gate": "place",
+   "Morlo's farm": "place",
+   "Urgoth": "person",
+   "Oberik": "person",
+   "Ambrin": "person",
+   "Tobb": "person",
+   "Morlo": "person",
+   "Hask": "person",
+   "Hulda": "person",
+   "Duvic": "person",
+   "Fenna": "person",
+   "Ysolde": "person",
+   "Grizzel": "person",
+   "Gulliam": "person",
+   "Brodd": "person",
+   "Ysmay": "person",
+   "Ogres": "group",
+   "Imp": "group",
+   "Invisibility potion": "thing",
+   "Haste potion": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb at the north gate, shut while Chief Urgoth's Ogres hold Fort Ulm.",
+   "names": {
+    "Tobb": "person",
+    "Oberik": "person",
+    "Urgoth": "person",
+    "Fort Ulm": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Those Ogres never would have taken Fort Ulm if Oberik had been here!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "No, nobody goes north while the Ogres hold Fort Ulm!"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Did you see which way Urgoth ran? An Ogre that big couldn't just disappear!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Morlo the cider farmer wants the Imp in the old well behind his barn killed, the Imp having riled up the rats; he pays with a letter for Hask the Ferryman.",
+   "names": {
+    "Morlo": "person",
+    "Hask": "person",
+    "Torvel Cross": "place",
+    "Morlo's farm": "place",
+    "Imp": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Morlo",
+     "text": "Good! My family presses the best cider in Torvel Cross. Sadly, a nasty little Imp has moved into the old well behind our barn. He has riled up the rats and now they bite anyone who goes near the barn.\n\nGo kill the Imp and when you get back, I'll write you a letter for Hask the Ferryman.\n\nHere, take this iron key, it opens the barn door."
+    },
+    "reminder": {
+     "speaker": "Morlo",
+     "text": "Courage, one small Imp is nothing to fear. Come back once he's been done away with."
+    },
+    "completion": {
+     "speaker": "Morlo",
+     "text": "Wonderful! The Imp is dead!\n\nHere is your letter. Give it to Hask the Ferryman and he'll take you over the river. Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Imp stirring up the rats on Morlo's farm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Hulda's house was smashed up by the Ogres and one of them is asleep on her magic cloak in the back room.",
+   "names": {
+    "Hulda": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Please, help me, kind stranger! The Ogres have smashed up my house and one of the brutes is asleep on my magic cloak in the back room!\n\nBring it back to me and I'll be in your debt forever! Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Oh, no! Then who will save my cloak?!"
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Keep anything else you find in there! Just hurry and bring my cloak!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Thank goodness, you found it! How will I ever pay back such courage?!\n\nWhat's that? A big sack of gold? Well, if that's what you want, please accept this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "Bless you again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Hulda's magic cloak from the Ogre in her house."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Hulda's magic cloak from the Ogre in her house."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Torvel Cross: a market woman who stays home, a townsman who wants revenge, a flirting barmaid.",
+   "names": {
+    "Ogres": "group",
+    "the north road": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townswoman",
+     "text": "No, I won't go out to market while those Ogres hold the north road!"
+    },
+    "rumour2": {
+     "speaker": "Townsman",
+     "text": "We must take up arms and avenge the carters the Ogres killed on the road!"
+    },
+    "rumour3": {
+     "speaker": "Barmaid",
+     "text": "Hello, stranger! Come see me again once you're famous."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gulliam of the Lame Mule inn, Brodd the smith, Ysmay of the potion shop.",
+   "names": {
+    "Gulliam": "person",
+    "Brodd": "person",
+    "Ysmay": "person",
+    "the Lame Mule": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gulliam",
+     "text": "Sorry, friend, but my cellar's run a bit low. Ogres on the road always make folks thirsty. Heh, heh, heh..."
+    },
+    "arms": {
+     "speaker": "Brodd",
+     "text": "What d'ya need, then?"
+    },
+    "magic": {
+     "speaker": "Ysmay",
+     "text": "Are you a paying customer?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Women of Torvel Cross kidnapped in an Ogre raid and held in the pens of Fort Ulm: Ysolde asks to be led home, sharp-tongued Grizzel asks again and sulks at a no.",
+   "names": {
+    "Ysolde": "person",
+    "Grizzel": "person",
+    "Torvel Cross": "place",
+    "Fort Ulm": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ysolde",
+     "text": "Hail, brave Adventurer! We are honest women, snatched from Torvel Cross in a vicious Ogre raid!\n\nWill you please lead us safely home? If you do, I'm sure a fine reward will be yours, since the men of Torvel Cross can't even cook their own supper without us!"
+    },
+    "offer_b": {
+     "speaker": "Grizzel",
+     "text": "Oh, it's you again. Have you thought it over? Will you be our hero and take us home?"
+    },
+    "outcome_a": {
+     "speaker": "Ysolde",
+     "text": "Then it's agreed! We'll follow you home!\n\nWe have to be quick. Time is short!\n\nThe Ogres barred the door of this pen, but I heard one of those smelly Ogre cooks talk about a hole behind the woodpile. If we poke around here, perhaps we can find it!"
+    },
+    "outcome_b": {
+     "speaker": "Grizzel",
+     "text": "Well, that's a shame. I hope you think it over soon, for I fear it's nearly supper time. I heard the big one sharpening his cleaver a little while ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Lead the kidnapped women out of the Ogre pens in Fort Ulm."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "NOTE: The Ogres have barred the way out. Search the pens for another way."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Mayor Duvic's house is overrun by bats and his cook Fenna is trapped in the pantry.",
+   "names": {
+    "Duvic": "person",
+    "Fenna": "person",
+    "Torvel Cross": "place",
+    "the toll gate": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Duvic",
+     "text": "These filthy bats are the bane of my house! My guards tried to swat them, but they keep coming back! You're my last hope! Get past those bats and bring my cook out alive!\n\nFenna is trapped in the pantry, there, through the kitchen door. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Duvic",
+     "text": "I shall not set foot inside till Fenna is safe! Kill the bats! Or drive them off! Hurry, before they get to her!"
+    },
+    "found": {
+     "speaker": "Fenna",
+     "text": "Is somebody there? Oh, please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Fenna",
+     "text": "Take me back to Mayor Duvic, please."
+    },
+    "completion": {
+     "speaker": "Duvic",
+     "text": "Kind sir, my warmest thanks! You are a true friend of Torvel Cross. The gatemen will be told that you may pass the toll gate free of charge from now on.\n\nTake this gold for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Fenna the cook from the bats in Mayor Duvic's house."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player, Oberik's man, to Ambrin at the old drain, who sends him into Fort Ulm for the north gate key Chief Urgoth keeps.",
+   "names": {
+    "Oberik": "person",
+    "Ambrin": "person",
+    "Urgoth": "person",
+    "Fort Ulm": "place",
+    "the old drain": "place",
+    "the north gate": "place",
+    "Ogres": "group",
+    "Invisibility potion": "thing",
+    "Haste potion": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "WHAT? Oberik sent... YOU? Well, Ambrin's waiting for you by the old drain."
+    },
+    "opening": {
+     "speaker": "Ambrin",
+     "text": "Sorry about the muck, lad, but the old drain is the only way into Fort Ulm without a fight. There are two Ogres on guard here and plenty more inside.\n\nYou must bring back the north gate key, but Chief Urgoth won't part with it easily. This could get very nasty, lad. But these potions will help."
+    },
+    "reminder": {
+     "speaker": "Ambrin",
+     "text": "The Invisibility potion will help you slip past the Ogres. The Haste potion will keep anyone from catching you as you run back out. Good luck and be swift."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Sneak into Fort Ulm through the old drain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

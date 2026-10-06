@@ -1,0 +1,28 @@
+{
+  "packet": "b05952",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Breathless '!?' opener, specific odd items (an ankh), the digit in '4 trapped apprentices' and the slightly clumsy journal read like shipped Westwood. Its twin C reads like the copy, not this."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Competent, but the self-introduction ('I am X, wizard to...') and the neat foreshadowing close ('We have much to do before X makes his move') are tidier than Nox. The stammered 'Og... Ogre!' feels put in on purpose."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "It follows A beat for beat ('Where in the world have you been!?', 'I beg of you!', key, potion, 'While you were down...', '-- at the foot of...'), so it looks like a template filled in. 'Lost in the noble pursuit of knowledge' is a writerly flourish."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Terse, a bit crude ('lovely women', 'damsels', 'before the Ogres eat them'), with a two-word captive line: unpolished period game text."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Overlong exposition dumped through the captive, a mangled sentence ('leaving rebuilding the village our smallest concern', 'At happier other times') and stacked exclamations: Westwood's real roughness."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The functional captive lines (key, chest of supplies, secret passage) feel like Nox. But 'express elevator', 'We best go' and 'Thank the stars you're both alive!' sound more modern and casual than the rest."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The absurd frog captive ('Fine! I will follow you!') and the deadpan 'Loads and loads of money?' joke match Nox's silly side-quest humour."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Smooth and well built: a staged hand-off ('I'll see the boy home from here'), the homely sentiment 'sleep better tonight with his son safe under his roof', and 'young sir' used three times. It reads like a pastiche."}
+  ],
+  "tells": [
+    "New texts copy a Westwood quest's beats almost line for line (opener, plea, key, extra item, 'while you were away' hand-off), so two near-identical texts in a packet point to one copy.",
+    "Westwood's lines are rougher: mangled syntax, digits in journals, crude or silly humour, captives dumping exposition. New lines are grammatically clean and evenly paced.",
+    "New texts add warm, rounded closing sentiments ('His father will sleep better tonight') and foreshadowing sign-offs. Westwood ends abruptly with a reward or a command.",
+    "New texts repeat polite address forms ('young sir') several times and add small writerly flourishes ('noble pursuit of knowledge')."
+  ]
+}

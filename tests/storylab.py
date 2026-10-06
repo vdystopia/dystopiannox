@@ -162,8 +162,9 @@ def _words(parts):
 def _md_items(sc, it, items, title):
     pp = sc["packet_parts"]
     md = [f"# Blind packet {title}: {sc['title']}", "",
-          "Ten texts of one kind, each the lines of one quest or one place in a Nox single-player map. Some are from "
-          "Westwood's Nox campaign, some were written for new maps. Names are masked: [Person], [Place], [Thing], "
+          f"{('Ten', 'Nine', 'Eight', 'Seven', 'Six')[10 - len(items)] if 6 <= len(items) <= 10 else len(items)} texts of one kind, each the lines of one quest or one place in a Nox single-player map. "
+          f"Exactly half{' (five)' if len(items) == 10 else ' (' + str(len(items) // 2) + ')'} are from "
+          "Westwood's Nox campaign, the others were written for new maps. Names are masked: [Person], [Place], [Thing], "
           "[Group]. Judge by JUDGE.md (review/storylab/JUDGE.md) and answer in its JSON.", ""]
     key = {}
     for L, (src, ref, parts, names) in zip(LETTERS, items):
@@ -206,22 +207,41 @@ def packet(world, sc, it, vs, n_each=5):
     if it in LEGACY: return packet_v1(world, sc, it, vs, n_each)
     rng = random.Random(_seed(sc["id"], it))
     pp = sc["packet_parts"]
-    ours = [v for v in vs if all(p in v["parts"] for p in pp)]
-    ours = rng.sample(ours, min(n_each, len(ours)))
+    cands = [v for v in vs if all(p in v["parts"] for p in pp)]
     txt = lambda v: {p: (v["parts"][p]["text"] if isinstance(v["parts"][p], dict) else v["parts"][p]) for p in pp}
-    pool = [u for u in ww_units(sc) if all(p in u["parts"] for p in pp)]
+    full = [u for u in ww_units(sc) if all(p in u["parts"] for p in pp)]
     dp = os.path.join(OUT, f"dealt_{it}.json")             # v10: no Westwood unit beside a text written from it
-    if os.path.exists(dp):
-        dealt = json.load(open(dp))
-        banned = {k for v in ours for keys in (dealt.get(str(v.get("id"))) or {}).values() for k in keys}
-        pool = [u for u in pool if not any(k in banned for kk in u["keys"].values() for k in (kk if isinstance(kk, list) else [kk]))]
+    dealt = json.load(open(dp)) if os.path.exists(dp) else None
+
+    S_ = westwood.strings()
+
+    def allowed(sel):
+        if not dealt: return full
+        banned = {k for v in sel for keys in (dealt.get(str(v.get("id"))) or {}).values() for k in keys}
+        out = [u for u in full if not any(k in banned for kk in u["keys"].values() for k in (kk if isinstance(kk, list) else [kk]))]
+        if it not in ("i10",):                              # (i11 on) and no near-copy of a dealt line under another key
+            import difflib
+            bt = [S_[k] for k in banned if k in S_]
+            out = [u for u in out if not any(difflib.SequenceMatcher(None, t, b).ratio() > 0.6
+                                             for t in u["parts"].values() for b in bt)]
+        return out
+    best = None
+    for _ in range(300 if dealt else 1):                    # five of ours that leave five Westwood units to set beside them
+        sel = rng.sample(cands, min(n_each, len(cands)))
+        left = allowed(sel)
+        if best is None or len(left) > len(best[1]): best = (sel, left)
+        if len(left) >= n_each: break
+    ours, pool = best
+    pool = list(pool)
     rng.shuffle(pool)
     ww = []
+    matched = []
     for v in sorted(ours, key=lambda v: -_words(txt(v))):    # the Westwood unit nearest in length to each of ours
         pool = [u for u in pool if not _shares(u, ww, pp)]  # no line twice in a packet
         if not pool: break
         u = min(pool, key=lambda u: abs(_words({p: u["parts"][p] for p in pp}) - _words(txt(v))))
-        pool.remove(u); ww.append(u)
+        pool.remove(u); ww.append(u); matched.append(v)
+    ours = matched                                          # as many of ours as Westwood units, half and half
     items = [("generated", v.get("id"), txt(v), dict(world["names"], **(v.get("names") or {}))) for v in ours]
     items += [("westwood", "|".join(str(u["keys"][p]) for p in pp), {p: u["parts"][p] for p in pp}, {}) for u in ww]
     rng.shuffle(items)

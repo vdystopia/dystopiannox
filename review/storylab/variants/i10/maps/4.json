@@ -1,0 +1,302 @@
+{
+ "iter": "i10",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tarnhold",
+  "setting": "a castle town with a garrison",
+  "trouble": "The sorcerer Vargoth's Ogres hold the old fort above Grael Gorge and raid the roads, and Baron Hadrim has barred the east gate. Captain Orlo sent the player to help.",
+  "names": {
+   "Tarnhold": "place",
+   "Vargoth": "person",
+   "Hadrim": "person",
+   "Rusk": "person",
+   "Orlo": "person",
+   "Brunwick": "person",
+   "Wendle": "person",
+   "Ottla": "person",
+   "Ostrick": "person",
+   "Nebbick": "person",
+   "Grimwald": "person",
+   "Pobbin": "person",
+   "Brokk": "person",
+   "Quilla": "person",
+   "Dask": "person",
+   "Yorra": "person",
+   "Mott": "person",
+   "Grael Gorge": "place",
+   "Rusty Helm": "place",
+   "Ogre-Be-Gone": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brunwick at the east gate, barred by Baron Hadrim while Vargoth's Ogres hold the Gorge; later the gate is open.",
+   "names": {
+    "Brunwick": "person",
+    "Rusk": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunwick",
+     "text": "Sorry. Gate's barred. Turn around."
+    },
+    "again": {
+     "speaker": "Brunwick",
+     "text": "Nobody comes in through this gate anymore."
+    },
+    "later": {
+     "speaker": "Brunwick",
+     "text": "I would see Commander Rusk at the outpost first... unless you want to fight the Ogres alone."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Wendle, sentry at the jammed drawbridge, had his helmet taken by the Urchins of the den under the wall while he napped on watch.",
+   "names": {
+    "Wendle": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wendle",
+     "text": "Sorry, mate, the drawbridge is jammed! Only way to the south road is under the wall, through the Urchin den. But, if you go that way, mate, stay sharp! The Urchins swiped my helmet while I was napping on watch!\n\nIf you get it back, mate, I'll give you a damn fine spell book."
+    },
+    "reminder": {
+     "speaker": "Wendle",
+     "text": "Got my helmet yet, mate? I feel naked out here without it!"
+    },
+    "completion": {
+     "speaker": "Wendle",
+     "text": "My helmet! I figured it was gone for good! I owe you one, mate. Here's the spell book, like I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the drawbridge sentry's helmet from the Urchins and give it back."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ottla, the brewer's wife; an Imp in the brewery cellar stole her husband's magic cloak. She hands over the cellar key.",
+   "names": {
+    "Ottla": "person",
+    "Tarnhold": "place",
+    "Brokk": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "At last! My husband brews the finest ale in Tarnhold. Unfortunately, a nasty little Imp has moved into the cellar below our brewery. He stole my husband's magic cloak and now he bites anyone who goes down the stairs.\n\nWill you kill the Imp and bring back the cloak? When you return, I'll make it worth your while.\n\nHere, take this iron key, it opens the cellar door."
+    },
+    "refusal": {
+     "speaker": "Ottla",
+     "text": "Pity, I doubt anyone else in town will have work for you.\n\nShould you think better of it, I'll be at the brewery behind the barracks."
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Take heart, one puny Imp can't do much harm. Return once he's dead and you have the cloak."
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "Wonderful! You've killed the Imp and found the cloak!\n\nHere is your reward. Take it to Brokk at the forge and he'll fix you up for the Ogres. Good luck!"
+    },
+    "after": {
+     "speaker": "Ottla",
+     "text": "Thanks again for the cloak, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Imp in the brewery cellar and bring back the magic cloak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Kill the Imp in the brewery cellar and bring back the magic cloak."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Dask, a soldier of the garrison; Yorra, a townswoman; Mott, an idler by the well.",
+   "names": {
+    "Dask": "person",
+    "Yorra": "person",
+    "Mott": "person",
+    "Grael Gorge": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dask",
+     "text": "March on, Wanderer. Your strength and the garrison's spears will drive back these foul Ogres."
+    },
+    "rumour2": {
+     "speaker": "Yorra",
+     "text": "How can the garrison hold off the Ogres? This is terrible! Where will we go?"
+    },
+    "rumour3": {
+     "speaker": "Mott",
+     "text": "Shouldn't you be off to Grael Gorge by now?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Pobbin of the Rusty Helm inn, Brokk the smith, Quilla the potion seller.",
+   "names": {
+    "Pobbin": "person",
+    "Rusty Helm": "place",
+    "Brokk": "person",
+    "Quilla": "person",
+    "Orlo": "person",
+    "Ogre-Be-Gone": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pobbin",
+     "text": "So, you've got both Captain Orlo's letter and the Baron's ear. Good for you, young sir!"
+    },
+    "arms": {
+     "speaker": "Brokk",
+     "text": "Times are bad. Buy something, before I test this new mace on your skull!"
+    },
+    "magic": {
+     "speaker": "Quilla",
+     "text": "Wanna taste my newest potion?\n\nI call it 'Ogre-Be-Gone.'"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Quartermaster Ostrick wants the garrison's pay chest back from the Ogres; Nebbick, who drinks in the Rusty Helm, offers to sell the old north tower.",
+   "names": {
+    "Ostrick": "person",
+    "Nebbick": "person",
+    "Vargoth": "person",
+    "Rusty Helm": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrick",
+     "text": "I'm afraid the men are in a foul mood, with Vargoth's Ogres raiding our supply wagons. They took the garrison's pay chest on the south road. Get it back for me and I'll open the armory to you."
+    },
+    "offer_b": {
+     "speaker": "Nebbick",
+     "text": "So, you ready to buy the old north tower and its dungeon? Only 30,000 in gold for the pair of them!"
+    },
+    "outcome_a": {
+     "speaker": "Ostrick",
+     "text": "Excellent! You got the pay chest back, lad! Here, take this shield from the armory. I hope you live through this whole business. Now if you'll excuse me, I've got soldiers to pay. Good luck, and keep clear of Vargoth's Ogres if you want to keep your head!"
+    },
+    "outcome_b": {
+     "speaker": "Nebbick",
+     "text": "Ah, never mind, friend. I'm sure somebody else will want a tower and a dungeon. Should you reconsider, you know where I'll be!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the Ogres for Quartermaster Ostrick."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the old north tower from Nebbick."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Grimwald, the Baron's wizard; his apprentice went down into the Spider nest in the cellars below the keep and has not come back.",
+   "names": {
+    "Grimwald": "person",
+    "Hadrim": "person",
+    "Vargoth": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grimwald",
+     "text": "Crawling little horrors! The Spiders just crept up into the keep and have made a real nuisance of themselves!\n\nI am Grimwald, wizard to Baron Hadrim. My apprentice has gone missing. I'm afraid he wandered into the Spider nest in the cellars below us.\n\nBring him back to me safe, and I will see you properly rewarded. Come along, I'll show you the stair down to that wretched nest."
+    },
+    "reminder": {
+     "speaker": "Grimwald",
+     "text": "Any word of my apprentice? Oh my, I fear for the boy."
+    },
+    "found": {
+     "speaker": "Apprentice",
+     "text": "Thank you for finding me, but I've hurt my leg. The Spiders... they weren't the only things down here! I saw an Og... Og... Ogre! Please, help me back to Master Grimwald."
+    },
+    "following": {
+     "speaker": "Apprentice",
+     "text": "Hurry, please! That Ogre could be anywhere!"
+    },
+    "completion": {
+     "speaker": "Grimwald",
+     "text": "My apprentice! Alive, thank goodness!\n\nClearly those Spiders were nothing to you. Maybe you'd make a decent apprentice yourself. Hmmm... Yes.\n\nTake this robe, then. When you are ready, go up to the keep and tell Baron Hadrim what you saw down there. We have much to do before Vargoth makes his move."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what happened to Grimwald's apprentice."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Yorra points the player to Baron Hadrim in the keep; the Baron sends him east to Commander Rusk at the Grael Gorge outpost, where Vargoth's Ogres hold the old fort.",
+   "names": {
+    "Yorra": "person",
+    "Hadrim": "person",
+    "Rusk": "person",
+    "Vargoth": "person",
+    "Brokk": "person",
+    "Grael Gorge": "place",
+    "Tarnhold": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Yorra",
+     "text": "I'm late for market, sorry. Baron Hadrim is up in the keep."
+    },
+    "opening": {
+     "speaker": "Hadrim",
+     "text": "Something is very wrong in our valley. I need you to ride east to Grael Gorge. There you must find Commander Rusk at the outpost.\n\nHe has asked for our help against the Ogres of the sorcerer Vargoth, who now hold the old fort above the pass.\n\nTake these potions -- and gold. Visit Brokk's forge for anything more. Then hurry.\n\nThe road through the east gate will lead you to the Gorge."
+    },
+    "reminder": {
+     "speaker": "Hadrim",
+     "text": "There is nothing more I can tell you, brave Adventurer. Ride now, and help Commander Rusk hold the Gorge!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Leave Tarnhold and find Commander Rusk at the Grael Gorge outpost."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

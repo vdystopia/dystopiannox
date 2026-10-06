@@ -1,0 +1,643 @@
+{
+ "scenario": "rescue",
+ "iter": "i10",
+ "writer": "one writer a town (variants/i10/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm begs the player to bring back his novice Pip from the Urchins' barrow.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Tobin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Cloak of Mists": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, kind stranger, you must help! The Urchins have dug into the old barrow east of the ford and my poor novice, Pip, went in after them and never came out!\n\nBring him back and I'll pray for you every day of my life!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Whatever you find down in that barrow is yours to keep! Only hurry and bring Pip home!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "All right! I'll stay close behind you! Only get me out of this hole!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Quick! Take me back to Brother Anselm!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Thank goodness, you found him! How will I ever thank you for your courage?!\n\nWhat's that you say? Heaps and heaps of gold? Well, if that's your price, then please accept this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Pip the Novice from the Urchin barrow east of the ford."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Ostrum: Lissel's brother Tobb was carried off with the night shift by Grummox's Ogres into the Copper Deep.",
+   "names": {
+    "Ostrum": "place",
+    "the Copper Deep": "place",
+    "Grummox": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ulmar": "person",
+    "Dagrim": "person",
+    "Kettrig": "person",
+    "Pellox": "person",
+    "Ottla": "person",
+    "Krell": "person",
+    "Varlo Blackpick": "person",
+    "Lissel": "person",
+    "Tobb": "person",
+    "Gubbin": "person",
+    "Tarsk": "person",
+    "Zephrin": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Lissel",
+     "text": "Sir! Please help me! A band of filthy Ogres just broke into the Copper Deep, under the town, and dragged off nearly all the night shift! My little brother, Tobb, was with them!\n\nPlease bring him back and you'll have a reward, I swear it!"
+    },
+    "reminder": {
+     "speaker": "Lissel",
+     "text": "Oh, what are you waiting for? Tobb is in terrible danger!"
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Hail, brave Adventurer! We're just honest miners, carried off from Ostrum when the Ogres broke through!\n\nCan you lead us back up to the town? Do that, and there's a fine reward waiting for you, I'm sure of it, because Ostrum can't dig an ounce of ore without us!"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Quickly, kind sir and lead us up out of this pit!"
+    },
+    "completion": {
+     "speaker": "Lissel",
+     "text": "Tobb's home! Thank you, thank you, kind stranger! Please accept these as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Lissel's brother from the Ogres in the Copper Deep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Vell: Ulmar begs the player to free Dagny and the boatmen of Vell from the Trolls in the Sunken Keep.",
+   "names": {
+    "Vell": "place",
+    "Black Fen": "place",
+    "Sunken Keep": "place",
+    "Troll caves": "place",
+    "Kessik's forge": "place",
+    "Grulga": "person",
+    "Trolls": "group",
+    "Marsh Guard": "group",
+    "Ulmar": "person",
+    "Pellig": "person",
+    "Tansy": "person",
+    "Torvic": "person",
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Oswig": "person",
+    "Dagny": "person",
+    "Vasko": "person",
+    "Kessik": "person",
+    "Bodo": "person",
+    "Ystra": "person",
+    "Fisk": "person",
+    "Brena": "person",
+    "Staff of Binding": "thing",
+    "Trial of Blades": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ulmar",
+     "text": "Quickly, lad! The boatmen haven't got long. You've got to free every last one of them before the Trolls cook them!"
+    },
+    "reminder": {
+     "speaker": "Ulmar",
+     "text": "There's no time to lose. Get moving!"
+    },
+    "found": {
+     "speaker": "Dagny",
+     "text": "Save us, please!"
+    },
+    "following": {
+     "speaker": "Dagny",
+     "text": "Oh, thank goodness you came!"
+    },
+    "completion": {
+     "speaker": "Ulmar",
+     "text": "Good work, lad! Every one of these brave boatmen owes you his life!\n\nTake these potions with you. Now go and find the rest of them!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Dagny and the boatmen of Vell held captive in the Sunken Keep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Tarnhold: Grimwald, the Baron's wizard; his apprentice went down into the Spider nest in the cellars below the keep and has not come back.",
+   "names": {
+    "Tarnhold": "place",
+    "Vargoth": "person",
+    "Hadrim": "person",
+    "Rusk": "person",
+    "Orlo": "person",
+    "Brunwick": "person",
+    "Wendle": "person",
+    "Ottla": "person",
+    "Ostrick": "person",
+    "Nebbick": "person",
+    "Grimwald": "person",
+    "Pobbin": "person",
+    "Brokk": "person",
+    "Quilla": "person",
+    "Dask": "person",
+    "Yorra": "person",
+    "Mott": "person",
+    "Grael Gorge": "place",
+    "Rusty Helm": "place",
+    "Ogre-Be-Gone": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grimwald",
+     "text": "Crawling little horrors! The Spiders just crept up into the keep and have made a real nuisance of themselves!\n\nI am Grimwald, wizard to Baron Hadrim. My apprentice has gone missing. I'm afraid he wandered into the Spider nest in the cellars below us.\n\nBring him back to me safe, and I will see you properly rewarded. Come along, I'll show you the stair down to that wretched nest."
+    },
+    "reminder": {
+     "speaker": "Grimwald",
+     "text": "Any word of my apprentice? Oh my, I fear for the boy."
+    },
+    "found": {
+     "speaker": "Apprentice",
+     "text": "Thank you for finding me, but I've hurt my leg. The Spiders... they weren't the only things down here! I saw an Og... Og... Ogre! Please, help me back to Master Grimwald."
+    },
+    "following": {
+     "speaker": "Apprentice",
+     "text": "Hurry, please! That Ogre could be anywhere!"
+    },
+    "completion": {
+     "speaker": "Grimwald",
+     "text": "My apprentice! Alive, thank goodness!\n\nClearly those Spiders were nothing to you. Maybe you'd make a decent apprentice yourself. Hmmm... Yes.\n\nTake this robe, then. When you are ready, go up to the keep and tell Baron Hadrim what you saw down there. We have much to do before Vargoth makes his move."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what happened to Grimwald's apprentice."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tolvin: Fennick the Harbor Master begs the player to bring back his deckhand Tibbet, carried off by the Urchins to their caves on Gull Isle.",
+   "names": {
+    "Tolvin": "place",
+    "Gorvane": "person",
+    "Mayor Gorvane": "person",
+    "Quillan": "person",
+    "Master Quillan": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Tobb": "person",
+    "Grella": "person",
+    "Ysolde": "person",
+    "Corm": "person",
+    "Fennick": "person",
+    "Tibbet": "person",
+    "Dobbs": "person",
+    "Porley": "person",
+    "Hobb": "person",
+    "Esmolde": "person",
+    "Heron Rock": "place",
+    "Gull Isle": "place",
+    "Fenwood": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Orb of Calling": "thing",
+    "Staff of Mending": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Imp": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fennick",
+     "text": "Damn it! Where were you, lad!? The Urchins came across the water and raided our docks, and we'd have lost every boat to them if my deckhand Tibbet hadn't rung the alarm bell at the last moment!\n\nBut in all the confusion, the little beasts dragged Tibbet off, and the boats are now the least of my worries! All Tolvin will grieve if Tibbet is lost!\n\nYou must go where they took him, east to the Urchin caves on Gull Isle! Bring Tibbet back or I'll never forgive myself!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "I just know Tibbet's in terrible trouble! Hurry, lad!"
+    },
+    "found": {
+     "speaker": "Tibbet",
+     "text": "Kind sir! Get me out of here, quick! Black Varrick really is the one behind the Urchin raids, and he has wicked plans for the Orb of Calling. I was grabbed when my lantern went out and I can't undo these ropes by myself. Those Urchins tied them so tight there's no hope of wriggling free."
+    },
+    "following": {
+     "speaker": "Tibbet",
+     "text": "Hurry, kind sir! Daylight's burning!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "In better times, the whole of Tolvin would throw a feast for Tibbet's safe return! Well done, lad! But now we must put an end to Black Varrick for good.\n\nPlease accept these as a token of our gratitude for your brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the caves on Gull Isle and rescue Tibbet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Olvane: Master Wendle's students went down for a lesson in the College cellars, now overrun by giant rats and Ghosts. Ebbo is the first one found.",
+   "names": {
+    "Olvane": "place",
+    "the College": "place",
+    "the Observatory": "place",
+    "the Bell Tower": "place",
+    "the Brass Owl": "place",
+    "the summoning hall": "place",
+    "the College cellars": "place",
+    "the College library": "place",
+    "the north gate": "place",
+    "Grelvin": "person",
+    "Haskel": "person",
+    "Tibald": "person",
+    "Brunt": "person",
+    "Dobbo": "person",
+    "Vashti": "person",
+    "Pumbric": "person",
+    "Vimbly": "person",
+    "Ostrigan": "person",
+    "Ursin": "person",
+    "Fennick": "person",
+    "Wendle": "person",
+    "Ebbo": "person",
+    "Hulda": "person",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the guards": "group",
+    "the porters": "group",
+    "the Golem Trial": "thing",
+    "Friend of the College": "thing",
+    "magic spectacles": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wendle",
+     "text": "Where in the world have you been!? We have a terrible problem!\n\nMonstrous rats and wailing Ghosts have overrun the cellars beneath the College. Students have been lost in the noble pursuit of knowledge!\n\nPlease, I beg of you! Drive the vermin out, bring my students back up and I shall reward you well.\n\nTake this key. It opens the room where my first student is shut in. He will show you where the rest are.\n\nI also have a cure poison potion which may prove handy."
+    },
+    "reminder": {
+     "speaker": "Wendle",
+     "text": "Bring my students back to me and you will be well rewarded."
+    },
+    "found": {
+     "speaker": "Ebbo",
+     "text": "Thank goodness you found me! Please lead me back to the stairs."
+    },
+    "following": {
+     "speaker": "Ebbo",
+     "text": "I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Wendle",
+     "text": "You are a true hero! A thousand thanks.\n\nWhile you were down in the cellars, saving my students, Haskel came by asking for you. He's waiting at the north gate -- at the foot of the hill road.\n\nBefore you go, take this gold as your reward."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the monsters in the College cellars. Rescue Master Wendle's students."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Ostkar: Tolvar sends the player after Hobb, the Master Builder, trapped in the Lower Vaults when the lift froze.",
+   "names": {
+    "Fort Ostkar": "place",
+    "Ostkar": "place",
+    "Kragan": "person",
+    "Trolls": "group",
+    "Brannoc": "person",
+    "Thrane": "person",
+    "Tolvar": "person",
+    "Fenna": "person",
+    "Haskel": "person",
+    "Osk": "person",
+    "Brisa": "person",
+    "Pell": "person",
+    "Tibbet": "person",
+    "Gorm": "person",
+    "Hobb": "person",
+    "Bornik": "person",
+    "Gribb": "person",
+    "Zell": "person",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Upper Gate": "place",
+    "Howling Crag": "place",
+    "Signal Tower": "place",
+    "Lower Vaults": "place",
+    "Keep": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Tolvar",
+     "text": "While you were up on the battlements, the old lift froze in its shaft -- trapping Hobb in the Lower Vaults far beneath the fort! Brannoc is worried sick for our Master Builder.\n\nWe best get down under the fort and find Hobb."
+    },
+    "reminder": {
+     "speaker": "Tolvar",
+     "text": "Why are you standing about? We must hurry to the lift shaft! Hobb could be freezing to death!"
+    },
+    "found": {
+     "speaker": "Hobb",
+     "text": "Hey, it's you! The one Thrane sent!\n\nThere are some awfully big spiders down here. I had to bar myself in while I was patching the vault walls.\n\nHere's the key. Go back around to the barred door."
+    },
+    "following": {
+     "speaker": "Hobb",
+     "text": "Thanks again. There ought to be potions in that crate. Come on, stay close! I know an old stair that comes out by the Keep!"
+    },
+    "completion": {
+     "speaker": "Tolvar",
+     "text": "Thank goodness you're both safe! You'd make a fine sentry of Ostkar, lad. Brannoc will be pleased you brought his Master Builder home in one piece.\n\nHere, take this Ankh for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Hobb from the Lower Vaults beneath Fort Ostkar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Orvak: Master Haggarth's apprentices, Pell among them, are trapped in the Old Smelter by Ember Demons.",
+   "names": {
+    "Orvak": "place",
+    "Mayor Dunbrak": "person",
+    "Wendril": "person",
+    "Tolvar": "person",
+    "Foreman Kessick": "person",
+    "Master Haggarth": "person",
+    "Pell": "person",
+    "Elsbeth": "person",
+    "Bram": "person",
+    "Warden Holgarth": "person",
+    "Fenwick": "person",
+    "Vesk Blackthumb": "person",
+    "Murdo": "person",
+    "Grondel": "person",
+    "Zarna": "person",
+    "Dibble": "person",
+    "Corla": "person",
+    "Ebbe": "person",
+    "Nissa": "person",
+    "the Cinder Caves": "place",
+    "the Great Forge": "place",
+    "the Ironvein Mine": "place",
+    "the Old Smelter": "place",
+    "the Slag Heaps": "place",
+    "the Sooty Mug": "place",
+    "Fenwick's": "place",
+    "the Forge Hammer": "thing",
+    "the Imps": "group",
+    "the Ember Demons": "group",
+    "the Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Master Haggarth",
+     "text": "How long must we wait for help!? Something terrible has happened!\n\nEmber Demons and fire-spitting fiends from the depths have taken over the Old Smelter. One of my apprentices has already given his life for the honor of our guild!\n\nPlease, I implore you! Destroy those demons, free my apprentices and I shall pay you well.\n\nThis key will open the door to young Pell's hiding place. He can lead you to the rest.\n\nTake this ankh as well. It should prove quite valuable."
+    },
+    "reminder": {
+     "speaker": "Master Haggarth",
+     "text": "Bring my boys home safe and you won't be sorry."
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Thank goodness you've come! Here, take this key. The others are locked up past the next door."
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Please, take me back to Master Haggarth."
+    },
+    "completion": {
+     "speaker": "Master Haggarth",
+     "text": "My boys are safe! You are a true hero, kind sir! You have my heartfelt thanks.\n\nWhile you were in the smelter, Mayor Dunbrak's guard came by looking for you. The Mayor wants to see you at his house -- beside the Great Forge.\n\nBut first, please take this gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Ember Demons from the Old Smelter. Rescue Haggarth's 4 trapped apprentices."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel Cross: Mayor Duvic's house is overrun by bats and his cook Fenna is trapped in the pantry.",
+   "names": {
+    "Torvel Cross": "place",
+    "Fort Ulm": "place",
+    "the Lame Mule": "place",
+    "the old drain": "place",
+    "the north road": "place",
+    "the north gate": "place",
+    "the toll gate": "place",
+    "Morlo's farm": "place",
+    "Urgoth": "person",
+    "Oberik": "person",
+    "Ambrin": "person",
+    "Tobb": "person",
+    "Morlo": "person",
+    "Hask": "person",
+    "Hulda": "person",
+    "Duvic": "person",
+    "Fenna": "person",
+    "Ysolde": "person",
+    "Grizzel": "person",
+    "Gulliam": "person",
+    "Brodd": "person",
+    "Ysmay": "person",
+    "Ogres": "group",
+    "Imp": "group",
+    "Invisibility potion": "thing",
+    "Haste potion": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Duvic",
+     "text": "These filthy bats are the bane of my house! My guards tried to swat them, but they keep coming back! You're my last hope! Get past those bats and bring my cook out alive!\n\nFenna is trapped in the pantry, there, through the kitchen door. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Duvic",
+     "text": "I shall not set foot inside till Fenna is safe! Kill the bats! Or drive them off! Hurry, before they get to her!"
+    },
+    "found": {
+     "speaker": "Fenna",
+     "text": "Is somebody there? Oh, please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Fenna",
+     "text": "Take me back to Mayor Duvic, please."
+    },
+    "completion": {
+     "speaker": "Duvic",
+     "text": "Kind sir, my warmest thanks! You are a true friend of Torvel Cross. The gatemen will be told that you may pass the toll gate free of charge from now on.\n\nTake this gold for your trouble. I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Fenna the cook from the bats in Mayor Duvic's house."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Corvale: Warden Grisholm offers a reward for Tibbet, the miller's boy, carried off by the Ogres to their camp in the Skarrow Hills.",
+   "names": {
+    "Corvale": "place",
+    "Gorbrak": "person",
+    "Captain Brannoc": "person",
+    "Master Ebbrin": "person",
+    "Mayor Pudrick": "person",
+    "Mobb": "person",
+    "Bodger": "person",
+    "Warden Grisholm": "person",
+    "Tibbet": "person",
+    "Haldo": "person",
+    "Sergeant Krell": "person",
+    "Muddock": "person",
+    "Tamsy": "person",
+    "Grobbel": "person",
+    "Quillda": "person",
+    "Hettie": "person",
+    "Darvel": "person",
+    "Pella": "person",
+    "Town Hall": "place",
+    "Old Quarry": "place",
+    "Thistle Hill": "place",
+    "Skarrow Hills": "place",
+    "North Gate": "place",
+    "Muddy Boot": "place",
+    "Horn of Corvale": "thing",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Warden Grisholm",
+     "text": "Greetings, young sir. I take it you have come about the reward.\n\nThere's a handsome reward for young Tibbet, the miller's boy -- brought home safe and sound. The Ogres grabbed him from his father's field and have kept him in their camp in the Skarrow Hills for days.\n\nBe careful, you don't want those brutes catching you unawares."
+    },
+    "reminder": {
+     "speaker": "Warden Grisholm",
+     "text": "No word of the miller's boy yet? His poor father is beside himself."
+    },
+    "found": {
+     "speaker": "Tibbet",
+     "text": "Who's that? Please, don't let them eat me!"
+    },
+    "following": {
+     "speaker": "Tibbet",
+     "text": "Please, take me home to my father!"
+    },
+    "completion": {
+     "speaker": "Warden Grisholm",
+     "text": "Ho, there! The miller told me he heard his boy shouting at the gate, so I came running.\n\nYou have single handedly snatched young Tibbet from the Ogres! Very impressive! You have my deepest respect, young sir! Those Ogres have plagued Corvale for weeks! I'll see the boy home from here. His father will sleep better tonight with his son safe under his roof!\n\nAnd here is your reward, young sir -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring young Tibbet home from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

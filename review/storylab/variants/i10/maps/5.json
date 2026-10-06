@@ -1,0 +1,321 @@
+{
+ "iter": "i10",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tolvin",
+  "setting": "a lake village of fishermen",
+  "trouble": "Black Varrick's rogues raided Tolvin, stole the Orb of Calling and hold the old watchtower on Heron Rock, the north road is shut and the Urchins of Gull Isle raid the docks at Varrick's bidding.",
+  "names": {
+   "Tolvin": "place",
+   "Gorvane": "person",
+   "Mayor Gorvane": "person",
+   "Quillan": "person",
+   "Master Quillan": "person",
+   "Black Varrick": "person",
+   "Varrick": "person",
+   "Tobb": "person",
+   "Grella": "person",
+   "Ysolde": "person",
+   "Corm": "person",
+   "Fennick": "person",
+   "Tibbet": "person",
+   "Dobbs": "person",
+   "Porley": "person",
+   "Hobb": "person",
+   "Esmolde": "person",
+   "Heron Rock": "place",
+   "Gull Isle": "place",
+   "Fenwood": "place",
+   "Town Hall": "place",
+   "Bent Hook": "place",
+   "Orb of Calling": "thing",
+   "Staff of Mending": "thing",
+   "Urchins": "group",
+   "Wolves": "group",
+   "Imp": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb guards the north gate, shut by Mayor Gorvane while Black Varrick's rogues rob the north road.",
+   "names": {
+    "Tobb": "person",
+    "Varrick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "No way through! Shove off, pest!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "You'd stroll up the north road with Varrick's rogues on it!? You're daft! Now clear off! You tire me!"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Out the gate with you, lad! Enjoy the walk!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Grella, a goat-keeper's wife, wants the Wolves of the Fenwood killed for taking her goats.",
+   "names": {
+    "Grella": "person",
+    "Fenwood": "place",
+    "Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grella",
+     "text": "Sir! Help me please! A pack of wild Wolves just came out of the Fenwood, the forest south of here and dragged off almost all of my goats! They even took my best milk goat!\n\nPlease kill those Wolves and I'll give you a reward!"
+    },
+    "reminder": {
+     "speaker": "Grella",
+     "text": "Oh why aren't you hunting them? There won't be a goat left by morning!"
+    },
+    "completion": {
+     "speaker": "Grella",
+     "text": "Bless you, brave stranger! Please take these for your trouble!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Wolves that are taking Grella's goats."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ysolde the healer sends the player through the old tunnel under her house to fetch the Staff of Mending from her brother Corm's hut, where the Urchins have been.",
+   "names": {
+    "Ysolde": "person",
+    "Corm": "person",
+    "Mayor Gorvane": "person",
+    "Staff of Mending": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysolde",
+     "text": "While I tend to the fishermen hurt in these raids, there's another errand I need run.\n\nCorm, my brother, has sent word that he has finished the Staff of Mending I asked him to make. But nobody has heard a peep from him since the Urchins started prowling the east shore.\n\nUnder this house there is an old tunnel which we used to hide from raiders. It comes out at Corm's hut. Just stand beside the barrels at the back of this room and you'll find the way in.\n\nWill you fetch the Staff for me and see how Corm is faring?"
+    },
+    "refusal": {
+     "speaker": "Ysolde",
+     "text": "Then I'll find someone braver to go."
+    },
+    "reminder": {
+     "speaker": "Ysolde",
+     "text": "Down the tunnel beside the barrels! Hurry!"
+    },
+    "completion": {
+     "speaker": "Ysolde",
+     "text": "You have the Staff of Mending! Wonderful!\n\nBut my fears for poor Corm have come true, I see. I will miss him, but there's no time for grieving now. Mayor Gorvane needs every able hand and he has asked to see you.\n\nTake this Ankh for your trouble. Good luck, lad!"
+    },
+    "after": {
+     "speaker": "Ysolde",
+     "text": "Thank you again, lad. Go and see Mayor Gorvane."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Staff of Mending which Corm has made."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the Staff of Mending which Corm has made."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tolvin: a brush-off, a woman with leeches on her, a girl who saw an Urchin by the Mayor's boathouse.",
+   "names": {
+    "Mayor Gorvane": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fisherman",
+     "text": "You're thinking of my brother, sorry."
+    },
+    "rumour2": {
+     "speaker": "Fishwife",
+     "text": "Yeeeugh! Get these leeches off my legs!"
+    },
+    "rumour3": {
+     "speaker": "Maiden",
+     "text": "Ew! I saw one of those Urchins sneak right into the Mayor Gorvane's boathouse!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Porley of the Bent Hook inn, Hobb the smith, Esmolde who sells potions and scrolls.",
+   "names": {
+    "Porley": "person",
+    "Hobb": "person",
+    "Esmolde": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Porley",
+     "text": "Pssst! This way! You looking for a soft bed? A bowl of chowder, maybe?"
+    },
+    "arms": {
+     "speaker": "Hobb",
+     "text": "Rogues shut the north road. Need a sword?"
+    },
+    "magic": {
+     "speaker": "Esmolde",
+     "text": "Hmm... Not the cheapest potions, I admit... But mighty strong all the same!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Fennick the Harbor Master wants a pass sealed by Mayor Gorvane before he lends a boat, and Dobbs, who rowed for Black Varrick, offers a way to get one: fetch the tithe chest he hid in a net shed and take it to the Mayor.",
+   "names": {
+    "Fennick": "person",
+    "Dobbs": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Mayor Gorvane": "person",
+    "Tolvin": "place",
+    "Bent Hook": "place",
+    "Imp": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Fennick",
+     "text": "I am the Harbor Master of Tolvin. If you want to take a boat out on the lake you'll need a pass with the Mayor's seal."
+    },
+    "offer_b": {
+     "speaker": "Dobbs",
+     "text": "Hello. Name's Dobbs, I used to row for Black Varrick's crew. Boats are scarce around here, and getting a pass sealed by the Mayor is the hardest part.\n\nTell you what, you do me a little favor and I'll see that you get your pass. How about it?"
+    },
+    "outcome_a": {
+     "speaker": "Dobbs",
+     "text": "Good! When I quit Varrick's crew I hid the Mayor's tithe chest in the old net shed on the south shore. Trouble is, a nasty little Imp has settled in the shed. He has stirred up the rats and now they bite anyone who goes near it.\n\nKill the Imp and take the chest back to Mayor Gorvane. Tell him Dobbs kept it safe for him, and he'll seal your pass!\n\nHere, take this iron key, it opens the shed."
+    },
+    "outcome_b": {
+     "speaker": "Dobbs",
+     "text": "Suit yourself, I doubt the Mayor will seal a pass for a stranger.\n\nShould you think better of it, I'll be at the Bent Hook, in the back."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get a boat pass sealed by Mayor Gorvane."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take the tithe chest from the net shed to Mayor Gorvane."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Fennick the Harbor Master begs the player to bring back his deckhand Tibbet, carried off by the Urchins to their caves on Gull Isle.",
+   "names": {
+    "Fennick": "person",
+    "Tibbet": "person",
+    "Black Varrick": "person",
+    "Tolvin": "place",
+    "Gull Isle": "place",
+    "Orb of Calling": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fennick",
+     "text": "Damn it! Where were you, lad!? The Urchins came across the water and raided our docks, and we'd have lost every boat to them if my deckhand Tibbet hadn't rung the alarm bell at the last moment!\n\nBut in all the confusion, the little beasts dragged Tibbet off, and the boats are now the least of my worries! All Tolvin will grieve if Tibbet is lost!\n\nYou must go where they took him, east to the Urchin caves on Gull Isle! Bring Tibbet back or I'll never forgive myself!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "I just know Tibbet's in terrible trouble! Hurry, lad!"
+    },
+    "found": {
+     "speaker": "Tibbet",
+     "text": "Kind sir! Get me out of here, quick! Black Varrick really is the one behind the Urchin raids, and he has wicked plans for the Orb of Calling. I was grabbed when my lantern went out and I can't undo these ropes by myself. Those Urchins tied them so tight there's no hope of wriggling free."
+    },
+    "following": {
+     "speaker": "Tibbet",
+     "text": "Hurry, kind sir! Daylight's burning!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "In better times, the whole of Tolvin would throw a feast for Tibbet's safe return! Well done, lad! But now we must put an end to Black Varrick for good.\n\nPlease accept these as a token of our gratitude for your brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the caves on Gull Isle and rescue Tibbet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Mayor Gorvane in the Town Hall, who sends him to take back the Orb of Calling from Black Varrick's rogues on Heron Rock.",
+   "names": {
+    "Mayor Gorvane": "person",
+    "Master Quillan": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Tobb": "person",
+    "Tolvin": "place",
+    "Heron Rock": "place",
+    "Town Hall": "place",
+    "Orb of Calling": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Those rogues on Heron Rock are a filthy and thieving band of cutthroats! If you mean to fight them, see Mayor Gorvane in the Town Hall!"
+    },
+    "opening": {
+     "speaker": "Mayor Gorvane",
+     "text": "So Master Quillan sent you! The road to Tolvin has tested your mettle, I'm sure, lad. But this is no time to put your feet up. You must now take back the Orb of Calling, which Black Varrick's rogues stole from this very hall when they raided our poor village!\n\nWith the rogues on the move and the Orb as their prize, I'm certain Varrick is behind the Urchin raids too. They hold the old watchtower on Heron Rock and the north road is shut. I'll send word to Tobb at the north gate to let you through. Now, off with you!"
+    },
+    "reminder": {
+     "speaker": "Mayor Gorvane",
+     "text": "Hurry to the north gate! Tobb will let you through."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Orb of Calling from Black Varrick's rogues."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

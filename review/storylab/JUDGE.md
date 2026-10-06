@@ -8,7 +8,7 @@ Westwood's Nox campaign (1999) and not be told apart.
 One packet at a time: `review/out/storylab/_blind/<iter>/<id>.md` (the id is opaque), written by
 `py tests/storylab.py all --iter <iter>`. It holds ten texts labelled A to J, each the lines of one quest or one place
 (an offer, a reminder, the thanks when it is done, the journal entry; or three townsfolk; or three shopkeepers; or a
-cross-section of one town). **Exactly five** are from Westwood's campaign and five were written for new maps. The order
+cross-section of one town). **Exactly half** are from Westwood's campaign (five of ten, unless the packet says otherwise) and the others were written for new maps. The order
 is shuffled by a seed. Proper nouns are masked on both sides: `[Person]`, `[Place]`, `[Thing]`, `[Group]`. The player
 is never addressed by class on either side: where Westwood's line named the class, it reads as Westwood's class-free
 chapter does ("brave Adventurer", "young sir"). Page breaks inside a long speech show as ` / `.
@@ -26,7 +26,7 @@ The key (which text is which) is written apart, where the judge does not look.
   how the journal is phrased, and the shape of the quest.
 - Topic is no evidence: each new text was written for another invented town, and Westwood's come from different
   chapters. Judge the writing.
-- Guess exactly five as generated.
+- Guess exactly half as generated (five of ten, unless the packet says otherwise).
 
 ## The score (1-10): "reads like Nox's campaign"
 
@@ -56,7 +56,7 @@ Write one file per packet to `review/storylab/judgements/<iter>/<id>.json` (the 
 }
 ```
 
-- `items`: all ten, A to J. `verdict`: `"westwood"` or `"generated"`, five of each. `confidence`: 1 (a guess) to 5
+- `items`: every text of the packet (A to J for ten). `verdict`: `"westwood"` or `"generated"`, half of each. `confidence`: 1 (a guess) to 5
   (certain). `score`: 1-10 by the table above.
 - `tells`: the cues you used, general enough to fix a style guide by (not "Text C mentions a mill").
 

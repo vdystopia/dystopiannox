@@ -200,3 +200,31 @@ frame for every sentence. Side by side 98% (rumour 80%), ours 5.5 / Westwood 8.4
 Westwood's taken for ours 7%). The short lines held (solo: shops 1 of 5 caught, rumours 2 of 5, guards 3 of 5) and
 the long ones got worse (two givers 4.4, bounty 5.0): sentences from different speeches read as assembled, with stock
 beats that do not follow, objects never introduced and a speaker who changes mid-speech.
+
+### i10: a whole Westwood quest dealt to each quest, line frames for the short lines (WRITER.md v10)
+
+Each quest of each town was dealt one of Westwood's own quests (from the scenario pools; a packet leaves out every
+Westwood unit dealt to the writers whose texts it holds, so no text stands beside its own source; where too few were
+left, the packet holds 8 texts, four and four, and says so).
+
+| scenario | metric ours / WW | side by side: acc | ours / WW | solo: ours caught | solo: WW taken for ours |
+|---|---|---|---|---|---|
+| guard_bark | 9.17 / 9.69 | 100% | 5.8 / 8.0 | 2/5 | 0/5 |
+| bounty_offer | 9.06 / 9.62 | 100% (8 texts) | 5.5 / 7.5 | 4/4 | 1/4 |
+| heirloom_fetch | 9.44 / 9.62 | 100% (8) | 5.5 / 7.8 | 2/3 | 1/4 |
+| rumour | 9.49 / 9.71 | 100% | 5.4 / 8.4 | 2/5 | 0/4 |
+| shop_greeting | 9.28 / 9.79 | **60%** | 6.8 / 7.4 | 3/5 | 1/4 |
+| two_givers | 8.75 / 9.47 | **90%** | 6.4 / 8.4 | **2/4** | 0/5 |
+| rescue | 9.12 / 9.46 | **75%** (8) | 6.5 / 7.2 | 3/4 | 0/3 |
+| main_opening | 9.19 / 9.59 | 100% | 5.8 / 7.8 | 4/4 | 0/5 |
+| town | 8.08 / 9.59 | **75%** (8) | 6.5 / 8.2 | 3/4 | 0/4 |
+| **all** | **9.06** | **89%** | **6.0 / 7.9** | **25/38 (66%)** | **3/38 (8%)** |
+
+Solo: 76 texts, accuracy 79%, confidence on ours 2.7, scores ours 6.6 / Westwood 8.1. **The best round on every
+blind measure**: two givers, rescues and towns (the long quests) below 100% side by side for the first time, a third
+of ours passing alone. The tells left are what writers added to the frames (logistics, cause and consequence, warm
+closing sentiments, comic self-introductions, pseudo-archaic ornament, an address word three times, several errands
+in one briefing) and, a new one, **recognition**: judges who know Nox saw a famous quest's skeleton under new nouns
+("Paraphrase of a known quest skeleton... with the nouns swapped... is a strong tell"), and two of ours written from
+near-copies of one Westwood speech (Con and War versions of a line under different keys) stood side by side; from i11
+a packet also leaves out near-copies by text.
