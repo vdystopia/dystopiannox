@@ -533,16 +533,19 @@ ROOMS = {
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
                        group_seats={"hearth": (0, 0)},          # Westwood's free hearths stand alone (Con06b's three)
-                       by_walls=("hearth",), decor_max=6,       # toward a corner, not before the door; banners in a few places
+                       decor_max=6,                             # banners in a few places
                        top_up=(),
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
+                                # a big hall's free hearth in the middle first, the boards either side of it (Con06b's U
+                                # of boards round its hearth; independent judge, r4: "a carpet dead centre with two or
+                                # four long tables in parallel, ringed by bare floor")
+                                dict(fam="fireplace", slot="groups", group="hearth", n=1, extra=True, min_area=400),
                                 dict(fam="table", slot="table_rows", seat="bench", joined=3),
                                 dict(fam="carpet", slot="carpet", where="under", margin=2.0, chance=1.0),
                                 # hangings either side of the hearth: two at least, the walls carry an open hall
                                 # (rules/rooms/great_hall.md; Harrowby's moot hall had one)
                                 dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
-                       fill=[dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=440, fixed=True),
-                             # a bench in each front corner, where those who wait sit (Harrowby playtest, HB-2: "a
+                       fill=[# a bench in each front corner, where those who wait sit (Harrowby playtest, HB-2: "a
                              # little bit too empty. It needs some more objects and fill along the southeast wall in the
                              # south corner")
                              dict(fam="bench", slot="wall", at="room_corner", clear=0, max=2, fixed=True),

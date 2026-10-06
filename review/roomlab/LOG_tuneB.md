@@ -247,3 +247,7 @@ Chapel r3 re-run as r4 (re-rendered): AUC 0.959, 1 hard-rule room; queued in its
 
 Shared, opt-in: `cluster`, `decor_first` recipe keys. The gallery still reads as a lone group on a bare floor: its
 Westwood example is a set of bays (the shell).
+| great hall | r5 | the free hearth first, in the middle of a big hall, the boards round it (Con06b's U round its hearth; judge, r4: "a carpet dead centre with two or four long tables in parallel, ringed by bare floor"); its by-the-wall placement and the fill's second hearth dropped | AUC 0.886 -> 0.871 | cross 0.991 -> 0.889 | 3 (a shell door, one room without hangings, one reading as a living room) |
+
+The boards break into single tables round the hearth (a joined board will not fit beside it): closer to Con06b's ring
+of tables than the parallel boards were, by the cross-type classifier's measure.

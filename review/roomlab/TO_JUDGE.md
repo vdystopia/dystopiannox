@@ -22,3 +22,4 @@ Second pass (the best round per type, after the judges' first verdicts):
 | hall | r4 (replaces r3) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\hall\r4\blind |
 | shrine | r10 (replaces r9) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\shrine\r10\blind |
 | gallery | r8 (replaces r3) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\gallery\r8\blind |
+| great_hall | r5 (replaces r4) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\great_hall\r5\blind |

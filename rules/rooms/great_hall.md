@@ -78,7 +78,8 @@ The lord at the hearth's side, else by a statue or at a back wall facing the tab
 - **Boards, not sets:** the tables joined end to end into long boards (three pieces), benches down both sides at every
   other piece (Con06b: twelve Table1/2 in a U, sixteen benches); a table piece per 24 tiles reads as two to four
   boards, never a grid of little sets.
-- **Fire:** the hearth on a back wall and at most one free hearth, standing alone (no benches ringing it).
+- **Fire:** the hearth on a back wall and, in a big hall, one free hearth in the middle, standing alone (no benches
+  ringing it), the tables set round it (Con06b's U).
 - **Walls:** shields, banners or trophies of one theme along the back walls; a bench in each front corner (HB-2).
 - **Nothing else:** no plants, no statues (Westwood's great halls hold neither).
 - Still missing: the boards in a U round a free hearth (Con06b), and the shell's shape.
