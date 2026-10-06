@@ -1621,15 +1621,16 @@ ARCHETYPE_RECIPES = {
                                       dict(fam="statue", slot="wing", group="statues")],
                              fill=[]),
         # the walls dressed end to end, statues along them, the floor bare (Con10d, Con06b's hall of shields)
-        "dressed_walls": dict(decor_max=8, core={"column": (2, 6), "statue": (4, 6)}, optional={"wall_decor": (1.0, 8)},
+        "dressed_walls": dict(decor_max=10, core={"column": (2, 6), "statue": (4, 6), "wall_decor": (6, 10)},
+                              decorate=True, lined_goal=0.5,
                               decor_themes=("blue", "red", "white", "green", "arms"), columns_by_walls=True,
                               repeat={"column": (30, 6)},
                               compose=[dict(fam="throne", slot="throne", runner=False),
                                        dict(fam="statue", slot="flank", of="throne", gap=0.8),
                                        dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
                                        dict(fam="column", slot="colonnade", gap=4.0, aisle=5.0),
-                                       dict(fam="statue", slot="wall", at="center", clear=0.6, n=2),
-                                       _DECOR, _DECOR, _DECOR, _DECOR],
+                                       dict(fam="statue", slot="wall", at="center", clear=0.6, n=4),
+                                       _DECOR, _DECOR, _DECOR, _DECOR, _DECOR, _DECOR],
                               fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
         # the throne out from the wall ringed by lights, a square of statues before it, chests and hangings (Con11a)
         "ringed_seat": dict(core={"column": (2, 2), "statue": (4, 6)}, optional={"storage": (1.0, 2)},
@@ -1644,7 +1645,7 @@ ARCHETYPE_RECIPES = {
         # a small chamber: the throne between a pair of statues, a lone light; nothing else (Wiz11A)
         "audience_chamber": dict(core={"column": (2, 2), "statue": (4, 4)}, optional={"wall_decor": (1.0, 2)},
                                  repeat={"column": (40, 2)},
-                                 compose=[dict(fam="throne", slot="throne"),
+                                 compose=[dict(fam="throne", slot="throne", runner=False),
                                           dict(fam="statue", slot="flank", of="throne", gap=0.8),
                                           dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
                                           dict(fam="column", slot="colonnade", gap=8.0, aisle=3.0),
@@ -1693,10 +1694,10 @@ ARCHETYPE_RECIPES = {
                                     dict(fam="storage", slot="center")],
                            fill=[dict(fam="tomb", slot="wall", at="any", clear=1.0, max=2)]),
         # no sarcophagi: tombstones in a loose grid over the floor, a crypt chest (Con04a@148, Con04b, War03c@80)
-        "tombstone_yard": dict(types={"tomb": r"^Tombstone\d+$|^Crypt(1|3|5|6|7|8)$"}, core={"tomb": (4, 9)},
+        # (the profile's focal, a sarcophagus, is missing here as in six of Westwood's 25 crypts: the checker says so)
+        "tombstone_yard": dict(types={"tomb": r"^Tombstone\d+$"}, core={"tomb": (4, 9)},
                                optional={"statue": (0.0, 0), "storage": (0.6, 1)},
-                               compose=[dict(fam="tomb", slot="wall", at="center", clear=1.0, n=1, only=r"^Crypt"),
-                                        dict(fam="tomb", slot="center"),
+                               compose=[dict(fam="tomb", slot="center"),
                                         dict(fam="storage", slot="wall", at="corner", clear=1.2)],
                                fill=[]),
     },
