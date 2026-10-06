@@ -29,3 +29,6 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
 - 20:45 Phase 1 started: room lab and judges (`night-lab`), object knowledge base (`night-objkb`), more room types
   (`night-types2`), dialogue and quest lab (`night-dialogue`). The PC is held on until 2026-10-06 14:00 by the guard's
   hold-awake file (remove it when the user says stop).
+- 21:15 The user added: "do the same process for exterior settings - bandit camps, graveyards, gardens, ponds etc."
+  Scene lab started (`night-scenes`): 10 variants of an outdoor scene type, matched renders against Westwood's
+  campaign scenes, metric and blind judges, then iteration rounds on the bandit camp, graveyard, garden and pond first.
