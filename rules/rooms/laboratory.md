@@ -85,3 +85,8 @@ The wizard at his work bench (beside a workstation or the alchemist's desk), els
   `wall_candidates`, so the small laboratory has its desk.
 - Still a giveaway: the back walls are lined more than Westwood's, since its big labs stand their bookcases on the SE
   wall (a house rule forbids it) and the checker wants the room as covered as Westwood's median.
+- The independent judges (r8, r11): ours read as labs but mechanical; workstations one at a time at even spacing,
+  separate clumps against the back walls with three quarters of the floor bare, while Westwood's labs fill the room as
+  one working space. r12-r13 stand a work island of workstations and the alchemist's desk free on the floor (GROUPS
+  `workbench`), the table and stools free in a big room (`labtable`), the coils as a mirrored pair apart.
+

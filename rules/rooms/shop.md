@@ -68,3 +68,9 @@ The keeper behind his counter, on the spot the furnisher keeps clear there (Furn
   crates and barrels, trader's shelves, no racks). No plants (Westwood's shops have none). Mixing every trade in every
   shop was the first giveaway (AUC 0.91 -> 0.86).
 - Still a giveaway: everything in rows and the stock packed tight; Westwood's shops leave more floor between pieces.
+- The independent judge (r4, r8): runs of three at even gaps and grids of racks read as generated ("three armour racks
+  and three weapon racks" means variety, not three-and-three grids); a counter stranded in a corner; pieces of other
+  rooms (a cauldron, potion shelves by the door, barrels in runs). r9-r11: the counter the room's one strong idea, the
+  goods end to end on the other back wall, standing racks two or three against the walls, the stock in heaps as a
+  store's, no hangings of décor.
+

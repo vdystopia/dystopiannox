@@ -646,23 +646,24 @@ ROOMS = {
                                  dict(fam="wall_decor", slot="decor")],
                         fill=[dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                               dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
-    "barracks": dict(purpose="bunks for a crew: beds of one kind spaced along a front wall, a nightstand between "
-                             "neighbours, a chest a step beyond each bed's foot, a rug before each bed, shelves for their "
-                             "gear end to end on a back wall, shields and trophies on the back walls, a table with seats",
-                     core={"bed": (2, 8), "storage": (0, 10), "shelves": (2, 8)}, per_tiles={"bed": 15},
-                     optional={"fireplace": (0.3, 1), "bench": (0.3, 4), "table": (0.6, 1), "chair": (0.6, 4), "rug": (1.0, 8), "wall_decor": (1.0, 5),
-                               "nightstand": (1.0, 6)},
-                     types={"fireplace": r"^FreestandingFireplace$", "storage": r"^Chest\d$", "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
-                            "shelves": r"^LogShelvesFull\d$|^Bookcase\d$", "chair": r"Stool|Chair"},
-                     prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1},
-                             "rug": {"RedRug1": 1, "RedRug2": 1, "RedRug3": 1, "RedRug4": 1},
-                             "shelves": {"LogShelvesFull1": 1, "LogShelvesFull2": 1, "LogShelvesFull3": 1, "LogShelvesFull4": 1}},
+    # the room lab (2026-10-05): Westwood's curated town and Dun Mir barracks (Con05A: four beds, a chest, a bow rack
+    # and a pole arm, a round table with chairs; Con06b: six cots, tables, three Dun Mir chests, chairs, swords hung) have
+    # no nightstands, shelves, rugs or hangings of décor: bunks in a row, chests, the crew's table and chairs, their arms
+    "barracks": dict(purpose="bunks for a crew: beds of one kind in a row, a chest or two, the crew's table with chairs, "
+                             "a rack or two of their arms",
+                     core={"bed": (2, 8), "storage": (1, 4), "table": (1, 2), "chair": (2, 6)}, per_tiles={"bed": 15},
+                     optional={"shop_rack": (0.7, 2)},
+                     types={"storage": r"^Chest\d$", "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
+                            "table": r"^RoundTable[12]$|^Table[1-4]$|^SquareTable[12]$", "chair": r"Chair|Stool",
+                            "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$"},
+                     prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1}},
+                     top_up=(), decor_max=0, lined_goal=0.0, bed_nightstands=False,
                      compose=[dict(fam="bed", slot="bed_row"),
-                              dict(fam="shelves", slot="line", n=6),
+                              dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                               dict(fam="table", slot="center", seats=True),
-                              dict(fam="wall_decor", slot="decor")],
-                     fill=[dict(fam="shelves", slot="line", other=True, max=8, min_area=120), dict(fam="table", slot="group", group="dining", max=1, min_area=170), dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300), dict(fam="shelves", slot="line", n=6, max=6),
-                           dict(fam="storage", slot="wall", at="center", clear=1.6, max=1)]),
+                              dict(fam="shop_rack", slot="wall", at="center", clear=1.0, n=1)],
+                     fill=[dict(fam="table", slot="center", seats=True, max=1, min_area=160),
+                           dict(fam="shop_rack", slot="wall", at="any", clear=1.0, max=1)]),
     # ---- the cultures' rooms (rules/cultures.py, rules/out/cultures.json): Westwood furnishes its ogre lairs and the
     # Land of the Dead's temples with their own pieces. Ogre rooms (18 measured, median 42 tiles): straw heaped free on
     # the floor in 72% of them, crude beds against the back walls, stools, round tables, meat and carcasses, barrels,
@@ -689,12 +690,14 @@ ROOMS = {
                      lights={"TorchPole": 1}, lights_per100=2.0, top_up=(),
                      compose=[dict(fam="straw", slot="scatter", per100=6, cluster=(2, 4)),
                               dict(fam="bed", slot="wall", at="any", clear=0.6, n=2),
-                              dict(fam="storage", slot="heaps", n=4),
-                              dict(fam="table", slot="groups", group="ogre_table", n=1, extra=True, min_area=130),
+                              dict(fam="storage", slot="heaps", n=2),
+                              # the curated barracks (Con05C, Con09c): the crude table with its bench and stools in most
+                              dict(fam="table", slot="groups", group="ogre_table", n=1, extra=True, min_area=60),
+                              dict(fam="bench", slot="wall", at="any", clear=0.6, n=1),
                               dict(fam="clutter", slot="scatter", per100=2, cluster=(1, 2))],
                      fill=[dict(fam="straw", slot="scatter", per100=2, max=6),
                            dict(fam="statue", slot="wall", at="corner", clear=0.6, max=1, min_area=150),
-                           dict(fam="storage", slot="heaps", max=2)]),
+                           dict(fam="storage", slot="heaps", max=1)]),
     "ogre_hall": dict(purpose="where the ogres feast: crude round tables ringed by stools, a fire pit, carcasses and meat "
                               "on the floor, straw in the corners, barrels by the walls",
                       base="dining_hall",

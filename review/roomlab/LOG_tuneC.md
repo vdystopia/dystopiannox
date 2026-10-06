@@ -336,3 +336,16 @@ The storeroom passed the blind criterion; what made it work is recorded in rules
 The metric and the judge pull apart for the laboratory and the shop: the judge wants a working middle and the keeper's
 counter with its goods, where Westwood's measured medians say the middle is bare; with 6-8 references the AUC moves
 0.1-0.15 between near-identical rounds. I queued the rounds that answer the judges.
+
+## Barracks against the curated references (7: Con05A, Con05C x2, Con06b x2, Con09c x2)
+
+| Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|
+| c1 | (r3's recipe) | 0.893 | 0.901 | 1 |
+| c2 | ogre den: the crude table with stools from 25 tiles, a bench, fewer barrels | 0.869 | 0.932 | 1 |
+| c3 | town barracks per Con05A and Con06b: bunks in a row, chests, the crew's table and chairs, a rack or two; no nightstands, shelves, rugs or hangings | 0.733 | 0.895 | 4 (nightstands from the bed row) |
+| c4 | recipe key `bed_nightstands` (the bed row's nightstands, a no-op elsewhere) off; `guardroom` kin | 0.793 | 0.900 | 2 |
+| c4s2 | (seed 2) | 0.921 | 0.909 | 1 |
+
+Storeroom r19-r21: dropping a heap that stayed one piece and capping great casks at one a room raised the AUC (0.81 ->
+0.88), so both were reverted (r21 reproduces r18 exactly: the batches are deterministic).

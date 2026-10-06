@@ -1737,7 +1737,7 @@ class Furnisher:
             self.beds.append((o, r, self._uv_on(r, hp + 0.3, a)))
             self.anchors.append(self._uv_on(r, hp + 0.3, a))
         ns = self.variant_for_side("Nightstand", r["side"])
-        if ns:
+        if ns and ROOM_IDENTITY.get(self.kind, {}).get("bed_nightstands", True):  # (Westwood's barracks have none)
             nhu, nhv = self.half(ns)
             na, nperp = (nhv, nhu) if r["line"] == "/" else (nhu, nhv)
             for (_, a1), (_, a2) in zip(beds, beds[1:]):
