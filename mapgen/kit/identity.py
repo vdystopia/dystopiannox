@@ -166,46 +166,48 @@ ROOMS = {
                                dict(fam="storage", slot="stock", coverage=0.7, kinds=("crates", "tools", "barrels"), pad=1.2)],
                       fill=[dict(fam="shop_rack", slot="line", other=True, max=8, min_area=80), dict(fam="shop_rack", slot="line", max=6), dict(fam="cart", slot="group", group="carts", max=2), dict(fam="storage", slot="stock", coverage=1.0, kinds=("crates", "barrels", "sacks", "tools"), pad=1.0),
                             dict(fam="storage", slot="stack", n=3, once=True)]),
-    "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables with stools, a long "
-                           "table with benches, a table laid with food, the hearth with a rug before it and shelves of "
-                           "tankards beside it, kegs heaped by the walls, trophies on the walls, benches along the front "
-                           "walls, open floor between",
+    "tavern": dict(purpose="the public drinking room: a long bar ringed by stools with kegs behind it, round tables with "
+                           "stools, long tables with benches, a table laid with food, the hearth with a rug before it, "
+                           "a cask by the bar, trophies on the walls, benches along the front walls, open floor between",
                    # 2026-10-05 playtest: 24 tables and 76 chairs in a 342-tile common room were too many; Westwood's
-                   # taverns hold a table per 27-42 tiles, so a table per 28 tiles, at most 12, in three kinds of set
-                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 34), "storage": (3, 10), "fireplace": (1, 1)},
+                   # taverns hold a table per 27-42 tiles, so a table per 28 tiles, at most 12. Room lab (tuneB): its five
+                   # campaign taverns (Con02a, Con06a, Con07B's two, Wiz05A) keep 5-8 kegs and casks, by the bar; one or
+                   # two kinds of set, each of one table and one seat (Con06a: four RoundTable2 with cushioned stools;
+                   # Con07B: tables of food with chairs and long tables with benches); a bar of 9-14 pieces ringed by
+                   # stools; a bearskin before the hearth or a woven carpet under the tables, never rugs under them; no
+                   # plants, no shelves of tankards but a pair at most
+                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 34), "storage": (2, 5), "fireplace": (1, 1)},
                    per_tiles={"table": 28},
-                   optional={"bench": (0.9, 4), "wall_decor": (1.0, 8), "rug": (1.0, 2), "shelves": (0.9, 10),
-                             "plant": (0.8, 2)},
+                   optional={"bench": (0.9, 4), "wall_decor": (1.0, 5), "rug": (0.7, 1)},
                    types={"storage": r"(?<!Powder)Barrel$|(?<!Powder)Barrel\d|PiledBarrels|LargeBarrel",
                           "table": r"RoundTable|^Table\d$|SquareTable", "chair": r"Stool|Chair",
                           "bench": r"^LightBench\d$|^CushionedBench\d$|^Bench\d$",
                           # shelves of tankards and crockery, never a bookcase (rules/rooms/tavern.md)
-                          "shelves": r"^LogShelvesFull\d$", "plant": PLANTS},
+                          "shelves": r"^LogShelvesFull\d$", "rug": r"^BearskinRug\d$"},
                    # Westwood's room statistics count hearths as lights: the tavern names its own (it had stood without)
                    prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
+                   one_set=("round", "longtable", "feast", "dining", "kegs"), group_rugs=False,
+                   # seats pulled out from the tables, as Westwood's patrons leave them (its taverns' median gap to the
+                   # nearest piece 0.7 units; ours had stood 0.2 off every table)
+                   seat_gaps={"round": 0.5, "feast": 0.45, "longtable": 0.3},
+                   group_seats={"round": (2, 3)},
+                   by_walls=("longtable", "feast"),     # along the walls and in the corners, the middle left open
                    compose=[dict(fam="counter_bar", slot="bar"),
                             dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
-                            dict(fam="shelves", slot="line", near="fireplace", decor=2),
                             dict(fam="fireplace", slot="groups", group="hearth", n=1, min_area=500, extra=True),
-                            dict(fam="table", slot="groups", group="longtable", n=1),
+                            dict(fam="table", slot="groups", group="round", n=2),
+                            dict(fam="table", slot="groups", group="longtable", n=2),
                             dict(fam="table", slot="groups", group="feast", n=1),
-                            dict(fam="table", slot="groups", group="round", n=4),
-                            # one dining set composed, a second only by the fill in a big room (Harrowby's 324-tile common
-                            # room seated 19 of one chair at three: rules/rooms/tavern.md, seats counted)
-                            dict(fam="table", slot="groups", group="dining", n=1),
+                            dict(fam="table", slot="groups", group="round", n=1, min_area=440),
+                            dict(fam="carpet", slot="carpet", where="under", margin=1.2, chance=0.45),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="table", slot="group", group="longtable", max=1, min_area=300),
-                         dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=300),
-                         dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
-                         # kegs heaped by the walls, never a wall lined with them (per_wall)
-                         dict(fam="storage", slot="stock", coverage=0.65, kinds=("barrels",), pad=1.2, max=3,
-                              per_wall=0.4),
+                   fill=[dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
+                         dict(fam="table", slot="group", group="longtable", max=1, min_area=220),
+                         dict(fam="table", slot="group", group="round", max=1, min_area=300),
+                         dict(fam="table", slot="group", group="feast", max=1, min_area=200),
                          dict(fam="bench", slot="wall", max=4),
-                         dict(fam="storage", slot="group", group="kegs", max=1, min_area=400),
-                         dict(fam="table", slot="group", group="feast", max=1, min_area=400),
-                         dict(fam="table", slot="group", group="round", max=2, min_area=60),
-                         dict(fam="table", slot="group", group="dining", max=1, min_area=200),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                         # a few barrels heaped on a front wall, never lining it (Con02a's by its door)
+                         dict(fam="storage", slot="stock", coverage=0.3, kinds=("kegs",), pad=1.2, max=3, per_wall=0.25)]),
     "mess_hall": dict(purpose="where a crew eats together: long tables in rows with a bench along each side, the hearth "
                               "on a back wall flanked end to end by shelves of crockery, benches along the front walls, "
                               "trophies and hangings on the back walls",

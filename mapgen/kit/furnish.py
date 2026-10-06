@@ -258,7 +258,8 @@ SUPPLIES = {"shelves": (r"^LogShelvesFull[1-4]$", 1, 2),
             "barrels": (r"^(Barrel|Barrel2|WaterBarrel|PiledBarrels[1-4]|LargeBarrel[12])$", 2, 3),
             "sacks": (r"^SackChest(Large|Medium|Small)[12]$", 2, 3),
             "apples": (r"^TraderAppleCrate$", 1, 2),
-            "tools": (r"^BarrelWithTools[12]$", 1, 2)}
+            "tools": (r"^BarrelWithTools[12]$", 1, 2),
+            "kegs": (r"^(Barrel|Barrel2|WaterBarrel|PiledBarrels[1-4])$", 2, 3)}     # barrels without the great casks
 PILE = r"^(Barrel|Barrel2|WaterBarrel|SackChest(Large|Medium)[12])$"     # round pieces that heap in a corner
 # Shelves and desks face one way and have no corner pieces: they stop at the corner, tight against the wall across
 # its end, whose line is 1 unit past the run's end (2026-10-04 review: "make sure bookcases and shelves fit tight
@@ -555,6 +556,9 @@ class Furnisher:
         self._group = None        # footprint records of the group being composed (None: no group)
         self._pairing = False     # a deliberate pair (statues flanking a throne) is being placed
         self.kb_refused = Counter()   # rule -> placements the knowledge base refused (for the lab's report)
+        self._set_type = {}       # GROUPS name -> the one anchor type a room of a one_set kind uses for it
+        self._set_seat = {}       # GROUPS name -> the one seat (base) such a room's sets of that name take
+        self._last_seat_base = None
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
         prng = random.Random(zlib.crc32(f"{spec.d.get('name')}:{getattr(room, 'building', '')}".encode()))
         self.palette = {k: prng.choice(v) for k, v in PALETTES.items()}
@@ -969,6 +973,7 @@ class Furnisher:
                      _family_of(t) == seat_fam and (not allow or re.search(allow, t))}
         if not types or n <= 0: return 0
         base = base or (None if pat else self.palette_seat(seat_fam, types)) or _base(_pick(self.rng, types))
+        self._last_seat_base = base
         facing = self.chair_facing.get(base, {})
         ahu, ahv = self.half(anchor_t)
         au, av = anchor_uv
@@ -1054,7 +1059,11 @@ class Furnisher:
         if not rp: return None
         per, most = rp
         lo = ROOM_IDENTITY[self.kind].get("core", {}).get(fam, (0, 0))[0]
-        return max(lo, min(most, int(len(self.room.tiles) / per)))
+        # the floor inside the walls, as the room score counts it (review/roomscore.py cap_for: the room lab found
+        # tavern rooms of 143 floor tiles capped by their 168 footprint tiles, the tiles under the walls with them)
+        # (the usable cells are the half-tile grid, two to a floor tile, and reach under the doorways: the room score's
+        # floor is about 0.9 of half of them)
+        return max(lo, min(most, int(0.9 * self.g.area / 2 / per)))
 
     def identity_plan(self):
         """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at
@@ -1445,6 +1454,23 @@ class Furnisher:
             room = min([self.g.wall_dist(u, v) - max(hu, hv)] +
                        [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
             out.append((min(room, 3.0) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
+        out.sort(key=lambda s: -s[0])
+        return [(u, v) for _, u, v in out]
+
+    def wall_spots(self, hu, hv):
+        """Open spots near the walls, best first: as close to a wall as the piece and its seats fit, clear of what
+        already stands there (Westwood's taverns set their long tables and tables of food along the walls and in the
+        corners, Con07B, Con06a, leaving the floor before the bar open)."""
+        blocks = [p for p in self.g.placed if p[4] and p[5] != "wall"]
+        out = []
+        for (x, y) in self.g.cells:
+            u, v = x + y + 1.0, x - y
+            if not self.g.fits(u, v, hu, hv): continue
+            wd = self.g.wall_dist(u, v) - max(hu, hv)
+            if wd < 0.2: continue
+            room = min([3.0] + [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
+            if room < 0.6: continue
+            out.append((-wd + 0.4 * room + 0.5 * FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
         return [(u, v) for _, u, v in out]
 
@@ -2835,6 +2861,9 @@ class Furnisher:
         types = sorted(t for t in self.things if re.match(g["anchor"], t) and self.ok_type(t) and self.belongs(t))
         if not types: return 0
         t = self.rng.choice(types)
+        ident = ROOM_IDENTITY.get(self.kind, {})
+        if name in ident.get("one_set", ()):            # one kind of table to each kind of set, as Westwood furnishes a
+            t = self._set_type.setdefault(name, t)       # room (Con06a's four RoundTable2, Con07B's Tables and tables of food)
         if g.get("pair") and self.aisle and _family_of(t) == "statue":
             got = self.aisle_pair(t)                    # a room with an aisle: the pair lines it, facing across it
             if got: return got
@@ -2843,7 +2872,8 @@ class Furnisher:
         cu, cv = self.g.centroid
         us = [x + y + 1 for x, y in self.g.cells]; vs = [x - y for x, y in self.g.cells]
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
-        spots = self.middle_spots(hu + pad, hv + pad)[:30]
+        by_walls = name in ident.get("by_walls", ())
+        spots = (self.wall_spots if by_walls else self.middle_spots)(hu + pad, hv + pad)[:30]
         if not spots and g.get("seats") and g["seats"][0] <= 2:    # a seat or two need not ring it: a narrower margin
             spots = self.middle_spots(hu + 0.9, hv + 0.9)[:30]
         try:
@@ -2862,8 +2892,12 @@ class Furnisher:
                 n_seats = 0
                 if g.get("seats"):
                     lo, hi = g["seats"]
-                    n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2),
-                                                pat=g.get("seat_pat"))
+                    one = name in ident.get("one_set", ())
+                    gap_s = ident.get("seat_gaps", {}).get(name, g.get("seat_gap", 0.2))      # a recipe's own spacing
+                    lo, hi = ident.get("group_seats", {}).get(name, (lo, hi))                  # a recipe's own count
+                    n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=gap_s,
+                                                pat=g.get("seat_pat"), base=self._set_seat.get(name) if one else None)
+                    if one and n_seats: self._set_seat.setdefault(name, self._last_seat_base)
                     if n_seats < lo:
                         for x in got: self._remove(x)
                         continue                            # seats_around removes nothing: the seats it placed stay
@@ -2882,7 +2916,7 @@ class Furnisher:
                         for x in ring + got: self._remove(x)
                         continue
                     self.ring_lights += [(spot[0] + du, spot[1] + dv) for du, dv in ((rr, 0), (-rr, 0), (0, rr), (0, -rr))]
-                if g.get("rug") and self.rng.random() < g["rug"]: self.rug_under(o, spot)
+                if g.get("rug") and ident.get("group_rugs", True) and self.rng.random() < g["rug"]: self.rug_under(o, spot)
                 besides = g.get("beside")
                 for pat, n, *gap_ in ([besides] if besides and isinstance(besides[0], str) else besides or []):
                     gap_ = gap_[0] if gap_ else 0.35         # pieces set close by (a cauldron a step off: fires draw wide)
@@ -3137,7 +3171,10 @@ class Furnisher:
                 done[fam] += self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
                 continue
             if st["slot"] == "bar":
+                s0, c0 = self._fam_n["storage"], self._fam_n["chair"]
                 if self.build_bar(): done[fam] += 1
+                done["storage"] += self._fam_n["storage"] - s0       # its kegs and casks are the room's stores
+                done["chair"] += self._fam_n["chair"] - c0           # and its stools seats
                 continue
             if st["slot"] == "groups":                  # n free-standing groups (a tavern's tables with their stools)
                 if self.g.area < st.get("min_area", 0): continue
@@ -3310,18 +3347,27 @@ class Furnisher:
                    ("/|BR", "\\|TR", +1, +1, "BarCorner3", "high_v", "high_u"),
                    ("/|TL", "\\|BL", -1, -1, "BarCorner1", "low_v", "low_u"),
                    ("/|TL", "\\|TR", -1, +1, "BarCorner4", "high_v", "low_u")]
+        # Westwood's bars stand in the N corner (Con07B), the E (Con02a, Con06a) or the W (Con07B's lower tavern): any
+        # corner but the front one, which would turn the counter's back to the camera
+        back = corners[:3]
+        self.rng.shuffle(back)
+        corners = back + corners[3:]
 
         def pick(prefix):
             opts = {f"{prefix}{k}": n for k, n in letters.get(prefix, {"A": 1}).items() if f"{prefix}{k}" in self.things}
             return _pick(self.rng, opts) or f"{prefix}A"
 
-        for (us, vs, su, sv, corner, urun_side, vrun_side) in corners:
+        # odd offsets from the wall line put the last piece of each run 1 unit from the wall, so the counter meets the
+        # wall flush (Westwood's run ends: 1.0-1.3 units from the wall line). Westwood's bars run 9-14 pieces (Con02a 9,
+        # Con06a 11, Con07B 14): a long L in a common room (g.area counts half-tile cells), shorter where it must
+        tiles = self.g.area / 2
+        arms = [9, 11] if tiles >= 140 else [7, 9] if tiles >= 90 else [5, 7]
+        first = (self.rng.choice(arms), self.rng.choice(arms))
+        sizes = [first] + [(a, b) for a, b in ((first[0] - 2, first[1]), (first[0], first[1] - 2),
+                                               (first[0] - 2, first[1] - 2), (5, 7), (5, 5)) if a >= 5 and b >= 5]
+        for (us, vs, su, sv, corner, urun_side, vrun_side), (du, dv) in [(c, z) for c in corners for z in sizes]:
             if us not in runs or vs not in runs: continue
             ru, rv = runs[us], runs[vs]          # '/' wall (constant u) and '\' wall (constant v)
-            # odd offsets from the wall line put the last piece of each run 1 unit from the wall, so the
-            # counter meets the wall flush (Westwood's run ends: 1.0-1.3 units from the wall line)
-            long_bar = len(self.room.tiles) >= 100
-            du = self.rng.choice([7, 9] if long_bar else [5, 7]); dv = self.rng.choice([7, 9] if long_bar else [5, 7])
             # each run is anchored on its own wall line ('/' walls lie on odd u, '' walls on even v), so
             # with odd offsets the last piece always sits 1 unit from the wall
             U = ru["coord"] + su * du; V = rv["coord"] + sv * dv
@@ -3363,8 +3409,14 @@ class Furnisher:
             for t, u, v in typed: self.put(t, u, v, blocking=t != "BarHingedTop")
             inside = (U - su * du / 2, V - sv * dv / 2)
             self.spots.append(dict(role="barkeep", px=_px(*inside)))
+            # the walls inside the bar are the barkeep's: no hearth or shelf of the room's goes up behind the counter
+            self.wall_used.append((("/", ru["coord"]), min(rv["coord"], V) - 0.5, max(rv["coord"], V) + 0.5))
+            self.wall_used.append((("\\", rv["coord"]), min(ru["coord"], U) - 0.5, max(ru["coord"], U) + 0.5))
+            self.bar_stools(typed, U, V, su, sv, series[urun_side], series[vrun_side])
+            self.bar_casks(ru, rv, U, V, su, sv)
             # kegs behind the bar, against the back walls
-            kegs = [t for t in ("Barrel", "Barrel2", "LargeBarrel2", "PiledBarrels1") if self.ok_type(t)] or ["Barrel"]
+            # (barrels and piles: the great casks stand outside it, bar_casks; Con07B's five Barrel2 behind its bar)
+            kegs = [t for t in ("Barrel", "Barrel2", "PiledBarrels1") if self.ok_type(t)] or ["Barrel"]
             n_kegs = self.rng.randint(2, 4)
             for k in range(1, 6):
                 for (uu, vv) in ((ru["coord"] + su * 1.2, rv["coord"] + sv * (1.4 + 1.5 * k)),
@@ -3373,6 +3425,62 @@ class Furnisher:
                         if self.try_put(self.rng.choice(kegs), uu, vv): n_kegs -= 1
             return True
         return False
+
+    def bar_stools(self, typed, U, V, su, sv, useries, vseries):
+        """Stools along the outer face of a bar, one before every other counter piece, of one kind (Westwood rings its
+        bars with them: Con07B's 7 Stool1, Con06a's cushioned stools, Con02a's), and a spittoon at the bar's foot."""
+        kinds = [t for t in ("Stool1", "Stool3", "CushionedStool1", "CushionedStool4") if self.ok_type(t)]
+        if not kinds: return 0
+        st = self.rng.choice(kinds)
+        # the round tables take the same stools (Con06a's cushioned stools at its bar and its four round tables: the
+        # seat that dominates a Westwood tavern, 0.2-0.4 of its pieces); the profile's free_most caps how many
+        self._set_seat.setdefault("round", _base(st))
+        hs = max(self.half(st))
+        spots = []
+        for t, u, v in typed:
+            if t == "BarHingedTop": continue
+            if t.startswith(useries) and v == V: spots.append((u, V + sv * (1.0 + hs + 0.15)))   # the u-run's outer side
+            elif t.startswith(vseries) and u == U: spots.append((U + su * (1.0 + hs + 0.15), v))  # the v-run's outer side
+        corner = (U + su * (1.0 + hs + 0.15), V + sv * (1.0 + hs + 0.15))
+        spots.sort(key=lambda p: math.hypot(p[0] - corner[0], p[1] - corner[1]))
+        got, last = 0, []
+        for (u, v) in spots:
+            if len(last) >= 5 or any(math.hypot(u - a, v - b) < 2.3 for a, b in last): continue
+            self._pairing = True
+            try:
+                o = self.try_put(st, u, v)
+            finally:
+                self._pairing = False
+            if o: got += 1; last.append((u, v))
+        if self.ok_type("Spitoon"):
+            for (u, v) in spots[::-1]:
+                for du_, dv_ in ((su * 1.2, 0), (0, sv * 1.2), (su * 1.2, sv * 1.2)):
+                    if self.try_put("Spitoon", u + du_, v + dv_): return got + 1
+        return got
+
+    def bar_casks(self, ru, rv, U, V, su, sv):
+        """A pair of great casks against a wall just past an end of the bar, outside it (Westwood's taverns keep their
+        casks by the bar: Con06a's two LargeBarrel2 at its end, Con02a's on the wall beside it), not in the room's
+        middle nor down its walls."""
+        casks = [t for t in ("LargeBarrel1", "LargeBarrel2") if self.ok_type(t)]
+        if not casks: return 0
+        t = self.rng.choice(casks)
+        hc = max(self.half(t))
+        for k0 in (1.4, 2.4, 3.4):
+            for wall, end in ((ru, V), (rv, U)):
+                pts = []
+                for k in range(2):
+                    off = k0 + hc + 2 * hc * k + 0.1 * k
+                    if wall is ru: pts.append((ru["coord"] + su * (hc + 0.25), end + sv * off))
+                    else: pts.append((end + su * off, rv["coord"] + sv * (hc + 0.25)))
+                got = []
+                for (u, v) in pts:
+                    o = self.try_put(t, u, v, snug=True)
+                    if not o: break
+                    got.append(o)
+                if len(got) == 2: return 2
+                for o in got: self._remove(o)
+        return 0
 
     def counter_spot(self, res):
         o, r, (u, v) = res

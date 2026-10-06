@@ -31,7 +31,7 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 
 ## Density and openness
 
-| | Westwood's campaign (2 rooms, Con06a, Con07B) | Profile |
+| | Westwood's campaign (2 rooms, Con06a, Con07B; five since the room lab's index fix) | Profile |
 |---|---|---|
 | coverage | 0.12-0.14-0.14 | 0.10-0.30 (target 0.18) |
 | open floor | 0.53-0.55-0.55 | 0.40-0.80 |
@@ -42,7 +42,7 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 
 ## Size
 
-100-360 tiles: most of an inn's floor.
+180-360 tiles: most of an inn's floor (the checker's Westwood taverns run 166-216).
 
 ## Where people stand
 
@@ -65,3 +65,23 @@ The barkeep behind the bar (the furnisher's spot); patrons by the hearth; never 
 - Westwood: Con07B / War07A, cell 91,177 (216 tiles, 35 types: 8 tables of mixed kinds, 20 seats, a bar of 14 pieces,
   coverage 0.14, open 0.55); Con06a, cell 143,178 (166 tiles, 23 types).
 - Ours: Starwell seed 4, room 11, the common room (342 tiles).
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+Westwood's five campaign taverns: Con02a (125 tiles, the bar on a raised dais in the E corner, its barman a Shopkeeper
+object), Con06a (166, the L bar on the NE wall, two hearth pillars free in the middle, four round tables), Con07B (216,
+a U bar ringed by stools, tables of food and long tables on an L of red carpet), Con07B's lower tavern (104, the bar in
+the W corner, long tables round a woven carpet), Wiz05A (25, a tap room). Lab pool: taverns and dining halls.
+- **The bar** is the room: 9-14 pieces, a long L in any back corner (N, E or W; never the front), ringed on its outer
+  face by stools of one kind (Con07B 7 Stool1), a spittoon at its foot, barrels behind it, a pair of great casks against
+  the wall just past its end. Never a hearth or shelf behind the counter.
+- **Sets:** one or two kinds, each one table type and one seat (Con06a: four RoundTable2 with cushioned stools); the same
+  stools at the bar and the round tables (the seat that dominates: 0.2-0.4 of a Westwood tavern's pieces), 2-3 to a
+  round table, pulled out from it; long tables with benches and tables of food along the walls and in the corners; a
+  table per 28 tiles.
+- **Floor:** a bearskin before the hearth, or a woven carpet under the seating; never rugs under the tables.
+- **Stores:** 5-8 kegs and casks, by the bar; never a wall of them.
+- No plants, no bookcases, shelves of tankards rarely (Westwood's taverns hold none).
+- A tavern reads as a living room too (hearth, tables, benches): Westwood's Con02a does; the living room is its kin.
+- Still giving it away: fewer lights than Westwood (its taverns burn torch poles, which the house rule forbids), a plain
+  rectangle where Westwood's have a dais, an L or a stair (the shell).

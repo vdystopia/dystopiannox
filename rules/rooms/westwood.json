@@ -1,24 +1,24 @@
 {
- "rooms": 235,
+ "rooms": 227,
  "maps": "campaign (Con/War/Wiz), each room once",
  "types": {
   "bedroom": {
-   "n": 40,
-   "maps": 14,
+   "n": 39,
+   "maps": 13,
    "cultures": {
-    "dunmir": 15,
+    "dunmir": 14,
     "town": 24,
     "ogre": 1
    },
    "tiles": {
     "p10": 9,
     "p25": 12,
-    "p50": 18,
+    "p50": 15,
     "p75": 38,
     "p90": 98
    },
    "cover": {
-    "p10": 0.054,
+    "p10": 0.046,
     "p25": 0.083,
     "p50": 0.145,
     "p75": 0.192,
@@ -27,8 +27,8 @@
    "open": {
     "p10": 0.344,
     "p25": 0.406,
-    "p50": 0.567,
-    "p75": 0.69,
+    "p50": 0.562,
+    "p75": 0.688,
     "p90": 0.789
    },
    "middle": {
@@ -39,7 +39,7 @@
     "p90": 0.03
    },
    "per_tile": {
-    "p10": 0.112,
+    "p10": 0.083,
     "p25": 0.229,
     "p50": 0.417,
     "p75": 0.556,
@@ -47,7 +47,7 @@
    },
    "types": {
     "p10": 4,
-    "p25": 5,
+    "p25": 4,
     "p50": 7,
     "p75": 8,
     "p90": 12
@@ -67,32 +67,32 @@
     "p90": 3
    },
    "walls": {
-    "p10": 2,
+    "p10": 1,
     "p25": 2,
     "p50": 2,
     "p75": 3,
     "p90": 3
    },
    "lined": {
-    "p10": 0.126,
-    "p25": 0.163,
+    "p10": 0.114,
+    "p25": 0.156,
     "p50": 0.259,
     "p75": 0.316,
     "p90": 0.387
    },
    "families": {
     "bed": 1.0,
-    "storage": 0.8,
+    "storage": 0.82,
     "shelves": 0.72,
+    "nightstand": 0.64,
     "chair": 0.62,
-    "nightstand": 0.62,
-    "desk": 0.55,
+    "desk": 0.54,
     "table": 0.33,
-    "rug": 0.23,
-    "bench": 0.17,
-    "wall_decor": 0.17,
-    "clutter": 0.12,
-    "statue": 0.12,
+    "rug": 0.21,
+    "bench": 0.18,
+    "wall_decor": 0.18,
+    "clutter": 0.13,
+    "statue": 0.13,
     "fireplace": 0.05,
     "column": 0.03,
     "smithy": 0.03
@@ -171,65 +171,65 @@
    ]
   },
   "crypt": {
-   "n": 30,
-   "maps": 8,
+   "n": 29,
+   "maps": 7,
    "cultures": {
-    "town": 30
+    "town": 29
    },
    "tiles": {
     "p10": 25,
     "p25": 30,
     "p50": 56,
-    "p75": 82,
+    "p75": 81,
     "p90": 400
    },
    "cover": {
-    "p10": 0.009,
-    "p25": 0.058,
+    "p10": 0.008,
+    "p25": 0.066,
     "p50": 0.082,
     "p75": 0.127,
     "p90": 0.23
    },
    "open": {
-    "p10": 0.458,
+    "p10": 0.453,
     "p25": 0.611,
     "p50": 0.738,
     "p75": 0.773,
     "p90": 0.912
    },
    "middle": {
-    "p10": 0.003,
-    "p25": 0.014,
+    "p10": 0.002,
+    "p25": 0.022,
     "p50": 0.072,
     "p75": 0.11,
     "p90": 0.134
    },
    "per_tile": {
-    "p10": 0.045,
+    "p10": 0.042,
     "p25": 0.057,
-    "p50": 0.071,
-    "p75": 0.107,
+    "p50": 0.067,
+    "p75": 0.08,
     "p90": 0.2
    },
    "types": {
     "p10": 1,
     "p25": 2,
     "p50": 2,
-    "p75": 5,
-    "p90": 11
+    "p75": 4,
+    "p90": 9
    },
    "most": {
     "p10": 1,
     "p25": 2,
     "p50": 3,
-    "p75": 6,
+    "p75": 5,
     "p90": 18
    },
    "free_most": {
     "p10": 0,
     "p25": 0,
     "p50": 2,
-    "p75": 6,
+    "p75": 4,
     "p90": 18
    },
    "walls": {
@@ -237,7 +237,7 @@
     "p25": 0,
     "p50": 1,
     "p75": 1,
-    "p90": 4
+    "p90": 3
    },
    "lined": {
     "p10": 0.0,
@@ -248,9 +248,9 @@
    },
    "families": {
     "tomb": 1.0,
-    "storage": 0.2,
+    "storage": 0.21,
     "statue": 0.17,
-    "plant": 0.1
+    "plant": 0.07
    },
    "most_kinds": [
     [
@@ -262,15 +262,15 @@
      11
     ],
     [
-     "Plant",
-     2
-    ],
-    [
      "Statue",
      1
     ],
     [
      "Obelisk",
+     1
+    ],
+    [
+     "Plant",
      1
     ]
    ],
@@ -285,18 +285,6 @@
      "types": 14,
      "cover": 0.058,
      "open": 0.735,
-     "culture": "town"
-    },
-    {
-     "map": "War07A",
-     "centre": [
-      170,
-      175
-     ],
-     "tiles": 235,
-     "types": 14,
-     "cover": 0.057,
-     "open": 0.745,
      "culture": "town"
     },
     {
@@ -322,14 +310,26 @@
      "cover": 0.234,
      "open": 0.234,
      "culture": "town"
+    },
+    {
+     "map": "War03c",
+     "centre": [
+      80,
+      98
+     ],
+     "tiles": 56,
+     "types": 5,
+     "cover": 0.234,
+     "open": 0.297,
+     "culture": "town"
     }
    ]
   },
   "storeroom": {
-   "n": 22,
-   "maps": 17,
+   "n": 21,
+   "maps": 16,
    "cultures": {
-    "dunmir": 5,
+    "dunmir": 4,
     "town": 17
    },
    "tiles": {
@@ -342,13 +342,13 @@
    "cover": {
     "p10": 0.021,
     "p25": 0.038,
-    "p50": 0.073,
+    "p50": 0.06,
     "p75": 0.173,
-    "p90": 0.193
+    "p90": 0.19
    },
    "open": {
     "p10": 0.32,
-    "p25": 0.364,
+    "p25": 0.398,
     "p50": 0.75,
     "p75": 0.815,
     "p90": 0.912
@@ -356,22 +356,22 @@
    "middle": {
     "p10": 0.0,
     "p25": 0.0,
-    "p50": 0.012,
-    "p75": 0.025,
+    "p50": 0.009,
+    "p75": 0.018,
     "p90": 0.066
    },
    "per_tile": {
     "p10": 0.056,
     "p25": 0.083,
-    "p50": 0.25,
-    "p75": 0.371,
+    "p50": 0.2,
+    "p75": 0.361,
     "p90": 0.444
    },
    "types": {
     "p10": 1,
     "p25": 2,
     "p50": 3,
-    "p75": 5,
+    "p75": 4,
     "p90": 5
    },
    "most": {
@@ -404,8 +404,8 @@
    },
    "families": {
     "storage": 1.0,
-    "shop_rack": 0.09,
-    "column": 0.09,
+    "shop_rack": 0.1,
+    "column": 0.1,
     "shelves": 0.05,
     "clutter": 0.05,
     "chair": 0.05,
@@ -414,7 +414,7 @@
    "most_kinds": [
     [
      "Barrel",
-     13
+     12
     ],
     [
      "CaveRockPillarShort",
@@ -471,24 +471,24 @@
      "culture": "town"
     },
     {
-     "map": "War01A",
+     "map": "Con05C",
      "centre": [
-      153,
-      212
+      130,
+      78
      ],
-     "tiles": 35,
-     "types": 5,
-     "cover": 0.193,
-     "open": 0.325,
-     "culture": "dunmir"
+     "tiles": 42,
+     "types": 4,
+     "cover": 0.173,
+     "open": 0.5,
+     "culture": "town"
     }
    ]
   },
   "laboratory": {
-   "n": 19,
-   "maps": 12,
+   "n": 18,
+   "maps": 11,
    "cultures": {
-    "dunmir": 3,
+    "dunmir": 2,
     "town": 15,
     "ogre": 1
    },
@@ -496,13 +496,13 @@
     "p10": 12,
     "p25": 24,
     "p50": 31,
-    "p75": 97,
-    "p90": 208
+    "p75": 74,
+    "p90": 118
    },
    "cover": {
-    "p10": 0.006,
-    "p25": 0.061,
-    "p50": 0.091,
+    "p10": 0.033,
+    "p25": 0.068,
+    "p50": 0.097,
     "p75": 0.14,
     "p90": 0.251
    },
@@ -510,8 +510,8 @@
     "p10": 0.219,
     "p25": 0.39,
     "p50": 0.623,
-    "p75": 0.789,
-    "p90": 0.953
+    "p75": 0.722,
+    "p90": 0.833
    },
    "middle": {
     "p10": 0.0,
@@ -523,7 +523,7 @@
    "per_tile": {
     "p10": 0.124,
     "p25": 0.167,
-    "p50": 0.257,
+    "p50": 0.292,
     "p75": 0.419,
     "p90": 0.667
    },
@@ -538,14 +538,14 @@
     "p10": 1,
     "p25": 2,
     "p50": 2,
-    "p75": 9,
+    "p75": 6,
     "p90": 12
    },
    "free_most": {
     "p10": 0,
     "p25": 1,
     "p50": 2,
-    "p75": 4,
+    "p75": 3,
     "p90": 9
    },
    "walls": {
@@ -557,25 +557,25 @@
    },
    "lined": {
     "p10": 0.044,
-    "p25": 0.092,
-    "p50": 0.152,
+    "p25": 0.109,
+    "p50": 0.154,
     "p75": 0.273,
     "p90": 0.363
    },
    "families": {
     "lab": 1.0,
-    "storage": 0.63,
-    "chair": 0.58,
-    "shelves": 0.47,
-    "desk": 0.42,
-    "bed": 0.32,
-    "nightstand": 0.26,
-    "wall_decor": 0.26,
-    "table": 0.26,
-    "statue": 0.21,
-    "plant": 0.11,
-    "clutter": 0.05,
-    "rug": 0.05
+    "storage": 0.67,
+    "chair": 0.61,
+    "shelves": 0.5,
+    "desk": 0.44,
+    "bed": 0.33,
+    "nightstand": 0.28,
+    "table": 0.28,
+    "wall_decor": 0.22,
+    "statue": 0.17,
+    "clutter": 0.06,
+    "plant": 0.06,
+    "rug": 0.06
    },
    "most_kinds": [
     [
@@ -587,15 +587,15 @@
      2
     ],
     [
-     "Plant",
-     2
-    ],
-    [
      "DunMirChest",
      1
     ],
     [
      "WaterBarrel",
+     1
+    ],
+    [
+     "DarkWoodenChair",
      1
     ]
    ],
@@ -646,500 +646,6 @@
      "types": 14,
      "cover": 0.089,
      "open": 0.623,
-     "culture": "town"
-    }
-   ]
-  },
-  "hall": {
-   "n": 17,
-   "maps": 12,
-   "cultures": {
-    "town": 10,
-    "dunmir": 3,
-    "ogre": 1,
-    "lotd": 3
-   },
-   "tiles": {
-    "p10": 40,
-    "p25": 58,
-    "p50": 92,
-    "p75": 140,
-    "p90": 209
-   },
-   "cover": {
-    "p10": 0.002,
-    "p25": 0.025,
-    "p50": 0.03,
-    "p75": 0.061,
-    "p90": 0.096
-   },
-   "open": {
-    "p10": 0.612,
-    "p25": 0.724,
-    "p50": 0.783,
-    "p75": 0.91,
-    "p90": 0.972
-   },
-   "middle": {
-    "p10": 0.0,
-    "p25": 0.0,
-    "p50": 0.001,
-    "p75": 0.012,
-    "p90": 0.031
-   },
-   "per_tile": {
-    "p10": 0.045,
-    "p25": 0.065,
-    "p50": 0.119,
-    "p75": 0.259,
-    "p90": 0.342
-   },
-   "types": {
-    "p10": 2,
-    "p25": 3,
-    "p50": 4,
-    "p75": 7,
-    "p90": 9
-   },
-   "most": {
-    "p10": 4,
-    "p25": 4,
-    "p50": 7,
-    "p75": 12,
-    "p90": 34
-   },
-   "free_most": {
-    "p10": 0,
-    "p25": 2,
-    "p50": 4,
-    "p75": 12,
-    "p90": 34
-   },
-   "walls": {
-    "p10": 1,
-    "p25": 2,
-    "p50": 3,
-    "p75": 4,
-    "p90": 4
-   },
-   "lined": {
-    "p10": 0.0,
-    "p25": 0.0,
-    "p50": 0.0,
-    "p75": 0.0,
-    "p90": 0.036
-   },
-   "families": {
-    "statue": 0.76,
-    "column": 0.47,
-    "storage": 0.35,
-    "plant": 0.24,
-    "tomb": 0.18,
-    "wall_decor": 0.18,
-    "shop_rack": 0.06
-   },
-   "most_kinds": [
-    [
-     "Statue",
-     4
-    ],
-    [
-     "Plant",
-     4
-    ],
-    [
-     "LOTDManaObelisk",
-     3
-    ],
-    [
-     "StatueVictory",
-     2
-    ],
-    [
-     "Column",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "Con07B",
-     "centre": [
-      150,
-      198
-     ],
-     "tiles": 155,
-     "types": 9,
-     "cover": 0.061,
-     "open": 0.756,
-     "culture": "town"
-    },
-    {
-     "map": "War07A",
-     "centre": [
-      151,
-      197
-     ],
-     "tiles": 177,
-     "types": 9,
-     "cover": 0.054,
-     "open": 0.783,
-     "culture": "town"
-    },
-    {
-     "map": "Con04a",
-     "centre": [
-      148,
-      55
-     ],
-     "tiles": 58,
-     "types": 7,
-     "cover": 0.096,
-     "open": 0.612,
-     "culture": "town"
-    },
-    {
-     "map": "Con05A",
-     "centre": [
-      68,
-      153
-     ],
-     "tiles": 58,
-     "types": 7,
-     "cover": 0.096,
-     "open": 0.612,
-     "culture": "town"
-    }
-   ]
-  },
-  "shop": {
-   "n": 16,
-   "maps": 11,
-   "cultures": {
-    "town": 14,
-    "dunmir": 2
-   },
-   "tiles": {
-    "p10": 24,
-    "p25": 32,
-    "p50": 43,
-    "p75": 88,
-    "p90": 111
-   },
-   "cover": {
-    "p10": 0.063,
-    "p25": 0.082,
-    "p50": 0.133,
-    "p75": 0.26,
-    "p90": 0.275
-   },
-   "open": {
-    "p10": 0.341,
-    "p25": 0.429,
-    "p50": 0.618,
-    "p75": 0.673,
-    "p90": 0.681
-   },
-   "middle": {
-    "p10": 0.0,
-    "p25": 0.0,
-    "p50": 0.014,
-    "p75": 0.05,
-    "p90": 0.059
-   },
-   "per_tile": {
-    "p10": 0.139,
-    "p25": 0.167,
-    "p50": 0.206,
-    "p75": 0.292,
-    "p90": 0.438
-   },
-   "types": {
-    "p10": 5,
-    "p25": 6,
-    "p50": 7,
-    "p75": 11,
-    "p90": 16
-   },
-   "most": {
-    "p10": 2,
-    "p25": 3,
-    "p50": 4,
-    "p75": 5,
-    "p90": 7
-   },
-   "free_most": {
-    "p10": 0,
-    "p25": 1,
-    "p50": 1,
-    "p75": 4,
-    "p90": 4
-   },
-   "walls": {
-    "p10": 2,
-    "p25": 2,
-    "p50": 3,
-    "p75": 4,
-    "p90": 4
-   },
-   "lined": {
-    "p10": 0.0,
-    "p25": 0.029,
-    "p50": 0.174,
-    "p75": 0.249,
-    "p90": 0.296
-   },
-   "families": {
-    "counter_shop": 0.81,
-    "shelves": 0.38,
-    "storage": 0.31,
-    "chair": 0.25,
-    "lab": 0.25,
-    "shop_rack": 0.25,
-    "clutter": 0.19,
-    "bench": 0.19,
-    "stove": 0.19,
-    "statue": 0.19,
-    "wall_decor": 0.19,
-    "counter_bar": 0.12,
-    "tomb": 0.12,
-    "fireplace": 0.06,
-    "smithy": 0.06,
-    "rug": 0.06,
-    "table": 0.06
-   },
-   "most_kinds": [
-    [
-     "PotionShelves",
-     4
-    ],
-    [
-     "CrateSteel",
-     2
-    ],
-    [
-     "TraderPoleArm",
-     2
-    ],
-    [
-     "Tombstone",
-     2
-    ],
-    [
-     "Stool",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "War07A",
-     "centre": [
-      132,
-      174
-     ],
-     "tiles": 88,
-     "types": 16,
-     "cover": 0.182,
-     "open": 0.429,
-     "culture": "town"
-    },
-    {
-     "map": "Con06a",
-     "centre": [
-      142,
-      205
-     ],
-     "tiles": 108,
-     "types": 11,
-     "cover": 0.117,
-     "open": 0.633,
-     "culture": "dunmir"
-    },
-    {
-     "map": "War01A",
-     "centre": [
-      142,
-      205
-     ],
-     "tiles": 111,
-     "types": 11,
-     "cover": 0.119,
-     "open": 0.618,
-     "culture": "dunmir"
-    },
-    {
-     "map": "War07A",
-     "centre": [
-      109,
-      167
-     ],
-     "tiles": 68,
-     "types": 9,
-     "cover": 0.082,
-     "open": 0.669,
-     "culture": "town"
-    }
-   ]
-  },
-  "armoury": {
-   "n": 16,
-   "maps": 10,
-   "cultures": {
-    "town": 5,
-    "dunmir": 10,
-    "ogre": 1
-   },
-   "tiles": {
-    "p10": 16,
-    "p25": 25,
-    "p50": 55,
-    "p75": 78,
-    "p90": 117
-   },
-   "cover": {
-    "p10": 0.004,
-    "p25": 0.07,
-    "p50": 0.129,
-    "p75": 0.185,
-    "p90": 0.236
-   },
-   "open": {
-    "p10": 0.331,
-    "p25": 0.525,
-    "p50": 0.59,
-    "p75": 0.875,
-    "p90": 0.972
-   },
-   "middle": {
-    "p10": 0.0,
-    "p25": 0.0,
-    "p50": 0.036,
-    "p75": 0.063,
-    "p90": 0.101
-   },
-   "per_tile": {
-    "p10": 0.051,
-    "p25": 0.114,
-    "p50": 0.24,
-    "p75": 0.267,
-    "p90": 0.393
-   },
-   "types": {
-    "p10": 3,
-    "p25": 5,
-    "p50": 6,
-    "p75": 8,
-    "p90": 13
-   },
-   "most": {
-    "p10": 1,
-    "p25": 2,
-    "p50": 3,
-    "p75": 6,
-    "p90": 6
-   },
-   "free_most": {
-    "p10": 0,
-    "p25": 1,
-    "p50": 3,
-    "p75": 4,
-    "p90": 6
-   },
-   "walls": {
-    "p10": 2,
-    "p25": 2,
-    "p50": 3,
-    "p75": 3,
-    "p90": 3
-   },
-   "lined": {
-    "p10": 0.0,
-    "p25": 0.033,
-    "p50": 0.187,
-    "p75": 0.294,
-    "p90": 0.308
-   },
-   "families": {
-    "shop_rack": 1.0,
-    "storage": 0.69,
-    "table": 0.5,
-    "chair": 0.44,
-    "wall_decor": 0.25,
-    "bed": 0.25,
-    "clutter": 0.12,
-    "bench": 0.06,
-    "statue": 0.06,
-    "column": 0.06,
-    "lab": 0.06
-   },
-   "most_kinds": [
-    [
-     "TraderPoleArm",
-     5
-    ],
-    [
-     "WoodenChair",
-     3
-    ],
-    [
-     "WoodBed",
-     1
-    ],
-    [
-     "StatueVictory",
-     1
-    ],
-    [
-     "Cot",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "War03a",
-     "centre": [
-      111,
-      113
-     ],
-     "tiles": 63,
-     "types": 14,
-     "cover": 0.097,
-     "open": 0.636,
-     "culture": "dunmir"
-    },
-    {
-     "map": "Con03A",
-     "centre": [
-      110,
-      112
-     ],
-     "tiles": 63,
-     "types": 13,
-     "cover": 0.098,
-     "open": 0.594,
-     "culture": "dunmir"
-    },
-    {
-     "map": "Con06a",
-     "centre": [
-      69,
-      199
-     ],
-     "tiles": 55,
-     "types": 13,
-     "cover": 0.104,
-     "open": 0.551,
-     "culture": "dunmir"
-    },
-    {
-     "map": "Con05A",
-     "centre": [
-      48,
-      66
-     ],
-     "tiles": 28,
-     "types": 8,
-     "cover": 0.259,
-     "open": 0.275,
      "culture": "town"
     }
    ]
@@ -1307,6 +813,170 @@
     }
    ]
   },
+  "armoury": {
+   "n": 15,
+   "maps": 9,
+   "cultures": {
+    "town": 5,
+    "dunmir": 9,
+    "ogre": 1
+   },
+   "tiles": {
+    "p10": 16,
+    "p25": 25,
+    "p50": 35,
+    "p75": 78,
+    "p90": 117
+   },
+   "cover": {
+    "p10": 0.004,
+    "p25": 0.043,
+    "p50": 0.129,
+    "p75": 0.185,
+    "p90": 0.236
+   },
+   "open": {
+    "p10": 0.331,
+    "p25": 0.513,
+    "p50": 0.574,
+    "p75": 0.875,
+    "p90": 0.972
+   },
+   "middle": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.003,
+    "p75": 0.063,
+    "p90": 0.101
+   },
+   "per_tile": {
+    "p10": 0.051,
+    "p25": 0.077,
+    "p50": 0.24,
+    "p75": 0.267,
+    "p90": 0.393
+   },
+   "types": {
+    "p10": 3,
+    "p25": 4,
+    "p50": 6,
+    "p75": 8,
+    "p90": 13
+   },
+   "most": {
+    "p10": 1,
+    "p25": 2,
+    "p50": 3,
+    "p75": 6,
+    "p90": 6
+   },
+   "free_most": {
+    "p10": 0,
+    "p25": 0,
+    "p50": 1,
+    "p75": 4,
+    "p90": 6
+   },
+   "walls": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 3,
+    "p75": 3,
+    "p90": 3
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.016,
+    "p50": 0.187,
+    "p75": 0.294,
+    "p90": 0.308
+   },
+   "families": {
+    "shop_rack": 1.0,
+    "storage": 0.67,
+    "table": 0.47,
+    "chair": 0.4,
+    "wall_decor": 0.2,
+    "bed": 0.2,
+    "clutter": 0.07,
+    "bench": 0.07,
+    "statue": 0.07,
+    "column": 0.07,
+    "lab": 0.07
+   },
+   "most_kinds": [
+    [
+     "TraderPoleArm",
+     5
+    ],
+    [
+     "WoodenChair",
+     2
+    ],
+    [
+     "WoodBed",
+     1
+    ],
+    [
+     "StatueVictory",
+     1
+    ],
+    [
+     "Cot",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con03A",
+     "centre": [
+      110,
+      112
+     ],
+     "tiles": 63,
+     "types": 13,
+     "cover": 0.098,
+     "open": 0.594,
+     "culture": "dunmir"
+    },
+    {
+     "map": "Con06a",
+     "centre": [
+      69,
+      199
+     ],
+     "tiles": 55,
+     "types": 13,
+     "cover": 0.104,
+     "open": 0.551,
+     "culture": "dunmir"
+    },
+    {
+     "map": "Con05A",
+     "centre": [
+      48,
+      66
+     ],
+     "tiles": 28,
+     "types": 8,
+     "cover": 0.259,
+     "open": 0.275,
+     "culture": "town"
+    },
+    {
+     "map": "Con06b",
+     "centre": [
+      160,
+      48
+     ],
+     "tiles": 70,
+     "types": 8,
+     "cover": 0.236,
+     "open": 0.331,
+     "culture": "dunmir"
+    }
+   ]
+  },
   "living_room": {
    "n": 15,
    "maps": 9,
@@ -1467,6 +1137,331 @@
      "types": 9,
      "cover": 0.214,
      "open": 0.231,
+     "culture": "town"
+    }
+   ]
+  },
+  "shop": {
+   "n": 13,
+   "maps": 10,
+   "cultures": {
+    "town": 12,
+    "dunmir": 1
+   },
+   "tiles": {
+    "p10": 24,
+    "p25": 32,
+    "p50": 42,
+    "p75": 45,
+    "p90": 88
+   },
+   "cover": {
+    "p10": 0.063,
+    "p25": 0.081,
+    "p50": 0.117,
+    "p75": 0.182,
+    "p90": 0.275
+   },
+   "open": {
+    "p10": 0.341,
+    "p25": 0.429,
+    "p50": 0.628,
+    "p75": 0.673,
+    "p90": 0.681
+   },
+   "middle": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.013,
+    "p75": 0.036,
+    "p90": 0.059
+   },
+   "per_tile": {
+    "p10": 0.139,
+    "p25": 0.167,
+    "p50": 0.205,
+    "p75": 0.273,
+    "p90": 0.438
+   },
+   "types": {
+    "p10": 5,
+    "p25": 6,
+    "p50": 7,
+    "p75": 8,
+    "p90": 11
+   },
+   "most": {
+    "p10": 2,
+    "p25": 3,
+    "p50": 4,
+    "p75": 4,
+    "p90": 5
+   },
+   "free_most": {
+    "p10": 0,
+    "p25": 0,
+    "p50": 1,
+    "p75": 1,
+    "p90": 4
+   },
+   "walls": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 3,
+    "p75": 3,
+    "p90": 4
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.036,
+    "p50": 0.174,
+    "p75": 0.233,
+    "p90": 0.254
+   },
+   "families": {
+    "counter_shop": 0.85,
+    "shelves": 0.38,
+    "lab": 0.31,
+    "storage": 0.31,
+    "stove": 0.23,
+    "chair": 0.23,
+    "shop_rack": 0.23,
+    "wall_decor": 0.23,
+    "statue": 0.15,
+    "bench": 0.15,
+    "clutter": 0.15,
+    "tomb": 0.08,
+    "counter_bar": 0.08
+   },
+   "most_kinds": [
+    [
+     "PotionShelves",
+     4
+    ],
+    [
+     "CrateSteel",
+     2
+    ],
+    [
+     "TraderPoleArm",
+     2
+    ],
+    [
+     "TraderQuiverRack",
+     1
+    ],
+    [
+     "TraderDesk",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "War07A",
+     "centre": [
+      132,
+      174
+     ],
+     "tiles": 88,
+     "types": 16,
+     "cover": 0.182,
+     "open": 0.429,
+     "culture": "town"
+    },
+    {
+     "map": "War07A",
+     "centre": [
+      109,
+      167
+     ],
+     "tiles": 68,
+     "types": 9,
+     "cover": 0.082,
+     "open": 0.669,
+     "culture": "town"
+    },
+    {
+     "map": "Con03A",
+     "centre": [
+      14,
+      198
+     ],
+     "tiles": 44,
+     "types": 8,
+     "cover": 0.14,
+     "open": 0.596,
+     "culture": "town"
+    },
+    {
+     "map": "Con07B",
+     "centre": [
+      106,
+      208
+     ],
+     "tiles": 45,
+     "types": 8,
+     "cover": 0.133,
+     "open": 0.571,
+     "culture": "town"
+    }
+   ]
+  },
+  "hall": {
+   "n": 13,
+   "maps": 10,
+   "cultures": {
+    "town": 6,
+    "dunmir": 3,
+    "ogre": 1,
+    "lotd": 3
+   },
+   "tiles": {
+    "p10": 40,
+    "p25": 42,
+    "p50": 92,
+    "p75": 140,
+    "p90": 209
+   },
+   "cover": {
+    "p10": 0.002,
+    "p25": 0.025,
+    "p50": 0.03,
+    "p75": 0.061,
+    "p90": 0.096
+   },
+   "open": {
+    "p10": 0.612,
+    "p25": 0.695,
+    "p50": 0.745,
+    "p75": 0.939,
+    "p90": 0.972
+   },
+   "middle": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.001,
+    "p75": 0.007,
+    "p90": 0.031
+   },
+   "per_tile": {
+    "p10": 0.045,
+    "p25": 0.053,
+    "p50": 0.119,
+    "p75": 0.259,
+    "p90": 0.325
+   },
+   "types": {
+    "p10": 2,
+    "p25": 3,
+    "p50": 3,
+    "p75": 6,
+    "p90": 7
+   },
+   "most": {
+    "p10": 4,
+    "p25": 4,
+    "p50": 7,
+    "p75": 10,
+    "p90": 12
+   },
+   "free_most": {
+    "p10": 0,
+    "p25": 2,
+    "p50": 4,
+    "p75": 10,
+    "p90": 12
+   },
+   "walls": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 3,
+    "p75": 4,
+    "p90": 4
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.028,
+    "p90": 0.036
+   },
+   "families": {
+    "statue": 1.0,
+    "storage": 0.46,
+    "column": 0.31,
+    "tomb": 0.23,
+    "wall_decor": 0.23,
+    "shop_rack": 0.08
+   },
+   "most_kinds": [
+    [
+     "Statue",
+     4
+    ],
+    [
+     "LOTDManaObelisk",
+     3
+    ],
+    [
+     "StatueVictory",
+     2
+    ],
+    [
+     "Column",
+     1
+    ],
+    [
+     "DunMirHangingShield",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con04a",
+     "centre": [
+      148,
+      55
+     ],
+     "tiles": 58,
+     "types": 7,
+     "cover": 0.096,
+     "open": 0.612,
+     "culture": "town"
+    },
+    {
+     "map": "Con05A",
+     "centre": [
+      68,
+      153
+     ],
+     "tiles": 58,
+     "types": 7,
+     "cover": 0.096,
+     "open": 0.612,
+     "culture": "town"
+    },
+    {
+     "map": "Con07E",
+     "centre": [
+      172,
+      104
+     ],
+     "tiles": 140,
+     "types": 5,
+     "cover": 0.002,
+     "open": 0.983,
+     "culture": "ogre"
+    },
+    {
+     "map": "Con04c",
+     "centre": [
+      75,
+      78
+     ],
+     "tiles": 128,
+     "types": 5,
+     "cover": 0.061,
+     "open": 0.695,
      "culture": "town"
     }
    ]
@@ -1946,6 +1941,170 @@
     }
    ]
   },
+  "tavern": {
+   "n": 5,
+   "maps": 4,
+   "cultures": {
+    "town": 4,
+    "dunmir": 1
+   },
+   "tiles": {
+    "p10": 25,
+    "p25": 104,
+    "p50": 125,
+    "p75": 166,
+    "p90": 216
+   },
+   "cover": {
+    "p10": 0.079,
+    "p25": 0.124,
+    "p50": 0.142,
+    "p75": 0.147,
+    "p90": 0.167
+   },
+   "open": {
+    "p10": 0.42,
+    "p25": 0.532,
+    "p50": 0.547,
+    "p75": 0.559,
+    "p90": 0.607
+   },
+   "middle": {
+    "p10": 0.01,
+    "p25": 0.014,
+    "p50": 0.027,
+    "p75": 0.084,
+    "p90": 0.087
+   },
+   "per_tile": {
+    "p10": 0.277,
+    "p25": 0.28,
+    "p50": 0.288,
+    "p75": 0.31,
+    "p90": 0.384
+   },
+   "types": {
+    "p10": 6,
+    "p25": 23,
+    "p50": 23,
+    "p75": 34,
+    "p90": 35
+   },
+   "most": {
+    "p10": 3,
+    "p25": 6,
+    "p50": 10,
+    "p75": 12,
+    "p90": 13
+   },
+   "free_most": {
+    "p10": 3,
+    "p25": 4,
+    "p50": 10,
+    "p75": 12,
+    "p90": 13
+   },
+   "walls": {
+    "p10": 3,
+    "p25": 4,
+    "p50": 4,
+    "p75": 4,
+    "p90": 4
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.029,
+    "p50": 0.033,
+    "p75": 0.07,
+    "p90": 0.167
+   },
+   "families": {
+    "chair": 1.0,
+    "table": 1.0,
+    "bench": 0.8,
+    "storage": 0.8,
+    "counter_bar": 0.8,
+    "fireplace": 0.4,
+    "clutter": 0.4,
+    "rug": 0.4,
+    "wall_decor": 0.4,
+    "stove": 0.4,
+    "smithy": 0.2,
+    "shelves": 0.2
+   },
+   "most_kinds": [
+    [
+     "Stool",
+     1
+    ],
+    [
+     "CushionedStool",
+     1
+    ],
+    [
+     "DarkWoodenChair",
+     1
+    ],
+    [
+     "LightBench",
+     1
+    ],
+    [
+     "DarkWoodenChairFallen",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con07B",
+     "centre": [
+      91,
+      177
+     ],
+     "tiles": 216,
+     "types": 35,
+     "cover": 0.142,
+     "open": 0.547,
+     "culture": "town"
+    },
+    {
+     "map": "Con02a",
+     "centre": [
+      86,
+      105
+     ],
+     "tiles": 125,
+     "types": 34,
+     "cover": 0.147,
+     "open": 0.559,
+     "culture": "town"
+    },
+    {
+     "map": "Con07B",
+     "centre": [
+      112,
+      240
+     ],
+     "tiles": 104,
+     "types": 23,
+     "cover": 0.167,
+     "open": 0.42,
+     "culture": "town"
+    },
+    {
+     "map": "Con06a",
+     "centre": [
+      143,
+      178
+     ],
+     "tiles": 166,
+     "types": 23,
+     "cover": 0.124,
+     "open": 0.532,
+     "culture": "dunmir"
+    }
+   ]
+  },
   "throne_room": {
    "n": 4,
    "maps": 4,
@@ -2088,56 +2247,56 @@
    "n": 3,
    "maps": 3,
    "cultures": {
+    "town": 1,
     "ogre": 1,
-    "dunmir": 1,
-    "town": 1
+    "dunmir": 1
    },
    "tiles": {
-    "p10": 25,
-    "p25": 25,
-    "p50": 55,
+    "p10": 55,
+    "p25": 55,
+    "p50": 108,
     "p75": 110,
     "p90": 110
    },
    "cover": {
     "p10": 0.062,
     "p25": 0.062,
-    "p50": 0.079,
+    "p50": 0.104,
     "p75": 0.15,
     "p90": 0.15
    },
    "open": {
     "p10": 0.512,
     "p25": 0.512,
-    "p50": 0.607,
+    "p50": 0.639,
     "p75": 0.756,
     "p90": 0.756
    },
    "middle": {
-    "p10": 0.01,
-    "p25": 0.01,
-    "p50": 0.014,
-    "p75": 0.045,
-    "p90": 0.045
+    "p10": 0.014,
+    "p25": 0.014,
+    "p50": 0.045,
+    "p75": 0.063,
+    "p90": 0.063
    },
    "per_tile": {
     "p10": 0.155,
     "p25": 0.155,
-    "p50": 0.28,
+    "p50": 0.204,
     "p75": 0.309,
     "p90": 0.309
    },
    "types": {
-    "p10": 6,
-    "p25": 6,
-    "p50": 10,
-    "p75": 12,
-    "p90": 12
+    "p10": 10,
+    "p25": 10,
+    "p50": 12,
+    "p75": 13,
+    "p90": 13
    },
    "most": {
-    "p10": 3,
-    "p25": 3,
-    "p50": 5,
+    "p10": 5,
+    "p25": 5,
+    "p50": 6,
     "p75": 7,
     "p90": 7
    },
@@ -2151,28 +2310,35 @@
    "walls": {
     "p10": 2,
     "p25": 2,
-    "p50": 3,
+    "p50": 4,
     "p75": 4,
     "p90": 4
    },
    "lined": {
     "p10": 0.0,
     "p25": 0.0,
-    "p50": 0.0,
+    "p50": 0.117,
     "p75": 0.286,
     "p90": 0.286
    },
    "families": {
-    "chair": 1.0,
+    "storage": 1.0,
     "table": 1.0,
-    "storage": 0.67,
-    "bench": 0.67,
+    "bench": 1.0,
+    "fireplace": 0.67,
+    "chair": 0.67,
+    "wall_decor": 0.33,
+    "smithy": 0.33,
+    "stove": 0.33,
     "statue": 0.33,
-    "fireplace": 0.33,
     "shelves": 0.33,
     "desk": 0.33
    },
    "most_kinds": [
+    [
+     "LightBench",
+     1
+    ],
     [
      "Stool",
      1
@@ -2180,13 +2346,21 @@
     [
      "WoodenChair",
      1
-    ],
-    [
-     "DarkWoodenChairFallen",
-     1
     ]
    ],
    "best": [
+    {
+     "map": "Con03B",
+     "centre": [
+      200,
+      80
+     ],
+     "tiles": 108,
+     "types": 13,
+     "cover": 0.104,
+     "open": 0.639,
+     "culture": "town"
+    },
     {
      "map": "Con06a",
      "centre": [
@@ -2210,18 +2384,6 @@
      "cover": 0.062,
      "open": 0.756,
      "culture": "ogre"
-    },
-    {
-     "map": "Wiz05A",
-     "centre": [
-      48,
-      24
-     ],
-     "tiles": 25,
-     "types": 6,
-     "cover": 0.079,
-     "open": 0.607,
-     "culture": "town"
     }
    ]
   },
@@ -2343,132 +2505,6 @@
      "cover": 0.066,
      "open": 0.784,
      "culture": "town"
-    }
-   ]
-  },
-  "tavern": {
-   "n": 2,
-   "maps": 2,
-   "cultures": {
-    "dunmir": 1,
-    "town": 1
-   },
-   "tiles": {
-    "p10": 166,
-    "p25": 166,
-    "p50": 216,
-    "p75": 216,
-    "p90": 216
-   },
-   "cover": {
-    "p10": 0.124,
-    "p25": 0.124,
-    "p50": 0.142,
-    "p75": 0.142,
-    "p90": 0.142
-   },
-   "open": {
-    "p10": 0.532,
-    "p25": 0.532,
-    "p50": 0.547,
-    "p75": 0.547,
-    "p90": 0.547
-   },
-   "middle": {
-    "p10": 0.027,
-    "p25": 0.027,
-    "p50": 0.087,
-    "p75": 0.087,
-    "p90": 0.087
-   },
-   "per_tile": {
-    "p10": 0.277,
-    "p25": 0.277,
-    "p50": 0.31,
-    "p75": 0.31,
-    "p90": 0.31
-   },
-   "types": {
-    "p10": 23,
-    "p25": 23,
-    "p50": 35,
-    "p75": 35,
-    "p90": 35
-   },
-   "most": {
-    "p10": 12,
-    "p25": 12,
-    "p50": 13,
-    "p75": 13,
-    "p90": 13
-   },
-   "free_most": {
-    "p10": 12,
-    "p25": 12,
-    "p50": 13,
-    "p75": 13,
-    "p90": 13
-   },
-   "walls": {
-    "p10": 4,
-    "p25": 4,
-    "p50": 4,
-    "p75": 4,
-    "p90": 4
-   },
-   "lined": {
-    "p10": 0.033,
-    "p25": 0.033,
-    "p50": 0.07,
-    "p75": 0.07,
-    "p90": 0.07
-   },
-   "families": {
-    "storage": 1.0,
-    "chair": 1.0,
-    "table": 1.0,
-    "bench": 1.0,
-    "counter_bar": 1.0,
-    "fireplace": 0.5,
-    "rug": 0.5,
-    "wall_decor": 0.5,
-    "stove": 0.5,
-    "clutter": 0.5
-   },
-   "most_kinds": [
-    [
-     "CushionedStool",
-     1
-    ],
-    [
-     "DarkWoodenChair",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "Con07B",
-     "centre": [
-      91,
-      177
-     ],
-     "tiles": 216,
-     "types": 35,
-     "cover": 0.142,
-     "open": 0.547,
-     "culture": "town"
-    },
-    {
-     "map": "Con06a",
-     "centre": [
-      143,
-      178
-     ],
-     "tiles": 166,
-     "types": 23,
-     "cover": 0.124,
-     "open": 0.532,
-     "culture": "dunmir"
     }
    ]
   },
@@ -2596,74 +2632,74 @@
     }
    ]
   },
-  "smithy": {
+  "conservatory": {
    "n": 2,
-   "maps": 2,
+   "maps": 1,
    "cultures": {
-    "dunmir": 2
+    "town": 2
    },
    "tiles": {
-    "p10": 42,
-    "p25": 42,
-    "p50": 47,
-    "p75": 47,
-    "p90": 47
+    "p10": 72,
+    "p25": 72,
+    "p50": 155,
+    "p75": 155,
+    "p90": 155
    },
    "cover": {
-    "p10": 0.006,
-    "p25": 0.006,
-    "p50": 0.057,
-    "p75": 0.057,
-    "p90": 0.057
+    "p10": 0.023,
+    "p25": 0.023,
+    "p50": 0.061,
+    "p75": 0.061,
+    "p90": 0.061
    },
    "open": {
-    "p10": 0.764,
-    "p25": 0.764,
-    "p50": 0.96,
-    "p75": 0.96,
-    "p90": 0.96
+    "p10": 0.756,
+    "p25": 0.756,
+    "p50": 0.91,
+    "p75": 0.91,
+    "p90": 0.91
    },
    "middle": {
-    "p10": 0.005,
-    "p25": 0.005,
-    "p50": 0.006,
-    "p75": 0.006,
-    "p90": 0.006
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.012,
+    "p75": 0.012,
+    "p90": 0.012
    },
    "per_tile": {
-    "p10": 0.095,
-    "p25": 0.095,
-    "p50": 0.191,
-    "p75": 0.191,
-    "p90": 0.191
+    "p10": 0.083,
+    "p25": 0.083,
+    "p50": 0.342,
+    "p75": 0.342,
+    "p90": 0.342
    },
    "types": {
-    "p10": 3,
-    "p25": 3,
-    "p50": 6,
-    "p75": 6,
-    "p90": 6
+    "p10": 4,
+    "p25": 4,
+    "p50": 9,
+    "p75": 9,
+    "p90": 9
    },
    "most": {
-    "p10": 2,
-    "p25": 2,
-    "p50": 2,
-    "p75": 2,
-    "p90": 2
+    "p10": 4,
+    "p25": 4,
+    "p50": 35,
+    "p75": 35,
+    "p90": 35
    },
    "free_most": {
-    "p10": 2,
-    "p25": 2,
-    "p50": 2,
-    "p75": 2,
-    "p90": 2
+    "p10": 4,
+    "p25": 4,
+    "p50": 35,
+    "p75": 35,
+    "p90": 35
    },
    "walls": {
-    "p10": 1,
-    "p25": 1,
-    "p50": 2,
-    "p75": 2,
-    "p90": 2
+    "p10": 2,
+    "p25": 2,
+    "p50": 4,
+    "p75": 4,
+    "p90": 4
    },
    "lined": {
     "p10": 0.0,
@@ -2673,44 +2709,39 @@
     "p90": 0.0
    },
    "families": {
-    "chair": 1.0,
-    "smithy": 1.0,
-    "storage": 0.5
+    "plant": 1.0,
+    "column": 1.0
    },
    "most_kinds": [
     [
-     "WaterBarrel",
-     1
-    ],
-    [
-     "CushionedStool",
-     1
+     "Plant",
+     2
     ]
    ],
    "best": [
     {
-     "map": "Con06b",
+     "map": "Con07B",
      "centre": [
-      168,
-      82
+      150,
+      198
      ],
-     "tiles": 47,
-     "types": 6,
-     "cover": 0.057,
-     "open": 0.764,
-     "culture": "dunmir"
+     "tiles": 155,
+     "types": 9,
+     "cover": 0.061,
+     "open": 0.756,
+     "culture": "town"
     },
     {
-     "map": "War06b",
+     "map": "Con07B",
      "centre": [
-      167,
-      83
+      153,
+      226
      ],
-     "tiles": 42,
-     "types": 3,
-     "cover": 0.006,
-     "open": 0.96,
-     "culture": "dunmir"
+     "tiles": 72,
+     "types": 4,
+     "cover": 0.023,
+     "open": 0.91,
+     "culture": "town"
     }
    ]
   },
@@ -2838,6 +2869,108 @@
      "cover": 0.119,
      "open": 0.593,
      "culture": "ogre"
+    }
+   ]
+  },
+  "smithy": {
+   "n": 1,
+   "maps": 1,
+   "cultures": {
+    "dunmir": 1
+   },
+   "tiles": {
+    "p10": 47,
+    "p25": 47,
+    "p50": 47,
+    "p75": 47,
+    "p90": 47
+   },
+   "cover": {
+    "p10": 0.057,
+    "p25": 0.057,
+    "p50": 0.057,
+    "p75": 0.057,
+    "p90": 0.057
+   },
+   "open": {
+    "p10": 0.764,
+    "p25": 0.764,
+    "p50": 0.764,
+    "p75": 0.764,
+    "p90": 0.764
+   },
+   "middle": {
+    "p10": 0.005,
+    "p25": 0.005,
+    "p50": 0.005,
+    "p75": 0.005,
+    "p90": 0.005
+   },
+   "per_tile": {
+    "p10": 0.191,
+    "p25": 0.191,
+    "p50": 0.191,
+    "p75": 0.191,
+    "p90": 0.191
+   },
+   "types": {
+    "p10": 6,
+    "p25": 6,
+    "p50": 6,
+    "p75": 6,
+    "p90": 6
+   },
+   "most": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 2,
+    "p75": 2,
+    "p90": 2
+   },
+   "free_most": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 2,
+    "p75": 2,
+    "p90": 2
+   },
+   "walls": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 2,
+    "p75": 2,
+    "p90": 2
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.0,
+    "p75": 0.0,
+    "p90": 0.0
+   },
+   "families": {
+    "storage": 1.0,
+    "chair": 1.0,
+    "smithy": 1.0
+   },
+   "most_kinds": [
+    [
+     "WaterBarrel",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con06b",
+     "centre": [
+      168,
+      82
+     ],
+     "tiles": 47,
+     "types": 6,
+     "cover": 0.057,
+     "open": 0.764,
+     "culture": "dunmir"
     }
    ]
   },
@@ -3066,16 +3199,6 @@
    ],
    "tiles": 78,
    "culture": "ogre"
-  },
-  {
-   "map": "War03a",
-   "type": "armoury",
-   "centre": [
-    111,
-    113
-   ],
-   "tiles": 63,
-   "culture": "dunmir"
   },
   {
    "map": "War03b",
@@ -3578,16 +3701,6 @@
    "culture": "dunmir"
   },
   {
-   "map": "War06b",
-   "type": "bedroom",
-   "centre": [
-    149,
-    60
-   ],
-   "tiles": 26,
-   "culture": "dunmir"
-  },
-  {
    "map": "War07A",
    "type": "bedroom",
    "centre": [
@@ -3675,6 +3788,26 @@
     201
    ],
    "tiles": 123,
+   "culture": "town"
+  },
+  {
+   "map": "Con07B",
+   "type": "conservatory",
+   "centre": [
+    153,
+    226
+   ],
+   "tiles": 72,
+   "culture": "town"
+  },
+  {
+   "map": "Con07B",
+   "type": "conservatory",
+   "centre": [
+    150,
+    198
+   ],
+   "tiles": 155,
    "culture": "town"
   },
   {
@@ -3968,14 +4101,15 @@
    "culture": "town"
   },
   {
-   "map": "War07A",
-   "type": "crypt",
+   "map": "Con03B",
+   "type": "dining_hall",
    "centre": [
-    170,
-    175
+    200,
+    80
    ],
-   "tiles": 235,
-   "culture": "town"
+   "tiles": 108,
+   "culture": "town",
+   "by_hand": "the miners' mess: the cooking hearth on the NW wall, three long tables with benches on a carpet, casks along the SW wall, a moose trophy (a stove makes the finder call it a kitchen)"
   },
   {
    "map": "Con05C",
@@ -3996,16 +4130,6 @@
    ],
    "tiles": 55,
    "culture": "dunmir"
-  },
-  {
-   "map": "Wiz05A",
-   "type": "dining_hall",
-   "centre": [
-    48,
-    24
-   ],
-   "tiles": 25,
-   "culture": "town"
   },
   {
    "map": "Con06b",
@@ -4088,26 +4212,6 @@
    "culture": "dunmir"
   },
   {
-   "map": "Con07B",
-   "type": "hall",
-   "centre": [
-    153,
-    226
-   ],
-   "tiles": 72,
-   "culture": "town"
-  },
-  {
-   "map": "Con07B",
-   "type": "hall",
-   "centre": [
-    150,
-    198
-   ],
-   "tiles": 155,
-   "culture": "town"
-  },
-  {
    "map": "Con07D",
    "type": "hall",
    "centre": [
@@ -4156,26 +4260,6 @@
    ],
    "tiles": 481,
    "culture": "dunmir"
-  },
-  {
-   "map": "War07A",
-   "type": "hall",
-   "centre": [
-    158,
-    224
-   ],
-   "tiles": 62,
-   "culture": "town"
-  },
-  {
-   "map": "War07A",
-   "type": "hall",
-   "centre": [
-    151,
-    197
-   ],
-   "tiles": 177,
-   "culture": "town"
   },
   {
    "map": "War11a",
@@ -4486,16 +4570,6 @@
    ],
    "tiles": 12,
    "culture": "town"
-  },
-  {
-   "map": "War07D",
-   "type": "laboratory",
-   "centre": [
-    203,
-    112
-   ],
-   "tiles": 208,
-   "culture": "dunmir"
   },
   {
    "map": "Wiz02B",
@@ -4821,16 +4895,6 @@
    "map": "Con02a",
    "type": "shop",
    "centre": [
-    86,
-    105
-   ],
-   "tiles": 125,
-   "culture": "town"
-  },
-  {
-   "map": "Con02a",
-   "type": "shop",
-   "centre": [
     113,
     142
    ],
@@ -4918,16 +4982,6 @@
    "culture": "town"
   },
   {
-   "map": "War01A",
-   "type": "shop",
-   "centre": [
-    142,
-    205
-   ],
-   "tiles": 111,
-   "culture": "dunmir"
-  },
-  {
    "map": "War03b",
    "type": "shop",
    "centre": [
@@ -4958,16 +5012,6 @@
    "culture": "town"
   },
   {
-   "map": "War07A",
-   "type": "shop",
-   "centre": [
-    180,
-    173
-   ],
-   "tiles": 24,
-   "culture": "town"
-  },
-  {
    "map": "Wiz05A",
    "type": "shop",
    "centre": [
@@ -4985,16 +5029,6 @@
     82
    ],
    "tiles": 47,
-   "culture": "dunmir"
-  },
-  {
-   "map": "War06b",
-   "type": "smithy",
-   "centre": [
-    167,
-    83
-   ],
-   "tiles": 42,
    "culture": "dunmir"
   },
   {
@@ -5138,16 +5172,6 @@
    "culture": "town"
   },
   {
-   "map": "War01A",
-   "type": "storeroom",
-   "centre": [
-    153,
-    212
-   ],
-   "tiles": 35,
-   "culture": "dunmir"
-  },
-  {
    "map": "War02A",
    "type": "storeroom",
    "centre": [
@@ -5238,6 +5262,16 @@
    "culture": "town"
   },
   {
+   "map": "Con02a",
+   "type": "tavern",
+   "centre": [
+    86,
+    105
+   ],
+   "tiles": 125,
+   "culture": "town"
+  },
+  {
    "map": "Con06a",
    "type": "tavern",
    "centre": [
@@ -5256,6 +5290,28 @@
    ],
    "tiles": 216,
    "culture": "town"
+  },
+  {
+   "map": "Con07B",
+   "type": "tavern",
+   "centre": [
+    112,
+    240
+   ],
+   "tiles": 104,
+   "culture": "town",
+   "by_hand": "Galava's lower tavern: the bar in the W corner with its barman, long tables with benches and round tables of food round a great woven carpet, casks on the walls"
+  },
+  {
+   "map": "Wiz05A",
+   "type": "tavern",
+   "centre": [
+    48,
+    24
+   ],
+   "tiles": 25,
+   "culture": "town",
+   "retyped": "the Conjurers' tap room: round tables, stools and fallen chairs on a carpet before the bar along its NW wall (the bar and barman stand in a nook the finder splits off)"
   },
   {
    "map": "Con06b",

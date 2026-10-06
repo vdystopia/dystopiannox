@@ -236,7 +236,7 @@ TYPES = {
         signature={"counter_shop": (8, 1), "shop_rack": (0.4, 8)}, needs=("counter_shop",),
         kin=("armoury", "smithy")),
     "tavern": dict(
-        family="public", feel="balanced", kinds=("tavern",), westwood=("tavern",),
+        family="public", feel="balanced", kinds=("tavern",), westwood=("tavern", "dining_hall"),
         focal=dict(fam="counter_bar", types=r"^(BarPiece|BarCorner|BarHinged)", where="any", with_="fireplace"),
         must={"counter_bar": 1, "table": 3, "fireplace": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab",
                                                                     "smithy", "counter_shop"),
@@ -246,10 +246,11 @@ TYPES = {
                    front="benches; kegs heaped toward the corners, never a whole wall of them",
                    middle="tables in three kinds of set (round tables with stools, a long table with benches, a "
                           "table of food), open floor between to walk to the bar"),
-        cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(10, 18), free_skip=(),
-        caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(100, 360),
+        cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(12, 14), free_skip=(),
+        caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(180, 360),
         signature={"counter_bar": (1, 10), "table": (0.5, 10), "chair": (0.1, 30), "storage": (0.2, 8)},
-        needs=("counter_bar",), kin=("dining_hall", "great_hall")),
+        # a hearth, tables and benches read as a living room too: Westwood's Con02a tavern does (13.7 against 8.4)
+        needs=("counter_bar",), kin=("dining_hall", "great_hall", "living_room")),
     "dining_hall": dict(
         family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"), westwood=("dining_hall",),
         focal=dict(fam="table", types=r"^(Table[1-4]|OvalTable\d|OgreTable\d)$", where="rows", with_="fireplace"),
