@@ -59,3 +59,10 @@ The armourer beside a rack at the end of a row, else at a back wall; never in an
 
 - Westwood: War03a / Con03A, cell 111,113 (63 tiles, 13-14 types, coverage 0.10, open 0.60-0.64).
 - Ours: Starwell seed 4, room 16, racks of arms and armour (77 tiles).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's armouries (4 curated; 16 before the curation): a rack or two shown on a back wall (`back_only`), swords
+  and shields hung, Dun Mir chests, a few barrels, and in a guards' armoury a table with chairs; no log shelves, no rows
+  of racks but in a big room, no walls stocked with sacks. Rows of racks and stocked walls gave every room away
+  (AUC 1.0 -> 0.94).

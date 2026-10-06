@@ -217,3 +217,98 @@ alternating one by one down the front walls, three hanging themes on one wall.
 The checker's sparse rule (a generated room at least Westwood's median 0.126) still trips: the fill runs out of steps
 in an apothecary's or a general store's trade. Left: pieces packed tight (median gap 0.2 against 1.0), rows (0.73
 against 0.42).
+
+## Smithy (Westwood: 1 curated room, Con06b; compared with its pool)
+
+Con06b's smithy (47 tiles): the bellows and the anvil, water barrels and barrels in a knot, a dark crate, two stools;
+coverage 0.06.
+
+| Round | Change | AUC (pool) | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: the forge group, the counter, racks in rows, stocked walls) | 1.000 | 0.932 | 2 | - |
+| r1 | racks against the back walls (2-4), no rows; the stores heaped (water barrels lead); cover 0.24 -> 0.14 | 1.000 | 0.755 | 0 | - |
+
+The pool (the profile's kin types) has no anvils, counters or racks, so the pool AUC cannot fall; the cross AUC
+(type-free features against all Westwood rooms) fell from 0.93 to 0.76.
+
+## Herbalist (Westwood: 2 curated rooms, Con07D and Con09a; compared with its pool)
+
+Westwood's: a desk with its chair, a pair of potion shelves, a few bookcases, glowing jars, a square table with
+chairs, a crate; no plants, hangings or sacks along the walls; coverage 0.07-0.12.
+
+| Round | Change | AUC (pool) | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: books lining a wall, sacks stocked down the walls, plants, hangings) | 1.000 | 0.978 | 3 | - |
+| r1 | the desk among two bookcases, the potion shelves' pair, the cauldron, a table with chairs, a jar; no plants, sacks or hangings | 1.000 | 0.948 | 6 (sparse) | - |
+| r2 | pieces a step off the walls (`wall_gap`), more jars and crates, a sitting group in a big room | 1.000 | 0.916 | 6 (5 sparse) | - |
+
+## The store types added for variety (curated references; thin types are compared with their pool)
+
+Shared in this round (kit/furnish.py `_heap`): a heap's pieces keep 0.25-0.65 units between them (Westwood's stores:
+the nearest gap 0.4-0.6 in the curated rooms; ours had been 0.2).
+
+| Type | Westwood (curated) | Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|---|---|
+| cellar | 4 (pool) | ref | (as found: kegs in tight rows from the corners, casks in the middle with kegs by them) | 0.982 | 0.921 | 0 |
+| cellar | | r1 | heaped as a store's: barrels lead, dark crates, a piled barrel or a cask; no centrepiece cask; no lights; cover 0.22 -> 0.17 | 0.958 | 0.956 | 6 (reads as storeroom) |
+| cellar | | r2 | crates in 40% of cellars (the type's reading wants kegs at 70%); wider heap gaps | 0.952 | 0.965 | 1 |
+| powder store | 1 (pool) | r1 | heaped (the "powder" pool), plain barrels second; no lights; cover 0.30 -> 0.18 (the ref ran on this code too) | 0.952 | 0.976 | 1 |
+| powder store | | r2 | wider heap gaps | 0.935 | 0.972 | 1 |
+| treasury | 1 (pool) | ref | (as found: three chests in a row, trader's shelves, hung shields and arms: read as an armoury) | 0.983 | 0.968 | 5 (reads as) |
+| treasury | | r1 | three strongboxes on the back walls, sacks of coin and a cask in heaps, the counting table; no shelves or hung arms | 0.945 | 0.848 | 3 (caps) |
+| treasury | | r2 | the store cap one per 6 tiles (Con05B: five on 54) | 0.931 | 0.913 | 3 (caps: the kit's tile count runs above the checker's) |
+| mausoleum | 6 | ref | (as found: one great tomb in the middle, statues in pairs, monuments) | 0.922 | 0.947 | 2 |
+| mausoleum | | r1 | no tomb: statues along the walls, a crypt chest, a colonnade in a big one | 0.958 | 0.992 | 6 (caps) |
+| mausoleum | | r2 | statues in mirrored pairs (Westwood's symmetry 0.85-1), lights 6 per 100 tiles, the statue cap one per 5 tiles (Con04a: 12 on 58) | 0.882 | 0.975 | 9 (crypt chests across the wall) |
+| winch room | 4 (pool) | ref | (as found: gear trains, the winch, tool barrels and crates stocked down the walls) | 1.000 | 0.975 | 2 |
+| winch room | | r1 | the stores heaped (tool barrels and steel), cover 0.10 -> 0.07 | 0.990 | 0.892 | 3 |
+| treasury | | r3 | the store cap one per 7 tiles (the kit's room counts more tiles than the checker's finder) | 0.934 | 0.904 | 6 (caps) |
+| mausoleum | | r3 | the chest centred with a flanking pair of statues, more by the corner walls (free-standing statues read wrong: Westwood's middle 0.04) | 0.927 | 0.979 | 10 (crypt chests across the wall) |
+
+Shared fix (kit/furnish.py WALL_SIDE_TYPE): crypt chests take Westwood's variant for their wall (CryptChest1 or 3 on
+NE, 4 on NW); the numbering had laid every one across its wall (the checker's warning in the mausoleums, ossuaries and
+crypts).
+
+## Storeroom r17-r18 (after the heap gaps)
+
+| Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|
+| r17 | heap gaps 0.25-0.65 | 0.790 | 0.898 | 1 |
+| r17s2 | (seed 2) | 0.783 | 0.841 | 4 |
+| r18 | an ore store's crates share the lead with tool barrels (one had 15 crates of 16); a third wall allowed to balance a small room; kinds mixed 45% | 0.809 | 0.907 | 1 |
+| r18s2 | (seed 2) | 0.771 | 0.709 | 4 |
+
+## The remaining work rooms and the dead (no curated Westwood room of their own: their pool)
+
+| Type | Round | Change | AUC (pool) | Cross | Hard rooms |
+|---|---|---|---|---|---|
+| workshop | r1 | the stores heaped (`store_heaps`, tool barrels lead), one shelf of tools (no ref: the change went in first) | 1.000 | 0.860 | 3 |
+| workshop | r2 | cover 0.20 -> 0.12, one work table (from 83 tiles), a shelf on a wall where the line finds none | 1.000 | 0.853 | 2 |
+| observatory | r1 | the laboratory's lessons: no plants, the chart table against a wall, pieces a step off the walls (no ref) | 0.976 | 0.958 | 5 (2 telescopes; bookcases with gaps) |
+| torture chamber | ref | (as found) | 1.000 | 0.975 | 0 |
+| ossuary | ref | (as found; the crypt chests now take their wall's variant) | 1.000 | 0.997 | 5 (chests across the wall) |
+
+## Armoury and barracks against the curated references (no change since r4 / r3)
+
+| Type | Round | AUC | Cross | Hard rooms |
+|---|---|---|---|---|
+| armoury (4 curated) | c1 | 0.867 | 0.715 | 5 (sparse) |
+| barracks (7 curated) | c1 | 0.893 | 0.901 | 1 |
+| armoury | c2 | the curated four (Con06b's two, Con07D, War07A, 15-35 tiles): two to four racks, a chest, no table; cover 0.12 -> 0.16 | 0.989 | 0.866 | 6 |
+| armoury | c3 | the guards' table back: the lab compares a 4-room type with its martial pool, which holds the guardrooms' tables | 0.846 | 0.745 | 3 |
+
+| Type | Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|---|
+| mausoleum | r4 | the crypt chests' variants fixed (WALL_SIDE_TYPE) | 0.998 | 0.983 | 0 |
+| torture chamber | r1 | lights 1.5 per 100 tiles (its pool lights nothing) | 1.000 | 0.970 | 0 |
+| crypt | r5 | (the crypt chests' variants fixed) | 0.874 | 0.779 | 3 |
+| treasury | r4 | (unchanged recipe) | 0.934 | 0.904 | 6 (caps) |
+| mausoleum | r5 | back to r2's mirrored pairs of statues, with the crypt chests' variants fixed | 0.940 | 0.982 | 0 |
+| treasury | r5-r6 | fewer heaps; the cap per 9 tiles | 0.936 | 0.905 | 5-6 (caps) |
+| treasury | r7 | no cap on the stores (the knowledge base holds the strongboxes to three; the kit's room counts 1.3-1.4 times the tiles the checker measures, so any per-tile cap tripped) | 0.917 | 0.906 | 0 |
+| observatory | r2 | one telescope, an orrery against a wall in a big one: reads as a study (the type wants two telescopes, or one and two star charts) | 0.982 | 0.958 | 6 |
+| observatory | r3 | the wall telescope back (r1's recipe with the chart table at a wall) | 0.982 | 0.958 | 6 |
+| library | c1 | (r3's recipe against the curated references: 2 rooms, so the lab compares with the work-room pool, which holds no bookcases; the numbers say little) | 0.950 | 0.990 | 4 |
+
+Sanity check of the shared desk fix on another agent's type: study (agent A) furnished with the current kit has a
+desk in every room and 4 hard-rule rooms, as in BASELINE.md.

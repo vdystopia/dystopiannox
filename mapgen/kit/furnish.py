@@ -128,7 +128,10 @@ FACING_TYPES = re.compile(r"^(Chest\d|Chest[NS][EW]|DunMirChest\d|TraderShelves\
 # Pieces drawn facing one way, whose variant is fixed by the back wall they stand on (Westwood: LOTDLichGodStatue1 on
 # NW walls, facing SE, in 8 of 10 places; Statue2 on NE walls, facing SW, in 5 of 6. Ambermere's barrow had Statue1 on
 # a NE wall, looking sideways along it)
-WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"}}
+WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"},
+                  # Westwood's crypt chests: CryptChest1 or 3 on the NE wall, CryptChest4 on the NW (rules/out
+                  # type_wall_sides); the numbering had laid them across the wall (the room lab's mausoleums)
+                  "CryptChest": {"\\|BL": "CryptChest1", "/|BR": "CryptChest4", "\\|TR": "CryptChest3", "/|TL": "CryptChest2"}}
 FRONT_FAMS = {"bench", "storage", "shop_rack", "cart"}
 FRONT_WEIGHT = 1.8                # how strongly free-standing furniture leans toward the SE and SW walls
 # Pieces that stand tall against their wall: hangings never go above them (above a chest, a bed or a bench they may).
@@ -2072,7 +2075,7 @@ class Furnisher:
         heap, edge, got = [], a, 0
         for k in range(max(n, 1) + 5):
             if got >= n: break
-            pool = others if others and k > 0 and self.rng.random() < 0.4 else types
+            pool = others if others and k > 0 and self.rng.random() < 0.45 else types
             # the odd piece stays odd: two of an accent kind (a great cask, a piled barrel) to a room at most
             pool = [t for t in pool if t not in (accent or ()) or
                     sum(1 for tt, _ in self._typed if OBJ.kind(tt) == OBJ.kind(t)) < 2] or types
@@ -2090,7 +2093,8 @@ class Furnisher:
                 for _ in range(10):
                     bu, bv, br = self.rng.choice(heap)
                     ang = self.rng.uniform(0, 2 * math.pi)
-                    dist = br + max(hu, hv) + self.rng.uniform(0.16, 0.3)
+                    # (Westwood's stores keep a little air between their pieces: nearest gap 0.4-0.6, the curated rooms)
+                    dist = br + max(hu, hv) + self.rng.uniform(0.25, 0.65)
                     u, v = bu + dist * math.cos(ang), bv + dist * math.sin(ang)
                     dep, al = depth_of(u, v), along_of(u, v)
                     if dep < tp + 0.2 or dep > 3.0 or not (r["lo"] + 0.3 < al - ta and al + ta < r["hi"] - 0.3): continue
@@ -2254,7 +2258,8 @@ class Furnisher:
                 else: lo = max(lo, r["lo"] + 1.9)
                 bonus = 0.0
             elif r is rC:
-                bonus = -5.0                            # a third wall only where it balances the room
+                # a third wall only where it balances the room (a small room heaped in one corner reads as bunched)
+                bonus = -5.0 if self.g.area >= 60 else 0.0
             else:
                 continue
             if hi - lo < 2.0: continue

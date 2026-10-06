@@ -9,3 +9,8 @@ One line per round worth judging: type, iteration, the blind folder. The key sta
 - storeroom, r16 (best, after the judge of r9), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\storeroom\r16\blind\
 - laboratory, r11 (best, after the judge of r8), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\laboratory\r11\blind\
 - shop, r8 (best, after the judge of r4), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\shop\r8\blind\
+- crypt, r5 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\crypt\r5\blind\
+- armoury, c3 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\armoury\c3\blind\
+- barracks, c1 (best, r3 recipe), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\barracks\c1\blind\
+- cellar, r2 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\cellar\r2\blind\
+- mausoleum, r5 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\mausoleum\r5\blind\

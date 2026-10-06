@@ -62,3 +62,9 @@ A soldier beside his bunk (at its side, not at its foot where the chest is), an 
 
 - Westwood: War09c / Con09c, cell 62,206 (56 tiles, 14-15 types: an ogre den); Con05C, cell 122,91 (136 tiles).
 - Ours: Starwell seed 4, room 14, the soldiers' bunks (187 tiles).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's ogre barracks (Con05C, Con09c, Con11a, War02A) have no fire pit: straw heaped on the floor is the commonest
+  piece, barrels in a knot, a crude bed or three, a crude table with stools in some, meat, a primitive obelisk. The ogre
+  den follows them (AUC 1.0 -> 0.86). A den of straw is a pen's kin (`cell`).
