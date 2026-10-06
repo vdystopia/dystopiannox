@@ -45,7 +45,9 @@ def export(map_path, out_dir=None):
     """Exports a .map to JSON with the editor's library; returns the JSON path."""
     out_dir = out_dir or os.path.join(OUT, "json")
     os.makedirs(out_dir, exist_ok=True)
-    lst = os.path.join(out_dir, "_maplist.txt")
+    # a list file per process: parallel exports (the room lab's types side by side) wrote one shared list and read
+    # each other's maps
+    lst = os.path.join(out_dir, f"_maplist_{os.getpid()}.txt")
     with open(lst, "w", encoding="utf-8") as f: f.write(os.path.abspath(map_path))
     res = subprocess.run([PS32, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
                           os.path.join(REPO, "corpus", "dump_maps.ps1"), "-MapList", lst, "-OutDir", out_dir],
