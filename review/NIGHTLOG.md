@@ -228,3 +228,35 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   apart: they score about 5 against Westwood's 7-8 consistently. The judges' common thread is the same as for rooms:
   singles at even spacing, one template per scene, too sparse; Westwood's scenes are knots of mixed pieces leaning on
   terrain. All critiques passed to scene round 4.
+
+## 02:59 Placement grammar judged (independent, one sheet per type) and shells2 merged
+
+Placement grammar (g3), against the fair baseline (accuracy, generated / Westwood score; confidence):
+
+| Type | Fair baseline | Grammar g3 | Confidence |
+|---|---|---|---|
+| bedroom (motifs) | 9/10 (recipe), 10/10 motif | 8/10, 5.6 / 7.0 | 0.62 |
+| storeroom | 6/10 | 8/10, 5.4 / 7.2 | 0.62 |
+| living room | 8/10 | 8/10, 5.4 / 6.0 | 0.59 |
+| kitchen (motifs) | 10/10 | 9/10, 4.8 / 6.6 | 0.66 |
+| laboratory (motifs) | 10/10 | 8/10, 4.6 / 6.8 | 0.61 |
+| shop (motifs) | 10/10 | 8/10, 4.8 / 6.8 | 0.61 |
+| tavern | 8/10 | 8/10, 4.6 / 6.8 | 0.68 |
+| guardroom | 7/10 | 8/10, 4.6 / 5.8 | 0.61 |
+
+Better on the hard types (lab, shop, kitchen, bedroom), level elsewhere; storeroom 6 -> 8 is within one sheet's noise
+(10 pictures). Judges' confidence fell to about 0.6 throughout. What still gives the rooms away, by every judge:
+- one kit stamped across the batch (bed + two nightstands + chest at the foot; hearth flanked by bookcases + round
+  table set; two round food tables on a centre carpet) -> the variety agent (layout archetypes) is on it;
+- singles at even gaps along a wall (bookcase, chest, bookcase; crates in tidy rows of three);
+- stock and cots on the front walls, seen from behind;
+- loose lights still on the floor (lamp posts mid-shop, candelabras in corners);
+- shops mixing trades; tavern table sets stamped in rows/rings with half the floor bare; guardroom tables without chairs;
+- a full-floor carpet with an even one-tile margin, furniture rimming it.
+
+shells2 merged (7852e40): floors by type (crypts GreenBrick, no planks in crypts/chapels/throne rooms), tomb plinths,
+hearthstones, bar floors, carpets at the bed's foot / under seating. Its sh3 sheets are queued for judges. Open
+question for the user: room shapes are still measured on uncurated rooms (re-measuring changed every map's shapes and
+broke Thornwick's gate), kept frozen in rules/rooms/shells_shape.json.
+QA on Thornwick/Harrowby after the merge: builds clean, FAIL only on the long-standing composition.sparse warnings
+(13 rooms) plus one grammar_corners and one exterior.graveyard warning.
