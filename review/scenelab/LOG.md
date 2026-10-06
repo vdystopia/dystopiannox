@@ -54,6 +54,34 @@ hearth); still given away by an open forest glade with empty grass in the middle
 than Westwood's sparse hideouts." Westwood's camp evidence mixes cave hideouts without fires (Wiz03a, Wiz03b) and town
 fire rings: an AUC under 0.6 would need the camp to be one of those, not the camp the user asked for.
 
+### bandit_camp, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent blind judge on r4-irregular: 10/10 told apart, generated 5.2 against Westwood's 6.8
+("a stamped sleeping row, tent, two cots, tent, two cots; a crowded hearth, the bench tangent to the fire, four people
+within 60 px; stray props in open grass, a crystal mid-glade, a lone cauldron, a single crate by the trees, the awning
+stranded at the edge; the glade too big, half of it empty"). Westwood's 20 camps re-read: two families, the war camps
+(Con03A, Con04a, Con05A, Con09d: one pup tent, a row of three or four armour racks of different builds, helmet poles,
+barrels, a cart, the fire ring, no bedrolls) and the cave hideouts (Wiz03a, Wiz03b, Wiz03c, War03a, War05A: cots against
+the rock, barrels, rocks, wall torches, often no fire).
+
+| Round | What changed | AUC | Blind | Hard |
+|---|---|---|---|---|
+| ref | the kit as merged (r4-irregular) | 0.98 | (independent) 10/10, 5.2 / 6.8 | 0 |
+| r1-warband | radii ~0.8 (row 165, store 170, lookout 170); scale capped at 1.0 (a big glade does not make a big camp); the arms a row of two to four armour racks of different builds with the helmet poles or a polearm (Westwood's war camps); the bench 40%, else a stool; pot 10%; sack 15%; quiver 20%; one kind of barrel | 0.99 | | 0 |
+| r2-onetent | one pup tent to a camp, the awning beside it with a big band, in the row's middle; the outcrop at one end, half the camps, three stones; crates both or none; the dig's finds by the spoil; `camp_site` prefers 5 squares of open ground (backs onto the wood) | 0.985 | | 1 (pile: crates 39 px from the barrels) |
+| r3-tentbeds | two sleep in the tent and two under the awning (Westwood lays no bedrolls by its tents); the rest on bedrolls in pairs, a lone one beside the tent; an awning with no room becomes a pair (it had become a second tent); crates 76 px along | 0.947 | | 0 |
+| r4-fewer | fewer extras: outcrop 35%, bench 30% (or a stool 40%), pot 8%, water barrel 20%, sack 10%, cart 20%, helmet poles 30% / polearm 12%, the watch's stool 10%, quiver 15% | 0.945 | | 0 |
+| r5-edge | the lab as the designs call it: `camp_site` reach to the clearing's edge (the designs give 12-16 squares, the lab gave 5), the band 4-6 people (the designs' median 5; the lab had stood 8-9) | 0.985 | queued for the independent judge | 0 |
+
+Kinds fell from 13-16 to 8-13, pieces from 25-34 to 19-29, beds from 0.15 of the pieces to ~0.07, no second tent. The
+classifier still separates them mostly on "against walls" (ours 0.05, Westwood's 0.50: its hideouts are caves) and the
+family mix: an AUC near 0.6 needs a cave hideout variant, which the kit has no site for in the woods. The tuning agent
+looked at every render, so r5-edge is queued in TO_JUDGE.md for an independent judge.
+Greywatch: the changed camp shifted the planting, and a wild spider was shut in by pines, a log and a stump (the
+checker blocks logs and stumps; `Story.wild`'s walk test did not): `Story.reachable_cells` now floods as the checker does
+and `wild` turns away a shut-in spot (it changes nothing where no spot is shut in). Thornwick, Greywatch, Ambermere,
+Starwell, Harrowby: 0 errors, warnings unchanged.
+
 Westwood's evidence was deduplicated after graveyard r3 (the same place in two layout groups, Galava's yard in Con07B
 and War07A, counted once): bandit camps 20, graveyards 16 -> 13. Numbers after that are on the deduplicated set.
 
@@ -71,6 +99,28 @@ and War07A, counted once): bandit camps 20, graveyards 16 -> 13. Numbers after t
 r4 judge: "Inside the fence the generated yards hold Westwood's headstones, spacing and ground; they still read as one
 shape (a small square box in a glade) where Westwood's are long or large and set against buildings and crypts."
 Ambermere, Starwell and Harrowby build with 0 errors.
+
+### graveyard, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent judge on r3-spaced: 10/10, generated 4.2 against Westwood's 7.4 ("the same small box
+every time, a square iron-fenced yard about 6 x 6 squares in a glade, 6-8 headstones on an even grid about 90 px apart;
+Westwood's are large or long, joined to roads and crypts, with paved walks; tree trunks on the fence; a coffin on the
+front fence corner with no dug grave; headstones strung along one fence, the middle empty"). Westwood re-read (corpus
+War03b-d, Con07B, Con09b): crypt rows of Cobblestone cells with GreenBrick floors, a sarcophagus (Crypt1/Crypt3) and a
+WoodAndSteelDoor each; GrassSparse2; dead trees and trunks; headstones 100-130 px apart.
+
+| Round | What changed (mapgen/kit/yards.py) | AUC | Blind | Hard / missing |
+|---|---|---|---|---|
+| ref | the kit as merged | 0.865 | (independent, r3-spaced) 10/10, 4.2 / 7.4 | 0 / 0 |
+| r1-crypts | crypt cells along the back (`_crypts`: one, or two in a long yard, 75% of yards; their back and end walls the fence's line); a walk beaten bare from the gate to the crypt door; graves 3.0-3.6 squares along, 2.9-3.3 between rows; the gate pillar one, 30% (both 20%: statue share 0.17 against Westwood's 0); the digger's corner the spade and bucket, the coffin 25%, the torch pole 30%; larger sizes first where they fit with 3 squares free round them (`grow`, 14 x 10 to 12 x 10) | 0.816 | | 1 / 2 |
+| r2-larger | `grow` from 16 x 12 | 0.659 | | 0 / 1 |
+| r3-walk | the walk always (to the crypt, or across to the back), square to the gate, two tiles wide; graves 1.1 squares off the fence (built_near 0.36 against 0.17) and 0.5 off the walk | 0.578 | | 1 / 2 |
+| r4-small | a yard under 12 squares packs its graves closer (2.6-2.9 along, 2.4-2.7 between) and its walk one tile wide | 0.565 | | 0 / 0 |
+| r5-trees | the yard's trees 1.2 squares off the fence (the judge: trunks on the fence line) | 0.565 | queued for the independent judge | 0 / 0 |
+
+AUC under 0.6 from r3 (13 Westwood scenes: read it loosely). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors, warnings unchanged (the larger yards keep 3 squares free round them, so no corner is shut off). The tuning agent
+looked at the renders: r5-trees is queued for an independent judge.
 
 ## garden (mapgen/kit/village.py `Village.garden`)
 
@@ -91,6 +141,29 @@ fence is the clearest giveaway, and the gardens are still smaller and barer roun
 town field (`yards` "field", Log fence) is outside this round. Ambermere, Starwell, Harrowby, Greywatch, Thornwick: 0
 errors.
 
+### garden, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent judge on r3-larger: 10/10, generated 4.8 against Westwood's 7.8 ("crops under fences or
+edges, a tomato row along the front plank fence, rows into the pine edge, corn touching the tree line; too small and
+bare, one tomato and one cabbage row 150 px from the cabin, no barrel, spade or path; a bed squeezed between the cabin
+corner and the forest, flowers on the crops; the field one crop in a Log-walled pen with an iron gate"). Westwood's
+garden fences (corpus): Wiz03b DilapidatedShort (the low lattice), Wiz01A Dilapidated; Con05A's town garden three crops
+side by side with apple crates and barrels.
+
+| Round | What changed (mapgen/kit/village.py `garden`, kit/yards.py "field") | AUC | Blind | Hard / missing |
+|---|---|---|---|---|
+| ref | the kit as merged | 0.54 | (independent, r3-larger) 10/10, 4.8 / 7.8 | 0 / 1 |
+| r1-near | two squares of open land round the beds required; the fence DilapidatedShort (Wiz03b's low one); the barrel 85% (beside a narrow bed too), the spade 50%; flowers beyond a bed's end, never on the rows; a crate, barrel or sack on the side 35%; the field's fence DilapidatedShort with a door that suits it (no Log, no iron gate) | 0.07 | | 0 / 2 |
+| r2-wide | a second pass without the wide ring where none fits; the field two or three crops in bands of rows, its barrel and spade | 0.24 | | 0 / 0 |
+| r3-open | `garden` tries each size wide then narrow, the two largest first (`_garden_at`); a narrow one keeps the planting two squares off | 0.10 | | 0 / 0 |
+| r4-unpenned | no fence under 5 x 4 (a little bed's rows were lost to the fence: 8 crops in a pen) | 0.42 | | 0 / 0 |
+| r5-household | the garden's own generator (map, house, size: tuning it never shifts the rest of a map); no flowers past the beds' ends (Ambermere: a townsman's walk stop faced them, routes.facing); the crate mid-way along a long side | 0.25 | queued for the independent judge | 0 / 0 |
+
+AUC with 5 Westwood gardens is noise (0.07-0.54): judge by eye. Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors, warnings as before (an interim build showed the shifted design generator dropping an ogre camp's straw into
+Ambermere's chapel crypt, a warning: gone with the garden's own generator). The tuning agent looked at the renders: r5
+is queued in TO_JUDGE.md.
+
 ## pond_dock (mapgen/kit/water.py `Waterworks.dock`, `_shore_start`, `_dock_gear`)
 
 Westwood's docks (Con05A's three DockDown runs, Con03A's DockUp; War03a's DockUp is three pieces too): out into a big
@@ -105,6 +178,52 @@ lake, barrels, a crate, rocks on the bank by the root (store 0.22, rock 0.14 of 
 
 r3: generated mean within 0.5 of Westwood's. The judge knows Westwood's four dock scenes by heart, so blind accuracy is
 not meaningful for this type. Ambermere (dock yes) and DysVale build with 0 errors, warnings unchanged.
+
+### pond_dock, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent judge on r3-bank: 9/9, generated 5.2 against Westwood's 7.8 ("the same gear stamp, 2-3
+barrels touching at the root, a crate or rock opposite, 1-2 barrels at the tip, a crate in the dock's lane; short DockUp
+docks in small round ponds, tips 1.5 tiles out; a lone pond, a dozen reed clumps spread evenly"). Westwood (Con05A):
+DockDown runs into the lake, barrels in a loose knot on the bank, a rock with ferns, a crate on a dock's tip, bones.
+
+| Round | What changed (mapgen/kit/water.py `dock`, `_dock_gear`) | AUC | Blind | Hard |
+|---|---|---|---|---|
+| ref | the kit as merged | 0.75 | (independent, r3-bank) 9/9, 5.2 / 7.8 | 0 |
+| r1-loose | the bank laid loosely, never one stamp: 1-4 barrels in a knot with uneven steps (26-44 px), a rock with its stones 60%, a crate a little way off 40%, bones 30%, nothing on the dock's line carried back onto the bank; the dock's load from its own generator (none, a crate, one or two barrels); DockUp only 60 uv nearer the road (was 24) | 0.70 | | 0 |
+| r2-down | a one-centre DockDown before any DockUp (a small pond's dock is still the DockDown run) | 0.32 | queued for the independent judge | 0 |
+
+AUC with 4 Westwood docks is noise. Ten of ten docks are DockDown now (three were DockUp). Ambermere and DysVale: 0
+errors, no dock warnings. Still: one dock to a pond (Westwood's lake has three), the reeds' even spread (the water
+dressing, `_dress`, shared by every map: left alone), and no path or people in the lab's pond clearing.
+
+## The town setting (night-scenes3, 2026-10-06)
+
+The independent judge on the round-2 sheets (scored against the keys): graveyard r5-trees 8/10, 5.6 / 7.0; garden
+r5-household 10/10, 4.8 / 7.4; pond_dock r2-down 9/9, 4.6 / 7.8; bandit_camp r5-edge 10/10, 4.6 / 6.2. "The biggest tell
+is the lab's setting: ours stand alone in an empty forest glade, Westwood's sit in towns, among other yards, walls,
+paved walks, houses and crypt complexes."
+
+The lab (labgen.py): every scene not of the wild (`WILD`: bandit, ogre and urchin camps, wolf den, quarry, shrine) is
+now laid in a hamlet's ground: a larger clearing (12-15 squares), a road through it (the glade site becomes the road
+site), two or three houses of the kit's own generator (home, cottage, store, fisher, inn) round it away from the scene,
+furnished, each joined to the road by its walk (`plan_context`, `build_context`); a pond scene's water is a lake on one
+side of it (10-12 tiles), the hamlet on the other, the dock's landing kept clear of the planting. The scores before and
+after are not comparable (the setting changed), so each scene ran again in it.
+
+| Scene | Round | What changed in the kit | AUC | Hard |
+|---|---|---|---|---|
+| graveyard | t1-town | the town setting, the kit as r5 | 0.625 | 0 |
+| graveyard | r6-town | no tree in the yard (the judge: a green tree by the gate, a dead one among the graves); the crypt a square in from the back fence, about the back side's middle, never in a corner; the walk two tiles wide in every yard; the digger at work in 85% of yards; rows staggered | 0.81 | 0 |
+| graveyard | r7-town | rows back on the grid's lines (the stagger broke the screen-diagonal steps Westwood keeps: 0.58 against 0.96), the gaps along a row uneven instead (2.7-3.9 squares) | 0.635 | 1 (graves) |
+| graveyard | r8-own | the graveyard's own generator (a changed yard had shifted Harrowby's planting until a bush stood in a ruin's doorway, doorways.blocked); unused plots 14% | 0.644 | 0 |
+| garden | r6-town | two sizes up first (w + 2, h + 1: "token plots"); the barrel and spade set down off the beds' exact ends | 0.79 | 0 |
+| pond_dock | r3-lake | no reed within three tiles of a dock's lane ("reeds against the dock's sides"); the gear only on firm ground (a barrel had stood half in the water) | 0.48 | 0 |
+| pond_dock | r4-shore | the bank fuller: 2-4 barrels, the rock 75%, bones 40% | 0.64 | 0 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings as at the start of the night; DysVale 0
+errors. The tuning agent looked at the renders: graveyard r8-own, garden r6-town and pond_dock r4-shore are queued in
+TO_JUDGE.md. The market stall still lays in none of ten clearings (the awning's poles and cloths find no free ground
+by the store even with a kept square, r1-square): left for the next round.
 
 ## Final summary (every type, the kit as committed)
 

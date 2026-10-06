@@ -51,8 +51,27 @@ dug or empty, the digger's corner (65%), the trees' kind and place, the headston
 - The lab's own: graves 65 px apart on dirt tiles read as a grid of plots; a bench and urns that Westwood never lays;
   dead trees planted in the yard's middle.
 
+## Round 2 (2026-10-05): crypts, the walk, larger yards
+
+- **The crypts** (75% of yards, `yards._crypts`): one cobblestone cell (two in a long yard) at one end of the back
+  side, 3 x 3 squares, green brick inside, a sarcophagus (Crypt1/Crypt3), a WoodAndSteelDoor into the yard; its back
+  and end walls stand on the fence's line (War03b-d's crypt rows, Con07B's and Con09b's single crypts).
+- **The walk**: beaten bare (DirtLight2) from the gate square in to the crypt's door, or across to the back; two tiles
+  wide in a big yard, one in a small; graves either side of it, 0.5 squares off.
+- **Size**: `plan` tries 16 x 12 down to 12 x 10 first where they fit with 3 squares free round them, else the old
+  10 x 9 to 11 x 10 (a larger yard once shut a corner of Harrowby off).
+- **Graves**: 2.9-3.4 squares along a row, 2.7-3.1 between rows (2.6-2.9 / 2.4-2.7 in a small yard), 1.1 squares off
+  the fence; the gate pillar rare; the digger's corner the spade and bucket, the coffin and torch now and then.
+
 ## What still gives it away
 
-Size and shape: every kit graveyard is a small square box in a glade; Westwood's run large (up to 16 x 16 squares) or
-long, against buildings and crypts, often with a paved walk. Larger yards (14 x 11) took the AUC from 0.87 to 0.80 but
-cut a corner of Harrowby off, so they wait for a design that plans the room for them.
+Round 1: every kit graveyard was a small square box in a glade. Round 2 (AUC 0.565): crypts, a walk and larger yards;
+still a yard alone in a glade (Westwood's stand against town walls and buildings), and the walk's bare earth reads
+faintly on sparse grass.
+
+## Round 3 (2026-10-06, the town setting)
+
+- No tree inside the yard. The crypt stands free, a square in from the back fence, about the back side's middle.
+- The walk two tiles wide in every yard; the gravedigger at work in 85% of yards; the rows on the grid's lines (Westwood's
+  headstones step along the screen diagonals: 0.96), their gaps uneven along a row (2.7-3.9 squares).
+- The graveyard draws from its own generator (map and plot), never the design's.

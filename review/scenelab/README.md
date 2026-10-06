@@ -57,6 +57,10 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
 | `scorecard.py` | the scorecard and the iteration history (`review/out/scenelab/<scene>/iterations.json`) |
 | `LOG.md` | the per-scene iteration log |
 
+**The setting** (since 2026-10-06): a scene of the wild (labgen `WILD`: the camps, the wolf den, the quarry, the
+shrine) is laid in a forest glade; every other in a hamlet's ground: a road through it, two or three houses of the kit's
+generator round it with their walks to the road, a pond scene's lake on one side and the hamlet on the other.
+
 **Fairness.** A generated scene is found on the lab map by the same signature search that finds Westwood's
 (`labref.find_scenes`), its pieces grown the same way, measured by the same `metrics.features`, drawn by the same
 `labrender.picture` (one window per type, the ground away from the scene dimmed). What still differs: Westwood's

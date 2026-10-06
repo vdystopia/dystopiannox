@@ -27,6 +27,15 @@ from kit.vegetation import Planter, FORESTS, TOWN_PLANTING
 SCHEDULE = [("typical", "glade"), ("small", "road"), ("large", "glade"), ("typical", "wall"), ("small", "glade"),
             ("large", "road"), ("typical", "shore"), ("large", "wall"), ("small", "shore"), ("typical", "road")]
 RADIUS = {"small": 8, "typical": 10, "large": 12}            # the clearing's radius, squares
+# The setting (the independent blind judge, 2026-10-05: "the biggest tell is the lab's setting: ours stand alone in an
+# empty forest glade, Westwood's sit in towns, among other yards, walls, paved walks, houses"). A town scene's
+# clearing is a hamlet's ground: a road through it, two or three houses round the scene with their walks to the road;
+# the glade is kept for the scenes that belong in the wild.
+WILD = {"bandit_camp", "ogre_camp", "urchin_camp", "wolf_den", "quarry", "shrine"}
+TOWN_RADIUS = {"small": 12, "typical": 14, "large": 15}
+TOWN_COLS = [54, 90, 126, 162, 198]                          # 36 squares apart: a hamlet's ground and its wood
+TOWN_ROWS = [-18, 18]
+CONTEXT_ROLES = ("home", "cottage", "home", "store", "fisher", "cottage", "inn")
 FOREST_TURN = ["deciduous", "conifer", "oak", "aspen", "pine", "dusk", "ancient"]
 COLS = [64, 96, 128, 160, 192]
 ROWS = [-34, 34]
@@ -43,6 +52,7 @@ class Plot:
     def __init__(self, k, centre, size, site, forest, rng):
         self.k, self.c, self.size, self.site, self.forest, self.rng = k, centre, size, site, forest, rng
         self.r = RADIUS[size]
+        self.town = False
         self.dir = _unit(rng.choice(DIRS))                  # the side the road, the shore or the wall is on
         self.road = None                                    # (a, b) road end points, squares
         self.pond = None                                    # (centre squares, radius tiles)
@@ -67,13 +77,55 @@ def new_spec(name, scene):
 
 def plan_plots(scene, n, seed, rng):
     plots = []
+    town = scene not in WILD
+    cols, rows = (TOWN_COLS, TOWN_ROWS) if town else (COLS, ROWS)
     for k in range(n):
         size, site = SCHEDULE[k % len(SCHEDULE)]
+        if town and site == "glade": site = "road"            # a hamlet's ground has its road
         prng = random.Random(E.seed_of("scenelab", scene, seed, k))
-        c = (COLS[k % len(COLS)] + 0.5, ROWS[(k // len(COLS)) % len(ROWS)] - 0.5)
+        c = (cols[k % len(cols)] + 0.5, rows[(k // len(cols)) % len(rows)] - 0.5)
         forest = FOREST_TURN[(k + seed) % len(FOREST_TURN)]
-        plots.append(Plot(k, c, size, site, forest, prng))
+        p = Plot(k, c, size, site, forest, prng)
+        if town:
+            p.town, p.r = True, TOWN_RADIUS[size]
+            p.toward = (c[0] + p.dir[0] * p.r, c[1] + p.dir[1] * p.r)
+        plots.append(p)
     return plots
+
+
+def plan_context(ctx):
+    """A town scene's neighbours, after the scene has planned its own ground: two or three houses round the clearing,
+    away from the scene's middle (kit/building.generate_building, furnished as a map's are), each to be joined to the
+    road by its walk (build_context)."""
+    import recipes
+    for p in ctx["plots"]:
+        if not p.town: continue
+        sx, sy = p.notes.get("scene_sq") or p.scene_c
+        got = 0
+        base = math.atan2(sy - p.c[1], sx - p.c[0]) if (sx, sy) != tuple(p.c) else math.atan2(-p.dir[1], -p.dir[0])
+        for q in range(8):
+            if got >= 2 + (p.size == "large"): break
+            a = base + math.pi + (q // 2 + 1) * 0.55 * (1 if q % 2 else -1) - 0.55
+            R = p.r - 5.0
+            at = (p.c[0] + R * math.cos(a), p.c[1] + R * math.sin(a))
+            if math.hypot(at[0] - sx, at[1] - sy) < 7: continue
+            role = CONTEXT_ROLES[(p.k + q) % len(CONTEXT_ROLES)]
+            h = recipes._house(ctx, p, role, at, quiet=True)
+            if h:
+                got += 1
+                ctx.setdefault("context_houses", []).append(h)
+
+
+def build_context(ctx):
+    """The context houses' walks to the road."""
+    from kit.village import _squares_of
+    m, land = ctx["m"], ctx["land"]
+    if ctx.get("context_houses"): land.clear_walls(m)
+    done = ctx.setdefault("connected", set())
+    for bid, b in ctx.get("context_houses", []):
+        if id(b) in done: continue
+        done.add(id(b))
+        for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
 
 
 def lay_land(m, rng, plots, recipe):
@@ -154,10 +206,12 @@ def generate(scene, n=10, seed=1, out_dir=None, name="SceneLab", log=print):
     land.paint_roads(m, "DirtDark2", width_squares=2.4, skip=land.reserved)
     ctx = dict(m=m, rng=rng, land=land, plots=plots, scene=scene, seed=seed, log=log)
     rec["plan"](ctx)                                   # before the carve: yards, buildings, ponds the scene is round
+    plan_context(ctx)                                  # a town scene's neighbours
     carve_apply(m, land, plots)
     if any(p.pond for p in plots): ctx["ww"] = lay_ponds(m, rng, land, plots)
     land.ground_variety(m, clear=3)
     rec["build"](ctx)                                  # after the walls: the scene's own code
+    build_context(ctx)
     if ctx.get("ww"): ctx["ww"].finish()
     plant(m, rng, land, plots, set(ctx.get("keep", ())))
     if rec.get("after_plant"): rec["after_plant"](ctx)  # the catalogue's scenes are dressed last, as in a map

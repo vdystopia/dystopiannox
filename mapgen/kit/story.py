@@ -921,6 +921,48 @@ class StoryMap:
                 seen.add(n); q.append(n)
         return seen
 
+    def reachable_cells(self):
+        """Grid cells the player can reach from the PlayerStart with every blocking piece in the way, exactly as the
+        checker blocks them (validate/checks.py Context.object_cells: OBSTACLE or IMMOBILE things of radius 10 px or
+        more, by the corpus things table; logs, stumps and pines too). walkable() keeps its own lighter rule (the
+        planting's big pieces) so the wood's creatures are chosen as before; this one only turns away a spot the
+        checker would find shut in (Greywatch, 2026-10-05: a spider walled in by pines, a log and a stump)."""
+        import collections, glob, sys
+        m = self.m
+        st = next((o for o in m.d["objects"] if o.get("type") == "PlayerStart"), None)
+        if not st: return None
+        here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        if os.path.join(here, "validate") not in sys.path: sys.path.insert(0, os.path.join(here, "validate"))
+        import mapdata as MD
+        things = MD.thing_db(os.path.join(MD.CORPUS_JSON, "things.json"))[3]
+        floor = m.floor
+        cover = lambda c: any(t in floor for t in ((c[0], c[1]), (c[0] - 1, c[1]), (c[0], c[1] - 1), (c[0] - 1, c[1] - 1)))
+        blocked = set(m.wallmap)
+        for o in m.d["objects"]:
+            th = things.get(o.get("type", ""))
+            if not th or "TRIGGER" in th["class"] or "MONSTER" in th["class"] or "DOOR" in th["class"]: continue
+            if not ("OBSTACLE" in th["class"] or "IMMOBILE" in th["class"]) or "NO_COLLIDE" in (th["flags"] or ""): continue
+            if not th["ext"] or th["ext"] == "NULL" or max(th["ex"], th["ey"]) <= 0: continue
+            box = th["ext"] == "BOX"
+            r = max(th["ex"], th["ey"]) / 2 if box else th["ex"]
+            if r < 10: continue
+            cx, cy = int(o["x"] // CELL), int(o["y"] // CELL)
+            k = int(r // CELL) + 1
+            for x in range(cx - k, cx + k + 1):
+                for y in range(cy - k, cy + k + 1):
+                    if box: inside = abs(x * CELL + 11.5 - o["x"]) <= th["ex"] / 2 and abs(y * CELL + 11.5 - o["y"]) <= th["ey"] / 2
+                    else: inside = math.hypot(x * CELL + 11.5 - o["x"], y * CELL + 11.5 - o["y"]) <= r
+                    if inside: blocked.add((x, y))
+        s0 = (int(st["x"] // CELL), int(st["y"] // CELL))
+        seen, q = {s0}, collections.deque([s0])
+        while q:
+            x, y = q.popleft()
+            for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                n = (x + a, y + b)
+                if n in seen or n in blocked or not cover(n): continue
+                seen.add(n); q.append(n)
+        return seen
+
     # radii (px) of the pieces the planting stands in the way, as the checker measures them (corpus things table)
     WAY_BLOCKERS = {"CaveRockPillarShort1": 18, "CaveRockPillarTall1": 18, "CaveRockPillarTall2": 18,
                     "CaveRockPillarShort2": 12, "LargeStalagmite": 12, "CaveRocksHuge": 12, "CaveBoulders": 12,
@@ -1002,12 +1044,14 @@ class StoryMap:
                and (away_from is None or math.hypot(s[0] - away_from[0], s[1] - away_from[1]) > min_away)
                and all(math.hypot(s[0] - a[0], s[1] - a[1]) > 14 for a in avoid)]
         rng.shuffle(far)
-        centres, n = [], 0
+        centres, n, strict = [], 0, None
         for s_ in far:
             if n >= int(len(land.squares) * per100 / 100): break
             if any(math.hypot(s_[0] - a, s_[1] - b) < gap for a, b in centres): continue
             x, y = square_px(s_[0] + 0.5, s_[1] - 0.5)
             if any((int(x // 23) + a, int(y // 23) + b) in m.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+            if strict is None: strict = self.reachable_cells() or False
+            if strict is not False and (int(x // CELL), int(y // CELL)) not in strict: continue    # shut in
             self.pop.creature(rng.choices(list(mix), list(mix.values()))[0], x, y,
                               action="guard" if rng.random() < 0.38 else "idle")
             centres.append(s_); n += 1
