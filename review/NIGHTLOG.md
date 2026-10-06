@@ -198,3 +198,8 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   track's last numbers; reference counts after rebuild: bedroom 28, crypt 25, living room 14, guardroom 11, cell 10,
   shop 8, storeroom 7, barracks 7, tavern 6...). Fair head-to-head now with two judges: motif vs recipe engine on
   bedroom and storeroom. Generating fair baseline sheets for 12 more types from master.
+- 01:45 First fully fair head-to-head (new renders and protocol, independent judges): recipe storeroom 6/10 near chance
+  (5.4/6.0); motif storeroom 8/10 (5.0/7.0); motif bedroom 10/10 at low confidence 0.57 (5.0/6.2); recipe bedroom 9/10
+  (5.4/8.0). A split: recipes keep the storeroom, motifs bring the bedroom closer on score. Faults common to both
+  engines: candelabras free in walkways and on carpets, table sets out on the floor away from every wall, plants in
+  bedrooms (Westwood's have none), single pieces alone in the open, stock spread instead of heaped.
