@@ -124,8 +124,9 @@ TYPES = {
         kin=("storeroom", "herbalist", "living_room")),
     "laboratory": dict(
         family="work", feel="balanced", kinds=("laboratory",), westwood=("laboratory",),
-        focal=dict(fam="lab", types=r"^WizardWorkstation|^AlchemistDesk", where="back"),
-        must={"lab": 3, "shelves": 2, "desk": 1}, never=("bed", "counter_bar", "counter_shop", "smithy",
+        # the desk on its back wall (Westwood stands its workstations on every wall, the front walls the most)
+        focal=dict(fam="desk", types=r"^Desk\d$", where="back"),
+        must={"lab": 2, "shelves": 1, "desk": 1}, never=("bed", "counter_bar", "counter_shop", "smithy",
                                                          "altar", "throne", "tomb", "straw", "bench"),
         never_types=r"^RoundTableWithFood$|^RoundTable\d|^OvalTable|Barrel|Crate|Sack",
         walls=dict(back="the study end: the desk near a corner with bookcases either side",
@@ -133,8 +134,10 @@ TYPES = {
                               "alchemist's desk, a pair of potion shelves",
                    front="statues; a chest", middle="the alchemist's work table with stools and the cauldron; a "
                                                     "conjuring circle; generators apart"),
-        cover=(0.08, 0.17, 0.30), open=(0.40, 0.85), per_tile=(0.2, 0.7), types_min=12, free_most=(2, 60),
-        caps={"lab": (12, 10), "table": (1, 1)}, walls_min=3, lined=0.30, tiles=(30, 140),
+        # the room lab (2026-10-05): Westwood's 19 laboratories cover 0.01-0.09-0.25 with 4-15 types (median 7), the back
+        # walls lined 0.06-0.35, nothing in the middle; Con05A's 9-tile room holds four workstations
+        cover=(0.05, 0.14, 0.25), open=(0.40, 0.95), per_tile=(0.12, 0.7), types_min=5, free_most=(2, 60),
+        caps={"lab": (8, 12), "table": (1, 1)}, walls_min=2, lined=0.12, tiles=(30, 140),
         signature={"lab": (3, 5), "^AlchemistDesk|^WizardWorkstation|^Vandegraf": (1, 3), "desk": (1, 1),
                    "shelves": (0.2, 8)}, needs=("lab",), kin=("study", "library", "herbalist")),
     "herbalist": dict(

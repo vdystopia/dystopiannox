@@ -246,6 +246,8 @@ GROUPS = {
     "alchemy": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", seat_pat=r"Stool",
                     beside=[(r"^CauldronAnimated$", 1, 1.0), (r"^FairyJar$", 2)]),
     "conjuring": dict(anchor=r"^Orrery2$", ring=4, ring_r=1.9, clear=0.6),     # (SentryGlobeMovable: quest maps only)
+    # a big laboratory's table (Westwood's Con07C, Wiz02B: a table with chairs among the bookcases), a glowing jar by it
+    "labtable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", beside=[(r"^FairyJar$", 1)]),
     "generators": dict(anchor=r"^Vandegraf(Small|Large)$", pair=True, clear=1.2),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
@@ -1106,11 +1108,14 @@ class Furnisher:
             # (an observatory's star charts among its bookcases)
             for _ in range(self._deferred_decor): self.place_decor()
             self.fill_room()
-            self.line_backs()
+            # a kind may line its back walls less than the house's goal (ROOMS[kind]["lined_goal"]: Westwood's
+            # laboratories 0.06-0.35, the room lab)
+            goal = ROOM_IDENTITY.get(self.kind, {}).get("lined_goal", LINED_GOAL)
+            self.line_backs(goal)
             self.complete_bookcase_walls()
             self.centre_by_doors()
             if self.kind in DECORATED: self.decorate_walls()
-            while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
+            while self.line_family() and self.back_lined() < goal and self.place_decor(): pass
             self.audit_rugs()
             self.audit_tables()
             self.face_statues()
@@ -1281,6 +1286,8 @@ class Furnisher:
         op = self.main_door() if door else None
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
+        if fam in ROOM_IDENTITY.get(self.kind, {}).get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
+            facing = False
         depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
         out = []
         # a hanging takes bare wall, never a stretch any piece stands against (Westwood hangs nothing above a piece
@@ -1312,7 +1319,10 @@ class Furnisher:
                 ends = [e for e in ends if lo + ha - 0.05 <= e <= hi - ha + 0.05]
                 if not ends: continue
             if fam in ("shelves", "desk", "shop_rack"):        # they face one way and are no corner pieces
-                ends = [max(lo, r["lo"] + CORNER_CLEAR) + ha, min(hi, r["hi"] - CORNER_CLEAR) - ha]
+                # a desk keeps the snug gap (0.1, fits) off the wall across its end: at CORNER_CLEAR its end stood 0.05
+                # from it, so a desk "toward the corner" never fitted (the room lab: small laboratories had no desk)
+                cc = CORNER_CLEAR + (0.1 if fam == "desk" else 0.0)
+                ends = [max(lo, r["lo"] + cc) + ha, min(hi, r["hi"] - cc) - ha]
                 if ends[0] > ends[1]: continue
                 mid = min(max(mid, ends[0]), ends[1])
             spots = [mid] if at == "center" else ends if at in ("corner", "room_corner") else [mid] + ends
@@ -3313,6 +3323,7 @@ class Furnisher:
         self.decor_theme()
         free = sum(hi - lo for r, lo, hi in self.segments() if r["side"] in BACK_SIDES)
         n = max(1, min(8, int(free / 3.5)))
+        n = min(n, ROOM_IDENTITY.get(self.kind, {}).get("decor_max", 8))   # a kind hung more sparely (the room lab)
         for _ in range(n):
             if not self.place_decor(): break
 
