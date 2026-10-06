@@ -441,3 +441,18 @@ errors.
 
 Pond and dock r6-lake: the lab's town lake larger (13-16 tiles: "every pier into a small closed pond"). AUC 0.295. The
 lab only.
+
+### farmyard: Westwood's straw heaps (kit/scenes.py `hay_store`)
+
+Westwood's six farmyards (Con08d, War03c, Wiz03a, Wiz03b) are heaps of straw (OgreStraw1 most) along a wall, a barrel or
+two, a torch, a rock. The kit's hay_store had laid one or two heaps with sacks.
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged | 1.0 | 0 / 3 |
+| r1-heaps | three to five heaps along the wall, a barrel or two, sacks 35%, a torch pole 35%, a rock 25% | 0.92 | 0 / 1 |
+| r2-spread | heaps 54 px apart | 0.942 | 0 / 2 |
+| r3-shorter | two to four heaps 48 px apart (r2's run reached round a house's corner into Harrowby's storeroom: rooms.stray) | 0.967 | 0 / 3 |
+
+The lab alternates hay_store with the kit's threshing floor and windmill, which Westwood has no counterpart for.
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings as before. Not queued (one round of small moves).

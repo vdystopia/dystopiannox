@@ -176,8 +176,12 @@ CATALOGUE = [
           roles=("woodcutter", "home", "cottage", "grovelord"), places=("town",), biomes=("green", "swamp"), cap=2,
           spacing=26, family="wood", weight=1.5),
     Theme("hay_store", "hay heaped by a farmstead, sacks of feed", "wall",
-          [[P(HAY, 0, 36, must=True), P(HAY, 46, 42, p=0.6), P(STRAW, -40, 30, n=(1, 2), step=(-22, 14), must=True),
-            P(("SackChestLarge1", "SackChestLarge2"), 78, 30, must=True), P(("Barrel",), -34, 64, p=0.5)]],
+          # Westwood's (Con08d, War03c, Wiz03a, Wiz03b: three to ten heaps of straw (OgreStraw1 most) spread along a wall
+          # over ~90 px, a barrel or two, a torch, a rock): the heaps loose and many, the sacks now and then
+          [[P(("OgreStraw1", "OgreStraw1", "OgreStraw2", "OgreStraw3"), -50, 34, n=(2, 4), step=(48, 8), must=True),
+            P(("OgreStraw1",), -30, 76, p=0.5), P(("Barrel",), 120, 34, n=(1, 2), step=(26, 4), must=True),
+            P(("SackChestLarge1", "SackChestLarge2"), 104, 70, p=0.35), P(("TorchPole",), -110, 44, p=0.35),
+            P(("CaveRocksLarge", "CaveRocksHuge"), 150, 40, p=0.25)]],
           walls=("house", "fence"), roles=("mill", "home", "cottage", "grovelord", "barracks"), need=True, near=8,
           biomes=("green", "swamp"), cap=2, spacing=26, family="hay", tall=True, weight=1.5),
     Theme("midden", "the refuse heap behind a kitchen: old straw, bones, a broken crate", "wall",
