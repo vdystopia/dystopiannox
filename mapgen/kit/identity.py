@@ -484,7 +484,7 @@ ROOMS = {
                        lined_goal=0.15, decor_max=1,
                        # Westwood's labs stand their pieces a little off the walls (0.49 units against our snug 0.25)
                        wall_gap={"lab": 0.3, "desk": 0.25, "storage": 0.25, "table": 0.3},
-                       top_up=("storage",), lights_per100=3.0,
+                       top_up=("storage",), lights_per100=3.0, cap_tiles=0.72,
                        # the independent judge of r11: Westwood's labs fill the room as one working space; ours stood in
                        # separate clumps against the back walls. A work island of workstations stands free on the floor
                        # (GROUPS workbench), the desk among its bookcase on a back wall, the table with its stools free
@@ -492,9 +492,10 @@ ROOMS = {
                        compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                                 dict(fam="shelves", slot="line", near="desk", n=1),
                                 dict(fam="lab", slot="groups", group="workbench", n=1, extra=True),
-                                dict(fam="lab", slot="wall", at="corner", clear=1.2, only=r"^WizardWorkstation|^AlchemistDesk"),
                                 dict(fam="storage", slot="wall", at="corner", clear=1.0)],
                        fill=[dict(fam="desk", slot="wall", at="any", clear=0, seats=True, once=True, missing=True),
+                             dict(fam="lab", slot="wall", at="corner", clear=1.2, only=r"^WizardWorkstation", max=1,
+                                  min_area=150, fixed=True),
                              dict(fam="table", slot="group", group="labtable", max=1, min_area=150, fixed=True),
                              dict(fam="lab", slot="group", group="generators", max=1, min_area=200, fixed=True),
                              dict(fam="shelves", slot="line", other=True, n=2, max=4, min_area=150),

@@ -354,3 +354,14 @@ Storeroom r19-r21: dropping a heap that stayed one piece and capping great casks
 |---|---|---|---|---|---|
 | crypt | r8 | a tomb per 16 tiles, no tombs by the walls, fewer chests: worse (0.90, 8 sparse), reverted; r9 reproduces r7 (0.874) | 0.900 | 0.924 | 8 |
 | mausoleum | r6 | no focal piece in the profile (Westwood's have no one centrepiece), three mirrored pairs of statues tried | 0.867 | 0.983 | 0 |
+
+## Laboratory r14-r16: the work island made real
+
+| Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|
+| r14 | the island's pieces 0.2 apart (at 0.12, under fits()' 0.15, none had ever been placed: r12-r13's "island" was one workstation alone mid-floor) | 0.962 | 0.909 | 10 (caps 4) |
+| r15 | the corner workstation only past 62 tiles; the lab cap per 11 tiles | 0.973 | 0.940 | 9 (caps 7) |
+| r16 | recipe key `cap_tiles` 0.72 (kit/furnish.py repeat_cap: the kit's room counts 1.3-1.4 times the floor tiles the checker's finder measures, so any cap met by the kit was broken in the score); the lab cap per 7 tiles (Con05A: four workstations on 9 tiles) | 0.975 | 0.940 | 6 (sparse, door shells) |
+
+The AUC counts the island against the laboratory (Westwood's measured middles are bare), the judges for it ("Westwood's
+labs fill the room as one working space"); r16 is queued for the judge.

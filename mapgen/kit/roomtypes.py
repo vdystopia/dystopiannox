@@ -137,7 +137,8 @@ TYPES = {
         # the room lab (2026-10-05): Westwood's 19 laboratories cover 0.01-0.09-0.25 with 4-15 types (median 7), the back
         # walls lined 0.06-0.35, nothing in the middle; Con05A's 9-tile room holds four workstations
         cover=(0.05, 0.14, 0.25), open=(0.40, 0.95), per_tile=(0.12, 0.7), types_min=5, free_most=(2, 60),
-        caps={"lab": (8, 12), "table": (1, 1)}, walls_min=2, lined=0.12, tiles=(30, 140),
+        # (Westwood's Con05A: four workstations on 9 tiles; the kit counts its tiles as the checker does: cap_tiles)
+        caps={"lab": (7, 12), "table": (1, 1)}, walls_min=2, lined=0.12, tiles=(30, 140),
         signature={"lab": (3, 5), "^AlchemistDesk|^WizardWorkstation|^Vandegraf": (1, 3), "desk": (1, 1),
                    "shelves": (0.2, 8)}, needs=("lab",), kin=("study", "library", "herbalist")),
     "herbalist": dict(

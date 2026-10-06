@@ -255,7 +255,8 @@ GROUPS = {
     # the room one working space; the independent judge of the lab: "pieces in separated clumps against the back walls,
     # three quarters of the floor empty"): workstations side by side round one, a glowing jar by them
     "workbench": dict(anchor=r"^WizardWorkstation\d[a-d]?$", clear=0.8,
-                      beside=[(r"^WizardWorkstation\d[a-d]?$", 1, 0.12), (r"^AlchemistDesk\d$", 1, 0.12)]),
+                      # (0.2 apart: fits() keeps 0.15 between pieces, so 0.12 had placed none of them)
+                      beside=[(r"^WizardWorkstation\d[a-d]?$", 1, 0.2), (r"^AlchemistDesk\d$", 1, 0.2)]),
     # a crypt's sarcophagi as Westwood lays them: a mirrored pair across the room's middle (its 25 crypts: symmetry 1.0,
     # every tomb in line with another, two to a room at the median)
     "tombpair": dict(anchor=r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", pair=True, clear=0.8),
@@ -1074,7 +1075,10 @@ class Furnisher:
         if not rp: return None
         per, most = rp
         lo = ROOM_IDENTITY[self.kind].get("core", {}).get(fam, (0, 0))[0]
-        return max(lo, min(most, int(len(self.room.tiles) / per)))
+        # a kind may count its tiles as the checker's room finder does (ROOMS[kind]["cap_tiles"]: the kit's room holds
+        # 1.3-1.4 times the floor tiles the finder measures, so a cap met here was broken there; the room lab)
+        tiles = len(self.room.tiles) * ROOM_IDENTITY[self.kind].get("cap_tiles", 1.0)
+        return max(lo, min(most, int(tiles / per)))
 
     def identity_plan(self):
         """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at

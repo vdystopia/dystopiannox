@@ -14,5 +14,5 @@ One line per round worth judging: type, iteration, the blind folder. The key sta
 - barracks, c3 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\barracks\c3\blind\
 - cellar, r2 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\cellar\r2\blind\
 - mausoleum, r6 (best), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\mausoleum\r6\blind\
-- laboratory, r13 (answers the judge of r11), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\laboratory\r13\blind\
+- laboratory, r16 (answers the judge of r11; r13's island had been one piece), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\laboratory\r16\blind\
 - shop, r11 (answers the judge of r8), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\shop\r11\blind\
