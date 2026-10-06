@@ -354,6 +354,7 @@ class Exterior:
         if front and th.tall: return False
         if th.need and not (bld and bld["role"] in th.roles and dist <= th.near): return False
         if side and kinds and "house" in kinds and side not in th.sides: return False
+        if th.house_roles and kinds and "house" in kinds and not (bld and bld["role"] in th.house_roles): return False
         if bld and dist <= 3 and th.name in self._own_scenes(bld): return False    # its door scenes have one
         return True
 
@@ -392,13 +393,16 @@ class Exterior:
             got = 0
             if pc["types"] == ("@tent",):
                 way = "DN" if line == "\\" else "UP"
+                if th.name == "market_stall": way = "UP"      # (Westwood's three stalls: UP awnings, purple and orange
+                #                                              or green and red; the judge read red/blue as not theirs)
                 # the awning's open side faces the camera: its wares go before it (DN: south-west, UP: south-east)
                 n = (-1 / math.sqrt(2), 1 / math.sqrt(2)) if way == "DN" else (1 / math.sqrt(2), 1 / math.sqrt(2))
                 tdir = (-n[1], n[0])
                 parts = S.tent_pieces(way, rng.choice(S.TENT_COLOURS[way]), ox, oy)
                 if not all(self._ok(t, x, y, []) or "Shadow" in t for t, x, y in parts): return None
                 for t, x, y in parts:
-                    plan.append((t, x, y)); mine.append((x, y, 60 if "Side" in t or "Top" in t else 0))
+                    plan.append((t, x, y)); mine.append((x, y, 30 if "Side" in t else 10 if "Top" in t else 0))
+                # (the cloths overhead: the stock stands under the awning's front, Con09d's apples)
                 continue
             if pc["ring"]:
                 r, kk = pc["ring"]
@@ -441,6 +445,14 @@ class Exterior:
             r = radius(t)
             if r >= 14:
                 F |= {px_square(x + r * math.cos(q * math.pi / 4), y + r * math.sin(q * math.pi / 4)) for q in range(8)}
+        tent = [(x, y) for t, x, y in plan if t.startswith("TraderTent") and "Shadow" not in t]
+        if tent:
+            # the ground under an awning counts as blocked with its cloths and poles: else the open square between its
+            # sides read as a pocket it cut off, and no stall was ever laid (the scene lab, 2026-10-06)
+            xs, ys = [x for x, _ in tent], [y for _, y in tent]
+            for x in range(int(min(xs)), int(max(xs)) + 1, 12):
+                for y in range(int(min(ys)), int(max(ys)) + 1, 12):
+                    F.add(px_square(x, y))
         if self._cuts(F):
             why[(th.name, "cuts")] += 1; return None
         for t, x, y in plan:

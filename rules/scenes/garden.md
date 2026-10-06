@@ -68,3 +68,29 @@ Size: Westwood's gardens are bigger and come with the household round them (a we
 
 - Sizes tried: two up (w + 2, h + 1), one up, the asked size, then smaller; the barrel and spade set down a little off
   the beds' exact ends.
+
+## Round 4 (2026-10-06, the household round it)
+
+The independent judge on r6-town (10/10, 5.4 / 7.8): "the same small stamp: two or three even beds with a water barrel
+at a row end; dropped on open grass near a log cabin with no clear owning house; a corn bed starting at the cabin's
+corner; a sack leaning on a cabin corner; nothing of the household round them, where Westwood's have wells, apple
+trees, crates of apples, fences, paths and loose planting". Westwood's (corpus, 420 px round each): Con05A apple trees
+(TreeForest11, TreeForest12), five crates of apples, six water barrels; Wiz01A bushes and plants round its beds (Plant4,
+Plant5, Bush6); Con09a a WishingWell and a crate of apples.
+
+- **Centred on a side of its house** first (`_garden_at`: the four mid-side spots before the corner-aligned ones).
+- **The planting's density varies**: 0.52-0.62 squares between plants along a row, garden to garden.
+- **The household** (`Village._household`, the garden's own generator): an apple tree or two at the end of the beds away
+  from the house with a crate of apples under one (50%); a loose hedge of bushes along the far long side (40%); a
+  second water barrel by the beds (40%); never within a square of the house or two of a door.
+- The side goods (a crate, barrel or sack) on the long side away from the house.
+- **The lab**: gardens asked a size larger (4 x 3, 5 x 4, 6 x 5: Westwood's run 6-9 squares); a gardener standing at
+  the beds' end (60%; renders leave people out since the fairness fixes).
+
+## Round 5 (2026-10-06)
+
+The judge: "crop bands equal in length and ruler-straight; crops right under the fence; barrels, apple crates, a sack
+and a spade each alone round the beds instead of a knot at one corner (Westwood's gardens have no tools)". Each bed's
+ends 0-0.7 squares in (uneven bands); crops 12 px off a fence; no spade; the household's goods (a barrel, crates of
+apples, a sack) in one knot by the water barrel, each at Westwood's gap (kit/spacing).
+The garden now sits a square from its house's wall, centred on a side (Con07B's beds lie along their house).

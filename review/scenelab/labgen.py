@@ -27,11 +27,15 @@ from kit.vegetation import Planter, FORESTS, TOWN_PLANTING
 SCHEDULE = [("typical", "glade"), ("small", "road"), ("large", "glade"), ("typical", "wall"), ("small", "glade"),
             ("large", "road"), ("typical", "shore"), ("large", "wall"), ("small", "shore"), ("typical", "road")]
 RADIUS = {"small": 8, "typical": 10, "large": 12}            # the clearing's radius, squares
+# A hideout's pocket in the rock (Westwood's camps: half of them are CaveWall2 pockets on DirtDark2 off a cave's passage,
+# Wiz03a, Wiz03b, Wiz03c, War03a): a smaller, rougher clearing walled with rock, its one mouth on the passage
+CAVE_R = {"small": 4.0, "typical": 4.5, "large": 5.5}
+CAVE = dict(wall="CaveWall2", floor="DirtDark2")
 # The setting (the independent blind judge, 2026-10-05: "the biggest tell is the lab's setting: ours stand alone in an
 # empty forest glade, Westwood's sit in towns, among other yards, walls, paved walks, houses"). A town scene's
 # clearing is a hamlet's ground: a road through it, two or three houses round the scene with their walks to the road;
 # the glade is kept for the scenes that belong in the wild.
-WILD = {"bandit_camp", "ogre_camp", "urchin_camp", "wolf_den", "quarry", "shrine"}
+WILD = {"bandit_camp", "ogre_camp", "urchin_camp", "wolf_den", "quarry"}       # (Westwood's shrines stand against walls)
 TOWN_RADIUS = {"small": 12, "typical": 14, "large": 15}
 TOWN_COLS = [54, 90, 126, 162, 198]                          # 36 squares apart: a hamlet's ground and its wood
 TOWN_ROWS = [-18, 18]
@@ -53,6 +57,7 @@ class Plot:
         self.k, self.c, self.size, self.site, self.forest, self.rng = k, centre, size, site, forest, rng
         self.r = RADIUS[size]
         self.town = False
+        self.cave = False
         self.dir = _unit(rng.choice(DIRS))                  # the side the road, the shore or the wall is on
         self.road = None                                    # (a, b) road end points, squares
         self.pond = None                                    # (centre squares, radius tiles)
@@ -89,8 +94,21 @@ def plan_plots(scene, n, seed, rng):
         if town:
             p.town, p.r = True, TOWN_RADIUS[size]
             p.toward = (c[0] + p.dir[0] * p.r, c[1] + p.dir[1] * p.r)
+        elif k % len(SCHEDULE) in recipe_caves(scene):
+            # a hideout: a pocket in the rock, its mouth on the passage toward the middle of the map (the spine)
+            p.cave, p.site, p.forest, p.r = True, "cave", "cave", CAVE_R[size]
+            import recipes
+            p.cave_wall = recipes.RECIPES[scene].get("cave_wall", CAVE["wall"])     # urchins dig in earth (Dirt)
+            p.r *= recipes.RECIPES[scene].get("cave_scale", 1.0)
+            p.dir = (0.0, -1.0 if c[1] > 0 else 1.0)
+            p.toward = (c[0], c[1] + p.dir[1] * (p.r + 2))
         plots.append(p)
     return plots
+
+
+def recipe_caves(scene):
+    import recipes
+    return recipes.RECIPES[scene].get("caves", ())
 
 
 def plan_context(ctx):
@@ -102,6 +120,19 @@ def plan_context(ctx):
         if not p.town: continue
         sx, sy = p.notes.get("scene_sq") or p.scene_c
         got = 0
+        if ctx["scene"] == "pond_dock" and p.pond:
+            # the fisher's hut on the bank beside his dock's landing (Con03A: the hut a few steps from the dock's root)
+            (pci, pcj), pr = p.pond
+            ux, uy = p.toward[0] - pci, p.toward[1] - pcj
+            L = math.hypot(ux, uy) or 1
+            ux, uy = ux / L, uy / L
+            for sd in (1, -1):
+                at = (pci + ux * (pr + 3.5) - uy * sd * 4.5, pcj + uy * (pr + 3.5) + ux * sd * 4.5)
+                h = recipes._house(ctx, p, "fisher", at, quiet=True)
+                if h:
+                    got += 1
+                    ctx.setdefault("context_houses", []).append(h)
+                    break
         base = math.atan2(sy - p.c[1], sx - p.c[0]) if (sx, sy) != tuple(p.c) else math.atan2(-p.dir[1], -p.dir[0])
         for q in range(8):
             if got >= 2 + (p.size == "large"): break
@@ -133,15 +164,43 @@ def lay_land(m, rng, plots, recipe):
     carved: the recipe's planning goes first)."""
     land = Land(rng, u_range=(40, 470), v_range=(-205, 205))
     for p in plots:
-        land.area(p.name, (2 * p.c[0], 2 * p.c[1]), 2 * p.r, roughness=0.18, region=p.name)
-    # forest paths join the clearings in each row, and the rows at their west ends
-    for a, b in zip(plots, plots[1:]):
-        if (a.k // len(COLS)) == (b.k // len(COLS)) or (b.k % len(COLS) == 0):
-            if b.k % len(COLS) == 0: a = plots[b.k - len(COLS)]
-            land.link(a.name, b.name, 8, bend=0.15, road=False, pockets=(0, 0))
+        land.area(p.name, (2 * p.c[0], 2 * p.c[1]), 2 * p.r, roughness=0.45 if p.cave else 0.18, region=p.name,
+                  stretch=p.rng.uniform(1.0, 1.5) if p.cave else 1.0, angle=p.rng.uniform(0, 3.1) if p.cave else 0.0)
+    if any(p.cave for p in plots):
+        # a spine of forest path between the rows, each clearing on its own spur off it: a hideout's pocket has one
+        # mouth, as Westwood's have (a pocket off a cave's passage)
+        cols = sorted({p.c[0] for p in plots})
+        for q, x in enumerate(cols):
+            land.area(f"spine{q}", (2 * x, 0.0), 6, roughness=0.1, region="spine")
+            if q: land.link(f"spine{q - 1}", f"spine{q}", 8, bend=0.05, road=False, pockets=(0, 0))
+        for p in plots:
+            land.link(p.name, f"spine{cols.index(p.c[0])}", 6 if p.cave else 8, bend=0.3 if p.cave else 0.08, road=False,
+                      pockets=(0, 0))            # (a winding passage: the judge read one straight corridor in every hideout)
+    elif plots and plots[0].town:
+        # a hamlet's paths join it at its edges, never through its middle (the dressing keeps a forest path's lane
+        # clear, two squares either side: a path through the hamlet's middle had left a market no room for its
+        # awning)
+        def gate(p, dx, dy):
+            nm = f"{p.name}g{dx}{dy}"
+            if nm not in land.areas:
+                land.area(nm, (2 * (p.c[0] + dx * (p.r - 2)), 2 * (p.c[1] + dy * (p.r - 2))), 4, region=p.name)
+            return nm
+        for a, b in zip(plots, plots[1:]):
+            if (a.k // len(TOWN_COLS)) == (b.k // len(TOWN_COLS)):
+                land.link(gate(a, 1, 0), gate(b, -1, 0), 8, bend=0.15, road=False, pockets=(0, 0))
+            elif b.k % len(TOWN_COLS) == 0:
+                a = plots[b.k - len(TOWN_COLS)]
+                land.link(gate(a, 0, 1), gate(b, 0, -1), 8, bend=0.15, road=False, pockets=(0, 0))
+    else:
+        # forest paths join the clearings in each row, and the rows at their west ends
+        for a, b in zip(plots, plots[1:]):
+            if (a.k // len(COLS)) == (b.k // len(COLS)) or (b.k % len(COLS) == 0):
+                if b.k % len(COLS) == 0: a = plots[b.k - len(COLS)]
+                land.link(a.name, b.name, 8, bend=0.15, road=False, pockets=(0, 0))
     for p in plots:
         ux, uy = p.dir
         tx, ty = -uy, ux
+        if p.cave: continue
         if p.site == "road":
             off = p.r - 3.0
             a = (p.c[0] + ux * off - tx * (p.r + 3), p.c[1] + uy * off - ty * (p.r + 3))
@@ -151,6 +210,11 @@ def lay_land(m, rng, plots, recipe):
             land.link(p.name + "ra", p.name + "rb", 10, bend=0.04, road=True, pockets=(0, 0))
             p.road = (a, b)
             p.toward = (p.c[0] + ux * off, p.c[1] + uy * off)
+            if p.town and recipe.get("by_road"):
+                # the scene by its road, its gate or its front a few squares off it: the road in the picture, as
+                # Westwood's town scenes stand on their streets (the blind judge, 2026-10-06: "standing alone on open
+                # grass ... no road to the gate")
+                p.scene_c = (p.toward[0] - ux * recipe["by_road"], p.toward[1] - uy * recipe["by_road"])
         elif p.site == "shore" and not recipe.get("pond"):
             pr = 3.5 if p.size == "small" else 4.5
             pc = (p.c[0] + ux * (p.r - 1.5), p.c[1] + uy * (p.r - 1.5))
@@ -168,7 +232,9 @@ def carve_apply(m, land, plots):
     land.carve(margin=3.0)
     land.assign_regions()
     by = {p.name: p for p in plots}
-    land.apply(m, wall=lambda r: FORESTS[by[r].forest if r in by else "deciduous"]["wall"], floor="GrassNorm")
+    cave = lambda r: r in by and by[r].cave
+    land.apply(m, wall=lambda r: by[r].cave_wall if cave(r) else FORESTS[by[r].forest if r in by else "deciduous"]["wall"],
+               floor=lambda r: CAVE["floor"] if cave(r) else "GrassNorm")
 
 
 def lay_ponds(m, rng, land, plots, ww=None):
@@ -186,8 +252,10 @@ def lay_ponds(m, rng, land, plots, ww=None):
 
 def plant(m, rng, land, plots, keep=()):
     by = {p.name: p for p in plots}
-    planter = Planter(m, rng, land, "deciduous", keep_clear=set(keep),
-                      forest_of=lambda s: by[land.region_of(s)].forest if land.region_of(s) in by else "deciduous",
+    rock = {s for s in land.squares if land.region_of(s) in by and by[land.region_of(s)].cave}     # no tree in the rock
+    planter = Planter(m, rng, land, "deciduous", keep_clear=set(keep) | rock,
+                      forest_of=lambda s: by[land.region_of(s)].forest if land.region_of(s) in by and
+                      not by[land.region_of(s)].cave else "deciduous",
                       settled=tuple(p.name for p in plots))
     planter.plant_all(groves=0, profile=TOWN_PLANTING)
 
@@ -209,6 +277,10 @@ def generate(scene, n=10, seed=1, out_dir=None, name="SceneLab", log=print):
     plan_context(ctx)                                  # a town scene's neighbours
     carve_apply(m, land, plots)
     if any(p.pond for p in plots): ctx["ww"] = lay_ponds(m, rng, land, plots)
+    for p in plots:
+        if p.town and p.road and p.k % 3 == 1:
+            for sq in land.roads:
+                if land.region_of(sq) == p.name: m.floor[square_tile(*sq)] = "RoughCobble"
     land.ground_variety(m, clear=3)
     rec["build"](ctx)                                  # after the walls: the scene's own code
     build_context(ctx)
