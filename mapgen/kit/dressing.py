@@ -398,7 +398,8 @@ class Exterior:
                 parts = S.tent_pieces(way, rng.choice(S.TENT_COLOURS[way]), ox, oy)
                 if not all(self._ok(t, x, y, []) or "Shadow" in t for t, x, y in parts): return None
                 for t, x, y in parts:
-                    plan.append((t, x, y)); mine.append((x, y, 60 if "Side" in t or "Top" in t else 0))
+                    plan.append((t, x, y)); mine.append((x, y, 30 if "Side" in t else 10 if "Top" in t else 0))
+                # (the cloths overhead: the stock stands under the awning's front, Con09d's apples)
                 continue
             if pc["ring"]:
                 r, kk = pc["ring"]
@@ -441,6 +442,14 @@ class Exterior:
             r = radius(t)
             if r >= 14:
                 F |= {px_square(x + r * math.cos(q * math.pi / 4), y + r * math.sin(q * math.pi / 4)) for q in range(8)}
+        tent = [(x, y) for t, x, y in plan if t.startswith("TraderTent") and "Shadow" not in t]
+        if tent:
+            # the ground under an awning counts as blocked with its cloths and poles: else the open square between its
+            # sides read as a pocket it cut off, and no stall was ever laid (the scene lab, 2026-10-06)
+            xs, ys = [x for x, _ in tent], [y for _, y in tent]
+            for x in range(int(min(xs)), int(max(xs)) + 1, 12):
+                for y in range(int(min(ys)), int(max(ys)) + 1, 12):
+                    F.add(px_square(x, y))
         if self._cuts(F):
             why[(th.name, "cuts")] += 1; return None
         for t, x, y in plan:

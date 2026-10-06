@@ -129,8 +129,17 @@ CATALOGUE = [
             P(STRAW, -64, 46, p=0.5), P(("TraderAppleCrate",), 8, 80, p=0.5)]],
           places=("road",), requires=("road", "wild"), size=100, cap=1, spacing=60, family="cart", face="road", weight=1.5),
     Theme("market_stall", "a trader's awning with the wares set out before it", "open",
-          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -24, 70, n=2, step=(32, 4), must=True),
-            P(CRATES, 44, 64, orient="line", must=True), P(BARRELS, -62, 56), P(SACKS, 76, 40, p=0.7)]],
+          # (the wares: the apple crates must stand, the rest where they fit: with every piece a must, the stall had laid
+          # in none of the scene lab's market squares, 2026-10-06)
+          # Westwood's (Con02a, Con03A, Con09d: an awning with barrels in twos and threes, a water barrel, a steel crate,
+          # crates of apples, a torch pole or two, a cart now and then): the wares before it and at its ends, clear of
+          # its cloths
+          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -20, 62, n=(1, 2), step=(30, 3), must=True),
+            P(("Barrel2", "Barrel"), -30, -84, n=(2, 4), step=(27, 4)), P(("WaterBarrel",), -112, 18, p=0.6),
+            P(("CrateSteel3", "CrateSteel4"), 50, 72, p=0.7), P(("TorchPole",), 104, 36, p=0.6),
+            P(("TorchPole",), -100, 52, p=0.3),
+            P(("OutdoorTraderCart",), 150, -10, p=0.35), P(("TraderArmorRack1", "TraderArmorRack2"), 130, 60, p=0.15),
+            P(SACKS, 80, 104, p=0.25)]],
           roles=("store", "inn"), need=True, near=12, cap=1, spacing=40, family="stall", weight=1.2, size=170,
           min_types=3),
     Theme("supply_corner", "a household's stores kept outside the back door: barrels, a crate, sacks", "wall",
@@ -168,10 +177,13 @@ CATALOGUE = [
             P(TOOLS, 70, 30), P(POLEARMS, -88, 32, p=0.6, orient="line"), P(STOOLS, 26, 86, p=0.5)]],
           walls=("house",), roles=("smithy", "demon_forge"), need=True, near=6, sides=("side", "front", "back"),
           biomes=ALL, cap=2, spacing=30, family="smith", tall=True, weight=6.0),
-    Theme("well_side", "a draw well where water is fetched: barrels by it, a bench", "open",
-          [[P(("Well",), 0, 0, must=True), P(("WaterBarrel",), 48, 12, must=True), P(BARRELS, 58, 38),
-            P(("Bench1", "Bench2", "Bench4", "Bench5"), 0, 74, orient="face", must=True), P(SMALL_SACKS, -52, 22, p=0.4)]],
-          places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8),
+    # the well alone, clear on every side, a public landmark near a road (Westwood's four campaign wells, Con02a, Con07B,
+    # Con09a, War07A: the well and at most a sign a little apart; no barrels, buckets, benches or troughs by it. Westwood's
+    # well is the WishingWell; the kit keeps its Well, the user has not chosen: rules/scenes/well.md)
+    Theme("well_side", "a draw well where water is fetched, standing clear", "open",
+          [[P(("Well",), 0, 0, must=True)]],
+          places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
+          min_types=1, min_pieces=1, clear=60),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],

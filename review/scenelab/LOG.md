@@ -316,3 +316,30 @@ exterior warning. Queued: r4-fisher.
 AUC with 5 Westwood gardens is noise. Still: in a narrow clearing the garden is squeezed between the cabin and the
 wood (the wide pass fails, the narrow one lays it). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
 errors, no exterior warning (their room warnings come from master's room merges). Queued: r3-far.
+
+### market_stall: it lays (mapgen/kit/scenes.py `market_stall`, kit/dressing.py `_lay`; the lab's market square)
+
+| Round | What changed | AUC | Laid | Hard |
+|---|---|---|---|---|
+| (summary) | the kit as merged | - | 0 / 10 | 0 |
+| r1-square | the wares no longer all musts (the apple crates must, the rest where they fit); the dressing's cut test counts the ground under an awning as blocked (it had read the open square between the awning's sides as a pocket the stall cut off); the hamlet's forest paths join it at its edges, never through its middle (a path's lane is kept clear: no room for an awning) | 0.925 | 4 / 10 | 0 |
+| r2-wares | Westwood's wares (barrels in a row, a water barrel, an iron crate, a torch pole, a sack); the lab's store at the clearing's side, the market square 6.5 squares before its door | 0.875 | 4 / 10 | 0 |
+| r3-door | the store's door toward the clearing (the building's u runs along the squares' i) | 0.992 | 8 / 10 | 0 |
+| r4-fuller | two to four barrels, the cart at the side (35%), an armour rack (15%) | 0.983 | 8 / 10 | 0 |
+| r5-under | the stock as Con09d's: the apple crates under the awning's front (the dressing kept every piece 60 px off the cloths: now 30 off a side, 10 off a top), the barrels in a row behind under the back cloth, torch poles at the ends | 0.692 | 8 / 10 | 0 |
+
+3 Westwood stalls: read the AUC loosely. Queued: r5-under.
+
+### well: Westwood's lone well (kit/scenes.py `well_side`)
+
+Westwood's four campaign wells (Con02a, Con07B, Con09a, War07A) are the WishingWell alone, at most a sign a little
+apart; none has barrels, a bench or sacks. The kit's well_side had laid a water barrel, barrels, a bench and sacks round
+its Well. The landmark stays `Well` (the user has not chosen; rules/scenes/well.md says what Westwood uses).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged | 0.75 | 0 / 4 |
+| r1-alone | the well alone, 60 px kept clear round it | 0.761 | 0 / 1 |
+
+The classifier separates on zones (ours one piece: Westwood's four have their sign or a trader's pitch beside). By eye
+a lone well is Westwood's. No further round (4 Westwood wells).
