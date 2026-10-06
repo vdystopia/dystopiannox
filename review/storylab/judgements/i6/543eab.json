@@ -1,0 +1,33 @@
+{
+  "packet": "543eab",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Mannered, slightly arch shopkeeper voice ('I surmise', 'sorry band of thieves', 'lose no sleep fretting about his soul') with the gold amount spelled out in the thanks; that is Westwood's register."},
+    {"label": "B", "verdict": "generated", "confidence": 5, "score": 3,
+     "critique": "The first ask is one breathless run-on sentence of chained 'and's that no Westwood NPC speaks; the second ask and both outcomes are clipped to near-telegram length, so the lengths swing wildly."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain, functional exchange with a yes/no branch, an odd specific errand (apples, urchin, aggravated bats) and an item handed over by name ('ruby key'); this is the campaign's sponsorship quest in shape and tone."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Excited, exclamation-heavy plea with stock thanks ('token of my appreciation'), a mild comic stake (the father's cloak) and a loose comma splice; reads like Westwood's quick villager quests."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Comic touches ('the menfolk cannot live without us', the Ogres' stomachs grumbling) set in a dialogue tree with an accept/decline branch and a reminder line; it reads as authentic Nox."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Short, tidy sentences with an assembled feel ('tithe chest', 'I'll see you right', 'hardly a scratch on it'); a too-neat chain to the next quest ('go see [Person]'), and the rewards are generic arms without Westwood's flourish."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Casual, dialect-tinged humour ('Oh, bah!', 'ya', running a smuggling ring is hard) and a key with a practical warning about the wizards; very Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The headmaster's speech is close to Nox but stacks fragments for effect ('on the floor, among the books!'), and the dueling-yard ask is a terse vignette whose outcome is a bare quip; it reads like a pastiche."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "It opens in the middle of a story ('...and I ran!'), the wanted-poster joke is self-consciously writerly ('It looks more like a fish. I can't draw.') and the dead/alive pricing is stated too mechanically; the outcomes are short and blunt."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 3,
+     "critique": "Another long run-on sentence of chained 'and's in the first ask, the pompous warden's 'darkest hour' formula, and a petition subplot that repeats B's 'sign this paper' device; the voices are overwritten and their lengths uneven."}
+  ],
+  "tells": [
+    "Generated asks often hold one huge run-on sentence chained with 'and' to sound breathless; Westwood keeps its sentences short even in panic and splits them with ' / ' page breaks.",
+    "Generated outcomes are clipped to one or two exclamations ('Here, take the boots.'); Westwood's thanks usually name the gold amount in a set phrase ('Here's your reward -- 250 in gold!') or add a warning or a joke.",
+    "Generated texts reuse devices across quests (petitions to sign, 'put in a good word', staffs and shields as rewards); Westwood's errands are odder and more specific (apples and an urchin, a father's cloak, a smuggling shipment).",
+    "Westwood's humour is folksy and comes from the situation (hungry Ogres, menfolk who cannot cope, a boss who gets arrested to dodge work); generated humour is writerly and self-aware (a badly drawn poster, 'may he choke on his supper').",
+    "Westwood often builds quests as dialogue trees with accept and decline branches and reminder lines; generated pairs tend to be two independent asks each followed by its own completion line."
+  ]
+}

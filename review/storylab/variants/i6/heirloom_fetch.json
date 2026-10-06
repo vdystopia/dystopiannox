@@ -1,0 +1,692 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna the miller's widow wants the crank of her millstone back from the Urchins of the old barrow; she hands over the barrow gate key at once.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "So now the wheel turns all day and grinds nothing! Those Urchins pulled the crank right off my millstone and ran off with it. Here, take this key. It opens the gate of the old barrow, east of the ford. If you bring my crank back, I'll see you're paid for it. Well? Are you going or not?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Hmph. Then I'll grind it by hand, I suppose."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Have you got my crank? No? Then what are you doing here?"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My crank! At last! Take these boots, they're good in the mud down by the ford. And thank you, kind sir!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's millstone crank from the Urchins of the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's millstone crank from the Urchins of the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Hargo the assayer, a grumbling old man; the Imps of the Chimney stole his Crystal Lens.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hargo",
+     "text": "Oh, what now? Can't a man grieve in peace?\n\nVery well, since you insist. Those miserable Imps from the Chimney have stolen my Crystal Lens! My life's work is finished! These are the darkest of times, with the Stone Witch beneath our feet, and now this!\n\nIf you were to bring back my Lens, I would be forever in your debt. Take this potion. Those Imps bite. Well? Will you help a ruined old man?"
+    },
+    "refusal": {
+     "speaker": "Hargo",
+     "text": "Then go! Leave an old man to his misery!"
+    },
+    "reminder": {
+     "speaker": "Hargo",
+     "text": "Those wretched Imps get bolder every day."
+    },
+    "completion": {
+     "speaker": "Hargo",
+     "text": "My Lens! You found it?! Oh, happy day! Please accept this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Hargo",
+     "text": "Thanks again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hargo's Crystal Lens from the Imps of the Chimney."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hargo's Crystal Lens from the Imps of the Chimney."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Ebbard the Herbalist, fussy and nervous, wants back the magic lantern the Imps stole; they live in the hollow trees west of town.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "Thieves! Rotten little thieves! The Imps got into my hut and ran off with my magic lantern! I can't go out picking herbs without it, not with Vuldra's Zombies all over the bog at night. If you bring it back to me, I'll pay you well, I swear it! Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "No?! Well, fine. I'll just sit here in the dark, then."
+    },
+    "reminder": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "The Imps live out in the hollow trees, west of here. Bring me my lantern!"
+    },
+    "completion": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "My lantern! You found my lantern! Oh, thank you, thank you! Here's your reward, 80 gold pieces."
+    },
+    "after": {
+     "speaker": "Ebbard the Herbalist",
+     "text": "Thanks again, kind sir! Stay off the bog after dark."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ebbard's magic lantern from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ebbard's magic lantern from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Ilsabet, the castle healer, orders the player to get back her Staff of Mending from the Imps who stole it.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ilsabet",
+     "text": "And out the window they went, with my Staff of Mending! Imps! Filthy giggling Imps! They flew off toward the old quarry west of town. Go and get my staff back before they break it!"
+    },
+    "refusal": {
+     "speaker": "Ilsabet",
+     "text": "Then what good are you? Out of my way!"
+    },
+    "reminder": {
+     "speaker": "Ilsabet",
+     "text": "Well? Where's my staff? Go on, get moving!"
+    },
+    "completion": {
+     "speaker": "Ilsabet",
+     "text": "My staff! My staff! Oh, bless you, kind sir! Here, take this key. It opens the castle storeroom. Take whatever you need."
+    },
+    "after": {
+     "speaker": "Ilsabet",
+     "text": "Lord Tavrin was asking for you. He's waiting in the great hall of the keep."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ilsabet's Staff of Mending from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Go to the keep and speak with Lord Tavrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Krebbit the gruff old net-mender; Imps took his Pearl Amulet to their nest at the waterfall.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Krebbit",
+     "text": "...and that's the last time I leave a window open. Imps! Flew right in and grabbed my Pearl Amulet off the hook.\n\nTheir nest is up at the waterfall. You bring it back, you get somethin' for your trouble. Deal?"
+    },
+    "refusal": {
+     "speaker": "Krebbit",
+     "text": "Hmph. Then quit wastin' my time."
+    },
+    "reminder": {
+     "speaker": "Krebbit",
+     "text": "Back with nothin'?! Them Imps ain't gonna bring it to you."
+    },
+    "completion": {
+     "speaker": "Krebbit",
+     "text": "That's it! That's my amulet!\n\nHere. Take these boots. Go on, take 'em."
+    },
+    "after": {
+     "speaker": "Krebbit",
+     "text": "Mayor Dask's lookin' for you. Big house up the hill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Krebbit's Pearl Amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Krebbit's Pearl Amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Hulda, who brews the town's potions, lost her Crystal Staff to a pack of Imps that ran off to the Observatory west of town.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "So there I was, stirring the pot, minding my own business, when in through the window came a whole pack of screeching Imps, knocking over my jars and spilling everything and making the most awful racket you ever heard, and when they went out again they took my Crystal Staff with them, my good Crystal Staff, and I can't make a single potion without it, not one, and with Malgrith's Undead out on the hills this town needs potions more than ever! They ran off west of here, to the Observatory. Will you bring my Staff back to me?"
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Well! And here I thought you were the helpful sort."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Oh.... You haven't got it. Those horrible little Imps! Please, I need my Staff!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "My Crystal Staff! You found it! Bless you, bless you! Please take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "Thanks again, kind sir! The pots are bubbling again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hulda's Crystal Staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hulda's Crystal Staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion",
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Steward Ormund wants the Amulet of Kesh back from the Imps' nest on the crags; he pays with a pass through the Upper Gate.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Steward Ormund",
+     "text": "Ah! A capable soul, at last! A grievous crime has been committed against this fort. The Imps have stolen the Amulet of Kesh from my very chambers and carried it off to their nest on the crags north of here! Return it, and I shall grant you passage through the Upper Gate. Will you undertake this task?"
+    },
+    "refusal": {
+     "speaker": "Steward Ormund",
+     "text": "Then the Upper Gate shall remain closed to you. Good day."
+    },
+    "reminder": {
+     "speaker": "Steward Ormund",
+     "text": "Oh.... You do not have it. Please, make haste!"
+    },
+    "completion": {
+     "speaker": "Steward Ormund",
+     "text": "The Amulet of Kesh! Returned at last! Tor Vessa is in your debt. Here is your pass for the Upper Gate. Show it to the guards and they will let you through."
+    },
+    "after": {
+     "speaker": "Steward Ormund",
+     "text": "Thanks again, brave Adventurer. Tor Vessa will not forget you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Amulet of Kesh from the Imps' nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Amulet of Kesh from the Imps' nest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Overseer Tamsk of the Smiths' Guild wants the Ember Scepter back from the Imps who stole it from the Guild Hall, and pays with a pass to the Lower Forges.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Overseer Tamsk",
+     "text": "Halt there, citizen! By order of the Smiths' Guild, I am required to inform every able-bodied visitor of the present emergency, and that is exactly what I am doing, so kindly pay attention!\n\nLast night a pack of thieving Imps came squealing out of the caves to the north and broke into the Guild Hall and made off with the Ember Scepter, the very Scepter we carry at the Lighting of the Furnaces, and without the Scepter there can be no Lighting, and without the Lighting there is no forging at all, and with the Ember Demons already in the Great Forge, this is a calamity! A calamity, I say!\n\nThe Guild is prepared to issue a pass to the Lower Forges upon its safe return. Will you recover the Ember Scepter?"
+    },
+    "refusal": {
+     "speaker": "Overseer Tamsk",
+     "text": "Very well. I shall note your refusal in the Guild records."
+    },
+    "reminder": {
+     "speaker": "Overseer Tamsk",
+     "text": "The Scepter, citizen! The Ember Scepter!"
+    },
+    "completion": {
+     "speaker": "Overseer Tamsk",
+     "text": "The Ember Scepter! Returned to the Guild at last! As promised, here is your pass to the Lower Forges."
+    },
+    "after": {
+     "speaker": "Overseer Tamsk",
+     "text": "Thanks again, citizen. Guildmaster Dravick is waiting for you in the Guild Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Ember Scepter from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Take the pass to Guildmaster Dravick at the Guild Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Fennick, a fussy hermit, lost his Everlight Lantern to Skeletons of the Undead.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Greetings, Wanderer. Wipe your feet first. Both of them, please.\n\nThe Undead were rattling around my hut last night. Skeletons, a whole gang of them! I hid under the bed, and when I came out they had taken my Everlight Lantern.\n\nBring it back to me. And don't you dare scratch the glass."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Hmmph. Then stop standing in my doorway. You're letting the cold in."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Still no Lantern?! Skeletons never wander far from their graves, you know."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My Lantern! And not a scratch on it! Here, 80 gold for your trouble."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Feet, please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fennick's Everlight Lantern from the Undead."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return the Everlight Lantern to Fennick."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Ysolde the healer; the Ogres carried off her Gloves of Mending in a raid.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysolde",
+     "text": "Greetings, kind stranger. Please forgive an old woman her tears, for a great misfortune has fallen upon me.\n\nThe Ogres broke into my house and carried off my Gloves of Mending. With those gloves I have healed half the folk of Vardo. Without them I am useless! Useless! Every night the sick call for me from their beds, and every night I must turn them away and weep.\n\nIf you would bring my gloves back to me, I will reward you as well as a poor healer can. Will you help me?"
+    },
+    "refusal": {
+     "speaker": "Ysolde",
+     "text": "Very well. I shall pray that someone braver comes along."
+    },
+    "reminder": {
+     "speaker": "Ysolde",
+     "text": "Please, find my gloves! The Ogre who took them ran off toward the old quarry, I am sure of it."
+    },
+    "completion": {
+     "speaker": "Ysolde",
+     "text": "My gloves! My precious gloves! You have given Vardo back its healer! Please, take these 80 gold pieces, with all my thanks."
+    },
+    "after": {
+     "speaker": "Ysolde",
+     "text": "Thank you again, stranger. Come to me if you are ever hurt."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ysolde's Gloves of Mending from the Ogres."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ysolde's Gloves of Mending from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

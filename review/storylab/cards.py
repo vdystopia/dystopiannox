@@ -132,3 +132,91 @@ def card(seed, scenarios=None):
 
 if __name__ == "__main__":
     print(card(sys.argv[1] if len(sys.argv) > 1 else "1"))
+
+
+# ---- frames (v3): one Westwood line a part, to be rewritten line for line ---------------------------------------------
+# i6 showed that every instruction a brief gives ("one run-on speech", "an afterthought", "?!") is followed by all ten
+# writers and becomes the template. A frame is one of Westwood's own lines given to one part of one map: its quirks
+# (a slip, a stiff word, a run-on, an afterthought) come with it, spread over a map as unevenly as Westwood spread them.
+
+FRAME_OF_PART = {"offer": "offer", "plea": "offer", "offer_a": "offer", "offer_b": "offer", "opening": "opening",
+                 "reminder": "reminder", "completion": "completion", "outcome_a": "completion", "outcome_b": "completion",
+                 "after": "after", "refusal": "refusal", "rumour1": "townsfolk", "rumour2": "townsfolk",
+                 "rumour3": "townsfolk", "herald": "townsfolk", "first": "guard", "again": "guard", "later": "guard",
+                 "inn": "shop", "arms": "shop", "magic": "shop", "journal": "journal", "journal_a": "journal",
+                 "journal_b": "journal", "found": "captive", "following": "captive"}
+FRAME_SOURCES = {"offer": ["offer", "talk"], "opening": ["offer", "talk"], "reminder": ["reminder", "talk", "after"],
+                 "completion": ["completion", "talk"], "after": ["after", "bump", "completion"], "refusal": ["refusal", "after"],
+                 "townsfolk": ["townsfolk"], "guard": ["guard", "townsfolk", "talk"], "shop": ["shop"],
+                 "journal": ["journal"], "captive": ["talk", "reminder"]}
+FRAME_WORDS = {"offer": (25, 140), "opening": (25, 160), "reminder": (2, 30), "completion": (5, 90), "after": (2, 30),
+               "refusal": (3, 40), "townsfolk": (2, 35), "guard": (2, 45), "shop": (3, 45), "journal": (3, 25),
+               "captive": (2, 30)}
+
+
+def _frame_pools():
+    import difflib, json
+    import westwood
+    d = json.load(open(os.path.join(HERE, "scenarios.json"), encoding="utf-8"))
+    keys = set()
+    for s in d["scenarios"]:
+        for u in s["westwood"] + s.get("control_extra", []):
+            for _, k in u: keys.update(k if isinstance(k, list) else [k])
+    S = westwood.strings()
+    pooltexts = [S[k] for k in keys if k in S]
+    rows = [r for r in westwood.campaign() if not r["dup"] and r["key"] not in keys]
+    out = {}
+    for fs, srcs in FRAME_SOURCES.items():
+        lo, hi = FRAME_WORDS[fs]
+        tiers = []
+        for src in srcs:                                # the situation's own lines first, then the fallbacks
+            xs = []
+            for r in rows:
+                if r["situation"] != src: continue
+                n = len(r["text"].split())
+                if not lo <= n <= hi: continue
+                if any(difflib.SequenceMatcher(None, r["text"], t).ratio() > 0.6 for t in pooltexts): continue
+                xs.append((r["key"], re.sub(r"\s*\n\s*\n\s*", " / ", r["text"].strip())))
+            tiers.append(xs)
+        out[fs] = tiers
+    return out
+
+
+class FrameDealer:
+    """Deals frames for a round: no two maps of a round share a frame while the pool lasts."""
+    def __init__(self, seed):
+        self.rng = random.Random(f"frames|{seed}")
+        self.pools = _frame_pools()
+        self.decks = {}
+
+    def deal(self, fs):
+        deck = self.decks.get(fs)
+        if not deck:
+            deck = []
+            for tier in self.pools.get(fs, []):
+                t = list(tier); self.rng.shuffle(t); deck += t
+            self.decks[fs] = deck
+        return deck.pop(0) if deck else None
+
+
+def frames_card(dealer, scenarios):
+    """The frames of one map: {scenario: {part: (key, text)}} and its markdown."""
+    L = ["### Your frames: one Westwood line a part, to rewrite line for line", "",
+         "Each part of your town is a rewrite of its frame. Keep the frame's shape: about as many sentences, its "
+         "punctuation where it falls (! ? ... -- / page breaks), how it opens and how it ends, its stock words, its "
+         "quirks (a slip, a stiff word, a run-on, an afterthought, a flat statement). Change its matter to your town's: "
+         "who, what, where, the beast, the thing, the reward. Never keep five words of a frame in a row (a stock phrase "
+         "like \"a token of my appreciation\" excepted) and never a Westwood name. Where the scenario needs a thing the "
+         "frame lacks (a yes/no question, a reward, a place), add it in the frame's manner. A frame from another "
+         "situation is a model of rhythm and register, not of content.", ""]
+    got = {}
+    for sid, parts in scenarios:
+        for part, _ in parts:
+            fs = FRAME_OF_PART.get(part)
+            if not fs: continue
+            fr = dealer.deal(fs)
+            if not fr: continue
+            got.setdefault(sid, {})[part] = fr
+            L.append(f"- `{sid}.{part}`: \"{fr[1]}\"  ({fr[0]})")
+    L.append("")
+    return got, "\n".join(L)

@@ -1,0 +1,522 @@
+{
+ "scenario": "rumour",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A pointer to the inn, the gate news said again, and a comic brush-off from a man counting chickens.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "If it's news you want, go to the Drowned Lantern, down by the water."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Did you hear? The north gate's been shut on account of those bandits! Nobody gets through!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Shoo! Can't you see I'm counting my chickens? One... two... Aw, now I have to start all over!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Three townsfolk of Thrumm: Varn teases, Nella points to the inn, Fobb worries about the Golems.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Varn",
+     "text": "Well, look at you, all shiny and clean. Come see me when you've got some dirt on your face, hero."
+    },
+    "rumour2": {
+     "speaker": "Nella",
+     "text": "If you want a hot meal and a bed, the Deep Mug is just past the Great Hall"
+    },
+    "rumour3": {
+     "speaker": "Fobb",
+     "text": "Oh.... The Golems come up the shafts every night now. What will become of us?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Three folk of Tharn: Osk the net-mender brushes the player off, Fenna flirts, Brug thinks the Mayor too soft.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Osk",
+     "text": "Leave me be. I've got nets to mend."
+    },
+    "rumour2": {
+     "speaker": "Fenna",
+     "text": "My, my! We don't get many like you out here. Come and see me when you're done with that witch"
+    },
+    "rumour3": {
+     "speaker": "Brug",
+     "text": "Mayor Dremmel is a good man, but he's too soft! Gundar the Ferryman would have run that witch out of the swamp long ago!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Three townsfolk of Durnath: gossip about Lord Tavrin, a brush-off from a soldier, a complaint about the town's own folly.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Nessa",
+     "text": "Lord Tavrin is up in the keep, waiting on somebody. He's been up there for a month! If you ask me, he's scared stiff of Ostrigan."
+    },
+    "rumour2": {
+     "speaker": "Dobbs",
+     "text": "Go bother somebody else."
+    },
+    "rumour3": {
+     "speaker": "Pibb",
+     "text": "We let that Wizard live up on the hill for years and nobody ever asked what he was doing up there. Not once! Now look at us."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Three townsfolk of Tullin: a complaint about the town's own folly, a brush-off, an odd light under the lake.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fishwife",
+     "text": "Everybody said don't bury the dead out on the island. Did anybody listen? No!"
+    },
+    "rumour2": {
+     "speaker": "Fisherman",
+     "text": "Not now."
+    },
+    "rumour3": {
+     "speaker": "Old man",
+     "text": "There's a light down under the water at night. Under it! I saw it myself."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Three townsfolk: Dobb frets about the Undead, Liss flirts, Wendt gives a tip about barrels.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dobb",
+     "text": "The Undead are out in the Bone Hills. That's what everybody says. What's going to happen to us?"
+    },
+    "rumour2": {
+     "speaker": "Liss",
+     "text": "My, my, a new face in Quorran! Don't run off too fast, handsome."
+    },
+    "rumour3": {
+     "speaker": "Wendt",
+     "text": "If you're short on potions, smash a few barrels. You'd be amazed what people leave in them."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Ilsa teases, Olm brushes the player off, Petrik states the trouble plainly.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Ilsa",
+     "text": "Ooh! Are all the men down south as big as you?"
+    },
+    "rumour2": {
+     "speaker": "Olm",
+     "text": "Go away."
+    },
+    "rumour3": {
+     "speaker": "Petrik",
+     "text": "The dead walk on the pass at night. Grisla the Frost Witch calls them up out of the snow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Three townsfolk of Kildrun: Hilde warns of the Lower Forges, Tobin brushes the player off toward the Guild Hall, Bolgo repeats the Demon news as a joke.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hilde",
+     "text": "Stay out of the Lower Forges, stranger! The Ember Demons are down there, and they burn everything they touch!"
+    },
+    "rumour2": {
+     "speaker": "Tobin",
+     "text": "Can't talk now, I've got ore to haul. Try the Guild Hall, up the hill."
+    },
+    "rumour3": {
+     "speaker": "Bolgo",
+     "text": "Ember Demons in the Great Forge, did ya hear? Bah! My wife's cooking is hotter than any Demon. Hah, hah, hah!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Wenlow warns of the dead on the roads, Gimble brushes the player off, Mungo the drunk repeats Wenlow.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wenlow",
+     "text": "Stay off the roads after dark, stranger. The dead walk them now."
+    },
+    "rumour2": {
+     "speaker": "Gimble",
+     "text": "Not now. I've got horses to feed."
+    },
+    "rumour3": {
+     "speaker": "Mungo",
+     "text": "Hic! The dead walk the roads after dark! Ever'body says so. Well, I walk 'em after dark too, and nobody runs from ME! Hic!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Three folk of Vardo: an odd thing at the well, a complaint about the wall, a tip about potions on the north road.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tibbet",
+     "text": "Somebody keeps leaving turnips on the well every morning. Nobody in Vardo will say who."
+    },
+    "rumour2": {
+     "speaker": "Marl",
+     "text": "Oh.... We should have built a real wall around this village years ago. Now look at us."
+    },
+    "rumour3": {
+     "speaker": "Sorka",
+     "text": "I hear the Ogres are all over the north road. Take plenty of potions if you go that way."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

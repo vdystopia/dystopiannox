@@ -1,0 +1,32 @@
+{
+  "packet": "a18323",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stiff, shouted gatekeeping, a plain directions line and a casual 'boy' send-off with a bandit warning: Westwood's unpolished guard bark."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Atmosphere-first opening (rotten planks, zombies from the bog) and the 'Oh, and don't drink the water' button-joke feel built; the 'Get going, and hurry!' ending matches the packet's template."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Punchy, tidy, deliberately terse lines with an 'Oh, one more thing' afterthought and a 'hurry, it'll be dark soon' close: too neatly shaped to set up the key-and-gate beat."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The Imp joke is in Nox's spirit, but the 'that goes double for' quip and the 'Well, don't just stand there, hurry!' release line follow the same three-beat formula as B and C."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, slightly awkward jailer lines ('the inside of one of these cells', 'Don't hassle my prisoners') with no setup or payoff: Westwood's filler barks."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The list of petty bans ending in 'don't even think about wizardry. Enjoy your stay.' and the trailing 'huh...' are Westwood's dry humour and loose punctuation."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Mind your head' plus a delivered destination and a gear jab feel assembled; the 'Hail, brave Adventurer! ... honors your valor!' close echoes J's template."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Over-eager, exposition-heavy greeting ('our beloved [Place]', 'Delay no longer!') and a throwaway bandit warning read like Westwood's early-chapter guard."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Bureaucratic 'checkpoint for travelers', a hostile 'blast you to oblivion' and the deadpan 'Sorry, the [Place] are closed' have Westwood's odd, unbalanced charm."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The repeated 'lockup' threat is neat but generic, and 'The fires of [Place] burn again. Your valor will not be forgotten!' is a stock epic close shaped like G's."}
+  ],
+  "tells": [
+    "The new texts share one three-beat shape: a warning or welcome, an 'Oh, one more thing' or 'Oh, and...' afterthought, then a release line ending in 'hurry!'. Westwood's guards have no such pattern from one guard to the next.",
+    "The new lines set a scene (rotten planks, bog zombies, dusk on the causeway) and are tidily witty. Westwood's barks are flatter and more functional, sometimes awkward ('one of these cells', 'the [Place] are closed').",
+    "The new victory barks fall back on stock epic phrases ('Hail, brave Adventurer!', 'honors your valor', 'will not be forgotten'). Westwood's 'later' lines are small and practical (a bandit warning, 'I hope you're up to the challenge').",
+    "Westwood uses loose punctuation and trailing ellipses ('huh...'), stacked exclamations and odd register shifts ('blast you to oblivion'). The new texts are punctuated cleanly and keep one register throughout."
+  ]
+}

@@ -1,0 +1,567 @@
+{
+ "scenario": "main_opening",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman sends the player to Mayor Halvard, who gives a sword and a pass for the north gate and sends him to drive Red Corwin off Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Mayor Halvard shut the north gate on account of Red Corwin's bandits. He's looking for help. You'll find him in the town hall, in the center of town."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Grave news, stranger, grave news! Red Corwin and his bandits have seized the old watchtower on Crow Hill, north of town. From there they fall upon every cart and every traveler on the north road, and they grow bolder by the day!\n\nI was forced to shut the north gate. Now the millers cannot sell their flour, the ferrymen sit idle on the Bracken, and the wolves of the Ashwood creep closer every night! Never in all my years have I seen such strange and desperate times. I have too few guards, and they are farmers' sons, not fighters. Brackenford is doomed unless someone acts!\n\nTake this sword, and show this pass to Garrick at the north gate. Go to Crow Hill and drive Red Corwin and his cutthroats out of that tower! All Brackenford is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Hurry, stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin and his bandits out of the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Fobb sends the player to Warlord Gorran in the Great Hall; Gorran, sent word by Ulgrim, orders the player down to destroy Vorga the Stone Witch and gives gold and potions.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fobb",
+     "text": "Warlord Gorran has been shouting for you all morning! He's in the Great Hall. I'd hurry if I was you."
+    },
+    "opening": {
+     "speaker": "Warlord Gorran",
+     "text": "So! Ulgrim finally sent me somebody. About time! Stand up straight, lad, and listen well.\n\nVorga the Stone Witch has woken the Golems of the Deep Halls. Every night they march up the shafts and crush anything in their path! The mines of Thrumm have gone silent. This cannot stand!\n\nYou must go down into the Deep Halls and destroy Vorga. Take this gold and these potions. Dask can sell you a decent sword. Now go, and do not come back until the Witch is dead!"
+    },
+    "reminder": {
+     "speaker": "Warlord Gorran",
+     "text": "What are you waiting for, lad? Vorga grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down into the Deep Halls and destroy Vorga the Stone Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Wilk points the player to Mayor Dremmel in the Long House; the Mayor gives the key to the north gate and sends him after the Witch Vuldra in the Blackwater.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wilk",
+     "text": "Did you hear? The Zombies came up out of the bog again last night! Mayor Dremmel is in the Long House. Go see him!"
+    },
+    "opening": {
+     "speaker": "Mayor Dremmel",
+     "text": "Grave news, lad, grave news. The Witch Vuldra's Zombies climbed up onto the walkways again last night, and this time they carried off the whole night watch!\n\nGundar says you can handle yourself. Good, because there is nobody left here who can. Take this key. It opens the north gate. Go out into the Blackwater, find Vuldra's hut and put an end to her!\n\nAnd get some supplies first. Morla's inn and Harrok's shop are just down the walkway. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Mayor Dremmel",
+     "text": "Those Zombies get bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Witch Vuldra's hut in the Blackwater and destroy her."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Pibb points the player to Lord Tavrin in the keep; Tavrin sends him north against the renegade Wizard Ostrigan at the Black Spire.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibb",
+     "text": "You're the one Ruvane sent? Lord Tavrin is waiting for you in the great hall of the keep."
+    },
+    "opening": {
+     "speaker": "Tavrin",
+     "text": "Grim news, lad. Very grim. My scouts came back from the Black Spire last night. Not all of them. Ostrigan has woken the stone golems under the Spire, and his Imps fly over our walls whenever they please.\n\nRuvane tells me you are the one for this. Go north to the Black Spire. Find Ostrigan and put an end to him. Get what you need in town before you go, and don't waste any time."
+    },
+    "reminder": {
+     "speaker": "Tavrin",
+     "text": "Those Imps get bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Black Spire and stop the Wizard Ostrigan."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: A townsman points the player to Mayor Dask, who orders him to Gull Isle against the Necromancer Ostrega and gives him the causeway key.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The dead come up out of the lake every night now! Mayor Dask is expecting you. His house is up the hill."
+    },
+    "opening": {
+     "speaker": "Mayor Dask",
+     "text": "So Ambrel sent you. Good.\n\nThe Necromancer Ostrega holds the lighthouse on Gull Isle. His dead walk out of the lake and into our streets. Go out there and kill him.\n\nHere is the key to the causeway gate. Show it to Bosk. Now go."
+    },
+    "reminder": {
+     "speaker": "Mayor Dask",
+     "text": "The causeway, lad! What are you waiting for?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the causeway to Gull Isle and destroy the Necromancer Ostrega."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Dobb points the player to Archmage Corvald, who gives him a staff and sends him north after Malgrith in the Bone Hills; Gammel the patron brought him here.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobb",
+     "text": "You must be the one Gammel sent! Archmage Corvald has been asking for you all morning. His tower is in the middle of town."
+    },
+    "opening": {
+     "speaker": "Corvald",
+     "text": "So Gammel got you here in one piece. Good! I need every sword and spell I can find, lad.\n\nMalgrith has raised the Undead in the Bone Hills, in a numerosity such as Quorran has never seen. Each night they creep closer to our walls!\n\nTake this staff. Go north into the Bone Hills, find Malgrith and put an end to him. The Academy is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Corvald",
+     "text": "Go, lad! The Undead are getting closer every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Malgrith in the Bone Hills and put an end to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Dobb points the newcomer to Lord Kessick, who tells of the Kesh Tower's fall to Grisla's Undead and sends the player up the pass with gold and potions.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobb",
+     "text": "You came up the pass alone?! Lord Kessick's been waiting on you. Great Hall, top of the stairs."
+    },
+    "opening": {
+     "speaker": "Lord Kessick",
+     "text": "So Marshal Tobrin sent you. Then you come at a black hour, lad. Last night the Kesh Tower fell. Grisla the Frost Witch came down out of the storm with an army of the Undead behind her, and my men in the tower fought until the last torch went out and then they rose up again and turned their swords on their own brothers and now they serve her!\n\nThe pass is closed. All the north is in peril while that wicked witch holds the Kesh Tower!\n\nTake this gold and these potions, and get restocked in town. Then go up to the Kesh Tower and destroy Grisla the Frost Witch. Go now, and may all that is great protect you!"
+    },
+    "reminder": {
+     "speaker": "Lord Kessick",
+     "text": "Why do you linger, lad? The Frost Witch grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go up to the Kesh Tower and destroy Grisla the Frost Witch."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Hilde points the player to Guildmaster Dravick in the Guild Hall, an old friend of Brunhold, who hands him a hammer and sends him down through the Lower Forges against the Ember Demons in the Great Forge.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hilde",
+     "text": "The furnaces have gone cold. No fire, no work. If you're looking for Guildmaster Dravick, he's in the Guild Hall."
+    },
+    "opening": {
+     "speaker": "Guildmaster Dravick",
+     "text": "So Brunhold sent you. Good, good. I'm afraid you've come at a terrible hour, lad.\n\nThe Ember Demons have climbed out of the Burning Pit and taken the Great Forge! Every furnace in Kildrun has gone cold, and our smiths are falling one by one.\n\nTake this hammer. Go down through the Lower Forges and drive those Demons back into the Pit where they belong!"
+    },
+    "reminder": {
+     "speaker": "Guildmaster Dravick",
+     "text": "Every hour those Demons hold the Great Forge, Kildrun grows colder. Go, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ember Demons out of the Great Forge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WarHammer"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Gimble points the player to Mayor Osgood at the Cartwheel Inn, who gives the cemetery gate key and sends him after the Necromancer Sabbek.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Gimble",
+     "text": "Dead men on the road again last night. If you're the one Kestrin sent, Mayor Osgood's over at the Cartwheel Inn."
+    },
+    "opening": {
+     "speaker": "Mayor Osgood",
+     "text": "Grim news, lad. The Undead came right up to the crossroads last night. The Necromancer Sabbek is raising them from the graves on Gallows Hill, east of here, and every night there are more of them.\n\nKestrin said you would come, and not a day too soon!\n\nTake this key. It opens the cemetery gate. Find Sabbek and destroy him, before Harrow Cross is overrun!"
+    },
+    "reminder": {
+     "speaker": "Mayor Osgood",
+     "text": "Every hour you stand here, Sabbek digs up another grave! Go, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Necromancer Sabbek on Gallows Hill and destroy him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Marl points the player to Mayor Brumhold, who sends him after Bolgrum the Ogre Chief on Skarn Hill and gives the key to the north gate.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Marl",
+     "text": "Are you the one Thalden sent? Mayor Brumhold has been waiting for you. His house is the big one by the well."
+    },
+    "opening": {
+     "speaker": "Mayor Brumhold",
+     "text": "Terrible news, lad. Last night the Ogres burned another farm and carried off every pig they could find. Vardo cannot take much more of this!\n\nThalden wrote that you were coming, and not a moment too soon. Bolgrum the Ogre Chief and his brutes are camped on Skarn Hill, north of the village. Go there and put an end to him, once and for all.\n\nTake this key. It opens the north gate. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Mayor Brumhold",
+     "text": "Those Ogres get bolder every day."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Bolgrum the Ogre Chief at his camp on Skarn Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

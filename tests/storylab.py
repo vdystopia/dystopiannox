@@ -468,9 +468,14 @@ def brief(it, baseline=False, writers=10):
                   "Nox-like names (short, odd fantasy names in the manner of Theogrin, Gearhart, Byzanti, Mlurgh, "
                   "Grillf, Lydia, Henrick, but not these); a few places. The troubles of the scenarios below become "
                   "this town's own (another beast, thing, captive, deal).", ""]
-        if os.path.exists(os.path.join(LAB, "cards.py")) and it not in ("i4",):
+        scen_parts = [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"]
+        if it in ("i5", "i6"):                          # v5-v6: a card of shapes and model lines
             import cards
-            L += [cards.card(f"{it}-{n}", [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"]), ""]
+            L += [cards.card(f"{it}-{n}", scen_parts), ""]
+        elif it not in ("i4",):                         # v7 on: a Westwood frame for every part, dealt for the round
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.frames_card(dealer, scen_parts)[1], ""]
         L += ["## What to write", "",
               "Every scenario below, as one town's lines, by you alone (do not look at other writers' files). "
               "Each scenario's people are this town's people; one person may appear in two scenarios.", ""]
@@ -483,7 +488,7 @@ def brief(it, baseline=False, writers=10):
             L.append("")
         L += ["## The file", "",
               f"Write `review/storylab/variants/{it}/maps/{n}.json` (in the worktree; nothing else):", "", "```json",
-              json.dumps({"iter": it, "writer": "<agent and model>", "guide": "WRITER.md + exemplars + card",
+              json.dumps({"iter": it, "writer": "<agent and model>", "guide": "WRITER.md + exemplars + frames",
                           "map": {"name": "<town>", "setting": TOWNS[n - 1], "trouble": "<the chapter's trouble, a line>",
                                   "names": {"<Every Name you use>": "person|place|thing|group"}},
                           "scenarios": {"<scenario id>": {"specifics": "<one line: who, what>", "names": {},

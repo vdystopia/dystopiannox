@@ -1,0 +1,33 @@
+{
+  "packet": "49b9b0",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Practical, plot-bound instructions (secret route, bookcases open) and a plain off-screen death folded into the next errand read like a chapter hub; the em-dash and 'Unsavory elements dwell in the shadows!' are period Westwood."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Hits every slot neatly (theft, place, reward, pass, guards) with a stock 'Ah! A capable soul, at last!' and 'grievous crime'; the 'Oh.... You do not have it.' reminder looks borrowed rather than earned."},
+    {"label": "C", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Slightly awkward, breathless child-like voice ('he'll be destroyed', 'Could you... would you') and a bare thanks with an unnamed token feel authentically uneven rather than designed."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Overwrought pathos ('Useless! Useless!', weeping every night) and a tidy explanatory backstory are longer and more literary than Nox's townsfolk; the exact '80 gold pieces' reward echoes F."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The startled 'Gahhhhhh! No! Don't kill me!', the half-blind misreading, '?!' punctuation and the oddly specific bat scroll for conjurers have Westwood's quirky humour and loose plotting."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Crafted comic persona (wipe both feet, don't scratch the glass, hid under the bed) is a deliberate character bit; the callbacks are too neat and the reminder hint is phrased as a writer's tip."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "A single run-on paragraph as a characterization device is a modern writerly flourish Nox never uses; the thanks then reuses 'token of my appreciation' wholesale."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Mayor's welcome, odd capitalization ('East', 'Urchins'), redundant directions ('located East of here', 'I should be in my house at the center of town') and the shop-then-Captain nudge are classic Westwood tutorial plainness."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Grumpy-mourner opening and 'Those Imps bite' potion hand-off are a polished comic setup; 'darkest of times, with the [Person] beneath our feet' inserts lore in a way the originals rarely do, and the thanks is a stock copy."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Begins mid-conversation ('Good!'), gives a ruby key and a petition with gruff brevity ('Have faith, one little urchin is no threat'); functional, unadorned, slightly flat in the Nox way."}
+  ],
+  "tells": [
+    "New texts give each giver a crafted comic or tragic persona (fussy, grieving, rambling, weeping); Westwood's givers are plainer and their humour comes from odd, unpolished moments rather than designed bits.",
+    "New texts reuse stock phrases lifted from the originals ('Oh.... You haven't got it', 'Please accept this as a token of my appreciation') and repeat exact rewards (80 gold) across texts.",
+    "Westwood lines carry practical logistics and quirks: where to go next, whom to see, odd capitalization, redundant directions, rewards that are items or passes tied to the plot.",
+    "Stylistic set pieces (a one-sentence run-on monologue, 'Useless! Useless!', tidy callbacks between offer and thanks) read as modern writerly technique, not Nox's register.",
+    "New offers bundle full backstory plus theft plus location plus reward plus question in one balanced speech; Westwood's are less evenly structured."
+  ]
+}

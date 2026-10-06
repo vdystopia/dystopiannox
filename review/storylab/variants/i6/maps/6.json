@@ -1,0 +1,342 @@
+{
+ "iter": "i6",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Quorran",
+  "setting": "a wizards' college town",
+  "trouble": "Malgrith, a mad wizard, has raised the Undead in the Bone Hills north of Quorran and they creep closer to the town each night.",
+  "names": {
+   "Quorran": "place",
+   "Academy": "place",
+   "Bone Hills": "place",
+   "Observatory": "place",
+   "old bell tower": "place",
+   "old chapel": "place",
+   "old dormitory": "place",
+   "dueling yard": "place",
+   "Malgrith": "person",
+   "Gammel": "person",
+   "Corvald": "person",
+   "Gurt": "person",
+   "Dobb": "person",
+   "Fennick": "person",
+   "Hulda": "person",
+   "Haskel": "person",
+   "Tamsin": "person",
+   "Rook": "person",
+   "Mavrell": "person",
+   "Ollo": "person",
+   "Bodge": "person",
+   "Brack": "person",
+   "Liss": "person",
+   "Wendt": "person",
+   "Crystal Staff": "thing",
+   "Golem": "thing",
+   "Undead": "group",
+   "Imps": "group",
+   "Bats": "group",
+   "Ghosts": "group",
+   "Skeletons": "group",
+   "Watch": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gurt guards the door of Archmage Corvald's tower until the Archmage sends for the player.",
+   "names": {
+    "Gurt": "person",
+    "Corvald": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Gurt",
+     "text": "This here is the tower of Archmage Corvald! No visitors allowed, and that goes double for Imps. You're not an Imp, are you?"
+    },
+    "again": {
+     "speaker": "Gurt",
+     "text": "Like I said, this is the Archmage's tower. No visitors."
+    },
+    "later": {
+     "speaker": "Gurt",
+     "text": "The Archmage says you can go up now! The door's open. Well, don't just stand there, hurry!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, a nervous scholar, bargains with the player to clear the Bats out of his study; they roost in the old bell tower.",
+   "names": {
+    "Fennick": "person",
+    "Bats": "group",
+    "Malgrith": "person",
+    "Undead": "group",
+    "old bell tower": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Bats! There are Bats in my study again! As if Malgrith and his Undead weren't enough! I can't read a single page with them flapping around my candles. So here's my bargain. You get rid of the Bats, and I'll give you a token of my appreciation. Agreed?"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "I think they roost in the old bell tower. Please hurry, my books are a mess!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "No more Bats? Oh, thank goodness! Here, please take this as a token of my appreciation. Now maybe I can finally get some reading done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get rid of the Bats plaguing Fennick's study."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hulda, who brews the town's potions, lost her Crystal Staff to a pack of Imps that ran off to the Observatory west of town.",
+   "names": {
+    "Hulda": "person",
+    "Imps": "group",
+    "Crystal Staff": "thing",
+    "Malgrith": "person",
+    "Undead": "group",
+    "Observatory": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "So there I was, stirring the pot, minding my own business, when in through the window came a whole pack of screeching Imps, knocking over my jars and spilling everything and making the most awful racket you ever heard, and when they went out again they took my Crystal Staff with them, my good Crystal Staff, and I can't make a single potion without it, not one, and with Malgrith's Undead out on the hills this town needs potions more than ever! They ran off west of here, to the Observatory. Will you bring my Staff back to me?"
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Well! And here I thought you were the helpful sort."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Oh.... You haven't got it. Those horrible little Imps! Please, I need my Staff!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "My Crystal Staff! You found it! Bless you, bless you! Please take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "Thanks again, kind sir! The pots are bubbling again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hulda's Crystal Staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hulda's Crystal Staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion",
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Dobb frets about the Undead, Liss flirts, Wendt gives a tip about barrels.",
+   "names": {
+    "Dobb": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Undead": "group",
+    "Bone Hills": "place",
+    "Quorran": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dobb",
+     "text": "The Undead are out in the Bone Hills. That's what everybody says. What's going to happen to us?"
+    },
+    "rumour2": {
+     "speaker": "Liss",
+     "text": "My, my, a new face in Quorran! Don't run off too fast, handsome."
+    },
+    "rumour3": {
+     "speaker": "Wendt",
+     "text": "If you're short on potions, smash a few barrels. You'd be amazed what people leave in them."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodge keeps the inn, Brack the arms shop, Hulda the potion and scroll shop.",
+   "names": {
+    "Bodge": "person",
+    "Brack": "person",
+    "Hulda": "person",
+    "Academy": "place",
+    "Watch": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodge",
+     "text": "What?! Can't you see I'm busy? Ugh. Fine. A bed or a drink?"
+    },
+    "arms": {
+     "speaker": "Brack",
+     "text": "Welcome to Brack's Arms and Armor, Official Supplier to the Academy Watch. How may I serve you?"
+    },
+    "magic": {
+     "speaker": "Hulda",
+     "text": "Come in, come in! I can tell by the jingle you've got gold to spend. Have a look around!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Dean Mavrell wants the Ghosts driven from the old dormitory; Ollo charges twenty gold to fight his Golem in the dueling yard for a shield.",
+   "names": {
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Ghosts": "group",
+    "Golem": "thing",
+    "Academy": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Bone Hills": "place",
+    "Malgrith": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mavrell",
+     "text": "Disgrace! Disgrace upon the Academy! Ghosts walk the halls of the old dormitory!\n\nMy students cannot sleep for the wailing. They are sleeping in the library, on the floor, among the books! Never in all my years as Dean have I seen such a thing.\n\nIf you can drive those Ghosts out, I shall give you a token of my appreciation. The dormitory is east of here. Malgrith shall not have the Academy while I draw breath!"
+    },
+    "offer_b": {
+     "speaker": "Ollo",
+     "text": "Hey, you! Want some practice before you go off to the Bone Hills? Twenty gold and you can fight my Golem in the dueling yard. Knock him down and the shield on the wall is yours."
+    },
+    "outcome_a": {
+     "speaker": "Mavrell",
+     "text": "Can it be? The halls are quiet at last! The Academy is in your debt, brave Adventurer. Accept this as a token of my appreciation."
+    },
+    "outcome_b": {
+     "speaker": "Ollo",
+     "text": "Down he goes! Ha! Haven't seen that in a while. The shield's yours."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Drive the Ghosts out of the old dormitory for Dean Mavrell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Defeat Ollo's Golem in the dueling yard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Warden Haskel's scouts Tamsin and Rook are held by the Undead in the crypts beneath the old chapel; Tamsin has the key to Rook's cell.",
+   "names": {
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Undead": "group",
+    "Malgrith": "person",
+    "Bone Hills": "place",
+    "old chapel": "place",
+    "Watch": "group",
+    "Skeletons": "group",
+    "Corvald": "person",
+    "Quorran": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Haskel",
+     "text": "Calamity! Calamity! My scouts Tamsin and Rook are in the hands of the Undead!\n\nI sent them into the Bone Hills to watch Malgrith's servants, and they never came back. I fear they are held in the crypts beneath the old chapel. Even now, in that cold and dreadful place, they may be calling out for help that will never come!\n\nMy duty keeps me at this post. Will you go into the crypts and bring my brave scouts home?"
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "These are dark days for Quorran. Dark days indeed."
+    },
+    "found": {
+     "speaker": "Tamsin",
+     "text": "You came for us! Take this key. It opens Rook's cell. Hurry!"
+    },
+    "following": {
+     "speaker": "Tamsin",
+     "text": "Lead on!"
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "Tamsin! Rook! Alive and whole! This is a glad day for the Watch!\n\nTake this book. It contains all the Watch has learned about Skeletons. It may keep you alive out there. Now go see Archmage Corvald at once. He must hear what my scouts have seen."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Warden Haskel's scouts from the crypts beneath the old chapel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dobb points the player to Archmage Corvald, who gives him a staff and sends him north after Malgrith in the Bone Hills; Gammel the patron brought him here.",
+   "names": {
+    "Dobb": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Malgrith": "person",
+    "Undead": "group",
+    "Bone Hills": "place",
+    "Quorran": "place",
+    "Academy": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobb",
+     "text": "You must be the one Gammel sent! Archmage Corvald has been asking for you all morning. His tower is in the middle of town."
+    },
+    "opening": {
+     "speaker": "Corvald",
+     "text": "So Gammel got you here in one piece. Good! I need every sword and spell I can find, lad.\n\nMalgrith has raised the Undead in the Bone Hills, in a numerosity such as Quorran has never seen. Each night they creep closer to our walls!\n\nTake this staff. Go north into the Bone Hills, find Malgrith and put an end to him. The Academy is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Corvald",
+     "text": "Go, lad! The Undead are getting closer every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Malgrith in the Bone Hills and put an end to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

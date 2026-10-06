@@ -137,3 +137,27 @@ British and archaic flavour words (reeve, victualler, pilfered, splendid); every
 Westwood's are flat, functional, redundant, unhelpful, American-cartoonish, wired to the plot's mechanics (the Captain
 waits at the gate, take this key), with one speech too long and melodramatic. One judge noticed Westwood lines
 repeated between a control and a real packet (pools overlap): from i6 no judge gets two packets of one round.
+
+### i6: the plain pass (WRITER.md v6), card shapes without quoted instances; one packet a judge
+
+| scenario | metric ours / WW | blind acc | blind ours / WW |
+|---|---|---|---|
+| guard_bark | 9.63 / 9.69 | 100% | 6.2 / 8.2 |
+| bounty_offer | 9.21 / 9.62 | 100% | 5.6 / 8.2 |
+| heirloom_fetch | 9.26 / 9.62 | 100% | 5.4 / 8.2 |
+| rumour | 9.42 / 9.71 | 100% | 5.8 / 8.0 |
+| shop_greeting | 8.71 / 9.79 | 80% | 6.0 / 8.0 |
+| two_givers | 9.04 / 9.47 | 100% | 4.4 / 8.0 |
+| rescue | 9.12 / 9.46 | 100% | 6.4 / 8.2 |
+| main_opening | 9.36 / 9.59 | 100% | 5.6 / 8.4 |
+| town | 8.47 / 9.59 | 100% | 6.0 / 8.6 |
+| **all** | **9.14** | **98%** | **5.7 / 8.2** |
+
+The metric judge's best round (9.14; guard 9.63 against Westwood's 9.69) and no better for the blind judge: the
+first miss (one shop text, confidence 2) and lower scores. Every item of the plain pass was carried out by all ten
+writers and became the new template: an "Oh, one more thing" afterthought in every guard, a one-sentence run-on
+monologue as a set piece, "?!" and "Oh...." placed once each, "Deal?" / "What do you say?" endings, the same reward
+(100 gold, boots) in several towns. **An instruction to add a feature is followed uniformly, and uniformity is the
+tell**: Westwood's quirks fall unevenly, one chapter here, one line there. The tells otherwise repeat i5's: a persona
+and a joke for everyone, the town's gimmick in every mouth, sensory scene-setting, consequences over-explained,
+reminders restating atmosphere.

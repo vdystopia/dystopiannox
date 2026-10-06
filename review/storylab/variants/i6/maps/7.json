@@ -1,0 +1,321 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Tor Vessa",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "Grisla the Frost Witch and her Undead have taken the Kesh Tower at the top of the pass, and the pass is closed.",
+  "names": {
+   "Tor Vessa": "place",
+   "Kesh Tower": "place",
+   "Great Hall": "place",
+   "Upper Gate": "place",
+   "Frozen Boot": "place",
+   "Lord Kessick": "person",
+   "Marshal Tobrin": "person",
+   "Grisla the Frost Witch": "person",
+   "Brask": "person",
+   "Dobb": "person",
+   "Steward Ormund": "person",
+   "Wilda": "person",
+   "Fennick": "person",
+   "Master Vellis": "person",
+   "Fitch": "person",
+   "Rudd": "person",
+   "Haskel": "person",
+   "Brunna": "person",
+   "Ilsa": "person",
+   "Olm": "person",
+   "Petrik": "person",
+   "Amulet of Kesh": "thing",
+   "Skull of Varl": "thing",
+   "White Wolves": "group",
+   "Imps": "group",
+   "Undead": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brask, guard at the main gate of Tor Vessa, proud of the fort and Lord Kessick.",
+   "names": {
+    "Brask": "person",
+    "Tor Vessa": "place",
+    "Lord Kessick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "Welcome to Tor Vessa, stranger! No army has ever taken this fort, and none ever will while Lord Kessick holds the pass!"
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "Hmmm. Those boots won't last a week in this snow."
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "My mother wants me to come home and keep goats. Maybe I will."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Dobb, the fort's quartermaster, wants the White Wolves in the meat cellar killed and hands over the cellar key.",
+   "names": {
+    "Dobb": "person",
+    "White Wolves": "group",
+    "Lord Kessick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobb",
+     "text": "Ruined! Half the winter's meat, ruined! White Wolves got into the cellar under the kitchen and they won't come out! They bit my cook!\n\nHere, take this key. Get down there and kill every last one of them. And lock the door behind you!"
+    },
+    "reminder": {
+     "speaker": "Dobb",
+     "text": "Those mangy wolves are eating us out of house and home!"
+    },
+    "completion": {
+     "speaker": "Dobb",
+     "text": "Ha! That'll teach 'em! Here, this shield is yours. Now go see Lord Kessick, he's got bigger troubles than wolves."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the White Wolves in the cellar for Dobb."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Steward Ormund wants the Amulet of Kesh back from the Imps' nest on the crags; he pays with a pass through the Upper Gate.",
+   "names": {
+    "Steward Ormund": "person",
+    "Imps": "group",
+    "Amulet of Kesh": "thing",
+    "Upper Gate": "place",
+    "Tor Vessa": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Steward Ormund",
+     "text": "Ah! A capable soul, at last! A grievous crime has been committed against this fort. The Imps have stolen the Amulet of Kesh from my very chambers and carried it off to their nest on the crags north of here! Return it, and I shall grant you passage through the Upper Gate. Will you undertake this task?"
+    },
+    "refusal": {
+     "speaker": "Steward Ormund",
+     "text": "Then the Upper Gate shall remain closed to you. Good day."
+    },
+    "reminder": {
+     "speaker": "Steward Ormund",
+     "text": "Oh.... You do not have it. Please, make haste!"
+    },
+    "completion": {
+     "speaker": "Steward Ormund",
+     "text": "The Amulet of Kesh! Returned at last! Tor Vessa is in your debt. Here is your pass for the Upper Gate. Show it to the guards and they will let you through."
+    },
+    "after": {
+     "speaker": "Steward Ormund",
+     "text": "Thanks again, brave Adventurer. Tor Vessa will not forget you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Amulet of Kesh from the Imps' nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Amulet of Kesh from the Imps' nest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Ilsa teases, Olm brushes the player off, Petrik states the trouble plainly.",
+   "names": {
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Grisla the Frost Witch": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Ilsa",
+     "text": "Ooh! Are all the men down south as big as you?"
+    },
+    "rumour2": {
+     "speaker": "Olm",
+     "text": "Go away."
+    },
+    "rumour3": {
+     "speaker": "Petrik",
+     "text": "The dead walk on the pass at night. Grisla the Frost Witch calls them up out of the snow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Rudd of the Frozen Boot inn, Haskel the smith, Brunna who sells potions and makes coffins.",
+   "names": {
+    "Rudd": "person",
+    "Frozen Boot": "place",
+    "Haskel": "person",
+    "Brunna": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Rudd",
+     "text": "Welcome to the Frozen Boot! Warm yer bones by the fire, lad. The ale's colder'n a dead Troll's toes!"
+    },
+    "arms": {
+     "speaker": "Haskel",
+     "text": "What? You want a blade, buy a blade. I don't have all day."
+    },
+    "magic": {
+     "speaker": "Brunna",
+     "text": "Greetings, stranger. Potions and spell books are on the shelf. If you need a coffin, I make those too. Lots of folks do this winter."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Vellis bargains a spell for the Skull of Varl before Grisla gets it; Fitch sells a used Longsword cheap in the Frozen Boot.",
+   "names": {
+    "Master Vellis": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Skull of Varl": "thing",
+    "Tor Vessa": "place",
+    "Lord Kessick": "person",
+    "Great Hall": "place",
+    "Fitch": "person",
+    "Haskel": "person",
+    "Frozen Boot": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Vellis",
+     "text": "Hold, stranger! You are the one Marshal Tobrin sent, yes? Then hear me. Grisla the Frost Witch seeks the Skull of Varl, which lies in the crypt below the fort, and if she gets her hands on it every dead man on this mountain will rise and march on Tor Vessa and not one of us will live to see the spring! Bring me the Skull before she does, and I will teach you to Turn Undead. That is my bargain."
+    },
+    "offer_b": {
+     "speaker": "Fitch",
+     "text": "Hey, friend! Yes, you! Need a Longsword for the road? Barely used and still sharp! Only 60 gold. Haskel would charge you twice that."
+    },
+    "outcome_a": {
+     "speaker": "Master Vellis",
+     "text": "The Skull of Varl! You have done it! Grisla shall not have it now. As I promised, I will teach you to Turn Undead.\n\nNow go to Lord Kessick in the Great Hall. He must hear of this at once!"
+    },
+    "outcome_b": {
+     "speaker": "Fitch",
+     "text": "Sold! Best deal on the mountain, friend. Come back anytime."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the Skull of Varl from the crypt to Master Vellis."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the Longsword from Fitch at the Frozen Boot."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Wilda begs the player to bring home her husband Fennick, the winch-maker, trapped by the Undead in the mine east of the fort.",
+   "names": {
+    "Wilda": "person",
+    "Fennick": "person",
+    "Undead": "group",
+    "Lord Kessick": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wilda",
+     "text": "Greetings, kind sir! Oh, thank goodness, please you have to help me, my husband Fennick went up to the mine east of here to fix the winch and the Undead came down off the pass and now he's trapped in there and nobody will go up after him because they're all too scared and Lord Kessick says he can't spare a single man! If you bring Fennick home to me, I'll give you anything I have!"
+    },
+    "reminder": {
+     "speaker": "Wilda",
+     "text": "Please hurry! He's been up there so long!"
+    },
+    "found": {
+     "speaker": "Fennick",
+     "text": "Hello? Is somebody there? Get me out of here, please!"
+    },
+    "following": {
+     "speaker": "Fennick",
+     "text": "The lift at the back of the mine still works. I just fixed it! Pull the lever and it'll take us down."
+    },
+    "completion": {
+     "speaker": "Wilda",
+     "text": "Fennick! You brought him home! Thank you, thank you, kind sir! Please, take this spell book. It's full of weather spells. I can't make heads or tails of it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Fennick from the mine and bring him home to Wilda."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dobb points the newcomer to Lord Kessick, who tells of the Kesh Tower's fall to Grisla's Undead and sends the player up the pass with gold and potions.",
+   "names": {
+    "Dobb": "person",
+    "Lord Kessick": "person",
+    "Great Hall": "place",
+    "Marshal Tobrin": "person",
+    "Kesh Tower": "place",
+    "Grisla the Frost Witch": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobb",
+     "text": "You came up the pass alone?! Lord Kessick's been waiting on you. Great Hall, top of the stairs."
+    },
+    "opening": {
+     "speaker": "Lord Kessick",
+     "text": "So Marshal Tobrin sent you. Then you come at a black hour, lad. Last night the Kesh Tower fell. Grisla the Frost Witch came down out of the storm with an army of the Undead behind her, and my men in the tower fought until the last torch went out and then they rose up again and turned their swords on their own brothers and now they serve her!\n\nThe pass is closed. All the north is in peril while that wicked witch holds the Kesh Tower!\n\nTake this gold and these potions, and get restocked in town. Then go up to the Kesh Tower and destroy Grisla the Frost Witch. Go now, and may all that is great protect you!"
+    },
+    "reminder": {
+     "speaker": "Lord Kessick",
+     "text": "Why do you linger, lad? The Frost Witch grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go up to the Kesh Tower and destroy Grisla the Frost Witch."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  }
+ }
+}
