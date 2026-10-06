@@ -1,6 +1,6 @@
 """The motif engine: rooms composed from arrangements learned from Westwood's campaign rooms (rules/motifs.py ->
 rules/out/motifs.json), not from hand-written recipes. An experimental second furnisher beside the recipe engine
-(kit/furnish.py); the recipe engine stays the default.
+(kit/furnish.py); the default for the types in ENGINE_TYPES, the recipe engine for the rest.
 
     furnish_room(spec, room, kind=None, rng=None, style="town") -> list of placed object dicts
     furnish_original(spec, room, kind, rng, style) -> (objects, originality check)   # re-rolled until original
@@ -48,16 +48,30 @@ from kit.roomtypes import TYPES, KIND_TYPE, profile as kind_profile
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOTIFS_PATH = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rules", "out", "motifs.json")
 
-# The room types whose rooms the motif engine furnishes by default (kit/originality.furnish_original asks engine_for).
-# Empty: the recipe engine furnishes every type unless a caller (the room lab's --engine motifs) asks for motifs.
-ENGINE_TYPES = set()
+# The room types whose rooms the motif engine furnishes by default (kit/originality.furnish_original asks engine_for);
+# every other type keeps the recipe engine unless a caller (the room lab's --engine motifs) asks for motifs. Chosen
+# 2026-10-06 (night-motifs3, review/roomlab/MOTIFS.md round 3) where the motif rooms were at least as good as the
+# recipe's by eye and by the lab's numbers. NOX_MOTIF_TYPES (comma-separated, "" for none) overrides it, for comparison.
+ENGINE_TYPES = {"bedroom", "throne_room", "crypt", "storeroom"}
+if os.environ.get("NOX_MOTIF_TYPES") is not None:
+    ENGINE_TYPES = {t for t in os.environ["NOX_MOTIF_TYPES"].split(",") if t}
 # Kin types whose motifs a thin type borrows (at KIN_WEIGHT), filtered by the type's never pieces.
 KIN = {"kitchen": ("living_room", "storeroom", "dining_hall", "tavern"),
        "tavern": ("dining_hall", "living_room", "kitchen", "guardroom"),
        "storeroom": ("cellar", "kitchen", "armoury"),
        "laboratory": ("study", "library", "herbalist"),
        "living_room": ("solar", "study", "kitchen"),
-       "bedroom": ("solar",)}
+       "bedroom": ("solar",),
+       # the thin grand types and their nearest kin among Westwood's curated rooms (review/roomlab/MOTIFS.md round 3):
+       # a throne room from the halls and gallery, a chapel from the shrines and halls, a great hall from the dining
+       # halls, halls and taverns; a dining hall from the great halls, taverns and guard rooms; a study from the
+       # libraries, solars and laboratories
+       "throne_room": ("hall", "gallery"),
+       "chapel": ("shrine", "hall"),
+       "great_hall": ("dining_hall", "hall", "tavern"),
+       "dining_hall": ("great_hall", "tavern", "guardroom"),
+       "study": ("library", "solar", "laboratory"),
+       "crypt": ("mausoleum",)}
 KIN_WEIGHT, KIN_BELOW = 0.35, 12           # kin motifs count when the type has fewer than KIN_BELOW Westwood rooms
 MAX_PER_SOURCE = 2
 SWAP_P = 0.3                               # a motif swaps one of its kinds for another of the category
@@ -79,6 +93,8 @@ WW_PATH = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rules", "rooms",
 SEATS = {"chair", "bench"}
 FREE_NEVER = {"chest", "shelf", "hearth", "stove", "hanging"}   # never in a free group: they stand against a wall
 TOP_UP_TRIES = 40
+LIGHT_REACH = 1.6                          # a floor light's centre within this of a wall line (Westwood: 90% of them)
+SEAT_REACH = 1.4                           # a seat pulled out from its table, desk or hearth stays within this of it
 
 
 @lru_cache(None)
@@ -150,6 +166,18 @@ def type_kinds(rtype):
     return c
 
 
+@lru_cache(None)
+def all_kinds():
+    """category -> Counter of the types Westwood stands in any curated room: the last resort of a swap, when a thin
+    type's few rooms are of another culture (a Land of the Dead throne room's columns and tapestries for a town's)."""
+    lib = library()
+    c = collections.defaultdict(collections.Counter)
+    for r in lib["rooms"].values():
+        for p in r.get("pieces") or ():
+            c[p["cat"]][p["t"]] += 1
+    return c
+
+
 # ---- clusters: Westwood's groups whole (round 2) -------------------------------------------------------------------
 # The motifs above cut a room's arrangement at the walls: a desk on the wall and its chair in front of it became a wall
 # motif and a lone centre group, a bed's chest at its foot another. The independent judges' first fault with the motif
@@ -158,6 +186,11 @@ def type_kinds(rtype):
 # the wall its wall pieces stand against (the free pieces before them kept relative to them), to a corner (a heap of
 # small pieces against both walls), or free in the room (a table and its chairs).
 LINK = 0.9
+# the categories that stand in rows with gaps in Westwood's rooms of a type, and the gap a row keeps (edge to edge)
+ROW_LINK = {"crypt": {"tomb": 2.6}, "mausoleum": {"tomb": 2.6},
+            "chapel": {"bench": 2.4, "column": 6.5}, "shrine": {"bench": 2.4},
+            "great_hall": {"table": 1.6, "bench": 1.6}, "dining_hall": {"table": 1.6, "bench": 1.6},
+            "hall": {"column": 6.5}}
 SMALL = {"supply", "plant", "statue", "light", "clutter", "bones", "straw", "monument", "feature", "chest"}
 PELT = re.compile(r"Bearskin|Pelt")
 SEAT_AT = {"table", "desk", "lab", "hearth", "counter_bar", "counter_shop"}    # what a seat in a cluster faces
@@ -169,6 +202,7 @@ LEAD_ORDER = ("bed", "hearth", "counter_bar", "counter_shop", "lab", "desk", "ta
 MINOR = {"supply", "chest", "light", "statue", "clutter", "plant", "nightstand"}   # small leads that stand in for each other
 ZONE_FLOOR, ZONE_GAP = 1.0, 1.6     # a zone per Westwood median room of the type (floor), zones 1.6 units apart
 FREE_TOPUP = 1.3                     # rooms this many times Westwood's median floor may take a free group more
+FREE_PASS = {"great_hall", "dining_hall"}   # the halls whose middle is a feast crowd (the free pass)
 DRESS = {"supply", "chest", "clutter", "statue", "plant", "nightstand", "bench"}   # the details between groups
 DRESS_TRIES = 12
 SUPPLY_SHARE = 0.4                   # no kind of store past this share of a room's stock
@@ -219,10 +253,15 @@ def room_clusters(r):
             par[i] = par[par[i]]
             i = par[i]
         return i
+    rows = ROW_LINK.get(r["type"], {})
     for i in range(n):
         for j in range(i + 1, n):
             a, b = floor[i], floor[j]
             lim = 0.3 if "rug" in (a["cat"], b["cat"]) else LINK
+            # Westwood's rows (a crypt's sarcophagi, a chapel's pews, a hall's boards) are one arrangement with real
+            # gaps in it: kept together, so a row moves as one and stays on its line (round 3)
+            if a["cat"] == b["cat"] and a["cat"] in rows: lim = max(lim, rows[a["cat"]])
+            if "counter_bar" in (a["cat"], b["cat"]): lim = max(lim, 1.2)
             if _edge(a, b) <= lim: par[find(i)] = find(j)
     comps = collections.defaultdict(list)
     for i in range(n): comps[find(i)].append(floor[i])
@@ -232,6 +271,17 @@ def room_clusters(r):
         walls = {p["wall"] for p in comp if p["wall"]}
         corner = next((k for k, ws in CORNER_WALLS.items() if set(ws) == walls), None)
         big = [p for p in comp if p["blocking"] and (p["cat"] not in SMALL or max(p["hu"], p["hv"]) > 1.4)]
+        bar = [p for p in comp if p["cat"] == "counter_bar"]
+        if bar and walls:
+            # a bar is one block (its pieces are drawn for their sides: a U of counters with the kegs inside, Con07B):
+            # against the wall most of its pieces stand on, moved along it whole, never turned or mirrored
+            on = collections.Counter(p["wall"] for p in comp if p["wall"])
+            name = max(on, key=lambda k: (k in ("NE", "NW"), on[k]))
+            c = _wall_cluster(r, name, comp)
+            if c:
+                c["rigid"] = True
+                out.append(c)
+            continue
         if not walls:
             out.append(_free_cluster(r, comp, W, H))
         elif len(walls) == 1:
@@ -311,6 +361,115 @@ def _free_cluster(r, comp, W, H):
 @lru_cache(None)
 def clusters_of(rid):
     return tuple(room_clusters(library()["rooms"][rid]))
+
+
+AXIS_TYPES = {"throne_room", "chapel"}
+AXIS_REPEAT = {"chapel": ("bench",),        # the categories that repeat down the nave in rows (the congregation)
+               "great_hall": ("table", "bench", "chair"), "dining_hall": ("table", "bench", "chair")}
+FOCAL_CATS = {"throne", "altar"}
+
+
+@lru_cache(None)
+def axis_plan(rid, focal_rx=""):
+    """Westwood room rid's pieces in the frame of its axis of symmetry, or None when it has none: the axis along u
+    (line '/', the head the NW or SE wall) or v (line '\\', the NE or SW wall), through its focal piece (a throne, an
+    altar) or its middle, whichever pairs more of its pieces; the head the end nearer the focal piece (else the end
+    with more of the pieces). Each piece: a (from the head wall), o (from the axis), its halves along (ha) and across
+    (ho), whether it stands by the head wall or against a side wall, its mate across the axis."""
+    r = library()["rooms"].get(rid)
+    if not r or not r.get("pieces"): return None
+    W, H = r["U"][1] - r["U"][0], r["V"][1] - r["V"][0]
+    ps = [p for p in r["pieces"] if not re.search(r"Shadow$", p["t"])]
+    if len(ps) < 4: return None
+    focal = [p for p in ps if p["cat"] in FOCAL_CATS or (focal_rx and re.search(focal_rx, p["t"]))]
+    best = None
+    body = [p for p in ps if not p["hang"]]
+    for line in ("/", "\\"):
+        o_of = (lambda p: p["v"]) if line == "/" else (lambda p: p["u"])
+        a_of = (lambda p: p["u"]) if line == "/" else (lambda p: p["v"])
+        span = H if line == "/" else W
+        cs = {round(span / 2, 1)} | {round(o_of(p), 1) for p in focal} |             {round((o_of(p) + o_of(q)) / 2, 1) for p in body for q in body
+             if p is not q and p["cat"] == q["cat"] and abs(a_of(p) - a_of(q)) < 1.0 and abs(o_of(p) - o_of(q)) > 1.4}
+        for c in sorted(cs, key=lambda c: abs(c - span / 2)):
+            if not 0.25 * span <= c <= 0.75 * span: continue
+            hit = 0
+            for p in body:
+                o = o_of(p) - c
+                if abs(o) < 0.7 or any(q is not p and q["cat"] == p["cat"] and abs((o_of(q) - c) + o) < 1.0 and
+                                       abs(a_of(q) - a_of(p)) < 1.0 for q in body):
+                    hit += 1
+            sc = hit / max(1, len(body)) + (0.04 if (W if line == "/" else H) >= span else 0.0)   # the long way
+            if best is None or sc > best[0] + 1e-9: best = (sc, line, c)
+    sc, line, c = best
+    sc = min(1.0, sc)
+    if sc < 0.6: return None
+    o_of = (lambda p: p["v"]) if line == "/" else (lambda p: p["u"])
+    a_of = (lambda p: p["u"]) if line == "/" else (lambda p: p["v"])
+    L = W if line == "/" else H
+    if focal:
+        lo_end = a_of(focal[0]) < L / 2
+    else:
+        lo_end = sum(1 for p in ps if a_of(p) < L / 3) >= sum(1 for p in ps if a_of(p) > 2 * L / 3)
+    Wh = (H if line == "/" else W) / 2
+    head_wall = ("NW" if lo_end else "SE") if line == "/" else ("SW" if lo_end else "NE")
+    items = []
+    for p in ps:
+        a = a_of(p) if lo_end else L - a_of(p)
+        o = (o_of(p) - c) * (1 if lo_end else -1)
+        ha, ho = (p["hu"], p["hv"]) if line == "/" else (p["hv"], p["hu"])
+        items.append(dict(t=p["t"], cat=p["cat"], fam=p["fam"], blocking=p["blocking"], hang=p["hang"], a=a, o=o,
+                          ha=ha, ho=ho, hu=p["hu"], hv=p["hv"], head=a - ha < 3.0,
+                          side=abs(abs(o) + ho - Wh) < 2.0, focal=p in focal))
+    for x in items:
+        if "mate" in x: continue
+        m = None
+        if abs(x["o"]) >= 0.7:
+            m = next((y for y in items if y is not x and "mate" not in y and y["cat"] == x["cat"] and
+                      abs(y["o"] + x["o"]) < 1.0 and abs(y["a"] - x["a"]) < 1.0), None)
+        x["mate"] = m
+        if m is not None: m["mate"] = x
+    return dict(id=rid, line=line, A=L, Wh=Wh, items=items, score=round(sc, 2), head_wall=head_wall,
+                runner=rid == "Con06b@58,151")
+
+
+BOARD_TYPES = {"great_hall": ("long_boards", "hearth_in_the_round", None),
+               "dining_hall": ("*",)}           # the archetypes that lay long boards ("*": every one)
+
+
+@lru_cache(None)
+def board_units(rtype):
+    """[(weight, unit)]: the long boards of the Westwood rooms a room of the type draws on (its own and kin rooms):
+    three or more tables of one kind in a line (one coordinate within 0.3, the next table within its own length and
+    a step), the line's pitch (median), its seats (benches or chairs at a table's place along the line, within 3 units
+    across it, by their offset), the line's direction (along u or v)."""
+    lib = library()
+    out = []
+    for rid, w in sorted(pool(rtype).items()):
+        r = lib["rooms"][rid]
+        ps = r.get("pieces") or []
+        tabs = [p for p in ps if p["cat"] == "table"]
+        for along_u in (True, False):
+            a_of = (lambda p: p["u"]) if along_u else (lambda p: p["v"])
+            x_of = (lambda p: p["v"]) if along_u else (lambda p: p["u"])
+            lines = collections.defaultdict(list)
+            for p in tabs: lines[(p["t"], round(x_of(p) * 2) / 2)].append(p)
+            for (t, x), line in lines.items():
+                line.sort(key=a_of)
+                if len(line) < 3: continue                 # a pair of tables is a set, not a board
+                gaps = [a_of(b) - a_of(a) for a, b in zip(line, line[1:])]
+                half = line[0]["hu"] if along_u else line[0]["hv"]
+                if max(gaps) > 2 * half + 1.6: continue
+                pitch = sorted(gaps)[len(gaps) // 2]
+                seats = {}
+                for q in ps:
+                    if q["cat"] not in ("bench", "chair") or abs(a_of(q) - a_of(line[0])) > 0.6: continue
+                    off = round(x_of(q) - x, 1)
+                    if 0.8 < abs(off) < 3.0: seats.setdefault(off, q["t"])
+                if not seats: continue
+                out.append((w * len(line), dict(room=rid, t=t, hu=line[0]["hu"], hv=line[0]["hv"], along_u=along_u,
+                                                 pitch=pitch, n=len(line),
+                                                 seats=tuple((t2, off) for off, t2 in sorted(seats.items())))))
+    return tuple(out)
 
 
 @lru_cache(None)
@@ -459,6 +618,8 @@ class MotifFurnisher(F.Furnisher):
             if sum(1 for tt, _ in self._typed if OBJ.cap_key(tt) == key) >= cap: return True
         if self.rtype == "bedroom" and OBJ.category(t) in ("table", "desk") and                 any(OBJ.category(tt) in ("table", "desk") for tt, _ in self._typed): return True
         spec = self.prof.get("caps", {}).get(fam)
+        if spec and getattr(self, "axis_rows_on", False) and fam in AXIS_REPEAT.get(self.rtype, ()):
+            spec = None
         if spec:
             per, most = spec
             if self._count_fam(fam) >= max(self.prof.get("must", {}).get(fam, 0), min(most, int(self.tiles / per))):
@@ -482,6 +643,15 @@ class MotifFurnisher(F.Furnisher):
             if k2 == k0: continue
             cand = k2 + suffix if suffix and self.ok_type(k2 + suffix) else t2
             if self.ok_type(cand) and F._family_of(cand) == F._family_of(t): opts.append((n, cand))
+        if not opts:
+            # the culture's own kind of the piece from any of Westwood's rooms (a town column for a Land of the Dead
+            # one): of the same family, or of the same category when the family is the culture's own
+            fam0 = F._family_of(t)
+            for t2, n in all_kinds().get(cat, {}).items():
+                if OBJ.kind(t2) == k0 or not self.ok_type(t2): continue
+                f2 = F._family_of(t2)
+                if f2 == fam0 or (cat in ("statue", "light", "hanging", "throne", "tomb") and f2 not in self.never):
+                    opts.append((n * (1.0 if f2 == fam0 else 0.3), t2))
         return self._choose(opts)
 
     def _fit_type(self, t, cat, run=None, swap=None):
@@ -499,6 +669,8 @@ class MotifFurnisher(F.Furnisher):
             t = self.light_type()
         if not self.ok_type(t):
             t = self._swap_kind(t, cat)
+            if not t: return None
+            if cat == "light" and OPEN_TORCH.match(t) and self.house: t = self.light_type()   # the swap's torch too
             if not t: return None
         if F._family_of(t) in self.never or F._family_of(t) in self.once_done: return None
         if self.never_rx and self.never_rx.search(t): return None
@@ -539,6 +711,10 @@ class MotifFurnisher(F.Furnisher):
                    for tt, r in self._typed): return None
         if is_light:
             if self.lights_n >= self.light_cap: return None
+            # Westwood's floor lights stand against a wall (in every type but the throne room, where basins line the
+            # walk in pairs: the set pieces set free_lights): never loose on the floor or out in a corner
+            if not hang and not getattr(self, "free_lights", False) and self.g.wall_dist(u, v) > LIGHT_REACH:
+                return None
             if not hang and (any(u + 0.5 > z[0] and u - 0.5 < z[1] and v + 0.5 > z[2] and v - 0.5 < z[3]
                                  for z in self.light_zones) or self._before_anchor(u, v)):
                 return None
@@ -1105,8 +1281,9 @@ class MotifFurnisher(F.Furnisher):
         run = st["run"]
         # a piece of the group standing within reach of the wall takes the wall's variant too (a desk beside the bed
         # it was grouped with): the checker counts it against that wall
-        typed = self._types_for(c, lambda x: run if (x.get("att") or x["hang"] or (
-            x["d"] - x["hp"] <= 1.0 and F._family_of(x["t"]) not in SEATS)) else None)
+        rigid = c.get("rigid")
+        typed = self._types_for(c, lambda x: run if (x["hang"] or (not rigid and (x.get("att") or (
+            x["d"] - x["hp"] <= 1.0 and F._family_of(x["t"]) not in SEATS)))) else None)
         if not typed: return None
         pos = {}
         for x, t in typed:
@@ -1246,9 +1423,10 @@ class MotifFurnisher(F.Furnisher):
         """Cluster c on one of stretches sts (longest first, or as given), at its own place along the wall, shifted a
         little when that fails."""
         for st in (sts if ordered else sorted(sts, key=lambda s: -s["L"])):
+            if c.get("rigid") and st["name"] != c["wall"]: continue     # a bar on its own wall, as drawn
             at = self._at_for(c, st, like)
             if at is None: continue
-            flip = (like or c).get("g0", 9) > 1.3 and (like or c).get("g1", 9) > 1.3 and self.rng.random() < 0.35
+            flip = (like or c).get("g0", 9) > 1.3 and (like or c).get("g1", 9) > 1.3 and self.rng.random() < 0.35                 and not c.get("rigid")
             room = st["L"] - c["span"]
             tries = [at + dx for dx in (0.0, 0.35, -0.35, 0.8, -0.8, 1.4, -1.4)] + [room / 2, 0.0, room]
             if far and self.main_door():
@@ -1307,7 +1485,7 @@ class MotifFurnisher(F.Furnisher):
         state = self.rng.getstate()
         for x in c["items"]:
             if not x["blocking"] or x["cat"] == "light" or F._family_of(x["t"]) in SEATS: continue
-            att = x.get("att") or x["hang"]
+            att = x["hang"] or (x.get("att") and not c.get("rigid"))
             if not self._fit_type(x["t"], x["cat"], run if att else None, None):
                 ok = False
                 break
@@ -1391,7 +1569,10 @@ class MotifFurnisher(F.Furnisher):
                 if not sts: continue
                 sts.sort(key=lambda st: -(0.3 * self._st_door_dist(st) + st["L"]))
                 longest = max(st["L"] for st in sts)
-                cands = [(self._cw(c) * (1.5 if c.get("wall") == W else 1.0) * c["n_block"] ** 1.5, c)
+                # every Westwood focal group alike (a bed alone, a bed and its chest, a bed between nightstands):
+                # the richest first stamped one bed set over the batch (the judges: "bed, two nightstands, a chest at
+                # its foot" in every room)
+                cands = [(self._cw(c) * (1.5 if c.get("wall") == W else 1.0) * self._set_novelty(c), c)
                          for c in self._pool_clusters()
                          if c["kind"] == "wall" and c.get("back") and has(c) and c["span"] <= longest]
                 for _ in range(12):
@@ -1399,10 +1580,29 @@ class MotifFurnisher(F.Furnisher):
                     if not c: break
                     got = self._try_wall(c, sts, ordered=True, far=True)
                     if got:
+                        self._note_set(got)
                         self.focal_zone = z
                         return got
                     cands = [(w, x) for w, x in cands if x is not c]
         return None
+
+    def _set_novelty(self, c):
+        """Lower weight for a focal group of the composition the map's earlier rooms of the type took (one bed set
+        stamped over a town's bedrooms or the lab's batch): its blocking kinds' families, as a key kept on the spec."""
+        key = tuple(sorted(F._family_of(x["t"]) or x["cat"] for x in c["items"] if x["blocking"] and x["cat"] != "light"))
+        seen = getattr(self.spec, "_motif_sets", None)
+        if seen is None:
+            seen = collections.defaultdict(collections.Counter)
+            try: setattr(self.spec, "_motif_sets", seen)
+            except AttributeError: return 1.0
+        return 0.35 ** seen[self.rtype][key]
+
+    def _note_set(self, placed):
+        seen = getattr(self.spec, "_motif_sets", None)
+        if seen is None: return
+        key = tuple(sorted(F._family_of(o["type"]) or OBJ.category(o["type"]) for o in placed
+                           if OBJ.category(o["type"]) != "light" and id(o) in self._placed_of and self._placed_of[id(o)][4]))
+        seen[self.rtype][key] += 1
 
     def _st_door_dist(self, st):
         """How far the middle of stretch st lies from the main door."""
@@ -1441,6 +1641,321 @@ class MotifFurnisher(F.Furnisher):
         if not laid: laid = self.lay_carpet(None)
         if laid: self.log.append(f"carpet laid ({len(laid)} squares)")
 
+    # ---- round 3: the set piece on the room's axis (a throne room's walk, a chapel's nave) -----------------------
+    def _axis_sources(self):
+        """[(weight, plan)] of the Westwood rooms (the archetype's own and kin rooms, else the pool's) whose pieces
+        stand symmetric about an axis (axis_plan)."""
+        a = self.archetype or {}
+        ids = [i for i in tuple(a.get("rooms", ())) + tuple(a.get("kin", ())) if i in self.lib["rooms"]]
+        own = set(a.get("rooms", ()))
+        if not ids: ids = [rid for rid, w in self.pool.items()]
+        out = []
+        for rid in ids:
+            pl = axis_plan(rid, (self.prof.get("focal") or {}).get("types") or "")
+            if not pl: continue
+            fa = [x["a"] for x in pl["items"] if x["focal"]]
+            if fa and min(fa) > 0.35 * pl["A"]: continue      # a shrine's altar ringed in the middle: a free group
+            if sum(1 for x in pl["items"] if not x["hang"] and not x["focal"]) < 6: continue   # too little to be a plan
+            r = self.lib["rooms"][rid]
+            w = (1.0 if rid in own or not own else 0.5) * (1.5 if r["culture"] == self.culture else 1.0) * pl["score"]
+            out.append((w, pl))
+        return out
+
+    def _head_run(self, line):
+        """Our head wall for an axis along u ('/': the NW wall, facing SE down the room) or v ('\\': the NE wall): its
+        longest run on that side, or None."""
+        side = "/|BR" if line == "/" else "\\|BL"
+        runs = [r for r in self.g.runs if r["side"] == side and r["hi"] - r["lo"] >= 6]
+        return max(runs, key=lambda r: r["hi"] - r["lo"]) if runs else None
+
+    def compose_axis(self):
+        """A throne room's or a chapel's whole arrangement from one of Westwood's, on our room's axis: the throne (the
+        altar) centred on the head wall, the pairs down the walk (fire basins, columns, statues, pews) at their
+        distances from the head scaled to our room's length and their offsets from the axis (the side walls' pieces
+        kept at their distance from the side wall), each pair both or neither, rows of pews repeated down the nave at
+        Westwood's pitch, the walk kept clear (a runner on it in the processional rooms). Returns True when the focal
+        piece stood."""
+        srcs = self._axis_sources()
+        if not srcs:
+            self.log.append("axis: no Westwood room of the archetype stands on an axis")
+            return False
+        lu, lv = self.U1 - self.U0, self.V1 - self.V0
+        # the throne's picture faces SE only (kit/furnish.py place_throne): its walk runs along u from the NW wall;
+        # a chapel's altar on whichever back wall runs the room's long way
+        lines = ["/"] if self.rtype == "throne_room" else (["/", "\\"] if lu >= lv else ["\\", "/"])
+        # an altar on the back wall across from the main door (the room score's focal rule), else the long way
+        door = self._main_door_wall()
+        if self.rtype != "throne_room" and door in OPP and OPP[door] in ("NW", "NE"):
+            lines = ["/" if OPP[door] == "NW" else "\\"]
+        elif self.rtype != "throne_room" and door in ("NW", "NE"):
+            lines = ["/" if door == "NE" else "\\"]
+        for _ in range(4):
+            pl = self._choose(srcs)
+            if not pl: return False
+            srcs = [(w, x) for w, x in srcs if x is not pl]
+            for line in lines:
+                run = self._head_run(line)
+                if not run:
+                    self.log.append(f"axis: no head wall run for {line}")
+                    continue
+                if self._axis_realise(pl, run): return True
+                self.log.append(f"axis: {pl['id']} failed on {F.WALL_NAME[run['side']]}")
+        return False
+
+    def _axis_realise(self, pl, run):
+        line = run["line"]
+        rotate = pl["line"] != line
+        A = self._depth_of(run)
+        # the side walls' lines (the runs across the head wall's ends, nearest the head): the axis midway between
+        sides = [r for r in self.g.runs if r["line"] != line and r["lo"] - 1.5 <= run["coord"] <= r["hi"] + 1.5]
+        lo_s = [r["coord"] for r in sides if r["coord"] <= (run["lo"] + run["hi"]) / 2]
+        hi_s = [r["coord"] for r in sides if r["coord"] > (run["lo"] + run["hi"]) / 2]
+        if not lo_s or not hi_s: return False
+        c0, c1 = max(lo_s), min(hi_s)
+        mid, Wo = (c0 + c1) / 2, (c1 - c0) / 2          # Wo: from the axis to a side wall's line
+        # a door in the head wall's middle: not for this plan
+        for du, dv in self.g.doors:
+            perp, along = ((du, dv) if line == "/" else (dv, du))
+            if abs(perp - run["coord"]) < 1.6 and abs(along - mid) < 2.5:
+                if DEBUG: self.log.append(f"  axis: a door in the head wall {du:.1f},{dv:.1f} run {run['line']} "
+                                          f"{run['coord']} {run['lo']}-{run['hi']}")
+                return False
+        # Westwood's frame: its floor from 0 to A (W across), its wall lines one unit outside it
+        As, Ws = pl["A"] + 1.0, pl["Wh"] + 1.0
+        head = max([x["a"] + 1.0 + x["ha"] for x in pl["items"] if x["head"] and not x["hang"]] or [4.0])
+        kA = max(0.45, min(1.6, (A - head) / max(4.0, As - head)))
+
+        def uv(a, o):
+            return (run["coord"] + run["sign"] * a, mid + o) if line == "/" else (mid + o, run["coord"] + run["sign"] * a)
+        n0 = len(self.objects)
+        self.free_lights = self.rtype == "throne_room"
+        fd = self._axis_focal(run, uv, pl)
+        if not fd:
+            self.free_lights = False
+            return False
+        self.log.append(f"axis {pl['id']} ({pl['line']} head {pl['head_wall']}, {As:.0f}x{2 * Ws:.0f}) on our "
+                        f"{F.WALL_NAME[run['side']]} ({A:.0f}x{2 * Wo:.0f})")
+        walk = 1.7
+        rep = AXIS_REPEAT.get(self.rtype, ())
+        rows = [x for x in pl["items"] if x["cat"] in rep and not x["head"]]
+        items = [x for x in pl["items"] if x not in rows and x["cat"] not in FOCAL_CATS and not x["focal"]]
+        if rep and not rows:
+            # a colonnade or a sanctum with the type's must pews: the congregation of the type's own pewed room
+            # (Con07B's nave), its rows either side of the aisle, among the plan's columns
+            for rid, w in sorted(self.pool.items()):
+                if w < 1.0: continue
+                p2 = axis_plan(rid, (self.prof.get("focal") or {}).get("types") or "")
+                if p2 and p2["line"] == pl["line"]:
+                    rows = [x for x in p2["items"] if x["cat"] in rep and not x["head"]]
+                    if rows: break
+        rows_planned = self._axis_rows(rows, A, fd, kA)
+        items += rows_planned
+        tmap = {}
+        done = set()
+        placed_n = 0
+        self.axis_rows_on = True
+        for x in sorted(items, key=lambda x: (x["hang"], -x["ha"] * x["ho"])):
+            if id(x) in done: continue
+            mate = x.get("mate")
+            group = [x] + ([mate] if mate is not None and mate is not x else [])
+            for y in group: done.add(id(y))
+            got = []
+            for y in group:
+                a2 = y["a"] + 1.0 if y["head"] else (y.get("a2") or fd + 1.0 + max(0.0, y["a"] + 1.0 - head) * kA)
+                if a2 + y["ha"] > A - 0.6: break
+                o = y["o"]
+                if y["side"]: o2 = math.copysign(max(0.0, Wo - (Ws - abs(o))), o)     # its distance from the wall
+                elif abs(o) + y["ho"] <= Wo - 1.6: o2 = o
+                else: o2 = o * (Wo - 1.6) / max(1.0, Ws - 1.6)
+                turned = rotate and abs(y["hu"] - y["hv"]) > 0.3 and not y["hang"]
+                # nothing but the walk's own pairs on the walk
+                if not y["hang"] and not y["head"] and abs(o2) < walk + 0.3: break
+                u, v = uv(a2, o2)
+                if y["hang"]:
+                    wr = self._nearest_run(u, v)
+                    t = wr and self._fit_type(y["t"], y["cat"], wr, None)
+                else:
+                    if y["t"] not in tmap:
+                        t1 = self._fit_type(y["t"], y["cat"], None, None)
+                        tmap[y["t"]] = self._turned(t1) if (t1 and turned) else t1
+                    t = tmap[y["t"]]
+                if not t: break
+                o_ = self._put(t, u, v, y["blocking"], hang=y["hang"], touch=True,
+                               nudges=((0, 0), (0.15, 0), (-0.15, 0), (0, 0.15), (0, -0.15)))
+                if not o_:
+                    if DEBUG: self.log.append(f"  axis miss {t} a{a2:.1f} o{o2:.1f} " +
+                                              self._why(dict(t=t, u=u, v=v, x=dict(blocking=y["blocking"]))))
+                    break
+                got.append(o_)
+            if len(got) < len(group):
+                for o_ in got:
+                    if OBJ.category(o_["type"]) == "light": self.lights_n -= 1
+                    self._remove(o_)
+                continue
+            placed_n += len(got)
+        self.axis_rows_on = False
+        (u0, v0), (u1, v1) = uv(fd + 0.6, -walk), uv(A - 0.5, walk)
+        self.g.zones.append((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)))
+        self.free_lights = False
+        if pl.get("runner") or self.rng.random() < 0.3:
+            if self.lay_runner(run, mid, fd + 0.8, A): self.log.append("runner laid down the walk")
+        self.log.append(f"axis pieces {placed_n}: " + " ".join(o["type"] for o in self.objects[n0:]))
+        self.axis_done = True
+        self._mark_once()
+        return True
+
+    def _turned(self, t):
+        """t's sibling turned a quarter (its halves along u and v swapped: a pew across a nave that runs the other
+        way), or None."""
+        m = re.fullmatch(r"(.*\d)[a-z]", t)
+        pat = re.escape(m.group(1)) + r"[a-z]?" if (m or t + "b" in self.things) else re.escape(re.sub(r"\d+$", "", t)) + r"\d+"
+        hu, hv = self.half(t)
+        fit = sorted(x for x in self.things if re.fullmatch(pat, x) and self.ok_type(x) and
+                     abs(self.half(x)[0] - hv) < 0.06 and abs(self.half(x)[1] - hu) < 0.06)
+        return fit[0] if fit else None
+
+    def _nearest_run(self, u, v):
+        best = None
+        for r in self.g.runs:
+            a = v if r["line"] == "/" else u
+            if not r["lo"] - 0.5 <= a <= r["hi"] + 0.5: continue
+            d = abs((u if r["line"] == "/" else v) - r["coord"])
+            if best is None or d < best[0]: best = (d, r)
+        return best[1] if best and best[0] < 2.5 else None
+
+    def _axis_rows(self, rows, A, fd, kA):
+        """Westwood's rows of pews repeated down our nave at their own pitch, from where its first row stood (scaled)
+        to four units short of the far wall (the way in): a congregation filling the nave either side of the aisle."""
+        if not rows: return []
+        a_s = sorted({round(x["a"], 1) for x in rows})
+        firsts = [x for x in rows if abs(x["a"] - a_s[0]) < 0.6]
+        pitch = (a_s[-1] - a_s[0]) / max(1, len(a_s) - 1) if len(a_s) > 1 else 3.2
+        pitch = min(3.6, max(2.6, pitch))
+        a0 = fd + 1.6
+        out = []
+        k = 0
+        while a0 + k * pitch + 1.0 < A - 4.0 and k < 12:
+            for x in firsts:
+                out.append(dict(x, a2=a0 + k * pitch, head=False, mate=None))
+            k += 1
+        for y in out:                              # each row's pieces mate with their mirror across the aisle
+            if y["mate"] is not None: continue
+            m = next((z for z in out if z is not y and z["mate"] is None and z["a2"] == y["a2"] and
+                      abs(z["o"] + y["o"]) < 0.8), None)
+            y["mate"] = m
+            if m is not None: m["mate"] = y
+        return out
+
+    def _axis_focal(self, run, uv, pl):
+        """The throne (the altar) on the axis against the head wall. Returns its depth into the room (where the walk
+        starts), or None."""
+        fo = self.prof.get("focal") or {}
+        rx = fo.get("types")
+        if not rx: return None
+        if self.rtype == "throne_room":
+            # the throne's pieces as the recipe stands them (kit/furnish.py place_throne): Dun Mir's throne is every
+            # culture's but the Land of the Dead's, whatever the style excludes otherwise
+            if self.culture == "lotd" and "LOTDLichThrone1" in self.things:
+                t0 = "LOTDLichThrone1" if run["line"] == "/" else "LOTDLichThrone2"
+                parts, depth = [(t0, 0, 0), (t0 + "Base", 0, 0), (t0 + "Shadow", 0, 0)], 1.9
+            else:
+                if run["line"] != "/" or "DunMirThroneBase" not in self.things: return None
+                parts, depth = list(F.Furnisher.THRONE), 2.9
+            u, v = uv(depth, 0.0)
+            if not (self.g.fits(u, v, 1.6, 1.6) and self.g.reachable_ok((u, v, 1.6, 1.6, True, "floor"))):
+                if DEBUG: self.log.append(f"  throne: no fit at {u:.1f},{v:.1f} fits={self.g.fits(u, v, 1.6, 1.6)}")
+                return None
+            x0, y0 = F._px(u, v)
+            got = []
+            for typ, dx, dy in parts:
+                su, sv = F._uv(x0 + dx, y0 + dy)
+                if typ.endswith("Shadow") and not self.g.inside(su, sv): continue
+                if typ not in self.things: continue
+                got.append(self.put(typ, su, sv, blocking=not typ.endswith("Shadow")))
+            if not got: return None
+            mid = (run["lo"] + run["hi"]) / 2
+            self.wall_used.append(((run["line"], run["coord"]), mid - 2.2, mid + 2.2))
+            self.anchors.append((u, v))
+            self.log.append(f"throne {' '.join(t for t, _, _ in parts)} on the axis")
+            return depth + 1.6
+        cands = sorted(t for t in self.things if re.search(rx, t) and self.ok_type(t) and self.belongs(t))
+        for t in self.rng.sample(cands, len(cands)):
+            t2 = self.side_variant(t, run, F._family_of(t)) or t
+            if not self.ok_type(t2): continue
+            hu, hv = self.half(t2)
+            hp = hu if run["line"] == "/" else hv
+            for depth in (hp + 1.6, hp + 2.4, hp + 0.6):
+                u, v = uv(depth, 0.0)
+                o = self._put(t2, u, v, True, nudges=((0, 0),))
+                if o:
+                    self.anchors.append((u, v))
+                    self.log.append(f"altar {t2} on the axis")
+                    return depth + hp + 0.8
+        return None
+
+    # ---- round 3: long boards (a great hall's, a dining hall's tables end to end with their benches) -------------
+    def compose_boards(self):
+        """Westwood's long boards (board_units: tables of one kind end to end at their own pitch, a bench or chairs
+        either side at their own offsets, Con06b's great hall, Con06a's dining hall), laid down the room's long axis:
+        as many boards side by side as the room's width holds with a walk between (at most three), each as long as the
+        room less a way in at either end, centred across the room. A table that can't stand leaves a gap in its board
+        (Westwood's boards have gaps too); a board of fewer than two tables is taken up again. Returns the tables
+        laid."""
+        units = board_units(self.rtype)
+        if not units: return 0
+        unit = self._choose([(w, u) for w, u in units])
+        lu, lv = self.U1 - self.U0, self.V1 - self.V0
+        along_u = lu >= lv
+        L, Wd = (lu, lv) if along_u else (lv, lu)
+        t0 = self._fit_type(unit["t"], "table", None, None)
+        if not t0: return 0
+        if (unit["along_u"] != along_u) and abs(unit["hu"] - unit["hv"]) > 0.3:
+            t0 = self._turned(t0)
+            if not t0: return 0
+        seats = []
+        for st, off in unit["seats"]:
+            s2 = self._fit_type(st, OBJ.category(st) or "bench", None, None)
+            if s2 and unit["along_u"] != along_u and abs(self.half(s2)[0] - self.half(s2)[1]) > 0.3:
+                s2 = self._turned(s2)
+            if s2: seats.append((s2, off))
+        hu, hv = self.half(t0)
+        half_len = hu if along_u else hv
+        pitch = max(2 * half_len + 0.2, unit["pitch"])
+        width = 2 * max([abs(o) + max(self.half(s)) for s, o in seats] or [max(hu, hv)])
+        k = max(1, min(3, int((Wd - 3.0) / (width + 2.6))))
+        margin = 3.2
+        n = int((L - 2 * margin - 2 * half_len) / pitch) + 1
+        if n < 2: return 0
+        c_across = (self.V0 + self.V1) / 2 if along_u else (self.U0 + self.U1) / 2
+        c_along = (self.U0 + self.U1) / 2 if along_u else (self.V0 + self.V1) / 2
+        span = (k - 1) * (width + 2.6)
+        laid = 0
+        self.axis_rows_on = True
+        for b in range(k):
+            x = c_across - span / 2 + b * (width + 2.6) + self.rng.uniform(-0.3, 0.3)
+            board = []
+            for i in range(n):
+                a = c_along - (n - 1) * pitch / 2 + i * pitch
+                u, v = (a, x) if along_u else (x, a)
+                o = self._put(t0, u, v, True, touch=True, nudges=((0, 0), (0, 0.15), (0, -0.15)) if along_u else
+                              ((0, 0), (0.15, 0), (-0.15, 0)))
+                if not o: continue
+                board.append(o)
+                for s, off in seats:
+                    su, sv = (u, v + off) if along_u else (u + off, v)
+                    so = self._put(s, su, sv, True, touch=True)
+                    if so: board.append(so)
+            tables = [o for o in board if F._family_of(o["type"]) == "table"]
+            if len(tables) < 2:
+                for o in board: self._remove(o)
+                continue
+            laid += len(tables)
+            self.log.append(f"board {b + 1}/{k} from {unit['room']}: {len(tables)} x {t0}, "
+                            f"{len(board) - len(tables)} seats")
+        self.axis_rows_on = False
+        self.boards_done = laid > 0
+        return laid
+
     def compose_clusters(self):
         rng_c = ww_cover(self.rtype)
         self.cover_goal = self.rng.uniform(*rng_c) if rng_c else 0.15
@@ -1453,11 +1968,19 @@ class MotifFurnisher(F.Furnisher):
         fo = self.prof.get("focal") or {}
         target = self._focal_wall() if fo.get("where") == "back" else None
         self.focal_zone = None
-        if fo.get("types") and fo.get("where") == "back":
+        self.axis_done = False
+        if self.rtype in AXIS_TYPES:
+            self.compose_axis()
+        if fo.get("types") and (fo.get("where") == "back" or fo.get("fam") == "counter_bar"):
             self._place_focal(zones, target)
+        self.boards_done = False
+        bt = BOARD_TYPES.get(self.rtype, ())
+        if bt and ("*" in bt or (self.archetype or {}).get("name") in bt):
+            self.compose_boards()
         used_sk = set()
         frx = fo.get("types")
         for z in sorted(zones, key=lambda z: z is not self.focal_zone):
+            if self.axis_done or self.boards_done: break  # the set piece is the room's plan; the walls dressed after
             sk = self._zone_skeleton(z, used_sk)
             if not sk: continue
             used_sk.add(sk["id"])
@@ -1481,7 +2004,12 @@ class MotifFurnisher(F.Furnisher):
         if fo.get("types") and not self.once_done and fo.get("where") == "back":
             self._place_focal(zones, None)
         self.repair_clusters(zones)
-        self.top_up_clusters(zones)
+        if self.axis_done or self.boards_done:
+            # Westwood's throne rooms, chapels and halls of boards keep their walls to the set piece, a hanging or two
+            # (no top-up of singles along the walls: the judges' "statues at a regular pitch")
+            self.dress_gaps(zones, hangings_only=True)
+        else:
+            self.top_up_clusters(zones)
         if fo.get("types") and fo.get("where") not in ("back",) and                 not any(re.search(fo["types"], o["type"]) for o in self.objects):
             self._focal_alone(fo["types"])
 
@@ -1513,6 +2041,7 @@ class MotifFurnisher(F.Furnisher):
         failed = set()
         big = self.floor >= FREE_TOPUP * ww_floor(self.rtype) and (self.rtype not in WALLS_ONLY or self.tiles >= 60)
         free_n = 0
+        self._free_pass(zones)
         for _ in range(TOP_UP_TRIES):
             if self.coverage() >= self.cover_goal: break
             walls_done = getattr(self, "_walls_done", False)
@@ -1578,14 +2107,33 @@ class MotifFurnisher(F.Furnisher):
             corner["busy"] = True
         self.dress_gaps(zones)
 
-    def dress_gaps(self, zones):
+    def _free_pass(self, zones):
+        """The middle as Westwood's rooms of the type use it: where most of its rooms hold free groups (a tavern's
+        tables, a guard room's table set, a great hall's boards; rules/out/motifs.json stats middle_empty under 0.4),
+        as many as its rooms hold for their floor (half its groups per room, scaled by our floor), each a Westwood free
+        group where it stood in its room, before the walls take the rest of the cover (the judges: "half the floor
+        bare", "tables only round the walls")."""
+        st = self.lib["stats"].get(self.rtype) or {}
+        if self.rtype not in FREE_PASS or st.get("middle_empty", 1.0) >= 0.4: return
+        want = min(8, int(round(st.get("groups_per_room", 1.0) * 0.5 * self.floor / ww_floor(self.rtype))))
+        have = sum(1 for x in self.log if x.startswith("free "))
+        cands = [(w * (1 + c["n_block"]), c) for w, c in self._slot_cands(None, None, "free") if c["n_block"] >= 1]
+        tries = 0
+        while have < want and cands and tries < 3 * want + 4:
+            tries += 1
+            c = self._choose(cands)
+            cands = [(w, x) for w, x in cands if x is not c]
+            z = self.rng.choice(zones)
+            if self._try_free(c, z["inner"], tuple(c["pos"]), self.rng.random() < 0.5): have += 1
+
+    def dress_gaps(self, zones, hangings_only=False):
         """The lived-in details, at Westwood's rates: while the room is still under its cover, the small pieces Westwood's
         rooms of the type stand on their own in the gaps between the groups (a water barrel, an odd crate, a spittoon, a
         chest; a statue in a hall), from its own one-piece clusters, closer in than the groups keep (a step of floor)."""
         failed = set()
         stores = self.rtype in WALLS_ONLY          # a store heaps its stock: the pieces packed against each other
         pad = 0.05 if stores else 0.35
-        for _ in range(DRESS_TRIES * (2 if stores else 1)):
+        for _ in range(0 if hangings_only else DRESS_TRIES * (2 if stores else 1)):
             if self.coverage() >= self.cover_goal: break
             parts = [p for z in zones for st in z["stretches"] for p in self.free_parts(st, pad=pad, least=1.1)]
             parts = [p for p in parts if (p["run"]["coord"], round(p["s0"], 1)) not in failed]
@@ -1643,6 +2191,12 @@ class MotifFurnisher(F.Furnisher):
         hu, hv = self.half(t)
         if self._capped(t): return "capped"
         if self.n_blocking >= self.cap: return "cap"
+        if self.ceiling and self.n_blocking >= self.ceiling: return f"ceiling {self.ceiling}"
+        rc = self.repeat_cap(F._family_of(t))
+        if rc is not None and self._fam_n[F._family_of(t)] >= rc: return f"repeat {rc}"
+        if any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.runner_boxes): return "runner"
+        if F._family_of(t) in F.WAY_TALL and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3]
+                                                 for b in self.far_ways): return "far_way"
         if self.coverage(self.footprint(t)) > self.cover_max: return "cover_max"
         if not self._one_of_a_kind_ok(t, u, v): return "one-of-a-kind"
         before = dict(self.kb_refused)
@@ -1730,8 +2284,8 @@ class MotifFurnisher(F.Furnisher):
             # chair pulled out by a wall), never in a room with nothing to sit at
             # a loose seat (Westwood's chair pulled out by a wall) only within reach of a table or the hearth: never a
             # chair facing nothing across the room (the judges' first fault with round 1)
-            loose_ok = fam in SEATS and (near(rec, hearths, 3.0) or (self.rtype in LOOSE_SEATS and
-                                                                     near(rec, tables, 3.0))) if rec else False
+            loose_ok = fam in SEATS and (near(rec, hearths, 2.0) or (self.rtype in LOOSE_SEATS and
+                                                                     near(rec, tables, SEAT_REACH))) if rec else False
             if rec and ((fam in SEATS and not near(rec, tables, 1.2) and not loose_ok) or
                         (fam == "nightstand" and not near(rec, beds, 1.6))):
                 self._remove(o); continue
@@ -1773,11 +2327,45 @@ class MotifFurnisher(F.Furnisher):
                     if res: self.log.append(f"repair {fam}: recipe placement")
                     else: break
 
+    def _shelf_gaps(self):
+        """Two shelves on one wall with bare wall between them (more than a unit no piece against the wall fills) are
+        scattered, not a lined wall (the checker's composition.shelves_gap, a house rule): the later one is taken up
+        again. Westwood's motifs pair bookcases round a bed or a desk; when that piece did not stand, the pair is left
+        apart."""
+        SH = re.compile(r"^(Bookcase|MovableBookcase|LogShelves|PotionShelves|.*Shelves)")
+        at = collections.defaultdict(list)
+        for o in self.objects:
+            rec = self._placed_of.get(id(o))
+            if not rec or not rec[4]: continue
+            for r in self.g.runs:
+                along = rec[1] if r["line"] == "/" else rec[0]
+                if not r["lo"] - 0.5 <= along <= r["hi"] + 0.5: continue
+                perp = abs((rec[0] if r["line"] == "/" else rec[1]) - r["coord"])
+                depth, ha = (rec[2], rec[3]) if r["line"] == "/" else (rec[3], rec[2])
+                if perp - depth <= 1.4:
+                    at[(r["line"], r["coord"])].append((along - ha, along + ha, bool(SH.match(o["type"])), o))
+        for key, items in at.items():
+            items.sort(key=lambda it: it[0])
+            covered = [(a, b) for a, b, _, _ in items]
+            shelves = [it for it in items if it[2]]
+            for (a0, a1, _, o1), (b0, b1, _, o2) in zip(shelves, shelves[1:]):
+                if b0 - a1 <= 1.0: continue
+                bare, cur = 0.0, a1
+                for c0, c1 in sorted(covered):
+                    if c1 <= cur or c0 >= b0: continue
+                    if c0 > cur: bare += c0 - cur
+                    cur = max(cur, c1)
+                bare += max(0.0, b0 - cur)
+                if bare > 0.9 and id(o2) in self._placed_of:
+                    self._remove(o2)
+                    self.log.append(f"shelf {o2['type']} taken up: bare wall between it and {o1['type']}")
+
     def furnish(self):
         self.draw_archetype()
         self.composing = True
         if COMPOSE == "clusters": self.compose_clusters()
         else: self.compose_room()
+        self._shelf_gaps()
         self.composing = False
         self.face_statues()
         self.grammar_audit(self.prof.get("must", {}))

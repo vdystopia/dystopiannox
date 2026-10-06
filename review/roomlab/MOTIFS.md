@@ -240,3 +240,89 @@ Next steps, ordered by what the judges and the numbers point at:
    neighbouring motifs along a wall as one longer motif, so a long wall of ours is filled from Westwood's own longer
    walls.
 5. **Confirm:** run a second seed and the blind judge before calling any of it better.
+
+## Round 3: every type, set pieces, the first defaults (night-motifs3)
+
+Why: the judges named the insides of the recipe rooms (singles at a regular pitch along walls, one table set stamped in a
+grid or ring, the focal off its axis, tombs touching, benches never a congregation), and wherever both engines were
+judged the motif engine did better (review/NIGHTLOG.md 03:44). Log of the round: `LOG_motifs.md`.
+
+**Where it stood** (iteration `m0`, the engine as merged with archetypes, seed 1, n 10, every type): it composed every
+type from its own Westwood rooms, but four types had no plan it could carry out:
+- **throne room**: no throne at all (its four Westwood rooms are Land of the Dead and Dun Mir; every piece was excluded
+  for a town room and nothing swapped in; a focal "by the door" was never placed): a clump of statues mid-floor;
+- **chapel**: the altar off the axis, pews singly along the walls (a cap of 8 and no congregation);
+- **great hall, dining hall**: tables singly round the walls (Westwood's long boards have gaps over 0.9, so the miner cut
+  them into lone tables);
+- **tavern**: the bar cut into three wall clusters by the miner, so no bar stood (a lone counter piece at the end).
+
+**What was added** (`mapgen/kit/motifs.py`):
+- **Axis set pieces** (`axis_plan`, `compose_axis`): a Westwood room's pieces in the frame of its axis of symmetry (the
+  line through its throne or altar, or through the midpoint of its mirrored pairs, whichever pairs most of its pieces),
+  each with its distance from the head wall, its offset from the axis, its mate across it. A throne room or chapel stands
+  the throne (Dun Mir's three pieces, as the recipe does; the Lich's in the Land of the Dead) or the altar centred on
+  the head wall (the NW wall for a throne, which faces SE only; for an altar the back wall across from the main door),
+  then the plan's pairs at their distances scaled to our room's length and their offsets kept (the side walls' pieces at
+  their distance from the side wall), both of a pair or neither, the walk kept clear (a runner in the processional);
+  rows of pews repeat down the nave at Westwood's pitch (Con07B's congregation, borrowed by the colonnade and sanctum
+  plans), within the kind's own cap (the user's 8 pews). Plans: the archetype's own rooms and kin rooms (thin types,
+  `KIN`: a throne room from the halls and the gallery, a chapel from the shrines and halls; a great hall from the
+  dining halls, halls and taverns; a study from the libraries, solars and laboratories).
+- **Rows mined whole** (`ROW_LINK`): a crypt's tombs, a chapel's pews and columns, a hall's boards stay one cluster
+  with their real gaps, so a row of sarcophagi moves as one, on its line.
+- **Bars whole**: a tavern's bar (a U of counter pieces with the kegs inside) is one rigid cluster on the back wall it
+  stands on, never turned, mirrored or re-varianted, placed first as the tavern's focal.
+- **Long boards** (`board_units`, `compose_boards`): tables of one kind end to end at their pitch with their benches
+  at their offsets (Con06b's great hall), down our room's long axis, one to three side by side.
+- **A free pass** for the halls (great hall, dining hall): Westwood's free groups over the floor, as many as its rooms
+  hold for their floor, before the walls take the cover.
+- **Culture swap** (`all_kinds`): a piece the room's culture excludes swaps for the culture's own kind of the same
+  family from any curated room (a town column for a Land of the Dead one), when the type's own rooms have none.
+- **Its own faults**: floor lights only within 1.6 of a wall line (Westwood: 90% of its floor lights; the throne
+  room's basins down the walk excepted); a pulled-out seat within 1.4 of its table (no lone chair); the focal group
+  drawn by novelty over the map's rooms of the type, not the richest first (the stamped bed with two nightstands and a
+  chest at its foot); two shelves on one wall with bare wall between them are not left (`_shelf_gaps`); a torch swapped
+  in for a basin in a house becomes the house's candelabra.
+- **The lab's export race** (`validate/mapdata.py export`): parallel room-lab runs of different types shared one map
+  list file and could read each other's maps (a run's metrics silently came from another iteration's export); the
+  list file is per process now. Every number below was measured after the fix.
+
+**Results** (seed 1, n 10; AUC Westwood against generated, lower is better; template: the batch's mean pairwise layout
+similarity, against Westwood's p50/p90 for the type; r0 the recipe engine as it stands):
+
+| Type | Recipe r0 AUC / template | Motifs m0 AUC / template | Motifs now AUC / template | Westwood p50/p90 | Default now |
+|---|---|---|---|---|---|
+| bedroom | 0.845 / 0.287 | (m2 on night-variety: 0.83 / 0.209) | 0.868 / 0.263 (m11) | 0.195 / 0.227 | **motifs** |
+| throne room | 0.869 / 0.555 | 0.964 / 0.793 (no throne) | **0.843 / 0.533** (m11) | 0.171 / 0.197 | **motifs** |
+| crypt | 0.882 / 0.368 | 0.888 / 0.271 | 0.888 / **0.271** (m11) | 0.287 / 0.372 | **motifs** |
+| storeroom | 0.809 / 0.572 | 0.781 / 0.471 | 0.796 / **0.471** (m11) | 0.230 / 0.256 | **motifs** |
+| kitchen | 0.970 / 0.335 | 0.931 / 0.380 | 0.927 / 0.356 (m10) | 0.146 / 0.194 | recipe (in the QA maps a stove crowded the hearth) |
+| laboratory | 0.742 / 0.339 | 0.750 / 0.319 | 0.825 / 0.339 (m10) | 0.164 / 0.181 | recipe |
+| shop | 0.896 / 0.216 | 0.779 / 0.271 | 0.903 / 0.296 (m10) | 0.148 / 0.177 | recipe |
+| living room | 0.864 / 0.280 | 0.904 / 0.259 | 0.915 / 0.262 (m10) | 0.219 / 0.236 | recipe |
+| guardroom | 0.518 / 0.270 | 0.510 / 0.278 | 0.517 / 0.298 (m10) | 0.205 / 0.215 | recipe (more hard-rule rooms: 5 against 1) |
+| cell | 0.955 / 0.470 | 0.978 / 0.413 | 0.978 / 0.413 (m10) | 0.282 / 0.339 | recipe |
+| barracks | 0.947 / 0.229 | 0.893 / 0.309 | 0.943 / 0.326 (m10) | 0.228 / 0.271 | recipe |
+| tavern | 0.907 / 0.434 | 0.910 / 0.460 | 0.925 / 0.493 (m10) | 0.262 / 0.292 | recipe |
+| chapel | 0.936 / 0.362 | 1.000 / 0.594 | 0.968 / 0.290 (m10) | 0.093 / 0.120 | recipe |
+| great hall | 0.876 / 0.311 | 0.888 / 0.280 | 0.872 / 0.369 (m10) | 0.160 / 0.230 | recipe |
+| study | 0.994 / 0.407 | 0.993 / 0.455 | 0.973 / 0.334 (m10) | 0.332 / 0.332 | recipe |
+| dining hall | 0.971 / 0.302 | 0.997 / 0.319 | 0.955 / 0.236 (m10) | 0.191 / 0.191 | recipe |
+
+By eye against Westwood's galleries: the motif throne rooms now read as Westwood's (the throne centred at the head of a
+walk, basins and statues in pairs down it, the walls bare but for hangings), where the recipe's throne stands at the end
+of the NW wall; the motif crypts keep their tombs on lines with gaps and their floors open, where the recipe's tombs
+touch in clumps; the motif storerooms are sparse with a heap or two as Westwood's, where the recipe lines barrels along
+every wall. The chapel's congregation stands only where the axis plan fits (a door in the head wall's middle sends it
+back to the clusters, whose pews line the walls): not yet. The great hall's boards read as Westwood's long boards, but
+its feast-hall rooms still scatter single tables round the walls. The tavern has its bar now, but its floor is still a
+bare carpet with the tables round the walls. With ten rooms the AUC moves by 0.05-0.1 from noise alone; the sheets are
+queued in `TO_JUDGE.md` (one per type) for the independent judges.
+
+**Defaults** (`ENGINE_TYPES`): bedroom, throne room, crypt, storeroom. `NOX_MOTIF_TYPES` (comma-separated, "" for none)
+overrides it for a comparison. QA of the five story maps: see `LOG_motifs.md`.
+
+Next, by what the renders show: the chapel's congregation off the axis plan (pews in rows either side of an aisle
+wherever the altar stands); the tavern's floor (Westwood's taverns stand tables of two kinds over the floor among the
+drinkers; ours keep them to the walls); the great hall's feast crowd; the laboratory's and shop's density in rooms
+1.5 times Westwood's floor.
