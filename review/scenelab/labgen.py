@@ -117,6 +117,19 @@ def plan_context(ctx):
         if not p.town: continue
         sx, sy = p.notes.get("scene_sq") or p.scene_c
         got = 0
+        if ctx["scene"] == "pond_dock" and p.pond:
+            # the fisher's hut on the bank beside his dock's landing (Con03A: the hut a few steps from the dock's root)
+            (pci, pcj), pr = p.pond
+            ux, uy = p.toward[0] - pci, p.toward[1] - pcj
+            L = math.hypot(ux, uy) or 1
+            ux, uy = ux / L, uy / L
+            for sd in (1, -1):
+                at = (pci + ux * (pr + 3.5) - uy * sd * 4.5, pcj + uy * (pr + 3.5) + ux * sd * 4.5)
+                h = recipes._house(ctx, p, "fisher", at, quiet=True)
+                if h:
+                    got += 1
+                    ctx.setdefault("context_houses", []).append(h)
+                    break
         base = math.atan2(sy - p.c[1], sx - p.c[0]) if (sx, sy) != tuple(p.c) else math.atan2(-p.dir[1], -p.dir[0])
         for q in range(8):
             if got >= 2 + (p.size == "large"): break
@@ -125,7 +138,6 @@ def plan_context(ctx):
             at = (p.c[0] + R * math.cos(a), p.c[1] + R * math.sin(a))
             if math.hypot(at[0] - sx, at[1] - sy) < 7: continue
             role = CONTEXT_ROLES[(p.k + q) % len(CONTEXT_ROLES)]
-            if ctx["scene"] == "pond_dock" and not got: role = "fisher"      # the fisher's hut by his docks (Con05A)
             h = recipes._house(ctx, p, role, at, quiet=True)
             if h:
                 got += 1

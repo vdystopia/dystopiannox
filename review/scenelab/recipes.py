@@ -195,7 +195,9 @@ def _garden_build(ctx):
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
 POND_R = {"small": 6.0, "typical": 7.0, "large": 8.0}       # tiles: a lake a dock reaches out into (Con05A)
-LAKE_R = {"small": 10.0, "typical": 11.0, "large": 12.0}    # a town's lakeshore: the lake on one side, the hamlet on the other
+LAKE_R = {"small": 11.0, "typical": 13.0, "large": 14.0}    # a town's lakeshore: the lake on one side, the hamlet on the other
+DOCKS = {"small": 1, "typical": 2, "large": 3}              # docks to a lake (Con05A: three along its town's shore)
+FISHERS = (("Con03A", "Kenneth"), ("Con07B", "Dorian"))
 
 
 def _pond_plan(ctx):
@@ -229,7 +231,31 @@ def _pond_build(ctx):
             p.notes.update(anchor=_mean(pcs), kit=dock["kind"])
             du, dv = dock["start"]
             land.connect(m, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23))
-            _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 3)      # a bank to reach it, no pines
+            # a bank to reach it with no tree on it (the blind judge, 2026-10-06: "the root jammed against the tree line")
+            _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 5)
+            # more docks along the town's shore (Con05A: three), each its own landing and walk
+            (pci, pcj), _ = p.pond
+            n_more = DOCKS[p.size] - 1 if p.town else 0
+            for q in range(n_more):
+                d2 = ww.dock(body, "best", length=2 if p.rng.random() < 0.6 else 1, beyond=3,
+                             near=(du + (14 + 6 * q) * (1 if q % 2 == 0 else -1), dv + (10 + 4 * q) * (1 if q % 2 else -1)))
+                if not d2: continue
+                eu, ev = d2["start"]
+                land.connect(m, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23))
+                _keep(ctx, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23), 5)
+            # a fisher at work on the first dock's landing, looking out over the water
+            x_, y_ = (du + dv) / 2 * 23, (du - dv) / 2 * 23
+            tip = (pcs[0]["x"], pcs[0]["y"])
+            L_ = math.hypot(tip[0] - x_, tip[1] - y_) or 1
+            if p.town and p.rng.random() < 0.8:
+                near_ = [(o["x"], o["y"]) for o in m.d["objects"] if "type" in o and abs(o["x"] - x_) < 200 and
+                         abs(o["y"] - y_) < 200 and not o["type"].startswith("Dock")]
+                ex_, ey_ = (tip[0] - x_) / L_, (tip[1] - y_) / L_
+                for f_, g_ in ((30, 26), (30, -26), (10, 40), (10, -40), (50, 0), (-20, 40), (-20, -40)):
+                    fx_, fy_ = x_ + ex_ * f_ + ey_ * g_, y_ + ey_ * f_ - ex_ * g_
+                    if all(math.hypot(fx_ - a, fy_ - b) >= 30 for a, b in near_):   # never on a fern or a barrel
+                        _person(ctx, FISHERS[p.k % len(FISHERS)], fx_, fy_, tip, f"Fisher{p.k}")
+                        break
         else:
             ctx["log"](f"  plot {p.k + 1}: no room for the dock")
             (ci, cj), _ = p.pond

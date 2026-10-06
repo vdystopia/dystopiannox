@@ -289,3 +289,17 @@ SW-9), its pieces close together (closest gaps 52 px against 89). By eye the yar
 paved walk, crypts of several builds and a man at work. Queued: r5-small. Thornwick, Greywatch, Ambermere,
 Starwell, Harrowby: 0 errors; Harrowby's and Starwell's warnings back to the night's start once the small yard was
 lightened.
+
+### pond_dock: a lived-in shore (mapgen/kit/water.py `_dock_gear`, `_shore_start`; the lab's lake)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| (r4-shore) | the kit as merged, last round | 0.64 | 0 |
+| r1-lakeside | the bank's composition one of four (store, the fishers' fire, a rock with ferns, almost bare); the lab: a bigger town lake (11-14 tiles), two or three docks on it (Con05A), a fisher at the first landing | 0.615 | 0 |
+| r2-hut | the fisher's hut on the bank beside the first landing (Con03A); ferns along the bank | 0.44 | 0 |
+| r3-bank | `_shore_start` prefers a landing with land five tiles behind it; no fern on a piece | 0.515 | 0 |
+| r4-fisher | the fisher stands clear of the gear (he had stood on a fern) | 0.56 | 0 |
+
+AUC at or under 0.6 from r2 (4 Westwood docks: noise). By eye: docks in twos and threes along a lake, ferns and a
+rock on the bank, a fire or a barrel knot, the fisher at his landing. Ambermere and DysVale: 0 errors, no dock or
+exterior warning. Queued: r4-fisher.

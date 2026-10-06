@@ -62,3 +62,20 @@ The short DockUp in a small forest pond; Westwood's docks are long runs into a b
 
 - No reed within three tiles of a dock's lane; the bank's gear only where the ground a step round it is land too; 2-4
   barrels, the rock 75%, bones 40%.
+
+## Round 4 (2026-10-06, a lived-in shore)
+
+The independent judge on r4-shore (9/9, 5.6 / 7.8): "a formula: two touching barrels by the root and one or two at the
+tip, identical in two variants; the root jammed against the tree line; a lone dock into a small dark pond with no path,
+hut or fisher". Westwood: Con05A's three docks along its town's shore, its bank thick with ferns, bones by a rock;
+Con03A's dock a few steps from the fisher's hut, the fisher on the bank, a cold fire.
+
+- **The bank's composition varies** (`_dock_gear`, its own generator): a store (barrels in a knot, a crate: 40%), the
+  fishers' fire (a CampFire ringed by stones 90-150 px back, a stool now and then, one or two barrels: 20%), a rock
+  with ferns at its foot (30%), almost bare (one or two barrels: 10%); ferns along the bank either side of the landing
+  in most (never on a piece).
+- **A landing with a bank behind it**: `_shore_start` prefers a root with land five tiles back (the judge: "the root
+  jammed against the tree line").
+- **The lab**: a town lake 11-14 tiles; two docks on a typical lake and three on a large one (Con05A), each with its
+  walk; the fisher's hut on the bank beside the first landing (Con03A); the fisher standing at the landing, clear of the
+  gear, looking out (80%).
