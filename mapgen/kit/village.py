@@ -29,11 +29,24 @@ class Village:
         return s in L.squares and s not in L.roads and s not in L.plaza and s not in L.water and \
             s not in L.taken and s not in self.used
 
-    def garden(self, building, size=(4, 3), crop=None, fence="IronFence"):
-        """A fenced crop plot beside the building, on the side away from its entrance."""
+    def garden(self, building, size=(4, 3), crop=None, fence="auto", _grow=True):
+        """A household's vegetable garden beside the building, on the side away from its entrance, laid as Westwood
+        lays its gardens (the scene lab, review/scenelab: Con05A, Con07B, Con09a, Wiz01A, Wiz03b): two or three beds
+        side by side (on grass, or dug earth now and then), a different crop in each (corn, tomatoes, cabbage), two rows to a bed, the plants about
+        20 px apart; a strip of grass between the beds to walk; the water barrel at a path's end, now and then a spade
+        left in the ground; most unfenced, a few behind a low wooden fence (Dilapidated, Wiz01A's) with a gap for the gardener. Every plant stands
+        clear of a fence's line (Ambermere playtest, 2026-10-05: "the northeast stretch of fence overlaps with the row
+        of crops"). crop: one crop for every bed (a flower bed); fence: "auto" (a wooden fence now and then), a fence
+        material, or None."""
+        import zlib, random as _random
         L, rng = self.land, self.rng
         foot = {L_sq for L_sq in _squares_of(building.footprint)}
         if not foot: return False
+        if _grow and crop is None:                    # Westwood's gardens run larger: a size up first, where it fits
+            import copy
+            st = rng.getstate()
+            if self.garden(building, (size[0] + 1, size[1] + 1), crop, fence, _grow=False): return True
+            rng.setstate(st)
         i0, i1 = min(i for i, _ in foot), max(i for i, _ in foot)
         j0, j1 = min(j for _, j in foot), max(j for _, j in foot)
         w, h = size
@@ -41,7 +54,10 @@ class Village:
                  (i0, j1 + 3), (i1 - w + 1, j1 + 3), (i0, j0 - 2 - h), (i1 - w + 1, j0 - 2 - h)]
         rng.shuffle(cands)
         # then anywhere along the four sides, a little further out (a bigger building fills its corners)
-        more = [(i1 + d, j) for d in (3, 4, 5) for j in range(j0 - h, j1 + 2)] +                [(i0 - 1 - w - d + 1, j) for d in (2, 3, 4) for j in range(j0 - h, j1 + 2)] +                [(i, j1 + d) for d in (3, 4, 5) for i in range(i0 - w, i1 + 2)] +                [(i, j0 - 1 - h - d + 1) for d in (2, 3, 4) for i in range(i0 - w, i1 + 2)]
+        more = [(i1 + d, j) for d in (3, 4, 5) for j in range(j0 - h, j1 + 2)] + \
+               [(i0 - 1 - w - d + 1, j) for d in (2, 3, 4) for j in range(j0 - h, j1 + 2)] + \
+               [(i, j1 + d) for d in (3, 4, 5) for i in range(i0 - w, i1 + 2)] + \
+               [(i, j0 - 1 - h - d + 1) for d in (2, 3, 4) for i in range(i0 - w, i1 + 2)]
         rng.shuffle(more)
         cands += [c for c in more if c not in cands]
         # the squares the building's own margin took are free for its garden (never its walls or others')
@@ -53,34 +69,65 @@ class Village:
             plot = {(gi + a, gj + b) for a in range(w) for b in range(h)}
             ring = {(gi + a, gj + b) for a in range(-1, w + 1) for b in range(-1, h + 1)}
             if not all(clear(s) for s in ring): continue
-            crop = crop or rng.choice(CROPS)
-            for s in plot:
-                self.spec.floor[square_tile(*s)] = "DirtDark2"
-            # the crop in rows centred inside the fence, a walkable strip between the outer rows and the fence on every
-            # side (Ambermere playtest, 2026-10-05: "the northeast stretch of fence overlaps with the row of crops ...
-            # this fence is literally on top of this row of plants"). The fence's points (p, q) are drawn at square
-            # coordinates (p, q - 0.5) (kit/yards Yard.centre), so the fenced ground runs gi..gi + w across i and
-            # gj - 1.5..gj + h - 1.5 across j; the rows had been laid on the squares' middles, the last under the fence.
-            from kit.yards import _spread
-            from kit.spacing import off_walls
-            fence_cells = {point_cell(p, q) for p in range(gi, gi + w + 1) for q in range(gj - 1, gj + h)
-                           if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)}
-            walls = dict(self.spec.wallmap); walls.update({c: {} for c in fence_cells})
-            for sj in _spread(gj - 1.5 + 0.8, gj + h - 1.5 - 0.8, 1.0):
-                for si in _spread(gi + 0.65, gi + w - 0.65, 0.42):
-                    x, y = square_px(si, sj)
-                    if off_walls(walls, crop, x, y, margin=6): self.spec.obj_px(crop, x, y)
-            # fence on the wall points around the plot, with a gap for the gardener
+            one = crop
+            crop = crop or rng.choice(CROPS)          # (the design's generator draws as it always has)
             pts = [(p, q) for p in range(gi, gi + w + 1) for q in range(gj - 1, gj + h)
                    if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)]
             gap = rng.choice([p for p in pts if p[0] == gi + w // 2 or p[1] == gj - 1 + h // 2] or pts)
-            for p in pts:
-                if p == gap or not fence: continue
-                x, y = point_cell(*p)
-                if (x, y) not in self.spec.wallmap: self.spec.wall(x, y, fence)
+            own_rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden:{gi},{gj}".encode()))
+            if fence == "auto": fence = "Dilapidated" if own_rng.random() < 0.3 else None    # Wiz01A's garden fence
+            from kit.spacing import off_walls
+            fence_cells = {point_cell(p, q) for p, q in pts} if fence else set()
+            walls = dict(self.spec.wallmap); walls.update({c: {} for c in fence_cells})
+            # the beds: every other row of squares across the plot's short side, a strip of grass between; the plants
+            # in two rows along each bed (the fence's points (p, q) are drawn at square coordinates (p, q - 0.5), so
+            # the fenced ground runs gi..gi + w across i and gj - 1.5..gj + h - 1.5 across j: kit/yards Yard.centre)
+            long_i = w >= h
+            n_long, n_short = (w, h) if long_i else (h, w)
+            beds = list(range(0, n_short, 2)) if n_short > 2 else list(range(n_short))     # narrow: a row to a bed
+            rows = (0.3, 0.7) if n_short > 2 else (0.5,)
+            dug = own_rng.random() < 0.4              # Westwood's beds are dug earth now and then, mostly grass
+            kinds = [one] * len(beds) if one else ([crop] + own_rng.sample([c for c in CROPS if c != crop], 2))[:len(beds)]
+            laid = 0
+            for k, kind in zip(beds, kinds):
+                for s_ in range(n_long if dug else 0):
+                    sq = (gi + s_, gj + k) if long_i else (gi + k, gj + s_)
+                    self.spec.floor[square_tile(*sq)] = "DirtDark2"
+                start, end = 0.42, n_long - 0.42
+                n = max(2, int((end - start) / 0.62) + 1)
+                for row in rows:
+                    for q in range(n):
+                        a = start + (end - start) * q / (n - 1) + own_rng.uniform(-0.04, 0.04)
+                        si, sj = (gi + a, gj - 1.5 + k + row) if long_i else (gi + k + row, gj - 1.5 + a)
+                        x, y = square_px(si, sj)
+                        if not fence or off_walls(walls, kind, x, y, margin=6):
+                            self.spec.obj_px(kind, x, y); laid += 1
+            # the water barrel at a path's end, a spade left in the ground at the other
+            path = beds[0] + 1 if n_short > 2 else None
+            if path is not None and path < n_short:
+                ends = [(0.35, "WaterBarrel", 0.7), (n_long - 0.35, "MiningShovelInGround", 0.4)]
+                if own_rng.random() < 0.5: ends = [(n_long - 0.35, "WaterBarrel", 0.7), (0.35, "MiningShovelInGround", 0.4)]
+                for a, t, p in ends:
+                    if own_rng.random() >= p: continue
+                    si, sj = (gi + a, gj - 1.5 + path + 0.5) if long_i else (gi + path + 0.5, gj - 1.5 + a)
+                    x, y = square_px(si, sj)
+                    if not fence or off_walls(walls, t, x, y, margin=6): self.spec.obj_px(t, x, y)
+            if own_rng.random() < 0.4:                 # a patch of flowers at a bed's end (Con09a, Wiz01A)
+                si, sj = (gi + n_long - 0.3, gj - 1.5 + beds[-1] + 0.5) if long_i else (gi + beds[-1] + 0.5, gj - 1.5 + n_long - 0.3)
+                x, y = square_px(si, sj)
+                if not fence or off_walls(walls, "FlowersWhiteSparse", x, y, margin=6):
+                    self.spec.obj_px(own_rng.choice(("FlowersWhiteSparse", "FlowersYellowSparse", "FlowersPurpleSparse")), x, y)
+            if fence:                                # a low fence round it, a gap for the gardener
+                for p in pts:
+                    if p == gap: continue
+                    x, y = point_cell(*p)
+                    if (x, y) not in self.spec.wallmap: self.spec.wall(x, y, fence)
             self.used |= ring
             L.taken |= ring
-            return True
+            return laid > 0
+        if w * h > 6:                                 # no room at that size: a smaller garden, down to 3 x 2
+            return self.garden(building, (max(3, w - 1), max(2, h - 1)) if w >= h else (max(2, w - 1), max(3, h - 1)),
+                               crop=crop, fence=fence, _grow=False)
         return False
 
     def _entrance(self, building):

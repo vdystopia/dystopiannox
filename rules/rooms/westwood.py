@@ -73,41 +73,6 @@ HAND = [
 ]
 
 
-# Rooms the contents classify wrongly, read by eye from the room lab's gallery (tuneA, 2026-10-05; an independent blind
-# judge found "Westwood bedrooms" and "living rooms" that were cells, guard posts and a dais hall): (map, centre) ->
-# (type, what it is). "other" drops the room from every type.
-RETYPE = {
-    ("War07A", (174, 236)): ("cell", "a stone cell with two cots and a torch by the bars (a cell's evidence room)"),
-    ("Wiz06a", (136, 196)): ("guardroom", "two cots, a chest and the watch's table of food with chairs"),
-    ("Con03A", (80, 98)): ("guardroom", "a guard's cubby by the barred door: a cot and a Dun Mir chest"),
-    ("Con03A", (164, 60)): ("guardroom", "a palisade hut: a cot, two tables with chairs, barrels"),
-    ("Con07F", (196, 198)): ("other", "a dais hall with an inlaid floor; its bed and nightstand stand hidden by a front wall"),
-    ("Con07D", (134, 63)): ("solar", "the lord's chamber: bed, hearth, twelve bookcases, tables (solar evidence)"),
-    ("Con06b", (116, 182)): ("solar", "a Dun Mir lord's chamber (solar evidence)"),
-    ("Con06b", (91, 158)): ("solar", "a lord's chamber of 196 tiles with columns and a long table (solar evidence)"),
-    ("Wiz03b", (78, 85)): ("solar", "the green chamber: bed, hearth, bookcases, ten tapestries (solar evidence)"),
-    ("Wiz06a", (84, 151)): ("guardroom", "a dungeon guard post: round table, chairs, chest, a barred door"),
-    ("Wiz06a", (210, 180)): ("guardroom", "a dungeon guard post: round table, barrels, a barred door"),
-    ("Con06b", (104, 79)): ("guardroom", "a guard post by the cells: round table, chairs, barrels, barred gates"),
-    ("Con03A", (142, 223)): ("guardroom", "an 8-tile post by a barred door: a table of food and two chairs"),
-    ("Con03A", (152, 213)): ("guardroom", "an 8-tile post by a barred door: a table and two chairs"),
-    ("Con09a", (54, 126)): ("other", "a palisade pen with a chest, a table and meat: an ogres' shack"),
-    # the guardroom's and the cell's evidence rooms (kit/roomtypes.py evidence), which the contents had filed as armouries
-    # and barracks (an armoury with cots and a table of food; a cell of straw and a cot)
-    ("Con03A", (110, 112)): ("guardroom", "the watch room: two cots, the table of food with chairs, swords hung, chests"),
-    ("Con06a", (69, 199)): ("guardroom", "the watch's tables with chairs and benches, shields and swords hung, barrels"),
-    ("Con06b", (179, 71)): ("guardroom", "a table ringed by six chairs under hanging shields, a barrel"),
-    ("Con03A", (81, 83)): ("guardroom", "two cots on straw, Dun Mir chests, a barrel: the watch's bunks"),
-    ("Con02a", (93, 175)): ("guardroom", "the gaoler's: a table under racked pole arms, swords, a crossbow and bows"),
-    ("War07A", (160, 230)): ("cell", "a cell: straw strewn round a cot"),
-    ("War07A", (164, 226)): ("cell", "a cell: straw strewn round a cot"),
-    ("Con11a", (174, 44)): ("cell", "the ogres' pen: straw"),
-    ("Con11a", (166, 52)): ("cell", "the ogres' pen: straw, a crude obelisk"),
-    ("Con11a", (194, 80)): ("cell", "the ogres' pen: straw, a crude obelisk"),
-    ("Con11a", (182, 36)): ("cell", "the ogres' pen: straw, a barrel, a crude obelisk"),
-}
-
-
 def hand_rooms(name, m):
     out = []
     for mp, cell, typ, why in HAND:
@@ -154,18 +119,17 @@ def main():
         found = [r for rs in pool.map(one, maps) for r in rs]
     # the three campaigns share most layouts: a room met again (the same floor at the same place) counts once, even
     # when a class's copy differs by a piece or two (Galava's temple has a stray alchemist's desk in Con07B and Wiz02A)
-    # the rooms read by eye (RETYPE), wherever the same layout is met again (the campaigns share most maps' rooms)
-    retag = {(r["tiles"], tuple(r["centre"])): RETYPE[(r["map"], tuple(r["centre"]))] for r in found
-             if (r["map"], tuple(r["centre"])) in RETYPE and not r["by_hand"]}
-    for r in found:
-        k = (r["tiles"], tuple(r["centre"]))
-        if k in retag and not r["by_hand"]: r["type"], r["by_hand"] = retag[k]
-    found = [r for r in found if r["type"] != "other"]
     seen, rooms = set(), []
     for r in found:
         key = (r["tiles"], tuple(r["centre"]))
         if key in seen: continue
         seen.add(key); rooms.append(r)
+    # the verdicts by eye (rules/rooms/curated.json): the true type of a misfiled room; passages, cave pockets, yards,
+    # set pieces and other campaigns' copies left out
+    sys.path.insert(0, HERE)
+    import curated
+    excluded = []
+    rooms = curated.apply(rooms, excluded)
     by = collections.defaultdict(list)
     for r in rooms: by[r["type"]].append(r)
     types = {}
@@ -188,10 +152,16 @@ def main():
                         best=[dict(map=r["map"], centre=r["centre"], tiles=r["tiles"], types=r["types"], cover=r["cover"],
                                    open=r["open"], culture=r["culture"]) for r in best])
     index = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], culture=r["culture"],
+                  **({"classed": r["classed"]} if r.get("classed") else {}),
                   **({"by_hand": r["by_hand"]} if r["by_hand"] else {})) for r in sorted(rooms, key=lambda r: (r["type"], r["map"]))]
+    gone = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], why=r["why"])
+            for r in sorted(excluded, key=lambda r: (r["type"], r["map"]))]
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(dict(rooms=len(rooms), maps="campaign (Con/War/Wiz), each room once", types=types, index=index), f, indent=1)
-    print(f"{len(rooms)} rooms")
+        json.dump(dict(rooms=len(rooms), maps="campaign (Con/War/Wiz), each room once",
+                       curated="rules/rooms/curated.json: retyped by eye where misfiled (classed: the classifier's "
+                               "type); excluded: not rooms to learn from", types=types, index=index, excluded=gone),
+                  f, indent=1)
+    print(f"{len(rooms)} rooms ({len(excluded)} excluded by rules/rooms/curated.json)")
     print(f"{'type':14} {'n':>4} {'maps':>4}  tiles p50  cover p10-p50-p90   open p10-p50-p90   per_tile p50  types p50  most p50/p90")
     for t, d in types.items():
         print(f"{t:14} {d['n']:4} {d['maps']:4}  {d['tiles']['p50']:6}   {d['cover']['p10']:.2f}-{d['cover']['p50']:.2f}-{d['cover']['p90']:.2f}"

@@ -1,0 +1,1180 @@
+{
+ "doc": "Westwood's campaign rooms (rules/rooms/westwood.json's index) judged by eye, each room's render looked at type by type (2026-10-05). Keyed by <map>@<x>,<y> (the room's centre in the index). keep: it is the type it is filed as; retype: its true type; exclude: not a room to learn from (a passage, a cave pocket, an outdoor yard, a story set piece, an unfurnished room, or another campaign's copy of a room already counted). filed: the classifier's type when judged. Applied by rules/rooms/curated.py (westwood.py and the room lab).",
+ "rooms": {
+  "Con02a@93,175": {
+   "filed": "armoury",
+   "retype": "guardroom",
+   "why": "the village gaol's guard room: a table with the guard at it, a bow rack, pole arms and swords on the walls, jail doors"
+  },
+  "Con03A@110,112": {
+   "filed": "armoury",
+   "retype": "guardroom",
+   "why": "a guard room as the brief has it: two cots with chests, the round table with food, swords and a trophy on the walls, swordsman and archer"
+  },
+  "Con05A@48,66": {
+   "filed": "armoury",
+   "retype": "barracks",
+   "why": "four beds in a row along one wall, a bow rack and pole arms, a round table with chairs"
+  },
+  "Con06a@69,199": {
+   "filed": "armoury",
+   "retype": "guardroom",
+   "why": "the keep's guard room: a long table with benches and a round table, shields and swords hung on the walls, barrels and a chest; no racks"
+  },
+  "Con06b@160,48": {
+   "filed": "armoury",
+   "retype": "barracks",
+   "why": "six cots in a row with chests, tables on two rugs, swords and crossed arms hung: the keep's barracks"
+  },
+  "Con06b@169,63": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "a 476-tile ring corridor round a moat and a statue, with spike-block traps and levers: a passage and a puzzle"
+  },
+  "Con06b@179,71": {
+   "filed": "armoury",
+   "retype": "guardroom",
+   "why": "a guard room: a table with chairs on a rug, shields and banners on the walls, a barrel; no racks"
+  },
+  "Con06b@185,65": {
+   "filed": "armoury",
+   "keep": true,
+   "why": "looked at: reads as a armoury"
+  },
+  "Con06b@202,62": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "a passage: an L-shaped corridor with shields and banners hung along it"
+  },
+  "Con06b@98,158": {
+   "filed": "armoury",
+   "keep": true,
+   "why": "looked at: reads as a armoury"
+  },
+  "Con07D@145,51": {
+   "filed": "armoury",
+   "keep": true,
+   "why": "looked at: reads as a armoury"
+  },
+  "Con07D@148,62": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "78 tiles mostly bare: a carpet, two pole-arm racks and a desk, the ogre warlord and his brutes (a fight set piece)"
+  },
+  "War03a@111,113": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "duplicate of Con03A@110,112 (the same guard room, the warrior's copy with a great cask added)"
+  },
+  "War03b@95,173": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "duplicate of Con02a@93,175 (the gaol's guard room, the warrior's copy)"
+  },
+  "War07A@146,233": {
+   "filed": "armoury",
+   "keep": true,
+   "why": "looked at: reads as a armoury"
+  },
+  "Wiz06c@163,93": {
+   "filed": "armoury",
+   "exclude": true,
+   "why": "a passage: cross-shaped corridors with banners and shields hung (Con06b@163,93's layout)"
+  },
+  "Con03A@81,83": {
+   "filed": "barracks",
+   "retype": "guardroom",
+   "why": "a guard post: two cots with chests, straw, a barrel, the archer (the guardroom brief's example)"
+  },
+  "Con05C@122,91": {
+   "filed": "barracks",
+   "keep": true,
+   "why": "looked at: reads as a barracks"
+  },
+  "Con05C@140,109": {
+   "filed": "barracks",
+   "keep": true,
+   "why": "looked at: reads as a barracks"
+  },
+  "Con06b@106,192": {
+   "filed": "barracks",
+   "keep": true,
+   "why": "looked at: reads as a barracks"
+  },
+  "Con09c@50,210": {
+   "filed": "barracks",
+   "keep": true,
+   "why": "looked at: reads as a barracks"
+  },
+  "Con09c@62,206": {
+   "filed": "barracks",
+   "keep": true,
+   "why": "looked at: reads as a barracks"
+  },
+  "Con11a@166,52": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: straw heaps and the stocks behind a jail door, rough stone walls"
+  },
+  "Con11a@174,44": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: straw heaps and the stocks behind a jail door, cobwebs"
+  },
+  "Con11a@182,36": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: one great straw heap and a barrel behind a jail door"
+  },
+  "Con11a@194,80": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: straw heaps and the stocks behind a jail door"
+  },
+  "Con11a@202,72": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: a straw heap and a bench behind a jail door"
+  },
+  "Con11a@210,64": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "an ogre pen: straw heaps and a stool behind a jail door"
+  },
+  "Con11a@62,173": {
+   "filed": "barracks",
+   "exclude": true,
+   "why": "the ogres' stockade: 297 tiles of palisaded yard round a hut, mostly outdoors; not a room"
+  },
+  "War02A@140,138": {
+   "filed": "barracks",
+   "exclude": true,
+   "why": "123 tiles of bare floor with straw heaps and a few barrels, a floor lever: unfurnished"
+  },
+  "War07A@160,230": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "a gaol cell: a cot, straw, a prisoner, a jail door"
+  },
+  "War07A@164,226": {
+   "filed": "barracks",
+   "retype": "cell",
+   "why": "a gaol cell: a cot and straw behind a jail door"
+  },
+  "Con02a@214,42": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con02a@68,156": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con02a@74,98": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con02a@76,174": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con02a@78,126": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con02a@80,94": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con03A@164,60": {
+   "filed": "bedroom",
+   "retype": "guardroom",
+   "why": "a palisade watch hut: a cot, two tables with chairs, barrels; no bedside things"
+  },
+  "Con03A@80,98": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "a near-bare log hut: one cot and a chest by a barred window, a guard standing; too sparse to teach a bedroom"
+  },
+  "Con03B@132,98": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con05A@83,51": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con06b@116,182": {
+   "filed": "bedroom",
+   "retype": "solar",
+   "why": "a Dun Mir chamber in two ends: two beds at one end, a long table with benches, a pool, bookcases, chests and a desk at the other"
+  },
+  "Con06b@149,60": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con06b@85,218": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con06b@91,158": {
+   "filed": "bedroom",
+   "retype": "solar",
+   "why": "L-shaped lord's chamber of 196 tiles: the bed end with columns and rug, a pool and statues, a long table with benches at the other end"
+  },
+  "Con06b@92,211": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con06b@97,200": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@113,203": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@134,219": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "62 tiles of bare stone floor with a bed, desk and bookcase in one corner: mostly unfurnished"
+  },
+  "Con07B@173,213": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@36,34": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@38,28": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@40,38": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@46,36": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@92,224": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07B@97,219": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07D@125,86": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07D@134,63": {
+   "filed": "bedroom",
+   "retype": "solar",
+   "why": "a long chamber in two ends: the bed in an alcove, the hearth centred between bookcases with tables and chairs before it"
+  },
+  "Con07D@137,75": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07E@183,119": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "Con07F@196,198": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "a story set piece: the teleport pentagram room with demons; one bed and a bookcase in a corner"
+  },
+  "Con09a@135,41": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "War06b@149,60": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "duplicate of Con06b@149,60 (the same Dun Mir bedroom; the warrior's copy is cut 3 tiles smaller)"
+  },
+  "War07A@122,199": {
+   "filed": "bedroom",
+   "keep": true,
+   "why": "looked at: reads as a bedroom"
+  },
+  "War07A@174,236": {
+   "filed": "bedroom",
+   "retype": "cell",
+   "why": "a barred cell: a cot behind a jail door on cobbles, nothing else"
+  },
+  "War07A@70,128": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "duplicate of Con07B@36,34 (Galava's castle, the warrior's copy)"
+  },
+  "War07A@72,122": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "duplicate of Con07B@38,28 (Galava's castle, the warrior's copy)"
+  },
+  "War07A@74,132": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "duplicate of Con07B@40,38 (Galava's castle, the warrior's copy)"
+  },
+  "War07A@80,130": {
+   "filed": "bedroom",
+   "exclude": true,
+   "why": "duplicate of Con07B@46,36 (Galava's castle, the warrior's copy)"
+  },
+  "Wiz03b@78,85": {
+   "filed": "bedroom",
+   "retype": "solar",
+   "why": "a 98-tile household room: the hearth, an oval table with chairs on a carpet, a second carpet, tapestries, bookcases; one cot by the wall: the lord's chamber of two ends (the solar brief's example)"
+  },
+  "Wiz06a@136,196": {
+   "filed": "bedroom",
+   "retype": "guardroom",
+   "why": "a palisade watch hut: two cots, a table with food and chairs, a chest and key"
+  },
+  "Con07B@143,201": {
+   "filed": "chapel",
+   "keep": true,
+   "why": "looked at: reads as a chapel"
+  },
+  "Con04a@100,130": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@112,146": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@128,136": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@136,150": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@138,118": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@138,97": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@148,127": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04a@150,108": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04b@142,44": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con04c@194,152": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "Con07B@169,176": {
+   "filed": "crypt",
+   "exclude": true,
+   "why": "Galava's graveyard: an outdoor yard of tombstones, trees and bushes inside an iron fence; not a room"
+  },
+  "War03b@224,105": {
+   "filed": "crypt",
+   "exclude": true,
+   "why": "an outdoor graveyard of 400 tiles: rows of tombstones and dead trees inside a wall; not a room"
+  },
+  "War03c@100,229": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@73,224": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@74,214": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@79,208": {
+   "filed": "crypt",
+   "exclude": true,
+   "why": "an outdoor graveyard of 647 tiles: tombstones, dead trees and grass along walled paths; not a room"
+  },
+  "War03c@80,98": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@83,223": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@85,203": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@94,112": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@94,212": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03c@95,202": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@52,214": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@52,223": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@58,209": {
+   "filed": "crypt",
+   "exclude": true,
+   "why": "an outdoor graveyard of 674 tiles: tombstones and tree trunks along walled paths; not a room"
+  },
+  "War03d@62,222": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@64,202": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@74,201": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War03d@74,210": {
+   "filed": "crypt",
+   "keep": true,
+   "why": "looked at: reads as a crypt"
+  },
+  "War07A@170,175": {
+   "filed": "crypt",
+   "exclude": true,
+   "why": "duplicate of Con07B@169,176 (Galava's graveyard, the warrior's copy; outdoors in any case)"
+  },
+  "Con05C@139,92": {
+   "filed": "dining_hall",
+   "keep": true,
+   "why": "looked at: reads as a dining hall"
+  },
+  "Con06a@81,211": {
+   "filed": "dining_hall",
+   "keep": true,
+   "why": "looked at: reads as a dining hall"
+  },
+  "Wiz05A@48,24": {
+   "filed": "dining_hall",
+   "retype": "tavern",
+   "why": "the tavern's seating room: round tables with stools and chairs, the bar's tankards along the wall"
+  },
+  "Con06b@186,38": {
+   "filed": "great_hall",
+   "keep": true,
+   "why": "looked at: reads as a great hall"
+  },
+  "Con07E@173,104": {
+   "filed": "great_hall",
+   "keep": true,
+   "why": "looked at: reads as a great hall"
+  },
+  "Con04a@148,55": {
+   "filed": "hall",
+   "retype": "mausoleum",
+   "why": "a statue tomb: monuments and statues in the corners, sarcophagi against two walls, crypt chests, the lift pit"
+  },
+  "Con04a@230,88": {
+   "filed": "hall",
+   "retype": "mausoleum",
+   "why": "a statue tomb: monuments and statues round a sarcophagus, a crypt chest, the lift pit"
+  },
+  "Con04c@220,108": {
+   "filed": "hall",
+   "retype": "mausoleum",
+   "why": "a statue tomb: seven columns, monuments and statues round a sarcophagus, chests"
+  },
+  "Con04c@75,78": {
+   "filed": "hall",
+   "keep": true,
+   "why": "looked at: reads as a hall"
+  },
+  "Con05A@68,153": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "duplicate of Con04a@148,55 (the same statue tomb, Con05A's copy with the lift)"
+  },
+  "Con06b@98,180": {
+   "filed": "hall",
+   "keep": true,
+   "why": "looked at: reads as a hall"
+  },
+  "Con07B@150,198": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "a walled garden open to the sky round the chapel: grass, trees, plants and two columns; not a room"
+  },
+  "Con07B@153,226": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "a cave pocket: a dirt floor with cave rocks, a rock pillar, a plant and gold"
+  },
+  "Con07D@118,78": {
+   "filed": "hall",
+   "retype": "shrine",
+   "why": "four obelisks round a holy thing on a carpet, candelabras along the walls, a chest"
+  },
+  "Con07E@172,104": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "a passage: a ring corridor round a void, star charts and tapestries hung along it"
+  },
+  "Con10c@114,195": {
+   "filed": "hall",
+   "retype": "mausoleum",
+   "why": "the Land of the Dead's tomb hall: one great tomb in the middle between four blue flames, mana obelisks in the corners"
+  },
+  "Con10c@125,45": {
+   "filed": "hall",
+   "keep": true,
+   "why": "looked at: reads as a hall"
+  },
+  "War06b@169,63": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "duplicate of Con06b@169,63 (the ring corridor round the moat; a passage and a puzzle in any case)"
+  },
+  "War07A@151,197": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "duplicate of Con07B@150,198 (the walled garden, outdoors in any case)"
+  },
+  "War07A@158,224": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "duplicate of Con07B@153,226 (the cave pocket)"
+  },
+  "War11a@123,129": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "a story set piece: Hecubah's arena, a lava moat and fences round teleport pentagrams and pressure plates"
+  },
+  "Wiz07C@168,57": {
+   "filed": "hall",
+   "exclude": true,
+   "why": "a story set piece: a lava channel round a pit, spikes and skeletons, a few candelabras"
+  },
+  "Con07D@111,85": {
+   "filed": "herbalist",
+   "keep": true,
+   "why": "looked at: reads as a herbalist"
+  },
+  "Con09a@136,49": {
+   "filed": "herbalist",
+   "keep": true,
+   "why": "looked at: reads as a herbalist"
+  },
+  "Con02a@100,118": {
+   "filed": "kitchen",
+   "retype": "living_room",
+   "why": "a one-room cottage (the dwelling variant): a stove in the corner, a round table with chairs on a rug, a bed, chests, bookcases; no provisions or work table"
+  },
+  "Con02a@220,48": {
+   "filed": "kitchen",
+   "retype": "study",
+   "why": "a desk among bookcases on two walls, a carpet, one stove in the corner: a scholar's study"
+  },
+  "Con02a@57,149": {
+   "filed": "kitchen",
+   "retype": "living_room",
+   "why": "a one-room cottage (the dwelling variant): a stove, a bed, a round table and a bench on a rug, a bookcase and chest"
+  },
+  "Con05A@25,21": {
+   "filed": "kitchen",
+   "keep": true,
+   "why": "looked at: reads as a kitchen"
+  },
+  "Con06b@202,53": {
+   "filed": "kitchen",
+   "keep": true,
+   "why": "looked at: reads as a kitchen"
+  },
+  "Con07B@128,189": {
+   "filed": "kitchen",
+   "keep": true,
+   "why": "looked at: reads as a kitchen"
+  },
+  "Con07B@167,214": {
+   "filed": "kitchen",
+   "retype": "living_room",
+   "why": "a household room: the hearth with bookcases beside it, a round table with food and chairs on a carpet; one stove does not make it a kitchen"
+  },
+  "Con07B@64,194": {
+   "filed": "kitchen",
+   "retype": "living_room",
+   "why": "a one-room dwelling: a stove, a desk, a bed, barrels, a round table with chairs on a rug"
+  },
+  "Wiz03a@216,51": {
+   "filed": "kitchen",
+   "retype": "winch_room",
+   "why": "the elevator's room in the rock: the lift in the middle, gears, braziers in the corners, crates and tool barrels"
+  },
+  "Wiz06a@79,60": {
+   "filed": "kitchen",
+   "retype": "living_room",
+   "why": "a hunter's hut (the dwelling variant): a cot and wolf pelt, three chests, a stove, a round table on a rug"
+  },
+  "Con03B@210,71": {
+   "filed": "laboratory",
+   "retype": "bedroom",
+   "why": "a one-room dwelling read by its bed: the bed with its nightstand, a desk, log shelves and chests; one alchemist's desk does not make a lab"
+  },
+  "Con05A@15,31": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "a story set piece: the burning village house, flames among an alchemist's desk, a table and a fallen chair"
+  },
+  "Con05A@55,41": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "Con05A@88,16": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "a story set piece: the burning village house, flames, grunts, water barrels round a rug"
+  },
+  "Con07B@121,219": {
+   "filed": "laboratory",
+   "retype": "storeroom",
+   "why": "the castle's store: crates side by side, great casks and kegs heaped, a few telescopes and statues put away, a desk"
+  },
+  "Con07B@42,32": {
+   "filed": "laboratory",
+   "retype": "bedroom",
+   "why": "a scholar's bedroom: the bed on a carpet, nightstands, an alchemist's desk between bookcases"
+  },
+  "Con07C@119,195": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "a story set piece: the ogres' sabotaged lab, workstations among 22 black-powder kegs and flames"
+  },
+  "Con07C@71,136": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "Con07C@82,193": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "Con07D@118,93": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "Con07E@190,124": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "Con07E@203,112": {
+   "filed": "laboratory",
+   "retype": "gallery",
+   "why": "Galava's museum: exhibits in glass cases (an orrery, crystals, plants), paintings along the walls, tapestries"
+  },
+  "Con07F@197,181": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "a story set piece: the teleport pentagram room with demons; a bed and one workstation round it"
+  },
+  "Con09a@92,166": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "a derelict mine shack: a bed, a table, a chest and gold under cobwebs, mostly bare floor"
+  },
+  "Con09b@188,86": {
+   "filed": "laboratory",
+   "retype": "bedroom",
+   "why": "the astrologer's bedroom: the bed with nightstand and chest on a rug, star charts on the wall"
+  },
+  "Con09b@192,94": {
+   "filed": "laboratory",
+   "keep": true,
+   "why": "looked at: reads as a laboratory"
+  },
+  "War07A@76,126": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "duplicate of Con07B@42,32 (Galava's castle, the warrior's copy)"
+  },
+  "War07D@203,112": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "duplicate of Con07E@203,112 (Galava's museum, the warrior's copy)"
+  },
+  "Wiz02B@190,193": {
+   "filed": "laboratory",
+   "exclude": true,
+   "why": "duplicate of Con07C@82,193 (the same laboratory, the wizard's copy)"
+  },
+  "Con02a@211,51": {
+   "filed": "library",
+   "retype": "living_room",
+   "why": "the hearth centred between bookcases, a round and an oval table with chairs on a carpet: a household room, not a library"
+  },
+  "Con02a@80,168": {
+   "filed": "library",
+   "retype": "living_room",
+   "why": "the hearth with a bookcase beside it, tables and chairs on a rug, a barrel: a household room"
+  },
+  "Con03B@203,115": {
+   "filed": "library",
+   "retype": "storeroom",
+   "why": "the mine's ore store: steel crates, tool barrels, shovels, an ore cart, chests; a few bookcases do not make a library"
+  },
+  "Con07D@116,45": {
+   "filed": "library",
+   "keep": true,
+   "why": "looked at: reads as a library"
+  },
+  "War07A@119,187": {
+   "filed": "library",
+   "retype": "living_room",
+   "why": "Galava's castle common room: the hearth with chairs on a rug, an oval table with chairs, two bookcases, tapestries and statues"
+  },
+  "Wiz01A@108,137": {
+   "filed": "library",
+   "retype": "living_room",
+   "why": "Horvath's house: the hearth with chairs on a rug, two round tables, bookcases, barrels"
+  },
+  "Wiz01A@94,125": {
+   "filed": "library",
+   "keep": true,
+   "why": "looked at: reads as a library"
+  },
+  "Con02a@80,136": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a long bare vestibule: a bench and two small tables along a runner between two doors"
+  },
+  "Con03A@142,223": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a passage: a table with food and two chairs in a corridor junction (a guard post in the passage)"
+  },
+  "Con03A@152,213": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a passage: a table and two chairs in a corridor junction (a guard post in the passage)"
+  },
+  "Con05A@80,10": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a story set piece: the burning house, flames everywhere among barrels, crates, a table and a chest"
+  },
+  "Con06a@130,174": {
+   "filed": "living_room",
+   "keep": true,
+   "why": "looked at: reads as a living room"
+  },
+  "Con06a@137,166": {
+   "filed": "living_room",
+   "keep": true,
+   "why": "looked at: reads as a living room"
+  },
+  "Con06b@104,79": {
+   "filed": "living_room",
+   "retype": "guardroom",
+   "why": "a guard post in the keep's rock cellar: a round table with chairs, one fallen, barrels by the walls; no hearth"
+  },
+  "Con06b@163,93": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a passage: cross-shaped carpeted corridors with a table and chairs at one end"
+  },
+  "Con07B@105,197": {
+   "filed": "living_room",
+   "keep": true,
+   "why": "looked at: reads as a living room"
+  },
+  "Con07B@74,178": {
+   "filed": "living_room",
+   "keep": true,
+   "why": "looked at: reads as a living room"
+  },
+  "Con07B@80,184": {
+   "filed": "living_room",
+   "keep": true,
+   "why": "looked at: reads as a living room"
+  },
+  "Con09a@54,126": {
+   "filed": "living_room",
+   "exclude": true,
+   "why": "a derelict swamp shack: a chest, a bench, a fallen chair and ogre meat under cobwebs, a tree over it"
+  },
+  "Wiz06a@210,180": {
+   "filed": "living_room",
+   "retype": "guardroom",
+   "why": "a dungeon guard post: a round table with chairs, barrels in two corners, a guard standing"
+  },
+  "Wiz06a@84,151": {
+   "filed": "living_room",
+   "retype": "guardroom",
+   "why": "a dungeon guard post: a round table with chairs, a chest, a guard standing by the door"
+  },
+  "Wiz06b@46,38": {
+   "filed": "living_room",
+   "retype": "guardroom",
+   "why": "a dungeon guard post: a round table with three chairs, a chest, a guard standing"
+  },
+  "Con04a@110,117": {
+   "filed": "passage",
+   "retype": "mausoleum",
+   "why": "a tomb niche: a sarcophagus on its dais between statues and monuments, a crypt chest"
+  },
+  "Con04b@141,101": {
+   "filed": "passage",
+   "keep": true,
+   "why": "looked at: reads as a passage"
+  },
+  "Con05B@166,45": {
+   "filed": "passage",
+   "keep": true,
+   "why": "looked at: reads as a passage"
+  },
+  "Con09b@94,61": {
+   "filed": "passage",
+   "retype": "mausoleum",
+   "why": "a fenced tomb: one sarcophagus between two standing stones"
+  },
+  "War02A@197,197": {
+   "filed": "passage",
+   "keep": true,
+   "why": "looked at: reads as a passage"
+  },
+  "Wiz02B@120,120": {
+   "filed": "passage",
+   "retype": "shrine",
+   "why": "a spellbook on its pedestal between four obelisks, bones about (the shrine brief's example)"
+  },
+  "Wiz11A@194,49": {
+   "filed": "passage",
+   "retype": "shrine",
+   "why": "a niche: a spellbook between mana obelisks"
+  },
+  "Wiz11A@212,67": {
+   "filed": "passage",
+   "retype": "shrine",
+   "why": "a niche: a spellbook between mana obelisks (the twin of 194,49 in the same map)"
+  },
+  "Wiz11A@50,215": {
+   "filed": "passage",
+   "retype": "shrine",
+   "why": "a spellbook on a stepped dais between four mana obelisks (the shrine brief's example)"
+  },
+  "Con02a@113,142": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "Con02a@86,105": {
+   "filed": "shop",
+   "retype": "tavern",
+   "why": "the village tavern: the bar with stools and kegs behind it, the hearth, tables and a bearskin, the keeper at the bar"
+  },
+  "Con03A@14,198": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "Con03B@238,74": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "Con06a@142,205": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "Con07B@102,226": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "a clerk's hall between four doors: one desk with its keeper, a carpet and a bench; no goods, not a shop"
+  },
+  "Con07B@106,208": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "Con07B@179,174": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "the undertaker's: a desk among tombstones and crypt lids; a one-off, no goods a shop could learn from"
+  },
+  "Con07E@194,134": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "an office: a desk alone on a carpet, benches, star charts, a mirror; no keeper, no goods"
+  },
+  "Con09b@184,92": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "War01A@142,205": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "duplicate of Con06a@142,205 (the Warriors' Realm armourer, the warrior's copy)"
+  },
+  "War03b@114,141": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "duplicate of Con02a@113,142 (the village magic shop, the warrior's copy)"
+  },
+  "War07A@109,167": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "War07A@132,174": {
+   "filed": "shop",
+   "keep": true,
+   "why": "looked at: reads as a shop"
+  },
+  "War07A@180,173": {
+   "filed": "shop",
+   "exclude": true,
+   "why": "duplicate of Con07B@179,174 (the undertaker's, the warrior's copy)"
+  },
+  "Wiz05A@43,19": {
+   "filed": "shop",
+   "retype": "tavern",
+   "why": "a tavern's barroom: the bar with tankards, great casks behind it, the barkeep"
+  },
+  "Con06b@168,82": {
+   "filed": "smithy",
+   "keep": true,
+   "why": "looked at: reads as a smithy"
+  },
+  "War06b@167,83": {
+   "filed": "smithy",
+   "exclude": true,
+   "why": "duplicate of Con06b@168,82 (Dun Mir's forge, the warrior's copy)"
+  },
+  "Con01A@91,146": {
+   "filed": "storeroom",
+   "retype": "winch_room",
+   "why": "gear trains and pulley gears round the walls, tool barrels, cobwebs: the mine's winch room"
+  },
+  "Con01A@95,121": {
+   "filed": "storeroom",
+   "keep": true,
+   "why": "looked at: reads as a storeroom"
+  },
+  "Con02a@58,154": {
+   "filed": "storeroom",
+   "keep": true,
+   "why": "looked at: reads as a storeroom"
+  },
+  "Con05A@52,18": {
+   "filed": "storeroom",
+   "keep": true,
+   "why": "looked at: reads as a storeroom"
+  },
+  "Con05B@192,58": {
+   "filed": "storeroom",
+   "retype": "treasury",
+   "why": "the ogres' hoard: their chests, gold, sacks and a great cask by a lever (the treasury brief's example)"
+  },
+  "Con05C@130,78": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a cave cache: four barrels among rock pillars and stalagmites, grunts; not a built storeroom"
+  },
+  "Con05C@154,100": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a cave cache: four barrels among rock pillars, stalagmites and mushrooms, grunts; not a built storeroom"
+  },
+  "Con06a@107,154": {
+   "filed": "storeroom",
+   "retype": "winch_room",
+   "why": "the mine elevator's gear room: gears, the elevator, an ore cart wheel, a crate and tool barrel"
+  },
+  "Con06a@12,149": {
+   "filed": "storeroom",
+   "keep": true,
+   "why": "looked at: reads as a storeroom"
+  },
+  "Con06a@153,212": {
+   "filed": "storeroom",
+   "retype": "cellar",
+   "why": "kegs, a great cask and piled barrels with crates by the door: a keg cellar (the cellar brief's example)"
+  },
+  "Con06b@56,62": {
+   "filed": "storeroom",
+   "retype": "cellar",
+   "why": "kegs only, in two corners of the keep's undercroft (the cellar brief's Dun Mir example)"
+  },
+  "Con07B@132,196": {
+   "filed": "storeroom",
+   "retype": "cellar",
+   "why": "eight kegs in a tight block with two crates: a keg cellar, not provisions"
+  },
+  "Con08d@94,51": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a passage: a long corridor with a few barrels and a crate at its end"
+  },
+  "Con09c@62,232": {
+   "filed": "storeroom",
+   "retype": "powder_store",
+   "why": "eleven black-powder kegs in rows, cobwebs and spiders: a powder store"
+  },
+  "War01A@153,212": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "duplicate of Con06a@153,212 (the same store, the warrior's copy)"
+  },
+  "War02A@114,154": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a story set piece: a fenced spike-pit trap yard with crates, a lever and an iron gate, lava round it"
+  },
+  "War02b@194,194": {
+   "filed": "storeroom",
+   "retype": "cellar",
+   "why": "kegs only in two corners and a floor lever: the keep's keg cellar (Con06b@56,62's twin)"
+  },
+  "War02b@56,224": {
+   "filed": "storeroom",
+   "retype": "winch_room",
+   "why": "the elevator's machine room: pulley gears and gear trains, steel crates, tool barrels, buttons"
+  },
+  "War03c@104,88": {
+   "filed": "storeroom",
+   "retype": "cell",
+   "why": "a barred cell block: iron bars along the room, skeletons in the straw, barrels in a corner"
+  },
+  "War03d@88,216": {
+   "filed": "storeroom",
+   "keep": true,
+   "why": "looked at: reads as a storeroom"
+  },
+  "War04b@174,166": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a dungeon den: barrels heaped in two corners, skeletons and an axe on the floor, rough rock walls"
+  },
+  "War07G@122,31": {
+   "filed": "storeroom",
+   "exclude": true,
+   "why": "a story set piece: a trap gauntlet of flames, spike blocks and movers, a few barrels at one end"
+  },
+  "Con02a@69,161": {
+   "filed": "study",
+   "keep": true,
+   "why": "looked at: reads as a study"
+  },
+  "Con02a@71,132": {
+   "filed": "study",
+   "keep": true,
+   "why": "looked at: reads as a study"
+  },
+  "Con06a@143,178": {
+   "filed": "tavern",
+   "keep": true,
+   "why": "looked at: reads as a tavern"
+  },
+  "Con07B@91,177": {
+   "filed": "tavern",
+   "keep": true,
+   "why": "looked at: reads as a tavern"
+  },
+  "Con06b@58,151": {
+   "filed": "throne_room",
+   "keep": true,
+   "why": "looked at: reads as a throne room"
+  },
+  "Con10d@96,150": {
+   "filed": "throne_room",
+   "keep": true,
+   "why": "looked at: reads as a throne room"
+  },
+  "Con11a@166,141": {
+   "filed": "throne_room",
+   "keep": true,
+   "why": "looked at: reads as a throne room"
+  },
+  "Wiz11A@203,72": {
+   "filed": "throne_room",
+   "keep": true,
+   "why": "looked at: reads as a throne room"
+  }
+ }
+}
