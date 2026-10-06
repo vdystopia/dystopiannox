@@ -1,0 +1,573 @@
+{
+ "scenario": "main_opening",
+ "iter": "i11",
+ "writer": "one writer a town (variants/i11/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman sends the player to Halvard in the Moot Hall, who sends him against Red Corwin on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Tobin": "person",
+    "Barley": "thing",
+    "Amulet of Plenty": "thing",
+    "Horn of the Watch": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Brothers": "group",
+    "Bracken": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Not today. Go see Halvard."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "You came at last. Good. Your first job for this town is a grave one.\n\nSomething foul is afoot along the Bracken. Robberies on the north road is getting worse by the week.\n\nMy efforts to bargain with the outlaw have come to nothing. Red Corwin laughs at my letters. You can help me put a stop to it.\n\nThe old watchtower on Crow Hill has not been manned in many years. My spies tell me the bandits keep two things up there which are crucial to their hold on the road. The first is Red Corwin himself, the second is the Horn of the Watch.\n\nIf you can see to these things for me, quickly, I hope the north gate may be opened again."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "No news yet? Well, keep after them up on Crow Hill. Corwin and that horn must be dealt with at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Red Corwin for Reeve Halvard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Dolgar: A miner points the player to Foreman Brask, who sends him down the Old Shaft to drive Krell and his Trolls from the Deep Gate.",
+   "names": {
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Brask": "person",
+    "Durm": "person",
+    "Krell": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Old Shaft": "place",
+    "the Deep": "place",
+    "Great Lift": "place",
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "Imps": "group",
+    "Orla": "person",
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Kessa": "person",
+    "Ottick": "person",
+    "Brewhouse": "place",
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Old miner",
+     "text": "Those Trolls would never have got past the Deep Gate if Foreman Brask had kept a proper watch!"
+    },
+    "opening": {
+     "speaker": "Brask",
+     "text": "So you've made it at last, lad, to Dolgar. Not one of my miners will go a step deeper than this.\n\nFar down the Old Shaft you'll find the Deep Gate, where Krell, king of the Trolls, has made his lair. Haskel told me all about you. I must get back to my men and you must get going!\n\nYou are the last hope we have."
+    },
+    "reminder": {
+     "speaker": "Brask",
+     "text": "Enough idle talk. Get moving!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Krell, king of the Trolls, out of the Deep Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Pellmire: Moggs shouts for Mayor Dobbet, who sends the player across the Sunken Causeway against Mogrut at the Sluice Tower.",
+   "names": {
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Sluice Tower": "place",
+    "Sunken Causeway": "place",
+    "Causeway": "place",
+    "Rotten Pilings": "place",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Mayor Dobbet": "person",
+    "Dobbet": "person",
+    "Captain Vell": "person",
+    "Mogrut": "person",
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Gummet": "person",
+    "Nella": "person",
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Tobb": "person",
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Elsbet": "person",
+    "Moggs": "person",
+    "Bog Wardens": "group",
+    "Ogres": "group",
+    "Leeches": "group",
+    "Urchins": "group",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Moggs",
+     "text": "Mayor Dobbet! Mayor Dobbet! We've got a visitor!"
+    },
+    "opening": {
+     "speaker": "Mayor Dobbet",
+     "text": "So you've come at last, lad. Pellmire -- oldest stilt village of the whole Gloamfen! Home of the hardy Bog Wardens!\n\nCross the Sunken Causeway, find the Sluice Tower, then get ready for the fight of your life -- Mogrut the Ogre. He breaks the timid ones."
+    },
+    "reminder": {
+     "speaker": "Mayor Dobbet",
+     "text": "You'd best be moving on now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way across the Sunken Causeway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Korlen: Fennick points the player to Commander Dorvik in the Keep, who sends him out through the cellar passage to find his scout Haskin in the Dunwood, near Gruttock's Skarn Tower.",
+   "names": {
+    "Korlen": "place",
+    "Gruttock": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Skarn Tower": "place",
+    "Dunwood": "place",
+    "Keep": "place",
+    "Gorrow": "place",
+    "Broken Pike": "place",
+    "Lord Ambrel": "person",
+    "Dorvik": "person",
+    "Haskin": "person",
+    "Fisk": "person",
+    "Hobb": "person",
+    "Agna": "person",
+    "Orvel": "person",
+    "Gorlick": "person",
+    "Bellamar": "person",
+    "Gisla": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Orrin": "person",
+    "Tobb": "person",
+    "Ulda": "person",
+    "Chain Tunic": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "You can find Commander Dorvik in the Keep. He holds the key to the old cellar passage."
+    },
+    "opening": {
+     "speaker": "Dorvik",
+     "text": "I can spare you no soldiers, lad. Too many Ogre eyes the nearer one goes to Skarn Tower.\n\nTake the old cellar passage which comes out in the Dunwood.\n\nFind my scout Haskin. He'll show you the way if he can.\n\nTake this shield. Ogre clubs will glance off it should they swing at you. Watch yourself out there."
+    },
+    "reminder": {
+     "speaker": "Dorvik",
+     "text": "Go! Why are you still standing here? Off with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Haskin's camp in the Dunwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ondel: Maudie points the player to Mayor Wendrel, who sends him to Skell Isle after the golden amulet Vulmar's Undead carried off.",
+   "names": {
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Gull Rock": "place",
+    "Sunken Crypt": "place",
+    "Net Hall": "place",
+    "Rusty Hook": "place",
+    "Tavarin": "place",
+    "Rain Staff": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Leech": "group",
+    "Vulmar": "person",
+    "Brannoc": "person",
+    "Mayor Wendrel": "person",
+    "Tobb": "person",
+    "Maudie": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ishmar": "person",
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Tully": "person",
+    "Brusk": "person",
+    "Moll": "person",
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Maudie",
+     "text": "Shouldn't you be talking to Mayor Wendrel?"
+    },
+    "opening": {
+     "speaker": "Mayor Wendrel",
+     "text": "Welcome to Ondel, brave Adventurer! Brannoc told us you were on your way!\n\nVulmar's Undead are crawling out of Lake Dorrow! They came up over the docks and made off with my golden amulet! One of our fishermen rowed out after the rotten things, but hasn't come back.\n\nTake a boat out to Skell Isle in the middle of the lake and get my amulet back from the Undead. When you have it, come and see me. You will find me here in the Net Hall."
+    },
+    "reminder": {
+     "speaker": "Mayor Wendrel",
+     "text": "Those wretched Undead are getting bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Wendrel's golden amulet from the Undead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: A cauldron-scrubber points the player to Master Olvane, who sends him to Yalda the Stargazer after the Orb of Seeing the Ghosts stole.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "the Archive": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Murkfen": "place",
+    "the Inkwell": "place",
+    "Olvane": "person",
+    "Pellimore": "person",
+    "Umbrik": "person",
+    "Ezzard": "person",
+    "Nib": "person",
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "Brusk": "person",
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group",
+    "the Imps": "group",
+    "the Trolls": "group",
+    "the Rats": "group",
+    "the bats": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "I make a fair living scrubbing cauldrons. Master Olvane is up at the College, asking after you."
+    },
+    "opening": {
+     "speaker": "Olvane",
+     "text": "The road through the Murkfen has put you to the test, lad. But there's no time to put your feet up. You must now win back the Orb of Seeing, which the Ghosts stole from Yalda the Stargazer when they overran the Observatory on Crane Hill!\n\nWith Ghosts on the loose and the Orb in their keeping, Malgrith is certainly behind all of this. Yalda is waiting for you in the town square. Now, be off with you!"
+    },
+    "reminder": {
+     "speaker": "Olvane",
+     "text": "Go and find Yalda, quickly! She has much to tell you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Orb of Seeing from the Ghosts."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarra: Mirta points the player to Warden Ostrag, who sends him north to the Tombs of Gol Varra to bring back Ulvane, taken by Vaskor's Undead.",
+   "names": {
+    "Fort Skarra": "place",
+    "Vaskor": "person",
+    "Ulvane": "person",
+    "Ostrag": "person",
+    "Tombs of Gol Varra": "place",
+    "Undead": "group",
+    "Haddo": "person",
+    "Grubb": "person",
+    "Imps": "group",
+    "Imp caves": "place",
+    "Vardis": "person",
+    "Ebbet": "person",
+    "Ebbet's hut": "place",
+    "Silver Horn": "thing",
+    "Ankh": "thing",
+    "Mirta": "person",
+    "Bettra": "person",
+    "Dolgo": "person",
+    "Gunnet": "person",
+    "Brakka": "person",
+    "Brakka's forge": "place",
+    "Yselda": "person",
+    "Gimble": "person",
+    "Kolb": "person",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirta",
+     "text": "I'm sure I saw Warden Ostrag up on the north wall just now. He actually asked after you!"
+    },
+    "opening": {
+     "speaker": "Ostrag",
+     "text": "Blast! What kept you, lad!? The Undead stormed the lower gate of Fort Skarra and we'd never have held it if Ulvane's fire magic had not driven them back at the very end!\n\nBut in all the confusion, Vaskor's skeletons dragged Ulvane off, and the broken gate is now the least of our troubles! The whole pass will fall if Ulvane is not found!\n\nYou must climb to where they took him, north to the Tombs of Gol Varra! Bring Ulvane back alive or the fort is finished!"
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "I know Ulvane can't last long up there! Get moving!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Tombs of Gol Varra and rescue Ulvane."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "general-purpose subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 8,
+   "specifics": "Vurn: Brog points to Kolbrin, who sends the player into the Deep Forge to learn if Vargoth is below.",
+   "names": {
+    "Vurn": "place",
+    "Vargoth": "person",
+    "Brannoc": "person",
+    "Kolbrin": "person",
+    "Durk": "person",
+    "Grenna": "person",
+    "Gubbin": "person",
+    "Ambrel": "person",
+    "Brog": "person",
+    "Lissa": "person",
+    "Marga": "person",
+    "Torbek": "person",
+    "Zelphine": "person",
+    "Kragg": "person",
+    "Pibble": "person",
+    "Orsk": "person",
+    "Nessa": "person",
+    "Grisold": "person",
+    "Tarvel": "place",
+    "Hall of Anvils": "place",
+    "Deep Forge": "place",
+    "Cinder Caves": "place",
+    "Ash Gate": "place",
+    "Helm of Far Sight": "thing",
+    "Imps": "group",
+    "Ember Demons": "group",
+    "Rats": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Brog",
+     "text": "WHAT? Kolbrin sent for... YOU?"
+    },
+    "opening": {
+     "speaker": "Kolbrin",
+     "text": "The way down to the Deep Forge is through the old smelter at the top of the hill. Find out if Vargoth's been down there. You'll see. And watch yourself. Many of the lower halls have pits to catch thieves."
+    },
+    "reminder": {
+     "speaker": "Kolbrin",
+     "text": "Get down into the Deep Forge, lad! We have to learn if the stories about Vargoth are true. Go! Search the lower halls and see if he has already been there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Deep Forge for any sign of Vargoth."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Varrow: Ebba points the newcomer to Mayor Grumwald, who sends him up Crag Hill after Krull, whose bandits hold the old watchtower and shut the north road.",
+   "names": {
+    "Varrow": "place",
+    "Gilded Boar": "place",
+    "Grimwood": "place",
+    "Crag Hill": "place",
+    "Potions Aplenty": "place",
+    "Krull": "person",
+    "Druvan": "person",
+    "Grumwald": "person",
+    "Brannoc": "person",
+    "Hobbin": "person",
+    "Olla": "person",
+    "Varnus": "person",
+    "Fennick": "person",
+    "Pella": "person",
+    "Jory": "person",
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ebba",
+     "text": "Go stranger! Go! Mayor Grumwald needs you!"
+    },
+    "opening": {
+     "speaker": "Grumwald",
+     "text": "Dark times have come to the crossroads. I need you to go north to Crag Hill. Up there you must find the bandit chief, Krull.\n\nHe and his cutthroats have seized the old watchtower and shut the north road to all honest folk.\n\nTake these potions -- and some coin. See Garrock the smith for anything else you need. Then be quick about it.\n\nThe road past the north gate climbs straight to the watchtower."
+    },
+    "reminder": {
+     "speaker": "Grumwald",
+     "text": "There's nothing more I can tell you, stranger. Now go and put an end to Krull!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Pass through the north gate and climb to the old watchtower."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 10,
+   "specifics": "Tolm: Fulk points the player to Mayor Corbel in the Town Hall, who sends him against the Ogre Warlord Bolgrum at Krog Durm.",
+   "names": {
+    "Tolm": "place",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Ondrel": "person",
+    "Corbel": "person",
+    "Dorrik": "person",
+    "Fulk": "person",
+    "Hobb": "person",
+    "Zelna": "person",
+    "Brunn": "person",
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Tamm": "person",
+    "Hulda": "person",
+    "Nella": "person",
+    "Olm": "person",
+    "Pella": "person",
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Ogres": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fulk",
+     "text": "We'll hold the fences here, but you must go see Mayor Corbel in the Town Hall. Thanks for coming, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Corbel",
+     "text": "Sorry about the smell, lad, but the Ogres dumped a whole cart of manure on our doorstep last night. They have scouts in the fields and many more up at Krog Durm.\n\nIt is vital that Warlord Bolgrum be driven out, but his Ogres won't just step aside for you. This could turn very nasty. Still, these potions will help."
+    },
+    "reminder": {
+     "speaker": "Corbel",
+     "text": "The healing potions will be invaluable once the Ogres gang up on you. The Cure Poison potion will help against their filthy rusty blades. Good luck, and hurry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Break into Krog Durm and drive out Warlord Bolgrum."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

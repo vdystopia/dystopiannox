@@ -413,6 +413,10 @@ def voice(fs):
         p = min(1.0, 4 * (num - st["numbers"]["mean"] - 0.1 - slack)); pen += p
         out.append(f"-{p:.1f} voice: {num:.0%} of the lines count or number things")
     ad = sum(f["address"] for f in talk) / n
+    if n >= 8 and ad > 2.5 * st["address"]["mean"]:
+        p = min(1.5, 6 * (ad - 2.5 * st["address"]["mean"])); pen += p
+        out.append(f"-{p:.1f} voice: {ad:.0%} of the lines address the player (Westwood {st['address']['mean']:.0%}): "
+                   "one address word a quest at most")
     if n >= 6 and ad < 0.04:
         pen += 1.0; out.append(f"-1.0 voice: no line addresses the player (lad, stranger, friend, kind sir; Westwood {st['address']['mean']:.0%})")
     sem = sum(f["semicolons"] for f in talk)

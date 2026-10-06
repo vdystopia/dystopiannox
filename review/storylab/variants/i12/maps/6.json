@@ -1,0 +1,310 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Zorreth",
+  "setting": "a wizards' college town",
+  "trouble": "The renegade sorcerer Maldrek has sent his Gargoyles and Imps against the College of Zorreth, seized the Observatory and taken the Archmage Brannoch prisoner.",
+  "names": {
+   "Zorreth": "place",
+   "Maldrek": "person",
+   "Gargoyles": "group",
+   "Imps": "group",
+   "Captain": "person",
+   "Ulbrin": "person",
+   "Gorvo": "person",
+   "Tessik": "person",
+   "Dorrick": "person",
+   "Yarnak": "person",
+   "Hendry": "person",
+   "Zigg Quickquill": "person",
+   "Brannoch": "person",
+   "Pippet": "person",
+   "Hobb": "person",
+   "Varna": "person",
+   "Fenn": "person",
+   "Pellam": "person",
+   "Spire Crag": "place",
+   "Observatory": "place",
+   "Orrery of Zorreth": "thing",
+   "Book of Wards": "thing",
+   "Cloak of Warding": "thing",
+   "Lower Gate": "place",
+   "Gate Wardens": "group",
+   "Hobb's Iron and Steel": "place"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gorvo, guard at the college gate of Zorreth.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Gorvo",
+     "text": "We don't see many travelers at the gate these days."
+    },
+    "again": {
+     "speaker": "Gorvo",
+     "text": "Hey who left the gate unlatched?"
+    },
+    "later": {
+     "speaker": "Gorvo",
+     "text": "Oh, bless you. That was a bold thing to do."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Tessik, keeper of the Archive, wants the Imps and giant bats cleared from the vaults and his trapped clerks rescued.",
+   "names": {
+    "Tessik": "person",
+    "Captain": "person",
+    "Lower Gate": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tessik",
+     "text": "Why are you so late!? We are in terrible trouble!\n\nVicious giant bats and Imps from the pit have overrun the vaults beneath the Archive. Several clerks have been lost protecting the college's precious books!\n\nPlease, we implore you! Drive the beasts from the vaults, rescue my clerks and I will pay you generously.\n\nThis key opens the gate to the first trapped clerk. He will lead you to the others.\n\nI also have a spell book which ought to be very handy."
+    },
+    "reminder": {
+     "speaker": "Tessik",
+     "text": "Come back to me when you have freed my clerks and I will pay you well."
+    },
+    "completion": {
+     "speaker": "Tessik",
+     "text": "You are truly a hero! My sincere thanks.\n\nAs you were saving my clerks down below, the Captain stopped by, asking after you. He's waiting at the Lower Gate -- south of here.\n\nBefore you leave, here is some gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay or banish all the beasts in the vaults. Rescue the 4 trapped clerks."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SpellBook"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Dorrick's Cloak of Warding, woven by his colleague Yarnak, was carried off by the Gargoyles to the ruined bell tower.",
+   "names": {
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Cloak of Warding": "thing",
+    "Gargoyles": "group",
+    "Ulbrin": "person",
+    "Gate Wardens": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrick",
+     "text": "While I look into what is troubling our college, there's another job that needs doing.\n\nYarnak, a colleague of mine, finished the Cloak of Warding I asked for, but the Gargoyles carried it off from his cottage.\n\nBeyond the college wall there is a ruined bell tower where the Gargoyles roost. They carry everything they steal up there. You may leave by the garden door at the back of this hall.\n\nPlease fetch my cloak back and let Yarnak know it is safe.\n\nWill you help me, Apprentice?"
+    },
+    "refusal": {
+     "speaker": "Dorrick",
+     "text": "I'm sorry to hear that. Think it over and come back."
+    },
+    "reminder": {
+     "speaker": "Dorrick",
+     "text": "Go to the bell tower and find my cloak! Now!"
+    },
+    "completion": {
+     "speaker": "Dorrick",
+     "text": "You found the Cloak of Warding! Excellent!\n\nSadly, my worst fears for Yarnak's cottage have come true. I shall miss his fine work, but we have no time for sorrow, I'm afraid. The Gate Wardens need my help and Rector Ulbrin asks for your assistance.\n\nPlease take this potion. Good luck!"
+    },
+    "after": {
+     "speaker": "Dorrick",
+     "text": "Thanks again for finding my cloak!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Cloak of Warding which the Gargoyles stole from Yarnak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the Cloak of Warding which the Gargoyles stole from Yarnak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Fenn on the Observatory, Tessik on Pellam's lost wits, Hendry brushing the player off.",
+   "names": {
+    "Fenn": "person",
+    "Tessik": "person",
+    "Hendry": "person",
+    "Maldrek": "person",
+    "Pellam": "person",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fenn",
+     "text": "Maldrek must have found some way past our wards. At noon the Observatory was quiet, by dusk it was swarming with Gargoyles and Imps! They want the Orrery."
+    },
+    "rumour2": {
+     "speaker": "Tessik",
+     "text": "I'm afraid Pellam finally lost his wits. They've given me his study since he's taken to roaming the cloisters honking like a goose and chasing pigeons."
+    },
+    "rumour3": {
+     "speaker": "Hendry",
+     "text": "Shouldn't you be out chasing Gargoyles?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Pippet of the Singed Quill inn, Hobb the smith, Varna the magic seller.",
+   "names": {
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Maldrek": "person",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pippet",
+     "text": "Dark days, lad. I can't believe Maldrek turned on the college. Dire news indeed! Better rest up while you can!"
+    },
+    "arms": {
+     "speaker": "Hobb",
+     "text": "Welcome to Hobb's Iron and Steel. I believe I still have a few good blades in stock."
+    },
+    "magic": {
+     "speaker": "Varna",
+     "text": "Hello, kind sir. I'm nearly ready to pack up and leave town. Everything must go, if you're interested."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Hendry offers a bounty on Zigg Quickquill, dead or alive, and Zigg offers to surrender; Gorvo pays for the capture, Hendry for the kill.",
+   "names": {
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Gorvo": "person",
+    "Zorreth": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hendry",
+     "text": "Good day, young sir. I gather you have come about the bounty.\n\nThere's a fat bounty on Zigg Quickquill -- dead or alive. He and his sorry gang of dropouts have been raiding our fair college's libraries for weeks.\n\nWatch yourself, you don't want to be caught napping by those rowdy scoundrels."
+    },
+    "offer_b": {
+     "speaker": "Zigg Quickquill",
+     "text": "I give up! Don't zap me, please! I'll come along without a fuss!"
+    },
+    "outcome_a": {
+     "speaker": "Gorvo",
+     "text": "Hold it! The gardener heard odd noises coming from here, so I came to look.\n\nYou have caught the notorious Zigg Quickquill all by yourself! Very impressive! You have my deepest respect! Quickquill's gang has plagued Zorreth for weeks! I'll handle him from here. We will all sleep easier with this wretched rascal in the cellar!\n\nAnd now for your reward -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Hendry",
+     "text": "So you killed Zigg, eh? Well, I wanted him brought in alive, but I won't be losing any sleep over it!\n\nTake your reward -- 100 in gold! Thanks for cleaning up our streets!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Zigg Quickquill, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Zigg Quickquill in to the town guard."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "The Captain begs the player to rescue the Archmage Brannoch, taken by Maldrek's Gargoyles to Spire Crag.",
+   "names": {
+    "Captain": "person",
+    "Brannoch": "person",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Zorreth": "place",
+    "Spire Crag": "place",
+    "Orrery of Zorreth": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Captain",
+     "text": "Blast! What kept you, lad!? The Gargoyles stormed Zorreth and we'd have lost the college to them if Brannoch's mighty sorcery had not rallied us at the last moment!\n\nBut in the thick of it, the beasts snatched Brannoch, leaving the damage to the halls our smallest concern! Everything we teach here is in peril if Brannoch is lost!\n\nYou must go where Brannoch was taken, north to the Gargoyle roost at Spire Crag! Bring Brannoch back or we are finished!"
+    },
+    "reminder": {
+     "speaker": "Captain",
+     "text": "I'm sure Brannoch is in dreadful danger! Please hurry!"
+    },
+    "found": {
+     "speaker": "Brannoch",
+     "text": "You there! Quickly, find some way to get me out of here! Maldrek was indeed the sorcerer behind the Gargoyle attack and he has dark plans for the Orrery of Zorreth. Unfortunately, I was taken with my mana spent and I haven't the strength to break out of here by myself. Maldrek laid a strong ward on these bars, ending all hope of casting my way out."
+    },
+    "following": {
+     "speaker": "Brannoch",
+     "text": "Let's get moving! There's no time to lose!"
+    },
+    "completion": {
+     "speaker": "Captain",
+     "text": "In better times, the bells of Zorreth would ring all night for the return of Brannoch! Well done! But now we must stop the wicked Maldrek once and for all.\n\nPlease take these as tokens of our thanks for such a brave rescue!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Spire Crag and rescue Brannoch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Rector Ulbrin, sent word of by the Captain, wants his Book of Wards taken back from the Gargoyles in the Observatory.",
+   "names": {
+    "Fenn": "person",
+    "Ulbrin": "person",
+    "Zorreth": "place",
+    "Captain": "person",
+    "Gargoyles": "group",
+    "Book of Wards": "thing",
+    "Observatory": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fenn",
+     "text": "Make way! Rector Ulbrin wants to see you!"
+    },
+    "opening": {
+     "speaker": "Ulbrin",
+     "text": "Welcome to Zorreth, brave Adventurer! The Captain told us to expect you!\n\nThe Gargoyles on the hill have gone mad! They swooped into the college and stole my Book of Wards! A student chased the dirty things into the Observatory, but has not come back.\n\nGo to the Observatory east of here and take my book back from the Gargoyles. Come and see me when you are back. You will find me in my hall at the heart of the college."
+    },
+    "reminder": {
+     "speaker": "Ulbrin",
+     "text": "Those wretched Gargoyles are making too much mischief lately."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Rector's Book of Wards from the Gargoyles."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

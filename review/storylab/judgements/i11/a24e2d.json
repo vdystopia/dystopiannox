@@ -1,0 +1,33 @@
+{
+  "packet": "a24e2d",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The arrest is staged with evidence ('the cut rope proves it') and a wry 'damp and snug little cellar', more set-up and wit than a Nox guard bark carries. The caps on RATHER look like an imitation of Westwood's emphasis."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The '...' split and the '!?' are Nox-like. But 'unless you'd like to feel his boot' and 'I won't miss you!' read as a crafted gag running through all three lines, where Westwood's guards are usually blunter."},
+    {"label": "C", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A stock 'Halt! You are forbidden to pass!' and a flat line of directions, then a short send-off with 'boy'. Plain and functional, with the slightly stiff phrasing of the campaign."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A list of petty city rules with a dry sting ('don't even think about wizardry'), then 'Oh, I forgot to mention, no loitering.' This is Westwood's deadpan civic humour exactly."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A polite, slightly formal refusal ('The wilds hold far too many perils for the common man'), a curt 'Move on!', then a plain notice that the Mayor gave permission. This is the campaign's opening-town gatekeeping."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "An effusive greeting ('our beloved [Place]'), urgent exclamations and a comma-spliced warning about bandits. The earnest, slightly over-eager register is typical of Westwood's welcoming NPCs."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The first line packs in too much: a gate shut by order, who to see, and the Ogres. Dialect is laid on ('Wanna', 'that don't make you'), and the 'later' line comments on the player's standing, a writerly touch."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The mood-setting opener ('Hardly anybody comes up to this gate these days') gives the player nothing, and 'Back to town... Have a pleasant day!' clashes in tone. The final line is plain, but the set reads like a generic guard template."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The guard explains his own job ('so nobody wanders up the north road and gets robbed blind'), which is exposition aimed at the player, and 'robbed blind' is idiom-flavoured. The 'Aiieee! Wolves!' panic is Nox-like but reads as borrowed."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Bare and functional ('This is the home of [Person].'), with generic thanks and 'Adventurer'. It has the unadorned filler quality of many real Westwood guards."}
+  ],
+  "tells": [
+    "Westwood guards state one thing per line, flatly: a rule, a direction, a permission. The new texts pack two or three facts or a staged mini-scene (evidence, an arrest, gate orders plus a monster threat) into one bark.",
+    "The new texts lean on colloquial dialect and idiom ('Wanna', 'that don't make you', 'robbed blind', 'feel his boot') for flavour. Westwood's guards speak a plain, slightly formal standard English, and their humour comes from content (a list of petty rules), not slang.",
+    "Generated guards explain themselves or set a mood ('I guard this gate so...', 'Hardly anybody comes up here'). Westwood's guards open with a greeting, a command or a rule that tells the player what to do.",
+    "Westwood's tone is earnest or deadpan and consistent within a guard. The new texts swing between menace and cheer within one guard ('Back to town with you!' then 'Have a pleasant day!').",
+    "Imitated Nox markers (CAPS emphasis, '!?', 'Aiieee!') show up more densely in the generated texts than in Westwood's own."
+  ]
+}

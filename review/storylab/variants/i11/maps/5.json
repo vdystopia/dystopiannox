@@ -1,0 +1,314 @@
+{
+ "iter": "i11",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ondel",
+  "setting": "a lake village of fishermen",
+  "trouble": "The Necromancer Vulmar has raised the drowned dead of Lake Dorrow, and his Undead come up out of the water to raid Ondel by night.",
+  "names": {
+   "Ondel": "place",
+   "Lake Dorrow": "place",
+   "Skell Isle": "place",
+   "Gull Rock": "place",
+   "Sunken Crypt": "place",
+   "Net Hall": "place",
+   "Rusty Hook": "place",
+   "Tavarin": "place",
+   "Rain Staff": "thing",
+   "Undead": "group",
+   "Imps": "group",
+   "Leech": "group",
+   "Vulmar": "person",
+   "Brannoc": "person",
+   "Mayor Wendrel": "person",
+   "Tobb": "person",
+   "Maudie": "person",
+   "Jory Blackgill": "person",
+   "Fennick": "person",
+   "Ishmar": "person",
+   "Bastok": "person",
+   "Grubbin": "person",
+   "Tully": "person",
+   "Brusk": "person",
+   "Moll": "person",
+   "Ardle": "person",
+   "Grest": "person",
+   "Wilda": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb, the warden at the jetty gate, shut since the Undead rose, and Maudie accuses the player of untying her boat.",
+   "names": {
+    "Tobb": "person",
+    "Maudie": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Only fishermen go down to the boats!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Hold it right there! Maudie swears you tried to untie her boat and the cut rope proves it.\n\nCome along! I've got a damp and snug little cellar waiting for you.\n\nWill you come quietly, stranger?"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Up out of that cellar, lad! Unless you'd RATHER stay down there!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Warden Tobb posts a bounty on the outlaw Jory Blackgill and his crew of net cutters.",
+   "names": {
+    "Tobb": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ondel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobb",
+     "text": "Greetings, Wanderer. I presume you have come about the bounty.\n\nThere's a fat reward for Jory Blackgill -- dead or alive. He and his rotten crew of net cutters have been robbing our village all season.\n\nWatch yourself, those slimy cutthroats will stab you in the back."
+    },
+    "reminder": {
+     "speaker": "Tobb",
+     "text": "What are you waiting for? Blackgill is still out there!"
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Hallo there! Fennick heard a terrible racket out this way, so I came running to have a look.\n\nYou have caught the infamous Jory Blackgill all by your lonesome! Most remarkable! You have earned my highest regard! Blackgill's crew has plagued Ondel all season! I'll handle things from here. We will all sleep easier with this low-down villain locked in my cellar!\n\nAnd here is the bounty -- 150 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the outlaw Jory Blackgill."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ishmar the Conjurer has lost his Rain Staff to the Imps of Gull Rock and offers the player passage in his boat to Tavarin.",
+   "names": {
+    "Ishmar": "person",
+    "Imps": "group",
+    "Rain Staff": "thing",
+    "Gull Rock": "place",
+    "Tavarin": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ishmar",
+     "text": "Miserable little thieves! The Imps only flew down from the hills last month and they are already a terrible nuisance!\n\nI am Ishmar the Conjurer. I am missing my Rain Staff. I fear the Imps have carried it off to their nest on Gull Rock.\n\nIf you could find it and return it to me, I would take you along in my boat to Tavarin. Will you do this for me?"
+    },
+    "refusal": {
+     "speaker": "Ishmar",
+     "text": "Very well. I shall have to find someone braver."
+    },
+    "reminder": {
+     "speaker": "Ishmar",
+     "text": "Is there any sign of my staff? Oh my, this is most distressing."
+    },
+    "completion": {
+     "speaker": "Ishmar",
+     "text": "My Rain Staff! Those little devils must have fought over it.\n\nYou have shown the Imps who is master here. Perhaps you might be of further use to me. Hmmm... Very well.\n\nCome down to my boathouse with me. Whenever you wish, just climb into the boat and I will row us across to Tavarin. There is a great deal to be done once we land."
+    },
+    "after": {
+     "speaker": "Ishmar",
+     "text": "Whenever you wish, just climb into the boat and we will push off."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Ishmar's Rain Staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Ishmar's Rain Staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Ardle at the door of the Net Hall, Grest the fisherman and Wilda, a fishwife.",
+   "names": {
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person",
+    "Net Hall": "place",
+    "Mayor Wendrel": "person",
+    "Vulmar": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Ardle",
+     "text": "Welcome to the Net Hall. Mayor Wendrel's rooms are at the back."
+    },
+    "rumour2": {
+     "speaker": "Grest",
+     "text": "Find Vulmar and throw him to the eels!"
+    },
+    "rumour3": {
+     "speaker": "Wilda",
+     "text": "How can a few fishermen fight off the dead? It's hopeless! Where can we go?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Fennick of the Rusty Hook inn, Brusk the smith, Moll the potion seller.",
+   "names": {
+    "Fennick": "person",
+    "Rusty Hook": "place",
+    "Brusk": "person",
+    "Moll": "person",
+    "Lake Dorrow": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Fennick",
+     "text": "Sorry friend, you've drunk me dry! There's not a drop of cider left in the house."
+    },
+    "arms": {
+     "speaker": "Brusk",
+     "text": "I hear you came in by the lake road. Brave of you, stranger!"
+    },
+    "magic": {
+     "speaker": "Moll",
+     "text": "Wanna buy a potion? They're boiled up from the slimiest weeds at the bottom of Lake Dorrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Bastok the Harbor Master lends boats only to those a fisherman vouches for, and Grubbin the eel seller will vouch if the player kills the Leech in his eel pond.",
+   "names": {
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Ondel": "place",
+    "Leech": "group",
+    "Rusty Hook": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Bastok",
+     "text": "I am the Harbor Master of Ondel. If you want a boat out on the lake you'll need a fisherman to vouch for you."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Hiya. Grubbin's the name, best eel man in all of Ondel. The lake is deadly these days and getting a boat off old Bastok is even worse.\n\nLook here, if you do me a little job I'll vouch for you myself. How about it?"
+    },
+    "outcome_a": {
+     "speaker": "Grubbin",
+     "text": "Good! I keep the fattest eels in Ondel in a pond behind my shack. Trouble is, a great slimy Leech has crawled into the pond. It has riled up the frogs and now they jump on anybody who comes near.\n\nKill the Leech and when you get back, I'll vouch for you with Bastok.\n\nHere, take this brass key, it opens the gate to my pond."
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "Suit yourself, but I don't reckon anybody else will vouch for you.\n\nIf you think better of it I'll be at the Rusty Hook next to the docks."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find someone in Ondel to vouch for you with Bastok."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Kill the Leech in Grubbin's eel pond."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Bastok begs the player to bring Tully's crew of fishermen out of the Sunken Crypt before the Undead drown them.",
+   "names": {
+    "Bastok": "person",
+    "Tully": "person",
+    "Sunken Crypt": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bastok",
+     "text": "Quickly, lad! Our fishermen in the Sunken Crypt can't hold out much longer. You've got to bring every last one of them home before the Undead drown them!"
+    },
+    "reminder": {
+     "speaker": "Bastok",
+     "text": "Those poor souls haven't got long. Now get moving!"
+    },
+    "found": {
+     "speaker": "Tully",
+     "text": "Save us!"
+    },
+    "following": {
+     "speaker": "Tully",
+     "text": "We knew somebody would come!"
+    },
+    "completion": {
+     "speaker": "Bastok",
+     "text": "Good work! These men would be at the bottom of the lake but for you!\n\nNow go and fetch the other two crews!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Tully's crew from the Sunken Crypt and bring them home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Maudie points the player to Mayor Wendrel, who sends him to Skell Isle after the golden amulet Vulmar's Undead carried off.",
+   "names": {
+    "Maudie": "person",
+    "Mayor Wendrel": "person",
+    "Brannoc": "person",
+    "Vulmar": "person",
+    "Undead": "group",
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Net Hall": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Maudie",
+     "text": "Shouldn't you be talking to Mayor Wendrel?"
+    },
+    "opening": {
+     "speaker": "Mayor Wendrel",
+     "text": "Welcome to Ondel, brave Adventurer! Brannoc told us you were on your way!\n\nVulmar's Undead are crawling out of Lake Dorrow! They came up over the docks and made off with my golden amulet! One of our fishermen rowed out after the rotten things, but hasn't come back.\n\nTake a boat out to Skell Isle in the middle of the lake and get my amulet back from the Undead. When you have it, come and see me. You will find me here in the Net Hall."
+    },
+    "reminder": {
+     "speaker": "Mayor Wendrel",
+     "text": "Those wretched Undead are getting bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Wendrel's golden amulet from the Undead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

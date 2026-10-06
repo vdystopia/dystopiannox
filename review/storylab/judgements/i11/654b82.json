@@ -1,0 +1,29 @@
+{
+  "packet": "654b82",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Breathless exclamations, '--' dash and 'lad' all fit Nox, but the city-and-express-elevator framing and the tidy key-then-chest-then-secret-passage walkthrough read like a careful reconstruction of the mine quests; a close call."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too literary and too loaded with plot for Nox: a mystery seeded through a hooded man, 'Hmmm... Yes.', a robe given as reward and a handoff to another master. Westwood's rescues are blunter and shorter."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Pure Westwood melodrama: 'Damn! Where have you been, lad!?', run-on exposition from the captive about mana and enchantments, and the clumsy 'At happier other times'. Nobody imitating would write that last phrase."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 9,
+     "critique": "Plain, short and comic. The 'What's that you say? Heaps and heaps of gold?' gag in the reward is the deadpan player-greed joke Nox makes, and 'However can I repay you' has its period quaintness."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Terse to the point of thinness: 'Help us!', 'damsels', 'my boy' and the abrupt 'Now go find the other two groups' are Westwood's quick, slightly crude mass-rescue writing."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'What took you so long to get here!?', 'Nox's vital interests', a counted, mechanical journal entry ('Charm or kill all the monsters... Rescue the 6 trapped mine workers') and the Captain's message tacked on are all authentic campaign texture."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A near beat-for-beat copy of D's structure and joke ('What's that you say? A great big sack of gold?'), swapped onto a novice and Urchins. The template shows, and 'Wanderer' as an address is not Nox's."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Competent but generic: a guildmaster, a bell tower, gatemen and 'I insist'. The reminder repeats its own urgency in three short exclamations, and the dialogue lacks Westwood's odd specifics and run-on energy."}
+  ],
+  "tells": [
+    "Westwood's lines carry odd, slightly clumsy phrasing ('At happier other times', 'Nox's vital interests') and run-on exposition; the new texts are smoother and more evenly paced.",
+    "Westwood's journal entries are flat and mechanical, sometimes with counts ('Rescue the 6 trapped mine workers'); new journal entries read as composed summaries with possessive chains.",
+    "New texts seed side mysteries and handoffs (a hooded figure, a robe, 'tell Master X I sent you') that Westwood's single rescue quests rarely bother with.",
+    "When a Westwood joke is reused, the new text copies its structure line for line; one-to-one parallels between two texts point to the imitator.",
+    "Westwood addresses the player as 'lad', 'my boy' or 'young sir' and shouts with '!?'; invented forms of address such as 'Wanderer' or 'Kind sir' plus 'I insist' read as another writer."
+  ]
+}

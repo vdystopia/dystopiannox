@@ -1,0 +1,30 @@
+{
+  "packet": "b435e1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The offer is assembled from stock parts (outburst, 'I am [Person]', reward, closing question), and the masking is uneven: 'amulet' is plain in the reminder but masked in the offer. 'Oh my, I feel so cold' hints at a reason the quest never sets up, and 'Follow me to the counter' is a stage direction that reads oddly in a speech."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The panicked opening ('Gahhhhhh! No! Don't kill me!'), the half-blind misreading of the player and the odd, specific reward (all he knows about bats) all have Nox's broad comic touch. The '?!' and '....' punctuation is Westwood's own untidy kind."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Its plot is tied to the campaign: a secret route through the bookcases, a death off screen that is barely mourned, and a hand-off to a Captain. Melodramatic asides ('Unsavory elements dwell in the shadows!') and the double-dash punctuation are typical of Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "A tidy, self-contained problem: the imp, the angry hounds and a whistle handed over to solve it. The reward line explains what the item does ('The red potion will put you back on your feet'). The structure is too neat and the warmth too even for Westwood."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Wanderer' as a form of address, pastoral set-dressing (mill, ford, barrow, east of) and a long chain of reasons why the giver cannot go himself. The excuse is overexplained and the reward is generic boilerplate."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It imitates the Nox welcome ('We've been expecting you!') but crowds in invented geography (walks, posts, sinkhole, big platform, landing). The reminder does not tell the player what to do, and the thanks stacks routing advice ('visit the shops first, then go and talk to him at once')."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Exclamation-heavy urgency, a passing reference to the overarching villain and a teasing 'sooner than you think' are all Westwood's habits. The bare journal line 'Retrieve the [Thing].' is very campaign-like."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Its opening scolds the player, it makes the deadpan bureaucratic joke 'in defense of Nox's vital interests', and its journal is mechanical ('Charm or kill... Rescue the 6 trapped mine workers'). The structure has several steps, with a key and a scroll handed over. This is Nox's register."}
+  ],
+  "tells": [
+    "Westwood texts carry odd, specific humour and character (panic, half-blindness, bureaucratic deadpan, a cheap death barely mourned); the new texts are evenly polite and functional.",
+    "New texts over-justify the set-up: they chain reasons why the giver cannot go himself, or hand over a tool that neatly solves a problem the offer created (a whistle for the hounds).",
+    "New texts pile up invented local geography and pastoral nouns (mill, ford, barrow, walks, platform, landing), while Westwood names a few big places and points with a compass direction.",
+    "Westwood's punctuation is messier ('?!', '....', '--'); the new texts use tidy exclamations and rhetorical closing questions ('Will you go?').",
+    "Westwood's journals can be curt or mechanical ('Retrieve the [Thing].', 'Charm or kill all...'); new journals uniformly read 'Retrieve/Recover [Person]'s X from the Y'.",
+    "Westwood's reminders tend to add a hint or urgency (where the hideout is, a warning about the caverns); some new reminders carry no instruction at all."
+  ]
+}

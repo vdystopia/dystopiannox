@@ -1,0 +1,302 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tosk",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "The Ogre Chief Brakk and his raiders from Ulm Gorra trample the barley fields, loot the barns and drag off the farmers' kin.",
+  "names": {
+   "Tosk": "place",
+   "Ulm Gorra": "place",
+   "Brakk": "person",
+   "Ruddock": "person",
+   "Hesk": "person",
+   "Odrin": "person",
+   "Wenda": "person",
+   "Lorra": "person",
+   "Fenn": "person",
+   "Tamsin": "person",
+   "Maudie": "person",
+   "Dobb": "person",
+   "Mugg": "person",
+   "Grint": "person",
+   "Quenby": "person",
+   "Warden Orsk": "person",
+   "Tusker": "person",
+   "Staff of Rain": "thing",
+   "Plow and Pitcher": "place",
+   "Ogres": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Fenn, a guard at the gate of Tosk, jeers at the player, then keeps the watch against the Ogres.",
+   "names": {
+    "Fenn": "person",
+    "Tosk": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Fenn",
+     "text": "Hide, stranger, hide! Hah, hah, hah...!"
+    },
+    "again": {
+     "speaker": "Fenn",
+     "text": "You're pretty clean for an Ogre hunter."
+    },
+    "later": {
+     "speaker": "Fenn",
+     "text": "No, we cannot feast while the Ogres threaten Tosk!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Tamsin, a farmer, lost her horses to Ogres who broke into her barn, and pays to have them chased off.",
+   "names": {
+    "Tamsin": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tamsin",
+     "text": "My luck has been rotten of late. Two weeks ago, Ogres broke into the barn and carried off my horses.\n\nI don't expect I'll see them again, but I'd love to see those brutes run out of the valley.\n\nThere's coin for anyone who chases them off."
+    },
+    "reminder": {
+     "speaker": "Tamsin",
+     "text": "Have those brutes left my barn yet?"
+    },
+    "completion": {
+     "speaker": "Tamsin",
+     "text": "So the Ogres have been chased off! Well done, lad! We shall all rest easier knowing those brutes won't be stomping through our barley!\n\nNow take your reward... 90 in gold! You're always welcome at Tamsin's!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive off the Ogres that raided Tamsin's barn."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Maudie lost her Staff of Rain to Ogre raiders, who took it to their camp in the northwest.",
+   "names": {
+    "Maudie": "person",
+    "Staff of Rain": "thing",
+    "Brakk": "person",
+    "Tosk": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Maudie",
+     "text": "Welcome, Wanderer! Thank goodness you are here at last, for the farms are in terrible need of help. The Ogres came through Tosk the other night and carried off my Staff of Rain! Will you go to the Ogre camp in the northwest and bring back the precious staff at once?"
+    },
+    "refusal": {
+     "speaker": "Maudie",
+     "text": "I'm sorry you feel that way. Come back if you change your mind!"
+    },
+    "reminder": {
+     "speaker": "Maudie",
+     "text": "Hurry and fetch my Staff! Please go quickly! For given half a chance, Brakk will smash the Staff for pure sport, indeed!"
+    },
+    "completion": {
+     "speaker": "Maudie",
+     "text": "Wonderful! Many thanks for bringing the Staff home! With it back in my hands, we can finally put an end to Brakk's raids once and for all!\n\nHere, this Red Potion and this Spell Book may come in handy... sooner than you'd think."
+    },
+    "after": {
+     "speaker": "Maudie",
+     "text": "Thanks again, Wanderer, for the Staff."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Maudie's Staff of Rain."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Maudie's Staff of Rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tosk: praise after the boar hunt, a word on the Ogre chief's raids, a farmer's shout.",
+   "names": {
+    "Dobb": "person",
+    "Lorra": "person",
+    "Tamsin": "person",
+    "Brakk": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dobb",
+     "text": "They say you're the one who chased those pesky boars off our fields! Thank you, kind sir!"
+    },
+    "rumour2": {
+     "speaker": "Lorra",
+     "text": "That brute Brakk has left the east fields in ruins. Find his scouts before they reach the mill."
+    },
+    "rumour3": {
+     "speaker": "Tamsin",
+     "text": "Hey! Get out of my barn!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Mugg of the Plow and Pitcher inn, Grint the smith and Quenby the magic seller greet the player.",
+   "names": {
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Plow and Pitcher": "place",
+    "Ulm Gorra": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mugg",
+     "text": "Sorry, friend, but my rooms have filled up somewhat. Ogres tend to make the farm folk crowd into town. Heh, heh, heh..."
+    },
+    "arms": {
+     "speaker": "Grint",
+     "text": "Wanna buy a scythe? They're salvaged from the vast scrap heaps of Ulm Gorra."
+    },
+    "magic": {
+     "speaker": "Quenby",
+     "text": "Word gets around. Out of my shop, before I test a scroll on your head!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Orsk puts a bounty on Tusker, a boar ruining the fields. Mugg of the Plow and Pitcher wants bats cleared out of his cellar.",
+   "names": {
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Mugg": "person",
+    "Plow and Pitcher": "place",
+    "Tosk": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Orsk",
+     "text": "Good day, young sir. I suppose you have come about the bounty.\n\nThere's a fat purse waiting for Tusker -- dead or alive. He and his sorry herd of boars have been ruining the fields of our fair town for weeks.\n\nTake care, one charge from those savage swine will break your legs."
+    },
+    "offer_b": {
+     "speaker": "Mugg",
+     "text": "Actually, trade has been rather poor lately. Two weeks ago, bats took over the cellar and fouled the barrels.\n\nI doubt I'll save a drop of that ale, but I'd be delighted to see those rotten pests cleared out.\n\nI'll gladly pay whoever clears them out."
+    },
+    "outcome_a": {
+     "speaker": "Warden Orsk",
+     "text": "You finished Tusker, eh? Well, I had hoped to see him hauled in alive, but I'll lose no sleep over a pig's soul!\n\nHere's your reward -- 150 in gold! Thanks for keeping Tosk safe!"
+    },
+    "outcome_b": {
+     "speaker": "Mugg",
+     "text": "So the bats are gone! Well done! We shall all drink easier now that those pests aren't fouling the barrels!\n\nAnd here's your reward... a Red Potion! You're welcome at the Plow and Pitcher anytime, young sir!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Tusker the boar for Warden Orsk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the bats out of Mugg's cellar at the Plow and Pitcher."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["RedPotion"]
+   }
+  },
+  "rescue": {
+   "specifics": "Wenda begs the player to bring back Odrin the miller, dragged off by Ogres to Ulm Gorra.",
+   "names": {
+    "Wenda": "person",
+    "Odrin": "person",
+    "Brakk": "person",
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wenda",
+     "text": "Damn! Where have you been, lad!? The Ogres stormed into Tosk and they'd have burned every barn if Odrin had not rung the alarm bell at the last moment!\n\nBut in the confusion, the brutes dragged Odrin off, leaving the burned barns our smallest concern! All of Tosk will starve if Odrin is lost!\n\nYou must go where the Ogres were headed, northwest to the Ogre camp of Ulm Gorra! Bring Odrin home or we are done for!"
+    },
+    "reminder": {
+     "speaker": "Wenda",
+     "text": "I'm sure Odrin's in a bad way! Go quickly!"
+    },
+    "found": {
+     "speaker": "Odrin",
+     "text": "Is someone there? Please, let me out of this cage!"
+    },
+    "following": {
+     "speaker": "Odrin",
+     "text": "Hurry! Take me back to Tosk!"
+    },
+    "completion": {
+     "speaker": "Wenda",
+     "text": "At gladder other times, the fields of Tosk would ring with cheers at the return of Odrin! Well done, lad! But now we must put an end to Brakk and his raiders.\n\nPlease accept these as tokens of our thanks for such a brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Ulm Gorra and rescue Odrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Lorra points the player to Ruddock, who sends him on to Hesk, Odrin's brother, a farmer.",
+   "names": {
+    "Lorra": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Tosk": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Lorra",
+     "text": "Well, well! You're certainly cleaner than the other travelers! Go see Ruddock by the pump when you're done saving the world."
+    },
+    "opening": {
+     "speaker": "Ruddock",
+     "text": "Here we are, lad, the village of Tosk. I can't safely escort you any farther.\n\nUp this lane a little way you'll find the farm of Hesk, brother of Odrin the Miller. He's expecting you. I must go and so should you!\n\nTosk is counting on you."
+    },
+    "reminder": {
+     "speaker": "Ruddock",
+     "text": "Stop dawdling now. Better get going!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Odrin's farmer brother, Hesk, who lives north of the barley."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

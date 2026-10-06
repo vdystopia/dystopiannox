@@ -1,0 +1,693 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, wants her amulet back from the Urchins of the old barrow.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Greetings, brave Wanderer! Please, help me, a dreadful thing has happened at my mill!\n\nNot long ago, a band of Urchins crept in through the yard. They stole my amulet and ran off to their barrow! I could ward them off if I only had it, but they took it east of the ford. I'm afraid they'll be back to wreck the mill if I go out after it!\n\nWill you fetch it back for me? I will give a good reward for its quick return."
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Fine then, leave my amulet with the Urchins!"
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Why are you standing there? I need my amulet back!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "Oh, thank you kindly, Wanderer! I could never pay you in full for this... But please, take this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again, kind Wanderer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Wenna's amulet from the Urchins' barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return the amulet to Wenna at the mill."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Pellwick the assayer has had the Rod of Seeking stolen by a Troll and sends the player on to Dorvak with it",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellwick",
+     "text": "Ooooh, how can this be? That filthy Troll beat both of my helpers. Will you go after him? Quickly, you must stop him before the Rod of Seeking is lost."
+    },
+    "refusal": {
+     "speaker": "Pellwick",
+     "text": "Oh dear. Then come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Pellwick",
+     "text": "Please, I implore you. Catch that cowardly Troll and bring back the Rod of Seeking."
+    },
+    "completion": {
+     "speaker": "Pellwick",
+     "text": "The Rod of Seeking is saved! Dorvak will need my Sounding Bell to read the new seams. Here, carry them both down to him."
+    },
+    "after": {
+     "speaker": "Pellwick",
+     "text": "You may have saved the whole Delve with this. Well done, lad! Now, hurry down to Dorvak."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Rod of Seeking stolen by the Troll."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Take the Rod of Seeking and the Sounding Bell to Dorvak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Mayor Pellan's amulet, stolen by the Mud Imps, who took it into the sinkhole south of Gorrow",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellan",
+     "text": "Welcome to Gorrow, noble Adventurer! We've been expecting you!\n\nThe Mud Imps who live below the walks have gone wild! They crept up the posts and stole my Amulet! A Hunter chased the little brutes into the sinkhole, but hasn't come back.\n\nWill you go into the sinkhole to the South and recover my Amulet from the Imps? Come see me once you are back. I'll be home on the big platform."
+    },
+    "refusal": {
+     "speaker": "Pellan",
+     "text": "Oh, bah! Then the Imps can keep it!"
+    },
+    "reminder": {
+     "speaker": "Pellan",
+     "text": "Those pesky Imps are up to no good again these days."
+    },
+    "completion": {
+     "speaker": "Pellan",
+     "text": "My Amulet! Thank you, kind sir! All Gorrow is truly thankful for your fine work.\n\nHere, take this as a small gift from the hamlet. The Captain is waiting at the landing. You should visit the shops first, then go and talk to him at once."
+    },
+    "after": {
+     "speaker": "Pellan",
+     "text": "There is nothing more I can give you but my gratitude. You ought to find the Captain. He is waiting down at the landing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pellan's amulet from the Mud Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mayor Pellan's amulet from the Mud Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Odlin lost his fur cloak to an imp in the loft above the kennels, and the hounds now bite anyone who enters the yard.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Odlin",
+     "text": "Good! My family keeps the finest hounds in Karth Vael. Unfortunately, a nasty little imp has moved into the loft above our kennel and run off with my fur cloak. He has stirred up the hounds and now they snap at anyone who enters the yard.\n\nGo get the cloak back from the imp, and I'll make it worth your while. Will you go?\n\nHere, take this whistle, it will calm the hounds."
+    },
+    "refusal": {
+     "speaker": "Odlin",
+     "text": "Too bad, nobody else will go near that yard.\n\nCome and find me if you think better of it, I'm at the kennels by the stables."
+    },
+    "reminder": {
+     "speaker": "Odlin",
+     "text": "Don't fret, one little imp is no match for you. Come back with my cloak."
+    },
+    "completion": {
+     "speaker": "Odlin",
+     "text": "Excellent! You've got my cloak back.\n\nHere is your reward. The red potion will put you back on your feet. Good luck!"
+    },
+    "after": {
+     "speaker": "Odlin",
+     "text": "Thanks again for getting my cloak back."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Odlin's fur cloak from the Imp in the kennel loft."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "NOTE: Odlin has his cloak back and the hounds are quiet."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Dorrel is waiting on a Cloak of Tides that the maker Skerrik has not delivered from his hut on Eel Island.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrel",
+     "text": "Skerrik has been working on a Cloak of Tides for me for some time. He should have been done with it and had it brought to me by now.\n\nTake the old pier out to Skerrik's hut on Eel Island and find the Cloak. Will you go?"
+    },
+    "refusal": {
+     "speaker": "Dorrel",
+     "text": "Oh, I see. Well, the offer stands if you come back."
+    },
+    "reminder": {
+     "speaker": "Dorrel",
+     "text": "Find Skerrik and bring the Cloak to me -- at whatever the cost! Beware of the reed channels. Nasty things lurk under the pier!"
+    },
+    "completion": {
+     "speaker": "Dorrel",
+     "text": "You found the Cloak of Tides! Wonderful!\n\nMy worst fears for Skerrik, however, have come true. I'll miss him, but there is no time for grief. Orlmere needs me and Rudge wants a word with you. Take this Blue Potion for your trouble.\n\nGood luck, brave Adventurer!"
+    },
+    "after": {
+     "speaker": "Dorrel",
+     "text": "Thanks again for all your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Cloak of Tides which Skerrik has made."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return the Cloak of Tides to Dorrel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Dorrick's Cloak of Warding, woven by his colleague Yarnak, was carried off by the Gargoyles to the ruined bell tower.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrick",
+     "text": "While I look into what is troubling our college, there's another job that needs doing.\n\nYarnak, a colleague of mine, finished the Cloak of Warding I asked for, but the Gargoyles carried it off from his cottage.\n\nBeyond the college wall there is a ruined bell tower where the Gargoyles roost. They carry everything they steal up there. You may leave by the garden door at the back of this hall.\n\nPlease fetch my cloak back and let Yarnak know it is safe.\n\nWill you help me, Apprentice?"
+    },
+    "refusal": {
+     "speaker": "Dorrick",
+     "text": "I'm sorry to hear that. Think it over and come back."
+    },
+    "reminder": {
+     "speaker": "Dorrick",
+     "text": "Go to the bell tower and find my cloak! Now!"
+    },
+    "completion": {
+     "speaker": "Dorrick",
+     "text": "You found the Cloak of Warding! Excellent!\n\nSadly, my worst fears for Yarnak's cottage have come true. I shall miss his fine work, but we have no time for sorrow, I'm afraid. The Gate Wardens need my help and Rector Ulbrin asks for your assistance.\n\nPlease take this potion. Good luck!"
+    },
+    "after": {
+     "speaker": "Dorrick",
+     "text": "Thanks again for finding my cloak!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Cloak of Warding which the Gargoyles stole from Yarnak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the Cloak of Warding which the Gargoyles stole from Yarnak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: Mylka, who keeps the magic shop, lost her Amulet of Warmth to the Imps",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mylka",
+     "text": "Wretched little fiends! The Imps have crept into my cellar and made a mess of everything already!\n\nI am Mylka. I am looking for my Amulet of Warmth. I fear it has been carried off to a nearby Imp Nest.\n\nIf you could get it back from them, I would be willing to teach you a spell or two. Will you search the wretched Imp Nest for it?"
+    },
+    "refusal": {
+     "speaker": "Mylka",
+     "text": "Oh. Well, come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Mylka",
+     "text": "Have you got my amulet back yet? Oh my, I feel so cold."
+    },
+    "completion": {
+     "speaker": "Mylka",
+     "text": "My Amulet of Warmth! I feared it was lost for good.\n\nYou are braver than you look. Perhaps you might make a fine student.\n\nFollow me to the counter. Please take this Blue Potion with my thanks. We have much to discuss when you return from your quest."
+    },
+    "after": {
+     "speaker": "Mylka",
+     "text": "Whenever you are free, step up to my counter and we will begin."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mylka's Amulet of Warmth from the Imp Nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mylka's Amulet of Warmth from the Imp Nest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Tilda's enchanted hammer Gertie was carried off by Imps to their den.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tilda",
+     "text": "Please, help me, kind stranger! The Imps have raided my forge and carried off my poor enchanted hammer, Gertie, to their den!\n\nWill you bring her back? I'll be in your debt forever!"
+    },
+    "refusal": {
+     "speaker": "Tilda",
+     "text": "No? Oh.... Well, come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Tilda",
+     "text": "Take whatever you find in the den! Just hurry and fetch Gertie!"
+    },
+    "completion": {
+     "speaker": "Tilda",
+     "text": "Thank goodness, you got her back! How can I ever thank you for your courage?!\n\nWhat's that you say? A pile of gold? Well, if gold is what you want, please take this as a sign of my appreciation."
+    },
+    "after": {
+     "speaker": "Tilda",
+     "text": "Thanks again for fetching her, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Gertie the Magic Hammer back from the Imps near Ashkar."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "NOTE: Gertie the Magic Hammer is back in Tilda's hands."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Hessel, the stablemaster, lost his Cloak of Warding to crows and imps that overran the stable loft.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hessel",
+     "text": "Why did you take so long!? We have a terrible problem!\n\nHideous overgrown crows and flying imps from the Hollow have overrun the stable loft. Two of my stablehands were hurt in defense of the inn's good name!\n\nPlease, I beg you! Will you drive off the beasts and fetch back my Cloak of Warding? I'll pay you handsomely.\n\nThis key will open the loft door.\n\nI also have a potion that might come in handy."
+    },
+    "refusal": {
+     "speaker": "Hessel",
+     "text": "No? Well, the cloak is still up there. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Hessel",
+     "text": "Come back to me once the loft is clear and the cloak is mine again, and you'll be paid well."
+    },
+    "completion": {
+     "speaker": "Hessel",
+     "text": "You are a true champion! My deepest thanks.\n\nWhile you were up in the loft, fighting those crows, Orsk came by, looking for you. He's waiting for you at the Warden's Post -- north of here.\n\nTake this gold and potion for your trouble, before you go."
+    },
+    "after": {
+     "speaker": "Hessel",
+     "text": "Orsk is no fool. Best do as he says."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the crows and imps in Hessel's stable loft. Recover the Cloak of Warding."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Go to the Warden's Post and speak with Orsk."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Maudie lost her Staff of Rain to Ogre raiders, who took it to their camp in the northwest.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Maudie",
+     "text": "Welcome, Wanderer! Thank goodness you are here at last, for the farms are in terrible need of help. The Ogres came through Tosk the other night and carried off my Staff of Rain! Will you go to the Ogre camp in the northwest and bring back the precious staff at once?"
+    },
+    "refusal": {
+     "speaker": "Maudie",
+     "text": "I'm sorry you feel that way. Come back if you change your mind!"
+    },
+    "reminder": {
+     "speaker": "Maudie",
+     "text": "Hurry and fetch my Staff! Please go quickly! For given half a chance, Brakk will smash the Staff for pure sport, indeed!"
+    },
+    "completion": {
+     "speaker": "Maudie",
+     "text": "Wonderful! Many thanks for bringing the Staff home! With it back in my hands, we can finally put an end to Brakk's raids once and for all!\n\nHere, this Red Potion and this Spell Book may come in handy... sooner than you'd think."
+    },
+    "after": {
+     "speaker": "Maudie",
+     "text": "Thanks again, Wanderer, for the Staff."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Maudie's Staff of Rain."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Maudie's Staff of Rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

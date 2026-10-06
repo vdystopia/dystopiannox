@@ -39,12 +39,14 @@ law-or-mercy choice ending in a journey home). `thornwick.py` and `rimehold.py` 
 5. **Fights with a reason**, **rewards** (items first, gold within about 500-1500 per map, `rules/QUESTS.md`), **shops**,
    and **everyone talks** (a rumour each, a line after the main quest, a portrait). Item names must exist:
    `py review/catalog.py <name or regex>`.
-6. **Write every line from Westwood's own lines, then check it by `rules/DIALOGUE.md`.** Read
-   `review/storylab/WRITER.md` and the exemplars in `review/storylab/exemplars/` (20-30 campaign lines per situation:
-   offer, opening, reminder, completion, after, townsfolk, guard, shop, captive, journal); write each line in the
-   manner of two or three of its situation's exemplars (never copied, never a Westwood name). Then the guide's checks
-   (plain and loud, short sentences, two lines in three exclaim or ask, no semicolons, the player addressed as lad /
-   stranger / kind sir and never by class, journal entries as short orders), and each side quest by `rules/QUESTS.md`'s five beats (offer with a yes/no
+6. **Write every line from a Westwood frame, then check it by `rules/DIALOGUE.md`.** Deal the map its frames with
+   `py tests/storylab.py frames --seed <MapName>` (a Westwood quest for each quest, a Westwood line for each guard,
+   shopkeeper, townsperson, reminder and journal entry) and rewrite each line for line: same size, punctuation,
+   register and quirks, new matter and names, nothing added (no explanation, joke, backstory or closing sentiment
+   the frame lacks). This is what the story lab's blind judges could not tell from Westwood (`rules/DIALOGUE.md`
+   "Write from Westwood's own lines"); rules and imitation alone were told apart every time. Then the guide's
+   checks (no semicolons, the player never addressed by class, journal entries as short orders) and each side quest
+   by `rules/QUESTS.md`'s five beats (offer with a yes/no
    question, refusal, reminder, completion with the reward handed over, afterwards; `q.errand`). Score the story with
    `py tests/storylab.py --check mapgen/designs/<map>.py` (aim: 8 or more, no line below 6).
 

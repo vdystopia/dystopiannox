@@ -1,0 +1,310 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ashkar",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Drovak the lava sorcerer has sent his Trolls to raid Ashkar and carry off the Hammer of Kolgar, the forge-town's greatest tool.",
+  "names": {
+   "Ashkar": "place",
+   "Brakk": "person",
+   "Maldrek": "person",
+   "Drovak": "person",
+   "Kolgar": "person",
+   "Hammer of Kolgar": "thing",
+   "Trolls": "group",
+   "Goblins": "group",
+   "Imps": "group",
+   "Foundry": "place",
+   "Guildhall": "place",
+   "Crucible Vault": "place",
+   "Tobb": "person",
+   "Pogg": "person",
+   "Fenn": "person",
+   "Yara": "person",
+   "Odo": "person",
+   "Hettie": "person",
+   "Skeld": "person",
+   "Ilsa": "person",
+   "Gorm": "person",
+   "Tilda": "person",
+   "Gertie": "thing",
+   "Rusk Tinker": "person",
+   "Hilde": "person",
+   "Ketta": "person",
+   "Pell": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb, gate guard of Ashkar, wary of strangers because of the Trolls.",
+   "names": {
+    "Tobb": "person",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Guildhall": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Stranger! Ugh! I've heard what the Trolls do to travelers on the road! Turn back!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "We will hold the gate here, but you must report to Maldrek in the Guildhall. Thanks for coming, brave Adventurer!"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "That Troll just walked into the furnace before my very eyes!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gorm, a lift-keeper, had his best helmet stolen by Goblins while napping and wants it back.",
+   "names": {
+    "Gorm": "person",
+    "Goblins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorm",
+     "text": "Sorry, mate, the ore lift is jammed! Only way down to the lower forge is the old cart tunnel, through the Goblin warren. But, if you go that way, mate, keep your guard up! The Goblins stole my best helmet while I was napping!\n\nIf you bring it back, I'll give you a damn fine spell book."
+    },
+    "reminder": {
+     "speaker": "Gorm",
+     "text": "Did you find my helmet yet?"
+    },
+    "completion": {
+     "speaker": "Gorm",
+     "text": "My helmet! I had given it up for lost! I'm eternally grateful. Here's the book, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the helmet stolen from Gorm by the Goblins and bring it back to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Tilda's enchanted hammer Gertie was carried off by Imps to their den.",
+   "names": {
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Imps": "group",
+    "Ashkar": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tilda",
+     "text": "Please, help me, kind stranger! The Imps have raided my forge and carried off my poor enchanted hammer, Gertie, to their den!\n\nWill you bring her back? I'll be in your debt forever!"
+    },
+    "refusal": {
+     "speaker": "Tilda",
+     "text": "No? Oh.... Well, come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Tilda",
+     "text": "Take whatever you find in the den! Just hurry and fetch Gertie!"
+    },
+    "completion": {
+     "speaker": "Tilda",
+     "text": "Thank goodness, you got her back! How can I ever thank you for your courage?!\n\nWhat's that you say? A pile of gold? Well, if gold is what you want, please take this as a sign of my appreciation."
+    },
+    "after": {
+     "speaker": "Tilda",
+     "text": "Thanks again for fetching her, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Gertie the Magic Hammer back from the Imps near Ashkar."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "NOTE: Gertie the Magic Hammer is back in Tilda's hands."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Fenn on a slug at Maldrek's door, Yara teasing, Odo on a missing ore cart.",
+   "names": {
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Maldrek": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fenn",
+     "text": "Ew! I watched that huge lava slug ooze right under Maldrek's door!"
+    },
+    "rumour2": {
+     "speaker": "Yara",
+     "text": "You're pretty puny for a hammer-boy. Hah, hah, hah...!"
+    },
+    "rumour3": {
+     "speaker": "Odo",
+     "text": "Did you see where the ore cart went? It couldn't have just rolled away!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hettie the innkeeper, Skeld the armsmith, Ilsa the potion seller.",
+   "names": {
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hettie",
+     "text": "Sorry, I can't give you a room. The smiths have all taken beds."
+    },
+    "arms": {
+     "speaker": "Skeld",
+     "text": "Pssst! Over here! Are you wanting a sharp sword? Some armor, maybe?"
+    },
+    "magic": {
+     "speaker": "Ilsa",
+     "text": "Sorry friend, you've bought me dry! I've no potions left to give you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Rusk Tinker is locked in the stockade and offers a vault key. Hilde, who runs a foundry, wants him back at the molds and offers a steel shield.",
+   "names": {
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Crucible Vault": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Rusk Tinker",
+     "text": "Hi there. Name's Rusk Tinker. Think you could spring me from this cell? If you do, I'll let you into the Crucible Vault."
+    },
+    "offer_b": {
+     "speaker": "Hilde",
+     "text": "Oh, bah! Rusk's in the stockade again?! Sometimes I swear he gets locked up to dodge the night shift. Running a foundry is no easy job, you know. We've got a big pour on today and we really need Rusk at the molds.\n\nTell you what... Spring Rusk from the stockade and you get a steel shield off today's pour!"
+    },
+    "outcome_a": {
+     "speaker": "Rusk Tinker",
+     "text": "Thanks for getting me out. Take this gold as a token of my thanks. Ah, yes! And here's a key to the Crucible Vault. Watch yourself when you go in. The furnace wardens won't take well to the sight of a stranger down there. Thanks again!"
+    },
+    "outcome_b": {
+     "speaker": "Hilde",
+     "text": "Rusk! What were you thinking, getting yourself thrown in the stockade again? Thanks for springing him, stranger! Here's the shield I promised. Good luck with whatever it is you're doing!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get Rusk Tinker out of the stockade and win his key to the Crucible Vault."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Rusk Tinker for Hilde and collect a steel shield."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Ketta's apprentice Pell was dragged off by Trolls and must be brought home.",
+   "names": {
+    "Ketta": "person",
+    "Pell": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ketta",
+     "text": "Actually, work has been rather quiet at my forge. Two weeks ago, Trolls broke in and dragged off my apprentice, Pell.\n\nI don't expect she's alive, but I'd like nothing better than to see her home.\n\nI'll happily pay anyone who brings her back."
+    },
+    "reminder": {
+     "speaker": "Ketta",
+     "text": "Please, bring Pell back!"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Is somebody there? Please, help me!"
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Take me to the forge!"
+    },
+    "completion": {
+     "speaker": "Ketta",
+     "text": "So Pell is home safe! Well done, lad! We shall all breathe easier knowing those Trolls won't be laying a hand on her again!\n\nAnd here's your reward... 80 in gold! You're welcome at Ketta's anytime!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Pell back from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Pogg points the player to Maldrek, who sends him to recover the Hammer of Kolgar from Drovak's Trolls; Brakk waits at the Foundry.",
+   "names": {
+    "Pogg": "person",
+    "Maldrek": "person",
+    "Brakk": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Ashkar": "place",
+    "Foundry": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pogg",
+     "text": "Hey! Hey! Maldrek has been asking for you!"
+    },
+    "opening": {
+     "speaker": "Maldrek",
+     "text": "The long road has tested your mettle well, lad. But there's no time to sit idle. You must now recover the Hammer of Kolgar, which the Trolls took from Brakk when they raided poor Ashkar!\n\nWith the Trolls marching and the Hammer in their hands, Drovak is most certainly behind it all. Brakk is waiting at the Foundry. Now, off with you!"
+    },
+    "reminder": {
+     "speaker": "Maldrek",
+     "text": "Quickly, go and find Brakk! He wants a word with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Hammer of Kolgar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

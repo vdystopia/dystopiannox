@@ -1,0 +1,34 @@
+{
+  "packet": "ba0396",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The opener 'While the rest of [Place] frets over [Person], there's a smaller job' is a writerly framing device Westwood never uses, and 'I'll miss the old goat, but we have no time for weeping' is a polished turn. Its thanks has the same skeleton as E (found it, wonderful, my fears came true, no time to grieve, take this), which looks like a template."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The slightly clumsy, over-explicit directions ('located East of here', 'I should be in my house at the center of town'), the odd capitalisation and 'nettlesome urchins' are all Westwood's tutorial-town voice. The hand-off to the Captain and telling the player to buy supplies first is how the campaign moves the player on."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The breathless melodrama ('a horrific fate has befallen my wife!', 'raving demoness'), plus giving the player the reason he can't go himself, sounds like Nox. 'What are you waiting for?' and a thanks that trails off on an ellipsis are typical of it."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Thank the stars someone has come at last, for we badly need a strong arm' and 'the vilest of uses, indeed!' are archaic flourishes stacked up. The reminder carries backstory and the wry 'perhaps sooner than you'd like' is a modern aside, more literary than Westwood's plain hints."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Its shape mirrors A almost line for line. 'Watch your footing on the way down. Wolves prowl the slopes!' is atmospheric scene-setting, and 'carried up the pass' reads like environmental prose, not Nox's blunt quest-giver speech."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It opens mid-rant ('Thieving little creatures!'), introduces the speaker by title, and offers a 'Hmmm... Yes.' musing before the teleporter instructions. That is the campaign's chapter-opening hand-off, plain and a bit stilted."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "It starts on 'Good!' as if answering an earlier exchange. The cause and effect is concrete and a little silly (an urchin annoys the bats, the bats attack the orchard), and the payment is plain bureaucracy (a petition, a ruby key). The terse thanks is pure Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Aiieee!' and the old-woman voice are plausible, but the potion pitch ('It draws the poison out of any bite. It would be a godsend to anyone who walks the wilds') explains the item in an advert-like way. The reminder repeats the location the offer had left out, which is a careful, designed touch."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "It is short and plain, close to Nox's register, but 'Run down that thieving Ogre' and a reward framed as 'You will need my old [Thing] more than I will, up at [Place]' read a little too neat. It gives no direction and no concrete stakes, and its tidy efficiency feels constructed."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Mine workers have died in defense of Nox's vital interests!' is the campaign's bombastic bureaucrat humour. The list of handed-over items (key, beast scroll), the Captain hand-off and a counted journal objective ('Rescue the 6 trapped mine workers') are Westwood's quest construction."}
+  ],
+  "tells": [
+    "Generated texts share a reusable skeleton: an item recovered, 'Wonderful!', 'however' my fears came true, no time to grieve, take this. Two texts in one packet using the same arc and wording give the template away.",
+    "Generated lines add literary flourishes and asides ('Thank the stars', 'the vilest of uses, indeed', 'perhaps sooner than you'd like', 'the old goat') where Westwood stays blunt or goes melodramatic without irony.",
+    "Westwood often starts mid-conversation or mid-emotion ('Good!', 'Thieving little creatures!', 'What took you so long'), gives clumsy explicit directions ('located East of here') and over-capitalises nouns.",
+    "Westwood's rewards and hand-offs are mechanical: a key, a scroll, a petition, 'the Captain awaits you', 'step into the teleporter'. Generated rewards come with explanations or sentiment about the item's use.",
+    "Generated reminders tend to carry new atmosphere or backstory (wolves on the slopes, the villain's plans). Westwood's reminders are short nudges or mutterings ('Those nettlesome urchins are causing too much trouble these days').",
+    "Westwood's journal entries can be oddly specific or game-mechanical ('Charm or kill all the monsters', 'Rescue the 6 trapped mine workers'). Generated entries are uniformly tidy 'Recover the X from Y'."
+  ]
+}

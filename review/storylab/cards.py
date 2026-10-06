@@ -176,7 +176,7 @@ def _frame_pools():
                 n = len(r["text"].split())
                 if not lo <= n <= hi: continue
                 if any(difflib.SequenceMatcher(None, r["text"], t).ratio() > 0.6 for t in pooltexts): continue
-                xs.append((r["key"], re.sub(r"\s*\n\s*\n\s*", " / ", r["text"].strip())))
+                xs.append((r["key"], re.sub(r"\s*\n\s*\n\s*", " / ", r["text"].strip()).replace(chr(10), " / ")))
             tiers.append(xs)
         out[fs] = tiers
     return out
@@ -205,8 +205,8 @@ LONG = ("offer", "opening", "completion")
 def frames_card(dealer, scenarios, long=True):
     """The frames of one map: {scenario: {part: (key, text)}} and its markdown."""
     L = ["### Your frames: one Westwood line a part, to rewrite line for line", "",
-         ("Each part listed below is a rewrite of its frame (the offers, thanks and openings are built sentence by "
-          "sentence from the sentence frames that follow)." if not long else "Each part of your town is a rewrite of its frame.") + " Keep the frame's shape: about as many sentences, its "
+         ("Each part listed below is a rewrite of its frame (the quests are rewritten from their quest frames above)."
+          if not long else "Each part of your town is a rewrite of its frame.") + " Keep the frame's shape: about as many sentences, its "
          "punctuation where it falls (! ? ... -- / page breaks), how it opens and how it ends, its stock words, its "
          "quirks (a slip, a stiff word, a run-on, an afterthought, a flat statement). Change its matter to your town's: "
          "who, what, where, the beast, the thing, the reward. Never keep five words of a frame in a row (a stock phrase "
@@ -346,11 +346,20 @@ def map_frames(seed, spec=DEFAULT_MAP_PARTS):
         if ":" not in chunk: continue
         who, parts = chunk.split(":", 1)
         groups.append((who.strip(), [(p.strip(), "") for p in parts.split(",") if p.strip()]))
-    short = frames_card(dealer, groups, long=False)[1]
+    # each quest of the map gets a whole Westwood quest (v10, the lab's best round); the rest gets line frames
+    qmap = {}
+    for who, parts in groups:
+        ps = {p for p, _ in parts}
+        if "opening" in ps: qmap[who] = "main_opening"
+        elif "found" in ps or "plea" in ps: qmap[who] = "rescue"
+        elif "offer" in ps or "offer_a" in ps: qmap[who] = "heirloom_fetch" if "refusal" in ps else "bounty_offer"
+    qmd = quest_frames_card(dealer, [(qmap[w], ps) for w, ps in groups if w in qmap])[0]
+    for w, sid in qmap.items(): qmd = qmd.replace(f"**{sid}**", f"**{w}**", 1)
+    short = frames_card(dealer, [(w, ps) for w, ps in groups if w not in qmap], long=False)[1]
     return "\n".join([f"# Story frames for {seed}", "",
                       "Write every line of the map from its frame (review/storylab/WRITER.md, rules/DIALOGUE.md). The "
                       "frames are Westwood's own lines, dealt to this map; never keep five words of one in a row, "
-                      "never a Westwood name.", "", short, sentence_frames_card(dealer, groups)])
+                      "never a Westwood name.", "", qmd, short])
 
 
 # ---- quest frames (v10): a whole Westwood quest a quest ---------------------------------------------------------------

@@ -1,0 +1,322 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kell Varn",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Ogre Warlord Zhurg holds the mine hold above the pass and has taken the Staff of Thaw.",
+  "names": {
+   "Kell Varn": "place",
+   "Zhurg": "person",
+   "Zhurg's Hold": "place",
+   "Staff of Thaw": "thing",
+   "Warden Odrin": "person",
+   "Captain": "person",
+   "Brek": "person",
+   "Orlo": "person",
+   "Mylka": "person",
+   "Dagg": "person",
+   "Brisa": "person",
+   "Tam": "person",
+   "Gruff": "person",
+   "Pell": "person",
+   "Tolly": "person",
+   "Hobb": "person",
+   "Vessa": "person",
+   "Ketra": "person",
+   "Wenk": "person",
+   "Long Hall": "place",
+   "Pass Gate": "place",
+   "Hald Rock": "place",
+   "Wolf Den": "place",
+   "Imp Nest": "place",
+   "lower gate": "place",
+   "Amulet of Warmth": "thing",
+   "Warden's Key": "thing",
+   "Ogre's Lullaby": "thing",
+   "Ogres": "group",
+   "White Wolves": "group",
+   "Imps": "group",
+   "Urchins": "group",
+   "drovers": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brek, guard at the Pass Gate of Kell Varn",
+   "names": {
+    "Brek": "person",
+    "Warden Odrin": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Captain": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brek",
+     "text": "Warden Odrin is waiting in the Long Hall. He has the key to the Pass Gate."
+    },
+    "again": {
+     "speaker": "Brek",
+     "text": "You've got the wrong guard, sorry."
+    },
+    "later": {
+     "speaker": "Brek",
+     "text": "Did you see where the Captain went? He wouldn't have left without a word!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Orlo, a trapper, asks the player to learn what became of his brother in the White Wolves' den",
+   "names": {
+    "Orlo": "person",
+    "White Wolves": "group",
+    "Wolf Den": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orlo",
+     "text": "Mangy brutes! The White Wolves have come down off the heights and made a terror of the whole pass!\n\nI am Master Trapper Orlo. I am looking for my brother. I fear he has strayed into a nearby Wolf Den.\n\nIf you could find out what happened and bring me word, I would be willing to teach you the trade. Come with me and I will point out the cursed Wolf Den above his cabin."
+    },
+    "reminder": {
+     "speaker": "Orlo",
+     "text": "Any sign of my brother? Oh no, I fear he is gone."
+    },
+    "completion": {
+     "speaker": "Orlo",
+     "text": "My brother's cap! Bad luck must have caught up with him.\n\nYou have shown the wolves could not stop you. Maybe you would make a fine trapper. Hmmm... Yes.\n\nFollow me to the cabin. Whenever you like, take the Bow off the rack. We have plenty of trapping ahead of us up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Learn the fate of Orlo's brother."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Mylka, who keeps the magic shop, lost her Amulet of Warmth to the Imps",
+   "names": {
+    "Mylka": "person",
+    "Imps": "group",
+    "Imp Nest": "place",
+    "Amulet of Warmth": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mylka",
+     "text": "Wretched little fiends! The Imps have crept into my cellar and made a mess of everything already!\n\nI am Mylka. I am looking for my Amulet of Warmth. I fear it has been carried off to a nearby Imp Nest.\n\nIf you could get it back from them, I would be willing to teach you a spell or two. Will you search the wretched Imp Nest for it?"
+    },
+    "refusal": {
+     "speaker": "Mylka",
+     "text": "Oh. Well, come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Mylka",
+     "text": "Have you got my amulet back yet? Oh my, I feel so cold."
+    },
+    "completion": {
+     "speaker": "Mylka",
+     "text": "My Amulet of Warmth! I feared it was lost for good.\n\nYou are braver than you look. Perhaps you might make a fine student.\n\nFollow me to the counter. Please take this Blue Potion with my thanks. We have much to discuss when you return from your quest."
+    },
+    "after": {
+     "speaker": "Mylka",
+     "text": "Whenever you are free, step up to my counter and we will begin."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mylka's Amulet of Warmth from the Imp Nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mylka's Amulet of Warmth from the Imp Nest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "three townsfolk of Kell Varn: Ogres at the pass, the Warden, a spy",
+   "names": {
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Kell Varn": "place",
+    "Ogres": "group",
+    "Warden Odrin": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hobb",
+     "text": "Kell Varn will never fall to the Ogres. Stand firm for the honor of Warden Odrin!"
+    },
+    "rumour2": {
+     "speaker": "Vessa",
+     "text": "No, we dare not sleep while the Ogres hold the pass!"
+    },
+    "rumour3": {
+     "speaker": "Ketra",
+     "text": "A spy from the Hold just ran past me! Be fast! He's heading for the gate!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brisa the innkeeper, Dagg the smith, Mylka of the magic shop",
+   "names": {
+    "Brisa": "person",
+    "Dagg": "person",
+    "Mylka": "person",
+    "Ogre's Lullaby": "thing",
+    "Staff of Thaw": "thing",
+    "Warden's Key": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brisa",
+     "text": "Hope you don't need a room any time soon, lad. You seem to have plenty left to do."
+    },
+    "arms": {
+     "speaker": "Dagg",
+     "text": "Wanna see a new blade?\n\nI call it 'Ogre's Lullaby.'"
+    },
+    "magic": {
+     "speaker": "Mylka",
+     "text": "So, you carry both the Staff of Thaw and the Warden's Key. Well done, brave Adventurer!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Tam wants his goat Gruff back from the Ogres of Hald Rock raid; Pell, a smuggler's runner, lost his boss's crate to the Urchins",
+   "names": {
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Hald Rock": "place",
+    "Ogres": "group",
+    "Urchins": "group",
+    "lower gate": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tam",
+     "text": "Sir! Help me please! A mob of foul Ogres just raided Hald Rock, the camp north of here and carried off almost all of the goats! One of them is my favorite billy, Gruff!\n\nPlease bring him back and I promise you a reward!"
+    },
+    "offer_b": {
+     "speaker": "Pell",
+     "text": "The Urchins just made off with my boss's precious crate! If I come back without it, he'll skin me. He's due any minute!\n\nPlease, kind sir, you have to help me! I think the Urchins went toward the lower gate.\n\nCould you... would you fetch it for us?"
+    },
+    "outcome_a": {
+     "speaker": "Tam",
+     "text": "Thank you so much, kind stranger! Take these as tokens of my appreciation!"
+    },
+    "outcome_b": {
+     "speaker": "Pell",
+     "text": "Oh, thank goodness! Please take this as a token of our appreciation!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue Tam's goat Gruff from the Ogre pens."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Pell's crate back from the Urchins by the lower gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion", "LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "The Captain begs the player to free Tolly and the drovers of Hald Rock from the Ogres of Zhurg's Hold",
+   "names": {
+    "Captain": "person",
+    "Tolly": "person",
+    "Hald Rock": "place",
+    "Zhurg's Hold": "place",
+    "Ogres": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Captain",
+     "text": "Hurry, lad! The drovers don't have much time. You must rescue all of them before the Ogres roast them!"
+    },
+    "reminder": {
+     "speaker": "Captain",
+     "text": "Every minute counts. Get moving!"
+    },
+    "found": {
+     "speaker": "Tolly",
+     "text": "Get us out!"
+    },
+    "following": {
+     "speaker": "Tolly",
+     "text": "We thought no one would come!"
+    },
+    "completion": {
+     "speaker": "Captain",
+     "text": "Good work, my son! All these hardy drovers owe you their lives!\n\nNow go find the other drovers!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Tolly and the drovers of Hald Rock held captive in Zhurg's Hold."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Warden Odrin sends the player through the old mine tunnel into Zhurg's Hold after the Staff of Thaw",
+   "names": {
+    "Warden Odrin": "person",
+    "Wenk": "person",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wenk",
+     "text": "Warden Odrin wants to see you -- that's a bad sign."
+    },
+    "opening": {
+     "speaker": "Warden Odrin",
+     "text": "Sorry about the cold, lad, but the old mine tunnel is the quietest way into Zhurg's Hold. Two Ogre sentries watch the entrance, and plenty more patrol inside.\n\nYou must bring back the Staff of Thaw, but Zhurg will not part with it willingly. This may turn nasty. But these scrolls will help."
+    },
+    "reminder": {
+     "speaker": "Warden Odrin",
+     "text": "Haste will be invaluable for slipping past the sentries. The Shield spell will help turn aside their clubs on your way back. Good luck and good speed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Sneak into Zhurg's Hold through the mine tunnel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

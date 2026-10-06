@@ -1,0 +1,34 @@
+{
+  "packet": "5082ac",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The pig-in-the-cellar setup and the 'heaps and heaps of gold' joke come close to Westwood's comic peasant voice. A smiths' guild with a speech about carrying a heavy load at the anvil sits outside Nox's three-guild world, and its 'welcome to the guild' lines are worded too neatly."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The offer has five pages and covers a key, a first picker who knows where the others are, a spell book, and a follow-up hand-off. That much setup is more than Westwood's offers carry. 'Perished in the service of the dinner tables' is a writer showing off, and 'Kill or charm every beast' writes game mechanics into the journal."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The flat 'Good!' opener, the ruby key, the petition errand and the guard's list of banned behaviour ending in 'don't even think about wizardry' are Westwood's dry town humour. The brag about '40 wizards with his bare hands' is their kind of overstatement too."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The capitalised 'East', the speaker telling you where his house is, 'Ya need some new weapons and armor?' and the line missing its final period all look like shipped 1999 text. The plain, functional journal entry fits as well."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A put-upon smuggler grumbling about his partner, the guard's 'a week, or a two! ... Heh, heh, heh...!' and 'Grunt if you agree!' are Westwood's loose, joking punctuation and voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The bridge guard says 'mate' four times, offers 'a damn fine spell', and lost his boots while bathing. The running gag about the mayor's spider fear across two townsfolk is Westwood's way of building a running town joke."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The quest is plain enough, but the town lines are terse alarm bulletins ('That does it! First the birds go quiet then the Ogres come') that tell a war story rather than characters' quirks. The shopkeeper reports troop movements instead of selling anything."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "It has the stock 'Greetings, brave Adventurer!' and 'token of our appreciation', the house 'northwest of here', and the dark joke about the ogres taking the women but leaving the cider. The 'finest wares in all of Nox' boast is also typical Westwood. The offer runs a little wordy but is period-true."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'While the rest of [Place] frets over [Person], there's a smaller job' and 'we have no time for weeping' are a modern novelist's framing. The deadpan one-liners ('I wonder who cuts his hair?', 'I'm not the miller, sorry') are under-written jokes rather than Westwood's broad ones."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The 'Ooooh' opener and the helmets sold 'off real Ogre heads' come close to Westwood's tone. Still, the bell-clapper relay quest is a neat, self-contained construction, and the guard and shopkeeper set up the same joke so tidily that the place reads as one designed gag."}
+  ],
+  "tells": [
+    "Westwood's town lines are single eccentric characters with broad, often crude jokes. The new texts' townsfolk tend to broadcast the map's current situation (the threat, the gate, the walkway) like status reports.",
+    "Westwood's punctuation and spelling are loose ('Ya', '?!', 'Heh, heh, heh...!', a missing final period, odd capitals such as 'East'). The new texts are cleaner and more controlled.",
+    "The new offers pack in extra logistics (keys, a first rescue who leads to the rest, a follow-up NPC hand-off, a bonus item) or literary framing ('in the service of the dinner tables', 'we have no time for weeping'). Westwood states the problem, the place and the reward and stops.",
+    "The new texts' jokes are deadpan or self-aware non-sequiturs ('I'm not the miller, sorry'). Westwood's are exaggerations and slapstick (40 wizards bare-handed, ogres leaving the cider, boots stolen while bathing).",
+    "Several of the new texts thread one theme through every speaker in a town (all on ogres, all on helmets). Westwood's speakers in one place often have nothing to do with each other.",
+    "Journal entries that name game mechanics ('Kill or charm') or count targets read as new. Westwood's journal entries are a plain imperative with the object and the place."
+  ]
+}

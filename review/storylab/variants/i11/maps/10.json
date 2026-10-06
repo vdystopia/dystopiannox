@@ -1,0 +1,313 @@
+{
+ "iter": "i11",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tolm",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "The Ogre Warlord Bolgrum holds Krog Durm above the Village of Tolm and his Ogres raid its farms. Ondrel sent the player to help Mayor Corbel.",
+  "names": {
+   "Tolm": "place",
+   "Krog Durm": "place",
+   "Town Hall": "place",
+   "Bolgrum": "person",
+   "Ondrel": "person",
+   "Corbel": "person",
+   "Dorrik": "person",
+   "Fulk": "person",
+   "Hobb": "person",
+   "Zelna": "person",
+   "Brunn": "person",
+   "Vessa": "person",
+   "Rain Staff": "thing",
+   "Tamm": "person",
+   "Hulda": "person",
+   "Nella": "person",
+   "Olm": "person",
+   "Pella": "person",
+   "Bramwick": "person",
+   "Kettick": "person",
+   "Ogres": "group",
+   "Bears": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Dorrik keeps the east gate, shut by Mayor Corbel while the Ogres raid the fields.",
+   "names": {
+    "Dorrik": "person",
+    "Corbel": "person",
+    "Zelna": "person",
+    "Hobb": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dorrik",
+     "text": "Mayor Corbel has shut the east gate until somebody chases the Ogres out of the bean fields. Somebody ought to go and get Zelna. She usually just puts the Ogres to sleep instead of fighting them."
+    },
+    "again": {
+     "speaker": "Dorrik",
+     "text": "I'm afraid old Hobb has finally lost his wits. They've put me on his gate now that he's taken up sleeping in the hayloft and hooting at the moon all night."
+    },
+    "later": {
+     "speaker": "Dorrik",
+     "text": "We must save the granary! Drive back the Ogres and shut the east gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Brunn, a pig farmer, has lost his pigs to Bears and wants them hunted down.",
+   "names": {
+    "Brunn": "person",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunn",
+     "text": "Truth be told, my farm's been doing rather poorly of late. Ten nights back, Bears broke into the sty and dragged off my pigs.\n\nI don't suppose I'll ever get my pigs back, but I'd like nothing better than to see those Bears hunted down.\n\nI'll gladly pay whoever puts an end to them."
+    },
+    "reminder": {
+     "speaker": "Brunn",
+     "text": "Any luck with those Bears? They had another pig last night!"
+    },
+    "completion": {
+     "speaker": "Brunn",
+     "text": "So those Bears are finished! Good work, lad! My pigs can rest easy knowing those brutes won't be shoving their big hairy snouts in my sty!\n\nAnd here's what I promised... 90 gold pieces! You're welcome at my farm anytime!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Bears that have been stealing Brunn's pigs."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Vessa's Rain Staff was taken by an Ogre who beat her farmhands, bound for Krog Durm.",
+   "names": {
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Krog Durm": "place",
+    "Tolm": "place",
+    "Corbel": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vessa",
+     "text": "Ooooh, how could this happen? That Ogre brute knocked down both of my farmhands. The guards will never get here in time. Please, will you catch him before he carries the Rain Staff off to Krog Durm?"
+    },
+    "refusal": {
+     "speaker": "Vessa",
+     "text": "Oh.... Then the Rain Staff is gone for good."
+    },
+    "reminder": {
+     "speaker": "Vessa",
+     "text": "Please, I'm begging you. Run down that thieving Ogre and bring back the Rain Staff."
+    },
+    "completion": {
+     "speaker": "Vessa",
+     "text": "The Rain Staff is safe! You will need my old Ankh more than I will, up at Krog Durm. Here, take it with you."
+    },
+    "after": {
+     "speaker": "Vessa",
+     "text": "You may have saved every field in Tolm with your bold deeds. Well done, young sir! Now, hurry on to Mayor Corbel."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Rain Staff stolen from Vessa by an Ogre."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Rain Staff stolen from Vessa by an Ogre."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tolm: Pella, Nella and old Hobb.",
+   "names": {
+    "Pella": "person",
+    "Nella": "person",
+    "Hobb": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Pella",
+     "text": "Yaaaaagh! Get it out of my apron!"
+    },
+    "rumour2": {
+     "speaker": "Nella",
+     "text": "Oh, you're back. Have the Ogres been beaten, yet?"
+    },
+    "rumour3": {
+     "speaker": "Hobb",
+     "text": "Is it true what folks say about Ogres?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bramwick keeps the inn, Kettick the smithy, Zelna the magic shop.",
+   "names": {
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Zelna": "person",
+    "Bolgrum": "person",
+    "Tolm": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bramwick",
+     "text": "A stranger, eh? You'd best turn around and go home. Mark my words, Bolgrum will be stomping through Tolm before long, too! Hard times we're having, isn't it?"
+    },
+    "arms": {
+     "speaker": "Kettick",
+     "text": "Ogres trampled the barley. Need a sword?"
+    },
+    "magic": {
+     "speaker": "Zelna",
+     "text": "What is it you want, Wanderer? I'm very busy."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Tamm sits in the lockup at the Town Hall and offers a way into Krog Durm. Hulda needs him back at her cider press for the harvest.",
+   "names": {
+    "Tamm": "person",
+    "Hulda": "person",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tamm",
+     "text": "Hello there. Folks call me Tamm. Can you spring me from this lockup? Do that, and I'll show you a way into Krog Durm."
+    },
+    "offer_b": {
+     "speaker": "Hulda",
+     "text": "Oh, for pity's sake! Tamm's in the lockup again?! Sometimes I think he gets caught on purpose just to dodge his chores. It's hard work running a cider press, you know. The whole apple crop is coming in today and I need Tamm at the press when the carts pull up.\n\nTell you what... Spring Tamm from the lockup and you can have one of the chain tunics the peddler owes me!"
+    },
+    "outcome_a": {
+     "speaker": "Tamm",
+     "text": "Thank you for getting me out. Take this gold as token of my thanks. Oh, I nearly forgot! Here's a key to the back gate of Krog Durm. Mind yourself in there. The Ogres won't take kindly to a stranger sneaking round their fort. Thanks again!"
+    },
+    "outcome_b": {
+     "speaker": "Hulda",
+     "text": "Tamm! What were you thinking, getting yourself locked up on harvest day? Thanks for springing him, stranger! Here's the chain tunic, like I said. Good luck with whatever it is you're up to!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get Tamm out of the lockup in the Town Hall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Tamm and return him to Hulda's cider press."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Nella's grandpa Olm is trapped in the root cellar under her barn, knocked flat by the Ogres.",
+   "names": {
+    "Nella": "person",
+    "Olm": "person",
+    "Tolm": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nella",
+     "text": "Oh, please, stranger, help me! The Ogres have knocked my barn flat and my poor old grandpa, Olm, is stuck down in the root cellar under it!\n\nGet him out and I'll owe you for the rest of my days!"
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Whatever you find down in that cellar is yours to keep! Just hurry and get Grandpa out!"
+    },
+    "found": {
+     "speaker": "Olm",
+     "text": "Who's that? Get these beams off me!"
+    },
+    "following": {
+     "speaker": "Olm",
+     "text": "Go on, I'm right behind you!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Thank goodness, you got him out! However can I repay you for your courage?!\n\nWhat's that you say? Heaps and heaps of gold? Well, if you insist, then please accept this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Grandpa Olm from the wrecked barn in Tolm."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Fulk points the player to Mayor Corbel in the Town Hall, who sends him against the Ogre Warlord Bolgrum at Krog Durm.",
+   "names": {
+    "Fulk": "person",
+    "Corbel": "person",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Krog Durm": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fulk",
+     "text": "We'll hold the fences here, but you must go see Mayor Corbel in the Town Hall. Thanks for coming, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Corbel",
+     "text": "Sorry about the smell, lad, but the Ogres dumped a whole cart of manure on our doorstep last night. They have scouts in the fields and many more up at Krog Durm.\n\nIt is vital that Warlord Bolgrum be driven out, but his Ogres won't just step aside for you. This could turn very nasty. Still, these potions will help."
+    },
+    "reminder": {
+     "speaker": "Corbel",
+     "text": "The healing potions will be invaluable once the Ogres gang up on you. The Cure Poison potion will help against their filthy rusty blades. Good luck, and hurry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Break into Krog Durm and drive out Warlord Bolgrum."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  }
+ }
+}

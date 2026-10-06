@@ -10,7 +10,10 @@ cannot be told from Westwood's.
 | `westwood.py` | the campaign's text from `nox.csf` (read only), each line sorted by situation from its key |
 | `metrics.py` | the metric judge: each line against Westwood's measured lines of its situation (length, sentence length, paging, punctuation, rare words, what it must carry), a set of lines for its voice (exclaiming, addressing the player, semicolons), and consistency (names not on the map, reward over budget, journal entries that are not orders, lines copied from the campaign) |
 | `JUDGE.md` | the blind judge's protocol and its fixed JSON |
-| `WRITER.md` | the writers' brief (v4 on): imitate Westwood's lines, then check by the guide |
+| `WRITER.md` | the writers' brief (v4 on; v11: a Westwood quest frame for each quest, a line frame for each short line, nothing added) |
+| `cards.py` | what each writer is dealt: v5-v6 a card of shapes; v7-v9 line and sentence frames; v10 on quest frames (`quest_frames_card`) and line frames (`frames_card`); `map_frames` for a map agent (`py tests/storylab.py frames --seed <Map>`) |
+| `JUDGE_SOLO.md` | the solo protocol: each text judged alone, no quota (`py tests/storylab.py solo --iter NAME`) |
+| `modes.json` | the phrases every writer reaches for (`py tests/storylab.py modes`), flagged by the metric judge |
 | `exemplars.py`, `exemplars/<situation>.md` | 20-30 of Westwood's own lines per situation for the writers to imitate (offer, opening, reminder, completion, after, townsfolk, guard, shop, captive, journal); none of them is in a packet pool |
 | `variants/<iter>/maps/<n>.json` | (i4 on) writer n's whole town: every scenario's lines, one voice |
 | `variants/<iter>/<scenario>.json` | the variants of a scenario (from i4 merged from the towns: variant n is town n) |
@@ -52,7 +55,9 @@ py tests/storylab.py brief --iter i4                  # one brief a writer -> re
 py tests/storylab.py merge --iter i4                  # -> variants/i4/<scenario>.json (and the town cross-sections)
 py tests/storylab.py all --iter i4                    # metric judge; blind packets -> review/out/storylab/_blind/i4/<id>.md
 py tests/storylab.py control --iter i4                # the control packets, same folder
-(fresh agents judge the packets by JUDGE.md -> review/storylab/judgements/i4/<id>.json)
+(fresh agents judge the packets by JUDGE.md -> review/storylab/judgements/i4/<id>.json, one packet a judge)
+py tests/storylab.py solo --iter i4                   # (i8 on) every text alone -> review/out/storylab/_solo/i4/, judges.json
+(fresh agents judge three texts each by JUDGE_SOLO.md -> review/storylab/judgements/i4/solo/<id>.json)
 py tests/storylab.py all --iter i4; py tests/storylab.py summary
 ```
 

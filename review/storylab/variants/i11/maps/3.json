@@ -1,0 +1,325 @@
+{
+ "iter": "i11",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Pellmire",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Mogrut the Ogre and his brutes hold the Sluice Tower across the Sunken Causeway and have shut the way out of the Gloamfen.",
+  "names": {
+   "Pellmire": "place",
+   "Gloamfen": "place",
+   "Sluice Tower": "place",
+   "Sunken Causeway": "place",
+   "Causeway": "place",
+   "Rotten Pilings": "place",
+   "Black Cuttings": "place",
+   "Cuttings": "place",
+   "Old Landing": "place",
+   "Mayor Dobbet": "person",
+   "Dobbet": "person",
+   "Captain Vell": "person",
+   "Mogrut": "person",
+   "Warden Ossel": "person",
+   "Grelk the Smuggler": "person",
+   "Grelk": "person",
+   "Gummet": "person",
+   "Nella": "person",
+   "Grimsel": "person",
+   "Dabb": "person",
+   "Tobb": "person",
+   "Fennick": "person",
+   "Bruda": "person",
+   "Yvra": "person",
+   "Elsbet": "person",
+   "Moggs": "person",
+   "Bog Wardens": "group",
+   "Ogres": "group",
+   "Leeches": "group",
+   "Urchins": "group",
+   "Spiders": "group",
+   "Zombies": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb at the Causeway gate, shut while Mogrut's Ogres hold the Sluice Tower.",
+   "names": {
+    "Tobb": "person",
+    "Causeway": "place",
+    "Mayor Dobbet": "person",
+    "Sluice Tower": "place",
+    "Bog Wardens": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "What's this? The Causeway gate is shut by order! You'd better go see Mayor Dobbet if you mean to cross. The Ogres are out there."
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Wanna spend a night in the stocks?"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Fair work at the Sluice Tower. But that don't make you one of the Bog Wardens! Now move along!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gummet, an old walkway-dweller, wants the Leech nest under the Rotten Pilings burned out.",
+   "names": {
+    "Gummet": "person",
+    "Mayor Dobbet": "person",
+    "Pellmire": "place",
+    "Rotten Pilings": "place",
+    "Mogrut": "person",
+    "Leeches": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gummet",
+     "text": "Blast it! Where were you, lad!? The Leeches swarmed up out of the water onto the lower walkways and we'd have lost every one of them if Mayor Dobbet's torchmen were not rushed down the ladders at the very last!\n\nBut in all the commotion, the slimy things laid a nest under the pilings, leaving the walkways our smallest worry! All Pellmire is in danger if that nest hatches!\n\nYou must go where the Leeches crawled off to, south to the Rotten Pilings! Burn out that nest or we are finished!"
+    },
+    "reminder": {
+     "speaker": "Gummet",
+     "text": "I just know that nest is about to hatch! Hurry!"
+    },
+    "completion": {
+     "speaker": "Gummet",
+     "text": "In happier days, the whole of Pellmire would turn out to celebrate the end of those Leeches! Fine work! But now we must deal with Mogrut and his Ogres once and for all.\n\nTake these as a small thanks from all of us for a brave deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Rotten Pilings and destroy the Leech nest."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["RedPotion", "WoodenShield"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Nella's uncle's lucky amulet was snatched by the Urchins, who ran to the net sheds.",
+   "names": {
+    "Nella": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nella",
+     "text": "Those Urchins just made off with my uncle's lucky amulet! If it isn't found, he'll be ruined. He's coming home from market tonight!\n\nOh please, help me, kind stranger! I think the Urchins that grabbed it ran to the net sheds.\n\nWill you... could you find it for me?"
+    },
+    "refusal": {
+     "speaker": "Nella",
+     "text": "Oh.... Then I suppose I'll look for it myself."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Oh, hurry! Uncle's boat could come in any time now!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Oh, thank you, thank you! Please take this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Nella",
+     "text": "Thanks again for all your help!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Nella's amulet from the Urchins at the net sheds."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Nella's amulet from the Urchins at the net sheds."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Moggs panics, Elsbet swats gnats, Dabb boasts of holding the walkways.",
+   "names": {
+    "Moggs": "person",
+    "Elsbet": "person",
+    "Dabb": "person",
+    "Gloamfen": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Moggs",
+     "text": "That does it! First the birds go quiet then the Ogres come. Run for the boats!"
+    },
+    "rumour2": {
+     "speaker": "Elsbet",
+     "text": "Shoo! These gnats won't leave me be!"
+    },
+    "rumour3": {
+     "speaker": "Dabb",
+     "text": "We've held the walkways! Now we must chase the Ogres out of the whole Gloamfen!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Fennick the innkeeper, Bruda the smith, Yvra the potion seller.",
+   "names": {
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Mogrut": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Fennick",
+     "text": "Mogrut's Ogres have pulled up the north walkway."
+    },
+    "arms": {
+     "speaker": "Bruda",
+     "text": "It's a bit quiet today, with the frog-jumping fair and all."
+    },
+    "magic": {
+     "speaker": "Yvra",
+     "text": "Sorry, I can't serve you. It would spoil my good name."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Ossel posts a bounty on Grelk the Smuggler, dead or alive. Grelk, cornered, surrenders.",
+   "names": {
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Elsbet": "person",
+    "Pellmire": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Ossel",
+     "text": "Good day, stranger. I presume you've come about the notice.\n\nThere's a fat reward for Grelk the Smuggler -- dead or alive. He and his miserable crew of cutthroats have been robbing our toll boats for a month.\n\nMind yourself, you don't want a knife in the back from that wretched lot."
+    },
+    "offer_b": {
+     "speaker": "Grelk",
+     "text": "Enough! I give up! Don't hit me, please! I'll come along quietly!"
+    },
+    "outcome_a": {
+     "speaker": "Warden Ossel",
+     "text": "Hey, there! Elsbet told me of a terrible racket down this way, so I came to have a look.\n\nYou have caught the infamous Grelk the Smuggler all on your own! Most impressive! You have my highest regard! Grelk's crew has plagued Pellmire for a month! I'll handle him now. We'll all rest easier with this rotten villain in the stocks!\n\nAnd here is your reward -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Warden Ossel",
+     "text": "You did away with Grelk, eh? Well, I'd wanted him in the stocks, but I won't shed any tears over the rascal!\n\nHere's your reward -- 100 in gold! Thank you for ridding Pellmire of that pest!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Grelk the Smuggler, dead or alive, for Warden Ossel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Escort Grelk the Smuggler to Warden Ossel."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Grimsel the peat master begs the player to clear the Black Cuttings and free his trapped cutters, Dabb first.",
+   "names": {
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Captain Vell": "person",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Pellmire": "place",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grimsel",
+     "text": "What kept you!? Something awful has happened!\n\nGiant Spiders and moaning Zombies from the old bog graves have overrun the Black Cuttings. Good cutters have perished in defense of Pellmire's winter peat!\n\nPlease, I implore you! Drive the monsters out of the Cuttings, bring back my cutters and you shall be well paid.\n\nThis key opens the shed where Dabb is trapped. He can lead you to the others.\n\nI also have a spell book that may come in handy."
+    },
+    "reminder": {
+     "speaker": "Grimsel",
+     "text": "Come back when my cutters are safe and you'll be paid in full."
+    },
+    "found": {
+     "speaker": "Dabb",
+     "text": "Oh, thank goodness somebody came! Get me back to the landing, please."
+    },
+    "following": {
+     "speaker": "Dabb",
+     "text": "Right behind you."
+    },
+    "completion": {
+     "speaker": "Grimsel",
+     "text": "You're a real hero! A thousand thanks.\n\nWhile you were down in the Cuttings, getting my cutters out, Captain Vell stopped by, asking after you. He'll meet you at the Old Landing -- west of here.\n\nBefore you leave, take this purse for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill or drive off the monsters in the Black Cuttings. Free the trapped peat cutters."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Moggs shouts for Mayor Dobbet, who sends the player across the Sunken Causeway against Mogrut at the Sluice Tower.",
+   "names": {
+    "Moggs": "person",
+    "Mayor Dobbet": "person",
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Bog Wardens": "group",
+    "Sunken Causeway": "place",
+    "Sluice Tower": "place",
+    "Mogrut": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Moggs",
+     "text": "Mayor Dobbet! Mayor Dobbet! We've got a visitor!"
+    },
+    "opening": {
+     "speaker": "Mayor Dobbet",
+     "text": "So you've come at last, lad. Pellmire -- oldest stilt village of the whole Gloamfen! Home of the hardy Bog Wardens!\n\nCross the Sunken Causeway, find the Sluice Tower, then get ready for the fight of your life -- Mogrut the Ogre. He breaks the timid ones."
+    },
+    "reminder": {
+     "speaker": "Mayor Dobbet",
+     "text": "You'd best be moving on now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way across the Sunken Causeway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

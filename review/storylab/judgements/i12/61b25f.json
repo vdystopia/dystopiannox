@@ -1,0 +1,25 @@
+{
+  "packet": "61b25f",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Same skeleton as C, swapped piece by piece (barns for halls, alarm bell for sorcery). 'At gladder other times' is a mangled idiom, and the plea's logic (the burned barns as the smaller worry, everyone starves) feels assembled rather than spoken."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The pet frog and the 'Loads and loads of money?' turn are Westwood's deadpan humour. The plea is short and plain, the grumpy 'Fine! I will follow you!' captive is a joke, and the journal line is bare and functional."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Close to the house style, but the captive's speech is a long exposition dump with writerly turns ('ending all hope of casting my way out', 'mighty sorcery had not rallied us'). It shares its template with A almost clause for clause."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Terse and slightly crude in a period way ('before the Ogres eat them', 'lovely women', 'damsels'). The lines are mechanical and tell the player exactly what to do next ('the other two groups'), with no flourish."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The jammed express elevator, the casual 'We best go', 'Hey, it's you!', the '--' dashes and the practical key-and-chest directions all match Westwood's offhand, game-mechanical dialogue."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Mostly plain, but 'drowned things from the deep' and 'in defense of [Place]'s vital nets' are a more literary register. The plea stacks key, potion and reward in a tidy checklist, and the hand-off at the end feels designed."}
+  ],
+  "tells": [
+    "Two texts sharing one sentence-for-sentence skeleton with nouns swapped point to a template filled twice. Westwood's quests each have their own shape.",
+    "Swapped or mangled idioms ('At gladder other times') and over-built cause-and-effect in a plea give the new texts away.",
+    "Literary adjectives and noun phrases ('drowned things from the deep', 'vital nets', 'ending all hope of casting') sit above Westwood's plain register.",
+    "Long expository captive speeches that recap the plot read as new. Westwood's captives say one or two blunt lines, often with a joke or an attitude.",
+    "Westwood's humour is deadpan and slightly crude (the pet frog, greedy reward haggling, 'damsels'), and its lines point straight at mechanics (keys, chests, 'the other two groups'). The new texts are earnest and tidy."
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "packet": "f38969",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Clipped, practical handoff with a gift and a 'lad'. The odd phrase 'heed its bite' and the bare, gruff reminder sound like Westwood's own lines."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Stock fantasy setup (bandit chief, cutthroats, honest folk, crossroads) that reads like a generic RPG quest-giver. The last page just restates the route, which feels written to make sure the player knows where to go."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Long and expository, with spies, letters and a two-target briefing. The agreement slip ('Robberies ... is') looks like an imitated flaw, and the reminder brings up a horn the opening never named."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Has the right brusque energy and the 'last hope' close, but 'king of the Trolls' and the stacked [Place] of [Place] read like a pastiche of the mine-handoff pattern."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'You'll see.' is a non sequitur, and the reminder says the objective twice ('learn if the stories are true', 'see if he has already been there'). The pit warning is a nice touch, but the line doesn't flow the way Westwood's do."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stiff, formal self-introduction ('The Master for the...'), capitalised 'YOU' and a key handed over. That clumsy-but-earnest ceremony is how Westwood writes late-game exposition."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The reasoning is tangled ('With Ghosts on the loose ... [Person] is certainly behind all of this'), and 'put your feet up' plus the stacked theft backstory feel like a pastiche of Westwood's exclamatory handoffs."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Sounds like Jandor's arrival speech: grand dashes and exclamations, 'test of your life', and a deadpan 'It weeds out the weak recruits.'"},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Wry opening apology ('Sorry about the stench, lad'), a concrete count of guards, and a reminder that explains how to use the spells. Very Nox."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless '!?' and exclamation marks, the clunky 'leaving rebuilding the village our smallest concern' and 'All Nox is now in peril'. That overwrought urgency is Westwood's."}
+  ],
+  "tells": [
+    "Westwood's openers are short and in medias res: one concrete detail of the place (a stench, too many eyes, a weeding-out test), then the order. The new ones explain the backstory and politics (letters, spies, two objectives).",
+    "Generic fantasy stock (bandit chief, cutthroats, honest folk, dark times at the crossroads) separates the new texts from Nox's specific, slightly odd world.",
+    "Westwood's reminders are curt and impatient ('Go! Don't just stand there.') or hand over one practical tip. The new ones repeat the objective or bring in details not set up before.",
+    "Pastiches overdo Westwood's tics: stacked masked nouns, 'lad', exclamations and imitated grammar slips, while their cause-and-effect turns muddled ('You'll see.', 'is certainly behind all of this')."
+  ]
+}

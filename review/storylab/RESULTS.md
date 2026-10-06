@@ -228,3 +228,60 @@ in one briefing) and, a new one, **recognition**: judges who know Nox saw a famo
 ("Paraphrase of a known quest skeleton... with the nouns swapped... is a strong tell"), and two of ours written from
 near-copies of one Westwood speech (Con and War versions of a line under different keys) stood side by side; from i11
 a packet also leaves out near-copies by text.
+
+### i11: quest frames, nothing added (WRITER.md v11)
+
+The i10 method with the tells of i10 written into the brief: rewrite each frame part for part and add nothing (no
+logistics, no cause and consequence, no closing sentiment, no persona, no address word the frame lacks), transpose the
+trouble as well as the nouns. Packets now also leave out any Westwood unit within 0.6 (difflib) of a line dealt to
+their writers. The metric judge also flags more address words than 2.5 times Westwood's rate.
+
+| scenario | metric ours / WW | side by side: acc | ours / WW |
+|---|---|---|---|
+| guard_bark | 9.35 / 9.69 | 100% | 6.0 / 8.0 |
+| bounty_offer | 8.99 / 9.62 | 100% | 6.4 / 8.6 |
+| heirloom_fetch | 9.47 / 9.62 | 100% | 6.2 / 8.0 |
+| rumour | 8.98 / 9.71 | 80% | 6.2 / 8.0 |
+| shop_greeting | 9.40 / 9.79 | 80% | 6.0 / 7.6 |
+| two_givers | 8.59 / 9.47 | 80% | 5.8 / 8.2 |
+| rescue | 9.06 / 9.46 | 75% (8) | 6.5 / 7.5 |
+| main_opening | 9.36 / 9.59 | 100% | 5.8 / 8.6 |
+| town | 8.14 / 9.59 | 100% | 6.4 / 8.6 |
+| **all** | **9.04** | **91%** | **6.1 / 8.1** |
+
+Solo (39 texts, half the round): accuracy 82%, ours caught 70%, Westwood taken for ours 0%, scores 6.6 / 8.4. No
+better than i10 within the noise (a round of nine packets has sd about 6 points on accuracy): saying "add nothing"
+removed the logistics and sentiments, and the judges found the next thing (a tidier sentence than Westwood's, a stock
+fantasy phrase, a joke that lands too neatly).
+
+### i12: the same brief, sonnet writers
+
+To test whether the tells belong to the writer model, i12 ran the v11 brief with Claude Sonnet writers (fresh Opus
+judges as always). Side by side 90% (bounty, rumour, shops and the town 75-80%, the rest 100%), ours 6.1 / Westwood
+8.1, metric 8.96: the same as Opus writers. The judges' reasons are the same kind ("built-up stakes Westwood's
+briefings rarely spell out", "a forced punchline", "morale-poster lines", "same skeleton as C, swapped piece by
+piece"). The tell is the rewriting, not the model.
+
+## Where the lab stands (i0-i12)
+
+| round | method | side by side | solo | ours / WW (blind) |
+|---|---|---|---|---|
+| control | ten Westwood texts, five keyed as ours | 49-55% (chance) | | called "generated" costs ~2 points |
+| i0-i3 | rules (DIALOGUE.md), metric tuning | 100% | | 4.7-6.1 / 8.1 |
+| i4 | exemplar imitation | 100% | | 6.1 / 8.6 |
+| i5-i6 | story cards, the plain pass | 98-100% | | 5.7-5.9 / 8.2 |
+| i7 | line frames for every line | 99% | | 5.6 / 8.2 |
+| i8 | line frames short, premises long | 93% | 89% (townsfolk 0/5 caught) | 6.2 / 7.9 |
+| i9 | sentence frames | 98% | 86% | 5.5 / 8.4 |
+| **i10** | **a whole Westwood quest per quest, line frames for the rest** | **89%** | **79%** | 6.0 / 7.9 |
+| i11 | i10 plus "add nothing" | 91% | 82% (half) | 6.1 / 8.1 |
+| i12 | i11 with sonnet writers | 90% | | 6.1 / 8.1 |
+
+The stop criteria (accuracy near the control's 50%, blind scores within 0.5 of Westwood's) were not met. What moved the
+judges was only frames: Westwood's own lines, one dealt to each line of a map, rewritten line for line. Short lines
+written that way (townsfolk, shops, guards, rumours) pass alone or nearly; long quests rewritten from a whole
+Westwood quest are caught about four times in five side by side and two times in three alone. Every instruction that
+asks writers to add a feature, and every list of tells, moved the judges by no more than the noise. What is left is
+the gap between a rewrite and an original: a skeleton a Nox-aware judge recognises, and a sentence a little tidier
+or a stake a little more spelled out than Westwood's. The default for map agents (rules/DIALOGUE.md, the skill's step 6) is
+the i10/i11 method: `py tests/storylab.py frames --seed <MapName>`, rewrite, add nothing, then `--check`.

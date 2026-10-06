@@ -1,0 +1,263 @@
+{
+ "iter": "i11",
+ "writer": "general-purpose subagent, Claude Opus 5.5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Skarra",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "Vaskor the Lich has woken the frozen dead of the pass. His Undead stormed the fort's lower gate and dragged off the wizard Ulvane, who sent the player here.",
+  "names": {
+   "Fort Skarra": "place",
+   "Vaskor": "person",
+   "Ulvane": "person",
+   "Ostrag": "person",
+   "Tombs of Gol Varra": "place",
+   "Undead": "group",
+   "Haddo": "person",
+   "Grubb": "person",
+   "Imps": "group",
+   "Imp caves": "place",
+   "Vardis": "person",
+   "Ebbet": "person",
+   "Ebbet's hut": "place",
+   "Silver Horn": "thing",
+   "Ankh": "thing",
+   "Mirta": "person",
+   "Bettra": "person",
+   "Dolgo": "person",
+   "Gunnet": "person",
+   "Brakka": "person",
+   "Brakka's forge": "place",
+   "Yselda": "person",
+   "Gimble": "person",
+   "Kolb": "person",
+   "Brannoc": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Haddo, guard at the north gate of Fort Skarra, before and after the Undead attack on the wall.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Haddo",
+     "text": "You're mighty thin for these mountains."
+    },
+    "again": {
+     "speaker": "Haddo",
+     "text": "Move stranger! Move!"
+    },
+    "later": {
+     "speaker": "Haddo",
+     "text": "Vaskor must have found a way to wake the frozen dead. One night the east wall was quiet and by morning it was overrun with skeletons and zombies! They want the pass."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Grubb, sentry at the frozen rope lift, wants back the fur cap the Imps of the Imp caves stole while he napped on watch.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Grubb",
+     "text": "Sorry, pal, the rope lift is frozen stiff! Only way down to the lower pass is the long way, through the Imp caves. But, if you go that way, keep your eyes open! Those Imps swiped my fur cap while I was napping on watch!\n\nIf you get it back for me, pal, I'll show you a mighty handy spell."
+    },
+    "reminder": {
+     "speaker": "Grubb",
+     "text": "Any sign of my cap? My ears are turning blue!"
+    },
+    "completion": {
+     "speaker": "Grubb",
+     "text": "My cap! I figured it was gone for good! I owe you one, pal. Here's that Spell, like I said."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the fur cap the Imps stole from Grubb and return it."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Vardis the Sage waits on the Silver Horn that Ebbet was forging for the fort. Ebbet's hut lies down the west slope, and Ebbet is dead.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Vardis",
+     "text": "Ebbet has been forging a Silver Horn for the fort for a long while. It ought to have been done and carried up the pass by now.\n\nTake the goat path down to Ebbet's hut on the west slope and bring back the Horn. Will you go for me?"
+    },
+    "refusal": {
+     "speaker": "Vardis",
+     "text": "Very well. But the fort cannot wait long for that Horn."
+    },
+    "reminder": {
+     "speaker": "Vardis",
+     "text": "Find Ebbet and bring the Horn back here -- no matter the danger! Watch your footing on the way down. Wolves prowl the slopes!"
+    },
+    "completion": {
+     "speaker": "Vardis",
+     "text": "You've brought back the Silver Horn! Wonderful!\n\nPoor Ebbet, however, is gone, as I feared he would be. I will grieve for him, but sadly the Undead leave us no time for it. Take this Ankh for your trouble, and Warden Ostrag has asked to see you.\n\nGood luck, Wanderer!"
+    },
+    "after": {
+     "speaker": "Vardis",
+     "text": "Thanks again for bringing back the Horn."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Silver Horn which Ebbet has made."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Silver Horn which Ebbet has made."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Fort Skarra: Mirta by the cold hearth, Bettra who teases, Dolgo the bear trapper.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Mirta",
+     "text": "Hey who let the fire go out?"
+    },
+    "rumour2": {
+     "speaker": "Bettra",
+     "text": "Shiver, little man, shiver! Hah, hah, hah...!"
+    },
+    "rumour3": {
+     "speaker": "Dolgo",
+     "text": "Greetings! My name is Dolgo. I hunt and trap the mountain bears to keep the high road safe for traders."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gunnet keeps the inn, Brakka the forge (arms and armour), Yselda the potion and scroll shop.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Gunnet",
+     "text": "Welcome! I see my favorite sight -- a traveler with a heavy purse."
+    },
+    "arms": {
+     "speaker": "Brakka",
+     "text": "Are you the new recruit?"
+    },
+    "magic": {
+     "speaker": "Yselda",
+     "text": "Mind the ice while you're in Fort Skarra! I keep a whole shelf of potions for broken necks."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Gimble sells a used Steel Shield on the cheap. Sergeant Kolb says anyone on wall watch needs a shield and sends the player to Brakka's forge.",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Gimble",
+     "text": "Now here's a real beauty of a shield. The last owner mostly used it as a sled.\n\nDown at Brakka's forge, one like this would run you 250 gold or more. But seeing as I like you, I'll let you have it for 90. You want it?"
+    },
+    "offer_b": {
+     "speaker": "Kolb",
+     "text": "Anyone standing watch on the wall needs a shield of his own. Brakka's forge sells them at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Gimble",
+     "text": "Sold! That shield's got your name on it. Nothing's getting past you on the wall with that."
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "Big mistake, friend. Go on down to Brakka's and have a look at his prices. Then hurry on back -- another buyer's been sniffing around it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy the used shield from Gimble."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a shield at Brakka's forge for wall duty."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Sergeant Kolb: ice off the north tower sealed Brannoc the Master Mason in the cellars under the keep, among the leeches.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Kolb",
+     "text": "While you were climbing the pass, a sheet of ice came down off the north tower -- sealing Brannoc in the cellars far below the keep! Warden Ostrag is worried for our Master Mason.\n\nWe'd better get down under the keep and find Brannoc."
+    },
+    "reminder": {
+     "speaker": "Kolb",
+     "text": "What's keeping you? We have to get down to the cellars! Brannoc could be badly hurt!"
+    },
+    "found": {
+     "speaker": "Brannoc",
+     "text": "Hey, you're the one Ulvane sent! You made it up the pass!\n\nThere are some awful fat leeches in that water. I barred myself in the pump room while I was patching the walls.\n\nHere, take my key and go back around to the iron grate."
+    },
+    "following": {
+     "speaker": "Brannoc",
+     "text": "Much obliged. There ought to be supplies in that crate. Come on, stay close! I know an old drain that comes out by the stables!"
+    },
+    "completion": {
+     "speaker": "Kolb",
+     "text": "Thank goodness you both got out alive! You'd do well on the wall, lad. Warden Ostrag sends these potions for bringing his Master Mason back unharmed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Brannoc from the cellars beneath Fort Skarra."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Mirta points the player to Warden Ostrag, who sends him north to the Tombs of Gol Varra to bring back Ulvane, taken by Vaskor's Undead.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Mirta",
+     "text": "I'm sure I saw Warden Ostrag up on the north wall just now. He actually asked after you!"
+    },
+    "opening": {
+     "speaker": "Ostrag",
+     "text": "Blast! What kept you, lad!? The Undead stormed the lower gate of Fort Skarra and we'd never have held it if Ulvane's fire magic had not driven them back at the very end!\n\nBut in all the confusion, Vaskor's skeletons dragged Ulvane off, and the broken gate is now the least of our troubles! The whole pass will fall if Ulvane is not found!\n\nYou must climb to where they took him, north to the Tombs of Gol Varra! Bring Ulvane back alive or the fort is finished!"
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "I know Ulvane can't last long up there! Get moving!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Tombs of Gol Varra and rescue Ulvane."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}
