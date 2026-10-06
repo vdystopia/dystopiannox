@@ -251,3 +251,11 @@ Westwood example is a set of bays (the shell).
 
 The boards break into single tables round the hearth (a joined board will not fit beside it): closer to Con06b's ring
 of tables than the parallel boards were, by the cross-type classifier's measure.
+
+## Shared changes checked on the other tracks' types (end of the night)
+
+Same seed, the curated references, master's furnisher/identity/roomtypes against mine: kitchen (AUC 0.999, cross
+0.965, 4 hard-rule rooms) and barracks (0.999, 0.96, 2) came out identical. On my kit: bedroom 0.98 / 0.902 / 8,
+crypt 0.999 / 0.968 / 1, study 0.994 / 0.982 / 4, laboratory 1.0 / 0.98 / 7 (master's kit files would not run against
+this tree for those four, so they have no like-for-like baseline; the earlier pre/post check of bedroom, kitchen,
+barracks and crypt on the old index is under "Shared changes" above).
