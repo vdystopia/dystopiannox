@@ -1,0 +1,432 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Wenna, the miller's widow; her late husband's silver millstone-seal, stolen by the Urchins into the old barrow.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "My husband's seal. Silver, the size of my palm, cut with the mill's mark: three generations of Brackenford flour went out stamped with it, his grandfather's and his father's and his. When he died I kept it in the box by the bed. Last week the Urchins came up from the old barrow east of the ford and took it, with my good candles and half a sack of oats. I can't go in there. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "No. No, I suppose not; it's only silver, to anyone else. If you change your mind, I'm at the mill."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "The old barrow's east of the ford, past the Chapel. They'll have taken it deep; they take everything deep."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "That's it. That's his mark. ...Forgive me. Here, take this, and the potions; and when you need flour, there's always a sack for you at the mill."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "I stamped the first sack with it this morning. It came out crooked. He always said it would."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Wenna, the miller's widow, asked me to bring back her late husband's silver millstone-seal, the mill's mark for three generations. The Urchins of the old barrow east of the ford stole it from the mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Wenna her husband's millstone-seal from the old barrow. She paid me in silver and potions."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Ossian; the brass lantern his grandfather pulled from the Bracken that named his inn, taken by Corwin's bandits to the watchtower.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ossian",
+     "text": "You'll have seen the hook over my door with nothing on it. That's where the lantern hung. My grandfather pulled it out of the Bracken, green with weed and still burning, or so he swore, and he named the inn for it. Corwin's bandits took it off the hook a month ago, laughing, on their way up to Crow Hill. It'll be hanging in that watchtower now, lighting their dice. Will you fetch it home for me?"
+    },
+    "refusal": {
+     "speaker": "Ossian",
+     "text": "Fair enough. It's a lantern, and that's a tower full of cutthroats. I'd not do it either."
+    },
+    "reminder": {
+     "speaker": "Ossian",
+     "text": "The old watchtower on Crow Hill, north of town. It's brass, green at the seams; you'll know it."
+    },
+    "completion": {
+     "speaker": "Ossian",
+     "text": "There she is. Green as the day he fished her out. I'll hang her tonight. Here's what I promised, and a bottle or two from under the bar, and you'll not pay for a bed in this house again."
+    },
+    "after": {
+     "speaker": "Ossian",
+     "text": "See her? Lit every night now. Folk come in just to look."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ossian of the Drowned Lantern asked me to bring back the old brass lantern his grandfather pulled from the Bracken, which gave the inn its name. Corwin's bandits took it up to the watchtower on Crow Hill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought the drowned lantern home from the watchtower. Ossian hung it over his door again and paid me."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Brother Anselm; the Book of the Ford, the Chapel's roll of the drowned, lost in the Ashwood when wolves killed the carter carrying it.",
+   "names": {
+    "Book of the Ford": "thing",
+    "Hobb": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Anselm",
+     "text": "The Chapel keeps a book, the Book of the Ford: every soul the river has taken at the crossing for two hundred years, written in by every brother before me. Its binding was failing, so I sent it with a carter to a binder beyond the Ashwood. The wolves had the carter on the forest road. His mule came home; the book did not. It will be lying where he fell, if the rain has spared it. Will you look for it?"
+    },
+    "refusal": {
+     "speaker": "Anselm",
+     "text": "Then I will pray it keeps dry until someone will. Go in peace."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "The forest road into the Ashwood, west of town. Look where the wolves are thickest; that is where they took him."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Damp at the edges, but whole. Whole! I'll write the carter's name in it tonight; he has earned his place. Take this from the Chapel's box, and the ankh; it has watched over that book longer than I have."
+    },
+    "after": {
+     "speaker": "Anselm",
+     "text": "I have written his name. Hobb, carter, taken on the forest road, who carried the book. It reads well."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Brother Anselm asked me to find the Book of the Ford, the Chapel's roll of everyone drowned at the crossing. It was lost in the Ashwood when wolves killed the carter carrying it."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I found the Book of the Ford in the Ashwood and brought it home to Brother Anselm."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Garrick; his father's brass-bound watch-horn, taken with the old watchtower on Crow Hill by Corwin's bandits.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Garrick",
+     "text": "That tower on Crow Hill was the town's watch post before it was Corwin's. My father kept it twenty years, and his horn hung by the beacon: a ram's horn bound in brass, and when he blew it you could hear it on the Moot Hall steps. When Corwin's men took the tower they took the horn with it. I can't leave the gate, and the Reeve wouldn't let me if I could. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Garrick",
+     "text": "Aye. It's not your father's. Forget I asked."
+    },
+    "reminder": {
+     "speaker": "Garrick",
+     "text": "The watchtower's up on Crow Hill, north. Look by the beacon; they'll not have had the sense to move it."
+    },
+    "completion": {
+     "speaker": "Garrick",
+     "text": "That's it. That's his. ...I'll blow it from the gate when the north road's safe again; let the whole town hear. Here, my month's pay, and the boots I was saving for winter."
+    },
+    "after": {
+     "speaker": "Garrick",
+     "text": "I tried it this morning. Scared the Reeve half out of his chair. Father would have laughed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Garrick, the guard at the north gate, asked me to bring back his father's brass-bound watch-horn. Corwin's bandits took it with the old watchtower on Crow Hill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Garrick his father's watch-horn from the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Ulric the shepherd; his grandfather's silver-shod crook, dropped on the high pasture when the wolves drove him off.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Wolves drove me off the high pasture at dusk last week, and I ran, an old man, and left my crook in the grass. It was my grandfather's: ash, cut in the Ashwood, with a silver ferrule my wife saved a year to buy. I've a stick now. It isn't the same. It'll be lying at the top of the pasture, under the trees, where they've been laying up. Will you go and get it for me?"
+    },
+    "refusal": {
+     "speaker": "Ulric",
+     "text": "No, I'd not go up there either, and it's my crook. Mind how you go."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Top of the high pasture, under the first of the Ashwood's trees. Mind the wolves; it's their ground now."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "There's the silver; there's the notch where my grandfather cut his mark. You've given me back the feel of my own hand. Take the purse, and the boots; I'll not walk far enough to wear them out now."
+    },
+    "after": {
+     "speaker": "Ulric",
+     "text": "Walked the low fold with it this morning. The ewes knew the sound of it on the stones."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ulric the shepherd dropped his grandfather's silver-shod crook on the high pasture when the wolves drove him off. He asked me to bring it back from under the Ashwood's trees."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Ulric his grandfather's crook from the high pasture."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Mabry the potion-seller; her mother's moonstone ring, stolen by the Urchins through her coal hole into the old barrow.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Mabry",
+     "text": "I don't sell everything I own, whatever you've heard. My mother's ring: a moonstone set in silver, the only thing she left me besides her recipes. It sat in a dish on my back shelf. The Urchins got in through the coal hole three nights ago and took it, and a jar of glow-moss, and every candle-end I had. They'll have dragged it into the old barrow east of the ford. They like shiny things, I'm told. Will you get it back?"
+    },
+    "refusal": {
+     "speaker": "Mabry",
+     "text": "Then I'll put up a sign. 'Urchins not served.' Much good it'll do."
+    },
+    "reminder": {
+     "speaker": "Mabry",
+     "text": "East of the ford, past the Chapel. Little lights in the dark: that's them."
+    },
+    "completion": {
+     "speaker": "Mabry",
+     "text": "Oh, that's hers. I can see her hand in it still. Here, a book from the back, and a blue draught, and silver. Don't argue; I don't haggle when I'm grateful."
+    },
+    "after": {
+     "speaker": "Mabry",
+     "text": "I wear it for the shop now. I take it off for the strong mixes."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Mabry, who sells potions and books, asked me to bring back her mother's moonstone ring. The Urchins stole it from her shop and carried it into the old barrow east of the ford."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Mabry her mother's moonstone ring from the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "SpellBook",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Nell the ferrywoman; her father's bronze ferry-badge, the Reeve's grant, taken by Corwin's men on the north road.",
+   "names": {
+    "Nell": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nell",
+     "text": "Every ferry on the Bracken works by the Reeve's grant, and the grant's a bronze badge struck with the ford and a boat; lose it and you lose the ferry. My father's came down to me last winter. Three weeks ago I took the north road to my sister's, and Corwin's men stopped me under Crow Hill and tore the badge off my coat for the bronze. Reeve Halvard says I've a month to show it or the ferry goes to another. Will you get it back from them?"
+    },
+    "refusal": {
+     "speaker": "Nell",
+     "text": "Then I've a month left on the river. Well."
+    },
+    "reminder": {
+     "speaker": "Nell",
+     "text": "They'll have it in the watchtower on Crow Hill, with everything else they've taken off the road. Bronze, the size of a cup's mouth."
+    },
+    "completion": {
+     "speaker": "Nell",
+     "text": "That's it: ford and boat, and my father's thumb worn into the edge. I'll take it to the Reeve first thing. Here's every coin I've made since spring, and the potions I keep for the cold water."
+    },
+    "after": {
+     "speaker": "Nell",
+     "text": "The Reeve looked at it and grunted, which from him is a blessing. Ferry's mine. Ride free, any day."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Nell the ferrywoman asked me to bring back her father's bronze ferry-badge, the Reeve's grant to work the ferry. Corwin's bandits took it from her on the north road; it will be in the watchtower on Crow Hill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Nell her father's ferry-badge from the watchtower. The ferry stays hers."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Lissy the goose-girl; her dead mother's silver bird brooch, lost by the split rock at the Ashwood's edge running from wolves.",
+   "names": {
+    "Lissy": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Lissy",
+     "text": "Will you help me? I took the geese up by the Ashwood, which I'm not let, and the wolves came, and I ran, and when I got home my mother's brooch was gone off my shawl. It's a little silver one with a bird on it. She's dead, my mother, so I can't get another. I think it fell by the big split rock where I climbed over. Will you find it? Please?"
+    },
+    "refusal": {
+     "speaker": "Lissy",
+     "text": "Oh. All right. I'll go and look myself when the wolves are asleep, then."
+    },
+    "reminder": {
+     "speaker": "Lissy",
+     "text": "The big split rock, at the edge of the Ashwood. Don't tell my aunt I was there."
+    },
+    "completion": {
+     "speaker": "Lissy",
+     "text": "You found it! That's the bird, and the bent pin, and everything. Here, this is my saving; it's all coppers but it's a lot of them. And Aunt says you're to have the potion from her cupboard."
+    },
+    "after": {
+     "speaker": "Lissy",
+     "text": "I sewed it on so it won't come off again. Aunt says I'm not to go near the Ashwood ever. I'm not going to."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lissy the goose-girl lost her dead mother's silver bird brooch by the split rock at the Ashwood's edge, running from the wolves. She asked me to find it."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I found Lissy's brooch by the split rock and brought it back to her."
+    }
+   },
+   "reward": {
+    "gold": 15,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Reeve Halvard; the reeves' silver chain of office, stolen from the Moot Hall by Corwin, who taunts him with it.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Halvard",
+     "text": "You'll keep this between us. Brackenford's reeves have worn the same chain since the town had a charter: silver links, a ford and a millwheel in the clasp. Ten nights ago someone came in through the Moot Hall's roof and took it from the chest. I know who; Corwin sent me one link of it tied to a crow's foot. The moot sits at the new moon, and a reeve without his chain is a reeve the town stops listening to. Will you go into that tower and bring it back?"
+    },
+    "refusal": {
+     "speaker": "Halvard",
+     "text": "Then I'll wear a borrowed one and tell them it's at the smith's. Leave me."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The watchtower on Crow Hill. Corwin will keep it close; he likes his jokes."
+    },
+    "completion": {
+     "speaker": "Halvard",
+     "text": "All the links but one, and that one I already have. You have done the office of Reeve a service, and the office of Reeve is not ungrateful. Take this; and the ankh, which has done nothing in the Moot Hall's chest for forty years."
+    },
+    "after": {
+     "speaker": "Halvard",
+     "text": "The moot sat, and not one of them so much as looked at my neck. Which is how it should be."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Reeve Halvard asked me, quietly, to bring back his chain of office, stolen from the Moot Hall. Red Corwin has it in the watchtower on Crow Hill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Reeve Halvard his chain of office from the watchtower on Crow Hill before the moot sat."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Cobb the fisherman; his grandfather's five-tined eel-spear, taken off his boat at the ford by the Urchins into the old barrow.",
+   "names": {
+    "Cobb": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Cobb",
+     "text": "You'd not think a man could miss a fork. My grandfather's eel-spear: five tines, the ash shaft gone black with river water and three lifetimes of hands. I'd catch as many eels with any spear in Dunstan's shop, but that one's fed my family a hundred years and I'll not fish without it. The Urchins took it off my boat at the ford, with my nets, and ran it back to the old barrow. Will you bring it home?"
+    },
+    "refusal": {
+     "speaker": "Cobb",
+     "text": "Then I'll sit on the bank and watch the eels go by. Suits them."
+    },
+    "reminder": {
+     "speaker": "Cobb",
+     "text": "Old barrow, east of the ford. A spear's a long thing to hide; they'll have it propped somewhere."
+    },
+    "completion": {
+     "speaker": "Cobb",
+     "text": "Black shaft, five tines, the bent one on the left. That's her. Here, last month's eel money, and boots that'll keep the river out better than mine do."
+    },
+    "after": {
+     "speaker": "Cobb",
+     "text": "First cast with her this morning, and three eels. She knew she was home."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cobb the fisherman asked me to bring back his grandfather's five-tined eel-spear. The Urchins took it from his boat at the ford and carried it into the old barrow east of the ford."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "I brought Cobb his eel-spear from the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 45,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  }
+ ]
+}

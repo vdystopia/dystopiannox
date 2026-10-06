@@ -106,7 +106,44 @@ class QuestBook:
         return key
 
     def journal(self, text, typ=QUEST):
+        """A journal entry. Westwood's are orders, 5-14 words, naming the goal and the place ("Retrieve Matilda's
+        cloak from an Ogre near the docks of Brin."): never the first person (rules/DIALOGUE.md)."""
         return ("journal", self.text(text, "Journal"), "", typ)
+
+    def done(self, objective):
+        """The quest's entry done: Westwood greys the same entry (JournalEdit to COMPLETED), which OpenNox alpha13
+        lacks, so this writes a COMPLETED entry in the objective's own words."""
+        return self.journal(objective, COMPLETED)
+
+    def note(self, text):
+        """News the player overheard, as Westwood's "NOTE: According to a pair of bridge guards, ..."."""
+        return self.journal(text if text.startswith("NOTE:") else "NOTE: " + text, NOTE)
+
+    def errand(self, giver, quest, offer, reminder, thanks, after, objective, done, reward=(), refusal=None,
+               again=None, on_take=(), take=True):
+        """Westwood's side quest (rules/QUESTS.md, "five lines and a journal entry"): the giver's lines, later stages
+        first, to put in q.talker(giver, ...) (with any other lines of the giver after them).
+
+        offer      the trouble, where, the ask and the reward, ending in a yes/no question (it is asked: yes takes
+                   the quest and writes `objective` in the journal; no runs `refusal`)
+        refusal    the sulk on "no", said over the giver's head; the next talk asks `again` (default: the offer)
+        reminder   while the quest is open; thanks: when `done` holds (a condition: q.when(has="SilverSeal"),
+                   q.when(flag=q.dead("Greyjaw")), q.at(quest, 2) set by an event), with `reward` (A.give, A.gold),
+                   the item taken back (`take`, when `done` is carrying something) and the objective done
+        after      afterwards ("Thanks again, brave Adventurer!")
+        Stages: 0 not taken, 1 taken, 2 done (if an event sets it), 3 paid."""
+        take_it = [A.take(done["Has"])] if take and done.get("Has") else []
+        if not done.get("Quest"): done = dict(done, Quest=quest, Stage=1)
+        refused = f"{quest}_refused"
+        yes = [A.stage(quest, 1), A.unflag(refused), self.journal(objective)] + list(on_take)
+        no = [A.flag(refused)] + ([A.chat(giver, refusal)] if refusal else [])
+        return [
+            self.say(after, when=self.at(quest, 3), who=giver),
+            self.say(thanks, when=done, do=list(reward) + take_it + [A.stage(quest, 3), self.done(objective)], who=giver),
+            self.say(reminder, when=self.at(quest, 1), who=giver),
+            self.say(again or offer, when=self.at(quest, 0, flag=refused), ask=True, do=yes, else_=no, who=giver),
+            self.say(offer, when=self.at(quest, 0), ask=True, do=yes, else_=no, who=giver),
+        ]
 
     # ---- conditions --------------------------------------------------------------------------------------------
     def dead(self, *names):

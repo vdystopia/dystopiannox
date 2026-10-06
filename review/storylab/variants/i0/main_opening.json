@@ -1,0 +1,287 @@
+{
+ "scenario": "main_opening",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "A townsman at the south gate sends the player to Reeve Halvard; Corwin's bandits hold the watchtower on Crow Hill and rob the north road; the north gate is shut until Corwin dies.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "South road, is it? Then you've missed the worst of it. Don't go north. Red Corwin's bandits have the old watchtower on Crow Hill and the road under it, and the reeve's shut the north gate. If you mean to go on, see Reeve Halvard at the Moot Hall."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "You came up the south road? Then you're the first traveller to reach Brackenford in a fortnight who wasn't robbed on the way. I'm Halvard, reeve here.\n\nRed Corwin and his bandits have taken the old watchtower on Crow Hill, north of town. From up there they see every cart on the north road, and they take every one. Two carters dead, and the rest too frightened to come. I've shut the north gate; I'll not send any more of ours up that road to be robbed.\n\nI have a town of millers and ferrymen, and not one fighter worth the name. Kill Corwin and the gate opens, and the Moot Hall will pay you for it."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Corwin's in the watchtower on Crow Hill, north of town. Kill him and I'll open the gate myself."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin's bandits hold the old watchtower on Crow Hill, north of Brackenford, and rob the north road. Reeve Halvard has shut the north gate until Corwin is dead. When he is, the gate opens."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "A ferryman at the south gate; Corwin has demanded a robber's rent of a hundred silver a month to let carts pass, Halvard tore up the letter and shut the north gate.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Off the south road, and on foot? Brave, or lucky. The reeve's asking every stranger who can fight to come and see him at the Moot Hall. I'd go, if I were you. He pays, they say, and nobody else in Brackenford does just now."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Sit down; I'll be plain. Last week Red Corwin sent me a letter from the old watchtower on Crow Hill. Pay him a hundred in silver every month, and he lets our carts through on the north road. Don't, and he takes them all.\n\nI tore it up. Brackenford will not pay a robber's rent. Since then he's taken every cart, and I've shut the north gate so he can't take the carters as well.\n\nCorwin is the whole of it. Without him his men will scatter like crows. Kill him and I'll open the gate, and you'll have from the Moot Hall what I'd have paid him in a month."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Corwin's still in his tower, and the gate stays shut while he lives. Crow Hill, north of town."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin demanded a robber's rent from Brackenford to let its carts pass on the north road. Reeve Halvard refused and has shut the north gate. He will open it when I have killed Corwin in the old watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "A shepherd at the south gate; the wolves of the Ashwood, led by Greyjaw, are the main threat; Halvard has barred the east gate to the pastures until Greyjaw is dead.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Don't stop on the road after dark, stranger; that's how my cousin went. The wolves, see. Come down out of the Ashwood, with a great grey one leading them. The reeve wants to see anyone who'll carry a weapon. Moot Hall, the big house by the ford."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Halvard, reeve of Brackenford. You'll have heard about the wolves; everyone south of the hills has.\n\nThey came down out of the Ashwood at the end of summer, more than I've ever seen, and a grey brute the shepherds call Greyjaw at the head of them. They've had sheep, then dogs, then a drover on the east road. I've barred the east gate. Nobody goes out to the Ashwood pastures till that wolf is dead.\n\nThe shepherds say the pack will break up without him. Kill Greyjaw and I'll unbar the gate, and pay you what the flock-owners have put by."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Greyjaw's still out there; I hear them every night from the Moot Hall. The east gate stays barred till he's dead."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Wolves from the Ashwood, led by a great grey wolf the shepherds call Greyjaw, have killed Brackenford's sheep, its dogs and a drover. Reeve Halvard has barred the east gate to the pastures until Greyjaw is dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "The gravedigger at the south gate; the Urchins dug too deep in the old barrow and woke the Barrow King, whose dead walk the east road at night; Halvard has chained the ford gate until the king is back in his grave.",
+   "names": {
+    "Barrow King": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Evening, stranger. You'll want to be indoors before dark. Since the Urchins dug into the old barrow there are things on the east road at night that I buried myself, years back. The reeve's at the Moot Hall; he'll tell you the rest. He's looking for someone who isn't afraid."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "I'm Halvard, reeve. What I'm about to tell you will sound like an old wives' tale. It isn't.\n\nThe Urchins dug into the old barrow east of the ford, after the grave-goods. They dug too deep. The Barrow King, whoever he was before Brackenford had a name, is awake, and his dead come up out of the ground at night and walk the east road to the ford. I've chained the ford gate, and nobody crosses after dusk.\n\nBrother Anselm says the dead will lie down again when their king does. Go down into the barrow and put him back in his grave, and I'll unchain the gate."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The barrow's east of the ford. The dead come out at dusk; go by day if you can. The gate stays chained till the king's back in his grave."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Urchins digging in the old barrow east of the ford woke the Barrow King, and his dead walk the east road at night. Reeve Halvard has chained the ford gate. He will open it when I have put the king back in his grave."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "An old man at the south gate; Red Corwin was Brackenford's own captain of the watch until he took its pay chest and half its men to the watchtower; Halvard means to end what he started.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Hold up. You came by the south road? Then you'll be wanting the north road next, and you can't have it. The gate's shut. Corwin. Ask the reeve, at the Moot Hall; he'll want to see you anyway. Anyone who can fight, he wants to see."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "You'll want to know why my north gate's shut. One word: Corwin. Red Corwin, they call him now. Ten years he was captain of Brackenford's watch, and a good one. Last spring he took the watch's pay chest and half the watch with it, and went up to the old watchtower on Crow Hill, where he used to post his own sentries.\n\nHe knows every path, every carter, every bolt on every gate. That's why the north gate's shut: it's the one he never had the key to.\n\nI gave him that captaincy. I'll see it ended. Kill him and the gate opens, and the Moot Hall pays."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "He was my captain. Don't let him talk to you; he's good at it. Crow Hill, north of town."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin was captain of Brackenford's watch until he took its pay chest and half its men up to the old watchtower on Crow Hill. Now his bandits rob the north road, and Reeve Halvard has shut the north gate until Corwin is dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "A ferryboy at the south gate; Old Morwen, a hedge-witch whose cottage the town burned, sends the Ashwood's wolves on Brackenford; Halvard, partly to blame, has shut the forest gate until she is dealt with.",
+   "names": {
+    "Morwen": "person",
+    "Old Morwen": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "You're the first through the south gate in days. Don't take the forest road out: Old Morwen's wolves. Reeve Halvard's at the Moot Hall; he'll tell it better than me. Or worse, it being his fault."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Halvard, reeve. You've heard it's my fault, I expect, and it is, partly.\n\nOld Morwen lived in the Ashwood fifty years, selling cures to anyone who'd walk out to her. This spring a child died of one. The town wanted her gone, and I let them burn her cottage. She went deeper into the wood, and in the autumn the wolves came out of it, more than anyone has seen, and they go only where she sends them.\n\nI've shut the forest gate; nobody goes into the Ashwood. Find Morwen and end it, and I'll open the gate. The rest I'll live with."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Morwen's somewhere deep in the Ashwood. Follow the wolves; they come from her. The forest gate stays shut till it's done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Reeve Halvard let the town burn Old Morwen's cottage in the Ashwood, and now the wolves come out of the wood wherever she sends them. Halvard has shut the forest gate until I find Morwen and end it."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Pip the novice at the south gate; Corwin holds four carters in the watchtower and sells them back to the town by name; Halvard shut the north gate so he gets no more.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Pip",
+     "text": "Hello! Are you a traveller? Brother Anselm says to send all travellers to the reeve. That's Reeve Halvard, at the Moot Hall. It's because of the bandits. I'm not supposed to talk about the bandits."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Pip sent you, I expect. He sends me everyone; last week it was a goat. Sit.\n\nRed Corwin has the old watchtower on Crow Hill, and he's not just robbing the north road now. He keeps the carters. Four of them, up in his tower, and he sends me their names on a scrap of hide with a price beside each. The town can't pay. I've shut the north gate so he gets no more to sell back to us.\n\nKill Corwin. His men won't keep prisoners they can't sell. The gate opens the day he's dead, and the carters come home."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Four carters in that tower, and a price on each. Crow Hill, north of town. Don't wait too long."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin holds four carters in the old watchtower on Crow Hill and sells them back to Brackenford by name. Reeve Halvard has shut the north gate. He will open it when Corwin is dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "A miller at the south gate; Corwin's bandits hold the Upper Weir north of town and have turned the Bracken off the mills; Halvard has shut the north gate until Corwin is dead.",
+   "names": {
+    "Upper Weir": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Hear that? No, you don't. That's the trouble. Every wheel in Brackenford has stood still since Red Corwin's lot took the Upper Weir and turned the river. Flour on my apron and nothing to grind. The reeve's at the Moot Hall, if you can help."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Halvard, reeve. Brackenford lives on the Bracken: the ferries cross it, and the mills grind on it. A month ago Red Corwin took the Upper Weir, north of town, where the river's let into the mill-race, and shut the water off.\n\nHe wants half the flour of every mill for the rest of the year. I've said no, and I've shut the north gate, because every miller who went up to plead with him came back without his cart.\n\nKill Corwin. His men will take what they've got and go. The water runs again, and I open the gate."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The Upper Weir, up the river north of town. Kill Corwin, and Brackenford grinds again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin's bandits hold the Upper Weir north of Brackenford and have turned the Bracken off its mills. Reeve Halvard has shut the north gate until Corwin is dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "A carter at the south gate; an ogre chief the carters call Mogga sits on the north bridge over the Bracken taking tolls of carts and carters; Halvard has shut the north gate until Mogga is dead.",
+   "names": {
+    "Mogga": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Going north? You're not. Nobody is. There's an ogre on the north bridge, big as the mill and twice as hungry, and the reeve's shut the gate on him. Moot Hall, if you want to tell him you're the one to shift it. I'd pay to watch."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "I'm Halvard, reeve of Brackenford. A month ago an ogre came down out of the hills with a dozen of his tribe and sat himself on the north bridge, where the road crosses the Bracken. Mogga, the carters call him. He takes a toll of whatever you carry, and sometimes of whoever's carrying it.\n\nI've shut the north gate. I'll not feed him Brackenford folk one cart at a time.\n\nKill Mogga. Ogres don't stay without a chief. Then the bridge is ours again, and the gate opens."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Mogga's on the north bridge, past the gate. Kill him and come back to me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "An ogre chief the carters call Mogga holds the north bridge over the Bracken and takes his toll of carts and carters. Reeve Halvard has shut the north gate until Mogga is dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "An old soldier at the south gate points at Corwin's fire on Crow Hill; Corwin keeps the old beacon in the watchtower lit to guide his bandits home; Halvard has shut the north gate until Corwin is dead and the fire out.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "See that red light up north? On Crow Hill. That's Corwin's fire. He lights it every night so his men on the north road know where home is. Reeve's shut the north gate till somebody puts it out. You look like somebody. Moot Hall."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Halvard, reeve. You'll have seen the fire on Crow Hill. That's the old watchtower; my grandfather kept a beacon there to warn the town of raiders. Now the raiders keep it.\n\nRed Corwin has thirty men, more or less, and every one of them steers home by that fire. They come down on the north road by day and go up to the tower at night, and my carters come home in pieces, if at all. So the north gate's shut.\n\nKill Corwin and his fire goes out, and the north gate opens the next morning. You'll be paid; the carters will see to that, if I don't."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The fire's still burning. Corwin's under it, in the watchtower on Crow Hill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin keeps a fire burning on the old watchtower on Crow Hill to guide his bandits home from the north road. Reeve Halvard has shut the north gate until Corwin is dead and his fire is out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}
