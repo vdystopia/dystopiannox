@@ -19,6 +19,14 @@ writes `westwood.json`; a room the three campaigns share counted once: 235 rooms
 misses, read by hand: `HAND`), from the playtester's verdicts, and from our own praised rooms. Westwood's figures below are
 p10-p50-p90.
 
+**Curated by eye (2026-10-05).** Every one of the 235 rooms was looked at in the room lab's render: `curated.json`
+(applied by `curated.py` in `westwood.py` and the room lab) keeps 110 as filed, retypes 67 (guard posts filed as
+bedrooms and armouries, keg cellars and winch rooms filed as storerooms, the ogres' pens filed as barracks, statue
+tombs filed as halls, cottages filed as kitchens, households filed as libraries...) and excludes 58 (passages, cave
+pockets, outdoor graveyards and gardens, burning-house and trap set pieces, unfurnished rooms, and a second campaign's
+copy of a room already counted): 177 rooms. The Westwood counts in the table below are the classifier's, before the
+curation; `westwood.json` has the curated ones.
+
 ## The types, by family
 
 Ranked within each family by how often they occur (Westwood's building rooms / our 11 designs' rooms, 2026-10-05); the

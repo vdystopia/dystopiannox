@@ -124,6 +124,12 @@ def main():
         key = (r["tiles"], tuple(r["centre"]))
         if key in seen: continue
         seen.add(key); rooms.append(r)
+    # the verdicts by eye (rules/rooms/curated.json): the true type of a misfiled room; passages, cave pockets, yards,
+    # set pieces and other campaigns' copies left out
+    sys.path.insert(0, HERE)
+    import curated
+    excluded = []
+    rooms = curated.apply(rooms, excluded)
     by = collections.defaultdict(list)
     for r in rooms: by[r["type"]].append(r)
     types = {}
@@ -146,10 +152,16 @@ def main():
                         best=[dict(map=r["map"], centre=r["centre"], tiles=r["tiles"], types=r["types"], cover=r["cover"],
                                    open=r["open"], culture=r["culture"]) for r in best])
     index = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], culture=r["culture"],
+                  **({"classed": r["classed"]} if r.get("classed") else {}),
                   **({"by_hand": r["by_hand"]} if r["by_hand"] else {})) for r in sorted(rooms, key=lambda r: (r["type"], r["map"]))]
+    gone = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], why=r["why"])
+            for r in sorted(excluded, key=lambda r: (r["type"], r["map"]))]
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(dict(rooms=len(rooms), maps="campaign (Con/War/Wiz), each room once", types=types, index=index), f, indent=1)
-    print(f"{len(rooms)} rooms")
+        json.dump(dict(rooms=len(rooms), maps="campaign (Con/War/Wiz), each room once",
+                       curated="rules/rooms/curated.json: retyped by eye where misfiled (classed: the classifier's "
+                               "type); excluded: not rooms to learn from", types=types, index=index, excluded=gone),
+                  f, indent=1)
+    print(f"{len(rooms)} rooms ({len(excluded)} excluded by rules/rooms/curated.json)")
     print(f"{'type':14} {'n':>4} {'maps':>4}  tiles p50  cover p10-p50-p90   open p10-p50-p90   per_tile p50  types p50  most p50/p90")
     for t, d in types.items():
         print(f"{t:14} {d['n']:4} {d['maps']:4}  {d['tiles']['p50']:6}   {d['cover']['p10']:.2f}-{d['cover']['p50']:.2f}-{d['cover']['p90']:.2f}"

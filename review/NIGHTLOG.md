@@ -56,3 +56,43 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   Harrowby rooms, rebuilt wall for wall (`hbreplay.py`): cauldrons 2->0, bedroom chests 4->1 and table sets 3->1, library
   candelabras 8->3, storeroom log shelves 15->2 in mixed clusters. Room lab: 0 `pieces.*` findings (89 before).
   Next: tuning rounds by room type in three parallel tracks.
+- 23:20 Phase 2 started: three room tuning tracks, each running the lab loop (ref, then rounds r1, r2...; a blind
+  judgement every second round; stop at AUC <= 0.6, blind accuracy <= 60%, scores within 0.5 of Westwood's):
+  A (`night-tuneA`): bedroom, living room, kitchen, study, solar, guardroom, cell, infirmary.
+  B (`night-tuneB`): tavern, throne room, great hall, chapel, dining hall, hall, shrine, gallery, conservatory, plus the
+     classifier's misfiled tavern and garden.
+  C (`night-tuneC`): storeroom, laboratory, shop, library, smithy, armoury, barracks, crypt, herbalist, cellar,
+     treasury, workshop, torture chamber, mausoleum, ossuary, observatory, winch room, powder store.
+  Still running: the scene lab (`night-scenes`) and dialogue round 2 (`night-dialogue2`).
+- 22:20 (Correction: the times on the entries above were estimates and ran ahead of the clock. The real time of this
+  entry is 22:20, so the entries stamped 21:50-23:20 all happened between 21:30 and 22:15.) Scene lab mid-run: garden
+  AUC 0.89 -> 0.16-0.42 (Westwood has only 5 gardens); graveyard 1.00 -> 0.87 (graves in Westwood's rows and spacing,
+  sparse grass, pillars at the gate; the blind judge still sees one small square box where Westwood's yards are long or
+  large and set against buildings); bandit camp r3 judged "much better: clear zones and the user's structure".
+- 22:40 Scene lab round 1 merged (`night-scenes`): 159 Westwood campaign scenes of 18 types catalogued
+  (`rules/scenes/`). Bandit camp AUC 1.00->0.98 (score 3.6->6.0 vs Westwood 6.8), graveyard 1.00->0.87, garden
+  0.89->0.30, pond with dock 0.68->0.77 (6.6 vs 6.75). Kit: camps back onto a wall with a sleeping row; graveyards in
+  Westwood's rows; gardens with mixed beds and a low wooden fence; docks square with barrels on the bank. Caveat: the
+  tuning agent judged its own sheets, so an independent blind judge (a fresh agent that sees only the pictures, never
+  the key) is now judging them. From here on, every blind result in this log is marked "independent" or "self".
+  Scene lab round 2 (`night-scenes3`) started: camp sub-types (hideout and fire camp), graveyards fitted to the site,
+  then the other 13 scene types.
+- 22:55 First independent blind judgement (a fresh agent, pictures only, scored against the keys by the main session),
+  on scene lab round 1's last sheets: bandit camp 10/10 (generated 5.2 vs Westwood 6.8), graveyard 10/10 (4.2 vs 7.4),
+  garden 10/10 (4.8 vs 7.8), pond with dock 9/9 (5.2 vs 7.8). Self-judging had been too generous; these are the real
+  starting points. Its critique (stamped tent rows, the same 6x6 graveyard box, crops on fences again, the same dock gear
+  stamp in a small round pond) has been passed to scene round 2.
+- 23:05 Independent judgement of rooms (pictures only, scored against the keys): bedroom ref 6/10 (generated 6.4 vs
+  Westwood 6.0), bedroom r6 8/10 (4.8 vs 5.8), living room r6 8/10 (6.0 vs 4.6), storeroom r8 8/10 (5.6 vs 4.2).
+  Rooms are much closer to Westwood than scenes are. Lessons: (1) the bedroom regressed by eye from ref to r6 though
+  its AUC improved: the tuning made a stamp (chest against the bed's head, a lone bench and candelabra on the front
+  wall), so AUC alone can't steer; (2) the Westwood galleries hold rooms that aren't truly the type (dais rooms,
+  cellars, cave caches), which pulls Westwood's means down and skews the targets; (3) one judge on ten pictures is noisy.
+  Passed to the tracks. A shells agent (`night-shells`) now owns room shapes and floors: L-shapes, alcoves, corridors,
+  floor patterns.
+- 23:25 Westwood references curated by eye (`night-curate`, `rules/rooms/curated.json`): all 235 campaign rooms looked
+  at; 110 kept, 67 retyped to their true type, 58 excluded (corridors, cave caches, traps, burning houses, set pieces,
+  second-campaign copies the old de-duplication missed). Bedroom 40->28 references, storeroom 22->7 (the real ones are
+  fuller: coverage 0.07->0.16), living room 15->14 (now real households: bigger, with more kinds of piece), laboratory
+  19->6, hall 17->3. New types gain real references: guardroom 11, cell 10, mausoleum 6, shrine 5, cellar 4, solar 4,
+  winch room 4. Storeroom AUC 0.955->0.741 from the cleaner references alone. The tuning tracks are told to merge it.
