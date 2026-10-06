@@ -45,6 +45,10 @@ The hearth, centred on a back wall, shelves end to end either side of it, a rug 
 Log cabins take log shelves and hunting trophies; stone houses bookcases and tapestries. A dwelling in a lake town keeps
 its nets and salt in sacks by the wall.
 
+## Where people stand
+
+The householder at the hearth's side, never before it (the rug and the way to the fire stay clear); never between the table and its chairs. (`STANDS["living_room"]`: beside the hearth, a back wall.)
+
 ## Common mistakes
 
 - A living room without trophies or hangings on its walls (TreePlace review: "a living room needs trophies on the

@@ -1882,7 +1882,8 @@ def check_minimap(m, ctx, base):
 LINED = re.compile(r"^(Plant|Bush|Obelisk|CaveRockPillar|RuinsColumn|Tombstone|LOTDTombstone|Flower|"
                    r"Bookcase|MovableBookcase|LogShelves|PotionShelves|WizardWorkstation|Trader|Bed|WoodBed|Cot|Bench|"
                    r"LightBench|CushionedBench|Crypt|Coffin|Column|CathedralColumn|LOTD|Barrel|Crate|DarkCrate|Sack|"
-                   r"PiledBarrels|LargeBarrel|WaterBarrel|BarrelWithTools|Candleabra|Nightstand|Chest|OgreStraw)")
+                   r"PiledBarrels|LargeBarrel|WaterBarrel|BarrelWithTools|Candleabra|Nightstand|Chest|OgreStraw|"
+                   r"BlackPowderBarrel)")     # (a powder store's kegs stand in rows: rules/rooms/powder_store.md)
 TABLES_RE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d)$")
 SUPPLY_RE = re.compile(r"^(Barrel|Barrel2|LargeBarrel\d|PiledBarrels\d|WaterBarrel|BarrelWithTools\d|BarrelSteel\d|Crate\d|"
                        r"DarkCrate\d|CrateSteel\d|SackChest|TraderAppleCrate|BlackPowderBarrel)")

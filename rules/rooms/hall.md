@@ -46,6 +46,10 @@ The colonnade and the statues facing each other across the aisle; in a long hall
 Land of the Dead halls (3 of the campaign's 17; Con10c's obelisk halls): mana obelisks and LOTD columns instead of statues and columns. Dun Mir: Dun
 Mir statues and hanging shields.
 
+## Where people stand
+
+Beside a statue, at its side away from the aisle, else against a back wall; never in the aisle down the colonnade or between two columns in line with a door. (`STANDS["hall"]`: beside a statue, a back wall.)
+
 ## Common mistakes
 
 - Columns in a row down the middle, blocking the way in (Greywatch's keep, 2026-10-05: "The pillars are in the dead

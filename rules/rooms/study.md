@@ -51,6 +51,10 @@ The desk with its chair, centred on a back wall, bookcases either side of it to 
 A wizard's study (Starwell) takes a telescope or orrery and an alchemist's desk; an official's (Greywatch, Ambermere) a
 ledger desk, a chest, trophies or tapestries.
 
+## Where people stand
+
+The scholar at the side of his desk, else by his bookcases; never between the meeting table and its chairs. (`STANDS["study"]`: beside the desk, beside a bookcase, a back wall.)
+
 ## Common mistakes
 
 - Three round-table groups in a 143-tile reeve's study (Harrowby): a study takes its meeting table and at most one
