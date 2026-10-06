@@ -220,7 +220,7 @@ def _garden_build(ctx):
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
 POND_R = {"small": 6.0, "typical": 7.0, "large": 8.0}       # tiles: a lake a dock reaches out into (Con05A)
-LAKE_R = {"small": 11.0, "typical": 13.0, "large": 14.0}    # a town's lakeshore: the lake on one side, the hamlet on the other
+LAKE_R = {"small": 13.0, "typical": 15.0, "large": 16.0}    # a town's lakeshore: the lake on one side, the hamlet on the other (bigger: "every pier into a small closed pond")
 DOCKS = {"small": 1, "typical": 2, "large": 3}              # docks to a lake (Con05A: three along its town's shore)
 FISHERS = (("Con03A", "Kenneth"), ("Con07B", "Dorian"))
 

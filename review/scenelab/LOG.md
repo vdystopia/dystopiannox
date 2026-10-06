@@ -438,3 +438,6 @@ Bandit camp r9-warcamp: two kinds of open camp, as Westwood's: a war camp (60%: 
 racks 90%, no bedrolls: its men sleep in the tent and under the awning; Con03A, Con04a, Con05A, Con09d) or a rough camp
 (bedrolls in pairs, racks 20%). AUC 0.873 (1 of 10 not found). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
 errors.
+
+Pond and dock r6-lake: the lab's town lake larger (13-16 tiles: "every pier into a small closed pond"). AUC 0.295. The
+lab only.
