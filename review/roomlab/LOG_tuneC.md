@@ -372,3 +372,31 @@ labs fill the room as one working space"); r16 is queued for the judge.
 | herbalist | r3 | more bookcases and a sitting group for the sparse rule: no effect (the back walls hold the shelves and the desk; a door on each left the fill nowhere) | 0.997 | 0.923 | 6 |
 | herbalist | r4 | the stores in a heap or two (`store_heaps`: crates or barrels, an apple crate) | 1.000 | 0.899 | 5 (4 sparse) |
 | shop | r12 | `lined_goal` 0 (the line pass had grown a second identical run of three shelves), runs of two, more heaps | 0.971 | 0.875 | 7 (sparse) |
+| storeroom | r22 | crates square up to the heap (axis-aligned candidates): AUC 0.83 / seed 2 0.85, worse than r18 (0.81 / 0.77): reverted; the passing recipe (r16-r18) stands | 0.829 | 0.869 | 0 |
+
+## Summary at the end of the night (seed 1 unless noted; "pool": the type has under 6 curated Westwood rooms)
+
+| Type | Rounds | AUC first -> last | Hard rooms | Independent blind (accuracy, gen / WW) | Queued |
+|---|---|---|---|---|---|
+| storeroom | 22 (+3 on seed 2) | 0.955 -> 0.809 (s2 0.771) | 6 -> 1 | r8 80% 5.6/4.2; r9 90% 5.0/5.4; **r16 50% 5.2/5.8 (passes)** | - |
+| laboratory | 17 | 0.999 -> 0.765 (r11) -> 0.983 (r17, the judge's working middle) | 8 -> 6 | r8 100% 4.6/5.6; r11 100% 4.4/6.8 | r17 |
+| shop | 12 | 0.907 -> 0.829 (r9) -> 0.971 (r12) | 2 -> 7 (sparse) | r4 100% 4.2/6.4; r8 100% 4.4/7.2 | r12 |
+| library | 3 (+c1) | 0.991 -> 0.886; pool 0.950 | 1 -> 4 | - | c1 |
+| armoury | 4 (+3) | 1.000 -> 0.942; curated pool c3 0.846 | 1 -> 3 | - | c3 |
+| barracks | 3 (+4) | 0.999 -> 0.856; curated c3 0.733, c4 0.793 (s2 0.921) | 1 -> 2 | - | c3 |
+| crypt | 9 | 0.999 -> 0.874 | 2 -> 3 | - | r7 |
+| mausoleum | 6 | 0.922 -> 0.867 | 2 -> 0 | - | r6 |
+| cellar | 2 | 0.982 -> 0.952 (pool) | 0 -> 1 | - | r2 |
+| treasury | 7 | 0.983 -> 0.917 (pool) | 5 -> 0 | - | - |
+| powder store | 2 | 0.952 -> 0.935 (pool) | 1 -> 1 | - | - |
+| winch room | 1 | 1.000 -> 0.990 (pool) | 2 -> 3 | - | - |
+| smithy | 1 | 1.000 -> 1.000 (pool; cross 0.93 -> 0.76) | 2 -> 0 | - | - |
+| herbalist | 4 | 1.000 -> 1.000 (pool; cross 0.98 -> 0.90) | 3 -> 5 (sparse) | - | - |
+| workshop | 2 | 1.000 (pool; cross 0.86 -> 0.85) | 3 -> 2 | - | - |
+| observatory | 3 | 0.976 -> 0.982 (pool) | 5 -> 6 | - | - |
+| torture chamber | 2 | 1.000 (pool) | 0 -> 0 | - | - |
+| ossuary | ref | 1.000 (pool; crypt chests fixed since) | 5 | - | - |
+
+Self-judged blind numbers (storeroom r6: 100%, 4.8 / 5.6) are marked "self" above. A pool AUC compares a thin type
+with other types' rooms (a library with work rooms that hold no bookcases), so it says little; for those the cross
+AUC, the hard rules and the judges are the measure.
