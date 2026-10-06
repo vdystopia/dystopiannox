@@ -1,37 +1,39 @@
-# The story lab's writer brief (v11: a Westwood quest frame for each quest, a line frame for each short line, nothing added)
+# The story lab's writer brief (v13: quests blended from two or three Westwood quests, line frames, your own words)
 
-You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
-Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
-beside lines from Westwood's own campaign, and a judge who knows Nox will try to tell them apart. The aim: nobody can
-tell your town from one of Westwood's.
+You write the quests and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's Nox,
+1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set beside
+lines from Westwood's own campaign, and a judge who knows Nox will try to tell them apart. The aim: nobody can tell
+your town from one of Westwood's, and every line is your own writing, not Westwood's with the nouns changed.
 
-## How to write: Westwood's premises, Westwood's lines
+## How to write: Westwood's shapes, your own quests
 
 1. **Read Westwood first.** Read every file in `review/storylab/exemplars/` (Westwood's own lines, 20-30 a
    situation) for the voice: short, loud, plain and corny, stock phrases used straight, flat functional people beside
    one or two odd ones, American-cartoonish, a little clumsy.
-2. **Every quest from its quest frame.** Each quest of your town is dealt one of Westwood's own quests (its
-   offer, reminder, thanks, journal, all by one speaker in one situation). Rewrite it part for part: the same shape,
-   register and quirks, the same kind of trouble and of reward, transposed to your town. The coherence comes with
-   it. In i7 a frame a line from mixed situations and in i9 a frame a sentence gave speeches that read as
-   assembled (things never introduced, a tag in the wrong slot); in i8 a dealt "absurd premise" became the template.
-3. **Keep the frame's size and plainness.** Each part has as many sentences as its frame part, and no clause the
-   frame lacks. Where your scenario needs a fact the frame does not carry (a place, a reward), put it in the place of
-   one of the frame's own facts, never as an extra clause. No explanation of why, no logistics (where the hidden door
-   is, how to open it), no closing sentiment, no foreshadowing; Westwood ends abruptly on the reward or an order.
-   Its humour is blunt and silly, never a set-up and a punchline. One address word ("lad" or "young sir") a quest at
-   most, and only where the frame has one.
-4. **Every short line from its frame.** Reminders, afterwards, refusals, townsfolk, guards, shopkeepers, captives
-   and journal entries each have a frame: one of Westwood's own lines, dealt to you alone. Rewrite it line for line:
-   keep its shape (about as many sentences, its punctuation where it falls, its opening and ending, its stock words,
-   its quirks) and change its matter to your town's. Never five words of a frame in a row (stock phrases excepted),
-   never a Westwood name.
-5. **Add nothing on purpose, and leave the setting to the map.** No jokes, colour, quirks or set pieces beyond what
-   the premise and the frames carry: an instruction to add a feature is followed by every writer and becomes the
-   template (i6). Westwood's people rarely describe their surroundings: no smokehouses, stilts, slag roads or bog
-   toads in every line; the town's look is the map's business.
-6. **Then check against `rules/DIALOGUE.md`** (no semicolons, no em dashes, the player never addressed by class,
-   journal entries as short orders) and the tells below.
+2. **Every quest blended from its dealt quests.** Each quest of your town is dealt two or three of Westwood's quests
+   of other kinds and chapters: a **shape** (A) for the size and rhythm of each part, a **trouble** (B) for the kind
+   of trouble and its turn, and for some a **payoff or complication** (C). Build one new quest out of them for your
+   scenario. Earlier rounds rewrote one Westwood quest per quest, part for part; judges who know Nox recognised the
+   quest under the new nouns, and the lab's originality check measured those quests as far closer to a Westwood quest
+   than any two of Westwood's own quests are to each other. A blend of three is a new quest; keep its coherence (one
+   speaker, one situation, the trouble introduced before it is referred to).
+3. **Each part takes its rhythm from A's part of the same name,** or from its line frame where A has none: about as
+   many pages and sentences, the ! and ? where they fall, how it opens and how it ends, its register (plain, grand,
+   gruff, odd) and its quirks. Not its words: never five words of any Westwood line in a row (stock phrases excepted),
+   never a Westwood name. Not its matter: the matter comes from your scenario, B and C.
+4. **Keep it plain and say no more than Westwood would.** No explanation of why, no logistics (where the hidden door
+   is, how to open it), no closing sentiment, no foreshadowing of your own; Westwood ends abruptly on the reward or an
+   order. Its humour is blunt and silly, never a set-up and a punchline. One address word ("lad" or "young sir") a
+   quest at most. No jokes, colour or set pieces beyond what the dealt quests carry, and no scenery: Westwood's people
+   rarely describe their surroundings; the town's look is the map's business.
+5. **A loose spot, where one is dealt.** Some of your quests are dealt one Westwood line that is loose in a particular
+   way (a stake half said, an aside, a slip, a line that runs on). That quest may be loose that way once, where it
+   falls naturally. The others are as tidy or as loose as their shapes are.
+6. **Every short line from its frame.** Reminders, refusals, afterwards, captives, the townsman and journal entries
+   take their rhythm from A's part of the same name or, where A has none, from the line frame dealt for them.
+7. **Then check:** `rules/DIALOGUE.md` (no semicolons, no em dashes, the player never addressed by class, journal
+   entries as short orders), the tells below, and the originality check your brief names. Fix what it flags in your
+   own words.
 
 ## What gave earlier writers away (the judges' tells)
 

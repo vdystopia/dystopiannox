@@ -8,7 +8,7 @@ i4 showed it: ten writers given one brief and one set of exemplars converge on t
 shapes; a card draws each map's shapes from that spread (the lists below are Westwood's, from the campaign), and gives
 every part two or three model lines of its own, drawn from review/storylab/exemplars.
 """
-import os, random, re, sys
+import collections, os, random, re, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -414,3 +414,192 @@ def quest_frames_card(dealer, scenarios):
         L.append(f"- **{sid}**: " + " | ".join(f"*{p}*: \"{txt}\"" for p, (ks, txt) in unit.items()))
     L.append("")
     return "\n".join(L), used
+
+
+# ---- blended quests (v13): beats dealt from two or three Westwood quests of other chapters and kinds -------------------
+# i10-i12 rewrote one Westwood quest per quest. The judges recognised the skeleton under new nouns, and the originality
+# check (originality.py) put those quests at 0.6-0.8 to the quest they were dealt where Westwood's own quests sit at
+# 0.36 (p95 0.43) to their nearest neighbour. A blended quest takes the shape of its lines from a Westwood quest of
+# *another kind* (A), the kind of trouble and its turn from a second (B), and, for some quests, the payoff or a
+# complication from a third (C), all of other chapters; so no single Westwood quest maps onto it, while every line
+# still has a Westwood line for its rhythm. The units come from every pool except the scenario's own, so a round's
+# packets need leave nothing out.
+
+FAMILY = {
+    "Con02a:MayorGreeting": "pest", "Wiz01A.scr:HorvathTalk01": "rescue", "Wiz02:OldArchivistTalk01": "chase",
+    "Wiz02A.scr:WardenTalk01": "bounty", "Wiz02A.scr:MaxTalk02": "bounty", "War01A.scr:GearhartTalk02": "pest",
+    "Con03C.scr:ForemanA": "pest", "Con02a:BridgeGuardGuarding": "fetch", "Wiz05A.scr:CaptainGreeting": "briefing",
+    "War05A.scr:SadVillagerGreeting": "rescue", "War05A.scr:IngridGreeting": "rescue",
+    "War05A.scr:FarmerGreeting": "fetch", "War05A.scr:MaidenGreeting": "fetch", "Con05A.scr:HorvathGreeting": "fetch",
+    "Con03A.scr:HermitMeet01": "fetch", "Wiz03a:HorvathIntro": "fetch", "War03b:MayorIntro": "fetch",
+    "Wiz02B.scr:HorvathTalk04": "fetch", "War07A.scr:MorganTalk04": "deal", "Con02a:ConManSalesPitch3": "deal",
+    "War01A.scr:QuaterMasterTalk01": "deal", "War05C.scr:SisterGreeting": "captive", "War07A.scr:MaxOffer01": "deal",
+    "Con02a:ContestGuard": "deal", "Con02a:AldwinGreeting": "deal", "Wiz02B.scr:InversionBoyTalk01": "deal",
+    "War02a:QuarterMasterTalk04": "rescue", "War05A.scr:CaptainGreeting": "rescue", "Con01a:CaptainGreet": "briefing",
+    "War01A.scr:CaptainTalkStart": "briefing", "Con04a:CaptainGreet": "briefing", "Wiz06a:Captain1": "briefing",
+    "Wiz02B.scr:HorvathTalk01": "briefing", "War02B.scr:HorrendousTalk1Start": "briefing",
+    "Con05A.scr:CaptainGreeting": "briefing", "War09a:CaptainGreet": "briefing", "War08a:AldwynGreet": "briefing",
+    # speakers outside the pools (originality.ww_quests ids)
+    "War07a:MorganFriend": "deal", "War09a:Aidan": "captive", "War09c:Cain": "captive", "Wiz05c:Horvath": "captive",
+    "War03b:Aldwyn": "gift", "War02a:Gearhart": "captive",
+}
+QUEST_PART_OF = {"offer": "offer", "plea": "offer", "opening": "offer", "offer_a": "offer", "offer_b": "offer",
+                 "reminder": "reminder", "completion": "completion", "outcome_a": "completion",
+                 "outcome_b": "completion", "after": "after", "refusal": "refusal"}
+SCEN_FAMILY = {"bounty_offer": {"pest", "bounty", "chase"}, "heirloom_fetch": {"fetch", "chase"},
+               "rescue": {"rescue", "captive"}, "two_givers": {"deal"}, "main_opening": {"briefing"}}
+
+# Westwood's own loose spots: a stake half said, an aside, a non sequitur, a slip, a speech that runs on or stops
+# short. A quest may be dealt one (about half are), each a different one, so no rule reaches every writer.
+UNTIDY = [
+    ("War05A.scr:MaidenGreeting", "If I don't get it back, he'll be destroyed. He's supposed to arrive soon!", "the stake half said: why it matters is left to the player"),
+    ("War05A.scr:MaidenGreeting", "Could you... would you get it back for us?", "the ask stumbles and starts again"),
+    ("Con04a:CaptainGreet", "See if Hecubah's been here. You'll know. And careful.", "a hint that explains nothing; a fragment"),
+    ("Con02a:ConManSalesPitch3", "This bow is a beauty. The previous owner only used it on weekends.", "an aside that does nothing for the quest"),
+    ("War07A.scr:MorganFriendTalk01", "Sometimes I think he does this just to get away from his responsibilities. It's not easy running a smuggling ring, you know.", "a grumble about someone, off the point"),
+    ("Con02a:MayorsGuardIdle", "Beautiful weather today, don't you think?", "small talk with nothing to do with anything"),
+    ("War02a:GearhartTalk06", "It worked! It worked! Um... You go first.", "a speaker who loses his nerve mid-line"),
+    ("War03b:AldwynIntro", "Well, I don't really care for Theogrin and his petty conundrums, but allow me to assist you.", "an opinion about another townsman, unasked"),
+    ("Con01a:CaptainGreet", "I'll bring you no further, lad. Too many prying eyes the closer we get by air to the Village of Ix.", "a reason half given, in a clumsy order"),
+    ("Wiz02B.scr:HorvathTalk01", "Wildlife incursions in the settled areas is on a steady rise.", "a stiff word and a grammar slip"),
+    ("War03b:AldwynPre", "Good luck with those urchins. They can be sneaky and ruthless bunch.", "a dropped word"),
+    ("War07A.scr:MorganTalk06", "Accept this gold as token of my gratitude. Ah, yes! And here's a key", "a stock phrase a word short, then an afterthought"),
+    ("Con03A.scr:HermitMeet02", "Have you recovered my spectacles?! Oh.... Well, the rogues who took them have a hideout in the woods nearby.", "the speaker trails off, then gives the hint late"),
+    ("Wiz05C.scr:Horvath1", "Who is that? Can anybody hear me?", "the speech ends on a question to nobody"),
+    ("Con05A.scr:HorvathReturned", "Here, these bottles of Mana and the Infravision spell will come in handy... sooner than you think.", "a hint of trouble ahead, not explained"),
+    ("War03b:MayorPre", "Those nettlesome urchins are causing too much trouble these days.", "a reminder that reminds of nothing"),
+    ("War07A.scr:MaxOffer01", "Actually, business has fallen off quite a bit, with Hecubah running loose. I'm moving out of here to set up shop further south.", "an offer that never quite asks"),
+    ("War05A.scr:IngridReturned", "Thank you so much, kind Adventurer! Take these as tokens of my appreciation!", "a thanks far shorter than the ask"),
+    ("Wiz05A.scr:CaptainGreeting", "The Ogres overran the Village of Brin and we'd have lost it to them if Horvath's powerful wizardry were not thrown into the fray at the last moment!", "one sentence that runs on past its point"),
+    ("Wiz01A.scr:HorvathTalk04", "Perhaps you might make a good apprentice. Hmmm... Yes.", "the speaker thinking aloud"),
+    ("Wiz02A.scr:WardenTalk02", "Ho, there! The priest told me of strange sounds coming from here, so I came to investigate.", "the speaker explains why he turned up, which nobody asked"),
+    ("Con03C.scr:ForemanA", "What took you so long to get here!? We have a horrible problem!", "a gripe before the greeting"),
+    ("War09a:AidanGreet1", "My companion died two days ago and the stench of his rotting corpse is a constant and nauseating reminder of my certain fate.", "one grim detail too many, stiffly said"),
+    ("War05C.scr:SisterFollowing1C", "By the way, the Ogres mentioned something about a secret passage...", "something already said, said again as news"),
+    ("War03b:T4Post", "Hmmm. I thought I locked the door.", "a line to himself"),
+    ("War07A.scr:TurnMaxDown", "Ah, that's alright, lad. I'm sure I'll be able to sell my two buildings to someone else.", "a shrug where a giver would plead"),
+    ("Wiz02B.scr:LewisTalk08", "Hmmm... don't tell Horvath about this. I'll try to sort it out on my own.", "a secret blurted out"),
+    ("Wiz02A.scr:WardenTalk04", "You eliminated Morgan, eh? Well, I had hoped to bring him in alive, but I'll lose no sleep fretting about his soul!", "the giver's second thoughts about the job, after it is done"),
+]
+
+_POOLKEYS = None
+
+
+def _pools_of_key(k):
+    """The scenarios whose packet pool holds the string key k."""
+    global _POOLKEYS
+    if _POOLKEYS is None:
+        import json
+        d = json.load(open(os.path.join(HERE, "scenarios.json"), encoding="utf-8"))
+        _POOLKEYS = collections.defaultdict(set)
+        for s in d["scenarios"]:
+            for u in s["westwood"] + s.get("control_extra", []):
+                for _, kk in u:
+                    for x in (kk if isinstance(kk, list) else [kk]): _POOLKEYS[x].add(s["id"])
+    return _POOLKEYS.get(k, set())
+
+
+def _blend_units():
+    """{id: {"family", "chapter", "keys", "parts": {part: text}, "pools": {scenario}}}: every Westwood quest a blend
+    may draw from (originality.ww_quests, one per first key, labelled by FAMILY)."""
+    import originality as O
+    out = {}
+    for q in O.ww_quests():
+        head, _, rest = q["id"].partition(":")
+        first = rest if head in ("bounty_offer", "heirloom_fetch", "two_givers", "rescue", "main_opening") else q["id"]
+        if first not in FAMILY or first in out: continue
+        m = re.match(r"^(Con|War|Wiz)(\d+)", first, re.I)
+        out[first] = dict(id=first, family=FAMILY[first], chapter=(m.group(1).capitalize() + m.group(2)) if m else first,
+                          keys=set(q["keys"]), pools=set().union(*(_pools_of_key(k) for k in q["keys"])),
+                          parts={p: re.sub(r"\s*\n\s*\n\s*", " / ", t.strip()).replace("\n", " ") for p, t in q["parts"].items()})
+    return out
+
+
+def _near_pool(unit, sid, S, d):
+    import difflib
+    texts = []
+    for s in d["scenarios"]:
+        if s["id"] != sid: continue
+        for u in s["westwood"]:
+            for _, k in u:
+                texts += [S[x] for x in (k if isinstance(k, list) else [k]) if x in S]
+    return any(difflib.SequenceMatcher(None, t, x).ratio() > 0.6 for t in unit["parts"].values() for x in texts)
+
+
+BLEND_INTRO = [
+    "### Your quests: each built from two or three Westwood quests", "",
+    "Each quest below is dealt Westwood quests of other kinds and chapters. Build one new quest from them:", "",
+    "- **Shape (A)**, a Westwood quest of another kind: each of your parts takes its size and rhythm from A's part of "
+    "the same name (as many pages and sentences, where the ! and ? fall, how it opens and how it ends, its register "
+    "and its quirks), not A's matter or the order of A's errand.",
+    "- **Trouble (B):** the kind of trouble behind your quest and its turn (who is to blame, what went wrong first, "
+    "what is odd about it), transposed to your scenario and town.",
+    "- **Payoff or complication (C)**, where dealt: what the reward is (an item, a spell, a key, a pass, the way on, "
+    "gold), or the snag in the job (a condition, a second person to see, a thing to do first).",
+    "- **A loose spot**, where dealt: one Westwood line that is loose in one way, and what is loose about it. Your "
+    "quest may be loose that way, once, where it falls naturally. Not its words.", "",
+    "Where A has no part your scenario needs, write that part in the manner of A's other parts, or from its line "
+    "frame below. No one of A, B or C may show through: a judge who knows Nox must not recognise any of them under "
+    "new nouns.", ""]
+
+
+def blend_card(dealer, scenarios, intro=True):
+    """The blended quests of one map: for each quest a shape (A, of another kind), a trouble (B) and for two in three a
+    payoff or complication (C), from three chapters, none from the scenario's own packet pool or near it; about half
+    get one loose spot. Returns (markdown, {scenario: [keys dealt]}, {quest: arm}, [(scenario, parts A has no part
+    for)])."""
+    import json
+    import westwood
+    if not hasattr(dealer, "bunits"):
+        dealer.bunits = _blend_units()
+        dealer.buse = collections.Counter()
+        dealer.bscen = collections.defaultdict(set)
+        dealer.untidy = []
+        S = westwood.strings()
+        d = json.load(open(os.path.join(HERE, "scenarios.json"), encoding="utf-8"))
+        dealer.bnear = {sid: {u for u, x in dealer.bunits.items() if _near_pool(x, sid, S, d)} for sid in SCEN_FAMILY}
+    rng, U = dealer.rng, dealer.bunits
+    L = list(BLEND_INTRO) if intro else []
+    used, arms, need, mine = {}, {}, {}, set()           # mine: no Westwood quest twice on one map
+    pick = lambda xs: (rng.shuffle(xs), xs.sort(key=lambda u: dealer.buse[u]), xs[0])[2] if xs else None
+    for sid, parts in scenarios:
+        if sid not in SCEN_FAMILY: continue
+        for sub in (("a", "b") if sid == "two_givers" else ("",)):
+            fam = SCEN_FAMILY[sid] if sid != "two_givers" else ({"deal"} if sub == "b" else {"deal", "bounty"})
+            ok = lambda u: sid not in U[u]["pools"] and u not in dealer.bnear[sid] and u not in mine
+            a = pick([u for u in U if ok(u) and U[u]["family"] not in fam and u not in dealer.bscen[sid]
+                      and "offer" in U[u]["parts"] and len(U[u]["parts"]) >= 2])
+            b = pick([u for u in U if ok(u) and u != a and U[u]["chapter"] != U[a]["chapter"]
+                      and U[u]["family"] not in fam | {U[a]["family"], "gift"}])
+            arm = rng.choice(["AB", "ABC", "ABC"])
+            c = pick([u for u in U if ok(u) and u not in (a, b)
+                      and U[u]["chapter"] not in (U[a]["chapter"], U[b]["chapter"])]) if arm == "ABC" else None
+            for u in (a, b, c):
+                if u: dealer.buse[u] += 1; mine.add(u)
+            dealer.bscen[sid].add(a)
+            un = None
+            if rng.random() < 0.5:
+                if not dealer.untidy:
+                    dealer.untidy = list(UNTIDY); rng.shuffle(dealer.untidy)
+                for i, x in enumerate(dealer.untidy):
+                    if sid not in _pools_of_key(x[0]):
+                        un = dealer.untidy.pop(i); break
+            q = sid + (f"_{sub}" if sub else "")
+            role_c = rng.choice(["payoff", "complication"]) if c else ""
+            arms[q] = dict(arm=arm, c=role_c, loose=bool(un), A=a, B=b, C=c, U=un[0] if un else None)
+            used.setdefault(sid, [])
+            used[sid] += [k for u in (a, b, c) if u for k in U[u]["keys"]] + ([un[0]] if un else [])
+            show = lambda u: " | ".join(f"*{p}*: \"{t}\"" for p, t in U[u]["parts"].items())
+            title = {"a": "two_givers, the first ask (offer_a, outcome_a, journal_a)",
+                     "b": "two_givers, the odd ask (offer_b, outcome_b, journal_b)"}.get(sub, sid)
+            L += [f"#### {title}", "",
+                  f"- **Shape (A)**, a {U[a]['family']} quest: {show(a)}",
+                  f"- **Trouble (B)**, from a {U[b]['family']} quest: {show(b)}"]
+            if c: L.append(f"- **{'Payoff' if role_c == 'payoff' else 'Complication'} (C)**, from a {U[c]['family']} quest: {show(c)}")
+            if un: L.append(f"- **A loose spot:** \"{un[1]}\" ({un[2]})")
+            L.append("")
+            for p, st in parts:                         # the parts A has no part for get a line frame
+                if sid == "two_givers" and not p.endswith("_" + sub): continue
+                qp = QUEST_PART_OF.get(p)
+                if qp is None or qp not in U[a]["parts"]: need.setdefault(sid, []).append((p, st))
+    return "\n".join(L), used, arms, [(sid, ps) for sid, ps in need.items()]
