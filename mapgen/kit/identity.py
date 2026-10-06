@@ -498,9 +498,13 @@ ROOMS = {
                                   min_area=150, fixed=True),
                              dict(fam="table", slot="group", group="labtable", max=1, min_area=150, fixed=True),
                              dict(fam="lab", slot="group", group="generators", max=1, min_area=200, fixed=True),
-                             dict(fam="shelves", slot="line", other=True, n=2, max=4, min_area=150),
+                             dict(fam="shelves", slot="line", other=True, n=2, max=4, min_area=90),
                              dict(fam="lab", slot="wall", at="center", clear=0.6, only=r"^FairyJar", max=1, fixed=True),
-                             dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=220, fixed=True)]),
+                             # (the checker wants a lab as covered as Westwood's median, 0.097: the fill had run out of
+                             # steps at 0.07-0.09 in the medium rooms)
+                             dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=150, fixed=True),
+                             dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=120, fixed=True),
+                             dict(fam="shelves", slot="line", n=2, max=4, only=r"^Bookcase")]),
     "chapel": dict(purpose="a chapel: the altar centred on a back wall between statues, a few rows of pews facing it "
                            "split by a carpeted aisle, a colonnade down the nave, a pair of statues, tapestries on the "
                            "walls, plants in the corners, open floor toward the doors",

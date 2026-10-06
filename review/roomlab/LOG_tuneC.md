@@ -365,3 +365,4 @@ Storeroom r19-r21: dropping a heap that stayed one piece and capping great casks
 
 The AUC counts the island against the laboratory (Westwood's measured middles are bare), the judges for it ("Westwood's
 labs fill the room as one working space"); r16 is queued for the judge.
+| r17 | more fill for the checker's sparse rule (bookcases from 38 tiles, gargoyles from 62, a chest): sparse rooms 5 -> 3 | 0.983 | 0.943 | 6 (3 sparse, 3 door shells) |
