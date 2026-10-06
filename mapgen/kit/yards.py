@@ -423,7 +423,8 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
     for _ in range(rng.randint(1, 2)):
         for _try in range(30):
             s_ = (rng.uniform(I0 + 0.9, I1 - 0.9), rng.uniform(J0 + 0.9, J1 - 0.9))
-            if min(s_[0] - I0, I1 - s_[0], s_[1] - J0, J1 - s_[1]) > 1.3: continue
-            if free_spot(*s_, pad=0.85, lane_w=1.3):
+            if min(s_[0] - I0, I1 - s_[0], s_[1] - J0, J1 - s_[1]) > 1.6: continue
+            # a trunk's spread is wide: 1.2 squares off the fence's line, never on it (the blind judge, 2026-10-05)
+            if free_spot(*s_, pad=1.2, lane_w=1.3, t="TreeOgre08"):
                 put(rng.choice(("TreeOgre08", "TreeOgre09", "TreeOgre10", "TreeTrunk6", "TreeForest01", "TreeForest03")),
                     *s_, room=1.0); break

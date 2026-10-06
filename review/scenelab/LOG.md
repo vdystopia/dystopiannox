@@ -115,11 +115,12 @@ WoodAndSteelDoor each; GrassSparse2; dead trees and trunks; headstones 100-130 p
 | r1-crypts | crypt cells along the back (`_crypts`: one, or two in a long yard, 75% of yards; their back and end walls the fence's line); a walk beaten bare from the gate to the crypt door; graves 3.0-3.6 squares along, 2.9-3.3 between rows; the gate pillar one, 30% (both 20%: statue share 0.17 against Westwood's 0); the digger's corner the spade and bucket, the coffin 25%, the torch pole 30%; larger sizes first where they fit with 3 squares free round them (`grow`, 14 x 10 to 12 x 10) | 0.816 | | 1 / 2 |
 | r2-larger | `grow` from 16 x 12 | 0.659 | | 0 / 1 |
 | r3-walk | the walk always (to the crypt, or across to the back), square to the gate, two tiles wide; graves 1.1 squares off the fence (built_near 0.36 against 0.17) and 0.5 off the walk | 0.578 | | 1 / 2 |
-| r4-small | a yard under 12 squares packs its graves closer (2.6-2.9 along, 2.4-2.7 between) and its walk one tile wide | 0.565 | queued for the independent judge | 0 / 0 |
+| r4-small | a yard under 12 squares packs its graves closer (2.6-2.9 along, 2.4-2.7 between) and its walk one tile wide | 0.565 | | 0 / 0 |
+| r5-trees | the yard's trees 1.2 squares off the fence (the judge: trunks on the fence line) | 0.565 | queued for the independent judge | 0 / 0 |
 
 AUC under 0.6 from r3 (13 Westwood scenes: read it loosely). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
 errors, warnings unchanged (the larger yards keep 3 squares free round them, so no corner is shut off). The tuning agent
-looked at the renders: r4-small is queued for an independent judge.
+looked at the renders: r5-trees is queued for an independent judge.
 
 ## garden (mapgen/kit/village.py `Village.garden`)
 
