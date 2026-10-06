@@ -43,7 +43,7 @@ law-or-mercy choice ending in a journey home). `thornwick.py` and `rimehold.py` 
    `py tests/storylab.py frames --seed <MapName>` (a Westwood quest for each quest, a Westwood line for each guard,
    shopkeeper, townsperson, reminder and journal entry) and rewrite each line for line: same size, punctuation,
    register and quirks, new matter and names, nothing added (no explanation, joke, backstory or closing sentiment
-   the frame lacks). This is what the story lab's blind judges could not tell from Westwood (`rules/DIALOGUE.md`
+   the frame lacks), then rework whatever the originality check flags so the lines are our own. This is what the story lab's blind judges could not tell from Westwood (`rules/DIALOGUE.md`
    "Write from Westwood's own lines"); rules and imitation alone were told apart every time. Then the guide's
    checks (no semicolons, the player never addressed by class, journal entries as short orders) and each side quest
    by `rules/QUESTS.md`'s five beats (offer with a yes/no

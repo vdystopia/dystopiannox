@@ -1,0 +1,34 @@
+{
+  "packet": "e0567d",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The deadpan 'Loads and loads of money?' joke where the NPC answers the player's unheard reply, the '?!' punctuation and the silly frog premise are pure Westwood."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Long, breathless exposition with 'raving demoness', 'brave Adventurer', 'kind sir' and a pushy 'What are you waiting for?' reminder; the stray apostrophe in the journal is a real-world slip."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short like Nox, but the stammered 'Could you... would you' and the tidy journal feel composed; 'he'll be destroyed' is the one odd word."},
+    {"label": "D", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "Concrete practical warnings ('Keep to the planks out there') and the brusque 'no time now for weeping' hand-off read authentic, though the shape is close to E and F."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Opens with an off-topic framing line about minding the mill, then follows the same 'So the X ... but there's no time to fret ... [Person] has been asking for you' template as F; neat geography ('barrow east of the ford') is too composed."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Five pages of item hand-offs with tidy cause-and-effect ('now the sick of [Place] go without') and a forwarding 'was here asking for you ... across the square' that repeats the packet's template; journal is two clean imperatives."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The startled opener is lively, but lines like 'you'll have saved an old man's trade' and 'Any traveler would be glad of it' are writerly summaries Nox's NPCs rarely say; the 'No?....' punctuation looks forced."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Hail, stranger! ... for our need is very great' is mock-archaic high fantasy rather than Nox's plain chatty register, and the foreshadowing 'You will need them... and soon, I suspect' is stock."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The awkward 'I would be willing to bring you along with us', 'Dark fortunes must have befallen him' and the 'Hmmm... Yes.' muttering are Westwood's chapter-opening style, with a teleporter instruction tacked on."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff mayoral welcome, odd capitalization ('East of here'), a reminder that is only grumbling, and a functional 'buy supplies first, then see the Captain' tutorial nudge, all typical of the campaign."}
+  ],
+  "tells": [
+    "Generated texts reuse a single template for the thanks: exclaim the item, comment on what the player found ('So the X...'), dismiss it with 'no time to fret/weep', then forward the player to a named person 'who has been asking for you'.",
+    "Generated offers open with a scene-setting or framing line unrelated to the request and give over-tidy geography (direction + landmark + feature) and cause-and-effect stakes.",
+    "Westwood's reminders are often unhelpful grumbles or impatient one-liners; generated reminders tend to be clean restatements of the goal.",
+    "Westwood's humour is deadpan and absurd (pet frog, imagined player reply), while generated humour or colour comes as polished aphorisms ('saved an old man's trade', 'Any traveler would be glad of it').",
+    "Westwood's prose has small slips: odd capitalization, stray apostrophes, clumsy phrasing ('bring you along with us'); generated prose is grammatically clean, or adds forced punctuation.",
+    "Mock-archaic register ('Hail', 'for our need is very great') reads as generic fantasy, not Nox's plain, chatty townsfolk."
+  ]
+}

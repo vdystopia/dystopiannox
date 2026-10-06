@@ -1,0 +1,33 @@
+{
+  "packet": "128711",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Jandor's 'lad' and the exclamations are there, but the '!?' and 'Damn!' push too hard, and 'leaving rebuilding the village our smallest concern' is a clumsy construction. It stacks melodrama ('All Nox is now in peril', 'or we are doomed') where Westwood stays brisker."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A plain drop-off line with short sentences, a clear direction and a terse 'No more time for chit-chat' reminder. The journal names who and where in one breath, which is the campaign's habit."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'Too many prying eyes the closer we get by air' and 'Forest beasts will heed its bite' have Westwood's slightly odd, compact phrasing, and the gruff 'Get a move on' reminder fits. A staff handed over in the opening is a true chapter-start beat."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Clipped and plausible, but 'You'll know.' is a writerly beat. The reminder restates the opening almost word for word ('Enter... Go into the crypts to see if...'), which feels like padding."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The longest speech of the ten. 'Antiquated records', 'furnish the answers I seek' and 'scry out the cause' are a more literary register than Nox's NPCs use. The agreement slip ('incursions... is') could be either side's."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Its instructions spell out geography ('located East of here', 'my house at the center of town') like a modern quest-giver. The reminder gives the player nothing to act on, and the stray capitals ('Urchins', 'East') read like imitated quirks."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Stiff and functional ('The Master for the [Place]', 'convey the [Thing]'), with a key handed over and a capitalised 'YOU' in the reminder: late-campaign Westwood exposition, flawed in Westwood's own way."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Every step is an errand ('Take these supplies -- and gold. Go to the shop... The road across these bridges'), which reads like a tutorial checklist. 'Something is deeply amiss in our land' and 'recent surge of violence in the local creatures' are generic fantasy openers."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The proud, exclamatory introduction ('timeless fortress home... Training grounds of the glorious...') with dashes, and the blunt 'It weeds out the weak recruits', sound exactly like Jandor arriving at a chapter start. The journal is minimal."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "'No time to rest on laurels' and 'Now, off with you!' are Jandor's voice. It ties the raid, the stolen item and the villain together in a few plain sentences, and the journal is the bare 'Retrieve the [Thing]'."}
+  ],
+  "tells": [
+    "Westwood's openings are short and blunt and do one job (drop off, point the way, hand over an item). The new texts spend more words on the setting and the threat before they give the instruction.",
+    "The new texts overload the directions (compass points, 'at the center of town', shops, bridges), while Westwood gives one landmark and trusts the map.",
+    "Reminders in the new texts either restate the opening at length or give no action at all. Westwood's are one or two gruff lines that push the player to move ('Get a move on', 'Better hurry!').",
+    "Imitated Jandor gruffness tends to be overdone ('Damn!', '!?', 'we are doomed'). Westwood's gruffness is dry and understated.",
+    "A literary vocabulary ('antiquated', 'furnish the answers I seek', 'deeply amiss') reads as a modern writer. Westwood's oddities are terse, slightly ungrammatical compressions instead."
+  ]
+}

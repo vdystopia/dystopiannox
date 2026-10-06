@@ -1,0 +1,33 @@
+{
+  "packet": "299491",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Theatrical opening wail ('Ooooh, how can this be?'), plot-bound stakes and a hand-off to the next quest-giver, all in short, plain sentences. The journal is terse and names the villain by type, as Westwood's journals do."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It starts mid-conversation ('Good!'), is tied to a petition that unlocks the next area, hands over a colour-named key, and the reminder is a slightly odd one ('Have faith, one little urchin is no threat'). Those are Westwood's gating mechanics and quirks."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Exclamation-heavy and stiff ('for the darkest purposes, indeed!'), with a compass direction and a reward of bottles plus a spell given with a wink ('sooner than you think'). It is corny the way Westwood's chapter-plot lines often are."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The character is a literary scholar ('At last the heavens are mine again', 'the makings of a scholar after all. Hmmm... Perhaps.') with an introduction in the middle of the speech. The voice is more crafted and wry than Nox's plain helpers, and the offer runs long."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The panicked opening ('Gahhhhhh! No! Don't kill me!'), the near-blind comedy, the reminder that gives the location only on a second visit, and an oddly specific reward (a scroll about bats for a conjurer) all point to Westwood's own voice."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Bluster ('What took you so long to get here!?'), a mock-official phrase ('Nox's vital interests'), several items handed over at once, a numbered journal task ('Charm or kill... Rescue the 6') and a Captain hand-off. Classic Westwood structure."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Competent and Nox-shaped, but the reminder is a generic flavour line, and 'For such courage the whole village is in your debt' plus the 'buy what you need in the shops' hand-off read like a template filled in neatly."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The chicken curse is a good Nox-style joke, but the offer piles up exposition (raiders, Ogre shaman, Urchins, the cat) with a tidy causal chain that Westwood rarely builds. The thanks is generic."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "A small domestic stake told in breathless short exclamations ('You're wonderful!'), with a double ask ('Could you bring it home to us? Would you?'). It is pleasant but thin, and has none of the plot tie-ins or quirky rewards Westwood's quest-givers carry."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The joke in the reward ('A great big heap of gold? Well... if you insist') is Nox-like, but the tidy setup about Imps digging under the forge and the reminder that permits looting feel engineered. The 'magic [item]' pattern repeats the other new texts."}
+  ],
+  "tells": [
+    "Westwood's quests hook into the campaign machinery: petitions, keys named by colour, hand-offs to the next quest-giver or the Captain, and spells or scrolls as rewards. The new texts end in a generic 'token' or 'small gift'.",
+    "Westwood's speakers often open with an odd outburst or start mid-conversation (a wail, 'Gahhhhhh!', 'Good!', 'What took you so long'). The new texts open with a polite plea for help ('Oh, please help, kind stranger!').",
+    "Westwood's reminders are uneven and sometimes add new information (a location) or say something odd. The new reminders are tidy restatements of urgency or flavour lines.",
+    "The new texts reuse one template: a creature type steals a single named personal item (amulet, spyglass, pickaxe), takes it to a den or hole in a stated direction, and the journal reads 'Recover/Bring [Person]'s X from the Y at Z'. Westwood's journals are shorter or carry numbers and mechanics ('Charm or kill... Rescue the 6').",
+    "The new texts are more literary and causally neat, with a character voice built in (a wry scholar, a backstory of curse plus cat). Westwood's lines are blunter, cornier and more often exclamatory."
+  ]
+}

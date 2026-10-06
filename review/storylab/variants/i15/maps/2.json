@@ -1,0 +1,229 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent, Claude Opus 5.5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Khelm",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Gorrak's Trolls have broken up out of the deep, hold the lower mines and raid every cart on the mountain road.",
+  "names": {
+   "Khelm": "place",
+   "Haddrick": "person",
+   "Mirra": "person",
+   "Orvek": "person",
+   "Gorrak": "person",
+   "Elka": "person",
+   "Jorrin": "person",
+   "Gundra": "person",
+   "Pellam": "person",
+   "Nibbs": "person",
+   "Ulla": "person",
+   "Tobb": "person",
+   "Wash Pools": "place",
+   "Troll caves": "place",
+   "Crystal Caves": "place",
+   "Great Lift": "place",
+   "Miners' Guild": "group",
+   "Trolls": "group",
+   "Giant Leeches": "group",
+   "Imps": "group",
+   "Spiders": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Elka, an ore washer, wants the Giant Leeches that bit her brother Jorrin killed out of the Wash Pools.",
+   "names": {
+    "Elka": "person",
+    "Jorrin": "person",
+    "Wash Pools": "place",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Elka",
+     "text": "Somebody help me, please! My poor brother Jorrin was bitten half to death at the Wash Pools east of here! Filthy Giant Leeches crawled up into the basins and got nearly every ore washer in Khelm!\n\nIf you kill them off, there's a reward in it for you!"
+    },
+    "reminder": {
+     "speaker": "Elka",
+     "text": "You're still here?! Jorrin gets worse every hour!"
+    },
+    "completion": {
+     "speaker": "Elka",
+     "text": "Bless you a thousand times, brave Adventurer! Here, these are for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Giant Leeches out of the Wash Pools for Elka."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Gundra the smith's magic pickaxe was dragged off by Imps down a hole they dug under her forge.",
+   "names": {
+    "Gundra": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gundra",
+     "text": "Oh, please help, kind stranger! The Imps have dug up through my floor and my magic pickaxe is gone, dragged off down their hole under the forge!\n\nWill you go down there and get it back for me?"
+    },
+    "refusal": {
+     "speaker": "Gundra",
+     "text": "Oh... Then I suppose my pickaxe is lost for good."
+    },
+    "reminder": {
+     "speaker": "Gundra",
+     "text": "Keep whatever else the Imps have stashed down there! Only bring me my pickaxe!"
+    },
+    "completion": {
+     "speaker": "Gundra",
+     "text": "My pickaxe! Oh, you found it! What can I possibly give you for this?!\n\nEh, what's that? A great big heap of gold? Well... if you insist, here's a little something for your trouble."
+    },
+    "after": {
+     "speaker": "Gundra",
+     "text": "Many thanks again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Gundra's magic pickaxe from the Imp tunnels under Khelm."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Gundra's magic pickaxe from the Imp tunnels under Khelm."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Pellam wants the Miners' Guild pay chest back from the Trolls, and Nibbs, a tunnel rat, sells a secret way into the Troll caves.",
+   "names": {
+    "Pellam": "person",
+    "Nibbs": "person",
+    "Orvek": "person",
+    "Gorrak": "person",
+    "Miners' Guild": "group",
+    "Troll caves": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Pellam",
+     "text": "Greetings, Wanderer! The Miners' Guild has been robbed blind, our pay chest carried off in a brazen Troll raid!\n\nWould you be so good as to fetch it back from the Troll caves below? Do so and a fine reward awaits you, for the miners of Khelm won't lift a pick without their wages!"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Hey, you. Will you loosen that purse, save your neck and buy my secret way into the Troll caves?"
+    },
+    "outcome_a": {
+     "speaker": "Pellam",
+     "text": "It's back then! The Guild's wages are saved!\n\nHere is your reward, as promised. You've earned it twice over!\n\nGorrak's Trolls still hold the deep, but I heard one of those grimy diggers say Foreman Orvek wants them gone. If you go and see him maybe he can use a strong arm like yours!"
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Pleasure doing business. I hope you live to use it, for the Trolls are in a foul mood. I heard them bellowing down there a short while ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Miners' Guild pay chest from the Troll caves."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Use Nibbs' secret way into the Troll caves."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Ulla's son Tobb is trapped by Spiders in the Crystal Caves.",
+   "names": {
+    "Ulla": "person",
+    "Tobb": "person",
+    "Crystal Caves": "place",
+    "Spiders": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ulla",
+     "text": "Lad, my Tobb went into the Crystal Caves and the Spiders have him trapped! Get him out of there before it's too late!"
+    },
+    "reminder": {
+     "speaker": "Ulla",
+     "text": "There's no time to lose. Off with you now!"
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Somebody help me!"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Oh, thank goodness you came!"
+    },
+    "completion": {
+     "speaker": "Ulla",
+     "text": "My little Tobb, home safe! I owe you everything!\n\nTake this, and then go show those Trolls what for!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ulla's son Tobb from the Spiders in the Crystal Caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Haddrick drives the player's cart to the edge of Khelm and sends him to Foreman Orvek, as Gorrak's Trolls raid the mountain road; Mirra points the way.",
+   "names": {
+    "Haddrick": "person",
+    "Mirra": "person",
+    "Orvek": "person",
+    "Khelm": "place",
+    "Great Lift": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirra",
+     "text": "Hello Newcomer! Come find me after Foreman Orvek makes you a Master Miner."
+    },
+    "opening": {
+     "speaker": "Haddrick",
+     "text": "This is where my cart stops, lad. The deeper we roll toward Khelm, the more Trolls come sniffing.\n\nWalk the ore track the rest of the way down.\n\nAsk after Foreman Orvek. He's an old friend and he'll do what he can for you.\n\nHere, this sword is yours. Any Troll who tries you will feel its edge. Mind your step on the way down."
+    },
+    "reminder": {
+     "speaker": "Haddrick",
+     "text": "What, still here? Off with you. Down the track!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Foreman Orvek at the Great Lift in Khelm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

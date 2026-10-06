@@ -337,7 +337,7 @@ DEFAULT_MAP_PARTS = ("main:opening,reminder,journal; "
                      "townsfolk:rumour1,rumour2,rumour3,rumour1,rumour2,rumour3,rumour1,rumour2")
 
 
-def map_frames(seed, spec=DEFAULT_MAP_PARTS, blend=True):
+def map_frames(seed, spec=DEFAULT_MAP_PARTS, blend=False):
     """The frames card of one map: `spec` is "who:part,part; who:part" (parts as in FRAME_OF_PART: offer, opening,
     reminder, completion, after, refusal, rumour1, first/again/later, inn/arms/magic, journal, found, following)."""
     dealer = FrameDealer(f"map|{seed}")
@@ -346,7 +346,9 @@ def map_frames(seed, spec=DEFAULT_MAP_PARTS, blend=True):
         if ":" not in chunk: continue
         who, parts = chunk.split(":", 1)
         groups.append((who.strip(), [(p.strip(), "") for p in parts.split(",") if p.strip()]))
-    # each quest of the map gets a whole Westwood quest (v10, the lab's best round); the rest gets line frames
+    # each quest of the map gets a whole Westwood quest (v10/v15); the rest gets line frames. The map's story must then
+    # pass the originality check (--check): i10-i12 quests followed their frames at 0.6-0.8, i15's reworked ones 0.42.
+    # blend=True deals i13's blends instead (as original, as easily told apart, and more padded).
     qmap = {}
     for who, parts in groups:
         ps = {p for p, _ in parts}

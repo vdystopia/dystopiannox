@@ -1,0 +1,29 @@
+{
+  "packet": "e2eba1",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Over-the-top opener ('What took you so long to get here!?'), stock 'reward you handsomely', a plain item handoff and a bare journal with a number in it ('Rescue the 6 trapped mine workers'): Westwood's functional, slightly clumsy plainness."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Cosy hamlet texture ('net-man', 'old mill steps', 'Oh my, oh my...') and a captive who seeds the next quest with a stammered clue: well made, but too crafted and too local-colourful for Nox's blunt quest lines."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy cause-and-effect exposition (raid, paddocks, western hills, barred storeroom, back way, food in the crate) and a captive who explains his whole survival; the closing 'makings of a true soldier' is a neat bow Westwood rarely ties."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The absurd stakes (a pet frog), the oddly cross captive line 'Fine! I will follow you!' and the deadpan 'Loads and loads of money?' joke are exactly Nox's goofy humour; short, exclaimed, plain."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every line is a small, balanced exclamation with a cute character detail (no stick to fight with, can't ring the chapel bell without him); the even, complete dramatic beats and the double-name journal read as a careful imitation."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Bare, almost perfunctory lines ('Help us!', 'Time is running out. Now be on your way!'), 'lovely women' and 'damsels' with period-game cheek, and a quest that just points to the next two groups: unpolished in Westwood's way."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Overwrought plot exposition with awkward syntax ('leaving rebuilding the village our smallest concern', 'At happier other times'), 'Damn!' and the cliché 'Time waits for no man!': Westwood's main-plot voice, clumsy but authentic."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Close to Nox in its plainness and short captive lines, but the reminder stacks four exclamations in a row and the reward (guards will let you cross) is a tidy mechanical payoff; the journal is cleanly formatted rather than terse."}
+  ],
+  "tells": [
+    "Westwood's rescue lines are often perfunctory or oddly toned (a captive who sounds annoyed, a one-word 'Help us!'); the new texts give every captive a vivid, explanatory, emotionally fitting speech.",
+    "Westwood leans on clumsy syntax and stock phrases ('reward you handsomely', 'Time waits for no man', 'At happier other times'); the new texts are grammatically smooth and evenly paced.",
+    "The new texts add local colour and small cute character details (net-man, chapel bell, mill steps, food in the crate) and plant follow-up hooks neatly; Westwood's details are sparse and its humour is broad and absurd (a pet frog, 'Loads and loads of money?').",
+    "Westwood journals are bare objectives, sometimes with numerals or 'Charm or kill'; the new journals are uniformly shaped 'Find X in Y and bring him home' sentences.",
+    "New reminders tend to stack several short exclamations of urgency; Westwood reminders are a single plain instruction."
+  ]
+}

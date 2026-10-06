@@ -28,7 +28,8 @@ For every map:
    who know Nox recognise a famous quest under new nouns). Never five words of a frame in a row (stock phrases
    excepted). **Add nothing**: no explanation, logistics, backstory for a reward, closing sentiment, joke, persona,
    or address word the frame does not have. Where the map needs a fact the frame lacks, put it in place of one of
-   the frame's facts.
+   the frame's facts. Then make it your own (step 5): where the originality check flags a quest or a line, put the
+   frame's facts in another order, join or split its sentences, say the ask another way, adding nothing.
 3. Read the exemplars (`review/storylab/exemplars/<situation>.md`) for the voice, and `review/storylab/WRITER.md`
    for the tells the judges found.
 4. Check by the rules below and `py tests/storylab.py --check mapgen/designs/<map>.py` (it flags phrases every writer

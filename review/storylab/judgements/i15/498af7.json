@@ -1,0 +1,21 @@
+{
+  "packet": "498af7",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Breathless exclamation chain, the slightly clumsy run-on ('invaded [Place], the village north of here and kidnapped'), and the dry joke about the menfolk who cannot live without the maidens are pure Nox; the short thanks and terse journal fit too."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The plea runs five pages and stacks logistics (key, reading rooms, the student who knows where the rest hide, a poison potion) in a tidy designed way; 'you'll not find me ungrateful' and the hand-off to the next quest-giver in the thanks read like a modern quest chain, and the journal's numeral count is too precise."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Voice is close (shouting 'Lad!', exclamations), but the captive's found-line is one long expository paragraph explaining the villain, his motive and the spell, and 'next to that a cracked wall is nothing' is a more literary turn than Westwood's plain lines."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The quirky specifics (express elevator, really big bugs, the Chief Engineer), the colloquial slip 'We best go', and the casual 'Hey, it's you! You made [Place]!' have Westwood's offhand, slightly rough charm; short lines throughout."}
+  ],
+  "tells": [
+    "Westwood's pleas are short and blurt the situation in one or two breaths; the new texts spread the setup over several pages and add designed logistics (keys, rooms, potions, who knows where the rest are).",
+    "Westwood's captives speak a line or two of plain need; new captives deliver exposition about the villain's plan and motive.",
+    "Westwood's prose has small grammatical roughness and colloquialisms ('We best go', run-on commas) and quirky mundane detail used for humour; the new texts are cleaner and reach for literary contrasts.",
+    "New thanks lines chain into the next quest (someone asked after you, go see him); Westwood's thanks just hand over the reward.",
+    "Journal entries with exact counts or two sentences lean generated; Westwood's are one plain imperative."
+  ]
+}
