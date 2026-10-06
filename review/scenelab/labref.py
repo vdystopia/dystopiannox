@@ -143,7 +143,21 @@ def westwood(typ=None):
     global _WW
     if _WW is None:
         with open(E.WW_INDEX, encoding="utf-8") as f: _WW = json.load(f)["scenes"]
+        _irregularity(_WW)
     return [s for s in _WW if typ is None or s["type"] == typ]
+
+
+def _irregularity(scenes):
+    """The irregularity measures (metrics.irregularity, metrics.stamp_scores) of Westwood's scenes, read from their
+    pieces at load (so the committed index needs no rebuild when they change): stamp over the other scenes of the type."""
+    import metrics
+    by = collections.defaultdict(list)
+    for s in scenes:
+        s["features"].update(metrics.irregularity(s["pieces"]))
+        by[s["type"]].append(s)
+    for group in by.values():
+        for s, v in zip(group, metrics.stamp_scores([metrics.stamp_sig(s["pieces"]) for s in group])):
+            s["features"]["stamp"] = v
 
 
 # ---------------------------------------------------------------------------------------------------- the gallery
@@ -184,8 +198,8 @@ def gallery(typ, log=print):
     out = []
     for s in ww:
         m = E.MD.load(E.MD.corpus_json(s["map"]))
-        full = R.westwood_render(m)
-        pic = R.picture(full, s, win)
+        full, bare = R.westwood_render(m)
+        pic = R.picture(full, bare, s, win)
         fn = s["id"] + ".png"
         pic.save(os.path.join(d, fn))
         out.append(dict(file=fn, id=s["id"], map=s["map"], env=s["env"], anchor=s["anchor"], n=len(s["pieces"])))
