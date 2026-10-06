@@ -359,3 +359,31 @@ next leg; a sustained crafted persona and wry or understated humour; captives gi
 hints. The loose spots came out as performed mannerisms ("Could you... would you", "Um...", stammering ellipses,
 agreement slips that "look like editing seams"). What i10's whole-quest frames gave, and the blends lost, was
 Westwood's *amount*: a frame of one quest carries just as much matter as a Westwood quest does.
+
+### i14: part frames (WRITER.md v14, `cards.part_frames_card`)
+
+Each part of each quest (offer, refusal, reminder, thanks, afterwards) was dealt one Westwood line of its kind, each
+from a different Westwood speaker and none from or near the scenario's packet pool; the brief asked for the line's
+size (never more than a tenth over) and rhythm, the scenario's matter only, one trouble said once, nothing else (no
+backstory, logistics, scenery, persona, aside). The loose spots were dropped.
+
+| scenario | metric ours / WW | side by side (2 packets) | blind ours / WW |
+|---|---|---|---|
+| bounty_offer | 9.08 / 9.62 | 100% | 5.8 / 8.0 |
+| heirloom_fetch | 9.31 / 9.62 | 100% | 5.9 / 8.3 |
+| two_givers | 8.70 / 9.47 | 100% | 5.3 / 8.1 |
+| rescue | 9.12 / 9.46 | 95% | 5.7 / 8.5 |
+| main_opening | 9.31 / 9.59 | 100% | 5.8 / 8.6 |
+| **all** | **9.10** | **99%** | **5.7 / 8.3** |
+
+Controls (3): 53%, confidence 3.1. Solo (51 of 100 texts): 90%, ours caught 84%, Westwood taken for ours 0%, ours
+5.9 / Westwood 8.3, confidence on ours 2.8. Originality: lines pass (0% above p95, relative medians 0.09 / 0.95, no
+copied run), quests median 0.42 to the nearest Westwood quest (24 of 60 above Westwood's p95, none above p99): a part
+frame's template carries into its part, and four writers had to rework a quest the check flagged.
+
+The judges found the same things as in i13, less of them: crafted turns ("beat him or eat him", "my courage holds"),
+folksy self-introductions ("[Person]'s the name!", "Folks call me"), invented geography for directions, outcomes that
+do not follow their asks (parts from different speakers that do not join up), a reminder that "doesn't follow from
+the opening, as if two speakers had been stitched", captives with character beats, journals with flourishes. A few of
+ours now score 7-8 at confidence 2. The brief's "nothing more" lists cut the padding of i13 and did not reach the
+voice.

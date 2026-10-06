@@ -1,0 +1,208 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Kessry",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Ogre warlord Gorrak and his horde hold the high gate above the fort, and the pass through the mountains is shut.",
+  "names": {
+   "Fort Kessry": "place",
+   "Haldrek": "person",
+   "Gorrak": "person",
+   "Belgard": "person",
+   "Fennick": "person",
+   "Brunko Tallow": "person",
+   "Yorla": "person",
+   "Ostrik": "person",
+   "Grubbin": "person",
+   "Tessaly": "person",
+   "Dobbin": "person",
+   "Amulet of Warmth": "thing",
+   "White Wolves": "group",
+   "Imps": "group",
+   "Ogres": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Brunko Tallow, a goatherd of the fort, pays to have the White Wolves cleared from the ice caves above his pens.",
+   "names": {
+    "Brunko Tallow": "person",
+    "White Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunko Tallow",
+     "text": "Well met, stranger! Brunko Tallow's the name! You look like a fellow who isn't afraid of a fight, so I thought I'd put a deal to you. The last time the snow came down, the White Wolves crept into my goat pens... And they dragged off my best nannies. The pack should still be holed up in the ice caves above the fort. I'll pay you handsomely once you've cleared them out."
+    },
+    "reminder": {
+     "speaker": "Brunko Tallow",
+     "text": "Those wolves must be driven off! YOU have the might to end their raiding.\n\nHurry! Each night they grow bolder."
+    },
+    "completion": {
+     "speaker": "Brunko Tallow",
+     "text": "Thank goodness the pack is finished! You'll make a fine wolf hunter, lad. Here are the 100 gold pieces I promised for clearing them off my pens."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bounty accepted! Slay the White Wolves above the fort!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Yorla, an old woman of the fort, wants her Amulet of Warmth back from the Imps nesting at the frozen falls.",
+   "names": {
+    "Yorla": "person",
+    "Amulet of Warmth": "thing",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yorla",
+     "text": "Are you climbing to the frozen falls? If so, mind the Imps who nest there. They stole my Amulet of Warmth.\n\nWell? Will you get it back or not?"
+    },
+    "refusal": {
+     "speaker": "Yorla",
+     "text": "So you're afraid of Imps. Ask me again when you're braver."
+    },
+    "reminder": {
+     "speaker": "Yorla",
+     "text": "The Imps of the frozen falls are thieving and spiteful pests of the worst kind. Your climb to their nest will try your courage and your patience."
+    },
+    "completion": {
+     "speaker": "Yorla",
+     "text": "Hey, there! The sentry told me you came down from the falls, so I hurried right over.\n\nYou found my Amulet of Warmth! Simply wonderful! My heartfelt gratitude is yours, kind stranger! Those wretched Imps have plagued this fort all winter! I'll never take it off again. My old bones will be warm at last with this blessed amulet!\n\nAnd here is something for you, brave Adventurer -- 80 in gold!"
+    },
+    "after": {
+     "speaker": "Yorla",
+     "text": "Hello again, I'm sure this amulet will keep me warm till spring.\n\nDrop in on me again if you ever feel the chill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Yorla's Amulet of Warmth from the Imp nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Yorla's Amulet of Warmth from the Imp nest."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Marshal Ostrik wants the signal fire on the beacon tower lit again; Grubbin, a smuggler, wants his furs fetched from beyond the gate.",
+   "names": {
+    "Ostrik": "person",
+    "Grubbin": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrik",
+     "text": "The stair to the beacon is behind the barracks. Get up there and light the fire. You'll see why. And mind yourself. The bats roosting in the rafters bite anyone who climbs."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Fine furs are stashed just past the gate! Easy coin for so short a stroll."
+    },
+    "outcome_a": {
+     "speaker": "Ostrik",
+     "text": "Hurrah, the beacon burns once more, bold and steady friend! The fort could never thank you enough for this deed, but please accept this shield as a token of my esteem!"
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "Heh, heh! Quick and quiet, just how I like it, friend! The Marshal never smelled a thing... Your cut of the coin is in this purse. Pleasure doing business!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the signal fire atop the beacon tower for Marshal Ostrik.\n\nThe stair begins behind the barracks."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Grubbin the furs hidden beyond the gate."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Tessaly begs the player to bring her husband Dobbin back out of the old silver mine.",
+   "names": {
+    "Tessaly": "person",
+    "Dobbin": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Tessaly",
+     "text": "No doubt you've heard about my husband Dobbin. He went into the old silver mine and never returned.\n\nSince you look brave, I'll pay you 60 gold to bring him home. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Tessaly",
+     "text": "Have courage, a few bats are nothing to fear. Return once Dobbin's been found."
+    },
+    "found": {
+     "speaker": "Dobbin",
+     "text": "Keep back or I'll swing!"
+    },
+    "following": {
+     "speaker": "Dobbin",
+     "text": "Right behind you."
+    },
+    "completion": {
+     "speaker": "Tessaly",
+     "text": "Wonderful! You've brought my Dobbin home safe, lad! I hope that old mine never swallows anyone again. Now if you'll excuse us, we have plenty of catching up to do. Take this gold, and keep clear of Gorrak's Ogres if you value your neck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Dobbin home from the old silver mine."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Fennick points the player to Commander Haldrek in the keep, who sends him against Gorrak's Ogres at the high gate.",
+   "names": {
+    "Fennick": "person",
+    "Haldrek": "person",
+    "Gorrak": "person",
+    "Belgard": "person",
+    "Fort Kessry": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "Ogres hold the high gate and the pass is shut! Have you spoken to Commander Haldrek in the keep?"
+    },
+    "opening": {
+     "speaker": "Haldrek",
+     "text": "Hello. I am Haldrek, Commander of Fort Kessry. Gorrak's Ogres hold the high gate and breaking through them is no easy task.\n\nI'll make you a promise, if you'll drive Gorrak from the gate I'll send word of your deeds to Belgard. How about it?"
+    },
+    "reminder": {
+     "speaker": "Haldrek",
+     "text": "Go and break the Ogres' hold! Please make haste, for if left alone, Gorrak could bring his horde down on our walls, to be sure!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the high gate and defeat Gorrak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

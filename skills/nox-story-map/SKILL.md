@@ -48,7 +48,7 @@ law-or-mercy choice ending in a journey home). `thornwick.py` and `rimehold.py` 
    checks (no semicolons, the player never addressed by class, journal entries as short orders) and each side quest
    by `rules/QUESTS.md`'s five beats (offer with a yes/no
    question, refusal, reminder, completion with the reward handed over, afterwards; `q.errand`). Score the story with
-   `py tests/storylab.py --check mapgen/designs/<map>.py` (aim: 8 or more, no line below 6).
+   `py tests/storylab.py --check mapgen/designs/<map>.py` (aim: 8 or more, no line below 6; its Originality section must pass: the lines are our own writing, never Westwood's with the nouns changed).
 
 Then the map plan: areas and links. Units: the map is 256 x 256 squares on screen (X right, Y down);
 `land.area(name, uv(X, Y), radius_uv)` takes its centre in uv (`uv(X, Y) = (X + Y, X - Y)`) and its radius in uv

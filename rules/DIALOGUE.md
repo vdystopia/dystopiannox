@@ -33,6 +33,13 @@ For every map:
    for the tells the judges found.
 4. Check by the rules below and `py tests/storylab.py --check mapgen/designs/<map>.py` (it flags phrases every writer
    reaches for, copied lines, semicolons, first-person journals, and more address words than Westwood uses).
+5. **The story must be our own writing.** The check's Originality section measures every line and quest against
+   Westwood's whole campaign, with thresholds from Westwood against itself (`review/storylab/originality.py`): no
+   run of 5+ words from a Westwood line (stock phrases excepted), no more than a tenth of the lines closer to one of
+   Westwood's (word 3-grams, edit similarity) than Westwood's own lines come to each other, and no quest whose
+   skeleton (its sentences with the content words taken out, part for part) follows one Westwood quest closer than
+   any two of Westwood's quests are (p99, 0.55). The story lab's rounds that rewrote one Westwood quest per quest
+   (i10-i12) failed this at 0.6-0.8 a quest; a map must pass it. Rewrite what it flags in your own words.
 
 ## The numbers
 
@@ -329,3 +336,4 @@ fresher out here and the sun is bright.", "This cave is dank and smells of Ogre.
 - [ ] Every person, place and thing named is on the map (`--check` flags names used once).
 - [ ] A comic line or two, from minor people.
 - [ ] `py tests/storylab.py --check mapgen/designs/<map>.py` at 8 or more, no line below 6.
+- [ ] The check's Originality section passes: no copied 5-word run, no quest skeleton following one Westwood quest.

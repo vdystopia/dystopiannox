@@ -1,0 +1,209 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Skarra",
+  "setting": "a lake village of fishermen",
+  "trouble": "Vashk the Necromancer raises the Undead out of the lake from Heron Isle, and no boat dares go out.",
+  "names": {
+   "Skarra": "place",
+   "Heron Isle": "place",
+   "Vashk": "person",
+   "Dreyhaus": "person",
+   "Ottrick": "person",
+   "Lomm": "person",
+   "Torvy": "person",
+   "Dobrin": "person",
+   "Brannoc": "person",
+   "Tamsk": "person",
+   "Nim": "person",
+   "Gorm": "person",
+   "Nella": "person",
+   "Warding Lantern": "thing",
+   "Urchins": "group",
+   "Undead": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Torvy, a fishing crew boss, wants the giant leeches cleared out of the south reeds.",
+   "names": {
+    "Torvy": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Torvy",
+     "text": "Oh, bah! Leeches in the shallows again?! Sometimes I think they come back just to spoil my mornings. It's not easy keeping a fishing crew fed, you know. We're hauling in the season's best catch today and we can't have leeches on every line when the nets come up.\n\nTell you what... Clear those leeches out of the south reeds and the wooden shield off my boat is yours!"
+    },
+    "reminder": {
+     "speaker": "Torvy",
+     "text": "Hurry up with those leeches! The boats are waiting to go out."
+    },
+    "completion": {
+     "speaker": "Torvy",
+     "text": "Splendid work! You've chased off the leeches! Now there's just the catch to haul in.\n\nHere's your shield!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the giant leeches out of the south reeds."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Dobrin, a fisherman, lost his spyglass to the Urchins of the caves on the north shore.",
+   "names": {
+    "Dobrin": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobrin",
+     "text": "Pardon the mess, lad, but those thieving Urchins tore my whole shack apart to get at my spyglass. There were three of them here and plenty more in their caves on the north shore.\n\nI must have that spyglass back, but the little beasts won't part with it easily. Will you go after it, lad? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Dobrin",
+     "text": "Hmmm, a shame. Urchin hunting isn't for everybody."
+    },
+    "reminder": {
+     "speaker": "Dobrin",
+     "text": "Maybe if you poked into every last crack and hollow of those caves you would turn up my spyglass at last!"
+    },
+    "completion": {
+     "speaker": "Dobrin",
+     "text": "I bet those Urchins put up quite a fight, eh mate?"
+    },
+    "after": {
+     "speaker": "Dobrin",
+     "text": "Heron Isle is out to the North. Just follow the shoreline."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Dobrin's spyglass from the Urchin caves!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Dobrin's spyglass from the Urchin caves!"
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Brannoc wants the Warding Lantern Tamsk was making for the boats, and Nim the smuggler sells a secret way to Heron Isle.",
+   "names": {
+    "Brannoc": "person",
+    "Tamsk": "person",
+    "Warding Lantern": "thing",
+    "Nim": "person",
+    "Heron Isle": "place",
+    "Vashk": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "Tamsk the lampmaker has been crafting a Warding Lantern for our boats all this season. It ought to be done and hanging on my dock by now.\n\nFollow the shore path round the lake to Tamsk's hut by the cliffs and bring me the Lantern. The rocks behind his hut hide a cave where he keeps his work."
+    },
+    "offer_b": {
+     "speaker": "Nim",
+     "text": "Psst! You must be the brave hero they sent to rescue our sorry little village! My boat's yours, for a price."
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "Well done! A thousand thanks, brave Adventurer, for bringing the Lantern home! With it hung on the dock, we can at last keep that foul Necromancer's Undead out of our waters for good!\n\nHere, this chain tunic and these red potions will come in useful... sooner than you'd like."
+    },
+    "outcome_b": {
+     "speaker": "Nim",
+     "text": "Take my skiff under the old pier. Then find the cave which runs straight beneath the lake to Heron Isle. You'll meet plenty of Undead in there. Give them a taste of your steel."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go to the cliffs and find Tamsk's Warding Lantern."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy passage from Nim to sneak onto Heron Isle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic", "RedPotion"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gorm the fisherman's daughter Nella was taken by the Undead into the flooded cellar under the old smokehouse.",
+   "names": {
+    "Gorm": "person",
+    "Nella": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gorm",
+     "text": "There is a flooded cellar under the old smokehouse where the Undead have taken my daughter Nella. Before the lake rose, the whole village kept its salted fish down there. It holds dark passages and a few rotten floors, and I fear she will never find her way out alone."
+    },
+    "reminder": {
+     "speaker": "Gorm",
+     "text": "It is time you went after her. The water down there rises higher every hour."
+    },
+    "found": {
+     "speaker": "Nella",
+     "text": "Heeeeeeelp! Don't let them drag me under! I want to go home!"
+    },
+    "following": {
+     "speaker": "Nella",
+     "text": "Rotten old corpses! You won't get me again!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Hooray! I'm back home and dry with my papa again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the smokehouse cellar and rescue Nella."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Lomm points the player to Mayor Ottrick, who sends him after Vashk the Necromancer on Heron Isle.",
+   "names": {
+    "Lomm": "person",
+    "Ottrick": "person",
+    "Vashk": "person",
+    "Heron Isle": "place",
+    "Dreyhaus": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Lomm",
+     "text": "I ferry all newcomers to Mayor Ottrick."
+    },
+    "opening": {
+     "speaker": "Ottrick",
+     "text": "Good day, young sir. I take it you've heard about our troubles.\n\nThere's a fat purse for whoever stops Vashk the Necromancer -- by any means. He and his Undead have been crawling out of the lake by Heron Isle for weeks.\n\nWatch yourself, nobody wants to be pulled under by those rotting wretches."
+    },
+    "reminder": {
+     "speaker": "Ottrick",
+     "text": "So you're the one Dreyhaus sent us? He must think highly of your talents, seeing as the last fellow who rowed out after those Undead never came back!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the lake to Heron Isle and destroy Vashk the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "067992",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The opening is brisk and plain in Nox's way, but the reminder is a stock gate-guard refusal that doesn't follow from the opening at all, as if two speakers had been stitched together. 'Burns us all' is generic."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too many exclamations from a stock panicked villager ('Thank goodness, help us!', 'wicked rabble', 'a fine reward is yours'). It reads like a template bandit quest, not a mentor sending the hero along the main thread."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "'Hello. I am X, Y of Z' is a stiff self-introduction, and the comma splice in 'I'll make you a promise, if you'll...' plus the tacked-on 'to be sure!' sound written to imitate a voice. The bargain of sending word of your deeds is a thin reward."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The mentor's voice is right ('lad', 'Now, off with you!'), and it ties the last trial to the next errand in the way of the main campaign. The reminder points to a person rather than the goal, a slightly clumsy hand-off that is typical of Westwood."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Short, clipped beats split by page breaks: the drop-off by air, the tunnel, the old friend, the gift staff with its odd 'heed its bite'. The gruff reminder 'Get a move on' is pure airship captain."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "It names the masked item outright as 'the sacred hammer' twice, and the plot is generic (Trolls from the deep shafts steal a relic). The reminder 'Keep whatever you find down there!' is a decent touch, but the opening is one long, evenly paced explanation."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Its showy double dashes, the grandiose '-- timeless fortress home of...' and the dry 'It weeds out the weak recruits' are Westwood's arrival at a chapter's start. The reminder is minimal."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Greetings, brave Adventurer!' followed by a request with stated stakes and a purse is a quest-board formula. The idea of wizards who can't read the stars is too neatly reasoned, and the voice is neither a mentor's nor a townsman's."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The drop-off is said in plain words, then a family tie between the masked names, then the slightly melodramatic 'You remain our only hope.' The journal entry is redundant in a very Westwood way ('...who lives in the swamp')."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The terse fragments ('You'll know. And careful.') and the reminder that repeats itself ('Hurry! Go into the crypts to see if...') have Westwood's unpolished, functional rhythm. The journal entry is wordy in the original's way."}
+  ],
+  "tells": [
+    "Westwood's main-quest openings come from a mentor or guide who knows the hero (a guide dropping him off, 'lad', a family tie between named people), not from strangers begging for help with a stated reward.",
+    "Westwood's openings come in short, uneven beats split by page breaks, with fragments and gruff asides ('You'll know.', 'Get a move on.'). The new texts run as one evenly paced paragraph that explains the stakes.",
+    "The new texts lean on stock request formulas: 'Greetings, brave Adventurer!', 'Thank goodness, help us!', 'a fine reward is yours / a fine purse of gold', 'Hello. I am X, Y of Z.'",
+    "The new texts name a masked item in plain words elsewhere ('the sacred hammer') or give tidy causal reasons (wizards can't read the stars until...). Westwood leaves such things vague or quirky.",
+    "Westwood's reminders and journal entries are often a little redundant or awkward (pointing to a person rather than the goal, or repeating the opening). The new reminders are either generic exclamations or don't match their opening.",
+    "Forced folksy tags ('to be sure!') and comma splices in bargains read as imitation, not the original's plainness."
+  ]
+}
