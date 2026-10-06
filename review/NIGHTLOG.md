@@ -118,3 +118,7 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   quests are still caught by a recognisable skeleton and slightly tidier sentences. The writer model made no difference.
   The `q.errand`, `q.done` and `q.note` helpers compile (three fixes). For map agents: `py tests/storylab.py frames --seed
   <Map>` deals the frames, and `--check` flags shared stock phrases.
+- 23:59 (Clock check: the 00:05 and 23:55 entries above were stamped ahead of the real time; entries from here use
+  the system clock.) 16 more sheets sent to four fresh judges (13 room types, 3 scenes; one sheet per type per judge).
+  Four sheets rendered before the renderer fix (tavern r10, study r3, solar r3, chapel r3) were sent back for
+  re-rendering. Track commits so far: A 7, B 13, C 13, scenes 5.
