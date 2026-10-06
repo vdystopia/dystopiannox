@@ -326,3 +326,27 @@ kitchen 0.45 -> 0.34) but all but crypt are still above Westwood's p90 (~0.2): w
 repeats itself. Classifier AUC: lab 0.92 -> 0.74, shop 0.98 -> 0.90, living room 0.94 -> 0.86. QA on Starwell,
 Thornwick, Greywatch: 0 errors (a few more rooms.stray warnings). Ten sheets sent to five independent judges, under
 neutral folder names (review/blind_neutral.py).
+
+## 03:44 Archetype sheets judged (independent, neutral folder names)
+
+| Type | Engine | Before (best judged) | Archetypes (accuracy, generated / Westwood, confidence) |
+|---|---|---|---|
+| bedroom | motifs | 8/10 (g3m) | **6/10, 6.0 / 6.8, 0.60** (m2) |
+| living room | recipe | 8/10 | 7/10, 5.4 / 6.6, 0.65 |
+| crypt | recipe | 9/10 | 8/10, 4.8 / 7.2, 0.66 |
+| shop | recipe | 8/10 (g3m) | 8/10, 4.0 / 7.0, 0.68 |
+| tavern | recipe | 8/10 | 8/10, 5.0 / 7.6, 0.72 |
+| chapel | recipe | 9/10 | 9/10, 4.2 / 7.2, 0.76 |
+| laboratory | recipe | 8/10 (g3m) | 10/10, 4.2 / 7.4, 0.70 |
+| kitchen | recipe | 9/10 (g3m) | 10/10, 4.6 / 7.2, 0.73 |
+| throne room | recipe | 10/10 | 10/10, 4.2 / 7.8, 0.83 |
+| great hall | recipe | 10/10 | 10/10, 3.6 / 7.2, 0.85 |
+
+The motif bedroom is near chance (6/10, a point apart, judge at 0.5-0.55 on most calls) - the best room result after
+storeroom r16. Recipe types moved a step at most: archetypes changed the layout between rooms but the judges now name
+what is inside each one - singles at a regular pitch along walls (banners, tapestries, candelabras, bookcases), one
+table set stamped in a grid or ring, the focal off its axis (throne at the end of the NW wall facing across the short
+width; shrine dead centre of an empty hall), tombs touching or on no axis, benches never a congregation, plants in
+taverns, huge rooms with stock on one wall. Lesson: the motif engine (arrangements mined from Westwood's rooms) beats
+the recipe engine wherever both were judged; the next room wave should move the remaining types to motifs with
+archetype zone plans, rather than tune recipes further.
