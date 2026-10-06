@@ -13,7 +13,7 @@ then `py review/scenelab/blind.py score <scene> <iter>`. Paths are under this wo
 | pond_dock | r5-knots | `pond_dock/r5-knots/blind/` | r4-fisher (round 4) |
 | market_stall | r6-trades | `market_stall/r6-trades/blind/` | r5-under: 3.6 / 8.0 |
 | urchin_camp | r5-knots | `urchin_camp/r5-knots/blind/` | r3-close (round 4) |
-| shrine | r4-chapel | `shrine/r4-chapel/blind/` | r3-lights (round 4) |
+| shrine | r5-masonry | `shrine/r5-masonry/blind/` | r3-lights (round 4) |
 | ogre_camp | r4-fewbones | `ogre_camp/r4-fewbones/blind/` | r2-hut (round 4) |
 | jail | r3-torch | `jail/r3-torch/blind/` | (first sheet) |
 | well | r2-road | `well/r2-road/blind/` | r1-alone (round 4: "the restraint is right") |

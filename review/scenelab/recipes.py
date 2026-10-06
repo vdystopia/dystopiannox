@@ -424,7 +424,7 @@ RECIPES = {
                      after_plant=_theme_after(["woodpile", "chopping_yard", "timber_stack"])),
     # the shrine by the village's chapel: masonry to stand against (the judge, 2026-10-06: "shrines set against wooden
     # peasant cabins")
-    "shrine": dict(plan=_house_plan(["village_chapel"]), build=_house_build,
+    "shrine": dict(plan=_house_plan(["shrine", "mausoleum"]), build=_house_build,
                    after_plant=_theme_after(["waystone", "shrine"])),
     "farmyard": dict(plan=_house_plan(["mill", "home", "cottage"]), build=_house_build,
                      after_plant=_theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")),

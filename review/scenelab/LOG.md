@@ -419,3 +419,8 @@ scene, too sparse; Westwood's scenes are clustered knots of mixed pieces leaning
 
 Thornwick, Greywatch, Ambermere, Starwell, Harrowby, DysVale: 0 errors after round 5 (warnings: room rules only). The
 round-5 sheets are queued in TO_JUDGE.md.
+
+Shrine r5-masonry: the kit's `shrine` now stands only against masonry, a castle's walls or a stone house (`Theme.house_roles`:
+chapels, the shrine and mausoleum buildings, keeps, manors, the town hall, barracks, towers, gatehouses, gaols,
+observatories), never a cabin; the lab builds a small stone shrine or mausoleum for it (the village chapel did not fit).
+AUC 0.91 (2 of 10 missing). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.

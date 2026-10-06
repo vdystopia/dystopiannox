@@ -354,6 +354,7 @@ class Exterior:
         if front and th.tall: return False
         if th.need and not (bld and bld["role"] in th.roles and dist <= th.near): return False
         if side and kinds and "house" in kinds and side not in th.sides: return False
+        if th.house_roles and kinds and "house" in kinds and not (bld and bld["role"] in th.house_roles): return False
         if bld and dist <= 3 and th.name in self._own_scenes(bld): return False    # its door scenes have one
         return True
 

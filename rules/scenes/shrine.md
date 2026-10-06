@@ -29,5 +29,6 @@ Westwood's stand in castle courts and gardens against long straight walls; the l
 ## Round 5 (2026-10-06)
 
 The judge: "the wrong backing: against wooden peasant cabins or floating in a glade, instead of masonry or a ruin". The
-lab sets the shrine by the village's chapel. Still to do in the kit: prefer a stone wall (a chapel's, a town wall, a
-ruin's) over a cabin's when the dressing chooses the shrine's wall.
+lab sets the shrine by the village's chapel. Then the kit: the shrine stands only against masonry, a castle's walls or a stone house
+(`Theme.house_roles`: chapels, shrine and mausoleum buildings, keeps, manors, the town hall, barracks, towers,
+gatehouses, gaols, observatories), never a cabin.

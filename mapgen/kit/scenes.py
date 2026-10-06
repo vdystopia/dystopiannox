@@ -96,6 +96,7 @@ class Theme:
     size: int = 75                               # about how far its pieces reach from its anchor (px)
     scales: bool = False                         # its cap grows with the map's open ground (the wood's own heaps)
     mirror: bool = True
+    house_roles: Tuple[str, ...] = ()           # a wall scene against a house only beside these roles (stone ones)
     culture: str = ""                            # a culture's own scene: laid only when the map names it
                                                  # (Exterior(culture=...): Starwell's wizards), never elsewhere
 
@@ -300,7 +301,10 @@ CATALOGUE = [
               [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), must=True),
                P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])],
           # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
-          walls=("house", "fence"), sides=("side", "back", "front"), places=("wild", "town"),
+          # (masonry, a castle's walls, or a stone house: the judge, 2026-10-06, "set against wooden peasant cabins")
+          walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),
+          house_roles=("chapel", "village_chapel", "shrine", "mausoleum", "keep", "manor", "townhall", "barracks", "tower",
+                       "gatehouse", "gaol", "observatory"),
           roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
           family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
