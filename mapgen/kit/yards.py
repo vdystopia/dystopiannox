@@ -35,7 +35,8 @@ YARDS = {
                  purpose="benches round a shade tree"),
     "quarry": dict(fence="CaveWall2", gate="IronFenceGate", floor="DirtLight2", size=[(9, 8), (10, 9)],
                    purpose="where the town cuts its stone"),
-    "field": dict(fence="Log", gate="Gate", floor="DirtDark2", size=[(8, 6), (9, 6), (7, 7)], purpose="the town's crops"),
+    "field": dict(fence="DilapidatedShort", gate=None, floor="DirtDark2", size=[(8, 6), (9, 6), (7, 7)],
+                  purpose="the town's crops"),       # Wiz03b's low wooden fence (a Log fence draws as a cabin's wall)
     "monument": dict(fence="Cobblestone", gate="WoodAndSteelHalfDoor", floor="RoughCobble", size=[(8, 8), (9, 8)],
                      purpose="a memorial to the town's founders"),
     "jail": dict(fence="Cobblestone", gate="JailDoor", floor="RoughCobble", size=[(6, 3)], cells=2,
@@ -234,14 +235,22 @@ def build(spec, rng, land, y):
         # 2026-10-05: "the northeast stretch of fence overlaps with the row of crops"), bare earth between the rows; the
         # rows run away from the gate, so the lane from it runs between them
         crop = rng.choice(CROPS)
+        # two or three crops, each its own band of rows (Con05A's town garden: corn, tomatoes and cabbage side by side)
+        bands = [crop] + [c for c in CROPS if c != crop][:1 + (rng.random() < 0.5)]
         rows_i = y.side in ("j0", "j1")
         I0, I1, J0, J1 = y.gi, y.gi + y.w, yj - 1, yj - 1 + y.h
         across = (I0, I1) if not rows_i else (J0, J1)
         along = (J0, J1) if not rows_i else (I0, I1)
-        for r in _spread(across[0] + 0.85, across[1] - 0.85, 1.25):
+        rws = _spread(across[0] + 0.85, across[1] - 0.85, 1.25)
+        for k_, r in enumerate(rws):
+            crop_ = bands[min(len(bands) - 1, k_ * len(bands) // len(rws))]
             for a in _spread(along[0] + 0.75, along[1] - 0.75, 0.42):
                 si, sj = (r, a) if not rows_i else (a, r)
-                if free_spot(si, sj, pad=0.6, lane_w=0.7, t=crop): put(crop, si, sj, room=0.3)
+                if free_spot(si, sj, pad=0.6, lane_w=0.7, t=crop_): put(crop_, si, sj, room=0.3)
+        for t_ in ("WaterBarrel", "MiningShovelInGround"):           # the barrel and the spade by the gate, inside
+            for f_ in (0.3, 0.7):
+                s_ = (gm[0] + (ci - gm[0]) * 0.25 + (cj - gm[1]) * (f_ - 0.5) * 0.6, gm[1] + (cj - gm[1]) * 0.25 - (ci - gm[0]) * (f_ - 0.5) * 0.6)
+                if free_spot(*s_, pad=0.6, lane_w=0.6, t=t_): put(t_, *s_, room=0.5); break
     elif y.kind == "monument":
         put("Monument1", ci, cj, room=2.2)
         for c in ((y.gi + 1.3, yj + 0.3), (y.gi + y.w - 1.3, yj + 0.3), (y.gi + 1.3, yj + y.h - 2.3),

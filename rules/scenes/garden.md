@@ -19,7 +19,8 @@ The beds, on the side of the house away from its door.
 - **The walk**: a strip of grass between the beds.
 - **Its things**: the water barrel at a path's end (70%), a spade in the ground at the other (40%), flowers at a bed's
   end (40%).
-- **Fence**: most gardens unfenced; a few (30%) behind Westwood's low wooden fence (Dilapidated, Wiz01A's) with a gap.
+- **Fence**: most gardens unfenced; a few (30%, 5 x 4 or more) behind Westwood's low lattice fence (DilapidatedShort,
+  Wiz03b's) with a gap.
 
 ## Must, may, never
 
@@ -48,6 +49,16 @@ dug or grass, the barrel and spade, flowers, the fence.
   literally on top of this row of plants." (AM-1)
 - The lab's own: a first rewrite laid the rows in the squares' frame and put one on the fence line again (the half-square
   offset); the Log fence drew as a pen's walls.
+
+## Round 2 (2026-10-05)
+
+- Each size is tried with two squares of open land round the beds first (no crop against the wood's edge, the tree
+  line or a pond), then with one (the planting then keeps two squares off); the two largest sizes before any smaller.
+- The fence is Westwood's low lattice (DilapidatedShort, Wiz03b), 30%, and only round a garden of 5 x 4 or more (a
+  smaller pen loses its rows to the fence). The town field: the same fence, two or three crops in bands, never Log.
+- The water barrel 85% (beside a narrow bed's end too), the spade 50%, a crate, barrel or sack mid-way along a long
+  side 35%; no flowers past the beds' ends (a townsman's walk stops there).
+- The garden draws from its own generator, never the design's.
 
 ## What still gives it away
 

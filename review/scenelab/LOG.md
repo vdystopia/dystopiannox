@@ -141,6 +141,29 @@ fence is the clearest giveaway, and the gardens are still smaller and barer roun
 town field (`yards` "field", Log fence) is outside this round. Ambermere, Starwell, Harrowby, Greywatch, Thornwick: 0
 errors.
 
+### garden, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent judge on r3-larger: 10/10, generated 4.8 against Westwood's 7.8 ("crops under fences or
+edges, a tomato row along the front plank fence, rows into the pine edge, corn touching the tree line; too small and
+bare, one tomato and one cabbage row 150 px from the cabin, no barrel, spade or path; a bed squeezed between the cabin
+corner and the forest, flowers on the crops; the field one crop in a Log-walled pen with an iron gate"). Westwood's
+garden fences (corpus): Wiz03b DilapidatedShort (the low lattice), Wiz01A Dilapidated; Con05A's town garden three crops
+side by side with apple crates and barrels.
+
+| Round | What changed (mapgen/kit/village.py `garden`, kit/yards.py "field") | AUC | Blind | Hard / missing |
+|---|---|---|---|---|
+| ref | the kit as merged | 0.54 | (independent, r3-larger) 10/10, 4.8 / 7.8 | 0 / 1 |
+| r1-near | two squares of open land round the beds required; the fence DilapidatedShort (Wiz03b's low one); the barrel 85% (beside a narrow bed too), the spade 50%; flowers beyond a bed's end, never on the rows; a crate, barrel or sack on the side 35%; the field's fence DilapidatedShort with a door that suits it (no Log, no iron gate) | 0.07 | | 0 / 2 |
+| r2-wide | a second pass without the wide ring where none fits; the field two or three crops in bands of rows, its barrel and spade | 0.24 | | 0 / 0 |
+| r3-open | `garden` tries each size wide then narrow, the two largest first (`_garden_at`); a narrow one keeps the planting two squares off | 0.10 | | 0 / 0 |
+| r4-unpenned | no fence under 5 x 4 (a little bed's rows were lost to the fence: 8 crops in a pen) | 0.42 | | 0 / 0 |
+| r5-household | the garden's own generator (map, house, size: tuning it never shifts the rest of a map); no flowers past the beds' ends (Ambermere: a townsman's walk stop faced them, routes.facing); the crate mid-way along a long side | 0.25 | queued for the independent judge | 0 / 0 |
+
+AUC with 5 Westwood gardens is noise (0.07-0.54): judge by eye. Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors, warnings as before (an interim build showed the shifted design generator dropping an ogre camp's straw into
+Ambermere's chapel crypt, a warning: gone with the garden's own generator). The tuning agent looked at the renders: r5
+is queued in TO_JUDGE.md.
+
 ## pond_dock (mapgen/kit/water.py `Waterworks.dock`, `_shore_start`, `_dock_gear`)
 
 Westwood's docks (Con05A's three DockDown runs, Con03A's DockUp; War03a's DockUp is three pieces too): out into a big
