@@ -12,7 +12,7 @@ C, MD = E.C, E.MD
 
 def index():
     with open(E.WW_INDEX, encoding="utf-8") as f:
-        return json.load(f)["index"]
+        return E.curate(json.load(f)["index"])
 
 
 def _centre(cells):

@@ -58,10 +58,11 @@ the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face
 - Stream bridges are Westwood's rope-bridge kits (`Waterworks.rope_bridge`, the crossing's `kit`) over a 2-row deck.
   A plank deck is never more than 2 tiles wide. Kit pieces stand at Westwood's exact step offsets (`KIT_STEPS`) [DV1-1].
 - A lake belongs in its own dead-end area, its radius well under the area's.
-- **Docks** [DV4-1, AM-2]: a dock stands on a lake, on the shore nearest the road, and runs out square to the shore
-  (within 30 degrees of straight out from the bank) into open water: water two tiles to either side all along it and
-  three tiles round its tip (`Waterworks._shore_start`; `dock(body, "best")` takes whichever kit fits nearest the
-  road). Reeds grow only in the shallows.
+- **Docks** [DV4-1, AM-2] (`rules/scenes/pond_dock.md`): a dock stands on a lake, on the shore nearest the road, and
+  runs out square to the shore (within 20 degrees of the shore's normal read over ten cells, the checker's ring) into
+  open water: water two tiles to either side all along it and three tiles round its tip (`Waterworks._shore_start`;
+  `dock(body, "best")` prefers the long DockDown run, DockUp only where it lands much nearer the road). The fishers'
+  gear on the bank by its root (`_dock_gear`: barrels touching, a crate or a rock). Reeds grow only in the shallows.
   **Recurring:** caught by `checks.dock_reach` (run by `check_exterior`).
 
 ### The land grows round what was placed [DV1-5, DV1-6]
@@ -88,10 +89,14 @@ material for it with a gate facing the town.
   gj - 1.5..gj + h - 1.5 across j (`Yard.centre` is its middle). Everything in a yard or garden stands inside that,
   its drawn half-width plus a margin off the line (`spacing.off_walls`); crop rows are centred with a walkable strip
   to the fence all round. Nothing stands on a fence or wall line, ground bits included.
-- A graveyard has graves (`yards._graveyard`): rows 2 squares apart, each a tile of dug earth with its headstone at the
-  head, flowers on some; the gravedigger's corner away from the gate (an open grave, the coffin, the spade, the pick,
-  a bucket of tools); a cross between two urns by the back fence; a mourners' bench by the gate; torch poles in two
-  corners. Westwood has no grave-mound object: its headstones stand on bare earth (War03d).
+- A household's garden (`Village.garden`, `rules/scenes/garden.md`) is two or three beds side by side, a different crop
+  in each, two rows to a bed ~20 px apart, a grass strip between, on grass or dug earth; the water barrel and a spade
+  at the path's ends; mostly unfenced, a few behind Westwood's low wooden fence (Dilapidated), never Log (a cabin wall).
+- A graveyard has graves (`yards._graveyard`, `rules/scenes/graveyard.md`): its ground sparse grass (GrassSparse2);
+  headstones in rows on the grid's lines ~90 px apart (Westwood's nearest), a third of the plots dug earth, flowers on
+  some; the gravedigger's corner away from the gate in most yards (an open grave, the coffin, the spade, a bucket of
+  tools, a torch pole); a stone pillar either side of the gate; a tree or two by the fence, never among the graves; no
+  bench. Westwood has no grave-mound object: its headstones stand on grass and bare earth (War03b-d).
 
 ## 3. Buildings and rooms
 
@@ -188,6 +193,12 @@ Rules that hold for every type:
 
 ## 4. Outdoors and scenes
 
+**Per-scene briefs** (purpose, anchor, zones, must/may/never, spacing against Westwood, mistakes): `rules/scenes/`
+(bandit camp, graveyard, garden, pond and dock; `rules/scenes/README.md` ranks every scene type with Westwood's
+evidence). They are measured and tuned in the scene lab: `py tests/scenelab.py <scene>` lays ten variants with the
+kit's real code and judges them against Westwood's campaign scenes by numbers and by eye (`review/scenelab/README.md`,
+the iteration log `review/scenelab/LOG.md`). Change a scene's code with the lab open, and run the maps that lay it.
+
 ### Ground, paths and planting [DV1-6, DV4-2, TL-4]
 - Route a path from each door's doorstep to the streets (`Land.connect_door`); streets keep clear of walls and never
   run into the side of a building.
@@ -242,17 +253,20 @@ a fire; `exterior.bedroll`, a bedroll away from any tent or row; `exterior.pile`
 purpose) and the crowd rules (`exterior.swarm`, `exterior.two_bodies`) catch what can be measured; the QA gate's spots
 pictures show every camp for the rest.
 
-- **Zones** (`camps.bandit_camp(spec, rng, land, centre, toward, loot, sleepers=, tents=, trade=, finds=)`), as
-  Westwood lays its camps (Con03A, Con04a, War05A, Wiz02C, Wiz03b, Wiz03c): the hearth (fire, stones ringed 17-30 px
-  round it, two log benches `OgreBench` and a stool 52-64 px out, the pot); the sleeping row behind it toward the top of
-  the screen (tents in an arc 112-120 px out, two bedrolls before each, head to the tent); the store on one flank (one
-  tidy row of sacks, crates, barrels and the water barrel at Westwood's gaps, the cart behind); the arms corner on the
-  other (racks in a row 26-30 px apart, a straw dummy) or the dig (`trade="dig"`: tools in the ground, the tool barrel,
-  spoil, `finds`); the lookout at the way in (a torch pole, a stool, quivers). Zones keep clear ground between them;
-  the layout scales with the clearing (0.75-1.25).
+- **Zones** (`camps.bandit_camp(spec, rng, land, centre, toward, loot, sleepers=, tents=, trade=, finds=)`;
+  `rules/scenes/bandit_camp.md`), as Westwood lays its camps (the scene lab's 20 campaign camps: Wiz03a, Wiz03b,
+  Con03A, Con04a, War05A...): the camp backs onto a wall (the wood's edge, the cliff); the hearth (fire, stones ringed
+  17-30 px round it, one log bench `OgreBench` behind it, a stool sometimes, a pot rarely); the sleeping row along the
+  back wall (each pup tent with its bedrolls beside it, sleepers in pairs 44 px apart, never one alone, an uneven
+  rhythm, a torch pole at its end, the leader's awning in the middle with three or more tents); the store on one flank
+  against the wall (barrels touching, crates in a pair, one kind of each, a cart sometimes); the arms on the other (a
+  rack or two and a polearm rack) or the dig (`trade="dig"`); the lookout at the way in (a torch pole); a rock outcrop
+  at the row's end. Typed pieces may stand snug to a wall (`spacing.off_walls`). The layout scales with the clearing
+  (0.75-1.25).
 - **Seats round a fire** are benches, stools and logs, never stumps [SW-3].
-- **The site** [AMR-1]: `camps.camp_site(spec, land, near, ...)` takes the square with the most open ground clear all
-  round, near the place, off its road; lay the camp open toward the road beside it (`StoryMap.road_near(site)`). A camp
+- **The site** [AMR-1]: `camps.camp_site(spec, land, near, ...)` takes a square with open ground clear all round for
+  `room - 1` squares and, among those, the one whose nearest wall is nearest (a camp backs onto the wood or the cliff,
+  never floats in a wide glade), near the place, off its road; lay the camp open toward the road beside it (`StoryMap.road_near(site)`). A camp
   holds its ground: planting and dressing keep off it.
 - **Urchins** squat as Westwood furnishes their dens (Con02a, War03c): `camps.urchin_camp` (beds of one kind side by
   side, a table ringed by stools, the pickings heaped) [AMR-2].

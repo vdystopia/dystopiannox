@@ -39,7 +39,7 @@ Westwood has under 10 rooms), worded as a plain-English critique with where to c
 Westwood rooms (tavern, study, chapel, great hall, smithy, herbalist, dining hall, throne room) is compared with its
 pool instead: the Westwood types the profile names (kit/roomtypes.py westwood) and the rest of its family, and said so.
 Every room is also compared on the cross-type features (CROSS: spacing, overlaps, snugness, rows, symmetry, facing,
-the way in) with all 235 Westwood rooms, and judged against the user's rules in the type's brief (review/roomscore.py
+the way in) with every curated Westwood room, and judged against the user's rules in the type's brief (review/roomscore.py
 judge: must, never, focal, caps, repeat, reads as; plus overlaps, statues facing walls, a blocked way in): these are
 the hard-rule findings.
 
@@ -341,7 +341,7 @@ def westwood():
             import labref
             labref.build_features()
         with open(E.WW_FEATURES, encoding="utf-8") as f:
-            _WW = json.load(f)["rooms"]
+            _WW = E.curate(json.load(f)["rooms"])      # the verdicts by eye (rules/rooms/curated.json)
         facing_table(_WW)
         for r in _WW: r["features"]["odd_facing"] = odd_facing(r["details"]["wall_pieces"])
     return _WW
