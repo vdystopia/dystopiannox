@@ -501,41 +501,35 @@ ROOMS = {
     "great_hall": dict(purpose="a lord's great hall, the heart of the house every other room opens onto: the hearth on a "
                                "back wall, long tables with benches down the middle, banners and trophies on the back "
                                "walls, statues in pairs, benches along the walls, aisles clear along the doors",
-                       base="hall",
+                       base="dining_hall",    # its density and pieces are a feast hall's (a hall's trimmed its boards to four tables)
                        # 2026-10-04 review: "the sheer number of tables and chairs was too much", 4-6 sets fewer;
                        # a table per 48 tiles (was 30), at most 6, and a carpet of floor tiles over the open floor
-                       core={"table": (2, 6), "bench": (4, 24), "fireplace": (1, 2)},
-                       per_tiles={"table": 48},
-                       # 2026-10-05 playtest: benches along every wall and 8 chests (Thornwick) beside the tables'
-                       # benches; a bench per 11 tiles in all (the tables' and the hearths' with them), at most 24, a chest
-                       # per 80 tiles; open hearths with benches round them fill the ends of a long hall
-                       optional={"statue": (0.8, 4), "wall_decor": (1.0, 12), "plant": (0.8, 4), "storage": (0.5, 2),
-                                 "column": (0.5, 12), "chair": (0.5, 4)},
+                       # room lab (tuneB): Westwood's great halls (Con06b, Con07E) set their tables end to end into
+                       # long boards (Con06b: twelve Table1/2 in a U round a free hearth, benches down both sides of
+                       # each board), hang their walls with shields and banners, keep no plants and no statues; a free
+                       # hearth or two, not a wall hearth and two free ones. A long board counts its pieces, so a
+                       # table piece per 24 tiles reads as two or three boards (2026-10-04: "4-6 sets fewer")
+                       core={"table": (2, 12), "bench": (4, 24), "fireplace": (1, 2)},
+                       per_tiles={"table": 24},
+                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
-                              "column": r"^Column[5-8]$", "statue": r"^Statue2[a-h]$", "storage": CHEST,
-                              "plant": PLANTS},
+                              "storage": CHEST},
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
+                       group_seats={"hearth": (0, 0)},          # Westwood's free hearths stand alone (Con06b's three)
+                       top_up=(),
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
-                                dict(fam="table", slot="table_rows", seat="bench"),
-                                dict(fam="carpet", slot="carpet", where="under", margin=3.0, chance=1.0),
+                                dict(fam="table", slot="table_rows", seat="bench", joined=3),
+                                dict(fam="carpet", slot="carpet", where="under", margin=2.0, chance=1.0),
                                 # hangings either side of the hearth: two at least, the walls carry an open hall
                                 # (rules/rooms/great_hall.md; Harrowby's moot hall had one)
                                 dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
-                       fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
-                             dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
-                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
-                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=500, fixed=True),
-                             # a few benches by the front walls, no more: the tables' benches already make up most of
-                             # the hall's pieces (Harrowby's moot hall: 20 of 32, identity.monotony); one in each front
-                             # corner first, where those who wait sit (Harrowby playtest, HB-2: "a little bit too empty.
-                             # It needs some more objects and fill along the southeast wall in the south corner")
+                       fill=[dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=440, fixed=True),
+                             # a bench in each front corner, where those who wait sit (Harrowby playtest, HB-2: "a
+                             # little bit too empty. It needs some more objects and fill along the southeast wall in the
+                             # south corner")
                              dict(fam="bench", slot="wall", at="room_corner", clear=0, max=2, fixed=True),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
-                             dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=300, fixed=True),
-                             dict(fam="bench", slot="wall", max=3),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     # 2026-10-05 playtest (Greywatch's keep: the throne "facing sideways towards the store room", "the pillars are in the
     # dead center of the room", statues facing the wall): Westwood's Dun Mir throne faces SE only, so it stands on the NW

@@ -86,3 +86,21 @@ floor; the lab's door can sit at the end of the SE wall, so the throne in line w
 
 What still gives it away (metrics): the dominant kind's share (Westwood's halls are mostly columns; ours mix columns,
 statues, braziers, hangings), a lone throne where Westwood's has its base, back and shadow plus a dais, the plain shell.
+
+## Great hall
+
+Westwood: Con06b's Dun Mir hall (twelve Table1/2 joined into long boards in a U round a free hearth, sixteen benches,
+three free hearths, eleven shields and war poles) and Con07E's feast hall (twenty tables of food and square tables with
+chairs). Pool: great halls and halls (whose bare middles make every table "too much in the middle": read loosely).
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.954 | 0.988 | 2 (a shell door warning) | - |
+| r1 | recipe: no plants or statues, one free hearth (alone) besides the wall hearth, benches only in the front corners; boards of 3 joined tables (`table_rows(joined=)`); a table piece per 24 tiles | 0.921 | 0.991 | 4 | - |
+| r2 | (no change: the boards were not joining) | 0.921 | 0.991 | 4 | - |
+| r3 | base statistics a dining hall's (a hall's density trimmed the boards to four tables); joined pieces 0.04 apart (`fits` keeps 0.02 when touching); a board laid whole before its benches | 0.915 | 0.992 | 10 (benches 60% of pieces) | - |
+| r4 | benches at every other piece of a board (Con06b: 16 benches down 12 tables) | 0.886 | 0.991 | 1 (shell door) | queued |
+
+Shared: `table_rows` takes `joined` (0, the default, is the old behaviour); a board's tables are laid before they are
+seated. Still giving it away: the boards stand as islands mid-carpet (Westwood's U wraps a free hearth), the plain
+shell, few lights.

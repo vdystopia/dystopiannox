@@ -281,7 +281,7 @@ TYPES = {
                    middle="long tables with benches down the middle on a great carpet, open floor round them and a "
                           "clear way from every door; open hearths at the ends of a long hall"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.90), per_tile=(0.08, 0.35), types_min=10, free_most=(6, 40), free_skip=("chair", "bench"),
-        caps={"bench": (16, 24), "table": (48, 6), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
+        caps={"bench": (9, 24), "table": (20, 12), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
         signature={"table": (1, 6), "bench": (0.3, 24), "fireplace": (2, 2), "statue": (0.5, 4), "wall_decor": (0.2, 10)},
         needs=("table", "fireplace"), kin=("dining_hall", "hall")),
     "hall": dict(

@@ -1765,7 +1765,7 @@ class Furnisher:
             for o in got:
                 if o: self._remove(o)
 
-    def table_rows(self, n, seat="bench"):
+    def table_rows(self, n, seat="bench", joined=0):
         """Dining tables in rows through the open middle of the room, their long sides along the room's
         length, evenly spaced and centred, seated along both long sides: a mess hall (Westwood's dining
         halls set long tables with benches). A table that gets fewer than 2 seats is taken out again.
@@ -1782,14 +1782,17 @@ class Furnisher:
         hu, hv = self.half(t)
         hl, hs = (hu, hv) if long_u else (hv, hu)
         cell_l = 2 * hl + 1.6                           # a table and the aisle past its end
+        if joined:                                      # banquet tables: `joined` pieces end to end, then an aisle
+            cell_l = joined * (2 * hl + 0.04) + 1.8     # (Westwood's Con06b: Table1s joined into long boards)
         cell_w = 2 * hs + 2 * 1.3 + 1.4                 # a table, a seat on each side, an aisle
         inset = 1.3                                     # wall pieces and a walkway along the walls
         span_l = (max(us) - min(us) if long_u else max(vs) - min(vs)) - 2 * inset
         span_w = (max(vs) - min(vs) if long_u else max(us) - min(us)) - 2 * inset
         per_row = max(1, int((span_l + 1.6) / cell_l))
         rows = max(1, int((span_w + 1.4) / cell_w))
-        while per_row * rows > n and rows > 1 and per_row * (rows - 1) >= n: rows -= 1
-        while per_row * rows > n and per_row > 1: per_row -= 1
+        k_ = max(1, joined)
+        while per_row * rows * k_ > n and rows > 1 and per_row * (rows - 1) * k_ >= n: rows -= 1
+        while per_row * rows * k_ > n and per_row > 1: per_row -= 1
         cu, cv = self.g.centroid
         mid_l, mid_w = (cu, cv) if long_u else (cv, cu)
         seat_types = self.types_of(seat)
@@ -1797,19 +1800,32 @@ class Furnisher:
         tables = []
         for i in range(rows):
             w = mid_w + (i - (rows - 1) / 2) * cell_w
-            for k in range(per_row):
-                ell = mid_l + (k - (per_row - 1) / 2) * cell_l
+            laid = []
+            for k in range(per_row * k_):
+                g_, j_ = divmod(k, k_)
+                ell = mid_l + (g_ - (per_row - 1) / 2) * cell_l + (j_ - (k_ - 1) / 2) * (2 * hl + 0.04)
                 uv = (ell, w) if long_u else (w, ell)
-                o = self.try_put(t, *uv)
-                if not o: continue
-                got = self.seats_around(uv, t, 2 if seat == "bench" else 4, seat, base=seat_base)
-                if got < 2 and seat == "bench": got += self.seats_around(uv, t, 4 - got, "chair")
-                if got < 2:
-                    self._remove(o); continue
-                self._seated.add((uv, t))
-                self.anchors.append(uv)
-                tables.append((o, uv))
+                o = self.try_put(t, *uv, touch=bool(joined))
+                if o: laid.append((o, uv))
+                if not joined: laid = self._seat_row(laid, t, seat, seat_base, tables)
+            if joined:                                  # a board's pieces first, then its benches: a pair at every
+                # other piece (Con06b: 16 benches down 12 joined tables), the pieces between seated by their neighbours'
+                self._seat_row(laid[::2], t, seat, seat_base, tables)
+                for o, uv in laid[1::2]:
+                    self._seated.add((uv, t)); tables.append((o, uv))
         return tables
+
+    def _seat_row(self, laid, t, seat, seat_base, tables):
+        """Seats the tables just laid (table_rows); a table left with fewer than 2 seats goes. Returns []."""
+        for o, uv in laid:
+            got = self.seats_around(uv, t, 2 if seat == "bench" else 4, seat, base=seat_base)
+            if got < 2 and seat == "bench": got += self.seats_around(uv, t, 4 - got, "chair")
+            if got < 2:
+                self._remove(o); continue
+            self._seated.add((uv, t))
+            self.anchors.append(uv)
+            tables.append((o, uv))
+        return []
 
     def stock_walls(self, coverage=0.65, kinds=("shelves", "crates", "barrels", "sacks"), pad=1.0, limit=None,
                     per_wall=None):
@@ -3270,7 +3286,7 @@ class Furnisher:
                 if beds: placed[fam] = True
                 continue
             if st["slot"] == "table_rows":
-                rows = self.table_rows(n, st.get("seat", "bench"))
+                rows = self.table_rows(n, st.get("seat", "bench"), joined=st.get("joined", 0))
                 done[fam] += len(rows)
                 done[st.get("seat", "bench")] += 2 * len(rows)
                 continue
