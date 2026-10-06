@@ -261,3 +261,6 @@ this tree for those four, so they have no like-for-like baseline; the earlier pr
 barracks and crypt on the old index is under "Shared changes" above).
 
 | tavern | r16 | the round tables together in one part of the floor (`cluster`; Con06a's four in its S half), not dotted at even gaps | AUC 0.952 -> 0.963 (noise of 10 against 6) | cross 0.986 | 4 (sparse) |
+
+| throne room | r8 | `compose_alts` (shared, opt-in: a recipe's other compositions, one drawn per room): the colonnade with statues between (the Lich Lord's), and the runner lined with three pairs of braziers with statues in the corners (Hecubah's), beside the first | AUC 0.871 | 0.994 | 4 (statues 2/4 where the corners were taken) |
+| throne room | r9 | each alternative falls back to a statue pair or the corners | AUC 0.86 | 0.997 | 1 (bunched) |

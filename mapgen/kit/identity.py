@@ -586,6 +586,23 @@ ROOMS = {
                                  # statues of the house in the back corners where the aisle took no pair
                                  dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
                                  dict(fam="wall_decor", slot="decor")],
+                        # the other ways Westwood builds the walk (the judge, ref: "one template every time"): Hecubah's
+                        # runner lined with fire, statues in the corners; the Lich Lord's columns with statues between
+                        compose_alts=([dict(fam="throne", slot="throne"),
+                                       dict(fam="statue", slot="flank", of="throne", gap=0.8),
+                                       dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
+                                       dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
+                                       dict(fam="light", slot="aisle_lights", n=3),
+                                       dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
+                                       dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=100),
+                                       dict(fam="wall_decor", slot="decor")],
+                                      [dict(fam="throne", slot="throne"),
+                                       dict(fam="statue", slot="flank", of="throne", gap=0.8),
+                                       dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
+                                       dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
+                                       dict(fam="statue", slot="groups", group="statues", n=2, extra=True, min_area=100),
+                                       dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
+                                       dict(fam="wall_decor", slot="decor")]),
                         fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "barracks": dict(purpose="bunks for a crew: beds of one kind spaced along a front wall, a nightstand between "
                              "neighbours, a chest a step beyond each bed's foot, a rug before each bed, shelves for their "

@@ -3262,6 +3262,8 @@ class Furnisher:
         done = collections.Counter()
         tables, placed = [], {}
         steps = ROOM_IDENTITY[self.kind]["compose"]
+        alts = ROOM_IDENTITY[self.kind].get("compose_alts")
+        if alts: steps = self.rng.choice([steps] + list(alts))   # a recipe's other compositions: not one template
         cp = next((st for st in steps if st["slot"] == "carpet"), None)
         if cp and CARPET_FLOORS.search(self.room.floor or "") and self.rng.random() < cp.get("chance", 0.5):
             self.carpet_plan = cp                       # carpet tiles in this room, no rug objects
