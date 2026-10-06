@@ -4,6 +4,7 @@ review/roomlab/README.md and the metric judge.
     py tests/roomlab.py <type> [--n 10] [--seed S] [--iter NAME]     one type (kit/roomtypes.py TYPES: bedroom, tavern...)
     py tests/roomlab.py all [--n 10] [--seed S] [--iter NAME]        every type, then a summary table
     py tests/roomlab.py list                                         the types and their Westwood evidence
+    py tests/roomlab.py <type|all> --iter NAME --rejudge             judge an iteration again (after changing a judge)
 
 Each run:
 1. generates N variants of the type (review/roomlab/labgen.py): each the main room of its own building shell, built
@@ -27,12 +28,30 @@ sys.path.insert(0, os.path.join(os.path.dirname(HERE), "review", "roomlab"))
 import labenv as E   # noqa: E402  (sets the import paths)
 
 
+def rejudge(typ, it, log=print):
+    """Re-runs the judges on an iteration already generated (after a change to the judges or to Westwood's reference):
+    metrics, the gallery, the blind sheet unless it has been judged, the scorecard."""
+    import labref, metrics, blind, scorecard
+    d = E.iter_dir(typ, it)
+    labref.gallery(typ, log=lambda *_: None)
+    metrics.judge_batch(typ, it, log=log)
+    if not os.path.exists(os.path.join(d, "blind", "judge.json")): blind.make(typ, it)
+    scorecard.write(typ, it)
+    s = scorecard.summarise(typ, it)
+    log(f"{typ} [{it}] re-judged: AUC {s['auc']}{' (pool)' if s['fallback'] else ''}, cross {s['cross_auc']}, "
+        f"hard-rule rooms {s['rooms_with_hard']}")
+    return s
+
+
 def run(typ, n=10, seed=1, it="scratch", log=print):
     import labgen, labrender, labref, metrics, blind, scorecard
     t0 = time.time()
     d = E.iter_dir(typ, it)
     os.makedirs(d, exist_ok=True)
-    name = "R" + format(E.seed_of(typ, it) & 0xFFFFFF, "06x")            # unique per (type, iteration)
+    # the map's name seeds the furnisher's palette (kit/furnish.py), so it depends on the type and seed only: the same
+    # type and seed give the same rooms whatever the iteration is called (two iterations of one type and seed should
+    # not run at the same moment: they share the checker's export, validate/out/json/<name>.json)
+    name = "R" + format(E.seed_of(typ, seed) & 0xFFFFFF, "06x")
     batch = labgen.generate(typ, n, seed, out_dir=os.path.join(d, "map"), name=name, log=log)
     with open(os.path.join(d, "variants.json"), "w", encoding="utf-8") as f:
         json.dump(dict(type=typ, iter=it, n=n, seed=seed, maps=[E.rel(p) for p in batch["maps"]],
@@ -90,6 +109,7 @@ def main():
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--iter", default="scratch")
+    ap.add_argument("--rejudge", action="store_true", help="judge an iteration already generated again (no new rooms)")
     a = ap.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", a.iter): sys.exit("--iter: letters, digits, '-' and '_' only")
     types = E.types()
@@ -104,7 +124,7 @@ def main():
         if t not in types: sys.exit(f"unknown type {t}; one of: {', '.join(types)}")
     rows = []
     for t in todo:
-        rows.append(run(t, a.n, a.seed, a.iter))
+        rows.append(rejudge(t, a.iter) if a.rejudge else run(t, a.n, a.seed, a.iter))
     if len(todo) > 1:
         import scorecard
         rows = [scorecard.summarise(t, a.iter) for t in todo]

@@ -87,13 +87,17 @@ def gallery(typ, log=print):
     import metrics
     d = gallery_dir(typ)
     meta_path = os.path.join(d, "gallery.json")
-    if os.path.exists(meta_path):
-        with open(meta_path, encoding="utf-8") as f: meta = json.load(f)
-        if meta.get("version") == 2 and all(os.path.exists(os.path.join(d, x["file"])) for x in meta["rooms"]):
-            return meta
-    os.makedirs(d, exist_ok=True)
     pool_rooms, note = metrics.pool(typ)
     keys = {(r["map"], tuple(r["centre"])) for r in pool_rooms}
+    if os.path.exists(meta_path):
+        with open(meta_path, encoding="utf-8") as f: meta = json.load(f)
+        if meta.get("version") == 2 and meta.get("note") == note and \
+                {(x["map"], tuple(x["centre"])) for x in meta["rooms"]} <= keys and \
+                all(os.path.exists(os.path.join(d, x["file"])) for x in meta["rooms"]):
+            return meta
+    if os.path.isdir(d):
+        for fn in os.listdir(d): os.remove(os.path.join(d, fn))
+    os.makedirs(d, exist_ok=True)
     by = collections.defaultdict(list)
     for e in index():
         if (e["map"], tuple(e["centre"])) in keys: by[e["map"]].append(e)

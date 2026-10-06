@@ -109,7 +109,7 @@ TEXT = {
     "nn_med": ("typical gap to the nearest piece", "pieces crowd each other (median gap {v} units)",
                "pieces stand apart, each alone (median gap {v} units): no groups", "the recipe's groups (sets, pairs)"),
     "overlaps": ("overlapping pieces per 10", "", "pieces overlap ({v} per 10 pieces)", "kit/furnish.py placement (fits)"),
-    "focal_n": ("focal pieces", "no focal piece", "the focal piece repeated ({v})", "kit/roomtypes.py focal; the recipe's anchor"),
+    "focal_n": ("focal pieces", "no focal piece", "{v} focal pieces (the type's focal kind)", "kit/roomtypes.py focal; the recipe's anchor"),
     "focal_back": ("focal piece on a back wall", "the focal piece is not on a back wall (NE or NW)", "",
                    "kit/roomtypes.py focal where"),
     "focal_door": ("focal piece's distance from the door", "the focal piece sits near the door ({v} of the diagonal)",
@@ -383,8 +383,11 @@ def pool(typ, culture=None):
         if len(same) >= MIN_WW: return same, f"Westwood's {len(same)} {typ.replace('_', ' ')} rooms of the {culture} culture"
     if len(own) >= MIN_WW: return own, f"Westwood's {len(own)} {typ.replace('_', ' ')} rooms"
     p = TYPES[typ]
-    names = list(dict.fromkeys(list(p.get("westwood", (typ,))) + [t for t, q in TYPES.items() if q["family"] == p["family"]]))
+    names = list(dict.fromkeys(p.get("westwood", (typ,))))
     rooms = [r for r in ww if r["type"] in names]
+    if len(rooms) < MIN_WW:              # still thin: the rest of its family too
+        names = list(dict.fromkeys(names + [t for t, q in TYPES.items() if q["family"] == p["family"]]))
+        rooms = [r for r in ww if r["type"] in names]
     used = sorted({r["type"] for r in rooms})
     return rooms, (f"FALLBACK: Westwood has only {len(own)} {typ.replace('_', ' ')} room(s) (under {MIN_WW}); compared "
                    f"with the {len(rooms)} rooms of its pool ({', '.join(used)}), so read these numbers loosely and lean "
@@ -418,7 +421,7 @@ def judge_feature(name, v, vals, typ_label):
     text = (low if side == "low" else high)
     if not text: return pc, None                  # a direction that is no fault (fewer overlaps than Westwood)
     text = text.format(v=_fmt(v)) + f" (Westwood's {typ_label}: {_fmt(lo)}-{_fmt(hi)}, median {_fmt(_pct(vals, 50))})"
-    return pc, dict(feature=name, value=v, side=side, severity=round(dist, 2), percentile=pc, range=[lo, hi],
+    return pc, dict(feature=name, value=v, side=side, severity=round(min(dist, 10.0), 2), percentile=pc, range=[lo, hi],
                     text=text, where=where)
 
 
@@ -456,9 +459,16 @@ def compare(f, d, typ, culture=None):
     label = "pool" if note.startswith("FALLBACK") else label
     pct, finds = {}, []
     names = CORE + [k for k in f if k.startswith("fam_")]
+    # a thin type's pool holds kin types without its defining pieces (halls have no throne): its own families are
+    # judged by the brief's rules (must, caps) instead
+    own_fams = set()
+    if note.startswith("FALLBACK"):
+        p = TYPES[typ]
+        own_fams = set(p.get("must", {})) | set(p.get("needs", ())) | {(p.get("focal") or {}).get("fam")}
     for k in names:
         vals = [r["features"].get(k) for r in rooms]
         if k.startswith("fam_") and not any(vals) and not f.get(k): continue
+        if k.startswith("fam_") and k[4:] in own_fams: continue
         pc, fd = judge_feature(k, f.get(k), vals, label)
         pct[k] = pc
         if fd: finds.append(fd)
