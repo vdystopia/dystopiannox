@@ -640,30 +640,33 @@ ROOMS = {
     # the floor in 72% of them, crude beds against the back walls, stools, round tables, meat and carcasses, barrels,
     # torch poles. Land of the Dead rooms (47, median 45 tiles): sconces on the back walls (88-94%), mana obelisks and
     # tombstones, tapestries on the back walls, bones and skulls strewn free (10 and 8 per 100 tiles).
-    "ogre_den": dict(purpose="where the ogres sleep: straw heaped over the floor, crude beds against the back walls, a "
-                             "fire pit ringed by stools, meat and carcasses left about, barrels by the walls",
+    # the room lab (2026-10-05): Westwood's 12 ogre barracks (Con05C, Con09c, Con11a, War02A) have no fire pit: straw
+    # heaped on the floor is most of the room (median share of the commonest kind 0.64), barrels in a knot, a crude bed
+    # or three, a table with a bench and a stool or two, meat, a primitive obelisk; the old den's fire pit ringed by
+    # stools (two to five pits in a big den) gave every one away (AUC 1.0)
+    "ogre_den": dict(purpose="where the ogres sleep: straw heaped over the floor, crude beds against the back walls, "
+                             "barrels in a knot by a wall, a crude table with a bench and stools, meat left about",
                      base="barracks",
-                     core={"straw": (4, 80), "fireplace": (1, 2)},
-                     optional={"bed": (0.8, 4), "chair": (1.0, 8), "storage": (1.0, 8), "clutter": (1.0, 16)},
-                     types={"straw": r"^OgreStraw\d$", "fireplace": r"^OgreFirePit$", "bed": r"^OgreBed\d$",
-                            "chair": r"^OgreStool\d$", "storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$",
+                     core={"straw": (5, 80)},
+                     optional={"bed": (0.8, 3), "chair": (0.8, 3), "table": (0.6, 1), "bench": (0.5, 1),
+                               "storage": (1.0, 8), "clutter": (0.8, 6), "statue": (0.4, 2)},
+                     types={"straw": r"^OgreStraw\d$", "bed": r"^OgreBed\d$", "table": r"^OgreTable\d$",
+                            "chair": r"^OgreStool\d$", "bench": r"^OgreBench\d$", "statue": r"^ObeliskPrimitive$",
+                            "storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$|^Chest\d$",
                             "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$"},
                      prefer={"straw": {"OgreStraw1": 5, "OgreStraw2": 2, "OgreStraw3": 2, "OgreStraw4": 1, "OgreStraw5": 1},
-                             "fireplace": {"OgreFirePit": 1}, "bed": {"OgreBed1": 1, "OgreBed2": 1},
-                             "chair": {"OgreStool1": 2, "OgreStool2": 1},
-                             "storage": {"Barrel": 2, "Barrel2": 1, "OgreSack1": 1, "OgreSack2": 1},
-                             "clutter": {"OgreHutMeat": 4, "OgreHutCarcass": 1, "OgreHutCarcassBig": 1}},
-                     lights={"TorchPole": 1},
-                     compose=[dict(fam="fireplace", slot="groups", group="firepit", n=1),
-                              dict(fam="bed", slot="wall", at="any", clear=0.6, n=3),
-                              # Westwood's ogre rooms: straw 8.6 per 100 tiles where it lies (rules/CULTURES.md); per100
-                              # counts heaps of 2-3: Harrowby's 80-tile den had 26 of its 32 pieces straw (TW-8)
-                              dict(fam="straw", slot="scatter", per100=4, cluster=(2, 3)),
-                              dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
-                              dict(fam="clutter", slot="scatter", per100=3, cluster=(1, 2))],
-                     fill=[dict(fam="fireplace", slot="group", group="firepit", max=1, min_area=260),
-                           dict(fam="straw", slot="scatter", per100=1, max=12),
-                           dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
+                             "bed": {"OgreBed1": 1, "OgreBed2": 1}, "chair": {"OgreStool1": 2, "OgreStool2": 1},
+                             "clutter": {"OgreHutMeat": 4, "OgreHutCarcass": 1}},
+                     store=dict(lead={"barrels": 1}, second={}, second_p=0.0, accent={"piled": 1, "ogre": 1}, accent_p=0.5),
+                     lights={"TorchPole": 1}, lights_per100=2.0, top_up=(),
+                     compose=[dict(fam="straw", slot="scatter", per100=6, cluster=(2, 4)),
+                              dict(fam="bed", slot="wall", at="any", clear=0.6, n=2),
+                              dict(fam="storage", slot="heaps", n=4),
+                              dict(fam="table", slot="groups", group="ogre_table", n=1, extra=True, min_area=130),
+                              dict(fam="clutter", slot="scatter", per100=2, cluster=(1, 2))],
+                     fill=[dict(fam="straw", slot="scatter", per100=2, max=6),
+                           dict(fam="statue", slot="wall", at="corner", clear=0.6, max=1, min_area=150),
+                           dict(fam="storage", slot="heaps", max=2)]),
     "ogre_hall": dict(purpose="where the ogres feast: crude round tables ringed by stools, a fire pit, carcasses and meat "
                               "on the floor, straw in the corners, barrels by the walls",
                       base="dining_hall",

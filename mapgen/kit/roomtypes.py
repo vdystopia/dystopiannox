@@ -213,10 +213,10 @@ TYPES = {
         cover=(0.12, 0.24, 0.34), open=(0.25, 0.75), per_tile=(0.2, 0.8), types_min=8, free_most=(4, 25),
         caps={"bed": (12, 12)}, walls_min=3, lined=0.30, tiles=(40, 200),
         signature={"bed": (2.5, 12), "straw": (1, 20), "nightstand": (0.3, 6)}, needs=("bed",),
-        kin=("bedroom", "armoury"),
-        variants={"ogre_den": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
-                                   must={"straw": 4, "fireplace": 1}, lined=None, walls_min=2, types_min=6,
-                                   cover=(0.10, 0.14, 0.30), needs=("straw",))}),
+        kin=("bedroom", "armoury", "cell"),          # an ogre den of straw is a pen's kin (Con11a)
+        # the room lab: Westwood's 12 ogre barracks cover 0.03-0.06-0.20 and keep no fire pit
+        variants={"ogre_den": dict(focal=None, must={"straw": 4}, lined=None, walls_min=2, types_min=4,
+                                   cover=(0.04, 0.09, 0.25), needs=("straw",))}),
     "armoury": dict(
         family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),

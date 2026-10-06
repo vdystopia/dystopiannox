@@ -139,3 +139,18 @@ in 6 of 16 the guards' table with chairs (Con03A, Con05A, Con06a, Con06b, War03a
 Left: runs of 3 of one kind (the hangings of arms side by side), the pieces bunched toward the home corner in big
 rooms, sparse big rooms. Shared: recipe key `back_only` (wall_candidates treats those families as faced), a no-op
 elsewhere.
+
+## Barracks (Westwood: 16 rooms, 12 of them the ogres'; kit kinds barracks, ogre_den)
+
+What Westwood's ogre barracks look like (Con05C, Con09c, Con11a, War02A): no fire pit; straw heaped on the floor the
+commonest piece (most_share 0.64), barrels in a knot, a crude bed or three, a table with a bench and a stool or two
+in some, meat, a primitive obelisk; coverage 0.03-0.06-0.20.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: the ogre den round a fire pit ringed by stools, two to five pits in a big den) | 0.999 | 0.943 | 1 | - |
+| r1 | ogre den: no fire pit; straw scattered (9 per 100 tiles), beds, a knot of barrels (`store_heaps`), a crude table with stools, meat, an obelisk in a big one; cover 0.14 -> 0.09; torch poles 2 per 100 tiles | 0.873 | 0.873 | 4 (3 one-kind) | - |
+| r2 | the table only past 54 tiles; less straw in the fill | 0.786 | 0.863 | 6 | - |
+| r3 | straw 6 per 100 tiles (a big den was 2/3 straw: the checker's monotony); `cell` kin of the barracks (a den of straw reads as a pen) | 0.856 | 0.886 | 1 (a town barracks' bed cap) | - |
+
+Left: walls used 4 against 2, the town barracks (2 of 10 variants) untouched.
