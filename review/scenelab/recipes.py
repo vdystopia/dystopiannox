@@ -383,7 +383,9 @@ RECIPES = {
     # half the camps in a pocket of the rock (Westwood's hideouts: 10 of its 20 camps), the kit's own test (rock_pocket)
     # turns them into hideouts
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8)),
-    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp")),
+    # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
+    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
+                      cave_scale=1.7),
     # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
     # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens
     "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp"), caves=(1, 2, 3, 4, 5, 7, 8, 9),

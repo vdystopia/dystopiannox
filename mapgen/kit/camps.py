@@ -829,12 +829,15 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
         t = _seat(-math.sin(a), math.cos(a)) if kind == "bench" else rng.choice(("OgreStool1", "OgreStool2"))
         if sc.put_px(t, *sc.p(R["seat"], a), gap=30) and len(seats) < 2:
             seats.append(sc.p(R["sit"], a + 0.35))
-    for k in range(5):
-        a = b + rng.uniform(-2.4, 2.4)
-        if abs(_ang(a - a_in)) < 0.5: continue
-        sc.put_px(rng.choice(BONES), *sc.p(rng.uniform(100, 130), a), gap=18)
+    # bones dropped round the pit, close (Con05B: 40-75 px out)
+    for k in range(rng.randint(4, 7)):
+        a = rng.uniform(-math.pi, math.pi)
+        if abs(_ang(a - a_in)) < 0.4: continue
+        sc.put_px(rng.choice(BONES), *sc.p(rng.uniform(40, 75), a), gap=14)
     # ---- the sleeping row: straw bedding side by side in an arc behind the fire --------------------------------------
-    n = max(2, sleepers)
+    # (Westwood's ogres sleep in their huts: an open camp's bedding is a heap or two of straw, not a row: the lab's
+    # Westwood ogre camps hold no straw by the fire)
+    n = rng.choice((0, 1, 2)) if rng.random() < 0.5 else 0
     step = 46.0 / R["straw"]
     beds_at = []
     for q in range(n):
@@ -844,7 +847,8 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
     zones["sleep"] = (sc.p(R["straw"], b), 40.0 + n * 23)
     # the take: the warlord's bearskin and his chest behind the bedding's middle
     chest = None
-    rug = sc.put_px(rng.choice(("OgreBearskin1", "OgreBearskin3")), *sc.p(R["back"] + 18, b), gap=40)
+    rug = sc.put_px(rng.choice(("OgreBearskin1", "OgreBearskin3")), *sc.p(R["back"] + 18, b), gap=40) \
+        if rng.random() < 0.3 else None                # (Westwood's bearskins lie in the huts)
     for d in (0.32, -0.32, 0.5, -0.5):
         chest = sc.put_px("Chest3", *sc.p(R["back"] + 12, b + d), gap=30, items=loot)
         if chest: break
@@ -855,9 +859,10 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
     sx, sy = sc.p(R["store"], st)
     ux, uy = -math.sin(st), math.cos(st)
     wx, wy = math.cos(st), math.sin(st)
-    stock = [("Barrel", {}), ("OgreSack1", {}), ("Barrel2", {}), ("OgreSack2", {}), ("Barrel", {})][:rng.randint(4, 5)]
+    stock = [("Barrel", {}), ("OgreSack1", {}), ("Barrel2", {}), ("OgreSack2", {}), ("Barrel", {})][:rng.randint(2, 4)]
     goods += [t for t, _, _ in sc.row(stock, sx, sy, ux, uy)]
-    if sc.put_px("OgreHutCarcassBig", sx + wx * 46 + ux * 40, sy + wy * 46 + uy * 40, gap=30): goods.append("OgreHutCarcassBig")
+    if rng.random() < 0.5 and sc.put_px("OgreHutCarcassBig", sx + wx * 46 + ux * 40, sy + wy * 46 + uy * 40, gap=30):
+        goods.append("OgreHutCarcassBig")
     store_spot = (sx - wx * 46, sy - wy * 46)
     zones["store"] = ((sx, sy), 100.0)
     # ---- the gate: two wings of tusk palisade either side of the way in, skull posts at its ends -----------------------
@@ -873,7 +878,8 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
     gr = max((R["gate"], R["gate"] - 20, R["gate"] + 20, R["gate"] - 40, R["gate"] + 40, R["gate"] - 60),
              key=lambda r: (wings_at(r), -abs(r - R["gate"])))
     gx, gy = sc.p(gr, a_in)
-    for side in (1, -1):
+    gate = rng.random() < 0.4                     # (none of the lab's five Westwood ogre fires has a tusk gate by it)
+    for side in ((1, -1) if gate else ()):
         for k in range(wing):
             o = side * (58 + 33 * k)
             t = rng.choice(tuple(TUSK_SHADOW))

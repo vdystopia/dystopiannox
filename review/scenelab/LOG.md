@@ -374,3 +374,13 @@ Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings unchange
 Queued: r3-lights. Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors. (Thornwick's warnings now and then
 include "a study room holds OgreStraw4": a catalogue hay scene in a ruined room; it comes and goes between runs of the
 same code, as the lab's maps do, so it is not this change's.)
+
+### ogre_camp: the fire in the swamp (kit/camps.py `ogre_camp`)
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged (a forest glade) | 1.0 | 0 / 0 |
+| r1-swamp | the lab: every ogre camp in a pocket of RootLight on dirt; the kit: bones close round the pit, straw rare, the stock two to four, the big carcass 50%, the tusk gate 40% | 1.0 | 0 / 0 |
+| r2-hut | the warlord's bearskin by the fire 30% (Westwood's lie in the huts) | 1.0 | 0 / 0 |
+
+Five Westwood scenes: the AUC cannot move far (its top features: the fire by a path, open ground). Queued: r2-hut.

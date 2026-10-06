@@ -57,9 +57,16 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
 | `scorecard.py` | the scorecard and the iteration history (`review/out/scenelab/<scene>/iterations.json`) |
 | `LOG.md` | the per-scene iteration log |
 
-**The setting** (since 2026-10-06): a scene of the wild (labgen `WILD`: the camps, the wolf den, the quarry, the
-shrine) is laid in a forest glade; every other in a hamlet's ground: a road through it, two or three houses of the kit's
-generator round it with their walks to the road, a pond scene's lake on one side and the hamlet on the other.
+**The setting** (since 2026-10-06): a scene of the wild (labgen `WILD`: the bandit, ogre and urchin camps, the wolf
+den, the quarry) is laid in a forest glade, or in a pocket of the rock where its recipe says (`caves`: the plots in a
+pocket; `cave_wall`: CaveWall2 for the bandits' hideouts, Dirt for the urchins' dens, RootLight for the ogres' swamp;
+`cave_scale`), each pocket on its own spur off a passage between the rows, so it has one mouth. Every other scene is
+laid in a hamlet's ground: a road through it (cobbled in a third of the hamlets), two or three houses of the kit's
+generator round it with their walks to the road, the forest paths joining the hamlet at its edges (never through its
+middle); `by_road` sets the scene that many squares in from the road (the graveyard's gate toward it); a pond scene's
+lake (11-14 tiles) lies on one side with the fisher's hut by the first landing; the market's store stands at the
+clearing's side, its door toward the market square. Townsfolk at work (the gravedigger, the fisher, the gardener) are
+clones of Westwood's townsfolk; the renders leave every creature out.
 
 **Fairness** (review/roomlab/FAIRNESS.md lists every known tell that is not design and how it is handled). A
 generated scene is found on the lab map by the same signature search that finds Westwood's (`labref.find_scenes`), its
