@@ -166,3 +166,10 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   (independent): living room 10/10 (4.4/7.6), tavern 10/10 (3.6/7.6), laboratory 9/10 (4.6/7.4): worse than recipes. A
   lab-fairness agent (night-labfair) removes the remaining non-design tells: creatures in Westwood's renders, briefs that
   leak our rules to judges, the lab's 1-3 doors where Westwood has one, repeated Westwood pictures.
+- 00:43 Pushed the merged kit (integration: 0 errors on all five recent maps). Independent results: track C
+  laboratory r17 10/10 (5.4/6.2), shop r12 10/10 (4.6/6.8), crypt r7 10/10 (5.2/7.4), armoury c3 10/10 (4.8/6.6),
+  barracks c3 8/10 (4.8/7.2), cellar r2 10/10 (5.2/6.4), mausoleum r6 10/10 (3.8/7.4), library c1 10/10 (4.6/6.2).
+  **Motif engine: bedroom 6/10 (near chance; 4.8/6.8), storeroom 7/10 (5.2/5.6)**, kitchen 10/10. Learned
+  arrangements beat the tuned recipes on the two types with the most Westwood rooms (recipe bedroom best 8/10). The
+  judges' diagnosis of the recipe rooms is unanimous across 30 sheets: everything at even gaps along the back walls,
+  one template repeated, a token group in a bare middle; Westwood's are zoned, dense, irregular, with story details.
