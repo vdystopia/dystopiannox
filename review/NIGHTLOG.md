@@ -50,3 +50,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   types. Every type now has "where people stand" (`STANDS`, `StoryMap.stand_px`, `person_in`). Six new building roles
   (gaol, gatehouse, healer, wheelwright, mausoleum, shrine); roles take the new rooms with `extra=`. Existing maps are
   unchanged.
+- 23:10 Object knowledge base merged (`rules/objects.py` -> `rules/out/objects.json`, `kit/objects.py`): 229 object kinds
+  profiled from 357 campaign rooms (showpiece, fabric, pair, group; runs along walls; counts per room type; clearances;
+  companions; hangings). The furnisher checks every placement against it; eight new `pieces.*` checks. The user's five
+  Harrowby rooms, rebuilt wall for wall (`hbreplay.py`): cauldrons 2->0, bedroom chests 4->1 and table sets 3->1, library
+  candelabras 8->3, storeroom log shelves 15->2 in mixed clusters. Room lab: 0 `pieces.*` findings (89 before).
+  Next: tuning rounds by room type in three parallel tracks.
