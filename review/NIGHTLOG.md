@@ -156,3 +156,13 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   off by default; lower AUC in 4 of 6 types but more hard-rule rooms). Conflicts in furnish.py and identity.py were
   additive and resolved keeping both sides. 22 new sheets sent to six fresh judges. Integration build running.
   Track B and dialogue round 3 and scene round 4 still running.
+- 00:43 Integration build of the merged kit: 0 errors on every map, but warnings rose (Thornwick 0->7, Starwell 0->7,
+  Greywatch 1->8, Ambermere 0->7). Almost all are composition.sparse: the user's TreePlace house rule ("rooms at Westwood's
+  median and below read as empty") against the tuned rooms, which now match Westwood's real spread (10-11% cover against
+  the curated medians of 12-13%; half of Westwood's own rooms fall below its median). Kept as warnings: the user's call.
+  The rest are real: a hard OakWoodFloor/RedBrick seam from the new second floors, a dining hall of 29 WoodenChairs
+  (track B not merged yet), a bookcase gap in a library. Track A's third sheets: bedroom j6 9/10 (5.4/7.0), guardroom j3
+  9/10 (4.4/6.2), kitchen j2, living room j6, cell j1, infirmary j3, study r4, solar r4 all 10/10. Motif engine sheets
+  (independent): living room 10/10 (4.4/7.6), tavern 10/10 (3.6/7.6), laboratory 9/10 (4.6/7.4): worse than recipes. A
+  lab-fairness agent (night-labfair) removes the remaining non-design tells: creatures in Westwood's renders, briefs that
+  leak our rules to judges, the lab's 1-3 doors where Westwood has one, repeated Westwood pictures.
