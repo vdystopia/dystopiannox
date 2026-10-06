@@ -313,3 +313,16 @@ Fairness: the judge sees the iteration name in the path ("r2-road"); from now on
 folders.
     ../dystopiannox-wt/scenes4/review/out/scenelab/shrine/r5-masonry: accuracy 10/10, generated 4.6 vs Westwood 8.4, confidence 0.84
     ../dystopiannox-wt/scenes4/review/out/scenelab/ogre_camp/r4-fewbones: accuracy 10/10, generated 5.2 vs Westwood 7.6, confidence 0.71
+
+## 03:41 Layout archetypes merged (night-variety)
+
+Each room type now draws one of 3-6 archetypes clustered from Westwood's curated rooms (kit/archetypes.py), by
+Westwood's frequency, spread over a map's rooms of the type by deficit (bedroom: cot room / bed and desk / sitting end /
+lord's room; crypt: tomb niche / tomb row / wall tombs / tombstone yard / statue vault; shop: lined walls / stock heaps /
+showroom; thin types from their few rooms plus kin at half weight). A new lab check, template similarity (mean pairwise
+layout similarity of a batch), is compared with Westwood's p50/p90 for the type and flagged on the scorecard.
+Recipe batches got less alike in 8 of 10 types (throne room 0.72 -> 0.56, great hall 0.46 -> 0.31, lab 0.47 -> 0.34,
+kitchen 0.45 -> 0.34) but all but crypt are still above Westwood's p90 (~0.2): within an archetype the recipe still
+repeats itself. Classifier AUC: lab 0.92 -> 0.74, shop 0.98 -> 0.90, living room 0.94 -> 0.86. QA on Starwell,
+Thornwick, Greywatch: 0 errors (a few more rooms.stray warnings). Ten sheets sent to five independent judges, under
+neutral folder names (review/blind_neutral.py).
