@@ -215,6 +215,36 @@ mean pairwise layout similarity of its ten rooms (half the same families on the 
 the same places, mirrors counted), against the same mean over draws of Westwood's rooms of the type; a batch above
 Westwood's p90 is flagged on the scorecard ("more alike than Westwood"), with its twin pairs.
 
+Measured (seed 1, ten variants; before: `NOX_ARCHETYPES=0`; template similarity, Westwood's p50/p90 for the type, and
+the classifier AUC):
+
+| Type | Engine | Template before -> after | Westwood p50 / p90 | AUC before -> after |
+|---|---|---|---|---|
+| throne room | recipe | 0.717 -> 0.555 | 0.171 / 0.197 | 0.871 -> 0.869 |
+| great hall | recipe | 0.459 -> 0.311 | 0.160 / 0.230 | 0.875 -> 0.876 |
+| shop | recipe | 0.288 -> 0.216 | 0.148 / 0.177 | 0.975 -> 0.896 |
+| laboratory | recipe | 0.474 -> 0.339 | 0.164 / 0.181 | 0.918 -> 0.742 |
+| tavern | recipe | 0.522 -> 0.434 | 0.262 / 0.292 | 0.908 -> 0.907 |
+| kitchen | recipe | 0.452 -> 0.335 | 0.146 / 0.194 | 0.995 -> 0.970 |
+| living room | recipe | 0.326 -> 0.280 | 0.219 / 0.236 | 0.935 -> 0.864 |
+| bedroom | recipe | 0.295 -> 0.287 | 0.195 / 0.227 | 0.816 -> 0.845 |
+| chapel | recipe | 0.370 -> 0.362 | 0.093 / 0.120 (shrines, a hall) | 0.980 -> 0.936 |
+| crypt | recipe | 0.270 -> 0.368 | 0.287 / 0.372 | 0.940 -> 0.882 |
+| bedroom | motifs | 0.225 -> 0.209 | 0.195 / 0.227 | 0.677 -> 0.830 |
+| living room | motifs | 0.253 -> 0.259 | 0.219 / 0.236 | 0.958 -> 0.904 |
+| shop | motifs | 0.263 -> 0.271 | 0.148 / 0.177 | 0.917 -> 0.779 |
+| laboratory | motifs | 0.297 -> 0.319 | 0.164 / 0.181 | 0.950 -> 0.750 |
+| tavern | motifs | 0.480 -> 0.460 | 0.262 / 0.292 | 0.918 -> 0.910 |
+| kitchen | motifs | 0.381 -> 0.380 | 0.146 / 0.194 | 0.949 -> 0.931 |
+
+The recipe engine's batches are less alike in eight of ten types (most in the throne room, great hall, laboratory,
+kitchen), but still above Westwood's p90 in all but the crypt: within an archetype the recipe still repeats itself, and
+for the thin types Westwood's reference mixes cultures and kin types (a Land of the Dead throne room, a shrine) that no
+generated batch of one culture can match. The crypt's archetypes made its batch more alike (0.27 -> 0.37, Westwood's own
+crypts are alike: p50 0.29): its tomb niches pair their sarcophagi alike. The motif engine already drew each room's plan
+from another Westwood room; its archetypes change which rooms, not how alike they are (the bedroom within Westwood's
+spread before and after). AUC moves within the lab's ±0.05-0.1 noise except the laboratory (0.92 -> 0.74) and shop.
+
 ## Culture variants
 
 The ogres (rough wood, straw, meat, torch poles), the Land of the Dead (sconces, mana obelisks, tombstones, bones), Dun
