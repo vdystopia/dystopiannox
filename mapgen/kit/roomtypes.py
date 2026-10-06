@@ -184,14 +184,17 @@ TYPES = {
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="stocked log shelves end to end", other_back="crates side by side",
                    front="heaps of barrels and sacks in the corners", middle="clear, or one row of racks with aisles"),
-        cover=(0.15, 0.30, 0.42), open=(0.15, 0.65), per_tile=(0.3, 1.1), types_min=4, free_most=(4, 20),
-        # lined 0.10: log shelves stand alone or in pairs, never a whole wall of them (Harrowby playtest HB-5, kit/objects.py)
-        caps={"shop_rack": (10, 6)}, walls_min=3, lined=0.10, tiles=(15, 90),
+        # the room lab (2026-10-05): Westwood's 22 campaign storerooms cover 0.02-0.07-0.19 of their floor with 1-5 types
+        # (median 3), barrels the commonest, against two walls (p90 three), no shelf or rack in any of them; the user
+        # wants stores fuller than Westwood's median ("a store room holds more than any other room"), so the target
+        # sits at Westwood's p75, the limit past its p90
+        cover=(0.06, 0.13, 0.26), open=(0.30, 0.92), per_tile=(0.1, 0.8), types_min=2, free_most=(4, 20),
+        caps={"shop_rack": (10, 6)}, walls_min=2, lined=None, tiles=(15, 90),
         signature={"storage": (0.8, 30), "^LogShelves": (0.5, 8)}, needs=("storage",),
-        kin=("kitchen", "armoury"),
-        variants={"ore_store": dict(must={"storage": 2, "shop_rack": 2}, cover=(0.15, 0.28, 0.42), focal=dict(fam=None, types=r"^Mine(Mana|Ore)Cart",
+        kin=("kitchen", "armoury", "cellar"),
+        variants={"ore_store": dict(must={"storage": 2}, cover=(0.06, 0.15, 0.28), focal=dict(fam=None, types=r"^Mine(Mana|Ore)Cart",
                                     where="any"), caps={"shop_rack": (8, 12)}),
-                  "ogre_hoard": dict(lined=None, walls_min=2, cover=(0.15, 0.26, 0.42), never=("bed", "desk", "altar",
+                  "ogre_hoard": dict(lined=None, walls_min=2, cover=(0.06, 0.14, 0.28), never=("bed", "desk", "altar",
                                      "throne", "lab", "counter_bar", "counter_shop"))}),
     # ---- martial -------------------------------------------------------------------------------------------------
     "barracks": dict(

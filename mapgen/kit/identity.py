@@ -154,18 +154,24 @@ ROOMS = {
                               "down the middle, trader shelves of tools and helmets along a back wall, crates and barrels of "
                               "tools along the front walls",
                       base="storeroom",
-                      core={"cart": (2, 3), "storage": (2, 16), "shop_rack": (2, 12)},
-                      optional={},
-                      types={"storage": SUPPLY, "shop_rack": RACKS},
+                      core={"cart": (1, 2), "storage": (2, 16)},
+                      optional={"shop_rack": (0.5, 2)},
+                      types={"storage": SUPPLY, "shop_rack": r"^TraderShelves[12]$"},
                       prefer={"cart": {"MineManaCart1": 2, "MineManaCart2": 2, "MineOreCart1": 1, "MineOreCart2": 1},
                               "storage": {"DarkCrate1": 2, "DarkCrate2": 2, "BarrelWithTools1": 1, "Barrel": 1},
                               "shop_rack": {"TraderShelves1": 1, "TraderShelves2": 1}},
-                      compose=[dict(fam="shop_rack", slot="line"), dict(fam="shop_rack", slot="line", other=True),
+                      # the carts are the town-furnished ore shed's own pieces (the "town" style had excluded every Mine
+                      # piece, so the lab's ore stores never had their carts: the profile's focal missed in 3 of 3);
+                      # the store heaped as a storeroom's (store_heaps), a shelf of tools or two at most
+                      lift=("Mine|",), lights_per100=3.0,
+                      store=dict(lead={"crates": 3, "barrels": 1}, second={"tools": 2, "barrels": 2, "crates": 1},
+                                 accent={"large": 1, "piled": 1}),
+                      top_up=(),
+                      compose=[dict(fam="cart", slot="groups", group="carts", n=1),
                                dict(fam="cart", slot="wall", at="any", clear=1.2),
-                               dict(fam="shop_rack", slot="racks", kind="mine"),
-                               dict(fam="storage", slot="stock", coverage=0.7, kinds=("crates", "tools", "barrels"), pad=1.2)],
-                      fill=[dict(fam="shop_rack", slot="line", other=True, max=8, min_area=80), dict(fam="shop_rack", slot="line", max=6), dict(fam="cart", slot="group", group="carts", max=2), dict(fam="storage", slot="stock", coverage=1.0, kinds=("crates", "barrels", "sacks", "tools"), pad=1.0),
-                            dict(fam="storage", slot="stack", n=3, once=True)]),
+                               dict(fam="storage", slot="heaps", n=4),
+                               dict(fam="shop_rack", slot="wall", at="center", clear=1.0, n=1)],
+                      fill=[dict(fam="storage", slot="heaps")]),
     "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables with stools, a long "
                            "table with benches, a table laid with food, the hearth with a rug before it and shelves of "
                            "tankards beside it, kegs heaped by the walls, trophies on the walls, benches along the front "
@@ -263,28 +269,34 @@ ROOMS = {
                  fill=[dict(fam="shelves", slot="line", other=True, max=6),
                        dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
                        dict(fam="storage", slot="stock", coverage=0.8, kinds=("crates", "sacks"), pad=1.0, max=4)]),
-    "storeroom": dict(purpose="stores kept in good order: a back wall lined with shelves of provisions, heaps of barrels "
-                              "and sacks in the corners, crates side by side along the walls, racks of hunting gear in rows "
-                              "down the middle with aisles to walk",
-                      core={"storage": (4, 24), "shelves": (2, 10)},
-                      optional={"shop_rack": (1.0, 12)},
-                      types={"storage": SUPPLY, "shelves": r"^LogShelvesFull\d$", "shop_rack": RACKS},
-                      compose=[dict(fam="shelves", slot="line"),
-                               dict(fam="shop_rack", slot="racks", kind="hunt"),
-                               dict(fam="storage", slot="stock", coverage=0.8, kinds=("crates", "barrels", "sacks"))],
-                      fill=[dict(fam="storage", slot="stack", n=3, once=True),
-                            dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "crates"), pad=0.3)]),
+    # the room lab (2026-10-05): Westwood's 22 campaign storerooms hold 1-5 types (median 3), barrels the commonest, heaped
+    # against two walls with the rest of the floor bare, crates side by side or stacked free; no shelves, no racks (the
+    # user: "armor and weapon racks in storerooms are just a little bit too dense and numerous"; "Repeating the same item
+    # along the entire length of a wall is not realistic ... try a cluster of sacks (three different sizes), and then a
+    # barrel, and then something else"). The old recipe (shelves, a row of hunting racks, every wall stocked with a
+    # cluster of every kind) gave 8-15 types round all four walls: AUC 0.96 against Westwood's. store: the weights of the
+    # room's lead kind, its second kind and its odd piece (kit/furnish.py store_heaps)
+    "storeroom": dict(purpose="stores kept in good order: barrels heaped in the corner furthest from the door, crates side "
+                              "by side along the same walls or stacked in the middle, the odd cask; an aisle to walk",
+                      core={"storage": (4, 24)},
+                      optional={},
+                      types={"storage": SUPPLY},
+                      store=dict(lead={"barrels": 6, "crates": 2, "sacks": 1}, second={"crates": 3, "barrels": 2, "sacks": 2},
+                                 accent={"piled": 2, "large": 2, "water": 1, "tools": 1, "apples": 1}),
+                      top_up=(), lights_per100=3.0,
+                      compose=[dict(fam="storage", slot="heaps", n=4)],
+                      fill=[dict(fam="storage", slot="heaps")]),
     # a mill's or a farm's grain store (Harrowby): a storeroom of sacks, never racks of arms (the mill's first
     # storeroom held a row of axe racks down its middle: rules/rooms/storeroom.md)
-    "granary": dict(base="storeroom", purpose="grain kept dry: sacks heaped in the corners and stacked down the middle, shelves of "
-                            "provisions on a back wall, barrels and crates along the walls, an aisle to walk",
-                    core={"storage": (5, 28), "shelves": (1, 8)}, optional={},
-                    types={"storage": SUPPLY, "shelves": r"^LogShelvesFull\d$"},
-                    compose=[dict(fam="shelves", slot="line"),
-                             dict(fam="storage", slot="stack", n=3, once=True),
-                             dict(fam="storage", slot="stock", coverage=0.9, kinds=("sacks", "barrels", "crates"))],
-                    fill=[dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, max=8),
-                          dict(fam="storage", slot="stock", coverage=1.0, kinds=("sacks", "crates", "barrels"), pad=0.3)]),
+    "granary": dict(base="storeroom", purpose="grain kept dry: sacks heaped in the corners in their three sizes, barrels and "
+                            "crates along the same walls, an aisle to walk",
+                    core={"storage": (5, 28)}, optional={},
+                    types={"storage": SUPPLY},
+                    store=dict(lead={"sacks": 1}, second={"barrels": 2, "crates": 2}, second_p=0.9,
+                               accent={"large": 1, "piled": 1}),
+                    top_up=(), lights_per100=3.0,
+                    compose=[dict(fam="storage", slot="heaps", n=4)],
+                    fill=[dict(fam="storage", slot="heaps")]),
     "gear_store": dict(purpose="a crew's gear in good order: armour stands and racks of pole arms, clothes and bows in "
                                "rows down the middle, a back wall lined with shelves, barrels, crates and tool barrels "
                                "along the front walls",
@@ -646,11 +658,13 @@ ROOMS = {
                        prefer={"clutter": {"OgreHutCarcass": 2, "OgreHutCarcassBig": 1, "OgreHutMeat": 2},
                                "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2}},
                        lights={"TorchPole": 1},
-                       compose=[dict(fam="storage", slot="stock", coverage=0.8, kinds=("barrels", "sacks", "crates"), pad=1.0),
-                                dict(fam="clutter", slot="scatter", per100=4, cluster=(1, 2)),
-                                dict(fam="bones", slot="scatter", per100=6, cluster=(1, 3))],
-                       fill=[dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels", "sacks", "crates"), pad=0.8, max=20),
-                             dict(fam="storage", slot="stack", n=3, once=True)]),
+                       # the ogres' sacks stand two or three to a room (they do not line walls: kit/objects.py), barrels lead
+                       store=dict(lead={"barrels": 1}, second={"crates": 2, "piled": 1}, accent={"ogre": 2}),
+                       top_up=(),
+                       compose=[dict(fam="storage", slot="heaps", n=4),
+                                dict(fam="clutter", slot="scatter", per100=3, cluster=(1, 2)),
+                                dict(fam="bones", slot="scatter", per100=4, cluster=(1, 3))],
+                       fill=[dict(fam="storage", slot="heaps")]),
     "dark_chapel": dict(purpose="the Land of the Dead's chapel: the lich god's statue on a back wall, mana obelisks and "
                                 "arks along the walls, judgement balances standing in a pair, tapestries and sconces on "
                                 "the back walls, bones and skulls strewn about",
