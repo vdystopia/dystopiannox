@@ -64,3 +64,11 @@ in the way from the door to the bed. (`STANDS["solar"]`: beside the hearth, besi
   tapestries, eleven candelabras); Con06b, cells 116,182 and 91,158 (132 and 196 tiles: Dun Mir chambers); Wiz03b, cell
   78,85 (98 tiles: a cot, the hearth, bookcases, ten green tapestries, obelisks).
 - Ours: the room lab's solars.
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's four lords' chambers (98-196 tiles) hold 12-20 kinds, no plants, a bearskin or a red rug, tapestries of one
+colour, and are carpeted wall to wall and zoned by the shell (Con07D's hearth on a partition across the middle, the bed
+in its own end). The recipe now: no plants, a bench drawn up before the hearth, a second sitting group, rugs, carpet in
+0.8. The furniture cannot fill an open 200-tile square at Westwood's 0.05-0.09 cover without reading as empty: the
+zoning is the shell's.

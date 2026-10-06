@@ -67,3 +67,37 @@ The sleeper at the bed's side (never at its foot, where the chest is), else by t
   63-tile bedroom, once cited here, is a quest map's: not campaign evidence.)
 - Ours: Starwell seed 4, room 10, the archmagister's chamber (36 tiles, 15 types, coverage 0.14, open 0.48), and room
   13, the innkeeper's room (28 tiles, 15 types): the smaller bedrooms the user praised.
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's campaign bedrooms (40, then 31 once cells, guard posts and lords' chambers were retyped), piece by piece (review/roomlab/westwood_features.json), against ten generated a round:
+
+- **What they hold**: the bed (26 rooms; a wood bed 8, a cot 6), a nightstand (25), bookcases (25: one alone in about
+  half), a desk with its chair (22), a chest (27, Dun Mir or plain). Median 7 kinds of object. A table set in a third of
+  them, mostly the bigger rooms, and never a table and a desk together (the HB-3 rule). **No plants** (0 of 40); hangings
+  in one in six; a rug object in one in five (a bearskin or a red rug); a carpet laid in the floor tiles far more often.
+- **Where**: everything against the two back walls (walls used: median 2). The bed headboard to a back wall about
+  0.7 of the room's diagonal from the door, with its nightstand and the chest beside it (bed to chest 0.6 units); the
+  desk and its chair with a bookcase beside it (0.66) on the other back wall. A bookcase may stand alone on a short
+  stretch between a door and a corner.
+- **What gave ours away** (classifier AUC 0.99 at the start): plants in the corners, trophies and tapestries, two rugs
+  and a table set on a rug in the middle, a bench on a front wall, a third wall used, too many kinds (9.5 against 7).
+- **A stamp reads worse than a mix** (the lesson of rounds r1-r6): a recipe that put Westwood's commonest layout in
+  every room (the bed far from the door with the chest and nightstand at its head, the desk and a bookcase beside it,
+  two walls used) brought the classifier's AUC from 0.99 to 0.83-0.88, but an independent blind judge picked it out
+  more easily (8/10, scored 4.8) than the kit's own recipe (6/10, scored 6.4, above Westwood's 6.0): "the chest pressed
+  against the bed's head, a desk crowding the bed, a lone bench on the SE wall with a candelabra, the carpet's middle
+  empty, single pieces instead of a run of shelves". The measures are a check, the eye the judge.
+- **The recipe now** (`kit/identity.py ROOMS["bedroom"]`, r7): the kit's composition (the bed headboard to a wall with
+  its nightstand, the chest centred on its own back wall with a rug before it, shelves end to end, the desk with its
+  chair or a small table set, a carpet in some) with Westwood's proportions: the desk in 0.7 of rooms, a table in 0.4,
+  a bench in 0.3, a plant in 0.3, at most two hangings and no decoration pass (`decorate=False`).
+- **What still gives them away**: the lab's rooms are plain rectangles with doors in the back walls, and 1.25 times
+  Westwood's size: with Westwood's pieces they come out at 0.10-0.12 cover, just under the checker's sparse line
+  (Westwood's median, 0.117). Westwood's bedrooms are shaped (L-rooms round an alcove, niches, a carpet laid to the
+  shape) and carry an odd lived-in piece (a barrel, a crate, a spittoon) the brief forbids.
+
+**After the independent judge** (r7 9/10 and 4.8 against Westwood's 6.6): back to the kit's recipe, which the judge
+could hardly tell from Westwood's (ref 6/10), with only the faults it named taken out: one rug, before the chest (not
+"two identical rugs"); the table set on the bare floor (not on a rug in a corner); a single bookcase on a short stretch
+between doors. The curated Westwood set: 28 bedrooms, p90 42 tiles.

@@ -131,7 +131,10 @@ FACING_TYPES = re.compile(r"^(Chest\d|Chest[NS][EW]|DunMirChest\d|TraderShelves\
 WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"},
                   # Westwood's crypt chests: CryptChest1 or 3 on the NE wall, CryptChest4 on the NW (rules/out
                   # type_wall_sides); the numbering had laid them across the wall (the room lab's mausoleums)
-                  "CryptChest": {"\\|BL": "CryptChest1", "/|BR": "CryptChest4", "\\|TR": "CryptChest3", "/|TL": "CryptChest2"}}
+                  "CryptChest": {"\\|BL": "CryptChest1", "/|BR": "CryptChest4", "\\|TR": "CryptChest3", "/|TL": "CryptChest2"},
+                  # the iron stove as Westwood stands it on each wall (campaign kitchens: Stove05 on the NW wall 6 times,
+                  # Stove03 and Stove04 on the NE wall, Stove01 on the SE, Stove02 on the SW; room lab tuneA)
+                  "Stove": {"/|BR": "Stove05", "\\|BL": "Stove04", "/|TL": "Stove01", "\\|TR": "Stove02"}}
 FRONT_FAMS = {"bench", "storage", "shop_rack", "cart"}
 FRONT_WEIGHT = 1.8                # how strongly free-standing furniture leans toward the SE and SW walls
 # Pieces that stand tall against their wall: hangings never go above them (above a chest, a bed or a bench they may).
@@ -231,6 +234,10 @@ GROUPS = {
     "worktable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair",
                       beside=(r"^TraderAppleCrate$|^Barrel2?$|^SackChestMedium[12]$|^Crate[12]$", 2)),
     "sitting": dict(anchor=r"^SmallTable2$|^SquareTable[12]$|^RoundTable[12]$", seats=(2, 3), seat="chair", rug=0.8),
+    # a household's round table ringed by its chairs, its meal on it most often (Westwood's living rooms: 3-5 chairs)
+    "family_table": dict(anchor=r"^RoundTableWithFood$|^RoundTable[12]$", seats=(3, 4), seat="chair", rug=0.0, seat_gap=0.35),
+    # a bedroom's small table with a chair or two and no rug under it (Westwood's bedrooms: Con02a's, Con03A's)
+    "side_table": dict(anchor=r"^SquareTable[12]$|^RoundTable[12]$", seats=(1, 2), seat="chair", rug=0.0),
     "curio": dict(anchor=r"^Telescope2[a-g]$|^Orrery2$", clear=1.0),
     "statues": dict(anchor=r"^Statue2[aceg]$", pair=True, clear=1.0),
     "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0, seat_gap=1.1),   # fires draw wide
@@ -429,7 +436,16 @@ class _Room:
             for seg in segs:
                 self.runs.append(dict(line=line, coord=coord, lo=seg[0] - 1, hi=seg[-1] + 1, side=f"{line}|{side}",
                                       sign=1 if side in ("BR", "TR") else -1))
-        self.doors = [(g[0] + g[1] + 1, g[0] - g[1]) for g in (d.gap for d in room.doors)]
+        # both cells of a double door keep their clearance (room lab tuneA: barrels stood 0.3 units inside the second
+        # half of a double door, in its straight way in, because only the first cell was kept clear)
+        gaps_all = {d.gap for d in room.doors} | set(getattr(spec, "door_gaps", ()))
+        cells_ = []
+        for d in room.doors:
+            gx, gy = d.gap
+            step = (1, -1) if d.line == "/" else (1, 1)
+            cells_.append(d.gap)
+            cells_ += [c for c in ((gx + step[0], gy + step[1]), (gx - step[0], gy - step[1])) if c in gaps_all][:1]
+        self.doors = list(dict.fromkeys((g[0] + g[1] + 1, g[0] - g[1]) for g in cells_))
         mats = Counter(walls[c].get("material") for c in near)
         self.wall_material = mats.most_common(1)[0][0] if mats else ""
         self.placed = []          # (u, v, hu, hv, blocking, layer)
@@ -1135,12 +1151,14 @@ class Furnisher:
             for _ in range(self._deferred_decor): self.place_decor()
             self.fill_room()
             # a kind may line its back walls less than the house's goal (ROOMS[kind]["lined_goal"]: Westwood's
-            # laboratories 0.06-0.35, the room lab)
-            goal = ROOM_IDENTITY.get(self.kind, {}).get("lined_goal", LINED_GOAL)
+            # laboratories 0.06-0.35), and say whether its walls take hangings (a bedroom: Westwood hangs something in
+            # 17% of its bedrooms and lines a quarter of their back walls; the room lab)
+            ident = ROOM_IDENTITY.get(self.kind, {})
+            goal = ident.get("lined_goal", LINED_GOAL)
             self.line_backs(goal)
             self.complete_bookcase_walls()
             self.centre_by_doors()
-            if self.kind in DECORATED: self.decorate_walls()
+            if ident.get("decorate", self.kind in DECORATED): self.decorate_walls()
             while self.line_family() and self.back_lined() < goal and self.place_decor(): pass
             self.audit_rugs()
             self.audit_tables()
@@ -1302,14 +1320,19 @@ class Furnisher:
         the room), or None."""
         return min(self.openings, key=lambda op: (not op["outside"], not op["double"], -op["extent"]), default=None)
 
-    def wall_candidates(self, fam, t0, at, deep=False, door=False):
+    def wall_candidates(self, fam, t0, at, deep=False, door=False, far=False, back_only=False):
         """Positions for a piece against a wall, best first: a back wall, away from the pieces already
         composed (one anchor per wall where the room allows), centred on its free stretch (at="center")
         or toward an end of it (at="corner"). deep: the wall with the most room before it first (a chapel's altar at
         the end of a long nave, not halfway along its side). door: the wall straight across the room from the main
         door first, in line with it (a chapel's altar faces the way in down its aisle, as a throne does: Ambermere's
-        altar had stood on the NW wall of a nave entered through its SW wall, its pews side-on to the door)."""
+        altar had stood on the NW wall of a nave entered through its SW wall, its pews side-on to the door). far: the
+        spot farthest from every door first (a bed: Westwood's stand 0.7 of the room's diagonal from the door)."""
         op = self.main_door() if door else None
+        if far:
+            doors_uv = [(o["coord"], o["along"]) if o["line"] == "/" else (o["along"], o["coord"]) for o in self.openings]
+            us_ = [x + y + 1 for x, y in self.g.cells]; vs_ = [x - y for x, y in self.g.cells]
+            diag = max(1.0, math.hypot(max(us_) - min(us_), max(vs_) - min(vs_)))
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
         if fam in ROOM_IDENTITY.get(self.kind, {}).get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
@@ -1323,6 +1346,7 @@ class Furnisher:
         for r, lo, hi in self.segments():
             back = r["side"] in BACK_SIDES
             if facing and not back: continue                 # the camera would see only its back
+            if back_only and not back: continue              # (a recipe's own choice: a kitchen's barrels, as Westwood's)
             t = self.side_variant(t0, r, fam)
             if not t: continue
             hu, hv = self.half(t)
@@ -1330,9 +1354,12 @@ class Furnisher:
             if hi - lo < 2 * ha + 0.1: continue
             if fam == "wall_decor": d = self.perp_for(t, inv.get("perp_px"))
             else: d = hp + SNUG_GAP.get(fam, 0.3) + self.rng.uniform(0.0, 0.08)    # snug against the wall
-            # a kind whose pieces stand a step out from the wall (ROOMS[kind]["wall_gap"]: Westwood's sarcophagi, 1-2.5
-            # units off it; the room lab)
-            d += ROOM_IDENTITY.get(self.kind, {}).get("wall_gap", {}).get(fam, 0.0) * self.rng.uniform(0.7, 1.3)
+            # a kind whose pieces stand a step out from the wall: ROOMS[kind]["wall_gap"] is either {family: units}
+            # (Westwood's sarcophagi, 1-2.5 units off it) or one number for every wall piece (its kitchens: median gap
+            # 0.49 units against the furnisher's 0.24; the checker calls a piece floating from 0.9). The room lab.
+            wg = ROOM_IDENTITY.get(self.kind, {}).get("wall_gap", 0.0)
+            if isinstance(wg, dict): d += wg.get(fam, 0.0) * self.rng.uniform(0.7, 1.3)
+            elif fam != "wall_decor": d += wg
             side_score = (3.0 if back else 0.0) if facing else (0.0 if back else 3.0) if fam in FRONT_FAMS else (1.5 if back else 0.0)
             coord = r["coord"] + r["sign"] * d
             mid = (lo + hi) / 2
@@ -1366,6 +1393,9 @@ class Furnisher:
                 score = side_score + 2.0 * min(spacing, 8.0) / 8.0 + 0.05 * (hi - lo) + self.rng.uniform(0, 0.4)
                 if at != "corner": score += 1.0 - abs(a - mid) / max(1.0, (hi - lo) / 2)
                 if deep: score += 0.4 * depth_of(r)
+                if far and doors_uv:                   # toward 0.7 of the diagonal from the doors, on a back wall
+                    score += 3.0 * min(1.0, min(math.hypot(u - du, v - dv) for du, dv in doors_uv) / (0.7 * diag))
+                    score -= 0.0 if back else 6.0
                 if facing_door: score += 20.0 - 0.5 * min(abs(a - op["along"]), 6.0)
                 out.append((score, t, r, u, v, a, ha, hp))
         out.sort(key=lambda c: -c[0])
@@ -1397,14 +1427,15 @@ class Furnisher:
                     if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
-    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False, only=None):
+    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False, only=None, far=False,
+                      back_only=False):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
         front of it (nothing blocking may stand there later; it must be free now). only: a pattern the piece matches."""
         types = self.types_of(fam)
         if only: types = {t: w for t, w in types.items() if re.search(only, t)}
         t0 = t0 or _pick(self.rng, types)
         if not t0: return None
-        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door):
+        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door, far, back_only):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
             if zone and self.g.zone_blocked(zone): continue
             if NEEDS_FRONT.search(t) and self._front_crowded(r, u, v, ha, hp): continue
@@ -1478,6 +1509,12 @@ class Furnisher:
         """Open spots of the room, best first: farthest from the walls and from what already stands there,
         nearest the middle."""
         cu, cv = self.g.centroid
+        # a recipe may draw its middle group off the exact centre (`middle_jitter`: an independent judge picked out the
+        # lone table "dead centre" in every generated kitchen and living room; Westwood's stand off to one side)
+        jit = ROOM_IDENTITY.get(self.kind, {}).get("middle_jitter", 0.0)
+        if jit:
+            a = self.rng.uniform(0, 2 * math.pi); rr = self.rng.uniform(0.5, 1.0) * jit
+            cu, cv = cu + rr * math.cos(a), cv + rr * math.sin(a)
         blocks = [p for p in self.g.placed if p[4] and p[5] != "wall"]
         out = []
         for (x, y) in self.g.cells:
@@ -1485,7 +1522,7 @@ class Furnisher:
             if not self.g.fits(u, v, hu, hv): continue
             room = min([self.g.wall_dist(u, v) - max(hu, hv)] +
                        [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
-            out.append((min(room, 3.0) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
+            out.append((min(room, 3.0 if not jit else 0.6) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
         return [(u, v) for _, u, v in out]
 
@@ -1499,7 +1536,8 @@ class Furnisher:
         a rug or the room's density rules out the first). Tables come from the building's palette when the room
         allows them; `small`: the smallest type the room allows (a table its seats fit round in a small room)."""
         types = self.types_of(fam)
-        if fam == "table":
+        if fam == "table" and ROOM_IDENTITY.get(self.kind, {}).get("table_palette", True):
+            # (a recipe may take its own tables whatever the building's palette: a living room's table with its food)
             own = {t: w for t, w in types.items() if re.match(self.palette["table"], t)}
             types = own or types
         if small and types:
@@ -3181,7 +3219,7 @@ class Furnisher:
         return min([self.g.wall_dist(u, v) - max(hu, hv)] +
                    [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
 
-    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3):
+    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3, by_bed=False):
         """Pieces of `fam` strewn over the floor in small heaps (straw in an ogre den, bones and skulls in the Land of
         the Dead: rules/out/cultures.json): about `per100` for every 100 floor tiles, `cluster` to a heap, `wall_gap`
         units clear of the walls and clear of the doors and the spaces kept clear. Returns the pieces placed."""
@@ -3190,6 +3228,9 @@ class Furnisher:
         n = max(1, int(round(per100 * len(self.room.tiles) / 100)))
         cells = sorted(self.g.cells)
         self.rng.shuffle(cells)
+        if by_bed and (self.beds or self.anchors):   # heaped by the cot (War07A) or the stocks (Con11a's pens)
+            bu, bv = self.beds[0][2] if self.beds else self.anchors[0]
+            cells.sort(key=lambda c: math.hypot(c[0] + c[1] + 1.0 - bu, c[0] - c[1] - bv) + self.rng.uniform(0, 1.5))
         got = 0
         for (x, y) in cells:
             if got >= n: break
@@ -3237,11 +3278,14 @@ class Furnisher:
                 n_seats = 0
                 if g.get("seats"):
                     lo, hi = g["seats"]
+                    n0 = len(self.objects)
                     n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2),
                                                 pat=g.get("seat_pat"))
                     if n_seats < lo:
-                        for x in got: self._remove(x)
-                        continue                            # seats_around removes nothing: the seats it placed stay
+                        # the seats it did place go too: they had stood as stray chairs by the doors (room lab tuneA,
+                        # a guardroom's chair left alone in the way in)
+                        for x in self.objects[n0:] + got: self._remove(x)
+                        continue
                     self._seated.add((spot, t))
                 if g.get("ring"):                           # candelabras round it, on the four sides: all or none
                     lt, ring, rr = self.light_type(), [], g.get("ring_r", 1.9)
@@ -3295,6 +3339,9 @@ class Furnisher:
             if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
             if st.get("once"): done_once.add(i)
             if st.get("missing") and self._fam_n[st["fam"]]: misses += 1; continue     # only where none stands yet
+            # (a step a recipe skips where a carpet covers the floor: a table on a whole carpet can only stand at its
+            # centre, the "table dead centre of a huge empty carpet" an independent judge picked out in bedrooms)
+            if st.get("bare_floor") and self.carpet_plan: misses += 1; continue
             before = self.n_blocking
             fam = st["fam"]
             if st["slot"] == "stock":
@@ -3309,6 +3356,8 @@ class Furnisher:
                 self.stack_middle(st.get("n", 4))
             elif st["slot"] == "heaps":
                 self.store_heaps()
+            elif st["slot"] == "beside_bed":            # a second nightstand, the bed's other side
+                self.beside_bed()
             elif st["slot"] == "scatter":
                 self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
             elif st["slot"] == "group":                 # its `max` counts groups (a table and its chairs), not pieces
@@ -3322,7 +3371,8 @@ class Furnisher:
                     if self.seats_around(uv, o["type"], 2, "chair") < 2: self._remove(o)
                     elif st.get("rug"): self.rug_under(o, uv)
             else:
-                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2), only=st.get("only"))
+                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2), only=st.get("only"),
+                                       back_only=st.get("back", False))
                 if p and st.get("seats"): self.seats_around(p["uv"], p["obj"]["type"], 1)   # a desk and its chair
             added[i] += self.n_blocking - before
             misses = 0 if self.n_blocking > before else misses + 1
@@ -3505,6 +3555,9 @@ class Furnisher:
             self.carpet_plan = cp                       # carpet tiles in this room, no rug objects
         for st in steps:
             fam = st["fam"]
+            # a step a recipe takes only sometimes (a living room's shelves by the hearth: Westwood's have none, the
+            # TreePlace review asked for them); a carpet's chance is its own (above)
+            if st["slot"] != "carpet" and "chance" in st and self.rng.random() >= st["chance"]: continue
             if st["slot"] == "carpet":
                 if self.carpet_plan:
                     box = self._table_box() if st.get("where") == "under" else None
@@ -3565,7 +3618,8 @@ class Furnisher:
                     if spot and self.try_put(t, *spot, blocking=False): done["rug"] += 1
                 continue
             if st["slot"] == "scatter":               # strewn over the floor in heaps (straw, bones, meat)
-                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
+                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6),
+                                          st.get("spread", 1.3), st.get("by_bed", False))
                 continue
             if st["slot"] == "decor":                 # hangings go up last, once every wall is lined (fill_room)
                 self._deferred_decor += n
@@ -3636,7 +3690,8 @@ class Furnisher:
                     k += got
                     continue
                 p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False),
-                                       door=st.get("door", False), only=st.get("only"))
+                                       door=st.get("door", False), only=st.get("only"), far=st.get("far", False),
+                                       back_only=st.get("back", False))
                 if not p: break
                 k += 1
                 placed.setdefault(fam, p)
@@ -3796,6 +3851,8 @@ class Furnisher:
         return self._light_t
 
     def add_lights(self):
+        # a recipe may leave its room unlit (`dark`: Westwood's cells and pens hold no light of their own, 9 of 10)
+        if ROOM_IDENTITY.get(self.kind, {}).get("dark"): return
         vl = self.T.get("visible_lights", {})
         tiles = len(self.room.tiles)
         rate = _q(self.rng, vl.get("per100_tiles")) or 3.0          # learned lights per 100 tiles

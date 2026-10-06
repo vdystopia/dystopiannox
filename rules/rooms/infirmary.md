@@ -61,3 +61,10 @@ cauldron, beside the potion shelves, a back wall.)
 
 - Westwood: none.
 - Ours: the room lab's infirmaries.
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+No Westwood rooms: judged by eye. The ref read as a bunk room (cots in a row and a tiny table alone in a bare middle).
+Now the healer's work table with its stools and sacks of herbs by it (the `worktable` group), drawn off the centre, a
+chest of linen. Fill groups grow with the room (a step's `max` times the room's size): a table group in the fill
+became three tables and a mess hall; keep the work table in the composition, once.
