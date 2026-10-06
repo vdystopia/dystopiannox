@@ -56,3 +56,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   Harrowby rooms, rebuilt wall for wall (`hbreplay.py`): cauldrons 2->0, bedroom chests 4->1 and table sets 3->1, library
   candelabras 8->3, storeroom log shelves 15->2 in mixed clusters. Room lab: 0 `pieces.*` findings (89 before).
   Next: tuning rounds by room type in three parallel tracks.
+- 23:20 Phase 2 started: three room tuning tracks, each running the lab loop (ref, then rounds r1, r2...; a blind
+  judgement every second round; stop at AUC <= 0.6, blind accuracy <= 60%, scores within 0.5 of Westwood's):
+  A (`night-tuneA`): bedroom, living room, kitchen, study, solar, guardroom, cell, infirmary.
+  B (`night-tuneB`): tavern, throne room, great hall, chapel, dining hall, hall, shrine, gallery, conservatory, plus the
+     classifier's misfiled tavern and garden.
+  C (`night-tuneC`): storeroom, laboratory, shop, library, smithy, armoury, barracks, crypt, herbalist, cellar,
+     treasury, workshop, torture chamber, mausoleum, ossuary, observatory, winch room, powder store.
+  Still running: the scene lab (`night-scenes`) and dialogue round 2 (`night-dialogue2`).
