@@ -69,7 +69,10 @@ FAMS = ["bed", "nightstand", "storage", "table", "chair", "bench", "desk", "shel
 CORE = ["cover", "open", "middle", "per_tile", "types", "most_share", "free_most", "walls", "lined", "wall_share",
         "mid_share", "wall_gap", "max_run", "runs3", "showpiece_rep", "nn_p10", "nn_med", "overlaps", "focal_n",
         "focal_back", "focal_door", "way_in", "way_in_frac", "sym", "align", "statues_to_wall", "front_faced",
-        "odd_facing", "lights_per_tile"]
+        "odd_facing", "lights_per_tile", "reach", "empty_rect", "offset", "groups_100"]
+# the density study's measures (2026-10-06, density()): the scorecard's density table puts the batch's median of each
+# against Westwood's p10-p90 for the type and flags it outside; reach separates ours from Westwood's best
+DENSITY = ["tiles", "pieces", "per_tile", "cover", "reach", "empty_rect", "offset", "groups_100", "zones"]
 CROSS = ["wall_gap", "nn_p10", "nn_med", "overlaps", "wall_share", "mid_share", "align", "sym", "way_in_frac",
          "front_faced", "statues_to_wall", "odd_facing", "lights_per_tile", "most_share"]
 NOT_CLASSIFIED = {"doors"}
@@ -129,6 +132,18 @@ TEXT = {
                    "{v} pieces face the wrong way for their wall", "kit/furnish.py WALL_SIDE_TYPE, along_variant"),
     "lights_per_tile": ("lights per tile", "too dark: {v} lights per tile", "too many lights ({v} per tile)",
                         "kit/furnish.py lights"),
+    "reach": ("floor within 2 units of a piece", "too much bare floor: only {v} of the floor lies within reach of a "
+              "piece", "more of the floor within reach of a piece than Westwood's ({v})",
+              "kit/density.py (the density pass, both engines); rules/out/density.json"),
+    "empty_rect": ("largest bare rectangle over the floor", "", "a bare stretch of floor takes {v} of the room",
+                   "kit/density.py: groups where the room is bare"),
+    "offset": ("the furniture's centre off the room's middle", "", "the furniture is bunched at one end (offset {v})",
+               "kit/density.py: groups where the room is bare; the recipe's zones (kit/archetypes.py)"),
+    "groups_100": ("groups per 100 floor tiles", "too few groups for the floor ({v} per 100 tiles)",
+                   "more groups than Westwood's ({v} per 100 tiles)", "kit/density.py; the recipe's groups"),
+    "zones": ("zones of the room (3 x 3) holding a piece", "pieces in only {v} of the room's zones",
+              "", "kit/density.py"),
+    "pieces": ("pieces", "too few pieces ({v})", "more pieces than Westwood's ({v})", "the recipe; kit/density.py"),
 }
 for _f in FAMS:
     TEXT[f"fam_{_f}"] = (f"{_f.replace('_', ' ')} pieces per 10 tiles", f"fewer {_f.replace('_', ' ')} pieces than "
@@ -176,6 +191,98 @@ def _pct(vals, p):
     return s[f] + (s[c] - s[f]) * (k - f)
 
 
+REACH = 2.0                  # uv units: floor this close to a piece is "in use" (a group's reach)
+BARE_GAP = 1.0               # uv units: floor this far from every piece is bare (the largest empty rectangle)
+GROUP_GAP = 1.5              # uv units: pieces this close belong to one group
+ZONES = 3                    # the room's box cut into ZONES x ZONES zones (spread)
+
+
+def _max_rect(grid):
+    """Area (cells) of the largest all-True axis-aligned rectangle in a 2-D list of booleans (histogram method)."""
+    best = 0
+    if not grid: return 0
+    h = [0] * len(grid[0])
+    for row in grid:
+        for j, ok in enumerate(row): h[j] = h[j] + 1 if ok else 0
+        st = []
+        for j in range(len(h) + 1):
+            cur = h[j] if j < len(h) else 0
+            start = j
+            while st and st[-1][1] >= cur:
+                start, hh = st.pop()
+                best = max(best, hh * (j - start))
+            st.append((start, cur))
+    return best
+
+
+def density(m, r, pieces):
+    """How the furniture fills the floor (2026-10-06 density study, review/roomlab/README.md Density): pieces (count), reach
+    (the share of floor cells within REACH units of a floor piece: furniture, rugs and clutter, not lights or hangings),
+    empty_rect (the largest axis-aligned rectangle of bare floor, more than BARE_GAP from every floor piece, over the
+    floor), zones (the share of the room's ZONES x ZONES zones holding a piece), groups and groups_100 (pieces in
+    groups GROUP_GAP apart; groups per 100 floor tiles), group_top (the largest group's share of the pieces) and
+    offset (the pieces' centre from the floor's centre over the floor's half-size, as the checker's bunched rule)."""
+    cells = r["cells"]
+    cset = set(cells)
+    floor = [o for o in pieces if RT.family(o["type"]) not in ("wall_decor",)]
+    fpos = [(C.uv_of(o), o) for o in floor]
+    pts = [(x + y + 1, x - y) for x, y in cells]
+
+    def dist(u, v):
+        best = 99.0
+        for (pu, pv), o in fpos:
+            if abs(u - pu) > best + 3 or abs(v - pv) > best + 3: continue
+            best = min(best, RM._dist_to_piece(u, v, o))
+        return best
+    near = sum(1 for u, v in pts if dist(u, v) <= REACH)
+    reach = near / max(1, len(pts))
+    # the largest bare rectangle on the uv lattice: a point is floor if it is a cell's centre (u + v odd) or a corner
+    # shared by four floor cells (u + v even)
+    us = [u for u, _ in pts]; vs = [v for _, v in pts]
+    u0, u1, v0, v1 = min(us) - 1, max(us) + 1, min(vs) - 1, max(vs) + 1
+    centres = set(pts)
+    def is_floor(u, v):
+        if (u + v) % 2: return (u, v) in centres
+        return all(q in centres for q in ((u + 1, v), (u - 1, v), (u, v + 1), (u, v - 1)))
+    grid, nfloor = [], 0
+    for u in range(u0, u1 + 1):
+        row = []
+        for v in range(v0, v1 + 1):
+            fl = is_floor(u, v)
+            nfloor += fl
+            row.append(fl and dist(u, v) > BARE_GAP)
+        grid.append(row)
+    empty_rect = _max_rect(grid) / max(1, nfloor)
+    # zones: the floor's uv box cut into ZONES x ZONES; a zone with 3+ floor cells counts, and is used when a floor
+    # piece (not a rug) stands in it
+    solid = [(p, o) for p, o in fpos if RT.family(o["type"]) != "rug"]
+    du, dv = (max(us) - min(us) + 1) / ZONES, (max(vs) - min(vs) + 1) / ZONES
+    zone = lambda u, v: (min(ZONES - 1, max(0, int((u - min(us) + 0.5) / du))), min(ZONES - 1, max(0, int((v - min(vs) + 0.5) / dv))))
+    zc = collections.Counter(zone(u, v) for u, v in pts)
+    valid = {z for z, n in zc.items() if n >= 3}
+    used = {zone(*p) for p, _ in solid} & valid
+    zones = len(used) / max(1, len(valid))
+    # groups
+    n = len(solid)
+    parent = list(range(n))
+    def find(i):
+        while parent[i] != i: parent[i] = parent[parent[i]]; i = parent[i]
+        return i
+    for i in range(n):
+        for j in range(i + 1, n):
+            if gap(solid[i][1], solid[j][1]) <= GROUP_GAP: parent[find(i)] = find(j)
+    sizes = collections.Counter(find(i) for i in range(n))
+    tiles = max(1, r.get("tiles") or len(cells))
+    cu, cv = sum(us) / len(us), sum(vs) / len(vs)
+    if solid:
+        fu = sum(p[0] for p, _ in solid) / n; fv = sum(p[1] for p, _ in solid) / n
+        offset = math.hypot(fu - cu, fv - cv) / (math.sqrt(len(cells)) / 1.4)
+    else:
+        offset = 0.0
+    return dict(pieces=len(pieces), reach=reach, empty_rect=empty_rect, zones=zones, groups=len(sizes),
+                groups_100=100.0 * len(sizes) / tiles, group_top=(max(sizes.values()) / n) if n else 0.0, offset=offset)
+
+
 def features(m, r, typ, kind=None):
     """(features, details) of room r (a validate/checks.py find_rooms room) judged as room type `typ`."""
     me = RM.measure(m, r)
@@ -194,6 +301,7 @@ def features(m, r, typ, kind=None):
     f = dict(tiles=me["tiles"], cover=me["cover"], open=me["open"], middle=me["middle"], per_tile=me["per_tile"],
              types=me["types"], most_share=(me["most"][1] / max(1, me["pieces"])), free_most=me["free_most"][1],
              walls=me["walls"], lined=me["lined"])
+    f.update(density(m, r, pieces))
     for fm in FAMS:
         f[f"fam_{fm}"] = 10.0 * fam.get(fm, 0) / tiles
     # walls: who stands against which wall, how snug
@@ -690,6 +798,27 @@ def template(gen_layouts, typ, n=None, draws=300):
     return out
 
 
+def density_table(gen_feats, typ):
+    """The batch's density against Westwood's: for each DENSITY measure, the batch's median, Westwood's p10, p50 and
+    p90 for the type (pool() when thin), the measure's own AUC, and a flag when the batch's median falls outside
+    Westwood's p10-p90 (not for tiles: our rooms are bigger by the kit's scale)."""
+    rooms, note = pool(typ)
+    out = dict(note=note.split(";")[0], measures=[])
+    for k in DENSITY:
+        ww = [r["features"].get(k) for r in rooms if r["features"].get(k) is not None]
+        g = [x.get(k) for x in gen_feats if x.get(k) is not None]
+        if not ww or not g: continue
+        med = statistics.median(g)
+        lo, p50, hi = _pct(ww, 10), _pct(ww, 50), _pct(ww, 90)
+        a = sum((1.0 if y > x else 0.5 if y == x else 0.0) for x in ww for y in g) / (len(ww) * len(g))
+        out["measures"].append(dict(name=k, batch=round(med, 3), ww_p10=round(lo, 3), ww_p50=round(p50, 3),
+                                    ww_p90=round(hi, 3), auc=round(max(a, 1 - a), 3),
+                                    side="low" if med < lo else "high" if med > hi else None,
+                                    flag=bool(k != "tiles" and (med < lo or med > hi))))
+    out["flags"] = [m["name"] for m in out["measures"] if m["flag"]]
+    return out
+
+
 def judge_batch(typ, it, log=print):
     """Measures and judges an iteration's generated rooms (review/out/roomlab/<type>/<iter>/variants.json), writes
     metrics.json there and returns it."""
@@ -741,7 +870,8 @@ def judge_batch(typ, it, log=print):
     hard_tally = collections.Counter(h["rule"] for x in rooms_out for h in x["hard"])
     own = sum(1 for r in westwood() if r["type"] == typ)
     tmpl = template([x["details"].get("layout") for x in rooms_out], typ)
-    res = dict(type=typ, iter=it, classifier=cls, cross_classifier=cross, westwood_rooms=own, template=tmpl,
+    dens = density_table(gen, typ)
+    res = dict(type=typ, iter=it, classifier=cls, cross_classifier=cross, westwood_rooms=own, template=tmpl, density=dens,
                westwood_cultures=dict(collections.Counter(r["culture"] for r in westwood() if r["type"] == typ)),
                batch_cultures=dict(cultures), worst=worst, hard_rules=dict(hard_tally),
                rooms_with_hard=sum(1 for x in rooms_out if x["hard"]), rooms=rooms_out)

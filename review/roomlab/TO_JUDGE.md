@@ -151,3 +151,24 @@ seed and code, round two off: `NOX_GRAMMAR2=0`): iteration `r0` in the same fold
 | living_room | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\living_room\q7\blind | seats drawn up to bare tables; matching chairs not all one distance off the table (one pulled out); no strings of singles | |
 | tavern | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\tavern\q7\blind | table sets spread over the floor (a set moved onto a carpet laid in the widest bare stretch), no three in a row or diagonal, seats at every table, chairs pulled about | |
 | guardroom | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\guardroom\q7\blind | a table always has its chairs; four matching chairs not in a perfect cross; cots and stock off the front walls; no candelabra loose by the front wall | |
+
+## Queued (density, night-density: one sheet per type, the final iteration d2)
+
+Built with `py tests/roomlab.py <type> --iter d2` (seed 1, n 10, each type's default engine: motifs for bedroom,
+throne room, storeroom; the recipes for the rest) in the worktree `C:\GOG Games\Nox\dystopiannox-wt\density`. The kit's
+new density pass (`mapgen/kit/density.py`) adds groups of the room's own where its floor is bare, toward Westwood's
+reach for the type. The builder has not judged them. Before (same seed, no density pass): `d0-recipe` and `d0-motifs`
+in the same type folders. After judging, write `blind/judge.json` and run `py review/roomlab/blind.py score <type> d2`.
+
+| Type | Iteration | Engine | Blind folder | What changed | Result |
+|---|---|---|---|---|---|
+| bedroom | d2 | motifs | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\bedroom\d2\blind | bare floor taken by a rug, a bench or a bookcase (reach 0.45 -> 0.55) | |
+| living_room | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\living_room\d2\blind | wall pieces where the floor is bare (reach 0.44 -> 0.47) | |
+| tavern | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\tavern\d2\blind | little: the table cap holds (reach 0.53) | |
+| shop | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\shop\d2\blind | stock and racks where the floor is bare (reach 0.32 -> 0.36, offset 0.75 -> 0.57) | |
+| laboratory | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\laboratory\d2\blind | free table sets and workbenches in the bare half (reach 0.32 -> 0.53) | |
+| great_hall | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\great_hall\d2\blind | groups spread (offset 0.25 -> 0.17) | |
+| throne_room | d2 | motifs | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\throne_room\d2\blind | little (Westwood's throne rooms are open) | |
+| chapel | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\chapel\d2\blind | groups spread (offset 0.35 -> 0.23) | |
+| guardroom | d2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\guardroom\d2\blind | little (already within Westwood's reach) | |
+| storeroom | d2 | motifs | C:\GOG Games\Nox\dystopiannox-wt\density\review\out\roomlab\storeroom\d2\blind | stock where the floor is bare (reach 0.54 -> 0.72) | |
