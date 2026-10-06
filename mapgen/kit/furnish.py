@@ -2886,11 +2886,14 @@ class Furnisher:
                 n_seats = 0
                 if g.get("seats"):
                     lo, hi = g["seats"]
+                    n0 = len(self.objects)
                     n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2),
                                                 pat=g.get("seat_pat"))
                     if n_seats < lo:
-                        for x in got: self._remove(x)
-                        continue                            # seats_around removes nothing: the seats it placed stay
+                        # the seats it did place go too: they had stood as stray chairs by the doors (room lab tuneA,
+                        # a guardroom's chair left alone in the way in)
+                        for x in self.objects[n0:] + got: self._remove(x)
+                        continue
                     self._seated.add((spot, t))
                 if g.get("ring"):                           # candelabras round it, on the four sides: all or none
                     lt, ring, rr = self.light_type(), [], g.get("ring_r", 1.9)

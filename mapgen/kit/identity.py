@@ -936,7 +936,7 @@ ROOMS = {
                       # (room lab tuneA: Westwood's 13 guard rooms, 8-63 tiles: the table ringed by chairs (one fallen
                       # now and then), cots in five, a chest, barrels, swords and shields hung in some; no trophies; the
                       # back walls bare but for the arms)
-                      core={"table": (1, 2), "chair": (3, 6), "bed": (1, 3), "shop_rack": (1, 3), "storage": (1, 4)},
+                      core={"table": (1, 2), "chair": (3, 6), "bed": (1, 3), "shop_rack": (1, 2), "storage": (1, 4)},
                       optional={"bench": (0.4, 1), "wall_decor": (0.2, 1)},
                       types={"table": r"^RoundTableWithFood$|^RoundTable[12]$|^SquareTable[12]$",
                              "chair": r"Chair|Stool", "bed": r"^Cot\d$",
@@ -949,17 +949,16 @@ ROOMS = {
                                             "TraderPoleArm3": 1, "TraderBowRack2": 1, "TraderQuiverRack": 1},
                               "table": {"RoundTableWithFood": 3, "RoundTable1": 1, "SquareTable1": 1},
                               "bed": {"Cot1": 2, "Cot4": 1}},
-                      decor_themes=("arms",), table_palette=False,
+                      decor_themes=("arms",), table_palette=False, wall_gap=0.25,
                       top_up=("storage", "bench"),
                       compose=[dict(fam="bed", slot="wall", at="corner", clear=1.0, n=1),
                                dict(fam="storage", slot="wall", at="center", clear=2.3, only=r"^Chest"),
-                               dict(fam="shop_rack", slot="line", n=2),
-                               dict(fam="shop_rack", slot="wall", at="any", clear=0.6, n=1),
+                               dict(fam="shop_rack", slot="wall", at="center", clear=0.6, n=1),
                                dict(fam="table", slot="groups", group="family_table", n=1),
                                dict(fam="table", slot="center", seats=True),
                                dict(fam="storage", slot="stock", coverage=0.25, kinds=("barrels",), pad=1.2, per_wall=0.4),
                                dict(fam="wall_decor", slot="decor")],
-                      fill=[dict(fam="shop_rack", slot="line", other=True, n=2, max=2),
+                      fill=[dict(fam="shop_rack", slot="wall", at="center", clear=0.6, max=1, min_area=80),
                             dict(fam="bed", slot="wall", at="corner", clear=1.0, max=1, min_area=120),
                             dict(fam="bench", slot="wall", at="center", clear=0, max=1)]),
     # a cell (War07A, 13 tiles: a cot, straw, a jail door; Con11a's ogre pens, 30-35 tiles: straw, the stocks)

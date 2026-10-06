@@ -12471,9 +12471,9 @@
 "nn_med": 0.8146,
 "overlaps": 0.0,
 "doors": 3,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.7982,
 "way_in": 13,
 "way_in_frac": 1.0,
 "sym": 0.0,
@@ -12518,7 +12518,7 @@
 "stove|table": 7.242
 },
 "runs": [],
-"focal": null,
+"focal": "Stove04",
 "doors": [
 "NE",
 "SE",
@@ -12583,9 +12583,9 @@
 "nn_med": 0.5166,
 "overlaps": 0.0,
 "doors": 6,
-"focal_n": 2,
+"focal_n": 3,
 "focal_back": 1.0,
-"focal_door": 0.6497,
+"focal_door": 0.7515,
 "way_in": 5.4253,
 "way_in_frac": 0.241,
 "sym": 0.5294,
@@ -12682,7 +12682,7 @@
 "fireplace|stove": 1.481
 },
 "runs": [],
-"focal": "WallFireplace3",
+"focal": "Stove03",
 "doors": [
 "NW",
 "NW",
@@ -12751,8 +12751,8 @@
 "overlaps": 0.0,
 "doors": 2,
 "focal_n": 1,
-"focal_back": 0.0,
-"focal_door": 0.5192,
+"focal_back": 1.0,
+"focal_door": 0.7356,
 "way_in": 6.7265,
 "way_in_frac": 0.7474,
 "sym": 0.6,
@@ -12803,7 +12803,7 @@
 "fireplace|table": 2.958
 },
 "runs": [],
-"focal": "FreestandingFireplace",
+"focal": "Stove05",
 "doors": [
 "SW",
 "SW"
