@@ -1,0 +1,556 @@
+{
+ "scenario": "main_opening",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points to Halvard in the Moot Hall, who sends the player against Red Corwin on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Well there goes the north gate again. Halvard's in the Moot Hall, I'm off for a drink."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Welcome to Brackenford, lad. Crow Hill -- cursed watchtower home of Red Corwin's gang! Hideout of the greedy bandits of the north road!\n\nClear the watchtower, find Corwin and face his whole gang -- the fight of your life. They rob the road and shoot the careless."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "You need to deal with Corwin now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way into the Crow Hill watchtower."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Mayor Vorlund sends the player down to Chief Engineer Dorvak at Thrum Landing over the Trolls in the deep shafts",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Garn",
+     "text": "Hello, friend. Mayor Vorlund is expecting you."
+    },
+    "opening": {
+     "speaker": "Mayor Vorlund",
+     "text": "Something is badly wrong under our mountain. I need you to go down to Thrum Landing. There you must seek Chief Engineer Dorvak.\n\nHe has requested our help in dealing with the recent swarming of Trolls in the deep shafts.\n\nTake this lamp -- and gold. Visit the shop if you need more supplies. Then make haste.\n\nThe lift beyond the Counting House will take you to Thrum Landing."
+    },
+    "reminder": {
+     "speaker": "Mayor Vorlund",
+     "text": "I've nothing more to say to you, lad. Go now and help Chief Engineer Dorvak!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Leave Skarn Delve and travel down to Thrum Landing."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Wend points the player to Gwoll, who sends him into the Sunken Chapel to look for signs of Vorgul and the Mudmen",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wend",
+     "text": "Don't lose hope now, stranger, Gwoll knows how to stop the Mudmen!"
+    },
+    "opening": {
+     "speaker": "Gwoll",
+     "text": "The entrance to the Sunken Chapel is in the last hut on the walk. See if Vorgul has been there. You'll know. And watch your step. Many of the floors have pits against thieves."
+    },
+    "reminder": {
+     "speaker": "Gwoll",
+     "text": "Enter the Sunken Chapel, lad! We must know if tales of Vorgul's raids are true. Hurry! Go down into the vaults and see if the Mudmen have already come."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Sunken Chapel for signs of Vorgul's doings."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Joss points the player to Commander Ostrag, who sends him to Pemmick in Orm against the Troll King Skorn of Mount Dreg.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "WHAT? Ostrag is... EXPECTING you?"
+    },
+    "opening": {
+     "speaker": "Ostrag",
+     "text": "I'll go no further. Too many Troll eyes the closer we get to Mount Dreg.\n\nFollow the river path to Orm.\n\nFind my old comrade Pemmick. He'll lend you a hand if he can.\n\nStay on the path. Cliff beasts will bite hard should you stray. Watch yourself out there, lad."
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "Go on! Don't stand around gawking. Look lively."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pemmick's hut in the Village of Orm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: A townsman Pim points to Mayor Brannoch, who sends the player after the two items needed against Zorvane's drowned dead.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pim",
+     "text": "That necromancer Zorvane would never have come to the lake if Rudge had still been here! Brannoch is the one to ask."
+    },
+    "opening": {
+     "speaker": "Brannoch",
+     "text": "Ah, you've arrived. Good. Your first task in Orlmere is very important.\n\nSomething strange is transpiring on the lake. Sightings of the drowned dead near the nets is growing every day.\n\nMy efforts to learn the cause have been fruitless. A mysterious fog clouds the water. You may be able to help.\n\nMost of the old boathouse on the north shore has sat empty for many years. The ledgers say it holds two items which may be crucial to my search. The first is the Silver Gaff, the second is the Bell of Ashes.\n\nIf you can bring these objects to me, quickly, I hope they will help give me the answers I need."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "No luck yet? Well, keep looking in the boathouse on the north shore. The gaff and bell must be secured immediately!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Silver Gaff for Brannoch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Rector Ulbrin, sent word of by the Captain, wants his Book of Wards taken back from the Gargoyles in the Observatory.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fenn",
+     "text": "Make way! Rector Ulbrin wants to see you!"
+    },
+    "opening": {
+     "speaker": "Ulbrin",
+     "text": "Welcome to Zorreth, brave Adventurer! The Captain told us to expect you!\n\nThe Gargoyles on the hill have gone mad! They swooped into the college and stole my Book of Wards! A student chased the dirty things into the Observatory, but has not come back.\n\nGo to the Observatory east of here and take my book back from the Gargoyles. Come and see me when you are back. You will find me in my hall at the heart of the college."
+    },
+    "reminder": {
+     "speaker": "Ulbrin",
+     "text": "Those wretched Gargoyles are making too much mischief lately."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Rector's Book of Wards from the Gargoyles."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: Warden Odrin sends the player through the old mine tunnel into Zhurg's Hold after the Staff of Thaw",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wenk",
+     "text": "Warden Odrin wants to see you -- that's a bad sign."
+    },
+    "opening": {
+     "speaker": "Warden Odrin",
+     "text": "Sorry about the cold, lad, but the old mine tunnel is the quietest way into Zhurg's Hold. Two Ogre sentries watch the entrance, and plenty more patrol inside.\n\nYou must bring back the Staff of Thaw, but Zhurg will not part with it willingly. This may turn nasty. But these scrolls will help."
+    },
+    "reminder": {
+     "speaker": "Warden Odrin",
+     "text": "Haste will be invaluable for slipping past the sentries. The Shield spell will help turn aside their clubs on your way back. Good luck and good speed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Sneak into Zhurg's Hold through the mine tunnel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Pogg points the player to Maldrek, who sends him to recover the Hammer of Kolgar from Drovak's Trolls; Brakk waits at the Foundry.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pogg",
+     "text": "Hey! Hey! Maldrek has been asking for you!"
+    },
+    "opening": {
+     "speaker": "Maldrek",
+     "text": "The long road has tested your mettle well, lad. But there's no time to sit idle. You must now recover the Hammer of Kolgar, which the Trolls took from Brakk when they raided poor Ashkar!\n\nWith the Trolls marching and the Hammer in their hands, Drovak is most certainly behind it all. Brakk is waiting at the Foundry. Now, off with you!"
+    },
+    "reminder": {
+     "speaker": "Maldrek",
+     "text": "Quickly, go and find Brakk! He wants a word with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Hammer of Kolgar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Fitch points the player to Orsk, who sends him to Glumm Hollow to rescue Quillon from the Trolls.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fitch",
+     "text": "Welcome! I hear you're the one Orsk has been waiting for!"
+    },
+    "opening": {
+     "speaker": "Orsk",
+     "text": "Blast! Where have you been, lad!? The Trolls swarmed the North Bridge and we'd have lost it to them if Quillon's fiery spells had not been hurled in at the last moment!\n\nBut in the thick of it, the brutes dragged Quillon off, leaving the broken bridge our smallest worry! The whole north road is in peril if Quillon is lost!\n\nYou must go where Quillon was taken, north to the Troll Den of Glumm Hollow! Bring Quillon back or we are doomed!"
+    },
+    "reminder": {
+     "speaker": "Orsk",
+     "text": "I'm sure Quillon's in deep trouble! Move fast!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Glumm Hollow and free Quillon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Lorra points the player to Ruddock, who sends him on to Hesk, Odrin's brother, a farmer.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Lorra",
+     "text": "Well, well! You're certainly cleaner than the other travelers! Go see Ruddock by the pump when you're done saving the world."
+    },
+    "opening": {
+     "speaker": "Ruddock",
+     "text": "Here we are, lad, the village of Tosk. I can't safely escort you any farther.\n\nUp this lane a little way you'll find the farm of Hesk, brother of Odrin the Miller. He's expecting you. I must go and so should you!\n\nTosk is counting on you."
+    },
+    "reminder": {
+     "speaker": "Ruddock",
+     "text": "Stop dawdling now. Better get going!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Odrin's farmer brother, Hesk, who lives north of the barley."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

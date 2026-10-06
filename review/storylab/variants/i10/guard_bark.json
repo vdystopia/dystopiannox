@@ -1,0 +1,507 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i10",
+ "writer": "one writer a town (variants/i10/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Garrick at the north gate, shut by Halvard because of Red Corwin's bandits.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Tobin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Cloak of Mists": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Only Halvard's own men may pass this gate!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Tobin, here is one more traveler who wants to try his luck against Red Corwin!"
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Hey, you should get through before Halvard shuts the gate again."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Ostrum: Kettrig keeps the lift down to the Copper Deep, shut until Foreman Dagrim gives the word.",
+   "names": {
+    "Ostrum": "place",
+    "the Copper Deep": "place",
+    "Grummox": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ulmar": "person",
+    "Dagrim": "person",
+    "Kettrig": "person",
+    "Pellox": "person",
+    "Ottla": "person",
+    "Krell": "person",
+    "Varlo Blackpick": "person",
+    "Lissel": "person",
+    "Tobb": "person",
+    "Gubbin": "person",
+    "Tarsk": "person",
+    "Zephrin": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Kettrig",
+     "text": "What are you doing here? The lift is shut by order! You'd best go see Foreman Dagrim if you hope to get below. The Ogres hold the Copper Deep."
+    },
+    "again": {
+     "speaker": "Kettrig",
+     "text": "Step away from that lift, lad! Unless you WANT to meet an Ogre!"
+    },
+    "later": {
+     "speaker": "Kettrig",
+     "text": "Hold it right there, stranger! Foreman Dagrim says the way below is yours and his word is good enough for me.\n\nStep in! I've got the lift oiled and ready to go down.\n\nWill you be going below now, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Vell: Torvic of the Marsh Guard keeps the causeway gate of Vell.",
+   "names": {
+    "Vell": "place",
+    "Black Fen": "place",
+    "Sunken Keep": "place",
+    "Troll caves": "place",
+    "Kessik's forge": "place",
+    "Grulga": "person",
+    "Trolls": "group",
+    "Marsh Guard": "group",
+    "Ulmar": "person",
+    "Pellig": "person",
+    "Tansy": "person",
+    "Torvic": "person",
+    "Hesper": "person",
+    "Mortimer": "person",
+    "Oswig": "person",
+    "Dagny": "person",
+    "Vasko": "person",
+    "Kessik": "person",
+    "Bodo": "person",
+    "Ystra": "person",
+    "Fisk": "person",
+    "Brena": "person",
+    "Staff of Binding": "thing",
+    "Trial of Blades": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torvic",
+     "text": "Lookin' to spend a night in the stocks?"
+    },
+    "again": {
+     "speaker": "Torvic",
+     "text": "Have it your way."
+    },
+    "later": {
+     "speaker": "Torvic",
+     "text": "Fair work with the Trolls. But that doesn't make you a hero! Now move along!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Tarnhold: Brunwick at the east gate, barred by Baron Hadrim while Vargoth's Ogres hold the Gorge; later the gate is open.",
+   "names": {
+    "Tarnhold": "place",
+    "Vargoth": "person",
+    "Hadrim": "person",
+    "Rusk": "person",
+    "Orlo": "person",
+    "Brunwick": "person",
+    "Wendle": "person",
+    "Ottla": "person",
+    "Ostrick": "person",
+    "Nebbick": "person",
+    "Grimwald": "person",
+    "Pobbin": "person",
+    "Brokk": "person",
+    "Quilla": "person",
+    "Dask": "person",
+    "Yorra": "person",
+    "Mott": "person",
+    "Grael Gorge": "place",
+    "Rusty Helm": "place",
+    "Ogre-Be-Gone": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunwick",
+     "text": "Sorry. Gate's barred. Turn around."
+    },
+    "again": {
+     "speaker": "Brunwick",
+     "text": "Nobody comes in through this gate anymore."
+    },
+    "later": {
+     "speaker": "Brunwick",
+     "text": "I would see Commander Rusk at the outpost first... unless you want to fight the Ogres alone."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tolvin: Tobb guards the north gate, shut by Mayor Gorvane while Black Varrick's rogues rob the north road.",
+   "names": {
+    "Tolvin": "place",
+    "Gorvane": "person",
+    "Mayor Gorvane": "person",
+    "Quillan": "person",
+    "Master Quillan": "person",
+    "Black Varrick": "person",
+    "Varrick": "person",
+    "Tobb": "person",
+    "Grella": "person",
+    "Ysolde": "person",
+    "Corm": "person",
+    "Fennick": "person",
+    "Tibbet": "person",
+    "Dobbs": "person",
+    "Porley": "person",
+    "Hobb": "person",
+    "Esmolde": "person",
+    "Heron Rock": "place",
+    "Gull Isle": "place",
+    "Fenwood": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Orb of Calling": "thing",
+    "Staff of Mending": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Imp": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "No way through! Shove off, pest!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "You'd stroll up the north road with Varrick's rogues on it!? You're daft! Now clear off! You tire me!"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Out the gate with you, lad! Enjoy the walk!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Olvane: Brunt, the guard at the College library gate, first takes the player for Dobbo's thief, later lets him through.",
+   "names": {
+    "Olvane": "place",
+    "the College": "place",
+    "the Observatory": "place",
+    "the Bell Tower": "place",
+    "the Brass Owl": "place",
+    "the summoning hall": "place",
+    "the College cellars": "place",
+    "the College library": "place",
+    "the north gate": "place",
+    "Grelvin": "person",
+    "Haskel": "person",
+    "Tibald": "person",
+    "Brunt": "person",
+    "Dobbo": "person",
+    "Vashti": "person",
+    "Pumbric": "person",
+    "Vimbly": "person",
+    "Ostrigan": "person",
+    "Ursin": "person",
+    "Fennick": "person",
+    "Wendle": "person",
+    "Ebbo": "person",
+    "Hulda": "person",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the guards": "group",
+    "the porters": "group",
+    "the Golem Trial": "thing",
+    "Friend of the College": "thing",
+    "magic spectacles": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunt",
+     "text": "Stand where you are, stranger! Dobbo says you snatched a dagger off his counter and the bare hook on his wall proves it! Come along. I've got a cold and musty cell waiting just for you! Will you go quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Brunt",
+     "text": "We must drive out Grelvin! Smash his Undead and take back the Observatory."
+    },
+    "later": {
+     "speaker": "Brunt",
+     "text": "Hello Scholar! Come see me when you make Master."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Ostkar: Tolvar, the guard at the fort's main gate.",
+   "names": {
+    "Fort Ostkar": "place",
+    "Ostkar": "place",
+    "Kragan": "person",
+    "Trolls": "group",
+    "Brannoc": "person",
+    "Thrane": "person",
+    "Tolvar": "person",
+    "Fenna": "person",
+    "Haskel": "person",
+    "Osk": "person",
+    "Brisa": "person",
+    "Pell": "person",
+    "Tibbet": "person",
+    "Gorm": "person",
+    "Hobb": "person",
+    "Bornik": "person",
+    "Gribb": "person",
+    "Zell": "person",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Upper Gate": "place",
+    "Howling Crag": "place",
+    "Signal Tower": "place",
+    "Lower Vaults": "place",
+    "Keep": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tolvar",
+     "text": "Aren't you supposed to be off fighting Trolls?"
+    },
+    "again": {
+     "speaker": "Tolvar",
+     "text": "There is a smithy right behind Brannoc's hall."
+    },
+    "later": {
+     "speaker": "Tolvar",
+     "text": "I've been ordered not to leave the wall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Orvak: Tolvar, a guard at the town gate, while the Imps of the Cinder Caves raid Orvak.",
+   "names": {
+    "Orvak": "place",
+    "Mayor Dunbrak": "person",
+    "Wendril": "person",
+    "Tolvar": "person",
+    "Foreman Kessick": "person",
+    "Master Haggarth": "person",
+    "Pell": "person",
+    "Elsbeth": "person",
+    "Bram": "person",
+    "Warden Holgarth": "person",
+    "Fenwick": "person",
+    "Vesk Blackthumb": "person",
+    "Murdo": "person",
+    "Grondel": "person",
+    "Zarna": "person",
+    "Dibble": "person",
+    "Corla": "person",
+    "Ebbe": "person",
+    "Nissa": "person",
+    "the Cinder Caves": "place",
+    "the Great Forge": "place",
+    "the Ironvein Mine": "place",
+    "the Old Smelter": "place",
+    "the Slag Heaps": "place",
+    "the Sooty Mug": "place",
+    "Fenwick's": "place",
+    "the Forge Hammer": "thing",
+    "the Imps": "group",
+    "the Ember Demons": "group",
+    "the Urchins": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tolvar",
+     "text": "The Imps are pouring out of the Cinder Caves! Mayor Dunbrak wants you at once!"
+    },
+    "again": {
+     "speaker": "Tolvar",
+     "text": "I wonder who trims Mayor Dunbrak's beard?"
+    },
+    "later": {
+     "speaker": "Tolvar",
+     "text": "I sense a dark storm gathering over Orvak! Will we ever be free of these Imps?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel Cross: Tobb at the north gate, shut while Chief Urgoth's Ogres hold Fort Ulm.",
+   "names": {
+    "Torvel Cross": "place",
+    "Fort Ulm": "place",
+    "the Lame Mule": "place",
+    "the old drain": "place",
+    "the north road": "place",
+    "the north gate": "place",
+    "the toll gate": "place",
+    "Morlo's farm": "place",
+    "Urgoth": "person",
+    "Oberik": "person",
+    "Ambrin": "person",
+    "Tobb": "person",
+    "Morlo": "person",
+    "Hask": "person",
+    "Hulda": "person",
+    "Duvic": "person",
+    "Fenna": "person",
+    "Ysolde": "person",
+    "Grizzel": "person",
+    "Gulliam": "person",
+    "Brodd": "person",
+    "Ysmay": "person",
+    "Ogres": "group",
+    "Imp": "group",
+    "Invisibility potion": "thing",
+    "Haste potion": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Those Ogres never would have taken Fort Ulm if Oberik had been here!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "No, nobody goes north while the Ogres hold Fort Ulm!"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Did you see which way Urgoth ran? An Ogre that big couldn't just disappear!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Corvale: Haldo keeps the North Gate, shut while the Ogres hold the north road.",
+   "names": {
+    "Corvale": "place",
+    "Gorbrak": "person",
+    "Captain Brannoc": "person",
+    "Master Ebbrin": "person",
+    "Mayor Pudrick": "person",
+    "Mobb": "person",
+    "Bodger": "person",
+    "Warden Grisholm": "person",
+    "Tibbet": "person",
+    "Haldo": "person",
+    "Sergeant Krell": "person",
+    "Muddock": "person",
+    "Tamsy": "person",
+    "Grobbel": "person",
+    "Quillda": "person",
+    "Hettie": "person",
+    "Darvel": "person",
+    "Pella": "person",
+    "Town Hall": "place",
+    "Old Quarry": "place",
+    "Thistle Hill": "place",
+    "Skarrow Hills": "place",
+    "North Gate": "place",
+    "Muddy Boot": "place",
+    "Horn of Corvale": "thing",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Haldo",
+     "text": "You're awful scrawny for an Ogre hunter. Haw, haw, haw...!"
+    },
+    "again": {
+     "speaker": "Haldo",
+     "text": "My fields... trampled... all trampled."
+    },
+    "later": {
+     "speaker": "Haldo",
+     "text": "Can't talk now, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

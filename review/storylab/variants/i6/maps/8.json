@@ -1,0 +1,318 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Kildrun",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Ember Demons have climbed out of the Burning Pit and taken the Great Forge, and every furnace in Kildrun has gone cold.",
+  "names": {
+   "Kildrun": "place",
+   "Gorm": "person",
+   "Warden Krugg": "person",
+   "Gristle": "person",
+   "Overseer Tamsk": "person",
+   "Guildmaster Dravick": "person",
+   "Brannoc": "person",
+   "Master Odo": "person",
+   "Tallyman Pell": "person",
+   "Ozzle the Coin-Clipper": "person",
+   "Hilde": "person",
+   "Tobin": "person",
+   "Bolgo": "person",
+   "Mott": "person",
+   "Imbra": "person",
+   "Brunhold": "person",
+   "Ember Demons": "group",
+   "Imps": "group",
+   "Smiths' Guild": "group",
+   "Guild Hall": "place",
+   "Great Forge": "place",
+   "Burning Pit": "place",
+   "Lower Forges": "place",
+   "the Bellows": "place",
+   "Ember Scepter": "thing",
+   "Lighting of the Furnaces": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gorm, the guard at the town gate of Kildrun, threatens the lockup, then praises the player once the Great Forge is won back.",
+   "names": {
+    "Gorm": "person",
+    "Kildrun": "place",
+    "Warden Krugg": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Gorm",
+     "text": "Watch yourself, stranger. Troublemakers in Kildrun end up in Warden Krugg's lockup!"
+    },
+    "again": {
+     "speaker": "Gorm",
+     "text": "Move along, or it's the lockup!"
+    },
+    "later": {
+     "speaker": "Gorm",
+     "text": "Hail, brave Adventurer! The fires of Kildrun burn again. Your valor will not be forgotten!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gristle, a hermit by the cooling pools, wants the giant leeches cleared out of them.",
+   "names": {
+    "Gristle": "person",
+    "Kildrun": "place",
+    "Ember Demons": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gristle",
+     "text": "Greetings, Wanderer. Everybody in Kildrun is fussing about the Ember Demons, and nobody cares one bit about my leeches! Giant leeches, big ones, crawled up into the cooling pools east of here. I can't fill a bucket without one of 'em latching onto my arm! You clear 'em out for me and I'll give you something useful. What do you say?"
+    },
+    "reminder": {
+     "speaker": "Gristle",
+     "text": "Those leeches are getting fatter every day, I tell you."
+    },
+    "completion": {
+     "speaker": "Gristle",
+     "text": "No more leeches? Ha! I can fill my bucket in peace! Here, these boots are yours. Thank you, Wanderer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant leeches in the cooling pools."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Overseer Tamsk of the Smiths' Guild wants the Ember Scepter back from the Imps who stole it from the Guild Hall, and pays with a pass to the Lower Forges.",
+   "names": {
+    "Overseer Tamsk": "person",
+    "Smiths' Guild": "group",
+    "Imps": "group",
+    "Guild Hall": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing",
+    "Ember Demons": "group",
+    "Great Forge": "place",
+    "Lower Forges": "place",
+    "Guildmaster Dravick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Overseer Tamsk",
+     "text": "Halt there, citizen! By order of the Smiths' Guild, I am required to inform every able-bodied visitor of the present emergency, and that is exactly what I am doing, so kindly pay attention!\n\nLast night a pack of thieving Imps came squealing out of the caves to the north and broke into the Guild Hall and made off with the Ember Scepter, the very Scepter we carry at the Lighting of the Furnaces, and without the Scepter there can be no Lighting, and without the Lighting there is no forging at all, and with the Ember Demons already in the Great Forge, this is a calamity! A calamity, I say!\n\nThe Guild is prepared to issue a pass to the Lower Forges upon its safe return. Will you recover the Ember Scepter?"
+    },
+    "refusal": {
+     "speaker": "Overseer Tamsk",
+     "text": "Very well. I shall note your refusal in the Guild records."
+    },
+    "reminder": {
+     "speaker": "Overseer Tamsk",
+     "text": "The Scepter, citizen! The Ember Scepter!"
+    },
+    "completion": {
+     "speaker": "Overseer Tamsk",
+     "text": "The Ember Scepter! Returned to the Guild at last! As promised, here is your pass to the Lower Forges."
+    },
+    "after": {
+     "speaker": "Overseer Tamsk",
+     "text": "Thanks again, citizen. Guildmaster Dravick is waiting for you in the Guild Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Ember Scepter from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Take the pass to Guildmaster Dravick at the Guild Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Kildrun: Hilde warns of the Lower Forges, Tobin brushes the player off toward the Guild Hall, Bolgo repeats the Demon news as a joke.",
+   "names": {
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Lower Forges": "place",
+    "Ember Demons": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hilde",
+     "text": "Stay out of the Lower Forges, stranger! The Ember Demons are down there, and they burn everything they touch!"
+    },
+    "rumour2": {
+     "speaker": "Tobin",
+     "text": "Can't talk now, I've got ore to haul. Try the Guild Hall, up the hill."
+    },
+    "rumour3": {
+     "speaker": "Bolgo",
+     "text": "Ember Demons in the Great Forge, did ya hear? Bah! My wife's cooking is hotter than any Demon. Hah, hah, hah!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Mott of the Bellows inn, Brannoc the armorer, Imbra of the magic shop.",
+   "names": {
+    "Mott": "person",
+    "the Bellows": "place",
+    "Brannoc": "person",
+    "Imbra": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mott",
+     "text": "Welcome to the Bellows! Best ale this side of the mountain!"
+    },
+    "arms": {
+     "speaker": "Brannoc",
+     "text": "Well, look at you! You've seen some fighting, I can tell. Come in and have a look around."
+    },
+    "magic": {
+     "speaker": "Imbra",
+     "text": "Ah, a customer! My prices went up this morning. Don't ask me why. Heh, heh."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Tallyman Pell wants the Guild strongbox back from Ozzle the Coin-Clipper; Warden Krugg wants Ozzle himself, dead or alive.",
+   "names": {
+    "Tallyman Pell": "person",
+    "Warden Krugg": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Ember Demons": "group",
+    "Lower Forges": "place",
+    "Smiths' Guild": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tallyman Pell",
+     "text": "Ahem! Good day, young sir. As if the Ember Demons weren't trouble enough, the Guild has suffered a most irregular loss. Our strongbox is gone, and every coin in it was counted and written in my ledger!\n\nThat scoundrel Ozzle the Coin-Clipper has it hidden in the slag heaps south of town. The Guild will see that you are properly rewarded. Can you bring back the strongbox?"
+    },
+    "offer_b": {
+     "speaker": "Warden Krugg",
+     "text": "You there! Ozzle the Coin-Clipper has slipped out of my lockup again, and every guard I have is down in the Lower Forges. Bring him back alive and I'll pay 150 gold. Dead, 75. Either way, I want that rat off my streets!"
+    },
+    "outcome_a": {
+     "speaker": "Tallyman Pell",
+     "text": "The strongbox! Oh, and not a single coin missing! The ledger balances!\n\nPlease accept this shield with the thanks of the Guild."
+    },
+    "outcome_b": {
+     "speaker": "Warden Krugg",
+     "text": "Well, well! Ozzle, back in my lockup where he belongs! Here's 150 gold, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Return the Guild strongbox to Tallyman Pell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Ozzle the Coin-Clipper to Warden Krugg, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Brannoc the armorer begs the player to bring his master, old Master Odo, up out of the lava tubes, and hands over the key to the lift.",
+   "names": {
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Ember Demons": "group",
+    "Guildmaster Dravick": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brannoc",
+     "text": "Who's there?! Oh.... thank goodness. I thought the Demons had come up for me too! Master Odo went down into the lava tubes west of town and now the Ember Demons have him trapped! Here, take this key to the lift. Bring my master back up and whatever he has is yours, I swear it!"
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "Hurry, please!"
+    },
+    "found": {
+     "speaker": "Master Odo",
+     "text": "Hello? Is someone there? Get me to the lift, lad, quickly!"
+    },
+    "following": {
+     "speaker": "Master Odo",
+     "text": "Lead on. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Master Odo",
+     "text": "Ahh, home at last! You have my thanks, young sir. Take this Ankh. And tell Guildmaster Dravick that old Odo still lives!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Master Odo in the lava tubes and lead him to the lift."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hilde points the player to Guildmaster Dravick in the Guild Hall, an old friend of Brunhold, who hands him a hammer and sends him down through the Lower Forges against the Ember Demons in the Great Forge.",
+   "names": {
+    "Hilde": "person",
+    "Guildmaster Dravick": "person",
+    "Guild Hall": "place",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Burning Pit": "place",
+    "Great Forge": "place",
+    "Kildrun": "place",
+    "Lower Forges": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hilde",
+     "text": "The furnaces have gone cold. No fire, no work. If you're looking for Guildmaster Dravick, he's in the Guild Hall."
+    },
+    "opening": {
+     "speaker": "Guildmaster Dravick",
+     "text": "So Brunhold sent you. Good, good. I'm afraid you've come at a terrible hour, lad.\n\nThe Ember Demons have climbed out of the Burning Pit and taken the Great Forge! Every furnace in Kildrun has gone cold, and our smiths are falling one by one.\n\nTake this hammer. Go down through the Lower Forges and drive those Demons back into the Pit where they belong!"
+    },
+    "reminder": {
+     "speaker": "Guildmaster Dravick",
+     "text": "Every hour those Demons hold the Great Forge, Kildrun grows colder. Go, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ember Demons out of the Great Forge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WarHammer"]
+   }
+  }
+ }
+}

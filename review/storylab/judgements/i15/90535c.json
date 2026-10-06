@@ -1,0 +1,33 @@
+{
+  "packet": "90535c",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless exclamations, '!?', 'lad', grand stakes ('All Nox is now in peril') and the slightly garbled 'At happier other times' are the campaign's own melodrama and rough edges."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'I surmise', '-- dead or alive', 'young sir' repeated, an exact gold sum and a bystander who walks in to take over the prisoner: Westwood's slightly stiff, formal bounty voice."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short, close to Nox, but the invented trade detail ('basins', 'ore washer') is worldbuilding colour Westwood rarely spent on a side quest."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Worse than the pox', a reward that is a title and free passage, 'I insist', and a journal naming the mechanic ('Charm and banish') are pure campaign."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Flat, functional exposition ('Unfortunately, a foul little urchin has moved into the cave'), a named key colour, a petition as gate token, and the deadpan 'Excellent! You've killed the Urchin.'"},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Packs a setup with alibi ('Mayor's men up at the north gate, nobody else can go') into one breath; the bow-needs-arrows quip is a writer's joke rather than Nox's plain thanks."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "'Sorry, pal', 'Them Imps', 'cracking good', 'I owe you a big one' is a modern colloquial British register Nox's townsfolk never use."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Starts mid-conversation ('Actually, business has been somewhat slow'), polite measured shopkeeper prose, ellipsis before '100 in gold!' and a plug for the shop: very Westwood."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "A comic goose rescue with the player asking for gold off-page ('Gold, you say? Lots of it?') is a knowing gag; the '?!' and the doubled 'she's safe!' read as imitation."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Five pages stacking stakes, key, guide, potion and a follow-up hook is overloaded; 'out of the black depths' and 'You're a real hero!' are generic fantasy rather than Nox's plainness."}
+  ],
+  "tells": [
+    "Westwood's givers speak in a stiff, slightly formal register ('I surmise', 'somewhat slow of late', 'I insist') with occasional awkward phrasing; the new texts lean colloquial and modern ('pal', 'cracking good', 'I owe you a big one').",
+    "Westwood's rewards are concrete and stated plainly: an exact gold sum, a title, passage, a petition; the new texts make the reward a joke or a quip.",
+    "New texts over-justify the setup (why nobody else can go, how the monsters got in, which trade suffered) and pack several handouts into one offer.",
+    "Westwood's journal lines are short imperatives that may name the mechanic ('Charm and banish'); the new ones are longer and stack places and owners into one line or two sentences.",
+    "Westwood's humour is deadpan and incidental; the new texts stage comic set-pieces (a goose, a stolen hat, a bow without arrows)."
+  ]
+}

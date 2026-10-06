@@ -1,0 +1,33 @@
+{
+  "packet": "e43006",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and breathless like Nox, but the two outcomes are near-twins built on the same 'token of my gratitude/appreciation' stock phrase, and trolls carrying off students and a hat is a pile-up of invented colour with no Nox-specific mechanics."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "The second ask ('You, again. Will you think it over, buy me an ale...') doesn't follow from the first, and the refusal line is clumsy. The quest crams in a lead to the next step ('maybe you can find a way in') in a way Westwood's short speeches rarely do."},
+    {"label": "C", "verdict": "generated", "confidence": 1, "score": 7,
+     "critique": "Very plain and short with the '20 in gold' price idiom and a dry joke ('Since I like your face'), all of which fits Nox. It's a near guess, but the neat fee-plus-vendor pairing feels built to order."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Sponsorship petition, an urchin that has stirred up the bats, and a ruby key for the orchard gate: concrete, functional and slightly absurd, in plain uneven sentences. It reads like a real level hook."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The shop line is fine, but the chain-yanking favour comes with no stated purpose or reward, and the 'It roared! ... You're my lucky charm!' payoff is humour reaching for whimsy instead of Nox's deadpan."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A full bounty arc with a surrender line, a constable who heard the racket, and alive-versus-dead rewards (200/100 in gold). It has Nox's exclamatory, plain register and lets the quest's mechanics show in the dialogue."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The grumbling smuggler ('Sometimes I think he does this just to get away from his responsibilities'), the jailbreak and the warning about the wizards' tower have Westwood's light comic plainness and clear reward lines."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "An absurd 50,000-gold offer to buy an inn, delivered deadpan with 'lad'. This is the kind of throwaway joke Westwood put in its towns."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The apprentice fee, the spellbook and a field guide that lets you charm spiders all tie straight to game mechanics, with a casual 'Ya want one?'. It reads as authentic tutorial-style Nox text."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A near-copy of F's opener with the nouns swapped (ore carts, claim-jumpers, gallows), and its second ask echoes H's 'Actually, business has fallen off'. It also leaks an unmasked invented name ('Snade')."}
+  ],
+  "tells": [
+    "Generated texts reuse stock phrases from other texts in the set ('token of my gratitude', 'Actually, business/trade has...', 'I presume you've come about the notice') with only the nouns swapped.",
+    "Westwood's asks tie straight to game mechanics (keys, field guides, spells, sponsorship petitions, prices in gold), while generated ones lean on invented local colour (hats, ale, furnace chains) with vaguer stakes.",
+    "Generated pairs of asks and outcomes are often near-symmetrical or don't connect (an outcome that doesn't answer its ask, or a second ask that doesn't follow from the first).",
+    "Westwood's humour is deadpan and situational (a 50,000-gold inn, a smuggler who gets arrested on purpose). Generated humour is more exclaimed and whimsical ('It roared!', 'lucky charm').",
+    "Generated outcomes tend to add a forward-pointing lead to the next quest step in one long speech; Westwood keeps thanks short and to the reward."
+  ]
+}

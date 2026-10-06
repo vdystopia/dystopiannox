@@ -1,0 +1,33 @@
+{
+  "packet": "e5aa20",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The panic and the mock-official 'died in defense of Nox's vital interests' are Nox-like, but the offer stacks too many hand-offs (key, rescued worker, scroll). The thanks echoes the Captain hand-off almost to formula. The journal's numeral '6' is a little modern."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The jokes are good ('Grunt if you agree!', 'a week, or a two'), but the smuggler's chatty 'It's not easy running a smuggling ring, you know' and 'Tell you what...' are more modern sitcom than Westwood. The townsfolk are strong."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "It mirrors the bounty pattern ('brought to justice', 'young sir', a gold figure), but the thanks mixes 'lad' and 'young sir' and runs to tidy moralising ('We shall all sleep better knowing...'). The townsfolk are competent but generic."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The mayor's breathless welcome, the capitalised 'Urchins', precise directions, an unmasked 'A warrior in [Place]?' and a townsperson line missing its full stop all read as Westwood's unpolished originals."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The repeated 'mate' tic is laid on thick, and the journal is long and over-specified ('...by the Urchins and return them to him'). Both townsfolk lean on the same spider joke, as if built to tie the town together."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The tidy-city guard ('No street brawls, foul language, or spitting... And don't even think about wizardry') and the tall tale of fending off '40 wizards with his bare hands' are Westwood's deadpan. The quest is a plain errand with a key and a petition."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "There is a real typo ('right off you back'), the class joke lands ('If you need something done, get a [Group]'), and the offer is plainly functional. 'You are worthy of your new title' ties into the chapter's structure."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The guard line copies another text with its punctuation tidied, and the townsfolk are thin. The offer's high-stakes pile-up ('leaving rebuilding the village our smallest concern', 'All Nox is now in peril') overreaches. The ale joke is the best line."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The stiff 'I surmise you might be here about the reward', the oddly specific 'The priest told me of strange sounds' and the snide 'old goat' gossip fit Westwood. The 'young sir' masking recurs throughout."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The trapped pet frog and the self-answering 'What's that you say? Loads and loads of money?' are Westwood's slapstick. The guard's misused semicolon and the townsperson's unspaced 'Oh no...I've lost everything.' look like the original."}
+  ],
+  "tells": [
+    "Westwood's lines carry small, unforced slips (missing full stops, a misused semicolon, 'off you back', an unmasked class noun). The new texts are clean or tidy those slips away when they borrow a line.",
+    "New texts lean on one verbal tic per speaker ('mate', 'young sir', 'lad') harder and more evenly than Westwood does.",
+    "New journals add clauses (who stole it, return it to whom). Westwood keeps them to a bare imperative.",
+    "New quest-givers explain motive in chatty modern asides ('It's not easy running..., you know', 'Tell you what...'). Westwood's humour is deadpan or slapstick inside an otherwise plain errand.",
+    "New towns make townsfolk echo the local quest too neatly. Westwood's townsfolk mostly gossip about unrelated places or deliver one-line jokes."
+  ]
+}

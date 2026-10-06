@@ -1,0 +1,527 @@
+{
+ "scenario": "rumour",
+ "iter": "i9",
+ "writer": "one writer a town (variants/i9/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Three townsfolk: a grumbler, a woman who wants Red Corwin hanged, a ferryman who teases.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Spell Book": "thing",
+    "Red Potions": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Step aside! You ought to be out chasing those bandits, you slowpoke!"
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Catch that Red Corwin and hang him from his own tower!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "My, my! You're a lot cleaner than the last fellow who came through here! Drop by the ferry some day when you're done chasing bandits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Varrhold: Three townsfolk: Tamsk the ore-hauler, Orla, and Pibbet.",
+   "names": {
+    "Varrhold": "place",
+    "Ozrath": "person",
+    "Garvus": "person",
+    "Haldrek": "person",
+    "Brask": "person",
+    "Nella": "person",
+    "Bruddock": "person",
+    "Gimbrel": "person",
+    "Skabb": "person",
+    "Gudra": "person",
+    "Durbin": "person",
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person",
+    "Tamsk": "person",
+    "Pibbet": "person",
+    "Orla": "person",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "east tunnel": "place",
+    "north shaft": "place",
+    "copper shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "magic pick": "thing",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tamsk",
+     "text": "Out of the way! I've got ore to haul!"
+    },
+    "rumour2": {
+     "speaker": "Orla",
+     "text": "Keep your chin up, stranger, Ozrath's dead will crumble under our picks!"
+    },
+    "rumour3": {
+     "speaker": "Pibbet",
+     "text": "Oh, pardon me. That was my foot."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skeel: Wilka, Orra and Nella talk to the player in the walkways of Skeel.",
+   "names": {
+    "Skeel": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Grell": "person",
+    "Hobbe": "person",
+    "Pellam": "person",
+    "Nubbin": "person",
+    "Quimby": "person",
+    "Snub": "person",
+    "Nella": "person",
+    "Tobb": "person",
+    "Ludo": "person",
+    "Wilka": "person",
+    "Orra": "person",
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Watch Hut": "place",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "north bog": "place",
+    "Corvale": "place",
+    "Bone Totem": "thing",
+    "Amulet of Healing": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wilka",
+     "text": "We'll hold the ladders here, but you must report to Mayor Pellam in the Town Hall. May your lamp stay lit through this long night, friend of Skeel!"
+    },
+    "rumour2": {
+     "speaker": "Orra",
+     "text": "Oh, it's you. Has the swamp been drained, yet?"
+    },
+    "rumour3": {
+     "speaker": "Nella",
+     "text": "I smell the stink of the grave on the wind! Will the dead ever leave us in peace?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Gorst: Three townsfolk: Mirabel frets about the silent bell, Gribbin wonders about Zarrow, Hask praises the player after the Scorpions.",
+   "names": {
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Great Hall": "place",
+    "Blades Galore": "place",
+    "Zarrow": "person",
+    "Pelgrim": "person",
+    "Lord Dravus": "person",
+    "Brunk": "person",
+    "Gribbin": "person",
+    "Hulda": "person",
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Steward Oswin": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Pell": "person",
+    "Orlo": "person",
+    "Hask": "person",
+    "Mirabel": "person",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Rats": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Mirabel",
+     "text": "We're all to gather in the chapel when the bell rings, but who can ring a bell with no clapper? Good luck to you, brave Adventurer!"
+    },
+    "rumour2": {
+     "speaker": "Gribbin",
+     "text": "I wonder if Zarrow ever trims his beard?"
+    },
+    "rumour3": {
+     "speaker": "Hask",
+     "text": "So you're the one who squashed the Scorpions in Gribbin's wagon! Much obliged, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ombry: Three townsfolk: Mopsa cackles, Fennick saw an Ogre raft in the fog, Olm brushes the player off.",
+   "names": {
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Lamp Tower": "place",
+    "Rat Island": "place",
+    "Washing Cove": "place",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Mayor Varrow": "person",
+    "Varrow": "person",
+    "Brosk": "person",
+    "Grella": "person",
+    "Quimby": "person",
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person",
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Mopsa",
+     "text": "Swim, stranger, swim! Hee, hee, hee...!"
+    },
+    "rumour2": {
+     "speaker": "Fennick",
+     "text": "That Ogre raft just came out of the fog right under my very nose!"
+    },
+    "rumour3": {
+     "speaker": "Olm",
+     "text": "You've got the wrong boat, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Merinth: Three townsfolk of Merinth: Hobbe the worrier, Rusk the drunk, Tilda the busybody.",
+   "names": {
+    "Merinth": "place",
+    "College": "place",
+    "Black Spire": "place",
+    "old kiln": "place",
+    "old foundry": "place",
+    "old quarry": "place",
+    "College lockup": "place",
+    "Zorvan": "person",
+    "Varrus": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Fennick": "person",
+    "Oswick": "person",
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "Mimics": "group",
+    "Imps": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "Zorvan's Downfall": "thing",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hobbe",
+     "text": "We must hold fast and see Zorvan's Golems broken before they reach the College!"
+    },
+    "rumour2": {
+     "speaker": "Rusk",
+     "text": "Help! Help! He's asking me questions!"
+    },
+    "rumour3": {
+     "speaker": "Tilda",
+     "text": "Shouldn't you be out smashing Golems?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vosk: Orwin on poor mad Hobb, Hilde teasing the player about the cold, Gorbo shouting about the Bats.",
+   "names": {
+    "Fort Vosk": "place",
+    "Frostgate": "place",
+    "Watchtower": "place",
+    "Ice Caves": "place",
+    "Frozen Field": "place",
+    "Morvayne": "person",
+    "Dorvin": "person",
+    "Brask": "person",
+    "Holm": "person",
+    "Gorbo": "person",
+    "Gosk": "person",
+    "Hesk": "person",
+    "Snib": "person",
+    "Yselde": "person",
+    "Dolf": "person",
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Horn of Calling": "thing",
+    "Bats": "group",
+    "Urchins": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Orwin",
+     "text": "I'm afraid poor Hobb has finally gone mad. They gave me his bunk in the barracks since he took to walking the walls all night howling at the moon and eating snow by the handful."
+    },
+    "rumour2": {
+     "speaker": "Hilde",
+     "text": "I thought you adventurer types could take the cold. Try wearing a thicker cloak."
+    },
+    "rumour3": {
+     "speaker": "Gorbo",
+     "text": "Help! The Bats are back in the brewhouse!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Durgal: Three townsfolk: a smith who finds the Great Forge cold, a hothead about Bargul, a woman who teases the player.",
+   "names": {
+    "Durgal": "place",
+    "Bargul": "person",
+    "Orvald": "person",
+    "Krell": "person",
+    "Brannock": "person",
+    "Zeck": "person",
+    "Mirva": "person",
+    "Dagny": "person",
+    "Ulda": "person",
+    "Fennick": "person",
+    "Krenshaw": "person",
+    "Rudgar": "person",
+    "Brisba": "person",
+    "Grimble": "person",
+    "Smelting Pits": "place",
+    "Great Forge": "place",
+    "Hot Coal": "place",
+    "lava caves": "place",
+    "slag caves": "place",
+    "north gate": "place",
+    "Fireproof Gloves": "thing",
+    "Guild Hammer": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Smith",
+     "text": "WHAT? The Great Forge is... COLD?"
+    },
+    "rumour2": {
+     "speaker": "Townsman",
+     "text": "We must get the ore moving again! Drive off Bargul and take back the Smelting Pits."
+    },
+    "rumour3": {
+     "speaker": "Townswoman",
+     "text": "You're awful puny for a hammer-man. Hah, hah, hah...!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellor's Cross: Three folk of the hamlet: Moll on the Ogre Lord, Gimbo in her kitchen, Hask the wheelwright.",
+   "names": {
+    "Pellor's Cross": "place",
+    "Four Roads Inn": "place",
+    "Gallows Hill": "place",
+    "Stony Hollow": "place",
+    "Hamley Farm": "place",
+    "Bludgor": "person",
+    "Captain Vell": "person",
+    "Mayor Tull": "person",
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Fennick": "person",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Wila": "person",
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Master Odric": "person",
+    "Snig": "person",
+    "Brisa": "person",
+    "Orlo": "person",
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Wuzzle": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Moll",
+     "text": "Bludgor would never have come down off his hills if Captain Vell had still been in town!"
+    },
+    "rumour2": {
+     "speaker": "Gimbo",
+     "text": "Hey! Don't you track mud through my kitchen!"
+    },
+    "rumour3": {
+     "speaker": "Hask",
+     "text": "I earn a fair living mending cart wheels."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5"
+  },
+  {
+   "id": 10,
+   "specifics": "Vellin: Three townsfolk: Wendle points the way, Prissa brushes the player off, Pellow praises the bat job afterwards.",
+   "names": {
+    "Vellin": "place",
+    "Kaldor": "person",
+    "Bodrick": "person",
+    "Tobber": "person",
+    "Kestrin": "person",
+    "Fennick": "person",
+    "Ysmay": "person",
+    "Marwold": "person",
+    "Snibb": "person",
+    "Ostra": "person",
+    "Grebb": "person",
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Town Hall": "place",
+    "Harvest Amulet": "thing",
+    "Ogres": "group",
+    "Krudd Ogres": "group",
+    "Urchins": "group",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wendle",
+     "text": "Welcome to Vellin. The Town Hall is just up the road."
+    },
+    "rumour2": {
+     "speaker": "Prissa",
+     "text": "I've got cows to milk, sorry."
+    },
+    "rumour3": {
+     "speaker": "Pellow",
+     "text": "Good work with those bats, stranger! I hear Fennick is telling everybody!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), claude-opus-5-5"
+  }
+ ]
+}

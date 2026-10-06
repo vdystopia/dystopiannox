@@ -1,0 +1,34 @@
+{
+  "packet": "7e059b",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and well paced, but the route is laid out in surveyor's detail (air shaft, who dug it and why, ladder by the water barrels); Westwood rarely spends three sentences on directions. 'Good luck, my son!' is a nice touch."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless exclamations, a missing comma after the appositive, a vague 'reward' and 'tokens of my appreciation': the slightly rough, earnest voice of the campaign."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Chatty self-introduction ('[Person]'s the name!', 'put a deal to you'), ellipsis inside the offer and a cheerleading journal ('Bounty accepted!') read like a writer imitating folksiness rather than Nox's plain speech."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Honestly' as an opener and the jokey journal 'Kill [Person]'s wolves... for good.' are off-register; the thanks line explains the gold's use and flatters the player in a way Westwood does not."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff, slightly pompous lawman diction ('I surmise', 'savage scum', 'despicable scoundrel'), double-dash, a concrete sum, and the awkward 'single handedly': unmistakably the campaign's voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Short, voice-acted panic ('Ooooh, how can this be?') and a functional hand-off to the next person; the journal is plain and object-led as Westwood's are."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Ornate exclamatory description ('Roost of the foulest [Group] ever to plague a forge!') and 'nest and all' feel crafted; the terse thanks with 'No doubt the smiths will sleep better' is a writerly flourish."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Comic plainness (apples, a foul little urchin, aggravated bats), an item handed over with its use, a petition hook to the next gate, inconsistent capitalisation of Urchin: classic Nox."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Hesitant stammer ('Could you... would you burn it out'), a reward routed through a third party, and a journal written as narrated musing ('Maybe there's a bounty for burning it...') are far from Nox's imperative journal style."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Exclamation-heavy plea, 'worse than the pox', the request to charm rather than kill, and a formal thanks granting a title and passage: the campaign's shape and register."}
+  ],
+  "tells": [
+    "Journal entries: Westwood's are short imperatives naming the task and target; the new ones add exclamations, jokey trailing ellipses or narrated speculation.",
+    "Ellipses and stammering for effect inside speeches mark the new texts; Westwood favours exclamation marks and double dashes.",
+    "Folksy self-introductions and conversational openers ('Honestly', '[Person]'s the name!') are not in Westwood's register, which gets straight to the trouble.",
+    "New texts decorate places with ornate epithets or over-detailed directions; Westwood describes just enough to act on.",
+    "Westwood's thanks often hand over a concrete next step (an item, a pass, a person to see) or a stiff formal compliment; the new ones add sentimental or witty asides about the aftermath.",
+    "Westwood's lines keep small roughnesses (missing commas, inconsistent capitals, odd compounds) that the new texts are too clean to show."
+  ]
+}

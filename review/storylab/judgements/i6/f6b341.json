@@ -1,0 +1,33 @@
+{
+  "packet": "f6b341",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Loose, chatty offer with an aside ('It's not easy running a smuggling ring, you know'), a cackling jailer and the 'Grunt if you agree!' gag; slips like 'get in to' and 'a week, or a two' are Westwood's unpolished hand."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The pet frog in a burning house and the 'Loads and loads of money?' reply to an unspoken line are Nox's own goofy beat; the guard's long trailing warning with an ellipsis is typical."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Charming spiders out of the Mayor's study, a reward that is mostly a change of status ('free to come and go'), and the typo 'off you back' read as the shipped game; townsfolk lines are faction gossip rather than gags."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The bridge guard's repeated 'mate' and 'damn fine spell', a long explicit journal line, and two townsfolk who both talk about the same mayor gag make this a coherent original town."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy, compressed quest beats with a built-in grievance ('nobody cares one bit about my leeches') and a forced joke ('My wife's cooking is hotter than any Demon'); every NPC addresses 'stranger' and the shopkeeper's 'Heh, heh' is a pasted tic."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Opens in medias res with a writerly line ('the wheel turns all day and grinds nothing'), the quest hands over a key and directions too neatly, and the chicken-counting gag and coffin-selling shop feel like constructed colour."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Elevated register ('A grievous crime has been committed against this fort', 'Will you undertake this task?') is plausible for a lord, but the boastful guard, terse shopkeeper and 'The dead walk...' townsperson read as a balanced checklist of types."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Over-explicit, slightly clumsy directions ('located East of here', 'I should be in my house at the center of town'), the missing period after 'help us' and a bare 'This is the home of [Person]' guard line are the real game's plain functional writing."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Comic fussiness ('Wipe your feet first. Both of them, please', 'don't you dare scratch the glass') is crafted rather than Nox's broad gags; the drunk's 'Hic!' bit and the coffin-making innkeeper repeat motifs from other new texts."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Starts mid-sentence with an ellipsis, uses clipped modern fragments ('Flew right in', 'Go on, take 'em') and atmospheric hooks ('a light down under the water... Under it!') that Westwood's functional townsfolk rarely attempt."}
+  ],
+  "tells": [
+    "New texts give every NPC a crafted comic quirk or atmospheric hook; Westwood's townsfolk are often flat, functional or single-gag, and some lines are bare signage.",
+    "New texts reuse a small stock of motifs across towns (boots as the reward, 'stranger'/'Wanderer' as the address, coffins sold at the shop, 'the dead walk the roads'), which shows a shared template.",
+    "Westwood's lines carry small mechanical slips (missing periods, 'in to', 'you back', 'a two') and over-explicit directions; the new texts are clean and polished.",
+    "Westwood's offers ramble and explain the situation in long plain sentences with ' / ' page breaks; the new ones are compressed, punchy, and end on a tidy prompt ('Deal?', 'What do you say?', 'Well? Are you going or not?').",
+    "Westwood's townsfolk within a town talk about the same local event (the Mayor's spider fear, the ogre raid); new towns spread lines across unrelated flavour hooks."
+  ]
+}

@@ -1,0 +1,304 @@
+{
+ "iter": "i9",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Vosk",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "Morvayne the Necromancer raises the soldiers frozen in the old battle of the pass and sends them against Fort Vosk.",
+  "names": {
+   "Fort Vosk": "place",
+   "Frostgate": "place",
+   "Watchtower": "place",
+   "Ice Caves": "place",
+   "Frozen Field": "place",
+   "Morvayne": "person",
+   "Dorvin": "person",
+   "Brask": "person",
+   "Holm": "person",
+   "Gorbo": "person",
+   "Gosk": "person",
+   "Hesk": "person",
+   "Snib": "person",
+   "Yselde": "person",
+   "Dolf": "person",
+   "Orwin": "person",
+   "Hobb": "person",
+   "Hilde": "person",
+   "Brodd": "person",
+   "Gundar": "person",
+   "Zenka": "person",
+   "Horn of Calling": "thing",
+   "Bats": "group",
+   "Urchins": "group",
+   "Zombies": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Holm, the guard at the Frostgate, frightened of the frozen dead coming down the pass.",
+   "names": {
+    "Holm": "person",
+    "Frostgate": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Holm",
+     "text": "I can feel a dark shadow creeping over the pass! Will any of us live to see the spring?"
+    },
+    "again": {
+     "speaker": "Holm",
+     "text": "We must hold the Frostgate and honor the men who fell up in the pass today!"
+    },
+    "later": {
+     "speaker": "Holm",
+     "text": "Zombies! Ugh! I know what those creatures do to soldiers! Stay back!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gorbo the brewer has been chased out of his own ale cellar by Bats and pays a bounty to have them cleared.",
+   "names": {
+    "Gorbo": "person",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorbo",
+     "text": "Will somebody listen to me?!\n\nThe Bats chased me clean out of the cellar under my brewhouse...\n\nYou're not from around here. That cellar has lots of twisty passages and a few old traps, which were first built to keep thirsty soldiers away from the ale. Clear those Bats out and I'll pay you a good bounty."
+    },
+    "reminder": {
+     "speaker": "Gorbo",
+     "text": "The Bats are still down there. Hear 'em?"
+    },
+    "completion": {
+     "speaker": "Gorbo",
+     "text": "Oh, bless you, good and brave stranger! This gold will surely help you against the Necromancer's dead. Really gone? I bet that Necromancer sent them down there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bats out of the cellar under Gorbo's brewhouse. It runs beneath the west wall and down into the old cisterns."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Gosk the horn-blower's Horn of Calling, which guides the supply sledge to the gate, was stolen by the Urchins of the north crags.",
+   "names": {
+    "Gosk": "person",
+    "Horn of Calling": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gosk",
+     "text": "Ahh, a new face at last! Warm yourself if you must, but don't linger by the fire. My horn has been stolen.\n\nThe supply sledge is due any day now! I fear it'll never find our gate without it! The Urchins have carried it off to their den up in the north crags! Will you bring my horn back to me?"
+    },
+    "refusal": {
+     "speaker": "Gosk",
+     "text": "So you won't go after my horn. Come back when you change your mind."
+    },
+    "reminder": {
+     "speaker": "Gosk",
+     "text": "Cold day, stranger."
+    },
+    "completion": {
+     "speaker": "Gosk",
+     "text": "You have done it, kind sir! Please accept these boots as a token of my appreciation. Now if you'll excuse me, I'll be off up to the wall to blow it. I thought I'd hidden it so well."
+    },
+    "after": {
+     "speaker": "Gosk",
+     "text": "Thanks again, kind sir. You have done this fort a great service, one we won't soon forget..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Horn of Calling from Urchin den."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Horn of Calling from Urchin den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Orwin on poor mad Hobb, Hilde teasing the player about the cold, Gorbo shouting about the Bats.",
+   "names": {
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Gorbo": "person",
+    "Bats": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Orwin",
+     "text": "I'm afraid poor Hobb has finally gone mad. They gave me his bunk in the barracks since he took to walking the walls all night howling at the moon and eating snow by the handful."
+    },
+    "rumour2": {
+     "speaker": "Hilde",
+     "text": "I thought you adventurer types could take the cold. Try wearing a thicker cloak."
+    },
+    "rumour3": {
+     "speaker": "Gorbo",
+     "text": "Help! The Bats are back in the brewhouse!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brodd the innkeeper, Gundar the smith, Zenka who sells potions and scrolls.",
+   "names": {
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Fort Vosk": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brodd",
+     "text": "Keep out, stranger! I don't rent rooms to ZOMBIES!"
+    },
+    "arms": {
+     "speaker": "Gundar",
+     "text": "Greetings, stranger. I'm about to pack up my anvil and head down the mountain. All my stock is cheap, if you want it."
+    },
+    "magic": {
+     "speaker": "Zenka",
+     "text": "Mind the ice while you're in Fort Vosk, young sir! I've got a whole shelf of potions here for broken bones."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Hesk the Quartermaster wants the winter stores saved from Zombies in the ice house (Gundar has the other key); Snib the trader swaps a longsword for a dead soldier's helmet from the Frozen Field.",
+   "names": {
+    "Hesk": "person",
+    "Gundar": "person",
+    "Snib": "person",
+    "Morvayne": "person",
+    "Frozen Field": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hesk",
+     "text": "Thank goodness you've come, stranger! What brings a traveler all the way up to our fort? But never mind that, the ice house has been overrun by a new and dreadful evil -- frozen Zombies!\n\nIf we're quick we can still save most of the winter stores. Someone must go down to the ice house below the south wall! I'm sure it's that Necromancer's doing.\n\nAnd pick up some potions in town first. A smith named Gundar lives by the east wall, he made the lock and keeps the other key. You may tell him Hesk sent you. You'll get a steel shield from our armory for your trouble."
+    },
+    "offer_b": {
+     "speaker": "Snib",
+     "text": "Hello, I'm Snib, the most honest trader on this side of the mountain, and I'll trade you a fine sword for a helmet off one of those frozen dead men out on the Frozen Field. The soldiers of the old war in the pass have risen to plague us all over again."
+    },
+    "outcome_a": {
+     "speaker": "Hesk",
+     "text": "You're back! You've saved nearly all of the winter stores! Here, this steel shield is yours, as promised. Good luck, and keep well clear of Morvayne if you mean to stay alive!"
+    },
+    "outcome_b": {
+     "speaker": "Snib",
+     "text": "You got one!? Here's the sword -- you've made yourself quite a deal, lad! Folks down the mountain pay a fortune for a real helmet from the old war."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Clear the Zombies out of the ice house and save the winter stores.\n(Hint: Gundar the smith has a key.)"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Enter the Frozen Field and bring Snib a helmet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield", "Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Yselde's husband Dolf, an ice-cutter afraid of the dark, is trapped in the Ice Caves by the frozen dead.",
+   "names": {
+    "Yselde": "person",
+    "Dolf": "person",
+    "Morvayne": "person",
+    "Ice Caves": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yselde",
+     "text": "I've just heard more dreadful news of the Necromancer's wicked deeds. Those horrid dead things chased off both of Dolf's ice-cutters. Dolf has always been terrified of the dark and now he's trapped deep in the Ice Caves west of the fort!\n\nIt will be a dangerous journey. Please, bring him home, brave Adventurer! Take this key, it opens the iron grate that seals the Ice Caves."
+    },
+    "reminder": {
+     "speaker": "Yselde",
+     "text": "Please don't dawdle, lad, poor Dolf grows colder with every hour he's down there."
+    },
+    "found": {
+     "speaker": "Dolf",
+     "text": "I'll stay right here."
+    },
+    "following": {
+     "speaker": "Dolf",
+     "text": "Okay -- lead on!"
+    },
+    "completion": {
+     "speaker": "Yselde",
+     "text": "Wonderful! Take this ankh -- I'd give you more, but beyond that, I'm afraid we have nothing left to spare. Morvayne's dead are on the march!\n\nBut no time to fuss over this half-frozen husband of mine now!\n\nMy Dolf is home, safe and warm at last!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the Ice Caves and bring Dolf home to Yselde."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Orwin points the player to Warden Brask in the keep, who sends him up to the old Watchtower to stop Morvayne the Necromancer.",
+   "names": {
+    "Orwin": "person",
+    "Brask": "person",
+    "Dorvin": "person",
+    "Morvayne": "person",
+    "Zenka": "person",
+    "Watchtower": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orwin",
+     "text": "I hope nothing else goes wrong around here. Warden Brask is up in the keep, he's the one to see."
+    },
+    "opening": {
+     "speaker": "Brask",
+     "text": "Take the north road up to the old Watchtower, where Morvayne the Necromancer has made his lair. I can't deny it any longer -- too many dead men have climbed out of the ice since the first snows. Yes, Dorvin wrote to me about you. Go and stop him... From this day you are my scout. Zenka sells potions by the gate, I'd go see her before anything else if I was you. Once you reach the Watchtower Morvayne will throw everything he has at you, since the old battlefield beneath it holds the biggest army of frozen soldiers a Necromancer could wish for -- far more than the stragglers that come knocking at our walls."
+    },
+    "reminder": {
+     "speaker": "Brask",
+     "text": "The north road starts behind the barracks, you'll spot it right away."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Warden Brask proof that Morvayne has fallen."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

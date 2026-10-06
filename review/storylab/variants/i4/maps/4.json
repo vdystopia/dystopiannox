@@ -1,0 +1,318 @@
+{
+ "iter": "i4",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Durnhelm",
+  "setting": "a castle town with a garrison",
+  "trouble": "The Necromancer Malgrith raises the dead of Kragmoor, and each night the Undead creep closer to the walls of Durnhelm.",
+  "names": {
+   "Durnhelm": "place",
+   "Kragmoor": "place",
+   "Crypts of Kragmoor": "place",
+   "Old Chapel": "place",
+   "Rookery": "place",
+   "Broken Pike": "place",
+   "Brunwald's Arms and Armor": "place",
+   "Iron Watch": "group",
+   "Undead": "group",
+   "Skeletons": "group",
+   "Imps": "group",
+   "Giant Leeches": "group",
+   "Ogre": "group",
+   "Commander Holgrim": "person",
+   "Master Quell": "person",
+   "Malgrith": "person",
+   "Tobin": "person",
+   "Bodric": "person",
+   "Yorrin": "person",
+   "Mungo": "person",
+   "Brunwald": "person",
+   "Orsolya": "person",
+   "Lumpy Dorn": "person",
+   "Merriwen": "person",
+   "Jory": "person",
+   "Gaspar": "person",
+   "Agna": "person",
+   "Spyglass": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobin, guard at the east gate, shut by Commander Holgrim until the main quest opens it.",
+   "names": {
+    "Tobin": "person",
+    "Durnhelm": "place",
+    "Undead": "group",
+    "Iron Watch": "group",
+    "Commander Holgrim": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobin",
+     "text": "Welcome to Durnhelm, stranger! No Undead has ever set foot inside these walls, and none ever will while the Iron Watch stands guard! The east gate stays shut, though. Commander Holgrim's orders."
+    },
+    "again": {
+     "speaker": "Tobin",
+     "text": "Move along. I'm on watch."
+    },
+    "later": {
+     "speaker": "Tobin",
+     "text": "Commander Holgrim says you may pass. The gate is open. Watch yourself out on the moor, lad!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Bodric, the castle cook, wants the Giant Leeches cleared out of the cistern under the kitchens.",
+   "names": {
+    "Bodric": "person",
+    "Giant Leeches": "group",
+    "Malgrith": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bodric",
+     "text": "Bah! Giant Leeches! The cistern under the kitchens is crawling with the slimy things! I sent the potboy down for a bucket of water and he came back up screaming, with leeches stuck all over his legs!\n\nIf Malgrith's dead ever lay siege to us, this castle will need every drop in that cistern. And the soldiers won't go near it!\n\nClear 'em out and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Bodric",
+     "text": "Well? Are they gone? I can't make soup without water!"
+    },
+    "completion": {
+     "speaker": "Bodric",
+     "text": "No more leeches? Ha! Thank you, lad! Here, take this gold. You earned every piece of it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Giant Leeches out of the cistern beneath the kitchens."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Yorrin, the old lookout on the battlements, lost his Spyglass to the Imps of the Rookery.",
+   "names": {
+    "Yorrin": "person",
+    "Imps": "group",
+    "Spyglass": "thing",
+    "Malgrith": "person",
+    "Undead": "group",
+    "Rookery": "place",
+    "Kragmoor": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yorrin",
+     "text": "Thieves! Flying thieves! A pack of Imps swooped down on the battlements and snatched my Spyglass right out of my hands!\n\nWithout it I can't see the moor at all. If Malgrith's Undead march on us, nobody will know till they're knocking at the gate!\n\nThe Imps nest in the Rookery, the old tower west of the keep. Will you get my Spyglass back?"
+    },
+    "refusal": {
+     "speaker": "Yorrin",
+     "text": "Very well. I'll find someone braver, I suppose."
+    },
+    "reminder": {
+     "speaker": "Yorrin",
+     "text": "Have you got my Spyglass? Those Imps could drop it anywhere!"
+    },
+    "completion": {
+     "speaker": "Yorrin",
+     "text": "My Spyglass! You found it! Bless you, kind sir! Now I can keep watch on the moor again. Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Yorrin",
+     "text": "Thanks again, kind sir! I can see clear across Kragmoor now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Yorrin's Spyglass from the Imps in the Rookery."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Yorrin's Spyglass from the Imps in the Rookery."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Gaspar brags about the Commander, Agna frets about the Necromancer, Bodric brushes the player off.",
+   "names": {
+    "Gaspar": "person",
+    "Agna": "person",
+    "Bodric": "person",
+    "Commander Holgrim": "person",
+    "Durnhelm": "place",
+    "Ogre": "group",
+    "Kragmoor": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Gaspar",
+     "text": "Commander Holgrim is the bravest man in Durnhelm! He once wrestled an Ogre in the courtyard and won!"
+    },
+    "rumour2": {
+     "speaker": "Agna",
+     "text": "They say the Necromancer can raise a whole army out of the mud on Kragmoor. I haven't slept a wink in days!"
+    },
+    "rumour3": {
+     "speaker": "Bodric",
+     "text": "What? Sorry, I've got bread in the oven."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Mungo of the Broken Pike, Brunwald the armorer, Orsolya the potion seller.",
+   "names": {
+    "Mungo": "person",
+    "Broken Pike": "place",
+    "Brunwald": "person",
+    "Brunwald's Arms and Armor": "place",
+    "Orsolya": "person",
+    "Skeletons": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mungo",
+     "text": "Welcome to the Broken Pike! Try the ale -- it'll put hair on a Skeleton's chin!"
+    },
+    "arms": {
+     "speaker": "Brunwald",
+     "text": "Brunwald's Arms and Armor. Swords, shields, mail. What'll it be?"
+    },
+    "magic": {
+     "speaker": "Orsolya",
+     "text": "Ah, a customer! Potions, scrolls, spell books... With the dead walking about, I'd buy plenty, if I were you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Commander Holgrim wants the garrison's pay chest back from the Skeletons; Lumpy Dorn, in the keep's cells, trades the hiding place of a shield for a meat pie.",
+   "names": {
+    "Commander Holgrim": "person",
+    "Lumpy Dorn": "person",
+    "Skeletons": "group",
+    "Iron Watch": "group",
+    "Broken Pike": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Commander Holgrim",
+     "text": "A grave matter, lad. Our supply wagon was ambushed on the moor road and the pay chest for the whole garrison was lost with it. Those abominable Skeletons stand guard over the wreck, east of the gate.\n\nSoldiers without pay are surly soldiers. Recover the chest and the Iron Watch will see you well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Lumpy Dorn",
+     "text": "Psst! You! Over here by the bars!\n\nThe Commander threw me in here for borrowing a shield. Borrowing! I was going to give it back!\n\nTell you what. Bring me a meat pie from the Broken Pike and I'll tell you where I hid it. Do we have a deal?"
+    },
+    "outcome_a": {
+     "speaker": "Commander Holgrim",
+     "text": "The pay chest! Splendid work! The men will be paid tonight. Take these 100 gold pieces from it, with the thanks of the Iron Watch."
+    },
+    "outcome_b": {
+     "speaker": "Lumpy Dorn",
+     "text": "A pie! Mmmmf... Oh, that's a good pie. All right, a deal's a deal. The shield's under the hay in the stables. Don't tell the Commander! Heh, heh, heh..."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the wrecked supply wagon."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Lumpy Dorn a meat pie from the Broken Pike."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Merriwen's husband Jory, a soldier of the night patrol, is trapped by Skeletons in the Old Chapel on the moor.",
+   "names": {
+    "Merriwen": "person",
+    "Jory": "person",
+    "Skeletons": "group",
+    "Old Chapel": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Merriwen",
+     "text": "Please, help me! My Jory went out with the night patrol and never came back!\n\nThe others say the Skeletons drove him into the Old Chapel out on the moor. Nobody will go after him!\n\nPlease, kind sir, bring my Jory home!"
+    },
+    "reminder": {
+     "speaker": "Merriwen",
+     "text": "Please hurry! I can't bear the waiting!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Over here! Help!\n\nMerriwen sent you? Bless her! I'll follow you."
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "Hurry! More of them are crawling up out of the floor!"
+    },
+    "completion": {
+     "speaker": "Merriwen",
+     "text": "Jory! You're home! Oh, thank you, thank you, brave Adventurer! It isn't much, but please take this."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Jory from the Old Chapel and bring him home to Merriwen."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["RedPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Gaspar points the player to Commander Holgrim in the keep, who sends him east after the Necromancer Malgrith.",
+   "names": {
+    "Gaspar": "person",
+    "Master Quell": "person",
+    "Commander Holgrim": "person",
+    "Malgrith": "person",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Tobin": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Gaspar",
+     "text": "You're the one Master Quell sent? Then you'd best see Commander Holgrim in the keep. He's been pacing the walls all morning."
+    },
+    "opening": {
+     "speaker": "Commander Holgrim",
+     "text": "Ah, there you are! Master Quell said you would come. Good. We need all the help we can get.\n\nThe Necromancer Malgrith has raised the dead of Kragmoor -- every soldier who ever fell on that cursed moor! Each night more of them crawl out of the mud, and each night they come closer to these walls.\n\nMy men can hold the castle, but they cannot end this. That is your task, lad. Go east across the moor and find Malgrith's lair in the Crypts of Kragmoor. Destroy him and the dead will lie down again.\n\nI'll tell Tobin to open the east gate. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Commander Holgrim",
+     "text": "What are you waiting for? The gate is open! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Necromancer Malgrith in the Crypts of Kragmoor and destroy him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

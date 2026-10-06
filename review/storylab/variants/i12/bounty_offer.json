@@ -1,0 +1,570 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric, an old shepherd at the edge of the Ashwood, wants the wolves driven off from his ram Bartle and his fold.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Please, help me, kind stranger! The wolves have broken into my fold and my poor ram, Bartle, is trapped by them in the far pen!\n\nDrive them off and you'll have my thanks forever!"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Any pelts you find out there you may keep! Just hurry and save Bartle!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Hooray, you saved him! How can I ever thank you for such bravery?!\n\nWhat's that you say? Gold, and plenty of it? Well, if gold it must be, please take this as a sign of my gratitude."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Bartle the Ram from wolves at the edge of the Ashwood."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: Paymaster Orrin offers a bounty on Skrit, the king of the Imps raiding the ore carts",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Paymaster Orrin",
+     "text": "Hello, young sir. I surmise you have come about the bounty.\n\nThere is a generous reward on Skrit the Imp King -- dead or alive. He and his noisy swarm of Imps have been raiding the ore carts for weeks.\n\nTake care, you do not want to get bitten by those spiteful pests."
+    },
+    "reminder": {
+     "speaker": "Paymaster Orrin",
+     "text": "Still no word on Skrit? The Imps are at the carts again!"
+    },
+    "completion": {
+     "speaker": "Paymaster Orrin",
+     "text": "Ho, there! Nib complained of squeaking down this tunnel, so I came to look.\n\nYou have single handedly slain the dreaded Skrit! Very impressive! My profound respect is yours! Skrit's swarm has plagued Skarn Delve for weeks! I'll take it from here. We will all rest easier now that this vile pest is dead!\n\nAnd here is your reward -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Skrit the Imp King."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Dorrit, whose ducks were dragged off from the hamlet of Tarn by Bog Gators, wants them driven out",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrit",
+     "text": "Sir! Please help me! A pack of foul Bog Gators just overran Tarn, the hamlet south of here and dragged off almost all of my ducks! One of them was my sweet Pru!\n\nPlease drive them out and I promise you a reward!"
+    },
+    "reminder": {
+     "speaker": "Dorrit",
+     "text": "Oh why aren't you going? My poor ducks are in terrible danger!"
+    },
+    "completion": {
+     "speaker": "Dorrit",
+     "text": "Oh, thank you, brave sir! These are tokens of my gratitude!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bog Gators out of Tarn for Dorrit."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Commander Ostrag wants Grolm, the Troll chief who raided the Granary Yard, dead in the Troll Den on Mount Dreg.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrag",
+     "text": "Blast! Where were you, lad!? The Trolls stormed the Granary Yard and we'd have lost the winter stores to them if Dorrik's pikemen had not charged in at the last moment!\n\nBut in the confusion, their chief Grolm got away with a dozen of our war-horses, leaving the burnt stores our smallest worry! All of Karth Vael is now at risk if Grolm lives!\n\nYou must follow his trail, northeast to the Troll Den on Mount Dreg! Kill Grolm or we are doomed!"
+    },
+    "reminder": {
+     "speaker": "Ostrag",
+     "text": "I'm sure Grolm is still out there! Go quickly!"
+    },
+    "completion": {
+     "speaker": "Ostrag",
+     "text": "In calmer times, the barracks of Karth Vael would ring with cheers for the death of Grolm! Well done! But now we must stop the Troll King Skorn once and for all.\n\nPlease accept these with our deepest thanks for your fine work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Troll Den and kill Grolm."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "WoodenShield",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Tamsk wants the river pirate Joh Skarn caught and the toll chest he stole brought back.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tamsk",
+     "text": "Ooooh, what is this? That pirate beat both of my ferrymen. There is no time to fetch the guards. Quickly, you must catch him before the toll chest goes into the lake."
+    },
+    "reminder": {
+     "speaker": "Tamsk",
+     "text": "Please, I'm begging you. Hunt down that thieving scoundrel and bring back the toll chest."
+    },
+    "completion": {
+     "speaker": "Tamsk",
+     "text": "The toll chest is saved! Gurtle will need my Bow to guard it. Here, take both to him."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Regain the toll chest stolen by the pirate Joh Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Tessik, keeper of the Archive, wants the Imps and giant bats cleared from the vaults and his trapped clerks rescued.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tessik",
+     "text": "Why are you so late!? We are in terrible trouble!\n\nVicious giant bats and Imps from the pit have overrun the vaults beneath the Archive. Several clerks have been lost protecting the college's precious books!\n\nPlease, we implore you! Drive the beasts from the vaults, rescue my clerks and I will pay you generously.\n\nThis key opens the gate to the first trapped clerk. He will lead you to the others.\n\nI also have a spell book which ought to be very handy."
+    },
+    "reminder": {
+     "speaker": "Tessik",
+     "text": "Come back to me when you have freed my clerks and I will pay you well."
+    },
+    "completion": {
+     "speaker": "Tessik",
+     "text": "You are truly a hero! My sincere thanks.\n\nAs you were saving my clerks down below, the Captain stopped by, asking after you. He's waiting at the Lower Gate -- south of here.\n\nBefore you leave, here is some gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay or banish all the beasts in the vaults. Rescue the 4 trapped clerks."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: Orlo, a trapper, asks the player to learn what became of his brother in the White Wolves' den",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orlo",
+     "text": "Mangy brutes! The White Wolves have come down off the heights and made a terror of the whole pass!\n\nI am Master Trapper Orlo. I am looking for my brother. I fear he has strayed into a nearby Wolf Den.\n\nIf you could find out what happened and bring me word, I would be willing to teach you the trade. Come with me and I will point out the cursed Wolf Den above his cabin."
+    },
+    "reminder": {
+     "speaker": "Orlo",
+     "text": "Any sign of my brother? Oh no, I fear he is gone."
+    },
+    "completion": {
+     "speaker": "Orlo",
+     "text": "My brother's cap! Bad luck must have caught up with him.\n\nYou have shown the wolves could not stop you. Maybe you would make a fine trapper. Hmmm... Yes.\n\nFollow me to the cabin. Whenever you like, take the Bow off the rack. We have plenty of trapping ahead of us up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Learn the fate of Orlo's brother."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Gorm, a lift-keeper, had his best helmet stolen by Goblins while napping and wants it back.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorm",
+     "text": "Sorry, mate, the ore lift is jammed! Only way down to the lower forge is the old cart tunnel, through the Goblin warren. But, if you go that way, mate, keep your guard up! The Goblins stole my best helmet while I was napping!\n\nIf you bring it back, I'll give you a damn fine spell book."
+    },
+    "reminder": {
+     "speaker": "Gorm",
+     "text": "Did you find my helmet yet?"
+    },
+    "completion": {
+     "speaker": "Gorm",
+     "text": "My helmet! I had given it up for lost! I'm eternally grateful. Here's the book, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the helmet stolen from Gorm by the Goblins and bring it back to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Bessa Tuck, a cider brewer, wants a bear out of the shed by her hop yard; the hornets sting everyone. She pays in a ferry pass.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bessa Tuck",
+     "text": "Good! My family brews the finest cider in Tolmar Cross. Unfortunately, a foul great bear has moved into the shed near our hop yard. He has stirred up the hornets and now they sting anyone who goes into the yard.\n\nGo and kill the bear, then come back and I'll sign your ferry pass.\n\nHere, take this iron key, it opens the yard gate."
+    },
+    "reminder": {
+     "speaker": "Bessa Tuck",
+     "text": "Don't fret, one old bear is no great threat. Come back when it's been put down."
+    },
+    "completion": {
+     "speaker": "Bessa Tuck",
+     "text": "Excellent! The bear is dead.\n\nHere is your ferry pass. Show it to Ibb and he'll put you on the ferry. Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Bear troubling Tuck's hop yard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Tamsin, a farmer, lost her horses to Ogres who broke into her barn, and pays to have them chased off.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tamsin",
+     "text": "My luck has been rotten of late. Two weeks ago, Ogres broke into the barn and carried off my horses.\n\nI don't expect I'll see them again, but I'd love to see those brutes run out of the valley.\n\nThere's coin for anyone who chases them off."
+    },
+    "reminder": {
+     "speaker": "Tamsin",
+     "text": "Have those brutes left my barn yet?"
+    },
+    "completion": {
+     "speaker": "Tamsin",
+     "text": "So the Ogres have been chased off! Well done, lad! We shall all rest easier knowing those brutes won't be stomping through our barley!\n\nNow take your reward... 90 in gold! You're always welcome at Tamsin's!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive off the Ogres that raided Tamsin's barn."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

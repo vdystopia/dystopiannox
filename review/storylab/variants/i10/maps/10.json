@@ -1,0 +1,309 @@
+{
+ "iter": "i10",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Corvale",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Gorbrak's Ogres have come over the Skarrow Hills, raid the farms, hold the old watchtower on Thistle Hill and have shut the North Gate road.",
+  "names": {
+   "Corvale": "place",
+   "Gorbrak": "person",
+   "Captain Brannoc": "person",
+   "Master Ebbrin": "person",
+   "Mayor Pudrick": "person",
+   "Mobb": "person",
+   "Bodger": "person",
+   "Warden Grisholm": "person",
+   "Tibbet": "person",
+   "Haldo": "person",
+   "Sergeant Krell": "person",
+   "Muddock": "person",
+   "Tamsy": "person",
+   "Grobbel": "person",
+   "Quillda": "person",
+   "Hettie": "person",
+   "Darvel": "person",
+   "Pella": "person",
+   "Town Hall": "place",
+   "Old Quarry": "place",
+   "Thistle Hill": "place",
+   "Skarrow Hills": "place",
+   "North Gate": "place",
+   "Muddy Boot": "place",
+   "Horn of Corvale": "thing",
+   "Ogres": "group",
+   "Imps": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Haldo keeps the North Gate, shut while the Ogres hold the north road.",
+   "names": {
+    "Haldo": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Haldo",
+     "text": "You're awful scrawny for an Ogre hunter. Haw, haw, haw...!"
+    },
+    "again": {
+     "speaker": "Haldo",
+     "text": "My fields... trampled... all trampled."
+    },
+    "later": {
+     "speaker": "Haldo",
+     "text": "Can't talk now, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Mobb the shepherd has lost his sheepdog Bodger to the wolves that moved into the woods by his pasture.",
+   "names": {
+    "Mobb": "person",
+    "Bodger": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mobb",
+     "text": "Filthy, greedy beasts! The wolves just moved into the woods by my pasture and are already making a terrible nuisance of themselves!\n\nMy name is Mobb. I am looking for my sheepdog, Bodger. I fear he ran off into a wolf den near here.\n\nIf you can find Bodger and bring him home, I would gladly give you my old bow. Come along, I'll take you as far as that miserable den past the north pasture."
+    },
+    "reminder": {
+     "speaker": "Mobb",
+     "text": "Any sign of Bodger yet? Oh my, I fear for the poor fellow."
+    },
+    "completion": {
+     "speaker": "Mobb",
+     "text": "Bodger's collar! Something dreadful must have happened to him.\n\nWell, you have shown those wolves who is master. Maybe you would make a fine shepherd yourself. Hmmm... Yes.\n\nFollow me back to my cottage. When you are ready, take the bow and quiver by the door. They are yours. We have a great deal to do before the Ogres come down from the hills."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find out what became of Mobb's sheepdog."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow", "Quiver"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Mayor Pudrick's amulet was stolen from the Town Hall by the Imps, who fled into the Old Quarry north of town.",
+   "names": {
+    "Corvale": "place",
+    "Mayor Pudrick": "person",
+    "Master Ebbrin": "person",
+    "Town Hall": "place",
+    "Old Quarry": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mayor Pudrick",
+     "text": "Welcome to Corvale, brave Adventurer! We've been waiting for you!\n\nThe Imps who live up in the hills have gone wild! They crept into the Town Hall and stole my amulet! A farmhand chased the little devils into the Old Quarry, but never came back.\n\nWill you go north to the quarry and win back my amulet from the Imps? When you return, please come see me. I'll be in the Town Hall."
+    },
+    "refusal": {
+     "speaker": "Mayor Pudrick",
+     "text": "Oh.... Well, I suppose the Imps can keep it, then."
+    },
+    "reminder": {
+     "speaker": "Mayor Pudrick",
+     "text": "Those wretched Imps get bolder every day."
+    },
+    "completion": {
+     "speaker": "Mayor Pudrick",
+     "text": "My amulet! Thank you, kind sir! The whole of Corvale is grateful for your valiant deed.\n\nHere, take this as a small gift from the town. Master Ebbrin is waiting for you at his house on the hill. Stock up at the shops first, then go and see him right away."
+    },
+    "after": {
+     "speaker": "Mayor Pudrick",
+     "text": "I have only my thanks left to give. You should go see Master Ebbrin. He has been asking for you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pudrick's amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mayor Pudrick's amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Hettie, Darvel and Pella of Corvale: an Ogre at the gate, Gorbrak's raids, a flirt.",
+   "names": {
+    "Hettie": "person",
+    "Darvel": "person",
+    "Pella": "person",
+    "Gorbrak": "person",
+    "Captain Brannoc": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hettie",
+     "text": "An Ogre just went by my gate! Watch out! He can't be far off!"
+    },
+    "rumour2": {
+     "speaker": "Darvel",
+     "text": "Gorbrak must have found a pass through the hills. One week the north road was safe, the week after it was crawling with Ogres and wolves! They want our grain."
+    },
+    "rumour3": {
+     "speaker": "Pella",
+     "text": "You're not from these parts, are you? Too bad you're not one of Captain Brannoc's soldiers. I just adore soldiers!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Tamsy of the Muddy Boot inn, Grobbel the smith, Quillda's potion shop.",
+   "names": {
+    "Tamsy": "person",
+    "Grobbel": "person",
+    "Quillda": "person",
+    "Muddy Boot": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tamsy",
+     "text": "Hungry travelers are always welcome at the Muddy Boot. What'll it be?"
+    },
+    "arms": {
+     "speaker": "Grobbel",
+     "text": "You'd better be quick the Ogres could come back any minute."
+    },
+    "magic": {
+     "speaker": "Quillda",
+     "text": "You look like you could use a potion or two, friend."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Sergeant Krell sells a sword lesson for 100 gold; Muddock wants a rope pulled by the barn door on his signal.",
+   "names": {
+    "Sergeant Krell": "person",
+    "Muddock": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Sergeant Krell",
+     "text": "Ready for your lesson in swordplay? That will be 100 gold for the sword you'll train with."
+    },
+    "offer_b": {
+     "speaker": "Muddock",
+     "text": "Hello, stranger. Could you pull that rope by the barn door when I wave my hat? I'd be ever so grateful.\n\nJust let me climb up into the hayloft first."
+    },
+    "outcome_a": {
+     "speaker": "Sergeant Krell",
+     "text": "Hmmm, pity. Swordplay isn't for everyone."
+    },
+    "outcome_b": {
+     "speaker": "Muddock",
+     "text": "It worked! It actually worked! Thank you! You must be my lucky star!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Sergeant Krell for a lesson in swordplay."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pull the barn rope when Muddock gives the signal."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Warden Grisholm offers a reward for Tibbet, the miller's boy, carried off by the Ogres to their camp in the Skarrow Hills.",
+   "names": {
+    "Warden Grisholm": "person",
+    "Tibbet": "person",
+    "Corvale": "place",
+    "Skarrow Hills": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Warden Grisholm",
+     "text": "Greetings, young sir. I take it you have come about the reward.\n\nThere's a handsome reward for young Tibbet, the miller's boy -- brought home safe and sound. The Ogres grabbed him from his father's field and have kept him in their camp in the Skarrow Hills for days.\n\nBe careful, you don't want those brutes catching you unawares."
+    },
+    "reminder": {
+     "speaker": "Warden Grisholm",
+     "text": "No word of the miller's boy yet? His poor father is beside himself."
+    },
+    "found": {
+     "speaker": "Tibbet",
+     "text": "Who's that? Please, don't let them eat me!"
+    },
+    "following": {
+     "speaker": "Tibbet",
+     "text": "Please, take me home to my father!"
+    },
+    "completion": {
+     "speaker": "Warden Grisholm",
+     "text": "Ho, there! The miller told me he heard his boy shouting at the gate, so I came running.\n\nYou have single handedly snatched young Tibbet from the Ogres! Very impressive! You have my deepest respect, young sir! Those Ogres have plagued Corvale for weeks! I'll see the boy home from here. His father will sleep better tonight with his son safe under his roof!\n\nAnd here is your reward, young sir -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring young Tibbet home from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Hettie points the player to Master Ebbrin, who sends him to the Ogre-held watchtower on Thistle Hill for the Horn of Corvale and the North Gate key.",
+   "names": {
+    "Hettie": "person",
+    "Master Ebbrin": "person",
+    "Captain Brannoc": "person",
+    "Corvale": "place",
+    "Thistle Hill": "place",
+    "North Gate": "place",
+    "Horn of Corvale": "thing",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hettie",
+     "text": "Hello, stranger. Has Master Ebbrin found you, yet?"
+    },
+    "opening": {
+     "speaker": "Master Ebbrin",
+     "text": "You're here. Good. Captain Brannoc chose well. Your first task is a very important one.\n\nSomething foul is stirring in the valley. Ogre raids on the outlying farms is growing worse with every week.\n\nMy attempts to send for help have come to nothing. The Ogres stop every rider on the north road. Perhaps you can help me there.\n\nThe old watchtower on Thistle Hill has not been manned in many years, and now the Ogres hold it. The old town records say the tower keeps two things which might be vital to our defense. One is the Horn of Corvale, the other is the key to the North Gate.\n\nIf you can bring these things back to me, quickly, I believe they will help us drive the Ogres from our fields."
+    },
+    "reminder": {
+     "speaker": "Master Ebbrin",
+     "text": "Nothing yet? Well, keep searching the old watchtower. The horn and the key must be found at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Horn of Corvale for Master Ebbrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

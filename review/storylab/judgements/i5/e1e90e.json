@@ -1,0 +1,32 @@
+{
+  "packet": "e1e90e",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The bounty and '500 in gold' fit Nox, but the speaker in the thanks is someone new who explains why he arrived. The 'young sir' said three times reads like a writer imitating the address rather than using it."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The panicked plea and short thanks are Nox-shaped. 'Almost all of the maidens' and the Ogre-dungeon journal feel like a compact pastiche of the campaign's Ogre episodes."},
+    {"label": "C", "verdict": "generated", "confidence": 1, "score": 8,
+     "critique": "The over-the-top 'airborne demons from the underworld' and 'Nox's vital interests' are close to Westwood's comic bombast. A two-sentence journal with an exact count is unusual, but it may be original."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The 'mate' tic, 'damn fine spell' and a loose run-on journal sentence. This is Westwood's loose comic register."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Laying their filthy paws on our belongings', 'Well done, lad!' and '100 in gold!' A plain shopkeeper quest in the original voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The mentor's grumbling, the robe found in place of the apprentice, 'Hmmm... Yes.', and a scene-ending teleporter instruction. This is the campaign's chapter-opening structure."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Very short and vague ('that evil one', 'both items'), which could be Westwood. The 'Regain' journal verb is slightly off-pattern."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Worse than the pox!', charming the spiders, and the reward of a new title plus free passage. This fits Westwood's chapter-gate quest exactly."},
+    {"label": "I", "verdict": "generated", "confidence": 2, "score": 8,
+     "critique": "The frog and the 'Loads and loads of money?' gag are very Westwood in spirit, but the joke is set up a little too neatly, which could be a pastiche of Nox humour."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The quest is given with a key ('ruby key'), 'aggravated the bats' and a signed petition as the reward. Plain, functional and slightly clumsy in the original way."}
+  ],
+  "tells": [
+    "This packet was hard: nearly every text uses Westwood's plain plea, then short thanks, then imperative journal. The calls on the generated side are low confidence.",
+    "I leaned towards 'generated' when a text used Nox signatures ('young sir', a comic money gag, monster bombast) a little more often or more neatly than they tend to occur.",
+    "Westwood's quests tie into the chapter's progression (a petition, a title, a teleporter, the Captain waiting). Free-standing favours with only gold as the reward read as less anchored.",
+    "Journal verbs off the usual set (Retrieve, Rescue, Kill, Bring ... to justice), such as 'Regain', were taken as a weak cue."
+  ]
+}

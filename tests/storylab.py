@@ -13,7 +13,13 @@ The loop (review/storylab/README.md):
   4. the scorecard: review/out/storylab/<scenario>/<iter>/scorecard.md (and SUMMARY.md across iterations).
 
     py tests/storylab.py list                              the scenarios
-    py tests/storylab.py brief --iter NAME [--baseline]    the writer's brief for every scenario
+    py tests/storylab.py brief --iter NAME                 one brief a writer (one town each, every scenario)
+    py tests/storylab.py merge --iter NAME                 variants/NAME/maps/<n>.json -> variants/NAME/<scenario>.json
+    py tests/storylab.py control --iter NAME               the control packets (all Westwood) and their results
+    py tests/storylab.py solo --iter NAME                  every text of the round alone (no side by side, no quota)
+    py tests/storylab.py modes                             the phrases every writer reaches for -> review/storylab/modes.json
+    py tests/storylab.py frames --seed MAPNAME [--parts ...] a map's frames: a Westwood line for every line it will write
+    py tests/storylab.py card --seed MAPNAME               a map's story card: its draw of Westwood's shapes and model lines
     py tests/storylab.py <scenario|all> --iter NAME [--n 10]   judge the variants, write the packet and scorecard
     py tests/storylab.py summary                           every scenario and iteration in one table
     py tests/storylab.py westwood                          Westwood's measures, and its own units scored
@@ -61,10 +67,45 @@ def variants_of(it, sid):
     return json.load(open(p, encoding="utf-8"))
 
 
-def judgement_of(it, sid):
-    p = os.path.join(LAB, "judgements", it, f"{sid}.json")
-    if not os.path.exists(p): return None
-    return json.load(open(p, encoding="utf-8"))
+def packet_id(sid, it, control=False, half=None):
+    """The packet's opaque name: the judge sees neither the scenario's id nor whether it is a control."""
+    h = "" if half is None else f"|{half}"
+    return hashlib.sha1(f"{sid}|{it}|{'control' if control else 'real'}{h}|storylab".encode()).hexdigest()[:6]
+
+
+def judgement_of(it, sid, control=False, half=None):
+    for name in (packet_id(sid, it, control, half), None if control or half is not None else sid):
+        if not name: continue
+        p = os.path.join(LAB, "judgements", it, f"{name}.json")
+        if os.path.exists(p): return json.load(open(p, encoding="utf-8"))
+    return None
+
+
+def merge(it):
+    """variants/<it>/maps/<n>.json (one writer, one town, every scenario) -> variants/<it>/<scenario>.json."""
+    world, S = scenarios()
+    md = os.path.join(LAB, "variants", it, "maps")
+    files = sorted((f for f in os.listdir(md) if f.endswith(".json")), key=lambda f: int(re.sub(r"\D", "", f) or 0))
+    by = collections.defaultdict(list)
+    guide = "?"
+    for f in files:
+        m = json.load(open(os.path.join(md, f), encoding="utf-8"))
+        guide = m.get("guide", guide)
+        n = int(re.sub(r"\D", "", f) or 0)
+        town = m.get("map", {})
+        scen = dict(m.get("scenarios") or {})
+        if "town" in S and "town" not in scen and all(x[0] in scen for x in TOWN_FROM.values()):
+            scen["town"] = town_variant(n, scen)
+        for sid, v in scen.items():
+            if sid not in S: print(f"{f}: unknown scenario {sid}"); continue
+            names = dict(town.get("names") or {}); names.update(v.get("names") or {})
+            by[sid].append(dict(id=n, specifics=f"{town.get('name', '?')}: {v.get('specifics', '')}", names=names,
+                                parts=v["parts"], reward=v.get("reward"), writer=m.get("writer", "?")))
+    for sid, vs in by.items():
+        json.dump(dict(scenario=sid, iter=it, writer="one writer a town (variants/%s/maps)" % it, guide=guide,
+                       variants=sorted(vs, key=lambda v: v["id"])),
+                  open(os.path.join(LAB, "variants", it, f"{sid}.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+        print(f"{sid}: {len(vs)} variants")
 
 
 def ctx_for(world, sc, v=None):
@@ -96,31 +137,251 @@ def judge_ww(sc, u):
 
 # ---- the blind packet -----------------------------------------------------------------------------------------------
 
-def packet(world, sc, it, vs, n_each=5):
-    """The 10 texts (5 ours, 5 Westwood's), shuffled, masked; returns (markdown, key)."""
-    rng = random.Random(_seed(sc["id"], it))
+_CLS = r"(?:Fire Knight|Warrior|Wizard|Conjurer|Mage|Apprentice|Adept|Candidate)"
+
+
+def classfree(t):
+    """Westwood's lines addressing the player by class, made class-free the way Westwood's own class-free chapter (Brin,
+    the same text in all three campaigns) speaks: "young Mage" -> "young sir", "brave Conjurer" -> "brave Adventurer",
+    "Thank you, Warrior!" -> "Thank you, Adventurer!". Our maps never name the class, so a [Class] mask was a tell."""
+    t = re.sub(r"\b(Arch-Wizard|Arch-Mage|Master Conjurer)\b", "Master", t)
+    t = re.sub(r"\b([Yy]oung) " + _CLS + r"\b", r"\1 sir", t)
+    t = re.sub(r"\b([Bb]rave|[Vv]aliant|[Kk]ind|[Ff]riend|[Gg]ood) " + _CLS + r"\b", r"\1 Adventurer", t)
+    t = re.sub(r"(,\s|^|[.!?]\s)" + _CLS + r"(?=[!,.?])", r"\1Adventurer", t)
+    return t
+
+
+def _shares(u, chosen, pp):
+    """Whether Westwood unit u has a line one of the chosen units has (pools share some keys and some speeches)."""
+    mine = {u["parts"][p].strip() for p in pp}
+    return any(c["parts"][p].strip() in mine for c in chosen for p in pp)
+
+
+def _words(parts):
+    return sum(len(metrics.words(x)) for x in parts.values())
+
+
+def _md_items(sc, it, items, title):
     pp = sc["packet_parts"]
-    ours = [v for v in vs if all(p in v["parts"] for p in pp)]
-    ours = rng.sample(ours, min(n_each, len(ours)))
-    ww = [u for u in ww_units(sc) if all(p in u["parts"] for p in pp)]
-    ww = rng.sample(ww, min(n_each, len(ww)))
-    items = [("generated", v.get("id"), {p: (v["parts"][p]["text"] if isinstance(v["parts"][p], dict) else v["parts"][p]) for p in pp},
-              dict(world["names"], **(v.get("names") or {}))) for v in ours]
-    items += [("westwood", "|".join(str(u["keys"][p]) for p in pp), {p: u["parts"][p] for p in pp}, {}) for u in ww]
-    rng.shuffle(items)
-    md = [f"# Blind packet: {sc['title']} ({it})", "",
-          "Ten texts of one kind, each the lines of one quest or one place in a Nox single-player map. Some are from "
-          "Westwood's Nox campaign, some were written for new maps. Names are masked: [Person], [Place], [Thing], "
-          "[Group], [Class]. Judge by JUDGE.md (review/storylab/JUDGE.md) and answer in its JSON.", ""]
+    md = [f"# Blind packet {title}: {sc['title']}", "",
+          f"{('Ten', 'Nine', 'Eight', 'Seven', 'Six')[10 - len(items)] if 6 <= len(items) <= 10 else len(items)} texts of one kind, each the lines of one quest or one place in a Nox single-player map. "
+          f"Exactly half{' (five)' if len(items) == 10 else ' (' + str(len(items) // 2) + ')'} are from "
+          "Westwood's Nox campaign, the others were written for new maps. Names are masked: [Person], [Place], [Thing], "
+          "[Group]. Judge by JUDGE.md (review/storylab/JUDGE.md) and answer in its JSON.", ""]
     key = {}
     for L, (src, ref, parts, names) in zip(LETTERS, items):
         key[L] = dict(source=src, ref=ref)
         md += [f"## Text {L}", ""]
         for p in pp:
-            t = metrics.mask(parts[p], {k: v for k, v in names.items() if k[:1].isupper()})
+            t = parts[p] if src == "generated" else classfree(parts[p])
+            t = metrics.mask(t, {k: v for k, v in names.items() if k[:1].isupper()}).replace("[Class]", "[Group]")
             md.append(f"**{sc['labels'].get(p, p)}:** " + t.replace("\n\n", " / ").replace("\n", " / "))
             md.append("")
     return "\n".join(md), key
+
+
+LEGACY = ("i0", "i1", "i2", "i3")      # judged on the first protocol: its packets are rebuilt as they were
+LONG_SCEN = ("bounty_offer", "heirloom_fetch", "two_givers", "rescue", "main_opening")
+
+
+def is_blend(it):
+    """(i13 on) blended quests, the long scenarios only, two packets a scenario (each five writers' texts)."""
+    m = re.match(r"i(\d+)", it)
+    return bool(m) and int(m.group(1)) >= 13
+
+
+def halves(it):
+    return (0, 1) if is_blend(it) else (None,)
+
+
+def packet_v1(world, sc, it, vs, n_each=5):
+    """The first protocol's packet (i0-i3): 5 ours, 5 Westwood's from the first pools, [Class] masked."""
+    rng = random.Random(_seed(sc["id"], it))
+    pp = sc["packet_parts"]
+    ours = [v for v in vs if all(p in v["parts"] for p in pp)]
+    ours = rng.sample(ours, min(n_each, len(ours)))
+    units = [dict(parts={p: _ww_text(k) for p, k in u}, keys={p: k for p, k in u}) for u in sc.get("westwood_v1", sc["westwood"])]
+    ww = [u for u in units if all(p in u["parts"] for p in pp)]
+    ww = rng.sample(ww, min(n_each, len(ww)))
+    items = [("generated", v.get("id"), {p: (v["parts"][p]["text"] if isinstance(v["parts"][p], dict) else v["parts"][p]) for p in pp},
+              dict(world["names"], **(v.get("names") or {}))) for v in ours]
+    items += [("westwood", "|".join(str(u["keys"][p]) for p in pp), {p: u["parts"][p] for p in pp}, {}) for u in ww]
+    rng.shuffle(items)
+    key = {L: dict(source=src, ref=ref) for L, (src, ref, _, _) in zip(LETTERS, items)}
+    md = [f"# Blind packet: {sc['title']} ({it})", ""]
+    for L, (src, ref, parts, names) in zip(LETTERS, items):
+        md += [f"## Text {L}", ""] + [f"**{sc['labels'].get(p, p)}:** " + metrics.mask(parts[p], {k: v for k, v in names.items() if k[:1].isupper()}) for p in pp]
+    return "\n".join(md), key
+
+
+def packet(world, sc, it, vs, n_each=5, half=None, avoid=()):
+    """The 10 texts (5 ours, each from another writer's town; 5 Westwood's, matched to ours in length), shuffled,
+    masked; returns (markdown, key). half (i13 on): 0 or 1, the packet of one half of the round's writers; `avoid`:
+    Westwood units (by their keys) the other half's packet holds, left out while enough others remain."""
+    if it in LEGACY: return packet_v1(world, sc, it, vs, n_each)
+    rng = random.Random(_seed(sc["id"], it) + (0 if half is None else 1 + half))
+    pp = sc["packet_parts"]
+    cands = [v for v in vs if all(p in v["parts"] for p in pp)]
+    if half is not None:                                    # the writers split in two, the same split for every scenario
+        ids = list(range(1, 11)); random.Random(_seed(it, "halves")).shuffle(ids)
+        mine = set(ids[:5] if half == 0 else ids[5:])
+        cands = [v for v in cands if v.get("id") in mine]
+    txt = lambda v: {p: (v["parts"][p]["text"] if isinstance(v["parts"][p], dict) else v["parts"][p]) for p in pp}
+    full = [u for u in ww_units(sc) if all(p in u["parts"] for p in pp)]
+    dp = os.path.join(OUT, f"dealt_{it}.json")             # v10: no Westwood unit beside a text written from it
+    dealt = json.load(open(dp)) if os.path.exists(dp) else None
+
+    S_ = westwood.strings()
+
+    def allowed(sel):
+        if not dealt: return full
+        if is_blend(it):                                    # a blend draws from other scenarios' pools: only its own deals
+            banned = {k for v in sel for k in (dealt.get(str(v.get("id"))) or {}).get(sc["id"], [])}
+        else:
+            banned = {k for v in sel for keys in (dealt.get(str(v.get("id"))) or {}).values() for k in keys}
+        out = [u for u in full if not any(k in banned for kk in u["keys"].values() for k in (kk if isinstance(kk, list) else [kk]))]
+        if it not in ("i10",):                              # (i11 on) and no near-copy of a dealt line under another key
+            import difflib
+            bt = [S_[k] for k in banned if k in S_]
+            out = [u for u in out if not any(difflib.SequenceMatcher(None, t, b).ratio() > 0.6
+                                             for t in u["parts"].values() for b in bt)]
+        return out
+    best = None
+    for _ in range(300 if dealt else 1):                    # five of ours that leave five Westwood units to set beside them
+        sel = rng.sample(cands, min(n_each, len(cands)))
+        left = allowed(sel)
+        if best is None or len(left) > len(best[1]): best = (sel, left)
+        if len(left) >= n_each: break
+    ours, pool = best
+    pool = list(pool)
+    rng.shuffle(pool)
+    if avoid:
+        rest = [u for u in pool if not any(str(x) in avoid for x in u["keys"].values())]
+        if len(rest) >= len(ours): pool = rest
+    ww = []
+    matched = []
+    for v in sorted(ours, key=lambda v: -_words(txt(v))):    # the Westwood unit nearest in length to each of ours
+        pool = [u for u in pool if not _shares(u, ww, pp)]  # no line twice in a packet
+        if not pool: break
+        u = min(pool, key=lambda u: abs(_words({p: u["parts"][p] for p in pp}) - _words(txt(v))))
+        pool.remove(u); ww.append(u); matched.append(v)
+    ours = matched                                          # as many of ours as Westwood units, half and half
+    items = [("generated", v.get("id"), txt(v), dict(world["names"], **(v.get("names") or {}))) for v in ours]
+    items += [("westwood", "|".join(str(u["keys"][p]) for p in pp), {p: u["parts"][p] for p in pp}, {}) for u in ww]
+    rng.shuffle(items)
+    return _md_items(sc, it, items, packet_id(sc["id"], it, half=half))
+
+
+def packets(world, sc, it, vs):
+    """[(half, markdown, key)]: one packet a scenario, or (i13 on) one for each half of the writers."""
+    out, used = [], set()
+    for h in halves(it):
+        md, key = packet(world, sc, it, vs, half=h, avoid=used)
+        used |= {x for k in key.values() if k["source"] == "westwood" for x in k["ref"].split("|")}
+        out.append((h, md, key))
+    return out
+
+
+def control_packet(sc, it):
+    """Ten of Westwood's own units, five of them falsely keyed as ours: what a judge that must call five 'generated'
+    does when nothing is. Returns (markdown, key), or None when the pool has fewer than ten."""
+    rng = random.Random(_seed(sc["id"], it, "control"))
+    pp = sc["packet_parts"]
+    extra = [dict(parts={p: _ww_text(k) for p, k in u}, keys={p: k for p, k in u}) for u in sc.get("control_extra", [])]
+    pool = [u for u in ww_units(sc) + extra if all(p in u["parts"] for p in pp)]
+    if it != "i4":                                       # (i4's controls were judged before this rule)
+        rng.shuffle(pool)
+        uniq = []
+        for u in pool:
+            if not _shares(u, uniq, pp): uniq.append(u)
+        pool = uniq
+    if len(pool) < 10: return None
+    ww = rng.sample(pool, 10)
+    fake = set(rng.sample(range(10), 5))
+    items = [("westwood", "|".join(str(u["keys"][p]) for p in pp), {p: u["parts"][p] for p in pp}, {}) for u in ww]
+    md, key = _md_items(sc, it, items, packet_id(sc["id"], it, True))
+    for i, L in enumerate(LETTERS):                      # every text is Westwood's; "generated" in the key is a decoy
+        key[L]["source"] = "generated" if i in fake else "westwood"
+    return md, key
+
+
+def write_packet(sid, it, md, key, control=False, half=None):
+    pid = packet_id(sid, it, control, half)
+    bd = os.path.join(OUT, "_blind", it); os.makedirs(bd, exist_ok=True)
+    open(os.path.join(bd, f"{pid}.md"), "w", encoding="utf-8").write(md)
+    kd = os.path.join(OUT, "_keys", it); os.makedirs(kd, exist_ok=True)
+    json.dump(dict(scenario=sid, control=control, key=key), open(os.path.join(kd, f"{pid}.json"), "w", encoding="utf-8"), indent=1)
+    return pid
+
+
+def solo(it, per_judge=3):
+    """The solo protocol: every text of a round's packets alone in its own file (no side-by-side, no quota), dealt
+    to judges three at a time, of different kinds. Writes review/out/storylab/_solo/<it>/<id>.md, the key, and the
+    judges' lists; reads review/storylab/judgements/<it>/solo/<id>.json when present."""
+    world, S = scenarios()
+    sd = os.path.join(OUT, "_solo", it); os.makedirs(sd, exist_ok=True)
+    key, texts = {}, []
+    for sid, sc in S.items():
+        vd = variants_of(it, sid)
+        if not vd: continue
+        for h, md, k in packets(world, sc, it, vd["variants"][:10]):
+          blocks = re.split(r"^## Text ([A-J])\n", md, flags=re.M)
+          for L, body in zip(blocks[1::2], blocks[2::2]):
+            tid = hashlib.sha1((f"{sid}|{it}|{L}|solo" if h is None else f"{sid}|{it}|{h}|{L}|solo").encode()).hexdigest()[:6]
+            open(os.path.join(sd, f"{tid}.md"), "w", encoding="utf-8").write(
+                f"# Text {tid}: {sc['title']}\n\nOne text, alone. Judge by review/storylab/JUDGE_SOLO.md.\n\n{body.strip()}\n")
+            key[tid] = dict(scenario=sid, source=k[L]["source"], ref=k[L]["ref"])
+            texts.append(tid)
+    json.dump(key, open(os.path.join(OUT, "_keys", it, "solo.json"), "w", encoding="utf-8"), indent=1)
+    rng = random.Random(_seed(it, "solo"))
+    by = collections.defaultdict(list)
+    for t in texts: by[key[t]["scenario"]].append(t)
+    for v in by.values(): rng.shuffle(v)
+    judges = []
+    while any(by.values()):
+        kinds = sorted((k for k in by if by[k]), key=lambda k: -len(by[k]))[:per_judge]
+        judges.append([by[k].pop() for k in kinds])
+    open(os.path.join(sd, "judges.json"), "w").write(json.dumps(judges))
+    # results
+    jd = os.path.join(LAB, "judgements", it, "solo")
+    got = {}
+    if os.path.isdir(jd):
+        for f in os.listdir(jd):
+            j = json.load(open(os.path.join(jd, f), encoding="utf-8")); got[j.get("text", f[:-5])] = j
+    if got:
+        res = [(key[t], got[t]) for t in got if t in key]
+        acc = sum(1 for k, j in res if j["verdict"] == k["source"]) / len(res)
+        ours = [j for k, j in res if k["source"] == "generated"]; ww = [j for k, j in res if k["source"] == "westwood"]
+        caught = sum(1 for j in ours if j["verdict"] == "generated") / max(1, len(ours))
+        fa = sum(1 for j in ww if j["verdict"] == "generated") / max(1, len(ww))
+        m = lambda xs, f: statistics.mean(f(x) for x in xs) if xs else 0
+        print(f"solo {it}: {len(res)} texts judged alone; accuracy {acc:.0%}; ours called generated {caught:.0%}, "
+              f"Westwood's called generated {fa:.0%}; score ours {m(ours, lambda j: j['score']):.1f}, Westwood "
+              f"{m(ww, lambda j: j['score']):.1f}; confidence on ours {m(ours, lambda j: j['confidence']):.1f}")
+    print(f"{len(texts)} solo texts, {len(judges)} judges -> review/out/storylab/_solo/{it}/judges.json")
+    return judges
+
+
+def run_control(sc, it):
+    r = control_packet(sc, it)
+    if not r: return None
+    md, key = r
+    pid = write_packet(sc["id"], it, md, key, control=True)
+    br = blind_results(key, judgement_of(it, sc["id"], control=True))
+    if not br:
+        print(f"{sc['id']:15s} {it:10s} control packet {pid}: not judged"); return None
+    its = br["items"].values()
+    conf = statistics.mean(i.get("confidence", 0) for i in its)
+    called = [i["score"] for i in its if i["verdict"] == "generated"]
+    kept = [i["score"] for i in its if i["verdict"] == "westwood"]
+    row = dict(scenario=sc["id"], iter=it, control=True, accuracy=br["accuracy"], confidence=conf,
+               score_called_gen=statistics.mean(called) if called else None,
+               score_called_ww=statistics.mean(kept) if kept else None, score_all=statistics.mean(called + kept),
+               conf_gen=statistics.mean(i.get("confidence", 0) for i in its if i["verdict"] == "generated"),
+               tells=br["tells"])
+    print(f"{sc['id']:15s} {it:10s} control {pid}: acc {br['accuracy']:.0%} (chance by construction), confidence "
+          f"{conf:.1f}; scores: called generated {row['score_called_gen']:.1f}, called Westwood {row['score_called_ww']:.1f}")
+    return row
 
 
 # ---- the scorecard --------------------------------------------------------------------------------------------------
@@ -165,17 +426,34 @@ def run(world, sc, it, n):
     vs = vd["variants"][:n]
     res = [(v, judge_variant(world, sc, v)) for v in vs]
     wres = [(u, judge_ww(sc, u)) for u in ww_units(sc)]
-    md_packet, key = packet(world, sc, it, vs)
     d = os.path.join(OUT, sc["id"], it); os.makedirs(d, exist_ok=True)
-    open(os.path.join(d, "packet.md"), "w", encoding="utf-8").write(md_packet)
-    kd = os.path.join(OUT, "_keys", it); os.makedirs(kd, exist_ok=True)
-    json.dump(key, open(os.path.join(kd, f"{sc['id']}.json"), "w", encoding="utf-8"), indent=1)
-    br = blind_results(key, judgement_of(it, sc["id"]))
+    key, brs, pids = {}, [], []
+    for h, md_packet, k in packets(world, sc, it, vs):
+        pids.append(write_packet(sc["id"], it, md_packet, k, half=h))
+        if it in LEGACY: open(os.path.join(d, "packet.md"), "w", encoding="utf-8").write(md_packet)
+        b = blind_results(k, judgement_of(it, sc["id"], half=h))
+        pre = "" if h is None else f"{h}:"
+        key.update({pre + L: x for L, x in k.items()})
+        if b: brs.append((pre, b, len(k)))
+    pid = ", ".join(pids)
+    br = None
+    if brs:                                                 # the packets' results pooled, text by text
+        n = sum(x for _, _, x in brs)
+        items = {pre + L: i for pre, b, _ in brs for L, i in b["items"].items()}
+        kk = {L: x for L, x in key.items() if L in items}
+        gen = [items[L]["score"] for L, x in kk.items() if x["source"] == "generated"]
+        ww_ = [items[L]["score"] for L, x in kk.items() if x["source"] == "westwood"]
+        br = dict(accuracy=sum(b["accuracy"] * x for _, b, x in brs) / n,
+                  detected=sum(1 for L, x in kk.items() if x["source"] == "generated" and items[L]["verdict"] == "generated") / max(1, len(gen)),
+                  score_gen=statistics.mean(gen) if gen else 0, score_ww=statistics.mean(ww_) if ww_ else 0, items=items,
+                  tells=[t for _, b, _ in brs for t in b["tells"]], packets=len(brs))
+        key = kk
     same, same_flags = sameness(vs)
     m_gen = statistics.mean(r["score"] for _, r in res) - same
     m_ww = statistics.mean(r["score"] for _, r in wres)
     # the scorecard
     L = [f"# {sc['title']}: {it}", "", f"Writer: {vd.get('writer', '?')}; guide: {vd.get('guide', '?')}", "",
+         f"Blind packet(s): review/out/storylab/_blind/{it}/ {pid}", "",
          f"**Metric judge:** ours {m_gen:.2f} / 10 (n={len(res)}), Westwood's units {m_ww:.2f} (n={len(wres)}).", ""]
     L += [f"- {f}" for f in same_flags] + ([""] if same_flags else [])
     if br:
@@ -245,6 +523,26 @@ def summary():
         L.append(f"| {it} | {statistics.mean(r['metric_gen'] for r in rs):.2f} | "
                  + (f"{statistics.mean(r['accuracy'] for r in j):.0%} | {statistics.mean(r['blind_gen'] for r in j):.1f} | "
                     f"{statistics.mean(r['blind_ww'] for r in j):.1f} |" if j else "- | - | - |"))
+    crow = []
+    for it in its:
+        for sid, sc in S.items():
+            import io, contextlib
+            with contextlib.redirect_stdout(io.StringIO()):
+                r = run_control(sc, it)
+            if r: crow.append(r)
+    if crow:
+        L += ["", "## Controls (ten of Westwood's texts, five falsely keyed as ours)", "",
+              "Accuracy is chance by construction (50% expected; a packet lands on 0-100% in steps of 20, sd 17 points; "
+              "the mean of n packets has sd 17/sqrt(n)). What the control measures is the judge: how sure it is when "
+              "nothing is to be found, and how far calling a text 'generated' pulls its score down.", "",
+              "| iter | packets | accuracy | confidence | score called generated | score called Westwood | all |",
+              "|---|---|---|---|---|---|---|"]
+        cb = collections.defaultdict(list)
+        for r in crow: cb[r["iter"]].append(r)
+        for it, rs in cb.items():
+            m = lambda k: statistics.mean(r[k] for r in rs)
+            L.append(f"| {it} | {len(rs)} | {m('accuracy'):.0%} | {m('confidence'):.1f} | {m('score_called_gen'):.1f} | "
+                     f"{m('score_called_ww'):.1f} | {m('score_all'):.1f} |")
     os.makedirs(OUT, exist_ok=True)
     open(os.path.join(OUT, "SUMMARY.md"), "w", encoding="utf-8").write("\n".join(L))
     print("\n".join(L))
@@ -252,46 +550,132 @@ def summary():
 
 # ---- the writer's brief ---------------------------------------------------------------------------------------------
 
-def brief(it, baseline=False):
+TOWNS = ["Brackenford (the template map below)", "a cave town of miners under a mountain", "a swamp hamlet on stilts",
+         "a castle town with a garrison", "a lake village of fishermen", "a wizards' college town",
+         "a frozen fort on a mountain pass", "a lava-forge town of smiths", "a crossroads inn and its hamlet",
+         "a farming town troubled by Ogres"]
+
+# the town scenario: a cross-section of the writer's town, taken from its other scenarios (the quest varies by town)
+TOWN_FROM = dict(guard=("guard_bark", "first"), shop=("shop_greeting", None), townsfolk1=("rumour", "rumour1"),
+                 townsfolk2=("rumour", "rumour3"))
+
+
+def town_variant(n, scen):
+    """The whole-town cross-section of writer n's map, from its own scenarios."""
+    q = ("bounty_offer", "heirloom_fetch")[n % 2]
+    shop = ("inn", "arms", "magic")[n % 3]
+    src = dict(offer=(q, "offer"), completion=(q, "completion"), journal=(q, "journal"), **TOWN_FROM)
+    parts = {}
+    for p, (sid, part) in src.items():
+        v = scen.get(sid) or {}
+        x = (v.get("parts") or {}).get(part or shop)
+        if x is not None: parts[p] = x
+    names = {}
+    for sid in {x[0] for x in src.values()}: names.update((scen.get(sid) or {}).get("names") or {})
+    return dict(specifics=f"cross-section: {q}, the {shop}, a guard, two townsfolk", names=names, parts=parts)
+
+
+def brief(it, baseline=False, writers=10):
+    """One brief a writer: review/out/storylab/brief_<it>_w<n>.md (the brief REVIEW/storylab/WRITER.md, the town, the
+    scenarios)."""
     world, S = scenarios()
-    L = [f"# Story lab brief: {it}", "",
-         "You write dialogue and quest text for Nox single-player maps (OpenNox). For each scenario below write 10 "
-         "variants, as JSON, to `review/storylab/variants/%s/<scenario id>.json` in the worktree." % it, ""]
-    if baseline:
-        L += ["Write the way the map-building agents write today: read `skills/nox-story-map/SKILL.md` (section 1, "
-              "'Write the story first') and the story of `mapgen/designs/starwell.py` (its q.say, q.journal, RUMOURS "
-              "and GREET text) as the house style. Do not read rules/DIALOGUE.md, the game's string table (nox.csf) or "
-              "anything under review/storylab/: this brief has all you need.", ""]
-    else:
-        L += ["Follow the style guide `rules/DIALOGUE.md` and the quest patterns in `rules/QUESTS.md` closely. Do "
-              "not read the game's string table (nox.csf) or anything under review/storylab/ (this brief has all you "
-              "need): write new lines; lines copied from the campaign are penalised.", ""]
-    L += ["## The map", "", world["summary"], "",
-          "Names already on the map: " + ", ".join(f"{k} ({v})" for k, v in world["names"].items()), "",
-          "## The variants", "",
-          "Variant 1 takes the scenario as written, in Brackenford. Variants 2-10 are the same kind of situation on "
-          "other generated maps, one each: " + SETTINGS + " Each changes who asks, the beast, item, captive or place, "
-          "and why, so that no two read alike, and the ten do not share one skeleton (vary length, opening, ending). "
-          "Every person, place or named thing a variant mentions that is not on Brackenford's list goes in the "
-          "variant's `names` ({name: person|place|thing|group}). Rewards: gold within the scenario's budget, items "
-          "only from its list.", "",
-          "```json", json.dumps({"scenario": "<id>", "iter": it, "writer": "<who wrote it>", "guide": "<the guide you followed>",
-                                 "variants": [{"id": 1, "specifics": "<one line: who, what, where>",
-                                               "names": {"<New Name>": "person"},
-                                               "parts": {"<part>": {"speaker": "<name>", "text": "<the line>"}},
-                                               "reward": {"gold": 0, "items": []}}]}, indent=1), "```", "",
-          "Text is plain: a page break inside a long speech is a blank line (\"\\n\\n\"). A journal entry's speaker is "
-          "\"\".", ""]
-    for sid, sc in S.items():
-        L += [f"## {sid}: {sc['title']}", "", sc["situation"], "",
-              "Parts: " + "; ".join(f"`{p}` ({s}{', ' + who if who else ''})" for p, s, who in sc["parts"])]
-        if sc.get("reward"):
-            L.append(f"Reward: at most {sc['reward']['budget']} gold; items from {sc['reward']['items']}.")
-        L.append("")
+    guide = open(os.path.join(LAB, "WRITER.md"), encoding="utf-8").read()
     os.makedirs(OUT, exist_ok=True)
-    p = os.path.join(OUT, f"brief_{it}.md")
-    open(p, "w", encoding="utf-8").write("\n".join(L))
-    print(f"wrote {os.path.relpath(p, REPO)}")
+    for n in range(1, writers + 1):
+        L = [f"# Story lab brief: {it}, writer {n}", "", guide, "", "## Your town", ""]
+        if n == 1:
+            L += [f"Town 1 is the template map, **Brackenford**: {world['summary']}", "",
+                  "Names already on the map: " + ", ".join(f"{k} ({v})" for k, v in world["names"].items()) + ". "
+                  "Add others as you need them.", ""]
+        else:
+            L += [f"Town {n} is **{TOWNS[n - 1]}**. Invent it: its name; the chapter's trouble (who or what threatens "
+                  "the region: the main quest is about it, and most people in town know of it); the patron who sent "
+                  "the player here (as Westwood's Captain, Horrendous or Horvath send the player on); 8-14 people with "
+                  "Nox-like names (short, odd fantasy names in the manner of Theogrin, Gearhart, Byzanti, Mlurgh, "
+                  "Grillf, Lydia, Henrick, but not these); a few places. The troubles of the scenarios below become "
+                  "this town's own (another beast, thing, captive, deal).", ""]
+        scen_parts = [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"
+                      and (sid in LONG_SCEN or not is_blend(it))]
+        if is_blend(it) and it not in ("i13", "i15"):   # v14: each quest part from another Westwood quest's line
+            import cards
+            if n == 1: dealer, dealt = cards.FrameDealer(it), {}
+            pmd, used, need = cards.part_frames_card(dealer, scen_parts)
+            dealt[n] = used
+            fmd = cards.frames_card(dealer, need)[1].replace(
+                "Each part of your town is a rewrite of its frame.",
+                "The other parts (journal entries, the captive, the townsman) each take their rhythm from a line frame.")
+            L += [pmd, fmd, ""]
+            json.dump(dealt, open(os.path.join(OUT, f"dealt_{it}.json"), "w"), indent=1)
+        elif it == "i13":                               # v13: blended quests, line frames where the shape has no part
+            import cards
+            if n == 1: dealer, dealt, arms = cards.FrameDealer(it), {}, {}
+            bmd, used, arm, need = cards.blend_card(dealer, scen_parts)
+            dealt[n], arms[n] = used, arm
+            fmd = cards.frames_card(dealer, need)[1].replace(
+                "Each part of your town is a rewrite of its frame.",
+                "The parts below have no part of the same name in their quest's shape (A): each takes its rhythm from "
+                "this line frame instead, its matter from your quest.")
+            L += [bmd, fmd, ""]
+            json.dump(dealt, open(os.path.join(OUT, f"dealt_{it}.json"), "w"), indent=1)
+            json.dump(arms, open(os.path.join(OUT, f"arms_{it}.json"), "w"), indent=1)
+        elif it in ("i5", "i6"):                          # v5-v6: a card of shapes and model lines
+            import cards
+            L += [cards.card(f"{it}-{n}", scen_parts), ""]
+        elif it == "i7":                                # v7: a Westwood frame for every part, dealt for the round
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.frames_card(dealer, scen_parts)[1], ""]
+        elif it == "i8":                                # v8: premises dealt; frames for the short lines only
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.premise_card(dealer), cards.frames_card(dealer, scen_parts, long=False)[1], ""]
+        elif it == "i9":                                # v9: frames for the short lines, sentence frames for the long
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.frames_card(dealer, scen_parts, long=False)[1], cards.sentence_frames_card(dealer, scen_parts), ""]
+        elif it not in ("i4",):                         # v10 on: frames for the short lines, a Westwood quest a quest
+            import cards
+            if n == 1: dealer, dealt = cards.FrameDealer(it), {}
+            qmd, used = cards.quest_frames_card(dealer, scen_parts)
+            dealt[n] = used
+            short = [(sid, ps) for sid, ps in scen_parts if sid not in cards.QUEST_SCENARIOS]
+            short += [(sid, [(p, st) for p, st in ps if p in ("herald",)])
+                      for sid, ps in scen_parts if sid in cards.QUEST_SCENARIOS]
+            L += [qmd, cards.frames_card(dealer, short, long=False)[1], ""]
+            json.dump(dealt, open(os.path.join(OUT, f"dealt_{it}.json"), "w"), indent=1)
+        L += ["## What to write", "",
+              "Every scenario below, as one town's lines, by you alone (do not look at other writers' files). "
+              "Each scenario's people are this town's people; one person may appear in two scenarios.", ""]
+        for sid, sc in S.items():
+            if sid == "town" or (is_blend(it) and sid not in LONG_SCEN): continue
+            L += [f"### {sid}: {sc['title']}", "", sc["situation"], "",
+                  "Parts: " + "; ".join(f"`{p}` ({st}{', ' + who if who and n == 1 else ''})" for p, st, who in sc["parts"])]
+            if sc.get("reward"):
+                L.append(f"Reward: at most {sc['reward']['budget']} gold; items only from {sc['reward']['items']}.")
+            L.append("")
+        L += ["## The file", "",
+              f"Write `review/storylab/variants/{it}/maps/{n}.json` (in the worktree; nothing else):", "", "```json",
+              json.dumps({"iter": it, "writer": "<agent and model>", "guide": "WRITER.md + exemplars + frames",
+                          "map": {"name": "<town>", "setting": TOWNS[n - 1], "trouble": "<the chapter's trouble, a line>",
+                                  "names": {"<Every Name you use>": "person|place|thing|group"}},
+                          "scenarios": {"<scenario id>": {"specifics": "<one line: who, what>", "names": {},
+                                                          "parts": {"<part>": {"speaker": "<name>", "text": "<the line>"}},
+                                                          "reward": {"gold": 0, "items": []}}}}, indent=1),
+              "```", "",
+              "Every person, place or named thing a line mentions goes in `map.names`. Check the JSON parses "
+              "(`py -c \"import json;json.load(open('review/storylab/variants/%s/maps/%d.json',encoding='utf-8'))\"`)." % (it, n),
+              "", "Read nothing else under `review/storylab/` than `exemplars/` and `WRITER.md`, and never the game's "
+              "string table (nox.csf): the lab compares your text with the campaign's, and copied lines are penalised.", ""]
+        if is_blend(it):
+            L += ["When the file is written, check it against Westwood's campaign: `py tests/storylab.py originality "
+                  f"--file review/storylab/variants/{it}/maps/{n}.json`. It prints the closest Westwood line or quest for "
+                  "anything too close: a line that copies five words in a row, a line closer to one of Westwood's than "
+                  "Westwood's own lines come to each other, a quest whose skeleton (its sentences with the content words "
+                  "taken out) follows one Westwood quest. Rewrite what it flags in your own words until it passes; change "
+                  "nothing it does not flag.", ""]
+        p = os.path.join(OUT, f"brief_{it}_w{n}.md")
+        open(p, "w", encoding="utf-8").write("\n".join(L))
+    print(f"wrote review/out/storylab/brief_{it}_w1..{writers}.md")
 
 
 # ---- Westwood -------------------------------------------------------------------------------------------------------
@@ -413,6 +797,118 @@ def extract_design(path):
     return out, src
 
 
+def find_modes(min_towns=3):
+    """review/storylab/modes.json: four-word phrases that three or more towns of one round wrote (not in a journal,
+    not a name) and Westwood's campaign never has."""
+    vdir = os.path.join(LAB, "variants")
+    ww4 = set()
+    for r in westwood.campaign():
+        w = [x.lower() for x in metrics.words(r["text"])]
+        ww4 |= {tuple(w[i:i + 4]) for i in range(len(w) - 3)}
+    found = collections.Counter()
+    for it in sorted(os.listdir(vdir)):
+        md = os.path.join(vdir, it, "maps")
+        if not os.path.isdir(md): continue
+        per = collections.defaultdict(set)
+        for f in os.listdir(md):
+            m = json.load(open(os.path.join(md, f), encoding="utf-8"))
+            names = {w.lower() for n in (m.get("map", {}).get("names") or {}) for w in metrics.words(n)}
+            for sid, v in (m.get("scenarios") or {}).items():
+                for p, x in v["parts"].items():
+                    if p.startswith("journal"): continue
+                    w = [y.lower() for y in metrics.words(x["text"] if isinstance(x, dict) else x)]
+                    for i in range(len(w) - 3):
+                        g = tuple(w[i:i + 4])
+                        if g in ww4 or any(y in names for y in g): continue
+                        per[g].add(f)
+        for g, fs in per.items():
+            if len(fs) >= min_towns: found[" ".join(g)] = max(found[" ".join(g)], len(fs))
+    out = dict(_doc=find_modes.__doc__.strip(), phrases=sorted(found), towns=dict(sorted(found.items(), key=lambda x: -x[1])))
+    json.dump(out, open(os.path.join(LAB, "modes.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    print(f"{len(found)} phrases -> review/storylab/modes.json")
+    for g, n in sorted(found.items(), key=lambda x: -x[1])[:40]: print(f"  {n}  {g}")
+
+
+# ---- originality ----------------------------------------------------------------------------------------------------
+
+QSIT = {"offer": "offer", "plea": "offer", "opening": "offer", "offer_a": "offer", "offer_b": "offer",
+        "reminder": "reminder", "completion": "completion", "outcome_a": "completion", "outcome_b": "completion",
+        "after": "after", "refusal": "refusal"}
+
+
+def quests_of(sid, parts):
+    """A scenario's quests as {situation: text} (two_givers holds two)."""
+    t = lambda x: x["text"] if isinstance(x, dict) else x
+    if sid == "two_givers":
+        return [{QSIT[p]: t(parts[p]) for p in (f"offer_{s}", f"outcome_{s}") if p in parts} for s in "ab"]
+    q = {QSIT[p]: t(x) for p, x in parts.items() if p in QSIT}
+    return [q] if "offer" in q else []
+
+
+def originality_of_map(m, dealt=None, verbose=False):
+    """A writer's town (variants/<it>/maps/<n>.json) against Westwood: (summary, [flag lines])."""
+    import originality as O
+    lr, qr, out = [], [], []
+    for sid, v in (m.get("scenarios") or {}).items():
+        for p, x in v["parts"].items():
+            t = x["text"] if isinstance(x, dict) else x
+            r = O.judge_line(t); lr.append(r)
+            if r["flags"]: out.append(f"{sid}.{p}: {'; '.join(r['flags'])}  | {t[:90]}".replace(chr(10), ' '))
+        for i, q in enumerate(quests_of(sid, v["parts"])):
+            r = O.judge_quest(q); r["sid"] = sid; qr.append(r)
+            src = ""
+            if dealt and sid in dealt:
+                srcs = [u for u in O.ww_quests() if u["keys"] & set(dealt[sid])]
+                if srcs: src = f"; its frames {max(O.quest_sim(q, u)[0] for u in srcs):.2f}"
+            if r["flag"] or verbose:
+                out.append(f"{sid} quest{' ' + 'ab'[i] if sid == 'two_givers' else ''}: skeleton {r['sim']:.2f} to "
+                           f"{r['nearest']} {r['detail']} (Westwood p99 {r['threshold']:.2f}){src}"
+                           + ("  FLAG" if r["flag"] else ""))
+    return O.summarise(lr, qr), out, qr
+
+
+def originality_round(it, verbose=False):
+    import originality as O
+    md = os.path.join(LAB, "variants", it, "maps")
+    dp = os.path.join(OUT, f"dealt_{it}.json")
+    dealt = json.load(open(dp)) if os.path.exists(dp) else {}
+    allq, alll = [], []
+    L = [f"# Originality: {it}", "", "Every line and quest of the round against Westwood's campaign "
+         "(review/storylab/originality.py; thresholds: Westwood against itself, review/storylab/originality.json).", ""]
+    for f in sorted(os.listdir(md), key=lambda f: int(re.sub(r"\D", "", f) or 0)):
+        m = json.load(open(os.path.join(md, f), encoding="utf-8"))
+        n = re.sub(r"\D", "", f)
+        s, out, qr = originality_of_map(m, (dealt.get(n) or {}), verbose)
+        allq += qr
+        L += [f"## writer {n}", "", O.report(s), ""] + [f"- {x}" for x in out] + [""]
+        alll.append(s)
+    tot = dict(lines=sum(s["lines"] for s in alll), copies=sum(s["copies"] for s in alll),
+               flagged=sum(s["flagged"] * s["lines"] for s in alll) / max(1, sum(s["lines"] for s in alll)),
+               rel=(statistics.mean(s["rel_ngram"] for s in alll), statistics.mean(s["rel_edit"] for s in alll)),
+               qf=sum(1 for q in allq if q["flag"]), q95=sum(1 for q in allq if q["above95"]), q=len(allq), qmed=statistics.median(q["sim"] for q in allq) if allq else 0)
+    head = (f"**Round:** {tot['lines']} lines, above Westwood's p95 {tot['flagged']:.0%} (at most 10%), relative medians "
+            f"{tot['rel'][0]:.2f} / {tot['rel'][1]:.2f} (at most 1.00), copied 5-word runs {tot['copies']}; quests "
+            f"{tot['q']}, skeleton to the nearest Westwood quest median {tot['qmed']:.2f} (Westwood to itself: median "
+            f"{O.cal()['quests']['p50']:.2f}, p95 {O.cal()['quests']['p95']:.2f}, p99 {O.cal()['quests']['p99']:.2f}), above p95 "
+            f"{tot['q95']} (at most 10%), above p99 {tot['qf']} (none)")
+    L.insert(4, head); L.insert(5, "")
+    d = os.path.join(OUT, "originality"); os.makedirs(d, exist_ok=True)
+    open(os.path.join(d, f"{it}.md"), "w", encoding="utf-8").write("\n".join(L))
+    print(head)
+    print(f"-> review/out/storylab/originality/{it}.md")
+    return tot
+
+
+def originality_file(path):
+    """One writer's file (variants/<it>/maps/<n>.json) against Westwood, every flag printed: for writers and map agents."""
+    import originality as O
+    m = json.load(open(path, encoding="utf-8"))
+    s, out, _ = originality_of_map(m, verbose=True)
+    print(O.report(s))
+    for x in out: print("  " + x)
+    return 0 if s["ok"] else 1
+
+
 def check(design):
     lines, src = extract_design(design)
     if not lines:
@@ -460,6 +956,25 @@ def check(design):
           f"- journal entries: {len(j)}, in the first person: {len(j1)} (Westwood: objectives, 'Retrieve the ...', never 'I')",
           f"- lines that exclaim: {ex:.0%} (Westwood {st['excl']['mean']:.0%}); that address the player: {ad:.0%} (Westwood {st['address']['mean']:.0%})",
           f"- lines per talker: " + ", ".join(f"{k} {v}" for k, v in per_talker.most_common()), ""]
+    # originality: every line and every giver's quest against Westwood (review/storylab/originality.py)
+    import originality as O
+    olr, oqr, oflags = [], [], []
+    for l in lines:
+        if l["role"] in ("sign",): continue
+        r = O.judge_line(l["text"]); olr.append(r)
+        if r["flags"]: oflags.append(f"line {l['line']} ({l['talker']}): {'; '.join(r['flags'])}")
+    quests = collections.defaultdict(dict)
+    for l in lines:
+        if l["kind"] == "say" and l["role"] in O.QUEST_PARTS:
+            quests[l["talker"]].setdefault(l["role"], []).append(l["text"])
+    for who, parts in quests.items():
+        if "offer" not in parts: continue
+        r = O.judge_quest({p: "\n\n".join(v) for p, v in parts.items()}); oqr.append(r)
+        if r["above95"]:
+            oflags.append(f"{who}'s quest: skeleton {r['sim']:.2f} to Westwood's {r['nearest']} {r['detail']} "
+                          f"({'FLAG: one to one' if r['flag'] else 'above Westwood p95'})")
+    osum = O.summarise(olr, oqr)
+    L += ["## Originality", "", O.report(osum), ""] + [f"- {x}" for x in oflags] + [""]
     L += ["## Lines below 7", "", "| line | situation | score | text | flags |", "|---|---|---|---|---|"]
     for l, r, fl in sorted(rows, key=lambda x: x[1]["score"]):
         if r["score"] >= 7 and not any("named once" in f for f in fl): continue
@@ -479,6 +994,10 @@ def main():
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--baseline", action="store_true")
     ap.add_argument("--check", metavar="DESIGN")
+    ap.add_argument("--seed", help="card, frames: the map's seed (its name)")
+    ap.add_argument("--file", help="originality: one writer's map file")
+    ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--parts", help='frames: "who:part,part; who:part" (default: a town with a main quest, three errands, a rescue, guards, shops, townsfolk)')
     a = ap.parse_args()
     if a.check: sys.exit(check(a.check))
     world, S = scenarios()
@@ -487,6 +1006,28 @@ def main():
     elif a.what == "brief": brief(a.iter, a.baseline)
     elif a.what == "summary": summary()
     elif a.what == "westwood": show_westwood()
+    elif a.what == "merge": merge(a.iter)
+    elif a.what == "solo": solo(a.iter)
+    elif a.what == "frames":
+        import cards
+        txt = cards.map_frames(a.seed or "map", a.parts or cards.DEFAULT_MAP_PARTS)
+        d = os.path.join(OUT, "frames"); os.makedirs(d, exist_ok=True)
+        p = os.path.join(d, f"{a.seed or 'map'}.md"); open(p, "w", encoding="utf-8").write(txt)
+        print(f"wrote {os.path.relpath(p, REPO)}")
+    elif a.what == "modes": find_modes()
+    elif a.what == "originality":
+        if a.file: sys.exit(originality_file(a.file))
+        originality_round(a.iter, a.verbose)
+    elif a.what == "card":
+        import cards
+        print(cards.card(a.seed or a.iter, [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"]))
+    elif a.what == "control":
+        rows = [r for r in (run_control(sc, a.iter) for sc in S.values()) if r]
+        if rows:
+            print(f"control {a.iter}: {len(rows)} packets, accuracy {statistics.mean(r['accuracy'] for r in rows):.0%}, "
+                  f"confidence {statistics.mean(r['confidence'] for r in rows):.1f}, scores called generated "
+                  f"{statistics.mean(r['score_called_gen'] for r in rows):.1f} / called Westwood "
+                  f"{statistics.mean(r['score_called_ww'] for r in rows):.1f} / all {statistics.mean(r['score_all'] for r in rows):.1f}")
     elif a.what == "all":
         for sc in S.values(): run(world, sc, a.iter, a.n)
     elif a.what in S: run(world, S[a.what], a.iter, a.n)

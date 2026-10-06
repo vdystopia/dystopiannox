@@ -1,0 +1,319 @@
+{
+ "iter": "i7",
+ "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tarrow Crossing",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Gorbash and his Ogres hold Fort Grimmock and have shut the east road, and their raiders rob the wagons that come through the crossroads.",
+  "names": {
+   "Tarrow Crossing": "place",
+   "Tarrow": "place",
+   "Copper Kettle": "place",
+   "Town Hall": "place",
+   "Fort Grimmock": "place",
+   "Thistle Wood": "place",
+   "Gorbash": "person",
+   "Vardis": "person",
+   "Pellam": "person",
+   "Thurl": "person",
+   "Ottmar": "person",
+   "Marga": "person",
+   "Bodrick": "person",
+   "Gundar": "person",
+   "Grizelda": "person",
+   "Hobart": "person",
+   "Fitch": "person",
+   "Dorlise": "person",
+   "Corby": "person",
+   "Fenna": "person",
+   "Pimm": "person",
+   "Jory": "person",
+   "Ogres": "group",
+   "Bears": "group",
+   "Grizzly": "group",
+   "Imps": "group",
+   "Spiders": "group",
+   "Troll": "group",
+   "Ankh": "thing",
+   "Longsword": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Thurl at the east gate of Tarrow Crossing, shut while Gorbash's Ogres hold Fort Grimmock.",
+   "names": {
+    "Thurl": "person",
+    "Pellam": "person",
+    "Town Hall": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Thurl",
+     "text": "Hurry! Mayor Pellam is waiting for you upstairs in the Town Hall. There's a ladder behind the clerk's desk that will take you right up to him."
+    },
+    "again": {
+     "speaker": "Thurl",
+     "text": "We must hold this gate and make the Ogres pay for every wagon they've burned!"
+    },
+    "later": {
+     "speaker": "Thurl",
+     "text": "Those big ugly Ogres and their drums used to keep me up all night."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ottmar, a stubborn pig farmer, loses his pigs to the Bears of Thistle Wood.",
+   "names": {
+    "Ottmar": "person",
+    "Bears": "group",
+    "Grizzly": "group",
+    "Thistle Wood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottmar",
+     "text": "No matter if the Bears carry off every last pig! This farm is all I have. Even a Grizzly wouldn't dare trespass on the land of an honest man! But if you clear out their den in Thistle Wood, I'll reward you well."
+    },
+    "reminder": {
+     "speaker": "Ottmar",
+     "text": "Thanks for stopping by. Now go get those Bears."
+    },
+    "completion": {
+     "speaker": "Ottmar",
+     "text": "Thank you for killing those Bears. Here, take this shield."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Locate the Bear den in Thistle Wood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Marga, an old woman of the hamlet; the Imps of the old windmill stole her amulet.",
+   "names": {
+    "Marga": "person",
+    "Bodrick": "person",
+    "Imps": "group",
+    "Tarrow Crossing": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Marga",
+     "text": "Search the old windmill from top to bottom if you have to. If you want a torch or a rope, you can take the ones hanging by my door. The windmill is just up the west road. Will you bring my amulet back from those Imps?"
+    },
+    "refusal": {
+     "speaker": "Marga",
+     "text": "Fine, don't help an old woman. I'm doomed."
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "Hail Bodrick, one more hero off to fight the Imps."
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wonderful, my amulet. Here, have a couple of these."
+    },
+    "after": {
+     "speaker": "Marga",
+     "text": "Thanks again for your trouble! All of Tarrow Crossing will hear about your courage!\n\nBless you for your kindness!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the old windmill and recover Marga's amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fight your way into the old windmill and recover Marga's amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "RedPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tarrow Crossing: Fenna, Pimm and Jory.",
+   "names": {
+    "Fenna": "person",
+    "Pimm": "person",
+    "Jory": "person",
+    "Fort Grimmock": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fenna",
+     "text": "Hello young sir! Come find me after you've beaten the Ogres."
+    },
+    "rumour2": {
+     "speaker": "Pimm",
+     "text": "Shouldn't you be off to Fort Grimmock by now?"
+    },
+    "rumour3": {
+     "speaker": "Jory",
+     "text": "Don't give up hope now, stranger, those Ogres will run from our pitchforks!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodrick of the Copper Kettle inn, Gundar the smith, Grizelda of the magic shop.",
+   "names": {
+    "Bodrick": "person",
+    "Gundar": "person",
+    "Grizelda": "person",
+    "Copper Kettle": "place",
+    "Gorbash": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodrick",
+     "text": "I hear Gorbash's Ogres are coming down out of the hills. Might be time for me to sell the Copper Kettle and move on."
+    },
+    "arms": {
+     "speaker": "Gundar",
+     "text": "Watch your back on the east road, lad! I've got shields here big enough for two of you."
+    },
+    "magic": {
+     "speaker": "Grizelda",
+     "text": "Word gets around. Get out, before I turn you into a toad!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Hobart, a caravan master, wants the crates the Ogres took from his wagons; Fitch, a peddler at the Copper Kettle, sells a pair of boots for 80 gold.",
+   "names": {
+    "Hobart": "person",
+    "Fitch": "person",
+    "Ogres": "group",
+    "Ogre": "group",
+    "Longsword": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hobart",
+     "text": "Ogres robbed two of my wagons on the east road and one more near the old bridge. After you find the crates from the first two I'll send my drivers out after the third. I'll stay here and keep an eye on the crossroads. Find my crates and haul them back here."
+    },
+    "offer_b": {
+     "speaker": "Fitch",
+     "text": "Ah, here they are... the finest boots this side of the mountains. My uncle pulled them off a dead Ogre, back when the fort was still ours. They'll serve you well against whatever's waiting for you out on the east road.\n\nYours for 80 gold."
+    },
+    "outcome_a": {
+     "speaker": "Hobart",
+     "text": "That settles our business, stranger. Take this Longsword for your trouble, and mind what I told you about the old bridge."
+    },
+    "outcome_b": {
+     "speaker": "Fitch",
+     "text": "Congratulations, stranger! You are now the proud owner of the finest boots in all the land!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Retrieve Hobart's crates from the Ogre raiders"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find enough gold to buy Fitch's boots."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Dorlise, wife of Gundar the smith, sent her boy Corby to hide in the old mine, where the Spiders nest.",
+   "names": {
+    "Dorlise": "person",
+    "Corby": "person",
+    "Tarrow": "place",
+    "Ogres": "group",
+    "Spiders": "group",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorlise",
+     "text": "Ah, there you are. This is the blackest day in all of Tarrow -- my boy Corby is missing!\n\nI sent him to hide in the old mine in case the Ogres came through the crossroads. That mine will prove his doom should he wander into the Spiders' nest. Please, bring him home!"
+    },
+    "reminder": {
+     "speaker": "Dorlise",
+     "text": "Hmmm... don't say a word to his father. I'll try to keep him busy at the forge."
+    },
+    "found": {
+     "speaker": "Corby",
+     "text": "Let's go home to Mother!"
+    },
+    "following": {
+     "speaker": "Corby",
+     "text": "No matter if the Spiders come after us! The tunnel goes up to the light. Even Spiders won't follow us out into the sun!"
+    },
+    "completion": {
+     "speaker": "Dorlise",
+     "text": "My Corby has been found and brought home safe and sound! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the old mine and bring Corby home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pimm points the player, sent by Vardis, to Mayor Pellam in the Town Hall, who sends him against Gorbash in Fort Grimmock.",
+   "names": {
+    "Pimm": "person",
+    "Vardis": "person",
+    "Pellam": "person",
+    "Gorbash": "person",
+    "Tarrow Crossing": "place",
+    "Town Hall": "place",
+    "Fort Grimmock": "place",
+    "Ogres": "group",
+    "Troll": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pimm",
+     "text": "So you're the one Vardis sent! Welcome to Tarrow Crossing! As keepers of the crossroads, we see all manner of trouble. I'm sure you'll find Mayor Pellam in the Town Hall, he's expecting you."
+    },
+    "opening": {
+     "speaker": "Pellam",
+     "text": "I've never been inside Fort Grimmock and can only give this to you this warning as it was told to me, long ago -- beware of the Troll.\n\nGorbash and his Ogres must be driven out of that fort, lad, or the east road stays shut for good."
+    },
+    "reminder": {
+     "speaker": "Pellam",
+     "text": "The Ogres at the front gate let nobody by, lad. But find the old drain under the north wall and you're inside!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Fort Grimmock and defeat Gorbash."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

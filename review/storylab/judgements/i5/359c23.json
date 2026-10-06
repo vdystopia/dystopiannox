@@ -1,0 +1,33 @@
+{
+  "packet": "359c23",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The panicked opening is lively and Nox-like, but it points the way through a chain of landmarks ('west of the [Thing] behind the old sundial'), and the backstory about who drove the creatures off the hill is more causal tidiness than Westwood usually bothers with."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The voice is warm and the 'make heads or tails of it' aside is pleasant, but it repeats the 'west of X past Y' direction formula, adds world detail ('Nobody can set a net out there now', 'my boys and me could fish again'), and closes on a neat reward-as-promised."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The mock-grand diction ('beset', 'abominable creatures', 'liberated') and the dud-bow joke could be Westwood's, but the bow anecdote is the same template as H, which suggests one writer working a formula."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The absurd premise (a frog trapped in a burning house) and the player's cheeky reply implied through 'Loads and loads of money?' are pure Nox humour, with short exclamatory lines and '?!'."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It starts mid-conversation ('Actually, business has been somewhat slow'), says 'lad' and 'young sir', and pays '100 in gold' with an ellipsis. That is Westwood's innkeeper register, a little wordy but authentic."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The fussy cartographer is a neat comic sketch, but the 'I take it you have read my notice?' set-up, the tidy list of complaints and '100 gold pieces, and well earned' read as a polished modern pastiche rather than Westwood's blunter lines."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The repeated 'mate', 'damn fine spell', the boots stolen while bathing, and a long, literal journal entry ('...and return them to him') all fit Westwood's slightly clumsy, cheerful plainness."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "The bureaucratic comedy ('authorised', 'expungement of the bears') is over-written, the British spelling stands out, the directions are stacked ('south of the crossroads past the old well'), and the dragon-bow anecdote is padded with an extra punchline."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Young sir', the double dashes, 'dead or alive', the long gushing thanks and '500 in gold!' are Westwood's Ix-style bounty voice, including its awkward 'single handedly'."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It is a story-carrying quest with a mentor's 'Hmmm... Yes.', a robe found instead of a rescue, and a teleporter handoff. The odd self-introduction mid-speech is a typical Westwood seam."}
+  ],
+  "tells": [
+    "New texts give directions as a chain of landmarks ('west of the village past the drying racks', 'south of the crossroads past the old well'); Westwood says 'east of here' or simply names the place.",
+    "New texts set up the quest with tidy cause and effect (who drove the monsters, why the road or the fishing matters); Westwood states the problem and moves on.",
+    "New texts reuse one joke template: a reward item with a dubious provenance anecdote, then a dry undercut. Westwood's humour is more random and situational (the frog, 'Loads and loads of money?').",
+    "Westwood pays rewards in a fixed formula ('100 in gold!', '500 in gold!') and uses 'young sir', 'lad', double dashes, ellipses and '?!'. The new texts say '100 gold pieces, and well earned' or 'as I promised' in cleaner prose.",
+    "Over-elevated or bureaucratic vocabulary ('expungement', 'authorised', 'liberated') and British spelling are a giveaway; Westwood's elevated words are fewer and its American spelling is consistent."
+  ]
+}

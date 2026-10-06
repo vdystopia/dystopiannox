@@ -2,7 +2,7 @@
 
 Branch `night-tuneB`. Seed 1, 10 variants a round. Blind numbers marked **self** were judged by the tuner, who had seen
 the Westwood rooms while fixing the index (so its Westwood guesses are recognitions, not judgements); independent
-judging is queued in `review/roomlab/TO_JUDGE.md`.
+judging is queued in `review/roomlab/TO_JUDGE_tuneB.md`.
 
 ## The Westwood index (rules/rooms/westwood.py)
 

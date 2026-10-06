@@ -1,0 +1,309 @@
+{
+ "iter": "i7",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kelm",
+  "setting": "a lake village of fishermen",
+  "trouble": "Vaskor the Necromancer has raised the drowned of Lake Kelm, his Zombies hold the lighthouse on Gull Isle and the lake road is shut, and he wants the Black Pearl the village keeps.",
+  "names": {
+   "Kelm": "place",
+   "Lake Kelm": "place",
+   "Gull Isle": "place",
+   "Town Hall": "place",
+   "Bent Hook": "place",
+   "Sunken Chapel": "place",
+   "Vaskor": "person",
+   "Emmerik": "person",
+   "Gundrel": "person",
+   "Torvik": "person",
+   "Mott": "person",
+   "Gisla": "person",
+   "Brannoc": "person",
+   "Dulcie": "person",
+   "Hobb": "person",
+   "Bolo": "person",
+   "Harg": "person",
+   "Odra": "person",
+   "Fesk": "person",
+   "Skiv": "person",
+   "Gilm": "person",
+   "Orrin": "person",
+   "Black Pearl": "thing",
+   "Zombies": "group",
+   "Bears": "group",
+   "Imps": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Torvik at the lake road gate, shut by Mayor Gundrel while Vaskor's Zombies walk the shore.",
+   "names": {
+    "Torvik": "person",
+    "Gundrel": "person",
+    "Bent Hook": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torvik",
+     "text": "You look handy enough. But that won't get you through this gate! Now move along!"
+    },
+    "again": {
+     "speaker": "Torvik",
+     "text": "Stay right there, stranger! Mayor Gundrel has shut the lake road to all comers and his seal on this order says so! Turn around. There's a dry bed waiting for you at the Bent Hook! Will you go quietly, stranger?"
+    },
+    "later": {
+     "speaker": "Torvik",
+     "text": "You talked the Mayor into opening the gate!? You're mad! Now go on through! Don't come crying to me!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Mott, an old fisherman, pays a bounty on the Bears from the pine woods that raid his smokehouse.",
+   "names": {
+    "Mott": "person",
+    "Bears": "group",
+    "Lake Kelm": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mott",
+     "text": "I'm the one paying the bounty on Bears this season. The brutes have raided my smokehouse 3 nights out of 4. You have to clear out their whole den to collect.\n\nEvery hunter gets a Bow from me. This one is yours. Carry it up to their den in the pine woods when you're ready."
+    },
+    "reminder": {
+     "speaker": "Mott",
+     "text": "Those Bears are the boldest and greediest thieves on all of Lake Kelm. Your trip to their den will show whether you're fit to carry that Bow of mine."
+    },
+    "completion": {
+     "speaker": "Mott",
+     "text": "Thanks again Wanderer. You have done the whole shore a great service, one I won't soon forget. Here's your bounty."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Bears out of their den in the pine woods."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Gisla, a fisherman's widow, lost her magic lantern to the Imps of the reed caves.",
+   "names": {
+    "Gisla": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gisla",
+     "text": "I've never set foot in the reed caves and can only repeat you the warning my husband gave me, long ago -- mind the deep water.\n\nThe Imps who live there stole my magic lantern off the dock. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Gisla",
+     "text": "You don't have a minute to spare for a poor widow."
+    },
+    "reminder": {
+     "speaker": "Gisla",
+     "text": "My lantern must be down there somewhere!"
+    },
+    "completion": {
+     "speaker": "Gisla",
+     "text": "Wonderful! Thank you kindly, young sir. I am truly amazed at your courage!\n\nNow, you must take these Leather Boots."
+    },
+    "after": {
+     "speaker": "Gisla",
+     "text": "Thank you. I suppose you're not a stranger here anymore."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to win back Gisla's lantern from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find a way to win back Gisla's lantern from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Brannoc on Vaskor, Dulcie mocking, Hobb and his nets.",
+   "names": {
+    "Brannoc": "person",
+    "Dulcie": "person",
+    "Hobb": "person",
+    "Vaskor": "person",
+    "Kelm": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Brannoc",
+     "text": "I've heard that Vaskor the Necromancer has at last grown tired of hiding out on his island. He's raising the drowned for an attack on Kelm! We must all keep a sharp eye on the shore!"
+    },
+    "rumour2": {
+     "speaker": "Dulcie",
+     "text": "Row, stranger, row! Hah, hah, hah...!"
+    },
+    "rumour3": {
+     "speaker": "Hobb",
+     "text": "My nets... torn... all torn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bolo of the Bent Hook inn, Harg the smith, Odra who sells potions and spell books.",
+   "names": {
+    "Bolo": "person",
+    "Harg": "person",
+    "Odra": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bolo",
+     "text": "Well... Not the biggest inn on the lake exactly... But warm and dry all the same!"
+    },
+    "arms": {
+     "speaker": "Harg",
+     "text": "Sorry, I don't haggle with paupers."
+    },
+    "magic": {
+     "speaker": "Odra",
+     "text": "Strangers aren't trusted here. But for a few coins more, I'll trust you just this once."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Torvik sends the player to Fesk to fetch back Mayor Gundrel's toll box from the Zombies in the marsh, and Skiv the smuggler wants his crates hauled out of a cellar the Zombies got into.",
+   "names": {
+    "Torvik": "person",
+    "Gundrel": "person",
+    "Fesk": "person",
+    "Skiv": "person",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Torvik",
+     "text": "It's a disaster! The toll box is Mayor Gundrel's pride and joy and the Zombies have carried it off into the marsh! He's shut his door and won't open it till the box is home!\n\nA boatman named Fesk lives down on the south dock, past the inn. We need him to take you out through the reeds and bring back our poor Mayor's box."
+    },
+    "offer_b": {
+     "speaker": "Skiv",
+     "text": "There is a cellar under the old fish market where I keep my goods. Before the Mayor shut the market, it served as our best hiding place for ale casks and related cargo. It has a few hidden doors and a trap or two, which were put in to keep out the Mayor's tax men.\n\nNow the Zombies have got in down there. Haul my crates out to my boat and I'll give you a Longsword for your trouble."
+    },
+    "outcome_a": {
+     "speaker": "Gundrel",
+     "text": "So much silver for so poor a village! Take a handful if you can!"
+    },
+    "outcome_b": {
+     "speaker": "Skiv",
+     "text": "...and now I'll just go and count my crates."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go to Fesk the boatman on the south dock."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Haul the first load of Skiv's crates out to his boat."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gilm begs the player to bring back Father Orrin, dragged into the Sunken Chapel by Vaskor's Zombies, who want the Black Pearl from him.",
+   "names": {
+    "Gilm": "person",
+    "Orrin": "person",
+    "Sunken Chapel": "place",
+    "Kelm": "place",
+    "Vaskor": "person",
+    "Black Pearl": "thing",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gilm",
+     "text": "The old hatred between the living and the drowned runs deep on this lake, lad. So go carefully as you climb down into the Sunken Chapel, because I doubt the Zombies will be glad to see a warm body. Bring Father Orrin home. Kelm is lost without him. Go on now... And watch your feet! Zombies love to grab a man from below!"
+    },
+    "reminder": {
+     "speaker": "Gilm",
+     "text": "It's rare that a stranger comes to the aid of our village."
+    },
+    "found": {
+     "speaker": "Orrin",
+     "text": "My strength may be failing, but you'll never get the Black Pearl from me, Vaskor. There is another, wiser than me, who will stand in your way."
+    },
+    "following": {
+     "speaker": "Orrin",
+     "text": "Young sir! Please lead me out!"
+    },
+    "completion": {
+     "speaker": "Orrin",
+     "text": "Thanks for bringing me back. Take this Ankh with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Follow the shore to the Sunken Chapel and find Father Orrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fesk points the player to Mayor Gundrel in the Town Hall, who sends him after Vaskor on Gull Isle.",
+   "names": {
+    "Fesk": "person",
+    "Gundrel": "person",
+    "Emmerik": "person",
+    "Vaskor": "person",
+    "Kelm": "place",
+    "Town Hall": "place",
+    "Gull Isle": "place",
+    "Black Pearl": "thing",
+    "Zombies": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fesk",
+     "text": "Vaskor must have found out how to wake the drowned. One night the lake was calm and the next the shore was crawling with Zombies! They want the Black Pearl. Go see Mayor Gundrel in the Town Hall."
+    },
+    "opening": {
+     "speaker": "Gundrel",
+     "text": "Emmerik told us to expect you. The people of Kelm have always been the keepers and faithful protectors of the Black Pearl.\n\nOnce Vaskor gets the Pearl the drowned will rise all over the lake, since the Pearl holds the greatest power in these waters -- far more than the old bones he digs up from the mud.\n\nHis Zombies hold the lighthouse on Gull Isle and the lake road is shut. Fesk will row you across. Stop Vaskor, lad!"
+    },
+    "reminder": {
+     "speaker": "Gundrel",
+     "text": "Please, stop him!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Vaskor on Gull Isle!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

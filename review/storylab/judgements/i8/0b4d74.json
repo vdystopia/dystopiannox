@@ -1,0 +1,33 @@
+{
+  "packet": "0b4d74",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The mayor's spider plague with the title and free passage as part of the payoff ties the quest into the chapter's progression; 'worse than the pox' and the flat 'Charm and banish' journal line read like the shipped campaign."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stock bounty-officer voice ('young sir', 'savage scum', 'despicable scoundrel') with a hard number reward and the odd plot detail of the priest hearing sounds; uneven but authentically period."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A comic premise (Pa's lucky long johns) built to be funny, with the 'worse than a blizzard' simile and a tidy punchline closer; the comedy is too engineered and the joke carries the quest more than Nox's errand logic does."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lively, but the list of three comic complaints and the 'worse than a hailstorm' formula feel assembled; the two-part journal with a hint line is plausible, but the whole thing is a joke set-up first."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The 'mate'-repeating bridge guard who gives directions through the Urchin den and pays in a spell is Nox's practical routing of the player; the long literal journal line is typical Westwood."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Opens mid-conversation ('Good!'), hands over a ruby key, and pays with a petition that unlocks the next area: plain, functional and progression-driven, exactly the campaign's way."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Bear-in-the-outhouse slapstick with a hyperbolic 'worst calamity ever' line and the recurring 'I'll make it worth your while'; the punchy comic beat structure is a pattern shared with the other new texts."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Shopkeeper aside ('Actually, business has been somewhat slow') that turns into a quest, with a fixed '100 in gold' and 'lad'/'young sir'; slightly stiff but in the campaign's register."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Self-inflicted comic mishap (the cursed horn), 'will be the death of me', 'I'll make it worth your while', and a neat handoff to the next quest-giver; competent but too shaped and joke-led."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The bat-snatched wig is an embarrassment gag written for laughs ('Don't you dare laugh!'), and the reward-plus-punchline closer matches the other new texts; Westwood's quest-givers state the problem more plainly."}
+  ],
+  "tells": [
+    "The new texts lead with a comic, embarrassing premise (lost long johns, a wig, a bear in an outhouse); Westwood's quests are plain errands where any humour is incidental.",
+    "The 'X is worse than a <weather or plague>!' simile and the stock 'I'll make it worth your while' close recur across several texts, which reads as a reused template.",
+    "The new texts follow a fixed beat shape: exclamatory outcry, comic backstory, location directions, request, then an excited 'You did it?! Really gone?!' thanks with a punchline. Westwood's vary more and often start mid-conversation.",
+    "Westwood's rewards tie into progression (a title, free passage, a signed petition, a key, a spell) and give exact gold sums with a flat 'here is your reward'. The new ones pay in gold plus a joke.",
+    "Westwood's dialogue has period stiffness ('I surmise', 'despicable scoundrel', 'single handedly'), where the new texts are smoother and more polished."
+  ]
+}

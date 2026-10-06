@@ -1,0 +1,34 @@
+{
+  "packet": "706e19",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy, logistical offer that explains the setup (crowd, refugees, bandits) and hands over a key with tactical advice in the reminder; Westwood's openings rarely justify themselves so neatly or give stealth tips."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Short escort drop-off, breathless 'I must hurry and so should you!', 'You remain our only hope', and a chit-chat reminder: the hurried, slightly hokey Nox register."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff mentor diction ('transpiring', 'antiquated records', 'furnish the answers') and a real grammar slip ('incursions ... is on a steady rise') are characteristic of the shipped script; reminder names 'book and amulet' plainly."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Stock idiom ('rest on laurels'), exclamations, 'Now, off with you!' and a terse journal line read like Westwood, though the plot summary is a little crowded."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clipped one-line pages, quirky 'heed its bite', 'Get a move on' reminder: odd, compact and characterful in the Nox way."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 5,
+     "critique": "Hard to parse: an introduction that strings titles together, a blade to be blessed, a kiln, then a two-page reminder with shouted 'YOU'; the reminder is longer and more emphatic than Westwood's usual one-liners."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Atmospheric opener ('Dark days have come upon the crossroads'), shop pointer, double hyphen and a route-spelling journal ('Go north from X to Y and defeat Z') feel assembled from a template rather than spoken."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Very plain, fragmentary directions ('You'll know. And careful.') and a reminder that redundantly repeats the task: the unpolished but authentic shipped feel."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Exclamation on nearly every sentence, a missing-scout side detail and precise directions plus a return point read as a designer's brief voiced; same Ogres-in-the-watchtower kit as A and G."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Overloaded with circumstantial detail (reeds, boatmen with torches, walkways, roofs, starving hamlets) and long run-on exclamations; Westwood keeps the stakes to one plain sentence."}
+  ],
+  "tells": [
+    "New texts over-explain the backstory with concrete scene detail (who fled where, who rowed in, which wall was climbed); Westwood states the task and stakes in one or two plain sentences.",
+    "New texts reuse a small kit of stock elements (north road, old watchtower, 'drive X out', Ogre brutes, caravans plundered) that makes them sound like siblings.",
+    "Westwood's lines have rough edges: grammar slips, stilted Latinate words in a mentor's mouth, fragments like 'You'll know. And careful.', redundant reminders; new texts are grammatically clean.",
+    "New journals spell out routes and objectives in full ('Go north from X to Y and defeat Z'); Westwood journals are terse ('Retrieve the X').",
+    "Westwood reminders are short and impatient ('Go! Don't just stand there.'); new reminders add fresh tactical advice or extra emphasis.",
+    "Overuse of exclamation marks on every sentence and double-hyphen dashes mark the new texts."
+  ]
+}

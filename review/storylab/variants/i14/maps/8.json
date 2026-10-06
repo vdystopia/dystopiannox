@@ -1,0 +1,223 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ferrik",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Magrok, a fire demon risen from the deep lava, holds the Great Furnace under Ferrik and sends his Imps against the forges. The Warlord Grenn sent the player to help Mayor Thurgo.",
+  "names": {
+   "Ferrik": "place",
+   "Magrok": "person",
+   "Grenn": "person",
+   "Imps": "group",
+   "Great Furnace": "place",
+   "Mayor Thurgo": "person",
+   "Holk": "person",
+   "Mirta": "person",
+   "Dobrin": "person",
+   "Slag Pits": "place",
+   "Fire Bats": "group",
+   "Tobb": "person",
+   "Master Hollin": "person",
+   "Rune Hammer": "thing",
+   "Guild": "group",
+   "Guild Hall": "place",
+   "Nibbs": "person",
+   "Rusty Bellows": "place",
+   "Gretta": "person",
+   "Pell": "person",
+   "Ash Caverns": "place"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Dobrin the smith pays a bounty to clear the Fire Bats roosting in the Slag Pits.",
+   "names": {
+    "Dobrin": "person",
+    "Slag Pits": "place",
+    "Fire Bats": "group",
+    "Ferrik": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobrin",
+     "text": "Look there, lad. The Slag Pits -- ancient workings of the master smiths of Ferrik! Roost of the foulest Fire Bats ever to plague a forge!\n\nClimb down into the Slag Pits, find the roost and then wipe out every bat in it -- nest and all. The bounty is 100 gold."
+    },
+    "reminder": {
+     "speaker": "Dobrin",
+     "text": "The Fire Bats grow strong on raw heat, which they draw from the lava vents deep under the abandoned workings."
+    },
+    "completion": {
+     "speaker": "Dobrin",
+     "text": "No doubt the smiths will sleep better now, so take this gold with their thanks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Fire Bats from the Slag Pits."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Tobb the smith wants back the fireproof gloves the Imps snatched from his anvil.",
+   "names": {
+    "Tobb": "person",
+    "Imps": "group",
+    "Ferrik": "place",
+    "Magrok": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobb",
+     "text": "Hold up, pal, the lower forge is overrun! The Imps nest down there, in the cinder tunnels under the smithy. So if you head down there, pal, watch your back! Them little devils snatched my fireproof gloves while I was napping!\n\nGet 'em back for me, pal, and I'll pay you good gold. Will you?"
+    },
+    "refusal": {
+     "speaker": "Tobb",
+     "text": "That's a shame, pal. I hope you change your mind quick, 'cause my hands won't last long at the anvil without them gloves. I burned my thumb twice this morning already."
+    },
+    "reminder": {
+     "speaker": "Tobb",
+     "text": "Enough standing around. Go get 'em!"
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Marvelous! All of Ferrik owes you a great debt.\n\nBut there's no time to admire these gloves now! Magrok is stirring below! Take this gold and get after him before he wrecks every forge in town!"
+    },
+    "after": {
+     "speaker": "Tobb",
+     "text": "Everybody's heard how you handled them Imps under the smithy! Good job!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the cinder tunnels and recover Tobb's gloves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Search the cinder tunnels and recover Tobb's gloves."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Hollin wants the Guild's Rune Hammer back from the thief, and Nibbs in the Rusty Bellows has a hammer going cheap.",
+   "names": {
+    "Master Hollin": "person",
+    "Rune Hammer": "thing",
+    "Guild": "group",
+    "Guild Hall": "place",
+    "Nibbs": "person",
+    "Rusty Bellows": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Hollin",
+     "text": "Ahhh, how did this happen? A thief has knocked out both my apprentices. I can't wait for the guards. Hurry, you must catch him before he sells the Rune Hammer of the Guild!"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Evening, stranger! Welcome to the Rusty Bellows! I've got a fine hammer going cheap."
+    },
+    "outcome_a": {
+     "speaker": "Master Hollin",
+     "text": "Hmmm. I'd given up on that hammer."
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Pleasure doing business. I can't give change, but I can toss in this old Longsword I found lying near the back door of the Guild Hall. Then I must be off before the guards come."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Guild's thief and win back the Rune Hammer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the hammer Nibbs keeps behind the Rusty Bellows' bar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gretta's apprentice Pell is held by the Imps in the Ash Caverns.",
+   "names": {
+    "Gretta": "person",
+    "Pell": "person",
+    "Imps": "group",
+    "Ash Caverns": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gretta",
+     "text": "Hey there. Name's Gretta. Could you save my apprentice Pell from the Imps in the Ash Caverns? If you do, I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Gretta",
+     "text": "Those wretched Imps are getting far too bold lately."
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Help me reach the old ore lift. From there we can ride up past the slag heaps and home to Gretta's forge."
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "I'm sorry, sir, but I'm not built for running. Please we must go slower."
+    },
+    "completion": {
+     "speaker": "Gretta",
+     "text": "You brought Pell back, eh? Well, I had feared the Imps would roast him, but he hasn't got a single scorch mark on him!\n\nTake this purse -- 50 gold pieces! Thank you for keeping my apprentice safe!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead Gretta's apprentice Pell out of the Ash Caverns."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Mirta points the player to Mayor Thurgo, who sends him against Magrok's Imps in the Great Furnace, and Holk keeps the gate shut.",
+   "names": {
+    "Mirta": "person",
+    "Mayor Thurgo": "person",
+    "Magrok": "person",
+    "Imps": "group",
+    "Great Furnace": "place",
+    "Holk": "person",
+    "Ferrik": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirta",
+     "text": "I was told to send strangers on to Mayor Thurgo."
+    },
+    "opening": {
+     "speaker": "Mayor Thurgo",
+     "text": "Quick, lad! Our forges are failing fast. You must clear the Imps from the Great Furnace before Magrok burns us all!"
+    },
+    "reminder": {
+     "speaker": "Holk",
+     "text": "Sorry, stranger. The gate stays shut until Mayor Thurgo says otherwise. We do it to keep folks safe. The roads beyond Ferrik are far too dangerous for plain folk."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Magrok's Imps out of the Great Furnace."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

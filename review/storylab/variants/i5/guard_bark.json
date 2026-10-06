@@ -1,0 +1,571 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i5",
+ "writer": "one writer a town (variants/i5/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Garrick at the shut north gate, proud of Reeve Halvard; thanks once Corwin is dealt with.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Mabry's Magnificent Magicks": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Nettle Hob": "person",
+    "Hob": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Reeve Halvard is the finest Reeve Brackenford ever had! When he says this gate stays shut, it stays shut!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Finest Reeve we ever had. The gate stays shut."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "All of Brackenford thanks you, stranger."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Bormunt: Tavik at the upper gate of Bormunt, proud of the mine; later the lower gate is open.",
+   "names": {
+    "Bormunt": "place",
+    "Mount Grull": "place",
+    "Yorrel": "person",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Great Lift": "thing",
+    "Great Shaft": "place",
+    "Guild Hall": "place",
+    "Miners' Guild": "group",
+    "Brannoc": "person",
+    "Tavik": "person",
+    "Ulbo": "person",
+    "Giant Leeches": "group",
+    "pump house": "place",
+    "flooded gallery": "place",
+    "Quessel": "person",
+    "Imps": "group",
+    "Divining Rod": "thing",
+    "cart tunnel": "place",
+    "Velgard": "person",
+    "Urchins": "group",
+    "Spell Lantern": "thing",
+    "Ludo Quickpurse": "person",
+    "Chain Tunic": "thing",
+    "Hammel": "person",
+    "Nessa": "person",
+    "Hask": "person",
+    "washing cave": "place",
+    "Troll pens": "place",
+    "ore chutes": "place",
+    "Orrin": "person",
+    "Mott": "person",
+    "Elsbeth": "person",
+    "Grumwald": "person",
+    "Sooty Lamp": "place",
+    "Ilvane": "person",
+    "Azure Circle": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tavik",
+     "text": "This is Bormunt, the greatest mine under Mount Grull! Show some respect when you go in."
+    },
+    "again": {
+     "speaker": "Tavik",
+     "text": "Hey, those boots won't last a day in the shafts. You should get yourself some proper ones."
+    },
+    "later": {
+     "speaker": "Tavik",
+     "text": "The lower gate is open! Go on down and hurry, Guildmaster Brannoc needs every hand he can get!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Oskry: Tobben, the guard at the top of the main ladder into Oskry.",
+   "names": {
+    "Oskry": "place",
+    "the Blackwater": "place",
+    "Vesra the Bog Witch": "person",
+    "Marrock": "person",
+    "Mayor Brumm": "person",
+    "Tobben": "person",
+    "Hobb": "person",
+    "Quillon": "person",
+    "Sister Ondine": "person",
+    "Snig": "person",
+    "Hadda": "person",
+    "Durl": "person",
+    "Skarrow": "person",
+    "Zanthe": "person",
+    "Glynna": "person",
+    "the Long House": "place",
+    "the Sunken Shrine": "place",
+    "the Dry Plank": "place",
+    "Skarrow's Arms and Armor": "place",
+    "the south walk": "place",
+    "the west walk": "place",
+    "the north bog": "place",
+    "the old peat shed": "place",
+    "the Sacred Bell of Oskry": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Giant Leeches": "group",
+    "the peat cutters": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobben",
+     "text": "Good day, stranger! This is Oskry, the proudest village in all the Blackwater!"
+    },
+    "again": {
+     "speaker": "Tobben",
+     "text": "Keep moving!"
+    },
+    "later": {
+     "speaker": "Tobben",
+     "text": "Looks like more rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Brask: Brunn at the south gate of Castle Brask.",
+   "names": {
+    "Castle Brask": "place",
+    "Brask": "place",
+    "Vessk": "person",
+    "Ostric": "person",
+    "Belloc": "person",
+    "Brunn": "person",
+    "Fennig": "person",
+    "Haskel": "person",
+    "Ferrol": "person",
+    "Gondrel": "person",
+    "Krell": "person",
+    "Velka": "person",
+    "Tibbet": "person",
+    "Hulda": "person",
+    "Bortho": "person",
+    "Quigg": "person",
+    "Iron Kettle": "place",
+    "Quigg's Magic and Goat Rental": "place",
+    "Gallow Crag": "place",
+    "Split Rock": "place",
+    "north postern": "place",
+    "old barrows": "place",
+    "marsh road": "place",
+    "old toll house": "place",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Zombie": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunn",
+     "text": "Good day, stranger. If you go out again, keep off the marsh road. A cart went missing on it only yesterday."
+    },
+    "again": {
+     "speaker": "Brunn",
+     "text": "Oh, I nearly forgot. No fires in the lower town after dark. Move along."
+    },
+    "later": {
+     "speaker": "Brunn",
+     "text": "Looks like rain again. I hate the rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Vesk: Dolf, the guard at the landward gate of Vesk.",
+   "names": {
+    "Vesk": "place",
+    "Village of Vesk": "place",
+    "Lake Mirrow": "place",
+    "Weeping Isle": "place",
+    "Leaky Bucket": "place",
+    "Mudd's": "place",
+    "Vezzek": "person",
+    "Master Odrel": "person",
+    "Mayor Ostrin": "person",
+    "Dolf": "person",
+    "Haskin": "person",
+    "Ambrus the Ferryman": "person",
+    "Ambrus": "person",
+    "Pruitt the Lamplighter": "person",
+    "Pruitt": "person",
+    "Bodkin Mudd": "person",
+    "Hesk": "person",
+    "Inky": "person",
+    "Mott": "person",
+    "Brynna": "person",
+    "Tib": "person",
+    "Hulda": "person",
+    "Dorgo": "person",
+    "Joss": "person",
+    "Giant Leeches": "group",
+    "Urchins": "group",
+    "Imps": "group",
+    "Beacon Lens": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dolf",
+     "text": "Welcome to the Village of Vesk! The Leaky Bucket is just up the dock road. A warm bed for the weary!"
+    },
+    "again": {
+     "speaker": "Dolf",
+     "text": "Hmm. You'll want better boots than those around here. It's all mud and fish guts."
+    },
+    "later": {
+     "speaker": "Dolf",
+     "text": "Take care out on the Weeping Isle, stranger. Nobody who goes out there comes back the same!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Vorne: Torrik keeps the north gate of Vorne and the cell beneath it; the gate is shut while Sarvok holds Gallow Ridge.",
+   "names": {
+    "Vorne": "place",
+    "the Lyceum": "place",
+    "Sarvok the Renegade": "person",
+    "Sarvok": "person",
+    "Gallow Ridge": "place",
+    "the Observatory": "place",
+    "the Black Arts": "thing",
+    "Jorvald": "person",
+    "Master Dorrovan": "person",
+    "Torrik": "person",
+    "Gostrel": "person",
+    "Feldrim": "person",
+    "Force Wand": "thing",
+    "the old granary": "place",
+    "Tibbald": "person",
+    "Master Quorn": "person",
+    "Quorn": "person",
+    "the Lyceum cellars": "place",
+    "Lissra": "person",
+    "the Moonstone": "thing",
+    "the chapel": "place",
+    "the crypt beneath the chapel": "place",
+    "Zabbo": "person",
+    "the Clock Tower": "place",
+    "the Singing Kettle": "place",
+    "Grenda": "person",
+    "Brask": "person",
+    "Velka": "person",
+    "Nox": "place",
+    "Imps": "group",
+    "Golems": "group",
+    "Wasps": "group",
+    "Ghost": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torrik",
+     "text": "Thinking of slipping out the north gate, are you? Try it, and you'll spend the night in the cell underneath it!"
+    },
+    "again": {
+     "speaker": "Torrik",
+     "text": "Oh, I forgot to tell you. No casting spells inside the walls. That means you too."
+    },
+    "later": {
+     "speaker": "Torrik",
+     "text": "Hail, defender of Vorne! Your valor is the talk of the Lyceum. The gate is open to you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kholm: Brunn keeps the north gate of Fort Kholm, shut by Marshal Odric while Ulvana's Undead hold the pass.",
+   "names": {
+    "Fort Kholm": "place",
+    "Wyrmtooth Pass": "place",
+    "Glacier Crypts": "place",
+    "Snow Caves": "place",
+    "Ice Bridge": "place",
+    "Snowbound Inn": "place",
+    "Thudd's Armory": "place",
+    "Ulvana": "person",
+    "Faldrin": "person",
+    "Marshal Odric": "person",
+    "Brunn": "person",
+    "Fennick": "person",
+    "Gorrin": "person",
+    "Gelbrand": "person",
+    "Wendric": "person",
+    "Lucky Skiv": "person",
+    "Olva": "person",
+    "Thudd": "person",
+    "Yeva": "person",
+    "Hagen": "person",
+    "Mag": "person",
+    "Lissa": "person",
+    "Sledge crew": "group",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunn",
+     "text": "This is the north gate, Marshal Odric's post. The pass beyond is closed to all."
+    },
+    "again": {
+     "speaker": "Brunn",
+     "text": "Oh, one more thing. Keep off the wall walk. It's solid ice up there."
+    },
+    "later": {
+     "speaker": "Brunn",
+     "text": "The gate is open! Up the pass with you, and hurry! The Marshal is counting on you!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Fornath: Bodo, guard at the Lava Gate of Fornath: proud of the town and its master, then idle talk, then nothing to do with the quest.",
+   "names": {
+    "Fornath": "place",
+    "Nox": "place",
+    "Kasrak": "person",
+    "Tobrin": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Mountain Road": "place",
+    "Anvil Hall": "place",
+    "Bodo": "person",
+    "Krall": "person",
+    "Ember Demons": "group",
+    "slag pits": "place",
+    "Fennick": "person",
+    "Salamander Cloak": "thing",
+    "Imps": "group",
+    "Cinder Caves": "place",
+    "Smiths' Gate": "place",
+    "Ambrus": "person",
+    "Tavik": "person",
+    "old quarry": "place",
+    "broken bridge": "place",
+    "old ore chute": "place",
+    "Velda": "person",
+    "Fire Shrine": "place",
+    "Great Bell": "thing",
+    "lava falls": "place",
+    "Grubb": "person",
+    "Bram Sootfinger": "person",
+    "old furnace tunnels": "place",
+    "Hesta": "person",
+    "Slag Pot": "place",
+    "Gundrek": "person",
+    "Zibba": "person",
+    "Kettla": "person",
+    "Harl": "person",
+    "Bessamy": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bodo",
+     "text": "Welcome to Fornath, stranger! Home of the great Master Kasrak and the hottest forges in all of Nox!"
+    },
+    "again": {
+     "speaker": "Bodo",
+     "text": "Hot one today, isn't it?"
+    },
+    "later": {
+     "speaker": "Bodo",
+     "text": "Good day to you, lad. My watch is nearly over."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Wendle Cross: Brask stands guard at the door of Telmarq the Arch-Wizard's tower.",
+   "names": {
+    "Wendle Cross": "place",
+    "Telmarq": "person",
+    "Pellam": "person",
+    "Zelloc": "person",
+    "Fort Skarrow": "place",
+    "Grey Moor": "place",
+    "Skeletons": "group",
+    "Brask": "person",
+    "Rudd": "person",
+    "Haddrick": "person",
+    "Toll House": "place",
+    "beech wood": "place",
+    "old well": "place",
+    "south road": "place",
+    "north road": "place",
+    "Belgrin": "person",
+    "Lantern": "thing",
+    "Imps": "group",
+    "old lime kiln": "place",
+    "Ambrus": "person",
+    "Book of Old Roads": "thing",
+    "chapel": "place",
+    "chapel crypt": "place",
+    "Holk": "person",
+    "Grubbin the Grave-Robber": "person",
+    "Gorsk": "person",
+    "quarrymen": "group",
+    "Quarryman": "person",
+    "old quarry": "place",
+    "west gate": "place",
+    "Crooked Kettle": "place",
+    "Odo": "person",
+    "Grimsel": "person",
+    "Quimby": "person",
+    "Quimby's Potions and Notions": "place",
+    "Hesta": "person",
+    "Fenna": "person",
+    "Mungo": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "This is the tower of Telmarq the Arch-Wizard."
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "Telmarq's tower, I said."
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "Looks like rain again. Good for the turnips, I suppose."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Hestle: Tobb keeps the north gate of Hestle barred until Mayor Dulvane sends the player against the Ogres on Kroth Hill.",
+   "names": {
+    "Hestle": "place",
+    "Vellis": "person",
+    "Mayor Dulvane": "person",
+    "Dulvane": "person",
+    "Tobb": "person",
+    "Hoskin": "person",
+    "Orlo": "person",
+    "Sister Alwen": "person",
+    "Ebbin": "person",
+    "Bramwell": "person",
+    "Sabble": "person",
+    "Rook": "person",
+    "Hulda": "person",
+    "Gorrick": "person",
+    "Pidwick": "person",
+    "Greda": "person",
+    "Marl": "person",
+    "Kroth Hill": "place",
+    "the granary fort": "place",
+    "the Town Hall": "place",
+    "the north gate": "place",
+    "the well house": "place",
+    "the windmill": "place",
+    "the Ogre camp": "place",
+    "the river": "place",
+    "the Sleepy Ox": "place",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the giant leeches": "group",
+    "Orlo's amulet": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "This is the north gate of Hestle, and it stays shut."
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Still shut."
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "The gate is open! Off with you, and hurry!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

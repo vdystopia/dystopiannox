@@ -1,0 +1,34 @@
+{
+  "packet": "969822",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The mentor's 'lad', the plain logistics (two guards here, more along the way) and the reminder that just explains the spells he handed you all read like Westwood. The journal is terse and literal."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The page-broken instructions are short and practical, the item hand-off ('heed its bite') is slightly odd, and the gruff 'Go! Don't just stand there' reminder is very much Nox's mentor voice."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every sentence ends in an exclamation mark and the setup is crammed in (villain, captured landmark, road, a son on watch). The 'Troll's stewpot' reminder is a joke built to be a joke, and the journal's 'bring proof' is a modern quest-design framing."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Hail, Wanderer!', the heaped stakes (bounty, dead or alive, no forge will light) and the long compound exclamations are over-written. A reminder that only describes the boss's hammer reads like a tooltip, not like a townsman."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The slightly stiff exposition ('rest on laurels', 'most certainly behind it all'), the 'Now, off with you!', the flat reminder and the three-word journal entry fit Westwood's mentor scenes."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The gothic imagery ('drowned dead', 'climb out of the mud'), the hesitant 'Would you... could you' and the double-masked journal give it the feel of modern atmospheric writing. Nox's plain townsfolk seldom stack this many vivid details."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The grand dashed announcement ('timeless fortress home of...'), followed by the dry 'It weeds out the weak recruits', and the bare reminder and journal are typical Westwood."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The flat, functional briefing (seek the Mayor, take supplies and gold, go to the shop, the road across these bridges) and the 'I have nothing else to tell you, Adventurer' reminder are Westwood's tutorial plainness."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It is compact and plain enough, but the opening '[Person]'s friend? Thank goodness!' repeats the formula from C, and the comic barricaded-in setup with a key pushed under the door feels designed. The reminder reuses the opening's own logic."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Ohhh, it gets worse by the day!' is a decent Nox-style comic wail, but the line is one long unbroken speech that piles up motivations, and the 'each day... another cart is robbed' reminder spells out the stakes too neatly."}
+  ],
+  "tells": [
+    "Westwood's openings in this slot are mostly a mentor talking to 'lad': short practical orders broken into pages, a gruff or dry closing line, and no emotional escalation. The new texts are mostly panicked townsfolk.",
+    "The new texts overuse exclamation marks and stack stakes: the villain's name, a captured landmark, a hostage or relative, a reward and a ticking clock, all in one speech.",
+    "A repeated formula across the new texts ('[Person]'s friend? Thank goodness!', 'So [Person] sent you') gives them away as one writer's template.",
+    "Westwood's reminders are flat nudges ('You need to press on now, lad', 'I have nothing else to tell you'). The new reminders restate the stakes with a vivid image or a joke.",
+    "Westwood's journal entries are short and plain ('Retrieve the [Thing].', 'Find a way into [Place].'). The new ones carry extra conditions ('bring proof', compound places) or more masked nouns.",
+    "Vivid gothic or atmospheric imagery and hesitant ellipses ('Would you... could you') read as modern writing, not as Nox's plain, slightly stiff exposition."
+  ]
+}

@@ -1,0 +1,585 @@
+{
+ "scenario": "main_opening",
+ "iter": "i8",
+ "writer": "one writer a town (variants/i8/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points the player to Halvard in the Moot Hall, who sends him up Crow Hill after Red Corwin.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Ulric": "person",
+    "Wenna": "person",
+    "Tobin": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Halvard is looking for someone brave! Hurry! The Moot Hall is just up the road!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Ah, at last! Someone who isn't afraid to walk the roads!\n\nThat villain Red Corwin and his bandits have seized the old watchtower on Crow Hill, north of town. They rob every cart and traveler on the north road, and I have had no choice but to shut the north gate. Brackenford cannot live long without its trade!\n\nGo up Crow Hill and drive Corwin out of that tower. I will tell Garrick to open the gate for you. Off with you, lad, and good luck!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Wanderer! Get up that hill at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the watchtower on Crow Hill and defeat Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Krennack: A townsman points the player to Foreman Brakkus at the Pit Office, who sends him down the old service tunnel after Urgrubb's Ogres at the Great Lift.",
+   "names": {
+    "Krennack": "place",
+    "Urgrubb": "person",
+    "Ogres": "group",
+    "Grunts": "group",
+    "Corvane": "person",
+    "Great Lift": "place",
+    "Pit Office": "place",
+    "Pit": "place",
+    "Brakkus": "person",
+    "Stobb": "person",
+    "Toskel": "person",
+    "Troll": "group",
+    "Counting House": "place",
+    "Mining Council": "group",
+    "Fennick": "person",
+    "Singing Pick": "thing",
+    "Imps": "group",
+    "West Shaft": "place",
+    "Jory": "person",
+    "Ma": "person",
+    "Pa": "person",
+    "Enchanted Rolling Pin": "thing",
+    "East Shaft": "place",
+    "Bats": "group",
+    "Shift Bell": "thing",
+    "Vell": "person",
+    "Duggles": "person",
+    "Gant": "person",
+    "Mirri": "person",
+    "Dolla": "person",
+    "Tobbs": "person",
+    "Broken Pick": "place",
+    "Hurlo": "person",
+    "Zilva": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Gant",
+     "text": "Those Ogres never would have taken the Great Lift if Foreman Brakkus had been on the lever! Go and find him at the Pit Office."
+    },
+    "opening": {
+     "speaker": "Brakkus",
+     "text": "Ah, there you are! Corvane said you'd be along. Good. We need you, lad.\n\nUrgrubb and his Ogres came up out of the deep tunnels and seized the Great Lift! We can't get ore up or food down, and the whole town is going hungry!\n\nTake this key. It opens the old service tunnel at the south end of the Pit. Get down to the Great Lift and drive Urgrubb out. Krennack is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Brakkus",
+     "text": "Oi! Hello!? This is a mine office, not an inn. Shouldn't you be at the Lift?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Foreman Brakkus has given you the service tunnel key, but Urgrubb's Ogres still hold the Great Lift. Maybe the old tunnel is another way down..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skell: Wendle points the player to Mayor Pellum, who gives him the key to the Sunken Temple and sends him after Vashtor. Orvel sent the player.",
+   "names": {
+    "Skell": "place",
+    "Vashtor": "person",
+    "Orvel": "person",
+    "Mayor Pellum": "person",
+    "Warden Brodd": "person",
+    "Tolly": "person",
+    "Gubbin": "person",
+    "Thurlo": "person",
+    "Ysolt": "person",
+    "Marda": "person",
+    "Bodkin": "person",
+    "Father Ambrus": "person",
+    "Mother Hesk": "person",
+    "Krell": "person",
+    "Oggin": "person",
+    "Wendle": "person",
+    "Corra": "person",
+    "Grume": "person",
+    "Tibbet": "person",
+    "Sunken Temple": "place",
+    "Krell's Forge": "place",
+    "Muddy Mug": "place",
+    "Moon Amulet": "thing",
+    "Silver Bell": "thing",
+    "Zombies": "group",
+    "Ogres": "group",
+    "Ogre Chief": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wendle",
+     "text": "Something wicked is creeping out of the swamp! Has Mayor Pellum found anybody brave enough to stop it?"
+    },
+    "opening": {
+     "speaker": "Mayor Pellum",
+     "text": "Ah, there you are, lad! Orvel wrote that he was sending someone. Not a moment too soon!\n\nThe Necromancer Vashtor has taken the Sunken Temple east of Skell. Every night his Zombies climb out of the water and come knocking at our doors. Nobody sleeps and nobody fishes!\n\nHere is the key to the temple gate. Go in, find Vashtor and put an end to his wickedness. All of Skell is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Mayor Pellum",
+     "text": "I have nothing more to give you just now. Good luck with Vashtor. His Zombies can be slow and stubborn bunch."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "New quest! Find Vashtor in the Sunken Temple!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varrok: Pellam sends the player to Warden Grisholm in the Keep; the Warden, an old friend of the patron Dorran, sends him through the east postern to take Grukk's fort at the Stone Bridge.",
+   "names": {
+    "Varrok": "place",
+    "Grukk": "person",
+    "Dorran": "person",
+    "Grisholm": "person",
+    "Bolk": "person",
+    "Gessa": "person",
+    "Pruett": "person",
+    "Brenik": "person",
+    "Pogg": "person",
+    "Lunk": "person",
+    "Hesk": "person",
+    "Wobbin": "person",
+    "Tibbet": "person",
+    "Brask": "person",
+    "Quillon": "person",
+    "Lissa": "person",
+    "Pellam": "person",
+    "the Keep": "place",
+    "the Stone Bridge": "place",
+    "the east postern": "place",
+    "the old quarry": "place",
+    "the Urchin caves": "place",
+    "the Ogre camp": "place",
+    "the south woods": "place",
+    "the moonstone amulet": "thing",
+    "the pay chest": "thing",
+    "Ogres": "group",
+    "Rogues": "group",
+    "Urchins": "group",
+    "Urchin Shaman": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pellam",
+     "text": "That's it! First they take the bridge then they starve us out. Go see Warden Grisholm in the Keep!"
+    },
+    "opening": {
+     "speaker": "Grisholm",
+     "text": "So, Dorran's friend has finally arrived! Good. We have no time to lose.\n\nThat brute Grukk and his Ogres have taken the old fort at the Stone Bridge, east of the castle. Not a single wagon gets through, and my men are down to their last crust of bread! This insolent usurper must be stopped!\n\nI've ordered the east postern unbarred for you. Cross the bridge, take that fort and bring me Grukk's head, lad. Go!"
+    },
+    "reminder": {
+     "speaker": "Grisholm",
+     "text": "It's open! The postern's open! Er... After you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way into Grukk's fort at the Stone Bridge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kesk: Fennic points the player to Mayor Hobbrig, who sends him to Gull Island to stop the Necromancer Skarn.",
+   "names": {
+    "Kesk": "place",
+    "Lake Murl": "place",
+    "Gull Island": "place",
+    "Drowned Chapel": "place",
+    "Tolbek": "person",
+    "Skarn": "person",
+    "Hobbrig": "person",
+    "Dorvic": "person",
+    "Tull": "person",
+    "Gribble": "person",
+    "Wessa": "person",
+    "Bodrik": "person",
+    "Kurlow": "person",
+    "Marla": "person",
+    "Beaky": "person",
+    "Selka": "person",
+    "Ostwin": "person",
+    "Pellik": "person",
+    "Agna": "person",
+    "Yarnoth": "person",
+    "Fennic": "person",
+    "Fishing Amulet": "thing",
+    "Ear Horn": "thing",
+    "Undead": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ghost": "group",
+    "Zombies": "group",
+    "Necromancer": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennic",
+     "text": "You must see Mayor Hobbrig before the sun goes down. Our village must not fall to those walking dead!"
+    },
+    "opening": {
+     "speaker": "Hobbrig",
+     "text": "Ah! You must be the one Tolbek sent! At last!\n\nA Necromancer named Skarn has taken the old keep on Gull Island. Every night he calls our drowned fishermen up out of the lake and sends them shambling into Kesk! It is a horror beyond words!\n\nYou must go to the island and put an end to this madness. Bodrik keeps the boats down at the docks. Hurry, lad -- before the sun goes down again!"
+    },
+    "reminder": {
+     "speaker": "Hobbrig",
+     "text": "The island? Get a boat from the docks and row straight out toward the keep.."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a boat to Gull Island and defeat Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Dilly points the player to Arch-Mage Tollund in the Great Library, who gives him the key to the South Gate and sends him after Malgrin.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Great Library": "place",
+    "South Gate": "place",
+    "Gloomfen": "place",
+    "Malgrin's Tower": "place",
+    "Ogre Camp": "place",
+    "Bramble Orchard": "place",
+    "Old Quarry": "place",
+    "Old Mill": "place",
+    "Crag Hill": "place",
+    "Bat Caves": "place",
+    "Inkpot": "place",
+    "Golden Quill": "thing",
+    "Teleport": "thing",
+    "Ogres": "group",
+    "Wisps": "group",
+    "Urchins": "group",
+    "Malgrin": "person",
+    "Vandell": "person",
+    "Tollund": "person",
+    "Brusk": "person",
+    "Pellock": "person",
+    "Hesk": "person",
+    "Dilly": "person",
+    "Orlo": "person",
+    "Gasper": "person",
+    "Mossop": "person",
+    "Dorgle": "person",
+    "Yselda": "person",
+    "Elspen": "person",
+    "Gimble": "person",
+    "Wobbin": "person",
+    "Nettle": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dilly",
+     "text": "Oh, hello. Arch-Mage Tollund is in the Great Library."
+    },
+    "opening": {
+     "speaker": "Tollund",
+     "text": "Ah, there you are! Vandell's letter said you'd be coming. He speaks highly of you, lad. I hope he's right.\n\nBad times have come to Ostrel. Malgrin -- a wizard we threw out of this College long ago -- has gathered an army of Ogres in the Gloomfen. They've already cut the fen road. Next it will be our gates!\n\nTake this key. It opens the South Gate. Go through the Gloomfen, find Malgrin's Tower and stop him. The fate of the whole College rests on your shoulders!"
+    },
+    "reminder": {
+     "speaker": "Tollund",
+     "text": "Go on. Use the key!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Put an end to Malgrin and his Ogres!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Ulmgard: Pell points the newcomer to Warden Galmor, who gives the Upper Gate key and sends him after Ostrag the Necromancer in the Glacier Tombs.",
+   "names": {
+    "Ulmgard": "place",
+    "Upper Gate": "place",
+    "Low Gate": "place",
+    "Glacier Tombs": "place",
+    "Ice Caves": "place",
+    "Signal Tower": "place",
+    "Cold Kettle": "place",
+    "Hask": "person",
+    "Galmor": "person",
+    "Dromund": "person",
+    "Ostrag": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Hedda": "person",
+    "Tibbet": "person",
+    "Brannoc": "person",
+    "Krell": "person",
+    "Mildra": "person",
+    "Mungo": "person",
+    "Bodo": "person",
+    "Gorm": "person",
+    "Yorla": "person",
+    "Undead": "group",
+    "White Wolves": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "Warden Galmor has bolted the Upper Gate until someone drives the Undead off the pass. I hope Master Dromund sent us somebody useful. The Warden usually just shouts at them from the wall instead of fighting them."
+    },
+    "opening": {
+     "speaker": "Galmor",
+     "text": "Ah! You must be the one Dromund promised me. Good! I need every pair of hands I can get.\n\nThe Necromancer Ostrag has raised the dead in the Glacier Tombs above the pass. His Undead swarm the high road and not a single sled has come through. I fear he means to take this fort next!\n\nHere is the key to the Upper Gate. Go up through the gate, find Ostrag in the Tombs and put an end to him, lad. All of Ulmgard is counting on you."
+    },
+    "reminder": {
+     "speaker": "Galmor",
+     "text": "Fight well!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Seek out Ostrag the Necromancer in the Glacier Tombs above the Upper Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Kalgarr: Brix points the player to Forgemaster Hadric, an old friend of Mardock's, who hands over the key to the Mine Gate and sends him after Malgrith in the Deep Furnace.",
+   "names": {
+    "Kalgarr": "place",
+    "Malgrith": "person",
+    "Mardock": "person",
+    "Hadric": "person",
+    "Tibbet": "person",
+    "Pelgrim": "person",
+    "Fusk": "person",
+    "Orsolde": "person",
+    "Grizzel": "person",
+    "Lumpkin": "person",
+    "Yarra": "person",
+    "Quell": "person",
+    "Brix": "person",
+    "Dorla": "person",
+    "Bulba": "person",
+    "Hobb": "person",
+    "Zibbet": "person",
+    "Deep Furnace": "place",
+    "Mount Skarl": "place",
+    "Forge Hall": "place",
+    "Mine Gate": "place",
+    "Old Smelter": "place",
+    "Ash Pits": "place",
+    "Cinder Hills": "place",
+    "Burning Caves": "place",
+    "Guild": "group",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Shade": "group",
+    "Fire Amulet": "thing",
+    "Hammer of Kalgarr": "thing",
+    "Cell Key": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Brix",
+     "text": "That crazed fire witch has set the mines ablaze. Find Forgemaster Hadric in the Forge Hall before she does worse."
+    },
+    "opening": {
+     "speaker": "Hadric",
+     "text": "So you're the one Mardock sent! Good. You've arrived not a moment too soon, lad.\n\nMalgrith the Fire Witch has seized the Deep Furnace beneath Mount Skarl. Her Ember Demons pour out of it day and night, and not one cart of ore has come up the mine road since!\n\nTake this key. It opens the Mine Gate at the north end of town. Go down into the Deep Furnace and stop Malgrith -- before she melts all of Kalgarr down to slag!"
+    },
+    "reminder": {
+     "speaker": "Hadric",
+     "text": "The Mine Gate holds fast against most, lad. But turn my key in its lock and the road down is yours!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Malgrith the Fire Witch in the Deep Furnace"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel: Mirra points the player to Mayor Dremmel in the Toll House, who sends him against Skarn's bandits in Varga Tower.",
+   "names": {
+    "Torvel": "place",
+    "Crooked Crown": "place",
+    "Toll House": "place",
+    "Varga Tower": "place",
+    "Pitch Caves": "place",
+    "Hollow Wood": "place",
+    "Kelmor": "place",
+    "Grelloch": "place",
+    "Skarn": "person",
+    "Ulbar": "person",
+    "Dremmel": "person",
+    "Brask": "person",
+    "Pell": "person",
+    "Nella": "person",
+    "Gorvin": "person",
+    "Mirra": "person",
+    "Nibbs": "person",
+    "Dorla": "person",
+    "Grumbald": "person",
+    "Bertol": "person",
+    "Hargo": "person",
+    "Quenna": "person",
+    "Tobb": "person",
+    "Wilk": "person",
+    "Amulet of Warding": "thing",
+    "Urchins": "group",
+    "Bear": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirra",
+     "text": "My, my! You're a sight better looking than the bandits! Go see Mayor Dremmel at the Toll House, and come back to me in one piece."
+    },
+    "opening": {
+     "speaker": "Dremmel",
+     "text": "Ah! You must be the one Ulbar wrote to me about. Good, good. You have arrived not a moment too soon!\n\nThat villain Skarn and his bandits have seized Varga Tower, on the hill north of town. They have shut the road to Kelmor! Not one wagon has come through in weeks, and Torvel cannot live without that road.\n\nYou must go up to the tower and drive Skarn out. Take this key to the north gate. Brask will let you pass. Good luck, lad. All of Torvel is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Dremmel",
+     "text": "That's enough talk, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go up to Varga Tower and defeat the bandit Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Durnhal: Bessa points the player to Mayor Quillon at the Town Hall; Garamund sent the player; Ugrash's Ogres hold the Stone Granary and the town's grain.",
+   "names": {
+    "Durnhal": "place",
+    "Garamund": "person",
+    "Ugrash": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Quillon": "person",
+    "Town Hall": "place",
+    "Stone Granary": "place",
+    "Wendt": "person",
+    "Hobart": "person",
+    "Krell": "person",
+    "Posey": "person",
+    "Rain Amulet": "thing",
+    "Bolliver": "person",
+    "Longsword of Sir Bolliver": "thing",
+    "Bunt": "person",
+    "Pie Recipe": "thing",
+    "Grisel": "person",
+    "Tobble": "person",
+    "Hammet": "person",
+    "Fat Turnip": "place",
+    "Ombra": "person",
+    "Bessa": "person",
+    "Mott": "person",
+    "The Harvest": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Bessa",
+     "text": "Hello there. Has Mayor Quillon found you at the Town Hall, yet?"
+    },
+    "opening": {
+     "speaker": "Quillon",
+     "text": "Ah, at last! Garamund wrote that he would send someone.\n\nIt is a dark hour for Durnhal, lad. Ugrash the Ogre Chief and his horde have seized the Stone Granary on the hill north of town, with every sack of our grain inside! That Ogre is a greater calamity than locusts and hail together!\n\nTake this key. It opens the north gate. Drive Ugrash out of the Granary or Durnhal will starve this winter. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Quillon",
+     "text": "Why are you still dawdling? Save our grain!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Ugrash and his Ogres from the Stone Granary."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

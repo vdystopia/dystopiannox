@@ -235,20 +235,45 @@ _NGRAMS = None
 
 
 def ww_ngrams(n=6):
+    """{6-gram: in how many of Westwood's distinct lines}."""
     global _NGRAMS
     if _NGRAMS is None:
         import westwood
-        g = set()
+        g = collections.Counter()
         for r in westwood.campaign():
+            if r["dup"]: continue
             w = [x.lower() for x in words(r["text"])]
-            g |= {tuple(w[i:i + n]) for i in range(len(w) - n + 1)}
+            g.update({tuple(w[i:i + n]) for i in range(len(w) - n + 1)})
         _NGRAMS = g
     return _NGRAMS
 
 
-def copied(t, n=6):
+_MODES = None
+
+
+def modes():
+    """The phrases the lab's writers all reach for (review/storylab/modes.json, from `py tests/storylab.py modes`):
+    four words that three or more towns of one round wrote and Westwood never did. The model's first idea, which every
+    map agent has too."""
+    global _MODES
+    if _MODES is None:
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "modes.json")
+        _MODES = [tuple(x.split()) for x in json.load(open(p, encoding="utf-8"))["phrases"]] if os.path.exists(p) else []
+    return _MODES
+
+
+def mode_hits(t):
     w = [x.lower() for x in words(t)]
-    return [" ".join(g) for g in (tuple(w[i:i + n]) for i in range(len(w) - n + 1)) if g in ww_ngrams(n)]
+    g = {tuple(w[i:i + 4]) for i in range(len(w) - 3)}
+    return [" ".join(m) for m in modes() if m in g]
+
+
+def copied(t, n=6):
+    """Westwood's phrases a line repeats. A stock phrase Westwood itself uses in two lines or more ("as a token of my
+    appreciation", "thanks again for your help") is the house style the guide asks for, not a copy."""
+    w = [x.lower() for x in words(t)]
+    g6 = ww_ngrams(n)
+    return [" ".join(g) for g in (tuple(w[i:i + n]) for i in range(len(w) - n + 1)) if g6.get(g, 0) == 1]
 
 
 # ---- judging --------------------------------------------------------------------------------------------------------
@@ -297,6 +322,8 @@ def judge_line(t, situation, known=None, allowed=None, westwood=False):
         if ch in t: hit(0.7, msg)
     for m in MODERN.findall(t): hit(1.5, f"modern idiom: {m if isinstance(m, str) else m[0]!r}")
     for m in ANACHRONISM.findall(t): hit(1.5, f"anachronism: {m if isinstance(m, str) else m[0]!r}")
+    mh = [] if westwood else mode_hits(t)
+    if mh: hit(min(2.0, 0.8 * len(mh)), f"a phrase every writer reaches for: {mh[0]!r} (review/storylab/modes.json)")
     cp = [] if westwood else copied(t)
     if cp: hit(min(3.0, 1.0 + 0.3 * len(cp)), f"copied from Westwood: {cp[0]!r}")
     if allowed is not None:
@@ -304,6 +331,7 @@ def judge_line(t, situation, known=None, allowed=None, westwood=False):
         if unknown: hit(min(3.0, 1.0 * len(unknown)), "names not on the map: " + ", ".join(unknown))
     # what each situation must carry
     if sit == "journal":
+        t = re.sub(r"^COMPLETED:\s*", "", t)          # a done entry: the objective's own words (q.done)
         w0 = (words(t) or [""])[0].lower()
         if w0 not in IMPERATIVE and not t.startswith("NOTE"):
             hit(2.0, f"a journal entry starts with an order (Find, Retrieve, Rescue...), not {w0!r}")
@@ -385,6 +413,10 @@ def voice(fs):
         p = min(1.0, 4 * (num - st["numbers"]["mean"] - 0.1 - slack)); pen += p
         out.append(f"-{p:.1f} voice: {num:.0%} of the lines count or number things")
     ad = sum(f["address"] for f in talk) / n
+    if n >= 8 and ad > 2.5 * st["address"]["mean"]:
+        p = min(1.5, 6 * (ad - 2.5 * st["address"]["mean"])); pen += p
+        out.append(f"-{p:.1f} voice: {ad:.0%} of the lines address the player (Westwood {st['address']['mean']:.0%}): "
+                   "one address word a quest at most")
     if n >= 6 and ad < 0.04:
         pen += 1.0; out.append(f"-1.0 voice: no line addresses the player (lad, stranger, friend, kind sir; Westwood {st['address']['mean']:.0%})")
     sem = sum(f["semicolons"] for f in talk)

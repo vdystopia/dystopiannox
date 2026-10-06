@@ -1,0 +1,310 @@
+{
+ "iter": "i6",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Durnath",
+  "setting": "a castle town with a garrison",
+  "trouble": "The renegade Wizard Ostrigan holds the Black Spire north of Durnath, and his Imps and golems raid the land around the castle.",
+  "names": {
+   "Durnath": "place",
+   "Castle Durnath": "place",
+   "Black Spire": "place",
+   "Black Boar": "place",
+   "Armory of Castle Durnath": "place",
+   "Ostrigan": "person",
+   "Ruvane": "person",
+   "Tavrin": "person",
+   "Torbek": "person",
+   "Fennick": "person",
+   "Ilsabet": "person",
+   "Jasko": "person",
+   "Mila": "person",
+   "Orwenna": "person",
+   "Dobbs": "person",
+   "Brumbo": "person",
+   "Hulgar": "person",
+   "Zelpha": "person",
+   "Nessa": "person",
+   "Pibb": "person",
+   "Staff of Mending": "thing",
+   "Horn of Durnath": "thing",
+   "Imps": "group",
+   "Wasps": "group",
+   "Zombies": "group",
+   "Ghosts": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Torbek at the north gate of Durnath, where the road runs toward Ostrigan's Black Spire.",
+   "names": {
+    "Torbek": "person",
+    "Durnath": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torbek",
+     "text": "Greetings, stranger! Watch the sky on the north road. The Imps have been dropping on travelers all week."
+    },
+    "again": {
+     "speaker": "Torbek",
+     "text": "Keep moving."
+    },
+    "later": {
+     "speaker": "Torbek",
+     "text": "Durnath owes you, brave Adventurer. Thank you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, a fussy old stargazer, wants the Giant Wasps' nest cleared out of his observatory east of town.",
+   "names": {
+    "Fennick": "person",
+    "Tavrin": "person",
+    "Ostrigan": "person",
+    "Wasps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Oh, not again! Every night the same thing! I climb up to look at the stars and I come back down stung all over!\n\nGiant Wasps have nested in my observatory east of here. My charts are ruined and my lenses are filthy, and Lord Tavrin's soldiers won't lift a finger. They say they are too busy watching for Ostrigan. Would you clear out those Wasps for me? I will pay you well."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Still here?! Those Wasps won't leave on their own, you know!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "No more buzzing! Listen! Not a single Wasp! Oh, thank you, thank you! Here is your reward, 100 gold pieces, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wasp nest in Fennick's observatory."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ilsabet, the castle healer, orders the player to get back her Staff of Mending from the Imps who stole it.",
+   "names": {
+    "Ilsabet": "person",
+    "Staff of Mending": "thing",
+    "Imps": "group",
+    "Tavrin": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ilsabet",
+     "text": "And out the window they went, with my Staff of Mending! Imps! Filthy giggling Imps! They flew off toward the old quarry west of town. Go and get my staff back before they break it!"
+    },
+    "refusal": {
+     "speaker": "Ilsabet",
+     "text": "Then what good are you? Out of my way!"
+    },
+    "reminder": {
+     "speaker": "Ilsabet",
+     "text": "Well? Where's my staff? Go on, get moving!"
+    },
+    "completion": {
+     "speaker": "Ilsabet",
+     "text": "My staff! My staff! Oh, bless you, kind sir! Here, take this key. It opens the castle storeroom. Take whatever you need."
+    },
+    "after": {
+     "speaker": "Ilsabet",
+     "text": "Lord Tavrin was asking for you. He's waiting in the great hall of the keep."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ilsabet's Staff of Mending from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Go to the keep and speak with Lord Tavrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Durnath: gossip about Lord Tavrin, a brush-off from a soldier, a complaint about the town's own folly.",
+   "names": {
+    "Nessa": "person",
+    "Dobbs": "person",
+    "Pibb": "person",
+    "Tavrin": "person",
+    "Ostrigan": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Nessa",
+     "text": "Lord Tavrin is up in the keep, waiting on somebody. He's been up there for a month! If you ask me, he's scared stiff of Ostrigan."
+    },
+    "rumour2": {
+     "speaker": "Dobbs",
+     "text": "Go bother somebody else."
+    },
+    "rumour3": {
+     "speaker": "Pibb",
+     "text": "We let that Wizard live up on the hill for years and nobody ever asked what he was doing up there. Not once! Now look at us."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brumbo of the Black Boar inn, Hulgar of the castle armory, Zelpha the potion seller.",
+   "names": {
+    "Brumbo": "person",
+    "Black Boar": "place",
+    "Hulgar": "person",
+    "Armory of Castle Durnath": "place",
+    "Tavrin": "person",
+    "Zelpha": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brumbo",
+     "text": "Welcome to the Black Boar! A bed's only 10 gold, and I throw in the fleas fer free! Har, har, har!"
+    },
+    "arms": {
+     "speaker": "Hulgar",
+     "text": "Welcome to the Armory of Castle Durnath. Arms and armor for the loyal subjects of Lord Tavrin."
+    },
+    "magic": {
+     "speaker": "Zelpha",
+     "text": "Hmph. Don't touch anything. Buy something or leave."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Lady Orwenna orders the player to find the lost Horn of Durnath; Dobbs, a drunk soldier at the Black Boar, bets the player won't come back from the bell tower with it.",
+   "names": {
+    "Orwenna": "person",
+    "Horn of Durnath": "thing",
+    "Ostrigan": "person",
+    "Dobbs": "person",
+    "Ghosts": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Orwenna",
+     "text": "Aaah! Oh! Oh, it's only you. Thank goodness, I thought one of those Imps had gotten in again! Now you listen to me, because nobody in this castle ever listens to me, not my husband and not the guards and certainly not that drunken innkeeper, the Horn of Durnath is gone, the great silver horn that calls the garrison to the walls, and if Ostrigan comes in the night and nobody blows it then nobody wakes up and we will all be murdered in our beds, every one of us, the soldiers and the cooks and the little children too, and all because some fool left it lying around after the feast instead of putting it back where it belongs! Find the Horn of Durnath and bring it to me at once!"
+    },
+    "offer_b": {
+     "speaker": "Dobbs",
+     "text": "Heh, heh. Looking for her Ladyship's horn, are you? It's up in the old bell tower. The Ghosts took it up there, everybody knows that. I'll bet you 50 gold you don't come back down alive. Go on, shake on it!"
+    },
+    "outcome_a": {
+     "speaker": "Orwenna",
+     "text": "The Horn! Oh, you found it! Here, take my husband's pass. The guards at the north gate will let you through now."
+    },
+    "outcome_b": {
+     "speaker": "Dobbs",
+     "text": "Well, look at that. You came back. Alright, alright, I lost. Here's your 50 gold."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Horn of Durnath for Lady Orwenna."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the Horn down from the bell tower to win Dobbs' bet."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Jasko, a peddler, bargains the key to the old sewer gate for his sister Mila, dragged into the catacombs by Zombies; she is found dying.",
+   "names": {
+    "Jasko": "person",
+    "Mila": "person",
+    "Durnath": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Jasko",
+     "text": "Help! Help! The Zombies took my sister! They dragged Mila down into the catacombs! Look, friend, I'm a businessman, not a hero. So here's my offer. You bring her back and I give you the key to the old sewer gate. Nobody else in Durnath has one."
+    },
+    "reminder": {
+     "speaker": "Jasko",
+     "text": "Please hurry! Mila can't last long down there!"
+    },
+    "found": {
+     "speaker": "Mila",
+     "text": "Is someone there? Jasko? I can't see... Please, I'm so cold..."
+    },
+    "following": {
+     "speaker": "Mila",
+     "text": "Leave me here. I can't go on."
+    },
+    "completion": {
+     "speaker": "Jasko",
+     "text": "Where's Mila? She didn't make it? Oh.... My poor sister. Here, take the key. I don't care about it any more."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jasko's sister Mila in the catacombs."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Pibb points the player to Lord Tavrin in the keep; Tavrin sends him north against the renegade Wizard Ostrigan at the Black Spire.",
+   "names": {
+    "Pibb": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Ostrigan": "person",
+    "Black Spire": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibb",
+     "text": "You're the one Ruvane sent? Lord Tavrin is waiting for you in the great hall of the keep."
+    },
+    "opening": {
+     "speaker": "Tavrin",
+     "text": "Grim news, lad. Very grim. My scouts came back from the Black Spire last night. Not all of them. Ostrigan has woken the stone golems under the Spire, and his Imps fly over our walls whenever they please.\n\nRuvane tells me you are the one for this. Go north to the Black Spire. Find Ostrigan and put an end to him. Get what you need in town before you go, and don't waste any time."
+    },
+    "reminder": {
+     "speaker": "Tavrin",
+     "text": "Those Imps get bolder every night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Black Spire and stop the Wizard Ostrigan."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

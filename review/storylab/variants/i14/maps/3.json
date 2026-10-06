@@ -1,0 +1,229 @@
+{
+ "iter": "i14",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tarrow",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Grisla the Bog Witch has raised the drowned dead of the Black Mire, and they climb the stilts of Tarrow every night.",
+  "names": {
+   "Tarrow": "place",
+   "Black Mire": "place",
+   "Mire": "place",
+   "Grisla": "person",
+   "Jessop": "person",
+   "Ostrick": "person",
+   "Pibb": "person",
+   "Hulda": "person",
+   "Brannoch": "person",
+   "Ombrel": "person",
+   "Gudge": "person",
+   "Dorla": "person",
+   "Wick": "person",
+   "Hollow Oak": "place",
+   "Drowned Chapel": "place",
+   "Sunken Crypt": "place",
+   "Eel Landing": "place",
+   "Moonstone": "thing",
+   "Ankh": "thing",
+   "Leeches": "group",
+   "Imps": "group",
+   "Bog Toads": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Hulda, a fisherwife, pays gold to have the Giant Leeches of the south pools killed.",
+   "names": {
+    "Hulda": "person",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Giant Leeches have crawled into my husband's fish traps again! Unless somebody drives them off, we'll starve this winter. And he's back at dusk!\n\nOh, please, young sir, help me! They must breed in the south pools.\n\nCould you... would you kill them for us, for a bit of gold?"
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Quickly now, young sir, clear out those wretched Leeches!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "We never should've set traps so near those pools. I wonder if that mad witch bred the Leeches. Here's your gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Wade out to the south pools and rid Hulda's fish traps of the Giant Leeches."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Brannoch's lantern was stolen by the Imps of the Hollow Oak.",
+   "names": {
+    "Brannoch": "person",
+    "Imps": "group",
+    "Hollow Oak": "place",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brannoch",
+     "text": "Those thieving Imps are a curse on this house! My boy chased them with a broom, yet back they swoop! Only you can catch the little pests and win my lantern back!\n\nThey roost in the Hollow Oak, past the reeds there. Will you fetch it?"
+    },
+    "refusal": {
+     "speaker": "Brannoch",
+     "text": "Then I'll need a braver soul for this. The tavern has plenty of them most nights."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "It's dark! It's so dark! Um... You hurry now."
+    },
+    "completion": {
+     "speaker": "Brannoch",
+     "text": "My lantern! I thought I'd lost it forever! I'm truly in your debt, friend. Here's an Ankh, for your trouble."
+    },
+    "after": {
+     "speaker": "Brannoch",
+     "text": "Well, look who's back."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Brannoch's lantern from the Hollow Oak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Brannoch's lantern from the Hollow Oak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Ombrel the priest wants his Moonstone from the Drowned Chapel, and Gudge the bootlegger wants the Bog Toads out of his still.",
+   "names": {
+    "Ombrel": "person",
+    "Gudge": "person",
+    "Moonstone": "thing",
+    "Drowned Chapel": "place",
+    "Mire": "place",
+    "Jessop": "person",
+    "Eel Landing": "place",
+    "Bog Toads": "group",
+    "Grisla": "person",
+    "Tarrow": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ombrel",
+     "text": "You came. Good. The task I set you is a grave one.\n\nSomething wicked stirs in the Mire. Drowned corpses climbing our ladders is a nightly sight now.\n\nMy Moonstone, which would show me the cause, lies in the Drowned Chapel. A dark spell guards it. You may help me get it back."
+    },
+    "offer_b": {
+     "speaker": "Gudge",
+     "text": "It's the cruelest of blows! Bog Toads have moved into my still!"
+    },
+    "outcome_a": {
+     "speaker": "Ombrel",
+     "text": "Splendid! Tarrow owes you a great debt, friend.\n\nJessop came asking for you while you fought in that cursed chapel. He'll be down at the Eel Landing -- south of here.\n\nTake this purse of gold with you before you leave."
+    },
+    "outcome_b": {
+     "speaker": "Gudge",
+     "text": "Bless you! Follow me as far as the witch's back door, and not one step more, or I'd only get us both caught. Every crow in the Mire carries tales straight to Grisla."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Moonstone from the Drowned Chapel"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Evict the Bog Toads!"
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Dorla's little brother Wick was dragged off by the drowned dead to the Sunken Crypt.",
+   "names": {
+    "Dorla": "person",
+    "Wick": "person",
+    "Sunken Crypt": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorla",
+     "text": "Eeeeyaaah! Stay back! Don't eat me!\n\nOh. A person?! My eyes are swollen from crying. But you're surely none of those rotten dead men who dragged off my brother Wick! He's only a little boy.\n\nIf you could bring him home, you'd mend my heart and I'd thank you all my days."
+    },
+    "reminder": {
+     "speaker": "Dorla",
+     "text": "The Sunken Crypt is a hole without hope and will even drain a bit of the boldest man's courage away."
+    },
+    "found": {
+     "speaker": "Wick",
+     "text": "Here is my last apple, you have it. Take me back to my sister once you're ready."
+    },
+    "following": {
+     "speaker": "Wick",
+     "text": "I'll stay close."
+    },
+    "completion": {
+     "speaker": "Dorla",
+     "text": "Hooray, brave Adventurer! A thousand thanks for bringing my little Wick home! With him back, our house can finally sleep without fear of that wicked witch and her dead!\n\nHere, this robe and this potion will serve you well -- better than you know."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Dorla's brother home from the Sunken Crypt."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe",
+     "BluePotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pibb points the player to Warden Ostrick, who sends him after Grisla the Bog Witch in the Black Mire.",
+   "names": {
+    "Pibb": "person",
+    "Ostrick": "person",
+    "Grisla": "person",
+    "Tarrow": "place",
+    "Black Mire": "place",
+    "Mire": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibb",
+     "text": "I'm late for Warden Ostrick's muster, sorry."
+    },
+    "opening": {
+     "speaker": "Ostrick",
+     "text": "It's a calamity! Tarrow fears nothing like the drowned dead and a horde has risen from the Black Mire! Each night they climb our stilts, and no boat will leave till they're gone!\n\nOut in the Mire, to the North, dwells a witch named Grisla. Someone must break her spell and free our besieged hamlet."
+    },
+    "reminder": {
+     "speaker": "Ostrick",
+     "text": "Is the witch beaten yet?! Oh.... Well, they say her hut stands on stilts deep in the Mire."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the witch Grisla in the Mire."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

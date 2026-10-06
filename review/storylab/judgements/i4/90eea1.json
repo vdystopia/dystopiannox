@@ -1,0 +1,33 @@
+{
+  "packet": "90eea1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The mentor's bluster and 'Now, off with you!' fit, but 'no time to rest on laurels' and 'most certainly behind it all' read like a careful copy of the voice. The reminder points at a person while the journal points at a thing, which may be meant to imitate Westwood's looseness."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A plain, functional briefing with stage directions ('Go to the shop', 'The road across these bridges') and a stiff 'surge of violence in the local creatures'. It reads like a first-chapter tutorial handoff."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The exclamatory travel-guide boast ('timeless fortress home ... Training grounds of the glorious') and the dry 'It weeds out the weak recruits' are Westwood's mentor exactly. The reminder is bare."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Too many prying eyes the closer we get by air' is tangled, and 'Forest beasts will heed its bite should they threaten' is a literary flourish Nox's mentor never reaches for. The reminder overdoes the gruffness."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The clipped fragments ('You'll know. And careful.') feel built to mimic terseness. The reminder repeats the opening almost word for word, which Westwood also does, so this is a close call."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The mayor's overexcited welcome, the capitalised 'Urchins' and 'East', and the exact practical directions ('my house at the center of town') are Westwood's early-chapter style. The idle grumbling reminder fits too."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'You remain our only hope' is a stock cliche, and 'I must hurry and so should you!' is filler. The genealogy in both the speech and the journal ('[Person]'s [Group] brother, [Person]') is over-explained."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The stiff fragments ('The Master for the [Place].') and the shouted 'YOU' try for Westwood's oddness but come out mannered, and the briefing is dense with lore nouns. The journal is fine."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A long, bureaucratic wizard's briefing with a real agreement slip ('incursions ... is on a steady rise'), an empty page break, and a reminder that names the book and amulet the masked opening hid. This is Westwood's unpolished voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The apologetic 'Sorry about the stench, lad', the frank 'This may get very ugly' and a reminder that only explains what the given spells are for are pure Westwood mentor. The journal is plain."}
+  ],
+  "tells": [
+    "New texts add literary or poetic flourishes ('heed its bite should they threaten', 'You remain our only hope') where Westwood stays functional.",
+    "New texts imitate terseness with stacked sentence fragments that feel deliberate. Westwood's oddities are grammar slips and stiff phrasing, not stylised clipping.",
+    "Westwood's reminders often add a concrete detail (which items, what each spell is for) or idle grumbling. New reminders tend to be generic 'hurry up' lines.",
+    "New journals over-explain relationships or carry extra clauses. Westwood's are short imperatives.",
+    "Westwood's briefings give mundane logistics (shop, road, house location). New ones lean on stakes and atmosphere."
+  ]
+}

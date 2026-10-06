@@ -6289,9 +6289,9 @@
 "nn_med": 0.647,
 "overlaps": 0.0,
 "doors": 1,
-"focal_n": 1,
-"focal_back": 0.0,
-"focal_door": 0.7532,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
 "way_in": 4.5663,
 "way_in_frac": 0.3513,
 "sym": 0.4615,
@@ -6348,7 +6348,7 @@
 "NW"
 ]
 ],
-"focal": "LargeBarrel2",
+"focal": null,
 "doors": [
 "NW"
 ],
@@ -13041,9 +13041,9 @@
 "nn_med": 1.7016,
 "overlaps": 0.0,
 "doors": 1,
-"focal_n": 4,
-"focal_back": 1.0,
-"focal_door": 0.3927,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
 "way_in": 6.0838,
 "way_in_frac": 0.8691,
 "sym": 1.0,
@@ -13076,7 +13076,7 @@
 "lab|lab": 1.702
 },
 "runs": [],
-"focal": "WizardWorkstation1",
+"focal": null,
 "doors": [
 "NE"
 ],
@@ -13139,9 +13139,9 @@
 "nn_med": 0.7234,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 5,
-"focal_back": 0.0,
-"focal_door": 0.6769,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.5334,
 "way_in": 21,
 "way_in_frac": 1.0,
 "sym": 0.4211,
@@ -13269,7 +13269,7 @@
 "SW"
 ]
 ],
-"focal": "WizardWorkstation3c",
+"focal": "Desk2",
 "doors": [
 "NW",
 "NW"
@@ -13333,9 +13333,9 @@
 "nn_med": 0.1411,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 5,
-"focal_back": 0.0,
-"focal_door": 0.4171,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.5889,
 "way_in": 23.034,
 "way_in_frac": 0.8531,
 "sym": 0.4138,
@@ -13484,7 +13484,7 @@
 "SE"
 ]
 ],
-"focal": "WizardWorkstation1c",
+"focal": "Desk1",
 "doors": [
 "SW",
 "SW"
@@ -13550,7 +13550,7 @@
 "doors": 2,
 "focal_n": 1,
 "focal_back": 1.0,
-"focal_door": 0.6829,
+"focal_door": 0.7457,
 "way_in": 11.3924,
 "way_in_frac": 0.8763,
 "sym": 0.1667,
@@ -13599,7 +13599,7 @@
 "chair|desk": 0.458
 },
 "runs": [],
-"focal": "WizardWorkstation3b",
+"focal": "Desk1",
 "doors": [
 "SW",
 "SE"
@@ -13664,8 +13664,8 @@
 "overlaps": 0.0,
 "doors": 1,
 "focal_n": 1,
-"focal_back": 0.0,
-"focal_door": 0.7178,
+"focal_back": 1.0,
+"focal_door": 0.743,
 "way_in": 10.2546,
 "way_in_frac": 0.7888,
 "sym": 0.5,
@@ -13707,7 +13707,7 @@
 "chair|desk": 0.676
 },
 "runs": [],
-"focal": "WizardWorkstation1",
+"focal": "Desk2",
 "doors": [
 "SW"
 ],
@@ -13770,9 +13770,9 @@
 "nn_med": 0.5597,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 2,
+"focal_n": 1,
 "focal_back": 1.0,
-"focal_door": 0.6239,
+"focal_door": 0.3756,
 "way_in": 1.9212,
 "way_in_frac": 0.2135,
 "sym": 0.5714,
@@ -13835,7 +13835,7 @@
 "desk|shelves": 4.079
 },
 "runs": [],
-"focal": "WizardWorkstation1b",
+"focal": "Desk1",
 "doors": [
 "NW",
 "NW"

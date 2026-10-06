@@ -1,0 +1,296 @@
+{
+ "iter": "i6",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Tullin",
+  "setting": "a lake village of fishermen",
+  "trouble": "The Necromancer Ostrega holds the lighthouse on Gull Isle, and every night his dead walk up out of Lake Mirrow into Tullin.",
+  "names": {
+   "Tullin": "place",
+   "Lake Mirrow": "place",
+   "Gull Isle": "place",
+   "Ostrega": "person",
+   "Ambrel": "person",
+   "Mayor Dask": "person",
+   "Bosk": "person",
+   "Ulla": "person",
+   "Krebbit": "person",
+   "Priest Umbrin": "person",
+   "Warden Gubb": "person",
+   "Snell": "person",
+   "Guildmaster Fennick": "person",
+   "Merrit": "person",
+   "Tam Rooke": "person",
+   "Orlo": "person",
+   "Sabeth": "person",
+   "Blue Heron": "place",
+   "Orlo's Lakeside Armory": "place",
+   "Fishmongers' Guild": "group",
+   "Pearl Amulet": "thing",
+   "Leeches": "group",
+   "Imps": "group",
+   "Zombies": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Bosk at the causeway gate, shut until Mayor Dask hands the player its key.",
+   "names": {
+    "Bosk": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bosk",
+     "text": "Want to spend a night in the lockup? Then keep walking."
+    },
+    "again": {
+     "speaker": "Bosk",
+     "text": "Oh, one more thing. Nobody crosses the causeway. Not without a key."
+    },
+    "later": {
+     "speaker": "Bosk",
+     "text": "The gate's open! Get across the causeway and hurry, it'll be dark soon!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulla the fishwife wants the giant Leeches of the reed beds killed, then sends the player on to Krebbit.",
+   "names": {
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulla",
+     "text": "Leeches! Big ones, in the reed beds south of here! They dragged my nets right out of the boat and I barely made it back to shore!\n\nNobody goes near the water anymore. Not with the dead coming up out of the lake every night, and now this!\n\nYou look like you can handle yourself, kind sir. Kill those Leeches and I'll give you a good reward. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Ulla",
+     "text": "Those Leeches get bigger every day, you know."
+    },
+    "completion": {
+     "speaker": "Ulla",
+     "text": "The reeds are clear! I can fish again! Oh, thank you, thank you!\n\nHere, take these. And go see old Krebbit at the net sheds. He's got trouble of his own."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant Leeches in the reed beds for Ulla."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield", "RedPotion"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Krebbit the gruff old net-mender; Imps took his Pearl Amulet to their nest at the waterfall.",
+   "names": {
+    "Krebbit": "person",
+    "Pearl Amulet": "thing",
+    "Imps": "group",
+    "Mayor Dask": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Krebbit",
+     "text": "...and that's the last time I leave a window open. Imps! Flew right in and grabbed my Pearl Amulet off the hook.\n\nTheir nest is up at the waterfall. You bring it back, you get somethin' for your trouble. Deal?"
+    },
+    "refusal": {
+     "speaker": "Krebbit",
+     "text": "Hmph. Then quit wastin' my time."
+    },
+    "reminder": {
+     "speaker": "Krebbit",
+     "text": "Back with nothin'?! Them Imps ain't gonna bring it to you."
+    },
+    "completion": {
+     "speaker": "Krebbit",
+     "text": "That's it! That's my amulet!\n\nHere. Take these boots. Go on, take 'em."
+    },
+    "after": {
+     "speaker": "Krebbit",
+     "text": "Mayor Dask's lookin' for you. Big house up the hill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Krebbit's Pearl Amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Krebbit's Pearl Amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Tullin: a complaint about the town's own folly, a brush-off, an odd light under the lake.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Fishwife",
+     "text": "Everybody said don't bury the dead out on the island. Did anybody listen? No!"
+    },
+    "rumour2": {
+     "speaker": "Fisherman",
+     "text": "Not now."
+    },
+    "rumour3": {
+     "speaker": "Old man",
+     "text": "There's a light down under the water at night. Under it! I saw it myself."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Tam Rooke of the Blue Heron inn, Orlo the armorer, Sabeth the potion seller.",
+   "names": {
+    "Tam Rooke": "person",
+    "Blue Heron": "place",
+    "Orlo": "person",
+    "Orlo's Lakeside Armory": "place",
+    "Sabeth": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tam Rooke",
+     "text": "Welcome to the Blue Heron! Fresh fish and a warm bed, every night!"
+    },
+    "arms": {
+     "speaker": "Orlo",
+     "text": "This is Orlo's Lakeside Armory. Swords and shields of the finest quality. What is your business?"
+    },
+    "magic": {
+     "speaker": "Sabeth",
+     "text": "Oh my, you look half drowned! Come in, come in. I have just the potion for you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Priest Umbrin fled the shrine and orders the player to fetch his staff; Warden Gubb posts a dead-or-alive bounty on Snell the eel thief.",
+   "names": {
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Priest Umbrin",
+     "text": "...and I ran! Right out the back door and all the way down the hill! The dead have taken the shrine!\n\nI left my staff on the altar. Go to the shrine north of here and bring it back to me. And watch yourself in there."
+    },
+    "offer_b": {
+     "speaker": "Warden Gubb",
+     "text": "Wanted, dead or alive! Snell the eel thief! That's him on the poster. Well, it's supposed to be him. It looks more like a fish. I can't draw.\n\nHe broke out of my jail again while I was busy with those Zombies. He's hiding somewhere in the marsh. Bring him back alive and it's 150 gold. Dead, 75. Alive is better!"
+    },
+    "outcome_a": {
+     "speaker": "Priest Umbrin",
+     "text": "My staff! Oh, thank goodness! Take this shield, brave Adventurer, with my blessing."
+    },
+    "outcome_b": {
+     "speaker": "Warden Gubb",
+     "text": "Ha! Got you, Snell! Back in the cell you go!\n\nHere's your reward, 150 in gold!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring Priest Umbrin his staff from the shrine."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Snell the eel thief in the marsh and bring him to Warden Gubb."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Guildmaster Fennick begs the player to bring back Merrit, a merchant the dead carried off to the old cemetery; the reward is passage on the Guild's ferry.",
+   "names": {
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tullin": "place",
+    "Fishmongers' Guild": "group",
+    "Lake Mirrow": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Calamity! Calamity upon the Village of Tullin! Merrit, our finest merchant, has been carried off by the walking dead! I saw it with my own eyes! They rose up out of the lake and seized him from his cart, and the poor man cried out for his mother and for the Guild, and none of us could do a thing but stand there and watch! Oh, the shame of it! The Fishmongers' Guild shall never recover from such a blow!\n\nThey dragged him into the old cemetery east of here. Bring Merrit back to me alive, and the Guild shall grant you passage on our ferry, anywhere on Lake Mirrow. That is my offer, and the word of a Guildmaster is never broken!"
+    },
+    "reminder": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Oh.... You are still here. And Merrit is still down there among the dead. Please, every moment counts!"
+    },
+    "found": {
+     "speaker": "Merrit",
+     "text": "Help! Over here! Please, get me out of this place!"
+    },
+    "following": {
+     "speaker": "Merrit",
+     "text": "I'll follow you. There's a lever behind the big tomb. That's the way out!"
+    },
+    "completion": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Merrit lives! The Guild is saved!\n\nTake this pass, brave Adventurer. Show it at the ferry dock and you may cross the lake whenever you please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Merrit from the old cemetery and bring him to Fennick."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Mayor Dask, who orders him to Gull Isle against the Necromancer Ostrega and gives him the causeway key.",
+   "names": {
+    "Mayor Dask": "person",
+    "Ambrel": "person",
+    "Ostrega": "person",
+    "Gull Isle": "place",
+    "Bosk": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The dead come up out of the lake every night now! Mayor Dask is expecting you. His house is up the hill."
+    },
+    "opening": {
+     "speaker": "Mayor Dask",
+     "text": "So Ambrel sent you. Good.\n\nThe Necromancer Ostrega holds the lighthouse on Gull Isle. His dead walk out of the lake and into our streets. Go out there and kill him.\n\nHere is the key to the causeway gate. Show it to Bosk. Now go."
+    },
+    "reminder": {
+     "speaker": "Mayor Dask",
+     "text": "The causeway, lad! What are you waiting for?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the causeway to Gull Isle and destroy the Necromancer Ostrega."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

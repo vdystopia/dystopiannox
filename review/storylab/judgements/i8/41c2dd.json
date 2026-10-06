@@ -1,0 +1,33 @@
+{
+  "packet": "41c2dd",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The first line is a cute regional jab ('you lowlanders') that has nothing to do with the rest, and the directions are spelled out tidily (hall, top of keep, stair behind the stables). Westwood's guards rarely give directions in that kind of travel-guide detail."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Blunt and official, with no comma before the vocative ('Be gone [Group], before I blast you') and an odd plural 'the [Place] are closed'. These are the small unpolished quirks of the original string table."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Florid civic welcome ('fairest of all villages in the land of Nox', 'open warm arms of aid and hospitality') followed by a short cheer and a flat closed-road notice. That uneven swing in register is typical of Westwood."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line is a stand-alone mood beat (taunt, idle cart remark, all-clear), with no person, place or task named. It reads like flavour written to fill bark slots, not a guard serving a quest."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The comic charge is overbuilt ('her floor testifies to it', 'damp, drafty cell waiting just for you'), and it ends on a rhetorical question tagged 'stranger?'. The joke is engineered rather than offhand."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The first two lines are crisp, but the 'later' line is a three-page set piece in the same template as E ('Stop where you are, stranger!' ... 'just for you' ... a closing question with 'stranger?'). The warden's seal and the oiled hinges are tidy invented detail."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Eager and naive ('the great [Group] [Person] dispatched to aid our beloved [Place]!'), with exclamation stacking, an unmasked 'The Mayor', and a comma splice in the bandit warning. All of that is plausible Westwood."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Plot-carrying alarm lines that name the sorceress, the Undead army and the necromancer's curse, with a little capitalised exposition and 'look out' written as two words. This is campaign-chapter exposition through a guard."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Brusque work-site guard with the capitalised 'The Foreman' and 'Ogres', a WANT in capitals, 'lad', and the helmet gag. It is specific, plain and funny in Westwood's offhand way."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The rules-list gag and the 'Oh, I forgot to mention, no loitering' follow-up are neatly set up as a two-beat joke, slightly more polished than Westwood's offhand humour. It is very close to Nox, though, and this call is a near guess."}
+  ],
+  "tells": [
+    "New texts recycle a template: an exclamatory arrest or stop line, an elaborate comic detail, then a closing rhetorical question tagged with 'stranger?'.",
+    "New texts add tidy invented logistics (a warden's seal, oiled hinges, a stair behind the stables) where Westwood's guards state one plain fact or command.",
+    "Westwood's barks carry campaign information (who is attacking, who is waiting, what is closed) and keep small grammatical roughness: missing vocative commas, odd plurals, comma splices, words in capitals for emphasis.",
+    "New texts give each bark slot its own self-contained mood beat (taunt, idle remark, all-clear) that does not move a quest; Westwood ties the three lines to one situation.",
+    "Westwood's humour is offhand and blunt (a helmet warning, a threat to blast someone to oblivion); the new humour is more constructed, with figurative flourishes like 'her floor testifies to it'."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "103db7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and Jandor-like, but the reminder reads like a tooltip pasted into speech ('Haste will be invaluable', 'turn aside their clubs'), and the opening leans on two 'But' sentences in a row."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The exclamations fit, but every sentence gets one, and 'leaving the broken bridge our smallest worry' and 'the whole north road is in peril' are built-up stakes Westwood's briefings rarely spell out."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Clipped arrival, fragment exclamations, the double-dash aside and a dry closing jab ('It weeds out the weak recruits'): this is the campaign's voice."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'The long road has tested your mettle well' is stock fantasy, and the logic is spelled out ('most certainly behind it all'); the reminder adds a chatty aside ('He wants a word with you')."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Short pages, a practical airship drop-off and a gruff reminder are true to Nox; 'Forest beasts will heed its bite' is the only slightly ornate turn."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Organised like a modern quest brief (go here, find this title, take the lamp and gold, visit the shop, take the lift) with careful logistics; 'I've nothing more to say to you' sounds like a writer's idea of gruff."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The 'brave Adventurer' greeting and the imp-like mischief are close to Nox, but the offer piles up exposition and directions ('in my hall at the heart of the college'), and the reminder is flavour, not a push."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A terse drop-off, 'You remain our only hope', 'No more time for chit-chat', and a long, clunky journal line that is very much Westwood's."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Very terse fragments ('You'll know. And careful.') and a reminder that repeats the order nearly word for word: the slightly rough redundancy of the shipped game."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Odd grammar ('The Master for the [Place]' as a fragment, 'convey the [Thing]') and the capitalised 'YOU' are the campaign's quirks; no generated text would be this stiff on purpose."}
+  ],
+  "tells": [
+    "Westwood's briefings are terse and a little rough: sentence fragments, repeated orders in the reminder, odd word choices and plain clunky journal lines. The new texts are smoother and better organised.",
+    "New texts spell out stakes and reasoning ('the whole north road is in peril', 'most certainly behind it all') where Westwood just gives the order and an exclamation.",
+    "New texts give step-by-step logistics in the offer (title of the contact, item handed over, shop, lift, where to report back), like a modern quest brief.",
+    "Stock fantasy idioms ('tested your mettle', 'turn aside their clubs', 'heed its bite') mark the new texts; Westwood's colour is drier and shorter ('It weeds out the weak recruits').",
+    "New reminders tend to be flavour or attitude lines ('I've nothing more to say to you', 'making too much mischief lately'); Westwood's simply repeat the push to go now."
+  ]
+}

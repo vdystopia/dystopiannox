@@ -1,0 +1,33 @@
+{
+  "packet": "96b32a",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A single colloquial tic ('mate') repeated without shame, a petty grievance (boots stolen while bathing) and a blunt 'damn fine spell' reward: plain, comic, and exactly Nox's register."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Absurd stakes (a pet frog in a burning house) and the one-sided 'What's that you say? Loads and loads of money?' joke are classic Westwood; the journal is short and functional."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Reads as a pastiche: the scream opener, then a clause-heavy logistics line ('I can keep the miners out, but you'll have to wade in yourself when you reach the pool down the west tunnel') and a thanks that echoes stock Nox gratitude almost verbatim before a cute closing beat."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Opener is a headline-like fragment with a crafted punchline about unwashed shirts and a double-hyphen dash; the thanks swerves to an unexplained warning about a third person, a non sequitur that feels assembled rather than spoken."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Polite set-up with precise directions ('which lies in the cellar under the north wing'), a cleverly coded hint (chests that bite) and a double-hyphen aside; the journal spells out the mechanic ('Lure ... out ... and destroy'), more designed than Nox's plain orders."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "Two voices spliced: an urgent bellows plea plus a shop pointer, then a sly mercenary speech that ignores the urgency; the 'Heh, heh, heh' and 'Ha-HA!' feel borrowed, and the two-sentence journal adds a hint Nox wouldn't."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Exclamatory, slightly theatrical mayor ('worse than the pox!'), direct directions ('there, through the double doors'), the reward of a new title and free passage, and a terse journal: authentic campaign text."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "Lines don't follow each other ('You're not from around here' then trap lore; 'Really gone?' after already paying), the backstory of traps built against thirsty soldiers is invented colour, and the journal carries extra geography."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Plain exposition with a cause-and-effect chain (urchin aggravated the bats), an item handed over mid-offer, and the petition as the reward that opens the next area: Nox's quest-gate shape in its plain voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Conversational opener that continues a prior exchange ('Actually, business has been somewhat slow'), stated sum '100 in gold!', 'young sir' and 'filthy paws': period-plain and slightly stiff in the Westwood way."}
+  ],
+  "tells": [
+    "New texts pack precise spatial directions and lore into the offer or journal (which wing, which tunnel, what the cellar runs beneath); Westwood's give one plain pointer ('there, through the double doors') and short imperative journals.",
+    "New texts splice stock Nox beats (a scream opener, 'How will I ever repay you', a cackle, 'Ha-HA!') onto lines that don't flow from them, so speeches read as assembled rather than spoken by one person in one moment.",
+    "New texts tend toward written cleverness (coded hints like chests that bite, punchline asides after a double-hyphen dash) where Westwood's humour is broad and character-driven (a pet frog, 'Loads and loads of money?', boots stolen while bathing).",
+    "Westwood's quest givers have one consistent tic or voice per speaker and a reward stated plainly and tied to progress (a spell, a title, a petition, a sum); new texts' thanks drift into non sequiturs or second thoughts after the payment.",
+    "New journals sometimes add a second sentence of hints or omit the terminal period inconsistently; Westwood's are one short imperative sentence."
+  ]
+}

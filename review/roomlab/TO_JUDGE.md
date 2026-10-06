@@ -1,28 +1,40 @@
-# Blind sheets to judge independently (track B)
+# Blind sheets for an independent judge (tuneA)
 
-| type | iteration | blind folder |
+Each line: type, iteration, the blind folder. Judge by review/roomlab/JUDGE.md from the pictures alone (never
+blind_key.json). The tuner's own judgements, where there are any, are in each folder's judge.json (self, too generous):
+overwrite or set them aside.
+
+## Judged (results from the main session)
+
+| Type | Iteration | Note | Result (accuracy, generated / Westwood) |
+|---|---|---|---|
+| bedroom | ref | before | 6/10, 6.4 / 6.0 |
+| bedroom | r6 | Westwood stamp (dropped) | 8/10, 4.8 / 5.8 |
+| living_room | r6 | | 8/10, 6.0 / 4.6 |
+| bedroom | r7 | ref's composition, Westwood's proportions (dropped) | 9/10, 4.8 / 6.6 |
+| kitchen | ref | before | 10/10, 5.0 / 5.8 |
+| kitchen | r8 | Westwood's pieces (dropped) | 10/10, 3.4 / 5.8 |
+
+## Judged, second batch (after the renderer fix)
+
+| Type | Iteration | Result (accuracy, generated / Westwood) |
 |---|---|---|
-| tavern | r15 (replaces r10: re-rendered after the renderer fix) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r15\blind |
-| tavern | ref (before) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\ref\blind |
-| throne_room | ref (before) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\ref\blind |
-| throne_room | r5 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\r5\blind |
-| great_hall | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\great_hall\r4\blind |
-| chapel | r4 (r3 re-rendered after the renderer fix) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\chapel\r4\blind |
-| dining_hall | r8 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\dining_hall\r8\blind |
-| hall | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\hall\r3\blind |
-| shrine | r9 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\shrine\r9\blind |
-| gallery | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\gallery\r3\blind |
+| bedroom | r10 | 8/10, 5.6 / 7.4 |
+| kitchen | r11 | 10/10, 5.0 / 4.2 (thin pool) |
+| living_room | r10 | 10/10, 4.6 / 6.6 |
+| guardroom | r8 | 9/10, 5.4 / 5.4 |
+| cell | r4 | 10/10, 3.8 / 7.2 |
+| infirmary | r2 | 10/10, 4.6 / 4.0 (kin rooms) |
 
-Second pass (the best round per type, after the judges' first verdicts):
+## Queued (third batch: the judge's faults from the second batch taken out; one sheet per type)
 
-| type | iteration | blind folder |
-|---|---|---|
-| throne_room | r6 (replaces r5: the curated pool, the fixed renderer) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\r6\blind |
-| dining_hall | r11 (replaces r8) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\dining_hall\r11\blind |
-| hall | r4 (replaces r3) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\hall\r4\blind |
-| shrine | r10 (replaces r9) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\shrine\r10\blind |
-| gallery | r8 (replaces r3) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\gallery\r8\blind |
-| great_hall | r5 (replaces r4) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\great_hall\r5\blind |
-| tavern | r16 (replaces r15 if not judged yet: round tables clustered) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r16\blind |
-| throne_room | r9 (replaces r6: three compositions, not one template) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\r9\blind |
-| tavern | r17 (replaces r16: one long table, better on both seeds) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r17\blind |
+| Type | Iteration | Blind folder | What changed since the judged round | Result |
+|---|---|---|---|---|
+| bedroom | j6 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\bedroom\j6\blind | the bed centred on a back wall, the desk on a back wall, the table drawn off the centre, a second nightstand and bookcases on the other back wall (fuller: Westwood's 0.147 cover) | |
+| kitchen | j2 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\kitchen\j2\blind | the pot always beside the hearth, stores fewer and heaped, provision shelves on the second back wall | |
+| living_room | j6 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\living_room\j6\blind | barrels heaped by the stock pass 2.4 off the fire, a bench drawn up before the hearth, no stamped benches, no second set on a rug | |
+| guardroom | j3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\guardroom\j3\blind | two cots side by side on a back wall, no pennants, the table off the corner | |
+| cell | j1 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\cell\j1\blind | pens: the stocks with one straw heap before them (Westwood's Con11a), the obelisk; fewer straw mats | |
+| infirmary | j3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\infirmary\j3\blind | 3-9 cots (was up to 10 stamped), one pair of potion shelves and two bookcases, not a lined wall | |
+| study | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\study\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |
+| solar | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\solar\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |

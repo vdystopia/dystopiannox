@@ -120,6 +120,43 @@ material for it with a gate facing the town.
    the wall line (`layout.door_frame`) or not at all; a torch pole never stands in or against a wall, and a yard's
    corner torch moves into the yard when a building reaches that corner.
 
+### Room shells: shapes, partitions, floors and carpets (2026-10-05, the shells night)
+The room lab's judges and every room-tuning track found the shell the biggest giveaway once the furniture improved:
+our rooms were rectangles on one floor, carpeted wall to wall. `py rules/rooms/shells.py` measures every built room of
+the campaign maps (308, each layout once; 231 typed by `rules/rooms/westwood.json`) into `rules/rooms/shells.json`, and
+`kit/shells.py` draws each room's shell from its type's numbers (its size band's when the type has under 8 rooms),
+from its own generator, so the rest of a building draws as before (`NOX_SHELLS=0` builds the old shells, to compare):
+- **Shape** (`shape_rooms`, run by `building._build`): two rooms in three are rectangles; 15% have a bay or alcove,
+  8% are L or T, 10% more broken; larger rooms less often rectangles (under 30 tiles 82%, 80-200 tiles 41%). By type:
+  bedrooms 80% rectangles (12% L, 7% bays), storerooms 73% (27% bays), living rooms 73% (20% bays), halls 41%,
+  crypts 67%. A room drawn otherwise gives a corner to the room beside it (an L) or takes an alcove
+  from the room beside it; every room keeps one piece, its least size, its proportions and its place in the size
+  order; the entrance's facade, throne rooms and chapels stay as they are, and the outline is the footprint's (a notch
+  to the outside had opened a way round Thornwick's locked gate). Rooms are shaped against a budget per building
+  (an alcove bends the room it is taken from too).
+- **Partial partitions** (`spur_points`): a wall spur 1-3 points long from the middle of a wall, two units of floor
+  beyond its tip: 5% of rooms, 15% of those of 80-200 tiles, a third over 200. Free-standing wall pillars: 1% (none
+  generated; pillars are furniture).
+- **Floors** (`floor_pattern`): half of Westwood's rooms carry a second floor on 3% of their floor or more (bedrooms
+  10%, storerooms 55%, living rooms 60%, halls 82%, crypts 97%), a median 16% of it: a region (a wing, a bay, a strip
+  along a wall, one end), a border, worn patches of dirt, inlaid panels. The partner is the one Westwood lays with the
+  main floor; never one it keeps apart from it or from the town's grass (`ground_shy`); two tiles clear of every door
+  (a doorway's floor is the room's own); blended where Westwood blends the pair (`blend_pattern`,
+  `nox.Spec.pattern_tiles`).
+- **Carpets** (`furnish.lay_carpet`, `CARPET_FULL`): never on the room's outer ring; a small room's carpet is its floor
+  less that ring (4 squares across: 3 in 4), a larger room's 2-5 by 3-8 squares in its middle (8 or more across: 1 in
+  10 wall to wall); a quarter to a third of the floor.
+- Doors: Westwood's rooms have one door in two (bedrooms 70%, storerooms 77%), placed 0.3-0.45 of the way along their
+  wall, one in seven a unit from a corner.
+Measure a lab iteration's shells against Westwood's: `py rules/rooms/shells.py --lab <type> <iter>` (side by side and
+a shell AUC); a built map's: `--maps <map> ...`. Tonight's lab (seed 1, iterations `shells0` and `shells`): the shell
+AUC went bedroom 0.85 to 0.75, storeroom 0.89 to 0.82, living room 0.88 to 0.80, hall 0.99 to 0.94, crypt 0.99 to
+0.78; the furniture AUC barely moved (it reads no shell feature). What still gives the shells away: the lab's own
+doors (its schedule gives 1-3, Westwood's rooms mostly one), halls' floors (Westwood's halls mix floors patchily) and
+Westwood's irregular halls (rooms run together through openings). The five designs' rooms went from 93-97% rectangles
+to 41-83% (Westwood 67%), a quarter to two fifths with a second floor. The checker's threshold rule now looks only
+within 4 cells of a door (a room's own second floor further in may share a material with the ground).
+
 ### Thresholds [SW-4]
 A room's floor runs under its walls and out onto the doorstep; the ground blends onto the doorstep, never onto a tile
 that reaches into the room (`Spec._wall_line_floors`, `Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are

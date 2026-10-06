@@ -1,0 +1,234 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Vellin Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Thrungar's Ogres hold the Old Toll Fort on the east road and have shut every road through Vellin Cross. The wizard Garamond sent the player here.",
+  "names": {
+   "Vellin Cross": "place",
+   "Gold Goose": "place",
+   "Gray Quarry": "place",
+   "Mire Caves": "place",
+   "Scraggle Wood": "place",
+   "Hagg Hollow": "place",
+   "Old Toll Fort": "place",
+   "Gormley": "person",
+   "Grenna": "person",
+   "Tullock": "person",
+   "Bramble": "person",
+   "Dalbo": "person",
+   "Fennick": "person",
+   "Pell": "person",
+   "Brusk": "person",
+   "Thrungar": "person",
+   "Pibbet": "person",
+   "Garamond": "person",
+   "Elixir of Mighty Strength": "thing",
+   "Ogres": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Gormley, keeper of the Gold Goose, wants the bats of the Gray Quarry destroyed.",
+   "names": {
+    "Gormley": "person",
+    "Gold Goose": "place",
+    "Vellin Cross": "place",
+    "Gray Quarry": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gormley",
+     "text": "Welcome, brave Adventurer, to Vellin Cross! At last, help has come!\n\nThose wretched bats in the Gray Quarry are out of control! Every night now they swoop down on the inn and scare my guests off! My stableboy ran after them yesterday and still isn't back.\n\nHead west to the Gray Quarry and wipe out the bats in their roost. Once it's done, come back to me. You'll find me pouring ale at the Gold Goose."
+    },
+    "reminder": {
+     "speaker": "Gormley",
+     "text": "Hurry off! The bats grow bolder."
+    },
+    "completion": {
+     "speaker": "Gormley",
+     "text": "Take your gold, I'm awfully busy today."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the bats from the back of the Gray Quarry."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Grenna the herb woman wants her magic gloves back from the Urchins of the Mire Caves.",
+   "names": {
+    "Grenna": "person",
+    "Brusk": "person",
+    "Vellin Cross": "place",
+    "Mire Caves": "place",
+    "Urchins": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenna",
+     "text": "Hello, and welcome to the only herb shop at Vellin Cross.\n\nWhat sort of thief robs a poor old herb woman? Hmm, let me think... those filthy Urchins from the Mire Caves, that's who!\n\nWell, Warden Brusk won't spare a single guard while the Ogres hold the roads, but you look like you could help an old woman, kind sir.\n\nFetch back my magic gloves. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Grenna",
+     "text": "So you have no pity for old women."
+    },
+    "reminder": {
+     "speaker": "Grenna",
+     "text": "Oh, thank goodness you're back!"
+    },
+    "completion": {
+     "speaker": "Grenna",
+     "text": "Bless you for my gloves! Now you simply must take these potions for your trouble!"
+    },
+    "after": {
+     "speaker": "Grenna",
+     "text": "The Ogres won't wait forever. Off you go now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take the magic gloves from the Urchins in the Mire Caves to Grenna at the herb shop."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take the magic gloves from the Urchins in the Mire Caves to Grenna at the herb shop."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Tullock the wagon master wants his runaway ox Bramble found in Scraggle Wood. Dalbo, a peddler of a fake elixir, hides in the inn cellar from two angry Ogres.",
+   "names": {
+    "Tullock": "person",
+    "Bramble": "person",
+    "Dalbo": "person",
+    "Thrungar": "person",
+    "Scraggle Wood": "place",
+    "Gold Goose": "place",
+    "Elixir of Mighty Strength": "thing",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tullock",
+     "text": "Help! Somebody help me, good sir! Ogres smashed up my wagons out on the east road, and Bramble, my prize ox, ran off into Scraggle Wood!\n\nWhoever brings him home gets a fat purse from me!"
+    },
+    "offer_b": {
+     "speaker": "Dalbo",
+     "text": "Many good customers have paid a handsome price for a bottle of my Elixir of Mighty Strength. Two of Thrungar's Ogres bought the last of it -- and now the brutes are sick and swear they will eat me alive. They are waiting in the yard of the Gold Goose, armed with clubs and cursing my good name.\n\nYou must go up to the yard and send them running. Take this key to my strongbox, and help yourself to your reward once they are gone."
+    },
+    "outcome_a": {
+     "speaker": "Tullock",
+     "text": "Thanks for fetching Bramble and enjoy the gold, sir."
+    },
+    "outcome_b": {
+     "speaker": "Dalbo",
+     "text": "Is it true!? The Ogres left? Truly left? I'm coming up now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Lead Tullock's runaway ox back home from Scraggle Wood."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Chase the angry Ogres away from Dalbo's cellar door."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Fennick the woodcutter's son Pell is held in the Ogre pens of Hagg Hollow.",
+   "names": {
+    "Fennick": "person",
+    "Pell": "person",
+    "Hagg Hollow": "place",
+    "Gold Goose": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fennick",
+     "text": "I can't go back out there, lad. Too many Ogres watching from the trees on the road to Hagg Hollow.\n\nTake the old cart track north out of town.\n\nFind my boy Pell. He'll be in their pens if he's still alive.\n\nTake this potion. It will mend your wounds should the brutes catch you. Careful out there, lad."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Have you found my Pell yet?"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "The lock! The lock! Smash open the lock!"
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "My knees may be knocking, but you didn't get to eat me, ugly Ogres. There is someone here, bigger and braver than you, who is taking me home."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "You brought my Pell home! Take this gold as a token of my appreciation. Oh, and one more thing! Here's a spell book some wizard left behind at the Gold Goose. Be careful with it. The last fellow who tried it lost his eyebrows. Thanks again, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fennick's son has been dragged off to Hagg Hollow, and every man in town is too scared to follow. Somebody has to bring him back..."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion",
+     "SpellBook"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pibbet points the player to Warden Brusk, who sends him against Thrungar's Ogres in the Old Toll Fort.",
+   "names": {
+    "Pibbet": "person",
+    "Brusk": "person",
+    "Thrungar": "person",
+    "Old Toll Fort": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pibbet",
+     "text": "Aaaaiiieee! Go find Warden Brusk!"
+    },
+    "opening": {
+     "speaker": "Brusk",
+     "text": "Big, stinking brutes! Down from the hills came the Ogres, and now not one road through the crossroads is open!\n\nWarden Brusk, at your service. A brave champion is what I need. Their chief, Thrungar, holds the Old Toll Fort, I fear.\n\nDrive him out, open our roads, and you'll ride north with the next caravan. Come along, and I'll point you down the east road to that cursed fort."
+    },
+    "reminder": {
+     "speaker": "Brusk",
+     "text": "Hurry! Drive those Ogres out!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Help Warden Brusk drive Thrungar from the fort."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

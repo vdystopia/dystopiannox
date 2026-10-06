@@ -1,0 +1,306 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Harrow Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "The Necromancer Sabbek is raising the dead on Gallows Hill, and the Undead walk the roads around Harrow Cross every night.",
+  "names": {
+   "Harrow Cross": "place",
+   "Cartwheel Inn": "place",
+   "Gallows Hill": "place",
+   "Kestrin": "person",
+   "Mayor Osgood": "person",
+   "Sabbek": "person",
+   "Warden Krell": "person",
+   "Dobbs": "person",
+   "Father Ambry": "person",
+   "Harrup": "person",
+   "Fennick": "person",
+   "Ebbert": "person",
+   "Grimsby": "person",
+   "Gimble": "person",
+   "Wenlow": "person",
+   "Mungo": "person",
+   "Gilly": "person",
+   "Brask": "person",
+   "Sabrine": "person",
+   "Everlight Lantern": "thing",
+   "Dispel Undead": "thing",
+   "Undead": "group",
+   "Imps": "group",
+   "Spiders": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Warden Krell keeps the jail by the east gate, and later the dead come down from Gallows Hill.",
+   "names": {
+    "Warden Krell": "person",
+    "Harrow Cross": "place",
+    "Gallows Hill": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Warden Krell",
+     "text": "Watch yourself in Harrow Cross, stranger. Start a fight at the inn and you'll be sleeping in my jail with the rats!"
+    },
+    "again": {
+     "speaker": "Warden Krell",
+     "text": "Move along."
+    },
+    "later": {
+     "speaker": "Warden Krell",
+     "text": "The dead are coming down from Gallows Hill tonight! If you go out the east gate, go ready to fight."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Harrup, a grumbling old farmer, wants the Imps that raid his henhouse driven off.",
+   "names": {
+    "Harrup": "person",
+    "Harrow Cross": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Harrup",
+     "text": "Hmmph. Another stranger come to eat at the inn and not lift a finger for an old farmer, I suppose. Well, listen anyway! The Imps are back, and every night they get into the henhouse and they break the eggs and they let the goats out and they pull the wool right off my sheep and they cackle, they cackle all night long, and with the dead walking the roads not one soul in Harrow Cross will help me, so I'm ruined, I tell you, ruined! Will you get rid of those Imps for me?"
+    },
+    "reminder": {
+     "speaker": "Harrup",
+     "text": "Oh.... Still nothing? They come down out of the woods north of here, I tell you!"
+    },
+    "completion": {
+     "speaker": "Harrup",
+     "text": "No more cackling in the henhouse! Ha, ha! Thank you, brave Adventurer! Take this Bow. It never hit an Imp for me, but maybe you'll have better luck."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Imps away from Harrup's farm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Fennick, a fussy hermit, lost his Everlight Lantern to Skeletons of the Undead.",
+   "names": {
+    "Fennick": "person",
+    "Everlight Lantern": "thing",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Greetings, Wanderer. Wipe your feet first. Both of them, please.\n\nThe Undead were rattling around my hut last night. Skeletons, a whole gang of them! I hid under the bed, and when I came out they had taken my Everlight Lantern.\n\nBring it back to me. And don't you dare scratch the glass."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Hmmph. Then stop standing in my doorway. You're letting the cold in."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Still no Lantern?! Skeletons never wander far from their graves, you know."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My Lantern! And not a scratch on it! Here, 80 gold for your trouble."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Feet, please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fennick's Everlight Lantern from the Undead."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return the Everlight Lantern to Fennick."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Wenlow warns of the dead on the roads, Gimble brushes the player off, Mungo the drunk repeats Wenlow.",
+   "names": {
+    "Wenlow": "person",
+    "Gimble": "person",
+    "Mungo": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wenlow",
+     "text": "Stay off the roads after dark, stranger. The dead walk them now."
+    },
+    "rumour2": {
+     "speaker": "Gimble",
+     "text": "Not now. I've got horses to feed."
+    },
+    "rumour3": {
+     "speaker": "Mungo",
+     "text": "Hic! The dead walk the roads after dark! Ever'body says so. Well, I walk 'em after dark too, and nobody runs from ME! Hic!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gilly keeps the Cartwheel Inn and makes coffins, Brask sells arms, Sabrine sells potions and does not like browsers.",
+   "names": {
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Cartwheel Inn": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gilly",
+     "text": "Welcome to the Cartwheel Inn! Beds are upstairs. I make coffins out back too, if things go bad for you."
+    },
+    "arms": {
+     "speaker": "Brask",
+     "text": "Come in, come in! I hope you brought plenty of gold. Prices went up when the dead started walking. Heh, heh."
+    },
+    "magic": {
+     "speaker": "Sabrine",
+     "text": "Hmmph. Don't touch the bottles unless you're buying."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Father Ambry wants the chapel candles lit against the Undead and then sends the player to Warden Krell, who pays for Dobbs the grave robber dead or alive.",
+   "names": {
+    "Father Ambry": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Gallows Hill": "place",
+    "Harrow Cross": "place",
+    "Dispel Undead": "thing",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Father Ambry",
+     "text": "The candles have gone out! All the candles in the chapel, every last one! And the Undead are scratching at the crypt door!\n\nI would do it myself, but look at my hands! I can't hold a flint like this.\n\nGo to the chapel and light the candles again. Left to right, mind you, the proper way! The tinderbox is on the shelf by the door."
+    },
+    "offer_b": {
+     "speaker": "Warden Krell",
+     "text": "Looking for work? Dobbs the grave robber broke out of my jail last night. I hear he's hiding in the cemetery on Gallows Hill, the fool.\n\nBring him back alive and it's 150 gold. Dead, 75. That's the deal."
+    },
+    "outcome_a": {
+     "speaker": "Father Ambry",
+     "text": "The candles are lit! Left to right, I hope? Bless you, my son! Take this scroll, it holds the Dispel Undead spell.\n\nNow go and see Warden Krell at the jail. He has need of a brave soul too."
+    },
+    "outcome_b": {
+     "speaker": "Warden Krell",
+     "text": "Dobbs! Back in his cell, and still breathing! Here's your 150 gold, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the candles in the chapel of Harrow Cross."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Dobbs the grave robber back to Warden Krell, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Ebbert, a nervous scholar, gives the cellar key and begs the player to save his raven Grimsby, found hurt among the Spiders.",
+   "names": {
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Spiders": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ebbert",
+     "text": "Good day to you, kind stranger! Oh, please, you must help me!\n\nMy raven Grimsby flew into the cellar of the burned farmhouse west of here, and the Spiders got him. I heard him squawking! Nobody will go near the place, not with the Undead about. Here, take the key to the cellar. Will you find him for me?"
+    },
+    "reminder": {
+     "speaker": "Ebbert",
+     "text": "Grimsby never listens to me. Never!"
+    },
+    "found": {
+     "speaker": "Grimsby",
+     "text": "Squawk... Ebbert...? Hurt... can't fly..."
+    },
+    "following": {
+     "speaker": "Grimsby",
+     "text": "Squawk! Home! Home!"
+    },
+    "completion": {
+     "speaker": "Ebbert",
+     "text": "Grimsby! Oh, look at his poor wing! He'll live, he'll live. Thank you, thank you! Please, take this Spell Book as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ebbert's raven from the cellar of the burned farmhouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Gimble points the player to Mayor Osgood at the Cartwheel Inn, who gives the cemetery gate key and sends him after the Necromancer Sabbek.",
+   "names": {
+    "Gimble": "person",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Harrow Cross": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Gimble",
+     "text": "Dead men on the road again last night. If you're the one Kestrin sent, Mayor Osgood's over at the Cartwheel Inn."
+    },
+    "opening": {
+     "speaker": "Mayor Osgood",
+     "text": "Grim news, lad. The Undead came right up to the crossroads last night. The Necromancer Sabbek is raising them from the graves on Gallows Hill, east of here, and every night there are more of them.\n\nKestrin said you would come, and not a day too soon!\n\nTake this key. It opens the cemetery gate. Find Sabbek and destroy him, before Harrow Cross is overrun!"
+    },
+    "reminder": {
+     "speaker": "Mayor Osgood",
+     "text": "Every hour you stand here, Sabbek digs up another grave! Go, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Necromancer Sabbek on Gallows Hill and destroy him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

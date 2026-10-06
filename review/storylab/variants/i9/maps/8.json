@@ -1,0 +1,312 @@
+{
+ "iter": "i9",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Durgal",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "The Ogre chief Bargul has seized the Smelting Pits north of Durgal, the ore no longer comes down and the forges are going cold.",
+  "names": {
+   "Durgal": "place",
+   "Bargul": "person",
+   "Orvald": "person",
+   "Krell": "person",
+   "Brannock": "person",
+   "Zeck": "person",
+   "Mirva": "person",
+   "Dagny": "person",
+   "Ulda": "person",
+   "Fennick": "person",
+   "Krenshaw": "person",
+   "Rudgar": "person",
+   "Brisba": "person",
+   "Grimble": "person",
+   "Smelting Pits": "place",
+   "Great Forge": "place",
+   "Hot Coal": "place",
+   "lava caves": "place",
+   "slag caves": "place",
+   "north gate": "place",
+   "Fireproof Gloves": "thing",
+   "Guild Hammer": "thing",
+   "Ogres": "group",
+   "Imps": "group",
+   "Bats": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brannock keeps the north gate, shut by Guildmaster Krell since Bargul's Ogres took the Smelting Pits.",
+   "names": {
+    "Brannock": "person",
+    "Krell": "person",
+    "Great Forge": "place",
+    "Smelting Pits": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannock",
+     "text": "Whoa! Nobody's going out that gate!"
+    },
+    "again": {
+     "speaker": "Brannock",
+     "text": "Still here? Mighty stubborn, eh?"
+    },
+    "later": {
+     "speaker": "Brannock",
+     "text": "The north gate is open, but you must report to Guildmaster Krell at the Great Forge when you return. May your luck hold out in the Smelting Pits, Wanderer!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Zeck, an odd old bellows-man, pays to be rid of the Bats nesting inside his great bellows below the forge.",
+   "names": {
+    "Zeck": "person",
+    "Mirva": "person",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Zeck",
+     "text": "Bats have nested inside my great bellows below the forge! There's no time to send for help. Down by the gate a woman named Mirva sells potions you'll surely be needing.\n\nNow, I don't much care for heroes and their grand quests, but let me make it worth your while, friend. You look like the sort who'll do a job for coin, so I figured I'd put some your way. Heh, heh, heh..."
+    },
+    "reminder": {
+     "speaker": "Zeck",
+     "text": "I've got nothing else to tell you just now. Good luck with those bats. They can be noisy and filthy bunch."
+    },
+    "completion": {
+     "speaker": "Zeck",
+     "text": "Ha-HA! Now, take this purse and off you go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Bats in order to free Zeck's great bellows.\nTheir nest is likely somewhere under the forge."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Dagny the smith cannot work the hot iron since Imps ran off with her Fireproof Gloves to the lava caves.",
+   "names": {
+    "Dagny": "person",
+    "Imps": "group",
+    "Fireproof Gloves": "thing",
+    "lava caves": "place",
+    "Durgal": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dagny",
+     "text": "Imps ran off with my Fireproof Gloves, down into the lava caves west of town! Will you get them back for me please?"
+    },
+    "refusal": {
+     "speaker": "Dagny",
+     "text": "Oh, never mind then."
+    },
+    "reminder": {
+     "speaker": "Dagny",
+     "text": "Those Imps are the pests and sworn enemies of every smith in Durgal. Going down into their caves will show if you are worthy to stand beside us at the anvil."
+    },
+    "completion": {
+     "speaker": "Dagny",
+     "text": "Bless you, brave Adventurer! Then I must get back to my anvil -- and you must take these boots with my thanks."
+    },
+    "after": {
+     "speaker": "Dagny",
+     "text": "My deepest thanks again for bringing back my gloves!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find and return the Fireproof Gloves in order to help Dagny.\nThe Imps have most likely hidden them in the lava caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find and return the Fireproof Gloves in order to help Dagny."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a smith who finds the Great Forge cold, a hothead about Bargul, a woman who teases the player.",
+   "names": {
+    "Great Forge": "place",
+    "Bargul": "person",
+    "Smelting Pits": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Smith",
+     "text": "WHAT? The Great Forge is... COLD?"
+    },
+    "rumour2": {
+     "speaker": "Townsman",
+     "text": "We must get the ore moving again! Drive off Bargul and take back the Smelting Pits."
+    },
+    "rumour3": {
+     "speaker": "Townswoman",
+     "text": "You're awful puny for a hammer-man. Hah, hah, hah...!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Rudgar of the Hot Coal inn, Krenshaw the armourer, Mirva who sells potions and spell books.",
+   "names": {
+    "Rudgar": "person",
+    "Hot Coal": "place",
+    "Krenshaw": "person",
+    "Mirva": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Rudgar",
+     "text": "You can't be back here, stranger. Rooms are round the front of the Hot Coal."
+    },
+    "arms": {
+     "speaker": "Krenshaw",
+     "text": "You'd better be quick I've got a sword in the fire."
+    },
+    "magic": {
+     "speaker": "Mirva",
+     "text": "Pssst! Back here! You in want of a spell book? A potion or two, perhaps?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Ulda the Treasurer wants the Guild Hammer the Ogres carried off to the slag caves. Fennick, jailed in town, wants the key to his cell and offers help in return.",
+   "names": {
+    "Ulda": "person",
+    "Fennick": "person",
+    "Bargul": "person",
+    "Krell": "person",
+    "Krenshaw": "person",
+    "Guild Hammer": "thing",
+    "slag caves": "place",
+    "Smelting Pits": "place",
+    "Durgal": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulda",
+     "text": "Our smiths and our miners alike have paid dearly to put an end to Bargul's raids. Hmm, I suppose Guildmaster Krell has already sent you up to the Smelting Pits after him. All of Durgal is counting on you, lad.\n\nBut the Ogres also carried off our Guild Hammer, and if I don't get it back, the guild is finished. So keep your wits about you as you climb to the slag caves east of town, because the brutes won't take kindly to strangers. Look at you, not a speck of fear!"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Greetings, young sir. Bargul's Ogres have already carried off half the iron in Durgal. Fetch the cell key from the guard room. Quickly! The jailer's gone to his supper. I'd wager the brutes who took Ulda's hammer have it in the slag caves. Please, if you bring me that key and let me out of this cell, I may just be able to help you in return."
+    },
+    "outcome_a": {
+     "speaker": "Ulda",
+     "text": "Thank goodness, the hammer is home! Once it rests on the anvil again, you may wear this Chain Tunic into battle, or sell it to Krenshaw for a good price."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "You must keep well clear of the jailer for a while. You will meet scores of Ogres up in those caves, so take this Longsword of mine. I'm sure Ulda will reward you well for the hammer."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Guild Hammer from the slag caves for Ulda the Treasurer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Fennick from his cell in the town jail."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic", "Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Brisba's husband Grimble, a tinker, went to sell kettles to the Ogres and they locked him up in the Smelting Pits.",
+   "names": {
+    "Brisba": "person",
+    "Grimble": "person",
+    "Bargul": "person",
+    "Smelting Pits": "place",
+    "north gate": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brisba",
+     "text": "Please! I shall never see my Grimble again -- he went off to sell kettles to the Ogres and they've locked him up in the Smelting Pits! If you're going up that way, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Brisba",
+     "text": "Bless you, dear. Go quickly. I know he can't last long up there."
+    },
+    "found": {
+     "speaker": "Grimble",
+     "text": "Am I glad to see you, young sir! Take me as far as the north gate -- just down the hill. I can make it home on my own from there."
+    },
+    "following": {
+     "speaker": "Grimble",
+     "text": "Yaaaaaarrrgggghhh!!! Oh..."
+    },
+    "completion": {
+     "speaker": "Brisba",
+     "text": "Hmmm. Well, you'd best take this Ankh, kind sir, if you're to stand any chance against that Bargul and his brutes!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Grimble the Tinker from the Smelting Pits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Guildmaster Krell at the Great Forge, an old friend of Orvald, who sends him against Bargul in the Smelting Pits.",
+   "names": {
+    "Krell": "person",
+    "Orvald": "person",
+    "Bargul": "person",
+    "Great Forge": "place",
+    "Smelting Pits": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "How can a town of smiths fight off Ogres? This is a disaster! Will you go see Guildmaster Krell at the Great Forge?"
+    },
+    "opening": {
+     "speaker": "Krell",
+     "text": "Friend of Orvald, a thousand thanks for answering my call... I hear the Ogre chief Bargul has seized the Smelting Pits north of town and put our ore-men to the sword, so you must be the one to drive him out!"
+    },
+    "reminder": {
+     "speaker": "Krell",
+     "text": "That is all I can tell you. Until the Pits are ours again..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Bargul in the Smelting Pits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

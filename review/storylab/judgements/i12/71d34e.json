@@ -1,0 +1,33 @@
+{
+  "packet": "71d34e",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The dry 'guaranteed to work under all circumstances' is Nox-like, but the crude 'fresher'n a monkey's butt' simile feels like a forced punchline, and 'finest wares in all of Nox' is stock barker talk."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The rambling, self-amused arms dealer with '!? Eh? Heh, heh, heh...' and a page break before a polite 'You're always welcome here, sir' has Westwood's loose rhythm and character."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and serviceable, but every line exists to signal a plot state (betrayal, the town emptying), and 'Dark days... Dire news indeed!' is stacked exposition rather than a shopkeeper's quirk."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Thin and generic; all three lines lean on one invented 'garrison' hook, and the run-on 'quick the garrison's' misses a comma. No humour or personality."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Short, flat greetings with a slightly pompous 'hallowed shop... full range of a [Group]'s needs' that reads like Westwood's class-flavoured shop lines."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The arms line answers a question nobody asked ('Well... Maybe not the newest exactly...'), the inn refusal is an odd greeting, and 'Well done, stranger!' is a quest-state nod rather than a voice."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Imitates Westwood's 'Heh, heh, heh...' and gruff hostility, but 'filled up somewhat' and 'vast scrap heaps' are writerly, and each line explains its own world-building."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The undertaker-shopkeeper offering 'funerary services or... goods' and 'Let's get to know each other! Buy something!' is exactly Nox's deadpan, slightly absurd humour."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Boastful, plain merchant talk tied to the chapter's events with a concrete offer to lower prices; 'lad' and 'eh?' land naturally rather than as decoration."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Pig-headed armored sheep marching up and down, up and down!' and the drawn-out 'Ahhhhhhhh...' are Westwood's broad, character-first comedy."}
+  ],
+  "tells": [
+    "Westwood's shopkeepers have a personality first (cranky, absurd, boastful, morbid) and the plot second; the new texts use each greeting to state a plot condition or local fact (a garrison, a betrayal, crowded farm folk).",
+    "Westwood's humour is deadpan and situational (funeral services vs. goods, sheep marching up and down); the new texts reach for a stock joke or borrow the 'Heh, heh, heh...' tag without the absurdity behind it.",
+    "Generated lines sometimes answer an unseen prompt or read as a mid-conversation reply ('Well... Maybe not the newest exactly'), which a standalone shop greeting does not do in Westwood's text.",
+    "Writerly qualifiers and adjectives ('somewhat', 'vast scrap heaps', 'Dire news indeed') mark the new texts; Westwood's are blunter, with odd punctuation like '!?' and stretched interjections.",
+    "Small mechanical slips (a missing comma in a run-on) appeared only on the new side."
+  ]
+}

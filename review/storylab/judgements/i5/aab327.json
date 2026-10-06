@@ -1,0 +1,33 @@
+{
+  "packet": "aab327",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless offer, the odd 'At happier other times', the monkey's-butt ale and the ''till the ogres moved in' grumble are Westwood's own rough, jokey voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Smuggler's exasperation, the jailer's 'in a week, or a two!' and 'Grunt if you agree!' have Westwood's sly slapstick and small slips."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Nox-like and plain, but the thanks is a touch too composed ('We shall all sleep better knowing...') and the townsfolk lines are generic warnings with no slip or joke."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Fits Nox's bounty formula and 'young sir' register, but 'I surmise you might be here about the reward' and the repeated 'scoundrel behind bars' read as a writer echoing the formula; the old-goat apprentice joke is good."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The 'mate' bridge guard has the right comic plainness, but the journal entry is longer and more explicit than Westwood's and the two spider townsfolk lines echo each other too neatly."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Good Nox humour ('40 wizards with his bare hands'), yet the guard's rule list and the shopkeeper's sales pitch are a little over-built; could be either."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Mayor's plea with 'worse than the pox', the typo 'off you back' and the class-joke about getting things done: Westwood's texture."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The trapped pet frog, 'Loads and loads of money?' and 'Oh no...I've lost everything.' are Westwood's deadpan comedy, with its loose punctuation."},
+    {"label": "I", "verdict": "generated", "confidence": 1, "score": 8,
+     "critique": "Very close to Westwood (capitalised 'East', a missing full stop, plain directions to the Captain); called generated only to make the count, a near guess."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Hysterical overstatement ('in defense of Nox's vital interests!'), the pushy 'Buy something!' shopkeeper and a counted journal entry are pure Westwood."}
+  ],
+  "tells": [
+    "This packet was hard to split: every text uses Nox's creatures and plain register, so the calls rest on small cues and are close to guesses.",
+    "Westwood's town lines carry slips and loose punctuation (typos, missing full stops, 'or a two', ellipses without spaces) and blunt, slightly crude jokes; the texts I called new are cleaner and more even.",
+    "Lines that echo one another inside a town (two townsfolk on the same topic, a guard repeating the quest's phrase) read as planned for coherence; Westwood's townsfolk wander off-topic.",
+    "Slightly elevated words in an otherwise plain voice ('I surmise', 'We shall all sleep better') hint at a writer imitating the register rather than living in it.",
+    "Journal entries that spell out every element (who stole what from whom, and return it to him) are longer than Westwood's terse imperative entries."
+  ]
+}

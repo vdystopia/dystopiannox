@@ -1,0 +1,32 @@
+{
+  "packet": "f54b05",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The warm opening-town welcome, 'nettlesome urchins' as the reminder, capitalised 'East', and a gift with an instruction to see the Captain. The campaign's first quest shape."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The grumbling mentor, 'Oh dear, I fear the worst', the robe as grim news and the teleporter hand-off. Westwood's chapter opener."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The register is right ('kind sir', 'worthy reward'), but the offer is long and fully reasoned (why he cannot leave, where the staff is). The apostrophe slip in the journal argues the other way."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Terse and vague ('that evil one', 'both items'). The reminder 'cowardly madman' is fine, and 'Regain' is an unusual journal verb."},
+    {"label": "E", "verdict": "generated", "confidence": 1, "score": 8,
+     "critique": "The monster bombast and 'Nox's vital interests' are close to Westwood's comedy. A two-sentence journal with an exact count is unusual. A weak call."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The quest is given with the ruby key, 'aggravated the bats', 'Have faith, one little urchin is no threat' and the petition reward. Pure Westwood."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 8,
+     "critique": "The frog in the fire and the 'Loads and loads of money?' joke are Nox-spirited, but the reminder offering loot ('Anything you find in that room you may keep!') feels like a designer hint written into dialogue."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "A short plea with a stammer ('Could you... would you') and a generic thanks. The cloak-and-father premise and 'he'll be destroyed' feel slightly off-key."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The 'Gahhhhhh!' fright, the near-blind hermit mistaking the player, a reminder that gives the hint, and a bat scroll 'invaluable to any conjurer'. Quirky in Westwood's manner."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "An earnest exclamation-heavy plea, 'for the darkest purposes, indeed!', 'that foul demoness' and the coy 'sooner than you think'. This is the campaign's main-plot errand voice."}
+  ],
+  "tells": [
+    "Most texts in this packet are in Westwood's plain plea, short thanks and imperative journal shape, so the generated calls are low confidence.",
+    "I leaned towards 'generated' when an offer reasons out its premise at length or a reminder doubles as a game-design hint.",
+    "Westwood's reminders are short reaction lines in character ('nettlesome urchins', 'Oh dear, I fear the worst', 'Have faith'), often with a quirk. Generic urgency ('Please hurry, kind sir!') was a weak cue towards imitation.",
+    "Westwood's quests hook into chapter progress (a petition, the Captain, a teleporter, the demoness's plans). Stand-alone favours with only a token reward read as less anchored."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "71c3c7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain, slightly stiff shop greetings with a jab at a rival inn and the class-as-title address ('sir [Group]'); unshowy in the way Nox's real vendors are."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line is a tidy stock-fantasy quip ('best ale this side of the mountain', the price-gouging gag with 'Heh, heh'); every shop gets a joke, which is too even."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The long, odd, insulting tirade with 'Hmmmph!' and repetition ('up and down, up and down'), the drawn-out 'Ahhhhhhhh...', and 'young sir' are pure Nox eccentricity."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Dialect ('aye mate', 'Ya') plus a flat expository magic-shop line that just states who supplies whom; this unpolished informativeness is Westwood's."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every line has a crafted twist (impatient innkeep, coffins sold alongside arms, desperate mage); the 'coffins' gag reads as a borrowed motif and the set is too uniformly characterful."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Built around the town's theme (fish, half drowned), slogan-like and cosy; fine game writing but tailored and generic rather than Nox's quirky plainness."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The pushy 'Let's get to know each other! Buy something!' and the ominous mortician offering 'funerary services or ... goods' with ellipses and a page break are distinctive Nox."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Beds upstairs, coffins out back' plus 'Heh, heh, heh' and 'finest steel under the mountain' are polished punchlines; it reworks the funeral-shop joke rather than having Nox's own oddness."},
+    {"label": "I", "verdict": "westwood", "confidence": 2, "score": 7,
+     "critique": "The over-long official shop name 'outfitters to the Watch' feels like Westwood's formal signage; the grumpy inn line and 'jingle' gag are more modern, so this is a close call."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Short, terse, formulaic lines ('This is [Person]'s', 'be quick about it') that echo the shapes of other texts (the Keep, 'don't see many') without a distinctive voice."}
+  ],
+  "tells": [
+    "Generated sets give every shopkeeper a neat one-line joke or personality hook; Westwood's sets are uneven, with one strange or rambling line beside flat, functional ones.",
+    "Generated lines lean on tidy stock phrases and slogans ('best ale this side of the mountain', 'finest steel under the mountain', 'fresh fish and a warm bed').",
+    "Recycled motifs across new texts (coffins at the inn or arms shop, 'Heh, heh') signal imitation of a single memorable Westwood line.",
+    "Westwood uses drawn-out interjections and odd spellings ('Hmmmph', 'Ahhhhhhhh...'), dialect ('aye mate', 'Ya'), and plain expository statements about factions, which the new texts rarely do.",
+    "New texts tailor greetings to the town's theme (fish, drowning, mountains); Westwood's vendors talk about the player, rivals, or their trade, not the setting's gimmick."
+  ]
+}

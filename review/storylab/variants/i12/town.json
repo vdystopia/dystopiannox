@@ -1,0 +1,646 @@
+{
+ "scenario": "town",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Greetings, brave Wanderer! Please, help me, a dreadful thing has happened at my mill!\n\nNot long ago, a band of Urchins crept in through the yard. They stole my amulet and ran off to their barrow! I could ward them off if I only had it, but they took it east of the ford. I'm afraid they'll be back to wreck the mill if I go out after it!\n\nWill you fetch it back for me? I will give a good reward for its quick return."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "Oh, thank you kindly, Wanderer! I could never pay you in full for this... But please, take this as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Wenna's amulet from the Urchins' barrow."
+    },
+    "guard": {
+     "speaker": "Garrick",
+     "text": "Step back from that gate, lad! Unless you WANT to get robbed!"
+    },
+    "shop": {
+     "speaker": "Dunstan",
+     "text": "Well... Maybe not the newest exactly... But solid all the same!"
+    },
+    "townsfolk1": {
+     "speaker": "Townsman",
+     "text": "My wagon... robbed... all robbed."
+    },
+    "townsfolk2": {
+     "speaker": "Townsman",
+     "text": "We will hold the ford, but you must see Halvard in the Moot Hall. Thanks for your help, brave Adventurer!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Paymaster Orrin",
+     "text": "Hello, young sir. I surmise you have come about the bounty.\n\nThere is a generous reward on Skrit the Imp King -- dead or alive. He and his noisy swarm of Imps have been raiding the ore carts for weeks.\n\nTake care, you do not want to get bitten by those spiteful pests."
+    },
+    "completion": {
+     "speaker": "Paymaster Orrin",
+     "text": "Ho, there! Nib complained of squeaking down this tunnel, so I came to look.\n\nYou have single handedly slain the dreaded Skrit! Very impressive! My profound respect is yours! Skrit's swarm has plagued Skarn Delve for weeks! I'll take it from here. We will all rest easier now that this vile pest is dead!\n\nAnd here is your reward -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Skrit the Imp King."
+    },
+    "guard": {
+     "speaker": "Hurk",
+     "text": "Hold it right there, stranger! Nib says you hit him with a pick for no reason and his bruises prove it! Let's go. There's a cold and tidy cell waiting for you! Will you come quietly, stranger?"
+    },
+    "shop": {
+     "speaker": "Ommi",
+     "text": "Welcome to Skarn Delve!"
+    },
+    "townsfolk1": {
+     "speaker": "Tarn",
+     "text": "You can find Mobb the Tallyman in the Counting House. He has the Lift Key."
+    },
+    "townsfolk2": {
+     "speaker": "Garn",
+     "text": "We have held the Counting House! Now we must drive the Trolls out of all of Skarn Delve!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellan",
+     "text": "Welcome to Gorrow, noble Adventurer! We've been expecting you!\n\nThe Mud Imps who live below the walks have gone wild! They crept up the posts and stole my Amulet! A Hunter chased the little brutes into the sinkhole, but hasn't come back.\n\nWill you go into the sinkhole to the South and recover my Amulet from the Imps? Come see me once you are back. I'll be home on the big platform."
+    },
+    "completion": {
+     "speaker": "Pellan",
+     "text": "My Amulet! Thank you, kind sir! All Gorrow is truly thankful for your fine work.\n\nHere, take this as a small gift from the hamlet. The Captain is waiting at the landing. You should visit the shops first, then go and talk to him at once."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pellan's amulet from the Mud Imps."
+    },
+    "guard": {
+     "speaker": "Thoss",
+     "text": "Onto the boards, stranger! Enjoy your stay!"
+    },
+    "shop": {
+     "speaker": "Bidda",
+     "text": "You look like you could use a bed, friend."
+    },
+    "townsfolk1": {
+     "speaker": "Yarrin",
+     "text": "Help! The leeches are in my bed!"
+    },
+    "townsfolk2": {
+     "speaker": "Tuk",
+     "text": "Blaaargh! Get this thing off my leg!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrag",
+     "text": "Blast! Where were you, lad!? The Trolls stormed the Granary Yard and we'd have lost the winter stores to them if Dorrik's pikemen had not charged in at the last moment!\n\nBut in the confusion, their chief Grolm got away with a dozen of our war-horses, leaving the burnt stores our smallest worry! All of Karth Vael is now at risk if Grolm lives!\n\nYou must follow his trail, northeast to the Troll Den on Mount Dreg! Kill Grolm or we are doomed!"
+    },
+    "completion": {
+     "speaker": "Ostrag",
+     "text": "In calmer times, the barracks of Karth Vael would ring with cheers for the death of Grolm! Well done! But now we must stop the Troll King Skorn once and for all.\n\nPlease accept these with our deepest thanks for your fine work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Troll Den and kill Grolm."
+    },
+    "guard": {
+     "speaker": "Hulm",
+     "text": "Hey, you ought to get a proper cloak."
+    },
+    "shop": {
+     "speaker": "Zibbet",
+     "text": "You'd better be quick the garrison's buying up all my steel."
+    },
+    "townsfolk1": {
+     "speaker": "Nessa",
+     "text": "Hello again. Has the Troll King been stopped, yet?"
+    },
+    "townsfolk2": {
+     "speaker": "Tam",
+     "text": "I've been told to keep away from newcomers."
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: cross-section: heirloom_fetch, the magic, a guard, two townsfolk",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrel",
+     "text": "Skerrik has been working on a Cloak of Tides for me for some time. He should have been done with it and had it brought to me by now.\n\nTake the old pier out to Skerrik's hut on Eel Island and find the Cloak. Will you go?"
+    },
+    "completion": {
+     "speaker": "Dorrel",
+     "text": "You found the Cloak of Tides! Wonderful!\n\nMy worst fears for Skerrik, however, have come true. I'll miss him, but there is no time for grief. Orlmere needs me and Rudge wants a word with you. Take this Blue Potion for your trouble.\n\nGood luck, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Cloak of Tides which Skerrik has made."
+    },
+    "guard": {
+     "speaker": "Gurtle",
+     "text": "Pitiful! Off with you, fishbait!"
+    },
+    "shop": {
+     "speaker": "Ismene",
+     "text": "Drifters aren't welcome here. But for a little extra, I'll sell to you anyway."
+    },
+    "townsfolk1": {
+     "speaker": "Pim",
+     "text": "Hide, stranger! Hide!"
+    },
+    "townsfolk2": {
+     "speaker": "Crodd",
+     "text": "Can't swim? Not so clever, eh?"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: cross-section: bounty_offer, the inn, a guard, two townsfolk",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tessik",
+     "text": "Why are you so late!? We are in terrible trouble!\n\nVicious giant bats and Imps from the pit have overrun the vaults beneath the Archive. Several clerks have been lost protecting the college's precious books!\n\nPlease, we implore you! Drive the beasts from the vaults, rescue my clerks and I will pay you generously.\n\nThis key opens the gate to the first trapped clerk. He will lead you to the others.\n\nI also have a spell book which ought to be very handy."
+    },
+    "completion": {
+     "speaker": "Tessik",
+     "text": "You are truly a hero! My sincere thanks.\n\nAs you were saving my clerks down below, the Captain stopped by, asking after you. He's waiting at the Lower Gate -- south of here.\n\nBefore you leave, here is some gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay or banish all the beasts in the vaults. Rescue the 4 trapped clerks."
+    },
+    "guard": {
+     "speaker": "Gorvo",
+     "text": "We don't see many travelers at the gate these days."
+    },
+    "shop": {
+     "speaker": "Pippet",
+     "text": "Dark days, lad. I can't believe Maldrek turned on the college. Dire news indeed! Better rest up while you can!"
+    },
+    "townsfolk1": {
+     "speaker": "Fenn",
+     "text": "Maldrek must have found some way past our wards. At noon the Observatory was quiet, by dusk it was swarming with Gargoyles and Imps! They want the Orrery."
+    },
+    "townsfolk2": {
+     "speaker": "Hendry",
+     "text": "Shouldn't you be out chasing Gargoyles?"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mylka",
+     "text": "Wretched little fiends! The Imps have crept into my cellar and made a mess of everything already!\n\nI am Mylka. I am looking for my Amulet of Warmth. I fear it has been carried off to a nearby Imp Nest.\n\nIf you could get it back from them, I would be willing to teach you a spell or two. Will you search the wretched Imp Nest for it?"
+    },
+    "completion": {
+     "speaker": "Mylka",
+     "text": "My Amulet of Warmth! I feared it was lost for good.\n\nYou are braver than you look. Perhaps you might make a fine student.\n\nFollow me to the counter. Please take this Blue Potion with my thanks. We have much to discuss when you return from your quest."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mylka's Amulet of Warmth from the Imp Nest."
+    },
+    "guard": {
+     "speaker": "Brek",
+     "text": "Warden Odrin is waiting in the Long Hall. He has the key to the Pass Gate."
+    },
+    "shop": {
+     "speaker": "Dagg",
+     "text": "Wanna see a new blade?\n\nI call it 'Ogre's Lullaby.'"
+    },
+    "townsfolk1": {
+     "speaker": "Hobb",
+     "text": "Kell Varn will never fall to the Ogres. Stand firm for the honor of Warden Odrin!"
+    },
+    "townsfolk2": {
+     "speaker": "Ketra",
+     "text": "A spy from the Hold just ran past me! Be fast! He's heading for the gate!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorm",
+     "text": "Sorry, mate, the ore lift is jammed! Only way down to the lower forge is the old cart tunnel, through the Goblin warren. But, if you go that way, mate, keep your guard up! The Goblins stole my best helmet while I was napping!\n\nIf you bring it back, I'll give you a damn fine spell book."
+    },
+    "completion": {
+     "speaker": "Gorm",
+     "text": "My helmet! I had given it up for lost! I'm eternally grateful. Here's the book, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the helmet stolen from Gorm by the Goblins and bring it back to him."
+    },
+    "guard": {
+     "speaker": "Tobb",
+     "text": "Stranger! Ugh! I've heard what the Trolls do to travelers on the road! Turn back!"
+    },
+    "shop": {
+     "speaker": "Ilsa",
+     "text": "Sorry friend, you've bought me dry! I've no potions left to give you."
+    },
+    "townsfolk1": {
+     "speaker": "Fenn",
+     "text": "Ew! I watched that huge lava slug ooze right under Maldrek's door!"
+    },
+    "townsfolk2": {
+     "speaker": "Odo",
+     "text": "Did you see where the ore cart went? It couldn't have just rolled away!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hessel",
+     "text": "Why did you take so long!? We have a terrible problem!\n\nHideous overgrown crows and flying imps from the Hollow have overrun the stable loft. Two of my stablehands were hurt in defense of the inn's good name!\n\nPlease, I beg you! Will you drive off the beasts and fetch back my Cloak of Warding? I'll pay you handsomely.\n\nThis key will open the loft door.\n\nI also have a potion that might come in handy."
+    },
+    "completion": {
+     "speaker": "Hessel",
+     "text": "You are a true champion! My deepest thanks.\n\nWhile you were up in the loft, fighting those crows, Orsk came by, looking for you. He's waiting for you at the Warden's Post -- north of here.\n\nTake this gold and potion for your trouble, before you go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the crows and imps in Hessel's stable loft. Recover the Cloak of Warding."
+    },
+    "guard": {
+     "speaker": "Gurm",
+     "text": "Keep your chin up, stranger, the Trolls will break on our spears!"
+    },
+    "shop": {
+     "speaker": "Pegg",
+     "text": "Maybe you'd like a hot meal or a room?"
+    },
+    "townsfolk1": {
+     "speaker": "Lorna",
+     "text": "Hello stranger! Look me up when you're done with the Trolls."
+    },
+    "townsfolk2": {
+     "speaker": "Dray",
+     "text": "Get that Troll chief and tear his tusks out!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tamsin",
+     "text": "My luck has been rotten of late. Two weeks ago, Ogres broke into the barn and carried off my horses.\n\nI don't expect I'll see them again, but I'd love to see those brutes run out of the valley.\n\nThere's coin for anyone who chases them off."
+    },
+    "completion": {
+     "speaker": "Tamsin",
+     "text": "So the Ogres have been chased off! Well done, lad! We shall all rest easier knowing those brutes won't be stomping through our barley!\n\nNow take your reward... 90 in gold! You're always welcome at Tamsin's!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive off the Ogres that raided Tamsin's barn."
+    },
+    "guard": {
+     "speaker": "Fenn",
+     "text": "Hide, stranger, hide! Hah, hah, hah...!"
+    },
+    "shop": {
+     "speaker": "Grint",
+     "text": "Wanna buy a scythe? They're salvaged from the vast scrap heaps of Ulm Gorra."
+    },
+    "townsfolk1": {
+     "speaker": "Dobb",
+     "text": "They say you're the one who chased those pesky boars off our fields! Thank you, kind sir!"
+    },
+    "townsfolk2": {
+     "speaker": "Tamsin",
+     "text": "Hey! Get out of my barn!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

@@ -1,0 +1,329 @@
+{
+ "iter": "i5",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Vorne",
+  "setting": "a wizards' college town",
+  "trouble": "Sarvok the Renegade, thrown out of the Lyceum for the Black Arts, holds the old Observatory on Gallow Ridge with Imps and Golems and steals the college's magic night by night.",
+  "names": {
+   "Vorne": "place",
+   "the Lyceum": "place",
+   "Sarvok the Renegade": "person",
+   "Sarvok": "person",
+   "Gallow Ridge": "place",
+   "the Observatory": "place",
+   "the Black Arts": "thing",
+   "Jorvald": "person",
+   "Master Dorrovan": "person",
+   "Torrik": "person",
+   "Gostrel": "person",
+   "Feldrim": "person",
+   "Force Wand": "thing",
+   "the old granary": "place",
+   "Tibbald": "person",
+   "Master Quorn": "person",
+   "Quorn": "person",
+   "the Lyceum cellars": "place",
+   "Lissra": "person",
+   "the Moonstone": "thing",
+   "the chapel": "place",
+   "the crypt beneath the chapel": "place",
+   "Zabbo": "person",
+   "the Clock Tower": "place",
+   "the Singing Kettle": "place",
+   "Grenda": "person",
+   "Brask": "person",
+   "Velka": "person",
+   "Nox": "place",
+   "Imps": "group",
+   "Golems": "group",
+   "Wasps": "group",
+   "Ghost": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Torrik keeps the north gate of Vorne and the cell beneath it; the gate is shut while Sarvok holds Gallow Ridge.",
+   "names": {
+    "Torrik": "person",
+    "Vorne": "place",
+    "the Lyceum": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torrik",
+     "text": "Thinking of slipping out the north gate, are you? Try it, and you'll spend the night in the cell underneath it!"
+    },
+    "again": {
+     "speaker": "Torrik",
+     "text": "Oh, I forgot to tell you. No casting spells inside the walls. That means you too."
+    },
+    "later": {
+     "speaker": "Torrik",
+     "text": "Hail, defender of Vorne! Your valor is the talk of the Lyceum. The gate is open to you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gostrel the gardener, stung half to death, wants the Wasps' nest in his herb garden burned out; pays with a spell.",
+   "names": {
+    "Gostrel": "person",
+    "Wasps": "group",
+    "Gallow Ridge": "place",
+    "Imps": "group",
+    "Sarvok": "person",
+    "the Lyceum": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gostrel",
+     "text": "Ow! Ow! Sir! Help me, get them off!\n\nWasps! Giant ones! Sarvok's Imps drove them down off Gallow Ridge and now they've built a nest in my herb garden, west of the Lyceum behind the old sundial.\n\nGo and burn that nest out. Do it and I'll teach you a spell worth knowing."
+    },
+    "reminder": {
+     "speaker": "Gostrel",
+     "text": "Go on! They're still in there!"
+    },
+    "completion": {
+     "speaker": "Gostrel",
+     "text": "Burned it out? Ha! Good riddance! Here, the spell I promised you. Take it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wasp nest in Gostrel's herb garden."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Feldrim, who teaches battle magic, had his Force Wand stolen from his desk by Sarvok's Imps; they hide in the old granary.",
+   "names": {
+    "Feldrim": "person",
+    "Force Wand": "thing",
+    "Imps": "group",
+    "Sarvok": "person",
+    "the old granary": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Feldrim",
+     "text": "Sir! Stop them! Thieves!\n\n...Gone. Blast it all! Sarvok's Imps came in at my window and took my Force Wand right off the desk. I teach battle magic, and I can't teach it with my bare hands. Get it back and I'll teach you a spell for your trouble. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Feldrim",
+     "text": "Then don't! I'll catch the little devils myself."
+    },
+    "reminder": {
+     "speaker": "Feldrim",
+     "text": "Still nothing?! Those Imps hide out in the old granary, everybody knows that. Go and look!"
+    },
+    "completion": {
+     "speaker": "Feldrim",
+     "text": "My wand! Hah! Now those Imps had better watch out. Take this spell book, stranger, as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Feldrim",
+     "text": "Thanks again, stranger. My class is back in session!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Feldrim's Force Wand from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Feldrim's Force Wand from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three people of Vorne: a student points to the inn, a lecturer brushes the player off, a townsman passes on a tip about the Golems.",
+   "names": {
+    "the Singing Kettle": "place",
+    "Golems": "group",
+    "Gallow Ridge": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Student",
+     "text": "Looking for gossip? The Singing Kettle is where the students go to complain."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Excuse me, I'm late for an examination!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "I hear the Golems on Gallow Ridge are terribly slow. Run, and they'll never catch you!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Grenda of the Singing Kettle inn, Brask the armorer who mends cauldrons on the side, Velka of the magic shop who has no time for talk.",
+   "names": {
+    "Grenda": "person",
+    "the Singing Kettle": "place",
+    "Nox": "place",
+    "Vorne": "place",
+    "Brask": "person",
+    "Velka": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Grenda",
+     "text": "Welcome to the Singing Kettle, finest inn in all of Nox! Well... finest in Vorne, anyway. Sit yerself down."
+    },
+    "arms": {
+     "speaker": "Brask",
+     "text": "Welcome, stranger! Weapons and armor out front. I also mend cauldrons, if you've got one that leaks."
+    },
+    "magic": {
+     "speaker": "Velka",
+     "text": "I sell potions and scrolls, not conversation. What do you want?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Lissra, a nervous keeper of the Lyceum's treasures, lost the Moonstone to a Ghost in the chapel crypt and sends the player on to Master Dorrovan; Zabbo at the Singing Kettle bets 100 gold against 50 that nobody can ring the Clock Tower bell.",
+   "names": {
+    "Lissra": "person",
+    "the Moonstone": "thing",
+    "Ghost": "group",
+    "the chapel": "place",
+    "the crypt beneath the chapel": "place",
+    "Master Dorrovan": "person",
+    "the Lyceum": "place",
+    "Zabbo": "person",
+    "the Clock Tower": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Lissra",
+     "text": "Help! Oh, help me, please! The Moonstone! A Ghost came right through the chapel wall and snatched it out of my hands! I was only carrying it to Master Dorrovan... He'll be furious! It went down into the crypt beneath the chapel, I saw it go. I'll teach you a spell, a good one, if you bring it back. Please, will you?"
+    },
+    "offer_b": {
+     "speaker": "Zabbo",
+     "text": "Care for a wager, stranger? Nobody's rung the bell up in the Clock Tower since the Imps moved in. I'll put up 100 gold against your 50 that you can't do it either. Well? Is it a bet?"
+    },
+    "outcome_a": {
+     "speaker": "Lissra",
+     "text": "The Moonstone! Oh, thank goodness, thank goodness! Here is the spell I promised you.\n\nAnd please... Master Dorrovan wishes to see you. He waits for you on the Lyceum steps."
+    },
+    "outcome_b": {
+     "speaker": "Zabbo",
+     "text": "That was you ringing the bell? I nearly fell off my stool! All right, all right, here's your gold. You won it fair."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Moonstone from the crypt beneath the chapel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Ring the bell in the Clock Tower to win Zabbo's wager."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Tibbald, a nervous apprentice, begs the player to find his master Quorn, who went to study the Imps and sits in a cage in the Lyceum cellars.",
+   "names": {
+    "Tibbald": "person",
+    "Quorn": "person",
+    "Master Quorn": "person",
+    "Imps": "group",
+    "the Lyceum cellars": "place",
+    "the Lyceum": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Tibbald",
+     "text": "Greetings, Wanderer. Oh dear, oh dear... My master, Quorn, went off to study the Imps up close and he hasn't come home. He never misses his supper! Never! If you could find him and bring him back, you'd save my life. I'm sure he'd want you rewarded."
+    },
+    "reminder": {
+     "speaker": "Tibbald",
+     "text": "He was always talking about the cellars under the Lyceum. Have you looked down there?"
+    },
+    "found": {
+     "speaker": "Master Quorn",
+     "text": "Hello? Over here, in the cage! Quick, let me out before those Imps come back to tickle me again!"
+    },
+    "following": {
+     "speaker": "Master Quorn",
+     "text": "Careful! Those Imps put fire traps under the loose stones. I lost half my beard to one!"
+    },
+    "completion": {
+     "speaker": "Master Quorn",
+     "text": "Home! Supper! My own bed! I'm free!!! Tibbald, fetch this brave Adventurer the good potions off the top shelf. Thank you, thank you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Master Quorn and bring him safely home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Master Dorrovan on the Lyceum steps; Dorrovan, an old friend of Jorvald who sent the player, hands over scrolls and sends him north against Sarvok in the Observatory on Gallow Ridge.",
+   "names": {
+    "Master Dorrovan": "person",
+    "the Lyceum": "place",
+    "Jorvald": "person",
+    "Sarvok the Renegade": "person",
+    "Sarvok": "person",
+    "the Black Arts": "thing",
+    "the Observatory": "place",
+    "Gallow Ridge": "place",
+    "Imps": "group",
+    "Golems": "group",
+    "Torrik": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Fireballs over the north wall again last night. Master Dorrovan's been waiting on the Lyceum steps all morning for somebody. Is it you?"
+    },
+    "opening": {
+     "speaker": "Master Dorrovan",
+     "text": "So, you've arrived at last, lad! Jorvald wrote that he was sending me someone. I hope you're as good as he says.\n\nSarvok the Renegade was a master of this Lyceum until we threw him out for meddling in the Black Arts. Now he holds the old Observatory on Gallow Ridge, north of town, with Imps and Golems at his beck and call. Every night he steals more of our magic.\n\nTake these scrolls. They'll serve you well. Go north, find Sarvok and put an end to his madness! Torrik will open the gate for you."
+    },
+    "reminder": {
+     "speaker": "Master Dorrovan",
+     "text": "Go, lad! The Lyceum cannot hold out much longer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Observatory on Gallow Ridge and stop Sarvok the Renegade."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

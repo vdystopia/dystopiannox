@@ -1,0 +1,334 @@
+{
+ "iter": "i5",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Bormunt",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "The warlock Skarn has brought the Trolls up out of the deep caves. They hold the Great Lift and the lower shafts, and the miners below are cut off.",
+  "names": {
+   "Bormunt": "place",
+   "Mount Grull": "place",
+   "Yorrel": "person",
+   "Skarn": "person",
+   "Trolls": "group",
+   "Great Lift": "thing",
+   "Great Shaft": "place",
+   "Guild Hall": "place",
+   "Miners' Guild": "group",
+   "Brannoc": "person",
+   "Tavik": "person",
+   "Ulbo": "person",
+   "Giant Leeches": "group",
+   "pump house": "place",
+   "flooded gallery": "place",
+   "Quessel": "person",
+   "Imps": "group",
+   "Divining Rod": "thing",
+   "cart tunnel": "place",
+   "Velgard": "person",
+   "Urchins": "group",
+   "Spell Lantern": "thing",
+   "Ludo Quickpurse": "person",
+   "Chain Tunic": "thing",
+   "Hammel": "person",
+   "Nessa": "person",
+   "Hask": "person",
+   "washing cave": "place",
+   "Troll pens": "place",
+   "ore chutes": "place",
+   "Orrin": "person",
+   "Mott": "person",
+   "Elsbeth": "person",
+   "Grumwald": "person",
+   "Sooty Lamp": "place",
+   "Ilvane": "person",
+   "Azure Circle": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tavik at the upper gate of Bormunt, proud of the mine; later the lower gate is open.",
+   "names": {
+    "Tavik": "person",
+    "Bormunt": "place",
+    "Mount Grull": "place",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tavik",
+     "text": "This is Bormunt, the greatest mine under Mount Grull! Show some respect when you go in."
+    },
+    "again": {
+     "speaker": "Tavik",
+     "text": "Hey, those boots won't last a day in the shafts. You should get yourself some proper ones."
+    },
+    "later": {
+     "speaker": "Tavik",
+     "text": "The lower gate is open! Go on down and hurry, Guildmaster Brannoc needs every hand he can get!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulbo the lamplighter, bitten, wants the Giant Leeches of the flooded gallery destroyed; pays with a bow found beside a skeleton and sends the player to Brannoc.",
+   "names": {
+    "Ulbo": "person",
+    "Giant Leeches": "group",
+    "flooded gallery": "place",
+    "pump house": "place",
+    "Brannoc": "person",
+    "Guild Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulbo",
+     "text": "Sir! Over here! Help me, please! I've been bitten and I can hardly stand!\n\nAbominable Giant Leeches have infested the flooded gallery below the old pump house, south of here. They fell upon me as I was lighting the lamps. Their infestation imperils the entire lower mine, and no miner dares set foot down there now. If you would exterminate these loathsome creatures, I will see you suitably rewarded. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Ulbo",
+     "text": "Please, sir, hurry! I can still feel them on me..."
+    },
+    "completion": {
+     "speaker": "Ulbo",
+     "text": "You've destroyed them?! Splendid! Splendid!\n\nTake this bow. It was found lying beside an old skeleton in the lower shafts, and nobody ever came to claim it. It's yours now. Guildmaster Brannoc is asking for you at the Guild Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Giant Leeches in the flooded gallery."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Quessel the fussy old assayer; the Imps took his Divining Rod down the old cart tunnel; he hands over the tunnel key at once and teaches a spell.",
+   "names": {
+    "Quessel": "person",
+    "Imps": "group",
+    "Divining Rod": "thing",
+    "cart tunnel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quessel",
+     "text": "Oh, not again! Imps! Imps in my workshop?! They made off with my Divining Rod while I was having my nap, the wretched little thieves!\n\nWithout it I can't find a single vein of silver. If you could get it back, I'd teach you a spell my old master taught me. They went down the old cart tunnel west of here. Here, take this iron key, it opens the tunnel gate. Will you go?"
+    },
+    "refusal": {
+     "speaker": "Quessel",
+     "text": "No? Hmph. Well, keep the key anyway. Perhaps you'll think better of it."
+    },
+    "reminder": {
+     "speaker": "Quessel",
+     "text": "Have you got my Rod? No?! Then what are you doing here?"
+    },
+    "completion": {
+     "speaker": "Quessel",
+     "text": "My Divining Rod! Oh, bless you, bless you! I was sure those Imps had chewed it to bits.\n\nNow, as promised. Sit down and read this, and mind you read it carefully. It's a good spell, a very good one."
+    },
+    "after": {
+     "speaker": "Quessel",
+     "text": "Thanks again, lad! I'm back to work at last!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Quessel's Divining Rod from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Quessel's Divining Rod from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Orrin brushes the player off, Mott points to the Sooty Lamp, Elsbeth's candles are being eaten.",
+   "names": {
+    "Orrin": "person",
+    "Mott": "person",
+    "Elsbeth": "person",
+    "Sooty Lamp": "place",
+    "Grumwald": "person",
+    "Bormunt": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Orrin",
+     "text": "Not now, stranger. The bell's rung for my shift."
+    },
+    "rumour2": {
+     "speaker": "Mott",
+     "text": "Want to hear the news? Go to the Sooty Lamp. Grumwald knows everything that goes on in Bormunt."
+    },
+    "rumour3": {
+     "speaker": "Elsbeth",
+     "text": "Somebody's been eating my candles again! Who would do such a thing?!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Grumwald of the Sooty Lamp inn, Hask the smith who also pulls teeth, Ilvane of the Azure Circle.",
+   "names": {
+    "Grumwald": "person",
+    "Sooty Lamp": "place",
+    "Hask": "person",
+    "Ilvane": "person",
+    "Azure Circle": "group",
+    "Bormunt": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Grumwald",
+     "text": "You're not from around here, are you? Too much sun on your face! What'll it be?"
+    },
+    "arms": {
+     "speaker": "Hask",
+     "text": "Arms and armor, best in Bormunt. I pull teeth too, if you need one out."
+    },
+    "magic": {
+     "speaker": "Ilvane",
+     "text": "The Azure Circle is the sole purveyor of potions and scrolls to the mines of Bormunt. State your needs."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Velgard, a gruff old wizard, orders the player to get back his Spell Lantern from the Urchins and teaches a spell; Ludo Quickpurse sells a dead man's Chain Tunic for 50 gold (the player pays).",
+   "names": {
+    "Velgard": "person",
+    "Urchins": "group",
+    "Spell Lantern": "thing",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Ludo Quickpurse": "person",
+    "Chain Tunic": "thing",
+    "Hask": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Velgard",
+     "text": "Hmph! Robbed! In my own house?! Those blasted Urchins have taken my Spell Lantern, and with Skarn's Trolls about I need it more than ever. Get it back. I'll teach you a spell for your trouble."
+    },
+    "offer_b": {
+     "speaker": "Ludo Quickpurse",
+     "text": "Ahhh, a customer! Lookee here, a Chain Tunic, hardly worn! The last owner was buried in it, but he didn't move around much after that, so it's good as new! Yours for 50 gold. That's half what Hask asks!"
+    },
+    "outcome_a": {
+     "speaker": "Velgard",
+     "text": "Hmph. My Lantern. Took you long enough. Well, a promise is a promise, sit down and I'll teach you that spell."
+    },
+    "outcome_b": {
+     "speaker": "Ludo Quickpurse",
+     "text": "A fine bargain, friend! Come back anytime, I get new stock every week."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover Velgard's Spell Lantern from the Urchins."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the used Chain Tunic from Ludo Quickpurse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Hammel's daughter Nessa was dragged off by the Trolls to their pens east of the Great Shaft; she gives the key to the next cage, where Hask's wife is held.",
+   "names": {
+    "Hammel": "person",
+    "Nessa": "person",
+    "Trolls": "group",
+    "washing cave": "place",
+    "Great Shaft": "place",
+    "Troll pens": "place",
+   "ore chutes": "place",
+    "Hask": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hammel",
+     "text": "Trolls! The Trolls have taken my daughter! They came up through the floor of the washing cave and dragged my Nessa away!\n\nThey keep a pen past the old ore chutes, on the east side of the Great Shaft. I'm no fighter, kind sir, I'd only get us both killed. Will you bring her home?"
+    },
+    "reminder": {
+     "speaker": "Hammel",
+     "text": "What are you waiting for?! Please, find my girl!"
+    },
+    "found": {
+     "speaker": "Nessa",
+     "text": "Father sent you? Oh, thank goodness!\n\nHere, take this key, I stole it off the Troll guard. It opens the cage next to mine. Hask's wife is in there!"
+    },
+    "following": {
+     "speaker": "Nessa",
+     "text": "Please hurry! Father will be worried sick."
+    },
+    "completion": {
+     "speaker": "Hammel",
+     "text": "Nessa! My girl! You're safe! Oh, thank you, kind sir, thank you! Please, take this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Hammel's daughter from the Troll pens."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Mott points the player to Guildmaster Brannoc in the Guild Hall; Brannoc gives the key to the lower gate and sends him against Skarn's Trolls at the Great Lift.",
+   "names": {
+    "Mott": "person",
+    "Brannoc": "person",
+    "Guild Hall": "place",
+    "Yorrel": "person",
+    "Bormunt": "place",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Great Lift": "thing",
+    "Miners' Guild": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mott",
+     "text": "The Lift's stuck again. Can't dig, can't get home. If you're looking for somebody important, Guildmaster Brannoc's in the Guild Hall."
+    },
+    "opening": {
+     "speaker": "Brannoc",
+     "text": "So Yorrel sent you. Good. You've come at a black hour for Bormunt.\n\nThe warlock Skarn has brought the Trolls up out of the deep caves. They've taken the Great Lift -- and half our miners are trapped below with them!\n\nBy the authority of the Miners' Guild, I deputate you to go down and break their hold on the Lift. Here is the key to the lower gate. Find our miners. And if Skarn shows his face, kill him!"
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "You have the key. Why are you still standing in my hall? Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Break the Trolls' hold on the Great Lift."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

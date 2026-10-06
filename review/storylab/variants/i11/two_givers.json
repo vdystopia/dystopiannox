@@ -1,0 +1,664 @@
+{
+ "scenario": "two_givers",
+ "iter": "i11",
+ "writer": "one writer a town (variants/i11/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest back from Red Corwin's bandits; Sly Wat, a turncoat, wants an ale for what he knows of Corwin's tower.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Tobin": "person",
+    "Barley": "thing",
+    "Amulet of Plenty": "thing",
+    "Horn of the Watch": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Brothers": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Greetings, brave Adventurer! This town has been robbed blind in a shameless bandit raid!\n\nWill you please bring back the tithe chest Red Corwin's men stole? If you do, you shall be well paid, because the good Brothers of the Chapel of the Ford cannot eat without it!"
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "You, again. Will you think it over, buy me an ale and hear what I know about Corwin's tower?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "It's done, then! The tithe chest is safe in the Moot Hall again!\n\nTake this shield, though. You have more than earned it!\n\nCorwin's men still hold the watchtower, but I hear one of those filthy bandits drinks at the Drowned Lantern. If you ask around there maybe you can find a way in!"
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "Shame to hear that. I hope you think again soon, for I fear Corwin's lads are getting wise to me. I saw one of them sniffing around the inn a short while back."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest stolen by Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Sly Wat an ale at the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Dolgar: Warden Ostrel posts a bounty on Snade the Claim-Jumper, dead or alive; Pibble the gem-trader, robbed by Snade's gang, wants them brought in.",
+   "names": {
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Brask": "person",
+    "Durm": "person",
+    "Krell": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Old Shaft": "place",
+    "the Deep": "place",
+    "Great Lift": "place",
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "Imps": "group",
+    "Orla": "person",
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Kessa": "person",
+    "Ottick": "person",
+    "Brewhouse": "place",
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrel",
+     "text": "Good day, lad. I presume you've come about the notice.\n\nThere's a fat purse for Snade the Claim-Jumper -- dead or alive. He and his rotten crew have been robbing our ore carts for some time now.\n\nWatch yourself, you'd hate to be ambushed by those mangy dogs."
+    },
+    "offer_b": {
+     "speaker": "Pibble",
+     "text": "Actually, trade has been pretty poor lately. Last month, those claim-jumpers broke in and cleaned out my stall.\n\nI don't suppose I'll get my gems back, but nothing would make me happier than to see those crooks get what's coming to them.\n\nI'll gladly pay whoever brings them in."
+    },
+    "outcome_a": {
+     "speaker": "Ostrel",
+     "text": "Snade's dead, eh? Well, I'd wanted him alive for the gallows, but I won't be shedding any tears for him!\n\nHere's your bounty -- 150 in gold! Dolgar is a safer town thanks to you!"
+    },
+    "outcome_b": {
+     "speaker": "Pibble",
+     "text": "So the claim-jumpers have got what they deserved! Good work, lad! We'll all rest easier knowing those crooks won't be sticking their greedy fingers in our pockets!\n\nAnd here's your reward... a fine steel shield! Pibble's stall is always open to you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Snade the Claim-Jumper, dead or alive."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Snade's gang of claim-jumpers to justice for Pibble."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Pellmire: Warden Ossel posts a bounty on Grelk the Smuggler, dead or alive. Grelk, cornered, surrenders.",
+   "names": {
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Sluice Tower": "place",
+    "Sunken Causeway": "place",
+    "Causeway": "place",
+    "Rotten Pilings": "place",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Mayor Dobbet": "person",
+    "Dobbet": "person",
+    "Captain Vell": "person",
+    "Mogrut": "person",
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Gummet": "person",
+    "Nella": "person",
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Tobb": "person",
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Elsbet": "person",
+    "Moggs": "person",
+    "Bog Wardens": "group",
+    "Ogres": "group",
+    "Leeches": "group",
+    "Urchins": "group",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Ossel",
+     "text": "Good day, stranger. I presume you've come about the notice.\n\nThere's a fat reward for Grelk the Smuggler -- dead or alive. He and his miserable crew of cutthroats have been robbing our toll boats for a month.\n\nMind yourself, you don't want a knife in the back from that wretched lot."
+    },
+    "offer_b": {
+     "speaker": "Grelk",
+     "text": "Enough! I give up! Don't hit me, please! I'll come along quietly!"
+    },
+    "outcome_a": {
+     "speaker": "Warden Ossel",
+     "text": "Hey, there! Elsbet told me of a terrible racket down this way, so I came to have a look.\n\nYou have caught the infamous Grelk the Smuggler all on your own! Most impressive! You have my highest regard! Grelk's crew has plagued Pellmire for a month! I'll handle him now. We'll all rest easier with this rotten villain in the stocks!\n\nAnd here is your reward -- 200 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Warden Ossel",
+     "text": "You did away with Grelk, eh? Well, I'd wanted him in the stocks, but I won't shed any tears over the rascal!\n\nHere's your reward -- 100 in gold! Thank you for ridding Pellmire of that pest!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring in Grelk the Smuggler, dead or alive, for Warden Ossel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Escort Grelk the Smuggler to Warden Ossel."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Korlen: Paymaster Orvel wants the garrison's pay chest back from Gruttock's Ogres; Sergeant Gorlick wants to sell his stripes and his post at the gate.",
+   "names": {
+    "Korlen": "place",
+    "Gruttock": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Skarn Tower": "place",
+    "Dunwood": "place",
+    "Keep": "place",
+    "Gorrow": "place",
+    "Broken Pike": "place",
+    "Lord Ambrel": "person",
+    "Dorvik": "person",
+    "Haskin": "person",
+    "Fisk": "person",
+    "Hobb": "person",
+    "Agna": "person",
+    "Orvel": "person",
+    "Gorlick": "person",
+    "Bellamar": "person",
+    "Gisla": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Orrin": "person",
+    "Tobb": "person",
+    "Ulda": "person",
+    "Chain Tunic": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Orvel",
+     "text": "Truthfully, the men's spirits have sunk pretty low, with Gruttock's Ogres on the prowl. They carried off the garrison's pay chest and I want it back."
+    },
+    "offer_b": {
+     "speaker": "Gorlick",
+     "text": "You ready to take over my stripes and my post at the gate? Just 30,000 gold pieces for the lot!"
+    },
+    "outcome_a": {
+     "speaker": "Orvel",
+     "text": "Wonderful! You've earned this Chain Tunic, lad! I hope you live through this whole war. Now if you'll excuse me, I've a garrison of hungry soldiers to pay. Good luck and keep clear of Gruttock's Ogres if you want to keep your head!"
+    },
+    "outcome_b": {
+     "speaker": "Gorlick",
+     "text": "Eh, no harm done, lad. I'm certain some young recruit will snap up my stripes and my post. If you think it over though, I'm always at the Broken Pike!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from Gruttock's Ogres."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Sergeant Gorlick's stripes and post at the gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ondel: Bastok the Harbor Master lends boats only to those a fisherman vouches for, and Grubbin the eel seller will vouch if the player kills the Leech in his eel pond.",
+   "names": {
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Gull Rock": "place",
+    "Sunken Crypt": "place",
+    "Net Hall": "place",
+    "Rusty Hook": "place",
+    "Tavarin": "place",
+    "Rain Staff": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Leech": "group",
+    "Vulmar": "person",
+    "Brannoc": "person",
+    "Mayor Wendrel": "person",
+    "Tobb": "person",
+    "Maudie": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ishmar": "person",
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Tully": "person",
+    "Brusk": "person",
+    "Moll": "person",
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Bastok",
+     "text": "I am the Harbor Master of Ondel. If you want a boat out on the lake you'll need a fisherman to vouch for you."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Hiya. Grubbin's the name, best eel man in all of Ondel. The lake is deadly these days and getting a boat off old Bastok is even worse.\n\nLook here, if you do me a little job I'll vouch for you myself. How about it?"
+    },
+    "outcome_a": {
+     "speaker": "Grubbin",
+     "text": "Good! I keep the fattest eels in Ondel in a pond behind my shack. Trouble is, a great slimy Leech has crawled into the pond. It has riled up the frogs and now they jump on anybody who comes near.\n\nKill the Leech and when you get back, I'll vouch for you with Bastok.\n\nHere, take this brass key, it opens the gate to my pond."
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "Suit yourself, but I don't reckon anybody else will vouch for you.\n\nIf you think better of it I'll be at the Rusty Hook next to the docks."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find someone in Ondel to vouch for you with Bastok."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Kill the Leech in Grubbin's eel pond."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Odalie's little brother Tobble was carried off by Trolls from the herb gardens; the apprentice Jessop lost his master's best hat to the same Trolls.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "the Archive": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Murkfen": "place",
+    "the Inkwell": "place",
+    "Olvane": "person",
+    "Pellimore": "person",
+    "Umbrik": "person",
+    "Ezzard": "person",
+    "Nib": "person",
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "Brusk": "person",
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group",
+    "the Imps": "group",
+    "the Trolls": "group",
+    "the Rats": "group",
+    "the bats": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odalie",
+     "text": "Sir! Please, help me! A band of ugly Trolls just stormed the herb gardens, south of the College and carried off nearly every one of the young students! One of them is my little brother, Tobble!\n\nPlease bring him home safe and you shall be rewarded!"
+    },
+    "offer_b": {
+     "speaker": "Jessop",
+     "text": "The Trolls just ran off with my master's best hat! If he finds it gone, he'll have my hide. He's due home any time now!\n\nPlease, help me, stranger! I saw them carry it off toward the mill pond.\n\nWould you... could you bring it back for me?"
+    },
+    "outcome_a": {
+     "speaker": "Odalie",
+     "text": "Bless you, kind sir! Please, take these as tokens of my gratitude!"
+    },
+    "outcome_b": {
+     "speaker": "Jessop",
+     "text": "Oh, thank you, stranger! Here, take this as a token of my appreciation!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue Tobble from the Trolls and bring him home to Odalie."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Jessop's master's hat back from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarra: Gimble sells a used Steel Shield on the cheap. Sergeant Kolb says anyone on wall watch needs a shield and sends the player to Brakka's forge.",
+   "names": {
+    "Fort Skarra": "place",
+    "Vaskor": "person",
+    "Ulvane": "person",
+    "Ostrag": "person",
+    "Tombs of Gol Varra": "place",
+    "Undead": "group",
+    "Haddo": "person",
+    "Grubb": "person",
+    "Imps": "group",
+    "Imp caves": "place",
+    "Vardis": "person",
+    "Ebbet": "person",
+    "Ebbet's hut": "place",
+    "Silver Horn": "thing",
+    "Ankh": "thing",
+    "Mirta": "person",
+    "Bettra": "person",
+    "Dolgo": "person",
+    "Gunnet": "person",
+    "Brakka": "person",
+    "Brakka's forge": "place",
+    "Yselda": "person",
+    "Gimble": "person",
+    "Kolb": "person",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Gimble",
+     "text": "Now here's a real beauty of a shield. The last owner mostly used it as a sled.\n\nDown at Brakka's forge, one like this would run you 250 gold or more. But seeing as I like you, I'll let you have it for 90. You want it?"
+    },
+    "offer_b": {
+     "speaker": "Kolb",
+     "text": "Anyone standing watch on the wall needs a shield of his own. Brakka's forge sells them at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Gimble",
+     "text": "Sold! That shield's got your name on it. Nothing's getting past you on the wall with that."
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "Big mistake, friend. Go on down to Brakka's and have a look at his prices. Then hurry on back -- another buyer's been sniffing around it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy the used shield from Gimble."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a shield at Brakka's forge for wall duty."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "general-purpose subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 8,
+   "specifics": "Vurn: Kragg the armorer sells a chain tunic fitting for 100 gold, Pibble wants his furnace chain pulled on his signal.",
+   "names": {
+    "Vurn": "place",
+    "Vargoth": "person",
+    "Brannoc": "person",
+    "Kolbrin": "person",
+    "Durk": "person",
+    "Grenna": "person",
+    "Gubbin": "person",
+    "Ambrel": "person",
+    "Brog": "person",
+    "Lissa": "person",
+    "Marga": "person",
+    "Torbek": "person",
+    "Zelphine": "person",
+    "Kragg": "person",
+    "Pibble": "person",
+    "Orsk": "person",
+    "Nessa": "person",
+    "Grisold": "person",
+    "Tarvel": "place",
+    "Hall of Anvils": "place",
+    "Deep Forge": "place",
+    "Cinder Caves": "place",
+    "Ash Gate": "place",
+    "Helm of Far Sight": "thing",
+    "Imps": "group",
+    "Ember Demons": "group",
+    "Rats": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Kragg",
+     "text": "Ready to be fitted for a chain tunic? I'll want 100 gold for the iron."
+    },
+    "offer_b": {
+     "speaker": "Pibble",
+     "text": "Hey, you there. Could you yank that iron chain by the furnace when I wave my cap? I'd be ever so grateful.\n\nHold on, let me get out of the way first."
+    },
+    "outcome_a": {
+     "speaker": "Kragg",
+     "text": "Hmmm, a shame. Not everyone can afford proper armor."
+    },
+    "outcome_b": {
+     "speaker": "Pibble",
+     "text": "It roared! I can't believe it roared! Thank you! You're my lucky charm!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy a chain tunic from Kragg the armorer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pull Pibble's furnace chain when he gives the signal."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Varrow: Master-at-Arms Varnus sells a place in the town watch with its sword and mail; Fennick, once one of Krull's men, sells boots in the Gilded Boar.",
+   "names": {
+    "Varrow": "place",
+    "Gilded Boar": "place",
+    "Grimwood": "place",
+    "Crag Hill": "place",
+    "Potions Aplenty": "place",
+    "Krull": "person",
+    "Druvan": "person",
+    "Grumwald": "person",
+    "Brannoc": "person",
+    "Hobbin": "person",
+    "Olla": "person",
+    "Varnus": "person",
+    "Fennick": "person",
+    "Pella": "person",
+    "Jory": "person",
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Varnus",
+     "text": "Greetings. I am Master-at-Arms Varnus. And it was Druvan who sent you, eh? Well, the town watch can always use another blade, but the sword and mail will cost you 50 in gold.\n\nDo you agree to my terms?"
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Hail, Wanderer! Could I interest you in some fine boots to wear on your travels? These boots are the same as Krull's scouts wear and worth every bit of the 150 gold I'm asking.\n\nYa want 'em?"
+    },
+    "outcome_a": {
+     "speaker": "Varnus",
+     "text": "Very well! This sword is from the watch's own armory. The tunic is good iron chain, which will turn most bandit arrows."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "There you go, I'm sure those boots will carry you far.\n\nCome find me again if you ever need another pair."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Master-at-Arms Varnus to join the watch of Varrow."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a pair of boots from Fennick at the Gilded Boar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 10,
+   "specifics": "Tolm: Tamm sits in the lockup at the Town Hall and offers a way into Krog Durm. Hulda needs him back at her cider press for the harvest.",
+   "names": {
+    "Tolm": "place",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Ondrel": "person",
+    "Corbel": "person",
+    "Dorrik": "person",
+    "Fulk": "person",
+    "Hobb": "person",
+    "Zelna": "person",
+    "Brunn": "person",
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Tamm": "person",
+    "Hulda": "person",
+    "Nella": "person",
+    "Olm": "person",
+    "Pella": "person",
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Ogres": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tamm",
+     "text": "Hello there. Folks call me Tamm. Can you spring me from this lockup? Do that, and I'll show you a way into Krog Durm."
+    },
+    "offer_b": {
+     "speaker": "Hulda",
+     "text": "Oh, for pity's sake! Tamm's in the lockup again?! Sometimes I think he gets caught on purpose just to dodge his chores. It's hard work running a cider press, you know. The whole apple crop is coming in today and I need Tamm at the press when the carts pull up.\n\nTell you what... Spring Tamm from the lockup and you can have one of the chain tunics the peddler owes me!"
+    },
+    "outcome_a": {
+     "speaker": "Tamm",
+     "text": "Thank you for getting me out. Take this gold as token of my thanks. Oh, I nearly forgot! Here's a key to the back gate of Krog Durm. Mind yourself in there. The Ogres won't take kindly to a stranger sneaking round their fort. Thanks again!"
+    },
+    "outcome_b": {
+     "speaker": "Hulda",
+     "text": "Tamm! What were you thinking, getting yourself locked up on harvest day? Thanks for springing him, stranger! Here's the chain tunic, like I said. Good luck with whatever it is you're up to!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Get Tamm out of the lockup in the Town Hall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Tamm and return him to Hulda's cider press."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

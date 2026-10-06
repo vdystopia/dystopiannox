@@ -1,0 +1,236 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Vurn",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Grutt the Troll chief and his Trolls have come up from the deep shafts, shut the lower mines and stolen the Hammer of the Mountain from the Great Hall.",
+  "names": {
+   "Vurn": "place",
+   "Ossric": "person",
+   "Durvin": "person",
+   "Pob": "person",
+   "Grutt": "person",
+   "Trolls": "group",
+   "Kettrin": "person",
+   "Scorpions": "group",
+   "West Gallery": "place",
+   "Bram": "person",
+   "Imps": "group",
+   "Flooded Seam": "place",
+   "Hulda": "person",
+   "Great Forge": "place",
+   "Fire Crystal": "thing",
+   "Lower Galleries": "place",
+   "Fesk": "person",
+   "Marra": "person",
+   "Tobb": "person",
+   "Troll den": "place",
+   "East Shaft": "place",
+   "Great Hall": "place",
+   "Hammer of the Mountain": "thing"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Mayor Durvin pays to have giant Scorpions cleared from the new tunnel Kettrin dug under the West Gallery.",
+   "names": {
+    "Durvin": "person",
+    "Kettrin": "person",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Scorpions": "group",
+    "West Gallery": "place",
+    "Vurn": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Durvin",
+     "text": "Until we find some way to drive off Grutt's Trolls, I have a smaller job for you to do.\n\nWord has come from Kettrin, one of my diggers, that giant Scorpions have made a nest in his new tunnel.\n\nAn old air shaft runs down from the West Gallery to the lower tunnels. Our miners dug it long ago to bring them fresh air. Kettrin's tunnel is at the bottom, and a ladder by the water barrels will take you down.\n\nGet rid of those Scorpions and bring Kettrin the good news.\n\nGood luck, my son!"
+    },
+    "reminder": {
+     "speaker": "Durvin",
+     "text": "Please, slay them!"
+    },
+    "completion": {
+     "speaker": "Durvin",
+     "text": "Well done! This bow is the finest in Vurn. The quiver is full of iron arrows, which can pierce a Troll's hide."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Scorpion nest and clear it out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow", "Quiver"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Bram the miner wants back the magic pickaxe the Imps stole from his shed.",
+   "names": {
+    "Bram": "person",
+    "Imps": "group",
+    "Flooded Seam": "place",
+    "Grutt": "person",
+    "Vurn": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bram",
+     "text": "Hello. Folks call me Bram. And you came down with the Mayor's blessing, eh? Well, there is a fine reward in it for you, but first you must win back the magic pickaxe the Imps stole from my shed.\n\nWill you do it?"
+    },
+    "refusal": {
+     "speaker": "Bram",
+     "text": "Oh, never mind then, lad. I suppose some other fellow will come along to fetch my pickaxe. But if you think it over, I'll be right here by my shed!"
+    },
+    "reminder": {
+     "speaker": "Bram",
+     "text": "One of the little Imps -- with a nasty cackle -- flew off toward the old Flooded Seam. Maybe their nest is down there!"
+    },
+    "completion": {
+     "speaker": "Bram",
+     "text": "Wonderful! You found my pickaxe after all, lad! I hope those Imps got what they deserved.\n\nNow if you'll excuse me, I've got a lot of digging to catch up on.\n\nHere's your gold, and stay clear of Grutt if you hope to live!"
+    },
+    "after": {
+     "speaker": "Bram",
+     "text": "Thanks a hundred times over! All of Vurn will hear of your good deed!\n\nBless you, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Bram's pickaxe."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Bram's pickaxe."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Hulda the smith needs the Fire Crystal the Trolls took from her Great Forge, and Fesk the pedlar wants Troll teeth to sell as lucky charms.",
+   "names": {
+    "Hulda": "person",
+    "Fesk": "person",
+    "Great Forge": "place",
+    "Fire Crystal": "thing",
+    "Lower Galleries": "place",
+    "Trolls": "group",
+    "Grutt": "person",
+    "Vurn": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hulda",
+     "text": "The Great Forge is the pride of Vurn. It burns only with the Fire Crystal, which the Trolls have carried off to the deepest end of the Lower Galleries."
+    },
+    "offer_b": {
+     "speaker": "Fesk",
+     "text": "Good day, young sir. You've come deep under the mountain. I've spent my own sweat and gold to bring lucky Troll teeth to these poor frightened miners."
+    },
+    "outcome_a": {
+     "speaker": "Hulda",
+     "text": "The Fire Crystal is back! You will need a sharp blade to face Grutt. Here, take this sword and the shield beside it."
+    },
+    "outcome_b": {
+     "speaker": "Fesk",
+     "text": "Nicely done, my friend! These Troll teeth will make me a rich man!\n\nNow go pull a few more!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Fire Crystal and relight Hulda's forge."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Hunt the Trolls and gather their teeth."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Marra's boy Tobb went after the Trolls with a toy pick and is held in the Troll den.",
+   "names": {
+    "Marra": "person",
+    "Tobb": "person",
+    "Trolls": "group",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Grutt": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marra",
+     "text": "My Tobb is a brave boy. He went after the Trolls with his toy pick.\n\nDown in the Troll den a little lad like him won't last the night. But since you have an honest face, I'll give you 50 gold to fetch him. You'll do it?"
+    },
+    "reminder": {
+     "speaker": "Marra",
+     "text": "The Troll den lies below the East Shaft, you can't miss it."
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "You must have come from my Ma."
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Please hurry, take me home to Ma."
+    },
+    "completion": {
+     "speaker": "Marra",
+     "text": "Tobb is home safe! I shall bless your name every day!\n\nHere, take this gold. You've earned it ten times over!\n\nThe Trolls nearly ate him, but he heard one of those big smelly Troll cooks talk of a back door into Grutt's den. If you search the lower tunnels maybe you can find it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Troll den and bring Tobb back to his mother.\n\n(Hint: Listen for his voice.)"
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Pob the miner points the player to Mayor Durvin, who sends him after Grutt's Trolls and the stolen Hammer of the Mountain.",
+   "names": {
+    "Pob": "person",
+    "Durvin": "person",
+    "Ossric": "person",
+    "Great Hall": "place",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Hammer of the Mountain": "thing",
+    "Vurn": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pob",
+     "text": "We'll hold the upper tunnels, but Mayor Durvin wants you in the Great Hall. Thanks for coming, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Durvin",
+     "text": "Welcome, stranger! Ossric told me you would come, and none too soon, for we need your help badly. Grutt's Trolls came up from the deep shafts not long ago and stole the Hammer of the Mountain! Please go down to the Troll den below the East Shaft and bring back the sacred hammer at once!"
+    },
+    "reminder": {
+     "speaker": "Durvin",
+     "text": "Keep whatever you find down there! Just hurry and bring back the hammer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Hammer of the Mountain from Grutt's den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

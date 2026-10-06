@@ -1,0 +1,317 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ulmgard",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Necromancer Ostrag has raised the dead in the Glacier Tombs above the pass, and his Undead hold the high road beyond the Upper Gate.",
+  "names": {
+   "Ulmgard": "place",
+   "Upper Gate": "place",
+   "Low Gate": "place",
+   "Glacier Tombs": "place",
+   "Ice Caves": "place",
+   "Signal Tower": "place",
+   "Cold Kettle": "place",
+   "Hask": "person",
+   "Galmor": "person",
+   "Dromund": "person",
+   "Ostrag": "person",
+   "Pell": "person",
+   "Fennick": "person",
+   "Hedda": "person",
+   "Tibbet": "person",
+   "Brannoc": "person",
+   "Krell": "person",
+   "Mildra": "person",
+   "Mungo": "person",
+   "Bodo": "person",
+   "Gorm": "person",
+   "Yorla": "person",
+   "Undead": "group",
+   "White Wolves": "group",
+   "Ogres": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hask at the Low Gate of Ulmgard, pointing newcomers up to Warden Galmor; later the Upper Gate is open.",
+   "names": {
+    "Hask": "person",
+    "Galmor": "person",
+    "Ulmgard": "place",
+    "Upper Gate": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hask",
+     "text": "I thought you lowlanders could take a little cold. Try stamping your feet."
+    },
+    "again": {
+     "speaker": "Hask",
+     "text": "Hurry! Warden Galmor is expecting you up in his hall at the top of the keep. There's a stair behind the stables that will lead you straight to him."
+    },
+    "later": {
+     "speaker": "Hask",
+     "text": "Welcome back to Ulmgard. The Upper Gate is open to you now."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Hedda's Pa comes home from patrol tomorrow, and the White Wolves of the Ice Caves dragged off his lucky long johns from the east wall.",
+   "names": {
+    "Hedda": "person",
+    "White Wolves": "group",
+    "Ice Caves": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hedda",
+     "text": "Kind sir! Kind sir, wait! I'm in terrible trouble! Pa's lucky long johns are gone! I hung them on the east wall to dry and a pack of White Wolves made off with them!\n\nPa comes home from patrol tomorrow and he won't stand a single watch without them. These mangy beasts are worse than a blizzard!\n\nPlease, go down to their den below the east wall and get rid of those wolves. I'll pay you well for it."
+    },
+    "reminder": {
+     "speaker": "Hedda",
+     "text": "One of the soldiers -- with a nasty cough -- says he saw those wolves slink into the caves under the wall. Maybe Pa's long johns are down there too!"
+    },
+    "completion": {
+     "speaker": "Hedda",
+     "text": "You did it?! The wolves are really gone? And Pa's long johns too! Oh, thank you, thank you!\n\nHere, take this gold, with my thanks. Pa will never know a thing!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the White Wolves out of the Ice Caves."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Tibbet the furrier's shop is ruined since rogues took his magic shears to the old toll house down the west road.",
+   "names": {
+    "Tibbet": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tibbet",
+     "text": "Ruined! I'm ruined! Rogues broke into my shop last night and took my magic shears! Without them I can't cut a single fur, and the whole garrison is waiting on winter coats!\n\nThose thieves are holed up in the old toll house down the west road. Will you get my shears back for me, young sir?"
+    },
+    "refusal": {
+     "speaker": "Tibbet",
+     "text": "Come back when you feel braver."
+    },
+    "reminder": {
+     "speaker": "Tibbet",
+     "text": "Those rogues must be laughing at me right now!"
+    },
+    "completion": {
+     "speaker": "Tibbet",
+     "text": "My shears! Oh, my beautiful shears! Now I can get back to work!\n\nI can't offer much till the coats are sold, but take these boots. A token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Tibbet",
+     "text": "Please, don't block my doorway. I'm swamped with work."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the toll house and take back Tibbet's shears."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Go to the toll house and take back Tibbet's shears."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Ulmgard: Fennick stuck to a railing, Pell in a hurry, Brannoc worried about the Undead.",
+   "names": {
+    "Fennick": "person",
+    "Pell": "person",
+    "Brannoc": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Fennick",
+     "text": "Help! Help! My tongue's stuck to the railing!"
+    },
+    "rumour2": {
+     "speaker": "Pell",
+     "text": "I'm due up on the wall at noon, sorry."
+    },
+    "rumour3": {
+     "speaker": "Brannoc",
+     "text": "Beware! Those Undead grow bolder every night!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodo of the Cold Kettle inn, Gorm the smith, Yorla the potion seller.",
+   "names": {
+    "Bodo": "person",
+    "Gorm": "person",
+    "Yorla": "person",
+    "Cold Kettle": "place",
+    "Undead": "group",
+    "Upper Gate": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodo",
+     "text": "Welcome to the Cold Kettle!"
+    },
+    "arms": {
+     "speaker": "Gorm",
+     "text": "Hard times, lad. I can't believe the Undead got as far as the Upper Gate. A black day indeed! Best buy what you need while I've still got it!"
+    },
+    "magic": {
+     "speaker": "Yorla",
+     "text": "Sorry, stranger, but my shelves are looking a bit bare. Cold weather makes folks drink up every potion in sight. Heh, heh, heh..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Brannoc the beacon keeper wants the Signal Tower's beacon lit again; Krell, locked in the stocks for selling Warden Galmor his own horse, wants Hask's key.",
+   "names": {
+    "Brannoc": "person",
+    "Krell": "person",
+    "Galmor": "person",
+    "Hask": "person",
+    "Signal Tower": "place",
+    "Low Gate": "place",
+    "Ulmgard": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "Greetings, Wanderer. I bring grave news. The beacon atop the Signal Tower has gone dark, and the Undead have crept up its stair.\n\nIf the beacon does not burn, the supply sleds from the valley will lose their way in the pass. Climb the tower on the north wall and light the fire. I will offer a worthy reward."
+    },
+    "offer_b": {
+     "speaker": "Krell",
+     "text": "Oh, bah! Don't just stand there gawking!\n\nAll right, all right, so I tried to sell the Warden his own horse. How was I supposed to know it was his? It looked like any other horse!\n\nHask keeps the key to these stocks in his hut at the Low Gate. Snatch it for me and I'll give you a fine mail shirt I've got stashed away."
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "The beacon burns again! I can see it from the yard!\n\nYou have done Ulmgard a great service. Take this longsword, with our thanks. Now go and see Warden Galmor -- he will want to hear of this."
+    },
+    "outcome_b": {
+     "speaker": "Krell",
+     "text": "Ha! Free! Oh, my poor ankles...\n\nHere's the mail shirt, like I promised. Now I'm off before the Warden comes back!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fight your way up the Signal Tower and light its beacon for the supply sleds."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get the key from Hask's hut and free Krell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Old Mildra's parrot Mungo flew out after a moth and the Ogres in the camp below the south cliff mean to bake him in a pie.",
+   "names": {
+    "Mildra": "person",
+    "Mungo": "person",
+    "Ogres": "group",
+    "Ulmgard": "place",
+    "Galmor": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Mildra",
+     "text": "Oh, my Mungo! My poor Mungo! The Ogres have got him!\n\nHe flew out the window after a moth and the Ogres from the camp below the south cliff caught him in a sack. I heard them laughing about a pie! A pie!\n\nPlease, young sir, bring my bird home safe. I'm just an old woman. I can't go down there."
+    },
+    "reminder": {
+     "speaker": "Mildra",
+     "text": "Mungo is the dearest friend and sole comfort of my old age. Your trip down that cliff will show whether you have any heart at all."
+    },
+    "found": {
+     "speaker": "Mungo",
+     "text": "Awk! This road climbs to Ulmgard, the mighty frozen stronghold of the north!"
+    },
+    "following": {
+     "speaker": "Mungo",
+     "text": "March up the ice stair. From there we climb past the stables and on to Warden Galmor's hall."
+    },
+    "completion": {
+     "speaker": "Mildra",
+     "text": "Mungo! My darling Mungo! You're home! Thank goodness!\n\nHere, kind sir, take this spell book as a token of my appreciation. It's no use to an old woman like me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Mungo from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pell points the newcomer to Warden Galmor, who gives the Upper Gate key and sends him after Ostrag the Necromancer in the Glacier Tombs.",
+   "names": {
+    "Pell": "person",
+    "Galmor": "person",
+    "Dromund": "person",
+    "Ostrag": "person",
+    "Upper Gate": "place",
+    "Glacier Tombs": "place",
+    "Ulmgard": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "Warden Galmor has bolted the Upper Gate until someone drives the Undead off the pass. I hope Master Dromund sent us somebody useful. The Warden usually just shouts at them from the wall instead of fighting them."
+    },
+    "opening": {
+     "speaker": "Galmor",
+     "text": "Ah! You must be the one Dromund promised me. Good! I need every pair of hands I can get.\n\nThe Necromancer Ostrag has raised the dead in the Glacier Tombs above the pass. His Undead swarm the high road and not a single sled has come through. I fear he means to take this fort next!\n\nHere is the key to the Upper Gate. Go up through the gate, find Ostrag in the Tombs and put an end to him, lad. All of Ulmgard is counting on you."
+    },
+    "reminder": {
+     "speaker": "Galmor",
+     "text": "Fight well!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Seek out Ostrag the Necromancer in the Glacier Tombs above the Upper Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

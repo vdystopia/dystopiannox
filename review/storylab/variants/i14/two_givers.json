@@ -1,0 +1,593 @@
+{
+ "scenario": "two_givers",
+ "iter": "i14",
+ "writer": "one writer a town (variants/i14/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest Corwin's bandits took back from Crow Hill; Sly Wat says a beast is drinking the Drowned Lantern's ale.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Ohhhh, how could this happen? Corwin's bandits beat both of my gate guards and took the tithe chest. There is no one left to send.\n\nHurry, you must catch them before it reaches Crow Hill."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "I have heard some beast down in the Drowned Lantern cellar drinks the ale dry."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Bless you, young sir! Brackenford owes you a great debt for such a bold deed.\n\nThis sword is yours, a modest gift from all of us. The north gate is open to you now. Get whatever supplies are needed, then hurry on toward Crow Hill."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Bless you! You saved the ale! Now, go and see the barkeep. I bet he'll pour you a free mug for your trouble."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go up Crow Hill and take back Halvard's tithe chest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Something is drinking the Drowned Lantern's ale -- find and kill it!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Vurn: Hulda the smith needs the Fire Crystal the Trolls took from her Great Forge, and Fesk the pedlar wants Troll teeth to sell as lucky charms.",
+   "names": {
+    "Vurn": "place",
+    "Ossric": "person",
+    "Durvin": "person",
+    "Pob": "person",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Kettrin": "person",
+    "Scorpions": "group",
+    "West Gallery": "place",
+    "Bram": "person",
+    "Imps": "group",
+    "Flooded Seam": "place",
+    "Hulda": "person",
+    "Great Forge": "place",
+    "Fire Crystal": "thing",
+    "Lower Galleries": "place",
+    "Fesk": "person",
+    "Marra": "person",
+    "Tobb": "person",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Great Hall": "place",
+    "Hammer of the Mountain": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hulda",
+     "text": "The Great Forge is the pride of Vurn. It burns only with the Fire Crystal, which the Trolls have carried off to the deepest end of the Lower Galleries."
+    },
+    "offer_b": {
+     "speaker": "Fesk",
+     "text": "Good day, young sir. You've come deep under the mountain. I've spent my own sweat and gold to bring lucky Troll teeth to these poor frightened miners."
+    },
+    "outcome_a": {
+     "speaker": "Hulda",
+     "text": "The Fire Crystal is back! You will need a sharp blade to face Grutt. Here, take this sword and the shield beside it."
+    },
+    "outcome_b": {
+     "speaker": "Fesk",
+     "text": "Nicely done, my friend! These Troll teeth will make me a rich man!\n\nNow go pull a few more!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Fire Crystal and relight Hulda's forge."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Hunt the Trolls and gather their teeth."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tarrow: Ombrel the priest wants his Moonstone from the Drowned Chapel, and Gudge the bootlegger wants the Bog Toads out of his still.",
+   "names": {
+    "Tarrow": "place",
+    "Black Mire": "place",
+    "Mire": "place",
+    "Grisla": "person",
+    "Jessop": "person",
+    "Ostrick": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Brannoch": "person",
+    "Ombrel": "person",
+    "Gudge": "person",
+    "Dorla": "person",
+    "Wick": "person",
+    "Hollow Oak": "place",
+    "Drowned Chapel": "place",
+    "Sunken Crypt": "place",
+    "Eel Landing": "place",
+    "Moonstone": "thing",
+    "Ankh": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Bog Toads": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ombrel",
+     "text": "You came. Good. The task I set you is a grave one.\n\nSomething wicked stirs in the Mire. Drowned corpses climbing our ladders is a nightly sight now.\n\nMy Moonstone, which would show me the cause, lies in the Drowned Chapel. A dark spell guards it. You may help me get it back."
+    },
+    "offer_b": {
+     "speaker": "Gudge",
+     "text": "It's the cruelest of blows! Bog Toads have moved into my still!"
+    },
+    "outcome_a": {
+     "speaker": "Ombrel",
+     "text": "Splendid! Tarrow owes you a great debt, friend.\n\nJessop came asking for you while you fought in that cursed chapel. He'll be down at the Eel Landing -- south of here.\n\nTake this purse of gold with you before you leave."
+    },
+    "outcome_b": {
+     "speaker": "Gudge",
+     "text": "Bless you! Follow me as far as the witch's back door, and not one step more, or I'd only get us both caught. Every crow in the Mire carries tales straight to Grisla."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Moonstone from the Drowned Chapel"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Evict the Bog Toads!"
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varnhold: Quartermaster Brannock wants the Granary cleared of rats and bats. Wezzle, a bandit turned deserter, wants Crull's buried silver dug up in Blackrock Mine.",
+   "names": {
+    "Varnhold": "place",
+    "Tobrin": "person",
+    "Jask": "person",
+    "Ostrik": "person",
+    "Skarn": "person",
+    "Hesk": "person",
+    "Sibba": "person",
+    "Brannock": "person",
+    "Wezzle": "person",
+    "Crull": "person",
+    "Hulda": "person",
+    "Tib": "person",
+    "Old Gatehouse": "place",
+    "North Pass": "place",
+    "Gloomwood": "place",
+    "Cistern": "place",
+    "Granary": "place",
+    "Blackrock Mine": "place",
+    "Grey Quarry": "place",
+    "Healing Stone": "thing",
+    "Trolls": "group",
+    "Wolves": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannock",
+     "text": "At last! Did you stop for a nap on the way!? Something dreadful has happened!\n\nThe Granary is crawling with monstrous rats and bats come up from the deep tunnels. Brave soldiers gave their lives defending the winter stores of this castle!\n\nI beg of you, go down there! Kill every last one of the vermin, save the grain, and a rich reward is yours.\n\nTake this key. It fits the hatch to the lower cellars, where the nests must be.\n\nAnd here's a healing potion for the road."
+    },
+    "offer_b": {
+     "speaker": "Wezzle",
+     "text": "Well, well, a new face! I've had my eye on you. You look like you can handle trouble. I'd split a fortune with you, but you'll have to dig it up yourself once you reach Blackrock Mine.\n\nIn Blackrock Mine my partner Crull hid a sack of silver from our bandit days. The hole is close by the entrance as you go in. I'd dig there before anywhere else. I hope you've got a strong back. The Spiders down there get mighty hungry.\n\nWell, what are you waiting for? Half is yours!"
+    },
+    "outcome_a": {
+     "speaker": "Brannock",
+     "text": "The Granary is safe, thank goodness! Whatever can the garrison give you for such courage?!\n\nA sword, you say? A fine new one? Very well, it's yours. Please accept this Longsword as a token of my gratitude."
+    },
+    "outcome_b": {
+     "speaker": "Wezzle",
+     "text": "You dug up the silver! Splendid!\n\nPoor Crull, however, must have ended up as Spider food, just as I feared. I'll miss the old rascal, but there's no use weeping over him now. The Warden's men are hunting me and the Trolls up north are waiting on you.\n\nOff you go, partner!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rid the Granary of rats and bats."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Dig up the sack of silver near the mouth of Blackrock Mine and bring it to Wezzle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Skarra: Guildmaster Brannoc wants the Warding Lantern Tamsk was making for the boats, and Nim the smuggler sells a secret way to Heron Isle.",
+   "names": {
+    "Skarra": "place",
+    "Heron Isle": "place",
+    "Vashk": "person",
+    "Dreyhaus": "person",
+    "Ottrick": "person",
+    "Lomm": "person",
+    "Torvy": "person",
+    "Dobrin": "person",
+    "Brannoc": "person",
+    "Tamsk": "person",
+    "Nim": "person",
+    "Gorm": "person",
+    "Nella": "person",
+    "Warding Lantern": "thing",
+    "Urchins": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "Tamsk the lampmaker has been crafting a Warding Lantern for our boats all this season. It ought to be done and hanging on my dock by now.\n\nFollow the shore path round the lake to Tamsk's hut by the cliffs and bring me the Lantern. The rocks behind his hut hide a cave where he keeps his work."
+    },
+    "offer_b": {
+     "speaker": "Nim",
+     "text": "Psst! You must be the brave hero they sent to rescue our sorry little village! My boat's yours, for a price."
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "Well done! A thousand thanks, brave Adventurer, for bringing the Lantern home! With it hung on the dock, we can at last keep that foul Necromancer's Undead out of our waters for good!\n\nHere, this chain tunic and these red potions will come in useful... sooner than you'd like."
+    },
+    "outcome_b": {
+     "speaker": "Nim",
+     "text": "Take my skiff under the old pier. Then find the cave which runs straight beneath the lake to Heron Isle. You'll meet plenty of Undead in there. Give them a taste of your steel."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go to the cliffs and find Tamsk's Warding Lantern."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy passage from Nim to sneak onto Heron Isle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 6,
+   "specifics": "Zanthis: Hestra of the Archive wants the Star Charts back from the bandits; Tobb, a bandit turned turncoat at the Tipsy Owl, wants a partner to loot the bandits' hoard.",
+   "names": {
+    "Zanthis": "place",
+    "Academy": "place",
+    "Observatory": "place",
+    "Archive": "place",
+    "Tipsy Owl": "place",
+    "Grelloch": "person",
+    "Jorvan": "person",
+    "Ombrel": "person",
+    "Wendle": "person",
+    "Tibba": "person",
+    "Bastel": "person",
+    "Fennick": "person",
+    "Hestra": "person",
+    "Tobb": "person",
+    "Rook": "person",
+    "Oona": "person",
+    "Nib": "person",
+    "Star Charts": "thing",
+    "Golems": "group",
+    "Wasps": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hestra",
+     "text": "We have long awaited your coming. The learned Masters of Zanthis are the keepers and faithful wardens of the Star Charts.\n\nWhen you find the bandits' camp in the western hills you must take the charts back from them, since those thieves stole the finest maps the college has ever owned -- far more precious than the coin in our coffers."
+    },
+    "offer_b": {
+     "speaker": "Tobb",
+     "text": "Well, you'd be the bold stranger my old pal Rook keeps talking about. Sit down, I've got a bargain for you."
+    },
+    "outcome_a": {
+     "speaker": "Hestra",
+     "text": "Kind sir, my warmest thanks! You have earned a reader's pass. The doormen will be told that you may walk into the Archive at any hour you like.\n\nHere is gold as a reward for your labors. Go on, take it."
+    },
+    "outcome_b": {
+     "speaker": "Tobb",
+     "text": "The chief's own cloak! So his luck finally ran out.\n\nThose bandits never stood a chance against you. A fine partner you'd make. Hmmm... Yes, indeed.\n\nDown to the cellar with me. Once you're ready, drop through the trapdoor -- it comes out right beside their treasure hoard. Plenty of counting waits for us down there."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Star Charts."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Meet Tobb at the Tipsy Owl."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kessry: Marshal Ostrik wants the signal fire on the beacon tower lit again; Grubbin, a smuggler, wants his furs fetched from beyond the gate.",
+   "names": {
+    "Fort Kessry": "place",
+    "Haldrek": "person",
+    "Gorrak": "person",
+    "Belgard": "person",
+    "Fennick": "person",
+    "Brunko Tallow": "person",
+    "Yorla": "person",
+    "Ostrik": "person",
+    "Grubbin": "person",
+    "Tessaly": "person",
+    "Dobbin": "person",
+    "Amulet of Warmth": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ostrik",
+     "text": "The stair to the beacon is behind the barracks. Get up there and light the fire. You'll see why. And mind yourself. The bats roosting in the rafters bite anyone who climbs."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Fine furs are stashed just past the gate! Easy coin for so short a stroll."
+    },
+    "outcome_a": {
+     "speaker": "Ostrik",
+     "text": "Hurrah, the beacon burns once more, bold and steady friend! The fort could never thank you enough for this deed, but please accept this shield as a token of my esteem!"
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "Heh, heh! Quick and quiet, just how I like it, friend! The Marshal never smelled a thing... Your cut of the coin is in this purse. Pleasure doing business!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the signal fire atop the beacon tower for Marshal Ostrik.\n\nThe stair begins behind the barracks."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Grubbin the furs hidden beyond the gate."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Ferrik: Master Hollin wants the Guild's Rune Hammer back from the thief, and Nibbs in the Rusty Bellows has a hammer going cheap.",
+   "names": {
+    "Ferrik": "place",
+    "Magrok": "person",
+    "Grenn": "person",
+    "Imps": "group",
+    "Great Furnace": "place",
+    "Mayor Thurgo": "person",
+    "Holk": "person",
+    "Mirta": "person",
+    "Dobrin": "person",
+    "Slag Pits": "place",
+    "Fire Bats": "group",
+    "Tobb": "person",
+    "Master Hollin": "person",
+    "Rune Hammer": "thing",
+    "Guild": "group",
+    "Guild Hall": "place",
+    "Nibbs": "person",
+    "Rusty Bellows": "place",
+    "Gretta": "person",
+    "Pell": "person",
+    "Ash Caverns": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Hollin",
+     "text": "Ahhh, how did this happen? A thief has knocked out both my apprentices. I can't wait for the guards. Hurry, you must catch him before he sells the Rune Hammer of the Guild!"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Evening, stranger! Welcome to the Rusty Bellows! I've got a fine hammer going cheap."
+    },
+    "outcome_a": {
+     "speaker": "Master Hollin",
+     "text": "Hmmm. I'd given up on that hammer."
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Pleasure doing business. I can't give change, but I can toss in this old Longsword I found lying near the back door of the Guild Hall. Then I must be off before the guards come."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Guild's thief and win back the Rune Hammer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the hammer Nibbs keeps behind the Rusty Bellows' bar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Vellin Cross: Tullock the wagon master wants his runaway ox Bramble found in Scraggle Wood. Dalbo, a peddler of a fake elixir, hides in the inn cellar from two angry Ogres.",
+   "names": {
+    "Vellin Cross": "place",
+    "Gold Goose": "place",
+    "Gray Quarry": "place",
+    "Mire Caves": "place",
+    "Scraggle Wood": "place",
+    "Hagg Hollow": "place",
+    "Old Toll Fort": "place",
+    "Gormley": "person",
+    "Grenna": "person",
+    "Tullock": "person",
+    "Bramble": "person",
+    "Dalbo": "person",
+    "Fennick": "person",
+    "Pell": "person",
+    "Brusk": "person",
+    "Thrungar": "person",
+    "Pibbet": "person",
+    "Garamond": "person",
+    "Elixir of Mighty Strength": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tullock",
+     "text": "Help! Somebody help me, good sir! Ogres smashed up my wagons out on the east road, and Bramble, my prize ox, ran off into Scraggle Wood!\n\nWhoever brings him home gets a fat purse from me!"
+    },
+    "offer_b": {
+     "speaker": "Dalbo",
+     "text": "Many good customers have paid a handsome price for a bottle of my Elixir of Mighty Strength. Two of Thrungar's Ogres bought the last of it -- and now the brutes are sick and swear they will eat me alive. They are waiting in the yard of the Gold Goose, armed with clubs and cursing my good name.\n\nYou must go up to the yard and send them running. Take this key to my strongbox, and help yourself to your reward once they are gone."
+    },
+    "outcome_a": {
+     "speaker": "Tullock",
+     "text": "Thanks for fetching Bramble and enjoy the gold, sir."
+    },
+    "outcome_b": {
+     "speaker": "Dalbo",
+     "text": "Is it true!? The Ogres left? Truly left? I'm coming up now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Lead Tullock's runaway ox back home from Scraggle Wood."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Chase the angry Ogres away from Dalbo's cellar door."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tarrow: Dorrin of the granary wants the seed chest the Ogres carried off to Blackstump Hill, and Nebbit sells a smelly Ogre-hide cloak to walk among the Ogres unseen.",
+   "names": {
+    "Tarrow": "place",
+    "Kervan": "person",
+    "Gorlak": "person",
+    "Blackstump Hill": "place",
+    "Mott": "person",
+    "Grisk Hollow": "place",
+    "Marga": "person",
+    "Silver Sickle": "thing",
+    "Mossback Cave": "place",
+    "Brannoch": "person",
+    "Dorrin": "person",
+    "Nebbit": "person",
+    "Hobb": "person",
+    "Tam": "person",
+    "Pell": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dorrin",
+     "text": "Ah, it's you! You got past the Ogres!\n\nThose brutes have grown very bold of late. They broke into the granary while I was counting sacks and carried off our seed chest.\n\nPlease, go up to Blackstump Hill and bring that chest home."
+    },
+    "offer_b": {
+     "speaker": "Nebbit",
+     "text": "Evening, stranger. A small bargain if you are bound for the Ogre camp, I have a cloak here sewn from Ogre hide, yours for 50 gold. One sniff of it and those foul brutes will take you for one of their own..."
+    },
+    "outcome_a": {
+     "speaker": "Dorrin",
+     "text": "Thank goodness, our seed chest is back! How shall I ever reward such courage?! Eh, what was that? A big sharp sword? Well, if that's your wish, please accept this Longsword as a token of my thanks."
+    },
+    "outcome_b": {
+     "speaker": "Nebbit",
+     "text": "You must keep it on while walking among the Ogres. If you take it off before you leave their camp, they will sniff you out at once! Once you are past their guards, you may take back what they stole, or slip away unseen."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the seed chest from Blackstump Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Wear Nebbit's Ogre-hide cloak into the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  }
+ ]
+}

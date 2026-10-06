@@ -61,3 +61,12 @@ outside, in the guardroom). (`STANDS["cell"]`: beside the cot, beside the stocks
 - Westwood: War07A, cells 174,236, 160,230 and 164,226 (13 tiles each: a cot, straw, a jail door); Con11a, cells 174,44,
   166,52, 194,80 and 182,36 (30-35 tiles: the ogres' pens, straw and the stocks).
 - Ours: the room lab's cells and pens.
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's 10 curated cells: War07A's 13-tile cells hold a cot and **9-12 bundles of straw heaped beside it**; Con11a's
+ogre pens hold 4-7 heaps of ogre straw and a crude obelisk (`ObeliskPrimitive`) in four of six, a stool or a bench in
+two, a barrel; **never the stocks**, and no light of their own. The recipe now: cells `dark`, the cot far from the
+door, straw heaped by it (`scatter by_bed`); pens lift the Ogre pieces whatever the building's style (`lift`; the lab
+had built them empty), the obelisk always (the pen's focal now), stocks rare. AUC 0.98 -> 0.83, hard rooms 6 -> 2.
+Shell: our cells are 16-36 tiles with up to three doors; Westwood's are 13 tiles behind one barred door.

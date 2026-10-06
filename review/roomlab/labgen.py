@@ -213,9 +213,11 @@ def new_spec(name, typ):
     return m
 
 
-def generate(typ, n=10, seed=1, out_dir=None, name="RoomLab", log=print):
+def generate(typ, n=10, seed=1, out_dir=None, name="RoomLab", log=print, engine=None):
     """Builds the batch: one or more maps (`name`, then name + page) of the variants. Returns dict(maps=[paths],
-    variants=[plan + map, building, room id, floor tiles, doors])."""
+    variants=[plan + map, building, room id, floor tiles, doors]). engine: the furnisher of each variant's main room
+    ("recipe" or "motifs", kit/originality.furnish_original); None: the type's own (the recipe engine by default).
+    The neighbouring rooms keep their type's own engine."""
     plans = plan(typ, n, seed)
     os.makedirs(out_dir, exist_ok=True)
     pending = sorted(plans, key=lambda p: -size_uv(p)[0] * size_uv(p)[1])
@@ -246,9 +248,11 @@ def generate(typ, n=10, seed=1, out_dir=None, name="RoomLab", log=print):
         rooms_json = []
         for p, b in built:
             main = next(r for r in b.rooms if r.kind == p["kind"])
+            orig = {}
             for r in b.rooms:          # the neighbours too: their furniture shows through the doors, as in a map
-                furnish_original(m, r, kind=r.kind, rng=random.Random(E.seed_of("furnish", p["seed"], r.id)),
-                                 style=p["furnish"])
+                _, res = furnish_original(m, r, kind=r.kind, rng=random.Random(E.seed_of("furnish", p["seed"], r.id)),
+                                          style=p["furnish"], engine=engine if r is main else None)
+                orig[r.id] = res
             for r in b.rooms:
                 xs = [x for x, _ in r.tiles]; ys = [y for _, y in r.tiles]
                 rooms_json.append(dict(number=len(rooms_json) + 1, building=f"{p['role']} ({p['style']})", kind=r.kind,
@@ -257,7 +261,10 @@ def generate(typ, n=10, seed=1, out_dir=None, name="RoomLab", log=print):
                                        floor=sorted([x, y] for x, y in r.tiles)))
                 if r is main:
                     done.append(dict(p, map=mname, room=r.id, number=len(rooms_json), floor_tiles=len(r.tiles),
-                                     doors=len(r.doors), floor_material=r.floor,
+                                     doors=len(r.doors), floor_material=r.floor, engine=engine or "default",
+                                     originality=dict(max_sim=orig[r.id]["max_sim"], nearest=orig[r.id]["nearest"],
+                                                      ok=orig[r.id]["ok"]),
+                                     motif_log=getattr(r, "motif_log", None),
                                      centre=[round(sum(xs) / len(xs)), round(sum(ys) / len(ys))]))
         m.obj("PlayerStart", u0 + 3, v0 + 3)
         with open(os.path.join(out_dir, f"{mname}.rooms.json"), "w", encoding="utf-8") as f:

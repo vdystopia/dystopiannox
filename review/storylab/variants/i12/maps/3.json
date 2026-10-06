@@ -1,0 +1,315 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Gorrow",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Vorgul the Marsh Lord and his Mudmen rise out of the bog to raid the walks, and the Captain has sent the player to Gorrow to learn what Vorgul is up to",
+  "names": {
+   "Gorrow": "place",
+   "Vorgul": "person",
+   "Mudmen": "group",
+   "Captain": "person",
+   "Gwoll": "person",
+   "Thoss": "person",
+   "Pellan": "person",
+   "Mud Imps": "group",
+   "Imps": "group",
+   "Amulet": "thing",
+   "Sunken Chapel": "place",
+   "Dorrit": "person",
+   "Tarn": "place",
+   "Bog Gators": "group",
+   "Gators": "group",
+   "Pru": "thing",
+   "Ketta": "person",
+   "Fergus": "person",
+   "Odo": "person",
+   "Gubb": "person",
+   "Rudge": "person",
+   "Bidda": "person",
+   "Krunk": "person",
+   "Mirelda": "person",
+   "Yarrin": "person",
+   "Sallow": "person",
+   "Tuk": "person",
+   "Wend": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Thoss, the guard at the landing gate of Gorrow, where the Mudmen have lately crept under the walks",
+   "names": {
+    "Thoss": "person",
+    "Mudmen": "group",
+    "Gwoll": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Thoss",
+     "text": "Onto the boards, stranger! Enjoy your stay!"
+    },
+    "again": {
+     "speaker": "Thoss",
+     "text": "You let a few Mudmen frighten you!? You're useless! Now go home! You sicken me!"
+    },
+    "later": {
+     "speaker": "Thoss",
+     "text": "Stop right there, stranger! Gwoll swears the Mudmen are creeping under the south walk and the claw marks on the posts prove it.\n\nLet's go! I've got a damp and snug shelter set aside for you.\n\nWill you come quietly, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Dorrit, whose ducks were dragged off from the hamlet of Tarn by Bog Gators, wants them driven out",
+   "names": {
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrit",
+     "text": "Sir! Please help me! A pack of foul Bog Gators just overran Tarn, the hamlet south of here and dragged off almost all of my ducks! One of them was my sweet Pru!\n\nPlease drive them out and I promise you a reward!"
+    },
+    "reminder": {
+     "speaker": "Dorrit",
+     "text": "Oh why aren't you going? My poor ducks are in terrible danger!"
+    },
+    "completion": {
+     "speaker": "Dorrit",
+     "text": "Oh, thank you, brave sir! These are tokens of my gratitude!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bog Gators out of Tarn for Dorrit."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Mayor Pellan's amulet, stolen by the Mud Imps, who took it into the sinkhole south of Gorrow",
+   "names": {
+    "Pellan": "person",
+    "Gorrow": "place",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Captain": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellan",
+     "text": "Welcome to Gorrow, noble Adventurer! We've been expecting you!\n\nThe Mud Imps who live below the walks have gone wild! They crept up the posts and stole my Amulet! A Hunter chased the little brutes into the sinkhole, but hasn't come back.\n\nWill you go into the sinkhole to the South and recover my Amulet from the Imps? Come see me once you are back. I'll be home on the big platform."
+    },
+    "refusal": {
+     "speaker": "Pellan",
+     "text": "Oh, bah! Then the Imps can keep it!"
+    },
+    "reminder": {
+     "speaker": "Pellan",
+     "text": "Those pesky Imps are up to no good again these days."
+    },
+    "completion": {
+     "speaker": "Pellan",
+     "text": "My Amulet! Thank you, kind sir! All Gorrow is truly thankful for your fine work.\n\nHere, take this as a small gift from the hamlet. The Captain is waiting at the landing. You should visit the shops first, then go and talk to him at once."
+    },
+    "after": {
+     "speaker": "Pellan",
+     "text": "There is nothing more I can give you but my gratitude. You ought to find the Captain. He is waiting down at the landing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pellan's amulet from the Mud Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mayor Pellan's amulet from the Mud Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Gorrow: one pestered by leeches, one brushing the player off, one with something on his leg",
+   "names": {
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Yarrin",
+     "text": "Help! The leeches are in my bed!"
+    },
+    "rumour2": {
+     "speaker": "Sallow",
+     "text": "Eh? Sorry, no time."
+    },
+    "rumour3": {
+     "speaker": "Tuk",
+     "text": "Blaaargh! Get this thing off my leg!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bidda the innkeeper, Krunk the arms seller, Mirelda of the magic shop",
+   "names": {
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Gorrow": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bidda",
+     "text": "You look like you could use a bed, friend."
+    },
+    "arms": {
+     "speaker": "Krunk",
+     "text": "Pssst! Hey! Stranger! Want a blade? Cheapest in the marsh and it was hammered together right here in Gorrow!"
+    },
+    "magic": {
+     "speaker": "Mirelda",
+     "text": "Go away, stranger! I don't sell to FROG-KILLERS!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Odo wants the ferry rafts the Mudmen took brought back to the dock; Gubb wants his brother Rudge sneaked out of the stocks past Thoss",
+   "names": {
+    "Odo": "person",
+    "Mudmen": "group",
+    "Gorrow": "place",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Thoss": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odo",
+     "text": "Hail, brave Adventurer! The Mudmen have snatched our poor ferry rafts during a ruthless raid!\n\nWill you please tow them back to the dock? If you do, a fine reward awaits you, because the folk of Gorrow cannot cross the water without them!"
+    },
+    "offer_b": {
+     "speaker": "Gubb",
+     "text": "Hello, friend. Will you be my partner, slip my brother Rudge out of the stocks and lead him to the east dock?"
+    },
+    "outcome_a": {
+     "speaker": "Odo",
+     "text": "It's done then! The rafts are home again!\n\nWe must be quick, though. The fog is rising!\n\nThe Mudmen took most of our coin. One of those greedy Mudmen left a purse behind. Take it, it's yours!"
+    },
+    "outcome_b": {
+     "speaker": "Gubb",
+     "text": "That's a relief to hear. I hope you spend your share wisely, for I fear Thoss is getting suspicious. I heard his boots squeaking a moment ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring Odo's stolen rafts back to the dock."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sneak Rudge out of the stocks for Gubb."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Ketta's pet goose Fergus, who can talk, is trapped on the tipping floor of her shed after the Mudmen chopped the posts",
+   "names": {
+    "Ketta": "person",
+    "Fergus": "person",
+    "Mudmen": "group",
+    "Gorrow": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ketta",
+     "text": "Help, please, kind sir! The Mudmen have chopped away the posts of my shed and my poor goose, Fergus, is stuck on the tipping floor of the back room!\n\nSave him and I'll owe you for life!"
+    },
+    "reminder": {
+     "speaker": "Ketta",
+     "text": "Whatever you find in that shed is yours! Just hurry and save Fergus!"
+    },
+    "found": {
+     "speaker": "Fergus",
+     "text": "Fine! I'll come with you! Just get me off this tipping floor!"
+    },
+    "following": {
+     "speaker": "Fergus",
+     "text": "Hurry! Lead me to Ketta!"
+    },
+    "completion": {
+     "speaker": "Ketta",
+     "text": "Thank goodness, he's safe! How could I ever thank you enough?!\n\nWhat's that you say? A heap of gold? Well, if that is what you wish, please take this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Fergus the Talking Goose from a flooding hut in Gorrow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Wend points the player to Gwoll, who sends him into the Sunken Chapel to look for signs of Vorgul and the Mudmen",
+   "names": {
+    "Wend": "person",
+    "Gwoll": "person",
+    "Mudmen": "group",
+    "Vorgul": "person",
+    "Sunken Chapel": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wend",
+     "text": "Don't lose hope now, stranger, Gwoll knows how to stop the Mudmen!"
+    },
+    "opening": {
+     "speaker": "Gwoll",
+     "text": "The entrance to the Sunken Chapel is in the last hut on the walk. See if Vorgul has been there. You'll know. And watch your step. Many of the floors have pits against thieves."
+    },
+    "reminder": {
+     "speaker": "Gwoll",
+     "text": "Enter the Sunken Chapel, lad! We must know if tales of Vorgul's raids are true. Hurry! Go down into the vaults and see if the Mudmen have already come."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Sunken Chapel for signs of Vorgul's doings."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "852c2b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "The offer contradicts itself ('well in hand', then 'But then I shall forge a blade', then asks for help anyway) and 'cloak' sits beside a masked [Thing]. The reminder 'Hello!? This is my forge.' is an odd non sequitur, not Westwood's plain urging."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Borrows Westwood tics ('heh, heh, heh', 'lad', 'little devils') but stacks them. 'Sad, plain truth, lad' and the clipped 'Follow the ore track. Find the cave past the last lamp.' read like a style imitation, and 'the sneakiest of thieves, at best' is a misfired idiom."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Classic Nox: exclamation-heavy greeting, plain who/what/where ('Ogre village in the northeast'), the demoness threat, and the wink in '...sooner than you think.' The journal is a bare imperative."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Earnest town-official voice with exact directions ('East of here', 'my house at the center of town') and an onward hand-off to the Captain. Inconsistent capitalisation of Urchins is a period slip that fits."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "The offer starts in the middle with no setup. 'Hail [Person], one more hero off to fight the Imps' is addressed to the wrong party, and 'Wonderful, my amulet. Here, have a couple of these.' is flat. The journal is longer and more literary than Westwood's."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Melodramatic but plain and complete: who (wife turned into a wolf), why he can't go, where the staff is, and a promised reward. The gushing thanks and the impatient reminder match Nox."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Or should I say a hero, lad! Heh, heh, heh' is pastiche. 'I can't deny it any longer' and the millstones aside are odd, and the thanks turns into a potion tutorial ('If you wait too long before you drink one...') that fits no context."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A short, urgent offer ('Ooooh, how can this be?'), a pleading reminder, and a thanks that moves the plot on ('take both items to him'). It is economical in Westwood's way."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Concrete navigation ('The bookcases along the back wall will open'), the dash-and-exclamation reminder ('Unsavory elements dwell in the shadows!'), and a plot turn of a death mourned in a line before the next task. That is Nox's campaign shape."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The chatty opener and the 'dusty corner and odd little cupboard' reminder are whimsical in a way Nox rarely sustains. 'More precious than gold, which now belongs to you' feels assembled. This could be Westwood, so it is the least certain call."}
+  ],
+  "tells": [
+    "The new texts recycle Westwood's verbal tics ('heh, heh, heh', 'lad', 'little devils') too densely and in odd places; Westwood uses them sparingly and in character.",
+    "The new offers have logic gaps: a speaker says all is well, then asks for help; offers start mid-thought; lines are addressed to the wrong person. Westwood's offers run setup, then problem, then where, then ask.",
+    "Westwood gives concrete compass directions and landmarks plus an onward hand-off (go see the Captain, take this to him); the new texts' directions are vaguer or arranged as clipped imperatives.",
+    "The new thanks are often flat ('Wonderful, my amulet') or swerve into unrelated tutorial advice; Westwood's thanks are effusive with exclamation marks and tie the reward to the plot.",
+    "New journal entries tend to be longer or more descriptive ('Fight your way into...'); Westwood's are short imperatives ('Retrieve the X.').",
+    "Unmasked common item nouns (amulet, cloak) next to masked [Thing] inside one text hint at generated writing."
+  ]
+}

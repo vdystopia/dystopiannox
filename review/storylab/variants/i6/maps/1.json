@@ -1,0 +1,317 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so Mayor Halvard has shut the north gate.",
+  "names": {
+   "Brackenford": "place",
+   "Bracken": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Drowned Lantern": "place",
+   "Chapel of the Ford": "place",
+   "Chapel": "place",
+   "Halvard": "person",
+   "Mayor Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Brother Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Wat": "person",
+   "Dobbs": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick keeps the north gate shut by Mayor Halvard's order because of Red Corwin's bandits.",
+   "names": {
+    "Garrick": "person",
+    "Mayor Halvard": "person",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "The north gate is closed by order of Mayor Halvard. There are bandits on the north road. If you want through, you'll have to take it up with the Mayor himself."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "I told you, the gate stays shut. See Mayor Halvard."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Thank you, brave Adventurer. Brackenford is in your debt."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric the shepherd orders the player into the Ashwood to kill the wolves, hands over a quiver at once and pays with his old bow.",
+   "names": {
+    "Ulric": "person",
+    "Ashwood": "place",
+    "Red Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Greetings, stranger.\n\nWolves. Out of the Ashwood, every night, after my sheep. I'm too old to chase them anymore.\n\nHere, take this quiver. Go into the Ashwood and kill those mangy beasts. Then come back to me."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Still them wolves. Every blessed night."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "No howling last night! First time all season!\n\nTake my old bow. It goes with the quiver. Now if somebody would only run Red Corwin off Crow Hill!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the wolves of the Ashwood for Ulric the shepherd."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Quiver",
+     "Bow"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna the miller's widow wants the crank of her millstone back from the Urchins of the old barrow; she hands over the barrow gate key at once.",
+   "names": {
+    "Wenna": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "So now the wheel turns all day and grinds nothing! Those Urchins pulled the crank right off my millstone and ran off with it. Here, take this key. It opens the gate of the old barrow, east of the ford. If you bring my crank back, I'll see you're paid for it. Well? Are you going or not?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Hmph. Then I'll grind it by hand, I suppose."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Have you got my crank? No? Then what are you doing here?"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My crank! At last! Take these boots, they're good in the mud down by the ford. And thank you, kind sir!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's millstone crank from the Urchins of the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's millstone crank from the Urchins of the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "A pointer to the inn, the gate news said again, and a comic brush-off from a man counting chickens.",
+   "names": {
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "If it's news you want, go to the Drowned Lantern, down by the water."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Did you hear? The north gate's been shut on account of those bandits! Nobody gets through!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Shoo! Can't you see I'm counting my chickens? One... two... Aw, now I have to start all over!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian is rude at the Drowned Lantern, Dunstan makes coffins for the Chapel on the side, Mabry says business is bad.",
+   "names": {
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Drowned Lantern": "place",
+    "Chapel": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern. You want a room or a drink? Make up your mind, I haven't got all day."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Welcome! Arms and armor, and coffins for the Chapel when there's call for them. What do you need?"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "A customer! Times are hard, stranger. Please, buy something. Anything!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Halvard wants the tithe chest back from Crow Hill; Wat, a turncoat of Corwin's, wants his friend Dobbs sprung from the watchtower cellar.",
+   "names": {
+    "Halvard": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Corwin": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place",
+    "Brother Anselm": "person",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Who's there?! Oh.... It's you. Thank goodness. I thought Corwin's men had come back. Those thieves took the town's tithe chest up to Crow Hill. Bring it back and you'll have the town's thanks, and more. Will you do it?"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Here's to Red Corwin, may he choke on his supper! Ha! Now, you look like someone who can open a lock. My pal Dobbs is locked up in the cellar of the old watchtower. Get him out and I'll see you right. Just don't tell the Mayor, eh?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Well done, stranger! Here, take this steel shield.\n\nAnd go see Brother Anselm at the Chapel of the Ford. He has been asking for help."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Dobbs is out and drinking already! You're all right, stranger. Here, take this sword. It's a good one, hardly a scratch on it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from Red Corwin's bandits for Mayor Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Dobbs from the cellar of the old watchtower for Wat."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm begs the player to bring back his novice Pip from the old barrow; Pip must be led out to the gate.",
+   "names": {
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Brackenford": "place",
+    "Chapel": "place",
+    "Mayor Halvard": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Help! Somebody, please help! My novice Pip went into the old barrow after the Urchins and he hasn't come back! Bring the boy home to me and I will give you the best the Chapel has. I swear it!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Those wicked Urchins are a plague on Brackenford. I will pray for Pip."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Hello? Hello? Over here! Please, don't leave me down here!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Get me to the gate! I'll stay right behind you."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You're safe! Thank goodness!\n\nPlease take this robe as a token of my appreciation. And go see Mayor Halvard. Brackenford needs you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Pip from the old barrow and bring him back to Brother Anselm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Mayor Halvard, who gives a sword and a pass for the north gate and sends him to drive Red Corwin off Crow Hill.",
+   "names": {
+    "Mayor Halvard": "person",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Garrick": "person",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Mayor Halvard shut the north gate on account of Red Corwin's bandits. He's looking for help. You'll find him in the town hall, in the center of town."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Grave news, stranger, grave news! Red Corwin and his bandits have seized the old watchtower on Crow Hill, north of town. From there they fall upon every cart and every traveler on the north road, and they grow bolder by the day!\n\nI was forced to shut the north gate. Now the millers cannot sell their flour, the ferrymen sit idle on the Bracken, and the wolves of the Ashwood creep closer every night! Never in all my years have I seen such strange and desperate times. I have too few guards, and they are farmers' sons, not fighters. Brackenford is doomed unless someone acts!\n\nTake this sword, and show this pass to Garrick at the north gate. Go to Crow Hill and drive Red Corwin and his cutthroats out of that tower! All Brackenford is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Hurry, stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin and his bandits out of the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

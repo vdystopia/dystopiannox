@@ -1,0 +1,32 @@
+{
+  "packet": "7d51d8",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The grumpy 'Hmmmph!' with the drawn-out 'Ahhhhhhhh...', 'pig-headed armored sheep' and the arms dealer's dry aside are Westwood's comic shopkeeper voice exactly."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The 'Wanna' openers fit, but 'carted up from the great smokehouses' is invented world detail packed into a sales line, and the named blade reads like a set-up for something."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Cheapest under the mountain' and the clipped 'Undead took the deep shafts.' are setting exposition worked into greetings, and the curt magic seller reads as a writer's mood choice rather than Nox's plain huckstering."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Flat, generic and a little clumsy ('New here aren't you?' with no comma, 'Your money is still good with me'), like Westwood's filler shopkeepers: no lore and no flourish."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'What with the dead climbing up the stilts at night' and 'bog toads into my kettle' tie each line to a local setting too neatly, and the inn line is longer and more literary than Nox's greetings."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The arms dealer's speech on politics ('I never thought the masters would let...') explains the plot through the shopkeeper, and 'A sorry business indeed!' feels written to order; the inn line could pass."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The funerary-services joke, the pushy 'Let's get to know each other! Buy something!' and the loose punctuation ('Greetings traveler.') are pure Westwood."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A plain 'Welcome to the X' with a jab at a rival inn and 'at your service! What can I do for you, sir...?' match the campaign's simple, slightly stiff greetings."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The broad dialect ('aye mate', 'Ya need') and the awkward, informational 'supplies enchantments and spells to the...' line have Westwood's unpolished feel."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The potion seller's joke is Nox-like, but 'with the north gate shut and all' is a stray world-state hint, and the bare one-line inn welcome feels like a template filled in."}
+  ],
+  "tells": [
+    "New texts pack invented local detail (smokehouses, deep shafts, stilts, gates, bog toads) into greetings; Westwood's shopkeepers mostly just welcome you and sell, with lore only rarely.",
+    "Westwood's humour is broad and personal (insults, pushy salesmanship, morbid jokes) with drawn-out interjections ('Hmmmph!', 'Ahhhhhhhh...'); the new humour is milder and tied to the setting.",
+    "Westwood's punctuation is loose (missing commas before vocatives and tags) and its phrasing a little clumsy; the new lines are tidier and more evenly built.",
+    "New lines tend to put backstory or plot state in a shopkeeper's mouth (who took what, what is shut, what is dangerous at night)."
+  ]
+}

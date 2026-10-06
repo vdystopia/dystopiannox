@@ -1,0 +1,621 @@
+{
+ "scenario": "rescue",
+ "iter": "i13",
+ "writer": "one writer a town (variants/i13/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip went into the old barrow after the Urchins to prove himself; Anselm gives the key to the barrow gate.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Pip, my novice, went down into the old barrow after the Urchins this morning. He was so set on proving himself worthy of the Chapel! He ought to have been back long before now.\n\nHere is the key to the barrow gate, east of the ford. Go in after him and see him safely home. Please hurry!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Bring Pip back to me -- whatever it takes! Mind the dark down there. The Urchins know every hole in that barrow!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Your filthy chattering doesn't scare me, Urchin! Come one step nearer and I'll crack you with my staff!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Hail, Brother Anselm, one novice home from the barrow!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "You found Pip! Thank goodness!\n\nI feared the worst when he missed supper. I shall scold him later, but tonight he needs his bed. Take this robe with the Chapel's blessing.\n\nGo safely, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Brother Anselm's novice in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Druvak: Brakka's old father Ottar is stuck in the Old Shrine, where a Spider has riled up the bats.",
+   "names": {
+    "Druvak": "place",
+    "Odrik": "person",
+    "Dalmor": "person",
+    "Grizzick": "person",
+    "Pudd": "person",
+    "Morva": "person",
+    "Tolbrek": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Snib": "person",
+    "Brakka": "person",
+    "Ottar": "person",
+    "Skarn": "person",
+    "Yorvan": "person",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "North Drift": "place",
+    "Old Shaft": "place",
+    "Old Shrine": "place",
+    "Smelter": "place",
+    "Deep Gate": "place",
+    "Troll Warrens": "place",
+    "Sunken Hall": "place",
+    "Lower Mines": "place",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Spider": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brakka",
+     "text": "Forgive my tears. My father Ottar is stuck down in the Old Shrine. Some great hairy Spider made its nest by the altar and riled up the bats, and now they set upon anyone who goes in.\n\nOttar won't budge till that Spider is dead. Could you... would you bring him home? Take this iron key. It opens the shrine gate."
+    },
+    "reminder": {
+     "speaker": "Brakka",
+     "text": "Don't lose that iron key, it's the only one. Once the Spider's dead, the bats should calm down. Hurry, and good luck to you."
+    },
+    "found": {
+     "speaker": "Ottar",
+     "text": "This shrine is holy ground, my son, and no beast may harm a man who kneels on it. May the spirits of the deep rock walk ever at your side."
+    },
+    "following": {
+     "speaker": "Ottar",
+     "text": "Well struck! There's no braver soul in all Druvak!"
+    },
+    "completion": {
+     "speaker": "Brakka",
+     "text": "Wonderful! Thank you so very much. I had given up hope of him ever walking through that door again!\n\nNow, take this ankh for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay the Spider in the Old Shrine at the foot of the east tunnels. This should calm the bats so Ottar can be led home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Okkum: Grumm shuts his boat shed until his daughter Dilla, who went after the Leeches at the Drowned Chapel, is brought home; the reward is his punt and the way on.",
+   "names": {
+    "Okkum": "place",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Kelso": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Grumm": "person",
+    "Dilla": "person",
+    "Ysmay": "person",
+    "Bodrick": "person",
+    "Pella": "person",
+    "Black Reeds": "place",
+    "Drowned Chapel": "place",
+    "Moon Amulet": "thing",
+    "Frog Horn": "thing",
+    "Troll": "group",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grumm",
+     "text": "Not one boat leaves my shed while my Dilla is missing! She poled out to the Drowned Chapel after the Leeches and never came back. If you want passage out of Okkum, you'll have to bring her home first. Hmmm... and don't tell Kelso she took his punt."
+    },
+    "reminder": {
+     "speaker": "Grumm",
+     "text": "My shed's still shut. You want a boat or not?"
+    },
+    "found": {
+     "speaker": "Dilla",
+     "text": "You already know the way back out, I hope."
+    },
+    "following": {
+     "speaker": "Dilla",
+     "text": "Oh, it's you up ahead! Wait for me!"
+    },
+    "completion": {
+     "speaker": "Grumm",
+     "text": "Dilla! Home safe! That girl will be the death of me, I swear! But she's the best hand on the water, and Okkum can't spare one of us now.\n\nMy shed is open to you now, and so is my best punt.\n\nHere's the shed key. The punt will carry you through the Black Reeds."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Drowned Chapel and bring back Grumm's daughter."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Thrane: Maudra of the Bent Spoon begs the player to bring home her nephew Tobin, who bought a sword off Wizzle and went after the Urchins.",
+   "names": {
+    "Thrane": "place",
+    "Lord Ostric": "person",
+    "Fennick": "person",
+    "Gruthak": "person",
+    "Dalric": "person",
+    "Warden Krell": "person",
+    "Skell the Poisoner": "person",
+    "Edda": "person",
+    "Steward Ambrel": "person",
+    "Harl": "person",
+    "Wizzle": "person",
+    "Dunk": "person",
+    "Maudra": "person",
+    "Tobin": "person",
+    "Brusk": "person",
+    "Gallow Hill": "place",
+    "the Beacon": "place",
+    "the Great Hall": "place",
+    "the Thornwood": "place",
+    "the Urchin Hollow": "place",
+    "Lowmarket": "place",
+    "the Bent Spoon": "place",
+    "Trolls": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Maudra",
+     "text": "Business? Oh, business is the least of my worries this week. My nephew Tobin paid that pedlar Wizzle good money for a sword that 'never misses', and off he went to the Urchin Hollow to try it out!\n\nI doubt the thing could cut butter, but nothing would make me happier than seeing that boy back in my kitchen.\n\nTake this key, it opens the postern gate by the Hollow. Bring Tobin home and you'll be well rewarded."
+    },
+    "reminder": {
+     "speaker": "Maudra",
+     "text": "The Hollow? Through the postern gate and follow the ditch down to the left.."
+    },
+    "found": {
+     "speaker": "Tobin",
+     "text": "Well... I guess you came all this way for me. Nice work, friend."
+    },
+    "following": {
+     "speaker": "Tobin",
+     "text": "For Thrane and the Bent Spoon! -- Yaaaaaarrrrggghh!! ...Um. You go first."
+    },
+    "completion": {
+     "speaker": "Maudra",
+     "text": "So the boy's home in one piece! Bless you! He'll not touch a sword again while I've breath in me!\n\nNow, your reward... 75 gold, as promised! And I'll tell my brother Brusk at the north gate to let you pass whenever you please!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Use Maudra's key on the postern gate in order to reach Tobin.\n\nThe boy is probably lost somewhere in the Urchin Hollow."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Skellow: Dorrin the boatwright's apprentice Kett is trapped in the old mill by wasps an Urchin stirred up.",
+   "names": {
+    "Skellow": "place",
+    "Lake Ommel": "place",
+    "Gannet Rock": "place",
+    "Town Hall": "place",
+    "Guild Hall": "place",
+    "Reed Island": "place",
+    "Leech marsh": "place",
+    "Hulvo": "person",
+    "Mayor Oskelt": "person",
+    "Talboth": "person",
+    "Gorrick": "person",
+    "Jebba": "person",
+    "Harbor Master Pell": "person",
+    "Pell": "person",
+    "Guildmaster Fennick": "person",
+    "Grubbin": "person",
+    "Dorrin": "person",
+    "Kett": "person",
+    "Tamsin": "person",
+    "Nubb": "person",
+    "Urchins": "group",
+    "Leeches": "group",
+    "Fishers' Guild": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorrin",
+     "text": "Rotten wasps! My apprentice Kett went to the old mill for the eel traps, but some Urchin had already gone and stirred up their nest! You're all I've got now. Get him out of there!\n\nThe mill stands at the water's edge, west of the jetty. Please, be careful."
+    },
+    "reminder": {
+     "speaker": "Dorrin",
+     "text": "I won't rest till Kett is back! Kill those wasps if you must! Just get him out! Hurry, before he tries something foolish!"
+    },
+    "found": {
+     "speaker": "Kett",
+     "text": "Lead me home. I will keep my head down."
+    },
+    "following": {
+     "speaker": "Kett",
+     "text": "Bless you for coming. Let's go before more wasps show up."
+    },
+    "completion": {
+     "speaker": "Dorrin",
+     "text": "Brave Adventurer, you have my thanks! Kett owes you his life. Every ferryman in Skellow will hear of this, and they'll row you anywhere on the lake for nothing.\n\nTake these potions for your stings. Go on, take them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the old mill and bring Kett home to Dorrin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Orlo begs the player to bring his pupil Nimrel up from the Proving Vaults, where Vorlath's Shades have got in.",
+   "names": {
+    "Ostrel": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Chapter House": "place",
+    "Proving Vaults": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Vorlath": "person",
+    "Yarrick": "person",
+    "Dorvanis": "person",
+    "Krumm": "person",
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "Quillan": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Zabble": "person",
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Ysolde": "person",
+    "Golems": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Shades": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Ward Stone": "thing",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Orlo",
+     "text": "Welcome to Ostrel, kind sir! We've been hoping for a stout pair of arms for days!\n\nMy pupil Nimrel, a fine singer too, went down into the Proving Vaults for her final trial and never came up! No student has ever been kept down there this long. Vorlath's Shades must have got in.\n\nGo down into the Vaults under the west court and bring Nimrel out. Then come and find me. I'll be in the lecture hall, as always."
+    },
+    "reminder": {
+     "speaker": "Orlo",
+     "text": "Those wretched Shades get bolder every week."
+    },
+    "found": {
+     "speaker": "Nimrel",
+     "text": "Keep back, or I'll burn you!"
+    },
+    "following": {
+     "speaker": "Nimrel",
+     "text": "Filthy Shades! You'll never hold me down here again!"
+    },
+    "completion": {
+     "speaker": "Orlo",
+     "text": "Nimrel! Back safe! Thank you! The whole College owes you a debt it won't forget.\n\nHere, take this robe. Ysolde sells them for 200 gold or more, but you've earned it twice over. Archmage Dorvanis has been asking for you. Go and see him in the Chapter House straight away."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Nimrel back up from the Proving Vaults"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Krell: Dagna the pedlar, packed to leave the fort, begs the player to bring back her boy Jeppo from the Grey Hood bandits.",
+   "names": {
+    "Fort Krell": "place",
+    "High Gate": "place",
+    "Beacon Tower": "place",
+    "Ghrulg": "person",
+    "Brannoc": "person",
+    "Hadrik": "person",
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ulvek": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Fenn": "person",
+    "Trolls": "group",
+    "Imps": "group",
+    "Wolves": "group",
+    "Grey Hoods": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dagna",
+     "text": "Aaaagh! Get away! I've nothing left!\n\nOh. You're not a bandit?! Thank goodness. The Grey Hoods dragged my boy Jeppo off to their cave up the west slope! We were all packed to leave this fort for good.\n\nBring my Jeppo home and you'll have the best bargain of your life!"
+    },
+    "reminder": {
+     "speaker": "Dagna",
+     "text": "Is Jeppo with you?! Oh.... Well, those bandits are a nasty lot. Be careful up there."
+    },
+    "found": {
+     "speaker": "Jeppo",
+     "text": "Hey! The Grey Hoods took me! Now the door's frozen shut! I'll try to squeeze through the bars. Get me home!"
+    },
+    "following": {
+     "speaker": "Jeppo",
+     "text": "This way, quick."
+    },
+    "completion": {
+     "speaker": "Dagna",
+     "text": "Jeppo! You brought him back! May the stars smile on you!\n\nI've no gold left to give, so take this robe off my cart. It's the best piece I had! Now Jeppo and I are off down the mountain, and we won't be coming back. Watch yourself with those Trolls about!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight through the Grey Hood cave and bring Jeppo back to his mother Dagna."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Varnok: Varga the smith begs the player to bring back his apprentice Nib, who chased an Imp into the old kiln and is cut off by bats.",
+   "names": {
+    "Varnok": "place",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guildhall": "place",
+    "Guild": "group",
+    "Ozmand": "person",
+    "Dravic": "person",
+    "Pell": "person",
+    "Hask": "person",
+    "Tobb": "person",
+    "Ottla": "person",
+    "Frost Tongs": "thing",
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Varga": "person",
+    "Nib": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Varga",
+     "text": "While I keep the forge fires lit, I have a favor to ask of you.\n\nMy apprentice Nib chased an Imp into the old kiln north of town this morning. The little pest stirred up the bats in there, and now they go after anyone who comes near.\n\nHmmm. I was sure I'd barred the kiln gate. Here's my key, you'll need it.\n\nFind Nib and get him home safe, before the bats get the best of him.\n\nGood luck, Wanderer!"
+    },
+    "reminder": {
+     "speaker": "Varga",
+     "text": "Into the kiln with you! Now!"
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Bat bites swell up something awful, so a Cure Poison potion would do me a world of good."
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "Watch the lava. Quickly! The bats are coming back!"
+    },
+    "completion": {
+     "speaker": "Varga",
+     "text": "Nib! You found him! Excellent!\n\nA few burns, but the boy will mend. There's no time to fuss over him, though. Dravic says the Ogres are on the move again.\n\nHere, take these. You'll be needing them soon enough... trust me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Nib home from the kiln... alive."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow: Brother Fennick's novice Odo chased the Urchins into the Knobble caves and has not come home.",
+   "names": {
+    "Tarrow": "place",
+    "Town Hall": "place",
+    "Crooked Mule": "place",
+    "Rook Hill": "place",
+    "Thornwood": "place",
+    "Knobble caves": "place",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Gammel": "person",
+    "Widow Brisa": "person",
+    "Skeff": "person",
+    "Dorrit": "person",
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Hobbe": "person",
+    "Warding Bell": "thing",
+    "Bears": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brother Fennick",
+     "text": "Ah, you've come! Good! Our little chapel has the most devoted novices in all the valley. Sadly, young Odo went chasing the Urchins back to the Knobble caves, and he hasn't come home. I have prayed over his name all night, but something dark hides him from me.\n\nFind the boy and bring him home, and you shall have my blessing and a gift from the altar.\n\nHere, take this iron key. It opens the grate at the mouth of the caves."
+    },
+    "reminder": {
+     "speaker": "Brother Fennick",
+     "text": "No sign of him yet? Keep faith and keep looking. Those Urchins are cowards at heart."
+    },
+    "found": {
+     "speaker": "Odo",
+     "text": "Please get me back to Brother Fennick."
+    },
+    "following": {
+     "speaker": "Odo",
+     "text": "Brother Fennick will be very cross with me. You may tell him I went after the Urchins for the good of the chapel."
+    },
+    "completion": {
+     "speaker": "Brother Fennick",
+     "text": "Odo! Thank goodness! You've brought him back to us!\n\nHere is the Ankh from our altar, as promised. May all that is great watch over you! Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Brother Fennick's novice in the Knobble caves and bring him home.\n\n(Hint: The iron key opens the cave grate.)"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Belvik: Old Mabbet, half blind, begs the player to bring home her grandson Tibbo, who went up to the Ogre camp on Gristle Hill after her goats.",
+   "names": {
+    "Belvik": "place",
+    "Grimfell": "place",
+    "Krell": "place",
+    "Town Hall": "place",
+    "Bramble Gully": "place",
+    "Cairn of Olm": "place",
+    "Muddy Boot": "place",
+    "Gristle Hill": "place",
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Grenwold": "person",
+    "Hesta": "person",
+    "Gimble": "person",
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Orrick": "person",
+    "Amulet of Warding": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Old Mabbet",
+     "text": "Tibbo's a good boy. He went up to the Ogre camp on Gristle Hill after our goats and he never came back.\n\nNobody here will go up there. But you've got an honest sort of voice, so I'll give you every coin I've saved. Will you bring him home?"
+    },
+    "reminder": {
+     "speaker": "Old Mabbet",
+     "text": "Those Ogres fatten up their prisoners on stolen goat, which they take from every farm in the valley."
+    },
+    "found": {
+     "speaker": "Tibbo",
+     "text": "They were saving me for the cookpot, the big black kettle in the middle of their camp!"
+    },
+    "following": {
+     "speaker": "Tibbo",
+     "text": "Please, hurry and take me home to Granny!"
+    },
+    "completion": {
+     "speaker": "Old Mabbet",
+     "text": "Tibbo! I'd know that voice anywhere! Oh, you were made for this sort of work, stranger. I can't pay you what it's worth... But please, take this as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Tibbo from Gristle Hill!"
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

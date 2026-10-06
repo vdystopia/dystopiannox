@@ -1,0 +1,35 @@
+{
+  "packet": "7a6d07",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Stiff, slightly formal mentor register with an actual grammar slip ('incursions ... is on a steady rise') and a stray empty page; the reminder names 'the book and amulet' plainly. Pure Westwood wizard-opening texture."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless exclamation chain with '!?', 'lad', and a clumsy clause ('leaving rebuilding the village our smallest concern'), then a flat bare-bones journal. Reads like the original's hasty urgency."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Too much packed in: villain colour, a grumble about feeding the village, causeway logistics, reward and referral, plus a '(Hint: ...)' in the journal. The 'Um... Mind the Leeches' gag is a deliberate comic beat rather than Nox's incidental humour."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and short, which is Nox-like, but the curt-commander opening ('Hmph! ... sent just one?!') and the folksy 'Trolls are big, but they're dim' reminder feel like a crafted characterisation; the key handed over in a neat third page is a template shape."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The stammering ellipses ('they've shut... they've shut') are a performed nervousness Westwood rarely wrote; harvest carts and a reminder that just gives directions read as a generic fetch-and-clear quest."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stilted self-introduction ('The Master for the [Place]'), short declaratives, capitalised 'YOU' in the reminder and a journal that just says whom to speak to. The awkwardness is authentically Westwood."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Wanderer' as address, loot-permission reminder ('Keep whatever you take off those Trolls!') and a two-part journal with an inferred location note are modern quest-design tells; the stakes stack (trapped miners, mad group, debt of every miner) is overbuilt."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Pompous civic welcome, 'nettlesome urchins', explicit directions ('East of here', 'my house at the center of town') and odd capitalisation of 'Urchins' and 'East'. Classic Westwood town-quest text."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Long single page with backstory, a gate-seal mechanic, an aside gag about an unpaid cart and then a second page of impatient nagging; the humour is written-in sitcom rather than Nox's dry plainness, and 'waiting on' idiom is modern."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Terse, clipped fragments ('You'll know. And careful.') and a reminder that repeats itself ('Hurry! Go into the crypts...'), with 'lad'. The redundancy and bluntness are Westwood's."}
+  ],
+  "tells": [
+    "Westwood lines carry small grammatical slips, odd capitalisation (East, Urchins, YOU) and stiff phrasing; the new texts are cleaner and more fluent.",
+    "New openings pack more exposition per page: villain colour, logistics, reward, referral and a joke all in one speech. Westwood's state the problem and the task, then stop.",
+    "Humour in new texts is a planted beat (a parting aside, a 'between you and me' gag, a folksy reminder); Westwood's humour, when present, is incidental tone or pomposity.",
+    "Performed speech mannerisms (stammering ellipses, 'Um...', 'Hmph!') mark the new texts; Westwood uses exclamations but rarely scripted hesitation.",
+    "New journal entries add hints or second sentences of inference ('(Hint: ...)', 'is likely holed up in'); Westwood's journals are one bare imperative.",
+    "Reminders in Westwood often repeat the task or just urge haste; new reminders tend to add a fresh joke, loot permission or directions.",
+    "Address forms like 'Wanderer' and modern idiom ('waiting on', 'off with you') are tells; Westwood uses 'lad', 'Adventurer'."
+  ]
+}

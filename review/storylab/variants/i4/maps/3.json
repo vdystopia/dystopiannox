@@ -1,0 +1,325 @@
+{
+ "iter": "i4",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Gloam",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Ulgor the Necromancer has taken the Sunken Graves north of Gloam and raises the Undead, who wade up out of the bog at night.",
+  "names": {
+   "Gloam": "place",
+   "Plank Gate": "place",
+   "Sunken Graves": "place",
+   "Rotten Oak": "place",
+   "Healing House": "place",
+   "Town Hall": "place",
+   "Soggy Toad": "place",
+   "Hodd's Arms and Armor": "place",
+   "Ulgor": "person",
+   "Ostric": "person",
+   "Mayor Grimbol": "person",
+   "Tobbin": "person",
+   "Haskin": "person",
+   "Fennick": "person",
+   "Ysolde the Healer": "person",
+   "Mudge": "person",
+   "Hessa": "person",
+   "Wim": "person",
+   "Bulmer": "person",
+   "Hodd": "person",
+   "Quorra": "person",
+   "Nell": "person",
+   "Hollis": "person",
+   "Spyglass": "thing",
+   "Blackroot": "thing",
+   "Undead": "group",
+   "Zombies": "group",
+   "Imps": "group",
+   "Giant Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobbin at the Plank Gate on the north boardwalk, shut by Mayor Grimbol because the Undead come up out of the bog.",
+   "names": {
+    "Tobbin": "person",
+    "Plank Gate": "place",
+    "Mayor Grimbol": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobbin",
+     "text": "Halt! No one passes the Plank Gate. Mayor Grimbol's orders! There's Undead out in that bog, stranger, and plenty of 'em."
+    },
+    "again": {
+     "speaker": "Tobbin",
+     "text": "I said the gate is shut. Now move along!"
+    },
+    "later": {
+     "speaker": "Tobbin",
+     "text": "The Mayor says you may pass. Watch your step out there -- some of those planks are rotten clean through!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Haskin, an old eel-catcher, wants the Giant Leeches killed in his eel ponds south of the village.",
+   "names": {
+    "Haskin": "person",
+    "Ulgor": "person",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskin",
+     "text": "Bah! Leeches! Great big slimy ones, in my eel ponds south of the village! They've eaten every last eel and now they're starting on my nets!\n\nNothing's been right in this swamp since that Necromancer Ulgor came. You kill them Leeches and there's good gold in it for you."
+    },
+    "reminder": {
+     "speaker": "Haskin",
+     "text": "Are them Leeches dead yet? No? Then what are you doing here?"
+    },
+    "completion": {
+     "speaker": "Haskin",
+     "text": "Dead? All of 'em? Ha! Now that's good news for a change! Here's your reward -- 75 gold, and well earned."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches in Haskin's eel ponds."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Fennick, the village lookout; the Imps of the Rotten Oak flew off with his Spyglass.",
+   "names": {
+    "Fennick": "person",
+    "Spyglass": "thing",
+    "Imps": "group",
+    "Rotten Oak": "place",
+    "Gloam": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Those wretched Imps! They flew right in my window and made off with my Spyglass!\n\nHow am I to keep watch now? Without it I can't see the Undead coming till they're halfway up the ladders! The Imps nest in the Rotten Oak, west across the bog.\n\nWould you get my Spyglass back for me, brave Adventurer? I'd make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Very well. But don't blame me when the Undead walk right in!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Have you got my Spyglass yet? I can't see a blessed thing out there!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My Spyglass! You found it! Ha, ha! Now let those Undead try to sneak up on Gloam! Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Thanks again, kind sir! I can see clear across the swamp now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fennick's Spyglass from the Imps in the Rotten Oak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Fennick's Spyglass from the Imps in the Rotten Oak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Gloam: Nell brushes the player off, Haskin worries about the bog, Hollis gossips about the Mayor.",
+   "names": {
+    "Nell": "person",
+    "Haskin": "person",
+    "Hollis": "person",
+    "Mayor Grimbol": "person",
+    "Town Hall": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Nell",
+     "text": "Not now, please. My floor's flooding again."
+    },
+    "rumour2": {
+     "speaker": "Haskin",
+     "text": "I feel it in my bones. Something terrible is coming up out of that bog, and nobody's doing a thing about it!"
+    },
+    "rumour3": {
+     "speaker": "Hollis",
+     "text": "Mayor Grimbol hasn't set foot outside the Town Hall in a week. They say he sleeps under his desk with a pitchfork!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bulmer of the Soggy Toad inn, Hodd the armorer, Quorra the potion-seller.",
+   "names": {
+    "Bulmer": "person",
+    "Soggy Toad": "place",
+    "Hodd": "person",
+    "Hodd's Arms and Armor": "place",
+    "Quorra": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bulmer",
+     "text": "Welcome to the Soggy Toad, stranger! Pull up a stool. What'll it be?"
+    },
+    "arms": {
+     "speaker": "Hodd",
+     "text": "Hodd's Arms and Armor. Swords, shields, the lot. Buy something or move along, I've got work to do."
+    },
+    "magic": {
+     "speaker": "Quorra",
+     "text": "Ahh, come in, come in! Potions, scrolls, spell books... With the Undead about, you'll be wanting plenty of everything!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Ysolde the Healer needs Blackroot from the Zombie-haunted east isle for the bitten sick; Mudge, an odd skull collector, trades a Steel Shield for a Zombie skull.",
+   "names": {
+    "Ysolde the Healer": "person",
+    "Healing House": "place",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Gloam": "place",
+    "Mudge": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ysolde the Healer",
+     "text": "Greetings, Wanderer. The Healing House is full of the sick. Many were bitten by the Undead, and their wounds will not close.\n\nI can mend them with Blackroot, but it grows on the isle east of the village, and the Zombies roam there now. Bring me a sack of Blackroot and I will offer a worthy reward."
+    },
+    "offer_b": {
+     "speaker": "Mudge",
+     "text": "Heh, heh, heh... You look like somebody who ain't scared of a Zombie or two. I got a little business offer for you.\n\nI collect skulls, see. Undead ones! Bring me the skull of a Zombie, a nice fresh one, and this shiny Steel Shield is all yours. Deal?"
+    },
+    "outcome_a": {
+     "speaker": "Ysolde the Healer",
+     "text": "The Blackroot! Thank goodness! Now I can tend to the sick at last. Please, take this gold. Gloam will not forget what you have done."
+    },
+    "outcome_b": {
+     "speaker": "Mudge",
+     "text": "Ooooh! Look at him! Look at that grin! Heh, heh, heh... He goes right up on the shelf with the others. Here's your shield, friend. Pleasure doing business!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Gather Blackroot for Ysolde the Healer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Mudge the skull of a Zombie."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Hessa's boy Wim took a boat to the Sunken Graves to see the Undead and has not come back.",
+   "names": {
+    "Hessa": "person",
+    "Wim": "person",
+    "Sunken Graves": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hessa",
+     "text": "Oh, please help me! My boy Wim took the boat out to the Sunken Graves to see the Undead for himself. That was last night, and he hasn't come back!\n\nPlease, kind sir, find him and bring him home!"
+    },
+    "reminder": {
+     "speaker": "Hessa",
+     "text": "Please, hurry! I can't bear to think of him out there alone..."
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "Over here! Help! Please get me out of here!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Go on, I'm right behind you! Just get me home!"
+    },
+    "completion": {
+     "speaker": "Hessa",
+     "text": "Wim! Oh, my boy! You're safe!\n\nThank you, thank you, brave Adventurer! It isn't much, but please take this. May all that is great bless you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hessa's son Wim in the Sunken Graves and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hollis points the player up to Mayor Grimbol, who sends him into the Sunken Graves after Ulgor the Necromancer; Ostric sent the player.",
+   "names": {
+    "Hollis": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Ulgor": "person",
+    "Sunken Graves": "place",
+    "Gloam": "place",
+    "Tobbin": "person",
+    "Plank Gate": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hollis",
+     "text": "You must be the one Master Ostric sent! Mayor Grimbol's been waiting on you for days. His hall's at the very top of the village -- just keep climbing!"
+    },
+    "opening": {
+     "speaker": "Mayor Grimbol",
+     "text": "At last! Ostric said he would send someone, and not a moment too soon.\n\nThe Necromancer Ulgor has taken the Sunken Graves north of the village. Every night he raises more of the dead, and every night they wade a little closer to Gloam. My guards can barely hold the ladders!\n\nYou must go into the Sunken Graves and put an end to Ulgor's nefarious work. I have told Tobbin to open the Plank Gate for you. Go, and may fortune favor you!"
+    },
+    "reminder": {
+     "speaker": "Mayor Grimbol",
+     "text": "What are you waiting for? The Undead will be at our ladders again tonight!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Sunken Graves and defeat Ulgor the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

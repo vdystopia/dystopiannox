@@ -1,0 +1,32 @@
+{
+  "packet": "12a608",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Flat self-introductions, a petition and a sponsorship mechanic, an odd small errand (an urchin who has aggravated the bats) and an item handed over mid-speech. Plain, a little clumsy, very Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The smuggler's single run-on sentence of grievance is a written comic set piece, not Nox's plain delivery. The shield's little backstory ('Never did find out whose it was') is a writer's flourish."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A plain, transactional sales pitch with a big round price, 'lad', and a parting warning about the villain. It has the slightly stiff, functional exposition of Westwood's merchants."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Packs too many beats into short lines: a fright gag, the lore of the lighthouse, 'mind you don't drop it', then a sinking-house punchline with a discount. Its comedy is built like a sketch, and Nox's isn't."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Exasperated, chatty exposition ('It's not easy running a smuggling ring, you know'), 'Tell you what...', and a thank-you that restates the reward. Westwood's rhythm and its mild humour."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The shrine plea apes Westwood's archaic register ('abominable dead', 'nefarious witch'), but the outcome says 'As I vowed... a spell' when no spell was promised, and the boatman's terse modern patter belongs to another voice."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Here's my offer', 'Will you?', the jailer's routine laid out like a heist brief, and the 'pulled it out of the moat, nobody ever claimed it' reward lore are all tidy, crafted beats that are foreign to Nox."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The buried-in-it-but-didn't-move-around-much gag and the grudging 'Took you long enough' are punchier and more knowing than Westwood's humour. The lines are compressed rather than plainly expository."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Hello, young sir. I surmise...', double-dash punctuation, 'savage scum', and exact gold sums in the thanks. A wordy, earnest townsfolk voice that is pure Nox."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Melodramatic captives, 'the menfolk cannot live without us', and a decline answered with a joke about grumbling Ogre stomachs. Westwood's broad humour and its long exclamatory sentences."}
+  ],
+  "tells": [
+    "New texts give rewards a little invented backstory ('found it in the moat/field, never knew whose it was'). Westwood just names the item and hands it over.",
+    "New texts compress several comic beats into short punchy lines with a sketch-like setup and punchline. Westwood's humour is broader and sits inside longer, plainer exposition.",
+    "New texts favour terse imperatives and brisk modern idiom ('Here's my offer', 'Will you?', 'If the guards ask, you never saw us'). Westwood's townsfolk ramble, explain and exclaim.",
+    "Pastiche of Westwood's archaic register sits next to a plainer voice in the same text, and outcomes do not match what the ask promised."
+  ]
+}

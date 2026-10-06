@@ -1,0 +1,33 @@
+{
+  "packet": "daf305",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Melodramatic 'horrific fate has befallen', a long exposition page, 'timely return' and an impatient reminder are Westwood's earnest, slightly stiff register; the 'Name' possessive with a bare apostrophe is a Westwood string quirk."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short, but the voice wobbles from 'lad' to 'mate', and the thanks is a quip with no reward or closure, which Westwood's fetch quests rarely skip; the reminder is an over-built conditional sentence."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The stilted 'I am Master ...', 'Dark fortunes must have befallen him', 'Hmmm... Yes.' and a plot-driving teleporter hand-off read as a chapter opening; the journal's 'Discover the fate of' is campaign phrasing."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Ooooh, how can this be?' and 'cowardly madman' are Westwood's theatrical urgency; the thanks moves the main plot on rather than paying a reward, and the journal is clipped and functional."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless short sentences, 'he'll be destroyed' as hyperbole, the halting 'Could you... would you', and a stock 'token of my appreciation' thanks fit Westwood's town errands; the journal is precise about where."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Tidy but generic: 'nothing would make me happier than to see those little thieves punished' is too composed, and naming the boots in the thanks while the reminder explains wheat rotting feels built to a checklist."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The offer packs travel, urgency, an alliance theory and barracks details into long sentences; the exact '80 gold pieces', the doubled period in the reminder, and 'lad' alongside 'young sir' give it away."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "A shop greeting, a rhetorical question, a warden excuse and the request make a crowded four-page offer; the reminder 'thank goodness you're back' doesn't fit an unfinished task, and the journal is overlong."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Has some Nox-like comic panic ('It's dark! It's so dark! Um...'), but the exclamatory rhythm is forced and 'win my lantern back' and the boy with a broom read as invented colour; the journal is template-shaped."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, instructive exposition with a concrete secret passage behind bookcases, the '--' dash, 'Unsavory elements dwell in the shadows!' and a plot hand-off to a Captain are typical campaign lines, even if wordy."}
+  ],
+  "tells": [
+    "Westwood's fetch quests hang on the main plot or a stock 'token of my appreciation' thanks; the new ones end with a specific bribe (exact gold, named boots or potions) or a quip and no closure.",
+    "The new texts crowd one offer with local colour (wardens, wounded soldiers, harvest, a boy with a broom) and reasons why no one else can help; Westwood states the trouble, the place and the request, and stops.",
+    "Westwood's melodrama is earnest and a bit stiff ('a horrific fate has befallen', 'Dark fortunes', 'cowardly madman'); the new texts aim for folksy charm with mixed address forms ('lad', 'mate', 'young sir', 'friend').",
+    "Reminders in the new texts drift away from the task (directions mid-sentence, a greeting, a rhetorical complaint); Westwood's restate the need in one short, impatient line.",
+    "Small mechanical slips in the new texts (a doubled period, a reminder that contradicts the quest state) and journals that restate the whole quest route rather than one clipped imperative."
+  ]
+}

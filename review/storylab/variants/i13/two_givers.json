@@ -1,0 +1,632 @@
+{
+ "scenario": "two_givers",
+ "iter": "i13",
+ "writer": "one writer a town (variants/i13/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest Corwin's bandits took from the cart, and Sly Wat, who quit the gang, trades the key to the tower's back door for news of his brother Ossian.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "You're back. Good. What I ask of you now is of great importance to this town.\n\nRed Corwin's men fell upon the tithe cart at the ford. The carters barely got away with their lives, and the chest is gone!\n\nI cannot spare a single guard from the north gate. That is where you come in.\n\nThe bandits will have carried it up to Crow Hill with the rest of their plunder. Recover the tithe chest, quickly, and you will be well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Running errands for Halvard now, are you, friend? Forget his chest. When I walked out on Corwin, his lot grabbed my brother Ossian and hauled him up Crow Hill in my place!\n\nWith me gone and Ossian their prize, Corwin means to make an example of somebody. Ossian will be in the tower cellar, if he's still breathing. Bring him down and the key to Corwin's back door is yours. Now, off you go!"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "Well done, Adventurer! This tithe will see Brackenford through until the north road is open again. Take this chain tunic as a token of the town's gratitude. It seems there is no task you cannot manage!"
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Ossian's cap. Well... thanks for going up there for him. Here's the key, like I promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Retrieve the tithe chest stolen by Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Ossian in Corwin's watchtower cellar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Druvak: Tolbrek, master of the great lift, wants the Lift Key the Trolls stole; Snib, a shady old pawnbroker, wants his war horn back, no questions asked.",
+   "names": {
+    "Druvak": "place",
+    "Odrik": "person",
+    "Dalmor": "person",
+    "Grizzick": "person",
+    "Pudd": "person",
+    "Morva": "person",
+    "Tolbrek": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Snib": "person",
+    "Brakka": "person",
+    "Ottar": "person",
+    "Skarn": "person",
+    "Yorvan": "person",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "North Drift": "place",
+    "Old Shaft": "place",
+    "Old Shrine": "place",
+    "Smelter": "place",
+    "Deep Gate": "place",
+    "Troll Warrens": "place",
+    "Sunken Hall": "place",
+    "Lower Mines": "place",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Spider": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tolbrek",
+     "text": "Dark days for Druvak, stranger. The Trolls broke into the Ore Hall in the night and stole the Lift Key. You must go down into the Black Chasm and bring it back.\n\nWithout that key the great lift won't budge, and Krug went charging after the brutes with nothing but his pick and we'd have heard from him long ago if he'd found them, unless they found him first!\n\nTake these potions -- and some gold. Nessa's store has whatever else you need. Then go quickly.\n\nThe stair behind the Smelter will take you down to the Chasm."
+    },
+    "offer_b": {
+     "speaker": "Snib",
+     "text": "Aaaagh! Keep back! Keep back!\n\nOh. Not a Troll?! My eyes are no good in this gloom. The brutes broke into my shop and they'd have taken the lot if my old war horn hadn't sent them running just in time! Only, in all the racket, one of them grabbed the horn and ran off with it... down... somewhere... The Troll Warrens, I'd say.\n\nGet it back for old Snib, and no questions about where I got it, eh? You'll find me very generous."
+    },
+    "outcome_a": {
+     "speaker": "Tolbrek",
+     "text": "Bless you, the Lift Key! I've little enough to give, but this shield is yours, and the lift will run you down to the Lower Mines whenever you're ready. Odrik must hear of this at once."
+    },
+    "outcome_b": {
+     "speaker": "Snib",
+     "text": "Ha! There it is! Not a dent on it! Bless you, bless you! Now take these potions and these boots. Something tells me you'll be needing them... and soon."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take back the Lift Key!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Snib's war horn is somewhere in the Troll Warrens, but the tunnel in has been dug shut. The Trolls must use a back door of their own..."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion",
+     "SteelShield",
+     "BluePotion",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Okkum: Kelso wants the reed-cutters brought back from the far beds before the Zombies reach them; Snell, caged by Kelso, wants his Frog Horn back from Quibb.",
+   "names": {
+    "Okkum": "place",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Kelso": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Grumm": "person",
+    "Dilla": "person",
+    "Ysmay": "person",
+    "Bodrick": "person",
+    "Pella": "person",
+    "Black Reeds": "place",
+    "Drowned Chapel": "place",
+    "Moon Amulet": "thing",
+    "Frog Horn": "thing",
+    "Troll": "group",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Kelso",
+     "text": "Stand back, lad, the walkway's gone under! The reed-cutters went out to the far beds this morning, and the Zombies came up out of the mud behind them. They're trapped on the cutting platform and the dead are climbing! Hurry, they can't hold them off much longer!\n\nGet them home alive, and the village chest will pay you well for it."
+    },
+    "offer_b": {
+     "speaker": "Snell",
+     "text": "Hey! You! Up on the walkway! Help me, something awful has happened!\n\nQuibb, that toad-faced servant of the Witch, came sneaking by in the night. He knocked both my frog-boys into the water and ran off into the reeds with my Frog Horn! Kelso won't unlock this cage till I pay my fine in frogs, and I can't call a single frog without that horn! If nobody catches the little thief, I'll rot in here!\n\nWould you chase him down and bring my horn back, Wanderer? There'll be something nice in it for you, once I'm out."
+    },
+    "outcome_a": {
+     "speaker": "Kelso",
+     "text": "The cutters! Every last one home and dry! I'm in your debt for this. Here's the gold from the village chest, and a good tunic besides.\n\nNow go and see Ysmay. She has been asking for you."
+    },
+    "outcome_b": {
+     "speaker": "Snell",
+     "text": "My horn! You caught that sneak! Ooh, the frogs won't know what hit them! I'm not much for coin, stuck in here... But take these boots and a little gold. And tell Kelso his frogs are coming!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the reed-cutters' platform in the far beds."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Chase down Quibb and recover Snell's Frog Horn."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": [
+     "ChainTunic",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Thrane: Steward Ambrel wants the garrison's pay chest that Harl the paymaster never brought in; Wizzle, a pedlar who sold charms to the Trolls, wants his wand to undo a hex on his partner.",
+   "names": {
+    "Thrane": "place",
+    "Lord Ostric": "person",
+    "Fennick": "person",
+    "Gruthak": "person",
+    "Dalric": "person",
+    "Warden Krell": "person",
+    "Skell the Poisoner": "person",
+    "Edda": "person",
+    "Steward Ambrel": "person",
+    "Harl": "person",
+    "Wizzle": "person",
+    "Dunk": "person",
+    "Maudra": "person",
+    "Tobin": "person",
+    "Brusk": "person",
+    "Gallow Hill": "place",
+    "the Beacon": "place",
+    "the Great Hall": "place",
+    "the Thornwood": "place",
+    "the Urchin Hollow": "place",
+    "Lowmarket": "place",
+    "the Bent Spoon": "place",
+    "Trolls": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Steward Ambrel",
+     "text": "Where have you been!? The garrison's pay is late and the men are grumbling on the walls!\n\nHarl the paymaster set out from Lowmarket with the pay chest days ago. He ought to have come through the south gate long before now.\n\nTake the south road toward Lowmarket and find Harl and the chest. Bring the chest back here and you'll be rewarded handsomely."
+    },
+    "offer_b": {
+     "speaker": "Wizzle",
+     "text": "Hello? Is somebody up there? Down here, in the cellar!\n\nOh, it's you! The one who walked in right under Gruthak's nose!\n\nI took a cartload of charms up to the Beacon to sell to the Trolls. Their shaman didn't think much of them -- he turned my partner Dunk into a goose! I've kept him shut down here with me ever since, so he can't waddle off.\n\nMy wand would set him right, but it's still in my cart at the foot of Gallow Hill. Hmmm... Yes. You'll do. Here's the key to the cart."
+    },
+    "outcome_a": {
+     "speaker": "Steward Ambrel",
+     "text": "The pay chest! You found it! Wonderful!\n\nBut poor Harl... so the Trolls got him after all. I'll miss the old miser, but there's no time to grieve now. Lord Ostric has been asking for you in the Great Hall.\n\nHere's 120 gold out of the chest. Good luck!"
+    },
+    "outcome_b": {
+     "speaker": "Wizzle",
+     "text": "Hah! My wand! Dunk's nearly himself again! Just the feathers left to go now.\n\nKeep these boots, and good luck!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay chest missing! Find it for Steward Ambrel!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find a way to get Wizzle's wand back from Gallow Hill."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Skellow: Guildmaster Fennick wants the Guild strongbox carried out of the hall the raiders set burning; Grubbin, thrown off Hulvo's crew, wants his spyglass and compass from the raiders' camp and offers the back way to the lighthouse.",
+   "names": {
+    "Skellow": "place",
+    "Lake Ommel": "place",
+    "Gannet Rock": "place",
+    "Town Hall": "place",
+    "Guild Hall": "place",
+    "Reed Island": "place",
+    "Leech marsh": "place",
+    "Hulvo": "person",
+    "Mayor Oskelt": "person",
+    "Talboth": "person",
+    "Gorrick": "person",
+    "Jebba": "person",
+    "Harbor Master Pell": "person",
+    "Pell": "person",
+    "Guildmaster Fennick": "person",
+    "Grubbin": "person",
+    "Dorrin": "person",
+    "Kett": "person",
+    "Tamsin": "person",
+    "Nubb": "person",
+    "Urchins": "group",
+    "Leeches": "group",
+    "Fishers' Guild": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmaster Fennick",
+     "text": "There it burns, lad. The Guild Hall -- proudest building on all of Lake Ommel! Home of the honored Fishers' Guild!\n\nGet inside, find the strongbox in the counting room and carry it out -- before the roof falls in. Every coin this village owns is in it."
+    },
+    "offer_b": {
+     "speaker": "Grubbin",
+     "text": "Double-crossing bilge rats! Hulvo threw me off his crew and kept my share of the loot!\n\nGrubbin. I rowed for Hulvo for years. I hid my spyglass and my compass in the raiders' camp on Reed Island before they dumped me.\n\nBring me both of them and I'll row you out to the lighthouse by the back way, the one only Hulvo's men know. I'll be right here, drinking."
+    },
+    "outcome_a": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Thanks for saving the strongbox! Now all we need is a new roof! Take 100 in gold out of it, with the Guild's blessing."
+    },
+    "outcome_b": {
+     "speaker": "Grubbin",
+     "text": "My spyglass! And the compass too! Hulvo must be fuming.\n\nSo you got past the raiders, did you? Maybe you'd make a decent oarsman. Hmmm... maybe.\n\nMeet me at the end of the old jetty. When you're ready, climb in the boat and keep your head down. It's a long row to Gannet Rock."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Carry the Guild strongbox out of the burning hall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Grubbin's hidden spyglass and compass."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Tessaly sends the player to Fennick's workshop for her Focus Crystal. Zabble, a student, pays to have his summoned Bats cleared before the Masters find out.",
+   "names": {
+    "Ostrel": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Chapter House": "place",
+    "Proving Vaults": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Vorlath": "person",
+    "Yarrick": "person",
+    "Dorvanis": "person",
+    "Krumm": "person",
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "Quillan": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Zabble": "person",
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Ysolde": "person",
+    "Golems": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Shades": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Ward Stone": "thing",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tessaly",
+     "text": "Wanderer! You must hurry to Fennick's workshop by the east wall! Fennick was making me a Focus Crystal, and I haven't had a word from him since Vorlath's Golems came over the bridge. I would go myself, but I spent the last of my mana holding them off and I can't so much as light a candle. Bring me the Crystal, and see if Vorlath has been there. You'll know if he has.\n\nAnd careful! Fennick keeps traps for thieves."
+    },
+    "outcome_a": {
+     "speaker": "Tessaly",
+     "text": "The Crystal! Oh, wonderful! Thank you, I didn't think anyone could get past Fennick's traps!\n\nSo Vorlath was there first. Poor Fennick... We have no time to mourn him. Take these potions, they'll do you more good than me. Now, I must get to work."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go to Fennick's workshop and bring back the Focus Crystal."
+    },
+    "offer_b": {
+     "speaker": "Zabble",
+     "text": "Psst! Greetings. I am Zabble. Student of Summoning at the College, second year, maybe third. I tried a little summoning in my room and now it's full of Bats. I chased them out with a broom and they flew right back in!\n\nYou must get them out before the Masters make their rounds. Here is the key to my room, top of the east stair. Don't let any into the hall!"
+    },
+    "outcome_b": {
+     "speaker": "Zabble",
+     "text": "Many thanks friend. You've done me a kindness, one the Masters will never hear about, I hope. Take this gold. I insist."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the Bats out of Zabble's room in the College."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "BluePotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Krell: Ulvek, keeper of the fort's keys, wants the stolen armory key back; Snibb the smuggler wants the Wolves off his sled trail and pays with gold and his back way past the High Gate.",
+   "names": {
+    "Fort Krell": "place",
+    "High Gate": "place",
+    "Beacon Tower": "place",
+    "Ghrulg": "person",
+    "Brannoc": "person",
+    "Hadrik": "person",
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ulvek": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Fenn": "person",
+    "Trolls": "group",
+    "Imps": "group",
+    "Wolves": "group",
+    "Grey Hoods": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulvek",
+     "text": "While you were coming up the road, some sneak knocked out both my guards -- and made off with the armory key! Commander Hadrik will be furious when he hears of it.\n\nGet after him, north toward the ice falls, and bring that key back. Take these boots. They won't slip. Who would dare do such a thing?"
+    },
+    "offer_b": {
+     "speaker": "Snibb",
+     "text": "Hey, you! About time somebody showed up!? I'm in a real fix!\n\nWolves have moved onto my sled trail under the east cliffs. My dogs won't set a paw on it, and the goods are piling up! Smuggling's hard enough with the Trolls about!\n\nPlease, I'm begging you! Run those Wolves off my trail and I'll make it worth your while.\n\nTake this whistle. My lead dog Bodger will come to it and show you the way.\n\nI've a blue potion here, too. You'll want it out on those cliffs."
+    },
+    "outcome_a": {
+     "speaker": "Ulvek",
+     "text": "The armory key! Back in my hand at last!\n\nHadrik will want the armory open before the Trolls come down. Take this sword off the rack, stranger, and go tell him yourself."
+    },
+    "outcome_b": {
+     "speaker": "Snibb",
+     "text": "Ha! Not a Wolf left on my trail! My dogs thank you, and so do I.\n\nWhile you were up on the cliffs, I had a word with my partner Grimble. He'll meet you at the top of my trail -- round the back of the High Gate. Not a word to the Commander!\n\nNow take your gold. I've got sleds to load!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Catch the thief of Ulvek's key."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the Wolves from the sled trail to win Snibb's back way."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "LeatherBoots",
+     "Longsword",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Varnok: Brannoc the armourer wants the Guild's pay chest the Ogres took from his runner Kessick; Fennick, who hauled ore for Gorlak, wants his wand fetched to turn his partner Dobb back from a pig.",
+   "names": {
+    "Varnok": "place",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guildhall": "place",
+    "Guild": "group",
+    "Ozmand": "person",
+    "Dravic": "person",
+    "Pell": "person",
+    "Hask": "person",
+    "Tobb": "person",
+    "Ottla": "person",
+    "Frost Tongs": "thing",
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Varga": "person",
+    "Nib": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "Please, help me, brave Adventurer! Gorlak's Ogres fell on my runner Kessick on the mine road and took the Guild's pay chest! Ambushes on that road is a daily occurrence now.\n\nBring back the chest, and Kessick if you can, and the Guild will be in your debt!"
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "The pay chest! Thank goodness! And Kessick crawled home an hour ago, half starved but breathing!\n\nThe Guild owes you a great deal. Please take this chain tunic as a sign of our appreciation."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Guild's pay chest from the Ogres on the mine road."
+    },
+    "offer_b": {
+     "speaker": "Fennick",
+     "text": "Keep it down, lad! I hauled ore for Gorlak till his shaman turned my partner Dobb into a pig. That's him under the table. Ogres at the camp want my hide now, and they're mean and hungry lot.\n\nI need my wand to turn Dobb back, but it's under my bunk in their camp south of the ridge. Fetch it and I'll show you the back way into the Old Smelter. Gorlak will never see you coming."
+    },
+    "outcome_b": {
+     "speaker": "Fennick",
+     "text": "I never should've hauled iron for that big lout Gorlak. Here, take the flue key -- I wonder if he even knows the old flue is there."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sneak into the Ogre camp and fetch Fennick's wand."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow: Mayor Quillon wants the tithe chest Vosk's bandits stole; Skeff, thrown out of Vosk's gang, sells the key to the tower's back gate for his bar tab at the Crooked Mule.",
+   "names": {
+    "Tarrow": "place",
+    "Town Hall": "place",
+    "Crooked Mule": "place",
+    "Rook Hill": "place",
+    "Thornwood": "place",
+    "Knobble caves": "place",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Gammel": "person",
+    "Widow Brisa": "person",
+    "Skeff": "person",
+    "Dorrit": "person",
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Hobbe": "person",
+    "Warding Bell": "thing",
+    "Bears": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Quillon",
+     "text": "Ah, it's you again. Come in, come in.\n\nAnd what brings you up to my door, hmm? No, let me guess... Dorrit at the Crooked Mule has been filling your ears about the tithe chest.\n\nWell, Dorrit talks too much, but she has it right. Vosk's bandits carried the chest off from under my own desk, and with his rabble holding the hill, I'd wager it's up in that tower now! Bring it back before he spends it all!\n\nTake these potions, stranger. You'll want them up there."
+    },
+    "offer_b": {
+     "speaker": "Skeff",
+     "text": "Well, well! A real hero, in the Crooked Mule! Old Skeff knew one would turn up sooner or later!\n\nVosk's gone soft in the head! Threw me off the hill for one little nap on watch, me, his best man! But I've still got the key to the back gate of his tower.\n\nI won't go up there myself. Too many of the lads know my face. But the key's yours for what I owe Dorrit at the bar. Pay my tab and come see me. I'll be right here at this table."
+    },
+    "outcome_a": {
+     "speaker": "Mayor Quillon",
+     "text": "The whole town will be glad to see that chest back where it belongs! Please accept this shield as a token of Tarrow's thanks."
+    },
+    "outcome_b": {
+     "speaker": "Skeff",
+     "text": "Paid in full?! Ha! Dorrit's smiling at me again! You're a real friend, you are!\n\nHere's the key, fair and square. Now go on up and give Vosk a good kick from old Skeff!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go up Rook Hill and recover the tithe chest for Mayor Quillon."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pay Skeff's tab at the Crooked Mule for the key to Vosk's back gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Belvik: Mayor Pellandor wants the village strongbox saved from the granary the Ogres set alight. Gimble, who runs the Muddy Boot and deals with the Ogres on the side, wants the wasps out of his cellar.",
+   "names": {
+    "Belvik": "place",
+    "Grimfell": "place",
+    "Krell": "place",
+    "Town Hall": "place",
+    "Bramble Gully": "place",
+    "Cairn of Olm": "place",
+    "Muddy Boot": "place",
+    "Gristle Hill": "place",
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Grenwold": "person",
+    "Hesta": "person",
+    "Gimble": "person",
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Orrick": "person",
+    "Amulet of Warding": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Pellandor",
+     "text": "Ooooh, this cannot be happening! The Ogres beat my guards senseless and set the granary alight! The bucket line will never get there in time. Take this key, quick, and get the village strongbox out of there before it burns! Whatever else you find inside, keep it!"
+    },
+    "offer_b": {
+     "speaker": "Gimble",
+     "text": "Blast it all! What kept you!? Wasps got into my cellar and they're all over the barrels! I swatted 'em with a broom, and still they come back for more!\n\nNow I've shut myself in the pantry and I'm not coming out! If the Mayor ever sees what's stacked down there, I'm finished!\n\nGo down the trap door and drive those wasps out! Keep it quiet, and I'll see you get through the Ogre lines whenever you please! ... Hello? Is anybody still out there?"
+    },
+    "outcome_a": {
+     "speaker": "Mayor Pellandor",
+     "text": "The strongbox is saved! While you were in the smoke, a rider from Ferrigan came by asking for you. He's waiting at the south gate. Here, take this gold and the steel shield for your trouble."
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "On a better night, I'd pour free ale for the whole of Belvik over this! Good work! But not one word to the Mayor about my cellar.\n\nTake these boots for your trouble. And from now on, the Ogre lookouts won't lay a hand on a friend of Gimble's!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Save the village strongbox from the burning granary."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Go down through the trap door in the Muddy Boot and drive the wasps out of Gimble's cellar."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield",
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

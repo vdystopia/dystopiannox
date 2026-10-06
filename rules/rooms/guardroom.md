@@ -63,3 +63,13 @@ in the doorway or the way past the table. (`STANDS["guardroom"]`: beside a weapo
   shields, hanging swords); Con06b, cell 179,71 (25 tiles); Con03A, cell 81,83 (15 tiles: a guard post with two cots);
   Con02a / War03b, cell 93,175 (25 tiles: the gaoler's room by the cells, a table, racks of bows and swords).
 - Ours: the room lab's guardrooms (`py mapgen/designs/roomlab.py 1 guardroom --stands`).
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's 11 curated guard rooms (12-63 tiles, median 20): **the watch's table ringed by chairs** (a round table in
+6, food on it in 2, a chair fallen over now and then), a cot or two in 4, Dun Mir chests in 5, barrels in 6, swords or
+shields hung in 3-4, a single rack of pole arms or bows in 1-2; no trophies; back walls bare but for the arms (lined
+0.05). Our ref gave itself away with lined racks, trophies, two or three cots in a 20-tile room and two table sets
+side by side (a tavern). The recipe now: one cot under 120 tiles, the table group with a rug sometimes, one arms piece
+(two in a big room) centred on its stretch, a second table only over 110 tiles on its own stretch, pieces 0.25 off
+the wall. AUC 0.87 -> 0.73, hard rooms 4 -> 0.

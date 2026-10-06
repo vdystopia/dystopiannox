@@ -1,0 +1,232 @@
+{
+ "iter": "i15",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Vulkir",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Malgrith the Ember Witch has turned the Fire Imps of Mount Skarn against the forges of Vulkir.",
+  "names": {
+   "Vulkir": "place",
+   "Mount Skarn": "place",
+   "Malgrith": "person",
+   "Ember Witch": "person",
+   "Fire Imps": "group",
+   "Imps": "group",
+   "Kessick": "person",
+   "Ostrid": "person",
+   "Odrik": "person",
+   "Ember Blade": "thing",
+   "Keepers of the Anvil": "group",
+   "Old Kiln": "place",
+   "Dagrun": "person",
+   "Pellock": "person",
+   "Beetles": "group",
+   "Beetle Nest": "place",
+   "Muldo": "person",
+   "Cinder Gang": "group",
+   "Thorva": "person",
+   "Grubble": "person",
+   "Red Bellows": "place",
+   "Bolgrim": "person",
+   "Tobble": "person",
+   "North Bridge": "place"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Dagrun the armorer wants the Beetles of the Beetle Nest gone and her lost ore-carter Pellock found.",
+   "names": {
+    "Dagrun": "person",
+    "Pellock": "person",
+    "Beetles": "group",
+    "Beetle Nest": "place",
+    "Vulkir": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dagrun",
+     "text": "Filthy chewing pests! The Beetles crawled up out of the cinder caves only this month and they're already into everything!\n\nI'm Dagrun the armorer. It's my ore-carter Pellock I'm after. I'm afraid that Beetle Nest has swallowed him up.\n\nFind him for me and I'll see you're well paid. Follow me, I'll point you to that miserable nest beside the slag heaps."
+    },
+    "reminder": {
+     "speaker": "Dagrun",
+     "text": "Any sign of Pellock? Oh my, I can't bear to think of it."
+    },
+    "completion": {
+     "speaker": "Dagrun",
+     "text": "Pellock's leather cap! The poor fellow must have met a bad end.\n\nThose Beetles didn't stand a chance against you, that's plain. Maybe you've got the arms for smithing. Hmmm... Could be.\n\nCome by my shop. There's a pair of boots on the bench with your name on it, and some gold too. The guild will have more work for you before long."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Learn what happened to Pellock in the Beetle Nest."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Muldo the smith cannot work his forge since the Cinder Gang stole his fire gloves.",
+   "names": {
+    "Muldo": "person",
+    "Cinder Gang": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Muldo",
+     "text": "Aaaagh! Back! Don't hurt me!\n\nHuh. Just a traveler?! My nerves are in pieces. Still, you don't look like those rotten thieves of the Cinder Gang who took my fire gloves! I can't go near my forge without them.\n\nFetch them back and you'll have saved an old man's trade. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Muldo",
+     "text": "Oh.... I see. Well, I won't keep you then."
+    },
+    "reminder": {
+     "speaker": "Muldo",
+     "text": "Got my gloves back?! No?.... Well, that gang hides out in the old quarry west of town."
+    },
+    "completion": {
+     "speaker": "Muldo",
+     "text": "You found my gloves! Bless you, bless you! Now take this spellbook along with my thanks. Everything I ever learned about fire is written in it. Any traveler would be glad of it."
+    },
+    "after": {
+     "speaker": "Muldo",
+     "text": "A hundred thanks for my gloves! The forge is roaring again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Muldo's fire gloves from the Cinder Gang."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Muldo's fire gloves from the Cinder Gang."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Thorva sells her finest blade cheap before leaving town; Grubble at the Red Bellows wants 9,000 gold for his anvil and his mule.",
+   "names": {
+    "Thorva": "person",
+    "Grubble": "person",
+    "Ember Witch": "person",
+    "Red Bellows": "place",
+    "Vulkir": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Thorva",
+     "text": "With the Ember Witch about, hardly anyone orders a sword these days. Before I pack up for the coast, I'd let my finest blade go cheap."
+    },
+    "offer_b": {
+     "speaker": "Grubble",
+     "text": "Fancy buying my anvil and my mule? Just 9,000 gold for the pair of 'em!"
+    },
+    "outcome_a": {
+     "speaker": "Thorva",
+     "text": "Wonderful! A steal at that price, lad! Now I'd best load my cart, the coast is a long way off. Mind you keep clear of the Ember Witch, and I hope you come through all this in one piece. Farewell!"
+    },
+    "outcome_b": {
+     "speaker": "Grubble",
+     "text": "Ah, no harm done. Somebody else will want an anvil and a mule, I'm sure. Should you think better of it, I'll be at the Red Bellows!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy Thorva's blade before she leaves Vulkir."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Hear out Grubble's offer at the Red Bellows."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Mayor Bolgrim begs the player to bring his nephew Tobble back from the Imps in the old smelter.",
+   "names": {
+    "Bolgrim": "person",
+    "Tobble": "person",
+    "Imps": "group",
+    "North Bridge": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bolgrim",
+     "text": "Those wretched Imps will be the death of this town! My guards drove them off, and back they came the very next night! They've carried off my nephew Tobble, and you're the only one who can bring him home!\n\nThey took him into the old smelter, over there behind the east wall. Please, watch yourself."
+    },
+    "reminder": {
+     "speaker": "Bolgrim",
+     "text": "I won't set foot outside till Tobble is home! Get into that smelter! Find the boy! Hurry, before those Imps do something dreadful!"
+    },
+    "found": {
+     "speaker": "Tobble",
+     "text": "Is somebody there? Please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Tobble",
+     "text": "Hurry! Take me back to my uncle!"
+    },
+    "completion": {
+     "speaker": "Bolgrim",
+     "text": "Brave Adventurer, you have my heartfelt thanks! You've earned the town's trust. I'll tell the guards you may cross the North Bridge whenever you please.\n\nThis gold is yours for your trouble. Please, take it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Mayor Bolgrim's nephew from the old smelter."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Ostrid points the player to Forgemaster Odrik, who sends him with the Ember Blade to the Keepers of the Anvil in the Old Kiln.",
+   "names": {
+    "Ostrid": "person",
+    "Odrik": "person",
+    "Kessick": "person",
+    "Vulkir": "place",
+    "Ember Blade": "thing",
+    "Ember Witch": "person",
+    "Malgrith": "person",
+    "Keepers of the Anvil": "group",
+    "Old Kiln": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ostrid",
+     "text": "I've heard Forgemaster Odrik is waiting on some stranger Kessick sent him. Odd times we're living in."
+    },
+    "opening": {
+     "speaker": "Odrik",
+     "text": "Ah, Kessick's friend. Odrik, Forgemaster to the smiths of Vulkir. At last my Ember Blade is ready to meet the Ember Witch! Only the Keepers of the Anvil can bless it, and they keep to the Old Kiln.\n\nThis key will open the iron gate on the mountain road. Take the blade to the kiln and talk with the Keepers."
+    },
+    "reminder": {
+     "speaker": "Odrik",
+     "text": "Malgrith has to be beaten! It's YOU who holds the blade that can finish her!\n\nOff you go! There's no time to lose."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Keepers of the Anvil in the Old Kiln."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

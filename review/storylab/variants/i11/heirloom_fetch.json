@@ -1,0 +1,700 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i11",
+ "writer": "one writer a town (variants/i11/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, wants the Amulet of Plenty back from the Urchins of the old barrow, and her hired man Tobin, who went after it.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Tobin": "person",
+    "Barley": "thing",
+    "Amulet of Plenty": "thing",
+    "Horn of the Watch": "thing",
+    "Urchins": "group",
+    "Wolves": "group",
+    "Brothers": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "While the rest of Brackenford frets over Red Corwin, there's a smaller job which I need done.\n\nTobin, my hired man, chased the Urchins who broke into the mill last night and took the Amulet of Plenty.\n\nThose Urchins have burrowed into the old barrow east of the ford. Tobin went in after them. He hasn't come out.\n\nWill you bring the Amulet back to me and find out what became of Tobin?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Fine then, leave my amulet with those thieving Urchins!"
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Off to that barrow with you! Hurry!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "You found the Amulet of Plenty! Wonderful!\n\nMy worst fears for Tobin, however, have come to pass. I'll miss the old goat, but we have no time for weeping. Reeve Halvard needs help with Red Corwin and has been asking for you.\n\nTake this, with my thanks!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again for bringing back my amulet, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Amulet of Plenty the Urchins stole from Wenna's mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Amulet of Plenty the Urchins stole from Wenna's mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Dolgar: Widow Orla's magic lantern was carried off by the Imps to their nest under the old smelter.",
+   "names": {
+    "Dolgar": "place",
+    "Haskel": "person",
+    "Brask": "person",
+    "Durm": "person",
+    "Krell": "person",
+    "Trolls": "group",
+    "Deep Gate": "place",
+    "Old Shaft": "place",
+    "the Deep": "place",
+    "Great Lift": "place",
+    "Brunna": "person",
+    "mushroom farms": "place",
+    "Imps": "group",
+    "Orla": "person",
+    "Ostrel": "person",
+    "Snade the Claim-Jumper": "person",
+    "Pibble": "person",
+    "Kessa": "person",
+    "Ottick": "person",
+    "Brewhouse": "place",
+    "Bodric": "person",
+    "Thrum": "person",
+    "Ozwick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orla",
+     "text": "Oh, please help, kind stranger! The Imps have raided my kitchen and run off with my magic lantern, down into their nest under the old smelter!\n\nWill you bring it back? I'd owe you everything!"
+    },
+    "refusal": {
+     "speaker": "Orla",
+     "text": "Oh dear! Then I'll just sit here in the dark!"
+    },
+    "reminder": {
+     "speaker": "Orla",
+     "text": "Anything else you find in that nest is yours! Just hurry and fetch my lantern!"
+    },
+    "completion": {
+     "speaker": "Orla",
+     "text": "Oh, bless you, you found it! What could I ever give you for such courage?!\n\nWhat's that? Heaps and heaps of gold? Well, if gold is what you're after, please accept this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Orla",
+     "text": "Bless you again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fetch Orla's magic lantern from the Imps' nest in Dolgar."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fetch Orla's magic lantern from the Imps' nest in Dolgar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Pellmire: Nella's uncle's lucky amulet was snatched by the Urchins, who ran to the net sheds.",
+   "names": {
+    "Pellmire": "place",
+    "Gloamfen": "place",
+    "Sluice Tower": "place",
+    "Sunken Causeway": "place",
+    "Causeway": "place",
+    "Rotten Pilings": "place",
+    "Black Cuttings": "place",
+    "Cuttings": "place",
+    "Old Landing": "place",
+    "Mayor Dobbet": "person",
+    "Dobbet": "person",
+    "Captain Vell": "person",
+    "Mogrut": "person",
+    "Warden Ossel": "person",
+    "Grelk the Smuggler": "person",
+    "Grelk": "person",
+    "Gummet": "person",
+    "Nella": "person",
+    "Grimsel": "person",
+    "Dabb": "person",
+    "Tobb": "person",
+    "Fennick": "person",
+    "Bruda": "person",
+    "Yvra": "person",
+    "Elsbet": "person",
+    "Moggs": "person",
+    "Bog Wardens": "group",
+    "Ogres": "group",
+    "Leeches": "group",
+    "Urchins": "group",
+    "Spiders": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nella",
+     "text": "Those Urchins just made off with my uncle's lucky amulet! If it isn't found, he'll be ruined. He's coming home from market tonight!\n\nOh please, help me, kind stranger! I think the Urchins that grabbed it ran to the net sheds.\n\nWill you... could you find it for me?"
+    },
+    "refusal": {
+     "speaker": "Nella",
+     "text": "Oh.... Then I suppose I'll look for it myself."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Oh, hurry! Uncle's boat could come in any time now!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Oh, thank you, thank you! Please take this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Nella",
+     "text": "Thanks again for all your help!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Nella's amulet from the Urchins at the net sheds."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Nella's amulet from the Urchins at the net sheds."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Korlen: Old Agna: the Urchins of the old quarry ran off with her cane.",
+   "names": {
+    "Korlen": "place",
+    "Gruttock": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Skarn Tower": "place",
+    "Dunwood": "place",
+    "Keep": "place",
+    "Gorrow": "place",
+    "Broken Pike": "place",
+    "Lord Ambrel": "person",
+    "Dorvik": "person",
+    "Haskin": "person",
+    "Fisk": "person",
+    "Hobb": "person",
+    "Agna": "person",
+    "Orvel": "person",
+    "Gorlick": "person",
+    "Bellamar": "person",
+    "Gisla": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Orrin": "person",
+    "Tobb": "person",
+    "Ulda": "person",
+    "Chain Tunic": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Agna",
+     "text": "Aiieee! Stay away! Don't hurt me!\n\nEh? Only a young fellow?! I can't get up to see you properly. But you're surely no Urchin, not like those nasty little things that ran off with my cane! I can barely take a step without it.\n\nWill you fetch it back for me? You'd save an old woman and I'd never forget it."
+    },
+    "refusal": {
+     "speaker": "Agna",
+     "text": "Oh.... Then I'll just sit here and wait, I suppose."
+    },
+    "reminder": {
+     "speaker": "Agna",
+     "text": "Have you found my cane?! Oh.... Well, the Urchins who took it hide in the old quarry east of town."
+    },
+    "completion": {
+     "speaker": "Agna",
+     "text": "My cane! You found it! May all that is great bless you! And please, take this potion. It draws the poison out of any bite. It would be a godsend to anyone who walks the wilds."
+    },
+    "after": {
+     "speaker": "Agna",
+     "text": "Bless you again, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve old Agna's cane from the Urchins in the quarry."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve old Agna's cane from the Urchins in the quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ondel: Ishmar the Conjurer has lost his Rain Staff to the Imps of Gull Rock and offers the player passage in his boat to Tavarin.",
+   "names": {
+    "Ondel": "place",
+    "Lake Dorrow": "place",
+    "Skell Isle": "place",
+    "Gull Rock": "place",
+    "Sunken Crypt": "place",
+    "Net Hall": "place",
+    "Rusty Hook": "place",
+    "Tavarin": "place",
+    "Rain Staff": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Leech": "group",
+    "Vulmar": "person",
+    "Brannoc": "person",
+    "Mayor Wendrel": "person",
+    "Tobb": "person",
+    "Maudie": "person",
+    "Jory Blackgill": "person",
+    "Fennick": "person",
+    "Ishmar": "person",
+    "Bastok": "person",
+    "Grubbin": "person",
+    "Tully": "person",
+    "Brusk": "person",
+    "Moll": "person",
+    "Ardle": "person",
+    "Grest": "person",
+    "Wilda": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ishmar",
+     "text": "Miserable little thieves! The Imps only flew down from the hills last month and they are already a terrible nuisance!\n\nI am Ishmar the Conjurer. I am missing my Rain Staff. I fear the Imps have carried it off to their nest on Gull Rock.\n\nIf you could find it and return it to me, I would take you along in my boat to Tavarin. Will you do this for me?"
+    },
+    "refusal": {
+     "speaker": "Ishmar",
+     "text": "Very well. I shall have to find someone braver."
+    },
+    "reminder": {
+     "speaker": "Ishmar",
+     "text": "Is there any sign of my staff? Oh my, this is most distressing."
+    },
+    "completion": {
+     "speaker": "Ishmar",
+     "text": "My Rain Staff! Those little devils must have fought over it.\n\nYou have shown the Imps who is master here. Perhaps you might be of further use to me. Hmmm... Very well.\n\nCome down to my boathouse with me. Whenever you wish, just climb into the boat and I will row us across to Tavarin. There is a great deal to be done once we land."
+    },
+    "after": {
+     "speaker": "Ishmar",
+     "text": "Whenever you wish, just climb into the boat and we will push off."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Ishmar's Rain Staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Ishmar's Rain Staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Mayor Pellimore's silver staff was stolen from the Town Hall by the Imps of the old quarry.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "the Archive": "place",
+    "the Town Hall": "place",
+    "the old quarry": "place",
+    "the herb gardens": "place",
+    "the mill pond": "place",
+    "the Rat warrens": "place",
+    "the old granary": "place",
+    "the Observatory": "place",
+    "Crane Hill": "place",
+    "the Murkfen": "place",
+    "the Inkwell": "place",
+    "Olvane": "person",
+    "Pellimore": "person",
+    "Umbrik": "person",
+    "Ezzard": "person",
+    "Nib": "person",
+    "Odalie": "person",
+    "Tobble": "person",
+    "Jessop": "person",
+    "Yalda": "person",
+    "Malgrith": "person",
+    "Brusk": "person",
+    "Bolgar": "person",
+    "Drogg": "person",
+    "Quenby": "person",
+    "the Orb of Seeing": "thing",
+    "the Ghosts": "group",
+    "the Wisps": "group",
+    "the Imps": "group",
+    "the Trolls": "group",
+    "the Rats": "group",
+    "the bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellimore",
+     "text": "Welcome to Ostrel, brave Wanderer! Master Olvane told us you would come!\n\nThe Imps who live in the old quarry have gone wild! They crept into the Town Hall and stole my silver staff! One of the guards ran after the little thieves into the quarry, but hasn't come back.\n\nWill you go into the quarry pits, West of town, and win back my staff from those Imps? When you come back, please find me. I will be at the Town Hall on the square."
+    },
+    "refusal": {
+     "speaker": "Pellimore",
+     "text": "Hmph! Well, I suppose I'll ask someone else, then."
+    },
+    "reminder": {
+     "speaker": "Pellimore",
+     "text": "Those pesky Imps are getting far too bold these days."
+    },
+    "completion": {
+     "speaker": "Pellimore",
+     "text": "My silver staff! Thank you, kind sir! Every soul in Ostrel is grateful for the great deed you have done.\n\nHere, accept this small gift from the town. Master Olvane is waiting for you up at the College. Stock up at the shops before you go, then see him at once."
+    },
+    "after": {
+     "speaker": "Pellimore",
+     "text": "I have only my thanks left to give you. Go and find Master Olvane. He has been asking for you up at the College."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Pellimore's silver staff from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Mayor Pellimore's silver staff from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarra: Vardis the Sage waits on the Silver Horn that Ebbet was forging for the fort. Ebbet's hut lies down the west slope, and Ebbet is dead.",
+   "names": {
+    "Fort Skarra": "place",
+    "Vaskor": "person",
+    "Ulvane": "person",
+    "Ostrag": "person",
+    "Tombs of Gol Varra": "place",
+    "Undead": "group",
+    "Haddo": "person",
+    "Grubb": "person",
+    "Imps": "group",
+    "Imp caves": "place",
+    "Vardis": "person",
+    "Ebbet": "person",
+    "Ebbet's hut": "place",
+    "Silver Horn": "thing",
+    "Ankh": "thing",
+    "Mirta": "person",
+    "Bettra": "person",
+    "Dolgo": "person",
+    "Gunnet": "person",
+    "Brakka": "person",
+    "Brakka's forge": "place",
+    "Yselda": "person",
+    "Gimble": "person",
+    "Kolb": "person",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vardis",
+     "text": "Ebbet has been forging a Silver Horn for the fort for a long while. It ought to have been done and carried up the pass by now.\n\nTake the goat path down to Ebbet's hut on the west slope and bring back the Horn. Will you go for me?"
+    },
+    "refusal": {
+     "speaker": "Vardis",
+     "text": "Very well. But the fort cannot wait long for that Horn."
+    },
+    "reminder": {
+     "speaker": "Vardis",
+     "text": "Find Ebbet and bring the Horn back here -- no matter the danger! Watch your footing on the way down. Wolves prowl the slopes!"
+    },
+    "completion": {
+     "speaker": "Vardis",
+     "text": "You've brought back the Silver Horn! Wonderful!\n\nPoor Ebbet, however, is gone, as I feared he would be. I will grieve for him, but sadly the Undead leave us no time for it. Take this Ankh for your trouble, and Warden Ostrag has asked to see you.\n\nGood luck, Wanderer!"
+    },
+    "after": {
+     "speaker": "Vardis",
+     "text": "Thanks again for bringing back the Horn."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Silver Horn which Ebbet has made."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Silver Horn which Ebbet has made."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "general-purpose subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 8,
+   "specifics": "Vurn: Ambrel asks the player to bring back the Helm of Far Sight, carried off by Imps to the Cinder Caves.",
+   "names": {
+    "Vurn": "place",
+    "Vargoth": "person",
+    "Brannoc": "person",
+    "Kolbrin": "person",
+    "Durk": "person",
+    "Grenna": "person",
+    "Gubbin": "person",
+    "Ambrel": "person",
+    "Brog": "person",
+    "Lissa": "person",
+    "Marga": "person",
+    "Torbek": "person",
+    "Zelphine": "person",
+    "Kragg": "person",
+    "Pibble": "person",
+    "Orsk": "person",
+    "Nessa": "person",
+    "Grisold": "person",
+    "Tarvel": "place",
+    "Hall of Anvils": "place",
+    "Deep Forge": "place",
+    "Cinder Caves": "place",
+    "Ash Gate": "place",
+    "Helm of Far Sight": "thing",
+    "Imps": "group",
+    "Ember Demons": "group",
+    "Rats": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ambrel",
+     "text": "Greetings, Wanderer! Thank the stars someone has come at last, for we badly need a strong arm. A band of Imps raided Vurn only days ago and made off with the Helm of Far Sight! Will you go to the Cinder Caves in the southwest and bring the precious relic back to me?"
+    },
+    "refusal": {
+     "speaker": "Ambrel",
+     "text": "Alas! Then I fear the Helm is lost to us. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Ambrel",
+     "text": "Quickly, bring back the Helm! Do not delay! For if he ever lays hands on it, Vargoth will put the Helm to the vilest of uses, indeed!"
+    },
+    "completion": {
+     "speaker": "Ambrel",
+     "text": "Congratulations! My heartfelt thanks for bringing back the Helm! With it back in our hands, we will at last see through that wicked fire-mage's schemes!\n\nHere, these Mana potions and this Ankh will serve you well... perhaps sooner than you'd like."
+    },
+    "after": {
+     "speaker": "Ambrel",
+     "text": "Thanks once more for everything you've done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Helm of Far Sight from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Helm of Far Sight from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion",
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Varrow: Widow Olla's son was bitten by an Urchin when they raided the mill, and they ran off with her healing amulet.",
+   "names": {
+    "Varrow": "place",
+    "Gilded Boar": "place",
+    "Grimwood": "place",
+    "Crag Hill": "place",
+    "Potions Aplenty": "place",
+    "Krull": "person",
+    "Druvan": "person",
+    "Grumwald": "person",
+    "Brannoc": "person",
+    "Hobbin": "person",
+    "Olla": "person",
+    "Varnus": "person",
+    "Fennick": "person",
+    "Pella": "person",
+    "Jory": "person",
+    "Dorrit": "person",
+    "Garrock": "person",
+    "Mirabel": "person",
+    "Hosk": "person",
+    "Ebba": "person",
+    "Quilp": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Olla",
+     "text": "Hello, brave Adventurer! Oh, please help me, a dreadful fever has struck my son!\n\nNot long ago, a pack of Urchins broke into the mill. One of the little beasts bit my boy, and now he burns with fever! I could heal him with my healing amulet, but they ran off with it to their caves east of the mill. I dare not leave his bedside, or he may get worse!\n\nWill you get my amulet back from those thieves? I will pay a worthy reward for its safe return."
+    },
+    "refusal": {
+     "speaker": "Olla",
+     "text": "Very well, let those Urchins keep my amulet!"
+    },
+    "reminder": {
+     "speaker": "Olla",
+     "text": "Why are you dawdling? My boy needs that amulet!"
+    },
+    "completion": {
+     "speaker": "Olla",
+     "text": "Oh, thank you, thank you! I can't ever repay you enough for this kindness... But please, accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Olla",
+     "text": "Bless you again, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Widow Olla's healing amulet from the Urchin caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Widow Olla's healing amulet from the Urchin caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 10,
+   "specifics": "Tolm: Vessa's Rain Staff was taken by an Ogre who beat her farmhands, bound for Krog Durm.",
+   "names": {
+    "Tolm": "place",
+    "Krog Durm": "place",
+    "Town Hall": "place",
+    "Bolgrum": "person",
+    "Ondrel": "person",
+    "Corbel": "person",
+    "Dorrik": "person",
+    "Fulk": "person",
+    "Hobb": "person",
+    "Zelna": "person",
+    "Brunn": "person",
+    "Vessa": "person",
+    "Rain Staff": "thing",
+    "Tamm": "person",
+    "Hulda": "person",
+    "Nella": "person",
+    "Olm": "person",
+    "Pella": "person",
+    "Bramwick": "person",
+    "Kettick": "person",
+    "Ogres": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vessa",
+     "text": "Ooooh, how could this happen? That Ogre brute knocked down both of my farmhands. The guards will never get here in time. Please, will you catch him before he carries the Rain Staff off to Krog Durm?"
+    },
+    "refusal": {
+     "speaker": "Vessa",
+     "text": "Oh.... Then the Rain Staff is gone for good."
+    },
+    "reminder": {
+     "speaker": "Vessa",
+     "text": "Please, I'm begging you. Run down that thieving Ogre and bring back the Rain Staff."
+    },
+    "completion": {
+     "speaker": "Vessa",
+     "text": "The Rain Staff is safe! You will need my old Ankh more than I will, up at Krog Durm. Here, take it with you."
+    },
+    "after": {
+     "speaker": "Vessa",
+     "text": "You may have saved every field in Tolm with your bold deeds. Well done, young sir! Now, hurry on to Mayor Corbel."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Rain Staff stolen from Vessa by an Ogre."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Rain Staff stolen from Vessa by an Ogre."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

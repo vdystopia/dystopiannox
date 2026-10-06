@@ -1,0 +1,129 @@
+{
+ "iter": "i6",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Vardo",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Bolgrum the Ogre Chief and his Ogres raid the farms of Vardo from their camp on Skarn Hill.",
+  "names": {
+   "Vardo": "place",
+   "Mayor Brumhold": "person",
+   "Brumhold": "person",
+   "Bolgrum": "person",
+   "Thalden": "person",
+   "Skarn Hill": "place",
+   "Gorlen": "person",
+   "Darvo": "person",
+   "Ysolde": "person",
+   "Gloves of Mending": "thing",
+   "Odelia": "person",
+   "Pockle": "person",
+   "Fodric": "person",
+   "Gubbin": "person",
+   "Bessa": "person",
+   "Krell": "person",
+   "Krell's Armory": "place",
+   "Zenna": "person",
+   "Tibbet": "person",
+   "Marl": "person",
+   "Sorka": "person",
+   "Ogres": "group",
+   "Imps": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gorlen keeps the north gate of Vardo, shut by Mayor Brumhold until the Ogres are dealt with.",
+   "names": {"Gorlen": "person", "Mayor Brumhold": "person", "Vardo": "place", "Ogres": "group"},
+   "parts": {
+    "first": {"speaker": "Gorlen", "text": "Hold it! Nobody goes out the north gate without Mayor Brumhold's permission. And keep that weapon put away while you're inside the village."},
+    "again": {"speaker": "Gorlen", "text": "Nice day, isn't it? My beans could use some rain, though."},
+    "later": {"speaker": "Gorlen", "text": "The gate is open. Watch yourself out there! Ogres have been seen all along the north road."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Darvo, a grain farmer, wants the Imps cleared out of his granary.",
+   "names": {"Darvo": "person", "Imps": "group", "Ogres": "group"},
+   "parts": {
+    "offer": {"speaker": "Darvo", "text": "Thieving, stinking, good-for-nothing Imps! They've moved into my granary south of the village and they eat my seed corn all night long and throw the husks at me when I go in there with a lantern, and the Mayor says he can't spare a single man because of the Ogres, and if this keeps up I won't have one seed left to plant come spring! Here, take this quiver. You clear those Imps out for me and I'll pay you in good gold. Deal?"},
+    "reminder": {"speaker": "Darvo", "text": "Are those Imps still in my granary?! Get in there and clear 'em out!"},
+    "completion": {"speaker": "Darvo", "text": "They're gone? Good riddance! Here's 100 gold, stranger. Thank you kindly!"},
+    "journal": {"speaker": "", "text": "Clear the Imps out of Darvo's granary."}
+   },
+   "reward": {"gold": 100, "items": ["Quiver"]}
+  },
+  "heirloom_fetch": {
+   "specifics": "Ysolde the healer; the Ogres carried off her Gloves of Mending in a raid.",
+   "names": {"Ysolde": "person", "Gloves of Mending": "thing", "Ogres": "group", "Vardo": "place"},
+   "parts": {
+    "offer": {"speaker": "Ysolde", "text": "Greetings, kind stranger. Please forgive an old woman her tears, for a great misfortune has fallen upon me.\n\nThe Ogres broke into my house and carried off my Gloves of Mending. With those gloves I have healed half the folk of Vardo. Without them I am useless! Useless! Every night the sick call for me from their beds, and every night I must turn them away and weep.\n\nIf you would bring my gloves back to me, I will reward you as well as a poor healer can. Will you help me?"},
+    "refusal": {"speaker": "Ysolde", "text": "Very well. I shall pray that someone braver comes along."},
+    "reminder": {"speaker": "Ysolde", "text": "Please, find my gloves! The Ogre who took them ran off toward the old quarry, I am sure of it."},
+    "completion": {"speaker": "Ysolde", "text": "My gloves! My precious gloves! You have given Vardo back its healer! Please, take these 80 gold pieces, with all my thanks."},
+    "after": {"speaker": "Ysolde", "text": "Thank you again, stranger. Come to me if you are ever hurt."},
+    "journal": {"speaker": "", "text": "Recover Ysolde's Gloves of Mending from the Ogres."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover Ysolde's Gloves of Mending from the Ogres."}
+   },
+   "reward": {"gold": 80, "items": []}
+  },
+  "rumour": {
+   "specifics": "Three folk of Vardo: an odd thing at the well, a complaint about the wall, a tip about potions on the north road.",
+   "names": {"Tibbet": "person", "Marl": "person", "Sorka": "person", "Vardo": "place", "Ogres": "group"},
+   "parts": {
+    "rumour1": {"speaker": "Tibbet", "text": "Somebody keeps leaving turnips on the well every morning. Nobody in Vardo will say who."},
+    "rumour2": {"speaker": "Marl", "text": "Oh.... We should have built a real wall around this village years ago. Now look at us."},
+    "rumour3": {"speaker": "Sorka", "text": "I hear the Ogres are all over the north road. Take plenty of potions if you go that way."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Bessa keeps the inn, Krell the armory, Zenna the potion shop.",
+   "names": {"Bessa": "person", "Krell": "person", "Krell's Armory": "place", "Zenna": "person"},
+   "parts": {
+    "inn": {"speaker": "Bessa", "text": "Pay first, drink after. That's the rule in this house."},
+    "arms": {"speaker": "Krell", "text": "Welcome to Krell's Armory! Good steel at a fair price!"},
+    "magic": {"speaker": "Zenna", "text": "Hmmm. You look like you've been in a fight or two. I have just the potions for you."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Fodric, a nervous scholar, needs the signal fire lit for the Mayor; Gubbin sells his farm for 30,000 gold.",
+   "names": {"Fodric": "person", "Gubbin": "person", "Mayor Brumhold": "person", "Brumhold": "person", "Ogres": "group"},
+   "parts": {
+    "offer_a": {"speaker": "Fodric", "text": "Who's there? Stay back! Stay back, I say!\n\nOh. Oh my. You're no Ogre at all. Thank goodness! Forgive me, my nerves are in tatters since the last raid.\n\nMayor Brumhold wants the old signal fire lit on the watch hill west of here. But that hill is crawling with Ogres, and I am a scholar, not a fighter! Would you light it in my place?"},
+    "offer_b": {"speaker": "Gubbin", "text": "Looking to buy a farm, stranger? Mine's for sale. Good house and a fine barn. Yours for only 30,000 gold. Interested?"},
+    "outcome_a": {"speaker": "Fodric", "text": "You lit it! I could see the flames from my window! Here are 150 gold pieces. Mayor Brumhold will be most pleased!"},
+    "outcome_b": {"speaker": "Gubbin", "text": "That's not 30,000 gold. Come back when you have all of it. The farm isn't going anywhere."},
+    "journal_a": {"speaker": "", "text": "Light the signal fire on the watch hill for Fodric."},
+    "journal_b": {"speaker": "", "text": "Find 30,000 gold to buy Gubbin's farm."}
+   },
+   "reward": {"gold": 150, "items": []}
+  },
+  "rescue": {
+   "specifics": "Odelia's husband Pockle, a merchant, is locked in his own storeroom at the trading post the Ogres overran; Odelia gives the key.",
+   "names": {"Odelia": "person", "Pockle": "person", "Ogres": "group"},
+   "parts": {
+    "plea": {"speaker": "Odelia", "text": "Calamity! The Ogres have seized my husband Pockle! The vile brutes overran our trading post east of here and locked him in his own storeroom! I have the only other key. Take it, I beg you. Can you bring my husband home to me?"},
+    "reminder": {"speaker": "Odelia", "text": "Please, hurry!"},
+    "found": {"speaker": "Pockle", "text": "A customer! Er... I mean, a rescuer! Oh, bless you! Get me out of here and you can have anything in my cart at half price!"},
+    "following": {"speaker": "Pockle", "text": "Lead on! And if you see a crate of soap, grab it. Those Ogres sure won't be using it!"},
+    "completion": {"speaker": "Pockle", "text": "Home at last! Odelia, I'm home! Here, take this robe for all your help. Hardly worn at all!"},
+    "journal": {"speaker": "", "text": "Rescue Pockle the merchant from the Ogres."}
+   },
+   "reward": {"gold": 0, "items": ["WizardRobe"]}
+  },
+  "main_opening": {
+   "specifics": "Marl points the player to Mayor Brumhold, who sends him after Bolgrum the Ogre Chief on Skarn Hill and gives the key to the north gate.",
+   "names": {"Marl": "person", "Thalden": "person", "Mayor Brumhold": "person", "Brumhold": "person", "Bolgrum": "person", "Skarn Hill": "place", "Vardo": "place", "Ogres": "group"},
+   "parts": {
+    "herald": {"speaker": "Marl", "text": "Are you the one Thalden sent? Mayor Brumhold has been waiting for you. His house is the big one by the well."},
+    "opening": {"speaker": "Mayor Brumhold", "text": "Terrible news, lad. Last night the Ogres burned another farm and carried off every pig they could find. Vardo cannot take much more of this!\n\nThalden wrote that you were coming, and not a moment too soon. Bolgrum the Ogre Chief and his brutes are camped on Skarn Hill, north of the village. Go there and put an end to him, once and for all.\n\nTake this key. It opens the north gate. Good luck!"},
+    "reminder": {"speaker": "Mayor Brumhold", "text": "Those Ogres get bolder every day."},
+    "journal": {"speaker": "", "text": "Defeat Bolgrum the Ogre Chief at his camp on Skarn Hill."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

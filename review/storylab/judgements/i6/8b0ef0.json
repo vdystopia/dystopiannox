@@ -1,0 +1,33 @@
+{
+  "packet": "8b0ef0",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short, and the payoff line is Nox-like, but it switches from a posted proclamation ('Attention! By order of...') into a first-person complaint ('my finest diggers'). The 'As if X were not horror enough!' aside repeats a pattern seen elsewhere in the new texts."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A frog trapped in a burning house, a '?!', and the player 'saying' he wants loads and loads of money: the dry, slightly absurd humour is Westwood's own."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "One sentence runs on through four 'and' clauses, far longer than any Nox line. It hands over a quiver with no reason given, and the plot (the mayor can't spare a man because of the Ogres) is spelled out too neatly."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The quest comes up casually out of shop talk ('Actually, business has been somewhat slow'), gives a vague goal, and closes with a 'Well done, lad!' / 'young sir' thanks that is typical of Westwood's townsfolk."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Opens with 'Good!' in reply to something said earlier, ties the reward to a story item (the petition) and gives a coloured key. The journal entry capitalises Urchin, as Westwood does."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clipped exclamations ('Ruined! Half the winter's meat, ruined!') are built for punch, and 'lock the door behind you' and 'he's got bigger troubles than wolves' feel like a writer's flourishes. The handoff to the next quest-giver reads like a design template."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The drawn-out 'Ooooh', the urgent and slightly stiff phrasing ('That evil one defeated both of my novices') and a reward that is really a plot item are all main-quest Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too many sensory and comic touches piled up ('stung all over', 'lenses are filthy', 'Listen! Not a single...'), plus a setting-bridging complaint about the soldiers, make it a written-up comic vignette rather than Nox's plain quest talk."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'So here's my bargain... Agreed?' and the closing joke 'Now maybe I can finally get some reading done' are modern sitcom timing. The 'As if [Person] and his Undead weren't enough!' aside works the same way as in A and C."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Old-fashioned overstatement ('worse than the pox!'), a reward of a title and free passage, and 'I insist' all suit Westwood's town officials. The stiff, odd 'charm and banish' journal entry fits the class-masked original."}
+  ],
+  "tells": [
+    "The new texts pack the offer with extra colour (sensory detail, comic complaints, why the local authorities won't help). Westwood's offers state the problem, the place and the ask in a few plain sentences.",
+    "Run-on or rhythm-built sentences (chains of 'and' clauses, triplets of clipped exclamations) point to the new writing. Westwood's sentences are mostly short and evenly paced.",
+    "Sitcom-style closing jokes and bargain framing ('So here's my bargain... Agreed?', 'Deal?', 'Now maybe I can finally...') read modern. Westwood's humour comes from absurd situations and dry, deadpan replies to the player.",
+    "The same aside ('As if X weren't enough!') and the same reward ('100 gold pieces') turn up across several texts, which suggests one template. Westwood's quests vary more and often give story items (petitions, titles, keys) as rewards.",
+    "Westwood's offers often grow out of a running conversation ('Actually...', 'Good!') rather than opening cold with an exclamation about the pest."
+  ]
+}

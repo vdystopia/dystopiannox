@@ -41,8 +41,8 @@ hideouts may have no fire: then the sleeping row is the anchor.)
 
 | | Westwood (median, p10-p90) | Kit now |
 |---|---|---|
-| pieces | 20 (5-35) | 20-30 |
-| kinds | 9 (4-12) | 10-13 |
+| pieces | 20 (5-35) | 19-29 (round 2) |
+| kinds | 9 (4-12) | 8-13 (round 2) |
 | reach from the middle | 162 px (93-224) | 150-200 |
 | nearest-piece gap | 33 px (25-42) | 35-45 |
 | pieces within 46 px of a wall | 0.50 | 0.1 in the lab's wide glades |
@@ -71,6 +71,17 @@ camp.
 - "the stumps around the fires in bandit camps arent the right object for that use case." (SW-3)
 - The lab's own: bedrolls two to a tent in front of tents in an arc became a dormitory block; a cart backed into a
   pond; a lone bedroll at a row's end.
+
+## Round 2 (2026-10-05): one tent, the war camp's racks, a smaller camp
+
+- Westwood's open-air camps are war camps: ONE pup tent (never two), the leader's awning only with a big band, a row of
+  three or four armour racks of different builds with the helmet poles, barrels, a cart, the fire ring; no bedrolls by
+  the tent (its sleepers are in it). Its hideouts (caves) have the cots against the rock.
+- The kit now: one pup tent (two sleep in it, two under the awning), the rest on bedrolls in pairs; radii ~0.8 of
+  round 1 (the row 165 px, scale never above 1.0: a big glade does not make a big camp); extras rare (bench 30% or a
+  stool 40%, pot 8%, water barrel 20%, sack 10%, cart 20%, outcrop 35%); 8-13 kinds, 19-29 pieces.
+- A camp's site backs onto the wood with ~5 squares of open ground before it (`camp_site`).
+- Never: two pup tents; a lone crate (both or none); finds out in the open grass; the awning at the row's end.
 
 ## What still gives it away
 

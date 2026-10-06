@@ -1,0 +1,33 @@
+{
+  "packet": "3b4a3f",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'The menfolk of [Place] cannot live without us!' and the grumbling Ogre stomachs are classic Nox deadpan. The hint about a secret passage tells the player what to do in one plain line."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The two asks don't connect, and the button-pusher's 'You must be good luck!' is pleasant but generic. 'Basic training isn't for everyone' feels like a modern idiom."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The sponsorship-for-a-favour chain is neat and plausible, and the refusal leaves a clear 'where to find me'. It is tidy, with little of the campaign's oddness."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Breathless 'Sir! Help me please!' openers and a stammered 'Could you... would you get it back for us?', with near-identical 'token of my appreciation' thanks: the repetition Westwood never minded."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A blunt guild master who quotes a price, 'And you are sent by the Captain, eh?', and a gruff beast-seller ('Ya want one?'). These are short trade lines with stated gold amounts, as in the campaign."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The 50,000-gold inn sale is a joke stretched over four lines, and the farewell ('I hope you survive this whole mess... stay out of [Person]'s way if you want to stay alive!') runs longer and chattier than Nox's shopkeepers."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'It's not easy running a smuggling ring, you know' and 'Good luck with whatever business you're up to!' have a sitcom wink. The outcomes are long strings of thanks plus item plus warning plus thanks again."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The bounty with capture and kill outcomes at different prices, 'young sir' throughout, 'I'll lose no sleep fretting about his soul!' and '--' before the gold: very much the campaign's register."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "It shares the bounty lines with H, and the innkeeper's robbery ask and 'filthy paws on our belongings!' payoff fit the same voice and price-stating habit."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The used-car-salesman patter ('only used it on weekends', 'I like your face') is a familiar modern bit, and the four lines all turn on one sales joke rather than telling the player much."}
+  ],
+  "tells": [
+    "New texts lean on recognisable modern comic bits (the used-car sale, the sitcom smuggler, the absurd property price) and spread one joke across every line. Westwood's humour is a single deadpan beat inside a functional line.",
+    "New outcomes chain several clauses (thanks, item, warning, thanks again, good luck). Westwood outcomes are shorter and front-load the reward.",
+    "Westwood repeats stock phrases ('token of my appreciation', 'young sir', '--' before a sum) without embarrassment. The new texts vary their phrasing more.",
+    "Pairs of asks that don't relate to each other or to the town read as assembled. Westwood's pairs usually belong to one situation or one speaker type.",
+    "Modern idioms ('isn't for everyone', 'whatever business you're up to', 'this whole mess') stand out against Westwood's slightly formal, archaic-tinged plainness."
+  ]
+}

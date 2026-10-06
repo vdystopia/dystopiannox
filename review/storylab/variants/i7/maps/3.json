@@ -1,0 +1,136 @@
+{
+ "iter": "i7",
+ "writer": "Claude Agent SDK subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Velk",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "The Bog Witch Vethra has raised the drowned dead of the Sunken Graves, and her Zombies climb the stilts of Velk at night.",
+  "names": {
+   "Velk": "place",
+   "Marsh Folk": "group",
+   "Vethra": "person",
+   "Tolver": "person",
+   "Quillon": "person",
+   "Murrow": "person",
+   "Brask": "person",
+   "Hobb": "person",
+   "Orvane": "person",
+   "Grudd": "person",
+   "Snibb": "person",
+   "Hesper": "person",
+   "Dremmel": "person",
+   "Gorbo": "person",
+   "Fenna": "person",
+   "Tibbalt": "person",
+   "Pell": "person",
+   "Sodge": "person",
+   "Minna": "person",
+   "Bog Mother": "thing",
+   "Sunken Graves": "place",
+   "Stilt House": "place",
+   "Long Walk": "place",
+   "Black Fen": "place",
+   "Hollow Stump": "place",
+   "Drowned Chapel": "place",
+   "Leaky Tub": "place",
+   "Imps": "group",
+   "Zombies": "group",
+   "Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brask at the Long Walk gate, kept shut until Mayor Quillon says otherwise.",
+   "names": {"Brask": "person", "Quillon": "person", "Long Walk": "place"},
+   "parts": {
+    "first": {"speaker": "Brask", "text": "I would take it up with Mayor Quillon...\nunless you want to rile him."},
+    "again": {"speaker": "Brask", "text": "Truly stubborn! Off the planks, bog rat!"},
+    "later": {"speaker": "Brask", "text": "Good. Gate's open. Go on."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Hobb, a goatherd on the edge of the Black Fen, wants the giant Leech called the Bog Mother killed.",
+   "names": {"Hobb": "person", "Bog Mother": "thing", "Black Fen": "place", "Leeches": "group"},
+   "parts": {
+    "offer": {"speaker": "Hobb", "text": "The Bog Mother is a monstrous creature. It grows fat on warm blood, which it sucks from my goats in the darkest pools of the Black Fen. Kill it, and I'll pay you well."},
+    "reminder": {"speaker": "Hobb", "text": "One of the little Leeches -- with a terrible bite -- got up into my boat last night. Maybe the Bog Mother is sending them after me!"},
+    "completion": {"speaker": "Hobb", "text": "Thanks for ridding the fen of that beast. Here, take this Bow."},
+    "journal": {"speaker": "", "text": "Find the Bog Mother and slay her in The Black Fen."}
+   },
+   "reward": {"gold": 0, "items": ["Bow"]}
+  },
+  "heirloom_fetch": {
+   "specifics": "Orvane the healer wants back the enchanted cloak the Imps carried off to the Hollow Stump.",
+   "names": {"Orvane": "person", "Velk": "place", "Marsh Folk": "group", "Imps": "group", "Hollow Stump": "place", "Long Walk": "place", "Leeches": "group"},
+   "parts": {
+    "offer": {"speaker": "Orvane", "text": "Welcome to Velk, Home of the Marsh Folk. You shall be my new helper.\n\nIt is all settled. You may take any path you like, but do not linger too long.\n\nThe Imps who took my enchanted cloak live in the Hollow Stump. Just cross the Long Walk east and you will find the Stump. Will you bring my cloak back?"},
+    "refusal": {"speaker": "Orvane", "text": "You don't have the nerve, I see. Come back when you find some."},
+    "reminder": {"speaker": "Orvane", "text": "I don't have any herbs to spare for you today. Good luck with those Imps. They can be thieving and spiteful lot."},
+    "completion": {"speaker": "Orvane", "text": "Hang my cloak on the hook by the stove. Then take the Spell Book which sits on the shelf above my bed. You will find all sorts of spells inside. Try them out on the Leeches."},
+    "after": {"speaker": "Orvane", "text": "I hear you sent those Imps packing from the Stump! Good work!"},
+    "journal": {"speaker": "", "text": "Find Orvane's enchanted cloak."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Find Orvane's enchanted cloak."}
+   },
+   "reward": {"gold": 0, "items": ["SpellBook"]}
+  },
+  "rumour": {
+   "specifics": "Pell, a fisherman, hears about Murrow; Sodge, a drunk on the walkway; Minna, wading with Leeches on her.",
+   "names": {"Pell": "person", "Murrow": "person", "Sodge": "person", "Minna": "person", "Leeches": "group"},
+   "parts": {
+    "rumour1": {"speaker": "Pell", "text": "WHAT? Old Murrow is... DROWNED?"},
+    "rumour2": {"speaker": "Sodge", "text": "Whatcha gonna do? Dunk me?"},
+    "rumour3": {"speaker": "Minna", "text": "Eeeeyuck! Leeches! Pull them off!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Grudd of the Leaky Tub inn, Snibb who sells arms from under the walkway, Hesper the potion maker.",
+   "names": {"Grudd": "person", "Leaky Tub": "place", "Velk": "place", "Snibb": "person", "Hesper": "person"},
+   "parts": {
+    "inn": {"speaker": "Grudd", "text": "Haven't had many travelers lately. Velk isn't exactly a pleasure trip these days, what with the dead climbing up the stilts at night."},
+    "arms": {"speaker": "Snibb", "text": "Psst! Down here! Need a sharp sword? A shield, maybe?"},
+    "magic": {"speaker": "Hesper", "text": "Welcome, Wanderer! I hope you can toss a few bog toads into my kettle. I always need more of them for my potions!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Dremmel the toll keeper wants his toll box back from Vethra's dead in the Sunken Graves; Gorbo buys Leech hides by the bundle.",
+   "names": {"Dremmel": "person", "Vethra": "person", "Sunken Graves": "place", "Gorbo": "person", "Quillon": "person", "Stilt House": "place", "Leeches": "group"},
+   "parts": {
+    "offer_a": {"speaker": "Dremmel", "text": "Greetings, young sir. You've come far from the dry country. I've gone to great trouble and personal danger, to collect the tolls of this poor sinking village. Now Vethra's dead have carried my toll box off into the Sunken Graves. Bring it back and I will reward you."},
+    "offer_b": {"speaker": "Gorbo", "text": "Hello there, would you sell me a few more of those Leech hides? I think my purse can stand another 100 gold pieces. Heh, heh, heh..."},
+    "outcome_a": {"speaker": "Dremmel", "text": "Mayor Quillon is waiting inside the Stilt House! And take this Longsword, too."},
+    "outcome_b": {"speaker": "Gorbo", "text": "Fine work! You've brought me most of the hides I need! Here's your 100 gold. There's only one more bundle to get.\n\nGood luck!"},
+    "journal_a": {"speaker": "", "text": "Raid the Sunken Graves and recover Dremmel's toll box."},
+    "journal_b": {"speaker": "", "text": "Carry the first bundle of Leech hides to Gorbo's shack."}
+   },
+   "reward": {"gold": 100, "items": ["Longsword"]}
+  },
+  "rescue": {
+   "specifics": "Fenna's boy Tibbalt went reed-gathering at the Drowned Chapel and is cornered by Zombies.",
+   "names": {"Fenna": "person", "Tibbalt": "person", "Drowned Chapel": "place", "Zombies": "group", "Velk": "place", "Quillon": "person", "Long Walk": "place"},
+   "parts": {
+    "plea": {"speaker": "Fenna", "text": "Follow the west planks to the Drowned Chapel. There you must look for my boy, Tibbalt. He went to gather reeds in spite of the recent rising of the dead in the old chapel yard."},
+    "reminder": {"speaker": "Fenna", "text": "Stranger! Get on out to the chapel!"},
+    "found": {"speaker": "Tibbalt", "text": "The Zombies! The Zombies! Keep the Zombies off me!"},
+    "following": {"speaker": "Tibbalt", "text": "Hooray for my new friend the Zombie Slayer! Your reward is a hot supper at home."},
+    "completion": {"speaker": "Fenna", "text": "Thank you! You brought my boy home! Please, go and see Mayor Quillon. I'm certain he'll have a good reward for your trouble."},
+    "journal": {"speaker": "", "text": "Lead Tibbalt out of the Drowned Chapel and over the Long Walk to take him home to Fenna."}
+   },
+   "reward": {"gold": 75, "items": []}
+  },
+  "main_opening": {
+   "specifics": "Pell points the newcomer to Mayor Quillon in the Stilt House, who sends him north after the Bog Witch Vethra.",
+   "names": {"Pell": "person", "Quillon": "person", "Stilt House": "place", "Sunken Graves": "place", "Vethra": "person", "Murrow": "person", "Tolver": "person", "Velk": "place"},
+   "parts": {
+    "herald": {"speaker": "Pell", "text": "You want Mayor Quillon at the Stilt House, sorry."},
+    "opening": {"speaker": "Quillon", "text": "You know, far too many grim tidings have come up these stilts this past week, and not one of them good! The Sunken Graves have been broken open -- the drowned dead raised by the Bog Witch Vethra! They say too that old Murrow the ferryman was pulled under by a dead man's hand!\n\nTolver sent word you were coming. Go north into the Graves and put an end to that witch!"},
+    "reminder": {"speaker": "Quillon", "text": "By the way, Murrow always said there was a back way into the Graves..."},
+    "journal": {"speaker": "", "text": "Vethra is raising the drowned dead of the Sunken Graves -- find and destroy her!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

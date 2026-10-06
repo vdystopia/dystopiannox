@@ -1,0 +1,30 @@
+{
+  "packet": "7d0bb6",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Flat, transactional shop-and-trainer lines with a price and a yes/no question, the slangy 'Ya want one?' and the dry field-guide-to-spiders explanation are pure Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lively, but the run-on second page with nested clauses, the 'Take these potions -- and some gold' reward-at-the-ask pattern and the doubled 'Bless you' outcomes read like a careful pastiche rather than Westwood's terser lines."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Short, slightly odd and unpolished ('hit that red button on the wall', 'Basic training isn't for everyone') with a gag outcome; exactly Westwood's offhand register."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every beat is spelled out (direction, item that helps, reward, follow-up contact) and the '?!' and stacked exclamations feel manufactured; 'Smuggling's hard enough with the Trolls about!' is a written-for-flavour line."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Two interlocking quests with cross-referenced townsfolk, a guessing-game opener and polished comic voice; Westwood's quest-givers rarely layer exposition and characterization this densely."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The used-car-salesman joke ('only used it on weekends'), 'There ya go!' and the pushy refusal line are Westwood's anachronistic humour in short sentences."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "An absurd 50,000-gold offer, 'lad', mild run-on farewells and plain logistics; slightly clumsy in the way the original is."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Panicked openers, 'What kept you!?', a dangling '... Hello? Is anybody still out there?' gag and rewards plus future favours in every outcome feel engineered; too many exclamations per page."}
+  ],
+  "tells": [
+    "New texts hand over items at the ask ('Take these potions/boots/whistle') and stack rewards plus a future favour in the outcome; Westwood's quest lines usually state one price or one task and one plain result.",
+    "New texts run to three or four pages per ask with every quest beat spelled out (who did it, where to go, which tool helps); Westwood's are often one or two short sentences.",
+    "Interrobangs ('?!', '!?') and long chains of exclamations mark the new texts; Westwood punctuates more flatly.",
+    "Westwood's humour is anachronistic and deadpan (weekend bow, field guide to spiders, absurd prices); the new humour is situational slapstick and character banter built for the scene.",
+    "New texts cross-reference other named townsfolk and plant follow-up hooks ('He'll meet you at the top', 'a rider came asking for you'); Westwood's lines rarely tie quests together in dialogue.",
+    "Westwood's lines are often transactional (gold amount, 'Do you accept?', 'You want it?') and slightly unpolished; the new texts are uniformly polished and vivid."
+  ]
+}

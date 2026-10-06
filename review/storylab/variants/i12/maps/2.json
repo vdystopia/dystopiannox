@@ -1,0 +1,312 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Skarn Delve",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Trolls are swarming up out of the deep shafts and the Lower Shafts have fallen to them; Mayor Vorlund sends the player down to Chief Engineer Dorvak at Thrum Landing",
+  "names": {
+   "Skarn Delve": "place",
+   "Thrum Landing": "place",
+   "Lower Shafts": "place",
+   "Counting House": "place",
+   "Mayor Vorlund": "person",
+   "Dorvak": "person",
+   "Paymaster Orrin": "person",
+   "Skrit": "person",
+   "Hurk": "person",
+   "Nib": "person",
+   "Mobb": "person",
+   "Pellwick": "person",
+   "Master Gruntle": "person",
+   "Wick": "person",
+   "Bessa": "person",
+   "Tam": "person",
+   "Tarn": "person",
+   "Ysolt": "person",
+   "Garn": "person",
+   "Dugga": "person",
+   "Kragg": "person",
+   "Ommi": "person",
+   "Rod of Seeking": "thing",
+   "Sounding Bell": "thing",
+   "Lift Key": "thing",
+   "Trolls": "group",
+   "Imps": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hurk, the guard at the gate of Skarn Delve, who suspects the player of hitting Nib",
+   "names": {
+    "Hurk": "person",
+    "Nib": "person",
+    "Lower Shafts": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hurk",
+     "text": "Hold it right there, stranger! Nib says you hit him with a pick for no reason and his bruises prove it! Let's go. There's a cold and tidy cell waiting for you! Will you come quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Hurk",
+     "text": "I would stay out of the Lower Shafts...\n\nunless you want a Troll to chew on you."
+    },
+    "later": {
+     "speaker": "Hurk",
+     "text": "Right. Thank you. Go through."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Paymaster Orrin offers a bounty on Skrit, the king of the Imps raiding the ore carts",
+   "names": {
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Imps": "group",
+    "Nib": "person",
+    "Skarn Delve": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Paymaster Orrin",
+     "text": "Hello, young sir. I surmise you have come about the bounty.\n\nThere is a generous reward on Skrit the Imp King -- dead or alive. He and his noisy swarm of Imps have been raiding the ore carts for weeks.\n\nTake care, you do not want to get bitten by those spiteful pests."
+    },
+    "reminder": {
+     "speaker": "Paymaster Orrin",
+     "text": "Still no word on Skrit? The Imps are at the carts again!"
+    },
+    "completion": {
+     "speaker": "Paymaster Orrin",
+     "text": "Ho, there! Nib complained of squeaking down this tunnel, so I came to look.\n\nYou have single handedly slain the dreaded Skrit! Very impressive! My profound respect is yours! Skrit's swarm has plagued Skarn Delve for weeks! I'll take it from here. We will all rest easier now that this vile pest is dead!\n\nAnd here is your reward -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Skrit the Imp King."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Pellwick the assayer has had the Rod of Seeking stolen by a Troll and sends the player on to Dorvak with it",
+   "names": {
+    "Pellwick": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Dorvak": "person",
+    "Skarn Delve": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellwick",
+     "text": "Ooooh, how can this be? That filthy Troll beat both of my helpers. Will you go after him? Quickly, you must stop him before the Rod of Seeking is lost."
+    },
+    "refusal": {
+     "speaker": "Pellwick",
+     "text": "Oh dear. Then come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Pellwick",
+     "text": "Please, I implore you. Catch that cowardly Troll and bring back the Rod of Seeking."
+    },
+    "completion": {
+     "speaker": "Pellwick",
+     "text": "The Rod of Seeking is saved! Dorvak will need my Sounding Bell to read the new seams. Here, carry them both down to him."
+    },
+    "after": {
+     "speaker": "Pellwick",
+     "text": "You may have saved the whole Delve with this. Well done, lad! Now, hurry down to Dorvak."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Rod of Seeking stolen by the Troll."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Take the Rod of Seeking and the Sounding Bell to Dorvak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a tip about Mobb and the Lift Key, a tease, and a word about the Trolls",
+   "names": {
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Mobb": "person",
+    "Lift Key": "thing",
+    "Counting House": "place",
+    "Trolls": "group",
+    "Skarn Delve": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tarn",
+     "text": "You can find Mobb the Tallyman in the Counting House. He has the Lift Key."
+    },
+    "rumour2": {
+     "speaker": "Ysolt",
+     "text": "Duck, stranger, duck! Hee, hee, hee...!"
+    },
+    "rumour3": {
+     "speaker": "Garn",
+     "text": "We have held the Counting House! Now we must drive the Trolls out of all of Skarn Delve!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "The inn, arms shop and magic shop of Skarn Delve",
+   "names": {
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Skarn Delve": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Dugga",
+     "text": "Thirsty folk are always welcome here. What can I pour for you?"
+    },
+    "arms": {
+     "speaker": "Kragg",
+     "text": "It's awful quiet today, with the Troll scare and all."
+    },
+    "magic": {
+     "speaker": "Ommi",
+     "text": "Welcome to Skarn Delve!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Gruntle sells a blasting lesson for gold, and the odd Wick wants a lever pulled at his signal",
+   "names": {
+    "Master Gruntle": "person",
+    "Wick": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Gruntle",
+     "text": "Are you ready for your Blasting lesson? That will be 100 gold for the powder and fuses."
+    },
+    "offer_b": {
+     "speaker": "Wick",
+     "text": "Hello, stranger. Could you pull that long lever by the door when I wave my lamp? That would help me a great deal.\n\nWait until I'm in place first."
+    },
+    "outcome_a": {
+     "speaker": "Master Gruntle",
+     "text": "Hmmm, a pity. Blasting isn't for everyone."
+    },
+    "outcome_b": {
+     "speaker": "Wick",
+     "text": "It worked! I was sure the cart would stay stuck! Thank you! You must be lucky!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Master Gruntle 100 gold for a blasting lesson."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pull Wick's lever when he waves his lamp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Bessa begs the player to rescue her brother Tam, carried off by Trolls into the Lower Shafts",
+   "names": {
+    "Bessa": "person",
+    "Tam": "person",
+    "Trolls": "group",
+    "Lower Shafts": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bessa",
+     "text": "Sir! Help me please! A pack of foul Trolls just broke into the Lower Shafts, the diggings below us, and carried off almost all of the crew! One of them is my dear brother, Tam!\n\nPlease rescue him and I promise you a reward!"
+    },
+    "reminder": {
+     "speaker": "Bessa",
+     "text": "Oh why haven't you gone? My brother is in terrible danger!"
+    },
+    "found": {
+     "speaker": "Tam",
+     "text": "Hail, brave Adventurer! We are innocent diggers, hauled off from our shaft during a ruthless Troll attack!\n\nWill you please lead us up to the surface? If you do, you will surely have a handsome reward, because the ore carts cannot roll without us!"
+    },
+    "following": {
+     "speaker": "Tam",
+     "text": "Hurry, kind sir and get us out of these tunnels!"
+    },
+    "completion": {
+     "speaker": "Bessa",
+     "text": "Thanks so much, kind stranger! Please take these as tokens of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Bessa's brother from the Trolls in the Lower Shafts."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Mayor Vorlund sends the player down to Chief Engineer Dorvak at Thrum Landing over the Trolls in the deep shafts",
+   "names": {
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Thrum Landing": "place",
+    "Skarn Delve": "place",
+    "Trolls": "group",
+    "Counting House": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Garn",
+     "text": "Hello, friend. Mayor Vorlund is expecting you."
+    },
+    "opening": {
+     "speaker": "Mayor Vorlund",
+     "text": "Something is badly wrong under our mountain. I need you to go down to Thrum Landing. There you must seek Chief Engineer Dorvak.\n\nHe has requested our help in dealing with the recent swarming of Trolls in the deep shafts.\n\nTake this lamp -- and gold. Visit the shop if you need more supplies. Then make haste.\n\nThe lift beyond the Counting House will take you to Thrum Landing."
+    },
+    "reminder": {
+     "speaker": "Mayor Vorlund",
+     "text": "I've nothing more to say to you, lad. Go now and help Chief Engineer Dorvak!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Leave Skarn Delve and travel down to Thrum Landing."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

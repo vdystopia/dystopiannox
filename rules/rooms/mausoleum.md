@@ -62,3 +62,10 @@ the tomb they face. (`STANDS["mausoleum"]`: beside the tomb, beside a monument, 
   cell 230,88 (40 tiles); Con04c, cell 220,108 (40 tiles: seven columns, monuments, statues, chests); Con04c, cell 75,78
   (128 tiles: 22 columns, 24 statues, fire grates).
 - Ours: the room lab's mausoleums.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 6 curated mausoleums (Con04a's three, Con04c, Con09b, Con10c) hold no great tomb: statues of the dead
+  (2-12) in mirrored pairs, a crypt chest, columns in Con04c, obelisks in Con09b and Con10c; mirror symmetry 0.85-1;
+  0.06 lights a tile. The recipe: statues in mirrored pairs (GROUPS statues), the crypt chest centred on a back wall, a
+  colonnade in a big one; the statue cap rose to one per 5 tiles (Con04a: 12 on 58 tiles).

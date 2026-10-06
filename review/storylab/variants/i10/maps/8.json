@@ -1,0 +1,327 @@
+{
+ "iter": "i10",
+ "writer": "Claude Code agent (Opus 5.5, claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Orvak",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "The Imps of the Cinder Caves have gone mad, raiding the forges of Orvak and carrying off whatever they can grab.",
+  "names": {
+   "Orvak": "place",
+   "Mayor Dunbrak": "person",
+   "Wendril": "person",
+   "Tolvar": "person",
+   "Foreman Kessick": "person",
+   "Master Haggarth": "person",
+   "Pell": "person",
+   "Elsbeth": "person",
+   "Bram": "person",
+   "Warden Holgarth": "person",
+   "Fenwick": "person",
+   "Vesk Blackthumb": "person",
+   "Murdo": "person",
+   "Grondel": "person",
+   "Zarna": "person",
+   "Dibble": "person",
+   "Corla": "person",
+   "Ebbe": "person",
+   "Nissa": "person",
+   "the Cinder Caves": "place",
+   "the Great Forge": "place",
+   "the Ironvein Mine": "place",
+   "the Old Smelter": "place",
+   "the Slag Heaps": "place",
+   "the Sooty Mug": "place",
+   "Fenwick's": "place",
+   "the Forge Hammer": "thing",
+   "the Imps": "group",
+   "the Ember Demons": "group",
+   "the Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tolvar, a guard at the town gate, while the Imps of the Cinder Caves raid Orvak.",
+   "names": {
+    "Tolvar": "person",
+    "Mayor Dunbrak": "person",
+    "the Cinder Caves": "place",
+    "Orvak": "place",
+    "the Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tolvar",
+     "text": "The Imps are pouring out of the Cinder Caves! Mayor Dunbrak wants you at once!"
+    },
+    "again": {
+     "speaker": "Tolvar",
+     "text": "I wonder who trims Mayor Dunbrak's beard?"
+    },
+    "later": {
+     "speaker": "Tolvar",
+     "text": "I sense a dark storm gathering over Orvak! Will we ever be free of these Imps?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Foreman Kessick wants the giant wasps and bats driven out of the Ironvein Mine.",
+   "names": {
+    "Foreman Kessick": "person",
+    "the Ironvein Mine": "place",
+    "Orvak": "place",
+    "Wendril": "person",
+    "the Great Forge": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Foreman Kessick",
+     "text": "Where in blazes have you been!? We're in dreadful trouble!\n\nMonstrous giant wasps and shrieking bats from the deep tunnels have swarmed the Ironvein Mine. Good miners have perished defending the ore of Orvak!\n\nPlease, I'm begging you! Drive those beasts out of my mine and I promise you a generous reward.\n\nThis key opens the gate at the mine entrance.\n\nI also have a spell book which might come in handy."
+    },
+    "reminder": {
+     "speaker": "Foreman Kessick",
+     "text": "Come back once the mine is clear and you'll be paid well."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "Now that's what I call a hero! My sincerest thanks.\n\nWhile you were down in the mine, driving out the beasts, Wendril stopped by asking after you. He said he'd wait for you at the Great Forge -- just south of here.\n\nAnd before you go, here's some gold as your reward."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill or drive off all the beasts in the Ironvein Mine."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Elsbeth's husband Bram's fireproof gauntlets were stolen by Urchins, who ran off toward the Slag Heaps.",
+   "names": {
+    "Elsbeth": "person",
+    "Bram": "person",
+    "the Urchins": "group",
+    "the Slag Heaps": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Elsbeth",
+     "text": "Urchins just ran off with my husband's fireproof gauntlets! If I don't get them back, he'll be ruined. He's due home any minute!\n\nPlease, help me, kind sir! I think the Urchins who grabbed them ran off toward the Slag Heaps.\n\nWould you... could you bring them back for me?"
+    },
+    "refusal": {
+     "speaker": "Elsbeth",
+     "text": "Oh... Fine, then. I'll just have to tell Bram myself."
+    },
+    "reminder": {
+     "speaker": "Elsbeth",
+     "text": "Hurry, please, kind sir! Bram could walk in at any moment!"
+    },
+    "completion": {
+     "speaker": "Elsbeth",
+     "text": "Oh, bless you! Thank you, thank you! Please accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Elsbeth",
+     "text": "Thanks again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Bram's fireproof gauntlets from the Urchins at the Slag Heaps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Bram's fireproof gauntlets from the Urchins at the Slag Heaps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Orvak: Corla with a tip, Ebbe robbed by the Imps, Nissa with gossip about Warden Holgarth's jail.",
+   "names": {
+    "Corla": "person",
+    "Ebbe": "person",
+    "Nissa": "person",
+    "Warden Holgarth": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Corla",
+     "text": "I thought heroes didn't mind a little heat. Try keeping out of the lava."
+    },
+    "rumour2": {
+     "speaker": "Ebbe",
+     "text": "My tools... taken... every last one."
+    },
+    "rumour3": {
+     "speaker": "Nissa",
+     "text": "I hear Warden Holgarth's jail got overrun with rats last week. Odd things happening around here lately."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Murdo of the Sooty Mug inn, Grondel the armourer, Zarna the potion and scroll seller.",
+   "names": {
+    "Murdo": "person",
+    "the Sooty Mug": "place",
+    "Grondel": "person",
+    "Zarna": "person",
+    "Orvak": "place",
+    "the Imps": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Murdo",
+     "text": "This is the Sooty Mug. I doubt you'll get much sleep here, stranger."
+    },
+    "arms": {
+     "speaker": "Grondel",
+     "text": "A stranger, eh? You'd better turn back while you still can. No doubt them Imps will be raiding the forges any day now, too! Dangerous days we're living in, isn't it?"
+    },
+    "magic": {
+     "speaker": "Zarna",
+     "text": "Not many travelers come through lately. Orvak isn't much of a holiday spot these days, what with cutthroats robbing every wagon on the road."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Holgarth offers a bounty on the outlaw Vesk Blackthumb, and Fenwick the armour dealer, robbed by Vesk's cutthroats, will reward whoever stops them.",
+   "names": {
+    "Warden Holgarth": "person",
+    "Vesk Blackthumb": "person",
+    "Fenwick": "person",
+    "Fenwick's": "place",
+    "Orvak": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Holgarth",
+     "text": "Good day, young sir. I presume you've come about the bounty.\n\nThere's a fat purse waiting for whoever brings in Vesk Blackthumb -- dead or alive. He and his miserable gang of cutthroats have been robbing our ore wagons for a month now.\n\nWatch yourself. You don't want those vicious brutes sneaking up on you."
+    },
+    "offer_b": {
+     "speaker": "Fenwick",
+     "text": "To tell the truth, trade has been rather poor lately. Last month, cutthroats smashed in my door and emptied the shop.\n\nI doubt I'll ever see my goods again, but I'd dearly love to see those villains punished.\n\nI'll gladly reward anyone who puts a stop to them."
+    },
+    "outcome_a": {
+     "speaker": "Warden Holgarth",
+     "text": "Vesk is dead, eh? Well, I'd hoped to see him hang, but I won't shed a tear over that scoundrel!\n\nHere's your reward -- 150 in gold! Orvak owes you a great debt!"
+    },
+    "outcome_b": {
+     "speaker": "Fenwick",
+     "text": "So those cutthroats finally got what they deserved! Well done, lad! We'll all rest easier knowing those villains won't be getting their grubby hands on our goods again!\n\nAnd here's your reward... my finest steel shield! You're always welcome at Fenwick's!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Vesk Blackthumb and collect the Warden's bounty."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the thieves who robbed Fenwick's shop to justice."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Haggarth's apprentices, Pell among them, are trapped in the Old Smelter by Ember Demons.",
+   "names": {
+    "Master Haggarth": "person",
+    "Pell": "person",
+    "the Old Smelter": "place",
+    "the Ember Demons": "group",
+    "Mayor Dunbrak": "person",
+    "the Great Forge": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Master Haggarth",
+     "text": "How long must we wait for help!? Something terrible has happened!\n\nEmber Demons and fire-spitting fiends from the depths have taken over the Old Smelter. One of my apprentices has already given his life for the honor of our guild!\n\nPlease, I implore you! Destroy those demons, free my apprentices and I shall pay you well.\n\nThis key will open the door to young Pell's hiding place. He can lead you to the rest.\n\nTake this ankh as well. It should prove quite valuable."
+    },
+    "reminder": {
+     "speaker": "Master Haggarth",
+     "text": "Bring my boys home safe and you won't be sorry."
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Thank goodness you've come! Here, take this key. The others are locked up past the next door."
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Please, take me back to Master Haggarth."
+    },
+    "completion": {
+     "speaker": "Master Haggarth",
+     "text": "My boys are safe! You are a true hero, kind sir! You have my heartfelt thanks.\n\nWhile you were in the smelter, Mayor Dunbrak's guard came by looking for you. The Mayor wants to see you at his house -- beside the Great Forge.\n\nBut first, please take this gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Ember Demons from the Old Smelter. Rescue Haggarth's 4 trapped apprentices."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dibble points the player to Mayor Dunbrak, whose Forge Hammer the Imps carried off into the Cinder Caves.",
+   "names": {
+    "Dibble": "person",
+    "Mayor Dunbrak": "person",
+    "Orvak": "place",
+    "Wendril": "person",
+    "the Cinder Caves": "place",
+    "the Great Forge": "place",
+    "the Forge Hammer": "thing",
+    "the Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dibble",
+     "text": "Not now. Go see Mayor Dunbrak."
+    },
+    "opening": {
+     "speaker": "Mayor Dunbrak",
+     "text": "Welcome to Orvak, valiant Adventurer! Wendril told us you'd be coming!\n\nThe Imps who live in the Cinder Caves have gone crazy! They swarmed into town and made off with my Forge Hammer! A smith chased the little devils back into the caves, but he never came back.\n\nGo into the Cinder Caves north of town and take my hammer back from the Imps. When you return, come and see me. I'll be in my house next to the Great Forge."
+    },
+    "reminder": {
+     "speaker": "Mayor Dunbrak",
+     "text": "Those wretched Imps are making a terrible mess of things lately."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Mayor Dunbrak's Forge Hammer from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

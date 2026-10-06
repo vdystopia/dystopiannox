@@ -1,0 +1,132 @@
+{
+ "iter": "i4",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Fort Skarn",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "Kolgrath the Necromancer holds Kel Dorran at the top of the pass and raises the frozen dead against Fort Skarn, and the pass is shut.",
+  "names": {
+   "Fort Skarn": "place",
+   "Kel Dorran": "place",
+   "East Gate": "place",
+   "Keep": "place",
+   "Iron Kettle": "place",
+   "Bodmar's Armory": "place",
+   "Ice Caves": "place",
+   "Kolgrath": "person",
+   "Ormund": "person",
+   "Warden Brannoc": "person",
+   "Tormod": "person",
+   "Fitch": "person",
+   "Dagny": "person",
+   "Elko": "person",
+   "Ulla": "person",
+   "Grindle": "person",
+   "Hobb": "person",
+   "Bodmar": "person",
+   "Ysmay": "person",
+   "Brother Ennick": "person",
+   "Nibbs": "person",
+   "Hulda": "person",
+   "Ansgar": "person",
+   "Undead": "group",
+   "Urchins": "group",
+   "Bears": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tormod at the East Gate, shut by Warden Brannoc while Kolgrath's Undead walk the pass.",
+   "names": {"Tormod": "person", "East Gate": "place", "Warden Brannoc": "person", "Iron Kettle": "place", "Undead": "group"},
+   "parts": {
+    "first": {"speaker": "Tormod", "text": "Halt! The East Gate is shut by order of Warden Brannoc. Nobody goes up the pass while the Undead are on it."},
+    "again": {"speaker": "Tormod", "text": "You again? The gate's shut. Go and get warm by the fire in the Iron Kettle."},
+    "later": {"speaker": "Tormod", "text": "The Warden says you may pass. Go on through. And mind the ice!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Dagny the cook: Bears dig into the fort's meat store behind the kitchen every night.",
+   "names": {"Dagny": "person", "Bears": "group", "Undead": "group"},
+   "parts": {
+    "offer": {"speaker": "Dagny", "text": "Bears! Big hungry Black Bears, in my meat store! They dig in through the snow behind the kitchen every night and eat the soldiers' supper!\n\nThe Warden won't spare me a single man, they're all up on the walls watching for the Undead. Kill those beasts and I'll pay you well, I promise!"},
+    "reminder": {"speaker": "Dagny", "text": "Hurry! There won't be a scrap of meat left for supper!"},
+    "completion": {"speaker": "Dagny", "text": "You killed them? Ha! The soldiers will eat tonight! Here's your gold, a hundred pieces, just like I promised."},
+    "journal": {"speaker": "", "text": "Kill the Bears raiding Dagny's meat store behind the kitchen."}
+   },
+   "reward": {"gold": 100, "items": []}
+  },
+  "heirloom_fetch": {
+   "specifics": "Elko the Lookout: Urchins from the Ice Caves stole his magic spyglass off the north wall.",
+   "names": {"Elko": "person", "Urchins": "group", "Ice Caves": "place", "Kolgrath": "person", "Undead": "group", "Kel Dorran": "place"},
+   "parts": {
+    "offer": {"speaker": "Elko", "text": "Blast it all! How am I supposed to watch the pass now?\n\nThe Urchins crept up the north wall last night and made off with my spyglass! A magic one, it is. They live down in the Ice Caves below the wall.\n\nWithout it, Kolgrath's Undead could be at the gate before anybody sees them! Will you get it back for me, young sir?"},
+    "refusal": {"speaker": "Elko", "text": "Bah! Then we're as good as blind up here."},
+    "reminder": {"speaker": "Elko", "text": "Did you find my spyglass? I can't see a thing up here!"},
+    "completion": {"speaker": "Elko", "text": "My spyglass! Ha, ha! I can see all the way to Kel Dorran again! Thank you, lad. Here, take this for your trouble."},
+    "after": {"speaker": "Elko", "text": "Thanks again, lad! Nothing gets past old Elko now."},
+    "journal": {"speaker": "", "text": "Recover Elko's spyglass from the Urchins in the Ice Caves."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover Elko's spyglass from the Urchins in the Ice Caves."}
+   },
+   "reward": {"gold": 60, "items": ["BluePotion"]}
+  },
+  "rumour": {
+   "specifics": "Ulla, Grindle and Fitch, folk of Fort Skarn.",
+   "names": {"Ulla": "person", "Grindle": "person", "Fitch": "person", "Warden Brannoc": "person", "Nibbs": "person", "Undead": "group"},
+   "parts": {
+    "rumour1": {"speaker": "Ulla", "text": "Cold, cold, cold! I haven't felt my toes since spring."},
+    "rumour2": {"speaker": "Grindle", "text": "Warden Brannoc hasn't slept a wink since the Undead came down the pass. Poor man looks worse than they do!"},
+    "rumour3": {"speaker": "Fitch", "text": "Nibbs is in the cell again for cheating at dice. He'll talk your ear off if you let him."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Hobb of the Iron Kettle, Bodmar the smith, Ysmay the potion-seller.",
+   "names": {"Hobb": "person", "Iron Kettle": "place", "Bodmar": "person", "Bodmar's Armory": "place", "Ysmay": "person", "Undead": "group"},
+   "parts": {
+    "inn": {"speaker": "Hobb", "text": "Shut the door, yer lettin' the snow in! Now, what'll it be? Hot cider's on the fire."},
+    "arms": {"speaker": "Bodmar", "text": "Welcome to Bodmar's Armory! Swords, shields, good thick armor. Can I help you?"},
+    "magic": {"speaker": "Ysmay", "text": "Hello, hello! Potions, scrolls, spell books! I hear the Undead don't care for fire... and I just happen to have a few fire spells!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Brother Ennick wants the risen dead in the chapel crypt put down; Nibbs, locked up for cheating at dice, wants the jailer's key.",
+   "names": {"Brother Ennick": "person", "Kolgrath": "person", "Nibbs": "person", "Undead": "group"},
+   "parts": {
+    "offer_a": {"speaker": "Brother Ennick", "text": "Greetings, my son. Grave tidings, I fear. Kolgrath's foul magic has reached even into our chapel. The honored dead in the crypt below have risen from their rest!\n\nI am a man of prayer, not of the sword. Go down into the crypt and lay them to rest again, and the chapel will see you rewarded."},
+    "offer_b": {"speaker": "Nibbs", "text": "Psst! You there! Yes, you! Come closer.\n\nThey locked me up for one little game of dice. Can you believe it? The jailer keeps the key on his belt, and he sleeps through his whole watch.\n\nBring me that key and I'll tell you where I buried a real beauty of a Longsword. What do you say?"},
+    "outcome_a": {"speaker": "Brother Ennick", "text": "The dead sleep again! Bless you, my son. This shield has hung in our chapel for many years. Take it, and may it guard you against Kolgrath's evil."},
+    "outcome_b": {"speaker": "Nibbs", "text": "Hee, hee! Free at last! The Longsword is under the woodpile behind the stable, like I said. And if the Warden asks, you never saw me!"},
+    "journal_a": {"speaker": "", "text": "Destroy the Undead in the crypt beneath the chapel."},
+    "journal_b": {"speaker": "", "text": "Steal the cell key from the sleeping jailer and free Nibbs."}
+   },
+   "reward": {"gold": 0, "items": ["SteelShield", "Longsword"]}
+  },
+  "rescue": {
+   "specifics": "Hulda begs for her husband Ansgar the woodcutter, chased into the old mine on the south slope by the Undead.",
+   "names": {"Hulda": "person", "Ansgar": "person", "Undead": "group"},
+   "parts": {
+    "plea": {"speaker": "Hulda", "text": "Help! Please, somebody help me! My Ansgar went out for firewood this morning and never came back!\n\nOne of the soldiers saw him run into the old mine on the south slope with the Undead right behind him. Please, bring him home to me, kind stranger!"},
+    "reminder": {"speaker": "Hulda", "text": "Please hurry! It will be dark soon, and so cold!"},
+    "found": {"speaker": "Ansgar", "text": "Over here! I'm stuck behind these rocks! Did Hulda send you?"},
+    "following": {"speaker": "Ansgar", "text": "Hurry, before those things come back!"},
+    "completion": {"speaker": "Hulda", "text": "Ansgar! Oh, you're alive! Thank you, thank you, kind sir! Please, take this as a token of my thanks. May all good spirits watch over you!"},
+    "journal": {"speaker": "", "text": "Rescue Ansgar the woodcutter from the old mine."}
+   },
+   "reward": {"gold": 50, "items": ["RedPotion"]}
+  },
+  "main_opening": {
+   "specifics": "Fitch points the player to Warden Brannoc in the Keep; Brannoc sends him up the pass against Kolgrath the Necromancer at Kel Dorran.",
+   "names": {"Fitch": "person", "Ormund": "person", "Warden Brannoc": "person", "Keep": "place", "Kolgrath": "person", "Kel Dorran": "place", "Fort Skarn": "place"},
+   "parts": {
+    "herald": {"speaker": "Fitch", "text": "So you're the one Ormund sent! Warden Brannoc has been asking for you all morning. He's up in the Keep."},
+    "opening": {"speaker": "Warden Brannoc", "text": "So, Ormund has sent me help at last! Good. You look a bit thin for this weather, lad, but you'll have to do. Heh, heh.\n\nKolgrath the Necromancer has taken Kel Dorran, the old fortress at the top of the pass. Every night he raises more of the frozen dead out of the ice and sends them down against our walls. No caravan has come through since the first snow.\n\nGo up the pass to Kel Dorran and put an end to Kolgrath! If Fort Skarn falls, nothing stands between his dead and the valley below. Now off with you, and dress warm!"},
+    "reminder": {"speaker": "Warden Brannoc", "text": "Off with you, lad! Every night you wait, Kolgrath raises more of them."},
+    "journal": {"speaker": "", "text": "Climb the pass to Kel Dorran and defeat Kolgrath the Necromancer."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

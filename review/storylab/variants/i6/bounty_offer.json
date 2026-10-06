@@ -1,0 +1,579 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric the shepherd orders the player into the Ashwood to kill the wolves, hands over a quiver at once and pays with his old bow.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Greetings, stranger.\n\nWolves. Out of the Ashwood, every night, after my sheep. I'm too old to chase them anymore.\n\nHere, take this quiver. Go into the Ashwood and kill those mangy beasts. Then come back to me."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Still them wolves. Every blessed night."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "No howling last night! First time all season!\n\nTake my old bow. It goes with the quiver. Now if somebody would only run Red Corwin off Crow Hill!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the wolves of the Ashwood for Ulric the shepherd."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Quiver",
+     "Bow"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Foreman Kessick posts the Miners' Guild bounty on the Giant Leeches of the Sump and hands over the Sump gate key.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Foreman Kessick",
+     "text": "Attention! By order of the Miners' Guild, a bounty has been posted on the Giant Leeches of the Sump! These loathsome creatures have bled my finest diggers nearly dry. As if the Golems of Vorga were not horror enough!\n\nThe Sump is east of the lift. Here is the key to its gate. Will you go down there and destroy them?"
+    },
+    "reminder": {
+     "speaker": "Foreman Kessick",
+     "text": "Are the Leeches dead yet? My men refuse to go below until they are."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "The Leeches are dead? Excellent work! The Miners' Guild always pays its debts. Here is your bounty, 100 gold pieces."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Giant Leeches in the Sump for Foreman Kessick."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Priest Hollin, bled weak by Giant Leeches that nest under the drying racks, offers a boatman's token for the way on.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Priest Hollin",
+     "text": "Ohhh... Woe to me! Woe to all of Tharn! The Giant Leeches have come up out of the bog, and I have paid for it in my own blood!\n\nEvery night they come for us, and every night I drive them back with nothing but a candle and my prayers. But I am weak now, stranger, too weak. And I am sure the Witch Vuldra is laughing at us!\n\nRid us of these vile creatures and you shall have a worthy reward. Will you do this thing, brave Adventurer?"
+    },
+    "reminder": {
+     "speaker": "Priest Hollin",
+     "text": "The Leeches nest in the mud under the drying racks. Go now, before they come again tonight!"
+    },
+    "completion": {
+     "speaker": "Priest Hollin",
+     "text": "The Leeches are destroyed? Then my prayers have been answered! Tharn owes you a great debt, stranger.\n\nTake this token. Show it to any boatman in the hamlet, and he will take you wherever you wish to go."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rid Tharn of the Giant Leeches for Priest Hollin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Fennick, a fussy old stargazer, wants the Giant Wasps' nest cleared out of his observatory east of town.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Oh, not again! Every night the same thing! I climb up to look at the stars and I come back down stung all over!\n\nGiant Wasps have nested in my observatory east of here. My charts are ruined and my lenses are filthy, and Lord Tavrin's soldiers won't lift a finger. They say they are too busy watching for Ostrigan. Would you clear out those Wasps for me? I will pay you well."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Still here?! Those Wasps won't leave on their own, you know!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "No more buzzing! Listen! Not a single Wasp! Oh, thank you, thank you! Here is your reward, 100 gold pieces, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wasp nest in Fennick's observatory."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Ulla the fishwife wants the giant Leeches of the reed beds killed, then sends the player on to Krebbit.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulla",
+     "text": "Leeches! Big ones, in the reed beds south of here! They dragged my nets right out of the boat and I barely made it back to shore!\n\nNobody goes near the water anymore. Not with the dead coming up out of the lake every night, and now this!\n\nYou look like you can handle yourself, kind sir. Kill those Leeches and I'll give you a good reward. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Ulla",
+     "text": "Those Leeches get bigger every day, you know."
+    },
+    "completion": {
+     "speaker": "Ulla",
+     "text": "The reeds are clear! I can fish again! Oh, thank you, thank you!\n\nHere, take these. And go see old Krebbit at the net sheds. He's got trouble of his own."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant Leeches in the reed beds for Ulla."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Fennick, a nervous scholar, bargains with the player to clear the Bats out of his study; they roost in the old bell tower.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Bats! There are Bats in my study again! As if Malgrith and his Undead weren't enough! I can't read a single page with them flapping around my candles. So here's my bargain. You get rid of the Bats, and I'll give you a token of my appreciation. Agreed?"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "I think they roost in the old bell tower. Please hurry, my books are a mess!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "No more Bats? Oh, thank goodness! Here, please take this as a token of my appreciation. Now maybe I can finally get some reading done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get rid of the Bats plaguing Fennick's study."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Dobb, the fort's quartermaster, wants the White Wolves in the meat cellar killed and hands over the cellar key.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobb",
+     "text": "Ruined! Half the winter's meat, ruined! White Wolves got into the cellar under the kitchen and they won't come out! They bit my cook!\n\nHere, take this key. Get down there and kill every last one of them. And lock the door behind you!"
+    },
+    "reminder": {
+     "speaker": "Dobb",
+     "text": "Those mangy wolves are eating us out of house and home!"
+    },
+    "completion": {
+     "speaker": "Dobb",
+     "text": "Ha! That'll teach 'em! Here, this shield is yours. Now go see Lord Kessick, he's got bigger troubles than wolves."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the White Wolves in the cellar for Dobb."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Gristle, a hermit by the cooling pools, wants the giant leeches cleared out of them.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gristle",
+     "text": "Greetings, Wanderer. Everybody in Kildrun is fussing about the Ember Demons, and nobody cares one bit about my leeches! Giant leeches, big ones, crawled up into the cooling pools east of here. I can't fill a bucket without one of 'em latching onto my arm! You clear 'em out for me and I'll give you something useful. What do you say?"
+    },
+    "reminder": {
+     "speaker": "Gristle",
+     "text": "Those leeches are getting fatter every day, I tell you."
+    },
+    "completion": {
+     "speaker": "Gristle",
+     "text": "No more leeches? Ha! I can fill my bucket in peace! Here, these boots are yours. Thank you, Wanderer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant leeches in the cooling pools."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Harrup, a grumbling old farmer, wants the Imps that raid his henhouse driven off.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Harrup",
+     "text": "Hmmph. Another stranger come to eat at the inn and not lift a finger for an old farmer, I suppose. Well, listen anyway! The Imps are back, and every night they get into the henhouse and they break the eggs and they let the goats out and they pull the wool right off my sheep and they cackle, they cackle all night long, and with the dead walking the roads not one soul in Harrow Cross will help me, so I'm ruined, I tell you, ruined! Will you get rid of those Imps for me?"
+    },
+    "reminder": {
+     "speaker": "Harrup",
+     "text": "Oh.... Still nothing? They come down out of the woods north of here, I tell you!"
+    },
+    "completion": {
+     "speaker": "Harrup",
+     "text": "No more cackling in the henhouse! Ha, ha! Thank you, brave Adventurer! Take this Bow. It never hit an Imp for me, but maybe you'll have better luck."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Imps away from Harrup's farm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Darvo, a grain farmer, wants the Imps cleared out of his granary.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Darvo",
+     "text": "Thieving, stinking, good-for-nothing Imps! They've moved into my granary south of the village and they eat my seed corn all night long and throw the husks at me when I go in there with a lantern, and the Mayor says he can't spare a single man because of the Ogres, and if this keeps up I won't have one seed left to plant come spring! Here, take this quiver. You clear those Imps out for me and I'll pay you in good gold. Deal?"
+    },
+    "reminder": {
+     "speaker": "Darvo",
+     "text": "Are those Imps still in my granary?! Get in there and clear 'em out!"
+    },
+    "completion": {
+     "speaker": "Darvo",
+     "text": "They're gone? Good riddance! Here's 100 gold, stranger. Thank you kindly!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Imps out of Darvo's granary."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "Quiver"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

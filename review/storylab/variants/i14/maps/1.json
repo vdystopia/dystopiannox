@@ -1,0 +1,216 @@
+{
+ "iter": "i14",
+ "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so the way north is shut.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Wat": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, pays to have the wolves that take his sheep killed.",
+   "names": {
+    "Ulric": "person",
+    "Ashwood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Honestly, my flock has shrunk quite a lot, with wolves prowling out of the Ashwood. I'll pay good gold to whoever thins that pack."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Hunter! Go out after that wolf pack!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Fine work, young sir! This gold will surely help me rebuild the flock those wolves scattered across my pasture. It seems no beast in the Ashwood can stand against you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Ulric's wolves... for good."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow: the Urchins of the old barrow stole the crank of her waterwheel.",
+   "names": {
+    "Wenna": "person",
+    "Urchins": "group",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Blast! Where were you, lad!? The Urchins broke into my mill last night and they'd have carried off every sack of flour if the ferrymen had not come running with their poles just in time!\n\nBut in the uproar, the thieves grabbed my waterwheel's crank, making the flour my smallest worry! No grain gets ground in Brackenford without it!\n\nFollow them east of the ford, to the old barrow! Will you bring my crank home, or is the mill finished?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Return when you've changed your mind."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Nothing yet? Well, keep searching in that barrow by the ford. My crank must be found at once!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "I trust you gave those Urchins a thrashing they'll long remember! I'm not sure what this old ankh is worth, but it's yours."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Bless you for helping a poor lonely widow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the waterwheel crank from the barrow for Wenna the widow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the waterwheel crank from the barrow for Wenna the widow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest Corwin's bandits took back from Crow Hill; Sly Wat says a beast is drinking the Drowned Lantern's ale.",
+   "names": {
+    "Halvard": "person",
+    "Corwin": "person",
+    "Crow Hill": "place",
+    "Brackenford": "place",
+    "Drowned Lantern": "place",
+    "Wat": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Ohhhh, how could this happen? Corwin's bandits beat both of my gate guards and took the tithe chest. There is no one left to send.\n\nHurry, you must catch them before it reaches Crow Hill."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "I have heard some beast down in the Drowned Lantern cellar drinks the ale dry."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Bless you, young sir! Brackenford owes you a great debt for such a bold deed.\n\nThis sword is yours, a modest gift from all of us. The north gate is open to you now. Get whatever supplies are needed, then hurry on toward Crow Hill."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Bless you! You saved the ale! Now, go and see the barkeep. I bet he'll pour you a free mug for your trouble."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go up Crow Hill and take back Halvard's tithe chest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Something is drinking the Drowned Lantern's ale -- find and kill it!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip chased the Urchins into the old barrow and has not come back.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Praise be! No novice in all Brackenford is braver than my Pip. But the boy went after the Urchins into the old barrow east of the ford. Not a sign of him since, and the pests bite all who come near.\n\nBring him home safe, and a reward awaits you here.\n\nTake this potion along, in case things go badly below."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "I have no more potions to spare just now. Good fortune down in that barrow. Those Urchins can be a nasty, biting bunch."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Filthy Urchins have taken over this barrow, chasing me into every corner. You must lead me out, stay close and fend off these wretched beasts."
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Lead on."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Bless you, my son. You did a holy deed, and this chapel won't forget it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead the lost novice from the barrow to safety."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points to Halvard in the Moot Hall, who sends the player against Red Corwin on Crow Hill.",
+   "names": {
+    "Halvard": "person",
+    "Moot Hall": "place",
+    "Crow Hill": "place",
+    "Red Corwin": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Eek! I saw Halvard storm right into the Moot Hall in a fury!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Stranger! Thank goodness, help us! Rotten bandits have seized the watchtower on Crow Hill, north of town, and no traveler on the road gets by them with his purse! Red Corwin leads that whole wicked rabble!\n\nDrive him off, and a fine reward is yours!"
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "The bandits still hold Crow Hill!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin off Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

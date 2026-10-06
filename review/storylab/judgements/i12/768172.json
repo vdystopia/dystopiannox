@@ -1,0 +1,33 @@
+{
+  "packet": "768172",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Flat, officious checkpoint statement, the missing comma in 'Be gone [Group], before' and the curt 'Sorry, the [Place] are closed' all read as Westwood's plain, slightly rough barks."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Exclamation-heavy 'Halt! You are forbidden to pass!' plus plain directions and the 'boy' send-off fit Nox. It is just functional enough to be authentic."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Morale-poster lines ('break on our spears', 'repay those who were lost', 'a strange hope on the road') are more literary and atmospheric than Nox guards ever are. None of them tells the player anything useful."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The capitalised 'WANT' and the gruff tone imitate Nox's guards well. 'Fair try at sweet talk' answers a player line that never existed, and 'the Reeve's men' sounds like an invented setting."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The jailer's welcome, 'Don't hassle my prisoners' and 'Last warning' are Westwood's dry, plain humour. Each line is short and does one job."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "It borrows Nox's arrest-and-insult shape ('You sicken me!', 'Will you come quietly'), but the lines don't follow from one another. 'Onto the boards', the claw-marks evidence and the 'damp and snug shelter' irony are overwritten."},
+    {"label": "G", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Blunt plot exposition ('The sorceress, [Person], has attacked us with an army of Undead'), 'look out' written as two words and 'haunt Nox again' read like Westwood's stiff story-delivery guards."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "'This is the home of [Person].' then simple gratitude with 'Adventurer' is the bare, functional Nox register."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Pitiful! Off with you, fishbait!' opens with hostility that has no cause, and the lines are in the wrong emotional order. 'if you hope to see morning' is a genre flourish."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The opening line is plausibly Nox, but 'You've got the wrong guard, sorry' is a modern wink. The worried question about the Captain sets up a hook in a way Westwood's guards rarely do."}
+  ],
+  "tells": [
+    "New texts reach for atmosphere and figurative phrasing (morale slogans, 'strange hope', 'fishbait', 'damp and snug shelter'), while Westwood's guards state facts flatly: where you are, who is here, what is forbidden.",
+    "Westwood's three lines go in a clear order (statement, repeat, changed state after the quest). New texts often don't follow on, or they answer a player line that doesn't exist.",
+    "Westwood's humour is dry and comes from function (the jailer and his cells). The new texts' humour is a modern wink or a mocking insult.",
+    "Westwood shows small roughness: missing commas, 'look out' as two words, abrupt one-liners. The new texts are smoother and more crafted.",
+    "Invented social titles ('the Reeve's men', 'onto the boards') bring in a setting vocabulary that isn't Nox's."
+  ]
+}

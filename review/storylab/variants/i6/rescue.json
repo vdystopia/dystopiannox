@@ -1,0 +1,658 @@
+{
+ "scenario": "rescue",
+ "iter": "i6",
+ "writer": "one writer a town (variants/i6/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm begs the player to bring back his novice Pip from the old barrow; Pip must be led out to the gate.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Halvard": "person",
+    "Mayor Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Dobbs": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Help! Somebody, please help! My novice Pip went into the old barrow after the Urchins and he hasn't come back! Bring the boy home to me and I will give you the best the Chapel has. I swear it!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Those wicked Urchins are a plague on Brackenford. I will pray for Pip."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Hello? Hello? Over here! Please, don't leave me down here!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Get me to the gate! I'll stay right behind you."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You're safe! Thank goodness!\n\nPlease take this robe as a token of my appreciation. And go see Mayor Halvard. Brackenford needs you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Pip from the old barrow and bring him back to Brother Anselm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Thrumm: Foreman Kessick begs the player to bring back Master Quill, held by the Golems in the Deep Halls; Quill gives the key to his apprentices' cell.",
+   "names": {
+    "Thrumm": "place",
+    "Vorga": "person",
+    "Stone Witch": "person",
+    "Golems": "group",
+    "Deep Halls": "place",
+    "Great Hall": "place",
+    "Warlord Gorran": "person",
+    "Ulgrim": "person",
+    "Tullis": "person",
+    "Dask": "person",
+    "Dask's Armory": "place",
+    "Foreman Kessick": "person",
+    "Miners' Guild": "group",
+    "Giant Leeches": "group",
+    "Sump": "place",
+    "Hargo": "person",
+    "Imps": "group",
+    "Chimney": "place",
+    "Crystal Lens": "thing",
+    "Varn": "person",
+    "Nella": "person",
+    "Fobb": "person",
+    "Deep Mug": "place",
+    "Bulgo": "person",
+    "Yselde": "person",
+    "Guildmistress Ottilie": "person",
+    "Old Shaft": "place",
+    "Light spell": "thing",
+    "Master Quill": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Foreman Kessick",
+     "text": "Stranger! Master Quill is trapped down in the Deep Halls with the Golems! Bring him back alive and the best scroll in the Guild is yours! Go! Hurry!"
+    },
+    "reminder": {
+     "speaker": "Foreman Kessick",
+     "text": "Please hurry!"
+    },
+    "found": {
+     "speaker": "Master Quill",
+     "text": "You came for me? Ha! Good. Here, take this key. My apprentices are locked up further down. Get them out too, lad."
+    },
+    "following": {
+     "speaker": "Master Quill",
+     "text": "Lead the way. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Foreman Kessick",
+     "text": "Master Quill! You brought him back alive! The Guild thanks you. This scroll is yours.\n\nNow go and see Warlord Gorran. He must hear what Master Quill saw down there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Master Quill from the Golems in the Deep Halls."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tharn: Yarra's pet pig Mulch is shut in the old smokehouse west of town with Zombies all around; Yarra locked the door and gives the player the key.",
+   "names": {
+    "Tharn": "place",
+    "Vuldra": "person",
+    "Witch Vuldra": "person",
+    "Blackwater": "place",
+    "Gundar the Ferryman": "person",
+    "Gundar": "person",
+    "Mayor Dremmel": "person",
+    "Long House": "place",
+    "Pelk": "person",
+    "Priest Hollin": "person",
+    "Giant Leeches": "group",
+    "Leeches": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Ebbard the Herbalist": "person",
+    "Ebbard": "person",
+    "Yarra": "person",
+    "Mulch": "person",
+    "old smokehouse": "place",
+    "Warden Brakk": "person",
+    "Pump House": "place",
+    "Gribble": "person",
+    "Morla": "person",
+    "Green Lamp": "place",
+    "Harrok": "person",
+    "Nimm": "person",
+    "Nimm's": "place",
+    "Osk": "person",
+    "Fenna": "person",
+    "Brug": "person",
+    "Wilk": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yarra",
+     "text": "Help! Somebody help me! They've got my pig!\n\nMy Mulch ran into the old smokehouse, west of here, and now those Zombies are all around it! I locked the door so they can't get in. Here's the key. If you get him out, I'll give you anything I have!"
+    },
+    "reminder": {
+     "speaker": "Yarra",
+     "text": "Oh.... My poor Mulch. He must be so scared. Please hurry!"
+    },
+    "found": {
+     "speaker": "Mulch",
+     "text": "Squeeeeee! Oink! Oink! Oink!"
+    },
+    "following": {
+     "speaker": "Mulch",
+     "text": "Oink! Oink!"
+    },
+    "completion": {
+     "speaker": "Yarra",
+     "text": "Mulch! My Mulch, you came home! Oh, thank you, thank you!\n\nPlease take this spell book. I can't read a word of it, but maybe you can. And go see Mayor Dremmel in the Long House. He needs everybody who can fight!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Yarra's pig from the old smokehouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnath: Jasko, a peddler, bargains the key to the old sewer gate for his sister Mila, dragged into the catacombs by Zombies; she is found dying.",
+   "names": {
+    "Durnath": "place",
+    "Castle Durnath": "place",
+    "Black Spire": "place",
+    "Black Boar": "place",
+    "Armory of Castle Durnath": "place",
+    "Ostrigan": "person",
+    "Ruvane": "person",
+    "Tavrin": "person",
+    "Torbek": "person",
+    "Fennick": "person",
+    "Ilsabet": "person",
+    "Jasko": "person",
+    "Mila": "person",
+    "Orwenna": "person",
+    "Dobbs": "person",
+    "Brumbo": "person",
+    "Hulgar": "person",
+    "Zelpha": "person",
+    "Nessa": "person",
+    "Pibb": "person",
+    "Staff of Mending": "thing",
+    "Horn of Durnath": "thing",
+    "Imps": "group",
+    "Wasps": "group",
+    "Zombies": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Jasko",
+     "text": "Help! Help! The Zombies took my sister! They dragged Mila down into the catacombs! Look, friend, I'm a businessman, not a hero. So here's my offer. You bring her back and I give you the key to the old sewer gate. Nobody else in Durnath has one."
+    },
+    "reminder": {
+     "speaker": "Jasko",
+     "text": "Please hurry! Mila can't last long down there!"
+    },
+    "found": {
+     "speaker": "Mila",
+     "text": "Is someone there? Jasko? I can't see... Please, I'm so cold..."
+    },
+    "following": {
+     "speaker": "Mila",
+     "text": "Leave me here. I can't go on."
+    },
+    "completion": {
+     "speaker": "Jasko",
+     "text": "Where's Mila? She didn't make it? Oh.... My poor sister. Here, take the key. I don't care about it any more."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jasko's sister Mila in the catacombs."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Tullin: Guildmaster Fennick begs the player to bring back Merrit, a merchant the dead carried off to the old cemetery; the reward is passage on the Guild's ferry.",
+   "names": {
+    "Tullin": "place",
+    "Lake Mirrow": "place",
+    "Gull Isle": "place",
+    "Ostrega": "person",
+    "Ambrel": "person",
+    "Mayor Dask": "person",
+    "Bosk": "person",
+    "Ulla": "person",
+    "Krebbit": "person",
+    "Priest Umbrin": "person",
+    "Warden Gubb": "person",
+    "Snell": "person",
+    "Guildmaster Fennick": "person",
+    "Merrit": "person",
+    "Tam Rooke": "person",
+    "Orlo": "person",
+    "Sabeth": "person",
+    "Blue Heron": "place",
+    "Orlo's Lakeside Armory": "place",
+    "Fishmongers' Guild": "group",
+    "Pearl Amulet": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Calamity! Calamity upon the Village of Tullin! Merrit, our finest merchant, has been carried off by the walking dead! I saw it with my own eyes! They rose up out of the lake and seized him from his cart, and the poor man cried out for his mother and for the Guild, and none of us could do a thing but stand there and watch! Oh, the shame of it! The Fishmongers' Guild shall never recover from such a blow!\n\nThey dragged him into the old cemetery east of here. Bring Merrit back to me alive, and the Guild shall grant you passage on our ferry, anywhere on Lake Mirrow. That is my offer, and the word of a Guildmaster is never broken!"
+    },
+    "reminder": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Oh.... You are still here. And Merrit is still down there among the dead. Please, every moment counts!"
+    },
+    "found": {
+     "speaker": "Merrit",
+     "text": "Help! Over here! Please, get me out of this place!"
+    },
+    "following": {
+     "speaker": "Merrit",
+     "text": "I'll follow you. There's a lever behind the big tomb. That's the way out!"
+    },
+    "completion": {
+     "speaker": "Guildmaster Fennick",
+     "text": "Merrit lives! The Guild is saved!\n\nTake this pass, brave Adventurer. Show it at the ferry dock and you may cross the lake whenever you please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Merrit from the old cemetery and bring him to Fennick."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorran: Warden Haskel's scouts Tamsin and Rook are held by the Undead in the crypts beneath the old chapel; Tamsin has the key to Rook's cell.",
+   "names": {
+    "Quorran": "place",
+    "Academy": "place",
+    "Bone Hills": "place",
+    "Observatory": "place",
+    "old bell tower": "place",
+    "old chapel": "place",
+    "old dormitory": "place",
+    "dueling yard": "place",
+    "Malgrith": "person",
+    "Gammel": "person",
+    "Corvald": "person",
+    "Gurt": "person",
+    "Dobb": "person",
+    "Fennick": "person",
+    "Hulda": "person",
+    "Haskel": "person",
+    "Tamsin": "person",
+    "Rook": "person",
+    "Mavrell": "person",
+    "Ollo": "person",
+    "Bodge": "person",
+    "Brack": "person",
+    "Liss": "person",
+    "Wendt": "person",
+    "Crystal Staff": "thing",
+    "Golem": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Ghosts": "group",
+    "Skeletons": "group",
+    "Watch": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Haskel",
+     "text": "Calamity! Calamity! My scouts Tamsin and Rook are in the hands of the Undead!\n\nI sent them into the Bone Hills to watch Malgrith's servants, and they never came back. I fear they are held in the crypts beneath the old chapel. Even now, in that cold and dreadful place, they may be calling out for help that will never come!\n\nMy duty keeps me at this post. Will you go into the crypts and bring my brave scouts home?"
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "These are dark days for Quorran. Dark days indeed."
+    },
+    "found": {
+     "speaker": "Tamsin",
+     "text": "You came for us! Take this key. It opens Rook's cell. Hurry!"
+    },
+    "following": {
+     "speaker": "Tamsin",
+     "text": "Lead on!"
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "Tamsin! Rook! Alive and whole! This is a glad day for the Watch!\n\nTake this book. It contains all the Watch has learned about Skeletons. It may keep you alive out there. Now go see Archmage Corvald at once. He must hear what my scouts have seen."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Warden Haskel's scouts from the crypts beneath the old chapel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Tor Vessa: Wilda begs the player to bring home her husband Fennick, the winch-maker, trapped by the Undead in the mine east of the fort.",
+   "names": {
+    "Tor Vessa": "place",
+    "Kesh Tower": "place",
+    "Great Hall": "place",
+    "Upper Gate": "place",
+    "Frozen Boot": "place",
+    "Lord Kessick": "person",
+    "Marshal Tobrin": "person",
+    "Grisla the Frost Witch": "person",
+    "Brask": "person",
+    "Dobb": "person",
+    "Steward Ormund": "person",
+    "Wilda": "person",
+    "Fennick": "person",
+    "Master Vellis": "person",
+    "Fitch": "person",
+    "Rudd": "person",
+    "Haskel": "person",
+    "Brunna": "person",
+    "Ilsa": "person",
+    "Olm": "person",
+    "Petrik": "person",
+    "Amulet of Kesh": "thing",
+    "Skull of Varl": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wilda",
+     "text": "Greetings, kind sir! Oh, thank goodness, please you have to help me, my husband Fennick went up to the mine east of here to fix the winch and the Undead came down off the pass and now he's trapped in there and nobody will go up after him because they're all too scared and Lord Kessick says he can't spare a single man! If you bring Fennick home to me, I'll give you anything I have!"
+    },
+    "reminder": {
+     "speaker": "Wilda",
+     "text": "Please hurry! He's been up there so long!"
+    },
+    "found": {
+     "speaker": "Fennick",
+     "text": "Hello? Is somebody there? Get me out of here, please!"
+    },
+    "following": {
+     "speaker": "Fennick",
+     "text": "The lift at the back of the mine still works. I just fixed it! Pull the lever and it'll take us down."
+    },
+    "completion": {
+     "speaker": "Wilda",
+     "text": "Fennick! You brought him home! Thank you, thank you, kind sir! Please, take this spell book. It's full of weather spells. I can't make heads or tails of it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Fennick from the mine and bring him home to Wilda."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Kildrun: Brannoc the armorer begs the player to bring his master, old Master Odo, up out of the lava tubes, and hands over the key to the lift.",
+   "names": {
+    "Kildrun": "place",
+    "Gorm": "person",
+    "Warden Krugg": "person",
+    "Gristle": "person",
+    "Overseer Tamsk": "person",
+    "Guildmaster Dravick": "person",
+    "Brannoc": "person",
+    "Master Odo": "person",
+    "Tallyman Pell": "person",
+    "Ozzle the Coin-Clipper": "person",
+    "Hilde": "person",
+    "Tobin": "person",
+    "Bolgo": "person",
+    "Mott": "person",
+    "Imbra": "person",
+    "Brunhold": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Smiths' Guild": "group",
+    "Guild Hall": "place",
+    "Great Forge": "place",
+    "Burning Pit": "place",
+    "Lower Forges": "place",
+    "the Bellows": "place",
+    "Ember Scepter": "thing",
+    "Lighting of the Furnaces": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brannoc",
+     "text": "Who's there?! Oh.... thank goodness. I thought the Demons had come up for me too! Master Odo went down into the lava tubes west of town and now the Ember Demons have him trapped! Here, take this key to the lift. Bring my master back up and whatever he has is yours, I swear it!"
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "Hurry, please!"
+    },
+    "found": {
+     "speaker": "Master Odo",
+     "text": "Hello? Is someone there? Get me to the lift, lad, quickly!"
+    },
+    "following": {
+     "speaker": "Master Odo",
+     "text": "Lead on. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Master Odo",
+     "text": "Ahh, home at last! You have my thanks, young sir. Take this Ankh. And tell Guildmaster Dravick that old Odo still lives!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Master Odo in the lava tubes and lead him to the lift."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Harrow Cross: Ebbert, a nervous scholar, gives the cellar key and begs the player to save his raven Grimsby, found hurt among the Spiders.",
+   "names": {
+    "Harrow Cross": "place",
+    "Cartwheel Inn": "place",
+    "Gallows Hill": "place",
+    "Kestrin": "person",
+    "Mayor Osgood": "person",
+    "Sabbek": "person",
+    "Warden Krell": "person",
+    "Dobbs": "person",
+    "Father Ambry": "person",
+    "Harrup": "person",
+    "Fennick": "person",
+    "Ebbert": "person",
+    "Grimsby": "person",
+    "Gimble": "person",
+    "Wenlow": "person",
+    "Mungo": "person",
+    "Gilly": "person",
+    "Brask": "person",
+    "Sabrine": "person",
+    "Everlight Lantern": "thing",
+    "Dispel Undead": "thing",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ebbert",
+     "text": "Good day to you, kind stranger! Oh, please, you must help me!\n\nMy raven Grimsby flew into the cellar of the burned farmhouse west of here, and the Spiders got him. I heard him squawking! Nobody will go near the place, not with the Undead about. Here, take the key to the cellar. Will you find him for me?"
+    },
+    "reminder": {
+     "speaker": "Ebbert",
+     "text": "Grimsby never listens to me. Never!"
+    },
+    "found": {
+     "speaker": "Grimsby",
+     "text": "Squawk... Ebbert...? Hurt... can't fly..."
+    },
+    "following": {
+     "speaker": "Grimsby",
+     "text": "Squawk! Home! Home!"
+    },
+    "completion": {
+     "speaker": "Ebbert",
+     "text": "Grimsby! Oh, look at his poor wing! He'll live, he'll live. Thank you, thank you! Please, take this Spell Book as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ebbert's raven from the cellar of the burned farmhouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Vardo: Odelia's husband Pockle, a merchant, is locked in his own storeroom at the trading post the Ogres overran; Odelia gives the key.",
+   "names": {
+    "Vardo": "place",
+    "Mayor Brumhold": "person",
+    "Brumhold": "person",
+    "Bolgrum": "person",
+    "Thalden": "person",
+    "Skarn Hill": "place",
+    "Gorlen": "person",
+    "Darvo": "person",
+    "Ysolde": "person",
+    "Gloves of Mending": "thing",
+    "Odelia": "person",
+    "Pockle": "person",
+    "Fodric": "person",
+    "Gubbin": "person",
+    "Bessa": "person",
+    "Krell": "person",
+    "Krell's Armory": "place",
+    "Zenna": "person",
+    "Tibbet": "person",
+    "Marl": "person",
+    "Sorka": "person",
+    "Ogres": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Odelia",
+     "text": "Calamity! The Ogres have seized my husband Pockle! The vile brutes overran our trading post east of here and locked him in his own storeroom! I have the only other key. Take it, I beg you. Can you bring my husband home to me?"
+    },
+    "reminder": {
+     "speaker": "Odelia",
+     "text": "Please, hurry!"
+    },
+    "found": {
+     "speaker": "Pockle",
+     "text": "A customer! Er... I mean, a rescuer! Oh, bless you! Get me out of here and you can have anything in my cart at half price!"
+    },
+    "following": {
+     "speaker": "Pockle",
+     "text": "Lead on! And if you see a crate of soap, grab it. Those Ogres sure won't be using it!"
+    },
+    "completion": {
+     "speaker": "Pockle",
+     "text": "Home at last! Odelia, I'm home! Here, take this robe for all your help. Hardly worn at all!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Pockle the merchant from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

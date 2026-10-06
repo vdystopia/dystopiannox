@@ -1,0 +1,318 @@
+{
+ "iter": "i7",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kal Vorra",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Gezra the Witch has woken the Undead in the Deep Shafts below Kal Vorra, and the mines are shut.",
+  "names": {
+   "Kal Vorra": "place",
+   "Deep Shafts": "place",
+   "Glimmer Pit": "place",
+   "Sunken Shaft": "place",
+   "Old Guild Hall": "place",
+   "Ulmac": "place",
+   "Scrolls-Galore": "place",
+   "Ruby Amulet": "thing",
+   "Gezra": "person",
+   "Ozric": "person",
+   "Korvald": "person",
+   "Torg": "person",
+   "Pellam": "person",
+   "Fennick": "person",
+   "Wenk": "person",
+   "Hessa": "person",
+   "Dobb": "person",
+   "Gorlo": "person",
+   "Brokka": "person",
+   "Grudd": "person",
+   "Ilva": "person",
+   "Ulda Coppernose": "person",
+   "Snig": "person",
+   "Merra": "person",
+   "Orvo": "person",
+   "Undead": "group",
+   "Imps": "group",
+   "Spiders": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Torg guards the big lift down to the mines, which Foreman Korvald has closed to all but working miners.",
+   "names": {
+    "Torg": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Torg",
+     "text": "Only working miners may ride the lift!"
+    },
+    "again": {
+     "speaker": "Torg",
+     "text": "Hey, you should find yourself a proper helmet."
+    },
+    "later": {
+     "speaker": "Torg",
+     "text": "Go on, then."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Pellam the mule keeper wants the Spiders of the west tunnel cleared out after they ate his best mule.",
+   "names": {
+    "Pellam": "person",
+    "Spiders": "group",
+    "Kal Vorra": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellam",
+     "text": "Spiders? Sure, I know all about 'em. Ate my best mule.\n\nFollow the west tunnel, out past the ore carts, over the rope bridge. That's where they nest. Clear 'em out and there's gold in it for you."
+    },
+    "reminder": {
+     "speaker": "Pellam",
+     "text": "I am glad to see a brave stranger take up the fight which can rid Kal Vorra of those Spiders."
+    },
+    "completion": {
+     "speaker": "Pellam",
+     "text": "Thanks for your help! Here's 100 gold. Now I just have to go buy myself a new mule!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Spiders out of the west tunnel for Pellam the mule keeper."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Fennick's Ruby Amulet was stolen by Imps who took it to the Glimmer Pit.",
+   "names": {
+    "Fennick": "person",
+    "Ruby Amulet": "thing",
+    "Imps": "group",
+    "Glimmer Pit": "place",
+    "Kal Vorra": "place",
+    "Gezra": "person",
+    "Korvald": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Sad, plain truth, lad. Some sneaking Imps came up from the deep and made off with my Ruby Amulet before I could lock it away. The place they went is the Glimmer Pit, an old haunt of theirs.\n\nI know Kal Vorra is in need of a brave soul. But are you brave enough, lad? heh, heh, heh...\n\nFollow the ore track. Find the cave past the last lamp. And watch out for Imps. Those little devils are the sneakiest of thieves, at best. I promise you, you don't want them in your pockets, lad. Will you bring my Amulet back?"
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Don't go playing the coward with me friend. You have a good strong arm. My Amulet is down in that Pit, plain as day. Come back when you find your nerve."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Good hunting!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "We never should have let those Imps nest so close to the mine. I bet that mad witch Gezra stirred them up. Here, take this Spell Book as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Foreman Korvald came by asking for you. He said he'd be waiting at the big lift."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back Fennick's Ruby Amulet from the Glimmer Pit."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back Fennick's Ruby Amulet from the Glimmer Pit."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Wenk and Dobb brush the player off, Hessa runs down the ore buyers from Ulmac.",
+   "names": {
+    "Wenk": "person",
+    "Hessa": "person",
+    "Dobb": "person",
+    "Ulmac": "place",
+    "Gorlo": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wenk",
+     "text": "Not today, sorry."
+    },
+    "rumour2": {
+     "speaker": "Hessa",
+     "text": "The ore buyers from Ulmac are a greedy and heartless pack of swindlers! The worst is their master, Gorlo!"
+    },
+    "rumour3": {
+     "speaker": "Dobb",
+     "text": "Huh? Sorry, no time."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brokka keeps the tavern, Grudd sells arms and armor, Ilva runs Scrolls-Galore.",
+   "names": {
+    "Brokka": "person",
+    "Grudd": "person",
+    "Ilva": "person",
+    "Scrolls-Galore": "place",
+    "Kal Vorra": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brokka",
+     "text": "Pssst! Hey! You! Want a mug of ale? Cheapest under the mountain and it's brewed right here in Kal Vorra!"
+    },
+    "arms": {
+     "speaker": "Grudd",
+     "text": "Undead took the deep shafts. Need a shield?"
+    },
+    "magic": {
+     "speaker": "Ilva",
+     "text": "This is Scrolls-Galore. I doubt you'll find a thing worth buying here, stranger."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Respectable: Ulda Coppernose, the paymaster, wants the miners' pay chest left in the Old Guild Hall when the Undead rose. Shady: Snig wants his smuggled ale kegs fetched out of a locked tunnel before Foreman Korvald hears of it.",
+   "names": {
+    "Ulda Coppernose": "person",
+    "Undead": "group",
+    "Old Guild Hall": "place",
+    "Snig": "person",
+    "Korvald": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulda Coppernose",
+     "text": "Hail, stranger! Ulda Coppernose' the name! You look like someone with work to do, so I thought I might put one more job your way. The last time the Undead rose up, they chased us out of the very hall where the miners' pay chest sits... And we ran without it. The chest should still be there behind the altar in the Old Guild Hall. I'll keep the miners calm while you go fetch it."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "Five kegs of my ale are stuck in the old tunnel under us. If we're quick we can sell every last drop before Korvald hears of it. Come on!\n\nI can keep watch and run the lift while you go after the kegs. Use this key to open the first gate. Behind it you'll find another key for the next one."
+    },
+    "outcome_a": {
+     "speaker": "Ulda Coppernose",
+     "text": "You did fine work, young sir! This chest will surely keep the miners digging through these dark days. Seems there's nothing you can't do! Take this Chain Tunic for your trouble."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "Hmmm. I thought there were five kegs. Here's your 50 gold."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Old Guild Hall and bring back Ulda's pay chest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Snig's smuggled kegs."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Merra begs the player to bring back her husband Orvo, trapped by the Undead in the Sunken Shaft.",
+   "names": {
+    "Merra": "person",
+    "Orvo": "person",
+    "Sunken Shaft": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Merra",
+     "text": "Greetings, kind stranger. You're a long way down from the sun. I've spent all my savings and all my strength, to get my husband Orvo out of the Sunken Shaft. The Undead have him trapped down there. Please, bring him home!"
+    },
+    "reminder": {
+     "speaker": "Merra",
+     "text": "Now that you heard where he is, you need to go bring him back!"
+    },
+    "found": {
+     "speaker": "Orvo",
+     "text": "I shouted 'help me'! Now get me out of here before my lamp gives out with my nerve."
+    },
+    "following": {
+     "speaker": "Orvo",
+     "text": "Grab whatever potions you can find in these old crates and lead me out once you're ready."
+    },
+    "completion": {
+     "speaker": "Merra",
+     "text": "I'm sure the children will be thrilled to have their father back home. Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Orvo home alive."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hessa points the player to Foreman Korvald, who got Ozric's letter and sends the player down the big lift after Gezra the Witch in the Deep Shafts.",
+   "names": {
+    "Hessa": "person",
+    "Korvald": "person",
+    "Ozric": "person",
+    "Deep Shafts": "place",
+    "Gezra": "person",
+    "Undead": "group",
+    "Kal Vorra": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hessa",
+     "text": "Hello, friend Wanderer. Foreman Korvald is looking for you."
+    },
+    "opening": {
+     "speaker": "Korvald",
+     "text": "Ozric sent you? Yeah, I got his letter. Something of a worrier, that one.\n\nTake the big lift, down past the smelters, into the Deep Shafts. That's where the witch Gezra woke the Undead. Stop her, lad, or Kal Vorra is finished."
+    },
+    "reminder": {
+     "speaker": "Korvald",
+     "text": "Go on. Get in the lift!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down to the Deep Shafts and stop Gezra the Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,682 @@
+{
+ "scenario": "rescue",
+ "iter": "i8",
+ "writer": "one writer a town (variants/i8/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Anselm's novice Pip followed the Urchins into the old barrow and their shaman turned him into an Urchin.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Ulric": "person",
+    "Wenna": "person",
+    "Tobin": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Kind sir! Please, help us!\n\nMy novice Pip went into the old barrow across the ford after those Urchins, and he never came back. Last night an Urchin came scratching at the chapel door, crying my name in Pip's voice! Their shaman has turned the poor boy into one of them!\n\nBring him back to the Chapel of the Ford and I can lift the curse. Will you go?"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "I've got my prayers to say. You fetch the boy."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Here's a human face at last and someone besides Urchins who might take me home!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "No matter if the Urchins chase us clear to the ford! The chapel is holy ground. Even Urchins wouldn't dare set foot in the Chapel of the Ford!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! Hold still, boy...\n\nThere! He's himself again! Not a whisker of Urchin left on him! Bless you, brave Adventurer!\n\nPlease, take this spell book. You have done the chapel a great service."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pip among the Urchins in the tunnels beneath the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Krennack: Granny Vell's pet mole Duggles dug his way into the Ogre camp under the Great Lift.",
+   "names": {
+    "Krennack": "place",
+    "Urgrubb": "person",
+    "Ogres": "group",
+    "Grunts": "group",
+    "Corvane": "person",
+    "Great Lift": "place",
+    "Pit Office": "place",
+    "Pit": "place",
+    "Brakkus": "person",
+    "Stobb": "person",
+    "Toskel": "person",
+    "Troll": "group",
+    "Counting House": "place",
+    "Mining Council": "group",
+    "Fennick": "person",
+    "Singing Pick": "thing",
+    "Imps": "group",
+    "West Shaft": "place",
+    "Jory": "person",
+    "Ma": "person",
+    "Pa": "person",
+    "Enchanted Rolling Pin": "thing",
+    "East Shaft": "place",
+    "Bats": "group",
+    "Shift Bell": "thing",
+    "Vell": "person",
+    "Duggles": "person",
+    "Gant": "person",
+    "Mirri": "person",
+    "Dolla": "person",
+    "Tobbs": "person",
+    "Broken Pick": "place",
+    "Hurlo": "person",
+    "Zilva": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Vell",
+     "text": "Help! Oh, somebody help me! My Duggles dug his way right into the Ogre camp under the Great Lift!\n\nThose brutes will eat anything that wriggles! My sweet little mole will end up in an Ogre's stew pot!\n\nPlease, kind stranger, find my Duggles and bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Vell",
+     "text": "By the way, Duggles always squeaks when he's frightened..."
+    },
+    "found": {
+     "speaker": "Duggles",
+     "text": "Salutations, kind sir! I am most relieved you have come at long last!"
+    },
+    "following": {
+     "speaker": "Duggles",
+     "text": "Lead on! *SNUFFLE*"
+    },
+    "completion": {
+     "speaker": "Vell",
+     "text": "Duggles! My precious Duggles! You're home, you're home!\n\nBless you, kind stranger. Please accept this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Granny Vell's pet mole home from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skell: Marda's husband Bodkin, out after frogs, has walked into the Ogre camp north of town and been caught again.",
+   "names": {
+    "Skell": "place",
+    "Vashtor": "person",
+    "Orvel": "person",
+    "Mayor Pellum": "person",
+    "Warden Brodd": "person",
+    "Tolly": "person",
+    "Gubbin": "person",
+    "Thurlo": "person",
+    "Ysolt": "person",
+    "Marda": "person",
+    "Bodkin": "person",
+    "Father Ambrus": "person",
+    "Mother Hesk": "person",
+    "Krell": "person",
+    "Oggin": "person",
+    "Wendle": "person",
+    "Corra": "person",
+    "Grume": "person",
+    "Tibbet": "person",
+    "Sunken Temple": "place",
+    "Krell's Forge": "place",
+    "Muddy Mug": "place",
+    "Moon Amulet": "thing",
+    "Silver Bell": "thing",
+    "Zombies": "group",
+    "Ogres": "group",
+    "Ogre Chief": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marda",
+     "text": "Oh, that fool! That great soggy fool! The Ogres have caught my Bodkin again! He goes out after frogs and walks straight into their camp every time! He's been caught more often than the frogs!\n\nTheir camp is north of town, past the dead trees. Please, bring him home before they put him in the pot! I'll give you anything!"
+    },
+    "reminder": {
+     "speaker": "Marda",
+     "text": "Go, quickly! The Ogres' pot grows hot."
+    },
+    "found": {
+     "speaker": "Bodkin",
+     "text": "Untie me, quick!"
+    },
+    "following": {
+     "speaker": "Bodkin",
+     "text": "Take me home, young sir. I'll be right behind you."
+    },
+    "completion": {
+     "speaker": "Marda",
+     "text": "Bodkin! You're home, and still in one piece! Oh, thank you, thank you, kind sir!\n\nPlease, take this Ankh. It's the least I can do."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get the cage key from the Ogres and set Bodkin free.\nThe key is probably hanging in the Ogre Chief's tent."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varrok: Hesk's partner Wobbin keeps sneaking off to sell pots to the Ogres at the Stone Bridge, and they have locked him in a cage again.",
+   "names": {
+    "Varrok": "place",
+    "Grukk": "person",
+    "Dorran": "person",
+    "Grisholm": "person",
+    "Bolk": "person",
+    "Gessa": "person",
+    "Pruett": "person",
+    "Brenik": "person",
+    "Pogg": "person",
+    "Lunk": "person",
+    "Hesk": "person",
+    "Wobbin": "person",
+    "Tibbet": "person",
+    "Brask": "person",
+    "Quillon": "person",
+    "Lissa": "person",
+    "Pellam": "person",
+    "the Keep": "place",
+    "the Stone Bridge": "place",
+    "the east postern": "place",
+    "the old quarry": "place",
+    "the Urchin caves": "place",
+    "the Ogre camp": "place",
+    "the south woods": "place",
+    "the moonstone amulet": "thing",
+    "the pay chest": "thing",
+    "Ogres": "group",
+    "Rogues": "group",
+    "Urchins": "group",
+    "Urchin Shaman": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hesk",
+     "text": "Oh, no! Not again! Those Ogres have caught Wobbin again!?\n\nThat fool keeps sneaking off to the Stone Bridge to sell pots to the Ogres! And every time they lock him in a cage and keep the pots!\n\nPlease, young sir, get him out of there before they throw him in the stew. I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "Good evening, young sir."
+    },
+    "found": {
+     "speaker": "Wobbin",
+     "text": "Drat it all! Now they've gone and smashed my best kettle! I'll try to keep up behind you. Take me to Hesk!"
+    },
+    "following": {
+     "speaker": "Wobbin",
+     "text": "Whew... looks like I'm not Ogre stew yet. Keep going, friend."
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "Wobbin! You big oaf, you're home!\n\nBless you, kind stranger! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Stone Bridge and free Wobbin from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kesk: Marla's pet parrot Beaky flew off when the Undead came ashore and is stuck in the Drowned Chapel among the Zombies.",
+   "names": {
+    "Kesk": "place",
+    "Lake Murl": "place",
+    "Gull Island": "place",
+    "Drowned Chapel": "place",
+    "Tolbek": "person",
+    "Skarn": "person",
+    "Hobbrig": "person",
+    "Dorvic": "person",
+    "Tull": "person",
+    "Gribble": "person",
+    "Wessa": "person",
+    "Bodrik": "person",
+    "Kurlow": "person",
+    "Marla": "person",
+    "Beaky": "person",
+    "Selka": "person",
+    "Ostwin": "person",
+    "Pellik": "person",
+    "Agna": "person",
+    "Yarnoth": "person",
+    "Fennic": "person",
+    "Fishing Amulet": "thing",
+    "Ear Horn": "thing",
+    "Undead": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ghost": "group",
+    "Zombies": "group",
+    "Necromancer": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marla",
+     "text": "Beaky! My poor Beaky!\n\nHe flew off when the dead men came ashore last night, and now he's stuck in the old Drowned Chapel at the west end of the lake! I can hear him squawking from here!\n\nThose Zombies will pluck him bald! Please, kind stranger, bring my Beaky home!"
+    },
+    "reminder": {
+     "speaker": "Marla",
+     "text": "Oh, it's you again. Have you found my Beaky?"
+    },
+    "found": {
+     "speaker": "Beaky",
+     "text": "Awk! Sorry but you need a cracker!"
+    },
+    "following": {
+     "speaker": "Beaky",
+     "text": "The water down here is even deeper than it looks. Awk! Be very, very careful. Remember, Beaky is a good bird."
+    },
+    "completion": {
+     "speaker": "Marla",
+     "text": "Beaky! Oh, you're home! Mama's been worried sick!\n\nThank you, thank you, kind sir! Take these potions, it's all I have. Say thank you, Beaky!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue the parrot of Marla the net-maker."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Wobbin muddled a Teleport spell and sent his apprentice Nettle into the Bat Caves under Crag Hill.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Great Library": "place",
+    "South Gate": "place",
+    "Gloomfen": "place",
+    "Malgrin's Tower": "place",
+    "Ogre Camp": "place",
+    "Bramble Orchard": "place",
+    "Old Quarry": "place",
+    "Old Mill": "place",
+    "Crag Hill": "place",
+    "Bat Caves": "place",
+    "Inkpot": "place",
+    "Golden Quill": "thing",
+    "Teleport": "thing",
+    "Ogres": "group",
+    "Wisps": "group",
+    "Urchins": "group",
+    "Malgrin": "person",
+    "Vandell": "person",
+    "Tollund": "person",
+    "Brusk": "person",
+    "Pellock": "person",
+    "Hesk": "person",
+    "Dilly": "person",
+    "Orlo": "person",
+    "Gasper": "person",
+    "Mossop": "person",
+    "Dorgle": "person",
+    "Yselda": "person",
+    "Elspen": "person",
+    "Gimble": "person",
+    "Wobbin": "person",
+    "Nettle": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wobbin",
+     "text": "Oh, this is a catastrophe! The worst blunder of my whole miserable career!\n\nI was showing young Nettle the Teleport spell and I muddled the words. Instead of across the room, I sent her clear into the Bat Caves under Crag Hill!\n\nIf the Arch-Mage finds out, he'll take away my wand! Go north to Crag Hill and bring her back before anybody notices she's gone!"
+    },
+    "reminder": {
+     "speaker": "Wobbin",
+     "text": "I am ashamed to see a stranger clean up the mess which my own clumsy tongue has made."
+    },
+    "found": {
+     "speaker": "Nettle",
+     "text": "You have come all the way down here to get me!"
+    },
+    "following": {
+     "speaker": "Nettle",
+     "text": "This way."
+    },
+    "completion": {
+     "speaker": "Wobbin",
+     "text": "Nettle! You're home! Oh, thank the stars!\n\nAnd not a word to the Arch-Mage, eh? Please accept this Wizard Robe as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Nettle from the Bat Caves beneath Crag Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Ulmgard: Old Mildra's parrot Mungo flew out after a moth and the Ogres in the camp below the south cliff mean to bake him in a pie.",
+   "names": {
+    "Ulmgard": "place",
+    "Upper Gate": "place",
+    "Low Gate": "place",
+    "Glacier Tombs": "place",
+    "Ice Caves": "place",
+    "Signal Tower": "place",
+    "Cold Kettle": "place",
+    "Hask": "person",
+    "Galmor": "person",
+    "Dromund": "person",
+    "Ostrag": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Hedda": "person",
+    "Tibbet": "person",
+    "Brannoc": "person",
+    "Krell": "person",
+    "Mildra": "person",
+    "Mungo": "person",
+    "Bodo": "person",
+    "Gorm": "person",
+    "Yorla": "person",
+    "Undead": "group",
+    "White Wolves": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Mildra",
+     "text": "Oh, my Mungo! My poor Mungo! The Ogres have got him!\n\nHe flew out the window after a moth and the Ogres from the camp below the south cliff caught him in a sack. I heard them laughing about a pie! A pie!\n\nPlease, young sir, bring my bird home safe. I'm just an old woman. I can't go down there."
+    },
+    "reminder": {
+     "speaker": "Mildra",
+     "text": "Mungo is the dearest friend and sole comfort of my old age. Your trip down that cliff will show whether you have any heart at all."
+    },
+    "found": {
+     "speaker": "Mungo",
+     "text": "Awk! This road climbs to Ulmgard, the mighty frozen stronghold of the north!"
+    },
+    "following": {
+     "speaker": "Mungo",
+     "text": "March up the ice stair. From there we climb past the stables and on to Warden Galmor's hall."
+    },
+    "completion": {
+     "speaker": "Mildra",
+     "text": "Mungo! My darling Mungo! You're home! Thank goodness!\n\nHere, kind sir, take this spell book as a token of my appreciation. It's no use to an old woman like me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Mungo from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Kalgarr: Yarra's husband Quell walked into the Burning Caves to prove his new apron could stand any fire and has not come out.",
+   "names": {
+    "Kalgarr": "place",
+    "Malgrith": "person",
+    "Mardock": "person",
+    "Hadric": "person",
+    "Tibbet": "person",
+    "Pelgrim": "person",
+    "Fusk": "person",
+    "Orsolde": "person",
+    "Grizzel": "person",
+    "Lumpkin": "person",
+    "Yarra": "person",
+    "Quell": "person",
+    "Brix": "person",
+    "Dorla": "person",
+    "Bulba": "person",
+    "Hobb": "person",
+    "Zibbet": "person",
+    "Deep Furnace": "place",
+    "Mount Skarl": "place",
+    "Forge Hall": "place",
+    "Mine Gate": "place",
+    "Old Smelter": "place",
+    "Ash Pits": "place",
+    "Cinder Hills": "place",
+    "Burning Caves": "place",
+    "Guild": "group",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Shade": "group",
+    "Fire Amulet": "thing",
+    "Hammer of Kalgarr": "thing",
+    "Cell Key": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yarra",
+     "text": "Please, you must help me! My Quell got himself a new leather apron and swore it could stand any fire! He walked into the Burning Caves to prove it, and he hasn't come out!\n\nThe caves are past the slag heaps, east of town. Oh, bring him home to me, kind sir! I'll give you what I can!"
+    },
+    "reminder": {
+     "speaker": "Yarra",
+     "text": "Go -- hurry!"
+    },
+    "found": {
+     "speaker": "Quell",
+     "text": "I'm saved. Bless you!"
+    },
+    "following": {
+     "speaker": "Quell",
+     "text": "Sorry, but I can't go another step unless you know where you're leading me. Can't have the two of us wandering around in here getting cooked, can we?"
+    },
+    "completion": {
+     "speaker": "Yarra",
+     "text": "Quell! You great oaf, you're home! Oh, thank you, thank you, kind sir! Please, take this gold. It isn't much, but it's all we have."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Quell and lead him out of The Burning Caves."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel: Dorla's grumpy brother Grumbald marched off to the bandit camp in Hollow Wood to complain about their drumming and never came back.",
+   "names": {
+    "Torvel": "place",
+    "Crooked Crown": "place",
+    "Toll House": "place",
+    "Varga Tower": "place",
+    "Pitch Caves": "place",
+    "Hollow Wood": "place",
+    "Kelmor": "place",
+    "Grelloch": "place",
+    "Skarn": "person",
+    "Ulbar": "person",
+    "Dremmel": "person",
+    "Brask": "person",
+    "Pell": "person",
+    "Nella": "person",
+    "Gorvin": "person",
+    "Mirra": "person",
+    "Nibbs": "person",
+    "Dorla": "person",
+    "Grumbald": "person",
+    "Bertol": "person",
+    "Hargo": "person",
+    "Quenna": "person",
+    "Tobb": "person",
+    "Wilk": "person",
+    "Amulet of Warding": "thing",
+    "Urchins": "group",
+    "Bear": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorla",
+     "text": "Oh, please, you must help me! My brother Grumbald marched off to the bandit camp in Hollow Wood, west of here. Their drumming kept him up all night, and he swore he'd give them a piece of his mind!\n\nHe hasn't come back! Those brutes will skin him alive!\n\nBring him home to me and I'll give you whatever I can."
+    },
+    "reminder": {
+     "speaker": "Dorla",
+     "text": "Grumbald! My poor Grumbald! Go and get Grumbald!"
+    },
+    "found": {
+     "speaker": "Grumbald",
+     "text": "Untie me."
+    },
+    "following": {
+     "speaker": "Grumbald",
+     "text": "Your slow plodding no longer pleases me. Show me one more bandit and I'll thump him with my bare fists!"
+    },
+    "completion": {
+     "speaker": "Dorla",
+     "text": "Grumbald! You're home! Oh, you stubborn old fool!\n\nThank you, kind stranger! Please take this Spell Book. It's the finest thing I own."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to free Grumbald from the bandit camp in Hollow Wood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Durnhal: Grisel's lazy husband Tobble has let the Ogres lock him in their cage at the old quarry again, to dodge the haying.",
+   "names": {
+    "Durnhal": "place",
+    "Garamund": "person",
+    "Ugrash": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Quillon": "person",
+    "Town Hall": "place",
+    "Stone Granary": "place",
+    "Wendt": "person",
+    "Hobart": "person",
+    "Krell": "person",
+    "Posey": "person",
+    "Rain Amulet": "thing",
+    "Bolliver": "person",
+    "Longsword of Sir Bolliver": "thing",
+    "Bunt": "person",
+    "Pie Recipe": "thing",
+    "Grisel": "person",
+    "Tobble": "person",
+    "Hammet": "person",
+    "Fat Turnip": "place",
+    "Ombra": "person",
+    "Bessa": "person",
+    "Mott": "person",
+    "The Harvest": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grisel",
+     "text": "Not again! That lazy lump Tobble has let the Ogres catch him again, right when the hay needs bringing in!\n\nHe swears they grabbed him, but I know he walks right up to them on purpose. They lock him in a cage at the old quarry east of town, and he sits there eating their stew while I do all the work!\n\nGo and fetch him home, would you? I'll pay you for your trouble."
+    },
+    "reminder": {
+     "speaker": "Grisel",
+     "text": "Back already?\n\nThen you're just in time. Grab a pitchfork and help me pitch this hay, since my good-for-nothing husband is still sitting in that Ogre cage!\n\nGo on, then, off with you."
+    },
+    "found": {
+     "speaker": "Tobble",
+     "text": "Oh, blast! A rescuer!"
+    },
+    "following": {
+     "speaker": "Tobble",
+     "text": "Oh dear, is Grisel waiting up for me?"
+    },
+    "completion": {
+     "speaker": "Grisel",
+     "text": "There he is! Get inside, you lazy lump, the cows need milking!\n\nThank you, kind stranger. Here's some gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Tobble from the Ogre cage and bring him home for The Harvest."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

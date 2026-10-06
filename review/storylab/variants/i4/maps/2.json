@@ -1,0 +1,327 @@
+{
+ "iter": "i4",
+ "writer": "Claude agent (Opus 5.5, claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Kroth",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Ulgrim the Necromancer has crept into the Old Deeps under Mount Ghal and raises the dead miners, who claw at the Deep Gate of Kroth every night.",
+  "names": {
+   "Kroth": "place",
+   "Mount Ghal": "place",
+   "Old Deeps": "place",
+   "Deep Gate": "place",
+   "Guild Hall": "place",
+   "Gloom Hole": "place",
+   "Shrine of Stone": "place",
+   "Rat Run": "place",
+   "Flooded Shaft": "place",
+   "Molehole": "place",
+   "Brakka's Armory": "place",
+   "Ulgrim": "person",
+   "Hobbart": "person",
+   "Brummel": "person",
+   "Hask": "person",
+   "Grenda": "person",
+   "Edda": "person",
+   "Odo": "person",
+   "Snig": "person",
+   "Wilna": "person",
+   "Jory": "person",
+   "Grubb": "person",
+   "Brakka": "person",
+   "Yorla": "person",
+   "Olf": "person",
+   "Bettina": "person",
+   "Tamsin": "person",
+   "Undead": "group",
+   "Scorpions": "group",
+   "Urchins": "group",
+   "Zombies": "group",
+   "Dowsing Rod": "thing",
+   "Mountain Brew": "thing",
+   "Spell Book": "thing",
+   "Ankh": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hask keeps the Deep Gate, shut by Guildmaster Brummel while Ulgrim's dead walk the Old Deeps.",
+   "names": {
+    "Hask": "person",
+    "Deep Gate": "place",
+    "Brummel": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hask",
+     "text": "Halt! The Deep Gate is shut by order of Guildmaster Brummel. The dead are walking down there!"
+    },
+    "again": {
+     "speaker": "Hask",
+     "text": "Move along. I've got my orders."
+    },
+    "later": {
+     "speaker": "Hask",
+     "text": "Guildmaster Brummel has given you leave to go below. Open the gate! Good luck, Adventurer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Grenda the mushroom farmer wants the Scorpions cleared out of her mushroom cave west of the market.",
+   "names": {
+    "Grenda": "person",
+    "Scorpions": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenda",
+     "text": "Scorpions! Scorpions in my mushroom cave! They came up out of the old tunnels when the dead started walking, and now they're eating my whole crop and stinging anybody who goes in there!\n\nMy cave is just west of the market. Kill the nasty things and I'll pay you well, I promise!"
+    },
+    "reminder": {
+     "speaker": "Grenda",
+     "text": "Are they dead yet? I can hear them clicking from here!"
+    },
+    "completion": {
+     "speaker": "Grenda",
+     "text": "All dead? Oh, thank goodness! My poor mushrooms! Here, take this gold, kind sir. You've earned every piece of it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Scorpions in Grenda's mushroom cave."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Edda the Dowser's magic Dowsing Rod was stolen by the Urchins of the Gloom Hole, up the east tunnel.",
+   "names": {
+    "Edda": "person",
+    "Dowsing Rod": "thing",
+    "Urchins": "group",
+    "Gloom Hole": "place",
+    "Spell Book": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Edda",
+     "text": "Thieves! Thieving little Urchins! They crept in while I was sleeping and took my Dowsing Rod right off the wall!\n\nWithout it I'm just an old woman poking at rocks. They live in the Gloom Hole, up the east tunnel past the slag heaps.\n\nWill you get my rod back for me, young sir? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Edda",
+     "text": "Hmph! Then go away and let me be miserable."
+    },
+    "reminder": {
+     "speaker": "Edda",
+     "text": "Did you get my Dowsing Rod back? Hurry, before those Urchins break it!"
+    },
+    "completion": {
+     "speaker": "Edda",
+     "text": "My rod! You found my rod! Bless you, bless you! Please, take this old Spell Book as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Edda",
+     "text": "Thank you again! I'm off to find some silver!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Edda's Dowsing Rod from the Urchins in the Gloom Hole."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Edda's Dowsing Rod from the Urchins in the Gloom Hole."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three miners of Kroth: Bettina pushing her ore cart, Tamsin whose husband won't go below, Olf with word of Edda's trouble.",
+   "names": {
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Olf": "person",
+    "Edda": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Bettina",
+     "text": "Out of my way! This cart won't push itself!"
+    },
+    "rumour2": {
+     "speaker": "Tamsin",
+     "text": "My husband won't go below anymore. He swears he saw his dead uncle down there, still swinging a pick!"
+    },
+    "rumour3": {
+     "speaker": "Olf",
+     "text": "Old Edda's been screaming about Urchins all morning. Somebody ought to help her."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Grubb of the Molehole tavern, Brakka the smith of Brakka's Armory, Yorla who sells potions and scrolls.",
+   "names": {
+    "Grubb": "person",
+    "Molehole": "place",
+    "Mountain Brew": "thing",
+    "Brakka": "person",
+    "Brakka's Armory": "place",
+    "Yorla": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Grubb",
+     "text": "Welcome to the Molehole! Have a mug of Mountain Brew. Puts hair on yer chest, and yer back, and yer knuckles!"
+    },
+    "arms": {
+     "speaker": "Brakka",
+     "text": "Brakka's Armory. Good steel, fair prices. What'll it be?"
+    },
+    "magic": {
+     "speaker": "Yorla",
+     "text": "Ah, a customer! With the dead walking again, everybody wants healing potions... so the price has gone up a little. Heh, heh, heh..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Priest Odo of the Shrine of Stone wants the holy braziers below relit against the Undead; Snig, a sneak in the Molehole, wants his hidden cask of Mountain Brew fetched from the Rat Run.",
+   "names": {
+    "Odo": "person",
+    "Shrine of Stone": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Ulgrim": "person",
+    "Undead": "group",
+    "Kroth": "place",
+    "Snig": "person",
+    "Mountain Brew": "thing",
+    "Rat Run": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odo",
+     "text": "Greetings, my son. The holy braziers in the Old Deeps have gone out. Without their flames, nothing stands between Ulgrim's Undead and the town.\n\nTake this torch and light the three braziers beyond the Deep Gate. The Shrine of Stone will not forget such a valiant service."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "Psst! Hey, you! Yeah, you. You look like somebody who goes places other folks won't.\n\nI had a little cask of Mountain Brew hidden down in the Rat Run, see. Very rare. Very valuable. Then the Zombies moved in.\n\nFetch it for me and I'll give you a fine sword. Never been used! Well... hardly."
+    },
+    "outcome_a": {
+     "speaker": "Odo",
+     "text": "The braziers burn again! I felt it in my bones! Kroth owes you a great debt, my son. Accept this gold from the Shrine, with my blessing."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "Heh, heh, heh! My cask! Here's yer sword, like I said. Now go on, before somebody sees us together!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the three holy braziers in the Old Deeps."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Fetch Snig's cask of Mountain Brew from the Rat Run."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Wilna begs the player to find her husband Jory, who went down the Flooded Shaft and has not come back.",
+   "names": {
+    "Wilna": "person",
+    "Jory": "person",
+    "Flooded Shaft": "place",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wilna",
+     "text": "Help me, please! My Jory went down the Flooded Shaft this morning and he hasn't come back! The other men heard screaming and ran!\n\nPlease, brave Adventurer, find him and bring him home!"
+    },
+    "reminder": {
+     "speaker": "Wilna",
+     "text": "Please hurry! He's all I have!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Is somebody there? Help! I'm stuck back here!... Thank goodness! Did Wilna send you? Get me out of here!"
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "Hurry! I can hear them coming!"
+    },
+    "completion": {
+     "speaker": "Wilna",
+     "text": "Jory! You're home! Oh, thank you, thank you! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jory in the Flooded Shaft and bring him home to Wilna."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Olf points the player to Guildmaster Brummel in the Guild Hall, who sends him below the Deep Gate after Ulgrim the Necromancer.",
+   "names": {
+    "Olf": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Guild Hall": "place",
+    "Ulgrim": "person",
+    "Old Deeps": "place",
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Deep Gate": "place",
+    "Hask": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Olf",
+     "text": "You must be the one Hobbart sent! Go see Guildmaster Brummel -- the Guild Hall is at the top of the big stairs."
+    },
+    "opening": {
+     "speaker": "Brummel",
+     "text": "Ahh, Hobbart's friend! Good. Good! I asked him for someone brave, and here you are.\n\nListen well, lad. A Necromancer called Ulgrim has crept into the Old Deeps beneath Kroth. Every miner ever buried under Mount Ghal, he's raising up again! They claw at the Deep Gate every night and my men are too frightened to swing a pick.\n\nGo below and put an end to that despicable sorcerer. Hask will open the gate for you. Kroth is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Brummel",
+     "text": "Why are you still standing about? Ulgrim's dead won't wait for you, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down into the Old Deeps and stop Ulgrim the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

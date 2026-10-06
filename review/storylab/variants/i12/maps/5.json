@@ -1,0 +1,309 @@
+{
+ "iter": "i12",
+ "writer": "Claude Sonnet subagent",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Orlmere",
+  "setting": "a lake village of fishermen",
+  "trouble": "The necromancer Zorvane is raising the drowned dead out of the lake and sending them ashore against the fishing grounds.",
+  "names": {
+   "Orlmere": "place",
+   "Zorvane": "person",
+   "Rudge": "person",
+   "Brannoch": "person",
+   "Gurtle": "person",
+   "Pim": "person",
+   "Sedda": "person",
+   "Crodd": "person",
+   "Tamsk": "person",
+   "Joh Skarn": "person",
+   "Dorrel": "person",
+   "Skerrik": "person",
+   "Brisa": "person",
+   "Nubb": "person",
+   "Wenda": "person",
+   "Jorn": "person",
+   "Gorbel": "person",
+   "Drusk": "person",
+   "Ismene": "person",
+   "Sedge Landing": "place",
+   "Eel Island": "place",
+   "Long Pier": "place",
+   "Mooring Stones": "place",
+   "Silver Gaff": "thing",
+   "Bell of Ashes": "thing",
+   "Cloak of Tides": "thing",
+   "toll chest": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Gurtle, gate guard at the pier gate of Orlmere, turns strangers away because of the drowned dead.",
+   "names": {
+    "Gurtle": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Gurtle",
+     "text": "Pitiful! Off with you, fishbait!"
+    },
+    "again": {
+     "speaker": "Gurtle",
+     "text": "What are you doing? The gate is about to close! You'd better get inside if you hope to see morning. The dead are rising."
+    },
+    "later": {
+     "speaker": "Gurtle",
+     "text": "Go on, then."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Tamsk wants the river pirate Joh Skarn caught and the toll chest he stole brought back.",
+   "names": {
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Gurtle": "person",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tamsk",
+     "text": "Ooooh, what is this? That pirate beat both of my ferrymen. There is no time to fetch the guards. Quickly, you must catch him before the toll chest goes into the lake."
+    },
+    "reminder": {
+     "speaker": "Tamsk",
+     "text": "Please, I'm begging you. Hunt down that thieving scoundrel and bring back the toll chest."
+    },
+    "completion": {
+     "speaker": "Tamsk",
+     "text": "The toll chest is saved! Gurtle will need my Bow to guard it. Here, take both to him."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Regain the toll chest stolen by the pirate Joh Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Dorrel is waiting on a Cloak of Tides that the maker Skerrik has not delivered from his hut on Eel Island.",
+   "names": {
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Cloak of Tides": "thing",
+    "Eel Island": "place",
+    "Rudge": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dorrel",
+     "text": "Skerrik has been working on a Cloak of Tides for me for some time. He should have been done with it and had it brought to me by now.\n\nTake the old pier out to Skerrik's hut on Eel Island and find the Cloak. Will you go?"
+    },
+    "refusal": {
+     "speaker": "Dorrel",
+     "text": "Oh, I see. Well, the offer stands if you come back."
+    },
+    "reminder": {
+     "speaker": "Dorrel",
+     "text": "Find Skerrik and bring the Cloak to me -- at whatever the cost! Beware of the reed channels. Nasty things lurk under the pier!"
+    },
+    "completion": {
+     "speaker": "Dorrel",
+     "text": "You found the Cloak of Tides! Wonderful!\n\nMy worst fears for Skerrik, however, have come true. I'll miss him, but there is no time for grief. Orlmere needs me and Rudge wants a word with you. Take this Blue Potion for your trouble.\n\nGood luck, brave Adventurer!"
+    },
+    "after": {
+     "speaker": "Dorrel",
+     "text": "Thanks again for all your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Cloak of Tides which Skerrik has made."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return the Cloak of Tides to Dorrel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["BluePotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a warning, gossip about the pirates, a taunt from a drunk.",
+   "names": {
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Sedge Landing": "place",
+    "Joh Skarn": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Pim",
+     "text": "Hide, stranger! Hide!"
+    },
+    "rumour2": {
+     "speaker": "Sedda",
+     "text": "The river-rats of Sedge Landing are a crooked and shameless band of smugglers! The worst is their boss, Joh Skarn!"
+    },
+    "rumour3": {
+     "speaker": "Crodd",
+     "text": "Can't swim? Not so clever, eh?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Gorbel at the inn, Drusk the smith, Ismene at the magic shop.",
+   "names": {
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Zorvane": "person",
+    "Orlmere": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gorbel",
+     "text": "Stranger, eh? You'd best head back where you came from. No doubt Zorvane will be raising the dead in the next village soon, too! Strange times we live in, eh?"
+    },
+    "arms": {
+     "speaker": "Drusk",
+     "text": "Haven't seen many strangers lately. Orlmere isn't exactly a good place for a holiday these days, what with the drowned wandering out of the lake."
+    },
+    "magic": {
+     "speaker": "Ismene",
+     "text": "Drifters aren't welcome here. But for a little extra, I'll sell to you anyway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Brisa sells her boat and net shed before leaving for her sister's; Nubb pitches his boat and pond.",
+   "names": {
+    "Brisa": "person",
+    "Nubb": "person",
+    "Zorvane": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brisa",
+     "text": "Actually, business has fallen off quite a bit, with the drowned dead about. I'm leaving for my sister's, so you can have my boat and net shed for 100 in gold!"
+    },
+    "offer_b": {
+     "speaker": "Nubb",
+     "text": "You ready to buy up my boat and pond? Only 200 in gold for the both of them!"
+    },
+    "outcome_a": {
+     "speaker": "Brisa",
+     "text": "Excellent! You got yourself a real bargain, lad! I hope you live through all this. Now if you'll excuse me, I have a long road ahead. Good luck and keep away from Zorvane if you want to live!"
+    },
+    "outcome_b": {
+     "speaker": "Nubb",
+     "text": "Ah, that's all right, lad. I'm sure someone else will want my boat and pond. If you change your mind, I'll be around!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy Brisa's boat and net shed."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Nubb's boat and pond."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Wenda begs the player to rescue her husband Jorn, a boatman trapped in a boathouse on the Long Pier.",
+   "names": {
+    "Wenda": "person",
+    "Jorn": "person",
+    "Long Pier": "place",
+    "Rudge": "person",
+    "Mooring Stones": "place",
+    "Orlmere": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wenda",
+     "text": "What took you so long to get here!? We have a horrible problem!\n\nGiant leeches and drowned things from the deep have overrun the Long Pier. Boatmen have died in defense of Orlmere's vital nets!\n\nPlease, I beg you! Clear the beasts from the pier, rescue my husband and I shall reward you handsomely.\n\nThis key will unlock the door to Jorn, trapped in the boathouse.\n\nI also have a healing potion which should be quite useful."
+    },
+    "reminder": {
+     "speaker": "Wenda",
+     "text": "Return to me after you rescue Jorn and I will pay you well."
+    },
+    "found": {
+     "speaker": "Jorn",
+     "text": "Thank you for finding me. Please take me back to the dock."
+    },
+    "following": {
+     "speaker": "Jorn",
+     "text": "I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Wenda",
+     "text": "You are a true hero! My deepest thanks.\n\nWhile you were out on the pier, rescuing Jorn, Rudge came by looking for you. He's waiting at the Mooring Stones -- west of here.\n\nBefore you leave, please accept this gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Long Pier of monsters. Rescue the trapped boatman Jorn."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["RedPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman Pim points to Mayor Brannoch, who sends the player after the two items needed against Zorvane's drowned dead.",
+   "names": {
+    "Pim": "person",
+    "Brannoch": "person",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Orlmere": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pim",
+     "text": "That necromancer Zorvane would never have come to the lake if Rudge had still been here! Brannoch is the one to ask."
+    },
+    "opening": {
+     "speaker": "Brannoch",
+     "text": "Ah, you've arrived. Good. Your first task in Orlmere is very important.\n\nSomething strange is transpiring on the lake. Sightings of the drowned dead near the nets is growing every day.\n\nMy efforts to learn the cause have been fruitless. A mysterious fog clouds the water. You may be able to help.\n\nMost of the old boathouse on the north shore has sat empty for many years. The ledgers say it holds two items which may be crucial to my search. The first is the Silver Gaff, the second is the Bell of Ashes.\n\nIf you can bring these objects to me, quickly, I hope they will help give me the answers I need."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "No luck yet? Well, keep looking in the boathouse on the north shore. The gaff and bell must be secured immediately!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Silver Gaff for Brannoch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

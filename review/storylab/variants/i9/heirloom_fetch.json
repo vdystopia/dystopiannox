@@ -1,0 +1,703 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i9",
+ "writer": "one writer a town (variants/i9/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, is locked out of her mill since the Urchins of the old barrow stole its key.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Spell Book": "thing",
+    "Red Potions": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Oh, at last, somebody's come along! Before those Urchins showed up, this mill ground the flour for the whole town, but they've run off with my key and locked me out of it! Just go east across the ford and you'll find their barrow. Will you bring back my key, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "You don't have the heart to help a poor widow."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "I've got the flour sacks ready. You get the key."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "Wonderful work! I didn't think anybody could get the better of those Urchins! A thousand thanks for bringing back my key! Please accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Fresh flour."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go into the Urchins' barrow and get back the key to Wenna's mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Go into the Urchins' barrow and get back the key to Wenna's mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Varrhold: Imps snatched Bruddock's magic pick and carried it to their nest in the old east tunnel.",
+   "names": {
+    "Varrhold": "place",
+    "Ozrath": "person",
+    "Garvus": "person",
+    "Haldrek": "person",
+    "Brask": "person",
+    "Nella": "person",
+    "Bruddock": "person",
+    "Gimbrel": "person",
+    "Skabb": "person",
+    "Gudra": "person",
+    "Durbin": "person",
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person",
+    "Tamsk": "person",
+    "Pibbet": "person",
+    "Orla": "person",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "east tunnel": "place",
+    "north shaft": "place",
+    "copper shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "magic pick": "thing",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bruddock",
+     "text": "Hail, tunnel-brother! The Imps snatched my magic pick right out of my hands! If they don't snap it in half, they'll lose it down some pit anyway. Their nest is over in the old east tunnel! Will you get it back for me?"
+    },
+    "refusal": {
+     "speaker": "Bruddock",
+     "text": "Not quite up to it yet, eh? No matter, I'll hold the job for you. If you change your mind later, just come find me."
+    },
+    "reminder": {
+     "speaker": "Bruddock",
+     "text": "Those Imps love anything shiny, which they pile in a heap at the far end of their stinking nest."
+    },
+    "completion": {
+     "speaker": "Bruddock",
+     "text": "Thank you, friend, thank you! Well, I can't pay much, but please take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Bruddock",
+     "text": "The Great Lift is to the north. Just follow the cart tracks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Bruddock's magic pick... from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Bruddock's magic pick... from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skeel: A Troll snatched Quimby the healer's Amulet of Healing and waded off toward the north bog.",
+   "names": {
+    "Skeel": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Grell": "person",
+    "Hobbe": "person",
+    "Pellam": "person",
+    "Nubbin": "person",
+    "Quimby": "person",
+    "Snub": "person",
+    "Nella": "person",
+    "Tobb": "person",
+    "Ludo": "person",
+    "Wilka": "person",
+    "Orra": "person",
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Watch Hut": "place",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "north bog": "place",
+    "Corvale": "place",
+    "Bone Totem": "thing",
+    "Amulet of Healing": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quimby",
+     "text": "I'm the healer in this village. Quickly, a Troll snatched my Amulet of Healing right off my neck, and you must catch him before he wades off into the north bog! Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Quimby",
+     "text": "Return to me when you've found some courage."
+    },
+    "reminder": {
+     "speaker": "Quimby",
+     "text": "The Amulet of Healing is a treasure without equal and can close a dying man's wounds overnight."
+    },
+    "completion": {
+     "speaker": "Quimby",
+     "text": "Wonderful! That was a brave deed, one this old healer won't soon forget -- take this Ankh, with my thanks."
+    },
+    "after": {
+     "speaker": "Quimby",
+     "text": "Word is you cleaned the leeches out of Nubbin's bathhouse too! Good work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the lair of the Troll who took Quimby's Amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the lair of the Troll who took Quimby's Amulet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Gorst: Hulda the laundress lost Lord Dravus' best cloak off her washing line to the Urchins.",
+   "names": {
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Great Hall": "place",
+    "Blades Galore": "place",
+    "Zarrow": "person",
+    "Pelgrim": "person",
+    "Lord Dravus": "person",
+    "Brunk": "person",
+    "Gribbin": "person",
+    "Hulda": "person",
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Steward Oswin": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Pell": "person",
+    "Orlo": "person",
+    "Hask": "person",
+    "Mirabel": "person",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Rats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Help! Lord Dravus' best cloak! Those thieving Urchins snatched it off my washing line and ran to their caves east of the wall. There is no hiding a thing like that from the Lord. Will you fetch it back for me, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Don't you turn your back on me, mister. You don't know Lord Dravus. He'll have my head for this, nothing less. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Please, find that cloak!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Oh, thank you, kind sir! This cloak will surely save my neck when Lord Dravus asks for it. Please take this as a token of my appreciation. Now, I'd better get it pressed."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "A hundred blessings on you, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Lord Dravus' cloak from the caves of the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Lord Dravus' cloak from the caves of the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ombry: Old Quimby's wooden leg was snatched by the Urchins while he dozed on the pier; it is in their den on Rat Island.",
+   "names": {
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Lamp Tower": "place",
+    "Rat Island": "place",
+    "Washing Cove": "place",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Mayor Varrow": "person",
+    "Varrow": "person",
+    "Brosk": "person",
+    "Grella": "person",
+    "Quimby": "person",
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person",
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quimby",
+     "text": "They've stolen my leg! Yeah, I know how it sounds. Listen!\n\nThe Urchins took it off me while I dozed on the pier, and now it's hidden in their den on Rat Island, east of the docks, guarded by the whole thieving pack and kept for who knows what. Take this key to my boathouse. Will you, won't you bring it home to me?"
+    },
+    "refusal": {
+     "speaker": "Quimby",
+     "text": "You've got troubles enough of your own. Sorry the old fool bothered you."
+    },
+    "reminder": {
+     "speaker": "Quimby",
+     "text": "Maybe if you poked through every stinking heap and soggy hole on that island you'd turn up my poor leg!"
+    },
+    "completion": {
+     "speaker": "Quimby",
+     "text": "My leg! My deepest gratitude, lad. Take this Ankh, and good luck!"
+    },
+    "after": {
+     "speaker": "Quimby",
+     "text": "Thank you. I suppose I can quit hopping around now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Urchins' den and recover Quimby's wooden leg."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the Urchins' den and recover Quimby's wooden leg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Merinth: Master Oswick, an old teacher of the College, wants his staff back from the Imps of the old kiln.",
+   "names": {
+    "Merinth": "place",
+    "College": "place",
+    "Black Spire": "place",
+    "old kiln": "place",
+    "old foundry": "place",
+    "old quarry": "place",
+    "College lockup": "place",
+    "Zorvan": "person",
+    "Varrus": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Fennick": "person",
+    "Oswick": "person",
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "Mimics": "group",
+    "Imps": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "Zorvan's Downfall": "thing",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Oswick",
+     "text": "Good day, young sir! As those thieving Imps have run off with my teaching staff, I must beg a stranger's help to get it back from their den -- the old kiln west of town. Without it I'm no better than a first-year student, and a disgrace to the College.\n\nWill you bring it home to me?"
+    },
+    "refusal": {
+     "speaker": "Oswick",
+     "text": "You haven't got the nerve. Come back when you find some."
+    },
+    "reminder": {
+     "speaker": "Oswick",
+     "text": "Ah, it's you. Have you made up your mind about my staff?"
+    },
+    "completion": {
+     "speaker": "Oswick",
+     "text": "Thank you! Gold, and lots of it? Here, take what I can spare. I hope you live through this whole business with Zorvan.\n\nMany thanks for getting my staff away from those Imps!\n\nYou have done a great service for an old teacher, one I won't soon forget."
+    },
+    "after": {
+     "speaker": "Oswick",
+     "text": "Please, don't interrupt me now. I'm lecturing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Imps have run off with Master Oswick's staff -- find it and bring it back!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Imps have run off with Master Oswick's staff -- find it and bring it back!"
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vosk: Gosk the horn-blower's Horn of Calling, which guides the supply sledge to the gate, was stolen by the Urchins of the north crags.",
+   "names": {
+    "Fort Vosk": "place",
+    "Frostgate": "place",
+    "Watchtower": "place",
+    "Ice Caves": "place",
+    "Frozen Field": "place",
+    "Morvayne": "person",
+    "Dorvin": "person",
+    "Brask": "person",
+    "Holm": "person",
+    "Gorbo": "person",
+    "Gosk": "person",
+    "Hesk": "person",
+    "Snib": "person",
+    "Yselde": "person",
+    "Dolf": "person",
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Horn of Calling": "thing",
+    "Bats": "group",
+    "Urchins": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gosk",
+     "text": "Ahh, a new face at last! Warm yourself if you must, but don't linger by the fire. My horn has been stolen.\n\nThe supply sledge is due any day now! I fear it'll never find our gate without it! The Urchins have carried it off to their den up in the north crags! Will you bring my horn back to me?"
+    },
+    "refusal": {
+     "speaker": "Gosk",
+     "text": "So you won't go after my horn. Come back when you change your mind."
+    },
+    "reminder": {
+     "speaker": "Gosk",
+     "text": "Cold day, stranger."
+    },
+    "completion": {
+     "speaker": "Gosk",
+     "text": "You have done it, kind sir! Please accept these boots as a token of my appreciation. Now if you'll excuse me, I'll be off up to the wall to blow it. I thought I'd hidden it so well."
+    },
+    "after": {
+     "speaker": "Gosk",
+     "text": "Thanks again, kind sir. You have done this fort a great service, one we won't soon forget..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Horn of Calling from Urchin den."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Horn of Calling from Urchin den."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Durgal: Dagny the smith cannot work the hot iron since Imps ran off with her Fireproof Gloves to the lava caves.",
+   "names": {
+    "Durgal": "place",
+    "Bargul": "person",
+    "Orvald": "person",
+    "Krell": "person",
+    "Brannock": "person",
+    "Zeck": "person",
+    "Mirva": "person",
+    "Dagny": "person",
+    "Ulda": "person",
+    "Fennick": "person",
+    "Krenshaw": "person",
+    "Rudgar": "person",
+    "Brisba": "person",
+    "Grimble": "person",
+    "Smelting Pits": "place",
+    "Great Forge": "place",
+    "Hot Coal": "place",
+    "lava caves": "place",
+    "slag caves": "place",
+    "north gate": "place",
+    "Fireproof Gloves": "thing",
+    "Guild Hammer": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dagny",
+     "text": "Imps ran off with my Fireproof Gloves, down into the lava caves west of town! Will you get them back for me please?"
+    },
+    "refusal": {
+     "speaker": "Dagny",
+     "text": "Oh, never mind then."
+    },
+    "reminder": {
+     "speaker": "Dagny",
+     "text": "Those Imps are the pests and sworn enemies of every smith in Durgal. Going down into their caves will show if you are worthy to stand beside us at the anvil."
+    },
+    "completion": {
+     "speaker": "Dagny",
+     "text": "Bless you, brave Adventurer! Then I must get back to my anvil -- and you must take these boots with my thanks."
+    },
+    "after": {
+     "speaker": "Dagny",
+     "text": "My deepest thanks again for bringing back my gloves!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find and return the Fireproof Gloves in order to help Dagny.\nThe Imps have most likely hidden them in the lava caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find and return the Fireproof Gloves in order to help Dagny."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellor's Cross: Imps from the old well west of the inn stole old Tibbald's wooden leg while he dozed.",
+   "names": {
+    "Pellor's Cross": "place",
+    "Four Roads Inn": "place",
+    "Gallows Hill": "place",
+    "Stony Hollow": "place",
+    "Hamley Farm": "place",
+    "Bludgor": "person",
+    "Captain Vell": "person",
+    "Mayor Tull": "person",
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Fennick": "person",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Wila": "person",
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Master Odric": "person",
+    "Snig": "person",
+    "Brisa": "person",
+    "Orlo": "person",
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Wuzzle": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tibbald",
+     "text": "Bad news, plain and simple, lad. Once I'd dozed off in my chair the Imps came up out of the old well west of the inn and made off with my wooden leg, since they'll steal anything that isn't nailed down -- and now I can't get past my own front step! Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Tibbald",
+     "text": "Dobbin the carter was by this morning offering to whittle me a new leg. I suppose I'll sit and wait on him by the woodpile till winter, then."
+    },
+    "reminder": {
+     "speaker": "Tibbald",
+     "text": "I'm one leg short, I can't chase them."
+    },
+    "completion": {
+     "speaker": "Tibbald",
+     "text": "Strap it on right here, below the knee. I haven't much to give, but at least I can walk you to the inn door now! The Imps -- they're gone? Please accept this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Tibbald",
+     "text": "Thanks once more for the leg! Pellor's Cross will talk of your daring deed for years and years!\n\nBless you, young sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Tibbald's wooden leg."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Tibbald's wooden leg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5"
+  },
+  {
+   "id": 10,
+   "specifics": "Vellin: Ysmay, an old widow, lost her Harvest Amulet to Urchins who took it to their burrow south of the fields.",
+   "names": {
+    "Vellin": "place",
+    "Kaldor": "person",
+    "Bodrick": "person",
+    "Tobber": "person",
+    "Kestrin": "person",
+    "Fennick": "person",
+    "Ysmay": "person",
+    "Marwold": "person",
+    "Snibb": "person",
+    "Ostra": "person",
+    "Grebb": "person",
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Town Hall": "place",
+    "Harvest Amulet": "thing",
+    "Ogres": "group",
+    "Krudd Ogres": "group",
+    "Urchins": "group",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysmay",
+     "text": "Urchins? In my kitchen?! I need someone to chase them to their burrow south of the fields and recover my precious Harvest Amulet. Would you help a poor old widow, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Ysmay",
+     "text": "Please, just leave me be. I'm ruined."
+    },
+    "reminder": {
+     "speaker": "Ysmay",
+     "text": "No amulet yet. Hurry, please!"
+    },
+    "completion": {
+     "speaker": "Ysmay",
+     "text": "You found it!? Then I must hang it back over my door this very night. Please, take this gold for your trouble."
+    },
+    "after": {
+     "speaker": "Ysmay",
+     "text": "Bless you for helping a foolish old widow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ysmay's Harvest Amulet from the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ysmay's Harvest Amulet from the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), claude-opus-5-5"
+  }
+ ]
+}

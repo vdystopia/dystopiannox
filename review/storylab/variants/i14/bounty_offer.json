@@ -1,0 +1,501 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i14",
+ "writer": "one writer a town (variants/i14/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric, an old shepherd at the edge of the Ashwood, pays to have the wolves that take his sheep killed.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Honestly, my flock has shrunk quite a lot, with wolves prowling out of the Ashwood. I'll pay good gold to whoever thins that pack."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Hunter! Go out after that wolf pack!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Fine work, young sir! This gold will surely help me rebuild the flock those wolves scattered across my pasture. It seems no beast in the Ashwood can stand against you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Ulric's wolves... for good."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Vurn: Mayor Durvin pays to have giant Scorpions cleared from the new tunnel Kettrin dug under the West Gallery.",
+   "names": {
+    "Vurn": "place",
+    "Ossric": "person",
+    "Durvin": "person",
+    "Pob": "person",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Kettrin": "person",
+    "Scorpions": "group",
+    "West Gallery": "place",
+    "Bram": "person",
+    "Imps": "group",
+    "Flooded Seam": "place",
+    "Hulda": "person",
+    "Great Forge": "place",
+    "Fire Crystal": "thing",
+    "Lower Galleries": "place",
+    "Fesk": "person",
+    "Marra": "person",
+    "Tobb": "person",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Great Hall": "place",
+    "Hammer of the Mountain": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Durvin",
+     "text": "Until we find some way to drive off Grutt's Trolls, I have a smaller job for you to do.\n\nWord has come from Kettrin, one of my diggers, that giant Scorpions have made a nest in his new tunnel.\n\nAn old air shaft runs down from the West Gallery to the lower tunnels. Our miners dug it long ago to bring them fresh air. Kettrin's tunnel is at the bottom, and a ladder by the water barrels will take you down.\n\nGet rid of those Scorpions and bring Kettrin the good news.\n\nGood luck, my son!"
+    },
+    "reminder": {
+     "speaker": "Durvin",
+     "text": "Please, slay them!"
+    },
+    "completion": {
+     "speaker": "Durvin",
+     "text": "Well done! This bow is the finest in Vurn. The quiver is full of iron arrows, which can pierce a Troll's hide."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Scorpion nest and clear it out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tarrow: Hulda, a fisherwife, pays gold to have the Giant Leeches of the south pools killed.",
+   "names": {
+    "Tarrow": "place",
+    "Black Mire": "place",
+    "Mire": "place",
+    "Grisla": "person",
+    "Jessop": "person",
+    "Ostrick": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Brannoch": "person",
+    "Ombrel": "person",
+    "Gudge": "person",
+    "Dorla": "person",
+    "Wick": "person",
+    "Hollow Oak": "place",
+    "Drowned Chapel": "place",
+    "Sunken Crypt": "place",
+    "Eel Landing": "place",
+    "Moonstone": "thing",
+    "Ankh": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Bog Toads": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Giant Leeches have crawled into my husband's fish traps again! Unless somebody drives them off, we'll starve this winter. And he's back at dusk!\n\nOh, please, young sir, help me! They must breed in the south pools.\n\nCould you... would you kill them for us, for a bit of gold?"
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Quickly now, young sir, clear out those wretched Leeches!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "We never should've set traps so near those pools. I wonder if that mad witch bred the Leeches. Here's your gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Wade out to the south pools and rid Hulda's fish traps of the Giant Leeches."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varnhold: Hesk, a goatherd below the castle walls, pays to be rid of the Wolves of the Gloomwood.",
+   "names": {
+    "Varnhold": "place",
+    "Tobrin": "person",
+    "Jask": "person",
+    "Ostrik": "person",
+    "Skarn": "person",
+    "Hesk": "person",
+    "Sibba": "person",
+    "Brannock": "person",
+    "Wezzle": "person",
+    "Crull": "person",
+    "Hulda": "person",
+    "Tib": "person",
+    "Old Gatehouse": "place",
+    "North Pass": "place",
+    "Gloomwood": "place",
+    "Cistern": "place",
+    "Granary": "place",
+    "Blackrock Mine": "place",
+    "Grey Quarry": "place",
+    "Healing Stone": "thing",
+    "Trolls": "group",
+    "Wolves": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesk",
+     "text": "There it is, lad, the Gloomwood. That's where the Wolves come from every night.\n\nA little ways into those trees you'll find their den, under the hill. They've taken half my herd. Get rid of them and I'll make it worth your while!\n\nYou're my last hope."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "You set to go hunt those Wolves now? Just the one den, and the whole pack inside!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "My goats! They're safe at last! Bless you a hundred times over! And here, take these boots. I've chased many a goat in them. They'd serve any traveler well."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Wolves in order to protect Hesk's goats.\n\nTheir den lies somewhere in the Gloomwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Skarra: Torvy, a fishing crew boss, wants the giant leeches cleared out of the south reeds.",
+   "names": {
+    "Skarra": "place",
+    "Heron Isle": "place",
+    "Vashk": "person",
+    "Dreyhaus": "person",
+    "Ottrick": "person",
+    "Lomm": "person",
+    "Torvy": "person",
+    "Dobrin": "person",
+    "Brannoc": "person",
+    "Tamsk": "person",
+    "Nim": "person",
+    "Gorm": "person",
+    "Nella": "person",
+    "Warding Lantern": "thing",
+    "Urchins": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Torvy",
+     "text": "Oh, bah! Leeches in the shallows again?! Sometimes I think they come back just to spoil my mornings. It's not easy keeping a fishing crew fed, you know. We're hauling in the season's best catch today and we can't have leeches on every line when the nets come up.\n\nTell you what... Clear those leeches out of the south reeds and the wooden shield off my boat is yours!"
+    },
+    "reminder": {
+     "speaker": "Torvy",
+     "text": "Hurry up with those leeches! The boats are waiting to go out."
+    },
+    "completion": {
+     "speaker": "Torvy",
+     "text": "Splendid work! You've chased off the leeches! Now there's just the catch to haul in.\n\nHere's your shield!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the giant leeches out of the south reeds."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 6,
+   "specifics": "Zanthis: Tibba asks the player to burn out the Wasps' nest plaguing her uncle Bastel's orchard; Bastel pays the bounty.",
+   "names": {
+    "Zanthis": "place",
+    "Academy": "place",
+    "Observatory": "place",
+    "Archive": "place",
+    "Tipsy Owl": "place",
+    "Grelloch": "person",
+    "Jorvan": "person",
+    "Ombrel": "person",
+    "Wendle": "person",
+    "Tibba": "person",
+    "Bastel": "person",
+    "Fennick": "person",
+    "Hestra": "person",
+    "Tobb": "person",
+    "Rook": "person",
+    "Oona": "person",
+    "Nib": "person",
+    "Star Charts": "thing",
+    "Golems": "group",
+    "Wasps": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tibba",
+     "text": "The Wasps just swarmed all over my uncle's precious orchard! If they aren't gone soon, he'll be ruined. The pickers come next week!\n\nOh, please help us, young sir! I think their nest hangs in the big oak by the pond. Could you... would you burn it out for us?"
+    },
+    "reminder": {
+     "speaker": "Tibba",
+     "text": "It gladdens me to see a stout hero go after the Wasps that torment my poor uncle."
+    },
+    "completion": {
+     "speaker": "Tibba",
+     "text": "You made it back! Go find Uncle Bastel -- he has your bounty at his farmhouse by the east gate."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bastel's orchard has just been overrun, but the Wasps' nest is still somewhere among the trees. Maybe there's a bounty for burning it..."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kessry: Brunko Tallow, a goatherd of the fort, pays to have the White Wolves cleared from the ice caves above his pens.",
+   "names": {
+    "Fort Kessry": "place",
+    "Haldrek": "person",
+    "Gorrak": "person",
+    "Belgard": "person",
+    "Fennick": "person",
+    "Brunko Tallow": "person",
+    "Yorla": "person",
+    "Ostrik": "person",
+    "Grubbin": "person",
+    "Tessaly": "person",
+    "Dobbin": "person",
+    "Amulet of Warmth": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brunko Tallow",
+     "text": "Well met, stranger! Brunko Tallow's the name! You look like a fellow who isn't afraid of a fight, so I thought I'd put a deal to you. The last time the snow came down, the White Wolves crept into my goat pens... And they dragged off my best nannies. The pack should still be holed up in the ice caves above the fort. I'll pay you handsomely once you've cleared them out."
+    },
+    "reminder": {
+     "speaker": "Brunko Tallow",
+     "text": "Those wolves must be driven off! YOU have the might to end their raiding.\n\nHurry! Each night they grow bolder."
+    },
+    "completion": {
+     "speaker": "Brunko Tallow",
+     "text": "Thank goodness the pack is finished! You'll make a fine wolf hunter, lad. Here are the 100 gold pieces I promised for clearing them off my pens."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bounty accepted! Slay the White Wolves above the fort!"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Ferrik: Dobrin the smith pays a bounty to clear the Fire Bats roosting in the Slag Pits.",
+   "names": {
+    "Ferrik": "place",
+    "Magrok": "person",
+    "Grenn": "person",
+    "Imps": "group",
+    "Great Furnace": "place",
+    "Mayor Thurgo": "person",
+    "Holk": "person",
+    "Mirta": "person",
+    "Dobrin": "person",
+    "Slag Pits": "place",
+    "Fire Bats": "group",
+    "Tobb": "person",
+    "Master Hollin": "person",
+    "Rune Hammer": "thing",
+    "Guild": "group",
+    "Guild Hall": "place",
+    "Nibbs": "person",
+    "Rusty Bellows": "place",
+    "Gretta": "person",
+    "Pell": "person",
+    "Ash Caverns": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobrin",
+     "text": "Look there, lad. The Slag Pits -- ancient workings of the master smiths of Ferrik! Roost of the foulest Fire Bats ever to plague a forge!\n\nClimb down into the Slag Pits, find the roost and then wipe out every bat in it -- nest and all. The bounty is 100 gold."
+    },
+    "reminder": {
+     "speaker": "Dobrin",
+     "text": "The Fire Bats grow strong on raw heat, which they draw from the lava vents deep under the abandoned workings."
+    },
+    "completion": {
+     "speaker": "Dobrin",
+     "text": "No doubt the smiths will sleep better now, so take this gold with their thanks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Fire Bats from the Slag Pits."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Vellin Cross: Gormley, keeper of the Gold Goose, wants the bats of the Gray Quarry destroyed.",
+   "names": {
+    "Vellin Cross": "place",
+    "Gold Goose": "place",
+    "Gray Quarry": "place",
+    "Mire Caves": "place",
+    "Scraggle Wood": "place",
+    "Hagg Hollow": "place",
+    "Old Toll Fort": "place",
+    "Gormley": "person",
+    "Grenna": "person",
+    "Tullock": "person",
+    "Bramble": "person",
+    "Dalbo": "person",
+    "Fennick": "person",
+    "Pell": "person",
+    "Brusk": "person",
+    "Thrungar": "person",
+    "Pibbet": "person",
+    "Garamond": "person",
+    "Elixir of Mighty Strength": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gormley",
+     "text": "Welcome, brave Adventurer, to Vellin Cross! At last, help has come!\n\nThose wretched bats in the Gray Quarry are out of control! Every night now they swoop down on the inn and scare my guests off! My stableboy ran after them yesterday and still isn't back.\n\nHead west to the Gray Quarry and wipe out the bats in their roost. Once it's done, come back to me. You'll find me pouring ale at the Gold Goose."
+    },
+    "reminder": {
+     "speaker": "Gormley",
+     "text": "Hurry off! The bats grow bolder."
+    },
+    "completion": {
+     "speaker": "Gormley",
+     "text": "Take your gold, I'm awfully busy today."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the bats from the back of the Gray Quarry."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tarrow: Mott the goatherd, stuck up a haystack with a hurt leg, pays to be rid of the wolves denning in Grisk Hollow.",
+   "names": {
+    "Tarrow": "place",
+    "Kervan": "person",
+    "Gorlak": "person",
+    "Blackstump Hill": "place",
+    "Mott": "person",
+    "Grisk Hollow": "place",
+    "Marga": "person",
+    "Silver Sickle": "thing",
+    "Mossback Cave": "place",
+    "Brannoch": "person",
+    "Dorrin": "person",
+    "Nebbit": "person",
+    "Hobb": "person",
+    "Tam": "person",
+    "Pell": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mott",
+     "text": "Kind sir! You've got to hurry and drive off these wolves! The Ogres were indeed the ones who chased this pack into our valley, and the beasts have a taste for my goats. Sadly, I hurt my leg when they ran me up this haystack and I can't fight them off by myself. The pack has made its den in Grisk Hollow west of here, spoiling any hope of grazing in peace."
+    },
+    "reminder": {
+     "speaker": "Mott",
+     "text": "Hello again, lad."
+    },
+    "completion": {
+     "speaker": "Mott",
+     "text": "Here's 80 gold for the hero of Grisk Hollow!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Grisk Hollow and slay the wolves."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  }
+ ]
+}

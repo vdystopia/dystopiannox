@@ -1,0 +1,619 @@
+{
+ "scenario": "main_opening",
+ "iter": "i5",
+ "writer": "one writer a town (variants/i5/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman sends the player to Reeve Halvard in the Moot Hall; Halvard briefs him on Red Corwin in the Crow Hill watchtower and gives him the town's scrolls.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Mabry's Magnificent Magicks": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Nettle Hob": "person",
+    "Hob": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The north gate's shut and nobody can get the flour out to market! If you're looking for work, Reeve Halvard is in the Moot Hall. Go and see him."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "So, you're the one Garrick told me about. Good! Brackenford has need of you, lad.\n\nRed Corwin and his band of cutthroats have taken the old watchtower on Crow Hill. From up there they see every cart on the north road, and they rob every one. I have shut the north gate, and now Brackenford is besieged in all but name!\n\nCorwin must be removed. Go up Crow Hill, take back the tower and bring Corwin down, by whatever means. Garrick will open the gate for you.\n\nTake these scrolls. They are the town's own, kept in the Moot Hall for darker days than this. Use them well."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Every day Corwin sits in that tower, Brackenford grows poorer. Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the watchtower on Crow Hill from Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Bormunt: Mott points the player to Guildmaster Brannoc in the Guild Hall; Brannoc gives the key to the lower gate and sends him against Skarn's Trolls at the Great Lift.",
+   "names": {
+    "Bormunt": "place",
+    "Mount Grull": "place",
+    "Yorrel": "person",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Great Lift": "thing",
+    "Great Shaft": "place",
+    "Guild Hall": "place",
+    "Miners' Guild": "group",
+    "Brannoc": "person",
+    "Tavik": "person",
+    "Ulbo": "person",
+    "Giant Leeches": "group",
+    "pump house": "place",
+    "flooded gallery": "place",
+    "Quessel": "person",
+    "Imps": "group",
+    "Divining Rod": "thing",
+    "cart tunnel": "place",
+    "Velgard": "person",
+    "Urchins": "group",
+    "Spell Lantern": "thing",
+    "Ludo Quickpurse": "person",
+    "Chain Tunic": "thing",
+    "Hammel": "person",
+    "Nessa": "person",
+    "Hask": "person",
+    "washing cave": "place",
+    "Troll pens": "place",
+    "ore chutes": "place",
+    "Orrin": "person",
+    "Mott": "person",
+    "Elsbeth": "person",
+    "Grumwald": "person",
+    "Sooty Lamp": "place",
+    "Ilvane": "person",
+    "Azure Circle": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mott",
+     "text": "The Lift's stuck again. Can't dig, can't get home. If you're looking for somebody important, Guildmaster Brannoc's in the Guild Hall."
+    },
+    "opening": {
+     "speaker": "Brannoc",
+     "text": "So Yorrel sent you. Good. You've come at a black hour for Bormunt.\n\nThe warlock Skarn has brought the Trolls up out of the deep caves. They've taken the Great Lift -- and half our miners are trapped below with them!\n\nBy the authority of the Miners' Guild, I deputate you to go down and break their hold on the Lift. Here is the key to the lower gate. Find our miners. And if Skarn shows his face, kill him!"
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "You have the key. Why are you still standing in my hall? Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Break the Trolls' hold on the Great Lift."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Oskry: A townsman sends the player to Mayor Brumm in the Long House; Brumm, curt, sends him after Vesra the Bog Witch and gives gold and potions.",
+   "names": {
+    "Oskry": "place",
+    "the Blackwater": "place",
+    "Vesra the Bog Witch": "person",
+    "Marrock": "person",
+    "Mayor Brumm": "person",
+    "Tobben": "person",
+    "Hobb": "person",
+    "Quillon": "person",
+    "Sister Ondine": "person",
+    "Snig": "person",
+    "Hadda": "person",
+    "Durl": "person",
+    "Skarrow": "person",
+    "Zanthe": "person",
+    "Glynna": "person",
+    "the Long House": "place",
+    "the Sunken Shrine": "place",
+    "the Dry Plank": "place",
+    "Skarrow's Arms and Armor": "place",
+    "the south walk": "place",
+    "the west walk": "place",
+    "the north bog": "place",
+    "the old peat shed": "place",
+    "the Sacred Bell of Oskry": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Giant Leeches": "group",
+    "the peat cutters": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The dead came up the ladders again last night! You'd better go see Mayor Brumm in the Long House. Quick!"
+    },
+    "opening": {
+     "speaker": "Mayor Brumm",
+     "text": "So, Marrock sent you. Good. There's no time for talk.\n\nVesra the Bog Witch is raising the drowned dead out of the Blackwater. Every night they climb our ladders, and every night there are more of them. Find her island in the west and destroy her.\n\nHere's 100 gold and some potions. Get what you need in town, then go."
+    },
+    "reminder": {
+     "speaker": "Mayor Brumm",
+     "text": "Why do you wait, lad? Vesra grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Vesra the Bog Witch's island and destroy her."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Brask: A townsman sends the player to Belloc the War-Mage in the keep, who sends him after the Necromancer Vessk in the old barrows.",
+   "names": {
+    "Castle Brask": "place",
+    "Brask": "place",
+    "Vessk": "person",
+    "Ostric": "person",
+    "Belloc": "person",
+    "Brunn": "person",
+    "Fennig": "person",
+    "Haskel": "person",
+    "Ferrol": "person",
+    "Gondrel": "person",
+    "Krell": "person",
+    "Velka": "person",
+    "Tibbet": "person",
+    "Hulda": "person",
+    "Bortho": "person",
+    "Quigg": "person",
+    "Iron Kettle": "place",
+    "Quigg's Magic and Goat Rental": "place",
+    "Gallow Crag": "place",
+    "Split Rock": "place",
+    "north postern": "place",
+    "old barrows": "place",
+    "marsh road": "place",
+    "old toll house": "place",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Zombie": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The Undead came over the north wall again last night! Belloc the War-Mage wants anyone who can fight. He's up in the keep."
+    },
+    "opening": {
+     "speaker": "Belloc",
+     "text": "So Ostric sent you. Good.\n\nA Necromancer called Vessk is raising the dead from the old barrows north of the castle. Every night more of them come over the wall. Go out through the north postern, find Vessk and destroy him.\n\nTake these spells. You'll need them. Now go, lad."
+    },
+    "reminder": {
+     "speaker": "Belloc",
+     "text": "Are you still here?! Go! The wall won't hold forever!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Necromancer Vessk in the old barrows north of the castle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Vesk: Joss points the player to Mayor Ostrin, who sends him to the Weeping Isle after the Necromancer Vezzek.",
+   "names": {
+    "Vesk": "place",
+    "Village of Vesk": "place",
+    "Lake Mirrow": "place",
+    "Weeping Isle": "place",
+    "Leaky Bucket": "place",
+    "Mudd's": "place",
+    "Vezzek": "person",
+    "Master Odrel": "person",
+    "Mayor Ostrin": "person",
+    "Dolf": "person",
+    "Haskin": "person",
+    "Ambrus the Ferryman": "person",
+    "Ambrus": "person",
+    "Pruitt the Lamplighter": "person",
+    "Pruitt": "person",
+    "Bodkin Mudd": "person",
+    "Hesk": "person",
+    "Inky": "person",
+    "Mott": "person",
+    "Brynna": "person",
+    "Tib": "person",
+    "Hulda": "person",
+    "Dorgo": "person",
+    "Joss": "person",
+    "Giant Leeches": "group",
+    "Urchins": "group",
+    "Imps": "group",
+    "Beacon Lens": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "You're the one Master Odrel sent? Mayor Ostrin is expecting you. Big house at the end of the main dock."
+    },
+    "opening": {
+     "speaker": "Mayor Ostrin",
+     "text": "Grim tidings, lad. Last night the dead walked up out of Lake Mirrow and dragged some of our fishermen right off the dock. We could hear the poor souls screaming all the way to the Weeping Isle.\n\nIt is the Necromancer Vezzek. He has made the Isle his home, and the drowned answer to him now!\n\nBy the authorization of this village, I command you to cross to the Weeping Isle and put an end to Vezzek. Ambrus the Ferryman can take you across. Go!"
+    },
+    "reminder": {
+     "speaker": "Mayor Ostrin",
+     "text": "Go! Vezzek grows bolder with every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross to the Weeping Isle and defeat the Necromancer Vezzek."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Vorne: A townsman points the player to Master Dorrovan on the Lyceum steps; Dorrovan, an old friend of Jorvald who sent the player, hands over scrolls and sends him north against Sarvok in the Observatory on Gallow Ridge.",
+   "names": {
+    "Vorne": "place",
+    "the Lyceum": "place",
+    "Sarvok the Renegade": "person",
+    "Sarvok": "person",
+    "Gallow Ridge": "place",
+    "the Observatory": "place",
+    "the Black Arts": "thing",
+    "Jorvald": "person",
+    "Master Dorrovan": "person",
+    "Torrik": "person",
+    "Gostrel": "person",
+    "Feldrim": "person",
+    "Force Wand": "thing",
+    "the old granary": "place",
+    "Tibbald": "person",
+    "Master Quorn": "person",
+    "Quorn": "person",
+    "the Lyceum cellars": "place",
+    "Lissra": "person",
+    "the Moonstone": "thing",
+    "the chapel": "place",
+    "the crypt beneath the chapel": "place",
+    "Zabbo": "person",
+    "the Clock Tower": "place",
+    "the Singing Kettle": "place",
+    "Grenda": "person",
+    "Brask": "person",
+    "Velka": "person",
+    "Nox": "place",
+    "Imps": "group",
+    "Golems": "group",
+    "Wasps": "group",
+    "Ghost": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Fireballs over the north wall again last night. Master Dorrovan's been waiting on the Lyceum steps all morning for somebody. Is it you?"
+    },
+    "opening": {
+     "speaker": "Master Dorrovan",
+     "text": "So, you've arrived at last, lad! Jorvald wrote that he was sending me someone. I hope you're as good as he says.\n\nSarvok the Renegade was a master of this Lyceum until we threw him out for meddling in the Black Arts. Now he holds the old Observatory on Gallow Ridge, north of town, with Imps and Golems at his beck and call. Every night he steals more of our magic.\n\nTake these scrolls. They'll serve you well. Go north, find Sarvok and put an end to his madness! Torrik will open the gate for you."
+    },
+    "reminder": {
+     "speaker": "Master Dorrovan",
+     "text": "Go, lad! The Lyceum cannot hold out much longer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Observatory on Gallow Ridge and stop Sarvok the Renegade."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kholm: Hagen points the player to Marshal Odric on the wall; Odric, Faldrin's old friend, gives him a sword and sends him up to the Glacier Crypts after Ulvana.",
+   "names": {
+    "Fort Kholm": "place",
+    "Wyrmtooth Pass": "place",
+    "Glacier Crypts": "place",
+    "Snow Caves": "place",
+    "Ice Bridge": "place",
+    "Snowbound Inn": "place",
+    "Thudd's Armory": "place",
+    "Ulvana": "person",
+    "Faldrin": "person",
+    "Marshal Odric": "person",
+    "Brunn": "person",
+    "Fennick": "person",
+    "Gorrin": "person",
+    "Gelbrand": "person",
+    "Wendric": "person",
+    "Lucky Skiv": "person",
+    "Olva": "person",
+    "Thudd": "person",
+    "Yeva": "person",
+    "Hagen": "person",
+    "Mag": "person",
+    "Lissa": "person",
+    "Sledge crew": "group",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hagen",
+     "text": "Marshal Odric's been pacing the wall all morning, waiting on somebody from the lowlands. That'd be you, I expect."
+    },
+    "opening": {
+     "speaker": "Marshal Odric",
+     "text": "So, you have arrived at last, lad! Faldrin's letter came up the pass ahead of you. He speaks well of you.\n\nHear me. The Necromancer Ulvana -- curse her name -- has woken the dead of the Glacier Crypts, high above the fort. Every night her Undead come down Wyrmtooth Pass and every night we drive them back. My men grow cold and weary.\n\nTake this sword, it served me well in younger days. Climb to the Crypts and put an end to Ulvana, or Fort Kholm will not see the spring!"
+    },
+    "reminder": {
+     "speaker": "Marshal Odric",
+     "text": "The Crypts, lad! Go! My men cannot hold the wall forever!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb to the Glacier Crypts and destroy the Necromancer Ulvana."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Fornath: Harl points the player to Master Kasrak, the town's old warlord and an old friend of Tobrin; Kasrak gives a sword and sends him up the Mountain Road against Gorvane.",
+   "names": {
+    "Fornath": "place",
+    "Nox": "place",
+    "Kasrak": "person",
+    "Tobrin": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Mountain Road": "place",
+    "Anvil Hall": "place",
+    "Bodo": "person",
+    "Krall": "person",
+    "Ember Demons": "group",
+    "slag pits": "place",
+    "Fennick": "person",
+    "Salamander Cloak": "thing",
+    "Imps": "group",
+    "Cinder Caves": "place",
+    "Smiths' Gate": "place",
+    "Ambrus": "person",
+    "Tavik": "person",
+    "old quarry": "place",
+    "broken bridge": "place",
+    "old ore chute": "place",
+    "Velda": "person",
+    "Fire Shrine": "place",
+    "Great Bell": "thing",
+    "lava falls": "place",
+    "Grubb": "person",
+    "Bram Sootfinger": "person",
+    "old furnace tunnels": "place",
+    "Hesta": "person",
+    "Slag Pot": "place",
+    "Gundrek": "person",
+    "Zibba": "person",
+    "Kettla": "person",
+    "Harl": "person",
+    "Bessamy": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Harl",
+     "text": "Are you the one Tobrin sent? Master Kasrak has been asking for you since sunup! Go on up to the Anvil Hall, quick!"
+    },
+    "opening": {
+     "speaker": "Kasrak",
+     "text": "So, Tobrin sent you. Good. He spoke highly of you, lad, and we have need of every brave arm. The nefarious warlock Gorvane has marched his Ogres up the mountain and seized the Black Smeltery. Every bar of iron in Fornath comes out of that smeltery -- every one!\n\nGorvane means to turn our own furnaces against us. Once his Ogres are armed with Fornath steel, they will come down the mountain and nothing in the land will stand before them.\n\nTake this sword. It was forged in this hall and it has never failed me. Go up the Mountain Road to the Black Smeltery and drive Gorvane out. Fornath's fires are in your hands!"
+    },
+    "reminder": {
+     "speaker": "Kasrak",
+     "text": "Still here, lad? Every hour you tarry, Gorvane's Ogres forge another blade!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Gorvane and his Ogres from the Black Smeltery."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Wendle Cross: Rudd points the player to Telmarq the Arch-Wizard, an old friend of Pellam the Caravan Master, who gives him spell scrolls and sends him after the warlock Zelloc at Fort Skarrow.",
+   "names": {
+    "Wendle Cross": "place",
+    "Telmarq": "person",
+    "Pellam": "person",
+    "Zelloc": "person",
+    "Fort Skarrow": "place",
+    "Grey Moor": "place",
+    "Skeletons": "group",
+    "Brask": "person",
+    "Rudd": "person",
+    "Haddrick": "person",
+    "Toll House": "place",
+    "beech wood": "place",
+    "old well": "place",
+    "south road": "place",
+    "north road": "place",
+    "Belgrin": "person",
+    "Lantern": "thing",
+    "Imps": "group",
+    "old lime kiln": "place",
+    "Ambrus": "person",
+    "Book of Old Roads": "thing",
+    "chapel": "place",
+    "chapel crypt": "place",
+    "Holk": "person",
+    "Grubbin the Grave-Robber": "person",
+    "Gorsk": "person",
+    "quarrymen": "group",
+    "Quarryman": "person",
+    "old quarry": "place",
+    "west gate": "place",
+    "Crooked Kettle": "place",
+    "Odo": "person",
+    "Grimsel": "person",
+    "Quimby": "person",
+    "Quimby's Potions and Notions": "place",
+    "Hesta": "person",
+    "Fenna": "person",
+    "Mungo": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Rudd",
+     "text": "There were Skeletons on the Grey Moor again last night! Telmarq the Arch-Wizard wants you up at his tower right away."
+    },
+    "opening": {
+     "speaker": "Telmarq",
+     "text": "So! You are the one Pellam wrote to me about. Come in, come in, lad. I had begun to fear Zelloc's Skeletons had got you on the road.\n\nHear me well. Zelloc is a warlock of the foulest sort. He has taken old Fort Skarrow, out on the Grey Moor, and there he raises the dead of an ancient battle. Every night his army grows. Already the north road is lost, and if he is not stopped Wendle Cross will be the next to fall!\n\nI am too old for such a journey, more's the pity. Take these spell scrolls, they are the best I have. Cross the Grey Moor, find Fort Skarrow and put an end to Zelloc's abominable work. Go now, and may the stars watch over you!"
+    },
+    "reminder": {
+     "speaker": "Telmarq",
+     "text": "Why do you dawdle? Zelloc's army grows with every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Fort Skarrow on the Grey Moor and stop the warlock Zelloc."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Hestle: Greda points the player to Mayor Dulvane in the Town Hall, who hands him a sword and sends him to drive the Ogres from the granary fort on Kroth Hill.",
+   "names": {
+    "Hestle": "place",
+    "Vellis": "person",
+    "Mayor Dulvane": "person",
+    "Dulvane": "person",
+    "Tobb": "person",
+    "Hoskin": "person",
+    "Orlo": "person",
+    "Sister Alwen": "person",
+    "Ebbin": "person",
+    "Bramwell": "person",
+    "Sabble": "person",
+    "Rook": "person",
+    "Hulda": "person",
+    "Gorrick": "person",
+    "Pidwick": "person",
+    "Greda": "person",
+    "Marl": "person",
+    "Kroth Hill": "place",
+    "the granary fort": "place",
+    "the Town Hall": "place",
+    "the north gate": "place",
+    "the well house": "place",
+    "the windmill": "place",
+    "the Ogre camp": "place",
+    "the river": "place",
+    "the Sleepy Ox": "place",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the giant leeches": "group",
+    "Orlo's amulet": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Greda",
+     "text": "Mayor Dulvane has been calling for help all morning! The Town Hall is in the middle of the village."
+    },
+    "opening": {
+     "speaker": "Mayor Dulvane",
+     "text": "So Vellis sent you. Good. There's no time for talk.\n\nThe Ogres have taken the old granary fort on Kroth Hill -- our own grain, in our own fort! Every night they come down and rob the farms.\n\nTake this sword. Go up the hill and drive them out. Tobb will open the north gate for you."
+    },
+    "reminder": {
+     "speaker": "Mayor Dulvane",
+     "text": "The fort, lad! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ogres out of the granary fort on Kroth Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

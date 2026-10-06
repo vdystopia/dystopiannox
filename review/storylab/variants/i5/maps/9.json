@@ -1,0 +1,336 @@
+{
+ "iter": "i5",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Wendle Cross",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "The warlock Zelloc raises the dead of an ancient battle at Fort Skarrow on the Grey Moor, and his Skeletons are shutting the four roads.",
+  "names": {
+   "Wendle Cross": "place",
+   "Telmarq": "person",
+   "Pellam": "person",
+   "Zelloc": "person",
+   "Fort Skarrow": "place",
+   "Grey Moor": "place",
+   "Skeletons": "group",
+   "Brask": "person",
+   "Rudd": "person",
+   "Haddrick": "person",
+   "Toll House": "place",
+   "beech wood": "place",
+   "old well": "place",
+   "south road": "place",
+   "north road": "place",
+   "Belgrin": "person",
+   "Lantern": "thing",
+   "Imps": "group",
+   "old lime kiln": "place",
+   "Ambrus": "person",
+   "Book of Old Roads": "thing",
+   "chapel": "place",
+   "chapel crypt": "place",
+   "Holk": "person",
+   "Grubbin the Grave-Robber": "person",
+   "Gorsk": "person",
+   "quarrymen": "group",
+   "Quarryman": "person",
+   "old quarry": "place",
+   "west gate": "place",
+   "Crooked Kettle": "place",
+   "Odo": "person",
+   "Grimsel": "person",
+   "Quimby": "person",
+   "Quimby's Potions and Notions": "place",
+   "Hesta": "person",
+   "Fenna": "person",
+   "Mungo": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brask stands guard at the door of Telmarq the Arch-Wizard's tower.",
+   "names": {
+    "Brask": "person",
+    "Telmarq": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "This is the tower of Telmarq the Arch-Wizard."
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "Telmarq's tower, I said."
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "Looks like rain again. Good for the turnips, I suppose."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Haddrick the Toll Keeper pays to have the bears driven from the beech wood that shuts the south road; he pays with a hunter's bow.",
+   "names": {
+    "Haddrick": "person",
+    "Toll House": "place",
+    "beech wood": "place",
+    "old well": "place",
+    "south road": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haddrick",
+     "text": "Good day. I take it you have come about the notice on my door? The bears in the beech wood, south of the crossroads past the old well, have become a public menace! Half the pigs in the hamlet are eaten and no cart will come up the south road. The Toll House is authorised to pay for the expungement of the bears. If you could drive them off, I would give you a very fine bow."
+    },
+    "reminder": {
+     "speaker": "Haddrick",
+     "text": "No carts, no tolls! Please do something about those bears."
+    },
+    "completion": {
+     "speaker": "Haddrick",
+     "text": "Splendid! Most splendid! The south road is open again, and the carts will be rolling by morning!\n\nHere is the bow, as promised. A traveling hunter paid his toll with it last spring. He swore it once shot down a dragon. I don't believe a word of it, but it is a very good bow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bears out of the beech wood for Haddrick the Toll Keeper."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Lord Belgrin, an old gentleman, wants back the enchanted Lantern the Imps stole from his house in the night.",
+   "names": {
+    "Belgrin": "person",
+    "Lantern": "thing",
+    "Imps": "group",
+    "old lime kiln": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Belgrin",
+     "text": "Greetings, Wanderer. You find me in a most deplorable predicament. In the dead of night a horde of malodorous Imps invaded my house and purloined my enchanted Lantern! Without it I cannot find my own door after sundown. If you could get it back, you would save an old man a great deal of misery. Will you undertake this task?"
+    },
+    "refusal": {
+     "speaker": "Belgrin",
+     "text": "Then I shall bear the darkness alone. Good day to you."
+    },
+    "reminder": {
+     "speaker": "Belgrin",
+     "text": "Have you no news of my Lantern? Someone saw the Imps flitting about the old lime kiln at dusk. Make haste!"
+    },
+    "completion": {
+     "speaker": "Belgrin",
+     "text": "My Lantern! You have recovered it! I am in your debt, kind sir. Here are 100 gold pieces, a modest recompense for your valor."
+    },
+    "after": {
+     "speaker": "Belgrin",
+     "text": "My thanks again, Wanderer. My door is always open to you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Lord Belgrin's enchanted Lantern from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Lord Belgrin's enchanted Lantern from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Wendle Cross: Hesta points to the inn, Fenna repeats Rudd's news of Skeletons, Mungo grumbles about the stables.",
+   "names": {
+    "Hesta": "person",
+    "Fenna": "person",
+    "Mungo": "person",
+    "Crooked Kettle": "place",
+    "Odo": "person",
+    "Skeletons": "group",
+    "Grey Moor": "place",
+    "Rudd": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hesta",
+     "text": "If it's news you want, go to the Crooked Kettle. Odo hears everything that comes down the four roads."
+    },
+    "rumour2": {
+     "speaker": "Fenna",
+     "text": "Did you hear? Skeletons on the Grey Moor again last night! Rudd saw them himself!"
+    },
+    "rumour3": {
+     "speaker": "Mungo",
+     "text": "Whose bright idea was it to build the new stables on top of the old graveyard? Now the horses won't go in at all!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Odo of the Crooked Kettle inn, Grimsel the smith, Quimby of Quimby's Potions and Notions.",
+   "names": {
+    "Odo": "person",
+    "Crooked Kettle": "place",
+    "Grimsel": "person",
+    "Quimby": "person",
+    "Quimby's Potions and Notions": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Odo",
+     "text": "Welcome to the Crooked Kettle! Prices went up a bit since the roads closed. Can't be helped, friend!"
+    },
+    "arms": {
+     "speaker": "Grimsel",
+     "text": "What now? Half the hamlet wants a sword mended today. Buy something or get out of my light."
+    },
+    "magic": {
+     "speaker": "Quimby",
+     "text": "Ooh, you're new around here! I can always tell -- you've still got both your eyebrows! Welcome to Quimby's Potions and Notions!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Ambrus, a fussy scholar, wants the Book of Old Roads fetched from the chapel crypt for Telmarq; Warden Holk wants Grubbin the Grave-Robber back, dead or alive.",
+   "names": {
+    "Ambrus": "person",
+    "Telmarq": "person",
+    "Skeletons": "group",
+    "chapel crypt": "place",
+    "chapel": "place",
+    "Book of Old Roads": "thing",
+    "Fort Skarrow": "place",
+    "Holk": "person",
+    "Grubbin the Grave-Robber": "person",
+    "Zelloc": "person",
+    "Grey Moor": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ambrus",
+     "text": "Oh, botheration! Telmarq's sent someone after his book again?!\n\nVery well, very well. When the Skeletons came up out of the chapel crypt I ran, and I left the Book of Old Roads down there on the reading stand. Telmarq says he can't find the way into Fort Skarrow without it. If you could get it back, you'd save my good name. Here, take this iron key. It opens the crypt door behind the chapel."
+    },
+    "offer_b": {
+     "speaker": "Holk",
+     "text": "Wanted, dead or alive! Grubbin the Grave-Robber dug himself out of my cell last night. That wretch has been selling our dead to Zelloc by the cartload. He's hiding out on the Grey Moor somewhere. Bring him back alive and it's 100 gold. Dead, 50. Makes no difference to me, stranger."
+    },
+    "outcome_a": {
+     "speaker": "Ambrus",
+     "text": "My Book! Not a page torn! Oh, thank goodness. Telmarq shall have it tonight. Please, take this as a token of my appreciation."
+    },
+    "outcome_b": {
+     "speaker": "Holk",
+     "text": "Grubbin! Back in my cell where he belongs! Here's your 100 gold, as I promised. This time I'll chain him to the wall."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Book of Old Roads from the chapel crypt for Ambrus."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Grubbin the Grave-Robber to Warden Holk, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gorsk's quarrymen hid in the tunnels under the old quarry when the Skeletons came up; he gives the key to the west gate for them.",
+   "names": {
+    "Gorsk": "person",
+    "Skeletons": "group",
+    "old quarry": "place",
+    "Crooked Kettle": "place",
+    "quarrymen": "group",
+    "west gate": "place",
+    "Grey Moor": "place",
+    "Telmarq": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gorsk",
+     "text": "Yaaahh! Stay back! I've got a shovel and I'll use it!... Oh. You're no Skeleton. Thank goodness! The Skeletons came up out of the old quarry north of the Crooked Kettle and my lads ran down into the tunnels to hide. They're still down there! I'll tell you what, bring my men out safe and you can have my key to the west gate. It's the quickest way onto the Grey Moor."
+    },
+    "reminder": {
+     "speaker": "Gorsk",
+     "text": "My poor lads! Are they still down there? Hurry!"
+    },
+    "found": {
+     "speaker": "Quarryman",
+     "text": "Someone's come for us! Up, lads, up! We're going home!"
+    },
+    "following": {
+     "speaker": "Quarryman",
+     "text": "Not the left tunnel! That's where the Skeletons came from. Take the right one, past the old cart."
+    },
+    "completion": {
+     "speaker": "Gorsk",
+     "text": "My lads! You brought them all back! Here's the key to the west gate, as I promised. Now go and see Telmarq at his tower. He's been asking after you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue the quarrymen trapped in the tunnels under the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Rudd points the player to Telmarq the Arch-Wizard, an old friend of Pellam the Caravan Master, who gives him spell scrolls and sends him after the warlock Zelloc at Fort Skarrow.",
+   "names": {
+    "Rudd": "person",
+    "Skeletons": "group",
+    "Grey Moor": "place",
+    "Telmarq": "person",
+    "Pellam": "person",
+    "Zelloc": "person",
+    "Fort Skarrow": "place",
+    "north road": "place",
+    "Wendle Cross": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Rudd",
+     "text": "There were Skeletons on the Grey Moor again last night! Telmarq the Arch-Wizard wants you up at his tower right away."
+    },
+    "opening": {
+     "speaker": "Telmarq",
+     "text": "So! You are the one Pellam wrote to me about. Come in, come in, lad. I had begun to fear Zelloc's Skeletons had got you on the road.\n\nHear me well. Zelloc is a warlock of the foulest sort. He has taken old Fort Skarrow, out on the Grey Moor, and there he raises the dead of an ancient battle. Every night his army grows. Already the north road is lost, and if he is not stopped Wendle Cross will be the next to fall!\n\nI am too old for such a journey, more's the pity. Take these spell scrolls, they are the best I have. Cross the Grey Moor, find Fort Skarrow and put an end to Zelloc's abominable work. Go now, and may the stars watch over you!"
+    },
+    "reminder": {
+     "speaker": "Telmarq",
+     "text": "Why do you dawdle? Zelloc's army grows with every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Fort Skarrow on the Grey Moor and stop the warlock Zelloc."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

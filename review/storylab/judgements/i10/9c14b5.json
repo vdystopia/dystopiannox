@@ -1,0 +1,33 @@
+{
+  "packet": "9c14b5",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Dry, cynical townsfolk ('The smart people have already left... Let them take it, I say') in short flat sentences; the panic line is a touch generic but the deadpan is Nox's."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'March on, Wanderer' and 'foul Ogres' / 'garrison's spears' is heroic-fantasy register Nox's villagers rarely use; the coined form of address gives it away."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The cackling digger has Nox's oddball touch, but 'friend Wanderer' and the run-on 'deep shafts then they come for the town' read as an imitation of the voice."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Three curt lines, one snub ('I'm very busy.'), a plain hint about hostile forest creatures; exactly Nox's terse filler-NPC rhythm."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Lava taunt and the ellipsis-broken 'My tools... taken... every last one' are written to be dramatic; the rumour line ('Odd things happening around here lately') is filler that points at a quest hook too neatly."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Folksy warning about taverns, a bare 'Beware of the rising undead,' and a gameplay tip about fire-walking boots: the plain, slightly silly hint-giving of Nox's towns."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The wry aside about a villainess having style, the breathless 'They're here!' and 'Only fools and warriors' carry Nox's humour and town-gossip voice."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Pure signposting (mayor's house, little boat behind the inn, inn on your left, thanks for a rescue); functional but lacks any character, and 'telling everyone about it' is flat."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Gossipy alarm with a comic detail (mayor deathly afraid of spiders), the double-dash and the uncorrected 'off you back' typo feel like shipped 1999 text."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Leech yelp and urchin sighting are Nox-like slapstick, but 'You're thinking of my brother, sorry' is a context-less oddity and 'Ew!' sounds modern; a close call."}
+  ],
+  "tells": [
+    "Invented honorific forms of address ('Wanderer', 'friend Wanderer') recur in the new texts; Nox's townsfolk mostly say nothing to the player or use 'stranger'/'Adventurer'.",
+    "New texts lean on epic register ('foul', 'March on', 'spears') or on dramatic ellipses; Westwood's lines are deadpan, gossipy, and often comic or cynical.",
+    "New texts over-signpost (directions to the inn, boat, mayor's house) in tidy, complete sentences; Westwood's hints are blunter and stranger, often a single tip or warning.",
+    "Westwood lines include snubs and non-sequiturs ('I'm very busy.') and occasional typos; new texts are cleaner and more purposeful.",
+    "Modern interjections ('Ew!') and run-on clauses missing a comma signal the imitation."
+  ]
+}

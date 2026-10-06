@@ -1,0 +1,32 @@
+{
+  "packet": "c692b4",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Wry, plain townsfolk complaints with the period double-dash and 'Well good luck to ya' without a comma; the joke about building next to the ogre village is Westwood's dry humour."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Lines react to the campaign's plot (a woman in charge, necromancers being real) with no chore or scene-setting; the clipped 'They're here!' and 'fools and warriors' quip are typical."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The flirt 'My, my, a new face... handsome' recurs in another text as a template, and the barrel-smashing gameplay tip reads like a designer's hint rather than a villager's remark."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Functional directions and a slightly clumsy sentence ('can't keep track of it anymore') feel like an original writer's unpolished info line rather than a crafted bark."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A bare 'Not now.' filler plus an eerie hook ('Under it! I saw it myself') is a tidy three-beat composition of grumble, brush-off and mystery, more modern than Nox's plainness."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Leave me be. I've got nets to mend.' is the brush-off-with-chore template; the missing final period and the 'My, my!' flirt repeat across the packet."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Repetitive, plain alarm ('If you're smart you'll leave [Place], too') and the contrarian 'Let them take it, I say' fit the campaign's siege chatter."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Each line is a polished vignette: a warning, a busy worker with directions, a braggart's joke with 'Hah, hah, hah!' -- too evenly designed and too flavourful."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same warning / busy-chore / drunk-with-'Hic!' structure as other new texts; the drunk echoes the first line too neatly, a writer's callback."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Flat, disconnected one-liners ('Beware of the rising undead.') with a hint about items, exactly the unvarnished bark style of the original towns."}
+  ],
+  "tells": [
+    "New texts reuse a template per set: a warning to the 'stranger', a brush-off naming a chore ('I've got nets to mend / horses to feed / ore to haul'), then a comic character (drunk, flirt, braggart); Westwood's three lines are disconnected and uneven.",
+    "Stock phrases recur across new texts ('My, my', 'Not now', 'stranger', 'The dead walk...', 'everybody says'); Westwood's lines rarely share wording across towns.",
+    "New lines invent local colour and mystery (lights under water, burying the dead on an island) and call back within the set; Westwood's townsfolk mostly react bluntly to the main plot or give flat hints.",
+    "Westwood's lines are plainer and sometimes clumsy (run-on grammar, missing commas, 'it' for a plural); new lines are tidier and more crafted, with sound effects like 'Hic!' and 'Hah, hah, hah!'."
+  ]
+}

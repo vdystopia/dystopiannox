@@ -1,0 +1,693 @@
+{
+ "scenario": "two_givers",
+ "iter": "i4",
+ "writer": "one writer a town (variants/i4/maps)",
+ "guide": "WRITER.md v4 + exemplars",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the tithe chest Corwin's men stole back unopened; Sly Wat sells a back way into the watchtower.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "tithe chest": "thing",
+    "Wenna's amulet": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "One more matter, stranger. When Corwin's men raided the Chapel of the Ford, they carried off the tithe chest as well. That chest holds the tithes of the whole town!\n\nIf you should find it up on Crow Hill, bring it back to me unopened. I will see that you are well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Psst! You there! Goin' up the hill, are ye? Heh, heh... Thought so.\n\nI used to run with Corwin, see, till he caught me eatin' his cheese. I know a back way into that old tower that nobody guards. It's yours for 30 gold. What d'you say?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Splendid, splendid! The Chapel shall have its tithes and Brackenford its winter stores.\n\nPlease accept this shield with the thanks of the whole town."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "You made it out! Told ye that cellar door was never locked, didn't I? Heh, heh... Have a drink on old Wat!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the stolen tithe chest for Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Use Sly Wat's back way into the watchtower."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Kroth: Priest Odo of the Shrine of Stone wants the holy braziers below relit against the Undead; Snig, a sneak in the Molehole, wants his hidden cask of Mountain Brew fetched from the Rat Run.",
+   "names": {
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Guild Hall": "place",
+    "Gloom Hole": "place",
+    "Shrine of Stone": "place",
+    "Rat Run": "place",
+    "Flooded Shaft": "place",
+    "Molehole": "place",
+    "Brakka's Armory": "place",
+    "Ulgrim": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Hask": "person",
+    "Grenda": "person",
+    "Edda": "person",
+    "Odo": "person",
+    "Snig": "person",
+    "Wilna": "person",
+    "Jory": "person",
+    "Grubb": "person",
+    "Brakka": "person",
+    "Yorla": "person",
+    "Olf": "person",
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Undead": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Zombies": "group",
+    "Dowsing Rod": "thing",
+    "Mountain Brew": "thing",
+    "Spell Book": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Odo",
+     "text": "Greetings, my son. The holy braziers in the Old Deeps have gone out. Without their flames, nothing stands between Ulgrim's Undead and the town.\n\nTake this torch and light the three braziers beyond the Deep Gate. The Shrine of Stone will not forget such a valiant service."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "Psst! Hey, you! Yeah, you. You look like somebody who goes places other folks won't.\n\nI had a little cask of Mountain Brew hidden down in the Rat Run, see. Very rare. Very valuable. Then the Zombies moved in.\n\nFetch it for me and I'll give you a fine sword. Never been used! Well... hardly."
+    },
+    "outcome_a": {
+     "speaker": "Odo",
+     "text": "The braziers burn again! I felt it in my bones! Kroth owes you a great debt, my son. Accept this gold from the Shrine, with my blessing."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "Heh, heh, heh! My cask! Here's yer sword, like I said. Now go on, before somebody sees us together!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the three holy braziers in the Old Deeps."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Fetch Snig's cask of Mountain Brew from the Rat Run."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Gloam: Ysolde the Healer needs Blackroot from the Zombie-haunted east isle for the bitten sick; Mudge, an odd skull collector, trades a Steel Shield for a Zombie skull.",
+   "names": {
+    "Gloam": "place",
+    "Plank Gate": "place",
+    "Sunken Graves": "place",
+    "Rotten Oak": "place",
+    "Healing House": "place",
+    "Town Hall": "place",
+    "Soggy Toad": "place",
+    "Hodd's Arms and Armor": "place",
+    "Ulgor": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Tobbin": "person",
+    "Haskin": "person",
+    "Fennick": "person",
+    "Ysolde the Healer": "person",
+    "Mudge": "person",
+    "Hessa": "person",
+    "Wim": "person",
+    "Bulmer": "person",
+    "Hodd": "person",
+    "Quorra": "person",
+    "Nell": "person",
+    "Hollis": "person",
+    "Spyglass": "thing",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ysolde the Healer",
+     "text": "Greetings, Wanderer. The Healing House is full of the sick. Many were bitten by the Undead, and their wounds will not close.\n\nI can mend them with Blackroot, but it grows on the isle east of the village, and the Zombies roam there now. Bring me a sack of Blackroot and I will offer a worthy reward."
+    },
+    "offer_b": {
+     "speaker": "Mudge",
+     "text": "Heh, heh, heh... You look like somebody who ain't scared of a Zombie or two. I got a little business offer for you.\n\nI collect skulls, see. Undead ones! Bring me the skull of a Zombie, a nice fresh one, and this shiny Steel Shield is all yours. Deal?"
+    },
+    "outcome_a": {
+     "speaker": "Ysolde the Healer",
+     "text": "The Blackroot! Thank goodness! Now I can tend to the sick at last. Please, take this gold. Gloam will not forget what you have done."
+    },
+    "outcome_b": {
+     "speaker": "Mudge",
+     "text": "Ooooh! Look at him! Look at that grin! Heh, heh, heh... He goes right up on the shelf with the others. Here's your shield, friend. Pleasure doing business!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Gather Blackroot for Ysolde the Healer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Mudge the skull of a Zombie."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnhelm: Commander Holgrim wants the garrison's pay chest back from the Skeletons; Lumpy Dorn, in the keep's cells, trades the hiding place of a shield for a meat pie.",
+   "names": {
+    "Durnhelm": "place",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Old Chapel": "place",
+    "Rookery": "place",
+    "Broken Pike": "place",
+    "Brunwald's Arms and Armor": "place",
+    "Iron Watch": "group",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Giant Leeches": "group",
+    "Ogre": "group",
+    "Commander Holgrim": "person",
+    "Master Quell": "person",
+    "Malgrith": "person",
+    "Tobin": "person",
+    "Bodric": "person",
+    "Yorrin": "person",
+    "Mungo": "person",
+    "Brunwald": "person",
+    "Orsolya": "person",
+    "Lumpy Dorn": "person",
+    "Merriwen": "person",
+    "Jory": "person",
+    "Gaspar": "person",
+    "Agna": "person",
+    "Spyglass": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Commander Holgrim",
+     "text": "A grave matter, lad. Our supply wagon was ambushed on the moor road and the pay chest for the whole garrison was lost with it. Those abominable Skeletons stand guard over the wreck, east of the gate.\n\nSoldiers without pay are surly soldiers. Recover the chest and the Iron Watch will see you well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Lumpy Dorn",
+     "text": "Psst! You! Over here by the bars!\n\nThe Commander threw me in here for borrowing a shield. Borrowing! I was going to give it back!\n\nTell you what. Bring me a meat pie from the Broken Pike and I'll tell you where I hid it. Do we have a deal?"
+    },
+    "outcome_a": {
+     "speaker": "Commander Holgrim",
+     "text": "The pay chest! Splendid work! The men will be paid tonight. Take these 100 gold pieces from it, with the thanks of the Iron Watch."
+    },
+    "outcome_b": {
+     "speaker": "Lumpy Dorn",
+     "text": "A pie! Mmmmf... Oh, that's a good pie. All right, a deal's a deal. The shield's under the hay in the stables. Don't tell the Commander! Heh, heh, heh..."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the wrecked supply wagon."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Lumpy Dorn a meat pie from the Broken Pike."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ostra: Master Ferrin wants the old beacon on Heron Point lit so the boats can come home; Snibbet wants his taxed barrel of cider stolen back out of the storehouse.",
+   "names": {
+    "Ostra": "place",
+    "Lake Vell": "place",
+    "Gorm Isle": "place",
+    "Black Cliff": "place",
+    "Heron Point": "place",
+    "Drowned Chapel": "place",
+    "long pier": "place",
+    "Wet Herring": "place",
+    "Haldo's": "place",
+    "Skarn": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "Brannoc": "person",
+    "Gubby": "person",
+    "Hulda": "person",
+    "Pell": "person",
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Mag": "person",
+    "Haldo": "person",
+    "Zebulin": "person",
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Agna": "person",
+    "Wim": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Undead": "group",
+    "Hulda's amulet": "thing",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Ferrin",
+     "text": "Greetings, Wanderer. These are dark days for Ostra. Since the Necromancer seized the lighthouse on Gorm Isle, our boats come home blind in the fog, and the rocks have taken more than one.\n\nThere is an old beacon on Heron Point, along the shore west of here. If it were lit, our fishermen could find their way home.\n\nLight it, and I shall see that you are well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Snibbet",
+     "text": "Psst! Hey! Over here, friend! You look like a fella who can keep his mouth shut.\n\nMaster Ferrin's men took a barrel of my best cider right off my boat. Taxes, he says! Ha! It's sitting in the storehouse on the long pier.\n\nFetch it back for me, quiet-like, and I'll give you a nice shiny sword. Deal?"
+    },
+    "outcome_a": {
+     "speaker": "Master Ferrin",
+     "text": "The beacon burns! Look there -- the boats are coming in! Ostra owes you a great debt, Wanderer. Take this shield as a token of our thanks.\n\nNow go and see Mayor Odrick. He has need of you."
+    },
+    "outcome_b": {
+     "speaker": "Snibbet",
+     "text": "Ha, ha! My cider! You're a true pal! Here's the sword, like I promised. Don't go telling Ferrin where you got it. Heh, heh, heh..."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the old beacon on Heron Point for Master Ferrin."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Snibbet's barrel of cider from the storehouse on the long pier."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ardoth: Magistrate Tullan wants to know what became of his watchmen on the mill road; Nubbin, locked in the lockup for turning Tullan's hat into a goose, trades a back way into the Star Tower for his freedom.",
+   "names": {
+    "Ardoth": "place",
+    "College": "place",
+    "Star Tower": "place",
+    "Malgor": "person",
+    "Mazrel": "person",
+    "Quellan": "person",
+    "Brannoc": "person",
+    "Fennick": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Pim": "person",
+    "Grisella": "person",
+    "Bodkin": "person",
+    "Singed Owl": "place",
+    "Krell": "person",
+    "Krell's Arms and Armor": "place",
+    "Olwen": "person",
+    "Olwen's Potions and Scrolls": "place",
+    "Tullan": "person",
+    "Nubbin": "person",
+    "Fenwold": "person",
+    "Orrick": "person",
+    "west gate": "place",
+    "lily pond": "place",
+    "old quarry": "place",
+    "mill road": "place",
+    "lockup": "place",
+    "old well": "place",
+    "old chapel": "place",
+    "catacombs": "place",
+    "crystal ball": "thing",
+    "Skeletons": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Leeches": "group",
+    "watchmen": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tullan",
+     "text": "Good day, young sir. You look capable enough.\n\nIt is my unhappy duty to tell you that I sent a patrol of watchmen down the mill road, south of town, to see what the Necromancer's creatures were up to. Not one of them has returned.\n\nFind out what became of my men. Your assistance would be most appreciated, and the town will reward you handsomely."
+    },
+    "offer_b": {
+     "speaker": "Nubbin",
+     "text": "Psst! Hey, you! Over here, by the bars!\n\nThey locked me up just for turning Magistrate Tullan's hat into a goose. It was a very small goose!\n\nGet the key off the hook by the jailer's desk and let me out. Do that, and I'll show you a back way into the Star Tower that Malgor doesn't know about. Heh, heh, heh... Deal?"
+    },
+    "outcome_a": {
+     "speaker": "Tullan",
+     "text": "Dead? All of them? This is a black day for Ardoth... Malgor will answer for this!\n\nYou have done the town a great service, young sir. Please, accept this as a token of our gratitude. And go to Archmaster Quellan at once. He must hear of this."
+    },
+    "outcome_b": {
+     "speaker": "Nubbin",
+     "text": "Free! Free at last! Thanks, friend. The back way into the Star Tower is through the old well behind it. Malgor never had it filled in. Now I'm off, before the jailer wakes up!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find out what became of Magistrate Tullan's watchmen on the mill road."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get the jail key and free Nubbin from the lockup."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarn: Brother Ennick wants the risen dead in the chapel crypt put down; Nibbs, locked up for cheating at dice, wants the jailer's key.",
+   "names": {
+    "Fort Skarn": "place",
+    "Kel Dorran": "place",
+    "East Gate": "place",
+    "Keep": "place",
+    "Iron Kettle": "place",
+    "Bodmar's Armory": "place",
+    "Ice Caves": "place",
+    "Kolgrath": "person",
+    "Ormund": "person",
+    "Warden Brannoc": "person",
+    "Tormod": "person",
+    "Fitch": "person",
+    "Dagny": "person",
+    "Elko": "person",
+    "Ulla": "person",
+    "Grindle": "person",
+    "Hobb": "person",
+    "Bodmar": "person",
+    "Ysmay": "person",
+    "Brother Ennick": "person",
+    "Nibbs": "person",
+    "Hulda": "person",
+    "Ansgar": "person",
+    "Undead": "group",
+    "Urchins": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brother Ennick",
+     "text": "Greetings, my son. Grave tidings, I fear. Kolgrath's foul magic has reached even into our chapel. The honored dead in the crypt below have risen from their rest!\n\nI am a man of prayer, not of the sword. Go down into the crypt and lay them to rest again, and the chapel will see you rewarded."
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Psst! You there! Yes, you! Come closer.\n\nThey locked me up for one little game of dice. Can you believe it? The jailer keeps the key on his belt, and he sleeps through his whole watch.\n\nBring me that key and I'll tell you where I buried a real beauty of a Longsword. What do you say?"
+    },
+    "outcome_a": {
+     "speaker": "Brother Ennick",
+     "text": "The dead sleep again! Bless you, my son. This shield has hung in our chapel for many years. Take it, and may it guard you against Kolgrath's evil."
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Hee, hee! Free at last! The Longsword is under the woodpile behind the stable, like I said. And if the Warden asks, you never saw me!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Destroy the Undead in the crypt beneath the chapel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Steal the cell key from the sleeping jailer and free Nibbs."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulmar: Guildmaster Orvald wants the jammed lava sluice west of town opened; Grubb the scrapper sells a chain tunic of doubtful origin.",
+   "names": {
+    "Vulmar": "place",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Thrugg": "person",
+    "Hulgar": "person",
+    "Mott": "person",
+    "Thessa": "person",
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Tobb": "person",
+    "Kraddock": "person",
+    "Sibba": "person",
+    "Guildmaster Orvald": "person",
+    "Grubb": "person",
+    "Marga": "person",
+    "Wim": "person",
+    "Old Foundry": "place",
+    "Slag Pits": "place",
+    "Cinder Caves": "place",
+    "Red Bucket": "place",
+    "Town Hall": "place",
+    "Guild": "group",
+    "Ogres": "group",
+    "Scorpions": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Guildmaster Orvald",
+     "text": "Greetings, Wanderer. The Ogres have jammed the great lava sluice west of town. Without the lava, our furnaces languish and the Guild cannot arm the town against these abominable brutes.\n\nGo to the sluice and pull the great lever. The Guild will reward you handsomely."
+    },
+    "offer_b": {
+     "speaker": "Grubb",
+     "text": "Psst! You there! Need some armor? I got a chain tunic here, hardly used. It fell in the lava twice and didn't even melt!\n\nYours for 100 gold. Can't say fairer than that, eh?"
+    },
+    "outcome_a": {
+     "speaker": "Guildmaster Orvald",
+     "text": "The lava flows again! Listen to those hammers ring! The Guild is in your debt, lad. Take this longsword, fresh from our own forge.\n\nNow go and see Mayor Dravik. The Ogres will not like this one bit!"
+    },
+    "outcome_b": {
+     "speaker": "Grubb",
+     "text": "Sold! Pleasure doing business with you, friend. And if the Mayor's men come asking, you never saw me."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Open the lava sluice west of Vulmar for Guildmaster Orvald."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the chain tunic from Grubb for 100 gold."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Kesrin: Brother Calvo wants the Ghost in the Broken Wheel's attic banished; Gimble, locked in the stocks for stealing a pig, offers his buried sword to be let out.",
+   "names": {
+    "Kesrin": "place",
+    "Broken Wheel": "place",
+    "Fort Karn": "place",
+    "Gallow Rock": "place",
+    "Ravek": "person",
+    "Ambrus": "person",
+    "Fennick": "person",
+    "Dalt": "person",
+    "Ossrik": "person",
+    "Thurl": "person",
+    "Wenzel": "person",
+    "Bettrin": "person",
+    "Lumm": "person",
+    "Ebb": "person",
+    "Bodger": "person",
+    "Hargis": "person",
+    "Hargis' Forge": "place",
+    "Fizwick": "person",
+    "Calvo": "person",
+    "Gimble": "person",
+    "Nell": "person",
+    "Gorm": "person",
+    "Undead": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Ogres": "group",
+    "Ghost": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brother Calvo",
+     "text": "Bless you for coming, stranger! A Ghost has taken up lodging in the attic of the Broken Wheel. It moans all night and throws the plates about.\n\nBodger fears he will lose what little custom he has left. I fear it is yet another sign of Ravek's wicked work.\n\nWill you go up and banish it?"
+    },
+    "offer_b": {
+     "speaker": "Gimble",
+     "text": "Psst... over here! No, here, in the stocks!\n\nMayor Fennick locked me up for one little pig. One! And it was only Ossrik's.\n\nDalt has the key on his belt. Get me out of here and I'll tell you where I buried my sword. Whatcha say?"
+    },
+    "outcome_a": {
+     "speaker": "Brother Calvo",
+     "text": "The Ghost is gone? Praise be! The Broken Wheel is saved! Take this shield, kind sir, and may it guard you well against Ravek's foul Undead!"
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "Free! Ahhh, my poor legs... A deal's a deal. Dig under the big stump behind the Broken Wheel. The sword's yours, and there's a bit of coin with it. Heh, heh, heh... Now you never saw me!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Banish the Ghost from the attic of the Broken Wheel."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Dalt's key and free Gimble from the stocks."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Ostrel: Warden Dalbrek wants the village's seed corn back from the Ogres; Mungo the scarecrow-maker wants an Ogre's helmet for his scarecrow.",
+   "names": {
+    "Ostrel": "place",
+    "Nox": "place",
+    "Kragmoor": "place",
+    "Ulgor": "person",
+    "Haskar": "person",
+    "Bellock": "person",
+    "Dobbs": "person",
+    "Gaffer Rudd": "person",
+    "Granny Orla": "person",
+    "Dalbrek": "person",
+    "Mungo": "person",
+    "Gedge": "person",
+    "Wil": "person",
+    "Harl": "person",
+    "Brask": "person",
+    "Yselda": "person",
+    "Nettie": "person",
+    "Bram": "person",
+    "Joss": "person",
+    "Rusty Plough": "place",
+    "Brask's Forge": "place",
+    "Dowsing Rod": "thing",
+    "Ankh": "thing",
+    "Chain Tunic": "thing",
+    "Longsword": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dalbrek",
+     "text": "Good day to you, kind sir. You have the look of one who can handle himself.\n\nThe Ogres have stolen the village's seed corn and carried it off toward Kragmoor. Without seed there can be no planting in the spring, and without planting, Ostrel will starve.\n\nRecover it, and the village will see you handsomely rewarded."
+    },
+    "offer_b": {
+     "speaker": "Mungo",
+     "text": "Psst! Hey! Over here! You want to be rid of them Ogres? I've built the scariest scarecrow in the whole valley. Only he needs a proper Ogre helmet on his head to finish him off.\n\nBring me a helmet off one of them Ogres and I'll give you this Longsword. Found it in a ditch. Hardly used! Heh, heh, heh..."
+    },
+    "outcome_a": {
+     "speaker": "Dalbrek",
+     "text": "The seed corn! Splendid! Ostrel is in your debt, brave Adventurer. Please, take this Chain Tunic from the village armory. You have more than earned it."
+    },
+    "outcome_b": {
+     "speaker": "Mungo",
+     "text": "Ha! A real Ogre helmet! Look at him now -- the meanest scarecrow in all of Nox! The Ogres will run home crying to their mothers! Here's your sword. A deal's a deal!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the seed corn the Ogres stole and return it to Warden Dalbrek."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Mungo a helmet taken from an Ogre."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic",
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

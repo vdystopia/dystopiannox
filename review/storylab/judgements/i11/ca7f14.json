@@ -1,0 +1,33 @@
+{
+  "packet": "ca7f14",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A garrulous innkeeper with '!?', 'Eh?' and a cackle, a whispered 'Psst! Hey, you!' hawker and a bare 'Welcome to the [Thing]!': uneven lengths and broad comedy typical of Nox."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Let's get to know each other! Buy something!' and the undertaker who sells funerals or goods are Westwood's deadpan gags; the ellipses and the missing comma after 'Greetings' fit too."},
+    {"label": "C", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Plain shop names and stock greetings ('at your service! What can I do for you') that tell the player where they are, with a small rivalry between inns. Workmanlike in the Westwood way, no setting colour piled on."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Call yer drink!' could pass, but the forge keeper's bribe joke and a potion seller asking for bat wings both feel built to be clever. 'Forge' for the arms shop is a tell that comes up again in other new texts."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Polished one-liner wit ('my favorite sight -- a traveler with a heavy purse', 'potions for broken necks') tied to the local weather. It reads like a modern writer's punchlines, not Nox's blunter humour."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Every line hangs on local colour (damp beds, bandits, wolves at the mill), and all three are mood rather than service. Westwood's shopkeepers greet and sell."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Gossip about a shut north road, a 'forge going cold' with its punctuation dropped (an imitated roughness), and a vague 'couple of spell books in the back'. Ambient realism, no Nox flavour."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Hmmmph!', 'pig-headed armored sheep marching up and down, up and down!' and 'Ahhhhhhhh... young sir!': the stretched interjections and outsized character insult are pure Westwood."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Three greetings in a row on the 'This is X's' formula, each with a transactional rider ('be quick about it', 'if you have the gold'). Westwood's naming-the-shop greeting, copied too evenly."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Dialect ('aye mate', 'Ya need') with a naive sales cry ('This is the place!'), and a flat expository line about who supplies whom. That clumsy plainness is Westwood's, not a modern polish."}
+  ],
+  "tells": [
+    "New texts tie greetings to invented local circumstance (weather, closed roads, wolves, damp beds); Westwood's shopkeepers mostly greet, name the shop or the player, and sell.",
+    "New texts favour neat, crafted punchlines ('my favorite sight -- a heavy purse', 'potions for broken necks'); Westwood's humour is broader and sillier: stretched interjections (Hmmmph, Ahhhhhhhh), cackles, absurd sales pitches.",
+    "Recurring modern vocabulary such as 'forge' for the arms shop and 'be quick about it' riders turn up across several new texts.",
+    "Westwood's lengths are uneven within one place (a long rant next to a three-word welcome); the new texts keep the three lines of a similar length and weight.",
+    "Imitated roughness (a dropped comma, a mild bribe joke) is less convincing than Westwood's real quirks: '!?', 'Eh?', dialect spellings and ellipses."
+  ]
+}

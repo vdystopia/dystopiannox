@@ -1,0 +1,318 @@
+{
+ "iter": "i11",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so Halvard has shut the north gate.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Chapel of the Ford": "place",
+   "Halvard": "person",
+   "Reeve Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Brother Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Tobin": "person",
+   "Barley": "thing",
+   "Amulet of Plenty": "thing",
+   "Horn of the Watch": "thing",
+   "Urchins": "group",
+   "Wolves": "group",
+   "Brothers": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick keeps the north gate, shut by Halvard against Red Corwin's bandits.",
+   "names": {
+    "Garrick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Hardly anybody comes up to this gate these days."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Back to town with you, stranger! Have a pleasant day!"
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Very well. It's open. Go on."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, wants the Wolves that took his sheep killed.",
+   "names": {
+    "Ulric": "person",
+    "Ashwood": "place",
+    "Barley": "thing",
+    "Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Help! Please, help me! A pack of grey Wolves just came down out of the Ashwood, behind my fold and dragged off nearly half of my sheep! One of them was my fine old ram, Barley!\n\nPlease put an end to those Wolves and you'll have a reward!"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Oh why are you still standing here? My flock gets smaller every night!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Oh, bless you, brave Adventurer! Here, these are for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Wolves raiding Ulric's flock at the edge of the Ashwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, wants the Amulet of Plenty back from the Urchins of the old barrow, and her hired man Tobin, who went after it.",
+   "names": {
+    "Wenna": "person",
+    "Tobin": "person",
+    "Amulet of Plenty": "thing",
+    "Urchins": "group",
+    "Brackenford": "place",
+    "Red Corwin": "person",
+    "Reeve Halvard": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "While the rest of Brackenford frets over Red Corwin, there's a smaller job which I need done.\n\nTobin, my hired man, chased the Urchins who broke into the mill last night and took the Amulet of Plenty.\n\nThose Urchins have burrowed into the old barrow east of the ford. Tobin went in after them. He hasn't come out.\n\nWill you bring the Amulet back to me and find out what became of Tobin?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Fine then, leave my amulet with those thieving Urchins!"
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Off to that barrow with you! Hurry!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "You found the Amulet of Plenty! Wonderful!\n\nMy worst fears for Tobin, however, have come to pass. I'll miss the old goat, but we have no time for weeping. Reeve Halvard needs help with Red Corwin and has been asking for you.\n\nTake this, with my thanks!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again for bringing back my amulet, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Amulet of Plenty the Urchins stole from Wenna's mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Amulet of Plenty the Urchins stole from Wenna's mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a joke about Red Corwin, praise after the Wolves, a brush-off.",
+   "names": {
+    "Red Corwin": "person",
+    "Ulric": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "I wonder who cuts Red Corwin's hair?"
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Good work with the wolves, stranger! I hear old Ulric is very grateful!"
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "I'm not the miller, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian of the Drowned Lantern, Dunstan the smith, Mabry the potion seller.",
+   "names": {
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "This is the Drowned Lantern. I can't promise the beds are dry, stranger."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Out of my forge, stranger! I don't sell blades to BANDITS!"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "I hear the wolves are coming right up to the mill now. Time I thought about selling my potions somewhere else."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest back from Red Corwin's bandits; Sly Wat, a turncoat, wants an ale for what he knows of Corwin's tower.",
+   "names": {
+    "Halvard": "person",
+    "Sly Wat": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Chapel of the Ford": "place",
+    "Brothers": "group",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Greetings, brave Adventurer! This town has been robbed blind in a shameless bandit raid!\n\nWill you please bring back the tithe chest Red Corwin's men stole? If you do, you shall be well paid, because the good Brothers of the Chapel of the Ford cannot eat without it!"
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "You, again. Will you think it over, buy me an ale and hear what I know about Corwin's tower?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "It's done, then! The tithe chest is safe in the Moot Hall again!\n\nTake this shield, though. You have more than earned it!\n\nCorwin's men still hold the watchtower, but I hear one of those filthy bandits drinks at the Drowned Lantern. If you ask around there maybe you can find a way in!"
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "Shame to hear that. I hope you think again soon, for I fear Corwin's lads are getting wise to me. I saw one of them sniffing around the inn a short while back."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest stolen by Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Sly Wat an ale at the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip chased the Urchins into the old barrow east of the ford and is lost there.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, help me, Wanderer! My young novice, Pip, chased the Urchins into the old barrow east of the ford and he's lost down there in the dark!\n\nFind him and I'll be in your debt forever!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Whatever those Urchins have piled up down there is yours! Just hurry and bring Pip back!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "All right! I'm coming with you! Just get me away from these Urchins!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Quick! Take me back to the Chapel!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Praise be, you found him! How can the Chapel ever reward such courage?!\n\nWhat's that you say? A great big sack of gold? Well, if that's your price, please accept this with the Chapel's blessing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Brother Anselm's novice, Pip, back from the Urchins' barrow."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Halvard in the Moot Hall, who sends him against Red Corwin on Crow Hill.",
+   "names": {
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Bracken": "place",
+    "Crow Hill": "place",
+    "Horn of the Watch": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Not today. Go see Halvard."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "You came at last. Good. Your first job for this town is a grave one.\n\nSomething foul is afoot along the Bracken. Robberies on the north road is getting worse by the week.\n\nMy efforts to bargain with the outlaw have come to nothing. Red Corwin laughs at my letters. You can help me put a stop to it.\n\nThe old watchtower on Crow Hill has not been manned in many years. My spies tell me the bandits keep two things up there which are crucial to their hold on the road. The first is Red Corwin himself, the second is the Horn of the Watch.\n\nIf you can see to these things for me, quickly, I hope the north gate may be opened again."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "No news yet? Well, keep after them up on Crow Hill. Corwin and that horn must be dealt with at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Red Corwin for Reeve Halvard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

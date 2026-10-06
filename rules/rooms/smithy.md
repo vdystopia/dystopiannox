@@ -56,3 +56,10 @@ The smith behind his counter (the furnisher's keeper spot, StoryMap.shops), else
 
 - Westwood: Con06b, cell 168,82 (47 tiles): Dun Mir's forge.
 - Ours: Starwell seed 4, room 19, the forge (47 tiles, coverage 0.15).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's one curated smithy (Con06b): the bellows and anvil, water barrels and barrels in a knot, a dark crate,
+  two stools; coverage 0.06. The racks stand against the back walls, never in rows dead centre (the shop's independent
+  judge: rows read as generated); the stores heap as a store's (`store_heaps`, water barrels leading). The counter
+  stays (the user: the smith behind his counter).

@@ -98,6 +98,7 @@ class QuestBook:
     def text(self, text, stem="Line"):
         """A key in the map's string table for `text`."""
         stem = re.sub(r"[^A-Za-z0-9]", "", stem) or "Line"
+        stem = stem[:max(1, 31 - len(self.map) - 4)]       # a long script name is cut to fit (room for n up to 999)
         self._n[stem] = self._n.get(stem, 0) + 1
         key = f"{self.map}:{stem}{self._n[stem]}"
         # the dialogue message carries the key in 32 bytes (opennox nox_xxx_startShopDialog_548DE0)
@@ -137,13 +138,14 @@ class QuestBook:
         refused = f"{quest}_refused"
         yes = [A.stage(quest, 1), A.unflag(refused), self.journal(objective)] + list(on_take)
         no = [A.flag(refused)] + ([A.chat(giver, refusal)] if refusal else [])
-        return [
+        lines = [
             self.say(after, when=self.at(quest, 3), who=giver),
             self.say(thanks, when=done, do=list(reward) + take_it + [A.stage(quest, 3), self.done(objective)], who=giver),
             self.say(reminder, when=self.at(quest, 1), who=giver),
-            self.say(again or offer, when=self.at(quest, 0, flag=refused), ask=True, do=yes, else_=no, who=giver),
-            self.say(offer, when=self.at(quest, 0), ask=True, do=yes, else_=no, who=giver),
         ]
+        if again:       # with no `again` the offer is asked again as it was: one line, one key
+            lines.append(self.say(again, when=self.at(quest, 0, flag=refused), ask=True, do=yes, else_=no, who=giver))
+        return lines + [self.say(offer, when=self.at(quest, 0), ask=True, do=yes, else_=no, who=giver)]
 
     # ---- conditions --------------------------------------------------------------------------------------------
     def dead(self, *names):
@@ -177,6 +179,7 @@ class QuestBook:
         """The name the dialogue window shows for creature `name`: the game reads the string "NPC:<script name>" (as
         Westwood's "NPC:Horst"), else it shows MISSING:NPC:<name>. The table is shared by every map, so a script name
         used in two maps must carry the same title (mapgen/strings.py refuses a clash)."""
+        assert len(f"NPC:{name}") <= 31, f"script name too long for its dialogue title's string key: NPC:{name}"
         self.strings[f"NPC:{name}"] = text
 
     def portrait(self, name, pic):

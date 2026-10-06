@@ -1,0 +1,662 @@
+{
+ "scenario": "rescue",
+ "iter": "i9",
+ "writer": "one writer a town (variants/i9/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip went into the old barrow after the Urchins and has not come back.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Spell Book": "thing",
+    "Red Potions": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, take the path east of the ford to the old barrow! My novice Pip went down there after the Urchins!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Hurry, please!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Get me back to the chapel."
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Oh no..."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "I pray those Urchins never come near this chapel again! Here, take this Spell Book with my blessing, then I must get the boy cleaned up and fed."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the barrow and lead Pip back to Brother Anselm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5), writer 1"
+  },
+  {
+   "id": 2,
+   "specifics": "Varrhold: Gudra's husband Durbin went back down the old copper shaft for his lunch pail and Ozrath's Zombies have him cornered.",
+   "names": {
+    "Varrhold": "place",
+    "Ozrath": "person",
+    "Garvus": "person",
+    "Haldrek": "person",
+    "Brask": "person",
+    "Nella": "person",
+    "Bruddock": "person",
+    "Gimbrel": "person",
+    "Skabb": "person",
+    "Gudra": "person",
+    "Durbin": "person",
+    "Grobbin": "person",
+    "Kettrick": "person",
+    "Mizzra": "person",
+    "Tamsk": "person",
+    "Pibbet": "person",
+    "Orla": "person",
+    "Great Lift": "place",
+    "the Deep": "place",
+    "bathhouse": "place",
+    "west tunnel": "place",
+    "east tunnel": "place",
+    "north shaft": "place",
+    "copper shaft": "place",
+    "market": "place",
+    "Urchin den": "place",
+    "magic pick": "thing",
+    "crank handle": "thing",
+    "lamp oil": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gudra",
+     "text": "Greetings, kind sir! My husband Durbin went back down the old copper shaft for his lunch pail, and now Ozrath's Zombies have him cornered! Every miner carries a horn, and I've heard his tooting all morning.\n\nYou must go down the copper shaft, east of the market, and bring him home. The last time he went down there alone, I had to send half the town after him... Take this key -- it opens the gate that closes off the shaft."
+    },
+    "reminder": {
+     "speaker": "Gudra",
+     "text": "I am afraid to think of Durbin alone in the dark, with those dead things shuffling all around him."
+    },
+    "found": {
+     "speaker": "Durbin",
+     "text": "Oh! My knees aren't quite steady yet. You'll have to lead me slow."
+    },
+    "following": {
+     "speaker": "Durbin",
+     "text": "Good. A little further now."
+    },
+    "completion": {
+     "speaker": "Gudra",
+     "text": "Wonderful! Durbin and I can never thank you enough -- here, take the gold from our savings jar. The Zombies didn't bite him? Ozrath's rotting servants have a nasty knack for grabbing anyone who wanders too far below."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Escort the trapped miner Durbin out of the copper shaft."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skeel: Nella's husband Tobb, the gravedigger, was dragged down into the crypt on the burial isle by the dead.",
+   "names": {
+    "Skeel": "place",
+    "Morvane": "person",
+    "Fendrick": "person",
+    "Grell": "person",
+    "Hobbe": "person",
+    "Pellam": "person",
+    "Nubbin": "person",
+    "Quimby": "person",
+    "Snub": "person",
+    "Nella": "person",
+    "Tobb": "person",
+    "Ludo": "person",
+    "Wilka": "person",
+    "Orra": "person",
+    "Bettik": "person",
+    "Durgan": "person",
+    "Zeela": "person",
+    "Watch Hut": "place",
+    "Town Hall": "place",
+    "burial isles": "place",
+    "north bog": "place",
+    "Corvale": "place",
+    "Bone Totem": "thing",
+    "Amulet of Healing": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ogre": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nella",
+     "text": "Welcome to Skeel, stranger, though it's a sorry place to visit now! My husband Tobb went digging on the burial isle and the dead dragged him down into the crypt! This key is yours -- it opens the crypt gate. I'll watch the water for Zombies while you go find him."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Oh, and Tobb always said that crypt had a back way out..."
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Let's go home to Nella?"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Please get me out of this hole."
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Hmmm. I'm back home and still among the living! Nella, fetch the stranger our purse!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Tobb back from the crypt."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Gorst: Pell's master Orlo the Stargazer climbed down the dry well to look at the stars and the Rats keep him there.",
+   "names": {
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Great Hall": "place",
+    "Blades Galore": "place",
+    "Zarrow": "person",
+    "Pelgrim": "person",
+    "Lord Dravus": "person",
+    "Brunk": "person",
+    "Gribbin": "person",
+    "Hulda": "person",
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Steward Oswin": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Pell": "person",
+    "Orlo": "person",
+    "Hask": "person",
+    "Mirabel": "person",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Rats": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Pell",
+     "text": "Ah, so you're the brave stranger old Pelgrim wrote to us about. You must climb down the dry well behind the chapel and fetch Master Orlo before the Rats make a supper of him! Grrrrrrrrrr... that stubborn old goat!"
+    },
+    "reminder": {
+     "speaker": "Pell",
+     "text": "One of the night watch heard him calling for his supper. You just have to hurry!"
+    },
+    "found": {
+     "speaker": "Orlo",
+     "text": "I'm sorry young sir, but you're standing in my starlight. I'll must ask you kindly to step aside."
+    },
+    "following": {
+     "speaker": "Orlo",
+     "text": "I'm sorry, but I can't climb any faster unless somebody carries my star charts. Can't have a learned man scrambling about in the dirt, can I?"
+    },
+    "completion": {
+     "speaker": "Pell",
+     "text": "You did it, brave Adventurer! I wonder if that wicked Zarrow sent those Rats after him. Please, take this Ankh for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Orlo the Stargazer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ombry: Wendla's husband Gossard was hauled out of his boat by the Ogres to row their rafts; he is chained in their camp up the north shore.",
+   "names": {
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Lamp Tower": "place",
+    "Rat Island": "place",
+    "Washing Cove": "place",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Mayor Varrow": "person",
+    "Varrow": "person",
+    "Brosk": "person",
+    "Grella": "person",
+    "Quimby": "person",
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person",
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wendla",
+     "text": "You know, nothing but bad news has come across the lake these last days, and not one scrap of good! And now the Ogres have hauled my Gossard out of his boat to row their rafts for them. Bring him home from their camp up the north shore."
+    },
+    "reminder": {
+     "speaker": "Wendla",
+     "text": "There's no time to lose. My Gossard grows weaker with every hour at those Ogre oars."
+    },
+    "found": {
+     "speaker": "Gossard",
+     "text": "The key! The key! The fat Ogre has the key!"
+    },
+    "following": {
+     "speaker": "Gossard",
+     "text": "Mind your step, young sir. I'll be right behind you."
+    },
+    "completion": {
+     "speaker": "Wendla",
+     "text": "Gossard, home at last! I hope you gave those Ogres a thrashing they'll remember all their days! Take this spell book, and try it out on them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the Ogre camp and free Gossard from the oars."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Merinth: Hulda's daughter Merra, a student, was dragged off by the Golems to the old quarry.",
+   "names": {
+    "Merinth": "place",
+    "College": "place",
+    "Black Spire": "place",
+    "old kiln": "place",
+    "old foundry": "place",
+    "old quarry": "place",
+    "College lockup": "place",
+    "Zorvan": "person",
+    "Varrus": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Fennick": "person",
+    "Oswick": "person",
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "Mimics": "group",
+    "Imps": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "Zorvan's Downfall": "thing",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulda",
+     "text": "Please... The Golems dragged my Merra off to the old quarry north of town..."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Pardon me! Hello!? My girl is still out there. Did you forget her?"
+    },
+    "found": {
+     "speaker": "Merra",
+     "text": "Push and Blink spells are no use against these bars, so I'm glad somebody came!"
+    },
+    "following": {
+     "speaker": "Merra",
+     "text": "Lead on, and quickly! You may consider me right on your heels until we see my mother's door."
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Wonderful work! Thank you so very much, kind sir. With my Merra home, we can at last sleep without fear of those horrid Golems! I could never pay you back for my girl, but please accept this as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to free Merra from the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vosk: Yselde's husband Dolf, an ice-cutter afraid of the dark, is trapped in the Ice Caves by the frozen dead.",
+   "names": {
+    "Fort Vosk": "place",
+    "Frostgate": "place",
+    "Watchtower": "place",
+    "Ice Caves": "place",
+    "Frozen Field": "place",
+    "Morvayne": "person",
+    "Dorvin": "person",
+    "Brask": "person",
+    "Holm": "person",
+    "Gorbo": "person",
+    "Gosk": "person",
+    "Hesk": "person",
+    "Snib": "person",
+    "Yselde": "person",
+    "Dolf": "person",
+    "Orwin": "person",
+    "Hobb": "person",
+    "Hilde": "person",
+    "Brodd": "person",
+    "Gundar": "person",
+    "Zenka": "person",
+    "Horn of Calling": "thing",
+    "Bats": "group",
+    "Urchins": "group",
+    "Zombies": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yselde",
+     "text": "I've just heard more dreadful news of the Necromancer's wicked deeds. Those horrid dead things chased off both of Dolf's ice-cutters. Dolf has always been terrified of the dark and now he's trapped deep in the Ice Caves west of the fort!\n\nIt will be a dangerous journey. Please, bring him home, brave Adventurer! Take this key, it opens the iron grate that seals the Ice Caves."
+    },
+    "reminder": {
+     "speaker": "Yselde",
+     "text": "Please don't dawdle, lad, poor Dolf grows colder with every hour he's down there."
+    },
+    "found": {
+     "speaker": "Dolf",
+     "text": "I'll stay right here."
+    },
+    "following": {
+     "speaker": "Dolf",
+     "text": "Okay -- lead on!"
+    },
+    "completion": {
+     "speaker": "Yselde",
+     "text": "Wonderful! Take this ankh -- I'd give you more, but beyond that, I'm afraid we have nothing left to spare. Morvayne's dead are on the march!\n\nBut no time to fuss over this half-frozen husband of mine now!\n\nMy Dolf is home, safe and warm at last!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the Ice Caves and bring Dolf home to Yselde."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Durgal: Brisba's husband Grimble, a tinker, went to sell kettles to the Ogres and they locked him up in the Smelting Pits.",
+   "names": {
+    "Durgal": "place",
+    "Bargul": "person",
+    "Orvald": "person",
+    "Krell": "person",
+    "Brannock": "person",
+    "Zeck": "person",
+    "Mirva": "person",
+    "Dagny": "person",
+    "Ulda": "person",
+    "Fennick": "person",
+    "Krenshaw": "person",
+    "Rudgar": "person",
+    "Brisba": "person",
+    "Grimble": "person",
+    "Smelting Pits": "place",
+    "Great Forge": "place",
+    "Hot Coal": "place",
+    "lava caves": "place",
+    "slag caves": "place",
+    "north gate": "place",
+    "Fireproof Gloves": "thing",
+    "Guild Hammer": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Bats": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brisba",
+     "text": "Please! I shall never see my Grimble again -- he went off to sell kettles to the Ogres and they've locked him up in the Smelting Pits! If you're going up that way, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Brisba",
+     "text": "Bless you, dear. Go quickly. I know he can't last long up there."
+    },
+    "found": {
+     "speaker": "Grimble",
+     "text": "Am I glad to see you, young sir! Take me as far as the north gate -- just down the hill. I can make it home on my own from there."
+    },
+    "following": {
+     "speaker": "Grimble",
+     "text": "Yaaaaaarrrgggghhh!!! Oh..."
+    },
+    "completion": {
+     "speaker": "Brisba",
+     "text": "Hmmm. Well, you'd best take this Ankh, kind sir, if you're to stand any chance against that Bargul and his brutes!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Grimble the Tinker from the Smelting Pits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellor's Cross: The Ogres carried off Orlo, the inn's lute player, to sing at their supper in Stony Hollow, and his wife Brisa begs for him.",
+   "names": {
+    "Pellor's Cross": "place",
+    "Four Roads Inn": "place",
+    "Gallows Hill": "place",
+    "Stony Hollow": "place",
+    "Hamley Farm": "place",
+    "Bludgor": "person",
+    "Captain Vell": "person",
+    "Mayor Tull": "person",
+    "Ruddock": "person",
+    "Tobbe": "person",
+    "Fennick": "person",
+    "Dagny": "person",
+    "Mother Quill": "person",
+    "Wila": "person",
+    "Tibbald": "person",
+    "Dobbin": "person",
+    "Master Odric": "person",
+    "Snig": "person",
+    "Brisa": "person",
+    "Orlo": "person",
+    "Moll": "person",
+    "Gimbo": "person",
+    "Hask": "person",
+    "Wuzzle": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Ghosts": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brisa",
+     "text": "Please... The Ogres dragged my Orlo off to sing at Bludgor's supper table! Their camp is in Stony Hollow, east of the crossroads, and the cookhouse door at the back should still be unlatched. Bring him home! Good luck!"
+    },
+    "reminder": {
+     "speaker": "Brisa",
+     "text": "Oh, it's only you! No Orlo yet?"
+    },
+    "found": {
+     "speaker": "Orlo",
+     "text": "Psst...in here, under the big kettle, stranger..."
+    },
+    "following": {
+     "speaker": "Orlo",
+     "text": "Thank you. I wouldn't have lasted another night in that place."
+    },
+    "completion": {
+     "speaker": "Brisa",
+     "text": "Orlo! My heartfelt thanks, kind sir! Here, take this purse. You should go see Mayor Tull -- his house is right across from the inn."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Ogre camp in Stony Hollow and free Orlo."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": []
+   },
+   "writer": "Claude Agent SDK general-purpose agent, Claude Opus 5.5"
+  },
+  {
+   "id": 10,
+   "specifics": "Vellin: Ostra begs the player to free her husband Grebb, carried off by Ogres from his plow and penned with the stolen cattle north of the fields.",
+   "names": {
+    "Vellin": "place",
+    "Kaldor": "person",
+    "Bodrick": "person",
+    "Tobber": "person",
+    "Kestrin": "person",
+    "Fennick": "person",
+    "Ysmay": "person",
+    "Marwold": "person",
+    "Snibb": "person",
+    "Ostra": "person",
+    "Grebb": "person",
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Town Hall": "place",
+    "Harvest Amulet": "thing",
+    "Ogres": "group",
+    "Krudd Ogres": "group",
+    "Urchins": "group",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ostra",
+     "text": "Thank goodness you're here, stranger! My husband Grebb is held in the Ogre pens north of the fields, tied up with the cattle and kept for the Ogres' supper.\n\nThere you must hunt for him among the stolen oxen. You came all this way, lad, or should I say our savior! The brutes grabbed him right off his plow and won't let him go till they've fattened him up!\n\nYou must go to the pens and set him free. You'll find him."
+    },
+    "reminder": {
+     "speaker": "Ostra",
+     "text": "Go to him!"
+    },
+    "found": {
+     "speaker": "Grebb",
+     "text": "A rescuer at last. If you mean to get me out you must cut these ropes off my feet first.\n\nWill you hurry up?"
+    },
+    "following": {
+     "speaker": "Grebb",
+     "text": "Thanks, friend. Stay close. I know a back way home."
+    },
+    "completion": {
+     "speaker": "Ostra",
+     "text": "Bless you! Here, this ankh and a few potions will serve you well -- more than you know."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead Grebb out of the Ogre pens and back to Ostra."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), claude-opus-5-5"
+  }
+ ]
+}

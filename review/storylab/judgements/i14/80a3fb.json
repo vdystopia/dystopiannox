@@ -1,0 +1,33 @@
+{
+  "packet": "80a3fb",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain, exclamatory offer with a concrete direction ('through the double doors') and a bare imperative journal; the 'new title' and free passage tie the quest to the chapter's plot the way Westwood's do."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Short, breathless 'Ooooh' opener and a functional hand-off of two items to the next person; the economy and the slightly stiff 'That evil one' read as Westwood."},
+    {"label": "C", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "A chapter-transition quest whose reward is travel by teleporter, with the odd turn from a lost apprentice to recruiting the player ('Hmmm... Yes.'); the logic is loose in the way shipped scripts are."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The pet-frog rescue and the 'Loads and loads of money?' joke are Nox-like, but the joke feels placed to show humour, and the '?!' and the 'forever be indebted' cliche feel assembled."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "A tidy, generic robbed-shopkeeper bounty; it echoes G's phrasing ('brought to justice', 'scoundrels', 'We shall all sleep better knowing') without the scene-specific oddities of a scripted map."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The chain urchin, angered bats, orchard, ruby key and signed petition has a neat cause-and-effect setup that reads designed; the voice is plain but the quest economy is too tidy."},
+    {"label": "G", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "The bounty-giver walks in afterwards ('The priest told me of strange sounds') which is a scripted-scene seam typical of a real map; the '--' amounts, 'single handedly' and repeated 'young sir' read as Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short, with a terse thanks that fits Nox, but 'kind Adventurer' and the 'tokens of my appreciation' formula look borrowed from a template and shared with J."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The over-the-top 'airborne demons from the underworld' and 'Nox's vital interests', a counted journal goal ('the 6 trapped mine workers') and the Captain hand-off with '-- east of here' are Westwood's campaign plumbing."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "Long tangled sentences ('leaving rebuilding the village our smallest concern', 'At happier other times') pile up campaign stakes; it imitates the '!?' and 'lad' register but overreaches in rhythm."}
+  ],
+  "tells": [
+    "Westwood's quests carry visible scripting seams: NPCs who appear after the fact, rewards of passage or a teleporter, hand-offs to the next plot person. The new texts are self-contained and neatly causal (A leads to B, which leads to C, which needs a key).",
+    "New texts reuse stock reward formulas ('tokens of my appreciation', 'sign of my appreciation', 'brought to justice') across texts; Westwood varies or skips the thanks and often names a sum ('-- 500 in gold').",
+    "Humour and exclamation in the new texts feel inserted to signal Nox's tone; Westwood's oddities are incidental (clumsy logic, a missing comma, 'single handedly').",
+    "The longer new speeches build multi-clause sentences of high stakes that strain the rhythm; Westwood keeps clauses short even when melodramatic.",
+    "Journals: Westwood's are bare imperatives with counts or concrete objects; new ones are fine but sometimes put the place and object in one compound noun phrase."
+  ]
+}

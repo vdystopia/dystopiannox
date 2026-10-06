@@ -1,0 +1,310 @@
+{
+ "iter": "i9",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ombry",
+  "setting": "a lake village of fishermen",
+  "trouble": "Gurlok's Ogres have seized the Lamp Tower on Gull Isle and raid the lake from their camp on the north shore, so no boat crosses safely.",
+  "names": {
+   "Ombry": "place",
+   "Gull Isle": "place",
+   "Lamp Tower": "place",
+   "Rat Island": "place",
+   "Washing Cove": "place",
+   "Pellandor": "person",
+   "Gurlok": "person",
+   "Mayor Varrow": "person",
+   "Varrow": "person",
+   "Brosk": "person",
+   "Grella": "person",
+   "Quimby": "person",
+   "Mopsa": "person",
+   "Fennick": "person",
+   "Olm": "person",
+   "Dabbo": "person",
+   "Krell": "person",
+   "Yselde": "person",
+   "Nebb": "person",
+   "Harbormaster Dunmott": "person",
+   "Dunmott": "person",
+   "Wendla": "person",
+   "Gossard": "person",
+   "Ogres": "group",
+   "Urchins": "group",
+   "Giant Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brosk at the causeway gate, shut by Mayor Varrow while Gurlok's Ogres hold the Lamp Tower on Gull Isle.",
+   "names": {
+    "Brosk": "person",
+    "Mayor Varrow": "person",
+    "Ogres": "group",
+    "Gull Isle": "place",
+    "Lamp Tower": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brosk",
+     "text": "Fancy gear, stranger. But that buys you no passage over the causeway! Now back to the village with you!"
+    },
+    "again": {
+     "speaker": "Brosk",
+     "text": "Back to the docks, stranger! Mind the nets!"
+    },
+    "later": {
+     "speaker": "Brosk",
+     "text": "Hold it right there, Adventurer! Mayor Varrow says you threw the Ogres off Gull Isle and the light in the Lamp Tower proves it! Off you go. I've got the causeway gate open and waiting just for you! Will you be needing a boat too, Adventurer?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Grella the washerwoman wants the Giant Leeches cleared out of the Washing Cove, where nobody can wash a shirt.",
+   "names": {
+    "Grella": "person",
+    "Washing Cove": "place",
+    "Giant Leeches": "group",
+    "Ombry": "place",
+    "Gurlok": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grella",
+     "text": "Good day, brave Adventurer. A worthy reward to whoever rids the Washing Cove south of the docks of those horrid Giant Leeches -- not one shirt in Ombry has been washed since they came!"
+    },
+    "reminder": {
+     "speaker": "Grella",
+     "text": "The Washing Cove? Follow the shore path and keep the water on your left.."
+    },
+    "completion": {
+     "speaker": "Grella",
+     "text": "We never should have let those leeches breed so close to the village. There must have been scores of them in that cove! Take these boots, and keep out of Gurlok's way if you want to keep your hide!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Giant Leeches from the Washing Cove"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Quimby's wooden leg was snatched by the Urchins while he dozed on the pier; it is in their den on Rat Island.",
+   "names": {
+    "Quimby": "person",
+    "Urchins": "group",
+    "Rat Island": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quimby",
+     "text": "They've stolen my leg! Yeah, I know how it sounds. Listen!\n\nThe Urchins took it off me while I dozed on the pier, and now it's hidden in their den on Rat Island, east of the docks, guarded by the whole thieving pack and kept for who knows what. Take this key to my boathouse. Will you, won't you bring it home to me?"
+    },
+    "refusal": {
+     "speaker": "Quimby",
+     "text": "You've got troubles enough of your own. Sorry the old fool bothered you."
+    },
+    "reminder": {
+     "speaker": "Quimby",
+     "text": "Maybe if you poked through every stinking heap and soggy hole on that island you'd turn up my poor leg!"
+    },
+    "completion": {
+     "speaker": "Quimby",
+     "text": "My leg! My deepest gratitude, lad. Take this Ankh, and good luck!"
+    },
+    "after": {
+     "speaker": "Quimby",
+     "text": "Thank you. I suppose I can quit hopping around now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Urchins' den and recover Quimby's wooden leg."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the Urchins' den and recover Quimby's wooden leg."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Mopsa cackles, Fennick saw an Ogre raft in the fog, Olm brushes the player off.",
+   "names": {
+    "Mopsa": "person",
+    "Fennick": "person",
+    "Olm": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Mopsa",
+     "text": "Swim, stranger, swim! Hee, hee, hee...!"
+    },
+    "rumour2": {
+     "speaker": "Fennick",
+     "text": "That Ogre raft just came out of the fog right under my very nose!"
+    },
+    "rumour3": {
+     "speaker": "Olm",
+     "text": "You've got the wrong boat, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Dabbo keeps the inn, Krell the arms shop, Yselde the potion and scroll shop.",
+   "names": {
+    "Dabbo": "person",
+    "Krell": "person",
+    "Yselde": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Dabbo",
+     "text": "I hope you'll be wanting a bed tonight, stranger. You look like you rowed across the whole lake to get here."
+    },
+    "arms": {
+     "speaker": "Krell",
+     "text": "Are you a new recruit for the harbor watch?"
+    },
+    "magic": {
+     "speaker": "Yselde",
+     "text": "You look a little green around the gills, friend."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Nebb, a hiccupping pedlar, trades a chain tunic for an Ogre's tusk; Harbormaster Dunmott wants the harbor strongbox back from the Ogres on Gull Isle.",
+   "names": {
+    "Nebb": "person",
+    "Harbormaster Dunmott": "person",
+    "Dunmott": "person",
+    "Ombry": "place",
+    "Gull Isle": "place",
+    "Gurlok": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Nebb",
+     "text": "Hiccup! Hiccup! I've rowed this fine chain tunic all the way across the lake, at great risk and my own expense, for the poor frightened folk of Ombry -- and it's yours for one Ogre's tusk off Gull Isle!"
+    },
+    "offer_b": {
+     "speaker": "Harbormaster Dunmott",
+     "text": "The harbor strongbox is the pride of Ombry. If the Ogres truly carried it off to Gull Isle, then we're lucky there was only a little fish money in it.\n\nI've worked long and hard, and paid out of my own purse, to keep this harbor open for these hard-pressed fishermen -- bring that strongbox back to me and you'll be well rewarded."
+    },
+    "outcome_a": {
+     "speaker": "Nebb",
+     "text": "Marvelous! That tunic's the deal of the century, friend! I can't say I believe those stories about Gurlok eating whole boats though."
+    },
+    "outcome_b": {
+     "speaker": "Harbormaster Dunmott",
+     "text": "Thanks again Wanderer, and take this Longsword for your trouble. What's that you say? Gurlok's rafts are on the water! Good luck!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring an Ogre's tusk from Gull Isle to Nebb at the inn."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Recover the harbor strongbox! Return it to Dunmott!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["ChainTunic", "Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Wendla's husband Gossard was hauled out of his boat by the Ogres to row their rafts; he is chained in their camp up the north shore.",
+   "names": {
+    "Wendla": "person",
+    "Gossard": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wendla",
+     "text": "You know, nothing but bad news has come across the lake these last days, and not one scrap of good! And now the Ogres have hauled my Gossard out of his boat to row their rafts for them. Bring him home from their camp up the north shore."
+    },
+    "reminder": {
+     "speaker": "Wendla",
+     "text": "There's no time to lose. My Gossard grows weaker with every hour at those Ogre oars."
+    },
+    "found": {
+     "speaker": "Gossard",
+     "text": "The key! The key! The fat Ogre has the key!"
+    },
+    "following": {
+     "speaker": "Gossard",
+     "text": "Mind your step, young sir. I'll be right behind you."
+    },
+    "completion": {
+     "speaker": "Wendla",
+     "text": "Gossard, home at last! I hope you gave those Ogres a thrashing they'll remember all their days! Take this spell book, and try it out on them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the Ogre camp and free Gossard from the oars."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fennick points the player to Mayor Varrow, who, warned by Pellandor, sends him to drive Gurlok's Ogres out of the Lamp Tower on Gull Isle.",
+   "names": {
+    "Fennick": "person",
+    "Mayor Varrow": "person",
+    "Pellandor": "person",
+    "Gurlok": "person",
+    "Ombry": "place",
+    "Lamp Tower": "place",
+    "Gull Isle": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "Hey who put out the big lamp? Go ask Mayor Varrow!"
+    },
+    "opening": {
+     "speaker": "Mayor Varrow",
+     "text": "Pellandor sent word of you, lad -- and not a day too soon, for the Ogres of Gurlok have plagued Ombry long enough. I think the brutes who took the Lamp Tower out on Gull Isle came over from the north shore, so take this key to the causeway gate and throw them out! Ogres love nothing better than a boat on the rocks!"
+    },
+    "reminder": {
+     "speaker": "Mayor Varrow",
+     "text": "Why aren't you on the water yet?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Gurlok's Ogres out of the Lamp Tower on Gull Isle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

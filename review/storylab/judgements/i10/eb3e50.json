@@ -1,0 +1,29 @@
+{
+  "packet": "eb3e50",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stiff, slightly bureaucratic exposition ('there's another task which I need performed', 'requested he create'), odd possessive [Person]', and a terse shouted reminder; the turn to an off-screen death folded into the thanks is very Westwood."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Short, breathless, a little awkward ('That evil one defeated both of my novices'), with a capitalised 'the Necromancer' in the journal; the reward is a hand-off to the next quest, not a gift speech."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Tidy template: greeting, problem, a lost farmhand for colour, a question with a direction and a meeting place, then a gift and a 'stock up at the shops first' hint; too orderly and too signposted for Westwood."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clumsy-real lines ('he'll be destroyed', 'Could you... would you get it back for us?') and a thin one-line thanks; the journal names 'an Ogre near the docks' slightly off from the offer, a typical Westwood unevenness."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Ornate, pseudo-archaic register ('sorely need', 'turn the [Thing] to the foulest of ends, for certain!', 'more useful than you know') and stacked clauses; 'Wanderer' as address and the overwrought reminder read as pastiche."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and Nox-like in length, but the 'At last!' opener with no context, the neat key handoff and the forge pointer read as a designed quest beat; reminder 'Take heart, one puny Imp can't do much harm' is a writer's wink."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Character-comedy self-introduction ('I am Master [Person]', 'half-blind old man', 'Hmmm... Quite so.') and a three-page thanks that sets up lessons; more personality-sketch than Westwood's flat functional voice."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Melodramatic setup ('a raving demoness', wife turned into a wolf) with run-on comma splices and an impatient reminder; effusive 'brave and kind Adventurer' thanks and the odd [Person]' possessive fit Westwood."}
+  ],
+  "tells": [
+    "Westwood's texts are a little clumsy: comma splices, odd possessives, journal lines that do not quite match the offer, stiff phrasing ('a task which I need performed'); the new texts are cleaner and more evenly built.",
+    "New texts follow a visible template (greeting, problem, colourful aside, question with direction, reward plus a pointer to the next NPC or the shops); Westwood often skips steps or makes the thanks a bare one-liner.",
+    "New texts give speakers comic personality flourishes (self-introductions, 'Hmmm... Quite so', winking reminders); Westwood's NPCs are flatter and more urgent.",
+    "Pseudo-archaic ornament ('sorely', 'foulest of ends', 'for certain', 'more useful than you know') marks pastiche rather than Westwood's plain register.",
+    "Several new texts reuse the same monster (Imps) and the same 'little devils' phrasing; repeated stock creatures and words across a packet point to one generator."
+  ]
+}

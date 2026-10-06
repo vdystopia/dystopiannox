@@ -42,7 +42,7 @@ def _camp_build(kind):
         pop = _pop(ctx)
         for p in ctx["plots"]:
             rng = p.rng
-            site = camps.camp_site(m, land, p.scene_c, reach=5, road_clear=3.0, room=7)
+            site = camps.camp_site(m, land, p.scene_c, reach=p.r - 3, road_clear=3.0, room=7)     # as the designs let it
             toward = p.toward
             sleepers = {"small": 3, "typical": 4, "large": 6}[p.size]
             tents = {"small": 1, "typical": 2, "large": 3}[p.size]
@@ -50,7 +50,8 @@ def _camp_build(kind):
                 trade = "dig" if p.k % 4 == 3 else "bandit"
                 camp = camps.bandit_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers, tents=tents,
                                          trade=trade, finds=("MineCrystal01", "MineCrystal03", "CaveRocksSmall"))
-                posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=min(2, tents), watch=1 + (p.size == "large"),
+                # the designs' bands: 4-7 people, median 5 (Thornwick, Greywatch, Harrowby, Ambermere, Starwell)
+                posts = camp_posts(m, camp, square_px(*toward), sit=1 + (p.size != "small"), tents=1, watch=1,
                                    work=2 if trade == "dig" else 0)
                 kinds = dict(leader="Swordsman", sit="Swordsman", tent="Swordsman", watch="Archer", work="Swordsman")
                 p.notes.update(trade=trade, sleepers=sleepers, tents=tents)
@@ -82,7 +83,7 @@ def _yard_plan(kind):
             ring = [(p.c[0] + r * math.cos(k * math.pi / 4), p.c[1] + r * math.sin(k * math.pi / 4))
                     for r in (3, 5) for k in range(8)]
             y = Y.plan_any(land, p.rng, kind, [p.scene_c, p.c] + ring, toward=p.toward)      # as the designs plan
-            if y: ctx["yards"][p.k] = y
+            if y: ctx["yards"][p.k] = y; p.notes["scene_sq"] = list(y.centre)
             else: ctx["log"](f"  plot {p.k + 1}: no room for the {kind}")
     return plan
 
@@ -146,7 +147,7 @@ def _garden_plan(ctx):
         role = HOME_ROLES[p.k % len(HOME_ROLES)] if p.size != "small" else "cottage"     # a small clearing: a cottage
         at = (p.c[0] - ux * 3.5, p.c[1] - uy * 3.5)
         h = _house(ctx, p, role, at, quiet=True) or _house(ctx, p, role, p.c)
-        if h: ctx["houses"][p.k] = h
+        if h: ctx["houses"][p.k] = h; p.notes["scene_sq"] = [at[0], at[1]]
 
 
 def _garden_build(ctx):
@@ -175,15 +176,18 @@ def _garden_build(ctx):
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
 POND_R = {"small": 6.0, "typical": 7.0, "large": 8.0}       # tiles: a lake a dock reaches out into (Con05A)
+LAKE_R = {"small": 10.0, "typical": 11.0, "large": 12.0}    # a town's lakeshore: the lake on one side, the hamlet on the other
 
 
 def _pond_plan(ctx):
     land = ctx["land"]
     for p in ctx["plots"]:
-        pr = POND_R[p.size]
+        pr = (LAKE_R if p.town else POND_R)[p.size]
         ux, uy = p.dir
         pc = p.c if p.site != "wall" else (p.c[0] + ux * 2.5, p.c[1] + uy * 2.5)
+        if p.town: pc = (p.c[0] - ux * p.r * 0.3, p.c[1] - uy * p.r * 0.3)
         p.pond = (pc, pr)
+        p.notes["scene_sq"] = [pc[0], pc[1]]
         land.reserve_band([(2 * pc[0], 2 * pc[1]), (2 * pc[0] + 0.1, 2 * pc[1])], pr + 1.0)
         if p.site == "road":
             p.toward = ((p.road[0][0] + p.road[1][0]) / 2, (p.road[0][1] + p.road[1][1]) / 2)
@@ -206,6 +210,7 @@ def _pond_build(ctx):
             p.notes.update(anchor=_mean(pcs), kit=dock["kind"])
             du, dv = dock["start"]
             land.connect(m, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23))
+            _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 3)      # a bank to reach it, no pines
         else:
             ctx["log"](f"  plot {p.k + 1}: no room for the dock")
             (ci, cj), _ = p.pond
@@ -255,12 +260,15 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
     return after
 
 
-def _house_plan(roles):
+def _house_plan(roles, square=0):
+    """A house of one of `roles` at the clearing's side; `square` > 0: the ground before it kept open as a town's
+    square is (a market stall's awning needs a market place; the planting had filled the lab's clearings)."""
     def plan(ctx):
         for p in ctx["plots"]:
             ux, uy = p.dir
             role = roles[p.k % len(roles)]
             _house(ctx, p, role, (p.c[0] - ux * 4.5, p.c[1] - uy * 4.5))
+            if square: _keep(ctx, p.scene_c, square)
     return plan
 
 
@@ -268,7 +276,10 @@ def _house_build(ctx):
     from kit.village import _squares_of
     m, land = ctx["m"], ctx["land"]
     land.clear_walls(m)
+    done = ctx.setdefault("connected", set())
     for bid, b in ctx.get("placed", []):
+        if id(b) in done: continue
+        done.add(id(b))
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
 
 
@@ -307,7 +318,7 @@ RECIPES = {
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
     "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"])),
-    "market_stall": dict(plan=_house_plan(["store", "inn"]), build=_house_build,
+    "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
                          after_plant=_theme_after(["market_stall"])),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
                   after_plant=_theme_after(["wagon_verge", "unhitched_cart", "broken_wagon"])),

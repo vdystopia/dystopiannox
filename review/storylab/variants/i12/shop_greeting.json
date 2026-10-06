@@ -1,0 +1,516 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i12",
+ "writer": "one writer a town (variants/i12/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ossian at the Drowned Lantern, Dunstan the smith, Mabry the magic seller.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Bartle": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Sorry, I don't serve folk without coin."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Well... Maybe not the newest exactly... But solid all the same!"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "I hear you came through the Ashwood. Well done, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 2,
+   "specifics": "Skarn Delve: The inn, arms shop and magic shop of Skarn Delve",
+   "names": {
+    "Skarn Delve": "place",
+    "Thrum Landing": "place",
+    "Lower Shafts": "place",
+    "Counting House": "place",
+    "Mayor Vorlund": "person",
+    "Dorvak": "person",
+    "Paymaster Orrin": "person",
+    "Skrit": "person",
+    "Hurk": "person",
+    "Nib": "person",
+    "Mobb": "person",
+    "Pellwick": "person",
+    "Master Gruntle": "person",
+    "Wick": "person",
+    "Bessa": "person",
+    "Tam": "person",
+    "Tarn": "person",
+    "Ysolt": "person",
+    "Garn": "person",
+    "Dugga": "person",
+    "Kragg": "person",
+    "Ommi": "person",
+    "Rod of Seeking": "thing",
+    "Sounding Bell": "thing",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Dugga",
+     "text": "Thirsty folk are always welcome here. What can I pour for you?"
+    },
+    "arms": {
+     "speaker": "Kragg",
+     "text": "It's awful quiet today, with the Troll scare and all."
+    },
+    "magic": {
+     "speaker": "Ommi",
+     "text": "Welcome to Skarn Delve!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 3,
+   "specifics": "Gorrow: Bidda the innkeeper, Krunk the arms seller, Mirelda of the magic shop",
+   "names": {
+    "Gorrow": "place",
+    "Vorgul": "person",
+    "Mudmen": "group",
+    "Captain": "person",
+    "Gwoll": "person",
+    "Thoss": "person",
+    "Pellan": "person",
+    "Mud Imps": "group",
+    "Imps": "group",
+    "Amulet": "thing",
+    "Sunken Chapel": "place",
+    "Dorrit": "person",
+    "Tarn": "place",
+    "Bog Gators": "group",
+    "Gators": "group",
+    "Pru": "thing",
+    "Ketta": "person",
+    "Fergus": "person",
+    "Odo": "person",
+    "Gubb": "person",
+    "Rudge": "person",
+    "Bidda": "person",
+    "Krunk": "person",
+    "Mirelda": "person",
+    "Yarrin": "person",
+    "Sallow": "person",
+    "Tuk": "person",
+    "Wend": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bidda",
+     "text": "You look like you could use a bed, friend."
+    },
+    "arms": {
+     "speaker": "Krunk",
+     "text": "Pssst! Hey! Stranger! Want a blade? Cheapest in the marsh and it was hammered together right here in Gorrow!"
+    },
+    "magic": {
+     "speaker": "Mirelda",
+     "text": "Go away, stranger! I don't sell to FROG-KILLERS!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 4,
+   "specifics": "Karth Vael: Gorlick keeps the inn, Zibbet the arms shop, Vexel the magic shop in Karth Vael.",
+   "names": {
+    "Karth Vael": "place",
+    "Ostrag": "person",
+    "Dorrik": "person",
+    "Zibbet": "person",
+    "Hulm": "person",
+    "Grolm": "person",
+    "Skorn": "person",
+    "Mount Dreg": "place",
+    "Orm": "place",
+    "Pemmick": "person",
+    "Odlin": "person",
+    "Brindle": "person",
+    "Gorlick": "person",
+    "Vexel": "person",
+    "Nessa": "person",
+    "Crull": "person",
+    "Tam": "person",
+    "Joss": "person",
+    "Granary Yard": "place",
+    "the Keep": "place",
+    "Troll Den": "place",
+    "Grain Vault": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gorlick",
+     "text": "Are you here to join the garrison?"
+    },
+    "arms": {
+     "speaker": "Zibbet",
+     "text": "You'd better be quick the garrison's buying up all my steel."
+    },
+    "magic": {
+     "speaker": "Vexel",
+     "text": "Yes, what is it, stranger? I'm rather occupied."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 5,
+   "specifics": "Orlmere: Gorbel at the inn, Drusk the smith, Ismene at the magic shop.",
+   "names": {
+    "Orlmere": "place",
+    "Zorvane": "person",
+    "Rudge": "person",
+    "Brannoch": "person",
+    "Gurtle": "person",
+    "Pim": "person",
+    "Sedda": "person",
+    "Crodd": "person",
+    "Tamsk": "person",
+    "Joh Skarn": "person",
+    "Dorrel": "person",
+    "Skerrik": "person",
+    "Brisa": "person",
+    "Nubb": "person",
+    "Wenda": "person",
+    "Jorn": "person",
+    "Gorbel": "person",
+    "Drusk": "person",
+    "Ismene": "person",
+    "Sedge Landing": "place",
+    "Eel Island": "place",
+    "Long Pier": "place",
+    "Mooring Stones": "place",
+    "Silver Gaff": "thing",
+    "Bell of Ashes": "thing",
+    "Cloak of Tides": "thing",
+    "toll chest": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Gorbel",
+     "text": "Stranger, eh? You'd best head back where you came from. No doubt Zorvane will be raising the dead in the next village soon, too! Strange times we live in, eh?"
+    },
+    "arms": {
+     "speaker": "Drusk",
+     "text": "Haven't seen many strangers lately. Orlmere isn't exactly a good place for a holiday these days, what with the drowned wandering out of the lake."
+    },
+    "magic": {
+     "speaker": "Ismene",
+     "text": "Drifters aren't welcome here. But for a little extra, I'll sell to you anyway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 6,
+   "specifics": "Zorreth: Pippet of the Singed Quill inn, Hobb the smith, Varna the magic seller.",
+   "names": {
+    "Zorreth": "place",
+    "Maldrek": "person",
+    "Gargoyles": "group",
+    "Imps": "group",
+    "Captain": "person",
+    "Ulbrin": "person",
+    "Gorvo": "person",
+    "Tessik": "person",
+    "Dorrick": "person",
+    "Yarnak": "person",
+    "Hendry": "person",
+    "Zigg Quickquill": "person",
+    "Brannoch": "person",
+    "Pippet": "person",
+    "Hobb": "person",
+    "Varna": "person",
+    "Fenn": "person",
+    "Pellam": "person",
+    "Spire Crag": "place",
+    "Observatory": "place",
+    "Orrery of Zorreth": "thing",
+    "Book of Wards": "thing",
+    "Cloak of Warding": "thing",
+    "Lower Gate": "place",
+    "Gate Wardens": "group",
+    "Hobb's Iron and Steel": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pippet",
+     "text": "Dark days, lad. I can't believe Maldrek turned on the college. Dire news indeed! Better rest up while you can!"
+    },
+    "arms": {
+     "speaker": "Hobb",
+     "text": "Welcome to Hobb's Iron and Steel. I believe I still have a few good blades in stock."
+    },
+    "magic": {
+     "speaker": "Varna",
+     "text": "Hello, kind sir. I'm nearly ready to pack up and leave town. Everything must go, if you're interested."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 7,
+   "specifics": "Kell Varn: Brisa the innkeeper, Dagg the smith, Mylka of the magic shop",
+   "names": {
+    "Kell Varn": "place",
+    "Zhurg": "person",
+    "Zhurg's Hold": "place",
+    "Staff of Thaw": "thing",
+    "Warden Odrin": "person",
+    "Captain": "person",
+    "Brek": "person",
+    "Orlo": "person",
+    "Mylka": "person",
+    "Dagg": "person",
+    "Brisa": "person",
+    "Tam": "person",
+    "Gruff": "person",
+    "Pell": "person",
+    "Tolly": "person",
+    "Hobb": "person",
+    "Vessa": "person",
+    "Ketra": "person",
+    "Wenk": "person",
+    "Long Hall": "place",
+    "Pass Gate": "place",
+    "Hald Rock": "place",
+    "Wolf Den": "place",
+    "Imp Nest": "place",
+    "lower gate": "place",
+    "Amulet of Warmth": "thing",
+    "Warden's Key": "thing",
+    "Ogre's Lullaby": "thing",
+    "Ogres": "group",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "drovers": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brisa",
+     "text": "Hope you don't need a room any time soon, lad. You seem to have plenty left to do."
+    },
+    "arms": {
+     "speaker": "Dagg",
+     "text": "Wanna see a new blade?\n\nI call it 'Ogre's Lullaby.'"
+    },
+    "magic": {
+     "speaker": "Mylka",
+     "text": "So, you carry both the Staff of Thaw and the Warden's Key. Well done, brave Adventurer!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 8,
+   "specifics": "Ashkar: Hettie the innkeeper, Skeld the armsmith, Ilsa the potion seller.",
+   "names": {
+    "Ashkar": "place",
+    "Brakk": "person",
+    "Maldrek": "person",
+    "Drovak": "person",
+    "Kolgar": "person",
+    "Hammer of Kolgar": "thing",
+    "Trolls": "group",
+    "Goblins": "group",
+    "Imps": "group",
+    "Foundry": "place",
+    "Guildhall": "place",
+    "Crucible Vault": "place",
+    "Tobb": "person",
+    "Pogg": "person",
+    "Fenn": "person",
+    "Yara": "person",
+    "Odo": "person",
+    "Hettie": "person",
+    "Skeld": "person",
+    "Ilsa": "person",
+    "Gorm": "person",
+    "Tilda": "person",
+    "Gertie": "thing",
+    "Rusk Tinker": "person",
+    "Hilde": "person",
+    "Ketta": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hettie",
+     "text": "Sorry, I can't give you a room. The smiths have all taken beds."
+    },
+    "arms": {
+     "speaker": "Skeld",
+     "text": "Pssst! Over here! Are you wanting a sharp sword? Some armor, maybe?"
+    },
+    "magic": {
+     "speaker": "Ilsa",
+     "text": "Sorry friend, you've bought me dry! I've no potions left to give you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 9,
+   "specifics": "Tolmar Cross: Pegg keeps the inn, Kolb the arms shop, Zillah the magic shop.",
+   "names": {
+    "Tolmar Cross": "place",
+    "The Split Post": "place",
+    "Warden's Post": "place",
+    "Glumm Hollow": "place",
+    "North Bridge": "place",
+    "Orsk": "person",
+    "Quillon": "person",
+    "Brannoch": "person",
+    "Trolls": "group",
+    "Gurm": "person",
+    "Bessa Tuck": "person",
+    "Ibb": "person",
+    "Hessel": "person",
+    "Cloak of Warding": "thing",
+    "Dessa": "person",
+    "Tibb": "person",
+    "Tarn": "person",
+    "Odo Grubb": "person",
+    "Pegg": "person",
+    "Kolb": "person",
+    "Zillah": "person",
+    "Lorna": "person",
+    "Wick": "person",
+    "Dray": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Pegg",
+     "text": "Maybe you'd like a hot meal or a room?"
+    },
+    "arms": {
+     "speaker": "Kolb",
+     "text": "Stranger from the south, eh? Most folk around here don't trust your sort, but they've never even been to the Hollow and I have! What do they know!? Eh? Heh, heh, heh...\n\nYou're always welcome here, sir."
+    },
+    "magic": {
+     "speaker": "Zillah",
+     "text": "Watch your step in my shop, stranger! I've got plenty of scrolls here that'll singe your eyebrows off."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  },
+  {
+   "id": 10,
+   "specifics": "Tosk: Mugg of the Plow and Pitcher inn, Grint the smith and Quenby the magic seller greet the player.",
+   "names": {
+    "Tosk": "place",
+    "Ulm Gorra": "place",
+    "Brakk": "person",
+    "Ruddock": "person",
+    "Hesk": "person",
+    "Odrin": "person",
+    "Wenda": "person",
+    "Lorra": "person",
+    "Fenn": "person",
+    "Tamsin": "person",
+    "Maudie": "person",
+    "Dobb": "person",
+    "Mugg": "person",
+    "Grint": "person",
+    "Quenby": "person",
+    "Warden Orsk": "person",
+    "Tusker": "person",
+    "Staff of Rain": "thing",
+    "Plow and Pitcher": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mugg",
+     "text": "Sorry, friend, but my rooms have filled up somewhat. Ogres tend to make the farm folk crowd into town. Heh, heh, heh..."
+    },
+    "arms": {
+     "speaker": "Grint",
+     "text": "Wanna buy a scythe? They're salvaged from the vast scrap heaps of Ulm Gorra."
+    },
+    "magic": {
+     "speaker": "Quenby",
+     "text": "Word gets around. Out of my shop, before I test a scroll on your head!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Sonnet subagent"
+  }
+ ]
+}

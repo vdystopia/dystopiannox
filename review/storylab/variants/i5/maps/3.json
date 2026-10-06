@@ -1,0 +1,312 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Oskry",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Vesra the Bog Witch raises the drowned dead out of the Blackwater, and every night they climb the ladders of Oskry.",
+  "names": {
+   "Oskry": "place",
+   "the Blackwater": "place",
+   "Vesra the Bog Witch": "person",
+   "Marrock": "person",
+   "Mayor Brumm": "person",
+   "Tobben": "person",
+   "Hobb": "person",
+   "Quillon": "person",
+   "Sister Ondine": "person",
+   "Snig": "person",
+   "Hadda": "person",
+   "Durl": "person",
+   "Skarrow": "person",
+   "Zanthe": "person",
+   "Glynna": "person",
+   "the Long House": "place",
+   "the Sunken Shrine": "place",
+   "the Dry Plank": "place",
+   "Skarrow's Arms and Armor": "place",
+   "the south walk": "place",
+   "the west walk": "place",
+   "the north bog": "place",
+   "the old peat shed": "place",
+   "the Sacred Bell of Oskry": "thing",
+   "the Undead": "group",
+   "the Imps": "group",
+   "the Giant Leeches": "group",
+   "the peat cutters": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobben, the guard at the top of the main ladder into Oskry.",
+   "names": {
+    "Tobben": "person",
+    "Oskry": "place",
+    "the Blackwater": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobben",
+     "text": "Good day, stranger! This is Oskry, the proudest village in all the Blackwater!"
+    },
+    "again": {
+     "speaker": "Tobben",
+     "text": "Keep moving!"
+    },
+    "later": {
+     "speaker": "Tobben",
+     "text": "Looks like more rain."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Hobb, a gruff eel fisherman, wants the Giant Leeches in his eel pens under the south walk killed; pays with a spell book and sends the player on to Sister Ondine.",
+   "names": {
+    "Hobb": "person",
+    "the Giant Leeches": "group",
+    "the south walk": "place",
+    "Sister Ondine": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hobb",
+     "text": "Hail, stranger. Giant Leeches got into my eel pens under the south walk. Fat ones. Go down there and kill every one of them. Then come back and I'll give you something worth reading."
+    },
+    "reminder": {
+     "speaker": "Hobb",
+     "text": "The leeches are still down there. Go on, get to it."
+    },
+    "completion": {
+     "speaker": "Hobb",
+     "text": "All dead? Good. Here, this spell book is yours. Now go and see Sister Ondine. She's been asking after you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches in Hobb's eel pens."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Quillon, a fussy alchemist, had his magic lantern stolen by Imps; they nest in the dead trees past the west walk.",
+   "names": {
+    "Quillon": "person",
+    "the Imps": "group",
+    "the west walk": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quillon",
+     "text": "Gone! Gone! Those rotten little Imps came in my window last night and took my magic lantern right off its hook! And they tracked mud all over my floor! I can't do a bit of work without that lantern. Would you get it back for me?"
+    },
+    "refusal": {
+     "speaker": "Quillon",
+     "text": "Fine! I'll just sit here in the dark, then."
+    },
+    "reminder": {
+     "speaker": "Quillon",
+     "text": "Where's my lantern?! Those Imps live up in the dead trees, out past the west walk. Everybody knows that!"
+    },
+    "completion": {
+     "speaker": "Quillon",
+     "text": "My lantern! My lantern! Thank you, thank you! Here, take this Ankh. A peddler sold it to me for good luck. It never brought me any, so maybe it will do better for you."
+    },
+    "after": {
+     "speaker": "Quillon",
+     "text": "Thanks again, kind stranger! I keep my window shut now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Quillon's magic lantern back from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Get Quillon's magic lantern back from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk on the walkways: the night's news again, a grumble about building in a swamp, and Glynna, who flirts.",
+   "names": {
+    "Glynna": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townswoman",
+     "text": "Did you hear? The dead climbed up the ladders again last night!"
+    },
+    "rumour2": {
+     "speaker": "Old fisherman",
+     "text": "We should have built this village on dry ground like sensible folk. Nothing good ever comes up out of a swamp."
+    },
+    "rumour3": {
+     "speaker": "Glynna",
+     "text": "Well, hello there! You're the first visitor all year that isn't green and dripping! Hee, hee, hee!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Durl of the Dry Plank inn, Skarrow the armorer, Zanthe who sells potions and spell books.",
+   "names": {
+    "Durl": "person",
+    "the Dry Plank": "place",
+    "Skarrow": "person",
+    "Skarrow's Arms and Armor": "place",
+    "Zanthe": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Durl",
+     "text": "Welcome to the Dry Plank! Driest beds in the swamp! Well... Mostly dry."
+    },
+    "arms": {
+     "speaker": "Skarrow",
+     "text": "Welcome to Skarrow's Arms and Armor! Look around, take your time."
+    },
+    "magic": {
+     "speaker": "Zanthe",
+     "text": "Ahh, come in! I've got potions and spell books, and you've got gold. We'll get along fine!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Sister Ondine wants the Sacred Bell back from the Sunken Shrine and gives the shrine key at once (pays with a spell she teaches); Snig the smuggler will row the player there if Mayor Brumm signs his petition to unchain his boats.",
+   "names": {
+    "Sister Ondine": "person",
+    "the Sacred Bell of Oskry": "thing",
+    "the Sunken Shrine": "place",
+    "Vesra the Bog Witch": "person",
+    "Snig": "person",
+    "Mayor Brumm": "person",
+    "Oskry": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Sister Ondine",
+     "text": "Oh! Kind sir! Help me, I beg of you! The abominable dead have besieged our Sunken Shrine, and the Sacred Bell of Oskry lies abandoned within, at the mercy of that nefarious witch Vesra! If you could recover it, you would deliver this entire village from ruin. Here, take this silver key. It will unlock the shrine doors."
+    },
+    "offer_b": {
+     "speaker": "Snig",
+     "text": "You want to get out to the Sunken Shrine? Nobody gets there without a boat, and nobody's got boats but me. Only the Mayor went and chained them all up. Says I'm a smuggler.\n\nGet Mayor Brumm to put his mark on this petition and I'll row you out there myself. Free!"
+    },
+    "outcome_a": {
+     "speaker": "Sister Ondine",
+     "text": "The Sacred Bell! It has been restored to us! Oskry is forever in your debt, kind sir.\n\nAs I vowed, I shall teach you a spell of great power. May it serve you well against the Undead."
+    },
+    "outcome_b": {
+     "speaker": "Snig",
+     "text": "His mark, right there! Ha! My boats are mine again. Climb in whenever you like, I'll take you anywhere."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Sacred Bell from the Sunken Shrine."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Get Mayor Brumm to sign Snig's petition."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Hadda, boss of the peat cutters; her cutters locked themselves in the old peat shed in the north bog when the dead came up, and she hands over the spare key.",
+   "names": {
+    "Hadda": "person",
+    "the peat cutters": "group",
+    "the north bog": "place",
+    "the old peat shed": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hadda",
+     "text": "Blast it! Blast it all! Of all the days! My peat cutters were out in the north bog this morning when the dead came up out of the water all around them!\n\nThey ran into the old peat shed and locked themselves in. It's north of the village, past the sunken barge. They won't open up for anybody, and I don't blame them.\n\nHere's my offer. You take this spare key, open that shed and bring my cutters home. Do it and there's good gold in it for you!"
+    },
+    "reminder": {
+     "speaker": "Hadda",
+     "text": "Go on! My cutters can't sit in that shed forever!"
+    },
+    "found": {
+     "speaker": "Peat cutter",
+     "text": "The door! Thank goodness! We thought we'd die in here!"
+    },
+    "following": {
+     "speaker": "Peat cutter",
+     "text": "Lead the way. We'll stay close."
+    },
+    "completion": {
+     "speaker": "Hadda",
+     "text": "My cutters! Home, every one of them! Thank you, stranger! Here's 75 gold, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Hadda's peat cutters from the shed in the north bog."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Mayor Brumm in the Long House; Brumm, curt, sends him after Vesra the Bog Witch and gives gold and potions.",
+   "names": {
+    "Mayor Brumm": "person",
+    "the Long House": "place",
+    "Marrock": "person",
+    "Vesra the Bog Witch": "person",
+    "the Blackwater": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The dead came up the ladders again last night! You'd better go see Mayor Brumm in the Long House. Quick!"
+    },
+    "opening": {
+     "speaker": "Mayor Brumm",
+     "text": "So, Marrock sent you. Good. There's no time for talk.\n\nVesra the Bog Witch is raising the drowned dead out of the Blackwater. Every night they climb our ladders, and every night there are more of them. Find her island in the west and destroy her.\n\nHere's 100 gold and some potions. Get what you need in town, then go."
+    },
+    "reminder": {
+     "speaker": "Mayor Brumm",
+     "text": "Why do you wait, lad? Vesra grows stronger every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Vesra the Bog Witch's island and destroy her."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  }
+ }
+}

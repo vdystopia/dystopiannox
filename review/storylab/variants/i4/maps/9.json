@@ -1,0 +1,134 @@
+{
+ "iter": "i4",
+ "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Kesrin",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Ravek the Sorcerer has taken the old Fort of Karn east of the crossroads, and his Undead come down the east road every night, so the caravans no longer stop at Kesrin.",
+  "names": {
+   "Kesrin": "place",
+   "Broken Wheel": "place",
+   "Fort Karn": "place",
+   "Gallow Rock": "place",
+   "Ravek": "person",
+   "Ambrus": "person",
+   "Fennick": "person",
+   "Dalt": "person",
+   "Ossrik": "person",
+   "Thurl": "person",
+   "Wenzel": "person",
+   "Bettrin": "person",
+   "Lumm": "person",
+   "Ebb": "person",
+   "Bodger": "person",
+   "Hargis": "person",
+   "Hargis' Forge": "place",
+   "Fizwick": "person",
+   "Calvo": "person",
+   "Gimble": "person",
+   "Nell": "person",
+   "Gorm": "person",
+   "Undead": "group",
+   "Bears": "group",
+   "Imps": "group",
+   "Skeletons": "group",
+   "Ogres": "group",
+   "Ghost": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Dalt at the east gate of Kesrin, shut by Mayor Fennick against Ravek's Undead on the east road.",
+   "names": {"Dalt": "person", "Fennick": "person", "Ravek": "person", "Undead": "group"},
+   "parts": {
+    "first": {"speaker": "Dalt", "text": "Halt! No one goes out the east gate. Mayor Fennick's orders! Ravek's Undead walk that road after dark."},
+    "again": {"speaker": "Dalt", "text": "Still shut. Move along!"},
+    "later": {"speaker": "Dalt", "text": "Mayor Fennick gave the word. The gate is open, brave Adventurer -- you may pass. Watch yourself out there."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Ossrik the swineherd wants the Bears out of the north woods driven off his pig farm.",
+   "names": {"Ossrik": "person", "Bears": "group", "Fennick": "person", "Ravek": "person", "Undead": "group"},
+   "parts": {
+    "offer": {"speaker": "Ossrik", "text": "Bears! Big black ones, down out of the north woods! They've been at my pigs every night and they'll be at me next!\n\nThe Mayor won't spare me a man, not with Ravek's Undead at the gate. Drive those Bears off and I'll pay you what I can."},
+    "reminder": {"speaker": "Ossrik", "text": "Are they gone yet? My poor pigs!"},
+    "completion": {"speaker": "Ossrik", "text": "No more Bears? Ha! My pigs can sleep easy tonight, and so can I! Here, 80 gold. It's all I've got, but it's yours!"},
+    "journal": {"speaker": "", "text": "Drive off the Bears raiding Ossrik's pig farm."}
+   },
+   "reward": {"gold": 80, "items": []}
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Thurl, deaf without it, lost his ear trumpet to the Imps of Gallow Rock south of town.",
+   "names": {"Thurl": "person", "Imps": "group", "Gallow Rock": "place"},
+   "parts": {
+    "offer": {"speaker": "Thurl", "text": "EH? Speak up! SPEAK UP!\n\nIt's no good, I can't hear a blessed thing. Those Imps flew down from Gallow Rock and snatched my ear trumpet right out of my hand!\n\nYou'll fetch it back for me, won't you, young sir? I'll make it worth your while!"},
+    "refusal": {"speaker": "Thurl", "text": "WHAT? No? Bah! Nobody listens to me anymore!"},
+    "reminder": {"speaker": "Thurl", "text": "Did you get it? My trumpet? EH?"},
+    "completion": {"speaker": "Thurl", "text": "My trumpet! Ahhhh, I can hear the birds again! Thank you, young sir, thank you! Please, take this as a token of my appreciation!"},
+    "after": {"speaker": "Thurl", "text": "No need to shout, I can hear you fine now!"},
+    "journal": {"speaker": "", "text": "Retrieve Thurl's ear trumpet from the Imps of Gallow Rock."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Retrieve Thurl's ear trumpet from the Imps of Gallow Rock."}
+   },
+   "reward": {"gold": 60, "items": ["RedPotion"]}
+  },
+  "rumour": {
+   "specifics": "Three folk of Kesrin: Wenzel brushes the player off, Bettrin frets about Ravek and the caravans, Lumm warns about the Imps.",
+   "names": {"Wenzel": "person", "Bettrin": "person", "Lumm": "person", "Ravek": "person", "Undead": "group", "Fort Karn": "place", "Imps": "group", "Gallow Rock": "place"},
+   "parts": {
+    "rumour1": {"speaker": "Wenzel", "text": "What? Can't you see I'm busy?"},
+    "rumour2": {"speaker": "Bettrin", "text": "Merchants used to stop here every day of the week. Ever since Ravek and his Undead came to Fort Karn, nobody travels the east road anymore! What will become of us?"},
+    "rumour3": {"speaker": "Lumm", "text": "Going south? Keep your purse tied tight. The Imps of Gallow Rock will take anything that shines!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Bodger keeps the Broken Wheel inn, Hargis the forge, Fizwick sells potions and spell books.",
+   "names": {"Bodger": "person", "Broken Wheel": "place", "Hargis": "person", "Hargis' Forge": "place", "Fizwick": "person", "Ravek": "person", "Ogres": "group"},
+   "parts": {
+    "inn": {"speaker": "Bodger", "text": "Come in, come in! Sit yerself down! The stew's hot and there's ale enough in the cellar to drown a whole army of Ogres!"},
+    "arms": {"speaker": "Hargis", "text": "Welcome to Hargis' Forge! Swords, shields, armor. What'll it be?"},
+    "magic": {"speaker": "Fizwick", "text": "Ahh, a customer! With Ravek about, my potions are flying off the shelves. Better buy while there's any left!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Brother Calvo wants the Ghost in the Broken Wheel's attic banished; Gimble, locked in the stocks for stealing a pig, offers his buried sword to be let out.",
+   "names": {"Calvo": "person", "Ghost": "thing", "Broken Wheel": "place", "Bodger": "person", "Ravek": "person", "Undead": "group", "Gimble": "person", "Fennick": "person", "Ossrik": "person", "Dalt": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Brother Calvo", "text": "Bless you for coming, stranger! A Ghost has taken up lodging in the attic of the Broken Wheel. It moans all night and throws the plates about.\n\nBodger fears he will lose what little custom he has left. I fear it is yet another sign of Ravek's wicked work.\n\nWill you go up and banish it?"},
+    "offer_b": {"speaker": "Gimble", "text": "Psst... over here! No, here, in the stocks!\n\nMayor Fennick locked me up for one little pig. One! And it was only Ossrik's.\n\nDalt has the key on his belt. Get me out of here and I'll tell you where I buried my sword. Whatcha say?"},
+    "outcome_a": {"speaker": "Brother Calvo", "text": "The Ghost is gone? Praise be! The Broken Wheel is saved! Take this shield, kind sir, and may it guard you well against Ravek's foul Undead!"},
+    "outcome_b": {"speaker": "Gimble", "text": "Free! Ahhh, my poor legs... A deal's a deal. Dig under the big stump behind the Broken Wheel. The sword's yours, and there's a bit of coin with it. Heh, heh, heh... Now you never saw me!"},
+    "journal_a": {"speaker": "", "text": "Banish the Ghost from the attic of the Broken Wheel."},
+    "journal_b": {"speaker": "", "text": "Get Dalt's key and free Gimble from the stocks."}
+   },
+   "reward": {"gold": 50, "items": ["SteelShield", "Longsword"]}
+  },
+  "rescue": {
+   "specifics": "Nell, cook at the Broken Wheel, begs the player to bring back her husband Gorm the carter, caught by Skeletons in the crypt under the old chapel west of town.",
+   "names": {"Nell": "person", "Gorm": "person", "Skeletons": "group", "Broken Wheel": "place"},
+   "parts": {
+    "plea": {"speaker": "Nell", "text": "Please, help me! My Gorm took the cart out to the old chapel west of here for stone, and the Skeletons came up out of the crypt and dragged him down! He never came home!\n\nPlease, kind sir, bring him back to me!"},
+    "reminder": {"speaker": "Nell", "text": "Hurry, please! He's been down there so long!"},
+    "found": {"speaker": "Gorm", "text": "Over here! Help! Get me out before they come back!"},
+    "following": {"speaker": "Gorm", "text": "Hurry, lad! I can hear them rattling!"},
+    "completion": {"speaker": "Nell", "text": "Gorm! You great oaf, you're alive!\n\nThank you, thank you, kind sir! Here, take this, it's all we can spare. And there's always a hot bowl for you at the Broken Wheel!"},
+    "journal": {"speaker": "", "text": "Rescue Gorm the carter from the crypt beneath the old chapel."}
+   },
+   "reward": {"gold": 50, "items": ["CurePoisonPotion"]}
+  },
+  "main_opening": {
+   "specifics": "Ebb points the player to Mayor Fennick, who sends him east to Fort Karn to put an end to Ravek the Sorcerer.",
+   "names": {"Ebb": "person", "Ambrus": "person", "Fennick": "person", "Broken Wheel": "place", "Ravek": "person", "Fort Karn": "place", "Undead": "group", "Kesrin": "place", "Dalt": "person"},
+   "parts": {
+    "herald": {"speaker": "Ebb", "text": "You're the one Ambrus sent? Mayor Fennick's been waiting on you. His house is the big one across from the Broken Wheel."},
+    "opening": {"speaker": "Mayor Fennick", "text": "At last! Ambrus promised me help, and not a moment too soon!\n\nRavek the Sorcerer has seized the old Fort of Karn, east of the crossroads. Every night his Undead come down the east road. The caravans have stopped coming. Kesrin is dying, lad!\n\nYou must go to Fort Karn and put an end to Ravek and his abominable sorcery. Dalt will open the east gate for you. Go -- and go with my blessing!"},
+    "reminder": {"speaker": "Mayor Fennick", "text": "Why do you tarry, lad? Ravek grows stronger with every night that passes!"},
+    "journal": {"speaker": "", "text": "Go to Fort Karn and defeat Ravek the Sorcerer."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

@@ -1,0 +1,238 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kesh",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Skarn and his Swamp Trolls have come up out of the reeds and seized the Long Causeway, the only road out of the fen.",
+  "names": {
+   "Kesh": "place",
+   "Stilt Hall": "place",
+   "Long Causeway": "place",
+   "Gallow Mound": "place",
+   "Sunk Boathouse": "place",
+   "Drowned Mill": "place",
+   "Mayor Ottrick": "person",
+   "Pell": "person",
+   "Tavlin": "person",
+   "Skarn": "person",
+   "Dunstav": "person",
+   "Wezzel": "person",
+   "Yselda": "person",
+   "Pothar": "person",
+   "Warden Hask": "person",
+   "Bartol Quickhook": "person",
+   "Hennet": "person",
+   "Tobb": "person",
+   "Trolls": "group",
+   "Giant Leeches": "group",
+   "Imps": "group",
+   "Boots of Speed": "thing"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Dunstav the eel-catcher pays to have the Giant Leech nest in the Sunk Boathouse burned out.",
+   "names": {
+    "Dunstav": "person",
+    "Wezzel": "person",
+    "Sunk Boathouse": "place",
+    "Giant Leeches": "group",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Kesh": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dunstav",
+     "text": "Curses! Where were you this morning, stranger!? The Giant Leeches swarmed up onto the eel pens, and we'd have lost every pen in Kesh if old Wezzel hadn't flung her salt pots at them just in time!\n\nBut in all the fuss, the slimy things crept off into the Sunk Boathouse and laid their eggs there, which makes the lost eels the least of it! The whole hamlet will be crawling with them if that nest is left!\n\nGo down into the Boathouse, west along the lower walkway! Burn out that nest or we're finished!"
+    },
+    "reminder": {
+     "speaker": "Dunstav",
+     "text": "Those leeches are breeding while you stand there! Hurry!"
+    },
+    "completion": {
+     "speaker": "Dunstav",
+     "text": "In better days, all of Kesh would be dancing on the walkways over this! Good work! But Skarn and his Trolls are still out there in the reeds.\n\nPlease accept these with the thanks of every eel-catcher in the hamlet!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Burn out the Giant Leech nest in the Sunk Boathouse."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion",
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Yselda the healer wants the Boots of Speed that Pothar the cobbler was making her, from his shack in the reeds where the Trolls got him.",
+   "names": {
+    "Yselda": "person",
+    "Pothar": "person",
+    "Boots of Speed": "thing",
+    "Trolls": "group",
+    "Kesh": "place",
+    "Mayor Ottrick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yselda",
+     "text": "Pothar the cobbler was making me a pair of Boots of Speed, and that was a long while ago. They ought to have been done and brought up to my door weeks back.\n\nHis shack is out in the reeds to the north, where the Trolls have been prowling. Will you go out there and fetch my Boots?"
+    },
+    "refusal": {
+     "speaker": "Yselda",
+     "text": "Oh. Then I'll just have to wait a while longer for them."
+    },
+    "reminder": {
+     "speaker": "Yselda",
+     "text": "Find Pothar and bring those Boots to me -- no matter what! Keep to the planks out there. Nasty things lurk under the water!"
+    },
+    "completion": {
+     "speaker": "Yselda",
+     "text": "My Boots of Speed! Wonderful!\n\nSo the Trolls got poor Pothar after all, just as I feared. He was a dear old fool, but there's no time now for weeping. Take this Ankh, and go see Mayor Ottrick -- he has been asking for you.\n\nGood luck, stranger!"
+    },
+    "after": {
+     "speaker": "Yselda",
+     "text": "Thanks again for bringing back my Boots!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the Boots of Speed from Pothar's shack for Yselda."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the Boots of Speed from Pothar's shack for Yselda."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Hask offers the bounty on the river pirate Bartol Quickhook, more alive than dead, and Bartol himself begs to be taken in quietly.",
+   "names": {
+    "Warden Hask": "person",
+    "Bartol Quickhook": "person",
+    "Hennet": "person",
+    "Kesh": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Hask",
+     "text": "Come about the notice, have you? Good day.\n\nBartol Quickhook has been robbing our flatboats since the thaw, him and his rotten crew. Kesh will pay good gold to see him brought in, alive or dead.\n\nWatch yourself. That lot would slit a throat for a copper."
+    },
+    "offer_b": {
+     "speaker": "Bartol Quickhook",
+     "text": "Mercy! Mercy! I give up! Put that thing away and I'll come along nice and quiet!"
+    },
+    "outcome_a": {
+     "speaker": "Warden Hask",
+     "text": "Well, well! I rowed over to have a look when Hennet heard a racket out on the water.\n\nBartol Quickhook, taken all by yourself! Remarkable work, kind sir, and you have my sincere admiration! Every boat in the fen has been plagued by that pirate since the thaw! Leave him to me. With this wretched rogue in irons, the flatboats can run again!\n\nThe reward is yours -- 150 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Warden Hask",
+     "text": "So Bartol's dead, is he? I'd rather have hanged him proper, but I won't shed a tear over the likes of him!\n\nHere's what you're owed -- 75 in gold! The whole fen thanks you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Capture the river pirate Bartol Quickhook for Warden Hask."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Bartol Quickhook to Warden Hask alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Old Hennet's grandson Tobb went after the Imps nesting in the Drowned Mill and has not come back.",
+   "names": {
+    "Hennet": "person",
+    "Tobb": "person",
+    "Imps": "group",
+    "Drowned Mill": "place",
+    "Trolls": "group",
+    "Mayor Ottrick": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hennet",
+     "text": "Wretched little devils! Imps have nested in the Drowned Mill and already they're making nuisances of themselves all over the hamlet!\n\nTobb is my grandson. He went out with his net this morning and never came back. I'm afraid he's gone into that Mill after them.\n\nBring the boy home to me and I'll give you whatever I can spare. Come, I'll take you as far as the old mill steps."
+    },
+    "reminder": {
+     "speaker": "Hennet",
+     "text": "Any sign of Tobb? Oh my, oh my... I can't bear to think of it."
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "You came for me! My leg's bit something awful, but I can still walk. The Imps... they had a master! I saw a Tr... Tr... Troll..."
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Please, get me out of here before it comes back!"
+    },
+    "completion": {
+     "speaker": "Hennet",
+     "text": "Tobb! My boy, you're home!\n\nSo those Imps couldn't stand up to you. You'd make a fine net-man yourself, I'd say. Hmmm... Maybe so.\n\nHere, take this potion and a bit of gold. And go tell Mayor Ottrick about that Troll."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hennet's grandson Tobb in the Drowned Mill."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pell points the player to Mayor Ottrick in the Stilt Hall, who sends him to drive Skarn's Trolls off the Long Causeway from their camp on Gallow Mound.",
+   "names": {
+    "Pell": "person",
+    "Mayor Ottrick": "person",
+    "Stilt Hall": "place",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Kesh": "place",
+    "Tavlin": "person",
+    "Long Causeway": "place",
+    "Gallow Mound": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "The boatmen will wait at the landing, but you must go and see Mayor Ottrick in the Stilt Hall. Glad you came, brave Adventurer!"
+    },
+    "opening": {
+     "speaker": "Mayor Ottrick",
+     "text": "Blast! What kept you so long, lad!? Skarn's Trolls came up out of the reeds, and Kesh would have burned if Tavlin's boatmen hadn't rowed in with torches at the very end!\n\nBut while we fought them off the walkways, the brutes seized the Long Causeway, which makes mending our roofs the least of our troubles! Every hamlet in the fen will starve if the Causeway is lost!\n\nYou must go where they carried off their wounded, south to Skarn's camp on Gallow Mound! Drive Skarn out or Kesh is finished!"
+    },
+    "reminder": {
+     "speaker": "Mayor Ottrick",
+     "text": "Skarn means to keep that Causeway for good, I'm sure of it! Off with you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Gallow Mound and drive Skarn from the Long Causeway."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}
