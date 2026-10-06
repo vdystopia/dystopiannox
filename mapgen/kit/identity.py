@@ -299,11 +299,12 @@ ROOMS = {
                  # the one strong idea, out from a back wall with his goods behind and beside him
                  store=dict(lead={"steel": 3, "barrels": 1}, second={"steel": 1, "crates": 1, "barrels": 1}, second_p=0.6,
                             accent={"tools": 1}, accent_p=0.3),
-                 top_up=(), decor_max=0, lined_goal=0.15, back_only=("shop_rack",),
+                 # (lined_goal 0: the line pass had grown a second identical run of three shelves on the same wall)
+                 top_up=(), decor_max=0, lined_goal=0.0, back_only=("shop_rack",),
                  compose=[dict(fam="counter_shop", slot="counter", depth=2.2, clear=1.8),
                           # the goods on the back wall across from the counter's, end to end (a pair flanking the
                           # counter left bare wall between them: the checker's gap rule)
-                          dict(fam="shop_rack", slot="line", other=True, n=3, only=r"^TraderShelves"),
+                          dict(fam="shop_rack", slot="line", other=True, n=2, only=r"^TraderShelves"),
                           dict(fam="shelves", slot="line", other=True, n=2, only=r"^PotionShelves"),
                           dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
                                only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=2),
@@ -315,7 +316,7 @@ ROOMS = {
                             only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack|HelmShelf)", max=3),
                        dict(fam="shelves", slot="line", n=3, max=6, only=r"^Bookcase"),
                        dict(fam="lab", slot="wall", at="any", clear=0.6, max=3),
-                       dict(fam="storage", slot="heaps", max=2)]),
+                       dict(fam="storage", slot="heaps", max=3)]),
     # the room lab (2026-10-05): Westwood's 22 campaign storerooms hold 1-5 types (median 3), barrels the commonest, heaped
     # against two walls with the rest of the floor bare, crates side by side or stacked free; no shelves, no racks (the
     # user: "armor and weapon racks in storerooms are just a little bit too dense and numerous"; "Repeating the same item

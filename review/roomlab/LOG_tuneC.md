@@ -371,3 +371,4 @@ labs fill the room as one working space"); r16 is queued for the judge.
 |---|---|---|---|---|---|
 | herbalist | r3 | more bookcases and a sitting group for the sparse rule: no effect (the back walls hold the shelves and the desk; a door on each left the fill nowhere) | 0.997 | 0.923 | 6 |
 | herbalist | r4 | the stores in a heap or two (`store_heaps`: crates or barrels, an apple crate) | 1.000 | 0.899 | 5 (4 sparse) |
+| shop | r12 | `lined_goal` 0 (the line pass had grown a second identical run of three shelves), runs of two, more heaps | 0.971 | 0.875 | 7 (sparse) |
