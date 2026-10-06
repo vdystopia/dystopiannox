@@ -179,6 +179,23 @@ lake, barrels, a crate, rocks on the bank by the root (store 0.22, rock 0.14 of 
 r3: generated mean within 0.5 of Westwood's. The judge knows Westwood's four dock scenes by heart, so blind accuracy is
 not meaningful for this type. Ambermere (dock yes) and DysVale build with 0 errors, warnings unchanged.
 
+### pond_dock, round 2 (night-scenes3, 2026-10-05)
+
+Starting point: the independent judge on r3-bank: 9/9, generated 5.2 against Westwood's 7.8 ("the same gear stamp, 2-3
+barrels touching at the root, a crate or rock opposite, 1-2 barrels at the tip, a crate in the dock's lane; short DockUp
+docks in small round ponds, tips 1.5 tiles out; a lone pond, a dozen reed clumps spread evenly"). Westwood (Con05A):
+DockDown runs into the lake, barrels in a loose knot on the bank, a rock with ferns, a crate on a dock's tip, bones.
+
+| Round | What changed (mapgen/kit/water.py `dock`, `_dock_gear`) | AUC | Blind | Hard |
+|---|---|---|---|---|
+| ref | the kit as merged | 0.75 | (independent, r3-bank) 9/9, 5.2 / 7.8 | 0 |
+| r1-loose | the bank laid loosely, never one stamp: 1-4 barrels in a knot with uneven steps (26-44 px), a rock with its stones 60%, a crate a little way off 40%, bones 30%, nothing on the dock's line carried back onto the bank; the dock's load from its own generator (none, a crate, one or two barrels); DockUp only 60 uv nearer the road (was 24) | 0.70 | | 0 |
+| r2-down | a one-centre DockDown before any DockUp (a small pond's dock is still the DockDown run) | 0.32 | queued for the independent judge | 0 |
+
+AUC with 4 Westwood docks is noise. Ten of ten docks are DockDown now (three were DockUp). Ambermere and DysVale: 0
+errors, no dock warnings. Still: one dock to a pond (Westwood's lake has three), the reeds' even spread (the water
+dressing, `_dress`, shared by every map: left alone), and no path or people in the lab's pond clearing.
+
 ## Final summary (every type, the kit as committed)
 
 | Scene | Westwood scenes | AUC | Blind acc. | Blind gen/WW | Hard-rule scenes | Missing | Worst findings |

@@ -46,6 +46,14 @@ Kit (DockDown or DockUp by the shore), the bank side of the gear, two or three b
 - The lab's own: the kit's 30-degree test over six tiles let two DockUp docks run 35-40 degrees off square as the
   checker reads them.
 
+## Round 2 (2026-10-05)
+
+- `dock("best")`: the DockDown run at the asked length, else a one-centre DockDown, and a DockUp only where it lands
+  60 uv nearer the road: Westwood's dock is the DockDown run.
+- The bank never one stamp (`_dock_gear`, its own generator): 1-4 barrels in a loose knot (26-44 px steps, some
+  touching), a rock with its stones (60%), a crate set down a little way off (40%), bones (30%); nothing on the dock's
+  line carried back onto the bank. The dock's own load: nothing, a crate, or one or two barrels near the tip.
+
 ## What still gives it away
 
 The short DockUp in a small forest pond; Westwood's docks are long runs into a big lake.
