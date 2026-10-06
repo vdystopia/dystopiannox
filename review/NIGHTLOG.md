@@ -203,3 +203,22 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   (5.4/8.0). A split: recipes keep the storeroom, motifs bring the bedroom closer on score. Faults common to both
   engines: candelabras free in walkways and on carpets, table sets out on the floor away from every wall, plants in
   bedrooms (Westwood's have none), single pieces alone in the open, stock spread instead of heaped.
+- 02:00 **Fair baseline** of master's recipe engine after all tonight's merges (new renders and protocol, one
+  independent judge per sheet; accuracy, then generated / Westwood score; 5/10 is chance):
+
+  | Type | Accuracy | Score | Type | Accuracy | Score |
+  |---|---|---|---|---|---|
+  | storeroom | **6/10** | 5.4 / 6.0 | crypt | 9/10 | 4.4 / 6.6 |
+  | guardroom | **7/10** | 5.8 / 6.2 | chapel | 9/10 | 4.4 / 5.0 |
+  | tavern | 8/10 | 6.2 / 6.6 | bedroom | 9/10 | 5.4 / 8.0 |
+  | living room | 8/10 | 5.2 / 5.8 | shop | 10/10 | 4.6 / 7.2 |
+  | barracks | 8/10 | 5.0 / 7.6 | laboratory | 10/10 | 4.2 / 6.6 |
+  | throne room | 10/10 | 5.2 / 7.6 | kitchen | 10/10 | 4.0 / 6.8 |
+  | great hall | 10/10 | 3.8 / 6.8 | dining hall | 10/10 | 4.2 / 7.8 |
+
+  The same faults named across every sheet: one template per type repeated across variants; singles at even gaps
+  (rows, rings, one per corner); lights loose on the floor; table sets and apparatus parked mid-floor; few story pieces.
+  All sent to the placement-grammar agent (night-grammar). New tells from the room shells: second-floor patches
+  (brick squares) scattered with no relation to the room, and plank floors in throne rooms. Thin evidence misleads:
+  the judging description of kitchens (3 Westwood rooms) says kitchens hold no cauldron, against the user's own rules:
+  for the user to decide.
