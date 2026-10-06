@@ -202,3 +202,12 @@ tapestries between them, sixteen lanterns. Its bays are the shell's; the furnitu
 
 Still giving it away: coverage 0.009 against 0.05 (the room is bare; Westwood's bays make it), four paintings at most
 (the knowledge base's two of a kind to a wall), small pieces lost on a big floor. The weakest of my types.
+
+## Conservatory
+
+No Westwood reference left: the curated index excludes both of Galava's gardens (a cave pocket; a garden open to the
+sky), so the lab compares it with the ceremonial pool (AUC 0.999 by its plants alone; meaningless). ref: the fountain
+or well in the middle, benches, a statue pair, plants in the corners and in clumps: 0 hard-rule rooms bar one bunched.
+r1 tried beds of 4-6 plants instead of clumps (per 100 tiles 5): the clearances thinned them to a sparser, emptier
+garden (AUC 0.995); reverted. Not queued for judging (nothing to tell it from). Still giving it away by eye: clumps
+dotted evenly, benches not turned to the fountain.
