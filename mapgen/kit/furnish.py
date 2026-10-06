@@ -560,6 +560,7 @@ class Furnisher:
         self.kb_refused = Counter()   # rule -> placements the knowledge base refused (for the lab's report)
         self._set_type = {}       # GROUPS name -> the one anchor type a room of a one_set kind uses for it
         self._set_seat = {}       # GROUPS name -> the one seat (base) such a room's sets of that name take
+        self._group_at = {}       # GROUPS name -> where its last set stands (a recipe's `cluster` sets stand together)
         self._last_seat_base = None
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
         prng = random.Random(zlib.crc32(f"{spec.d.get('name')}:{getattr(room, 'building', '')}".encode()))
@@ -1609,7 +1610,10 @@ class Furnisher:
         # back wall bare (Harrowby's moot hall: one bull's head in a 273-tile hall)
         rest = sorted(t for t in types if t != t0)
         self.rng.shuffle(rest)
-        for tt in [t0] + rest:
+        order = [t0] + rest
+        first = ROOM_IDENTITY.get(self.kind, {}).get("decor_first")       # a recipe's own hangings before the rest
+        if first: order.sort(key=lambda t: not re.match(first, t))        # (a gallery's paintings)
+        for tt in order:
             # (a gallery hangs its paintings at the ends of a stretch as well as its middle: ROOMS[kind]["decor_at"]; any
             # bare stretch otherwise, since hangings no longer go above pieces: HB-2)
             for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt,
@@ -2798,7 +2802,9 @@ class Furnisher:
         rh = max(self.half(rt))
         if t: d = max(d, max(hu, hv) + rh + 1.1)        # the obelisks clear of the holy thing (a fire: OBJ.NEXT_GAP)
         reach = d + rh + 0.2
-        for spot in (self.middle_spots(reach, reach) or self.middle_spots(reach - 0.6, reach - 0.6))[:200]:
+        cu, cv = self.g.centroid                        # the middle of the room, not its front corner (the free pieces'
+        spots = self.middle_spots(reach, reach) or self.middle_spots(reach - 0.6, reach - 0.6)    # lean, FRONT_WEIGHT)
+        for spot in sorted(spots, key=lambda p: math.hypot(p[0] - cu, p[1] - cv))[:200]:
             o = self.try_put(t, *spot) if t else {"type": None}
             if not o: continue
             got = []
@@ -2976,6 +2982,13 @@ class Furnisher:
         long_u = (max(us) - min(us)) >= (max(vs) - min(vs))
         by_walls = name in ident.get("by_walls", ())
         spots = (self.wall_spots if by_walls else self.middle_spots)(hu + pad, hv + pad)[:30]
+        prev = self._group_at.get(name)
+        if prev and name in ident.get("cluster", ()):
+            # the next set beside the last, side by side, not the next open spot down the room (Con06a's two tables
+            # together before the hearth, Con03B's three on one carpet); a little off the line (room lab, tuneB)
+            allspots = (self.wall_spots if by_walls else self.middle_spots)(hu + pad, hv + pad)
+            spots = sorted(allspots, key=lambda p: math.hypot(p[0] - prev[0], p[1] - prev[1]) +
+                           0.3 * self.rng.random())[:30]
         if not spots and g.get("seats") and g["seats"][0] <= 2:    # a seat or two need not ring it: a narrower margin
             spots = self.middle_spots(hu + 0.9, hv + 0.9)[:30]
         try:
@@ -3030,6 +3043,7 @@ class Furnisher:
                             x = self.try_put(b, uu, vv)
                             if x: got.append(x); break
                 self.anchors.append(spot)
+                self._group_at[name] = spot
                 return len(got) + n_seats
         finally:
             self._group = None

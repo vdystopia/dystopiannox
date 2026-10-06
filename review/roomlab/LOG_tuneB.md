@@ -230,3 +230,20 @@ irregularities."
 | r15 | r13 re-run (its sheet re-rendered after the renderer fix): queued | 0.952 | 0.985 | 3 |
 
 Chapel r3 re-run as r4 (re-rendered): AUC 0.959, 1 hard-rule room; queued in its place.
+
+### Answers to the independent judge (second pass)
+
+| type | round | change | AUC | cross AUC | hard-rule rooms |
+|---|---|---|---|---|---|
+| throne room | r6 | (r5's kit, re-rendered with the fixed renderer and the curated pool) | 0.861 | 0.997 | 1 |
+| throne room | r7 | a dais of carpet under the throne: too small to read and it kept the runner from laying (the carpets' trims may not touch); reverted | 0.867 | 0.996 | 1 |
+| dining hall | r9 | long tables with a bench down each side set as groups where the floor is open, not `table_rows` ("stamped in a perfect diagonal line"); the far bench was there all along, hidden behind its table at 0.2 off | 0.894 | 0.986 | 10 (sparse) |
+| dining hall | r10 | the far bench 0.6 off its table, seen past it | 0.884 | 0.985 | 10 |
+| dining hall | r11 | a recipe's `cluster` sets stand together: the next table beside the last, a little off the line (Con06a's pair, Con03B's three on a carpet) | 0.908 | 0.971 | 10 |
+| hall | r4 | one statue group, not two (two pairs had met in a 2x2 block mid-aisle) | 0.829 | 0.975 | 7 (sparse) |
+| shrine | r10 | the ring takes the open spot nearest the room's middle, not the front corner the free pieces lean to ("jammed into the S corner") | 0.971 | 0.919 | 0 |
+| gallery | r4-r6 | blue tapestries hung after the paintings (`decor_first`), a gallery reads as one with three paintings (two to a wall by the knowledge base, a wall broken by a door holds one) | 0.938 | 0.989 | 0 |
+| gallery | r7-r8 | the centrepiece: the orrery ringed by candelabras mid-walk, a statue pair, basins by the walls; no bench (Westwood's has none; the profile's must dropped it) | 0.941 | 0.996 | 0 |
+
+Shared, opt-in: `cluster`, `decor_first` recipe keys. The gallery still reads as a lone group on a bare floor: its
+Westwood example is a set of bays (the shell).

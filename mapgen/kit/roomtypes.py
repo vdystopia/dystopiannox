@@ -557,7 +557,7 @@ TYPES.update({
         family="ceremonial", feel="open", kinds=("gallery",), westwood=(),
         evidence=(("Con07E", (203, 112)),),
         focal=dict(fam="wall_decor", types=r"^Painting", where="back"),
-        must={"wall_decor": 4, "bench": 1}, never=("bed", "desk", "table", "stove", "smithy", "counter_bar",
+        must={"wall_decor": 4}, never=("bed", "desk", "table", "stove", "smithy", "counter_bar",
                                                    "counter_shop", "shop_rack", "straw", "tomb", "shelves", "altar"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
         walls=dict(back="paintings hung along both back walls at even spacing, a tapestry of one colour between",
@@ -716,7 +716,8 @@ def reads_as(fam, kinds, kind=None):
         if t == "cell" and (fam.get("fireplace") or fam.get("table") or fam.get("chair", 0) > 1): s = 0.0
         if t == "torture_chamber" and k(r"^TortureRack|^IronMaiden|^Stocks") < 2: s = 0.0
         if t == "shrine" and fam.get("bench", 0) >= 4: s = 0.0
-        if t == "gallery" and (k(r"^Painting") < 4 or any(fam.get(f) for f in ("bed", "desk", "shelves", "table", "stove"))):
+        # (three: the knowledge base hangs two paintings to a wall, and a back wall broken by a door holds one)
+        if t == "gallery" and (k(r"^Painting") < 3 or any(fam.get(f) for f in ("bed", "desk", "shelves", "table", "stove"))):
             s = 0.0
         if t == "conservatory" and fam.get("plant", 0) < 8: s = 0.0
         if t == "mausoleum" and (fam.get("tomb", 0) > 4 or fam.get("altar") or fam.get("bench", 0) >= 4): s = 0.0

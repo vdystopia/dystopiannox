@@ -244,10 +244,15 @@ ROOMS = {
                                "chair": r"Chair", "bench": r"^LightBench\d$|^Bench[1245]$"},
                         # Westwood's room statistics count hearths as lights, so a recipe names its own
                         prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
-                        one_set=("dining", "feast"), group_rugs=False, statues_along=True, decor_max=5,
+                        one_set=("dining", "feast", "longtable"), group_rugs=False, statues_along=True, decor_max=5,
+                        seat_gaps={"longtable": 0.6, "dining": 0.4, "feast": 0.4},   # the far bench seen past its table
+                        cluster=("longtable",),
                         top_up=(),                           # never benches or barrels down the walls to fill the floor
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
-                                 dict(fam="table", slot="table_rows", seat="bench"),
+                                 # long tables with a bench down each side, set where the floor is open, not a row
+                                 # stamped at equal gaps (independent judge, r8: "one identical table set stamped in a
+                                 # perfect diagonal line", "seated on one side only")
+                                 dict(fam="table", slot="groups", group="longtable", n=3),
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.5),
                                  dict(fam="wall_decor", slot="decor")],
                         fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=160),
@@ -503,7 +508,7 @@ ROOMS = {
                  # Westwood's halls: 6 columns at the median (Starwell playtest, 2026-10-05)
                  compose=[dict(fam="column", slot="colonnade", gap=3.4, aisle=2.6),
                           dict(fam="wall_decor", slot="decor")],
-                 fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120, fixed=True),
+                 fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120, fixed=True),
                        # statues in the corners and along the walls, turned along them (Con04c's sixteen, Con06b's pair)
                        dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                        dict(fam="bench", slot="wall", max=1, fixed=True),
@@ -1033,24 +1038,29 @@ ROOMS = {
                     # room lab (tuneB): Westwood's gallery (Con07E, 210 tiles) shows its pieces apart along the walls,
                     # each in its own bay: an orrery, a flame basin on a plinth, crystals among plants, a statue;
                     # paintings and blue tapestries between them; lanterns; not a bench group in the middle
-                    core={"wall_decor": (6, 14), "bench": (0, 2)},
-                    optional={"statue": (0.9, 2), "plant": (1.0, 4), "lab": (0.9, 1), "basin": (0.8, 2),
-                              "bench": (0.5, 1)},
+                    core={"wall_decor": (6, 14)},
+                    optional={"statue": (0.9, 2), "plant": (1.0, 4), "lab": (1.0, 1), "basin": (0.8, 2)},
                     types={"bench": r"^Bench[1-4]$|^CushionedBench\d$", "statue": r"^Statue2[aceg]$", "plant": PLANTS,
-                           "lab": r"^Orrery2$", "basin": r"^DunMirFlameBasinLit$", "wall_decor": r"^Painting[12]$"},
-                    prefer={"wall_decor": {"Painting1": 1, "Painting2": 1}, "basin": {"DunMirFlameBasinLit": 1},
+                           "lab": r"^Orrery2$", "basin": r"^DunMirFlameBasinLit$",
+                           "wall_decor": r"^Painting[12]$|^BlueTapestry[24]$"},
+                    # paintings first (two of a kind to a wall: the knowledge base), blue tapestries between them on the
+                    # rest of the wall, as Con07E hangs them: the walls are the show (independent judge, r3)
+                    prefer={"wall_decor": {"Painting1": 4, "Painting2": 4, "BlueTapestry2": 1, "BlueTapestry4": 1},
+                            "basin": {"DunMirFlameBasinLit": 1},
                             "lab": {"Orrery2": 1}},
-                    decor_max=10,
+                    decor_max=10, decor_first=r"^Painting",
                     decor_at="any",           # paintings at the ends of each stretch of wall as well as its middle
-                    lift=("DunMir|",), by_walls=("curio", "statues"), statues_along=True,
+                    lift=("DunMir|",), statues_along=True,
                     top_up=(),
-                    compose=[dict(fam="lab", slot="groups", group="curio", n=1, extra=True, min_area=80),
+                    # the centrepiece: the orrery ringed by candelabras in the middle of the walk (independent judge,
+                    # r3: "the orrery always in the S corner", "a single bench alone in the middle"); a statue pair
+                    # facing across the room; flame basins by the walls; the walls hung with the show
+                    compose=[dict(fam="lab", slot="groups", group="conjuring", n=1, extra=True, min_area=80),
                              dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=80),
                              dict(fam="basin", slot="wall", at="center", clear=1.0, n=2),
                              dict(fam="plant", slot="wall", at="corner", clear=0, n=4),
                              dict(fam="wall_decor", slot="decor")],
-                    fill=[dict(fam="statue", slot="wall", at="center", clear=0.8, max=2, fixed=True, min_area=120),
-                          dict(fam="bench", slot="center", max=1, min_area=160, fixed=True)]),
+                    fill=[]),
     # a garden hall (Con07B / War07A, 155-177 tiles: 33-35 potted plants and a pair of columns; Wiz01A, 24 tiles: a
     # fountain with lily pads among barren plants)
     "conservatory": dict(base="hall", grand=True,
