@@ -552,6 +552,10 @@ class Furnisher:
         self.g = _Room(spec, room)
         self.kind = kind or next(k for lim, k in DEFAULT_KIND_BY_SIZE if self.g.area <= lim)
         self.T = RT["types"][ROOM_IDENTITY.get(self.kind, {}).get("base", self.kind)]
+        # the kind's recipe (kit/identity.py ROOMS[kind]), with the room's archetype laid over it once drawn
+        # (draw_archetype: kit/archetypes.py)
+        self.ident = ROOM_IDENTITY.get(self.kind, {})
+        self.archetype = None
         self.chair_facing = RT["chair_facing"]
         self.dirvar = DEC["directional_variants"]
         self.things = THINGS
@@ -920,11 +924,11 @@ class Furnisher:
 
     def types_of(self, fam):
         inv = self.T["inventory"].get(fam, {})
-        allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(fam)
+        allow = self.ident.get("types", {}).get(fam)
         ok = (lambda t: self.ok_type(t) and re.search(allow, t)) if allow else self.ok_type
         tonly = self._trade.get("only", {}).get(fam)
         if tonly: ok0 = ok; ok = lambda t: ok0(t) and bool(re.search(tonly, t))
-        prefer = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam)
+        prefer = self.ident.get("prefer", {}).get(fam)
         if prefer:                                       # the identity's own choice (a kitchen table with food)
             chosen = {t: w for t, w in prefer.items() if ok(t)}
             if chosen: return chosen
@@ -1015,7 +1019,7 @@ class Furnisher:
         seats placed."""
         types = self.types_of(seat_fam)
         if pat:                                         # a work table's stools, whatever the room's own seats are
-            allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(seat_fam)
+            allow = self.ident.get("types", {}).get(seat_fam)
             types = {t: 1 for t in sorted(self.things) if re.search(pat, t) and self.ok_type(t) and
                      _family_of(t) == seat_fam and (not allow or re.search(allow, t))}
         if not types or n <= 0: return 0
@@ -1060,7 +1064,7 @@ class Furnisher:
     def palette_seat(self, seat_fam, types):
         """The building's own seat for this room (its chair, stool or bench), where the room's identity allows it."""
         bases = {_base(t) for t in types}
-        allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(seat_fam)
+        allow = self.ident.get("types", {}).get(seat_fam)
         keys = ("bench",) if seat_fam == "bench" else ("stool", "chair") if bases <= {"Stool", "CushionedStool"} else ("chair",)
         for key in keys:
             b = self.palette[key]
@@ -1102,17 +1106,17 @@ class Furnisher:
         """Most pieces of `fam` this room may hold (kit/identity.py ROOMS[kind]["repeat"]: a piece per so many floor
         tiles, at most so many), or None when the kind sets no cap. A large room fills with a mix of pieces, not with
         more of one (2026-10-05 playtest: the Greywatch chapel's 46 pews, the taverns' 24 tables and 76 chairs)."""
-        rp = ROOM_IDENTITY.get(self.kind, {}).get("repeat", {}).get(fam)
+        rp = self.ident.get("repeat", {}).get(fam)
         if not rp: return None
         per, most = rp
-        lo = ROOM_IDENTITY[self.kind].get("core", {}).get(fam, (0, 0))[0]
+        lo = self.ident.get("core", {}).get(fam, (0, 0))[0]
         # the floor inside the walls, as the room score counts it (review/roomscore.py cap_for: the room lab found
         # tavern rooms of 143 floor tiles capped by their 168 footprint tiles, the tiles under the walls with them)
         # (the usable cells are the half-tile grid, two to a floor tile, and reach under the doorways: the room score's
         # floor is about 0.9 of half of them). A kind may instead give its own measured share of the kit's tiles
         # (ROOMS[kind]["cap_tiles"]: the laboratory's rooms hold 1.3-1.4 times the floor tiles the checker's room
         # finder measures, so a cap met here was broken there; the room lab, tuneC)
-        ct = ROOM_IDENTITY[self.kind].get("cap_tiles")
+        ct = self.ident.get("cap_tiles")
         tiles = len(self.room.tiles) * ct if ct is not None else 0.9 * self.g.area / 2
         return max(lo, min(most, int(tiles / per)))
 
@@ -1120,7 +1124,7 @@ class Furnisher:
         """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at
         its Westwood count clamped to the identity's range, optional families by their probability,
         nothing else. Returns (plan, need) or None for kinds without an identity."""
-        ident = ROOM_IDENTITY.get(self.kind)
+        ident = (self.ident or None)
         if not ident: return None
         plan, need = {}, {}
         for f, (lo, hi) in ident["core"].items():
@@ -1136,14 +1140,36 @@ class Furnisher:
                 plan[f] = max(1, min(hi, self.count(f) or 1))
         return plan, {f: n for f, n in need.items() if n > 0 and (self.types_of(f) or f in ("counter_bar", "chair", "bench"))}
 
+    def draw_archetype(self):
+        """The room's archetype (kit/archetypes.py draw: one of the type's Westwood layouts, by Westwood's frequencies,
+        spread over the map's rooms of the type); its overlay in the kind's recipe (ROOMS[kind]["archetypes"][name]:
+        its own compose, fill, counts...) laid over the recipe, and its cover factor on the room's cover target."""
+        from kit import archetypes as ARCH
+        culture = self.style if self.style in ("dunmir", "lotd", "ogre") else "town"
+        a = ARCH.draw(self.spec, self.room, self.rtype, len(self.room.tiles), culture)
+        self.archetype = a
+        if not a: return None
+        base = ROOM_IDENTITY.get(self.kind, {})
+        over = (base.get("archetypes") or {}).get(a["name"])
+        if over is not None:
+            merged = dict(base)
+            for k, v in over.items():          # dict values merge into the recipe's (core, optional, types, prefer...)
+                merged[k] = dict(base.get(k) or {}, **v) if isinstance(v, dict) and isinstance(base.get(k), dict)                     and k != "trades" else v
+            if "compose" in over: merged.pop("compose_alts", None)
+            self.ident = merged
+            f = over.get("cover", a.get("cover", 1.0))
+            self.cover_target = min(self.cover_max, self.cover_target * f)
+        return a
+
     def furnish(self):
+        self.draw_archetype()
         inv_all = self.T["inventory"]
         ip = self.identity_plan()
         if ip:
             plan, need = ip
         else:
             plan = {f: self.count(f) for f in ORDER if f in inv_all and f not in VETO.get(self.kind, ())}
-        if self.style == "town" and self.kind not in GRAND_ROOMS and not ROOM_IDENTITY.get(self.kind, {}).get("grand"):
+        if self.style == "town" and self.kind not in GRAND_ROOMS and not self.ident.get("grand"):
             plan["statue"] = plan["column"] = 0
         if not ip:
             need = {f: n for f, n in REQUIRED.get(self.kind, {}).items() if self.types_of(f) or f == "counter_bar"}
@@ -1157,7 +1183,7 @@ class Furnisher:
             trimmable = [f for f, n in plan.items() if f not in NON_BLOCKING and n > need.get(f, 0)]
             if not trimmable: break
             plan[max(trimmable, key=lambda f: plan[f])] -= 1
-        if ROOM_IDENTITY.get(self.kind, {}).get("compose"):
+        if self.ident.get("compose"):
             self.in_required = True                      # the plan is already within the room's density
             self.composing = True                        # the room's coverage limit holds instead (ROOM_COVER)
             self.compose(plan, need)
@@ -1169,7 +1195,7 @@ class Furnisher:
             # a kind may line its back walls less than the house's goal (ROOMS[kind]["lined_goal"]: Westwood's
             # laboratories 0.06-0.35), and say whether its walls take hangings (a bedroom: Westwood hangs something in
             # 17% of its bedrooms and lines a quarter of their back walls; the room lab)
-            ident = ROOM_IDENTITY.get(self.kind, {})
+            ident = self.ident
             goal = ident.get("lined_goal", LINED_GOAL)
             self.line_backs(goal)
             self.complete_bookcase_walls()
@@ -1347,7 +1373,7 @@ class Furnisher:
             return t if t and self.ok_type(t) else None
         if base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side"):
             return self.along_variant(self.variant_for_side(base, r["side"]), r["side"])
-        pref = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam) if fam else None
+        pref = self.ident.get("prefer", {}).get(fam) if fam else None
         if pref:
             along = [t for t in pref if self.ok_type(t) and self._along_wall(t, r["line"])]
             if along:                     # and the numbered sibling for this wall (Desk4 is the NE wall's desk)
@@ -1378,9 +1404,9 @@ class Furnisher:
             diag = max(1.0, math.hypot(max(us_) - min(us_), max(vs_) - min(vs_)))
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
-        if fam in ROOM_IDENTITY.get(self.kind, {}).get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
+        if fam in self.ident.get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
             facing = False
-        if fam in ROOM_IDENTITY.get(self.kind, {}).get("back_only", ()):  # a kind whose pieces Westwood shows on the back walls
+        if fam in self.ident.get("back_only", ()):  # a kind whose pieces Westwood shows on the back walls
             facing = True
         depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
         out = []
@@ -1400,7 +1426,7 @@ class Furnisher:
             # a kind whose pieces stand a step out from the wall: ROOMS[kind]["wall_gap"] is either {family: units}
             # (Westwood's sarcophagi, 1-2.5 units off it) or one number for every wall piece (its kitchens: median gap
             # 0.49 units against the furnisher's 0.24; the checker calls a piece floating from 0.9). The room lab.
-            wg = ROOM_IDENTITY.get(self.kind, {}).get("wall_gap", 0.0)
+            wg = self.ident.get("wall_gap", 0.0)
             if isinstance(wg, dict): d += wg.get(fam, 0.0) * self.rng.uniform(0.7, 1.3)
             elif fam != "wall_decor": d += wg
             side_score = (3.0 if back else 0.0) if facing else (0.0 if back else 3.0) if fam in FRONT_FAMS else (1.5 if back else 0.0)
@@ -1554,7 +1580,7 @@ class Furnisher:
         cu, cv = self.g.centroid
         # a recipe may draw its middle group off the exact centre (`middle_jitter`: an independent judge picked out the
         # lone table "dead centre" in every generated kitchen and living room; Westwood's stand off to one side)
-        jit = ROOM_IDENTITY.get(self.kind, {}).get("middle_jitter", 0.0)
+        jit = self.ident.get("middle_jitter", 0.0)
         if jit:
             a = self.rng.uniform(0, 2 * math.pi); rr = self.rng.uniform(0.5, 1.0) * jit
             cu, cv = cu + rr * math.cos(a), cv + rr * math.sin(a)
@@ -1596,7 +1622,7 @@ class Furnisher:
         a rug or the room's density rules out the first). Tables come from the building's palette when the room
         allows them; `small`: the smallest type the room allows (a table its seats fit round in a small room)."""
         types = self.types_of(fam)
-        if fam == "table" and ROOM_IDENTITY.get(self.kind, {}).get("table_palette", True):
+        if fam == "table" and self.ident.get("table_palette", True):
             # (a recipe may take its own tables whatever the building's palette: a living room's table with its food)
             own = {t: w for t, w in types.items() if re.match(self.palette["table"], t)}
             types = own or types
@@ -1689,7 +1715,7 @@ class Furnisher:
     def decor_theme(self):
         """The room's hangings: the identity's own choice, else one theme picked for the room."""
         if not hasattr(self, "_decor_types"):
-            own = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get("wall_decor")
+            own = self.ident.get("prefer", {}).get("wall_decor")
             culture = CULTURE_DECOR.get(self.style)
             if own:
                 self._decor_types = {t: w for t, w in own.items() if self.ok_type(t)}
@@ -1697,7 +1723,7 @@ class Furnisher:
                 self._decor_types = {t: 1 for t in self.things if re.match(culture, t) and self.ok_type(t)}
             else:                                       # one of the building's two themes, as the room allows it
                 themes = list(self.palette["decor"]); self.rng.shuffle(themes)
-                allowed = ROOM_IDENTITY.get(self.kind, {}).get("decor_themes")
+                allowed = self.ident.get("decor_themes")
                 if allowed:                             # the kind's own (a throne room's tapestries, never trophies)
                     themes = [th for th in themes if th in allowed] or                         [allowed[zlib.crc32(f"{getattr(self.room, 'building', '')}".encode()) % len(allowed)]]
                 for th in themes:
@@ -1718,13 +1744,13 @@ class Furnisher:
         rest = sorted(t for t in types if t != t0)
         self.rng.shuffle(rest)
         order = [t0] + rest
-        first = ROOM_IDENTITY.get(self.kind, {}).get("decor_first")       # a recipe's own hangings before the rest
+        first = self.ident.get("decor_first")       # a recipe's own hangings before the rest
         if first: order.sort(key=lambda t: not re.match(first, t))        # (a gallery's paintings)
         for tt in order:
             # (a gallery hangs its paintings at the ends of a stretch as well as its middle: ROOMS[kind]["decor_at"]; any
             # bare stretch otherwise, since hangings no longer go above pieces: HB-2)
             for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt,
-                                                                    ROOM_IDENTITY.get(self.kind, {}).get("decor_at", "any")):
+                                                                    self.ident.get("decor_at", "any")):
                 if r["side"] not in BACK_SIDES: continue
                 if any(k == (r["line"], r["coord"]) and abs(a - a2) < DECOR_GAP for k, a2 in self._decor_at): continue
                 if self.try_put(t, u, v, blocking=False, wall_ok=True, layer="wall"):
@@ -1846,7 +1872,7 @@ class Furnisher:
             self.beds.append((o, r, self._uv_on(r, hp + 0.3, a)))
             self.anchors.append(self._uv_on(r, hp + 0.3, a))
         ns = self.variant_for_side("Nightstand", r["side"])
-        if ns and ROOM_IDENTITY.get(self.kind, {}).get("bed_nightstands", True):  # (Westwood's barracks have none)
+        if ns and self.ident.get("bed_nightstands", True):  # (Westwood's barracks have none)
             nhu, nhv = self.half(ns)
             na, nperp = (nhv, nhu) if r["line"] == "/" else (nhu, nhv)
             for (_, a1), (_, a2) in zip(beds, beds[1:]):
@@ -2055,7 +2081,7 @@ class Furnisher:
 
     def supply_types(self, pat):
         """Supply types matching pat that the room's identity allows (its storage and shelf patterns)."""
-        types = ROOM_IDENTITY.get(self.kind, {}).get("types", {})
+        types = self.ident.get("types", {})
 
         def allowed(t):
             allow = types.get("shelves" if re.match(r"^(LogShelves|PotionShelves|Bookcase)", t) else "storage")
@@ -2120,7 +2146,7 @@ class Furnisher:
         """The room's few kinds of supply: (lead types, second types or [], accent types or []), each kind narrowed to one
         or two types (one stem of crate, one size order of sacks), drawn by the recipe's `store` weights."""
         if getattr(self, "_store_pal", None) is not None: return self._store_pal
-        st = ROOM_IDENTITY.get(self.kind, {}).get("store", {})
+        st = self.ident.get("store", {})
 
         def pool(k):
             ts = self.supply_types(self.STORE_POOLS[k])
@@ -3012,7 +3038,7 @@ class Furnisher:
             self.aisle = dict(run=r, mid=mid, half=aisle / 2, first=first, far=self._depth_of(r), door=None)
         if columns and got and len(sides) == 2:
             off = aisle / 2 + k * pitch + 0.9
-            if ROOM_IDENTITY.get(self.kind, {}).get("columns_by_walls"):
+            if self.ident.get("columns_by_walls"):
                 # Westwood's chapel (Con07B) rings its nave with columns near the walls, the side aisles between
                 # them and the pews (a recipe's choice: columns_by_walls)
                 wide = max(off, min(mid - r["lo"], r["hi"] - mid) - 3.1)      # (nave_columns keeps 1.6 off the wall)
@@ -3083,7 +3109,7 @@ class Furnisher:
     # pieces; the fourth, DunMirThroneFront, stands only in the multiplayer map Kingdoms, which the kit once copied
     THRONE = (("DunMirThroneShadow", -61, -29), ("DunMirThroneBack", -5, -26), ("DunMirThroneBase", 0, 0))
 
-    def place_throne(self, depth=2.9, clear=3.0, aisle=2.0):
+    def place_throne(self, depth=2.9, clear=3.0, aisle=2.0, runner=True):
         """The throne of a throne room: Westwood's Dun Mir throne in its three pieces at Con06b's offsets. Its
         picture faces one way only, SE (Hecubah's throne in Con06b looks down a runner to the doors on its SE; the back
         piece lies along a NW wall), so it stands against the NW wall, straight across the room from the main door in
@@ -3120,7 +3146,7 @@ class Furnisher:
                 self.aisle = dict(run=r, mid=a, half=aisle, first=depth + 1.6, far=far, door=op)
                 (u0, v0), (u1, v1) = self._uv_on(r, depth + 1.4, a - aisle), self._uv_on(r, far + 1.0, a + aisle)
                 self.g.zones.append((min(u0, u1), max(u0, u1), min(v0, v1), max(v0, v1)))
-                self.lay_runner(r, a, depth + 1.0, far)
+                if runner: self.lay_runner(r, a, depth + 1.0, far)     # (an archetype may keep the floor bare)
                 return dict(run=r, uv=(u, v), along=a, ha=2.0, hp=1.6)
         return None
 
@@ -3339,7 +3365,7 @@ class Furnisher:
             if backs:
                 r = min(backs, key=lambda b: (b[0], b[1]))[2]
                 want = (r["sign"], 0) if r["line"] == "/" else (0, r["sign"])
-                if ROOM_IDENTITY.get(self.kind, {}).get("statues_along") and r["side"] in BACK_SIDES:
+                if self.ident.get("statues_along") and r["side"] in BACK_SIDES:
                     # Westwood turns a statue on a NE or NW wall along it (Statue2c/2g on the NW wall, 19 of 20): toward
                     # the throne or altar it flanks, else toward the wall's middle (a recipe's choice: statues_along)
                     along = v if r["line"] == "/" else u
@@ -3366,7 +3392,7 @@ class Furnisher:
     def belongs(self, t):
         """True if the room's identity has a place for type t (its family among the core or optional ones, matching the
         identity's pattern for it): what the checker's identity rule accepts (validate/checks.py identity_strays)."""
-        ident = ROOM_IDENTITY.get(self.kind)
+        ident = (self.ident or None)
         if not ident: return True
         fam = _family_of(t)
         if fam is None:                                 # a piece with no furniture family the recipe names (a cart)
@@ -3407,6 +3433,57 @@ class Furnisher:
                     if got >= n: break
         return got
 
+    @staticmethod
+    def _anchor_uv(p):
+        if not p or p is True: return None
+        if isinstance(p, dict):
+            if "uv" in p: return tuple(p["uv"])
+            if "obj" in p and isinstance(p["obj"], dict): return _uv(p["obj"]["x"], p["obj"]["y"])
+        return None
+
+    def wing_cells(self):
+        """The room's arms: its floor cells outside the largest rectangle of floor it holds (an L or T room's wing), when
+        they are a real part of the room (an eighth of its floor or more); else an empty set. Cached."""
+        if getattr(self, "_wings", None) is not None: return self._wings
+        cells = set(self.g.cells)
+        xs = sorted({x for x, _ in cells}); ys = sorted({y for _, y in cells})
+        best, box = 0, None
+        if len(xs) * len(ys) <= 40000:
+            for i, x0 in enumerate(xs):
+                for x1 in xs[i:]:
+                    cols = [y for y in ys if all((x, y) in cells for x in range(x0, x1 + 1))]
+                    run, start, prev = 0, None, None
+                    for y in cols:
+                        if prev is not None and y == prev + 1: run += 1
+                        else: run, start = 1, y
+                        prev = y
+                        a = run * (x1 - x0 + 1)
+                        if a > best: best, box = a, (x0, x1, start, y)
+        wings = set()
+        if box:
+            wings = {(x, y) for x, y in cells if not (box[0] <= x <= box[1] and box[2] <= y <= box[3])}
+        self._wings = wings if len(wings) >= max(8, len(cells) / 8) else set()
+        return self._wings
+
+    def prefer_spots(self, spots, pref):
+        """Spots reordered for an archetype's zoning: ("wing", _) the room's arms first (only them), ("away", uv) the
+        farthest from an anchor first, ("near", uv) the nearest, ("end", _) the end of the room's length farthest from
+        its main door."""
+        where, at = pref
+        if where == "wing":
+            w = self.wing_cells()
+            return [p for p in spots if (int(math.floor((p[0] + p[1] - 1) / 2)), int(math.floor((p[0] - p[1] - 1) / 2))) in w
+                    or any((int((p[0] + p[1] - 1) // 2) + a, int((p[0] - p[1] - 1) // 2) + b) in w for a in (0, 1) for b in (0, 1))]
+        if where in ("away", "near") and at:
+            d = lambda p: math.hypot(p[0] - at[0], p[1] - at[1]) + 0.6 * self.rng.random()
+            return sorted(spots, key=(lambda p: -d(p)) if where == "away" else d)
+        if where == "end":
+            op = self.main_door() if hasattr(self, "main_door") else (self.openings[0] if self.openings else None)
+            if not op: return spots
+            du, dv = (op["coord"], op["along"]) if op["line"] == "/" else (op["along"], op["coord"])
+            return sorted(spots, key=lambda p: -math.hypot(p[0] - du, p[1] - dv) + 0.6 * self.rng.random())
+        return spots
+
     def place_group(self, name):
         """One free-standing group of GROUPS[name] at the best open spot of the floor (middle_spots: room round it, the
         front of the room first). Returns the pieces placed (0 when it does not fit)."""
@@ -3414,7 +3491,7 @@ class Furnisher:
         types = sorted(t for t in self.things if re.match(g["anchor"], t) and self.ok_type(t) and self.belongs(t))
         if not types: return 0
         t = self.rng.choice(types)
-        ident = ROOM_IDENTITY.get(self.kind, {})
+        ident = self.ident
         if name in ident.get("one_set", ()):            # one kind of table to each kind of set, as Westwood furnishes a
             t = self._set_type.setdefault(name, t)       # room (Con06a's four RoundTable2, Con07B's Tables and tables of food)
         if g.get("pair") and self.aisle and _family_of(t) == "statue":
@@ -3436,6 +3513,10 @@ class Furnisher:
                            0.3 * self.rng.random())[:30]
         if not spots and g.get("seats") and g["seats"][0] <= 2:    # a seat or two need not ring it: a narrower margin
             spots = self.middle_spots(hu + 0.9, hv + 0.9)[:30]
+        pref = getattr(self, "_spot_pref", None)
+        if pref and pref[0]:
+            allspots = (self.wall_spots if by_walls else self.middle_spots)(hu + pad, hv + pad) or                 self.middle_spots(hu + 0.9, hv + 0.9)
+            spots = self.prefer_spots(allspots, pref)[:30] or spots
         try:
             for spot in spots:
                 self._group = None
@@ -3502,7 +3583,7 @@ class Furnisher:
         its identity says belongs there (ROOMS[kind]["fill"]), taking the steps in turn, each up to its own `max`
         pieces: a room holding only its anchors reads as empty, and coverage grows with the room (bigger rooms
         than Westwood's get more)."""
-        steps = ROOM_IDENTITY.get(self.kind, {}).get("fill") or []
+        steps = self.ident.get("fill") or []
         if not steps: return
         # the steps' limits suit Westwood's rooms of the kind: a room bigger than its kind's median takes more of each
         # in proportion (a study of 266 tiles, twice Westwood's median, two reading tables and two curios)
@@ -3540,7 +3621,11 @@ class Furnisher:
             elif st["slot"] == "scatter":
                 self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
             elif st["slot"] == "group":                 # its `max` counts groups (a table and its chairs), not pieces
-                if self.place_group(st["group"]): added[i] += 1
+                self._spot_pref = (st.get("where"), None) if st.get("where") in ("wing", "end") else None
+                try:
+                    if self.place_group(st["group"]): added[i] += 1
+                finally:
+                    self._spot_pref = None
                 misses = 0 if self.n_blocking > before else misses + 1
                 continue
             elif st["slot"] == "center":
@@ -3562,7 +3647,7 @@ class Furnisher:
         the walls, until the room reaches its coverage target. The fill steps open with the room's size (min_area),
         and a medium room of some kinds ran out of steps below its target (bedrooms of 32-48 tiles at 0.11-0.13
         against 0.14, studies of 60-90 tiles at 0.08-0.10 against 0.11)."""
-        ident = ROOM_IDENTITY.get(self.kind, {})
+        ident = self.ident
         # first the rows of shelves already lining the walls, grown end to end
         fam = self.line_family()
         while fam and self.coverage() < self.cover_target and self.line_wall(fam, grow_only=True): pass
@@ -3604,7 +3689,7 @@ class Furnisher:
 
     def stock_kinds(self):
         """The kinds of supply the room's recipe stocks its walls with (its "stock" steps), or () when it stocks none."""
-        ident = ROOM_IDENTITY.get(self.kind, {})
+        ident = self.ident
         out = []
         for st in (ident.get("compose") or []) + (ident.get("fill") or []):
             if st.get("slot") == "stock":
@@ -3613,7 +3698,7 @@ class Furnisher:
 
     def line_family(self):
         """The family this room's identity lines its walls with (shelves, shop racks), or None."""
-        ident = ROOM_IDENTITY.get(self.kind, {})
+        ident = self.ident
         return next((st["fam"] for st in (ident.get("compose") or []) + (ident.get("fill") or [])
                      if st.get("slot") == "line"), None)
 
@@ -3679,7 +3764,7 @@ class Furnisher:
         free = sum(hi - lo for r, lo, hi in self.segments() if r["side"] in BACK_SIDES)
         # `decor_max`: the recipe's most hangings in all, the composed ones too (a kind hung more sparely, the room lab;
         # a gallery hung more fully than the house's 8)
-        dm = ROOM_IDENTITY.get(self.kind, {}).get("decor_max")
+        dm = self.ident.get("decor_max")
         n = max(1, min(8 if dm is None else dm, int(free / 3.5)))
         if dm is not None: n = min(n, dm - self._fam_n["wall_decor"])
         for _ in range(n):
@@ -3727,10 +3812,10 @@ class Furnisher:
         composition could not fit is placed the old way so the room keeps its identity."""
         done = collections.Counter()
         tables, placed = [], {}
-        steps = ROOM_IDENTITY[self.kind]["compose"]
-        alts = ROOM_IDENTITY[self.kind].get("compose_alts")
+        steps = self.ident["compose"]
+        alts = self.ident.get("compose_alts")
         if alts: steps = self.rng.choice([steps] + list(alts))   # a recipe's other compositions: not one template
-        trades = ROOM_IDENTITY[self.kind].get("trades")
+        trades = self.ident.get("trades")
         if trades:
             self._trade = trades[self.rng.choice(sorted(trades))]
         steps = [st for st in steps if not self._skipped(st)]
@@ -3771,8 +3856,25 @@ class Furnisher:
                 continue
             if st["slot"] == "groups":                  # n free-standing groups (a tavern's tables with their stools)
                 if self.g.area < st.get("min_area", 0): continue
-                for _ in range(st["n"] if st.get("extra") else min(n, st.get("n", n))):
-                    if not self.place_group(st["group"]): break
+                # where on the floor (an archetype's zoning): "wing" the room's arm, "away"/"near" a placed anchor
+                # (st["of"]), "end" the end of the room's length farthest from the main door
+                self._spot_pref = (st.get("where"), self._anchor_uv(placed.get(st.get("of"))))
+                try:
+                    for _ in range(st["n"] if st.get("extra") else min(n, st.get("n", n))):
+                        if not self.place_group(st["group"]): break
+                        done[fam] += 1
+                finally:
+                    self._spot_pref = None
+                continue
+            if st["slot"] == "wing":                    # a group in each arm of an L or T room (an archetype fills its shape)
+                for _ in range(st.get("n", 1)):
+                    if not self.wing_cells(): break
+                    self._spot_pref = ("wing", None)
+                    try:
+                        got = self.place_group(st["group"])
+                    finally:
+                        self._spot_pref = None
+                    if not got: break
                     done[fam] += 1
                 continue
             if st["slot"] == "counter":
@@ -3780,7 +3882,7 @@ class Furnisher:
                 if q: done[fam] += 1; placed[fam] = q
                 continue
             if st["slot"] == "throne":
-                q = self.place_throne()
+                q = self.place_throne(depth=st.get("depth", 2.9), runner=st.get("runner", True))
                 if q: done[fam] += 1; placed[fam] = q
                 continue
             if st["slot"] == "flank":                  # a pair against the wall either side of an anchor (the throne)
@@ -3926,7 +4028,7 @@ class Furnisher:
                 seat = "bench" if plan.get("bench") and self.rng.random() < 0.5 else "chair"
                 k = max(1, int(round(_q(self.rng, (_RT["sets"].get(f"table+{seat}") or {}).get("per_anchor"), 1.0) or 2)))
                 # the room's identity sets a minimum (a living room's table has 2+ chairs)
-                lo = ROOM_IDENTITY.get(self.kind, {}).get("core", {}).get("chair", (0, 0))[0]
+                lo = self.ident.get("core", {}).get("chair", (0, 0))[0]
                 k = max(k, -(-lo // max(1, sum(1 for x in tables if x[2] == "table"))))
                 self.seats_around(uv, t, min(4, k), seat)
 
@@ -4104,7 +4206,7 @@ class Furnisher:
         vl = self.T.get("visible_lights", {})
         types = {t: s for t, s in vl.get("types", {}).items()
                  if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
-        own = ROOM_IDENTITY.get(self.kind, {}).get("lights")
+        own = self.ident.get("lights")
         if own:                                                  # the culture's own lights (rules/out/cultures.json)
             types = {t: s for t, s in own.items() if self.ok_type(t)} or types
         elif HOUSE_WALLS.search(self.g.wall_material or ""):     # a house: candelabras, never torches
@@ -4123,7 +4225,7 @@ class Furnisher:
 
     def add_lights(self):
         # a recipe may leave its room unlit (`dark`: Westwood's cells and pens hold no light of their own, 9 of 10)
-        if ROOM_IDENTITY.get(self.kind, {}).get("dark"): return
+        if self.ident.get("dark"): return
         vl = self.T.get("visible_lights", {})
         tiles = len(self.room.tiles)
         rate = _q(self.rng, vl.get("per100_tiles")) or 3.0          # learned lights per 100 tiles
@@ -4131,7 +4233,7 @@ class Furnisher:
         n = max(1 if tiles >= 12 else 0, tiles // 40, min(n, max(1, tiles // 12)))
         types = {t: s for t, s in vl.get("types", {}).items()
                  if self.ok_type(t) and _family_of(t) not in ("fireplace", "stove") and not OUTDOOR_LIGHT.search(t)} or {"Candleabra1": 1}
-        own = ROOM_IDENTITY.get(self.kind, {}).get("lights")
+        own = self.ident.get("lights")
         if own:                                                  # the culture's own lights (rules/out/cultures.json)
             types = {t: s for t, s in own.items() if self.ok_type(t)} or types
         elif HOUSE_WALLS.search(self.g.wall_material or ""):     # a house: candelabras, never torches
@@ -4148,7 +4250,7 @@ class Furnisher:
         n = min(n, max(0, OBJ.light_cap(tiles) - len(lights)))
         # a kind lit more dimly than the house default (kit/identity.py ROOMS[kind]["lights_per100"]: Westwood's storerooms
         # hold 0.03 lights a tile, one candelabra in a store of 40 tiles; the room lab, 2026-10-05)
-        lp = ROOM_IDENTITY.get(self.kind, {}).get("lights_per100")
+        lp = self.ident.get("lights_per100")
         if lp is not None: n = 0 if lp <= 0 else min(n, max(1 if tiles >= 12 else 0, int(round(tiles * lp / 100.0))))
         t = self._light_t or _pick(self.rng, types)   # one style of light per room
         base = _base(t)
@@ -4264,6 +4366,7 @@ def furnish_room(spec, room: Room, kind=None, rng=None, style="town"):
     room.spots = f.spots
     room.kb_refused = dict(f.kb_refused)  # what the object knowledge base refused, by rule (the labs print it)
     room.grammar_log = dict(getattr(f, "grammar_log", None) or {})   # what kit/grammar.py's audit moved or dropped
+    room.archetype = (f.archetype or {}).get("name")   # the room's archetype (kit/archetypes.py)
     from kit import loot
     loot.tag(spec, objs, f.kind)          # where its containers stand: their loot (kit/loot.py)
     return objs

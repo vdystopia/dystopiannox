@@ -50,7 +50,7 @@ the size, nor the door count the harness sets), cross-validated (stratified k-fo
 fixed seeds): the AUC is how well it tells them apart, 0.5 meaning it cannot. Each feature's own AUC shows which
 features give the batch away. With under 6 Westwood rooms the type's pool is used and the result marked as a fallback.
 """
-import collections, json, math, os, re, statistics, sys
+import collections, json, math, os, random, re, statistics, sys
 import labenv as E
 C = E.C
 import roommeasure as RM
@@ -318,7 +318,18 @@ def features(m, r, typ, kind=None):
     f["odd_facing"] = 0.0           # filled in by compare() from Westwood's variants by wall (details["wall_pieces"])
     lights = [o for o in objs if C.LIGHT_NAME.search(o["type"]) and RT.family(o["type"]) != "fireplace"]
     f["lights_per_tile"] = len(lights) / tiles
-    details = dict(kinds=dict(kinds), fam=dict(fam), wall_pieces=wall_pieces,
+    # the layout, for the batch's template similarity (template()): each piece's family, where it stands (the wall it
+    # is against, "mid" more than 2.5 units from every wall, else "free") and its place over the room's uv box (0-1)
+    u0_, u1_, v0_, v1_ = min(us), max(us) + 1, min(vs), max(vs) + 1
+    layout = []
+    for o in pieces:
+        fm = RT.family(o["type"])
+        if fm in (None, "light", "rug"): continue
+        a = against.get(o["id"])
+        place = a[0] if a else ("mid" if not C._against(o, runs, cu, cv, m, reach=2.5, across=True) else "free")
+        ou, ov = C.uv_of(o)
+        layout.append([fm, place, round((ou - u0_) / max(1, u1_ - u0_), 3), round((ov - v0_) / max(1, v1_ - v0_), 3)])
+    details = dict(kinds=dict(kinds), fam=dict(fam), wall_pieces=wall_pieces, layout=layout,
                    pairs={k: round(statistics.median(v), 3) for k, v in pairs.items()},
                    runs=[[n, k, w] for n, k, w in sorted(run_list, reverse=True) if n >= 3][:6],
                    focal=foc[0]["type"] if foc else None, doors=[w for _, _, _, w in doors],
@@ -567,6 +578,118 @@ def cross_classify(gen_feats, seed=0):
 
 
 # ---------------------------------------------------------------------------------------------------- an iteration
+# ---------------------------------------------------------------------------------------------------- templates
+# "One template per type repeated across variants" (the independent blind judges, review/NIGHTLOG.md 2026-10-06): a
+# batch whose ten rooms are more alike than Westwood's rooms of the type are. Two rooms' layout similarity (0-1) is the
+# mean of a structural one (the same families on the same walls: weighted Jaccard of (family, wall) counts, each count
+# held to 3, the mirror image counted) and a positional one (pieces of one family within MATCH of each other over the
+# rooms' boxes, greedy, kit/originality.py's measure with a looser match, the four flips counted). A batch's template
+# similarity is the mean over its pairs; Westwood's spread for the type is the same mean over random draws of as many of
+# its rooms (its own when it has 3 or more, with the kin rooms its archetypes name when it has fewer than MIN_WW; else
+# the pool's). The lab flags a batch above Westwood's p90.
+T_MATCH = 0.2
+MIRROR_WALL = {"NE": "NW", "NW": "NE", "SE": "SW", "SW": "SE"}
+
+
+def _tokens(lay, mirror=False):
+    c = collections.Counter((f, MIRROR_WALL.get(p, p) if mirror else p) for f, p, _, _ in lay)
+    return {k: min(3, n) for k, n in c.items()}
+
+
+def _struct(a, b):
+    ta = _tokens(a)
+    best = 0.0
+    for mir in (False, True):
+        tb = _tokens(b, mir)
+        keys = set(ta) | set(tb)
+        den = sum(max(ta.get(k, 0), tb.get(k, 0)) for k in keys)
+        if den: best = max(best, sum(min(ta.get(k, 0), tb.get(k, 0)) for k in keys) / den)
+    return best
+
+
+def _pos(a, b):
+    if not a or not b: return 0.0
+    best = 0.0
+    for fu, fv in ((0, 0), (1, 0), (0, 1), (1, 1)):
+        bb = [(f, 1 - u if fu else u, 1 - v if fv else v) for f, _, u, v in b]
+        pairs = sorted((math.hypot(p[2] - q[1], p[3] - q[2]), i, j) for i, p in enumerate(a) for j, q in enumerate(bb)
+                       if p[0] == q[0])
+        ua, ub, mm = set(), set(), 0
+        for dd, i, j in pairs:
+            if dd > T_MATCH: break
+            if i in ua or j in ub: continue
+            ua.add(i); ub.add(j); mm += 1
+        best = max(best, 2 * mm / (len(a) + len(b)))
+    return best
+
+
+def layout_similarity(a, b):
+    """0-1: how alike two rooms' layouts (details["layout"]) are."""
+    if not a or not b: return 0.0
+    return 0.5 * (_struct(a, b) + _pos(a, b))
+
+
+def _mean_pairs(lays):
+    sims = [layout_similarity(a, b) for i, a in enumerate(lays) for b in lays[i + 1:]]
+    return (sum(sims) / len(sims)) if sims else None, sims
+
+
+def template_reference(typ):
+    """(Westwood layouts the type's template similarity is compared with, a note)."""
+    ww = [r for r in westwood() if r["details"].get("layout")]
+    own = [r for r in ww if r["type"] == typ]
+    if len(own) >= MIN_WW: return own, f"Westwood's {len(own)} {typ.replace('_', ' ')} rooms"
+    kin = set()
+    try:
+        from kit.archetypes import ARCHETYPES
+        kin = {i for a in ARCHETYPES.get(typ, []) for i in a.get("kin", ())}
+    except Exception:
+        pass
+    key = lambda r: f"{r['map']}@{r['centre'][0]},{r['centre'][1]}"
+    with_kin = own + [r for r in ww if key(r) in kin and r["type"] != typ]
+    if len(with_kin) >= 3:
+        return with_kin, (f"Westwood's {len(own)} {typ.replace('_', ' ')} rooms" +
+                          (f" and {len(with_kin) - len(own)} kin rooms its archetypes name" if len(with_kin) > len(own) else ""))
+    rooms, note = pool(typ)
+    rooms = [r for r in rooms if r["details"].get("layout")]
+    return rooms, f"its pool's {len(rooms)} rooms (thin type)"
+
+
+def template(gen_layouts, typ, n=None, draws=300):
+    """The batch's template similarity against Westwood's spread for the type: dict(batch, westwood p10/p50/p90 of the
+    same mean over random draws of n of its rooms, flag, twins: the batch's pairs more alike than Westwood's p95 pair)."""
+    lays = [l for l in gen_layouts if l]
+    bm, bsims = _mean_pairs(lays)
+    ref, note = template_reference(typ)
+    rl = [r["details"]["layout"] for r in ref]
+    k = min(len(rl), n or len(lays))
+    if len(rl) <= k: k = max(3, len(rl) - 2)        # a thin type: its spread over leave-two-out draws
+    rng = random.Random(E.seed_of("template", typ))
+    full = {}
+    def sim(i, j):
+        if (i, j) not in full: full[(i, j)] = layout_similarity(rl[i], rl[j])
+        return full[(i, j)]
+    means = []
+    if k >= 2:
+        for _ in range(draws):
+            idx = sorted(rng.sample(range(len(rl)), k))
+            ss = [sim(i, j) for a_, i in enumerate(idx) for j in idx[a_ + 1:]]
+            means.append(sum(ss) / len(ss))
+    means.sort()
+    pq = lambda p: round(means[min(len(means) - 1, int(p / 100 * len(means)))], 3) if means else None
+    allpairs = sorted(sim(i, j) for i in range(len(rl)) for j in range(i + 1, len(rl)))
+    p95 = allpairs[min(len(allpairs) - 1, int(0.95 * len(allpairs)))] if allpairs else 1.0
+    twins = []
+    idxs = [i for i, l in enumerate(gen_layouts) if l]
+    pairs = [(idxs[a], idxs[b]) for a in range(len(idxs)) for b in range(a + 1, len(idxs))]
+    for (i, j), s_ in zip(pairs, bsims):
+        if s_ > p95: twins.append([i, j, round(s_, 3)])
+    out = dict(batch=round(bm, 3) if bm is not None else None, ww_p10=pq(10), ww_p50=pq(50), ww_p90=pq(90),
+               ww_pair_p95=round(p95, 3), twins=sorted(twins, key=lambda t: -t[2])[:8], note=note, ww_rooms=len(rl))
+    out["flag"] = bool(bm is not None and out["ww_p90"] is not None and bm > out["ww_p90"])
+    return out
+
+
 def judge_batch(typ, it, log=print):
     """Measures and judges an iteration's generated rooms (review/out/roomlab/<type>/<iter>/variants.json), writes
     metrics.json there and returns it."""
@@ -617,7 +740,8 @@ def judge_batch(typ, it, log=print):
                   where=v[0]["where"]) for k, v in worst[:8]]
     hard_tally = collections.Counter(h["rule"] for x in rooms_out for h in x["hard"])
     own = sum(1 for r in westwood() if r["type"] == typ)
-    res = dict(type=typ, iter=it, classifier=cls, cross_classifier=cross, westwood_rooms=own,
+    tmpl = template([x["details"].get("layout") for x in rooms_out], typ)
+    res = dict(type=typ, iter=it, classifier=cls, cross_classifier=cross, westwood_rooms=own, template=tmpl,
                westwood_cultures=dict(collections.Counter(r["culture"] for r in westwood() if r["type"] == typ)),
                batch_cultures=dict(cultures), worst=worst, hard_rules=dict(hard_tally),
                rooms_with_hard=sum(1 for x in rooms_out if x["hard"]), rooms=rooms_out)

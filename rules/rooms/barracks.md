@@ -26,6 +26,16 @@ The row of bunks, headboards against a wall.
 - **A back wall:** shelves for gear end to end; shields and trophies.
 - **The middle:** a table with its seats; a hearth with benches in a big room.
 
+
+## Archetypes
+
+Westwood's 7 curated campaign barracks rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| bunk row | 43% | Con06b@160,48, Con06b@106,192, Con05A@48,66 | bunks of one kind in a row on one wall with chests, the crew's tables and chairs free before them, arms hung (recipe engine: the kind's own recipe) |
+| ogre den | 57% | Con05C@122,91, Con05C@140,109, Con09c@50,210, Con09c@62,206 | the ogres' den: straw heaped over the floor, crude beds on the back walls, a table with stools, barrels in a knot, meat (recipe engine: the kind's own recipe) |
+
 ## Density and openness
 
 | | Westwood's campaign (16 rooms, 7 maps) | Profile |

@@ -31,6 +31,17 @@ Statues stand either side of it.
   door.
 - **Movement:** straight in and up the aisle; nothing in the door's line.
 
+
+## Archetypes
+
+Westwood's 1 curated campaign chapel room differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Few rooms: the archetypes also draw on kin types' rooms (each counted half a room), as named. Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| pewed nave | 44% | Con07B@143,201 | pews in short rows either side of a carpeted aisle, columns ringing the nave among them, tapestries of one colour, candelabras in pairs, a statue by the altar |
+| sanctum | 33% | -kin: Con07D@118,78, Wiz02B@120,120, Wiz11A@50,215 | the holy thing in the middle ringed by four obelisks on a carpet, candelabras along the walls, a few pews facing it (kin: the shrines) |
+| colonnade chapel | 22% | -kin: Con04c@75,78 | the altar at the end of a colonnade, statues in pairs facing across the aisle, a few pews near the altar (kin: Con04c's colonnade hall) |
+
 ## Density and openness
 
 | | Westwood's campaign (1 room, Con07B) | Profile |

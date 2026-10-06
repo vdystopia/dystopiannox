@@ -42,7 +42,9 @@ def summarise(typ, it):
              findings_per_room=round(sum(len(r["findings"]) for r in m["rooms"]) / max(1, len(m["rooms"])), 2),
              worst=[w["example"] for w in m["worst"][:3]],
              blind_accuracy=b and b["accuracy"], blind_generated=b and b["score_generated"],
-             blind_westwood=b and b["score_westwood"])
+             blind_westwood=b and b["score_westwood"],
+             template=(m.get("template") or {}).get("batch"), template_ww=(m.get("template") or {}).get("ww_p50"),
+             template_ww90=(m.get("template") or {}).get("ww_p90"), template_flag=(m.get("template") or {}).get("flag"))
     ok = dict(auc=s["auc"] is not None and s["auc"] <= STOP["auc"],
               blind_accuracy=b is not None and b["accuracy"] <= STOP["blind_accuracy"],
               blind_score=b is not None and None not in (b["score_generated"], b["score_westwood"]) and
@@ -99,12 +101,16 @@ def write(typ, it):
            f"<tr><td>rooms with hard-rule findings</td><td>{s['rooms_with_hard']} of {s['rooms']} "
            f"{e(json.dumps(s['hard_rules']))}</td><td>0</td><td class={bad(s['stop']['hard'])}>{bad(s['stop']['hard'])}</td></tr>",
            f"<tr><td>cross-type AUC (type-free features, every Westwood room)</td><td>{s['cross_auc']}</td><td>(context)</td><td></td></tr>",
+           f"<tr><td>template similarity (mean pairwise layout similarity of the batch; metrics.template)</td>"
+           f"<td>{s.get('template')} (Westwood p50 {s.get('template_ww')}, p90 {s.get('template_ww90')}; twins "
+           f"{e(json.dumps((m.get('template') or {}).get('twins', [])))})</td><td>&le; Westwood's p90</td>"
+           f"<td class={bad(not s.get('template_flag'))}>{'MORE ALIKE THAN WESTWOOD' if s.get('template_flag') else 'ok'}</td></tr>",
            "</table>", f"<p><small>{e(c['note'])}</small></p>"]
     if prev:
         out.append("<h2>Against the previous iteration</h2><table><tr><th></th><th>" + e(prev["iter"]) + "</th><th>"
                    + e(it) + "</th></tr>")
-        for k in ("auc", "cross_auc", "rooms_with_hard", "findings_per_room", "blind_accuracy", "blind_generated",
-                  "blind_westwood"):
+        for k in ("auc", "cross_auc", "template", "rooms_with_hard", "findings_per_room", "blind_accuracy",
+                  "blind_generated", "blind_westwood"):
             out.append(f"<tr><td>{k}</td><td>{prev.get(k)}</td><td>{s.get(k)}</td></tr>")
         out.append("</table>")
     out.append("<h2>What gives the batch away</h2><p><small>Each feature's own AUC (1.0: it alone separates them), "

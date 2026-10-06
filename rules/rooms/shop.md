@@ -28,6 +28,17 @@ there).
 - **The middle:** racks for show, three to a row, each row its own kind; the floor before the counter open.
 - **Movement:** from the door straight to the counter.
 
+
+## Archetypes
+
+Westwood's 8 curated campaign shop rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| lined walls | 50% | Con02a@113,142, Con09b@184,92, War07A@109,167, Con07B@106,208 | goods lining the back walls (potion shelves, bookcases, trader's shelves), the keeper's desk on a wall or a little out from it, a cauldron or a stove in a corner, the floor open |
+| stock heaps | 25% | Con03A@14,198, Con03B@238,74 | a general store: steel crates and barrels heaped along both long walls, the keeper's desk with its chair at the far end; the middle an aisle |
+| showroom | 25% | Con06a@142,205, War07A@132,174 | an armourer's showroom: racks hung along the walls and standing free over the floor in loose rows, the keeper's desk standing free among them |
+
 ## Density and openness
 
 | | Westwood's campaign (16 rooms, 11 maps) | Profile |

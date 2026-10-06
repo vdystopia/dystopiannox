@@ -164,6 +164,57 @@ every lab room.
 - **The dead** (crypt, ossuary, mausoleum): rows of tombs with aisles, heaps of bones, or one great tomb; sparse and
   quiet.
 
+## Archetypes: several layouts to a type (2026-10-06)
+
+The independent blind judges' top remaining giveaway (review/NIGHTLOG.md): "one template per type repeated across
+variants" (the same throne room four times, the same shop three times, the same NW wall of bookcase, desk and bookcase,
+every lab's workbenches as one block in the middle). Westwood's rooms of one type differ in structure: one bedroom is a
+chamber with a bed end and a sitting end, another a small cot room, another a lord's room with an oval table standing
+free on a rug. A per-room audit (kit/grammar.py) cannot see this; it comes from how a room's composition is chosen.
+
+So each type's curated campaign rooms are clustered by structure (where the focal stands from the door, how the room is
+zoned, which walls are used, what the middle holds, density) into named **archetypes** (`mapgen/kit/archetypes.py`,
+`py mapgen/kit/archetypes.py [type]` prints them; each brief's "Archetypes" section lists them with their rooms). On
+Westwood's own rooms the clustering holds: rooms of one archetype are more alike than rooms of two (the room lab's layout
+similarity, within against between: bedroom 0.26/0.17, living room 0.32/0.19, crypt 0.49/0.24, guardroom 0.29/0.17, cell
+0.55/0.09, shop 0.31/0.09, storeroom 0.31/0.18, barracks 0.31/0.18, laboratory 0.20/0.15, tavern 0.46/0.18). A thin
+type (throne room, great hall, chapel, kitchen, tavern) takes its few rooms plus kin types' rooms, each counted half,
+and its brief says so.
+
+| Type | Archetypes (share of Westwood's rooms) |
+|---|---|
+| bedroom (28) | cot room 14%, bed and desk 36%, sitting end 32%, lord's room 18% |
+| living room (14) | hearth nook 36%, parlour 21%, common room 14%, cottage 29% |
+| crypt (25) | tomb niche 32%, tomb row 16%, wall tombs 24%, tombstone yard 24%, statue vault 4% |
+| guardroom (11) | watch table 45%, cot post 36%, armed hall 18% |
+| cell (10) | straw pen 60%, gaol cell 30%, cell block 10% |
+| shop (8) | lined walls 50%, stock heaps 25%, showroom 25% |
+| storeroom (7) | corner heaps 57%, shelved store 14%, hall of stock 29% |
+| barracks (7) | bunk row 43%, ogre den 57% |
+| tavern (5 + kin) | common room 33%, hearth hall 17%, barroom 17%, drinking room 33% |
+| laboratory (6) | study lab 33%, work wall 33%, zoned lab 33% |
+| kitchen (3 + kin) | cookhouse 33%, stove kitchen 25%, open hearth 17%, pantry kitchen 25% (kin only) |
+| throne room (4 + kin) | processional 30%, dressed walls 30%, ringed seat 20%, audience chamber 20% |
+| great hall (2 + kin) | hearth in the round 33%, feast hall 33%, long boards 33% (kin only) |
+| chapel (1 + kin) | pewed nave 44%, sanctum 33%, colonnade chapel 22% |
+
+**How a room takes one.** Both engines draw the room's archetype first (`kit/archetypes.py draw`): by Westwood's
+frequencies among the archetypes whose Westwood rooms are of about the room's size (a type with 10 or more rooms holds
+them to their rooms' sizes, a thinner one only keeps a room far off them away) and culture (ogre rooms take the ogre
+archetypes), spread over the map's rooms of the type by deficit (a town's five bedrooms are not one archetype five
+times by chance; the first room of a type draws by frequency alone), reproducible (crc32 of the map, the room and the
+type), and kept when the originality check composes the room again. The recipe engine lays the archetype's overlay
+(`kit/identity.py ARCHETYPE_RECIPES[kind][name]`: its own compose and fill, families in or out, its density factor) over
+the kind's recipe; zoning steps place a group "away" from or "near" an anchor, at the "end" of the room from its door,
+or in the room's "wing" (the arms of an L or T room, `Furnisher.wing_cells`). The motif engine composes its zones from
+the archetype's own Westwood rooms (and kin rooms), stands the focal where they stand it from the door, and scales its
+cover goal. Within an archetype the pieces still vary. `NOX_ARCHETYPES=0` turns the draw off (the lab's "before").
+
+**The batch check.** The room lab measures a batch's **template similarity** (`review/roomlab/metrics.py template`): the
+mean pairwise layout similarity of its ten rooms (half the same families on the same walls, half the same families at
+the same places, mirrors counted), against the same mean over draws of Westwood's rooms of the type; a batch above
+Westwood's p90 is flagged on the scorecard ("more alike than Westwood"), with its twin pairs.
+
 ## Culture variants
 
 The ogres (rough wood, straw, meat, torch poles), the Land of the Dead (sconces, mana obelisks, tombstones, bones), Dun
