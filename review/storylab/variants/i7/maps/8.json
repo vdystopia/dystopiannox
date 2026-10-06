@@ -1,0 +1,328 @@
+{
+ "iter": "i7",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrak",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Malgrath the Fire Mage and his Ember Demons hold the Old Foundry on Mount Krell and have stopped the lava that feeds the forges of Ostrak.",
+  "names": {
+   "Ostrak": "place",
+   "Mount Krell": "place",
+   "Old Foundry": "place",
+   "Great Furnace": "place",
+   "Fire Pools": "place",
+   "Slag Gate": "place",
+   "Ash Caves": "place",
+   "Deep Shaft": "place",
+   "Cracked Anvil": "place",
+   "Malgrath": "person",
+   "Gavrik": "person",
+   "Brugo": "person",
+   "Yorga": "person",
+   "Quilla": "person",
+   "Gorvane": "person",
+   "Magra": "person",
+   "Toller": "person",
+   "Fennick": "person",
+   "Orsk": "person",
+   "Grisp": "person",
+   "Dagny": "person",
+   "Rhun": "person",
+   "Torvic": "person",
+   "Hobb": "person",
+   "Ember Demons": "group",
+   "Imps": "group",
+   "Bats": "group",
+   "Guild": "group",
+   "Fire Cloak": "thing",
+   "Guild Hammer": "thing",
+   "Spell Book": "thing",
+   "Steel Shield": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brugo guards the Slag Gate while Malgrath's Ember Demons raid the slag road.",
+   "names": {
+    "Brugo": "person",
+    "Ember Demons": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brugo",
+     "text": "I'm under orders not to chat with outsiders."
+    },
+    "again": {
+     "speaker": "Brugo",
+     "text": "Don't lose heart now, stranger, those Ember Demons will crack under our hammers!"
+    },
+    "later": {
+     "speaker": "Brugo",
+     "text": "No, nobody sleeps while Ember Demons walk the slag road!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Yorga, who keeps the cooling pools, wants the Bats cleared from their roost up the slag road, and pays in her sister Quilla's potions.",
+   "names": {
+    "Yorga": "person",
+    "Gavrik": "person",
+    "Quilla": "person",
+    "Bats": "group",
+    "Slag Gate": "place",
+    "Ostrak": "place",
+    "Mount Krell": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yorga",
+     "text": "So you're the one Gavrik sent! Wonderful! The Bats roost up the slag road to your left, in the big cave past the cooling pools. I've opened the Slag Gate for you. I'll make it worth your while.\n\nWelcome to Ostrak!"
+    },
+    "reminder": {
+     "speaker": "Yorga",
+     "text": "Good day, kind sir."
+    },
+    "completion": {
+     "speaker": "Yorga",
+     "text": "Ah, here they are... some of the finest potions in Ostrak. My sister Quilla mixed them for the stokers, in case the furnaces ever blew. They should serve you well against the fires you'll surely meet up on Mount Krell."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear out the Bats' roost."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "RedPotion"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Gorvane, a boastful master smith, lost his Fire Cloak to the Imps of the lava tubes west of town.",
+   "names": {
+    "Gorvane": "person",
+    "Imps": "group",
+    "Fire Cloak": "thing",
+    "Ostrak": "place",
+    "Spell Book": "thing",
+    "Old Foundry": "place",
+    "Malgrath": "person",
+    "Ember Demons": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorvane",
+     "text": "Worry not, young sir, I have the whole matter well in hand. The Imps may hide my Fire Cloak wherever they please, it makes no difference to me.\n\nBut then I shall forge a blade so fine that no thief dares stand before it.\n\nOnce those Imps see it, they shall know why I am called the Master of Ostrak.\n\nStill... their den is in the lava tubes west of town. Will you fetch my cloak back for me?"
+    },
+    "refusal": {
+     "speaker": "Gorvane",
+     "text": "Fine, the cloak can wait."
+    },
+    "reminder": {
+     "speaker": "Gorvane",
+     "text": "You there! Hello!? This is my forge. Where is my cloak?"
+    },
+    "completion": {
+     "speaker": "Gorvane",
+     "text": "Ah, there it is. This is one of the finest pieces ever made in Ostrak: my own Fire Cloak.\n\nI made it myself for working the big furnace. Here, take this Spell Book. It will come in handy at the Old Foundry should you run into Malgrath's Ember Demons."
+    },
+    "after": {
+     "speaker": "Gorvane",
+     "text": "Ah, you're back again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Win back Gorvane's Fire Cloak from the Imps!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Win back Gorvane's Fire Cloak from the Imps!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Ostrak: Magra teases, Dagny frets about the Ember Demons, Toller has no fire to work.",
+   "names": {
+    "Magra": "person",
+    "Dagny": "person",
+    "Toller": "person",
+    "Ember Demons": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Magra",
+     "text": "Well you sure don't look like much. I'd hate to have you minding my forge."
+    },
+    "rumour2": {
+     "speaker": "Dagny",
+     "text": "How can a town of smiths beat Ember Demons? This is madness! Where will we go?"
+    },
+    "rumour3": {
+     "speaker": "Toller",
+     "text": "Well there goes the furnace again. Can't forge, guess I'll go take a nap."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Fennick of the Cracked Anvil inn, Gorvane the smith, Quilla the potion-seller.",
+   "names": {
+    "Fennick": "person",
+    "Cracked Anvil": "place",
+    "Gorvane": "person",
+    "Quilla": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Fennick",
+     "text": "Wet yer whistle! What'll it be fer you?"
+    },
+    "arms": {
+     "speaker": "Gorvane",
+     "text": "Perhaps you're in the market for a sword or helm?"
+    },
+    "magic": {
+     "speaker": "Quilla",
+     "text": "Sorry, stranger, but my shelves are looking bare. Hard times make people stock up on potions. Heh, heh, heh..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Guildmaster Orsk wants the Guild Hammer back from the Ember Demons in the Ash Caves. Grisp, a smuggler at the Cracked Anvil, sells a back way into the Old Foundry for 100 gold.",
+   "names": {
+    "Orsk": "person",
+    "Grisp": "person",
+    "Guild": "group",
+    "Guild Hammer": "thing",
+    "Steel Shield": "thing",
+    "Ash Caves": "place",
+    "Malgrath": "person",
+    "Ember Demons": "group",
+    "Ostrak": "place",
+    "Old Foundry": "place",
+    "Cracked Anvil": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Orsk",
+     "text": "Bah! I'm only asking for our hammer back from the Ash Caves north of town, and I'll pay well for it. And this Guild is worth nothing without that blessed hammer on its anvil! But if Malgrath thinks a pack of Ember Demons can keep it from us, his folly is an enormity -- as is the certainty of our revenge!"
+    },
+    "offer_b": {
+     "speaker": "Grisp",
+     "text": "I'm sorry, but I can't show you the back way into the Old Foundry unless you've got 100 gold. Can't let just anybody go stomping around up there for free, can I?"
+    },
+    "outcome_a": {
+     "speaker": "Orsk",
+     "text": "Good work in the Ash Caves, lad! With the Guild Hammer back on its anvil, the smiths of Ostrak will be at it all night. Take this Steel Shield, fresh from our forges. But if I know Malgrath, I fear the talk of him breeding more Ember Demons may be true. So now you must climb to the Old Foundry -- where you will find out for certain if he is feeding our lava to his demons through some foul fire-magic of his own."
+    },
+    "outcome_b": {
+     "speaker": "Grisp",
+     "text": "Relax, stranger, I have it all worked out. I'll take you up whichever way you like, it's all the same to me.\n\nBut first I'll slip us in through the old chimney, which no Ember Demon has ever found.\n\nOnce we're inside, you'll understand the true meaning of Smuggler."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Enter the Ash Caves and find the Guild Hammer."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Meet Grisp at the back door of the Cracked Anvil."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Dagny begs the player to bring back her husband Rhun, a stoker cut off by the lava in the lowest tunnels of the Deep Shaft.",
+   "names": {
+    "Dagny": "person",
+    "Rhun": "person",
+    "Deep Shaft": "place",
+    "Ostrak": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dagny",
+     "text": "Thank goodness you're here, lad! With the lava up in the Deep Shaft, my husband Rhun is cut off down there. But if I know Rhun, he's too stubborn to leave his tools behind. And it falls to you to climb down to the lowest tunnels -- where you must find him before the heat does and bring him home to his wife."
+    },
+    "reminder": {
+     "speaker": "Dagny",
+     "text": "Hurry to the Deep Shaft!"
+    },
+    "found": {
+     "speaker": "Rhun",
+     "text": "My tools are lost, lad, but the Guild will forge me new ones! The ladder up is over here.\n\nLead on, with the blessings of every stoker in Ostrak."
+    },
+    "following": {
+     "speaker": "Rhun",
+     "text": "Good. Just a bit farther."
+    },
+    "completion": {
+     "speaker": "Rhun",
+     "text": "I'm home. Thanks, lad! Take this."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Rhun in the lowest tunnels of the Deep Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Toller points the player to Forgemaster Torvic at the Great Furnace, who sends him up Mount Krell after Malgrath by way of Hobb the ore-carter.",
+   "names": {
+    "Toller": "person",
+    "Torvic": "person",
+    "Hobb": "person",
+    "Malgrath": "person",
+    "Ember Demons": "group",
+    "Ostrak": "place",
+    "Old Foundry": "place",
+    "Great Furnace": "place",
+    "Fire Pools": "place",
+    "Mount Krell": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Toller",
+     "text": "No, there's no work in Ostrak while Malgrath holds the Old Foundry! Go see Forgemaster Torvic at the Great Furnace."
+    },
+    "opening": {
+     "speaker": "Torvic",
+     "text": "The Great Furnace is a mighty forge. It feeds on pure lava, which it draws from the Fire Pools in the very roots of Mount Krell.\n\nNow Malgrath and his Ember Demons have stopped the flow at the Old Foundry. Go up there and drive them out!"
+    },
+    "reminder": {
+     "speaker": "Torvic",
+     "text": "That is all I can tell you, lad. Find Hobb the ore-carter at his shack -- just west of the slag heaps. He'll take you up to the Old Foundry from there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rendezvous with Hobb at his shack by the slag heaps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

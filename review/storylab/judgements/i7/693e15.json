@@ -1,0 +1,33 @@
+{
+  "packet": "693e15",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, functional checkpoint line followed by a stock threat ('blast you to oblivion') and a terse closing; the missing comma after 'Be gone' and the plain bureaucratic tone read as Westwood."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Earnest, slightly stiff welcome ('fairest of all villages in the land of Nox', 'open warm arms of aid') with a cheery 'young Adventurer!' sign-off; exactly the campaign's formal-courteous town guard."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line is built for flavour ('crack under our hammers', 'the slag road') rather than to tell the player anything; the coined local colour and rallying tone feel written to sound gritty."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A jailer's plain, slightly dry warnings with an escalating 'Last warning'; short, practical, with Westwood's mild humour about the cells."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Bare-bones informational line, then generic gratitude with an exclamation mark and 'Adventurer'; the repetition of 'deed(s)' is the kind of unpolished plainness Westwood has."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Clipped, characterful slang ('Off the planks, bog rat!', 'Gate's open. Go on.') and an ellipsis page break used for drama; too stylised and voicey for Nox's plain guards."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Pure directions: where to go, why (the shipment), which way to walk, repeated with a small variant; that redundant, navigational plainness is very Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Too long and too many exclamation marks; stacked rhetorical beats ('his seal on this order says so', 'Will you go quietly, stranger?', '!?') read like a modern writer performing a gruff guard."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Short and plain enough to pass, but the helmet aside and 'Go on, then.' feel like a deliberate attempt at terse Nox flavour; the three lines don't add up to a task the way Westwood's do."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Concrete direction (ladder behind the clerk's desk) then a battle line and a homely joke about the Ogres' drums; the light, slightly silly closing is Westwood's humour."}
+  ],
+  "tells": [
+    "Westwood's guards mostly deliver information: who lives here, where to go, which path to take, often repeating the direction with small variation; the new texts spend their lines on mood and character instead.",
+    "Coined local slang and insults ('bog rat', 'off the planks', 'slag road') and gritty regional colour mark the new texts; Westwood uses generic terms and stock threats.",
+    "The new texts over-use exclamation marks, interrobangs and stacked short sentences in one speech; Westwood's lines are fewer and simpler, often a single sentence.",
+    "Westwood's tone is earnest or mildly comic and occasionally stiff/formal ('fairest of all villages'); the new texts aim for terse hard-boiled attitude.",
+    "Ellipsis page breaks used for dramatic pause, and rhetorical questions to the player, point to the new writer."
+  ]
+}

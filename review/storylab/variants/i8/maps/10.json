@@ -1,0 +1,239 @@
+{
+ "iter": "i8",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Durnhal",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Ugrash the Ogre Chief and his horde have seized the Stone Granary north of Durnhal with the whole harvest inside, and the north gate is shut.",
+  "names": {
+   "Durnhal": "place",
+   "Garamund": "person",
+   "Ugrash": "person",
+   "Ogres": "group",
+   "Urchins": "group",
+   "Quillon": "person",
+   "Town Hall": "place",
+   "Stone Granary": "place",
+   "Wendt": "person",
+   "Hobart": "person",
+   "Krell": "person",
+   "Posey": "person",
+   "Rain Amulet": "thing",
+   "Bolliver": "person",
+   "Longsword of Sir Bolliver": "thing",
+   "Bunt": "person",
+   "Pie Recipe": "thing",
+   "Grisel": "person",
+   "Tobble": "person",
+   "Hammet": "person",
+   "Fat Turnip": "place",
+   "Ombra": "person",
+   "Bessa": "person",
+   "Mott": "person",
+   "The Harvest": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Wendt at the north gate of Durnhal, shut by Mayor Quillon while Ugrash's Ogres hold the Stone Granary.",
+   "names": {"Wendt": "person", "Quillon": "person", "Town Hall": "place"},
+   "parts": {
+    "first": {
+     "speaker": "Wendt",
+     "text": "You're awful scrawny for an Ogre-fighter. Hah, hah, hah...!"
+    },
+    "again": {
+     "speaker": "Wendt",
+     "text": "Hey! Nobody goes out this gate!"
+    },
+    "later": {
+     "speaker": "Wendt",
+     "text": "The north gate is open now, but you should go on to Mayor Quillon at the Town Hall. Much obliged for the help, brave Wanderer!"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Hobart bought a farm cheap and found an Ogre living in the hayloft; he pays to have it driven out.",
+   "names": {"Hobart": "person", "Krell": "person", "Quillon": "person"},
+   "parts": {
+    "offer": {
+     "speaker": "Hobart",
+     "text": "It's an outrage! I've been swindled!\n\nI bought the farm east of the well for next to nothing, and nobody told me an Ogre lives in the hayloft! He eats my cabbages, he snores all night and he won't budge! That brute is worse than a hailstorm!\n\nGet him out of my barn, stranger, and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Hobart",
+     "text": "Pick up whatever weapons you need from Krell the smith and come back when the hayloft is empty."
+    },
+    "completion": {
+     "speaker": "Hobart",
+     "text": "You did it! The hayloft is empty at last! Here, take this Bow, it's yours. Go tell Mayor Quillon -- he said nobody could shift that Ogre!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ogre out of Hobart's barn in order to earn a reward.\n\nThe Ogre is most likely asleep in the hayloft."
+    }
+   },
+   "reward": {"gold": 0, "items": ["Bow"]}
+  },
+  "heirloom_fetch": {
+   "specifics": "Posey wore her mother's Rain Amulet to the harvest dance and Urchins snatched it; it must be back on its hook before her mother comes home from market.",
+   "names": {"Posey": "person", "Rain Amulet": "thing", "Urchins": "group"},
+   "parts": {
+    "offer": {
+     "speaker": "Posey",
+     "text": "Oh no, oh no, oh no! What am I going to do?!\n\nI wore Mother's Rain Amulet to the harvest dance, and a pack of Urchins snatched it right off my neck! They ran off to their cave south of the creek.\n\nMother comes home from market tomorrow. If that amulet isn't on its hook, I'll be scrubbing pig pens till I'm ninety! Will you get it back for me, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Posey",
+     "text": "Thank you for ruining a poor farm girl."
+    },
+    "reminder": {
+     "speaker": "Posey",
+     "text": "Go, hurry!"
+    },
+    "completion": {
+     "speaker": "Posey",
+     "text": "Mother's amulet! You found it! Oh, thank goodness!\n\nHere, take this Ankh. And please, not one word about this to Mother!"
+    },
+    "after": {
+     "speaker": "Posey",
+     "text": "Thanks again for the amulet! Mother never noticed a thing, not one single thing!\n\nBless you for your kindness!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Posey has lost her mother's Rain Amulet to the Urchins, and her mother comes home tomorrow. Maybe the Urchins still have it in their cave..."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Posey's Rain Amulet has been returned before her mother came home."
+    }
+   },
+   "reward": {"gold": 0, "items": ["AnkhTradable"]}
+  },
+  "rumour": {
+   "specifics": "Posey brushes the player off, Mott the drunkard taunts, Bessa saw an Ogre in the Mayor's pig trough.",
+   "names": {"Posey": "person", "Mott": "person", "Bessa": "person", "Quillon": "person"},
+   "parts": {
+    "rumour1": {
+     "speaker": "Posey",
+     "text": "Mother says I'm not supposed to speak to outsiders."
+    },
+    "rumour2": {
+     "speaker": "Mott",
+     "text": "Are you gonna run off? Little lamb's scared of a few Ogres?"
+    },
+    "rumour3": {
+     "speaker": "Bessa",
+     "text": "Eww! I saw a big hairy Ogre sit right down in Mayor Quillon's pig trough!"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Hammet of the Fat Turnip inn, Krell the smith, Ombra who sells potions and spell books.",
+   "names": {"Hammet": "person", "Fat Turnip": "place", "Krell": "person", "Ombra": "person", "Durnhal": "place"},
+   "parts": {
+    "inn": {
+     "speaker": "Hammet",
+     "text": "You're the curious one to be poking around Durnhal at harvest time."
+    },
+    "arms": {
+     "speaker": "Krell",
+     "text": "Business is a bit dead this week, with the cabbage harvest and all."
+    },
+    "magic": {
+     "speaker": "Ombra",
+     "text": "Haven't had many customers lately. Durnhal isn't exactly a merry place these days, what with Ogres tramping through the cornfields."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Sir Bolliver, an old knight, lends his Longsword to clear Ugrash's Ogres from his orchard; Bunt the baker's secret pie recipe was stolen by the Ogres, whose cook now undersells him.",
+   "names": {"Bolliver": "person", "Ugrash": "person", "Longsword of Sir Bolliver": "thing", "Bunt": "person", "Pie Recipe": "thing", "Durnhal": "place"},
+   "parts": {
+    "offer_a": {
+     "speaker": "Bolliver",
+     "text": "Hail, young sir! A black day, a black day for Durnhal! Ugrash's Ogres have overrun my apple orchard west of the mill, and these old arms can no longer swing a blade.\n\nTake my Longsword from the wall. Drive those abominable brutes from my trees and you shall have a worthy reward."
+    },
+    "offer_b": {
+     "speaker": "Bunt",
+     "text": "Ruined! I'm ruined, I tell you!\n\nThose thieving Ogres broke into my bakery and made off with my secret pie recipe! Now their cook bakes MY pies and sells them on the road for half my price!\n\nGet that recipe back from the Ogre cook's hut in their camp to the north. I'll pay you well, and you'll never pay for a pie in Durnhal again!"
+    },
+    "outcome_a": {
+     "speaker": "Bolliver",
+     "text": "Victory! My orchard is free once more! Keep the Longsword, it has found a worthier arm than mine. And take this Steel Shield as a token of my appreciation."
+    },
+    "outcome_b": {
+     "speaker": "Bunt",
+     "text": "My recipe! You got it back! Ha! Let those Ogres try to bake without it now! Here's your gold, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take the Longsword of Sir Bolliver."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Retrieve Pie Recipe from Ogre Cook's hut."
+    }
+   },
+   "reward": {"gold": 75, "items": ["Longsword", "SteelShield"]}
+  },
+  "rescue": {
+   "specifics": "Grisel's lazy husband Tobble has let the Ogres lock him in their cage at the old quarry again, to dodge the haying.",
+   "names": {"Grisel": "person", "Tobble": "person", "The Harvest": "thing"},
+   "parts": {
+    "plea": {
+     "speaker": "Grisel",
+     "text": "Not again! That lazy lump Tobble has let the Ogres catch him again, right when the hay needs bringing in!\n\nHe swears they grabbed him, but I know he walks right up to them on purpose. They lock him in a cage at the old quarry east of town, and he sits there eating their stew while I do all the work!\n\nGo and fetch him home, would you? I'll pay you for your trouble."
+    },
+    "reminder": {
+     "speaker": "Grisel",
+     "text": "Back already?\n\nThen you're just in time. Grab a pitchfork and help me pitch this hay, since my good-for-nothing husband is still sitting in that Ogre cage!\n\nGo on, then, off with you."
+    },
+    "found": {
+     "speaker": "Tobble",
+     "text": "Oh, blast! A rescuer!"
+    },
+    "following": {
+     "speaker": "Tobble",
+     "text": "Oh dear, is Grisel waiting up for me?"
+    },
+    "completion": {
+     "speaker": "Grisel",
+     "text": "There he is! Get inside, you lazy lump, the cows need milking!\n\nThank you, kind stranger. Here's some gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Tobble from the Ogre cage and bring him home for The Harvest."
+    }
+   },
+   "reward": {"gold": 50, "items": []}
+  },
+  "main_opening": {
+   "specifics": "Bessa points the player to Mayor Quillon at the Town Hall; Garamund sent the player; Ugrash's Ogres hold the Stone Granary and the town's grain.",
+   "names": {"Bessa": "person", "Quillon": "person", "Town Hall": "place", "Garamund": "person", "Ugrash": "person", "Stone Granary": "place", "Durnhal": "place"},
+   "parts": {
+    "herald": {
+     "speaker": "Bessa",
+     "text": "Hello there. Has Mayor Quillon found you at the Town Hall, yet?"
+    },
+    "opening": {
+     "speaker": "Quillon",
+     "text": "Ah, at last! Garamund wrote that he would send someone.\n\nIt is a dark hour for Durnhal, lad. Ugrash the Ogre Chief and his horde have seized the Stone Granary on the hill north of town, with every sack of our grain inside! That Ogre is a greater calamity than locusts and hail together!\n\nTake this key. It opens the north gate. Drive Ugrash out of the Granary or Durnhal will starve this winter. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Quillon",
+     "text": "Why are you still dawdling? Save our grain!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Ugrash and his Ogres from the Stone Granary."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

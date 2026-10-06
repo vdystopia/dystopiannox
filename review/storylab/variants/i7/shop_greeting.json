@@ -1,0 +1,552 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i7",
+ "writer": "one writer a town (variants/i7/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ossian of the Drowned Lantern, Dunstan the smith, Mabry the potion seller.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern!"
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "It's a bit quiet today, with the north gate shut and all."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "I can tell we'll be the very best of friends! So long as you buy all your potions from me, that is!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 2,
+   "specifics": "Kal Vorra: Brokka keeps the tavern, Grudd sells arms and armor, Ilva runs Scrolls-Galore.",
+   "names": {
+    "Kal Vorra": "place",
+    "Deep Shafts": "place",
+    "Glimmer Pit": "place",
+    "Sunken Shaft": "place",
+    "Old Guild Hall": "place",
+    "Ulmac": "place",
+    "Scrolls-Galore": "place",
+    "Ruby Amulet": "thing",
+    "Gezra": "person",
+    "Ozric": "person",
+    "Korvald": "person",
+    "Torg": "person",
+    "Pellam": "person",
+    "Fennick": "person",
+    "Wenk": "person",
+    "Hessa": "person",
+    "Dobb": "person",
+    "Gorlo": "person",
+    "Brokka": "person",
+    "Grudd": "person",
+    "Ilva": "person",
+    "Ulda Coppernose": "person",
+    "Snig": "person",
+    "Merra": "person",
+    "Orvo": "person",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brokka",
+     "text": "Pssst! Hey! You! Want a mug of ale? Cheapest under the mountain and it's brewed right here in Kal Vorra!"
+    },
+    "arms": {
+     "speaker": "Grudd",
+     "text": "Undead took the deep shafts. Need a shield?"
+    },
+    "magic": {
+     "speaker": "Ilva",
+     "text": "This is Scrolls-Galore. I doubt you'll find a thing worth buying here, stranger."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Velk: Grudd of the Leaky Tub inn, Snibb who sells arms from under the walkway, Hesper the potion maker.",
+   "names": {
+    "Velk": "place",
+    "Marsh Folk": "group",
+    "Vethra": "person",
+    "Tolver": "person",
+    "Quillon": "person",
+    "Murrow": "person",
+    "Brask": "person",
+    "Hobb": "person",
+    "Orvane": "person",
+    "Grudd": "person",
+    "Snibb": "person",
+    "Hesper": "person",
+    "Dremmel": "person",
+    "Gorbo": "person",
+    "Fenna": "person",
+    "Tibbalt": "person",
+    "Pell": "person",
+    "Sodge": "person",
+    "Minna": "person",
+    "Bog Mother": "thing",
+    "Sunken Graves": "place",
+    "Stilt House": "place",
+    "Long Walk": "place",
+    "Black Fen": "place",
+    "Hollow Stump": "place",
+    "Drowned Chapel": "place",
+    "Leaky Tub": "place",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Grudd",
+     "text": "Haven't had many travelers lately. Velk isn't exactly a pleasure trip these days, what with the dead climbing up the stilts at night."
+    },
+    "arms": {
+     "speaker": "Snibb",
+     "text": "Psst! Down here! Need a sharp sword? A shield, maybe?"
+    },
+    "magic": {
+     "speaker": "Hesper",
+     "text": "Welcome, Wanderer! I hope you can toss a few bog toads into my kettle. I always need more of them for my potions!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Tarbek: Hennet of the Broken Pike inn, Thudd the smith, Quilla of Scrolls Galore.",
+   "names": {
+    "Castle Tarbek": "place",
+    "Tarbek": "place",
+    "Morvane": "person",
+    "Ostrik": "person",
+    "Commander Brask": "person",
+    "Brask": "person",
+    "Brogan": "person",
+    "East Gate": "place",
+    "Fort Grenn": "place",
+    "Gallows Hill": "place",
+    "Sergeant Pell": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Thornwood": "place",
+    "Black Bears": "group",
+    "Vossel": "person",
+    "Crystal Spyglass": "thing",
+    "Bell Tower": "place",
+    "Imps": "group",
+    "Tibbet": "person",
+    "Gorry": "person",
+    "Bessa": "person",
+    "Hennet": "person",
+    "Broken Pike": "place",
+    "Varnholm": "place",
+    "Thudd": "person",
+    "Morvane's Misery": "thing",
+    "Quilla": "person",
+    "Scrolls Galore": "place",
+    "Paymaster Orrin": "person",
+    "Grey Hoods": "group",
+    "salt cellars": "place",
+    "Jarl": "person",
+    "Gromm": "person",
+    "Sister Maudra": "person",
+    "Sisters of the Lamp": "group",
+    "Ludo": "person",
+    "Skeletons": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hennet",
+     "text": "Wanna buy a meat pie? They're carted up from the great smokehouses down in Varnholm."
+    },
+    "arms": {
+     "speaker": "Thudd",
+     "text": "Wanna see a new blade?\n\nI call it 'Morvane's Misery.'"
+    },
+    "magic": {
+     "speaker": "Quilla",
+     "text": "Welcome to Scrolls Galore. I believe I still have a few good spell books on the shelf."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kelm: Bolo of the Bent Hook inn, Harg the smith, Odra who sells potions and spell books.",
+   "names": {
+    "Kelm": "place",
+    "Lake Kelm": "place",
+    "Gull Isle": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Sunken Chapel": "place",
+    "Vaskor": "person",
+    "Emmerik": "person",
+    "Gundrel": "person",
+    "Torvik": "person",
+    "Mott": "person",
+    "Gisla": "person",
+    "Brannoc": "person",
+    "Dulcie": "person",
+    "Hobb": "person",
+    "Bolo": "person",
+    "Harg": "person",
+    "Odra": "person",
+    "Fesk": "person",
+    "Skiv": "person",
+    "Gilm": "person",
+    "Orrin": "person",
+    "Black Pearl": "thing",
+    "Zombies": "group",
+    "Bears": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bolo",
+     "text": "Well... Not the biggest inn on the lake exactly... But warm and dry all the same!"
+    },
+    "arms": {
+     "speaker": "Harg",
+     "text": "Sorry, I don't haggle with paupers."
+    },
+    "magic": {
+     "speaker": "Odra",
+     "text": "Strangers aren't trusted here. But for a few coins more, I'll trust you just this once."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Margle of the Inkpot Inn, Gorrum the smith, Nelda's magic shop.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Vaskar": "person",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Wisps": "group",
+    "Bats": "group",
+    "Urchins": "group",
+    "Ebbard": "person",
+    "Master Orlund": "person",
+    "Great Hall": "place",
+    "Tobb": "person",
+    "Pellow": "person",
+    "Fennick": "person",
+    "Healer Mossa": "person",
+    "Doddrick": "person",
+    "Spyglass": "thing",
+    "Ankh": "thing",
+    "Kester": "person",
+    "Brunna": "person",
+    "Gussa": "person",
+    "Margle": "person",
+    "Gorrum": "person",
+    "Nelda": "person",
+    "Ismay": "person",
+    "Founder's Staff": "thing",
+    "Founders": "group",
+    "Mire Caves": "place",
+    "Steel Shield": "thing",
+    "Nibbs": "person",
+    "Thule": "person",
+    "Merrit": "person",
+    "Sunken Library": "place",
+    "Alchemy Hall": "place",
+    "Wizard Robe": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Margle",
+     "text": "You look as though you need a good night's rest, stranger."
+    },
+    "arms": {
+     "speaker": "Gorrum",
+     "text": "Hard times, lad. I never thought the masters would let Vaskar take the Star Tower. A sorry business indeed! Buy what you need while I've still got it!"
+    },
+    "magic": {
+     "speaker": "Nelda",
+     "text": "Friends of the College are welcome in my shop. What would you like to see?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (general-purpose), claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vestrin: Brannoc keeps the inn, Torgal sells arms and armor, Pugg sells potions and scrolls.",
+   "names": {
+    "Fort Vestrin": "place",
+    "Vestrin": "place",
+    "Morlak": "person",
+    "Ice Tower": "place",
+    "Undead": "group",
+    "Fennick": "person",
+    "Orla": "person",
+    "Bell Tower": "place",
+    "Hulgar": "person",
+    "Brokk": "person",
+    "Tolmar": "person",
+    "Ottmar": "person",
+    "White Wolves": "group",
+    "Grunda": "person",
+    "Urchins": "group",
+    "Bearskin Cloak": "thing",
+    "Dagna": "person",
+    "Ulfa": "person",
+    "Gorrin": "person",
+    "Bodvar": "person",
+    "Fitch": "person",
+    "Brannoc": "person",
+    "Torgal": "person",
+    "Pugg": "person",
+    "Halbrin": "person",
+    "Warhorn of Vestrin": "thing",
+    "Old Watch": "place",
+    "Skeevo": "person",
+    "Gundry": "person",
+    "Pell": "person",
+    "Hessa": "person",
+    "Signal Hut": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brannoc",
+     "text": "I hear you climbed the pass on foot. Well done, lad!"
+    },
+    "arms": {
+     "speaker": "Torgal",
+     "text": "The snow has closed the road down to the lowlands."
+    },
+    "magic": {
+     "speaker": "Pugg",
+     "text": "What'll it be fer you today?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Ostrak: Fennick of the Cracked Anvil inn, Gorvane the smith, Quilla the potion-seller.",
+   "names": {
+    "Ostrak": "place",
+    "Mount Krell": "place",
+    "Old Foundry": "place",
+    "Great Furnace": "place",
+    "Fire Pools": "place",
+    "Slag Gate": "place",
+    "Ash Caves": "place",
+    "Deep Shaft": "place",
+    "Cracked Anvil": "place",
+    "Malgrath": "person",
+    "Gavrik": "person",
+    "Brugo": "person",
+    "Yorga": "person",
+    "Quilla": "person",
+    "Gorvane": "person",
+    "Magra": "person",
+    "Toller": "person",
+    "Fennick": "person",
+    "Orsk": "person",
+    "Grisp": "person",
+    "Dagny": "person",
+    "Rhun": "person",
+    "Torvic": "person",
+    "Hobb": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Guild": "group",
+    "Fire Cloak": "thing",
+    "Guild Hammer": "thing",
+    "Spell Book": "thing",
+    "Steel Shield": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Fennick",
+     "text": "Wet yer whistle! What'll it be fer you?"
+    },
+    "arms": {
+     "speaker": "Gorvane",
+     "text": "Perhaps you're in the market for a sword or helm?"
+    },
+    "magic": {
+     "speaker": "Quilla",
+     "text": "Sorry, stranger, but my shelves are looking bare. Hard times make people stock up on potions. Heh, heh, heh..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow Crossing: Bodrick of the Copper Kettle inn, Gundar the smith, Grizelda of the magic shop.",
+   "names": {
+    "Tarrow Crossing": "place",
+    "Tarrow": "place",
+    "Copper Kettle": "place",
+    "Town Hall": "place",
+    "Fort Grimmock": "place",
+    "Thistle Wood": "place",
+    "Gorbash": "person",
+    "Vardis": "person",
+    "Pellam": "person",
+    "Thurl": "person",
+    "Ottmar": "person",
+    "Marga": "person",
+    "Bodrick": "person",
+    "Gundar": "person",
+    "Grizelda": "person",
+    "Hobart": "person",
+    "Fitch": "person",
+    "Dorlise": "person",
+    "Corby": "person",
+    "Fenna": "person",
+    "Pimm": "person",
+    "Jory": "person",
+    "Ogres": "group",
+    "Bears": "group",
+    "Grizzly": "group",
+    "Imps": "group",
+    "Spiders": "group",
+    "Troll": "group",
+    "Ankh": "thing",
+    "Longsword": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodrick",
+     "text": "I hear Gorbash's Ogres are coming down out of the hills. Might be time for me to sell the Copper Kettle and move on."
+    },
+    "arms": {
+     "speaker": "Gundar",
+     "text": "Watch your back on the east road, lad! I've got shields here big enough for two of you."
+    },
+    "magic": {
+     "speaker": "Grizelda",
+     "text": "Word gets around. Get out, before I turn you into a toad!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tullin: Wobbin of the Muddy Boot inn, Dorrick the smith, Mirrin who sells potions and spell books.",
+   "names": {
+    "Tullin": "place",
+    "Skarr Ridge": "place",
+    "Grange Hall": "place",
+    "Muddy Boot": "place",
+    "Ogres": "group",
+    "Imps": "group",
+    "Tullin Watch": "group",
+    "Gorrumph": "person",
+    "Brannoch": "person",
+    "Gromwell": "person",
+    "Hessa": "person",
+    "Barlo": "person",
+    "Fendra": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Joss": "person",
+    "Wobbin": "person",
+    "Dorrick": "person",
+    "Mirrin": "person",
+    "Sneed": "person",
+    "Bartolf": "person",
+    "Pottle": "person",
+    "Nella": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Wobbin",
+     "text": "You'd better eat quick the Ogres were seen down by the mill this morning."
+    },
+    "arms": {
+     "speaker": "Dorrick",
+     "text": "You don't belong back here. You need to go round to the front of the forge."
+    },
+    "magic": {
+     "speaker": "Mirrin",
+     "text": "You're the bold one to come shopping in Tullin with Ogres at the gates."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  }
+ ]
+}

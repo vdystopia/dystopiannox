@@ -1,0 +1,545 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i8",
+ "writer": "one writer a town (variants/i8/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Garrick at the shut north gate, then the gate open again.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Ulric": "person",
+    "Wenna": "person",
+    "Tobin": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Brave enough to walk right up to my gate. But that won't get you through it! Now move along!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "I don't see many carts on this road lately."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "All honest travelers may pass north again!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Krennack: Stobb, the guard at the lift lever by the Pit Office, before and after the Great Lift is retaken.",
+   "names": {
+    "Krennack": "place",
+    "Urgrubb": "person",
+    "Ogres": "group",
+    "Grunts": "group",
+    "Corvane": "person",
+    "Great Lift": "place",
+    "Pit Office": "place",
+    "Pit": "place",
+    "Brakkus": "person",
+    "Stobb": "person",
+    "Toskel": "person",
+    "Troll": "group",
+    "Counting House": "place",
+    "Mining Council": "group",
+    "Fennick": "person",
+    "Singing Pick": "thing",
+    "Imps": "group",
+    "West Shaft": "place",
+    "Jory": "person",
+    "Ma": "person",
+    "Pa": "person",
+    "Enchanted Rolling Pin": "thing",
+    "East Shaft": "place",
+    "Bats": "group",
+    "Shift Bell": "thing",
+    "Vell": "person",
+    "Duggles": "person",
+    "Gant": "person",
+    "Mirri": "person",
+    "Dolla": "person",
+    "Tobbs": "person",
+    "Broken Pick": "place",
+    "Hurlo": "person",
+    "Zilva": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Stobb",
+     "text": "Where have you been? The Foreman has been asking for you all morning! You'd best get over to the Pit Office if you ever want to see the Great Lift running again. The Ogres won't leave by themselves."
+    },
+    "again": {
+     "speaker": "Stobb",
+     "text": "Get away from that lift lever, lad! Unless you WANT to go down the hard way!"
+    },
+    "later": {
+     "speaker": "Stobb",
+     "text": "Hey, you should get a helmet before you go back down the Great Lift."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skell: Warden Brodd keeps the village lockup, where Tolly sits again.",
+   "names": {
+    "Skell": "place",
+    "Vashtor": "person",
+    "Orvel": "person",
+    "Mayor Pellum": "person",
+    "Warden Brodd": "person",
+    "Tolly": "person",
+    "Gubbin": "person",
+    "Thurlo": "person",
+    "Ysolt": "person",
+    "Marda": "person",
+    "Bodkin": "person",
+    "Father Ambrus": "person",
+    "Mother Hesk": "person",
+    "Krell": "person",
+    "Oggin": "person",
+    "Wendle": "person",
+    "Corra": "person",
+    "Grume": "person",
+    "Tibbet": "person",
+    "Sunken Temple": "place",
+    "Krell's Forge": "place",
+    "Muddy Mug": "place",
+    "Moon Amulet": "thing",
+    "Silver Bell": "thing",
+    "Zombies": "group",
+    "Ogres": "group",
+    "Ogre Chief": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Warden Brodd",
+     "text": "Hold it right there, stranger! Mother Hesk says you tracked swamp mud all through her shop and her floor testifies to it! Come on. I've got a damp, drafty cell waiting just for you! Will you come quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Warden Brodd",
+     "text": "Back in your cell, Tolly! Have a pleasant nap!"
+    },
+    "later": {
+     "speaker": "Warden Brodd",
+     "text": "You can tell it to Mayor Pellum yourself... unless you'd like to share Tolly's cell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varrok: Bolk guards the east postern, barred until Warden Grisholm gives the player leave to cross to the Stone Bridge.",
+   "names": {
+    "Varrok": "place",
+    "Grukk": "person",
+    "Dorran": "person",
+    "Grisholm": "person",
+    "Bolk": "person",
+    "Gessa": "person",
+    "Pruett": "person",
+    "Brenik": "person",
+    "Pogg": "person",
+    "Lunk": "person",
+    "Hesk": "person",
+    "Wobbin": "person",
+    "Tibbet": "person",
+    "Brask": "person",
+    "Quillon": "person",
+    "Lissa": "person",
+    "Pellam": "person",
+    "the Keep": "place",
+    "the Stone Bridge": "place",
+    "the east postern": "place",
+    "the old quarry": "place",
+    "the Urchin caves": "place",
+    "the Ogre camp": "place",
+    "the south woods": "place",
+    "the moonstone amulet": "thing",
+    "the pay chest": "thing",
+    "Ogres": "group",
+    "Rogues": "group",
+    "Urchins": "group",
+    "Urchin Shaman": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bolk",
+     "text": "Absolutely not! Off with you, ruffian!"
+    },
+    "again": {
+     "speaker": "Bolk",
+     "text": "Have it your way."
+    },
+    "later": {
+     "speaker": "Bolk",
+     "text": "Stop where you are, stranger! Warden Grisholm says you have leave to pass, and his seal proves it.\n\nGo on! I've unbarred the gate and oiled the hinges just for you.\n\nWill you be back by nightfall, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kesk: Dorvic at the causeway gate of Kesk, with his fellow guard Tull.",
+   "names": {
+    "Kesk": "place",
+    "Lake Murl": "place",
+    "Gull Island": "place",
+    "Drowned Chapel": "place",
+    "Tolbek": "person",
+    "Skarn": "person",
+    "Hobbrig": "person",
+    "Dorvic": "person",
+    "Tull": "person",
+    "Gribble": "person",
+    "Wessa": "person",
+    "Bodrik": "person",
+    "Kurlow": "person",
+    "Marla": "person",
+    "Beaky": "person",
+    "Selka": "person",
+    "Ostwin": "person",
+    "Pellik": "person",
+    "Agna": "person",
+    "Yarnoth": "person",
+    "Fennic": "person",
+    "Fishing Amulet": "thing",
+    "Ear Horn": "thing",
+    "Undead": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ghost": "group",
+    "Zombies": "group",
+    "Necromancer": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dorvic",
+     "text": "Tull, here is one more brave soul who wishes to go swimming with Skarn's dead men!"
+    },
+    "again": {
+     "speaker": "Dorvic",
+     "text": "Fine. Off you go. Mind the water."
+    },
+    "later": {
+     "speaker": "Dorvic",
+     "text": "You ran from a dead fisherman!? You're useless! Now back to the gate! You make me ill!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Brusk keeps the College gate while Malgrin's Ogres hold the fen road.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Great Library": "place",
+    "South Gate": "place",
+    "Gloomfen": "place",
+    "Malgrin's Tower": "place",
+    "Ogre Camp": "place",
+    "Bramble Orchard": "place",
+    "Old Quarry": "place",
+    "Old Mill": "place",
+    "Crag Hill": "place",
+    "Bat Caves": "place",
+    "Inkpot": "place",
+    "Golden Quill": "thing",
+    "Teleport": "thing",
+    "Ogres": "group",
+    "Wisps": "group",
+    "Urchins": "group",
+    "Malgrin": "person",
+    "Vandell": "person",
+    "Tollund": "person",
+    "Brusk": "person",
+    "Pellock": "person",
+    "Hesk": "person",
+    "Dilly": "person",
+    "Orlo": "person",
+    "Gasper": "person",
+    "Mossop": "person",
+    "Dorgle": "person",
+    "Yselda": "person",
+    "Elspen": "person",
+    "Gimble": "person",
+    "Wobbin": "person",
+    "Nettle": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brusk",
+     "text": "Wanna get yourself turned into a toad?"
+    },
+    "again": {
+     "speaker": "Brusk",
+     "text": "We must hold this gate and keep those Ogres out of the College tonight!"
+    },
+    "later": {
+     "speaker": "Brusk",
+     "text": "I hope the Ogres stay in their fen."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Ulmgard: Hask at the Low Gate of Ulmgard, pointing newcomers up to Warden Galmor; later the Upper Gate is open.",
+   "names": {
+    "Ulmgard": "place",
+    "Upper Gate": "place",
+    "Low Gate": "place",
+    "Glacier Tombs": "place",
+    "Ice Caves": "place",
+    "Signal Tower": "place",
+    "Cold Kettle": "place",
+    "Hask": "person",
+    "Galmor": "person",
+    "Dromund": "person",
+    "Ostrag": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Hedda": "person",
+    "Tibbet": "person",
+    "Brannoc": "person",
+    "Krell": "person",
+    "Mildra": "person",
+    "Mungo": "person",
+    "Bodo": "person",
+    "Gorm": "person",
+    "Yorla": "person",
+    "Undead": "group",
+    "White Wolves": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hask",
+     "text": "I thought you lowlanders could take a little cold. Try stamping your feet."
+    },
+    "again": {
+     "speaker": "Hask",
+     "text": "Hurry! Warden Galmor is expecting you up in his hall at the top of the keep. There's a stair behind the stables that will lead you straight to him."
+    },
+    "later": {
+     "speaker": "Hask",
+     "text": "Welcome back to Ulmgard. The Upper Gate is open to you now."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Kalgarr: Tibbet, a guard at the town gate who likes the look of the player.",
+   "names": {
+    "Kalgarr": "place",
+    "Malgrith": "person",
+    "Mardock": "person",
+    "Hadric": "person",
+    "Tibbet": "person",
+    "Pelgrim": "person",
+    "Fusk": "person",
+    "Orsolde": "person",
+    "Grizzel": "person",
+    "Lumpkin": "person",
+    "Yarra": "person",
+    "Quell": "person",
+    "Brix": "person",
+    "Dorla": "person",
+    "Bulba": "person",
+    "Hobb": "person",
+    "Zibbet": "person",
+    "Deep Furnace": "place",
+    "Mount Skarl": "place",
+    "Forge Hall": "place",
+    "Mine Gate": "place",
+    "Old Smelter": "place",
+    "Ash Pits": "place",
+    "Cinder Hills": "place",
+    "Burning Caves": "place",
+    "Guild": "group",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Shade": "group",
+    "Fire Amulet": "thing",
+    "Hammer of Kalgarr": "thing",
+    "Cell Key": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tibbet",
+     "text": "Welcome, friend Wanderer."
+    },
+    "again": {
+     "speaker": "Tibbet",
+     "text": "My, my! You're a good deal handsomer than the usual smiths! Come find me at the gate when you're not off fighting demons."
+    },
+    "later": {
+     "speaker": "Tibbet",
+     "text": "Can't talk, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel: Brask keeps the north gate of Torvel, locked by Mayor Dremmel while Skarn's bandits hold Varga Tower.",
+   "names": {
+    "Torvel": "place",
+    "Crooked Crown": "place",
+    "Toll House": "place",
+    "Varga Tower": "place",
+    "Pitch Caves": "place",
+    "Hollow Wood": "place",
+    "Kelmor": "place",
+    "Grelloch": "place",
+    "Skarn": "person",
+    "Ulbar": "person",
+    "Dremmel": "person",
+    "Brask": "person",
+    "Pell": "person",
+    "Nella": "person",
+    "Gorvin": "person",
+    "Mirra": "person",
+    "Nibbs": "person",
+    "Dorla": "person",
+    "Grumbald": "person",
+    "Bertol": "person",
+    "Hargo": "person",
+    "Quenna": "person",
+    "Tobb": "person",
+    "Wilk": "person",
+    "Amulet of Warding": "thing",
+    "Urchins": "group",
+    "Bear": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "I'm told the bandits up at Varga Tower lately robbed a tinker of his own trousers. Nasty business all over these days."
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "You'll find Mayor Dremmel in the Toll House. He has the key to this gate."
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "Move aside! You were meant to stop Skarn's men, you lout!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Durnhal: Wendt at the north gate of Durnhal, shut by Mayor Quillon while Ugrash's Ogres hold the Stone Granary.",
+   "names": {
+    "Durnhal": "place",
+    "Garamund": "person",
+    "Ugrash": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Quillon": "person",
+    "Town Hall": "place",
+    "Stone Granary": "place",
+    "Wendt": "person",
+    "Hobart": "person",
+    "Krell": "person",
+    "Posey": "person",
+    "Rain Amulet": "thing",
+    "Bolliver": "person",
+    "Longsword of Sir Bolliver": "thing",
+    "Bunt": "person",
+    "Pie Recipe": "thing",
+    "Grisel": "person",
+    "Tobble": "person",
+    "Hammet": "person",
+    "Fat Turnip": "place",
+    "Ombra": "person",
+    "Bessa": "person",
+    "Mott": "person",
+    "The Harvest": "thing"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Wendt",
+     "text": "You're awful scrawny for an Ogre-fighter. Hah, hah, hah...!"
+    },
+    "again": {
+     "speaker": "Wendt",
+     "text": "Hey! Nobody goes out this gate!"
+    },
+    "later": {
+     "speaker": "Wendt",
+     "text": "The north gate is open now, but you should go on to Mayor Quillon at the Town Hall. Much obliged for the help, brave Wanderer!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

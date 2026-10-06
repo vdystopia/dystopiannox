@@ -161,3 +161,34 @@ monologue as a set piece, "?!" and "Oh...." placed once each, "Deal?" / "What do
 tell**: Westwood's quirks fall unevenly, one chapter here, one line there. The tells otherwise repeat i5's: a persona
 and a joke for everyone, the town's gimmick in every mouth, sensory scene-setting, consequences over-explained,
 reminders restating atmosphere.
+
+### i7: a Westwood frame for every line (WRITER.md v7)
+
+Every part of every town was dealt one of Westwood's own lines (not in any pool), to be rewritten line for line.
+Blind: 99% (guard 90%), ours 5.6 / Westwood 8.2. The short lines now read like Westwood's ("Truly stubborn! Off the
+planks, bog rat!"), but long offers built on a frame of another situation came out with logic gaps (an offer that
+starts mid-thought, thanks about things never said), and the premises behind them were mundane (wolves eat the sheep,
+a bounty on bears). Westwood's tics ("heh, heh, heh", "lad") packed densely were a new tell.
+
+### i8: frames for the short lines, exemplars and a dealt premise for the long; the solo protocol
+
+| scenario | metric ours / WW | blind acc (side by side) | blind ours / WW | solo: ours caught | solo: WW called ours |
+|---|---|---|---|---|---|
+| guard_bark | 9.61 / 9.69 | **80%** | 6.4 / 7.2 | 4/5 | 0/5 |
+| bounty_offer | 8.70 / 9.62 | 100% | 6.0 / 7.8 | 4/5 | 0/5 |
+| heirloom_fetch | 9.11 / 9.62 | 100% | 6.0 / 8.2 | 5/5 | 1/5 |
+| rumour | 9.10 / 9.71 | **80%** | 6.4 / 8.2 | **0/5** (8.2 / 8.4) | 0/5 |
+| shop_greeting | 9.46 / 9.79 | **80%** | 6.2 / 7.6 | **3/5** | 0/5 |
+| two_givers | 8.76 / 9.47 | 100% | 6.0 / 8.0 | 5/5 | 0/5 |
+| rescue | 8.80 / 9.46 | 100% | 6.6 / 8.0 | 5/5 | 0/5 |
+| main_opening | 9.08 / 9.59 | 100% | 5.8 / 7.8 | 5/5 | 0/5 |
+| town | 7.98 / 9.59 | 100% | 6.0 / 8.0 | 5/5 | 0/5 |
+| **all** | **8.96** | **93%** | **6.2 / 7.9** | **36/45 (80%)** | **1/45** |
+
+**The solo protocol** (`JUDGE_SOLO.md`, `py tests/storylab.py solo`): every text of the round alone in its own file,
+no quota, no side-by-side, three texts of different kinds a fresh judge. Accuracy 89%; the judges almost never take
+Westwood for ours (1 of 45) and catch 80% of ours, at confidence 2.9 (side by side: 4). **Where frames wrote the
+lines, ours pass**: townsfolk 0 of 5 caught alone and scored like Westwood's (8.2 / 8.4); shops 3 of 5; guards,
+rumours and shops 80% side by side, the first packets below 90%. Every scenario with a long offer or thanks is still
+caught, and its tells are the dealt premise turned template: every quest a comic setup with a callback in the thanks,
+"X is worse than a plague!", "My X! My poor X!", "I'll make it worth your while".

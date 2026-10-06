@@ -1,0 +1,33 @@
+{
+  "packet": "e346af",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clean, well-balanced three-beat briefing (who seized what, why the town suffers, go and the gate will open). Too tidy and too explanatory about trade and the gate; it shares a template with D, E, G and H."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless, slightly clumsy syntax ('leaving rebuilding the village our smallest concern', '!?') and stacked exclamations read like Westwood's hurried campaign voice. The reminder is plain and panicky."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Flat, functional briefing with the double-dash, 'Take these supplies -- and gold. Go to the shop', and a reminder that says 'I have nothing else to tell you'. Plain and a little stiff, as Nox is."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Vivid, atmospheric invention (drowned fishermen shambling into town, 'a horror beyond words') and a neat ticking-clock close; more colour than Westwood usually spends. The double period in the reminder is a typo, not a Westwood quirk."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same opening and arc as A/G/H ('not a moment too soon, lad', seized, key, stop her -- before ...). The reminder is overwritten ('holds fast against most... the road down is yours') and the punchy slag image is too crafted."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Wry opening ('Sorry about the stench, lad'), an abrupt practical brief and a reminder that explains the spells handed over: typical of Nox's mission-giver voice. 'Good luck and good speed' is a slightly odd turn, Westwood-like."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Comic simile ('greater calamity than locusts and hail together') and a stakes line about starving this winter are polished and generic. The structure duplicates the other generated briefings."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Near copy of A: villain and bandits seize a hill north of town, a road shut, a key to the north gate, 'All of [Place] is counting on you'. The reminder 'That's enough talk, lad!' is a decent Nox-ish bark, but the whole thing is a template."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Stiff, clipped self-introduction ('I am [Person]. The Master for the [Place].' as a fragment), lore-heavy, with a shouted 'YOU' in the reminder. The odd, unpolished phrasing is authentic Westwood."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Slightly goofy humour (urchins gone mad, 'little pests', 'nettlesome urchins'), capitalised 'East' and 'Urchins', a plain where-to-find-me instruction and a vague reminder: Nox's light comic townsfolk voice."}
+  ],
+  "tells": [
+    "The new texts share one skeleton: 'At last / not a moment too soon' greeting, a villain who has 'seized' a place 'north of town', an economic or survival stake, a key or gate handed over, and 'Good luck, lad'. Westwood's openings vary widely in shape from quest to quest.",
+    "The new texts are evenly balanced into three tidy beats of similar length. Westwood's are lopsided: some are two clipped sentences, some a run-on panic, with fragments and stiff phrasing.",
+    "The new texts invent polished images and similes (drowned fishermen, locusts and hail, melted to slag). Westwood's humour is plainer and more slapstick (stench, nettlesome urchins), and its lines are mostly functional.",
+    "Westwood's reminders often add practical information (which spells help, the Mayor is waiting) or say plainly that there is nothing more. The new reminders are mostly impatient one-liners or decorated restatements.",
+    "Westwood's text has irregular mechanics: '!?', shouted capitals, odd capitalisation of common nouns, and journal entries that are not always parallel with the speech. The new texts are mechanically uniform apart from incidental typos."
+  ]
+}

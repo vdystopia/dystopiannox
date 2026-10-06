@@ -1,0 +1,314 @@
+{
+ "iter": "i7",
+ "writer": "Claude Agent SDK subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Vestrin",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Necromancer Morlak has raised the Undead of the pass and holds the Ice Tower above it, and his skeletons beat on the walls of Fort Vestrin.",
+  "names": {
+   "Fort Vestrin": "place",
+   "Vestrin": "place",
+   "Morlak": "person",
+   "Ice Tower": "place",
+   "Undead": "group",
+   "Fennick": "person",
+   "Orla": "person",
+   "Bell Tower": "place",
+   "Hulgar": "person",
+   "Brokk": "person",
+   "Tolmar": "person",
+   "Ottmar": "person",
+   "White Wolves": "group",
+   "Grunda": "person",
+   "Urchins": "group",
+   "Bearskin Cloak": "thing",
+   "Dagna": "person",
+   "Ulfa": "person",
+   "Gorrin": "person",
+   "Bodvar": "person",
+   "Fitch": "person",
+   "Brannoc": "person",
+   "Torgal": "person",
+   "Pugg": "person",
+   "Halbrin": "person",
+   "Warhorn of Vestrin": "thing",
+   "Old Watch": "place",
+   "Skeevo": "person",
+   "Gundry": "person",
+   "Pell": "person",
+   "Hessa": "person",
+   "Signal Hut": "place"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Hulgar keeps the gate of Fort Vestrin while Morlak's skeletons come down the pass.",
+   "names": {
+    "Hulgar": "person",
+    "Tolmar": "person",
+    "Brokk": "person",
+    "Vestrin": "place",
+    "Morlak": "person",
+    "Ice Tower": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hulgar",
+     "text": "Shouldn't you be out on the pass smashing skeletons?"
+    },
+    "again": {
+     "speaker": "Hulgar",
+     "text": "Those skeletons never would have reached our gate if Tolmar the Ranger had been on the wall!"
+    },
+    "later": {
+     "speaker": "Hulgar",
+     "text": "We have held it! The walls of Vestrin have never stood so proud as on this frozen day! Now we will rally behind Warden Brokk and carry the fight up to Morlak himself!\n\nTO THE ICE TOWER! BROKK SHALL LEAD US TO VICTORY!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ottmar the stablemaster wants the White Wolves cleared out of the ice cave above the stables.",
+   "names": {
+    "Ottmar": "person",
+    "White Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottmar",
+     "text": "Impressive, the way you cut through those skeletons at the gate!\n\nNow for the wolves. I've staked out a goat by the old ice cave above the stables, but the White Wolves won't come out while anybody stands close by.\n\nWait for me to bar the stable doors and then you go up after them. My old bow is yours if you do."
+    },
+    "reminder": {
+     "speaker": "Ottmar",
+     "text": "That old bow of mine is a fine weapon and will even drop a White Wolf before it gets close enough to bite."
+    },
+    "completion": {
+     "speaker": "Ottmar",
+     "text": "Great! There is not one wolf left in that cave. Take this bow and I will let the mules out to graze again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the den of the White Wolves and clear it out."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Grunda's Bearskin Cloak was dragged off by the Urchins to their cave under the west wall.",
+   "names": {
+    "Grunda": "person",
+    "Urchins": "group",
+    "Bearskin Cloak": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grunda",
+     "text": "My old legs go no farther than this, lad. The Urchins dragged my Bearskin Cloak off to their cave -- just under the west wall. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Grunda",
+     "text": "You've clearly never spent a winter on the pass. Sorry my knees disallow such climbing."
+    },
+    "reminder": {
+     "speaker": "Grunda",
+     "text": "The Urchin cave? Go out the west gate and down the first slope on your left.."
+    },
+    "completion": {
+     "speaker": "Grunda",
+     "text": "I said 'hand it here'! Now take this gold before the fire burns low with my generosity."
+    },
+    "after": {
+     "speaker": "Grunda",
+     "text": "You know, I've been wondering... maybe those Urchins were just cold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Grunda's cloak from the Urchin cave."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Grunda's cloak from the Urchin cave."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Fort Vestrin: Dagna on the cellar rats, Bodvar on Morlak, Fitch on a skeleton.",
+   "names": {
+    "Dagna": "person",
+    "Ulfa": "person",
+    "Gorrin": "person",
+    "Bodvar": "person",
+    "Morlak": "person",
+    "Fitch": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dagna",
+     "text": "Quartermaster Ulfa has locked herself in the pantry until someone rids the cellar of rats. I hope someone has gone to fetch Gorrin. He usually just traps the rats instead of stomping them."
+    },
+    "rumour2": {
+     "speaker": "Bodvar",
+     "text": "You must stop Morlak before he comes down the pass. The lowlands must not fall to his walking dead!"
+    },
+    "rumour3": {
+     "speaker": "Fitch",
+     "text": "I'd swear I saw a skeleton up on the wall just now. It actually waved!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brannoc keeps the inn, Torgal sells arms and armor, Pugg sells potions and scrolls.",
+   "names": {
+    "Brannoc": "person",
+    "Torgal": "person",
+    "Pugg": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brannoc",
+     "text": "I hear you climbed the pass on foot. Well done, lad!"
+    },
+    "arms": {
+     "speaker": "Torgal",
+     "text": "The snow has closed the road down to the lowlands."
+    },
+    "magic": {
+     "speaker": "Pugg",
+     "text": "What'll it be fer you today?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Brokk wants the Warhorn of Vestrin brought down from the Old Watch; Skeevo wants his barrels rolled past Hulgar.",
+   "names": {
+    "Brokk": "person",
+    "Halbrin": "person",
+    "Warhorn of Vestrin": "thing",
+    "Old Watch": "place",
+    "Skeevo": "person",
+    "Hulgar": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brokk",
+     "text": "Sergeant Halbrin is gone, lad, but his horn will be brought home! The Warhorn of Vestrin lies up at the Old Watch.\n\nGo, and the whole garrison's blessings go with you."
+    },
+    "offer_b": {
+     "speaker": "Skeevo",
+     "text": "Very good. Now when I start singing to Hulgar you roll the barrels out back. Use the old drain to get out. Be careful, I don't pay a copper until you roll them all."
+    },
+    "outcome_a": {
+     "speaker": "Brokk",
+     "text": "I'm sorry, but the Warhorn can't leave the fort unless you take the garrison oath. Can't have just anybody up on the walls blowing it, can I? Here, take this Steel Shield instead."
+    },
+    "outcome_b": {
+     "speaker": "Skeevo",
+     "text": "My barrels are gone, but my profit lives on -- far from the Warden's ledger. Here's your cut."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the Old Watch at the top of the north stair. The Warhorn of Vestrin lies there under the snow, beside Sergeant Halbrin."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Roll Skeevo's barrels past the gate and out the drain.\n(Hint: Wait for the singing.)"
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Gundry the winchman's apprentice Pell is trapped by skeletons at the Signal Hut.",
+   "names": {
+    "Gundry": "person",
+    "Pell": "person",
+    "Signal Hut": "place",
+    "Hessa": "person",
+    "Fort Vestrin": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gundry",
+     "text": "Arrgh!! Now it's frozen again! I've been out here trying to free this blasted gate winch since dawn! (Sigh)... I bet that fool Pell is stuck up at the Signal Hut where I sent him for oil. Somebody has to bring him down!\n\nIf you do go up to the Signal Hut, watch out for the skeletons. The whole slope is crawling with them."
+    },
+    "reminder": {
+     "speaker": "Gundry",
+     "text": "I still can't budge this winch. You find Pell yet?"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Over here, stranger!\n\nYou're just in time. Those skeletons have been banging on this door all night and my lamp just went out!\n\nCome on, let's run."
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Can I hold the torch, sir?"
+    },
+    "completion": {
+     "speaker": "Gundry",
+     "text": "When you pass the storehouse, you'll be handed a fine robe by my wife Hessa. She will see that it fits -- best seamstress in Fort Vestrin."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Pell down from the Signal Hut... in one piece."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WizardRobe"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Orla points the player to Master Fennick in the Bell Tower, who sends him after the Necromancer Morlak in the Ice Tower.",
+   "names": {
+    "Orla": "person",
+    "Fennick": "person",
+    "Bell Tower": "place",
+    "Morlak": "person",
+    "Ice Tower": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orla",
+     "text": "Hurry! Master Fennick is waiting for you up in the Bell Tower. There's a rope ladder behind the kitchens that will get you up to him."
+    },
+    "opening": {
+     "speaker": "Fennick",
+     "text": "Hello again, are you ready for another of my little errands? I think the Necromancer Morlak up in his Ice Tower will keep you busy a while. Heh, heh, heh..."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "One of the old soldiers mentioned a back stair into the Ice Tower. You only need to find it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Necromancer Morlak in Ice Tower's top chamber."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

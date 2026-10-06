@@ -1,0 +1,313 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Skell",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "The Necromancer Vashtor has taken the Sunken Temple east of Skell, and every night his Zombies climb out of the swamp to knock on the village's doors.",
+  "names": {
+   "Skell": "place",
+   "Vashtor": "person",
+   "Orvel": "person",
+   "Mayor Pellum": "person",
+   "Warden Brodd": "person",
+   "Tolly": "person",
+   "Gubbin": "person",
+   "Thurlo": "person",
+   "Ysolt": "person",
+   "Marda": "person",
+   "Bodkin": "person",
+   "Father Ambrus": "person",
+   "Mother Hesk": "person",
+   "Krell": "person",
+   "Oggin": "person",
+   "Wendle": "person",
+   "Corra": "person",
+   "Grume": "person",
+   "Tibbet": "person",
+   "Sunken Temple": "place",
+   "Krell's Forge": "place",
+   "Muddy Mug": "place",
+   "Moon Amulet": "thing",
+   "Silver Bell": "thing",
+   "Zombies": "group",
+   "Ogres": "group",
+   "Ogre Chief": "person",
+   "Urchins": "group",
+   "Giant Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Warden Brodd keeps the village lockup, where Tolly sits again.",
+   "names": {
+    "Warden Brodd": "person",
+    "Mother Hesk": "person",
+    "Tolly": "person",
+    "Mayor Pellum": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Warden Brodd",
+     "text": "Hold it right there, stranger! Mother Hesk says you tracked swamp mud all through her shop and her floor testifies to it! Come on. I've got a damp, drafty cell waiting just for you! Will you come quietly, stranger?"
+    },
+    "again": {
+     "speaker": "Warden Brodd",
+     "text": "Back in your cell, Tolly! Have a pleasant nap!"
+    },
+    "later": {
+     "speaker": "Warden Brodd",
+     "text": "You can tell it to Mayor Pellum yourself... unless you'd like to share Tolly's cell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Thurlo, deathly afraid of leeches, sits on his roof since Giant Leeches nested under his hut.",
+   "names": {
+    "Thurlo": "person",
+    "Vashtor": "person",
+    "Ogres": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thurlo",
+     "text": "Up here! Up on the roof! Giant Leeches have crawled out of the swamp and nested under my hut! I can't stand the things! I'd sooner kiss an Ogre than feel one of those slimy bloodsuckers on me!\n\nEver since Vashtor came, the water's been crawling with them. The nest is under the floor, on the east side. Kill every last one and I'll make it worth your while! I'm not coming down till they're gone!"
+    },
+    "reminder": {
+     "speaker": "Thurlo",
+     "text": "Those Leeches grow fat on warm blood, which they suck from the legs of anyone who wades in the black water underneath my poor hut."
+    },
+    "completion": {
+     "speaker": "Thurlo",
+     "text": "Oh, thank goodness! I can come down at last! You've saved my life, kind sir!\n\nHere, take my leather boots as a token of my appreciation. I'm never setting foot in that water again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the nest under Thurlo's hut and kill the Leeches."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Old Ysolt paid all her gold for the Moon Amulet, sold to her by an Urchin in a big hat, and the Urchins stole it back that night.",
+   "names": {
+    "Ysolt": "person",
+    "Moon Amulet": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysolt",
+     "text": "Oh, I'm a silly old fool! A pedlar came by yesterday with a magic amulet -- the Moon Amulet, he called it. I paid him every coin I had!\n\nThat very night it was stolen right off my table. And the pedlar? He was an Urchin in a big hat! They've sold that same amulet to half the village!\n\nThe Urchins hide in the hollow tree west of here. Will you get my amulet back, kind sir? I'll find some way to repay you."
+    },
+    "refusal": {
+     "speaker": "Ysolt",
+     "text": "You haven't got the nerve. Come see me when you find it."
+    },
+    "reminder": {
+     "speaker": "Ysolt",
+     "text": "Quickly, kind stranger! Those Urchins could be selling my amulet to someone else right now!"
+    },
+    "completion": {
+     "speaker": "Ysolt",
+     "text": "My Moon Amulet! Oh, bless you, kind sir, bless you! I spent all my gold on it, so please take this spell book instead. I hope it serves you well."
+    },
+    "after": {
+     "speaker": "Ysolt",
+     "text": "Well, look who's back."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ysolt's amulet... before it's sold again."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ysolt's amulet... before it's sold again."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three villagers: Corra, Grume and Tibbet.",
+   "names": {
+    "Corra": "person",
+    "Grume": "person",
+    "Tibbet": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Corra",
+     "text": "I thought adventurers never got lost. Try following the lanterns."
+    },
+    "rumour2": {
+     "speaker": "Grume",
+     "text": "Is that Necromancer really as ugly as folks say?"
+    },
+    "rumour3": {
+     "speaker": "Tibbet",
+     "text": "I do all right selling frog legs."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Oggin of the Muddy Mug inn, Krell the smith at Krell's Forge, Mother Hesk of the potion shop.",
+   "names": {
+    "Oggin": "person",
+    "Krell": "person",
+    "Krell's Forge": "place",
+    "Mother Hesk": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Oggin",
+     "text": "Welcome, welcome! I smell my favorite smell -- a stranger with a full purse."
+    },
+    "arms": {
+     "speaker": "Krell",
+     "text": "This is Krell's Forge. I doubt you'll find much here worth your gold, stranger."
+    },
+    "magic": {
+     "speaker": "Mother Hesk",
+     "text": "The damp has gotten into every scroll in my shop."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Father Ambrus wants the shrine's Silver Bell back from Vashtor's Zombies. Gubbin wants his partner Tolly out of Warden Brodd's lockup again.",
+   "names": {
+    "Father Ambrus": "person",
+    "Silver Bell": "thing",
+    "Vashtor": "person",
+    "Zombies": "group",
+    "Mayor Pellum": "person",
+    "Skell": "place",
+    "Gubbin": "person",
+    "Tolly": "person",
+    "Warden Brodd": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Father Ambrus",
+     "text": "Thank goodness, a stranger with a strong arm! Vashtor's Zombies came up out of the water last night and carried off the Silver Bell from our shrine!\n\nThey took it into the old graveyard south of town. Bring it back to me, and the shrine will see that you are well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Gubbin",
+     "text": "Not again! Tolly's gone and got himself thrown in the lockup! Pinched a ham right off the Mayor's table, the idiot!\n\nTrouble is, he's the only one knows where we hid our money. Get the key off Warden Brodd and let him out. Brodd naps after supper. Do it and there's somethin' good in it fer you."
+    },
+    "outcome_a": {
+     "speaker": "Father Ambrus",
+     "text": "The Silver Bell! Praise be! You have done a great deed for Skell, kind sir. Here is 100 gold from the shrine's offering box.\n\nNow go and see Mayor Pellum. He has need of brave folk like you."
+    },
+    "outcome_b": {
+     "speaker": "Gubbin",
+     "text": "There he is! Tolly, you old crook, I thought they'd never let you go! Thanks, friend. Here, take this chain tunic. It's yours."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Locate the Silver Bell in the old graveyard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find and steal the lockup key so Tolly can go free.\n\nWarden Brodd most probably keeps it under his hat."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Marda's husband Bodkin, out after frogs, has walked into the Ogre camp north of town and been caught again.",
+   "names": {
+    "Marda": "person",
+    "Bodkin": "person",
+    "Ogres": "group",
+    "Ogre Chief": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marda",
+     "text": "Oh, that fool! That great soggy fool! The Ogres have caught my Bodkin again! He goes out after frogs and walks straight into their camp every time! He's been caught more often than the frogs!\n\nTheir camp is north of town, past the dead trees. Please, bring him home before they put him in the pot! I'll give you anything!"
+    },
+    "reminder": {
+     "speaker": "Marda",
+     "text": "Go, quickly! The Ogres' pot grows hot."
+    },
+    "found": {
+     "speaker": "Bodkin",
+     "text": "Untie me, quick!"
+    },
+    "following": {
+     "speaker": "Bodkin",
+     "text": "Take me home, young sir. I'll be right behind you."
+    },
+    "completion": {
+     "speaker": "Marda",
+     "text": "Bodkin! You're home, and still in one piece! Oh, thank you, thank you, kind sir!\n\nPlease, take this Ankh. It's the least I can do."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get the cage key from the Ogres and set Bodkin free.\nThe key is probably hanging in the Ogre Chief's tent."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Wendle points the player to Mayor Pellum, who gives him the key to the Sunken Temple and sends him after Vashtor. Orvel sent the player.",
+   "names": {
+    "Wendle": "person",
+    "Mayor Pellum": "person",
+    "Orvel": "person",
+    "Vashtor": "person",
+    "Sunken Temple": "place",
+    "Skell": "place",
+    "Zombies": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wendle",
+     "text": "Something wicked is creeping out of the swamp! Has Mayor Pellum found anybody brave enough to stop it?"
+    },
+    "opening": {
+     "speaker": "Mayor Pellum",
+     "text": "Ah, there you are, lad! Orvel wrote that he was sending someone. Not a moment too soon!\n\nThe Necromancer Vashtor has taken the Sunken Temple east of Skell. Every night his Zombies climb out of the water and come knocking at our doors. Nobody sleeps and nobody fishes!\n\nHere is the key to the temple gate. Go in, find Vashtor and put an end to his wickedness. All of Skell is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Mayor Pellum",
+     "text": "I have nothing more to give you just now. Good luck with Vashtor. His Zombies can be slow and stubborn bunch."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "New quest! Find Vashtor in the Sunken Temple!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

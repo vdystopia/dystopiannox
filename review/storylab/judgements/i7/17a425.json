@@ -1,0 +1,33 @@
+{
+  "packet": "17a425",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The plea builds a long, careful sentence ('And it falls to you to climb down... before the heat does and bring him home to his wife') where Nox would just bark the order. 'The blessings of every stoker' is a writerly flourish."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless overstatement ('What took you so long to get here!?', 'Nox's vital interests'), a key handed over with a plain hint, flat captive lines, and a numeric journal ('Rescue the 6 trapped mine workers'). This is the campaign's quest machinery."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The pet frog and the 'Loads and loads of money?' gag that answers the player's unspoken greed are Westwood's dry humour exactly. Exclamations everywhere, and short."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "The lore exposition is overbuilt ('keepers and faithful wardens', 'the richest store of the power [Person] craves -- far more than the poor bones in the churchyard'). The reminder reads like a refused offer, 'Let's find [Person]?' is broken, and the reward line is fussy."},
+    {"label": "E", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "A companion gives the plea ('We best go'), there is a specific mechanical setup (express elevator, gears, key, secret passage), and the plain 'really big bugs' feels like Westwood. The captive's chattiness is the only doubt."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The masked class address ('brave Adventurer', 'kind sir') and the cheeky 'the menfolk cannot live without us' are signature Westwood. The comma-less run-ons and the generic 'tokens of my appreciation' are true to the source."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Close to Nox, but the reminder ('don't say a word to his father... keep him busy at the forge') adds novelistic side-plot, and the captive's following line explains the level layout ('The tunnel goes up to the light'). It is too composed for an escort bark."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The '...he he he' and 'young sir' feel Nox, but the plea is one long hypotactic sentence ('not only because... but I'm sure') with a double-[Person] setup. The captive lines carry invented flavour (barrels) rather than plain escort barks."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The plea opens with directions before any greeting, the captive's following line is incoherent ('Hooray for my new friend the Zombie [Thing]! Your reward is a hot supper'), and the journal is an over-long route description."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "It is terse and blunt ('before the Ogres eat them!', 'Help us!'), with 'lovely women' and 'other two groups of damsels' in the campaign's slightly goofy register. Minimal and functional."}
+  ],
+  "tells": [
+    "New texts write pleas as composed, subordinate-clause sentences with explanatory lore; Westwood's are short exclamatory bursts with page breaks and overstatement.",
+    "Westwood's captive barks are generic and functional ('I'll follow you.', 'Help us!'). New texts give captives scene-specific flavour, directions or jokes that sometimes misfire or don't parse.",
+    "New reminders drift into side-plot or odd non-sequiturs, where Westwood's just repeat the urgency.",
+    "Westwood's journals are imperative and concrete, sometimes with a number. New journals either copy that shape closely or run into long route descriptions.",
+    "Westwood's humour is broad and greedy-player aware (money gags, damsel counting). The new texts' humour is quirkier and more literary."
+  ]
+}

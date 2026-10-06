@@ -1,0 +1,336 @@
+{
+ "iter": "i7",
+ "writer": "Claude Code subagent (general-purpose), claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrel",
+  "setting": "a wizards' college town",
+  "trouble": "Vaskar, a pupil the College of Ostrel cast out long ago, has taken the Star Tower north of town and fills the country with Imps and Wisps.",
+  "names": {
+   "Ostrel": "place",
+   "the College": "place",
+   "Vaskar": "person",
+   "Star Tower": "place",
+   "Imps": "group",
+   "Wisps": "group",
+   "Bats": "group",
+   "Urchins": "group",
+   "Ebbard": "person",
+   "Master Orlund": "person",
+   "Great Hall": "place",
+   "Tobb": "person",
+   "Pellow": "person",
+   "Fennick": "person",
+   "Healer Mossa": "person",
+   "Doddrick": "person",
+   "Spyglass": "thing",
+   "Ankh": "thing",
+   "Kester": "person",
+   "Brunna": "person",
+   "Gussa": "person",
+   "Margle": "person",
+   "Gorrum": "person",
+   "Nelda": "person",
+   "Ismay": "person",
+   "Founder's Staff": "thing",
+   "Founders": "group",
+   "Mire Caves": "place",
+   "Steel Shield": "thing",
+   "Nibbs": "person",
+   "Thule": "person",
+   "Merrit": "person",
+   "Sunken Library": "place",
+   "Alchemy Hall": "place",
+   "Wizard Robe": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tobb keeps the College gate at night while Vaskar's Imps are about.",
+   "names": {
+    "Tobb": "person",
+    "Vaskar": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobb",
+     "text": "Through the gate, stranger! Mind your manners!"
+    },
+    "again": {
+     "speaker": "Tobb",
+     "text": "Do you believe what folks say about Vaskar?"
+    },
+    "later": {
+     "speaker": "Tobb",
+     "text": "Well there go the last of the Imps. No more night watch, guess I'll go get some sleep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick the groundskeeper, his leg broken, wants the Wisps driven out of the cistern under the orchard.",
+   "names": {
+    "Fennick": "person",
+    "Healer Mossa": "person",
+    "Bats": "group",
+    "Wisps": "group",
+    "Vaskar": "person",
+    "Star Tower": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Friend, bless you for stopping to help me... But you're late, I'm afraid. My leg is broken. I can't stand...\n\nBut hear me... I chased the Bats down into the old cistern under the orchard...\n\nBut the cistern is home to something far worse -- swarms of Wisps! I saw them over the water, obeying a man's voice.\n\nHe was laughing... Drive them out, friend, and my purse is yours."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Did you get rid of the Wisps?"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "Ah, there you are! Healer Mossa says I'll walk again! Good work! Never thought you'd come up out of there! heh, heh, heh.\n\nBut here now, take your 100 gold and hurry on to the Star Tower where that wicked Vaskar hides!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Wisps from the cistern in order to help Fennick.\n\nThe way in is most likely through the old orchard well."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Doddrick the star-gazer lost his magic Spyglass to the Imps of the Star Tower.",
+   "names": {
+    "Doddrick": "person",
+    "the College": "place",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Vaskar": "person",
+    "Spyglass": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Doddrick",
+     "text": "You know, so many gloomy things have happened at the College this week, and not one cheerful one! The Star Tower has been taken -- overrun by Imps called up by that renegade Vaskar! And they tell me those same Imps flew off with my magic Spyglass! Will you go and get it back for me? I'll make it worth your trouble."
+    },
+    "refusal": {
+     "speaker": "Doddrick",
+     "text": "No time for an old star-gazer, eh? Never mind, the offer stands for you. If you change your mind later, just come and find me."
+    },
+    "reminder": {
+     "speaker": "Doddrick",
+     "text": "Maybe if you looked in every dusty corner and odd little cupboard of that Tower you might spot where those Imps hide their treasures!"
+    },
+    "completion": {
+     "speaker": "Doddrick",
+     "text": "My old eyes may be failing, but with my Spyglass back I can see the stars again, young sir. Here is an Ankh, more precious than gold, which now belongs to you."
+    },
+    "after": {
+     "speaker": "Doddrick",
+     "text": "Please, leave me be now. I'm busy with my charts."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Doddrick's Spyglass and bring it back to him."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Doddrick's Spyglass and bring it back to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Kester on Vaskar, Brunna who dislikes strangers, Gussa proud of her son.",
+   "names": {
+    "Kester": "person",
+    "Brunna": "person",
+    "Gussa": "person",
+    "Vaskar": "person",
+    "the College": "place",
+    "Imps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Kester",
+     "text": "That traitor Vaskar has left the College half empty. Stop those Imps of his before they burn the library."
+    },
+    "rumour2": {
+     "speaker": "Brunna",
+     "text": "Adventurer! Ugh! I know what your kind do to library books! Go on, shoo!"
+    },
+    "rumour3": {
+     "speaker": "Gussa",
+     "text": "Wonderful news! I hear my son passed his Fireball exam!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Margle of the Inkpot Inn, Gorrum the smith, Nelda's magic shop.",
+   "names": {
+    "Margle": "person",
+    "Gorrum": "person",
+    "Nelda": "person",
+    "Vaskar": "person",
+    "Star Tower": "place",
+    "the College": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Margle",
+     "text": "You look as though you need a good night's rest, stranger."
+    },
+    "arms": {
+     "speaker": "Gorrum",
+     "text": "Hard times, lad. I never thought the masters would let Vaskar take the Star Tower. A sorry business indeed! Buy what you need while I've still got it!"
+    },
+    "magic": {
+     "speaker": "Nelda",
+     "text": "Friends of the College are welcome in my shop. What would you like to see?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Ismay wants the Founder's Staff back from the Urchins of the Mire Caves, and Nibbs sells a key to the Star Tower's back door.",
+   "names": {
+    "Ismay": "person",
+    "Founder's Staff": "thing",
+    "Founders": "group",
+    "Urchins": "group",
+    "Mire Caves": "place",
+    "the College": "place",
+    "Steel Shield": "thing",
+    "Nibbs": "person",
+    "Margle": "person",
+    "Star Tower": "place",
+    "Vaskar": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ismay",
+     "text": "Welcome, stranger. I am Ismay! Guarding the Founder's Staff was my honor, until Urchins carried it off to the Mire Caves east of town. I expect you will not shame us -- or the College -- by coming back without it. For here, shame never washes off. Now go forth and fetch the Staff home!"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Oho, a new face! Margle told me you'd be by! Very good! Didn't think you'd look so honest! heh, heh, heh.\n\nBut listen close now, 50 gold buys my key to the back door of the Star Tower where Vaskar never posts a guard!"
+    },
+    "outcome_a": {
+     "speaker": "Ismay",
+     "text": "This sacred Staff is held to be the heart of the College, my son. May the wise spirits of the Founders always walk beside you, brave Adventurer. Take this Steel Shield as a token of my appreciation."
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Oh no, not you again?"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Founder's Staff from the Mire Caves"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sneak into the Star Tower."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Thule's student Merrit went down into the Sunken Library and is trapped among Vaskar's Imps.",
+   "names": {
+    "Thule": "person",
+    "Merrit": "person",
+    "Sunken Library": "place",
+    "Alchemy Hall": "place",
+    "Imps": "group",
+    "Vaskar": "person",
+    "Master Orlund": "person",
+    "Star Tower": "place",
+    "Wizard Robe": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Thule",
+     "text": "Curiosity, mischief, foolishness, say what you like, the girl has too much of it. But scolding her now will not bring her back. You must find Merrit in the Sunken Library before Vaskar's Imps carry her off, or she is lost.\n\nGo down the old stair under the west wing, find her and bring her home! I will pay you what I can!... I fear I am too old for this, lad."
+    },
+    "reminder": {
+     "speaker": "Thule",
+     "text": "Why aren't you gone yet?"
+    },
+    "found": {
+     "speaker": "Merrit",
+     "text": "Thank the stars you found me!"
+    },
+    "following": {
+     "speaker": "Merrit",
+     "text": "Stay close, kind sir, I can't find the way alone. Take me to Master Thule at the Alchemy Hall -- just past the fountain. He'll look after me from there."
+    },
+    "completion": {
+     "speaker": "Thule",
+     "text": "Courage, luck, stubbornness, whatever it was, it brought our Merrit home. But thanking you with words is not enough. You must take this Wizard Robe, for I have nothing finer to give.\n\nWear the robe, go to Master Orlund and help him stop Vaskar!... I am forever in your debt, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Merrit from the Sunken Library! Bring her back to Master Thule!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WizardRobe"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pellow points the player to Master Orlund in the Great Hall, who sends him north after Vaskar in the Star Tower.",
+   "names": {
+    "Pellow": "person",
+    "Master Orlund": "person",
+    "Great Hall": "place",
+    "Ebbard": "person",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Vaskar": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pellow",
+     "text": "Hey! No strangers in the dormitory! Go see Master Orlund in the Great Hall."
+    },
+    "opening": {
+     "speaker": "Master Orlund",
+     "text": "Ah, ha! You've made it, lad -- or should I call you Adventurer! Heh, heh, heh...\n\nEbbard's letter about you is most encouraging. I cannot hide the truth -- too many of our students have gone missing since the new term began.\n\nI am sure I know who is to blame. If I am right, we are fortunate the Star Tower holds only Imps so far.\n\nHurry! You must go north to the Star Tower! Our old pupil Vaskar has come back to plague us."
+    },
+    "reminder": {
+     "speaker": "Master Orlund",
+     "text": "The Star Tower is up on the hill north of town, you can't miss it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb the Star Tower and find Vaskar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

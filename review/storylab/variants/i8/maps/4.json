@@ -1,0 +1,314 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varrok",
+  "setting": "a castle town with a garrison",
+  "trouble": "The Ogre chieftain Grukk and his Ogres hold the old fort at the Stone Bridge east of Varrok, and no wagon reaches the castle.",
+  "names": {
+   "Varrok": "place",
+   "Grukk": "person",
+   "Dorran": "person",
+   "Grisholm": "person",
+   "Bolk": "person",
+   "Gessa": "person",
+   "Pruett": "person",
+   "Brenik": "person",
+   "Pogg": "person",
+   "Lunk": "person",
+   "Hesk": "person",
+   "Wobbin": "person",
+   "Tibbet": "person",
+   "Brask": "person",
+   "Quillon": "person",
+   "Lissa": "person",
+   "Pellam": "person",
+   "the Keep": "place",
+   "the Stone Bridge": "place",
+   "the east postern": "place",
+   "the old quarry": "place",
+   "the Urchin caves": "place",
+   "the Ogre camp": "place",
+   "the south woods": "place",
+   "the moonstone amulet": "thing",
+   "the pay chest": "thing",
+   "Ogres": "group",
+   "Rogues": "group",
+   "Urchins": "group",
+   "Urchin Shaman": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Bolk guards the east postern, barred until Warden Grisholm gives the player leave to cross to the Stone Bridge.",
+   "names": {
+    "Bolk": "person",
+    "Grisholm": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bolk",
+     "text": "Absolutely not! Off with you, ruffian!"
+    },
+    "again": {
+     "speaker": "Bolk",
+     "text": "Have it your way."
+    },
+    "later": {
+     "speaker": "Bolk",
+     "text": "Stop where you are, stranger! Warden Grisholm says you have leave to pass, and his seal proves it.\n\nGo on! I've unbarred the gate and oiled the hinges just for you.\n\nWill you be back by nightfall, stranger?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gessa's bathhouse is ruined because a gang of Rogues from the old quarry steals all her soap and towels every night.",
+   "names": {
+    "Gessa": "person",
+    "Rogues": "group",
+    "the old quarry": "place",
+    "Varrok": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gessa",
+     "text": "Thieves! Thieves in my bathhouse!\n\nEvery night a gang of Rogues creeps in and carries off all my soap and towels. Those miserable rascals will be the ruin of me! The soldiers stink to high heaven, and nobody pays for a bath without soap!\n\nThe Rogues hide out in the old quarry west of town. Run them off for good and I'll pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Gessa",
+     "text": "It is high time you got moving, lad, those Rogues get bolder every night."
+    },
+    "completion": {
+     "speaker": "Gessa",
+     "text": "Gone? The Rogues are really gone?! Oh, happy day! Tonight every soldier in Varrok gets a proper bath!\n\nHere's 100 gold, as promised. You've saved my business, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rout the soap thieves."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "An Urchin Shaman turned Pruett's husband into a goat, and the Urchins stole the moonstone amulet that could break the curse.",
+   "names": {
+    "Pruett": "person",
+    "Urchin Shaman": "group",
+    "Urchins": "group",
+    "the moonstone amulet": "thing",
+    "the Urchin caves": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pruett",
+     "text": "Please, kind sir, you must help me! It's the most horrible thing!\n\nAn Urchin Shaman put a curse on my husband, and now he's a goat! A goat! He's chewed up half the laundry already.\n\nI could break the spell with my moonstone amulet, but the Urchins stole it off my windowsill and ran off to their caves north of the castle. Will you bring back my amulet? I'll reward you, I promise."
+    },
+    "refusal": {
+     "speaker": "Pruett",
+     "text": "You haven't the heart for it. Come back when you've found some."
+    },
+    "reminder": {
+     "speaker": "Pruett",
+     "text": "Now that you've promised, you'd better hurry back with my amulet!"
+    },
+    "completion": {
+     "speaker": "Pruett",
+     "text": "My amulet! Oh, bless you!\n\nThere... the curse is broken! He's my husband again! Oh, thank you, thank you! Here, take this shield. It's the least I can do."
+    },
+    "after": {
+     "speaker": "Pruett",
+     "text": "Nice shield."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fetch Pruett's amulet from the Urchin caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fetch Pruett's amulet from the Urchin caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield"]
+   }
+  },
+  "rumour": {
+   "specifics": "A soldier of the garrison, Lissa, and Pellam, who has lost his cart.",
+   "names": {
+    "Grukk": "person",
+    "Lissa": "person",
+    "Pellam": "person",
+    "Varrok": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Soldier",
+     "text": "Find that Grukk and knock his ugly head clean off!"
+    },
+    "rumour2": {
+     "speaker": "Lissa",
+     "text": "You've only just come to Varrok, haven't you? Pity you're not one of the garrison. I just adore soldiers!"
+    },
+    "rumour3": {
+     "speaker": "Pellam",
+     "text": "Did you see where my cart went? It couldn't have just rolled off by itself!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Tibbet keeps the inn, Brask the forge, Quillon the magic shop.",
+   "names": {
+    "Tibbet": "person",
+    "Brask": "person",
+    "Quillon": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tibbet",
+     "text": "Maybe you'd like a hot supper, or a bed for the night?"
+    },
+    "arms": {
+     "speaker": "Brask",
+     "text": "What brings you to my forge, stranger? I've no time to waste."
+    },
+    "magic": {
+     "speaker": "Quillon",
+     "text": "I just know we're going to be wonderful friends! Assuming, of course, you spend lots of gold here!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Quartermaster Brenik wants the garrison's pay chest back from the Ogre camp; Pogg wants his partner Lunk, who went first after the chest, or at least the purse Lunk took with him.",
+   "names": {
+    "Brenik": "person",
+    "Pogg": "person",
+    "Lunk": "person",
+    "Grukk": "person",
+    "Ogres": "group",
+    "the pay chest": "thing",
+    "the Ogre camp": "place",
+    "the south woods": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brenik",
+     "text": "Good day. You look capable enough.\n\nGrukk's Ogres ambushed our supply wagon on the south road and carried off the garrison's pay chest. The men have gone unpaid for weeks and are on the verge of mutiny!\n\nThe chest is in the Ogre camp in the south woods. Return it intact and the armory will see you properly equipped."
+    },
+    "offer_b": {
+     "speaker": "Pogg",
+     "text": "Hey! Hey, you! You going after the Quartermaster's chest? Ha! Too late. Lunk beat you to it.\n\nLunk's my partner. He went off to that Ogre camp to grab the chest for himself, and he hasn't come back. And he's got my purse with him!\n\nBring Lunk back. Or, if the Ogres ate him, bring back my purse. Either way you'll get your share."
+    },
+    "outcome_a": {
+     "speaker": "Brenik",
+     "text": "The pay chest, and still locked! Most excellent! The men will be paid tonight.\n\nTake this Longsword from the armory, with the thanks of the garrison."
+    },
+    "outcome_b": {
+     "speaker": "Pogg",
+     "text": "My purse! Ha ha! Every coin still in it!\n\nLunk? Oh, he'll turn up somewhere. Here, take your share."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Raid the Ogre camp and take back the pay chest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Lunk or his purse back from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Hesk's partner Wobbin keeps sneaking off to sell pots to the Ogres at the Stone Bridge, and they have locked him in a cage again.",
+   "names": {
+    "Hesk": "person",
+    "Wobbin": "person",
+    "Ogres": "group",
+    "the Stone Bridge": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hesk",
+     "text": "Oh, no! Not again! Those Ogres have caught Wobbin again!?\n\nThat fool keeps sneaking off to the Stone Bridge to sell pots to the Ogres! And every time they lock him in a cage and keep the pots!\n\nPlease, young sir, get him out of there before they throw him in the stew. I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "Good evening, young sir."
+    },
+    "found": {
+     "speaker": "Wobbin",
+     "text": "Drat it all! Now they've gone and smashed my best kettle! I'll try to keep up behind you. Take me to Hesk!"
+    },
+    "following": {
+     "speaker": "Wobbin",
+     "text": "Whew... looks like I'm not Ogre stew yet. Keep going, friend."
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "Wobbin! You big oaf, you're home!\n\nBless you, kind stranger! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Stone Bridge and free Wobbin from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pellam sends the player to Warden Grisholm in the Keep; the Warden, an old friend of the patron Dorran, sends him through the east postern to take Grukk's fort at the Stone Bridge.",
+   "names": {
+    "Pellam": "person",
+    "Grisholm": "person",
+    "Dorran": "person",
+    "Grukk": "person",
+    "Ogres": "group",
+    "the Keep": "place",
+    "the Stone Bridge": "place",
+    "the east postern": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pellam",
+     "text": "That's it! First they take the bridge then they starve us out. Go see Warden Grisholm in the Keep!"
+    },
+    "opening": {
+     "speaker": "Grisholm",
+     "text": "So, Dorran's friend has finally arrived! Good. We have no time to lose.\n\nThat brute Grukk and his Ogres have taken the old fort at the Stone Bridge, east of the castle. Not a single wagon gets through, and my men are down to their last crust of bread! This insolent usurper must be stopped!\n\nI've ordered the east postern unbarred for you. Cross the bridge, take that fort and bring me Grukk's head, lad. Go!"
+    },
+    "reminder": {
+     "speaker": "Grisholm",
+     "text": "It's open! The postern's open! Er... After you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way into Grukk's fort at the Stone Bridge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

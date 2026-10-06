@@ -1,0 +1,340 @@
+{
+ "iter": "i8",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Ostrel",
+  "setting": "a wizards' college town",
+  "trouble": "Malgrin, a wizard thrown out of the College long ago, has raised an army of Ogres in the Gloomfen and cut the fen road to Ostrel.",
+  "names": {
+   "Ostrel": "place",
+   "the College": "place",
+   "Great Library": "place",
+   "South Gate": "place",
+   "Gloomfen": "place",
+   "Malgrin's Tower": "place",
+   "Ogre Camp": "place",
+   "Bramble Orchard": "place",
+   "Old Quarry": "place",
+   "Old Mill": "place",
+   "Crag Hill": "place",
+   "Bat Caves": "place",
+   "Inkpot": "place",
+   "Golden Quill": "thing",
+   "Teleport": "thing",
+   "Ogres": "group",
+   "Wisps": "group",
+   "Urchins": "group",
+   "Malgrin": "person",
+   "Vandell": "person",
+   "Tollund": "person",
+   "Brusk": "person",
+   "Pellock": "person",
+   "Hesk": "person",
+   "Dilly": "person",
+   "Orlo": "person",
+   "Gasper": "person",
+   "Mossop": "person",
+   "Dorgle": "person",
+   "Yselda": "person",
+   "Elspen": "person",
+   "Gimble": "person",
+   "Wobbin": "person",
+   "Nettle": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brusk keeps the College gate while Malgrin's Ogres hold the fen road.",
+   "names": {
+    "Brusk": "person",
+    "Ogres": "group",
+    "the College": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brusk",
+     "text": "Wanna get yourself turned into a toad?"
+    },
+    "again": {
+     "speaker": "Brusk",
+     "text": "We must hold this gate and keep those Ogres out of the College tonight!"
+    },
+    "later": {
+     "speaker": "Brusk",
+     "text": "I hope the Ogres stay in their fen."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Master Pellock, a teacher at the College, wants the Wisps of Bramble Orchard destroyed: they burned off his beard while he napped.",
+   "names": {
+    "Pellock": "person",
+    "Wisps": "group",
+    "Bramble Orchard": "place",
+    "the College": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellock",
+     "text": "Don't look at my chin! Don't you dare look at it!\n\nThose Wisps from Bramble Orchard set my beard on fire while I was napping under the apple trees! Years to grow it, and gone in one puff! The students giggle every time I walk into class. These blasted Wisps are worse than a plague of rats!\n\nGo out to the orchard, east of the College, and put out every last one of them. I'll pay you well."
+    },
+    "reminder": {
+     "speaker": "Pellock",
+     "text": "Why are you standing around?"
+    },
+    "completion": {
+     "speaker": "Pellock",
+     "text": "The Wisps are gone? Ha! Now my beard can grow back in peace!\n\nThank you, stranger. Here are 100 gold pieces and a Spell Book. Spend them wisely!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go out to Bramble Orchard and destroy the Wisps."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hesk the scribe's Golden Quill, which writes the College's scrolls by itself, was stolen by the Urchins of the Old Quarry, and his shop is ruined.",
+   "names": {
+    "Hesk": "person",
+    "Tollund": "person",
+    "Golden Quill": "thing",
+    "Urchins": "group",
+    "Old Quarry": "place",
+    "the College": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesk",
+     "text": "Ruined! I'm ruined!\n\nUrchins broke into my shop last night and stole my Golden Quill! It writes the scrolls all by itself -- every spell scroll the College buys comes from that quill! Without it I can't fill a single order, and Arch-Mage Tollund will take his business elsewhere!\n\nThe little thieves hide in the Old Quarry, west of town. Will you get my quill back?"
+    },
+    "refusal": {
+     "speaker": "Hesk",
+     "text": "You don't have a minute for a ruined man."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "Please, find my quill!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "My quill! My beautiful quill! I'm back in business!\n\nThank you, Wanderer. Take this Ankh and these 50 gold pieces. You've saved my shop!"
+    },
+    "after": {
+     "speaker": "Hesk",
+     "text": "You know, I've been busy... that quill hasn't stopped scribbling since you brought it back!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hesk's Golden Quill from the Urchins of the Old Quarry."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hesk's Golden Quill from the Urchins of the Old Quarry."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Dilly gossips about Malgrin, Orlo the student taunts, Gasper the senior student boasts.",
+   "names": {
+    "Dilly": "person",
+    "Orlo": "person",
+    "Gasper": "person",
+    "Malgrin": "person",
+    "Gloomfen": "place",
+    "the College": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dilly",
+     "text": "There is a wicked old wizard -- Malgrin -- hiding out in the Gloomfen. They say the College threw him out for turning his teacher into a goat!"
+    },
+    "rumour2": {
+     "speaker": "Orlo",
+     "text": "Can't answer? Not so clever, eh?"
+    },
+    "rumour3": {
+     "speaker": "Gasper",
+     "text": "We have mastered the Fireball! Now we must burn every last Ogre out of the Gloomfen!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Mossop keeps the Inkpot inn, Dorgle sells arms to a town of wizards, Yselda sells potions and scrolls.",
+   "names": {
+    "Mossop": "person",
+    "Inkpot": "place",
+    "Dorgle": "person",
+    "Yselda": "person",
+    "Malgrin": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mossop",
+     "text": "Traveler, eh? You'd better turn around while you can. No doubt Malgrin's Ogres will come knocking here soon, too! Strange days we're living in, isn't it?"
+    },
+    "arms": {
+     "speaker": "Dorgle",
+     "text": "Stranger, eh? Most of these wizards turn up their noses at good steel, but not one of them ever swung a sword in a real fight and I have! What do those bookworms know!? Hm? Heh, heh, heh...\n\nYou can shop here anytime, friend."
+    },
+    "magic": {
+     "speaker": "Yselda",
+     "text": "I hear Malgrin's Ogres are already at the edge of the fen. Maybe it's time I packed up my potions and moved north."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mistress Elspen wants her herb students brought home from the Old Mill. Proctor Gimble must serve Malgrin his notice of expulsion by hand, and would rather someone else did it.",
+   "names": {
+    "Elspen": "person",
+    "Gimble": "person",
+    "Malgrin": "person",
+    "Old Mill": "place",
+    "Gloomfen": "place",
+    "Ogre Camp": "place",
+    "Great Library": "place",
+    "the College": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Elspen",
+     "text": "Help! My herb students went into the Gloomfen this morning, and now Malgrin's Ogres are all over the fen road! They're hiding in the Old Mill and are too frightened to come back alone.\n\nPlease, go to the Mill, south of the gate, and bring them home safely. The College will reward you."
+    },
+    "offer_b": {
+     "speaker": "Gimble",
+     "text": "You there! Yes, you! You look like someone who isn't afraid of Ogres. I am. Terribly.\n\nCollege law says the Proctor must hand every expelled student his notice in person. Malgrin was thrown out long ago, and nobody ever delivered it! Until he gets it, he's still a member of this College -- he could walk right into the Great Library and borrow any book he likes!\n\nNail this notice to the gate of his Ogre Camp. I'll make it worth your while. Just don't tell the Arch-Mage it wasn't me."
+    },
+    "outcome_a": {
+     "speaker": "Elspen",
+     "text": "My students! Every one of them home and in one piece!\n\nYou have the thanks of the whole College. Here are 100 gold pieces. Oh, and Proctor Gimble has been asking for you. Something about a letter."
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "You nailed it to the gate?! With the Ogres watching? Ha! Then it's official -- Malgrin is no longer a member of this College!\n\nHere, take these potions and 50 gold pieces. And remember... I delivered it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Escort Mistress Elspen's herb students home from the Old Mill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Malgrin's Ogre Camp on the far side of the Gloomfen. Nail the Proctor's notice of expulsion to its gate."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Master Wobbin muddled a Teleport spell and sent his apprentice Nettle into the Bat Caves under Crag Hill.",
+   "names": {
+    "Wobbin": "person",
+    "Nettle": "person",
+    "Teleport": "thing",
+    "Bat Caves": "place",
+    "Crag Hill": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wobbin",
+     "text": "Oh, this is a catastrophe! The worst blunder of my whole miserable career!\n\nI was showing young Nettle the Teleport spell and I muddled the words. Instead of across the room, I sent her clear into the Bat Caves under Crag Hill!\n\nIf the Arch-Mage finds out, he'll take away my wand! Go north to Crag Hill and bring her back before anybody notices she's gone!"
+    },
+    "reminder": {
+     "speaker": "Wobbin",
+     "text": "I am ashamed to see a stranger clean up the mess which my own clumsy tongue has made."
+    },
+    "found": {
+     "speaker": "Nettle",
+     "text": "You have come all the way down here to get me!"
+    },
+    "following": {
+     "speaker": "Nettle",
+     "text": "This way."
+    },
+    "completion": {
+     "speaker": "Wobbin",
+     "text": "Nettle! You're home! Oh, thank the stars!\n\nAnd not a word to the Arch-Mage, eh? Please accept this Wizard Robe as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Nettle from the Bat Caves beneath Crag Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dilly points the player to Arch-Mage Tollund in the Great Library, who gives him the key to the South Gate and sends him after Malgrin.",
+   "names": {
+    "Dilly": "person",
+    "Tollund": "person",
+    "Vandell": "person",
+    "Malgrin": "person",
+    "Great Library": "place",
+    "South Gate": "place",
+    "Gloomfen": "place",
+    "Malgrin's Tower": "place",
+    "Ostrel": "place",
+    "the College": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dilly",
+     "text": "Oh, hello. Arch-Mage Tollund is in the Great Library."
+    },
+    "opening": {
+     "speaker": "Tollund",
+     "text": "Ah, there you are! Vandell's letter said you'd be coming. He speaks highly of you, lad. I hope he's right.\n\nBad times have come to Ostrel. Malgrin -- a wizard we threw out of this College long ago -- has gathered an army of Ogres in the Gloomfen. They've already cut the fen road. Next it will be our gates!\n\nTake this key. It opens the South Gate. Go through the Gloomfen, find Malgrin's Tower and stop him. The fate of the whole College rests on your shoulders!"
+    },
+    "reminder": {
+     "speaker": "Tollund",
+     "text": "Go on. Use the key!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Put an end to Malgrin and his Ogres!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

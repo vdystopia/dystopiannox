@@ -1,0 +1,33 @@
+{
+  "packet": "fd16bc",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Exclamatory comic offer with a tidy setup-complaint-hook arc and a joke simile ('worse than a hailstorm'); the ambient lines all point back at the same Ogre gag, too neatly themed for a Westwood town."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, slightly stiff innkeeper prose ('somewhat slow of late'), the bare '100 in gold' reward and a one-line journal; the guard and rumour lines are plain information drops, very Nox."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The warden with a 'signed and sealed' notice and the 'never had to set one foot inside' punchline is constructed comedy; the offer is long and closes on an over-explained location-plus-goal formula."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Overwrought pleading ('a horrific fate has befallen my wife'), 'kind sir', the slightly broken possessive in the journal and the deadpan cider joke all read as the original campaign."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Magic shears and winter coats is a whimsical premise built for a joke; 'My tongue's stuck to the railing!' and the cold-weather guard quip feel like a modern writer's flavour pass."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Mayor's spider quest with the 'charm' instruction, the title and freedom-of-passage reward, the gate guard and the 'right off you back' typo are characteristic of Westwood's early town."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Bombastic 'in defense of Nox's vital interests', a key and a beast scroll handed over mid-speech, a numbered journal objective and the pushy 'Buy something!' shopkeeper are pure Nox."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The singed-beard teacher is a crafted comic bit ('Don't look at my chin!') with another 'worse than a plague of rats' simile; the reward line is fussy and the whole town riffs on one wizard theme."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Repetitive 'mate', 'a damn fine spell', the long literal journal sentence and the cross-referencing mayor-spider gossip are the original's plain, slightly clumsy voice."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The Urchin-in-a-big-hat con, the arch journal ('before it's sold again') and the courtroom-pun guard ('her floor testifies to it') are too witty and too polished for Nox's townsfolk."}
+  ],
+  "tells": [
+    "New texts build each quest around a single comic premise (a swindle, a singed beard, a squatter eviction) and then make the guard, shop and townsfolk lines all riff on that same joke; Westwood's ambient lines are about the wider world (bandits, checkpoints, rumours, the war) and rarely echo the quest.",
+    "New offers follow a uniform three-beat shape: exclamatory complaint, comic detail with a 'worse than X' simile, then a precise location plus 'and I'll reward you'; Westwood's offers are flatter, more literal, and hand over items or keys mid-speech.",
+    "New thanks lines carry a punchline or callback; Westwood's thanks are generic gratitude plus the reward ('take this gold as payment', '100 in gold').",
+    "Westwood's journals are bare or clumsily literal (sometimes a typo or numbered objective); new journals are neat imperatives or add a wry tag.",
+    "Westwood lets small errors and stiff phrasing through ('right off you back', 'somewhat slow of late', 'in defense of Nox's vital interests'); new texts are uniformly clean and clever, with wordplay and quips for every bystander."
+  ]
+}

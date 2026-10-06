@@ -1,25 +1,33 @@
-# The story lab's writer brief (v7: a Westwood frame for every line)
+# The story lab's writer brief (v9: frames for every line, sentence frames for the long ones)
 
 You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
 Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
 beside lines from Westwood's own campaign, and a judge who knows Nox will try to tell them apart. The aim: nobody can
 tell your town from one of Westwood's.
 
-## How to write: a frame a line
+## How to write: Westwood's premises, Westwood's lines
 
 1. **Read Westwood first.** Read every file in `review/storylab/exemplars/` (Westwood's own lines, 20-30 a
    situation) for the voice: short, loud, plain and corny, stock phrases used straight, flat functional people beside
    one or two odd ones, American-cartoonish, a little clumsy.
-2. **Write every part from its frame.** Below the brief, each part of your town has a frame: one of Westwood's own
-   lines, dealt to you alone. Rewrite it line for line: keep its shape (about as many sentences, its punctuation
-   where it falls, its opening and ending, its stock words, its quirks: a slip, a stiff word, a run-on, an
-   afterthought, a flat statement) and change its matter to your town's. Never five words of a frame in a row (stock
-   phrases excepted), never a Westwood name. Where a part needs what its frame lacks (a yes/no question, a reward, a
-   place), add it in the frame's manner, plainly.
-3. **Add nothing on purpose.** Do not add jokes, colour, quirks, rough patches or set pieces the frame does not have:
-   in i6 every feature the brief asked for ("one run-on speech", "an afterthought", "?!") was written by all ten
-   writers and became the template. The frames carry Westwood's quirks, spread as unevenly as Westwood spread them.
-4. **Then check against `rules/DIALOGUE.md`** (no semicolons, no em dashes, the player never addressed by class,
+2. **The premise of each quest: plain.** What the giver lost, fears or wants, said plainly. Westwood's errands are
+   mostly plain (spiders in the study, a stolen scepter, a lost apprentice, rogues who robbed an inn), its humour
+   incidental. In i8 a dealt "absurd premise" became the template: every quest a comic setup with a callback.
+3. **Offers, thanks and openings sentence by sentence.** Each has a plan below the brief: the pages and sentences of
+   one of Westwood's own lines of that kind, and for every sentence a frame (a Westwood sentence from that place in
+   such a speech). Write one sentence per frame in its manner, about your town's matter; merge or drop one if the
+   sense needs it, keep the pages. The plan gives the length and the unevenness: a two-sentence offer stays two
+   sentences, a seven-sentence one stays long.
+4. **Every short line from its frame.** Reminders, afterwards, refusals, townsfolk, guards, shopkeepers, captives
+   and journal entries each have a frame: one of Westwood's own lines, dealt to you alone. Rewrite it line for line:
+   keep its shape (about as many sentences, its punctuation where it falls, its opening and ending, its stock words,
+   its quirks) and change its matter to your town's. Never five words of a frame in a row (stock phrases excepted),
+   never a Westwood name.
+5. **Add nothing on purpose, and leave the setting to the map.** No jokes, colour, quirks or set pieces beyond what
+   the premise and the frames carry: an instruction to add a feature is followed by every writer and becomes the
+   template (i6). Westwood's people rarely describe their surroundings: no smokehouses, stilts, slag roads or bog
+   toads in every line; the town's look is the map's business.
+6. **Then check against `rules/DIALOGUE.md`** (no semicolons, no em dashes, the player never addressed by class,
    journal entries as short orders) and the tells below.
 
 ## What gave earlier writers away (the judges' tells)
@@ -42,6 +50,14 @@ tell your town from one of Westwood's.
   every mouth (fish, mountains); British or archaic words (reeve, victualler, pilfered, splendid); sensory scene
   setting; endings like "Deal?", "Agreed?", "What do you say?". Westwood hands the reward over, gives one bearing,
   states the trouble and moves on, and most of its people are flat.
+- **(i8) The dealt premise became the template:** every quest a comic setup ("lost long johns", "a wig") with a
+  callback punchline in the thanks; "X is worse than a plague!" similes; "My X! My poor X!"; thanks that open by
+  naming the returned thing and close on a quip. Westwood's thanks are often generic ("Please accept this as a token
+  of my appreciation!").
+- **(i7) Frames that do not fit.** Long offers rewritten from a frame of another situation came out with logic gaps
+  (an offer that starts mid-thought, thanks that refer to things never said, a guard's frame in a giver's mouth); and
+  Westwood's tics ("heh, heh, heh", "lad", "Adventurer") packed into one speech. Mundane premises and exact sums ("80
+  gold", "3 nights out of 4") gave the rest away.
 
 - One template: the same beats in every quest (hail, self-introduction, named beast leader, a precise place, gold
   plus an item plus a joke, "Will you...?"). Each person here gets another shape.

@@ -16,6 +16,7 @@ The loop (review/storylab/README.md):
     py tests/storylab.py brief --iter NAME                 one brief a writer (one town each, every scenario)
     py tests/storylab.py merge --iter NAME                 variants/NAME/maps/<n>.json -> variants/NAME/<scenario>.json
     py tests/storylab.py control --iter NAME               the control packets (all Westwood) and their results
+    py tests/storylab.py solo --iter NAME                  every text of the round alone (no side by side, no quota)
     py tests/storylab.py modes                             the phrases every writer reaches for -> review/storylab/modes.json
     py tests/storylab.py card --seed MAPNAME               a map's story card: its draw of Westwood's shapes and model lines
     py tests/storylab.py <scenario|all> --iter NAME [--n 10]   judge the variants, write the packet and scorecard
@@ -253,6 +254,54 @@ def write_packet(sid, it, md, key, control=False):
     return pid
 
 
+def solo(it, per_judge=3):
+    """The solo protocol: every text of a round's packets alone in its own file (no side-by-side, no quota), dealt
+    to judges three at a time, of different kinds. Writes review/out/storylab/_solo/<it>/<id>.md, the key, and the
+    judges' lists; reads review/storylab/judgements/<it>/solo/<id>.json when present."""
+    world, S = scenarios()
+    sd = os.path.join(OUT, "_solo", it); os.makedirs(sd, exist_ok=True)
+    key, texts = {}, []
+    for sid, sc in S.items():
+        vd = variants_of(it, sid)
+        if not vd: continue
+        md, k = packet(world, sc, it, vd["variants"][:10])
+        blocks = re.split(r"^## Text ([A-J])\n", md, flags=re.M)
+        for L, body in zip(blocks[1::2], blocks[2::2]):
+            tid = hashlib.sha1(f"{sid}|{it}|{L}|solo".encode()).hexdigest()[:6]
+            open(os.path.join(sd, f"{tid}.md"), "w", encoding="utf-8").write(
+                f"# Text {tid}: {sc['title']}\n\nOne text, alone. Judge by review/storylab/JUDGE_SOLO.md.\n\n{body.strip()}\n")
+            key[tid] = dict(scenario=sid, source=k[L]["source"], ref=k[L]["ref"])
+            texts.append(tid)
+    json.dump(key, open(os.path.join(OUT, "_keys", it, "solo.json"), "w", encoding="utf-8"), indent=1)
+    rng = random.Random(_seed(it, "solo"))
+    by = collections.defaultdict(list)
+    for t in texts: by[key[t]["scenario"]].append(t)
+    for v in by.values(): rng.shuffle(v)
+    judges = []
+    while any(by.values()):
+        kinds = sorted((k for k in by if by[k]), key=lambda k: -len(by[k]))[:per_judge]
+        judges.append([by[k].pop() for k in kinds])
+    open(os.path.join(sd, "judges.json"), "w").write(json.dumps(judges))
+    # results
+    jd = os.path.join(LAB, "judgements", it, "solo")
+    got = {}
+    if os.path.isdir(jd):
+        for f in os.listdir(jd):
+            j = json.load(open(os.path.join(jd, f), encoding="utf-8")); got[j.get("text", f[:-5])] = j
+    if got:
+        res = [(key[t], got[t]) for t in got if t in key]
+        acc = sum(1 for k, j in res if j["verdict"] == k["source"]) / len(res)
+        ours = [j for k, j in res if k["source"] == "generated"]; ww = [j for k, j in res if k["source"] == "westwood"]
+        caught = sum(1 for j in ours if j["verdict"] == "generated") / max(1, len(ours))
+        fa = sum(1 for j in ww if j["verdict"] == "generated") / max(1, len(ww))
+        m = lambda xs, f: statistics.mean(f(x) for x in xs) if xs else 0
+        print(f"solo {it}: {len(res)} texts judged alone; accuracy {acc:.0%}; ours called generated {caught:.0%}, "
+              f"Westwood's called generated {fa:.0%}; score ours {m(ours, lambda j: j['score']):.1f}, Westwood "
+              f"{m(ww, lambda j: j['score']):.1f}; confidence on ours {m(ours, lambda j: j['confidence']):.1f}")
+    print(f"{len(texts)} solo texts, {len(judges)} judges -> review/out/storylab/_solo/{it}/judges.json")
+    return judges
+
+
 def run_control(sc, it):
     r = control_packet(sc, it)
     if not r: return None
@@ -472,10 +521,18 @@ def brief(it, baseline=False, writers=10):
         if it in ("i5", "i6"):                          # v5-v6: a card of shapes and model lines
             import cards
             L += [cards.card(f"{it}-{n}", scen_parts), ""]
-        elif it not in ("i4",):                         # v7 on: a Westwood frame for every part, dealt for the round
+        elif it == "i7":                                # v7: a Westwood frame for every part, dealt for the round
             import cards
             if n == 1: dealer = cards.FrameDealer(it)
             L += [cards.frames_card(dealer, scen_parts)[1], ""]
+        elif it == "i8":                                # v8: premises dealt; frames for the short lines only
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.premise_card(dealer), cards.frames_card(dealer, scen_parts, long=False)[1], ""]
+        elif it not in ("i4",):                         # v9 on: frames for the short lines, sentence frames for the long
+            import cards
+            if n == 1: dealer = cards.FrameDealer(it)
+            L += [cards.frames_card(dealer, scen_parts, long=False)[1], cards.sentence_frames_card(dealer, scen_parts), ""]
         L += ["## What to write", "",
               "Every scenario below, as one town's lines, by you alone (do not look at other writers' files). "
               "Each scenario's people are this town's people; one person may appear in two scenarios.", ""]
@@ -731,6 +788,7 @@ def main():
     elif a.what == "summary": summary()
     elif a.what == "westwood": show_westwood()
     elif a.what == "merge": merge(a.iter)
+    elif a.what == "solo": solo(a.iter)
     elif a.what == "modes": find_modes()
     elif a.what == "card":
         import cards

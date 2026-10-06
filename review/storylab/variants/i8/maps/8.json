@@ -1,0 +1,328 @@
+{
+ "iter": "i8",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kalgarr",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "Malgrith the Fire Witch has seized the Deep Furnace beneath Mount Skarl, her Ember Demons pour out of it and no ore comes up from the mines.",
+  "names": {
+   "Kalgarr": "place",
+   "Malgrith": "person",
+   "Mardock": "person",
+   "Hadric": "person",
+   "Tibbet": "person",
+   "Pelgrim": "person",
+   "Fusk": "person",
+   "Orsolde": "person",
+   "Grizzel": "person",
+   "Lumpkin": "person",
+   "Yarra": "person",
+   "Quell": "person",
+   "Brix": "person",
+   "Dorla": "person",
+   "Bulba": "person",
+   "Hobb": "person",
+   "Zibbet": "person",
+   "Deep Furnace": "place",
+   "Mount Skarl": "place",
+   "Forge Hall": "place",
+   "Mine Gate": "place",
+   "Old Smelter": "place",
+   "Ash Pits": "place",
+   "Cinder Hills": "place",
+   "Burning Caves": "place",
+   "Guild": "group",
+   "Ember Demons": "group",
+   "Imps": "group",
+   "Bats": "group",
+   "Shade": "group",
+   "Fire Amulet": "thing",
+   "Hammer of Kalgarr": "thing",
+   "Cell Key": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Tibbet, a guard at the town gate who likes the look of the player.",
+   "names": {
+    "Tibbet": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tibbet",
+     "text": "Welcome, friend Wanderer."
+    },
+    "again": {
+     "speaker": "Tibbet",
+     "text": "My, my! You're a good deal handsomer than the usual smiths! Come find me at the gate when you're not off fighting demons."
+    },
+    "later": {
+     "speaker": "Tibbet",
+     "text": "Can't talk, sorry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Pelgrim, a smith, had his wig snatched off his head in the street by the Bats of the Old Smelter and wants them driven out.",
+   "names": {
+    "Pelgrim": "person",
+    "Old Smelter": "place",
+    "Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pelgrim",
+     "text": "Don't you laugh! Don't you dare laugh! I was walking home past the Old Smelter when a swarm of Bats came screeching out and snatched the wig clean off my head! In front of the whole street!\n\nI'll never show my face at the forge again! They roost inside the place, west of the town well. Drive them out and I'll pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Pelgrim",
+     "text": "That roost of Bats is a curse beyond compare and will even pluck the hair right off an honest smith's head."
+    },
+    "completion": {
+     "speaker": "Pelgrim",
+     "text": "My wig! You found my wig too! Oh, I'm a new man! Here -- 90 gold, as I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bats from their roost in the Old Smelter."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Warden Fusk must by the town charter fetch back the Fire Amulet the Imps stole from the Guild vault, and would much rather the player went.",
+   "names": {
+    "Fusk": "person",
+    "Fire Amulet": "thing",
+    "Imps": "group",
+    "Ash Pits": "place",
+    "Guild": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fusk",
+     "text": "Bah! Those wretched Imps are the bane of my existence! They crept into the Guild vault last night and carried off the Fire Amulet!\n\nAnd who must go and fetch it back? The Warden! It's written right there in the town charter! Well, I've a bad knee and I don't care for Imps one bit.\n\nThey've dug their burrows in the Ash Pits, south of the smelters. Would you go down there and bring the Amulet back for me, kind sir? There's a reward in it for you."
+    },
+    "refusal": {
+     "speaker": "Fusk",
+     "text": "So that's how you treat old Fusk and his Imp problem! Thanks a lot!"
+    },
+    "reminder": {
+     "speaker": "Fusk",
+     "text": "Maybe if you poked through all the hottest holes and smelliest burrows you could turn up that Amulet in those stinking pits!"
+    },
+    "completion": {
+     "speaker": "Fusk",
+     "text": "The Fire Amulet! You've found it! Now nobody can say the Warden didn't do his duty! Please, take this Ankh as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Fusk",
+     "text": "Thank you. I reckon you've earned my badge more than I have."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Fire Amulet for Fusk."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Fire Amulet for Fusk."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Brix worries about Malgrith, Dorla shouts a warning, Grizzel cackles at the player.",
+   "names": {
+    "Brix": "person",
+    "Dorla": "person",
+    "Grizzel": "person",
+    "Malgrith": "person",
+    "Deep Furnace": "place",
+    "Ember Demons": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Brix",
+     "text": "Malgrith must have learned the forbidden secrets of fire. One morning the Deep Furnace was quiet and by supper it was boiling over with Ember Demons and Imps! They want our forges."
+    },
+    "rumour2": {
+     "speaker": "Dorla",
+     "text": "Hide lad! Hide!"
+    },
+    "rumour3": {
+     "speaker": "Grizzel",
+     "text": "Hurry, hero, hurry! Hee, hee, hee...!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bulba keeps the tavern, Hobb sells arms and armor, Zibbet hawks potions.",
+   "names": {
+    "Bulba": "person",
+    "Hobb": "person",
+    "Zibbet": "person",
+    "Kalgarr": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bulba",
+     "text": "What'll I pour fer you?"
+    },
+    "arms": {
+     "speaker": "Hobb",
+     "text": "Hmm... Perhaps not the sharpest blades... But sturdy enough all the same!"
+    },
+    "magic": {
+     "speaker": "Zibbet",
+     "text": "Pssst! Hey! Stranger! Want a potion? Cheapest in town and they're brewed right over the lava of Kalgarr!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Orsolde of the Guild wants the Hammer of Kalgarr back from a Shade of Malgrith's; Grizzel wants his sleepwalking partner Lumpkin let out of jail again.",
+   "names": {
+    "Orsolde": "person",
+    "Grizzel": "person",
+    "Lumpkin": "person",
+    "Hadric": "person",
+    "Malgrith": "person",
+    "Shade": "group",
+    "Guild": "group",
+    "Forge Hall": "place",
+    "Cinder Hills": "place",
+    "Hammer of Kalgarr": "thing",
+    "Cell Key": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Orsolde",
+     "text": "An outrage! A Shade of Malgrith's has robbed the Forge Hall! It slipped in at night and carried off the Hammer of Kalgarr, the pride of our Guild!\n\nThe creature fled north into the Cinder Hills. One of courage must chase it down and bring back the Hammer. The Guild will not forget such a service."
+    },
+    "offer_b": {
+     "speaker": "Grizzel",
+     "text": "Hey! You! You look like someone who isn't afraid of a little mischief. My partner Lumpkin is in jail again! He walks in his sleep, see, and every blessed night he ends up in the Forgemaster's kitchen, eating his pies! That man's belly will be the ruin of us both!\n\nThe Jailer keeps the cell key on his belt and sleeps sound after supper. Get that key, let Lumpkin out, and I'll see you get something nice for your trouble."
+    },
+    "outcome_a": {
+     "speaker": "Orsolde",
+     "text": "The Hammer of Kalgarr! Returned to the Forge Hall at last! The Guild is in your debt, brave Adventurer. Please accept this Steel Shield with our thanks.\n\nNow go and see Forgemaster Hadric. He will want to hear of this himself."
+    },
+    "outcome_b": {
+     "speaker": "Grizzel",
+     "text": "Ha! There he is, free as a bird! You're a true pal, stranger. Here's that something nice I promised -- his Chain Tunic!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Chase down the Shade and recover the Hammer of Kalgarr.\n(Hint: Follow the smoke.)"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Swipe Cell Key from Jailer's belt to free Lumpkin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Yarra's husband Quell walked into the Burning Caves to prove his new apron could stand any fire and has not come out.",
+   "names": {
+    "Yarra": "person",
+    "Quell": "person",
+    "Burning Caves": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Yarra",
+     "text": "Please, you must help me! My Quell got himself a new leather apron and swore it could stand any fire! He walked into the Burning Caves to prove it, and he hasn't come out!\n\nThe caves are past the slag heaps, east of town. Oh, bring him home to me, kind sir! I'll give you what I can!"
+    },
+    "reminder": {
+     "speaker": "Yarra",
+     "text": "Go -- hurry!"
+    },
+    "found": {
+     "speaker": "Quell",
+     "text": "I'm saved. Bless you!"
+    },
+    "following": {
+     "speaker": "Quell",
+     "text": "Sorry, but I can't go another step unless you know where you're leading me. Can't have the two of us wandering around in here getting cooked, can we?"
+    },
+    "completion": {
+     "speaker": "Yarra",
+     "text": "Quell! You great oaf, you're home! Oh, thank you, thank you, kind sir! Please, take this gold. It isn't much, but it's all we have."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Quell and lead him out of The Burning Caves."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Brix points the player to Forgemaster Hadric, an old friend of Mardock's, who hands over the key to the Mine Gate and sends him after Malgrith in the Deep Furnace.",
+   "names": {
+    "Brix": "person",
+    "Hadric": "person",
+    "Mardock": "person",
+    "Malgrith": "person",
+    "Forge Hall": "place",
+    "Deep Furnace": "place",
+    "Mount Skarl": "place",
+    "Mine Gate": "place",
+    "Kalgarr": "place",
+    "Ember Demons": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Brix",
+     "text": "That crazed fire witch has set the mines ablaze. Find Forgemaster Hadric in the Forge Hall before she does worse."
+    },
+    "opening": {
+     "speaker": "Hadric",
+     "text": "So you're the one Mardock sent! Good. You've arrived not a moment too soon, lad.\n\nMalgrith the Fire Witch has seized the Deep Furnace beneath Mount Skarl. Her Ember Demons pour out of it day and night, and not one cart of ore has come up the mine road since!\n\nTake this key. It opens the Mine Gate at the north end of town. Go down into the Deep Furnace and stop Malgrith -- before she melts all of Kalgarr down to slag!"
+    },
+    "reminder": {
+     "speaker": "Hadric",
+     "text": "The Mine Gate holds fast against most, lad. But turn my key in its lock and the road down is yours!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Malgrith the Fire Witch in the Deep Furnace"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

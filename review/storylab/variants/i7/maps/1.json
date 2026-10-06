@@ -1,0 +1,301 @@
+{
+ "iter": "i7",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so Halvard has shut the north gate.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Chapel of the Ford": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick keeps the north gate, shut by Halvard against Red Corwin's bandits.",
+   "names": {
+    "Garrick": "person",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Halvard, here is another traveller who wishes to try his luck with Red Corwin's bandits!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Wanna see what's waiting up the north road?"
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "I don't hear much from Crow Hill anymore."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, wants the wolves that take his sheep killed.",
+   "names": {
+    "Ulric": "person",
+    "Halvard": "person",
+    "Ashwood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "I was walking my sheep along the edge of the Ashwood when a pack of wolves came out of the trees. Halvard sent me out here to mind the town's flock and keep watch on the wood.\n\nPlease, if you can drive those wolves off for good, I'll be sure to help you in return."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Hurry, kind sir! I don't have many sheep left to lose!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Yay! The wolves are gone and my sheep are safe in the fold again! Here, take my bow, it's yours."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go into the Ashwood and kill the wolves raiding Ulric's flock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, wants the amulet the Urchins of the old barrow took from her mill.",
+   "names": {
+    "Wenna": "person",
+    "Brackenford": "place",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Well, well! A stranger in Brackenford, or should I say a hero, lad! Heh, heh, heh...\n\nThose Urchins are most troublesome. I can't deny it any longer -- they crept into my mill last night and made off with my amulet.\n\nI think I know which ones did it. If that's all they took, then we are lucky the millstones are too heavy for them.\n\nQuickly! The old barrow is east of the ford! Will you go and bring my amulet back?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "You don't have the stomach for it. Come and see me when you do."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Go, lad! The Urchins grow bolder."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My amulet! Here, take these potions. You must keep them close at hand in a fight. If you wait too long before you drink one, it will do you no good! Once your wounds are mended, you may go after more thieves, or carry on with your travels."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Good lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the old barrow and recover Wenna's amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Go to the old barrow and recover Wenna's amulet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a brush-off, a stiff word of cheer, a pointer to the chapel.",
+   "names": {
+    "Brackenford": "place",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Shouldn't you be off chasing bandits?"
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Lead on, brave Adventurer. Our pitchforks and your courage will repel these foul beasts."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Welcome to Brackenford. The Chapel of the Ford is down by the river."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian of the Drowned Lantern, Dunstan the smith, Mabry the potion seller.",
+   "names": {
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern!"
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "It's a bit quiet today, with the north gate shut and all."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "I can tell we'll be the very best of friends! So long as you buy all your potions from me, that is!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest back from Red Corwin's bandits; Sly Wat will show a way into the watchtower if his tab is paid.",
+   "names": {
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Brackenford": "place",
+    "Garrick": "person",
+    "Crow Hill": "place",
+    "Sly Wat": "person",
+    "Ossian": "person",
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "I've just had more grim news of Red Corwin's wicked deeds. His men have stolen the tithe chest! All of Brackenford is counting on you now, lad.\n\nAs these hard times have made you the one to bring back our tithe chest, you must go see Garrick at the north gate. He has my orders and will let you through.\n\nAnd buy what you need in town first. I can't say when you'll be back, since Corwin keeps his loot up in the old watchtower on Crow Hill."
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "Evening, young sir. You're a long way from home. I've gone to great trouble and no small risk, to bring this fine secret down from Crow Hill. Pay off my tab with Ossian and it's yours."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "You have returned with the chest! You should keep a share of it -- the town can spare 150 gold for the one who brought it home."
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "Thank you! I'll take you as far as the back door of the old watchtower, but past that, I'd only get us both killed. Red Corwin's lookouts have a nasty knack for spotting the likes of me."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find and bring back the tithe chest stolen by Red Corwin.\nThe chest is likely kept in the old watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Settle the tab Sly Wat ran up at the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip went into the old barrow after the Urchins and has not come back.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Look there, lad -- the old barrow, east of the ford. My novice Pip went down after the Urchins and never came back up.\n\nThose Urchins have overrun every tunnel of the barrow. Nobody has seen Pip since he went in. You'll have to go alone.\n\nOnce you find Pip, bring him home to the Chapel of the Ford as fast as you can. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "You must go back down to the barrow. Pip grows weaker with every hour he spends down there."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Follow me. I will show you the way up."
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Wonderful! I'll lift the bar on the door now. Take this key, it's for the iron gate up above."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "I hope you gave those Urchins a thrashing they'll long remember! I don't know that I believe Pip's tales about ghosts in the barrow though. Please, take this ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Escort Brother Anselm's novice Pip out of the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Halvard in the Moot Hall, who sends him past Garrick to Red Corwin's watchtower on Crow Hill.",
+   "names": {
+    "Halvard": "person",
+    "Moot Hall": "place",
+    "Corwin": "person",
+    "Red Corwin": "person",
+    "Brackenford": "place",
+    "Crow Hill": "place",
+    "Garrick": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Don't lose heart now, stranger, Halvard is in the Moot Hall and he'll see Corwin's bandits run!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "It's a disaster! The north road is the lifeblood of Brackenford and a band of cutthroats have seized it! Red Corwin and his bandits hold the old watchtower on Crow Hill and I've shut the north gate till they're gone!\n\nA guard named Garrick keeps the gate, at the north end of town. We need you to go past him to Crow Hill and liberate our besieged road."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "It's time you were on your way, lad, Red Corwin gets bolder with every day that passes."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Locate Red Corwin's hideout on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

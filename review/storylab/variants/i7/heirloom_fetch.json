@@ -1,0 +1,732 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i7",
+ "writer": "one writer a town (variants/i7/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, wants the amulet the Urchins of the old barrow took from her mill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Well, well! A stranger in Brackenford, or should I say a hero, lad! Heh, heh, heh...\n\nThose Urchins are most troublesome. I can't deny it any longer -- they crept into my mill last night and made off with my amulet.\n\nI think I know which ones did it. If that's all they took, then we are lucky the millstones are too heavy for them.\n\nQuickly! The old barrow is east of the ford! Will you go and bring my amulet back?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "You don't have the stomach for it. Come and see me when you do."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Go, lad! The Urchins grow bolder."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My amulet! Here, take these potions. You must keep them close at hand in a fight. If you wait too long before you drink one, it will do you no good! Once your wounds are mended, you may go after more thieves, or carry on with your travels."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Good lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the old barrow and recover Wenna's amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Go to the old barrow and recover Wenna's amulet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 2,
+   "specifics": "Kal Vorra: Old Fennick's Ruby Amulet was stolen by Imps who took it to the Glimmer Pit.",
+   "names": {
+    "Kal Vorra": "place",
+    "Deep Shafts": "place",
+    "Glimmer Pit": "place",
+    "Sunken Shaft": "place",
+    "Old Guild Hall": "place",
+    "Ulmac": "place",
+    "Scrolls-Galore": "place",
+    "Ruby Amulet": "thing",
+    "Gezra": "person",
+    "Ozric": "person",
+    "Korvald": "person",
+    "Torg": "person",
+    "Pellam": "person",
+    "Fennick": "person",
+    "Wenk": "person",
+    "Hessa": "person",
+    "Dobb": "person",
+    "Gorlo": "person",
+    "Brokka": "person",
+    "Grudd": "person",
+    "Ilva": "person",
+    "Ulda Coppernose": "person",
+    "Snig": "person",
+    "Merra": "person",
+    "Orvo": "person",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Sad, plain truth, lad. Some sneaking Imps came up from the deep and made off with my Ruby Amulet before I could lock it away. The place they went is the Glimmer Pit, an old haunt of theirs.\n\nI know Kal Vorra is in need of a brave soul. But are you brave enough, lad? heh, heh, heh...\n\nFollow the ore track. Find the cave past the last lamp. And watch out for Imps. Those little devils are the sneakiest of thieves, at best. I promise you, you don't want them in your pockets, lad. Will you bring my Amulet back?"
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Don't go playing the coward with me friend. You have a good strong arm. My Amulet is down in that Pit, plain as day. Come back when you find your nerve."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Good hunting!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "We never should have let those Imps nest so close to the mine. I bet that mad witch Gezra stirred them up. Here, take this Spell Book as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Foreman Korvald came by asking for you. He said he'd be waiting at the big lift."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back Fennick's Ruby Amulet from the Glimmer Pit."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back Fennick's Ruby Amulet from the Glimmer Pit."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Velk: Orvane the healer wants back the enchanted cloak the Imps carried off to the Hollow Stump.",
+   "names": {
+    "Velk": "place",
+    "Marsh Folk": "group",
+    "Vethra": "person",
+    "Tolver": "person",
+    "Quillon": "person",
+    "Murrow": "person",
+    "Brask": "person",
+    "Hobb": "person",
+    "Orvane": "person",
+    "Grudd": "person",
+    "Snibb": "person",
+    "Hesper": "person",
+    "Dremmel": "person",
+    "Gorbo": "person",
+    "Fenna": "person",
+    "Tibbalt": "person",
+    "Pell": "person",
+    "Sodge": "person",
+    "Minna": "person",
+    "Bog Mother": "thing",
+    "Sunken Graves": "place",
+    "Stilt House": "place",
+    "Long Walk": "place",
+    "Black Fen": "place",
+    "Hollow Stump": "place",
+    "Drowned Chapel": "place",
+    "Leaky Tub": "place",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Orvane",
+     "text": "Welcome to Velk, Home of the Marsh Folk. You shall be my new helper.\n\nIt is all settled. You may take any path you like, but do not linger too long.\n\nThe Imps who took my enchanted cloak live in the Hollow Stump. Just cross the Long Walk east and you will find the Stump. Will you bring my cloak back?"
+    },
+    "refusal": {
+     "speaker": "Orvane",
+     "text": "You don't have the nerve, I see. Come back when you find some."
+    },
+    "reminder": {
+     "speaker": "Orvane",
+     "text": "I don't have any herbs to spare for you today. Good luck with those Imps. They can be thieving and spiteful lot."
+    },
+    "completion": {
+     "speaker": "Orvane",
+     "text": "Hang my cloak on the hook by the stove. Then take the Spell Book which sits on the shelf above my bed. You will find all sorts of spells inside. Try them out on the Leeches."
+    },
+    "after": {
+     "speaker": "Orvane",
+     "text": "I hear you sent those Imps packing from the Stump! Good work!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Orvane's enchanted cloak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Orvane's enchanted cloak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Tarbek: Vossel the stargazer wants back the Crystal Spyglass the Imps carried off to the old Bell Tower.",
+   "names": {
+    "Castle Tarbek": "place",
+    "Tarbek": "place",
+    "Morvane": "person",
+    "Ostrik": "person",
+    "Commander Brask": "person",
+    "Brask": "person",
+    "Brogan": "person",
+    "East Gate": "place",
+    "Fort Grenn": "place",
+    "Gallows Hill": "place",
+    "Sergeant Pell": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Thornwood": "place",
+    "Black Bears": "group",
+    "Vossel": "person",
+    "Crystal Spyglass": "thing",
+    "Bell Tower": "place",
+    "Imps": "group",
+    "Tibbet": "person",
+    "Gorry": "person",
+    "Bessa": "person",
+    "Hennet": "person",
+    "Broken Pike": "place",
+    "Varnholm": "place",
+    "Thudd": "person",
+    "Morvane's Misery": "thing",
+    "Quilla": "person",
+    "Scrolls Galore": "place",
+    "Paymaster Orrin": "person",
+    "Grey Hoods": "group",
+    "salt cellars": "place",
+    "Jarl": "person",
+    "Gromm": "person",
+    "Sister Maudra": "person",
+    "Sisters of the Lamp": "group",
+    "Ludo": "person",
+    "Skeletons": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Vossel",
+     "text": "With the Crystal Spyglass stolen and the night watch blind, the castle is no longer able to see Morvane's Undead on the march.\n\nThe Spyglass is now hidden in the old Bell Tower north of the castle, snatched by the Imps and hoarded with the rest of their shiny trinkets.\n\nGo up to the tower and find it. Take this key. It opens the small north gate on the way. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Vossel",
+     "text": "Come back when you have the nerve."
+    },
+    "reminder": {
+     "speaker": "Vossel",
+     "text": "I've got my charts. You get the glass."
+    },
+    "completion": {
+     "speaker": "Vossel",
+     "text": "Thanks for the Spyglass and good luck against the Necromancer. Here, take this Ankh."
+    },
+    "after": {
+     "speaker": "Vossel",
+     "text": "Thank you for helping a half-blind old stargazer."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get back the Crystal Spyglass the Imps stole from Vossel."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Get back the Crystal Spyglass the Imps stole from Vossel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kelm: Gisla, a fisherman's widow, lost her magic lantern to the Imps of the reed caves.",
+   "names": {
+    "Kelm": "place",
+    "Lake Kelm": "place",
+    "Gull Isle": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Sunken Chapel": "place",
+    "Vaskor": "person",
+    "Emmerik": "person",
+    "Gundrel": "person",
+    "Torvik": "person",
+    "Mott": "person",
+    "Gisla": "person",
+    "Brannoc": "person",
+    "Dulcie": "person",
+    "Hobb": "person",
+    "Bolo": "person",
+    "Harg": "person",
+    "Odra": "person",
+    "Fesk": "person",
+    "Skiv": "person",
+    "Gilm": "person",
+    "Orrin": "person",
+    "Black Pearl": "thing",
+    "Zombies": "group",
+    "Bears": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gisla",
+     "text": "I've never set foot in the reed caves and can only repeat you the warning my husband gave me, long ago -- mind the deep water.\n\nThe Imps who live there stole my magic lantern off the dock. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Gisla",
+     "text": "You don't have a minute to spare for a poor widow."
+    },
+    "reminder": {
+     "speaker": "Gisla",
+     "text": "My lantern must be down there somewhere!"
+    },
+    "completion": {
+     "speaker": "Gisla",
+     "text": "Wonderful! Thank you kindly, young sir. I am truly amazed at your courage!\n\nNow, you must take these Leather Boots."
+    },
+    "after": {
+     "speaker": "Gisla",
+     "text": "Thank you. I suppose you're not a stranger here anymore."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to win back Gisla's lantern from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find a way to win back Gisla's lantern from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Doddrick the star-gazer lost his magic Spyglass to the Imps of the Star Tower.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Vaskar": "person",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Wisps": "group",
+    "Bats": "group",
+    "Urchins": "group",
+    "Ebbard": "person",
+    "Master Orlund": "person",
+    "Great Hall": "place",
+    "Tobb": "person",
+    "Pellow": "person",
+    "Fennick": "person",
+    "Healer Mossa": "person",
+    "Doddrick": "person",
+    "Spyglass": "thing",
+    "Ankh": "thing",
+    "Kester": "person",
+    "Brunna": "person",
+    "Gussa": "person",
+    "Margle": "person",
+    "Gorrum": "person",
+    "Nelda": "person",
+    "Ismay": "person",
+    "Founder's Staff": "thing",
+    "Founders": "group",
+    "Mire Caves": "place",
+    "Steel Shield": "thing",
+    "Nibbs": "person",
+    "Thule": "person",
+    "Merrit": "person",
+    "Sunken Library": "place",
+    "Alchemy Hall": "place",
+    "Wizard Robe": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Doddrick",
+     "text": "You know, so many gloomy things have happened at the College this week, and not one cheerful one! The Star Tower has been taken -- overrun by Imps called up by that renegade Vaskar! And they tell me those same Imps flew off with my magic Spyglass! Will you go and get it back for me? I'll make it worth your trouble."
+    },
+    "refusal": {
+     "speaker": "Doddrick",
+     "text": "No time for an old star-gazer, eh? Never mind, the offer stands for you. If you change your mind later, just come and find me."
+    },
+    "reminder": {
+     "speaker": "Doddrick",
+     "text": "Maybe if you looked in every dusty corner and odd little cupboard of that Tower you might spot where those Imps hide their treasures!"
+    },
+    "completion": {
+     "speaker": "Doddrick",
+     "text": "My old eyes may be failing, but with my Spyglass back I can see the stars again, young sir. Here is an Ankh, more precious than gold, which now belongs to you."
+    },
+    "after": {
+     "speaker": "Doddrick",
+     "text": "Please, leave me be now. I'm busy with my charts."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Doddrick's Spyglass and bring it back to him."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Doddrick's Spyglass and bring it back to him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (general-purpose), claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vestrin: Old Grunda's Bearskin Cloak was dragged off by the Urchins to their cave under the west wall.",
+   "names": {
+    "Fort Vestrin": "place",
+    "Vestrin": "place",
+    "Morlak": "person",
+    "Ice Tower": "place",
+    "Undead": "group",
+    "Fennick": "person",
+    "Orla": "person",
+    "Bell Tower": "place",
+    "Hulgar": "person",
+    "Brokk": "person",
+    "Tolmar": "person",
+    "Ottmar": "person",
+    "White Wolves": "group",
+    "Grunda": "person",
+    "Urchins": "group",
+    "Bearskin Cloak": "thing",
+    "Dagna": "person",
+    "Ulfa": "person",
+    "Gorrin": "person",
+    "Bodvar": "person",
+    "Fitch": "person",
+    "Brannoc": "person",
+    "Torgal": "person",
+    "Pugg": "person",
+    "Halbrin": "person",
+    "Warhorn of Vestrin": "thing",
+    "Old Watch": "place",
+    "Skeevo": "person",
+    "Gundry": "person",
+    "Pell": "person",
+    "Hessa": "person",
+    "Signal Hut": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grunda",
+     "text": "My old legs go no farther than this, lad. The Urchins dragged my Bearskin Cloak off to their cave -- just under the west wall. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Grunda",
+     "text": "You've clearly never spent a winter on the pass. Sorry my knees disallow such climbing."
+    },
+    "reminder": {
+     "speaker": "Grunda",
+     "text": "The Urchin cave? Go out the west gate and down the first slope on your left.."
+    },
+    "completion": {
+     "speaker": "Grunda",
+     "text": "I said 'hand it here'! Now take this gold before the fire burns low with my generosity."
+    },
+    "after": {
+     "speaker": "Grunda",
+     "text": "You know, I've been wondering... maybe those Urchins were just cold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Grunda's cloak from the Urchin cave."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Grunda's cloak from the Urchin cave."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Ostrak: Gorvane, a boastful master smith, lost his Fire Cloak to the Imps of the lava tubes west of town.",
+   "names": {
+    "Ostrak": "place",
+    "Mount Krell": "place",
+    "Old Foundry": "place",
+    "Great Furnace": "place",
+    "Fire Pools": "place",
+    "Slag Gate": "place",
+    "Ash Caves": "place",
+    "Deep Shaft": "place",
+    "Cracked Anvil": "place",
+    "Malgrath": "person",
+    "Gavrik": "person",
+    "Brugo": "person",
+    "Yorga": "person",
+    "Quilla": "person",
+    "Gorvane": "person",
+    "Magra": "person",
+    "Toller": "person",
+    "Fennick": "person",
+    "Orsk": "person",
+    "Grisp": "person",
+    "Dagny": "person",
+    "Rhun": "person",
+    "Torvic": "person",
+    "Hobb": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Guild": "group",
+    "Fire Cloak": "thing",
+    "Guild Hammer": "thing",
+    "Spell Book": "thing",
+    "Steel Shield": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorvane",
+     "text": "Worry not, young sir, I have the whole matter well in hand. The Imps may hide my Fire Cloak wherever they please, it makes no difference to me.\n\nBut then I shall forge a blade so fine that no thief dares stand before it.\n\nOnce those Imps see it, they shall know why I am called the Master of Ostrak.\n\nStill... their den is in the lava tubes west of town. Will you fetch my cloak back for me?"
+    },
+    "refusal": {
+     "speaker": "Gorvane",
+     "text": "Fine, the cloak can wait."
+    },
+    "reminder": {
+     "speaker": "Gorvane",
+     "text": "You there! Hello!? This is my forge. Where is my cloak?"
+    },
+    "completion": {
+     "speaker": "Gorvane",
+     "text": "Ah, there it is. This is one of the finest pieces ever made in Ostrak: my own Fire Cloak.\n\nI made it myself for working the big furnace. Here, take this Spell Book. It will come in handy at the Old Foundry should you run into Malgrath's Ember Demons."
+    },
+    "after": {
+     "speaker": "Gorvane",
+     "text": "Ah, you're back again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Win back Gorvane's Fire Cloak from the Imps!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Win back Gorvane's Fire Cloak from the Imps!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow Crossing: Marga, an old woman of the hamlet; the Imps of the old windmill stole her amulet.",
+   "names": {
+    "Tarrow Crossing": "place",
+    "Tarrow": "place",
+    "Copper Kettle": "place",
+    "Town Hall": "place",
+    "Fort Grimmock": "place",
+    "Thistle Wood": "place",
+    "Gorbash": "person",
+    "Vardis": "person",
+    "Pellam": "person",
+    "Thurl": "person",
+    "Ottmar": "person",
+    "Marga": "person",
+    "Bodrick": "person",
+    "Gundar": "person",
+    "Grizelda": "person",
+    "Hobart": "person",
+    "Fitch": "person",
+    "Dorlise": "person",
+    "Corby": "person",
+    "Fenna": "person",
+    "Pimm": "person",
+    "Jory": "person",
+    "Ogres": "group",
+    "Bears": "group",
+    "Grizzly": "group",
+    "Imps": "group",
+    "Spiders": "group",
+    "Troll": "group",
+    "Ankh": "thing",
+    "Longsword": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Marga",
+     "text": "Search the old windmill from top to bottom if you have to. If you want a torch or a rope, you can take the ones hanging by my door. The windmill is just up the west road. Will you bring my amulet back from those Imps?"
+    },
+    "refusal": {
+     "speaker": "Marga",
+     "text": "Fine, don't help an old woman. I'm doomed."
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "Hail Bodrick, one more hero off to fight the Imps."
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wonderful, my amulet. Here, have a couple of these."
+    },
+    "after": {
+     "speaker": "Marga",
+     "text": "Thanks again for your trouble! All of Tarrow Crossing will hear about your courage!\n\nBless you for your kindness!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight your way into the old windmill and recover Marga's amulet from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fight your way into the old windmill and recover Marga's amulet from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tullin: Old Fendra's magic staff was taken by the Imps down into the old well west of the barns.",
+   "names": {
+    "Tullin": "place",
+    "Skarr Ridge": "place",
+    "Grange Hall": "place",
+    "Muddy Boot": "place",
+    "Ogres": "group",
+    "Imps": "group",
+    "Tullin Watch": "group",
+    "Gorrumph": "person",
+    "Brannoch": "person",
+    "Gromwell": "person",
+    "Hessa": "person",
+    "Barlo": "person",
+    "Fendra": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Joss": "person",
+    "Wobbin": "person",
+    "Dorrick": "person",
+    "Mirrin": "person",
+    "Sneed": "person",
+    "Bartolf": "person",
+    "Pottle": "person",
+    "Nella": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fendra",
+     "text": "My eyes may be going, but I still know who robbed me, those wretched Imps. They took my magic staff, older than me, down into the old well west of the barns.\n\nWill you fetch it back for me, lad?"
+    },
+    "refusal": {
+     "speaker": "Fendra",
+     "text": "The well is out past the barns. Just follow the cart track."
+    },
+    "reminder": {
+     "speaker": "Fendra",
+     "text": "Well... I see you came back with empty hands. Keep looking, lad."
+    },
+    "completion": {
+     "speaker": "Fendra",
+     "text": "Thank you. I never could have got it back on my own. Please, take this Ankh for your trouble."
+    },
+    "after": {
+     "speaker": "Fendra",
+     "text": "Thanks again, young sir. You have done an old woman a great kindness, one I won't soon forget..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fendra's magic staff from the Imps in the old well."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Fendra's magic staff from the Imps in the old well."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  }
+ ]
+}

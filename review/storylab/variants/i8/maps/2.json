@@ -1,0 +1,248 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Krennack",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Urgrubb and his Ogres have come up out of the deep tunnels and seized the Great Lift, cutting Krennack off from the surface.",
+  "names": {
+   "Krennack": "place",
+   "Urgrubb": "person",
+   "Ogres": "group",
+   "Grunts": "group",
+   "Corvane": "person",
+   "Great Lift": "place",
+   "Pit Office": "place",
+   "Pit": "place",
+   "Brakkus": "person",
+   "Stobb": "person",
+   "Toskel": "person",
+   "Troll": "group",
+   "Counting House": "place",
+   "Mining Council": "group",
+   "Fennick": "person",
+   "Singing Pick": "thing",
+   "Imps": "group",
+   "West Shaft": "place",
+   "Jory": "person",
+   "Ma": "person",
+   "Pa": "person",
+   "Enchanted Rolling Pin": "thing",
+   "East Shaft": "place",
+   "Bats": "group",
+   "Shift Bell": "thing",
+   "Vell": "person",
+   "Duggles": "person",
+   "Gant": "person",
+   "Mirri": "person",
+   "Dolla": "person",
+   "Tobbs": "person",
+   "Broken Pick": "place",
+   "Hurlo": "person",
+   "Zilva": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Stobb, the guard at the lift lever by the Pit Office, before and after the Great Lift is retaken.",
+   "names": {"Stobb": "person", "Brakkus": "person", "Pit Office": "place", "Great Lift": "place", "Ogres": "group"},
+   "parts": {
+    "first": {
+     "speaker": "Stobb",
+     "text": "Where have you been? The Foreman has been asking for you all morning! You'd best get over to the Pit Office if you ever want to see the Great Lift running again. The Ogres won't leave by themselves."
+    },
+    "again": {
+     "speaker": "Stobb",
+     "text": "Get away from that lift lever, lad! Unless you WANT to go down the hard way!"
+    },
+    "later": {
+     "speaker": "Stobb",
+     "text": "Hey, you should get a helmet before you go back down the Great Lift."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Warden Toskel must by order of the Mining Council evict a Troll squatting in the old Counting House, and would rather anyone else did it.",
+   "names": {"Toskel": "person", "Mining Council": "group", "Troll": "group", "Counting House": "place", "Ogres": "group", "Great Lift": "place"},
+   "parts": {
+    "offer": {
+     "speaker": "Toskel",
+     "text": "Ahem. You there, stranger. The Mining Council has ordered that the Troll squatting in the old Counting House be evicted at once. As Warden, the duty falls to me.\n\nI have the notice right here, signed and sealed. But that Troll is the biggest, smelliest lout ever to set foot in Krennack! Ever since the Ogres took the Great Lift, every brute in the mountain thinks he can just move in!\n\nThe Counting House is at the east end of town. Get that Troll out of there, by whatever means you like, and the Council will see you rewarded."
+    },
+    "reminder": {
+     "speaker": "Toskel",
+     "text": "It's not every day we get a Troll for a neighbor."
+    },
+    "completion": {
+     "speaker": "Toskel",
+     "text": "Excellent work! The Counting House is fit for honest folk again, and I never had to set one foot inside!\n\nOn behalf of the Mining Council, I present you with this shield. Wear it with pride!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Evict the Troll squatting in the old Counting House."
+    }
+   },
+   "reward": {"gold": 0, "items": ["WoodenShield"]}
+  },
+  "heirloom_fetch": {
+   "specifics": "Fennick the prospector cannot find a scrap of ore without his Singing Pick, which the Imps snatched from his hands.",
+   "names": {"Fennick": "person", "Singing Pick": "thing", "Imps": "group", "West Shaft": "place"},
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Gone! My Singing Pick is gone! Those wretched Imps snatched it right out of my hands while I was eating my lunch!\n\nWithout that pick I couldn't find gold in a goldsmith's shop! I'm ruined!\n\nThe Imps have a nest down the old West Shaft. Will you get my pick back for me, young sir?"
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "You've made up your mind then. Sorry the Imps aren't in the habit of giving things back."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "One of the cart boys heard singing from the Imp nest. You just have to follow it!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My pick! Listen to her sing! I never thought I'd hear that sweet sound again! Here, take this gold, with an old man's thanks!"
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Thanks again for helping a poor broke old digger."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Imps have stolen Fennick's Singing Pick -- hunt them down and bring it back!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Imps have stolen Fennick's Singing Pick -- hunt them down and bring it back!"
+    }
+   },
+   "reward": {"gold": 100, "items": []}
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Old Gant with a pointer, Mirri worrying about the Ogres, Dolla in a fright.",
+   "names": {"Gant": "person", "Mirri": "person", "Dolla": "person", "Brakkus": "person", "Pit Office": "place", "Krennack": "place", "Ogres": "group"},
+   "parts": {
+    "rumour1": {
+     "speaker": "Gant",
+     "text": "Foreman Brakkus is over at the Pit Office. He keeps the keys to every shaft in Krennack."
+    },
+    "rumour2": {
+     "speaker": "Mirri",
+     "text": "How can a town of miners fight off Ogres? This is a disaster! What will become of us?"
+    },
+    "rumour3": {
+     "speaker": "Dolla",
+     "text": "Oh No! An Ogre! Hide the gold!"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Tobbs of the Broken Pick inn, Hurlo the smith, Zilva the cross old witch of the magic shop.",
+   "names": {"Tobbs": "person", "Broken Pick": "place", "Hurlo": "person", "Zilva": "person"},
+   "parts": {
+    "inn": {
+     "speaker": "Tobbs",
+     "text": "You look like you've been down the shafts too long, friend."
+    },
+    "arms": {
+     "speaker": "Hurlo",
+     "text": "Are you a new hire for the mines?"
+    },
+    "magic": {
+     "speaker": "Zilva",
+     "text": "Word gets around. Get out, before I hex the beard off your chin!"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Foreman Brakkus wants the Shift Bell back from the Ogres so his men can go home. Jory must have Ma's Enchanted Rolling Pin back on its hook before she comes home tonight, and pays with Pa's sword.",
+   "names": {"Brakkus": "person", "Shift Bell": "thing", "Ogres": "group", "Great Lift": "place", "Pit Office": "place", "Jory": "person", "Ma": "person", "Pa": "person", "Enchanted Rolling Pin": "thing", "Bats": "group", "East Shaft": "place"},
+   "parts": {
+    "offer_a": {
+     "speaker": "Brakkus",
+     "text": "It's a disgrace! The Ogres have carried off the Shift Bell!\n\nWithout that bell nobody knows when a shift is over. Half my men haven't come up for supper in days, and their wives are ready to skin me alive!\n\nThe brutes took it down to their camp below the Great Lift. Bring the bell back to the Pit Office and I'll see you're paid."
+    },
+    "offer_b": {
+     "speaker": "Jory",
+     "text": "Hey! You! C'mere a second!\n\nI'm in big trouble. I borrowed Ma's Enchanted Rolling Pin to swat Bats down the old East Shaft, and... well... I dropped it down a crack.\n\nMa comes home tonight! If that pin isn't on its hook when she walks in, I'm a dead man! Fetch it for me and I'll give you Pa's old sword. He'll never notice it's gone!"
+    },
+    "outcome_a": {
+     "speaker": "Brakkus",
+     "text": "The Shift Bell! Ring it! Ring it loud! Now my men can finally go home and eat!\n\nThank you, lad. Here's 100 gold from the company strongbox. Spend it well!"
+    },
+    "outcome_b": {
+     "speaker": "Jory",
+     "text": "Ma's pin! Not a dent on it! Oh, you saved my hide, stranger!\n\nHere's Pa's sword, like I promised. If anybody asks, you found it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Return the stolen Shift Bell to Foreman Brakkus at the Pit Office."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Ma's Enchanted Rolling Pin for Jory."
+    }
+   },
+   "reward": {"gold": 100, "items": ["Longsword"]}
+  },
+  "rescue": {
+   "specifics": "Granny Vell's pet mole Duggles dug his way into the Ogre camp under the Great Lift.",
+   "names": {"Vell": "person", "Duggles": "person", "Ogres": "group", "Great Lift": "place"},
+   "parts": {
+    "plea": {
+     "speaker": "Vell",
+     "text": "Help! Oh, somebody help me! My Duggles dug his way right into the Ogre camp under the Great Lift!\n\nThose brutes will eat anything that wriggles! My sweet little mole will end up in an Ogre's stew pot!\n\nPlease, kind stranger, find my Duggles and bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Vell",
+     "text": "By the way, Duggles always squeaks when he's frightened..."
+    },
+    "found": {
+     "speaker": "Duggles",
+     "text": "Salutations, kind sir! I am most relieved you have come at long last!"
+    },
+    "following": {
+     "speaker": "Duggles",
+     "text": "Lead on! *SNUFFLE*"
+    },
+    "completion": {
+     "speaker": "Vell",
+     "text": "Duggles! My precious Duggles! You're home, you're home!\n\nBless you, kind stranger. Please accept this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Granny Vell's pet mole home from the Ogre camp."
+    }
+   },
+   "reward": {"gold": 0, "items": ["AnkhTradable"]}
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Foreman Brakkus at the Pit Office, who sends him down the old service tunnel after Urgrubb's Ogres at the Great Lift.",
+   "names": {"Gant": "person", "Brakkus": "person", "Pit Office": "place", "Corvane": "person", "Urgrubb": "person", "Ogres": "group", "Great Lift": "place", "Krennack": "place"},
+   "parts": {
+    "herald": {
+     "speaker": "Gant",
+     "text": "Those Ogres never would have taken the Great Lift if Foreman Brakkus had been on the lever! Go and find him at the Pit Office."
+    },
+    "opening": {
+     "speaker": "Brakkus",
+     "text": "Ah, there you are! Corvane said you'd be along. Good. We need you, lad.\n\nUrgrubb and his Ogres came up out of the deep tunnels and seized the Great Lift! We can't get ore up or food down, and the whole town is going hungry!\n\nTake this key. It opens the old service tunnel at the south end of the Pit. Get down to the Great Lift and drive Urgrubb out. Krennack is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Brakkus",
+     "text": "Oi! Hello!? This is a mine office, not an inn. Shouldn't you be at the Lift?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Foreman Brakkus has given you the service tunnel key, but Urgrubb's Ogres still hold the Great Lift. Maybe the old tunnel is another way down..."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

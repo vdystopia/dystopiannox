@@ -1,0 +1,268 @@
+{
+ "iter": "i8",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Kesk",
+  "setting": "a lake village of fishermen",
+  "trouble": "The Necromancer Skarn has taken the old keep on Gull Island and each night sends the drowned dead of Lake Murl ashore into Kesk.",
+  "names": {
+   "Kesk": "place",
+   "Lake Murl": "place",
+   "Gull Island": "place",
+   "Drowned Chapel": "place",
+   "Tolbek": "person",
+   "Skarn": "person",
+   "Hobbrig": "person",
+   "Dorvic": "person",
+   "Tull": "person",
+   "Gribble": "person",
+   "Wessa": "person",
+   "Bodrik": "person",
+   "Kurlow": "person",
+   "Marla": "person",
+   "Beaky": "person",
+   "Selka": "person",
+   "Ostwin": "person",
+   "Pellik": "person",
+   "Agna": "person",
+   "Yarnoth": "person",
+   "Fennic": "person",
+   "Fishing Amulet": "thing",
+   "Ear Horn": "thing",
+   "Undead": "group",
+   "Urchins": "group",
+   "Giant Leeches": "group",
+   "Troll": "group",
+   "Ghost": "group",
+   "Zombies": "group",
+   "Necromancer": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Dorvic at the causeway gate of Kesk, with his fellow guard Tull.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Dorvic",
+     "text": "Tull, here is one more brave soul who wishes to go swimming with Skarn's dead men!"
+    },
+    "again": {
+     "speaker": "Dorvic",
+     "text": "Fine. Off you go. Mind the water."
+    },
+    "later": {
+     "speaker": "Dorvic",
+     "text": "You ran from a dead fisherman!? You're useless! Now back to the gate! You make me ill!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gribble, a fisherman who cannot abide leeches, wants the Giant Leeches cleared from the shallows by his nets.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Gribble",
+     "text": "Leeches! Giant Leeches! They've crawled up into the shallows where I keep my nets!\n\nI can't abide the things. One look and I go weak at the knees! These slimy bloodsuckers will be the death of me!\n\nA fisherman who can't go near the water... Please, kill them all. My nets are at the south end of the beach. I'll pay you well!"
+    },
+    "reminder": {
+     "speaker": "Gribble",
+     "text": "Did you kill the Leeches?"
+    },
+    "completion": {
+     "speaker": "Gribble",
+     "text": "No more Leeches? Truly? Oh, bless you! I can go back to my nets!\n\nHere, 100 gold pieces, just as I promised. You've saved a poor man's living, brave Adventurer."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches to free the nets of Gribble."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wessa needs her Fishing Amulet, stolen off her boat by the Urchins, to win the Mayor's fishing contest.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Wessa",
+     "text": "Rotten little thieves! The Urchins came in the night and took my Fishing Amulet right off my boat!\n\nThe Mayor's fishing contest is in a few days. Without that amulet I won't catch a thing! It makes the fish practically leap into the net. Well... it's not cheating if nobody finds out.\n\nTheir caves are up on the north shore. Will you get it back for me?"
+    },
+    "refusal": {
+     "speaker": "Wessa",
+     "text": "Not feeling brave enough yet, eh? No matter, the contest isn't till the end of the week. If you change your mind, just come and find me."
+    },
+    "reminder": {
+     "speaker": "Wessa",
+     "text": "The Urchin caves are up past the big rock, you can't miss them."
+    },
+    "completion": {
+     "speaker": "Wessa",
+     "text": "My amulet! Oh, you wonderful thing! Those fish don't stand a chance now!\n\nHere, take this Ankh as a token of my appreciation. And not a word to anyone about the contest!"
+    },
+    "after": {
+     "speaker": "Wessa",
+     "text": "Old Tolbek came by asking after you. He says he'll be waiting at the end of the long pier."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wessa's Fishing Amulet!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "The Fishing Amulet is back with Wessa."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three folk of Kesk: Fennic, Agna and Yarnoth.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Fennic",
+     "text": "There is a weapon smith next to Selka's inn."
+    },
+    "rumour2": {
+     "speaker": "Agna",
+     "text": "So you're the one who cleared out those slimy Leeches! Bless you, stranger!"
+    },
+    "rumour3": {
+     "speaker": "Yarnoth",
+     "text": "We must take up our oars and send those dead things back to the bottom of the lake!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Selka keeps the inn, Ostwin the smith sells arms, Pellik sells potions and scrolls.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Selka",
+     "text": "I trust you'll be wanting a bed before dark, kind sir. Nobody in Kesk sleeps out of doors with the dead walking about."
+    },
+    "arms": {
+     "speaker": "Ostwin",
+     "text": "Sorry, I don't sell swords to fishermen."
+    },
+    "magic": {
+     "speaker": "Pellik",
+     "text": "The dead came up out of the lake again. Need a potion?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Dockmaster Bodrik gives a boat for proof the Troll under the east pier is dead; old deaf Kurlow will row the player to Gull Island if he gets his Ear Horn back from a Ghost.",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Bodrik",
+     "text": "Nobody takes a boat out of Kesk without my leave. Mayor's orders, with the Undead about.\n\nBut I'll make you a bargain. A Troll has moved in under the east pier and eats anything that floats past. It ate my best rowboat, oars and all! Kill it and bring me one of its teeth as proof. Then the boat is yours."
+    },
+    "offer_b": {
+     "speaker": "Kurlow",
+     "text": "Eh? What's that? Speak up!\n\nA Ghost snatched my Ear Horn right out of my hand while I was napping in the old net house! Now I can't hear a blessed thing!\n\nYou want to get out to the island? Hah! Bodrik's boats aren't going anywhere. Bring back my Ear Horn and I'll row you across myself!"
+    },
+    "outcome_a": {
+     "speaker": "Bodrik",
+     "text": "That's a Troll's tooth, sure enough! Ugh, what a smell.\n\nThe boat at the east pier is yours. Take this Steel Shield too -- you'll need it on the island."
+    },
+    "outcome_b": {
+     "speaker": "Kurlow",
+     "text": "WHAT?! No need to shout, I can hear you fine!\n\nHah! My Ear Horn! Now I can hear the gulls again! Come on, get in the boat. I'll row you out to the island before Bodrik even wakes up!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Show Dockmaster Bodrik proof that the Troll is dead."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Old Kurlow's Ear Horn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Marla's pet parrot Beaky flew off when the Undead came ashore and is stuck in the Drowned Chapel among the Zombies.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Marla",
+     "text": "Beaky! My poor Beaky!\n\nHe flew off when the dead men came ashore last night, and now he's stuck in the old Drowned Chapel at the west end of the lake! I can hear him squawking from here!\n\nThose Zombies will pluck him bald! Please, kind stranger, bring my Beaky home!"
+    },
+    "reminder": {
+     "speaker": "Marla",
+     "text": "Oh, it's you again. Have you found my Beaky?"
+    },
+    "found": {
+     "speaker": "Beaky",
+     "text": "Awk! Sorry but you need a cracker!"
+    },
+    "following": {
+     "speaker": "Beaky",
+     "text": "The water down here is even deeper than it looks. Awk! Be very, very careful. Remember, Beaky is a good bird."
+    },
+    "completion": {
+     "speaker": "Marla",
+     "text": "Beaky! Oh, you're home! Mama's been worried sick!\n\nThank you, thank you, kind sir! Take these potions, it's all I have. Say thank you, Beaky!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue the parrot of Marla the net-maker."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fennic points the player to Mayor Hobbrig, who sends him to Gull Island to stop the Necromancer Skarn.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Fennic",
+     "text": "You must see Mayor Hobbrig before the sun goes down. Our village must not fall to those walking dead!"
+    },
+    "opening": {
+     "speaker": "Hobbrig",
+     "text": "Ah! You must be the one Tolbek sent! At last!\n\nA Necromancer named Skarn has taken the old keep on Gull Island. Every night he calls our drowned fishermen up out of the lake and sends them shambling into Kesk! It is a horror beyond words!\n\nYou must go to the island and put an end to this madness. Bodrik keeps the boats down at the docks. Hurry, lad -- before the sun goes down again!"
+    },
+    "reminder": {
+     "speaker": "Hobbrig",
+     "text": "The island? Get a boat from the docks and row straight out toward the keep.."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a boat to Gull Island and defeat Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

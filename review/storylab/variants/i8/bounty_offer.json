@@ -1,0 +1,597 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i8",
+ "writer": "one writer a town (variants/i8/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ulric the shepherd blew a peddler's sheep horn and called every wolf in the Ashwood down on his fold.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Ulric": "person",
+    "Wenna": "person",
+    "Tobin": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Oh, what have I done?! What have I done!\n\nA peddler sold me a horn for calling my sheep home. I blew it once, and every wolf in the Ashwood came running down on my fold! These wolves will be the death of me!\n\nKill them, young sir. They lurk in the trees just behind my house. I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "I still hear that howling. You going?"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Not a howl out there! They're really gone?! Bless you!\n\nHere, take this bow. And if you're headed north, see Halvard in the Moot Hall. He has worse trouble than mine."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the wolves at Ulric's fold and drive them off."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Krennack: Warden Toskel must by order of the Mining Council evict a Troll squatting in the old Counting House, and would rather anyone else did it.",
+   "names": {
+    "Krennack": "place",
+    "Urgrubb": "person",
+    "Ogres": "group",
+    "Grunts": "group",
+    "Corvane": "person",
+    "Great Lift": "place",
+    "Pit Office": "place",
+    "Pit": "place",
+    "Brakkus": "person",
+    "Stobb": "person",
+    "Toskel": "person",
+    "Troll": "group",
+    "Counting House": "place",
+    "Mining Council": "group",
+    "Fennick": "person",
+    "Singing Pick": "thing",
+    "Imps": "group",
+    "West Shaft": "place",
+    "Jory": "person",
+    "Ma": "person",
+    "Pa": "person",
+    "Enchanted Rolling Pin": "thing",
+    "East Shaft": "place",
+    "Bats": "group",
+    "Shift Bell": "thing",
+    "Vell": "person",
+    "Duggles": "person",
+    "Gant": "person",
+    "Mirri": "person",
+    "Dolla": "person",
+    "Tobbs": "person",
+    "Broken Pick": "place",
+    "Hurlo": "person",
+    "Zilva": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Toskel",
+     "text": "Ahem. You there, stranger. The Mining Council has ordered that the Troll squatting in the old Counting House be evicted at once. As Warden, the duty falls to me.\n\nI have the notice right here, signed and sealed. But that Troll is the biggest, smelliest lout ever to set foot in Krennack! Ever since the Ogres took the Great Lift, every brute in the mountain thinks he can just move in!\n\nThe Counting House is at the east end of town. Get that Troll out of there, by whatever means you like, and the Council will see you rewarded."
+    },
+    "reminder": {
+     "speaker": "Toskel",
+     "text": "It's not every day we get a Troll for a neighbor."
+    },
+    "completion": {
+     "speaker": "Toskel",
+     "text": "Excellent work! The Counting House is fit for honest folk again, and I never had to set one foot inside!\n\nOn behalf of the Mining Council, I present you with this shield. Wear it with pride!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Evict the Troll squatting in the old Counting House."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WoodenShield"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Skell: Thurlo, deathly afraid of leeches, sits on his roof since Giant Leeches nested under his hut.",
+   "names": {
+    "Skell": "place",
+    "Vashtor": "person",
+    "Orvel": "person",
+    "Mayor Pellum": "person",
+    "Warden Brodd": "person",
+    "Tolly": "person",
+    "Gubbin": "person",
+    "Thurlo": "person",
+    "Ysolt": "person",
+    "Marda": "person",
+    "Bodkin": "person",
+    "Father Ambrus": "person",
+    "Mother Hesk": "person",
+    "Krell": "person",
+    "Oggin": "person",
+    "Wendle": "person",
+    "Corra": "person",
+    "Grume": "person",
+    "Tibbet": "person",
+    "Sunken Temple": "place",
+    "Krell's Forge": "place",
+    "Muddy Mug": "place",
+    "Moon Amulet": "thing",
+    "Silver Bell": "thing",
+    "Zombies": "group",
+    "Ogres": "group",
+    "Ogre Chief": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thurlo",
+     "text": "Up here! Up on the roof! Giant Leeches have crawled out of the swamp and nested under my hut! I can't stand the things! I'd sooner kiss an Ogre than feel one of those slimy bloodsuckers on me!\n\nEver since Vashtor came, the water's been crawling with them. The nest is under the floor, on the east side. Kill every last one and I'll make it worth your while! I'm not coming down till they're gone!"
+    },
+    "reminder": {
+     "speaker": "Thurlo",
+     "text": "Those Leeches grow fat on warm blood, which they suck from the legs of anyone who wades in the black water underneath my poor hut."
+    },
+    "completion": {
+     "speaker": "Thurlo",
+     "text": "Oh, thank goodness! I can come down at last! You've saved my life, kind sir!\n\nHere, take my leather boots as a token of my appreciation. I'm never setting foot in that water again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the nest under Thurlo's hut and kill the Leeches."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varrok: Gessa's bathhouse is ruined because a gang of Rogues from the old quarry steals all her soap and towels every night.",
+   "names": {
+    "Varrok": "place",
+    "Grukk": "person",
+    "Dorran": "person",
+    "Grisholm": "person",
+    "Bolk": "person",
+    "Gessa": "person",
+    "Pruett": "person",
+    "Brenik": "person",
+    "Pogg": "person",
+    "Lunk": "person",
+    "Hesk": "person",
+    "Wobbin": "person",
+    "Tibbet": "person",
+    "Brask": "person",
+    "Quillon": "person",
+    "Lissa": "person",
+    "Pellam": "person",
+    "the Keep": "place",
+    "the Stone Bridge": "place",
+    "the east postern": "place",
+    "the old quarry": "place",
+    "the Urchin caves": "place",
+    "the Ogre camp": "place",
+    "the south woods": "place",
+    "the moonstone amulet": "thing",
+    "the pay chest": "thing",
+    "Ogres": "group",
+    "Rogues": "group",
+    "Urchins": "group",
+    "Urchin Shaman": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gessa",
+     "text": "Thieves! Thieves in my bathhouse!\n\nEvery night a gang of Rogues creeps in and carries off all my soap and towels. Those miserable rascals will be the ruin of me! The soldiers stink to high heaven, and nobody pays for a bath without soap!\n\nThe Rogues hide out in the old quarry west of town. Run them off for good and I'll pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Gessa",
+     "text": "It is high time you got moving, lad, those Rogues get bolder every night."
+    },
+    "completion": {
+     "speaker": "Gessa",
+     "text": "Gone? The Rogues are really gone?! Oh, happy day! Tonight every soldier in Varrok gets a proper bath!\n\nHere's 100 gold, as promised. You've saved my business, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rout the soap thieves."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kesk: Gribble, a fisherman who cannot abide leeches, wants the Giant Leeches cleared from the shallows by his nets.",
+   "names": {
+    "Kesk": "place",
+    "Lake Murl": "place",
+    "Gull Island": "place",
+    "Drowned Chapel": "place",
+    "Tolbek": "person",
+    "Skarn": "person",
+    "Hobbrig": "person",
+    "Dorvic": "person",
+    "Tull": "person",
+    "Gribble": "person",
+    "Wessa": "person",
+    "Bodrik": "person",
+    "Kurlow": "person",
+    "Marla": "person",
+    "Beaky": "person",
+    "Selka": "person",
+    "Ostwin": "person",
+    "Pellik": "person",
+    "Agna": "person",
+    "Yarnoth": "person",
+    "Fennic": "person",
+    "Fishing Amulet": "thing",
+    "Ear Horn": "thing",
+    "Undead": "group",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Troll": "group",
+    "Ghost": "group",
+    "Zombies": "group",
+    "Necromancer": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gribble",
+     "text": "Leeches! Giant Leeches! They've crawled up into the shallows where I keep my nets!\n\nI can't abide the things. One look and I go weak at the knees! These slimy bloodsuckers will be the death of me!\n\nA fisherman who can't go near the water... Please, kill them all. My nets are at the south end of the beach. I'll pay you well!"
+    },
+    "reminder": {
+     "speaker": "Gribble",
+     "text": "Did you kill the Leeches?"
+    },
+    "completion": {
+     "speaker": "Gribble",
+     "text": "No more Leeches? Truly? Oh, bless you! I can go back to my nets!\n\nHere, 100 gold pieces, just as I promised. You've saved a poor man's living, brave Adventurer."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches to free the nets of Gribble."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Pellock, a teacher at the College, wants the Wisps of Bramble Orchard destroyed: they burned off his beard while he napped.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Great Library": "place",
+    "South Gate": "place",
+    "Gloomfen": "place",
+    "Malgrin's Tower": "place",
+    "Ogre Camp": "place",
+    "Bramble Orchard": "place",
+    "Old Quarry": "place",
+    "Old Mill": "place",
+    "Crag Hill": "place",
+    "Bat Caves": "place",
+    "Inkpot": "place",
+    "Golden Quill": "thing",
+    "Teleport": "thing",
+    "Ogres": "group",
+    "Wisps": "group",
+    "Urchins": "group",
+    "Malgrin": "person",
+    "Vandell": "person",
+    "Tollund": "person",
+    "Brusk": "person",
+    "Pellock": "person",
+    "Hesk": "person",
+    "Dilly": "person",
+    "Orlo": "person",
+    "Gasper": "person",
+    "Mossop": "person",
+    "Dorgle": "person",
+    "Yselda": "person",
+    "Elspen": "person",
+    "Gimble": "person",
+    "Wobbin": "person",
+    "Nettle": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellock",
+     "text": "Don't look at my chin! Don't you dare look at it!\n\nThose Wisps from Bramble Orchard set my beard on fire while I was napping under the apple trees! Years to grow it, and gone in one puff! The students giggle every time I walk into class. These blasted Wisps are worse than a plague of rats!\n\nGo out to the orchard, east of the College, and put out every last one of them. I'll pay you well."
+    },
+    "reminder": {
+     "speaker": "Pellock",
+     "text": "Why are you standing around?"
+    },
+    "completion": {
+     "speaker": "Pellock",
+     "text": "The Wisps are gone? Ha! Now my beard can grow back in peace!\n\nThank you, stranger. Here are 100 gold pieces and a Spell Book. Spend them wisely!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go out to Bramble Orchard and destroy the Wisps."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Ulmgard: Hedda's Pa comes home from patrol tomorrow, and the White Wolves of the Ice Caves dragged off his lucky long johns from the east wall.",
+   "names": {
+    "Ulmgard": "place",
+    "Upper Gate": "place",
+    "Low Gate": "place",
+    "Glacier Tombs": "place",
+    "Ice Caves": "place",
+    "Signal Tower": "place",
+    "Cold Kettle": "place",
+    "Hask": "person",
+    "Galmor": "person",
+    "Dromund": "person",
+    "Ostrag": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Hedda": "person",
+    "Tibbet": "person",
+    "Brannoc": "person",
+    "Krell": "person",
+    "Mildra": "person",
+    "Mungo": "person",
+    "Bodo": "person",
+    "Gorm": "person",
+    "Yorla": "person",
+    "Undead": "group",
+    "White Wolves": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hedda",
+     "text": "Kind sir! Kind sir, wait! I'm in terrible trouble! Pa's lucky long johns are gone! I hung them on the east wall to dry and a pack of White Wolves made off with them!\n\nPa comes home from patrol tomorrow and he won't stand a single watch without them. These mangy beasts are worse than a blizzard!\n\nPlease, go down to their den below the east wall and get rid of those wolves. I'll pay you well for it."
+    },
+    "reminder": {
+     "speaker": "Hedda",
+     "text": "One of the soldiers -- with a nasty cough -- says he saw those wolves slink into the caves under the wall. Maybe Pa's long johns are down there too!"
+    },
+    "completion": {
+     "speaker": "Hedda",
+     "text": "You did it?! The wolves are really gone? And Pa's long johns too! Oh, thank you, thank you!\n\nHere, take this gold, with my thanks. Pa will never know a thing!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the White Wolves out of the Ice Caves."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Kalgarr: Pelgrim, a smith, had his wig snatched off his head in the street by the Bats of the Old Smelter and wants them driven out.",
+   "names": {
+    "Kalgarr": "place",
+    "Malgrith": "person",
+    "Mardock": "person",
+    "Hadric": "person",
+    "Tibbet": "person",
+    "Pelgrim": "person",
+    "Fusk": "person",
+    "Orsolde": "person",
+    "Grizzel": "person",
+    "Lumpkin": "person",
+    "Yarra": "person",
+    "Quell": "person",
+    "Brix": "person",
+    "Dorla": "person",
+    "Bulba": "person",
+    "Hobb": "person",
+    "Zibbet": "person",
+    "Deep Furnace": "place",
+    "Mount Skarl": "place",
+    "Forge Hall": "place",
+    "Mine Gate": "place",
+    "Old Smelter": "place",
+    "Ash Pits": "place",
+    "Cinder Hills": "place",
+    "Burning Caves": "place",
+    "Guild": "group",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Shade": "group",
+    "Fire Amulet": "thing",
+    "Hammer of Kalgarr": "thing",
+    "Cell Key": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pelgrim",
+     "text": "Don't you laugh! Don't you dare laugh! I was walking home past the Old Smelter when a swarm of Bats came screeching out and snatched the wig clean off my head! In front of the whole street!\n\nI'll never show my face at the forge again! They roost inside the place, west of the town well. Drive them out and I'll pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Pelgrim",
+     "text": "That roost of Bats is a curse beyond compare and will even pluck the hair right off an honest smith's head."
+    },
+    "completion": {
+     "speaker": "Pelgrim",
+     "text": "My wig! You found my wig too! Oh, I'm a new man! Here -- 90 gold, as I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bats from their roost in the Old Smelter."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Torvel: Old Pell cannot use his outhouse: a Bear has come down from the hills and moved in.",
+   "names": {
+    "Torvel": "place",
+    "Crooked Crown": "place",
+    "Toll House": "place",
+    "Varga Tower": "place",
+    "Pitch Caves": "place",
+    "Hollow Wood": "place",
+    "Kelmor": "place",
+    "Grelloch": "place",
+    "Skarn": "person",
+    "Ulbar": "person",
+    "Dremmel": "person",
+    "Brask": "person",
+    "Pell": "person",
+    "Nella": "person",
+    "Gorvin": "person",
+    "Mirra": "person",
+    "Nibbs": "person",
+    "Dorla": "person",
+    "Grumbald": "person",
+    "Bertol": "person",
+    "Hargo": "person",
+    "Quenna": "person",
+    "Tobb": "person",
+    "Wilk": "person",
+    "Amulet of Warding": "thing",
+    "Urchins": "group",
+    "Bear": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pell",
+     "text": "Help! Help! There's a Bear in my outhouse!\n\nThe big hairy brute came down out of the hills and squeezed himself inside, and he won't come out! It's the worst calamity ever to befall an old man!\n\nMy cottage is just west of the inn. Get that Bear out of there, brave Adventurer, and I'll make it worth your while!"
+    },
+    "reminder": {
+     "speaker": "Pell",
+     "text": "You haven't got that Bear out of my outhouse!"
+    },
+    "completion": {
+     "speaker": "Pell",
+     "text": "He's gone?! Really gone? Oh, thank goodness! I've been waiting all morning!\n\nHere, take these Leather Boots as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Pell's yard and chase off the Bear."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Durnhal: Hobart bought a farm cheap and found an Ogre living in the hayloft; he pays to have it driven out.",
+   "names": {
+    "Durnhal": "place",
+    "Garamund": "person",
+    "Ugrash": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Quillon": "person",
+    "Town Hall": "place",
+    "Stone Granary": "place",
+    "Wendt": "person",
+    "Hobart": "person",
+    "Krell": "person",
+    "Posey": "person",
+    "Rain Amulet": "thing",
+    "Bolliver": "person",
+    "Longsword of Sir Bolliver": "thing",
+    "Bunt": "person",
+    "Pie Recipe": "thing",
+    "Grisel": "person",
+    "Tobble": "person",
+    "Hammet": "person",
+    "Fat Turnip": "place",
+    "Ombra": "person",
+    "Bessa": "person",
+    "Mott": "person",
+    "The Harvest": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hobart",
+     "text": "It's an outrage! I've been swindled!\n\nI bought the farm east of the well for next to nothing, and nobody told me an Ogre lives in the hayloft! He eats my cabbages, he snores all night and he won't budge! That brute is worse than a hailstorm!\n\nGet him out of my barn, stranger, and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Hobart",
+     "text": "Pick up whatever weapons you need from Krell the smith and come back when the hayloft is empty."
+    },
+    "completion": {
+     "speaker": "Hobart",
+     "text": "You did it! The hayloft is empty at last! Here, take this Bow, it's yours. Go tell Mayor Quillon -- he said nobody could shift that Ogre!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Ogre out of Hobart's barn in order to earn a reward.\n\nThe Ogre is most likely asleep in the hayloft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

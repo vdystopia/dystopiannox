@@ -1,0 +1,34 @@
+{
+  "packet": "42d85f",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Short, flat warnings and a bit of shop gossip, with a cheap joke about taverns: Nox's ambient-townsfolk register. Lines this thin are hard to fake or to tell apart."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The self-introduction with name and job ('I catch and cage the castle rats to keep the granary safe for the garrison') is too tidy and explanatory for a passer-by. The taunt is Nox-like, but 'gonna' and 'Little lamb' feel imported."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Tall-tale exaggeration ('40 wizards with his bare hands'), naive enthusiasm, and townsfolk prejudice against wizards are classic Westwood colour, with uneven, exclamatory rhythm."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The first line packs a whole quest setup into one speech (who, where, the condition, who to fetch, and a detail about trapping versus stomping). It reads like a brief turned into dialogue. The 'It actually waved!' joke is a little too crafted."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "All three lines hang on one invented trade theme (forge, smiths, furnace), so the place feels tidier than Westwood's scattered chatter. The rhetorical panic ('This is madness! Where will we go?') is generic."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short, close to Nox. But 'Our pitchforks and your courage will repel these foul beasts' is a stock fantasy line, and a directions line plus a bandit jab reads like a set chosen to cover the bases."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Wry, slightly cheeky asides about the villain ('has style', 'a woman in charge') and the 'fools and warriors' quip carry Westwood's dry humour in very few words."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The first line is an over-long exposition dump (the villain's name and title, his island, raising the drowned, the target, a call to watch the shore). The lunatic laugh and the broken 'My nets... torn' feel staged for atmosphere."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The blunt, repetitive logic ('If you're smart you'll leave [Place], too') and the defeatist 'Let them take it, I say' are true to Nox's plain-spoken, slightly cynical villagers."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The double-dash punctuation, the typo ('off you back'), the mayor's comic fear of spiders and the slightly redundant repeat of the spider news are the unpolished marks of original game text."}
+  ],
+  "tells": [
+    "The new texts give each set of three lines one tidy theme (the trade, the threat or the setting) all three fit. Westwood's townsfolk lines are more scattered: unrelated gossip, warnings and jokes side by side.",
+    "The new texts pack a quest's whole exposition (name, title, location, motive, target, instruction) into one townsperson line. Westwood's townsfolk give one fact or one opinion per line.",
+    "Self-introductions that state name and job ('My name is X. I do Y to keep Z safe for W') read as written by design. Westwood's townsfolk rarely introduce themselves this neatly.",
+    "Staged atmospheric devices (ellipsis-broken mourning, maniacal laughter, a skeleton that 'actually waved') feel crafted. Westwood's humour is drier and plainer: tall tales, cynical asides, petty fears.",
+    "Westwood's text keeps small flaws (typos, double-dash punctuation, redundant repeats). The new text is cleaner and more uniformly polished.",
+    "Modern colloquialisms ('gonna') and stock fantasy phrasing ('repel these foul beasts', 'This is madness!') stand out against Westwood's plain register."
+  ]
+}

@@ -1,0 +1,592 @@
+{
+ "scenario": "main_opening",
+ "iter": "i7",
+ "writer": "one writer a town (variants/i7/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points the player to Halvard in the Moot Hall, who sends him past Garrick to Red Corwin's watchtower on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Don't lose heart now, stranger, Halvard is in the Moot Hall and he'll see Corwin's bandits run!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "It's a disaster! The north road is the lifeblood of Brackenford and a band of cutthroats have seized it! Red Corwin and his bandits hold the old watchtower on Crow Hill and I've shut the north gate till they're gone!\n\nA guard named Garrick keeps the gate, at the north end of town. We need you to go past him to Crow Hill and liberate our besieged road."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "It's time you were on your way, lad, Red Corwin gets bolder with every day that passes."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Locate Red Corwin's hideout on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 2,
+   "specifics": "Kal Vorra: Hessa points the player to Foreman Korvald, who got Ozric's letter and sends the player down the big lift after Gezra the Witch in the Deep Shafts.",
+   "names": {
+    "Kal Vorra": "place",
+    "Deep Shafts": "place",
+    "Glimmer Pit": "place",
+    "Sunken Shaft": "place",
+    "Old Guild Hall": "place",
+    "Ulmac": "place",
+    "Scrolls-Galore": "place",
+    "Ruby Amulet": "thing",
+    "Gezra": "person",
+    "Ozric": "person",
+    "Korvald": "person",
+    "Torg": "person",
+    "Pellam": "person",
+    "Fennick": "person",
+    "Wenk": "person",
+    "Hessa": "person",
+    "Dobb": "person",
+    "Gorlo": "person",
+    "Brokka": "person",
+    "Grudd": "person",
+    "Ilva": "person",
+    "Ulda Coppernose": "person",
+    "Snig": "person",
+    "Merra": "person",
+    "Orvo": "person",
+    "Undead": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hessa",
+     "text": "Hello, friend Wanderer. Foreman Korvald is looking for you."
+    },
+    "opening": {
+     "speaker": "Korvald",
+     "text": "Ozric sent you? Yeah, I got his letter. Something of a worrier, that one.\n\nTake the big lift, down past the smelters, into the Deep Shafts. That's where the witch Gezra woke the Undead. Stop her, lad, or Kal Vorra is finished."
+    },
+    "reminder": {
+     "speaker": "Korvald",
+     "text": "Go on. Get in the lift!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down to the Deep Shafts and stop Gezra the Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Velk: Pell points the newcomer to Mayor Quillon in the Stilt House, who sends him north after the Bog Witch Vethra.",
+   "names": {
+    "Velk": "place",
+    "Marsh Folk": "group",
+    "Vethra": "person",
+    "Tolver": "person",
+    "Quillon": "person",
+    "Murrow": "person",
+    "Brask": "person",
+    "Hobb": "person",
+    "Orvane": "person",
+    "Grudd": "person",
+    "Snibb": "person",
+    "Hesper": "person",
+    "Dremmel": "person",
+    "Gorbo": "person",
+    "Fenna": "person",
+    "Tibbalt": "person",
+    "Pell": "person",
+    "Sodge": "person",
+    "Minna": "person",
+    "Bog Mother": "thing",
+    "Sunken Graves": "place",
+    "Stilt House": "place",
+    "Long Walk": "place",
+    "Black Fen": "place",
+    "Hollow Stump": "place",
+    "Drowned Chapel": "place",
+    "Leaky Tub": "place",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "You want Mayor Quillon at the Stilt House, sorry."
+    },
+    "opening": {
+     "speaker": "Quillon",
+     "text": "You know, far too many grim tidings have come up these stilts this past week, and not one of them good! The Sunken Graves have been broken open -- the drowned dead raised by the Bog Witch Vethra! They say too that old Murrow the ferryman was pulled under by a dead man's hand!\n\nTolver sent word you were coming. Go north into the Graves and put an end to that witch!"
+    },
+    "reminder": {
+     "speaker": "Quillon",
+     "text": "By the way, Murrow always said there was a back way into the Graves..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Vethra is raising the drowned dead of the Sunken Graves -- find and destroy her!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Tarbek: Bessa points the player to Commander Brask, who sends him to take back Fort Grenn from Morvane's Undead.",
+   "names": {
+    "Castle Tarbek": "place",
+    "Tarbek": "place",
+    "Morvane": "person",
+    "Ostrik": "person",
+    "Commander Brask": "person",
+    "Brask": "person",
+    "Brogan": "person",
+    "East Gate": "place",
+    "Fort Grenn": "place",
+    "Gallows Hill": "place",
+    "Sergeant Pell": "person",
+    "Pell": "person",
+    "Fennick": "person",
+    "Thornwood": "place",
+    "Black Bears": "group",
+    "Vossel": "person",
+    "Crystal Spyglass": "thing",
+    "Bell Tower": "place",
+    "Imps": "group",
+    "Tibbet": "person",
+    "Gorry": "person",
+    "Bessa": "person",
+    "Hennet": "person",
+    "Broken Pike": "place",
+    "Varnholm": "place",
+    "Thudd": "person",
+    "Morvane's Misery": "thing",
+    "Quilla": "person",
+    "Scrolls Galore": "place",
+    "Paymaster Orrin": "person",
+    "Grey Hoods": "group",
+    "salt cellars": "place",
+    "Jarl": "person",
+    "Gromm": "person",
+    "Sister Maudra": "person",
+    "Sisters of the Lamp": "group",
+    "Ludo": "person",
+    "Skeletons": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Bessa",
+     "text": "Ugh! I saw a whole cart of dead soldiers roll right up to Commander Brask's barracks!"
+    },
+    "opening": {
+     "speaker": "Commander Brask",
+     "text": "Plain, ugly truth, lad. You must take back Fort Grenn before the east road can be opened again. The man who held it was Sergeant Pell, an old comrade of mine.\n\nI know Pell is still holding out in the cellars, if he lives. But are you the man for it, lad? heh, heh, heh...\n\nTake the east road. Find the old fort on Gallows Hill. And beware of the Skeletons. They are the least of Morvane's servants, by far. Believe me, you don't want to meet his finest, lad."
+    },
+    "reminder": {
+     "speaker": "Commander Brask",
+     "text": "The Necromancer draws his strength from the dead, which he raises out of the grave pits in the deep cellars of that cursed fort."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Commander Brask has shut the east road, but Fort Grenn has fallen to the Undead. Perhaps Sergeant Pell still lives somewhere inside..."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Kelm: Fesk points the player to Mayor Gundrel in the Town Hall, who sends him after Vaskor on Gull Isle.",
+   "names": {
+    "Kelm": "place",
+    "Lake Kelm": "place",
+    "Gull Isle": "place",
+    "Town Hall": "place",
+    "Bent Hook": "place",
+    "Sunken Chapel": "place",
+    "Vaskor": "person",
+    "Emmerik": "person",
+    "Gundrel": "person",
+    "Torvik": "person",
+    "Mott": "person",
+    "Gisla": "person",
+    "Brannoc": "person",
+    "Dulcie": "person",
+    "Hobb": "person",
+    "Bolo": "person",
+    "Harg": "person",
+    "Odra": "person",
+    "Fesk": "person",
+    "Skiv": "person",
+    "Gilm": "person",
+    "Orrin": "person",
+    "Black Pearl": "thing",
+    "Zombies": "group",
+    "Bears": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fesk",
+     "text": "Vaskor must have found out how to wake the drowned. One night the lake was calm and the next the shore was crawling with Zombies! They want the Black Pearl. Go see Mayor Gundrel in the Town Hall."
+    },
+    "opening": {
+     "speaker": "Gundrel",
+     "text": "Emmerik told us to expect you. The people of Kelm have always been the keepers and faithful protectors of the Black Pearl.\n\nOnce Vaskor gets the Pearl the drowned will rise all over the lake, since the Pearl holds the greatest power in these waters -- far more than the old bones he digs up from the mud.\n\nHis Zombies hold the lighthouse on Gull Isle and the lake road is shut. Fesk will row you across. Stop Vaskor, lad!"
+    },
+    "reminder": {
+     "speaker": "Gundrel",
+     "text": "Please, stop him!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Vaskor on Gull Isle!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Pellow points the player to Master Orlund in the Great Hall, who sends him north after Vaskar in the Star Tower.",
+   "names": {
+    "Ostrel": "place",
+    "the College": "place",
+    "Vaskar": "person",
+    "Star Tower": "place",
+    "Imps": "group",
+    "Wisps": "group",
+    "Bats": "group",
+    "Urchins": "group",
+    "Ebbard": "person",
+    "Master Orlund": "person",
+    "Great Hall": "place",
+    "Tobb": "person",
+    "Pellow": "person",
+    "Fennick": "person",
+    "Healer Mossa": "person",
+    "Doddrick": "person",
+    "Spyglass": "thing",
+    "Ankh": "thing",
+    "Kester": "person",
+    "Brunna": "person",
+    "Gussa": "person",
+    "Margle": "person",
+    "Gorrum": "person",
+    "Nelda": "person",
+    "Ismay": "person",
+    "Founder's Staff": "thing",
+    "Founders": "group",
+    "Mire Caves": "place",
+    "Steel Shield": "thing",
+    "Nibbs": "person",
+    "Thule": "person",
+    "Merrit": "person",
+    "Sunken Library": "place",
+    "Alchemy Hall": "place",
+    "Wizard Robe": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pellow",
+     "text": "Hey! No strangers in the dormitory! Go see Master Orlund in the Great Hall."
+    },
+    "opening": {
+     "speaker": "Master Orlund",
+     "text": "Ah, ha! You've made it, lad -- or should I call you Adventurer! Heh, heh, heh...\n\nEbbard's letter about you is most encouraging. I cannot hide the truth -- too many of our students have gone missing since the new term began.\n\nI am sure I know who is to blame. If I am right, we are fortunate the Star Tower holds only Imps so far.\n\nHurry! You must go north to the Star Tower! Our old pupil Vaskar has come back to plague us."
+    },
+    "reminder": {
+     "speaker": "Master Orlund",
+     "text": "The Star Tower is up on the hill north of town, you can't miss it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb the Star Tower and find Vaskar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (general-purpose), claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Vestrin: Orla points the player to Master Fennick in the Bell Tower, who sends him after the Necromancer Morlak in the Ice Tower.",
+   "names": {
+    "Fort Vestrin": "place",
+    "Vestrin": "place",
+    "Morlak": "person",
+    "Ice Tower": "place",
+    "Undead": "group",
+    "Fennick": "person",
+    "Orla": "person",
+    "Bell Tower": "place",
+    "Hulgar": "person",
+    "Brokk": "person",
+    "Tolmar": "person",
+    "Ottmar": "person",
+    "White Wolves": "group",
+    "Grunda": "person",
+    "Urchins": "group",
+    "Bearskin Cloak": "thing",
+    "Dagna": "person",
+    "Ulfa": "person",
+    "Gorrin": "person",
+    "Bodvar": "person",
+    "Fitch": "person",
+    "Brannoc": "person",
+    "Torgal": "person",
+    "Pugg": "person",
+    "Halbrin": "person",
+    "Warhorn of Vestrin": "thing",
+    "Old Watch": "place",
+    "Skeevo": "person",
+    "Gundry": "person",
+    "Pell": "person",
+    "Hessa": "person",
+    "Signal Hut": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orla",
+     "text": "Hurry! Master Fennick is waiting for you up in the Bell Tower. There's a rope ladder behind the kitchens that will get you up to him."
+    },
+    "opening": {
+     "speaker": "Fennick",
+     "text": "Hello again, are you ready for another of my little errands? I think the Necromancer Morlak up in his Ice Tower will keep you busy a while. Heh, heh, heh..."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "One of the old soldiers mentioned a back stair into the Ice Tower. You only need to find it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Necromancer Morlak in Ice Tower's top chamber."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Ostrak: Toller points the player to Forgemaster Torvic at the Great Furnace, who sends him up Mount Krell after Malgrath by way of Hobb the ore-carter.",
+   "names": {
+    "Ostrak": "place",
+    "Mount Krell": "place",
+    "Old Foundry": "place",
+    "Great Furnace": "place",
+    "Fire Pools": "place",
+    "Slag Gate": "place",
+    "Ash Caves": "place",
+    "Deep Shaft": "place",
+    "Cracked Anvil": "place",
+    "Malgrath": "person",
+    "Gavrik": "person",
+    "Brugo": "person",
+    "Yorga": "person",
+    "Quilla": "person",
+    "Gorvane": "person",
+    "Magra": "person",
+    "Toller": "person",
+    "Fennick": "person",
+    "Orsk": "person",
+    "Grisp": "person",
+    "Dagny": "person",
+    "Rhun": "person",
+    "Torvic": "person",
+    "Hobb": "person",
+    "Ember Demons": "group",
+    "Imps": "group",
+    "Bats": "group",
+    "Guild": "group",
+    "Fire Cloak": "thing",
+    "Guild Hammer": "thing",
+    "Spell Book": "thing",
+    "Steel Shield": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Toller",
+     "text": "No, there's no work in Ostrak while Malgrath holds the Old Foundry! Go see Forgemaster Torvic at the Great Furnace."
+    },
+    "opening": {
+     "speaker": "Torvic",
+     "text": "The Great Furnace is a mighty forge. It feeds on pure lava, which it draws from the Fire Pools in the very roots of Mount Krell.\n\nNow Malgrath and his Ember Demons have stopped the flow at the Old Foundry. Go up there and drive them out!"
+    },
+    "reminder": {
+     "speaker": "Torvic",
+     "text": "That is all I can tell you, lad. Find Hobb the ore-carter at his shack -- just west of the slag heaps. He'll take you up to the Old Foundry from there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rendezvous with Hobb at his shack by the slag heaps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow Crossing: Pimm points the player, sent by Vardis, to Mayor Pellam in the Town Hall, who sends him against Gorbash in Fort Grimmock.",
+   "names": {
+    "Tarrow Crossing": "place",
+    "Tarrow": "place",
+    "Copper Kettle": "place",
+    "Town Hall": "place",
+    "Fort Grimmock": "place",
+    "Thistle Wood": "place",
+    "Gorbash": "person",
+    "Vardis": "person",
+    "Pellam": "person",
+    "Thurl": "person",
+    "Ottmar": "person",
+    "Marga": "person",
+    "Bodrick": "person",
+    "Gundar": "person",
+    "Grizelda": "person",
+    "Hobart": "person",
+    "Fitch": "person",
+    "Dorlise": "person",
+    "Corby": "person",
+    "Fenna": "person",
+    "Pimm": "person",
+    "Jory": "person",
+    "Ogres": "group",
+    "Bears": "group",
+    "Grizzly": "group",
+    "Imps": "group",
+    "Spiders": "group",
+    "Troll": "group",
+    "Ankh": "thing",
+    "Longsword": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pimm",
+     "text": "So you're the one Vardis sent! Welcome to Tarrow Crossing! As keepers of the crossroads, we see all manner of trouble. I'm sure you'll find Mayor Pellam in the Town Hall, he's expecting you."
+    },
+    "opening": {
+     "speaker": "Pellam",
+     "text": "I've never been inside Fort Grimmock and can only give this to you this warning as it was told to me, long ago -- beware of the Troll.\n\nGorbash and his Ogres must be driven out of that fort, lad, or the east road stays shut for good."
+    },
+    "reminder": {
+     "speaker": "Pellam",
+     "text": "The Ogres at the front gate let nobody by, lad. But find the old drain under the north wall and you're inside!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Fort Grimmock and defeat Gorbash."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Claude Code), Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tullin: Nella points the player to Mayor Gromwell in the Grange Hall, who sends him up Skarr Ridge against Chief Gorrumph's Ogres.",
+   "names": {
+    "Tullin": "place",
+    "Skarr Ridge": "place",
+    "Grange Hall": "place",
+    "Muddy Boot": "place",
+    "Ogres": "group",
+    "Imps": "group",
+    "Tullin Watch": "group",
+    "Gorrumph": "person",
+    "Brannoch": "person",
+    "Gromwell": "person",
+    "Hessa": "person",
+    "Barlo": "person",
+    "Fendra": "person",
+    "Fennick": "person",
+    "Marga": "person",
+    "Joss": "person",
+    "Wobbin": "person",
+    "Dorrick": "person",
+    "Mirrin": "person",
+    "Sneed": "person",
+    "Bartolf": "person",
+    "Pottle": "person",
+    "Nella": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Nella",
+     "text": "Hello, stranger. Has Mayor Gromwell spoken to you, yet?"
+    },
+    "opening": {
+     "speaker": "Gromwell",
+     "text": "We were cutting barley in the east fields when the Ogres came down off Skarr Ridge. Brannoch sent word that you would come to stand against Chief Gorrumph and drive back his raiders.\n\nPlease, if you will go up the ridge and break that camp of theirs, I can perhaps open the north gate for you in return."
+    },
+    "reminder": {
+     "speaker": "Gromwell",
+     "text": "Thanks, my son. Hurry now. I know of a goat trail up the back of the ridge."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Defeat Chief Gorrumph in the Ogre camp on Skarr Ridge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  }
+ ]
+}

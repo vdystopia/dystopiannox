@@ -1,0 +1,315 @@
+{
+ "iter": "i8",
+ "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Torvel",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Skarn and his bandits have seized Varga Tower on the hill north of Torvel and shut the road to Kelmor.",
+  "names": {
+   "Torvel": "place",
+   "Crooked Crown": "place",
+   "Toll House": "place",
+   "Varga Tower": "place",
+   "Pitch Caves": "place",
+   "Hollow Wood": "place",
+   "Kelmor": "place",
+   "Grelloch": "place",
+   "Skarn": "person",
+   "Ulbar": "person",
+   "Dremmel": "person",
+   "Brask": "person",
+   "Pell": "person",
+   "Nella": "person",
+   "Gorvin": "person",
+   "Mirra": "person",
+   "Nibbs": "person",
+   "Dorla": "person",
+   "Grumbald": "person",
+   "Bertol": "person",
+   "Hargo": "person",
+   "Quenna": "person",
+   "Tobb": "person",
+   "Wilk": "person",
+   "Amulet of Warding": "thing",
+   "Urchins": "group",
+   "Bear": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brask keeps the north gate of Torvel, locked by Mayor Dremmel while Skarn's bandits hold Varga Tower.",
+   "names": {
+    "Brask": "person",
+    "Varga Tower": "place",
+    "Dremmel": "person",
+    "Toll House": "place",
+    "Skarn": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brask",
+     "text": "I'm told the bandits up at Varga Tower lately robbed a tinker of his own trousers. Nasty business all over these days."
+    },
+    "again": {
+     "speaker": "Brask",
+     "text": "You'll find Mayor Dremmel in the Toll House. He has the key to this gate."
+    },
+    "later": {
+     "speaker": "Brask",
+     "text": "Move aside! You were meant to stop Skarn's men, you lout!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Old Pell cannot use his outhouse: a Bear has come down from the hills and moved in.",
+   "names": {
+    "Pell": "person",
+    "Bear": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pell",
+     "text": "Help! Help! There's a Bear in my outhouse!\n\nThe big hairy brute came down out of the hills and squeezed himself inside, and he won't come out! It's the worst calamity ever to befall an old man!\n\nMy cottage is just west of the inn. Get that Bear out of there, brave Adventurer, and I'll make it worth your while!"
+    },
+    "reminder": {
+     "speaker": "Pell",
+     "text": "You haven't got that Bear out of my outhouse!"
+    },
+    "completion": {
+     "speaker": "Pell",
+     "text": "He's gone?! Really gone? Oh, thank goodness! I've been waiting all morning!\n\nHere, take these Leather Boots as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Pell's yard and chase off the Bear."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Nella's husband Gorvin turned into a goat when the Urchins of the Pitch Caves stole his Amulet of Warding.",
+   "names": {
+    "Nella": "person",
+    "Gorvin": "person",
+    "Urchins": "group",
+    "Amulet of Warding": "thing",
+    "Pitch Caves": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Nella",
+     "text": "Oh, it's terrible! My husband Gorvin has been turned into a goat!\n\nThose thieving Urchins crept in last night and took his Amulet of Warding right off the bedpost. He never takes it off! And the moment it was gone... BAAAAA!\n\nThe Urchins hide in the Pitch Caves, east of the crossroads. Please, will you bring back the Amulet?"
+    },
+    "refusal": {
+     "speaker": "Nella",
+     "text": "Oh, you're no help."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Gorvin ate the curtains again this morning, lad. Search where the Urchins hide -- deep inside those caves. Bring the Amulet straight back from there."
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "The Amulet! You found it!\n\nGorvin! Come here, Gorvin! ... Oh! He's himself again! Thank you, thank you, kind sir! Please, take this Ankh. May all that is great bless you!"
+    },
+    "after": {
+     "speaker": "Nella",
+     "text": "Everyone's talking about how you thrashed those Urchins! Bless you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Pitch Caves east of the crossroads. The Urchins hiding there have stolen the Amulet of Warding from Nella's house."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find the Pitch Caves and return the Amulet of Warding to Nella."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "rumour": {
+   "specifics": "Tobb points to the inn, old Wilk sends adventurers off, Dorla worries about Skarn at Varga Tower.",
+   "names": {
+    "Tobb": "person",
+    "Wilk": "person",
+    "Dorla": "person",
+    "Torvel": "place",
+    "Crooked Crown": "place",
+    "Skarn": "person",
+    "Varga Tower": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Tobb",
+     "text": "Welcome to Torvel. The Crooked Crown is the big house on your left."
+    },
+    "rumour2": {
+     "speaker": "Wilk",
+     "text": "Adventurer! Hmph! I know what your lot do to an honest man's chickens! Shoo!"
+    },
+    "rumour3": {
+     "speaker": "Dorla",
+     "text": "We'll keep our shutters barred here, but somebody has to face Skarn at Varga Tower. May your luck hold on that cursed hill, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bertol keeps the Crooked Crown inn, Hargo the smithy, Quenna sells potions and scrolls.",
+   "names": {
+    "Bertol": "person",
+    "Hargo": "person",
+    "Quenna": "person",
+    "Brask": "person",
+    "Crooked Crown": "place",
+    "Grelloch": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bertol",
+     "text": "So, now you've met both Brask at the gate and our Mayor. Welcome to the Crooked Crown, young sir!"
+    },
+    "arms": {
+     "speaker": "Hargo",
+     "text": "You'd better choose quick the bandits took my last load of iron."
+    },
+    "magic": {
+     "speaker": "Quenna",
+     "text": "Wanna buy a potion? They're carried up from the deep mushroom caves of Grelloch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Dremmel wants the toll chest Skarn's bandits stole. Nibbs, a turncoat of Skarn's who is terrified of high places, wants his Longsword fetched down from the top of Varga Tower.",
+   "names": {
+    "Dremmel": "person",
+    "Nibbs": "person",
+    "Skarn": "person",
+    "Torvel": "place",
+    "Varga Tower": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dremmel",
+     "text": "Good day, kind sir. A grave matter has come before me.\n\nSkarn's bandits have stolen the toll chest of Torvel -- every coin this crossroads has gathered since spring! Without it I cannot pay the town guard. I am told the chest now sits in Varga Tower.\n\nRecover it, and you shall have a fair share of what is inside. Will you do this for the town?"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Hey! You! Sit down a moment...\n\nI rode with Skarn once. Not anymore! He put me on lookout at the very top of that tower. High places terrify me! I couldn't stop shaking for a week!\n\nI ran so fast I left my good Longsword up there. Bring it down to me and I'll tell you the bandits' secret way in."
+    },
+    "outcome_a": {
+     "speaker": "Dremmel",
+     "text": "The toll chest! Excellent work! Torvel is in your debt.\n\nAs promised, here is your share -- 150 gold pieces."
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "My sword! You went all the way up there?! Brrrr...\n\nKeep it! I never want to see the thing again! And the back door is behind the woodpile on the east side."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find and bring back the toll chest in order to pay Torvel's guard.\nThe chest is probably hidden in Varga Tower."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Climb up into Varga Tower and fetch the Longsword for Nibbs."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Dorla's grumpy brother Grumbald marched off to the bandit camp in Hollow Wood to complain about their drumming and never came back.",
+   "names": {
+    "Dorla": "person",
+    "Grumbald": "person",
+    "Hollow Wood": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dorla",
+     "text": "Oh, please, you must help me! My brother Grumbald marched off to the bandit camp in Hollow Wood, west of here. Their drumming kept him up all night, and he swore he'd give them a piece of his mind!\n\nHe hasn't come back! Those brutes will skin him alive!\n\nBring him home to me and I'll give you whatever I can."
+    },
+    "reminder": {
+     "speaker": "Dorla",
+     "text": "Grumbald! My poor Grumbald! Go and get Grumbald!"
+    },
+    "found": {
+     "speaker": "Grumbald",
+     "text": "Untie me."
+    },
+    "following": {
+     "speaker": "Grumbald",
+     "text": "Your slow plodding no longer pleases me. Show me one more bandit and I'll thump him with my bare fists!"
+    },
+    "completion": {
+     "speaker": "Dorla",
+     "text": "Grumbald! You're home! Oh, you stubborn old fool!\n\nThank you, kind stranger! Please take this Spell Book. It's the finest thing I own."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to free Grumbald from the bandit camp in Hollow Wood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Mirra points the player to Mayor Dremmel in the Toll House, who sends him against Skarn's bandits in Varga Tower.",
+   "names": {
+    "Mirra": "person",
+    "Dremmel": "person",
+    "Toll House": "place",
+    "Ulbar": "person",
+    "Skarn": "person",
+    "Varga Tower": "place",
+    "Torvel": "place",
+    "Kelmor": "place",
+    "Brask": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Mirra",
+     "text": "My, my! You're a sight better looking than the bandits! Go see Mayor Dremmel at the Toll House, and come back to me in one piece."
+    },
+    "opening": {
+     "speaker": "Dremmel",
+     "text": "Ah! You must be the one Ulbar wrote to me about. Good, good. You have arrived not a moment too soon!\n\nThat villain Skarn and his bandits have seized Varga Tower, on the hill north of town. They have shut the road to Kelmor! Not one wagon has come through in weeks, and Torvel cannot live without that road.\n\nYou must go up to the tower and drive Skarn out. Take this key to the north gate. Brask will let you pass. Good luck, lad. All of Torvel is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Dremmel",
+     "text": "That's enough talk, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go up to Varga Tower and defeat the bandit Skarn."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

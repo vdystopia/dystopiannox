@@ -1,0 +1,33 @@
+{
+  "packet": "a743b6",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless exclamations, the cheeky 'menfolk cannot live without us' and the hungry-Ogre stomach joke are pure Westwood; the refusal line is a full little scene rather than a tidy beat."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The wig gag is Nox-ish, but both outcomes repeat the item with a crafted exclamation ('My wig! Oh, my beautiful wig!'), the reward is spelled out to the gold, and 'tithe chest ... the very coffers' is a writerly gloss."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Run-on panic, missing comma, 'he'll be destroyed', the hesitant 'Could you... would you' and two near-identical generic thank-yous are the uneven, plain grain of the real campaign."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'I surmise', 'lose no sleep fretting about his soul', 'laying their filthy paws' and the slightly wordy innkeeper rhythm feel authentic; rewards given as '250 in gold' in the period style."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Both asks are engineered comic setups with a stated stake and a punchline ('wives ready to skin me alive', 'He'll never notice it's gone!'); the paired outcomes echo each other with 'like I promised'-style symmetry and a quip closer."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The beacon offer is solemn, logistic world-building (supply sleds, the pass) with a quest-giver redirect; the stocks prisoner borrows 'Oh, bah!' and closes on a tidy escape joke, all very evenly built."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "The deaf ferryman's 'WHAT?! No need to shout' gag and the troll-tooth proof are too neatly constructed, and the gating explanation ('Mayor's orders, with the Undead about') is denser exposition than Westwood gives."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse 'Hi there. Name's [Person].', the throwaway 'smuggling ring' grumble, 'ya', and the clunky 'Accept this gold as token of my gratitude' read like the shipped game, mistakes included."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Flat, functional bureaucracy, an odd 'foul little urchin' aggravating bats, and a refusal that just tells you where he'll be: plain and a little awkward, as Westwood often was."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "'A black day, a black day' and 'these old arms' are pastiche-heroic, and the pie-recipe theft with 'MY pies' and a free-pie reward is a polished comic hook; the 'token of my appreciation' line is close to Westwood but the whole is too balanced."}
+  ],
+  "tells": [
+    "Generated texts pair a solemn ask with a comic ask of a fixed shape (stake, punchline, specific reward) in every text; Westwood's two halves are less symmetrical and often both plain.",
+    "Generated outcomes open by exclaiming the returned item's name ('My wig!', 'The beacon burns again!', 'My recipe!') and close on a quip; Westwood's thanks are often generic and interchangeable ('Please accept this as a token of my appreciation').",
+    "Generated lines reuse the same tics across texts ('Oh, bah!', 'like I promised', 'Don't just stand there'), suggesting a style sheet rather than individual characters.",
+    "Generated asks over-explain the stakes with world logistics (shift bells, supply sleds, boat permits); Westwood states the problem and the reward and moves on.",
+    "Westwood's prose carries small roughness: missing commas, run-ons, odd word choices ('he'll be destroyed', 'I surmise', 'as token of'), and dialogue-tree outcomes (accept/refuse) rather than two finished quests."
+  ]
+}
