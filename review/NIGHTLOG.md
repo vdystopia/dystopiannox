@@ -82,3 +82,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   garden 10/10 (4.8 vs 7.8), pond with dock 9/9 (5.2 vs 7.8). Self-judging had been too generous; these are the real
   starting points. Its critique (stamped tent rows, the same 6x6 graveyard box, crops on fences again, the same dock gear
   stamp in a small round pond) has been passed to scene round 2.
+- 23:05 Independent judgement of rooms (pictures only, scored against the keys): bedroom ref 6/10 (generated 6.4 vs
+  Westwood 6.0), bedroom r6 8/10 (4.8 vs 5.8), living room r6 8/10 (6.0 vs 4.6), storeroom r8 8/10 (5.6 vs 4.2).
+  Rooms are much closer to Westwood than scenes are. Lessons: (1) the bedroom regressed by eye from ref to r6 though
+  its AUC improved: the tuning made a stamp (chest against the bed's head, a lone bench and candelabra on the front
+  wall), so AUC alone can't steer; (2) the Westwood galleries hold rooms that aren't truly the type (dais rooms,
+  cellars, cave caches), which pulls Westwood's means down and skews the targets; (3) one judge on ten pictures is noisy.
+  Passed to the tracks. A shells agent (`night-shells`) now owns room shapes and floors: L-shapes, alcoves, corridors,
+  floor patterns.
