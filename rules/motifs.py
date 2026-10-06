@@ -216,8 +216,20 @@ def mine_room(entry, m, r):
     # a carpet laid in floor tiles (Westwood's carpets are floor, not rug objects): the share of the floor it covers
     mats = [m.tiles[c]["material"] for c in cells if c in m.tiles]
     carpet = round(sum(1 for t in mats if re.search(r"Carpet|Rug", t or "")) / max(1, len(mats)), 3)
+    # the raw plan: every piece in the room's frame (u - U0, v - V0), the wall it stands against, and the walls and doors
+    # themselves, so the engine can measure Westwood's clusters and zones (kit/motifs.py clusters)
+    raw = []
+    for o, p in pieces:
+        raw.append(dict(t=p["t"], cat=p["cat"], fam=p["fam"], u=round(p["u"] - U0, 3), v=round(p["v"] - V0, 3),
+                        hu=round(p["hu"], 3), hv=round(p["hv"], 3), blocking=p["blocking"], hang=p["hang"],
+                        wall=p.get("wname") if p["wall"] else None, gap=p.get("gap")))
+    walls_raw = [dict(name=w["name"], line=w["line"], coord=round(w["coord"] - (U0 if w["line"] == "/" else V0), 3),
+                      lo=round(w["lo"] - (V0 if w["line"] == "/" else U0), 3),
+                      hi=round(w["hi"] - (V0 if w["line"] == "/" else U0), 3)) for w in named.values()]
+    doors_raw = [dict(u=round(du - U0, 3), v=round(dv - V0, 3), wall=dn) for du, dv, _, dn in doors]
     room = dict(id=rid, map=entry["map"], type=entry["type"], culture=entry["culture"], tiles=entry["tiles"],
                 U=[U0, U1], V=[V0, V1], doors=door_walls, focal=focal, lights=lights, carpet=carpet,
+                pieces=raw, walls=walls_raw, door_at=doors_raw, floor=len(cells),
                 middle_empty=not any(cm["wall_dist"] > 2.5 and any(x["blocking"] for x in cm["items"])
                                      for cm in centre_motifs))
     for lst in (wall_motifs, corner_motifs, centre_motifs):

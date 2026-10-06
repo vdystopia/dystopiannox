@@ -77,7 +77,7 @@ OPEN_TORCH = re.compile(r"^(Torch|TorchPole|TorchPoleImmobile)$")
 WW_PATH = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rules", "rooms", "westwood.json")
 SEATS = {"chair", "bench"}
 FREE_NEVER = {"chest", "shelf", "hearth", "stove", "hanging"}   # never in a free group: they stand against a wall
-TOP_UP_TRIES = 24
+TOP_UP_TRIES = 40
 
 
 @lru_cache(None)
@@ -149,6 +149,185 @@ def type_kinds(rtype):
     return c
 
 
+# ---- clusters: Westwood's groups whole (round 2) -------------------------------------------------------------------
+# The motifs above cut a room's arrangement at the walls: a desk on the wall and its chair in front of it became a wall
+# motif and a lone centre group, a bed's chest at its foot another. The independent judges' first fault with the motif
+# rooms was exactly that: "pieces floating free with no relation, chairs not pulled up to tables". A cluster keeps every
+# piece of a Westwood group together with its geometry: the pieces within LINK of each other (edge to edge), anchored to
+# the wall its wall pieces stand against (the free pieces before them kept relative to them), to a corner (a heap of
+# small pieces against both walls), or free in the room (a table and its chairs).
+LINK = 0.9
+SMALL = {"supply", "plant", "statue", "light", "clutter", "bones", "straw", "monument", "feature", "chest"}
+PELT = re.compile(r"Bearskin|Pelt")
+SEAT_AT = {"table", "desk", "lab", "hearth", "counter_bar", "counter_shop"}    # what a seat in a cluster faces
+UNIFY = {"chair", "chest", "nightstand", "light", "table", "bench"}            # one kind of each per room
+# the piece a cluster is about, first found in this order (a desk cluster with a water barrel beside it is a desk's)
+LEAD_ORDER = ("bed", "hearth", "counter_bar", "counter_shop", "lab", "desk", "table", "stove", "tomb", "shop_rack", "rack",
+              "shelf", "bench", "chest", "nightstand", "supply", "statue", "chair", "light", "clutter", "plant", "rug",
+              "hanging")
+MINOR = {"supply", "chest", "light", "statue", "clutter", "plant", "nightstand"}   # small leads that stand in for each other
+ZONE_FLOOR, ZONE_GAP = 1.0, 1.6     # a zone per Westwood median room of the type (floor), zones 1.6 units apart
+FREE_TOPUP = 1.3                     # rooms this many times Westwood's median floor may take a free group more
+GROUP_PAD = 0.9                      # a step of floor between the groups along a wall
+WALLS_ONLY = {"storeroom", "armoury", "cellar"}    # stores keep their middle as the aisle (no free heaps under 60 tiles)
+DEBUG = os.environ.get("MOTIF_DEBUG") == "1"
+COMPOSE = "clusters"                 # "clusters" (round 2) or "motifs" (round 1: wall, corner and centre motifs)
+
+
+def _edge(a, b):
+    return max(abs(a["u"] - b["u"]) - a["hu"] - b["hu"], abs(a["v"] - b["v"]) - a["hv"] - b["hv"])
+
+
+def _run_of(r, name, p):
+    """The wall run named `name` of Westwood room r that piece p stands against (the nearest whose span covers it)."""
+    best = None
+    for w in r["walls"]:
+        if w["name"] != name: continue
+        along = p["v"] if w["line"] == "/" else p["u"]
+        if not w["lo"] - 1.5 <= along <= w["hi"] + 1.5: continue
+        off = abs((p["u"] if w["line"] == "/" else p["v"]) - w["coord"])
+        if best is None or off < best[0]: best = (off, w)
+    return best and best[1]
+
+
+def _wall_frame(r, w):
+    """(sign into the room, interior start, interior end, from_hi) of run w of Westwood room r."""
+    cu, cv = (r["U"][1] - r["U"][0]) / 2, (r["V"][1] - r["V"][0]) / 2
+    sign = 1 if ((cu if w["line"] == "/" else cv) > w["coord"]) else -1
+    return sign, w["lo"] + 1.0, w["hi"] - 1.0, w["name"] in FROM_HI
+
+
+def _lead(items):
+    bl = [x for x in items if x["blocking"] and x["cat"] != "light"] or [x for x in items if x["blocking"]] or items
+    return max(bl, key=lambda x: x["hu"] * x["hv"])["cat"] if bl else "bare"
+
+
+def room_clusters(r):
+    """The clusters of one Westwood room (rules/out/motifs.json rooms[].pieces)."""
+    ps = [dict(p, i=i) for i, p in enumerate(r.get("pieces") or [])]
+    floor = [p for p in ps if not p["hang"]]
+    hung = [p for p in ps if p["hang"]]
+    n = len(floor)
+    par = list(range(n))
+
+    def find(i):
+        while par[i] != i:
+            par[i] = par[par[i]]
+            i = par[i]
+        return i
+    for i in range(n):
+        for j in range(i + 1, n):
+            a, b = floor[i], floor[j]
+            lim = 0.3 if "rug" in (a["cat"], b["cat"]) else LINK
+            if _edge(a, b) <= lim: par[find(i)] = find(j)
+    comps = collections.defaultdict(list)
+    for i in range(n): comps[find(i)].append(floor[i])
+    out = []
+    W, H = max(1, r["U"][1] - r["U"][0]), max(1, r["V"][1] - r["V"][0])
+    for comp in comps.values():
+        walls = {p["wall"] for p in comp if p["wall"]}
+        corner = next((k for k, ws in CORNER_WALLS.items() if set(ws) == walls), None)
+        big = [p for p in comp if p["blocking"] and (p["cat"] not in SMALL or max(p["hu"], p["hv"]) > 1.4)]
+        if not walls:
+            out.append(_free_cluster(r, comp, W, H))
+        elif len(walls) == 1:
+            c = _wall_cluster(r, next(iter(walls)), comp)
+            if c: out.append(c)
+        elif corner and not big:
+            c = _corner_cluster(r, corner, comp)
+            if c: out.append(c)
+        else:                                   # split by wall: each free piece goes with its nearest wall piece
+            groups = collections.defaultdict(list)
+            on = [p for p in comp if p["wall"]]
+            for p in comp:
+                if p["wall"]: groups[p["wall"]].append(p)
+                else: groups[min(on, key=lambda q: _edge(p, q))["wall"]].append(p)
+            for name, g in groups.items():
+                c = _wall_cluster(r, name, g)
+                if c: out.append(c)
+    for p in hung:
+        if not p["wall"]: continue
+        c = _wall_cluster(r, p["wall"], [p], kind="hang")
+        if c: out.append(c)
+    for k, c in enumerate(out):
+        c.update(room=r["id"], type=r["type"], culture=r["culture"], cid=f"{r['id']}#{k}",
+                 lead=_lead(c["items"]), n=len(c["items"]),
+                 n_block=sum(1 for x in c["items"] if x["blocking"] and x["cat"] != "light"))
+    return out
+
+
+def _wall_cluster(r, name, comp, kind="wall"):
+    att = [p for p in comp if p["wall"] == name]
+    w = _run_of(r, name, att[0]) if att else None
+    if not w: return None
+    sign, lo, hi, from_hi = _wall_frame(r, w)
+    items = []
+    for p in comp:
+        along = p["v"] if w["line"] == "/" else p["u"]
+        s = (hi - along) if from_hi else (along - lo)
+        d = ((p["u"] if w["line"] == "/" else p["v"]) - w["coord"]) * sign
+        ha, hp = (p["hv"], p["hu"]) if w["line"] == "/" else (p["hu"], p["hv"])
+        items.append(dict(t=p["t"], cat=p["cat"], fam=p["fam"], blocking=p["blocking"], hang=p["hang"], s=s, d=d,
+                          ha=ha, hp=hp, hu=p["hu"], hv=p["hv"], att=p["wall"] == name, gap=p["gap"] or 0.0))
+    a0 = min(x["s"] - x["ha"] for x in items)
+    a1 = max(x["s"] + x["ha"] for x in items)
+    for x in items: x["s"] -= a0
+    L = hi - lo
+    return dict(kind=kind, wall=name, back=name in ("NE", "NW"), Lw=round(L, 2), span=round(a1 - a0, 2),
+                g0=round(a0, 2), g1=round(L - a1, 2), rel=round((a0 + a1) / 2 / max(1.0, L), 3),
+                depth=round(max(x["d"] + x["hp"] for x in items), 2), items=items)
+
+
+def _corner_cluster(r, corner, comp):
+    na, nb = CORNER_WALLS[corner]
+    pa = next((p for p in comp if p["wall"] == na), None)
+    pb = next((p for p in comp if p["wall"] == nb), None)
+    wa = pa and _run_of(r, na, pa)
+    wb = pb and _run_of(r, nb, pb)
+    if not (wa and wb): return None
+    items = []
+    for p in comp:
+        items.append(dict(t=p["t"], cat=p["cat"], fam=p["fam"], blocking=p["blocking"], hang=p["hang"],
+                          da=abs(p["u"] - wa["coord"]), db=abs(p["v"] - wb["coord"]), hu=p["hu"], hv=p["hv"]))
+    return dict(kind="corner", corner=corner, items=items,
+                span=round(max(max(x["da"] + x["hu"], x["db"] + x["hv"]) for x in items), 2))
+
+
+def _free_cluster(r, comp, W, H):
+    u0 = min(p["u"] - p["hu"] for p in comp); u1 = max(p["u"] + p["hu"] for p in comp)
+    v0 = min(p["v"] - p["hv"] for p in comp); v1 = max(p["v"] + p["hv"] for p in comp)
+    gu, gv = (u0 + u1) / 2, (v0 + v1) / 2
+    items = [dict(t=p["t"], cat=p["cat"], fam=p["fam"], blocking=p["blocking"], hang=False, du=p["u"] - gu,
+                  dv=p["v"] - gv, hu=p["hu"], hv=p["hv"]) for p in comp]
+    return dict(kind="free", items=items, pos=(round(gu / W, 3), round(gv / H, 3)), span_uv=(u1 - u0, v1 - v0),
+                span=round(max(u1 - u0, v1 - v0), 2),
+                wall_dist=round(min(gu, W - gu, gv, H - gv), 2))
+
+
+@lru_cache(None)
+def clusters_of(rid):
+    return tuple(room_clusters(library()["rooms"][rid]))
+
+
+@lru_cache(None)
+def ww_floor(rtype):
+    """The median floor (cells) of the Westwood rooms a room of the type draws on (its own, else its pool's)."""
+    rooms = library()["rooms"]
+    fl = sorted(rooms[rid]["floor"] for rid, w in pool(rtype).items() if w >= 1.0 and rooms[rid].get("floor")) or \
+        sorted(rooms[rid]["floor"] for rid in pool(rtype) if rooms[rid].get("floor")) or [40]
+    return fl[len(fl) // 2]
+
+
+@lru_cache(None)
+def ww_tiles(rtype):
+    """Westwood's floor tiles for the type (p10..p90), or None."""
+    try:
+        with open(WW_PATH, encoding="utf-8") as f:
+            return (json.load(f)["types"].get(rtype) or {}).get("tiles")
+    except OSError:
+        return None
+
+
 class MotifFurnisher(F.Furnisher):
     """The recipe furnisher's geometry and gate (try_put and the object knowledge base), composing from motifs."""
 
@@ -168,6 +347,7 @@ class MotifFurnisher(F.Furnisher):
         us = [x + y + 1 for x, y in cells]; vs = [x - y for x, y in cells]
         self.U0, self.U1, self.V0, self.V1 = min(us), max(us), min(vs), max(vs)
         self.tiles = len(room.tiles)
+        self.floor = len(self.g.cells)            # floor cells, as Westwood's rooms are measured (rooms[].floor)
         self.lights_n = 0
         self.once_done = set()                    # ONCE families already in the room
         self.used_ids = set()                     # the motifs used in this room
@@ -177,6 +357,11 @@ class MotifFurnisher(F.Furnisher):
         self.light_cap = min(OBJ.light_cap(self.tiles), max(1, int(round(lpr * 1.5 + 0.4))))
         self.stretches = self._stretches()
         self.corners = self._corners()
+        self.cat_kind = {}                        # category -> the one kind of it the room takes (UNIFY)
+        self._ok_memo = {}
+        # the straight way in from every door kept clear four units deep (the user's rule, rules/rooms/README.md GW-7)
+        for op in self.openings:
+            self.g.zones.append(self._way_box(op, 0.5, min(4.4, 0.62 * op["extent"])))
 
     # ---- our room's frame ---------------------------------------------------------------------------------------
     def _stretches(self):
@@ -302,6 +487,10 @@ class MotifFurnisher(F.Furnisher):
             k2 = swap[OBJ.kind(t)]
             suffix = t[len(OBJ.kind(t)):]
             t = k2 + suffix if self.ok_type(k2 + suffix) else (self._swap_kind(t, cat) or t)
+        k0, k1 = OBJ.kind(t), self.cat_kind.get(cat)
+        if cat in UNIFY and k1 and k0 != k1:                 # the room's one kind of chair, chest, candelabra
+            alt = k1 + t[len(k0):]
+            if self.ok_type(alt) and F._family_of(alt) == F._family_of(t): t = alt
         if cat == "light" and OPEN_TORCH.match(t) and self.house:
             t = self.light_type()
         if not self.ok_type(t):
@@ -734,6 +923,630 @@ class MotifFurnisher(F.Furnisher):
             m = self._choose(cands)
             if m: self.place_centre_motif(m, m["pos"])
 
+    # ---- round 2: composing from Westwood's clusters, zone by zone, round one centrepiece ---------------------------
+    def _zones(self):
+        """The room split into zones of Westwood's room sizes for the type: one zone up to 1.7 times Westwood's median
+        room, else two halves across the long axis with a walking gap between them (a bed end and a sitting end). Each
+        zone: its box, its tiles, its parts of the walls (stretches clipped to it) and its corners."""
+        p50 = ww_floor(self.rtype)
+        lu, lv = self.U1 - self.U0, self.V1 - self.V0
+        M = 4.0
+        box = (self.U0 - M, self.U1 + M, self.V0 - M, self.V1 + M)
+        boxes = [box]
+        nz = max(1, min(4, int(self.floor / (ZONE_FLOOR * p50) + 0.5)))
+        long_u = lu >= lv
+        L, S = max(lu, lv), min(lu, lv)
+        g = ZONE_GAP / 2
+        if nz >= 3 and L / max(1, S) < 1.6 and S >= 10:
+            # a big square room: four quarters round its middle (the front quarter, by the SE and SW walls, stays light
+            # as Westwood's front walls do)
+            mu = (self.U0 + self.U1) / 2 + self.rng.uniform(-0.1, 0.1) * lu
+            mv = (self.V0 + self.V1) / 2 + self.rng.uniform(-0.1, 0.1) * lv
+            boxes = [(box[0], mu - g, box[2], mv - g), (box[0], mu - g, mv + g, box[3]),
+                     (mu + g, box[1], box[2], mv - g), (mu + g, box[1], mv + g, box[3])]
+        elif nz >= 2 and L >= 9:
+            k = min(nz, max(2, int(L / 7)))            # strips across the long axis, each at least 7 units long
+            lo, hi = (self.U0, self.U1) if long_u else (self.V0, self.V1)
+            cuts = [lo + (hi - lo) * i / k + (self.rng.uniform(-0.08, 0.08) * (hi - lo) if 0 < i < k else 0)
+                    for i in range(k + 1)]
+            boxes = []
+            for i in range(k):
+                a = (box[0] if long_u else box[2]) if i == 0 else cuts[i] + g
+                b = (box[1] if long_u else box[3]) if i == k - 1 else cuts[i + 1] - g
+                boxes.append((a, b, box[2], box[3]) if long_u else (box[0], box[1], a, b))
+        zones = []
+        for b in boxes:
+            sts = []
+            for st in self.stretches:
+                r = st["run"]
+                perp_lo, perp_hi = (b[0], b[1]) if r["line"] == "/" else (b[2], b[3])
+                if not perp_lo <= r["coord"] <= perp_hi: continue
+                a_lo, a_hi = (b[2], b[3]) if r["line"] == "/" else (b[0], b[1])
+                s0, s1 = max(st["s0"], a_lo), min(st["s1"], a_hi)
+                if s1 - s0 < 1.0: continue
+                sts.append(dict(st, s0=s0, s1=s1, L=s1 - s0, parent=st, used=False))
+            corners = {k: c for k, c in self.corners.items()
+                       if b[0] <= c["a"]["coord"] <= b[1] and b[2] <= c["b"]["coord"] <= b[3]}
+            inner = (max(b[0], self.U0), min(b[1], self.U1), max(b[2], self.V0), min(b[3], self.V1))
+            zones.append(dict(box=b, inner=inner, stretches=sts, corners=corners,
+                              floor=self.floor * ((inner[1] - inner[0]) * (inner[3] - inner[2])) /
+                              max(1.0, lu * lv)))
+        return zones
+
+    def _focal_wall(self):
+        """The back wall the focal piece stands on: the one farther from the main door (across the room from a door in
+        a front wall; the other back wall when the door is in one)."""
+        door = self._main_door_wall()
+        backs = [n for n in ("NE", "NW") if any(st["name"] == n and st["L"] >= 3.0 for st in self.stretches)]
+        if not backs: return None
+        if door in ("SW", "SE"):
+            want = OPP[door]
+            if want in backs: return want
+        elif door in ("NE", "NW"):
+            other = MIRROR[door]
+            if other in backs: return other
+        return max(backs, key=lambda n: max(st["L"] for st in self.stretches if st["name"] == n))
+
+    def _zone_skeleton(self, z, used):
+        rooms = [r for rid, r in self.lib["rooms"].items() if self.pool.get(rid, 0) >= 1.0 and rid not in used and
+                 r.get("pieces")] or [self.lib["rooms"][rid] for rid in self.pool if self.lib["rooms"][rid].get("pieces")]
+        cands = []
+        for r in rooms:
+            w = math.exp(-abs(math.log(max(9, r["floor"]) / max(9, z["floor"]))) * 2.0)
+            if r["culture"] == self.culture: w *= 1.5
+            cands.append((w, r))
+        return self._choose(cands)
+
+    @staticmethod
+    def _lead_of(c):
+        cats = {x["cat"] for x in c["items"] if x["blocking"]} or {x["cat"] for x in c["items"]}
+        return next((k for k in LEAD_ORDER if k in cats), c["lead"])
+
+    def _cw(self, c, sk_id=None):
+        """A cluster's weight here: its room's weight in the pool, none when it was used, its room gave its share, or it
+        holds a piece the room may not hold or holds once already."""
+        w = self.pool.get(c["room"], 0.0)
+        if not w or c["cid"] in self.used_ids or self.sources[c["room"]] >= MAX_PER_SOURCE: return 0.0
+        bl = [x for x in c["items"] if x["blocking"] and x["cat"] != "light"]
+        fams = {F._family_of(x["t"]) for x in bl}
+        if fams & self.once_done: return 0.0
+        if any(F._family_of(x["t"]) in self.never and F._family_of(x["t"]) not in SEATS for x in bl): return 0.0
+        if self.never_rx and any(self.never_rx.search(x["t"]) for x in bl): return 0.0
+        if any(self._capped(x["t"]) for x in bl if F._family_of(x["t"]) not in SEATS): return 0.0
+        if bl and all(F._family_of(x["t"]) in SEATS for x in bl) and                 not (c["kind"] == "wall" and self.rtype in LOOSE_SEATS):
+            return 0.0                                  # never a lone chair facing nothing (a bench on a hall's wall)
+        if c["kind"] == "free":
+            if not bl and not any(PELT.search(x["t"]) for x in c["items"]): return 0.0
+            if self.rtype in WALLS_ONLY and c["kind"] == "free" and self.tiles < 60: return 0.0
+        if c["room"] == sk_id: w *= 0.3
+        if c["culture"] != self.culture: w *= 0.5
+        return w
+
+    def _pool_clusters(self):
+        if not hasattr(self, "_pc"):
+            self._pc = [c for rid in sorted(self.pool) for c in clusters_of(rid)]
+        return self._pc
+
+    # -- plans: where each piece of a cluster goes in our room
+    def _face_seats(self, plan):
+        """A seat in a cluster faces the table, desk or hearth of its cluster nearest to it (the seat's own variant for
+        that side, kit chair_facing): a chair is drawn up to its table whichever way the cluster was turned."""
+        anchors = [p for p in plan if p["x"]["cat"] in SEAT_AT]
+        if not anchors: return
+        for p in plan:
+            if F._family_of(p["t"]) not in SEATS or p["run"] is not None: continue
+            a = min(anchors, key=lambda a: abs(a["u"] - p["u"]) + abs(a["v"] - p["v"]))
+            du, dv = a["u"] - p["u"], a["v"] - p["v"]
+            d = ("+u" if du > 0 else "-u") if abs(du) >= abs(dv) else ("+v" if dv > 0 else "-v")
+            var = (self.chair_facing.get(F._base(p["t"]), {}).get(d) or {}).get("variant")
+            if var and self.ok_type(var): p["t"] = var
+
+    def _types_for(self, c, run_of):
+        """[(item, type)] for cluster c's pieces here (run_of(item): the wall run whose variant it takes, or None), or
+        None when a piece the cluster stands on (not a seat, a light or a hanging) can't be had."""
+        out = []
+        for x in c["items"]:
+            t = self._fit_type(x["t"], x["cat"], run_of(x), None)
+            if not t:
+                if x["blocking"] and x["cat"] != "light" and F._family_of(x["t"]) not in SEATS:
+                    if DEBUG: self.log.append(f"  notype {x['t']} capped={self._capped(x['t'])} run={run_of(x) and run_of(x)['side']}")
+                    return None
+                continue
+            out.append((x, t))
+        return out
+
+    def _plan_wall(self, c, st, at, flip):
+        run = st["run"]
+        typed = self._types_for(c, lambda x: run if (x.get("att") or x["hang"]) else None)
+        if not typed: return None
+        pos = {}
+        for x, t in typed:
+            if x.get("att") or x["hang"]:
+                hu, hv = self.half(t)
+                ha, hp = (hv, hu) if run["line"] == "/" else (hu, hv)
+                gap = x["gap"] if x["hang"] else max(0.12, min(x["gap"], 0.9))
+                pos[id(x)] = (x["s"], gap + hp, ha, hp)
+        if not pos: return None
+        for x, t in typed:
+            if id(x) in pos: continue
+            hu, hv = self.half(t)
+            ha, hp = (hv, hu) if run["line"] == "/" else (hu, hv)
+            anc = min((y for y, _ in typed if id(y) in pos and not y["hang"]),
+                      key=lambda y: abs(y["s"] - x["s"]) + abs(y["d"] - x["d"]), default=None)
+            d = x["d"]
+            if anc is not None:
+                _, dn, _, hpn = pos[id(anc)]
+                d = x["d"] + (dn + hpn) - (anc["d"] + anc["hp"])
+            pos[id(x)] = (x["s"], d, ha, hp)
+        plan = []
+        for x, t in typed:
+            s, d, ha, hp = pos[id(x)]
+            s2 = at + ((c["span"] - s) if flip else s)
+            if (x.get("att") or x["hang"]) and not (ha - 0.2 <= s2 <= st["L"] - ha + 0.2):
+                if DEBUG: self.log.append(f"  range {t} s2={s2:.1f} ha={ha:.1f} L={st['L']:.1f}")
+                return None
+            along = (st["s1"] - s2) if st["from_hi"] else (st["s0"] + s2)
+            perp = run["coord"] + run["sign"] * d
+            u, v = (perp, along) if run["line"] == "/" else (along, perp)
+            plan.append(dict(t=t, u=u, v=v, x=x, run=run if (x.get("att") or x["hang"]) else None, along=along,
+                             ha=ha, hp=hp))
+        self._face_seats(plan)
+        return plan
+
+    def _plan_corner(self, c, corner, mirrored):
+        a, b = corner["a"], corner["b"]
+        typed = self._types_for(c, lambda x: None)
+        if not typed: return None
+        plan = []
+        for x, t in typed:
+            da, db = (x["db"], x["da"]) if mirrored else (x["da"], x["db"])
+            run = a if da <= db else b
+            if x["cat"] not in ("supply", "plant", "light", "clutter", "statue", "chest") or x["hang"]:
+                t2 = self._fit_type(t, x["cat"], run, None)
+                if not t2:
+                    if x["blocking"] and x["cat"] != "light": return None
+                    continue
+                t = t2
+            plan.append(dict(t=t, u=a["coord"] + a["sign"] * da, v=b["coord"] + b["sign"] * db, x=x, run=None,
+                             along=0, ha=0, hp=0))
+        self._face_seats(plan)
+        return plan
+
+    def _plan_free(self, c, inner, pos, mirrored, shift=(0.0, 0.0)):
+        typed = self._types_for(c, lambda x: None)
+        if not typed: return None
+        su, sv = c["span_uv"]
+        if mirrored: su, sv = sv, su
+        u0, u1, v0, v1 = inner
+        gu = u0 + pos[0] * (u1 - u0) + shift[0]
+        gv = v0 + pos[1] * (v1 - v0) + shift[1]
+        mu, mv = su / 2 + 1.0, sv / 2 + 1.0
+        if u1 - u0 > 2 * mu: gu = min(max(gu, u0 + mu), u1 - mu)
+        if v1 - v0 > 2 * mv: gv = min(max(gv, v0 + mv), v1 - mv)
+        plan = []
+        for x, t in typed:
+            du, dv = (-x["dv"], -x["du"]) if mirrored else (x["du"], x["dv"])
+            plan.append(dict(t=t, u=gu + du, v=gv + dv, x=x, run=None, along=0, ha=0, hp=0))
+        self._face_seats(plan)
+        return plan
+
+    def _realise(self, plan, c, where):
+        """Places a cluster's plan as one: every piece it stands on, or nothing (seats, lights and hangings may drop).
+        Returns the pieces placed or None."""
+        if not plan: return None
+        blk = lambda p: p["x"]["blocking"] and p["x"]["cat"] != "light" and not p["x"]["hang"] and \
+            F._family_of(p["t"]) not in SEATS
+        lead = self._lead_of(c)
+        ess = lambda p: blk(p) and p["x"]["cat"] == lead
+        n_blk = sum(1 for p in plan if blk(p))
+        order = sorted(plan, key=lambda p: (p["x"]["hang"], not ess(p), not blk(p), F._family_of(p["t"]) in SEATS,
+                                            -self.footprint(p["t"])))
+        snap = (len(self.wall_used), len(self.wall_tall), len(self.g.zones), len(self.light_zones))
+        placed, ok = [], True
+        self._group = []
+        for p in order:
+            nud = [(0, 0), (0.12, 0), (-0.12, 0), (0, 0.12), (0, -0.12)]
+            o = self._put(p["t"], p["u"], p["v"], p["x"]["blocking"], hang=p["x"]["hang"], touch=True, nudges=nud)
+            if o:
+                placed.append(o)
+                if p["run"] is not None:
+                    rec = self._placed_of[id(o)]
+                    self._after_put(o, p["run"], p["along"], p["ha"], p["hp"], rec[0], rec[1])
+            elif ess(p):
+                ok = False
+                if DEBUG: self.log.append(f"  fail {c['cid']} {where}: {p['t']} at {p['u']:.1f},{p['v']:.1f} {self._why(p)}")
+                break
+        self._group = None
+        if ok and n_blk and sum(1 for o in placed if F._family_of(o["type"]) not in SEATS and
+                                 OBJ.category(o["type"]) != "light" and self._placed_of[id(o)][4]) < 0.6 * n_blk:
+            ok = False
+        if ok and placed:
+            placed = self._drop_lone_seats(placed)
+        if not ok or not placed or (c["kind"] != "hang" and not any(
+                self._placed_of.get(id(o)) and self._placed_of[id(o)][4] for o in placed)
+                and not any(PELT.search(o["type"]) for o in placed)):
+            for o in placed:
+                if id(o) in self._placed_of:
+                    if OBJ.category(o["type"]) == "light": self.lights_n -= 1
+                    self._remove(o)
+            del self.wall_used[snap[0]:]; del self.wall_tall[snap[1]:]; del self.g.zones[snap[2]:]
+            del self.light_zones[snap[3]:]
+            return None
+        self.sources[c["room"]] += 1
+        self.used_ids.add(c["cid"])
+        for o in placed:
+            cat = OBJ.category(o["type"])
+            if cat in UNIFY: self.cat_kind.setdefault(cat, OBJ.kind(o["type"]))
+        self._mark_once()
+        self.log.append(f"{c['kind']} {where} <- {c['cid']} ({c.get('wall') or c.get('corner') or 'free'}): " +
+                        " ".join(o["type"] for o in placed))
+        return placed
+
+    def _at_for(self, c, st, like=None):
+        """Where along stretch st cluster c starts: at the corner end it kept in Westwood's room (like: the skeleton's
+        cluster whose slot it fills), or its place along the wall scaled to ours."""
+        ref = like or c
+        L, span = st["L"], c["span"]
+        if span > L + 0.05: return None
+        if ref.get("g0", 9) <= 1.3: at = min(c.get("g0", 0.3), 1.3)
+        elif ref.get("g1", 9) <= 1.3: at = L - span - min(c.get("g1", 0.3), 1.3)
+        else: at = ref.get("rel", 0.5) * L - span / 2 + self.rng.uniform(-0.6, 0.6)
+        return min(max(0.0, at), L - span)
+
+    def _try_wall(self, c, sts, like=None, where="", ordered=False):
+        """Cluster c on one of stretches sts (longest first, or as given), at its own place along the wall, shifted a
+        little when that fails."""
+        for st in (sts if ordered else sorted(sts, key=lambda s: -s["L"])):
+            at = self._at_for(c, st, like)
+            if at is None: continue
+            flip = (like or c).get("g0", 9) > 1.3 and (like or c).get("g1", 9) > 1.3 and self.rng.random() < 0.35
+            room = st["L"] - c["span"]
+            tries = [at + dx for dx in (0.0, 0.35, -0.35, 0.8, -0.8, 1.4, -1.4)] + [room / 2, 0.0, room]
+            seen = set()
+            for a in tries:
+                a2 = round(min(max(0.0, a), room), 2)
+                if a2 in seen: continue
+                seen.add(a2)
+                plan = self._plan_wall(c, st, a2, flip)
+                if DEBUG and not plan: self.log.append(f"  noplan {c['cid']} {[x['t'] for x in c['items']]} on {st['name']} L{st['L']:.1f} at {a2:.1f}")
+                got = self._realise(plan, c, f"{st['name']} {st['L']:.0f}u@{a2:.1f}") if plan else None
+                if got:
+                    st["used"] = True
+                    return got
+        return None
+
+    def _try_corner(self, c, corner, mirrored):
+        for sh in ((0, 0), (0.2, 0.2), (0.45, 0.1), (0.1, 0.45)):
+            c2 = dict(c, items=[dict(x, da=x["da"] + sh[0], db=x["db"] + sh[1]) for x in c["items"]])
+            got = self._realise(self._plan_corner(c2, corner, mirrored), c, corner["name"])
+            if got: return got
+        return None
+
+    def _try_free(self, c, inner, pos, mirrored):
+        spots = [(0.0, 0.0)]
+        for rad in (0.8, 1.6, 2.6):
+            for k in range(6):
+                ang = k * math.pi / 3 + self.rng.uniform(-0.4, 0.4)
+                spots.append((rad * math.cos(ang), rad * math.sin(ang)))
+        for sh in spots:
+            got = self._realise(self._plan_free(c, inner, pos, mirrored, sh), c, f"({pos[0]:.2f},{pos[1]:.2f})")
+            if got: return got
+        return None
+
+    def _kinds_ok(self, c, back, run=None):
+        """Whether every piece cluster c stands on can be had here, on a wall of this class (back: True, False, or None
+        for a corner or free group): the type's own pieces, never a faced piece on a front wall. Memoised."""
+        key = (c["cid"], back, run and run["side"])
+        if key in self._ok_memo: return self._ok_memo[key]
+        if back is not None and run is None:
+            run = next((st["run"] for st in self.stretches if st["back"] == back), None)
+        ok = True
+        state = self.rng.getstate()
+        for x in c["items"]:
+            if not x["blocking"] or x["cat"] == "light" or F._family_of(x["t"]) in SEATS: continue
+            att = x.get("att") or x["hang"]
+            if not self._fit_type(x["t"], x["cat"], run if att else None, None):
+                ok = False
+                break
+        self.rng.setstate(state)
+        self._ok_memo[key] = ok
+        return ok
+
+    def _slot_cands(self, c0, sk_id, kind, back=None, max_span=None, run=None):
+        lead0 = self._lead_of(c0) if c0 else None
+        out = []
+        for c in self._pool_clusters():
+            if c["kind"] != kind: continue
+            if back is not None and c.get("back") != back: continue
+            if not self._kinds_ok(c, back if kind in ("wall", "hang") else None, run): continue
+            if max_span is not None and c["span"] > max_span: continue
+            w = self._cw(c, sk_id)
+            if not w: continue
+            if c0 is not None:
+                l = self._lead_of(c)
+                if l != lead0:
+                    if l in MINOR and lead0 in MINOR: w *= 0.25
+                    else: continue
+                w *= math.exp(-abs(c["span"] - c0["span"]) / 2.5)
+                if c["room"] == c0["room"] and c is c0: w *= 1.0
+            out.append((w, c))
+        return out
+
+    def _fill_slot(self, z, c0, mirrored, sk_id):
+        """One cluster of the skeleton's: a cluster like it (its lead piece, its size) from the pool, where it stood."""
+        if c0["kind"] in ("wall", "hang"):
+            W0 = MIRROR[c0["wall"]] if mirrored else c0["wall"]
+            for W in (W0, MIRROR[W0]):
+                sts = [st for st in z["stretches"] if st["name"] == W]
+                if not sts: continue
+                longest = max(st["L"] for st in sts)
+                cands = self._slot_cands(c0, sk_id, c0["kind"], back=W in ("NE", "NW"), max_span=longest,
+                                         run=sts[0]["run"])
+                for _ in range(5):
+                    c = self._choose(cands)
+                    if not c: break
+                    got = self._try_wall(c, sts, like=c0)
+                    if got: return got
+                    cands = [(w, x) for w, x in cands if x is not c]
+            return None
+        if c0["kind"] == "corner":
+            want = MIRROR[c0["corner"]] if mirrored else c0["corner"]
+            corner = z["corners"].get(want)
+            if not corner: return None
+            cands = self._slot_cands(c0, sk_id, "corner")
+            for _ in range(6):
+                c = self._choose(cands)
+                if not c: return None
+                mir = (MIRROR[c["corner"]] == want) if c["corner"] != want else False
+                got = self._try_corner(c, corner, mir)
+                if got: return got
+                cands = [(w, x) for w, x in cands if x is not c]
+            return None
+        # a free group where the skeleton's stood
+        pos = (1 - c0["pos"][1], 1 - c0["pos"][0]) if mirrored else tuple(c0["pos"])
+        cands = self._slot_cands(c0, sk_id, "free")
+        for _ in range(5):
+            c = self._choose(cands)
+            if not c: return None
+            got = self._try_free(c, z["inner"], pos, mirrored)
+            if got: return got
+            cands = [(w, x) for w, x in cands if x is not c]
+        return None
+
+    def _place_focal(self, zones, target):
+        """The type's focal cluster (a bed with its nightstands and chest) on the back wall across from the door, at
+        its own place along the wall (in its corner, or centred), before anything else."""
+        fo = self.prof.get("focal") or {}
+        rx = fo.get("types")
+        if not rx: return None
+        has = lambda c: any(re.search(rx, x["t"]) for x in c["items"])
+        walls = [target] + [w for w in ("NE", "NW") if w != target] if target else ["NE", "NW"]
+        for W in walls:
+            zs = sorted(zones, key=lambda z: -self._door_dist(z))
+            for z in zs:
+                sts = [st for st in z["stretches"] if st["name"] == W and st["L"] >= 3.5]
+                if not sts: continue
+                sts.sort(key=lambda st: -(0.3 * self._st_door_dist(st) + st["L"]))
+                longest = max(st["L"] for st in sts)
+                cands = [(self._cw(c) * (1.5 if c.get("wall") == W else 1.0) * c["n_block"] ** 1.5, c)
+                         for c in self._pool_clusters()
+                         if c["kind"] == "wall" and c.get("back") and has(c) and c["span"] <= longest]
+                for _ in range(12):
+                    c = self._choose(cands)
+                    if not c: break
+                    got = self._try_wall(c, sts, ordered=True)
+                    if got:
+                        self.focal_zone = z
+                        return got
+                    cands = [(w, x) for w, x in cands if x is not c]
+        return None
+
+    def _st_door_dist(self, st):
+        """How far the middle of stretch st lies from the main door."""
+        op = self.main_door()
+        if not op: return 0.0
+        du, dv = (op["coord"], op["along"]) if op["line"] == "/" else (op["along"], op["coord"])
+        a = (st["s0"] + st["s1"]) / 2
+        r = st["run"]
+        u, v = (r["coord"], a) if r["line"] == "/" else (a, r["coord"])
+        return math.hypot(u - du, v - dv)
+
+    def _door_dist(self, z):
+        op = self.main_door()
+        if not op: return 0.0
+        du, dv = (op["coord"], op["along"]) if op["line"] == "/" else (op["along"], op["coord"])
+        i = z["inner"]
+        return math.hypot((i[0] + i[1]) / 2 - du, (i[2] + i[3]) / 2 - dv)
+
+    def _carpet(self):
+        """A carpet in floor tiles in the share of Westwood's rooms of the type that lay one. Westwood's larger rooms
+        lay a larger one (its big bedrooms: a carpet over most of the floor between the groups on the walls; rules/rooms/
+        shells.json carpet_share p50-p90 0.3-0.53): a room over 1.3 times Westwood's median takes a carpet over the
+        middle half to two thirds of each side, a smaller room Westwood's own (its floor less a ring, kit/shells)."""
+        carpeted = (self.lib["stats"].get(self.rtype) or {}).get("carpeted", 0.0)
+        big = self.floor >= 1.3 * ww_floor(self.rtype)
+        if carpeted and big: carpeted = min(0.9, carpeted + 0.15)
+        if self.rng.random() >= carpeted: return
+        laid = None
+        if big:
+            fu, fv = self.rng.uniform(0.5, 0.7), self.rng.uniform(0.5, 0.7)
+            cu, cv = (self.U0 + self.U1) / 2, (self.V0 + self.V1) / 2
+            hu, hv = (self.U1 - self.U0) * fu / 2, (self.V1 - self.V0) * fv / 2
+            cu += self.rng.uniform(-0.15, 0.15) * (self.U1 - self.U0 - 2 * hu)
+            cv += self.rng.uniform(-0.15, 0.15) * (self.V1 - self.V0 - 2 * hv)
+            laid = self.lay_carpet((cu - hu, cu + hu, cv - hv, cv + hv), margin=0.0)
+        if not laid: laid = self.lay_carpet(None)
+        if laid: self.log.append(f"carpet laid ({len(laid)} squares)")
+
+    def compose_clusters(self):
+        rng_c = ww_cover(self.rtype)
+        self.cover_goal = self.rng.uniform(*rng_c) if rng_c else 0.15
+        self._carpet()
+        zones = self._zones()
+        self.zones = zones
+        self.log.append(f"zones {len(zones)} (tiles {self.tiles}, floor {self.floor})")
+        fo = self.prof.get("focal") or {}
+        target = self._focal_wall() if fo.get("where") == "back" else None
+        self.focal_zone = None
+        if fo.get("types") and fo.get("where") == "back":
+            self._place_focal(zones, target)
+        used_sk = set()
+        frx = fo.get("types")
+        for z in sorted(zones, key=lambda z: z is not self.focal_zone):
+            sk = self._zone_skeleton(z, used_sk)
+            if not sk: continue
+            used_sk.add(sk["id"])
+            clus = list(clusters_of(sk["id"]))
+            self.log.append(f"zone skeleton {sk['id']} ({sk['type']}, {sk['culture']}, floor {sk['floor']}) for "
+                            f"floor {z['floor']:.0f}")
+            skf = next((c for c in clus if c["kind"] == "wall" and frx and
+                        any(re.search(frx, x["t"]) for x in c["items"])), None)
+            if skf and target and skf["wall"] in ("NE", "NW") and z is self.focal_zone:
+                mirrored = skf["wall"] != target
+            else:
+                mirrored = self.rng.random() < 0.5
+            clus.sort(key=lambda c: (-c["n_block"], -c["span"]))
+            for c0 in clus:
+                if c0 is skf and self.once_done: continue
+                if frx and any(re.search(frx, x["t"]) for x in c0["items"]) and self.once_done: continue
+                if self.coverage() >= self.cover_max * 0.9: break
+                if not self._fill_slot(z, c0, mirrored, sk["id"]):
+                    self.log.append(f"  slot missed: {c0['kind']} {c0.get('wall') or c0.get('corner') or ''} "
+                                    f"{self._lead_of(c0)} {[x['t'] for x in c0['items']]}")
+        if fo.get("types") and not self.once_done and fo.get("where") == "back":
+            self._place_focal(zones, None)
+        self.repair_clusters(zones)
+        self.top_up_clusters(zones)
+
+    def top_up_clusters(self, zones):
+        """Up to this room's draw from Westwood's cover for the type: more clusters on the free parts of the walls
+        (back walls first, each in its zone, with a step of floor between groups) and in empty corners; in a room well
+        over Westwood's size, a free group of the type's (a table and its chairs) in one of its zones."""
+        failed = set()
+        big = self.floor >= FREE_TOPUP * ww_floor(self.rtype) and self.rtype not in WALLS_ONLY
+        free_n = 0
+        for _ in range(TOP_UP_TRIES):
+            if self.coverage() >= self.cover_goal: break
+            walls_done = getattr(self, "_walls_done", False)
+            if big and free_n < 1 + (self.floor >= 2.5 * ww_floor(self.rtype)) and                     (walls_done or self.rng.random() < 0.3):
+                cands = [(w * (1 + c["n_block"]), c) for w, c in self._slot_cands(None, None, "free")
+                         if self._lead_of(c) in ("table", "desk", "bed", "bench") or self.rtype not in ("bedroom",)]
+                c = self._choose(cands)
+                z = self.rng.choice(zones)
+                if DEBUG: self.log.append(f"  free try {c and c['cid']} of {len(cands)}")
+                if c and self._try_free(c, z["inner"], tuple(c["pos"]), self.rng.random() < 0.5): free_n += 1
+                elif walls_done: break
+                if walls_done: free_n += 0.5
+                continue
+            parts = []
+            for z in zones:
+                for st in z["stretches"]:
+                    if st.get("full"): continue
+                    for p in self.free_parts(st, pad=GROUP_PAD, least=1.6):
+                        key = (p["run"]["line"], p["run"]["coord"], round(p["s0"], 1), round(p["s1"], 1))
+                        if key not in failed: parts.append((p, st, key))
+            corners = [c for z in zones for c in z["corners"].values()
+                       if not self._corner_busy(c)]
+            if not parts and not corners:
+                if big and not walls_done:
+                    self._walls_done = True
+                    continue
+                break
+            if DEBUG: self.log.append(f"topup: {len(parts)} parts {[round(p[0]['L'], 1) for p in parts]} {len(corners)} corners")
+            if parts and (not corners or self.rng.random() < 0.75):
+                parts.sort(key=lambda ps: (not ps[0]["back"], -ps[0]["L"] * self.rng.uniform(0.6, 1.4)))
+                part, st, key = parts[0]
+                have = collections.Counter(OBJ.category(o["type"]) for o in self.objects)
+                cands = [(w * (1 + c["n_block"]) * 0.3 ** have[self._lead_of(c)], c)
+                         for w, c in self._slot_cands(None, None, "wall", back=part["back"], max_span=part["L"] - 0.2,
+                                                      run=part["run"])
+                         if c["n_block"] >= 1]
+                got = None
+                for _ in range(8):
+                    c = self._choose(cands)
+                    if not c: break
+                    got = self._try_wall(c, [part])
+                    if got: break
+                    cands = [(w, x) for w, x in cands if x is not c]
+                if not got: failed.add(key)
+                continue
+            corner = self.rng.choice(corners)
+            cands = [(w, c) for w, c in self._slot_cands(None, None, "corner")]
+            for _ in range(4):
+                c = self._choose(cands)
+                if not c: break
+                mir = MIRROR[c["corner"]] == corner["name"] and c["corner"] != corner["name"]
+                if c["corner"] != corner["name"] and not mir: w_ok = False
+                else: w_ok = True
+                if w_ok and self._try_corner(c, corner, mir): break
+                cands = [(w, x) for w, x in cands if x is not c]
+            corner["busy"] = True
+
+    def _why(self, p):
+        t, u, v = p["t"], p["u"], p["v"]
+        hu, hv = self.half(t)
+        if self._capped(t): return "capped"
+        if self.n_blocking >= self.cap: return "cap"
+        if self.coverage(self.footprint(t)) > self.cover_max: return "cover_max"
+        if not self._one_of_a_kind_ok(t, u, v): return "one-of-a-kind"
+        before = dict(self.kb_refused)
+        if not self._kb_ok(t, u, v, hu, hv, p["x"]["blocking"], "floor"):
+            return "kb " + str({k: v - before.get(k, 0) for k, v in self.kb_refused.items() if v != before.get(k, 0)})
+        pts = [(u + a * hu, v + b * hv) for a in (-1, 0, 1) for b in (-1, 0, 1)]
+        if not all(self.g.inside(*q) for q in pts): return "outside"
+        if min(self.g.wall_dist(*q) for q in pts) < 0.1: return "wall_dist"
+        if not self.g.before_back_wall(u, v): return "behind wall"
+        for du, dv in self.g.doors:
+            if math.hypot(u - du, v - dv) < F.DOOR_CLEAR + max(hu, hv): return "door"
+        for z in self.g.zones:
+            if u + hu > z[0] and u - hu < z[1] and v + hv > z[2] and v - hv < z[3]: return f"zone {[round(q,1) for q in z]}"
+        if not self.g.fits(u, v, hu, hv, True, False, wall_min=0.1, touch=True): return "overlap"
+        if not self.g.reachable_ok((u, v, hu, hv, True, "floor")): return "reach"
+        return "?"
+
+    def _corner_busy(self, c):
+        if c.get("busy"): return True
+        cu, cv = c["a"]["coord"] + c["a"]["sign"] * 1.5, c["b"]["coord"] + c["b"]["sign"] * 1.5
+        return any(abs(rec[0] - cu) < 1.8 + rec[2] and abs(rec[1] - cv) < 1.8 + rec[3] for rec in self.g.placed
+                   if rec[5] != "wall")
+
+    def repair_clusters(self, zones):
+        """The type's must pieces still missing: clusters that hold them, on free parts of the walls; the recipe's own
+        placement as the last resort."""
+        must = self.prof.get("must", {})
+        for fam, n in must.items():
+            for attempt in range(5):
+                if self._count_fam(fam) >= n: break
+                has = lambda c: any(F._family_of(x["t"]) == fam for x in c["items"])
+                parts = [p for z in zones for st in z["stretches"] for p in self.free_parts(st, pad=GROUP_PAD,
+                                                                                           least=1.6)]
+                parts.sort(key=lambda p: (not p["back"], -p["L"]))
+                done = False
+                for part in parts[:4]:
+                    cands = [(w, c) for w, c in self._slot_cands(None, None, "wall", back=part["back"],
+                                                                 max_span=part["L"] - 0.1, run=part["run"]) if has(c)]
+                    for _ in range(3):
+                        c = self._choose(cands)
+                        if not c: break
+                        if self._try_wall(c, [part]): done = True; break
+                        cands = [(w, x) for w, x in cands if x is not c]
+                    if done: break
+                if not done:
+                    for z in zones:
+                        for name, corner in z["corners"].items():
+                            cands = [(w, c) for w, c in self._slot_cands(None, None, "corner") if has(c)]
+                            c = self._choose(cands)
+                            if c and self._try_corner(c, corner, c["corner"] != name):
+                                done = True; break
+                        if done: break
+                if not done:
+                    if fam in F.WALL_ONLY or fam in ("storage", "stove", "fireplace", "bed", "desk", "lab"):
+                        res = self.place_on_wall(fam, at=self.rng.choice(["center", "corner"]))
+                    else:
+                        res = self.place_center(fam)
+                    if res: self.log.append(f"repair {fam}: recipe placement")
+                    else: break
+
     def _seat_anchor_in_room(self):
         return any(F._family_of(o["type"]) in ("table", "desk", "fireplace", "counter_bar") for o in self.objects)
 
@@ -803,7 +1616,8 @@ class MotifFurnisher(F.Furnisher):
 
     def furnish(self):
         self.composing = True
-        self.compose_room()
+        if COMPOSE == "clusters": self.compose_clusters()
+        else: self.compose_room()
         self.composing = False
         self.face_statues()
         # the room's ambient light, as the recipe engine adds it (not drawn; it lights what is there)
