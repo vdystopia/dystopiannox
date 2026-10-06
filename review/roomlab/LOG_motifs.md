@@ -22,7 +22,11 @@ had given round 1 bedroom 6/10 (4.8 / 6.8) and storeroom 7/10 (5.2 / 5.6).
 | c6 | No lone chair anywhere (a seat comes with its table or desk); the bed on the longest stretch of the far back wall, not the farthest point; top-up penalises a lead already in the room | 0.916 | 0.839 | 7 | 0.095 | 0.30 | 0.67 | No floating chairs |
 | c7 | (lab fairness merged: creature-free renders, Westwood's door counts) Gap dressing: Westwood's one-piece clusters in the gaps between groups | 0.869 | 0.796 | 7 | 0.105 | 0.33 | 0.63 | Fuller; bookcases too common |
 | c8 | Dressing without shelves, stores favoured; shelf groups halved in the top-up | 0.853 | 0.792 | 7 | 0.102 | 0.31 | 0.63 | |
-| **c9** | Hangings on bare back wall at Westwood's rate per floor (trophies, tapestries, paintings) | **0.825** | 0.796 | 7 | 0.102 | 0.31 | 0.63 | **Queued.** Closest yet; still sparser than Westwood's small rooms |
+| c9 | Hangings on bare back wall at Westwood's rate per floor (trophies, tapestries, paintings) | 0.825 | 0.796 | 7 | 0.102 | 0.31 | 0.63 | Queued first, then replaced by c13 |
+| c10 | The focal's wall drawn from where Westwood's rooms of the type stand it from their door (stats focal: a bed across from the door 12 times, beside it 7); a seat only in a cluster with its table, desk or hearth | 0.661 | 0.776 | 7 | 0.103 | 0.33 | 0.63 | No loose chairs at all |
+| c11 | Never on the door's own wall (our door cuts leave no room beside the door) | 0.661 | 0.776 | 7 | 0.103 | 0.33 | 0.63 | Same rooms (seed 1 drew no "door") |
+| c12 | The focal group placed along its wall nearest 0.72 of the room's diagonal from the door (Westwood's median) | 0.710 | 0.709 | 7 | 0.103 | 0.33 | 0.64 | Cross AUC best of the night |
+| **c13** | A group's piece within reach of the wall takes the wall's variant too | **0.710** | **0.709** | 7 | 0.103 | 0.33 | 0.64 | **Queued.** Same rooms as c12 (no such piece on seed 1). Still 7 pieces in a variant Westwood seldom uses on that wall (Desk1 and Bookcase1 on NE), not yet traced |
 
 Hard-rule rooms in c9: all seven are the checker's "sparse" warning (cover under 11-12%). The bedroom identity
 (`kit/identity.py ROOMS["bedroom"]`) holds only chests as storage, one chest per room (`kit/objects.py room_cap`) and one
@@ -39,7 +43,22 @@ share of the most common kind.
 | s2 | Top-up penalises a kind already in the room; free heaps allowed in stores of 60+ tiles (Westwood's big Con07B store has them), never in the way in; the kind's focal placed alone when no cluster holds it (the ore store's cart) | 0.657 | 0.952 | 2 | 0.146 | 0.32 | 0.53 | |
 | s3 | Stores mixed: a kind past 40% of the room's stock gives way to the type's least used kind | 0.674 | 0.922 | 0 | 0.151 | 0.32 | 0.51 | No monotony warning |
 | s4 | Dressing packs small stock against the stock already on a wall (heaps grow) | 0.647 | 0.921 | 0 | 0.151 | 0.32 | 0.51 | Little change: the cover is reached before the dressing |
-| **s5** | Stock on the back walls only when they have room (Westwood's stores use 2 walls, ours used 4) | 0.686 | **0.894** | **0** | 0.151 | 0.31 | 0.51 | **Queued.** Within Westwood's own range: its stores are sparse too (a few big crates, a barrel heap) |
+| s5 | Stock on the back walls only when they have room (Westwood's stores use 2 walls, ours used 4) | 0.686 | 0.894 | 0 | 0.151 | 0.31 | 0.51 | Within Westwood's own range: its stores are sparse too (a few big crates, a barrel heap) |
+| **s6** | The engine as it ends the night (bedroom c13's changes; none is specific to stores) | **0.639** | 0.894 | **0** | 0.151 | 0.34 | 0.51 | **Queued** |
 
 Originality: no room is a copy. Bedroom c9's highest similarity to any stock room is 0.44-0.67; the storerooms are all
 one family (storage), which the checker counts as unrecognisable.
+
+## Living room (not queued)
+
+| Round | What changed | AUC | Cross | Hard | Cover | Per tile | Open | Look |
+|---|---|---|---|---|---|---|---|---|
+| l1 | The engine as at bedroom c9 | 0.804 | 0.714 | 7 | 0.118 | 0.30 | 0.54 | The hearth group whole (fireplace and bellows), tables with their chairs; but loose chairs and a barrel-and-chair against walls, three stoves in four rooms, the hearth far across from the door (0.96 of the diagonal; Westwood 0.57) |
+| l2 | One stove; the hearth beside the door as Westwood's (stats focal: beside 7 of 10); a seat only with its table | 0.909 | 0.803 | 7 | 0.094 | 0.22 | 0.66 | Hearth placed right, but no loose chairs left: Westwood's living rooms hold 1.3 chairs per 10 tiles, many pulled out by a wall |
+| l3 | (bedroom c11) | 0.945 | 0.871 | 7 | 0.095 | 0.21 | 0.67 | |
+| l4 | (bedroom c12) | 0.973 | 0.911 | 9 | 0.098 | 0.24 | 0.67 | |
+| l5 | Loose seats again in the types Westwood has them, but only within 3 units of a table or the hearth | 0.974 | 0.904 | 7 | 0.111 | 0.26 | 0.60 | Still sparse and unsymmetric; the table groups fail the gate's clearances against the hearth group (kb refusals), so the table count is half Westwood's |
+
+The living room needs its table groups to stand (the gate refuses most of them next to the hearth group) and its
+symmetry (Westwood's hearths stand with something either side). It stays on the recipe engine. Laboratory, kitchen,
+crypt, barracks and armoury were not reached tonight.

@@ -205,9 +205,15 @@ round: `LOG_motifs.md`.
 - **Variety.** One kind per category per room (`UNIFY`: one chair, chest, nightstand, candelabra kind), no motif swaps.
   Floors and walls come from the shells; carpets vary in size and place.
 
-Results (seed 1; the blind sheets are queued in `TO_JUDGE.md`): bedroom c9 AUC 0.825 (round 1: 0.838-0.88), cross
-0.796, 7 hard-rule rooms (all the checker's "sparse" warning); storeroom s5 AUC 0.686 (round 1: 0.844), cross 0.894,
-0 hard-rule rooms (round 1: 7).
+- **The focal's place.** The focal's wall is drawn from where Westwood's rooms of the type stand it from their door
+  (`_focal_wall`, stats focal: a bed across from the door or beside it, a hearth beside it), on the longest stretch of
+  that wall, along it nearest 0.72 of the room's diagonal from the door (Westwood's median).
+
+Results (seed 1; the blind sheets are queued in `TO_JUDGE.md`): bedroom c13 AUC 0.71 (round 1: 0.838-0.88), cross 0.709
+(round 1: 0.745), 7 hard-rule rooms (all the checker's "sparse" warning: the bedroom identity allows one chest and no
+barrels or crates, so Westwood's density can't be reached with its own pieces); storeroom s6 AUC 0.639 (round 1:
+0.844), cross 0.894, 0 hard-rule rooms (round 1: 7). The living room is not ready (best l1 0.804, but loose chairs and
+too few tables; see `LOG_motifs.md`).
 
 ## Verdict (round 1)
 
