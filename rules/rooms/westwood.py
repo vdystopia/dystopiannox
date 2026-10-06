@@ -73,6 +73,28 @@ HAND = [
 ]
 
 
+# Rooms the contents classify wrongly, read by eye from the room lab's gallery (tuneA, 2026-10-05; an independent blind
+# judge found "Westwood bedrooms" and "living rooms" that were cells, guard posts and a dais hall): (map, centre) ->
+# (type, what it is). "other" drops the room from every type.
+RETYPE = {
+    ("War07A", (174, 236)): ("cell", "a stone cell with two cots and a torch by the bars (a cell's evidence room)"),
+    ("Wiz06a", (136, 196)): ("guardroom", "two cots, a chest and the watch's table of food with chairs"),
+    ("Con03A", (80, 98)): ("guardroom", "a guard's cubby by the barred door: a cot and a Dun Mir chest"),
+    ("Con03A", (164, 60)): ("guardroom", "a palisade hut: a cot, two tables with chairs, barrels"),
+    ("Con07F", (196, 198)): ("other", "a dais hall with an inlaid floor; its bed and nightstand stand hidden by a front wall"),
+    ("Con07D", (134, 63)): ("solar", "the lord's chamber: bed, hearth, twelve bookcases, tables (solar evidence)"),
+    ("Con06b", (116, 182)): ("solar", "a Dun Mir lord's chamber (solar evidence)"),
+    ("Con06b", (91, 158)): ("solar", "a lord's chamber of 196 tiles with columns and a long table (solar evidence)"),
+    ("Wiz03b", (78, 85)): ("solar", "the green chamber: bed, hearth, bookcases, ten tapestries (solar evidence)"),
+    ("Wiz06a", (84, 151)): ("guardroom", "a dungeon guard post: round table, chairs, chest, a barred door"),
+    ("Wiz06a", (210, 180)): ("guardroom", "a dungeon guard post: round table, barrels, a barred door"),
+    ("Con06b", (104, 79)): ("guardroom", "a guard post by the cells: round table, chairs, barrels, barred gates"),
+    ("Con03A", (142, 223)): ("guardroom", "an 8-tile post by a barred door: a table of food and two chairs"),
+    ("Con03A", (152, 213)): ("guardroom", "an 8-tile post by a barred door: a table and two chairs"),
+    ("Con09a", (54, 126)): ("other", "a palisade pen with a chest, a table and meat: an ogres' shack"),
+}
+
+
 def hand_rooms(name, m):
     out = []
     for mp, cell, typ, why in HAND:
@@ -119,6 +141,13 @@ def main():
         found = [r for rs in pool.map(one, maps) for r in rs]
     # the three campaigns share most layouts: a room met again (the same floor at the same place) counts once, even
     # when a class's copy differs by a piece or two (Galava's temple has a stray alchemist's desk in Con07B and Wiz02A)
+    # the rooms read by eye (RETYPE), wherever the same layout is met again (the campaigns share most maps' rooms)
+    retag = {(r["tiles"], tuple(r["centre"])): RETYPE[(r["map"], tuple(r["centre"]))] for r in found
+             if (r["map"], tuple(r["centre"])) in RETYPE and not r["by_hand"]}
+    for r in found:
+        k = (r["tiles"], tuple(r["centre"]))
+        if k in retag and not r["by_hand"]: r["type"], r["by_hand"] = retag[k]
+    found = [r for r in found if r["type"] != "other"]
     seen, rooms = set(), []
     for r in found:
         key = (r["tiles"], tuple(r["centre"]))

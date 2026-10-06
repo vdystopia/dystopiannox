@@ -62,3 +62,22 @@ The householder at the hearth's side, never before it (the rug and the way to th
 
 - Westwood: Con07B, cell 105,197 (31 tiles, 12 types); War05A / Con05A, cell 80,10 (40 tiles).
 - Ours: Starwell seed 4, rooms 25 and 27 (50 and 60 tiles, 17 and 21 types), rooms 29-30 (dwellings).
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's 15 campaign living rooms (8-40 tiles, one of 116) are **sitting rooms round a table**, not lined rooms:
+
+- **What they hold**: a round table (12 of 15; with its food in 7) ringed by three to five chairs, sometimes one fallen
+  over; the hearth in only 6 (Fireplace, with bellows beside it in 3); a chest (6); barrels or water barrels (6), heaped
+  in a corner or in pairs; a bench or a cushioned bench (6); a spittoon (2); a rug, a tapestry or two, a painting now
+  and then. **No bookcases** (one movable bookcase in 15), **no plants**, **no statues** but a vase. 5 kinds of object
+  (3-10); the back walls lined 0.05; the commonest piece is the chair (0.44 of the pieces).
+- **What gave ours away** (AUC 0.985 at the start): bookcases lining both back walls, plants, statues, sacks, no chairs
+  at the table (the building's table palette left out the table of food), hangings by the room's decoration pass.
+- **The recipe now** (`kit/identity.py ROOMS["living_room"]`, `["dwelling"]`): the hearth centred on a back wall, shelves
+  beside it in a quarter of the rooms only (the TreePlace review's "shelves along the wall with the hearth"), the
+  `family_table` group (a round table, its food on it most often, three or four chairs), a chest, one barrel, a bench, a
+  spittoon sometimes, at most one hanging; no plants, no decorated walls (`decorate=False`), lined goal 0.05.
+- **Profile**: lined 0.08, types_min 6 (were 0.30 and 9, above Westwood's p90).
+- **Still giving it away**: the hearth in every room (the brief's must; Westwood's in 6 of 15), the table dead centre and
+  single barrels spaced along the walls; Westwood's heap the barrels in one corner and pull chairs round the hearth.
