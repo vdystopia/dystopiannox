@@ -148,3 +148,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
 - 00:29 Scene round 3's last sheets, judged independently: graveyard r8 10/10 (5.6/7.4), garden r6 10/10 (5.4/7.8,
   up from 4.8), dock r4 9/9 (5.6/7.8, up from 4.6). Scores are rising and all are still told apart. Diagnosis: each
   scene is an isolated stamp, where Westwood's are woven into walls, roads, houses and each other. Passed to round 4.
+- 00:39 Merged: room shells (night-shells: L-shapes, alcoves, partitions, second floors and carpets at Westwood's
+  rates; rooms now 41-83% rectangles per map against Westwood's 67%; shell AUC down for all five lab types, crypt
+  0.99->0.78), tuning tracks C (storeroom passed; 18 types tuned; shared heaps slot, steel stock, crypt-chest variants)
+  and A (8 types; guardroom matched Westwood's score; fixes for double-door clearance and stray chairs), and the motif
+  engine (night-motifs: 174 curated rooms mined into 1279 wall stretches, 239 corner and 457 centre motifs; experimental,
+  off by default; lower AUC in 4 of 6 types but more hard-rule rooms). Conflicts in furnish.py and identity.py were
+  additive and resolved keeping both sides. 22 new sheets sent to six fresh judges. Integration build running.
+  Track B and dialogue round 3 and scene round 4 still running.
