@@ -591,7 +591,7 @@ TYPES.update({
     "mausoleum": dict(
         family="dead", feel="open", kinds=("mausoleum",), westwood=(),
         evidence=(("Con04a", (148, 55)), ("Con04a", (230, 88)), ("Con04c", (220, 108)), ("Con04c", (75, 78))),
-        focal=dict(fam="statue", types=r"^Statue", where="any"),
+        focal=None,                 # Westwood's mausoleums have no one centrepiece: statues in pairs (the room lab)
         must={"statue": 2}, never=("bed", "desk", "table", "chair", "stove", "smithy", "lab", "counter_bar",
                                               "counter_shop", "shop_rack", "fireplace", "straw", "bench"),
         never_types=r"Barrel|Sack|^Bookcase",

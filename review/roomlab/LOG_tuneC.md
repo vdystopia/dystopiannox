@@ -349,3 +349,8 @@ counter with its goods, where Westwood's measured medians say the middle is bare
 
 Storeroom r19-r21: dropping a heap that stayed one piece and capping great casks at one a room raised the AUC (0.81 ->
 0.88), so both were reverted (r21 reproduces r18 exactly: the batches are deterministic).
+
+| Type | Round | Change | AUC | Cross | Hard rooms |
+|---|---|---|---|---|---|
+| crypt | r8 | a tomb per 16 tiles, no tombs by the walls, fewer chests: worse (0.90, 8 sparse), reverted; r9 reproduces r7 (0.874) | 0.900 | 0.924 | 8 |
+| mausoleum | r6 | no focal piece in the profile (Westwood's have no one centrepiece), three mirrored pairs of statues tried | 0.867 | 0.983 | 0 |

@@ -1173,9 +1173,9 @@ ROOMS = {
                       # walls in the corners
                       # (r3-r4 stood them by the walls flanking the chest: AUC 0.93-1.0; the mirrored pairs of r2 read
                       # closer, 0.88, once the crypt chests took their wall's variant)
-                      compose=[dict(fam="statue", slot="groups", group="statues", n=2, extra=True),
+                      compose=[dict(fam="statue", slot="groups", group="statues", n=3, extra=True),
                                dict(fam="storage", slot="wall", at="center", clear=1.2)],
-                      fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120),
+                      fill=[dict(fam="statue", slot="group", group="statues", max=3, min_area=80),
                             dict(fam="column", slot="racks", kind="columns", gap=4.0, aisle=3.0, min_area=240, max=4,
                                  fixed=True)]),
     # a bone room (Con04a, 64-81 tiles: crypt chests, monuments, bones; War04b: 21 bones heaped round a crypt chest)
