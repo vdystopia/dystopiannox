@@ -447,27 +447,24 @@ ROOMS = {
                               "table": r"^Table[1-4]$", "statue": r"^Gargoyle[1-8]$",
                               "chair": r"^Stool\d$|^CushionedStool\d$|^DarkWoodenChair\d$|^WoodenChair\d$"},
                        decor_themes=("blue", "red", "paintings"),
-                       # Westwood stands its workstations against every wall, the front walls the most (10 of 16:
-                       # metrics facing table), so its back walls stay 0.06-0.35 lined
-                       front_ok=("lab",), lined_goal=0.15, decor_max=1,
+                       # the independent judge (r8): workstations one at a time at even spacing, on the front walls
+                       # showing their backs, a lone table in the middle of a bare floor, the bookcase-desk-bookcase
+                       # formula. Westwood's curated six hold three workstations or alchemist's desks as a work bench
+                       # (Con07C: three side by side), the table against a wall with its chairs (Con07C's corner)
+                       lined_goal=0.15, decor_max=1,
+                       # Westwood's labs stand their pieces a little off the walls (0.49 units against our snug 0.25)
+                       wall_gap={"lab": 0.3, "desk": 0.25, "storage": 0.25, "table": 0.3},
                        top_up=("storage",), lights_per100=4.0,
-                       # the desk toward a corner of the back wall with the most room before it, a bookcase or two
-                       # beside it; workstations in a corner, the alchemist's desk alone; the chest
-                       # (min_area counts the room's grid cells, about 2.4 a floor tile)
-                       compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True, deep=True),
+                       compose=[dict(fam="lab", slot="line", n=3, only=r"^WizardWorkstation"),
+                                dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                                 dict(fam="shelves", slot="line", near="desk", n=1),
-                                dict(fam="lab", slot="wall", at="corner", clear=1.0, only=r"^WizardWorkstation", n=2),
-                                dict(fam="lab", slot="wall", at="center", clear=1.2, only=r"^AlchemistDesk"),
+                                dict(fam="lab", slot="wall", at="corner", clear=1.2, only=r"^AlchemistDesk"),
                                 dict(fam="storage", slot="wall", at="corner", clear=1.0)],
                        fill=[dict(fam="desk", slot="wall", at="any", clear=0, seats=True, once=True, missing=True),
-                             dict(fam="lab", slot="wall", at="corner", clear=1.0, only=r"^WizardWorkstation", max=2,
-                                  min_area=110),
-                             dict(fam="table", slot="group", group="labtable", max=1, min_area=90, fixed=True),
+                             dict(fam="table", slot="wall", at="corner", clear=0, seats=True, max=1, min_area=90, fixed=True),
                              dict(fam="lab", slot="wall", at="center", clear=0.8, only=r"^Vandegraf", max=2, min_area=200,
                                   fixed=True),
                              dict(fam="shelves", slot="line", other=True, n=2, max=4, min_area=150),
-                             dict(fam="lab", slot="wall", at="corner", clear=1.0, only=r"^WizardWorkstation", max=2,
-                                  min_area=170),
                              dict(fam="lab", slot="wall", at="center", clear=0.6, only=r"^FairyJar", max=1, fixed=True),
                              dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=220, fixed=True)]),
     "chapel": dict(purpose="a chapel: the altar centred on a back wall between statues, a few rows of pews facing it "

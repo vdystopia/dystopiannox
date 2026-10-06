@@ -185,3 +185,17 @@ candelabras.
 | r15 | no stretch left: a clump in another corner | 0.736 | 0.904 | 1 | - |
 | r16 | a heap's first piece slides along when its spot is taken | 0.781 | 0.809 | 0 | queued |
 | r16s2 | (seed 2) | 0.891 | 0.839 | 3 | - |
+
+## Laboratory, after the curated references and the independent judge
+
+Curated references: 6 laboratories (Con05A, Con07C x2, Con07D, Con07E, Con09b): workstations 1-5 as a bench, a desk with
+a chair, a bookcase or twelve, a table; 40% of the pieces stand off the walls (0.49 units, against our snug 0.25).
+Independent judge of r8: 10/10, generated 4.6 against 5.6; tells: workstations one at a time at even spacing, often on
+the front walls showing their backs; a lone small table with chairs in the middle of a bare floor; the
+bookcase-desk-bookcase formula; hangings of two colours.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| r9 | (r8's recipe against the curated references) | 0.797 | 0.799 | 7 | - |
+| r10 | a bench of three workstations on a back wall (no `front_ok`), the desk with one bookcase, the alchemist's desk in a corner, the table and chairs against a wall | 0.830 | 0.898 | 9 (sparse) | - |
+| r11 | `wall_gap` for the lab's pieces (a little off the wall, as Westwood's) | 0.765 | 0.853 | 9 (5 sparse, 3 door shells, caps) | queued |
