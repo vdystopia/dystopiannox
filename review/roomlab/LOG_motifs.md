@@ -62,3 +62,36 @@ one family (storage), which the checker counts as unrecognisable.
 The living room needs its table groups to stand (the gate refuses most of them next to the hearth group) and its
 symmetry (Westwood's hearths stand with something either side). It stays on the recipe engine. Laboratory, kitchen,
 crypt, barracks and armoury were not reached tonight.
+
+# Round 3 (night-motifs3): every type, set pieces, the first defaults
+
+Seed 1, n 10 each; `m0` the engine as merged, `r0` the recipe engine on the same code, `m10`/`m11` the round's last
+iterations before merging master, `m12` and `r1` after it (placement grammar round two, the thin types' fair sheets).
+Full tables in MOTIFS.md round 3.
+
+| Round | What changed | Types run | Notes |
+|---|---|---|---|
+| m0 | The engine as merged (archetype zone plans) | all 15 + bedroom | throne room without a throne; chapel pews singly on walls; halls' tables singly; tavern without a bar |
+| m1 | Kin pools for the thin types; a culture's own kind from any curated room when the type's rooms have none; floor lights against a wall; seats within 1.4 of their table; focal groups by novelty (the bed set); rows and bars mined whole | throne, chapel, tavern, crypt | throne still missing (Dun Mir excluded in town: the recipe's own exception now used) |
+| m2-m4 | Axis set pieces (`axis_plan`, `compose_axis`): throne on the NW wall's middle, pairs down the walk; walls kept to hangings after a set piece; Westwood's frame (wall lines one unit outside its floor) | throne, chapel | throne rooms read as Westwood's processional; the chapel's pews met the user's cap of 8 |
+| m5 | Free groups over the floor where Westwood's middles are used | six types | tavern and barracks worse: kept for the halls only (m8) |
+| m6 | Long boards (`board_units`, `compose_boards`) | great hall, dining hall | great hall long boards read as Con06b's; the dining hall's never stood |
+| m7-m9 | Pews borrowed by colonnade and sanctum chapels; altar across from the door; a swapped torch in a house becomes a candelabra | all | throne hard-rule rooms 10 -> 5 |
+| (fix) | The lab's export race: a map list per process (validate/mapdata.py) | - | every earlier parallel number re-judged; m0/r0 confirmed |
+| m10/m11 | Final code; shelves never left apart with bare wall between (`_shelf_gaps`) | all | defaults chosen: bedroom, throne room, crypt, storeroom |
+| m12/r1 | After merging master | all | defaults hold; the queued sheets |
+
+QA after merging master (`py tests/qa.py <design> --no-render`; base: `NOX_MOTIF_TYPES=""`, the recipe for every type):
+
+| Map | Errors base / new | Warnings base -> new | Classes that grew or appeared |
+|---|---|---|---|
+| Thornwick | 0 / 0 | 21 -> 26 | composition.sparse 11 -> 15, composition.bunched 0 -> 1, composition.short_span 0 -> 1 |
+| Greywatch | 0 / 0 | 11 -> 17 | composition.sparse 8 -> 10, composition.bunched 0 -> 2, rooms.stray 1 -> 2, floors.hard_seam 0 -> 1 (GrassNorm against a crypt's GreenBrick) |
+| Ambermere | 0 / 0 | 17 -> 21 | composition.sparse 12 -> 16, rooms.stray 1 -> 2 (grammar_corners 1 -> 0) |
+| Starwell | 0 / 0 | 19 -> 31 | composition.sparse 16 -> 20, composition.bunched 1 -> 5 (five bedrooms), rooms.stray 2 -> 3, composition.anchor_blocked 0 -> 1 (a bed before a chest), composition.shelves_gap 0 -> 1, composition.short_span 0 -> 1 |
+| Harrowby | 0 / 0 | 18 -> 22 | composition.sparse 13 -> 16, composition.bunched 2 -> 3 |
+
+Every map builds with 0 errors. The warnings that grow come mostly from the motif bedrooms: sparser than the checker's
+range (the bedroom identity holds one chest and no stores, round 2's finding) and their groups gathered round the N
+corner on the back walls, as Westwood's bedrooms gather them, which the checker's bunching rule (offset over 0.76)
+counts against. Next: spread a bedroom's second group to the far half of the room when the first stands in a corner.

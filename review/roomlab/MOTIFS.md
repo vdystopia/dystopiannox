@@ -326,3 +326,27 @@ Next, by what the renders show: the chapel's congregation off the axis plan (pew
 wherever the altar stands); the tavern's floor (Westwood's taverns stand tables of two kinds over the floor among the
 drinkers; ours keep them to the walls); the great hall's feast crowd; the laboratory's and shop's density in rooms
 1.5 times Westwood's floor.
+
+**After merging master** (placement grammar round two, the thin types' fair sheets; the queued sheets are these):
+recipe `r1` (`NOX_MOTIF_TYPES=""`) against motifs `m12`, seed 1, n 10 (AUC / template / hard-rule rooms):
+
+| Type | Recipe r1 | Motifs m12 | Westwood template p50/p90 |
+|---|---|---|---|
+| bedroom | 0.852 / 0.285 / 6 | 0.869 / 0.263 / 8 | 0.195 / 0.227 |
+| throne room | 0.873 / 0.601 / 3 | 0.844 / 0.539 / 5 | 0.171 / 0.197 |
+| crypt | 0.894 / 0.373 / 8 | 0.896 / 0.273 / 7 | 0.287 / 0.372 |
+| storeroom | 0.81 / 0.573 / 1 | 0.79 / 0.442 / 1 | 0.23 / 0.256 |
+| kitchen | 0.973 / 0.324 / 9 | 0.927 / 0.365 / 8 | 0.146 / 0.194 |
+| laboratory | 0.808 / 0.344 / 9 | 0.838 / 0.327 / 10 | 0.164 / 0.181 |
+| shop | 0.921 / 0.223 / 10 | 0.86 / 0.254 / 10 | 0.148 / 0.177 |
+| living room | 0.844 / 0.288 / 8 | 0.939 / 0.252 / 9 | 0.219 / 0.236 |
+| guardroom | 0.502 / 0.288 / 1 | 0.572 / 0.316 / 5 | 0.205 / 0.215 |
+| cell | 0.955 / 0.47 / 4 | 0.978 / 0.413 / 1 | 0.282 / 0.339 |
+| barracks | 0.901 / 0.246 / 2 | 0.943 / 0.332 / 5 | 0.228 / 0.271 |
+| tavern | 0.932 / 0.45 / 10 | 0.928 / 0.507 / 10 | 0.262 / 0.292 |
+| chapel | 0.934 / 0.366 / 6 | 0.969 / 0.293 / 5 | 0.093 / 0.12 |
+| great hall | 0.884 / 0.337 / 7 | 0.869 / 0.39 / 9 | 0.16 / 0.23 |
+| study | 0.995 / 0.414 / 4 | 0.976 / 0.314 / 10 | 0.332 / 0.332 |
+| dining hall | 0.95 / 0.327 / 10 | 0.97 / 0.265 / 10 | 0.191 / 0.191 |
+
+The defaults hold after the merge: the throne room, crypt and storeroom are at least level on AUC and nearer Westwood's template spread; the bedroom is level on AUC (within the lab's noise) and less alike. The grammar's carpet rule now lifts most of the throne room's runners.
