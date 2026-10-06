@@ -1,0 +1,32 @@
+{
+  "packet": "rumour/i1",
+  "judge": "Claude Code subagent, Opus 5.5 (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Generic world-news rumours (trade routes, brazen Ogres, strange noises in alleys) in full, calm sentences with 'Be careful if you plan on traveling.' This is the campaign's townsfolk filler."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Three one-liners, unrelated and a bit absurd ('You'll become a drunkard before you know it', 'Beware of the rising undead'). This is classic Westwood throwaway banter."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Maybe we shouldn't have built so close to the ogre village' and 'Well good luck to ya' are Westwood's dry, self-mocking townsfolk humour."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Each line is a quest pointer with a named giver, the problem and where to go ('offering a reward', 'out by their den', 'buy him a drink'). Functional and dense with names."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Three quest hooks in a row, each ending in '[Person] wants...!' with exclamation marks. Nothing here is mere colour."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Wolves taking half the sheep, a bounty, Urchins from the barrow stealing an heirloom and bandits at the watchtower: a menu of side quests voiced as gossip."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "A directional 'head over to [Place]' and 'beyond the grand statue', plus a city-machinery complaint about the Chief Engineer. Bland and plain, with an unforced Westwood flavour."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'That unfortunate lad will wish he'd never even heard of the old goat' and 'I don't know who spreads these insane rumors' carry sly, self-aware humour and longer sentences."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "'Mawweeds ate them, she says! Plants!' is a good beat, but all three lines are quest pointers with names, places and exclamations."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "A missing novice, a pony-sized wolf, a stolen tithe chest, each line naming who wants what. Same structure and punctuation as D/E/F/I."}
+  ],
+  "tells": [
+    "New rumours are all quest signposts: every line names a quest-giver, the trouble and the place, often ending with '[Person] wants...' or 'offering a reward'. Westwood's rumours are mostly colour, general world news or jokes, with at most a loose hint.",
+    "Name density: new lines pack two or three masked names each. Westwood's use few and favour generic nouns ('the ogres', 'bandits', 'merchants').",
+    "Punctuation: the new lines end almost every sentence in '!'. Westwood's townsfolk speak in calmer statements with periods, and the humour is dry and self-deprecating rather than exclaimed.",
+    "Westwood's three lines per place are often unrelated or even contradictory. The new sets are three parallel hooks of the same length and shape."
+  ]
+}

@@ -1,0 +1,148 @@
+{
+ "scenario": "rescue",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brother Anselm's novice Pip followed the candlestick-stealing Urchins into the old barrow east of the ford.",
+   "names": {},
+   "parts": {
+    "plea": {"speaker": "Anselm", "text": "Thank goodness, a traveller! Please, help me! My novice, young Pip, went after the Urchins who stole the chapel's candlesticks. He followed them into the old barrow, east of the ford -- and he hasn't come back!\n\nHe's only a boy! Please, find him and bring him home to the Chapel of the Ford. I'll give you all the chapel can spare. Will you go?"},
+    "reminder": {"speaker": "Anselm", "text": "Have you found Pip? Hurry, please! The barrow is just east of the ford!"},
+    "found": {"speaker": "Pip", "text": "Ahhh! Don't hurt me! ... Oh! You're not an Urchin! Please, take me home to Brother Anselm!"},
+    "following": {"speaker": "Pip", "text": "Wait for me! Don't let them get me again!"},
+    "completion": {"speaker": "Anselm", "text": "Pip! You're home, my boy! Thank goodness! Kind stranger, you have done a great deed. Take this gold, and this ankh, with the chapel's blessing!"},
+    "journal": {"speaker": "", "text": "Rescue Pip from the old barrow east of the ford."}
+   },
+   "reward": {"gold": 60, "items": ["AnkhTradable"]}
+  },
+  {
+   "id": 2,
+   "specifics": "Wenna's boy Tam ran into the Ashwood after the wolves took his dog and is treed by the wolves' den west of the mill.",
+   "names": {"Tam": "person"},
+   "parts": {
+    "plea": {"speaker": "Wenna", "text": "Oh, stranger, please! My boy Tam ran into the Ashwood after the wolves took his dog. That was this morning, and it's nearly dark!\n\nThe wolves' den is in the Ashwood, west of the mill. I'm so afraid! Please, find my Tam and bring him home. I'll give you what I have. Will you help me?"},
+    "reminder": {"speaker": "Wenna", "text": "Please hurry! Tam's out there alone with the wolves!"},
+    "found": {"speaker": "Tam", "text": "Help! Help! Up here! ... The wolves are gone? Oh, thank you! Please, take me home to my mother!"},
+    "following": {"speaker": "Tam", "text": "Stay close! I can hear them howling!"},
+    "completion": {"speaker": "Wenna", "text": "Tam! My Tam! Oh, thank goodness! You brought him back to me! Please, take this gold and these potions, kind stranger. It's all I have!"},
+    "journal": {"speaker": "", "text": "Find Tam in the Ashwood west of the mill and bring him home."}
+   },
+   "reward": {"gold": 50, "items": ["RedPotion", "CurePoisonPotion"]}
+  },
+  {
+   "id": 3,
+   "specifics": "Ulric's granddaughter Elsie went mushrooming in the spider caves under Crow Hill and lost her way.",
+   "names": {"Elsie": "person"},
+   "parts": {
+    "plea": {"speaker": "Ulric", "text": "Kind stranger, please listen to an old man! My granddaughter Elsie went to pick mushrooms in the caves under Crow Hill. That was yesterday, and she's not come home!\n\nThe caves are full of spiders, and Corwin's bandits are right up the hill! I'm too old to go myself. Please, find her! I'll give you every coin I have."},
+    "reminder": {"speaker": "Ulric", "text": "Elsie is still out there! Please, go to the caves under Crow Hill!"},
+    "found": {"speaker": "Elsie", "text": "Ohhh! A spider... no, a person! Thank goodness! I lost my way in the dark. Please, take me back to Grandfather!"},
+    "following": {"speaker": "Elsie", "text": "Don't go so fast! I can't see in here!"},
+    "completion": {"speaker": "Ulric", "text": "Elsie! You're safe! Oh, my heart! Thank you, thank you, friend! Here, take this gold, and this cure for spider bites too. You may need it!"},
+    "journal": {"speaker": "", "text": "Find Elsie in the caves under Crow Hill and bring her to Ulric."}
+   },
+   "reward": {"gold": 80, "items": ["CurePoisonPotion"]}
+  },
+  {
+   "id": 4,
+   "specifics": "Corwin's bandits took the ferrywoman Hild's son Robin off the ferry and hold him for ransom in the watchtower.",
+   "names": {"Hild": "person", "Robin": "person"},
+   "parts": {
+    "plea": {"speaker": "Hild", "text": "Please, you have to help me! Red Corwin's men took my son Robin off the ferry! They want a ransom, and I haven't got a penny!\n\nThey've got him in the watchtower on Crow Hill, north of town. Please, bring my boy home! I'll find some way to reward you, I swear it!"},
+    "reminder": {"speaker": "Hild", "text": "Robin's still up there with those brutes! Hurry, please!"},
+    "found": {"speaker": "Robin", "text": "Is it over? Did Mother send you? Oh, please, get me out of here before they come back!"},
+    "following": {"speaker": "Robin", "text": "Hurry! Corwin's men will be back any moment!"},
+    "completion": {"speaker": "Hild", "text": "Robin! Oh, my boy! You brought him back! I can't thank you enough! The ferrymen took up a collection -- here, it's yours!"},
+    "journal": {"speaker": "", "text": "Rescue Robin from the watchtower on Crow Hill and bring him to Hild."}
+   },
+   "reward": {"gold": 100, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Mabry sent her apprentice Lorna into the old barrow for grave moss, and the Urchins and bats have her trapped.",
+   "names": {"Lorna": "person"},
+   "parts": {
+    "plea": {"speaker": "Mabry", "text": "Oh, it's all my fault! I sent my apprentice Lorna to the old barrow east of the ford for grave moss. She should have been back at noon!\n\nThe Urchins are in there, and who knows what else! Please, find her and bring her back to my shop. I'll give you a spell book and potions besides. Please hurry!"},
+    "reminder": {"speaker": "Mabry", "text": "Have you found Lorna? Hurry, the barrow is east of the ford!"},
+    "found": {"speaker": "Lorna", "text": "Eek! Get away! ... Oh, it's a person! I thought you were another Urchin! Please, get me out of this horrid place!"},
+    "following": {"speaker": "Lorna", "text": "Don't leave me behind! I've had enough of bats for one day!"},
+    "completion": {"speaker": "Mabry", "text": "Lorna! You're safe! Thank goodness! Oh, kind stranger, you've saved my poor girl. Take this spell book and these potions, as promised!"},
+    "journal": {"speaker": "", "text": "Rescue Lorna from the old barrow east of the ford."}
+   },
+   "reward": {"gold": 0, "items": ["SpellBook", "BluePotion"]}
+  },
+  {
+   "id": 6,
+   "specifics": "Dunstan's son Col is cornered by wolves at the charcoal camp in the Ashwood, northwest of town.",
+   "names": {"Col": "person"},
+   "parts": {
+    "plea": {"speaker": "Dunstan", "text": "You there! Can you fight? My son Col went to the charcoal camp in the Ashwood, northwest of here. The wolves came down last night, and he never came home!\n\nThe camp is past the mill, where the smoke used to rise. Please, bring my boy back! I'll give you the best I have!"},
+    "reminder": {"speaker": "Dunstan", "text": "Any sign of Col? The charcoal camp is northwest, in the Ashwood!"},
+    "found": {"speaker": "Col", "text": "Get back! Get back, I said! ... Oh! You killed them! Please, I hurt my leg -- help me home to my father!"},
+    "following": {"speaker": "Col", "text": "Go on, I'll keep up! Just get me out of these woods!"},
+    "completion": {"speaker": "Dunstan", "text": "Col! You're alive! Thank goodness! Stranger, I owe you my boy's life. Take this gold, and this ankh I kept for a bad day!"},
+    "journal": {"speaker": "", "text": "Find Col at the charcoal camp in the Ashwood and bring him home."}
+   },
+   "reward": {"gold": 70, "items": ["AnkhTradable"]}
+  },
+  {
+   "id": 7,
+   "specifics": "Ossian's potboy Fen chased an Urchin into the smugglers' cave on the north bank of the Bracken.",
+   "names": {"Fen": "person"},
+   "parts": {
+    "plea": {"speaker": "Ossian", "text": "Have you seen my potboy? Skinny lad, name of Fen, big ears? He chased an Urchin out of my kitchen and down to the river -- right into the old smugglers' cave on the north bank of the Bracken!\n\nThat was hours ago. Who'll wash the cups? Who'll carry the ale? Please, find him and bring him back to the Drowned Lantern. I'll make it worth your while!"},
+    "reminder": {"speaker": "Ossian", "text": "Still no Fen? The cave's on the north bank of the Bracken, friend. Hurry!"},
+    "found": {"speaker": "Fen", "text": "Is that you, Ossian? No? Oh, never mind -- please, get me out of here! The Urchins took my boots!"},
+    "following": {"speaker": "Fen", "text": "Quick, before they come back for my shirt too!"},
+    "completion": {"speaker": "Ossian", "text": "Fen! You're back! And you look awful! Ha! Thank you, friend. Here, take this gold and a potion. Your ale's free tonight!"},
+    "journal": {"speaker": "", "text": "Find Fen in the smugglers' cave on the north bank of the Bracken."}
+   },
+   "reward": {"gold": 60, "items": ["RedPotion"]}
+  },
+  {
+   "id": 8,
+   "specifics": "Corwin's bandits caught the guard Bertil scouting the north road and hold him in the watchtower; Garrick cannot leave his gate.",
+   "names": {"Bertil": "person"},
+   "parts": {
+    "plea": {"speaker": "Garrick", "text": "Stranger! My shield-brother Bertil rode out to scout the north road. Corwin's men caught him and dragged him up to the watchtower on Crow Hill!\n\nThe Reeve says no guard can leave the gate. But you can! Get him out of there and bring him back to me. I'll pay you from my own purse."},
+    "reminder": {"speaker": "Garrick", "text": "Bertil's still in Corwin's hands! Get up to Crow Hill, stranger!"},
+    "found": {"speaker": "Bertil", "text": "Who's there? ... Not one of Corwin's, by your look! Cut me loose, and get me back to the north gate!"},
+    "following": {"speaker": "Bertil", "text": "Lead on! I'm right behind you!"},
+    "completion": {"speaker": "Garrick", "text": "Bertil! You old dog, you're alive! Thank you, stranger! Here, it's all I've got -- take it, with my thanks!"},
+    "journal": {"speaker": "", "text": "Rescue Bertil from the watchtower on Crow Hill and bring him to Garrick."}
+   },
+   "reward": {"gold": 90, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Halvard's daughter Ysolde fell into the barrow pit while berrying east of the ford and hides from the Urchins.",
+   "names": {"Ysolde": "person"},
+   "parts": {
+    "plea": {"speaker": "Halvard", "text": "Stranger, I need your help, and quickly! My daughter Ysolde went berrying east of the ford. Her basket was found by the old barrow -- but there was no sign of her!\n\nI think she fell into the barrow pit. The Urchins live down there! Find her, please, and bring her home to the Moot Hall. Name your reward!"},
+    "reminder": {"speaker": "Halvard", "text": "Any news of my Ysolde? Please, search the old barrow!"},
+    "found": {"speaker": "Ysolde", "text": "Oh! Oh, thank goodness, someone came! I fell, and I've been hiding from those Urchins ever since. Please, take me home!"},
+    "following": {"speaker": "Ysolde", "text": "Please don't lose me! It's so dark down here!"},
+    "completion": {"speaker": "Halvard", "text": "Ysolde! My girl! Stranger, you've given me back my daughter! Take this gold, and this ankh from the Moot Hall's strongroom!"},
+    "journal": {"speaker": "", "text": "Find Ysolde in the old barrow east of the ford."}
+   },
+   "reward": {"gold": 100, "items": ["AnkhTradable"]}
+  },
+  {
+   "id": 10,
+   "specifics": "The other way round: Pip begs for Brother Anselm, trapped by wolves at the old shrine in the Ashwood west of the mill.",
+   "names": {},
+   "parts": {
+    "plea": {"speaker": "Pip", "text": "Please, help! Brother Anselm went into the Ashwood to pray at the old shrine, and the wolves came! I heard them howling all night!\n\nThe shrine is west of the mill, past the dead oak. I'm too small to fight wolves! Please, find him and bring him back to the Chapel of the Ford!"},
+    "reminder": {"speaker": "Pip", "text": "Please, have you found Brother Anselm? The shrine is west of the mill!"},
+    "found": {"speaker": "Anselm", "text": "Bless you, my child! I've been praying for help, and here you are. Please, lead me back to the chapel!"},
+    "following": {"speaker": "Anselm", "text": "Go on, I'll keep up! These old legs still have some life in them!"},
+    "completion": {"speaker": "Pip", "text": "Brother Anselm! You came back! Thank you, thank you! He says I may give you this robe and the chapel's gold. Here!"},
+    "journal": {"speaker": "", "text": "Find Brother Anselm at the old shrine in the Ashwood."}
+   },
+   "reward": {"gold": 50, "items": ["WizardRobe"]}
+  }
+ ]
+}

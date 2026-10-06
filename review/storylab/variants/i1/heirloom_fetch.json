@@ -1,0 +1,425 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Wenna, the miller's widow, wants her late husband's silver millstone-seal back from the Urchins in the old barrow east of the ford.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Oh, a stranger! Please, help me! The Urchins broke into my mill and stole my husband's silver millstone-seal! It has marked our flour for three generations!\n\nThey dug into the old barrow, east of the ford. I'm sure they took it there!\n\nI'm only a poor widow, but I'll give you what I can. Would you bring the seal back to me, kind stranger?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Oh... I see. Then the seal is lost for good. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Have you found the seal? The Urchins took it to the barrow, east of the ford!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My husband's seal! You found it! I could weep for joy! Thank you, thank you! Please take this gold, and this potion. It's the least I can do!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thanks again, kind stranger! The mill's mark is home."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Wenna's silver millstone-seal from the Urchins in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Wenna's silver millstone-seal from the Urchins in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Ossian wants his grandfather's brass lantern, the inn's namesake, back from the Urchins' hole in the riverbank south of the ford.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ossian",
+     "text": "Friend! You won't believe it! The Urchins crept in last night and took my grandfather's brass lantern! It hung over the door for sixty years.\n\nThe Drowned Lantern is named for it! Without it, nobody will drink here!\n\nThe little thieves live in a hole in the riverbank, south of the ford. Bring it home and I'll pay you in gold. Will you get my lantern back, friend?"
+    },
+    "refusal": {
+     "speaker": "Ossian",
+     "text": "No? Well, then don't expect your ale any cheaper!"
+    },
+    "reminder": {
+     "speaker": "Ossian",
+     "text": "My door is still dark! The lantern's in that hole south of the ford!"
+    },
+    "completion": {
+     "speaker": "Ossian",
+     "text": "My lantern! Look at it shine! Grandfather would be proud! Here, take 60 gold and a potion, friend. And your ale is free tonight!"
+    },
+    "after": {
+     "speaker": "Ossian",
+     "text": "Thanks again, friend! See how it shines?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ossian's brass lantern from the Urchin hole south of the ford."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ossian's brass lantern from the Urchin hole south of the ford."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Dunstan the smith wants his grandfather's hammer back from the bandit camp at the Hanging Oak on the north road.",
+   "names": {
+    "Hanging Oak": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dunstan",
+     "text": "You there! Got a moment? Corwin's bandits robbed my cart on the north road and took my grandfather's hammer! Three Dunstans have forged with it!\n\nThey camp under the Hanging Oak, a mile up the north road. They'll be using my hammer to crack nuts, the brutes!\n\nBring it back and you'll have gold, and a shield from my own forge. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Dunstan",
+     "text": "Hmph. Then I'll forge with a borrowed hammer, and badly!"
+    },
+    "reminder": {
+     "speaker": "Dunstan",
+     "text": "The Hanging Oak, north up the road! My hammer's there!"
+    },
+    "completion": {
+     "speaker": "Dunstan",
+     "text": "That's it! Grandfather's hammer! I'd know its weight in the dark! Thank you, friend! Here's 100 gold and a shield I made myself. It won't let you down!"
+    },
+    "after": {
+     "speaker": "Dunstan",
+     "text": "Thanks again, friend! Hear that ring? That's the old hammer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Dunstan's hammer from the bandit camp at the Hanging Oak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Dunstan's hammer from the bandit camp at the Hanging Oak."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "WoodenShield"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Mabry the potion seller wants her grandmother's silver scales back from the Troll under the old stone bridge west of town.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Mabry",
+     "text": "Oh, it's terrible! A Troll took my grandmother's silver scales! I weigh every potion on them. They've been in my family since before Brackenford had a wall!\n\nThe brute lives under the old stone bridge, west of town. He thinks the scales are something to eat, I suppose!\n\nI'll make it worth your while. Would you get them back for me, kind stranger?"
+    },
+    "refusal": {
+     "speaker": "Mabry",
+     "text": "Then I'll have to guess my measures. Heaven help my customers!"
+    },
+    "reminder": {
+     "speaker": "Mabry",
+     "text": "My scales! Is that Troll still under the bridge?!"
+    },
+    "completion": {
+     "speaker": "Mabry",
+     "text": "My scales! Not a scratch on them! Oh, you dear, dear stranger! Here, take 70 gold and two of my best potions. On the house!"
+    },
+    "after": {
+     "speaker": "Mabry",
+     "text": "Thanks again, kind stranger! My measures are true again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Mabry's silver scales from the Troll under the stone bridge."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Mabry's silver scales from the Troll under the stone bridge."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "BluePotion",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Brother Anselm dropped his mother's prayer beads fleeing the Undead in the crypt below the Chapel of the Ford.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Anselm",
+     "text": "Peace be with you, my son. The dead are stirring in the crypt below the chapel. It began when the Urchins dug into the old barrow.\n\nI fled in a fright and dropped my mother's prayer beads! She carried them all her life!\n\nI dare not go back. I can offer a little gold and a blessed Ankh. Would you go into the crypt and find my beads, my son?"
+    },
+    "refusal": {
+     "speaker": "Anselm",
+     "text": "I understand, my son. I would not go down there either."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Have you found my mother's beads? The crypt door is behind the altar!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "My mother's beads! Thank goodness you came back alive! Bless you, my son! Take this Ankh and this gold. May they keep you safe!"
+    },
+    "after": {
+     "speaker": "Anselm",
+     "text": "Bless you again, my son! I pray for you each night."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Brother Anselm's prayer beads in the crypt below the Chapel of the Ford."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Brother Anselm's prayer beads in the crypt below the Chapel of the Ford."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Ulric the shepherd dropped his father's carved crook by the wolves' den in the Ashwood, west of his fold, running from Greyjaw's pack.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Hello, stranger. Forgive an old man for shaking. Greyjaw's wolves chased me out of the Ashwood today!\n\nI dropped my father's crook as I ran. He carved it himself, and I've carried it fifty years! It's lying by the wolves' den, west of my fold.\n\nI'm too old to outrun them twice! I've a little gold put by. Would you fetch my crook for me, stranger?"
+    },
+    "refusal": {
+     "speaker": "Ulric",
+     "text": "Ah well. I'll lean on a fence post, then!"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "My crook is still out by the wolves' den! Hurry, before they chew it!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "My father's crook! Not a tooth mark on it! Bless you, stranger! Take these boots, and 40 gold. A shepherd doesn't have much more!"
+    },
+    "after": {
+     "speaker": "Ulric",
+     "text": "Thanks again, stranger! I'll lean on this crook till I die!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fetch Ulric's carved crook from the wolves' den west of his fold."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Fetch Ulric's carved crook from the wolves' den west of his fold."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Mother Gale the washerwoman lost her wedding ring to a Giant Leech in the reeds below the mill.",
+   "names": {
+    "Gale": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gale",
+     "text": "Oh, help! Help! I was washing at the river below the mill, and a Giant Leech bit me! My wedding ring came right off in its mouth!\n\nIt was my mother's ring before me! The horrid thing swam into the reeds with it.\n\nI'll give you all my egg money! Would you kill that leech and bring back my ring, dearie?"
+    },
+    "refusal": {
+     "speaker": "Gale",
+     "text": "Hmph! And I took you for a kind sir!"
+    },
+    "reminder": {
+     "speaker": "Gale",
+     "text": "My ring is still inside that leech! In the reeds, below the mill!"
+    },
+    "completion": {
+     "speaker": "Gale",
+     "text": "My ring! Ugh, it's slimy... but it's mine! Thank you, dearie! Here's my egg money, 30 gold, and a potion for those bites!"
+    },
+    "after": {
+     "speaker": "Gale",
+     "text": "Thanks again, dearie! I'll wash upstream from now on!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leech in the reeds below the mill and return Gale's ring."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Kill the Giant Leech in the reeds below the mill and return Gale's ring."
+    }
+   },
+   "reward": {
+    "gold": 30,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Reeve Halvard wants his grandfather's chain of office back from the Urchins who took it from the Moot Hall to the old barrow.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Halvard",
+     "text": "Stranger, a moment. The Urchins crept into the Moot Hall and stole my chain of office! My grandfather wore it, and his father before him!\n\nA reeve without his chain is a laughing stock!\n\nThe thieves dug into the old barrow, east of the ford. The Moot Hall will pay you well. Will you bring my chain back?"
+    },
+    "refusal": {
+     "speaker": "Halvard",
+     "text": "Very well. I'll govern bare-necked, then. Come back if you think better of it."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "My chain is still in that barrow! East of the ford, stranger!"
+    },
+    "completion": {
+     "speaker": "Halvard",
+     "text": "My chain! Brackenford has its Reeve again! You've done the town a great service, stranger. Here are 100 gold from the town chest, and a spell book besides."
+    },
+    "after": {
+     "speaker": "Halvard",
+     "text": "Thanks again, stranger! The Moot Hall is in your debt."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Reeve Halvard's chain of office from the Urchins in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Reeve Halvard's chain of office from the Urchins in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Hebb the charcoal burner left his father's silver tinderbox in a spider web in the Ashwood, south of the charcoal pits.",
+   "names": {
+    "Hebb": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hebb",
+     "text": "Stranger! Please, help me! Spiders caught me in the Ashwood, and I barely cut myself free! I left my coat in the web, and my father's silver tinderbox was in the pocket!\n\nHe lit every charcoal fire with it for forty years. Now it hangs in a web, south of the charcoal pits!\n\nI'll pay you for your trouble. Will you fetch it for me?"
+    },
+    "refusal": {
+     "speaker": "Hebb",
+     "text": "Can't blame you. Those spiders are the size of sheep!"
+    },
+    "reminder": {
+     "speaker": "Hebb",
+     "text": "The web's just south of the charcoal pits! Mind the spiders!"
+    },
+    "completion": {
+     "speaker": "Hebb",
+     "text": "My father's tinderbox! Still in the pocket, too! Thank you, stranger! Take 60 gold and this potion. You'll need it if you go back in there!"
+    },
+    "after": {
+     "speaker": "Hebb",
+     "text": "Thanks again, stranger! The old box lights every fire now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Hebb's silver tinderbox from the spider web south of the charcoal pits."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Hebb's silver tinderbox from the spider web south of the charcoal pits."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Garrick wants his father's watch horn back from the old watchtower on Crow Hill, where Corwin's bandits blow it nightly to mock the town.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Garrick",
+     "text": "Stranger, a word, if you're going up Crow Hill. My father kept the old watchtower before me. His horn still hangs there, by the top stair!\n\nCorwin's bandits took the tower, horn and all. They blow it to mock us! Every night we hear it from the gate!\n\nI'll pay you from my own pocket. Will you bring my father's horn back down, stranger?"
+    },
+    "refusal": {
+     "speaker": "Garrick",
+     "text": "So be it. I'll grit my teeth when they blow it."
+    },
+    "reminder": {
+     "speaker": "Garrick",
+     "text": "Hear that? They're blowing my father's horn again! Get it back!"
+    },
+    "completion": {
+     "speaker": "Garrick",
+     "text": "My father's horn! You got it! No bandit will blow it again! Here, take this 80 gold, stranger. And these boots, from the guard's store!"
+    },
+    "after": {
+     "speaker": "Garrick",
+     "text": "Thanks again, stranger! The horn stays on my belt now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Garrick's watch horn back from the old watchtower on Crow Hill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring Garrick's watch horn back from the old watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "rumour/i0",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "''till the ogres moved in', 'Maybe we shouldn't have built so close to the ogre village', 'good luck to ya' - Nox's deadpan townsfolk humour in one-liners."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Three disconnected short barks (taverns, undead, fire boots) with an item hint; flat and random in the way Nox's ambient NPCs are."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'strange and desperate times', a missing full stop, and the pointed jab about the last [Class] still missing are Westwood's tone and sloppiness."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "'white as milk', 'thirty men... or ten, or a hundred, depending who's drinking' - clever, but the quest-by-quest pointers with nested names are a different writer."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Each line is a compressed quest summary (wolves, the silver seal, bandits and the north gate) with names and places; too informative and too uniform for Nox's chatter."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Generic warnings about trade routes and caravans and 'Young [Class]! Watch yourself' - plain, mildly stiff, Westwood's ambient rumour style."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Hail traveler', directions to the gossip spot and a 'Chief Engineer' aside: functional, slightly bland Nox town flavour."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Elided dialect ('there's leeches come up'), 'a month's takings', the tower that sees carts 'an hour off' - textured village gossip that maps one-to-one onto side quests."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "'wrapped up like parcels', a bandit chief counting loot in a stolen chair: vivid, but the density of [Person] references and quest hooks gives it away."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A father's horn blown to mock him, a turncoat who 'knows it stone by stone' - novelistic backstory per line, not Nox's quick quips."}
+  ],
+  "tells": [
+    "Every new rumour points at a specific quest with names, places and a vivid detail; Westwood's townsfolk mostly say generic, sometimes random things (taverns, undead, boots) with only one or two lines pointing anywhere.",
+    "Name density: the new lines carry two or three [Person]/[Place] slots each; Westwood's rarely more than one.",
+    "Humour: Westwood's is broad and self-deprecating ('Maybe we shouldn't have built so close to the ogre village'); the new texts' is wry and observational ('or ten, or a hundred, depending who's drinking').",
+    "Register: the new texts use dialect elisions and English rural furniture (Reeve, ford, ferry, mill boys, north gate); Westwood's uses 'Hail traveler', 'Young [Class]!', 'good luck to ya' and exclamation marks.",
+    "Polish: Westwood's lines include small slips (a missing full stop) and flat functional sentences; the new ones are uniformly polished and evenly weighted."
+  ]
+}

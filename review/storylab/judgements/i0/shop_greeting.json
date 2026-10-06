@@ -1,0 +1,33 @@
+{
+  "packet": "shop_greeting/i0",
+  "judge": "Claude Code subagent (blind judge), claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Flat, friendly, slightly odd shopkeeper small talk ('Your money is still good with me') with a missing comma, exactly Nox's casual register. No backstory, no scene-setting."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exclamation-mark welcomes and a cheesy 'one stop shop for all your literary needs' pun are pure Westwood shop barks."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Every keeper opens with suspicion and a mini-story about a third-party faction; dialect ('bold as you like', 'I'll not') and the ellipsis beat are literary, not Nox's sunny shop greeting."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Aye mate?', 'Ya need some new weapons and armor? This is the place!' and a stiff institutional magic-shop line: the uneven, cheerful voice-acting copy of the campaign."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "All three keepers riff on the same local monster nuisance with vivid similes ('quick as rats', 'glass and all'); a shared theme across shops and semicolon rhythm give it away."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Wistful, quiet prose about stopped mill wheels; clipped declaratives ('Have one.') and a mood piece where Nox would just sell you a sword."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Boastful, plot-hooked sales talk ('finest assortment of arms in the South!', 'lad', offering lower prices if you reclaim the [Thing]) is classic campaign shopkeeper."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Reeve's levy, pikes paid in promises, 'Don't tell the reeve': civic-economy worldbuilding and wry understatement unlike Nox's broad welcomes."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Each keeper gives a melancholy local history (grandfather's lamp, a shut road, a missing carter); fatalistic tone ('Everything's cheap') and semicolons are not Nox."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'At your service! What can I do for you, sir [Class]?' and a rival-inn comparison: plain, upbeat, exclamatory Westwood greetings."}
+  ],
+  "tells": [
+    "Westwood shopkeepers greet and sell: 'Welcome to X! How can I help you?', exclamation marks, boasts of 'the finest', occasional pun; the new texts open with local grievances or history instead of a welcome.",
+    "The new texts tie all three shops in a place to one shared local theme (a closed road, a monster nuisance, stopped mills, a levy); Westwood's three keepers are independent and generic.",
+    "Literary devices absent from Nox: semicolon-joined clauses, ellipsis pauses, similes, wry understatement, archaic-British dialect ('I'll not', 'You've none').",
+    "Mood: Westwood is chipper and slightly hokey; the new texts are wistful, suspicious or fatalistic.",
+    "Westwood addresses the player directly by role ('sir [Class]', 'lad', 'sir') and makes a sales pitch; the new texts rarely name what is sold or pitch it."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "guard_bark/i0",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Short civic-pride lines, a dropped article ('can be dangerous place'), and lore-by-proclamation are pure Nox. Flat, but that flatness is the house voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exclamation-driven urgency, plain directions ('just west, down the path'), and a generic heroic thanks ('Your valor knows no peer') read exactly like Westwood's quest-hub guards."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Three terse barks escalating to a 'last warning'; jailer humour in one sentence. Could not be more Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Stammered 'Wh- who's there?', a nested chain of authority, a burned toll-house backstory and rural titles (the Reeve) pack far more texture into a bark than Nox ever did; the length alone gives it away."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Atmospheric and well-made, but semicolon-joined clauses, folk detail ('little lights on the hill') and an English-village register (Reeve, ford, barrow) are not Westwood's plainer, exclamatory style."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Dry wit ('He'll take your name and tell you no', 'I may even miss the quiet') is literate in a way Nox's guards are not; three named people and a whole economic backstory in one bark."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Move on!' and 'It's meant for your own good' are stock Nox gatekeeper lines; brief, slightly stiff, functional."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Greetings!', 'beloved [Place]', 'Delay no longer! The Mayor needs your help!' is Westwood's earnest, exclamation-heavy hero-greeting register."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Measured prose with semicolons, 'not a bowshot from here', 'I'll still keep a torch lit, mind' - a novelist's guard. Too long and too textured for a Nox bark."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "A paragraph of first words with a colon-list, a wry simile ('sooner have back than her own teeth') and a closing quip; far beyond Nox's two-sentence guard."}
+  ],
+  "tells": [
+    "Length: Westwood's guard barks are one to three short sentences; the new ones open with a full paragraph of backstory.",
+    "Punctuation: the new texts lean on semicolons and colons to join clauses; Westwood uses exclamation marks and plain full stops, occasionally ' -- '.",
+    "Register: the new texts use an English rural vocabulary (Reeve, ford, barrow, toll-house, bowshot, 'mind') and dialect elisions; Westwood's guards speak generic fantasy-civic ('Greetings!', 'beloved', 'the Mayor needs your help').",
+    "Density of names: new barks chain two or three named people and a place per line; Westwood names at most one person and points the player at them.",
+    "Humour: Westwood's is blunt and situational ('Don't hassle my prisoners'); the new texts use dry, understated literary wit and closing quips.",
+    "The 'later' line: Westwood gives a generic thanks or a new warning; the new texts give a reflective, characterful coda."
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "rescue/i1",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A frog trapped in a burning house, the 'Loads and loads of money?' gag and the '?!' punctuation are pure Nox silliness."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Express elevator, Chief Engineer, 'really big bugs', a key and a secret passage: the loose, gadgety exposition and stitched-together logic are the campaign's."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless melodrama ('my sweet sister', 'the worst danger!'), a run-on clause, and a vague 'tokens of my appreciation' reward fit Westwood."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Damn! Where have you been, lad!?', overwrought stakes ('All Nox is now in peril') and a long, over-explained captive speech are characteristic, if clumsy."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy and plain, but the plea carries a small mystery clue (basket by the barrow) and the reward names exact items; the journal repeats precise geography."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The 'Eek! ... Oh, it's a person!' beat and the bats quip are crafted comic touches; every line repeats the place 'east of the ford'."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clear motive ('The Reeve says no guard can leave the gate. But you can!') and a neat 'You old dog' payoff; well structured but even-toned and template-like."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "The funniest of the new ones (big ears, 'Who'll wash the cups?', boots and shirt) and close to Nox's humour, but the running gag is too evenly threaded through every line."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Get back! Get back, I said! ... Oh!' mirrors F's discovery beat; directions ('past the mill, where the smoke used to rise') are literary for Nox."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Bombastic 'airborne demons from the underworld', 'Nox's vital interests', a numbered objective in the journal and a flat 'I'll follow you.': the campaign's mix of pomp and functional text."}
+  ],
+  "tells": [
+    "New texts repeat the destination in plea, reminder and journal (east of the ford, north bank); Westwood's reminders are emotional ('Oh why aren't you going?') rather than navigational.",
+    "New captives share a constructed discovery beat ('Eek! ... Oh, it's a person!', 'Get back! ... Oh!'); Westwood's captives speak functionally or over-explain plot.",
+    "New rewards are named items listed at the payoff (gold and an ankh, spell book and potions); Westwood uses vaguer 'tokens of my appreciation' or a punchline.",
+    "Westwood's register swings into bombast and melodrama ('All Nox is now in peril', '?!', 'Damn!'), with run-on sentences and grammar slips; the new texts are evenly plain and clean.",
+    "Westwood's rescues are often absurd or oddly mechanical (a pet frog, a jammed express elevator, six miners); the new ones are uniformly grounded village-folk cases."
+  ]
+}

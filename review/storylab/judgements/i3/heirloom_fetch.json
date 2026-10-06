@@ -1,0 +1,33 @@
+{
+  "packet": "heirloom_fetch/i3",
+  "judge": "Claude Code subagent, Claude Opus 5.5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The screaming 'Gahhhhhh!', the half-blind hermit mistaking the hero, '?!' and 'Oh....' punctuation and a reward scroll 'about bats' are Westwood's comic touch."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Overwrought exclamations ('for the darkest purposes, indeed!'), 'that foul demoness' and a teasing 'sooner than you think' reward line; masked names everywhere, a bare journal."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Well shaped, but the offer explains why the horn matters in a neat sentence, ends 'What say you?', and the reminder is an atmospheric mood line instead of a nudge."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Long breathless setup with odd logic (can't leave or the wolf-wife runs off), 'What are you waiting for?' and a vague 'token of our appreciation': classic campaign."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Panicky, low-stakes family worry ('he'll be destroyed'), the hesitant 'Could you... would you', generic thanks and a journal precise about place: Westwood's side-quest voice."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Invented magic object explained in one tidy clause ('burns without wood'), stakes stated, location given, and a reward counted in exact gold from the Captain's purse."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Plot-carrying main-quest text with double-hyphen dash, 'at whatever the cost!', a death reported offhand and a handoff to the next chapter; uneven but authentic."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Charming, but the enchanted honey crock gets the same one-line mechanic gloss, and 'Your supper's on the house' is a cosier humour than Nox's."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Mannered academic register ('most regrettable position', 'does not forget its benefactors', 'undertake to recover') is too literary for Nox's plain speakers."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same template: snatched object, what it magically does, where the thieves went, 'Would you go after them, lad?', exact '80 gold' reward."}
+  ],
+  "tells": [
+    "New offers follow a fixed template: the theft, a one-clause explanation of the object's magic or importance, the exact place the thief went, then a closing question to the hero. Westwood's offers wander, carry plot, or have odd logic.",
+    "New rewards are counted (80 gold, 100 gold) or tied to a titled NPC (the Captain sends...). Westwood's thanks are generic ('take this as a token of my appreciation') or a named item/spell.",
+    "New objects are invented, homely magic gadgets (fire-stone, honey crock, dowsing rod) that need a gloss; Westwood's items are masked proper nouns or plain things (spectacles, staff, cloak).",
+    "Westwood leans on overwrought punctuation ('?!', 'Oh....', '--', 'indeed!') and stock epithets ('brave Adventurer', 'foul demoness'); new texts are cleaner and more evenly paced.",
+    "A raised or literary register (scholarly understatement, 'What say you?') gives new texts away; Nox's speakers are plain and a little melodramatic."
+  ]
+}

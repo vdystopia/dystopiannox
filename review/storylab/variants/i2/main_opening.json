@@ -1,0 +1,302 @@
+{
+ "scenario": "main_opening",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "A townsman at Brackenford's south gate sends the player to Reeve Halvard in the Moot Hall, who keeps the north gate shut until Red Corwin's bandits are driven from the watchtower on Crow Hill.",
+   "names": {},
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Heading north? Not this week. Go and see Reeve Halvard at the Moot Hall."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Another traveller for the north road! I am sorry, but the north gate stays shut.\n\nRed Corwin and his cutthroats have taken the old watchtower on Crow Hill. From there they fall on every cart that passes. Three wagons robbed this month! I will not send more of our people up that road to be beaten and stripped.\n\nIf you would go north, Corwin must be dealt with first. Drive that scoundrel from the tower, brave Adventurer, and I will open the gate myself."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Is Corwin still breathing? Then the gate stays shut!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin's bandits from the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "In a miners' town under a mountain, a miner sends the player to Chief Engineer Odo, who has shut the deep road through the mountain since a Lich and its Skeletons woke in a tomb the miners broke into.",
+   "names": {
+    "Odo": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Miner",
+     "text": "Mind your head! The Chief Engineer will want to see you, up at the lift house."
+    },
+    "opening": {
+     "speaker": "Odo",
+     "text": "Hmph. The deep road? It's closed, and it stays closed.\n\nWe broke into an old tomb at the bottom of the east vein. Something in there woke up. Skeletons have been walking out of it ever since, and behind them a Lich. A Lich! In my mine!\n\nThe deep road runs right past that tomb. Nobody goes under the mountain until the Lich is destroyed. Do it, and you can walk the deep road whenever you please."
+    },
+    "reminder": {
+     "speaker": "Odo",
+     "text": "Bones in my tunnels and a Lich in my vein! Go and do something about it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Lich that haunts the old tomb under the mine."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "In a swamp hamlet on stilts, a boatman points the player to Mother Ysmay at the shrine, who asks for an end to the witch Morwen, whose Zombies have cut the causeway out of the swamp.",
+   "names": {
+    "Ysmay": "person",
+    "Morwen": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Boatman",
+     "text": "Careful, them planks are rotten! Mother Ysmay's in the shrine. She'll want you."
+    },
+    "opening": {
+     "speaker": "Ysmay",
+     "text": "Come in, my child, come in. You came through the swamp, so you have seen them. The Zombies.\n\nThey are the work of Morwen, a witch who lives in the flooded church to the west. She raises more every night. Now they have cut the causeway, the only way out of the swamp.\n\nPut an end to Morwen, and the causeway will be safe again. May the gods walk with you."
+    },
+    "reminder": {
+     "speaker": "Ysmay",
+     "text": "I pray for you, child. Go carefully."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Put an end to the witch Morwen in the flooded church."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "At a castle town with a garrison, a gate soldier sends the player to Captain Brannoc, whose east road is cut since the Lord's brother Sir Varne seized the river keep with half the garrison.",
+   "names": {
+    "Brannoc": "person",
+    "Varne": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Soldier",
+     "text": "Halt! State your business. ... The east road? Then you see the Captain first. Barracks, left of the keep."
+    },
+    "opening": {
+     "speaker": "Brannoc",
+     "text": "Traitors! Traitors inside our own walls!\n\nSir Varne, the Lord's own brother, has seized the river keep on the east road with half the garrison behind him. He means to starve us out and take the Lord's seat. Despicable!\n\nI cannot spare a man from the walls. You, however, are no man of mine. Retake the river keep, and the east road is open to you. The Lord rewards loyalty handsomely."
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "Varne's banner flies over that keep yet. See to it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retake the river keep from Sir Varne and his traitors."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "In a lake village of fishermen, a fisherman points the player to Ferrymaster Nella, whose ferry to the far shore will not sail while a mad sorcerer on Hollow Isle sinks boats with storms.",
+   "names": {
+    "Nella": "person",
+    "Hollow Isle": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fisherman",
+     "text": "No ferry today. Nor tomorrow, the way things are going. Ask the Ferrymaster why -- she's down on the jetty."
+    },
+    "opening": {
+     "speaker": "Nella",
+     "text": "You'll be wanting the ferry. Everyone does! And everyone gets the same answer -- not while that madman lives.\n\nThere's an old sorcerer on Hollow Isle, out in the middle of the lake. He's been alone out there too long, and now he calls up storms that sink anything that floats. Two ferries gone this spring!\n\nTake my little skiff, row out to the isle, and stop him. Then my ferry sails again, and you'll ride it free."
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "No ferry, and storms every night. Off with you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Row out to Hollow Isle and stop the sorcerer's storms."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "In a wizards' college town, a student sends the player to Master Thessaly in the Great Library, who needs the Demon that an apprentice summoned driven from the Bell Tower, which holds the seals on every gate.",
+   "names": {
+    "Thessaly": "person",
+    "Great Library": "place",
+    "Bell Tower": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Student",
+     "text": "Oh! A visitor! You'll want Master Thessaly in the Great Library. Everyone wants Master Thessaly."
+    },
+    "opening": {
+     "speaker": "Thessaly",
+     "text": "Ah. You have come at a most unfortunate hour.\n\nThree nights ago an apprentice's summoning went awry. What came through was a Demon -- a true Demon, not some petty Imp. It holds the Bell Tower, and with it the seals on every gate. Not one of them will open.\n\nOur masters have tried and failed. Perhaps a stranger will fare better. Banish the Demon, and you will find the college most grateful."
+    },
+    "reminder": {
+     "speaker": "Thessaly",
+     "text": "That abominable creature squats in my tower. Do hurry."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Banish the Demon from the Bell Tower of the college."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "At a frozen fort on a mountain pass, a soldier at the lower gate sends the player up to Warden Brega, who will open the upper gate once the Trolls holding the high bridge are dead.",
+   "names": {
+    "Brega": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Soldier",
+     "text": "Shut the door behind you! ... The Warden's up the stairs. Don't keep her waiting. She hates that."
+    },
+    "opening": {
+     "speaker": "Brega",
+     "text": "In, quick, and warm yourself. Nobody crosses the pass this winter.\n\nTrolls came down from the peaks and took the high bridge. They sit on it and eat whatever tries to cross. I've lost four good soldiers up there!\n\nYou want the far side? Then clear that bridge, every last Troll, and I'll open the upper gate for you."
+    },
+    "reminder": {
+     "speaker": "Brega",
+     "text": "Trolls on my bridge, and you're warming your hands by my fire?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Trolls holding the high bridge over the pass."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "In a lava-forge town of smiths, an apprentice sends the player to Guildmaster Vorn in the Anvil Hall, whose own Stone Golem has cracked and now throws travellers off the only bridge out of the valley.",
+   "names": {
+    "Vorn": "person",
+    "Anvil Hall": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Apprentice",
+     "text": "Hot enough for you? Ha! If you're after the bridge, see the Guildmaster in the Anvil Hall."
+    },
+    "opening": {
+     "speaker": "Vorn",
+     "text": "Don't look at me like that. I know! It's our fault.\n\nThe Guild built a Stone Golem to haul ore across the lava bridge. Strong, tireless, and it never asked for wages. Then its head cracked, and now it won't let anyone across! It stands on the bridge and throws people into the fire.\n\nThat bridge is the only road out of the valley. Break the Golem, and the Guild will pay you well for the trouble."
+    },
+    "reminder": {
+     "speaker": "Vorn",
+     "text": "Smash that Golem! What are you waiting for?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Break the Guild's Golem on the lava bridge."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "At a crossroads inn, a stable hand sends the player in to Grimble the innkeeper, an old friend of the player's teacher, who reports Giant Spiders have webbed shut the only open road.",
+   "names": {
+    "Grimble": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Stable Hand",
+     "text": "Rooms are full. But old Grimble said to send you straight in if you turned up."
+    },
+    "opening": {
+     "speaker": "Grimble",
+     "text": "There you are! Your old teacher wrote that you'd be coming this way. Sit, sit. Have a drink, you'll need it.\n\nThe bad news first. Giant Spiders have webbed over the forest road, from the old shrine down to the river. The other roads are washed out, and nobody who goes into those webs comes back.\n\nI promised to see you safely on your way. Well, I can't. But you could burn out that nest yourself... and then we'll drink to it!"
+    },
+    "reminder": {
+     "speaker": "Grimble",
+     "text": "Spiders gone? No? Finish your drink and go, then!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Burn out the Spiders' nest on the forest road."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "In a farming town, a farmer sends the player to Mayor Dobbs, who begs for the Ogre camp on the east road by the old mill to be cleared so the road can open again.",
+   "names": {
+    "Dobbs": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Farmer",
+     "text": "Whoa there, don't step in that! ... The Mayor's who you want. Big house, red door."
+    },
+    "opening": {
+     "speaker": "Dobbs",
+     "text": "Welcome, welcome! Forgive the state of things -- the Ogres have been at us again.\n\nThey've built a camp across the east road, by the old mill. Every night they come down and help themselves to our cattle. Their chief swings a whole tree trunk for a club! We are simple farmers, kind sir. We cannot fight such creatures!\n\nClear the Ogres from the east road, I beg you. Until they're gone, the road is shut, and our grain rots in the barns."
+    },
+    "reminder": {
+     "speaker": "Dobbs",
+     "text": "Another cow gone last night! Please, hurry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Ogre camp off the east road by the old mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}

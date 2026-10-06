@@ -1,0 +1,312 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, pays to have Greyjaw's wolf pack killed.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Wolves! Half my flock, gone to wolves!\n\nThey come down out of the Ashwood at night, led by a great grey brute the shepherds call Greyjaw. My old dog won't even bark at him anymore.\n\nKill that pack, and Greyjaw with it, and I'll pay you 100 gold. Will you do it, lad?"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Is Greyjaw still out there? I lost another ewe last night!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Greyjaw's dead? Truly dead? Ha! The flock can graze in peace again! Take this purse -- 100 gold, as I promised. And take my old bow too. I'm past using it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Greyjaw and his wolf pack in the Ashwood."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "Bow"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Old Tuck, lamp-keeper of a mining town under a mountain, pays to clear Giant Bats out of the north shaft.",
+   "names": {
+    "Tuck": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tuck",
+     "text": "Hmmm. You look like you can handle yourself in the dark.\n\nGiant Bats have nested in the north shaft. They knock out our lamps and bite whoever's left standing. Two of my lamp boys won't go below anymore, and I can't say I blame them.\n\nClear the shaft and there's 80 gold in it for you."
+    },
+    "reminder": {
+     "speaker": "Tuck",
+     "text": "Hear that squeaking? They're still down there."
+    },
+    "completion": {
+     "speaker": "Tuck",
+     "text": "Not a squeak from the north shaft! Bless you, stranger! The 80 gold's yours, and a potion for any bites you took."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Giant Bats out of the north shaft."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Prew, an odd eel-catcher of a stilt hamlet in the swamp, pays to have Giant Leeches cleared from his eel traps.",
+   "names": {
+    "Prew": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Prew",
+     "text": "Heh... you got blood in you? Good. So do I, and I'd like to keep it.\n\nGiant Leeches have got into my eel traps out past the dead willow. They eat the eels, then they try to eat me!\n\nSquash every one and I'll pay 60 gold. Might even find you some boots."
+    },
+    "reminder": {
+     "speaker": "Prew",
+     "text": "Leeches still in my traps? Ugh. I can feel 'em from here."
+    },
+    "completion": {
+     "speaker": "Prew",
+     "text": "No more Leeches! Heh, heh! Boots, as promised. Waterproof! Mostly. Oh, and your 60 gold."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rid Prew's eel traps of the Giant Leeches."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Quartermaster Hollis of a castle garrison pays by the tail for the Giant Rats in the granary under the east tower.",
+   "names": {
+    "Hollis": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hollis",
+     "text": "Ah. You have the look of someone who can deal with vermin.\n\nThe garrison granary beneath the east tower is infested with Giant Rats. These abominable pests have devoured a month of the soldiers' bread. My men are too proud to hunt rats, and too hungry to bear it much longer.\n\nThe garrison will pay 5 gold a tail, up to 120. Do we have an arrangement?"
+    },
+    "reminder": {
+     "speaker": "Hollis",
+     "text": "The rats are still at the bread. I expected better of you."
+    },
+    "completion": {
+     "speaker": "Hollis",
+     "text": "Twenty-four tails! Most satisfactory. The garrison is in your debt. The Paymaster will count you out 120 gold, and you may take a shield from the stores -- it is quite sound."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Giant Rats in the granary under the east tower."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "WoodenShield"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Gilla, a fishwife of a lake village, pays to have the Wasp nest in the reed beds destroyed.",
+   "names": {
+    "Gilla": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gilla",
+     "text": "Ow! Ow! Look at my arm!\n\nThere's a great Wasp nest in the reed beds on the south shore, and nobody can get to the nets. Burn it, smash it, I don't care! Fifty gold if you do!"
+    },
+    "reminder": {
+     "speaker": "Gilla",
+     "text": "Still buzzing out there! I can hear them from my door!"
+    },
+    "completion": {
+     "speaker": "Gilla",
+     "text": "You did it? Oh, you wonderful thing! Here's 50 gold, and a potion. You look like you've been stung a few times yourself."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wasp nest in the reed beds on the south shore."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Master Thessaly of a wizards' college quietly pays to destroy seven Imps that escaped her lecture into the bell tower.",
+   "names": {
+    "Thessaly": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thessaly",
+     "text": "Greetings. You will have heard the bells? That is not the hour. That is Imps.\n\nA demonstration of mine in the lecture hall went... less than perfectly. Seven Imps escaped into the bell tower, and they are ringing the bells day and night. The Master of the College is most displeased.\n\nI shall pay 100 gold, and something from my own shelves, to have them destroyed. Discretion is essential. Will you oblige me?"
+    },
+    "reminder": {
+     "speaker": "Thessaly",
+     "text": "Bong... bong... bong. Every quarter hour! Please, hurry."
+    },
+    "completion": {
+     "speaker": "Thessaly",
+     "text": "Silence! Blessed, beautiful silence! You have my gratitude, and the Master need never know. Your 100 gold -- and this book of spells, from my own shelves."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Silence the seven Imps loose in the college bell tower."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Mother Ruke, cook of a frozen fort on a mountain pass, pays to kill three White Bears raiding the meat store.",
+   "names": {
+    "Ruke": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ruke",
+     "text": "You! Can you fight?\n\nWhite Bears have been breaking into the meat store under the west wall. Three of them, and the biggest tore the door clean off. We're down to boiled oats. Boiled oats! In this cold!\n\nKill those bears and I'll pay you 120 gold. And you'll eat first at my table for a week."
+    },
+    "reminder": {
+     "speaker": "Ruke",
+     "text": "Oats again tonight. Oats! Go and kill those bears!"
+    },
+    "completion": {
+     "speaker": "Ruke",
+     "text": "All three? Ha! Bear stew for the whole fort! Take the 120 gold and sit down -- you eat first tonight. Don't argue."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the three White Bears raiding the fort's meat store."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Bren, charcoal burner of a lava-forge town, pays the smiths' bounty on the Scorpions in the charcoal store.",
+   "names": {
+    "Bren": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bren",
+     "text": "My apprentice got stung by a Scorpion in the charcoal store. He's swelled up like... well, he's swelled up. The store is crawling with them, past the third furnace. No charcoal, no fire. No fire, no forge! Kill them all and the smiths will pay 90 gold."
+    },
+    "reminder": {
+     "speaker": "Bren",
+     "text": "Scorpions still in there? Then the furnaces are still cold."
+    },
+    "completion": {
+     "speaker": "Bren",
+     "text": "The fires are lit again! The smiths sent 90 gold, as promised -- and I'm adding an antidote. Never go anywhere hot without one."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Scorpions out of the charcoal store past the third furnace."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Tolly, the stable boy of a crossroads inn, passes on his mistress's bounty for the Giant Spiders eating horses in the wood.",
+   "names": {
+    "Tolly": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tolly",
+     "text": "Mister! Mister, please!\n\nThere's Spiders in the wood behind the stables. Huge ones! They took the mule, and a pedlar's pony, and Missus says if they take the coach horses it's my fault!\n\nShe said she'd pay 70 gold to whoever kills them. Please, will you?"
+    },
+    "reminder": {
+     "speaker": "Tolly",
+     "text": "Did you kill them yet? I'm sleeping in the hayloft with a pitchfork!"
+    },
+    "completion": {
+     "speaker": "Tolly",
+     "text": "You killed them? All of them? Wait here -- Missus! MISSUS!\n\n...She says here's your 70 gold. And this quiver somebody left in room four. They won't be back for it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay the Giant Spiders in the wood behind the stables."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "Quiver"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Bertil, a farmer of a town plagued by Ogres, pays everything he has to kill five Ogres camped in his barley.",
+   "names": {
+    "Bertil": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bertil",
+     "text": "Ogres. Five of 'em, camped in my barley by the old windmill, eating my pigs one at a time.\n\nThe Mayor won't help, so it's up to you. 150 gold for the lot -- bring me an ear from each, so I know you're not lying."
+    },
+    "reminder": {
+     "speaker": "Bertil",
+     "text": "That's another pig gone! Are you going or not?"
+    },
+    "completion": {
+     "speaker": "Bertil",
+     "text": "Five ears! Ugh, they stink! Still, a deal's a deal. 150 gold -- every coin I had under the hearth."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the five Ogres camped by the old windmill."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "bounty_offer/i2",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Worse than the pox', charm-and-drive-out tied to class mechanics, guards informed of free passage, 'I insist' - plot-bearing and slightly florid like Nox's Mayor scenes."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Chain logic joke ('No charcoal, no fire. No fire, no forge!'), exact 90-gold reward stated in offer and repeated in thanks, plus an add-on item and a double-hyphen dash."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lively, but the 'Fifty gold' then '50 gold, and a potion' pattern and the stung-yourself quip match the new texts' formula; journal echoes the offer's location wording verbatim."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Long, plot-moving, slightly stilted ('Dark fortunes must have befallen him', 'Hmmm... Yes.'), teleporter hand-off - Nox chapter-transition writing."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Boiled oats! In this cold!' and 'Don't argue.' are characterful but crafted; counted beasts, exact gold, a perk, and a double-hyphen dash."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Opens mid-conversation ('Actually, business has been somewhat slow'), 'Well done, lad!', 'filthy paws', '100 in gold' - genuine Nox innkeeper phrasing."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Comic stable-boy shouting for the Missus and the dark quiver joke are well made but too neatly structured; 'Mister! Mister, please!' and exact 70 gold follow the new template."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'I surmise', 'savage scum', 'single handedly', '500 in gold', the constable who just happens to arrive - Nox's earnest, exclamatory bounty writing."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Terse farmer voice is good, but the ear-proof gag, 'a deal's a deal', and counted-monsters-plus-exact-gold structure match the generated set."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Ooooh, how can this be?' and a terse plot-item hand-off with no reward haggling; the vagueness and urgency are Nox's main-quest style."}
+  ],
+  "tells": [
+    "New offers state an exact gold sum in the offer and repeat it word for word in the thanks, usually with a small extra item added; Westwood's rewards are announced only at the end ('100 in gold', '500 in gold') or are plot items.",
+    "New offers count the targets ('Three of them', 'Five of 'em') and name a precise spot ('past the third furnace', 'by the old windmill'); the journal then copies that location.",
+    "Westwood's speakers come with story context (an apprentice gone missing, a title earned, a teleporter, a constable) and often open mid-conversation; new ones are free-standing errands from working-class folk.",
+    "New texts use crafted comic beats (rhetorical chains, punchline endings, 'Don't argue.') and double-hyphen '--' dashes; Westwood's humour is broader ('worse than the pox') and its register more stilted ('I surmise', 'Dark fortunes must have befallen him').",
+    "Westwood's address forms: 'young [Class]', 'Brave [Class]', 'lad'; new ones: 'Mister', 'You!', or none."
+  ]
+}

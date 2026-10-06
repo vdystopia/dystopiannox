@@ -1,0 +1,32 @@
+{
+  "packet": "guard_bark/i1",
+  "judge": "Claude Code subagent, Opus 5.5 (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Dry jailer humour and a flat, repetitive escalation ('Last warning') that reads like a minor Westwood NPC. Plain, a bit lazy, very Nox."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The list of petty city rules, the 'Oh, I forgot to mention' afterthought and the jab at wizardry are Westwood's deadpan town humour. The 'later' line is unrelated to the first two, which is typical of the original."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Lore-flavour barks with no instruction and a dropped article ('can be dangerous place') read like original, lightly edited text. Stiff, but not built to a template."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Problem, villain, 'See X in Y', then a solved-state line: a clean state machine with an exclamation on nearly every sentence. 'Pass, friend -- and watch the road!' is neat, but the structure is too regular."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Ceremonious 'great [Class] dispatched to aid our beloved' and 'Delay no longer!' match the campaign's slightly overwrought heralding. The third line is a loose travel warning, as in the original."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same three beats as D/H/I/J, with the Reeve's order and a celebratory 'Bread for everyone!' payoff. Clipped exclamatory sentences, with a 'Not one grain!' second line in the house pattern."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Urgent, slightly formal ('Your valor knows no peer') with a page break and repeated directions to the Foreman. Longer sentences and an inconsistent capital in 'foreman' feel authentic."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Shut-door, culprit, go-see-NPC, then a reopened-and-celebrate pattern. Every sentence ends in '!' and the follow-up is a two-word 'Locked!' echo."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "'No ferry today! Or tomorrow, likely.' has a nice comic beat, but the Reeve, the far bank and the reopened-state cheer follow the same mould as its siblings."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The template again (the Reeve, a villain's spies, get X to vouch, then '[Person]'s dead... Go on in!'). The short rhyming 'No word, no way in!' feels written to a style guide."}
+  ],
+  "tells": [
+    "New texts share one three-state skeleton (blocked by an order, a terse echo, reopened after the quest) that tracks quest state. Westwood's guard lines are looser, often unrelated to each other, and sometimes pure flavour or lore.",
+    "Exclamation marks on almost every sentence, in uniformly short sentences. Westwood mixes in periods, longer clauses and the odd stiff formality ('Your valor knows no peer').",
+    "Recurring invented office and vocabulary ('the Reeve', 'stranger', 'friend', 'north road') repeated across texts reads like one writer and one map.",
+    "Westwood's guards carry deadpan bureaucratic humour (rules lists, afterthoughts, prisoner warnings). The new ones are cheerful and functional, with the joke saved for the final quip."
+  ]
+}

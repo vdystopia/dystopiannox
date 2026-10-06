@@ -1,0 +1,323 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Ulric the shepherd, at the Ashwood's edge, on the wolf pack led by Greyjaw.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "You've come by the Ashwood, then; you'll have heard them. Wolves. They came down out of the wood at the turn of the season, and there's one leads them the like of which I've never seen: a great grey brute the shepherds call Greyjaw. Half my flock's gone in a month. I'm too old to go into the trees after him. Kill the pack, Greyjaw with it, and I'll pay you everything I've put by."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "They den in the Ashwood, west of the fold. You'll hear Greyjaw before you see him."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Greyjaw? Dead? ...I heard the ewes settle last night and didn't know why. Here: everything I put by, as I said, and my old boots. Good leather still; you've walked further than I will."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ulric, the old shepherd at the edge of the Ashwood, has lost half his flock to wolves led by a great grey wolf the shepherds call Greyjaw. He will pay me to kill the pack."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Aldo the ferryman, on the giant leeches in the ford and the great one the ferrymen call Old Mother.",
+   "names": {
+    "Aldo": "person",
+    "Old Mother": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Aldo",
+     "text": "Don't put your feet in the water, traveller. Leeches. Not the little ones; things as long as your arm, come up the Bracken from the marsh with the warm weather. They had my dog last week and near had my lad off the ferry step. There's one bigger than the rest, fat as a sow, that we call Old Mother; she lies in the deep pool below the ford. Clear them out and the ferrymen will make up a purse for you."
+    },
+    "reminder": {
+     "speaker": "Aldo",
+     "text": "They lie in the shallows below the ford. Old Mother's in the deep pool."
+    },
+    "completion": {
+     "speaker": "Aldo",
+     "text": "The water's clear? And Old Mother with them? The lad's been on the step all morning, grinning. Here's the ferrymen's purse, and something for the bites; you've earned them more than I have."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Aldo the ferryman says giant leeches have come up the Bracken into the ford, the biggest a bloated thing the ferrymen call Old Mother. The ferrymen will pay me to clear them."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "CurePoisonPotion",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Hesk the charcoal-burner, on the black she-bear Soot and her grown cubs wrecking his kilns in the Ashwood.",
+   "names": {
+    "Hesk": "person",
+    "Soot": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesk",
+     "text": "Three kilns I had in the Ashwood clearing, and three kilns that bear's knocked flat. A black she-bear, Soot I call her, for she rolls in the ashes, and two cubs near as big as she is. They came for the honey I keep and stayed for the warm earth. No kilns, no charcoal; no charcoal, and Dunstan's forge goes cold. Get rid of them for good, and I'll pay you what Dunstan pays me for a month."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "The clearing's deep in the Ashwood, where the smoke used to go up. Soot sleeps in the ruin of the big kiln."
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "All three? Then I'll fire the kilns again by the new moon. Here's the month's money, and a shield Dunstan made me in trade that I've never once had the arm for."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hesk the charcoal-burner says a black she-bear he calls Soot and her two grown cubs have wrecked his kilns in the Ashwood clearing. He will pay me to kill them."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "WoodenShield"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Wenna the miller's widow, on the giant rats in her grain loft and the great one the mill boys call the Alderman.",
+   "names": {
+    "Alderman": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Rats. You'll laugh, but come and look at my loft. They've come up out of the river bank since the flood, rats big as cats and one big as a dog that the mill boys call the Alderman, for he sits on the grain sacks like he owns them. They've eaten half the winter flour, and what they don't eat they foul. I've no man now to deal with them. Clear the loft, and I'll pay you, and gladly."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "The loft's up the ladder at the back of the mill. The Alderman sits on the far sacks."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "Quiet up there. I'd forgotten the mill could be quiet. Here, take this, and the potions; and come to me for flour whenever you like, as long as you live."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Wenna, the miller's widow, has giant rats in her mill's grain loft, led by one as big as a dog that the mill boys call the Alderman. She will pay me to clear the loft."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Brother Anselm, on the great bats from the old barrow nesting in the Chapel's belfry.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Anselm",
+     "text": "The Chapel's bell has not rung for a fortnight, and every soul in Brackenford asks me why. Bats, my friend. Great bats out of the old barrow, nesting in the belfry by the score, and when I climb to ring they come down on me like a black sheet. I am a man of peace, but I am not a fool. Clear the belfry and the Chapel will pay what it can, and give you a book my order has kept longer than I have."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Up the stair behind the altar. Cover your face."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "I rang it this morning; did you hear? Half the town came out to see. Here is the Chapel's gift, and the book. Read it kindly."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Brother Anselm says great bats from the old barrow nest in the belfry of the Chapel of the Ford, and the bell cannot be rung. He will pay me to clear them."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Hild the beekeeper, on the giant wasps out of the Ashwood and their nest in a hollow oak.",
+   "names": {
+    "Hild": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hild",
+     "text": "My bees are dead, every hive of them. Wasps came out of the Ashwood, the big ones, long as your thumb, and they went through my hives like Corwin through a purse. They've a nest in a hollow oak at the wood's edge as big as a cart, and a queen in it the size of a hen. Kill the nest, queen and all, and you'll have my savings and every potion in my cupboard."
+    },
+    "reminder": {
+     "speaker": "Hild",
+     "text": "The hollow oak at the Ashwood's edge, past the last hedge. You'll hear it humming."
+    },
+    "completion": {
+     "speaker": "Hild",
+     "text": "No more wasps? I'll start again with one hive, maybe two. Here's what I promised. Take the potions too; I've nothing left to sweeten, and they keep."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hild the beekeeper's hives were killed by giant wasps out of the Ashwood. Their nest is in a hollow oak at the wood's edge. She will pay me to destroy it."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Edric the woodcutter, on the spiders in his new cutting in the Ashwood and the great white one his men call the Weaver.",
+   "names": {
+    "Edric": "person",
+    "Weaver": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Edric",
+     "text": "I've cut timber in the Ashwood forty years and never once run. Last week I ran. Spiders: a cutting full of them, webs from oak to oak, and in the middle something white and fat the size of a cow that my men have taken to calling the Weaver. Two of them went in after a felled ash and came out wrapped, and they've not woken yet. Kill the brood and the Weaver, and I'll pay you, and give you my bow. I can't hold it steady any more."
+    },
+    "reminder": {
+     "speaker": "Edric",
+     "text": "The new cutting, north-west in the Ashwood. If you walk into a web, don't stop to pick it off."
+    },
+    "completion": {
+     "speaker": "Edric",
+     "text": "You're whole? And it's dead? My men woke yesterday, too. Here's the money, and the bow, and the quiver with it. Keep it strung; the wood's not tame yet."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Edric the woodcutter says spiders have filled his new cutting in the Ashwood, with a great white one his men call the Weaver. He will pay me to kill the brood."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Dunstan the smith, on the black wolves off Crow Hill, led by one-eyed Old Patch, killing the horses on the charcoal track.",
+   "names": {
+    "Old Patch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dunstan",
+     "text": "My charcoal comes down the track from the Ashwood, and the carters won't drive it. Black wolves, off Crow Hill where Corwin's bandits throw out their leavings, and grown bold on it. They've killed two horses this month. The leader's a one-eyed brute the carters call Old Patch. Kill the pack and I'll pay you, and my forge will thank you every day it's lit."
+    },
+    "reminder": {
+     "speaker": "Dunstan",
+     "text": "The charcoal track runs along the Ashwood's edge under Crow Hill. That's where they wait for the carts."
+    },
+    "completion": {
+     "speaker": "Dunstan",
+     "text": "The carts came through this morning, full. I'd shake your hand, but I'm black to the elbows. Here's your money, and a shield off my own wall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Dunstan the smith says black wolves led by a one-eyed brute called Old Patch are killing the carters' horses on the charcoal track from the Ashwood. He will pay me to kill the pack."
+    }
+   },
+   "reward": {
+    "gold": 110,
+    "items": [
+     "WoodenShield",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Ossian of the Drowned Lantern, on the white spiders come up into his cellar through the old river door.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ossian",
+     "text": "A word, and quietly; it's bad for trade. Something's got into my cellar. White spiders, the size of a dog, come up through the old river door from the caves under the Bracken. My potboy went down for a cask and came up screaming, and nobody's been down since. I'm pouring from the one barrel I had up here, and it won't last the week. Clear them out and I'll pay you, and you'll drink free at the Drowned Lantern."
+    },
+    "reminder": {
+     "speaker": "Ossian",
+     "text": "Down the steps behind the bar. Mind the river door; that's where they come from."
+    },
+    "completion": {
+     "speaker": "Ossian",
+     "text": "Gone? All of them? I'll have the river door bricked up tomorrow. Here's your purse, and a cure I keep for bites, and your first cup's poured."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ossian of the Drowned Lantern says white spiders have come up into his cellar through the old river door. He will pay me to clear them out."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "CurePoisonPotion",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Tobias the swineherd, on the great brown bear out of the Ashwood, the old folk's Old Bramble, taking his pigs.",
+   "names": {
+    "Tobias": "person",
+    "Old Bramble": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobias",
+     "text": "Every night for a week, a sow gone. I sat up last night with a lantern and saw him: a brown bear bigger than any I ever heard of, out of the Ashwood and through my fence like it was straw. The old folk say it's Old Bramble, that was a story to scare children in my grandfather's day. Story or not, he's eating my pigs. Kill him and the swineherds will make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Tobias",
+     "text": "His track runs from my fence straight into the Ashwood. You won't miss it; he flattens what he walks on."
+    },
+    "completion": {
+     "speaker": "Tobias",
+     "text": "So he was real, and now he isn't. The swineherds took up a purse, and here it is, and the potion my wife sent. There's pork for you whenever you want it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Tobias the swineherd says a great brown bear out of the Ashwood, the old folk's Old Bramble, has been taking his pigs. The swineherds will pay me to kill it."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  }
+ ]
+}

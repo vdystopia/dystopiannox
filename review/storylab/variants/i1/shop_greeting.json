@@ -1,0 +1,118 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Ossian at the Drowned Lantern, Dunstan the smith, Mabry's potions and books; bandits on the north road keep trade thin.",
+   "names": {},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Welcome to the Drowned Lantern, stranger! With Corwin's lot on the north road, you'll have a bed all to yourself tonight!"},
+    "arms": {"speaker": "Dunstan", "text": "Dunstan's forge! Swords, shields, good mail -- all made right here. Nobody's bought a blade in a month. Will you be the first?"},
+    "magic": {"speaker": "Mabry", "text": "Oh! A customer! Come in, come in! Potions, scrolls and spell books, and nobody to buy them since the bandits came."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Tilda at the Miller's Rest, Bram the smith, Old Nell the potion-seller; wolves from the Ashwood scare the carters off.",
+   "names": {"Tilda": "person", "Miller's Rest": "place", "Bram": "person", "Nell": "person"},
+   "parts": {
+    "inn": {"speaker": "Tilda", "text": "Come in, lad! The Miller's Rest has hot stew and warm beds. The wolves scare the carters off, so take your pick!"},
+    "arms": {"speaker": "Bram", "text": "Bram's the name, and iron's the trade! Wolves in the Ashwood, friend -- you'll want a good shield before you go near them."},
+    "magic": {"speaker": "Nell", "text": "Hmmm. A new face. Old Nell has potions for bites and scrolls for the dark. Buy something, dearie -- the wolves never do!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Ossian at the Drowned Lantern, Hobb the armourer by the Moot Hall, Mabry; the Reeve's shut north gate stops the carts.",
+   "names": {"Hobb": "person"},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Ah, a guest! The Reeve shut the north gate, and now nobody stops at the Drowned Lantern but the rats. Ale, stranger?"},
+    "arms": {"speaker": "Hobb", "text": "This is Hobb's. Armour, blades, shields. Gate's shut, carts don't come, prices go up. Buy now or pay more tomorrow!"},
+    "magic": {"speaker": "Mabry", "text": "Welcome, kind stranger! I've potions for every ache, and scrolls besides. Trade's slow with the gate shut -- I'll make you a fair price!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Gertrude at the Ferryman's Rope, Dunstan, Elspeth the herb-wife; the Urchins from the barrow steal from every stall.",
+   "names": {"Gertrude": "person", "Ferryman's Rope": "place", "Elspeth": "person"},
+   "parts": {
+    "inn": {"speaker": "Gertrude", "text": "Welcome to the Ferryman's Rope! Mind your boots by the door -- the Urchins from the barrow will have them off you!"},
+    "arms": {"speaker": "Dunstan", "text": "Shields and swords, fresh from the anvil! Those Urchins east of the ford stole half my nails. Buy something before they take the rest!"},
+    "magic": {"speaker": "Elspeth", "text": "Potions, scrolls, books of spells! Elspeth's wares are the best this side of the Bracken. Well... the only ones, anyway!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Ossian, Dunstan's son Col minding the forge, Mabry's apprentice Lorna minding the shop; Corwin took the smith's iron cart.",
+   "names": {"Col": "person", "Lorna": "person"},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Welcome, traveller! Come in, sit down! The Drowned Lantern's had no guests since Corwin started robbing the north road."},
+    "arms": {"speaker": "Col", "text": "Father's out, but I can sell you anything on the rack! Corwin took our iron cart, so this is all there is. What'll it be?"},
+    "magic": {"speaker": "Lorna", "text": "Mabry's gone to her sister's, so I'm keeping the shop! Potions, scrolls, spell books... please don't ask me what they do!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Hal at the Grey Goose by the ford, Dunstan, Mabry; the Ashwood wolves keep travellers off the roads at night.",
+   "names": {"Hal": "person", "Grey Goose": "place"},
+   "parts": {
+    "inn": {"speaker": "Hal", "text": "The Grey Goose welcomes you, friend! Best beds by the ford. Stay off the Ashwood road at night -- the wolves are hungry!"},
+    "arms": {"speaker": "Dunstan", "text": "Wolves, bandits, and who knows what else! You've come to the right man. Dunstan's blades are the sharpest in Brackenford!"},
+    "magic": {"speaker": "Mabry", "text": "Welcome, Wanderer! Need a potion for the road? With wolves in the Ashwood, you'll want two or three!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Ossian boasting of his ale, Ketter the armourer, Mabry; Corwin robbed the pedlars' carts on the north road.",
+   "names": {"Ketter": "person"},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Welcome to the Drowned Lantern! The ale's as fresh as the river... well, fresher than the river, anyway! Sit down, sit down!"},
+    "arms": {"speaker": "Ketter", "text": "Ketter's armoury! Corwin robbed the pedlars, so mine's the only steel for twenty miles. Look around, young sir!"},
+    "magic": {"speaker": "Mabry", "text": "You're the first face I've seen all week! Potions, scrolls, spell books -- buy something, please! The bandits took my last order."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Ossian, Dunstan and Mabry the morning after the barrow Urchins raided the shops by night.",
+   "names": {},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Hello, stranger! Hungry? We've bread and fish. The Urchins took the cheese last night -- dug right under the cellar wall!"},
+    "arms": {"speaker": "Dunstan", "text": "The Urchins came for my tools last night, the little rats! What's left is for sale. Need a sword, lad?"},
+    "magic": {"speaker": "Mabry", "text": "Shh! Come in quick and shut the door! The Urchins stole three potions off my sill. Do you want what's left?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Marta, Ossian's wife, at the Drowned Lantern, Dunstan, Rook the travelling magic-seller; nothing comes from the north.",
+   "names": {"Marta": "person", "Rook": "person"},
+   "parts": {
+    "inn": {"speaker": "Marta", "text": "Ossian's out fishing, so it's me today! Welcome to the Drowned Lantern, kind sir. Rooms are cheap -- there's nobody else in them!"},
+    "arms": {"speaker": "Dunstan", "text": "Hmmm. Strong arms on you. Dunstan can make them stronger -- with a good sword and a better shield! What do you need?"},
+    "magic": {"speaker": "Rook", "text": "Rook's the name! Potions, scrolls and spell books, all the way from the south. Nobody comes from the north now, so I'm all you've got!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Ossian, Brannoc the smith, Mabry; winter is near and no carts come down the north road.",
+   "names": {"Brannoc": "person"},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Welcome! Warm yourself by the fire, traveller. Winter's coming and no carts come down the north road. Will you stay the night?"},
+    "arms": {"speaker": "Brannoc", "text": "Brannoc's forge! I've got swords and shields, but not much iron left. Better buy now, before the bandits get it all!"},
+    "magic": {"speaker": "Mabry", "text": "Good day, friend! Potions to mend you, scrolls to guard you, books to teach you. Buy while I've still got stock!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

@@ -1,0 +1,259 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Garrick at the north gate, shut by Reeve Halvard against Red Corwin's bandits; see the Reeve.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Hold there, traveller. The north gate's shut, by order of Reeve Halvard. Red Corwin's bandits have taken the old watchtower on Crow Hill, and they rob anyone fool enough to walk the north road. Nobody goes out this way till Corwin's dealt with. If you've business north, take it up with the Reeve at the Moot Hall."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Still shut. The Moot Hall's back down the street, if you want to argue it."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Corwin's dead and the gate's open, by the Reeve's word. North road's yours. Quiet up on Crow Hill for the first time all summer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Edwy at the Ashwood gate, barred against the wolves; see Ulric the shepherd.",
+   "names": {
+    "Edwy": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Edwy",
+     "text": "Not that way. The Reeve's barred the Ashwood gate since the wolves came down out of the wood; they took a carter's mule off the track not a bowshot from here. If you mean to go into the Ashwood anyway, talk to Ulric first. He's the old shepherd at the edge of the trees, and he's lost more to them than anyone."
+    },
+    "again": {
+     "speaker": "Edwy",
+     "text": "Wolves, I said. Ulric's your man, not me."
+    },
+    "later": {
+     "speaker": "Edwy",
+     "text": "Greyjaw's dead, they're saying, and the pack's scattered. Gate's open. I'll still keep a torch lit, mind."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Brede at the east bank of the ford, turning folk back from the barrow path; see Brother Anselm.",
+   "names": {
+    "Brede": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brede",
+     "text": "You'll not cross to the barrow path, stranger. The Urchins have dug into the old barrow east of the ford, and they come out at dusk and take whatever isn't nailed down. The Reeve's put me here to turn folk back. Brother Anselm at the Chapel of the Ford knows more about that barrow than any of us; ask him."
+    },
+    "again": {
+     "speaker": "Brede",
+     "text": "Turn back, stranger. The Chapel's just there, by the water."
+    },
+    "later": {
+     "speaker": "Brede",
+     "text": "Barrow's quiet. No little lights on the hill last night, nor the night before. Go where you like."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Joss, a young night guard at the north gate, shut since Corwin's men burned the toll-house; see the Reeve.",
+   "names": {
+    "Joss": "person",
+    "Fen": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Joss",
+     "text": "Wh- who's there? Oh. A traveller. Sorry. The gate's shut, see. Corwin's lot came down off Crow Hill two nights back and burned the toll-house with old Fen still in it. The Reeve says the gate stays shut till Corwin's dead, and Garrick says I'm not to open it for anyone, not even him. You want the Reeve. Moot Hall, middle of town."
+    },
+    "again": {
+     "speaker": "Joss",
+     "text": "I'm not opening it. Garrick would have my ears."
+    },
+    "later": {
+     "speaker": "Joss",
+     "text": "Corwin's dead? Really dead? Then it's open, it's open! Garrick let me lift the bar myself."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Hamm at the ferry landing, the ferry drawn up because Corwin's men crossed on it to raid; see the Reeve.",
+   "names": {
+    "Hamm": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hamm",
+     "text": "Ferry's not running, friend. Corwin's bandits rowed across on it two nights running and cleared out the south bank farms, so the Reeve had the rope cut and the boat drawn up. There's no crossing till Corwin's done. You'd have to see Reeve Halvard in the Moot Hall, and he'll tell you the same."
+    },
+    "again": {
+     "speaker": "Hamm",
+     "text": "No ferry. And the ford's too deep this week, before you ask."
+    },
+    "later": {
+     "speaker": "Hamm",
+     "text": "Rope's spliced and the boat's back in the water. With Corwin gone there's nobody to row for but honest folk. Step aboard."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Brother Tobin at the Chapel's lychgate, the graveyard shut because something from the barrow digs there by night; see Brother Anselm.",
+   "names": {
+    "Brother Tobin": "person",
+    "Tobin": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tobin",
+     "text": "Peace, traveller, but you can't come through the lychgate. Something has been digging in the Chapel's graveyard by night, from the barrow side. Little things, quick, with lanterns. Brother Anselm has closed the yard till it stops. If you would help, he is in the Chapel; I only keep the gate."
+    },
+    "again": {
+     "speaker": "Tobin",
+     "text": "The yard's closed. Brother Anselm is inside, if you would speak with him."
+    },
+    "later": {
+     "speaker": "Tobin",
+     "text": "No more digging. Brother Anselm has opened the yard, and the dead may sleep. Go in peace."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Rook at the Moot Hall door, shut to strangers since a spy of Corwin's walked in; see Ossian to vouch.",
+   "names": {
+    "Rook": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Rook",
+     "text": "Moot Hall's closed to strangers. Last week a man walked in here calling himself a carter and walked out with the Reeve's list of who stands which watch; next night Corwin's men came over the north wall right where we were thinnest. So nobody sees Reeve Halvard without someone in town to speak for them. Try Ossian at the Drowned Lantern; he knows every face that comes up the road."
+    },
+    "again": {
+     "speaker": "Rook",
+     "text": "Find someone to vouch for you. Ossian, at the Drowned Lantern."
+    },
+    "later": {
+     "speaker": "Rook",
+     "text": "Corwin's dead, and the Reeve says your face goes anywhere it likes in Brackenford. In you go."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Old Harte at the north road's bridge over the Bracken, its planks pulled up against Corwin's carts; see the Reeve.",
+   "names": {
+    "Harte": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Harte",
+     "text": "Bridge is up, traveller. I pulled the planks myself, Reeve's orders. Red Corwin's men use the north road like their own back yard, and this bridge is the only way they'd get carts into Brackenford. When the Reeve says Corwin's done, the planks go down. Till then, see him at the Moot Hall, not me; I'm only the one with the sore back."
+    },
+    "again": {
+     "speaker": "Harte",
+     "text": "Planks stay up. Moot Hall, if you want them down."
+    },
+    "later": {
+     "speaker": "Harte",
+     "text": "Planks are down and nailed. Corwin's dead, they tell me. Mind the third one from the end; it bounces."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Maud on the river quay, a chain across the Bracken since Corwin took the mill barges; see the Reeve's clerk Benet.",
+   "names": {
+    "Maud": "person",
+    "Benet": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Maud",
+     "text": "The chain's across the river, and it stays across. Corwin's bandits took two of the mill barges under Crow Hill last week and sold the flour back to us. Reeve Halvard's stopped everything on the Bracken going north. If you've a boat or a cargo, see his clerk, Benet, at the Moot Hall. He'll take your name and tell you no."
+    },
+    "again": {
+     "speaker": "Maud",
+     "text": "Chain's up. Benet's at the Moot Hall."
+    },
+    "later": {
+     "speaker": "Maud",
+     "text": "Chain's down and the barges are going up. Corwin's dead, and the flour's ours again. I may even miss the quiet."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Nye at the mouth of the old barrow, set by the Reeve to keep folk out of the Urchins' way; see Wenna.",
+   "names": {
+    "Nye": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Nye",
+     "text": "Far enough. That's the old barrow, and the Urchins are in it. They dug in after the spring rains and they've been robbing Brackenford blind since: the mill, the Chapel, my own hen-house. The Reeve's set me here to keep the children out, and anybody else with more courage than sense. You want to know what's down there, ask Wenna, the miller's widow. They took something of hers she'd sooner have back than her own teeth."
+    },
+    "again": {
+     "speaker": "Nye",
+     "text": "Still here, still not letting you in without a reason. Wenna's at the mill."
+    },
+    "later": {
+     "speaker": "Nye",
+     "text": "The Urchins are gone? Then I'm off home. Nobody's going to steal the barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}

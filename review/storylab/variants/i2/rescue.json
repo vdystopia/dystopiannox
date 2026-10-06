@@ -1,0 +1,386 @@
+{
+ "scenario": "rescue",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brother Anselm of the Chapel of the Ford begs the player to find his novice Pip, who chased the Urchins and the stolen candlesticks into the old barrow.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Bless you for stopping, my son! Pip is gone! The Urchins stole our candlesticks from the altar. The foolish boy ran after them!\n\nHe followed them into the old barrow east of the ford. That was yesterday, and he has not come back. I am too old for such places, and I fear for him.\n\nWill you go into that barrow and find him? The chapel is poor, but you shall not go unrewarded."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Is there no word of Pip? Oh, go quickly, I beg you!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "You came for me! The Urchins took my lantern, and I've been lost in the dark ever since. I want to go home!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Stay close! I think one of them is still behind us!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! Oh, thank goodness, you are safe! Kind sir, the chapel owes you more than it can ever repay. Take this, with my blessing, and may the light keep you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pip in the old barrow and bring him back to the chapel."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["AnkhTradable"]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Foreman Hesk of a mining town under the mountain wants his lamp-boy Tib, who went back down for the lamps, pulled out of the Spider-infested lower galleries.",
+   "names": {
+    "Hesk": "person",
+    "Tib": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hesk",
+     "text": "Spiders! The Spiders crawled up from the deep shaft and everyone ran. Everyone but Tib. That fool of a lamp-boy went back down for the lamps!\n\nHe's somewhere in the lower galleries, under the east lift. Get him out, and there's 80 gold in it for you."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "Tib's down there in the dark. Get going!"
+    },
+    "found": {
+     "speaker": "Tib",
+     "text": "Over here! I'm stuck in the web! Cut me loose, quick, before the big one comes back!"
+    },
+    "following": {
+     "speaker": "Tib",
+     "text": "I've got the lamps! Well, two of them. Go on, I'm right behind you!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "Tib, you little idiot! Get over here! ... Right. You kept your end, and I'll keep mine. Here's the 80."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Tib the lamp-boy up from the lower galleries."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Young Fenn of a swamp hamlet on stilts begs the player to bring home his Granny Odile, cornered by Zombies while digging fever root on the south boardwalk.",
+   "names": {
+    "Fenn": "person",
+    "Odile": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fenn",
+     "text": "Please, kind stranger, you have to help! Granny went down the old boardwalk south of the stilts to dig fever root. Then the Zombies came up out of the mud. I saw them from the roof!\n\nShe's hiding in the smokehouse at the end of the walk. I'm not allowed past the last post. Will you bring her home?\n\nYou can have the coins in her jar. She won't mind. I think."
+    },
+    "reminder": {
+     "speaker": "Fenn",
+     "text": "Granny's still out there! Hurry, please!"
+    },
+    "found": {
+     "speaker": "Odile",
+     "text": "Did Fenn send you? Bless the boy. Now give me your arm. These old knees won't lift me from this floor alone."
+    },
+    "following": {
+     "speaker": "Odile",
+     "text": "Not so fast, dearie! These legs are ninety-one years old!"
+    },
+    "completion": {
+     "speaker": "Fenn",
+     "text": "You found her! You really found her! Here -- the coins from her jar. Don't tell her it was me."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Fenn's grandmother from the Zombies on the south boardwalk."
+    }
+   },
+   "reward": {
+    "gold": 25,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Captain Roderick of a garrisoned castle quietly asks the player to fetch the Lord's son Aubrey out of the Skeleton-haunted crypt, where he went on a wager.",
+   "names": {
+    "Roderick": "person",
+    "Aubrey": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Roderick",
+     "text": "Ah, you there! You look capable. This is a delicate matter, and I would rather the garrison did not hear of it.\n\nThe Lord's son, young Aubrey, went down into the crypt beneath the chapel on a wager with the stable boys. The Skeletons there have woken. My men will not go below. Superstitious lot!\n\nBring the boy out alive, and the Lord will be most generous. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Roderick",
+     "text": "Well? The Lord returns from the hunt at nightfall. Make haste!"
+    },
+    "found": {
+     "speaker": "Aubrey",
+     "text": "You took your time! Do you know who my father is? ... Never mind. Just get me out of here."
+    },
+    "following": {
+     "speaker": "Aubrey",
+     "text": "Carry my torch! No? Then at least walk in front."
+    },
+    "completion": {
+     "speaker": "Roderick",
+     "text": "The boy, unharmed! Excellent. The Lord need never learn how close it was. Here, from the Lord's own purse. Not a word of this to anyone."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Lord's son in the crypt below the castle chapel."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Maud of a lake village of fishermen begs the player to fetch her husband Tobin off Gull Rock, where he swam when his boat sank, past shallows full of Giant Leeches.",
+   "names": {
+    "Maud": "person",
+    "Tobin": "person",
+    "Gull Rock": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Maud",
+     "text": "Have you a boat? No? Oh, it doesn't matter... Tobin is out on Gull Rock, in the middle of the lake. His boat went down two nights ago, and he swam for it.\n\nNobody will wade out to him. The shallows are thick with Giant Leeches! There's an old stepping path from the north shore, if you're brave.\n\nWe'll find something to give you, I promise. Please, bring him home!"
+    },
+    "reminder": {
+     "speaker": "Maud",
+     "text": "Oh, please hurry! The water's getting colder every night."
+    },
+    "found": {
+     "speaker": "Tobin",
+     "text": "Maud sent you? Ha! I knew she would! Two days on this rock, eating raw fish... I'm ready to go home."
+    },
+    "following": {
+     "speaker": "Tobin",
+     "text": "Mind the deep part. Something big brushed my leg there."
+    },
+    "completion": {
+     "speaker": "Maud",
+     "text": "Oh, look at him, soaked to the bone and smelling of fish! Thank you, stranger, thank you! It isn't much, but please take it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fetch Tobin off Gull Rock."
+    }
+   },
+   "reward": {
+    "gold": 30,
+    "items": ["RedPotion"]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Master Quillon of a wizards' college sends the player into the vaults under the east tower for his apprentice Corra, besieged by the Imps of her own botched summoning.",
+   "names": {
+    "Quillon": "person",
+    "Corra": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Quillon",
+     "text": "Hmmm. You are not one of my students. Good. A student would only make matters worse.\n\nCorra, my most gifted apprentice, has attempted a summoning far beyond her skill. Imps! Dozens of the wretched creatures. She has barred herself in the vaults beneath the east tower, and they are clawing at the door.\n\nRetrieve her, and you shall be rewarded from the college library itself."
+    },
+    "reminder": {
+     "speaker": "Quillon",
+     "text": "The girl is still below, is she not? Then why are you here?"
+    },
+    "found": {
+     "speaker": "Corra",
+     "text": "Oh no, he sent someone. Is the Master very angry? ... I only wanted to see if it would work!"
+    },
+    "following": {
+     "speaker": "Corra",
+     "text": "Faster! I think I summoned more of them on the way out!"
+    },
+    "completion": {
+     "speaker": "Quillon",
+     "text": "So. She lives, and the east tower still stands. Your service to the college is noted, and appreciated. Take this book, and read it with more care than she reads hers."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead Corra out of the vaults beneath the east tower."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Warden Ysolde of a frozen fort on a mountain pass wants the fort's cook Hamm back from the Troll that carried him off to the ice caves.",
+   "names": {
+    "Ysolde": "person",
+    "Hamm": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ysolde",
+     "text": "A Troll came in through the kitchen wall and went out with our cook! Hamm is up in the ice caves west of the fort, if he isn't stew yet.\n\nThe men have eaten nothing but frozen bread for three days. Fetch him back, and the 60 gold in my desk is yours."
+    },
+    "reminder": {
+     "speaker": "Ysolde",
+     "text": "No cook, no supper. Move!"
+    },
+    "found": {
+     "speaker": "Hamm",
+     "text": "Shhh! He's asleep. He's been trying all day to light a fire under me. Let's go before he gets it right."
+    },
+    "following": {
+     "speaker": "Hamm",
+     "text": "Go on, go on! I left a pot on the fire three days ago!"
+    },
+    "completion": {
+     "speaker": "Ysolde",
+     "text": "Ha! You found him! The men will eat tonight! Here's your 60 gold, and you'll get the first bowl besides."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save the fort's cook from the Troll."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Tarvin, a smith of a lava-forge town, pleads for his daughter Brenna, trapped on the slag heap by Ember Demons while gathering ore at the south vents.",
+   "names": {
+    "Tarvin": "person",
+    "Brenna": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Tarvin",
+     "text": "Help! Somebody, help me! My girl Brenna went to the south vents for ore this morning, and Ember Demons burst from the cracks!\n\nShe's stuck on the slag heap with fire all round her. I can't get near. I'm a smith, not a fighter!\n\nGo, Wanderer, please! Bring her back, and everything in my strongbox is yours!"
+    },
+    "reminder": {
+     "speaker": "Tarvin",
+     "text": "What are you waiting for? Go! Go!"
+    },
+    "found": {
+     "speaker": "Brenna",
+     "text": "Watch the left one, it spits fire! ... Right. Thanks. Now get me off this heap!"
+    },
+    "following": {
+     "speaker": "Brenna",
+     "text": "Go round the long way. I know where the cracks are."
+    },
+    "completion": {
+     "speaker": "Tarvin",
+     "text": "Thank you! Oh, thank you, thank you! She's singed, but she's whole! Here -- everything in the strongbox. Don't argue, just take it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Escort Brenna home from the slag heap by the south vents."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Hobb, keeper of a crossroads inn, wants his guest Pell the merchant freed from ransom-seeking bandits in the old windmill, chiefly because Pell owes him for his room.",
+   "names": {
+    "Hobb": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hobb",
+     "text": "Psst. A word, stranger. One of my guests, a merchant called Pell, was dragged off by bandits last night. They want 500 gold for him.\n\nNow, I don't care much for Pell. But he owes me for nine nights and a barrel of cider! The bandits are holed up in the old windmill west of the crossroads.\n\nBring him back alive and I'll give you a share of what he pays me. Fair?"
+    },
+    "reminder": {
+     "speaker": "Hobb",
+     "text": "Pell's bill isn't getting any smaller, you know!"
+    },
+    "found": {
+     "speaker": "Pell",
+     "text": "Untie me, quickly! My hands have gone numb! ... Who sent you? Hobb? Oh no. He wants his money, doesn't he?"
+    },
+    "following": {
+     "speaker": "Pell",
+     "text": "Must we go through the mud? These boots cost more than a horse!"
+    },
+    "completion": {
+     "speaker": "Hobb",
+     "text": "Master Pell, alive and with his purse still on him! Wonderful! Here's your share, as I promised. Now, Master Pell... about that bill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the merchant Pell from the bandits at the old windmill."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Hilde of a farming town begs the player to bring back her husband Jory, carried off by Ogres with the best pig to their camp north of the barley fields.",
+   "names": {
+    "Hilde": "person",
+    "Jory": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hilde",
+     "text": "They took Jory! The Ogres came over the hedge at dawn and carried him off, and our best pig with him!\n\nTheir camp is north of the barley fields, past the old scarecrow. Please, Adventurer, he's all I have... him and the pig.\n\nI've a little gold put by for the winter. It's yours if you bring him back!"
+    },
+    "reminder": {
+     "speaker": "Hilde",
+     "text": "Is he still alive? Don't tell me. Just go!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Keep your voice down! They've been feeding me up all week... and I think I know why."
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "Wait, the pig! ... No, leave the pig. Run!"
+    },
+    "completion": {
+     "speaker": "Hilde",
+     "text": "Jory! Oh, my Jory, they didn't eat you! Bless you, brave Adventurer! Here's the winter gold, every coin. We'll manage somehow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Jory from the Ogre camp north of the barley fields."
+    }
+   },
+   "reward": {
+    "gold": 45,
+    "items": []
+   }
+  }
+ ]
+}

@@ -1,0 +1,158 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna the miller's widow wants the mill's silver seal back from the Urchins in the old barrow east of the ford.",
+   "names": {},
+   "parts": {
+    "offer": {"speaker": "Wenna", "text": "Oh, what a wretched week! Those Urchins broke into my mill and stole the silver seal. Without it I can't mark my flour, and no baker in Brackenford will touch an unmarked sack!\n\nThe little thieves are hiding in the old barrow east of the ford. My knees won't take me crawling about in barrows.\n\nI'll pay you well. Will you bring my seal back to me?"},
+    "refusal": {"speaker": "Wenna", "text": "Oh... Well, I suppose I'll be feeding my flour to the ducks, then."},
+    "reminder": {"speaker": "Wenna", "text": "Have you found my seal? The sacks are piling up to the rafters!"},
+    "completion": {"speaker": "Wenna", "text": "My seal! Oh, my seal, and not a scratch on it! Bless you, bless you! Here's your reward, dear. You've earned every coin."},
+    "after": {"speaker": "Wenna", "text": "The bakers are buying again! Thank you, dear."},
+    "journal": {"speaker": "", "text": "Recover Wenna's silver seal from the Urchins in the old barrow."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover Wenna's silver seal from the Urchins in the old barrow."}
+   },
+   "reward": {"gold": 80, "items": ["RedPotion"]}
+  },
+  {
+   "id": 2,
+   "specifics": "Cave town of miners: Hobb the miner wants his dowsing rod back from the spiders' nest past the flooded gallery.",
+   "names": {"Hobb": "person"},
+   "parts": {
+    "offer": {"speaker": "Hobb", "text": "Oi, you there! The spiders came up out of the old shaft and dragged off my dowsing rod. Can't find a decent seam without it -- I've been digging nothing but rubble all week!\n\nThey've a nest down past the flooded gallery, east of the lift. Fetch me that rod and there's gold in it for you. You'll do it, won't you?"},
+    "refusal": {"speaker": "Hobb", "text": "Bah! Rubble for supper again, then."},
+    "reminder": {"speaker": "Hobb", "text": "Still no rod? Rubble, rubble, rubble... I'm sick of rubble!"},
+    "completion": {"speaker": "Hobb", "text": "That's her! That's my rod! Covered in web, but she's twitching already! You're a marvel, you are. Here, this is yours -- take it before I change my mind!"},
+    "after": {"speaker": "Hobb", "text": "Struck a fine seam this morning! Heh!"},
+    "journal": {"speaker": "", "text": "Fetch Hobb's dowsing rod from the spiders' nest past the flooded gallery."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Fetch Hobb's dowsing rod from the spiders' nest past the flooded gallery."}
+   },
+   "reward": {"gold": 50, "items": ["RedPotion"]}
+  },
+  {
+   "id": 3,
+   "specifics": "Swamp hamlet on stilts: Mother Brisa wants the charm that keeps the leeches off, stolen by Wisps to the sunken shrine.",
+   "names": {"Mother Brisa": "person"},
+   "parts": {
+    "offer": {"speaker": "Mother Brisa", "text": "Greetings, kind stranger. Those nefarious Wisps have stolen the charm that keeps the leeches from our hamlet! I saw their lights go south, to the sunken shrine past the last walkway. Without the charm, the leeches will eat us alive. I can pay a modest sum. Would you recover it for us?"},
+    "refusal": {"speaker": "Mother Brisa", "text": "I am sorry to hear it. I shall pray you think better of it."},
+    "reminder": {"speaker": "Mother Brisa", "text": "The leeches are at the ladders again! Please, the charm!"},
+    "completion": {"speaker": "Mother Brisa", "text": "You found it! Oh, blessed day! The leeches will keep to the water now. Please accept this, with the thanks of everyone on the stilts."},
+    "after": {"speaker": "Mother Brisa", "text": "Not one leech this week! Thanks again, kind stranger."},
+    "journal": {"speaker": "", "text": "Recover the leech charm from the Wisps in the sunken shrine."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover the leech charm from the Wisps in the sunken shrine."}
+   },
+   "reward": {"gold": 60, "items": ["CurePoisonPotion"]}
+  },
+  {
+   "id": 4,
+   "specifics": "Castle town with a garrison: Quartermaster Bellamy wants the armoury key back from a Mimic in the old west keep.",
+   "names": {"Bellamy": "person"},
+   "parts": {
+    "offer": {"speaker": "Bellamy", "text": "This is an outrage! A disgrace to the whole garrison! I put the armoury key down on a chest in the old west keep, and the chest ATE it! A Mimic, the Captain says. As if that makes it any better!\n\nNo key, no spears for the dawn drill. Go in there and cut it out of the beast, and I'll pay you from my own pocket. Quietly, though. Will you do it, young sir?"},
+    "refusal": {"speaker": "Bellamy", "text": "Fine! I'll tell the Captain the spearmen are drilling with broom handles."},
+    "reminder": {"speaker": "Bellamy", "text": "The key! Drill is at dawn!"},
+    "completion": {"speaker": "Bellamy", "text": "My key! Slimy, but mine! You've saved my post, and possibly my neck. Here, take this shield from the stores. Nobody counts them anyway."},
+    "after": {"speaker": "Bellamy", "text": "The Captain suspects nothing. Heh, heh."},
+    "journal": {"speaker": "", "text": "Get the armoury key back from the Mimic in the old west keep."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Get the armoury key back from the Mimic in the old west keep."}
+   },
+   "reward": {"gold": 40, "items": ["WoodenShield"]}
+  },
+  {
+   "id": 5,
+   "specifics": "Lake village of fishermen: Merrit the fisherman wants his fish-drawing stone back from a ghost at the wreck off Gull Isle.",
+   "names": {"Merrit": "person", "Gull Isle": "place"},
+   "parts": {
+    "offer": {"speaker": "Merrit", "text": "A ghost came up out of the lake last night and took my fishing stone! It brings the fish to my nets. The thing swam off with it to the wreck off Gull Isle, north of the jetty. I'll pay what I can. Will you get my stone back?"},
+    "refusal": {"speaker": "Merrit", "text": "No? Then it's eels and empty nets for me."},
+    "reminder": {"speaker": "Merrit", "text": "Three days of empty nets! Have you got my stone?"},
+    "completion": {"speaker": "Merrit", "text": "My stone! Oh, the fish will be fighting to get into the boat now! It's not much, but it's honest gold. Take it, please."},
+    "after": {"speaker": "Merrit", "text": "Best catch in years! Come round for a fish supper sometime."},
+    "journal": {"speaker": "", "text": "Recover Merrit's fishing stone from the ghost at the wreck off Gull Isle."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover Merrit's fishing stone from the ghost at the wreck off Gull Isle."}
+   },
+   "reward": {"gold": 70, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Wizards' college town: Archivist Pell wants the Index of Spells back from a Shade in the vaults beneath the west library.",
+   "names": {"Pell": "person", "Index of Spells": "thing"},
+   "parts": {
+    "offer": {"speaker": "Pell", "text": "Ahem. Forgive the intrusion, Wanderer. A most grievous theft has occurred! A Shade slipped past the wards and made off with the Index of Spells. Without the Index, nobody in this college can find a single book.\n\nThe creature lurks in the vaults beneath the west library. The Masters are too proud to go down there, and the apprentices are far too frightened.\n\nThe college rewards its friends handsomely. Would you be so good as to retrieve it?"},
+    "refusal": {"speaker": "Pell", "text": "How very disappointing. Do reconsider at your leisure."},
+    "reminder": {"speaker": "Pell", "text": "The Index, if you please! The apprentices are shelving books by colour!"},
+    "completion": {"speaker": "Pell", "text": "The Index! Not a page singed! Splendid, simply splendid! On behalf of the college, I present you with this volume, and our deepest gratitude."},
+    "after": {"speaker": "Pell", "text": "Order is restored. The college is in your debt."},
+    "journal": {"speaker": "", "text": "Find the Index of Spells and return it to Archivist Pell."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Find the Index of Spells and return it to Archivist Pell."}
+   },
+   "reward": {"gold": 30, "items": ["SpellBook"]}
+  },
+  {
+   "id": 7,
+   "specifics": "Frozen fort on a mountain pass: Ulla the cook wants the ember-stone that lights her hearth back from a Troll in the ice caves above the pass.",
+   "names": {"Ulla": "person"},
+   "parts": {
+    "offer": {"speaker": "Ulla", "text": "Brrrr! Shut that door, will you? It's freezing in here since that Troll took our ember-stone!\n\nThe brute smashed my kitchen door and carried the stone up to the ice caves above the pass. Without it the hearth won't light, and the soldiers have eaten cold porridge for four days. They're getting ugly about it.\n\nBring it back and the Warden will see you paid. Will you go?"},
+    "refusal": {"speaker": "Ulla", "text": "Then shut the door on your way out!"},
+    "reminder": {"speaker": "Ulla", "text": "Cold porridge again! The men are muttering. Hurry!"},
+    "completion": {"speaker": "Ulla", "text": "Ahhh, feel that! Warm already! Oh, you wonderful thing! Here, take these boots. They're lined with fur, and you'll want them on the pass."},
+    "after": {"speaker": "Ulla", "text": "Hot stew tonight! There's a bowl kept back for you."},
+    "journal": {"speaker": "", "text": "Bring the ember-stone back from the Troll in the ice caves."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Bring the ember-stone back from the Troll in the ice caves."}
+   },
+   "reward": {"gold": 30, "items": ["LeatherBoots"]}
+  },
+  {
+   "id": 8,
+   "specifics": "Lava-forge town of smiths: Guildmaster Torva wants the Founder's Hammer back from the Imps on the lava flats west of town.",
+   "names": {"Torva": "person", "Founder's Hammer": "thing"},
+   "parts": {
+    "offer": {"speaker": "Torva", "text": "Calamity! The Imps have stolen the Founder's Hammer from the guildhall! The finest blades in the land were struck with that hammer, and now those wretched little devils are dancing with it on the lava flats west of town!\n\nI am too old and too heavy to chase Imps. Return the Hammer, and the guild will fill your purse. Do we have a bargain?"},
+    "refusal": {"speaker": "Torva", "text": "Hmph! The guild will remember your face, and not fondly."},
+    "reminder": {"speaker": "Torva", "text": "I can hear those Imps cackling from here! The Hammer, quickly!"},
+    "completion": {"speaker": "Torva", "text": "The Hammer! In my hand again! Ha-HA! Ring the bell, lads, the forges burn tonight! Here, Adventurer -- the guild pays its debts in full."},
+    "after": {"speaker": "Torva", "text": "Hear that ringing? That's my Hammer at work."},
+    "journal": {"speaker": "", "text": "Take the Founder's Hammer back from the Imps on the lava flats."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Take the Founder's Hammer back from the Imps on the lava flats."}
+   },
+   "reward": {"gold": 120, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Crossroads inn and its hamlet: Barnaby the innkeeper wants his magic ale tap back from the bandits camped in the old quarry south of the crossroads.",
+   "names": {"Barnaby": "person"},
+   "parts": {
+    "offer": {"speaker": "Barnaby", "text": "Psst... a word, stranger? Some bandits drank my inn dry last night, and on the way out they took my magic tap. Without it the ale goes sour in a day. They're camped in the old quarry south of the crossroads. Get my tap back and you'll drink free all year, with a little gold besides. Deal?"},
+    "refusal": {"speaker": "Barnaby", "text": "Your loss, friend. Vinegar by the end of the week, you'll see."},
+    "reminder": {"speaker": "Barnaby", "text": "Taste that? Sour! Where's my tap?"},
+    "completion": {"speaker": "Barnaby", "text": "Ahhh, my beautiful tap! Let me pour you the first mug... Mmm! Perfect! Your money's no good here, stranger. And here's a little something for the road."},
+    "after": {"speaker": "Barnaby", "text": "First mug's on the house. So's the second. Don't push it."},
+    "journal": {"speaker": "", "text": "Find the bandits' camp in the old quarry and retrieve Barnaby's magic tap."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Find the bandits' camp in the old quarry and retrieve Barnaby's magic tap."}
+   },
+   "reward": {"gold": 50, "items": ["RedPotion"]}
+  },
+  {
+   "id": 10,
+   "specifics": "Farming town troubled by Ogres: Oswin the farmer wants the shrine's rain bell back from the Ogre camp past the windmill on the east hill.",
+   "names": {"Oswin": "person"},
+   "parts": {
+    "offer": {"speaker": "Oswin", "text": "Ogres! Ogres in the barley again! And this time they took the rain bell from the shrine. Ring it at dawn and the clouds come. Without it we'll have no rain and no harvest!\n\nThe brutes carried it to their camp past the windmill on the east hill. I think they're cooking in it. The whole town will chip in for your trouble. Will you get it back before they burn a hole in it?"},
+    "refusal": {"speaker": "Oswin", "text": "Then pray for rain, stranger. I know I will."},
+    "reminder": {"speaker": "Oswin", "text": "Not a cloud in the sky! Please, hurry!"},
+    "completion": {"speaker": "Oswin", "text": "Our bell! A bit dented, and it smells of Ogre stew, but it's ours! Thank goodness! Here's what the town gathered for you. Every family gave something."},
+    "after": {"speaker": "Oswin", "text": "Rain on the barley at last! Listen to it!"},
+    "journal": {"speaker": "", "text": "Steal back the rain bell from the Ogre camp on the east hill."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Steal back the rain bell from the Ogre camp on the east hill."}
+   },
+   "reward": {"gold": 60, "items": ["AnkhTradable"]}
+  }
+ ]
+}

@@ -1,0 +1,247 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Ossian at the Drowned Lantern by the ford, Dunstan the smith, Mabry's potions and books; trade thin since Corwin's bandits took the north road.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "The Drowned Lantern. Named for the lamp my grandfather hung on the ford post; the Bracken took it the first spring. Rooms are cheap since Corwin shut the north road. Everything's cheap."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Dunstan's forge. Nobody's been through that door but Garrick for a fortnight, and he only wants his pike straightened. Buy something; the fire's hot anyway."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Potions, scrolls, a book or two. The carter who brings my glass hasn't come down the north road in a month, so mind that bottle. I've no more."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Same three keepers, but it is the Ashwood wolves that keep the drovers away, and market day is empty.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Come in out of the wind. Market day, and you're the only face I've seen. The drovers won't bring their beasts past the Ashwood with the wolves down. Sit where you like; you've the choice of all of it."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Spears, mostly, this month. Every shepherd on the Ashwood edge wants one, and not one of them can pay. You look like you can. Have a look."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Wolfsbane's sold out, before you ask. The shepherds' wives buy red potions by the basket now; I can't brew them fast enough. Everything else is on the shelf."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Other keepers: Hild at the Ferryman's Rest by the ferry stage, Brann the armourer, Old Nell the herb-wife; the ferry is tied up while the north road is shut.",
+   "names": {
+    "Hild": "person",
+    "Ferryman's Rest": "place",
+    "Brann": "person",
+    "Nell": "person",
+    "Old Nell": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hild",
+     "text": "The Ferryman's Rest. The ferry's tied up and the ferrymen drink on tick, so a traveller with coin is a holiday. Sit by the fire; the river damp gets into your bones."
+    },
+    "arms": {
+     "speaker": "Brann",
+     "text": "Brann's. I make mail for the reeve's men, and nothing else sells while the north road's shut. If you've the coin, you'll have my best and my thanks with it."
+    },
+    "magic": {
+     "speaker": "Nell",
+     "text": "Old Nell's. Herbs, draughts, an old book or two the chapel didn't want. I used to sell to the carters going north. Now I sell to you."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Ossian, Dunstan and Mabry, each robbed or wary since the Urchins from the old barrow began creeping into town at night.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "The Drowned Lantern, and welcome. Keep your purse on the table where I can see it; the Urchins from the barrow had two off my customers last week, quick as rats."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Don't lean on the rack. Last time I turned my back an Urchin had a dagger off it and was halfway to the ford. I'll sell you one honest, cheaper than they'd steal it."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Everything's on the high shelf now. Those barrow Urchins will eat anything, glass and all, I'd swear. What can I find you?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Ossian's cellar flooded by the spring Bracken, Dunstan short of iron since the north road closed, Mabry's ink running low.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Mind the step, it's wet. The Bracken came in through the cellar at the thaw and took half my ale. The half that's left is the good half. Sit down."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Iron comes down the north road from the hills, or it did. What you see is what I've got till Corwin's gone, so if you like it, buy it."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "My ink's down to the dregs, so scrolls are dear this month, and I'll not apologise for it. Potions are fresh. Books are old. Have a look."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Brother Anselm sells the chapel's draughts and old books to mend its roof; the pilgrims who filled Ossian's inn and bought Dunstan's knives no longer come.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Pilgrims used to fill these benches on their way to the Chapel of the Ford. Not since the north road turned bad. You'll have a bed by the window, and nobody snoring in it."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Pilgrims don't buy swords. Travellers do. I'm glad to see one."
+    },
+    "magic": {
+     "speaker": "Anselm",
+     "text": "The chapel's cellar keeps our draughts cool and our old books dry, and the roof leaks over both. Buy something and the Ford will thank you. So will the roof."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "The keepers take the player for one of Red Corwin's men, who come into town bold as brass to spend the north road's silver.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "You're not one of Corwin's? They come in here bold as you like and pay me in the north road's own silver. ...No. You've an honest face. Ale's a copper."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Last man who bought a sword off me used it on a carter a week later. So I'll ask you plain: you're not riding for Red Corwin? Good. Then look all you like."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "I sell to anyone with coin, but I'll not sell a fire scroll to anyone with a red rag round the arm. You've none. Welcome, then."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Reeve Halvard's levy to pay the watch on the north gate eats the trade; the watch has bought up Dunstan's pikes and Mabry's potions.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "The reeve's levy is a penny on every cup, to pay the watch on the north gate. I'll not charge you the penny. Sit."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Halvard bought every pike I had for the watch and paid me in promises. What's left on the rack I'll sell for silver."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Most of my red potions went up to the Moot Hall for the watch. I've kept a few back. Don't tell the reeve."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "The millers' quarter: Tam at the Millrace tavern, Dunstan who mends mill-irons, Mabry who sold the millers' wives sleeping draughts; the wheels stand idle without grain from the north road.",
+   "names": {
+    "Tam": "person",
+    "Millrace": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Tam",
+     "text": "The Millrace. When the wheels turn, this place is full of flour and millers. Now the wheels stand, and so does my ale. Come in."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Mill-irons and wheel-pins, that's my bread. No grain, no milling, no broken pins. So I've made swords. Have one."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "The millers' wives used to buy my sleeping draughts against the noise of the wheels. It's quiet now, and nobody sleeps any better. What'll it be?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "With the north road shut, the only trade comes up the Bracken by barge; each keeper greets the player as off the barge.",
+   "names": {},
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Off the barge? Then you've come the only way left. Shake the river off and sit; the Drowned Lantern still has a fire, even if the Bracken has most of the custom."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "Every bar of iron I've got came up the river on a barge, and every barge costs me double. The prices are on the tags. Don't argue with the tags."
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Whatever the bargemen didn't drop in the Bracken is on these shelves. Potions, scrolls, a book of spells with only a little water in it."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}

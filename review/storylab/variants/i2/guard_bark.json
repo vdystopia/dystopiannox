@@ -1,0 +1,271 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Garrick at Brackenford's north gate, shut by Reeve Halvard against Red Corwin's bandits.",
+   "names": {},
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Halt! The north gate is shut by Reeve Halvard's order. Corwin's bandits rob the road beyond. Complaints go to the Reeve himself."
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Still shut. Off with you, now."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "Gate's open! Corwin won't be robbing anyone now. Go on through."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Hobb guards the lift to the lower tunnels of a mining town; Foreman Dagna closed it over a Troll in the deep seam.",
+   "names": {
+    "Hobb": "person",
+    "Dagna": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Hobb",
+     "text": "Nobody goes below! A Troll's loose in the deep seam. Foreman Dagna's orders, and she's down at the lamp house."
+    },
+    "again": {
+     "speaker": "Hobb",
+     "text": "Below's shut. Lamp house is behind you."
+    },
+    "later": {
+     "speaker": "Hobb",
+     "text": "So the Troll's finished? Then the lift's yours. Mind your head down there."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Tam watches the cut walkway of a stilt hamlet in the swamp; Mother Brea cut it because the witch Slake sends the drowned dead up the ladders.",
+   "names": {
+    "Tam": "person",
+    "Mother Brea": "person",
+    "Slake": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Tam",
+     "text": "Hold there! The walkway's cut. The witch Slake sends the drowned dead up our ladders. Mother Brea cut it -- her hut's the tall one."
+    },
+    "again": {
+     "speaker": "Tam",
+     "text": "Mind the planks. Some are rotten."
+    },
+    "later": {
+     "speaker": "Tam",
+     "text": "Slake's done for? Then I'll lay the planks back myself! Off you go, and watch for leeches."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Osric, a sentry of a castle garrison, keeps the river gate barred by Captain Rowan while the deserter Brannoch holds the toll bridge.",
+   "names": {
+    "Osric": "person",
+    "Rowan": "person",
+    "Brannoch": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Osric",
+     "text": "By order of Captain Rowan, the river gate is barred, citizen. That deserter Brannoch holds the toll bridge beyond it. The Captain is at the barracks."
+    },
+    "again": {
+     "speaker": "Osric",
+     "text": "Do not make me repeat myself, citizen."
+    },
+    "later": {
+     "speaker": "Osric",
+     "text": "The traitor Brannoch is slain! The river gate stands open by the Captain's leave. Pass, and be welcome."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Dobbs keeps the boats chained at a fishing village on a lake; Mayor Liss forbids crossings while Kell's raiders sink skiffs.",
+   "names": {
+    "Dobbs": "person",
+    "Liss": "person",
+    "Kell": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dobbs",
+     "text": "Boats stay chained! Kell's raiders sank two skiffs last week. Mayor Liss decides who crosses -- she's up in the net loft."
+    },
+    "again": {
+     "speaker": "Dobbs",
+     "text": "Chained, I tell you. Tighter than my wife's purse."
+    },
+    "later": {
+     "speaker": "Dobbs",
+     "text": "Kell's feeding the eels now! Take any boat you like... except mine."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Quill, porter of a wizards' college, bars the lower stacks that Archivist Pell sealed after a student woke a Lich.",
+   "names": {
+    "Quill": "person",
+    "Pell": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Quill",
+     "text": "No admittance! Archivist Pell has sealed the lower stacks. Some fool of a student woke a Lich among the scrolls. Appeals go to the Archivist, in writing."
+    },
+    "again": {
+     "speaker": "Quill",
+     "text": "In writing. Hmmm."
+    },
+    "later": {
+     "speaker": "Quill",
+     "text": "Ahem. The lower stacks are open again, now the Lich is gone. Kindly keep your voice down."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Bors guards the pass gate of a frozen mountain fort; Warden Hask keeps it shut while Black Hilde's raiders camp in the pass.",
+   "names": {
+    "Bors": "person",
+    "Black Hilde": "person",
+    "Hilde": "person",
+    "Hask": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bors",
+     "text": "Brrr... Gate's frozen shut anyway. Black Hilde's raiders are camped up in the pass. Warden Hask won't open it till she's dead."
+    },
+    "again": {
+     "speaker": "Bors",
+     "text": "Shut. Go and warm yourself."
+    },
+    "later": {
+     "speaker": "Bors",
+     "text": "Well! The Warden's opened the gate, so Hilde must be dead. Up you go -- the pass is yours."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Orrin keeps the slag bridge of a forge town closed by Guildmaster Vask while an Ember Demon prowls past it.",
+   "names": {
+    "Orrin": "person",
+    "Vask": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Orrin",
+     "text": "Back! The slag bridge is closed. There's an Ember Demon loose on the far side. Take it up with Guildmaster Vask -- he never leaves the great anvil."
+    },
+    "again": {
+     "speaker": "Orrin",
+     "text": "Hot out here, isn't it? Move along."
+    },
+    "later": {
+     "speaker": "Orrin",
+     "text": "The Guildmaster says the bridge is open again. Cross quick -- the stones still smoke."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Nim, a hired hand at a crossroads inn, minds the gate Marta put across the west road against a highwayman called the Gentleman.",
+   "names": {
+    "Nim": "person",
+    "Marta": "person",
+    "the Gentleman": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Nim",
+     "text": "Psst... the west road's closed. A highwayman called the Gentleman has been robbing coaches. Marta at the inn put this gate up -- go and moan at her."
+    },
+    "again": {
+     "speaker": "Nim",
+     "text": "Closed. Have a drink instead."
+    },
+    "later": {
+     "speaker": "Nim",
+     "text": "Marta says leave the gate open, now that fancy Gentleman's in the ground. So I'm leaving it open!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Wilf guards the palisade of a farming town, shut by the Mayor while the Ogre chief Mugrot raids the fields.",
+   "names": {
+    "Wilf": "person",
+    "Mugrot": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Wilf",
+     "text": "Whoa! The palisade's shut. The Ogre chief Mugrot carried off three cows and a farmhand last night. Go and beg the Mayor, if you like."
+    },
+    "again": {
+     "speaker": "Wilf",
+     "text": "Ask the Mayor! I just stand here."
+    },
+    "later": {
+     "speaker": "Wilf",
+     "text": "Mugrot's dead! The Mayor's opened the palisade, and my cows are safe. Well... the ones that are left."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}

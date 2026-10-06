@@ -1,0 +1,404 @@
+{
+ "scenario": "rescue",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Pip, Brother Anselm's novice, went into the old barrow east of the ford after the Urchins who stole the chapel's candlesticks; Anselm begs the player to find him.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, wait. My novice, Pip, a boy of twelve, went into the old barrow east of the ford yesterday, after the Urchins that stole our altar candlesticks. He said they were the chapel's and he'd have them back. He hasn't come home.\n\nI'm no fighter, and the town has no one to spare. Find him. Bring him home to me."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Any word of Pip? The barrow's east of the ford, past the willows. Please hurry; it's cold under the ground."
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "You're not an Urchin! Oh, thank the Ford. They chased me down into the deep room and I hid behind the bones. I didn't get the candlesticks. Brother Anselm will be so cross. Will you take me home?"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "I'm right behind you. I'll stay close. Closer than that, even."
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You young fool, come here. ...Thank you. The candlesticks can stay with the Urchins for all I care. Take these from the chapel's stores, and the ankh from our altar. It has kept better folk than me alive."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Brother Anselm's novice Pip went into the old barrow east of the ford after the Urchins who stole the chapel's candlesticks, and has not come back. Anselm begs me to find him and bring him home to the Chapel of the Ford."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "RedPotion",
+     "AnkhTradable"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Wenna's son Robin, ten, chased a strayed lamb into the Ashwood and is treed by wolves; Wenna begs.",
+   "names": {
+    "Robin": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wenna",
+     "text": "Robin's not come home. My boy. He went after a lamb that strayed into the Ashwood this morning, and the shepherds say the wolves are down from the deep wood. Please. He's ten. He'll have climbed something; he always climbs. Find him."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Have you found him? Into the Ashwood, past Ulric's folds. Listen for him; he never stops talking."
+    },
+    "found": {
+     "speaker": "Robin",
+     "text": "Up here! Are they gone? I've been up this tree since the sun was over there. The lamb ran off. Is my mum angry? Can I come down now?"
+    },
+    "following": {
+     "speaker": "Robin",
+     "text": "Are there any more wolves? You go first. I'll hold on to your belt. Not really. Nearly."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "Robin! Where have you been, you... come here. Oh, come here. Thank you, traveller. It's only what was in the jar, and potions for the road; I'd give you the mill if I could."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Robin, the ten-year-old son of Wenna the miller's widow, went into the Ashwood after a strayed lamb and has not come home. The wolves are down from the deep wood. Wenna begs me to find him."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Edwy the ferryman, taken by Corwin's bandits to row their loot across the Bracken at night, is tied up in the watchtower; his wife Bess begs.",
+   "names": {
+    "Edwy": "person",
+    "Bess": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bess",
+     "text": "They took my Edwy. Corwin's men, on the north road, three days ago; they wanted a ferryman to take their loot across the Bracken by night. He's in that tower on Crow Hill. The reeve says he can't spare a man. I'm asking you. Bring him home."
+    },
+    "reminder": {
+     "speaker": "Bess",
+     "text": "Is he...? The tower's on Crow Hill, north of town. Please."
+    },
+    "found": {
+     "speaker": "Edwy",
+     "text": "Who's that? Not one of them. Bess sent you, didn't she. She would. Get these ropes off me; I've rowed my last for Red Corwin."
+    },
+    "following": {
+     "speaker": "Edwy",
+     "text": "My legs are stiff as oars. Go on, I'm with you. Don't stop for me."
+    },
+    "completion": {
+     "speaker": "Bess",
+     "text": "Edwy! Oh, you're thin; what did they feed you? ...Here, traveller, take it, take it all. It's what we'd put by for the new boat. We'll build it next year."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Red Corwin's bandits took Edwy the ferryman off the north road to row their loot across the Bracken at night. His wife Bess begs me to bring him home from the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Mabry's apprentice Linnet went down into the flooded crypt under the Chapel of the Ford for grave-moss and is trapped among spiders; Mabry begs.",
+   "names": {
+    "Linnet": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Mabry",
+     "text": "My apprentice, Linnet. I sent her down into the crypt under the Chapel of the Ford for grave-moss, it only grows there, and she hasn't come up. Brother Anselm says the river's in the crypt again, and there are spiders down there the size of my hand. Bigger. I sent her. Please go and look."
+    },
+    "reminder": {
+     "speaker": "Mabry",
+     "text": "The crypt stair is behind the chapel altar. Anselm will let you down. Please hurry."
+    },
+    "found": {
+     "speaker": "Linnet",
+     "text": "Is that a light? Oh, please, I'm here! On the tomb; the water's all round it. The spiders are in the walls. I got the moss, though. Mabry will want the moss."
+    },
+    "following": {
+     "speaker": "Linnet",
+     "text": "Mind the third step, it's gone. And the webs. I'm right behind you. I won't drop the moss."
+    },
+    "completion": {
+     "speaker": "Mabry",
+     "text": "Linnet! You're soaked through... and you got the moss, you mad girl. Thank you. Take these, and the book; she's copied every receipt in it and doesn't need it now. Do you, love?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Mabry's apprentice Linnet went down into the crypt under the Chapel of the Ford for grave-moss and has not come up. The river is in the crypt again, and spiders with it. Mabry begs me to find her."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "CurePoisonPotion",
+     "SpellBook"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Ossian's daughter Merry went into the Reedmere downstream looking for the lantern the inn is named for, and is lost among the marsh lights; Ossian begs.",
+   "names": {
+    "Merry": "person",
+    "Reedmere": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ossian",
+     "text": "My girl, Merry. She's got it into her head she'll find the lantern the inn's named for, the one the river took off the ford post, out in the Reedmere downstream. She went at dusk. There are lights out there at night that aren't lanterns. Please. Find her before they do."
+    },
+    "reminder": {
+     "speaker": "Ossian",
+     "text": "The Reedmere's down the river, south of the ford. Keep to the hummocks; the mud will have your boots."
+    },
+    "found": {
+     "speaker": "Merry",
+     "text": "I followed the lights. I thought one was the lantern. It wasn't. It laughed. Can we go home? I'm cold, and I've lost a shoe."
+    },
+    "following": {
+     "speaker": "Merry",
+     "text": "I'll step where you step. Don't look at the lights. Da says don't look at the lights."
+    },
+    "completion": {
+     "speaker": "Ossian",
+     "text": "Merry! Sit by the fire, you're blue. ...Traveller, your room's free as long as you're in Brackenford, and take this. It's the inn's takings for the week. Not much, with the road shut."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Ossian's daughter Merry went out into the Reedmere, downstream of the ford, looking for the lantern the Drowned Lantern is named for, and has not come back. There are lights in the marsh at night. Ossian begs me to find her."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Brother Anselm himself went to the old barrow to ask the Urchins for the candlesticks and was thrown in a pit; Pip begs.",
+   "names": {},
+   "parts": {
+    "plea": {
+     "speaker": "Pip",
+     "text": "Please, you have to help. Brother Anselm went down to the old barrow to talk to the Urchins, to ask for the candlesticks back nicely, he said. He took bread for them. That was this morning. He's old, and his knees are bad, and he hasn't come back."
+    },
+    "reminder": {
+     "speaker": "Pip",
+     "text": "The barrow's east of the ford. Please hurry. I've lit every candle we have left."
+    },
+    "found": {
+     "speaker": "Anselm",
+     "text": "Ah. I'd hoped my next visitor would be friendlier. No, I'm unhurt; they took the bread and my sandals and put me in this pit to think about it. Pip sent you? Bless him. Let's go, before they finish thinking."
+    },
+    "following": {
+     "speaker": "Anselm",
+     "text": "Slowly, if you'll forgive an old man. My knees were not made for barrows."
+    },
+    "completion": {
+     "speaker": "Pip",
+     "text": "Brother! You've no shoes! ...Thank you. Brother Anselm says I'm to give you the ankh from the altar, and the chapel's coin box. There's not much in it. I'd give you more if we had it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Brother Anselm went down to the old barrow east of the ford to ask the Urchins for the chapel's candlesticks, and has not come back. His novice Pip begs me to find him."
+    }
+   },
+   "reward": {
+    "gold": 30,
+    "items": [
+     "AnkhTradable",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Dunstan's apprentice Corin went to dig ore in the old drift mine under Crow Hill, walled up for a reason, and has not come out; Dunstan begs.",
+   "names": {
+    "Corin": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dunstan",
+     "text": "My apprentice, Corin. With no iron coming down the north road, the fool went to the old drift mine under Crow Hill to dig ore himself. Two days gone. The miners walled that drift up in my father's time, for a reason nobody would tell me. Bring the lad back and I'll owe you."
+    },
+    "reminder": {
+     "speaker": "Dunstan",
+     "text": "The drift's in the face of Crow Hill, below the tower. Mind the bandits. Mind the dark more."
+    },
+    "found": {
+     "speaker": "Corin",
+     "text": "Master Dunstan sent you? He'll kill me. Better him than what's down the far end. Something walks there and drags its feet. I've a sack of ore. Can I bring it?"
+    },
+    "following": {
+     "speaker": "Corin",
+     "text": "I've got the sack. I'm keeping up. Don't go back that way, whatever you hear."
+    },
+    "completion": {
+     "speaker": "Dunstan",
+     "text": "Corin, you thick-headed... is that ore? ...Traveller, thank you. Take this, and these draughts from Mabry's. I bought them for him, and he doesn't deserve them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Dunstan the smith's apprentice Corin went to dig ore in the old drift mine under Crow Hill, which the miners walled up long ago, and has not come back. Dunstan begs me to bring him home."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Reeve Halvard's son Ewan rode out alone after Corwin's bandits, was thrown from his horse and lies hurt in a ditch on the north road; Halvard begs as a father.",
+   "names": {
+    "Ewan": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Halvard",
+     "text": "This isn't the reeve asking. This is a father. My son, Ewan, rode out of the north gate last night before I could stop him, to prove to the town he's worth something. His horse came home this morning without him. Corwin's men ride that road. Find him. Alive, if he is."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Anything? The north road, toward Crow Hill. Garrick will let you through the gate. Go."
+    },
+    "found": {
+     "speaker": "Ewan",
+     "text": "Don't... oh. You're not one of them. My leg's done; the horse threw me into this ditch and I've lain here all night listening to them ride past. Did my father send you? He'll never let me forget this."
+    },
+    "following": {
+     "speaker": "Ewan",
+     "text": "I can walk, if it's slow. Don't tell him I cried."
+    },
+    "completion": {
+     "speaker": "Halvard",
+     "text": "Ewan. ...Sit. Someone fetch Brother Anselm to that leg. Traveller, what I have: the Moot Hall's purse, and an ankh Anselm gave me when the boy was born. Better it goes with you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Reeve Halvard's son Ewan rode out alone after Corwin's bandits on the north road, and his horse came home without him. Halvard begs me to find him."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Old Maud, the half-blind bell-ringer of the chapel, went mushrooming in the Ashwood and is lost among the wolves; her grandson Davy begs.",
+   "names": {
+    "Maud": "person",
+    "Davy": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Davy",
+     "text": "It's my gran, Maud. She went mushrooming in the Ashwood, like every autumn, and she can't see past her own hand, and she's not back, and the wolves... I can't go; she made me promise I'd never go in there. You could. Please."
+    },
+    "reminder": {
+     "speaker": "Davy",
+     "text": "She'll be where the mushrooms are, under the big beeches. She sings when she's lost. Listen for singing."
+    },
+    "found": {
+     "speaker": "Maud",
+     "text": "Who's that? You've a kind step, whoever you are. Davy sent you, did he, the worrier. I'm not lost; I know exactly which tree I'm under. I just don't know where the tree is. Lend me your arm."
+    },
+    "following": {
+     "speaker": "Maud",
+     "text": "Not so fast; I've a basket. Mind the mushrooms. Mind the wolves too, I suppose."
+    },
+    "completion": {
+     "speaker": "Davy",
+     "text": "Gran! ...Thank you. She says to give you her red draughts; she brews them herself. They taste of feet, but they work. And the purse. And a kiss, she says, but I'll not."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Maud, the half-blind old woman who rings the chapel bell, went mushrooming in the Ashwood and has not come home. Her grandson Davy begs me to find her before the wolves do."
+    }
+   },
+   "reward": {
+    "gold": 25,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Gytha, Garrick's wife, crossed to the haunted old toll-house on the far bank of the Bracken for firewood and her punt drifted home without her; Garrick, who cannot leave the gate, begs.",
+   "names": {
+    "Gytha": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Garrick",
+     "text": "I can't leave the gate, the reeve's orders, and it's killing me. My wife, Gytha, poled the punt across to the old toll-house on the far bank to fetch our winter wood. That was noon. The punt's come back down the river empty.\n\nNobody goes in that toll-house after dark. Something lives in it that used to be the toll-keeper."
+    },
+    "reminder": {
+     "speaker": "Garrick",
+     "text": "The far bank, downstream: the ruin with no roof. There's a skiff at the ferry stage. Please."
+    },
+    "found": {
+     "speaker": "Gytha",
+     "text": "Garrick sent you? Thank the Ford. The punt slipped its rope and I couldn't swim for it, and when the sun went down the old keeper came out of the walls asking for his penny. I've been hiding in the chimney. Get me out of here."
+    },
+    "following": {
+     "speaker": "Gytha",
+     "text": "Row; I'll bail. Don't look back at the windows. He's still asking for his penny."
+    },
+    "completion": {
+     "speaker": "Garrick",
+     "text": "Gytha! ...You're shaking. Here, my cloak. Traveller, you've a friend at the north gate for life. Take this; it's a month's pay, and the potions the reeve gives the watch."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Gytha, the wife of Garrick the gate guard, crossed the Bracken to the old toll-house on the far bank for firewood, and her punt came back without her. Garrick cannot leave the gate and begs me to bring her home."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  }
+ ]
+}

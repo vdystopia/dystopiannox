@@ -1,0 +1,258 @@
+{
+ "scenario": "rumour",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Three townsfolk on Ulric's wolves, Wenna's seal in the old barrow, and Corwin in the watchtower.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Wolves have come down out of the Ashwood. Old Ulric the shepherd's lost half his flock to them, and he says there's a grey one leading them, bigger than a pony."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "The Urchins in the old barrow robbed Wenna's mill. Took her husband's silver seal, the mill's mark, poor soul. She's not been the same since."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Red Corwin's bandits have the old watchtower on Crow Hill. That's why the Reeve shut the north gate. Nobody gets up the north road with their purse, these days."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "A boatman, an inn's neighbour and a carter: Aldo's leeches, Ossian's lantern, Corwin watching the road.",
+   "names": {
+    "Aldo": "person",
+    "Old Mother": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Don't paddle at the ford. Aldo the ferryman says there's leeches come up the Bracken long as your arm, and one he calls Old Mother that took his dog."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Seen the empty hook over the Drowned Lantern's door? Corwin's lot took Ossian's lantern, the one the inn's named for. He'd give a month's takings to have it back."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Corwin's men watch the north road from the tower on Crow Hill. They can see a cart coming an hour off, and they're waiting for it when it gets there."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Hesk's bears in the Ashwood, Brother Anselm's lost book, Corwin stripping a cousin on the north road.",
+   "names": {
+    "Hesk": "person",
+    "Book of the Ford": "thing"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Hesk's kilns in the Ashwood have gone cold. A black bear and her cubs knocked them flat. Ask Dunstan; he's near out of charcoal."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Brother Anselm's beside himself. The Chapel's old book, the Book of the Ford, went into the Ashwood with a carter, and only the carter's mule came out."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "My cousin walked the north road last month. Corwin's bandits took his boots and his coat and sent him home in his shirt. The Reeve won't open the gate till Corwin's dead."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Wenna's rats, Garrick's father's horn in the watchtower, Corwin knowing the tower stone by stone.",
+   "names": {
+    "Alderman": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Wenna's mill loft is crawling with rats. The mill boys swear the big one, the Alderman, sat on a sack and watched them run."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Garrick at the north gate keeps looking up at Crow Hill. His father's horn's up in that tower, they say, and Corwin's men blow it at night to mock him."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Red Corwin stood watch in that tower himself once, before he went bad. Knows it stone by stone. That's why nobody's got him out of it."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "The Chapel's bats, Ulric's crook on the high pasture, Garrick and the shut north gate.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "The Chapel bell hasn't rung in a fortnight. Bats, Brother Anselm says, out of the old barrow. Hundreds of them in the belfry."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Old Ulric left his crook on the high pasture when the wolves ran him off. Silver on the end of it, his wife's money. He's too proud to ask anybody to fetch it."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "The Reeve's shut the north gate, and Garrick won't open it for love nor money. Not till Red Corwin's out of that watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Hild's wasps, Mabry's stolen ring, the empty inn since Corwin closed the road.",
+   "names": {
+    "Hild": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Hild's bees are all dead. Wasps out of the Ashwood, big as your thumb, and a nest in a hollow oak at the wood's edge you can hear from the road."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Mabry had her mother's ring stolen. Urchins, through the coal hole, and off to the old barrow with it. She'd pay well to have it back, and Mabry doesn't pay well for anything."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "The Drowned Lantern's been empty since the north gate shut. No carters, no traders. Corwin's bandits on Crow Hill have the whole town by the throat."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Edric's spiders, Nell's lost ferry-badge, Corwin in his stolen chair.",
+   "names": {
+    "Edric": "person",
+    "Weaver": "person",
+    "Nell": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Edric's men found spiders in the new cutting in the Ashwood. Two came out wrapped up like parcels. They call the big one the Weaver."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Nell's going to lose her ferry. Corwin's lot took her father's badge off her on the north road, and without it the Reeve says the ferry's not hers."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "They say Red Corwin sits at the top of the old watchtower on Crow Hill in a chair he took off a merchant's cart, and counts what his men bring him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Dunstan's black wolves on the charcoal track, Lissy's lost brooch, Corwin lighting the old beacon.",
+   "names": {
+    "Lissy": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "No charcoal's come in a fortnight. Black wolves on the track from the Ashwood, Dunstan says, with a one-eyed one leading them. Killed two cart horses."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Little Lissy lost her dead mother's brooch running from the wolves up by the Ashwood. Cried all night, her aunt says."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Corwin's men lit the old beacon on Crow Hill last night. Mocking us, my wife says. Telling the Reeve whose tower it is now."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Ossian's cellar spiders, the Reeve's missing chain, how many men Corwin has.",
+   "names": {},
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Don't ask Ossian for anything from the cellar. His potboy came up white as milk, babbling about spiders the size of dogs."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Have you noticed the Reeve's not wearing his chain? Somebody had it out of the Moot Hall. Corwin, they say, and Corwin's laughing about it up on Crow Hill."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Corwin's got thirty men in that watchtower on Crow Hill, or ten, or a hundred, depending who's drinking. Enough that the Reeve shut the north gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Tobias's bear Old Bramble, Cobb's eel-spear in the old barrow, Garrick waiting for Corwin's head.",
+   "names": {
+    "Tobias": "person",
+    "Old Bramble": "person",
+    "Cobb": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Tobias the swineherd swears it's Old Bramble taking his pigs, the bear out of the old stories. Something's flattening his fences, that's sure."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Cobb's not fishing. The Urchins took his grandfather's eel-spear off his boat and dragged it into the old barrow, and he won't fish without it."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "Garrick at the north gate says he'll not open it till he sees Red Corwin's head on a pole. The Reeve says the same, only more politely."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ ]
+}

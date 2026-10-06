@@ -1,0 +1,32 @@
+{
+  "packet": "rumour/i2",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The toad joke ('We still don't know which toad') is a polished punchline; each line is a neat hook (vault trouble, renegade's tower) aimed at a quest."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Flavour line, missing girl, monster with a named payer: a deliberate one-colour/one-quest/one-bounty set; 'longer than my punt' is crafted local colour."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same three-beat structure; the white-haired scout is a stock literary hook that Nox's townsfolk don't tend to deliver."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Missing final period, 'strange and desperate times', a long run-on about the missing [Class] - unpolished and earnest like Nox's first village."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Generic regional news (trade routes, brazen Ogres, strange noises) addressed to 'Young [Class]' - plain, unspecific Nox chatter."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Disconnected one-liners incl. a bare 'Beware of the rising undead.' and an item tip about fire boots - the throwaway style of Nox's townsfolk."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Mind your head... Ha!', a named payer for a numbered shaft, a missing cousin: the same joke/bounty/missing-person triad."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Folksy 'neighborhood', 'Well good luck to ya', lowercase 'ogres' and the dumb-in-hindsight joke about building next to the ogre village - Nox's broad humour."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Directions to a gossip spot and a statue, a stray remark about city breakdowns and a Chief Engineer - functional, slightly odd Nox city NPC lines."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Last week my pig, this week my husband's boots. I'm not sure which I miss more.' and 'If he's sober, that is' are crafted punchlines; every line points at a quest."}
+  ],
+  "tells": [
+    "New rumour sets follow a fixed recipe: one local-colour joke, one missing-person or disaster hook, one 'X is paying gold to clear Y from Z'. Westwood's sets are looser - generic warnings, travel directions, item tips, or three variations on one complaint.",
+    "New lines end on a crafted punchline or ominous literary hook (toad, white hair, 'If he's sober'); Westwood's humour is blunter and less timed.",
+    "Westwood's townsfolk speak in general terms (trade routes, the undead, strange noises); new ones name a precise spot (ninth shaft, south pool, third plank) and a payer.",
+    "Westwood texts show small slips (missing full stop, inconsistent capitalisation of monster names, run-on sentences) and stock phrases ('strange and desperate times', 'Hail traveler')."
+  ]
+}
