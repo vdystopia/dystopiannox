@@ -273,3 +273,6 @@ barracks and crypt on the old index is under "Shared changes" above).
 | r16 / s2 | (r16's kit) | 0.963 | 0.998 (rows of long tables by the walls, benches twice Westwood's) | 4 / 5 |
 | r17 / s2b | one long table composed, not two | **0.877** | **0.968** | 6 / 10 (the checker's sparse at 10-12%) |
 | r18 / s2c | a third round table from 150 tiles, spittoons: worse on seed 1; reverted to r17 | 0.97 | 0.972 | 6 / 8 |
+
+Hall r5: columns a piece per 20 tiles, 8 at most (the judge: "two rows of six"): AUC 0.828, but every room then fell
+under the checker's sparse median (0.027); reverted, r4 stays the hall's best.

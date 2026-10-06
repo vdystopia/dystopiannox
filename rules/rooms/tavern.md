@@ -77,8 +77,9 @@ the W corner, long tables round a woven carpet), Wiz05A (25, a tap room). Lab po
   the wall just past its end. Never a hearth or shelf behind the counter.
 - **Sets:** one or two kinds, each one table type and one seat (Con06a: four RoundTable2 with cushioned stools); the same
   stools at the bar and the round tables (the seat that dominates: 0.2-0.4 of a Westwood tavern's pieces), 2-3 to a
-  round table, pulled out from it; long tables with benches and tables of food along the walls and in the corners; a
-  table per 28 tiles.
+  round table, pulled out from it, the round tables together in one part of the floor; one long table with benches
+  and a table of food along the walls or in a corner (Westwood's taverns carry half the benches two long tables gave);
+  a table per 28 tiles.
 - **Floor:** a bearskin before the hearth, or a woven carpet under the seating; never rugs under the tables.
 - **Stores:** 5-8 kegs and casks, by the bar; never a wall of them.
 - No plants, no bookcases, shelves of tankards rarely (Westwood's taverns hold none).
