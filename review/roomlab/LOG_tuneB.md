@@ -169,3 +169,20 @@ statues, shields), Con10c's ring of four columns round its obelisks (209). Pool:
 
 Still giving it away: two statue pairs meet in the middle of the aisle; plain shell (Westwood's halls are rings,
 inlaid floors and fire grates).
+
+## Shrine
+
+Westwood (curated, 5): Con07D (42 tiles: four obelisks in a diamond round a key on a ring of carpet, candelabras in
+the corners, a chest), Wiz02B (25: four obelisks, a spell book, bones), Wiz11A's three Land of the Dead niches (13-36:
+two or four mana obelisks round a spell book). None holds an altar.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.999 | 0.933 | 7 (dark shrines in town houses empty: their LOTD pieces excluded by the style) | - |
+| r1 | obelisks for statues, no plants, a chest; the dark shrine lifts LOTD and Lich in any building | 0.997 | 0.956 | 4 | - |
+| r2-r6 | `relic_ring`: the holy thing (the altar, else a basin of fire, else bare floor) in the open middle ringed by four obelisks at the screen's axes with a carpet under the ring; failed every time: the profile capped statues at 2 (a piece per 16 tiles), and the way-in rule keeps columns and statues off the doors' lines (the ring tries every open spot) | 0.989-1.0 | 0.92-0.98 | 3 | - |
+| r7 | statues a piece per 6 tiles (Westwood: four obelisks in 25-42 tiles): the ring stands | 0.989 | 0.923 | 3 | - |
+| r8 | no extra corner obelisks | 0.965 | 0.922 | 4 | - |
+| r9 | the dark shrine is a shrine by its obelisks (Wiz11A's niches hold no god's statue): no focal or altar required | 0.967 | 0.922 | 1 (bunched) | queued |
+
+Profile focal "any" (the altar in the ring where the room has the floor, else on the wall across from the door).

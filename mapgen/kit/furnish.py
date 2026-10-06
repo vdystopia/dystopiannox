@@ -2784,6 +2784,41 @@ class Furnisher:
                 if o1: self._remove(o1)
         return 0
 
+    def relic_ring(self, fam="altar", ring="statue", d=1.9, carpet=True):
+        """The holy thing in the middle of the room ringed by four obelisks at the room's screen axes (top, bottom, left,
+        right), a carpet under the ring on a built floor: Westwood's shrines (Con07D's key, Wiz02B's and Wiz11A's spell
+        books among four obelisks). All or nothing. Returns the anchor's placement dict or None."""
+        types = self.types_of(fam) if fam != "none" else {None: 1}    # "none": the ring round bare floor (a relic
+        rtypes = self.types_of(ring)                                  # the player finds there, as Westwood's key)
+        if not types or not rtypes: return None
+        t, rt = _pick(self.rng, types), _pick(self.rng, rtypes)
+        hu, hv = self.half(t) if t else (0.0, 0.0)
+        rh = max(self.half(rt))
+        if t: d = max(d, max(hu, hv) + rh + 1.1)        # the obelisks clear of the holy thing (a fire: OBJ.NEXT_GAP)
+        reach = d + rh + 0.2
+        for spot in (self.middle_spots(reach, reach) or self.middle_spots(reach - 0.6, reach - 0.6))[:200]:
+            o = self.try_put(t, *spot) if t else {"type": None}
+            if not o: continue
+            got = []
+            self._pairing = True
+            try:
+                for du, dv in ((d, d), (-d, -d), (d, -d), (-d, d)):
+                    x = self.try_put(rt, spot[0] + du, spot[1] + dv)
+                    if not x: break
+                    got.append(x)
+            finally:
+                self._pairing = False
+            if len(got) < 4:
+                for x in got + ([o] if t else []): self._remove(x)
+                continue
+            if carpet:
+                m = d + rh + 0.6
+                self.lay_carpet((spot[0] - m, spot[0] + m, spot[1] - m, spot[1] + m), margin=0.0)
+            self.anchors.append(spot)
+            self.g.zones.append((spot[0] - reach, spot[0] + reach, spot[1] - reach, spot[1] + reach))
+            return dict(obj=o, uv=spot)
+        return None
+
     def aisle_lights(self, n=2):
         """Pairs of braziers (else the room's floor lights) lining the aisle, one each side of it just off the runner, at
         depths between the pairs of columns (Hecubah's six flame basins line the runner to his throne in pairs, Con06b;
@@ -3259,6 +3294,14 @@ class Furnisher:
                 continue
             if st["slot"] == "flank":                  # a pair against the wall either side of an anchor (the throne)
                 if placed.get(st["of"]): done[fam] += self.flank(fam, placed[st["of"]], st.get("gap", 0.8))
+                continue
+            if st["slot"] == "relic_ring":             # the holy thing ringed by obelisks (a shrine's)
+                for f_ in (fam,) + tuple(st.get("else", ())):    # else a smaller holy thing, or bare floor
+                    q = self.relic_ring(f_, st.get("ring", "statue"), st.get("d", 1.9))
+                    if q:
+                        done[f_] += f_ != "none"; done[st.get("ring", "statue")] += 4
+                        if f_ == fam: placed[fam] = q
+                        break
                 continue
             if st["slot"] == "aisle_lights":           # braziers in pairs down the aisle (a throne room's)
                 self.aisle_lights(st.get("n", 2))

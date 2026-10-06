@@ -985,21 +985,25 @@ ROOMS = {
                            "basin of fire in each front corner, a runner to the altar with a kneeling bench, a tapestry "
                            "or two of one colour, plants",
                    core={"altar": (1, 1), "statue": (2, 4)},
-                   optional={"bench": (0.8, 2), "basin": (0.9, 2), "wall_decor": (1.0, 3), "plant": (0.5, 2)},
-                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
-                          "basin": r"^DunMirFlameBasinLit$", "plant": PLANTS},
-                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1}, "basin": {"DunMirFlameBasinLit": 1}},
+                   # room lab (tuneB): Westwood's shrines (Con07D, Wiz02B, Wiz11A's three, curated) set four obelisks
+                   # round the holy thing, candelabras, a chest; no plants, no statues of the town's kind
+                   optional={"bench": (0.5, 1), "basin": (1.0, 2), "wall_decor": (1.0, 2), "storage": (0.4, 1)},
+                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Obelisk$|^Statue2[a-h]$",
+                          "bench": r"^Bench\d$|^LightBench\d$", "basin": r"^DunMirFlameBasinLit$",
+                          "storage": r"^Chest\d$"},
+                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1}, "basin": {"DunMirFlameBasinLit": 1},
+                           "statue": {"Obelisk": 1}},
+                   statues_along=True,
                    decor_themes=("blue", "red", "white", "green"),
                    lift=("DunMir|",),
-                   top_up=("plant",),
-                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                   top_up=(),
+                   compose=[dict(fam="altar", slot="relic_ring", ring="statue", d=1.9, **{"else": ("basin", "none")}),
+                            # a room too small for the ring: the altar on the wall across from the door, obelisks by it
+                            dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                             dict(fam="statue", slot="flank", of="altar", gap=0.8),
-                            dict(fam="light", slot="flank_lights", of="altar", gap=0.9),
-                            dict(fam="bench", slot="pews", toward="altar", runner=True),
                             dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=70),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                   fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "dark_shrine": dict(base="study", grand=True,
                         purpose="the Land of the Dead's shrine: the lich god's statue on the wall across from the door, "
                                 "mana obelisks either side, incense basins burning, tapestries and sconces, bones",
@@ -1012,6 +1016,7 @@ ROOMS = {
                                 "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                 "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
+                        lift=("LOTD|", "Lich|"),     # its own pieces in any building (a town house had shown none)
                         top_up=(),
                         compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                                  dict(fam="statue", slot="flank", of="altar", gap=0.8),

@@ -533,7 +533,10 @@ TYPES.update({
         family="ceremonial", feel="open", kinds=("shrine", "dark_shrine"), westwood=(),
         evidence=(("Con10c", (30, 140)), ("Con10d", (132, 51)), ("Con07H", (118, 85)), ("Wiz11A", (50, 215)),
                   ("Wiz02B", (120, 120)), ("Con07D", (118, 78))),
-        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="door"),
+        # Westwood's shrines (curated: Con07D, Wiz02B, Wiz11A's three) set the holy thing in the middle ringed by
+        # obelisks (room lab, tuneB): the altar there where the room has the floor for it, else on the wall across from
+        # the door with the ring of obelisks in the middle
+        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="any"),
         must={"altar": 1, "statue": 2}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
                                                "counter_shop", "shop_rack", "straw", "shelves", "fireplace"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
@@ -542,10 +545,14 @@ TYPES.update({
                    other_back="a tapestry or two of one colour", front="the door; a basin of fire in each front corner",
                    middle="a runner from the door to the altar; a kneeling bench or two; open"),
         cover=(0.0, 0.05, 0.14), open=(0.65, 0.97), per_tile=(0.04, 0.4), types_min=4, free_most=(4, 30),
-        caps={"bench": (20, 3), "statue": (16, 6)}, walls_min=2, lined=None, tiles=(12, 120),
+        caps={"bench": (20, 3), "statue": (6, 6)}, walls_min=2, lined=None, tiles=(12, 120),     # four obelisks in 25-42 tiles
         signature={"altar": (8, 1), "^DunMirFlameBasin|^LOTDIncenseBasin": (2, 2), "statue": (0.5, 4)},
         needs=("altar",), kin=("chapel", "hall"),
-        variants={"dark_shrine": dict(must={"altar": 1, "statue": 2}, types_min=3)}),
+        # the Land of the Dead's shrines (Wiz11A's three, 13-36 tiles) hold obelisks round a spell book, no god's statue:
+        # a niche too small for the statue is still a shrine by its obelisks (room lab, tuneB)
+        variants={"dark_shrine": dict(must={"statue": 2}, types_min=3, focal=None, needs=(),
+                                      signature={"altar": (8, 1), "^LOTDManaObelisk": (3, 4),
+                                                 "^LOTDIncenseBasin": (2, 2)})}),
     "gallery": dict(
         family="ceremonial", feel="open", kinds=("gallery",), westwood=(),
         evidence=(("Con07E", (203, 112)),),
