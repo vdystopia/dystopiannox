@@ -53,7 +53,7 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
 | `recipes.py` | each type laid by the kit's own code: `camps.bandit_camp` + `posts.camp_posts`, `yards.plan/build`, `Village.garden`, `Waterworks.pond/dock`, the dressing's `Exterior._try_wall/_try_open` for catalogue themes |
 | `metrics.py` | the metric judge: features, findings, hard rules, classifier |
 | `labrender.py` | the pictures, drawn alike for Westwood and ours |
-| `blind.py`, `JUDGE.md` | the blind visual judge |
+| `blind.py`, `JUDGE.md`, `judging/` | the blind visual judge, its protocol and what it reads (a judging description per scene) |
 | `scorecard.py` | the scorecard and the iteration history (`review/out/scenelab/<scene>/iterations.json`) |
 | `LOG.md` | the per-scene iteration log |
 
@@ -61,11 +61,14 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
 shrine) is laid in a forest glade; every other in a hamlet's ground: a road through it, two or three houses of the kit's
 generator round it with their walks to the road, a pond scene's lake on one side and the hamlet on the other.
 
-**Fairness.** A generated scene is found on the lab map by the same signature search that finds Westwood's
-(`labref.find_scenes`), its pieces grown the same way, measured by the same `metrics.features`, drawn by the same
-`labrender.picture` (one window per type, the ground away from the scene dimmed). What still differs: Westwood's
-scenes stand in its towns, castles and caves, ours in forest clearings; Westwood's creatures are its monsters, ours the
-kit's posts (creature features are shown, not classified).
+**Fairness** (review/roomlab/FAIRNESS.md lists every known tell that is not design and how it is handled). A
+generated scene is found on the lab map by the same signature search that finds Westwood's (`labref.find_scenes`), its
+pieces grown the same way, measured by the same `metrics.features`, drawn by the same `labrender.picture` (one window
+per type, the ground away from the scene dimmed) from a creature-free copy of the map (no monsters, NPCs, players or
+the kit's posts in either picture; the metrics still count creatures on the real map). The blind sheets rotate through
+Westwood's scenes of the type (`review/out/scenelab/<scene>/westwood_shown.json`), and judges read
+`review/scenelab/judging/` (what real scenes are like, from Westwood's evidence), never the design briefs. What still
+differs: Westwood's scenes stand in its towns, castles and caves, ours in a hamlet's ground or a forest glade.
 
 **Westwood's evidence** is from the campaign maps only (Con/War/Wiz). Some types are thin or absent there (a brazier
 guard post, target barrels, woodpiles, smithy yards: 0-3 scenes); their numbers are read loosely and the brief leans on

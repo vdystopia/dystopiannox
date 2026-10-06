@@ -12,11 +12,13 @@ Files (review/out/scenelab/<scene>/<iter>/):
     blind_key.json                the key: NOT in blind/; do not open it before judging
     blind/result.json             written by `score`: the key, the judge's accuracy and scores by source
 
-The pictures: labrender.py draws Westwood's scenes and ours the same way. The generated five are spread over the
-batch's sizes and sites; the Westwood five are drawn at random (seeded) from the type's campaign scenes, all of them
-when it has five or fewer.
+The pictures: labrender.py draws Westwood's scenes and ours the same way (no creatures in either). The generated five
+are spread over the batch's sizes and sites; the Westwood five are the type's campaign scenes shown least on its
+earlier sheets, in a seeded order among equals (all of them when it has five or fewer): the sheets rotate through
+Westwood's scenes, and review/out/scenelab/<scene>/westwood_shown.json records which each sheet showed
+(review/roomlab/FAIRNESS.md).
 """
-import json, os, random, shutil, sys
+import collections, json, os, random, shutil, sys
 import labenv as E
 from PIL import Image, ImageDraw, ImageFont
 
@@ -26,6 +28,25 @@ LETTERS = "ABCDEFGHIJKL"
 def font(size):
     try: return ImageFont.truetype("arialbd.ttf", size)
     except OSError: return ImageFont.load_default()
+
+
+def shown_path(scene):
+    return os.path.join(E.OUT, scene, "westwood_shown.json")
+
+
+def shown(scene):
+    """{iteration: [Westwood scene ids its sheet showed]} for the scene type."""
+    try:
+        with open(shown_path(scene), encoding="utf-8") as f: return json.load(f)
+    except (OSError, ValueError):
+        return {}
+
+
+def record_shown(scene, it, ids):
+    led = shown(scene)
+    led[it] = ids
+    os.makedirs(os.path.dirname(shown_path(scene)), exist_ok=True)
+    with open(shown_path(scene), "w", encoding="utf-8") as f: json.dump(led, f, indent=1)
 
 
 def make(scene, it, n_each=5):
@@ -46,7 +67,10 @@ def make(scene, it, n_each=5):
     gal = labref.gallery(scene)
     ww = list(gal["scenes"])
     rng.shuffle(ww)
+    uses = collections.Counter(i for k, ids in shown(scene).items() if k != it for i in ids)
+    ww.sort(key=lambda s: uses[s["id"]])          # stable: the seeded order among scenes shown as often
     pick_w = ww[:n_each]
+    record_shown(scene, it, [s["id"] for s in pick_w])
     items = [dict(source="generated", file=os.path.join(d, "renders", f"{v['index']:02d}.png"), variant=v["index"],
                   size=v["size"], site=v["site"]) for v in pick_g]
     items += [dict(source="westwood", file=os.path.join(labref.gallery_dir(scene), s["file"]), map=s["map"], id=s["id"])
@@ -73,7 +97,7 @@ def make(scene, it, n_each=5):
         dr.text((x + 10, y + 4), L, fill=(255, 215, 130), font=font(26))
     sheet.save(os.path.join(bd, "sheet.png"))
     with open(os.path.join(d, "blind_key.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(scene=scene, iter=it, key=key), f, indent=1)
+        json.dump(dict(scene=scene, iter=it, key=key, westwood_shown=[s["id"] for s in pick_w]), f, indent=1)
     template = dict(scene=scene, iter=it, judge="<your name or model>", pictures={
         L: dict(guess="westwood or generated", confidence=0.5, score=5, critique=["<concrete fault or strength>"])
         for L in LETTERS[:len(items)]}, overall="<what gives the generated scenes away, in one or two sentences>")
