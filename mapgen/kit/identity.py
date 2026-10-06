@@ -199,7 +199,8 @@ ROOMS = {
                             dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
                             dict(fam="fireplace", slot="groups", group="hearth", n=1, min_area=500, extra=True),
                             dict(fam="table", slot="groups", group="round", n=2),
-                            dict(fam="table", slot="groups", group="longtable", n=2),
+                            # one long table composed (Westwood's taverns carry half our benches: 0.21 to 10 tiles)
+                            dict(fam="table", slot="groups", group="longtable", n=1),
                             dict(fam="table", slot="groups", group="feast", n=1),
                             dict(fam="table", slot="groups", group="round", n=1, min_area=440),
                             dict(fam="carpet", slot="carpet", where="under", margin=1.2, chance=0.45),

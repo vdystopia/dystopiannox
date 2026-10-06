@@ -265,3 +265,11 @@ barracks and crypt on the old index is under "Shared changes" above).
 | throne room | r8 | `compose_alts` (shared, opt-in: a recipe's other compositions, one drawn per room): the colonnade with statues between (the Lich Lord's), and the runner lined with three pairs of braziers with statues in the corners (Hecubah's), beside the first | AUC 0.871 | 0.994 | 4 (statues 2/4 where the corners were taken) |
 | throne room | r9 | each alternative falls back to a statue pair or the corners | AUC 0.86 | 0.997 | 1 (bunched) |
 | great hall | r6 | `compose_alts`: or the boards in parallel on a great carpet with the hearth on its wall alone (r4's way) | AUC 0.885 | 0.885 | 4 (two rooms short of hangings: the trophies theme refused above the benches; one reading as a living room) |
+
+### Tavern on a second seed
+
+| round | change | AUC seed 1 | AUC seed 2 | hard-rule rooms (seed 1 / 2) |
+|---|---|---|---|---|
+| r16 / s2 | (r16's kit) | 0.963 | 0.998 (rows of long tables by the walls, benches twice Westwood's) | 4 / 5 |
+| r17 / s2b | one long table composed, not two | **0.877** | **0.968** | 6 / 10 (the checker's sparse at 10-12%) |
+| r18 / s2c | a third round table from 150 tiles, spittoons: worse on seed 1; reverted to r17 | 0.97 | 0.972 | 6 / 8 |

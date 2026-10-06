@@ -25,3 +25,4 @@ Second pass (the best round per type, after the judges' first verdicts):
 | great_hall | r5 (replaces r4) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\great_hall\r5\blind |
 | tavern | r16 (replaces r15 if not judged yet: round tables clustered) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r16\blind |
 | throne_room | r9 (replaces r6: three compositions, not one template) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\r9\blind |
+| tavern | r17 (replaces r16: one long table, better on both seeds) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r17\blind |
