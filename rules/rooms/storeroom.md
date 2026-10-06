@@ -92,3 +92,18 @@ The storekeeper by his shelves, else at a back wall clear of the stock; never in
 - A store heaped in one corner trips the checker's furniture offset: the fill goes where the stores are thinnest.
 - What still gives them away: rows along a wall align more than Westwood's (0.71 against 0.45), three walls used
   against two, and above all the shell (Westwood's stores are alcoves, cell blocks and caves).
+
+## What passed the blind test (2026-10-06, the independent judge of r16: 5/10, chance; generated 5.2, Westwood 5.8)
+
+The storeroom was the first type the independent judge could not tell from Westwood's. What made it work:
+- **touching clumps, not rows**: each heap grows by touching a piece already in it at a random bearing, within three
+  units of its wall, its pieces 0.25-0.65 apart (Westwood's nearest gaps 0.4-0.6);
+- **mixed kinds in one heap**: a lead kind, a second and an odd piece, a piece in two of the room's other kinds;
+  sacks in their three sizes; the odd kind twice a room at most;
+- **few kinds, two walls**: 3-5 types, the stores against the home walls, a third only to balance the room;
+- **nothing alone**: no single barrel mid-floor, a stack of crates standing free only near the heaps;
+- **no lights in the store** (Westwood's have none inside), the house's candelabras left out;
+- **fuller than the old target**: cover 0.17 (the curated median 0.16).
+The judge's remaining tells: single crates at even gaps along a front wall; crates in regular pairs and a 2x3 block of
+kegs mid-floor; great casks side by side along a wall; an ore store's racks crowding a door.
+

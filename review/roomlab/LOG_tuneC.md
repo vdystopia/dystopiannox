@@ -312,3 +312,27 @@ crypts).
 
 Sanity check of the shared desk fix on another agent's type: study (agent A) furnished with the current kit has a
 desk in every room and 4 hard-rule rooms, as in BASELINE.md.
+
+## Independent judges, second round, and the answers
+
+| Sheet | Accuracy | Generated / Westwood |
+|---|---|---|
+| storeroom r16 | **5/10 (chance)** | 5.2 / 5.8 |
+| laboratory r11 | 10/10 | 4.4 / 6.8 |
+| shop r8 | 10/10 | 4.4 / 7.2 |
+
+The storeroom passed the blind criterion; what made it work is recorded in rules/rooms/storeroom.md.
+
+| Type | Round | Change (answering the judge) | AUC | Cross | Hard rooms |
+|---|---|---|---|---|---|
+| laboratory | r12 | one working space: a work island of workstations and the alchemist's desk standing free (GROUPS `workbench`), the desk among its bookcase on a back wall, the table with stools free in a big room (`labtable`), the coils as a mirrored pair apart (`generators`), lights 3 per 100 tiles | 0.895 | 0.850 | 9 |
+| laboratory | r13 | the island lighter (one workstation and the alchemist's desk beside the first; no jar): the lab cap | 0.872 | 0.846 | 10 (sparse, caps, door shells) |
+| shop | r9 | the counter the one strong idea: goods flanking it on its wall, standing racks two or three against the walls (no rows, no grids of three), the stock in heaps, no cauldron | 0.829 | 0.799 | 9 (gaps between the flanking shelves, sparse) |
+| shop | r10 | the goods end to end on the other back wall instead (the flanking pair left bare wall between: the checker's gap rule) | 0.969 | 0.869 | 6 (sparse) |
+| shop | r11 | no decorative hangings (`lined_goal` 0.15: the line pass had hung tapestries), bookcases and jars for an apothecary | 0.980 | 0.890 | 6 (sparse) |
+| crypt | r6 | a mirrored pair of sarcophagi across the middle (GROUPS `tombpair`): worse, reverted | 0.948 | 0.873 | 3 |
+| crypt | r7 | rows again, a crypt chest in 40% of crypts | 0.874 | 0.779 | 3 |
+
+The metric and the judge pull apart for the laboratory and the shop: the judge wants a working middle and the keeper's
+counter with its goods, where Westwood's measured medians say the middle is bare; with 6-8 references the AUC moves
+0.1-0.15 between near-identical rounds. I queued the rounds that answer the judges.

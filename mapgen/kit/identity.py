@@ -271,7 +271,7 @@ ROOMS = {
                  # and barrels by the counter: Con03A, Con03B); 5-16 types (median 7), no plants. The old recipe mixed
                  # crates, barrels, sacks, racks, potion shelves and plants in every shop (AUC 0.91)
                  core={"counter_shop": (1, 1), "shop_rack": (0, 24)},
-                 optional={"storage": (0.9, 8), "shelves": (0.9, 8), "chair": (0.5, 1), "lab": (0.8, 3), "stove": (1.0, 1)},
+                 optional={"storage": (0.9, 8), "shelves": (0.9, 8), "chair": (0.5, 1), "lab": (0.8, 3)},
                  types={"storage": r"Crate|(?<!Powder)Barrel$|(?<!Powder)Barrel\d|BarrelSteel\d|Sack|Chest\d",
                         "shop_rack": RACKS + r"|^TraderHangingSwords\d$|^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$",
                         "shelves": r"^PotionShelves\d$|^Bookcase\d(HalfFull)?$", "lab": r"^FairyJar$",
@@ -286,25 +286,28 @@ ROOMS = {
                  # literally: the user meant variety), crates and barrels alternating one by one down the front walls,
                  # three hanging themes on a wall. Racks now stand against the walls, a short row only in a big shop;
                  # the stock heaps as a store's (store_heaps); no hangings but the trade's own
+                 # the independent judge (r8): runs of three at even gaps and a grid of racks in the middle, a counter
+                 # stranded in a corner, pieces of other rooms (a cauldron, potion shelves by the door, barrels in runs).
+                 # As the storeroom that passed: composed groups and heaps, not evenly spaced units; the keeper's counter
+                 # the one strong idea, out from a back wall with his goods behind and beside him
                  store=dict(lead={"steel": 3, "barrels": 1}, second={"steel": 1, "crates": 1, "barrels": 1}, second_p=0.6,
                             accent={"tools": 1}, accent_p=0.3),
-                 top_up=(), decor_max=0, back_only=("shop_rack",),
+                 top_up=(), decor_max=0, lined_goal=0.15, back_only=("shop_rack",),
                  compose=[dict(fam="counter_shop", slot="counter", depth=2.2, clear=1.8),
-                          dict(fam="shop_rack", slot="line", n=3, only=r"^TraderShelves"),
-                          dict(fam="shelves", slot="line", other=True, n=4),
+                          # the goods on the back wall across from the counter's, end to end (a pair flanking the
+                          # counter left bare wall between them: the checker's gap rule)
+                          dict(fam="shop_rack", slot="line", other=True, n=3, only=r"^TraderShelves"),
+                          dict(fam="shelves", slot="line", other=True, n=2, only=r"^PotionShelves"),
                           dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
-                               only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=3),
+                               only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=2),
                           dict(fam="lab", slot="wall", at="corner", clear=0.6, n=1),
-                          # an apothecary's brewing cauldron (Westwood's Con02a, Con09b's stove)
-                          dict(fam="stove", slot="wall", at="corner", clear=1.4),
                           dict(fam="storage", slot="heaps", n=3)],
                  fill=[dict(fam="shop_rack", slot="wall", at="center", clear=0, only=r"^TraderHanging|^TraderShield",
-                            max=2),
-                       dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=260),
+                            max=1, fixed=True),
                        dict(fam="shop_rack", slot="wall", at="any", clear=1.0,
-                            only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", max=3),
-                       dict(fam="shelves", slot="line", other=True, n=3, max=6, only=r"^Bookcase"),
-                       dict(fam="lab", slot="wall", at="center", clear=0.6, max=2),
+                            only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack|HelmShelf)", max=3),
+                       dict(fam="shelves", slot="line", n=3, max=6, only=r"^Bookcase"),
+                       dict(fam="lab", slot="wall", at="any", clear=0.6, max=3),
                        dict(fam="storage", slot="heaps", max=2)]),
     # the room lab (2026-10-05): Westwood's 22 campaign storerooms hold 1-5 types (median 3), barrels the commonest, heaped
     # against two walls with the rest of the floor bare, crates side by side or stacked free; no shelves, no racks (the
@@ -481,16 +484,19 @@ ROOMS = {
                        lined_goal=0.15, decor_max=1,
                        # Westwood's labs stand their pieces a little off the walls (0.49 units against our snug 0.25)
                        wall_gap={"lab": 0.3, "desk": 0.25, "storage": 0.25, "table": 0.3},
-                       top_up=("storage",), lights_per100=4.0,
-                       compose=[dict(fam="lab", slot="line", n=3, only=r"^WizardWorkstation"),
-                                dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
+                       top_up=("storage",), lights_per100=3.0,
+                       # the independent judge of r11: Westwood's labs fill the room as one working space; ours stood in
+                       # separate clumps against the back walls. A work island of workstations stands free on the floor
+                       # (GROUPS workbench), the desk among its bookcase on a back wall, the table with its stools free
+                       # in a bigger one, the coils as a mirrored pair apart
+                       compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                                 dict(fam="shelves", slot="line", near="desk", n=1),
-                                dict(fam="lab", slot="wall", at="corner", clear=1.2, only=r"^AlchemistDesk"),
+                                dict(fam="lab", slot="groups", group="workbench", n=1, extra=True),
+                                dict(fam="lab", slot="wall", at="corner", clear=1.2, only=r"^WizardWorkstation|^AlchemistDesk"),
                                 dict(fam="storage", slot="wall", at="corner", clear=1.0)],
                        fill=[dict(fam="desk", slot="wall", at="any", clear=0, seats=True, once=True, missing=True),
-                             dict(fam="table", slot="wall", at="corner", clear=0, seats=True, max=1, min_area=90, fixed=True),
-                             dict(fam="lab", slot="wall", at="center", clear=0.8, only=r"^Vandegraf", max=2, min_area=200,
-                                  fixed=True),
+                             dict(fam="table", slot="group", group="labtable", max=1, min_area=150, fixed=True),
+                             dict(fam="lab", slot="group", group="generators", max=1, min_area=200, fixed=True),
                              dict(fam="shelves", slot="line", other=True, n=2, max=4, min_area=150),
                              dict(fam="lab", slot="wall", at="center", clear=0.6, only=r"^FairyJar", max=1, fixed=True),
                              dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=220, fixed=True)]),
@@ -539,7 +545,7 @@ ROOMS = {
                   # coverage 0.08. The old rows of sarcophagi and coffins down the middle with columns, statues,
                   # tapestries and plants gave every one away (AUC 0.98-1.0)
                   core={"tomb": (2, 12)},
-                  optional={"statue": (0.3, 2), "storage": (0.6, 1)},
+                  optional={"statue": (0.3, 2), "storage": (0.4, 1)},
                   types={"tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$|^Coffin\d$",
                          "statue": r"^Statue2[a-h]$", "storage": r"^CryptChest\d$"},
                   top_up=(), lights_per100=2.0,
@@ -548,6 +554,7 @@ ROOMS = {
                   wall_gap={"tomb": 1.1},
                   # two rows of sarcophagi side by side with a wide aisle between (Westwood's stand in rows: align 1.0),
                   # so each row keeps near its wall; a narrow crypt takes them along its walls a pace out
+                  # (r6 tried a mirrored pair across the middle, GROUPS tombpair: AUC 0.95 against the rows' 0.87)
                   compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.5, side_by_side=True, aisle=3.6),
                            dict(fam="storage", slot="wall", at="corner", clear=1.2)],
                   fill=[dict(fam="tomb", slot="wall", at="any", clear=1.0, max=3),

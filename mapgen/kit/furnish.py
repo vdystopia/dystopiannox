@@ -251,6 +251,14 @@ GROUPS = {
     "conjuring": dict(anchor=r"^Orrery2$", ring=4, ring_r=1.9, clear=0.6),     # (SentryGlobeMovable: quest maps only)
     # a big laboratory's table (Westwood's Con07C, Wiz02B: a table with chairs among the bookcases), a glowing jar by it
     "labtable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", beside=[(r"^FairyJar$", 1)]),
+    # a laboratory's work island (Westwood's Con07C: workstations and the alchemist's desk standing together on the floor,
+    # the room one working space; the independent judge of the lab: "pieces in separated clumps against the back walls,
+    # three quarters of the floor empty"): workstations side by side round one, a glowing jar by them
+    "workbench": dict(anchor=r"^WizardWorkstation\d[a-d]?$", clear=0.8,
+                      beside=[(r"^WizardWorkstation\d[a-d]?$", 1, 0.12), (r"^AlchemistDesk\d$", 1, 0.12)]),
+    # a crypt's sarcophagi as Westwood lays them: a mirrored pair across the room's middle (its 25 crypts: symmetry 1.0,
+    # every tomb in line with another, two to a room at the median)
+    "tombpair": dict(anchor=r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", pair=True, clear=0.8),
     "generators": dict(anchor=r"^Vandegraf(Small|Large)$", pair=True, clear=1.2),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
