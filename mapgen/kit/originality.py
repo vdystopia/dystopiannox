@@ -131,9 +131,14 @@ def check(spec, room, objects, threshold=THRESHOLD):
     return dict(max_sim=round(sim, 3), nearest=nearest, pieces=len(lay), ok=sim < threshold or trivial)
 
 
-def furnish_original(spec, room, kind=None, rng=None, style="town", tries=6, threshold=THRESHOLD):
+def furnish_original(spec, room, kind=None, rng=None, style="town", tries=6, threshold=THRESHOLD, engine=None):
     """furnish_room, re-rolled (removing the previous attempt's objects) until the layout is not a near copy
-    of a stock room. Returns (objects, check result)."""
+    of a stock room. Returns (objects, check result). engine: "recipe" (kit/furnish.py) or "motifs" (kit/motifs.py,
+    the experimental engine composing from Westwood's mined arrangements); None: the room type's own
+    (kit/motifs.py engine_for: the recipe engine unless the type is in ENGINE_TYPES)."""
+    from kit import motifs as MOT
+    if (engine or MOT.engine_for(kind)) == "motifs":
+        return MOT.furnish_original(spec, room, kind, rng, style, tries, threshold)
     from kit.furnish import furnish_room
     rng = rng or random.Random(0)
     best = None

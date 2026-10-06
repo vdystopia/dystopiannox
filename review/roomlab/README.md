@@ -96,6 +96,7 @@ Record each iteration's verdict in one line in the commit message (type, iterati
 | `review/roomlab/blind.py`, `JUDGE.md` | the blind visual judge |
 | `review/roomlab/scorecard.py` | the scorecard and the iteration history (`review/out/roomlab/<type>/iterations.json`) |
 | `review/roomlab/BASELINE.md` | the baseline iteration for every type |
+| `review/roomlab/MOTIFS.md`, `headtohead.py` | the experimental motif engine (`--engine motifs`: rooms composed from arrangements mined from Westwood's rooms, `kit/motifs.py`) and the head-to-head table of two iterations |
 
 How the renders are matched: the editor's full render (no lighting) for both; the room cropped by its own cells (the
 checker's room finder, for both) plus a margin and the rise of its walls; the front walls half see-through over the

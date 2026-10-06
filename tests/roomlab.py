@@ -5,6 +5,8 @@ review/roomlab/README.md and the metric judge.
     py tests/roomlab.py all [--n 10] [--seed S] [--iter NAME]        every type, then a summary table
     py tests/roomlab.py list                                         the types and their Westwood evidence
     py tests/roomlab.py <type|all> --iter NAME --rejudge             judge an iteration again (after changing a judge)
+    py tests/roomlab.py <type> --iter NAME --engine motifs           furnish the variants with the motif engine
+                                                                     (kit/motifs.py; default: the type's own, the recipes)
 
 Each run:
 1. generates N variants of the type (review/roomlab/labgen.py): each the main room of its own building shell, built
@@ -43,7 +45,7 @@ def rejudge(typ, it, log=print):
     return s
 
 
-def run(typ, n=10, seed=1, it="scratch", log=print):
+def run(typ, n=10, seed=1, it="scratch", log=print, engine=None):
     import labgen, labrender, labref, metrics, blind, scorecard
     t0 = time.time()
     d = E.iter_dir(typ, it)
@@ -52,9 +54,9 @@ def run(typ, n=10, seed=1, it="scratch", log=print):
     # type and seed give the same rooms whatever the iteration is called (two iterations of one type and seed should
     # not run at the same moment: they share the checker's export, validate/out/json/<name>.json)
     name = "R" + format(E.seed_of(typ, seed) & 0xFFFFFF, "06x")
-    batch = labgen.generate(typ, n, seed, out_dir=os.path.join(d, "map"), name=name, log=log)
+    batch = labgen.generate(typ, n, seed, out_dir=os.path.join(d, "map"), name=name, log=log, engine=engine)
     with open(os.path.join(d, "variants.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(type=typ, iter=it, n=n, seed=seed, maps=[E.rel(p) for p in batch["maps"]],
+        json.dump(dict(type=typ, iter=it, n=n, seed=seed, engine=engine or "default", maps=[E.rel(p) for p in batch["maps"]],
                        variants=batch["variants"]), f, indent=1)
     t1 = time.time()
     gal = labref.gallery(typ, log=lambda *_: None)
@@ -110,6 +112,8 @@ def main():
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--iter", default="scratch")
     ap.add_argument("--rejudge", action="store_true", help="judge an iteration already generated again (no new rooms)")
+    ap.add_argument("--engine", choices=("recipe", "motifs"), default=None,
+                    help="the furnisher of the variants' main rooms (default: the type's own, kit/motifs.py engine_for)")
     a = ap.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9_-]+", a.iter): sys.exit("--iter: letters, digits, '-' and '_' only")
     types = E.types()
@@ -124,7 +128,7 @@ def main():
         if t not in types: sys.exit(f"unknown type {t}; one of: {', '.join(types)}")
     rows = []
     for t in todo:
-        rows.append(rejudge(t, a.iter) if a.rejudge else run(t, a.n, a.seed, a.iter))
+        rows.append(rejudge(t, a.iter) if a.rejudge else run(t, a.n, a.seed, a.iter, engine=a.engine))
     if len(todo) > 1:
         import scorecard
         rows = [scorecard.summarise(t, a.iter) for t in todo]
