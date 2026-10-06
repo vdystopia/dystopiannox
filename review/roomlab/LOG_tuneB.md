@@ -259,3 +259,5 @@ Same seed, the curated references, master's furnisher/identity/roomtypes against
 crypt 0.999 / 0.968 / 1, study 0.994 / 0.982 / 4, laboratory 1.0 / 0.98 / 7 (master's kit files would not run against
 this tree for those four, so they have no like-for-like baseline; the earlier pre/post check of bedroom, kitchen,
 barracks and crypt on the old index is under "Shared changes" above).
+
+| tavern | r16 | the round tables together in one part of the floor (`cluster`; Con06a's four in its S half), not dotted at even gaps | AUC 0.952 -> 0.963 (noise of 10 against 6) | cross 0.986 | 4 (sparse) |

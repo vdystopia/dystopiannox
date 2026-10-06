@@ -191,7 +191,10 @@ ROOMS = {
                    # nearest piece 0.7 units; ours had stood 0.2 off every table)
                    seat_gaps={"round": 0.5, "feast": 0.45, "longtable": 0.3},
                    group_seats={"round": (2, 3)},
-                   by_walls=("longtable", "feast"),     # along the walls and in the corners, the middle left open
+                   by_walls=("longtable", "feast"),
+                   # the round tables together in one part of the floor (Con06a's four in its S half), not dotted at even
+                   # gaps over it (independent judge, ref: "four round tables of four stools at equal distances")
+                   cluster=("round",),     # along the walls and in the corners, the middle left open
                    compose=[dict(fam="counter_bar", slot="bar"),
                             dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
                             dict(fam="fireplace", slot="groups", group="hearth", n=1, min_area=500, extra=True),
