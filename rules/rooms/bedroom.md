@@ -29,6 +29,18 @@ The bed, headboard against a back wall, its nightstand beside it (apart from it,
 - **The middle:** a rug or a carpet; clear enough to walk from the door to the bed.
 - **The door:** a single door (never a double door into a bedroom), not in front of the bed.
 
+
+## Archetypes
+
+Westwood's 28 curated campaign bedroom rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| cot room | 14% | Con03B@132,98, Con07B@97,219, Con09b@188,86, Con09a@135,41 | a small sleeping room: the bed with its nightstand on the back wall across from the door, a chest by it or on the other back wall, a bookcase at most; nothing in the middle, no desk or table |
+| bed and desk | 36% | Con02a@68,156, Con02a@74,98, Con05A@83,51, Con07B@173,213, Con07B@36,34, Con07B@40,38, Con07B@92,224, Con07B@38,28, Con07B@42,32, Con07B@46,36 | a snug chamber in two walls: the bed and nightstand on one back wall, the desk with its chair on the other, a bookcase or two beside one of them, the chest snug at the bed or free before it; the middle bare. In three the door is in a back wall and the bed stands across from it on a front wall |
+| sitting end | 32% | Con02a@214,42, Con02a@78,126, Con02a@80,94, Con02a@76,174, Con03B@210,71, Con07B@113,203, Con07D@125,86, Con07D@137,75, War07A@122,199 | a chamber of two ends: the bed end (the bed with nightstands, often in a corner of a back wall) and a sitting or working end (a table with chairs, or a desk among bookcases, candles), a carpet under much of it |
+| lords room | 18% | Con06b@85,218, Con06b@92,211, Con06b@149,60, Con07E@183,119, Con06b@97,200 | a big, sparse chamber: the bed on a back wall, a rug and an oval table standing free on the open floor, a chest, trophies or tapestries on the walls; most of the floor bare |
+
 ## Density and openness
 
 | | Westwood's campaign (40 rooms, 14 maps) | Profile |

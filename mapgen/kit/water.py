@@ -435,7 +435,8 @@ class Waterworks:
             q_ = self.rng.choice((0, 1, 2))            # (the design's generator draws as it always has)
             import random as _random, zlib
             own = _random.Random(zlib.crc32(f"{self.spec.d['name']}:docktip:{lane},{int(pos)}".encode()))
-            load = own.choice(((), (), ("Crate1",), ("Barrel",), ("Barrel", "Barrel")))
+            # (no lone crate squared on the last plank: the judge, 2026-10-06, read it in four docks of ten)
+            load = own.choice(((), (), (), ("Barrel",), ("Barrel", "Barrel")))
             for i, t_ in enumerate(load):
                 p = pos - sign * (2.0 + 1.6 * i)
                 u, v = (p, lane + k["piece_side"] + 0.4) if kit == "DockDown" else (lane + k["piece_side"] + 0.4, p)
@@ -469,6 +470,7 @@ class Waterworks:
             # on firm ground: the tiles a step round it land too (a barrel had stood half in the water)
             if not all(self._land(tile_at_uv((x + dx + y + dy) / CELL, (x + dx - y - dy) / CELL))
                        for dx, dy in ((18, 0), (-18, 0), (0, 18), (0, -18))): return False
+            if self.spec.floor.get(c) in ("RoughCobble", "DirtDark2"): return False      # never on a road
             return self._land(c) and c not in lane and c not in self.no_walls and                 not any((cell[0] + a, cell[1] + b) in self.spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1))
 
         def put(t, x, y):
@@ -479,14 +481,17 @@ class Waterworks:
             return t_ > 0 or abs((x - x0) * sx + (y - y0) * sy) >= 40
 
         def put2(t, x, y):
+            if t.startswith("PlantFern") and any(math.hypot(x - a, y - b) < 34 for _, a, b in placed): return False
             return off_lane(x, y) and put(t, x, y)
         # the bank, laid loosely as Westwood's fishers leave it (Con05A, Con03A: barrels in a loose knot, some touching,
         # some a step apart; a rock with its stones; a crate; bones now and then; never the same stamp twice)
         side = rng.choice((1, -1))
         barrel = rng.choice(("Barrel", "Barrel2"))
-        n_b = rng.choice((2, 3, 3, 4, 4))
+        bank = rng.choices(("store", "fire", "rock", "bare"), (4, 2, 3, 1))[0]
+        n_b = {"store": rng.choice((2, 3, 3, 4)), "fire": rng.choice((0, 1, 2)), "rock": rng.choice((0, 1)),
+               "bare": rng.choice((1, 2))}[bank]
         got = 0
-        for sd in (side, -side):
+        for sd in ((side, -side) if n_b else ()):
             for back in (40, 60, 85, 110):
                 bx, by = x0 - ux * back + sx * sd * rng.uniform(55, 95), y0 - uy * back + sy * sd * rng.uniform(55, 95)
                 a_ = rng.uniform(0, 2 * math.pi)
@@ -501,15 +506,37 @@ class Waterworks:
                 if got: break
             if got:
                 side = sd; break
-        # the rock the bank is made of, on the other side or further back, its stones fallen round it (half the docks)
-        if rng.random() < 0.75:
+        # the rock the bank is made of, on the other side or further back, its stones fallen round it, ferns at its foot
+        if rng.random() < {"store": 0.5, "fire": 0.4, "rock": 1.0, "bare": 0.3}[bank]:
             for back in (50, 80, 120):
                 bx, by = x0 - ux * back - sx * side * rng.uniform(60, 110), y0 - uy * back - sy * side * rng.uniform(60, 110)
                 if put2(rng.choice(("CaveRocksLarge", "CaveRocksHuge", "CaveRocksMedium")), bx, by):
                     for _ in range(rng.randint(0, 2)):
                         put2("CaveRocksSmall", bx + rng.uniform(-30, 30), by + rng.uniform(-30, 30))
+                    for _ in range(rng.randint(1, 3) if bank == "rock" else rng.randint(0, 1)):
+                        a_ = rng.uniform(0, 2 * math.pi)
+                        put2(rng.choice(("PlantFern1", "PlantFern2", "PlantFern3")), bx + 34 * math.cos(a_), by + 34 * math.sin(a_))
                     break
-        if rng.random() < 0.4:                              # a crate set down a little way off
+        if rng.random() < {"store": 0.5, "fire": 0.5, "rock": 0.9, "bare": 0.6}[bank]:
+            # ferns along the bank either side of the landing (Con05A: its bank thick with them)
+            for _ in range(rng.randint(3, 7)):
+                for _try in range(4):
+                    d_, e_ = rng.uniform(10, 90), rng.choice((1, -1)) * rng.uniform(50, 170)
+                    if put2(rng.choice(("PlantFern1", "PlantFern2", "PlantFern3")), x0 - ux * d_ + sx * e_,
+                            y0 - uy * d_ + sy * e_): break
+        if bank == "fire":                                  # the fishers' fire back from the water, stones round it
+            for _ in range(8):
+                d_, e_ = rng.uniform(90, 150), rng.uniform(-90, 90)
+                fx_, fy_ = x0 - ux * d_ + sx * e_, y0 - uy * d_ + sy * e_
+                if put2("CampFire", fx_, fy_):
+                    ph = rng.uniform(0, 6.3)
+                    for q in range(rng.randint(5, 7)):
+                        put2("CaveRocksSmall", fx_ + 22 * math.cos(ph + q * 1.0), fy_ + 22 * math.sin(ph + q * 1.0))
+                    if rng.random() < 0.5:
+                        a_ = rng.uniform(0, 6.3)
+                        put2(rng.choice(("Stool1", "Stool2")), fx_ + 58 * math.cos(a_), fy_ + 58 * math.sin(a_))
+                    break
+        if rng.random() < (0.4 if bank in ("store", "bare") else 0.15):   # a crate set down a little way off
             for _ in range(6):
                 d_, e_ = rng.uniform(60, 140), rng.uniform(-120, 120)
                 if put2(rng.choice(("Crate1", "Crate2")), x0 - ux * d_ + sx * e_, y0 - uy * d_ + sy * e_): break
@@ -558,11 +585,17 @@ class Waterworks:
             if not all(wet((tip[0] + a_, tip[1] + b_)) for a_ in range(-3, 4) for b_ in range(-3, 4)
                        if (a_ + b_) % 2 == 0 and a_ * a_ + b_ * b_ <= 9):
                 continue
-            if any(abs(c[0] - t[0]) + abs(c[1] - t[1]) < 12 for c in [land] + path for t in taken):
+            if any(abs(c[0] - t[0]) + abs(c[1] - t[1]) < 18 for c in [land] + path for t in taken):
                 continue                               # keep docks well apart
-            cands.append(xy_to_uv(*tile_centre_xy(*land)))
+            # a bank behind the landing to stand on: land five tiles back and two to each side (the blind judge,
+            # 2026-10-06: "the root jammed against the tree line")
+            deep = all(self._land((land[0] - step[0] * i + sx * k_, land[1] - step[1] * i + sy * k_))
+                       for i in range(1, 6) for sx, sy in side[:1] for k_ in (-2, 0, 2))
+            cands.append((0 if deep else 1, xy_to_uv(*tile_centre_xy(*land))))
         if not cands:
             return None
+        best_ = min(c[0] for c in cands)                # a landing with a bank behind it where there is one
+        cands = [c for d_, c in cands if d_ == best_]
         if near:
             return min(cands, key=lambda c: (c[0] - near[0]) ** 2 + (c[1] - near[1]) ** 2)
         cands.sort()

@@ -248,3 +248,211 @@ by the store even with a kept square, r1-square): left for the next round.
 | jail | 11 | 0.98 | - | - | 0/10  | 0 | 0.50 of the pieces are bed (more than Westwood's); 1 of its pieces on a path or road |
 
 Types below the sore points have their baseline and this run only (no tuning rounds yet). "Missing": clearings where the recipe could not lay the scene: the market stall's store and inn are too big for the lab's clearings (0 of 10 laid); wells and catalogue themes need a town's context the lab gives only partly.
+
+## Round 4 (night-scenes4, 2026-10-06)
+
+The independent judge on round 3's last sheets: graveyard r8-own 10/10 (5.6 / 7.4), garden r6-town 10/10 (5.4 / 7.8),
+pond_dock r4-shore 9/9 (5.6 / 7.8): "each scene is generated as an isolated stamp; Westwood's are built into their
+surroundings (walls, roads, houses, other scenes) and vary".
+
+### bandit_camp: the hideout (mapgen/kit/camps.py `hideout_camp`, `rock_pocket`)
+
+Westwood's camp evidence re-read: 10 of its 20 camps are pockets of CaveWall2 on DirtDark2 (Wiz03a, Wiz03b, Wiz03c,
+War03a), every piece against the rock (wall torches 1-16 px from the wall's line, rocks 5-25, barrels 13-46, cots
+20-48, the fire 50-146).
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged (all ten in forest glades) | 0.959 | 0 |
+| r1-hideout | the lab: five of ten camps in a rock pocket (CaveWall2 on DirtDark2, one mouth on a spur off a passage between the rows); the kit: `bandit_camp` becomes `hideout_camp` where its ground is a pocket of the rock or a ruin's walls: cots against the back rock with a wall torch, barrels and crates against a flank, big rocks and pillars where the rock juts, a fire in 70%, a table now and then, the chest by the beds | 0.973 | 2 (lone cots) |
+| r2-pairs | cots two together along the rock (never alone: the checker's bedroll rule), the groups apart | 0.879 | 1 |
+| r3-knots | two to four cots; barrels two against the rock and the rest before them; two or three rock places; the hideout's band smaller (no one at the fire) | 0.938 | 2 |
+| r4-groups | a cot group laid whole or not at all, 58-66 px apart and never past 74; a table 20% | 0.944 | 0 |
+| r5-small | smaller pockets (4-5.5 squares: Westwood's), the store's fallback flank | 0.967 | 0 |
+
+The hideouts' wall share 0.5-1.0 (Westwood's 0.50; the open-air camps 0.03-0.16). The AUC stays ~0.93-0.97 on the
+open-air half (a fire in every one, 11-14 kinds against 9). Queued: r5-small.
+
+### graveyard: on its street (mapgen/kit/yards.py `_graveyard`, `gate_outside`; the lab `by_road`)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged | 0.678 | 0 |
+| r1-woven | the yard by the hamlet's road (8.5 squares in, the gate toward it), a cobbled road in a third of the hamlets, the gate's walk to the road; graves in families of one to three, gaps between families; weeds by a quarter of the stones; a newer grave's dug earth two squares long; the digger at work: the open grave two squares, its heap, spade, bucket, coffin 60%, pick, torch, and the gravedigger standing there; crypts one to three cells of 2-4 squares | 0.792 | 0 |
+| r2-walks | the gate's square fixed (the walk had started inside the fence) | 0.873 | 0 |
+| r3-paved | the walk through the yard paved (RoughCobble, War03c): bare earth never showed in the pictures; big yards' graves closer | 0.789 | 0 |
+| r4-clear | the graves 1.5 squares off the walk (a stone had stood on it) | 0.849 | 0 |
+| r5-small | a small yard (under 12-13 squares) keeps one 3 x 3 crypt, its walk 1.1 squares clear, no heap and the coffin 25% (Harrowby's small yard had held two graves, exterior.graveyard; Starwell's 2 x 2 crypt cell had its sarcophagus in the doorway, doorways.blocked) | 0.782 | 0 |
+
+The AUC rose from the ref's 0.68: the digger's corner (tool share 0.08 against Westwood's 0: the user asked for it,
+SW-9), its pieces close together (closest gaps 52 px against 89). By eye the yards now stand on their streets with a
+paved walk, crypts of several builds and a man at work. Queued: r5-small. Thornwick, Greywatch, Ambermere,
+Starwell, Harrowby: 0 errors; Harrowby's and Starwell's warnings back to the night's start once the small yard was
+lightened.
+
+### pond_dock: a lived-in shore (mapgen/kit/water.py `_dock_gear`, `_shore_start`; the lab's lake)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| (r4-shore) | the kit as merged, last round | 0.64 | 0 |
+| r1-lakeside | the bank's composition one of four (store, the fishers' fire, a rock with ferns, almost bare); the lab: a bigger town lake (11-14 tiles), two or three docks on it (Con05A), a fisher at the first landing | 0.615 | 0 |
+| r2-hut | the fisher's hut on the bank beside the first landing (Con03A); ferns along the bank | 0.44 | 0 |
+| r3-bank | `_shore_start` prefers a landing with land five tiles behind it; no fern on a piece | 0.515 | 0 |
+| r4-fisher | the fisher stands clear of the gear (he had stood on a fern) | 0.56 | 0 |
+
+AUC at or under 0.6 from r2 (4 Westwood docks: noise). By eye: docks in twos and threes along a lake, ferns and a
+rock on the bank, a fire or a barrel knot, the fisher at his landing. Ambermere and DysVale: 0 errors, no dock or
+exterior warning. Queued: r4-fisher.
+
+### garden: the household round it (mapgen/kit/village.py `_garden_at`, `_household`)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged | 0.76 | 0 |
+| r1-household | centred on a side of the house first; the planting's density varies (0.52-0.62); the household: apple trees with a crate of apples (50%), a hedge of bushes (40%), a second water barrel (40%); the lab's gardener | 0.37 (0.236 re-rendered after the fairness merge) | 0 |
+| r2-larger | the lab asks a size larger (4 x 3 to 6 x 5) | 0.13 | 0 |
+| r3-far | the side goods on the long side away from the house (a sack had leant on the cabin's corner) | 0.062 | 0 |
+
+AUC with 5 Westwood gardens is noise. Still: in a narrow clearing the garden is squeezed between the cabin and the
+wood (the wide pass fails, the narrow one lays it). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors, no exterior warning (their room warnings come from master's room merges). Queued: r3-far.
+
+### market_stall: it lays (mapgen/kit/scenes.py `market_stall`, kit/dressing.py `_lay`; the lab's market square)
+
+| Round | What changed | AUC | Laid | Hard |
+|---|---|---|---|---|
+| (summary) | the kit as merged | - | 0 / 10 | 0 |
+| r1-square | the wares no longer all musts (the apple crates must, the rest where they fit); the dressing's cut test counts the ground under an awning as blocked (it had read the open square between the awning's sides as a pocket the stall cut off); the hamlet's forest paths join it at its edges, never through its middle (a path's lane is kept clear: no room for an awning) | 0.925 | 4 / 10 | 0 |
+| r2-wares | Westwood's wares (barrels in a row, a water barrel, an iron crate, a torch pole, a sack); the lab's store at the clearing's side, the market square 6.5 squares before its door | 0.875 | 4 / 10 | 0 |
+| r3-door | the store's door toward the clearing (the building's u runs along the squares' i) | 0.992 | 8 / 10 | 0 |
+| r4-fuller | two to four barrels, the cart at the side (35%), an armour rack (15%) | 0.983 | 8 / 10 | 0 |
+| r5-under | the stock as Con09d's: the apple crates under the awning's front (the dressing kept every piece 60 px off the cloths: now 30 off a side, 10 off a top), the barrels in a row behind under the back cloth, torch poles at the ends | 0.692 | 8 / 10 | 0 |
+
+3 Westwood stalls: read the AUC loosely. Queued: r5-under.
+
+### well: Westwood's lone well (kit/scenes.py `well_side`)
+
+Westwood's four campaign wells (Con02a, Con07B, Con09a, War07A) are the WishingWell alone, at most a sign a little
+apart; none has barrels, a bench or sacks. The kit's well_side had laid a water barrel, barrels, a bench and sacks round
+its Well. The landmark stays `Well` (the user has not chosen; rules/scenes/well.md says what Westwood uses).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged | 0.75 | 0 / 4 |
+| r1-alone | the well alone, 60 px kept clear round it | 0.761 | 0 / 1 |
+
+The classifier separates on zones (ours one piece: Westwood's four have their sign or a trader's pitch beside). By eye
+a lone well is Westwood's. No further round (4 Westwood wells).
+
+### urchin_camp: the den (mapgen/kit/camps.py `urchin_den`, the shared `Pocket`)
+
+Westwood's 42 urchin scenes are all dens in the earth (Dirt walls on DirtDark2: Con02a, War03c, War03d, Wiz01A). The
+hideout's rock-pocket reading became a class (`Pocket`: rays, the mouth, points off the rock, rows along it), used by
+`hideout_camp` and `urchin_den`; `urchin_camp` turns into a den in a pocket (`rock_pocket`, which knows Dirt walls).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged (open-air camps round a fire) | 1.00 | 0 / 0 |
+| r1-den | the den: beds of one kind in twos and threes against the back rock, their variant by the wall's side; shelves, paintings and scrolls on the upper walls; wall torches; the chest; barrels; a table ringed by stools; the lab: eight of ten in a Dirt pocket | 0.955 | 0 / 0 |
+| r2-walls | shelves in runs of two or three, more paintings, more beds, fewer stools, a table in 65%; the lab's dens 1.3 times larger | 0.914 | 0 / 1 |
+| r3-close | shelves 26 px apart, beds 42-48 | 0.75 | 0 / 0 |
+| r4-wide | dens 1.5 times larger, barrels 70%: worse (0.845), reverted to r3 | 0.845 | 0 / 0 |
+
+Queued: r3-close. Note: the lab is not reproducible run to run (the same code and seed gave bandit camps of 24 and
+19 pieces in two runs; graveyard r2 and r3 0 and 1 missing): read single-round AUC moves of under ~0.1 as noise.
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings unchanged.
+
+### shrine: statues in rows against a wall (kit/scenes.py `shrine`, `waystone`)
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged (a statue with torch poles and flowers in a glade; a milestone with flowers and stones) | 1.00 | 0 / 0 |
+| r1-rows | Westwood's compositions: statues of one kind three in a row 49 px apart, a pair flanking, a lone one between pillars; the waystone a row of milestones with its altar; no flowers | 0.991 | 0 / 0 |
+| r2-wall | the shrine a wall scene (Westwood's: 0.94 of their pieces within two cells of a built wall); the lab lays shrines in the hamlet's ground among houses | 0.901 | 0 / 1 |
+| r3-lights | a second torch pole and the pillars more often (Westwood's median 5.5 pieces, ours 3) | 0.836 | 0 / 0 |
+
+Queued: r3-lights. Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors. (Thornwick's warnings now and then
+include "a study room holds OgreStraw4": a catalogue hay scene in a ruined room; it comes and goes between runs of the
+same code, as the lab's maps do, so it is not this change's.)
+
+### ogre_camp: the fire in the swamp (kit/camps.py `ogre_camp`)
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged (a forest glade) | 1.0 | 0 / 0 |
+| r1-swamp | the lab: every ogre camp in a pocket of RootLight on dirt; the kit: bones close round the pit, straw rare, the stock two to four, the big carcass 50%, the tusk gate 40% | 1.0 | 0 / 0 |
+| r2-hut | the warlord's bearskin by the fire 30% (Westwood's lie in the huts) | 1.0 | 0 / 0 |
+
+Five Westwood scenes: the AUC cannot move far (its top features: the fire by a path, open ground). Queued: r2-hut.
+
+### jail: straw and torches (kit/yards.py jail cells; the lab's paved court)
+
+Westwood's eleven jail scenes (Con02a, Con07B, War03b, War03c, War07A): cells on RoughCobble behind Cobblestone, a cot in
+one cell, straw strewn thick (seven to twelve tufts to a jail), a wall torch to a cell; Con02a's and War03b's guardroom
+racks and table before the cells (not attempted: Greywatch places its prisoners by the cells' geometry).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged (a cot and one or two straw in every cell) | 0.974 | 0 / 1 |
+| r1-straw | the cells' bedding from the jail's own generator (the design's draws replayed): a cot in one cell (80%), three to six tufts of straw a cell, 0.6 squares apart | 0.977 | 0 / 1 |
+| r2-court | the lab paves a court round the jail in two clearings of three (Westwood's jails stand in paved courts) | 0.927 | 0 / 0 |
+| r3-torch | a wall torch on a cell's back wall (60%) | 0.905 | 0 / 0 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+## Round 5 (night-scenes4, 2026-10-06): the independent judge on the round-4 sheets
+
+The judge's critiques (scores in the main session's log). Common thread: "singles at even spacing, one template per
+scene, too sparse; Westwood's scenes are clustered knots of mixed pieces leaning on terrain". What each scene changed:
+
+| Scene | Round | The judge said | What changed | AUC (round 4 -> 5) |
+|---|---|---|---|---|
+| market_stall | r6-trades | near-empty (4-5 pieces against 11-16); barrels in an even line; nothing says what is sold; red/blue and yellow/green awnings Westwood never uses | three trades (a provisioner: apple crates, a knot of barrels, sacks, the cart; an armourer: three armour racks and helm poles; a potion seller: cauldron, stool, ore cart); the awning always Westwood's UP kind (purple and orange, green and red); 9-13 pieces | 0.692 -> 0.962 (3 stalls; 7 of 10 laid) |
+| urchin_camp | r5-knots | far too sparse; the table's stools spread wide; beds at even intervals; no barrel corners, no shelf runs | two or three shelf runs, three to five pictures, barrels in a corner knot (75%), stools packed 29 px round the table (three to five), straw more often | 0.75 -> 0.651 |
+| bandit_camp | r6-knots, r7-hollows, r8-upper | the same hollow and straight corridor; cots at even steps; the fire stones a wide even hexagon; stores in one strip; a bench right beside the fire | a tight, uneven fire ring (17-23 px, angles jittered); the hideout's crates set before the barrels' end (a knot); cot steps 54-70 px; the bench 70 px out; the lab's pockets stretched and turned, their passages winding; cots on an upper wall where they can (a cot under the near rock is hidden) | 0.967 -> 0.862 |
+| ogre_camp | r3-varied, r4-fewbones | one fire layout stamped every time; a torch pole by the fire or alone; the bearskin behind a bench; a chest Westwood never has | the meat one of four sets, one to three seats from six places, bones (none in two of five camps) mostly to one side; the bearskin gone, the chest 25%; without the gate the torch pole stands by the store at the camp's edge | 1.0 -> 0.992 (5 Westwood fires) |
+| garden | r4-knot | equal ruler-straight bands; crops under the fence; barrels, crates, a sack and a spade each alone round the beds | bed lengths uneven (each end 0-0.7 squares in); crops 12 px off a fence; no spade (Westwood's gardens keep no tools); the household's goods in one knot by the water barrel, each at Westwood's gap | 0.062 -> 0.448 (5 gardens) |
+| graveyard | r6-loose | a cobbled path down the middle to a crypt every time; stones on the fence line; pillars inside; flower patches | the walk in 60% of yards with a crypt, 30% without; stones 1.4 squares off the fence (1.1 in a small yard); the gate pillars a pair outside the gate (35%); no flowers | 0.811 -> 0.814 |
+| pond_dock | r5-knots | the same lone crate squared on the last plank; two piers squeezed together; goods split into singles; a barrel on the cobbled road | no crate on a dock's tip; docks 18 tiles apart (was 12); the bank's gear never on a road | 0.47 -> 0.443 |
+| shrine | r4-chapel | set against wooden cabins or floating in a glade; statues cramped or strewn | the lab sets the shrine by the village chapel (its stone_house style) | 0.836 -> 0.788 |
+| well | r2-road | no road or square: not a public landmark; placed by geometry | the lab sets the well 3.5 squares in from the hamlet's road | 0.761 -> 0.761 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby, DysVale: 0 errors after round 5 (warnings: room rules only). The
+round-5 sheets are queued in TO_JUDGE.md.
+
+Shrine r5-masonry: the kit's `shrine` now stands only against masonry, a castle's walls or a stone house (`Theme.house_roles`:
+chapels, the shrine and mausoleum buildings, keeps, manors, the town hall, barracks, towers, gatehouses, gaols,
+observatories), never a cabin; the lab builds a small stone shrine or mausoleum for it (the village chapel did not fit).
+AUC 0.91 (2 of 10 missing). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+Graveyard r7-walls (reverted): the back side a Cobblestone wall in 40% of yards and a broken length of fence
+(IronFenceDamaged) in 30%, as Westwood's War03b-d, War03c and Con07B yards have them: two of ten yards came out with
+three to five graves and two were not found at all (AUC 0.815, one hard rule), so the change was taken back; the
+yards' fences stay plain IronFence. Worth another try with the graves' count checked.
+
+Garden r5-against: the garden centred on a side of its house a square from the wall (it had stood two off: "floating in
+open grass between cabins with nothing behind them"; Con07B's beds lie along their house). AUC 0.434. Thornwick,
+Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+Bandit camp r9-warcamp: two kinds of open camp, as Westwood's: a war camp (60%: the pup tent and the awning, the armour
+racks 90%, no bedrolls: its men sleep in the tent and under the awning; Con03A, Con04a, Con05A, Con09d) or a rough camp
+(bedrolls in pairs, racks 20%). AUC 0.873 (1 of 10 not found). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors.
+
+Pond and dock r6-lake: the lab's town lake larger (13-16 tiles: "every pier into a small closed pond"). AUC 0.295. The
+lab only.
+
+### farmyard: Westwood's straw heaps (kit/scenes.py `hay_store`)
+
+Westwood's six farmyards (Con08d, War03c, Wiz03a, Wiz03b) are heaps of straw (OgreStraw1 most) along a wall, a barrel or
+two, a torch, a rock. The kit's hay_store had laid one or two heaps with sacks.
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| ref4 | the kit as merged | 1.0 | 0 / 3 |
+| r1-heaps | three to five heaps along the wall, a barrel or two, sacks 35%, a torch pole 35%, a rock 25% | 0.92 | 0 / 1 |
+| r2-spread | heaps 54 px apart | 0.942 | 0 / 2 |
+| r3-shorter | two to four heaps 48 px apart (r2's run reached round a house's corner into Harrowby's storeroom: rooms.stray) | 0.967 | 0 / 3 |
+
+The lab alternates hay_store with the kit's threshing floor and windmill, which Westwood has no counterpart for.
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings as before. Not queued (one round of small moves).

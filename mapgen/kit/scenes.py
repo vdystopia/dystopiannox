@@ -96,6 +96,7 @@ class Theme:
     size: int = 75                               # about how far its pieces reach from its anchor (px)
     scales: bool = False                         # its cap grows with the map's open ground (the wood's own heaps)
     mirror: bool = True
+    house_roles: Tuple[str, ...] = ()           # a wall scene against a house only beside these roles (stone ones)
     culture: str = ""                            # a culture's own scene: laid only when the map names it
                                                  # (Exterior(culture=...): Starwell's wizards), never elsewhere
 
@@ -129,8 +130,30 @@ CATALOGUE = [
             P(STRAW, -64, 46, p=0.5), P(("TraderAppleCrate",), 8, 80, p=0.5)]],
           places=("road",), requires=("road", "wild"), size=100, cap=1, spacing=60, family="cart", face="road", weight=1.5),
     Theme("market_stall", "a trader's awning with the wares set out before it", "open",
-          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -24, 70, n=2, step=(32, 4), must=True),
-            P(CRATES, 44, 64, orient="line", must=True), P(BARRELS, -62, 56), P(SACKS, 76, 40, p=0.7)]],
+          # (the wares: the apple crates must stand, the rest where they fit: with every piece a must, the stall had laid
+          # in none of the scene lab's market squares, 2026-10-06)
+          # Westwood's (Con02a, Con03A, Con09d: an awning with barrels in twos and threes, a water barrel, a steel crate,
+          # crates of apples, a torch pole or two, a cart now and then): the wares before it and at its ends, clear of
+          # its cloths
+          # three trades (the judge, 2026-10-06: "near-empty ... nothing says what is sold"): a provisioner (apples, a
+          # knot of barrels, sacks, the cart), an armourer (racks and helm poles), a potion seller (Con03A's cauldron,
+          # stool and ore cart); each with its stock in knots, not singles
+          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -20, 62, n=2, step=(30, 3), must=True),
+            P(("TraderAppleCrate",), 22, 92, p=0.6),
+            P(("Barrel2",), -40, -84, n=2, step=(27, 3)), P(("Barrel2", "Barrel"), -27, -60, n=(1, 2), step=(27, -2)),
+            P(("WaterBarrel",), -112, 18, p=0.7), P(("CrateSteel3", "CrateSteel4"), 54, 70, n=(1, 2), step=(30, 4)),
+            P(("TorchPole",), 104, 36, p=0.7), P(("TorchPole",), -100, 52, p=0.4),
+            P(("OutdoorTraderCart",), 150, -10, p=0.5), P(SACKS, 82, 104, n=(1, 2), step=(22, 10), p=0.6)],
+           [P(("@tent",), 0, 0, must=True),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3"), -60, 70, n=3,
+              step=(42, 2), must=True), P(("OutdoorTraderHelmPoles",), 70, 74, p=0.7),
+            P(("Barrel2",), -40, -84, n=2, step=(27, 3)), P(("CrateSteel3", "CrateSteel4"), 110, 30, p=0.7),
+            P(("TorchPole",), -104, 40, p=0.7), P(("TorchPole",), 104, 36, p=0.4),
+            P(("OutdoorTraderCart",), -150, 0, p=0.3)],
+           [P(("@tent",), 0, 0, must=True), P(("CauldronAnimated",), -10, 70, must=True),
+            P(("CushionedStool2",), 36, 92), P(("WaterBarrel",), -60, 60, p=0.7), P(("CrateSteel3",), 60, 60),
+            P(("MineOreCart2",), -130, 20, p=0.5), P(("Barrel2",), -40, -84, n=2, step=(27, 3)),
+            P(("TorchPole",), 104, 36, p=0.6), P(("Rock6",), 110, 100, p=0.4)]],
           roles=("store", "inn"), need=True, near=12, cap=1, spacing=40, family="stall", weight=1.2, size=170,
           min_types=3),
     Theme("supply_corner", "a household's stores kept outside the back door: barrels, a crate, sacks", "wall",
@@ -153,8 +176,12 @@ CATALOGUE = [
           roles=("woodcutter", "home", "cottage", "grovelord"), places=("town",), biomes=("green", "swamp"), cap=2,
           spacing=26, family="wood", weight=1.5),
     Theme("hay_store", "hay heaped by a farmstead, sacks of feed", "wall",
-          [[P(HAY, 0, 36, must=True), P(HAY, 46, 42, p=0.6), P(STRAW, -40, 30, n=(1, 2), step=(-22, 14), must=True),
-            P(("SackChestLarge1", "SackChestLarge2"), 78, 30, must=True), P(("Barrel",), -34, 64, p=0.5)]],
+          # Westwood's (Con08d, War03c, Wiz03a, Wiz03b: three to ten heaps of straw (OgreStraw1 most) spread along a wall
+          # over ~90 px, a barrel or two, a torch, a rock): the heaps loose and many, the sacks now and then
+          [[P(("OgreStraw1", "OgreStraw1", "OgreStraw2", "OgreStraw3"), -50, 34, n=(2, 4), step=(48, 8), must=True),
+            P(("OgreStraw1",), -30, 76, p=0.5), P(("Barrel",), 120, 34, n=(1, 2), step=(26, 4), must=True),
+            P(("SackChestLarge1", "SackChestLarge2"), 104, 70, p=0.35), P(("TorchPole",), -110, 44, p=0.35),
+            P(("CaveRocksLarge", "CaveRocksHuge"), 150, 40, p=0.25)]],
           walls=("house", "fence"), roles=("mill", "home", "cottage", "grovelord", "barracks"), need=True, near=8,
           biomes=("green", "swamp"), cap=2, spacing=26, family="hay", tall=True, weight=1.5),
     Theme("midden", "the refuse heap behind a kitchen: old straw, bones, a broken crate", "wall",
@@ -168,10 +195,13 @@ CATALOGUE = [
             P(TOOLS, 70, 30), P(POLEARMS, -88, 32, p=0.6, orient="line"), P(STOOLS, 26, 86, p=0.5)]],
           walls=("house",), roles=("smithy", "demon_forge"), need=True, near=6, sides=("side", "front", "back"),
           biomes=ALL, cap=2, spacing=30, family="smith", tall=True, weight=6.0),
-    Theme("well_side", "a draw well where water is fetched: barrels by it, a bench", "open",
-          [[P(("Well",), 0, 0, must=True), P(("WaterBarrel",), 48, 12, must=True), P(BARRELS, 58, 38),
-            P(("Bench1", "Bench2", "Bench4", "Bench5"), 0, 74, orient="face", must=True), P(SMALL_SACKS, -52, 22, p=0.4)]],
-          places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8),
+    # the well alone, clear on every side, a public landmark near a road (Westwood's four campaign wells, Con02a, Con07B,
+    # Con09a, War07A: the well and at most a sign a little apart; no barrels, buckets, benches or troughs by it. Westwood's
+    # well is the WishingWell; the kit keeps its Well, the user has not chosen: rules/scenes/well.md)
+    Theme("well_side", "a draw well where water is fetched, standing clear", "open",
+          [[P(("Well",), 0, 0, must=True)]],
+          places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
+          min_types=1, min_pieces=1, clear=60),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],
@@ -254,19 +284,33 @@ CATALOGUE = [
           walls=("house",), roles=("inn", "store", "home", "barracks", "mess", "fisher", "townhall"), places=("town",),
           sides=("front", "side"), biomes=ALL, cap=3, spacing=24, family="bench", weight=1.5, min_pieces=3),
     # ---- the road and the wilds ------------------------------------------------------------------------------------
-    Theme("waystone", "a waystone by the road, travellers' offerings at its foot: flowers and a few stones", "open",
-          [[P(("DunMirMileStone",), 0, 0, must=True), P(FLOWERS, 22, 24, must=True),
-            P(("CaveRocksMedium", "CaveRocksSmall"), -26, 14, n=2, step=(-14, 16), must=True), P(FLOWERS, 26, -14),
-            P(("SackChestSmall1",), -10, 44, p=0.3)]],
+    # Westwood's waystones (Con03A, War03a): two to four milestones (DunMirMileStone) in a row along a screen diagonal,
+    # 30-45 px apart, an altar stone (DunMirAltar2) at the row's end, a second now and then; no offerings
+    Theme("waystone", "waystones in a row by the way, an altar stone at its end", "open",
+          [[P(("DunMirAltar2",), 0, 0, must=True), P(("DunMirMileStone",), 32, 0, n=(2, 4), step=(32, 1), must=True),
+            P(("DunMirAltar2",), 150, 2, p=0.3)],
+           [P(("DunMirMileStone",), 0, 0, n=2, step=(62, 0), must=True), P(("DunMirAltar2",), 31, -4, must=True)]],
           places=("road",), requires=("road", "wild"), biomes=("green", "swamp", "ice"), cap=2, spacing=50, family="stone", face="road",
-          weight=1.5, min_pieces=4),
-    # no candles outdoors: the player can pick them up (Starwell playtest, 2026-10-05); torch poles light a shrine
-    Theme("shrine", "a wayside shrine: a carved stone, torch poles either side of it, flowers left before it", "open",
-          [[P(("Statue2a", "Statue2c", "Statue2g", "Cross1", "Cross2"), 0, 0, must=True),
-            P(("TorchPole",), -40, 18, n=2, step=(80, 0), must=True), P(FLOWERS, -18, 34), P(FLOWERS, 20, 36, p=0.7),
-            P(("CaveRocksSmall",), 10, -26, p=0.5)]],
-          places=("wild", "town"), roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
-          family="shrine", weight=0.8),
+          weight=1.5, min_types=2, min_pieces=3),
+    # no candles outdoors: the player can pick them up (Starwell playtest, 2026-10-05); torch poles light a shrine.
+    # Westwood's (Con04b, Con05A, Con07C, War03c, War04b, Wiz02B, 28 scenes): statues of one kind, three in a row along a
+    # screen diagonal ~49 px apart (or two ~160 px apart flanking a way), a torch pole by them, a pair of stone pillars
+    # (Monument1) ~100 px either side of a lone statue; flowers never
+    Theme("shrine", "a shrine against a wall: statues of one kind in a row, a torch pole by them", "wall",
+          [lay for k in ("a", "b", "c", "e", "g", "h") for lay in (
+              [P((f"Statue2{k}",), -49, 34, n=3, step=(49, 0), must=True), P(("TorchPole",), -100, 36, p=0.7),
+               P(("TorchPole",), 100, 36, p=0.4), P(("Monument1",), 150, 36, p=0.4)],
+              [P((f"Statue2{k}",), -80, 34, n=2, step=(160, 0), must=True), P(("TorchPole",), 0, 40, must=True),
+               P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.4)],
+              [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), must=True),
+               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])],
+          # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
+          # (masonry, a castle's walls, or a stone house: the judge, 2026-10-06, "set against wooden peasant cabins")
+          walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),
+          house_roles=("chapel", "village_chapel", "shrine", "mausoleum", "keep", "manor", "townhall", "barracks", "tower",
+                       "gatehouse", "gaol", "observatory"),
+          roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
+          family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
           "torch pole at the end of the row", "open",
           [[P(GRAVES, -48, 0, n=3, step=(48, 0), must=True), P(FLOWERS, -48, 34, n=3, step=(48, 0), p=0.8),

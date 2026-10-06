@@ -29,6 +29,18 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 - **The middle:** round tables with stools, a long table with benches, a table of food with chairs, open floor between.
 - **Movement:** from the door to the bar, between the tables.
 
+
+## Archetypes
+
+Westwood's 5 curated campaign tavern rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Few rooms: the archetypes also draw on kin types' rooms (each counted half a room), as named. Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| common room | 33% | Con02a@86,105, Con07B@91,177 | the bar in a back corner with kegs behind it, the hearth on another wall, tables of two kinds over the floor with open floor between |
+| hearth hall | 17% | Con06a@143,178 | free-standing hearths down the middle, round tables with cushioned stools clustered in one half, a short bar on a back wall with barrels |
+| barroom | 17% | Wiz05A@43,19 | the bar across the room with great casks behind it and piled barrels, little seating |
+| drinking room | 33% | Wiz05A@48,24; kin: Con06b@104,79, Wiz06a@210,180 | the seating room: round tables with stools against the walls, no bar or hearth of its own |
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, Con06a, Con07B; five since the room lab's index fix) | Profile |

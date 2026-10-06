@@ -25,6 +25,19 @@ The rows of tombs.
 - **The middle:** sarcophagi and coffins side by side in rows, aisles between; columns. An L-shaped or narrow crypt lays
   its dead along the walls instead.
 
+
+## Archetypes
+
+Westwood's 25 curated campaign crypt rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| tomb niche | 32% | War03c@74,214, War03c@83,223, War03c@85,203, War03c@94,212, War03d@52,214, War03d@62,222, War03d@64,202, War03d@74,210 | a small side chamber: one or two sarcophagi off the middle, a tombstone at the wall |
+| tomb row | 16% | War03c@73,224, War03c@95,202, War03d@52,223, War03d@74,201 | a big vault with a row of three or four sarcophagi along one side and tombstones behind them, the rest of the floor open |
+| wall tombs | 24% | Con04a@100,130, Con04a@128,136, Con04a@136,150, Con04a@138,118, Con04a@138,97, War03c@100,229 | sarcophagi against the walls, torches, a crypt chest or obelisks in the middle |
+| tombstone yard | 24% | Con04a@148,127, Con04a@150,108, Con04b@142,44, Con04c@194,152, War03c@80,98, War03c@94,112 | no sarcophagi: tombstones in a loose grid over the floor, a crypt chest |
+| statue vault | 4% | Con04a@112,146 | statues in pairs on every wall, tombstones in rows between (recipe engine: the kind's own recipe) |
+
 ## Density and openness
 
 | | Westwood's campaign (30 rooms, 8 maps) | Profile |

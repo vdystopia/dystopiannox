@@ -26,6 +26,18 @@ The hearth, centred on a back wall, shelves end to end either side of it, a rug 
 - **The middle:** the table with its chairs, toward the front, often on a carpet.
 - **Movement:** from the door to the table and the hearth.
 
+
+## Archetypes
+
+Westwood's 14 curated campaign living room rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| hearth nook | 36% | Con06a@130,174, Con06a@137,166, Con07B@105,197, Con07B@74,178, Con07B@80,184 | a small hearth room: the hearth on a back wall, the round table ringed by chairs before it or off to a side, a bench, a barrel or a water barrel; little else |
+| parlour | 21% | Con02a@211,51, Con02a@80,168, Con07B@167,214 | the hearth between bookcases (or bookcases on the wall across), tables with chairs on a carpet, candles: a household's best room |
+| common room | 14% | War07A@119,187, Wiz01A@108,137 | a great house's common room: the hearth with chairs on a rug before it, two or more tables apart, bookcases along a wall, statues and tapestries, barrels by the hearth; open floor between the sets |
+| cottage | 29% | Con02a@100,118, Con02a@57,149, Con07B@64,194, Wiz06a@79,60 | a one-room cottage: no hearth but an iron stove in a corner, a bed or a cot on a wall, chests on another, a round table with chairs on a rug |
+
 ## Density and openness
 
 | | Westwood's campaign (15 rooms, 9 maps) | Profile |

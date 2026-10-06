@@ -20,6 +20,18 @@ def _pop(ctx):
     return ctx["pop"]
 
 
+def _person(ctx, donor, x, y, face, name):
+    """A townsperson cloned in their clothes from a stock map (kit/story.Story.person: donor = (map, script name)),
+    standing at work (action 4), facing `face`."""
+    import os
+    from kit.story import STOCK
+    from kit.npcs import facing
+    xf = dict(DefaultAction=4, Aggressiveness=0.0, Immortal=True)
+    if face: xf["DirectionId"] = facing(face[0] - x, face[1] - y)
+    mp, scr = donor
+    return ctx["m"].clone(os.path.join(STOCK, mp, mp + ".map"), f"{mp}:{scr}", x, y, name=name, xfer=xf)
+
+
 def _keep(ctx, centre, r):
     ctx.setdefault("keep", set()).update({(int(centre[0]) + a, int(centre[1]) + 1 + b) for a in range(-r, r + 1)
                                           for b in range(-r, r + 1) if a * a + b * b <= r * r})
@@ -51,8 +63,9 @@ def _camp_build(kind):
                 camp = camps.bandit_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers, tents=tents,
                                          trade=trade, finds=("MineCrystal01", "MineCrystal03", "CaveRocksSmall"))
                 # the designs' bands: 4-7 people, median 5 (Thornwick, Greywatch, Harrowby, Ambermere, Starwell)
-                posts = camp_posts(m, camp, square_px(*toward), sit=1 + (p.size != "small"), tents=1, watch=1,
-                                   work=2 if trade == "dig" else 0)
+                hide = camp.get("hideout")                  # a hideout's band is smaller (Westwood's: two or three)
+                posts = camp_posts(m, camp, square_px(*toward), sit=0 if hide else 1 + (p.size != "small"), tents=1,
+                                   watch=1, work=2 if trade == "dig" and not hide else 0)
                 kinds = dict(leader="Swordsman", sit="Swordsman", tent="Swordsman", watch="Archer", work="Swordsman")
                 p.notes.update(trade=trade, sleepers=sleepers, tents=tents)
             elif kind == "ogre_camp":
@@ -96,10 +109,32 @@ def _yard_build(ctx):
         Y.build(m, p.rng, land, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
+        out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
+        if out and out in land.squares:
+            got = land.connect(m, out, footprint=frozenset(y.plot), material="DirtDark2")
+            p.notes["walk"] = len(got) if got else 0
+        for k_, (donor, (x, yy), face) in enumerate(getattr(y, "people", ())):   # the yard's people at work (the digger)
+            _person(ctx, donor, x, yy, face, f"Yard{p.k}_{k_}")
+
+
+def _jail_court(ctx):
+    """Westwood's jails stand in paved town courts (Con07B's castle, Con02a's and War03b's guardhouse yards, all on
+    RoughCobble): the lab paves a court round the jail in two clearings of three, so the jail's floor is not read as a
+    path laid through the grass."""
+    m, land = ctx["m"], ctx["land"]
+    for p in ctx["plots"]:
+        y = ctx["yards"].get(p.k)
+        if not y or p.k % 3 == 2: continue
+        for a in range(-3, y.w + 3):
+            for b in range(-3, y.h + 3):
+                sq = (y.gi + a, y.gj + b)
+                if sq in land.squares and sq not in land.water and sq not in land.taken_strict:
+                    m.floor[square_tile(*sq)] = "RoughCobble"
 
 
 # ---------------------------------------------------------------------------------------------------- gardens
 HOME_ROLES = ("home", "cottage", "home", "fisher", "herbwife")
+GARDENERS = (("Con02a", "Gretchen"), ("Con03A", "Kenneth"), ("Con02a", "Julie"))
 
 
 def _house(ctx, p, role, at, side=None, quiet=False):
@@ -168,15 +203,26 @@ def _garden_build(ctx):
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
         vil = Village(m, p.rng, land)
         n0 = len(m.d["objects"])
-        size = {"small": (3, 2), "typical": (4, 3), "large": (5, 4)}[p.size]
+        size = {"small": (4, 3), "typical": (5, 4), "large": (6, 5)}[p.size]     # (Westwood's run 6-9 squares)
         if vil.garden(b, size=size):
             crops = _new_objects(m, n0, r"^Garden")
-            if crops: p.notes.update(anchor=_mean(crops), kind="garden", role=bid.role)
+            if crops:
+                p.notes.update(anchor=_mean(crops), kind="garden", role=bid.role)
+                if p.rng.random() < 0.6:                 # the gardener at work at the beds' end
+                    xs = sorted(crops, key=lambda o: o["x"] + o["y"])
+                    a, z = xs[0], xs[-1]
+                    q = a if p.rng.random() < 0.5 else z
+                    mx, my = _mean(crops)
+                    L_ = math.hypot(q["x"] - mx, q["y"] - my) or 1
+                    _person(ctx, GARDENERS[p.k % len(GARDENERS)], q["x"] + (q["x"] - mx) / L_ * 34,
+                            q["y"] + (q["y"] - my) / L_ * 34, (mx, my), f"Gardener{p.k}")
 
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
 POND_R = {"small": 6.0, "typical": 7.0, "large": 8.0}       # tiles: a lake a dock reaches out into (Con05A)
-LAKE_R = {"small": 10.0, "typical": 11.0, "large": 12.0}    # a town's lakeshore: the lake on one side, the hamlet on the other
+LAKE_R = {"small": 13.0, "typical": 15.0, "large": 16.0}    # a town's lakeshore: the lake on one side, the hamlet on the other (bigger: "every pier into a small closed pond")
+DOCKS = {"small": 1, "typical": 2, "large": 3}              # docks to a lake (Con05A: three along its town's shore)
+FISHERS = (("Con03A", "Kenneth"), ("Con07B", "Dorian"))
 
 
 def _pond_plan(ctx):
@@ -210,7 +256,31 @@ def _pond_build(ctx):
             p.notes.update(anchor=_mean(pcs), kit=dock["kind"])
             du, dv = dock["start"]
             land.connect(m, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23))
-            _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 3)      # a bank to reach it, no pines
+            # a bank to reach it with no tree on it (the blind judge, 2026-10-06: "the root jammed against the tree line")
+            _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 5)
+            # more docks along the town's shore (Con05A: three), each its own landing and walk
+            (pci, pcj), _ = p.pond
+            n_more = DOCKS[p.size] - 1 if p.town else 0
+            for q in range(n_more):
+                d2 = ww.dock(body, "best", length=2 if p.rng.random() < 0.6 else 1, beyond=3,
+                             near=(du + (14 + 6 * q) * (1 if q % 2 == 0 else -1), dv + (10 + 4 * q) * (1 if q % 2 else -1)))
+                if not d2: continue
+                eu, ev = d2["start"]
+                land.connect(m, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23))
+                _keep(ctx, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23), 5)
+            # a fisher at work on the first dock's landing, looking out over the water
+            x_, y_ = (du + dv) / 2 * 23, (du - dv) / 2 * 23
+            tip = (pcs[0]["x"], pcs[0]["y"])
+            L_ = math.hypot(tip[0] - x_, tip[1] - y_) or 1
+            if p.town and p.rng.random() < 0.8:
+                near_ = [(o["x"], o["y"]) for o in m.d["objects"] if "type" in o and abs(o["x"] - x_) < 200 and
+                         abs(o["y"] - y_) < 200 and not o["type"].startswith("Dock")]
+                ex_, ey_ = (tip[0] - x_) / L_, (tip[1] - y_) / L_
+                for f_, g_ in ((30, 26), (30, -26), (10, 40), (10, -40), (50, 0), (-20, 40), (-20, -40)):
+                    fx_, fy_ = x_ + ex_ * f_ + ey_ * g_, y_ + ey_ * f_ - ex_ * g_
+                    if all(math.hypot(fx_ - a, fy_ - b) >= 30 for a, b in near_):   # never on a fern or a barrel
+                        _person(ctx, FISHERS[p.k % len(FISHERS)], fx_, fy_, tip, f"Fisher{p.k}")
+                        break
         else:
             ctx["log"](f"  plot {p.k + 1}: no room for the dock")
             (ci, cj), _ = p.pond
@@ -242,7 +312,7 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
             done = None
             for name in names:
                 th = S.THEMES[name]
-                for s in cands[:160]:
+                for s in cands[:400]:
                     n0 = len(m.d["objects"])
                     if th.stand == "wall":
                         x, y = square_px(s[0] + 0.5, s[1] - 0.5)
@@ -267,7 +337,23 @@ def _house_plan(roles, square=0):
         for p in ctx["plots"]:
             ux, uy = p.dir
             role = roles[p.k % len(roles)]
-            _house(ctx, p, role, (p.c[0] - ux * 4.5, p.c[1] - uy * 4.5))
+            # (a market's square before its store: the store at the clearing's side, the square kept open in the
+            # middle; the store at 4.5 squares had stood on the square itself, and no awning found room by it)
+            back = (p.r - 5.5) if (square and p.town) else 4.5
+            side = None
+            if square:                                   # its door toward the clearing (the market square before it)
+                # (the building's u runs along the squares' i, its v along j)
+                side = ("u_max" if ux > 0 else "u_min") if abs(ux) >= abs(uy) else ("v_max" if uy > 0 else "v_min")
+            h = _house(ctx, p, role, (p.c[0] - ux * back, p.c[1] - uy * back), side=side)
+            if square and h and h[1].entrances:
+                # the market's square before the store's door, six and a half squares out
+                from kit.village import _squares_of
+                foot = _squares_of(h[1].footprint)
+                fi, fj = sum(i for i, _ in foot) / len(foot), sum(j for _, j in foot) / len(foot)
+                di, dj = px_square(*h[1].entrances[0].px)
+                L = math.hypot(di - fi, dj - fj) or 1
+                p.scene_c = (di + (di - fi) / L * 6.5, dj + (dj - fj) / L * 6.5)      # (a door keeps 3 squares clear)
+                p.notes["scene_sq"] = list(p.scene_c)
             if square: _keep(ctx, p.scene_c, square)
     return plan
 
@@ -309,15 +395,24 @@ def _wolf_build(ctx):
 
 
 RECIPES = {
-    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp")),
-    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp")),
-    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp")),
-    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build),
+    # half the camps in a pocket of the rock (Westwood's hideouts: 10 of its 20 camps), the kit's own test (rock_pocket)
+    # turns them into hideouts
+    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8)),
+    # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
+    "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
+                      cave_scale=1.7),
+    # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
+    # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens
+    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp"), caves=(1, 2, 3, 4, 5, 7, 8, 9),
+                        cave_wall="Dirt", cave_scale=1.3),
+    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5),
     "quarry": dict(plan=_yard_plan("quarry"), build=_yard_build),
-    "jail": dict(plan=_yard_plan("jail"), build=_yard_build),
+    "jail": dict(plan=_yard_plan("jail"), build=lambda c: (_jail_court(c), _yard_build(c))),
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
-    "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"])),
+    # the well by the road, a public landmark (the judge, 2026-10-06: "no road ... placed by geometry rather than use")
+    "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"]),
+                 by_road=3.5),
     "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
                          after_plant=_theme_after(["market_stall"])),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
@@ -327,7 +422,10 @@ RECIPES = {
                             after_plant=_theme_after(["sparring_ring", "archers_mark"])),
     "woodpile": dict(plan=_house_plan(["home", "cottage", "woodcutter"]), build=_house_build,
                      after_plant=_theme_after(["woodpile", "chopping_yard", "timber_stack"])),
-    "shrine": dict(plan=_nothing, build=_nothing, after_plant=_theme_after(["waystone", "shrine"])),
+    # the shrine by the village's chapel: masonry to stand against (the judge, 2026-10-06: "shrines set against wooden
+    # peasant cabins")
+    "shrine": dict(plan=_house_plan(["shrine", "mausoleum"]), build=_house_build,
+                   after_plant=_theme_after(["waystone", "shrine"])),
     "farmyard": dict(plan=_house_plan(["mill", "home", "cottage"]), build=_house_build,
                      after_plant=_theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")),
     "wolf_den": dict(plan=_nothing, build=_wolf_build),

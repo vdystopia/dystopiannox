@@ -28,6 +28,17 @@ The watch's table in the middle, chairs round it, a meal on it (RoundTableWithFo
 - **The middle:** the table with its chairs, a meal on it; a clear way from the door past it.
 - **Movement:** in at the door, past the table, to the cell door or the stair beyond.
 
+
+## Archetypes
+
+Westwood's 11 curated campaign guardroom rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| watch table | 45% | Con06b@104,79, Wiz06a@210,180, Wiz06a@84,151, Wiz06b@46,38, Con06b@179,71 | a guard post: a round table with three or four chairs (one fallen) off the middle, barrels or a chest by the walls; no beds (recipe engine: the kind's own recipe) |
+| cot post | 36% | Con03A@110,112, Con03A@164,60, Con03A@81,83, Wiz06a@136,196 | a watch hut: two cots against the walls with chests, a table with food and chairs, barrels (recipe engine: the kind's own recipe) |
+| armed hall | 18% | Con02a@93,175, Con06a@69,199 | the keep's guard room: arms on the walls (swords, shields, racks), a long table with benches and a round table, barrels and a chest (recipe engine: the kind's own recipe) |
+
 ## Density and openness
 
 | | Westwood's campaign (5 rooms, 4 maps) | Profile |

@@ -37,6 +37,18 @@ wall; the building gives the room its door on the SE wall (`building._seat_thron
 - **Movement:** straight in through the door and up the runner to the throne; nothing within 12 units of the door's
   line but the runner.
 
+
+## Archetypes
+
+Westwood's 4 curated campaign throne room rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Few rooms: the archetypes also draw on kin types' rooms (each counted half a room), as named. Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| processional | 30% | Con06b@58,151; kin: Con04c@75,78 | the throne across from the door at the head of a long walk, fire basins in pairs down it, a pair of columns, victory statues; the walls bare |
+| dressed walls | 30% | Con10d@96,150; kin: Con06b@98,180 | the throne on the back wall across from the door, the walls dressed end to end (tapestries, columns against the side walls, balances or obelisks in pairs), the floor bare |
+| ringed seat | 20% | Con11a@166,141 | the throne standing out from the back wall ringed by four lights, a square of obelisks or statues before it, chests and tapestries on the walls |
+| audience chamber | 20% | Wiz11A@203,72 | a small chamber: the throne on a back wall beside the door, flanked by a pair of obelisks or statues, a lone basin; nothing else |
+
 ## Density and openness
 
 | | Westwood's campaign (4 rooms, Con06b, Con10d, Con11a, Wiz11A) | Profile |

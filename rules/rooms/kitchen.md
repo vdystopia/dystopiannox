@@ -27,6 +27,18 @@ The hearth (a wall fireplace) centred on a back wall, the cooking cauldron two u
 - **The middle:** the work table with its food and stools.
 - **Movement:** a clear way from the door to the hearth; supplies a unit from anything else and 2.4 from the fire.
 
+
+## Archetypes
+
+Westwood's 3 curated campaign kitchen rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Few rooms: the archetypes also draw on kin types' rooms (each counted half a room), as named. Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| cookhouse | 33% | Con06b@202,53; kin: Con02a@100,118, Con07B@64,194 | the wall hearth with iron stoves beside it, barrels heaped in the corners, work tables |
+| stove kitchen | 25% | Con05A@25,21; kin: Wiz06a@79,60 | an iron stove in a corner and a table with a chair or two; a hanging; nothing else |
+| open hearth | 17% | Con07B@128,189 | a free-standing hearth in the middle, the stove and tables round the walls |
+| pantry kitchen | 25% | -kin: Con06a@12,149, Con07B@167,214, Con05A@52,18 | the hearth with its pot, provisions on shelves along a back wall, stores heaped by the walls (kin: the storerooms' heaps and the living rooms' hearths) |
+
 ## Density and openness
 
 | | Westwood's campaign (10 rooms, 6 maps) | Profile |
