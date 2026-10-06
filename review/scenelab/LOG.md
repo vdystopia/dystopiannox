@@ -424,3 +424,8 @@ Shrine r5-masonry: the kit's `shrine` now stands only against masonry, a castle'
 chapels, the shrine and mausoleum buildings, keeps, manors, the town hall, barracks, towers, gatehouses, gaols,
 observatories), never a cabin; the lab builds a small stone shrine or mausoleum for it (the village chapel did not fit).
 AUC 0.91 (2 of 10 missing). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+Graveyard r7-walls (reverted): the back side a Cobblestone wall in 40% of yards and a broken length of fence
+(IronFenceDamaged) in 30%, as Westwood's War03b-d, War03c and Con07B yards have them: two of ten yards came out with
+three to five graves and two were not found at all (AUC 0.815, one hard rule), so the change was taken back; the
+yards' fences stay plain IronFence. Worth another try with the graves' count checked.
