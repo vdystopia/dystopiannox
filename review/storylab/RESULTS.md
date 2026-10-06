@@ -106,3 +106,34 @@ decorative dialect spelling.
 
 Metric judge changes (all iterations rescored): a `COMPLETED:` journal entry is judged by its objective; a six-word
 phrase Westwood itself uses in two lines or more ("as a token of my appreciation") is house style, not a copy.
+
+### i5: a card a map (WRITER.md v5, `cards.py`), the model's mode phrases measured (`modes.json`)
+
+Each writer got a card: its map's own draw of Westwood's shapes (how each giver opens, asks and pays; what the guard,
+townsfolk and keepers say; the captive; the one comic person; one rough patch) and two or three model lines a part.
+
+| scenario | metric ours / WW | blind acc | blind ours / WW |
+|---|---|---|---|
+| guard_bark | 9.02 / 9.69 | 100% | 5.6 / 8.6 |
+| bounty_offer | 8.90 / 9.62 | 100% | 6.2 / 8.2 |
+| heirloom_fetch | 9.15 / 9.62 | 100% | 6.4 / 8.4 |
+| rumour | 9.39 / 9.71 | 100% | 6.4 / 8.2 |
+| shop_greeting | 8.37 / 9.79 | 100% | 5.8 / 8.0 |
+| two_givers | 8.82 / 9.47 | 100% | 5.2 / 8.8 |
+| rescue | 9.49 / 9.46 | 100% | 5.4 / 8.4 |
+| main_opening | 9.12 / 9.59 | 100% | 6.0 / 8.0 |
+| town | 8.13 / 9.59 | 100% | 6.0 / 8.4 |
+| **all** | **8.93** | **100%** | **5.9 / 8.4** |
+
+Control i5 (seven packets, mixed unannounced among the real ones): accuracy 49%, confidence 3.2, called generated
+6.7 / called Westwood 8.5. With i4: 15 control packets, 52%, confidence 3.25, 6.5 / 8.45.
+
+The one-template tell went down (the judges name fewer shared lines) but the accuracy did not move, and a new one
+appeared: the card's quoted Westwood instances became the shared template ("Oh, I forgot to mention...", "The gate is
+open! Hurry!"). The judges' tells now describe a *writerly* voice rather than a template: rewards with a backstory ("A
+deserter left this bow behind"); directions as chains of landmarks ("south of the castle by the old mill"); tidy
+cause and effect; a constructed joke a line (a "Magic and Goat Rental" shop, the keeper's unrelated sideline);
+British and archaic flavour words (reeve, victualler, pilfered, splendid); every person purposeful and on-point where
+Westwood's are flat, functional, redundant, unhelpful, American-cartoonish, wired to the plot's mechanics (the Captain
+waits at the gate, take this key), with one speech too long and melodramatic. One judge noticed Westwood lines
+repeated between a control and a real packet (pools overlap): from i6 no judge gets two packets of one round.

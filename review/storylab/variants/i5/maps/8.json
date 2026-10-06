@@ -1,0 +1,340 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Fornath",
+  "setting": "a lava-forge town of smiths",
+  "trouble": "The warlock Gorvane and his Ogres have seized the Black Smeltery up the mountain, and Fornath's forges are starving for ore.",
+  "names": {
+   "Fornath": "place",
+   "Nox": "place",
+   "Kasrak": "person",
+   "Tobrin": "person",
+   "Gorvane": "person",
+   "Ogres": "group",
+   "Black Smeltery": "place",
+   "Mountain Road": "place",
+   "Anvil Hall": "place",
+   "Bodo": "person",
+   "Krall": "person",
+   "Ember Demons": "group",
+   "slag pits": "place",
+   "Fennick": "person",
+   "Salamander Cloak": "thing",
+   "Imps": "group",
+   "Cinder Caves": "place",
+   "Smiths' Gate": "place",
+   "Ambrus": "person",
+   "Tavik": "person",
+   "old quarry": "place",
+   "broken bridge": "place",
+   "old ore chute": "place",
+   "Velda": "person",
+   "Fire Shrine": "place",
+   "Great Bell": "thing",
+   "lava falls": "place",
+   "Grubb": "person",
+   "Bram Sootfinger": "person",
+   "old furnace tunnels": "place",
+   "Hesta": "person",
+   "Slag Pot": "place",
+   "Gundrek": "person",
+   "Zibba": "person",
+   "Kettla": "person",
+   "Harl": "person",
+   "Bessamy": "person"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Bodo, guard at the Lava Gate of Fornath: proud of the town and its master, then idle talk, then nothing to do with the quest.",
+   "names": {
+    "Bodo": "person",
+    "Fornath": "place",
+    "Kasrak": "person",
+    "Nox": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Bodo",
+     "text": "Welcome to Fornath, stranger! Home of the great Master Kasrak and the hottest forges in all of Nox!"
+    },
+    "again": {
+     "speaker": "Bodo",
+     "text": "Hot one today, isn't it?"
+    },
+    "later": {
+     "speaker": "Bodo",
+     "text": "Good day to you, lad. My watch is nearly over."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Overseer Krall wants the Ember Demons cleared out of the slag pits and hands over the iron key to the pit gate at once.",
+   "names": {
+    "Krall": "person",
+    "Ember Demons": "group",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Fornath": "place",
+    "slag pits": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Krall",
+     "text": "Moreover, production in the slag pits has ceased entirely. Entirely! Ever since those Ember Demons came crawling up out of the vents.\n\nThese abominable creatures appeared the very night Gorvane's Ogres seized the Black Smeltery. My workers have been forced to abandon their posts and the pits are now wholly besieged. Irregardless of the danger, the pits must be reclaimed for Fornath.\n\nHere, take this iron key, it will open the gate to the slag pits at the east end of town. Descend into the pits and eradicate every last one of these nefarious beasts. Report back to me when it is done."
+    },
+    "reminder": {
+     "speaker": "Krall",
+     "text": "Is it done? No? Then go, go!"
+    },
+    "completion": {
+     "speaker": "Krall",
+     "text": "Splendid! The slag pits are liberated at last! My workers can return to their labors.\n\nTake this shield as a token of my appreciation. You will have need of it, with Gorvane's Ogres still up on the mountain."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Eradicate the Ember Demons in the slag pits."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WoodenShield"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Fennick the assayer, a nervous fusspot, lost his Salamander Cloak to the Imps of the Cinder Caves; he pays with the key to the Smiths' Gate and sends the player on to Kasrak.",
+   "names": {
+    "Fennick": "person",
+    "Imps": "group",
+    "Salamander Cloak": "thing",
+    "Cinder Caves": "place",
+    "Smiths' Gate": "place",
+    "Kasrak": "person",
+    "Anvil Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Aiiieee! Get back! Get back, I say! ... Oh. Oh, it's a person. Forgive me, I thought the Imps had come back for the rest of my things. They crept down my chimney and stole my Salamander Cloak! Go to the Cinder Caves south of town and get it back for me."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Well! Fine. I'll ask somebody with a little more backbone."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "My cloak? Have you got it? Oh.... Oh dear."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My cloak! My Salamander Cloak! Thank you, thank you, thank you!\n\nHere, take this brass key. It opens the Smiths' Gate on the north side of the square. Nobody will bother you on that road."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Master Kasrak was looking for you. He's waiting in the Anvil Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fennick's Salamander Cloak from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Return to Master Kasrak in the Anvil Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Kettla brushes the player off, Harl states the trouble plainly, Bessamy says the same news again.",
+   "names": {
+    "Kettla": "person",
+    "Harl": "person",
+    "Bessamy": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Kettla",
+     "text": "Sorry, can't talk now. My crucible's about to spill."
+    },
+    "rumour2": {
+     "speaker": "Harl",
+     "text": "Gorvane's Ogres have the Black Smeltery. No ore will come down the mountain until they're gone."
+    },
+    "rumour3": {
+     "speaker": "Bessamy",
+     "text": "Did you hear? Ogres up at the Black Smeltery! Ogres!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hesta of the Slag Pot inn (bad times), Gundrek the armourer (a wink at the price), Zibba of the potion shop (the town's one comic person).",
+   "names": {
+    "Hesta": "person",
+    "Slag Pot": "place",
+    "Ogres": "group",
+    "Gundrek": "person",
+    "Fornath": "place",
+    "Zibba": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hesta",
+     "text": "Welcome to the Slag Pot. Ain't hardly nobody come up the mountain since them Ogres moved in. I'm about ready to pack it in fer good."
+    },
+    "arms": {
+     "speaker": "Gundrek",
+     "text": "Fornath steel, the best money can buy! And you look like you have a good deal of money."
+    },
+    "magic": {
+     "speaker": "Zibba",
+     "text": "Ooh, a new face! I can always spot the new ones, they've still got their eyebrows! Come in, come in!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Priestess Velda wants the Great Bell back from the Ogre camp and pays with a spell; Warden Grubb puts a dead-or-alive bounty on Bram Sootfinger, who sells Fornath swords to the Ogres.",
+   "names": {
+    "Velda": "person",
+    "Ogres": "group",
+    "Fire Shrine": "place",
+    "Great Bell": "thing",
+    "Fornath": "place",
+    "lava falls": "place",
+    "Grubb": "person",
+    "Bram Sootfinger": "person",
+    "old furnace tunnels": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Velda",
+     "text": "Ogres! Ogres in the Fire Shrine! They've carried off the Great Bell! Every forge in Fornath is lit at the ringing of that bell! Go east past the lava falls to the Ogre camp and bring it back. I'll teach you a fine spell for your trouble."
+    },
+    "offer_b": {
+     "speaker": "Grubb",
+     "text": "Bram Sootfinger has been selling our swords to the Ogres, the dirty rat! He's hiding out somewhere in the old furnace tunnels.\n\nBring him to me alive and I'll pay you 150 gold. Dead, 75. I'd rather have him alive... I've got a cell all swept out for him."
+    },
+    "outcome_a": {
+     "speaker": "Velda",
+     "text": "The Great Bell! You brought it home! Oh, the smiths will be so glad!\n\nNow, a spell for you, as I said. Hold still... There! It is yours, brave Adventurer."
+    },
+    "outcome_b": {
+     "speaker": "Grubb",
+     "text": "Alive, eh? Good work! In you go, Bram.\n\nHere's your gold. 150 pieces, count them if you like."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the Great Bell back to Priestess Velda."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Capture Bram Sootfinger for Warden Grubb, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Ambrus, a fussy old hermit, begs the player to free Tavik, one of Kasrak's scouts, from the Ogre stockade at the old quarry; he gives the cell key, and the reward is the way on into the Black Smeltery.",
+   "names": {
+    "Ambrus": "person",
+    "Tavik": "person",
+    "Kasrak": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "old quarry": "place",
+    "broken bridge": "place",
+    "Black Smeltery": "place",
+    "old ore chute": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ambrus",
+     "text": "Greetings, Wanderer. Careful where you step, those are my mushrooms. There. Much better.\n\nOne of Master Kasrak's scouts came past my hut a few nights back. Tavik, his name is. He was going up to spy on Gorvane's Ogres, and the brutes caught him. They've got him locked up in their stockade at the old quarry, northwest of here, past the broken bridge.\n\nLast night one of those Ogres fell asleep against my door, and I took this key right off his belt. Here, it should open Tavik's cell. If you could bring the boy home, you'd ease an old man's worries, and Kasrak would owe you a great deal."
+    },
+    "reminder": {
+     "speaker": "Ambrus",
+     "text": "Go now, Wanderer! Tavik won't last long up there."
+    },
+    "found": {
+     "speaker": "Tavik",
+     "text": "Over here! Is that a key? Open it, quick!"
+    },
+    "following": {
+     "speaker": "Tavik",
+     "text": "Lead on. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Ambrus",
+     "text": "Tavik! Home at last, and all in one piece! Thank you, brave Adventurer.\n\nHe tells me there's a back way into the Black Smeltery, through the old ore chute. Go and tell Master Kasrak at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Tavik the scout from the Ogre stockade."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Harl points the player to Master Kasrak, the town's old warlord and an old friend of Tobrin; Kasrak gives a sword and sends him up the Mountain Road against Gorvane.",
+   "names": {
+    "Harl": "person",
+    "Tobrin": "person",
+    "Kasrak": "person",
+    "Anvil Hall": "place",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Fornath": "place",
+    "Mountain Road": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Harl",
+     "text": "Are you the one Tobrin sent? Master Kasrak has been asking for you since sunup! Go on up to the Anvil Hall, quick!"
+    },
+    "opening": {
+     "speaker": "Kasrak",
+     "text": "So, Tobrin sent you. Good. He spoke highly of you, lad, and we have need of every brave arm. The nefarious warlock Gorvane has marched his Ogres up the mountain and seized the Black Smeltery. Every bar of iron in Fornath comes out of that smeltery -- every one!\n\nGorvane means to turn our own furnaces against us. Once his Ogres are armed with Fornath steel, they will come down the mountain and nothing in the land will stand before them.\n\nTake this sword. It was forged in this hall and it has never failed me. Go up the Mountain Road to the Black Smeltery and drive Gorvane out. Fornath's fires are in your hands!"
+    },
+    "reminder": {
+     "speaker": "Kasrak",
+     "text": "Still here, lad? Every hour you tarry, Gorvane's Ogres forge another blade!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Gorvane and his Ogres from the Black Smeltery."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  }
+ }
+}

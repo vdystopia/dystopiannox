@@ -1,4 +1,4 @@
-# The story lab's writer brief (v4: write from Westwood's lines)
+# The story lab's writer brief (v6: write from Westwood's lines, by your map's card, then the plain pass)
 
 You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
 Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
@@ -19,11 +19,49 @@ tell your town from one of Westwood's.
    Never copy or lightly reword a line, and never reuse a Westwood name.
 3. **Then check against `rules/DIALOGUE.md`** (its numbers and the tells below) and `rules/QUESTS.md` (quest
    shapes). Where a rule and the exemplars seem to differ, follow the exemplars.
-4. **Reread the whole town as one.** Uneven like Westwood's towns? Some people plain and functional, one or two odd;
-   some lines one word, a few long. Anything that sounds like a modern novelist, a tabletop module or a clever
-   screenwriter: cut it. Every line polished: rough some up.
+4. **Follow your card** (below the brief): it draws your map's shapes from Westwood's spread (how each giver opens,
+   asks and pays; what the guard, the townsfolk and the keepers say; who the captive is; the one comic person; one
+   rough patch) and gives each part its own model lines. Ten writers with one brief otherwise write one template.
+5. **The plain pass (last, on every line).** The judges still find our lines *writerly*: crafted, purposeful, tidy.
+   Go through the town once more and, line by line:
+   - **The reward is handed over, not explained.** No backstory for it ("a deserter left this bow", "found it in the
+     moat"). Westwood: "Here's your reward -- 100 in gold!", "please take this as a token of my appreciation",
+     "Take this key", "these bottles of Mana and the Infravision spell will come in handy".
+   - **One bearing, no chain of landmarks.** "east of here", "in the cemetery", "the Ogre village in the northeast";
+     never "south of the castle by the old mill".
+   - **No cause and effect.** State the trouble and move on; do not explain who drove the beasts or why the road
+     matters.
+   - **One joke a town, maybe two.** Cut every other set-up-and-punchline, every gag shop name ("Magic and Goat
+     Rental"), every "I also mend cauldrons" sideline. The rest is flat and functional: "Welcome to the shop of
+     Bright Blades! How can I help you?"
+   - **American and cartoonish, not British or archaic.** No reeve, victualler, purveyor, pilfered, splendid, bother,
+     "me stood", deputate, expungement. American spelling (armor, favor, honor). "mate", "Ya", "Heh, heh" are fine.
+   - **Plot wiring.** Every giver names the chapter's trouble or sends the player to someone ("The Captain awaits you
+     at the front gates.", "Go see Mayor X, his house is in the center of town.").
+   - **Unhelpful people.** One reminder that adds nothing ("Those nettlesome urchins are causing too much trouble
+     these days."), one townsperson who repeats what another said, one who just brushes the player off. Captives say
+     function lines ("I'll follow you.", "Help us!").
+   - **Uneven.** One speech in the town too long, over-explained and melodramatic; one line of two words.
+   - **Loose.** Your card's rough patch; "?!" once; "Oh...." once; no `--` at all; not every offer ends on "Will
+     you...?"; not every reminder is a one-line jab.
+   Then reread the whole town as one.
 
 ## What gave earlier writers away (the judges' tells)
+
+- **(i4) Ten writers, one template.** Independent writers with one brief wrote the same lines: "Bah! Scorpions!" /
+  "Dead? All of 'em? Ha!" / "You earned every piece"; "Psst! ... Heh, heh, heh... a deal's a deal"; "Did X send
+  you?" / "I think they're coming back!"; "Halt! ... [Person]'s orders"; "Pull up a stool"; "hasn't slept a wink";
+  "bread in the oven"; rescued boys named Wim. Whatever comes to you first comes to every writer: take your card's
+  shape, and when a line arrives too easily, write the second idea.
+- **(i4) Exact gold everywhere.** Westwood pays with items, spells, keys, passes and "a token of my appreciation" at
+  least as often as with a sum; and its quests run on mechanics: a key handed over, a gate opened, a petition signed,
+  the player sent on to the next person.
+- **(i4) A joke in every line, one menace in every mouth.** Most of a Westwood town is flat ("This is the home of
+  Mayor Theogrin.", "I'm very busy."); one or two people are funny, broadly. Townsfolk talk about local or unrelated
+  things as often as about the chapter's villain.
+- **(i4) Too clean.** Westwood's text is loose: "?!", "Oh....", a run-on, a fragment, a stiff word slightly wrong.
+  Keep one rough patch a town (your card says where). Dialect spelling ("yer", "fer") for one person at most; `--`
+  once a town at most; no wares listed in threes.
 
 - One template: the same beats in every quest (hail, self-introduction, named beast leader, a precise place, gold
   plus an item plus a joke, "Will you...?"). Each person here gets another shape.

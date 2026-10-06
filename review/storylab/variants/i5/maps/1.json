@@ -1,0 +1,308 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so Reeve Halvard has shut the north gate.",
+  "names": {
+   "Brackenford": "place",
+   "Bracken": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Chapel of the Ford": "place",
+   "Chapel": "place",
+   "Mabry's Magnificent Magicks": "place",
+   "Halvard": "person",
+   "Reeve Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Brother Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Nettle Hob": "person",
+   "Hob": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Garrick at the shut north gate, proud of Reeve Halvard; thanks once Corwin is dealt with.",
+   "names": {
+    "Reeve Halvard": "person",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Garrick",
+     "text": "Reeve Halvard is the finest Reeve Brackenford ever had! When he says this gate stays shut, it stays shut!"
+    },
+    "again": {
+     "speaker": "Garrick",
+     "text": "Finest Reeve we ever had. The gate stays shut."
+    },
+    "later": {
+     "speaker": "Garrick",
+     "text": "All of Brackenford thanks you, stranger."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd with grand words, wants the Ashwood wolves killed; pays with a minstrel's bow and sends the player to Halvard.",
+   "names": {
+    "Ashwood": "place",
+    "Reeve Halvard": "person",
+    "Moot Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Greetings, kind sir. I am beset by wolves! Each night they descend out of the Ashwood upon my poor flock, and I am far too old to repel such abominable creatures myself. Would you venture into the wood and exterminate the beasts? I shall reward you handsomely."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Another ewe taken last night! Please, make haste!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "The wolves are gone from the Ashwood? Splendid! Splendid! My flock is liberated at last!\n\nPlease, take my old bow and quiver. I purchased the bow from a traveling minstrel who swore it once belonged to a king. I have never hit a thing with it. Now, if you are seeking more honest work, go and see Reeve Halvard in the Moot Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the wolves that prey on Ulric's sheep."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Bow", "Quiver"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, grumbles that the Urchins of the barrow took her ring of mill keys; orders the player to get them, pays with a spell book, sends him to Anselm.",
+   "names": {
+    "Urchins": "group",
+    "Brother Anselm": "person",
+    "Chapel of the Ford": "place",
+    "Pip": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Oh, curse them all! Those Urchins have been into my mill again?!\n\nThey crawled up out of that old barrow east of the ford, and this time they took my ring of keys. The grain loft, the sluice, the front door -- all locked tight and me stood on the wrong side of them!\n\nGo into the barrow and get my keys back. I'll teach you a spell for your trouble, and a good one."
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Hmph! And I took you for the helpful sort."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Well? Where are my keys?"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My keys! Every last one of them! Oh, thank you, lad! Here's the spell book I promised you. Study it hard.\n\nAnd go and see Brother Anselm at the Chapel of the Ford. His boy Pip never came back out of that barrow."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "The wheel's turning again, thanks to you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's mill keys from the Urchins' barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's mill keys from the Urchins' barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: a pointer to the inn, a warning about the Ashwood wolves, a tip about smashing barrels.",
+   "names": {
+    "Drowned Lantern": "place",
+    "Ossian": "person",
+    "Ashwood": "place",
+    "Urchins": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Townsman",
+     "text": "Ask at the Drowned Lantern. Ossian knows everybody's business."
+    },
+    "rumour2": {
+     "speaker": "Townswoman",
+     "text": "Stay out of the Ashwood after dark! The wolves are worse this year than I've ever seen."
+    },
+    "rumour3": {
+     "speaker": "Townsman",
+     "text": "I've heard the Urchins stuff what they steal into barrels and crates. Smash them open and see!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Ossian the innkeeper who also makes coffins, Dunstan's flat slogan, Mabry the comic potion seller.",
+   "names": {
+    "Drowned Lantern": "place",
+    "Dunstan": "person",
+    "Bracken": "place",
+    "Mabry's Magnificent Magicks": "place",
+    "Brackenford": "place"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern. I rent the rooms, and I make the coffins for the whole town."
+    },
+    "arms": {
+     "speaker": "Dunstan",
+     "text": "This is Dunstan's forge. Best steel on the Bracken! How can I help you?"
+    },
+    "magic": {
+     "speaker": "Mabry",
+     "text": "Welcome to Mabry's Magnificent Magicks, sole supplier of potions to Brackenford and surrounding areas! Buy something, please. My cat hasn't eaten since Tuesday!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Reeve Halvard, fussy, bargains for the stolen tithe chest and hands over the watchtower cellar key; Sly Wat posts his own bounty on Nettle Hob, dead or alive.",
+   "names": {
+    "Halvard": "person",
+    "Sly Wat": "person",
+    "Nettle Hob": "person",
+    "Hob": "person",
+    "Crow Hill": "place",
+    "Corwin": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Ah. Hello. I presuppose you have come concerning the tithe.\n\nVery well. If you will fetch back the tithe chest those nefarious bandits carried off, I will see you paid in full, and promptly. Here, take this iron key. It opens the cellar under the old watchtower. They will have put the chest down there, I am quite certain."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Halvard's men won't go near Crow Hill. So I'm putting up my own bounty.\n\nThere's a fellow up there called Nettle Hob. He threw me out of Corwin's band and kept my share, didn't he? Bring him down here alive and I'll pay you 60 gold. Dead, 30. Alive is better. I want to see his face."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest! Is it all there? ... Yes. Yes, all there. Most satisfactory! Your reward is 120 gold pieces."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Hob! Look at him! Oh, this is a happy day. Here's your gold, as agreed."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from the old watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Nettle Hob to Sly Wat, dead or alive."
+    }
+   },
+   "reward": {
+    "gold": 180,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip and the Chapel's gravediggers went after the Urchins and are trapped in the barrow; lead them out to the barrow gate.",
+   "names": {
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel": "place",
+    "Brother Anselm": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Good day. You would be the traveler who has been assisting the townsfolk, I believe.\n\nMy novice Pip went off after those Urchins with the Chapel's gravediggers, armed with nothing but shovels and a lantern. That was yesterday. Not one of them has returned, and I fear some abominable fate has befallen them.\n\nLet us make an arrangement, you and I. Liberate the boy and those poor men and bring them home, and the Chapel will not forget your kindness."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Have you found them? The Urchins came up out of the old barrow east of the ford. Try there!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Is someone there? It's Pip, from the Chapel! We're all in here! Please, get us back to the gate!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Keep together, everyone! Stay close behind!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You're alive! And the diggers with you!\n\nBless you, brave Adventurer! Please accept this ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Brother Anselm's novice Pip and the lost gravediggers."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Reeve Halvard in the Moot Hall; Halvard briefs him on Red Corwin in the Crow Hill watchtower and gives him the town's scrolls.",
+   "names": {
+    "Reeve Halvard": "person",
+    "Moot Hall": "place",
+    "Garrick": "person",
+    "Brackenford": "place",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The north gate's shut and nobody can get the flour out to market! If you're looking for work, Reeve Halvard is in the Moot Hall. Go and see him."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "So, you're the one Garrick told me about. Good! Brackenford has need of you, lad.\n\nRed Corwin and his band of cutthroats have taken the old watchtower on Crow Hill. From up there they see every cart on the north road, and they rob every one. I have shut the north gate, and now Brackenford is besieged in all but name!\n\nCorwin must be removed. Go up Crow Hill, take back the tower and bring Corwin down, by whatever means. Garrick will open the gate for you.\n\nTake these scrolls. They are the town's own, kept in the Moot Hall for darker days than this. Use them well."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Every day Corwin sits in that tower, Brackenford grows poorer. Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the watchtower on Crow Hill from Red Corwin."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

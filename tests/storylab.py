@@ -16,6 +16,8 @@ The loop (review/storylab/README.md):
     py tests/storylab.py brief --iter NAME                 one brief a writer (one town each, every scenario)
     py tests/storylab.py merge --iter NAME                 variants/NAME/maps/<n>.json -> variants/NAME/<scenario>.json
     py tests/storylab.py control --iter NAME               the control packets (all Westwood) and their results
+    py tests/storylab.py modes                             the phrases every writer reaches for -> review/storylab/modes.json
+    py tests/storylab.py card --seed MAPNAME               a map's story card: its draw of Westwood's shapes and model lines
     py tests/storylab.py <scenario|all> --iter NAME [--n 10]   judge the variants, write the packet and scorecard
     py tests/storylab.py summary                           every scenario and iteration in one table
     py tests/storylab.py westwood                          Westwood's measures, and its own units scored
@@ -466,6 +468,9 @@ def brief(it, baseline=False, writers=10):
                   "Nox-like names (short, odd fantasy names in the manner of Theogrin, Gearhart, Byzanti, Mlurgh, "
                   "Grillf, Lydia, Henrick, but not these); a few places. The troubles of the scenarios below become "
                   "this town's own (another beast, thing, captive, deal).", ""]
+        if os.path.exists(os.path.join(LAB, "cards.py")) and it not in ("i4",):
+            import cards
+            L += [cards.card(f"{it}-{n}", [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"]), ""]
         L += ["## What to write", "",
               "Every scenario below, as one town's lines, by you alone (do not look at other writers' files). "
               "Each scenario's people are this town's people; one person may appear in two scenarios.", ""]
@@ -478,7 +483,7 @@ def brief(it, baseline=False, writers=10):
             L.append("")
         L += ["## The file", "",
               f"Write `review/storylab/variants/{it}/maps/{n}.json` (in the worktree; nothing else):", "", "```json",
-              json.dumps({"iter": it, "writer": "<agent and model>", "guide": "WRITER.md v4 + exemplars",
+              json.dumps({"iter": it, "writer": "<agent and model>", "guide": "WRITER.md + exemplars + card",
                           "map": {"name": "<town>", "setting": TOWNS[n - 1], "trouble": "<the chapter's trouble, a line>",
                                   "names": {"<Every Name you use>": "person|place|thing|group"}},
                           "scenarios": {"<scenario id>": {"specifics": "<one line: who, what>", "names": {},
@@ -613,6 +618,38 @@ def extract_design(path):
     return out, src
 
 
+def find_modes(min_towns=3):
+    """review/storylab/modes.json: four-word phrases that three or more towns of one round wrote (not in a journal,
+    not a name) and Westwood's campaign never has."""
+    vdir = os.path.join(LAB, "variants")
+    ww4 = set()
+    for r in westwood.campaign():
+        w = [x.lower() for x in metrics.words(r["text"])]
+        ww4 |= {tuple(w[i:i + 4]) for i in range(len(w) - 3)}
+    found = collections.Counter()
+    for it in sorted(os.listdir(vdir)):
+        md = os.path.join(vdir, it, "maps")
+        if not os.path.isdir(md): continue
+        per = collections.defaultdict(set)
+        for f in os.listdir(md):
+            m = json.load(open(os.path.join(md, f), encoding="utf-8"))
+            names = {w.lower() for n in (m.get("map", {}).get("names") or {}) for w in metrics.words(n)}
+            for sid, v in (m.get("scenarios") or {}).items():
+                for p, x in v["parts"].items():
+                    if p.startswith("journal"): continue
+                    w = [y.lower() for y in metrics.words(x["text"] if isinstance(x, dict) else x)]
+                    for i in range(len(w) - 3):
+                        g = tuple(w[i:i + 4])
+                        if g in ww4 or any(y in names for y in g): continue
+                        per[g].add(f)
+        for g, fs in per.items():
+            if len(fs) >= min_towns: found[" ".join(g)] = max(found[" ".join(g)], len(fs))
+    out = dict(_doc=find_modes.__doc__.strip(), phrases=sorted(found), towns=dict(sorted(found.items(), key=lambda x: -x[1])))
+    json.dump(out, open(os.path.join(LAB, "modes.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
+    print(f"{len(found)} phrases -> review/storylab/modes.json")
+    for g, n in sorted(found.items(), key=lambda x: -x[1])[:40]: print(f"  {n}  {g}")
+
+
 def check(design):
     lines, src = extract_design(design)
     if not lines:
@@ -679,6 +716,7 @@ def main():
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--baseline", action="store_true")
     ap.add_argument("--check", metavar="DESIGN")
+    ap.add_argument("--seed", help="card: the map's seed (its name)")
     a = ap.parse_args()
     if a.check: sys.exit(check(a.check))
     world, S = scenarios()
@@ -688,6 +726,10 @@ def main():
     elif a.what == "summary": summary()
     elif a.what == "westwood": show_westwood()
     elif a.what == "merge": merge(a.iter)
+    elif a.what == "modes": find_modes()
+    elif a.what == "card":
+        import cards
+        print(cards.card(a.seed or a.iter, [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"]))
     elif a.what == "control":
         rows = [r for r in (run_control(sc, a.iter) for sc in S.values()) if r]
         if rows:

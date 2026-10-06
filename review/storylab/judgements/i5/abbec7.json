@@ -1,0 +1,32 @@
+{
+  "packet": "abbec7",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The boastful welcome follows Westwood's template, but 'those boots won't last a day in the shafts' is crafted local colour, and the 'go on down and hurry, needs every hand' line is a formula."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Effusive, plot-forwarding exposition ('You must be the great [Group]... dispatched to aid our beloved [Place]!', 'Delay no longer! The Mayor needs your help!') and a bandit warning. Typical Westwood signposting."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Terse and tidy. 'Oh, one more thing. Keep off the wall walk. It's solid ice up there' reuses the forgot-to-mention structure with invented detail, and 'Up the pass with you' is a writer's idiom."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A list of petty rules with a punchline ('don't even think about wizardry. Enjoy your stay.'), then 'I forgot to mention, no loitering.' Westwood's dry comic guard."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Halt! You are forbidden to pass! Only warriors may enter...', a plain direction west, and 'Good luck in the mines, boy.' Blunt gatekeeping in Nox's style, with a slightly redundant direction."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "A weather complaint ('I hate the rain'), a missing cart and a no-fires rule. Atmospheric small-talk modelled on the tidy-city guard, but it gives the player nothing to act on."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Oh, I forgot to tell you. No casting spells inside the walls. That means you too.' echoes Westwood's rule gag, and 'Your valor is the talk of the [Thing]' is a stock fantasy phrase."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A blunt bureaucratic checkpoint, the hostile 'Be gone [Group], before I blast you to oblivion' and a curt 'Sorry, the [Place] are closed.' Functional and rude in Westwood's way."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A paternalistic explanation ('The wilds hold far too many perils for the common man'), a curt 'Move on!', then formal permission to pass, Adventurer. Classic Westwood gate flow."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Hottest forges in all of Nox', 'Hot one today, isn't it?' and 'My watch is nearly over' are idle flavour barks that tell the player nothing. They are smoother and emptier than Westwood's."}
+  ],
+  "tells": [
+    "Westwood's guards always serve gating: they state a rule, a block, a direction or a permission. New guards drift into idle small-talk (weather, end of shift, boots).",
+    "New texts reuse a recognisable Westwood structure ('Oh, I forgot to mention...', 'The gate is open! Hurry!') with fresh invented detail, so the formula repeats across several texts.",
+    "New texts use writerly idioms and stock fantasy phrases ('Up the pass with you', 'Your valor is the talk of...', 'solid ice up there'). Westwood is blunter and more expository.",
+    "Westwood's lines are often longer and over-explained or melodramatic. New lines are trimmed and evenly paced."
+  ]
+}

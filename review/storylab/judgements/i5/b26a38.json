@@ -1,0 +1,32 @@
+{
+  "packet": "b26a38",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Directional repetition matches Westwood's guard style, but the opening 'shipment will be delayed' reason and the near-copy of another guard's line suggest it was modelled on one."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The mocking jailer, the 'or a two!' slip, and the anticlimactic 'drinking binge again... Have a nice day' are Westwood's deadpan humour."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Very flat and generic ('This is the home of', 'a great deed for our village'); could be a minor Westwood guard, but it gives the player nothing specific and reads like filler built to the template."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The long, florid gate speech ('fairest of all villages in the land of Nox... open warm arms of aid') is a signature Westwood welcome, with a clumsy grandness no imitation bothers with."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "A tidy escalation (warning, then 'Last warning') and a neat line about the cells; well-shaped but generic, with no plot hook or Nox colour."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plausible gatekeeping, but 'meant for your own good... perils for the common man' is a little composed, and the three lines resolve neatly like a designed state machine."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Hostility to a class ('blast you to oblivion') is Nox-like, but the checkpoint framing and the bare 'Sorry, the [Place] are closed' could be imitation; a guess."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plot-alarm exposition with Westwood's typographic slip ('look out' as two words) and the melodramatic 'curse of the necromancer come to haunt Nox again!'."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The urgent mine-crisis greeting, the Foreman waiting outside, and 'Your valor knows no peer' are classic Westwood quest-hub guard lines."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The three lines don't quite cohere (forbidden to pass, then go back west, then good luck in the mines, boy), which is the patchwork of Westwood's shared guard scripts."}
+  ],
+  "tells": [
+    "Westwood's guards serve the plot: they point at the current objective, raise alarms about the villain, or deliver a long civic welcome; generated guards tend toward generic gatekeeping with no specific hook.",
+    "Westwood's lines include small slips and odd humour (typos, 'a week, or a two', anticlimactic jokes); the new texts are clean and evenly paced.",
+    "Generated sets form a neat escalating arc (welcome, warning, last warning); Westwood's three lines are often stitched from different moments and don't flow.",
+    "Florid over-long speeches and exclamatory melodrama are a Westwood marker; the new writing is more restrained and uniform in length."
+  ]
+}

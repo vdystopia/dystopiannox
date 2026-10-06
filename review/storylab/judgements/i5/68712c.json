@@ -1,0 +1,32 @@
+{
+  "packet": "68712c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Short, plain and plausible, but generic: 'So, what's the good word?' and 'better prices' carry no place or plot. 'Hallowed shop... full range of needs' is close to Nox but a bit polished."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The greetings are tied to the chapter's plot (Ogres invading the tower, reclaiming the [Thing]), with 'lad' and a price-lowering offer. That is how Westwood's shopkeepers comment on current events."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Pig-headed armored sheep marching up and down' and the drawn-out 'Ahhhhhhhh...' are Westwood's broad, character-driven humour and its spelled-out noises."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Welcome, Wanderer!' and 'finest wares in all of Nox' read like a template. The all-caps 'EXOTIC WARES' tries for Westwood's goofiness but feels pasted on."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The arms dealer's pitch about running the dreaded [Thing], 'You'll need more than burning desire!', and the dropped article in 'during [Place] run' are Westwood's slightly rough salesmanship. The dry informational magic line fits too."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "'Welcome to the shop of [Person]! How can I help you?' is bland, and the inn line echoes another text's formula. The 'one stop shop for literary needs' joke is modern-flavoured."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "Muted, laconic, modern customer-service lines ('Feel free to look around. I'm here if you need anything.') with no colour, place or exclamation. Not Nox's register."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The register jumps from 'aye mate?' to 'Ya need' to a flat encyclopedic magic line. A mix of dialect markers stuck on rather than one voice."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "A rival innkeeper's name-drop, 'sir [Group]', and 'Welcome to the [Group]'s Keep!' are the plain, place-anchored welcomes of Westwood's towns."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'Let's get to know each other! Buy something!' and an undertaker asking 'funerary services or... purchase goods?' are Westwood's dark-comic shopkeeper humour, with ellipses and a page break."}
+  ],
+  "tells": [
+    "Westwood's shop greetings reference the chapter's current plot or the player's quest item. New ones are generic welcomes that could sit in any town.",
+    "Westwood's humour is broad and character-specific (insults, drawn-out noises, a morbid salesman). New humour is a single pasted-on gag or none at all.",
+    "New lines use modern, low-key customer-service phrasing ('Feel free to look around', 'How can I help you?') where Westwood exclaims.",
+    "Dialect markers ('aye mate', 'ya', 'lad') are scattered inconsistently within one text rather than giving one speaker one voice."
+  ]
+}

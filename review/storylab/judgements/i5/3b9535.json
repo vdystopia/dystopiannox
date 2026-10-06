@@ -1,0 +1,32 @@
+{
+  "packet": "3b9535",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Plain, slightly stiff welcomes built around the shop's name and a rival's ('not as fancy as [Person]'s'); no joke reaching for effect. Reads like Westwood's functional greeters."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Every line is a crafted punchline (wipe your boots, horseshoes for everybody else, what doesn't sell I drink). Funny, but too evenly joke-loaded across three shops to be Westwood's mix."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A terse inn line, a long, awkwardly pushy sales pitch tied to the chapter's trial, and a flat informational magic-shop line. That unevenness and the sales-flyer grammar ('during [Place] run') are Westwood's."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Menacing, odd ('arrange funerary services or... purchase goods?') and the abrupt 'Let's get to know each other! Buy something!' have Nox's off-kilter humour without a set-up-and-punchline shape."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The 'finest in all of Nox! Well... finest in [Place]' self-correction and 'I also mend cauldrons' side-trade joke are a modern comic formula; 'Sit yerself down' dialect spelling feels added."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The side-trade gag again ('I pull teeth too'), and the magic shop line paraphrases a Westwood supplier line too closely ('sole purveyor... State your needs'). Pattern-built."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The rambling insult ('pig-headed armored sheep marching up and down, up and down!') and the drawn-out 'Ahhhhhhhh... young sir!' are idiosyncratic and tied to plot, very Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Victuallers to the garrison' is a writerly word, 'since the dead started walking' is world-state exposition, and 'goats out back' is a random-comedy beat; three different registers stitched together."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line explains local circumstance (roads closed, hamlet's swords) and ends with a crafted gag ('still got both your eyebrows'). The em-dash '--' and polished timing give it away."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "Short, functional, a bit gruff ('be quick about it'), with the shop identifying itself by owner's name. Unpolished in the way Westwood's minor vendors are."}
+  ],
+  "tells": [
+    "Generated shopkeepers almost all carry a constructed joke per line, especially the 'I also do some unrelated trade' gag (mend cauldrons, pull teeth, horseshoes); Westwood's vendors are often flat or functional, with humour that is odd rather than set-up-and-punchline.",
+    "Generated lines explain the town's situation in passing (roads closed, dead walking, half the street gone); Westwood greetings tie to the player's chapter goal or simply name the shop.",
+    "Writerly vocabulary (victuallers, purveyor) and '--' dashes mark the new texts; Westwood uses '...' and long drawn-out interjections ('Ahhhhhhhh...').",
+    "Westwood's set is uneven in length within one text (a two-word inn line beside a long sales pitch); the generated sets are evenly balanced."
+  ]
+}

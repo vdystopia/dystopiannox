@@ -1,0 +1,33 @@
+{
+  "packet": "9d59e4",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Tidy, complete quest shape with a backstory for the reward ('A courier left them here and never came back'); the 'squinting at that wall' reminder is nearly identical to H's, a template echo."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Opens mid-conversation ('Good!'), ties the fetch to a petition for the chapter gate, and its reminder is oddly cheerful ('Have faith, one little urchin is no threat'). Westwood's quest plumbing."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless exclamations, 'for the darkest purposes, indeed!', 'foul demoness', and the ominous 'sooner than you think' are Westwood's melodrama; the bare journal 'Retrieve the [Thing].' too."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "The startled scream, the near-blind hermit, 'May all that is great bless you!' and a scroll 'about bats' are odd, specific and plainly phrased, like Westwood."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Lists the keys' uses with a '--' dash, 'me stood on the wrong side' dialect, and a hook to a follow-up quest in the thanks; richly written but in a modern British-cosy voice, not Nox's."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Welcoming 'valiant Adventurer', 'East' capitalised mid-sentence, the vague reminder that doesn't remind, and the post-quest errand list (buy supplies, then see the Captain) are Westwood."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Lively and plain, but the mud-on-the-floor aside and the 'never brought me any luck, so maybe it will do better for you' reward quip are the crafted humour of the new texts."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Same spyglass-and-Urchins frame and reminder as A; the 'traveling [Group] left it to pay for his supper' reward backstory and polished diction ('pilfered', 'none the wiser') mark it as new."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Copies the startled-hermit opening of a Westwood quest ('Aiiieee! ... Oh. Oh, it's a person') and 'Oh.... Oh dear'; the brass-key reward with 'Nobody will bother you on that road' is a neat designer's touch."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A pet frog in a burning house and the player-joke 'Loads and loads of money?' is Westwood's goofy humour, with a plain journal line."}
+  ],
+  "tells": [
+    "Generated quests give the reward a little backstory (a courier's boots, a peddler's charm, a traveller's spell book left for supper); Westwood just hands the reward over, sometimes with an ominous or goofy line.",
+    "The new texts reuse one template: Urchins/Imps crept in at night and stole a named household object, with a reminder about squinting or missing it; near-duplicates across texts betray the generator.",
+    "Westwood's quests are wired into the chapter's plot (petitions, the demoness, the Captain at the gate, buy supplies first); the new ones are self-contained village chores.",
+    "Writerly diction and dashes ('pilfered', 'none the wiser', '--', dialect spellings) mark the new texts; Westwood is plainer, more exclamatory, with small typographic quirks ('East of here', 'Oh....').",
+    "Westwood's reminders are often unhelpful or off-topic; the new reminders are consistently on-point and witty."
+  ]
+}

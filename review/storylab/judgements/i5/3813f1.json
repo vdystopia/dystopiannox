@@ -1,0 +1,33 @@
+{
+  "packet": "3813f1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clean, well-built briefing with a gift of scrolls and a person who will open the gate, but 'besieged in all but name' and 'darker days than this' are a literary polish Westwood's openings rarely have."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clipped, half-finished instructions ('You'll know. And careful.') and a reminder that repeats itself; the slightly awkward plainness is Westwood's."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Practical, spell-by-spell advice and 'Good luck and good speed' read like real in-mission guidance; the uneven register ('This may get very ugly, lad') is true to Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'So [Person] sent you. Good.' plus 'By the authority of the [Group], I deputate you' and the 'Why are you still standing in my hall?' reminder follow the same template as several others here; the coined 'deputate' is a misfire."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Stiff, expository introduction ('I am [Person]. The Master for the [Place].'), capitalised YOU and a fragment-heavy reminder: rough edges a pastiche would smooth away."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Vivid, controlled scene-setting (screaming heard all the way to town, 'the drowned answer to him now') with 'By the authorization of this village, I command you' is the same formula as D and G; too composed for Westwood."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Long, rhetorical briefing with a heroic sword gift and a slogan ending ('[Place]'s fires are in your hands!'); the repetition for effect ('every one!') and the tidy stakes are a modern writer's."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless, exclamation-laden, slightly ungrammatical ('leaving rebuilding the village our smallest concern') with direct directions (northeast): unmistakably Westwood."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Wordy, slightly bureaucratic mentor speech ('Wildlife incursions in the settled areas is on a steady rise') with its grammar slip and a stray empty page: authentic campaign text."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Short and plain, closer to Nox than the others, but the same 'So [Person] sent you. Good.' opener and a too-complete journal entry with full location mark it as the template."}
+  ],
+  "tells": [
+    "The new texts share one opening template ('So, [Person] sent you. Good.') and one closing beat (gift, then 'Go!'), while Westwood's openings vary in shape and often start mid-situation.",
+    "New texts frame the order formally ('By the authority of...', 'I command you', 'I deputate you'); Westwood's givers just say what to do.",
+    "New texts are more literary and controlled (figurative stakes, rhetorical repetition, slogan endings); Westwood's are plainer, clumsier, with grammar slips, odd capitals and run-on exclamations.",
+    "Westwood's briefings carry concrete mechanics (spells to use, which direction, where the key opens); the new ones dwell on the villain's menace instead.",
+    "New reminders are all impatient one-liners of the same mould ('Still here?', 'Why are you still standing...'); Westwood's reminders restate the task or add a hint."
+  ]
+}

@@ -1,0 +1,705 @@
+{
+ "scenario": "rescue",
+ "iter": "i5",
+ "writer": "one writer a town (variants/i5/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip and the Chapel's gravediggers went after the Urchins and are trapped in the barrow; lead them out to the barrow gate.",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Mabry's Magnificent Magicks": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Nettle Hob": "person",
+    "Hob": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Good day. You would be the traveler who has been assisting the townsfolk, I believe.\n\nMy novice Pip went off after those Urchins with the Chapel's gravediggers, armed with nothing but shovels and a lantern. That was yesterday. Not one of them has returned, and I fear some abominable fate has befallen them.\n\nLet us make an arrangement, you and I. Liberate the boy and those poor men and bring them home, and the Chapel will not forget your kindness."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Have you found them? The Urchins came up out of the old barrow east of the ford. Try there!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Is someone there? It's Pip, from the Chapel! We're all in here! Please, get us back to the gate!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Keep together, everyone! Stay close behind!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You're alive! And the diggers with you!\n\nBless you, brave Adventurer! Please accept this ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Brother Anselm's novice Pip and the lost gravediggers."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Bormunt: Hammel's daughter Nessa was dragged off by the Trolls to their pens east of the Great Shaft; she gives the key to the next cage, where Hask's wife is held.",
+   "names": {
+    "Bormunt": "place",
+    "Mount Grull": "place",
+    "Yorrel": "person",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Great Lift": "thing",
+    "Great Shaft": "place",
+    "Guild Hall": "place",
+    "Miners' Guild": "group",
+    "Brannoc": "person",
+    "Tavik": "person",
+    "Ulbo": "person",
+    "Giant Leeches": "group",
+    "pump house": "place",
+    "flooded gallery": "place",
+    "Quessel": "person",
+    "Imps": "group",
+    "Divining Rod": "thing",
+    "cart tunnel": "place",
+    "Velgard": "person",
+    "Urchins": "group",
+    "Spell Lantern": "thing",
+    "Ludo Quickpurse": "person",
+    "Chain Tunic": "thing",
+    "Hammel": "person",
+    "Nessa": "person",
+    "Hask": "person",
+    "washing cave": "place",
+    "Troll pens": "place",
+    "ore chutes": "place",
+    "Orrin": "person",
+    "Mott": "person",
+    "Elsbeth": "person",
+    "Grumwald": "person",
+    "Sooty Lamp": "place",
+    "Ilvane": "person",
+    "Azure Circle": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hammel",
+     "text": "Trolls! The Trolls have taken my daughter! They came up through the floor of the washing cave and dragged my Nessa away!\n\nThey keep a pen past the old ore chutes, on the east side of the Great Shaft. I'm no fighter, kind sir, I'd only get us both killed. Will you bring her home?"
+    },
+    "reminder": {
+     "speaker": "Hammel",
+     "text": "What are you waiting for?! Please, find my girl!"
+    },
+    "found": {
+     "speaker": "Nessa",
+     "text": "Father sent you? Oh, thank goodness!\n\nHere, take this key, I stole it off the Troll guard. It opens the cage next to mine. Hask's wife is in there!"
+    },
+    "following": {
+     "speaker": "Nessa",
+     "text": "Please hurry! Father will be worried sick."
+    },
+    "completion": {
+     "speaker": "Hammel",
+     "text": "Nessa! My girl! You're safe! Oh, thank you, kind sir, thank you! Please, take this as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Hammel's daughter from the Troll pens."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Oskry: Hadda, boss of the peat cutters; her cutters locked themselves in the old peat shed in the north bog when the dead came up, and she hands over the spare key.",
+   "names": {
+    "Oskry": "place",
+    "the Blackwater": "place",
+    "Vesra the Bog Witch": "person",
+    "Marrock": "person",
+    "Mayor Brumm": "person",
+    "Tobben": "person",
+    "Hobb": "person",
+    "Quillon": "person",
+    "Sister Ondine": "person",
+    "Snig": "person",
+    "Hadda": "person",
+    "Durl": "person",
+    "Skarrow": "person",
+    "Zanthe": "person",
+    "Glynna": "person",
+    "the Long House": "place",
+    "the Sunken Shrine": "place",
+    "the Dry Plank": "place",
+    "Skarrow's Arms and Armor": "place",
+    "the south walk": "place",
+    "the west walk": "place",
+    "the north bog": "place",
+    "the old peat shed": "place",
+    "the Sacred Bell of Oskry": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Giant Leeches": "group",
+    "the peat cutters": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hadda",
+     "text": "Blast it! Blast it all! Of all the days! My peat cutters were out in the north bog this morning when the dead came up out of the water all around them!\n\nThey ran into the old peat shed and locked themselves in. It's north of the village, past the sunken barge. They won't open up for anybody, and I don't blame them.\n\nHere's my offer. You take this spare key, open that shed and bring my cutters home. Do it and there's good gold in it for you!"
+    },
+    "reminder": {
+     "speaker": "Hadda",
+     "text": "Go on! My cutters can't sit in that shed forever!"
+    },
+    "found": {
+     "speaker": "Peat cutter",
+     "text": "The door! Thank goodness! We thought we'd die in here!"
+    },
+    "following": {
+     "speaker": "Peat cutter",
+     "text": "Lead the way. We'll stay close."
+    },
+    "completion": {
+     "speaker": "Hadda",
+     "text": "My cutters! Home, every one of them! Thank you, stranger! Here's 75 gold, as promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Hadda's peat cutters from the shed in the north bog."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Brask: Ferrol the scribe begs the player to find his master Gondrel, a merchant taken on the road and found dying in the old toll house.",
+   "names": {
+    "Castle Brask": "place",
+    "Brask": "place",
+    "Vessk": "person",
+    "Ostric": "person",
+    "Belloc": "person",
+    "Brunn": "person",
+    "Fennig": "person",
+    "Haskel": "person",
+    "Ferrol": "person",
+    "Gondrel": "person",
+    "Krell": "person",
+    "Velka": "person",
+    "Tibbet": "person",
+    "Hulda": "person",
+    "Bortho": "person",
+    "Quigg": "person",
+    "Iron Kettle": "place",
+    "Quigg's Magic and Goat Rental": "place",
+    "Gallow Crag": "place",
+    "Split Rock": "place",
+    "north postern": "place",
+    "old barrows": "place",
+    "marsh road": "place",
+    "old toll house": "place",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Zombie": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ferrol",
+     "text": "Kind sir! Help me, please! Master Gondrel's wagon came back without him! The horses were all lathered and the seat was... oh, there was blood on it! And I have his ledgers and nobody to sign them! I'm no fighter, I'd faint at the first sight of a Zombie. Will you find him?"
+    },
+    "reminder": {
+     "speaker": "Ferrol",
+     "text": "Have you found him? Oh.... One of the soldiers said he saw lights in the old toll house on the marsh road. Maybe that's something?"
+    },
+    "found": {
+     "speaker": "Gondrel",
+     "text": "Is... is someone there? Please... they left me for dead... Get me home."
+    },
+    "following": {
+     "speaker": "Gondrel",
+     "text": "Slower... please... I can't keep up."
+    },
+    "completion": {
+     "speaker": "Ferrol",
+     "text": "Master Gondrel! Oh, he's so pale! Someone fetch the healer, quick!\n\nYou've done all anyone could, kind sir. Take this pass, it has his seal on it. The guards at the north postern will let you come and go as you please."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the merchant Gondrel and bring him back to Castle Brask."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Vesk: Hesk, a gruff net maker; Imps carried off his crow Inky, cage and all, and Inky holds the key to the Imps' next cage.",
+   "names": {
+    "Vesk": "place",
+    "Village of Vesk": "place",
+    "Lake Mirrow": "place",
+    "Weeping Isle": "place",
+    "Leaky Bucket": "place",
+    "Mudd's": "place",
+    "Vezzek": "person",
+    "Master Odrel": "person",
+    "Mayor Ostrin": "person",
+    "Dolf": "person",
+    "Haskin": "person",
+    "Ambrus the Ferryman": "person",
+    "Ambrus": "person",
+    "Pruitt the Lamplighter": "person",
+    "Pruitt": "person",
+    "Bodkin Mudd": "person",
+    "Hesk": "person",
+    "Inky": "person",
+    "Mott": "person",
+    "Brynna": "person",
+    "Tib": "person",
+    "Hulda": "person",
+    "Dorgo": "person",
+    "Joss": "person",
+    "Giant Leeches": "group",
+    "Urchins": "group",
+    "Imps": "group",
+    "Beacon Lens": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hesk",
+     "text": "Greetings, stranger.\n\nMy crow's gone. Inky. Imps came in the night and took him, cage and all.\n\nTell you what. You bring him back alive and I'll give you something I pulled out of the lake. Worth your while. Deal?"
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "No crow? Imps like holes in the ground. Try the old well behind the smokehouse."
+    },
+    "found": {
+     "speaker": "Inky",
+     "text": "Rawk! Over here! Get me out! Take the key, take the key! It opens the other cage! Rawk!"
+    },
+    "following": {
+     "speaker": "Inky",
+     "text": "Rawk! Home! Take me home to Hesk!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "Inky! You old fool, look at you. Thanks, stranger.\n\nHere's what I promised. A robe. Fished it out of the lake last spring, all wet and weedy. Nobody ever came asking for it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hesk's crow and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Vorne: Tibbald, a nervous apprentice, begs the player to find his master Quorn, who went to study the Imps and sits in a cage in the Lyceum cellars.",
+   "names": {
+    "Vorne": "place",
+    "the Lyceum": "place",
+    "Sarvok the Renegade": "person",
+    "Sarvok": "person",
+    "Gallow Ridge": "place",
+    "the Observatory": "place",
+    "the Black Arts": "thing",
+    "Jorvald": "person",
+    "Master Dorrovan": "person",
+    "Torrik": "person",
+    "Gostrel": "person",
+    "Feldrim": "person",
+    "Force Wand": "thing",
+    "the old granary": "place",
+    "Tibbald": "person",
+    "Master Quorn": "person",
+    "Quorn": "person",
+    "the Lyceum cellars": "place",
+    "Lissra": "person",
+    "the Moonstone": "thing",
+    "the chapel": "place",
+    "the crypt beneath the chapel": "place",
+    "Zabbo": "person",
+    "the Clock Tower": "place",
+    "the Singing Kettle": "place",
+    "Grenda": "person",
+    "Brask": "person",
+    "Velka": "person",
+    "Nox": "place",
+    "Imps": "group",
+    "Golems": "group",
+    "Wasps": "group",
+    "Ghost": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Tibbald",
+     "text": "Greetings, Wanderer. Oh dear, oh dear... My master, Quorn, went off to study the Imps up close and he hasn't come home. He never misses his supper! Never! If you could find him and bring him back, you'd save my life. I'm sure he'd want you rewarded."
+    },
+    "reminder": {
+     "speaker": "Tibbald",
+     "text": "He was always talking about the cellars under the Lyceum. Have you looked down there?"
+    },
+    "found": {
+     "speaker": "Master Quorn",
+     "text": "Hello? Over here, in the cage! Quick, let me out before those Imps come back to tickle me again!"
+    },
+    "following": {
+     "speaker": "Master Quorn",
+     "text": "Careful! Those Imps put fire traps under the loose stones. I lost half my beard to one!"
+    },
+    "completion": {
+     "speaker": "Master Quorn",
+     "text": "Home! Supper! My own bed! I'm free!!! Tibbald, fetch this brave Adventurer the good potions off the top shelf. Thank you, thank you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Master Quorn and bring him safely home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "BluePotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kholm: Gelbrand the provisioner's sledge crew, robbed by the Trolls, are locked in the old salt store; he hands over the key.",
+   "names": {
+    "Fort Kholm": "place",
+    "Wyrmtooth Pass": "place",
+    "Glacier Crypts": "place",
+    "Snow Caves": "place",
+    "Ice Bridge": "place",
+    "Snowbound Inn": "place",
+    "Thudd's Armory": "place",
+    "Ulvana": "person",
+    "Faldrin": "person",
+    "Marshal Odric": "person",
+    "Brunn": "person",
+    "Fennick": "person",
+    "Gorrin": "person",
+    "Gelbrand": "person",
+    "Wendric": "person",
+    "Lucky Skiv": "person",
+    "Olva": "person",
+    "Thudd": "person",
+    "Yeva": "person",
+    "Hagen": "person",
+    "Mag": "person",
+    "Lissa": "person",
+    "Sledge crew": "group",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gelbrand",
+     "text": "Thieving, lumbering brutes! The Trolls fell upon my supply sledges and plundered every barrel!\n\nMy sledge crew escaped with their lives and barricaded themselves in behind a stout door. But now the abominable creatures have them besieged, and the cold will finish what the Trolls began. I fear for them.\n\nI'll make you a bargain, stranger. Liberate my men and bring them home, and you will not find me ungrateful. Here is the key to their door. Go swiftly!"
+    },
+    "reminder": {
+     "speaker": "Gelbrand",
+     "text": "My men are holed up in the old salt store under the north wall. Please, hurry!"
+    },
+    "found": {
+     "speaker": "Sledge crew",
+     "text": "The key! You've got the key! Get us out of here, quick!"
+    },
+    "following": {
+     "speaker": "Sledge crew",
+     "text": "Lead the way. We'll stay right behind you."
+    },
+    "completion": {
+     "speaker": "Gelbrand",
+     "text": "My sledge crew, home safe! You have done a noble deed for Fort Kholm this day. Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Gelbrand's sledge crew from the Trolls."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Fornath: Ambrus, a fussy old hermit, begs the player to free Tavik, one of Kasrak's scouts, from the Ogre stockade at the old quarry; he gives the cell key, and the reward is the way on into the Black Smeltery.",
+   "names": {
+    "Fornath": "place",
+    "Nox": "place",
+    "Kasrak": "person",
+    "Tobrin": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Mountain Road": "place",
+    "Anvil Hall": "place",
+    "Bodo": "person",
+    "Krall": "person",
+    "Ember Demons": "group",
+    "slag pits": "place",
+    "Fennick": "person",
+    "Salamander Cloak": "thing",
+    "Imps": "group",
+    "Cinder Caves": "place",
+    "Smiths' Gate": "place",
+    "Ambrus": "person",
+    "Tavik": "person",
+    "old quarry": "place",
+    "broken bridge": "place",
+    "old ore chute": "place",
+    "Velda": "person",
+    "Fire Shrine": "place",
+    "Great Bell": "thing",
+    "lava falls": "place",
+    "Grubb": "person",
+    "Bram Sootfinger": "person",
+    "old furnace tunnels": "place",
+    "Hesta": "person",
+    "Slag Pot": "place",
+    "Gundrek": "person",
+    "Zibba": "person",
+    "Kettla": "person",
+    "Harl": "person",
+    "Bessamy": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ambrus",
+     "text": "Greetings, Wanderer. Careful where you step, those are my mushrooms. There. Much better.\n\nOne of Master Kasrak's scouts came past my hut a few nights back. Tavik, his name is. He was going up to spy on Gorvane's Ogres, and the brutes caught him. They've got him locked up in their stockade at the old quarry, northwest of here, past the broken bridge.\n\nLast night one of those Ogres fell asleep against my door, and I took this key right off his belt. Here, it should open Tavik's cell. If you could bring the boy home, you'd ease an old man's worries, and Kasrak would owe you a great deal."
+    },
+    "reminder": {
+     "speaker": "Ambrus",
+     "text": "Go now, Wanderer! Tavik won't last long up there."
+    },
+    "found": {
+     "speaker": "Tavik",
+     "text": "Over here! Is that a key? Open it, quick!"
+    },
+    "following": {
+     "speaker": "Tavik",
+     "text": "Lead on. I'm right behind you."
+    },
+    "completion": {
+     "speaker": "Ambrus",
+     "text": "Tavik! Home at last, and all in one piece! Thank you, brave Adventurer.\n\nHe tells me there's a back way into the Black Smeltery, through the old ore chute. Go and tell Master Kasrak at once!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Free Tavik the scout from the Ogre stockade."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Wendle Cross: Gorsk's quarrymen hid in the tunnels under the old quarry when the Skeletons came up; he gives the key to the west gate for them.",
+   "names": {
+    "Wendle Cross": "place",
+    "Telmarq": "person",
+    "Pellam": "person",
+    "Zelloc": "person",
+    "Fort Skarrow": "place",
+    "Grey Moor": "place",
+    "Skeletons": "group",
+    "Brask": "person",
+    "Rudd": "person",
+    "Haddrick": "person",
+    "Toll House": "place",
+    "beech wood": "place",
+    "old well": "place",
+    "south road": "place",
+    "north road": "place",
+    "Belgrin": "person",
+    "Lantern": "thing",
+    "Imps": "group",
+    "old lime kiln": "place",
+    "Ambrus": "person",
+    "Book of Old Roads": "thing",
+    "chapel": "place",
+    "chapel crypt": "place",
+    "Holk": "person",
+    "Grubbin the Grave-Robber": "person",
+    "Gorsk": "person",
+    "quarrymen": "group",
+    "Quarryman": "person",
+    "old quarry": "place",
+    "west gate": "place",
+    "Crooked Kettle": "place",
+    "Odo": "person",
+    "Grimsel": "person",
+    "Quimby": "person",
+    "Quimby's Potions and Notions": "place",
+    "Hesta": "person",
+    "Fenna": "person",
+    "Mungo": "person"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gorsk",
+     "text": "Yaaahh! Stay back! I've got a shovel and I'll use it!... Oh. You're no Skeleton. Thank goodness! The Skeletons came up out of the old quarry north of the Crooked Kettle and my lads ran down into the tunnels to hide. They're still down there! I'll tell you what, bring my men out safe and you can have my key to the west gate. It's the quickest way onto the Grey Moor."
+    },
+    "reminder": {
+     "speaker": "Gorsk",
+     "text": "My poor lads! Are they still down there? Hurry!"
+    },
+    "found": {
+     "speaker": "Quarryman",
+     "text": "Someone's come for us! Up, lads, up! We're going home!"
+    },
+    "following": {
+     "speaker": "Quarryman",
+     "text": "Not the left tunnel! That's where the Skeletons came from. Take the right one, past the old cart."
+    },
+    "completion": {
+     "speaker": "Gorsk",
+     "text": "My lads! You brought them all back! Here's the key to the west gate, as I promised. Now go and see Telmarq at his tower. He's been asking after you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue the quarrymen trapped in the tunnels under the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Hestle: Sister Alwen's novices were carried off to the Ogre camp across the river; the novice Ebbin, found first, gives the key to the other's pen.",
+   "names": {
+    "Hestle": "place",
+    "Vellis": "person",
+    "Mayor Dulvane": "person",
+    "Dulvane": "person",
+    "Tobb": "person",
+    "Hoskin": "person",
+    "Orlo": "person",
+    "Sister Alwen": "person",
+    "Ebbin": "person",
+    "Bramwell": "person",
+    "Sabble": "person",
+    "Rook": "person",
+    "Hulda": "person",
+    "Gorrick": "person",
+    "Pidwick": "person",
+    "Greda": "person",
+    "Marl": "person",
+    "Kroth Hill": "place",
+    "the granary fort": "place",
+    "the Town Hall": "place",
+    "the north gate": "place",
+    "the well house": "place",
+    "the windmill": "place",
+    "the Ogre camp": "place",
+    "the river": "place",
+    "the Sleepy Ox": "place",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the giant leeches": "group",
+    "Orlo's amulet": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sister Alwen",
+     "text": "Oh, it's dreadful! The Ogres have carried off my novices! They're locked in the pens at the Ogre camp across the river. Go and bring them home!"
+    },
+    "reminder": {
+     "speaker": "Sister Alwen",
+     "text": "Please, hurry! The Ogres will eat them!"
+    },
+    "found": {
+     "speaker": "Ebbin",
+     "text": "Who's there?... Oh, thank goodness! One of the Ogres dropped this key. It opens the other pen. Take it, quick!"
+    },
+    "following": {
+     "speaker": "Ebbin",
+     "text": "Lead on! I'm right behind you!"
+    },
+    "completion": {
+     "speaker": "Sister Alwen",
+     "text": "My novices! Home safe! Bless you, kind sir, bless you! Take this as a token of my appreciation.\n\nMayor Dulvane has been asking after you. Go and see him at the Town Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Sister Alwen's novices from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

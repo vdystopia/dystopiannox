@@ -1,0 +1,34 @@
+{
+  "packet": "619fbf",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stock welcome, capitalised 'East', a townsperson line with no closing period, and a flat 'humble gift from the village' thanks. This is Westwood's opening-town shape, warts included."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The steward's 'you'd save my position! I am held to account for every sack' and the deadpan 'It is a perfectly good bow' are wry and modern. The directions are stacked with landmarks (south of the castle by the old mill), which Nox rarely does."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The repeated 'mate', 'damn fine spell', a run-on journal sentence and the double-dash spider gossip all have Westwood's loose, jokey texture. The shopkeeper line is filler, as Westwood's often is."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The quest hands over a key ('ruby key'), the guard gives a comic list of rules, the shopkeeper's pitch is clumsy ('during [Place] run'), and the '40 wizards with his bare hands' boast is a typical Westwood exaggeration."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Laying their filthy paws on our belongings', '100 in gold!', 'young sir' and plain rumour lines about bandits and skeletons. The register is very close to the original campaign's town talk."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Bother and blast!', 'pilfered', 'none the wiser' and the reward backstory (a book left 'to pay for his supper') are crafted whimsy. The beard-ice joke and the flirty fireside line feel written to be quaint rather than plain."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The panicked opener is Nox-like, but 'finest inn in all of Nox! Well... finest in [Place]' is a self-aware gag, and the stacked directions (west of X behind the old sundial) give it away."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Smuggling-ring comedy, the guard's 'a week, or a two! ... Heh, heh, heh', 'Grunt if you agree!' and 'get in to the castle' are Westwood's silly, slightly sloppy humour."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Dialect touches ('me stood on the wrong side of them'), 'Reeve', a three-item list with dashes and a sequel hook about a lost boy in the barrow make it more literary and more British-rural than Nox."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Inflated diction ('Abominable', 'imperils', 'loathsome', 'exterminate') and a found-bow anecdote much like F's book. The shift-bell and candle-eating lines are atmospheric world-building rather than Nox's quick quips."}
+  ],
+  "tells": [
+    "New texts explain where the reward came from (an item left by a deserter, a traveller or a skeleton). Westwood just hands over gold, a scroll or 'this'.",
+    "New directions stack two or three landmarks (south of the castle by the old mill, west of X behind the old sundial). Westwood gives one bearing ('East of here', 'northwest of here').",
+    "New texts reuse a small set of exclamations ('Splendid!', 'Bother and blast!', 'Oh, curse them all!') and end the offer with a direct question ('Will you go after it?', 'Will you do it?').",
+    "New texts lean on regional or archaic flavour words (Reeve, 'me stood', 'pilfered', 'imperils'). Westwood's register is plainer and more American-cartoonish ('mate', 'Ya', 'Heh, heh').",
+    "Westwood shows small slips: missing final periods, odd capitals, 'in to', run-on journal sentences. The new texts are punctuated cleanly.",
+    "New townsfolk lines carry atmosphere (shift bells, ice in beards, the dead on the wall). Westwood's are blunt rumours, directions or one-joke insults."
+  ]
+}

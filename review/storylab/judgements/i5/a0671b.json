@@ -1,0 +1,32 @@
+{
+  "packet": "a0671b",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The urgent 'Damn! Where have you been, lad!?' fits Jandor, but 'leaving rebuilding the village our smallest concern' is a strained construction, and the set-up packs a whole battle summary into the opening."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "The stiff self-introduction in fragments ('The Master for the [Place].'), the shouted 'YOU carry the staff' and the plain 'Speak to one of the Priests' journal are Westwood's late-campaign stiffness."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Too many prying eyes the closer we get by air' is awkward, and 'Forest beasts will heed its bite should they threaten' is a literary flourish Jandor doesn't use. It reads as a drop-off scene modelled on Westwood's."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "'Sorry about the stench, lad', the frank 'This may get very ugly', and a reminder that just explains what the given spells are for read like Westwood's practical briefing voice."},
+    {"label": "E", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "'No time to rest on laurels', 'the unlucky [Place]' and a speech that names three masked people in a row feel assembled. The reminder repeats the opening's last line, which is plausible, but the whole is generic."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The mentor's formal, slightly ungrammatical exposition ('Wildlife incursions ... is on a steady rise'), 'scry', 'antiquated records' and a reminder naming 'book and amulet' are authentic Westwood quest-giver prose."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The clipped 'You'll know. And careful.' is good, but the reminder restates the opening almost word for word with an extra 'Hurry!', a seam that could be either side. It is a toss-up."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The drop-off formula ('This is as far as I can safely take you', 'You remain our only hope', 'chit-chat') is very Jandor, possibly too close to a template. The journal line is plain and good."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The over-hearty welcome, 'gone mad!', the capital-E 'East of here', 'nettlesome urchins' and a reminder that is just a grumble rather than an instruction are characteristic Westwood."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The exclamatory tour-guide arrival with double dashes and the curt 'It weeds out the weak recruits' are classic Westwood arrival lines."}
+  ],
+  "tells": [
+    "Westwood's reminders often add nothing new (a grumble, 'press on now, lad') or simply repeat the order. The new ones are more crafted.",
+    "Literary flourishes (a staff whose 'bite' beasts will heed, 'rest on laurels', 'unlucky [Place]') mark the new writing; Westwood's mentor-speak is formal but literal and sometimes ungrammatical.",
+    "New openings compress a whole backstory, with cause, consequence and stakes, into one speech; Westwood's openings give a place, a person and an order.",
+    "The guide's voice was hard to separate in this packet, since both sides use 'lad', exclamations and drop-off formulas. Confidence is low on the boundary items."
+  ]
+}

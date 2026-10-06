@@ -248,6 +248,26 @@ def ww_ngrams(n=6):
     return _NGRAMS
 
 
+_MODES = None
+
+
+def modes():
+    """The phrases the lab's writers all reach for (review/storylab/modes.json, from `py tests/storylab.py modes`):
+    four words that three or more towns of one round wrote and Westwood never did. The model's first idea, which every
+    map agent has too."""
+    global _MODES
+    if _MODES is None:
+        p = os.path.join(os.path.dirname(os.path.abspath(__file__)), "modes.json")
+        _MODES = [tuple(x.split()) for x in json.load(open(p, encoding="utf-8"))["phrases"]] if os.path.exists(p) else []
+    return _MODES
+
+
+def mode_hits(t):
+    w = [x.lower() for x in words(t)]
+    g = {tuple(w[i:i + 4]) for i in range(len(w) - 3)}
+    return [" ".join(m) for m in modes() if m in g]
+
+
 def copied(t, n=6):
     """Westwood's phrases a line repeats. A stock phrase Westwood itself uses in two lines or more ("as a token of my
     appreciation", "thanks again for your help") is the house style the guide asks for, not a copy."""
@@ -302,6 +322,8 @@ def judge_line(t, situation, known=None, allowed=None, westwood=False):
         if ch in t: hit(0.7, msg)
     for m in MODERN.findall(t): hit(1.5, f"modern idiom: {m if isinstance(m, str) else m[0]!r}")
     for m in ANACHRONISM.findall(t): hit(1.5, f"anachronism: {m if isinstance(m, str) else m[0]!r}")
+    mh = [] if westwood else mode_hits(t)
+    if mh: hit(min(2.0, 0.8 * len(mh)), f"a phrase every writer reaches for: {mh[0]!r} (review/storylab/modes.json)")
     cp = [] if westwood else copied(t)
     if cp: hit(min(3.0, 1.0 + 0.3 * len(cp)), f"copied from Westwood: {cp[0]!r}")
     if allowed is not None:

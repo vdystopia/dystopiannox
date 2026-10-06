@@ -1,0 +1,310 @@
+{
+ "iter": "i5",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + card",
+ "map": {
+  "name": "Vesk",
+  "setting": "a lake village of fishermen",
+  "trouble": "The Necromancer Vezzek has taken the Weeping Isle and sends the drowned dead up out of Lake Mirrow against the villages on its shore.",
+  "names": {
+   "Vesk": "place",
+   "Village of Vesk": "place",
+   "Lake Mirrow": "place",
+   "Weeping Isle": "place",
+   "Leaky Bucket": "place",
+   "Mudd's": "place",
+   "Vezzek": "person",
+   "Master Odrel": "person",
+   "Mayor Ostrin": "person",
+   "Dolf": "person",
+   "Haskin": "person",
+   "Ambrus the Ferryman": "person",
+   "Ambrus": "person",
+   "Pruitt the Lamplighter": "person",
+   "Pruitt": "person",
+   "Bodkin Mudd": "person",
+   "Hesk": "person",
+   "Inky": "person",
+   "Mott": "person",
+   "Brynna": "person",
+   "Tib": "person",
+   "Hulda": "person",
+   "Dorgo": "person",
+   "Joss": "person",
+   "Giant Leeches": "group",
+   "Urchins": "group",
+   "Imps": "group",
+   "Beacon Lens": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Dolf, the guard at the landward gate of Vesk.",
+   "names": {
+    "Dolf": "person",
+    "Village of Vesk": "place",
+    "Leaky Bucket": "place",
+    "Weeping Isle": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Dolf",
+     "text": "Welcome to the Village of Vesk! The Leaky Bucket is just up the dock road. A warm bed for the weary!"
+    },
+    "again": {
+     "speaker": "Dolf",
+     "text": "Hmm. You'll want better boots than those around here. It's all mud and fish guts."
+    },
+    "later": {
+     "speaker": "Dolf",
+     "text": "Take care out on the Weeping Isle, stranger. Nobody who goes out there comes back the same!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Haskin, a fisherman bitten in the reed beds, wants the Giant Leeches there killed.",
+   "names": {
+    "Haskin": "person",
+    "Giant Leeches": "group",
+    "Vesk": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskin",
+     "text": "Kind sir! Help me, please! Look at my legs! I'm bitten all over!\n\nGiant Leeches have come up out of the lake and into the reed beds, west of the village past the drying racks. Nobody can set a net out there now. They nearly had me for breakfast!\n\nIf you could clear them out, my boys and me could fish again. Do it and the spell book on my shelf is yours. I never could make heads or tails of it anyhow."
+    },
+    "reminder": {
+     "speaker": "Haskin",
+     "text": "Oh, my poor legs... Are those Leeches dead yet?"
+    },
+    "completion": {
+     "speaker": "Haskin",
+     "text": "The reeds are clear?! We can fish again! Bless you, kind sir! Here's the spell book, as I promised."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches in the reed beds west of Vesk."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ambrus the Ferryman; the Urchins of the east shore caves stole his spyglass, which he keeps watch on the Weeping Isle with.",
+   "names": {
+    "Ambrus the Ferryman": "person",
+    "Ambrus": "person",
+    "Urchins": "group",
+    "Weeping Isle": "place",
+    "Mayor Ostrin": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "Hail, Wanderer! Want to learn a spell? Then do me a favor. The Urchins in the caves on the east shore stole my spyglass right off my ferry! I can't keep watch on the Weeping Isle without it. Bring it back and I'll teach you a fine spell. Is it a bargain?"
+    },
+    "refusal": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "No? Then don't come asking me for a ride to the Isle."
+    },
+    "reminder": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "Got my spyglass? No? Then what are you standing around for?"
+    },
+    "completion": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "My spyglass! Not a scratch on it! Here, take this book. The spell inside is yours now. Learn it well!"
+    },
+    "after": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "You should go see Mayor Ostrin. He's been pacing up and down the big dock all morning."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ambrus' spyglass from the Urchins of the east shore."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "Speak with Mayor Ostrin on the big dock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["SpellBook"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three villagers of Vesk: Mott mending nets, Brynna at the smokehouse, old Tib on the shore.",
+   "names": {
+    "Mott": "person",
+    "Brynna": "person",
+    "Tib": "person",
+    "Master Odrel": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Mott",
+     "text": "Sorry, I've got nets to mend. Try me later."
+    },
+    "rumour2": {
+     "speaker": "Brynna",
+     "text": "That Master Odrel is a stingy old wizard! He ate up all our smoked eel last summer and never paid a copper!"
+    },
+    "rumour3": {
+     "speaker": "Tib",
+     "text": "Stay away from the water after dark. The dead come up out of it!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Hulda of the Leaky Bucket inn, Bodkin Mudd the arms dealer who also sells bait, Dorgo of the potion shop.",
+   "names": {
+    "Hulda": "person",
+    "Leaky Bucket": "place",
+    "Bodkin Mudd": "person",
+    "Mudd's": "place",
+    "Dorgo": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Hulda",
+     "text": "Welcome to the Leaky Bucket. Not many folk come out this way since the dead started walking. Take any room you like, they're all empty."
+    },
+    "arms": {
+     "speaker": "Bodkin Mudd",
+     "text": "Welcome to Mudd's! Finest blades on the lake, and the fattest worms! Go on, smell one. Fresh dug this mornin'!"
+    },
+    "magic": {
+     "speaker": "Dorgo",
+     "text": "Ah, a customer! My potions cost a bit more than in the city. But then, the city is a long row away, isn't it?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Pruitt the Lamplighter, driven from his lighthouse by the dead, wants the Beacon Lens brought back; Bodkin Mudd wants to sell his house on stilts for 40,000 gold.",
+   "names": {
+    "Pruitt the Lamplighter": "person",
+    "Pruitt": "person",
+    "Beacon Lens": "thing",
+    "Bodkin Mudd": "person",
+    "Vesk": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Pruitt the Lamplighter",
+     "text": "Gaaahhh! Stay back! Stay back! ... Oh. Oh, you're alive. Forgive me, I took you for one of the dead. Go to my lighthouse on the north point and bring me the Beacon Lens. They drove me out before I could take it. Without the light our boats can't find their way home at night. And mind you don't drop it! It's very old."
+    },
+    "offer_b": {
+     "speaker": "Bodkin Mudd",
+     "text": "Say, stranger! You look like somebody who needs a house! I got just the one. Up on stilts, right out over the lake, and the fish jump right into yer kitchen! Yours for 40,000 gold. A steal!"
+    },
+    "outcome_a": {
+     "speaker": "Pruitt the Lamplighter",
+     "text": "The Beacon Lens! Not even cracked! Here are 150 gold pieces for your trouble. Tonight the light burns again!"
+    },
+    "outcome_b": {
+     "speaker": "Bodkin Mudd",
+     "text": "Back for the house, are ya? Ha, ha... Funny story. She sank last night, stilts and all! Still want her? I'll knock off a hundred gold."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring the Beacon Lens back to Pruitt the Lamplighter."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy Bodkin Mudd's house for 40,000 gold."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Hesk, a gruff net maker; Imps carried off his crow Inky, cage and all, and Inky holds the key to the Imps' next cage.",
+   "names": {
+    "Hesk": "person",
+    "Inky": "person",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hesk",
+     "text": "Greetings, stranger.\n\nMy crow's gone. Inky. Imps came in the night and took him, cage and all.\n\nTell you what. You bring him back alive and I'll give you something I pulled out of the lake. Worth your while. Deal?"
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "No crow? Imps like holes in the ground. Try the old well behind the smokehouse."
+    },
+    "found": {
+     "speaker": "Inky",
+     "text": "Rawk! Over here! Get me out! Take the key, take the key! It opens the other cage! Rawk!"
+    },
+    "following": {
+     "speaker": "Inky",
+     "text": "Rawk! Home! Take me home to Hesk!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "Inky! You old fool, look at you. Thanks, stranger.\n\nHere's what I promised. A robe. Fished it out of the lake last spring, all wet and weedy. Nobody ever came asking for it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hesk's crow and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WizardRobe"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Joss points the player to Mayor Ostrin, who sends him to the Weeping Isle after the Necromancer Vezzek.",
+   "names": {
+    "Joss": "person",
+    "Master Odrel": "person",
+    "Mayor Ostrin": "person",
+    "Lake Mirrow": "place",
+    "Weeping Isle": "place",
+    "Vezzek": "person",
+    "Ambrus the Ferryman": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "You're the one Master Odrel sent? Mayor Ostrin is expecting you. Big house at the end of the main dock."
+    },
+    "opening": {
+     "speaker": "Mayor Ostrin",
+     "text": "Grim tidings, lad. Last night the dead walked up out of Lake Mirrow and dragged some of our fishermen right off the dock. We could hear the poor souls screaming all the way to the Weeping Isle.\n\nIt is the Necromancer Vezzek. He has made the Isle his home, and the drowned answer to him now!\n\nBy the authorization of this village, I command you to cross to the Weeping Isle and put an end to Vezzek. Ambrus the Ferryman can take you across. Go!"
+    },
+    "reminder": {
+     "speaker": "Mayor Ostrin",
+     "text": "Go! Vezzek grows bolder with every night!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross to the Weeping Isle and defeat the Necromancer Vezzek."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

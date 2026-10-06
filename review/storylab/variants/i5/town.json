@@ -1,0 +1,701 @@
+{
+ "scenario": "town",
+ "iter": "i5",
+ "writer": "one writer a town (variants/i5/maps)",
+ "guide": "WRITER.md + exemplars + card",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Brackenford": "place",
+    "Bracken": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Chapel": "place",
+    "Mabry's Magnificent Magicks": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Nettle Hob": "person",
+    "Hob": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Oh, curse them all! Those Urchins have been into my mill again?!\n\nThey crawled up out of that old barrow east of the ford, and this time they took my ring of keys. The grain loft, the sluice, the front door -- all locked tight and me stood on the wrong side of them!\n\nGo into the barrow and get my keys back. I'll teach you a spell for your trouble, and a good one."
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My keys! Every last one of them! Oh, thank you, lad! Here's the spell book I promised you. Study it hard.\n\nAnd go and see Brother Anselm at the Chapel of the Ford. His boy Pip never came back out of that barrow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's mill keys from the Urchins' barrow."
+    },
+    "guard": {
+     "speaker": "Garrick",
+     "text": "Reeve Halvard is the finest Reeve Brackenford ever had! When he says this gate stays shut, it stays shut!"
+    },
+    "shop": {
+     "speaker": "Dunstan",
+     "text": "This is Dunstan's forge. Best steel on the Bracken! How can I help you?"
+    },
+    "townsfolk1": {
+     "speaker": "Townsman",
+     "text": "Ask at the Drowned Lantern. Ossian knows everybody's business."
+    },
+    "townsfolk2": {
+     "speaker": "Townsman",
+     "text": "I've heard the Urchins stuff what they steal into barrels and crates. Smash them open and see!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Bormunt: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Bormunt": "place",
+    "Mount Grull": "place",
+    "Yorrel": "person",
+    "Skarn": "person",
+    "Trolls": "group",
+    "Great Lift": "thing",
+    "Great Shaft": "place",
+    "Guild Hall": "place",
+    "Miners' Guild": "group",
+    "Brannoc": "person",
+    "Tavik": "person",
+    "Ulbo": "person",
+    "Giant Leeches": "group",
+    "pump house": "place",
+    "flooded gallery": "place",
+    "Quessel": "person",
+    "Imps": "group",
+    "Divining Rod": "thing",
+    "cart tunnel": "place",
+    "Velgard": "person",
+    "Urchins": "group",
+    "Spell Lantern": "thing",
+    "Ludo Quickpurse": "person",
+    "Chain Tunic": "thing",
+    "Hammel": "person",
+    "Nessa": "person",
+    "Hask": "person",
+    "washing cave": "place",
+    "Troll pens": "place",
+    "ore chutes": "place",
+    "Orrin": "person",
+    "Mott": "person",
+    "Elsbeth": "person",
+    "Grumwald": "person",
+    "Sooty Lamp": "place",
+    "Ilvane": "person",
+    "Azure Circle": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulbo",
+     "text": "Sir! Over here! Help me, please! I've been bitten and I can hardly stand!\n\nAbominable Giant Leeches have infested the flooded gallery below the old pump house, south of here. They fell upon me as I was lighting the lamps. Their infestation imperils the entire lower mine, and no miner dares set foot down there now. If you would exterminate these loathsome creatures, I will see you suitably rewarded. Will you do it?"
+    },
+    "completion": {
+     "speaker": "Ulbo",
+     "text": "You've destroyed them?! Splendid! Splendid!\n\nTake this bow. It was found lying beside an old skeleton in the lower shafts, and nobody ever came to claim it. It's yours now. Guildmaster Brannoc is asking for you at the Guild Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Giant Leeches in the flooded gallery."
+    },
+    "guard": {
+     "speaker": "Tavik",
+     "text": "This is Bormunt, the greatest mine under Mount Grull! Show some respect when you go in."
+    },
+    "shop": {
+     "speaker": "Ilvane",
+     "text": "The Azure Circle is the sole purveyor of potions and scrolls to the mines of Bormunt. State your needs."
+    },
+    "townsfolk1": {
+     "speaker": "Orrin",
+     "text": "Not now, stranger. The bell's rung for my shift."
+    },
+    "townsfolk2": {
+     "speaker": "Elsbeth",
+     "text": "Somebody's been eating my candles again! Who would do such a thing?!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Oskry: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Oskry": "place",
+    "the Blackwater": "place",
+    "Vesra the Bog Witch": "person",
+    "Marrock": "person",
+    "Mayor Brumm": "person",
+    "Tobben": "person",
+    "Hobb": "person",
+    "Quillon": "person",
+    "Sister Ondine": "person",
+    "Snig": "person",
+    "Hadda": "person",
+    "Durl": "person",
+    "Skarrow": "person",
+    "Zanthe": "person",
+    "Glynna": "person",
+    "the Long House": "place",
+    "the Sunken Shrine": "place",
+    "the Dry Plank": "place",
+    "Skarrow's Arms and Armor": "place",
+    "the south walk": "place",
+    "the west walk": "place",
+    "the north bog": "place",
+    "the old peat shed": "place",
+    "the Sacred Bell of Oskry": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Giant Leeches": "group",
+    "the peat cutters": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quillon",
+     "text": "Gone! Gone! Those rotten little Imps came in my window last night and took my magic lantern right off its hook! And they tracked mud all over my floor! I can't do a bit of work without that lantern. Would you get it back for me?"
+    },
+    "completion": {
+     "speaker": "Quillon",
+     "text": "My lantern! My lantern! Thank you, thank you! Here, take this Ankh. A peddler sold it to me for good luck. It never brought me any, so maybe it will do better for you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Quillon's magic lantern back from the Imps."
+    },
+    "guard": {
+     "speaker": "Tobben",
+     "text": "Good day, stranger! This is Oskry, the proudest village in all the Blackwater!"
+    },
+    "shop": {
+     "speaker": "Durl",
+     "text": "Welcome to the Dry Plank! Driest beds in the swamp! Well... Mostly dry."
+    },
+    "townsfolk1": {
+     "speaker": "Townswoman",
+     "text": "Did you hear? The dead climbed up the ladders again last night!"
+    },
+    "townsfolk2": {
+     "speaker": "Glynna",
+     "text": "Well, hello there! You're the first visitor all year that isn't green and dripping! Hee, hee, hee!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Brask: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Castle Brask": "place",
+    "Brask": "place",
+    "Vessk": "person",
+    "Ostric": "person",
+    "Belloc": "person",
+    "Brunn": "person",
+    "Fennig": "person",
+    "Haskel": "person",
+    "Ferrol": "person",
+    "Gondrel": "person",
+    "Krell": "person",
+    "Velka": "person",
+    "Tibbet": "person",
+    "Hulda": "person",
+    "Bortho": "person",
+    "Quigg": "person",
+    "Iron Kettle": "place",
+    "Quigg's Magic and Goat Rental": "place",
+    "Gallow Crag": "place",
+    "Split Rock": "place",
+    "north postern": "place",
+    "old barrows": "place",
+    "marsh road": "place",
+    "old toll house": "place",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Zombie": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Paymaster Fennig",
+     "text": "Good day. I presume you are here about the notice on the gate. Imps have got into the garrison's granary, south of the castle by the old mill, and they are eating our winter stores! If you could drive them out, you'd save my position! I am held to account for every sack. There is a reward, of course."
+    },
+    "completion": {
+     "speaker": "Paymaster Fennig",
+     "text": "The Imps are gone? Splendid! The winter stores are saved!\n\nAs promised, here is your reward. A deserter left this bow behind when he ran off in the night. It is a perfectly good bow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Imps out of the garrison's granary."
+    },
+    "guard": {
+     "speaker": "Brunn",
+     "text": "Good day, stranger. If you go out again, keep off the marsh road. A cart went missing on it only yesterday."
+    },
+    "shop": {
+     "speaker": "Bortho",
+     "text": "A customer! Half the street's packed up and gone since the dead started walking. I'll be next if business doesn't pick up."
+    },
+    "townsfolk1": {
+     "speaker": "Townswoman",
+     "text": "If it's news you want, go to the Iron Kettle. Soldiers can't keep their mouths shut after a cup or two."
+    },
+    "townsfolk2": {
+     "speaker": "Soldier",
+     "text": "Did you hear? The dead came over the north wall again last night!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Vesk: cross-section: heirloom_fetch, the magic, a guard, two townsfolk",
+   "names": {
+    "Vesk": "place",
+    "Village of Vesk": "place",
+    "Lake Mirrow": "place",
+    "Weeping Isle": "place",
+    "Leaky Bucket": "place",
+    "Mudd's": "place",
+    "Vezzek": "person",
+    "Master Odrel": "person",
+    "Mayor Ostrin": "person",
+    "Dolf": "person",
+    "Haskin": "person",
+    "Ambrus the Ferryman": "person",
+    "Ambrus": "person",
+    "Pruitt the Lamplighter": "person",
+    "Pruitt": "person",
+    "Bodkin Mudd": "person",
+    "Hesk": "person",
+    "Inky": "person",
+    "Mott": "person",
+    "Brynna": "person",
+    "Tib": "person",
+    "Hulda": "person",
+    "Dorgo": "person",
+    "Joss": "person",
+    "Giant Leeches": "group",
+    "Urchins": "group",
+    "Imps": "group",
+    "Beacon Lens": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "Hail, Wanderer! Want to learn a spell? Then do me a favor. The Urchins in the caves on the east shore stole my spyglass right off my ferry! I can't keep watch on the Weeping Isle without it. Bring it back and I'll teach you a fine spell. Is it a bargain?"
+    },
+    "completion": {
+     "speaker": "Ambrus the Ferryman",
+     "text": "My spyglass! Not a scratch on it! Here, take this book. The spell inside is yours now. Learn it well!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ambrus' spyglass from the Urchins of the east shore."
+    },
+    "guard": {
+     "speaker": "Dolf",
+     "text": "Welcome to the Village of Vesk! The Leaky Bucket is just up the dock road. A warm bed for the weary!"
+    },
+    "shop": {
+     "speaker": "Dorgo",
+     "text": "Ah, a customer! My potions cost a bit more than in the city. But then, the city is a long row away, isn't it?"
+    },
+    "townsfolk1": {
+     "speaker": "Mott",
+     "text": "Sorry, I've got nets to mend. Try me later."
+    },
+    "townsfolk2": {
+     "speaker": "Tib",
+     "text": "Stay away from the water after dark. The dead come up out of it!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Vorne: cross-section: bounty_offer, the inn, a guard, two townsfolk",
+   "names": {
+    "Vorne": "place",
+    "the Lyceum": "place",
+    "Sarvok the Renegade": "person",
+    "Sarvok": "person",
+    "Gallow Ridge": "place",
+    "the Observatory": "place",
+    "the Black Arts": "thing",
+    "Jorvald": "person",
+    "Master Dorrovan": "person",
+    "Torrik": "person",
+    "Gostrel": "person",
+    "Feldrim": "person",
+    "Force Wand": "thing",
+    "the old granary": "place",
+    "Tibbald": "person",
+    "Master Quorn": "person",
+    "Quorn": "person",
+    "the Lyceum cellars": "place",
+    "Lissra": "person",
+    "the Moonstone": "thing",
+    "the chapel": "place",
+    "the crypt beneath the chapel": "place",
+    "Zabbo": "person",
+    "the Clock Tower": "place",
+    "the Singing Kettle": "place",
+    "Grenda": "person",
+    "Brask": "person",
+    "Velka": "person",
+    "Nox": "place",
+    "Imps": "group",
+    "Golems": "group",
+    "Wasps": "group",
+    "Ghost": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gostrel",
+     "text": "Ow! Ow! Sir! Help me, get them off!\n\nWasps! Giant ones! Sarvok's Imps drove them down off Gallow Ridge and now they've built a nest in my herb garden, west of the Lyceum behind the old sundial.\n\nGo and burn that nest out. Do it and I'll teach you a spell worth knowing."
+    },
+    "completion": {
+     "speaker": "Gostrel",
+     "text": "Burned it out? Ha! Good riddance! Here, the spell I promised you. Take it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wasp nest in Gostrel's herb garden."
+    },
+    "guard": {
+     "speaker": "Torrik",
+     "text": "Thinking of slipping out the north gate, are you? Try it, and you'll spend the night in the cell underneath it!"
+    },
+    "shop": {
+     "speaker": "Grenda",
+     "text": "Welcome to the Singing Kettle, finest inn in all of Nox! Well... finest in Vorne, anyway. Sit yerself down."
+    },
+    "townsfolk1": {
+     "speaker": "Student",
+     "text": "Looking for gossip? The Singing Kettle is where the students go to complain."
+    },
+    "townsfolk2": {
+     "speaker": "Townsman",
+     "text": "I hear the Golems on Gallow Ridge are terribly slow. Run, and they'll never catch you!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kholm: cross-section: heirloom_fetch, the arms, a guard, two townsfolk",
+   "names": {
+    "Fort Kholm": "place",
+    "Wyrmtooth Pass": "place",
+    "Glacier Crypts": "place",
+    "Snow Caves": "place",
+    "Ice Bridge": "place",
+    "Snowbound Inn": "place",
+    "Thudd's Armory": "place",
+    "Ulvana": "person",
+    "Faldrin": "person",
+    "Marshal Odric": "person",
+    "Brunn": "person",
+    "Fennick": "person",
+    "Gorrin": "person",
+    "Gelbrand": "person",
+    "Wendric": "person",
+    "Lucky Skiv": "person",
+    "Olva": "person",
+    "Thudd": "person",
+    "Yeva": "person",
+    "Hagen": "person",
+    "Mag": "person",
+    "Lissa": "person",
+    "Sledge crew": "group",
+    "Undead": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gorrin",
+     "text": "Bother and blast! Robbed again?! Those nefarious little Urchins crept into the signal tower in the night and pilfered my spyglass! Without it I cannot keep watch on the pass. Ulvana's Undead could march right up to the gate and I would be none the wiser!\n\nThe thieves keep a den in the Snow Caves, west of the Ice Bridge. If you could get my spyglass back, the whole fort would sleep easier. Will you go after it?"
+    },
+    "completion": {
+     "speaker": "Gorrin",
+     "text": "My spyglass! Splendid! Now I can resume my vigil.\n\nHere, take this spell book. A traveling Wizard left it with me years ago to pay for his supper. I never could make sense of a word in it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Gorrin's spyglass from the Urchins in the Snow Caves."
+    },
+    "guard": {
+     "speaker": "Brunn",
+     "text": "This is the north gate, Marshal Odric's post. The pass beyond is closed to all."
+    },
+    "shop": {
+     "speaker": "Thudd",
+     "text": "Welcome to Thudd's Armory! Best steel on the mountain! And if it won't kill the Undead, you can always use it to chip the ice off your beard!"
+    },
+    "townsfolk1": {
+     "speaker": "Hagen",
+     "text": "Stay away from the high pass after dark! The dead walk up there!"
+    },
+    "townsfolk2": {
+     "speaker": "Lissa",
+     "text": "Ooh, a new face in the fort! Come warm yourself by my fire some night, when you're done with all that fighting."
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Fornath: cross-section: bounty_offer, the magic, a guard, two townsfolk",
+   "names": {
+    "Fornath": "place",
+    "Nox": "place",
+    "Kasrak": "person",
+    "Tobrin": "person",
+    "Gorvane": "person",
+    "Ogres": "group",
+    "Black Smeltery": "place",
+    "Mountain Road": "place",
+    "Anvil Hall": "place",
+    "Bodo": "person",
+    "Krall": "person",
+    "Ember Demons": "group",
+    "slag pits": "place",
+    "Fennick": "person",
+    "Salamander Cloak": "thing",
+    "Imps": "group",
+    "Cinder Caves": "place",
+    "Smiths' Gate": "place",
+    "Ambrus": "person",
+    "Tavik": "person",
+    "old quarry": "place",
+    "broken bridge": "place",
+    "old ore chute": "place",
+    "Velda": "person",
+    "Fire Shrine": "place",
+    "Great Bell": "thing",
+    "lava falls": "place",
+    "Grubb": "person",
+    "Bram Sootfinger": "person",
+    "old furnace tunnels": "place",
+    "Hesta": "person",
+    "Slag Pot": "place",
+    "Gundrek": "person",
+    "Zibba": "person",
+    "Kettla": "person",
+    "Harl": "person",
+    "Bessamy": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Krall",
+     "text": "Moreover, production in the slag pits has ceased entirely. Entirely! Ever since those Ember Demons came crawling up out of the vents.\n\nThese abominable creatures appeared the very night Gorvane's Ogres seized the Black Smeltery. My workers have been forced to abandon their posts and the pits are now wholly besieged. Irregardless of the danger, the pits must be reclaimed for Fornath.\n\nHere, take this iron key, it will open the gate to the slag pits at the east end of town. Descend into the pits and eradicate every last one of these nefarious beasts. Report back to me when it is done."
+    },
+    "completion": {
+     "speaker": "Krall",
+     "text": "Splendid! The slag pits are liberated at last! My workers can return to their labors.\n\nTake this shield as a token of my appreciation. You will have need of it, with Gorvane's Ogres still up on the mountain."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Eradicate the Ember Demons in the slag pits."
+    },
+    "guard": {
+     "speaker": "Bodo",
+     "text": "Welcome to Fornath, stranger! Home of the great Master Kasrak and the hottest forges in all of Nox!"
+    },
+    "shop": {
+     "speaker": "Zibba",
+     "text": "Ooh, a new face! I can always spot the new ones, they've still got their eyebrows! Come in, come in!"
+    },
+    "townsfolk1": {
+     "speaker": "Kettla",
+     "text": "Sorry, can't talk now. My crucible's about to spill."
+    },
+    "townsfolk2": {
+     "speaker": "Bessamy",
+     "text": "Did you hear? Ogres up at the Black Smeltery! Ogres!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Wendle Cross: cross-section: heirloom_fetch, the inn, a guard, two townsfolk",
+   "names": {
+    "Wendle Cross": "place",
+    "Telmarq": "person",
+    "Pellam": "person",
+    "Zelloc": "person",
+    "Fort Skarrow": "place",
+    "Grey Moor": "place",
+    "Skeletons": "group",
+    "Brask": "person",
+    "Rudd": "person",
+    "Haddrick": "person",
+    "Toll House": "place",
+    "beech wood": "place",
+    "old well": "place",
+    "south road": "place",
+    "north road": "place",
+    "Belgrin": "person",
+    "Lantern": "thing",
+    "Imps": "group",
+    "old lime kiln": "place",
+    "Ambrus": "person",
+    "Book of Old Roads": "thing",
+    "chapel": "place",
+    "chapel crypt": "place",
+    "Holk": "person",
+    "Grubbin the Grave-Robber": "person",
+    "Gorsk": "person",
+    "quarrymen": "group",
+    "Quarryman": "person",
+    "old quarry": "place",
+    "west gate": "place",
+    "Crooked Kettle": "place",
+    "Odo": "person",
+    "Grimsel": "person",
+    "Quimby": "person",
+    "Quimby's Potions and Notions": "place",
+    "Hesta": "person",
+    "Fenna": "person",
+    "Mungo": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Belgrin",
+     "text": "Greetings, Wanderer. You find me in a most deplorable predicament. In the dead of night a horde of malodorous Imps invaded my house and purloined my enchanted Lantern! Without it I cannot find my own door after sundown. If you could get it back, you would save an old man a great deal of misery. Will you undertake this task?"
+    },
+    "completion": {
+     "speaker": "Belgrin",
+     "text": "My Lantern! You have recovered it! I am in your debt, kind sir. Here are 100 gold pieces, a modest recompense for your valor."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Lord Belgrin's enchanted Lantern from the Imps."
+    },
+    "guard": {
+     "speaker": "Brask",
+     "text": "This is the tower of Telmarq the Arch-Wizard."
+    },
+    "shop": {
+     "speaker": "Odo",
+     "text": "Welcome to the Crooked Kettle! Prices went up a bit since the roads closed. Can't be helped, friend!"
+    },
+    "townsfolk1": {
+     "speaker": "Hesta",
+     "text": "If it's news you want, go to the Crooked Kettle. Odo hears everything that comes down the four roads."
+    },
+    "townsfolk2": {
+     "speaker": "Mungo",
+     "text": "Whose bright idea was it to build the new stables on top of the old graveyard? Now the horses won't go in at all!"
+    }
+   },
+   "reward": null,
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Hestle: cross-section: bounty_offer, the arms, a guard, two townsfolk",
+   "names": {
+    "Hestle": "place",
+    "Vellis": "person",
+    "Mayor Dulvane": "person",
+    "Dulvane": "person",
+    "Tobb": "person",
+    "Hoskin": "person",
+    "Orlo": "person",
+    "Sister Alwen": "person",
+    "Ebbin": "person",
+    "Bramwell": "person",
+    "Sabble": "person",
+    "Rook": "person",
+    "Hulda": "person",
+    "Gorrick": "person",
+    "Pidwick": "person",
+    "Greda": "person",
+    "Marl": "person",
+    "Kroth Hill": "place",
+    "the granary fort": "place",
+    "the Town Hall": "place",
+    "the north gate": "place",
+    "the well house": "place",
+    "the windmill": "place",
+    "the Ogre camp": "place",
+    "the river": "place",
+    "the Sleepy Ox": "place",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the giant leeches": "group",
+    "Orlo's amulet": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hoskin",
+     "text": "Sir! Over here, quick! Giant leeches have crawled up out of my well house south of the farm, and they've had my goats! Here, drink this if they bite you. Now get in there and kill the lot of them."
+    },
+    "completion": {
+     "speaker": "Hoskin",
+     "text": "Gone? Truly gone? Oh, thank goodness! Here, take the key to my boat. It's tied up down at the river. Use it whenever you like."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the giant leeches in Hoskin's well house."
+    },
+    "guard": {
+     "speaker": "Tobb",
+     "text": "This is the north gate of Hestle, and it stays shut."
+    },
+    "shop": {
+     "speaker": "Gorrick",
+     "text": "Welcome! I make armor for heroes and horseshoes for everybody else. What'll it be?"
+    },
+    "townsfolk1": {
+     "speaker": "Greda",
+     "text": "Mayor Dulvane? The old windbag hasn't poked his nose out of the Town Hall since the Ogres came!"
+    },
+    "townsfolk2": {
+     "speaker": "Hoskin",
+     "text": "Beware of the north road after dark! The Ogres come down off the hill with torches."
+    }
+   },
+   "reward": null,
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}
