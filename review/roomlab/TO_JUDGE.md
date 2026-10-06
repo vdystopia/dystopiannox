@@ -9,3 +9,4 @@
 | great_hall | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\great_hall\r4\blind |
 | chapel | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\chapel\r3\blind |
 | dining_hall | r8 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\dining_hall\r8\blind |
+| hall | r3 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\hall\r3\blind |

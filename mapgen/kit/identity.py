@@ -491,8 +491,11 @@ ROOMS = {
     "hall": dict(purpose="a great hall: a colonnade down its length, statues facing each other, benches along the walls, "
                          "shields and banners on the back walls, plants in the corners",
                  core={"column": (4, 24)},
-                 optional={"statue": (0.8, 4), "bench": (0.8, 6), "wall_decor": (1.0, 10), "plant": (0.8, 4),
-                           "storage": (0.4, 2), "table": (0.4, 1), "chair": (0.4, 4)},
+                 # room lab (tuneB): Westwood's three halls (Con04c's colonnade, Con06b's bare hall of shields and two
+                 # statues, Con10c's ring of columns round its obelisks) hold no plants, benches or tables, a chest at
+                 # most, a few hangings: open floor and columns
+                 optional={"statue": (1.0, 6), "bench": (0.25, 2), "wall_decor": (1.0, 4), "storage": (0.3, 1)},
+                 decor_max=4, statues_along=True, top_up=(),
                  types={"column": r"^Column[5-8]$|^CathedralColumn\d", "statue": r"^Statue2[a-h]$",
                         "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
                  # 2026-10-05 playtest (Greywatch's keep): paired rows of columns flanking a clear aisle, never a row
@@ -501,9 +504,10 @@ ROOMS = {
                  compose=[dict(fam="column", slot="colonnade", gap=3.4, aisle=2.6),
                           dict(fam="wall_decor", slot="decor")],
                  fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120, fixed=True),
-                       dict(fam="bench", slot="wall", max=4),
-                       dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
-                       dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+                       # statues in the corners and along the walls, turned along them (Con04c's sixteen, Con06b's pair)
+                       dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
+                       dict(fam="bench", slot="wall", max=1, fixed=True),
+                       dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "great_hall": dict(purpose="a lord's great hall, the heart of the house every other room opens onto: the hearth on a "
                                "back wall, long tables with benches down the middle, banners and trophies on the back "
                                "walls, statues in pairs, benches along the walls, aisles clear along the doors",

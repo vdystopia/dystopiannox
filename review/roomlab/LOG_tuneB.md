@@ -154,3 +154,18 @@ The checker's "sparse" (coverage under its median 0.15 for dining halls, measure
 with Con07E's feast hall among them) now fires on every room at 0.08-0.13; the lab's Westwood dining halls cover
 0.06-0.15 (median 0.10). Left as it is: chasing it brought back the grid of eight tables. Still giving it away: seats
 0.2 units from their tables (Westwood's median gap to the nearest piece 0.58), rows aligned, few lights.
+
+## Hall
+
+Westwood (curated): Con04c's colonnade (128 tiles: 22 columns, 24 statues, fire grates), Con06b's bare hall (two
+statues, shields), Con10c's ring of four columns round its obelisks (209). Pool: the ceremonial family.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.951 | 0.968 | 3 (5 statues against 4) | - |
+| r1 | no plants, tables or benches down the walls (a bench at most), a chest at most, four hangings, statues turned along their walls, no top-up | 0.831 | 0.976 | 9 (checker: sparse at 1-2%) | - |
+| r2 | statue pairs twice and statues in two corners | 0.851 | 0.974 | 10 (repeat: statues) | - |
+| r3 | statues capped by the profile (a piece per 18 tiles, 8) instead of free_most; columns a piece per 14 tiles, 12 at most | 0.784 | 0.976 | 6 (sparse 2-3%, under the checker's 0.027) | queued |
+
+Still giving it away: two statue pairs meet in the middle of the aisle; plain shell (Westwood's halls are rings,
+inlaid floors and fire grates).

@@ -295,7 +295,9 @@ TYPES = {
                    front="benches by the walls; plants in the corners",
                    middle="a colonnade in pairs either side of a clear aisle; statues facing each other across it"),
         cover=(0.02, 0.04, 0.14), open=(0.65, 0.97), per_tile=(0.05, 0.30), types_min=6, free_most=(4, 30),
-        caps={"column": (18, 10)}, walls_min=2, lined=None, tiles=(50, 260),
+        # Westwood's halls: Con04c 22 columns and 24 statues in 128 tiles, Con10c 4 columns and 6 obelisks in 209 (room
+        # lab, tuneB): statues are the hall's own repeated piece, capped here rather than by free_most
+        caps={"column": (14, 12), "statue": (18, 8)}, walls_min=2, lined=None, tiles=(50, 260),
         signature={"column": (0.6, 10), "statue": (0.6, 6)}, needs=("column", "statue"),
         kin=("throne_room", "great_hall", "chapel")),
     "throne_room": dict(
