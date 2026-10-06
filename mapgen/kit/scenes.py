@@ -99,6 +99,8 @@ class Theme:
     house_roles: Tuple[str, ...] = ()           # a wall scene against a house only beside these roles (stone ones)
     culture: str = ""                            # a culture's own scene: laid only when the map names it
                                                  # (Exterior(culture=...): Starwell's wizards), never elsewhere
+    loose: float = 0.0                           # px each piece (a row: its first) is set off its mark by hand
+    loose_step: float = 0.0                      # a row's steps stretched or shrunk by up to this share, as it drifts
 
     def __post_init__(self):
         self.family = self.family or self.name
@@ -138,28 +140,35 @@ CATALOGUE = [
           # three trades (the judge, 2026-10-06: "near-empty ... nothing says what is sold"): a provisioner (apples, a
           # knot of barrels, sacks, the cart), an armourer (racks and helm poles), a potion seller (Con03A's cauldron,
           # stool and ore cart); each with its stock in knots, not singles
-          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -20, 62, n=2, step=(30, 3), must=True),
-            P(("TraderAppleCrate",), 22, 92, p=0.6),
-            P(("Barrel2",), -40, -84, n=2, step=(27, 3)), P(("Barrel2", "Barrel"), -27, -60, n=(1, 2), step=(27, -2)),
-            P(("WaterBarrel",), -112, 18, p=0.7), P(("CrateSteel3", "CrateSteel4"), 54, 70, n=(1, 2), step=(30, 4)),
-            P(("TorchPole",), 104, 36, p=0.7), P(("TorchPole",), -100, 52, p=0.4),
-            P(("OutdoorTraderCart",), 150, -10, p=0.5), P(SACKS, 82, 104, n=(1, 2), step=(22, 10), p=0.6)],
+          # (round 7, the judges: "four to seven pieces each standing alone a tile apart": Westwood's stalls hold five to
+          # ten wares besides the awning, packed: barrels touching in a knot with the water barrel, apple crates side by
+          # side and a second row, the steel crates together; every stock piece more often, set down by hand)
+          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -24, 60, n=(2, 3), step=(29, 4), must=True),
+            P(("TraderAppleCrate",), -8, 90, n=(1, 2), step=(29, 3), p=0.6),
+            P(("Barrel2", "Barrel"), -44, -80, n=(2, 3), step=(26, 4)),
+            P(("Barrel2", "Barrel"), -31, -56, n=(1, 2), step=(26, -2), p=0.8), P(("WaterBarrel",), -76, -50, p=0.8),
+            P(("CrateSteel3", "CrateSteel4"), 56, 66, n=(1, 2), step=(28, 6)),
+            P(SACKS, 82, 98, n=(1, 3), step=(22, 8), p=0.7),
+            P(("TorchPole",), 104, 30, p=0.7), P(("TorchPole",), -100, 52, p=0.3),
+            P(("OutdoorTraderCart",), 150, -10, p=0.5)],
            [P(("@tent",), 0, 0, must=True),
             # (one rack, a second set off it, never three in a ruler line: the judge, 2026-10-06; Con09d's one rack
             # among its barrels and apple crates)
             P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3"), -66, 64, must=True),
-            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), -24, 104, p=0.5),
-            P(("OutdoorTraderHelmPoles",), 70, 74, p=0.7),
-            P(("Barrel2", "Barrel"), -40, -84, n=(3, 4), step=(26, 4)), P(("WaterBarrel",), -112, 18, p=0.6),
-            P(("CrateSteel3", "CrateSteel4"), 110, 30, p=0.7),
-            P(("TorchPole",), -104, 40, p=0.7), P(("TorchPole",), 104, 36, p=0.4),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), -28, 100, p=0.6),
+            P(("OutdoorTraderHelmPoles",), 70, 74, p=0.8),
+            P(("Barrel2", "Barrel"), -40, -84, n=(3, 4), step=(26, 4)), P(("WaterBarrel",), -72, -58, p=0.7),
+            P(("CrateSteel3", "CrateSteel4"), 98, 40, n=(1, 2), step=(26, 6), p=0.8),
+            P(POLEARMS, 30, 104, p=0.4, orient="line"),
+            P(("TorchPole",), -104, 40, p=0.7), P(("TorchPole",), 104, 36, p=0.3),
             P(("OutdoorTraderCart",), -150, 0, p=0.3)],
            [P(("@tent",), 0, 0, must=True), P(("CauldronAnimated",), -10, 70, must=True),
-            P(("CushionedStool2",), 36, 92), P(("WaterBarrel",), -60, 60, p=0.7), P(("CrateSteel3",), 60, 60),
-            P(("MineOreCart2",), -130, 20, p=0.5), P(("Barrel2",), -40, -84, n=2, step=(27, 3)),
+            P(("CushionedStool2",), 36, 92), P(("WaterBarrel",), -58, 58, p=0.8),
+            P(("CrateSteel3", "CrateSteel4"), 60, 60, n=(1, 2), step=(26, 6)), P(SMALL_SACKS, 88, 36, p=0.5),
+            P(("MineOreCart2",), -130, 20, p=0.6), P(("Barrel2", "Barrel"), -40, -84, n=(2, 3), step=(27, 3)),
             P(("TorchPole",), 104, 36, p=0.6), P(("Rock6",), 110, 100, p=0.4)]],
           roles=("store", "inn"), need=True, near=12, cap=1, spacing=40, family="stall", weight=1.2, size=170,
-          min_types=3),
+          min_types=3, loose=10, loose_step=0.15),
     Theme("supply_corner", "a household's stores kept outside the back door: barrels, a crate, sacks", "wall",
           [[P(BIG_BARRELS, -40, 30, must=True), P(CRATES, 2, 28, must=True, orient="line"), P(SACKS, 36, 30, must=True),
             P(BARRELS, 10, 68, p=0.6), P(TOOLS + ("TraderAppleCrate",), 72, 30, p=0.5)],
@@ -205,11 +214,16 @@ CATALOGUE = [
     # (a sign a little apart in two of three: Con02a's SignIx, Con07B's and War07A's Sign1; the judge, 2026-10-06: "no
     # road or path, no sign")
     Theme("well_side", "a draw well where water is fetched, standing clear", "open",
+          # (round 7: the judges, "the sign at the same short step every time": the sign anywhere round the well at
+          # 60-110 px, set down by hand)
           [[P(("Well",), 0, 0, must=True)],
            [P(("Well",), 0, 0, must=True), P(("Sign1",), 78, 30, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), -70, 46, must=True)]],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), -70, 46, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), 34, -74, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), -96, -12, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), 18, 98, must=True)]],
           places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
-          min_types=1, min_pieces=1, clear=60),
+          min_types=1, min_pieces=1, clear=60, loose=16),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],
@@ -305,25 +319,31 @@ CATALOGUE = [
     # screen diagonal ~49 px apart (or two ~160 px apart flanking a way), a torch pole by them, a pair of stone pillars
     # (Monument1) ~100 px either side of a lone statue; flowers never
     Theme("shrine", "a shrine against a wall: statues of one kind in a row, a torch pole by them", "wall",
+          # (round 7, the judges: "the same obelisk, torch pole, statue kit every time"; Westwood's are mostly rows of
+          # statues along the wall, lights between them: the rows two of five, the lights-between row one, the pair and
+          # the lone statue one each, the pillars less often; every piece set down by hand)
           [lay for k in ("a", "b", "c", "e", "g", "h") for lay in (
-              [P((f"Statue2{k}",), -49, 34, n=3, step=(49, 0), must=True), P(("TorchPole",), -100, 36, p=0.7),
-               P(("TorchPole",), 100, 36, p=0.4), P(("Monument1",), 150, 36, p=0.4)],
+              [P((f"Statue2{k}",), -49, 34, n=(2, 4), step=(49, 0), must=True), P(("TorchPole",), -100, 36, p=0.6),
+               P(("TorchPole",), 100, 36, p=0.3), P(("Monument1",), 150, 36, p=0.2)],
+              [P((f"Statue2{k}",), -60, 34, n=3, step=(52, 0), must=True), P(("TorchPole",), 112, 38, p=0.5)],
+              [P((f"Statue2{k}",), -100, 34, n=3, step=(100, 0), must=True),
+               P(("TorchPole",), -50, 38, n=2, step=(100, 0), must=True)],
               [P((f"Statue2{k}",), -80, 34, n=2, step=(160, 0), must=True), P(("TorchPole",), 0, 40, must=True),
-               P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.4)],
-              [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), must=True),
-               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])] +
+               P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.25)],
+              [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), p=0.5),
+               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.3)])] +
           # the crypt court (Con04b's six: three sarcophagi in a cluster, a stone cross or a statue among them, a pillar
           # either side ~105 px out, torch poles by them)
           [[P(("Crypt1",), -2, 92, must=True), P(("Crypt4",), 0, 40, must=True), P(("Crypt3",), 2, -12, p=0.7),
             P(("Cross2", "Statue2b", "Statue2d"), 38, 44, must=True), P(("Monument1",), -110, 40, n=2, step=(220, 0), must=True),
-            P(("TorchPole",), -40, 80, p=0.6), P(("TorchPole",), 40, 10, p=0.5)]] * 3,
+            P(("TorchPole",), -40, 80, p=0.6), P(("TorchPole",), 40, 10, p=0.5)]] * 6,
           # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
           # (masonry, a castle's walls, or a stone house: the judge, 2026-10-06, "set against wooden peasant cabins")
           walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),
           house_roles=("chapel", "village_chapel", "shrine", "mausoleum", "keep", "manor", "townhall", "barracks", "tower",
                        "gatehouse", "gaol", "observatory"),
           roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
-          family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True),
+          family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True, loose=5, loose_step=0.15),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
           "torch pole at the end of the row", "open",
           [[P(GRAVES, -48, 0, n=3, step=(48, 0), must=True), P(FLOWERS, -48, 34, n=3, step=(48, 0), p=0.8),

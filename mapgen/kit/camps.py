@@ -863,36 +863,55 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
                 if ring(rng.choice(types), rng.uniform(r0, r1) * s, b + rng.uniform(-spread, spread), gap=34): break
 
     # ---- the meat: racks and the carcass by the fire on the cook's side (all but the cave's) ------------------------------
-    if arch != "cave_fire":
+    # (round 7, the judges: "one ring stamped round the pit: benches in a V, a stool, the bearskin and the rack against
+    # the fire"; "a cold pit, one bench and a single meat spill: the anchor missing"): the meat set back from the fire
+    # (70-105 px) at uneven angles, tried again further round where it does not fit; the seats two or three, each at an
+    # angle and distance of its own; the sacks and the bearskin bed well apart from the fire
+    if arch != "cave_fire" or rng.random() < 0.6:
         meat = ["OgreHutMeat", "OgreHutMeat"] + (["OgreHutCarcass"] if rng.random() < (0.5 if arch == "hut_yard" else 0.9) else [])
         if arch == "bone_pit": meat = ["OgreHutMeat", "OgreHutCarcass"]
+        if arch == "cave_fire": meat = ["OgreHutMeat"]
+        a_m = cook
         for k, t in enumerate(meat):
-            if ring(t, rng.uniform(56, 78), cook + (k - (len(meat) - 1) / 2) * 0.5 + rng.uniform(-0.12, 0.12), gap=26):
-                goods.append(t)
+            a_m += rng.uniform(0.35, 0.8) * (1 if k else 0)
+            for d_ in (0, 0.5, -0.5, 1.0, -1.0):
+                if ring(t, rng.uniform(70, 105), a_m + d_, gap=26):
+                    goods.append(t); break
     beds_at = []
     if arch == "hut_yard":
-        for kind, a in rng.sample([("bench", b + rng.uniform(-0.3, 0.3)), ("bench", a_in + left * 1.4),
-                                   ("stool", b - left * 1.0)], rng.randint(1, 3)):
-            seat(kind, rng.uniform(90, 100), a)
-        # the take in sack chests by the fire, opposite the meat (Con05B)
+        n_seat, tried = rng.choice((2, 2, 3)), 0
+        while tried < 14 and n_seat > 0:
+            tried += 1
+            a = b + rng.uniform(-2.6, 2.6)
+            if abs(_ang(a - cook)) < 0.7: continue                    # not on the meat
+            r0 = rng.uniform(84, 122)
+            t = _seat(-math.sin(a), math.cos(a)) if rng.random() < 0.6 else rng.choice(("OgreStool1", "OgreStool2"))
+            if ring(t, r0, a, gap=34):
+                n_seat -= 1
+                if len(seats) < 2: seats.append(sc.p(r0 - 32, a + 0.35))
+        # the take in sack chests, opposite the meat (Con05B), a step further out
         for k, t in enumerate(("SackChestMedium1", "SackChestSmall2")[:rng.randint(1, 2)]):
-            o = ring(t, rng.uniform(68, 82), cook + math.pi + (k - 0.5) * 0.45, gap=24, **({"items": loot} if k == 0 else {}))
+            o = ring(t, rng.uniform(88, 125), cook + math.pi + (k - 0.5) * rng.uniform(0.3, 0.7), gap=24,
+                     **({"items": loot} if k == 0 else {}))
             if o is not None and k == 0: chest = o
         # the warlord's bearskin bed at the back (Con09b: OgreBed by OgreBearskin), straw now and then
         ux, uy = -math.sin(b), math.cos(b)
         n_bed = rng.randint(1, 2)
-        for r_, d_ in sorted(((r_, d_) for r_ in (190, 170, 150, 130) for d_ in (0, 0.3, -0.3, 0.6, -0.6)),
+        sk_side = rng.choice((1, -1))
+        for r_, d_ in sorted(((r_, d_) for r_ in (215, 195, 175, 155) for d_ in (0, 0.3, -0.3, 0.6, -0.6)),
                              key=lambda t: (abs(t[1]), -t[0]) if rng.random() < 0.5 else (-t[0], abs(t[1]))):
             bx, by = sc.p(r_ * s, b + d_)
             spots_ = [(bx + ux * (k * 2 - 1) * 22 * (n_bed > 1), by + uy * (k * 2 - 1) * 22 * (n_bed > 1)) for k in range(n_bed)]
-            sk = (bx - math.cos(b) * 50, by - math.sin(b) * 50)            # the bearskin before the bed
+            # the bearskin beside the bed, not before it toward the fire
+            sk = (bx + ux * sk_side * (40 + 22 * (n_bed > 1)) - math.cos(b) * 16,
+                  by + uy * sk_side * (40 + 22 * (n_bed > 1)) - math.sin(b) * 16)
             if all(sc.free(x, y, 26, "OgreBed1") for x, y in spots_) and sc.free(*sk, 24, "OgreBearskin3"):
                 for k, (x, y) in enumerate(spots_):
                     if sc.put_px(("OgreBed1", "OgreBed2")[k], x, y, gap=26): beds_at.append((x, y))
                 sc.put_px(rng.choice(("OgreBearskin3", "OgreBearskin1")), *sk)       # (its spot held above)
                 break
         if rng.random() < 0.4: rim(("OgreStraw1", "OgreStraw2"), 1, 150, 190, 1.0)
-        bones(rng.choice((0, 1, 2)), 50, 80, [cook])
+        bones(rng.choice((0, 1, 2)), 70, 110, [cook + rng.uniform(-0.6, 0.6)])
         ring(rng.choice(("OgreTorchUnlit", "TorchPole")), rng.uniform(140, 190) * s, b - left * rng.uniform(1.0, 1.6), gap=40)
         if rng.random() < 0.3: ring("PlantBarren1", rng.uniform(170, 220) * s, b + left * rng.uniform(0.5, 1.5), gap=30)
     elif arch == "bone_pit":
@@ -912,8 +931,8 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=No
     else:                                                    # cave_fire
         for a in (b + rng.uniform(-0.3, 0.3), a_in + left * rng.uniform(1.2, 1.7)):
             seat("bench", rng.uniform(90, 112), a)
-        ka = b - left * rng.uniform(1.0, 1.5)                # the barrels' knot
-        kx, ky = sc.p(rng.uniform(118, 130), ka)
+        ka = b - left * rng.uniform(1.5, 2.1)                # the barrels' knot, off to one side (round 7: "five
+        kx, ky = sc.p(rng.uniform(128, 150), ka)            # barrels bunched in front of the fire")
         for k, (t, r) in enumerate((("Barrel", 0), ("Barrel", 26), ("Barrel", 26), ("WaterBarrel", 48), ("WaterBarrel", 50))):
             a = ka + k * 1.9
             if sc.put_px(t, kx + r * math.cos(a), ky + r * math.sin(a), gap=18): goods.append(t)
@@ -1043,9 +1062,17 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
         return {(True, True): "UrchinBed1", (True, False): "UrchinBed2", (False, False): "UrchinBed3",
                 (False, True): "UrchinBed4"}[(up, left)]
 
+    # one of Westwood's three dens (rules/scenes/urchin_camp.md "Archetypes": hall 19, mixed den 17, dormitory 6 of 42),
+    # as full as theirs (round 7, the judges: "a near-empty hollow"; Westwood's median 19 pieces, ours had been 9): a
+    # hall's tables ringed by stools and few beds, a mixed den's beds, shelf runs, chests and barrels, a dormitory's
+    # rows of beds. From the den's own hand-generator, so its other draws are as before
+    hand = random.Random(zlib.crc32(f"{spec.d['name']}:urchin-arch:{centre[0]:.1f},{centre[1]:.1f}".encode()))
+    arch = hand.choices(("hall", "mixed", "dormitory"), (19, 17, 6))[0]
     # ---- the beds: of one kind, side by side along the rock in twos and threes
     hammocks = rng.random() < 0.3
     n_beds = max(2, min(7, sleepers + rng.choice((0, 1, 1, 2))))
+    if arch == "hall": n_beds = hand.choice((3, 3, 4))
+    elif arch == "dormitory": n_beds = hand.randint(6, 9)
     groups, left_ = [], n_beds
     while left_ > 0:
         g = min(left_, rng.choice((2, 2, 3)))
@@ -1070,15 +1097,20 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
     # ---- the shelves of the den's stores on the upper walls, a picture or a hanging between them
     log = rng.random() < 0.4
 
+    run_log = [log]
+
     def shelf_of(a):
         up, left = _wall_side(a)
+        log = run_log[0]
         t = (("LogShelvesFull3" if left else "LogShelvesFull4") if log else
              ("UrchinShelvesFull2" if up == left else "UrchinShelvesFull1"))
         return t.replace("Full", "Empty") if rng.random() < 0.15 else t
-    for _ in range(rng.choice((2, 2, 3))):        # shelves two or three side by side along the upper rock
+    for _ in range(rng.choice((2, 2, 3)) + (hand.choice((1, 1, 2)) if arch != "dormitory" else -1)):    # shelves
+        #                                                       two or three side by side along the upper rock
         k = next((k for k in upper if P.free_k(k, 1)), None)
         if k is None: break
         got = 0
+        run_log[0] = hand.random() < 0.4                         # (Westwood's dens mix log and urchin shelf runs)
         for kk, p in P.along(k, 26, DEN_OFF["shelf"], rng.choice((2, 2, 3)), rng.choice((1, -1)), jitter=3, most=40):
             if P.put(shelf_of(A(kk)), *p): got += 1; P.claim(kk, 1)
         P.claim(k, 1 if got else 0)
@@ -1108,10 +1140,21 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
         if p:
             chest = P.put("ChestUrchin4" if left else "ChestUrchin3", *p, items=loot)
             if chest: P.claim(k, 2); break
+    if arch != "dormitory" and hand.random() < 0.45:             # a second chest along the rock
+        for k in [k for k in order if P.free_k(k, 1)][2:]:
+            up, left = _wall_side(A(k))
+            p = P.wall_pt(A(k), DEN_OFF["chest"])
+            if p and P.put("ChestUrchin4" if left else "ChestUrchin3", *p):
+                P.claim(k, 2); break
+    if arch != "dormitory" and hand.random() < 0.5:              # a torch pole standing free (Con02a's)
+        for k in [k for k in range(N) if P.free_k(k, 1)][::3]:
+            p = P.wall_pt(A(k), 40)
+            if p and P.put("TorchPole", *p):
+                P.claim(k, 1); break
     goods = []
     # barrels in a corner knot: two against the rock, one or two before them (the judge, 2026-10-06: "almost no corner
     # groups of barrels")
-    if rng.random() < 0.75:
+    if rng.random() < 0.75 or (arch != "dormitory" and hand.random() < 0.6):
         k0 = next((k for k in reversed(order) if P.free_k(k, 2) and k not in P.mouth), None)
         if k0 is not None:
             bk = rng.choice(("Barrel", "Barrel2"))
@@ -1127,17 +1170,30 @@ def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
                              my_ + (cy - my_) / L * 23 + (q2[1] - q1[1]) * (j - 0.5) * 0.9): goods.append(bk)
     # ---- the table in the open, stools round it
     table, seats = None, []
-    for r, d in ((0, 0), (40, 1.0), (40, -1.0), (60, 2.4), (60, -2.4), (30, 3.1)) if rng.random() < 0.65 else ():
+    want_t = rng.random() < 0.65
+    want_t = (want_t or arch == "hall") and arch != "dormitory"
+    for r, d in ((0, 0), (40, 1.0), (40, -1.0), (60, 2.4), (60, -2.4), (30, 3.1)) if want_t else ():
         x, y = cx + r * math.cos(b + d), cy + r * math.sin(b + d)
         t = "UrchinTableLarge" if rng.random() < 0.75 else "UrchinTableSmall"
         if P.can(t, x, y, gap=50) and P.put(t, x, y):
             table = (x, y)
             ph, n = rng.uniform(0, 6.3), rng.randint(3, 5)       # packed close round it (Westwood: three to five)
+            if arch == "hall": n = hand.randint(4, 6)
             for j in range(n):
-                a = ph + j * 2 * math.pi / n + rng.uniform(-0.15, 0.15)
-                P.put(rng.choice(("UrchinStool1", "UrchinStool2")), x + 29 * math.cos(a), y + 29 * math.sin(a))
+                a = ph + j * 2 * math.pi / n + rng.uniform(-0.15, 0.15) + hand.uniform(-0.2, 0.2)
+                r_ = 29 + hand.uniform(-3, 4)                    # pulled up by hand, not on a ring
+                P.put(rng.choice(("UrchinStool1", "UrchinStool2")), x + r_ * math.cos(a), y + r_ * math.sin(a))
             seats = [(x + 60 * math.cos(ph + 0.5), y + 60 * math.sin(ph + 0.5))]
             break
+    if table and arch == "hall" and hand.random() < 0.5:         # a hall's second table (Con02a, War03c: two)
+        for r, d in ((110, 1.4), (110, -1.4), (100, 2.2), (100, -2.2), (120, 0.6), (120, -0.6)):
+            x, y = table[0] + r * math.cos(b + d), table[1] + r * math.sin(b + d)
+            if P.can("UrchinTableLarge", x, y, gap=50) and P.put("UrchinTableLarge", x, y):
+                ph, n = hand.uniform(0, 6.3), hand.randint(3, 5)
+                for j in range(n):
+                    a = ph + j * 2 * math.pi / n + hand.uniform(-0.15, 0.15)
+                    P.put(hand.choice(("UrchinStool1", "UrchinStool2")), x + 29 * math.cos(a), y + 29 * math.sin(a))
+                break
     if rng.random() < 0.5:
         for _ in range(rng.randint(1, 3)):
             a, r = rng.uniform(0, 6.3), rng.uniform(60, 140)

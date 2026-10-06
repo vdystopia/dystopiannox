@@ -26,8 +26,8 @@ of the same type, and whether a classifier can tell ours from Westwood's.
   run_cv (the coefficient of variation of the lengths of the runs one kind of piece makes, where it makes two or more:
   low, crop bands, rows of stones or piers all one length), odd (the share of pieces whose kind is alone in the scene:
   low, no odd piece placed with intent), stamp (the share of a scene's piece-to-nearest-piece offsets, by kind, that
-  another scene of the batch repeats within 4 px, averaged over the other scenes: high, one template stamped; Westwood's
-  scenes are measured against each other the same way).
+  another scene of the batch repeats within 4 px, averaged over the other scenes, an awning's or a dock's own parts left
+  out: high, one template stamped; Westwood's scenes are measured against each other the same way).
 
 Needs numpy and scikit-learn (py -m pip install --user numpy scikit-learn).
 """
@@ -93,6 +93,7 @@ TEXT = {   # feature: (name, low text, high text, where to change it)
     "seat_fire": ("seats round the fire", "only {v} of the seats sit round the fire", "", "kit/camps.py hearth"),
 }
 MIN_WW = 5
+KIT_PARTS = re.compile(r"^(TraderTent|Dock)")      # the parts of one built thing (stamp_sig)
 # the irregularity measures and the side that reads as too regular (the scorecard's regularity table)
 REGULAR = {"gap_cv": "low", "step_cv": "low", "drift": "low", "run_cv": "low", "odd": "low", "stamp": "high"}
 
@@ -216,8 +217,10 @@ def irregularity(pieces):
 
 
 def stamp_sig(pieces):
-    """[(kind, nearest piece's kind, dx, dy)] of a scene's solid pieces: what stamp_scores compares."""
-    pcs = [(P.base(t), float(x), float(y)) for t, x, y in pieces if not P.LOOSE.match(t)]
+    """[(kind, nearest piece's kind, dx, dy)] of a scene's solid pieces: what stamp_scores compares. The parts of one
+    built thing (an awning's poles and cloths, a dock's planks) are left out: they stand at the same offsets in every
+    awning and dock, Westwood's as ours, and had made every market stall read as a stamped template."""
+    pcs = [(P.base(t), float(x), float(y)) for t, x, y in pieces if not P.LOOSE.match(t) and not KIT_PARTS.match(t)]
     out = []
     for i, (t, x, y) in enumerate(pcs):
         best = None

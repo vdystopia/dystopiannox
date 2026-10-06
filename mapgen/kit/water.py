@@ -442,14 +442,14 @@ class Waterworks:
                 u, v = (p, lane + k["piece_side"] + 0.4) if kit == "DockDown" else (lane + k["piece_side"] + 0.4, p)
                 if t_ == "Barrel": t_ = self.rng.choice(("Barrel", "Barrel2")) if i == 0 else t_
                 self.spec.obj_px(t_, *px_of_uv(u, v))
-        self._dock_gear(kit, pts)
+        self._dock_gear(kit, pts, tip_load=len(load) if barrels else 0)
         tip = int(round(pos / 2.0)) * 2 + 4 * sign      # wall closing the end of the dock
         cx, cy = uv_to_xy(tip - 2, lane) if kit == "DockDown" else uv_to_xy(lane - 2, tip)
         if cx == int(cx):
             self.kit_walls.add((int(cx), int(cy)))
         return dict(kind=kit, start=start, pieces=pieces, lane=lane)
 
-    def _dock_gear(self, kit, pts):
+    def _dock_gear(self, kit, pts, tip_load=0):
         """The fishers' gear on the bank by a dock's root (the scene lab, review/scenelab: Westwood's docks on Con03A and
         Con05A keep barrels, a crate or a water barrel and a rock or two on the shore beside the dock, a fifth of their
         pieces each): two or three barrels touching on one side of the landing, a crate or a rock on the other, on land,
@@ -487,7 +487,9 @@ class Waterworks:
         # some a step apart; a rock with its stones; a crate; bones now and then; never the same stamp twice)
         side = rng.choice((1, -1))
         barrel = rng.choice(("Barrel", "Barrel2"))
-        bank = rng.choices(("store", "fire", "rock", "bare"), (4, 2, 3, 1))[0]
+        # (round 7, the judges: "barrel pairs mirrored at both ends of the pier", "a campfire ring on the bank: Westwood's
+        # docks carry nothing like that"): a dock with barrels on its tip keeps its bank mostly rock or bare; no fire
+        bank = rng.choices(("store", "fire", "rock", "bare"), (1, 0, 4, 2) if tip_load else (4, 0, 3, 1))[0]
         n_b = {"store": rng.choice((2, 3, 3, 4)), "fire": rng.choice((0, 1, 2)), "rock": rng.choice((0, 1)),
                "bare": rng.choice((1, 2))}[bank]
         got = 0

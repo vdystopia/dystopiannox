@@ -43,6 +43,14 @@ Everything: `py tests/scenelab.py all --iter <name>` runs every type with a reci
   lights, swarms, a dock that does not reach out, stumps by a fire, strewn bedrolls, purposeless heaps, graveyards
   without graves; a scene the kit failed to lay).
 
+**Regularity** (since round 7; not a stop criterion, a warning): the scorecard's regularity table measures how
+irregular the scenes are against Westwood's own scenes of the type (`metrics.irregularity`, `stamp_scores`): the
+variation of the gaps between pieces (gap_cv), how evenly rows are stepped (step_cv) and how straight they run (drift),
+how much the runs of one kind differ in length (run_cv: crop bands, rows of stones, piers), the share of odd pieces
+(odd), and how much of a scene's layout other scenes of the batch repeat to the pixel (stamp; an awning's or a dock's
+own parts left out). A batch is flagged **too regular** on a measure when its median is past Westwood's quartile on the
+regular side and 40% of its scenes lie past Westwood's range; each scene's card names the measures it is too regular on.
+
 ## How it works
 
 | File | What it does |

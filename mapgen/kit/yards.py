@@ -363,25 +363,39 @@ def _jail(spec, rng, y, rec, pts):
     v_cells = 3 if arch == "guardhouse" else 0     # where the cells' front wall stands
     if v_cells:
         for u in range(0, L + 1): spec.wall(*point_cell(*pt(u, v_cells)), rec["fence"])
-    bounds = [k * L // n for k in range(n + 1)]
+    # (round 7, the judges: "doors and torches at exact even spacing; the cells bare, straw, cot in strict order"):
+    # the cells of uneven widths, each door where it falls in its cell, the torch on either side of it a step or so off
+    # (one door in six without), the cells furnished each by its own draw (two alike now and then), from the jail's
+    # own hand-generator so its other draws are as before
+    hand = _random.Random(zlib.crc32(f"{spec.d['name']}:jail-hand:{y.gi},{y.gj}".encode()))
+    widths = [2] * n
+    for _ in range(L - 2 * n): widths[hand.randrange(n)] += 1
+    if arch == "guardhouse": widths = [L // 2, L - L // 2]
+    bounds = [sum(widths[:k]) for k in range(n + 1)]
     for u_k in bounds[1:-1]:                       # the walls between the cells
         for v in range(v_cells, D + 1): spec.wall(*point_cell(*pt(u_k, v)), rec["fence"])
     doors, mids = [], []
-    side_t = 1 if own.random() < 0.5 else -1       # the torches on one side of every door, alike down the row
+    side_t = 1 if own.random() < 0.5 else -1       # (the draw the first jails made)
     for c in range(n):
         lo, hi = bounds[c], bounds[c + 1]
-        mid = (lo + hi) // 2 if hi - lo > 2 else lo + 1
-        doors.append(door(mid - (1 if hi - lo > 2 and mid + 1 >= hi else 0), v_cells, rec["gate"]))
+        du_ = hand.randint(lo + 1, max(lo + 1, hi - 2))
+        doors.append(door(du_, v_cells, rec["gate"]))
         mids.append(square_px(*at((lo + hi) / 2, (v_cells + D) / 2)))
-        tu = mid + 0.5 + side_t * 1.0
-        if lo + 0.3 < tu < hi - 0.3 or arch == "cell_row":
-            spec.obj_px("Torch", *square_px(*at(tu, v_cells - 0.3)))
+        sd_ = hand.choice((1, -1))
+        tu = du_ + 0.5 + sd_ * hand.uniform(0.85, 1.35)
+        if not (lo + 0.3 < tu < hi - 0.3) and arch != "cell_row":
+            tu = du_ + 0.5 - sd_ * hand.uniform(0.85, 1.1)
+        if (lo + 0.3 < tu < hi - 0.3 or arch == "cell_row") and (c == 0 or hand.random() >= 1 / 6):
+            spec.obj_px("Torch", *square_px(*at(tu, v_cells - 0.3 - hand.uniform(0, 0.12))))
     y.gate, y.cells, y.cell_mids = doors[0], doors, mids
-    # the cells' furnishing: one bare, one with a cot, one deep in straw (a fourth bare or straw)
+    # the cells' furnishing: bare, a cot or deep in straw, each cell its own draw, never all alike
     kinds = ["bare", "cot", "straw"]
     own.shuffle(kinds)
+    kinds = [hand.choices(("straw", "cot", "bare"), (0.45, 0.3, 0.25))[0] for _ in range(n)]
+    if len(set(kinds)) == 1 and n > 1: kinds[hand.randrange(n)] = hand.choice([k for k in ("straw", "cot", "bare")
+                                                                              if k != kinds[0]])
     if arch == "guardhouse": kinds = ["cot", own.choice(("straw", "cot"))]       # (Con02a, War03b: a cot in each)
-    kinds = (kinds + [own.choice(("bare", "straw"))] * 2)[:n]
+    else: own.choice(("bare", "straw"))
     for c, kind in enumerate(kinds):
         lo, hi = bounds[c], bounds[c + 1]
         laid = []
@@ -531,7 +545,8 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
             sqr = (int(math.floor(si_ + (o_ if abs(ey_) >= abs(ex_) else 0))),
                    int(math.floor(sj_ + 0.5 + (o_ if abs(ex_) > abs(ey_) else 0))) + 1)
             if sqr in y.plot: spec.floor[square_tile(*sqr)] = "RoughCobble"
-        reserve(si_, sj_, 1.35 if max(y.w, y.h) >= 12 else 1.1)      # (a headstone had stood on the paved walk)
+        reserve(si_, sj_, 1.5 if max(y.w, y.h) >= 12 else 1.2)       # (a headstone had stood on the paved walk;
+        #                                                       round 7, the judges: "several on the paving itself")
     if not walk_on:
         reserve(gm[0] + (ci - gm[0]) * 0.25, gm[1] + (cj - gm[1]) * 0.25, 1.2)    # the way in from the gate kept clear
     # ---- the dead trees by the walls (a field's: War03b-d) ------------------------------------------------------------
@@ -596,25 +611,30 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
     small = arch == "pen"
     A0, A1, B0, B1 = (I0, I1, J0, J1) if rows_i else (J0, J1, I0, I1)
     pad_ = 1.4 if big else (0.8 if small else 1.1)
+    # (round 7, the judges: "headstones in a near-perfect lattice, four rows of three, filling the yard"; the lab's
+    # measures: Westwood's own fields ARE laid on a lattice, snapped to the screen's diagonals, rows 0.83 of their stones,
+    # ~98 px apart; what differs is that its rows are of different lengths, start at different plots and leave plots
+    # empty, the stones wider apart). One pitch along the rows and one between them for the yard (Westwood's wider),
+    # each row starting at the first or second plot and stopping short by up to two, a stone barely out of true
     cands = []
+    pitch = rng.uniform(1.9, 2.4) if small else rng.uniform(2.9, 3.3)
     r_ = A0 + pad_ + 0.2 + rng.uniform(0, 0.4)
+    c_first = B0 + pad_ + 0.3 + rng.uniform(0, 0.4)
     while r_ <= A1 - pad_ - 0.2:
-        c_ = B0 + pad_ + 0.3 + rng.uniform(0, 0.5 if small else 1.2)  # rows a little out of step
-        fam_left = 0
-        while c_ <= B1 - pad_ - 0.3:
+        n_plots = int((B1 - pad_ - 0.3 - c_first) / pitch) + 1
+        k0 = 0 if small else rng.choice((0, 0, 1))
+        k1 = n_plots - (0 if small else rng.choice((0, 0, 1, 2)))
+        for k_ in range(k0, max(k0, k1)):
+            c_ = c_first + k_ * pitch
             hi, hj = (r_, c_) if rows_i else (c_, r_)
-            hi += rng.uniform(-0.2, 0.2); hj += rng.uniform(-0.3, 0.3)     # out of true, as dug by hand
-            if fam_left <= 0: fam_left = rng.choice((1, 2, 2, 3))
-            fam_left -= 1
-            c_ += rng.uniform(1.9, 2.4) if small else \
-                (rng.uniform(2.3, 2.7) if fam_left > 0 else rng.uniform(2.9, 3.9))
+            hi += rng.uniform(-0.1, 0.1); hj += rng.uniform(-0.12, 0.12)     # barely out of true
             cands.append((hi, hj))
-        r_ += rng.uniform(2.8, 3.4) if big else (rng.uniform(1.9, 2.3) if small else rng.uniform(2.5, 3.0))
+        r_ += rng.uniform(2.7, 3.4) if big else (rng.uniform(1.9, 2.4) if small else rng.uniform(2.6, 3.2))
     lw = 0.5                                                             # (the walk is the way through)
     cands = [(hi, hj) for hi, hj in cands if free_spot(hi, hj, pad=pad_, lane_w=lw, t="Tombstone1") and
              free_spot(hi + 0.45, hj, pad=pad_ - 0.4, lane_w=lw)]
     if arch == "field":
-        cands = [c for c in cands if rng.random() >= 0.1]                  # a plot not yet used
+        cands = [c for c in cands if rng.random() >= 0.15]                 # a plot not yet used
     elif arch == "crypt_yard":
         # a knot of graves near the crypt (or the yard's back), the lawn by the gate left open
         focus = steps[0] if steps else (2 * ci - gm[0], 2 * cj - gm[1])
@@ -631,9 +651,9 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
         if arch == "field" and rng.random() < 0.2:                       # weeds by the stone (War03c: PlantBarren)
             wi, wj = hi + rng.uniform(0.3, 0.8), hj + rng.uniform(-0.5, 0.5)
             if free_spot(wi, wj, pad=0.6, lane_w=0.5): put(rng.choice(("PlantBarren1", "PlantBarren2")), wi, wj, room=0.4)
-        if arch != "pen" and rng.random() < 0.3:                         # a newer grave: its plot dug earth
-            a_ = int(math.floor(hi - 0.1)), int(math.floor(hj + 0.5))
-            for sq_ in (a_, (a_[0] + 1, a_[1])):
+        if arch != "pen" and rng.random() < 0.12:                        # a newer grave: its plot dug earth
+            a_ = int(math.floor(hi - 0.1)), int(math.floor(hj + 0.5))     # (one square: two in a line had read as a
+            for sq_ in (a_,):                                             # path under the stones, round 7)
                 if sq_ in y.plot: spec.floor[square_tile(*sq_)] = "DirtDark2"
         reserve(hi + 0.45, hj, 0.8)                               # the plot stays clear
     # a yard keeps four graves at the least (a graveyard has graves, SW-9): a small yard's rows had left room for three,

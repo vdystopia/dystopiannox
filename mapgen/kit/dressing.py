@@ -382,6 +382,10 @@ class Exterior:
                              for a in [k * math.pi / 4 for k in range(8)])):
             return None
         layout = rng.choice(th.layouts)
+        # a loose theme's pieces set down by hand (scene lab round 7: "the sign at the same step every time", "every
+        # piece at a fixed offset"): each piece off its mark by up to th.loose px, a row's steps stretched or shrunk by
+        # up to th.loose_step; from the scene's own generator, so the dressing's draws are as before
+        hand = random.Random(zlib.crc32(f"{spec.d['name']}:hand:{th.name}:{int(ox)},{int(oy)}".encode()))
         why = self.why_fail = collections.Counter() if not hasattr(self, "why_fail") else self.why_fail
         mir = -1 if (th.mirror and rng.random() < 0.5) else 1
         line = S.line_of(*tdir)
@@ -417,9 +421,16 @@ class Exterior:
                 continue
             cnt = pc["n"] if isinstance(pc["n"], int) else rng.randint(*pc["n"])
             want += cnt
+            da, do, ca = 0.0, 0.0, 0.0
             for c in range(cnt):
                 a = mir * (pc["a"] + pc["step"][0] * c) + rng.uniform(-3, 3)
                 o = pc["o"] + pc["step"][1] * c + rng.uniform(-3, 3)
+                if th.loose or th.loose_step:
+                    if c == 0: da, do = hand.uniform(-th.loose, th.loose), hand.uniform(-th.loose, th.loose)
+                    else:                                           # a row drifts as it goes, its steps uneven
+                        ca += pc["step"][0] * hand.uniform(-th.loose_step, th.loose_step)
+                        do += hand.uniform(-0.35, 0.35) * th.loose
+                    a += mir * (da + ca); o += do
                 x, y = ox + n[0] * o + tdir[0] * a, oy + n[1] * o + tdir[1] * a
                 t = rng.choice(pc["types"])
                 if pc["orient"] == "line": t = S.ALONG[line].get(t, t)

@@ -494,3 +494,45 @@ yard unless it asks for a pen; and a garden's knot laid an apple crate on a Star
 knot keeps to open ground. Greywatch's prisoners stand by `y.cell_mids`.
 
 Sheets: `round6` for all ten, copied to `review/out/scenelab/_judge/round6/<scene>/` and queued in TO_JUDGE.md.
+
+## Round 7 (night-scenes7, 2026-10-06): footprint framing, an irregularity metric, looser and fuller scenes
+
+The independent judges on round 6 (NIGHTLOG 04:39): the bandit camp near chance (6/10), the other nine told apart 8-10
+of 10, for two things: regularity inside the scene (a 4x3 lattice of headstones, doors and torches at exact even steps,
+cells bare/straw/cot in strict order, piers of one length, goods mirrored at a pier's ends, crop bands of one length,
+the well's sign at one step, one ring stamped round the ogre fire, one shrine kit) and too few pieces (stalls, urchin
+dens, ogre camps without their anchor); and they kept scoring the setting.
+
+**Framing** (`labrender.py`, VERSION 4; FAIRNESS.md 6): both kinds of picture show only the scene's own footprint (the
+hull of its pieces plus 40 px, 50 px above it) and the walls it leans on (wall pixels within 90 px beyond); the rest is
+the canvas colour, as the room lab's. The town is judged on whole maps. `base7` is round 6's kit under the new framing.
+
+**The irregularity metric** (`metrics.irregularity`, `stamp_scores`, the scorecard's regularity table; README
+"Regularity"): gap_cv, step_cv, drift, run_cv, odd, stamp (an awning's and a dock's parts left out of stamp), measured
+alike on Westwood (at load) and ours, classified with the other features. Westwood's own medians: graveyards are the
+most regular of Westwood's scenes (gap_cv 0.13, rows 0.83 of their stones, stamp 0.08: a snapped lattice ~98 px apart),
+jails the least (gap_cv 0.63), gardens' run lengths vary most (run_cv 0.51).
+
+| Scene | What changed (kit) | Pieces WW / base7 / round7 (median) | AUC base7 -> round7 | Too regular base7 -> round7 |
+|---|---|---|---|---|
+| graveyard | `yards._graveyard`: one pitch along the rows (~3 squares, Westwood's 98 px) and between them, each row starting at its first or second plot and stopping up to two short, stones barely out of true; 15% plots empty; a newer grave's dug earth one square in 12% (two squares in a line had read as a path); the walk's reserve wider. A first try (rows tilting and wandering, families scattered) went the wrong way: AUC 0.89, Westwood's rows are straighter than that | 9 / 5.5 / 5 | 0.686 -> 0.624 | none -> none (run_cv 0.36 -> 0.43, WW 0.18) |
+| jail | `yards._jail`: cells of uneven widths, each door where it falls in its cell, the torch either side a step or so off it (one door in six without), each cell's furnishing its own draw (bare, cot, straw; never all alike) | 3 / 10 / 10 | 0.845 -> 0.843 | gap_cv, step_cv, drift, odd, stamp -> step_cv, drift, odd (gap_cv 0.06 -> 0.56, WW 0.63; stamp 0.22 -> 0) |
+| pond_dock | `water._dock_gear`: no fishers' fire; a dock with barrels on its tip keeps its bank rock or bare (no mirrored goods). Lab: the first pier two or three planks, the others each their own length, along the shore at uneven gaps | 6.5 / 6.5 / 6 | 0.38 -> 0.42 | none -> odd |
+| garden | `Village._garden_at`: one bed in two cut short, each row its own ends, plants closer (x0.78-0.9), a little off line, a plant failed now and then | 27 / 24.5 / 20 | 0.304 -> 0.29 | gap_cv, step_cv -> none (run_cv 0.0 -> 0.26, WW 0.51) |
+| well | `scenes.well_side`: the sign anywhere round the well (five places, 60-110 px), every piece set down by hand (`Theme.loose`) | 2 / 2 / 1.5 | 0.75 -> 0.58 | none -> none |
+| ogre_camp | `camps.ogre_camp`: the meat 70-105 px out at uneven angles, tried further round where it does not fit; two or three seats each at its own angle and distance (no V); sacks further out; the bearskin beside the bed, the bed further back; the cave fire's barrels off to one side, a meat rack in 60% of cave fires | 13 / 10.5 / 11 | 0.946 -> 0.828 | drift, run_cv, stamp -> drift |
+| shrine | `scenes.shrine`: statue rows two of five layouts, a row with the lights between the statues, the pillars rarer, the crypt court as often as Westwood's; set down by hand | 5.5 / 4 / 4.5 | 0.90 -> 0.846 | none -> none |
+| market_stall | `scenes.market_stall`: every trade's stock fuller and packed (barrels touching with the water barrel, apple crates two to three and a second row, steel crates in pairs, sacks), set down by hand | 15 / 12 / 12 (wares 8 / 6 / 6.5) | 0.858 -> 0.879 | gap_cv -> gap_cv, step_cv |
+| urchin_camp | `camps.urchin_den`: Westwood's three dens by frequency (hall: three or four beds, tables ringed by four to six stools, a second table half the time; mixed den; dormitory: six to nine beds), more shelf runs mixing log and urchin shelves, a second chest, a free torch pole, barrels more often, stools pulled up by hand | 19 / 9 / 13 | 0.87 -> 0.869 | none -> stamp |
+| bandit_camp | none (near chance) | 20 / 23 / 23 | 0.876 -> 0.876 | step_cv, stamp |
+
+Generic: `Theme.loose` / `loose_step` (kit/scenes.py, kit/dressing.py `_lay`): a theme's pieces set off their marks and
+its rows drifting, from the scene's own generator (the dressing's draws unchanged).
+
+Not done: the market stall's wares still fall short of Westwood's on two in eight stalls (pieces refused by the spacing
+next to the awning); the jail's cells stay one scene where Westwood's are found cell by cell (its piece counts and odd
+pieces are not comparable); urchin dens still miss in one to three clearings of ten (no bed placed, or the beds far from
+the table); bandit camps untouched.
+
+Story maps: Thornwick, Greywatch, Ambermere, Starwell, Harrowby 0 errors, warnings the same classes and counts as on the
+base (21, 12, 16, 19, 16: room rules only). Sheets: K (base7) and Q (round7) for all ten, queued in TO_JUDGE.md.
