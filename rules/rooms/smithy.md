@@ -41,6 +41,10 @@ Westwood's forges are bare workshops; ours sell over a counter, so they hold mor
 
 30-110 tiles.
 
+## Where people stand
+
+The smith behind his counter (the furnisher's keeper spot, StoryMap.shops), else beside the anvil; never among the racks. (`STANDS["smithy"]`: the keeper's spot, beside the anvil, beside the forge.)
+
 ## Common mistakes
 
 - "The shopkeeper is standing in the middle of the shop, surrounded by a random scattering of objects ... He needs to be

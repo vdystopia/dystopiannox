@@ -1,0 +1,118 @@
+{
+ "scenario": "rumour",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: a miller's man points at Wenna's seal, a fishwife grumbles about the inn's eels, a carter points at Red Corwin on the north road.",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Wenna's been weeping all week. Something about Urchins and her mill."},
+    "rumour2": {"speaker": "Townswoman", "text": "Don't eat the eels at the Drowned Lantern. Just don't."},
+    "rumour3": {"speaker": "Townsman", "text": "Nobody takes the north road now. Not with Red Corwin's lot sitting up in that old tower!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Cave town of miners: a miner warns about low ceilings, a woman points at the bats in the ninth shaft, a man points at his cousin lost after a cave-in.",
+   "names": {"Foreman Gast": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Mind your head, stranger. Everybody new does it once. Ha!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Foreman Gast is paying good gold to anyone who'll clear the bats out of the ninth shaft."},
+    "rumour3": {"speaker": "Townsman", "text": "My cousin went down after the cave-in. Not a peep from him since... I fear the worst."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Swamp hamlet on stilts: a man complains of a loose plank, a woman points at the ferryman's lost girl, a man points at Hagen's bounty on a giant leech.",
+   "names": {"Hagen": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Watch the third plank from the end. It's been loose since my grandfather's day, and nobody's fixed it yet."},
+    "rumour2": {"speaker": "Townswoman", "text": "The ferryman's girl never came back from the reed beds. Her poor mother hasn't slept since!"},
+    "rumour3": {"speaker": "Townsman", "text": "There's a leech in the south pool longer than my punt! Hagen says he'll pay to see it dead."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Castle town with a garrison: a man grumbles about drums at dawn, a woman points at the escaped prisoners, a man points at Skeletons in the chapel crypt.",
+   "names": {"Aldric": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Drums at dawn, every blessed day. I haven't had a lie-in since the garrison came."},
+    "rumour2": {"speaker": "Townswoman", "text": "The Captain's been shouting for an hour. Somebody let the prisoners out of the dungeon!"},
+    "rumour3": {"speaker": "Townsman", "text": "Skeletons are walking in the crypt under the chapel. Aldric the Priest wants them put back where they belong."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Lake village of fishermen: a man points at the boat-tipping beast, a woman points at the lights on Gull Isle, a man brushes the player off about the smell.",
+   "names": {"Gull Isle": "place"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The ferry's not running. Something big has been tipping the boats over, out past the reeds."},
+    "rumour2": {"speaker": "Townswoman", "text": "Saw lights out on Gull Isle again last night. Ghosts, if you ask me."},
+    "rumour3": {"speaker": "Townsman", "text": "That smell? That's just the village, stranger. You get used to it. Mostly."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Wizards' college town: a scholar points at trouble in the vaults, a woman jokes about a lost apprentice-toad, a man points at a renegade Master in the west tower.",
+   "names": {"Pell": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Archivist Pell is in a dreadful state. Something has got into the vaults, they say."},
+    "rumour2": {"speaker": "Townswoman", "text": "An apprentice turned himself into a toad last spring. We still don't know which toad."},
+    "rumour3": {"speaker": "Townsman", "text": "The old tower west of the college is lit again. The Masters won't speak of the renegade who lives there."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Frozen fort on a mountain pass: a soldier scoffs at the cold, a woman points at the overdue supply sled and the White Wolves, a man points at what the scout saw on the high pass.",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Cold? This is a warm day, lad! Wait till the wind turns."},
+    "rumour2": {"speaker": "Townswoman", "text": "The supply sled is four days late. The Warden fears the White Wolves got to it."},
+    "rumour3": {"speaker": "Townsman", "text": "A scout came back from the high pass with his hair gone white. He won't say what he saw up there."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Lava-forge town of smiths: a man points at the Emberdemons by the deep vein, a mother points at her boy lost in the slag tunnels, a man mocks a rival smith.",
+   "names": {"Torva": "person", "Hask": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Guildmaster Torva wants iron from the deep vein, but the Emberdemons won't let a soul near it."},
+    "rumour2": {"speaker": "Townswoman", "text": "My boy took a dare and went into the slag tunnels! Please, if you see him, send him home!"},
+    "rumour3": {"speaker": "Townsman", "text": "Buy your blade from anyone but Hask. His swords bend if you look at them hard."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Crossroads inn and its hamlet: a carter points at bandits on the east road, a woman gossips about watered ale, a man points at the howling shrine on the hill.",
+   "names": {"Barnaby": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Heading east? Don't. Bandits took the last two carts off that road."},
+    "rumour2": {"speaker": "Townswoman", "text": "The innkeeper waters the ale. Everybody knows it. Everybody drinks it anyway."},
+    "rumour3": {"speaker": "Townsman", "text": "Something howls in the old shrine on the hill every night. Barnaby says it's the wind. It isn't."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Farming town troubled by Ogres: a man points at the Mayor's taken daughter, a farm-wife complains about her pig and her husband's boots, a man points at Bram the hunter's way into the Ogre caves.",
+   "names": {"Bram": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The Ogres carried off the Mayor's daughter! He's offering half his barns to get her back!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Ogres again! Last week my pig, this week my husband's boots. I'm not sure which I miss more."},
+    "rumour3": {"speaker": "Townsman", "text": "Bram the hunter knows a back way into the Ogre caves. If he's sober, that is."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

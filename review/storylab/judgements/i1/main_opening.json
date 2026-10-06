@@ -1,0 +1,33 @@
+{
+  "packet": "main_opening/i1",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'valiant [Class] of [Place]! We've been expecting you!', mad urchins stealing a scepter, capitalised 'East', and the throwaway 'nettlesome urchins' reminder are classic Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Self-introduction by name and title, a clean threat (a hundred gold a month or the mill burns), shut gate, kill order and reward: a well-built but templated reeve speech."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff Latinate wizard voice ('transpiring', 'scry out', 'antiquated records') with an agreement slip ('incursions ... is') and a reminder that names items the opening masked: authentic campaign roughness."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Grand travelogue exclamations ('timeless fortress home', 'glorious') and a terse 'You need to press on now, lad.' reminder fit the campaign's openings."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Short clipped instructions from a companion who drops the player off ('Too many prying eyes', 'Forest beasts will heed its bite') and a gruff 'Get a move on.' reminder."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same reeve template with a proof-item twist (red cloak); the reminder and journal both restate the target and location precisely."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Come in, stranger, and shut the door. I'm [Person], Reeve of [Place].' then threat, gate, kill, reward; competent but formula-identical to its siblings."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'I'll be plain about it' and 'nothing comes in, and nothing goes out' are writerly flourishes; the structure mirrors B, F, G and I exactly."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'I won't waste your time' plus the same name-title intro and gate-reward close; the reminder 'Is [Person] dead yet? ... Go!' is closer to Nox but still navigational."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Mid-scene, terse fragments ('You'll know. And careful.') that assume context, with a longer reminder than opening; the unevenness reads authentic."}
+  ],
+  "tells": [
+    "New openings introduce the speaker by name and title ('I'm [Person], Reeve of [Place]'); Westwood's speakers assume the player knows them or the scene.",
+    "New openings follow a fixed three-beat arc: greeting, threat with a shut gate, kill order plus reward; Westwood's openings vary wildly in length and shape.",
+    "New reminders and journals restate target and location precisely ('Kill X in the watchtower on Y, north of Z'); Westwood's reminders are mood lines ('Go! Don't just stand there.') and journals are short.",
+    "Westwood's register is grander or stiffer (Latinate vocabulary, 'valiant', 'timeless fortress home') and carries small grammar or capitalisation slips; the new texts are uniformly clean and plain.",
+    "New texts use repeated writerly flourishes ('I'll be plain about it', 'I won't waste your time', 'nothing comes in, and nothing goes out')."
+  ]
+}

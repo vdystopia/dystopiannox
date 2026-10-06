@@ -1,0 +1,33 @@
+{
+  "packet": "two_givers/i1",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Melodramatic, wordy plea with Nox humour ('the menfolk cannot live without us', the Ogres' stomachs grumbling); the 'choice' is accept or refuse, not two rival givers."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Long, formal guard speech ('I surmise', 'despicable scoundrel', 'lose no sleep fretting about his soul') with distinct dead/alive rewards; the register is unmistakably the campaign's."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clean twin-giver template: honest giver names the place, the thief's 'Heh, heh' counter-offer, a tidy reward list; the 'priest will get another one' quip is well made but formulaic."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same skeleton as C and J (watchtower, 'Heh, heh', 'You never saw me, mate!'); the 'Halt! ... Oh, you're not one of them' opener is neat but too engineered."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Warm and plain, but the precise hiding directions, the rival's 'Heh, heh' and the 'Don't tell [Person]' sting follow the same mould as the other new texts."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The traitor's speech is long and precise ('a chest by [Person]'s bed, at the top of the watchtower', 'by the old elm south of the ford'); polished exposition rather than Nox's looser lines."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Used-car-salesman gag ('only used it on weekends') with a concrete price haggle; quirky, short, and anachronistic in the way Nox's humour is."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "An absurd 50,000-gold sale of an inn and home, told plainly with 'lad' and a long rambling farewell; odd and specific in Westwood's manner."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Bureaucratic sponsorship framing, apples, a 'foul little urchin', bats and a ruby key; meandering quest chain with concrete item handoff is very Nox."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Third and fourth repetitions of the stolen-goods / turncoat template ('I rode with [Person]', 'Heh, heh', 'you never saw me'); well paced but formula-shaped."}
+  ],
+  "tells": [
+    "The new texts share one rigid skeleton: honest giver with precise hideout directions, a turncoat who says 'Heh, heh', and a cheeky closing line ('you never saw me').",
+    "New texts give exact locations and return points (north of the ford, by the old elm, here at the gate); Westwood's quests are vaguer and lean on gags.",
+    "Westwood's choices are often odd or comic situations (a used bow sale, buying an inn, a sponsorship) rather than a symmetric moral fork.",
+    "Westwood's register swings: formal Latinate words ('surmise', 'despicable scoundrel'), melodrama and anachronistic jokes; the new texts stay in an even, plain folk voice.",
+    "New outcomes list a tidy reward pair ('gold and these boots', 'potions and a little gold'); Westwood names sums ('500 in gold') or hands a key to the next step."
+  ]
+}

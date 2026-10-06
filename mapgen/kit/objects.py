@@ -36,6 +36,15 @@ CATEGORIES = [
     ("cauldron", r"^Cauldron"),
     ("hearth", r"Fireplace|FirePit"),
     ("stove", r"^Stove|Oven"),
+    # the confinement and work rooms' pieces, which have no furniture family (kit/roomtypes.py: torture chambers, cells,
+    # winch rooms, workshops, ossuaries, conservatories): their counts per room come from Westwood's evidence rooms
+    ("torture", r"^TortureRack"),
+    ("restraint", r"^IronMaiden|^Stocks\d"),
+    ("gearwork", r"^Gear\d|^PulleyGear|^MechGear|^MineOreCartWheel"),
+    ("bones", r"^(Skull|ArmBone|LegBone|RibCage|Bones?\d*)$"),
+    ("monument", r"^Monument\d"),
+    ("feature", r"^Fountain$|^WishingWell$"),
+    ("hanging", r"^StarChart|^Zodiac"),
 ]
 FAMILY_CAT = {"wall_decor": "hanging", "shelves": "shelf", "shop_rack": "rack", "storage": "supply", "stove": "stove",
               "fireplace": "hearth"}
@@ -174,12 +183,20 @@ def room_cap(t, room_type, tiles):
     if c == "chest": return chest_cap(room_type, tiles)
     if c == "cauldron": return 1
     if c == "table": return table_cap(room_type, tiles)
+    if c == "statue" and kind(t) == "Statue":
+        # statues by the type's Westwood p90 per room, a pair at least (a living room 2, a library 4, a hall 12)
+        st = (kb().get("types", {}).get(room_type or "", {}).get("statues") or {})
+        if st: return max(2, int(st.get("p90", 0)))
+    ev = evidence_cap(t, room_type, tiles)
+    if ev is not None: return ev
     if role(t) == "showpiece":
         k = kind(t)
         for stem, n in SHOWPIECE_TWICE.items():
             if k.startswith(stem): return n
         if c in TWICE_IN_HALL and tiles >= HALL_TILES: return 2
-        return 1
+        # a type whose Westwood rooms hold more than one (an observatory's three telescopes, Con07B)
+        own = ((profile(t) or {}).get("count") or {}).get(room_type or "")
+        return max(1, int(own["max"])) if own and c != "cauldron" else 1
     return None
 
 
@@ -199,10 +216,27 @@ def table_cap(room_type, tiles):
     return max(1, int(round(p90 * min(big, 2.5))))
 
 
+# categories whose per-room count is Westwood's own in the evidence rooms of each type (kit/roomtypes.py evidence):
+# rules/out/objects.json kinds[k]["count"][type]["max"]
+EVIDENCE_CATS = {"torture", "restraint", "gearwork", "monument", "feature"}
+
+
+def evidence_cap(t, room_type, tiles):
+    """The most of t's kind a room of `room_type` holds where Westwood's evidence rooms of the type hold it (their max,
+    twice that in a room twice their median size), else None."""
+    if category(t) not in EVIDENCE_CATS: return None
+    p = profile(t)
+    c = (p or {}).get("count", {}).get(room_type or "")
+    if not c: return None
+    ty = kb().get("types", {}).get(room_type or "", {})
+    p50 = ((ty.get("tiles") or {}).get("p50") or tiles)
+    return max(1, int(c["max"])) * (2 if tiles >= 2 * p50 else 1)
+
+
 def cap_key(t):
     """What room_cap counts: chests together, cauldrons together, else the kind."""
     c = category(t)
-    return c if c in ("chest", "cauldron", "table") else kind(t)
+    return c if c in ("chest", "cauldron", "table") else kind(t)      # statues: kind Statue (Statue2a-h)
 
 
 def light_cap(tiles):

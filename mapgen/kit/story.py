@@ -15,7 +15,7 @@ Coordinates: squares (i, j) for the land, world pixels for objects, as in kit/la
 """
 import math, os, random, re, zlib
 from nox import CELL
-from kit.identity import BUILDINGS, role_size
+from kit.identity import BUILDINGS, role_size, role_program
 from kit.layout import square_tile, square_px, px_square, point_cell
 from kit.village import _squares_of
 from kit.building import generate_building
@@ -85,7 +85,7 @@ class StoryMap:
             bid = B_[k]
             role = BUILDINGS[bid.role]
             size0, min_units0 = role_size(role)
-            program = [kind for kind, _ in role["rooms"]]
+            program = [kind for kind, _ in role_program(bid.role, getattr(bid, "extra", ()))]   # with its extra rooms
             b = None
             # a house too small for its rooms at their least sizes is tried a size up before a size down
             for shrink in (1.0, 1.12, 0.92, 1.25, 0.84):
@@ -215,6 +215,105 @@ class StoryMap:
         for p in sorted(pts, key=lambda p: (p[0] - cx[0]) ** 2 + (p[1] - cx[1]) ** 2):
             if off_wall(p) and all((p[0] - a) ** 2 + (p[1] - b) ** 2 > clear * clear for a, b in objs): return p
         return pts[0]
+
+    # ---- where people stand indoors (kit/roomtypes.py STANDS) --------------------------------------------------------
+    def stand_px(self, room, k=0, clear=0.5):
+        """Where a person stands in a room, by its type (kit/roomtypes.py STANDS, rules/rooms/<type>.md "Where people
+        stand"): the keeper behind his counter, the priest at the altar's side, the lord by his hearth, the gaoler by his
+        table; else against a back wall facing the room. The k-th free spot (world px): on the room's floor, off its
+        walls, `clear` uv units clear of the furniture, out of the doorways and their ways in, never among tables, 40 px
+        from anyone standing there already. (2026-10-05: a quest giver stood "in a weird place in between two tables" in a
+        hall: free_px takes the open floor nearest the middle, which in a hall of tables lies between them.)"""
+        from kit.roomtypes import profile
+        from kit.furnish import _rules, _solid_types, K as UVPX
+        THINGS = _rules()[3]
+        solid = _solid_types()
+        cells = set(room.tiles)
+        m = self.m
+        to_uv = lambda p: ((p[0] + p[1]) / CELL, (p[0] - p[1]) / CELL)
+        to_px = lambda u, v: ((u + v) * CELL / 2, (u - v) * CELL / 2)
+
+        def half(t):
+            ext, ex, ey, _ = THINGS.get(t, ("CIRCLE", 10, 0, ""))
+            return (ex / 2 / UVPX, ey / 2 / UVPX) if ext == "BOX" else (ex / UVPX, ex / UVPX)
+
+        # a room's tiles are every other cell (x + y even): a point is on the floor when its cell or a neighbour is one
+        on_floor = lambda p: any((int(p[0] // CELL) + a, int(p[1] // CELL) + b) in cells
+                                 for a, b in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)))
+        inside = lambda o: on_floor((o["x"], o["y"]))
+        objs = [o for o in m.d["objects"] if inside(o) and "type" in o]
+        us = [x + y + 1 for x, y in cells]; vs = [x - y for x, y in cells]
+        cu, cv = sum(us) / len(us), sum(vs) / len(vs)
+        umin, umax, vmin, vmax = min(us), max(us), min(vs), max(vs)
+        people = [(o["x"], o["y"]) for o in m.d["objects"]
+                  if "DefaultAction" in (o.get("xfer") or {}) or o.get("type", "").startswith("Shopkeeper")]
+        doors = [d.px for d in getattr(room, "doors", []) or []]
+        TABLE = re.compile(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d|"
+                           r"Bench\d|LightBench\d|CushionedBench\d)$")
+
+        def gap(u, v, o):                       # uv distance from (u, v) to the piece's box
+            ou, ov = to_uv((o["x"], o["y"])); hu, hv = half(o["type"])
+            return math.hypot(max(0.0, abs(u - ou) - hu), max(0.0, abs(v - ov) - hv))
+
+        def ok(p):
+            if not on_floor(p): return False
+            if any((int(p[0] // CELL) + a, int(p[1] // CELL) + b) in m.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)):
+                return False
+            u, v = to_uv(p)
+            if any(o["type"] in solid and gap(u, v, o) < 0.75 + clear for o in objs): return False
+            if sum(1 for o in objs if TABLE.match(o["type"]) and gap(u, v, o) < 2.6) >= 2: return False   # among tables
+            if any(math.dist(p, d) < 64 for d in doors): return False
+            return all(math.dist(p, q) >= self.SPOT_GAP for q in people)
+
+        def sides(o, d):                        # the four sides of a piece, d uv units out from its box
+            ou, ov = to_uv((o["x"], o["y"])); hu, hv = half(o["type"])
+            return [(ou + hu + d, ov), (ou - hu - d, ov), (ou, ov + hv + d), (ou, ov - hv - d)]
+
+        cands = []
+        for rule in tuple((profile(room.kind) or {}).get("stands", ())) + (("back",),):
+            if rule[0] == "keeper":             # the furnisher kept it clear behind the counter: only someone there bars it
+                for sp in getattr(room, "spots", []) or []:
+                    p = tuple(sp["px"])
+                    if sp.get("role") in ("shopkeeper", "barkeep") and all(math.dist(p, q) >= self.SPOT_GAP for q in people):
+                        if k == 0: return p
+                        k -= 1
+                continue
+            if rule[0] == "back":               # the NW wall (lowest u) and the NE wall (highest v), mid-wall first
+                row = [(umin + 2.5, v) for v in range(int(vmin) + 3, int(vmax) - 2)] + \
+                      [(u, vmax - 2.5) for u in range(int(umin) + 3, int(umax) - 2)]
+                row.sort(key=lambda q: min(abs(q[1] - cv), abs(q[0] - cu)))
+                cands += [to_px(*q) for q in row]
+                continue
+            rx = re.compile(rule[1])
+            for o in sorted((o for o in objs if rx.search(o["type"])), key=lambda o: math.dist((o["x"], o["y"]), to_px(cu, cv))):
+                ou, ov = to_uv((o["x"], o["y"]))
+                walls = sorted([(ou - umin, "u"), (umax - ou, "u"), (ov - vmin, "v"), (vmax - ov, "v")])
+                if rule[0] == "beside" and walls[0][0] < 3.0:
+                    # against a wall: at its sides along that wall, a step out into the room
+                    out_u = 1.0 if walls[0][1] == "u" and ou - umin < umax - ou else -1.0 if walls[0][1] == "u" else 0.0
+                    out_v = 0.0 if walls[0][1] == "u" else (-1.0 if vmax - ov < ov - vmin else 1.0)
+                    # next to it, or past what flanks it (a statue either side of the altar)
+                    pts = [q for d in (1.0, 2.4) for q in sides(o, d) if (q[0] == ou) == (walls[0][1] == "u")]
+                    cands += [to_px(q[0] + out_u, q[1] + out_v) for q in pts]
+                else:
+                    # free-standing: beside it, or behind it, the far side from the door first
+                    ref = to_uv(doors[0]) if doors and rule[0] == "behind" else (cu, cv)
+                    pts = sorted(sides(o, 1.0) + sides(o, 2.0), key=lambda q: math.dist(q, ref),
+                                 reverse=rule[0] == "behind")
+                    cands += [to_px(*q) for q in pts]
+        n = 0
+        for p in cands:
+            if ok(p):
+                if n == k: return p
+                n += 1
+        return self.free_px(room)
+
+    def person_in(self, donor, scr, room, name, k=0, **kw):
+        """A person (person()) standing where people stand in this room by its type (stand_px), facing into the room."""
+        x, y = self.stand_px(room, k)
+        pts = [((a + 0.5) * CELL, (b + 0.5) * CELL) for a, b in room.tiles]
+        kw.setdefault("face", (sum(p[0] for p in pts) / len(pts), sum(p[1] for p in pts) / len(pts)))
+        return self.person(donor, scr, x, y, name, **kw)
 
     # ---- the land ----------------------------------------------------------------------------------------------------
     def keep_open(self, stages):
@@ -359,7 +458,7 @@ class StoryMap:
             for room in b.rooms:
                 spots = [sp for sp in (getattr(room, "spots", []) or []) if sp.get("role") in ("shopkeeper", "barkeep")]
                 if not spots and room.kind != "smithy": continue
-                at = spots[0]["px"] if spots else self.free_px(room)
+                at = spots[0]["px"] if spots else self.stand_px(room)     # by the anvil, never among the wares
                 xs = [(x + 1) * CELL for x, _ in room.tiles]; ys = [(y + 1) * CELL for _, y in room.tiles]
                 self.pop.shopkeeper(keeper.get(bid.role, "ShopkeeperYellow"), *at, wares[bid.role],
                                     greeting=greet.get(bid.role, ""), face=(sum(xs) / len(xs), sum(ys) / len(ys)))

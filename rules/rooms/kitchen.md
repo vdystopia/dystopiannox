@@ -45,6 +45,10 @@ The hearth (a wall fireplace) centred on a back wall, the cooking cauldron two u
 
 A camp kitchen (a mess) keeps more barrels; a Dun Mir kitchen (8 of Westwood's 18) its stone oven.
 
+## Where people stand
+
+The cook beside the cauldron (on the side away from the hearth), else by the hearth; never between the work table and the fire. (`STANDS["kitchen"]`: beside the cauldron or stove, beside the hearth, a back wall.)
+
 ## Common mistakes
 
 - "Kitchen: open space everywhere, everything clustered around the chimney, meat on the floor, no clear purpose"

@@ -49,6 +49,10 @@ The user wants stores fuller than Westwood's ("a store room holds more than any 
 - `ore_store`: mana and ore carts with room to move them, racks of mining gear, dark crates.
 - `ogre_hoard`: barrels, sacks and crates heaped along the walls, carcasses hung to cure, bones about; torch poles.
 
+## Where people stand
+
+The storekeeper by his shelves, else at a back wall clear of the stock; never in the aisle. (`STANDS["storeroom"]`: beside the log shelves, a back wall.)
+
 ## Common mistakes
 
 - A mill's grain store with a row of axe racks down its middle (Harrowby): the `granary` kind (a storeroom of sacks,

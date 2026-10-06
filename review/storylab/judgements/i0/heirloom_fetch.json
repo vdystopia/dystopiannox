@@ -1,0 +1,34 @@
+{
+  "packet": "heirloom_fetch/i0",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Secret bookcase passage, 'at whatever the cost!', 'Unsavory elements dwell in the shadows!', 'Good luck, Apprentice!' and an imperative journal: the Nox wizard chapter's voice, typo-level apostrophe included."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Greetings, Adept!', 'dire need', 'foul demoness', '...sooner than you think' - breathless exclamatory plot-pushing typical of Westwood."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A careful institutional backstory (Reeve's grant, a month's deadline), precise physical description ('the size of a cup's mouth', 'my father's thumb worn into the edge') and a long journal: thoughtful, but not Nox."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Political intrigue (the moot, the charter), a crow's-foot token, and the stately 'the office of Reeve is not ungrateful' - a different, more literary writer."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Fragmentary grief ('That's it. That's his mark. ...Forgive me.') and three-generation detail are affecting, but the restraint and colon-led lists are not Westwood's register."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'kind sir!', breathless short pleading, 'Could you... would you', a one-line thanks and a 'Retrieve X from Y near Z' journal: unmistakably Nox's townsfolk side quest."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A drowned-souls ledger, 'I'll write the carter's name in it tonight; he has earned his place' - elegiac, semicolon-rich, and far too composed for Nox."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Gahhhhhh! No! Don't kill me!', the half-blind hermit, and a reward scroll about bats: Nox's broad slapstick humour exactly."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Inn named for a lantern fished from the water, 'lighting their dice', 'There she is' - charming, but its wistful texture and narrative journal give it away."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'valiant [Class]', 'nettlesome urchins', explicit directions ('East of here', 'center of town') and a 'buy supplies, then see the Captain' handoff are classic Westwood tutorial-town writing."}
+  ],
+  "tells": [
+    "Journal form: Westwood uses one imperative clause ('Retrieve the [Thing].'); the new texts write two or three past-tense sentences naming who asked, what it is, its history and where it is.",
+    "Object description: the new texts lavish sensory detail on the heirloom (metal, size, marks, wear) and its lineage; Westwood names the object and moves on.",
+    "Emotion: Westwood's speakers are loud (exclamations, 'Gahhhhhh!', 'kind sir!', 'Please hurry'); the new ones are restrained, elegiac, with ellipsis-pauses and understatement.",
+    "Reminder lines: Westwood repeats the urgency or a warning; the new reminders give a precise location plus a characterful aside.",
+    "Rewards and humour: Westwood's rewards are campaign-relevant (spells, scrolls, next destination) and its humour broad and slapstick; the new ones offer a found item plus 'a bed/flour/potions for life' and lean on dry wit.",
+    "Repetition across new texts: the same shared map furniture (Reeve, ford, watchtower, barrow, mill) and the same 'Will you...?' closing question on every offer."
+  ]
+}

@@ -1,0 +1,118 @@
+{
+ "scenario": "rumour",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Three townsfolk point at Ulric's wolf bounty, Wenna's seal stolen by the Urchins, and Red Corwin on Crow Hill.",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Wolves out of the Ashwood took half of Ulric's sheep! The old shepherd's offering a bounty, I hear."},
+    "rumour2": {"speaker": "Townswoman", "text": "Poor Wenna! Those Urchins from the old barrow stole her husband's seal right out of the mill!"},
+    "rumour3": {"speaker": "Townsman", "text": "Red Corwin's bandits hold the old watchtower on Crow Hill. Nobody takes the north road now!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Townsfolk point at Dunlin's leeches in the Bracken, Mabry's scales taken by a Troll, and Dunstan's hammer at the Hanging Oak.",
+   "names": {"Dunlin": "person", "Hanging Oak": "place"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Don't wade in the Bracken! Giant Leeches have the shallows, and Dunlin the ferryman's paying to be rid of them!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Mabry's in tears! A Troll under the old stone bridge took her silver scales!"},
+    "rumour3": {"speaker": "Townsman", "text": "Corwin's men robbed Dunstan's cart by the Hanging Oak. Took his grandfather's hammer, too! He's furious!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Townsfolk point at Pip lost in the barrow, Greyjaw at the Ashwood's edge, and the tithe chest Corwin's bandits stole.",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Brother Anselm's novice, young Pip, went after the Urchins in the old barrow. He hasn't come back!"},
+    "rumour2": {"speaker": "Townswoman", "text": "I saw Greyjaw at the edge of the Ashwood! A wolf as big as a pony! Ulric wants him dead."},
+    "rumour3": {"speaker": "Townsman", "text": "Corwin's bandits stole the town's tithe chest! The Reeve is beside himself."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Townsfolk point at Corrie's hunt for the bear Old Scratch, Ossian's lantern stolen by the Urchins, and Corwin's lookouts on Crow Hill.",
+   "names": {"Corrie": "person", "Old Scratch": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "A bear mauled Corrie's brother by the berry thickets! She's hunting the brute they call Old Scratch."},
+    "rumour2": {"speaker": "Townswoman", "text": "Have you seen the Drowned Lantern's door? Dark! The Urchins pinched Ossian's brass lantern!"},
+    "rumour3": {"speaker": "Townsman", "text": "Corwin's lookouts watch the north road from the tower on Crow Hill. Someone ought to throw them off it!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Townsfolk point at Hebb's spider-ridden charcoal pits, Mother Gale's ring lost to a leech, and Garrick's father's horn on Crow Hill.",
+   "names": {"Hebb": "person", "Gale": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Hebb came running out of the Ashwood all covered in web! Spiders have taken his charcoal pits!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Mother Gale lost her wedding ring to a leech! Down in the reeds below the mill, of all places!"},
+    "rumour3": {"speaker": "Townsman", "text": "That horn at night? It was Garrick's father's! Corwin's men blow it on Crow Hill to mock us."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Townsfolk point at the bats in the chapel bell tower, the Reeve's chain stolen by the Urchins, and Corwin's black wolves on the north road.",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The chapel bell has gone quiet! Bats from the barrow nest in the tower, and Brother Anselm can't get them out."},
+    "rumour2": {"speaker": "Townswoman", "text": "Have you seen the Reeve's bare neck? The Urchins stole his chain of office! Heh, heh!"},
+    "rumour3": {"speaker": "Townsman", "text": "Corwin looses black wolves on the north road at night. Garrick has a bounty on them!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Townsfolk point at Tam's rats in the mill cellar, Ulric's crook by the wolves' den, and Sly Wat who knows Corwin's tower.",
+   "names": {"Tam": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Wenna's boy Tam swears the rats in the mill cellar are as big as dogs! He's offering a reward."},
+    "rumour2": {"speaker": "Townswoman", "text": "Old Ulric dropped his father's crook running from the wolves. It's out by their den in the Ashwood!"},
+    "rumour3": {"speaker": "Townsman", "text": "Sly Wat used to ride with Red Corwin. Buy him a drink at the Drowned Lantern, and he might talk about the watchtower!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Townsfolk point at the wasps in Elsa's orchard, Wenna's stolen seal, and Red Corwin robbing the north road.",
+   "names": {"Elsa": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Elsa's orchard is crawling with wasps! Their Queen is as big as a crow, she says!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Wenna's flour has no mark on it now. The Urchins crept out of the barrow and stole her seal!"},
+    "rumour3": {"speaker": "Townsman", "text": "Corwin's bandits took my brother's mule on the north road! I'd give a lot to see Red Corwin swing."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Townsfolk point at the Wisps over the Bracken, the Undead in the chapel crypt, and Corwin's men at the Hanging Oak.",
+   "names": {"Hanging Oak": "place"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Don't follow the lights on the Bracken! The Wisps lead drinkers into the river. Ossian wants them gone!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Brother Anselm saw the dead walking in the chapel crypt! He dropped his mother's beads running out!"},
+    "rumour3": {"speaker": "Townsman", "text": "Some of Corwin's men camp at the Hanging Oak. Dunstan wants a word with them about his hammer!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Townsfolk point at the Mawweeds eating Hedda's goats, Pip gone after the chapel's candlesticks, and the shut north gate.",
+   "names": {"Hedda": "person", "Mawweed": "thing"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Hedda's goats keep vanishing in the bog west of the Ashwood. Mawweeds ate them, she says! Plants!"},
+    "rumour2": {"speaker": "Townswoman", "text": "The Urchins stole the candlesticks from the Chapel of the Ford! Little Pip went after them alone!"},
+    "rumour3": {"speaker": "Townsman", "text": "The Reeve won't open the north gate till Red Corwin is dead. My cart's been waiting a month!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

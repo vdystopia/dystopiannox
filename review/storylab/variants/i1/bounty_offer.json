@@ -1,0 +1,314 @@
+{
+ "scenario": "bounty_offer",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, pays a bounty on the wolf pack led by Greyjaw that took half his flock.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Stranger! You look handy in a fight. Please, help an old shepherd! A wolf pack came down out of the Ashwood and took half my flock!\n\nThey're led by a great grey brute. We shepherds call him Greyjaw. The pack dens in the Ashwood, west of my fold.\n\nKill Greyjaw and his wolves, and I'll pay you 100 gold. It's all I have saved!"
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Greyjaw still lives! I heard him howling last night. Please hurry!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Greyjaw is dead?! Thank goodness! My sheep can graze in peace again! Here's the 100 gold, as I promised, and a potion besides. Bless you, stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Greyjaw and his wolf pack in the Ashwood for Ulric."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Dunlin the ferryman pays to clear the Giant Leeches, led by a bloated one called the Gullet, from the Bracken shallows south of the ford.",
+   "names": {
+    "Dunlin": "person",
+    "Gullet": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dunlin",
+     "text": "Ahoy there, friend! I'm Dunlin, the ferryman. Giant Leeches have nested in the Bracken shallows, south of the ford!\n\nThey latch on to anyone who wades in. The biggest, a bloated thing we call the Gullet, nearly dragged a miller under!\n\nClear them out, Gullet and all, and I'll pay you 80 gold. I'll throw in a potion for the poison, too!"
+    },
+    "reminder": {
+     "speaker": "Dunlin",
+     "text": "Those leeches are still in the shallows! Nobody will ride my ferry!"
+    },
+    "completion": {
+     "speaker": "Dunlin",
+     "text": "The Gullet is dead?! Ha! My ferry runs again! Here's your 80 gold, friend, and the potion as promised. Mind those bites!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches and the Gullet in the Bracken shallows."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Corrie the huntress pays a bounty on the bears led by Old Scratch, a great black bear, in the berry thickets northwest of the mill.",
+   "names": {
+    "Corrie": "person",
+    "Old Scratch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Corrie",
+     "text": "Hold, stranger! I'm Corrie, and I hunt the Ashwood. Or I did, until the bears came!\n\nA great black bear we call Old Scratch leads them. He mauled my brother at the berry thickets, northwest of the mill. Now no one dares go in!\n\nKill Old Scratch and the bears with him. My spare bow and quiver are yours, and 50 gold besides!"
+    },
+    "reminder": {
+     "speaker": "Corrie",
+     "text": "Old Scratch still roams the thickets! Watch for his claws, stranger!"
+    },
+    "completion": {
+     "speaker": "Corrie",
+     "text": "Old Scratch is dead! I can hardly believe it! My brother will sleep easy now. Here -- my bow, a full quiver, and 50 gold. You've earned every bit!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Old Scratch and his bears in the berry thickets northwest of the mill."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Tam, Wenna's mill boy, offers a bounty on the giant rats in the mill cellar and their leader, the Rat King.",
+   "names": {
+    "Tam": "person",
+    "Rat King": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tam",
+     "text": "Psst... you there! Are you brave? Rats have overrun the mill cellar! Big ones, as big as dogs!\n\nThe biggest is a fat old monster with a torn ear. I call him the Rat King. He ate my dinner. Twice!\n\nKill them all, and Mistress Wenna says you'll get 40 gold. And I'll give you my boots. They're nearly new!"
+    },
+    "reminder": {
+     "speaker": "Tam",
+     "text": "I can still hear them squeaking down there! Hurry, before they eat the flour!"
+    },
+    "completion": {
+     "speaker": "Tam",
+     "text": "The Rat King is dead?! Hooray! Here's your 40 gold from Mistress Wenna, and my boots, like I promised. Don't mind the smell!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the rats and the Rat King in the cellar of the mill."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Hebb the charcoal burner pays to kill the spiders and their huge white mother, the Widow, at his charcoal pits in the Ashwood.",
+   "names": {
+    "Hebb": "person",
+    "Widow": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hebb",
+     "text": "Thank goodness, a traveller! I'm Hebb. I burn charcoal at the pits in the Ashwood, south of the road. Spiders have spun webs all over the pits!\n\nTheir mother is a huge white spider. We call her the Widow. She took my mule last night!\n\nPlease, kill the Widow and her brood! I'll pay 100 gold, and you'll want this potion for their bite."
+    },
+    "reminder": {
+     "speaker": "Hebb",
+     "text": "Is the Widow dead? No? Then what are you doing here?!"
+    },
+    "completion": {
+     "speaker": "Hebb",
+     "text": "No more webs?! You did it! The pits are mine again! Here's 100 gold, kind stranger, and keep the potion. I'll bet you needed it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Widow and her spiders at the charcoal pits in the Ashwood."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Brother Anselm offers alms money to drive the bats, come up out of the old barrow, from the bell tower of the Chapel of the Ford.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Anselm",
+     "text": "Bless you for stopping, my son. A great cloud of bats has taken our bell tower! They came out of the old barrow when the Urchins dug into it.\n\nThe bats bite whoever climbs the stair!\n\nCould you climb the tower and drive them out? I have 60 gold from the alms box, and an old spell book that may serve you."
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "The bats still screech in the tower! Please, my son, hurry!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Listen! The bell rings again! Thank goodness, the tower is clean! Take these 60 gold, my son, and this old book. May it serve you well!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the bats out of the bell tower of the Chapel of the Ford."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "SpellBook"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Ossian of the Drowned Lantern pays to destroy the Wisps whose lights lure his drinkers into the Bracken south of the ford.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Ossian",
+     "text": "Welcome to the Drowned Lantern, friend! Business is bad, and I'll tell you why. Wisps!\n\nThey float over the Bracken every night, south of the ford. My customers follow the lights home and walk straight into the river! Two near drowned this week!\n\nPut out those Wisps, and the house pays 70 gold. I'll add a potion to keep you on your feet!"
+    },
+    "reminder": {
+     "speaker": "Ossian",
+     "text": "Those Wisps are still dancing on the water! Hurry, before I lose more customers!"
+    },
+    "completion": {
+     "speaker": "Ossian",
+     "text": "Not a light on the river tonight! You did it! Here's 70 gold and the potion, friend. Now my customers can stagger home dry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Wisps over the Bracken, south of the ford, for Ossian."
+    }
+   },
+   "reward": {
+    "gold": 70,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Elsa, a widow with an orchard east of town, offers a bounty on the wasps and their crow-sized Queen nesting among her apple trees.",
+   "names": {
+    "Elsa": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Elsa",
+     "text": "Ouch! Ow! Oh, a stranger! Wasps have built a nest as big as a barrel in my orchard! It's east of town, past the mill.\n\nTheir Queen is the size of a crow! The others sting anyone who comes near the apple trees. My harvest is rotting on the branches!\n\nKill the wasps and their Queen, please! I'll give you 50 gold and my late husband's shield."
+    },
+    "reminder": {
+     "speaker": "Elsa",
+     "text": "The wasps are still in my orchard! My poor apples!"
+    },
+    "completion": {
+     "speaker": "Elsa",
+     "text": "The nest is gone?! Oh, thank you! I can pick my apples at last! Here's the 50 gold, and the shield as well. It's better on your arm than on my wall!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the wasps and their Queen in Elsa's orchard east of town."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "WoodenShield"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Garrick pays the Reeve's bounty on the black wolves Red Corwin's men loose on the north road below Crow Hill at night.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Garrick",
+     "text": "Psst... stranger, a word. Red Corwin keeps black wolves up on Crow Hill. At night his men loose them on the north road!\n\nThey dragged off a carter last week. The Reeve has put a bounty on them, and I'm to pay it.\n\nKill the black wolves on the north road, and I'll hand you 120 gold from the Reeve's purse. Will you do it?"
+    },
+    "reminder": {
+     "speaker": "Garrick",
+     "text": "The black wolves still run the road at night! Watch yourself!"
+    },
+    "completion": {
+     "speaker": "Garrick",
+     "text": "No more howling on the north road! Well done, friend! Here's the Reeve's 120 gold, every coin. Corwin will miss his pets, heh, heh!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill Red Corwin's black wolves on the north road below Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": []
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Hedda the goatherd pays to destroy the man-eating Mawweeds in the bog west of the Ashwood that snap up her goats.",
+   "names": {
+    "Hedda": "person",
+    "Mawweed": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hedda",
+     "text": "Stranger! Have you seen a white goat? No? Then it's in the bog, and it's been eaten!\n\nThe bog west of the Ashwood is full of man-eating plants. Mawweeds, we call them. They snap up my goats like apples!\n\nChop down every Mawweed in that bog. I'll pay you 90 gold, and a potion in case they bite!"
+    },
+    "reminder": {
+     "speaker": "Hedda",
+     "text": "Another goat gone this morning! Are those plants still snapping?!"
+    },
+    "completion": {
+     "speaker": "Hedda",
+     "text": "Not a Mawweed left?! Hooray! My goats are safe! Here's 90 gold, kind stranger, and the potion. Not that you'll need it now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the Mawweeds in the bog west of the Ashwood for Hedda."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   }
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+  "packet": "guard_bark/i3",
+  "judge": "Claude Code subagent, Claude Opus 5.5",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Punchy and plain, but the opener packs cause, history and who-to-ask into one tidy briefing, and the 'into the fire with you' bark is a writer's flourish. Generic title ('Guildmaster') in place of a masked name."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The cells threat and the formal release line are close to Nox, but 'home of the bravest garrison in the realm' plus the blocked-road-and-who-decides formula reads assembled to spec."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same three-beat block (danger, consequence, who barred it, ask them) as other new texts; 'keep to the planks' is neat but the whole set is too economical and evenly paced."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Breathless, slightly clumsy urgency ('You have arrived! Lives are at stake!'), redundant repetition in the reminder and the stock 'Your valor knows no peer' are pure Westwood."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Dry officious humour (no spitting, don't even think about wizardry), 'Oh, I forgot to mention' and the trailing 'huh...' are Nox's comic guard voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stiff, slightly preachy register ('for the common man'), bare 'Move on!' and the masked name in the first line match the campaign's gate guards."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Flat, minimal, no quest pointer, page break mid-welcome and an escalating 'Last warning' that leads nowhere: the unpolished filler of the original."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Inn welcome stapled to a barred-road briefing with 'ask her inside', and a drunk-guard 'Hiccup!' gag that feels inserted to tick a humour box."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Proud, stilted civic lines with a grammar slip ('can be dangerous place') and no instruction at all; nobody writing to spec would leave it this loose."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Again sealed-area, monster, only-X-can-open, find-him-by-Y; the later line borrows Westwood's 'brave Adventurer' but the whole is too neatly symmetrical."}
+  ],
+  "tells": [
+    "New guards all deliver the same three-beat briefing in the first line: what is closed, which monster caused it, which titled NPC decides and where to find him. Westwood's guards often point nowhere, or only welcome and threaten.",
+    "New texts use generic titles (the Captain, the Foreman, the Elder, the Guildmaster) where Westwood uses a proper name (masked [Person]/[Place]/[Class]).",
+    "New sentences are uniformly short and clean; Westwood's are uneven, with redundant repetition, stock praise ('Your valor knows no peer'), grammar slips and stiff officialese.",
+    "Humour in new texts is a bolted-on gag (hiccups, 'mind your head'); Westwood's humour comes from the guard's own pompous or bored character.",
+    "The 'later' line in new texts always closes the loop neatly (road open, safe travels); Westwood's can be a non sequitur or an escalation."
+  ]
+}

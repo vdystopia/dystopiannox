@@ -48,6 +48,10 @@ The bed, headboard against a back wall, its nightstand beside it (apart from it,
 
 Dun Mir bedrooms (23 of Westwood's 50) take Dun Mir chests and hangings; an ogre sleeps in a den (see barracks).
 
+## Where people stand
+
+The sleeper at the bed's side (never at its foot, where the chest is), else by the chest; never between the table and its chairs. (`STANDS["bedroom"]`: beside the bed, beside the chest, a back wall.)
+
 ## Common mistakes
 
 - "Bedroom: very empty; nightstand too close to the bed" (TreePlace review).

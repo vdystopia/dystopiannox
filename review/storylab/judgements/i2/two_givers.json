@@ -1,0 +1,33 @@
+{
+  "packet": "two_givers/i2",
+  "judge": "Claude Code subagent (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The innkeeper's list and 'Drink up, love!' are lively, but the neat symmetrical rival claim ('Return it to me, its rightful owner') and the composed, morally balanced dilemma are a modern quest design, not Nox's."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The pig-snatched-by-Ogres setup and caps-lock 'PIG!' have Westwood's slapstick, but the pidgin Ogre exile offering a counter-deal is too neatly built as a two-giver choice. The comedy is engineered."},
+    {"label": "C", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Twenty-two gold and a button' and the child who wants to hatch a spider egg are charming, but whimsy in this register and the tidy mirror structure of the two outcomes read as new writing."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The used-car salesman bow ('only used it on weekends', 'since I like your face') is classic Westwood anachronism, and the outcome lines are plain and functional."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Two hundred gold for you -- well, a hundred and eighty. I have expenses.' and 'If the Foreman asks, you never met me' are crafted comic beats. Too polished and the symmetry is too exact."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'young [Class]' repeated, 'savage scum', 'despicable scoundrel behind bars', 'I'll lose no sleep fretting about his soul': long, overstated, exclamatory, with a dead-or-alive reward split. Pure Westwood."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Terse, clipped sentences ('My orders. Good. Very good.'), a debt 'to some very large men' and 'I feel lighter already'. Modern noir economy, not Nox's chatty exclamations."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "A sponsorship/petition structure with a ruby key, 'foul little urchin' and 'aggravated the bats'. Expository and slightly awkward, with an accept/decline outcome; it reads like Westwood's own quest scripting."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Hail, brave Adventurer!', 'menfolk ... cannot live without us', the Ogres' grumbling stomachs, and a sealed exit with a secret passage: Westwood's campy melodrama with accept/refuse branches."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Hi there. Name's [Person].', 'It's not easy running a smuggling ring, you know', 'ya', and the wizard tower warning. Breezy, wordy and functional, true to the campaign."}
+  ],
+  "tells": [
+    "Westwood's 'two-giver' texts are often not a rival dilemma at all: an accept/decline branch, dead or alive, or a shopkeeper upsell. The new texts are built as a symmetrical rival offer for the same object, with mirrored payoffs.",
+    "New texts lean on crafted comic beats such as a self-correcting price, an odd itemised reward or 'you never met me'; Westwood's humour is broader (anachronisms like 'used on weekends', melodramatic overstatement).",
+    "Westwood's speakers announce themselves and their role ('I am the ... Master of', 'Name's [Person]') and repeat a form of address ('young [Class]', 'brave Adventurer'); the new givers rarely do.",
+    "Westwood leans on adjective pairs and stock villain words ('notorious', 'despicable scoundrel', 'savage scum', 'disgusting'); the new texts prefer short clipped sentences and understatement.",
+    "New texts end the payoff line with a wry closer ('Heh... I feel lighter already', 'Don't tell [Person]!'); Westwood's outcomes end on a plain thanks or a 'Good luck'."
+  ]
+}

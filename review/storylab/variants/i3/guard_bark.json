@@ -1,0 +1,118 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i3",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v3 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Garrick at Brackenford's shut north gate, bandits on the road; shapes: first = refusal by order with a reason, again = curt, later = after the deed (one line, no news)",
+   "names": {},
+   "parts": {
+    "first": {"speaker": "Garrick", "text": "Halt! The north gate is shut by Halvard's order. Bandits own that road now. If you mean to change that, go and see Halvard at the Moot Hall."},
+    "again": {"speaker": "Garrick", "text": "Still here? Move along."},
+    "later": {"speaker": "Garrick", "text": "The gate stands open again, thanks to you. Brackenford won't forget it, kind stranger."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Brannoch guards the sealed lower gallery of a cave town of miners, giant Spiders nesting below, the Foreman holds the key; shapes: first = idle talk turning into a refusal, again = a warning, later = proud of the place",
+   "names": {"Brannoch": "person"},
+   "parts": {
+    "first": {"speaker": "Brannoch", "text": "Quiet in the tunnels today... The lower gallery is sealed. Giant Spiders have nested down there, and only the Foreman can open it. Find him by the lift."},
+    "again": {"speaker": "Brannoch", "text": "Mind your head on the beams!"},
+    "later": {"speaker": "Brannoch", "text": "The lower gallery is open and the picks are swinging again. This mine is proud to have you, brave Adventurer!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Hesk on the barred east boardwalk of a swamp hamlet on stilts, Wisps luring folk into the bog, the Elder had it barred; shapes: first = a warning about the road, again = curt, later = after the deed",
+   "names": {"Hesk": "person"},
+   "parts": {
+    "first": {"speaker": "Hesk", "text": "Don't go out on the east boardwalk, kind sir. The Wisps lead folk off it into the bog, and none come back. The Elder had it barred. Ask her if you want it opened."},
+    "again": {"speaker": "Hesk", "text": "Off with you. And keep to the planks."},
+    "later": {"speaker": "Hesk", "text": "No more lights in the bog! Go where you please."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Osric at the gate of Castle Varn, a garrison town, the west road closed while the Undead walk it, the Captain decides; shapes: first = proud of the place, again = a jailer's threat, later = the order lifted, stiff",
+   "names": {"Osric": "person", "Castle Varn": "place"},
+   "parts": {
+    "first": {"speaker": "Osric", "text": "This is Castle Varn, home of the bravest garrison in the realm! No one rides west while the Undead walk that road. The Captain decides who passes."},
+    "again": {"speaker": "Osric", "text": "Keep pestering me and you'll sleep in the cells tonight."},
+    "later": {"speaker": "Osric", "text": "By the Captain's order, the west road is open. You may pass, with the thanks of the garrison."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Tam keeps the jetty of a lake village of fishermen, no boats cross while a great serpent is loose, the Harbourmaster to see; shapes: first = curt grumble, again = idle talk, later = proud of the village",
+   "names": {"Tam": "person"},
+   "parts": {
+    "first": {"speaker": "Tam", "text": "No boats! Not today. Not while that great serpent is loose on the lake. Complain to the Harbourmaster, not to me."},
+    "again": {"speaker": "Tam", "text": "The fish aren't biting. Haven't been since the trouble started."},
+    "later": {"speaker": "Tam", "text": "Boats on the water and fish in the nets! The whole village is proud of you!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Ambrose at the gate of a wizards' college, the east wing closed since a Golem broke loose, the Archivist to see; shapes: first = the rules of the place, again = curt, later = stiff formal thanks",
+   "names": {"Ambrose": "person"},
+   "parts": {
+    "first": {"speaker": "Ambrose", "text": "Halt! No spells in the courtyard, and no familiars off the leash. The east wing is closed -- a Golem broke loose in the workshop. Take your business to the Archivist."},
+    "again": {"speaker": "Ambrose", "text": "No loitering by the fountain!"},
+    "later": {"speaker": "Ambrose", "text": "The College is in your debt, Wanderer. The east wing is open to you once more."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Ulfar at a frozen fort on a mountain pass, a Troll sitting on the high bridge, Captain Holm closed the pass; shapes: first = turn-back warning, again = idle talk (odd, a little comic), later = a warning about the road",
+   "names": {"Ulfar": "person", "Holm": "person"},
+   "parts": {
+    "first": {"speaker": "Ulfar", "text": "Turn back, lad! A Troll sits on the high bridge, and nothing crosses the pass while he's there. Captain Holm has closed it. He's in the keep, if you want to argue."},
+    "again": {"speaker": "Ulfar", "text": "Cold enough to freeze the ears off a Troll. Stamp your feet, it helps."},
+    "later": {"speaker": "Ulfar", "text": "The pass is open! Watch the ice on the far side."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Kael on the bridge to the deep forges of a lava-forge town of smiths, Imps up through the vents, the Guildmaster's orders; shapes: first = curt halt with an order, again = the rules of the place, later = proud of the Guild",
+   "names": {"Kael": "person", "Hall of Anvils": "place"},
+   "parts": {
+    "first": {"speaker": "Kael", "text": "Halt! The deep forges are shut. Guildmaster's orders! Imps came up through the vents, and nobody's been down since. Take it up with him at the Hall of Anvils."},
+    "again": {"speaker": "Kael", "text": "No blades drawn on the bridge. One shove and it's into the fire with you."},
+    "later": {"speaker": "Kael", "text": "Hear that? The deep forges are ringing again! A great day for the Guild!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Nedd, a tipsy watchman at a crossroads inn and its hamlet, the east road barred because something dead walks it, Hulda the innkeeper to see; shapes: first = a welcome and a pointer, again = comic spoken sound, later = a plain farewell",
+   "names": {"Nedd": "person", "Crossed Keys": "place", "Hulda": "person"},
+   "parts": {
+    "first": {"speaker": "Nedd", "text": "Welcome to the Crossed Keys! Hot food and a soft bed straight ahead. The east road is barred, mind. Something dead walks it at night. Hulda put the bar up, so ask her inside."},
+    "again": {"speaker": "Nedd", "text": "Hiccup! ...I'm on duty. Mostly."},
+    "later": {"speaker": "Nedd", "text": "The east road is clear again. Safe travels."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Rolf at the palisade of a farming town raided by Ogres, the Mayor at the granary; shapes: first = refusal with a reason, again = a warning, later = after the deed, a stock blessing",
+   "names": {"Rolf": "person"},
+   "parts": {
+    "first": {"speaker": "Rolf", "text": "Sorry, nobody goes past the palisade. The Ogres raid the east fields every night, and the Mayor won't lose anyone else to them. He's at the granary, if you think you can help."},
+    "again": {"speaker": "Rolf", "text": "Those brutes can smell a man from across the valley. Think on that!"},
+    "later": {"speaker": "Rolf", "text": "No more Ogres in the barley! Bless you, stranger, bless you!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

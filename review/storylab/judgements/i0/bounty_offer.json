@@ -1,0 +1,34 @@
+{
+  "packet": "bounty_offer/i0",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Hello, young [Class]. I surmise...', 'dead or alive', 'despicable scoundrel', an exact '500 in gold!' and an imperative journal line: textbook Nox, down to the leaked unmasked nickname."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Shopkeeper aside, 'Well done, lad!', 'filthy paws', '100 in gold!' and 'Bring that gang of Rogues to justice' are Westwood's voice and journal form."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Worse than the pox!', exclamation stacking, directions 'through the double doors', and the new-title reward fit the Nox conjurer chapter exactly."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Thieving little creatures!', 'Hmmm... Yes.', teleporter to the next place; the slightly awkward pacing and campaign-advancing payoff are Westwood's."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Strong voice ('forty years and never once run. Last week I ran.') but a colon-led catalogue, specific trees, and a first-person narrative journal entry are not Nox's style."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Chiasmus ('No kilns, no charcoal; no charcoal, and...'), semicolons, a nicknamed beast and a long third-person journal summary mark a different writer."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Ooooh, how can this be?' and the clipped, plot-pushing hand-off are Nox; terse and a little clumsy, as some of Westwood's are."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Vivid similes ('long as your thumb', 'like [Person] through a purse', 'size of a hen') and the wistful 'I've nothing left to sweeten' are too literary; the journal restates the whole offer."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Opening warning with fragments, semicolons, 'fat as a sow', and a reward with no figure; the journal is a reported-speech paragraph, not a Nox imperative."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "'You'll laugh, but...', 'I'd forgotten the mill could be quiet' - a quiet, characterful register; same template as E/F/H/I (nicknamed big one, bigger than X, vague pay plus potions)."}
+  ],
+  "tells": [
+    "Journal form: Westwood writes a short imperative ('Bring X to justice.', 'Retrieve the X.'); the new texts write a first-person reported paragraph ('X the woodcutter says... He will pay me to...').",
+    "Rewards: Westwood states an exact sum ('500 in gold!', '100 in gold!') or names the gift; the new texts promise vague 'savings', 'a purse', 'what I promised' plus a found item.",
+    "Template sameness: every new text has a tradesman, a beast plague, one oversized leader with a folk nickname, and size similes ('size of a cow', 'fat as a sow', 'big as a dog').",
+    "Punctuation and rhythm: semicolons, colons and rhetorical fragments in the new texts; exclamation marks, ' -- ', '...' and interjections ('Ho, there!', 'Ooooh', 'Hmmm') in Westwood's.",
+    "Register: Westwood's speakers address the player by rank ('young [Class]', 'Brave [Class]', 'lad') and use stock fantasy invective ('savage scum', 'despicable scoundrel'); the new speakers are understated, rural and wistful.",
+    "Westwood's thanks advance the campaign (titles, teleporters, next destination); the new thanks close a self-contained village vignette."
+  ]
+}

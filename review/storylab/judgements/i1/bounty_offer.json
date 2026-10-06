@@ -1,0 +1,32 @@
+{
+  "packet": "bounty_offer/i1",
+  "judge": "Claude Code subagent, Opus 5.5 (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'I surmise', 'sorry band of thieves', 'despicable scoundrel behind bars', '500 in gold!' and an unmasked nickname leak: florid, a little pompous, unmistakably the campaign's register."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Opens with 'Psst... stranger' and spells out who, where, when, the reward and 'Will you do it?' in tidy pages. The 'heh, heh!' payoff and exact 120 gold reflect the template more than Westwood's looser voice."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Worse than the pox!', charming spiders as a class-specific task and a reward of a new title and gate access are campaign-plot glue. 'I insist.' is a Westwood-style closer."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Kid-voice comedy ('He ate my dinner. Twice!', 'nearly new' boots) is charming but over-built. Named boss monster, exact gold and an item bonus match the same formula as E/H/J."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Self-introduction with trade, location and compass direction, a named matriarch beast, gold plus a potion, and an 'I'll bet you needed it!' quip. The journal line carries full geography, unlike Westwood's terse entries."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Starts mid-conversation ('Actually, business has been somewhat slow'), is vague about the target and uses 'lad', '100 in gold' and 'laying their filthy paws'. It is loose and conversational, as the original is."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "'Ooooh, how can this be?' and a hurried, plot-driven handoff with no gold and a reward of two items to carry on. That is main-quest Westwood, even if weak."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Old shepherd, a named grey brute, 'We shepherds call him', the den located 'west of my fold' and '100 gold. It's all I have saved!' all follow the generator's formula. Exclamations are dense."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Thieving little creatures!', a pompous self-title, an apprentice's fate, a teleporter and the 'Hmmm... Yes.' muse match the campaign's opening in voice and structure."},
+    {"label": "J", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Hold, stranger! I'm X, and I hunt Y', a named beast leader with a location 'northwest of the mill', and a bow plus 50 gold. The mould is identical to the other bounty offers."}
+  ],
+  "tells": [
+    "New texts follow a fixed bounty formula: an interjection hail ('Psst', 'Hold, stranger!'), self-introduction with occupation, a named beast leader ('we call him X'), a precise compass location, an exact gold sum plus an item, and a closing yes/no question.",
+    "Journal entries in new texts carry full geography (which place, which direction, whose quest). Westwood's are short imperatives ('Bring [Person] to justice.', 'Regain the [Thing]...').",
+    "Westwood's offers are tied to plot (titles, gate access, teleporters, an artifact for the next NPC) and often start mid-conversation or vaguely. The new ones are self-contained and over-explain who, what, where and how much.",
+    "Westwood uses archaic or florid diction ('surmise', 'scoundrel', 'in gold', 'lad') and longer sentences. The new texts use short exclamatory sentences, folksy humour and a closing joke in every thank-you."
+  ]
+}

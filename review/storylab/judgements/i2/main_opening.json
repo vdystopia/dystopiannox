@@ -1,0 +1,33 @@
+{
+  "packet": "main_opening/i2",
+  "judge": "Claude Code subagent (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A gatekeeper's argument laid out cleanly: problem, tally ('Three wagons robbed this month!'), condition, reward. 'Is [Person] still breathing? Then the gate stays shut!' is a crafted reminder; too well built for Nox."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Too many prying eyes the closer we get by air', 'Forest beasts will heed its bite', 'Go! Don't just stand there.' Slightly odd phrasing and a terse, practical send-off are the campaign's opening."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'valiant [Class] of [Place]! We've been expecting you!', 'located East of here', 'I should be in my house at the center of town' and 'nettlesome urchins'. Instructional, a little stiff, true Westwood."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Opens on a confession ('Don't look at me like that. I know! It's our fault.') and 'it never asked for wages' irony. Character-driven framing and tight structure read as new."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Traitors! Traitors inside our own walls!' and 'You, however, are no man of mine.' A polished political setup with a neat road-opening reward; more literary than Nox's openings."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Dry academic understatement ('a most unfortunate hour', 'not some petty Imp', 'squats in my tower. Do hurry.'). Elegant, but the irony is not Westwood's tone."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'A Lich! In my mine!' and 'Bones in my tunnels and a Lich in my vein!' are crafted comic exasperation, and it follows the same closed-road-until-monster-dies template as A, D and F."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Something is deeply amiss in our land', 'the recent surge of violence in the local creatures', supplies and gold, 'Go to the shop'. Plain, tutorial-like, slightly bureaucratic; a campaign start."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Wildlife incursions in the settled areas is on a steady rise' (a grammar slip), 'antiquated records', a blank page break and a reminder naming the book and amulet. Wordy, tutorial exposition; unmistakably Westwood."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'We have arrived, lad.', 'timeless fortress home', 'Training grounds of the glorious [Class]!', 'It weeds out the weak recruits.' Short, grand and plain; the campaign's voice."}
+  ],
+  "tells": [
+    "The new openings share one template: a place-keeper says the road or gate is shut until a monster or villain is removed, then offers passage as the reward. Westwood's openings are mentor send-offs or tutorial errands with practical directions.",
+    "Westwood's openings are instructional and spatial ('located East of here', 'Go to the shop', 'The road across these bridges', 'Follow the tunnel'); the new ones spend their words on the speaker's character and situation.",
+    "The new reminders are crafted comic lines that echo the opening ('Is [Person] still breathing?', 'Bones in my tunnels...'); Westwood's reminders are generic nudges ('Get a move on', 'You need to press on now, lad').",
+    "Westwood uses grand stock phrases and slight grammatical slips ('deeply amiss', 'timeless fortress home', 'incursions ... is on a steady rise'); the new texts are grammatically clean and use understatement and irony.",
+    "Westwood's speakers call the player 'lad' or by [Class]; the new ones use 'brave Adventurer' or no address at all and instead offer a personal confession or exasperation."
+  ]
+}

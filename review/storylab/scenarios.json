@@ -1,0 +1,1256 @@
+{
+ "_doc": "Story-lab scenarios: situations a map's story needs, on one template map (Brackenford). Each has the map context the lines may use (names and their kinds, reward items and a gold budget), the parts a variant writes, the parts the blind packet shows, and Westwood units to set beside ours: [part, csf key or [keys joined as pages]]. Read by tests/storylab.py. Variant 1 takes the situation as written; variants 2-10 each change its specifics (who, which beast, item or place, why) within Brackenford's world, declaring every new person, place or thing they name.",
+ "world": {
+  "map": "Brackenford",
+  "summary": "Brackenford, a river town of millers and ferrymen on the Bracken, at the edge of the Ashwood. Red Corwin's bandits have taken the old watchtower on Crow Hill, north of town, and rob the north road; Reeve Halvard has shut the north gate until Corwin is dealt with. Wolves have come down out of the Ashwood. Urchins have dug into the old barrow east of the ford. The player is a traveller of unknown class (Warrior, Wizard or Conjurer): never name the class.",
+  "names": {
+   "Brackenford": "place",
+   "Bracken": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Garrick": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Dunstan": "person",
+   "Mabry": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Greyjaw": "person",
+   "Chapel of the Ford": "place"
+  }
+ },
+ "scenarios": [
+  {
+   "id": "guard_bark",
+   "title": "A town guard's barks",
+   "situation": "Garrick guards Brackenford's north gate, which Reeve Halvard shut because Red Corwin's bandits rob the north road. Write what Garrick says: the first time the player speaks to him (the gate is shut, and whom to see), when spoken to again (a short bark), and after Corwin is dead and the gate is open.",
+   "parts": [
+    [
+     "first",
+     "guard",
+     "Garrick"
+    ],
+    [
+     "again",
+     "guard",
+     "Garrick"
+    ],
+    [
+     "later",
+     "guard",
+     "Garrick"
+    ]
+   ],
+   "packet_parts": [
+    "first",
+    "again",
+    "later"
+   ],
+   "labels": {
+    "first": "Guard, first words",
+    "again": "Guard, spoken to again",
+    "later": "Guard, later"
+   },
+   "westwood": [
+    [
+     [
+      "first",
+      "Con02a:GatekeeperWaiting"
+     ],
+     [
+      "again",
+      "Con02a:GatekeeperRandomSay"
+     ],
+     [
+      "later",
+      "Con02a:GatekeeperGuarding"
+     ]
+    ],
+    [
+     [
+      "first",
+      "War01A.scr:GateGuard2Talk01"
+     ],
+     [
+      "again",
+      "War01A.scr:GateGuard2Talk02"
+     ],
+     [
+      "later",
+      "War01A.scr:GateGuard1Talk01"
+     ]
+    ],
+    [
+     [
+      "first",
+      "Con03A.scr:MineGuardA"
+     ],
+     [
+      "again",
+      "Con03A.scr:MineGuardB"
+     ],
+     [
+      "later",
+      "Con03A.scr:MineGuardC"
+     ]
+    ],
+    [
+     [
+      "first",
+      "War03b:MayorsGuardIntro"
+     ],
+     [
+      "again",
+      "War03b:MayorsGuardPost"
+     ],
+     [
+      "later",
+      "War03b:MayorsGuardPost2"
+     ]
+    ],
+    [
+     [
+      "first",
+      "Con02A:JailerTalk01"
+     ],
+     [
+      "again",
+      "Con02A:JailerTalk04"
+     ],
+     [
+      "later",
+      "Con02A:JailerTalk05"
+     ]
+    ],
+    [
+     [
+      "first",
+      "War03a:IxGuard1Intro"
+     ],
+     [
+      "again",
+      "War03a:IxGuard1End"
+     ],
+     [
+      "later",
+      "War03a:Guard1Talk02"
+     ]
+    ],
+    [
+     [
+      "first",
+      "War03a:DunMirGuard1"
+     ],
+     [
+      "again",
+      "War03a:DunMirGuard2"
+     ],
+     [
+      "later",
+      "War03a:DunMirGuard3"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "bounty_offer",
+   "title": "A bounty on beasts",
+   "situation": "Ulric, an old shepherd at the edge of the Ashwood, has lost half his flock to a wolf pack led by a great grey wolf the shepherds call Greyjaw. He offers the player a bounty to kill the pack. Write his offer, his reminder while the pack lives, his thanks and reward when Greyjaw is dead, and the journal entry the offer writes.",
+   "parts": [
+    [
+     "offer",
+     "offer",
+     "Ulric"
+    ],
+    [
+     "reminder",
+     "reminder",
+     "Ulric"
+    ],
+    [
+     "completion",
+     "completion",
+     "Ulric"
+    ],
+    [
+     "journal",
+     "journal",
+     ""
+    ]
+   ],
+   "packet_parts": [
+    "offer",
+    "completion",
+    "journal"
+   ],
+   "labels": {
+    "offer": "The offer",
+    "reminder": "Reminder",
+    "completion": "When it is done",
+    "journal": "Journal entry"
+   },
+   "reward": {
+    "budget": 150,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion",
+     "LeatherBoots",
+     "WoodenShield",
+     "Bow",
+     "Quiver",
+     "SpellBook"
+    ]
+   },
+   "westwood": [
+    [
+     [
+      "offer",
+      "Con02a:MayorGreeting"
+     ],
+     [
+      "reminder",
+      "Con02a:MayorProd"
+     ],
+     [
+      "completion",
+      "Con02a:MayorsReward"
+     ],
+     [
+      "journal",
+      "Journal:BanishSpiders"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Wiz01A.scr:HorvathTalk01"
+     ],
+     [
+      "reminder",
+      "Wiz01A.scr:HorvathTalk03"
+     ],
+     [
+      "completion",
+      "Wiz01A.scr:HorvathTalk04"
+     ],
+     [
+      "journal",
+      "Journal:FindHorvathApprentice"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Wiz02:OldArchivistTalk01"
+     ],
+     [
+      "reminder",
+      "Wiz02:OldArchivistTalk02"
+     ],
+     [
+      "completion",
+      "Wiz02:OldArchivistTalk03"
+     ],
+     [
+      "journal",
+      "Journal:GetNecromancer"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Wiz02A.scr:WardenTalk01"
+     ],
+     [
+      "completion",
+      "Wiz02A.scr:WardenTalk02"
+     ],
+     [
+      "journal",
+      "Journal:ArrestMorgan"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Wiz02A.scr:MaxTalk02"
+     ],
+     [
+      "completion",
+      "Wiz02A.scr:MaxTalk03"
+     ],
+     [
+      "journal",
+      "Journal:ArrestRogues"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "heirloom_fetch",
+   "title": "Fetch an heirloom, start to completion",
+   "situation": "Wenna, the miller's widow, kept her late husband's silver millstone-seal, the mill's mark for three generations; the Urchins who dug into the old barrow east of the ford stole it from the mill. She asks the player (a yes/no question) to bring it back. Write her offer (ending in the question), her answer if the player says no, her reminder, her thanks and reward when the seal comes back, what she says afterwards, the journal entry, and the journal entry when it is done.",
+   "parts": [
+    [
+     "offer",
+     "offer",
+     "Wenna"
+    ],
+    [
+     "refusal",
+     "refusal",
+     "Wenna"
+    ],
+    [
+     "reminder",
+     "reminder",
+     "Wenna"
+    ],
+    [
+     "completion",
+     "completion",
+     "Wenna"
+    ],
+    [
+     "after",
+     "after",
+     "Wenna"
+    ],
+    [
+     "journal",
+     "journal",
+     ""
+    ],
+    [
+     "journal_done",
+     "journal",
+     ""
+    ]
+   ],
+   "packet_parts": [
+    "offer",
+    "reminder",
+    "completion",
+    "journal"
+   ],
+   "labels": {
+    "offer": "The offer",
+    "refusal": "If refused",
+    "reminder": "Reminder",
+    "completion": "When it is done",
+    "after": "Afterwards",
+    "journal": "Journal entry",
+    "journal_done": "Journal, done"
+   },
+   "reward": {
+    "budget": 120,
+    "items": [
+     "RedPotion",
+     "BluePotion",
+     "CurePoisonPotion",
+     "LeatherBoots",
+     "WoodenShield",
+     "SpellBook",
+     "AnkhTradable"
+    ]
+   },
+   "westwood": [
+    [
+     [
+      "offer",
+      "War05A.scr:FarmerGreeting"
+     ],
+     [
+      "refusal",
+      "War05A.scr:FarmerHuffy"
+     ],
+     [
+      "reminder",
+      "War05A.scr:FarmerWaiting"
+     ],
+     [
+      "completion",
+      "War05A.scr:FarmerReturned"
+     ],
+     [
+      "after",
+      "War05A.scr:FarmerIdle"
+     ],
+     [
+      "journal",
+      "Journal:War05Quest8"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "War05A.scr:MaidenGreeting"
+     ],
+     [
+      "reminder",
+      "War05A.scr:MaidenWaiting"
+     ],
+     [
+      "completion",
+      "War05A.scr:MaidenReturned"
+     ],
+     [
+      "after",
+      "War05A.scr:MaidenIdle"
+     ],
+     [
+      "journal",
+      "Journal:War05Quest7"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Con05A.scr:HorvathGreeting"
+     ],
+     [
+      "reminder",
+      "Con05A.scr:HorvathWaiting"
+     ],
+     [
+      "completion",
+      "Con05A.scr:HorvathReturned"
+     ],
+     [
+      "after",
+      "Con05A.scr:HorvathIdle"
+     ],
+     [
+      "journal",
+      "Journal:Con05Quest1"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Con03A.scr:HermitMeet01"
+     ],
+     [
+      "reminder",
+      "Con03A.scr:HermitMeet02"
+     ],
+     [
+      "completion",
+      "Con03A.scr:HermitHappy"
+     ],
+     [
+      "journal",
+      "Journal:Con03AHermitQuest"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "Wiz03a:HorvathIntro"
+     ],
+     [
+      "reminder",
+      "Wiz03a:HorvathPre"
+     ],
+     [
+      "completion",
+      "Wiz03a:HorvathFinish"
+     ],
+     [
+      "journal",
+      "Journal:Wiz03aGetAmulet"
+     ]
+    ],
+    [
+     [
+      "offer",
+      "War03b:MayorIntro"
+     ],
+     [
+      "reminder",
+      "War03b:MayorPre"
+     ],
+     [
+      "completion",
+      "War03b:MayorPost"
+     ],
+     [
+      "after",
+      "War03b:MayorPost2"
+     ],
+     [
+      "journal",
+      "Journal:War03bGetScepter"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "rumour",
+   "title": "Rumours pointing at quests",
+   "situation": "Three townsfolk of Brackenford each say one line to the player. Two of them point at a quest of the map (the wolves of the Ashwood and Ulric the shepherd's bounty; Wenna's seal stolen by the Urchins of the old barrow; Red Corwin's bandits in the watchtower on Crow Hill), the third is ordinary town talk: gossip, a complaint, a brush-off, a joke.",
+   "parts": [
+    [
+     "rumour1",
+     "rumour",
+     "Townsman"
+    ],
+    [
+     "rumour2",
+     "rumour",
+     "Townswoman"
+    ],
+    [
+     "rumour3",
+     "rumour",
+     "Townsman"
+    ]
+   ],
+   "packet_parts": [
+    "rumour1",
+    "rumour2",
+    "rumour3"
+   ],
+   "labels": {
+    "rumour1": "A townsperson",
+    "rumour2": "Another",
+    "rumour3": "A third"
+   },
+   "westwood": [
+    [
+     [
+      "rumour1",
+      "Wiz02A.scr:MaxRumor04"
+     ],
+     [
+      "rumour2",
+      "Wiz02A.scr:LameBarKeepRumor01"
+     ],
+     [
+      "rumour3",
+      "Wiz02A.scr:MaidenTalk01"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "Con02A:Townsman1Talk01"
+     ],
+     [
+      "rumour2",
+      "Con02A:Townsman2Talk02"
+     ],
+     [
+      "rumour3",
+      "Con02A:Maiden6Talk03"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "War01A.scr:Townsman3Talk01"
+     ],
+     [
+      "rumour2",
+      "War01A.scr:Townsman4Talk01"
+     ],
+     [
+      "rumour3",
+      "War01A.scr:Townsman1Talk01"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "Con05:Bartender03"
+     ],
+     [
+      "rumour2",
+      "Con05:Townsman9Talk01"
+     ],
+     [
+      "rumour3",
+      "Con05:Bartender04"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "War03b:T2Pre"
+     ],
+     [
+      "rumour2",
+      "War03b:Maiden2"
+     ],
+     [
+      "rumour3",
+      "War03b:BarkeeperPre"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "Wiz02A.scr:GrunbarTalk01"
+     ],
+     [
+      "rumour2",
+      "Wiz02A.scr:AlbiTalk01"
+     ],
+     [
+      "rumour3",
+      "Wiz02A.scr:DorianTalk01"
+     ]
+    ],
+    [
+     [
+      "rumour1",
+      "War02a:NewTownsman3"
+     ],
+     [
+      "rumour2",
+      "War02a:NewTownsman4"
+     ],
+     [
+      "rumour3",
+      "War02a:NewTownsman6"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "shop_greeting",
+   "title": "Shopkeepers' greetings",
+   "situation": "Three shops in Brackenford, each keeper greeting the player when the shop opens: Ossian, who keeps the Drowned Lantern inn by the ford; Dunstan the smith (arms and armour); Mabry, who sells potions, scrolls and spell books. Each greets and sells; at most one of the three mentions the town's troubles.",
+   "parts": [
+    [
+     "inn",
+     "shop",
+     "Ossian"
+    ],
+    [
+     "arms",
+     "shop",
+     "Dunstan"
+    ],
+    [
+     "magic",
+     "shop",
+     "Mabry"
+    ]
+   ],
+   "packet_parts": [
+    "inn",
+    "arms",
+    "magic"
+   ],
+   "labels": {
+    "inn": "The inn",
+    "arms": "The arms shop",
+    "magic": "The magic shop"
+   },
+   "westwood": [
+    [
+     [
+      "inn",
+      "Wiz02A.scr:GrillfTalk01"
+     ],
+     [
+      "arms",
+      "Wiz02A.scr:LoremanTalk01"
+     ],
+     [
+      "magic",
+      "Wiz02A.scr:MageVendorTalk01"
+     ]
+    ],
+    [
+     [
+      "inn",
+      "Con07B.scr:MaxWelcome01"
+     ],
+     [
+      "arms",
+      "Con07B.scr:BrightBladesTalk01"
+     ],
+     [
+      "magic",
+      "Con07B.scr:MageVendorTalk01"
+     ]
+    ],
+    [
+     [
+      "inn",
+      "Con05A.scr:BartenderTalk1"
+     ],
+     [
+      "arms",
+      "Con05A.scr:ShopKeeperTalk1"
+     ],
+     [
+      "magic",
+      "Con05A.scr:ShopKeeperGreeting"
+     ]
+    ],
+    [
+     [
+      "inn",
+      "Con02a:BarMaiden"
+     ],
+     [
+      "arms",
+      "Con02a:Belfor"
+     ],
+     [
+      "magic",
+      "Con02a:Mystic"
+     ]
+    ],
+    [
+     [
+      "inn",
+      "Con02:BarkeeperDefault"
+     ],
+     [
+      "arms",
+      "War03b:Shopkeeper"
+     ],
+     [
+      "magic",
+      "War03b:MagicShopkeeper"
+     ]
+    ],
+    [
+     [
+      "inn",
+      "Wiz02A.scr:MaxTalk01"
+     ],
+     [
+      "arms",
+      "Wiz02A.scr:BrightBladesTalk01"
+     ],
+     [
+      "magic",
+      "Wiz02A.scr:BookVendorTalk01"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "two_givers",
+   "title": "A choice between two givers",
+   "situation": "Red Corwin's bandits stole Brackenford's tithe chest. Reeve Halvard wants it brought back to the Moot Hall. Sly Wat, a turncoat of Corwin's drinking in the Drowned Lantern, knows where the chest is hidden in the watchtower and offers the player a bigger share if it is brought to him instead, so he can leave the country. The player can do only one. Write the reeve's ask, Wat's ask, the reeve's thanks if the chest comes home, Wat's line if he gets it, and a journal entry for each ask.",
+   "parts": [
+    [
+     "offer_a",
+     "offer",
+     "Halvard"
+    ],
+    [
+     "offer_b",
+     "offer",
+     "Wat"
+    ],
+    [
+     "outcome_a",
+     "completion",
+     "Halvard"
+    ],
+    [
+     "outcome_b",
+     "completion",
+     "Wat"
+    ],
+    [
+     "journal_a",
+     "journal",
+     ""
+    ],
+    [
+     "journal_b",
+     "journal",
+     ""
+    ]
+   ],
+   "packet_parts": [
+    "offer_a",
+    "offer_b",
+    "outcome_a",
+    "outcome_b"
+   ],
+   "labels": {
+    "offer_a": "One ask",
+    "offer_b": "Another ask",
+    "outcome_a": "One outcome",
+    "outcome_b": "The other outcome",
+    "journal_a": "Journal",
+    "journal_b": "Journal"
+   },
+   "reward": {
+    "budget": 200,
+    "items": [
+     "RedPotion",
+     "BluePotion",
+     "SteelShield",
+     "Longsword",
+     "ChainTunic",
+     "LeatherBoots"
+    ]
+   },
+   "westwood": [
+    [
+     [
+      "offer_a",
+      "War07A.scr:MorganTalk04"
+     ],
+     [
+      "offer_b",
+      "War07A.scr:MorganFriendTalk01"
+     ],
+     [
+      "outcome_a",
+      "War07A.scr:MorganTalk06"
+     ],
+     [
+      "outcome_b",
+      "War07A.scr:MorganFriendTalk02"
+     ]
+    ],
+    [
+     [
+      "offer_a",
+      "Con02a:ConManSalesPitch3"
+     ],
+     [
+      "offer_b",
+      "Con02a:NoBow"
+     ],
+     [
+      "outcome_a",
+      "Con02a:ConManSale"
+     ],
+     [
+      "outcome_b",
+      "Con02a:ConManSaleFailed"
+     ]
+    ],
+    [
+     [
+      "offer_a",
+      "War01A.scr:QuaterMasterTalk01"
+     ],
+     [
+      "offer_b",
+      "War01A.scr:GearhartTalk01"
+     ],
+     [
+      "outcome_a",
+      "War01A.scr:GearhartTalk02"
+     ],
+     [
+      "outcome_b",
+      "War01A.scr:GearhartTalk03"
+     ]
+    ],
+    [
+     [
+      "offer_a",
+      "War05C.scr:SisterGreeting"
+     ],
+     [
+      "offer_b",
+      "War05C.scr:SisterGreeting2"
+     ],
+     [
+      "outcome_a",
+      "War05C.scr:SisterThanks"
+     ],
+     [
+      "outcome_b",
+      "War05C.scr:SisterSad"
+     ]
+    ],
+    [
+     [
+      "offer_a",
+      "War07A.scr:MaxOffer01"
+     ],
+     [
+      "offer_b",
+      "War07A.scr:MaxWaiting"
+     ],
+     [
+      "outcome_a",
+      "War07A.scr:HaveGoldForMax"
+     ],
+     [
+      "outcome_b",
+      "War07A.scr:TurnMaxDown"
+     ]
+    ],
+    [
+     [
+      "offer_a",
+      "Wiz02A.scr:WardenTalk01"
+     ],
+     [
+      "offer_b",
+      "Wiz02A.scr:MorganTalk01"
+     ],
+     [
+      "outcome_a",
+      "Wiz02A.scr:WardenTalk02"
+     ],
+     [
+      "outcome_b",
+      "Wiz02A.scr:WardenTalk04"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "rescue",
+   "title": "A rescue",
+   "situation": "Pip, Brother Anselm's young novice at the Chapel of the Ford, went into the old barrow after the Urchins who stole the chapel's candlesticks, and has not come back. Anselm begs the player to find him. Write Anselm's plea, his reminder, what Pip says when the player finds him, what Pip says while he follows the player out, Anselm's thanks and reward when Pip is home, and the journal entry.",
+   "parts": [
+    [
+     "plea",
+     "offer",
+     "Anselm"
+    ],
+    [
+     "reminder",
+     "reminder",
+     "Anselm"
+    ],
+    [
+     "found",
+     "offer",
+     "Pip"
+    ],
+    [
+     "following",
+     "reminder",
+     "Pip"
+    ],
+    [
+     "completion",
+     "completion",
+     "Anselm"
+    ],
+    [
+     "journal",
+     "journal",
+     ""
+    ]
+   ],
+   "packet_parts": [
+    "plea",
+    "reminder",
+    "found",
+    "following",
+    "completion",
+    "journal"
+   ],
+   "labels": {
+    "plea": "The plea",
+    "reminder": "Reminder",
+    "found": "The captive, found",
+    "following": "The captive, following",
+    "completion": "When it is done",
+    "journal": "Journal entry"
+   },
+   "reward": {
+    "budget": 100,
+    "items": [
+     "RedPotion",
+     "BluePotion",
+     "CurePoisonPotion",
+     "AnkhTradable",
+     "SpellBook",
+     "WizardRobe"
+    ]
+   },
+   "westwood": [
+    [
+     [
+      "plea",
+      "War05A.scr:IngridGreeting"
+     ],
+     [
+      "reminder",
+      "War05A.scr:IngridWaiting"
+     ],
+     [
+      "found",
+      "War05C.scr:SisterGreeting"
+     ],
+     [
+      "following",
+      "War05C.scr:SisterFollowing1"
+     ],
+     [
+      "completion",
+      "War05A.scr:IngridReturned"
+     ],
+     [
+      "journal",
+      "Journal:War05Quest5"
+     ]
+    ],
+    [
+     [
+      "plea",
+      "War05A.scr:SadVillagerGreeting"
+     ],
+     [
+      "reminder",
+      "War05A.scr:SadVillagerWaiting"
+     ],
+     [
+      "found",
+      "War05A.scr:FrogGreeting"
+     ],
+     [
+      "following",
+      "War05A.scr:FrogFollowing"
+     ],
+     [
+      "completion",
+      "War05A.scr:SadVillagerReturned"
+     ],
+     [
+      "journal",
+      "Journal:War05Quest9"
+     ]
+    ],
+    [
+     [
+      "plea",
+      "War02a:QuarterMasterTalk04"
+     ],
+     [
+      "reminder",
+      "War02a:QuarterMasterTalk05"
+     ],
+     [
+      "found",
+      "War02a:GearhartTalk02"
+     ],
+     [
+      "following",
+      "War02A.scr:GearhartTalk2Start"
+     ],
+     [
+      "completion",
+      "War02:QuarterMaster12"
+     ],
+     [
+      "journal",
+      "Journal:SaveGearhart"
+     ]
+    ],
+    [
+     [
+      "plea",
+      "Con03C.scr:ForemanA"
+     ],
+     [
+      "reminder",
+      "Con03C.scr:ForemanC"
+     ],
+     [
+      "found",
+      "Con03B.scr:WorkersTalkA"
+     ],
+     [
+      "following",
+      "Con03B.scr:WorkersRec"
+     ],
+     [
+      "completion",
+      "Con03C.scr:ForemanD"
+     ],
+     [
+      "journal",
+      "Journal:Con03RescueMineWorkers"
+     ]
+    ],
+    [
+     [
+      "plea",
+      "Wiz05A.scr:CaptainGreeting"
+     ],
+     [
+      "reminder",
+      "Wiz05A.scr:CaptainWaiting"
+     ],
+     [
+      "found",
+      "Wiz05C.scr:HorvathGreeting"
+     ],
+     [
+      "following",
+      "Wiz05C.scr:HorvathFollowing"
+     ],
+     [
+      "completion",
+      "Wiz05B.scr:CaptainReturned"
+     ],
+     [
+      "journal",
+      "Journal:Wiz05Quest1"
+     ]
+    ]
+   ]
+  },
+  {
+   "id": "main_opening",
+   "title": "The main quest's opening, from a reeve",
+   "situation": "The player arrives in Brackenford by the south road. A townsman at the south gate sends the player to Reeve Halvard in the Moot Hall. Halvard opens the main quest: Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, and the way on is shut until Corwin is dealt with. Write the townsman's pointer, Halvard's opening, his reminder, and the journal entry. Variants may change who opens the quest (a reeve, a captain of the watch, a priest, an old friend of the player's patron) and the threat, as long as it is the map's main quest.",
+   "parts": [
+    [
+     "herald",
+     "townsfolk",
+     "Townsman"
+    ],
+    [
+     "opening",
+     "offer",
+     "Halvard"
+    ],
+    [
+     "reminder",
+     "reminder",
+     "Halvard"
+    ],
+    [
+     "journal",
+     "journal",
+     ""
+    ]
+   ],
+   "packet_parts": [
+    "opening",
+    "reminder",
+    "journal"
+   ],
+   "labels": {
+    "herald": "A townsman",
+    "opening": "The opening",
+    "reminder": "Reminder",
+    "journal": "Journal entry"
+   },
+   "westwood": [
+    [
+     [
+      "opening",
+      "War03b:MayorIntro"
+     ],
+     [
+      "reminder",
+      "War03b:MayorPre"
+     ],
+     [
+      "journal",
+      "Journal:War03bGetScepter"
+     ]
+    ],
+    [
+     [
+      "opening",
+      "Con01a:CaptainGreet"
+     ],
+     [
+      "reminder",
+      "Con01a:CaptainProd"
+     ],
+     [
+      "journal",
+      "Journal:LocateAldwyn"
+     ]
+    ],
+    [
+     [
+      "opening",
+      "War01A.scr:CaptainTalkStart"
+     ],
+     [
+      "reminder",
+      "War01A.scr:CaptainTalk2Start"
+     ],
+     [
+      "journal",
+      "Journal:WarMission1"
+     ]
+    ],
+    [
+     [
+      "opening",
+      "Con04a:CaptainGreet"
+     ],
+     [
+      "reminder",
+      "Con04a:CaptainIdle"
+     ],
+     [
+      "journal",
+      "Journal:Chapter4SearchCrypts"
+     ]
+    ],
+    [
+     [
+      "opening",
+      "Wiz06a:Captain1"
+     ],
+     [
+      "reminder",
+      "Wiz06a:Captain2"
+     ],
+     [
+      "journal",
+      "Journal:Wiz6SneakIn"
+     ]
+    ],
+    [
+     [
+      "opening",
+      [
+       "Wiz02B.scr:HorvathTalk01",
+       "Wiz02B.scr:HorvathTalk01b"
+      ]
+     ],
+     [
+      "reminder",
+      "Wiz02B.scr:HorvathTalk02"
+     ],
+     [
+      "journal",
+      "Journal:GetAmuletOfClarity"
+     ]
+    ],
+    [
+     [
+      "opening",
+      "War02B.scr:HorrendousTalk1Start"
+     ],
+     [
+      "reminder",
+      "War03a:HorrendousEnd"
+     ],
+     [
+      "journal",
+      "Journal:War2Ix"
+     ]
+    ]
+   ]
+  }
+ ]
+}

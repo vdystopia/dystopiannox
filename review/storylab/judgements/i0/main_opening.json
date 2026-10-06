@@ -1,0 +1,33 @@
+{
+  "packet": "main_opening/i0",
+  "judge": "Claude Code subagent (blind judge), claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'We have arrived, lad.', 'timeless fortress home', 'It weeds out the weak recruits.', a one-line reminder and imperative journal: the campaign's chapter-opening voice."},
+    {"label": "B", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Clear and well organised, but the long civic explanation (carters, shut gate, 'not one fighter worth the name') and the long descriptive journal read like a different writer."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Welcome to [Place], valiant [Class]! We've been expecting you!', mad urchins stealing a scepter, 'nettlesome urchins', explicit directions: classic Westwood mayor."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A beacon turned raiders' guide-light is a neat literary image, but the reeve's laconic, atmospheric storytelling ('come home in pieces, if at all') isn't Nox's register."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Something strange is transpiring in Nox. Wildlife incursions...is on a steady rise.': stilted mentor exposition with a grammar slip, a two-item fetch and short journal; very Westwood."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Named alpha wolf, sheep then dogs then a drover, barred gate: the same reeve template as the others, measured and grim, with a long narrative journal."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Mill-race extortion and flour tolls: economic worldbuilding in short, dry declaratives; reminder line ('[Place] grinds again') is too crafted for Nox."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Something is deeply amiss in our land.', supplies and gold, 'Go to the shop', 'make haste', 'I have nothing else to tell you, [Class].': plain, functional Westwood tutorial dispatch."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "A guilty reeve who let the town burn a healer's cottage is morally complex fiction ('The rest I'll live with.'); interesting but clearly not Westwood's voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'I'll bring you no further, lad.', 'Forest beasts will heed its bite', 'Go! Don't just stand there. Get a move on.': the campaign's gruff airship-captain voice exactly."}
+  ],
+  "tells": [
+    "Westwood's openings are brisk dispatches: who to see, where to go, what to fetch, often with supplies handed over and 'lad'; the new ones are long situational briefings with a grievance, a history and a stake for the town.",
+    "Westwood reminders are generic nudges ('Go! Don't just stand there.', 'You need to press on now, lad.'); the new reminders restate the target and location with a crafted closing phrase.",
+    "Journal entries: Westwood uses a short imperative ('Find a way into [Place].'); the new ones are two-sentence third-person summaries of the situation and the condition for success.",
+    "The new texts share one template (reeve introduces himself in a two-word fragment, a gate is shut until a villain is dead, payment by the townsfolk), which makes them obvious as a set.",
+    "Register: Westwood is enthusiastic or pompous with exclamation marks and occasional grammar slips; the new texts are terse, grim, morally shaded and use semicolons."
+  ]
+}

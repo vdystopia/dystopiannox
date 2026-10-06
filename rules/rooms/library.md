@@ -42,6 +42,10 @@ The lined back walls themselves, the desk among the bookcases.
 
 30-200 tiles (Con07D's great library is 494).
 
+## Where people stand
+
+The librarian beside his desk, else by the bookcases; never in the stacks' aisles or at the reading table. (`STANDS["library"]`: beside the desk, beside a bookcase, a back wall.)
+
 ## Common mistakes
 
 - "put bookshelves end to end for the entire length of the wall" (TreePlace v0.3): never a lone shelf on a long wall.

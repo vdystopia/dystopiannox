@@ -519,7 +519,8 @@ class Furnisher:
         ex = STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"])
         if kind in SACRED_KINDS:                 # a town's own crypt holds its coffins and sarcophagi (Thornwick v0.1)
             ex = ex.replace("Crypt|", "").replace("|Coffin|Tomb", "")
-        for lift in SACRED_PIECES.get(kind, ()): ex = ex.replace(lift, "")
+        # and the prefixes a kind of room takes back (kit/identity.py ROOMS[kind]["lift"]: a torture chamber's racks)
+        for lift in SACRED_PIECES.get(kind, ()) + tuple(ROOM_IDENTITY.get(kind, {}).get("lift", ())): ex = ex.replace(lift, "")
         self.exclude = re.compile(ex)
         self.lighting = LIGHT
         self.objects, self.spots, self.beds = [], [], []
@@ -1082,7 +1083,7 @@ class Furnisher:
             plan, need = ip
         else:
             plan = {f: self.count(f) for f in ORDER if f in inv_all and f not in VETO.get(self.kind, ())}
-        if self.style == "town" and self.kind not in GRAND_ROOMS:
+        if self.style == "town" and self.kind not in GRAND_ROOMS and not ROOM_IDENTITY.get(self.kind, {}).get("grand"):
             plan["statue"] = plan["column"] = 0
         if not ip:
             need = {f: n for f, n in REQUIRED.get(self.kind, {}).items() if self.types_of(f) or f == "counter_bar"}
@@ -1100,11 +1101,14 @@ class Furnisher:
             self.in_required = True                      # the plan is already within the room's density
             self.composing = True                        # the room's coverage limit holds instead (ROOM_COVER)
             self.compose(plan, need)
+            # the hangings the recipe calls for claim their bare wall before the fill and the rows of shelves grow to the
+            # corners: a hanging never goes above a piece (kit/objects.py hangs_over), so hung last it found no wall left
+            # (an observatory's star charts among its bookcases)
+            for _ in range(self._deferred_decor): self.place_decor()
             self.fill_room()
             self.line_backs()
             self.complete_bookcase_walls()
             self.centre_by_doors()
-            for _ in range(self._deferred_decor): self.place_decor()
             if self.kind in DECORATED: self.decorate_walls()
             while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
             self.audit_rugs()
@@ -1575,7 +1579,10 @@ class Furnisher:
         rest = sorted(t for t in types if t != t0)
         self.rng.shuffle(rest)
         for tt in [t0] + rest:
-            for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt, "any"):
+            # (a gallery hangs its paintings at the ends of a stretch as well as its middle: ROOMS[kind]["decor_at"]; any
+            # bare stretch otherwise, since hangings no longer go above pieces: HB-2)
+            for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt,
+                                                                    ROOM_IDENTITY.get(self.kind, {}).get("decor_at", "any")):
                 if r["side"] not in BACK_SIDES: continue
                 if any(k == (r["line"], r["coord"]) and abs(a - a2) < DECOR_GAP for k, a2 in self._decor_at): continue
                 if self.try_put(t, u, v, blocking=False, wall_ok=True, layer="wall"):

@@ -1,0 +1,33 @@
+{
+  "packet": "heirloom_fetch/i2",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Polished comic setup ('shelving books by colour', 'Not a page singed!') and a tidy offer/reminder/thanks arc; 'Wanderer' address and the 'too proud / too frightened' parallel feel composed."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Secret route behind bookcases, a dead craftsman, quick pivot to the next chapter task, 'Good luck, [Class]!' - plot plumbing in Nox's slightly stiff voice, even a stray apostrophe."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Simple, slightly awkward ('he'll be destroyed', 'kind sir') and a bare 'token of my appreciation' thanks; short and unpolished like Nox's side errands."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'for the darkest purposes, indeed!', 'that foul demoness', items 'will come in handy... sooner than you think' - Nox's melodramatic main-quest register; journal is a bare 'Retrieve the [Thing].'"},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Screaming hermit who mistakes you for a bandit, scroll of 'all I have learned about bats' for a conjurer - classic Nox oddball humour with loose punctuation ('Oh....')."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Explains its own stakes with economic logic (no seal, no marked flour, no baker), 'My knees won't take me', exact location 'old barrow east of the ford' copied into the journal."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'the chest ATE it!', 'Slimy, but mine!', 'Nobody counts them anyway' - a string of crafted jokes and a stakes chain ('No key, no spears'); funny but too engineered."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'valiant [Class]', capitalised 'East', 'nettlesome urchins' reminder that doesn't remind, and the shop-then-see-the-Captain instruction - tutorial-chapter Nox."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Calamity!', 'Ha-HA! Ring the bell, lads', 'Do we have a bargain?' plus double-hyphen dash; 'too old and too heavy' mirrors the excuse beat other new texts use."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Cooking-in-the-bell joke, stakes chain (no bell, no rain, no harvest), 'Every family gave something' - the same crafted comic-errand shape."}
+  ],
+  "tells": [
+    "New offers all share one five-beat shape: exclamation, what was stolen, why it matters spelled out as a cause-and-effect chain ('Without it... no...'), an excuse why the speaker can't go, then 'Will you...?' Westwood's offers are looser and often skip the 'why it matters' or the excuse.",
+    "New reminders are short punchy jokes restating the stakes ('shelving books by colour', 'Drill is at dawn!'); Westwood's reminders add a hint or a vague remark ('the rogues who took them have a hideout', 'nettlesome urchins').",
+    "New thanks lines pair the item with a quip about its condition ('Not a page singed', 'Slimy, but mine', 'a bit dented'); Westwood's thanks move the plot on or hand over class-specific loot.",
+    "Westwood journals are bare or plot-level ('Retrieve the [Thing].'); new journals repeat the precise location from the offer.",
+    "Westwood shows small mechanical slips (stray apostrophe, capitalised compass point, four-dot ellipsis, 'kind sir' formalism); the new texts are clean and use '--'."
+  ]
+}

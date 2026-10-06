@@ -402,6 +402,14 @@ def main():
     with ProcessPoolExecutor(6) as pool:
         res = list(pool.map(_one, [(n, n in reps) for n in maps]))
     found = [r for rs, _ in res for r in rs]
+    # the room types found by hand (kit/roomtypes.py evidence: a torture room, a winch room, a cellar of kegs) take
+    # their own name, so their pieces' counts per room stand on Westwood's rooms of that type
+    from kit.roomtypes import TYPES
+    evidence = [(mp, tuple(c), t) for t, p in TYPES.items() for mp, c in p.get("evidence", ())]
+    for r in found:
+        hit = next((t for mp, c, t in evidence if mp == r["map"] and abs(c[0] - r["centre"][0]) <= 3
+                    and abs(c[1] - r["centre"][1]) <= 3), None)
+        if hit: r["type"] = hit
     pieces = [p for _, ps in res for p in ps]
     seen, rooms = set(), []
     for r in found:                      # a room the campaigns share (same floor, same place) counts once

@@ -1,0 +1,33 @@
+{
+  "packet": "heirloom_fetch/i1",
+  "judge": "Claude Code subagent, Opus 5.5 (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Gahhhhhh! No! Don't kill me!' slapstick, a half-blind hermit, 'Oh....' with four dots and a scroll 'about bats' as the reward. This is Westwood's gag and plainness, with a vague hint in the reminder."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A father's horn as an heirloom, bandits mocking the town, 'I'll pay you from my own pocket' and a yes/no close. The reward of 80 gold plus boots and the detailed journal line mark the template."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A monk who calls the player 'my son' and drops his mother's beads, with the crypt door 'behind the altar'. It is tidy and warm, but the mother's-heirloom hook and the gold-plus-item reward match its siblings."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "A grandfather's lantern 'for sixty years', a tavern named for it, Urchins 'south of the ford' and 60 gold, a potion and free ale. Over-specified, with exclamations everywhere."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exposition-heavy plot handoff: a secret route behind bookcases, 'Unsavory elements dwell in the shadows!' and a curt 'we have no time for mourning'. A masking slip ('[Person]' cottage') and plot glue feel original."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Mayor's welcome, a scepter stolen by urchins who 'have gone mad', and 'nettlesome urchins' as a reminder that gives no direction. It hands off to the Captain and a shop, which is campaign structure."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "A father's tinderbox 'for forty years', its location repeated in the offer, reminder and journal, and 60 gold plus a potion with a joke. It is the same mould as B/D/I."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "A short, slightly stilted plea ('he'll be destroyed', 'kind sir', 'Could you... would you') and a generic 'token of my appreciation' with no amount. It is weak, but its weakness is Westwood's."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "'Dearie', egg money and 'Ugh, it's slimy... but it's mine!' are funny and plain. The mother's ring, exact 30 gold, a potion and a geographic journal follow the formula."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'I am thankful you are here at last, for we are in dire need', 'foul demoness' and 'sooner than you think' are the main plot's formal register. The journal is a bare 'Retrieve the [Thing].'"}
+  ],
+  "tells": [
+    "New heirloom quests always use a family heirloom with a duration ('my father's... for forty years', 'my mother's... all her life', 'sixty years'). Westwood's stolen items are functional or plot objects (spectacles, scepter, an artifact).",
+    "New rewards are exact gold plus an item plus a joke ('Take 60 gold and this potion. You'll need it...'). Westwood gives '500 in gold', 'a token of my appreciation', a scroll or spells, often without a number.",
+    "New reminders repeat the exact location. Westwood's reminders are often unhelpful or atmospheric ('Those nettlesome urchins...').",
+    "New journal entries name person, item and place with directions. Westwood's are short ('Retrieve the [Thing].').",
+    "Westwood's quest-givers move the plot on (go see the Captain, buy supplies, a teleporter). The new givers close the quest locally with a cheer."
+  ]
+}

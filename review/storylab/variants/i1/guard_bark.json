@@ -1,0 +1,118 @@
+{
+ "scenario": "guard_bark",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Garrick at the north gate, shut by Reeve Halvard because Red Corwin's bandits rob the north road; see the Reeve.",
+   "names": {},
+   "parts": {
+    "first": {"speaker": "Garrick", "text": "Halt, stranger! The north gate is shut by the Reeve's order. Red Corwin's bandits rob the north road! See Reeve Halvard in the Moot Hall."},
+    "again": {"speaker": "Garrick", "text": "The gate stays shut! Go and see the Reeve."},
+    "later": {"speaker": "Garrick", "text": "Red Corwin is dead! The Reeve has opened the north gate. Pass, friend -- and watch the road!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Tobin guards the ford, closed to the east bank because the Urchins of the old barrow rob travellers; see Reeve Halvard; later the Urchins are gone.",
+   "names": {"Tobin": "person"},
+   "parts": {
+    "first": {"speaker": "Tobin", "text": "Stop right there! Nobody crosses the ford to the east. The Urchins from the old barrow rob anyone who tries! Ask Reeve Halvard at the Moot Hall."},
+    "again": {"speaker": "Tobin", "text": "Still no crossing! Move along."},
+    "later": {"speaker": "Tobin", "text": "The Urchins are gone from the barrow! The ford is open again. Go on across, friend!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Edric at the west gate, barred because the Ashwood wolves raid the folds; see Ulric the shepherd; later Greyjaw is dead.",
+   "names": {"Edric": "person"},
+   "parts": {
+    "first": {"speaker": "Edric", "text": "Halt! The west gate stays barred. Wolves came down out of the Ashwood -- three sheep gone this week! Talk to Ulric the shepherd about it."},
+    "again": {"speaker": "Edric", "text": "Hear that howling? The gate stays barred!"},
+    "later": {"speaker": "Edric", "text": "Greyjaw is dead, they say! The west gate is open. Good hunting, stranger!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Cobb at the Moot Hall door, letting no strangers in for fear of Corwin's spies; see Ossian at the Drowned Lantern to vouch; later Corwin is dead.",
+   "names": {"Cobb": "person"},
+   "parts": {
+    "first": {"speaker": "Cobb", "text": "No further, stranger! The Reeve sees nobody he doesn't know. Corwin has spies in town! Get Ossian at the Drowned Lantern to speak for you."},
+    "again": {"speaker": "Cobb", "text": "No word from Ossian, no way in!"},
+    "later": {"speaker": "Cobb", "text": "Corwin's dead and his spies are fled! The Reeve will see anyone now. Go on in!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Rook at the ferry landing on the Bracken, the ferry tied up because Corwin's men wait on the far bank; see the Reeve; later the ferry runs.",
+   "names": {"Rook": "person"},
+   "parts": {
+    "first": {"speaker": "Rook", "text": "Sorry, friend, the ferry's tied up! Corwin's men wait on the far bank of the Bracken. The Reeve stopped all crossings. See him at the Moot Hall."},
+    "again": {"speaker": "Rook", "text": "No ferry today! Or tomorrow, likely."},
+    "later": {"speaker": "Rook", "text": "Corwin's men are gone from the far bank! The ferry runs again. Hop aboard, friend!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Marten at the foot of the Crow Hill path, keeping folk from Corwin's archers; the Reeve's leave needed; later the hill is free.",
+   "names": {"Marten": "person"},
+   "parts": {
+    "first": {"speaker": "Marten", "text": "Turn back! This path climbs Crow Hill, right under Corwin's watchtower. His archers shoot anything that moves! Nobody goes up without the Reeve's leave."},
+    "again": {"speaker": "Marten", "text": "Up there? Not without the Reeve's say-so!"},
+    "later": {"speaker": "Marten", "text": "Red Corwin is dead! Crow Hill belongs to Brackenford again. The path is yours, stranger!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Aldous guards the town granary, rationed since no carts come down the north road; sends the player to the Drowned Lantern for food; later the carts return.",
+   "names": {"Aldous": "person"},
+   "parts": {
+    "first": {"speaker": "Aldous", "text": "Keep back from the granary! No carts come down the north road now. Every sack is counted by the Reeve's order. Hungry? Try the Drowned Lantern."},
+    "again": {"speaker": "Aldous", "text": "Not one grain! Move along."},
+    "later": {"speaker": "Aldous", "text": "The carts are rolling in again! The Reeve says the granary's open. Bread for everyone!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Bess at the river gate, chained shut since Corwin's bandits stole boats; Captain Thorne at the Moot Hall has the key; later the boats are back.",
+   "names": {"Bess": "person", "Thorne": "person"},
+   "parts": {
+    "first": {"speaker": "Bess", "text": "Hold there! The river gate is chained shut. Corwin's bandits stole two boats last week! Captain Thorne has the key, and he's at the Moot Hall."},
+    "again": {"speaker": "Bess", "text": "Chained shut! Ask the Captain."},
+    "later": {"speaker": "Bess", "text": "Corwin's dead and the boats are back! The river gate is open, stranger. Off you go!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Fenn at the door of the Chapel of the Ford, locked since the Urchins stole the candlesticks; see Brother Anselm; later the candlesticks are back.",
+   "names": {"Fenn": "person"},
+   "parts": {
+    "first": {"speaker": "Fenn", "text": "The chapel is shut, stranger! The Urchins stole the candlesticks off the altar! Brother Anselm keeps the door locked now. Knock at his house behind the chapel."},
+    "again": {"speaker": "Fenn", "text": "Locked! Go and see Brother Anselm."},
+    "later": {"speaker": "Fenn", "text": "The candlesticks are back on the altar! The chapel is open again. Come in and give thanks!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Jory, a jumpy young watchman at the south gate, locked after dark because wolves prowl the walls; sends the player to Ossian for a bed; later Greyjaw is dead.",
+   "names": {"Jory": "person"},
+   "parts": {
+    "first": {"speaker": "Jory", "text": "Ah! You gave me a fright! The south gate's locked after dark. Wolves prowl the walls! Get a bed from Ossian at the Drowned Lantern."},
+    "again": {"speaker": "Jory", "text": "Hmmm. Did you hear something? Go on, get inside!"},
+    "later": {"speaker": "Jory", "text": "Greyjaw's dead, so the gate stays open all night now! I can finally stop jumping at shadows."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

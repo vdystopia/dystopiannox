@@ -59,6 +59,10 @@ wall; the building gives the room its door on the SE wall (`building._seat_thron
   finale's in Con11a (296 tiles, 0.01, 0.93) and Wiz11A's niche (84 tiles, 0.05, 0.81). (The 50-tile G_LOTD room this
   brief once stood on is a quest map's.)
 
+## Where people stand
+
+The lord beside his throne (on the dais, at its side), never on the runner or in the aisle between the door and the throne; courtiers by the statues. (`STANDS["throne_room"]`: beside the throne, a back wall.)
+
 ## Common mistakes
 
 - "The throne at the end of the room is facing sideways towards the store room. The pillars are in the dead center of

@@ -1,0 +1,148 @@
+{
+ "scenario": "two_givers",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Corwin's bandits stole the tithe chest; Halvard wants it at the Moot Hall, Sly Wat at the Drowned Lantern wants it to flee the country.",
+   "names": {},
+   "parts": {
+    "offer_a": {"speaker": "Halvard", "text": "Stranger! A word, if you please. Red Corwin's bandits broke into the Moot Hall and carried off the town's tithe chest! Every coin Brackenford saved this year was in it.\n\nThey'll have hidden it in the old watchtower on Crow Hill, north of town. Bring the chest back here to the Moot Hall, and you'll have a fair share of it. Will you do it?"},
+    "offer_b": {"speaker": "Wat", "text": "Psst... sit down, friend. The name's Wat. I rode with Corwin till last week, and I know just where he hid the Reeve's tithe chest -- under the floor of the watchtower's top room!\n\nBring that chest to me here, not to Halvard. I'll give you twice what the Reeve would, and I'll be gone from this country by morning. Heh, heh. What do you say?"},
+    "outcome_a": {"speaker": "Halvard", "text": "The tithe chest! You brought it home! Brackenford owes you much, friend. Here is your share, and this tunic of good mail besides!"},
+    "outcome_b": {"speaker": "Wat", "text": "Heh, heh! That's the one! Here's your gold, as I promised -- more than the Reeve would ever give you. Now I'm off, and you never saw me!"},
+    "journal_a": {"speaker": "", "text": "Recover the tithe chest from the watchtower on Crow Hill for Halvard."},
+    "journal_b": {"speaker": "", "text": "Bring the tithe chest from the watchtower on Crow Hill to Sly Wat."}
+   },
+   "reward": {"gold": 150, "items": ["ChainTunic"]}
+  },
+  {
+   "id": 2,
+   "specifics": "Corwin's men took the ferry toll box to their Ashwood camp; Jory the ferry-master wants it back, Tobin, a bandit deserter in the reed huts, wants it to run.",
+   "names": {"Jory": "person", "Tobin": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Jory", "text": "You there! Help an old ferryman! Corwin's men came down to the landing last night and took my toll box -- a whole summer of fares! Without it I can't pay the boatmen.\n\nThey camp in the Ashwood, west of Crow Hill. Bring my toll box back to the landing, and I'll pay you well for it!"},
+    "offer_b": {"speaker": "Tobin", "text": "Keep your voice down, lad. I'm Tobin -- I was one of Corwin's, but I've had enough. The ferry's toll box is in their camp in the Ashwood, in the big tent by the fire.\n\nBring it to me, here in the reed huts by the river. I'll split it with you, and you'll get more than old Jory could ever pay. Deal?"},
+    "outcome_a": {"speaker": "Jory", "text": "My toll box! Not a coin missing! Thank goodness! Here, take this gold, and a potion or two for the road. Free crossings for you, for life!"},
+    "outcome_b": {"speaker": "Tobin", "text": "You did it! Here's your half, and a bit more. I'm taking the first boat down the Bracken. Don't tell Jory where I've gone!"},
+    "journal_a": {"speaker": "", "text": "Recover the ferry toll box from the bandit camp in the Ashwood for Jory."},
+    "journal_b": {"speaker": "", "text": "Bring the ferry toll box from the bandit camp in the Ashwood to Tobin."}
+   },
+   "reward": {"gold": 120, "items": ["RedPotion", "BluePotion"]}
+  },
+  {
+   "id": 3,
+   "specifics": "Corwin's bandits robbed the chapel's silver chalice; Brother Anselm wants it home, Sly Wat wants to sell it in the south.",
+   "names": {},
+   "parts": {
+    "offer_a": {"speaker": "Anselm", "text": "Bless you for stopping, my son! Red Corwin's bandits robbed the Chapel of the Ford in the night. They took our silver chalice -- the holiest thing we own!\n\nI hear they keep their loot in the watchtower on Crow Hill, north of town. Please, bring the chalice back to the chapel! The town will reward you."},
+    "offer_b": {"speaker": "Wat", "text": "Heh, heh... looking for the priest's cup, are you? I know where it is -- in a sack under the watchtower stairs. I ought to know, I put it there!\n\nBring it to me at the Drowned Lantern instead. A cup like that sells for a fortune in the south. You'll have a good share of it, mate."},
+    "outcome_a": {"speaker": "Anselm", "text": "The chalice! Oh, thank goodness! You have done a holy thing, my son. Take this gold from the poor box, and these boots, with the chapel's blessing!"},
+    "outcome_b": {"speaker": "Wat", "text": "Ooh, she's a beauty! Here's your share, as I promised. Don't look at me like that -- the priest will get another one!"},
+    "journal_a": {"speaker": "", "text": "Return the silver chalice from the watchtower on Crow Hill to Brother Anselm."},
+    "journal_b": {"speaker": "", "text": "Bring the silver chalice from the watchtower on Crow Hill to Sly Wat."}
+   },
+   "reward": {"gold": 100, "items": ["LeatherBoots"]}
+  },
+  {
+   "id": 4,
+   "specifics": "Corwin's bandits took Wenna's grain money to the watchtower; Wenna wants it at the mill, Edda, Corwin's own lieutenant, wants it to ride off.",
+   "names": {"Edda": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Wenna", "text": "Oh, please help me! Corwin's bandits stopped my cart on the north road and took the grain money -- every coin from this year's flour!\n\nThey carried the purse back to the watchtower on Crow Hill. Without it the mill will close! Bring it back to me at the mill, and I'll reward you as best I can. Will you help me?"},
+    "offer_b": {"speaker": "Edda", "text": "Don't reach for your weapon, stranger. I'm Edda, and I ride with Corwin -- for now. The widow's purse is in a chest by Corwin's bed, at the top of the watchtower.\n\nI can't take it myself, he'd know. You take it, and bring it to me by the old elm south of the ford. You'll get a bigger cut than the widow can give, and I'll be gone before Corwin knows!"},
+    "outcome_a": {"speaker": "Wenna", "text": "My purse! You brought it back! The mill is saved! Here, take these potions and a little gold. I wish it were more!"},
+    "outcome_b": {"speaker": "Edda", "text": "Not bad, stranger, not bad at all! Here's your cut, as I promised. If Corwin asks, you never met me!"},
+    "journal_a": {"speaker": "", "text": "Recover the grain money from the watchtower on Crow Hill for Wenna."},
+    "journal_b": {"speaker": "", "text": "Bring the grain money from the watchtower on Crow Hill to Edda."}
+   },
+   "reward": {"gold": 140, "items": ["RedPotion", "BluePotion"]}
+  },
+  {
+   "id": 5,
+   "specifics": "Corwin's bandits took Dunstan's chest of steel bars to the burnt barn by the Ashwood; Dunstan wants it at the forge, Sly Wat has a buyer in the south.",
+   "names": {},
+   "parts": {
+    "offer_a": {"speaker": "Dunstan", "text": "You look like you can swing a blade! Corwin's bandits took a chest of steel bars off my cart on the north road -- a whole winter's work! No steel, no swords, no shields for anyone!\n\nThey've dragged it to the burnt barn at the edge of the Ashwood, northwest of town. Bring my steel back to the forge, and I'll give you the best longsword in Brackenford!"},
+    "offer_b": {"speaker": "Wat", "text": "The smith's steel? Hmmm. I know where it is -- in the burnt barn by the Ashwood, under the hay. Corwin's waiting for a buyer.\n\nWhy carry it home to Dunstan for one sword? Bring it to me at the Drowned Lantern. I've a buyer in the south who pays in gold, lots of it. You get a fat share!"},
+    "outcome_a": {"speaker": "Dunstan", "text": "Ha! My steel, every bar of it! You're a friend to this forge. Here's the longsword I promised -- the finest I ever made!"},
+    "outcome_b": {"speaker": "Wat", "text": "Heavy, isn't it? Heh, heh. Here's your gold. The buyer comes tonight, and by morning I'm gone. Pleasure doing business, friend!"},
+    "journal_a": {"speaker": "", "text": "Recover Dunstan's steel from the burnt barn near the Ashwood."},
+    "journal_b": {"speaker": "", "text": "Bring Dunstan's steel from the burnt barn near the Ashwood to Sly Wat."}
+   },
+   "reward": {"gold": 130, "items": ["Longsword"]}
+  },
+  {
+   "id": 6,
+   "specifics": "Corwin's thieves dropped the guards' wage box down the old well under Crow Hill; Halvard wants it at the Moot Hall, Hask, Corwin's runaway cook, wants it to escape downriver.",
+   "names": {"Hask": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Halvard", "text": "You there! I'm Halvard, Reeve of Brackenford. Corwin's thieves have taken the wage box for the town guard. No pay, no guards -- and then Corwin walks right in!\n\nMy scouts say it's hidden down the old well at the foot of Crow Hill. Bring the box back to me at the Moot Hall. Brackenford pays its debts, I promise you!"},
+    "offer_b": {"speaker": "Hask", "text": "Hey! You! I was Corwin's cook, till I ran off. I saw them drop the guards' pay box down the old well under Crow Hill!\n\nFetch it up and bring it to me behind the chapel. I'll give you more than the Reeve -- and then I'm off down the river, far from Corwin's knife!"},
+    "outcome_a": {"speaker": "Halvard", "text": "The wage box! Well done, stranger! The guard will get their pay, and Brackenford stays safe. Here, take this shield, and the gold as promised!"},
+    "outcome_b": {"speaker": "Hask", "text": "Ha! Got it! Here's your share, more than fair. Now I'm away down the Bracken. If anyone asks, I drowned!"},
+    "journal_a": {"speaker": "", "text": "Recover the guards' wage box from the old well under Crow Hill."},
+    "journal_b": {"speaker": "", "text": "Bring the guards' wage box from the old well under Crow Hill to Hask."}
+   },
+   "reward": {"gold": 160, "items": ["SteelShield"]}
+  },
+  {
+   "id": 7,
+   "specifics": "Corwin's bandits stole Mabry's old spell book to the watchtower; Mabry wants it in her shop, Silas Fenn, a rival hedge-wizard at the ferry landing, wants it for himself.",
+   "names": {"Silas Fenn": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Mabry", "text": "Oh, it's dreadful! Corwin's bandits robbed my shop and stole my old spell book! It's the only one of its kind -- my teacher wrote it himself!\n\nThey took it to the watchtower on Crow Hill, north of town. I'm sure they can't even read it! Please, bring it back to my shop. I'll give you gold and the best potions I have!"},
+    "offer_b": {"speaker": "Silas Fenn", "text": "Mabry's book, eh? Hmmm. The bandits threw it in a barrel at the watchtower on Crow Hill -- they think it's for the fire!\n\nBring it to me, Silas Fenn, at the ferry landing. That old woman has no use for it. I'll pay you double, and I'll be over the Bracken before she knows!"},
+    "outcome_a": {"speaker": "Mabry", "text": "My book! Oh, my precious book! Thank goodness! Here, kind stranger, take this gold and these potions. You've saved years of learning!"},
+    "outcome_b": {"speaker": "Silas Fenn", "text": "At last! Mabry's book is mine! Hmmm, hmmm. Here's your gold, every coin. Now go, before she sees us!"},
+    "journal_a": {"speaker": "", "text": "Recover Mabry's spell book from the watchtower on Crow Hill."},
+    "journal_b": {"speaker": "", "text": "Bring Mabry's spell book from the watchtower on Crow Hill to Silas Fenn."}
+   },
+   "reward": {"gold": 120, "items": ["BluePotion", "RedPotion"]}
+  },
+  {
+   "id": 8,
+   "specifics": "The barrow Urchins dug under the Moot Hall and took the tithe chest; Halvard wants it back, Mott the gravedigger wants it brought to the chapel yard.",
+   "names": {"Mott": "person"},
+   "parts": {
+    "offer_a": {"speaker": "Halvard", "text": "Stranger! Those Urchins from the old barrow have done it now -- they dug under the Moot Hall and dragged off the tithe chest!\n\nThe barrow is east of the ford. Go in, find the chest, and bring it back to the Moot Hall. Do it, and Brackenford will reward you!"},
+    "offer_b": {"speaker": "Mott", "text": "Psst. You going into the barrow? I'm Mott, I dig the graves. Those Urchins keep their loot in the deep room, past the bones. The Reeve's chest is there!\n\nBring it to me at the chapel yard. Halvard pays in thanks. I pay in gold! Then I'm off, far from this town."},
+    "outcome_a": {"speaker": "Halvard", "text": "The tithe chest! You found it, and in one piece! Well done, friend! Take this gold, and these boots for all that walking!"},
+    "outcome_b": {"speaker": "Mott", "text": "Heh, heh! Lovely! Here's your share. Nobody looks in a graveyard for a chest, eh? Now off with you!"},
+    "journal_a": {"speaker": "", "text": "Recover the tithe chest from the old barrow east of the ford."},
+    "journal_b": {"speaker": "", "text": "Bring the tithe chest from the old barrow to Mott at the chapel yard."}
+   },
+   "reward": {"gold": 120, "items": ["LeatherBoots"]}
+  },
+  {
+   "id": 9,
+   "specifics": "One of Corwin's men stole the north gate's keys to the watchtower; Garrick wants them back at the gate, Sly Wat wants them to slip out north.",
+   "names": {},
+   "parts": {
+    "offer_a": {"speaker": "Garrick", "text": "Halt! ... Oh, you're not one of them. Listen. One of Corwin's men slipped past me and stole the keys to the north gate! If Corwin gets in, the whole town is lost!\n\nHe ran north to the watchtower on Crow Hill. Bring those keys back to me, here at the gate. The Reeve will pay you well!"},
+    "offer_b": {"speaker": "Wat", "text": "The gate keys? Heh, heh. I know who took them -- and where they hang, by the watchtower door. Corwin means to open the gate some night.\n\nBring them to me first. I'll slip out the north gate and be gone for good, and you'll have every coin in my purse. Fair's fair!"},
+    "outcome_a": {"speaker": "Garrick", "text": "The keys! Thank goodness! The gate stays shut, and Corwin stays out! Here, the Reeve left this gold and a sword for you. You've earned them!"},
+    "outcome_b": {"speaker": "Wat", "text": "Ha! The keys! Here's my purse, all of it, as promised. Goodbye, Brackenford! You never saw me, mate!"},
+    "journal_a": {"speaker": "", "text": "Recover the north gate's keys from the watchtower on Crow Hill for Garrick."},
+    "journal_b": {"speaker": "", "text": "Bring the north gate's keys from the watchtower on Crow Hill to Sly Wat."}
+   },
+   "reward": {"gold": 100, "items": ["Longsword"]}
+  },
+  {
+   "id": 10,
+   "specifics": "Corwin's men stole the silver lantern over the inn door to their stilt hut in the reeds; Ossian wants it back, Sly Wat wants it to buy a boat.",
+   "names": {},
+   "parts": {
+    "offer_a": {"speaker": "Ossian", "text": "Have you seen my sign? No? That's because Corwin's men stole it! The silver lantern that hung over my door for fifty years!\n\nThey've got it in their hideout in the reeds, north of the ford. Bring it back, friend, and you'll drink free here forever -- and I'll pay you besides!"},
+    "offer_b": {"speaker": "Wat", "text": "Ossian's lantern, eh? Heh, heh. It's in the reeds north of the ford, in a little hut on stilts. I saw them hang it on the roof!\n\nBring it to me, quiet like, out back of the inn. Silver like that will buy me a boat and a new life. You'll get a big share, I promise!"},
+    "outcome_a": {"speaker": "Ossian", "text": "My lantern! It's back where it belongs! Free ale for you, friend, every night! And here's some gold, as promised!"},
+    "outcome_b": {"speaker": "Wat", "text": "Shiny! Here's your share, friend. Don't tell Ossian. He still thinks I'm his best customer!"},
+    "journal_a": {"speaker": "", "text": "Recover Ossian's silver lantern from the bandit hideout north of the ford."},
+    "journal_b": {"speaker": "", "text": "Bring Ossian's silver lantern from the bandit hideout to Sly Wat."}
+   },
+   "reward": {"gold": 100, "items": []}
+  }
+ ]
+}

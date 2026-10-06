@@ -1,0 +1,128 @@
+{
+ "scenario": "main_opening",
+ "iter": "i1",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v1 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "A townsman at the south gate sends the player to Halvard; Corwin holds the watchtower on Crow Hill and the north gate is shut.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Welcome to Brackenford, stranger! If you're looking for work, go to the Moot Hall. Reeve Halvard needs a strong arm!"},
+    "opening": {"speaker": "Halvard", "text": "So you're the traveller from the south road. I'm Halvard, Reeve of Brackenford. We're in trouble, friend, and I'll be plain about it.\n\nRed Corwin and his bandits have taken the old watchtower on Crow Hill, north of town. They rob every cart on the north road! I've shut the north gate to keep them out -- but now nothing comes in, and nothing goes out.\n\nKill Corwin, and I'll open the gate. Brackenford will reward you well!"},
+    "reminder": {"speaker": "Halvard", "text": "Corwin still holds the watchtower! Go north to Crow Hill, friend!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin in the watchtower on Crow Hill, north of Brackenford."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "A ferryman at the south landing points to Halvard; Corwin's gang holds the old toll house on the north road past Crow Hill.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Off the boat, are you? Mind the mud! If you want news, see Reeve Halvard at the Moot Hall. He's got trouble enough for two!"},
+    "opening": {"speaker": "Halvard", "text": "A traveller! Good. I'm Halvard, the Reeve here. Listen well.\n\nRed Corwin's gang has taken the old toll house on the north road, past Crow Hill. They take their toll in blood -- and in gold! I've shut the north gate, and the town is starving for trade.\n\nGo north, find Corwin, and end him. When he's dead, the gate opens and you'll be well paid. Will you do it?"},
+    "reminder": {"speaker": "Halvard", "text": "The toll house is north, past Crow Hill. Corwin is waiting!"},
+    "journal": {"speaker": "", "text": "Defeat Red Corwin at the old toll house on the north road."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "A beggar at the south gate jokes the player toward Halvard; Corwin's bandits camp in a ruined fort deep in the Ashwood, west of town.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Spare a coin? No? Then go and see the Reeve at the Moot Hall. He pays better than I do! Heh, heh."},
+    "opening": {"speaker": "Halvard", "text": "Come in, stranger, and shut the door. I'm Halvard, Reeve of Brackenford.\n\nRed Corwin and his bandits are camped in the ruined fort deep in the Ashwood, west of town. They creep out at night and rob the north road! I've had to shut the north gate.\n\nI need someone to go into that forest and kill Corwin. Do it, and the gate opens -- and Brackenford will reward you!"},
+    "reminder": {"speaker": "Halvard", "text": "Corwin is still alive! Find the ruined fort in the Ashwood!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin in the ruined fort in the Ashwood, west of town."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "An apple-seller sends the player to Halvard; Corwin's bandits crossed the Bracken and hold the north bank and Crow Hill, so the ferry is chained.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Apples! Fresh apples! ... Oh, a traveller! The Reeve wants to see anyone who can fight. He's in the Moot Hall, by the chapel."},
+    "opening": {"speaker": "Halvard", "text": "Well met, Adventurer! I'm Reeve Halvard. You've come at a bad time.\n\nRed Corwin's bandits have crossed the Bracken and taken the north bank. They hold the old watchtower on Crow Hill, and nobody on the north road is safe! I've shut the north gate and chained the ferry.\n\nCross the river, climb Crow Hill and kill Corwin. Then the gate opens, and you'll have Brackenford's thanks -- and its gold!"},
+    "reminder": {"speaker": "Halvard", "text": "Corwin still holds Crow Hill! Cross the river and finish him!"},
+    "journal": {"speaker": "", "text": "Cross the Bracken and kill Red Corwin on Crow Hill."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "A drunk at the south gate points to the Moot Hall; Corwin demands a monthly tribute from the watchtower or he burns the mill.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Hic! Welcome, welcome! Shee the Reeve, he'sh in the Moot Hall... Hic! Big building. Can't mish it!"},
+    "opening": {"speaker": "Halvard", "text": "Ah, a new face. I'm Halvard, the Reeve. Brackenford needs help, and fast!\n\nRed Corwin sent word from the watchtower on Crow Hill. He wants a hundred gold from the town every month -- or he'll burn the mill to the ground! His men already rob the north road. I've shut the north gate, but that won't hold him forever.\n\nGo north and kill Corwin. Do it, and the gate opens -- and Brackenford will pay you well!"},
+    "reminder": {"speaker": "Halvard", "text": "Corwin's threat still stands! Get to Crow Hill before he burns the mill!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin in the watchtower on Crow Hill before he burns the mill."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "A frightened townsman sends the player to Halvard; the witch Morwen calls the wolves out of the Ashwood and the west gate is shut.",
+   "names": {"Morwen": "person"},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Careful, stranger, there are wolves about! Go to the Moot Hall and speak to Reeve Halvard. He'll tell you more."},
+    "opening": {"speaker": "Halvard", "text": "Thank goodness, a fighter! I'm Halvard, Reeve of this town. Have you heard the howling?\n\nA witch called Morwen lives in the Ashwood, west of here. She calls the wolves out of the forest, and they've killed half our sheep! I've shut the west gate, and nobody dares go out.\n\nFind Morwen's hut in the Ashwood and kill her. When she's dead, the wolves will scatter and the gate will open. Brackenford will reward you!"},
+    "reminder": {"speaker": "Halvard", "text": "Morwen still lives, and the wolves still howl! Go west, into the Ashwood!"},
+    "journal": {"speaker": "", "text": "Find Morwen's hut in the Ashwood and kill the witch."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "A carter at the south gate sends the player to Halvard; Corwin's bandits dug in at the old quarry north of Crow Hill and killed two carters.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Ho, traveller! Came up the south road, did you? Lucky. The north road's no good now. See Reeve Halvard in the Moot Hall -- he'll tell you why."},
+    "opening": {"speaker": "Halvard", "text": "Welcome, kind stranger. I'm Halvard, Reeve of Brackenford. I won't waste your time.\n\nRed Corwin and his bandits have dug in at the old quarry, north of Crow Hill. They rob every cart on the north road, and they've killed two carters! I've shut the north gate until he's dealt with.\n\nGo north to the quarry and kill Corwin. Bring me word he's dead, and I'll open the gate and pay you well!"},
+    "reminder": {"speaker": "Halvard", "text": "Is Corwin dead yet? The quarry's north of Crow Hill. Go!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin at the old quarry north of Crow Hill."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "A jumpy townsman at the south gate points to Halvard; Corwin dragged the town's grain carts up to the watchtower and winter is coming.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Halt! ... Oh, just a traveller. Sorry, we're all jumpy here. Go see Reeve Halvard in the Moot Hall. He'll want to meet you!"},
+    "opening": {"speaker": "Halvard", "text": "Come in, come in! I'm Halvard, Reeve of Brackenford. We need help, Adventurer!\n\nRed Corwin's bandits stole our grain carts on the north road and dragged them up to the old watchtower on Crow Hill. Without that grain, we'll starve this winter! I've shut the north gate so they can't take more.\n\nGo up Crow Hill and kill Corwin! When he's dead, the north gate opens and you'll have your reward. Will you help us?"},
+    "reminder": {"speaker": "Halvard", "text": "Corwin still has our grain! Hurry, before winter comes!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin in the watchtower on Crow Hill and free the grain carts."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "A townsman warns the player off the east road; the old barrow opened and the Undead king Aldred walks, so Halvard shut the east gate.",
+   "names": {"Aldred": "person"},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "You came in by the south road? Good -- don't go east! See Reeve Halvard at the Moot Hall. He'll tell you why."},
+    "opening": {"speaker": "Halvard", "text": "Greetings, stranger. I'm Halvard, Reeve of Brackenford. Something terrible has happened.\n\nThe old barrow east of the ford has opened, and the dead have come out of it! An old king called Aldred walks again, and his Undead roam the east road at night. I've shut the east gate, but they still scratch at it.\n\nGo into the barrow and destroy Aldred. Then the gate opens, and you'll be paid well -- I swear it!"},
+    "reminder": {"speaker": "Halvard", "text": "Aldred still walks! Go east, into the old barrow, and end him!"},
+    "journal": {"speaker": "", "text": "Destroy the Undead king Aldred in the old barrow east of the ford."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "A townsman marvels the player got through and sends them to the Reeve; Halvard wants Corwin dead and his red cloak brought back as proof.",
+   "names": {},
+   "parts": {
+    "herald": {"speaker": "Townsman", "text": "Another traveller, and still alive! You're lucky. Go to the Moot Hall and see the Reeve. Tell him the south road's still clear!"},
+    "opening": {"speaker": "Halvard", "text": "So the south road's still clear? Good news at last! I'm Halvard, Reeve of Brackenford.\n\nRed Corwin's bandits hold the old watchtower on Crow Hill, north of town. They rob the north road and shoot at our guards from the hill! I've shut the north gate, but we can't stay locked up forever.\n\nKill Corwin and bring me his red cloak as proof. Then the gate opens, and you'll have a fine reward!"},
+    "reminder": {"speaker": "Halvard", "text": "Where's Corwin's red cloak? Go north to Crow Hill!"},
+    "journal": {"speaker": "", "text": "Kill Red Corwin on Crow Hill and bring his red cloak to Halvard."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

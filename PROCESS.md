@@ -157,8 +157,11 @@ Rules that hold for every type:
   it, what hangs above it. `kit/objects.py` turns it into rules and `Furnisher._kb_ok` holds every placement to them
   (recipes, fill, top-up, groups, set pieces alike):
   - *showpieces* stand once (a desk, an alchemist's desk, bellows, a telescope; a hearth twice only in a hall of 240
-    tiles); one cauldron a room; chests by the type's p90 (a bedroom 1, a chamber of 100 tiles 2); a bedroom one table
-    or desk with its chairs; tables in private and work rooms by the type's p90;
+    tiles, or as many as the type's Westwood rooms hold: an observatory's three telescopes); one cauldron a room; chests by
+    the type's p90 (a bedroom 1, a chamber of 100 tiles 2, a treasury 3); a bedroom one table or desk with its chairs;
+    tables in private and work rooms by the type's p90; statues by the type's p90, a pair at least; torture racks,
+    stocks, iron maidens, gears and winches, monuments and fountains by the most the type's evidence rooms hold
+    (`kit/roomtypes.py` evidence: the miner names those rooms by their type);
   - *fabric* lines walls (bookcases, a bench of workstations, trader's shelves, straw); everything else stands alone or
     in runs no longer than Westwood's (log shelves 2, barrels 3, chests and statues 1) and never down a whole wall
     (shelves and racks 2 to a wall, supplies 3, statues 2);
@@ -173,7 +176,8 @@ Rules that hold for every type:
     keeps, so every second piece failed and walls took single sacks spread evenly);
   - a chest on a wall between a door and the end of a row of shelves stands centred between them
     (`Furnisher.centre_by_doors`).
-  Before and after on the playtest's own rooms: `py mapgen/designs/hbreplay.py` rebuilds them wall for wall from the
+  The recipe's hangings go up right after its composition, before the fill lines the walls, so they keep their bare
+  stretch. Before and after on the playtest's own rooms: `py mapgen/designs/hbreplay.py` rebuilds them wall for wall from the
   played map and furnishes them again.
 - **A room reads as what it is** [SW-6, SWR-1, TW-8, AMR-4] whatever its type: the checker's room-identity warnings
   (`check_identity`) catch a showpiece repeated, a stand-alone piece four or more times along one wall, supplies lining

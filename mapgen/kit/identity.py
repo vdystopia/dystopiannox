@@ -699,6 +699,394 @@ ROOMS = {
                        fill=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, max=24),
                              dict(fam="tomb", slot="wall", at="center", clear=0.6, max=8),
                              dict(fam="statue", slot="wall", at="corner", clear=0.8, max=4)]),
+    # ---- more types for variety (2026-10-05; kit/roomtypes.py, rules/rooms/<type>.md). Each is composed from the
+    # furnisher's existing steps. `lift`: the furnishing style's excluded prefixes a kind takes back (a torture chamber's
+    # racks in a town keep: kit/furnish.py STYLE_EXCLUDE drops Torture, Pulley, Mine, Crypt, Coffin and DunMir from a
+    # town house); `grand`: statues and columns stand in it in a town house, as in kit/furnish.py GRAND_ROOMS.
+    # the lord's private chamber (Con07D's, 102 tiles: the bed, the hearth, twelve bookcases, two small tables,
+    # tapestries; Con06b's Dun Mir chambers): a bedroom at one end, a sitting room at the other
+    "solar": dict(base="laboratory",
+                  purpose="the lord's private chamber, used in two ends: the bed headboard to a back wall with its "
+                          "nightstand and a chest snug before a rug; the hearth centred on the other back wall between "
+                          "bookcases, the desk on a stretch of its own, a small table and chairs on a carpet before the "
+                          "sitting end, tapestries, a bench, plants",
+                  core={"bed": (1, 1), "fireplace": (1, 1), "desk": (1, 1), "shelves": (2, 10), "storage": (1, 2),
+                        "table": (1, 1), "chair": (2, 4)},
+                  optional={"nightstand": (1.0, 1), "rug": (1.0, 2), "wall_decor": (1.0, 6), "bench": (0.7, 1),
+                            "plant": (0.7, 2)},
+                  types={"bed": r"^Bed[2-4]$|^WoodBed[1-3]$", "storage": CHEST, "shelves": r"^Bookcase\d(HalfFull)?$",
+                         "table": r"^RoundTable[12]$|^SquareTable[12]$|^SmallTable2$", "plant": PLANTS,
+                         "desk": r"^Desk[12]$"},
+                  prefer={"fireplace": {"Fireplace3": 2, "Fireplace4": 1}},
+                  decor_themes=("blue", "red", "white", "green", "trophies"),
+                  top_up=("storage", "plant", "bench"),
+                  compose=[dict(fam="bed", slot="wall", at="corner", clear=1.0),
+                           dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
+                           dict(fam="shelves", slot="line", near="fireplace", n=4, decor=2),
+                           dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
+                           dict(fam="storage", slot="wall", at="center", clear=2.3),
+                           dict(fam="table", slot="center", seats=True, rug=True),
+                           dict(fam="carpet", slot="carpet", where="under", chance=0.5),
+                           dict(fam="wall_decor", slot="decor")],
+                  fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=8),
+                        dict(fam="bench", slot="wall", at="center", clear=0, max=1),
+                        dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
+                        dict(fam="table", slot="group", group="sitting", max=1, min_area=180),
+                        dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+    # a wheelwright's or a carpenter's shop (Con06a / War01A, 25-29 tiles: an anvil, a tool barrel, gears, cart wheels,
+    # trader's shelves): the work bench, the tools on the shelves, wheels and parts by the bench. No forge: that is the
+    # smithy's
+    "workshop": dict(base="smithy",
+                     purpose="a craftsman's workshop: trader's shelves of tools lining a back wall, the work bench (a long "
+                             "table) with its stool and a crate or barrel by it, cart wheels and gears lying by the bench, "
+                             "tool barrels and crates of timber and iron heaped toward the front corners",
+                     core={"table": (1, 3), "storage": (3, 14), "shop_rack": (1, 6)},
+                     optional={"chair": (1.0, 3), "parts": (1.0, 6), "anvil": (0.7, 1), "gearwork": (0.6, 1)},
+                     types={"table": r"^Table[1-4]$", "storage": r"^BarrelWithTools[12]$|^(Dark)?Crate[12]$|^Barrel2?$",
+                            "shop_rack": r"^TraderShelves[12]$", "chair": r"^Stool\d$|^CushionedStool\d$",
+                            "parts": r"^MineOreCartWheel$|^MechGear$", "anvil": r"^Anvil[2468]$", "gearwork": r"^Gear[1-4]$"},
+                     prefer={"storage": {"BarrelWithTools1": 3, "BarrelWithTools2": 3, "Crate1": 1, "Crate2": 1,
+                                         "DarkCrate1": 1, "Barrel": 1},
+                             "parts": {"MineOreCartWheel": 3, "MechGear": 1}, "anvil": {"Anvil2": 1, "Anvil6": 1},
+                             "gearwork": {"Gear1": 1, "Gear2": 1, "Gear3": 1, "Gear4": 1}},
+                     lift=("Mine|",),
+                     compose=[dict(fam="shop_rack", slot="line", n=3),
+                              dict(fam="table", slot="groups", group="worktable", n=1, extra=True),
+                              dict(fam="anvil", slot="wall", at="corner", clear=1.4),
+                              dict(fam="gearwork", slot="wall", at="center", clear=1.0),
+                              dict(fam="storage", slot="stock", coverage=0.5, kinds=("tools", "crates", "barrels"), pad=1.2),
+                              dict(fam="parts", slot="scatter", per100=4, cluster=(1, 2), wall_gap=1.0)],
+                     fill=[dict(fam="table", slot="group", group="worktable", max=2, min_area=70),
+                           dict(fam="shop_rack", slot="line", other=True, max=3),
+                           dict(fam="storage", slot="stock", coverage=0.8, kinds=("tools", "crates", "barrels"), pad=1.0, max=6),
+                           dict(fam="storage", slot="stack", n=3, once=True)]),
+    # the winch rooms that work a castle's gates, lifts and bridges (Con06a, 110 tiles: 18 gears, a pulley gear, a
+    # lever; War07A; War02b's lift room): gear trains on the walls, the great winch standing free
+    "winch_room": dict(base="storeroom",
+                       purpose="the machinery that works a gate, a lift or a bridge: gear trains against the back walls, "
+                               "the great winch (a pulley gear) standing free with room to work it, small gears by it, "
+                               "tool barrels and crates of spare parts by the front walls",
+                       core={"gearwork": (2, 6), "winch": (1, 1), "storage": (1, 6)},
+                       optional={"parts": (0.8, 4)},
+                       types={"gearwork": r"^Gear[1-6]$", "winch": r"^PulleyGear[13468]$",
+                              "storage": r"^BarrelWithTools[12]$|^(Dark)?Crate[12]$|^Barrel$", "parts": r"^MechGear$"},
+                       prefer={"winch": {"PulleyGear1": 1, "PulleyGear3": 2, "PulleyGear6": 1, "PulleyGear8": 1},
+                               "gearwork": {f"Gear{k}": 1 for k in range(1, 7)}, "parts": {"MechGear": 1},
+                               "storage": {"BarrelWithTools1": 2, "BarrelWithTools2": 2, "DarkCrate1": 1, "Crate2": 1}},
+                       lift=("Pulley|",),
+                       top_up=(),
+                       compose=[dict(fam="gearwork", slot="wall", at="center", clear=1.2, n=2),
+                                dict(fam="winch", slot="center"),
+                                dict(fam="storage", slot="stock", coverage=0.25, kinds=("tools", "crates"), pad=1.4),
+                                dict(fam="parts", slot="scatter", per100=3, cluster=(1, 2), wall_gap=1.0)],
+                       fill=[dict(fam="winch", slot="center", max=1, min_area=300, fixed=True),
+                             dict(fam="gearwork", slot="wall", at="corner", clear=1.0, max=2),
+                             dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, max=3)]),
+    # an astronomer's room (Con07B, 97 tiles: three telescopes, a desk, statues; Con07E's star hall: eight star charts,
+    # blue tapestries): telescopes at the walls and one free, star charts hung between the bookcases
+    "observatory": dict(base="laboratory",
+                        purpose="an astronomer's observatory: the desk near a corner of a back wall with bookcases either "
+                                "side, star charts and zodiacs hung on the back walls, a telescope at a wall and a "
+                                "telescope or an orrery standing free with room round it, the chart table with its stools, "
+                                "a chest, plants",
+                        core={"lab": (2, 4), "desk": (1, 1), "shelves": (2, 10), "wall_decor": (2, 8)},
+                        optional={"table": (0.8, 1), "chair": (0.8, 3), "storage": (0.7, 1), "plant": (0.6, 2)},
+                        types={"lab": r"^Telescope(1[bc]|2[aceg]|3[af])$|^Orrery2$", "shelves": r"^Bookcase\d(HalfFull)?$",
+                               "storage": r"^Chest\d$", "table": r"^Table[1-4]$|^SquareTable[12]$", "plant": PLANTS,
+                               "chair": r"^Stool\d$|^CushionedStool\d$|^DarkWoodenChair\d$|^WoodenChair\d$",
+                               "desk": r"^Desk[12]$"},
+                        prefer={"wall_decor": {"StarChart1a": 1, "StarChart2a": 1, "StarChart4a": 1, "StarChart2c": 1,
+                                               "Zodiac1c": 1, "Zodiac2a": 1}},
+                        decor_at="any",
+                        top_up=("storage", "plant"),
+                        compose=[dict(fam="lab", slot="groups", group="curio", n=1, extra=True),
+                                 dict(fam="lab", slot="wall", at="any", clear=1.2, only=r"^Telescope"),
+                                 dict(fam="desk", slot="wall", at="corner", clear=0, seats=True, deep=True),
+                                 dict(fam="shelves", slot="line", near="desk", n=3),
+                                 dict(fam="table", slot="center", seats=True),
+                                 dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor"),
+                                 dict(fam="wall_decor", slot="decor")],
+                        fill=[dict(fam="shelves", slot="line", other=True, max=6),
+                              dict(fam="lab", slot="group", group="curio", max=1, min_area=150, fixed=True),
+                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
+                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+    # no campaign room nurses the sick: a barracks' row of cots with a herbalist's shelves and cauldron (rules/rooms/
+    # infirmary.md stands on design judgement)
+    "infirmary": dict(base="barracks",
+                      purpose="where the sick are nursed: a row of cots with a nightstand between neighbours, a pair of "
+                              "potion shelves and books of remedies on a back wall, the cauldron toward a corner, the "
+                              "healer's table with its stool, a chest of linen, hangings of one colour",
+                      core={"bed": (2, 8), "shelves": (2, 8), "stove": (1, 1), "table": (1, 1)},
+                      per_tiles={"bed": 15},
+                      optional={"nightstand": (1.0, 6), "chair": (1.0, 2), "storage": (0.8, 2), "wall_decor": (1.0, 4),
+                                "plant": (0.5, 2)},
+                      types={"bed": r"^Cot\d$|^WoodBed[12]$", "shelves": r"^PotionShelves[1-4]$|^Bookcase\d(HalfFull)?$",
+                             "stove": r"^CauldronAnimated$", "table": r"^Table4$|^SquareTable[12]$",
+                             "storage": r"^Chest\d$|^SackChest(Medium|Small)[12]$", "plant": PLANTS,
+                             "chair": r"^Stool\d$|^CushionedStool\d$"},
+                      prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1},
+                              "shelves": {"PotionShelves1": 1, "PotionShelves2": 1, "PotionShelves3": 1, "PotionShelves4": 1,
+                                          "Bookcase1": 1, "Bookcase2": 1, "Bookcase3": 1, "Bookcase4": 1}},
+                      decor_themes=("white", "blue", "green"),
+                      compose=[dict(fam="bed", slot="bed_row"),
+                               dict(fam="stove", slot="wall", at="corner", clear=1.6),
+                               dict(fam="shelves", slot="line", n=2, only=r"^PotionShelves"),
+                               dict(fam="shelves", slot="line", n=3, only=r"^Bookcase"),
+                               dict(fam="table", slot="center", seats=True),
+                               dict(fam="wall_decor", slot="decor")],
+                      fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
+                            dict(fam="shelves", slot="line", other=True, max=4, only=r"^Bookcase"),
+                            dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+    # a keg cellar (Con07B's 17 tiles: eight kegs and two crates; Con06b and War02b: five kegs; Con06a / War01A: seven
+    # barrels, a great cask, piled barrels, crates)
+    "cellar": dict(base="storeroom",
+                   purpose="a cellar of kegs and casks: kegs in tight rows along the walls from the corners, a great "
+                           "cask or two standing free with kegs beside them, piled barrels, a few crates, aisles to walk",
+                   core={"storage": (6, 30)},
+                   optional={},
+                   types={"storage": r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12])$"},
+                   prefer={"storage": {"Barrel2": 4, "Barrel": 2, "PiledBarrels1": 1, "PiledBarrels2": 1, "DarkCrate1": 1}},
+                   compose=[dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, n=6),
+                            dict(fam="storage", slot="groups", group="kegs", n=1, extra=True, min_area=40),
+                            dict(fam="storage", slot="stock", coverage=0.8, kinds=("barrels", "crates"), pad=1.0)],
+                   fill=[dict(fam="storage", slot="group", group="kegs", max=1, min_area=80, fixed=True),
+                         dict(fam="storage", slot="stock", coverage=1.0, kinds=("barrels",), pad=0.6),
+                         dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, max=6)]),
+    # a strongroom (Con05B: the ogres' chests and gold; Wiz06c: Dun Mir chests under hanging shields; Con06b: chests and a
+    # round table with four chairs)
+    "treasury": dict(base="storeroom",
+                     purpose="a strongroom: strongboxes in a row along the back walls, each with room before it to open, "
+                             "the treasurer's counting table and chair in the middle, tally shelves, shields and crossed "
+                             "arms hung on the walls",
+                     core={"storage": (3, 6), "table": (1, 1), "chair": (1, 2)},
+                     optional={"shop_rack": (0.7, 2), "wall_decor": (1.0, 4)},
+                     types={"storage": r"^Chest[1-4]$", "table": r"^SquareTable[12]$|^Table[1-4]$",
+                            "shop_rack": r"^TraderShelves[12]$|^TraderShieldWallHanging\d$|^TraderCrossedWeapons\d$",
+                            "chair": r"Chair"},
+                     prefer={"shop_rack": {"TraderShelves1": 1, "TraderShelves2": 1}},
+                     decor_themes=("arms",),
+                     top_up=("storage",),
+                     compose=[dict(fam="storage", slot="wall", at="center", clear=2.0, group=True, n=3),
+                              dict(fam="table", slot="center", seats=True),
+                              dict(fam="shop_rack", slot="line", n=2, other=True),
+                              dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
+                     fill=[dict(fam="storage", slot="wall", at="any", clear=2.0, max=2, fixed=True)]),
+    # a powder magazine (Con07C, 31 tiles: 22 powder kegs; Con09c, 30 tiles: 11 powder kegs and 2 barrels): the one room
+    # black powder belongs in, kept apart
+    "powder_store": dict(base="storeroom",
+                         purpose="a powder magazine: kegs of black powder in tight rows along the walls from the corners, "
+                                 "a few plain barrels and crates by the door, the middle clear",
+                         core={"storage": (6, 30)},
+                         optional={},
+                         types={"storage": r"^BlackPowderBarrel2?$|^Barrel$|^DarkCrate[12]$"},
+                         prefer={"storage": {"BlackPowderBarrel": 4, "BlackPowderBarrel2": 2}},
+                         top_up=(),
+                         compose=[dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, n=12),
+                                  dict(fam="storage", slot="stock", coverage=0.3, kinds=("barrels", "crates"), pad=1.2)],
+                         fill=[dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True, max=12),
+                               dict(fam="storage", slot="wall", at="center", clear=0.4, group=True, max=8)]),
+    # the watch's room (Con03A / War03a, 63 tiles: two cots, chests, a table with a meal and four chairs, hanging swords,
+    # a bear's head, the archer and the swordsman on watch; Con06a's 55 tiles: tables, benches, shields; Con02a's
+    # gaoler's room by the cells: a table, racks of bows and swords)
+    "guardroom": dict(base="barracks",
+                      purpose="where the watch waits between rounds: two or three cots against a back wall with a chest "
+                              "at each, swords, pole arms and bows racked on the walls with shields and crossed arms hung "
+                              "between, the watch's table with its chairs and a meal on it, barrels of water and ale by "
+                              "the front walls, a bench",
+                      core={"table": (1, 2), "chair": (2, 6), "bed": (1, 3), "shop_rack": (1, 6), "storage": (1, 4)},
+                      optional={"bench": (0.6, 1), "wall_decor": (1.0, 3)},
+                      types={"table": r"^RoundTableWithFood$|^RoundTable[12]$|^SquareTable[12]$",
+                             "chair": r"Chair|Stool", "bed": r"^Cot\d$",
+                             "shop_rack": r"^Trader(HangingSwords[12]|PoleArm[1-4]|BowRack[12]|QuiverRack|"
+                                          r"ShieldWallHanging\d|CrossedWeapons\d)$",
+                             "storage": r"^Chest[1-4]$|^Barrel2?$|^WaterBarrel$",
+                             "wall_decor": r"^WallTrophy(Bear|Moose|MountainLion)[12]$",
+                             "bench": r"^Bench[1-4]$|^LightBench\d$"},
+                      prefer={"shop_rack": {"TraderHangingSwords1": 2, "TraderHangingSwords2": 2, "TraderPoleArm1": 1,
+                                            "TraderPoleArm3": 1, "TraderBowRack2": 1, "TraderQuiverRack": 1},
+                              "table": {"RoundTableWithFood": 3, "RoundTable1": 1, "SquareTable1": 1},
+                              "bed": {"Cot1": 2, "Cot4": 1}},
+                      decor_themes=("arms", "trophies"),
+                      top_up=("storage", "bench"),
+                      compose=[dict(fam="bed", slot="wall", at="corner", clear=1.0, n=2),
+                               dict(fam="storage", slot="wall", at="center", clear=2.3, only=r"^Chest"),
+                               dict(fam="shop_rack", slot="line", n=4),
+                               dict(fam="table", slot="center", seats=True),
+                               dict(fam="storage", slot="stock", coverage=0.25, kinds=("barrels",), pad=1.2, per_wall=0.4),
+                               dict(fam="wall_decor", slot="decor")],
+                      fill=[dict(fam="shop_rack", slot="line", other=True, max=3),
+                            dict(fam="bed", slot="wall", at="corner", clear=1.0, max=1, min_area=50),
+                            dict(fam="bench", slot="wall", at="center", clear=0, max=1)]),
+    # a cell (War07A, 13 tiles: a cot, straw, a jail door; Con11a's ogre pens, 30-35 tiles: straw, the stocks)
+    "cell": dict(base="bedroom",
+                 purpose="a cell: straw strewn over the floor, a cot against a back wall, the stocks in a bigger cell, a "
+                         "few bones; nothing else",
+                 core={"straw": (2, 10), "bed": (1, 1)},
+                 optional={"stocks": (0.4, 1), "bones": (0.6, 4)},
+                 types={"straw": r"^Straw[12]$", "bed": r"^Cot\d$", "stocks": r"^Stocks[1-5]$"},
+                 prefer={"straw": {"Straw2": 3, "Straw1": 1}, "bed": {"Cot1": 1, "Cot4": 1},
+                         "stocks": {"Stocks3": 1, "Stocks4": 1}, "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2}},
+                 top_up=(),
+                 compose=[dict(fam="bed", slot="wall", at="corner", clear=0.8),
+                          dict(fam="stocks", slot="wall", at="center", clear=1.0, min_area=20),
+                          dict(fam="straw", slot="scatter", per100=10, cluster=(1, 3), wall_gap=1.0),
+                          dict(fam="bones", slot="scatter", per100=4, cluster=(1, 2))],
+                 fill=[dict(fam="straw", slot="scatter", per100=4, max=6)]),
+    "ogre_pen": dict(base="bedroom",
+                     purpose="the ogres' pen for their captives (Con11a): straw heaped on the floor, the stocks against a "
+                             "wall, bones",
+                     core={"straw": (3, 12), "stocks": (1, 1)},
+                     optional={"bones": (0.8, 6)},
+                     types={"straw": r"^OgreStraw\d$", "stocks": r"^Stocks[1-5]$"},
+                     prefer={"straw": {"OgreStraw1": 4, "OgreStraw2": 1, "OgreStraw3": 1, "OgreStraw5": 1},
+                             "stocks": {"Stocks3": 1, "Stocks4": 1}, "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2}},
+                     top_up=(),
+                     compose=[dict(fam="stocks", slot="wall", at="center", clear=1.0),
+                              dict(fam="straw", slot="scatter", per100=4, cluster=(1, 3), wall_gap=1.0),
+                              dict(fam="bones", slot="scatter", per100=5, cluster=(1, 2))],
+                     fill=[]),
+    # the torture room (Wiz07C, 40 tiles: a rack, a body's remains, a chest, a candelabra; Con08d: remains and a chest)
+    "torture_chamber": dict(base="storeroom",
+                            purpose="the question room: the rack standing free with room round it, the iron maiden and "
+                                    "the stocks against the walls, the questioner's desk and chair, a chest of "
+                                    "instruments in a corner, bones on the floor",
+                            core={"torture": (1, 1), "restraint": (1, 3), "storage": (1, 1), "desk": (1, 1)},
+                            optional={"bones": (0.8, 6), "basin": (0.8, 1)},
+                            types={"torture": r"^TortureRack[468]$", "restraint": r"^IronMaiden1$|^Stocks[1-5]$",
+                                   "storage": r"^Chest[1-4]$", "desk": r"^Desk[12]$", "basin": r"^DunMirFlameBasinLit$"},
+                            prefer={"torture": {"TortureRack6": 2, "TortureRack4": 1, "TortureRack8": 1},
+                                    "restraint": {"IronMaiden1": 2, "Stocks3": 1, "Stocks4": 1},
+                                    "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2}, "basin": {"DunMirFlameBasinLit": 1}},
+                            lift=("Torture|", "DunMir|"),
+                            top_up=(),
+                            compose=[dict(fam="torture", slot="center"),
+                                     dict(fam="restraint", slot="wall", at="center", clear=1.2, n=2),
+                                     dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
+                                     dict(fam="storage", slot="wall", at="corner", clear=1.2),
+                                     dict(fam="basin", slot="wall", at="corner", clear=0.8),
+                                     dict(fam="bones", slot="scatter", per100=5, cluster=(1, 2))],
+                            fill=[dict(fam="torture", slot="center", max=1, min_area=110, fixed=True),
+                                  dict(fam="restraint", slot="wall", at="corner", clear=1.0, max=1)]),
+    # a shrine round one holy thing (Con10c / Wiz10c, 66-72 tiles: four incense basins, a chest; Con07H's pedestal;
+    # Wiz11A's obelisk niches with a book; Con07D: four candelabras, four obelisks, a chest)
+    "shrine": dict(base="study", grand=True,
+                   purpose="a shrine: the altar across from the door with statues flanking it and candles before it, a "
+                           "basin of fire in each front corner, a runner to the altar with a kneeling bench, a tapestry "
+                           "or two of one colour, plants",
+                   core={"altar": (1, 1), "statue": (2, 4)},
+                   optional={"bench": (0.8, 2), "basin": (0.9, 2), "wall_decor": (1.0, 3), "plant": (0.5, 2)},
+                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
+                          "basin": r"^DunMirFlameBasinLit$", "plant": PLANTS},
+                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1}, "basin": {"DunMirFlameBasinLit": 1}},
+                   decor_themes=("blue", "red", "white", "green"),
+                   lift=("DunMir|",),
+                   top_up=("plant",),
+                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                            dict(fam="statue", slot="flank", of="altar", gap=0.8),
+                            dict(fam="light", slot="flank_lights", of="altar", gap=0.9),
+                            dict(fam="bench", slot="pews", toward="altar", runner=True),
+                            dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
+                            dict(fam="wall_decor", slot="decor")],
+                   fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=70),
+                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+    "dark_shrine": dict(base="study", grand=True,
+                        purpose="the Land of the Dead's shrine: the lich god's statue on the wall across from the door, "
+                                "mana obelisks either side, incense basins burning, tapestries and sconces, bones",
+                        core={"altar": (1, 1), "statue": (2, 4)},
+                        optional={"basin": (1.0, 2), "wall_decor": (1.0, 3), "bones": (1.0, 12)},
+                        types={"altar": r"^LOTDLichGodStatue[12]$", "statue": r"^LOTDManaObelisk$",
+                               "basin": r"^LOTDIncenseBasinLit$", "wall_decor": r"^LOTDTapestry[12]$"},
+                        prefer={"altar": {"LOTDLichGodStatue1": 1, "LOTDLichGodStatue2": 1},
+                                "statue": {"LOTDManaObelisk": 1}, "basin": {"LOTDIncenseBasinLit": 1},
+                                "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
+                                "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
+                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
+                        top_up=(),
+                        compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                                 dict(fam="statue", slot="flank", of="altar", gap=0.8),
+                                 dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
+                                 dict(fam="bones", slot="scatter", per100=8, cluster=(1, 3)),
+                                 dict(fam="wall_decor", slot="decor")],
+                        fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2)]),
+    # a gallery (Con07E / War07D, 208-210 tiles: seven paintings, sixteen lanterns, nine plants, an orrery, tapestries,
+    # two flame basins, a statue)
+    "gallery": dict(base="hall", grand=True,
+                    purpose="a gallery: paintings hung along both back walls at even spacing, a bench or two in the middle "
+                            "facing them, a pair of statues, one curio (an orrery), plants in the corners, open floor to "
+                            "walk the walls",
+                    core={"wall_decor": (6, 14), "bench": (1, 4)},
+                    optional={"statue": (0.9, 4), "plant": (1.0, 4), "lab": (0.6, 1)},
+                    types={"bench": r"^Bench[1-4]$|^CushionedBench\d$", "statue": r"^Statue2[aceg]$", "plant": PLANTS,
+                           "lab": r"^Orrery2$"},
+                    prefer={"wall_decor": {"Painting1": 1, "Painting2": 1}},
+                    decor_at="any",           # paintings at the ends of each stretch of wall as well as its middle
+                    top_up=("plant",),
+                    compose=[dict(fam="bench", slot="center"),
+                             dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=80),
+                             dict(fam="plant", slot="wall", at="room_corner", clear=0, n=4),
+                             dict(fam="wall_decor", slot="decor")],
+                    # statues toward the far corners carry the room's length (validate/checks.py SPREAD_MIN)
+                    fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=120),
+                          dict(fam="lab", slot="group", group="curio", max=1, min_area=140, fixed=True),
+                          dict(fam="bench", slot="center", max=1, min_area=120)]),
+    # a garden hall (Con07B / War07A, 155-177 tiles: 33-35 potted plants and a pair of columns; Wiz01A, 24 tiles: a
+    # fountain with lily pads among barren plants)
+    "conservatory": dict(base="hall", grand=True,
+                         purpose="a garden room: the fountain or the well in the middle with benches facing it, plants "
+                                 "massed along the back walls and in clumps on the floor with paths between, a pair of "
+                                 "statues, plants in every corner",
+                         core={"plant": (6, 40), "bench": (1, 4)},
+                         optional={"feature": (1.0, 1), "statue": (0.6, 4)},
+                         types={"plant": r"^Plant[1-5]$|^Plant2Flowered$|^PlantFern[1-4]$", "bench": r"^Bench[1-4]$|^LightBench\d$",
+                                "feature": r"^Fountain$|^WishingWell$", "statue": r"^Statue2[aceg]$"},
+                         prefer={"plant": {"Plant4": 3, "Plant5": 3, "Plant3": 2, "Plant1": 1, "Plant2Flowered": 1,
+                                           "PlantFern2": 1}, "feature": {"Fountain": 2, "WishingWell": 1}},
+                         top_up=("plant",),
+                         compose=[dict(fam="feature", slot="center"),
+                                  dict(fam="bench", slot="center", n=2),
+                                  dict(fam="plant", slot="wall", at="room_corner", clear=0, n=4),
+                                  dict(fam="plant", slot="scatter", per100=10, cluster=(2, 4), wall_gap=0.4),
+                                  dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=120)],
+                         fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=120),
+                               dict(fam="plant", slot="scatter", per100=4, cluster=(2, 3), wall_gap=0.4, max=12),
+                               dict(fam="bench", slot="center", max=1, min_area=100)]),
+    # a tomb of statues (Con04a, 58 tiles: four monuments, twelve statues, crypt chests, a tombstone; Con04c: columns,
+    # monuments, statues): one great tomb, the statues of the dead about it
+    "mausoleum": dict(base="crypt", grand=True,
+                      purpose="a mausoleum: one great tomb in the middle, statues of the dead in pairs facing it, "
+                              "monuments at the back corners, a pair of columns in a big one, a tapestry",
+                      core={"tomb": (1, 1), "statue": (2, 6), "monument": (2, 4)},
+                      optional={"column": (0.6, 4), "wall_decor": (0.7, 2), "plant": (0.4, 2)},
+                      types={"tomb": r"^Crypt(1|3|5|6|7|8|9|12)$", "statue": r"^Statue2[aceg]$",
+                             "monument": r"^Monument1$", "storage": r"^CryptChest[1-4]$",
+                             "column": r"^Column[5-8]$", "plant": r"^PlantBarren[12]$"},
+                      prefer={"monument": {"Monument1": 1}},
+                      lift=("Crypt|",),
+                      top_up=("plant",),
+                      compose=[dict(fam="tomb", slot="center"),
+                               dict(fam="statue", slot="groups", group="statues", n=1, extra=True),
+                               dict(fam="monument", slot="wall", at="corner", clear=0.8, n=2),
+                               dict(fam="wall_decor", slot="decor")],
+                      fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=90, fixed=True),
+                            dict(fam="column", slot="racks", kind="columns", gap=4.0, aisle=3.0, min_area=120, max=4,
+                                 fixed=True),
+                            dict(fam="monument", slot="wall", at="corner", clear=0.8, max=2),
+                            dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+    # a bone room (Con04a, 64-81 tiles: crypt chests, monuments, bones; War04b: 21 bones heaped round a crypt chest)
+    "ossuary": dict(base="storeroom",
+                    purpose="an ossuary: skulls and long bones heaped along the walls and in the corners, crypt chests in "
+                            "the corners, a monument or two, a coffin, a way kept through",
+                    core={"bones": (8, 60), "storage": (1, 3)},
+                    optional={"monument": (0.8, 2), "tomb": (0.4, 1)},
+                    types={"storage": r"^CryptChest[1-4]$", "monument": r"^Monument1$", "tomb": r"^Coffin[1-4]$"},
+                    prefer={"bones": {"Skull": 3, "ArmBone": 3, "LegBone": 3}, "monument": {"Monument1": 1}},
+                    lift=("Crypt|", "Coffin|"),
+                    top_up=(),
+                    compose=[dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
+                             dict(fam="monument", slot="wall", at="center", clear=0.8, n=2),
+                             dict(fam="tomb", slot="wall", at="center", clear=1.0),
+                             dict(fam="bones", slot="scatter", per100=24, cluster=(4, 7), wall_gap=0.0)],
+                    fill=[]),
 }
 
 # ---- buildings ---------------------------------------------------------------------------------------
@@ -837,6 +1225,80 @@ BUILDINGS = {
                       scenes=[], garden=0.0, faces="road"),
 }
 
+# The roles added with the room types for variety (kit/roomtypes.py, rules/rooms/README.md): a town's gaol, a castle's
+# gatehouse, a healer's house, a wheelwright's workshop, a family's mausoleum, a wayside shrine.
+BUILDINGS.update({
+    "gaol": dict(purpose="the town's gaol: the gaoler's guardroom and the cells behind it", style="stone_house",
+                 size=(30, 22), min_units=140,
+                 rooms=[("guardroom", "the gaoler's room"), ("cell", "a cell"), ("cell", "a cell")],
+                 scenes=["water_barrel"], garden=0.0, faces="road"),
+    "gatehouse": dict(purpose="a castle's gatehouse: the watch room, the winch that works the gate, the gate's arms",
+                      style="stone_house", size=(30, 24), min_units=150,
+                      rooms=[("guardroom", "the gate's watch room"), ("winch_room", "the gate's winch"),
+                             ("gear_store", "the gate's arms")],
+                      scenes=["water_barrel"], garden=0.0, faces="square"),
+    "healer": dict(purpose="a healer's house: the sick room with its cots, the healer's remedies, the healer's bed",
+                   style="stucco_house", size=(32, 24), min_units=160,
+                   rooms=[("infirmary", "the sick room"), ("herbalist", "the healer's remedies"),
+                          ("bedroom", "the healer's bed")],
+                   scenes=["water_barrel", "sign"], garden=0.6, faces="road"),
+    "wheelwright": dict(purpose="a wheelwright's workshop and its store of timber and iron", style="log_cabin",
+                        size=(24, 20), min_units=90,
+                        rooms=[("workshop", "the workshop"), ("storeroom", "timber and iron")],
+                        scenes=["woodpile", "chopping_block"], garden=0.0, faces="road"),
+    "mausoleum": dict(purpose="an old family's mausoleum: the great tomb, and below it the bones of the older dead",
+                      style="stone_house", size=(28, 22), min_units=110,
+                      rooms=[("mausoleum", "the family's tomb"), ("ossuary", "the bones of the older dead")],
+                      scenes=[], garden=0.0, faces="road"),
+    "shrine": dict(purpose="a wayside shrine: one small holy room", style="stone_house", size=(18, 16), min_units=50,
+                   rooms=[("shrine", "the shrine")], scenes=[], garden=0.3, faces="road"),
+})
+
+# Rooms a role may add to its program (BuildingIdentity.extra), each with its purpose: the program above stays each role's
+# default, so the maps built so far keep their buildings (StoryMap.place_buildings appends the extras a design asks for).
+ROLE_OPTIONS = {
+    "inn": [("cellar", "the inn's cellar of ale and wine")],
+    "manor": [("solar", "the lord's solar"), ("gallery", "the long gallery"), ("conservatory", "the garden hall"),
+              ("cellar", "the wine cellar"), ("treasury", "the strongroom"), ("shrine", "the family's shrine")],
+    "townhall": [("treasury", "the town's treasury"), ("guardroom", "the watch room"), ("cell", "the lock-up"),
+                 ("cellar", "the cellar")],
+    "keep": [("solar", "the lord's solar"), ("guardroom", "the guard room"), ("treasury", "the strongroom"),
+             ("cell", "a cell"), ("torture_chamber", "the question room"), ("cellar", "the buttery"),
+             ("shrine", "the keep's shrine"), ("powder_store", "the powder store"), ("winch_room", "the winch room")],
+    "barracks": [("guardroom", "the guard room"), ("cell", "the lock-up"), ("powder_store", "the powder store"),
+                 ("infirmary", "the infirmary")],
+    "chapel": [("ossuary", "the bone room"), ("shrine", "the side shrine"), ("mausoleum", "the founder's tomb")],
+    "village_chapel": [("ossuary", "the bone room"), ("shrine", "the side shrine")],
+    "college": [("observatory", "the observatory"), ("gallery", "the gallery of the archmagisters"),
+                ("conservatory", "the garden hall"), ("shrine", "the shrine")],
+    "observatory": [("observatory", "the telescope room")],
+    "apothecary": [("infirmary", "the sick room")],
+    "smithy": [("workshop", "the workshop")],
+    "mill": [("winch_room", "the mill's gear room")],
+    "ore_shed": [("powder_store", "the blasting powder")],
+    "foreman": [("treasury", "the strongroom of the mine's pay")],
+    "grovelord": [("shrine", "the grove's shrine")],
+    "demon_forge": [("winch_room", "the forge's gear room"), ("powder_store", "the powder store")],
+    "ice_temple": [("dark_shrine", "the lich god's shrine"), ("ossuary", "the bones of the frozen dead")],
+    "barrow": [("dark_shrine", "the old god's shrine"), ("ossuary", "the bone room")],
+    "ogre_keep": [("ogre_pen", "the captives' pen")],
+    "gaol": [("torture_chamber", "the question room"), ("cell", "another cell")],
+    "gatehouse": [("cell", "the lock-up"), ("powder_store", "the powder store")],
+    "healer": [("shrine", "the healer's shrine")],
+    "wheelwright": [("winch_room", "the gear room")],
+    "mausoleum": [("shrine", "the mourners' shrine")],
+}
+for _r, _opts in ROLE_OPTIONS.items(): BUILDINGS[_r]["options"] = _opts
+
+
+def role_program(role, extra=()):
+    """[(kind, purpose)] of a role: its default rooms, then each of `extra` (kinds from its options) in turn."""
+    r = BUILDINGS[role]
+    opts = dict(r.get("options", ()))
+    bad = [k for k in extra if k not in opts]
+    if bad: raise ValueError(f"{role} takes no {', '.join(bad)} (its options: {', '.join(opts) or 'none'})")
+    return list(r["rooms"]) + [(k, opts[k]) for k in extra]
+
 # ---- outdoor scenes ------------------------------------------------------------------------------------
 # where: "door_side" (beside the entrance, not in front of it), "side_wall" (an outside wall away from
 # the entrance), "front" (in front of the entrance, clear of the doorway).
@@ -879,6 +1341,7 @@ class BuildingIdentity:
     name: str = ""                            # e.g. "The Mossy Tankard"
     occupant: str = ""                        # who lives or works there
     style: str = ""                           # a building style in place of the role's (stone houses in a volcanic town)
+    extra: Tuple[str, ...] = ()               # rooms from the role's options added to its program (ROLE_OPTIONS)
 
 
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).
@@ -917,7 +1380,7 @@ def rooms_sidecar(placed, path, yards=()):
     import json
     out = []
     for bid, b in placed:
-        program = list(BUILDINGS.get(bid.role, {}).get("rooms", []))
+        program = role_program(bid.role, getattr(bid, "extra", ())) if bid.role in BUILDINGS else []
         for r in b.rooms:
             purpose = next((p for kind, p in program if kind == r.kind), "")
             program = [kp for kp in program if kp != (r.kind, purpose)]
@@ -952,7 +1415,7 @@ class MapIdentity:
             lines.append(f"- {a.name}: {a.purpose}" + (f" (landmark: {a.landmark})" if a.landmark else ""))
         for b in self.buildings:
             r = BUILDINGS[b.role]
-            rooms = ", ".join(f"{k} ({p})" for k, p in r["rooms"])
+            rooms = ", ".join(f"{k} ({p})" for k, p in role_program(b.role, b.extra))
             lines.append(f"- {b.name or b.role} in the {b.area}: {r['purpose']}"
                          + (f", home of {b.occupant}" if b.occupant else "") + f". Rooms: {rooms}.")
         return "\n".join(lines)

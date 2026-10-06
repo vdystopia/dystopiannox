@@ -1,0 +1,33 @@
+{
+  "packet": "guard_bark/i2",
+  "judge": "Claude Code subagent, claude-opus-5-5",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, generic courtesy ('This is the home of', 'very grateful for your deeds') with no tactical detail; exactly the stiff, slightly redundant voice of Nox's house guards."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Ceremonial guild boasting plus a dropped article ('can be dangerous place') - an unpolished slip a generator rarely makes; pure flavour, no task."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Built to a template: blocked gate, named villain beyond, named authority and where to find him, then a 'later' line that reopens the way. 'By order of', 'by the Captain's leave' is a more formal, mannered register than Nox's guards."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Clipped, punchy and readable, but same blocked-route/who-to-see/route-reopened skeleton and terse elided sentences ('Below's shut.') that read as a modern bark style."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Crams monster, cause, villain, quest-giver and her hut into one bark; the double-hyphen dash and the closing 'watch for leeches' quip are tells."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The cows punchline ('the ones that are left') is a good joke but a too-neatly placed one; the gate-shut/see-the-Mayor/gate-open loop matches the other generated barks."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Jailer's patter with escalating warnings and a slightly clumsy page break; flavour without quest scaffolding, typical Nox."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Gushing 'You must be the great [Class]... our beloved [Place]!', capitalised 'Mayor', comma splice in the bandit line - the earnest, exclamatory Nox chapter-opener voice."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Atmospheric touches ('the stones still smoke') and a double-hyphen dash; again the closed-bridge/guildmaster/reopened template."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The tidy-city rules list with the 'don't even think about wizardry' jab and the 'Oh, I forgot to mention' follow-up is Nox's dry humour exactly."}
+  ],
+  "tells": [
+    "New barks all follow one rigid three-beat template: route closed + monster/villain + named authority and where to find them; repeat line; route reopened. Westwood's guards mostly just set mood, warn or welcome and do not route the player so precisely.",
+    "Information density: new first lines pack who, what, where and whom-to-see into two or three sentences; Westwood's are thinner and more redundant.",
+    "Double-hyphen '--' dashes appear only in new texts.",
+    "New texts end on a crafted quip or sensory detail (leeches, smoking stones, leftover cows); Westwood's humour is broader and tied to the speaker's role (no wizardry, no loitering).",
+    "Westwood lines carry small grammatical slips and stock fantasy phrases ('legendary', 'beloved', 'great deed'); new lines are cleaner and more colloquial-modern ('Below's shut', 'I just stand here')."
+  ]
+}

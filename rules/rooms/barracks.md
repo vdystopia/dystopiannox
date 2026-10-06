@@ -46,6 +46,10 @@ The row of bunks, headboards against a wall.
   against the back walls, a fire pit ringed by stools in the middle, meat and carcasses, barrels; torch poles. Its focus
   is the fire pit.
 
+## Where people stand
+
+A soldier beside his bunk (at its side, not at its foot where the chest is), an ogre by the fire pit; never in the row's walkway or between the table and its seats. (`STANDS["barracks"]`: beside a bed, beside the fire pit, a back wall.)
+
 ## Common mistakes
 
 - An ogre den of 26 straw heaps in 32 pieces (Harrowby; `identity.monotony`): the straw scatter's per100 counts heaps of

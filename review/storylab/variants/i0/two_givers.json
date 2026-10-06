@@ -1,0 +1,398 @@
+{
+ "scenario": "two_givers",
+ "iter": "i0",
+ "writer": "baseline agent (SKILL.md + starwell house style)",
+ "guide": "none (SKILL.md, starwell.py)",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford's tithe chest, stolen by Corwin's bandits; Halvard wants it in the Moot Hall (80 gold and a Longsword); Sly Wat, a turncoat in the Drowned Lantern, knows it is under the watchtower's hearth-stone and offers 180 gold so he can leave the country.",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest. A year of Brackenford's tithe, every miller's and every ferryman's, and Corwin's men carried it out of the Moot Hall under my nose. It'll be somewhere in the old watchtower on Crow Hill. Bring it back here and you'll have the town's thanks and a fair share of what's in it."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Sit down. Keep your voice low. Wat's the name. I rode with Corwin till last week, and I know where the tithe chest is: under the hearth-stone in the tower's lower room.\n\nThe reeve'll give you a tenth of it and a handshake. Bring it to me instead and you'll have a good deal more, and I'll be over the hills by morning. Brackenford won't miss me, and the tithe only goes back to be taken again."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest, every seal still on it. Brackenford eats this winter. Here: the town's thanks, and a sword from the Moot Hall's own rack. It's better on you than on the wall."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "That's the weight of it. Here's your share, as I swore. If the reeve asks, you never saw me. I'll be over the hills before the bells."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Red Corwin's bandits stole Brackenford's tithe chest. Reeve Halvard wants it brought back to the Moot Hall. It is somewhere in the old watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sly Wat, a turncoat of Corwin's drinking in the Drowned Lantern, says the tithe chest is under the hearth-stone in the watchtower's lower room. He will pay me a bigger share if I bring it to him instead of the reeve."
+    }
+   },
+   "reward": {
+    "gold": 180,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "The ferrymen's toll box, stolen by the Urchins into the old barrow; Kester the ferrymaster wants it back in the ferry house (90 gold and LeatherBoots); Mother Rook, a ferryman's widow the guild never paid, wants it brought to her and will split it (150 gold).",
+   "names": {
+    "Kester": "person",
+    "Mother Rook": "person",
+    "Rook": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Kester",
+     "text": "The toll box is gone. Every penny the ferry took since the thaw, and the guild's seal with it. Urchins, out of the old barrow east of the ford; we found their little prints in the mud. Bring it back to the ferry house and the guild will pay you out of it."
+    },
+    "offer_b": {
+     "speaker": "Rook",
+     "text": "Kester sent you after the toll box? Hear me first. My man drowned at the ford two winters back, working Kester's ferry, and the guild never paid his widow a penny.\n\nThe Urchins keep their takings in the deepest room of the barrow. Bring that box to me. I'll take what I'm owed and you'll have the rest. Kester need never know where it went."
+    },
+    "outcome_a": {
+     "speaker": "Kester",
+     "text": "The toll box, and the seal still in it! The guild pays its debts. Here's your share, and boots, the ferryman's kind. They'll keep the river out."
+    },
+    "outcome_b": {
+     "speaker": "Rook",
+     "text": "Two winters' wages, and not a penny over. The rest is yours, as I said. I'll light a candle for you at the chapel."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Urchins from the old barrow east of the ford stole the ferrymen's toll box. Kester the ferrymaster wants it brought back to the ferry house."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Mother Rook, a ferryman's widow the guild never paid, says the Urchins keep the toll box in the barrow's deepest room. She wants it brought to her instead of Kester, and will split it with me."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "The Chapel of the Ford's silver chalice, taken by Corwin's men to the watchtower; Brother Anselm wants it on the altar (60 gold and potions); Garrick the gate guard, deep in debt to Corwin's dice-man, wants it to sell (120 gold).",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Anselm",
+     "text": "They came in the night and took the chalice off the altar: Red Corwin's men, laughing as they went. It has stood there since the chapel was built over the ford. They'll have carried it up to the watchtower on Crow Hill. Bring it home to us, and the chapel will reward you as best it can."
+    },
+    "offer_b": {
+     "speaker": "Garrick",
+     "text": "Not so loud. You're going up after the chapel's cup? I owe Corwin's dice-man forty silver, and he'll have my throat the day the gate opens. That cup's worth twice that. Bring it to me, not the brother, and half of what it fetches is yours. The saints have other cups."
+    },
+    "outcome_a": {
+     "speaker": "Anselm",
+     "text": "Our chalice, home on the altar. Bless you. Take these from the chapel's stores, and this purse; the Ford has been kinder to us than we deserved."
+    },
+    "outcome_b": {
+     "speaker": "Garrick",
+     "text": "That's it. I'm a free man by Sunday. Your half, as I said. And you didn't get it from me. You never spoke to me."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Red Corwin's men stole the silver chalice from the altar of the Chapel of the Ford. Brother Anselm wants it back. It will be in the watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Garrick the gate guard owes Corwin's dice-man forty silver. He wants me to bring the chapel's chalice to him instead of Brother Anselm, and will give me half of what it fetches."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Greyjaw's pelt: Ulric wants it nailed to the Moot Hall door so the shepherds go back to their pastures (70 gold and a SteelShield); Sigrun the furrier will pay twice that to sell it south (140 gold).",
+   "names": {
+    "Sigrun": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulric",
+     "text": "When Greyjaw's dead, bring me his hide. Not for me. For the shepherds; they'll not go back to the Ashwood pastures till they've seen it nailed to the Moot Hall door with their own eyes. I'll pay what I can, and the others will put in."
+    },
+    "offer_b": {
+     "speaker": "Sigrun",
+     "text": "A pelt like Greyjaw's is a lord's cloak in the south. Ulric wants to nail it to a door till it rots. Bring it to me instead and I'll pay you twice what the shepherds can scrape together."
+    },
+    "outcome_a": {
+     "speaker": "Ulric",
+     "text": "That's him. That's the grey devil. The lads will be back on the hill by morning. From all of us: it isn't much, but it's honest. And my son's old shield; he carried it to the wars and back and never needed it again."
+    },
+    "outcome_b": {
+     "speaker": "Sigrun",
+     "text": "Oh, that's a fine hide. Not a tear in it but the one that killed him. Here's your silver. Ulric will have to take your word for it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Ulric the shepherd wants Greyjaw's hide brought to him when the great wolf is dead, so the shepherds can see it nailed to the Moot Hall door."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sigrun the furrier will pay me twice what the shepherds can for Greyjaw's hide, to sell in the south."
+    }
+   },
+   "reward": {
+    "gold": 140,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Reeve Halvard's seal-ring, taken by Corwin to forge passes; Halvard wants it back (100 gold and a ChainTunic); Sly Wat wants it to seal himself a pass out of the country (180 gold).",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "My seal. Corwin's men took it off my own hand on the north road, and now there are passes going about with the reeve's mark on them, letting his men through every gate in the valley. Bring the ring back and I'll put an end to that, and pay you for it."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "The reeve's ring? Corwin wears it on a cord round his neck. I know; I watched him seal a pass with it.\n\nBring it to me. One pass, in my name, and I'm out of this country for good, and you'll have more silver than Halvard ever paid anyone. Then throw the ring in the Bracken, for all I care."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "My ring. No more of Corwin's passes. Here: the Moot Hall's thanks, and mail from the watch's stores."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "One pass. Wat, free man, on the reeve's own word. Your silver. Don't tell Halvard what his ring's been doing."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Red Corwin's men took Reeve Halvard's seal-ring and are forging passes with it. Halvard wants it back."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sly Wat says Corwin wears the reeve's ring on a cord round his neck. Wat wants it brought to him so he can seal himself a pass out of the country, and will pay me more than the reeve."
+    }
+   },
+   "reward": {
+    "gold": 180,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Grave-gold the Urchins dug out of the old barrow-king's tomb; Brother Anselm wants it buried again (60 gold and potions); Hobb the gravedigger wants to split it (160 gold).",
+   "names": {
+    "Hobb": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Anselm",
+     "text": "The Urchins have dug down to the old king's grave in the barrow east of the ford, and they're carrying out his gold. That gold was laid with the dead, and whatever sleeps under the barrow knows it. Take it from them and bring it to me. I'll see it buried again, with the proper words."
+    },
+    "offer_b": {
+     "speaker": "Hobb",
+     "text": "The brother wants the barrow-gold put back in the ground. I've dug graves in Brackenford thirty years: gold in the ground does nobody any good. Bring it to me and we'll split it. If the old king minds, he can come and tell me himself."
+    },
+    "outcome_a": {
+     "speaker": "Anselm",
+     "text": "It's all here. We'll lay it down again tonight and say the words. Take these for your trouble, and my blessing; you'll want both if you go under the earth again."
+    },
+    "outcome_b": {
+     "speaker": "Hobb",
+     "text": "Ha! Look at it shine. Your half. Don't go near the barrow after dark, eh? Just in case."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "The Urchins have dug into the old king's grave in the barrow east of the ford. Brother Anselm wants the grave-gold brought to him to be buried again."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Hobb the gravedigger wants the barrow's grave-gold brought to him instead, to split between us."
+    }
+   },
+   "reward": {
+    "gold": 160,
+    "items": [
+     "BluePotion",
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Red Corwin's ledger of bribes, which names his informers in town; Halvard wants it (90 gold and a Longsword); Ossian, who is named in it, wants to burn his page (150 gold and free ale).",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Someone in this town tells Red Corwin which carts are worth robbing. Corwin keeps a ledger, I'm told, of every man he pays. It'll be in the watchtower on Crow Hill. Bring me that book and I'll know who sells us."
+    },
+    "offer_b": {
+     "speaker": "Ossian",
+     "text": "A word, by the fire. You're going after Corwin's book. My name's in it. Twice, when the inn was empty and the brewer wanted paying, I told his men when the wool carts left. Never again, I swear it.\n\nBring the book to me and let me burn that page. I'll pay you more than the reeve, and I'll never sell another cart."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "So. Names I knew, and one I didn't. ...Leave it with me. The Moot Hall pays its debts: here, and a sword."
+    },
+    "outcome_b": {
+     "speaker": "Ossian",
+     "text": "There it goes. That's the last of it. Thank you. Your silver, and your ale's free in the Drowned Lantern as long as I keep it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Reeve Halvard wants Red Corwin's ledger of bribes, which names everyone in Brackenford who sells him word of the carts. It is in the watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Ossian, who keeps the Drowned Lantern, is named in Corwin's ledger. He will pay me more than the reeve if I bring it to him so he can burn his page."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Mabry's mother's book of spells, stolen by the Urchins into the old barrow; Mabry wants it back (60 gold and potions); Ivo, a scholar staying in town, will pay more for it (140 gold).",
+   "names": {
+    "Ivo": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mabry",
+     "text": "The Urchins took my mother's book of spells off the shelf while I was in the back, and ran it down to the barrow. Thirty years of her hand in it, every receipt and charm she knew. Bring it back to me. I can't pay much, but I'll pay."
+    },
+    "offer_b": {
+     "speaker": "Ivo",
+     "text": "Mabry's book? I came to Brackenford to buy it, and she won't sell. If you find it in the barrow, bring it to me. It'll be read and copied and kept dry, not left on a shop shelf for the next thief. I pay in good silver."
+    },
+    "outcome_a": {
+     "speaker": "Mabry",
+     "text": "My mother's hand! Not a page torn. Here: potions from my own shelf, and what's in the box. And come back; I'll brew for you at cost."
+    },
+    "outcome_b": {
+     "speaker": "Ivo",
+     "text": "Remarkable. Oh, remarkable. Here's your silver. I'll be on the river barge tonight, I think, before Mabry hears."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Urchins stole Mabry's mother's book of spells from her shop and took it into the old barrow east of the ford. Mabry wants it back."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Ivo, a scholar staying in Brackenford, wants Mabry's book brought to him instead. He will pay me well for it."
+    }
+   },
+   "reward": {
+    "gold": 140,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "A miller's daughter's dowry chest, taken off a cart on the north road by Corwin's men; her father Aldric wants it back for the wedding (100 gold); her sweetheart Colm wants it to run off with her down the river (170 gold).",
+   "names": {
+    "Aldric": "person",
+    "Elsa": "person",
+    "Colm": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Aldric",
+     "text": "My Elsa's dowry. Forty years of milling in that chest, and Corwin's men took it off the cart on the north road a week before her wedding. The match is off without it. Get it back from the watchtower and I'll pay you out of my own purse."
+    },
+    "offer_b": {
+     "speaker": "Colm",
+     "text": "You'll be after Elsa's dowry. Her father wants her wed to the Moot Hall's clerk; she wants me, and I've nothing. Bring the chest to me. Elsa and I will be down the river on the first barge, and you'll have a share from the both of us."
+    },
+    "outcome_a": {
+     "speaker": "Aldric",
+     "text": "Every coin of it. The wedding's on, Saturday, at the Chapel of the Ford. Come and dance at it. Your fee, as I promised, and a draught for the morning after."
+    },
+    "outcome_b": {
+     "speaker": "Colm",
+     "text": "We'll be gone by morning. Elsa says thank you, and so do I. Here's your share; it's more than her father would have given you."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Red Corwin's men stole the dowry chest of Elsa, Aldric the miller's daughter, from a cart on the north road. Aldric wants it back from the watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Colm, Elsa's sweetheart, wants the dowry chest brought to him so he and Elsa can run off down the river. He will give me a share."
+    }
+   },
+   "reward": {
+    "gold": 170,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Brackenford's river charter, which grants the town its ford and tolls, taken by Corwin's men with the Moot Hall plate; Halvard wants it home (110 gold, SteelShield, ChainTunic); Morcant, bailiff to the lord across the river, pays more to claim the ford (200 gold).",
+   "names": {
+    "Morcant": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "The charter. The old king's parchment that gives Brackenford its ford and its tolls. Corwin's men took it from the Moot Hall with the plate, not knowing what it was. If it's lost, the lord across the river will claim the ford by the autumn. Find it in the watchtower and bring it home."
+    },
+    "offer_b": {
+     "speaker": "Morcant",
+     "text": "Bailiff Morcant, in the service of the lord across the river. You'll be going after the town's charter. Bring it to me instead; my lord pays far better than a reeve. Brackenford will still have its ford. It will simply pay its tolls to the proper hands."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The charter, and the king's seal on it still! The ford stays Brackenford's. Take these from the Moot Hall, with the town's thanks."
+    },
+    "outcome_b": {
+     "speaker": "Morcant",
+     "text": "My lord thanks you. Here is his silver. I would not stay long in Brackenford, when they find out whose ford it is now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Red Corwin's bandits took Brackenford's river charter, which grants the town its ford and its tolls. Reeve Halvard wants it brought back to the Moot Hall from the watchtower on Crow Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bailiff Morcant, who serves the lord across the river, wants me to bring Brackenford's charter to him instead, and will pay better than the reeve."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": [
+     "SteelShield",
+     "ChainTunic"
+    ]
+   }
+  }
+ ]
+}
