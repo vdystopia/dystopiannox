@@ -173,3 +173,10 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   arrangements beat the tuned recipes on the two types with the most Westwood rooms (recipe bedroom best 8/10). The
   judges' diagnosis of the recipe rooms is unanimous across 30 sheets: everything at even gaps along the back walls,
   one template repeated, a token group in a bare middle; Westwood's are zoned, dense, irregular, with story details.
+- 00:51 Dialogue round 3 merged (night-dialogue3, i13-i15). An originality check (review/storylab/originality.py),
+  calibrated on Westwood against itself, shows the earlier best rounds (i10-i12) did better only by staying closer to
+  Westwood's own text (their quests 0.67-0.76 similar to the quest each was dealt, closer than any two Westwood quests are
+  to each other; 16-89 copied five-word runs per round). Within the originality limit, long quests are still caught 98-100%
+  side by side (5.7-5.9 vs 8.1-8.3); blends, quest parts from different quests, and deliberate roughness all failed.
+  Controls: 53%. Short lines pass. Map agents now must pass the originality section of --check. The dialogue lab pauses here:
+  original long quests that read as Westwood's are the user's call (pastiche vs closeness).
