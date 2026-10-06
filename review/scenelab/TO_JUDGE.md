@@ -7,7 +7,7 @@ then `py review/scenelab/blind.py score <scene> <iter>`. Paths are under this wo
 
 | Scene | Iteration | Sheet | Previous independent verdict |
 |---|---|---|---|
-| bandit_camp | r8-upper | `bandit_camp/r8-upper/blind/` | r5-small (round 4, critiques in LOG round 5) |
+| bandit_camp | r9-warcamp | `bandit_camp/r9-warcamp/blind/` | r5-small (round 4, critiques in LOG round 5) |
 | graveyard | r6-loose | `graveyard/r6-loose/blind/` | r5-small (round 4) |
 | garden | r5-against | `garden/r5-against/blind/` | r3-far (round 4) |
 | pond_dock | r5-knots | `pond_dock/r5-knots/blind/` | r4-fisher (round 4) |

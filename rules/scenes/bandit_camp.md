@@ -126,3 +126,5 @@ right beside the fire". The fire ring tight and uneven (17-23 px, each stone's a
 before the barrels' end, a knot; cot steps 54-70 px; the bench 70 px out (Westwood's stool 59); cots on an upper wall
 where the pocket allows (a cot under the near rock is hidden); the lab's pockets stretched and turned, their passages
 winding.
+- Two kinds of open camp (round 5): a war camp (60%: pup tent and awning, armour racks 90%, no bedrolls) or a rough camp
+  (bedrolls in pairs, racks 20%), as Westwood's open-air camps are one or the other.

@@ -433,3 +433,8 @@ yards' fences stay plain IronFence. Worth another try with the graves' count che
 Garden r5-against: the garden centred on a side of its house a square from the wall (it had stood two off: "floating in
 open grass between cabins with nothing behind them"; Con07B's beds lie along their house). AUC 0.434. Thornwick,
 Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
+
+Bandit camp r9-warcamp: two kinds of open camp, as Westwood's: a war camp (60%: the pup tent and the awning, the armour
+racks 90%, no bedrolls: its men sleep in the tent and under the awning; Con03A, Con04a, Con05A, Con09d) or a rough camp
+(bedrolls in pairs, racks 20%). AUC 0.873 (1 of 10 not found). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors.

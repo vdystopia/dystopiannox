@@ -291,8 +291,15 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
     # at its ends (Westwood's hideouts: cots one or two together against the rock, a torch by them, Wiz03a, Wiz03b)
     # one pup tent to a camp (no Westwood camp pitches two: Con03A, Con04a, Con05A, Con09d, Wiz03b), the leader's
     # awning beside it when the band is big; the other tents' sleepers lie in pairs
-    n_t = min(2, max(0, tents)) if tents >= 3 else min(1, max(0, tents))
-    lead = 0 if tents >= 3 else None
+    # two kinds of open camp, as Westwood's (the judge, 2026-10-06: "every war-camp piece once in a tidy grid"): a war
+    # camp (Con03A, Con04a, Con05A, Con09d: the pup tent and the awning, the armour racks, barrels, a cart, no bedrolls)
+    # or a rough camp (Con03A's: bedrolls, barrels, a few rocks, no racks)
+    war = rng.random() < 0.6
+    if war:
+        n_t, lead = (2, 0) if sleepers >= 4 and tents >= 2 else (1, None)
+    else:
+        n_t = min(2, max(0, tents)) if tents >= 3 else min(1, max(0, tents))
+        lead = 0 if tents >= 3 else None
     per = [sleepers // max(1, n_t) + (1 if q < sleepers % max(1, n_t) else 0) for q in range(n_t)]
     units, spare = [], 0
     # two sleep in the tent and two under the awning (Westwood's war camps lay no bedrolls by their tent: Con03A,
@@ -300,6 +307,7 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
     for q in range(n_t):
         units.append(("awning" if q == lead else "tent", 0)); spare += max(0, per[q] - 2)
     spare += max(0, sleepers - sum(per))
+    if war and n_t: spare = 0                        # (the war camp's men sleep in the tent and under the awning)
     while spare > 1:
         units.append(("pair", 2)); spare -= 2
     if spare:
@@ -425,7 +433,7 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
         for t, (du, dw) in zip(finds[:2], ((-13, 4), (13, 4))):    # what they dig for, by the spoil (never mid-glade)
             sc.put_px(t, ax + wx * (40 + dw) + ux * (du + 70), ay + wy * (40 + dw) + uy * (du + 70))
         work = [(ax - wx * 30 - ux * 70, ay - wy * 30 - uy * 70), (ax - wx * 30 + ux * 70, ay - wy * 30 + uy * 70)]
-    elif rng.random() < 0.6:
+    elif rng.random() < (0.9 if war else 0.2):
         # the arms as Westwood's war camps stand them (Con03A, Con04a, Con05A, Con09d): three or four armour racks of
         # different builds in a row, the helmet poles at its end now and then, or a polearm rack
         builds = rng.sample(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3",
