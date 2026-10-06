@@ -2563,7 +2563,13 @@ class Furnisher:
         if got and not self.aisle:                      # the aisle the statues face and the colonnade lines
             self.aisle = dict(run=r, mid=mid, half=aisle / 2, first=first, far=self._depth_of(r), door=None)
         if columns and got and len(sides) == 2:
-            self.nave_columns(r, mid, aisle / 2 + k * pitch + 0.9, first, depth_max, 2 * gap)
+            off = aisle / 2 + k * pitch + 0.9
+            if ROOM_IDENTITY.get(self.kind, {}).get("columns_by_walls"):
+                # Westwood's chapel (Con07B) rings its nave with columns near the walls, the side aisles between
+                # them and the pews (a recipe's choice: columns_by_walls)
+                wide = max(off, min(mid - r["lo"], r["hi"] - mid) - 3.1)      # (nave_columns keeps 1.6 off the wall)
+                if wide > off and self.nave_columns(r, mid, wide, first, depth_max, 2 * gap) >= 2: off = None
+            if off is not None: self.nave_columns(r, mid, off, first, depth_max, 2 * gap)
         elif columns and got:                           # a one-sided nave: an arcade on the open side of the aisle
             ct = _pick(self.rng, self.types_of("column"))
             if ct:
@@ -3264,7 +3270,7 @@ class Furnisher:
             if st["slot"] == "pews":
                 done[fam] += self.pew_rows(fam, placed.get(st.get("toward")), st.get("gap", 2.6),
                                            runner=st.get("runner", False), columns=st.get("columns", False),
-                                           tombs=st.get("tombs", False))
+                                           tombs=st.get("tombs", False) and plan.get("tomb", 0) > 0)
                 continue
             if fam == "rug":                          # a rug no anchor called for: the middle of the room
                 t = None if self.carpet_plan else _pick(self.rng, self.types_of("rug"))

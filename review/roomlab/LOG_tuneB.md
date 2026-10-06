@@ -104,3 +104,20 @@ chairs). Pool: great halls and halls (whose bare middles make every table "too m
 Shared: `table_rows` takes `joined` (0, the default, is the old behaviour); a board's tables are laid before they are
 seated. Still giving it away: the boards stand as islands mid-carpet (Westwood's U wraps a free hearth), the plain
 shell, few lights.
+
+## Chapel
+
+Westwood: one campaign chapel, Galava's temple (Con07B, 123 tiles: eight pews in the arms of a cross-shaped carpet,
+six columns ringing the nave near its walls, white and blue tapestries, candelabras, statues by the altar, a lectern).
+Pool: the ceremonial family.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.97 | 0.981 | 1 (pews 3/4 in an 81-tile nave) | - |
+| r1 | pews a pair per 15 tiles, 8 at most (Westwood's 8; the user's "way too many benches"); columns ringing the nave near the walls (`columns_by_walls`); statues turned along the altar wall; 6 hangings at most; no plants | 0.956 | 0.974 | 1 | - |
+| r2 | sarcophagi only when the plan draws them (25%; they had stood behind the pews in every nave), one wall tomb at most in a big nave | 0.956 | 0.971 | 1 | - |
+| r3 | the columns fall back to beside the pews when the walls leave no room | 0.957 | 0.967 | 1 | queued |
+
+Still giving it away: the runner is a plain strip where Westwood's carpet is a cross (the shell's floor); a wide nave
+entered from its long side gets a one-sided set of pews (the shell's door); one tapestry colour where Westwood
+alternates two.

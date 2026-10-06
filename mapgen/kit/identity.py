@@ -426,8 +426,10 @@ ROOMS = {
                            "walls, plants in the corners, open floor toward the doors",
                    # 2026-10-05 playtest: 46 pews filled the Greywatch nave wall to wall; a pew per 10 tiles, at most 16
                    core={"altar": (1, 1), "bench": (4, 16), "statue": (2, 4)},
-                   optional={"column": (1.0, 8), "tomb": (0.7, 2), "wall_decor": (1.0, 6), "plant": (0.8, 4),
-                             "storage": (0.4, 1)},
+                   # room lab (tuneB): Westwood's chapel (Con07B) holds 8 pews, 6 columns ringing the nave near its
+                   # walls, tapestries, candelabras, statues by the altar: no plants, no tombs in the nave
+                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1)},
+                   columns_by_walls=True, statues_along=True, decor_max=6,
                    types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
                           "column": r"^CathedralColumn[123]$|^Column[5-8]$", "tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$",
                           "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
@@ -435,7 +437,7 @@ ROOMS = {
                    decor_themes=("blue", "red", "white", "green"),
                    # the pews stand in their rows, never topped up along the walls (Mirefen's nave had five benches lining
                    # its front walls: rules/rooms/chapel.md, open floor toward the door)
-                   top_up=("plant",),
+                   top_up=(),
                    # the game's altars (Westwood stands them outside its rooms, so the room statistics hold none)
                    prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1},
                            "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "LightBench1": 1, "LightBench2": 1}},
@@ -454,10 +456,8 @@ ROOMS = {
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          # a founder's tomb against a side wall where no pair lay behind the pews (a stone nave with
                          # no runner: Harrowby's, 5% covered, 12 of its 20 pieces pews)
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=140),
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=200),
-                         dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=200, missing=True),
+                         dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
                           "crypt chests, tapestries",
                   core={"tomb": (2, 30)},

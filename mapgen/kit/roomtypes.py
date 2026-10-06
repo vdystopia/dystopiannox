@@ -327,7 +327,8 @@ TYPES = {
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
-        caps={"bench": (14, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
+        # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch)
+        caps={"bench": (15, 8), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine"),
         variants={"dark_chapel": dict(must={"altar": 1, "statue": 4}, types_min=6,
                                       caps={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},
