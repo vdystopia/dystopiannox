@@ -1030,21 +1030,27 @@ ROOMS = {
                     purpose="a gallery: paintings hung along both back walls at even spacing, a bench or two in the middle "
                             "facing them, a pair of statues, one curio (an orrery), plants in the corners, open floor to "
                             "walk the walls",
-                    core={"wall_decor": (6, 14), "bench": (1, 4)},
-                    optional={"statue": (0.9, 4), "plant": (1.0, 4), "lab": (0.6, 1)},
+                    # room lab (tuneB): Westwood's gallery (Con07E, 210 tiles) shows its pieces apart along the walls,
+                    # each in its own bay: an orrery, a flame basin on a plinth, crystals among plants, a statue;
+                    # paintings and blue tapestries between them; lanterns; not a bench group in the middle
+                    core={"wall_decor": (6, 14), "bench": (0, 2)},
+                    optional={"statue": (0.9, 2), "plant": (1.0, 4), "lab": (0.9, 1), "basin": (0.8, 2),
+                              "bench": (0.5, 1)},
                     types={"bench": r"^Bench[1-4]$|^CushionedBench\d$", "statue": r"^Statue2[aceg]$", "plant": PLANTS,
-                           "lab": r"^Orrery2$"},
-                    prefer={"wall_decor": {"Painting1": 1, "Painting2": 1}},
+                           "lab": r"^Orrery2$", "basin": r"^DunMirFlameBasinLit$", "wall_decor": r"^Painting[12]$"},
+                    prefer={"wall_decor": {"Painting1": 1, "Painting2": 1}, "basin": {"DunMirFlameBasinLit": 1},
+                            "lab": {"Orrery2": 1}},
+                    decor_max=10,
                     decor_at="any",           # paintings at the ends of each stretch of wall as well as its middle
-                    top_up=("plant",),
-                    compose=[dict(fam="bench", slot="center"),
+                    lift=("DunMir|",), by_walls=("curio", "statues"), statues_along=True,
+                    top_up=(),
+                    compose=[dict(fam="lab", slot="groups", group="curio", n=1, extra=True, min_area=80),
                              dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=80),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, n=4),
+                             dict(fam="basin", slot="wall", at="center", clear=1.0, n=2),
+                             dict(fam="plant", slot="wall", at="corner", clear=0, n=4),
                              dict(fam="wall_decor", slot="decor")],
-                    # statues toward the far corners carry the room's length (validate/checks.py SPREAD_MIN)
-                    fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=120),
-                          dict(fam="lab", slot="group", group="curio", max=1, min_area=140, fixed=True),
-                          dict(fam="bench", slot="center", max=1, min_area=120)]),
+                    fill=[dict(fam="statue", slot="wall", at="center", clear=0.8, max=2, fixed=True, min_area=120),
+                          dict(fam="bench", slot="center", max=1, min_area=160, fixed=True)]),
     # a garden hall (Con07B / War07A, 155-177 tiles: 33-35 potted plants and a pair of columns; Wiz01A, 24 tiles: a
     # fountain with lily pads among barren plants)
     "conservatory": dict(base="hall", grand=True,

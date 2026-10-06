@@ -186,3 +186,19 @@ two or four mana obelisks round a spell book). None holds an altar.
 | r9 | the dark shrine is a shrine by its obelisks (Wiz11A's niches hold no god's statue): no focal or altar required | 0.967 | 0.922 | 1 (bunched) | queued |
 
 Profile focal "any" (the altar in the ring where the room has the floor, else on the wall across from the door).
+
+## Gallery
+
+Westwood (curated, 1): Con07E's gallery (210 tiles, retyped from laboratory): bays along a blue-carpeted walk, each with
+its exhibit (an orrery, a flame basin on a plinth, crystals among plants, a fountain), seven paintings and five blue
+tapestries between them, sixteen lanterns. Its bays are the shell's; the furniture can give the exhibits.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.983 | 0.995 | 5 | - |
+| r1 | exhibits apart instead of a bench group in the middle: the orrery and a statue pair toward the walls (`by_walls`), flame basins, plants; one bench at most; tapestries with the paintings | 0.934 | 0.99 | 6 (reads as nothing: tapestries took the paintings' places) | - |
+| r2 | paintings only, the gallery decorated like the other ceremonial rooms (up to 10 hangings) | 0.923 | 0.989 | 0 | - |
+| r3 | the basins and orrery named (their families are none), plants in any corner, statues on the walls' middles | 0.917 | 0.988 | 1 | queued |
+
+Still giving it away: coverage 0.009 against 0.05 (the room is bare; Westwood's bays make it), four paintings at most
+(the knowledge base's two of a kind to a wall), small pieces lost on a big floor. The weakest of my types.

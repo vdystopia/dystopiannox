@@ -196,7 +196,9 @@ DECORATED = {"living_room", "bedroom", "study", "herbalist", "mess_hall", "dinin
              "library", "shop", "laboratory", "throne_room",
              # the ceremonial rooms' walls carry their character (rules/rooms/great_hall.md, chapel.md, hall.md): with
              # few pieces on the floor, their banners and tapestries are what the eye meets
-             "great_hall", "chapel", "hall"}
+             "great_hall", "chapel", "hall",
+             # a gallery's paintings are the room (room lab, tuneB: the composed few left it reading as nothing)
+             "gallery"}
 # One theme of hangings per room (a room of mixed trophies, tapestries and paintings reads as random): hunting
 # trophies, tapestries of one colour, or paintings. Stone houses lean to tapestries and paintings, wooden ones to
 # trophies. Hangings keep DECOR_GAP units apart along a wall.
