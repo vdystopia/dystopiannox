@@ -32,3 +32,20 @@ The judge: "the wrong backing: against wooden peasant cabins or floating in a gl
 lab sets the shrine by the village's chapel. Then the kit: the shrine stands only against masonry, a castle's walls or a stone house
 (`Theme.house_roles`: chapels, shrine and mausoleum buildings, keeps, manors, the town hall, barracks, towers,
 gatehouses, gaols, observatories), never a cabin.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's 28 outdoor shrines (by their pieces):
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| statue row | 13 of 28 (Con07C, Wiz02B, Con04b, War04b) | statues of one kind in a row of two or three against masonry, torches by them |
+| crypt court | 5 of 28 (Con04b) | two or three sarcophagi in a cluster, a cross or statue among them, a stone pillar either side, torch poles |
+| lone statue | 5 of 28 (War03c, Con05A, War04b, Con07E) | one statue with a torch pole or a flame basin |
+| chapel nave | 3 of 28 (Con07B, War07A) | tapestries, benches, columns, candelabra (a roofless chapel) |
+| milestone altar | 2 of 28 (Con03A, War03a) | Dun Mir milestones in a row with an altar (the kit's `waystone`) |
+
+The kit (`scenes.THEMES["shrine"]`): the row, the pair and the lone statue for six statue kinds, and since round 6 the
+crypt court (Crypt1, Crypt4, Crypt3 70%, a cross or statue, Monument1 either side, torch poles). AUC 0.917 -> 0.874
+(round6). The lab still builds the same small stone shrine or mausoleum each time (the judge: "the same chapel box"):
+a town-wall site for the shrine is the next step.

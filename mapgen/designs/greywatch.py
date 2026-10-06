@@ -385,8 +385,8 @@ prisoners = []
 if jail and len(cells) >= 2:
     along_i = jail.side in ("j0", "j1")
     L_ = jail.w if along_i else jail.h
-    centres = []
-    for c in range(2):
+    centres = list(getattr(jail, "cell_mids", ()))[:2]       # (kit/yards: each cell's middle, as built)
+    for c in range(0 if centres else 2):
         lo, hi = c * L_ // 2, (c + 1) * L_ // 2
         # the cell's middle as drawn (kit/yards Yard.centre: the fence stands half a square toward -j of the squares)
         if along_i: centres.append(square_px(jail.gi + (lo + hi) / 2, jail.centre[1]))

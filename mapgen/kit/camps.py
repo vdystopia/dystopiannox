@@ -808,99 +808,137 @@ POST_SHADOW = {"OgrePostSkull1": ("OgrePostShadowSkull1", (-18, 4)), "OgrePostSk
 OGRE_R = dict(seat=82, sit=50, meat=62, straw=138, store=205, gate=250, back=196)
 
 
-def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
-    """The ogres' village before their lair, laid as Westwood lays Con05B's (an ogre culture's camp, the bandit camp's
-    zones in the ogres' pieces), open toward `toward` (squares: the way in):
-    - the hearth: the fire pit (a real fire), meat and a carcass on the cook's side, crude log benches and stools round
-      it with the way in to it open, bones strewn;
-    - the sleeping row behind it: heaps of straw bedding side by side in an arc, the warlord's bearskin and the take
-      (a chest) at its middle;
-    - the store on one flank: barrels and ogre sacks in one row, a big carcass hung beside it;
-    - the gate at the way in: two wings of tusk palisade (rows of tusks along a screen diagonal, 33 px apart, each with
-      its shadow) either side of the way, skull posts at the gate's ends, a torch pole inside it, the lookout's spot.
-    Scales with its clearing as bandit_camp does. Returns the same record as bandit_camp (fire, seats, lookout, chest,
-    goods, leader, posts, tents, work, zones), for kit/posts.camp_posts."""
+# Westwood's five campaign ogre fires are of three kinds (rules/scenes/ogre_camp.md "Archetypes"):
+# - hut_yard (3 of 5: Con05B x2, Con09b): the fire in the yard before the huts: two meat racks and a carcass at the
+#   cook's side, a log bench or two, the take in sack chests by the fire, the warlord's bearskin bed (OgreBed and
+#   OgreBearskin) at the back, a torch, a tusk mound at the yard's edge;
+# - bone_pit (1 of 5: Con05B's swamp hollow): the fire ringed by a mess of bones (arm and leg bones, skulls: a dozen),
+#   the meat and carcass, two stools, a couple of barrels and a big sack chest, boulders and rock pillars round the rim;
+# - cave_fire (1 of 5: Wiz02C): the fire in a cave, two log benches, a knot of barrels and water barrels, torch poles
+#   round the walls, rock pillars.
+OGRE_ARCH = (("hut_yard", 3), ("bone_pit", 1), ("cave_fire", 1))
+
+
+def ogre_arch(centre, weights=OGRE_ARCH):
+    r = random.Random(zlib.crc32(f"ogre_camp:arch:{centre[0]:.1f},{centre[1]:.1f}".encode()))
+    return r.choices([a for a, _ in weights], [w for _, w in weights])[0]
+
+
+def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4, arch=None):
+    """The ogres' fire before their lair, one of Westwood's three kinds (`arch`, else drawn by `ogre_arch`; OGRE_ARCH),
+    open toward `toward` (squares: the way in). Never a chest: the take is in sack chests (Con05B). Scales with its
+    clearing as bandit_camp does. Returns the same record as bandit_camp (fire, seats, lookout, chest, goods, leader,
+    posts, tents, work, zones), for kit/posts.camp_posts."""
     rng = own_rng(spec, "ogre_camp", centre)
+    arch = arch or ogre_arch(centre)
     fx, fy = square_px(*centre)
     tx, ty = square_px(*toward)
     a_in = math.atan2(ty - fy, tx - fx)
     probe = Camp(spec, rng, land, centre)
     s = max(0.8, min(1.2, _clearing(probe) / 260.0))
-    R = {k: v * (s if k in ("straw", "store", "gate", "back") else 1.0) for k, v in OGRE_R.items()}
     b = a_in + math.pi                                       # the back, away from the way in
     left = 1 if rng.random() < 0.5 else -1
     sc = Camp(spec, rng, land, centre)
     sc.put_px("OgreFirePit", fx, fy)
-    zones = {"hearth": ((fx, fy), 100.0)}
-    # ---- the hearth: meat and carcass on the cook's side, benches and stools round, bones about -------------------
-    cook = b + left * 2.2
-    goods = []
-    # (the judge, 2026-10-06: "one fire layout stamped every time": the meat, the seats and the bones vary camp to camp)
-    meat = [("OgreHutMeat", "OgreHutCarcass", "OgreHutMeat"), ("OgreHutMeat", "OgreHutMeat"), ("OgreHutCarcass",),
-            ("OgreHutMeat",)][rng.randrange(4)]
-    for k, t in enumerate(meat):
-        if sc.put_px(t, *sc.p(R["meat"] + rng.uniform(-4, 10), cook + (k - 1) * 0.42 + rng.uniform(-0.15, 0.15)), gap=26):
-            goods.append(t)
-    seats = []
-    spots_ = [(b, "bench"), (b - left * 1.25, "stool"), (b + left * 0.95, "stool"), (a_in + left * 1.35, "bench"),
-              (b + left * 0.3, "stool"), (b - left * 0.6, "bench")]
-    rng.shuffle(spots_)
-    for a, kind in spots_[:rng.randint(1, 3)]:
-        a += rng.uniform(-0.2, 0.2)
-        if abs(_ang(a - a_in)) < 0.6: continue
+    zones = {"hearth": ((fx, fy), 110.0)}
+    goods, seats, chest = [], [], None
+    cook = b + left * 2.2                                    # the cook's side
+    off_way = lambda a: abs(_ang(a - a_in)) >= 0.5          # the way in to the fire left open
+
+    def ring(t, r, a, gap=24, **extra):
+        return sc.put_px(t, *sc.p(r, a), gap=gap, **extra) if off_way(a) else None
+
+    def seat(kind, r, a):
         t = _seat(-math.sin(a), math.cos(a)) if kind == "bench" else rng.choice(("OgreStool1", "OgreStool2"))
-        if sc.put_px(t, *sc.p(R["seat"], a), gap=30) and len(seats) < 2:
-            seats.append(sc.p(R["sit"], a + 0.35))
-    # bones dropped round the pit, close (Con05B: 40-75 px out), most of them to one side
-    side_b = rng.uniform(-math.pi, math.pi)
-    for k in range(rng.choice((0, 0, 2, 3, 6))):            # (four of Westwood's five fires have none or one)
-        a = side_b + rng.gauss(0, 0.9)
-        if abs(_ang(a - a_in)) < 0.4: continue
-        sc.put_px(rng.choice(BONES), *sc.p(rng.uniform(40, 75), a), gap=14)
-    # ---- the sleeping row: straw bedding side by side in an arc behind the fire --------------------------------------
-    # (Westwood's ogres sleep in their huts: an open camp's bedding is a heap or two of straw, not a row: the lab's
-    # Westwood ogre camps hold no straw by the fire)
-    n = rng.choice((0, 1, 2)) if rng.random() < 0.5 else 0
-    step = 46.0 / R["straw"]
+        if ring(t, r, a, gap=30) and len(seats) < 2: seats.append(sc.p(r - 32, a + 0.35))
+
+    def bones(n, r0, r1, heads):
+        for k in range(n):
+            a = rng.choice(heads) + rng.gauss(0, 0.45)
+            if ring(rng.choice(BONES), rng.uniform(r0, r1), a, gap=12): goods.append("bone")
+
+    def rim(types, n, r0, r1, spread=1.6):                  # rocks round the hollow's back
+        for _ in range(n):
+            for _try in range(6):
+                if ring(rng.choice(types), rng.uniform(r0, r1) * s, b + rng.uniform(-spread, spread), gap=34): break
+
+    # ---- the meat: racks and the carcass by the fire on the cook's side (all but the cave's) ------------------------------
+    if arch != "cave_fire":
+        meat = ["OgreHutMeat", "OgreHutMeat"] + (["OgreHutCarcass"] if rng.random() < (0.5 if arch == "hut_yard" else 0.9) else [])
+        if arch == "bone_pit": meat = ["OgreHutMeat", "OgreHutCarcass"]
+        for k, t in enumerate(meat):
+            if ring(t, rng.uniform(56, 78), cook + (k - (len(meat) - 1) / 2) * 0.5 + rng.uniform(-0.12, 0.12), gap=26):
+                goods.append(t)
     beds_at = []
-    for q in range(n):
-        a = b + (q - (n - 1) / 2) * step * (1 if q % 2 == 0 else 1)
-        if sc.put_px(rng.choice(("OgreStraw1", "OgreStraw1", "OgreStraw2", "OgreStraw3")), *sc.p(R["straw"], a), gap=34):
-            beds_at.append(sc.p(R["straw"] - 42, a + 0.18))
-    zones["sleep"] = (sc.p(R["straw"], b), 40.0 + n * 23)
-    # the take: the warlord's bearskin and his chest behind the bedding's middle
-    chest = None
-    # (Westwood's bearskins lie in the huts; its ogre fires keep no chest: the take is rare out here)
-    for d in ((0.32, -0.32, 0.5, -0.5) if rng.random() < 0.25 else ()):
-        chest = sc.put_px("Chest3", *sc.p(R["back"] + 12, b + d), gap=30, items=loot)
-        if chest: break
-    leader = sc.stand([sc.p(R["back"] - 34, b + d) for d in (0.0, 0.15, -0.15, 0.3, -0.3)], clear=30) or \
-        sc.p(R["back"] - 34, b)
-    # ---- the store on one flank: barrels and sacks in one row, the big carcass beside it -------------------------------
-    st = b - left * 1.65
-    sx, sy = sc.p(R["store"], st)
-    ux, uy = -math.sin(st), math.cos(st)
-    wx, wy = math.cos(st), math.sin(st)
-    stock = [("Barrel", {}), ("OgreSack1", {}), ("Barrel2", {}), ("OgreSack2", {}), ("Barrel", {})][:rng.randint(2, 4)]
-    goods += [t for t, _, _ in sc.row(stock, sx, sy, ux, uy)]
-    if rng.random() < 0.5 and sc.put_px("OgreHutCarcassBig", sx + wx * 46 + ux * 40, sy + wy * 46 + uy * 40, gap=30):
-        goods.append("OgreHutCarcassBig")
-    store_spot = (sx - wx * 46, sy - wy * 46)
-    zones["store"] = ((sx, sy), 100.0)
-    # ---- the gate: two wings of tusk palisade either side of the way in, skull posts at its ends -----------------------
+    if arch == "hut_yard":
+        for kind, a in rng.sample([("bench", b + rng.uniform(-0.3, 0.3)), ("bench", a_in + left * 1.4),
+                                   ("stool", b - left * 1.0)], rng.randint(1, 3)):
+            seat(kind, rng.uniform(90, 100), a)
+        # the take in sack chests by the fire, opposite the meat (Con05B)
+        for k, t in enumerate(("SackChestMedium1", "SackChestSmall2")[:rng.randint(1, 2)]):
+            o = ring(t, rng.uniform(68, 82), cook + math.pi + (k - 0.5) * 0.45, gap=24, **({"items": loot} if k == 0 else {}))
+            if o is not None and k == 0: chest = o
+        # the warlord's bearskin bed at the back (Con09b: OgreBed by OgreBearskin), straw now and then
+        ux, uy = -math.sin(b), math.cos(b)
+        n_bed = rng.randint(1, 2)
+        for r_, d_ in sorted(((r_, d_) for r_ in (190, 170, 150, 130) for d_ in (0, 0.3, -0.3, 0.6, -0.6)),
+                             key=lambda t: (abs(t[1]), -t[0]) if rng.random() < 0.5 else (-t[0], abs(t[1]))):
+            bx, by = sc.p(r_ * s, b + d_)
+            spots_ = [(bx + ux * (k * 2 - 1) * 22 * (n_bed > 1), by + uy * (k * 2 - 1) * 22 * (n_bed > 1)) for k in range(n_bed)]
+            sk = (bx - math.cos(b) * 50, by - math.sin(b) * 50)            # the bearskin before the bed
+            if all(sc.free(x, y, 26, "OgreBed1") for x, y in spots_) and sc.free(*sk, 24, "OgreBearskin3"):
+                for k, (x, y) in enumerate(spots_):
+                    if sc.put_px(("OgreBed1", "OgreBed2")[k], x, y, gap=26): beds_at.append((x, y))
+                sc.put_px(rng.choice(("OgreBearskin3", "OgreBearskin1")), *sk)       # (its spot held above)
+                break
+        if rng.random() < 0.4: rim(("OgreStraw1", "OgreStraw2"), 1, 150, 190, 1.0)
+        bones(rng.choice((0, 1, 2)), 50, 80, [cook])
+        ring(rng.choice(("OgreTorchUnlit", "TorchPole")), rng.uniform(140, 190) * s, b - left * rng.uniform(1.0, 1.6), gap=40)
+        if rng.random() < 0.3: ring("PlantBarren1", rng.uniform(170, 220) * s, b + left * rng.uniform(0.5, 1.5), gap=30)
+    elif arch == "bone_pit":
+        for a in (b - left * 1.0, b + left * 0.5):
+            seat("stool", rng.uniform(73, 90), a + rng.uniform(-0.2, 0.2))
+        # the bone mess: a dozen bones and skulls in two drifts round the pit (Con05B: 66-120 px out)
+        heads = [rng.uniform(-math.pi, math.pi) for _ in range(2)]
+        bones(rng.randint(9, 13), 58, 120, heads)
+        for k in range(2):
+            if ring(rng.choice(("Barrel", "Barrel2")), rng.uniform(85, 117), b + left * (1.6 + 0.35 * k), gap=22):
+                goods.append("Barrel")
+        chest = ring("SackChestLarge2", rng.uniform(110, 125), b + left * 2.4, gap=26, items=loot)
+        rim(("CaveRocksHuge",), rng.randint(2, 3), 120, 235)
+        rim(("CaveRockPillarShort1", "CaveRockPillarShort2", "CaveRockPillarTall1", "CaveRockPillarTall2"),
+            rng.randint(2, 4), 155, 250)
+        rim(("CaveRocksSmall",), 2, 140, 200)
+    else:                                                    # cave_fire
+        for a in (b + rng.uniform(-0.3, 0.3), a_in + left * rng.uniform(1.2, 1.7)):
+            seat("bench", rng.uniform(90, 112), a)
+        ka = b - left * rng.uniform(1.0, 1.5)                # the barrels' knot
+        kx, ky = sc.p(rng.uniform(118, 130), ka)
+        for k, (t, r) in enumerate((("Barrel", 0), ("Barrel", 26), ("Barrel", 26), ("WaterBarrel", 48), ("WaterBarrel", 50))):
+            a = ka + k * 1.9
+            if sc.put_px(t, kx + r * math.cos(a), ky + r * math.sin(a), gap=18): goods.append(t)
+        for k in range(rng.randint(2, 3)):
+            ring("TorchPole", rng.uniform(125, 190) * s, b + (k - 1) * 1.3 + rng.uniform(-0.2, 0.2), gap=50)
+        rim(("CaveRockPillarShort1", "CaveRockPillarShort2"), 2, 130, 150, 2.4)
+    zones["sleep"] = (sc.p(190 * s, b), 70.0)
+    leader = sc.stand([sc.p(r, b + d) for r in (140, 120, 160) for d in (0.0, 0.25, -0.25, 0.5, -0.5)], clear=30) or \
+        sc.p(140, b)
+    store_spot = sc.p(150 * s, b - left * 1.65)
+    zones["store"] = (store_spot, 90.0)
+    # ---- the gate (a hut yard's, now and then): two wings of tusk palisade either side of the way in ---------------------
     tx_, ty_ = -math.sin(a_in), math.cos(a_in)               # across the way in
     dx_, dy_ = (math.sqrt(0.5), math.sqrt(0.5)) if abs(tx_ + ty_) >= abs(tx_ - ty_) else (math.sqrt(0.5), -math.sqrt(0.5))
     if dx_ * tx_ + dy_ * ty_ < 0: dx_, dy_ = -dx_, -dy_      # the palisade's line: the screen diagonal nearest across
-    # the gate where both wings stand whole: off the road the way in comes by, clear of the camp's pieces (the first
-    # Harrowby camp's wings were broken off by the hill road, two tusks on one side)
+    R_gate = OGRE_R["gate"] * s
+
     def wings_at(r):
         cx_, cy_ = sc.p(r, a_in)
         return sum(sc.free(cx_ + dx_ * o, cy_ + dy_ * o, 0, "OgreMoundTusk4")
                    for side in (1, -1) for o in (side * (58 + 33 * k) for k in range(wing)))
-    gr = max((R["gate"], R["gate"] - 20, R["gate"] + 20, R["gate"] - 40, R["gate"] + 40, R["gate"] - 60),
-             key=lambda r: (wings_at(r), -abs(r - R["gate"])))
+    gr = max((R_gate, R_gate - 20, R_gate + 20, R_gate - 40, R_gate + 40, R_gate - 60),
+             key=lambda r: (wings_at(r), -abs(r - R_gate)))
     gx, gy = sc.p(gr, a_in)
-    gate = rng.random() < 0.4                     # (none of the lab's five Westwood ogre fires has a tusk gate by it)
+    gate = arch == "hut_yard" and rng.random() < 0.4
     for side in ((1, -1) if gate else ()):
         for k in range(wing):
             o = side * (58 + 33 * k)
@@ -914,23 +952,26 @@ def ogre_camp(spec, rng, land, centre, toward, loot, sleepers=4, wing=4):
         if sc.put_px(post, x, y):
             shn, sh = POST_SHADOW[post]
             spec.obj_px(shn, x + sh[0], y + sh[1])
+    if arch == "hut_yard" and not gate and rng.random() < 0.5:           # a lone tusk mound at the yard's edge (Con05B)
+        t = rng.choice(tuple(TUSK_SHADOW))
+        x, y = sc.p(rng.uniform(170, 200) * s, a_in + left * rng.uniform(0.6, 1.0))
+        if sc.put_px(t, x, y, gap=30):
+            sh = TUSK_SHADOW[t]
+            spec.obj_px(t.replace("Tusk", "TuskShadow"), x + sh[0], y + sh[1])
     ix, iy = math.cos(a_in), math.sin(a_in)
     lookout = sc.stand([(gx - ix * d + dx_ * o, gy - iy * d + dy_ * o) for d in (46, 60, 34) for o in (-40, 40, -60, 60)],
                        clear=30) or (gx - ix * 50, gy - iy * 50)
-    if gate: sc.put_px("TorchPole", gx - ix * 38 - dx_ * 64 * left, gy - iy * 38 - dy_ * 64 * left, gap=24)
-    else:                                               # a torch pole at the camp's edge by the store, off the fire
-        sc.put_px("TorchPole", *sc.p(R["store"] * 0.85, st + left * 0.5), gap=40)
     zones["gate"] = ((gx, gy), 70.0 + 33 * wing)
-    posts = [p for p in (store_spot, sc.p(R["meat"] + 40, cook + 0.5 * left)) if p]
+    posts = [store_spot, sc.p(110, cook + 0.5 * left)]
 
     def spot(p):
-        ring = [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4)) for r in (20, 36) for k in range(8)]
-        return sc.stand([p] + ring, clear=32) or p
+        ring_ = [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4)) for r in (20, 36) for k in range(8)]
+        return sc.stand([p] + ring_, clear=32) or p
     posts = [spot(p) for p in posts]
-    tents = [spot(p) for p in beds_at[::2]]
+    tents = [spot((x + math.cos(a_in) * 50, y + math.sin(a_in) * 50)) for x, y in beds_at[:1]] or [spot(sc.p(160 * s, b + 0.6))]
     _hold_ground(land, centre, int(round(9 * s)))
     return dict(fire=(fx, fy), seats=seats, lookout=lookout, chest=chest, goods=goods, leader=leader, posts=posts,
-                tents=tents, work=[], zones=zones, scale=s, gate=(gx, gy))
+                tents=tents, work=[], zones=zones, scale=s, gate=(gx, gy), arch=arch)
 
 
 def camp_site(spec, land, near, reach=14, road_clear=4.5, room=7, avoid=()):
@@ -1148,11 +1189,11 @@ def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5, hideout=None)
         score = room * 2 + side + 2 * math.cos(b + math.pi / 2) + 2 * off_in / math.pi
         if best is None or score > best[0]: best = (score, b)
     b = best[1] if best else a_in + math.pi
-    sc.put_px("CampFire", fx, fy)
-    ph = rng.uniform(0, 1)
-    for q in range(6):
-        sc.put_px("CaveRocksSmall", *sc.p(22, ph + q * 2 * math.pi / 6))
-    # the beds side by side in a row behind the fire, all one kind, their feet to it; a second row behind if need be
+    # no fire: Westwood's urchins keep none (42 of 42 dens; the judge, 2026-10-06: "a fire in a glade"); their middle
+    # is the table ringed close by its stools, as in their dens
+    rng.uniform(0, 1)
+    sc.put_px("UrchinTableLarge", fx, fy)
+    # the beds side by side in a row behind the table, all one kind, their feet to it; a second row behind if need be
     x0, y0 = sc.p(92, b)
     bed = S.COT_FOOT[S.axis_of(fx - x0, fy - y0)].replace("Cot", "UrchinBed")
     ux, uy = -math.sin(b), math.cos(b)
@@ -1166,13 +1207,12 @@ def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5, hideout=None)
             o = (j - (n - 1) / 2) * 34
             if sc.put_px(bed, x0 + ux * o, y0 + uy * o, gap=24): laid += 1
     left = 1 if rng.random() < 0.5 else -1
-    # the table on one flank, its stools round it
+    # barrels in a knot on one flank (Westwood's dens: barrels in a corner)
     ta = b + left * 1.45
     tbx, tby = sc.p(100, ta)
-    if sc.put_px(rng.choice(("UrchinTableLarge", "UrchinTableSmall")), tbx, tby, gap=30):
-        for q in range(rng.randint(3, 4)):
-            a = ta + math.pi / 2 + q * 2 * math.pi / 4 + rng.uniform(-0.15, 0.15)
-            sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), tbx + 26 * math.cos(a), tby + 26 * math.sin(a))
+    for q in range(rng.randint(2, 4)):
+        a = ta + q * 2.1 + rng.uniform(-0.2, 0.2)
+        sc.put_px("Barrel", tbx + (0 if q == 0 else 25) * math.cos(a), tby + (0 if q == 0 else 25) * math.sin(a), gap=20)
     # the pickings on the other flank: crates side by side, sacks, the hoard's chest before them
     pa = b - left * 1.45
     gx, gy = sc.p(118, pa)
@@ -1192,12 +1232,12 @@ def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5, hideout=None)
         if chest: break
     leader = (sc.stand([sc.p(r, pa + d * left) for r in (62, 74, 86) for d in (0.5, 0.75, 0.3, 1.0)], clear=30) or
               (sc.p(62, pa + 0.5 * left) if chest else sc.p(60, b)))
-    # stools round the fire, the way in to it left open
+    # stools close round the table (Westwood's: 29 px), the way in to it left open
     seats = []
     for a in (b + 0.9, b - 0.9, b + math.pi + 0.7, b + math.pi - 0.7):
         if abs(_ang(a - a_in)) < 0.35: continue
-        if sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), *sc.p(54, a), gap=22):
-            seats.append(sc.p(34, a))
+        if sc.put_px(rng.choice(("UrchinStool1", "UrchinStool2")), *sc.p(30, a), gap=18):
+            seats.append(sc.p(52, a))
     # the lookout toward the way in
     lookout = None
     for r in (170, 145, 120):

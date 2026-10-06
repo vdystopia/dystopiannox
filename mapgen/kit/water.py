@@ -735,9 +735,16 @@ class Waterworks:
             fluid = WATER_MATERIALS | LAVA_MATERIALS
             shore = {c for c in tiles if any((c[0] + a, c[1] + b) in self.spec.floor and self.spec.floor[(c[0] + a, c[1] + b)] not in fluid
                                              for a in range(-4, 5) for b in range(-4, 5) if (a + b) % 2 == 0 and abs(a) + abs(b) <= 4)}
+            # the reeds in a few clumps along the bank, not strewn evenly over the shallows (the judge, 2026-10-06:
+            # "cattails strewn evenly over the water"; Westwood's stand in knots at the water's edge)
+            shore_l = sorted(shore)
+            heads = self.rng.sample(shore_l, min(len(shore_l), max(1, min(4, len(shore_l) // 45)))) if shore_l else []
+            clump = [c for c in shore_l if any(abs(c[0] - h[0]) + abs(c[1] - h[1]) <= 3 for h in heads)]
             for c in self.rng.sample(tiles, min(n, len(tiles))):
                 t = self.rng.choices(names, weights)[0]
-                if REEDS.search(t) and c not in shore: continue
+                if REEDS.search(t):
+                    if not clump: continue
+                    c = self.rng.choice(clump)
                 cx, cy = tile_centre_xy(*c)
                 self.spec.obj_px(t, (cx + self.rng.uniform(-0.4, 0.4)) * CELL, (cy + self.rng.uniform(-0.4, 0.4)) * CELL)
             if b.family != "lava":
