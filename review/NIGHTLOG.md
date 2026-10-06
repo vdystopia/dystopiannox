@@ -186,3 +186,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   (Con02a's barman is a Shopkeeper object). Its merge with master conflicts in 7 furnish.py and 2 identity.py hunks, so the
   merge was aborted and an agent is merging master into night-tuneB, resolving both sides and testing a sample of every
   track's types before it comes to master. B's sheets wait for the lab-fairness fixes before judging.
+- 01:13 Lab fairness merged (night-labfair): renders without creatures (both kinds), black surroundings with only the
+  room's own walls, one scale per sheet with each generated room paired to a Westwood room of similar size and culture,
+  door counts from Westwood's rooms, Westwood pictures rotated across sheets, and judges read review/roomlab/judging/
+  and review/scenelab/judging/ (Westwood descriptions without our generator's rules). Found on the way: scale was a tell
+  (ours always drawn larger), and culture was (the lab built no Dun Mir bedrooms). All blind results before this point
+  were under less fair renders. From now on judges get the new protocol.
