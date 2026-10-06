@@ -548,6 +548,11 @@ ROOMS = {
                                 # hangings either side of the hearth: two at least, the walls carry an open hall
                                 # (rules/rooms/great_hall.md; Harrowby's moot hall had one)
                                 dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
+                       # or the boards in parallel on a great carpet, the hearth on its wall alone (a smaller hall's way)
+                       compose_alts=([dict(fam="fireplace", slot="wall", at="center", clear=2.6),
+                                      dict(fam="table", slot="table_rows", seat="bench", joined=3),
+                                      dict(fam="carpet", slot="carpet", where="under", margin=2.0, chance=1.0),
+                                      dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],),
                        fill=[# a bench in each front corner, where those who wait sit (Harrowby playtest, HB-2: "a
                              # little bit too empty. It needs some more objects and fill along the southeast wall in the
                              # south corner")
