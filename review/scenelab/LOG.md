@@ -248,3 +248,44 @@ by the store even with a kept square, r1-square): left for the next round.
 | jail | 11 | 0.98 | - | - | 0/10  | 0 | 0.50 of the pieces are bed (more than Westwood's); 1 of its pieces on a path or road |
 
 Types below the sore points have their baseline and this run only (no tuning rounds yet). "Missing": clearings where the recipe could not lay the scene: the market stall's store and inn are too big for the lab's clearings (0 of 10 laid); wells and catalogue themes need a town's context the lab gives only partly.
+
+## Round 4 (night-scenes4, 2026-10-06)
+
+The independent judge on round 3's last sheets: graveyard r8-own 10/10 (5.6 / 7.4), garden r6-town 10/10 (5.4 / 7.8),
+pond_dock r4-shore 9/9 (5.6 / 7.8): "each scene is generated as an isolated stamp; Westwood's are built into their
+surroundings (walls, roads, houses, other scenes) and vary".
+
+### bandit_camp: the hideout (mapgen/kit/camps.py `hideout_camp`, `rock_pocket`)
+
+Westwood's camp evidence re-read: 10 of its 20 camps are pockets of CaveWall2 on DirtDark2 (Wiz03a, Wiz03b, Wiz03c,
+War03a), every piece against the rock (wall torches 1-16 px from the wall's line, rocks 5-25, barrels 13-46, cots
+20-48, the fire 50-146).
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged (all ten in forest glades) | 0.959 | 0 |
+| r1-hideout | the lab: five of ten camps in a rock pocket (CaveWall2 on DirtDark2, one mouth on a spur off a passage between the rows); the kit: `bandit_camp` becomes `hideout_camp` where its ground is a pocket of the rock or a ruin's walls: cots against the back rock with a wall torch, barrels and crates against a flank, big rocks and pillars where the rock juts, a fire in 70%, a table now and then, the chest by the beds | 0.973 | 2 (lone cots) |
+| r2-pairs | cots two together along the rock (never alone: the checker's bedroll rule), the groups apart | 0.879 | 1 |
+| r3-knots | two to four cots; barrels two against the rock and the rest before them; two or three rock places; the hideout's band smaller (no one at the fire) | 0.938 | 2 |
+| r4-groups | a cot group laid whole or not at all, 58-66 px apart and never past 74; a table 20% | 0.944 | 0 |
+| r5-small | smaller pockets (4-5.5 squares: Westwood's), the store's fallback flank | 0.967 | 0 |
+
+The hideouts' wall share 0.5-1.0 (Westwood's 0.50; the open-air camps 0.03-0.16). The AUC stays ~0.93-0.97 on the
+open-air half (a fire in every one, 11-14 kinds against 9). Queued: r5-small.
+
+### graveyard: on its street (mapgen/kit/yards.py `_graveyard`, `gate_outside`; the lab `by_road`)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged | 0.678 | 0 |
+| r1-woven | the yard by the hamlet's road (8.5 squares in, the gate toward it), a cobbled road in a third of the hamlets, the gate's walk to the road; graves in families of one to three, gaps between families; weeds by a quarter of the stones; a newer grave's dug earth two squares long; the digger at work: the open grave two squares, its heap, spade, bucket, coffin 60%, pick, torch, and the gravedigger standing there; crypts one to three cells of 2-4 squares | 0.792 | 0 |
+| r2-walks | the gate's square fixed (the walk had started inside the fence) | 0.873 | 0 |
+| r3-paved | the walk through the yard paved (RoughCobble, War03c): bare earth never showed in the pictures; big yards' graves closer | 0.789 | 0 |
+| r4-clear | the graves 1.5 squares off the walk (a stone had stood on it) | 0.849 | 0 |
+| r5-small | a small yard (under 12-13 squares) keeps one 3 x 3 crypt, its walk 1.1 squares clear, no heap and the coffin 25% (Harrowby's small yard had held two graves, exterior.graveyard; Starwell's 2 x 2 crypt cell had its sarcophagus in the doorway, doorways.blocked) | 0.782 | 0 |
+
+The AUC rose from the ref's 0.68: the digger's corner (tool share 0.08 against Westwood's 0: the user asked for it,
+SW-9), its pieces close together (closest gaps 52 px against 89). By eye the yards now stand on their streets with a
+paved walk, crypts of several builds and a man at work. Queued: r5-small. Thornwick, Greywatch, Ambermere,
+Starwell, Harrowby: 0 errors; Harrowby's and Starwell's warnings back to the night's start once the small yard was
+lightened.

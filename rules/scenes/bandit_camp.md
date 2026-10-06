@@ -88,3 +88,32 @@ camp.
 An open forest glade with empty grass in the middle; more people (the posts) and a few more kinds of thing than
 Westwood's sparse hideouts. Westwood's camp evidence mixes cave hideouts without fires and town fire rings, so the
 classifier (AUC ~0.98) separates the kit's composed camp from that mix even where the eye scores it 6.0 against 6.8.
+
+## Round 4 (2026-10-06): the hideout
+
+Half of Westwood's camp evidence is a hideout in the rock (Wiz03a x3, Wiz03b x4, Wiz03c, War03a x2): a pocket of
+CaveWall2 on DirtDark2 off a cave's passage, every piece against the rock. Measured from the wall's line: wall torches
+(Torch) 1-16 px, big rocks and pillars 5-25, barrels 13-46, crates 15-44, cots 20-48, the fire 50-146.
+
+- **Kit**: `camps.hideout_camp`; `bandit_camp` turns into it by itself where its ground is a pocket of the rock or a
+  ruin's walls (`rock_pocket`: 11 of 16 rays meet a cave's or a ruin's wall within 330 px; `hideout=True/False`
+  forces it). Its own generator.
+- **Beds**: two to four cots (sleepers less one or two) in groups of two (three with an odd one) against the back rock,
+  heads to it, 58-66 px apart (never more than 74: the checker's bedroll rule), a group laid whole or not at all, the
+  next group four to seven rays round; a wall torch beyond each group.
+- **Store**: two barrels against the rock on a flank, a third (and fourth) before them in a knot; a water barrel 25%,
+  a steel one 20%; a crate or two of one kind round the rock beside them.
+- **Rock**: two or three places where the rock juts nearest, a huge rock or a boulder (60%) or a pillar, one or two
+  smaller stones fallen beside it.
+- **Hearth**: a fire ringed by five to eight stones (55%), a cold one (15%), none (30%), well off the rock; bones by a
+  fire 30%. A table and two chairs on the other flank (20%). The chest against the rock by the beds. A third wall torch
+  50%; loose stones (Rock5-7) on the floor now and then.
+- **People**: the leader by the chest, one by the beds, the watch inside the mouth (the lab: no one at the fire).
+- **Lab**: five of ten camps in a rock pocket (`labgen` CAVE_R 4-5.5 squares, CaveWall2 on DirtDark2, one mouth on a
+  spur off a passage between the rows).
+
+## What still gives it away (round 4)
+
+The hideouts read as Westwood's (wall share 0.5-1.0 against Westwood's 0.5); the classifier still separates the batch
+(AUC ~0.93-0.97) on the open-air half: a fire in every one (fire share 0.04 against 0.01), 11-14 kinds against 9, the
+diagonal shape.

@@ -75,3 +75,24 @@ faintly on sparse grass.
 - The walk two tiles wide in every yard; the gravedigger at work in 85% of yards; the rows on the grid's lines (Westwood's
   headstones step along the screen diagonals: 0.96), their gaps uneven along a row (2.7-3.9 squares).
 - The graveyard draws from its own generator (map and plot), never the design's.
+
+## Round 4 (2026-10-06, woven into the hamlet)
+
+The independent judge on r8-own (10/10, 5.6 / 7.4): "a perfect rectangle of iron fence alone on open grass, no road to
+the gate; headstones on an even diagonal lattice, no dug plots; the digger's corner at most a lone spade; the same
+two-cell crypt block in two variants". Westwood's graveyards (War03c, Con07B): a paved walk through the graves, weeds
+(PlantBarren) by the stones, the yard on a street.
+
+- **On its street** (the lab: `by_road`, the yard 8.5 squares in from the hamlet's road, the gate toward it): a walk of
+  dark earth from the gate out to the road (`yards.gate_outside`, `Land.connect`).
+- **The walk paved** (RoughCobble, War03c): bare earth did not show on the sparse grass in any picture.
+- **Graves in families**: one to three stones 2.3-2.6 squares apart, then a gap of 3.0-4.0 (2.9-3.8 in a small yard)
+  before the next family; rows start out of step by up to 1.2 squares; 12% of plots unused; weeds by a quarter of the
+  stones; a newer grave's dug earth two squares long before its stone.
+- **The digger at work** (90%): the open grave two squares of dark earth, the heap thrown up beside it, the spade in it,
+  the bucket of tools (90%), the coffin waiting beside the grave (60%), a pick (35%), a torch pole (25%), and the
+  gravedigger standing at it (`Yard.people`: the design clones him; the lab stands Con03A's Kenneth).
+- **Crypts vary**: 70% of yards; one to three cells, each 2-4 squares deep and wide.
+
+Still: Westwood has no digger's corner (tool share 0); the user asked for one (SW-9), so it stays and the classifier
+reads it.

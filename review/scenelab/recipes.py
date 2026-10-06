@@ -20,6 +20,18 @@ def _pop(ctx):
     return ctx["pop"]
 
 
+def _person(ctx, donor, x, y, face, name):
+    """A townsperson cloned in their clothes from a stock map (kit/story.Story.person: donor = (map, script name)),
+    standing at work (action 4), facing `face`."""
+    import os
+    from kit.story import STOCK
+    from kit.npcs import facing
+    xf = dict(DefaultAction=4, Aggressiveness=0.0, Immortal=True)
+    if face: xf["DirectionId"] = facing(face[0] - x, face[1] - y)
+    mp, scr = donor
+    return ctx["m"].clone(os.path.join(STOCK, mp, mp + ".map"), f"{mp}:{scr}", x, y, name=name, xfer=xf)
+
+
 def _keep(ctx, centre, r):
     ctx.setdefault("keep", set()).update({(int(centre[0]) + a, int(centre[1]) + 1 + b) for a in range(-r, r + 1)
                                           for b in range(-r, r + 1) if a * a + b * b <= r * r})
@@ -51,8 +63,9 @@ def _camp_build(kind):
                 camp = camps.bandit_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers, tents=tents,
                                          trade=trade, finds=("MineCrystal01", "MineCrystal03", "CaveRocksSmall"))
                 # the designs' bands: 4-7 people, median 5 (Thornwick, Greywatch, Harrowby, Ambermere, Starwell)
-                posts = camp_posts(m, camp, square_px(*toward), sit=1 + (p.size != "small"), tents=1, watch=1,
-                                   work=2 if trade == "dig" else 0)
+                hide = camp.get("hideout")                  # a hideout's band is smaller (Westwood's: two or three)
+                posts = camp_posts(m, camp, square_px(*toward), sit=0 if hide else 1 + (p.size != "small"), tents=1,
+                                   watch=1, work=2 if trade == "dig" and not hide else 0)
                 kinds = dict(leader="Swordsman", sit="Swordsman", tent="Swordsman", watch="Archer", work="Swordsman")
                 p.notes.update(trade=trade, sleepers=sleepers, tents=tents)
             elif kind == "ogre_camp":
@@ -96,6 +109,12 @@ def _yard_build(ctx):
         Y.build(m, p.rng, land, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
+        out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
+        if out and out in land.squares:
+            got = land.connect(m, out, footprint=frozenset(y.plot), material="DirtDark2")
+            p.notes["walk"] = len(got) if got else 0
+        for k_, (donor, (x, yy), face) in enumerate(getattr(y, "people", ())):   # the yard's people at work (the digger)
+            _person(ctx, donor, x, yy, face, f"Yard{p.k}_{k_}")
 
 
 # ---------------------------------------------------------------------------------------------------- gardens
@@ -309,10 +328,12 @@ def _wolf_build(ctx):
 
 
 RECIPES = {
-    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp")),
+    # half the camps in a pocket of the rock (Westwood's hideouts: 10 of its 20 camps), the kit's own test (rock_pocket)
+    # turns them into hideouts
+    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8)),
     "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp")),
     "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp")),
-    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build),
+    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5),
     "quarry": dict(plan=_yard_plan("quarry"), build=_yard_build),
     "jail": dict(plan=_yard_plan("jail"), build=_yard_build),
     "garden": dict(plan=_garden_plan, build=_garden_build),
