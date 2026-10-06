@@ -170,7 +170,46 @@ not a blind judgement; the blind sheets are queued in `TO_JUDGE.md`.
   irregular runs, with the alchemist's desk on its own and carpets. The recipe's lab is one stamped arrangement round
   a central table.
 
-## Verdict
+## Round 2: clusters, zones, a centrepiece (night-motifs2)
+
+The independent judges' faults with round 1 (bedroom 6/10, storeroom 7/10): pieces floating free (a lone chair, a chair
+facing nothing), chairs not drawn up to tables, heaps mid-floor in the way in, everything on one back wall round a big
+empty carpet, too many kinds, large bare floors. Round 2 composes rooms from **clusters** instead of motifs
+(`COMPOSE = "clusters"` in `kit/motifs.py`; round 1's `compose_room` stays behind `COMPOSE = "motifs"`). Log of every
+round: `LOG_motifs.md`.
+
+- **What is mined.** `rules/motifs.py` now keeps each curated room's raw plan (`rooms[].pieces`: every piece in the room's
+  frame with the wall it stands against, and the room's walls, doors and floor cells). `kit/motifs.py room_clusters`
+  cuts it into Westwood's groups: pieces within 0.9 units of each other, edge to edge, kept together. A group against one
+  wall is a **wall cluster** (its free pieces, a desk's chair or a bed's chest, kept relative to the wall piece they
+  stand by); a heap of small pieces against both walls of a corner a **corner cluster**; a group off the walls a **free
+  cluster**; a hanging its own. A group running round a corner with a big piece in it splits by wall.
+- **Groups, not pieces.** A cluster is placed as one (`_realise`): its lead piece and most of the rest stand, or
+  nothing does. Its seats face its table, desk or hearth whichever way it was turned (`_face_seats`, the kit's
+  chair_facing). No cluster of seats alone (`_cw`). Clusters that can't stand on a wall (a faced piece on a front wall, a
+  kind the room's identity doesn't hold, a capped chest) are filtered before they are tried (`_kinds_ok`).
+- **Scale: zones.** A room is split into as many zones as Westwood's median room of the type fits by floor cells
+  (`_zones`: strips across the long axis, quarters for a big square room, 1.6 units of floor between them; our typical
+  bedroom is one zone, the large ones two or three). Each zone takes the plan of a Westwood room of its own size (its
+  clusters' walls, corners and places), each slot filled with a cluster of the same lead and size from another room.
+- **One centrepiece.** The type's focal cluster first, the richest groups preferred (a bed with its nightstands and
+  chest), on the longest stretch of the back wall across from the main door, at its own place along the wall
+  (`_place_focal`). A kind whose focal no cluster holds (an ore store's cart) gets it alone against a wall.
+- **Density and details.** Top-up on the free parts of the walls, back walls first, a step of floor between groups,
+  leads and kinds already in the room penalised; in rooms well over Westwood's size, a free group; then the gaps
+  dressed with Westwood's one-piece clusters (a chest, a nightstand, a plant; stock in a store packed against the
+  stock), hangings on bare back wall at Westwood's rate per floor, carpets as Westwood's larger rooms lay them.
+- **Stores.** Stock on the back walls while they have room (Westwood's stores use two walls), kinds mixed (no kind of
+  store past 40% of the stock), free heaps only in stores of 60 tiles or more, the way in from every door kept clear
+  4.4 units deep for every engine piece.
+- **Variety.** One kind per category per room (`UNIFY`: one chair, chest, nightstand, candelabra kind), no motif swaps.
+  Floors and walls come from the shells; carpets vary in size and place.
+
+Results (seed 1; the blind sheets are queued in `TO_JUDGE.md`): bedroom c9 AUC 0.825 (round 1: 0.838-0.88), cross
+0.796, 7 hard-rule rooms (all the checker's "sparse" warning); storeroom s5 AUC 0.686 (round 1: 0.844), cross 0.894,
+0 hard-rule rooms (round 1: 7).
+
+## Verdict (round 1)
 
 The hypothesis holds in part. Learned arrangements carry Westwood's heaps, its clusters on the back walls and its bare
 walls, and no two composed rooms share a stamp. The classifier separates them from Westwood less well in four of six

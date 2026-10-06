@@ -1,0 +1,45 @@
+# Motif engine, round 2: log (night-motifs2)
+
+Every round: `py tests/roomlab.py <type> --iter <iter> --engine motifs`, seed 1, n 10. AUC: Westwood against
+generated (0.5 = can't tell); cross: the cross-type arrangement features. Hard: rooms with hard-rule findings
+(review/roomscore.py, the user's rules). Medians of our rooms; Westwood's bedroom medians: cover 0.146, pieces per tile
+0.43, open floor 0.55; storeroom: cover 0.157, pieces per tile 0.38, open 0.46. With ten rooms the AUC moves by about
+0.05-0.1 from noise alone. The look is mine against Westwood's gallery, never a blind judgement (those are queued in
+`TO_JUDGE.md`).
+
+Starting point (iteration `m0`, round 1 re-run here): bedroom AUC 0.881, cross 0.823, 8 hard. The independent judges
+had given round 1 bedroom 6/10 (4.8 / 6.8) and storeroom 7/10 (5.2 / 5.6).
+
+## Bedroom
+
+| Round | What changed | AUC | Cross | Hard | Cover | Per tile | Open | Look |
+|---|---|---|---|---|---|---|---|---|
+| c1 | Clusters: Westwood's groups mined whole and placed as one (`rules/motifs.py` keeps each room's raw plan; `kit/motifs.py room_clusters`, `compose_clusters`); zones; the focal group first | 0.905 | 0.863 | 10 | 0.071 | 0.20 | 0.75 | Groups intact but the rooms near empty: most groups failed the gate (the whole group or nothing) |
+| c2 | Zones measured by floor cells against Westwood's (our typical room is 1.5 Westwood medians, not 2); the richest bed groups first; a group may lose a minor piece (60% of it stands, its lead always) | 0.800 | 0.829 | 9 | 0.084 | 0.24 | 0.69 | Bed with nightstands and chest, desk with its chair; still bare floors |
+| c3 | Clusters that can't stand on a wall filtered before they're tried (faced pieces on front walls, kinds the bedroom doesn't hold, capped chests); a slot falls back to the mirror wall; failed wall parts remembered | 0.868 | 0.845 | 7 | 0.092 | 0.29 | 0.66 | Fuller back walls; candelabras on front walls as Westwood's |
+| c4 | Zones as many as Westwood median rooms fit (quarters for big square rooms); the kind check per wall side | 0.876 | 0.819 | 7 | 0.091 | 0.29 | 0.66 | No change in the typical rooms (too small to split) |
+| c5 | Carpets as Westwood's larger bedrooms lay them (half to two thirds of each side, 0.9 of big rooms) | 0.905 | 0.832 | 7 | 0.097 | 0.31 | 0.66 | The big rooms now read as Westwood's big bedrooms (War07A, Con02a): groups on the back walls round a carpet |
+| c6 | No lone chair anywhere (a seat comes with its table or desk); the bed on the longest stretch of the far back wall, not the farthest point; top-up penalises a lead already in the room | 0.916 | 0.839 | 7 | 0.095 | 0.30 | 0.67 | No floating chairs |
+| c7 | (lab fairness merged: creature-free renders, Westwood's door counts) Gap dressing: Westwood's one-piece clusters in the gaps between groups | 0.869 | 0.796 | 7 | 0.105 | 0.33 | 0.63 | Fuller; bookcases too common |
+| c8 | Dressing without shelves, stores favoured; shelf groups halved in the top-up | 0.853 | 0.792 | 7 | 0.102 | 0.31 | 0.63 | |
+| **c9** | Hangings on bare back wall at Westwood's rate per floor (trophies, tapestries, paintings) | **0.825** | 0.796 | 7 | 0.102 | 0.31 | 0.63 | **Queued.** Closest yet; still sparser than Westwood's small rooms |
+
+Hard-rule rooms in c9: all seven are the checker's "sparse" warning (cover under 11-12%). The bedroom identity
+(`kit/identity.py ROOMS["bedroom"]`) holds only chests as storage, one chest per room (`kit/objects.py room_cap`) and one
+table-or-desk set (HB-3), so Westwood's barrels, crates and spittoons in bedrooms (11 of 28 rooms) can't be added: they
+are strays to the checker (DV3-4, TP1-4). The bedroom's story details are therefore the pelt, the hangings and the
+second nightstand. The classifier's top give-aways in c9 are density (open floor, pieces per tile, cover), then the
+share of the most common kind.
+
+## Storeroom
+
+| Round | What changed | AUC | Cross | Hard | Cover | Per tile | Open | Look |
+|---|---|---|---|---|---|---|---|---|
+| s1 | The bedroom's engine as it stood (c9) | 0.777 | 0.944 | 3 | 0.147 | 0.34 | 0.52 | Single big crates spaced along all four walls; 16 of 25 pieces Barrel in two big rooms; no ore cart |
+| s2 | Top-up penalises a kind already in the room; free heaps allowed in stores of 60+ tiles (Westwood's big Con07B store has them), never in the way in; the kind's focal placed alone when no cluster holds it (the ore store's cart) | 0.657 | 0.952 | 2 | 0.146 | 0.32 | 0.53 | |
+| s3 | Stores mixed: a kind past 40% of the room's stock gives way to the type's least used kind | 0.674 | 0.922 | 0 | 0.151 | 0.32 | 0.51 | No monotony warning |
+| s4 | Dressing packs small stock against the stock already on a wall (heaps grow) | 0.647 | 0.921 | 0 | 0.151 | 0.32 | 0.51 | Little change: the cover is reached before the dressing |
+| **s5** | Stock on the back walls only when they have room (Westwood's stores use 2 walls, ours used 4) | 0.686 | **0.894** | **0** | 0.151 | 0.31 | 0.51 | **Queued.** Within Westwood's own range: its stores are sparse too (a few big crates, a barrel heap) |
+
+Originality: no room is a copy. Bedroom c9's highest similarity to any stock room is 0.44-0.67; the storerooms are all
+one family (storage), which the checker counts as unrecognisable.

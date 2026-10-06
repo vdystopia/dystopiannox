@@ -168,6 +168,9 @@ LEAD_ORDER = ("bed", "hearth", "counter_bar", "counter_shop", "lab", "desk", "ta
 MINOR = {"supply", "chest", "light", "statue", "clutter", "plant", "nightstand"}   # small leads that stand in for each other
 ZONE_FLOOR, ZONE_GAP = 1.0, 1.6     # a zone per Westwood median room of the type (floor), zones 1.6 units apart
 FREE_TOPUP = 1.3                     # rooms this many times Westwood's median floor may take a free group more
+DRESS = {"supply", "chest", "clutter", "statue", "plant", "nightstand", "bench"}   # the details between groups
+DRESS_TRIES = 12
+SUPPLY_SHARE = 0.4                   # no kind of store past this share of a room's stock
 GROUP_PAD = 0.9                      # a step of floor between the groups along a wall
 WALLS_ONLY = {"storeroom", "armoury", "cellar"}    # stores keep their middle as the aisle (no free heaps under 60 tiles)
 DEBUG = os.environ.get("MOTIF_DEBUG") == "1"
@@ -1045,8 +1048,23 @@ class MotifFurnisher(F.Furnisher):
         """[(item, type)] for cluster c's pieces here (run_of(item): the wall run whose variant it takes, or None), or
         None when a piece the cluster stands on (not a seat, a light or a hanging) can't be had."""
         out = []
+        kinds = collections.Counter(OBJ.kind(o["type"]) for o in self.objects
+                                    if OBJ.category(o["type"]) == "supply")
+        tot = sum(kinds.values())
         for x in c["items"]:
-            t = self._fit_type(x["t"], x["cat"], run_of(x), None)
+            t0 = x["t"]
+            if x["cat"] == "supply":
+                # stores mixed as Westwood mixes them: a kind past its share of the room's stock gives way to the
+                # type's least used one (never one kind filling a big room, review/FEEDBACK.md TW-8)
+                k0 = OBJ.kind(t0)
+                if kinds[k0] >= max(3, SUPPLY_SHARE * (tot + 1)):
+                    alts = sorted(((kinds[OBJ.kind(t2)], n, t2) for t2, n in type_kinds(self.rtype).get("supply", {}).items()
+                                   if OBJ.kind(t2) != k0 and self.ok_type(t2) and self.belongs(t2)),
+                                  key=lambda a: (a[0], -a[1]))
+                    if alts: t0 = alts[0][2]
+                kinds[OBJ.kind(t0)] += 1
+                tot += 1
+            t = self._fit_type(t0, x["cat"], run_of(x), None)
             if not t:
                 if x["blocking"] and x["cat"] != "light" and F._family_of(x["t"]) not in SEATS:
                     if DEBUG: self.log.append(f"  notype {x['t']} capped={self._capped(x['t'])} run={run_of(x) and run_of(x)['side']}")
@@ -1417,13 +1435,36 @@ class MotifFurnisher(F.Furnisher):
             self._place_focal(zones, None)
         self.repair_clusters(zones)
         self.top_up_clusters(zones)
+        if fo.get("types") and fo.get("where") not in ("back",) and                 not any(re.search(fo["types"], o["type"]) for o in self.objects):
+            self._focal_alone(fo["types"])
+
+    def _focal_alone(self, rx):
+        """A kind's focal piece that no Westwood cluster of the type holds (an ore store's cart): against a wall, the
+        back walls first, at a spot along it where it fits."""
+        types = sorted(t for t in self.things if re.search(rx, t) and self.ok_type(t))
+        if not types: return None
+        t = self.rng.choice(types)
+        sts = sorted(self.stretches, key=lambda st: (not st["back"], -st["L"]))
+        for st in sts:
+            run = st["run"]
+            hu, hv = self.half(t)
+            ha, hp = (hv, hu) if run["line"] == "/" else (hu, hv)
+            for f in (0.5, 0.3, 0.7, 0.15, 0.85):
+                a = st["s0"] + f * st["L"]
+                perp = run["coord"] + run["sign"] * (0.4 + hp)
+                u, v = (perp, a) if run["line"] == "/" else (a, perp)
+                o = self._put(t, u, v, True, nudges=((0, 0), (0.2, 0), (0, 0.2), (-0.2, 0), (0, -0.2)))
+                if o:
+                    self.log.append(f"focal {t} on {st['name']} (no cluster holds it)")
+                    return o
+        return None
 
     def top_up_clusters(self, zones):
         """Up to this room's draw from Westwood's cover for the type: more clusters on the free parts of the walls
         (back walls first, each in its zone, with a step of floor between groups) and in empty corners; in a room well
         over Westwood's size, a free group of the type's (a table and its chairs) in one of its zones."""
         failed = set()
-        big = self.floor >= FREE_TOPUP * ww_floor(self.rtype) and self.rtype not in WALLS_ONLY
+        big = self.floor >= FREE_TOPUP * ww_floor(self.rtype) and (self.rtype not in WALLS_ONLY or self.tiles >= 60)
         free_n = 0
         for _ in range(TOP_UP_TRIES):
             if self.coverage() >= self.cover_goal: break
@@ -1445,6 +1486,8 @@ class MotifFurnisher(F.Furnisher):
                     for p in self.free_parts(st, pad=GROUP_PAD, least=1.6):
                         key = (p["run"]["line"], p["run"]["coord"], round(p["s0"], 1), round(p["s1"], 1))
                         if key not in failed: parts.append((p, st, key))
+            if self.rtype in WALLS_ONLY and any(p[0]["back"] for p in parts):
+                parts = [p for p in parts if p[0]["back"]]       # Westwood's stores: stock on two walls, the front bare
             corners = [c for z in zones for c in z["corners"].values()
                        if not self._corner_busy(c)]
             if not parts and not corners:
@@ -1457,7 +1500,12 @@ class MotifFurnisher(F.Furnisher):
                 parts.sort(key=lambda ps: (not ps[0]["back"], -ps[0]["L"] * self.rng.uniform(0.6, 1.4)))
                 part, st, key = parts[0]
                 have = collections.Counter(OBJ.category(o["type"]) for o in self.objects)
-                cands = [(w * (1 + c["n_block"]) * 0.3 ** have[self._lead_of(c)], c)
+                kinds = collections.Counter(OBJ.kind(o["type"]) for o in self.objects)
+                lead_kind = lambda c: OBJ.kind(next((x["t"] for x in c["items"] if x["cat"] == self._lead_of(c)),
+                                                    c["items"][0]["t"]))
+                cands = [(w * (1 + c["n_block"]) * 0.3 ** have[self._lead_of(c)] * 0.6 ** kinds[lead_kind(c)] /
+                          0.3 ** (have[self._lead_of(c)] if self._lead_of(c) in ("supply",) else 0) *
+                          (0.5 if self._lead_of(c) == "shelf" else 1.0), c)
                          for w, c in self._slot_cands(None, None, "wall", back=part["back"], max_span=part["L"] - 0.2,
                                                       run=part["run"])
                          if c["n_block"] >= 1]
@@ -1481,6 +1529,67 @@ class MotifFurnisher(F.Furnisher):
                 if w_ok and self._try_corner(c, corner, mir): break
                 cands = [(w, x) for w, x in cands if x is not c]
             corner["busy"] = True
+        self.dress_gaps(zones)
+
+    def dress_gaps(self, zones):
+        """The lived-in details, at Westwood's rates: while the room is still under its cover, the small pieces Westwood's
+        rooms of the type stand on their own in the gaps between the groups (a water barrel, an odd crate, a spittoon, a
+        chest; a statue in a hall), from its own one-piece clusters, closer in than the groups keep (a step of floor)."""
+        failed = set()
+        stores = self.rtype in WALLS_ONLY          # a store heaps its stock: the pieces packed against each other
+        pad = 0.05 if stores else 0.35
+        for _ in range(DRESS_TRIES * (2 if stores else 1)):
+            if self.coverage() >= self.cover_goal: break
+            parts = [p for z in zones for st in z["stretches"] for p in self.free_parts(st, pad=pad, least=1.1)]
+            parts = [p for p in parts if (p["run"]["coord"], round(p["s0"], 1)) not in failed]
+            if not parts: break
+            if stores:      # beside the stock already there (a heap grows), not out on a bare wall
+                parts = [p for p in parts if p["back"]] or parts
+                near = [p for p in parts if self._beside_stock(p)]
+                parts = near or parts
+            part = max(parts, key=lambda p: (p["back"], p["L"] * self.rng.uniform(0.5, 1.5)))
+            have = collections.Counter(OBJ.kind(o["type"]) for o in self.objects)
+            cands = [(w * 0.4 ** sum(have[OBJ.kind(x["t"])] for x in c["items"]) *
+                      (2.0 if self._lead_of(c) in ("supply", "chest") else 1.0), c)
+                     for w, c in self._slot_cands(None, None, "wall", back=part["back"], max_span=part["L"] - 0.1,
+                                                  run=part["run"])
+                     if c["n_block"] == 1 and len(c["items"]) <= 2 and self._lead_of(c) in DRESS]
+            got = None
+            for _ in range(5):
+                c = self._choose(cands)
+                if not c: break
+                got = self._try_wall(c, [part])
+                if got: break
+                cands = [(w, x) for w, x in cands if x is not c]
+            if not got: failed.add((part["run"]["coord"], round(part["s0"], 1)))
+        # hangings on bare back wall, as many as Westwood's rooms of the type hang for their floor (a trophy, a
+        # tapestry, a painting over no piece)
+        rate = sum(1 for rid, w in self.pool.items() if w >= 1 for c in clusters_of(rid) if c["kind"] == "hang")
+        rooms = sum(1 for rid, w in self.pool.items() if w >= 1) or 1
+        want = rate / rooms * self.floor / ww_floor(self.rtype)
+        n = int(want) + (self.rng.random() < want - int(want))
+        n -= sum(1 for o in self.objects if OBJ.category(o["type"]) == "hanging")
+        for _ in range(max(0, n)):
+            parts = [p for z in zones for st in z["stretches"] if st["back"]
+                     for p in self.free_parts(st, pad=0.3, least=2.2)]
+            if not parts: break
+            part = self.rng.choice(parts)
+            cands = self._slot_cands(None, None, "hang", back=True, max_span=part["L"], run=part["run"])
+            for _ in range(4):
+                c = self._choose(cands)
+                if not c or self._try_wall(c, [part]): break
+                cands = [(w, x) for w, x in cands if x is not c]
+
+    def _beside_stock(self, part):
+        """Whether a free part of a wall starts or ends at a piece of stock standing against that wall."""
+        r = part["run"]
+        for a in (part["s0"], part["s1"]):
+            for rec in self.g.placed:
+                if not rec[4] or rec[5] == "wall": continue
+                along, perp = (rec[1], rec[0]) if r["line"] == "/" else (rec[0], rec[1])
+                ha, hp = (rec[3], rec[2]) if r["line"] == "/" else (rec[2], rec[3])
+                if abs(perp - r["coord"]) - hp < 1.0 and abs(along - a) < ha + 0.5: return True
+        return False
 
     def _why(self, p):
         t, u, v = p["t"], p["u"], p["v"]

@@ -38,3 +38,14 @@ overwrite or set them aside.
 | infirmary | j3 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\infirmary\j3\blind | 3-9 cots (was up to 10 stamped), one pair of potion shelves and two bookcases, not a lined wall | |
 | study | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\study\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |
 | solar | r4 | C:\GOG Games\Nox\dystopiannox-wt\tuneA\review\out\roomlab\solar\r4\blind | re-rendered after the renderer fix (queued earlier as r3) | |
+
+# Motif engine, round 2 (night-motifs2): clusters, zones, a centrepiece
+
+Built with `py tests/roomlab.py <type> --iter <iter> --engine motifs` (seed 1, n 10) after merging the lab-fairness
+fixes (master 474c927: creature-free renders, paired sizes, Westwood's door counts). The builder has not judged them.
+After judging, write `blind/judge.json` and run `py review/roomlab/blind.py score <type> <iter>` from this worktree.
+
+| Type | Iteration | Blind folder | What changed since the judged motif round (bedroom 6/10, storeroom 7/10) | Result |
+|---|---|---|---|---|
+| bedroom | c9 | C:\GOG Games\Nox\dystopiannox-wt\motifs2\review\out\roomlab\bedroom\c9\blind | Westwood's groups placed whole (bed with nightstands and chest, desk with its chair drawn up); the bed group on the back wall across from the door; no lone chairs; zones of Westwood's room size in large rooms; carpets as Westwood's larger bedrooms lay them; hangings at Westwood's rate | |
+| storeroom | s5 | C:\GOG Games\Nox\dystopiannox-wt\motifs2\review\out\roomlab\storeroom\s5\blind | stock on the back walls in heaps, front walls mostly bare, the way in kept clear 4 units deep, kinds of store mixed (no kind past 40%), free heaps only in rooms of 60+ tiles, the ore store's cart | |
