@@ -145,3 +145,6 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   scene has its own random generator, so tuning one can't shift a design. Graveyard is the closest scene (judge 8/10).
   Round 4 started (night-scenes4): a cave-hideout camp (Westwood's camps are mostly hideouts), a better lab setting,
   then the 13 untuned scene types. Three new scene sheets are with a judge.
+- 00:29 Scene round 3's last sheets, judged independently: graveyard r8 10/10 (5.6/7.4), garden r6 10/10 (5.4/7.8,
+  up from 4.8), dock r4 9/9 (5.6/7.8, up from 4.6). Scores are rising and all are still told apart. Diagnosis: each
+  scene is an isolated stamp, where Westwood's are woven into walls, roads, houses and each other. Passed to round 4.
