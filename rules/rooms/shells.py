@@ -18,6 +18,15 @@ room:
   through them (outside, a room, a passage: a corridor);
 - building: the rooms joined to it by shared walls and doors, and its share of their floor.
 
+Purposes (2026-10-06): for each second-floor piece and carpet, what stands on and beside it, its distance from the
+doors, its share on the edge ring and in a wing (zone_measure), read as a purpose (zone_of: a plinth, the focal piece's
+zone, under a group, an aisle, a wing, a border, by a door, or loose); the main floors' families by type; how often a
+second floor lies at a tomb, a hearth, a throne, a bar (focal_rate) and in what (focal_pairs).
+
+Only Westwood's curated rooms (rules/rooms/westwood.json's index, curated.json's verdicts applied; the void-bounded
+throne halls included). The room-shape numbers kit/shells.py draws shapes and partitions from stay in
+rules/rooms/shells_shape.json, as measured on 2026-10-05 (see its doc).
+
 Writes rules/rooms/shells.json and prints the table. Run: py rules/rooms/shells.py
 A room lab iteration's shells against Westwood's (and a shell AUC): py rules/rooms/shells.py --lab bedroom,crypt <iter>
 """
@@ -178,6 +187,26 @@ def measure(m, r, comp_of, rooms_all):
                                   margin=min(depth[k] for k in p) - 1,
                                   material=collections.Counter(mats[k] for k in p).most_common(1)[0][0]))
     out["floor"] = fl
+    # what each second-floor piece and each carpet lies under or beside (the purpose measures, `zone_of`)
+    objs = []
+    for o in r.get("objects") or ():
+        if m.is_door(o) or "MONSTER" in o["cls"] or "PLAYER" in o["cls"]: continue
+        fam = obj_family(o["type"])
+        if not fam: continue
+        u, v = (o["x"] + o["y"]) / 23.0 - 1, (o["x"] - o["y"]) / 23.0
+        objs.append((fam, o["type"], (int(u // 2), int(v // 2)), (u / 2, v / 2)))
+    gaps = []
+    for g in m.door_gaps:
+        if any((g[0] + a, g[1] + b) in cells for a, b in N4):
+            gu, gv = uv(g); gaps.append((gu / 2, gv / 2))
+    core = max_rect(units)
+    core = {(i, j) for i in range(core[0], core[1] + 1) for j in range(core[2], core[3] + 1)}
+    fl["zones"] = []
+    sec_units = {k for k, mm in mats.items() if second[0] and mm == second[0]}
+    for what, us in (("second", sec_units), ("carpet", rugs)):
+        for p in pieces(us):
+            fl["zones"].append(dict(what=what, **zone_measure(set(p), units, ring, core, objs, gaps)))
+    out["objects"] = [(f, t, list(k)) for f, t, k, _ in objs]
     # walls round it
     wm = collections.Counter()
     for c in cells:
@@ -218,6 +247,55 @@ def measure(m, r, comp_of, rooms_all):
                           along=round(min(a, b) / max(1, a + b), 2), run=a + b, gap=list(g)))
     out["doors"] = doors
     return out
+
+
+# object families for the purpose measures: what a second floor or a carpet lies under
+FAMILIES = (("tomb", r"^Crypt\d|Coffin|Sarcophag|Tombstone|LOTDTomb"), ("throne", r"Throne"),
+            ("altar", r"Altar|LichGodStatue"), ("bed", r"^Bed\d|^Cot\d|WoodBed|BedCot"), ("bar", r"^Bar(Piece|Corner|Hinged)"),
+            ("seat", r"Chair|Bench|Stool|Pew"), ("table", r"Table|Desk"), ("hearth", r"Fireplace|FirePit|Stove|Cauldron"),
+            ("statue", r"Statue|Obelisk|Column|Pillar|Crystal|Gargoyle"),
+            ("light", r"Candle|Brazier|Torch|Lamp|Flame|Basin|Lantern"),
+            ("storage", r"Chest|Barrel|Crate|Sack|Bookcase|Shelf|Rack|Cabinet|Wardrobe|Cupboard|Pot"))
+FOCAL = ("tomb", "throne", "altar", "bed", "bar", "hearth")
+_FAM_RE = [(f, re.compile(p, re.I)) for f, p in FAMILIES]
+
+
+def obj_family(t):
+    return next((f for f, rx in _FAM_RE if rx.search(t)), None)
+
+
+def zone_measure(p, units, ring, core, objs, gaps):
+    """Where a second-floor piece or a carpet lies: its size, its box fill and length against breadth, its share on the
+    edge ring and outside the room's largest rectangle (a wing or an alcove), the object families standing on it and
+    within a unit of it, and its distance in units from the nearest door."""
+    di = max(i for i, _ in p) - min(i for i, _ in p) + 1; dj = max(j for _, j in p) - min(j for _, j in p) + 1
+    on = collections.Counter(f for f, _, k, _ in objs if k in p)
+    near = collections.Counter(f for f, _, k, _ in objs
+                               if k not in p and any(abs(k[0] - a) <= 1 and abs(k[1] - b) <= 1 for a, b in p))
+    door = min((max(abs(g[0] - (i + 0.5)), abs(g[1] - (j + 0.5))) for g in gaps for i, j in p), default=99)
+    return dict(units=len(p), share=round(len(p) / len(units), 3), dims=sorted((di, dj)), fill=round(len(p) / (di * dj), 2),
+                ring=round(sum(1 for k in p if k in ring) / len(p), 2),
+                wing=round(sum(1 for k in p if k not in core) / len(p), 2), on=dict(on), near=dict(near),
+                door=round(door, 1))
+
+
+def zone_of(z):
+    """A zone's purpose, as read from where it lies: `pad` (a plinth: a small pad with a showpiece on it, a tomb's, an
+    obelisk's), `focal` (round the room's focal piece: a throne's dais, an altar's, a bed's end), `group` (under a group:
+    seats, tables), `aisle` (a runner from a door: long and narrow), `wing` (filling a wing or an alcove), `border` (along
+    the walls), `door` (worn by a door), else `loose` (no relation the measures see)."""
+    on, near = z["on"], z["near"]
+    nfur = sum(v for k, v in on.items() if k not in ("light",))
+    if any(k in on or k in near for k in FOCAL) and z["units"] <= 40: kind = "focal"
+    elif z["units"] <= 4 and nfur: kind = "pad"
+    elif sum(on.get(k, 0) for k in ("seat", "table", "bed")) >= 2: kind = "group"
+    elif z["dims"][1] >= 2.5 * z["dims"][0] and z["dims"][1] >= 4 and z["door"] <= 2.5: kind = "aisle"
+    elif z["wing"] >= 0.6: kind = "wing"
+    elif z["ring"] >= 0.8 and z["dims"][1] >= 4: kind = "border"
+    elif z["door"] <= 2.5: kind = "door"
+    elif nfur: kind = "pad" if z["units"] <= 6 else "group"
+    else: kind = "loose"
+    return kind
 
 
 def depth_of(units):
@@ -272,6 +350,17 @@ def one(name):
         for k in near[1:]: parent[find(k)] = find(near[0])
     btiles = collections.Counter(); brooms = collections.Counter()
     for k, r in built.items(): btiles[find(k)] += r["tiles"]; brooms[find(k)] += 1
+    # the index's rooms the walled flood misses (westwood.py HAND: a throne hall ending in the void), void-bounded
+    def key(r):
+        xs = [c[0] for c in r["cells"]]; ys = [c[1] for c in r["cells"]]
+        return r["tiles"], (round(sum(xs) / len(xs)), round(sum(ys) / len(ys)))
+    have = {key(r) for r in built.values()}
+    want = {(e["tiles"], tuple(e["centre"])) for e in _index() if e["map"] == name} - have
+    if want:
+        for r in C.find_rooms(m, max_tiles=1500, void_bounds=True):
+            if key(r) in want:
+                built[id(r)] = r; parent[id(r)] = id(r); btiles[id(r)] += r["tiles"]; brooms[id(r)] += 1
+                for c in r["cells"]: comp_of.setdefault(c, id(r))
     out = []
     for k, r in built.items():
         res = measure(m, r, comp_of, built)
@@ -289,6 +378,20 @@ def one(name):
     return out
 
 
+_IDX = None
+
+
+def _index():
+    """Westwood's curated room index (rules/rooms/westwood.json, curated.json's verdicts applied)."""
+    global _IDX
+    if _IDX is None:
+        sys.path.insert(0, HERE)
+        import curated
+        with open(os.path.join(HERE, "westwood.json"), encoding="utf-8") as f:
+            _IDX = curated.apply(json.load(f)["index"])
+    return _IDX
+
+
 def pct(vals, ps=(10, 25, 50, 75, 90)):
     s = sorted(vals)
     if not s: return None
@@ -297,6 +400,37 @@ def pct(vals, ps=(10, 25, 50, 75, 90)):
 
 def share(rs, f):
     return round(sum(1 for r in rs if f(r)) / max(1, len(rs)), 3)
+
+
+def floor_family(mat):
+    """wood (planks), stone (brick, cobble, tile, flagstones), marble, earth (dirt, cave), rug, or other."""
+    if not mat: return None
+    if RUG.search(mat): return "rug"
+    if re.search(r"Marble", mat): return "marble"
+    if re.search(r"Wood|Oak|Redwood|Slat|Plank", mat): return "wood"
+    if re.search(r"Dirt|Cave|Mud|Grass|Weeds|Sand|Swamp", mat): return "earth"
+    if re.search(r"Brick|Cobble|Tile|Stone|Rough|LOTD|DunMir|Galava|Pitted|Mine", mat): return "stone"
+    return "other"
+
+
+def purposes(rs):
+    """What a group of rooms' second floors and carpets are for (zone_of, weighted by their floor), their main floors
+    by material and family, and how far a carpet lies from the room's middle."""
+    out = {}
+    for what in ("second", "carpet"):
+        zs = [(z, r) for r in rs for z in r["floor"].get("zones", ()) if z["what"] == what
+              and (what == "carpet" and z["units"] >= 2 or what == "second" and r["floor"]["second_share"] >= 0.03)]
+        cnt = collections.Counter()
+        for z, r in zs: cnt[zone_of(z)] += z["units"]
+        tot = max(1, sum(cnt.values()))
+        out[what + "_purpose"] = {k: round(v / tot, 3) for k, v in cnt.most_common()}
+        out[what + "_pieces"] = pct([sum(1 for z in r["floor"].get("zones", ()) if z["what"] == what and z["units"] >= 1)
+                                     for r in rs if any(z["what"] == what for z in r["floor"].get("zones", ()))])
+        out[what + "_on"] = dict(collections.Counter(f for z, r in zs for f in z["on"]).most_common(8))
+    out["main_floor"] = dict(collections.Counter(r["floor"]["main"] for r in rs if r["floor"]["main"]).most_common(8))
+    out["main_family"] = {k: round(v / len(rs), 3) for k, v in
+                          collections.Counter(floor_family(r["floor"]["main"]) for r in rs).most_common()}
+    return out
 
 
 def summarise(rs):
@@ -353,13 +487,15 @@ def main():
         key = (r["tiles"], tuple(r["centre"]))
         if key in seen: continue
         seen.add(key); rooms.append(r)
-    with open(os.path.join(HERE, "westwood.json"), encoding="utf-8") as f:
-        idx = json.load(f)["index"]
-    typed = {(e["tiles"], tuple(e["centre"])): e for e in idx}
+    typed = {(e["tiles"], tuple(e["centre"])): e for e in _index()}
     for r in rooms:
         e = typed.get((r["tiles"], tuple(r["centre"])))
         r["type"] = e["type"] if e else None
         r["culture"] = e["culture"] if e else None
+    # Westwood's curated rooms only (rules/rooms/curated.json): the rooms its index keeps, typed
+    found_n = len(rooms)
+    rooms = [r for r in rooms if r["type"]]
+    print(f"{found_n} built rooms found, {len(rooms)} of them curated")
     by_key = {(r["tiles"], tuple(r["centre"])): r for r in rooms}
     for r in rooms:
         for d in r["doors"]:
@@ -373,10 +509,24 @@ def main():
     for lo, hi in ((0, 30), (30, 80), (80, 200), (200, 5000)):
         groups[f"tiles:{lo}-{hi}"] = [r for r in rooms if lo <= r["tiles"] < hi]
     summ = {k: summarise(v) for k, v in groups.items() if v}
+    for k, v in groups.items():
+        if v: summ[k].update(purposes(v))
     pairs = collections.defaultdict(collections.Counter)
     for r in rooms:
         if r["floor"]["kind"] != "one" and r["floor"]["second"]: pairs[r["floor"]["main"]][r["floor"]["second"]] += 1
     summ["floor_pairs"] = {k: dict(v) for k, v in pairs.items()}
+    # under the room's focal pieces (kit/shells.py lay_zones): how often a second floor (a throne's: or a carpet) lies at
+    # them, and which on which main floor
+    rate, fpairs = {}, collections.defaultdict(lambda: collections.defaultdict(collections.Counter))
+    for fam in ("tomb", "hearth", "throne", "bar"):
+        rs = [r for r in rooms if any(o[0] == fam and not o[1].startswith("Cauldron") for o in r["objects"])]
+        at = lambda r, w: [z for z in r["floor"]["zones"] if z["what"] in w and (fam in z["on"] or fam in z["near"])]
+        hit = [r for r in rs if at(r, ("second", "carpet") if fam == "throne" else ("second",))]
+        rate[fam] = round(len(hit) / max(1, len(rs)), 3)
+        for r in rs:
+            if at(r, ("second",)): fpairs[fam][r["floor"]["main"]][r["floor"]["second"]] += 1
+    summ["focal_rate"] = rate
+    summ["focal_pairs"] = {f: {m: dict(c) for m, c in d.items()} for f, d in fpairs.items()}
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(dict(maps="campaign (Con/War/Wiz), each room once", summary=summ,
                        rooms=[dict(r, doors=[{k: v for k, v in d.items() if k != "other"} for d in r["doors"]]) for r in rooms]),
@@ -385,7 +535,7 @@ def main():
     print(f"{'group':18} {'n':>4}  rect   L    bay  TUZ  irr  | spur pill | one  mix  pat | carp  c.share c.edge w2w | "
           f"doors 1/2/3+  end1  mid  out  offpass | bshare")
     for k, s in summ.items():
-        if k == "floor_pairs": continue
+        if k in ("floor_pairs", "focal_rate", "focal_pairs"): continue
         sh = s["shape"]; fl = s["floor"]; dd = s["doors"]; nd = max(1, sum(dd.values()))
         print(f"{k:18} {s['n']:4}  {sh.get('rect', 0):.2f} {sh.get('L', 0) + sh.get('T', 0):.2f} {sh.get('bay', 0):.2f} "
               f"{sh.get('TUZ', 0):.2f} {sh.get('irregular', 0):.2f} | {s['with_spur']:.2f} {s['with_pillar']:.2f} | "
@@ -397,7 +547,7 @@ def main():
 
 
 SHELL_FEATURES = ("fill", "reflex", "core", "bays", "wings", "spurs", "second_share", "alternate", "carpet_share",
-                  "carpet_edge", "carpet_margin", "doors", "door_along")
+                  "carpet_edge", "carpet_margin", "doors", "door_along", "second_loose", "focal_zone", "main_wood")
 
 
 def shell_features(r):
@@ -408,7 +558,13 @@ def shell_features(r):
                 alternate=fl["alternate"], carpet_share=sum(c["share"] for c in carp),
                 carpet_edge=max((c["edge"] for c in carp), default=0.0),
                 carpet_margin=min((c["margin"] for c in carp), default=0),
-                doors=min(len(r["doors"]), 4), door_along=min((d["along"] for d in r["doors"]), default=0.5))
+                doors=min(len(r["doors"]), 4), door_along=min((d["along"] for d in r["doors"]), default=0.5),
+                # what the second floors and carpets are for: the share of the floor in zones with no purpose the
+                # measures see (zone_of `loose`), a zone at a focal piece (a tomb, a hearth, a throne, a bar, a bed),
+                # a plank main floor
+                second_loose=sum(z["share"] for z in fl.get("zones", ()) if z["what"] == "second" and zone_of(z) == "loose"),
+                focal_zone=float(any(k in z["on"] or k in z["near"] for z in fl.get("zones", ()) for k in FOCAL)),
+                main_wood=float(floor_family(fl["main"]) == "wood"))
 
 
 def lab(typ, it):

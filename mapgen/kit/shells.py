@@ -45,10 +45,11 @@ def tiles_of(n):
     return max(1.0, n - 2 * math.sqrt(n))
 
 
-def group(kind, n_units):
+def group(kind, n_units, shape=False):
     """Westwood's shell numbers for a room of `kind` and n units: its type's when 8 or more rooms of the type, else its
-    size band's."""
-    s = stats()
+    size band's. shape: the room-shape numbers (rules/rooms/shells_shape.json, kept as measured on 2026-10-05), else the
+    floors' (rules/rooms/shells.json, the curated rooms)."""
+    s = shape_stats() if shape else stats()
     if not s: return None
     try:
         from kit.roomtypes import KIND_TYPE
@@ -59,6 +60,19 @@ def group(kind, n_units):
     tl = tiles_of(n_units)
     band = "tiles:0-30" if tl < 30 else "tiles:30-80" if tl < 80 else "tiles:80-200" if tl < 200 else "tiles:200-5000"
     return s.get(band)
+
+
+_SHAPE = None
+
+
+def shape_stats():
+    global _SHAPE
+    if _SHAPE is None:
+        try:
+            with open(os.path.join(os.path.dirname(SHELLS), "shells_shape.json"), encoding="utf-8") as f:
+                _SHAPE = json.load(f)["groups"]
+        except OSError: _SHAPE = {}
+    return _SHAPE
 
 
 # ------------------------------------------------------------------------------------------------ shapes
@@ -138,7 +152,7 @@ def shape_rooms(rng, labels, kinds, least, keep=(), fixed_side=None, hall=None):
     # those its footprint already shaped (an L building's L room); rooms are picked for it weighted by their odds
     odds = {}
     for r in order0:
-        g = group(kinds.get(r), len(units(r)))
+        g = group(kinds.get(r), len(units(r)), shape=True)
         odds[r] = 0.0 if (r in keep or not g) else 1.0 - g["shape"].get("rect", 1.0)
     budget = int(sum(odds.values()) + rng.random())
     over = rng.random() < 0.5
@@ -150,7 +164,7 @@ def shape_rooms(rng, labels, kinds, least, keep=(), fixed_side=None, hall=None):
         if not pool: break
         r = _draw(rng, pool)
         tried.add(r)
-        sh = group(kinds.get(r), len(units(r)))["shape"]
+        sh = group(kinds.get(r), len(units(r)), shape=True)["shape"]
         cls = _draw(rng, {"L": sh.get("L", 0) + sh.get("T", 0), "bay": sh.get("bay", 0),
                           "two": sh.get("TUZ", 0) + sh.get("irregular", 0)}) or "bay"
         for step in range(2 if cls == "two" else 1):
@@ -242,7 +256,7 @@ def spur_points(rng, labels, kinds, edges, hall=None, keep=()):
         if r in keep: continue
         u = {p for p, v in labels.items() if v == r}
         if len(u) < 30: continue
-        g = group(kinds.get(r), len(u))
+        g = group(kinds.get(r), len(u), shape=True)
         if not g or rng.random() >= g.get("with_spur", 0): continue
         n = rng.choice((1, 2, 2, 2, 3))
         cands = []
@@ -324,69 +338,31 @@ def _second_floor(rng, main, pattern, floors, work):
 
 
 def floor_pattern(rng, units, main, kind, floors=None, work=False):
-    """{unit: material} for the units of a room that are not on its main floor, drawn as Westwood lays a second floor in
-    its rooms of the room's type (rules/rooms/shells.json: how many of them have one on 3% of their floor or more, how
-    much of it, in which pattern): a region (a wing, a bay, a strip along one wall or one end), a border round the room,
-    worn patches, inlaid panels."""
+    """{unit: material} for the units of a room that are not on its main floor, laid before it is furnished where
+    Westwood's second floors follow the room's shape (zone_odds): a wing or an alcove on its own floor, a border
+    round the room. The second floors under its pieces (a tomb's plinth, a hearthstone, a dais) are laid after
+    furnishing (lay_zones). Westwood's other second floors (a strip along one wall, patches, inlaid squares) are laid
+    nowhere: with no relation to the room they read as mistakes (independent judges, 2026-10-06)."""
     units = list(units)
     if len(units) < 9: return {}
-    g = group(kind, len(units))
-    if not g or "floor_touched" not in g: return {}
-    if rng.random() >= g["floor_touched"]: return {}
-    q = g.get("touched_share") or {"p25": 0.09, "p50": 0.16, "p75": 0.31}
-    a, m, b = q["p25"], q["p50"], q["p75"]
-    target = max(0.04, min(0.5, rng.triangular(a - 0.25 * (b - a), b + 0.25 * (b - a), m)))
-    pats = {k: v for k, v in (g.get("touched_pattern") or {}).items() if k not in (None, "null")}
-    if sum(pats.values()) < 6:
-        pats = {k: v for k, v in stats()["all built rooms"]["touched_pattern"].items() if k not in (None, "null")}
-    for _ in range(3):                                 # a pattern the main floor has a partner for
-        pattern = _draw(rng, pats)
-        second = second_floor(rng, main, pattern, floors, work)
-        if second and second != main: break
-    else:
-        return {}
+    odds = zone_odds(kind, len(units))
     s = set(units)
-    n = len(s)
-    i0, i1, j0, j1 = _box(s)
-    out = {}
-    if pattern == "border":
-        for k in _ring(s): out[k] = second
-    elif pattern == "region":
-        rest = s - _max_rect(s)
-        if rest and 0.5 * target <= len(rest) / n <= 2.0 * target:
-            for k in rest: out[k] = second            # the wing or the bay on its own floor
-        else:                                          # a strip along one wall, or one end of the room
-            sides = [("i", i0, 1), ("i", i1, -1), ("j", j0, 1), ("j", j1, -1)]
-            ax, edge, d = rng.choice(sides)
-            span = (j1 - j0 + 1) if ax == "i" else (i1 - i0 + 1)
-            rows = max(1, round(target * n / max(1, span)))
-            for (i, j) in s:
-                k = (i - edge) * d if ax == "i" else (j - edge) * d
-                if 0 <= k < rows: out[(i, j)] = second
-    elif pattern == "patches":
-        want = max(2, round(target * n))
-        ring = sorted(_ring(s))
-        tries = 0
-        while len(out) < want and tries < 50:
-            tries += 1
-            p = rng.choice(ring if rng.random() < 0.7 else sorted(s))
-            for _ in range(rng.choice((1, 2, 2, 3, 4))):
-                out[p] = second
-                nb = [(p[0] + x, p[1] + y) for x, y in N4 if (p[0] + x, p[1] + y) in s]
-                if not nb: break
-                p = rng.choice(nb)
-    else:                                              # inlaid panels in rows, off the walls
-        inner = s - _ring(s)
-        long_i = (i1 - i0) >= (j1 - j0)
-        pa, pb = (2, 1) if rng.random() < 0.6 else (2, 2)
-        period = 3 if pa == 2 and pb == 1 else 4
-        # rows far enough apart for the panels to cover about the target share of the floor
-        yp = max(3, round(pa * pb / (period * target) * len(inner) / n))
-        for (i, j) in sorted(inner):
-            x, y = (i - i0 - 1, j - j0 - 1) if long_i else (j - j0 - 1, i - i0 - 1)
-            if x % period < pa and y % yp < pb: out[(i, j)] = second
-    if len(out) >= 0.6 * n: return {}
-    return out
+    rest = s - _max_rect(s)
+    inner = s - _ring(s)
+    # a wing or an alcove: each piece two units deep or more both ways (a strip one unit wide along a wall is no wing:
+    # the judges' "brick band along one wall")
+    if not rest or len(rest) > 0.45 * len(s) or _thin(rest): odds.pop("wing", None)
+    if len(inner) < 4: odds.pop("border", None)
+    x = rng.random()
+    pattern = None
+    for k in sorted(odds):
+        x -= odds[k]
+        if x < 0: pattern = k; break
+    if not pattern: return {}
+    second = second_floor(rng, main, "region", floors, work)
+    if not second or second == main: return {}
+    if pattern == "wing": return {k: second for k in rest}
+    return {k: second for k in _ring(s)}
 
 
 def _max_rect(units):
@@ -452,3 +428,255 @@ def blend_pattern(spec, tiles, doors=()):
                 if tiles.get(n, base) != base: continue
                 if any(max(abs(n[0] - g[0]), abs(n[1] - g[1])) <= 3 for g in doors): continue
                 spec.pattern_tiles.setdefault(n, set()).add((over, base))
+
+
+# ------------------------------------------------------------------------------------------------ purposeful floors
+# What Westwood's second floors and carpets are for (rules/rooms/shells.json `second_purpose`, `carpet_purpose`,
+# `focal_rate`, `focal_pairs`; measured by rules/rooms/shells.py on the curated campaign rooms, 2026-10-06):
+# - a hearthstone of brick under the fireplace or stove (27 of Westwood's 33 rooms with one: 1-3 squares along the
+#   wall, RedBrick on planks, Redbrick3 on GalavaBrick);
+# - a plinth under each tomb (23 of 25 crypts: 1 by 2 squares of GalavaBrownMarble or BlueBrick3 under a sarcophagus
+#   on GreenBrick; a band under a row of them; else dirt worn round the tombs);
+# - the throne's dais and the runner from the door to it (3 of 4 throne rooms); the floor under the bar (2 of 5 taverns);
+# - a wing or an alcove on its own floor, a border round the room;
+# - carpets under the seating and the tables, before and beside the bed, down the aisle (bedrooms: 23 of 46 rooms with
+#   a bed have the carpet at it).
+# A second floor with no relation to the room's pieces, doors or shape (the scattered squares, a band along one wall,
+# patches in the corners) is not laid: independent judges read them as purposeless (2026-10-06).
+FOCAL_TYPES = (("tomb", r"^Crypt\d|Coffin|Sarcophag|Tombstone|LOTDTomb"), ("hearth", r"Fireplace|FirePit|^Stove"),
+               ("throne", r"Throne"), ("bar", r"^Bar(Piece|Corner|Hinged)"))
+CULTURE_FLOORS = ("LOTD", "DunMir")       # a culture's own floors, kept (the Land of the Dead's, Dun Mir's)
+FOCAL_RATE = {"tomb": 0.86, "hearth": 0.82, "throne": 0.75, "bar": 0.4}     # fallbacks of shells.json focal_rate
+_FOCAL_RE = None
+
+
+def floor_family(mat):
+    """wood (planks), stone (brick, cobble, tile, flagstones), marble, earth (dirt, cave), rug or other: as
+    rules/rooms/shells.py floor_family."""
+    import re
+    if not mat: return None
+    if mat.startswith("Rug"): return "rug"
+    if "Marble" in mat: return "marble"
+    if re.search(r"Wood|Oak|Redwood|Slat|Plank", mat): return "wood"
+    if re.search(r"Dirt|Cave|Mud|Grass|Weeds|Sand|Swamp", mat): return "earth"
+    if re.search(r"Brick|Cobble|Tile|Stone|Rough|LOTD|DunMir|Galava|Pitted|Mine", mat): return "stone"
+    return "other"
+
+
+def _type_of(kind):
+    try:
+        from kit.roomtypes import KIND_TYPE
+        return KIND_TYPE.get(kind) or kind
+    except Exception:
+        return kind
+
+
+def fit_families(kind):
+    """The floor families Westwood lays in rooms of `kind`'s type (a tenth of its rooms or more), None when it has
+    none of the type: throne rooms stone or marble, crypts, chapels and cells stone, bedrooms wood or stone."""
+    g = stats().get(_type_of(kind))
+    if not g or not g.get("main_family"): return None
+    fams = {f for f, s in g["main_family"].items() if s >= 0.1 and f}
+    if "stone" in fams: fams.add("marble")                 # a polished stone where a stone floor goes
+    return fams
+
+
+def fit_floor(rng, kind, floor, floors):
+    """`floor` when Westwood lays its family in rooms of `kind`'s type, else one of the style's `floors` that is (by
+    their weights), else Westwood's own main floor for the type (its commonest). rng: the shell's own generator."""
+    fams = fit_families(kind)
+    g = stats().get(_type_of(kind)) or {}
+    mf = g.get("main_floor") or {}
+    if g.get("n", 0) >= 8 and mf and not floor.startswith(CULTURE_FLOORS):
+        # a floor Westwood lays in most rooms of the type (crypts: GreenBrick in 23 of 25), as often as it does
+        top, k = max(mf.items(), key=lambda kv: (kv[1], kv[0]))
+        if k >= 0.6 * g["n"] and not ground_shy(top) and rng.random() < k / g["n"]: return top
+    if not fams or floor_family(floor) in fams: return floor
+    ok = {k: v for k, v in (floors or {}).items() if floor_family(k) in fams and not ground_shy(k)}
+    if ok: return _draw(rng, ok)
+    ww = {k: v for k, v in (stats().get(_type_of(kind)) or {}).get("main_floor", {}).items()
+          if floor_family(k) in fams and not ground_shy(k)}
+    return _draw(rng, ww) if ww else floor
+
+
+def zone_odds(kind, n_units):
+    """{purpose: chance} of the room laying a second floor for that purpose before it is furnished: the type's
+    floor_touched times the share of its second floors that fill a wing or run round the room as a border (the rest
+    lie under its pieces: lay_zones, after furnishing)."""
+    g = group(kind, n_units)
+    if not g or "floor_touched" not in g: return {}
+    pur = g.get("second_purpose") or {}
+    return {k: g["floor_touched"] * pur.get(k, 0) for k in ("wing", "border")}
+
+
+def _focal_re():
+    global _FOCAL_RE
+    if _FOCAL_RE is None:
+        import re
+        _FOCAL_RE = [(f, re.compile(p)) for f, p in FOCAL_TYPES]
+    return _FOCAL_RE
+
+
+def focal_family(t):
+    return next((f for f, rx in _focal_re() if rx.search(t or "")), None)
+
+
+def _things():
+    from kit import furnish as F
+    return F._rules()[3]
+
+
+def _squares_under(o, sq, things, least=0.5):
+    """The room's squares (i, j) an object covers (each overlapped by `least` uv units both ways), and the object's uv;
+    a square's centre is uv (2i + 2, 2j), it spans 2 uv units."""
+    from nox import CELL
+    K = CELL / math.sqrt(2)
+    u, v = (o["x"] + o["y"]) / CELL, (o["x"] - o["y"]) / CELL
+    ext, ex, ey, _ = things.get(o["type"], ("CIRCLE", 10, 0, ""))
+    hu, hv = (ex / 2 / K, ey / 2 / K) if ext == "BOX" else (ex / K, ex / K)
+    out = set()
+    for (i, j) in sq:
+        ou = min(u + hu, 2 * i + 3) - max(u - hu, 2 * i + 1)
+        ov = min(v + hv, 2 * j + 1) - max(v - hv, 2 * j - 1)
+        if ou >= least and ov >= least: out.add((i, j))
+    return out, (u, v)
+
+
+def _nearest_square(sq, u, v):
+    return min(sq, key=lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - v) ** 2, s)) if sq else None
+
+
+def zone_material(rng, fam, main, have=None):
+    """The second floor Westwood lays for a purpose on `main`: the room's own second floor when it has one, else
+    what Westwood lays under that family on that main floor (shells.json focal_pairs), else under the family on any
+    floor, else what it lays with `main`; never one it keeps apart from `main` or from the town's grass."""
+    def fine(m):
+        return bool(m) and m != main and frozenset((m, main)) not in _never() and not ground_shy(m) \
+            and not any(x in m for x in NOT_SECOND)
+    if have and fine(have): return have
+    fp = (stats().get("focal_pairs") or {}).get(fam) or {}
+    anywhere = {}
+    for d in fp.values():
+        for k, v in d.items(): anywhere[k] = anywhere.get(k, 0) + v
+    pools = [fp.get(main) or {}, anywhere, stats().get("floor_pairs", {}).get(main) or {}]
+    if fam == "throne" and not main.startswith(CULTURE_FLOORS):
+        # Westwood's one dais floor is the Land of the Dead's: elsewhere a marble Westwood lays beside the floor
+        # (GalavaBrownMarble beside the Galava bricks)
+        pools.insert(1, {k: 1 for pr, r in _blend_rules().items() if main in pr and r.get("edge_share_sp") is not None
+                         for k in pr if k != main and floor_family(k) == "marble"})
+    for pool in pools:
+        pool = {k: v for k, v in pool.items() if fine(k) and (fam == "tomb" or not any(d in k for d in DIRTY))}
+        if pool: return _draw(rng, pool)
+    return None
+
+
+def lay_zones(spec, room, objs, kind=None):
+    """After furnishing: the second floor laid where Westwood lays it under a room's pieces (FOCAL_TYPES): a plinth
+    under each tomb, a hearthstone under the fireplace, the throne's dais, the floor under the bar. Each at its
+    family's rate (shells.json focal_rate), from the room's own generator; on the room's main floor only (never on a
+    carpet, a threshold or a carpet's trim), three cells clear of every door, never beside a floor Westwood keeps from
+    it. Returns {tile: material} laid."""
+    if not ENABLED or not room or not getattr(room, "tiles", None) or not hasattr(spec, "floor"): return {}
+    import random, zlib
+    main = room.floor
+    rng = random.Random(zlib.crc32(f"zones:{room.id}".encode()))
+    things = _things()
+    sq = {((x + y) // 2, (x - y) // 2) for (x, y) in room.tiles}
+    tile = lambda s: (s[0] + s[1], s[0] - s[1])
+    ring = {s for s in sq if any((s[0] + a, s[1] + b) not in sq for a in (-1, 0, 1) for b in (-1, 0, 1))}
+    gaps = [d.gap for d in (getattr(room, "doors", None) or ())]
+    floor = spec.floor
+    local = getattr(spec, "local_blend", {}) or {}
+    have = next((m for t in sorted(room.tiles) for m in [floor.get(t)] if m and m != main and not m.startswith("Rug")),
+                None)
+    by_fam = {}
+    for o in objs or ():
+        f = focal_family(o.get("type"))
+        if f and "x" in o: by_fam.setdefault(f, []).append(o)
+    rates = stats().get("focal_rate") or {}
+    want = {}                                          # square -> family
+    for fam in sorted(by_fam):
+        if rng.random() >= rates.get(fam, FOCAL_RATE[fam]): continue
+        os_ = by_fam[fam]
+        if fam == "tomb":                              # a plinth under each tomb (a band under a row of them)
+            for o in os_:
+                for s in _squares_under(o, sq, things)[0]: want[s] = fam
+        elif fam == "hearth":                          # 1-3 squares along the wall at the fireplace
+            for o in os_[:2]:
+                under, (u, v) = _squares_under(o, sq, things, least=0.3)
+                s0 = _nearest_square(under or sq, u, v)
+                if s0 is None: continue
+                # the fireplace stands on the ring (Westwood's in the wall line): its hearthstone is the square before
+                # it, where Westwood's lies, with the square under it, and one along the wall more often than not
+                pad = {s0}
+                key = lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - v) ** 2, s)
+                inward = sorted((s for s in sq - ring if abs(s[0] - s0[0]) + abs(s[1] - s0[1]) == 1), key=key)
+                if inward: pad.add(inward[0])
+                if rng.random() < 0.6:
+                    d = (inward[0][0] - s0[0], inward[0][1] - s0[1]) if inward else (0, 0)
+                    side = sorted((s for s in sq if abs(s[0] - s0[0]) + abs(s[1] - s0[1]) == 1 and s not in pad
+                                   and (s[0] - s0[0], s[1] - s0[1]) != (-d[0], -d[1])), key=key)[:1]
+                    for s in side:
+                        pad.add(s)
+                        if inward and (s[0] + d[0], s[1] + d[1]) in sq: pad.add((s[0] + d[0], s[1] + d[1]))
+                for s in pad: want[s] = fam
+        else:                                          # the throne's dais, the floor under the bar: one square round
+            under = set()
+            for o in os_: under |= _squares_under(o, sq, things, least=0.3)[0]
+            if not under:
+                o = os_[0]
+                s0 = _nearest_square(sq, (o["x"] + o["y"]) / 23.0, (o["x"] - o["y"]) / 23.0)
+                under = {s0} if s0 else set()
+            for s in {(a + x, b + y) for a, b in under for x in (-1, 0, 1) for y in (-1, 0, 1)} & sq: want[s] = fam
+    if not want: return {}
+    mats = {fam: zone_material(rng, fam, main, have) for fam in sorted(set(want.values()))}
+    out = {}
+    for s, fam in sorted(want.items()):
+        t, mat = tile(s), mats.get(fam)
+        if not mat or floor.get(t, main) != main or t in local: continue
+        if any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 3 for g in gaps): continue
+        # never beside a floor Westwood keeps from it (a carpet, the next room's floor through a wall)
+        if any(frozenset((mat, floor.get((t[0] + a, t[1] + b)))) in _never()
+               for a in (-2, -1, 0, 1, 2) for b in (-2, -1, 0, 1, 2) if floor.get((t[0] + a, t[1] + b))): continue
+        out[t] = mat
+    # a zone too broken by the doors and carpets to read as one is left out
+    if len(out) < max(1, 0.5 * len(want)): return {}
+    for t, mat in out.items(): spec.tile(*t, mat)
+    blend_pattern(spec, {t: floor.get(t, main) for t in room.tiles}, gaps)
+    return out
+
+
+def carpet_target(kind, typed):
+    """Where a room's carpet goes (Westwood's rooms are shaped round it): before the bed in a bedroom (23 of
+    Westwood's 46 rooms with a bed have their carpet at it), else under the seating and the tables, else before the
+    hearth. typed: the furnisher's [(type, (u, v, hu, hv, blocking, layer))]. Returns a uv point or None."""
+    import re
+    seats = [(r[0], r[1]) for t, r in typed if re.search(r"Table|Chair|Bench|Stool", t) and r[5] != "wall"]
+    beds = [(r[0], r[1]) for t, r in typed if re.search(r"^(Bed\d|WoodBed|Cot\d)", t)]
+    hearth = [(r[0], r[1]) for t, r in typed if re.search(r"Fireplace|^Stove", t)]
+    if _type_of(kind) in ("bedroom", "solar") and beds: return beds[0]
+    if len(seats) >= 2: return sum(u for u, _ in seats) / len(seats), sum(v for _, v in seats) / len(seats)
+    if beds: return beds[0]
+    if hearth: return hearth[0]
+    return None
+
+
+def carpet_offset(rng, kind, typed, box, size):
+    """Where in a room's inner squares (box: i0, i1, j0, j1) a carpet of size (ci, cj) squares lies, as offsets from
+    the box's corner: its centre nearest carpet_target (before the bed, under the seating), a square either way at
+    random; else the middle, a square either way (furnish.lay_carpet)."""
+    i0, i1, j0, j1 = box
+    ci, cj = size
+    si, sj = i1 - i0 + 1 - ci, j1 - j0 + 1 - cj
+    jit = lambda: rng.choice((-1, 0, 0, 1))
+    tgt = carpet_target(kind, typed)
+    if tgt is None:
+        return max(0, min(si, si // 2 + jit())), max(0, min(sj, sj // 2 + jit()))
+    cu, cv = 2 * (i0 + i1) / 2 + 2, 2 * (j0 + j1) / 2           # the box's centre in uv
+    tu, tv = tgt
+    if _type_of(kind) in ("bedroom", "solar") and any(t.startswith(("Bed", "WoodBed", "Cot")) for t, _ in typed):
+        tu, tv = tu + 0.35 * (cu - tu), tv + 0.35 * (cv - tv)    # the bed's foot: toward the room's middle
+    # the offsets putting the carpet's centre (uv 2 (i0 + oi) + ci + 1, 2 (j0 + oj) + cj - 1) on the target
+    oi = round((tu - ci - 1) / 2 - i0) + (jit() if rng.random() < 0.3 else 0)
+    oj = round((tv - cj + 1) / 2 - j0) + (jit() if rng.random() < 0.3 else 0)
+    return max(0, min(si, oi)), max(0, min(sj, oj))

@@ -1,0 +1,280 @@
+{
+ "doc": "The room-shape numbers kit/shells.py shape_rooms and spur_points draw from: as measured on 2026-10-05 over all 308 built campaign rooms, typed by the index of then. Kept while the floors moved to the curated rooms (2026-10-06): the curated shape numbers change every map's room shapes, and Thornwick's north gate could then be walked round. Re-measuring the shapes on the curated rooms is the shells owner's call.",
+ "groups": {
+  "all built rooms": {
+   "n": 308,
+   "shape": {
+    "rect": 0.672,
+    "bay": 0.146,
+    "irregular": 0.091,
+    "T": 0.042,
+    "L": 0.039,
+    "TUZ": 0.01
+   },
+   "with_spur": 0.052
+  },
+  "typed": {
+   "n": 231,
+   "shape": {
+    "rect": 0.628,
+    "bay": 0.173,
+    "irregular": 0.091,
+    "T": 0.052,
+    "L": 0.043,
+    "TUZ": 0.013
+   },
+   "with_spur": 0.065
+  },
+  "armoury": {
+   "n": 16,
+   "shape": {
+    "rect": 0.75,
+    "irregular": 0.188,
+    "T": 0.062
+   },
+   "with_spur": 0.125
+  },
+  "barracks": {
+   "n": 16,
+   "shape": {
+    "rect": 0.625,
+    "irregular": 0.188,
+    "bay": 0.188
+   },
+   "with_spur": 0.062
+  },
+  "bedroom": {
+   "n": 40,
+   "shape": {
+    "rect": 0.8,
+    "T": 0.075,
+    "bay": 0.075,
+    "L": 0.05
+   },
+   "with_spur": 0.075
+  },
+  "chapel": {
+   "n": 1,
+   "shape": {
+    "bay": 1.0
+   },
+   "with_spur": 0.0
+  },
+  "crypt": {
+   "n": 30,
+   "shape": {
+    "rect": 0.667,
+    "T": 0.133,
+    "irregular": 0.1,
+    "TUZ": 0.067,
+    "bay": 0.033
+   },
+   "with_spur": 0.0
+  },
+  "dining_hall": {
+   "n": 3,
+   "shape": {
+    "rect": 0.667,
+    "bay": 0.333
+   },
+   "with_spur": 0.0
+  },
+  "great_hall": {
+   "n": 2,
+   "shape": {
+    "rect": 1.0
+   },
+   "with_spur": 0.5
+  },
+  "hall": {
+   "n": 17,
+   "shape": {
+    "rect": 0.412,
+    "irregular": 0.294,
+    "bay": 0.176,
+    "TUZ": 0.059,
+    "L": 0.059
+   },
+   "with_spur": 0.118
+  },
+  "herbalist": {
+   "n": 2,
+   "shape": {
+    "rect": 0.5,
+    "T": 0.5
+   },
+   "with_spur": 0.0
+  },
+  "kitchen": {
+   "n": 10,
+   "shape": {
+    "rect": 0.7,
+    "L": 0.3
+   },
+   "with_spur": 0.0
+  },
+  "laboratory": {
+   "n": 19,
+   "shape": {
+    "rect": 0.474,
+    "bay": 0.263,
+    "L": 0.158,
+    "irregular": 0.105
+   },
+   "with_spur": 0.105
+  },
+  "library": {
+   "n": 7,
+   "shape": {
+    "bay": 0.429,
+    "rect": 0.286,
+    "irregular": 0.143,
+    "T": 0.143
+   },
+   "with_spur": 0.143
+  },
+  "living_room": {
+   "n": 15,
+   "shape": {
+    "rect": 0.733,
+    "bay": 0.2,
+    "irregular": 0.067
+   },
+   "with_spur": 0.0
+  },
+  "passage": {
+   "n": 9,
+   "shape": {
+    "rect": 0.444,
+    "bay": 0.444,
+    "irregular": 0.111
+   },
+   "with_spur": 0.0
+  },
+  "shop": {
+   "n": 16,
+   "shape": {
+    "rect": 0.562,
+    "bay": 0.25,
+    "T": 0.125,
+    "irregular": 0.062
+   },
+   "with_spur": 0.062
+  },
+  "smithy": {
+   "n": 2,
+   "shape": {
+    "bay": 1.0
+   },
+   "with_spur": 0.0
+  },
+  "storeroom": {
+   "n": 22,
+   "shape": {
+    "rect": 0.727,
+    "bay": 0.273
+   },
+   "with_spur": 0.091
+  },
+  "study": {
+   "n": 2,
+   "shape": {
+    "L": 0.5,
+    "rect": 0.5
+   },
+   "with_spur": 0.0
+  },
+  "tavern": {
+   "n": 2,
+   "shape": {
+    "bay": 0.5,
+    "irregular": 0.5
+   },
+   "with_spur": 0.0
+  },
+  "culture:town": {
+   "n": 148,
+   "shape": {
+    "rect": 0.669,
+    "bay": 0.162,
+    "irregular": 0.054,
+    "T": 0.054,
+    "L": 0.047,
+    "TUZ": 0.014
+   },
+   "with_spur": 0.034
+  },
+  "culture:dunmir": {
+   "n": 56,
+   "shape": {
+    "rect": 0.571,
+    "bay": 0.179,
+    "irregular": 0.125,
+    "T": 0.071,
+    "L": 0.054
+   },
+   "with_spur": 0.143
+  },
+  "culture:lotd": {
+   "n": 6,
+   "shape": {
+    "rect": 0.333,
+    "bay": 0.333,
+    "TUZ": 0.167,
+    "irregular": 0.167
+   },
+   "with_spur": 0.0
+  },
+  "culture:ogre": {
+   "n": 21,
+   "shape": {
+    "rect": 0.571,
+    "irregular": 0.238,
+    "bay": 0.19
+   },
+   "with_spur": 0.095
+  },
+  "tiles:0-30": {
+   "n": 130,
+   "shape": {
+    "rect": 0.823,
+    "bay": 0.1,
+    "L": 0.054,
+    "T": 0.023
+   },
+   "with_spur": 0.008
+  },
+  "tiles:30-80": {
+   "n": 117,
+   "shape": {
+    "rect": 0.675,
+    "bay": 0.197,
+    "irregular": 0.06,
+    "L": 0.034,
+    "T": 0.034
+   },
+   "with_spur": 0.026
+  },
+  "tiles:80-200": {
+   "n": 46,
+   "shape": {
+    "rect": 0.413,
+    "irregular": 0.261,
+    "bay": 0.174,
+    "T": 0.13,
+    "L": 0.022
+   },
+   "with_spur": 0.152
+  },
+  "tiles:200-5000": {
+   "n": 15,
+   "shape": {
+    "irregular": 0.6,
+    "TUZ": 0.2,
+    "rect": 0.133,
+    "bay": 0.067
+   },
+   "with_spur": 0.333
+  }
+ }
+}
