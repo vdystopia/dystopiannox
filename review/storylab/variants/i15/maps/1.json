@@ -1,0 +1,214 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, so the north gate is shut.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Drowned Lantern": "place",
+   "Chapel of the Ford": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Pip": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Greyjaw": "person",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, pays for the death of Greyjaw, the wolf taking his sheep.",
+   "names": {
+    "Ulric": "person",
+    "Greyjaw": "person",
+    "Ashwood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Good day, stranger. I take it you've come about the reward?\n\nI'll pay well for the pelt of Greyjaw, the big grey wolf. Since the thaw he and his hungry pack have been carrying off my sheep.\n\nMind yourself out in the Ashwood -- those brutes would eat you as soon as look at you."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Is Greyjaw dead yet? I've hardly any sheep left!"
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Well, well! The howling up in the woods went quiet, so I walked out to have a look.\n\nYou've done in that monster Greyjaw all on your own! Amazing! I take my hat off to you! That beast has been at my flock since spring! I'll skin him myself. My sheep can graze in peace now that the wicked brute is gone!\n\nNow here's what I promised -- 100 in gold!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the wolf Greyjaw for Ulric."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, wants back her husband's enchanted gloves, taken from the mill by the Urchins of the old barrow.",
+   "names": {
+    "Wenna": "person",
+    "Urchins": "group",
+    "Halvard": "person",
+    "Moot Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "While I mind the mill by myself, there's another job I can't get to.\n\nThose Urchins crept in at night and ran off with my husband's enchanted gloves. Their burrow is in the old barrow east of the ford.\n\nWill you bring the gloves back to me, kind sir, and give those little pests a good fright?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Well! I'll just have to manage on my own, as always."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Get after those Urchins! Quickly!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "The gloves! You got them back! Wonderful!\n\nSo the Urchins have a whole den down there? That's bad news for every house by the ford, but there's no time to fret over it. Halvard has been asking for you at the Moot Hall.\n\nHere, take this for your trouble!"
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thank you again! Those gloves stay locked up from now on."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's enchanted gloves from the Urchins in the barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's enchanted gloves from the Urchins in the barrow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants back the tithe chest Red Corwin's bandits stole; Sly Wat, a turncoat of Corwin's in the Drowned Lantern, sells the key to the watchtower cellar.",
+   "names": {
+    "Halvard": "person",
+    "Corwin": "person",
+    "Sly Wat": "person",
+    "Drowned Lantern": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "The whole town's talking about you, traveller! I could use a strong arm like yours. But first I need the tithe chest back -- Corwin's thieves carried it off.\n\nWill you get it for me?"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Evenin', friend! Care to buy the key to Corwin's back door? It opens the cellar under the watchtower and it's a steal at 50 gold.\n\nWell, do ya?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The chest! Very good! The town armory can spare a longsword for you, and a mail shirt against the bandits' arrows."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Pleasure doin' business. That key'll get you in, sure as anything.\n\nCome find me if you want anything else of Corwin's."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Return the tithe chest stolen by Corwin's bandits to Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the cellar key from Sly Wat in the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword", "ChainTunic"]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip chased the Urchins into the old barrow and has not come back.",
+   "names": {
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel of the Ford": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Stranger! Please, you must help me! My novice Pip chased a gang of Urchins down into the old barrow east of the ford, and he never came out! The poor boy hasn't even got a stick to fight with!\n\nBring him home safe and the Chapel of the Ford will see you rewarded!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Why are you still standing about? Pip could be hurt down there!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Is somebody there? Oh, thank heavens! I came down after the Urchins and got lost in the dark!\n\nCan you lead me back out? Brother Anselm will give you something nice, I'm sure, because he can't ring the chapel bell without me!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Go on, I'm right behind you! Get us out of this horrible hole!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Bless you, you've brought him back to us! Please accept these, with the Chapel's thanks!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pip in the Urchin barrow and lead him home to Anselm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Halvard in the Moot Hall, who sends him after Red Corwin in the watchtower on Crow Hill and hands over the north gate key.",
+   "names": {
+    "Halvard": "person",
+    "Moot Hall": "place",
+    "Corwin": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Find Halvard in the Moot Hall and send Corwin packing!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Sorry about the crowd, lad, but half the north road has fled in here since Red Corwin took the old watchtower. His bandits watch Crow Hill day and night and rob anyone on the road.\n\nYou must drive Corwin out of that tower, and he won't go quietly. It could come to blood. Here is the key to the north gate."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Keep that key safe, the north gate is locked to everyone else. Corwin's men will see you coming up the hill, so stay off the road. Good luck to you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin from the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,587 @@
+{
+ "scenario": "rescue",
+ "iter": "i15",
+ "writer": "one writer a town (variants/i15/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm's novice Pip chased the Urchins into the old barrow and has not come back.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Stranger! Please, you must help me! My novice Pip chased a gang of Urchins down into the old barrow east of the ford, and he never came out! The poor boy hasn't even got a stick to fight with!\n\nBring him home safe and the Chapel of the Ford will see you rewarded!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Why are you still standing about? Pip could be hurt down there!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Is somebody there? Oh, thank heavens! I came down after the Urchins and got lost in the dark!\n\nCan you lead me back out? Brother Anselm will give you something nice, I'm sure, because he can't ring the chapel bell without me!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Go on, I'm right behind you! Get us out of this horrible hole!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Bless you, you've brought him back to us! Please accept these, with the Chapel's thanks!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Pip in the Urchin barrow and lead him home to Anselm."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Khelm: Ulla's son Tobb is trapped by Spiders in the Crystal Caves.",
+   "names": {
+    "Khelm": "place",
+    "Haddrick": "person",
+    "Mirra": "person",
+    "Orvek": "person",
+    "Gorrak": "person",
+    "Elka": "person",
+    "Jorrin": "person",
+    "Gundra": "person",
+    "Pellam": "person",
+    "Nibbs": "person",
+    "Ulla": "person",
+    "Tobb": "person",
+    "Wash Pools": "place",
+    "Troll caves": "place",
+    "Crystal Caves": "place",
+    "Great Lift": "place",
+    "Miners' Guild": "group",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ulla",
+     "text": "Lad, my Tobb went into the Crystal Caves and the Spiders have him trapped! Get him out of there before it's too late!"
+    },
+    "reminder": {
+     "speaker": "Ulla",
+     "text": "There's no time to lose. Off with you now!"
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "Somebody help me!"
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Oh, thank goodness you came!"
+    },
+    "completion": {
+     "speaker": "Ulla",
+     "text": "My little Tobb, home safe! I owe you everything!\n\nTake this, and then go show those Trolls what for!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ulla's son Tobb from the Spiders in the Crystal Caves."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Kesh: Old Hennet's grandson Tobb went after the Imps nesting in the Drowned Mill and has not come back.",
+   "names": {
+    "Kesh": "place",
+    "Stilt Hall": "place",
+    "Long Causeway": "place",
+    "Gallow Mound": "place",
+    "Sunk Boathouse": "place",
+    "Drowned Mill": "place",
+    "Mayor Ottrick": "person",
+    "Pell": "person",
+    "Tavlin": "person",
+    "Skarn": "person",
+    "Dunstav": "person",
+    "Wezzel": "person",
+    "Yselda": "person",
+    "Pothar": "person",
+    "Warden Hask": "person",
+    "Bartol Quickhook": "person",
+    "Hennet": "person",
+    "Tobb": "person",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Boots of Speed": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hennet",
+     "text": "Wretched little devils! Imps have nested in the Drowned Mill and already they're making nuisances of themselves all over the hamlet!\n\nTobb is my grandson. He went out with his net this morning and never came back. I'm afraid he's gone into that Mill after them.\n\nBring the boy home to me and I'll give you whatever I can spare. Come, I'll take you as far as the old mill steps."
+    },
+    "reminder": {
+     "speaker": "Hennet",
+     "text": "Any sign of Tobb? Oh my, oh my... I can't bear to think of it."
+    },
+    "found": {
+     "speaker": "Tobb",
+     "text": "You came for me! My leg's bit something awful, but I can still walk. The Imps... they had a master! I saw a Tr... Tr... Troll..."
+    },
+    "following": {
+     "speaker": "Tobb",
+     "text": "Please, get me out of here before it comes back!"
+    },
+    "completion": {
+     "speaker": "Hennet",
+     "text": "Tobb! My boy, you're home!\n\nSo those Imps couldn't stand up to you. You'd make a fine net-man yourself, I'd say. Hmmm... Maybe so.\n\nHere, take this potion and a bit of gold. And go tell Mayor Ottrick about that Troll."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hennet's grandson Tobb in the Drowned Mill."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Vorne: Sergeant Krell sends the player after Jorrin the Stablemaster, dragged off by Ogres to their caves.",
+   "names": {
+    "Castle Vorne": "place",
+    "Vorne": "place",
+    "the Keep": "place",
+    "Blackstone Rise": "place",
+    "the Gloamwood": "place",
+    "Grashnak": "person",
+    "Galdric": "person",
+    "Commander Dorvik": "person",
+    "Venn": "person",
+    "Magistrate Quillon": "person",
+    "Priestess Ombrel": "person",
+    "Armsmaster Brodric": "person",
+    "Snitt": "person",
+    "Sergeant Krell": "person",
+    "Jorrin": "person",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the Horn of Vorne": "thing",
+    "the Lantern of Warding": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sergeant Krell",
+     "text": "Jorrin, our Stablemaster, is gone! A band of Ogres raided the paddocks while you were at the Keep and dragged him off to their caves in the western hills. Commander Dorvik is sick with worry.\n\nGo into those caves and bring Jorrin back to us."
+    },
+    "reminder": {
+     "speaker": "Sergeant Krell",
+     "text": "Still here?! Every moment counts! The Ogres won't keep Jorrin alive forever!"
+    },
+    "found": {
+     "speaker": "Jorrin",
+     "text": "Who's there? A friend?! You got past the brutes!\n\nThey meant to put me on the spit, so I hid in this storeroom and barred the door.\n\nTake this key. It opens the iron gate back the way you came."
+    },
+    "following": {
+     "speaker": "Jorrin",
+     "text": "Bless you. There's food in that crate, take it. Quick, after me! There's a back way the Ogres never use!"
+    },
+    "completion": {
+     "speaker": "Sergeant Krell",
+     "text": "You both made it back, thank goodness! The Commander sent this purse for the one who brought Jorrin home. You've got the makings of a true soldier of Vorne, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jorrin in the Ogre caves and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Varn: Nella's grandfather, Old Mott, was dragged off by Vosker's pirates to their wreck in the reeds.",
+   "names": {
+    "Varn": "place",
+    "Vosker": "person",
+    "Vosker's pirates": "group",
+    "Gull Rock": "place",
+    "Odwald": "person",
+    "Mayor Ostrin": "person",
+    "Haskel": "person",
+    "Eel Caves": "place",
+    "Father Dunstal": "person",
+    "Imps": "group",
+    "Bodley": "person",
+    "Skeeve": "person",
+    "Nella": "person",
+    "Old Mott": "person",
+    "Marra": "person",
+    "Great Lake": "place",
+    "Nox": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nella",
+     "text": "Stranger! Oh, please! Those pirates of Vosker's grabbed my grandfather, Old Mott, and hauled him off to their wreck in the reeds! He's tied up below deck!\n\nI'll be in your debt forever if you bring him back!"
+    },
+    "reminder": {
+     "speaker": "Nella",
+     "text": "Whatever's on that wreck is yours to keep! But please, hurry to Grandpa!"
+    },
+    "found": {
+     "speaker": "Old Mott",
+     "text": "Bah! Fine, I'll come along! Just get me off this rotten tub!"
+    },
+    "following": {
+     "speaker": "Old Mott",
+     "text": "Quick! Get me home!"
+    },
+    "completion": {
+     "speaker": "Nella",
+     "text": "Grandpa's back! Thank goodness! I don't know how I'll ever pay you back!\n\nGold, you say? Heaps of it? Well... if you insist. Here, a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Old Mott from the pirates' wreck in the reeds near Varn."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorra: Proctor Hamble begs the player to clear the Sunken Archive and bring out the students trapped there.",
+   "names": {
+    "Quorra": "place",
+    "the Amber Tower": "place",
+    "the Ossuary": "place",
+    "the Observatory": "place",
+    "the Sealed Library": "place",
+    "the Sunken Archive": "place",
+    "the Ferry Landing": "place",
+    "Proctor Hamble's cells": "place",
+    "Malgrith": "person",
+    "Dravik": "person",
+    "Archmage Thule": "person",
+    "Orlo": "person",
+    "Grummet": "person",
+    "Magister Fennick": "person",
+    "Nim Halfpenny": "person",
+    "Bessaly": "person",
+    "Proctor Hamble": "person",
+    "Tamsin": "person",
+    "the Star Lens": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Spiders": "group",
+    "the Ghosts": "group",
+    "the Giant Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Proctor Hamble",
+     "text": "Where have you been all this time!? Something dreadful has happened!\n\nGhosts and Giant Leeches have risen out of the flooded floors of the Sunken Archive. Brave students have perished down there for the sake of learning!\n\nI implore you! Drive the creatures out of the Archive, bring my students back and you will be paid well.\n\nWith this key you can open the first of the locked reading rooms. The student inside knows where the rest are hiding.\n\nI also have a potion for the Leeches' poison which you will surely need."
+    },
+    "reminder": {
+     "speaker": "Proctor Hamble",
+     "text": "Bring my students back up safe, and you'll not find me ungrateful."
+    },
+    "found": {
+     "speaker": "Tamsin",
+     "text": "Oh, at last, somebody came! Get me up the stairs, please!"
+    },
+    "following": {
+     "speaker": "Tamsin",
+     "text": "Right behind you!"
+    },
+    "completion": {
+     "speaker": "Proctor Hamble",
+     "text": "What a hero you are! The Amber Tower is in your debt.\n\nDravik stopped in while you were down below with my students, asking after you. You'll find him at the Ferry Landing -- south of town.\n\nBut first, this gold is yours, as I said."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Ghosts and Leeches from the Sunken Archive. Bring out the 4 trapped students."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarrow: Sergeant Vorna begs the player to bring back Master Elbin, the fort's wizard, carried off by the Trolls to Hrimgar.",
+   "names": {
+    "Fort Skarrow": "place",
+    "Northgate": "place",
+    "Hrimgar": "place",
+    "Warden Brolth": "person",
+    "Brolth": "person",
+    "Ottla": "person",
+    "Hildy": "person",
+    "Brisa": "person",
+    "Fennick": "person",
+    "Snivvet": "person",
+    "Vorna": "person",
+    "Elbin": "person",
+    "Master Elbin": "person",
+    "Grakkus": "person",
+    "Dobbe": "person",
+    "Ember Stone": "thing",
+    "White Wolves": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Vorna",
+     "text": "Lad! At last! Where were you!? Last night the Trolls came over the north wall, and only Master Elbin's fire magic kept the fort from falling!\n\nThey took him, though. The brutes dragged Elbin off at the end of it all, and next to that a cracked wall is nothing! Without Elbin the whole pass is lost!\n\nThe Troll caves of Hrimgar are east, up the mountain, and that's where they've got him! Bring him home, or it's the end of us!"
+    },
+    "reminder": {
+     "speaker": "Vorna",
+     "text": "Don't just stand there! Every minute Elbin spends with those Trolls counts!"
+    },
+    "found": {
+     "speaker": "Elbin",
+     "text": "You there! Hurry, find some way to get me out of here! It's the shaman Grakkus who sent the Trolls down on the fort, and he wants the Ember Stone. I was taken when my magic was all spent, and I haven't the strength left to break free by myself. Grakkus has laid some foul spell on me, so not one charm of mine will get me out."
+    },
+    "following": {
+     "speaker": "Elbin",
+     "text": "Quickly, let's go! There's no time to lose!"
+    },
+    "completion": {
+     "speaker": "Vorna",
+     "text": "Good work, lad! In better days all of Fort Skarrow would feast over Elbin's return! But Grakkus still has to be stopped, once and for all.\n\nThese are yours, with our deepest thanks for so brave a deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Master Elbin from the Troll caves of Hrimgar."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "BluePotion",
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulkir: Mayor Bolgrim begs the player to bring his nephew Tobble back from the Imps in the old smelter.",
+   "names": {
+    "Vulkir": "place",
+    "Mount Skarn": "place",
+    "Malgrith": "person",
+    "Ember Witch": "person",
+    "Fire Imps": "group",
+    "Imps": "group",
+    "Kessick": "person",
+    "Ostrid": "person",
+    "Odrik": "person",
+    "Ember Blade": "thing",
+    "Keepers of the Anvil": "group",
+    "Old Kiln": "place",
+    "Dagrun": "person",
+    "Pellock": "person",
+    "Beetles": "group",
+    "Beetle Nest": "place",
+    "Muldo": "person",
+    "Cinder Gang": "group",
+    "Thorva": "person",
+    "Grubble": "person",
+    "Red Bellows": "place",
+    "Bolgrim": "person",
+    "Tobble": "person",
+    "North Bridge": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bolgrim",
+     "text": "Those wretched Imps will be the death of this town! My guards drove them off, and back they came the very next night! They've carried off my nephew Tobble, and you're the only one who can bring him home!\n\nThey took him into the old smelter, over there behind the east wall. Please, watch yourself."
+    },
+    "reminder": {
+     "speaker": "Bolgrim",
+     "text": "I won't set foot outside till Tobble is home! Get into that smelter! Find the boy! Hurry, before those Imps do something dreadful!"
+    },
+    "found": {
+     "speaker": "Tobble",
+     "text": "Is somebody there? Please, get me out of here!"
+    },
+    "following": {
+     "speaker": "Tobble",
+     "text": "Hurry! Take me back to my uncle!"
+    },
+    "completion": {
+     "speaker": "Bolgrim",
+     "text": "Brave Adventurer, you have my heartfelt thanks! You've earned the town's trust. I'll tell the guards you may cross the North Bridge whenever you please.\n\nThis gold is yours for your trouble. Please, take it!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Mayor Bolgrim's nephew from the old smelter."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellamar: Hask, keeper of the Lucky Boar, begs the player to rescue his potboy Nib from the Ogre camp west of the crossroads.",
+   "names": {
+    "Pellamar": "place",
+    "Lucky Boar": "place",
+    "Thornspur Fort": "place",
+    "Town Hall": "place",
+    "Hurgg": "person",
+    "Dorvan": "person",
+    "Mayor Corvane": "person",
+    "Tobb": "person",
+    "Moggin": "person",
+    "Hask": "person",
+    "Orla": "person",
+    "Vesk the Fox": "person",
+    "Gubbo": "person",
+    "Nib": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Imp": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hask",
+     "text": "Business? What business! The Ogres have scared every traveler off the road. Yesterday they grabbed my potboy Nib right off the woodpile!\n\nI fear the worst for the boy, but I'd give anything to have him back in my kitchen. They dragged him off to their camp west of the crossroads.\n\nAnyone who brings him home gets a fine reward!"
+    },
+    "reminder": {
+     "speaker": "Hask",
+     "text": "Why are you standing around? Those Ogres have my Nib!"
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Is someone there? Please, get me out of this cage before they come back!"
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "Quick! Take me home before they wake up!"
+    },
+    "completion": {
+     "speaker": "Hask",
+     "text": "Nib's home! Thank goodness, lad! Not a soul at the Lucky Boar could eat or sleep while those brutes had him!\n\nHere's your reward... 60 gold! And your room is free here any night you like!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Hask's potboy Nib home from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Wendrel: Farmer Bodkin's prize pig Squabble fled the Ogres into Gorrow Wood among the wolves.",
+   "names": {
+    "Wendrel": "place",
+    "Dunstrel": "person",
+    "Orvane": "person",
+    "Grumvak": "person",
+    "Ketter Hill": "place",
+    "Town Hall": "place",
+    "Bortle": "person",
+    "Gaskin": "person",
+    "Ethra": "person",
+    "Dobbin": "person",
+    "Bodkin": "person",
+    "Squabble": "person",
+    "Gorrow Wood": "place",
+    "Grisk": "person",
+    "Tobble": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bodkin",
+     "text": "Wanderer! Help! My prize pig, Squabble, ran off into Gorrow Wood when the Ogres smashed her pen, and the wolves are in there!\n\nI'll owe you my whole life if she comes home safe!"
+    },
+    "reminder": {
+     "speaker": "Bodkin",
+     "text": "Whatever's in that wood is yours to keep! But Squabble comes home, mind!"
+    },
+    "found": {
+     "speaker": "Squabble",
+     "text": "Oink! Oink! Oiiiink!"
+    },
+    "following": {
+     "speaker": "Squabble",
+     "text": "Snort... snort!"
+    },
+    "completion": {
+     "speaker": "Bodkin",
+     "text": "You found her! Oh, my Squabble! For a deed like that, what can I give you?!\n\nGold? A big sack of gold, you say? Well then, here you are, and my thanks with it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Bodkin's pig Squabble from the wolves of Gorrow Wood."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

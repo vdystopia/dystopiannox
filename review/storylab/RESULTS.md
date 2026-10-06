@@ -285,3 +285,166 @@ asks writers to add a feature, and every list of tells, moved the judges by no m
 the gap between a rewrite and an original: a skeleton a Nox-aware judge recognises, and a sentence a little tidier
 or a stake a little more spelled out than Westwood's. The default for map agents (rules/DIALOGUE.md, the skill's step 6) is
 the i10/i11 method: `py tests/storylab.py frames --seed <MapName>`, rewrite, add nothing, then `--check`.
+
+## Originality (i13 on): are our lines our own?
+
+Frames make our text derivative by design, and a map's lines must be our own writing. `review/storylab/originality.py`
+measures every line and quest against Westwood's whole campaign, with thresholds taken from Westwood against itself:
+each of its 936 distinct spoken lines and journal entries against every *other* line (a reused copy, matching at 0.8
+or more with class words masked, does not count), and each of its 69 quests (one speaker's offer, reminder, thanks,
+afterwards, refusal) against its nearest other quest (`originality.json`). `py tests/storylab.py originality --iter
+NAME` checks a round, `--file` one writer's town, and `--check <design>` now has an Originality section.
+
+| measure | what it is | Westwood to itself (p50 / p95, by line length 1-5, 6-12, 13-25, 26+ words) | rule |
+|---|---|---|---|
+| 3-gram share | the share of a line's word 3-grams found in its closest Westwood line | 0 / 1.0, 0.13 / 0.50, 0.08 / 0.36, 0.05 / 0.21 | median, relative to Westwood's for the length, at most 1.0; at most 10% of lines above p95 |
+| edit similarity | word-level normalised edit similarity (2M/T) to the closest Westwood line | 0.44 / 0.67, 0.36 / 0.64, 0.31 / 0.58, 0.23 / 0.46 | the same |
+| copied phrase | a run of 5+ words from one Westwood line with 2+ content words, not a stock phrase Westwood uses in two lines or the genre's stock phrases (rules/DIALOGUE.md rule 7) | 210 of 936 lines share a run with another line: all stock by definition | none |
+| quest skeleton | each part reduced to function words, punctuation and a slot X for every content word, compared part for part with every Westwood quest (length-weighted) | 0.36 / 0.43 (p99 0.55, max 0.59) | none above p99 (one to one); at most 10% above p95 |
+
+The earlier rounds measured after the fact (all ten towns, every scenario, 360 lines and 60 quests a round):
+
+| round | method | lines above p95 | relative median (3-gram / edit) | copied runs | quest skeleton median | quests above p95 / p99 |
+|---|---|---|---|---|---|---|
+| i4 | exemplars | 2% | 0.31 / 0.90 | 3 | 0.39 | 10 / 0 |
+| i5 | cards | 1% | 0.43 / 0.89 | 7 | 0.37 | 5 / 0 |
+| i7 | a line frame a line | 6% | 0.66 / 1.12 | 10 | 0.38 | 9 / 2 |
+| i8 | premises | 2% | 0.46 / 0.96 | 2 | 0.37 | 2 / 0 |
+| i9 | sentence frames | 3% | 0.49 / 0.96 | 4 | 0.37 | 4 / 0 |
+| i10 | a Westwood quest a quest | 14% | 0.85 / 1.19 | 46 | **0.68** | 54 / 50 |
+| i11 | i10, add nothing | 8% | 0.74 / 1.16 | 16 | **0.67** | 56 / 50 |
+| i12 | i11, sonnet writers | 31% | 1.57 / 1.49 | 89 | **0.76** | 56 / 56 |
+
+The check finds what the judges found: in i10-i12 the nearest Westwood quest of almost every quest is the one it was
+dealt (the skeleton 0.6-0.8 to it, where no two of Westwood's quests come closer than 0.59), and the lines sit closer
+to Westwood's than Westwood's sit to each other. The lab's best blind rounds were its least original. Every round
+before quest frames passes on skeletons and is within Westwood's own spread on lines (a few copied runs aside).
+
+## The third protocol (i13 on): long quests only, two packets a scenario
+
+From i13 the rounds test the long quests alone (bounty, heirloom, two givers, rescue, main opening): ten writers, one
+town each, the five quest scenarios; the writers split in two halves (the same split for every scenario), so each
+scenario has **two packets**, each five writers' texts beside five Westwood units (disjoint from the other packet's
+where the pool allows), each judged by a fresh judge that sees no other packet. Controls for the long scenarios
+(rescue's pool is too small for one), mixed in. Solo: every text of both packets alone, three a judge. Writers check
+their own town with `py tests/storylab.py originality --file` and revise what it flags.
+
+### i13: blended quests (WRITER.md v13, `cards.blend_card`)
+
+Each quest was dealt a **shape** (A: a Westwood quest of another kind, for the size and rhythm of each part), a
+**trouble** (B: another kind and chapter, for the kind of trouble and its turn), for two in three a **payoff or
+complication** (C: a third chapter), and for half a **loose spot** (one of 28 Westwood lines that are loose in one
+named way: a stake half said, an aside, a slip, a line that runs on), every quest a different one. None from the
+scenario's own packet pool, so packets leave nothing out.
+
+| scenario | metric ours / WW | side by side (2 packets) | blind ours / WW |
+|---|---|---|---|
+| bounty_offer | 9.05 / 9.62 | 100% | 5.9 / 8.0 |
+| heirloom_fetch | 9.09 / 9.62 | 100% | 5.6 / 7.9 |
+| two_givers | 8.90 / 9.47 | 100% (one of 8) | 5.8 / 8.2 |
+| rescue | 9.13 / 9.46 | 100% | 6.1 / 8.3 |
+| main_opening | 9.00 / 9.59 | 100% | 5.8 / 8.6 |
+| **all** | **9.03** | **100%** (98 texts) | **5.8 / 8.2** |
+
+Controls (3 packets): 60%, confidence 3.1, called generated 6.3 / called Westwood 8.1. Solo (stopped after 36 texts):
+100%, every one of ours caught, ours 5.9 / Westwood 8.3. Originality: **passes** (270 lines, none above Westwood's
+p95, relative medians 0.30 / 0.90, no copied run; quest skeletons median 0.37 to the nearest Westwood quest, as
+Westwood's own 0.36, 10 of 60 above p95, none above p99). By arm, ours scored 5.7 with two sources and 5.9 with three,
+5.8 without a loose spot and 5.9 with one: no difference.
+
+**Original, and worse.** The blends were new quests and every source added matter: the judges' tells are offers
+packed with backstory, a named helper, logistics, a gift at the ask, a hand-off and local trade colour ("eel boats",
+"sluice gate"), three to five pages where Westwood states the trouble, the place and the ask; thanks that set up the
+next leg; a sustained crafted persona and wry or understated humour; captives given character beats; journals with
+hints. The loose spots came out as performed mannerisms ("Could you... would you", "Um...", stammering ellipses,
+agreement slips that "look like editing seams"). What i10's whole-quest frames gave, and the blends lost, was
+Westwood's *amount*: a frame of one quest carries just as much matter as a Westwood quest does.
+
+### i14: part frames (WRITER.md v14, `cards.part_frames_card`)
+
+Each part of each quest (offer, refusal, reminder, thanks, afterwards) was dealt one Westwood line of its kind, each
+from a different Westwood speaker and none from or near the scenario's packet pool; the brief asked for the line's
+size (never more than a tenth over) and rhythm, the scenario's matter only, one trouble said once, nothing else (no
+backstory, logistics, scenery, persona, aside). The loose spots were dropped.
+
+| scenario | metric ours / WW | side by side (2 packets) | blind ours / WW |
+|---|---|---|---|
+| bounty_offer | 9.08 / 9.62 | 100% | 5.8 / 8.0 |
+| heirloom_fetch | 9.31 / 9.62 | 100% | 5.9 / 8.3 |
+| two_givers | 8.70 / 9.47 | 100% | 5.3 / 8.1 |
+| rescue | 9.12 / 9.46 | 95% | 5.7 / 8.5 |
+| main_opening | 9.31 / 9.59 | 100% | 5.8 / 8.6 |
+| **all** | **9.10** | **99%** | **5.7 / 8.3** |
+
+Controls (3): 53%, confidence 3.1. Solo (51 of 100 texts): 90%, ours caught 84%, Westwood taken for ours 0%, ours
+5.9 / Westwood 8.3, confidence on ours 2.8. Originality: lines pass (0% above p95, relative medians 0.09 / 0.95, no
+copied run), quests median 0.42 to the nearest Westwood quest (24 of 60 above Westwood's p95, none above p99): a part
+frame's template carries into its part, and four writers had to rework a quest the check flagged.
+
+The judges found the same things as in i13, less of them: crafted turns ("beat him or eat him", "my courage holds"),
+folksy self-introductions ("[Person]'s the name!", "Folks call me"), invented geography for directions, outcomes that
+do not follow their asks (parts from different speakers that do not join up), a reminder that "doesn't follow from
+the opening, as if two speakers had been stitched", captives with character beats, journals with flourishes. A few of
+ours now score 7-8 at confidence 2. The brief's "nothing more" lists cut the padding of i13 and did not reach the
+voice.
+
+### i15: whole-quest frames, then made our own (WRITER.md v15)
+
+The i10/i11 method (a whole Westwood quest per quest, rewritten part for part, add nothing) with one step added: run
+the originality check and rework what it flags (the frame's facts in another order, sentences joined or split, the ask
+said another way, nothing added) until no quest follows its frame closer than Westwood's p99.
+
+| scenario | metric ours / WW | side by side (2 packets) | blind ours / WW |
+|---|---|---|---|
+| bounty_offer | 9.07 / 9.62 | 100% | 5.9 / 8.1 |
+| heirloom_fetch | 9.24 / 9.62 | 90% | 6.0 / 8.0 |
+| two_givers | 8.76 / 9.47 | 100% (8 + 4 texts) | 5.7 / 8.4 |
+| rescue | 9.07 / 9.46 | 100% | 6.2 / 8.2 |
+| main_opening | 8.90 / 9.59 | 100% | 5.7 / 7.9 |
+| **all** | **9.01** | **98%** (88 texts) | **5.9 / 8.1** |
+
+Controls (3): 47%, confidence 3.1. Solo (45 texts): 98%, ours caught 96%, Westwood taken for ours 0%, ours 6.0 /
+Westwood 8.3. Originality: lines pass (0% above p95, relative medians 0.34 / 0.92, no copied run), quest skeletons
+median 0.42 to the nearest Westwood quest (i11: 0.67), 29 of 60 above Westwood's p95, none above p99. Tells: offers
+spread over several pages with designed set-up, thanks that set up the next lead or narrate, tidy cause and effect,
+captives with exposition, a shared kit of stock elements across writers ("north road", "old watchtower" from the
+Brackenford template), clean restating reminders, crafted cinematic beats. With the skeleton pushed off its frame, the
+whole-quest frame does no better than the blends.
+
+## Where the lab stands (i13-i15)
+
+| round | method | originality (lines / quests) | side by side | alone | ours / WW (side by side) |
+|---|---|---|---|---|---|
+| i10 | a Westwood quest per quest | fails (46 copied runs; skeletons 0.68, 54 of 60 above p95) | 89% | 79% | 6.0 / 7.9 |
+| i11 | i10, add nothing | fails (16 copied runs; 0.67) | 91% | 82% | 6.1 / 8.1 |
+| i13 | blends of 2-3 Westwood quests, loose spots | **passes** (0 copied; 0.37, 10 of 60 above p95) | 100% | 100% (36) | 5.8 / 8.2 |
+| i14 | part frames (each part from another quest) | lines pass; quests 0.42, 24 above p95 | 99% | 90% (51) | 5.7 / 8.3 |
+| i15 | whole-quest frames, reworked until the check passes | lines pass; quests 0.42, 29 above p95 | 98% | 98% (45) | 5.9 / 8.1 |
+| controls i13-i15 | ten Westwood texts, five keyed as ours | | 53% (90 texts) | | |
+
+i10-i12 numbers are the scenarios they ran (all nine, long and short); from i13 the long quests only, two packets
+each. The stop criteria (side by side 65% or less, alone 60% or less, within 0.5 of Westwood) were not met.
+
+**What the three rounds show.**
+
+1. **The originality check measures what the judges recognised.** The best blind rounds (i10-i12) were the least
+   original: their quests follow the Westwood quest they were dealt at 0.6-0.8, closer than any two of Westwood's 69
+   quests come to each other (max 0.59), and they copy 16-89 five-word runs a round. Every round before quest frames,
+   and every round since, sits at Westwood's own self-similarity.
+2. **Within originality, nothing tried reaches the long quests.** Blends, part frames and reworked whole frames all
+   land at 98-100% side by side and 90-100% alone, scored 5.7-5.9 against Westwood's 8.1-8.3. The judges' tells under
+   all three are one family: more designed matter than Westwood puts in a quest (set-up over pages, logistics,
+   cause and effect, next-step hooks, crafted turns, characterised captives), and less of Westwood's naive roughness.
+   Whole-quest frames got below 90% only by carrying Westwood's own matter and sentence skeletons, which is the
+   derivation the user's maps must not have.
+3. **Untidiness cannot be dealt.** Loose spots taken from real Westwood lines, one different one per quest, came back
+   as performed mannerisms ("Could you... would you", "Um...", agreement slips that "look like editing seams"): the
+   same failure as i6's "add a run-on", one level down. A writer who knows a flaw is wanted writes it on purpose.
+4. Short lines (townsfolk, shops, guards, rumours) were not retested; i8-i11 had them near chance, and their line
+   frames pass the line-level originality check (i10: 14% of lines above Westwood's p95, i11 8%, almost all in the
+   long parts).
+
+**For map agents** (rules/DIALOGUE.md, the skill's step 6): frames as before (`frames --seed`, whole quests by
+default; `blend=True` deals i13's blends), and the story must pass `--check`'s Originality section; rework what it
+flags without adding. Long quests written this way will read as competent pastiche, not as Westwood's; the lab has no
+method yet that does both.

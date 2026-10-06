@@ -1,0 +1,229 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Zanthis",
+  "setting": "a wizards' college town",
+  "trouble": "The renegade wizard Grelloch and his stone Golems have seized the Observatory on the hill above Zanthis, and the sage Jorvan sent the player to help the college.",
+  "names": {
+   "Zanthis": "place",
+   "Academy": "place",
+   "Observatory": "place",
+   "Archive": "place",
+   "Tipsy Owl": "place",
+   "Grelloch": "person",
+   "Jorvan": "person",
+   "Ombrel": "person",
+   "Wendle": "person",
+   "Tibba": "person",
+   "Bastel": "person",
+   "Fennick": "person",
+   "Hestra": "person",
+   "Tobb": "person",
+   "Rook": "person",
+   "Oona": "person",
+   "Nib": "person",
+   "Star Charts": "thing",
+   "Golems": "group",
+   "Wasps": "group",
+   "Imps": "group",
+   "Skeletons": "group",
+   "Masters": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Tibba asks the player to burn out the Wasps' nest plaguing her uncle Bastel's orchard; Bastel pays the bounty.",
+   "names": {
+    "Tibba": "person",
+    "Bastel": "person",
+    "Wasps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tibba",
+     "text": "The Wasps just swarmed all over my uncle's precious orchard! If they aren't gone soon, he'll be ruined. The pickers come next week!\n\nOh, please help us, young sir! I think their nest hangs in the big oak by the pond. Could you... would you burn it out for us?"
+    },
+    "reminder": {
+     "speaker": "Tibba",
+     "text": "It gladdens me to see a stout hero go after the Wasps that torment my poor uncle."
+    },
+    "completion": {
+     "speaker": "Tibba",
+     "text": "You made it back! Go find Uncle Bastel -- he has your bounty at his farmhouse by the east gate."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bastel's orchard has just been overrun, but the Wasps' nest is still somewhere among the trees. Maybe there's a bounty for burning it..."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Fennick the stargazer wants his crystal ball back from the Imps who nest in the old tower.",
+   "names": {
+    "Fennick": "person",
+    "Imps": "group",
+    "Zanthis": "place",
+    "Grelloch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Care to win back my crystal ball? I'll pay 80 gold to get it out of the Imps' tower."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Not quite brave enough yet, eh? Never mind, the gold will stay right here for you. If you change your mind later, just come and find me."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "A student saw it glowing in the tower window. It's still up there!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "In more peaceful days, the halls of Zanthis would ring with cheers for the return of my crystal ball! Nicely done, lad! But first the vile Grelloch must be stopped for good.\n\nTake this gold as a token of my appreciation for your bold deed!"
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Bless you for all your help!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Imps' tower at the south end of the college grounds. Fennick's crystal ball should be in their nest near the very top."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Search the Imps' tower at the south end of the college grounds."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Hestra of the Archive wants the Star Charts back from the bandits; Tobb, a bandit turned turncoat at the Tipsy Owl, wants a partner to loot the bandits' hoard.",
+   "names": {
+    "Hestra": "person",
+    "Tobb": "person",
+    "Rook": "person",
+    "Zanthis": "place",
+    "Archive": "place",
+    "Tipsy Owl": "place",
+    "Star Charts": "thing",
+    "Masters": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hestra",
+     "text": "We have long awaited your coming. The learned Masters of Zanthis are the keepers and faithful wardens of the Star Charts.\n\nWhen you find the bandits' camp in the western hills you must take the charts back from them, since those thieves stole the finest maps the college has ever owned -- far more precious than the coin in our coffers."
+    },
+    "offer_b": {
+     "speaker": "Tobb",
+     "text": "Well, you'd be the bold stranger my old pal Rook keeps talking about. Sit down, I've got a bargain for you."
+    },
+    "outcome_a": {
+     "speaker": "Hestra",
+     "text": "Kind sir, my warmest thanks! You have earned a reader's pass. The doormen will be told that you may walk into the Archive at any hour you like.\n\nHere is gold as a reward for your labors. Go on, take it."
+    },
+    "outcome_b": {
+     "speaker": "Tobb",
+     "text": "The chief's own cloak! So his luck finally ran out.\n\nThose bandits never stood a chance against you. A fine partner you'd make. Hmmm... Yes, indeed.\n\nDown to the cellar with me. Once you're ready, drop through the trapdoor -- it comes out right beside their treasure hoard. Plenty of counting waits for us down there."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Star Charts."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Meet Tobb at the Tipsy Owl."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   }
+  },
+  "rescue": {
+   "specifics": "Oona's apprentice Nib is lost in the catacombs among the Skeletons; the player brings him home.",
+   "names": {
+    "Oona": "person",
+    "Nib": "person",
+    "Skeletons": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Oona",
+     "text": "Thank goodness you've come, young sir! Skeletons are loose in the catacombs.\n\nYou must find my apprentice Nib and bring him home."
+    },
+    "reminder": {
+     "speaker": "Oona",
+     "text": "How can you just stand there? I need my apprentice back!"
+    },
+    "found": {
+     "speaker": "Nib",
+     "text": "Oh dear..."
+    },
+    "following": {
+     "speaker": "Nib",
+     "text": "I hate the dark. Do you?"
+    },
+    "completion": {
+     "speaker": "Oona",
+     "text": "He's safe! The Masters will be most thankful for your bravery!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Nib from the catacombs."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Wendle points the player to Master Ombrel, who sends him up the hill to drive Grelloch's Golems out of the Observatory.",
+   "names": {
+    "Wendle": "person",
+    "Ombrel": "person",
+    "Grelloch": "person",
+    "Golems": "group",
+    "Observatory": "place",
+    "Academy": "place",
+    "Zanthis": "place",
+    "Masters": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Wendle",
+     "text": "No, Master Ombrel can't wait while the Golems hold our Observatory!"
+    },
+    "opening": {
+     "speaker": "Ombrel",
+     "text": "Greetings, brave Adventurer! Grelloch and his stone Golems have driven every scholar out of the Observatory!\n\nWill you climb up there and smash those brutes to rubble? The Masters of Zanthis will pay a fine purse of gold, for no wizard here can read the stars until they're gone!"
+    },
+    "reminder": {
+     "speaker": "Ombrel",
+     "text": "Up the hill path behind the Academy! Hurry!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Grelloch from the Observatory."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

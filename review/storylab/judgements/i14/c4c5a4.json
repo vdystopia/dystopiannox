@@ -1,0 +1,34 @@
+{
+  "packet": "c4c5a4",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Plain, slightly clumsy officialese ('official sponsorship', 'put in a good word') and a petty, comic errand (a foul little urchin aggravating the bats) told in short, practical sentences with the key handed over. Reads exactly like the campaign's sponsorship errands."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The route directions are too careful and scenic ('shore path round the lake', 'rocks behind his hut hide a cave'), and the thanks tacks on a knowing aside ('sooner than you'd like'). Its 'Psst! ... sorry little village' tries for Nox's tone but the parts don't sit together."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The opening is gothic and grave ('Something wicked stirs', 'Drowned corpses climbing our ladders is a nightly sight now'), and lines like 'Every crow ... carries tales' are too literary for Nox's plain townsfolk. The four parts also read as lines from different quests."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Casual, chatty speech ('Name's', 'ya', 'Oh, bah!') with the exposition run on in one breath, 'token of my gratitude', and a practical warning about the tower. The smuggler humour is typical of the campaign."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The 'Eh, what was that? A big sharp sword?' joke borrows a Nox reward gag but sits awkwardly. The Ogre-hide cloak pitch and its rules ('If you take it off before you leave their camp') spell the mechanics out like a design note."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Breathless, exclamation-heavy pleading ('Sir! Help me please!'), naive syntax ('he'll be destroyed'), and stock 'tokens of my appreciation' thanks. This is weak but authentic early-campaign writing."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Stagey politeness ('I surmise', 'young sir', 'lad'), exact gold figures, and dry gallows humour ('I'll lose no sleep fretting about his soul'). The voice holds steady across two reward paths."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Comic melodrama ('the menfolk ... cannot live without us', the Ogres' stomachs grumbling) and the escort accept/refuse structure with a reminder line. The exclamations and quaint phrasing are Nox's."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The prize-ox ask is close to Nox's plainness, but the tonic seller's ask is long and overbuilt ('armed with clubs and cursing my good name'), and the two outcomes are oddly clipped. It mixes registers."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "There is too much in one ask (complaint, situation, plea, key, potion), and it copies the 'A sword, you say?' gag. The bandit's speech is long and novelistic ('I'll miss the old rascal, but there's no use weeping over him now') and points at the next chapter."}
+  ],
+  "tells": [
+    "New texts over-explain routes and mechanics (paths, hidden caves, rules for wearing an item). Westwood gives one plain pointer and the item or key.",
+    "New texts reach for literary or atmospheric images (crows carrying tales, drowned corpses on ladders, 'sooner than you'd like'). Westwood's townsfolk are blunt, a little clumsy and comic.",
+    "New asks stack too many beats (greeting, complaint, situation, plea, key, potion, foreshadowing) into one speech. Westwood's asks are two or three short beats.",
+    "Reused Westwood gags (the 'A big sharp sword?' reward bit) show up in more than one new text, which gives away imitation.",
+    "Westwood leans on stock formulas ('token of my gratitude/appreciation', 'young sir', exact gold sums) and on run-on, exclamatory speech. New texts use more varied and polished vocabulary.",
+    "In new packets the ask, reminder and outcomes often read like separate quests or shift voice. Westwood's four parts share one speaker's register."
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "5372a9",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The barker is close to Nox, but 'robbed blind', 'brazen Troll raid' and 'earned it twice over' are stock idioms piled on. The outcome then hands over the next quest lead in a long relay sentence ('I heard one of those grimy diggers say...'), which reads like a planned quest chain rather than Westwood's plain one-step talk."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Plain, practical and slightly odd ('a foul little urchin', aggravated bats, a ruby key for the orchard gate). It sets out who, what, where and the reward in short sentences with no flourish. The refusal line gives a location to come back to."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The prices and the short yes/no ask are right. But the humour is too neat a setup ('you bring your own boots. We supply the log', 'Nobody falls off a log in boots like these'), and the paired asks are built to mirror each other."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The flat explanation of the mechanics ('The scroll is a field guide to spiders, which allows you to charm them') and the folksy 'Ya want one?' after a formal pitch are Westwood's mix of tutorial and character."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A merchant's joke followed by a price comparison and a markdown ('call it 150') is a formula. The cross-referenced quest hook and the closing 'a farmer down the road has his eye on it' push the sale harder than Nox's shopkeepers do."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The opener reads like a pile of exclamations ('Sir! Trolls!'), and 'every scrap of our winter stores' is vivid scene-setting. The lockpick boy's trailing '...wouldn't you?' is a written-for-effect beat. The outcomes are thin and generic."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Westwood's bounty voice: 'young sir', 'savage scum', 'I'll lose no sleep fretting about his soul', exact gold sums, and two outcomes that each pay out plainly."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "A name slips through unmasked ('Nim'), and the backstory runs long (wagers on student duels, keeping the books, the prize pile). The outcomes are lumped into single paragraphs with many beats and modern chatter ('Cheers!', 'no picnic', 'What's the big idea')."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Terse, oddly specific and a little goofy ('hit that red button on the wall', 'You must be good luck!'). The deadpan 'Basic training isn't for everyone' is Westwood's understated humour."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The absurd 50,000-gold inn sale, 'lad', and the plain logistics ('sell my two buildings to someone else') are true to the campaign. It is rambling but unforced."}
+  ],
+  "tells": [
+    "New texts tend to stack idioms and set-up/punchline jokes ('robbed blind', 'no picnic', 'never took a single hit'). Westwood's humour is flatter, odder and comes from the situation more than from wordplay.",
+    "New texts build quest chains into the thanks (the next lead, a cross-reference to another NPC's shop). Westwood's outcomes pay out, add at most one practical note, and stop.",
+    "New outcome lines cram several beats into one page (thanks, reward, item, warning, farewell). Westwood splits them with page breaks or keeps them to two or three sentences.",
+    "Westwood often explains a game mechanic plainly and literally (what a scroll or key does) and quotes exact prices. The new texts lean on characterful backstory and scene-setting (supply sheds below the south wall, wagers on duels).",
+    "Paired asks that mirror each other too neatly (a fee and a boot sale, a pay chest and lockpicks) suggest one writer designing a pair, where Westwood's pairs are looser.",
+    "Leaked unmasked names and modern phrasing ('Cheers!', 'What's the big idea') give generated texts away."
+  ]
+}

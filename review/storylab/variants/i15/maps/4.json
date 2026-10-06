@@ -1,0 +1,227 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Castle Vorne",
+  "setting": "a castle town with a garrison",
+  "trouble": "Grashnak's Ogres have taken the watchtower on Blackstone Rise and raid the castle and its lands by night.",
+  "names": {
+   "Castle Vorne": "place",
+   "Vorne": "place",
+   "the Keep": "place",
+   "Blackstone Rise": "place",
+   "the Gloamwood": "place",
+   "Grashnak": "person",
+   "Galdric": "person",
+   "Commander Dorvik": "person",
+   "Venn": "person",
+   "Magistrate Quillon": "person",
+   "Priestess Ombrel": "person",
+   "Armsmaster Brodric": "person",
+   "Snitt": "person",
+   "Sergeant Krell": "person",
+   "Jorrin": "person",
+   "the Ogres": "group",
+   "the Imps": "group",
+   "the Horn of Vorne": "thing",
+   "the Lantern of Warding": "thing"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Magistrate Quillon has fled his chambers, where wasps have nested, and pays to have them killed.",
+   "names": {
+    "Magistrate Quillon": "person",
+    "Castle Vorne": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Magistrate Quillon",
+     "text": "These blasted wasps will be the death of me! My servants swatted at them, but more just fly in! I can only pray that you smoke out the nest and kill every last one!\n\nThe nest is in my chambers, up the stairs past the red curtain. Do watch yourself."
+    },
+    "reminder": {
+     "speaker": "Magistrate Quillon",
+     "text": "I won't set foot in there while those wasps live! Smoke out the nest! Then squash them all! Be quick before it grows any bigger!"
+    },
+    "completion": {
+     "speaker": "Magistrate Quillon",
+     "text": "Brave Adventurer, you have my heartfelt gratitude! You have earned a place among the friends of the Keep. I shall tell the gatesmen to let you in and out of Castle Vorne whenever you wish.\n\nHere is your fee, in gold. No, I insist."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Destroy the wasps in Magistrate Quillon's chambers."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Priestess Ombrel lost the Lantern of Warding to Imps out of the Gloamwood and asks the player to bring it back.",
+   "names": {
+    "Priestess Ombrel": "person",
+    "the Imps": "group",
+    "the Gloamwood": "place",
+    "the Lantern of Warding": "thing",
+    "Grashnak": "person",
+    "the Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Priestess Ombrel",
+     "text": "Hail, stranger! Thank goodness you have come, for our need is very great. A pack of Imps swarmed out of the Gloamwood last night and stole the Lantern of Warding from my altar! Will you hunt down the little thieves in the woods to the south and bring back the holy lantern quickly?"
+    },
+    "refusal": {
+     "speaker": "Priestess Ombrel",
+     "text": "Oh.... Then I must pray for some other hero to come along."
+    },
+    "reminder": {
+     "speaker": "Priestess Ombrel",
+     "text": "Find the Lantern, quickly! Do not delay! For if it falls into Grashnak's hands, that brute will snuff it out for good, I fear!"
+    },
+    "completion": {
+     "speaker": "Priestess Ombrel",
+     "text": "Well done! The Lantern is home, and I am forever in your debt! Now that it burns again, Grashnak and his filthy Ogres will never set foot inside our walls!\n\nTake these potions and this spell book. You will need them... and soon, I suspect."
+    },
+    "after": {
+     "speaker": "Priestess Ombrel",
+     "text": "Thanks once more for all you've done."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Lantern of Warding from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Lantern of Warding from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion",
+     "BluePotion",
+     "SpellBook"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Armsmaster Brodric sells a lesson in the shield wall, and Snitt wants the rain barrel knocked over on his signal.",
+   "names": {
+    "Armsmaster Brodric": "person",
+    "Snitt": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Armsmaster Brodric",
+     "text": "A lesson in the shield wall, then? Pay me 60 gold and you'll train with a steel shield you can keep."
+    },
+    "offer_b": {
+     "speaker": "Snitt",
+     "text": "Say, stranger. When I wink, would you knock over that big rain barrel by the barracks? It'd be a real favor to me.\n\nHold on till I'm behind the cart."
+    },
+    "outcome_a": {
+     "speaker": "Armsmaster Brodric",
+     "text": "No? Ah well. Some folks just aren't made for the drill yard."
+    },
+    "outcome_b": {
+     "speaker": "Snitt",
+     "text": "Ha! He's gone! I can't believe the old goat left his post! Bless you! Here's a little something!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Armsmaster Brodric for a lesson in the shield wall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Topple the rain barrel when Snitt gives the signal."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Sergeant Krell sends the player after Jorrin the Stablemaster, dragged off by Ogres to their caves.",
+   "names": {
+    "Sergeant Krell": "person",
+    "Jorrin": "person",
+    "Commander Dorvik": "person",
+    "the Keep": "place",
+    "the Ogres": "group",
+    "Vorne": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Sergeant Krell",
+     "text": "Jorrin, our Stablemaster, is gone! A band of Ogres raided the paddocks while you were at the Keep and dragged him off to their caves in the western hills. Commander Dorvik is sick with worry.\n\nGo into those caves and bring Jorrin back to us."
+    },
+    "reminder": {
+     "speaker": "Sergeant Krell",
+     "text": "Still here?! Every moment counts! The Ogres won't keep Jorrin alive forever!"
+    },
+    "found": {
+     "speaker": "Jorrin",
+     "text": "Who's there? A friend?! You got past the brutes!\n\nThey meant to put me on the spit, so I hid in this storeroom and barred the door.\n\nTake this key. It opens the iron gate back the way you came."
+    },
+    "following": {
+     "speaker": "Jorrin",
+     "text": "Bless you. There's food in that crate, take it. Quick, after me! There's a back way the Ogres never use!"
+    },
+    "completion": {
+     "speaker": "Sergeant Krell",
+     "text": "You both made it back, thank goodness! The Commander sent this purse for the one who brought Jorrin home. You've got the makings of a true soldier of Vorne, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jorrin in the Ogre caves and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Commander Dorvik sends the player to the Ogre watchtower on Blackstone Rise to take back the Horn of Vorne.",
+   "names": {
+    "Venn": "person",
+    "Commander Dorvik": "person",
+    "Castle Vorne": "place",
+    "Galdric": "person",
+    "Grashnak": "person",
+    "the Ogres": "group",
+    "the Horn of Vorne": "thing",
+    "Blackstone Rise": "place",
+    "the Keep": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Venn",
+     "text": "Chin up, stranger, Commander Dorvik will have those Ogres running from our walls!"
+    },
+    "opening": {
+     "speaker": "Commander Dorvik",
+     "text": "So you're Galdric's friend! Welcome to Castle Vorne! We hoped you would come!\n\nLast night Grashnak's Ogres climbed our north wall and made off with the Horn of Vorne! They grow bolder every day! A scout of mine went after the brutes and is still missing.\n\nThe Ogres hold the old watchtower on Blackstone Rise, north of the castle. Bring back the Horn, then come to me in the great hall of the Keep."
+    },
+    "reminder": {
+     "speaker": "Commander Dorvik",
+     "text": "Still no Horn? Those Ogres won't wait for us."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the Horn of Vorne from Grashnak's Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

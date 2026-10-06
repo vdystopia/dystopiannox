@@ -1,0 +1,525 @@
+{
+ "scenario": "main_opening",
+ "iter": "i13",
+ "writer": "one writer a town (variants/i13/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman points the player to Halvard in the Moot Hall, who sends him to drive Red Corwin's bandits from the watchtower on Crow Hill for passage through the north gate.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Don't lose heart now, stranger, Halvard in the Moot Hall still means to see Corwin beaten!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Ohhh, it gets worse by the day! Not one of the guards I sent up Crow Hill has come back whole. I have nobody else. You must get up there and drive Red Corwin's bandits out of the old watchtower, quickly, before more travelers are carried off! Clear that hill, and the north gate opens for you."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "What keeps you? Each day Corwin holds that tower, another cart is robbed on the north road! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin's bandits out of the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Druvak: Dalmor points the player to Foreman Odrik in the Ore Hall, who sends him through the Deep Gate after Skarn; Yorvan sent the player.",
+   "names": {
+    "Druvak": "place",
+    "Odrik": "person",
+    "Dalmor": "person",
+    "Grizzick": "person",
+    "Pudd": "person",
+    "Morva": "person",
+    "Tolbrek": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Snib": "person",
+    "Brakka": "person",
+    "Ottar": "person",
+    "Skarn": "person",
+    "Yorvan": "person",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "North Drift": "place",
+    "Old Shaft": "place",
+    "Old Shrine": "place",
+    "Smelter": "place",
+    "Deep Gate": "place",
+    "Troll Warrens": "place",
+    "Sunken Hall": "place",
+    "Lower Mines": "place",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Spider": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dalmor",
+     "text": "Go see Foreman Odrik in the Ore Hall, then find that Skarn and knock his block off!"
+    },
+    "opening": {
+     "speaker": "Odrik",
+     "text": "Thank goodness, Yorvan sent you, Wanderer! Skarn's Trolls have sealed the Deep Gate, and the miners I sent down to spy on that mad Conjurer are trapped below, or worse!\n\nTake this key and open the Gate. Bring Skarn to justice in the Sunken Hall and every miner in Druvak will be in your debt!"
+    },
+    "reminder": {
+     "speaker": "Odrik",
+     "text": "Keep whatever you take off those Trolls! But hurry, Skarn won't wait for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Open the Deep Gate and stop Skarn before the Trolls overrun Druvak.\n\nThe mad Conjurer is likely holed up in the Sunken Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Okkum: Pella points the player to Ysmay, Gorvald's old friend, who sends him past the Black Reeds after Ghessa the Bog Witch.",
+   "names": {
+    "Okkum": "place",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Kelso": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Grumm": "person",
+    "Dilla": "person",
+    "Ysmay": "person",
+    "Bodrick": "person",
+    "Pella": "person",
+    "Black Reeds": "place",
+    "Drowned Chapel": "place",
+    "Moon Amulet": "thing",
+    "Frog Horn": "thing",
+    "Troll": "group",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pella",
+     "text": "I was told to send outsiders straight up to Ysmay."
+    },
+    "opening": {
+     "speaker": "Ysmay",
+     "text": "Ghessa has turned our own drowned dead against us! Half of Okkum is packing up to leave! And she caught Bodrick out in the reeds and froze him stiff with a spell -- he hasn't moved a finger since!\n\nPlease, help us, kind sir! Gorvald swore you would come. I think her lair is the sunken shrine past the Black Reeds.\n\nWould you... could you go out there and stop her?"
+    },
+    "reminder": {
+     "speaker": "Ysmay",
+     "text": "Hurry, please! Every night more of the dead climb out of the mud!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the Black Reeds and find Ghessa the Bog Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Thrane: A townsman sends the player to Lord Ostric in the Great Hall, who sends him after Gruthak's Trolls on Gallow Hill and his son Dalric.",
+   "names": {
+    "Thrane": "place",
+    "Lord Ostric": "person",
+    "Fennick": "person",
+    "Gruthak": "person",
+    "Dalric": "person",
+    "Warden Krell": "person",
+    "Skell the Poisoner": "person",
+    "Edda": "person",
+    "Steward Ambrel": "person",
+    "Harl": "person",
+    "Wizzle": "person",
+    "Dunk": "person",
+    "Maudra": "person",
+    "Tobin": "person",
+    "Brusk": "person",
+    "Gallow Hill": "place",
+    "the Beacon": "place",
+    "the Great Hall": "place",
+    "the Thornwood": "place",
+    "the Urchin Hollow": "place",
+    "Lowmarket": "place",
+    "the Bent Spoon": "place",
+    "Trolls": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "The Trolls on Gallow Hill are a stinking, thieving rabble! Only Lord Ostric in the Great Hall has the stomach to stand up to them!"
+    },
+    "opening": {
+     "speaker": "Lord Ostric",
+     "text": "You must be Fennick's friend! Thank goodness you've come! Gruthak's Trolls swarmed over Gallow Hill and took the old Beacon, and with it the only road north! My son Dalric was on watch up there when it fell!\n\nDrive the brutes off that hill and bring my boy home, and Thrane will reward you well!"
+    },
+    "reminder": {
+     "speaker": "Lord Ostric",
+     "text": "What, still here? Dalric could be in a Troll's stewpot by now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Lord Ostric proof that the Trolls are gone from the Beacon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Skellow: Nubb points the player to Mayor Oskelt in the Town Hall, who sends him to drive Hulvo from the lighthouse on Gannet Rock and bring back Tamsin the ferrywoman.",
+   "names": {
+    "Skellow": "place",
+    "Lake Ommel": "place",
+    "Gannet Rock": "place",
+    "Town Hall": "place",
+    "Guild Hall": "place",
+    "Reed Island": "place",
+    "Leech marsh": "place",
+    "Hulvo": "person",
+    "Mayor Oskelt": "person",
+    "Talboth": "person",
+    "Gorrick": "person",
+    "Jebba": "person",
+    "Harbor Master Pell": "person",
+    "Pell": "person",
+    "Guildmaster Fennick": "person",
+    "Grubbin": "person",
+    "Dorrin": "person",
+    "Kett": "person",
+    "Tamsin": "person",
+    "Nubb": "person",
+    "Urchins": "group",
+    "Leeches": "group",
+    "Fishers' Guild": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Nubb",
+     "text": "I'm sure I saw Hulvo's sail off Gannet Rock this morning. Better see Mayor Oskelt in the Town Hall!"
+    },
+    "opening": {
+     "speaker": "Mayor Oskelt",
+     "text": "Oh, blast it! Hulvo again?! Sometimes I think that pirate wakes up just to ruin us. It's no easy thing keeping a village fed, I'll tell you. His raiders hold the lighthouse on Gannet Rock, they've taken the ferry and old Tamsin with it, and not one boat dares leave the harbor! And with the causeway under water, the only way out there is through the Leech marsh.\n\nListen... Get out to Gannet Rock, drive Hulvo out of that lighthouse and bring Tamsin home. Do that and Skellow will open its treasury to you! Talboth said you were the one for it!"
+    },
+    "reminder": {
+     "speaker": "Mayor Oskelt",
+     "text": "Off with you! Off! Um... Mind the Leeches."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Hulvo from the lighthouse on Gannet Rock and rescue Tamsin the ferrywoman.\n\n(Hint: The causeway is flooded.)"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Krumm points the player to Archmage Dorvanis, barred in the Chapter House, who hands over the Observatory key and sends him after Vorlath.",
+   "names": {
+    "Ostrel": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Chapter House": "place",
+    "Proving Vaults": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Vorlath": "person",
+    "Yarrick": "person",
+    "Dorvanis": "person",
+    "Krumm": "person",
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "Quillan": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Zabble": "person",
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Ysolde": "person",
+    "Golems": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Shades": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Ward Stone": "thing",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Krumm",
+     "text": "We must get help to Archmage Dorvanis in the Chapter House and drive these Golems out of our College!"
+    },
+    "opening": {
+     "speaker": "Dorvanis",
+     "text": "Yarrick's friend? Thank goodness! Vorlath's Golems are loose in the courts and I've had to bar myself in. Here, I'll push the Observatory key under the door. Stop Vorlath before he wakes every Golem we own!"
+    },
+    "reminder": {
+     "speaker": "Dorvanis",
+     "text": "Every Golem he wakes is another one at my door. Off you go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter the Observatory and stop Vorlath."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Krell: Fenn points the player to Commander Hadrik in the keep, who sends him to throw Ghrulg's Trolls off the High Gate.",
+   "names": {
+    "Fort Krell": "place",
+    "High Gate": "place",
+    "Beacon Tower": "place",
+    "Ghrulg": "person",
+    "Brannoc": "person",
+    "Hadrik": "person",
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ulvek": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Fenn": "person",
+    "Trolls": "group",
+    "Imps": "group",
+    "Wolves": "group",
+    "Grey Hoods": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fenn",
+     "text": "Not me, sorry. Commander Hadrik is up in the keep."
+    },
+    "opening": {
+     "speaker": "Hadrik",
+     "text": "Hmph! Brannoc sent just one?! Well, it'll have to do. Ghrulg and his Trolls have taken the High Gate and shut the pass. Nobody gets north while they hold it. And Brannoc himself rides in before the week is out!\n\nGet up there and throw them off the gate, and I'll pay you whatever the fort can spare.\n\nTake this iron key. It opens the little door at the foot of the wall."
+    },
+    "reminder": {
+     "speaker": "Hadrik",
+     "text": "Trolls are big, but they're dim. Come back when the High Gate is ours."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Ghrulg and his Trolls off the High Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Varnok: Pell points the player to Forgemaster Dravic in the Guildhall, who sends him up Slag Ridge against Gorlak.",
+   "names": {
+    "Varnok": "place",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guildhall": "place",
+    "Guild": "group",
+    "Ozmand": "person",
+    "Dravic": "person",
+    "Pell": "person",
+    "Hask": "person",
+    "Tobb": "person",
+    "Ottla": "person",
+    "Frost Tongs": "thing",
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Varga": "person",
+    "Nib": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "I'm wanted at the furnace, sorry. Try Forgemaster Dravic in the Guildhall."
+    },
+    "opening": {
+     "speaker": "Dravic",
+     "text": "Hail, Wanderer! So Ozmand sent you at last! Gorlak's Ogres have seized the Old Smelter on Slag Ridge, with our whole furnace crew shut inside!\n\nWill you go up there and get them out? The Guild has a fat bounty on Gorlak's head, dead or alive, and not a forge in Varnok will light again till the Smelter is ours!"
+    },
+    "reminder": {
+     "speaker": "Dravic",
+     "text": "Gorlak's hammer is a brute of a weapon and will even split a good steel shield at one blow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb Slag Ridge to the Old Smelter and free the furnace crew."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow: Hobbe the carter points the player to Mayor Quillon in the Town Hall, who sends him to drive Vosk out of the watchtower on Rook Hill.",
+   "names": {
+    "Tarrow": "place",
+    "Town Hall": "place",
+    "Crooked Mule": "place",
+    "Rook Hill": "place",
+    "Thornwood": "place",
+    "Knobble caves": "place",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Gammel": "person",
+    "Widow Brisa": "person",
+    "Skeff": "person",
+    "Dorrit": "person",
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Hobbe": "person",
+    "Warding Bell": "thing",
+    "Bears": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hobbe",
+     "text": "My cart... gone... ask Mayor Quillon."
+    },
+    "opening": {
+     "speaker": "Mayor Quillon",
+     "text": "Adventurer! So Pellam has sent you at last! You must hurry up Rook Hill and drive Vosk out of the old watchtower! His bandits came down on the crossroads and dragged off every carter they could catch, and now they sit up there waiting on ransom. Unfortunately, while that tower is his, the watch keeps our north gate shut and won't open it to anyone without my seal. Here, take it. Between you and me, Vosk never paid the town for that cart of his either.\n\nWell? Why are you still standing about? Does nobody listen to me?"
+    },
+    "reminder": {
+     "speaker": "Mayor Quillon",
+     "text": "Why are you still in my hall? Those carters won't last much longer up there!\n\nGo! Vosk won't wait on you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Vosk's bandits out of the old watchtower on Rook Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Belvik: Orrick points the player to Mayor Pellandor in the Town Hall, who sends him to drive the Ogres out of the old watchtower of Krell and open the north road.",
+   "names": {
+    "Belvik": "place",
+    "Grimfell": "place",
+    "Krell": "place",
+    "Town Hall": "place",
+    "Bramble Gully": "place",
+    "Cairn of Olm": "place",
+    "Muddy Boot": "place",
+    "Gristle Hill": "place",
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Grenwold": "person",
+    "Hesta": "person",
+    "Gimble": "person",
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Orrick": "person",
+    "Amulet of Warding": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orrick",
+     "text": "Go on ahead, Wanderer. Mayor Pellandor at the Town Hall will know what to do with these filthy brutes."
+    },
+    "opening": {
+     "speaker": "Mayor Pellandor",
+     "text": "Oh... at last! I can't keep this village calm much longer!\n\nThe Ogres... they've shut... they've shut the north road. The harvest carts can't get out, and Ferrigan expects them any day! I think the brutes are dug in at the old watchtower of Krell.\n\nWill you... will you drive them out of there?"
+    },
+    "reminder": {
+     "speaker": "Mayor Pellandor",
+     "text": "The north road runs straight up to the tower, you won't miss it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the watchtower of Krell and drive out the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

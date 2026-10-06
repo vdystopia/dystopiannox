@@ -1,0 +1,595 @@
+{
+ "scenario": "two_givers",
+ "iter": "i15",
+ "writer": "one writer a town (variants/i15/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants back the tithe chest Red Corwin's bandits stole; Sly Wat, a turncoat of Corwin's in the Drowned Lantern, sells the key to the watchtower cellar.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Greyjaw": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "The whole town's talking about you, traveller! I could use a strong arm like yours. But first I need the tithe chest back -- Corwin's thieves carried it off.\n\nWill you get it for me?"
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Evenin', friend! Care to buy the key to Corwin's back door? It opens the cellar under the watchtower and it's a steal at 50 gold.\n\nWell, do ya?"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The chest! Very good! The town armory can spare a longsword for you, and a mail shirt against the bandits' arrows."
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Pleasure doin' business. That key'll get you in, sure as anything.\n\nCome find me if you want anything else of Corwin's."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Return the tithe chest stolen by Corwin's bandits to Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy the cellar key from Sly Wat in the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude Code agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Khelm: Guildmaster Pellam wants the Miners' Guild pay chest back from the Trolls, and Nibbs, a tunnel rat, sells a secret way into the Troll caves.",
+   "names": {
+    "Khelm": "place",
+    "Haddrick": "person",
+    "Mirra": "person",
+    "Orvek": "person",
+    "Gorrak": "person",
+    "Elka": "person",
+    "Jorrin": "person",
+    "Gundra": "person",
+    "Pellam": "person",
+    "Nibbs": "person",
+    "Ulla": "person",
+    "Tobb": "person",
+    "Wash Pools": "place",
+    "Troll caves": "place",
+    "Crystal Caves": "place",
+    "Great Lift": "place",
+    "Miners' Guild": "group",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Pellam",
+     "text": "Greetings, Wanderer! The Miners' Guild has been robbed blind, our pay chest carried off in a brazen Troll raid!\n\nWould you be so good as to fetch it back from the Troll caves below? Do so and a fine reward awaits you, for the miners of Khelm won't lift a pick without their wages!"
+    },
+    "offer_b": {
+     "speaker": "Nibbs",
+     "text": "Hey, you. Will you loosen that purse, save your neck and buy my secret way into the Troll caves?"
+    },
+    "outcome_a": {
+     "speaker": "Pellam",
+     "text": "It's back then! The Guild's wages are saved!\n\nHere is your reward, as promised. You've earned it twice over!\n\nGorrak's Trolls still hold the deep, but I heard one of those grimy diggers say Foreman Orvek wants them gone. If you go and see him maybe he can use a strong arm like yours!"
+    },
+    "outcome_b": {
+     "speaker": "Nibbs",
+     "text": "Pleasure doing business. I hope you live to use it, for the Trolls are in a foul mood. I heard them bellowing down there a short while ago."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Miners' Guild pay chest from the Troll caves."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Use Nibbs' secret way into the Troll caves."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5"
+  },
+  {
+   "id": 3,
+   "specifics": "Kesh: Warden Hask offers the bounty on the river pirate Bartol Quickhook, more alive than dead, and Bartol himself begs to be taken in quietly.",
+   "names": {
+    "Kesh": "place",
+    "Stilt Hall": "place",
+    "Long Causeway": "place",
+    "Gallow Mound": "place",
+    "Sunk Boathouse": "place",
+    "Drowned Mill": "place",
+    "Mayor Ottrick": "person",
+    "Pell": "person",
+    "Tavlin": "person",
+    "Skarn": "person",
+    "Dunstav": "person",
+    "Wezzel": "person",
+    "Yselda": "person",
+    "Pothar": "person",
+    "Warden Hask": "person",
+    "Bartol Quickhook": "person",
+    "Hennet": "person",
+    "Tobb": "person",
+    "Trolls": "group",
+    "Giant Leeches": "group",
+    "Imps": "group",
+    "Boots of Speed": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Warden Hask",
+     "text": "Come about the notice, have you? Good day.\n\nBartol Quickhook has been robbing our flatboats since the thaw, him and his rotten crew. Kesh will pay good gold to see him brought in, alive or dead.\n\nWatch yourself. That lot would slit a throat for a copper."
+    },
+    "offer_b": {
+     "speaker": "Bartol Quickhook",
+     "text": "Mercy! Mercy! I give up! Put that thing away and I'll come along nice and quiet!"
+    },
+    "outcome_a": {
+     "speaker": "Warden Hask",
+     "text": "Well, well! I rowed over to have a look when Hennet heard a racket out on the water.\n\nBartol Quickhook, taken all by yourself! Remarkable work, kind sir, and you have my sincere admiration! Every boat in the fen has been plagued by that pirate since the thaw! Leave him to me. With this wretched rogue in irons, the flatboats can run again!\n\nThe reward is yours -- 150 in gold!"
+    },
+    "outcome_b": {
+     "speaker": "Warden Hask",
+     "text": "So Bartol's dead, is he? I'd rather have hanged him proper, but I won't shed a tear over the likes of him!\n\nHere's what you're owed -- 75 in gold! The whole fen thanks you!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Capture the river pirate Bartol Quickhook for Warden Hask."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Bartol Quickhook to Warden Hask alive."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Castle Vorne: Armsmaster Brodric sells a lesson in the shield wall, and Snitt wants the rain barrel knocked over on his signal.",
+   "names": {
+    "Castle Vorne": "place",
+    "Vorne": "place",
+    "the Keep": "place",
+    "Blackstone Rise": "place",
+    "the Gloamwood": "place",
+    "Grashnak": "person",
+    "Galdric": "person",
+    "Commander Dorvik": "person",
+    "Venn": "person",
+    "Magistrate Quillon": "person",
+    "Priestess Ombrel": "person",
+    "Armsmaster Brodric": "person",
+    "Snitt": "person",
+    "Sergeant Krell": "person",
+    "Jorrin": "person",
+    "the Ogres": "group",
+    "the Imps": "group",
+    "the Horn of Vorne": "thing",
+    "the Lantern of Warding": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Armsmaster Brodric",
+     "text": "A lesson in the shield wall, then? Pay me 60 gold and you'll train with a steel shield you can keep."
+    },
+    "offer_b": {
+     "speaker": "Snitt",
+     "text": "Say, stranger. When I wink, would you knock over that big rain barrel by the barracks? It'd be a real favor to me.\n\nHold on till I'm behind the cart."
+    },
+    "outcome_a": {
+     "speaker": "Armsmaster Brodric",
+     "text": "No? Ah well. Some folks just aren't made for the drill yard."
+    },
+    "outcome_b": {
+     "speaker": "Snitt",
+     "text": "Ha! He's gone! I can't believe the old goat left his post! Bless you! Here's a little something!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay Armsmaster Brodric for a lesson in the shield wall."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Topple the rain barrel when Snitt gives the signal."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Varn: Bodley signs up entrants for the log-rolling contest on the docks; Skeeve sells boots for it.",
+   "names": {
+    "Varn": "place",
+    "Vosker": "person",
+    "Vosker's pirates": "group",
+    "Gull Rock": "place",
+    "Odwald": "person",
+    "Mayor Ostrin": "person",
+    "Haskel": "person",
+    "Eel Caves": "place",
+    "Father Dunstal": "person",
+    "Imps": "group",
+    "Bodley": "person",
+    "Skeeve": "person",
+    "Nella": "person",
+    "Old Mott": "person",
+    "Marra": "person",
+    "Great Lake": "place",
+    "Nox": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Bodley",
+     "text": "Fifteen gold to enter the log-rolling contest, and you bring your own boots. We supply the log.\n\nYou want in or not?"
+    },
+    "offer_b": {
+     "speaker": "Skeeve",
+     "text": "Bet you're here for the log-rolling. I've got a lovely pair of boots for sale.\n\nSeeing as you've got an honest face, they're yours for 60 gold. Want 'em?"
+    },
+    "outcome_a": {
+     "speaker": "Bodley",
+     "text": "Right, you're all set. Out onto the dock with you, and the judge will explain how it works. Good luck to you!"
+    },
+    "outcome_b": {
+     "speaker": "Skeeve",
+     "text": "Here ya go! Those boots were made for your feet. Nobody falls off a log in boots like these."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Pay the entry fee and enter the log-rolling contest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Buy a pair of boots from Skeeve before the contest."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Quorra: Nim Halfpenny sits in Proctor Hamble's cells and wants out; Bessaly, who runs the wagers on the student duels, needs him back for match night.",
+   "names": {
+    "Quorra": "place",
+    "the Amber Tower": "place",
+    "the Ossuary": "place",
+    "the Observatory": "place",
+    "the Sealed Library": "place",
+    "the Sunken Archive": "place",
+    "the Ferry Landing": "place",
+    "Proctor Hamble's cells": "place",
+    "Malgrith": "person",
+    "Dravik": "person",
+    "Archmage Thule": "person",
+    "Orlo": "person",
+    "Grummet": "person",
+    "Magister Fennick": "person",
+    "Nim Halfpenny": "person",
+    "Bessaly": "person",
+    "Proctor Hamble": "person",
+    "Tamsin": "person",
+    "the Star Lens": "thing",
+    "the Undead": "group",
+    "the Imps": "group",
+    "the Spiders": "group",
+    "the Ghosts": "group",
+    "the Giant Leeches": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Nim Halfpenny",
+     "text": "Hey, you! They call me Nim Halfpenny. Can you spring me from this cell? Do that, and I'll find you a way into the Sealed Library."
+    },
+    "offer_b": {
+     "speaker": "Bessaly",
+     "text": "Oh, blast it! Nim's locked up again?! I swear the boy gets caught on purpose so he can skip the work. Running wagers on the student duels is no picnic, you know. Tonight's the big match and nobody keeps the books like Nim does.\n\nHere's the deal... Get Nim out of the cells and I'll throw in one of the steel shields from tonight's prize pile!"
+    },
+    "outcome_a": {
+     "speaker": "Nim Halfpenny",
+     "text": "Free at last, thanks to you! Here's a bit of gold to show my thanks. Oh, right! This key opens the Sealed Library, like I said. Tread softly once you're inside. The old Masters don't take kindly to strangers poking around their shelves. Cheers!"
+    },
+    "outcome_b": {
+     "speaker": "Bessaly",
+     "text": "Nim! What's the big idea, getting thrown in the cells on match night? Much obliged for springing him, stranger! One steel shield, just as I said. Best of luck with whatever it is you're after!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Free Nim Halfpenny from Proctor Hamble's cells."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Break Nim out of the cells and see Bessaly about the shield."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarrow: Fennick the quartermaster wants the garrison's pay chest back from the Trolls, and Snivvet wants his master's magic lockpicks back before the master notices.",
+   "names": {
+    "Fort Skarrow": "place",
+    "Northgate": "place",
+    "Hrimgar": "place",
+    "Warden Brolth": "person",
+    "Brolth": "person",
+    "Ottla": "person",
+    "Hildy": "person",
+    "Brisa": "person",
+    "Fennick": "person",
+    "Snivvet": "person",
+    "Vorna": "person",
+    "Elbin": "person",
+    "Master Elbin": "person",
+    "Grakkus": "person",
+    "Dobbe": "person",
+    "Ember Stone": "thing",
+    "White Wolves": "group",
+    "Urchins": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Fennick",
+     "text": "Sir! Trolls! A whole filthy pack of them fell on the supply sheds below the south wall and hauled off nearly every scrap of our winter stores! Even the garrison's pay chest is gone!\n\nThere's a fine reward in it if that chest comes back!"
+    },
+    "offer_b": {
+     "speaker": "Snivvet",
+     "text": "Those Trolls went and grabbed my master's magic lockpicks! He comes home from the tavern tonight, and if they aren't in his drawer, I'm done for!\n\nThe brutes went up to the old lookout, I'm pretty sure. Help a fellow out, sir?\n\nYou'd fetch them back for me... wouldn't you?"
+    },
+    "outcome_a": {
+     "speaker": "Fennick",
+     "text": "The pay chest, home again! These are yours, and the garrison thanks you!"
+    },
+    "outcome_b": {
+     "speaker": "Snivvet",
+     "text": "Ha! There they are! For your trouble, here!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the Trolls."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Fetch Snivvet's lockpicks from the Trolls at the old lookout."
+    }
+   },
+   "reward": {
+    "gold": 170,
+    "items": [
+     "SteelShield",
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulkir: Guildmaster Thorva sells her finest blade cheap before leaving town; Grubble at the Red Bellows wants 9,000 gold for his anvil and his mule.",
+   "names": {
+    "Vulkir": "place",
+    "Mount Skarn": "place",
+    "Malgrith": "person",
+    "Ember Witch": "person",
+    "Fire Imps": "group",
+    "Imps": "group",
+    "Kessick": "person",
+    "Ostrid": "person",
+    "Odrik": "person",
+    "Ember Blade": "thing",
+    "Keepers of the Anvil": "group",
+    "Old Kiln": "place",
+    "Dagrun": "person",
+    "Pellock": "person",
+    "Beetles": "group",
+    "Beetle Nest": "place",
+    "Muldo": "person",
+    "Cinder Gang": "group",
+    "Thorva": "person",
+    "Grubble": "person",
+    "Red Bellows": "place",
+    "Bolgrim": "person",
+    "Tobble": "person",
+    "North Bridge": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Thorva",
+     "text": "With the Ember Witch about, hardly anyone orders a sword these days. Before I pack up for the coast, I'd let my finest blade go cheap."
+    },
+    "offer_b": {
+     "speaker": "Grubble",
+     "text": "Fancy buying my anvil and my mule? Just 9,000 gold for the pair of 'em!"
+    },
+    "outcome_a": {
+     "speaker": "Thorva",
+     "text": "Wonderful! A steal at that price, lad! Now I'd best load my cart, the coast is a long way off. Mind you keep clear of the Ember Witch, and I hope you come through all this in one piece. Farewell!"
+    },
+    "outcome_b": {
+     "speaker": "Grubble",
+     "text": "Ah, no harm done. Somebody else will want an anvil and a mule, I'm sure. Should you think better of it, I'll be at the Red Bellows!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy Thorva's blade before she leaves Vulkir."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Hear out Grubble's offer at the Red Bellows."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Pellamar: Mayor Corvane posts a bounty on the outlaw Vesk the Fox; Gubbo the pedlar, robbed by Vesk's cutthroats, wants the gang in irons.",
+   "names": {
+    "Pellamar": "place",
+    "Lucky Boar": "place",
+    "Thornspur Fort": "place",
+    "Town Hall": "place",
+    "Hurgg": "person",
+    "Dorvan": "person",
+    "Mayor Corvane": "person",
+    "Tobb": "person",
+    "Moggin": "person",
+    "Hask": "person",
+    "Orla": "person",
+    "Vesk the Fox": "person",
+    "Gubbo": "person",
+    "Nib": "person",
+    "Ogres": "group",
+    "Urchins": "group",
+    "Imp": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Corvane",
+     "text": "Greetings, brave Adventurer. You'll be here for the bounty, I take it.\n\nVesk the Fox and his cutthroats have robbed every cart on the crossroads since spring. Bring him in dead or alive, and the town will pay a fine price.\n\nWatch yourself. Those rats stab a man the moment he turns his back."
+    },
+    "offer_b": {
+     "speaker": "Gubbo",
+     "text": "To tell the truth, nobody's buying much these days. Last week, cutthroats jumped my cart and took every pot I had.\n\nI'll never lay eyes on those pots again, but I'd love nothing better than to see that gang in irons.\n\nAnybody who puts them there gets a prize from me!"
+    },
+    "outcome_a": {
+     "speaker": "Mayor Corvane",
+     "text": "Dead, is he? I'd wanted Vesk to stand trial, but nobody in Pellamar will shed a tear for that scoundrel!\n\nYour bounty -- 100 gold! The crossroads are safer for your work!"
+    },
+    "outcome_b": {
+     "speaker": "Gubbo",
+     "text": "The cutthroats are in irons at last! Good work, lad! Every honest trader on the road can rest easy knowing those thugs won't be grabbing at our carts anymore!\n\nAnd here's your prize... the finest boots on my cart! Drop by anytime!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Hunt down Vesk the Fox and collect Mayor Corvane's bounty."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Vesk's cutthroats to justice for Gubbo the pedlar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Wendrel: Mayor Dunstrel wants the tax chest back from the Ogres and sends the player to Tobble's forge for armor; Grisk sells a used chain tunic on the cheap.",
+   "names": {
+    "Wendrel": "place",
+    "Dunstrel": "person",
+    "Orvane": "person",
+    "Grumvak": "person",
+    "Ketter Hill": "place",
+    "Town Hall": "place",
+    "Bortle": "person",
+    "Gaskin": "person",
+    "Ethra": "person",
+    "Dobbin": "person",
+    "Bodkin": "person",
+    "Squabble": "person",
+    "Gorrow Wood": "place",
+    "Grisk": "person",
+    "Tobble": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Grisk",
+     "text": "Now here's a real bargain of a chain tunic. Never took a single hit. The last owner ran from every fight!\n\nTobble the smith charges 400 gold for mail this good. You've got a trustworthy look about you, so call it 150. Interested?"
+    },
+    "offer_b": {
+     "speaker": "Dunstrel",
+     "text": "The Ogres carried off the village tax chest, and you'll want good armor to get it back. Tobble's forge sells mail at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Grisk",
+     "text": "Pleasure doing business! It fits you perfectly. No Ogre will lay a club on you in that!"
+    },
+    "outcome_b": {
+     "speaker": "Grisk",
+     "text": "Your loss, friend. Walk on over to Tobble's and see his prices for yourself. Hurry back, though -- a farmer down the road has his eye on it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy the chain tunic from Grisk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Recover the tax chest the Ogres stole from Mayor Dunstrel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

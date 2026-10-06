@@ -1,0 +1,221 @@
+{
+ "iter": "i13",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tarrow",
+  "setting": "a crossroads inn and its hamlet",
+  "trouble": "Vosk and his bandits hold the old watchtower on Rook Hill, the carters they caught are kept there for ransom, and the north gate of Tarrow stays shut.",
+  "names": {
+   "Tarrow": "place",
+   "Town Hall": "place",
+   "Crooked Mule": "place",
+   "Rook Hill": "place",
+   "Thornwood": "place",
+   "Knobble caves": "place",
+   "Mayor Quillon": "person",
+   "Pellam": "person",
+   "Vosk": "person",
+   "Gammel": "person",
+   "Widow Brisa": "person",
+   "Skeff": "person",
+   "Dorrit": "person",
+   "Brother Fennick": "person",
+   "Odo": "person",
+   "Hobbe": "person",
+   "Warding Bell": "thing",
+   "Bears": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Gammel, an old shepherd at the edge of the Thornwood, has lost sheep to the Bears and hides in his loft.",
+   "names": {
+    "Gammel": "person",
+    "Thornwood": "place",
+    "Bears": "group",
+    "Mayor Quillon": "person",
+    "Town Hall": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gammel",
+     "text": "Hello? Is somebody down there? Up here, in the loft!\n\nOh, it's a person! Thank goodness, I took you for one of them Bears!\n\nThe Bears out of the Thornwood come down for my sheep every night now. I'd go after them myself, only my knees, and that big black one would have me.\n\nHere, take the key to the high pasture and see to those Bears. I'll pay what I can when they're gone."
+    },
+    "reminder": {
+     "speaker": "Gammel",
+     "text": "I'm staying up here till they're gone.\n\nGo on, then! Get after 'em!"
+    },
+    "completion": {
+     "speaker": "Gammel",
+     "text": "Ha! Not a Bear left! Here's your pay, and Mayor Quillon has been asking for you at the Town Hall!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bears out of Gammel's high pasture."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Widow Brisa of the mill; the Urchins of the Knobble caves ran off with her Warding Bell.",
+   "names": {
+    "Widow Brisa": "person",
+    "Warding Bell": "thing",
+    "Urchins": "group",
+    "Knobble caves": "place",
+    "Rook Hill": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Widow Brisa",
+     "text": "Oh, please, help a poor widow!\n\nPlease, listen! Without my Warding Bell those Urchins will pick the mill clean, and me with it. Already the sacks are slit and the grain is all over the floor. Every night I hear them giggling down by the wheel, waiting for me to fall asleep.\n\nI was hanging out the washing when a pack of them ran off with it. They live in the Knobble caves, east across the river.\n\nPlease, if you bring my bell back, I'm sure I can find some way to repay you. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Widow Brisa",
+     "text": "I can see you've no time for a widow's bell! Off with you, then!"
+    },
+    "reminder": {
+     "speaker": "Widow Brisa",
+     "text": "Have you got my bell back?"
+    },
+    "completion": {
+     "speaker": "Widow Brisa",
+     "text": "Thanks for my bell, and good luck up on Rook Hill. Take these potions with you."
+    },
+    "after": {
+     "speaker": "Widow Brisa",
+     "text": "You know, I've been wondering... maybe I'll hang that bell a little higher this time!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back the bell the Urchins stole from Widow Brisa's mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back the bell the Urchins stole from Widow Brisa's mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "CurePoisonPotion"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Quillon wants the tithe chest Vosk's bandits stole; Skeff, thrown out of Vosk's gang, sells the key to the tower's back gate for his bar tab at the Crooked Mule.",
+   "names": {
+    "Mayor Quillon": "person",
+    "Dorrit": "person",
+    "Crooked Mule": "place",
+    "Vosk": "person",
+    "Skeff": "person",
+    "Rook Hill": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Quillon",
+     "text": "Ah, it's you again. Come in, come in.\n\nAnd what brings you up to my door, hmm? No, let me guess... Dorrit at the Crooked Mule has been filling your ears about the tithe chest.\n\nWell, Dorrit talks too much, but she has it right. Vosk's bandits carried the chest off from under my own desk, and with his rabble holding the hill, I'd wager it's up in that tower now! Bring it back before he spends it all!\n\nTake these potions, stranger. You'll want them up there."
+    },
+    "offer_b": {
+     "speaker": "Skeff",
+     "text": "Well, well! A real hero, in the Crooked Mule! Old Skeff knew one would turn up sooner or later!\n\nVosk's gone soft in the head! Threw me off the hill for one little nap on watch, me, his best man! But I've still got the key to the back gate of his tower.\n\nI won't go up there myself. Too many of the lads know my face. But the key's yours for what I owe Dorrit at the bar. Pay my tab and come see me. I'll be right here at this table."
+    },
+    "outcome_a": {
+     "speaker": "Mayor Quillon",
+     "text": "The whole town will be glad to see that chest back where it belongs! Please accept this shield as a token of Tarrow's thanks."
+    },
+    "outcome_b": {
+     "speaker": "Skeff",
+     "text": "Paid in full?! Ha! Dorrit's smiling at me again! You're a real friend, you are!\n\nHere's the key, fair and square. Now go on up and give Vosk a good kick from old Skeff!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Go up Rook Hill and recover the tithe chest for Mayor Quillon."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Pay Skeff's tab at the Crooked Mule for the key to Vosk's back gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "SteelShield"]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Fennick's novice Odo chased the Urchins into the Knobble caves and has not come home.",
+   "names": {
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Urchins": "group",
+    "Knobble caves": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brother Fennick",
+     "text": "Ah, you've come! Good! Our little chapel has the most devoted novices in all the valley. Sadly, young Odo went chasing the Urchins back to the Knobble caves, and he hasn't come home. I have prayed over his name all night, but something dark hides him from me.\n\nFind the boy and bring him home, and you shall have my blessing and a gift from the altar.\n\nHere, take this iron key. It opens the grate at the mouth of the caves."
+    },
+    "reminder": {
+     "speaker": "Brother Fennick",
+     "text": "No sign of him yet? Keep faith and keep looking. Those Urchins are cowards at heart."
+    },
+    "found": {
+     "speaker": "Odo",
+     "text": "Please get me back to Brother Fennick."
+    },
+    "following": {
+     "speaker": "Odo",
+     "text": "Brother Fennick will be very cross with me. You may tell him I went after the Urchins for the good of the chapel."
+    },
+    "completion": {
+     "speaker": "Brother Fennick",
+     "text": "Odo! Thank goodness! You've brought him back to us!\n\nHere is the Ankh from our altar, as promised. May all that is great watch over you! Good luck!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Brother Fennick's novice in the Knobble caves and bring him home.\n\n(Hint: The iron key opens the cave grate.)"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["AnkhTradable"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hobbe the carter points the player to Mayor Quillon in the Town Hall, who sends him to drive Vosk out of the watchtower on Rook Hill.",
+   "names": {
+    "Hobbe": "person",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Rook Hill": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hobbe",
+     "text": "My cart... gone... ask Mayor Quillon."
+    },
+    "opening": {
+     "speaker": "Mayor Quillon",
+     "text": "Adventurer! So Pellam has sent you at last! You must hurry up Rook Hill and drive Vosk out of the old watchtower! His bandits came down on the crossroads and dragged off every carter they could catch, and now they sit up there waiting on ransom. Unfortunately, while that tower is his, the watch keeps our north gate shut and won't open it to anyone without my seal. Here, take it. Between you and me, Vosk never paid the town for that cart of his either.\n\nWell? Why are you still standing about? Does nobody listen to me?"
+    },
+    "reminder": {
+     "speaker": "Mayor Quillon",
+     "text": "Why are you still in my hall? Those carters won't last much longer up there!\n\nGo! Vosk won't wait on you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Vosk's bandits out of the old watchtower on Rook Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,623 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i14",
+ "writer": "one writer a town (variants/i14/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow: the Urchins of the old barrow stole the crank of her waterwheel.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Wat": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Blast! Where were you, lad!? The Urchins broke into my mill last night and they'd have carried off every sack of flour if the ferrymen had not come running with their poles just in time!\n\nBut in the uproar, the thieves grabbed my waterwheel's crank, making the flour my smallest worry! No grain gets ground in Brackenford without it!\n\nFollow them east of the ford, to the old barrow! Will you bring my crank home, or is the mill finished?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Return when you've changed your mind."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Nothing yet? Well, keep searching in that barrow by the ford. My crank must be found at once!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "I trust you gave those Urchins a thrashing they'll long remember! I'm not sure what this old ankh is worth, but it's yours."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Bless you for helping a poor lonely widow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the waterwheel crank from the barrow for Wenna the widow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the waterwheel crank from the barrow for Wenna the widow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Vurn: Old Bram the miner wants back the magic pickaxe the Imps stole from his shed.",
+   "names": {
+    "Vurn": "place",
+    "Ossric": "person",
+    "Durvin": "person",
+    "Pob": "person",
+    "Grutt": "person",
+    "Trolls": "group",
+    "Kettrin": "person",
+    "Scorpions": "group",
+    "West Gallery": "place",
+    "Bram": "person",
+    "Imps": "group",
+    "Flooded Seam": "place",
+    "Hulda": "person",
+    "Great Forge": "place",
+    "Fire Crystal": "thing",
+    "Lower Galleries": "place",
+    "Fesk": "person",
+    "Marra": "person",
+    "Tobb": "person",
+    "Troll den": "place",
+    "East Shaft": "place",
+    "Great Hall": "place",
+    "Hammer of the Mountain": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Bram",
+     "text": "Hello. Folks call me Bram. And you came down with the Mayor's blessing, eh? Well, there is a fine reward in it for you, but first you must win back the magic pickaxe the Imps stole from my shed.\n\nWill you do it?"
+    },
+    "refusal": {
+     "speaker": "Bram",
+     "text": "Oh, never mind then, lad. I suppose some other fellow will come along to fetch my pickaxe. But if you think it over, I'll be right here by my shed!"
+    },
+    "reminder": {
+     "speaker": "Bram",
+     "text": "One of the little Imps -- with a nasty cackle -- flew off toward the old Flooded Seam. Maybe their nest is down there!"
+    },
+    "completion": {
+     "speaker": "Bram",
+     "text": "Wonderful! You found my pickaxe after all, lad! I hope those Imps got what they deserved.\n\nNow if you'll excuse me, I've got a lot of digging to catch up on.\n\nHere's your gold, and stay clear of Grutt if you hope to live!"
+    },
+    "after": {
+     "speaker": "Bram",
+     "text": "Thanks a hundred times over! All of Vurn will hear of your good deed!\n\nBless you, kind stranger!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Bram's pickaxe."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Bram's pickaxe."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Tarrow: Brannoch's lantern was stolen by the Imps of the Hollow Oak.",
+   "names": {
+    "Tarrow": "place",
+    "Black Mire": "place",
+    "Mire": "place",
+    "Grisla": "person",
+    "Jessop": "person",
+    "Ostrick": "person",
+    "Pibb": "person",
+    "Hulda": "person",
+    "Brannoch": "person",
+    "Ombrel": "person",
+    "Gudge": "person",
+    "Dorla": "person",
+    "Wick": "person",
+    "Hollow Oak": "place",
+    "Drowned Chapel": "place",
+    "Sunken Crypt": "place",
+    "Eel Landing": "place",
+    "Moonstone": "thing",
+    "Ankh": "thing",
+    "Leeches": "group",
+    "Imps": "group",
+    "Bog Toads": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brannoch",
+     "text": "Those thieving Imps are a curse on this house! My boy chased them with a broom, yet back they swoop! Only you can catch the little pests and win my lantern back!\n\nThey roost in the Hollow Oak, past the reeds there. Will you fetch it?"
+    },
+    "refusal": {
+     "speaker": "Brannoch",
+     "text": "Then I'll need a braver soul for this. The tavern has plenty of them most nights."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "It's dark! It's so dark! Um... You hurry now."
+    },
+    "completion": {
+     "speaker": "Brannoch",
+     "text": "My lantern! I thought I'd lost it forever! I'm truly in your debt, friend. Here's an Ankh, for your trouble."
+    },
+    "after": {
+     "speaker": "Brannoch",
+     "text": "Well, look who's back."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Brannoch's lantern from the Hollow Oak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Brannoch's lantern from the Hollow Oak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Varnhold: Sibba, the garrison's healer, wants her Healing Stone back from the Imps of the Cistern.",
+   "names": {
+    "Varnhold": "place",
+    "Tobrin": "person",
+    "Jask": "person",
+    "Ostrik": "person",
+    "Skarn": "person",
+    "Hesk": "person",
+    "Sibba": "person",
+    "Brannock": "person",
+    "Wezzle": "person",
+    "Crull": "person",
+    "Hulda": "person",
+    "Tib": "person",
+    "Old Gatehouse": "place",
+    "North Pass": "place",
+    "Gloomwood": "place",
+    "Cistern": "place",
+    "Granary": "place",
+    "Blackrock Mine": "place",
+    "Grey Quarry": "place",
+    "Healing Stone": "thing",
+    "Trolls": "group",
+    "Wolves": "group",
+    "Imps": "group",
+    "Spiders": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Sibba",
+     "text": "Your road here must have been a hard one, lad. But I'm afraid you can't stop to catch your breath. You must bring back my Healing Stone, which the Imps carried off when they crept up from the Cistern last night!\n\nWith the Imps growing bold and Skarn's Trolls at the gate, I'm sure the two are in league. My wounded are waiting in the barracks. Now, will you fetch it for me?"
+    },
+    "refusal": {
+     "speaker": "Sibba",
+     "text": "So you'd leave the soldiers to suffer, young sir? Without that Stone, some of them will die. Shame on you! Think it over and come see me again."
+    },
+    "reminder": {
+     "speaker": "Sibba",
+     "text": "The Cistern? Head round behind the chapel and down the long stair.."
+    },
+    "completion": {
+     "speaker": "Sibba",
+     "text": "The Imps are beaten and my Stone is home! Good work, lad! The soldiers will heal all the faster now those wretches can't touch it!\n\nHere, 80 gold pieces... you've earned them! The barracks door is always open to you, young sir!"
+    },
+    "after": {
+     "speaker": "Sibba",
+     "text": "The sun's out at last, eh?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Sibba's Healing Stone from the Cistern Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Sibba's Healing Stone from the Cistern Imps."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  },
+  {
+   "id": 5,
+   "specifics": "Skarra: Dobrin, a fisherman, lost his spyglass to the Urchins of the caves on the north shore.",
+   "names": {
+    "Skarra": "place",
+    "Heron Isle": "place",
+    "Vashk": "person",
+    "Dreyhaus": "person",
+    "Ottrick": "person",
+    "Lomm": "person",
+    "Torvy": "person",
+    "Dobrin": "person",
+    "Brannoc": "person",
+    "Tamsk": "person",
+    "Nim": "person",
+    "Gorm": "person",
+    "Nella": "person",
+    "Warding Lantern": "thing",
+    "Urchins": "group",
+    "Undead": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Dobrin",
+     "text": "Pardon the mess, lad, but those thieving Urchins tore my whole shack apart to get at my spyglass. There were three of them here and plenty more in their caves on the north shore.\n\nI must have that spyglass back, but the little beasts won't part with it easily. Will you go after it, lad? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Dobrin",
+     "text": "Hmmm, a shame. Urchin hunting isn't for everybody."
+    },
+    "reminder": {
+     "speaker": "Dobrin",
+     "text": "Maybe if you poked into every last crack and hollow of those caves you would turn up my spyglass at last!"
+    },
+    "completion": {
+     "speaker": "Dobrin",
+     "text": "I bet those Urchins put up quite a fight, eh mate?"
+    },
+    "after": {
+     "speaker": "Dobrin",
+     "text": "Heron Isle is out to the North. Just follow the shoreline."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Dobrin's spyglass from the Urchin caves!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Dobrin's spyglass from the Urchin caves!"
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 6,
+   "specifics": "Zanthis: Fennick the stargazer wants his crystal ball back from the Imps who nest in the old tower.",
+   "names": {
+    "Zanthis": "place",
+    "Academy": "place",
+    "Observatory": "place",
+    "Archive": "place",
+    "Tipsy Owl": "place",
+    "Grelloch": "person",
+    "Jorvan": "person",
+    "Ombrel": "person",
+    "Wendle": "person",
+    "Tibba": "person",
+    "Bastel": "person",
+    "Fennick": "person",
+    "Hestra": "person",
+    "Tobb": "person",
+    "Rook": "person",
+    "Oona": "person",
+    "Nib": "person",
+    "Star Charts": "thing",
+    "Golems": "group",
+    "Wasps": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Masters": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Care to win back my crystal ball? I'll pay 80 gold to get it out of the Imps' tower."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Not quite brave enough yet, eh? Never mind, the gold will stay right here for you. If you change your mind later, just come and find me."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "A student saw it glowing in the tower window. It's still up there!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "In more peaceful days, the halls of Zanthis would ring with cheers for the return of my crystal ball! Nicely done, lad! But first the vile Grelloch must be stopped for good.\n\nTake this gold as a token of my appreciation for your bold deed!"
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Bless you for all your help!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the Imps' tower at the south end of the college grounds. Fennick's crystal ball should be in their nest near the very top."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Search the Imps' tower at the south end of the college grounds."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Kessry: Yorla, an old woman of the fort, wants her Amulet of Warmth back from the Imps nesting at the frozen falls.",
+   "names": {
+    "Fort Kessry": "place",
+    "Haldrek": "person",
+    "Gorrak": "person",
+    "Belgard": "person",
+    "Fennick": "person",
+    "Brunko Tallow": "person",
+    "Yorla": "person",
+    "Ostrik": "person",
+    "Grubbin": "person",
+    "Tessaly": "person",
+    "Dobbin": "person",
+    "Amulet of Warmth": "thing",
+    "White Wolves": "group",
+    "Imps": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yorla",
+     "text": "Are you climbing to the frozen falls? If so, mind the Imps who nest there. They stole my Amulet of Warmth.\n\nWell? Will you get it back or not?"
+    },
+    "refusal": {
+     "speaker": "Yorla",
+     "text": "So you're afraid of Imps. Ask me again when you're braver."
+    },
+    "reminder": {
+     "speaker": "Yorla",
+     "text": "The Imps of the frozen falls are thieving and spiteful pests of the worst kind. Your climb to their nest will try your courage and your patience."
+    },
+    "completion": {
+     "speaker": "Yorla",
+     "text": "Hey, there! The sentry told me you came down from the falls, so I hurried right over.\n\nYou found my Amulet of Warmth! Simply wonderful! My heartfelt gratitude is yours, kind stranger! Those wretched Imps have plagued this fort all winter! I'll never take it off again. My old bones will be warm at last with this blessed amulet!\n\nAnd here is something for you, brave Adventurer -- 80 in gold!"
+    },
+    "after": {
+     "speaker": "Yorla",
+     "text": "Hello again, I'm sure this amulet will keep me warm till spring.\n\nDrop in on me again if you ever feel the chill."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Yorla's Amulet of Warmth from the Imp nest."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Yorla's Amulet of Warmth from the Imp nest."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 8,
+   "specifics": "Ferrik: Tobb the smith wants back the fireproof gloves the Imps snatched from his anvil.",
+   "names": {
+    "Ferrik": "place",
+    "Magrok": "person",
+    "Grenn": "person",
+    "Imps": "group",
+    "Great Furnace": "place",
+    "Mayor Thurgo": "person",
+    "Holk": "person",
+    "Mirta": "person",
+    "Dobrin": "person",
+    "Slag Pits": "place",
+    "Fire Bats": "group",
+    "Tobb": "person",
+    "Master Hollin": "person",
+    "Rune Hammer": "thing",
+    "Guild": "group",
+    "Guild Hall": "place",
+    "Nibbs": "person",
+    "Rusty Bellows": "place",
+    "Gretta": "person",
+    "Pell": "person",
+    "Ash Caverns": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobb",
+     "text": "Hold up, pal, the lower forge is overrun! The Imps nest down there, in the cinder tunnels under the smithy. So if you head down there, pal, watch your back! Them little devils snatched my fireproof gloves while I was napping!\n\nGet 'em back for me, pal, and I'll pay you good gold. Will you?"
+    },
+    "refusal": {
+     "speaker": "Tobb",
+     "text": "That's a shame, pal. I hope you change your mind quick, 'cause my hands won't last long at the anvil without them gloves. I burned my thumb twice this morning already."
+    },
+    "reminder": {
+     "speaker": "Tobb",
+     "text": "Enough standing around. Go get 'em!"
+    },
+    "completion": {
+     "speaker": "Tobb",
+     "text": "Marvelous! All of Ferrik owes you a great debt.\n\nBut there's no time to admire these gloves now! Magrok is stirring below! Take this gold and get after him before he wrecks every forge in town!"
+    },
+    "after": {
+     "speaker": "Tobb",
+     "text": "Everybody's heard how you handled them Imps under the smithy! Good job!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Search the cinder tunnels and recover Tobb's gloves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Search the cinder tunnels and recover Tobb's gloves."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Vellin Cross: Grenna the herb woman wants her magic gloves back from the Urchins of the Mire Caves.",
+   "names": {
+    "Vellin Cross": "place",
+    "Gold Goose": "place",
+    "Gray Quarry": "place",
+    "Mire Caves": "place",
+    "Scraggle Wood": "place",
+    "Hagg Hollow": "place",
+    "Old Toll Fort": "place",
+    "Gormley": "person",
+    "Grenna": "person",
+    "Tullock": "person",
+    "Bramble": "person",
+    "Dalbo": "person",
+    "Fennick": "person",
+    "Pell": "person",
+    "Brusk": "person",
+    "Thrungar": "person",
+    "Pibbet": "person",
+    "Garamond": "person",
+    "Elixir of Mighty Strength": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenna",
+     "text": "Hello, and welcome to the only herb shop at Vellin Cross.\n\nWhat sort of thief robs a poor old herb woman? Hmm, let me think... those filthy Urchins from the Mire Caves, that's who!\n\nWell, Warden Brusk won't spare a single guard while the Ogres hold the roads, but you look like you could help an old woman, kind sir.\n\nFetch back my magic gloves. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Grenna",
+     "text": "So you have no pity for old women."
+    },
+    "reminder": {
+     "speaker": "Grenna",
+     "text": "Oh, thank goodness you're back!"
+    },
+    "completion": {
+     "speaker": "Grenna",
+     "text": "Bless you for my gloves! Now you simply must take these potions for your trouble!"
+    },
+    "after": {
+     "speaker": "Grenna",
+     "text": "The Ogres won't wait forever. Off you go now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take the magic gloves from the Urchins in the Mire Caves to Grenna at the herb shop."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take the magic gloves from the Urchins in the Mire Caves to Grenna at the herb shop."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Tarrow: Marga's Silver Sickle was stolen by the Urchins of Mossback Cave.",
+   "names": {
+    "Tarrow": "place",
+    "Kervan": "person",
+    "Gorlak": "person",
+    "Blackstump Hill": "place",
+    "Mott": "person",
+    "Grisk Hollow": "place",
+    "Marga": "person",
+    "Silver Sickle": "thing",
+    "Mossback Cave": "place",
+    "Brannoch": "person",
+    "Dorrin": "person",
+    "Nebbit": "person",
+    "Hobb": "person",
+    "Tam": "person",
+    "Pell": "person",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Marga",
+     "text": "Oh, the harvest has gone badly this year. Three nights back, Urchins from Mossback Cave crept in and stole my Silver Sickle.\n\nI doubt I'll ever hold it again, but nothing would make me happier than to see those little thieves punished.\n\nWill you bring it back? I'll gladly reward you."
+    },
+    "refusal": {
+     "speaker": "Marga",
+     "text": "You'll be sorry. Go ask Mayor Brannoch how bold those Urchins have gotten. Then come back here quick -- my wheat won't wait forever."
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "With those Urchins holding my sickle, my wheat just stands there rotting!"
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wonderful! Thank you so much, young sir. I'm truly amazed by your courage!\n\nNow, take these boots for your trouble."
+    },
+    "after": {
+     "speaker": "Marga",
+     "text": "Fine boots."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Marga's sickle."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Marga's sickle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code agent, claude-opus-5-5"
+  }
+ ]
+}

@@ -1,0 +1,34 @@
+{
+  "packet": "81249a",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Breathless exclamation-stacked plea, 'my sweet sister', the comma-less 'Hurry, kind sir and find a way out' and the bald 'tokens of my appreciation' handover are Westwood's plain, slightly clumsy cheer; the journal is a bare imperative."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The plea is tidy and over-specified (pig farmer intro, cellar of the burned farmhouse, guards, key) in a measured cadence Westwood's panicked NPCs rarely have; the captive's 'Yaaaaaiiieeee!!' reads as an imitation of Nox's yelps bolted onto it."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Many short fragments split across pages, the 'lost his eyebrows' joke and the captive's speechy 'bigger and braver than you' line feel crafted; the narrative journal with a trailing ellipsis is not how Nox phrases objectives."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'What took you so long to get here!?', 'Nox's vital interests', 'Charm or kill all the monsters... Rescue the 6 trapped mine workers' with a numeral, and the flat 'I'll follow you.' are exactly the campaign's functional voice and quest shape."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The jammed express elevator, 'Chief Engineer', 'You'll make a fine [Group], lad' and the captive handing over a key and a secret passage are the campaign's logistics-heavy plainness with a cheerful mentor tone."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'beat him or eat him', 'a grim and terrible warning of my son's fate' and 'my courage holds -- lead me home!' are polished, rhythmic phrasing; the stew-warming reminder is a crafted character beat rather than Nox's blunt 'hurry' nag."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The plea is pure world-building (salted fish, the lake rising) with no request or reward stated; the evenly measured, comma-correct sentences and the 'dry with my papa' callback read as a modern writer."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Very short, blunt lines ('Help us!', 'Now be on your way!'), 'Well done, my boy!' and 'lovely women... damsels' have Westwood's dated, cheerful bluntness and a multi-group quest structure."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 4,
+     "critique": "Awkward constructions ('you're surely none of those rotten dead men', 'will even drain a bit of the boldest man's courage away', 'Here is my last apple, you have it') and the sentimental 'mend my heart' feel non-native and over-written; the reward line's 'better than you know' is a writerly flourish."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The trapped frog, the grumpy 'Fine! I will follow you!' and the 'What's that you say? Loads and loads of money?' gag are Nox's goofy humour, delivered in short exclamation-heavy lines."}
+  ],
+  "tells": [
+    "Westwood's pleas are panicked and functional: exclamation marks, a stated reward ('I promise you a reward', 'reward you handsomely'), a key or item, and little scene description; the new texts spend the plea on setting detail (who the speaker is, what the place used to be) and sometimes never state the request or the reward.",
+    "Westwood's journal entries are bare imperatives, sometimes with numerals ('Rescue the 6 trapped mine workers'); a narrative journal with an ellipsis or editorial voice gives a new text away.",
+    "New texts reach for crafted turns of phrase and rhyme or rhythm ('beat him or eat him', 'my courage holds', 'mend my heart', 'grim and terrible warning'); Westwood's lines are flatter and plainer, with humour from situation and blunt asides (the frog, 'Loads and loads of money?') rather than polished quips.",
+    "Westwood's captives and followers say very little and generically ('I'll follow you.', 'Help us!', 'Hurry! Lead me to safety!'); the new texts give captives speechy, characterful lines addressed to the monsters.",
+    "Westwood's reminders are plain nags ('Time is running out. Now be on your way!'); new reminders tend to be character beats or odd aphorisms.",
+    "Westwood's punctuation is looser (missing commas before 'and', '!?', '?!', double dashes for asides); the new texts are more grammatically tidy, or else awkward in a non-native way."
+  ]
+}

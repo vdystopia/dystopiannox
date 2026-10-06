@@ -1,0 +1,28 @@
+{
+  "packet": "c034a7",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Practical, scene-bound briefing that names the spells it hands over and why (invisibility for guards), with the stock 'Good luck and good speed'. Plain and slightly clumsy in a Westwood way."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Tidy cause-and-effect exposition (tower, road, harvest, therefore the Ogre Lord) that over-explains the stakes; 'in their claws' and the neat staging at the north gate feel composed rather than blurted."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Stiff, fragmentary self-introduction ('The Master for the [Place].'), capitalised 'YOU', and a reminder that restates the stakes instead of the task: Westwood's awkward plainness."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Double-dash aside, 'darkest hour', 'She knows you are coming', and the one-line dramatic page '[Place] has no one else.' are modern cinematic beats; the reminder 'Enough idle talk' is generic."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Carefully paced short pages with a homely hand-off and a gifted sword; flavour lines ('come sniffing', 'feel its edge', 'Mind your step') are polished atmosphere Westwood rarely spends on an opener."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Exclamatory, slightly silly mayor with 'nettlesome urchins', explicit directions ('East of here', 'house at the center of town'), odd capitalisation of Urchins: classic Nox."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Breathless shouting with '!?', run-on exclamations and awkward 'leaving rebuilding the village our smallest concern' - the overwrought but plain Westwood panic voice with a clear destination."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Opening starts mid-thought and the reminder repeats itself; the joke 'you'll smell him before you see him' and the rigged-rockfall warning read like a modern writer's scouting brief."}
+  ],
+  "tells": [
+    "Westwood's openings are clumsy and literal: fragments, odd capitalisation, '!?', all-caps emphasis, and stakes restated bluntly; the new texts are smoother and more evenly paced.",
+    "New texts lean on cinematic dramatic beats (short isolated pages like 'X has no one else.', 'She knows you are coming', 'darkest hour') and on double-dash asides, which Westwood does not use.",
+    "New texts over-explain causal logic and add homely flavour verbs ('come sniffing', 'in their claws', 'feel its edge'); Westwood gives the task and, when a tool is handed over, says exactly what it is for.",
+    "Westwood reminders often comment on the situation or repeat the stakes; new reminders tend to be brisk 'Off with you, go!' shoos or redundant restatements of the task."
+  ]
+}

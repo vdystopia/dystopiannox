@@ -8,6 +8,7 @@ cannot be told from Westwood's.
 |---|---|
 | `scenarios.json` | the situations, on one template map (Brackenford): a guard's barks, a bounty on beasts, an heirloom fetched start to end, rumours pointing at quests, shopkeepers' greetings, a choice between two givers, a rescue, the main quest's opening. Each has its map context (names, reward items, a gold budget), the parts a variant writes, and 5-7 Westwood units (string-table keys) to set beside ours |
 | `westwood.py` | the campaign's text from `nox.csf` (read only), each line sorted by situation from its key |
+| `originality.py`, `originality.json` | (i13 on) every line and quest against Westwood's whole campaign: closest line by word 3-grams and edit similarity, copied 5-word runs, quest skeletons; thresholds from Westwood against itself (`py tests/storylab.py originality --iter NAME` or `--file`, and in `--check`) |
 | `metrics.py` | the metric judge: each line against Westwood's measured lines of its situation (length, sentence length, paging, punctuation, rare words, what it must carry), a set of lines for its voice (exclaiming, addressing the player, semicolons), and consistency (names not on the map, reward over budget, journal entries that are not orders, lines copied from the campaign) |
 | `JUDGE.md` | the blind judge's protocol and its fixed JSON |
 | `WRITER.md` | the writers' brief (v4 on; v11: a Westwood quest frame for each quest, a line frame for each short line, nothing added) |
@@ -60,6 +61,8 @@ py tests/storylab.py solo --iter i4                   # (i8 on) every text alone
 (fresh agents judge three texts each by JUDGE_SOLO.md -> review/storylab/judgements/i4/solo/<id>.json)
 py tests/storylab.py all --iter i4; py tests/storylab.py summary
 ```
+
+From i13 a round is the long quests only, two packets a scenario (`py tests/storylab.py originality --iter NAME` with it; RESULTS.md "The third protocol").
 
 Then read the judges' critiques and tells and fix what they point at: `WRITER.md` and the exemplars first (what the
 writers imitate), the guide when a rule is wrong, the quest patterns when the shape is, `kit/quests.py` when the kit

@@ -1,0 +1,33 @@
+{
+  "packet": "d1ce48",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The outcomes don't fit their asks. 'I'd given up on that hammer' is a deadpan outcome with no setup, and the fence's 'I can't give change' line is clever in a way Westwood's shopkeepers aren't. The thief opener reads like a template of a Westwood alarm line."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The panic opener and 'Bless you, young sir!' are good Nox mimicry. But the routing ('The north gate is open to you now. Get whatever supplies are needed, then hurry on toward') is over-explained, and the ale-beast rumour is too terse beside it."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Pure Westwood: a merchant fleeing the villain, an absurd 50,000 gold price, 'lad', and a cheerful 'stay out of [Person]'s way if you want to stay alive!' The two outcomes are long, natural and full of exclamation marks."},
+    {"label": "D", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "The ask is long and formal ('keepers and faithful wardens', 'far more precious than the coin in our coffers'). It uses the ' -- ' dash several times, and the trapdoor routing is overwrought. The 'reader's pass' reward is literary rather than Nox-plain."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The used-car-salesman joke ('only used it on weekends') and the haggling ('since I like your face') are Westwood's humour exactly. Reward, price and contest are stated plainly."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'I surmise', 'savage scum', 'I'll lose no sleep fretting about his soul!' and exact gold rewards with '...' and exclamation marks are the hammy town-bounty voice of the campaign."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Breathless, slightly clumsy pleading ('Could you... would you get it back for us?'), capitalised Ogres and generic 'token of my appreciation' thanks: weak but authentic Westwood filler."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The asks are too compressed and lore-stated ('It burns only with the [Thing]'). The Troll-teeth merchant gag is half-formed, and 'Now go pull a few more!' strains for a punchline."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The conjurer's lesson fee, 'Basic training isn't for everyone' and the red-button gag ('I can't believe it worked! You must be good luck!') carry Westwood's light, silly tutorial tone."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Clipped imperative sentences ('You'll see why. And mind yourself.') are followed by an ornate thanks ('Hurrah... bold and steady friend!'). 'Pleasure doing business' and 'Quick and quiet, just how I like it' read as stock fantasy rather than Nox's register."}
+  ],
+  "tells": [
+    "Westwood's speakers ramble naturally and run long in outcomes, with many exclamation marks, 'lad'/'young sir', exact gold sums and broad salesman humour. The new texts are either clipped to a few short sentences or ornate.",
+    "The new texts use ' -- ' dashes and literary diction ('faithful wardens', 'far more precious than the coin in our coffers', 'bold and steady friend'). Westwood stays colloquial.",
+    "The new texts over-explain routing and next steps (which gate is open, where the trapdoor leads, 'get supplies then hurry on'). Westwood says what to do and stops.",
+    "In the new texts outcomes often don't follow their asks, or the joke is a setup with no payoff. Westwood's gags are built into the offer itself (the weekend bow, the 50,000-gold inn).",
+    "The new texts copy Westwood openers ('Ohhh, how could this happen?') as templates across several texts. Repeated near-identical alarm lines are a giveaway."
+  ]
+}

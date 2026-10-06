@@ -1,0 +1,229 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Okkum",
+  "setting": "a swamp hamlet on stilts",
+  "trouble": "Ghessa the Bog Witch has raised the drowned dead of the swamp against Okkum, and half the village is packing to leave.",
+  "names": {
+   "Okkum": "place",
+   "Ghessa": "person",
+   "Gorvald": "person",
+   "Fennick": "person",
+   "Ebbin": "person",
+   "Moribel": "person",
+   "Dobbs": "person",
+   "Kelso": "person",
+   "Snell": "person",
+   "Quibb": "person",
+   "Grumm": "person",
+   "Dilla": "person",
+   "Ysmay": "person",
+   "Bodrick": "person",
+   "Pella": "person",
+   "Black Reeds": "place",
+   "Drowned Chapel": "place",
+   "Moon Amulet": "thing",
+   "Frog Horn": "thing",
+   "Troll": "group",
+   "Imps": "group",
+   "Zombies": "group",
+   "Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Fennick the punt-man wants the Troll on the old sluice gate driven off, but the player must sign Ebbin's bounty book first.",
+   "names": {
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Okkum": "place",
+    "Black Reeds": "place",
+    "Troll": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Ahoy there! My punt goes no farther than the last stilts, not while a Troll is squatting on the old sluice gate!\n\nWill you go and drive the brute off? Put your mark in Ebbin's bounty book first, and I know there's a fat purse waiting for you, because no eel boat in Okkum can get past him!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Evening, stranger."
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "The Troll is gone? Gone for good? Then the eel boats go out tonight!\n\nYour mark is in the book, so the bounty's yours. Here, 100 in gold!\n\nEbbin says the Witch's lights were burning over the Black Reeds again last night. Keep this potion handy... you may want it before long."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Sign the bounty book and drive off the sluice Troll."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["RedPotion"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Moribel's Moon Amulet was carried off by the Imps that keep creeping into her hut; she hands over her storeroom key.",
+   "names": {
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Moon Amulet": "thing",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Moribel",
+     "text": "Good evening, young sir. I expect you have come about my trouble.\n\nImps! The wretched things got into my hut and made off with my Moon Amulet! Dobbs went after them with a broom, but they keep creeping back up the pilings!\n\nHere is the key to my storeroom -- they nest in there now. Will you go in and bring my amulet back?"
+    },
+    "refusal": {
+     "speaker": "Moribel",
+     "text": "Don't dawdle on my ladder then. You haven't the nerve for Imps, I see. My amulet is as good as lost. Come back when you've found some courage."
+    },
+    "reminder": {
+     "speaker": "Moribel",
+     "text": "Dobbs -- the great lump -- says he heard them squabbling under the floorboards. Maybe that's where they hide my amulet!"
+    },
+    "completion": {
+     "speaker": "Moribel",
+     "text": "Ah, there you are! I heard such squealing from the storeroom that I climbed down to look.\n\nYou have brought back the Moon Amulet! Remarkable! Those Imps have plagued this hut since the rains began! I shall hang it over my door tonight. We'll all sleep sounder with the little pests gone!\n\nAnd this is for your trouble -- 100 gold pieces!"
+    },
+    "after": {
+     "speaker": "Moribel",
+     "text": "Please, pull the hatch shut behind you. I'm still jumpy."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Moribel's storeroom and recover the Moon Amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Moribel's storeroom and recover the Moon Amulet."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Kelso wants the reed-cutters brought back from the far beds before the Zombies reach them; Snell, caged by Kelso, wants his Frog Horn back from Quibb.",
+   "names": {
+    "Kelso": "person",
+    "Ysmay": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Frog Horn": "thing",
+    "Zombies": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Kelso",
+     "text": "Stand back, lad, the walkway's gone under! The reed-cutters went out to the far beds this morning, and the Zombies came up out of the mud behind them. They're trapped on the cutting platform and the dead are climbing! Hurry, they can't hold them off much longer!\n\nGet them home alive, and the village chest will pay you well for it."
+    },
+    "offer_b": {
+     "speaker": "Snell",
+     "text": "Hey! You! Up on the walkway! Help me, something awful has happened!\n\nQuibb, that toad-faced servant of the Witch, came sneaking by in the night. He knocked both my frog-boys into the water and ran off into the reeds with my Frog Horn! Kelso won't unlock this cage till I pay my fine in frogs, and I can't call a single frog without that horn! If nobody catches the little thief, I'll rot in here!\n\nWould you chase him down and bring my horn back, Wanderer? There'll be something nice in it for you, once I'm out."
+    },
+    "outcome_a": {
+     "speaker": "Kelso",
+     "text": "The cutters! Every last one home and dry! I'm in your debt for this. Here's the gold from the village chest, and a good tunic besides.\n\nNow go and see Ysmay. She has been asking for you."
+    },
+    "outcome_b": {
+     "speaker": "Snell",
+     "text": "My horn! You caught that sneak! Ooh, the frogs won't know what hit them! I'm not much for coin, stuck in here... But take these boots and a little gold. And tell Kelso his frogs are coming!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the reed-cutters' platform in the far beds."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Chase down Quibb and recover Snell's Frog Horn."
+    }
+   },
+   "reward": {
+    "gold": 200,
+    "items": ["ChainTunic", "LeatherBoots"]
+   }
+  },
+  "rescue": {
+   "specifics": "Grumm shuts his boat shed until his daughter Dilla, who went after the Leeches at the Drowned Chapel, is brought home; the reward is his punt and the way on.",
+   "names": {
+    "Grumm": "person",
+    "Dilla": "person",
+    "Kelso": "person",
+    "Okkum": "place",
+    "Drowned Chapel": "place",
+    "Black Reeds": "place",
+    "Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Grumm",
+     "text": "Not one boat leaves my shed while my Dilla is missing! She poled out to the Drowned Chapel after the Leeches and never came back. If you want passage out of Okkum, you'll have to bring her home first. Hmmm... and don't tell Kelso she took his punt."
+    },
+    "reminder": {
+     "speaker": "Grumm",
+     "text": "My shed's still shut. You want a boat or not?"
+    },
+    "found": {
+     "speaker": "Dilla",
+     "text": "You already know the way back out, I hope."
+    },
+    "following": {
+     "speaker": "Dilla",
+     "text": "Oh, it's you up ahead! Wait for me!"
+    },
+    "completion": {
+     "speaker": "Grumm",
+     "text": "Dilla! Home safe! That girl will be the death of me, I swear! But she's the best hand on the water, and Okkum can't spare one of us now.\n\nMy shed is open to you now, and so is my best punt.\n\nHere's the shed key. The punt will carry you through the Black Reeds."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Drowned Chapel and bring back Grumm's daughter."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Pella points the player to Ysmay, Gorvald's old friend, who sends him past the Black Reeds after Ghessa the Bog Witch.",
+   "names": {
+    "Pella": "person",
+    "Ysmay": "person",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Bodrick": "person",
+    "Okkum": "place",
+    "Black Reeds": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pella",
+     "text": "I was told to send outsiders straight up to Ysmay."
+    },
+    "opening": {
+     "speaker": "Ysmay",
+     "text": "Ghessa has turned our own drowned dead against us! Half of Okkum is packing up to leave! And she caught Bodrick out in the reeds and froze him stiff with a spell -- he hasn't moved a finger since!\n\nPlease, help us, kind sir! Gorvald swore you would come. I think her lair is the sunken shrine past the Black Reeds.\n\nWould you... could you go out there and stop her?"
+    },
+    "reminder": {
+     "speaker": "Ysmay",
+     "text": "Hurry, please! Every night more of the dead climb out of the mud!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Cross the Black Reeds and find Ghessa the Bog Witch."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

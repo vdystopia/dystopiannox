@@ -1,0 +1,256 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Druvak",
+  "setting": "a cave town of miners under a mountain",
+  "trouble": "Skarn, a mad Conjurer, has turned the Trolls of the deep against Druvak and sealed the Deep Gate below the mines.",
+  "names": {
+   "Druvak": "place",
+   "Odrik": "person",
+   "Dalmor": "person",
+   "Grizzick": "person",
+   "Pudd": "person",
+   "Morva": "person",
+   "Tolbrek": "person",
+   "Krug": "person",
+   "Nessa": "person",
+   "Snib": "person",
+   "Brakka": "person",
+   "Ottar": "person",
+   "Skarn": "person",
+   "Yorvan": "person",
+   "Ore Hall": "place",
+   "Black Chasm": "place",
+   "North Drift": "place",
+   "Old Shaft": "place",
+   "Old Shrine": "place",
+   "Smelter": "place",
+   "Deep Gate": "place",
+   "Troll Warrens": "place",
+   "Sunken Hall": "place",
+   "Lower Mines": "place",
+   "Lift Key": "thing",
+   "Trolls": "group",
+   "Bears": "group",
+   "Imps": "group",
+   "Spider": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Grizzick, an old ore carter, wants the Bears driven out of the North Drift, where Pudd keeps leaving his supper.",
+   "names": {
+    "Grizzick": "person",
+    "Pudd": "person",
+    "North Drift": "place",
+    "Bears": "group",
+    "Skarn": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grizzick",
+     "text": "Huff... huff... The Bears... they're back in the North Drift!\n\nHuff... That lump Pudd left his supper down there again... and the ore carts are due through today!\n\nWill you get rid of them for a poor old carter?"
+    },
+    "reminder": {
+     "speaker": "Grizzick",
+     "text": "Mind the claws!"
+    },
+    "completion": {
+     "speaker": "Grizzick",
+     "text": "Thank you! Here's a bow and a bit of gold for your trouble. I'd help more, but these old legs would only get in your way. Skarn's Trolls have a nasty habit of picking off the slow ones."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive the Bears out of the North Drift for Grizzick the carter."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "Bow"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Morva, a peddler packing up to leave, lost her enchanted lantern (already sold) to the Imps of the Old Shaft.",
+   "names": {
+    "Morva": "person",
+    "Odrik": "person",
+    "Old Shaft": "place",
+    "Imps": "group",
+    "Skarn": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Morva",
+     "text": "While I was loading my cart, a pack of Imps came screeching up out of the Old Shaft -- and ran off with my enchanted lantern! It's already sold, and the buyer wants it tomorrow!\n\nOdrik calls me a swindler, but he's never sold a thing in his life. Will you go down after those Imps and get it back?"
+    },
+    "refusal": {
+     "speaker": "Morva",
+     "text": "Too scared of a few Imps? Then ask me again once you've grown a spine."
+    },
+    "reminder": {
+     "speaker": "Morva",
+     "text": "Still standing about? Those Imps could be smashing it to bits right now! My buyer won't wait forever!"
+    },
+    "completion": {
+     "speaker": "Morva",
+     "text": "Thank goodness, not a scratch on it! You'd make a fine peddler, lad. Take these boots, and I'm off before Skarn's Trolls come for the rest of my stock!"
+    },
+    "after": {
+     "speaker": "Morva",
+     "text": "Thanks again. A poor peddler won't soon forget a kindness like yours..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Morva's enchanted lantern from the Imps in the Old Shaft."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Morva's enchanted lantern from the Imps in the Old Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Tolbrek, master of the great lift, wants the Lift Key the Trolls stole; Snib, a shady old pawnbroker, wants his war horn back, no questions asked.",
+   "names": {
+    "Tolbrek": "person",
+    "Snib": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Odrik": "person",
+    "Druvak": "place",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "Smelter": "place",
+    "Lower Mines": "place",
+    "Troll Warrens": "place",
+    "Lift Key": "thing",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Tolbrek",
+     "text": "Dark days for Druvak, stranger. The Trolls broke into the Ore Hall in the night and stole the Lift Key. You must go down into the Black Chasm and bring it back.\n\nWithout that key the great lift won't budge, and Krug went charging after the brutes with nothing but his pick and we'd have heard from him long ago if he'd found them, unless they found him first!\n\nTake these potions -- and some gold. Nessa's store has whatever else you need. Then go quickly.\n\nThe stair behind the Smelter will take you down to the Chasm."
+    },
+    "offer_b": {
+     "speaker": "Snib",
+     "text": "Aaaagh! Keep back! Keep back!\n\nOh. Not a Troll?! My eyes are no good in this gloom. The brutes broke into my shop and they'd have taken the lot if my old war horn hadn't sent them running just in time! Only, in all the racket, one of them grabbed the horn and ran off with it... down... somewhere... The Troll Warrens, I'd say.\n\nGet it back for old Snib, and no questions about where I got it, eh? You'll find me very generous."
+    },
+    "outcome_a": {
+     "speaker": "Tolbrek",
+     "text": "Bless you, the Lift Key! I've little enough to give, but this shield is yours, and the lift will run you down to the Lower Mines whenever you're ready. Odrik must hear of this at once."
+    },
+    "outcome_b": {
+     "speaker": "Snib",
+     "text": "Ha! There it is! Not a dent on it! Bless you, bless you! Now take these potions and these boots. Something tells me you'll be needing them... and soon."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take back the Lift Key!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Snib's war horn is somewhere in the Troll Warrens, but the tunnel in has been dug shut. The Trolls must use a back door of their own..."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion",
+     "SteelShield",
+     "BluePotion",
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brakka's old father Ottar is stuck in the Old Shrine, where a Spider has riled up the bats.",
+   "names": {
+    "Brakka": "person",
+    "Ottar": "person",
+    "Old Shrine": "place",
+    "Druvak": "place",
+    "Spider": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Brakka",
+     "text": "Forgive my tears. My father Ottar is stuck down in the Old Shrine. Some great hairy Spider made its nest by the altar and riled up the bats, and now they set upon anyone who goes in.\n\nOttar won't budge till that Spider is dead. Could you... would you bring him home? Take this iron key. It opens the shrine gate."
+    },
+    "reminder": {
+     "speaker": "Brakka",
+     "text": "Don't lose that iron key, it's the only one. Once the Spider's dead, the bats should calm down. Hurry, and good luck to you."
+    },
+    "found": {
+     "speaker": "Ottar",
+     "text": "This shrine is holy ground, my son, and no beast may harm a man who kneels on it. May the spirits of the deep rock walk ever at your side."
+    },
+    "following": {
+     "speaker": "Ottar",
+     "text": "Well struck! There's no braver soul in all Druvak!"
+    },
+    "completion": {
+     "speaker": "Brakka",
+     "text": "Wonderful! Thank you so very much. I had given up hope of him ever walking through that door again!\n\nNow, take this ankh for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Slay the Spider in the Old Shrine at the foot of the east tunnels. This should calm the bats so Ottar can be led home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dalmor points the player to Foreman Odrik in the Ore Hall, who sends him through the Deep Gate after Skarn; Yorvan sent the player.",
+   "names": {
+    "Dalmor": "person",
+    "Odrik": "person",
+    "Yorvan": "person",
+    "Skarn": "person",
+    "Druvak": "place",
+    "Ore Hall": "place",
+    "Deep Gate": "place",
+    "Sunken Hall": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dalmor",
+     "text": "Go see Foreman Odrik in the Ore Hall, then find that Skarn and knock his block off!"
+    },
+    "opening": {
+     "speaker": "Odrik",
+     "text": "Thank goodness, Yorvan sent you, Wanderer! Skarn's Trolls have sealed the Deep Gate, and the miners I sent down to spy on that mad Conjurer are trapped below, or worse!\n\nTake this key and open the Gate. Bring Skarn to justice in the Sunken Hall and every miner in Druvak will be in your debt!"
+    },
+    "reminder": {
+     "speaker": "Odrik",
+     "text": "Keep whatever you take off those Trolls! But hurry, Skarn won't wait for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Open the Deep Gate and stop Skarn before the Trolls overrun Druvak.\n\nThe mad Conjurer is likely holed up in the Sunken Hall."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

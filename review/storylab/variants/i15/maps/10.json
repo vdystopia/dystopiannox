@@ -1,0 +1,226 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Wendrel",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "The Ogres of Grumvak the Ogre Lord raid the farms of Wendrel and hold the old watchtower on Ketter Hill, shutting the road north.",
+  "names": {
+   "Wendrel": "place",
+   "Dunstrel": "person",
+   "Orvane": "person",
+   "Grumvak": "person",
+   "Ketter Hill": "place",
+   "Town Hall": "place",
+   "Bortle": "person",
+   "Gaskin": "person",
+   "Ethra": "person",
+   "Dobbin": "person",
+   "Bodkin": "person",
+   "Squabble": "person",
+   "Gorrow Wood": "place",
+   "Grisk": "person",
+   "Tobble": "person",
+   "Ogres": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Gaskin the shepherd wants the Ogre that beat his boys and stole his Bow hunted down.",
+   "names": {
+    "Gaskin": "person",
+    "Dunstrel": "person",
+    "Ketter Hill": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gaskin",
+     "text": "Ohhhh, not again! Both of my shepherd boys lie beaten senseless, and a great hulking Ogre has run off with my Bow! With Mayor Dunstrel's men up at the north gate, nobody else can go. Run him down before he reaches Ketter Hill, quick!"
+    },
+    "reminder": {
+     "speaker": "Gaskin",
+     "text": "That big lout still has my Bow! After him, please!"
+    },
+    "completion": {
+     "speaker": "Gaskin",
+     "text": "Ha! My Bow, safe and sound! It's no good without arrows, so have my Quiver as well. Both are yours."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Ogre who stole Gaskin's Bow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ethra, the miller's widow, needs her magic amulet back from the Urchins to turn her son Dobbin back from a chicken.",
+   "names": {
+    "Ethra": "person",
+    "Dobbin": "person",
+    "Wendrel": "place",
+    "Urchins": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ethra",
+     "text": "Stranger! Oh, please, you must help me! Something dreadful has happened to my son!\n\nThe raiders came through last night with an Ogre shaman, and a wicked spell of his turned my poor Dobbin into a chicken! My magic amulet would undo it. But the Urchins took it off to their den east of the stream, and if I go after it the cat will get him!\n\nBring my amulet back to me, will you? There's good pay in it for you."
+    },
+    "refusal": {
+     "speaker": "Ethra",
+     "text": "A chicken, then! Leave my poor boy a chicken, see if I care!"
+    },
+    "reminder": {
+     "speaker": "Ethra",
+     "text": "Dobbin needs that amulet! What's keeping you?"
+    },
+    "completion": {
+     "speaker": "Ethra",
+     "text": "Bless you, oh, bless you! I'll never be able to pay you back properly... Here, a token of my appreciation, take it!"
+    },
+    "after": {
+     "speaker": "Ethra",
+     "text": "Dobbin and I thank you again!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Get Ethra's magic amulet back from the Urchin den east of Wendrel."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Get Ethra's magic amulet back from the Urchin den east of Wendrel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Dunstrel wants the tax chest back from the Ogres and sends the player to Tobble's forge for armor; Grisk sells a used chain tunic on the cheap.",
+   "names": {
+    "Grisk": "person",
+    "Dunstrel": "person",
+    "Tobble": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Grisk",
+     "text": "Now here's a real bargain of a chain tunic. Never took a single hit. The last owner ran from every fight!\n\nTobble the smith charges 400 gold for mail this good. You've got a trustworthy look about you, so call it 150. Interested?"
+    },
+    "offer_b": {
+     "speaker": "Dunstrel",
+     "text": "The Ogres carried off the village tax chest, and you'll want good armor to get it back. Tobble's forge sells mail at an honest price."
+    },
+    "outcome_a": {
+     "speaker": "Grisk",
+     "text": "Pleasure doing business! It fits you perfectly. No Ogre will lay a club on you in that!"
+    },
+    "outcome_b": {
+     "speaker": "Grisk",
+     "text": "Your loss, friend. Walk on over to Tobble's and see his prices for yourself. Hurry back, though -- a farmer down the road has his eye on it."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Buy the chain tunic from Grisk."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Recover the tax chest the Ogres stole from Mayor Dunstrel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Farmer Bodkin's prize pig Squabble fled the Ogres into Gorrow Wood among the wolves.",
+   "names": {
+    "Bodkin": "person",
+    "Squabble": "person",
+    "Gorrow Wood": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Bodkin",
+     "text": "Wanderer! Help! My prize pig, Squabble, ran off into Gorrow Wood when the Ogres smashed her pen, and the wolves are in there!\n\nI'll owe you my whole life if she comes home safe!"
+    },
+    "reminder": {
+     "speaker": "Bodkin",
+     "text": "Whatever's in that wood is yours to keep! But Squabble comes home, mind!"
+    },
+    "found": {
+     "speaker": "Squabble",
+     "text": "Oink! Oink! Oiiiink!"
+    },
+    "following": {
+     "speaker": "Squabble",
+     "text": "Snort... snort!"
+    },
+    "completion": {
+     "speaker": "Bodkin",
+     "text": "You found her! Oh, my Squabble! For a deed like that, what can I give you?!\n\nGold? A big sack of gold, you say? Well then, here you are, and my thanks with it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Bodkin's pig Squabble from the wolves of Gorrow Wood."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman sends the player to Mayor Dunstrel, who sends him to take back the watchtower on Ketter Hill from Grumvak's Ogres.",
+   "names": {
+    "Dunstrel": "person",
+    "Town Hall": "place",
+    "Orvane": "person",
+    "Wendrel": "place",
+    "Ketter Hill": "place",
+    "Grumvak": "person",
+    "Bortle": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Mayor Dunstrel just ran off to the Town Hall shouting for you!"
+    },
+    "opening": {
+     "speaker": "Dunstrel",
+     "text": "Orvane tells me the road here put you to the test, lad. Well, there's no rest to be had in Wendrel. The Ogres have seized the old watchtower on Ketter Hill, and with it the only road north out of the valley!\n\nWith the tower in their claws and our harvest at their mercy, Grumvak the Ogre Lord must be the one giving the orders. Bortle and the farmhands wait for you at the north gate. Go, and be quick!"
+    },
+    "reminder": {
+     "speaker": "Dunstrel",
+     "text": "Off to the north gate with you! Bortle is expecting you there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back the watchtower on Ketter Hill from the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

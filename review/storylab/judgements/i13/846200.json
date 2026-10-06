@@ -1,0 +1,33 @@
+{
+  "packet": "846200",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The herdsman's complaint is plain, but the offer runs four pages, explains too much (why he's leaving, how the bears behave, the track behind the pens), and the parting threat about Ogres eating 'mutton and herdsmen alike' is a written-up quip rather than Westwood's blunter humour."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The repeated 'mate', exclamations, the comic grievance (boots stolen while bathing) and the offhand 'damn fine spell' are exactly Nox's broad, cheerful voice; the journal is the long literal Westwood form."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Lively and close to Nox (the loft, 'one of them Bears', the bad knees), but the comic set-up is built in too many beats, and the capitalised 'Bear' every time plus the tidy hand-off to the next person feel modelled on a template."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Flat, functional exposition ('Unfortunately, a foul little urchin has moved into the cave'), a colour-named key, and a 'Good!' that opens mid-conversation; the 'Excellent! You've killed the Urchin.' thanks is Westwood's plain bookkeeping."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Five pages of short clipped sentences with a measured, literary rhythm ('gone up twice and come down twice'); a watch-captain's tactical brief rather than a Nox townsperson's outburst, and far longer than the campaign's offers."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The over-the-top panic ('airborne demons from the underworld', 'Nox's vital interests'), '!?', the '--' dash, the beast scroll, and the counted journal ('Rescue the 6 trapped mine workers') are all hallmarks of the campaign."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The 'Ooooh' wail, the terse urgent offer and the slightly awkward hand-off ('take both items to him') read like Westwood's quick functional scenes."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Self-introduction by title, 'Thieving little creatures!', the 'Hmmm... Yes.' and the teleporter instructions are Nox's stiff-but-earnest mentor voice; the journal 'Discover the fate of...' is a Westwood shape."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Short and plain with a fair Nox shape, but the chained name-dropping in the first line, 'boat and all' and the neat pointer to the mudflats feel engineered; the reward line copies the campaign's '--' habit rather deliberately."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The 'Huff... huff...' gimmick is laid on across every line, and the closing aside about Trolls 'picking off the slow ones' echoes a formula (a bow, a bit of gold, then a menacing aside) seen in other new texts; the journal is overloaded with who-for detail."}
+  ],
+  "tells": [
+    "New offers run longer and are paced in many short, deliberate sentences with a literary cadence; Westwood's are either brief and urgent or one breathless run of exclamations.",
+    "New texts tack a crafted, slightly menacing quip onto the thanks (another monster group 'has a nasty habit' / 'big appetite'), always paired with 'a bow and some gold'; Westwood's thanks are plainer bookkeeping or a direct hand-off.",
+    "New texts lean on a single speech gimmick (panting, calling from a loft) or chain several names in one breath to set context; Westwood sets context bluntly in one expository sentence.",
+    "Westwood's humour is broad and silly (boots stolen while bathing, 'Nox's vital interests', 'damn fine spell'); the new texts' humour is drier and character-observational.",
+    "Westwood's journal entries are long and literal (counts, who stole what from whom); new journal entries are compact verb-plus-object lines, sometimes with a 'for [Person]' tag."
+  ]
+}
