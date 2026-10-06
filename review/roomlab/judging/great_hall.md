@@ -1,36 +1,35 @@
 # Great hall: what a real one is like
 
-For the blind judge: Westwood's campaign rooms of this type, described from the rooms themselves.
+For the blind judge: Westwood's campaign rooms of this type, described by their qualities, not room by room.
 
-Westwood's campaign has only two great halls, and they are unlike each other. The other Westwood rooms on the sheet may be of the kin types: chapel, gallery, hall, shrine and throne room.
+Westwood's great halls are few and unlike one another: some ordered, some crowded.
 
 ## What it is for
 
-The big room of a house or castle where the household gathers and feasts, with doors opening off it.
+The big room of a house or castle where the household gathers and feasts, often with several doors opening off it.
 
 ## What you notice first
 
-- Hecubah's castle hall in Dun Mir (208 tiles, seven doors): twelve tables with sixteen benches in rows down the middle, with three freestanding fireplaces among them.
-- Galava's feasting hall (154 tiles): a crowd of tables and chairs, with a fireplace on a back wall.
+Many tables with their seats. A hall's tables stand in long strict rows or in a crowded mix, and a hearth (or more than one) warms it, on a back wall or standing out among the tables.
 
 ## What it holds
 
-- The castle hall: tables, benches, three freestanding fireplaces, nine Dun Mir shields and two cloth banners hung on two walls, a chest.
-- The feasting hall: ten square tables, five round tables with food and four others, 35 dark chairs, benches, a fireplace with a chest beside it, a moose's head, two small mirrors, a barrel, a desk and a trader's desk by the door.
-- Not seen in either: statues, columns, plants.
+- Common: many tables, sometimes of several shapes, some laid with food; benches or chairs by the dozen; a hearth or more; a chest.
+- Sometimes: hangings or a trophy on the walls; a few odd lived-in pieces.
+- Not seen: statues, columns, plants.
 
 ## How it is arranged
 
-The castle hall is orderly and close to symmetric: nearly everything stands in the middle in rows, the hangings march along two walls, and the ways between the doors run between the rows. The feasting hall is the reverse: most of its tables and chairs are pushed toward the walls, with sets also out on the floor.
+Two ways, both real. An ordered hall stands nearly everything in the middle in rows, close to symmetric, with its hangings marching along the walls and the ways between the doors running between the rows. A crowded hall pushes most of its tables and chairs toward the walls, with more sets out on the floor and the hearth on a back wall.
 
 ## Density and feel
 
-The castle hall is processional: rows, with about three fifths of the floor open. The feasting hall is full and busy, only about a third open. The castle hall shows few kinds of thing (six); the feasting hall many (fourteen).
+An ordered hall is processional: rows, with more than half the floor open, and few kinds of thing repeated. A crowded hall is full and busy, only about a third open, with many kinds of thing.
 
 ## Variants
 
-The castle hall is Dun Mir's; the feasting hall is a town's (Galava).
+Each culture brings its own tables, seats and hangings.
 
 ## What a designer's hand looks like here
 
-In the feasting hall, a trader's desk by the door, a lone barrel, a moose's head, mirrors, round tables with food among square ones, and dark chairs by the dozen. In the castle hall the designer's hand is the repetition itself: one table, one bench and one shield used many times in strict order.
+In a crowded hall: odd lived-in pieces among the sets, one of a kind each, tables of mixed shapes, chairs by the dozen. In an ordered hall the designer's hand is the repetition itself: one table, one bench and one hanging used many times in strict order.

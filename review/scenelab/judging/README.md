@@ -1,6 +1,6 @@
 # Westwood's exterior scenes: what real ones are like
 
-For the blind judge: a general description of the outdoor scenes in Westwood's Nox campaign, true of every scene type. Each type has its own page in this folder.
+For the blind judge: a general description of the outdoor scenes in Westwood's Nox campaign, true of every scene type. Each type has its own page in this folder. The pages describe the qualities real scenes of a type share, never any one scene: do not try to match a picture to a scene you think a page is about.
 
 **Every scene has a purpose.** A real scene is where something is done: a camp, a burial ground, a household's crop, a landing. Its pieces are what that work needs, and each stands where it would be used.
 

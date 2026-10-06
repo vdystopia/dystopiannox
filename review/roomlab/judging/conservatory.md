@@ -1,8 +1,8 @@
 # Conservatory: what a real one is like
 
-For the blind judge: Westwood's campaign rooms of this type, described from the rooms themselves.
+For the blind judge: Westwood's campaign rooms of this type, described by their qualities, not room by room.
 
-Westwood's campaign has no indoor garden room. The real rooms on this sheet will be its kin: a chapel, a gallery, great halls, halls, shrines and throne rooms. Judge them as Westwood's ceremonial rooms.
+Westwood's campaign has no indoor garden room, so a sheet may show rooms of the kin types: chapels, galleries, great halls, halls, shrines and throne rooms. Judge each picture as a room of its own type, by its design.
 
 ## What it is for
 
@@ -10,13 +10,13 @@ An indoor garden in a manor or a college: plants, perhaps a fountain.
 
 ## What you notice first
 
-The campaign's closest things are outdoors or half outdoors. Galava's castle has a walled garden round its chapel, open to the sky, with grass, trees, potted plants and a pair of columns. Ix has a small fountain court, half open to the sky, with a fountain and lily pads among barren plants. In both, the plants come first.
+The campaign's closest things are outdoor or half-open gardens: grass, trees and potted plants, sometimes a fountain with lily pads or a pair of columns. In them the plants come first.
 
 ## What it holds
 
-- In those gardens: potted plants of several kinds, trees, a fountain with lily pads, a pair of columns.
-- In Galava's museum: nine potted plants standing singly in the floor among the exhibits.
-- In the kin: tapestries, paintings, paired statues and columns, obelisks, the chapel's benches, the great halls' tables and fireplaces, thrones.
+- In Westwood's gardens: potted plants of several kinds, some barren; trees; a fountain with lily pads; a pair of columns.
+- In a gallery: potted plants standing singly in the floor among the exhibits.
+- In the kin: tapestries, paintings, paired statues and columns, obelisks, benches in rows, tables with hearths, thrones.
 - Not seen in any of them: beds, shelves, stoves, crates, racks.
 
 ## How it is arranged
@@ -25,13 +25,13 @@ Westwood's plants stand singly or in loose scatters, not in tidy rows along a wa
 
 ## Density and feel
 
-Open: most of the floor is empty in all the kin but the great halls. They run large, from about 80 to several hundred tiles, except the small shrine niches.
+Open: most of the floor is empty in all the kin but the great halls. They run large, except the small shrine niches.
 
 ## Variants
 
-Town and Galava (columns, tapestries, potted plants), Dun Mir (hung shields, wolf and victory statues, its throne), Land of the Dead (mana obelisks, tombstones, dark tapestries, the lich's throne).
+Each culture brings its own ceremonial pieces: its statues, columns, hangings and obelisks.
 
 ## What a designer's hand looks like here
 
 - Plants of mixed kinds, some barren, dotted about irregularly; grass, trees and sky in the gardens.
-- In the kin: mirror symmetry in halls, shrines and most throne rooms, but a looser, lived-in balance in the chapel (a desk among the benches) and the great halls (mismatched tables, a trophy, small mirrors).
+- In the kin: mirror symmetry in halls, shrines and most throne rooms, but a looser, lived-in balance in chapels and great halls (an odd working piece among the benches, mismatched tables, a trophy).

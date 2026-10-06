@@ -92,7 +92,9 @@ per type; since round 7 only the scene's own footprint, its pieces plus a small 
 rest the canvas colour) from a creature-free copy of the map (no monsters, NPCs, players or
 the kit's posts in either picture; the metrics still count creatures on the real map). The blind sheets rotate through
 Westwood's scenes of the type (`review/out/scenelab/<scene>/westwood_shown.json`), and judges read
-`review/scenelab/judging/` (what real scenes are like, from Westwood's evidence), never the design briefs. Westwood's
+`review/scenelab/judging/` (what real scenes are like, from Westwood's evidence), never the design briefs. Those
+descriptions are written and kept by hand and follow review/roomlab/FAIRNESS.md's rule: **describe qualities, never
+identify scenes** (no map names, people or places, no count or inventory that singles out one of a thin type's scenes). Westwood's
 scenes stand in its towns, castles and caves, ours in a hamlet's ground or a forest glade: since round 7 the pictures cut
 that setting away for both (FAIRNESS.md 6), so **the lab judges a scene's own arrangement; whether a scene sits well in
 its town (a well on its square, a jail in its castle, a stall on a market) is judged on whole maps** (tests/qa.py's
