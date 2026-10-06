@@ -57,3 +57,11 @@ The cellarer beside the great cask; else at a back wall clear of the rows. Never
 - Westwood: Con07B, cell 132,196 (17 tiles: eight kegs, two crates); Con06b, cell 56,62 and War02b, cell 194,194 (25
   tiles: five kegs); Con06a / War01A, cell 153,212 (36 tiles: seven barrels, a great cask, piled barrels, crates).
 - Ours: the room lab's cellars.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 4 curated cellars (Con06a, Con06b, Con07B, War02b) hold barrels in knots, a few dark crates, a piled
+  barrel or a great cask; 1-4 types; some barrels free of the walls; coverage 0.06-0.23; no lights inside. The recipe
+  heaps them as a store's (`slot="heaps"`, kit/furnish.py `store_heaps`): barrels lead, crates second in 40% of
+  cellars (the type's reading wants kegs at 70% of the stores), a piled barrel or a cask as the odd piece; no
+  centrepiece cask (one cellar in four has one).

@@ -64,3 +64,8 @@ The craftsman at his bench (at its side, not at its end where the crate is), els
 - Westwood: Con06a / War01A, cell 102,135 (25-29 tiles: an anvil, a tool barrel, a gear, four small gears, three cart
   wheels, trader's shelves).
 - Ours: the room lab's workshops.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- No Westwood workshop (curated). By the store types' lessons: the stores heap in touching clumps (`store_heaps`, tool
+  barrels leading), one shelf of tools rather than a lined wall; no candelabra rows.

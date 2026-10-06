@@ -62,3 +62,10 @@ The keeper beside a crypt chest or a statue of the dead; never in an aisle betwe
 - Westwood: Wiz02A / Con07B, cell 169,176 (235 tiles, 14-17 types, coverage 0.06, open 0.74). (G_CryptD's 209-tile crypt,
   once cited here, is a quest map's: not campaign evidence.)
 - Ours: Thornwick's family crypt (see `review/out/Thornwick/rooms/`).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 25 curated crypts hold 1-5 types (median 2): two to six sarcophagi in short aligned rows, none against a
+  wall and none far from one, a crypt chest; 0.67 tombs per 10 tiles. Two rows with a wide aisle (3.6), so each keeps
+  near its wall, capped at a tomb per 12 tiles; no columns, tapestries or plants (AUC 1.0 -> 0.89). Tombs along the walls
+  (`wall_gap`) read worse: Westwood's stand free of them.

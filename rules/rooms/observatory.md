@@ -60,3 +60,9 @@ back wall.)
 - Westwood: Con07B / War07A, cell 121,219 (97 tiles: three telescopes, a desk, statues and gargoyles, crates and
   barrels of the stores); Con07E, cell 172,104 (140 tiles: eight star charts, blue tapestries, gargoyles, lanterns).
 - Ours: the room lab's observatories; Starwell's observatory role holds a star-chamber hall that could become one.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- No Westwood observatory survives the curation as its own type; by the laboratory's lessons: no plants, the chart
+  table against a wall with its stools rather than alone in the middle, the desk among two bookcases, the pieces a
+  step off the walls (`wall_gap`).

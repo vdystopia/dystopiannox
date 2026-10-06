@@ -36,7 +36,7 @@ it. In the middle, the alchemist's work table.
 
 | | Westwood's campaign (19 rooms, 12 maps) | Profile |
 |---|---|---|
-| coverage | 0.01-0.09-0.25 | 0.08-0.30 (target 0.17) |
+| coverage | 0.01-0.09-0.25 | 0.05-0.25 (target 0.14) |
 | open floor | 0.22-0.62-0.95 | 0.40-0.85 |
 | pieces per tile | 0.12-0.26-0.67 | 0.20-0.70 |
 | distinct types | 4-7-15 | 12+ |
@@ -71,3 +71,22 @@ The wizard at his work bench (beside a workstation or the alchemist's desk), els
   apart); War07C, cell 134,63 (102 tiles, 19 types); Con07B, cell 121,219 (97 tiles, 18 types).
 - Ours: Starwell seed 4, room 8, the college laboratory after its rework (115 tiles, 23 types, coverage 0.10, open
   0.59).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 19 campaign laboratories keep the middle bare and hold no cauldron, plant or rug: the alchemy table on
+  its rug with the cauldron, and the conjuring circle of candelabras, gave every generated room away (AUC 1.0). The
+  recipe now keeps to the walls: the desk centred on the deep back wall with a bookcase, two workstations in corners
+  on any wall (Westwood stands them on the front walls the most), the alchemist's desk alone, a chest; from 38 tiles a
+  table with a chair and a glowing jar; from 80 a pair of coils on a wall, gargoyles, more bookcases and workstations.
+- Back walls 0.06-0.35 lined (median 0.15): the recipe's `lined_goal` is 0.15 and `decor_max` 1, else the decor
+  pass hangs tapestries to the house's 0.38.
+- A desk "toward the corner" never fitted (its end 0.05 from the cross wall, under the snug 0.1): fixed in
+  `wall_candidates`, so the small laboratory has its desk.
+- Still a giveaway: the back walls are lined more than Westwood's, since its big labs stand their bookcases on the SE
+  wall (a house rule forbids it) and the checker wants the room as covered as Westwood's median.
+- The independent judges (r8, r11): ours read as labs but mechanical; workstations one at a time at even spacing,
+  separate clumps against the back walls with three quarters of the floor bare, while Westwood's labs fill the room as
+  one working space. r12-r13 stand a work island of workstations and the alchemist's desk free on the floor (GROUPS
+  `workbench`), the table and stools free in a big room (`labtable`), the coils as a mirrored pair apart.
+
