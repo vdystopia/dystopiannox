@@ -15,9 +15,14 @@ rules share one geometry:
 - **gaps along walls**: the coefficient of variation of the gaps between neighbours on walls of 3+ pieces; the share
   of walls at even gaps; stepped rows;
 - **plants** by type; **twin knots** (two knots of the same kinds in one shape);
+- round two (`round2`): strings of single pieces at gaps along walls, kin apart, each category's share on the front
+  walls, front lights, tables with no seats, stamped seat sets, carpets (share, what stands on them, off every wall),
+  shop trades, the halls' widest bare floor and rows of table sets;
 - and how often each kit/grammar.py rule fires on Westwood's own rooms (the checker's false alarms).
 
     py rules/grammar.py
+    py rules/grammar.py lab <type> <iter> [-v]          # a room lab batch's grammar faults (rule: rooms)
+    py rules/grammar.py labstats <type,...> <iter> [-v] # a lab batch's round-two numbers, beside Westwood's
 """
 import collections, json, math, os, re, sys
 from concurrent.futures import ProcessPoolExecutor
@@ -29,6 +34,7 @@ import labenv as E            # noqa: E402  (sets the import paths: validate, ma
 import labref                 # noqa: E402
 C = E.C
 from kit import grammar as G   # noqa: E402
+from kit import objects as OBJ  # noqa: E402
 
 OUT = os.path.join(HERE, "out", "grammar.json")
 HOUSE = {"bedroom", "living_room", "kitchen", "laboratory", "shop", "tavern", "guardroom", "storeroom", "study", "solar",
@@ -79,6 +85,35 @@ def measure_room(e, m, r):
     out["plants"] = sum(1 for p in v.pieces if p["cat"] == "plant")
     out["twins"] = len(G.twins(v))
     out["stepped"] = len(G.stepped_rows(v))
+    # round two (kit/grammar.py, 2026-10-06)
+    units = [u for us in G.wall_units(v).values() for u in us]
+    out["units"], out["solo_units"] = len(units), sum(1 for u in units if u["solo"])
+    st = G.strings(v)
+    out["strings"] = len(st)
+    out["string_max"] = max([len(r) for _, r in st] or [0])
+    out["kin_gaps"] = len(G.kin_gaps(v))
+    out["kin_runs"] = sum(1 for u in units if len(u["ps"]) >= 2 and
+                          len({OBJ.kind(p["t"]) for p in u["ps"] if p["cat"] in G.REPEAT}) == 1 and
+                          sum(1 for p in u["ps"] if p["cat"] in G.REPEAT) >= 2)
+    fr = collections.defaultdict(lambda: [0, 0])
+    for p in v.pieces:
+        if not v.floor(p) or p["cat"] == "light" or not v.walls_of(p, G.WALL_REACH): continue
+        fr[p["cat"]][0] += 1
+        if G.front_only(v, p): fr[p["cat"]][1] += 1
+    out["front"] = dict(fr)
+    out["light_front"] = sum(1 for p in L if G.front_only(v, p, G.CORNER_REACH))
+    tables = [p for p in v.pieces if p["cat"] == "table" and v.floor(p)]
+    out["tables_n"], out["tables_bare"] = len(tables), sum(1 for p in tables if not G.seats_of(v, p))
+    sets = G.seat_sets(v)
+    out["sets"], out["sets_stamped"] = len(sets), sum(1 for t, s_ in sets if G.stamped_set(v, t, s_))
+    out["sets_onekind"] = sum(1 for t, s_ in sets if len({OBJ.kind(q["t"]) for q in s_}) == 1)
+    rel = G.carpet_relation(v)
+    off, margin = G.carpet_offset(v)
+    out["carpet"] = None if rel is None else dict(share=round(rel[0], 3), on=len(rel[1]), rim=len(rel[2]), off=off,
+                                                    margin=margin, floating=G.floating_carpet(v))
+    out["trades"] = dict(G.trades_in(v))
+    out["bare"] = round(G.bare_spot(v)[0], 2)
+    out["set_rows"] = len(G.set_rows(v))
     return out, v
 
 
@@ -139,9 +174,68 @@ def summarise(recs):
         )
     by = collections.defaultdict(list)
     for x in recs: by[x["type"]].append(x)
+    house = [x for x in recs if x["type"] in HOUSE]
     return dict(types={t: block(rs) for t, rs in sorted(by.items())},
-                house=block([x for x in recs if x["type"] in HOUSE]),
-                all=block(recs))
+                house=block(house), all=block(recs), round2=round2(house, by))
+
+
+def round2(house, by):
+    """Westwood's numbers for kit/grammar.py's second round (house rooms; per type where the type has MIN_EVIDENCE
+    rooms): strings of singles along walls, kin standing apart, front walls by category, front lights, tables with no
+    seats, stamped seat sets, carpets (share of the floor, what stands on them), shop trades."""
+    def rate(rs, f): return round(sum(1 for x in rs if f(x)) / len(rs), 3) if rs else None
+    out = {}
+    out["rooms"] = len(house)
+    out["strings_rooms"] = rate(house, lambda x: x["strings"])
+    out["string_max"] = collections.Counter(x["string_max"] for x in house)
+    out["kin_gap_rooms"] = rate(house, lambda x: x["kin_gaps"])
+    kg, kr = sum(x["kin_gaps"] for x in house), sum(x["kin_runs"] for x in house)
+    out["kin_gaps"], out["kin_runs"] = kg, kr
+    out["solo_share"] = round(sum(x["solo_units"] for x in house) / max(1, sum(x["units"] for x in house)), 3)
+    fr = collections.defaultdict(lambda: [0, 0])
+    for x in house:
+        for c, (n, f) in x["front"].items(): fr[c][0] += n; fr[c][1] += f
+    out["front_n"] = {c: v for c, v in sorted(fr.items(), key=lambda kv: -kv[1][0])}
+    out["front_share"] = {c: round(f / n, 3) for c, (n, f) in fr.items() if n >= 8}
+    nl = sum(x["lights"] for x in house)
+    out["light_front"] = round(sum(x["light_front"] for x in house) / nl, 3) if nl else 0.0
+    tb = {}
+    for t, rs in by.items():
+        if t not in HOUSE or len(rs) < G.MIN_EVIDENCE: continue
+        n = sum(x["tables_n"] for x in rs)
+        if n >= 4: tb[t] = round(sum(x["tables_bare"] for x in rs) / n, 3)
+    tb["house"] = round(sum(x["tables_bare"] for x in house) / max(1, sum(x["tables_n"] for x in house)), 3)
+    out["table_bare"] = tb
+    ns = sum(x["sets"] for x in house)
+    out["seat_sets"] = ns
+    out["set_stamped"] = round(sum(x["sets_stamped"] for x in house) / ns, 3) if ns else 0.0
+    out["set_onekind"] = round(sum(x["sets_onekind"] for x in house) / ns, 3) if ns else 0.0
+    cp = [x for x in house if x["carpet"]]
+    out["carpeted_rooms"] = len(cp)
+    cs = {}
+    for t, rs in by.items():
+        c = [x["carpet"]["share"] for x in rs if x["carpet"]]
+        if t in HOUSE and len(c) >= 4: cs[t] = q(c, 90)
+    cs["house"] = q([x["carpet"]["share"] for x in cp], 90)
+    out["carpet_share_p90"] = cs
+    out["carpet_share_p50"] = q([x["carpet"]["share"] for x in cp], 50)
+    out["carpet_empty"] = rate([x for x in cp if x["tiles"] >= 30], lambda x: x["carpet"]["on"] == 0)
+    out["carpet_floating"] = rate(cp, lambda x: x["carpet"]["floating"])
+    out["carpet_walled"] = rate(cp, lambda x: (x["carpet"]["margin"] or 0) < 1)
+    halls = [x for t in G.SET_HALLS for x in by.get(t, []) if x["tiles"] >= G.SET_HALL_TILES]
+    out["halls"] = len(halls)
+    out["hall_bare"] = sorted(x["bare"] for x in halls)
+    out["hall_bare_max"] = max([x["bare"] for x in halls] or [5.0])
+    out["hall_set_rows"] = rate([x for t in G.SET_HALLS for x in by.get(t, [])], lambda x: x["set_rows"])
+    shops = by.get("shop", [])
+    odd = []
+    for x in shops:
+        tr = collections.Counter(x["trades"])
+        odd.append(sum(tr.values()) - (tr.most_common(1)[0][1] if tr else 0))
+    out["shop_odd"] = odd
+    out["shop_odd_max"] = max(odd or [0])
+    out["shop_trades"] = [x["trades"] for x in shops]
+    return out
 
 
 def main():
@@ -186,10 +280,70 @@ def main():
     for t, s in sorted(st["types"].items(), key=lambda kv: -kv[1]["rooms"]):
         print(f"{t:14} {s['rooms']:5}  {s['lights_p50']}/{s['lights_p90']} {s['lights_per100_p90']:>6}   "
               f"{s['lone_chair_share']:.2f}   {s['tables']}")
+    print("round two:", json.dumps({k: v for k, v in st["round2"].items() if k not in ("shop_trades",)}))
     print("Westwood rooms a rule fires on (share):")
     for t in ("*", "house"):
         print(f"  {t}: {st['westwood_fires'].get(t)}")
 
 
+def lab_rooms(typ, it):
+    """[(variant, m, r)] of a room lab iteration's generated rooms (review/out/roomlab/<type>/<iter>), as the metric
+    judge finds them."""
+    d = os.path.join(REPO, "review", "out", "roomlab", typ, it)
+    with open(os.path.join(d, "variants.json"), encoding="utf-8") as fh:
+        batch = json.load(fh)
+    by_map = collections.defaultdict(list)
+    for v in batch["variants"]: by_map[v["map"]].append(v)
+    out = []
+    for mname, vs in by_map.items():
+        # its own export folder, so a lab run exporting maps at the same time keeps its own list
+        m = E.MD.MapData(E.MD.export(os.path.join(d, "map", mname + ".map"),
+                                     os.path.join(REPO, "validate", "out", "json_grammar")))
+        found = {r["declared"]["number"]: r for r in C.find_rooms(m, max_tiles=1500) if r.get("declared")}
+        for v in vs:
+            r = found.get(v["number"])
+            if r is not None: out.append((v, m, r))
+    return sorted(out, key=lambda x: x[0]["index"])
+
+
+def lab_faults(typ, it, verbose=False):
+    """Counter of kit/grammar.py faults (rule -> rooms it fires on) over a room lab iteration, and the room count."""
+    tally, n = collections.Counter(), 0
+    for v, m, r in lab_rooms(typ, it):
+        view = G.view_from_map(m, r, C, v["type"])
+        fs = G.faults(view)
+        n += 1
+        rules = collections.Counter(f["rule"] for f in fs)
+        for rule in rules: tally[rule] += 1
+        if verbose:
+            print(f"  {v['index']:2} {v['kind']:14} {v['tiles_target'] if 'tiles_target' in v else ''}: "
+                  + "; ".join(f"{f['rule']}: {f['p']['t']} {f['msg']}" for f in fs))
+    return tally, n
+
+
+def lab_stats(types, it):
+    """The round-two numbers of room lab iterations (as round2 measures Westwood's), to set ours beside Westwood's."""
+    recs = []
+    for typ in types:
+        for v, m, r in lab_rooms(typ, it):
+            e = dict(type=v["type"], map=v["map"], centre=[0, 0])
+            rec, _ = measure_room(e, m, r)
+            recs.append(rec)
+    by = collections.defaultdict(list)
+    for x in recs: by[x["type"]].append(x)
+    return round2(recs, by), recs
+
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) >= 4 and sys.argv[1] == "labstats":
+        # py rules/grammar.py labstats <type,type,...> <iter>: our round-two numbers beside Westwood's
+        st, recs = lab_stats(sys.argv[2].split(","), sys.argv[3])
+        print(json.dumps({k: v for k, v in st.items() if k != "shop_trades"}))
+        if "-v" in sys.argv:
+            for x in recs: print(x["type"], x["tiles"], x["carpet"], x["trades"], x["front"])
+    elif len(sys.argv) >= 4 and sys.argv[1] == "lab":
+        # py rules/grammar.py lab <type> <iter> [-v]: the grammar faults of a room lab iteration (rule: rooms)
+        t, n = lab_faults(sys.argv[2], sys.argv[3], "-v" in sys.argv)
+        print(f"{sys.argv[2]} {sys.argv[3]}: {n} rooms, {sum(t.values())} faults (rule x room): {dict(t.most_common())}")
+    else:
+        main()

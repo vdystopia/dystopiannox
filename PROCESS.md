@@ -252,6 +252,42 @@ Rules that hold for every type:
   - *stamps*: no two knots (small pieces, or a table with its seats) of the same kinds in the same shape in one room
     (a twin loses a seat or a piece); beds and tombs of one kind to a room.
   - *the way to the fire*: no table or bench square before a hearth within 3.4 units (a bench is drawn up beside it).
+  **Round two** (2026-10-06, night-grammar2: what the judges still named on the g3 sheets; `rules/out/grammar.json`
+  `round2`, measured on the 116 curated house rooms the same way as ours; `py rules/grammar.py labstats <types> <iter>`
+  prints the same numbers for a lab batch, `py rules/grammar.py lab <type> <iter> [-v]` its faults):
+  - *strings of singles*: three or more lone pieces in a row along one wall, each 0.5 units or more from the next
+    (bookcase, chest, bookcase; three crates none touching; workstations between candelabras; a unit is a run of
+    pieces under 0.35 apart, a piece with its candelabra, never a desk with its chair). Westwood: 7 of 116 rooms (none
+    longer than 4); ours 20% (q0). Repair: a unit slides along the wall against its neighbour, its own kind first (a
+    run of shelves, a heap of stock), until no three stand apart; else a stock piece of the string goes. Kin standing
+    apart on a wall was measured too and is not a rule: Westwood stands 21 of its 73 kin pairs apart, ours 13 of 48.
+  - *front walls by category*: the share of each category's wall pieces on a front wall only (SE, SW): supplies 27%,
+    workstations 29%, smiths' pieces 25%, statues 18%, beds and cots 15%, clutter 14%, racks 11% (tables, chairs and
+    benches 49-62%, the bar 50%, shelves 43%: not judged). Past floor(share x n) a piece goes to a back wall (stock into
+    a heap there, a cot or rack turned to its new wall); stock that fits nowhere stays.
+  - *front lights*: 29% of Westwood's floor lights stand by a front wall or in the front corner; past that share (none
+    in a room of one to three) a light moves to a back-wall spot, else goes.
+  - *loose pieces with a face*: desks (Westwood: 1 of 33 alone in the open or on a front wall), racks (20%),
+    workstations and fairy jars (21%; jars 2 of 11 in the open), shop counters (2 of 9) join the lone-piece rule: past
+    the share each goes to a back wall beside its own kind, else goes (the "lamp post mid-shop" was a FairyJar).
+  - *broken groups*: tables with no seat drawn up, past the type's Westwood share (guardroom 15%, tavern 5%, barracks 11%,
+    living room 32%, bedroom 50%; only the types with 5+ Westwood rooms), get one or two seats (`Furnisher.seats_around`);
+    sets of three or more matching chairs all one distance off the table (Westwood: 11 of 54 sets; ours 20 of 30) have
+    one or two chairs pulled out 0.35-0.75 units (Westwood keeps one kind of chair at 76% of its sets, ours 83%: not
+    changed).
+  - *carpets*: a carpet a square or more from every wall with nothing standing on it and no bed's foot at it (Westwood: 6
+    of 61 carpets; 52 of 61 touch a wall, laid to the room's shape) is lifted (`Furnisher.carpet_undo`, `lift_carpet`)
+    and laid again at the bed's foot or under the seating (`kit/shells.py carpet_target`), else taken up. Westwood's
+    carpets are not smaller than ours (p50 45% of the floor), so size is not a rule.
+  - *one trade to a shop*: potion (potion shelves, bookcases, fairy jars, star charts, cauldrons), steel (steel crates
+    and barrels, tool barrels, crates, sacks), arms (the trader's racks and hung arms). Westwood's 8 curated shops: 7
+    sell one trade, Con07B keeps one potion shelf among its arms; ours 1-9 odd pieces a shop (q0). Past one odd piece a
+    piece becomes one of the main trade's (Westwood's pieces of the trade, nearest its size, turned to its wall) where
+    it stands, else goes.
+  - *the halls' table sets* (taverns, dining halls, great halls of 100+ tiles): the widest stretch of floor with no
+    piece on it at most Westwood's widest (8 halls of 104-216 tiles: 3.4-5.7 units; ours 4.0-8.0, q0): a set from the
+    crowded part moves whole into it and a carpet is laid under it (Westwood's free hall tables stand on carpets), else
+    it goes back; no three sets in a straight or diagonal row in a tavern or dining hall (Westwood: 1 in 9 rooms).
   What the audit drops is made up against the walls by the recipe's top-up, then audited again. `NOX_GRAMMAR=0` turns
   the audit off (for comparisons). The checker warns (`composition.grammar_*`) only where Westwood's own curated rooms
   almost never reach (`checks.GRAMMAR_MIN`; each rule fires on 0.6-6.8% of Westwood's 176 rooms, any of them on 22%);

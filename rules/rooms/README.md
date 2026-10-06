@@ -213,7 +213,13 @@ These hold whatever the type (PROCESS.md keeps their history):
   and chests join a group (Westwood leaves 15% of its stock and 2% of its chests alone in the open or on a front wall);
   no even gaps along a wall (or of hangings), no stepped rows, no piece one to a corner, no rings (four chairs at a
   table's quarter points); no table or bench square before the hearth; no bench or column alone in the open; no plants
-  but in a gallery; no face on a front wall; no twin knots or table sets; beds and tombs of one kind.
+  but in a gallery; no face on a front wall; no twin knots or table sets; beds and tombs of one kind. Round two
+  (night-grammar2, `round2` in the same file): no three single pieces at gaps in a row along a wall (Westwood: 6% of
+  rooms); stock, cots, racks and workstations on the front walls no more often than Westwood's share for the category;
+  floor lights by a front wall at most Westwood's 29%; desks, racks, fairy jars and counters not alone in the open; a
+  table has seats where Westwood's tables of the type do, and a set's matching chairs are not all one distance off it;
+  no carpet floating in the middle with nothing on it; one trade to a shop (one odd piece at most); a hall's table sets
+  spread over its floor (no bare stretch wider than Westwood's halls leave, no three sets in a row).
 - **One palette per building** (seats, tables, carpets, hangings, plants), one hanging theme per room, one door family
   per building; candelabras indoors, never open torches.
 
