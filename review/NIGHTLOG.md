@@ -383,3 +383,34 @@ arrangement with the setting cropped to the scene's own footprint (both sides al
 maps instead.
     ../dystopiannox-wt/scenes6/review/out/scenelab/shrine/round6: accuracy 10/10, generated 4.6 vs Westwood 7.6, confidence 0.74
     ../dystopiannox-wt/scenes6/review/out/scenelab/ogre_camp/round6: accuracy 8/10, generated 4.8 vs Westwood 6.4, confidence 0.69
+
+## 04:59 Placement grammar round two merged (night-grammar2) and judged
+
+Rules (Westwood figure in brackets): strings of 3+ singles along a wall slide into runs or heaps (6% of rooms; ours
+16% -> 6%); faced pieces on front walls capped per category (supplies 27%, workstations 29%, statues 18%, beds 15%...);
+floor lights by a front wall capped (29%); loose jars/desks/racks to a back wall; tables without seats only at
+Westwood's per-type rate, one chair pulled out of matching sets (11 of 54; ours 84% -> 9%); floating carpets relaid or
+lifted (6 of 61; ours 28% -> 15%); one trade per shop (7 of 8); tavern sets off rows into bare floor. Grammar faults in
+the 80 lab rooms 127 -> 52. Story maps 0 errors, warnings 85 -> 86.
+
+| Type | Engine | Previous best | q7 (accuracy, generated / Westwood, confidence) |
+|---|---|---|---|
+| tavern | recipe | 8/10 | **6/10, 5.0 / 6.4, 0.72** |
+| shop | motifs | 8/10 | 7/10, 5.2 / 7.0, 0.64 |
+| guardroom | recipe | 8/10 | 8/10, 5.2 / 7.0, 0.61 |
+| living room | recipe | 7/10 | 8/10, 4.6 / 7.6, 0.66 |
+| laboratory | motifs | 8/10 | 9/10, 4.4 / 6.8, 0.67 |
+| kitchen | motifs | 9/10 | 10/10, 5.2 / 7.6, 0.73 (see fairness) |
+| bedroom | motifs | 6/10 (m2) | see below |
+| storeroom | recipe | 6/10 (r16: 5/10) | see below |
+
+Generated scores rose to ~5 across the board (were ~4-4.5). Remaining faults: stock still stamped in triangles or at
+equal gaps with kinds never sharing a heap; a closet with two pieces; a bed wall in one symmetric row; table sets
+jammed into a corner or against the hearth with 3/4 of the floor bare; huge rooms with a few singles.
+
+Fairness rule found: for thin types the sheet fills Westwood's side with kin rooms (kitchen: labs, a winch room, a
+library), and the judge then tells our rooms apart because they *are* kitchens. Thin types (kitchen 3, throne room 4,
+great hall 2, chapel 1) need their own protocol: judge each generated room against only the type's real Westwood
+rooms (fewer pictures), or score them by rubric alone, never against a kin-filled pool.
+    ../dystopiannox-wt/grammar2/review/out/roomlab/bedroom/q7: accuracy 8/10, generated 5.4 vs Westwood 7.4, confidence 0.62
+    ../dystopiannox-wt/grammar2/review/out/roomlab/storeroom/q7: accuracy 6/10, generated 5.8 vs Westwood 6.2, confidence 0.62
