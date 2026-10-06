@@ -32,6 +32,17 @@ it. In the middle, the alchemist's work table.
 - **Front walls:** statues; plants.
 - **Movement:** along the length between the zones.
 
+
+## Archetypes
+
+Westwood's 6 curated campaign laboratory rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| study lab | 33% | Con07E@190,124, Con07D@118,93 | a scholar's lab: the desk with its chair on a back wall, one workstation or shelf apart, candles; the floor mostly bare |
+| work wall | 33% | Con09b@192,94, Con05A@55,41 | workstations side by side along one wall, the desk and a shelf on the other |
+| zoned lab | 33% | Con07C@71,136, Con07C@82,193 | a big lab in zones: bookcases lining the walls, workstations as a bench (along a front wall or as an island), a table set in a corner, generators along a wall, many candles |
+
 ## Density and openness
 
 | | Westwood's campaign (19 rooms, 12 maps) | Profile |

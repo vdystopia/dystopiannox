@@ -27,6 +27,17 @@ The cot against the back wall (the stocks in an ogre pen).
 - **Front walls:** bare; the door.
 - **The middle:** straw strewn in a few heaps, a bone or two; open.
 
+
+## Archetypes
+
+Westwood's 10 curated campaign cell rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| straw pen | 60% | Con11a@166,52, Con11a@174,44, Con11a@182,36, Con11a@194,80, Con11a@202,72, Con11a@210,64 | an ogre pen: straw heaped over the floor, a primitive obelisk in a corner, a stool or a bench (recipe engine: the kind's own recipe) |
+| gaol cell | 30% | War07A@160,230, War07A@164,226, War07A@174,236 | a gaol cell: one cot on a back wall, straw lining the walls and strewn, nothing else (recipe engine: the kind's own recipe) |
+| cell block | 10% | War03c@104,88 | a long barred block: bare, barrels in a corner, torches (recipe engine: the kind's own recipe) |
+
 ## Density and openness
 
 | | Westwood's campaign (7 rooms, 2 maps) | Profile |

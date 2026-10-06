@@ -61,6 +61,11 @@ The scorecard's first table shows each against its target.
   hard rules (the brief, rules/rooms/<type>.md, and the user's verdicts in review/FEEDBACK.md), the cross-type features
   (spacing, overlaps, snugness, rows, symmetry, facing, the way in, compared with all 235 Westwood rooms: the cross AUC)
   and the blind judge.
+- **Template similarity** (the scorecard's last stop row; `metrics.template`): how alike the batch's ten rooms are
+  (mean pairwise layout similarity: the same families on the same walls, and at the same places, mirrors counted)
+  against Westwood's rooms of the type (the same mean over draws of as many of them; a thin type's with the kin rooms its
+  archetypes name). Above Westwood's p90: "more alike than Westwood", one template repeated; the twins listed are pairs
+  more alike than Westwood's p95 pair. The cure is the type's archetypes (`mapgen/kit/archetypes.py`, rules/rooms/README.md).
 - **Culture.** A batch mixes the type's kinds in proportion to Westwood's rooms by culture (a chapel and the Land of the
   Dead's dark chapel; a barracks and the ogres' den). A room is compared with Westwood's rooms of its own culture when
   there are 6 or more, else with all of the type.

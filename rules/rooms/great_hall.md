@@ -29,6 +29,17 @@ The hearth, centred on a back wall (a second one on the far wall of a long hall)
   round them; open hearths at the ends of a long hall.
 - **Movement:** clear ways from every door across the hall to the others; no table in a door's line.
 
+
+## Archetypes
+
+Westwood's 2 curated campaign great hall rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Few rooms: the archetypes also draw on kin types' rooms (each counted half a room), as named. Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| hearth in the round | 33% | Con06b@186,38 | a free-standing hearth in the middle, benches in rows round it, shields and banners on the back walls |
+| feast hall | 33% | Con07E@173,104 | the hearth on a back wall, many small tables of mixed kinds with chairs along the walls and over the floor, torch poles, trophies |
+| long boards | 33% | -kin: Con06a@81,211, Con05C@139,92 | the hearth on a back wall, long boards in parallel on a great carpet with benches down both sides |
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, Con06b, Con07E) | Profile |

@@ -38,6 +38,17 @@ walls (p90 three), the rest bare. The recipe follows them (`slot="heaps"`, kit/f
   as bunched), 1.6 units apart; a third wall only to balance the room.
 - **Lights:** three a hundred tiles (one candelabra in a store of 40 tiles).
 
+
+## Archetypes
+
+Westwood's 7 curated campaign storeroom rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).
+
+| Archetype | Share | Westwood rooms | What it is |
+|---|---|---|---|
+| corner heaps | 57% | Con01A@95,121, Con02a@58,154, Con06a@12,149, War03d@88,216 | a small store: a heap of barrels in one corner, a crate or an apple crate by another wall, the middle an aisle (recipe engine: the kind's own recipe) |
+| shelved store | 14% | Con05A@52,18 | shelves of stores on both back walls, water barrels free before them (recipe engine: the kind's own recipe) |
+| hall of stock | 29% | Con03B@203,115, Con07B@121,219 | a big store: crates and casks heaped free over the floor in knots, a desk, odd things put away (statues, telescopes, bookcases) (recipe engine: the kind's own recipe) |
+
 ## Density and openness
 
 | | Westwood's campaign (22 rooms, 17 maps) | Profile |

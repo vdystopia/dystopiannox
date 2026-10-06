@@ -990,6 +990,9 @@ class MotifFurnisher(F.Furnisher):
             w, rel = k.split(":")
             if w in ("NE", "NW") and rel in ("opposite", "beside"): rels[rel] += n   # on the door's own wall it
             # stood beside the door, which our walls' door cuts rarely leave room for
+        arel = (self.archetype or {}).get("focal")
+        if door and arel in ("opposite", "beside"):            # where the archetype's rooms stand it from the door
+            rels = collections.Counter({arel: 1})
         if door and rels:
             want_rel = self._choose([(n, r) for r, n in sorted(rels.items())])
             for w in backs:
@@ -1004,6 +1007,15 @@ class MotifFurnisher(F.Furnisher):
         return max(backs, key=lambda n: max(st["L"] for st in self.stretches if st["name"] == n))
 
     def _zone_skeleton(self, z, used):
+        # the room's archetype (kit/archetypes.py): its own Westwood rooms (and kin rooms) are the plans its zones take
+        a = self.archetype or {}
+        ids = [i for i in tuple(a.get("rooms", ())) + tuple(a.get("kin", ())) if i in self.lib["rooms"]]
+        rooms = [self.lib["rooms"][i] for i in ids if i not in used and self.lib["rooms"][i].get("pieces")] or                 [self.lib["rooms"][i] for i in ids if self.lib["rooms"][i].get("pieces")]
+        if rooms:
+            cands = [(math.exp(-abs(math.log(max(9, r["floor"]) / max(9, z["floor"]))) * 1.0) *
+                      (1.5 if r["culture"] == self.culture else 1.0) * (1.0 if i in a.get("rooms", ()) else 0.5), r)
+                     for i, r in ((r["id"], r) for r in rooms)]
+            return self._choose(cands)
         rooms = [r for rid, r in self.lib["rooms"].items() if self.pool.get(rid, 0) >= 1.0 and rid not in used and
                  r.get("pieces")] or [self.lib["rooms"][rid] for rid in self.pool if self.lib["rooms"][rid].get("pieces")]
         cands = []
@@ -1432,6 +1444,8 @@ class MotifFurnisher(F.Furnisher):
     def compose_clusters(self):
         rng_c = ww_cover(self.rtype)
         self.cover_goal = self.rng.uniform(*rng_c) if rng_c else 0.15
+        self.cover_goal *= (self.archetype or {}).get("cover", 1.0)       # the archetype's density
+        if self.archetype: self.log.append(f"archetype {self.archetype['name']}")
         self._carpet()
         zones = self._zones()
         self.zones = zones
@@ -1760,6 +1774,7 @@ class MotifFurnisher(F.Furnisher):
                     else: break
 
     def furnish(self):
+        self.draw_archetype()
         self.composing = True
         if COMPOSE == "clusters": self.compose_clusters()
         else: self.compose_room()
@@ -1792,6 +1807,7 @@ def furnish_room(spec, room, kind=None, rng=None, style="town"):
     room.kb_refused = dict(f.kb_refused)
     room.motif_log = list(f.log)
     room.grammar_log = dict(getattr(f, "grammar_log", None) or {})
+    room.archetype = (f.archetype or {}).get("name")   # the room's archetype (kit/archetypes.py)
     from kit import loot
     loot.tag(spec, objs, f.kind)
     return objs
