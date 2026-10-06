@@ -96,3 +96,12 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   fuller: coverage 0.07->0.16), living room 15->14 (now real households: bigger, with more kinds of piece), laboratory
   19->6, hall 17->3. New types gain real references: guardroom 11, cell 10, mausoleum 6, shrine 5, cellar 4, solar 4,
   winch room 4. Storeroom AUC 0.955->0.741 from the cleaner references alone. The tuning tracks are told to merge it.
+- 23:45 Independent judgements, round 2 (12 sheets): every room type is still told apart (9-10/10). Generated / Westwood:
+  bedroom r7 4.8/6.6, kitchen ref 5.0/5.8 -> r8 3.4/5.8 (regressed: no cauldron, stoves, bookcases), storeroom r9
+  5.0/5.4 (closest), laboratory r8 4.6/5.6, shop r4 4.2/6.4, tavern ref 5.0/7.0, throne room ref 4.8/7.2 -> r5 5.2/7.2,
+  great hall r4 4.8/6.0; bandit camp r5 4.6/6.2.
+  Three methodological fixes from the judges: (1) a render artifact: generated rooms had a glowing rim of sunlit ground
+  round their walls (fixed in `labrender.py`; the rim is gone); (2) the same Westwood pictures repeat across a type's
+  iterations, so a judge seeing two sheets recognises them: one sheet per type per judge from now on; (3) rounds have
+  often improved the metrics while making rooms worse by eye (stamps), so the tracks now check each round by eye
+  against ref. `review/score_indep.py` scores a judgement against its key.
