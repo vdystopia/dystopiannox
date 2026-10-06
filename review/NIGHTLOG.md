@@ -222,3 +222,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   (brick squares) scattered with no relation to the room, and plank floors in throne rooms. Thin evidence misleads:
   the judging description of kitchens (3 Westwood rooms) says kitchens hold no cauldron, against the user's own rules:
   for the user to decide.
+- 02:35 Scene round 4, fair independent judgements (accuracy, generated / Westwood): bandit camp 10/10 (5.0/7.2),
+  graveyard 10/10 (5.2/7.2), garden 10/10 (5.2/7.0), pond and dock 9/9 (5.2/7.2), market stall 6/8 (4.2/7.0), urchin
+  camp 10/10 (4.4/7.6), shrine 9/10 (4.6/6.8), ogre camp 10/10 (5.4/7.6), well 8/9 (5.2/8.0). Scenes are still told
+  apart: they score about 5 against Westwood's 7-8 consistently. The judges' common thread is the same as for rooms:
+  singles at even spacing, one template per scene, too sparse; Westwood's scenes are knots of mixed pieces leaning on
+  terrain. All critiques passed to scene round 4.
