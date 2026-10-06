@@ -119,6 +119,7 @@ def _yard_build(ctx):
 
 # ---------------------------------------------------------------------------------------------------- gardens
 HOME_ROLES = ("home", "cottage", "home", "fisher", "herbwife")
+GARDENERS = (("Con02a", "Gretchen"), ("Con03A", "Kenneth"), ("Con02a", "Julie"))
 
 
 def _house(ctx, p, role, at, side=None, quiet=False):
@@ -187,10 +188,19 @@ def _garden_build(ctx):
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
         vil = Village(m, p.rng, land)
         n0 = len(m.d["objects"])
-        size = {"small": (3, 2), "typical": (4, 3), "large": (5, 4)}[p.size]
+        size = {"small": (4, 3), "typical": (5, 4), "large": (6, 5)}[p.size]     # (Westwood's run 6-9 squares)
         if vil.garden(b, size=size):
             crops = _new_objects(m, n0, r"^Garden")
-            if crops: p.notes.update(anchor=_mean(crops), kind="garden", role=bid.role)
+            if crops:
+                p.notes.update(anchor=_mean(crops), kind="garden", role=bid.role)
+                if p.rng.random() < 0.6:                 # the gardener at work at the beds' end
+                    xs = sorted(crops, key=lambda o: o["x"] + o["y"])
+                    a, z = xs[0], xs[-1]
+                    q = a if p.rng.random() < 0.5 else z
+                    mx, my = _mean(crops)
+                    L_ = math.hypot(q["x"] - mx, q["y"] - my) or 1
+                    _person(ctx, GARDENERS[p.k % len(GARDENERS)], q["x"] + (q["x"] - mx) / L_ * 34,
+                            q["y"] + (q["y"] - my) / L_ * 34, (mx, my), f"Gardener{p.k}")
 
 
 # ---------------------------------------------------------------------------------------------------- ponds and docks
@@ -312,7 +322,10 @@ def _house_plan(roles, square=0):
         for p in ctx["plots"]:
             ux, uy = p.dir
             role = roles[p.k % len(roles)]
-            _house(ctx, p, role, (p.c[0] - ux * 4.5, p.c[1] - uy * 4.5))
+            # (a market's square before its store: the store at the clearing's side, the square kept open in the
+            # middle; the store at 4.5 squares had stood on the square itself, and no awning found room by it)
+            back = (p.r - 5.5) if (square and p.town) else 4.5
+            _house(ctx, p, role, (p.c[0] - ux * back, p.c[1] - uy * back))
             if square: _keep(ctx, p.scene_c, square)
     return plan
 

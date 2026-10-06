@@ -303,3 +303,16 @@ lightened.
 AUC at or under 0.6 from r2 (4 Westwood docks: noise). By eye: docks in twos and threes along a lake, ferns and a
 rock on the bank, a fire or a barrel knot, the fisher at his landing. Ambermere and DysVale: 0 errors, no dock or
 exterior warning. Queued: r4-fisher.
+
+### garden: the household round it (mapgen/kit/village.py `_garden_at`, `_household`)
+
+| Round | What changed | AUC | Hard |
+|---|---|---|---|
+| ref4 | the kit as merged | 0.76 | 0 |
+| r1-household | centred on a side of the house first; the planting's density varies (0.52-0.62); the household: apple trees with a crate of apples (50%), a hedge of bushes (40%), a second water barrel (40%); the lab's gardener | 0.37 (0.236 re-rendered after the fairness merge) | 0 |
+| r2-larger | the lab asks a size larger (4 x 3 to 6 x 5) | 0.13 | 0 |
+| r3-far | the side goods on the long side away from the house (a sack had leant on the cabin's corner) | 0.062 | 0 |
+
+AUC with 5 Westwood gardens is noise. Still: in a narrow clearing the garden is squeezed between the cabin and the
+wood (the wide pass fails, the narrow one lays it). Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0
+errors, no exterior warning (their room warnings come from master's room merges). Queued: r3-far.
