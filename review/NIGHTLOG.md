@@ -130,3 +130,7 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   have "one strong idea placed with small irregularities". Note for the method: the briefs describe our generator's
   rules (caps per wall), and a judge used that to tell rooms apart; judges should get a type description without the
   generator's rules.
+- 00:03 More independent results: shop r8 10/10 (4.4/7.2); scenes: graveyard r5 8/10 (5.6/7.0, progress),
+  garden r5 10/10 (4.8/7.4), pond and dock r2 9/9 (4.6/7.8). The scenes' main tell is partly the lab: ours stand alone
+  in an empty forest glade, Westwood's among town walls, walks, yards and houses. The scene lab is asked to generate
+  variants in a realistic town or shore context.
