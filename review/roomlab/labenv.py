@@ -28,6 +28,18 @@ WW_FEATURES = os.path.join(HERE, "westwood_features.json")
 WW_INDEX = os.path.join(REPO, "rules", "rooms", "westwood.json")
 
 
+def curate(rooms):
+    """Westwood rooms with the verdicts by eye applied (rules/rooms/curated.json via rules/rooms/curated.py): misfiled
+    rooms retyped, rooms not to learn from left out. Idempotent, so a fresh westwood.json passes through unchanged."""
+    import importlib.util
+    mod = sys.modules.get("ww_curated")
+    if mod is None:
+        spec = importlib.util.spec_from_file_location("ww_curated", os.path.join(REPO, "rules", "rooms", "curated.py"))
+        mod = importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
+        sys.modules["ww_curated"] = mod
+    return mod.apply(rooms)
+
+
 def types():
     """The room types of kit/roomtypes.py, in the brief's order."""
     from kit.roomtypes import TYPES

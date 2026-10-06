@@ -98,7 +98,7 @@ def write(typ, it):
            f"{bad(s['stop']['blind_score']) if b else 'not judged'}</td></tr>",
            f"<tr><td>rooms with hard-rule findings</td><td>{s['rooms_with_hard']} of {s['rooms']} "
            f"{e(json.dumps(s['hard_rules']))}</td><td>0</td><td class={bad(s['stop']['hard'])}>{bad(s['stop']['hard'])}</td></tr>",
-           f"<tr><td>cross-type AUC (type-free features, all 235 rooms)</td><td>{s['cross_auc']}</td><td>(context)</td><td></td></tr>",
+           f"<tr><td>cross-type AUC (type-free features, every Westwood room)</td><td>{s['cross_auc']}</td><td>(context)</td><td></td></tr>",
            "</table>", f"<p><small>{e(c['note'])}</small></p>"]
     if prev:
         out.append("<h2>Against the previous iteration</h2><table><tr><th></th><th>" + e(prev["iter"]) + "</th><th>"

@@ -105,6 +105,8 @@ canvas fixed; no labels. Generated variants come in the type's Westwood cultures
 that host the kind, whose walls, floors and doors are Westwood's (rules/out/buildings.json). What still differs: Westwood's
 rooms may hold monsters and NPCs, and Westwood's neighbouring rooms are furnished differently (both dimmed).
 
-Westwood reference data comes only from the campaign maps (Con, War, Wiz; `rules/rooms/westwood.json`, each room once).
+Westwood reference data comes only from the campaign maps (Con, War, Wiz; `rules/rooms/westwood.json`, each room once),
+with the verdicts by eye of `rules/rooms/curated.json` applied (misfiled rooms retyped, rooms not to learn from left
+out; `labenv.curate`, used by `labref.index` and `metrics.westwood`).
 Rebuild it after the index changes: `py review/roomlab/labref.py features`; re-render a gallery by deleting
 `review/out/roomlab/_westwood/<type>/`.
