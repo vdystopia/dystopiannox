@@ -536,3 +536,29 @@ the table); bandit camps untouched.
 
 Story maps: Thornwick, Greywatch, Ambermere, Starwell, Harrowby 0 errors, warnings the same classes and counts as on the
 base (21, 12, 16, 19, 16: room rules only). Sheets: K (base7) and Q (round7) for all ten, queued in TO_JUDGE.md.
+
+## Round 8 (night-scenes8, 2026-10-06): Westwood's structures per scene, and their sites
+
+The independent judges on round 7 (NIGHTLOG 05:26): under the footprint framing the round-6 urchin den, the graveyard,
+the round-7 dock and garden near chance; round 7's den changes and probably the well's caught; shrine, ogre camp and
+jail still caught 8-10 of 10 for one kit per scene. Round 8 clusters each of these types' Westwood campaign scenes by
+their pieces and makes each of ours draw one of those structures, in Westwood's frequencies.
+
+| Scene | What changed | Structures (Westwood count) | AUC round7 -> round8 | Too regular round7 -> round8 |
+|---|---|---|---|---|
+| urchin_camp | round 7's den hunks reverted (`camps.urchin_den` is round 6's again; renders identical to `base7`, which the judge inverted at 3/10) | as round 6 | 0.869 -> 0.87 (= base7) | stamp -> none |
+| well | `well_side` drawn in the screen's own frame (`Theme.screen`): the sign 50-56 px before the well, straight down (Con07B, War07A) or down and aside (Con02a); one in four bare (Con09a); one in four the market well's sign and street lamp 190 px before it (Con07B; its racks stand inside the shop, not round the well; the lamp's shadow piece laid with it) | bare 1, sign 2, market 1 of 4 | 0.582 -> 0.142 | none -> none |
+| shrine | `scenes.SHRINE_LAYOUTS`: seven structures with Westwood's offsets from the wall's line (statues 16-51 px, median 29; pillars 11-22; wall torches 10-20; torch poles 20-47; sarcophagi 41-67; a cross ~93), every step to a neighbour on a screen diagonal or axis; wall torches, pillars and tapestries may hug their wall (`dressing.WALL_HUGGERS`) but never past its end; `Theme.keep_layout` keeps the drawn layout until it is laid (drawn afresh at every spot, the small layouts had won out of turn); `Theme.archs` + `Exterior.want_arch` let the lab ask for one. Lab: no shrine house; a straight run of DungeonStone, GalavaTowerWall or StoneGray, nine to thirteen squares, the ground paved round it as Westwood's (DirtDark2 / BrokenCobbleDirtWebs, GalavaBrick3, GalavaBrick2), the batch in Westwood's order (`recipes.SHRINE_SITES`, `SHRINE_ARCH`) | castle row 4, tight row with a chest 2, alternating victory statues 2, pair 5, lone statue 5, crypt court 5, chapel nave 3 (of 26 against walls; the 2 milestones not in the lab: `waystone` needs the wild) | 0.846 -> 0.389 | none -> none (gap_cv 0.07 -> 0.24, Westwood 0.15) |
+| ogre_camp | `camps.OGRE_ARCH`: one structure per Westwood fire; the meat a touching knot or short row (`Camp.put_px(snug=)`: Westwood's racks 5-18 px apart) 55-75 px off the fire in four of five; seats each on its own side; torches, barrels, the tusk mound and the rocks against the hollow's wall (`edge`, `by_wall`), the rocks in one clump; no palisade gate, straw, bed or bearskin in the open (the "hide tent"); `hut_yard` (rounds 6-7, Harrowby) maps to one of the first three. Lab: each its ground (`OGRE_GROUND`) | cage yard 1, cold pit 1, hut camp 1, bone pit 1, cave fire 1 | 0.828 -> 0.558 | drift -> none |
+| jail | `yards._jail`: the castle cell row behind its corridor (five squares deep, a ThickWoodenDoor in its outer wall, the wall torches in the corridor); straw as a mat (5-10 Straw2 8-16 px on from the last) reaching out from the cot in a back corner, a candelabrum 30%; cells bare 40%; guardroom racks 16 px off the side walls, the bow rack's variant by its wall (`S.ALONG`); a cave cell (War03c: Dirt walls, four ogre straws) only when asked (`arch="cave_cell"`). Lab: a wide paved court round every jail | castle cell row 8, cave cell 1, guardhouse 2 | 0.843 -> 0.815 | step_cv, drift, odd -> none |
+
+The jail's AUC stays high on a comparability gap, not the kit: seven of Westwood's eleven "jails" are single Con07B
+cells found one at a time (one to three pieces: a torch), ours whole jails. Not done (stopped at the user's request):
+the bandit camp (the war camp's one kit; evenly strewn floor stones; side-by-side cot pairs, where Westwood's hideout
+cots lie singly 80-120 px apart along the rock; a chest in every camp, Westwood's in 5 of 20) and the market stall
+(sparse stalls, stock under the awning).
+
+Story maps: Thornwick, Greywatch, Ambermere, Starwell, Harrowby 0 errors, warnings the same classes and counts as on
+the base (21, 11, 17, 19, 18). On the way Greywatch failed once (a cave cell drawn for its jail: one cell for three
+prisoners): the cave cell is opt-in. Sheets: `round8` for shrine, ogre_camp, jail, well, urchin_camp, queued in
+TO_JUDGE.md.

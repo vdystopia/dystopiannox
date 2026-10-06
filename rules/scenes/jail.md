@@ -32,3 +32,11 @@ middle (Greywatch stands its prisoners by it).
 side the wall, running on past the corners), the court paved in two of three.
 
 AUC: 0.939 -> 0.889 (round6).
+
+## Structures (round 8, 2026-10-06)
+
+Castle cell row 8 (Con07B, War07A: cells off a corridor walled with its own ThickWoodenDoor, a JailDoor and wall torch
+to each cell; many cells bare, a cot in a back corner with a mat of 7-10 straws 8-16 px apart, a candelabrum), cave cell
+1 (War03c: Dirt walls, DirtDark2, four OgreStraw, a torch; `arch="cave_cell"` only), guardhouse 2 (Con02a, War03b:
+racks 16-27 px off the walls, BowRack2 and PoleArm3 on "/" walls). AUC 0.843 -> 0.815 (Westwood's Con07B cells are found
+one at a time, one to three pieces each).
