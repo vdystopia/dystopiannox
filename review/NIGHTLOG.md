@@ -90,3 +90,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   cellars, cave caches), which pulls Westwood's means down and skews the targets; (3) one judge on ten pictures is noisy.
   Passed to the tracks. A shells agent (`night-shells`) now owns room shapes and floors: L-shapes, alcoves, corridors,
   floor patterns.
+- 23:25 Westwood references curated by eye (`night-curate`, `rules/rooms/curated.json`): all 235 campaign rooms looked
+  at; 110 kept, 67 retyped to their true type, 58 excluded (corridors, cave caches, traps, burning houses, set pieces,
+  second-campaign copies the old de-duplication missed). Bedroom 40->28 references, storeroom 22->7 (the real ones are
+  fuller: coverage 0.07->0.16), living room 15->14 (now real households: bigger, with more kinds of piece), laboratory
+  19->6, hall 17->3. New types gain real references: guardroom 11, cell 10, mausoleum 6, shrine 5, cellar 4, solar 4,
+  winch room 4. Storeroom AUC 0.955->0.741 from the cleaner references alone. The tuning tracks are told to merge it.
