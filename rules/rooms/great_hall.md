@@ -72,3 +72,14 @@ The lord at the hearth's side, else by a statue or at a back wall facing the tab
   trader's desk by the door (the classifier once called it a shop): coverage 0.21, open 0.36. These two are the
   campaign's only great halls.
 - Ours: Thornwick's and Greywatch's great halls (see `review/out/<map>/rooms/`).
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+- **Boards, not sets:** the tables joined end to end into long boards (three pieces), benches down both sides at every
+  other piece (Con06b: twelve Table1/2 in a U, sixteen benches); a table piece per 24 tiles reads as two to four
+  boards, never a grid of little sets.
+- **Fire:** the hearth on a back wall and, in a big hall, one free hearth in the middle, standing alone (no benches
+  ringing it), the tables set round it (Con06b's U).
+- **Walls:** shields, banners or trophies of one theme along the back walls; a bench in each front corner (HB-2).
+- **Nothing else:** no plants, no statues (Westwood's great halls hold neither).
+- Still missing: the boards in a U round a free hearth (Con06b), and the shell's shape.

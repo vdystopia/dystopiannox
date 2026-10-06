@@ -61,3 +61,10 @@ Beside a statue, at its side away from the aisle, else against a back wall; neve
 - Westwood: Wiz02A / Con07B, cell 150,198: a 155-tile hall, 15 types (columns, statues, plants, chests): coverage 0.06,
   open 0.76.
 - Ours: Starwell's star-chamber (seed 4, room 3, 98 tiles): coverage 0.04, open 0.73.
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+Westwood's halls (curated: Con04c, Con06b, Con10c) are columns, statues and open floor.
+- **No plants, no tables, no benches down the walls** (one at most), a chest at most, four hangings at most.
+- **Statues are the hall's repeated piece** (Con04c holds 24): a piece per 18 tiles, 8 at most, in pairs across the
+  aisle and in the corners, turned along their walls; columns a piece per 14 tiles, 12 at most, in pairs.

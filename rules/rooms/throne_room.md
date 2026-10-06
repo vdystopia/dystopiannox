@@ -88,3 +88,18 @@ The lord beside his throne (on the dais, at its side), never on the runner or in
 - Ours: Starwell's Hall of the Star (seed 4, room 6, 170 tiles): the throne on the NW wall down a runner, statues and
   braziers, four pairs of columns, statues across the aisle, tapestries of one colour: coverage 0.04, open 0.81,
   13 types (`review/out/Starwell/rooms/06.png`).
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+- **Few hangings, placed:** four at most in all (Westwood's: Hecubah's war poles by the door, the Lich Lord's
+  tapestries in pairs), never one every few steps down both back walls.
+- **The runner lined with fire:** braziers in pairs just off the runner between the pairs of columns (Hecubah's six
+  flame basins), besides the pair before the dais.
+- **Columns:** a pair per 30 tiles, three pairs at most (the Lich Lord's six in 356 tiles).
+- **Statues:** two flanking the throne, a pair across the aisle, two in the back corners; a statue on a back wall turns
+  along it toward the throne (Statue2c/2g on the NW wall, as Westwood stands 19 of its 20), never with its back flat
+  to the wall facing the camera.
+- **Nothing else:** no plants, no benches, a chest at most.
+- Still missing: the dais and inlaid runner (a different floor under the throne and down the aisle) and a shaped hall
+  (the shell); a Land of the Dead throne room (the lich's throne with its base and shadow, obelisks, LOTD tapestries)
+  for Westwood's three of four.

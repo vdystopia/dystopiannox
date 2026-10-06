@@ -1,5 +1,5 @@
 {
- "rooms": 177,
+ "rooms": 179,
  "maps": "campaign (Con/War/Wiz), each room once",
  "curated": "rules/rooms/curated.json: retyped by eye where misfiled (classed: the classifier's type); excluded: not rooms to learn from",
  "types": {
@@ -1271,6 +1271,170 @@
     }
    ]
   },
+  "tavern": {
+   "n": 6,
+   "maps": 4,
+   "cultures": {
+    "town": 5,
+    "dunmir": 1
+   },
+   "tiles": {
+    "p10": 15,
+    "p25": 25,
+    "p50": 125,
+    "p75": 166,
+    "p90": 216
+   },
+   "cover": {
+    "p10": 0.079,
+    "p25": 0.124,
+    "p50": 0.147,
+    "p75": 0.167,
+    "p90": 0.443
+   },
+   "open": {
+    "p10": 0.128,
+    "p25": 0.42,
+    "p50": 0.547,
+    "p75": 0.559,
+    "p90": 0.607
+   },
+   "middle": {
+    "p10": 0.0,
+    "p25": 0.01,
+    "p50": 0.027,
+    "p75": 0.084,
+    "p90": 0.087
+   },
+   "per_tile": {
+    "p10": 0.277,
+    "p25": 0.28,
+    "p50": 0.31,
+    "p75": 0.384,
+    "p90": 0.867
+   },
+   "types": {
+    "p10": 6,
+    "p25": 7,
+    "p50": 23,
+    "p75": 34,
+    "p90": 35
+   },
+   "most": {
+    "p10": 3,
+    "p25": 3,
+    "p50": 10,
+    "p75": 12,
+    "p90": 13
+   },
+   "free_most": {
+    "p10": 0,
+    "p25": 3,
+    "p50": 10,
+    "p75": 12,
+    "p90": 13
+   },
+   "walls": {
+    "p10": 3,
+    "p25": 4,
+    "p50": 4,
+    "p75": 4,
+    "p90": 4
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.029,
+    "p50": 0.07,
+    "p75": 0.167,
+    "p90": 0.174
+   },
+   "families": {
+    "chair": 0.83,
+    "storage": 0.83,
+    "table": 0.83,
+    "counter_bar": 0.83,
+    "bench": 0.67,
+    "wall_decor": 0.5,
+    "fireplace": 0.33,
+    "clutter": 0.33,
+    "rug": 0.33,
+    "stove": 0.33,
+    "smithy": 0.17,
+    "shelves": 0.17
+   },
+   "most_kinds": [
+    [
+     "Stool",
+     1
+    ],
+    [
+     "CushionedStool",
+     1
+    ],
+    [
+     "DarkWoodenChair",
+     1
+    ],
+    [
+     "LightBench",
+     1
+    ],
+    [
+     "DarkWoodenChairFallen",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con07B",
+     "centre": [
+      91,
+      177
+     ],
+     "tiles": 216,
+     "types": 35,
+     "cover": 0.142,
+     "open": 0.547,
+     "culture": "town"
+    },
+    {
+     "map": "Con02a",
+     "centre": [
+      86,
+      105
+     ],
+     "tiles": 125,
+     "types": 34,
+     "cover": 0.147,
+     "open": 0.559,
+     "culture": "town"
+    },
+    {
+     "map": "Con07B",
+     "centre": [
+      112,
+      240
+     ],
+     "tiles": 104,
+     "types": 23,
+     "cover": 0.167,
+     "open": 0.42,
+     "culture": "town"
+    },
+    {
+     "map": "Con06a",
+     "centre": [
+      143,
+      178
+     ],
+     "tiles": 166,
+     "types": 23,
+     "cover": 0.124,
+     "open": 0.532,
+     "culture": "dunmir"
+    }
+   ]
+  },
   "mausoleum": {
    "n": 6,
    "maps": 4,
@@ -1580,170 +1744,6 @@
      "types": 6,
      "cover": 0.076,
      "open": 0.635,
-     "culture": "town"
-    }
-   ]
-  },
-  "tavern": {
-   "n": 5,
-   "maps": 4,
-   "cultures": {
-    "town": 4,
-    "dunmir": 1
-   },
-   "tiles": {
-    "p10": 15,
-    "p25": 25,
-    "p50": 125,
-    "p75": 166,
-    "p90": 216
-   },
-   "cover": {
-    "p10": 0.079,
-    "p25": 0.124,
-    "p50": 0.142,
-    "p75": 0.147,
-    "p90": 0.443
-   },
-   "open": {
-    "p10": 0.128,
-    "p25": 0.532,
-    "p50": 0.547,
-    "p75": 0.559,
-    "p90": 0.607
-   },
-   "middle": {
-    "p10": 0.0,
-    "p25": 0.01,
-    "p50": 0.014,
-    "p75": 0.027,
-    "p90": 0.087
-   },
-   "per_tile": {
-    "p10": 0.277,
-    "p25": 0.28,
-    "p50": 0.31,
-    "p75": 0.384,
-    "p90": 0.867
-   },
-   "types": {
-    "p10": 6,
-    "p25": 7,
-    "p50": 23,
-    "p75": 34,
-    "p90": 35
-   },
-   "most": {
-    "p10": 3,
-    "p25": 3,
-    "p50": 10,
-    "p75": 12,
-    "p90": 13
-   },
-   "free_most": {
-    "p10": 0,
-    "p25": 3,
-    "p50": 10,
-    "p75": 12,
-    "p90": 13
-   },
-   "walls": {
-    "p10": 3,
-    "p25": 4,
-    "p50": 4,
-    "p75": 4,
-    "p90": 4
-   },
-   "lined": {
-    "p10": 0.0,
-    "p25": 0.029,
-    "p50": 0.033,
-    "p75": 0.07,
-    "p90": 0.174
-   },
-   "families": {
-    "chair": 0.8,
-    "storage": 0.8,
-    "table": 0.8,
-    "counter_bar": 0.8,
-    "bench": 0.6,
-    "fireplace": 0.4,
-    "clutter": 0.4,
-    "rug": 0.4,
-    "wall_decor": 0.4,
-    "smithy": 0.2,
-    "shelves": 0.2,
-    "stove": 0.2
-   },
-   "most_kinds": [
-    [
-     "Stool",
-     1
-    ],
-    [
-     "CushionedStool",
-     1
-    ],
-    [
-     "DarkWoodenChair",
-     1
-    ],
-    [
-     "DarkWoodenChairFallen",
-     1
-    ],
-    [
-     "PiledBarrels",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "Con07B",
-     "centre": [
-      91,
-      177
-     ],
-     "tiles": 216,
-     "types": 35,
-     "cover": 0.142,
-     "open": 0.547,
-     "culture": "town"
-    },
-    {
-     "map": "Con02a",
-     "centre": [
-      86,
-      105
-     ],
-     "tiles": 125,
-     "types": 34,
-     "cover": 0.147,
-     "open": 0.559,
-     "culture": "town"
-    },
-    {
-     "map": "Con06a",
-     "centre": [
-      143,
-      178
-     ],
-     "tiles": 166,
-     "types": 23,
-     "cover": 0.124,
-     "open": 0.532,
-     "culture": "dunmir"
-    },
-    {
-     "map": "Wiz05A",
-     "centre": [
-      48,
-      24
-     ],
-     "tiles": 25,
-     "types": 6,
-     "cover": 0.079,
-     "open": 0.607,
      "culture": "town"
     }
    ]
@@ -2707,6 +2707,150 @@
     }
    ]
   },
+  "dining_hall": {
+   "n": 3,
+   "maps": 3,
+   "cultures": {
+    "town": 1,
+    "ogre": 1,
+    "dunmir": 1
+   },
+   "tiles": {
+    "p10": 55,
+    "p25": 55,
+    "p50": 108,
+    "p75": 110,
+    "p90": 110
+   },
+   "cover": {
+    "p10": 0.062,
+    "p25": 0.062,
+    "p50": 0.104,
+    "p75": 0.15,
+    "p90": 0.15
+   },
+   "open": {
+    "p10": 0.512,
+    "p25": 0.512,
+    "p50": 0.639,
+    "p75": 0.756,
+    "p90": 0.756
+   },
+   "middle": {
+    "p10": 0.014,
+    "p25": 0.014,
+    "p50": 0.045,
+    "p75": 0.063,
+    "p90": 0.063
+   },
+   "per_tile": {
+    "p10": 0.155,
+    "p25": 0.155,
+    "p50": 0.204,
+    "p75": 0.309,
+    "p90": 0.309
+   },
+   "types": {
+    "p10": 10,
+    "p25": 10,
+    "p50": 12,
+    "p75": 13,
+    "p90": 13
+   },
+   "most": {
+    "p10": 5,
+    "p25": 5,
+    "p50": 6,
+    "p75": 7,
+    "p90": 7
+   },
+   "free_most": {
+    "p10": 3,
+    "p25": 3,
+    "p50": 5,
+    "p75": 7,
+    "p90": 7
+   },
+   "walls": {
+    "p10": 2,
+    "p25": 2,
+    "p50": 4,
+    "p75": 4,
+    "p90": 4
+   },
+   "lined": {
+    "p10": 0.0,
+    "p25": 0.0,
+    "p50": 0.117,
+    "p75": 0.286,
+    "p90": 0.286
+   },
+   "families": {
+    "storage": 1.0,
+    "table": 1.0,
+    "bench": 1.0,
+    "fireplace": 0.67,
+    "chair": 0.67,
+    "wall_decor": 0.33,
+    "smithy": 0.33,
+    "stove": 0.33,
+    "statue": 0.33,
+    "shelves": 0.33,
+    "desk": 0.33
+   },
+   "most_kinds": [
+    [
+     "LightBench",
+     1
+    ],
+    [
+     "Stool",
+     1
+    ],
+    [
+     "WoodenChair",
+     1
+    ]
+   ],
+   "best": [
+    {
+     "map": "Con03B",
+     "centre": [
+      200,
+      80
+     ],
+     "tiles": 108,
+     "types": 13,
+     "cover": 0.104,
+     "open": 0.639,
+     "culture": "town"
+    },
+    {
+     "map": "Con06a",
+     "centre": [
+      81,
+      211
+     ],
+     "tiles": 55,
+     "types": 12,
+     "cover": 0.15,
+     "open": 0.512,
+     "culture": "dunmir"
+    },
+    {
+     "map": "Con05C",
+     "centre": [
+      139,
+      92
+     ],
+     "tiles": 110,
+     "types": 10,
+     "cover": 0.062,
+     "open": 0.756,
+     "culture": "ogre"
+    }
+   ]
+  },
   "passage": {
    "n": 3,
    "maps": 3,
@@ -3113,130 +3257,6 @@
      "cover": 0.049,
      "open": 0.82,
      "culture": "town"
-    }
-   ]
-  },
-  "dining_hall": {
-   "n": 2,
-   "maps": 2,
-   "cultures": {
-    "ogre": 1,
-    "dunmir": 1
-   },
-   "tiles": {
-    "p10": 55,
-    "p25": 55,
-    "p50": 110,
-    "p75": 110,
-    "p90": 110
-   },
-   "cover": {
-    "p10": 0.062,
-    "p25": 0.062,
-    "p50": 0.15,
-    "p75": 0.15,
-    "p90": 0.15
-   },
-   "open": {
-    "p10": 0.512,
-    "p25": 0.512,
-    "p50": 0.756,
-    "p75": 0.756,
-    "p90": 0.756
-   },
-   "middle": {
-    "p10": 0.014,
-    "p25": 0.014,
-    "p50": 0.045,
-    "p75": 0.045,
-    "p90": 0.045
-   },
-   "per_tile": {
-    "p10": 0.155,
-    "p25": 0.155,
-    "p50": 0.309,
-    "p75": 0.309,
-    "p90": 0.309
-   },
-   "types": {
-    "p10": 10,
-    "p25": 10,
-    "p50": 12,
-    "p75": 12,
-    "p90": 12
-   },
-   "most": {
-    "p10": 5,
-    "p25": 5,
-    "p50": 7,
-    "p75": 7,
-    "p90": 7
-   },
-   "free_most": {
-    "p10": 5,
-    "p25": 5,
-    "p50": 7,
-    "p75": 7,
-    "p90": 7
-   },
-   "walls": {
-    "p10": 2,
-    "p25": 2,
-    "p50": 4,
-    "p75": 4,
-    "p90": 4
-   },
-   "lined": {
-    "p10": 0.0,
-    "p25": 0.0,
-    "p50": 0.286,
-    "p75": 0.286,
-    "p90": 0.286
-   },
-   "families": {
-    "storage": 1.0,
-    "bench": 1.0,
-    "chair": 1.0,
-    "table": 1.0,
-    "statue": 0.5,
-    "fireplace": 0.5,
-    "shelves": 0.5,
-    "desk": 0.5
-   },
-   "most_kinds": [
-    [
-     "Stool",
-     1
-    ],
-    [
-     "WoodenChair",
-     1
-    ]
-   ],
-   "best": [
-    {
-     "map": "Con06a",
-     "centre": [
-      81,
-      211
-     ],
-     "tiles": 55,
-     "types": 12,
-     "cover": 0.15,
-     "open": 0.512,
-     "culture": "dunmir"
-    },
-    {
-     "map": "Con05C",
-     "centre": [
-      139,
-      92
-     ],
-     "tiles": 110,
-     "types": 10,
-     "cover": 0.062,
-     "open": 0.756,
-     "culture": "ogre"
     }
    ]
   },
@@ -4929,6 +4949,17 @@
    "culture": "town"
   },
   {
+   "map": "Con03B",
+   "type": "dining_hall",
+   "centre": [
+    200,
+    80
+   ],
+   "tiles": 108,
+   "culture": "town",
+   "by_hand": "the miners' mess: the cooking hearth on the NW wall, three long tables with benches on a carpet, casks along the SW wall, a moose trophy (a stove makes the finder call it a kitchen)"
+  },
+  {
    "map": "Con05C",
    "type": "dining_hall",
    "centre": [
@@ -5816,8 +5847,7 @@
     105
    ],
    "tiles": 125,
-   "culture": "town",
-   "classed": "shop"
+   "culture": "town"
   },
   {
    "map": "Con06a",
@@ -5840,6 +5870,17 @@
    "culture": "town"
   },
   {
+   "map": "Con07B",
+   "type": "tavern",
+   "centre": [
+    112,
+    240
+   ],
+   "tiles": 104,
+   "culture": "town",
+   "by_hand": "Galava's lower tavern: the bar in the W corner with its barman, long tables with benches and round tables of food round a great woven carpet, casks on the walls"
+  },
+  {
    "map": "Wiz05A",
    "type": "tavern",
    "centre": [
@@ -5848,7 +5889,7 @@
    ],
    "tiles": 25,
    "culture": "town",
-   "classed": "dining_hall"
+   "retyped": "the Conjurers' tap room: round tables, stools and fallen chairs on a carpet before the bar along its NW wall (the bar and barman stand in a nook the finder splits off)"
   },
   {
    "map": "Wiz05A",
@@ -5993,16 +6034,6 @@
    "why": "78 tiles mostly bare: a carpet, two pole-arm racks and a desk, the ogre warlord and his brutes (a fight set piece)"
   },
   {
-   "map": "War03a",
-   "type": "armoury",
-   "centre": [
-    111,
-    113
-   ],
-   "tiles": 63,
-   "why": "duplicate of Con03A@110,112 (the same guard room, the warrior's copy with a great cask added)"
-  },
-  {
    "map": "War03b",
    "type": "armoury",
    "centre": [
@@ -6073,16 +6104,6 @@
    "why": "a story set piece: the teleport pentagram room with demons; one bed and a bookcase in a corner"
   },
   {
-   "map": "War06b",
-   "type": "bedroom",
-   "centre": [
-    149,
-    60
-   ],
-   "tiles": 26,
-   "why": "duplicate of Con06b@149,60 (the same Dun Mir bedroom; the warrior's copy is cut 3 tiles smaller)"
-  },
-  {
    "map": "War07A",
    "type": "bedroom",
    "centre": [
@@ -6121,6 +6142,26 @@
    ],
    "tiles": 12,
    "why": "duplicate of Con07B@40,38 (Galava's castle, the warrior's copy)"
+  },
+  {
+   "map": "Con07B",
+   "type": "conservatory",
+   "centre": [
+    153,
+    226
+   ],
+   "tiles": 72,
+   "why": "a cave pocket: a dirt floor with cave rocks, a rock pillar, a plant and gold"
+  },
+  {
+   "map": "Con07B",
+   "type": "conservatory",
+   "centre": [
+    150,
+    198
+   ],
+   "tiles": 155,
+   "why": "a walled garden open to the sky round the chapel: grass, trees, plants and two columns; not a room"
   },
   {
    "map": "Con07B",
@@ -6163,16 +6204,6 @@
    "why": "an outdoor graveyard of 674 tiles: tombstones and tree trunks along walled paths; not a room"
   },
   {
-   "map": "War07A",
-   "type": "crypt",
-   "centre": [
-    170,
-    175
-   ],
-   "tiles": 235,
-   "why": "duplicate of Con07B@169,176 (Galava's graveyard, the warrior's copy; outdoors in any case)"
-  },
-  {
    "map": "Con05A",
    "type": "hall",
    "centre": [
@@ -6181,26 +6212,6 @@
    ],
    "tiles": 58,
    "why": "duplicate of Con04a@148,55 (the same statue tomb, Con05A's copy with the lift)"
-  },
-  {
-   "map": "Con07B",
-   "type": "hall",
-   "centre": [
-    153,
-    226
-   ],
-   "tiles": 72,
-   "why": "a cave pocket: a dirt floor with cave rocks, a rock pillar, a plant and gold"
-  },
-  {
-   "map": "Con07B",
-   "type": "hall",
-   "centre": [
-    150,
-    198
-   ],
-   "tiles": 155,
-   "why": "a walled garden open to the sky round the chapel: grass, trees, plants and two columns; not a room"
   },
   {
    "map": "Con07E",
@@ -6221,26 +6232,6 @@
    ],
    "tiles": 481,
    "why": "duplicate of Con06b@169,63 (the ring corridor round the moat; a passage and a puzzle in any case)"
-  },
-  {
-   "map": "War07A",
-   "type": "hall",
-   "centre": [
-    158,
-    224
-   ],
-   "tiles": 62,
-   "why": "duplicate of Con07B@153,226 (the cave pocket)"
-  },
-  {
-   "map": "War07A",
-   "type": "hall",
-   "centre": [
-    151,
-    197
-   ],
-   "tiles": 177,
-   "why": "duplicate of Con07B@150,198 (the walled garden, outdoors in any case)"
   },
   {
    "map": "War11a",
@@ -6321,16 +6312,6 @@
    ],
    "tiles": 12,
    "why": "duplicate of Con07B@42,32 (Galava's castle, the warrior's copy)"
-  },
-  {
-   "map": "War07D",
-   "type": "laboratory",
-   "centre": [
-    203,
-    112
-   ],
-   "tiles": 208,
-   "why": "duplicate of Con07E@203,112 (Galava's museum, the warrior's copy)"
   },
   {
    "map": "Wiz02B",
@@ -6433,16 +6414,6 @@
    "why": "an office: a desk alone on a carpet, benches, star charts, a mirror; no keeper, no goods"
   },
   {
-   "map": "War01A",
-   "type": "shop",
-   "centre": [
-    142,
-    205
-   ],
-   "tiles": 111,
-   "why": "duplicate of Con06a@142,205 (the Warriors' Realm armourer, the warrior's copy)"
-  },
-  {
    "map": "War03b",
    "type": "shop",
    "centre": [
@@ -6451,26 +6422,6 @@
    ],
    "tiles": 43,
    "why": "duplicate of Con02a@113,142 (the village magic shop, the warrior's copy)"
-  },
-  {
-   "map": "War07A",
-   "type": "shop",
-   "centre": [
-    180,
-    173
-   ],
-   "tiles": 24,
-   "why": "duplicate of Con07B@179,174 (the undertaker's, the warrior's copy)"
-  },
-  {
-   "map": "War06b",
-   "type": "smithy",
-   "centre": [
-    167,
-    83
-   ],
-   "tiles": 42,
-   "why": "duplicate of Con06b@168,82 (Dun Mir's forge, the warrior's copy)"
   },
   {
    "map": "Con05C",
@@ -6501,16 +6452,6 @@
    ],
    "tiles": 44,
    "why": "a passage: a long corridor with a few barrels and a crate at its end"
-  },
-  {
-   "map": "War01A",
-   "type": "storeroom",
-   "centre": [
-    153,
-    212
-   ],
-   "tiles": 35,
-   "why": "duplicate of Con06a@153,212 (the same store, the warrior's copy)"
   },
   {
    "map": "War02A",

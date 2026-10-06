@@ -45,6 +45,8 @@ def classify(r, meas):
     n = lambda k: f.get(k, 0)
     ts = [o["type"] for o in r["objects"]]
     keeper = any(C.RT.SHOPKEEPER.match(t) for t in ts)
+    if kind == "shop" and n("counter_bar") >= 3 and not n("counter_shop") and n("shop_rack") < 2 and n("lab") <= 1             and n("chair") + n("bench") >= 4:
+        return "tavern"          # the barman is a Shopkeeper object (Con02a's tavern): a bar with seats is no shop
     if kind == "shop" and not keeper and n("counter_shop") <= 1 and n("table") >= 6 and n("chair") + n("bench") >= 12:
         kind = "dining_hall"     # a feast hall of 20 tables with one trader's desk in it (Con07E) is no shop
     if kind == "shop" and not n("counter_shop") and not keeper: return "armoury"
@@ -55,6 +57,8 @@ def classify(r, meas):
         return "herbalist"
     if kind == "library" and n("desk") and n("shelves") <= 6: return "study"
     if kind in ("dining_hall", "living_room") and meas["tiles"] >= 140 and n("table") >= 2: return "great_hall"
+    if kind == "hall" and n("plant") >= 3 and n("plant") > n("statue") + n("column"):
+        return "conservatory"    # a walled garden of plants and two columns (Con07B/War07A's) is no hall
     if kind == "hall" and n("bench") >= 4: return "chapel"            # Westwood's temples: benches facing the far end
     if kind == "hall" and (meas["tiles"] < 40 or meas["pieces"] < 4): return "passage"   # a corridor, a bare vestibule
     return kind
@@ -70,7 +74,23 @@ HAND = [
                                          "judgement balances (the room ends in the void)"),
     ("Con11a", (178, 131), "throne_room", "the finale's Lich throne: LOTD throne, obelisks, candelabras, tapestries"),
     ("Wiz11A", (208, 67), "throne_room", "the Wizard finale's Lich throne niche: throne, obelisks, incense basins"),
+    ("Con07B", (112, 240), "tavern", "Galava's lower tavern: the bar in the W corner with its barman, long tables with "
+                                     "benches and round tables of food round a great woven carpet, casks on the walls"),
+    ("Con03B", (200, 80), "dining_hall", "the miners' mess: the cooking hearth on the NW wall, three long tables with "
+                                         "benches on a carpet, casks along the SW wall, a moose trophy (a stove makes "
+                                         "the finder call it a kitchen)"),
 ]
+
+# Rooms the finder closes but the classifier misreads, typed by hand. (map, cell, type, what it is)
+RETYPE = [
+    ("Wiz05A", (48, 24), "tavern", "the Conjurers' tap room: round tables, stools and fallen chairs on a carpet before "
+                                   "the bar along its NW wall (the bar and barman stand in a nook the finder splits off)"),
+]
+
+
+def retyped(name, r):
+    cells = set(r["cells"])
+    return next(((typ, why) for mp, cell, typ, why in RETYPE if mp == name and cell in cells), (None, None))
 
 
 def hand_rooms(name, m):
@@ -93,14 +113,15 @@ def one(name):
         wall = [m.walls[(x + a, y + b)] for x, y in r["cells"] for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))
                 if (x + a, y + b) in m.walls]
         if not wall or sum(1 for w in wall if not NATURAL.search(w.material)) < 0.6 * len(wall): continue
-        found.append((r, None, None))
+        found.append((r,) + retyped(name, r))
     for r, typ0, why in found + hand_rooms(name, m):
         meas = RM.measure(m, r)
         typ = typ0 or classify(r, meas)
         if typ in ("empty", "other", "dungeon"): continue
         xs = [c[0] for c in r["cells"]]; ys = [c[1] for c in r["cells"]]
         out.append(dict(map=name, type=typ, culture=culture(r["objects"]), centre=[round(sum(xs) / len(xs)), round(sum(ys) / len(ys))],
-                        by_hand=why,
+                        by_hand=why if typ0 and not retyped(name, r)[0] else None,
+                        retyped=why if retyped(name, r)[0] else None,
                         **{k: (round(v, 3) if isinstance(v, float) else v) for k, v in meas.items()
                            if k in ("tiles", "cover", "middle", "open", "pieces", "per_tile", "types", "most", "free_most",
                                     "walls", "lined", "fam")}))
@@ -119,10 +140,16 @@ def main():
         found = [r for rs in pool.map(one, maps) for r in rs]
     # the three campaigns share most layouts: a room met again (the same floor at the same place) counts once, even
     # when a class's copy differs by a piece or two (Galava's temple has a stray alchemist's desk in Con07B and Wiz02A)
+    # (a copy whose floor differs by a few tiles too: Galava's walled garden is 155 tiles in Con07B, 177 in War07A,
+    # its rock garden 72 and 62)
     seen, rooms = set(), []
     for r in found:
         key = (r["tiles"], tuple(r["centre"]))
         if key in seen: continue
+        if any(o["type"] == r["type"] and o["map"] != r["map"]
+               and abs(o["centre"][0] - r["centre"][0]) + abs(o["centre"][1] - r["centre"][1]) <= (7 if r["tiles"] >= 40 else 3)
+               and abs(o["tiles"] - r["tiles"]) <= 0.15 * max(o["tiles"], r["tiles"]) for o in rooms):
+            continue
         seen.add(key); rooms.append(r)
     # the verdicts by eye (rules/rooms/curated.json): the true type of a misfiled room; passages, cave pockets, yards,
     # set pieces and other campaigns' copies left out
@@ -153,7 +180,8 @@ def main():
                                    open=r["open"], culture=r["culture"]) for r in best])
     index = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], culture=r["culture"],
                   **({"classed": r["classed"]} if r.get("classed") else {}),
-                  **({"by_hand": r["by_hand"]} if r["by_hand"] else {})) for r in sorted(rooms, key=lambda r: (r["type"], r["map"]))]
+                  **({"by_hand": r["by_hand"]} if r["by_hand"] else {}),
+                  **({"retyped": r["retyped"]} if r.get("retyped") else {})) for r in sorted(rooms, key=lambda r: (r["type"], r["map"]))]
     gone = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], why=r["why"])
             for r in sorted(excluded, key=lambda r: (r["type"], r["map"]))]
     with open(OUT, "w", encoding="utf-8") as f:

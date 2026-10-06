@@ -80,3 +80,12 @@ The priest at the altar's side (past the statue that flanks it); the faithful in
   the quest map G_LOTD: the kit keeps the altar as a rule of its own (`identity.ROOMS["chapel"]` prefer), not as
   Westwood's habit.
 - Ours: Thornwick's and Greywatch's naves after the type split (see `review/out/<map>/rooms/`).
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+- **Eight pews at most** (Westwood's Con07B: 8 in 123 tiles), a pair per 15 tiles, two to a side of the aisle.
+- **Columns ring the nave near its walls,** the side aisles between them and the pews, not hard against the pews.
+- **Statues by the altar turn along its wall toward it.**
+- **Sarcophagi rarely** (a quarter of naves), never by default behind every set of pews; **no plants.**
+- At most six hangings.
+- Still missing: the cross-shaped carpet of Westwood's temple (the shell's floor), a lectern by the altar.

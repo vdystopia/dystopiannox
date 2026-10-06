@@ -237,52 +237,58 @@ ROOMS = {
                                dict(fam="storage", slot="heaps", n=4),
                                dict(fam="shop_rack", slot="wall", at="center", clear=1.0, n=1)],
                       fill=[dict(fam="storage", slot="heaps")]),
-    "tavern": dict(purpose="the public drinking room: a long bar with kegs behind it, round tables with stools, a long "
-                           "table with benches, a table laid with food, the hearth with a rug before it and shelves of "
-                           "tankards beside it, kegs heaped by the walls, trophies on the walls, benches along the front "
-                           "walls, open floor between",
+    "tavern": dict(purpose="the public drinking room: a long bar ringed by stools with kegs behind it, round tables with "
+                           "stools, long tables with benches, a table laid with food, the hearth with a rug before it, "
+                           "a cask by the bar, trophies on the walls, benches along the front walls, open floor between",
                    # 2026-10-05 playtest: 24 tables and 76 chairs in a 342-tile common room were too many; Westwood's
-                   # taverns hold a table per 27-42 tiles, so a table per 28 tiles, at most 12, in three kinds of set
-                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 34), "storage": (3, 10), "fireplace": (1, 1)},
+                   # taverns hold a table per 27-42 tiles, so a table per 28 tiles, at most 12. Room lab (tuneB): its five
+                   # campaign taverns (Con02a, Con06a, Con07B's two, Wiz05A) keep 5-8 kegs and casks, by the bar; one or
+                   # two kinds of set, each of one table and one seat (Con06a: four RoundTable2 with cushioned stools;
+                   # Con07B: tables of food with chairs and long tables with benches); a bar of 9-14 pieces ringed by
+                   # stools; a bearskin before the hearth or a woven carpet under the tables, never rugs under them; no
+                   # plants, no shelves of tankards but a pair at most
+                   core={"counter_bar": (1, 1), "table": (3, 12), "chair": (6, 34), "storage": (2, 5), "fireplace": (1, 1)},
                    per_tiles={"table": 28},
-                   optional={"bench": (0.9, 4), "wall_decor": (1.0, 8), "rug": (1.0, 2), "shelves": (0.9, 10),
-                             "plant": (0.8, 2)},
+                   optional={"bench": (0.9, 4), "wall_decor": (1.0, 5), "rug": (0.7, 1)},
                    types={"storage": r"(?<!Powder)Barrel$|(?<!Powder)Barrel\d|PiledBarrels|LargeBarrel",
                           "table": r"RoundTable|^Table\d$|SquareTable", "chair": r"Stool|Chair",
                           "bench": r"^LightBench\d$|^CushionedBench\d$|^Bench\d$",
                           # shelves of tankards and crockery, never a bookcase (rules/rooms/tavern.md)
-                          "shelves": r"^LogShelvesFull\d$", "plant": PLANTS},
+                          "shelves": r"^LogShelvesFull\d$", "rug": r"^BearskinRug\d$"},
                    # Westwood's room statistics count hearths as lights: the tavern names its own (it had stood without)
                    prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
+                   one_set=("round", "longtable", "feast", "dining", "kegs"), group_rugs=False,
+                   # seats pulled out from the tables, as Westwood's patrons leave them (its taverns' median gap to the
+                   # nearest piece 0.7 units; ours had stood 0.2 off every table)
+                   seat_gaps={"round": 0.5, "feast": 0.45, "longtable": 0.3},
+                   group_seats={"round": (2, 3)},
+                   by_walls=("longtable", "feast"),
+                   # the round tables together in one part of the floor (Con06a's four in its S half), not dotted at even
+                   # gaps over it (independent judge, ref: "four round tables of four stools at equal distances")
+                   cluster=("round",),     # along the walls and in the corners, the middle left open
                    compose=[dict(fam="counter_bar", slot="bar"),
                             dict(fam="fireplace", slot="wall", at="center", clear=2.4, rug=True),
-                            dict(fam="shelves", slot="line", near="fireplace", decor=2),
                             dict(fam="fireplace", slot="groups", group="hearth", n=1, min_area=500, extra=True),
+                            dict(fam="table", slot="groups", group="round", n=2),
+                            # one long table composed (Westwood's taverns carry half our benches: 0.21 to 10 tiles)
                             dict(fam="table", slot="groups", group="longtable", n=1),
                             dict(fam="table", slot="groups", group="feast", n=1),
-                            dict(fam="table", slot="groups", group="round", n=4),
-                            # one dining set composed, a second only by the fill in a big room (Harrowby's 324-tile common
-                            # room seated 19 of one chair at three: rules/rooms/tavern.md, seats counted)
-                            dict(fam="table", slot="groups", group="dining", n=1),
+                            dict(fam="table", slot="groups", group="round", n=1, min_area=440),
+                            dict(fam="carpet", slot="carpet", where="under", margin=1.2, chance=0.45),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="table", slot="group", group="longtable", max=1, min_area=300),
-                         dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=300),
-                         dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
-                         # kegs heaped by the walls, never a wall lined with them (per_wall)
-                         dict(fam="storage", slot="stock", coverage=0.65, kinds=("barrels",), pad=1.2, max=3,
-                              per_wall=0.4),
-                         dict(fam="bench", slot="wall", max=4),
-                         dict(fam="storage", slot="group", group="kegs", max=1, min_area=400),
-                         dict(fam="table", slot="group", group="feast", max=1, min_area=400),
-                         dict(fam="table", slot="group", group="round", max=2, min_area=60),
-                         dict(fam="table", slot="group", group="dining", max=1, min_area=200),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                   fill=[dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=680, fixed=True),
+                         dict(fam="table", slot="group", group="longtable", max=1, min_area=220),
+                         dict(fam="table", slot="group", group="round", max=1, min_area=300),
+                         dict(fam="table", slot="group", group="feast", max=1, min_area=200),
+                         dict(fam="bench", slot="wall", max=2),
+                         # a few barrels heaped on a front wall, never lining it (Con02a's by its door)
+                         dict(fam="storage", slot="stock", coverage=0.3, kinds=("kegs",), pad=1.2, max=3, per_wall=0.25)]),
     "mess_hall": dict(purpose="where a crew eats together: long tables in rows with a bench along each side, the hearth "
                               "on a back wall flanked end to end by shelves of crockery, benches along the front walls, "
                               "trophies and hangings on the back walls",
                       base="dining_hall",
                       core={"fireplace": (1, 1), "table": (2, 8), "bench": (4, 20), "shelves": (2, 12)},
-                      per_tiles={"table": 14},
+                      per_tiles={"table": 22},
                       # Westwood's mess (Con06b): 12 tables in 208 tiles
                       optional={"wall_decor": (1.0, 6)},
                       types={"table": r"^Table[1-4]$", "bench": r"^Bench\d$|^LightBench\d$|^CushionedBench\d$",
@@ -294,30 +300,41 @@ ROOMS = {
                                dict(fam="wall_decor", slot="decor")],
                       # a mess too small for rows still eats at one long table (Greywatch's 32-tile mess had none:
                       # rules/rooms/dining_hall.md)
+                      top_up=(),
                       fill=[dict(fam="table", slot="group", group="longtable", max=1, fixed=True),
-                            dict(fam="bench", slot="wall", at="center", clear=0, max=3),
-                            dict(fam="shelves", slot="line", max=8)]),
-    "dining_hall": dict(purpose="a household's dining hall: long tables seated along both sides, the hearth on a back wall "
-                                "flanked by shelves of crockery, hangings above, a table of food, plants in the corners",
-                        core={"table": (1, 6), "chair": (4, 36), "fireplace": (1, 1)},
-                        per_tiles={"table": 16},
-                        optional={"rug": (0.6, 1), "wall_decor": (1.0, 8), "shelves": (1.0, 12), "bench": (0.6, 2),
-                                  "plant": (0.8, 3), "statue": (0.5, 2), "storage": (0.5, 2)},
+                            dict(fam="bench", slot="wall", at="room_corner", clear=0, max=1),
+                            dict(fam="shelves", slot="line", max=4)]),
+    "dining_hall": dict(purpose="a household's dining hall: two or three long tables seated along both sides by benches "
+                                "and chairs, the hearth on a back wall, a cask or two, hangings above",
+                        # room lab (tuneB): Westwood's dining halls (Con06a 55 tiles, Con03B's mess 108, the ogres'
+                        # Con05C 110) hold two or three tables, never a grid of eight; benches with a chair or two at
+                        # the ends; a bookcase at most; casks and barrels by the walls; no plants, no statues
+                        core={"table": (1, 4), "chair": (2, 12), "fireplace": (1, 1)},
+                        per_tiles={"table": 26},
+                        optional={"rug": (0.4, 1), "wall_decor": (1.0, 5), "shelves": (0.4, 2), "bench": (1.0, 6),
+                                  "storage": (0.5, 2)},
                         types={"table": r"^Table[1-4]$|^OvalTable[12]$|^RoundTableWithFood$|^RoundTable[123]$",
-                               "shelves": r"^LogShelvesFull\d$|^Bookcase\d(HalfFull)?$", "statue": r"^Statue2[a-h]$",
-                               "storage": CHEST, "plant": PLANTS, "chair": r"Chair"},
+                               "shelves": r"^LogShelvesFull\d$",      # crockery, not books (dining halls read as libraries)
+                               "storage": CHEST + r"|^LargeBarrel[12]$|^Barrel2?$|^PiledBarrels[1-4]$",
+                               "chair": r"Chair", "bench": r"^LightBench\d$|^Bench[1245]$"},
                         # Westwood's room statistics count hearths as lights, so a recipe names its own
                         prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
+                        one_set=("dining", "feast", "longtable"), group_rugs=False, statues_along=True, decor_max=5,
+                        seat_gaps={"longtable": 0.6, "dining": 0.4, "feast": 0.4},   # the far bench seen past its table
+                        cluster=("longtable",),
+                        top_up=(),                           # never benches or barrels down the walls to fill the floor
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
-                                 dict(fam="shelves", slot="line", near="fireplace", decor=2),
-                                 dict(fam="table", slot="table_rows", seat="chair"),
+                                 # long tables with a bench down each side, set where the floor is open, not a row
+                                 # stamped at equal gaps (independent judge, r8: "one identical table set stamped in a
+                                 # perfect diagonal line", "seated on one side only")
+                                 dict(fam="table", slot="groups", group="longtable", n=3),
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.5),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="table", slot="group", group="dining", max=2, min_area=90), dict(fam="table", slot="group", group="feast", max=1, min_area=90),
-                              dict(fam="statue", slot="group", group="statues", max=1, min_area=260),
-                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
-                              dict(fam="bench", slot="wall", max=2),
-                              dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=140)]),
+                        fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=160),
+                              dict(fam="table", slot="group", group="dining", max=2, min_area=160),
+                              dict(fam="storage", slot="stock", coverage=0.2, kinds=("kegs",), pad=1.2, max=1,
+                                   per_wall=0.2, fixed=True),
+                              dict(fam="shelves", slot="line", near="fireplace", n=2, max=1, fixed=True)]),
     "shop": dict(purpose="a trader's shop: the counter set out before a back wall with the keeper's space behind it, "
                          "trader's shelves of goods lining the back walls, racks of arms and armour in rows down the "
                          "middle, crates of stock along the front walls",
@@ -572,8 +589,10 @@ ROOMS = {
                            "walls, plants in the corners, open floor toward the doors",
                    # 2026-10-05 playtest: 46 pews filled the Greywatch nave wall to wall; a pew per 10 tiles, at most 16
                    core={"altar": (1, 1), "bench": (4, 16), "statue": (2, 4)},
-                   optional={"column": (1.0, 8), "tomb": (0.7, 2), "wall_decor": (1.0, 6), "plant": (0.8, 4),
-                             "storage": (0.4, 1)},
+                   # room lab (tuneB): Westwood's chapel (Con07B) holds 8 pews, 6 columns ringing the nave near its
+                   # walls, tapestries, candelabras, statues by the altar: no plants, no tombs in the nave
+                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1)},
+                   columns_by_walls=True, statues_along=True, decor_max=6,
                    types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
                           "column": r"^CathedralColumn[123]$|^Column[5-8]$", "tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$",
                           "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
@@ -581,7 +600,7 @@ ROOMS = {
                    decor_themes=("blue", "red", "white", "green"),
                    # the pews stand in their rows, never topped up along the walls (Mirefen's nave had five benches lining
                    # its front walls: rules/rooms/chapel.md, open floor toward the door)
-                   top_up=("plant",),
+                   top_up=(),
                    # the game's altars (Westwood stands them outside its rooms, so the room statistics hold none)
                    prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1},
                            "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "LightBench1": 1, "LightBench2": 1}},
@@ -600,10 +619,8 @@ ROOMS = {
                          dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                          # a founder's tomb against a side wall where no pair lay behind the pews (a stone nave with
                          # no runner: Harrowby's, 5% covered, 12 of its 20 pieces pews)
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=140),
-                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=200),
-                         dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
+                         dict(fam="tomb", slot="wall", at="center", clear=1.2, max=1, min_area=200, missing=True),
+                         dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
                           "crypt chests, tapestries",
                   # the room lab (2026-10-05): Westwood's 25 campaign crypts (Con04a-c, War03b-d) hold 1-5 types
@@ -629,8 +646,11 @@ ROOMS = {
     "hall": dict(purpose="a great hall: a colonnade down its length, statues facing each other, benches along the walls, "
                          "shields and banners on the back walls, plants in the corners",
                  core={"column": (4, 24)},
-                 optional={"statue": (0.8, 4), "bench": (0.8, 6), "wall_decor": (1.0, 10), "plant": (0.8, 4),
-                           "storage": (0.4, 2), "table": (0.4, 1), "chair": (0.4, 4)},
+                 # room lab (tuneB): Westwood's three halls (Con04c's colonnade, Con06b's bare hall of shields and two
+                 # statues, Con10c's ring of columns round its obelisks) hold no plants, benches or tables, a chest at
+                 # most, a few hangings: open floor and columns
+                 optional={"statue": (1.0, 6), "bench": (0.25, 2), "wall_decor": (1.0, 4), "storage": (0.3, 1)},
+                 decor_max=4, statues_along=True, top_up=(),
                  types={"column": r"^Column[5-8]$|^CathedralColumn\d", "statue": r"^Statue2[a-h]$",
                         "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
                  # 2026-10-05 playtest (Greywatch's keep): paired rows of columns flanking a clear aisle, never a row
@@ -638,48 +658,52 @@ ROOMS = {
                  # Westwood's halls: 6 columns at the median (Starwell playtest, 2026-10-05)
                  compose=[dict(fam="column", slot="colonnade", gap=3.4, aisle=2.6),
                           dict(fam="wall_decor", slot="decor")],
-                 fill=[dict(fam="statue", slot="group", group="statues", max=2, min_area=120, fixed=True),
-                       dict(fam="bench", slot="wall", max=4),
-                       dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
-                       dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+                 fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=120, fixed=True),
+                       # statues in the corners and along the walls, turned along them (Con04c's sixteen, Con06b's pair)
+                       dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
+                       dict(fam="bench", slot="wall", max=1, fixed=True),
+                       dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "great_hall": dict(purpose="a lord's great hall, the heart of the house every other room opens onto: the hearth on a "
                                "back wall, long tables with benches down the middle, banners and trophies on the back "
                                "walls, statues in pairs, benches along the walls, aisles clear along the doors",
-                       base="hall",
+                       base="dining_hall",    # its density and pieces are a feast hall's (a hall's trimmed its boards to four tables)
                        # 2026-10-04 review: "the sheer number of tables and chairs was too much", 4-6 sets fewer;
                        # a table per 48 tiles (was 30), at most 6, and a carpet of floor tiles over the open floor
-                       core={"table": (2, 6), "bench": (4, 24), "fireplace": (1, 2)},
-                       per_tiles={"table": 48},
-                       # 2026-10-05 playtest: benches along every wall and 8 chests (Thornwick) beside the tables'
-                       # benches; a bench per 11 tiles in all (the tables' and the hearths' with them), at most 24, a chest
-                       # per 80 tiles; open hearths with benches round them fill the ends of a long hall
-                       optional={"statue": (0.8, 4), "wall_decor": (1.0, 12), "plant": (0.8, 4), "storage": (0.5, 2),
-                                 "column": (0.5, 12), "chair": (0.5, 4)},
+                       # room lab (tuneB): Westwood's great halls (Con06b, Con07E) set their tables end to end into
+                       # long boards (Con06b: twelve Table1/2 in a U round a free hearth, benches down both sides of
+                       # each board), hang their walls with shields and banners, keep no plants and no statues; a free
+                       # hearth or two, not a wall hearth and two free ones. A long board counts its pieces, so a
+                       # table piece per 24 tiles reads as two or three boards (2026-10-04: "4-6 sets fewer")
+                       core={"table": (2, 12), "bench": (4, 24), "fireplace": (1, 2)},
+                       per_tiles={"table": 24},
+                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
-                              "column": r"^Column[5-8]$", "statue": r"^Statue2[a-h]$", "storage": CHEST,
-                              "plant": PLANTS},
+                              "storage": CHEST},
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
+                       group_seats={"hearth": (0, 0)},          # Westwood's free hearths stand alone (Con06b's three)
+                       decor_max=6,                             # banners in a few places
+                       top_up=(),
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
-                                dict(fam="table", slot="table_rows", seat="bench"),
-                                dict(fam="carpet", slot="carpet", where="under", margin=3.0, chance=1.0),
+                                # a big hall's free hearth in the middle first, the boards either side of it (Con06b's U
+                                # of boards round its hearth; independent judge, r4: "a carpet dead centre with two or
+                                # four long tables in parallel, ringed by bare floor")
+                                dict(fam="fireplace", slot="groups", group="hearth", n=1, extra=True, min_area=400),
+                                dict(fam="table", slot="table_rows", seat="bench", joined=3),
+                                dict(fam="carpet", slot="carpet", where="under", margin=2.0, chance=1.0),
                                 # hangings either side of the hearth: two at least, the walls carry an open hall
                                 # (rules/rooms/great_hall.md; Harrowby's moot hall had one)
                                 dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],
-                       fill=[dict(fam="statue", slot="group", group="statues", max=1, min_area=200, fixed=True),
-                             dict(fam="fireplace", slot="wall", at="center", clear=2.6, max=1, min_area=320, fixed=True),
-                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
-                             dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=500, fixed=True),
-                             # a few benches by the front walls, no more: the tables' benches already make up most of
-                             # the hall's pieces (Harrowby's moot hall: 20 of 32, identity.monotony); one in each front
-                             # corner first, where those who wait sit (Harrowby playtest, HB-2: "a little bit too empty.
-                             # It needs some more objects and fill along the southeast wall in the south corner")
+                       # or the boards in parallel on a great carpet, the hearth on its wall alone (a smaller hall's way)
+                       compose_alts=([dict(fam="fireplace", slot="wall", at="center", clear=2.6),
+                                      dict(fam="table", slot="table_rows", seat="bench", joined=3),
+                                      dict(fam="carpet", slot="carpet", where="under", margin=2.0, chance=1.0),
+                                      dict(fam="wall_decor", slot="decor"), dict(fam="wall_decor", slot="decor")],),
+                       fill=[# a bench in each front corner, where those who wait sit (Harrowby playtest, HB-2: "a
+                             # little bit too empty. It needs some more objects and fill along the southeast wall in the
+                             # south corner")
                              dict(fam="bench", slot="wall", at="room_corner", clear=0, max=2, fixed=True),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
-                             dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=300, fixed=True),
-                             dict(fam="bench", slot="wall", max=3),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
     # 2026-10-05 playtest (Greywatch's keep: the throne "facing sideways towards the store room", "the pillars are in the
     # dead center of the room", statues facing the wall): Westwood's Dun Mir throne faces SE only, so it stands on the NW
@@ -693,26 +717,45 @@ ROOMS = {
     # stood in the way of the throne's view of its door)
     "throne_room": dict(purpose="a throne room: the throne centred on the NW wall facing the door across the room, statues "
                                 "flanking it and braziers before it, a clear aisle and a carpet runner from the door to "
-                                "the throne, a few pairs of columns spread down its length with pairs of statues between "
-                                "them facing across the aisle, tapestries of one colour on the back walls, a bench or two "
-                                "for those who wait, plants in the corners",
+                                "the throne, a few pairs of columns spread down its length, a pair of statues facing "
+                                "across the aisle and braziers lining it, a few tapestries of one colour",
                         core={"throne": (1, 4), "column": (2, 8)},
-                        optional={"statue": (1.0, 6), "wall_decor": (1.0, 8), "storage": (0.5, 1), "plant": (0.6, 4),
-                                  "bench": (0.8, 2)},
+                        # room lab (tuneB): Westwood's four throne rooms hold no plants or benches, a chest at most
+                        # (Con11a's two), their hangings in a few places (Hecubah's war poles by the door, the Lich
+                        # Lord's tapestries in pairs), not evenly down every wall; flame basins line the runner in pairs
+                        optional={"statue": (1.0, 6), "wall_decor": (1.0, 4), "storage": (0.3, 1)},
                         types={"throne": r"^DunMirThrone", "column": r"^Column[5-8]$|^CathedralColumn\d",
-                               "statue": r"^Statue2[a-h]$", "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS,
-                               "bench": r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"},
+                               "statue": r"^Statue2[a-h]$", "storage": r"^DunMirChest\d|^Chest\d"},
                         decor_themes=("blue", "red", "white", "green"),
-                        top_up=("plant",),           # never chests or benches down the walls to fill the floor
+                        decor_max=4, statues_along=True,
+                        top_up=(),                   # never chests, benches or plants down the walls to fill the floor
                         compose=[dict(fam="throne", slot="throne"),
                                  dict(fam="statue", slot="flank", of="throne", gap=0.8),
                                  dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
                                  dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
-                                 dict(fam="statue", slot="groups", group="statues", n=2, extra=True, min_area=100),
-                                 dict(fam="bench", slot="wall", at="center", clear=0, n=2),
+                                 dict(fam="light", slot="aisle_lights", n=2),
+                                 dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=100),
+                                 # statues of the house in the back corners where the aisle took no pair
+                                 dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
-                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
+                        # the other ways Westwood builds the walk (the judge, ref: "one template every time"): Hecubah's
+                        # runner lined with fire, statues in the corners; the Lich Lord's columns with statues between
+                        compose_alts=([dict(fam="throne", slot="throne"),
+                                       dict(fam="statue", slot="flank", of="throne", gap=0.8),
+                                       dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
+                                       dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
+                                       dict(fam="light", slot="aisle_lights", n=3),
+                                       dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
+                                       dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=100),
+                                       dict(fam="wall_decor", slot="decor")],
+                                      [dict(fam="throne", slot="throne"),
+                                       dict(fam="statue", slot="flank", of="throne", gap=0.8),
+                                       dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
+                                       dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
+                                       dict(fam="statue", slot="groups", group="statues", n=2, extra=True, min_area=100),
+                                       dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
+                                       dict(fam="wall_decor", slot="decor")]),
+                        fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     # the room lab (2026-10-05): Westwood's curated town and Dun Mir barracks (Con05A: four beds, a chest, a bow rack
     # and a pole arm, a round table with chairs; Con06b: six cots, tables, three Dun Mir chests, chairs, swords hung) have
     # no nightstands, shelves, rugs or hangings of décor: bunks in a row, chests, the crew's table and chairs, their arms
@@ -769,7 +812,9 @@ ROOMS = {
                               "on the floor, straw in the corners, barrels by the walls",
                       base="dining_hall",
                       core={"table": (2, 12), "fireplace": (1, 1)},
-                      optional={"chair": (1.0, 30), "storage": (1.0, 8), "clutter": (1.0, 12), "straw": (0.7, 12)},
+                      # room lab (tuneB): the ogres' feasting room (Con05C) holds two crude tables ringed by stools,
+                      # barrels heaped by the walls, skull posts; no straw on its floor
+                      optional={"chair": (1.0, 16), "storage": (1.0, 8), "clutter": (1.0, 5)},
                       types={"table": r"^OgreTable[123]$", "chair": r"^OgreStool\d$|^OgreBench[34]$",
                              "fireplace": r"^OgreFirePit$", "storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$",
                              "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$", "straw": r"^OgreStraw\d$"},
@@ -779,15 +824,15 @@ ROOMS = {
                               "storage": {"Barrel": 2, "Barrel2": 1, "OgreSack1": 1, "PiledBarrels2": 1},
                               "clutter": {"OgreHutMeat": 3, "OgreHutCarcass": 1, "OgreHutCarcassBig": 1},
                               "straw": {"OgreStraw1": 3, "OgreStraw2": 1, "OgreStraw3": 1}},
-                      per_tiles={"table": 22},
+                      per_tiles={"table": 45},
                       lights={"TorchPole": 1},
                       compose=[dict(fam="fireplace", slot="groups", group="firepit", n=1),
                                dict(fam="table", slot="groups", group="ogre_table"),
                                dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
-                               dict(fam="clutter", slot="scatter", per100=5, cluster=(1, 2))],
-                      fill=[dict(fam="table", slot="group", group="ogre_table", max=4),
-                            dict(fam="straw", slot="scatter", per100=4, max=12),
-                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
+                               dict(fam="clutter", slot="scatter", per100=1.5, cluster=(1, 2))],
+                      top_up=(),
+                      fill=[dict(fam="table", slot="group", group="ogre_table", max=3),
+                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=2, fixed=True)]),
     "ogre_hoard": dict(purpose="the ogres' hoard: barrels, sacks and crates heaped along the walls, a chest at the back, "
                                "carcasses hung to cure, bones about",
                        base="storeroom",
@@ -1178,21 +1223,25 @@ ROOMS = {
                            "basin of fire in each front corner, a runner to the altar with a kneeling bench, a tapestry "
                            "or two of one colour, plants",
                    core={"altar": (1, 1), "statue": (2, 4)},
-                   optional={"bench": (0.8, 2), "basin": (0.9, 2), "wall_decor": (1.0, 3), "plant": (0.5, 2)},
-                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
-                          "basin": r"^DunMirFlameBasinLit$", "plant": PLANTS},
-                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1}, "basin": {"DunMirFlameBasinLit": 1}},
+                   # room lab (tuneB): Westwood's shrines (Con07D, Wiz02B, Wiz11A's three, curated) set four obelisks
+                   # round the holy thing, candelabras, a chest; no plants, no statues of the town's kind
+                   optional={"bench": (0.5, 1), "basin": (1.0, 2), "wall_decor": (1.0, 2), "storage": (0.4, 1)},
+                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Obelisk$|^Statue2[a-h]$",
+                          "bench": r"^Bench\d$|^LightBench\d$", "basin": r"^DunMirFlameBasinLit$",
+                          "storage": r"^Chest\d$"},
+                   prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1}, "basin": {"DunMirFlameBasinLit": 1},
+                           "statue": {"Obelisk": 1}},
+                   statues_along=True,
                    decor_themes=("blue", "red", "white", "green"),
                    lift=("DunMir|",),
-                   top_up=("plant",),
-                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                   top_up=(),
+                   compose=[dict(fam="altar", slot="relic_ring", ring="statue", d=1.9, **{"else": ("basin", "none")}),
+                            # a room too small for the ring: the altar on the wall across from the door, obelisks by it
+                            dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                             dict(fam="statue", slot="flank", of="altar", gap=0.8),
-                            dict(fam="light", slot="flank_lights", of="altar", gap=0.9),
-                            dict(fam="bench", slot="pews", toward="altar", runner=True),
                             dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
                             dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=70),
-                         dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                   fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "dark_shrine": dict(base="study", grand=True,
                         purpose="the Land of the Dead's shrine: the lich god's statue on the wall across from the door, "
                                 "mana obelisks either side, incense basins burning, tapestries and sconces, bones",
@@ -1205,6 +1254,7 @@ ROOMS = {
                                 "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                 "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
+                        lift=("LOTD|", "Lich|"),     # its own pieces in any building (a town house had shown none)
                         top_up=(),
                         compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                                  dict(fam="statue", slot="flank", of="altar", gap=0.8),
@@ -1218,21 +1268,32 @@ ROOMS = {
                     purpose="a gallery: paintings hung along both back walls at even spacing, a bench or two in the middle "
                             "facing them, a pair of statues, one curio (an orrery), plants in the corners, open floor to "
                             "walk the walls",
-                    core={"wall_decor": (6, 14), "bench": (1, 4)},
-                    optional={"statue": (0.9, 4), "plant": (1.0, 4), "lab": (0.6, 1)},
+                    # room lab (tuneB): Westwood's gallery (Con07E, 210 tiles) shows its pieces apart along the walls,
+                    # each in its own bay: an orrery, a flame basin on a plinth, crystals among plants, a statue;
+                    # paintings and blue tapestries between them; lanterns; not a bench group in the middle
+                    core={"wall_decor": (6, 14)},
+                    optional={"statue": (0.9, 2), "plant": (1.0, 4), "lab": (1.0, 1), "basin": (0.8, 2)},
                     types={"bench": r"^Bench[1-4]$|^CushionedBench\d$", "statue": r"^Statue2[aceg]$", "plant": PLANTS,
-                           "lab": r"^Orrery2$"},
-                    prefer={"wall_decor": {"Painting1": 1, "Painting2": 1}},
+                           "lab": r"^Orrery2$", "basin": r"^DunMirFlameBasinLit$",
+                           "wall_decor": r"^Painting[12]$|^BlueTapestry[24]$"},
+                    # paintings first (two of a kind to a wall: the knowledge base), blue tapestries between them on the
+                    # rest of the wall, as Con07E hangs them: the walls are the show (independent judge, r3)
+                    prefer={"wall_decor": {"Painting1": 4, "Painting2": 4, "BlueTapestry2": 1, "BlueTapestry4": 1},
+                            "basin": {"DunMirFlameBasinLit": 1},
+                            "lab": {"Orrery2": 1}},
+                    decor_max=10, decor_first=r"^Painting",
                     decor_at="any",           # paintings at the ends of each stretch of wall as well as its middle
-                    top_up=("plant",),
-                    compose=[dict(fam="bench", slot="center"),
+                    lift=("DunMir|",), statues_along=True,
+                    top_up=(),
+                    # the centrepiece: the orrery ringed by candelabras in the middle of the walk (independent judge,
+                    # r3: "the orrery always in the S corner", "a single bench alone in the middle"); a statue pair
+                    # facing across the room; flame basins by the walls; the walls hung with the show
+                    compose=[dict(fam="lab", slot="groups", group="conjuring", n=1, extra=True, min_area=80),
                              dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=80),
-                             dict(fam="plant", slot="wall", at="room_corner", clear=0, n=4),
+                             dict(fam="basin", slot="wall", at="center", clear=1.0, n=2),
+                             dict(fam="plant", slot="wall", at="corner", clear=0, n=4),
                              dict(fam="wall_decor", slot="decor")],
-                    # statues toward the far corners carry the room's length (validate/checks.py SPREAD_MIN)
-                    fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, fixed=True, min_area=120),
-                          dict(fam="lab", slot="group", group="curio", max=1, min_area=140, fixed=True),
-                          dict(fam="bench", slot="center", max=1, min_area=120)]),
+                    fill=[]),
     # a garden hall (Con07B / War07A, 155-177 tiles: 33-35 potted plants and a pair of columns; Wiz01A, 24 tiles: a
     # fountain with lily pads among barren plants)
     "conservatory": dict(base="hall", grand=True,

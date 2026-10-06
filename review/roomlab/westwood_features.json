@@ -6289,9 +6289,9 @@
 "nn_med": 0.647,
 "overlaps": 0.0,
 "doors": 1,
-"focal_n": 1,
-"focal_back": 0.0,
-"focal_door": 0.7532,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
 "way_in": 4.5663,
 "way_in_frac": 0.3513,
 "sym": 0.4615,
@@ -6348,7 +6348,7 @@
 "NW"
 ]
 ],
-"focal": "LargeBarrel2",
+"focal": null,
 "doors": [
 "NW"
 ],
@@ -9209,6 +9209,180 @@
 "focal": "Crypt3",
 "doors": [
 "NW"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "Con03B",
+"type": "dining_hall",
+"culture": "town",
+"centre": [
+200,
+80
+],
+"tiles": 108,
+"by_hand": true,
+"features": {
+"tiles": 108,
+"cover": 0.1039,
+"open": 0.6387,
+"middle": 0.0628,
+"per_tile": 0.2037,
+"types": 13,
+"most_share": 0.2727,
+"free_most": 3,
+"walls": 4,
+"lined": 0.1174,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.6481,
+"fam_table": 0.2778,
+"fam_chair": 0.0,
+"fam_bench": 0.5556,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0926,
+"fam_stove": 0.0926,
+"fam_lab": 0.0,
+"fam_smithy": 0.0926,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.2778,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.5,
+"wall_gap": 0.3055,
+"mid_share": 0.5,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.5013,
+"nn_med": 1.5097,
+"overlaps": 0.0,
+"doors": 4,
+"focal_n": 3,
+"focal_back": 0.0,
+"focal_door": 0.4639,
+"way_in": 9.0403,
+"way_in_frac": 0.4758,
+"sym": 0.2727,
+"align": 0.6667,
+"statues_to_wall": 0,
+"front_faced": 0.4,
+"odd_facing": 0.0,
+"lights_per_tile": 0.037
+},
+"details": {
+"kinds": {
+"Fireplace": 1,
+"WallTrophyMoose": 1,
+"PiledBarrels": 4,
+"LargeBarrel": 3,
+"Bellows": 1,
+"Stove": 1,
+"Table": 3,
+"LightBench": 6,
+"GreenTapestry": 2
+},
+"fam": {
+"fireplace": 1,
+"wall_decor": 3,
+"storage": 7,
+"smithy": 1,
+"stove": 1,
+"table": 3,
+"bench": 6
+},
+"wall_pieces": [
+[
+"Fireplace4",
+"Fireplace",
+"NW"
+],
+[
+"WallTrophyMoose2",
+"WallTrophyMoose",
+"NE"
+],
+[
+"PiledBarrels1",
+"PiledBarrels",
+"SE"
+],
+[
+"PiledBarrels1",
+"PiledBarrels",
+"SE"
+],
+[
+"PiledBarrels2",
+"PiledBarrels",
+"SW"
+],
+[
+"LargeBarrel1",
+"LargeBarrel",
+"SW"
+],
+[
+"LargeBarrel2",
+"LargeBarrel",
+"NW"
+],
+[
+"LargeBarrel2",
+"LargeBarrel",
+"SW"
+],
+[
+"Bellows6",
+"Bellows",
+"NW"
+],
+[
+"Stove05",
+"Stove",
+"NW"
+],
+[
+"GreenTapestry1",
+"GreenTapestry",
+"SW"
+],
+[
+"GreenTapestry1",
+"GreenTapestry",
+"SW"
+],
+[
+"PiledBarrels2",
+"PiledBarrels",
+"NE"
+]
+],
+"pairs": {
+"fireplace|stove": 1.654,
+"storage|storage": 1.68,
+"storage|stove": 3.064,
+"bench|table": 0.64,
+"bench|storage": 2.855
+},
+"runs": [],
+"focal": "Table3",
+"doors": [
+"SE",
+"SE",
+"NW",
+"NE"
 ],
 "overlap_pairs": []
 }
@@ -12867,9 +13041,9 @@
 "nn_med": 1.7016,
 "overlaps": 0.0,
 "doors": 1,
-"focal_n": 4,
-"focal_back": 1.0,
-"focal_door": 0.3927,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
 "way_in": 6.0838,
 "way_in_frac": 0.8691,
 "sym": 1.0,
@@ -12902,7 +13076,7 @@
 "lab|lab": 1.702
 },
 "runs": [],
-"focal": "WizardWorkstation1",
+"focal": null,
 "doors": [
 "NE"
 ],
@@ -12965,9 +13139,9 @@
 "nn_med": 0.7234,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 5,
-"focal_back": 0.0,
-"focal_door": 0.6769,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.5334,
 "way_in": 21,
 "way_in_frac": 1.0,
 "sym": 0.4211,
@@ -13095,7 +13269,7 @@
 "SW"
 ]
 ],
-"focal": "WizardWorkstation3c",
+"focal": "Desk2",
 "doors": [
 "NW",
 "NW"
@@ -13159,9 +13333,9 @@
 "nn_med": 0.1411,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 5,
-"focal_back": 0.0,
-"focal_door": 0.4171,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.5889,
 "way_in": 23.034,
 "way_in_frac": 0.8531,
 "sym": 0.4138,
@@ -13310,7 +13484,7 @@
 "SE"
 ]
 ],
-"focal": "WizardWorkstation1c",
+"focal": "Desk1",
 "doors": [
 "SW",
 "SW"
@@ -13376,7 +13550,7 @@
 "doors": 2,
 "focal_n": 1,
 "focal_back": 1.0,
-"focal_door": 0.6829,
+"focal_door": 0.7457,
 "way_in": 11.3924,
 "way_in_frac": 0.8763,
 "sym": 0.1667,
@@ -13425,7 +13599,7 @@
 "chair|desk": 0.458
 },
 "runs": [],
-"focal": "WizardWorkstation3b",
+"focal": "Desk1",
 "doors": [
 "SW",
 "SE"
@@ -13490,8 +13664,8 @@
 "overlaps": 0.0,
 "doors": 1,
 "focal_n": 1,
-"focal_back": 0.0,
-"focal_door": 0.7178,
+"focal_back": 1.0,
+"focal_door": 0.743,
 "way_in": 10.2546,
 "way_in_frac": 0.7888,
 "sym": 0.5,
@@ -13533,7 +13707,7 @@
 "chair|desk": 0.676
 },
 "runs": [],
-"focal": "WizardWorkstation1",
+"focal": "Desk2",
 "doors": [
 "SW"
 ],
@@ -13596,9 +13770,9 @@
 "nn_med": 0.5597,
 "overlaps": 0.0,
 "doors": 2,
-"focal_n": 2,
+"focal_n": 1,
 "focal_back": 1.0,
-"focal_door": 0.6239,
+"focal_door": 0.3756,
 "way_in": 1.9212,
 "way_in_frac": 0.2135,
 "sym": 0.5714,
@@ -13661,7 +13835,7 @@
 "desk|shelves": 4.079
 },
 "runs": [],
-"focal": "WizardWorkstation1b",
+"focal": "Desk1",
 "doors": [
 "NW",
 "NW"
@@ -22663,6 +22837,173 @@
 -0.41
 ]
 ]
+}
+},
+{
+"map": "Con07B",
+"type": "tavern",
+"culture": "town",
+"centre": [
+112,
+240
+],
+"tiles": 104,
+"by_hand": true,
+"features": {
+"tiles": 104,
+"cover": 0.1666,
+"open": 0.4199,
+"middle": 0.0838,
+"per_tile": 0.2885,
+"types": 23,
+"most_share": 0.2,
+"free_most": 4,
+"walls": 4,
+"lined": 0.1666,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.2885,
+"fam_table": 0.4808,
+"fam_chair": 0.5769,
+"fam_bench": 0.6731,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0962,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.6731,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0962,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.3077,
+"wall_gap": 0.2943,
+"mid_share": 0.3846,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.0283,
+"nn_med": 0.5781,
+"overlaps": 0.0,
+"doors": 2,
+"focal_n": 7,
+"focal_back": 0.0,
+"focal_door": 0.5883,
+"way_in": 6.1029,
+"way_in_frac": 0.2441,
+"sym": 0.2,
+"align": 0.3846,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0288
+},
+"details": {
+"kinds": {
+"CushionedStool": 1,
+"GreenTapestry": 1,
+"WaterBarrel": 1,
+"PiledBarrels": 1,
+"CushionedBench": 1,
+"Stool": 1,
+"Stove": 1,
+"DarkWoodenChair": 4,
+"LightBench": 6,
+"RoundTableWithFood": 2,
+"Table": 3,
+"LargeBarrel": 1,
+"BarHingedTop": 1,
+"BarPiece4C": 1,
+"BarPiece3D": 1,
+"BarPiece4A": 2,
+"BarCorner3D": 1,
+"BarPiece3A": 1
+},
+"fam": {
+"chair": 6,
+"wall_decor": 1,
+"storage": 3,
+"bench": 7,
+"stove": 1,
+"table": 5,
+"counter_bar": 7
+},
+"wall_pieces": [
+[
+"GreenTapestry4",
+"GreenTapestry",
+"NE"
+],
+[
+"WaterBarrel",
+"WaterBarrel",
+"NE"
+],
+[
+"PiledBarrels1",
+"PiledBarrels",
+"NW"
+],
+[
+"CushionedBench2",
+"CushionedBench",
+"NE"
+],
+[
+"Stool1",
+"Stool",
+"SW"
+],
+[
+"Stove05",
+"Stove",
+"NW"
+],
+[
+"DarkWoodenChair2",
+"DarkWoodenChair",
+"SE"
+],
+[
+"LightBench1",
+"LightBench",
+"NE"
+],
+[
+"BarPiece4A",
+"BarPiece4A",
+"SW"
+],
+[
+"BarPiece3A",
+"BarPiece3A",
+"SW"
+]
+],
+"pairs": {
+"storage|table": 1.515,
+"bench|chair": 1.642,
+"bench|stove": 1.244,
+"chair|table": 0.068,
+"bench|table": 0.77,
+"counter_bar|counter_bar": 0.032
+},
+"runs": [],
+"focal": "BarHingedTop",
+"doors": [
+"NE",
+"NW"
+],
+"overlap_pairs": []
 }
 },
 {

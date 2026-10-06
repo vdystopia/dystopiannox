@@ -251,7 +251,7 @@ TYPES = {
         signature={"counter_shop": (8, 1), "shop_rack": (0.4, 8)}, needs=("counter_shop",),
         kin=("armoury", "smithy")),
     "tavern": dict(
-        family="public", feel="balanced", kinds=("tavern",), westwood=("tavern",),
+        family="public", feel="balanced", kinds=("tavern",), westwood=("tavern", "dining_hall"),
         focal=dict(fam="counter_bar", types=r"^(BarPiece|BarCorner|BarHinged)", where="any", with_="fireplace"),
         must={"counter_bar": 1, "table": 3, "fireplace": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab",
                                                                     "smithy", "counter_shop"),
@@ -261,12 +261,14 @@ TYPES = {
                    front="benches; kegs heaped toward the corners, never a whole wall of them",
                    middle="tables in three kinds of set (round tables with stools, a long table with benches, a "
                           "table of food), open floor between to walk to the bar"),
-        cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(10, 18), free_skip=(),
-        caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(100, 360),
+        cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(12, 14), free_skip=(),
+        caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(180, 360),
         signature={"counter_bar": (1, 10), "table": (0.5, 10), "chair": (0.1, 30), "storage": (0.2, 8)},
-        needs=("counter_bar",), kin=("dining_hall", "great_hall")),
+        # a hearth, tables and benches read as a living room too: Westwood's Con02a tavern does (13.7 against 8.4)
+        needs=("counter_bar",), kin=("dining_hall", "great_hall", "living_room")),
     "dining_hall": dict(
-        family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"), westwood=("dining_hall",),
+        family="public", feel="balanced", kinds=("dining_hall", "mess_hall", "ogre_hall"),
+        westwood=("dining_hall", "tavern", "great_hall"),      # its kin before the shops (room lab, tuneB)
         focal=dict(fam="table", types=r"^(Table[1-4]|OvalTable\d|OgreTable\d)$", where="rows", with_="fireplace"),
         must={"table": 2, "fireplace": 1}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "smithy",
                                                   "counter_shop", "shop_rack"),
@@ -275,14 +277,14 @@ TYPES = {
                                                                                          "sideboard of food",
                    front="benches; plants in the corners", middle="long tables in rows, seated along both sides"),
         cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.2, 0.7), types_min=8, free_most=(4, 30), free_skip=("chair", "bench"),
-        caps={"table": (16, 8)}, walls_min=3, lined=0.25, tiles=(50, 220),
+        caps={"table": (30, 6)}, walls_min=3, lined=0.25, tiles=(50, 220),
         signature={"table": (1.5, 12), "chair": (0.3, 40), "bench": (0.3, 20)}, needs=("table",),
         kin=("great_hall", "tavern", "living_room"),
-        variants={"mess_hall": dict(caps={"table": (17, 10)}, never_types=r"PowderBarrel|^RoundTable",
+        variants={"mess_hall": dict(caps={"table": (22, 8)}, never_types=r"PowderBarrel|^RoundTable",
                                     cover=(0.12, 0.24, 0.34), open=(0.25, 0.80)),
                   "ogre_hall": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
                                     lined=None, walls_min=2, types_min=6, cover=(0.12, 0.17, 0.32), free_most=(6, 20),
-                                    caps={"table": (22, 8)})}),
+                                    caps={"table": (40, 5)})}),     # Con05C: two crude tables in 110 tiles
     # ---- ceremonial ----------------------------------------------------------------------------------------------
     "great_hall": dict(
         family="ceremonial", feel="open", kinds=("great_hall",), westwood=("great_hall", "hall"),
@@ -295,7 +297,7 @@ TYPES = {
                    middle="long tables with benches down the middle on a great carpet, open floor round them and a "
                           "clear way from every door; open hearths at the ends of a long hall"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.90), per_tile=(0.08, 0.35), types_min=10, free_most=(6, 40), free_skip=("chair", "bench"),
-        caps={"bench": (16, 24), "table": (48, 6), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
+        caps={"bench": (9, 24), "table": (20, 12), "storage": (80, 3)}, walls_min=3, lined=None, tiles=(120, 400),
         signature={"table": (1, 6), "bench": (0.3, 24), "fireplace": (2, 2), "statue": (0.5, 4), "wall_decor": (0.2, 10)},
         needs=("table", "fireplace"), kin=("dining_hall", "hall")),
     "hall": dict(
@@ -308,7 +310,9 @@ TYPES = {
                    front="benches by the walls; plants in the corners",
                    middle="a colonnade in pairs either side of a clear aisle; statues facing each other across it"),
         cover=(0.02, 0.04, 0.14), open=(0.65, 0.97), per_tile=(0.05, 0.30), types_min=6, free_most=(4, 30),
-        caps={"column": (18, 10)}, walls_min=2, lined=None, tiles=(50, 260),
+        # Westwood's halls: Con04c 22 columns and 24 statues in 128 tiles, Con10c 4 columns and 6 obelisks in 209 (room
+        # lab, tuneB): statues are the hall's own repeated piece, capped here rather than by free_most
+        caps={"column": (14, 12), "statue": (18, 8)}, walls_min=2, lined=None, tiles=(50, 260),
         signature={"column": (0.6, 10), "statue": (0.6, 6)}, needs=("column", "statue"),
         kin=("throne_room", "great_hall", "chapel")),
     "throne_room": dict(
@@ -325,7 +329,9 @@ TYPES = {
                    middle="a carpet runner and a clear aisle from the door to the throne; a few pairs of columns spread "
                           "down the length; pairs of statues between them facing across the aisle"),
         cover=(0.03, 0.06, 0.12), open=(0.65, 0.92), per_tile=(0.10, 0.35), types_min=9, free_most=(6, 30),
-        caps={"column": (26, 8), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
+        # Westwood: the Lich Lord's six columns in three pairs (356 tiles), Hecubah's one pair (492):
+        # a pair per 30 tiles, three pairs at most (room lab, tuneB: four pairs read as "tons of the same exact pillars")
+        caps={"column": (30, 6), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"throne": (12, 1)}, needs=("throne",), kin=("hall",)),
     "chapel": dict(
         family="ceremonial", feel="open", kinds=("chapel", "dark_chapel"), westwood=("chapel",),
@@ -339,7 +345,8 @@ TYPES = {
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
-        caps={"bench": (14, 16), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
+        # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch)
+        caps={"bench": (15, 8), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine"),
         variants={"dark_chapel": dict(must={"altar": 1, "statue": 4}, types_min=6,
                                       caps={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},
@@ -552,7 +559,10 @@ TYPES.update({
         family="ceremonial", feel="open", kinds=("shrine", "dark_shrine"), westwood=(),
         evidence=(("Con10c", (30, 140)), ("Con10d", (132, 51)), ("Con07H", (118, 85)), ("Wiz11A", (50, 215)),
                   ("Wiz02B", (120, 120)), ("Con07D", (118, 78))),
-        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="door"),
+        # Westwood's shrines (curated: Con07D, Wiz02B, Wiz11A's three) set the holy thing in the middle ringed by
+        # obelisks (room lab, tuneB): the altar there where the room has the floor for it, else on the wall across from
+        # the door with the ring of obelisks in the middle
+        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="any"),
         must={"altar": 1, "statue": 2}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
                                                "counter_shop", "shop_rack", "straw", "shelves", "fireplace"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
@@ -561,15 +571,19 @@ TYPES.update({
                    other_back="a tapestry or two of one colour", front="the door; a basin of fire in each front corner",
                    middle="a runner from the door to the altar; a kneeling bench or two; open"),
         cover=(0.0, 0.05, 0.14), open=(0.65, 0.97), per_tile=(0.04, 0.4), types_min=4, free_most=(4, 30),
-        caps={"bench": (20, 3), "statue": (16, 6)}, walls_min=2, lined=None, tiles=(12, 120),
+        caps={"bench": (20, 3), "statue": (6, 6)}, walls_min=2, lined=None, tiles=(12, 120),     # four obelisks in 25-42 tiles
         signature={"altar": (8, 1), "^DunMirFlameBasin|^LOTDIncenseBasin": (2, 2), "statue": (0.5, 4)},
         needs=("altar",), kin=("chapel", "hall"),
-        variants={"dark_shrine": dict(must={"altar": 1, "statue": 2}, types_min=3)}),
+        # the Land of the Dead's shrines (Wiz11A's three, 13-36 tiles) hold obelisks round a spell book, no god's statue:
+        # a niche too small for the statue is still a shrine by its obelisks (room lab, tuneB)
+        variants={"dark_shrine": dict(must={"statue": 2}, types_min=3, focal=None, needs=(),
+                                      signature={"altar": (8, 1), "^LOTDManaObelisk": (3, 4),
+                                                 "^LOTDIncenseBasin": (2, 2)})}),
     "gallery": dict(
         family="ceremonial", feel="open", kinds=("gallery",), westwood=(),
         evidence=(("Con07E", (203, 112)),),
         focal=dict(fam="wall_decor", types=r"^Painting", where="back"),
-        must={"wall_decor": 4, "bench": 1}, never=("bed", "desk", "table", "stove", "smithy", "counter_bar",
+        must={"wall_decor": 4}, never=("bed", "desk", "table", "stove", "smithy", "counter_bar",
                                                    "counter_shop", "shop_rack", "straw", "tomb", "shelves", "altar"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
         walls=dict(back="paintings hung along both back walls at even spacing, a tapestry of one colour between",
@@ -729,7 +743,8 @@ def reads_as(fam, kinds, kind=None):
         if t == "cell" and (fam.get("fireplace") or fam.get("table") or fam.get("chair", 0) > 1): s = 0.0
         if t == "torture_chamber" and k(r"^TortureRack|^IronMaiden|^Stocks") < 2: s = 0.0
         if t == "shrine" and fam.get("bench", 0) >= 4: s = 0.0
-        if t == "gallery" and (k(r"^Painting") < 4 or any(fam.get(f) for f in ("bed", "desk", "shelves", "table", "stove"))):
+        # (three: the knowledge base hangs two paintings to a wall, and a back wall broken by a door holds one)
+        if t == "gallery" and (k(r"^Painting") < 3 or any(fam.get(f) for f in ("bed", "desk", "shelves", "table", "stove"))):
             s = 0.0
         if t == "conservatory" and fam.get("plant", 0) < 8: s = 0.0
         if t == "mausoleum" and (fam.get("tomb", 0) > 4 or fam.get("altar") or fam.get("bench", 0) >= 4): s = 0.0

@@ -65,3 +65,12 @@ before the altar. (`STANDS["shrine"]`: beside the altar, a back wall.)
   cell 50,215 (36 tiles: mana obelisks and a book); Wiz02B, cell 120,120 (25 tiles: four obelisks, a book, bones);
   Con07D, cell 118,78 (42 tiles: four candelabras, four obelisks, a chest).
 - Ours: the room lab's shrines and dark shrines.
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+Westwood's five shrines (curated: Con07D, Wiz02B, Wiz11A's three) are built round a ring, not an altar wall.
+- **Four obelisks in a diamond** (at the screen's top, bottom, left and right) round the holy thing in the open middle,
+  a ring of carpet under them on a built floor (Con07D); the holy thing is the altar where the room has the floor for it,
+  else a basin of fire, else bare floor (Westwood's: a key or a spell book). Clear of the doors' lines (GW-7).
+- Candelabras in the corners, a chest, a tapestry or two; **no plants, no statues of the town's kind.**
+- **The Land of the Dead's** niche is a shrine by its mana obelisks; the lich god's statue only where it fits.

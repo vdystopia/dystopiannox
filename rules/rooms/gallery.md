@@ -64,3 +64,10 @@ or between the benches. (`STANDS["gallery"]`: beside a statue, a back wall.)
 - Westwood: Con07E / War07D, cell 203,112 (208-210 tiles: seven paintings, sixteen lanterns, nine plants, an orrery, blue
   tapestries, two flame basins, a statue).
 - Ours: the room lab's galleries.
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+Westwood's gallery (Con07E, curated) shows its pieces apart, each in its own bay along the walk: the orrery, a flame
+basin, crystals among plants, a statue; paintings and blue tapestries hung between them. So: exhibits toward the walls,
+not a bench group in the middle; a bench at most; paintings hung on every free stretch (the room is decorated). Still
+missing: the bays themselves (the shell) and enough exhibits for a room of 200 tiles.
