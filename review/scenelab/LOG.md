@@ -105,3 +105,27 @@ lake, barrels, a crate, rocks on the bank by the root (store 0.22, rock 0.14 of 
 
 r3: generated mean within 0.5 of Westwood's. The judge knows Westwood's four dock scenes by heart, so blind accuracy is
 not meaningful for this type. Ambermere (dock yes) and DysVale build with 0 errors, warnings unchanged.
+
+## Final summary (every type, the kit as committed)
+
+| Scene | Westwood scenes | AUC | Blind acc. | Blind gen/WW | Hard-rule scenes | Missing | Worst findings |
+|---|---|---|---|---|---|---|---|
+| bandit_camp | 20 | 0.98 | - | - | 0/10  | 0 | 7 creatures; 15 kinds of thing: more variety than Westwood shows |
+| graveyard | 13 | 0.86 | - | - | 0/10  | 0 | only 0.55 of the steps along the screen diagonals: off Nox's grid; 0.25 of the pieces are statue (more than Westwood's) |
+| garden | 5 | 0.24 | - | - | 0/10  | 0 | round, no main line (0.96); water 138 px from its middle |
+| pond_dock | 4 | 0.75 | - | - | 0/10  | 0 | round, no main line (0.77); packed into 86 px |
+| ogre_camp | 5 | 0.91 | - | - | 0/10  | 0 | 0.32 of the pieces are hay (more than Westwood's); only 0 of its ground open: crammed |
+| well | 4 | 0.75 | - | - | 0/10  | 4 | 0.50 of the pieces are store (more than Westwood's); 0.25 of the pieces are seat (more than Westwood's) |
+| market_stall | 3 | - | - | - | 0/10  | 10 |  |
+| wagon | 7 | 1.00 | - | - | 0/10  | 1 | 0.40 of the pieces are hay (more than Westwood's); 11 kinds of thing: more variety than Westwood shows |
+| urchin_camp | 42 | 1.00 | - | - | 0/10  | 0 | 0.30 of the pieces are rock (more than Westwood's); only 0 of the pieces near a wall |
+| smithy_yard | 1 | - | - | - | 0/10  | 2 | 0.50 of the pieces are rock (more than Westwood's); 0 creatures |
+| training_ground | 0 | - | - | - | 0/10  | 4 |  |
+| woodpile | 3 | 0.99 | - | - | 0/10  | 1 | 0.60 of the pieces are log (more than Westwood's); 0 of the pieces are rock (fewer than Westwood's) |
+| shrine | 28 | 1.00 | - | - | 0/10  | 0 | only 0 near a built wall or fence; only 0 of the pieces near a wall |
+| farmyard | 6 | 1.00 | - | - | 0/10  | 2 | packed into 41 px; only 0 of the pieces near a wall |
+| wolf_den | 4 | 0.97 | - | - | 0/10  | 0 | zones of 7 pieces: big heaps; zones only 0 px apart: they run together |
+| quarry | 2 | 0.96 | - | - | 0/10  | 4 | pieces 44 px from their nearest: scattered; 1 of its pieces on a path or road |
+| jail | 11 | 0.98 | - | - | 0/10  | 0 | 0.50 of the pieces are bed (more than Westwood's); 1 of its pieces on a path or road |
+
+Types below the sore points have their baseline and this run only (no tuning rounds yet). "Missing": clearings where the recipe could not lay the scene: the market stall's store and inn are too big for the lab's clearings (0 of 10 laid); wells and catalogue themes need a town's context the lab gives only partly.
