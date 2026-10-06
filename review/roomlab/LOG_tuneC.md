@@ -167,3 +167,21 @@ What Westwood's look like (Con04a-c, War03b-d): 1-5 types (median 2), two to six
 | r2 | rows again, capped at a tomb per 12 tiles (6 at most); no columns, tapestries, plants | 0.950 | 0.938 | 3 | - |
 | r3 | `wall_gap` (new recipe key): sarcophagi along the walls a pace out | 0.974 | 0.777 | 1 | - |
 | r4 | two rows with a wide aisle (3.6) so each keeps near its wall; the pace-out tombs only in the fill | 0.886 | 0.751 | 5 (2 chests across a wall, 2 sparse, 1 reads as mausoleum) | - |
+
+## Storeroom, after the curated references and the independent judges
+
+The curated references (7 true storerooms) are fuller: coverage median 0.16, 0.38 pieces a tile, 4 types, the
+commonest kind 0.40, no lights in the room. Independent judge of r9: 9/10, generated 5.0 against Westwood's 5.4; its
+tells: barrels in evenly stepped lines and staircases, sacks sprinkled over the floor, one or two kinds only,
+candelabras.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| r10 | `_heap` builds a clump: each piece touches one already in the heap at a random bearing, within 3 units of the wall, a piece in four of the room's other kinds; bigger heaps (4-6) | 0.839 | 0.912 | 1 | - |
+| r11 | a second kind in 95% of rooms, an odd piece in 80%, two kinds in a heap 40% of the time; no lights in a store (`lights_per100` 0: Westwood's have none inside; the house rule keeps torches out of houses) | 0.777 | 0.931 | 1 | - |
+| r12 | cover target 0.13 -> 0.17 (the curated median 0.16) | 0.761 | 0.925 | 1 | - |
+| r13 | clumps compact (along the wall penalised over depth): no line of casks down a wall | 0.726 | 0.903 | 1 | - |
+| r14 | an odd kind twice a room at most | 0.771 | 0.910 | 1 | - |
+| r15 | no stretch left: a clump in another corner | 0.736 | 0.904 | 1 | - |
+| r16 | a heap's first piece slides along when its spot is taken | 0.781 | 0.809 | 0 | queued |
+| r16s2 | (seed 2) | 0.891 | 0.839 | 3 | - |

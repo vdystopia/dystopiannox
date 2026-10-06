@@ -193,7 +193,8 @@ TYPES = {
         # (median 3), barrels the commonest, against two walls (p90 three), no shelf or rack in any of them; the user
         # wants stores fuller than Westwood's median ("a store room holds more than any other room"), so the target
         # sits at Westwood's p75, the limit past its p90
-        cover=(0.06, 0.13, 0.26), open=(0.30, 0.92), per_tile=(0.1, 0.8), types_min=2, free_most=(4, 20),
+        # (curated 2026-10-05 to Westwood's 7 true storerooms: coverage median 0.16, open 0.46, 0.38 pieces a tile)
+        cover=(0.08, 0.17, 0.30), open=(0.25, 0.80), per_tile=(0.15, 1.0), types_min=3, free_most=(4, 20),
         caps={"shop_rack": (10, 6)}, walls_min=2, lined=None, tiles=(15, 90),
         signature={"storage": (0.8, 30), "^LogShelves": (0.5, 8)}, needs=("storage",),
         kin=("kitchen", "armoury", "cellar"),

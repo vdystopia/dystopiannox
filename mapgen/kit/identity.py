@@ -163,7 +163,7 @@ ROOMS = {
                       # the carts are the town-furnished ore shed's own pieces (the "town" style had excluded every Mine
                       # piece, so the lab's ore stores never had their carts: the profile's focal missed in 3 of 3);
                       # the store heaped as a storeroom's (store_heaps), a shelf of tools or two at most
-                      lift=("Mine|",), lights_per100=2.0,
+                      lift=("Mine|",), lights_per100=0,
                       store=dict(lead={"crates": 3, "barrels": 1}, second={"tools": 2, "barrels": 2, "crates": 1},
                                  accent={"large": 1, "piled": 1}),
                       top_up=(),
@@ -301,7 +301,7 @@ ROOMS = {
                       types={"storage": SUPPLY},
                       store=dict(lead={"barrels": 6, "crates": 2, "sacks": 1}, second={"crates": 3, "barrels": 2, "sacks": 2},
                                  accent={"piled": 2, "large": 2, "water": 1, "tools": 1, "apples": 1}),
-                      top_up=(), lights_per100=2.0,
+                      top_up=(), lights_per100=0,
                       compose=[dict(fam="storage", slot="heaps", n=4)],
                       fill=[dict(fam="storage", slot="heaps")]),
     # a mill's or a farm's grain store (Harrowby): a storeroom of sacks, never racks of arms (the mill's first
@@ -312,7 +312,7 @@ ROOMS = {
                     types={"storage": SUPPLY},
                     store=dict(lead={"sacks": 1}, second={"barrels": 2, "crates": 2}, second_p=0.9,
                                accent={"large": 1, "piled": 1}),
-                    top_up=(), lights_per100=2.0,
+                    top_up=(), lights_per100=0,
                     compose=[dict(fam="storage", slot="heaps", n=4)],
                     fill=[dict(fam="storage", slot="heaps")]),
     # the room lab (2026-10-05): Westwood's 16 campaign armouries hold 3-13 types (median 6), 0-0.73 supplies per 10 tiles

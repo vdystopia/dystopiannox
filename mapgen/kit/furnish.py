@@ -2002,9 +2002,9 @@ class Furnisher:
             return k, pool(k)
         lead_k, lead = draw(st.get("lead", {"barrels": 5, "crates": 2, "sacks": 2}))
         second_k, second = (draw(st.get("second", {"crates": 3, "barrels": 3, "sacks": 2}), avoid=(lead_k,))
-                            if self.rng.random() < st.get("second_p", 0.75) else (None, []))
+                            if self.rng.random() < st.get("second_p", 0.95) else (None, []))
         acc_k, accent = (draw(st.get("accent", {"piled": 2, "large": 2, "water": 1, "tools": 1, "apples": 1}),
-                              avoid=(lead_k, second_k)) if self.rng.random() < st.get("accent_p", 0.5) else (None, []))
+                              avoid=(lead_k, second_k)) if self.rng.random() < st.get("accent_p", 0.8) else (None, []))
         self._store_pal = (lead, second, accent)
         return self._store_pal
 
@@ -2058,14 +2058,54 @@ class Furnisher:
         return got, edge
 
     def _heap(self, r, a, d, types, n, round_):
-        """A heap along run r from `a`: a row of n, and for round pieces (barrels, sacks) a second row before it, offset
-        half a piece. Returns (pieces placed, the edge reached along the wall)."""
-        row, edge = self._heap_row(r, a, d, types, n)
-        got = len(row)
-        if row and round_ and self.rng.random() < 0.75:
-            fr, _ = self._heap_row(r, row[0][1] + d * row[0][2] * self.rng.uniform(0.3, 1.0), d, types,
-                                   self.rng.randint(1, max(1, len(row) - 1)), depth=2 * row[0][2] + 0.1)
-            got += len(fr)
+        """A heap against run r from `a` (toward d): the first piece snug in its place, each next one touching a piece of
+        the heap at a random bearing, kept within three units of the wall and near where it started, so the heap is a
+        clump, not a ruled row (the independent judge of the storeroom lab: "barrels strung in evenly stepped lines ...
+        a diagonal staircase"; "touching stacks of mixed kinds"). A piece in four is of the store's other kinds. Returns
+        (pieces placed, the furthest edge reached along the wall)."""
+        _, second, accent = self._store_palette()
+        others = [t for t in (second or []) + (accent or []) if t not in types]
+        line, sign, coord = r["line"], r["sign"], r["coord"]
+        along_of = lambda u, v: v if line == "/" else u
+        depth_of = lambda u, v: ((u if line == "/" else v) - coord) * sign
+        heap, edge, got = [], a, 0
+        for k in range(max(n, 1) + 5):
+            if got >= n: break
+            pool = others if others and k > 0 and self.rng.random() < 0.4 else types
+            # the odd piece stays odd: two of an accent kind (a great cask, a piled barrel) to a room at most
+            pool = [t for t in pool if t not in (accent or ()) or
+                    sum(1 for tt, _ in self._typed if OBJ.kind(tt) == OBJ.kind(t)) < 2] or types
+            cands = []
+            for t0 in sorted(pool, key=lambda x: self.rng.random())[:3]:
+                t = self.orient(t0, r["side"])
+                if not t: continue
+                hu, hv = self.half(t)
+                ta, tp = (hv, hu) if line == "/" else (hu, hv)
+                if not heap:
+                    c = a + d * ta
+                    if not (r["lo"] + 0.3 < c - ta and c + ta < r["hi"] - 0.3): continue
+                    cands.append((0.0, t, self._uv_on(r, tp + 0.25 + self.rng.uniform(0, 0.3), c), ta))
+                    continue
+                for _ in range(10):
+                    bu, bv, br = self.rng.choice(heap)
+                    ang = self.rng.uniform(0, 2 * math.pi)
+                    dist = br + max(hu, hv) + self.rng.uniform(0.16, 0.3)
+                    u, v = bu + dist * math.cos(ang), bv + dist * math.sin(ang)
+                    dep, al = depth_of(u, v), along_of(u, v)
+                    if dep < tp + 0.2 or dep > 3.0 or not (r["lo"] + 0.3 < al - ta and al + ta < r["hi"] - 0.3): continue
+                    cands.append((0.5 * dep + 0.9 * abs(al - a) + self.rng.uniform(0, 1.2), t, (u, v), ta))
+            for _, t, (u, v), ta in sorted(cands, key=lambda c: c[0]):
+                hu, hv = self.half(t)
+                if self._clear_of_anchors(u, v, hu, hv, 0.6) and self.try_put(t, u, v):
+                    heap.append((u, v, max(hu, hv))); got += 1
+                    al = along_of(u, v)
+                    if depth_of(u, v) - (hv if line == "/" else hu) < 1.0:
+                        self.wall_used.append(((line, coord), al - ta, al + ta))
+                    edge = max(edge, al + ta + self._heap_gap()) if d > 0 else min(edge, al - ta - self._heap_gap())
+                    break
+            if not heap:                                # the first piece found no room here: a little further along
+                if k >= 3: break
+                a += d * 0.7
         return got, edge
 
     def store_heaps(self):
@@ -2097,7 +2137,7 @@ class Furnisher:
         far = lambda r, d: (r["hi"] if d > 0 else r["lo"]) - d * 1.9      # short of the far corner: its wall stays bare
         got = 0
         if step == 0:                                   # the heap in the home corner
-            g, edge = self._heap(rA, aA + dA * 0.75, dA, lead, self.rng.randint(2, 3), round_)
+            g, edge = self._heap(rA, aA + dA * 0.75, dA, lead, self.rng.randint(4, 6), round_)
             got += g
             self._store_ends[id(rA)] = edge
             if g and self.rng.random() < 0.5:           # spilling round the corner onto the other wall
@@ -2201,7 +2241,7 @@ class Furnisher:
                 kinds = [t for t in (lead if self.rng.random() < 0.6 or not second else second) if self.orient(t, r["side"])]
                 if not kinds: continue
                 is_crates = all(re.search(self.STORE_POOLS["crates"], t) for t in kinds)
-                g, _ = self._heap(r, end + d * 0.1, d, kinds, self.rng.randint(1, 2), not is_crates)
+                g, _ = self._heap(r, end + d * 0.1, d, kinds, self.rng.randint(2, 3), not is_crates)
                 if g: return g
         rC = next((r for r in self.g.runs if r["line"] == rB["line"] and r is not rB and
                    r["lo"] - 1.5 <= rA["coord"] <= r["hi"] + 1.5 and abs(r["coord"] - rB["coord"]) > 3), None)
@@ -2221,7 +2261,13 @@ class Furnisher:
             a = (lo + hi) / 2
             pu, pv = self._uv_on(r, 1.0, a)
             cands.append((math.hypot(pu - fu, pv - fv) + bonus + self.rng.uniform(0, 1.5), r, lo, hi))
-        if not cands: return 0
+        if not cands:                                   # no free stretch left: a clump against another corner's heap
+            for (r, a0, d), _ in self._store_corners()[:4]:
+                kinds = [t for t in lead + second if self.orient(t, r["side"])]
+                if not kinds: continue
+                g, _ = self._heap(r, a0 + d * 0.75, d, kinds, self.rng.randint(2, 3), True)
+                if g: return g
+            return 0
         _, r, lo, hi = max(cands, key=lambda c: c[0])
         kinds = lead if self.rng.random() < 0.5 or not second else second if self.rng.random() < 0.6 else lead + second
         kinds = [t for t in kinds if self.orient(t, r["side"])] or [t for t in lead + second if self.orient(t, r["side"])]
@@ -2229,7 +2275,7 @@ class Furnisher:
         span = 3.0 * (2 if is_crates else 3)
         d = 1 if self.rng.random() < 0.5 else -1
         a0 = (lo if d > 0 else hi) + d * self.rng.uniform(0.0, max(0.0, hi - lo - span))
-        g, _ = self._heap(r, a0, d, kinds, self.rng.randint(2, 3), not is_crates)
+        g, _ = self._heap(r, a0, d, kinds, self.rng.randint(3, 4), not is_crates)
         return g
 
     def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False, grow_only=False, only=None):
@@ -3735,7 +3781,7 @@ class Furnisher:
         # a kind lit more dimly than the house default (kit/identity.py ROOMS[kind]["lights_per100"]: Westwood's storerooms
         # hold 0.03 lights a tile, one candelabra in a store of 40 tiles; the room lab, 2026-10-05)
         lp = ROOM_IDENTITY.get(self.kind, {}).get("lights_per100")
-        if lp is not None: n = min(n, max(1 if tiles >= 12 else 0, int(round(tiles * lp / 100.0))))
+        if lp is not None: n = 0 if lp <= 0 else min(n, max(1 if tiles >= 12 else 0, int(round(tiles * lp / 100.0))))
         t = self._light_t or _pick(self.rng, types)   # one style of light per room
         base = _base(t)
         mounted = bool(base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side")
