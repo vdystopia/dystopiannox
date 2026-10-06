@@ -66,7 +66,9 @@ class Village:
         # the garden's own generator (the map, the house, the size): tuning a garden never shifts the rest of the map
         rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden-site:{i0},{j0}:{w}x{h}:{wide}".encode()))
         im, jm = (i0 + i1 + 1 - w) // 2, (j0 + j1 + 1 - h) // 2
-        mid = [(i1 + 3, jm), (i0 - 2 - w, jm), (im, j1 + 3), (im, j0 - 2 - h)]
+        # (a square from the house's wall: Con07B's beds lie along its house; the judge, 2026-10-06, "floating in open
+        # grass between cabins with nothing behind them")
+        mid = [(i1 + 2, jm), (i0 - 1 - w, jm), (im, j1 + 2), (im, j0 - 1 - h)]
         cands = [(i1 + 3, j0), (i1 + 3, j1 - h + 1), (i0 - 2 - w, j0), (i0 - 2 - w, j1 - h + 1),
                  (i0, j1 + 3), (i1 - w + 1, j1 + 3), (i0, j0 - 2 - h), (i1 - w + 1, j0 - 2 - h)]
         rng.shuffle(mid)

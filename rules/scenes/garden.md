@@ -93,3 +93,4 @@ The judge: "crop bands equal in length and ruler-straight; crops right under the
 and a spade each alone round the beds instead of a knot at one corner (Westwood's gardens have no tools)". Each bed's
 ends 0-0.7 squares in (uneven bands); crops 12 px off a fence; no spade; the household's goods (a barrel, crates of
 apples, a sack) in one knot by the water barrel, each at Westwood's gap (kit/spacing).
+The garden now sits a square from its house's wall, centred on a side (Con07B's beds lie along their house).

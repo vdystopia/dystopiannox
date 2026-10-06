@@ -429,3 +429,7 @@ Graveyard r7-walls (reverted): the back side a Cobblestone wall in 40% of yards 
 (IronFenceDamaged) in 30%, as Westwood's War03b-d, War03c and Con07B yards have them: two of ten yards came out with
 three to five graves and two were not found at all (AUC 0.815, one hard rule), so the change was taken back; the
 yards' fences stay plain IronFence. Worth another try with the graves' count checked.
+
+Garden r5-against: the garden centred on a side of its house a square from the wall (it had stood two off: "floating in
+open grass between cabins with nothing behind them"; Con07B's beds lie along their house). AUC 0.434. Thornwick,
+Greywatch, Ambermere, Starwell, Harrowby: 0 errors.
