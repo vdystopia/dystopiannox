@@ -517,7 +517,8 @@ class Furnisher:
         ex = STYLE_EXCLUDE.get(style, STYLE_EXCLUDE["town"])
         if kind in SACRED_KINDS:                 # a town's own crypt holds its coffins and sarcophagi (Thornwick v0.1)
             ex = ex.replace("Crypt|", "").replace("|Coffin|Tomb", "")
-        for lift in SACRED_PIECES.get(kind, ()): ex = ex.replace(lift, "")
+        # and the prefixes a kind of room takes back (kit/identity.py ROOMS[kind]["lift"]: a torture chamber's racks)
+        for lift in SACRED_PIECES.get(kind, ()) + tuple(ROOM_IDENTITY.get(kind, {}).get("lift", ())): ex = ex.replace(lift, "")
         self.exclude = re.compile(ex)
         self.lighting = LIGHT
         self.objects, self.spots, self.beds = [], [], []
@@ -951,7 +952,7 @@ class Furnisher:
             plan, need = ip
         else:
             plan = {f: self.count(f) for f in ORDER if f in inv_all and f not in VETO.get(self.kind, ())}
-        if self.style == "town" and self.kind not in GRAND_ROOMS:
+        if self.style == "town" and self.kind not in GRAND_ROOMS and not ROOM_IDENTITY.get(self.kind, {}).get("grand"):
             plan["statue"] = plan["column"] = 0
         if not ip:
             need = {f: n for f, n in REQUIRED.get(self.kind, {}).items() if self.types_of(f) or f == "counter_bar"}
@@ -1436,7 +1437,9 @@ class Furnisher:
         rest = sorted(t for t in types if t != t0)
         self.rng.shuffle(rest)
         for tt in [t0] + rest:
-            for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt, "center"):
+            # (a gallery hangs its paintings at the ends of a stretch as well as its middle: ROOMS[kind]["decor_at"])
+            for score, t, r, u, v, a, ha, hp in self.wall_candidates("wall_decor", tt,
+                                                                    ROOM_IDENTITY.get(self.kind, {}).get("decor_at", "center")):
                 if r["side"] not in BACK_SIDES: continue
                 if any(k == (r["line"], r["coord"]) and abs(a - a2) < DECOR_GAP for k, a2 in self._decor_at): continue
                 if self.try_put(t, u, v, blocking=False, wall_ok=True, layer="wall"):

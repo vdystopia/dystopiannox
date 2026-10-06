@@ -45,6 +45,10 @@ The long tables in rows, the hearth on a back wall before them.
 - `ogre_hall`: crude round tables ringed by stools and ogre benches, a fire pit in the middle, carcasses and meat on the
   floor, straw in the corners, barrels; torch poles.
 
+## Where people stand
+
+The host at the hearth's side, else at a back wall facing the tables; never between the tables or in a row's gangway (2026-10-05: a quest giver stood "in a weird place in between two tables" in a hall). (`STANDS["dining_hall"]`: beside the hearth or fire pit, a back wall.)
+
 ## Common mistakes
 
 - "Mess hall: good layout but needs more" (TreePlace review): more tables in rows, benches along the walls, crockery

@@ -52,6 +52,10 @@ Statues stand either side of it.
   judgement balances in a pair, LOTD tapestries and sconces, bones strewn; obelisks 1 per 18 tiles, tombstones 1 per 28,
   LOTD columns 1 per 30 (Ambermere's 300-tile barrow had a block of 20 obelisks and arks down its middle).
 
+## Where people stand
+
+The priest at the altar's side (past the statue that flanks it); the faithful in the pews. Never on the runner, before the altar or in the aisle. (`STANDS["chapel"]`: beside the altar, a back wall.)
+
 ## Common mistakes
 
 - A nave far over its size (Harrowby's first chapel, 288-323 tiles: 4-6% covered): a village takes the

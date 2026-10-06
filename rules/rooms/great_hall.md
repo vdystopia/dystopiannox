@@ -48,6 +48,10 @@ The hearth, centred on a back wall (a second one on the far wall of a long hall)
 Dun Mir (Con06b): tables and benches in rows, three hearths, eleven hangings. The kit's great halls are the towns' and
 keeps': stone, banners, a carpet of floor tiles with the gold trim.
 
+## Where people stand
+
+The lord at the hearth's side, else by a statue or at a back wall facing the tables; never between the long tables or on the carpet's gangway (2026-10-05: a quest giver stood "in a weird place in between two tables" in a hall: StoryMap.free_px takes the open floor nearest the middle, which in a hall of tables lies between them; StoryMap.stand_px does not). (`STANDS["great_hall"]`: beside the hearth, beside a statue, a back wall.)
+
 ## Common mistakes
 
 - One bull's head in a 273-tile hall (Harrowby): a hanging tries every type of the room's theme, not only the one drawn

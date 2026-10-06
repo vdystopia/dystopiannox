@@ -45,6 +45,10 @@ The racks, in rows down the middle, each row of one kind.
 
 Dun Mir armouries (20 of Westwood's 29) stand among the castle's guard rooms, with tables and chairs for the guards.
 
+## Where people stand
+
+The armourer beside a rack at the end of a row, else at a back wall; never in an aisle between the rows. (`STANDS["armoury"]`: beside a rack, a back wall.)
+
 ## Common mistakes
 
 - "Storeroom racks a little too dense and numerous: spread out, fewer" (2026-10-04 review). The old storeroom

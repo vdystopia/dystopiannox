@@ -51,6 +51,10 @@ it. In the middle, the alchemist's work table.
 
 Dun Mir laboratories take Dun Mir chests; an apothecary's brewing room is a herbalist.
 
+## Where people stand
+
+The wizard at his work bench (beside a workstation or the alchemist's desk), else by his desk; never in the conjuring circle or between the work table and its stools. (`STANDS["laboratory"]`: beside a workstation, beside the desk, a back wall.)
+
 ## Common mistakes
 
 - "It almost looks like some sort of shoddy mess hall with random objects stuffed in it. This room has no sense of

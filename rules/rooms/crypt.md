@@ -43,6 +43,10 @@ The rows of tombs.
 
 `dark_crypt`: LOTD tombstones in rows, mana obelisks at the walls, sconces and candles, bones and skulls strewn.
 
+## Where people stand
+
+The keeper beside a crypt chest or a statue of the dead; never in an aisle between the rows of tombs. (`STANDS["crypt"]`: beside a crypt chest or statue, a back wall.) The restless dead stand about the floor (StoryMap.keepers).
+
 ## Common mistakes
 
 - Sarcophagi side by side in two rows head to head with no aisle: a block of 16 (Harrowby): a row's depth is the

@@ -45,6 +45,10 @@ there).
 
 Dun Mir's shops (7 of Westwood's 25) keep hearths and benches for customers.
 
+## Where people stand
+
+The keeper behind his counter, on the spot the furnisher keeps clear there (Furnisher.spots, StoryMap.shops); a second person beside the counter on the customer's side. Never among the racks. (`STANDS["shop"]`: the keeper's spot, beside the counter.)
+
 ## Common mistakes
 
 - "The shopkeeper is standing in the middle of the shop, surrounded by a random scattering of objects ... He needs to be

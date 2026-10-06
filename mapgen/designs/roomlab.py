@@ -11,7 +11,10 @@ one numbered picture per room. review/roomscore.py scores them.
 
 This is the loop for improving the furnisher: build, score, look at the pictures, fix, repeat.
 
-    py mapgen/designs/roomlab.py [seed] [kind ...]
+    py mapgen/designs/roomlab.py [seed] [kind ...] [--stands]
+
+--stands sets a person where people stand in each room (kit/story.py StoryMap.stand_px, by the room's type:
+kit/roomtypes.py STANDS), to look at with the room.
 """
 import json, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
@@ -46,6 +49,26 @@ LAB = {
     "crypt": (70, 130, "LOTDBrick", "LOTDPitted", "lotd"),
     "hall": (90, 180, "BrickPlain", "GalavaBrownMarble", "dunmir"),
     "throne_room": (60, 110, "BrickPlain", "GalavaBrownMarble", "dunmir"),
+    # the types added for variety (kit/roomtypes.py, rules/rooms/README.md "More types"): Westwood's rooms of the kind
+    # where the campaign has them (the type's brief), a reasoned size where it has few or none
+    "solar": (100, 140, "BrickPlain", "OakWoodFloor", "town"),
+    "workshop": (30, 70, "Log", "WoodSlatFloor", "town"),
+    "winch_room": (40, 110, "StoneGray", "DirtHard", "town"),
+    "observatory": (60, 110, "StoneGray", "OakWoodFloor", "town"),
+    "infirmary": (60, 110, "StuccoLightWood", "WoodLight2", "town"),
+    "cellar": (25, 50, "StoneGray", "DirtHard", "town"),
+    "treasury": (40, 80, "BrickPlain", "GalavaBrownMarble", "town"),
+    "powder_store": (25, 40, "StoneGray", "DirtHard", "town"),
+    "guardroom": (40, 70, "StoneGray", "WoodSlatFloor", "town"),
+    "cell": (14, 30, "StoneGray", "DirtHard", "town"),
+    "ogre_pen": (30, 40, "StoneGray", "DirtHard", "ogre"),
+    "torture_chamber": (35, 60, "StoneGray", "DirtHard", "town"),
+    "shrine": (30, 70, "BrickPlain", "GalavaBrownMarble", "town"),
+    "dark_shrine": (40, 70, "LOTDBrick", "LOTDPitted", "lotd"),
+    "gallery": (90, 180, "BrickPlain", "RedwoodFloor", "town"),
+    "conservatory": (60, 150, "BrickPlain", "GalavaBrownMarble", "town"),
+    "mausoleum": (50, 110, "StoneGray", "GalavaBrownMarble", "town"),
+    "ossuary": (30, 70, "StoneGray", "DirtHard", "town"),
 }
 SIZES = (("typical", 0), ("large", 1), ("bigger", 1.5))
 FIELD = (130, 380, -120, 120)           # u0, u1, v0, v1 of the open ground (x and y stay within 0-255)
@@ -61,7 +84,7 @@ def spans(tiles, rng):
     return (l, w) if rng.random() < 0.5 else (w, l)
 
 
-def build(seed=1, kinds=None, map_name="RoomLab", plan=None):
+def build(seed=1, kinds=None, map_name="RoomLab", plan=None, stands=False):
     """Builds the lab's rooms into map `map_name`; rooms the field cannot hold go on to the next page (RoomLab2, ...).
     Returns the paths of the maps built."""
     rng = random.Random(seed)
@@ -112,6 +135,14 @@ def build(seed=1, kinds=None, map_name="RoomLab", plan=None):
         out.append(dict(number=i + 1, building=f"room lab ({label})", kind=kind, purpose=f"{label} size, {style} style",
                         tiles=len(r.tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3],
                         floor=sorted([x, y] for x, y in r.tiles)))
+    if stands:                                      # a person where people stand in each room, by its type
+        from kit.story import StoryMap, STOCK
+        sm = StoryMap.__new__(StoryMap)
+        sm.m = m
+        for i, (r, kind, label, style) in enumerate(rooms):
+            x, y = sm.stand_px(r)
+            m.clone(os.path.join(STOCK, "Con02a", "Con02a.map"), "Con02a:Bryan", x, y, name=f"Stand{i + 1:02d}",
+                    xfer=dict(DefaultAction=4, Aggressiveness=0.0, Immortal=True))
     m.obj("PlayerStart", u0 + 4, v0 + 4)
     os.makedirs(OUT, exist_ok=True)
     with open(os.path.join(OUT, f"{map_name}.rooms.json"), "w", encoding="utf-8") as f: json.dump(out, f, indent=1)
@@ -120,10 +151,11 @@ def build(seed=1, kinds=None, map_name="RoomLab", plan=None):
     paths = [os.path.join(OUT, f"{map_name}.map")]
     if overflow:                                    # the next page
         page = int(map_name[len("RoomLab"):] or 1) + 1
-        paths += build(seed, kinds, f"RoomLab{page}", overflow)
+        paths += build(seed, kinds, f"RoomLab{page}", overflow, stands)
     return paths
 
 
 if __name__ == "__main__":
-    seed = int(sys.argv[1]) if len(sys.argv) > 1 else 1
-    build(seed, sys.argv[2:] or None)
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    seed = int(args[0]) if args else 1
+    build(seed, args[1:] or None, stands="--stands" in sys.argv)

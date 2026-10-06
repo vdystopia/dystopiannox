@@ -37,6 +37,10 @@ The bubbling cauldron toward a corner, and the one pair of potion shelves.
 
 25-90 tiles.
 
+## Where people stand
+
+The herbwife beside her cauldron, else by the potion shelves; never between the work table and its stool. (`STANDS["herbalist"]`: beside the cauldron, beside the potion shelves, a back wall.)
+
 ## Common mistakes
 
 - "The shelves on the NE wall in this room are more of a single instance object. These are not repeatable shelves that

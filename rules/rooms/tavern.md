@@ -44,6 +44,10 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 
 100-360 tiles: most of an inn's floor.
 
+## Where people stand
+
+The barkeep behind the bar (the furnisher's spot); patrons by the hearth; never between the tables or in the way to the bar. (`STANDS["tavern"]`: the keeper's spot, beside the hearth, a back wall.)
+
 ## Common mistakes
 
 - 19 of one chair in a 324-tile common room (Harrowby): one dining set composed, a second only from the fill in a big
