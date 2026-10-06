@@ -280,3 +280,36 @@ chapel: aisle + lectern between two statues + a tomb slab; living room: bench sq
 bookcases). Crypts: tombs singly on walls or in corners, coffins edge to edge. Relayed to the variety (archetype) agent.
     ../dystopiannox-wt/shells2/review/out/roomlab/bedroom/sh3: accuracy 10/10, generated 5.4 vs Westwood 7.6, confidence 0.64
     ../dystopiannox-wt/shells2/review/out/roomlab/living_room/sh3: accuracy 8/10, generated 5.0 vs Westwood 6.0, confidence 0.6
+
+## 03:30 Scene rounds 4-5 merged (f5fe025) and judged independently
+
+| Scene | Round 4 (fair) | Now (accuracy, generated / Westwood, confidence) |
+|---|---|---|
+| bandit camp | 10/10 | 8/10, 4.8 / 7.2, 0.80 (r9-warcamp) |
+| graveyard | 10/10 | 10/10, 4.4 / 7.2, 0.81 (r6-loose) |
+| garden | 10/10 | 8/10, 4.8 / 7.2, 0.73 (r5-against) |
+| pond dock | 9/9 | 9/9, 4.8 / 7.0, 0.71 (r6-lake) |
+| market stall | 6/8 | 7/8, 4.0 / 6.3, 0.72 (r6-trades) |
+| urchin camp | 10/10 | 10/10, 4.2 / 7.0, 0.73 (r5-knots) |
+| shrine | 9/10 | 10/10, 4.6 / 8.4 (r5-masonry) |
+| ogre camp | 10/10 | see below (r4-fewbones) |
+| jail | first | 10/10, 3.2 / 8.6, 0.83 (r3-torch) |
+| well | 8/9 | 9/9, 4.0 / 7.8, 0.77 (r2-road) |
+
+Judges' faults, the same theme as rooms - one kit stamped per scene, set in open ground leaning on nothing:
+- bandit war camp: the same awning + pup tent + three helmet racks + stone-ringed fire mid-glade; pieces in a straight
+  line; cots in open grass;
+- graveyard: the same rectangular fence box in open ground, crypt + gateposts + evenly spread headstones; open coffins
+  and spade (Westwood never); no loose rows along a wall or road;
+- garden: fenced pens alone on open ground; no tomatoes (every Westwood garden has corn and tomatoes); square bands;
+- pond: cattails strewn evenly over the water; small blob ponds hemmed by forest; bare banks;
+- market stall: armour racks in a ruler-straight diagonal into the grass; 4-7 pieces where Westwood has 11-16;
+- urchin camp: a fire in a glade (Westwood's dens have none); lone hollows, never warrens; even shelves;
+- shrine: the same chapel box (runner, two benches, braziers, corner statue); outside statues clumped at a corner;
+- ogre camp: one kit (fire + diagonal bench + stool + straw + torch); chests; no bone mess, bearskin bed or meat rack;
+- jail: a free-standing two-cell box on a plinth; torches missing or inside cells; identical straw per cell;
+- well: in an empty glade, no road or path, no sign.
+Fairness: the judge sees the iteration name in the path ("r2-road"); from now on judges get sheets copied to neutral
+folders.
+    ../dystopiannox-wt/scenes4/review/out/scenelab/shrine/r5-masonry: accuracy 10/10, generated 4.6 vs Westwood 8.4, confidence 0.84
+    ../dystopiannox-wt/scenes4/review/out/scenelab/ogre_camp/r4-fewbones: accuracy 10/10, generated 5.2 vs Westwood 7.6, confidence 0.71
