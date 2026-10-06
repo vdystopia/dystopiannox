@@ -110,3 +110,11 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   without copying any one room (originality rule kept). It sits behind a switch; the lab compares it head to head with
   the recipe engine, and its sheets go to independent judges. Reason: the judges' reasons repeat across every type
   (evenly spaced singles, one stamp per type, a lone table dead centre), which tuning recipes hasn't cured.
+- 00:05 Dialogue round 2 merged (`night-dialogue2`, i4-i12; every packet judged by a fresh agent, one packet per judge;
+  control packets of Westwood only scored 49-55%, chance level). Best round i10: told apart 89% side by side and 79% when
+  each text is judged alone; scores 6.0 vs Westwood 7.9. What worked was only "frames": each line rewritten from one of
+  Westwood's own lines, each quest from a whole Westwood quest. Rules, imitation and lists of tells did not help (any
+  added instruction became the new tell). Short lines (townsfolk, shops, guards, rumours) now pass or nearly pass; long
+  quests are still caught by a recognisable skeleton and slightly tidier sentences. The writer model made no difference.
+  The `q.errand`, `q.done` and `q.note` helpers compile (three fixes). For map agents: `py tests/storylab.py frames --seed
+  <Map>` deals the frames, and `--check` flags shared stock phrases.
