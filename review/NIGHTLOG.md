@@ -32,3 +32,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
 - 21:15 The user added: "do the same process for exterior settings - bandit camps, graveyards, gardens, ponds etc."
   Scene lab started (`night-scenes`): 10 variants of an outdoor scene type, matched renders against Westwood's
   campaign scenes, metric and blind judges, then iteration rounds on the bandit camp, graveyard, garden and pond first.
+- 21:50 Room lab merged (`tests/roomlab.py`, `review/roomlab/`). Baseline over the 19 types: the classifier separates
+  every type from Westwood's (AUC 0.94-1.00), and the blind judge picked out all 30 generated pictures (bedroom 3.8 vs
+  Westwood 7.2; tavern 4.4 vs 6.2; throne room 4.6 vs 7.0). Furthest: tavern and great hall (every room breaks a hard
+  rule), laboratory, throne room (one template every time), library. Closest: shop and storeroom. Found: Westwood's
+  room index misfiles Con02a's tavern as a shop and War07A's walled garden as a hall. Tuning rounds start once the
+  object knowledge base lands, so they build on it.
