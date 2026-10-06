@@ -106,3 +106,21 @@ judging, write `blind/judge.json` and run `py review/roomlab/blind.py score <typ
 | bedroom | m2 | motifs (zone plans from the archetype's Westwood rooms) | C:\GOG Games\Nox\dystopiannox-wt\variety\review\out\roomlab\bedroom\m2\blind | four archetypes: cot room (bed, nightstand, chest, a bookcase at most), bed and desk (bed on one back wall, desk on the other, bookcases with either or none), sitting end (the bed in a corner, a table set at the far end), lord's room (the bed, an oval table free on a rug, trophies, a desk) | template 0.225 -> 0.209 (Westwood p50 0.195, p90 0.227); AUC 0.677 -> 0.83 | |
 | living_room | v2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\variety\review\out\roomlab\living_room\v2\blind | four archetypes: hearth nook (the hearth and the table by it, a bench, barrels), parlour (the hearth between bookcases, two tables on a carpet), common room (sets apart, bookcases on a wall), cottage (an iron stove and a bed, no hearth, chests, the table on a rug) | template 0.326 -> 0.28 (Westwood p50 0.219, p90 0.236); AUC 0.935 -> 0.864 | |
 | kitchen | v2 | recipe | C:\GOG Games\Nox\dystopiannox-wt\variety\review\out\roomlab\kitchen\v2\blind | four archetypes: pantry kitchen (the recipe), cookhouse (the wall hearth with iron stoves, barrels heaped, work tables), stove kitchen (a stove in a corner and a table), open hearth (a free hearth in the middle, the stove and tables by the walls) | template 0.452 -> 0.335 (Westwood p50 0.146, p90 0.194); AUC 0.995 -> 0.97 | |
+
+# Placement grammar round two (night-grammar2): the g3 judges' remaining placement faults
+
+Built with `py tests/roomlab.py <type> --iter q7 [--engine motifs]` (seed 1, n 10) on master after the layout
+archetypes (night-variety), the same engine per type as the judged g3 sheets. The builder has not judged them. After
+judging, write `blind/judge.json` and run `py review/roomlab/blind.py score <type> q7` from this worktree. Before (same
+seed and code, round two off: `NOX_GRAMMAR2=0`): iteration `r0` in the same folders.
+
+| Type | Iteration | Engine | Blind folder | What changed (the g3 judges' faults) | Result |
+|---|---|---|---|---|---|
+| bedroom | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\bedroom\q7\blind | no carpet floating mid-floor with the furniture rimming it (laid again at the bed's foot, or taken up); no candelabra by a front wall; no three singles at gaps along a wall | |
+| kitchen | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\kitchen\q7\blind | stock off the front walls (into heaps on the back walls); no strings of singles; no floating carpet | |
+| laboratory | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\laboratory\q7\blind | workstations and fairy jars not alone mid-floor (to a back wall beside their kind); no workstations alternating with candelabras at even gaps; statues off the front walls | |
+| shop | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\shop\q7\blind | one trade to a shop (one odd piece at most); no fairy-jar "lamp post" mid-floor; racks and stock off the front walls; no strings of singles | |
+| storeroom | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\storeroom\q7\blind | stock off the front walls where a back wall takes it; no three crates at gaps in a row | |
+| living_room | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\living_room\q7\blind | seats drawn up to bare tables; matching chairs not all one distance off the table (one pulled out); no strings of singles | |
+| tavern | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\tavern\q7\blind | table sets spread over the floor (a set moved onto a carpet laid in the widest bare stretch), no three in a row or diagonal, seats at every table, chairs pulled about | |
+| guardroom | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\guardroom\q7\blind | a table always has its chairs; four matching chairs not in a perfect cross; cots and stock off the front walls; no candelabra loose by the front wall | |

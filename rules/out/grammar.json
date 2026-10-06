@@ -2770,32 +2770,220 @@
   "rooms_twins": 13,
   "rooms_stepped": 5
  },
+ "round2": {
+  "rooms": 116,
+  "strings_rooms": 0.06,
+  "string_max": {
+   "0": 109,
+   "3": 4,
+   "4": 3
+  },
+  "kin_gap_rooms": 0.138,
+  "kin_gaps": 21,
+  "kin_runs": 52,
+  "solo_share": 0.254,
+  "front_n": {
+   "shelf": [
+    337,
+    145
+   ],
+   "supply": [
+    165,
+    45
+   ],
+   "chair": [
+    110,
+    54
+   ],
+   "table": [
+    57,
+    28
+   ],
+   "rack": [
+    53,
+    6
+   ],
+   "bed": [
+    52,
+    8
+   ],
+   "chest": [
+    50,
+    0
+   ],
+   "desk": [
+    33,
+    2
+   ],
+   "nightstand": [
+    32,
+    6
+   ],
+   "lab": [
+    24,
+    7
+   ],
+   "statue": [
+    22,
+    4
+   ],
+   "bench": [
+    21,
+    13
+   ],
+   "hearth": [
+    20,
+    3
+   ],
+   "counter_bar": [
+    20,
+    10
+   ],
+   "stove": [
+    15,
+    1
+   ],
+   "clutter": [
+    14,
+    2
+   ],
+   "smithy": [
+    8,
+    2
+   ],
+   "counter_shop": [
+    5,
+    0
+   ],
+   "straw": [
+    2,
+    2
+   ]
+  },
+  "front_share": {
+   "supply": 0.273,
+   "chest": 0.0,
+   "table": 0.491,
+   "chair": 0.491,
+   "shelf": 0.43,
+   "nightstand": 0.188,
+   "bed": 0.154,
+   "desk": 0.061,
+   "rack": 0.113,
+   "hearth": 0.15,
+   "stove": 0.067,
+   "bench": 0.619,
+   "lab": 0.292,
+   "clutter": 0.143,
+   "smithy": 0.25,
+   "counter_bar": 0.5,
+   "statue": 0.182
+  },
+  "light_front": 0.286,
+  "table_bare": {
+   "bedroom": 0.5,
+   "guardroom": 0.154,
+   "living_room": 0.32,
+   "tavern": 0.045,
+   "barracks": 0.111,
+   "house": 0.193
+  },
+  "seat_sets": 54,
+  "set_stamped": 0.204,
+  "set_onekind": 0.759,
+  "carpeted_rooms": 61,
+  "carpet_share_p90": {
+   "bedroom": 0.667,
+   "living_room": 0.533,
+   "tavern": 0.473,
+   "house": 0.667
+  },
+  "carpet_share_p50": 0.452,
+  "carpet_empty": 0.421,
+  "carpet_floating": 0.098,
+  "carpet_walled": 0.852,
+  "halls": 8,
+  "hall_bare": [
+   3.41,
+   3.85,
+   4.0,
+   4.0,
+   4.0,
+   4.34,
+   4.45,
+   5.71
+  ],
+  "hall_bare_max": 5.71,
+  "hall_set_rows": 0.273,
+  "shop_odd": [
+   0,
+   0,
+   0,
+   0,
+   1,
+   0,
+   0,
+   0
+  ],
+  "shop_odd_max": 1,
+  "shop_trades": [
+   {
+    "potion": 6
+   },
+   {
+    "steel": 7
+   },
+   {
+    "steel": 12
+   },
+   {
+    "arms": 13
+   },
+   {
+    "arms": 5,
+    "potion": 1
+   },
+   {
+    "potion": 5
+   },
+   {
+    "arms": 18
+   },
+   {
+    "potion": 13
+   }
+  ]
+ },
  "source": "rules/rooms/westwood.json index with rules/rooms/curated.json applied (campaign maps Con/War/Wiz, kept and retyped rooms only), each room as validate/checks.py finds it",
  "made_by": "rules/grammar.py",
  "westwood_fires": {
   "winch_room": {
    "lone": 0.5,
-   "chair": 0.25,
-   "front": 0.25
+   "front": 0.5,
+   "chair": 0.25
   },
   "*": {
-   "lone": 0.21,
-   "front": 0.148,
-   "light": 0.136,
+   "front": 0.341,
+   "lone": 0.267,
+   "light": 0.153,
    "even": 0.136,
    "table": 0.131,
    "chair": 0.108,
+   "seats": 0.074,
    "twin": 0.074,
    "corners": 0.068,
+   "string": 0.057,
    "ring": 0.051,
    "mixed": 0.045,
    "lights": 0.04,
-   "stepped": 0.028
+   "carpet": 0.034,
+   "stepped": 0.028,
+   "hall": 0.011
   },
   "bedroom": {
-   "front": 0.286,
-   "light": 0.25,
-   "lone": 0.143,
+   "front": 0.357,
+   "light": 0.286,
+   "lone": 0.179,
    "table": 0.107,
    "even": 0.071,
    "lights": 0.071,
@@ -2803,36 +2991,62 @@
    "corners": 0.036
   },
   "house": {
-   "front": 0.216,
-   "light": 0.207,
-   "lone": 0.207,
+   "front": 0.405,
+   "lone": 0.276,
+   "light": 0.233,
    "table": 0.198,
    "even": 0.155,
    "chair": 0.155,
+   "seats": 0.112,
    "ring": 0.069,
+   "string": 0.06,
    "lights": 0.06,
    "twin": 0.052,
+   "carpet": 0.043,
    "corners": 0.034,
-   "stepped": 0.026
+   "stepped": 0.026,
+   "hall": 0.017
+  },
+  "guardroom": {
+   "seats": 0.364,
+   "chair": 0.273,
+   "even": 0.182,
+   "front": 0.182,
+   "table": 0.182,
+   "light": 0.091,
+   "lone": 0.091,
+   "string": 0.091,
+   "ring": 0.091
   },
   "living_room": {
+   "front": 0.429,
+   "seats": 0.357,
+   "light": 0.286,
    "table": 0.286,
    "chair": 0.286,
-   "light": 0.214,
    "even": 0.214,
-   "front": 0.214,
+   "carpet": 0.143,
    "lone": 0.143,
    "ring": 0.071,
+   "string": 0.071,
    "lights": 0.071,
    "corners": 0.071
   },
   "shop": {
+   "front": 0.5,
+   "lone": 0.5,
    "even": 0.375,
    "light": 0.25,
    "chair": 0.25,
    "lights": 0.125,
-   "lone": 0.125,
-   "front": 0.125
+   "string": 0.125
+  },
+  "storeroom": {
+   "front": 0.286,
+   "even": 0.143,
+   "lone": 0.143,
+   "corners": 0.143,
+   "chair": 0.143
   },
   "study": {
    "front": 0.667,
@@ -2843,18 +3057,12 @@
    "lone": 0.5,
    "ring": 0.5,
    "light": 0.333,
+   "seats": 0.333,
+   "front": 0.333,
    "table": 0.333,
    "chair": 0.333,
    "twin": 0.333,
-   "front": 0.167
-  },
-  "guardroom": {
-   "chair": 0.273,
-   "even": 0.182,
-   "table": 0.182,
-   "light": 0.091,
-   "lone": 0.091,
-   "ring": 0.091
+   "hall": 0.167
   },
   "dining_hall": {
    "twin": 0.667,
@@ -2862,63 +3070,80 @@
    "lone": 0.333,
    "corners": 0.333,
    "even": 0.333,
+   "string": 0.333,
+   "front": 0.333,
    "table": 0.333,
+   "seats": 0.333,
    "ring": 0.333
-  },
-  "storeroom": {
-   "front": 0.143,
-   "even": 0.143,
-   "lone": 0.143,
-   "corners": 0.143,
-   "chair": 0.143
   },
   "crypt": {
    "mixed": 0.32,
    "lone": 0.12,
    "twin": 0.08,
    "even": 0.08,
+   "front": 0.04,
+   "string": 0.04,
    "corners": 0.04
   },
   "mausoleum": {
+   "front": 0.667,
    "lone": 0.5,
    "twin": 0.333,
    "corners": 0.167
   },
   "hall": {
    "even": 0.333,
+   "string": 0.333,
    "twin": 0.333,
+   "front": 0.333,
    "lone": 0.333,
    "corners": 0.333
   },
+  "barracks": {
+   "table": 0.571,
+   "front": 0.429,
+   "even": 0.429,
+   "light": 0.286,
+   "chair": 0.286,
+   "lone": 0.286,
+   "stepped": 0.143,
+   "seats": 0.143,
+   "string": 0.143
+  },
+  "kitchen": {
+   "light": 0.333,
+   "string": 0.333,
+   "twin": 0.333,
+   "front": 0.333
+  },
   "laboratory": {
-   "front": 0.5,
+   "lone": 0.667,
+   "front": 0.667,
    "lights": 0.333,
    "light": 0.333,
-   "lone": 0.333,
    "table": 0.167,
-   "even": 0.167
+   "carpet": 0.167,
+   "even": 0.167,
+   "string": 0.167
   },
   "treasury": {
    "light": 1.0,
    "lone": 1.0
   },
-  "barracks": {
-   "table": 0.571,
-   "even": 0.429,
-   "light": 0.286,
-   "chair": 0.286,
-   "lone": 0.286,
-   "stepped": 0.143
+  "armoury": {
+   "lone": 0.75,
+   "front": 0.25
+  },
+  "cellar": {
+   "front": 0.75
   },
   "great_hall": {
    "stepped": 0.5,
+   "hall": 0.5,
    "table": 0.5,
    "lone": 0.5,
    "ring": 0.5,
    "front": 0.5
-  },
-  "kitchen": {
-   "twin": 0.333
   },
   "smithy": {
    "chair": 1.0
@@ -2933,28 +3158,35 @@
    "chair": 0.25
   },
   "throne_room": {
+   "front": 0.75,
    "lone": 0.5,
    "twin": 0.5,
    "even": 0.5,
-   "corners": 0.5
+   "corners": 0.5,
+   "string": 0.25,
+   "carpet": 0.25
   },
   "chapel": {
-   "even": 1.0
-  },
-  "armoury": {
-   "lone": 0.25
+   "lone": 1.0,
+   "even": 1.0,
+   "front": 1.0
   },
   "herbalist": {
    "lights": 0.5,
    "front": 0.5,
    "table": 0.5,
-   "lone": 0.5
+   "lone": 0.5,
+   "carpet": 0.5
   },
   "library": {
    "light": 1.0,
    "front": 1.0,
    "table": 0.5,
-   "twin": 0.5
+   "twin": 0.5,
+   "carpet": 0.5
+  },
+  "gallery": {
+   "lone": 1.0
   },
   "powder_store": {
    "lone": 1.0,
@@ -2966,7 +3198,8 @@
    "stepped": 0.1
   },
   "shrine": {
-   "corners": 0.6
+   "corners": 0.6,
+   "front": 0.2
   }
  }
 }

@@ -579,6 +579,7 @@ class Furnisher:
         self._rug_under = {}      # id(rug record) -> the table record it is centred under
         self._lined = set()       # (line, coord) of the wall runs lined with shelves
         self.carpet_boxes = []    # uv boxes of the carpets laid
+        self.carpet_undo = []     # what each carpet covered (lay_carpet), to lift it again
         self.runner_boxes = []    # uv boxes of the runners down an aisle (a chapel's): nothing stands on them
         self.light_zones = []     # the space before chests, hearths and stoves: no candelabra stands there
         self._deferred_decor = 0  # hangings the composition called for, put up after the walls are lined
@@ -2809,6 +2810,11 @@ class Furnisher:
         ring = {(s[0] + a, s[1] + b) for s in rect for a, b in nb8} - rect
         if any(tile(s) in self.spec.local_blend for s in rect | ring): return []     # a door's threshold
         mat = material or self.rng.choice(self.palette["carpet"])
+        # what it covers, so kit/grammar.py can lift a carpet that relates to nothing and lay it again (lift_carpet)
+        self.carpet_undo.append(dict(box=(2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1, 2 * j1 + 1), mat=mat,
+                                     floor={tile(s): self.spec.floor.get(tile(s)) for s in rect},
+                                     blend={tile(s): self.spec.local_blend.get(tile(s)) for s in ring},
+                                     frm={tile(s): set(self.spec.local_from.get(tile(s), ())) for s in ring}))
         for s in rect: self.spec.floor[tile(s)] = mat
         self.carpet_boxes.append((2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1, 2 * j1 + 1))    # its uv box (rows stay off it)
         if mat not in self.spec.blend: self.spec.blending(mat, 40, edge=CARPET_EDGE)
