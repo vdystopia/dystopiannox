@@ -94,3 +94,22 @@ and a spade each alone round the beds instead of a knot at one corner (Westwood'
 ends 0-0.7 squares in (uneven bands); crops 12 px off a fence; no spade; the household's goods (a barrel, crates of
 apples, a sack) in one knot by the water barrel, each at Westwood's gap (kit/spacing).
 The garden now sits a square from its house's wall, centred on a side (Con07B's beds lie along their house).
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's five campaign gardens:
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| household plot | 2 of 5 (Con09a, Wiz03b) | two or three beds beside the house or along a fence, a water barrel, a stump chest |
+| walled kitchen garden | 2 of 5 (Con07B, Wiz01A) | long rows of three crops against a town wall or a building, a torch pole |
+| town allotment | 1 of 5 (Con05A) | many beds edged with brick, water barrels, apple crates, barrels, rocks |
+
+Every one grows **corn and tomatoes**; cabbage in three of five. The kit (`Village.garden`): the beds' crops are corn and
+tomatoes in every garden (shuffled), cabbage the third bed 60% (else corn or tomatoes again), from the garden's own
+generator (`garden-crops`), so the household round it is laid as before. The household's knot (`_household`) now keeps to
+open ground (a knot's apple crate had stood on a house's floor in Starwell). The kit lays the household plot (beside its
+house, a square from its wall) and the field yard (`yards` field, Greywatch's kitchen garden); not yet the walled
+kitchen garden or the allotment.
+
+AUC: 0.254 -> 0.254 (round6; already under the stop line).

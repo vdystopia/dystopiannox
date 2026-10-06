@@ -32,3 +32,17 @@ so it can be walked up to.
 The judge (the closest of three: "the restraint is right"): "no road, square or signpost; placed by geometry". The lab
 sets the well 3.5 squares in from the hamlet's road. Still to do: a signpost a little apart (Westwood's Sign1, SignIx08)
 needs a string-table text (kit/camps.signpost).
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's four campaign wells:
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| well with its sign | 2 of 4 (Con02a, War07A) | the WishingWell alone by the street, a sign a little apart |
+| bare well | 1 of 4 (Con09a) | the well alone |
+| market well | 1 of 4 (Con07B) | the well among a trader's racks, a sign and a street lamp |
+
+The kit (`scenes.THEMES["well_side"]`): three layouts, the well alone, the well with a Sign1 78 px off to one side, or 70
+px off to the other. The lab sets it 3.5 squares from the hamlet's road. AUC 0.75 -> 0.75 (round6; four Westwood wells:
+the classifier cannot move far).

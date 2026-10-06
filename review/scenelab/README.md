@@ -17,7 +17,9 @@ game or the server; the only program it starts is the map editor's headless rend
        py tests/scenelab.py <scene> --iter <name> [--n 10] [--seed 1]
 
    Types: `py tests/scenelab.py list` (scenecat.py, ranked, with Westwood's evidence for each). Name iterations in
-   order (`baseline`, `r1-...`); the same type, n and seed always give the same map. Writes
+   order (`baseline`, `r1-...`); the same code, type, n and seed always give the same map, whatever the iteration's
+   name (since round 6: the lab map's name, which the kit seeds its scenes' own generators from, had been drawn from the
+   iteration's name, so two runs of the same code gave camps of 24 and 19 pieces). Writes
    `review/out/scenelab/<scene>/<iter>/`:
    - `index.html`: **the scorecard**: stop criteria, plain-English findings, the comparison with the previous
      iteration, what gives the batch away (each feature's own AUC), every scene's render with its findings, Westwood's
@@ -67,6 +69,13 @@ middle); `by_road` sets the scene that many squares in from the road (the gravey
 lake (11-14 tiles) lies on one side with the fisher's hut by the first landing; the market's store stands at the
 clearing's side, its door toward the market square. Townsfolk at work (the gravedigger, the fisher, the gardener) are
 clones of Westwood's townsfolk; the renders leave every creature out.
+
+**Sites by type** (since round 6, a recipe's `site_map` turns the schedule's sites into those Westwood's scenes of the type
+stand in): a **town wall** (graveyards in four clearings, jails in seven: the yard's back side Cobblestone, the wall
+running on seven squares past its corners, `recipes._town_wall`); a **cliff** (four of the bandits' five open camps: a
+glade walled by CaveWall2 instead of the wood, its trees kept off the rock's foot); the ogres' **swamp pocket** floored
+with SwampGrass and a trodden DirtLight2 path in from the mouth to the fire (`cave_floor`, `path_in`); every urchin camp
+a Dirt den. A recipe can fix a batch's archetypes in Westwood's frequencies (`GRAVE_ORDER`, `JAIL_ORDER`, `OGRE_ORDER`).
 
 **Fairness** (review/roomlab/FAIRNESS.md lists every known tell that is not design and how it is handled). A
 generated scene is found on the lab map by the same signature search that finds Westwood's (`labref.find_scenes`), its

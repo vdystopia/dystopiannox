@@ -71,7 +71,10 @@ def run(scene, n=10, seed=1, it="scratch", log=print):
     t0 = time.time()
     d = E.iter_dir(scene, it)
     os.makedirs(d, exist_ok=True)
-    name = "S" + format(E.seed_of(scene, it) & 0xFFFFFF, "06x")
+    # the map's name from the scene and seed only, never the iteration's name: the kit seeds its scenes' own generators
+    # from the map's name (camps.own_rng, the dressing, the garden, the dock, the yards), so a name drawn from the
+    # iteration had given the same code and seed different scenes run to run (bandit camps of 24 and 19 pieces)
+    name = "S" + format(E.seed_of(scene, seed) & 0xFFFFFF, "06x")
     batch = labgen.generate(scene, n, seed, out_dir=os.path.join(d, "map"), name=name, log=log)
     with open(os.path.join(d, "variants.json"), "w", encoding="utf-8") as f:
         json.dump(dict(scene=scene, iter=it, n=n, seed=seed, maps=[E.rel(p) for p in batch["maps"]],
