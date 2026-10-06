@@ -101,7 +101,7 @@ def _yard_build(ctx):
 HOME_ROLES = ("home", "cottage", "home", "fisher", "herbwife")
 
 
-def _house(ctx, p, role, at, side=None):
+def _house(ctx, p, role, at, side=None, quiet=False):
     """A small house of `role` with its footprint's corner near `at` (squares), by the kit's building generator."""
     from kit.building import generate_building
     from kit.identity import BUILDINGS, BuildingIdentity, role_size
@@ -125,8 +125,12 @@ def _house(ctx, p, role, at, side=None):
                     land.taken_strict |= _squares_of(b.footprint)
                     bid = BuildingIdentity(role, p.name, "", "")
                     ctx.setdefault("placed", []).append((bid, b))
+                    from kit.originality import furnish_original
+                    for room in b.rooms:                 # furnished as a map's are: their rooms show in the picture
+                        furnish_original(m, room, kind=room.kind, rng=random.Random(E.seed_of("furnish", p.k, room.id)),
+                                         style="town")
                     return bid, b
-    ctx["log"](f"  plot {p.k + 1}: no room for the {role}")
+    if not quiet: ctx["log"](f"  plot {p.k + 1}: no room for the {role}")
     return None
 
 
@@ -139,9 +143,9 @@ def _garden_plan(ctx):
             if y: ctx["yards"][p.k] = y
             continue
         ux, uy = p.dir
-        role = HOME_ROLES[p.k % len(HOME_ROLES)]
+        role = HOME_ROLES[p.k % len(HOME_ROLES)] if p.size != "small" else "cottage"     # a small clearing: a cottage
         at = (p.c[0] - ux * 3.5, p.c[1] - uy * 3.5)
-        h = _house(ctx, p, role, at)
+        h = _house(ctx, p, role, at, quiet=True) or _house(ctx, p, role, p.c)
         if h: ctx["houses"][p.k] = h
 
 

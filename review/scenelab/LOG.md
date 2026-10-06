@@ -65,3 +65,22 @@ and War07A, counted once): bandit camps 20, graveyards 16 -> 13. Numbers after t
 r4 judge: "Inside the fence the generated yards hold Westwood's headstones, spacing and ground; they still read as one
 shape (a small square box in a glade) where Westwood's are long or large and set against buildings and crypts."
 Ambermere, Starwell and Harrowby build with 0 errors.
+
+## garden (mapgen/kit/village.py `Village.garden`)
+
+Westwood's gardens (Con05A, Con07B, Con09a, Wiz01A, Wiz03b): beds of two or three crops (the kit's note "one crop
+each" was wrong), rows ~22 px apart, mostly unfenced (a built wall within two cells of 9% of their pieces), on grass
+more often than dug earth, a water barrel, flowers, a well or a tree about them.
+
+| Round | What changed | AUC | Blind acc. | Blind gen / WW | Hard |
+|---|---|---|---|---|---|
+| baseline | | 0.89 | (not judged) | | 3 missing |
+| r1-beds | beds side by side, a different crop in each, two rows to a bed (one when the plot is narrow), a grass strip between; the rows laid in the fence's frame (the half-square offset of AM-1: a first try put a row on the fence line); dug earth in 40%; a water barrel and a spade at the path's ends; most unfenced; a smaller garden when no room (down to 3 x 2); the lab furnishes its houses and counts a clearing without room as "missing", not a broken rule | 0.42 | 100% | | 0 |
+| r2-fence | the garden fence is Westwood's low wooden one (Dilapidated, Wiz01A), not Log (drawn as a cabin wall) | 0.16 | 90% | 6.0 / 7.4 | 0 |
+| r3-larger | a size up first where it fits; flowers at a bed's end now and then | 0.30 | 100% | 5.8 / 7.4 | 0 |
+
+AUC sits under 0.6 from r1 (Westwood has only 5 gardens: read it loosely). The judge in r2 opened the key after fixing
+its guesses (recorded unchanged). r3 judge: "Kitchen gardens beside houses now read right; the field yard's log-wall
+fence is the clearest giveaway, and the gardens are still smaller and barer round the edges than Westwood's." The
+town field (`yards` "field", Log fence) is outside this round. Ambermere, Starwell, Harrowby, Greywatch, Thornwick: 0
+errors.

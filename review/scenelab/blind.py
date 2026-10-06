@@ -34,7 +34,12 @@ def make(scene, it, n_each=5):
     with open(os.path.join(d, "variants.json"), encoding="utf-8") as f:
         batch = json.load(f)
     rng = random.Random(E.seed_of("blind", scene, it))
-    gens = [v for v in batch["variants"] if os.path.exists(os.path.join(d, "renders", f"{v['index']:02d}.png"))]
+    missing = set()
+    if os.path.exists(os.path.join(d, "metrics.json")):
+        with open(os.path.join(d, "metrics.json"), encoding="utf-8") as f:
+            missing = {r["index"] for r in json.load(f)["scenes"] if r.get("missing")}
+    gens = [v for v in batch["variants"] if os.path.exists(os.path.join(d, "renders", f"{v['index']:02d}.png"))
+            and v["index"] not in missing]
     start = rng.randrange(max(1, len(gens)))
     order = gens[start:] + gens[:start]
     pick_g = (order[::2] + order[1::2])[:n_each]

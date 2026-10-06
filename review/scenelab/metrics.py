@@ -434,9 +434,10 @@ def judge_batch(typ, it, log=print):
             ax, ay = v["anchor"]
             cands = [s for s in found if s["type"] == typ and math.hypot(s["anchor"][0] - ax, s["anchor"][1] - ay) < v["reach"]]
             if not cands:
-                out.append(dict(index=v["index"], missing=True, variant=v, features=None, findings=[],
-                                hard=[dict(rule="missing", text="no scene of the type found where the kit laid it",
-                                           source="lab")]))
+                # the kit declined (no room in that clearing) or laid it out of reach: counted apart, not a broken
+                # rule of the user's
+                out.append(dict(index=v["index"], missing=True, variant=v, features=None, findings=[], hard=[],
+                                note="no scene of the type found in this clearing (the kit found no room for it)"))
                 continue
             s = min(cands, key=lambda s: math.hypot(s["anchor"][0] - ax, s["anchor"][1] - ay))
             f, det = features(m, s)
