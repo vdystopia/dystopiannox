@@ -106,8 +106,8 @@
     "objects": 78
    },
    "shopkeeper": {
-    "maps": 43,
-    "objects": 100
+    "maps": 30,
+    "objects": 87
    },
    "special": {
     "maps": 29,
@@ -301,9 +301,9 @@
    },
    "shopkeeper": {
     "aggressiveness": {
-     "0": 0.7265,
-     "0.16": 0.0403,
-     "0.5": 0.2332
+     "0": 0.77,
+     "0.16": 0.048,
+     "0.5": 0.182
     },
     "default_action": {
      "GUARD": 1.0
@@ -311,9 +311,9 @@
     "door_distance_cells": [
      7.07,
      9.43,
-     16.64
+     17.03
     ],
-    "has_script_events": 0.013,
+    "has_script_events": 0.016,
     "has_script_name": 1.0,
     "health": [
      0.0,
@@ -321,29 +321,29 @@
      0.0
     ],
     "immortal": {
-     "False": 0.2567,
-     "True": 0.7433
+     "False": 0.138,
+     "True": 0.862
     },
-    "indoors": 0.624,
-    "maps": 43,
-    "n": 100,
+    "indoors": 0.576,
+    "maps": 30,
+    "n": 87,
     "npc_speed": null,
     "retreat_ratio": {
-     "0": 0.9396,
-     "0.25": 0.0604
+     "0": 0.928,
+     "0.25": 0.072
     },
     "roam_path_flag": {
-     "128": 0.0738,
-     "255": 0.9262
+     "128": 0.088,
+     "255": 0.912
     },
     "sight_range": {
-     "0": 0.8641,
-     "150": 0.1158,
-     "8": 0.0201
+     "0": 0.838,
+     "150": 0.138,
+     "8": 0.024
     },
     "team": {
-     "0": 0.9396,
-     "1": 0.0604
+     "0": 0.928,
+     "1": 0.072
     }
    }
   },
@@ -352,32 +352,32 @@
     {
      "buy": 1,
      "sell": 0.33,
-     "share": 0.232
+     "share": 0.132
     },
     {
      "buy": 1.5,
      "sell": 0.05,
-     "share": 0.107
+     "share": 0.128
     },
     {
      "buy": 3,
      "sell": 0.05,
-     "share": 0.081
+     "share": 0.096
     },
     {
      "buy": 1.2,
      "sell": 0.15,
-     "share": 0.06
+     "share": 0.072
     },
     {
-     "buy": 1,
-     "sell": 1,
-     "share": 0.04
+     "buy": 1.3,
+     "sell": 0.05,
+     "share": 0.048
     }
    ],
    "greeting_text": {
-    "empty": 0.0201,
-    "map:key string id": 0.9799
+    "empty": 0.024,
+    "map:key string id": 0.976
    },
    "item_lines_per_shop": [
     4.0,
@@ -386,79 +386,79 @@
    ],
    "item_units_per_shop": [
     7.0,
-    13.0,
-    23.0
+    12.0,
+    18.0
    ],
-   "maps": 43,
-   "n": 100,
+   "maps": 30,
+   "n": 87,
    "note": "ShopItems lists are truncated at 64 entries by the corpus export; 'xN Type' means N units of Type.",
    "objects_within_3_cells": {
-    "BarPiece2A": 0.0277,
-    "BarPiece2B": 0.0139,
-    "BarPiece3A": 0.0238,
-    "BarPiece3B": 0.0277,
-    "BarPiece3C": 0.0198,
-    "BarPiece3D": 0.0178,
-    "BarPiece4A": 0.0297,
-    "Candleabra3": 0.0238,
-    "FairyJar": 0.0238,
-    "MineBeam1": 0.0178,
-    "PiledBarrels1": 0.0158,
-    "PiledBarrels2": 0.0257,
-    "PlayerStart": 0.0386,
-    "Rock7": 0.0416,
-    "SmallFlameImmobile": 0.0297,
-    "StarChart3a": 0.0238,
-    "Straw2": 0.0238,
-    "TorchPole": 0.0139,
-    "TraderAppleCrate": 0.0317,
-    "TraderDesk1": 0.0416,
-    "TraderDesk3": 0.0475,
-    "TraderDesk5": 0.0178,
-    "TraderTentPoleDN1": 0.0257,
-    "TraderTentPoleUP1": 0.0158,
-    "TraderTentShadowDN2": 0.0198
+    "BarPiece1E": 0.0139,
+    "BarPiece2A": 0.0325,
+    "BarPiece2B": 0.0163,
+    "BarPiece3B": 0.0186,
+    "BarPiece3D": 0.0209,
+    "BarPiece4A": 0.0279,
+    "Candleabra1": 0.0139,
+    "Candleabra3": 0.0279,
+    "FairyJar": 0.0279,
+    "MineBeam1": 0.0209,
+    "PiledBarrels1": 0.0186,
+    "PiledBarrels2": 0.0302,
+    "Rock7": 0.0488,
+    "SmallFlameImmobile": 0.0349,
+    "StarChart3a": 0.0279,
+    "Straw2": 0.0279,
+    "TorchPole": 0.0163,
+    "TraderAppleCrate": 0.0372,
+    "TraderDesk1": 0.0418,
+    "TraderDesk2": 0.0139,
+    "TraderDesk3": 0.0558,
+    "TraderShieldWallHanging4": 0.0139,
+    "TraderTentPoleDN1": 0.0232,
+    "TraderTentPoleUP1": 0.0186,
+    "TraderTentShadowDN2": 0.0232
    },
    "shopkeeper_types": {
-    "ShopkeeperConjurerRealm": 0.1342,
-    "ShopkeeperLandOfTheDead": 0.2617,
-    "ShopkeeperMagicShop": 0.1812,
-    "ShopkeeperPurple": 0.1275,
-    "ShopkeeperWarriorsRealm": 0.1409,
-    "ShopkeeperWizardRealm": 0.0671,
-    "ShopkeeperYellow": 0.0872
+    "ShopkeeperConjurerRealm": 0.16,
+    "ShopkeeperLandOfTheDead": 0.12,
+    "ShopkeeperMagicShop": 0.216,
+    "ShopkeeperPurple": 0.152,
+    "ShopkeeperWarriorsRealm": 0.168,
+    "ShopkeeperWizardRealm": 0.08,
+    "ShopkeeperYellow": 0.104
    },
    "top_items": {
-    "BattleAxe": 0.0096,
-    "BluePotion": 0.0408,
-    "Bow": 0.023,
-    "Breastplate": 0.0146,
-    "ChainCoif": 0.0104,
-    "ChainLeggings": 0.0104,
-    "ChainTunic": 0.0137,
-    "Cider": 0.0209,
-    "CurePoisonPotion": 0.0426,
-    "FanChakram": 0.0521,
-    "FieldGuide": 0.0667,
-    "GreatSword": 0.013,
-    "LeatherArmbands": 0.0287,
-    "LeatherArmor": 0.0439,
-    "LeatherArmoredBoots": 0.0265,
-    "LeatherBoots": 0.0498,
-    "LeatherHelm": 0.0311,
-    "LeatherLeggings": 0.0243,
-    "Longsword": 0.0115,
-    "Meat": 0.0209,
-    "MedievalCloak": 0.0354,
-    "Quiver": 0.0621,
-    "RedApple": 0.0313,
-    "RedPotion": 0.0582,
-    "SpellBook": 0.0604,
-    "StaffWooden": 0.038,
-    "Sword": 0.0161,
-    "WizardHelm": 0.0282,
-    "WizardRobe": 0.0215,
-    "WoodenShield": 0.0122
+    "BluePotion": 0.0353,
+    "Bow": 0.016,
+    "Cider": 0.0264,
+    "ConjurerHelm": 0.0072,
+    "CurePoisonPotion": 0.0441,
+    "FanChakram": 0.0463,
+    "FieldGuide": 0.0845,
+    "GreatSword": 0.0132,
+    "LeatherArmbands": 0.0264,
+    "LeatherArmor": 0.0391,
+    "LeatherArmoredBoots": 0.0237,
+    "LeatherBoots": 0.0465,
+    "LeatherHelm": 0.0295,
+    "LeatherLeggings": 0.0209,
+    "Longsword": 0.0113,
+    "Meat": 0.0264,
+    "MedievalCloak": 0.0416,
+    "MedievalPants": 0.0105,
+    "MedievalShirt": 0.0105,
+    "Mushroom": 0.0096,
+    "Quiver": 0.0556,
+    "RedApple": 0.0397,
+    "RedPotion": 0.0573,
+    "SpellBook": 0.0766,
+    "StaffWooden": 0.0383,
+    "SulphorousShowerWand": 0.0077,
+    "Sword": 0.0171,
+    "WizardHelm": 0.0259,
+    "WizardRobe": 0.0207,
+    "WoodenShield": 0.0154
    }
   },
   "town_quartiles": {
@@ -871,38 +871,38 @@
  },
  "waypoints": {
   "bidirectional_link_share": [
-   0.89,
+   0.84,
    0.95,
    0.98
   ],
   "context_method": "cell context from walls within 5 cells (built vs natural), floor material, building rooms, townsfolk within 30 cells; tiles sampled every 3rd",
   "degree": {
-   "0": 0.1587,
-   "1": 0.183,
-   "2": 0.3745,
-   "3": 0.186,
-   "4": 0.0737,
-   "5": 0.0129,
-   "6": 0.0112
+   "0": 0.2099,
+   "1": 0.2024,
+   "2": 0.3328,
+   "3": 0.161,
+   "4": 0.0682,
+   "5": 0.012,
+   "6": 0.0136
   },
   "density_per_100_tiles": {
-   "cave": 2.84,
-   "dungeon": 3.108,
-   "town": 1.942,
-   "wilderness": 1.607
+   "cave": 2.175,
+   "dungeon": 2.451,
+   "town": 1.975,
+   "wilderness": 1.619
   },
   "graphs": {
    "components_per_map": [
-    15.0,
-    29.0,
-    49.0
+    12.0,
+    22.5,
+    44.0
    ],
    "cycles_per_map": [
-    9.0,
-    18.0,
-    30.0
+    6.0,
+    15.0,
+    26.0
    ],
-   "maps_with_waypoints": 120,
+   "maps_with_waypoints": 107,
    "per_map": [
     {
      "components": 101,
@@ -1141,97 +1141,6 @@
      "edges": 69,
      "map": "Con11a",
      "waypoints": 111
-    },
-    {
-     "components": 50,
-     "cycles": 79,
-     "edges": 530,
-     "map": "G_CastlD",
-     "waypoints": 501
-    },
-    {
-     "components": 50,
-     "cycles": 79,
-     "edges": 530,
-     "map": "G_Castle",
-     "waypoints": 501
-    },
-    {
-     "components": 45,
-     "cycles": 19,
-     "edges": 288,
-     "map": "G_CryptD",
-     "waypoints": 314
-    },
-    {
-     "components": 45,
-     "cycles": 19,
-     "edges": 288,
-     "map": "G_Crypts",
-     "waypoints": 314
-    },
-    {
-     "components": 50,
-     "cycles": 22,
-     "edges": 371,
-     "map": "G_ForesD",
-     "waypoints": 399
-    },
-    {
-     "components": 49,
-     "cycles": 22,
-     "edges": 370,
-     "map": "G_Forest",
-     "waypoints": 397
-    },
-    {
-     "components": 37,
-     "cycles": 260,
-     "edges": 1108,
-     "map": "G_LOTD",
-     "waypoints": 885
-    },
-    {
-     "components": 37,
-     "cycles": 260,
-     "edges": 1108,
-     "map": "G_LOTDD",
-     "waypoints": 885
-    },
-    {
-     "components": 108,
-     "cycles": 198,
-     "edges": 808,
-     "map": "G_Lava",
-     "waypoints": 718
-    },
-    {
-     "components": 69,
-     "cycles": 300,
-     "edges": 1130,
-     "map": "G_Mines",
-     "waypoints": 899
-    },
-    {
-     "components": 44,
-     "cycles": 30,
-     "edges": 340,
-     "map": "G_Swamp",
-     "waypoints": 354
-    },
-    {
-     "components": 39,
-     "cycles": 49,
-     "edges": 505,
-     "map": "G_TemplD",
-     "waypoints": 495
-    },
-    {
-     "components": 39,
-     "cycles": 49,
-     "edges": 505,
-     "map": "G_Temple",
-     "waypoints": 495
     },
     {
      "components": 21,
@@ -1746,49 +1655,49 @@
     }
    ],
    "waypoints_per_map": [
-    78.0,
-    159.0,
-    207.0
+    75.0,
+    137.5,
+    186.0
    ]
   },
   "link_flags": {
-   "1": 0.0269,
-   "128": 0.874,
-   "16": 0.0128,
-   "2": 0.0255,
-   "32": 0.0142,
-   "4": 0.0165,
-   "64": 0.003,
-   "8": 0.0271
+   "1": 0.0475,
+   "128": 0.8065,
+   "16": 0.0226,
+   "2": 0.0159,
+   "32": 0.0251,
+   "4": 0.0292,
+   "64": 0.0053,
+   "8": 0.0479
   },
   "link_length_cells": [
-   5.1,
-   7.44,
-   11.29
+   5.91,
+   8.63,
+   12.73
   ],
-  "named_waypoint_share": 0.18,
+  "named_waypoint_share": 0.233,
   "on_road_floor_share_by_context": {
-   "cave": 0.641,
-   "dungeon": 0.552,
-   "town": 0.509,
-   "wilderness": 0.105
+   "cave": 0.609,
+   "dungeon": 0.602,
+   "town": 0.513,
+   "wilderness": 0.057
   },
   "road_floor_share_of_tiles_by_context": {
-   "cave": 0.536,
-   "dungeon": 0.501,
-   "town": 0.414,
-   "wilderness": 0.053
+   "cave": 0.532,
+   "dungeon": 0.514,
+   "town": 0.417,
+   "wilderness": 0.042
   },
   "wall_distance_cells_by_context": {
    "cave": [
-    1.41,
-    2.24,
-    3.61
+    2.0,
+    2.83,
+    4.0
    ],
    "dungeon": [
-    1.41,
-    2.24,
-    3.61
+    2.0,
+    2.83,
+    4.24
    ],
    "town": [
     2.0,
@@ -1802,10 +1711,10 @@
    ]
   },
   "waypoint_share_by_context": {
-   "cave": 0.2993,
-   "dungeon": 0.5052,
-   "town": 0.0978,
-   "wilderness": 0.0978
+   "cave": 0.2882,
+   "dungeon": 0.4317,
+   "town": 0.1534,
+   "wilderness": 0.1267
   }
  }
 }

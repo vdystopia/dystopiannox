@@ -1,4 +1,4 @@
-"""Environment types of Westwood's single-player maps (town, forest, swamp, cave, dungeon, castle,
+"""Environment types of Westwood's campaign maps (town, forest, swamp, cave, dungeon, castle,
 ice, lava). Each map is classified from its floors, buildings and outdoor ground, so that statistics
 are compared like with like: a town is measured against Westwood's towns, never against the Dismal
 Swamp. Writes rules/out/environments.json: map -> type plus the measurements behind it.
@@ -65,7 +65,7 @@ def main():
     import mapdata as md
     from concurrent.futures import ProcessPoolExecutor
     with ProcessPoolExecutor(6) as pool:
-        res = list(pool.map(_one, [n for n, _ in md.sp_corpus_maps()]))
+        res = list(pool.map(_one, [n for n, _ in md.campaign_corpus_maps()]))
     out = {}
     for name, summary, f in res:
         out[name] = dict(type=classify(f), summary=summary, **f)

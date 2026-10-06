@@ -1,6 +1,7 @@
 # Towns: walls, islands, yards and planting
 
-What Westwood's 17 town maps (rules/environments.py type "town", single-player) are made of beyond their
+What Westwood's 16 campaign town maps (rules/environments.py type "town"; the quest maps G_Forest, G_ForesD and G_Mines
+no longer count) are made of beyond their
 buildings, and how the kit builds the same. Measured by `py rules/town_walls.py` (writes `rules/out/town_walls.json`;
 `py rules/town_walls.py <map> ...` gives the same figures for our maps).
 
@@ -22,8 +23,9 @@ forest, with bays off them and fenced plots in them.
 
 ## Islands
 
-- Westwood's towns hold about 32 islands of three cells or more each (4 per 1000 floor tiles). Their rims run 8-64
-  wall pieces (median 16).
+- Westwood's campaign towns hold about 26 islands each (median; 3.67 per 1000 floor tiles, weighted). Their rims
+  run 8-36 wall pieces (median 14). (With the three quest maps: 7.4 per 1000 and a rim of 8: the quest
+  forests are strewn with small clumps.)
 - They stand near the edge (median 5 cells from an edge wall) and about 10 cells apart.
 - Their walls are cliff (CaveWall2, Dirt), forest (DecidiousWallGreen, Coni-Wall1), a closed fence (Log,
   Cobblestone, DilapidatedShort) or masonry.
@@ -82,7 +84,7 @@ lab now carries 20 decorations per 100 tiles.
 
 |  | Westwood's towns | Town lab before | Town lab now |
 |---|---|---|---|
-| walls per 100 tiles | 25.9-49.2 (typical 37) | 20.9 | 26.4 |
-| decorations per 100 tiles | 7.9-23.7 (typical 19) | 24.3 | 20.4 |
-| islands | about 32 | 0 | 4 forest blocks, 26 clumps |
-| yards | about 7 a map | 0 | 9 |
+| walls per 100 tiles | 25.9-49.2 (typical 35) | 20.9 | 26.4 |
+| decorations per 100 tiles | 7.9-26.0 (typical 20) | 24.3 | 20.4 |
+| islands | about 26 | 0 | 4 forest blocks, 26 clumps |
+| yards | about 9 a map | 0 | 9 |

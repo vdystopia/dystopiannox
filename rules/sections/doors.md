@@ -8,34 +8,32 @@ Double doors are two half-door objects hinged at the two outer ends of a 2-cell 
 
 | Door type | Kind | 2-cell share | 1-cell share | Weighted count | Maps |
 |---|---|---|---|---|---|
-| Gate | double | 96% | 1% | 163.7 | 70 |
-| WoodAndSteelHalfDoor | double | 100% | 0% | 141.7 | 48 |
-| DunMirDoor | single | 24% | 76% | 140.7 | 22 |
-| GalavaHalfDoor | double | 98% | 0% | 131.0 | 20 |
-| CryptDoor | double | 82% | 17% | 125.0 | 22 |
-| ArchedHalfDoor | double | 99% | 0% | 104.7 | 27 |
-| ArchedDoor | single | 0% | 100% | 89.2 | 26 |
-| JailDoor | single | 34% | 66% | 88.0 | 26 |
-| WoodenDoor | single | 28% | 72% | 79.0 | 16 |
-| BandedPlankDoor | double | 58% | 42% | 79.0 | 35 |
-| LOTDHalfDoor | double | 100% | 0% | 74.0 | 17 |
-| CryptGate | double | 80% | 17% | 73.0 | 19 |
-| LOTDSingleDoor | single | 17% | 83% | 71.0 | 14 |
+| Gate | double | 96% | 1% | 155.7 | 67 |
+| WoodAndSteelHalfDoor | double | 100% | 0% | 135.7 | 46 |
+| DunMirDoor | single | 18% | 82% | 126.7 | 14 |
+| GalavaHalfDoor | double | 97% | 0% | 111.0 | 17 |
+| ArchedHalfDoor | double | 99% | 0% | 92.7 | 23 |
+| JailDoor | single | 36% | 64% | 84.0 | 25 |
+| ArchedDoor | single | 0% | 100% | 73.2 | 22 |
+| WoodenDoor | single | 31% | 69% | 70.0 | 15 |
 | DunMirHalfDoor | double | 100% | 0% | 70.0 | 10 |
-| SpikedDoor | double | 64% | 33% | 69.0 | 14 |
-| ThinWoodenDoor | double | 61% | 37% | 60.3 | 23 |
-| IronFenceGate | double | 56% | 44% | 43.3 | 25 |
-| OgreCageDoor | double | 86% | 14% | 37.0 | 13 |
-| GalavaDoor | single | 0% | 100% | 35.0 | 16 |
-| BandedWoodenDoor | single | 3% | 88% | 31.7 | 21 |
-| Dilapidated | double | 53% | 47% | 30.0 | 9 |
-| BarredGate | double | 61% | 37% | 29.5 | 27 |
-| WoodAndSteelDoor | single | 0% | 100% | 26.0 | 9 |
-| AncientRuinDoor | double | 82% | 18% | 22.0 | 2 |
-| ThickWoodenDoor | single | 0% | 100% | 14.5 | 15 |
-| AncientDungeonDoor | double | 60% | 40% | 10.0 | 2 |
+| CryptDoor | double | 86% | 11% | 63.0 | 12 |
+| ThinWoodenDoor | double | 62% | 36% | 59.3 | 22 |
+| CryptGate | double | 78% | 19% | 55.0 | 12 |
+| BandedPlankDoor | double | 63% | 37% | 38.0 | 27 |
+| IronFenceGate | double | 56% | 44% | 36.3 | 19 |
+| SpikedDoor | single | 40% | 53% | 30.0 | 13 |
+| GalavaDoor | single | 0% | 100% | 30.0 | 13 |
+| LOTDHalfDoor | double | 100% | 0% | 28.0 | 13 |
+| BandedWoodenDoor | single | 4% | 86% | 25.7 | 17 |
+| OgreCageDoor | double | 80% | 20% | 25.0 | 10 |
+| WoodAndSteelDoor | single | 0% | 100% | 24.0 | 7 |
+| LOTDSingleDoor | double | 60% | 40% | 20.0 | 10 |
+| BarredGate | double | 73% | 24% | 16.5 | 20 |
+| Dilapidated | single | 29% | 71% | 14.0 | 5 |
+| ThickWoodenDoor | single | 0% | 100% | 11.5 | 12 |
 | SecretDoor | single | 0% | 100% | 2.0 | 2 |
 
 ## Wall pieces beside an opening
 
-Facings of the walls next to a door opening are computed as if the opening were wall: 29.8% of jamb pieces match only that way, 0.7% only the other way (68.3% are the same either way). Computing them without the opening turns corners into straight pieces and Ts into corners, leaving see-through gaps.
+Facings of the walls next to a door opening are computed as if the opening were wall: 32.0% of jamb pieces match only that way, 1.0% only the other way (65.6% are the same either way). Computing them without the opening turns corners into straight pieces and Ts into corners, leaving see-through gaps.

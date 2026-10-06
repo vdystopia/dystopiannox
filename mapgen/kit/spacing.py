@@ -4,6 +4,9 @@ northeast stretch of fence overlaps with the row of crops ... this fence is lite
 
 - Pieces keep apart by Westwood's closest pairs (corpus, the representative maps, each piece's nearest of the other
   family, p05 rounded up): a stack touches only where Westwood's stacks touch, and nothing runs into anything.
+  `py rules/spacing.py` re-measures them on the campaign maps alone (rules/out/spacing.json; the quest maps moved no
+  pair by more than a pixel): every pair below is at or under the campaign's p05 (barrels 26, crates 32, a barrel
+  and a crate 43, racks 28, cots 44, benches 46, stools 21, headstones 39) except sacks (17; 27 measured).
       barrels 25 px apart (p25 29), big barrels 31, a barrel and a big one 33, crates 31, a barrel and a crate 38,
       sacks 20, a sack and a crate 33, a sack and a barrel 30, racks 27, bedrolls 35, benches 45, stools 20,
       headstones 39, anything and a cart 48, anything and a fire 50 (its ring of stones excepted).

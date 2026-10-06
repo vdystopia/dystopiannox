@@ -13,9 +13,10 @@ size, culture variants, mistakes, examples), its own profile in `mapgen/kit/room
 furnisher and the room score read), and its own recipe per kit kind in `mapgen/kit/identity.py ROOMS`. The room score
 (`review/roomscore.py`) judges every room against its own type, never against another room.
 
-The numbers come from Westwood's single-player maps, each building room classified by its contents and measured
-exactly as our rooms are (`py rules/rooms/westwood.py` writes `westwood.json`; rooms the three campaigns share counted
-once: 363 rooms), from the playtester's verdicts, and from our own praised rooms. Westwood's figures below are
+The numbers come from Westwood's campaign maps only (Con, War, Wiz: never the quest maps G_* nor the multiplayer maps),
+each building room classified by its contents and measured exactly as our rooms are (`py rules/rooms/westwood.py`
+writes `westwood.json`; a room the three campaigns share counted once: 235 rooms; the great rooms the finder
+misses, read by hand: `HAND`), from the playtester's verdicts, and from our own praised rooms. Westwood's figures below are
 p10-p50-p90.
 
 ## The types, by family
@@ -24,27 +25,27 @@ Ranked within each family by how often they occur (Westwood's building rooms / o
 
 | Family | Type | Westwood | Ours | Kit kinds | What makes it good |
 |---|---|---|---|---|---|
-| private | [bedroom](bedroom.md) | 50 | 36 | bedroom | the bed headboard to a back wall with its nightstand, the chest snug with a rug before it, shelves end to end; cosy and full, one sleeper's things |
-| private | [living room](living_room.md) | 22 | 32 | living_room, dwelling | the hearth centred on a back wall flanked by shelves, the table and chairs before it on a carpet: the household gathers here |
+| private | [bedroom](bedroom.md) | 40 | 36 | bedroom | the bed headboard to a back wall with its nightstand, the chest snug with a rug before it, shelves end to end; cosy and full, one sleeper's things |
+| private | [living room](living_room.md) | 15 | 32 | living_room, dwelling | the hearth centred on a back wall flanked by shelves, the table and chairs before it on a carpet: the household gathers here |
 | private | [study](study.md) | 2 | 8 | study | the desk centred on a back wall among bookcases, a meeting table on a carpet, a curio, statues: everything a scholar needs, in the right places |
-| work | [laboratory](laboratory.md) | 29 | 2 | laboratory | used in zones: the study end, the work wall of workstations, the alchemist's table and a conjuring circle in the middle; one of each showpiece |
-| work | [kitchen](kitchen.md) | 18 | 9 | kitchen | the hearth with the cauldron a step off, provisions lining a back wall, a work table with its food, stores heaped by the front walls |
-| work | [library](library.md) | 9 | 3 | library | books end to end on both back walls, stacks in rows in a big one, a reading table on a carpet |
-| work | [smithy](smithy.md) | 3 | 7 | smithy | the forge's coals, the bellows beside them, the anvil before them, water to quench; the smith behind his counter |
+| work | [laboratory](laboratory.md) | 19 | 2 | laboratory | used in zones: the study end, the work wall of workstations, the alchemist's table and a conjuring circle in the middle; one of each showpiece |
+| work | [kitchen](kitchen.md) | 10 | 9 | kitchen | the hearth with the cauldron a step off, provisions lining a back wall, a work table with its food, stores heaped by the front walls |
+| work | [library](library.md) | 7 | 3 | library | books end to end on both back walls, stacks in rows in a big one, a reading table on a carpet |
+| work | [smithy](smithy.md) | 2 | 7 | smithy | the forge's coals, the bellows beside them, the anvil before them, water to quench; the smith behind his counter |
 | work | [herbalist](herbalist.md) | 2 | 3 | herbalist | the cauldron bubbling, one pair of potion shelves, books of remedies end to end, herbs in sacks and pots |
-| stores | [storeroom](storeroom.md) | 28 | 21 | storeroom, ore_store, ogre_hoard, granary | supplies in good order: stocked shelves, heaps in the corners, crates side by side, an aisle to walk |
-| martial | [barracks](barracks.md) | 26 | 5 | barracks, ogre_den | bunks of one kind in a row, a chest at each foot, gear shelves end to end, a table: orderly |
-| martial | [armoury](armoury.md) | 29 | 4 | gear_store | racks in rows of one kind each with aisles between, shelves on the back wall, the stock by the front walls |
-| public | [shop](shop.md) | 25 | 8 | shop | the counter out from a back wall with the keeper behind it, goods lining the walls, racks for show three to a row, open floor before the counter |
-| public | [tavern](tavern.md) | 5 | 8 | tavern | the bar with kegs behind it, the hearth, tables of three kinds of set with open floor between, lively but not packed |
-| public | [dining hall](dining_hall.md) | 6 | 4 | dining_hall, mess_hall, ogre_hall | long tables in rows seated both sides, the hearth on a back wall flanked by crockery |
-| ceremonial | [hall](hall.md) | 41 | 2 | hall | a colonnade in pairs either side of a clear aisle, statues facing across it, hangings: open and stately |
-| ceremonial | [chapel](chapel.md) | 4 | 5 | chapel, dark_chapel | the altar across from the door in line with it, a carpeted aisle, a few rows of pews nearest the altar, open floor toward the door |
+| stores | [storeroom](storeroom.md) | 22 | 21 | storeroom, ore_store, ogre_hoard, granary | supplies in good order: stocked shelves, heaps in the corners, crates side by side, an aisle to walk |
+| martial | [barracks](barracks.md) | 16 | 5 | barracks, ogre_den | bunks of one kind in a row, a chest at each foot, gear shelves end to end, a table: orderly |
+| martial | [armoury](armoury.md) | 16 | 4 | gear_store | racks in rows of one kind each with aisles between, shelves on the back wall, the stock by the front walls |
+| public | [shop](shop.md) | 16 | 8 | shop | the counter out from a back wall with the keeper behind it, goods lining the walls, racks for show three to a row, open floor before the counter |
+| public | [tavern](tavern.md) | 2 | 8 | tavern | the bar with kegs behind it, the hearth, tables of three kinds of set with open floor between, lively but not packed |
+| public | [dining hall](dining_hall.md) | 3 | 4 | dining_hall, mess_hall, ogre_hall | long tables in rows seated both sides, the hearth on a back wall flanked by crockery |
+| ceremonial | [hall](hall.md) | 17 | 2 | hall | a colonnade in pairs either side of a clear aisle, statues facing across it, hangings: open and stately |
+| ceremonial | [chapel](chapel.md) | 1 | 5 | chapel, dark_chapel | the altar across from the door in line with it, a carpeted aisle, a few rows of pews nearest the altar, open floor toward the door |
 | ceremonial | [great hall](great_hall.md) | 2 | 3 | great_hall | the house's heart: the hearth, a few long tables on a great carpet, banners, and a lot of open floor |
-| ceremonial | [throne room](throne_room.md) | 1 | 2 | throne_room | the throne facing the door down a runner, statues and braziers about it, a few pairs of columns, tapestries of one colour: open, processional, with character |
-| dead | [crypt](crypt.md) | 28 | 5 | crypt, dark_crypt | sarcophagi in rows with aisles between, statues of the dead, a chest, quiet and sparse |
+| ceremonial | [throne room](throne_room.md) | 4 | 2 | throne_room | the throne facing the door down a runner, statues and braziers about it, a few pairs of columns, tapestries of one colour: open, processional, with character |
+| dead | [crypt](crypt.md) | 30 | 5 | crypt, dark_crypt | sarcophagi in rows with aisles between, statues of the dead, a chest, quiet and sparse |
 
-Westwood also has 33 **passages** (bare halls under 40 tiles, a statue or two): we build those as corridors, not rooms.
+Westwood also has 9 **passages** (bare halls under 40 tiles, a statue or two): we build those as corridors, not rooms.
 
 Merged and split: the dwelling is a one-room living room with a bed (a variant); mess halls and the ogres' feasting halls
 are dining halls; ore stores and the ogres' hoards are storerooms; the ogres' den is a barracks of straw; the Land of the

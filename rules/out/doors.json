@@ -6,10 +6,10 @@
  "jamb_facing": {
   "rule": "compute wall facings treating door openings as wall",
   "shares": {
-   "gap_as_empty": 0.007,
-   "gap_as_wall": 0.298,
-   "neither": 0.012,
-   "same": 0.683
+   "gap_as_empty": 0.01,
+   "gap_as_wall": 0.32,
+   "neither": 0.014,
+   "same": 0.656
   }
  },
  "single_placement": {
@@ -17,68 +17,26 @@
   "\\": "1-cell opening g: South at (g.x+1, g.y+1) or North at (g.x, g.y)"
  },
  "types": {
-  "AncientDungeonDoor": {
-   "by_line": {
-    "/": {
-     "kind": "double",
-     "share_one_cell": 0.0,
-     "share_two_cell": 1.0,
-     "weighted_count": 4.0
-    },
-    "\\": {
-     "kind": "single",
-     "share_one_cell": 0.667,
-     "share_two_cell": 0.333,
-     "weighted_count": 6.0
-    }
-   },
-   "kind": "double",
-   "maps": 2,
-   "share_one_cell": 0.4,
-   "share_two_cell": 0.6,
-   "weighted_count": 10.0
-  },
-  "AncientRuinDoor": {
-   "by_line": {
-    "/": {
-     "kind": "double",
-     "share_one_cell": 0.067,
-     "share_two_cell": 0.933,
-     "weighted_count": 15.0
-    },
-    "\\": {
-     "kind": "double",
-     "share_one_cell": 0.429,
-     "share_two_cell": 0.571,
-     "weighted_count": 7.0
-    }
-   },
-   "kind": "double",
-   "maps": 2,
-   "share_one_cell": 0.182,
-   "share_two_cell": 0.818,
-   "weighted_count": 22.0
-  },
   "ArchedDoor": {
    "by_line": {
     "/": {
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 27.3
+     "weighted_count": 24.3
     },
     "\\": {
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 61.9
+     "weighted_count": 48.9
     }
    },
    "kind": "single",
-   "maps": 26,
+   "maps": 22,
    "share_one_cell": 1.0,
    "share_two_cell": 0.0,
-   "weighted_count": 89.2
+   "weighted_count": 73.2
   },
   "ArchedHalfDoor": {
    "by_line": {
@@ -86,167 +44,167 @@
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 58.0
+     "weighted_count": 52.0
     },
     "\\": {
      "kind": "double",
      "share_one_cell": 0.0,
-     "share_two_cell": 0.986,
-     "weighted_count": 46.7
+     "share_two_cell": 0.984,
+     "weighted_count": 40.7
     }
    },
    "kind": "double",
-   "maps": 27,
+   "maps": 23,
    "share_one_cell": 0.0,
-   "share_two_cell": 0.994,
-   "weighted_count": 104.7
+   "share_two_cell": 0.993,
+   "weighted_count": 92.7
   },
   "BandedPlankDoor": {
    "by_line": {
     "/": {
      "kind": "double",
-     "share_one_cell": 0.258,
-     "share_two_cell": 0.742,
-     "weighted_count": 62.0
+     "share_one_cell": 0.226,
+     "share_two_cell": 0.774,
+     "weighted_count": 31.0
     },
     "\\": {
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 17.0
+     "weighted_count": 7.0
     }
    },
    "kind": "double",
-   "maps": 35,
-   "share_one_cell": 0.418,
-   "share_two_cell": 0.582,
-   "weighted_count": 79.0
+   "maps": 27,
+   "share_one_cell": 0.368,
+   "share_two_cell": 0.632,
+   "weighted_count": 38.0
   },
   "BandedWoodenDoor": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.905,
+     "share_one_cell": 0.867,
      "share_two_cell": 0.0,
-     "weighted_count": 7.0
+     "weighted_count": 5.0
     },
     "\\": {
      "kind": "single",
-     "share_one_cell": 0.878,
-     "share_two_cell": 0.041,
-     "weighted_count": 24.7
+     "share_one_cell": 0.855,
+     "share_two_cell": 0.048,
+     "weighted_count": 20.7
     }
    },
    "kind": "single",
-   "maps": 21,
-   "share_one_cell": 0.884,
-   "share_two_cell": 0.032,
-   "weighted_count": 31.7
+   "maps": 17,
+   "share_one_cell": 0.857,
+   "share_two_cell": 0.039,
+   "weighted_count": 25.7
   },
   "BarredGate": {
    "by_line": {
     "/": {
      "kind": "double",
-     "share_one_cell": 0.412,
-     "share_two_cell": 0.588,
-     "weighted_count": 17.0
+     "share_one_cell": 0.333,
+     "share_two_cell": 0.667,
+     "weighted_count": 6.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.32,
-     "share_two_cell": 0.64,
-     "weighted_count": 12.5
+     "share_one_cell": 0.19,
+     "share_two_cell": 0.762,
+     "weighted_count": 10.5
     }
    },
    "kind": "double",
-   "maps": 27,
-   "share_one_cell": 0.373,
-   "share_two_cell": 0.61,
-   "weighted_count": 29.5
+   "maps": 20,
+   "share_one_cell": 0.242,
+   "share_two_cell": 0.727,
+   "weighted_count": 16.5
   },
   "CryptDoor": {
    "by_line": {
     "/": {
      "kind": "double",
-     "share_one_cell": 0.208,
-     "share_two_cell": 0.792,
-     "weighted_count": 48.0
+     "share_one_cell": 0.133,
+     "share_two_cell": 0.867,
+     "weighted_count": 30.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.143,
-     "share_two_cell": 0.831,
-     "weighted_count": 77.0
+     "share_one_cell": 0.091,
+     "share_two_cell": 0.848,
+     "weighted_count": 33.0
     }
    },
    "kind": "double",
-   "maps": 22,
-   "share_one_cell": 0.168,
-   "share_two_cell": 0.816,
-   "weighted_count": 125.0
+   "maps": 12,
+   "share_one_cell": 0.111,
+   "share_two_cell": 0.857,
+   "weighted_count": 63.0
   },
   "CryptGate": {
    "by_line": {
     "/": {
      "kind": "double",
-     "share_one_cell": 0.171,
-     "share_two_cell": 0.829,
-     "weighted_count": 37.0
+     "share_one_cell": 0.204,
+     "share_two_cell": 0.796,
+     "weighted_count": 31.0
     },
     "\\": {
      "kind": "double",
      "share_one_cell": 0.167,
-     "share_two_cell": 0.778,
-     "weighted_count": 36.0
+     "share_two_cell": 0.75,
+     "weighted_count": 24.0
     }
    },
    "kind": "double",
-   "maps": 19,
-   "share_one_cell": 0.169,
-   "share_two_cell": 0.804,
-   "weighted_count": 73.0
+   "maps": 12,
+   "share_one_cell": 0.188,
+   "share_two_cell": 0.776,
+   "weighted_count": 55.0
   },
   "Dilapidated": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.625,
-     "share_two_cell": 0.375,
-     "weighted_count": 16.0
+     "share_one_cell": 1.0,
+     "share_two_cell": 0.0,
+     "weighted_count": 9.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.286,
-     "share_two_cell": 0.714,
-     "weighted_count": 14.0
+     "share_one_cell": 0.2,
+     "share_two_cell": 0.8,
+     "weighted_count": 5.0
     }
    },
-   "kind": "double",
-   "maps": 9,
-   "share_one_cell": 0.467,
-   "share_two_cell": 0.533,
-   "weighted_count": 30.0
+   "kind": "single",
+   "maps": 5,
+   "share_one_cell": 0.714,
+   "share_two_cell": 0.286,
+   "weighted_count": 14.0
   },
   "DunMirDoor": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.805,
-     "share_two_cell": 0.195,
-     "weighted_count": 71.8
+     "share_one_cell": 0.82,
+     "share_two_cell": 0.18,
+     "weighted_count": 66.8
     },
     "\\": {
      "kind": "single",
-     "share_one_cell": 0.724,
-     "share_two_cell": 0.276,
-     "weighted_count": 68.8
+     "share_one_cell": 0.816,
+     "share_two_cell": 0.184,
+     "weighted_count": 59.8
     }
    },
    "kind": "single",
-   "maps": 22,
-   "share_one_cell": 0.765,
-   "share_two_cell": 0.235,
-   "weighted_count": 140.7
+   "maps": 14,
+   "share_one_cell": 0.818,
+   "share_two_cell": 0.182,
+   "weighted_count": 126.7
   },
   "DunMirHalfDoor": {
    "by_line": {
@@ -275,20 +233,20 @@
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 12.0
+     "weighted_count": 10.0
     },
     "\\": {
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 23.0
+     "weighted_count": 20.0
     }
    },
    "kind": "single",
-   "maps": 16,
+   "maps": 13,
    "share_one_cell": 1.0,
    "share_two_cell": 0.0,
-   "weighted_count": 35.0
+   "weighted_count": 30.0
   },
   "GalavaHalfDoor": {
    "by_line": {
@@ -296,20 +254,20 @@
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 69.0
+     "weighted_count": 57.0
     },
     "\\": {
      "kind": "double",
      "share_one_cell": 0.0,
-     "share_two_cell": 0.952,
-     "weighted_count": 62.0
+     "share_two_cell": 0.944,
+     "weighted_count": 54.0
     }
    },
    "kind": "double",
-   "maps": 20,
+   "maps": 17,
    "share_one_cell": 0.0,
-   "share_two_cell": 0.977,
-   "weighted_count": 131.0
+   "share_two_cell": 0.973,
+   "weighted_count": 111.0
   },
   "Gate": {
    "by_line": {
@@ -317,49 +275,49 @@
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 109.0
+     "weighted_count": 103.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.018,
-     "share_two_cell": 0.89,
-     "weighted_count": 54.7
+     "share_one_cell": 0.019,
+     "share_two_cell": 0.886,
+     "weighted_count": 52.7
     }
    },
    "kind": "double",
-   "maps": 70,
+   "maps": 67,
    "share_one_cell": 0.006,
-   "share_two_cell": 0.963,
-   "weighted_count": 163.7
+   "share_two_cell": 0.961,
+   "weighted_count": 155.7
   },
   "IronFenceGate": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.667,
-     "share_two_cell": 0.333,
-     "weighted_count": 24.0
+     "share_one_cell": 0.619,
+     "share_two_cell": 0.381,
+     "weighted_count": 21.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.155,
-     "share_two_cell": 0.845,
-     "weighted_count": 19.3
+     "share_one_cell": 0.196,
+     "share_two_cell": 0.804,
+     "weighted_count": 15.3
     }
    },
    "kind": "double",
-   "maps": 25,
-   "share_one_cell": 0.438,
-   "share_two_cell": 0.562,
-   "weighted_count": 43.3
+   "maps": 19,
+   "share_one_cell": 0.44,
+   "share_two_cell": 0.56,
+   "weighted_count": 36.3
   },
   "JailDoor": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.683,
-     "share_two_cell": 0.317,
-     "weighted_count": 60.0
+     "share_one_cell": 0.661,
+     "share_two_cell": 0.339,
+     "weighted_count": 56.0
     },
     "\\": {
      "kind": "single",
@@ -369,10 +327,10 @@
     }
    },
    "kind": "single",
-   "maps": 26,
-   "share_one_cell": 0.659,
-   "share_two_cell": 0.341,
-   "weighted_count": 88.0
+   "maps": 25,
+   "share_one_cell": 0.643,
+   "share_two_cell": 0.357,
+   "weighted_count": 84.0
   },
   "LOTDHalfDoor": {
    "by_line": {
@@ -380,62 +338,62 @@
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 44.0
+     "weighted_count": 18.0
     },
     "\\": {
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 30.0
+     "weighted_count": 10.0
     }
    },
    "kind": "double",
-   "maps": 17,
+   "maps": 13,
    "share_one_cell": 0.0,
    "share_two_cell": 1.0,
-   "weighted_count": 74.0
+   "weighted_count": 28.0
   },
   "LOTDSingleDoor": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.842,
-     "share_two_cell": 0.158,
-     "weighted_count": 38.0
+     "share_one_cell": 0.5,
+     "share_two_cell": 0.5,
+     "weighted_count": 12.0
     },
     "\\": {
-     "kind": "single",
-     "share_one_cell": 0.818,
-     "share_two_cell": 0.182,
-     "weighted_count": 33.0
+     "kind": "double",
+     "share_one_cell": 0.25,
+     "share_two_cell": 0.75,
+     "weighted_count": 8.0
     }
    },
-   "kind": "single",
-   "maps": 14,
-   "share_one_cell": 0.831,
-   "share_two_cell": 0.169,
-   "weighted_count": 71.0
+   "kind": "double",
+   "maps": 10,
+   "share_one_cell": 0.4,
+   "share_two_cell": 0.6,
+   "weighted_count": 20.0
   },
   "OgreCageDoor": {
    "by_line": {
     "/": {
      "kind": "double",
-     "share_one_cell": 0.333,
-     "share_two_cell": 0.667,
-     "weighted_count": 15.0
+     "share_one_cell": 0.455,
+     "share_two_cell": 0.545,
+     "weighted_count": 11.0
     },
     "\\": {
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 22.0
+     "weighted_count": 14.0
     }
    },
    "kind": "double",
-   "maps": 13,
-   "share_one_cell": 0.135,
-   "share_two_cell": 0.865,
-   "weighted_count": 37.0
+   "maps": 10,
+   "share_one_cell": 0.2,
+   "share_two_cell": 0.8,
+   "weighted_count": 25.0
   },
   "SecretDoor": {
    "by_line": {
@@ -455,23 +413,23 @@
   "SpikedDoor": {
    "by_line": {
     "/": {
-     "kind": "double",
-     "share_one_cell": 0.292,
-     "share_two_cell": 0.667,
-     "weighted_count": 48.0
+     "kind": "single",
+     "share_one_cell": 0.556,
+     "share_two_cell": 0.333,
+     "weighted_count": 18.0
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.429,
-     "share_two_cell": 0.571,
-     "weighted_count": 21.0
+     "share_one_cell": 0.5,
+     "share_two_cell": 0.5,
+     "weighted_count": 12.0
     }
    },
-   "kind": "double",
-   "maps": 14,
-   "share_one_cell": 0.333,
-   "share_two_cell": 0.638,
-   "weighted_count": 69.0
+   "kind": "single",
+   "maps": 13,
+   "share_one_cell": 0.533,
+   "share_two_cell": 0.4,
+   "weighted_count": 30.0
   },
   "ThickWoodenDoor": {
    "by_line": {
@@ -479,7 +437,7 @@
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 8.5
+     "weighted_count": 5.5
     },
     "\\": {
      "kind": "single",
@@ -489,10 +447,10 @@
     }
    },
    "kind": "single",
-   "maps": 15,
+   "maps": 12,
    "share_one_cell": 1.0,
    "share_two_cell": 0.0,
-   "weighted_count": 14.5
+   "weighted_count": 11.5
   },
   "ThinWoodenDoor": {
    "by_line": {
@@ -504,16 +462,16 @@
     },
     "\\": {
      "kind": "double",
-     "share_one_cell": 0.368,
-     "share_two_cell": 0.592,
-     "weighted_count": 25.3
+     "share_one_cell": 0.342,
+     "share_two_cell": 0.616,
+     "weighted_count": 24.3
     }
    },
    "kind": "double",
-   "maps": 23,
-   "share_one_cell": 0.37,
-   "share_two_cell": 0.613,
-   "weighted_count": 60.3
+   "maps": 22,
+   "share_one_cell": 0.36,
+   "share_two_cell": 0.624,
+   "weighted_count": 59.3
   },
   "WoodAndSteelDoor": {
    "by_line": {
@@ -521,20 +479,20 @@
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 16.0
+     "weighted_count": 15.0
     },
     "\\": {
      "kind": "single",
      "share_one_cell": 1.0,
      "share_two_cell": 0.0,
-     "weighted_count": 10.0
+     "weighted_count": 9.0
     }
    },
    "kind": "single",
-   "maps": 9,
+   "maps": 7,
    "share_one_cell": 1.0,
    "share_two_cell": 0.0,
-   "weighted_count": 26.0
+   "weighted_count": 24.0
   },
   "WoodAndSteelHalfDoor": {
    "by_line": {
@@ -542,7 +500,7 @@
      "kind": "double",
      "share_one_cell": 0.0,
      "share_two_cell": 1.0,
-     "weighted_count": 92.0
+     "weighted_count": 86.0
     },
     "\\": {
      "kind": "double",
@@ -552,31 +510,31 @@
     }
    },
    "kind": "double",
-   "maps": 48,
+   "maps": 46,
    "share_one_cell": 0.0,
    "share_two_cell": 1.0,
-   "weighted_count": 141.7
+   "weighted_count": 135.7
   },
   "WoodenDoor": {
    "by_line": {
     "/": {
      "kind": "single",
-     "share_one_cell": 0.75,
-     "share_two_cell": 0.25,
-     "weighted_count": 32.0
+     "share_one_cell": 0.68,
+     "share_two_cell": 0.32,
+     "weighted_count": 25.0
     },
     "\\": {
      "kind": "single",
-     "share_one_cell": 0.702,
-     "share_two_cell": 0.298,
-     "weighted_count": 47.0
+     "share_one_cell": 0.689,
+     "share_two_cell": 0.311,
+     "weighted_count": 45.0
     }
    },
    "kind": "single",
-   "maps": 16,
-   "share_one_cell": 0.722,
-   "share_two_cell": 0.278,
-   "weighted_count": 79.0
+   "maps": 15,
+   "share_one_cell": 0.686,
+   "share_two_cell": 0.314,
+   "weighted_count": 70.0
   }
  }
 }

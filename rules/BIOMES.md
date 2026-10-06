@@ -3,9 +3,9 @@
 This file says what sets Westwood's cave, ice and lava maps apart, and how the kit builds them.
 
 **Sources.**
-- `py rules/biomes.py` profiles each biome: its floors, walls, signature objects, light, ambient colour and creatures, against all of Westwood's other single-player maps. It counts each layout once. It writes `rules/out/biomes.json`.
+- `py rules/biomes.py` profiles each biome: its floors, walls, signature objects, light, ambient colour and creatures, against all of Westwood's other campaign maps (Con/War/Wiz; G_Lava no longer counts). It counts each layout once. It writes `rules/out/biomes.json`.
 - `py rules/biome_places.py` measures where each signature object stands: on the liquid, against a wall (within 1.5 cells of one), or in the open. Densities are per 100 floor tiles of that context. It writes `rules/out/biome_places.json`.
-- `rules/environments.py` types every map: 11 cave maps (5 layouts), 4 ice maps (2 layouts: the Wastelands and the Wizard finale) and 10 lava maps (9 layouts).
+- `rules/environments.py` types every campaign map: 11 cave maps (5 layouts), 4 ice maps (2 layouts: the Wastelands and the Wizard finale) and 9 lava maps (8 layouts; G_Lava, a quest map, no longer counts).
 
 **Building.**
 - `mapgen/kit/biome.py` holds the palettes and the Dresser.

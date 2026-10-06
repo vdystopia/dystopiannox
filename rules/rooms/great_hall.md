@@ -31,13 +31,13 @@ The hearth, centred on a back wall (a second one on the far wall of a long hall)
 
 ## Density and openness
 
-| | Westwood (Con06b's feasting hall, 208 tiles) | Profile |
+| | Westwood's campaign (2 rooms, Con06b, Con07E) | Profile |
 |---|---|---|
-| coverage | 0.16 | 0.05-0.18 (target 0.10) |
-| open floor | 0.59 | 0.55-0.90 |
-| pieces per tile | 0.21 | 0.08-0.35 |
-| distinct types | 12 | 10+ |
-| caps | 12 tables, 16 benches | tables 1 per 48 tiles, at most 6; benches 1 per 16 tiles in all (Harrowby: 20 of 32 pieces at 1 per 11), at most 24; chests 1 per 80, at most 3 |
+| coverage | 0.16-0.21-0.21 | 0.05-0.18 (target 0.10) |
+| open floor | 0.36-0.58-0.58 | 0.55-0.90 |
+| pieces per tile | 0.21-0.48-0.48 | 0.08-0.35 |
+| distinct types | 12-24-24 | 10+ |
+| caps | Con06b: 12 tables, 16 benches; Con07E: 20 tables, 46 seats | tables 1 per 48 tiles, at most 6; benches 1 per 16 tiles in all (Harrowby: 20 of 32 pieces at 1 per 11), at most 24; chests 1 per 80, at most 3 |
 
 ## Size
 
@@ -63,4 +63,7 @@ keeps': stone, banners, a carpet of floor tiles with the gold trim.
 
 - Westwood: Con06b / War06b, cell 186,38: Hecubah's castle hall, 208 tiles, 12 tables in rows with 16 benches, three
   hearths, 11 hangings: coverage 0.16, open 0.59.
+- Westwood: Con07E, cell 173,104: a feasting hall of 154 tiles, 20 tables of four kinds and 46 seats, a hearth, a
+  trader's desk by the door (the classifier once called it a shop): coverage 0.21, open 0.36. These two are the
+  campaign's only great halls.
 - Ours: Thornwick's and Greywatch's great halls (see `review/out/<map>/rooms/`).

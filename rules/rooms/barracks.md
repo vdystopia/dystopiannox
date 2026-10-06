@@ -28,12 +28,12 @@ The row of bunks, headboards against a wall.
 
 ## Density and openness
 
-| | Westwood (26) | Profile |
+| | Westwood's campaign (16 rooms, 7 maps) | Profile |
 |---|---|---|
-| coverage | 0.03-0.06-0.24 | 0.12-0.34 (target 0.24) |
-| open floor | 0.36-0.72-0.80 | 0.25-0.75 |
-| pieces per tile | 0.08-0.17-0.47 | 0.20-0.80 |
-| distinct types | 3-7-14 | 8+ |
+| coverage | 0.03-0.06-0.25 | 0.12-0.34 (target 0.24) |
+| open floor | 0.36-0.65-0.78 | 0.25-0.75 |
+| pieces per tile | 0.11-0.23-0.77 | 0.20-0.80 |
+| distinct types | 2-5-14 | 8+ |
 | caps | 3+ beds always of one kind, in a row | beds 1 per 12 tiles, at most 12 |
 
 ## Size

@@ -53,7 +53,7 @@ def auto_variation(mat, x, y):
 
 
 def mine():
-    W = C.sp_weights()
+    W = C.campaign_weights()
     # adjacency (unordered pair key sorted), per contact
     pair = defaultdict(lambda: dict(sp_w=0.0, all=0, maps=set(), sp_maps=set(), a_over_b=0.0, b_over_a=0.0,
                                     none=0.0, both=0.0, types=Counter(), all_edge=0))
@@ -181,7 +181,7 @@ def build(r):
     # never-touch pairs among common materials
     common = [m for m, v in area_sp.most_common() if v >= 200][:70]
     cooc = Counter()
-    for m in C.sp_maps():
+    for m in C.campaign_maps():
         mats = {t["material"] for t in C.tiles(m).values()}
         for i, a in enumerate(common):
             if a not in mats: continue
@@ -253,12 +253,12 @@ def md(d):
     L = ["# Floors and edge blending", "",
          "Schema of `rules/out/floors.json`:",
          "- `blend[]`: one entry per pair of materials that touch as side neighbours (>= 10 contacts in all maps): "
-         "`a`, `b`, `contacts_all`, `maps_all`, `contacts_sp_weighted`, `maps_sp`, `edge_share_sp` (share of single-player contacts "
+         "`a`, `b`, `contacts_all`, `maps_all`, `contacts_sp_weighted`, `maps_sp`, `edge_share_sp` (share of campaign contacts "
          "with an edge overlay on the touching side), `edge_share_all`, `overlay`/`base` (which material is drawn over which), "
          "`overlay_direction_share`, `edge_types` (share), `preferred_edge_type`.",
-         "- `priority{material: {score, evidence}}`: score -1..1, higher = drawn over neighbours (single-player weighted); evidence = weighted blended contacts.",
+         "- `priority{material: {score, evidence}}`: score -1..1, higher = drawn over neighbours (campaign maps, weighted); evidence = weighted blended contacts.",
          "- `material_family{}`, `families{family: materials (area share), unused_in_sp, sp_maps_using, median_share_when_used, neighbour_families}`.",
-         "- `never_touch[]`: common materials that co-occur in single-player maps but never touch; `buffer_materials` seen between them.",
+         "- `never_touch[]`: common materials that co-occur in campaign maps but never touch; `buffer_materials` seen between them.",
          "- `edge_pieces{}`: piece rule, match rate, deviations, side-variant shares, piece ids.",
          "- `variation_rule{}`: share of tiles/edges whose variation equals the editor's automatic formula.",
          "- `edge_types{}`: usage counts and piece count (`nvar`).", ""]
@@ -269,10 +269,10 @@ def md(d):
           "- Lowest-matching materials: " + ", ".join(f"{m} {v:.0%}" for m, v in list(vr["tile_match_by_material"].items())[:8]), ""]
     ep = d["edge_pieces"]
     L += ["## Edge pieces", "", f"- Rule: {ep['rule']}.",
-          f"- Exact match with the rule: {ep['exact_match_share_sp']:.0%} of (tile, overlay) groups (single-player weighted).",
+          f"- Exact match with the rule: {ep['exact_match_share_sp']:.0%} of (tile, overlay) groups (campaign maps, weighted).",
           f"- Piece kinds: {ep['piece_kind_share_sp']}. Deviations per group: {ep['deviations_per_group_sp']}.",
           f"- Side variants are used about equally: {ep['side_variant_share_sp']}.", ""]
-    L += ["## Most common blends (single-player)", "",
+    L += ["## Most common blends (campaign maps)", "",
           "| a | b | contacts (all) | maps | blended | overlay on base | edge type |", "|---|---|---|---|---|---|---|"]
     for b in [b for b in d["blend"] if b["maps_sp"] >= 3][:45]:
         L.append(f"| {b['a']} | {b['b']} | {b['contacts_all']} | {b['maps_all']} | {b['edge_share_sp']:.0%} | "
@@ -281,7 +281,7 @@ def md(d):
     for f, v in sorted(d["families"].items(), key=lambda kv: -kv[1]["sp_maps_using"]):
         top = ", ".join(f"{m} {s:.0%}" for m, s in list(v["materials"].items())[:6])
         nb = ", ".join(f"{k} {s:.0%}" for k, s in v["neighbour_families"].items())
-        L.append(f"- **{f}**: in {v['sp_maps_using']} single-player maps, median {v['median_share_when_used']:.0%} of a map's floor when used. "
+        L.append(f"- **{f}**: in {v['sp_maps_using']} campaign maps, median {v['median_share_when_used']:.0%} of a map's floor when used. "
                  f"Palette: {top}. Borders: {nb or '-'}.")
     pr = sorted(((m, v["score"]) for m, v in d["priority"].items() if v["evidence"] >= 100), key=lambda kv: -kv[1])
     L += ["", "## Priority (who overlays whom, materials with >= 100 weighted blended contacts)", "",

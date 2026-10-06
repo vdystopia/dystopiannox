@@ -1,4 +1,4 @@
-"""Buildings in Westwood's single-player maps: footprint shapes, sizes, how they are divided into
+"""Buildings in Westwood's campaign maps: footprint shapes, sizes, how they are divided into
 rooms, doors, material styles and town spacing (phase 3 rule mining, feeds mapgen/kit/building.py).
 
 Buildings come from rules/out/rooms.json (rooms sharing a wall or a door). Room cells are rebuilt
@@ -11,7 +11,7 @@ Shape classes (from the bounding box minus the footprint; small notches ignored)
 rect, L (one corner cut), T (two corners cut on one side), U (one notch in a side), cross (four
 corners cut), Z (two opposite corners cut), courtyard (hole inside), irregular (anything else).
 
-Statistics weight single-player maps by 1 / layout group size. Writes rules/out/buildings.json and
+Statistics weight campaign maps by 1 / layout group size. Writes rules/out/buildings.json and
 rules/sections/buildings.md.  Run: py rules/buildings.py
 """
 import collections, json, math, os, statistics as st
@@ -198,7 +198,7 @@ def analyse_map(map_name, rooms_of_map):
 
 def main():
     data = json.load(open(os.path.join(c.OUT, "rooms.json"), encoding="utf-8"))
-    W8 = c.sp_weights()
+    W8 = c.campaign_weights()
     by_map = collections.defaultdict(list)
     for r in data["rooms"]: by_map[r["map"]].append(r)
     buildings = []
@@ -271,8 +271,8 @@ def fmt(d, n=6):
 def write_md(r):
     a, f = r["all"], r["freestanding"]
     L = ["# Buildings", "",
-         "Source: `rules/buildings.py`, buildings from `rules/out/rooms.json` (rooms sharing a wall or door) in the 120 "
-         "single-player maps, at most 900 floor tiles and 14 rooms (larger complexes are dungeons). Weighted by 1 / layout "
+         "Source: `rules/buildings.py`, buildings from `rules/out/rooms.json` (rooms sharing a wall or door) in the 107 "
+         "campaign maps, at most 900 floor tiles and 14 rooms (larger complexes are dungeons). Weighted by 1 / layout "
          "group size. Sizes are in lattice units along the wall axes (one wall segment = 2 in u or v, about one cell "
          "along the wall). Quartiles are [25%, median, 75%]. A building is *freestanding* when at least half of what lies "
          "outside its outer walls is open floor (towns, villages), as opposed to rooms inside larger structures.", "",

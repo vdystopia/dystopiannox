@@ -30,12 +30,12 @@ None: the stocked walls themselves. An ore store's loaded carts.
 
 ## Density and openness
 
-| | Westwood (28) | Profile |
+| | Westwood's campaign (22 rooms, 17 maps) | Profile |
 |---|---|---|
-| coverage | 0.02-0.13-0.19 | 0.15-0.42 (target 0.30) |
-| open floor | 0.32-0.67-0.91 | 0.15-0.65 |
-| pieces per tile | 0.06-0.31-0.50 | 0.30-1.1 |
-| distinct types | 2-3-5 | 4+ |
+| coverage | 0.02-0.07-0.19 | 0.15-0.42 (target 0.30) |
+| open floor | 0.32-0.75-0.91 | 0.15-0.65 |
+| pieces per tile | 0.06-0.25-0.44 | 0.30-1.1 |
+| distinct types | 1-3-5 | 4+ |
 | caps | | racks 1 per 10 tiles, at most 6 (an ore store 1 per 8, at most 12) |
 
 The user wants stores fuller than Westwood's ("a store room holds more than any other room", TreePlace reviews).

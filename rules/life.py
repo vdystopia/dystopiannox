@@ -1,4 +1,4 @@
-"""Townsfolk, shops, waypoints and roaming in Westwood's single-player maps (phase 2 rule mining).
+"""Townsfolk, shops, waypoints and roaming in Westwood's campaign maps (phase 2 rule mining).
 
 Townsfolk: shopkeepers (Shopkeeper*), maidens (Maiden), civilian NPCs (NPC objects that are immortal or
 carry no weapon) and special friendlies (AirshipCaptain, Wounded*). Armed, mortal NPCs are reported
@@ -311,8 +311,8 @@ def roaming(ctxs, W):
 
 
 def main():
-    W = c.sp_weights()
-    ctxs = [MapCtx(m) for m in c.sp_maps()]
+    W = c.campaign_weights()
+    ctxs = [MapCtx(m) for m in c.campaign_maps()]
     data = dict(schema_version=1, townsfolk=townsfolk(ctxs, W), waypoints=waypoints(ctxs, W), roaming=roaming(ctxs, W))
     data["townsfolk"]["towns"] = [{k: v for k, v in t.items() if k != "weight"} for t in data["townsfolk"]["towns"]]
     c.save_json("life.json", data)
@@ -334,7 +334,7 @@ def write_md(d):
     L = [
         "# Townsfolk, shops, waypoints and roaming",
         "",
-        "Source: `rules/life.py` over the 120 single-player maps; shares and quartiles ([25%, median, 75%])",
+        "Source: `rules/life.py` over the 107 campaign maps; shares and quartiles ([25%, median, 75%])",
         "weighted by `1 / layout group size`. Roles: **civilian** = NPC object that is immortal or unarmed;",
         "**armed_npc** = mortal NPC carrying a weapon (guards, soldiers, hostile humans); **maiden**;",
         "**shopkeeper** (Shopkeeper*); **special** (AirshipCaptain, Wounded*). A **town map** has 5+ civilians,",

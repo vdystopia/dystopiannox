@@ -125,7 +125,7 @@ def analyse(m):
 
 def town_maps():
     e = json.load(open(os.path.join(C.OUT, "environments.json"), encoding="utf-8"))["maps"]
-    sp = C.sp_weights()
+    sp = C.campaign_weights()
     return [k for k, v in e.items() if v.get("type") == "town" and k in sp]
 
 
@@ -173,7 +173,7 @@ if __name__ == "__main__":
             print("   yards:", [(y["tiles"], y["things"][:3]) for y in r["yards"]][:10])
         sys.exit()
     res, w = {}, {}
-    sp = C.sp_weights()
+    sp = C.campaign_weights()
     for k in town_maps():
         res[k] = analyse(md.load(md.corpus_json(k)))
         w[k] = sp[k]

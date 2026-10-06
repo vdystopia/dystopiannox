@@ -2,7 +2,7 @@
 
 The checker reads a finished `.map` through the editor's own library (the corpus exporter), so it
 sees exactly what the game loads. It reports **errors** (defects a player will see or hit) and
-**warnings** (departures from the range Westwood's single-player maps stay within), each with its
+**warnings** (departures from the range Westwood's campaign maps stay within: Con/War/Wiz only), each with its
 position. It can also draw them on a picture of the map.
 
 Every map build runs it (and the QA gate, `py tests/qa.py <design>`, runs it with everything else a map must pass:
@@ -15,9 +15,9 @@ The full report goes to `validate/out/<map>/report.md`.
 |---|---|
 | `py validate/validate.py DysVale` | Checks a map: a `.map` path, a game map folder name, or a Westwood map name such as `Con07B` |
 | `py validate/validate.py DysVale --image` | Also writes `overview.png` (numbered markers: red = error, orange = warning) and `errors/error_NNN.png` close-ups |
-| `py validate/checkcheck.py [--sample N]` | Checks the checks: per rule (`checks.RULES`), its findings on our 11 campaign maps and on Westwood's 120, and its planted case; flags dead rules, rules Westwood trips on more than a quarter of its maps, and findings no rule names. Writes `validate/out/checkcheck.md` |
+| `py validate/checkcheck.py [--sample N]` | Checks the checks: per rule (`checks.RULES`), its findings on our 11 campaign maps and on Westwood's 107, and its planted case; flags dead rules, rules Westwood trips on more than a quarter of its maps, and findings no rule names. Writes `validate/out/checkcheck.md` |
 | `py validate/selftest.py` | Builds a clean test map and one map per planted defect (every playtest finding a check covers), and confirms each defect is caught (by its own message) |
-| `py validate/calibrate.py` | Re-measures Westwood's 120 single-player maps, rewrites `baseline.json`, and lists how often each check fires on them |
+| `py validate/calibrate.py` | Re-measures Westwood's 107 campaign maps (Con/War/Wiz; kit step offsets, a validity table, from all 157), rewrites `baseline.json`, and lists how often each check fires on them |
 | `py validate/calibrate.py --dry [--json]` | Only lists how often each check fires on Westwood's maps (`--json`: also `validate/out/calibration.json`); `baseline.json` is left as it is. Run it for every new or changed check |
 
 The exit code of `validate.py` is 0 when there are no errors, 1 when there are errors, and 2 when the map can't be read.
@@ -76,14 +76,14 @@ Westwood's own maps:
 - Room furniture is compared with rooms of a similar size, because tiny bedrooms have very high
   per-tile densities.
 
-### What remains on Westwood's 120 single-player maps (errors)
+### What remains on Westwood's 107 campaign maps (errors)
 
 | Check | Findings | Maps | Notes |
 |---|---|---|---|
-| wall_shapes | 51 | 22 | Out of about 100,000 built wall pieces. Some are real Westwood gaps (a visible black hole in Con07C's tower wall) |
+| wall_shapes | 33 | 14 | Out of about 100,000 built wall pieces. Some are real Westwood gaps (a visible black hole in Con07C's tower wall) |
 | doors | 43 | 17 | Gates and crypt doors set at odd angles in natural walls (about 2% of their doors) |
-| doorways | 11 | 8 | Deliberate puzzle obstacles: powder barrels, boulders, spike blocks |
-| boundary | 5 | 5 | 1–3 cell gaps; three of them are one shared layout |
+| doorways | 7 | 5 | Deliberate puzzle obstacles: powder barrels, boulders, spike blocks |
+| boundary | 7 | 6 | 1–3 cell gaps; three of them are one shared layout |
 
 Composition warnings on Westwood's maps (they are guidance, not errors):
 

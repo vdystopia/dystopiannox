@@ -1,6 +1,7 @@
 # Cultures: how Westwood furnishes its ogre lairs, the Land of the Dead and Dun Mir
 
-`py rules/cultures.py` measures the rooms of Westwood's single-player maps (each layout once) that belong to a culture: a
+`py rules/cultures.py` measures the rooms of Westwood's campaign maps (Con/War/Wiz, each layout once; the quest maps G_LOTD, G_CryptD and the
+others no longer count: LOTD rooms 11, ogre 16, Dun Mir 36, from 47, 18 and 54) that belong to a culture: a
 room belongs when at least two of its pieces carry the culture's prefix (LOTD, Ogre, DunMir). For each culture it writes
 the rooms' size, walls and floors, and for each object type the share of rooms holding it, its count per 100 floor
 tiles where present, and where it stands: against the NE and NW walls (the back walls the camera sees), against the SE

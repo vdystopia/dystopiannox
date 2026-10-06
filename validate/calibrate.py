@@ -1,8 +1,8 @@
-"""Calibrates the checks on Westwood's single-player maps and writes validate/baseline.json.
+"""Calibrates the checks on Westwood's campaign maps and writes validate/baseline.json.
 
-The baseline holds the ranges warnings compare against (5th..95th percentile over Westwood's
-layouts, each layout counted once), Westwood's exact kit step offsets, and per-room-kind size and
-furniture ranges. It also prints how often each check fires on Westwood's own maps: errors should be
+The baseline holds the ranges warnings compare against (5th..95th percentile over Westwood's campaign
+layouts, Con/War/Wiz only, each layout counted once), Westwood's exact kit step offsets (a validity table: all 157
+maps), and per-room-kind size and furniture ranges (campaign maps). It also prints how often each check fires on Westwood's own maps: errors should be
 (close to) zero there, otherwise the check is miscalibrated.
 
 Run: py validate/calibrate.py            (needs corpus/out/json from corpus/build_corpus.py)
@@ -80,10 +80,11 @@ def one(args):
 
 
 def main():
-    maps = md.sp_corpus_maps()
+    maps = md.campaign_corpus_maps()
     weight = dict(maps)
     with ProcessPoolExecutor(6) as pool:
-        steps, back = kit_steps(pool, [n for n, _ in maps])
+        import common                                  # how kit pieces join is engine validity: every map shows it
+        steps, back = kit_steps(pool, [n for n in common.all_maps() if os.path.exists(md.corpus_json(n))])
         base = dict(kit_steps=steps, kit_back=back)
         if os.path.exists(BASELINE) and "--fresh" not in sys.argv:
             with open(BASELINE) as f: base.update({k: v for k, v in json.load(f).items() if k not in base})
@@ -127,7 +128,7 @@ def main():
     out.setdefault("sight_leak_cells", 0)
     if "--dry" not in sys.argv:
         with open(BASELINE, "w") as f: json.dump(out, f, indent=1, sort_keys=True)
-    print(f"Westwood single-player maps checked: {len(results)}  "
+    print(f"Westwood campaign maps checked: {len(results)}  "
           f"({'baseline left as it is' if '--dry' in sys.argv else 'baseline written to ' + BASELINE})\n")
     print("Findings on Westwood's own maps (check / severity: maps affected, total findings):")
     for (chk, sev), per_map in sorted(fired.items()):

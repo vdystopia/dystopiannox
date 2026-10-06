@@ -4,7 +4,7 @@ one's map, mapgen/designs/thornwick.py). The green world in four sections: the s
 road (FORESTS["silver"]), the old brown wood of the herbarium and the quarry in the west (FORESTS["ancient"]), the
 dark pines of the observatory's crag in the north-east (FORESTS["conifer"]) and the Scar, the bare crater where the
 star fell, ringed by crystal rock (FORESTS["camp"]). The houses are built in Ix's manner (Westwood's wizards' town,
-Wiz01A: dark-timbered stucco, StuccoDarkWood), the college in Galava's town stone, the old observatory in blue stone;
+Wiz01A: dark-timbered stucco, StuccoDarkWood), the college in Galava's town stone, the old observatory in grey stone (StoneGray: the campaign builds no blue-stone house);
 the square is paved in Ix's brick round the Starwell.
 
 The story
@@ -232,8 +232,10 @@ presets = json.load(open(os.path.join(HERE, "..", "..", "rules", "out", "lightin
 
 
 def preset(family):
-    return max((p for p in presets if p["family"] == family and p["animation"] == "steady" and p["intensity_class"] == "full"),
-               key=lambda p: p["weighted_share"])["xfer"]
+    # a steady full light of the family; the campaign has no steady full purple (only the quest maps did): its purple
+    # lights pulse, so the bindings take the family's full light whatever its animation
+    ps = [p for p in presets if p["family"] == family and p["animation"] == "steady" and p["intensity_class"] == "full"] or          [p for p in presets if p["family"] == family and p["intensity_class"] == "full"]
+    return max(ps, key=lambda p: p["weighted_share"])["xfer"]
 
 
 C = {k: land.areas[k]["c"] for k in AREAS}

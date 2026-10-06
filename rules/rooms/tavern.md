@@ -31,12 +31,12 @@ The bar, meeting the walls at both ends, its flap mid-run, kegs behind it; and t
 
 ## Density and openness
 
-| | Westwood (5) | Profile |
+| | Westwood's campaign (2 rooms, Con06a, Con07B) | Profile |
 |---|---|---|
-| coverage | 0.02-0.12-0.14 | 0.10-0.30 (target 0.18) |
-| open floor | 0.53-0.55-0.95 | 0.40-0.80 |
-| pieces per tile | 0.04-0.28-0.31 | 0.15-0.60 |
-| distinct types | 8-23-35 | 18+ |
+| coverage | 0.12-0.14-0.14 | 0.10-0.30 (target 0.18) |
+| open floor | 0.53-0.55-0.55 | 0.40-0.80 |
+| pieces per tile | 0.28-0.31-0.31 | 0.15-0.60 |
+| distinct types | 23-35-35 | 18+ |
 | most of one piece (seats counted) | 3-12-13 | 10, or 1 per 18 tiles |
 | caps | a table per 27-42 tiles (Con07B 8 in 216, Con06a 4 in 166) | tables 1 per 28 tiles, at most 12 |
 

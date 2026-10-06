@@ -1,85 +1,85 @@
 {
  "all": {
   "area_units_per_room": [
-   40.33,
-   66.0,
+   39.0,
+   63.5,
    97.0
   ],
-  "buildings": 917,
-  "corridor_share": 0.117,
+  "buildings": 678,
+  "corridor_share": 0.078,
   "entrance_sides": {
-   "u_max": 0.326,
-   "u_min": 0.253,
-   "v_max": 0.213,
-   "v_min": 0.207
+   "u_max": 0.308,
+   "u_min": 0.255,
+   "v_max": 0.214,
+   "v_min": 0.224
   },
   "entrances": {
-   "0": 0.523,
-   "1": 0.171,
-   "10": 0.002,
-   "11": 0.002,
-   "12": 0.002,
-   "2": 0.201,
-   "3": 0.037,
+   "0": 0.468,
+   "1": 0.202,
+   "10": 0.003,
+   "11": 0.003,
+   "12": 0.003,
+   "2": 0.212,
+   "3": 0.047,
    "4": 0.045,
-   "5": 0.01,
-   "6": 0.007
+   "5": 0.012,
+   "6": 0.003
   },
   "exterior_door_types": {
-   "ArchedHalfDoor": 0.093,
-   "CryptDoor": 0.111,
-   "DunMirDoor": 0.095,
-   "Gate": 0.064,
-   "WoodAndSteelHalfDoor": 0.068,
-   "WoodenDoor": 0.063
+   "ArchedHalfDoor": 0.111,
+   "CryptDoor": 0.076,
+   "DunMirDoor": 0.114,
+   "Gate": 0.079,
+   "WoodAndSteelHalfDoor": 0.077,
+   "WoodenDoor": 0.083
   },
   "hall_share": [
-   0.42,
-   0.57,
-   0.74
+   0.44,
+   0.61,
+   0.76
   ],
   "interior_door_types": {
-   "ArchedDoor": 0.086,
-   "ArchedHalfDoor": 0.083,
-   "DunMirDoor": 0.083,
-   "GalavaHalfDoor": 0.06,
-   "JailDoor": 0.076,
-   "LOTDHalfDoor": 0.058
+   "ArchedDoor": 0.105,
+   "ArchedHalfDoor": 0.114,
+   "DunMirDoor": 0.104,
+   "Gate": 0.069,
+   "JailDoor": 0.104,
+   "WoodenDoor": 0.074
   },
   "interior_doors_per_extra_room": [
    0.0,
-   0.86,
-   1.0
+   1.0,
+   1.25
   ],
   "interior_wall_materials": {
-   "Cobblestone": 0.06,
-   "DunMirCathedral": 0.065,
-   "DungeonStone": 0.134,
-   "GalavaTownWall": 0.136,
-   "LOTDBrick": 0.091
+   "Cobblestone": 0.101,
+   "DunMirCathedral": 0.115,
+   "DungeonStone": 0.076,
+   "GalavaTownWall": 0.112,
+   "StoneGray": 0.088
   },
   "nearest_gap_units": [
    3.0,
    5.0,
-   15.0
+   20.0
   ],
   "outside_floors": {
-   "CaveHardBrown": 0.063,
-   "DirtDark2": 0.056,
-   "GrassNorm": 0.119,
-   "GrassSparse2": 0.046,
-   "GreenBrick": 0.139,
-   "LOTDPitted": 0.081
+   "CaveHardBrown": 0.078,
+   "DirtDark2": 0.047,
+   "GrassNorm": 0.122,
+   "GrassSparse2": 0.07,
+   "GreenBrick": 0.154,
+   "LOTDPitted": 0.113
   },
   "room_floors": {
-   "DirtDark2": 0.057,
-   "GalavaBrick": 0.031,
-   "GreenBrick": 0.192,
-   "IxBrickFancy": 0.023,
-   "LOTDBlackMarble": 0.036,
-   "LOTDDark2": 0.03,
-   "LOTDPitted": 0.129,
-   "OakWoodFloor": 0.032
+   "DirtDark2": 0.029,
+   "GalavaBrick": 0.034,
+   "GreenBrick": 0.219,
+   "LOTDBlackMarble": 0.049,
+   "LOTDPitted": 0.169,
+   "RugTanLightNorm": 0.028,
+   "TileDark": 0.029,
+   "WoodGray2": 0.029
   },
   "room_long_short_units": {
    "long": [
@@ -90,31 +90,31 @@
    "short": [
     4.0,
     6.0,
-    9.0
+    8.0
    ]
   },
   "rooms": {
-   "1": 0.538,
-   "10": 0.037,
-   "2": 0.164,
-   "3": 0.095,
-   "4": 0.049,
-   "5": 0.044,
-   "6": 0.03,
-   "7": 0.013,
-   "8": 0.021,
-   "9": 0.009
+   "1": 0.541,
+   "10": 0.03,
+   "2": 0.178,
+   "3": 0.109,
+   "4": 0.041,
+   "5": 0.048,
+   "6": 0.017,
+   "7": 0.006,
+   "8": 0.02,
+   "9": 0.01
   },
   "shapes": {
    "H": 0.002,
-   "L": 0.118,
-   "T": 0.183,
-   "U": 0.02,
-   "Z": 0.088,
-   "courtyard": 0.005,
-   "cross": 0.032,
-   "irregular": 0.071,
-   "rect": 0.483
+   "L": 0.108,
+   "T": 0.163,
+   "U": 0.019,
+   "Z": 0.062,
+   "courtyard": 0.007,
+   "cross": 0.033,
+   "irregular": 0.083,
+   "rect": 0.523
   },
   "size_units": {
    "H": [
@@ -125,151 +125,151 @@
    "W": [
     7,
     12,
-    22
+    20
    ]
   },
   "tiles": [
-   22,
-   64,
-   171
+   24,
+   56,
+   162
   ],
-  "weighted": 438.33
+  "weighted": 301.33
  },
  "freestanding": {
   "area_units_per_room": [
-   34.67,
-   47.33,
-   74.0
+   31.5,
+   45.67,
+   64.4
   ],
-  "buildings": 421,
-  "corridor_share": 0.097,
+  "buildings": 299,
+  "corridor_share": 0.048,
   "entrance_sides": {
-   "u_max": 0.321,
-   "u_min": 0.247,
-   "v_max": 0.209,
-   "v_min": 0.223
+   "u_max": 0.322,
+   "u_min": 0.228,
+   "v_max": 0.211,
+   "v_min": 0.239
   },
   "entrances": {
-   "0": 0.317,
-   "1": 0.235,
-   "10": 0.005,
-   "11": 0.005,
-   "12": 0.005,
-   "2": 0.261,
-   "3": 0.077,
-   "4": 0.065,
-   "5": 0.02,
-   "6": 0.01
+   "0": 0.234,
+   "1": 0.282,
+   "10": 0.007,
+   "11": 0.007,
+   "12": 0.007,
+   "2": 0.26,
+   "3": 0.102,
+   "4": 0.069,
+   "5": 0.022,
+   "6": 0.007
   },
   "exterior_door_types": {
-   "ArchedHalfDoor": 0.12,
-   "CryptDoor": 0.132,
-   "DunMirDoor": 0.123,
-   "Gate": 0.06,
-   "SpikedDoor": 0.069,
-   "WoodAndSteelHalfDoor": 0.074
+   "ArchedHalfDoor": 0.142,
+   "CryptDoor": 0.109,
+   "DunMirDoor": 0.155,
+   "Gate": 0.08,
+   "WoodAndSteelHalfDoor": 0.09,
+   "WoodenDoor": 0.077
   },
   "hall_share": [
    0.37,
-   0.54,
-   0.74
+   0.56,
+   0.78
   ],
   "interior_door_types": {
-   "AncientRuinDoor": 0.045,
-   "ArchedDoor": 0.116,
-   "ArchedHalfDoor": 0.179,
-   "DunMirDoor": 0.158,
-   "LOTDHalfDoor": 0.052,
-   "WoodenDoor": 0.105
+   "ArchedDoor": 0.159,
+   "ArchedHalfDoor": 0.246,
+   "DunMirDoor": 0.211,
+   "DunMirHalfDoor": 0.058,
+   "JailDoor": 0.053,
+   "WoodenDoor": 0.144
   },
   "interior_doors_per_extra_room": [
-   0.0,
+   0.5,
    1.0,
    1.0
   ],
   "interior_wall_materials": {
-   "Cobblestone": 0.07,
-   "DunMirCathedral": 0.141,
-   "GalavaTownWall": 0.146,
-   "StoneGray": 0.097,
-   "StuccoLightWood": 0.073
+   "Cobblestone": 0.106,
+   "DunMirCathedral": 0.226,
+   "GalavaTownWall": 0.129,
+   "StoneGray": 0.156,
+   "StuccoLightWood": 0.117
   },
   "nearest_gap_units": [
    3.0,
    5.0,
-   15.0
+   20.0
   ],
   "outside_floors": {
-   "CaveHardBrown": 0.072,
-   "GalavaBrick2": 0.055,
-   "GrassNorm": 0.183,
-   "GrassSparse2": 0.073,
-   "GreenBrick": 0.142,
-   "SwampGrass": 0.051
+   "CaveHardBrown": 0.113,
+   "GalavaBrick": 0.069,
+   "GalavaBrick2": 0.071,
+   "GrassNorm": 0.185,
+   "GrassSparse2": 0.114,
+   "GreenBrick": 0.165
   },
   "room_floors": {
-   "DirtDark2": 0.067,
-   "GalavaBrick": 0.045,
-   "GreenBrick": 0.199,
-   "LOTDPitted": 0.062,
-   "OakWoodFloor": 0.069,
-   "RugTanLightNorm": 0.041,
-   "WoodGray": 0.036,
-   "WoodGray2": 0.03
+   "GalavaBrick": 0.057,
+   "GreenBrick": 0.227,
+   "LOTDBlackMarble": 0.035,
+   "LOTDPitted": 0.07,
+   "OakWoodFloor": 0.04,
+   "RugTanLightNorm": 0.061,
+   "WoodGray": 0.052,
+   "WoodGray2": 0.046
   },
   "room_long_short_units": {
    "long": [
     5.0,
-    8.0,
-    12.0
+    7.0,
+    11.0
    ],
    "short": [
     4.0,
     6.0,
-    8.0
+    7.0
    ]
   },
   "rooms": {
-   "1": 0.528,
-   "10": 0.025,
-   "2": 0.179,
-   "3": 0.11,
-   "4": 0.059,
-   "5": 0.044,
-   "6": 0.025,
-   "7": 0.012,
-   "8": 0.008,
-   "9": 0.01
+   "1": 0.493,
+   "10": 0.022,
+   "2": 0.197,
+   "3": 0.137,
+   "4": 0.052,
+   "5": 0.045,
+   "6": 0.015,
+   "7": 0.01,
+   "8": 0.012,
+   "9": 0.015
   },
   "shapes": {
-   "H": 0.001,
-   "L": 0.156,
-   "T": 0.1,
-   "U": 0.033,
-   "Z": 0.054,
-   "courtyard": 0.01,
-   "cross": 0.005,
-   "irregular": 0.086,
-   "rect": 0.553
+   "H": 0.002,
+   "L": 0.147,
+   "T": 0.085,
+   "U": 0.036,
+   "Z": 0.015,
+   "courtyard": 0.015,
+   "cross": 0.007,
+   "irregular": 0.094,
+   "rect": 0.599
   },
   "size_units": {
    "H": [
     5,
-    8,
-    12
+    7,
+    11
    ],
    "W": [
-    6,
+    7,
     10,
     17
    ]
   },
   "tiles": [
-   19,
-   51,
-   111
+   24,
+   48,
+   99
   ],
-  "weighted": 202.42
+  "weighted": 133.42
  },
  "schema_version": 1,
  "shape_definitions": {
@@ -284,111 +284,6 @@
   "rect": "no part of the bounding box missing"
  },
  "styles": {
-  "ancient_ruin": {
-   "area_units_per_room": [
-    22.67,
-    22.67,
-    114.43
-   ],
-   "buildings": 14,
-   "corridor_share": 0.5,
-   "entrance_sides": {
-    "u_max": 0.667,
-    "v_min": 0.333
-   },
-   "entrances": {
-    "0": 0.714,
-    "1": 0.143,
-    "2": 0.143
-   },
-   "exterior_door_types": {
-    "AncientRuinDoor": 1.0
-   },
-   "exterior_wall": "AncientRuin",
-   "freestanding_share": 0.64,
-   "hall_share": [
-    0.36,
-    0.36,
-    0.53
-   ],
-   "interior_door_types": {
-    "AncientRuinDoor": 1.0
-   },
-   "interior_doors_per_extra_room": [
-    0.0,
-    0.0,
-    1.67
-   ],
-   "interior_wall_materials": {
-    "AncientRuin": 0.98,
-    "AncientRuinShort": 0.02
-   },
-   "missing_wall_facings": [],
-   "nearest_gap_units": [
-    1.0,
-    3.0,
-    3.0
-   ],
-   "outside_floors": {
-    "AncientRuin": 0.115,
-    "AncientRuinRough": 0.638,
-    "DirtLight2": 0.037,
-    "GalavaBrownMarble": 0.009,
-    "GrassDenseYellow": 0.045,
-    "GrassNorm": 0.148
-   },
-   "room_floors": {
-    "AncientRuin": 0.061,
-    "AncientRuinRough": 0.874,
-    "DirtLight2": 0.024,
-    "GrassNorm": 0.02,
-    "GrassSparse2": 0.02
-   },
-   "room_long_short_units": {
-    "long": [
-     6.0,
-     7.0,
-     10.0
-    ],
-    "short": [
-     4.0,
-     5.0,
-     8.0
-    ]
-   },
-   "rooms": {
-    "1": 0.714,
-    "6": 0.143,
-    "7": 0.143
-   },
-   "shapes": {
-    "L": 0.143,
-    "T": 0.286,
-    "Z": 0.143,
-    "irregular": 0.143,
-    "rect": 0.286
-   },
-   "size_units": {
-    "H": [
-     4,
-     6,
-     10
-    ],
-    "W": [
-     6,
-     8,
-     20
-    ]
-   },
-   "source": "freestanding",
-   "tiles": [
-    13,
-    16,
-    80
-   ],
-   "wall_pieces_complete": true,
-   "weighted": 7.0
-  },
   "blue_brick_house": {
    "area_units_per_room": null,
    "buildings": 3,
@@ -405,7 +300,7 @@
     "GalavaHalfDoor": 1.0
    },
    "exterior_wall": "BrickBlue",
-   "freestanding_share": 0.16,
+   "freestanding_share": 0.17,
    "hall_share": null,
    "interior_door_types": {},
    "interior_doors_per_extra_room": null,
@@ -465,212 +360,6 @@
    "wall_pieces_complete": true,
    "weighted": 3.0
   },
-  "blue_stone_house": {
-   "area_units_per_room": [
-    9.0,
-    138.0,
-    161.17
-   ],
-   "buildings": 9,
-   "corridor_share": 0.0,
-   "entrance_sides": {
-    "u_max": 0.2,
-    "u_min": 0.6,
-    "v_max": 0.2
-   },
-   "entrances": {
-    "0": 0.556,
-    "4": 0.222,
-    "6": 0.222
-   },
-   "exterior_door_types": {
-    "ArchedHalfDoor": 0.2,
-    "BarredGate": 0.4,
-    "GalavaHalfDoor": 0.4
-   },
-   "exterior_wall": "StoneBlue",
-   "freestanding_share": 0.82,
-   "hall_share": [
-    0.35,
-    0.5,
-    0.73
-   ],
-   "interior_door_types": {
-    "CryptDoor": 1.0
-   },
-   "interior_doors_per_extra_room": [
-    0.0,
-    0.0,
-    0.4
-   ],
-   "interior_wall_materials": {
-    "CathedralBlueFace": 0.013,
-    "Dilapidated": 0.222,
-    "DungeonCobble": 0.196,
-    "LOTDMagicOrnate": 0.085,
-    "StoneBlue": 0.484
-   },
-   "missing_wall_facings": [],
-   "nearest_gap_units": [
-    0.0,
-    5.0,
-    5.0
-   ],
-   "outside_floors": {
-    "DirtLight2": 0.004,
-    "DungeonStoneDark": 0.089,
-    "DungeonStoneMuddy": 0.358,
-    "GrassNorm": 0.018,
-    "WoodLight": 0.397,
-    "WoodLight2": 0.134
-   },
-   "room_floors": {
-    "DirtLight2": 0.111,
-    "DungeonStoneDark": 0.148,
-    "DungeonStoneMuddy": 0.296,
-    "RugTanLightNorm": 0.037,
-    "WoodLight": 0.37,
-    "WoodLight2": 0.037
-   },
-   "room_long_short_units": {
-    "long": [
-     10.0,
-     13.0,
-     15.0
-    ],
-    "short": [
-     6.0,
-     9.0,
-     12.0
-    ]
-   },
-   "rooms": {
-    "1": 0.333,
-    "2": 0.222,
-    "3": 0.222,
-    "6": 0.222
-   },
-   "shapes": {
-    "U": 0.222,
-    "Z": 0.444,
-    "rect": 0.333
-   },
-   "size_units": {
-    "H": [
-     3,
-     13,
-     15
-    ],
-    "W": [
-     6,
-     16,
-     37
-    ]
-   },
-   "source": "freestanding",
-   "tiles": [
-    8,
-    144,
-    325
-   ],
-   "wall_pieces_complete": true,
-   "weighted": 4.5
-  },
-  "brick_house": {
-   "area_units_per_room": [
-    38.5,
-    38.5,
-    38.5
-   ],
-   "buildings": 3,
-   "corridor_share": 1.0,
-   "entrance_sides": {
-    "u_min": 1.0
-   },
-   "entrances": {
-    "0": 0.5,
-    "2": 0.5
-   },
-   "exterior_door_types": {
-    "CryptDoor": 1.0
-   },
-   "exterior_wall": "BrickPlain",
-   "freestanding_share": 0.0,
-   "hall_share": [
-    0.51,
-    0.51,
-    0.51
-   ],
-   "interior_door_types": {
-    "CryptDoor": 0.444,
-    "CryptGate": 0.444,
-    "LOTDSingleDoor": 0.111
-   },
-   "interior_doors_per_extra_room": [
-    0.8,
-    0.8,
-    0.8
-   ],
-   "interior_wall_materials": {
-    "BrickPlain": 0.773,
-    "IronFence": 0.227
-   },
-   "missing_wall_facings": [],
-   "nearest_gap_units": null,
-   "outside_floors": {
-    "DirtDark2": 0.009,
-    "DirtHard": 0.419,
-    "IxBrickSmallRev": 0.291,
-    "TileDark": 0.068,
-    "TileStarBlack": 0.214
-   },
-   "room_floors": {
-    "IxBrickSmall": 0.25,
-    "IxBrickSmallRev": 0.167,
-    "RugBlueDark": 0.083,
-    "TileStarBlack": 0.5
-   },
-   "room_long_short_units": {
-    "long": [
-     3.0,
-     9.0,
-     12.0
-    ],
-    "short": [
-     2.0,
-     5.0,
-     10.0
-    ]
-   },
-   "rooms": {
-    "1": 0.5,
-    "6": 0.5
-   },
-   "shapes": {
-    "Z": 0.5,
-    "rect": 0.5
-   },
-   "size_units": {
-    "H": [
-     12,
-     12,
-     19
-    ],
-    "W": [
-     14,
-     14,
-     26
-    ]
-   },
-   "source": "all",
-   "tiles": [
-    133,
-    133,
-    164
-   ],
-   "wall_pieces_complete": true,
-   "weighted": 2.0
-  },
   "cobble_house": {
    "area_units_per_room": [
     29.5,
@@ -699,7 +388,7 @@
     "WoodAndSteelHalfDoor": 0.667
    },
    "exterior_wall": "Cobblestone",
-   "freestanding_share": 0.38,
+   "freestanding_share": 0.42,
    "hall_share": [
     0.25,
     0.27,
@@ -793,124 +482,110 @@
   },
   "dungeon_block": {
    "area_units_per_room": [
+    40.5,
     44.0,
-    46.0,
-    62.0
+    48.5
    ],
-   "buildings": 69,
+   "buildings": 43,
    "corridor_share": 0.0,
    "entrance_sides": {
-    "u_max": 0.267,
-    "u_min": 0.244,
-    "v_max": 0.267,
-    "v_min": 0.222
+    "u_max": 0.316,
+    "u_min": 0.289,
+    "v_max": 0.211,
+    "v_min": 0.184
    },
    "entrances": {
-    "0": 0.407,
-    "1": 0.07,
-    "2": 0.244,
-    "3": 0.14,
-    "4": 0.105,
-    "5": 0.035
+    "0": 0.17,
+    "1": 0.064,
+    "2": 0.255,
+    "3": 0.255,
+    "4": 0.191,
+    "5": 0.064
    },
    "exterior_door_types": {
-    "CryptDoor": 0.733,
-    "CryptGate": 0.089,
-    "Gate": 0.044,
-    "JailDoor": 0.133
+    "CryptDoor": 0.684,
+    "CryptGate": 0.105,
+    "Gate": 0.053,
+    "JailDoor": 0.158
    },
    "exterior_wall": "DungeonStone",
    "freestanding_share": 0.37,
    "hall_share": [
-    0.38,
-    0.63,
-    0.7
+    0.37,
+    0.57,
+    0.73
    ],
    "interior_door_types": {
-    "CryptDoor": 0.5,
-    "Gate": 0.25,
-    "IronFenceGate": 0.083,
-    "WoodAndSteelHalfDoor": 0.167
+    "CryptDoor": 1.0
    },
    "interior_doors_per_extra_room": [
     0.0,
     0.0,
-    2.0
+    0.0
    ],
    "interior_wall_materials": {
-    "DecidiousWallBrown": 0.008,
-    "DilapidatedShort": 0.093,
-    "DungeonStone": 0.853,
-    "IronFence": 0.047
+    "DungeonStone": 1.0
    },
    "missing_wall_facings": [],
    "nearest_gap_units": [
     3.0,
-    5.0,
+    3.0,
     11.0
    ],
    "outside_floors": {
-    "CryptFloor": 0.016,
-    "DirtDark2": 0.118,
-    "GalavaBrownMarble": 0.006,
-    "GrassNorm": 0.085,
-    "GreenBrick": 0.755,
-    "WoodGray": 0.006
+    "DirtDark2": 0.151,
+    "GreenBrick": 0.844,
+    "TileDark": 0.001,
+    "TileStarBlack": 0.004
    },
    "room_floors": {
-    "DirtDark2": 0.047,
-    "GalavaBrownMarble": 0.07,
-    "GrassNorm": 0.009,
-    "GreenBrick": 0.831,
-    "LOTDDark2": 0.017,
-    "TileDark": 0.017,
-    "WoodGray": 0.009
+    "DirtDark2": 0.021,
+    "GreenBrick": 0.947,
+    "TileDark": 0.032
    },
    "room_long_short_units": {
     "long": [
-     6.0,
-     8.0,
+     7.0,
+     9.0,
      9.0
     ],
     "short": [
-     4.0,
+     5.0,
      6.0,
      8.0
     ]
    },
    "rooms": {
-    "1": 0.686,
-    "2": 0.209,
-    "3": 0.07,
-    "4": 0.035
+    "1": 0.617,
+    "2": 0.255,
+    "3": 0.128
    },
    "shapes": {
-    "L": 0.209,
-    "Z": 0.07,
-    "courtyard": 0.035,
-    "irregular": 0.035,
-    "rect": 0.651
+    "L": 0.064,
+    "Z": 0.064,
+    "courtyard": 0.064,
+    "rect": 0.809
    },
    "size_units": {
     "H": [
-     4,
      6,
-     9
+     8,
+     10
     ],
     "W": [
-     6,
      9,
-     11
+     9,
+     13
     ]
    },
    "source": "freestanding",
    "tiles": [
-    15,
-    50,
-    73
+    42,
+    56,
+    81
    ],
    "wall_pieces_complete": true,
-   "weighted": 28.67
+   "weighted": 15.67
   },
   "dunmir_hall": {
    "area_units_per_room": [
@@ -1152,54 +827,48 @@
   },
   "galava_townhouse": {
    "area_units_per_room": [
-    41.21,
-    49.6,
-    50.67
+    35.5,
+    50.67,
+    69.2
    ],
-   "buildings": 30,
-   "corridor_share": 0.111,
+   "buildings": 23,
+   "corridor_share": 0.0,
    "entrance_sides": {
-    "u_max": 0.391,
-    "u_min": 0.065,
-    "v_max": 0.25,
-    "v_min": 0.293
+    "u_max": 0.462,
+    "u_min": 0.092,
+    "v_max": 0.262,
+    "v_min": 0.185
    },
    "entrances": {
-    "0": 0.113,
-    "1": 0.264,
-    "2": 0.453,
-    "3": 0.113,
-    "4": 0.057
+    "1": 0.314,
+    "2": 0.514,
+    "3": 0.171
    },
    "exterior_door_types": {
-    "ArchedDoor": 0.185,
-    "ArchedHalfDoor": 0.326,
-    "CryptDoor": 0.196,
-    "WoodAndSteelDoor": 0.065,
-    "WoodAndSteelHalfDoor": 0.13,
-    "WoodenDoor": 0.065
+    "ArchedDoor": 0.262,
+    "ArchedHalfDoor": 0.369,
+    "WoodAndSteelDoor": 0.092,
+    "WoodAndSteelHalfDoor": 0.185,
+    "WoodenDoor": 0.092
    },
    "exterior_wall": "GalavaTownWall",
-   "freestanding_share": 0.52,
+   "freestanding_share": 0.7,
    "hall_share": [
     0.41,
     0.51,
-    0.78
+    0.79
    ],
    "interior_door_types": {
-    "ArchedDoor": 0.667,
-    "ArchedHalfDoor": 0.148,
-    "CryptDoor": 0.037,
-    "GalavaHalfDoor": 0.148
+    "ArchedDoor": 0.818,
+    "ArchedHalfDoor": 0.182
    },
    "interior_doors_per_extra_room": [
-    0.31,
     0.71,
+    1.0,
     1.0
    ],
    "interior_wall_materials": {
-    "GalavaTownWall": 0.85,
-    "LOTDMagicOrnate": 0.15
+    "GalavaTownWall": 1.0
    },
    "missing_wall_facings": [],
    "nearest_gap_units": [
@@ -1208,59 +877,55 @@
     6.0
    ],
    "outside_floors": {
-    "DirtLight2": 0.043,
-    "GalavaBrick": 0.227,
-    "GalavaBrick2": 0.267,
-    "GrassNorm": 0.147,
-    "Lava": 0.05,
-    "VolcanicCraggy": 0.099
+    "BlueBrick7": 0.046,
+    "DirtLight2": 0.076,
+    "GalavaBrick": 0.282,
+    "GalavaBrick2": 0.279,
+    "GrassNorm": 0.227,
+    "WoodGray2": 0.055
    },
    "room_floors": {
-    "DirtDark2": 0.046,
-    "GalavaBrick": 0.334,
-    "GalavaBrick2": 0.26,
-    "LOTDDark2": 0.057,
-    "OakWoodFloor": 0.075,
-    "Redbrick3": 0.023,
-    "RedwoodFloor": 0.019,
-    "RugBlueNorm": 0.151
+    "GalavaBrick": 0.389,
+    "GalavaBrick2": 0.175,
+    "OakWoodFloor": 0.114,
+    "Redbrick3": 0.034,
+    "RedwoodFloor": 0.029,
+    "RugBlueNorm": 0.229,
+    "RugGreen": 0.018,
+    "RugRed": 0.011
    },
    "room_long_short_units": {
     "long": [
-     4.0,
+     5.0,
      6.0,
      10.0
     ],
     "short": [
      4.0,
      5.0,
-     8.0
+     6.0
     ]
    },
    "rooms": {
-    "1": 0.491,
-    "10": 0.057,
-    "3": 0.113,
-    "5": 0.17,
-    "6": 0.057,
-    "7": 0.019,
-    "8": 0.094
+    "1": 0.486,
+    "3": 0.171,
+    "5": 0.171,
+    "7": 0.029,
+    "8": 0.143
    },
    "shapes": {
-    "L": 0.321,
-    "T": 0.057,
-    "Z": 0.113,
-    "rect": 0.509
+    "L": 0.486,
+    "rect": 0.514
    },
    "size_units": {
     "H": [
      9,
-     12,
-     16
+     11,
+     12
     ],
     "W": [
      10,
-     16,
+     14,
      22
     ]
    },
@@ -1271,15 +936,15 @@
     204
    ],
    "wall_pieces_complete": true,
-   "weighted": 17.67
+   "weighted": 11.67
   },
   "ix_temple": {
    "area_units_per_room": [
-    21.0,
-    21.0,
+    28.0,
+    28.0,
     28.0
    ],
-   "buildings": 8,
+   "buildings": 6,
    "corridor_share": 0.0,
    "entrance_sides": {},
    "entrances": {
@@ -1291,7 +956,7 @@
    "hall_share": [
     0.56,
     0.56,
-    0.73
+    0.56
    ],
    "interior_door_types": {},
    "interior_doors_per_extra_room": [
@@ -1306,14 +971,13 @@
    "nearest_gap_units": [
     11.0,
     11.0,
-    24.0
+    11.0
    ],
    "outside_floors": {
-    "DirtCrackedDark": 0.005,
-    "DirtLight2": 0.16,
-    "IxBrick": 0.29,
-    "IxBrickFancy": 0.395,
-    "IxBrickRev": 0.15
+    "DirtLight2": 0.246,
+    "IxBrick": 0.446,
+    "IxBrickFancy": 0.077,
+    "IxBrickRev": 0.231
    },
    "room_floors": {
     "IxBrickFancy": 1.0
@@ -1331,397 +995,334 @@
     ]
    },
    "rooms": {
-    "1": 0.333,
-    "2": 0.667
+    "1": 0.5,
+    "2": 0.5
    },
    "shapes": {
-    "L": 0.333,
-    "Z": 0.333,
-    "rect": 0.333
+    "L": 0.5,
+    "rect": 0.5
    },
    "size_units": {
     "H": [
      5,
      5,
-     9
+     5
     ],
     "W": [
      5,
-     9,
+     5,
      12
     ]
    },
    "source": "freestanding",
    "tiles": [
     12,
-    22,
+    12,
     36
    ],
    "wall_pieces_complete": true,
-   "weighted": 3.0
+   "weighted": 2.0
   },
   "log_cabin": {
    "area_units_per_room": [
-    22.0,
-    41.92,
+    19.33,
+    41.0,
     47.33
    ],
-   "buildings": 50,
-   "corridor_share": 0.132,
+   "buildings": 34,
+   "corridor_share": 0.033,
    "entrance_sides": {
-    "u_max": 0.262,
-    "u_min": 0.41,
-    "v_max": 0.164,
-    "v_min": 0.164
+    "u_max": 0.303,
+    "u_min": 0.394,
+    "v_max": 0.061,
+    "v_min": 0.242
    },
    "entrances": {
-    "0": 0.219,
-    "1": 0.5,
-    "2": 0.198,
-    "4": 0.042,
-    "5": 0.042
+    "0": 0.266,
+    "1": 0.562,
+    "2": 0.109,
+    "4": 0.062
    },
    "exterior_door_types": {
-    "BandedPlankDoor": 0.426,
-    "BandedWoodenDoor": 0.098,
-    "DunMirDoor": 0.066,
-    "ThinWoodenDoor": 0.098,
-    "WoodAndSteelHalfDoor": 0.115,
-    "WoodenDoor": 0.131
+    "ArchedHalfDoor": 0.121,
+    "BandedPlankDoor": 0.242,
+    "ThinWoodenDoor": 0.182,
+    "WoodAndSteelHalfDoor": 0.212,
+    "WoodenDoor": 0.242
    },
    "exterior_wall": "Log",
-   "freestanding_share": 0.66,
+   "freestanding_share": 0.6,
    "hall_share": [
-    0.33,
+    0.44,
     0.53,
     0.61
    ],
    "interior_door_types": {
-    "ArchedDoor": 0.005,
-    "ArchedHalfDoor": 0.086,
-    "BandedPlankDoor": 0.346,
-    "Gate": 0.086,
-    "WoodenDoor": 0.476
+    "ArchedDoor": 0.008,
+    "ArchedHalfDoor": 0.124,
+    "BandedPlankDoor": 0.062,
+    "Gate": 0.124,
+    "WoodenDoor": 0.682
    },
    "interior_doors_per_extra_room": [
     0.5,
     1.0,
-    1.0
+    1.25
    ],
    "interior_wall_materials": {
-    "Cobblestone": 0.057,
-    "InvisibleBlockingWallSet": 0.051,
-    "InvisibleWallSet": 0.038,
-    "IronFence": 0.032,
-    "Log": 0.783
+    "Dilapidated": 0.031,
+    "InvisibleBlockingWallSet": 0.083,
+    "Log": 0.885
    },
    "missing_wall_facings": [],
    "nearest_gap_units": [
     4.0,
     5.0,
-    15.0
+    20.0
    ],
    "outside_floors": {
-    "DirtDark2": 0.037,
-    "DirtLight2": 0.051,
-    "GrassNorm": 0.625,
-    "GrassSparse2": 0.115,
-    "ManaMineDirt": 0.025,
-    "OakWoodFloor": 0.062
+    "DirtDark2": 0.055,
+    "DirtLight2": 0.104,
+    "GrassNorm": 0.461,
+    "GrassSparse2": 0.234,
+    "ManaMineDirt": 0.051,
+    "WeedsSparse": 0.032
    },
    "room_floors": {
-    "DirtDark2": 0.087,
-    "DirtHard": 0.097,
-    "OakWoodFloor": 0.316,
-    "RugGreen": 0.056,
-    "WoodGray": 0.125,
-    "WoodGray2": 0.042,
-    "WoodLight": 0.049,
-    "WoodSlatFloor": 0.049
+    "DirtDark2": 0.13,
+    "DirtHard": 0.146,
+    "ManaMineDirt": 0.063,
+    "RugGreen": 0.083,
+    "WoodGray": 0.188,
+    "WoodGray2": 0.063,
+    "WoodLight": 0.073,
+    "WoodSlatFloor": 0.073
    },
    "room_long_short_units": {
     "long": [
      5.0,
-     7.0,
-     10.0
+     6.0,
+     9.0
     ],
     "short": [
-     4.0,
+     3.0,
      5.0,
-     8.0
+     6.0
     ]
    },
    "rooms": {
-    "1": 0.604,
-    "10": 0.042,
-    "2": 0.062,
-    "3": 0.208,
-    "4": 0.042,
-    "5": 0.042
+    "1": 0.531,
+    "2": 0.094,
+    "3": 0.312,
+    "5": 0.062
    },
    "shapes": {
-    "H": 0.01,
-    "L": 0.083,
-    "T": 0.062,
-    "U": 0.073,
+    "H": 0.016,
+    "L": 0.125,
+    "T": 0.031,
+    "U": 0.109,
     "irregular": 0.125,
-    "rect": 0.646
+    "rect": 0.594
    },
    "size_units": {
     "H": [
      4,
      5,
-     10
+     9
     ],
     "W": [
-     4,
-     10,
+     5,
+     11,
      13
     ]
    },
    "source": "freestanding",
    "tiles": [
-    9,
-    34,
-    98
+    12,
+    28,
+    84
    ],
    "wall_pieces_complete": true,
-   "weighted": 24.0
+   "weighted": 16.0
   },
   "lotd_crypt": {
-   "area_units_per_room": [
-    85.0,
-    85.0,
-    85.0
-   ],
-   "buildings": 23,
-   "corridor_share": 1.0,
-   "entrance_sides": {
-    "u_min": 1.0
-   },
+   "area_units_per_room": null,
+   "buildings": 17,
+   "corridor_share": 0.0,
+   "entrance_sides": {},
    "entrances": {
-    "0": 0.885,
-    "1": 0.115
+    "0": 1.0
    },
-   "exterior_door_types": {
-    "CryptDoor": 1.0
-   },
+   "exterior_door_types": {},
    "exterior_wall": "LOTDBrick",
-   "freestanding_share": 0.12,
-   "hall_share": [
-    0.42,
-    0.42,
-    0.42
-   ],
-   "interior_door_types": {
-    "LOTDHalfDoor": 1.0
-   },
-   "interior_doors_per_extra_room": [
-    0.67,
-    0.67,
-    0.67
-   ],
-   "interior_wall_materials": {
-    "LOTDBrick": 1.0
-   },
+   "freestanding_share": 0.1,
+   "hall_share": null,
+   "interior_door_types": {},
+   "interior_doors_per_extra_room": null,
+   "interior_wall_materials": {},
    "missing_wall_facings": [],
    "nearest_gap_units": [
-    11.0,
+    45.0,
     45.0,
     46.0
    ],
    "outside_floors": {
-    "DungeonStoneDark": 0.054,
-    "LOTDBlackMarble": 0.023,
-    "LOTDDark2": 0.456,
-    "LOTDPitted": 0.417,
-    "TileDark": 0.008,
-    "TileStarBlack": 0.042
+    "LOTDBlackMarble": 0.053,
+    "LOTDPitted": 0.947
    },
    "room_floors": {
-    "DungeonStoneDark": 0.26,
-    "LOTDDark2": 0.029,
-    "LOTDPitted": 0.654,
-    "TileDark": 0.029,
-    "TileStarBlack": 0.029
+    "LOTDPitted": 1.0
    },
    "room_long_short_units": {
     "long": [
-     4.0,
-     8.0,
-     18.0
+     3.0,
+     5.0,
+     6.0
+    ],
+    "short": [
+     2.0,
+     3.0,
+     3.0
+    ]
+   },
+   "rooms": {
+    "1": 1.0
+   },
+   "shapes": {
+    "rect": 1.0
+   },
+   "size_units": {
+    "H": [
+     2,
+     3,
+     3
+    ],
+    "W": [
+     3,
+     5,
+     6
+    ]
+   },
+   "source": "freestanding",
+   "tiles": [
+    2,
+    8,
+    10
+   ],
+   "wall_pieces_complete": true,
+   "weighted": 5.67
+  },
+  "lotd_ornate": {
+   "area_units_per_room": [
+    21.0,
+    45.67,
+    45.67
+   ],
+   "buildings": 16,
+   "corridor_share": 0.333,
+   "entrance_sides": {
+    "u_max": 0.167,
+    "u_min": 0.167,
+    "v_min": 0.667
+   },
+   "entrances": {
+    "0": 0.727,
+    "3": 0.273
+   },
+   "exterior_door_types": {
+    "LOTDHalfDoor": 0.667,
+    "LOTDSingleDoor": 0.333
+   },
+   "exterior_wall": "LOTDOrnate",
+   "freestanding_share": 0.59,
+   "hall_share": [
+    0.5,
+    0.85,
+    0.85
+   ],
+   "interior_door_types": {},
+   "interior_doors_per_extra_room": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "interior_wall_materials": {
+    "LOTDBrick": 0.143,
+    "LOTDOrnate": 0.857
+   },
+   "missing_wall_facings": [],
+   "nearest_gap_units": [
+    4.0,
+    5.0,
+    10.0
+   ],
+   "outside_floors": {
+    "LOTDBlackMarble": 0.377,
+    "LOTDDark2": 0.04,
+    "LOTDPitted": 0.583
+   },
+   "room_floors": {
+    "LOTDBlackMarble": 0.5,
+    "LOTDPitted": 0.5
+   },
+   "room_long_short_units": {
+    "long": [
+     3.0,
+     7.0,
+     10.0
     ],
     "short": [
      3.0,
-     4.0,
+     3.0,
      6.0
     ]
    },
    "rooms": {
-    "1": 0.885,
-    "4": 0.115
+    "1": 0.591,
+    "2": 0.136,
+    "3": 0.273
    },
    "shapes": {
-    "Z": 0.115,
-    "rect": 0.885
+    "T": 0.273,
+    "U": 0.273,
+    "irregular": 0.136,
+    "rect": 0.318
    },
    "size_units": {
     "H": [
      3,
-     3,
-     4
+     6,
+     11
     ],
     "W": [
-     4,
-     5,
-     8
+     3,
+     10,
+     17
     ]
    },
    "source": "freestanding",
    "tiles": [
-    6,
-    9,
-    21
+    4,
+    31,
+    99
    ],
    "wall_pieces_complete": true,
-   "weighted": 8.67
-  },
-  "lotd_ornate": {
-   "area_units_per_room": [
-    45.67,
-    82.2,
-    96.8
-   ],
-   "buildings": 34,
-   "corridor_share": 0.222,
-   "entrance_sides": {
-    "u_max": 0.143,
-    "u_min": 0.357,
-    "v_max": 0.071,
-    "v_min": 0.429
-   },
-   "entrances": {
-    "0": 0.633,
-    "1": 0.061,
-    "2": 0.122,
-    "3": 0.184
-   },
-   "exterior_door_types": {
-    "CryptGate": 0.143,
-    "LOTDHalfDoor": 0.571,
-    "LOTDSingleDoor": 0.286
-   },
-   "exterior_wall": "LOTDOrnate",
-   "freestanding_share": 0.73,
-   "hall_share": [
-    0.5,
-    0.59,
-    0.83
-   ],
-   "interior_door_types": {
-    "CryptGate": 0.034,
-    "LOTDHalfDoor": 0.621,
-    "LOTDSingleDoor": 0.345
-   },
-   "interior_doors_per_extra_room": [
-    0.0,
-    0.0,
-    1.0
-   ],
-   "interior_wall_materials": {
-    "IronFence": 0.08,
-    "LOTDBrick": 0.023,
-    "LOTDOrnate": 0.897
-   },
-   "missing_wall_facings": [],
-   "nearest_gap_units": [
-    5.0,
-    9.0,
-    11.0
-   ],
-   "outside_floors": {
-    "DirtDark2": 0.008,
-    "IceFloorRough": 0.391,
-    "LOTDBlackMarble": 0.163,
-    "LOTDDark": 0.032,
-    "LOTDDark2": 0.148,
-    "LOTDPitted": 0.25
-   },
-   "room_floors": {
-    "DungeonStoneDark": 0.012,
-    "IceFloorRough": 0.122,
-    "LOTDBlackMarble": 0.224,
-    "LOTDDark": 0.024,
-    "LOTDDark2": 0.19,
-    "LOTDPitted": 0.427
-   },
-   "room_long_short_units": {
-    "long": [
-     7.0,
-     10.0,
-     12.0
-    ],
-    "short": [
-     3.0,
-     6.0,
-     10.0
-    ]
-   },
-   "rooms": {
-    "1": 0.449,
-    "2": 0.245,
-    "3": 0.122,
-    "4": 0.061,
-    "5": 0.122
-   },
-   "shapes": {
-    "L": 0.061,
-    "T": 0.306,
-    "U": 0.122,
-    "irregular": 0.184,
-    "rect": 0.327
-   },
-   "size_units": {
-    "H": [
-     3,
-     11,
-     15
-    ],
-    "W": [
-     4,
-     17,
-     18
-    ]
-   },
-   "source": "freestanding",
-   "tiles": [
-    6,
-    99,
-    150
-   ],
-   "wall_pieces_complete": true,
-   "weighted": 16.33
+   "weighted": 7.33
   },
   "ogre_hut": {
    "area_units_per_room": [
-    38.0,
     38.67,
-    50.0
+    38.67,
+    38.67
    ],
-   "buildings": 20,
+   "buildings": 9,
    "corridor_share": 0.0,
    "entrance_sides": {
-    "u_max": 0.5,
-    "u_min": 0.318,
-    "v_max": 0.091,
-    "v_min": 0.091
+    "v_min": 1.0
    },
    "entrances": {
-    "0": 0.308,
-    "1": 0.077,
-    "2": 0.385,
-    "3": 0.077,
-    "4": 0.154
+    "0": 0.667,
+    "1": 0.333
    },
    "exterior_door_types": {
     "SpikedDoor": 1.0
@@ -1729,84 +1330,72 @@
    "exterior_wall": "OgreWall",
    "freestanding_share": 1.0,
    "hall_share": [
-    0.5,
-    0.53,
+    0.81,
+    0.81,
     0.81
    ],
    "interior_door_types": {
-    "AncientDungeonDoor": 0.167,
-    "DunMirDoor": 0.167,
-    "OgreCageDoor": 0.222,
-    "SpikedDoor": 0.389,
-    "ThinWoodenDoor": 0.056
+    "DunMirDoor": 0.75,
+    "ThinWoodenDoor": 0.25
    },
    "interior_doors_per_extra_room": [
-    0.0,
-    0.67,
+    1.0,
+    1.0,
     1.0
    ],
    "interior_wall_materials": {
-    "OgreCage": 0.177,
-    "OgreWall": 0.823
+    "OgreWall": 1.0
    },
    "missing_wall_facings": [],
    "nearest_gap_units": [
-    7.0,
     11.0,
-    15.0
+    11.0,
+    75.0
    ],
    "outside_floors": {
-    "DirtDark": 0.103,
-    "DirtDark2": 0.1,
-    "GalavaBrick": 0.032,
-    "GrassNorm": 0.033,
-    "SwampGrass": 0.56,
-    "WeedsSparse": 0.128
+    "GalavaBrick": 0.127,
+    "GrassNorm": 0.13,
+    "GrassSparse2": 0.01,
+    "SwampGrass": 0.135,
+    "WeedsSparse": 0.506,
+    "WoodGray2": 0.092
    },
    "room_floors": {
-    "AncientRuin": 0.077,
-    "DirtDark2": 0.628,
-    "DirtLight2": 0.038,
-    "GalavaBrick": 0.154,
-    "SwampGrass": 0.026,
-    "WeedsSparse": 0.026,
-    "WoodGray2": 0.051
+    "GalavaBrick": 0.667,
+    "WeedsSparse": 0.111,
+    "WoodGray2": 0.222
    },
    "room_long_short_units": {
     "long": [
-     6.0,
-     8.0,
+     5.0,
+     10.0,
      10.0
     ],
     "short": [
      4.0,
-     6.0,
-     8.0
+     7.0,
+     7.0
     ]
    },
    "rooms": {
-    "1": 0.538,
-    "2": 0.231,
-    "3": 0.154,
-    "4": 0.077
+    "1": 0.667,
+    "3": 0.333
    },
    "shapes": {
-    "L": 0.308,
-    "T": 0.077,
-    "courtyard": 0.077,
-    "irregular": 0.077,
-    "rect": 0.462
+    "courtyard": 0.333,
+    "irregular": 0.333,
+    "rect": 0.333
    },
    "size_units": {
     "H": [
      7,
-     8,
+     7,
      10
     ],
     "W": [
      10,
      10,
-     14
+     26
     ]
    },
    "source": "freestanding",
@@ -1816,7 +1405,7 @@
     81
    ],
    "wall_pieces_complete": true,
-   "weighted": 13.0
+   "weighted": 3.0
   },
   "red_brick_house": {
    "area_units_per_room": [
@@ -1923,71 +1512,70 @@
   "ruined_shack": {
    "area_units_per_room": [
     33.33,
-    35.0,
-    48.0
+    33.33,
+    35.0
    ],
-   "buildings": 24,
-   "corridor_share": 0.4,
+   "buildings": 21,
+   "corridor_share": 0.0,
    "entrance_sides": {
-    "u_max": 0.182,
-    "v_max": 0.273,
-    "v_min": 0.545
+    "u_max": 0.222,
+    "v_max": 0.222,
+    "v_min": 0.556
    },
    "entrances": {
-    "0": 0.102,
-    "1": 0.898
+    "0": 0.122,
+    "1": 0.878
    },
    "exterior_door_types": {
-    "ArchedDoor": 0.091,
-    "BandedPlankDoor": 0.455,
-    "Dilapidated": 0.273,
-    "ThinWoodenDoor": 0.182
+    "ArchedDoor": 0.111,
+    "BandedPlankDoor": 0.333,
+    "Dilapidated": 0.333,
+    "ThinWoodenDoor": 0.222
    },
    "exterior_wall": "Dilapidated",
    "freestanding_share": 1.0,
    "hall_share": [
     0.45,
-    0.72,
-    0.72
+    0.45,
+    0.92
    ],
    "interior_door_types": {
-    "ArchedHalfDoor": 0.316,
-    "BandedPlankDoor": 0.211,
-    "BarredGate": 0.053,
-    "ThinWoodenDoor": 0.421
+    "ArchedHalfDoor": 0.353,
+    "BandedPlankDoor": 0.118,
+    "BarredGate": 0.059,
+    "ThinWoodenDoor": 0.471
    },
    "interior_doors_per_extra_room": [
-    0.0,
     1.0,
-    1.0
+    1.0,
+    2.0
    ],
    "interior_wall_materials": {
-    "DecidiousWallGreen": 0.065,
-    "Dilapidated": 0.935
+    "Dilapidated": 1.0
    },
    "missing_wall_facings": [],
    "nearest_gap_units": [
-    9.0,
+    33.0,
     34.0,
-    47.0
+    52.0
    ],
    "outside_floors": {
-    "CaveHardDark": 0.082,
-    "DirtDark2": 0.071,
-    "GrassNorm": 0.098,
-    "GrassSparse2": 0.18,
-    "RedwoodFloor": 0.098,
-    "SwampGrass": 0.328
+    "CaveHardDark": 0.106,
+    "DirtDark2": 0.089,
+    "DirtLight2": 0.033,
+    "GrassNorm": 0.126,
+    "GrassSparse2": 0.233,
+    "SwampGrass": 0.334
    },
    "room_floors": {
-    "DirtDark2": 0.082,
-    "OakWoodFloor": 0.082,
-    "WoodGray": 0.327,
-    "WoodGray2": 0.136,
-    "WoodLight2": 0.041,
-    "WoodSlatFloor": 0.122,
-    "WoodThinSlatDark": 0.082,
-    "WoodThinSlatDarkREV": 0.061
+    "GrassSparse2": 0.024,
+    "RugBlueNorm": 0.033,
+    "WoodGray": 0.39,
+    "WoodGray2": 0.163,
+    "WoodLight2": 0.049,
+    "WoodSlatFloor": 0.146,
+    "WoodThinSlatDark": 0.098,
+    "WoodThinSlatDarkREV": 0.073
    },
    "room_long_short_units": {
     "long": [
@@ -1998,19 +1586,18 @@
     "short": [
      4.0,
      5.0,
-     6.0
+     5.0
     ]
    },
    "rooms": {
-    "1": 0.796,
-    "2": 0.041,
-    "3": 0.163
+    "1": 0.854,
+    "2": 0.049,
+    "3": 0.098
    },
    "shapes": {
-    "L": 0.082,
-    "T": 0.041,
-    "Z": 0.082,
-    "rect": 0.796
+    "L": 0.098,
+    "T": 0.049,
+    "rect": 0.854
    },
    "size_units": {
     "H": [
@@ -2031,7 +1618,7 @@
     30
    ],
    "wall_pieces_complete": true,
-   "weighted": 12.25
+   "weighted": 10.25
   },
   "sewer": {
    "area_units_per_room": null,
@@ -2110,30 +1697,28 @@
     51.0,
     85.0
    ],
-   "buildings": 14,
+   "buildings": 10,
    "corridor_share": 0.0,
    "entrance_sides": {
-    "u_max": 0.353,
-    "u_min": 0.212,
-    "v_max": 0.259,
-    "v_min": 0.176
+    "u_max": 0.247,
+    "u_min": 0.247,
+    "v_max": 0.301,
+    "v_min": 0.205
    },
    "entrances": {
-    "1": 0.455,
-    "10": 0.136,
-    "11": 0.136,
-    "2": 0.273
+    "1": 0.625,
+    "10": 0.187,
+    "11": 0.187
    },
    "exterior_door_types": {
-    "ArchedDoor": 0.153,
-    "ArchedHalfDoor": 0.212,
-    "BandedWoodenDoor": 0.106,
-    "CryptDoor": 0.071,
-    "Gate": 0.318,
-    "WoodAndSteelHalfDoor": 0.071
+    "ArchedDoor": 0.178,
+    "ArchedHalfDoor": 0.247,
+    "BandedWoodenDoor": 0.123,
+    "BarredGate": 0.082,
+    "Gate": 0.37
    },
    "exterior_wall": "StoneGray",
-   "freestanding_share": 0.76,
+   "freestanding_share": 0.7,
    "hall_share": [
     0.26,
     0.8,
@@ -2156,25 +1741,25 @@
    "nearest_gap_units": [
     0.0,
     0.0,
-    5.0
+    0.0
    ],
    "outside_floors": {
-    "BlueBrick7": 0.028,
-    "DirtLight2": 0.044,
-    "GalavaBrick": 0.328,
-    "GalavaBrick2": 0.395,
-    "GreenBrick": 0.119,
-    "LOTDBlackMarble": 0.034
+    "BlueBrick7": 0.032,
+    "DirtLight2": 0.05,
+    "GalavaBrick": 0.374,
+    "GalavaBrick2": 0.451,
+    "LOTDBlackMarble": 0.039,
+    "Lava": 0.015
    },
    "room_floors": {
-    "DirtHard": 0.027,
-    "GalavaBrick2": 0.05,
-    "GalavaBrownMarble": 0.136,
-    "GrassNorm": 0.027,
-    "GreenBrick": 0.136,
-    "LOTDBlackMarble": 0.136,
-    "OakWoodFloor": 0.045,
-    "WoodGray2": 0.386
+    "DirtHard": 0.038,
+    "GalavaBrick": 0.038,
+    "GalavaBrick2": 0.069,
+    "GrassNorm": 0.038,
+    "LOTDBlackMarble": 0.188,
+    "OakWoodFloor": 0.063,
+    "RugBlueNorm": 0.038,
+    "WoodGray2": 0.531
    },
    "room_long_short_units": {
     "long": [
@@ -2189,19 +1774,19 @@
     ]
    },
    "rooms": {
-    "1": 0.318,
-    "10": 0.273,
-    "2": 0.273,
-    "4": 0.136
+    "1": 0.062,
+    "10": 0.375,
+    "2": 0.375,
+    "4": 0.188
    },
    "shapes": {
-    "L": 0.273,
-    "T": 0.409,
-    "rect": 0.318
+    "L": 0.375,
+    "T": 0.562,
+    "rect": 0.062
    },
    "size_units": {
     "H": [
-     8,
+     11,
      11,
      34
     ],
@@ -2218,7 +1803,7 @@
     645
    ],
    "wall_pieces_complete": true,
-   "weighted": 7.33
+   "weighted": 5.33
   },
   "stucco_dark_house": {
    "area_units_per_room": [

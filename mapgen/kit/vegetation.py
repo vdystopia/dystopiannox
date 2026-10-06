@@ -69,7 +69,7 @@ FORESTS = {
     "aspen": dict(wall="AspenSparse",
                   trees={"TreeForest13": 14, "TreeForest14": 14, "TreeForest15": 12, "TreeForest16": 12, "TreeForest17": 8,
                          "TreeOgre01": 4, "TreeOgre02": 4, "TreeOgre05": 4, "TreeOgre06": 3},
-                  undergrowth={"PlantBarren1": 20, "PlantBarren2": 12, "Plant2Flowered": 10, "Plant2": 8, "Bush4": 4,
+                  undergrowth={"PlantBarren1": 20, "PlantBarren2": 12, "Plant2Flowered": 10, "Plant2": 8, "Bush3": 4,
                                "GrassTuft3": 10, "GrassTuft2": 5, "Mushroom4": 4},
                   flowers={"FlowersYellowDense": 4, "FlowersYellowSparse": 5, "FlowersWhiteSparse": 1}),
     "pine": dict(wall="Coni-Wall1",

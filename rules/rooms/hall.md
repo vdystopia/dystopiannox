@@ -5,8 +5,8 @@ arms). Profile: `kit/roomtypes.py TYPES["hall"]`.
 
 ## Purpose and feel
 
-A hall of state or display with no seat to face: a gallery, an antechamber, a temple's outer hall. Westwood's commonest
-large room after the bedroom: a colonnade, statues, a few hangings, and nearly all of the floor open.
+A hall of state or display with no seat to face: a gallery, an antechamber, a temple's outer hall. Among the campaign's
+larger rooms (17 halls; crypts and bedrooms are commoner): a colonnade, statues, a few hangings, and nearly all of the floor open.
 
 ## Focal point
 
@@ -29,12 +29,12 @@ The colonnade and the statues facing each other across the aisle; in a long hall
 
 ## Density and openness
 
-| | Westwood (41 halls) | Profile |
+| | Westwood's campaign (17 rooms, 12 maps) | Profile |
 |---|---|---|
-| coverage | 0.002-0.02-0.06 | 0.02-0.14 (target 0.04) |
-| open floor | 0.72-0.92-0.98 | 0.65-0.97 |
-| pieces per tile | 0.04-0.07-0.33 | 0.05-0.30 |
-| distinct types | 1-4-8 | 6+ |
+| coverage | 0.00-0.03-0.10 | 0.02-0.14 (target 0.04) |
+| open floor | 0.61-0.78-0.97 | 0.65-0.97 |
+| pieces per tile | 0.04-0.12-0.34 | 0.05-0.30 |
+| distinct types | 2-4-9 | 6+ |
 | caps | 6 columns at the median | columns 1 per 18 tiles, at most 10 |
 
 ## Size
@@ -43,7 +43,7 @@ The colonnade and the statues facing each other across the aisle; in a long hall
 
 ## Culture variants
 
-Land of the Dead halls (9 of Westwood's 41): mana obelisks and LOTD columns instead of statues and columns. Dun Mir: Dun
+Land of the Dead halls (3 of the campaign's 17; Con10c's obelisk halls): mana obelisks and LOTD columns instead of statues and columns. Dun Mir: Dun
 Mir statues and hanging shields.
 
 ## Common mistakes

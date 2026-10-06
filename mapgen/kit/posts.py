@@ -2,8 +2,8 @@
 bit more. they cluster too tightly on a central point like a swarm"; Starwell playtest, the same day: "These NPCs are
 all on top of each other like a swarm ... A digger camp's workers work, they don't crowd the fire").
 
-Westwood's grouped creatures (another of the kind within 6 cells) stand 49 px from their nearest at p25 and 70 at
-the median (corpus, 3,091 creatures). At its camps at most two stand at the fire (War05A's grunts, 47 and 56 px out);
+Westwood's grouped creatures (another of the kind within 6 cells) stand 46 px from their nearest at p25 and 71 at
+the median (the campaign maps, 2,919 creatures: `py rules/spacing.py`; with the quest maps it read 49 and 70). At its camps at most two stand at the fire (War05A's grunts, 47 and 56 px out);
 the rest stand 120-270 px out about the camp (Con03A's swordsmen 194-273 px from the fire, its archer 226). So a camp's
 people take posts in its zones: the leader by his tent and the take, one or two at the fire, the others by their
 tents, at the store, the arms or the dig, the watch at the way in; every post GAP px from every other.
@@ -18,7 +18,7 @@ bedrolls are read from the map round the fire.
 """
 import math
 
-GAP = 64.0          # px between two posts of a camp (Westwood's median between grouped creatures: 70)
+GAP = 64.0          # px between two posts of a camp (Westwood's campaign median between grouped creatures: 71)
 AT_FIRE = 2         # never more than two at the fire
 
 

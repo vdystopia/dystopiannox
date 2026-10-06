@@ -31,14 +31,14 @@ The bed, headboard against a back wall, its nightstand beside it (apart from it,
 
 ## Density and openness
 
-| | Westwood (50) | Profile |
+| | Westwood's campaign (40 rooms, 14 maps) | Profile |
 |---|---|---|
-| coverage | 0.05-0.12-0.23 | 0.11-0.28 (target 0.14) |
-| open floor | 0.34-0.62-0.79 | 0.30-0.80 |
-| pieces per tile | 0.11-0.33-0.58 | 0.25-1.0 |
-| distinct types | 4-7-13 | 8+ (fewer in a small room) |
+| coverage | 0.05-0.14-0.23 | 0.11-0.28 (target 0.14) |
+| open floor | 0.34-0.57-0.79 | 0.30-0.80 |
+| pieces per tile | 0.11-0.42-0.67 | 0.25-1.0 |
+| distinct types | 4-7-12 | 8+ (fewer in a small room) |
 | most of one stand-alone piece | 1-2-6 | 3, or 1 per 20 tiles |
-| walls with a purpose | 2-2-4 | 3+ (2 under 32 tiles); back walls 25%+ lined |
+| walls with a purpose | 2-2-3 | 3+ (2 under 32 tiles); back walls 25%+ lined |
 
 ## Size
 
@@ -58,7 +58,7 @@ Dun Mir bedrooms (23 of Westwood's 50) take Dun Mir chests and hangings; an ogre
 
 ## Examples
 
-- Westwood: Wiz03b, cell 78,85 (98 tiles, 18 types); G_ForesD, cell 96,144 (63 tiles, 13 types); Con06b, cell 116,182
-  (132 tiles, Dun Mir).
+- Westwood: Wiz03b, cell 78,85 (98 tiles, 18 types); Con06b, cell 116,182 (132 tiles, Dun Mir). (G_ForesD's
+  63-tile bedroom, once cited here, is a quest map's: not campaign evidence.)
 - Ours: Starwell seed 4, room 10, the archmagister's chamber (36 tiles, 15 types, coverage 0.14, open 0.48), and room
   13, the innkeeper's room (28 tiles, 15 types): the smaller bedrooms the user praised.

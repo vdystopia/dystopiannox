@@ -29,11 +29,11 @@ The hearth (a wall fireplace) centred on a back wall, the cooking cauldron two u
 
 ## Density and openness
 
-| | Westwood (18) | Profile |
+| | Westwood's campaign (10 rooms, 6 maps) | Profile |
 |---|---|---|
-| coverage | 0.05-0.14-0.20 | 0.15-0.32 (target 0.21) |
-| open floor | 0.39-0.52-0.77 | 0.22-0.65 |
-| pieces per tile | 0.15-0.38-0.50 | 0.30-1.0 |
+| coverage | 0.05-0.15-0.20 | 0.15-0.32 (target 0.21) |
+| open floor | 0.43-0.51-0.82 | 0.22-0.65 |
+| pieces per tile | 0.17-0.39-0.50 | 0.30-1.0 |
 | distinct types | 4-9-13 | 8+ |
 | walls with a purpose | 3-4-4 | 3+; back walls 30%+ lined |
 

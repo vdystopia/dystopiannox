@@ -1,5 +1,5 @@
 """What sets Westwood's biomes apart: the floors, walls, objects, lights and creatures of its ice, lava and cave
-maps against all its other single-player maps (rules/out/environments.json types every map).
+maps against all its other campaign maps (rules/out/environments.json types every map).
 
 For each biome:
 - floors and walls by share;
@@ -69,7 +69,7 @@ def one(name):
 def main():
     env = json.load(open(os.path.join(HERE, "out", "environments.json")))["maps"]
     from concurrent.futures import ProcessPoolExecutor
-    names = [n for n, _ in md.sp_corpus_maps()]
+    names = [n for n, _ in md.campaign_corpus_maps()]
     seen, chosen = set(), []
     for n in sorted(names):                                   # one map per layout
         k = layout_key(n)

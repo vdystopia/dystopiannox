@@ -182,7 +182,7 @@ placed=placed, culture=, martial=).dress()`.
   theme there when a map needs one; never lay loose piles in a design.
 - The buildings call for their scenes first (`ROLE_SCENES`; every role must call for some [AMR-5]; a guard post by each
   gate), then the emptiest ground takes a scene that belongs there until none lies over 4.5 cells from a prop or nothing
-  fits. Westwood's towns carry about 25 props per 100 open tiles and leave 16% of open ground over 4 cells from a prop
+  fits. Westwood's campaign towns carry about 25 props per 100 open tiles and leave 17% of open ground over 4 cells from a prop
   (`py review/exteriors.py <map> --holes`).
 - A scene is laid whole or not at all (its must-haves, 70% of it, 3 kinds and 4 pieces at least), within its cap, its
   family's spacing and cap (3 carts to a map), 6 squares from other scenes. Groups keep off roads, lanes, water, yards,
@@ -195,7 +195,8 @@ placed=placed, culture=, martial=).dress()`.
   each theme still keeps to its own places and buildings.
 
 ### Spacing outdoors [SW-5]
-Outdoor pieces keep Westwood's closest gaps (`kit/spacing.py`, p05 of each family's nearest): barrels 25 px, big
+Outdoor pieces keep Westwood's closest gaps (`kit/spacing.py`, p05 of each family's nearest; `py rules/spacing.py` re-measures
+them on the campaign maps alone: every pair the kit names is at or under the campaign's p05 but sacks, 20 against 17): barrels 25 px, big
 barrels 31, barrel and big barrel 33, crates 31, barrel and crate 38, sacks 20, sack and crate 33, sack and barrel 30,
 racks 27, bedrolls 35, benches 45, headstones 39, a cart 48 from anything, a fire 50; other pairs 0.8 of both
 footprints. The dressing, camps, wreck, door scenes and yards all place by it.
@@ -277,7 +278,7 @@ pictures show every camp for the rest.
 - **In the game a walker never pushes**: the ticker (twice a second) judges progress toward the waypoint. Not nearer for
   1.5 s: at a stop it stands aside and takes its pause; at a bend or doorway point it goes on; elsewhere it gives way 1-3
   s and retries, twice. Townsfolk set out a few frames apart and run home along their own route.
-- **Hostile groups stand apart** [GW-5, SW-1]: Westwood's grouped creatures stand 49 px from their nearest at p25, 70 at
+- **Hostile groups stand apart** [GW-5, SW-1]: Westwood's grouped creatures stand 46 px from their nearest at p25, 71 at
   the median: `Population.creature` keeps every hostile creature 48 px from the others (`spread=False` for two
   prisoners in a cell, or a person's disabled twin, which stands exactly on his spot). Roused groups come at the player
   from their own sides, fanned 50 degrees apart, archers holding their ground (`spreadOn`); a pack lies up spread about
@@ -372,7 +373,7 @@ departures from Westwood's range or from a house rule the playtests set. The rul
 - A new rule gets a planted defect in `validate/selftest.py` (`py validate/selftest.py [case ...]`); a finding no rule
   names fails the self-test.
 - A new rule is calibrated on Westwood's maps: `py validate/calibrate.py --dry` (how often each check fires there) and
-  `py validate/checkcheck.py` (per rule: our 11 maps, Westwood's 120, the planted case; flags dead rules, rules firing
+  `py validate/checkcheck.py` (per rule: our 11 maps, Westwood's 107 campaign maps, the planted case; flags dead rules, rules firing
   on more than a quarter of Westwood's maps, unnamed findings). A rule that fires a lot on Westwood is either narrowed
   or kept as a stated house rule (the playtest's word over Westwood's habit, as with torches indoors).
 - A new piece of feedback gets a line in `review/FEEDBACK.md`: the rule here that answers it, and the check, or the

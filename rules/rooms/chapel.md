@@ -33,12 +33,12 @@ Statues stand either side of it.
 
 ## Density and openness
 
-| | Westwood (4 chapels and temples) | Profile |
+| | Westwood's campaign (1 room, Con07B) | Profile |
 |---|---|---|
-| coverage | 0.05-0.08-0.09 | 0.05-0.18 (target 0.10) |
-| open floor | 0.66-0.81-0.83 | 0.55-0.88 |
-| pieces per tile | 0.04-0.10-0.20 | 0.08-0.35 |
-| distinct types | 2-3-6 | 8+ (6 in the Land of the Dead) |
+| coverage | 0.06 | 0.05-0.18 (target 0.10) |
+| open floor | 0.62 | 0.55-0.88 |
+| pieces per tile | 0.20 | 0.08-0.35 |
+| distinct types | 7 | 8+ (6 in the Land of the Dead) |
 | caps | Wiz07F: 8 benches in 123 tiles | pews 1 per 10 tiles, at most 16; columns 1 per 24 tiles, at most 8; statues 1 per 24, at most 6; sarcophagi 2 |
 
 ## Size
@@ -70,5 +70,9 @@ Statues stand either side of it.
 
 - Westwood: Wiz07F, cell 143,201: a temple of 123 tiles, 8 benches facing the far end, 6 columns, 8 tapestries, 2
   statues: coverage 0.05, open 0.66.
-- Westwood: G_LOTD, cells 40,72 and 70,210: the lich god's statues in 79-81-tile rooms, open 0.71-0.81.
+- Westwood's campaign has one chapel: Galava's temple above (Con07B, War07A, Wiz02A, Wiz07F share it; the priest stands
+  in it). It has no altar: no campaign room holds one (Dun Mir's altars stand in Con06a's cave hall and outdoors in
+  Con03A). The altar, the god statue of the `dark_chapel` and the 79-81-tile LOTD rooms this brief once cited come from
+  the quest map G_LOTD: the kit keeps the altar as a rule of its own (`identity.ROOMS["chapel"]` prefer), not as
+  Westwood's habit.
 - Ours: Thornwick's and Greywatch's naves after the type split (see `review/out/<map>/rooms/`).

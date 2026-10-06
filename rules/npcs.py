@@ -1,4 +1,4 @@
-"""How Westwood places and moves its creatures and NPCs (single-player maps, each layout once).
+"""How Westwood places and moves its creatures and NPCs (campaign maps, each layout once).
 
 For every creature (MonsterXfer / NPCXfer):
 - its default action (ai.ActionType: 0 idle, 3 escort, 4 guard, 5 hunt, 10 roam, ...), sight range, aggressiveness,
@@ -101,7 +101,7 @@ def groups(mons, radius=4.0):
 
 def main():
     env = json.load(open(os.path.join(HERE, "out", "environments.json")))["maps"]
-    names = [n for n, _ in md.sp_corpus_maps()]
+    names = [n for n, _ in md.campaign_corpus_maps()]
     seen, chosen = set(), []
     for n in sorted(names):
         k = layout_key(n)

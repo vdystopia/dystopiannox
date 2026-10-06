@@ -28,10 +28,10 @@ The long tables in rows, the hearth on a back wall before them.
 
 ## Density and openness
 
-| | Westwood (6) | Profile |
+| | Westwood's campaign (3 rooms, Con05C, Con06a, Wiz05A) | Profile |
 |---|---|---|
 | coverage | 0.06-0.08-0.15 | 0.10-0.32 (target 0.17; a mess 0.24) |
-| open floor | 0.51-0.74-0.77 | 0.30-0.80 |
+| open floor | 0.51-0.61-0.76 | 0.30-0.80 |
 | distinct types | 6-10-12 | 8+ |
 | caps | Con06b's mess: 12 tables in 208 tiles | tables 1 per 16 tiles, at most 8 (a mess 1 per 17, at most 10; ogres 1 per 22) |
 

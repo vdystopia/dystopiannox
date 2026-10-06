@@ -1,6 +1,7 @@
 # Rulebook (phase 2)
 
-Map-making rules learned from Westwood's 157 stock maps. Read [RULEBOOK.md](RULEBOOK.md); the
+Map-making rules learned from Westwood's maps: style from the 107 campaign maps only (Con, War, Wiz; 54 layouts),
+validity from all 157 stock maps. Read [RULEBOOK.md](RULEBOOK.md); the
 generator and the validator use the machine-readable versions in `out/`.
 
 ```
@@ -20,7 +21,11 @@ py rules\build_rulebook.py --assemble     # only reassemble RULEBOOK.md from sec
 | `rooms.py` | `out/rooms.json` | room and building statistics, and an index of every room for building pieces (phase 3) |
 
 `common.py` holds the shared geometry facts and database access. Style statistics weight
-single-player maps so layouts shared by the class campaigns count once; validity tables use all maps.
+campaign maps only (`common.campaign_weights()`: Con/War/Wiz, never the quest maps G_* nor the multiplayer and
+social maps, which are other games' noise for the campaign maps we make), so layouts shared by the class campaigns
+count once; validity tables (what object, wall and floor types exist, how kit pieces join) use all maps, and
+`decoration.json observed_types` marks the types never placed in a campaign map (`campaign: false`). `py rules/spacing.py`
+measures the outdoor gaps (`kit/spacing.py`) and grouped creatures (`kit/posts.py`) on the campaign maps.
 
 Spot checks against independent measurements: the valid-wall table rejects exactly the 56 walls that
 rendered black in Mossford v0.1; outer boundaries are visible walls 98-99% of the time; every light

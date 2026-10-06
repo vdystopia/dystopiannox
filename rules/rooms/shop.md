@@ -30,12 +30,12 @@ there).
 
 ## Density and openness
 
-| | Westwood (25) | Profile |
+| | Westwood's campaign (16 rooms, 11 maps) | Profile |
 |---|---|---|
-| coverage | 0.06-0.13-0.26 | 0.12-0.40 (target 0.24) |
-| open floor | 0.36-0.59-0.68 | 0.30-0.75 |
-| pieces per tile | 0.14-0.21-0.47 | 0.20-0.80 |
-| distinct types | 5-11-33 | 9+ |
+| coverage | 0.06-0.13-0.28 | 0.12-0.40 (target 0.24) |
+| open floor | 0.34-0.62-0.68 | 0.30-0.75 |
+| pieces per tile | 0.14-0.21-0.44 | 0.20-0.80 |
+| distinct types | 5-7-16 | 9+ |
 
 ## Size
 

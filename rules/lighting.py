@@ -6,8 +6,8 @@ rules/sections/lighting.md (summary with evidence). Run: py rules/lighting.py
 Covers: ColorLight (invisible light, InvisibleLightXfer) settings and presets, light density and
 spacing by floor context, pairing of ColorLights with visible light sources, visible light source
 types per context and wall-mounted direction variants, map/polygon ambient colour.
-Engine-validity facts use all 157 maps (plain counts); style rules use single-player maps weighted
-by common.sp_weights() (1 / layout group size).
+Engine-validity facts use all 157 maps (plain counts); style rules use campaign maps weighted
+by common.campaign_weights() (1 / layout group size).
 """
 import colorsys, json, math, os, re, statistics
 from collections import Counter, defaultdict
@@ -106,7 +106,7 @@ def point_in_poly(px, py, pts):
 # ================================================================ mining
 def main():
     con = C.db()
-    W = C.sp_weights()
+    W = C.campaign_weights()
     allmaps = C.all_maps()
 
     # ---------- 1. ColorLight field validity (all maps)
@@ -124,7 +124,7 @@ def main():
     rgb_eq_c1 = sum(1 for _, x in all_lights if [x["R"], x["G"], x["B"]] == x["Color1"]) / len(all_lights)
     cis_eq_int = sum(1 for _, x in all_lights if x["ChangeIntensitySingle"] == x["LightIntensity"]) / len(all_lights)
 
-    # ---------- per single-player map pass
+    # ---------- per campaign map pass
     ctx_tiles = defaultdict(float)            # context -> weighted tile count
     ctx_cl = defaultdict(float)               # context -> weighted ColorLight count
     ctx_src = defaultdict(float)              # context -> weighted scenery light source count
@@ -380,7 +380,7 @@ def render_md(o):
     L = []
     a = L.append
     a("## Lighting\n")
-    a("Source: `rules/lighting.py` -> `rules/out/lighting.json`. Style figures are single-player maps weighted by "
+    a("Source: `rules/lighting.py` -> `rules/out/lighting.json`. Style figures are campaign maps weighted by "
       "1/layout-group size; validity facts use all 157 maps. Quartiles are written as [25%, median, 75%].\n")
     a("**JSON schema (`lighting.json`)**: `floor_context_rules` (ordered regex -> context used everywhere below); "
       "`colorlight` {`constant_fields`, `varying_fields` (field -> distinct values), `radius_by_intensity`, "

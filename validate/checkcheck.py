@@ -3,7 +3,7 @@ rules the self-test plants a defect for. Finds dead rules (never fire anywhere a
 Westwood trips often (miscalibrated: a warning on more than a quarter of Westwood's maps, an error on more than 5%),
 findings no rule names ("<check>.other") and rules with no planted case.
 
-    py validate/checkcheck.py                      our 11 campaign maps (mapgen/out) and every Westwood single-player map
+    py validate/checkcheck.py                      our 11 campaign maps (mapgen/out) and every Westwood campaign map
     py validate/checkcheck.py --sample 30          a sample of Westwood's maps (every 4th)
     py validate/checkcheck.py --ours-only          only our maps
     py validate/checkcheck.py map.map [...]        these maps as "ours"
@@ -44,7 +44,7 @@ def tally(path):
 
 def main(argv):
     paths = [a for a in argv if a.endswith(".map")] or our_maps()
-    ww = [] if "--ours-only" in argv else [md.corpus_json(n) for n, _ in md.sp_corpus_maps()]
+    ww = [] if "--ours-only" in argv else [md.corpus_json(n) for n, _ in md.campaign_corpus_maps()]
     if "--sample" in argv:
         k = int(argv[argv.index("--sample") + 1]); step = max(1, len(ww) // k); ww = ww[::step][:k]
     paths = [md.export(p) for p in paths]       # one at a time: the editor's exporter shares its folder
@@ -76,7 +76,7 @@ def main(argv):
                          planted=planted.get(rule, ""), notes=notes, example=ex, ours_names=o_maps[:6],
                          ww_names=w_maps[:6]))
     lines = [f"# Check of the checks", "",
-             f"Our maps: {len(ours)} ({', '.join(n for n, _, _ in ours)}). Westwood's single-player maps: {len(west)}.", "",
+             f"Our maps: {len(ours)} ({', '.join(n for n, _, _ in ours)}). Westwood's campaign maps: {len(west)}.", "",
              "| Rule | Feedback | Ours: maps / findings | Westwood: maps / findings | Planted case | Notes |",
              "|---|---|---|---|---|---|"]
     for r in rows:

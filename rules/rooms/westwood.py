@@ -1,7 +1,7 @@
 """Westwood's building rooms by type: the numbers each type's brief (rules/rooms/<type>.md) and profile
 (mapgen/kit/roomtypes.py) stand on.
 
-Every enclosed room of Westwood's single-player maps whose walls are built (not a cave pocket) is classified by its
+Every enclosed room of Westwood's campaign maps whose walls are built (not a cave pocket) is classified by its
 contents into one of our room types (kit/roomtypes.py TYPES; rules/room_types.py classify, refined: a desk among a few
 shelves is a study, racks with no counter or keeper an armoury, a big hall of tables a great hall) and its culture
 (Land of the Dead, ogre, Dun Mir, or the towns'), then measured as review/roommeasure.py measures ours. Per type:
@@ -45,7 +45,11 @@ def classify(r, meas):
     n = lambda k: f.get(k, 0)
     ts = [o["type"] for o in r["objects"]]
     keeper = any(C.RT.SHOPKEEPER.match(t) for t in ts)
+    if kind == "shop" and not keeper and n("counter_shop") <= 1 and n("table") >= 6 and n("chair") + n("bench") >= 12:
+        kind = "dining_hall"     # a feast hall of 20 tables with one trader's desk in it (Con07E) is no shop
     if kind == "shop" and not n("counter_shop") and not keeper: return "armoury"
+    if kind in ("laboratory", "hall", "living_room") and n("bench") >= 4 and n("lab") <= 1 and not n("table"):
+        return "chapel"          # pews facing the far end; one stray alchemist's desk does not make Galava's temple a lab
     if kind == "laboratory" and not any(re.match(r"WizardWorkstation|Vandegraf|Orrery|Telescope|SentryGlobe", t) for t in ts) \
             and any(re.match(r"PotionShelves|Cauldron", t) for t in ts):
         return "herbalist"
@@ -56,19 +60,47 @@ def classify(r, meas):
     return kind
 
 
+# Westwood's great rooms the finder misses, read by hand: they end in the void (no wall) or open through arches, so the
+# walled flood never closes on them. Each is the void-bounded flood from a cell inside it (checks.find_rooms
+# void_bounds=True), typed by hand. (map, cell, type, what it is)
+HAND = [
+    ("Con06b", (55, 144), "throne_room", "Hecubah's throne hall: the Dun Mir throne on its dais, wolf statues, flame "
+                                         "basins, crystal walls (natural walls 47%, so the built-wall rule drops it)"),
+    ("Con10d", (89, 143), "throne_room", "the Lich Lord's throne room: LOTD throne, columns, tapestries, obelisks, the "
+                                         "judgement balances (the room ends in the void)"),
+    ("Con11a", (178, 131), "throne_room", "the finale's Lich throne: LOTD throne, obelisks, candelabras, tapestries"),
+    ("Wiz11A", (208, 67), "throne_room", "the Wizard finale's Lich throne niche: throne, obelisks, incense basins"),
+]
+
+
+def hand_rooms(name, m):
+    out = []
+    for mp, cell, typ, why in HAND:
+        if mp != name: continue
+        for r in C.find_rooms(m, max_tiles=1500, void_bounds=True):
+            if cell in set(r["cells"]): out.append((r, typ, why)); break
+        else:
+            print(f"  HAND room not found: {mp} {cell}")
+    return out
+
+
 def one(name):
     m = md.load(md.corpus_json(name))
     out = []
+    found = []
     for r in C.find_rooms(m, max_tiles=1500):
         if r["tiles"] < 8 or not r["objects"]: continue
         wall = [m.walls[(x + a, y + b)] for x, y in r["cells"] for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))
                 if (x + a, y + b) in m.walls]
         if not wall or sum(1 for w in wall if not NATURAL.search(w.material)) < 0.6 * len(wall): continue
+        found.append((r, None, None))
+    for r, typ0, why in found + hand_rooms(name, m):
         meas = RM.measure(m, r)
-        typ = classify(r, meas)
+        typ = typ0 or classify(r, meas)
         if typ in ("empty", "other", "dungeon"): continue
         xs = [c[0] for c in r["cells"]]; ys = [c[1] for c in r["cells"]]
         out.append(dict(map=name, type=typ, culture=culture(r["objects"]), centre=[round(sum(xs) / len(xs)), round(sum(ys) / len(ys))],
+                        by_hand=why,
                         **{k: (round(v, 3) if isinstance(v, float) else v) for k, v in meas.items()
                            if k in ("tiles", "cover", "middle", "open", "pieces", "per_tile", "types", "most", "free_most",
                                     "walls", "lined", "fam")}))
@@ -82,13 +114,14 @@ def pct(vals, ps=(10, 25, 50, 75, 90)):
 
 
 def main():
-    maps = [n for n, _ in md.sp_corpus_maps()]
+    maps = [n for n, _ in md.campaign_corpus_maps()]
     with ProcessPoolExecutor(6) as pool:
         found = [r for rs in pool.map(one, maps) for r in rs]
-    # the three campaigns share most layouts: a room met again (same type, size and contents) counts once
+    # the three campaigns share most layouts: a room met again (the same floor at the same place) counts once, even
+    # when a class's copy differs by a piece or two (Galava's temple has a stray alchemist's desk in Con07B and Wiz02A)
     seen, rooms = set(), []
     for r in found:
-        key = (r["type"], r["tiles"], r["pieces"], r["types"], tuple(sorted(r["fam"].items())))
+        key = (r["tiles"], tuple(r["centre"]))
         if key in seen: continue
         seen.add(key); rooms.append(r)
     by = collections.defaultdict(list)
@@ -112,8 +145,10 @@ def main():
                         most_kinds=collections.Counter(r["most"][0] for r in rs).most_common(5),
                         best=[dict(map=r["map"], centre=r["centre"], tiles=r["tiles"], types=r["types"], cover=r["cover"],
                                    open=r["open"], culture=r["culture"]) for r in best])
+    index = [dict(map=r["map"], type=r["type"], centre=r["centre"], tiles=r["tiles"], culture=r["culture"],
+                  **({"by_hand": r["by_hand"]} if r["by_hand"] else {})) for r in sorted(rooms, key=lambda r: (r["type"], r["map"]))]
     with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(dict(rooms=len(rooms), types=types), f, indent=1)
+        json.dump(dict(rooms=len(rooms), maps="campaign (Con/War/Wiz), each room once", types=types, index=index), f, indent=1)
     print(f"{len(rooms)} rooms")
     print(f"{'type':14} {'n':>4} {'maps':>4}  tiles p50  cover p10-p50-p90   open p10-p50-p90   per_tile p50  types p50  most p50/p90")
     for t, d in types.items():

@@ -1,7 +1,7 @@
 """How full a map's exteriors are: props on the outdoor ground against Westwood's maps of the same environment.
 
     py review/exteriors.py <map or json> [...]        our maps
-    py review/exteriors.py --westwood [type ...]      Westwood's single-player maps by environment (town, castle...)
+    py review/exteriors.py --westwood [type ...]      Westwood's campaign maps by environment (town, castle...)
     py review/exteriors.py --westwood --save          ...and write review/exteriors_baseline.json (each environment's
                                                       median, p75 and p90 of every measure), which tests/qa.py reads
     py review/exteriors.py <map> --holes [--out png]  also draws the empty ground over the map's render

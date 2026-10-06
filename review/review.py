@@ -58,7 +58,7 @@ def _measure(name):
 def calibrate():
     import common
     from concurrent.futures import ProcessPoolExecutor
-    weights = dict(md.sp_corpus_maps())
+    weights = dict(md.campaign_corpus_maps())
     with ProcessPoolExecutor(6) as pool:
         res = list(pool.map(_measure, sorted(weights)))
     with common.db() as c:

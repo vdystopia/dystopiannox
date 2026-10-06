@@ -175,7 +175,7 @@ def corpus_json(name):
     return os.path.join(CORPUS_JSON, name + ".json")
 
 
-def sp_corpus_maps():
-    """(map name, weight) for Westwood's single-player maps; weight 1/size of the layout group."""
+def campaign_corpus_maps():
+    """(map name, weight) for Westwood's campaign maps (Con/War/Wiz; common.campaign_weights); weight 1/size of the layout group."""
     import common
-    return sorted(common.sp_weights().items())
+    return sorted(common.campaign_weights().items())

@@ -27,12 +27,12 @@ The rows of tombs.
 
 ## Density and openness
 
-| | Westwood (28) | Profile |
+| | Westwood's campaign (30 rooms, 8 maps) | Profile |
 |---|---|---|
 | coverage | 0.01-0.08-0.23 | 0.08-0.30 (target 0.16) |
-| open floor | 0.45-0.75-0.91 | 0.40-0.85 |
-| pieces per tile | 0.04-0.08-0.20 | 0.06-0.40 |
-| distinct types | 1-3-14 | 3+ |
+| open floor | 0.46-0.74-0.91 | 0.40-0.85 |
+| pieces per tile | 0.04-0.07-0.20 | 0.06-0.40 |
+| distinct types | 1-2-11 | 3+ |
 | caps | | tombs 1 per 5 tiles, at most 30 |
 
 ## Size
@@ -55,6 +55,6 @@ The rows of tombs.
 
 ## Examples
 
-- Westwood: Wiz02A / Con07B, cell 169,176 (235 tiles, 14-17 types, coverage 0.06, open 0.74); G_CryptD, cell 42,24
-  (209 tiles).
+- Westwood: Wiz02A / Con07B, cell 169,176 (235 tiles, 14-17 types, coverage 0.06, open 0.74). (G_CryptD's 209-tile crypt,
+  once cited here, is a quest map's: not campaign evidence.)
 - Ours: Thornwick's family crypt (see `review/out/Thornwick/rooms/`).

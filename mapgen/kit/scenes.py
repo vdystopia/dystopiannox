@@ -43,8 +43,7 @@ STUMPS = ("Stump1", "Stump2", "Stump9")
 SEATS = ("Stump3", "Stump4", "Stump5", "Stump6")
 HAY = ("OgreStraw1", "OgreStraw2", "OgreStraw3", "OgreStraw4", "OgreStraw5")
 STRAW = ("Straw1", "Straw2")
-RUBBLE = ("RuinsColumnOutdoorRubble05", "RuinsColumnOutdoorRubble06", "RuinsColumnOutdoorRubble07",
-          "RuinsColumnOutdoorRubble08", "Brick0", "Brick1", "Brick2", "Brick3")
+RUBBLE = ("Brick0", "Brick1", "Brick2", "Brick3")     # (the ruins' column rubble stands in quest maps only)
 ROCKS = ("CaveRocksLarge", "CaveRocksMedium", "CaveRocksMedium")
 BIG_ROCKS = ("CaveRocksHuge", "CaveBoulders")
 BONES = ("ArmBone", "LegBone", "Skull", "LegBone")
@@ -58,7 +57,7 @@ STOOLS = ("Stool1", "Stool2", "Stool3")
 GRAVES = ("Tombstone1", "Tombstone1", "Tombstone11", "Tombstone17", "Tombstone5")
 PELTS = ("WolfPelt1", "WolfPelt2", "WolfPelt3", "WolfPelt4")
 CRYSTALS = ("MineCrystal01", "MineCrystal02", "MineCrystal03", "MineCrystal04", "MineCrystal05")
-TELESCOPES = ("Telescope1a", "Telescope1c", "Telescope1e", "Telescope1g")
+TELESCOPES = ("Telescope1b", "Telescope1c")      # the ones Westwood's campaign maps place (1a: an arena map; 1e, 1g: none)
 ALL = ("green", "ice", "lava", "cave", "swamp")
 TOWNISH = ("green", "ice", "swamp")
 
@@ -348,7 +347,7 @@ CATALOGUE = [
           places=("town", "road"), biomes=("green",), cap=2, spacing=34, family="cart", face="road", size=100,
           weight=1.5, culture="farm"),
     Theme("windmill", "a little wind-mill pumping by the fields, the sacks waiting at its foot", "open",
-          [[P(("Windmill2", "Windmill1"), 0, 0, must=True), P(SACKS, -40, 34, n=2, step=(-22, 8), must=True),
+          [[P(("Windmill2",), 0, 0, must=True), P(SACKS, -40, 34, n=2, step=(-22, 8), must=True),
             P(HAY, 42, 30, must=True), P(TOOLS, 6, 64, p=0.6)]],
           places=("town", "wild"), biomes=("green",), cap=2, spacing=50, family="windmill", weight=1.0,
           culture="farm"),

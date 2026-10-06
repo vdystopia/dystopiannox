@@ -18,7 +18,7 @@ area is the set of grid cells reached by flood fill from its floor tiles without
 import collections, math, random, re, zlib
 from collections import Counter, deque
 
-from nox import load_rules, CELL
+from nox import load_rules, campaign_types, CELL
 from kit.model import Room
 from kit.identity import WESTWOOD_KIND, ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM_COVER_DEFAULT
 from kit.roomtypes import profile as room_profile
@@ -75,11 +75,11 @@ def _solid_types():
 # Object-name prefixes that belong to other cultures/areas; excluded per style so a town house
 # does not get Land-of-the-Dead sconces or ogre stools.
 STYLE_EXCLUDE = {
-    "town": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Mine|Galava|Teepee|Sewer|Pulley|Torture|Coffin|Tomb)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
-    "dunmir": r"^(LOTD|Ogre|Urchin|Crypt|Lich|Horrendous|Mine|Teepee|Sewer|Pulley|Torture)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$",
-    "mine": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Galava|Teepee|Sewer|Torture|Coffin|Tomb)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
-    "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|(?<!Bone)(?<!Skull)Immobile$|Fallen|Movable|Shadow$",
-    "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|(?<!Bone)(?<!Skull)Immobile$|Movable|Shadow$",
+    "town": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Mine|Galava|Teepee|Sewer|Pulley|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
+    "dunmir": r"^(LOTD|Ogre|Urchin|Crypt|Lich|Horrendous|Mine|Teepee|Sewer|Pulley|Torture)|Immobile$|Fallen|Broken|Movable|Shadow$",
+    "mine": r"^(LOTD|Ogre|Urchin|DunMir|Crypt|Lich|Horrendous|Galava|Teepee|Sewer|Torture|Coffin|Tomb)|Immobile$|Fallen|Broken|Movable|Shadow$|Empty",
+    "lotd": r"^(Ogre|Urchin|DunMir|Mine|Teepee|Galava)|Immobile$|Fallen|Movable|Shadow$",
+    "ogre": r"^(LOTD|Urchin|DunMir|Crypt|Lich|Galava|Teepee)|Immobile$|Movable|Shadow$",
 }
 SACRED_KINDS = {"crypt"}
 # A chapel's altar is Dun Mir's (DunMirAltar1-2, the only altars in the game), which the town style had excluded with the
@@ -199,7 +199,8 @@ DECORATED = {"living_room", "bedroom", "study", "herbalist", "mess_hall", "dinin
 # One theme of hangings per room (a room of mixed trophies, tapestries and paintings reads as random): hunting
 # trophies, tapestries of one colour, or paintings. Stone houses lean to tapestries and paintings, wooden ones to
 # trophies. Hangings keep DECOR_GAP units apart along a wall.
-DECOR_THEMES = {"trophies": r"^WallTrophy(Bear|Moose|MountainLion|Bull)[12]$", "blue": r"^BlueTapestry\d$",
+# (the bull's head, WallTrophyBull, hangs only in quest and arena maps: not a campaign trophy)
+DECOR_THEMES = {"trophies": r"^WallTrophy(Bear|Moose|MountainLion)[12]$", "blue": r"^BlueTapestry\d$",
                 "green": r"^GreenTapestry\d$", "red": r"^RedTapestry\d$", "white": r"^WhiteTapestry\d$",
                 "paintings": r"^Painting[12]$", "arms": r"^(TraderShieldWallHanging[1-6]|TraderCrossedWeapons[1-6])$"}
 # a culture's own hangings, before any of the themes above (rules/out/cultures.json: the Land of the Dead's tapestries on
@@ -221,7 +222,7 @@ GROUPS = {
     "worktable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair",
                       beside=(r"^TraderAppleCrate$|^Barrel2?$|^SackChestMedium[12]$|^Crate[12]$", 2)),
     "sitting": dict(anchor=r"^SmallTable2$|^SquareTable[12]$|^RoundTable[12]$", seats=(2, 3), seat="chair", rug=0.8),
-    "curio": dict(anchor=r"^Telescope2[a-g]$|^Orrery2$|^SentryGlobeMovable$", clear=1.0),
+    "curio": dict(anchor=r"^Telescope2[a-g]$|^Orrery2$", clear=1.0),
     "statues": dict(anchor=r"^Statue2[aceg]$", pair=True, clear=1.0),
     "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0, seat_gap=1.1),   # fires draw wide
     # a long table with a bench along each side (Westwood's taverns mix them with the round tables: Con07B's 4 Tables
@@ -242,7 +243,7 @@ GROUPS = {
     # pair of generators
     "alchemy": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", seat_pat=r"Stool",
                     beside=[(r"^CauldronAnimated$", 1, 1.0), (r"^FairyJar$", 2)]),
-    "conjuring": dict(anchor=r"^SentryGlobeMovable$|^Orrery2$", ring=4, ring_r=1.9, clear=0.6),
+    "conjuring": dict(anchor=r"^Orrery2$", ring=4, ring_r=1.9, clear=0.6),     # (SentryGlobeMovable: quest maps only)
     "generators": dict(anchor=r"^Vandegraf(Small|Large)$", pair=True, clear=1.2),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
@@ -744,11 +745,12 @@ class Furnisher:
         if prefer:                                       # the identity's own choice (a kitchen table with food)
             chosen = {t: w for t, w in prefer.items() if ok(t)}
             if chosen: return chosen
-        shares = {t: s for t, s in inv.get("object_types", {}).items() if ok(t)}
+        camp = campaign_types()                          # statistics pick only what Westwood's campaign places
+        shares = {t: s for t, s in inv.get("object_types", {}).items() if ok(t) and t in camp}
         if not shares:   # fall back to the same family in any room type
             for d in _RT["types"].values():
                 for t, s in d["inventory"].get(fam, {}).get("object_types", {}).items():
-                    if ok(t): shares[t] = shares.get(t, 0) + s
+                    if ok(t) and t in camp: shares[t] = shares.get(t, 0) + s
         return shares
 
     def against_wall(self, fam, t_choice=None, side_pref=None, role="wall", tries=40):
@@ -2308,11 +2310,12 @@ class Furnisher:
             d += step
         return got
 
-    THRONE = (("DunMirThroneShadow", -61, -30), ("DunMirThroneBack", -4, -26), ("DunMirThroneBase", 0, 0),
-              ("DunMirThroneFront", -33, 3))            # Westwood's assembly (the Kingdoms map), px from the base
+    # Westwood's campaign assembly, px from the base: Hecubah's throne in Con06b (War06b, Wiz06c the same) is three
+    # pieces; the fourth, DunMirThroneFront, stands only in the multiplayer map Kingdoms, which the kit once copied
+    THRONE = (("DunMirThroneShadow", -61, -29), ("DunMirThroneBack", -5, -26), ("DunMirThroneBase", 0, 0))
 
     def place_throne(self, depth=2.9, clear=3.0, aisle=2.0):
-        """The throne of a throne room: Westwood's Dun Mir throne in its four pieces at the Kingdoms map's offsets. Its
+        """The throne of a throne room: Westwood's Dun Mir throne in its three pieces at Con06b's offsets. Its
         picture faces one way only, SE (Hecubah's throne in Con06b looks down a runner to the doors on its SE; the back
         piece lies along a NW wall), so it stands against the NW wall, straight across the room from the main door in
         the SE wall and centred on it, facing it down the room (2026-10-05 playtest, Greywatch: on the NE wall it had

@@ -27,11 +27,11 @@ The bubbling cauldron toward a corner, and the one pair of potion shelves.
 
 ## Density and openness
 
-| | Westwood (2) | Profile |
+| | Westwood's campaign (2 rooms, Con07D, Con09a) | Profile |
 |---|---|---|
-| coverage | 0.07-0.12 | 0.12-0.30 (target 0.17) |
-| open floor | 0.59-0.71 | 0.30-0.80 |
-| distinct types | 10-12 | 10+ |
+| coverage | 0.07-0.12-0.12 | 0.12-0.30 (target 0.17) |
+| open floor | 0.59-0.71-0.71 | 0.30-0.80 |
+| distinct types | 10-12-12 | 10+ |
 
 ## Size
 

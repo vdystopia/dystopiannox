@@ -334,7 +334,7 @@ ROOMS = {
                           "front on a carpet, plants",
                   core={"desk": (1, 1), "shelves": (2, 14), "storage": (1, 2), "table": (1, 1)},
                   optional={"statue": (0.4, 2), "lab": (0.8, 3), "rug": (0.8, 1), "wall_decor": (1.0, 6), "plant": (0.8, 2), "table": (0.8, 1), "chair": (0.8, 3)},
-                  types={"statue": r"^Statue2[a-h]$", "lab": r"^AlchemistDesk\d$|^WizardWorkstation\d[a-d]?$|^Telescope2[a-g]$|^Orrery2$|^SentryGlobeMovable$", "storage": r"^Chest\d", "shelves": r"^Bookcase\d(HalfFull)?$", "plant": PLANTS,
+                  types={"statue": r"^Statue2[a-h]$", "lab": r"^AlchemistDesk\d$|^WizardWorkstation\d[a-d]?$|^Telescope2[a-g]$|^Orrery2$", "storage": r"^Chest\d", "shelves": r"^Bookcase\d(HalfFull)?$", "plant": PLANTS,
                          "table": r"^RoundTable[12]$|^SquareTable[12]$"},
                   compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                            dict(fam="shelves", slot="line", near="desk", decor=2), dict(fam="shelves", slot="line", other=True, decor=2),
@@ -353,7 +353,7 @@ ROOMS = {
                     optional={"desk": (0.7, 1), "chair": (0.8, 6), "rug": (0.6, 1),
                               "fireplace": (0.25, 1), "lab": (0.5, 1), "plant": (0.5, 2), "statue": (0.3, 2),
                               "wall_decor": (0.8, 4)},
-                    types={"shelves": r"^Bookcase\d(HalfFull)?$", "lab": r"^Telescope2[a-g]$|^Orrery2$|^SentryGlobeMovable$",
+                    types={"shelves": r"^Bookcase\d(HalfFull)?$", "lab": r"^Telescope2[a-g]$|^Orrery2$",
                            "statue": r"^Statue2[a-h]$", "plant": PLANTS},
                     compose=[dict(fam="desk", slot="wall", at="center", clear=0, seats=True),
                              dict(fam="shelves", slot="line", near="desk"),
@@ -388,7 +388,7 @@ ROOMS = {
                        optional={"table": (1.0, 1), "chair": (1.0, 3), "plant": (0.5, 2), "rug": (0.4, 1),
                                  "wall_decor": (1.0, 5), "storage": (1.0, 1), "stove": (1.0, 1), "statue": (0.8, 2)},
                        types={"lab": r"^AlchemistDesk\d$|^WizardWorkstation\d[a-d]?$|^Telescope2[a-g]$|^Orrery2$|"
-                                     r"^SentryGlobeMovable$|^Vandegraf(Small|Large)$|^FairyJar$",
+                                     r"^Vandegraf(Small|Large)$|^FairyJar$",
                               "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "storage": r"^Chest\d", "plant": PLANTS,
                               "table": r"^Table[1-4]$", "stove": r"^CauldronAnimated$", "statue": r"^Statue2[aceg]$",
                               "chair": r"^Stool\d$|^CushionedStool\d$|^DarkWoodenChair\d$|^WoodenChair\d$"},
@@ -639,7 +639,7 @@ ROOMS = {
                        types={"storage": r"^Barrel2?$|^OgreSack\d$|^PiledBarrels\d$|^Crate[12]$|^DarkCrate[12]$|^Chest\d$",
                               "clutter": r"^OgreHutMeat$|^OgreHutCarcass(Big)?$"},
                        prefer={"clutter": {"OgreHutCarcass": 2, "OgreHutCarcassBig": 1, "OgreHutMeat": 2},
-                               "bones": {"SkullImmobile": 1, "ArmBoneImmobile": 2, "LegBoneImmobile": 2}},
+                               "bones": {"Skull": 1, "ArmBone": 2, "LegBone": 2}},
                        lights={"TorchPole": 1},
                        compose=[dict(fam="storage", slot="stock", coverage=0.8, kinds=("barrels", "sacks", "crates"), pad=1.0),
                                 dict(fam="clutter", slot="scatter", per100=4, cluster=(1, 2)),
@@ -662,7 +662,7 @@ ROOMS = {
                                 "statue": {"LOTDManaObelisk": 3, "LOTDArk1": 1, "LOTDArk2": 1},
                                 "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1},
                                 "tomb": {"LOTDTombstone1": 2, "LOTDTombstone3": 1, "LOTDTombstone4": 1},
-                                "bones": {"SkullImmobile": 3, "ArmBoneImmobile": 3, "LegBoneImmobile": 2}},
+                                "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
                         # the god's statue across the hall from the way in, looking down it; columns in pairs either
                         # side of the aisle, never a block in the middle (2026-10-05 playtest rule, the keep's throne)
@@ -685,7 +685,7 @@ ROOMS = {
                        types={"tomb": r"^LOTDTombstone[1-4]$", "statue": r"^LOTDManaObelisk$",
                               "wall_decor": r"^LOTDTapestry[12]$"},
                        prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
-                               "bones": {"SkullImmobile": 3, "ArmBoneImmobile": 3, "LegBoneImmobile": 2}},
+                               "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
                        compose=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8),
                                 dict(fam="statue", slot="wall", at="corner", clear=0.8, n=2),
@@ -798,8 +798,11 @@ BUILDINGS = {
                                "potions are brewed", style="stucco_dark_house", size=(28, 22), min_units=110,
                        rooms=[("shop", "the shop floor"), ("herbalist", "the brewing room")],
                        scenes=["goods_display", "sign"], garden=0.0, faces="square"),
-    "observatory": dict(purpose="an old observatory of blue stone on a crag: the star-chamber where the sky was "
-                                "watched, the workroom, the library of star charts", style="blue_stone_house",
+    "observatory": dict(purpose="an old observatory of grey stone on a crag: the star-chamber where the sky was "
+                                "watched, the workroom, the library of star charts",
+                        # stone_house (StoneGray): the blue stone house style was learned from the quest maps only
+                        # (G_Castle and its kin); the campaign builds no house of StoneBlue
+                        style="stone_house",
                         size=(40, 30), min_units=240,
                         rooms=[("hall", "the star-chamber"), ("laboratory", "the workroom"),
                                ("library", "the star charts")],

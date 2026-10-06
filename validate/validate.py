@@ -63,7 +63,7 @@ def report_md(m, findings):
     warns = [f for f in findings if f["severity"] == "warning"]
     lines = [f"# Check report: {m.name}", "",
              f"**{len(errs)} error(s), {len(warns)} warning(s).** Errors are defects a player will see or hit; "
-             "warnings are departures from the range Westwood's single-player maps stay within.", ""]
+             "warnings are departures from the range Westwood's campaign maps stay within.", ""]
     for sev, title in (("error", "Errors"), ("warning", "Warnings")):
         fs = [f for f in findings if f["severity"] == sev]
         if not fs: continue

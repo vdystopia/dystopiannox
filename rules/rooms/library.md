@@ -30,12 +30,12 @@ The lined back walls themselves, the desk among the bookcases.
 
 ## Density and openness
 
-| | Westwood (9) | Profile |
+| | Westwood's campaign (7 rooms, 5 maps) | Profile |
 |---|---|---|
-| coverage | 0.04-0.12-0.19 | 0.10-0.32 (target 0.17) |
-| open floor | 0.50-0.63-0.81 | 0.30-0.80 |
-| pieces per tile | 0.13-0.33-0.39 | 0.25-0.90 |
-| distinct types | 2-12-19 | 8+ |
+| coverage | 0.06-0.12-0.19 | 0.10-0.32 (target 0.17) |
+| open floor | 0.50-0.63-0.76 | 0.30-0.80 |
+| pieces per tile | 0.17-0.33-0.38 | 0.25-0.90 |
+| distinct types | 8-12-19 | 8+ |
 | walls with a purpose | 2-4-4 | 3+; back walls 50%+ lined |
 
 ## Size

@@ -1,7 +1,7 @@
 """Door construction rules: single vs double doors, opening width, hinge positions, and how the
 wall pieces beside an opening are shaped. Writes rules/out/doors.json and rules/sections/doors.md.
 
-Findings this encodes (single-player maps, layout-weighted):
+Findings this encodes (campaign maps, layout-weighted):
 - Single doors (ArchedDoor, WoodenDoor, DunMirDoor, ...) fill a 1-cell opening.
 - Some types are double in one wall direction and single in the other: BandedPlankDoor pairs only
   in '/' walls; in '\' walls Westwood always hangs it alone (its '\' halves do not line up as a
@@ -24,8 +24,8 @@ def main():
     width_line = collections.defaultdict(collections.Counter)     # (type, '/' or '\') -> opening widths
     maps_of = collections.defaultdict(set)
     jamb = collections.Counter()
-    for m in c.sp_maps():
-        W = c.walls(m); w = c.sp_weights()[m]
+    for m in c.campaign_maps():
+        W = c.walls(m); w = c.campaign_weights()[m]
         gaps = set()
         for o in c.objects(m):
             if o["xtype"] != "DoorXfer" or o["xfer"].get("Direction") not in DIRS: continue

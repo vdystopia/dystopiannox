@@ -7,10 +7,10 @@ Verified facts encoded here (see mapgen/README.md and corpus/FINDINGS.md):
   constant v ('\\' runs, facing 1).
 - Wall neighbours are the 4 diagonal cells; floor edge neighbours are the 4 diagonal cells
   ("sides") plus 4 cells two steps away along an axis ("tips").
-- Class campaigns share maps: weight single-player statistics by 1 / layout group size so a
+- Style statistics come from the campaign maps only (Con/War/Wiz: campaign_weights()). Class campaigns share maps: weight them by 1 / layout group size so a
   layout used by 3 classes counts once.
 """
-import json, os, sqlite3
+import json, os, re, sqlite3
 from collections import defaultdict
 from functools import lru_cache
 
@@ -40,16 +40,39 @@ def map_categories():
         return {r["name"]: r["category"] for r in c.execute("SELECT name, category FROM maps")}
 
 
+CAMPAIGN_RX = re.compile(r"^(con|war|wiz)\d\d[a-z]$", re.I)
+
+
+def is_campaign(name):
+    """Westwood's campaign maps are exactly Con/War/Wiz + chapter + part (Con01A, War03b, Wiz11A). Not the quest maps
+    (G_*), the social maps (So_*) nor the other multiplayer maps: they are other games' maps and are noise for the
+    campaign maps we make."""
+    return bool(CAMPAIGN_RX.match(name or ""))
+
+
 @lru_cache(None)
-def sp_weights():
-    """Single-player maps (campaign + quest) -> weight 1/group size."""
+def campaign_weights():
+    """THE source of style knowledge: Westwood's campaign maps -> weight 1/layout group size (the three class campaigns
+    share most layouts; a layout used by 3 classes counts once). Every rule, baseline and calibration that says what
+    Westwood does is measured on these maps only (107 maps, 54.0 layouts). Validity tables (what exists at all: object,
+    wall and floor types, pieces that join) may use all_maps()."""
     with db() as c:
-        return {r["map"]: 1.0 / r["size"] for r in c.execute(
-            "SELECT map, size FROM layout_group WHERE map IN (SELECT name FROM maps WHERE category IN ('campaign','quest'))")}
+        cats = {r["name"]: r["category"] for r in c.execute("SELECT name, category FROM maps")}
+        return {r["map"]: 1.0 / r["size"] for r in c.execute("SELECT map, size FROM layout_group")
+                if is_campaign(r["map"]) and cats.get(r["map"]) == "campaign"}
 
 
-def sp_maps():
-    return sorted(sp_weights())
+def campaign_maps():
+    return sorted(campaign_weights())
+
+
+@lru_cache(None)
+def campaign_types():
+    """Object types placed in at least one campaign map (anything else is seen only in quest or multiplayer maps)."""
+    names = campaign_maps()
+    with db() as c:
+        return frozenset(r[0] for r in c.execute(
+            f"SELECT DISTINCT type FROM objects WHERE map IN ({','.join('?' * len(names))})", names))
 
 
 def all_maps():

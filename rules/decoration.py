@@ -4,7 +4,7 @@ Reads corpus/out/nox_corpus.db (via common.py) and writes:
   rules/out/decoration.json      machine-readable rules (schema in rules/sections/decoration.md)
   rules/sections/decoration.md   human-readable summary with evidence
 
-Style statistics use single-player maps weighted by common.sp_weights() (a layout shared by the
+Style statistics use campaign maps weighted by common.campaign_weights() (a layout shared by the
 three class campaigns counts once). The list of valid decoration types uses all 157 maps, plain counts.
 
 Run:  py rules\\decoration.py
@@ -176,7 +176,7 @@ def top(counter, n, total=None):
 
 # ----------------------------------------------------------------------------- mining
 def mine():
-    W = C.sp_weights()
+    W = C.campaign_weights()
     res = {}
 
     # Valid decoration types (engine-level evidence): all 157 maps, plain counts
@@ -186,7 +186,9 @@ def mine():
             cat = classify(o)
             if cat is None: continue
             v = valid[o["type"]]; v[0] += 1; v[1].add(m); v[2] = cat
-    res["observed_types"] = {t: {"category": v[2], "count": v[0], "maps": len(v[1])} for t, v in sorted(valid.items())}
+    camp = set(W)
+    res["observed_types"] = {t: {"category": v[2], "count": v[0], "maps": len(v[1]), "campaign": bool(v[1] & camp)}
+                             for t, v in sorted(valid.items())}
 
     mat_tiles = Counter(); fam_tiles = Counter()
     mat_obj = defaultdict(Counter); fam_obj = defaultdict(Counter); fam_cat = defaultdict(Counter)
@@ -205,7 +207,7 @@ def mine():
     BANDS = [(0, 2), (2, 4), (4, 8), (8, 16), (16, 999)]
     band = lambda d: next(f"{a}-{b}" if b < 999 else f"{a}+" for a, b in BANDS if a <= d < b)
 
-    for mi, m in enumerate(C.sp_maps()):
+    for mi, m in enumerate(C.campaign_maps()):
         w = W[m]
         T = C.tiles(m); WL = C.walls(m); objs = C.objects(m)
         for (x, y), t in T.items():
@@ -300,7 +302,7 @@ def mine():
             line, side, perp, f = r
             dir_stats[o["type"]][f"{line}|{side}"] += w
             dir_perp[o["type"]].append((perp, w)); dir_maps[o["type"]].add(m)
-        if mi % 20 == 0: print(f"  mined {mi + 1}/{len(C.sp_maps())} maps", flush=True)
+        if mi % 20 == 0: print(f"  mined {mi + 1}/{len(C.campaign_maps())} maps", flush=True)
 
     # ---------------------------------------------------------------- assemble
     def palette(tile_c, obj_c, maps_c, min_tiles=150):
@@ -398,7 +400,7 @@ def mine():
                        for t, v in block_types.most_common()}
     # what sits on top of blockers: re-scan (cheap) for nearby scenery
     near = defaultdict(Counter)
-    for m in C.sp_maps():
+    for m in C.campaign_maps():
         objs = C.objects(m); w = W[m]
         blk = [o for o in objs if o["type"].startswith("Extent")]
         if not blk: continue
@@ -420,7 +422,7 @@ def mine():
     res["ambient_sounds_by_family"] = {f: {"per_100_tiles": round(100 * sum(c.values()) / fam_tiles[f], 3) if fam_tiles[f] else None,
                                            "weighted": round(sum(c.values()), 1), "top_types": top(c, 8)}
                                        for f, c in amb_fam.items() if fam_tiles[f] > 500 or f == "no_floor"}
-    res["meta"] = {"single_player_maps": len(C.sp_maps()), "layouts_weighted": round(sum(W.values()), 1),
+    res["meta"] = {"single_player_maps": len(C.campaign_maps()), "layouts_weighted": round(sum(W.values()), 1),
                    "excluded": "monsters/NPCs, items, doors, triggers, exits, transporters, elevators, generators, "
                                "holes, traps/spikes, markers, PlayerStart; lights only used in co-occurrence/directional"}
     return res
@@ -431,11 +433,11 @@ def report(r):
     L = []
     a = L.append
     a("# Decoration and furniture placement rules\n")
-    a("Mined by `rules/decoration.py` from the reference corpus. Style figures use the 120 single-player maps "
-      "weighted so each distinct layout counts once (62 layouts); `observed_types` uses all 157 maps.\n")
+    a("Mined by `rules/decoration.py` from the reference corpus. Style figures use the 107 campaign maps "
+      "weighted so each distinct layout counts once (54 layouts); `observed_types` uses all 157 maps and marks the types never placed in a campaign map (`campaign: false`).\n")
     a("## JSON schema (`rules/out/decoration.json`)\n")
     a("""```
-observed_types[type] = {category, count, maps}            # every decoration type seen (all maps)
+observed_types[type] = {category, count, maps, campaign}  # every decoration type seen (all maps); campaign: placed in a campaign map
 family_of_material[material] = family                     # grass/dirt/cave/dungeon/town_paving/interior/swamp/ice/lava/water/other
 palettes_by_material[material] / palettes_by_family[family] = {
     tiles_weighted, maps, objects_per_100_tiles, top_types[[type, share]...],

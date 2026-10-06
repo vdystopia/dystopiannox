@@ -44,7 +44,7 @@
      81
     ],
     "brightness_quartiles": [
-     19.3,
+     2.0,
      101.7,
      105.7
     ],
@@ -58,21 +58,21 @@
     ],
     "lights_per_100_tiles": [
      3.4,
-     5.0,
-     6.3
+     5.3,
+     6.5
     ],
-    "maps": 36,
+    "maps": 30,
     "polygon_coverage": [
-     1.0,
+     0.9,
      1.0,
      1.0
     ],
     "polygons_per_map": [
      1,
-     6,
-     11
+     3,
+     6
     ],
-    "weighted_maps": 16.0
+    "weighted_maps": 13.0
    },
    "ice": {
     "ambient_rgb_median": [
@@ -81,24 +81,22 @@
      140
     ],
     "brightness_quartiles": [
-     88.0,
+     93.3,
      93.3,
      93.3
     ],
     "examples": [
      "Wiz11A",
-     "G_LOTD",
-     "G_LOTDD",
      "Con09d",
      "War09d",
      "Wiz09d"
     ],
     "lights_per_100_tiles": [
+     0.8,
      0.9,
-     2.0,
-     4.3
+     2.0
     ],
-    "maps": 6,
+    "maps": 4,
     "polygon_coverage": [
      1.0,
      1.0,
@@ -106,84 +104,84 @@
     ],
     "polygons_per_map": [
      9,
-     14,
-     91
+     9,
+     14
     ],
-    "weighted_maps": 3.0
+    "weighted_maps": 2.0
    },
    "lava": {
     "ambient_rgb_median": [
-     125,
-     133,
-     94
+     45,
+     34,
+     45
     ],
     "brightness_quartiles": [
-     25.3,
-     138.3,
+     25.0,
+     36.0,
      253.0
     ],
     "examples": [
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
      "Wiz06a",
-     "Wiz06c"
+     "Wiz06c",
+     "Wiz07B"
     ],
     "lights_per_100_tiles": [
-     5.0,
      5.9,
-     10.0
+     6.2,
+     13.2
     ],
-    "maps": 10,
+    "maps": 9,
     "polygon_coverage": [
      1.0,
      1.0,
      1.0
     ],
     "polygons_per_map": [
+     4,
      6,
-     8,
-     11
+     10
     ],
-    "weighted_maps": 8.67
+    "weighted_maps": 7.67
    },
    "outdoor": {
     "ambient_rgb_median": [
-     98,
+     99,
      98,
      81
     ],
     "brightness_quartiles": [
-     36.0,
+     25.0,
      98.3,
-     109.3
+     105.7
     ],
     "examples": [
-     "G_Mines",
      "War03c",
      "War03d",
      "Wiz01A",
      "Wiz03a",
-     "Wiz03b"
+     "Wiz03b",
+     "Wiz03c"
     ],
     "lights_per_100_tiles": [
      1.6,
      3.9,
      4.4
     ],
-    "maps": 26,
+    "maps": 23,
     "polygon_coverage": [
      1.0,
      1.0,
      1.0
     ],
     "polygons_per_map": [
-     6,
+     5,
      7,
-     27
+     23
     ],
-    "weighted_maps": 13.67
+    "weighted_maps": 11.67
    },
    "swamp": {
     "ambient_rgb_median": [
@@ -192,35 +190,35 @@
      63
     ],
     "brightness_quartiles": [
+     40.0,
      76.0,
-     76.0,
-     98.3
+     76.0
     ],
     "examples": [
      "Con11a",
-     "G_Swamp",
      "Con08e",
      "Con09a",
      "Con09b",
-     "War08e"
+     "War08e",
+     "War09a"
     ],
     "lights_per_100_tiles": [
-     2.0,
-     2.5,
+     1.9,
+     2.7,
      2.9
     ],
-    "maps": 11,
+    "maps": 10,
     "polygon_coverage": [
      1.0,
      1.0,
      1.0
     ],
     "polygons_per_map": [
-     9,
+     7,
      20,
-     21
+     20
     ],
-    "weighted_maps": 5.0
+    "weighted_maps": 4.0
    },
    "town": {
     "ambient_rgb_median": [
@@ -668,162 +666,6 @@
     "lights_per_100_tiles": 1.93,
     "map": "Con11a",
     "polygons": 7
-   },
-   {
-    "ambient": [
-     89,
-     89,
-     178
-    ],
-    "coverage": 1.0,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 5.66,
-    "map": "G_CastlD",
-    "polygons": 87
-   },
-   {
-    "ambient": [
-     89,
-     89,
-     178
-    ],
-    "coverage": 1.0,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 5.03,
-    "map": "G_Castle",
-    "polygons": 87
-   },
-   {
-    "ambient": [
-     0,
-     23,
-     35
-    ],
-    "coverage": 0.999,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 4.17,
-    "map": "G_CryptD",
-    "polygons": 46
-   },
-   {
-    "ambient": [
-     0,
-     23,
-     35
-    ],
-    "coverage": 0.999,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 3.07,
-    "map": "G_Crypts",
-    "polygons": 46
-   },
-   {
-    "ambient": [
-     98,
-     150,
-     196
-    ],
-    "coverage": 1.0,
-    "kind": "outdoor",
-    "lights_per_100_tiles": 3.26,
-    "map": "G_ForesD",
-    "polygons": 60
-   },
-   {
-    "ambient": [
-     98,
-     150,
-     196
-    ],
-    "coverage": 1.0,
-    "kind": "outdoor",
-    "lights_per_100_tiles": 2.65,
-    "map": "G_Forest",
-    "polygons": 61
-   },
-   {
-    "ambient": [
-     63,
-     74,
-     127
-    ],
-    "coverage": 1.0,
-    "kind": "ice",
-    "lights_per_100_tiles": 4.35,
-    "map": "G_LOTD",
-    "polygons": 91
-   },
-   {
-    "ambient": [
-     23,
-     0,
-     35
-    ],
-    "coverage": 1.0,
-    "kind": "ice",
-    "lights_per_100_tiles": 4.66,
-    "map": "G_LOTDD",
-    "polygons": 91
-   },
-   {
-    "ambient": [
-     188,
-     133,
-     94
-    ],
-    "coverage": 1.0,
-    "kind": "lava",
-    "lights_per_100_tiles": 5.01,
-    "map": "G_Lava",
-    "polygons": 87
-   },
-   {
-    "ambient": [
-     12,
-     38,
-     63
-    ],
-    "coverage": 1.0,
-    "kind": "outdoor",
-    "lights_per_100_tiles": 4.7,
-    "map": "G_Mines",
-    "polygons": 199
-   },
-   {
-    "ambient": [
-     98,
-     127,
-     70
-    ],
-    "coverage": 0.833,
-    "kind": "swamp",
-    "lights_per_100_tiles": 2.02,
-    "map": "G_Swamp",
-    "polygons": 46
-   },
-   {
-    "ambient": [
-     38,
-     127,
-     53
-    ],
-    "coverage": 0.994,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 4.51,
-    "map": "G_TemplD",
-    "polygons": 55
-   },
-   {
-    "ambient": [
-     38,
-     127,
-     53
-    ],
-    "coverage": 0.994,
-    "kind": "dungeon/castle",
-    "lights_per_100_tiles": 4.39,
-    "map": "G_Temple",
-    "polygons": 55
    },
    {
     "ambient": [
@@ -1706,106 +1548,106 @@
    "cave": {
     "ambient_rgb_median": [
      86,
-     103,
-     109
+     117,
+     111
     ],
     "brightness_quartiles": [
-     53.0,
-     102.3,
-     129.7
+     73.0,
+     111.0,
+     143.7
     ],
-    "polygons": 334
+    "polygons": 234
    },
    "dungeon": {
     "ambient_rgb_median": [
-     58,
-     49,
-     45
+     54,
+     65,
+     71
     ],
     "brightness_quartiles": [
-     21.0,
+     54.0,
      63.3,
-     88.0
+     70.0
     ],
-    "polygons": 371
+    "polygons": 111
    },
    "ice": {
     "ambient_rgb_median": [
-     63,
      70,
-     127
+     70,
+     140
     ],
     "brightness_quartiles": [
-     21.0,
-     88.0,
-     93.3
+     93.3,
+     93.3,
+     94.0
     ],
-    "polygons": 43
+    "polygons": 21
    },
    "interior": {
     "ambient_rgb_median": [
-     126,
-     87,
-     81
+     140,
+     134,
+     106
     ],
     "brightness_quartiles": [
-     51.0,
      105.7,
-     137.7
+     132.7,
+     151.3
     ],
-    "polygons": 113
+    "polygons": 58
    },
    "lava": {
     "ambient_rgb_median": [
-     127,
-     14,
-     12
+     35,
+     12,
+     8
     ],
     "brightness_quartiles": [
-     51.0,
-     51.0,
-     51.0
+     16.7,
+     20.0,
+     106.7
     ],
-    "polygons": 41
+    "polygons": 13
    },
    "masonry": {
     "ambient_rgb_median": [
-     89,
-     63,
-     44
+     118,
+     122,
+     106
     ],
     "brightness_quartiles": [
-     37.0,
-     65.3,
-     106.3
+     100.3,
+     111.0,
+     143.7
     ],
-    "polygons": 331
+    "polygons": 147
    },
    "none": {
     "ambient_rgb_median": [
-     63,
-     79,
-     63
+     101,
+     100,
+     69
     ],
     "brightness_quartiles": [
      25.0,
-     77.7,
-     141.7
+     100.3,
+     173.7
     ],
-    "polygons": 32
+    "polygons": 12
    },
    "outdoor": {
     "ambient_rgb_median": [
-     99,
-     86,
+     101,
+     100,
      100
     ],
     "brightness_quartiles": [
-     37.7,
-     91.0,
-     114.3
+     100.3,
+     100.3,
+     149.3
     ],
-    "polygons": 665
+    "polygons": 415
    },
    "swamp": {
     "ambient_rgb_median": [
@@ -1814,36 +1656,36 @@
      63
     ],
     "brightness_quartiles": [
-     58.3,
+     40.3,
      76.0,
-     98.3
+     76.0
     ],
-    "polygons": 118
+    "polygons": 99
    },
    "water": {
     "ambient_rgb_median": [
-     20,
-     62,
+     100,
+     100,
      101
     ],
     "brightness_quartiles": [
-     61.0,
-     61.0,
-     61.0
+     68.0,
+     100.3,
+     137.3
     ],
-    "polygons": 102
+    "polygons": 29
    }
   },
-  "polygon_enter_function_share": 0.165,
+  "polygon_enter_function_share": 0.225,
   "polygon_minimap_groups": {
-   "100": 0.316,
-   "110": 0.064,
-   "50": 0.056,
-   "60": 0.03,
-   "70": 0.061,
-   "80": 0.151,
-   "90": 0.132,
-   "95": 0.03
+   "0": 0.018,
+   "1": 0.014,
+   "100": 0.498,
+   "110": 0.043,
+   "60": 0.01,
+   "70": 0.051,
+   "80": 0.138,
+   "90": 0.15
   }
  },
  "colorlight": {
@@ -1914,231 +1756,31 @@
    "UnknownR": 0,
    "UnknownR2": 0
   },
-  "other_presets_weighted_share": 0.029,
+  "other_presets_weighted_share": 0.0255,
   "presets": [
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.055,
-     "dungeon": 0.257,
-     "lava": 0.218,
-     "masonry": 0.106,
-     "outdoor": 0.247
-    },
-    "count": 3278,
-    "exemplar_share_in_preset": 0.361,
-    "family": "white",
-    "id": "white_steady_full",
-    "intensity_class": "full",
-    "intensity_median": 63,
-    "maps": 69,
-    "radius_median": 182,
-    "rgb_median": [
-     127,
-     126,
-     126
-    ],
-    "weighted_share": 0.3087,
-    "xfer": {
-     "B": 255,
-     "B2": 0,
-     "B3": 0,
-     "ChangeColors": null,
-     "ChangeIntensity": 0,
-     "ChangeIntensitySingle": 0,
-     "ChangeRadius": null,
-     "Color1": [
-      0,
-      0,
-      0
-     ],
-     "Color10": [
-      0,
-      0,
-      0
-     ],
-     "Color2": [
-      0,
-      0,
-      0
-     ],
-     "Color3": [
-      0,
-      0,
-      0
-     ],
-     "Color4": [
-      0,
-      0,
-      0
-     ],
-     "Color5": [
-      0,
-      0,
-      0
-     ],
-     "Color6": [
-      0,
-      0,
-      0
-     ],
-     "Color7": [
-      0,
-      0,
-      0
-     ],
-     "Color8": [
-      0,
-      0,
-      0
-     ],
-     "Color9": [
-      0,
-      0,
-      0
-     ],
-     "ColorChangeIndex": 0,
-     "G": 255,
-     "G2": 0,
-     "G3": 0,
-     "IntensityChangeIndex": 0,
-     "IsAntiLight": 0,
-     "LightIntensity": 63,
-     "LightRadius": 182,
-     "MaxRadius10": 0,
-     "MaxRadius2": 0,
-     "MaxRadius3": 0,
-     "MaxRadius4": 0,
-     "MaxRadius5": 0,
-     "MaxRadius6": 0,
-     "MaxRadius7": 0,
-     "MaxRadius8": 0,
-     "MaxRadius9": 0,
-     "MinRadius10": 0,
-     "MinRadius2": 0,
-     "MinRadius3": 0,
-     "MinRadius4": 0,
-     "MinRadius5": 0,
-     "MinRadius6": 0,
-     "MinRadius7": 0,
-     "MinRadius8": 0,
-     "MinRadius9": 0,
-     "NumOfColors": 0,
-     "PulseSpeed": 0,
-     "PulseSpeedSingle": 0,
-     "R": 255,
-     "R2": 0,
-     "R3": 0,
-     "RadiusChangeIndex": 0,
-     "Unknown10": 0,
-     "Unknown11": 0,
-     "Unknown2": [
-      1,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown3": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown30": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown4": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown5": 0,
-     "Unknown6": 0,
-     "Unknown7": 124,
-     "Unknown8": 66,
-     "Unknown80": 128,
-     "Unknown9": [
-      0,
-      0,
-      0
-     ],
-     "UnknownB": 0,
-     "UnknownB2": 0,
-     "UnknownG": 0,
-     "UnknownG2": 0,
-     "UnknownR": 0,
-     "UnknownR2": 0,
-     "UnknownVal": [
-      0,
-      0,
-      0,
-      0,
-      255,
-      255,
-      0,
-      0
-     ],
-     "type": 0
-    }
-   },
-   {
-    "animation": "steady",
-    "contexts": {
-     "cave": 0.07,
+     "cave": 0.071,
      "dungeon": 0.04,
      "lava": 0.702,
      "masonry": 0.088,
-     "outdoor": 0.069
+     "outdoor": 0.068
     },
-    "count": 1314,
+    "count": 1307,
     "exemplar_share_in_preset": 0.085,
     "family": "red",
     "id": "red_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 29,
+    "maps": 28,
     "radius_median": 181,
     "rgb_median": [
      114,
      4,
      0
     ],
-    "weighted_share": 0.1723,
+    "weighted_share": 0.222,
     "xfer": {
      "B": 0,
      "B2": 0,
@@ -2319,28 +1961,28 @@
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.102,
-     "dungeon": 0.152,
-     "masonry": 0.137,
-     "outdoor": 0.222,
-     "water": 0.211
+     "dungeon": 0.253,
+     "interior": 0.042,
+     "lava": 0.352,
+     "masonry": 0.093,
+     "outdoor": 0.177
     },
-    "count": 1892,
-    "exemplar_share_in_preset": 0.135,
-    "family": "blue",
-    "id": "blue_steady_full",
+    "count": 1617,
+    "exemplar_share_in_preset": 0.149,
+    "family": "white",
+    "id": "white_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 74,
+    "maps": 56,
     "radius_median": 181,
     "rgb_median": [
-     76,
-     92,
-     216
+     84,
+     85,
+     85
     ],
-    "weighted_share": 0.1194,
+    "weighted_share": 0.1993,
     "xfer": {
-     "B": 255,
+     "B": 68,
      "B2": 0,
      "B3": 0,
      "ChangeColors": null,
@@ -2348,9 +1990,9 @@
      "ChangeIntensitySingle": 63,
      "ChangeRadius": null,
      "Color1": [
-      127,
-      191,
-      255
+      68,
+      68,
+      68
      ],
      "Color10": [
       0,
@@ -2398,13 +2040,13 @@
       0
      ],
      "ColorChangeIndex": 0,
-     "G": 191,
+     "G": 68,
      "G2": 0,
      "G3": 0,
      "IntensityChangeIndex": 0,
      "IsAntiLight": 0,
      "LightIntensity": 63,
-     "LightRadius": 182,
+     "LightRadius": 181,
      "MaxRadius10": 0,
      "MaxRadius2": 0,
      "MaxRadius3": 0,
@@ -2426,7 +2068,7 @@
      "NumOfColors": 0,
      "PulseSpeed": 0,
      "PulseSpeedSingle": 0,
-     "R": 127,
+     "R": 68,
      "R2": 0,
      "R3": 0,
      "RadiusChangeIndex": 0,
@@ -2519,26 +2161,26 @@
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.258,
-     "interior": 0.087,
-     "lava": 0.02,
-     "masonry": 0.165,
-     "outdoor": 0.437
+     "cave": 0.271,
+     "interior": 0.08,
+     "masonry": 0.166,
+     "outdoor": 0.447,
+     "water": 0.018
     },
-    "count": 1515,
-    "exemplar_share_in_preset": 0.075,
+    "count": 1448,
+    "exemplar_share_in_preset": 0.079,
     "family": "orange",
     "id": "orange_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 44,
+    "maps": 37,
     "radius_median": 181,
     "rgb_median": [
      140,
      108,
      74
     ],
-    "weighted_share": 0.1015,
+    "weighted_share": 0.1249,
     "xfer": {
      "B": 63,
      "B2": 0,
@@ -2719,26 +2361,226 @@
    {
     "animation": "steady",
     "contexts": {
+     "dungeon": 0.162,
+     "masonry": 0.136,
+     "outdoor": 0.147,
+     "swamp": 0.134,
+     "water": 0.242
+    },
+    "count": 1465,
+    "exemplar_share_in_preset": 0.16,
+    "family": "blue",
+    "id": "blue_steady_full",
+    "intensity_class": "full",
+    "intensity_median": 63,
+    "maps": 67,
+    "radius_median": 181,
+    "rgb_median": [
+     51,
+     71,
+     216
+    ],
+    "weighted_share": 0.1147,
+    "xfer": {
+     "B": 216,
+     "B2": 0,
+     "B3": 0,
+     "ChangeColors": null,
+     "ChangeIntensity": 21,
+     "ChangeIntensitySingle": 63,
+     "ChangeRadius": null,
+     "Color1": [
+      0,
+      21,
+      216
+     ],
+     "Color10": [
+      0,
+      0,
+      0
+     ],
+     "Color2": [
+      0,
+      0,
+      0
+     ],
+     "Color3": [
+      0,
+      0,
+      0
+     ],
+     "Color4": [
+      0,
+      0,
+      0
+     ],
+     "Color5": [
+      0,
+      0,
+      0
+     ],
+     "Color6": [
+      0,
+      0,
+      0
+     ],
+     "Color7": [
+      0,
+      0,
+      0
+     ],
+     "Color8": [
+      0,
+      0,
+      0
+     ],
+     "Color9": [
+      0,
+      0,
+      0
+     ],
+     "ColorChangeIndex": 0,
+     "G": 21,
+     "G2": 0,
+     "G3": 0,
+     "IntensityChangeIndex": 0,
+     "IsAntiLight": 0,
+     "LightIntensity": 63,
+     "LightRadius": 181,
+     "MaxRadius10": 0,
+     "MaxRadius2": 0,
+     "MaxRadius3": 0,
+     "MaxRadius4": 0,
+     "MaxRadius5": 0,
+     "MaxRadius6": 0,
+     "MaxRadius7": 0,
+     "MaxRadius8": 0,
+     "MaxRadius9": 0,
+     "MinRadius10": 0,
+     "MinRadius2": 0,
+     "MinRadius3": 0,
+     "MinRadius4": 0,
+     "MinRadius5": 0,
+     "MinRadius6": 0,
+     "MinRadius7": 0,
+     "MinRadius8": 0,
+     "MinRadius9": 0,
+     "NumOfColors": 0,
+     "PulseSpeed": 0,
+     "PulseSpeedSingle": 0,
+     "R": 0,
+     "R2": 0,
+     "R3": 0,
+     "RadiusChangeIndex": 0,
+     "Unknown10": 0,
+     "Unknown11": 0,
+     "Unknown2": [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown3": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown30": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown4": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown5": 0,
+     "Unknown6": 0,
+     "Unknown7": 124,
+     "Unknown8": 66,
+     "Unknown80": 128,
+     "Unknown9": [
+      0,
+      0,
+      0
+     ],
+     "UnknownB": 0,
+     "UnknownB2": 0,
+     "UnknownG": 0,
+     "UnknownG2": 0,
+     "UnknownR": 0,
+     "UnknownR2": 0,
+     "UnknownVal": [
+      0,
+      0,
+      0,
+      0,
+      255,
+      255,
+      0,
+      0
+     ],
+     "type": 0
+    }
+   },
+   {
+    "animation": "steady",
+    "contexts": {
      "cave": 0.141,
      "interior": 0.043,
-     "masonry": 0.3,
+     "masonry": 0.301,
      "none": 0.01,
-     "outdoor": 0.499
+     "outdoor": 0.498
     },
-    "count": 831,
+    "count": 829,
     "exemplar_share_in_preset": 0.207,
     "family": "yellow",
     "id": "yellow_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 34,
+    "maps": 33,
     "radius_median": 181,
     "rgb_median": [
      132,
      123,
      70
     ],
-    "weighted_share": 0.0741,
+    "weighted_share": 0.0955,
     "xfer": {
      "B": 63,
      "B2": 0,
@@ -2919,26 +2761,26 @@
    {
     "animation": "animated",
     "contexts": {
-     "cave": 0.116,
-     "dungeon": 0.25,
-     "masonry": 0.099,
-     "none": 0.109,
-     "outdoor": 0.339
+     "cave": 0.1,
+     "dungeon": 0.317,
+     "masonry": 0.119,
+     "none": 0.134,
+     "outdoor": 0.279
     },
-    "count": 553,
-    "exemplar_share_in_preset": 0.36,
+    "count": 435,
+    "exemplar_share_in_preset": 0.456,
     "family": "white",
     "id": "white_animated_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 54,
+    "maps": 49,
     "radius_median": 181,
     "rgb_median": [
      255,
      255,
      255
     ],
-    "weighted_share": 0.0401,
+    "weighted_share": 0.0409,
     "xfer": {
      "B": 255,
      "B2": 0,
@@ -3119,26 +2961,26 @@
    {
     "animation": "steady",
     "contexts": {
-     "dungeon": 0.3,
-     "interior": 0.058,
-     "masonry": 0.107,
-     "outdoor": 0.339,
-     "water": 0.141
+     "dungeon": 0.322,
+     "interior": 0.053,
+     "masonry": 0.098,
+     "outdoor": 0.317,
+     "water": 0.151
     },
-    "count": 485,
-    "exemplar_share_in_preset": 0.22,
+    "count": 455,
+    "exemplar_share_in_preset": 0.236,
     "family": "cyan",
     "id": "cyan_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 35,
+    "maps": 33,
     "radius_median": 181,
     "rgb_median": [
-     85,
+     82,
      138,
      142
     ],
-    "weighted_share": 0.0318,
+    "weighted_share": 0.0383,
     "xfer": {
      "B": 142,
      "B2": 0,
@@ -3319,38 +3161,38 @@
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.048,
-     "masonry": 0.061,
-     "outdoor": 0.247,
-     "swamp": 0.446,
-     "water": 0.134
+     "dungeon": 0.029,
+     "masonry": 0.057,
+     "outdoor": 0.229,
+     "swamp": 0.505,
+     "water": 0.152
     },
-    "count": 515,
-    "exemplar_share_in_preset": 0.036,
+    "count": 473,
+    "exemplar_share_in_preset": 0.038,
     "family": "blue",
     "id": "blue_steady_dim",
     "intensity_class": "dim",
-    "intensity_median": 47,
-    "maps": 28,
-    "radius_median": 135,
+    "intensity_median": 49,
+    "maps": 22,
+    "radius_median": 141,
     "rgb_median": [
-     66,
+     68,
      71,
      255
     ],
-    "weighted_share": 0.0256,
+    "weighted_share": 0.0292,
     "xfer": {
-     "B": 152,
+     "B": 201,
      "B2": 0,
      "B3": 0,
      "ChangeColors": null,
      "ChangeIntensity": 21,
-     "ChangeIntensitySingle": 45,
+     "ChangeIntensitySingle": 44,
      "ChangeRadius": null,
      "Color1": [
-      38,
-      38,
-      152
+      50,
+      50,
+      201
      ],
      "Color10": [
       0,
@@ -3398,13 +3240,13 @@
       0
      ],
      "ColorChangeIndex": 0,
-     "G": 38,
+     "G": 50,
      "G2": 0,
      "G3": 0,
      "IntensityChangeIndex": 0,
      "IsAntiLight": 0,
-     "LightIntensity": 45,
-     "LightRadius": 130,
+     "LightIntensity": 44,
+     "LightRadius": 126,
      "MaxRadius10": 0,
      "MaxRadius2": 0,
      "MaxRadius3": 0,
@@ -3413,7 +3255,7 @@
      "MaxRadius6": 0,
      "MaxRadius7": 0,
      "MaxRadius8": 0,
-     "MaxRadius9": 0,
+     "MaxRadius9": 67,
      "MinRadius10": 0,
      "MinRadius2": 0,
      "MinRadius3": 0,
@@ -3426,7 +3268,7 @@
      "NumOfColors": 0,
      "PulseSpeed": 0,
      "PulseSpeedSingle": 0,
-     "R": 38,
+     "R": 50,
      "R2": 0,
      "R3": 0,
      "RadiusChangeIndex": 0,
@@ -3489,7 +3331,7 @@
      ],
      "Unknown5": 0,
      "Unknown6": 0,
-     "Unknown7": 52,
+     "Unknown7": 48,
      "Unknown8": 66,
      "Unknown80": 128,
      "Unknown9": [
@@ -3504,10 +3346,10 @@
      "UnknownR": 0,
      "UnknownR2": 0,
      "UnknownVal": [
-      0,
-      0,
-      0,
-      0,
+      40,
+      93,
+      165,
+      47,
       255,
       255,
       0,
@@ -3519,26 +3361,26 @@
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.093,
-     "interior": 0.033,
-     "masonry": 0.305,
-     "outdoor": 0.386,
-     "water": 0.147
+     "cave": 0.046,
+     "interior": 0.039,
+     "masonry": 0.296,
+     "outdoor": 0.44,
+     "water": 0.162
     },
-    "count": 250,
-    "exemplar_share_in_preset": 0.313,
+    "count": 222,
+    "exemplar_share_in_preset": 0.362,
     "family": "green",
     "id": "green_steady_full",
     "intensity_class": "full",
     "intensity_median": 63,
-    "maps": 40,
+    "maps": 34,
     "radius_median": 181,
     "rgb_median": [
-     16,
+     0,
      255,
      59
     ],
-    "weighted_share": 0.0214,
+    "weighted_share": 0.0239,
     "xfer": {
      "B": 59,
      "B2": 0,
@@ -3736,7 +3578,7 @@
      147,
      127
     ],
-    "weighted_share": 0.0164,
+    "weighted_share": 0.0212,
     "xfer": {
      "B": 127,
      "B2": 0,
@@ -3936,7 +3778,7 @@
      203,
      69
     ],
-    "weighted_share": 0.0148,
+    "weighted_share": 0.0192,
     "xfer": {
      "B": 69,
      "B2": 0,
@@ -4133,7 +3975,7 @@
      20,
      203
     ],
-    "weighted_share": 0.0144,
+    "weighted_share": 0.0186,
     "xfer": {
      "B": 203,
      "B2": 0,
@@ -4314,26 +4156,26 @@
    {
     "animation": "steady",
     "contexts": {
-     "cave": 0.169,
-     "dungeon": 0.169,
-     "masonry": 0.493,
-     "outdoor": 0.085,
-     "swamp": 0.056
+     "cave": 0.174,
+     "dungeon": 0.174,
+     "masonry": 0.587,
+     "none": 0.043,
+     "outdoor": 0.022
     },
-    "count": 165,
-    "exemplar_share_in_preset": 0.549,
+    "count": 120,
+    "exemplar_share_in_preset": 0.565,
     "family": "purple",
     "id": "purple_steady_dim",
     "intensity_class": "dim",
     "intensity_median": 50,
-    "maps": 22,
+    "maps": 15,
     "radius_median": 144,
     "rgb_median": [
      131,
      0,
      255
     ],
-    "weighted_share": 0.0101,
+    "weighted_share": 0.0085,
     "xfer": {
      "B": 255,
      "B2": 0,
@@ -4514,406 +4356,6 @@
    {
     "animation": "steady",
     "contexts": {
-     "dungeon": 0.477,
-     "ice": 0.049,
-     "masonry": 0.181,
-     "outdoor": 0.247,
-     "water": 0.016
-    },
-    "count": 112,
-    "exemplar_share_in_preset": 0.329,
-    "family": "purple",
-    "id": "purple_steady_full",
-    "intensity_class": "full",
-    "intensity_median": 63,
-    "maps": 20,
-    "radius_median": 182,
-    "rgb_median": [
-     190,
-     99,
-     255
-    ],
-    "weighted_share": 0.0087,
-    "xfer": {
-     "B": 255,
-     "B2": 0,
-     "B3": 0,
-     "ChangeColors": null,
-     "ChangeIntensity": 21,
-     "ChangeIntensitySingle": 63,
-     "ChangeRadius": null,
-     "Color1": [
-      178,
-      127,
-      255
-     ],
-     "Color10": [
-      0,
-      0,
-      0
-     ],
-     "Color2": [
-      0,
-      0,
-      0
-     ],
-     "Color3": [
-      0,
-      0,
-      0
-     ],
-     "Color4": [
-      0,
-      0,
-      0
-     ],
-     "Color5": [
-      0,
-      0,
-      0
-     ],
-     "Color6": [
-      0,
-      0,
-      0
-     ],
-     "Color7": [
-      0,
-      0,
-      0
-     ],
-     "Color8": [
-      0,
-      0,
-      0
-     ],
-     "Color9": [
-      0,
-      0,
-      0
-     ],
-     "ColorChangeIndex": 0,
-     "G": 127,
-     "G2": 0,
-     "G3": 0,
-     "IntensityChangeIndex": 0,
-     "IsAntiLight": 0,
-     "LightIntensity": 63,
-     "LightRadius": 182,
-     "MaxRadius10": 0,
-     "MaxRadius2": 0,
-     "MaxRadius3": 0,
-     "MaxRadius4": 0,
-     "MaxRadius5": 0,
-     "MaxRadius6": 0,
-     "MaxRadius7": 0,
-     "MaxRadius8": 0,
-     "MaxRadius9": 0,
-     "MinRadius10": 0,
-     "MinRadius2": 0,
-     "MinRadius3": 0,
-     "MinRadius4": 0,
-     "MinRadius5": 0,
-     "MinRadius6": 0,
-     "MinRadius7": 0,
-     "MinRadius8": 0,
-     "MinRadius9": 0,
-     "NumOfColors": 0,
-     "PulseSpeed": 0,
-     "PulseSpeedSingle": 0,
-     "R": 178,
-     "R2": 0,
-     "R3": 0,
-     "RadiusChangeIndex": 0,
-     "Unknown10": 0,
-     "Unknown11": 0,
-     "Unknown2": [
-      2,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown3": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown30": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown4": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown5": 0,
-     "Unknown6": 0,
-     "Unknown7": 124,
-     "Unknown8": 66,
-     "Unknown80": 128,
-     "Unknown9": [
-      0,
-      0,
-      0
-     ],
-     "UnknownB": 0,
-     "UnknownB2": 0,
-     "UnknownG": 0,
-     "UnknownG2": 0,
-     "UnknownR": 0,
-     "UnknownR2": 0,
-     "UnknownVal": [
-      0,
-      0,
-      0,
-      0,
-      255,
-      255,
-      0,
-      0
-     ],
-     "type": 0
-    }
-   },
-   {
-    "animation": "steady",
-    "contexts": {
-     "cave": 0.324,
-     "dungeon": 0.076,
-     "masonry": 0.153,
-     "outdoor": 0.233,
-     "swamp": 0.145
-    },
-    "count": 102,
-    "exemplar_share_in_preset": 0.137,
-    "family": "green",
-    "id": "green_steady_dim",
-    "intensity_class": "dim",
-    "intensity_median": 40,
-    "maps": 23,
-    "radius_median": 115,
-    "rgb_median": [
-     41,
-     211,
-     68
-    ],
-    "weighted_share": 0.0062,
-    "xfer": {
-     "B": 84,
-     "B2": 0,
-     "B3": 0,
-     "ChangeColors": null,
-     "ChangeIntensity": 21,
-     "ChangeIntensitySingle": 41,
-     "ChangeRadius": null,
-     "Color1": [
-      42,
-      211,
-      84
-     ],
-     "Color10": [
-      0,
-      0,
-      0
-     ],
-     "Color2": [
-      0,
-      0,
-      0
-     ],
-     "Color3": [
-      0,
-      0,
-      0
-     ],
-     "Color4": [
-      0,
-      0,
-      0
-     ],
-     "Color5": [
-      0,
-      0,
-      0
-     ],
-     "Color6": [
-      0,
-      0,
-      0
-     ],
-     "Color7": [
-      0,
-      0,
-      0
-     ],
-     "Color8": [
-      0,
-      0,
-      0
-     ],
-     "Color9": [
-      0,
-      0,
-      0
-     ],
-     "ColorChangeIndex": 0,
-     "G": 211,
-     "G2": 0,
-     "G3": 0,
-     "IntensityChangeIndex": 0,
-     "IsAntiLight": 0,
-     "LightIntensity": 41,
-     "LightRadius": 118,
-     "MaxRadius10": 0,
-     "MaxRadius2": 0,
-     "MaxRadius3": 0,
-     "MaxRadius4": 0,
-     "MaxRadius5": 0,
-     "MaxRadius6": 0,
-     "MaxRadius7": 0,
-     "MaxRadius8": 0,
-     "MaxRadius9": 0,
-     "MinRadius10": 0,
-     "MinRadius2": 0,
-     "MinRadius3": 0,
-     "MinRadius4": 0,
-     "MinRadius5": 0,
-     "MinRadius6": 0,
-     "MinRadius7": 0,
-     "MinRadius8": 0,
-     "MinRadius9": 0,
-     "NumOfColors": 0,
-     "PulseSpeed": 0,
-     "PulseSpeedSingle": 0,
-     "R": 42,
-     "R2": 0,
-     "R3": 0,
-     "RadiusChangeIndex": 0,
-     "Unknown10": 0,
-     "Unknown11": 0,
-     "Unknown2": [
-      2,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown3": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown30": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown4": [
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0,
-      0
-     ],
-     "Unknown5": 0,
-     "Unknown6": 0,
-     "Unknown7": 36,
-     "Unknown8": 66,
-     "Unknown80": 128,
-     "Unknown9": [
-      0,
-      0,
-      0
-     ],
-     "UnknownB": 0,
-     "UnknownB2": 0,
-     "UnknownG": 0,
-     "UnknownG2": 0,
-     "UnknownR": 0,
-     "UnknownR2": 0,
-     "UnknownVal": [
-      0,
-      0,
-      0,
-      0,
-      255,
-      255,
-      0,
-      0
-     ],
-     "type": 0
-    }
-   },
-   {
-    "animation": "steady",
-    "contexts": {
      "cave": 0.053,
      "dungeon": 0.053,
      "lava": 0.684,
@@ -4932,7 +4374,7 @@
      103,
      68
     ],
-    "weighted_share": 0.0054,
+    "weighted_share": 0.007,
     "xfer": {
      "B": 68,
      "B2": 0,
@@ -5109,6 +4551,404 @@
      ],
      "type": 0
     }
+   },
+   {
+    "animation": "animated",
+    "contexts": {
+     "interior": 0.031,
+     "masonry": 0.598,
+     "outdoor": 0.371
+    },
+    "count": 97,
+    "exemplar_share_in_preset": 0.464,
+    "family": "white",
+    "id": "white_animated_dim",
+    "intensity_class": "dim",
+    "intensity_median": 28,
+    "maps": 14,
+    "radius_median": 78,
+    "rgb_median": [
+     255,
+     252,
+     252
+    ],
+    "weighted_share": 0.006,
+    "xfer": {
+     "B": 252,
+     "B2": 0,
+     "B3": 0,
+     "ChangeColors": null,
+     "ChangeIntensity": 21,
+     "ChangeIntensitySingle": 25,
+     "ChangeRadius": null,
+     "Color1": [
+      255,
+      252,
+      252
+     ],
+     "Color10": [
+      0,
+      0,
+      0
+     ],
+     "Color2": [
+      0,
+      0,
+      0
+     ],
+     "Color3": [
+      0,
+      0,
+      0
+     ],
+     "Color4": [
+      0,
+      0,
+      0
+     ],
+     "Color5": [
+      0,
+      0,
+      0
+     ],
+     "Color6": [
+      0,
+      0,
+      0
+     ],
+     "Color7": [
+      0,
+      0,
+      0
+     ],
+     "Color8": [
+      0,
+      0,
+      0
+     ],
+     "Color9": [
+      0,
+      0,
+      0
+     ],
+     "ColorChangeIndex": 0,
+     "G": 252,
+     "G2": 0,
+     "G3": 0,
+     "IntensityChangeIndex": 0,
+     "IsAntiLight": 0,
+     "LightIntensity": 25,
+     "LightRadius": 66,
+     "MaxRadius10": 0,
+     "MaxRadius2": 0,
+     "MaxRadius3": 0,
+     "MaxRadius4": 0,
+     "MaxRadius5": 0,
+     "MaxRadius6": 0,
+     "MaxRadius7": 0,
+     "MaxRadius8": 0,
+     "MaxRadius9": 0,
+     "MinRadius10": 0,
+     "MinRadius2": 0,
+     "MinRadius3": 0,
+     "MinRadius4": 0,
+     "MinRadius5": 0,
+     "MinRadius6": 0,
+     "MinRadius7": 0,
+     "MinRadius8": 0,
+     "MinRadius9": 0,
+     "NumOfColors": 0,
+     "PulseSpeed": 90,
+     "PulseSpeedSingle": 0,
+     "R": 255,
+     "R2": 0,
+     "R3": 0,
+     "RadiusChangeIndex": 0,
+     "Unknown10": 0,
+     "Unknown11": 0,
+     "Unknown2": [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown3": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown30": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown4": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown5": 0,
+     "Unknown6": 0,
+     "Unknown7": 200,
+     "Unknown8": 65,
+     "Unknown80": 128,
+     "Unknown9": [
+      0,
+      0,
+      0
+     ],
+     "UnknownB": 0,
+     "UnknownB2": 0,
+     "UnknownG": 0,
+     "UnknownG2": 0,
+     "UnknownR": 0,
+     "UnknownR2": 0,
+     "UnknownVal": [
+      0,
+      0,
+      0,
+      0,
+      255,
+      255,
+      0,
+      0
+     ],
+     "type": 0
+    }
+   },
+   {
+    "animation": "steady",
+    "contexts": {
+     "cave": 0.238,
+     "masonry": 0.188,
+     "outdoor": 0.221,
+     "swamp": 0.21,
+     "water": 0.088
+    },
+    "count": 76,
+    "exemplar_share_in_preset": 0.133,
+    "family": "green",
+    "id": "green_steady_dim",
+    "intensity_class": "dim",
+    "intensity_median": 40,
+    "maps": 17,
+    "radius_median": 115,
+    "rgb_median": [
+     34,
+     255,
+     68
+    ],
+    "weighted_share": 0.0056,
+    "xfer": {
+     "B": 152,
+     "B2": 0,
+     "B3": 0,
+     "ChangeColors": null,
+     "ChangeIntensity": 21,
+     "ChangeIntensitySingle": 40,
+     "ChangeRadius": null,
+     "Color1": [
+      114,
+      255,
+      152
+     ],
+     "Color10": [
+      0,
+      0,
+      0
+     ],
+     "Color2": [
+      0,
+      0,
+      0
+     ],
+     "Color3": [
+      0,
+      0,
+      0
+     ],
+     "Color4": [
+      0,
+      0,
+      0
+     ],
+     "Color5": [
+      0,
+      0,
+      0
+     ],
+     "Color6": [
+      0,
+      0,
+      0
+     ],
+     "Color7": [
+      0,
+      0,
+      0
+     ],
+     "Color8": [
+      0,
+      0,
+      0
+     ],
+     "Color9": [
+      0,
+      0,
+      0
+     ],
+     "ColorChangeIndex": 0,
+     "G": 255,
+     "G2": 0,
+     "G3": 0,
+     "IntensityChangeIndex": 0,
+     "IsAntiLight": 0,
+     "LightIntensity": 40,
+     "LightRadius": 115,
+     "MaxRadius10": 0,
+     "MaxRadius2": 0,
+     "MaxRadius3": 0,
+     "MaxRadius4": 0,
+     "MaxRadius5": 0,
+     "MaxRadius6": 0,
+     "MaxRadius7": 0,
+     "MaxRadius8": 0,
+     "MaxRadius9": 0,
+     "MinRadius10": 0,
+     "MinRadius2": 0,
+     "MinRadius3": 0,
+     "MinRadius4": 0,
+     "MinRadius5": 0,
+     "MinRadius6": 0,
+     "MinRadius7": 0,
+     "MinRadius8": 0,
+     "MinRadius9": 0,
+     "NumOfColors": 0,
+     "PulseSpeed": 0,
+     "PulseSpeedSingle": 0,
+     "R": 114,
+     "R2": 0,
+     "R3": 0,
+     "RadiusChangeIndex": 0,
+     "Unknown10": 0,
+     "Unknown11": 0,
+     "Unknown2": [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown3": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown30": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown4": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+     ],
+     "Unknown5": 0,
+     "Unknown6": 0,
+     "Unknown7": 32,
+     "Unknown8": 66,
+     "Unknown80": 128,
+     "Unknown9": [
+      0,
+      0,
+      0
+     ],
+     "UnknownB": 0,
+     "UnknownB2": 0,
+     "UnknownG": 0,
+     "UnknownG2": 0,
+     "UnknownR": 0,
+     "UnknownR2": 0,
+     "UnknownVal": [
+      0,
+      0,
+      0,
+      0,
+      255,
+      255,
+      0,
+      0
+     ],
+     "type": 0
+    }
    }
   ],
   "radius_by_intensity": {
@@ -5239,46 +5079,46 @@
  "density": {
   "by_context": {
    "cave": {
-    "all_lights_per_100_tiles": 3.19,
-    "colorlights_per_100_tiles": 1.5,
-    "maps_with_colorlights": 53,
-    "sources_per_100_tiles": 1.69,
-    "tiles_weighted": 45659
+    "all_lights_per_100_tiles": 3.17,
+    "colorlights_per_100_tiles": 1.43,
+    "maps_with_colorlights": 47,
+    "sources_per_100_tiles": 1.75,
+    "tiles_weighted": 38454
    },
    "dungeon": {
-    "all_lights_per_100_tiles": 4.75,
-    "colorlights_per_100_tiles": 1.48,
-    "maps_with_colorlights": 58,
-    "sources_per_100_tiles": 3.27,
-    "tiles_weighted": 64275
+    "all_lights_per_100_tiles": 4.39,
+    "colorlights_per_100_tiles": 1.57,
+    "maps_with_colorlights": 45,
+    "sources_per_100_tiles": 2.82,
+    "tiles_weighted": 36864
    },
    "ice": {
-    "all_lights_per_100_tiles": 0.8,
-    "colorlights_per_100_tiles": 0.39,
-    "maps_with_colorlights": 5,
-    "sources_per_100_tiles": 0.41,
-    "tiles_weighted": 10744
+    "all_lights_per_100_tiles": 0.21,
+    "colorlights_per_100_tiles": 0.03,
+    "maps_with_colorlights": 3,
+    "sources_per_100_tiles": 0.19,
+    "tiles_weighted": 7531
    },
    "interior": {
-    "all_lights_per_100_tiles": 2.72,
-    "colorlights_per_100_tiles": 0.7,
-    "maps_with_colorlights": 62,
-    "sources_per_100_tiles": 2.03,
-    "tiles_weighted": 48188
+    "all_lights_per_100_tiles": 2.52,
+    "colorlights_per_100_tiles": 0.54,
+    "maps_with_colorlights": 50,
+    "sources_per_100_tiles": 1.98,
+    "tiles_weighted": 39198
    },
    "lava": {
-    "all_lights_per_100_tiles": 15.79,
-    "colorlights_per_100_tiles": 5.82,
-    "maps_with_colorlights": 19,
-    "sources_per_100_tiles": 9.97,
-    "tiles_weighted": 25399
+    "all_lights_per_100_tiles": 17.65,
+    "colorlights_per_100_tiles": 6.81,
+    "maps_with_colorlights": 14,
+    "sources_per_100_tiles": 10.84,
+    "tiles_weighted": 20203
    },
    "masonry": {
-    "all_lights_per_100_tiles": 4.7,
-    "colorlights_per_100_tiles": 1.25,
-    "maps_with_colorlights": 86,
-    "sources_per_100_tiles": 3.45,
-    "tiles_weighted": 79168
+    "all_lights_per_100_tiles": 4.8,
+    "colorlights_per_100_tiles": 1.24,
+    "maps_with_colorlights": 74,
+    "sources_per_100_tiles": 3.56,
+    "tiles_weighted": 63521
    },
    "other": {
     "all_lights_per_100_tiles": 7.02,
@@ -5288,38 +5128,38 @@
     "tiles_weighted": 130
    },
    "outdoor": {
-    "all_lights_per_100_tiles": 2.63,
-    "colorlights_per_100_tiles": 1.37,
-    "maps_with_colorlights": 76,
-    "sources_per_100_tiles": 1.26,
-    "tiles_weighted": 137778
+    "all_lights_per_100_tiles": 2.35,
+    "colorlights_per_100_tiles": 1.3,
+    "maps_with_colorlights": 63,
+    "sources_per_100_tiles": 1.05,
+    "tiles_weighted": 104862
    },
    "swamp": {
-    "all_lights_per_100_tiles": 2.14,
-    "colorlights_per_100_tiles": 1.45,
-    "maps_with_colorlights": 11,
-    "sources_per_100_tiles": 0.7,
-    "tiles_weighted": 15048
+    "all_lights_per_100_tiles": 2.12,
+    "colorlights_per_100_tiles": 1.84,
+    "maps_with_colorlights": 10,
+    "sources_per_100_tiles": 0.29,
+    "tiles_weighted": 9350
    },
    "water": {
-    "all_lights_per_100_tiles": 1.67,
-    "colorlights_per_100_tiles": 1.61,
-    "maps_with_colorlights": 36,
-    "sources_per_100_tiles": 0.06,
-    "tiles_weighted": 21154
+    "all_lights_per_100_tiles": 1.91,
+    "colorlights_per_100_tiles": 1.87,
+    "maps_with_colorlights": 31,
+    "sources_per_100_tiles": 0.04,
+    "tiles_weighted": 16347
    }
   },
-  "colorlight_near_lava_share": 0.26,
-  "colorlight_near_water_share": 0.093,
+  "colorlight_near_lava_share": 0.312,
+  "colorlight_near_water_share": 0.098,
   "per_map_colorlights_per_100_tiles": [
    0.4,
-   1.3,
-   2.1
+   0.9,
+   2.2
   ],
   "per_map_lights_per_100_tiles": [
    2.0,
-   4.3,
-   5.7
+   4.2,
+   5.9
   ]
  },
  "floor_context_rules": [
@@ -5362,68 +5202,63 @@
  ],
  "pairing": {
   "colorlight_to_nearest_source_px": [
-   90.0,
-   159.3,
-   321.8
+   83.2,
+   149.0,
+   343.2
   ],
-  "colorlight_within_46px_of_source_share": 0.089
+  "colorlight_within_46px_of_source_share": 0.102
  },
  "schema_version": 1,
  "spacing": {
   "all_colorlights_nn_px": [
-   86.8,
-   117.4,
-   167.8
+   81.0,
+   103.4,
+   139.6
   ],
   "cave": [
-   92.3,
-   118.4,
-   161.4
+   89.3,
+   111.4,
+   143.0
   ],
   "dungeon": [
-   105.4,
-   140.1,
-   198.7
-  ],
-  "ice": [
-   134.6,
-   166.4,
-   250.4
+   89.5,
+   124.0,
+   162.6
   ],
   "interior": [
-   103.7,
-   149.4,
-   206.8
+   94.8,
+   138.0,
+   190.1
   ],
   "lava": [
-   74.5,
-   90.1,
-   109.4
+   73.4,
+   87.9,
+   103.6
   ],
   "masonry": [
-   83.4,
-   121.5,
-   186.5
+   78.6,
+   106.0,
+   154.0
   ],
   "none": [
    57.6,
    65.1,
-   149.3
+   149.1
   ],
   "outdoor": [
-   98.1,
-   131.6,
-   179.6
+   93.2,
+   117.5,
+   148.3
   ],
   "swamp": [
-   88.3,
-   123.8,
-   184.0
+   77.1,
+   108.5,
+   142.5
   ],
   "water": [
-   87.0,
-   111.0,
-   143.2
+   84.6,
+   105.1,
+   135.9
   ]
  },
  "visible_sources": {
@@ -5548,12 +5383,12 @@
   "Candleabra1": {
    "contexts": {
     "interior": 0.465,
-    "masonry": 0.516,
-    "outdoor": 0.019
+    "masonry": 0.52,
+    "outdoor": 0.015
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 29,
+   "maps": 27,
    "paired_colorlight_presets": {
     "orange_steady_full": 1.0
    },
@@ -5563,7 +5398,7 @@
    ],
    "share_with_colorlight_within_46px": 0.008,
    "wall_mounted": false,
-   "weighted_count": 265.9
+   "weighted_count": 263.9
   },
   "Candleabra2": {
    "contexts": {
@@ -5647,13 +5482,13 @@
   },
   "CauldronAnimated": {
    "contexts": {
-    "dungeon": 0.208,
-    "masonry": 0.292,
-    "outdoor": 0.5
+    "dungeon": 0.05,
+    "masonry": 0.35,
+    "outdoor": 0.6
    },
    "dangerous": false,
    "kind": "other",
-   "maps": 12,
+   "maps": 11,
    "paired_colorlight_presets": {
     "yellow_steady_dim": 1.0
    },
@@ -5661,9 +5496,9 @@
     6.0,
     -13.0
    ],
-   "share_with_colorlight_within_46px": 0.167,
+   "share_with_colorlight_within_46px": 0.2,
    "wall_mounted": false,
-   "weighted_count": 6.0
+   "weighted_count": 5.0
   },
   "CinderBin2": {
    "contexts": {
@@ -5804,15 +5639,14 @@
   },
   "DunMirTorchEast": {
    "contexts": {
-    "cave": 0.069,
-    "interior": 0.026,
-    "masonry": 0.757,
-    "outdoor": 0.127
+    "cave": 0.093,
+    "interior": 0.041,
+    "masonry": 0.866
    },
    "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
+   "distance_to_wall_centre_px_median": 7.0,
    "kind": "fire",
-   "maps": 16,
+   "maps": 8,
    "paired_colorlight_presets": {
     "yellow_steady_full": 1.0
    },
@@ -5820,38 +5654,37 @@
     -18.0,
     -27.0
    ],
-   "share_with_colorlight_within_46px": 0.063,
+   "share_with_colorlight_within_46px": 0.124,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.805,
+     "share": 0.772,
      "side": "SW side",
      "wall": "'\\' wall"
     },
     {
-     "share": 0.174,
+     "share": 0.186,
      "side": "",
      "wall": "junction/corner"
     },
     {
-     "share": 0.021,
+     "share": 0.041,
      "side": "NE side",
      "wall": "'\\' wall"
     }
    ],
-   "weighted_count": 94.8
+   "weighted_count": 48.3
   },
   "DunMirTorchNorth": {
    "contexts": {
-    "cave": 0.077,
-    "interior": 0.037,
-    "masonry": 0.758,
-    "outdoor": 0.096
+    "cave": 0.103,
+    "masonry": 0.881,
+    "outdoor": 0.016
    },
    "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
+   "distance_to_wall_centre_px_median": 6.4,
    "kind": "fire",
-   "maps": 16,
+   "maps": 8,
    "paired_colorlight_presets": {
     "yellow_steady_full": 1.0
    },
@@ -5859,90 +5692,81 @@
     19.0,
     -4.0
    ],
-   "share_with_colorlight_within_46px": 0.102,
+   "share_with_colorlight_within_46px": 0.212,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.872,
+     "share": 0.84,
      "side": "SE side",
      "wall": "'/' wall"
     },
     {
-     "share": 0.093,
+     "share": 0.087,
      "side": "",
      "wall": "junction/corner"
     },
     {
-     "share": 0.019,
+     "share": 0.038,
      "side": "NE side",
      "wall": "'\\' wall"
     },
     {
-     "share": 0.017,
+     "share": 0.035,
      "side": "NW side",
      "wall": "'/' wall"
     }
    ],
-   "weighted_count": 108.0
+   "weighted_count": 52.0
   },
   "DunMirTorchSouth": {
    "contexts": {
-    "cave": 0.041,
-    "masonry": 0.571,
-    "outdoor": 0.286,
-    "water": 0.082
+    "masonry": 1.0
    },
    "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
+   "distance_to_wall_centre_px_median": 4.5,
    "kind": "fire",
-   "maps": 10,
+   "maps": 4,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.796,
+     "share": 1.0,
      "side": "NW side",
      "wall": "'/' wall"
-    },
-    {
-     "share": 0.204,
-     "side": "",
-     "wall": "junction/corner"
     }
    ],
-   "weighted_count": 24.5
+   "weighted_count": 2.0
   },
   "DunMirTorchWest": {
    "contexts": {
-    "cave": 0.141,
-    "ice": 0.047,
-    "interior": 0.059,
-    "masonry": 0.706
+    "cave": 0.16,
+    "interior": 0.08,
+    "masonry": 0.76
    },
    "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
+   "distance_to_wall_centre_px_median": 10.1,
    "kind": "fire",
-   "maps": 12,
+   "maps": 5,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.776,
+     "share": 0.76,
      "side": "NE side",
      "wall": "'\\' wall"
     },
     {
-     "share": 0.129,
-     "side": "",
-     "wall": "junction/corner"
-    },
-    {
-     "share": 0.094,
+     "share": 0.16,
      "side": "SW side",
      "wall": "'\\' wall"
+    },
+    {
+     "share": 0.08,
+     "side": "",
+     "wall": "junction/corner"
     }
    ],
-   "weighted_count": 42.5
+   "weighted_count": 25.0
   },
   "FairyJar": {
    "contexts": {
@@ -5957,17 +5781,6 @@
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
    "weighted_count": 39.3
-  },
-  "FairyJarImmobile": {
-   "contexts": {
-    "interior": 1.0
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 2,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 1.0
   },
   "FieldGuide": {
    "contexts": {
@@ -6015,30 +5828,28 @@
   },
   "Fireplace3": {
    "contexts": {
-    "dungeon": 0.127,
-    "interior": 0.37,
-    "masonry": 0.503
+    "interior": 0.44,
+    "masonry": 0.56
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 32,
+   "maps": 27,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 31.5
+   "weighted_count": 26.5
   },
   "Fireplace4": {
    "contexts": {
-    "cave": 0.02,
-    "dungeon": 0.196,
-    "masonry": 0.582,
-    "other": 0.203
+    "cave": 0.024,
+    "masonry": 0.724,
+    "other": 0.252
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 28,
+   "maps": 21,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 25.5
+   "weighted_count": 20.5
   },
   "Flame": {
    "contexts": {
@@ -6063,29 +5874,6 @@
    "wall_mounted": false,
    "weighted_count": 302.0
   },
-  "FlameImmobile": {
-   "contexts": {
-    "dungeon": 0.268,
-    "lava": 0.68,
-    "masonry": 0.041,
-    "outdoor": 0.01
-   },
-   "dangerous": true,
-   "kind": "fire",
-   "maps": 10,
-   "paired_colorlight_presets": {
-    "orange_steady_full": 0.294,
-    "red_steady_full": 0.118,
-    "white_steady_full": 0.588
-   },
-   "paired_offset_px_median": [
-    -6.0,
-    -7.0
-   ],
-   "share_with_colorlight_within_46px": 0.119,
-   "wall_mounted": false,
-   "weighted_count": 97.0
-  },
   "ForceOrb": {
    "contexts": {
     "dungeon": 0.989,
@@ -6100,84 +5888,16 @@
   },
   "FreestandingFireplace": {
    "contexts": {
-    "dungeon": 0.062,
-    "masonry": 0.562,
-    "other": 0.125,
-    "outdoor": 0.25
+    "masonry": 0.6,
+    "other": 0.133,
+    "outdoor": 0.267
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 16,
+   "maps": 14,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 16.0
-  },
-  "GauntletExitA": {
-   "contexts": {
-    "dungeon": 0.235,
-    "interior": 0.235,
-    "masonry": 0.118,
-    "outdoor": 0.294
-   },
-   "dangerous": false,
-   "kind": "other",
-   "maps": 13,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 17.0
-  },
-  "GauntletExitB": {
-   "contexts": {
-    "cave": 0.143,
-    "dungeon": 0.143,
-    "masonry": 0.429,
-    "outdoor": 0.286
-   },
-   "dangerous": false,
-   "kind": "other",
-   "maps": 7,
-   "paired_colorlight_presets": {
-    "white_steady_full": 1.0
-   },
-   "paired_offset_px_median": [
-    -8.0,
-    37.7
-   ],
-   "share_with_colorlight_within_46px": 0.143,
-   "wall_mounted": false,
-   "weighted_count": 7.0
-  },
-  "GauntletWarpExitA": {
-   "contexts": {
-    "ice": 0.25,
-    "masonry": 0.25,
-    "outdoor": 0.5
-   },
-   "dangerous": false,
-   "kind": "other",
-   "maps": 6,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 4.0
-  },
-  "GauntletWarpExitB": {
-   "contexts": {
-    "dungeon": 0.25,
-    "outdoor": 0.75
-   },
-   "dangerous": false,
-   "kind": "other",
-   "maps": 7,
-   "paired_colorlight_presets": {
-    "orange_steady_dim": 1.0
-   },
-   "paired_offset_px_median": [
-    11.5,
-    34.5
-   ],
-   "share_with_colorlight_within_46px": 0.125,
-   "wall_mounted": false,
-   "weighted_count": 4.0
+   "weighted_count": 15.0
   },
   "HeartOfNoxBase": {
    "contexts": {
@@ -6223,33 +5943,21 @@
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 5,
+   "maps": 3,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 4.0
+   "weighted_count": 2.0
   },
   "LOTDCandleGroupLarge2": {
-   "contexts": {
-    "dungeon": 0.75,
-    "interior": 0.25
-   },
-   "dangerous": false,
-   "kind": "fire",
-   "maps": 10,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 8.0
-  },
-  "LOTDCandleGroupLarge3": {
    "contexts": {
     "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 2,
+   "maps": 6,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 2.0
+   "weighted_count": 5.0
   },
   "LOTDCandleGroupLarge4": {
    "contexts": {
@@ -6257,113 +5965,88 @@
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 8,
+   "maps": 6,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 5.0
+   "weighted_count": 4.0
   },
   "LOTDCandleGroupSmall1": {
    "contexts": {
-    "dungeon": 0.962,
-    "interior": 0.025,
-    "masonry": 0.013
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 11,
-   "share_with_colorlight_within_46px": 0.013,
+   "maps": 7,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 39.5
+   "weighted_count": 28.0
   },
   "LOTDCandleGroupSmall2": {
    "contexts": {
-    "dungeon": 0.939,
-    "interior": 0.041,
-    "masonry": 0.02
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 11,
+   "maps": 7,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 24.5
+   "weighted_count": 14.0
   },
   "LOTDCandleLarge": {
    "contexts": {
-    "dungeon": 0.956,
-    "ice": 0.018,
-    "interior": 0.027
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 11,
-   "paired_colorlight_presets": {
-    "orange_steady_full": 1.0
-   },
-   "paired_offset_px_median": [
-    -13.5,
-    28.5
-   ],
-   "share_with_colorlight_within_46px": 0.053,
+   "maps": 7,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 56.5
+   "weighted_count": 29.0
   },
   "LOTDCandleSmall": {
    "contexts": {
-    "dungeon": 0.906,
-    "ice": 0.038,
-    "interior": 0.038,
-    "masonry": 0.019
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 10,
-   "paired_colorlight_presets": {
-    "orange_steady_dim": 1.0
-   },
-   "paired_offset_px_median": [
-    32.0,
-    -4.5
-   ],
-   "share_with_colorlight_within_46px": 0.006,
+   "maps": 6,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 79.5
+   "weighted_count": 36.0
   },
   "LOTDCandleabra1": {
    "contexts": {
-    "dungeon": 0.984,
-    "ice": 0.016
-   },
-   "dangerous": false,
-   "kind": "fire",
-   "maps": 16,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 124.3
-  },
-  "LOTDIncenseBasinLit": {
-   "contexts": {
-    "dungeon": 0.823,
-    "interior": 0.106,
-    "masonry": 0.071
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "fire",
    "maps": 14,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 37.7
+   "weighted_count": 49.3
+  },
+  "LOTDIncenseBasinLit": {
+   "contexts": {
+    "dungeon": 0.913,
+    "masonry": 0.087
+   },
+   "dangerous": false,
+   "kind": "fire",
+   "maps": 10,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": false,
+   "weighted_count": 30.7
   },
   "LOTDManaObelisk": {
    "contexts": {
-    "dungeon": 0.939,
-    "ice": 0.041,
-    "interior": 0.011,
-    "lava": 0.005
+    "dungeon": 0.966,
+    "interior": 0.019,
+    "lava": 0.008,
+    "masonry": 0.008
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 20,
+   "maps": 18,
    "paired_colorlight_presets": {
     "blue_steady_full": 1.0
    },
@@ -6373,137 +6056,116 @@
    ],
    "share_with_colorlight_within_46px": 0.001,
    "wall_mounted": false,
-   "weighted_count": 443.0
+   "weighted_count": 265.0
   },
   "LOTDWallSconse1": {
    "contexts": {
-    "dungeon": 0.858,
-    "ice": 0.01,
-    "interior": 0.132
+    "dungeon": 1.0
    },
    "dangerous": false,
    "distance_to_wall_centre_px_median": 11.5,
    "kind": "fire",
-   "maps": 18,
-   "paired_colorlight_presets": {
-    "blue_steady_full": 0.2,
-    "white_steady_full": 0.8
-   },
-   "paired_offset_px_median": [
-    -34.5,
-    26.3
-   ],
-   "share_with_colorlight_within_46px": 0.013,
-   "wall_mounted": true,
-   "wall_relation": [
-    {
-     "share": 0.909,
-     "side": "SE side",
-     "wall": "'/' wall"
-    },
-    {
-     "share": 0.091,
-     "side": "",
-     "wall": "junction/corner"
-    }
-   ],
-   "weighted_count": 197.7
-  },
-  "LOTDWallSconse2": {
-   "contexts": {
-    "dungeon": 0.908,
-    "interior": 0.09,
-    "none": 0.002
-   },
-   "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
-   "kind": "fire",
-   "maps": 18,
-   "paired_colorlight_presets": {
-    "cyan_steady_full": 0.333,
-    "white_steady_full": 0.667
-   },
-   "paired_offset_px_median": [
-    -23.0,
-    23.0
-   ],
-   "share_with_colorlight_within_46px": 0.032,
-   "wall_mounted": true,
-   "wall_relation": [
-    {
-     "share": 0.894,
-     "side": "SW side",
-     "wall": "'\\' wall"
-    },
-    {
-     "share": 0.106,
-     "side": "",
-     "wall": "junction/corner"
-    }
-   ],
-   "weighted_count": 189.3
-  },
-  "LOTDWallSconse3": {
-   "contexts": {
-    "dungeon": 0.874,
-    "interior": 0.126
-   },
-   "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
-   "kind": "fire",
-   "maps": 15,
+   "maps": 14,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.969,
-     "side": "NW side",
+     "share": 0.917,
+     "side": "SE side",
      "wall": "'/' wall"
     },
     {
-     "share": 0.031,
+     "share": 0.083,
      "side": "",
      "wall": "junction/corner"
     }
    ],
-   "weighted_count": 63.7
+   "weighted_count": 72.7
   },
-  "LOTDWallSconse4": {
+  "LOTDWallSconse2": {
    "contexts": {
-    "dungeon": 0.846,
-    "interior": 0.154
+    "dungeon": 0.995,
+    "none": 0.005
    },
    "dangerous": false,
    "distance_to_wall_centre_px_median": 11.5,
    "kind": "fire",
-   "maps": 13,
+   "maps": 14,
    "paired_colorlight_presets": {
-    "white_steady_full": 1.0
+    "cyan_steady_full": 1.0
    },
    "paired_offset_px_median": [
-    -15.7,
-    38.0
+    -33.5,
+    14.5
    ],
-   "share_with_colorlight_within_46px": 0.015,
+   "share_with_colorlight_within_46px": 0.028,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.908,
+     "share": 0.944,
+     "side": "SW side",
+     "wall": "'\\' wall"
+    },
+    {
+     "share": 0.056,
+     "side": "",
+     "wall": "junction/corner"
+    }
+   ],
+   "weighted_count": 71.3
+  },
+  "LOTDWallSconse3": {
+   "contexts": {
+    "dungeon": 1.0
+   },
+   "dangerous": false,
+   "distance_to_wall_centre_px_median": 12.1,
+   "kind": "fire",
+   "maps": 11,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": true,
+   "wall_relation": [
+    {
+     "share": 0.971,
+     "side": "NW side",
+     "wall": "'/' wall"
+    },
+    {
+     "share": 0.029,
+     "side": "",
+     "wall": "junction/corner"
+    }
+   ],
+   "weighted_count": 34.7
+  },
+  "LOTDWallSconse4": {
+   "contexts": {
+    "dungeon": 1.0
+   },
+   "dangerous": false,
+   "distance_to_wall_centre_px_median": 11.5,
+   "kind": "fire",
+   "maps": 9,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": true,
+   "wall_relation": [
+    {
+     "share": 0.941,
      "side": "NE side",
      "wall": "'\\' wall"
     },
     {
-     "share": 0.077,
-     "side": "",
-     "wall": "junction/corner"
-    },
-    {
-     "share": 0.015,
+     "share": 0.029,
      "side": "SW side",
      "wall": "'\\' wall"
+    },
+    {
+     "share": 0.029,
+     "side": "",
+     "wall": "junction/corner"
     }
    ],
-   "weighted_count": 65.0
+   "weighted_count": 34.0
   },
   "LargeBlueFlame": {
    "contexts": {
@@ -6537,18 +6199,6 @@
    "wall_mounted": false,
    "weighted_count": 108.3
   },
-  "LargeFlameImmobile": {
-   "contexts": {
-    "dungeon": 0.955,
-    "lava": 0.045
-   },
-   "dangerous": true,
-   "kind": "fire",
-   "maps": 6,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 22.0
-  },
   "MediumBlueFlame": {
    "contexts": {
     "masonry": 1.0
@@ -6562,18 +6212,18 @@
   },
   "MediumFlame": {
    "contexts": {
-    "dungeon": 0.034,
-    "lava": 0.773,
-    "masonry": 0.084,
+    "dungeon": 0.035,
+    "lava": 0.771,
+    "masonry": 0.085,
     "outdoor": 0.068
    },
    "dangerous": true,
    "kind": "fire",
-   "maps": 34,
+   "maps": 33,
    "paired_colorlight_presets": {
+    "red_animated_full": 0.019,
     "red_steady_dim": 0.019,
-    "red_steady_full": 0.923,
-    "white_steady_full": 0.029
+    "red_steady_full": 0.932
    },
    "paired_offset_px_median": [
     2.0,
@@ -6581,40 +6231,38 @@
    ],
    "share_with_colorlight_within_46px": 0.314,
    "wall_mounted": false,
-   "weighted_count": 630.3
+   "weighted_count": 625.3
   },
   "MediumFlameImmobile": {
    "contexts": {
-    "cave": 0.025,
-    "dungeon": 0.306,
-    "lava": 0.567,
-    "masonry": 0.076
+    "dungeon": 0.4,
+    "lava": 0.4,
+    "outdoor": 0.2
    },
    "dangerous": true,
    "kind": "fire",
-   "maps": 10,
+   "maps": 2,
    "paired_colorlight_presets": {
-    "red_steady_full": 0.333,
-    "white_steady_full": 0.667
+    "red_steady_full": 1.0
    },
    "paired_offset_px_median": [
-    -5.5,
-    0.0
+    11.0,
+    -2.0
    ],
-   "share_with_colorlight_within_46px": 0.092,
+   "share_with_colorlight_within_46px": 0.8,
    "wall_mounted": false,
-   "weighted_count": 157.0
+   "weighted_count": 5.0
   },
   "MineCrystal01": {
    "contexts": {
-    "cave": 0.363,
-    "dungeon": 0.133,
-    "lava": 0.224,
-    "outdoor": 0.212
+    "cave": 0.398,
+    "dungeon": 0.145,
+    "lava": 0.245,
+    "outdoor": 0.136
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 30,
+   "maps": 29,
    "paired_colorlight_presets": {
     "red_steady_full": 0.4,
     "white_steady_full": 0.6
@@ -6623,20 +6271,20 @@
     6.0,
     5.0
    ],
-   "share_with_colorlight_within_46px": 0.116,
+   "share_with_colorlight_within_46px": 0.127,
    "wall_mounted": false,
-   "weighted_count": 80.3
+   "weighted_count": 73.3
   },
   "MineCrystal02": {
    "contexts": {
-    "cave": 0.461,
-    "lava": 0.241,
-    "masonry": 0.113,
-    "outdoor": 0.137
+    "cave": 0.474,
+    "lava": 0.248,
+    "masonry": 0.117,
+    "outdoor": 0.112
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 29,
+   "maps": 28,
    "paired_colorlight_presets": {
     "orange_steady_full": 0.1,
     "white_steady_full": 0.9
@@ -6645,20 +6293,20 @@
     -1.5,
     25.5
    ],
-   "share_with_colorlight_within_46px": 0.09,
+   "share_with_colorlight_within_46px": 0.092,
    "wall_mounted": false,
-   "weighted_count": 70.5
+   "weighted_count": 68.5
   },
   "MineCrystal03": {
    "contexts": {
-    "cave": 0.337,
-    "dungeon": 0.164,
-    "lava": 0.199,
-    "outdoor": 0.207
+    "cave": 0.382,
+    "dungeon": 0.185,
+    "lava": 0.225,
+    "masonry": 0.106
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 32,
+   "maps": 29,
    "paired_colorlight_presets": {
     "blue_steady_full": 0.462,
     "red_steady_full": 0.231,
@@ -6668,20 +6316,20 @@
     6.0,
     17.0
    ],
-   "share_with_colorlight_within_46px": 0.074,
+   "share_with_colorlight_within_46px": 0.084,
    "wall_mounted": false,
-   "weighted_count": 85.5
+   "weighted_count": 75.5
   },
   "MineCrystal04": {
    "contexts": {
-    "cave": 0.358,
-    "dungeon": 0.191,
-    "lava": 0.085,
-    "outdoor": 0.341
+    "cave": 0.45,
+    "dungeon": 0.249,
+    "lava": 0.111,
+    "outdoor": 0.159
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 34,
+   "maps": 29,
    "paired_colorlight_presets": {
     "cyan_steady_full": 0.231,
     "orange_steady_full": 0.538,
@@ -6691,184 +6339,160 @@
     -21.0,
     -16.0
    ],
-   "share_with_colorlight_within_46px": 0.077,
+   "share_with_colorlight_within_46px": 0.101,
    "wall_mounted": false,
-   "weighted_count": 82.0
+   "weighted_count": 63.0
   },
   "MineCrystal05": {
    "contexts": {
-    "cave": 0.541,
-    "masonry": 0.144,
-    "outdoor": 0.316
+    "cave": 0.758,
+    "masonry": 0.201,
+    "outdoor": 0.04
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 22,
-   "share_with_colorlight_within_46px": 0.019,
+   "maps": 19,
+   "share_with_colorlight_within_46px": 0.027,
    "wall_mounted": false,
-   "weighted_count": 34.8
+   "weighted_count": 24.8
   },
   "MineCrystalDown01": {
    "contexts": {
-    "cave": 0.332,
-    "dungeon": 0.019,
-    "masonry": 0.161,
-    "outdoor": 0.487
+    "cave": 0.61,
+    "masonry": 0.297,
+    "outdoor": 0.093
+   },
+   "dangerous": false,
+   "kind": "magic",
+   "maps": 12,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": false,
+   "weighted_count": 28.7
+  },
+  "MineCrystalDown02": {
+   "contexts": {
+    "cave": 0.759,
+    "masonry": 0.207,
+    "outdoor": 0.034
+   },
+   "dangerous": false,
+   "kind": "magic",
+   "maps": 8,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": false,
+   "weighted_count": 9.7
+  },
+  "MineCrystalDown03": {
+   "contexts": {
+    "cave": 0.765,
+    "dungeon": 0.029,
+    "masonry": 0.044,
+    "outdoor": 0.162
    },
    "dangerous": false,
    "kind": "magic",
    "maps": 13,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 52.7
-  },
-  "MineCrystalDown02": {
-   "contexts": {
-    "cave": 0.338,
-    "masonry": 0.092,
-    "outdoor": 0.569
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 9,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 21.7
-  },
-  "MineCrystalDown03": {
-   "contexts": {
-    "cave": 0.364,
-    "dungeon": 0.035,
-    "masonry": 0.021,
-    "outdoor": 0.58
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 14,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 47.7
+   "weighted_count": 22.7
   },
   "MineCrystalDown04": {
    "contexts": {
-    "cave": 0.375,
-    "dungeon": 0.039,
-    "masonry": 0.059,
-    "outdoor": 0.526
+    "cave": 0.663,
+    "masonry": 0.105,
+    "outdoor": 0.233
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 11,
-   "paired_colorlight_presets": {
-    "white_steady_full": 1.0
-   },
-   "paired_offset_px_median": [
-    38.3,
-    23.0
-   ],
-   "share_with_colorlight_within_46px": 0.039,
+   "maps": 10,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 25.3
+   "weighted_count": 14.3
   },
   "MineCrystalDown05": {
    "contexts": {
-    "cave": 0.308,
-    "masonry": 0.231,
-    "outdoor": 0.462
+    "cave": 0.505,
+    "masonry": 0.379,
+    "outdoor": 0.117
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 11,
+   "maps": 10,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 28.2
+   "weighted_count": 17.2
   },
   "MineCrystalUp01": {
    "contexts": {
-    "cave": 0.185,
-    "outdoor": 0.815
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 9,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 27.0
-  },
-  "MineCrystalUp02": {
-   "contexts": {
-    "cave": 0.301,
-    "masonry": 0.008,
-    "outdoor": 0.674,
-    "water": 0.017
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 14,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 59.3
-  },
-  "MineCrystalUp03": {
-   "contexts": {
-    "cave": 0.308,
-    "outdoor": 0.692
+    "cave": 0.556,
+    "outdoor": 0.444
    },
    "dangerous": false,
    "kind": "magic",
    "maps": 8,
-   "paired_colorlight_presets": {
-    "white_steady_full": 1.0
-   },
-   "paired_offset_px_median": [
-    23.0,
-    -30.7
-   ],
-   "share_with_colorlight_within_46px": 0.044,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 30.3
+   "weighted_count": 9.0
+  },
+  "MineCrystalUp02": {
+   "contexts": {
+    "cave": 0.918,
+    "masonry": 0.027,
+    "water": 0.055
+   },
+   "dangerous": false,
+   "kind": "magic",
+   "maps": 9,
+   "share_with_colorlight_within_46px": 0.0,
+   "wall_mounted": false,
+   "weighted_count": 18.3
+  },
+  "MineCrystalUp03": {
+   "contexts": {
+    "cave": 0.903,
+    "outdoor": 0.097
+   },
+   "dangerous": false,
+   "kind": "magic",
+   "maps": 7,
+   "share_with_colorlight_within_46px": 0.032,
+   "wall_mounted": false,
+   "weighted_count": 10.3
   },
   "MineCrystalUp04": {
    "contexts": {
-    "cave": 0.205,
-    "masonry": 0.018,
-    "outdoor": 0.777
+    "cave": 0.674,
+    "masonry": 0.065,
+    "outdoor": 0.261
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 15,
-   "paired_colorlight_presets": {
-    "white_steady_full": 1.0
-   },
-   "paired_offset_px_median": [
-    30.7,
-    23.0
-   ],
-   "share_with_colorlight_within_46px": 0.018,
+   "maps": 10,
+   "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 55.3
+   "weighted_count": 15.3
   },
   "MineCrystalUp05": {
    "contexts": {
-    "cave": 0.108,
-    "masonry": 0.027,
-    "outdoor": 0.865
+    "cave": 0.444,
+    "masonry": 0.111,
+    "outdoor": 0.444
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 6,
-   "share_with_colorlight_within_46px": 0.054,
+   "maps": 5,
+   "share_with_colorlight_within_46px": 0.222,
    "wall_mounted": false,
-   "weighted_count": 18.5
+   "weighted_count": 4.5
   },
   "MineManaCart1": {
    "contexts": {
-    "cave": 0.333,
-    "outdoor": 0.667
+    "cave": 0.667,
+    "outdoor": 0.333
    },
    "dangerous": false,
    "kind": "other",
-   "maps": 2,
+   "maps": 1,
    "paired_colorlight_presets": {
     "red_steady_full": 1.0
    },
@@ -6876,18 +6500,17 @@
     -1.0,
     18.5
    ],
-   "share_with_colorlight_within_46px": 0.167,
+   "share_with_colorlight_within_46px": 0.333,
    "wall_mounted": false,
-   "weighted_count": 12.0
+   "weighted_count": 6.0
   },
   "MineManaCart2": {
    "contexts": {
-    "cave": 0.636,
-    "outdoor": 0.364
+    "cave": 1.0
    },
    "dangerous": false,
    "kind": "other",
-   "maps": 5,
+   "maps": 4,
    "paired_colorlight_presets": {
     "orange_steady_full": 1.0
    },
@@ -6895,9 +6518,9 @@
     18.0,
     40.0
    ],
-   "share_with_colorlight_within_46px": 0.091,
+   "share_with_colorlight_within_46px": 0.143,
    "wall_mounted": false,
-   "weighted_count": 11.0
+   "weighted_count": 7.0
   },
   "Nightstand1": {
    "contexts": {
@@ -6947,27 +6570,27 @@
   },
   "Nightstand4": {
    "contexts": {
-    "interior": 0.486,
-    "masonry": 0.428,
-    "outdoor": 0.087
+    "interior": 0.474,
+    "masonry": 0.437,
+    "outdoor": 0.089
    },
    "dangerous": false,
    "kind": "other",
-   "maps": 30,
+   "maps": 28,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 46.0
+   "weighted_count": 45.0
   },
   "Obelisk": {
    "contexts": {
-    "dungeon": 0.34,
-    "interior": 0.312,
-    "masonry": 0.319,
-    "outdoor": 0.02
+    "dungeon": 0.135,
+    "interior": 0.342,
+    "masonry": 0.478,
+    "outdoor": 0.03
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 38,
+   "maps": 36,
    "paired_colorlight_presets": {
     "red_steady_full": 0.6,
     "white_animated_full": 0.15,
@@ -6977,32 +6600,32 @@
     -1.0,
     24.0
    ],
-   "share_with_colorlight_within_46px": 0.064,
+   "share_with_colorlight_within_46px": 0.096,
    "wall_mounted": false,
-   "weighted_count": 308.2
+   "weighted_count": 205.2
   },
   "ObeliskPrimitive": {
    "contexts": {
-    "dungeon": 0.189,
-    "masonry": 0.282,
-    "outdoor": 0.286,
-    "swamp": 0.092
+    "ice": 0.057,
+    "masonry": 0.224,
+    "outdoor": 0.558,
+    "swamp": 0.126
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 54,
+   "maps": 43,
    "paired_colorlight_presets": {
-    "blue_steady_full": 0.371,
-    "orange_steady_full": 0.114,
-    "white_steady_full": 0.343
+    "blue_steady_full": 0.385,
+    "orange_steady_full": 0.154,
+    "white_steady_full": 0.231
    },
    "paired_offset_px_median": [
     -6.0,
-    14.0
+    2.0
    ],
-   "share_with_colorlight_within_46px": 0.008,
+   "share_with_colorlight_within_46px": 0.021,
    "wall_mounted": false,
-   "weighted_count": 830.0
+   "weighted_count": 211.0
   },
   "OgreFirePit": {
    "contexts": {
@@ -7091,16 +6714,15 @@
   },
   "SentryGlobe": {
    "contexts": {
-    "dungeon": 0.706,
-    "interior": 0.059,
-    "masonry": 0.235
+    "dungeon": 0.714,
+    "masonry": 0.286
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 11,
+   "maps": 8,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 17.0
+   "weighted_count": 14.0
   },
   "SentryGlobeE": {
    "contexts": {
@@ -7113,43 +6735,27 @@
    "wall_mounted": false,
    "weighted_count": 1.0
   },
-  "SentryGlobeMovable": {
+  "SentryGlobeN": {
    "contexts": {
-    "dungeon": 0.5,
-    "none": 0.125,
-    "outdoor": 0.375
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 5,
+   "maps": 6,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
    "weighted_count": 8.0
   },
-  "SentryGlobeN": {
-   "contexts": {
-    "dungeon": 0.857,
-    "interior": 0.071,
-    "none": 0.071
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 8,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 14.0
-  },
   "SentryGlobeW": {
    "contexts": {
-    "dungeon": 0.5,
-    "outdoor": 0.5
+    "dungeon": 1.0
    },
    "dangerous": false,
    "kind": "magic",
-   "maps": 4,
+   "maps": 3,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 2.0
+   "weighted_count": 1.0
   },
   "SmallBlueFlame": {
    "contexts": {
@@ -7188,26 +6794,24 @@
   },
   "SmallFlameImmobile": {
    "contexts": {
-    "cave": 0.046,
-    "dungeon": 0.114,
-    "lava": 0.713,
-    "masonry": 0.102
+    "dungeon": 0.348,
+    "lava": 0.464,
+    "outdoor": 0.188
    },
    "dangerous": true,
    "kind": "fire",
-   "maps": 12,
+   "maps": 4,
    "paired_colorlight_presets": {
-    "orange_steady_full": 0.133,
-    "red_steady_full": 0.067,
-    "white_steady_full": 0.767
+    "red_steady_full": 0.5,
+    "white_animated_full": 0.5
    },
    "paired_offset_px_median": [
-    0.0,
-    -12.0
+    19.5,
+    -9.0
    ],
-   "share_with_colorlight_within_46px": 0.167,
+   "share_with_colorlight_within_46px": 0.406,
    "wall_mounted": false,
-   "weighted_count": 263.5
+   "weighted_count": 34.5
   },
   "SmallMirror1": {
    "contexts": {
@@ -7253,38 +6857,16 @@
    ],
    "weighted_count": 8.5
   },
-  "SoulGate": {
-   "contexts": {
-    "dungeon": 0.29,
-    "interior": 0.177,
-    "masonry": 0.081,
-    "outdoor": 0.355
-   },
-   "dangerous": false,
-   "kind": "magic",
-   "maps": 13,
-   "paired_colorlight_presets": {
-    "cyan_steady_dim": 0.444,
-    "white_steady_full": 0.556
-   },
-   "paired_offset_px_median": [
-    4.0,
-    1.0
-   ],
-   "share_with_colorlight_within_46px": 0.145,
-   "wall_mounted": false,
-   "weighted_count": 62.0
-  },
   "SpellBook": {
    "contexts": {
-    "dungeon": 0.256,
-    "interior": 0.153,
-    "none": 0.256,
-    "outdoor": 0.153
+    "dungeon": 0.265,
+    "interior": 0.158,
+    "none": 0.265,
+    "outdoor": 0.158
    },
    "dangerous": false,
    "kind": "other",
-   "maps": 29,
+   "maps": 28,
    "paired_colorlight_presets": {
     "blue_steady_dim": 0.4,
     "white_steady_full": 0.6
@@ -7293,9 +6875,9 @@
     -18.0,
     28.0
    ],
-   "share_with_colorlight_within_46px": 0.073,
+   "share_with_colorlight_within_46px": 0.075,
    "wall_mounted": false,
-   "weighted_count": 32.2
+   "weighted_count": 31.2
   },
   "SpikeBrazierImmobile": {
    "contexts": {
@@ -7323,17 +6905,15 @@
   },
   "Stove03": {
    "contexts": {
-    "dungeon": 0.133,
-    "interior": 0.133,
-    "masonry": 0.6,
-    "other": 0.133
+    "masonry": 0.818,
+    "other": 0.182
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 17,
+   "maps": 13,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 15.0
+   "weighted_count": 11.0
   },
   "Stove04": {
    "contexts": {
@@ -7349,17 +6929,16 @@
   },
   "Stove05": {
    "contexts": {
-    "dungeon": 0.154,
-    "interior": 0.462,
-    "masonry": 0.308,
-    "outdoor": 0.077
+    "interior": 0.545,
+    "masonry": 0.364,
+    "outdoor": 0.091
    },
    "dangerous": false,
    "kind": "fire",
-   "maps": 15,
+   "maps": 13,
    "share_with_colorlight_within_46px": 0.0,
    "wall_mounted": false,
-   "weighted_count": 13.0
+   "weighted_count": 11.0
   },
   "StreetLamp1": {
    "contexts": {
@@ -7454,49 +7033,49 @@
   },
   "Torch": {
    "contexts": {
-    "cave": 0.068,
-    "interior": 0.071,
-    "masonry": 0.381,
-    "outdoor": 0.411
+    "cave": 0.094,
+    "interior": 0.064,
+    "masonry": 0.41,
+    "outdoor": 0.428
    },
    "dangerous": false,
-   "distance_to_wall_centre_px_median": 11.5,
+   "distance_to_wall_centre_px_median": 11.4,
    "kind": "fire",
-   "maps": 82,
+   "maps": 71,
    "paired_colorlight_presets": {
-    "blue_steady_full": 0.228,
-    "green_steady_dim": 0.076,
-    "green_steady_full": 0.127
+    "blue_steady_full": 0.224,
+    "green_steady_full": 0.149,
+    "red_steady_dim": 0.09
    },
    "paired_offset_px_median": [
-    -9.0,
-    -13.0
+    -6.0,
+    -17.0
    ],
-   "share_with_colorlight_within_46px": 0.019,
+   "share_with_colorlight_within_46px": 0.022,
    "wall_mounted": true,
    "wall_relation": [
     {
-     "share": 0.353,
+     "share": 0.392,
      "side": "",
      "wall": "junction/corner"
     },
     {
-     "share": 0.222,
-     "side": "SW side",
-     "wall": "'\\' wall"
-    },
-    {
-     "share": 0.222,
+     "share": 0.209,
      "side": "SE side",
      "wall": "'/' wall"
     },
     {
-     "share": 0.117,
+     "share": 0.205,
+     "side": "SW side",
+     "wall": "'\\' wall"
+    },
+    {
+     "share": 0.115,
      "side": "NW side",
      "wall": "'/' wall"
     }
    ],
-   "weighted_count": 1530.5
+   "weighted_count": 1101.5
   },
   "TorchPole": {
    "contexts": {
@@ -7520,20 +7099,6 @@
    "share_with_colorlight_within_46px": 0.031,
    "wall_mounted": false,
    "weighted_count": 632.8
-  },
-  "TorchPoleImmobile": {
-   "contexts": {
-    "dungeon": 0.061,
-    "masonry": 0.041,
-    "outdoor": 0.347,
-    "swamp": 0.51
-   },
-   "dangerous": false,
-   "kind": "fire",
-   "maps": 9,
-   "share_with_colorlight_within_46px": 0.0,
-   "wall_mounted": false,
-   "weighted_count": 49.0
   },
   "VandegrafLarge": {
    "contexts": {

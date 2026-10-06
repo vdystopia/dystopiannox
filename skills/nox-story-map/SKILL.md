@@ -11,7 +11,9 @@ for a reason.
 
 **Read first:** `PROCESS.md` (the rules, by topic: what a good result is, each rule tagged with the playtest that set
 it), `rules/rooms/README.md` (each room type's own rules: there is no one-size-fits-all room) and
-`review/FEEDBACK.md` (every piece of the user's feedback and the check that now enforces it). This file is the
+`review/FEEDBACK.md` (every piece of the user's feedback and the check that now enforces it). Westwood's style means its campaign
+maps only (Con/War/Wiz): never copy a piece, a number or a layout from the quest maps (G_*) or the multiplayer maps;
+the kit decorates only with types the campaign places (`nox.campaign_types()`). This file is the
 recipe: what to call, in which order.
 
 **Template:** copy `mapgen/designs/starwell.py` (the newest town: sections, yards, a camp in zones with posts, a sealed

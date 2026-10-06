@@ -1,9 +1,9 @@
 {
  "boundary": {
   "closed_by": {
-   "invisible wall only": 0.014,
-   "no wall": 0.006,
-   "visible wall": 0.98
+   "invisible wall only": 0.016,
+   "no wall": 0.007,
+   "visible wall": 0.977
   },
   "per_map": {
    "Con01A": {
@@ -123,47 +123,6 @@
     "visible wall": 0.896
    },
    "Con11a": {
-    "visible wall": 1.0
-   },
-   "G_CastlD": {
-    "visible wall": 1.0
-   },
-   "G_Castle": {
-    "visible wall": 1.0
-   },
-   "G_CryptD": {
-    "visible wall": 1.0
-   },
-   "G_Crypts": {
-    "visible wall": 1.0
-   },
-   "G_ForesD": {
-    "no wall": 0.001,
-    "visible wall": 0.999
-   },
-   "G_Forest": {
-    "no wall": 0.001,
-    "visible wall": 0.999
-   },
-   "G_LOTD": {
-    "visible wall": 1.0
-   },
-   "G_LOTDD": {
-    "visible wall": 1.0
-   },
-   "G_Lava": {
-    "visible wall": 1.0
-   },
-   "G_Mines": {
-    "visible wall": 1.0
-   },
-   "G_Swamp": {
-    "visible wall": 1.0
-   },
-   "G_TemplD": {
-    "visible wall": 1.0
-   },
-   "G_Temple": {
     "visible wall": 1.0
    },
    "War01A": {
@@ -431,105 +390,80 @@
  },
  "doors": {
   "context_by_type": {
-   "AncientDungeonDoor": {
-    "cave|natural": 0.1,
-    "masonry|masonry": 0.2,
-    "masonry|natural": 0.5,
-    "natural|natural": 0.2
-   },
-   "AncientRuinDoor": {
-    "masonry|masonry": 0.455,
-    "masonry|natural": 0.5,
-    "natural|natural": 0.045
-   },
    "ArchedDoor": {
-    "cave|interior": 0.011,
-    "cave|masonry": 0.007,
-    "interior|interior": 0.12,
-    "interior|masonry": 0.301,
-    "interior|natural": 0.115,
-    "masonry|masonry": 0.211,
-    "masonry|natural": 0.056,
-    "natural|natural": 0.179
+    "cave|interior": 0.014,
+    "cave|masonry": 0.009,
+    "interior|interior": 0.105,
+    "interior|masonry": 0.366,
+    "interior|natural": 0.14,
+    "masonry|masonry": 0.243,
+    "masonry|natural": 0.041,
+    "natural|natural": 0.082
    },
    "ArchedHalfDoor": {
-    "cave|masonry": 0.019,
-    "cave|natural": 0.019,
-    "interior|interior": 0.26,
-    "interior|masonry": 0.183,
-    "interior|natural": 0.288,
-    "masonry|masonry": 0.077,
-    "masonry|natural": 0.09,
-    "natural|natural": 0.064
+    "cave|masonry": 0.022,
+    "cave|natural": 0.022,
+    "interior|interior": 0.261,
+    "interior|masonry": 0.174,
+    "interior|natural": 0.326,
+    "masonry|masonry": 0.043,
+    "masonry|natural": 0.101,
+    "natural|natural": 0.051
    },
    "BandedPlankDoor": {
-    "cave|cave": 0.013,
-    "interior|interior": 0.101,
-    "interior|masonry": 0.038,
-    "interior|natural": 0.228,
-    "masonry|masonry": 0.304,
-    "masonry|natural": 0.101,
-    "natural|natural": 0.215
+    "interior|natural": 0.263,
+    "masonry|masonry": 0.395,
+    "masonry|natural": 0.158,
+    "natural|natural": 0.184
    },
    "BandedWoodenDoor": {
-    "cave|cave": 0.069,
-    "interior|interior": 0.115,
-    "interior|masonry": 0.069,
-    "interior|natural": 0.08,
-    "masonry|masonry": 0.379,
-    "masonry|natural": 0.172,
-    "natural|natural": 0.103,
-    "natural|void": 0.011
+    "interior|interior": 0.145,
+    "interior|masonry": 0.043,
+    "interior|natural": 0.058,
+    "masonry|masonry": 0.478,
+    "masonry|natural": 0.174,
+    "natural|natural": 0.087,
+    "natural|void": 0.014
    },
    "BarredGate": {
-    "cave|cave": 0.034,
-    "cave|interior": 0.034,
-    "cave|natural": 0.103,
-    "interior|interior": 0.224,
-    "interior|masonry": 0.121,
-    "interior|natural": 0.069,
-    "masonry|masonry": 0.138,
-    "natural|natural": 0.276
+    "cave|interior": 0.062,
+    "cave|natural": 0.125,
+    "interior|interior": 0.156,
+    "interior|masonry": 0.156,
+    "interior|natural": 0.125,
+    "masonry|masonry": 0.188,
+    "natural|natural": 0.188
    },
    "CryptDoor": {
-    "cave|cave": 0.024,
-    "cave|masonry": 0.033,
-    "interior|interior": 0.057,
-    "interior|masonry": 0.098,
-    "interior|natural": 0.033,
-    "masonry|masonry": 0.618,
-    "masonry|natural": 0.106,
-    "natural|natural": 0.033
+    "cave|cave": 0.033,
+    "interior|masonry": 0.033,
+    "masonry|masonry": 0.852,
+    "masonry|natural": 0.082
    },
    "CryptGate": {
-    "cave|masonry": 0.014,
-    "cave|natural": 0.07,
-    "interior|masonry": 0.056,
-    "masonry|masonry": 0.676,
-    "masonry|natural": 0.136,
-    "natural|natural": 0.047
+    "cave|masonry": 0.019,
+    "cave|natural": 0.075,
+    "masonry|masonry": 0.736,
+    "masonry|natural": 0.126,
+    "natural|natural": 0.044
    },
    "Dilapidated": {
-    "cave|cave": 0.033,
-    "cave|natural": 0.067,
-    "interior|interior": 0.033,
-    "interior|masonry": 0.033,
-    "interior|natural": 0.067,
-    "masonry|masonry": 0.1,
-    "masonry|natural": 0.133,
-    "natural|natural": 0.533
+    "cave|cave": 0.071,
+    "cave|natural": 0.143,
+    "interior|masonry": 0.071,
+    "interior|natural": 0.143,
+    "natural|natural": 0.571
    },
    "DunMirDoor": {
-    "cave|cave": 0.007,
-    "cave|interior": 0.012,
-    "cave|masonry": 0.031,
-    "cave|natural": 0.014,
-    "interior|interior": 0.064,
-    "interior|masonry": 0.288,
-    "interior|natural": 0.018,
-    "masonry|masonry": 0.453,
-    "masonry|natural": 0.078,
-    "natural|natural": 0.036
+    "cave|cave": 0.008,
+    "cave|interior": 0.013,
+    "cave|masonry": 0.034,
+    "cave|natural": 0.016,
+    "interior|interior": 0.055,
+    "interior|masonry": 0.32,
+    "interior|natural": 0.004,
+    "masonry|masonry": 0.487,
+    "masonry|natural": 0.063
    },
    "DunMirHalfDoor": {
     "cave|masonry": 0.057,
@@ -540,199 +474,174 @@
     "masonry|void": 0.057
    },
    "GalavaDoor": {
-    "cave|masonry": 0.029,
-    "interior|interior": 0.186,
-    "interior|masonry": 0.229,
-    "interior|natural": 0.029,
-    "masonry|masonry": 0.529
+    "interior|interior": 0.217,
+    "interior|masonry": 0.267,
+    "masonry|masonry": 0.517
    },
    "GalavaHalfDoor": {
-    "cave|cave": 0.016,
-    "cave|masonry": 0.016,
-    "interior|interior": 0.141,
-    "interior|masonry": 0.332,
-    "interior|natural": 0.016,
-    "interior|void": 0.008,
-    "masonry|masonry": 0.426,
-    "masonry|natural": 0.039,
-    "masonry|void": 0.008
+    "interior|interior": 0.167,
+    "interior|masonry": 0.375,
+    "interior|void": 0.009,
+    "masonry|masonry": 0.44,
+    "masonry|void": 0.009
    },
    "Gate": {
-    "cave|cave": 0.038,
-    "cave|masonry": 0.05,
-    "cave|water": 0.013,
-    "interior|interior": 0.082,
-    "interior|masonry": 0.076,
-    "masonry|masonry": 0.33,
-    "masonry|natural": 0.161,
-    "masonry|water": 0.006,
-    "natural|natural": 0.226,
-    "natural|water": 0.006,
+    "cave|cave": 0.04,
+    "cave|masonry": 0.053,
+    "interior|interior": 0.086,
+    "interior|masonry": 0.08,
+    "masonry|masonry": 0.334,
+    "masonry|natural": 0.149,
+    "masonry|water": 0.007,
+    "natural|natural": 0.231,
+    "natural|water": 0.007,
     "water|water": 0.013
    },
    "IronFenceGate": {
-    "cave|cave": 0.069,
-    "cave|masonry": 0.023,
-    "masonry|masonry": 0.115,
-    "masonry|natural": 0.285,
-    "natural|natural": 0.462,
-    "water|water": 0.046
+    "cave|cave": 0.083,
+    "cave|masonry": 0.028,
+    "masonry|masonry": 0.11,
+    "masonry|natural": 0.312,
+    "natural|natural": 0.413,
+    "water|water": 0.055
    },
    "JailDoor": {
-    "cave|cave": 0.17,
-    "masonry|masonry": 0.557,
-    "masonry|natural": 0.034,
-    "natural|natural": 0.239
+    "cave|cave": 0.179,
+    "masonry|masonry": 0.583,
+    "masonry|natural": 0.036,
+    "natural|natural": 0.202
    },
    "LOTDHalfDoor": {
-    "interior|interior": 0.122,
-    "interior|masonry": 0.27,
-    "interior|natural": 0.014,
-    "masonry|masonry": 0.554,
-    "masonry|natural": 0.041
+    "interior|interior": 0.071,
+    "interior|masonry": 0.429,
+    "masonry|masonry": 0.5
    },
    "LOTDSingleDoor": {
-    "interior|interior": 0.113,
-    "interior|masonry": 0.254,
-    "masonry|masonry": 0.62,
-    "masonry|natural": 0.014
+    "interior|interior": 0.2,
+    "masonry|masonry": 0.8
    },
    "OgreCageDoor": {
-    "cave|cave": 0.054,
-    "natural|natural": 0.946
+    "natural|natural": 1.0
    },
    "SecretDoor": {
     "interior|interior": 0.5,
     "interior|masonry": 0.5
    },
    "SpikedDoor": {
-    "cave|cave": 0.03,
-    "cave|masonry": 0.03,
-    "interior|masonry": 0.015,
-    "masonry|masonry": 0.239,
-    "masonry|natural": 0.06,
-    "natural|natural": 0.627
+    "cave|cave": 0.036,
+    "cave|masonry": 0.071,
+    "interior|masonry": 0.036,
+    "masonry|masonry": 0.571,
+    "masonry|natural": 0.143,
+    "natural|natural": 0.143
    },
    "ThickWoodenDoor": {
-    "cave|masonry": 0.069,
-    "interior|interior": 0.069,
-    "interior|masonry": 0.172,
-    "masonry|masonry": 0.345,
-    "masonry|natural": 0.276,
-    "natural|natural": 0.069
+    "interior|interior": 0.087,
+    "interior|masonry": 0.217,
+    "masonry|masonry": 0.348,
+    "masonry|natural": 0.348
    },
    "ThinWoodenDoor": {
-    "cave|cave": 0.042,
-    "cave|natural": 0.008,
-    "interior|interior": 0.042,
+    "cave|cave": 0.043,
+    "cave|natural": 0.009,
+    "interior|interior": 0.043,
     "interior|masonry": 0.017,
-    "interior|natural": 0.025,
-    "masonry|masonry": 0.59,
-    "masonry|natural": 0.084,
-    "masonry|water": 0.022,
-    "natural|natural": 0.169
+    "interior|natural": 0.026,
+    "masonry|masonry": 0.6,
+    "masonry|natural": 0.086,
+    "masonry|water": 0.023,
+    "natural|natural": 0.154
    },
    "WoodAndSteelDoor": {
-    "cave|cave": 0.038,
-    "cave|masonry": 0.077,
-    "masonry|masonry": 0.654,
-    "masonry|natural": 0.231
+    "cave|cave": 0.042,
+    "cave|masonry": 0.083,
+    "masonry|masonry": 0.708,
+    "masonry|natural": 0.167
    },
    "WoodAndSteelHalfDoor": {
-    "cave|masonry": 0.113,
-    "interior|interior": 0.109,
-    "interior|masonry": 0.114,
-    "interior|natural": 0.028,
-    "interior|void": 0.014,
-    "masonry|masonry": 0.409,
-    "masonry|natural": 0.092,
-    "natural|natural": 0.106,
-    "natural|void": 0.014
+    "cave|masonry": 0.118,
+    "interior|interior": 0.114,
+    "interior|masonry": 0.119,
+    "interior|natural": 0.029,
+    "interior|void": 0.015,
+    "masonry|masonry": 0.398,
+    "masonry|natural": 0.088,
+    "natural|natural": 0.103,
+    "natural|void": 0.015
    },
    "WoodenDoor": {
-    "cave|cave": 0.253,
-    "cave|natural": 0.025,
-    "interior|interior": 0.266,
-    "interior|masonry": 0.101,
-    "interior|natural": 0.101,
-    "masonry|natural": 0.051,
-    "natural|natural": 0.203
+    "cave|cave": 0.286,
+    "cave|natural": 0.029,
+    "interior|interior": 0.3,
+    "interior|masonry": 0.114,
+    "interior|natural": 0.114,
+    "masonry|natural": 0.057,
+    "natural|natural": 0.1
    }
   },
   "direction_by_inside_side": {
    "/ wall, inside BR": {
-    "East": 0.49,
-    "West": 0.51
+    "East": 0.522,
+    "West": 0.478
    },
    "/ wall, inside TL": {
-    "East": 0.506,
-    "West": 0.494
+    "East": 0.516,
+    "West": 0.484
    },
    "/ wall, sides alike": {
-    "East": 0.441,
-    "West": 0.559
+    "East": 0.45,
+    "West": 0.55
    },
    "\\ wall, inside BL": {
-    "North": 0.328,
-    "South": 0.672
+    "North": 0.277,
+    "South": 0.723
    },
    "\\ wall, inside TR": {
-    "North": 0.435,
-    "South": 0.565
+    "North": 0.457,
+    "South": 0.543
    },
    "\\ wall, sides alike": {
-    "North": 0.394,
-    "South": 0.606
+    "North": 0.406,
+    "South": 0.594
    }
   },
   "gap_width_cells": {
-   "1": 0.355,
-   "2": 0.645
+   "1": 0.349,
+   "2": 0.651
   },
   "lock_type": {
-   "Gold": 0.015,
-   "None": 0.89,
-   "Ruby": 0.015,
-   "Saphire": 0.011,
-   "Silver": 0.069
+   "Gold": 0.017,
+   "None": 0.921,
+   "Ruby": 0.02,
+   "Saphire": 0.015,
+   "Silver": 0.027
   },
   "placement_rule": {
    "East": {
-    "match": 0.998,
-    "no wall beside gap": 0.002
-   },
-   "North": {
-    "match": 0.98,
-    "no wall beside gap": 0.02
-   },
-   "South": {
-    "match": 0.981,
-    "no wall beside gap": 0.019
-   },
-   "West": {
     "match": 0.997,
     "no wall beside gap": 0.003
+   },
+   "North": {
+    "match": 0.973,
+    "no wall beside gap": 0.027
+   },
+   "South": {
+    "match": 0.975,
+    "no wall beside gap": 0.025
+   },
+   "West": {
+    "match": 0.996,
+    "no wall beside gap": 0.004
    }
   },
   "types_by_wall_material": {
-   "AncientRuin": {
-    "AncientRuinDoor": 22.0
-   },
    "BrickBlue": {
-    "ArchedDoor": 2.7,
-    "ArchedHalfDoor": 4.0,
-    "BarredGate": 3.0,
-    "CryptDoor": 11.0,
+    "ArchedHalfDoor": 2.0,
+    "BandedWoodenDoor": 1.3,
+    "BarredGate": 2.0,
     "GalavaHalfDoor": 10.0,
-    "LOTDHalfDoor": 2.0
-   },
-   "BrickFancyBright": {
-    "DunMirDoor": 2.0
-   },
-   "BrickPlain": {
-    "CryptDoor": 4.0,
-    "CryptGate": 2.0,
-    "LOTDSingleDoor": 1.0
+    "Gate": 2.0,
+    "WoodAndSteelHalfDoor": 2.0
    },
    "BrickRed": {
     "ArchedDoor": 2.0,
@@ -748,14 +657,13 @@
    },
    "CaveWall2": {
     "ArchedDoor": 6.0,
-    "BandedPlankDoor": 3.0,
     "BandedWoodenDoor": 1.0,
     "BarredGate": 2.0,
     "IronFenceGate": 2.0,
     "WoodenDoor": 3.0
    },
    "Cobblestone": {
-    "CryptGate": 6.0,
+    "ArchedHalfDoor": 4.0,
     "JailDoor": 20.0,
     "ThickWoodenDoor": 7.0,
     "ThinWoodenDoor": 7.0,
@@ -768,23 +676,20 @@
    "Dilapidated": {
     "ArchedDoor": 1.0,
     "ArchedHalfDoor": 6.0,
-    "BandedPlankDoor": 7.0,
+    "BandedPlankDoor": 4.0,
     "Dilapidated": 3.0,
     "Gate": 2.0,
     "ThinWoodenDoor": 4.0
    },
    "DilapidatedShort": {
     "BarredGate": 0.5,
-    "Gate": 4.0,
-    "IronFenceGate": 2.0
+    "Gate": 4.0
    },
    "Dirt": {
-    "AncientDungeonDoor": 1.0,
     "BandedPlankDoor": 1.0,
-    "Dilapidated": 15.0,
+    "Dilapidated": 11.0,
     "JailDoor": 5.0,
-    "OgreCageDoor": 18.0,
-    "ThinWoodenDoor": 1.0
+    "OgreCageDoor": 14.0
    },
    "DunMirCathedral": {
     "ArchedDoor": 1.3,
@@ -793,20 +698,13 @@
     "DunMirHalfDoor": 62.0,
     "Gate": 2.0
    },
-   "DungeonCobble": {
-    "AncientDungeonDoor": 6.0,
-    "BandedPlankDoor": 4.0,
-    "DunMirDoor": 5.0,
-    "LOTDHalfDoor": 2.0,
-    "WoodAndSteelDoor": 2.0
-   },
    "DungeonStone": {
-    "CryptDoor": 85.0,
-    "CryptGate": 57.0,
-    "IronFenceGate": 19.3,
+    "CryptDoor": 60.0,
+    "CryptGate": 46.0,
+    "IronFenceGate": 16.3,
     "JailDoor": 38.0,
-    "SpikedDoor": 26.0,
-    "WoodAndSteelHalfDoor": 14.0
+    "SpikedDoor": 25.0,
+    "WoodAndSteelHalfDoor": 10.0
    },
    "GalavaTowerWall": {
     "ArchedDoor": 9.0,
@@ -817,65 +715,52 @@
     "WoodAndSteelHalfDoor": 49.0
    },
    "GalavaTownWall": {
-    "ArchedDoor": 39.7,
-    "ArchedHalfDoor": 14.0,
+    "ArchedDoor": 35.7,
+    "ArchedHalfDoor": 12.0,
     "BandedWoodenDoor": 6.3,
-    "CryptDoor": 13.0,
-    "Dilapidated": 10.0,
-    "GalavaHalfDoor": 12.0
+    "ThickWoodenDoor": 2.0,
+    "WoodAndSteelDoor": 2.0,
+    "WoodAndSteelHalfDoor": 4.0
    },
    "IronFence": {
-    "BarredGate": 2.5,
+    "BarredGate": 1.5,
     "CryptGate": 3.0,
-    "Gate": 106.7,
-    "IronFenceGate": 15.0,
+    "Gate": 98.7,
+    "IronFenceGate": 13.0,
     "JailDoor": 5.0
    },
    "IronFenceDamaged": {
     "JailDoor": 1.0
    },
    "IxTempleWall": {
-    "BandedPlankDoor": 29.0,
+    "BandedPlankDoor": 21.0,
     "Gate": 2.0,
     "ThinWoodenDoor": 30.0,
     "WoodAndSteelHalfDoor": 4.0
    },
    "LOTDBrick": {
-    "BarredGate": 1.0,
-    "CryptDoor": 1.0,
-    "LOTDHalfDoor": 50.0,
-    "LOTDSingleDoor": 59.0
+    "LOTDHalfDoor": 22.0,
+    "LOTDSingleDoor": 18.0
    },
    "LOTDOrnate": {
-    "CryptGate": 3.0,
     "Gate": 2.0,
-    "LOTDHalfDoor": 18.0,
-    "LOTDSingleDoor": 11.0
+    "LOTDHalfDoor": 4.0,
+    "LOTDSingleDoor": 2.0
    },
    "Log": {
-    "ArchedHalfDoor": 8.0,
-    "BandedPlankDoor": 28.0,
+    "ArchedHalfDoor": 6.0,
+    "BandedPlankDoor": 12.0,
     "Gate": 6.0,
     "ThinWoodenDoor": 6.0,
     "WoodAndSteelHalfDoor": 12.0,
-    "WoodenDoor": 37.0
-   },
-   "ManaMineWall": {
-    "ArchedDoor": 9.0,
-    "BandedPlankDoor": 2.0,
-    "BarredGate": 2.0,
-    "Dilapidated": 2.0,
-    "JailDoor": 4.0,
-    "WoodenDoor": 8.0
+    "WoodenDoor": 36.0
    },
    "OgreCage": {
-    "OgreCageDoor": 19.0
+    "OgreCageDoor": 11.0
    },
    "OgreWall": {
-    "AncientDungeonDoor": 3.0,
     "DunMirDoor": 2.0,
-    "SpikedDoor": 39.0,
-    "ThickWoodenDoor": 1.0
+    "SpikedDoor": 1.0
    },
    "Rock": {
     "WoodAndSteelDoor": 6.0,
@@ -890,20 +775,13 @@
    "Shard": {
     "LOTDHalfDoor": 2.0
    },
-   "StoneBlue": {
-    "ArchedHalfDoor": 2.0,
-    "BarredGate": 4.0,
-    "CryptDoor": 4.0,
-    "GalavaDoor": 1.0,
-    "GalavaHalfDoor": 8.0
-   },
    "StoneGray": {
     "ArchedDoor": 10.3,
     "ArchedHalfDoor": 18.0,
     "BandedWoodenDoor": 3.7,
-    "CryptDoor": 4.0,
+    "DunMirDoor": 2.0,
     "WoodAndSteelDoor": 3.0,
-    "WoodAndSteelHalfDoor": 22.0
+    "WoodAndSteelHalfDoor": 20.0
    },
    "StuccoDarkWood": {
     "ArchedDoor": 3.0,
@@ -918,9 +796,6 @@
    },
    "StuccoLightWoodDamaged": {
     "ArchedHalfDoor": 2.0
-   },
-   "Volcano": {
-    "BandedWoodenDoor": 1.0
    }
   }
  },
@@ -941,74 +816,53 @@
   },
   "InvisibleStoneWallSet": {
    "contexts": {
-    "next to visible wall": 13.7,
-    "open ground (blocker)": 608.7,
-    "void edge": 3.0
+    "next to visible wall": 10.7,
+    "open ground (blocker)": 467.7
    },
    "role": {
-    "boundary": 0.005,
-    "partition": 0.995
+    "partition": 1.0
    }
   },
   "InvisibleWallSet": {
    "contexts": {
     "lava": 150.0,
-    "next to visible wall": 367.7,
-    "open ground (blocker)": 318.9,
-    "void edge": 52.3,
-    "water": 4320.3
+    "next to visible wall": 214.7,
+    "open ground (blocker)": 310.9,
+    "void edge": 43.3,
+    "water": 2248.2
    },
    "role": {
-    "boundary": 0.011,
-    "isolated": 0.0,
-    "partition": 0.989
+    "boundary": 0.016,
+    "isolated": 0.001,
+    "partition": 0.984
    }
   }
  },
  "materials": {
   "AncientRuin": {
-   "context": {
-    "interior": 0.01,
-    "masonry": 0.777,
-    "natural": 0.213
-   },
+   "context": {},
    "count_all": 2697,
-   "destructible": 25.0,
+   "destructible": 0,
    "invisible": false,
-   "joins": {
-    "AncientRuinShort": 29.0,
-    "DecidiousWallGreen": 56.0,
-    "IxTempleWall": 5.0
-   },
+   "joins": {},
    "maps_all": 2,
-   "role": {
-    "boundary": 0.582,
-    "partition": 0.418
-   },
-   "secret": 31.0,
-   "sp_maps": 2,
-   "sp_weight": 1348.5,
-   "windows": 5.0
+   "role": {},
+   "secret": 0,
+   "sp_maps": 0,
+   "sp_weight": 0,
+   "windows": 0
   },
   "AncientRuinShort": {
-   "context": {
-    "masonry": 0.119,
-    "natural": 0.881
-   },
+   "context": {},
    "count_all": 360,
    "destructible": 0,
    "invisible": false,
-   "joins": {
-    "AncientRuin": 29.0,
-    "DecidiousWallGreen": 4.0
-   },
+   "joins": {},
    "maps_all": 2,
-   "role": {
-    "partition": 1.0
-   },
-   "secret": 3.0,
-   "sp_maps": 2,
-   "sp_weight": 180.0,
+   "role": {},
+   "secret": 0,
+   "sp_maps": 0,
+   "sp_weight": 0,
    "windows": 0
   },
   "AspenSparse": {
@@ -1030,10 +884,10 @@
   },
   "BlackWall": {
    "context": {
-    "cave": 0.011,
-    "interior": 0.678,
-    "masonry": 0.253,
-    "natural": 0.058
+    "cave": 0.013,
+    "interior": 0.734,
+    "masonry": 0.187,
+    "natural": 0.066
    },
    "count_all": 1772,
    "destructible": 0,
@@ -1043,97 +897,80 @@
     "Cobblestone": 2.0,
     "DecidiousWallGreen": 8.0,
     "IceWall": 10.0,
-    "InvisibleStoneWallSet": 3.0,
     "IxTempleWall": 2.0,
     "StoneGray": 4.0
    },
    "maps_all": 23,
    "role": {
-    "boundary": 0.806,
-    "isolated": 0.033,
-    "partition": 0.162
+    "boundary": 0.78,
+    "isolated": 0.037,
+    "partition": 0.183
    },
    "secret": 0,
-   "sp_maps": 23,
-   "sp_weight": 724.0,
+   "sp_maps": 21,
+   "sp_weight": 638.0,
    "windows": 0
   },
   "BrickBlue": {
    "context": {
     "cave": 0.001,
-    "interior": 0.762,
+    "interior": 0.868,
     "lava": 0.0,
-    "masonry": 0.206,
-    "natural": 0.031
+    "masonry": 0.128,
+    "natural": 0.002
    },
    "count_all": 6341,
-   "destructible": 51.0,
+   "destructible": 6.0,
    "invisible": false,
    "joins": {
     "CathedralBlueFace": 6.0,
     "CaveWall2": 2.0,
     "Dirt": 4.0,
     "GalavaTowerWall": 4.0,
-    "IronFence": 22.7,
-    "LOTDMagicOrnate": 6.0,
-    "StoneBlue": 18.0
+    "IronFence": 16.7
    },
    "maps_all": 27,
    "role": {
-    "boundary": 0.712,
-    "partition": 0.288
+    "boundary": 0.739,
+    "partition": 0.261
    },
-   "secret": 108.3,
-   "sp_maps": 26,
-   "sp_weight": 4763.7,
-   "windows": 18.0
+   "secret": 44.3,
+   "sp_maps": 24,
+   "sp_weight": 3549.7,
+   "windows": 4.0
   },
   "BrickFancy": {
-   "context": {
-    "masonry": 1.0
-   },
+   "context": {},
    "count_all": 167,
    "destructible": 0,
    "invisible": false,
-   "joins": {
-    "BrickPlain": 2.0
-   },
+   "joins": {},
    "maps_all": 3,
-   "role": {
-    "partition": 1.0
-   },
+   "role": {},
    "secret": 0,
-   "sp_maps": 1,
-   "sp_weight": 1.0,
+   "sp_maps": 0,
+   "sp_weight": 0,
    "windows": 0
   },
   "BrickFancyBright": {
-   "context": {
-    "interior": 0.898,
-    "natural": 0.102
-   },
+   "context": {},
    "count_all": 517,
    "destructible": 0,
    "invisible": false,
-   "joins": {
-    "DecidiousWallBrown": 2.0
-   },
+   "joins": {},
    "maps_all": 3,
-   "role": {
-    "boundary": 0.75,
-    "partition": 0.25
-   },
+   "role": {},
    "secret": 0,
-   "sp_maps": 1,
-   "sp_weight": 44.0,
-   "windows": 3.0
+   "sp_maps": 0,
+   "sp_weight": 0,
+   "windows": 0
   },
   "BrickGray": {
    "context": {
-    "interior": 0.231,
-    "lava": 0.154,
-    "masonry": 0.346,
-    "natural": 0.269
+    "interior": 0.222,
+    "lava": 0.222,
+    "masonry": 0.5,
+    "natural": 0.056
    },
    "count_all": 9,
    "destructible": 1.0,
@@ -1141,42 +978,30 @@
    "joins": {
     "DecidiousWallGreen": 1.0,
     "DungeonStone": 1.0,
-    "StoneBlue": 4.0,
     "StoneGray": 2.0
    },
    "maps_all": 5,
    "role": {
-    "boundary": 0.231,
-    "partition": 0.769
-   },
-   "secret": 1.0,
-   "sp_maps": 5,
-   "sp_weight": 6.5,
-   "windows": 0
-  },
-  "BrickPlain": {
-   "context": {
-    "interior": 0.379,
-    "masonry": 0.583,
-    "natural": 0.038
-   },
-   "count_all": 527,
-   "destructible": 0,
-   "invisible": false,
-   "joins": {
-    "BrickFancy": 2.0,
-    "CaveWall2": 20.0,
-    "IronFence": 2.0
-   },
-   "maps_all": 5,
-   "role": {
-    "boundary": 0.795,
-    "partition": 0.205
+    "boundary": 0.111,
+    "partition": 0.889
    },
    "secret": 0,
    "sp_maps": 3,
-   "sp_weight": 161.0,
-   "windows": 4.0
+   "sp_weight": 4.5,
+   "windows": 0
+  },
+  "BrickPlain": {
+   "context": {},
+   "count_all": 527,
+   "destructible": 0,
+   "invisible": false,
+   "joins": {},
+   "maps_all": 5,
+   "role": {},
+   "secret": 0,
+   "sp_maps": 0,
+   "sp_weight": 0,
+   "windows": 0
   },
   "BrickRed": {
    "context": {
@@ -1225,17 +1050,15 @@
   },
   "CathedralBlueFace": {
    "context": {
-    "cave": 0.05,
-    "interior": 0.65,
-    "masonry": 0.2,
-    "natural": 0.1
+    "cave": 0.062,
+    "interior": 0.688,
+    "masonry": 0.25
    },
    "count_all": 22,
    "destructible": 0,
    "invisible": false,
    "joins": {
     "BrickBlue": 6.0,
-    "DungeonCobble": 4.0,
     "GalavaTowerWall": 4.0,
     "StoneGray": 2.0
    },
@@ -1243,9 +1066,9 @@
    "role": {
     "partition": 1.0
    },
-   "secret": 9.5,
-   "sp_maps": 8,
-   "sp_weight": 10.0,
+   "secret": 7.5,
+   "sp_maps": 6,
+   "sp_weight": 8.0,
    "windows": 0
   },
   "CathedralRed": {
@@ -1273,22 +1096,16 @@
    "windows": 0
   },
   "CathedralRedFace": {
-   "context": {
-    "masonry": 1.0
-   },
+   "context": {},
    "count_all": 1,
    "destructible": 0,
    "invisible": false,
-   "joins": {
-    "GalavaTownWall": 2.0
-   },
+   "joins": {},
    "maps_all": 1,
-   "role": {
-    "partition": 1.0
-   },
-   "secret": 1.0,
-   "sp_maps": 1,
-   "sp_weight": 1.0,
+   "role": {},
+   "secret": 0,
+   "sp_maps": 0,
+   "sp_weight": 0,
    "windows": 0
   },
   "CaveWall": {
@@ -1325,53 +1142,52 @@
   },
   "CaveWall2": {
    "context": {
-    "cave": 0.393,
+    "cave": 0.361,
     "interior": 0.002,
-    "lava": 0.031,
-    "masonry": 0.023,
-    "natural": 0.508,
-    "water": 0.043
+    "lava": 0.039,
+    "masonry": 0.029,
+    "natural": 0.535,
+    "water": 0.034
    },
    "count_all": 35049,
-   "destructible": 246.0,
+   "destructible": 76.0,
    "invisible": false,
    "joins": {
     "CaveWall": 39.3,
-    "DecidiousWallGreen": 83.8,
+    "Coni-Wall1": 16.7,
+    "DecidiousWallGreen": 30.8,
     "DunMirCathedral": 78.3,
-    "DungeonStone": 64.3,
-    "IceWall": 55.0,
-    "LOTDBrick": 31.0,
-    "Log": 36.0,
-    "ManaMineWall": 32.0
+    "InvisibleWallSet": 28.8,
+    "Log": 30.0,
+    "SewerWall": 22.7,
+    "StoneGray": 30.0
    },
    "maps_all": 64,
    "role": {
-    "boundary": 0.803,
+    "boundary": 0.81,
     "isolated": 0.0,
-    "partition": 0.197
+    "partition": 0.189
    },
    "secret": 44.0,
-   "sp_maps": 53,
-   "sp_weight": 20291.3,
-   "windows": 8.0
+   "sp_maps": 40,
+   "sp_weight": 15963.3,
+   "windows": 0
   },
   "Cobblestone": {
    "context": {
-    "cave": 0.005,
-    "interior": 0.116,
-    "masonry": 0.587,
-    "natural": 0.29,
-    "water": 0.002
+    "cave": 0.004,
+    "interior": 0.12,
+    "masonry": 0.604,
+    "natural": 0.271
    },
    "count_all": 5535,
-   "destructible": 182.0,
+   "destructible": 180.0,
    "invisible": false,
    "joins": {
     "CaveWall2": 10.0,
-    "DecidiousWallGreen": 28.5,
-    "Dirt": 20.0,
+    "DecidiousWallGreen": 24.5,
     "DungeonStone": 239.7,
+    "InvisibleWallSet": 8.0,
     "IronFence": 41.5,
     "RootLight": 16.0,
     "StoneGray": 8.0,
@@ -1379,43 +1195,42 @@
    },
    "maps_all": 39,
    "role": {
-    "boundary": 0.549,
-    "partition": 0.451
+    "boundary": 0.541,
+    "partition": 0.459
    },
    "secret": 3.5,
-   "sp_maps": 34,
-   "sp_weight": 2368.6,
+   "sp_maps": 32,
+   "sp_weight": 2276.6,
    "windows": 184.0
   },
   "Coni-Wall1": {
    "context": {
-    "cave": 0.0,
-    "interior": 0.002,
-    "masonry": 0.004,
-    "natural": 0.864,
-    "water": 0.13
+    "interior": 0.003,
+    "masonry": 0.003,
+    "natural": 0.849,
+    "water": 0.145
    },
    "count_all": 6868,
    "destructible": 6.3,
    "invisible": false,
    "joins": {
-    "CaveWall2": 22.7,
-    "DecidiousWallBrown": 40.5,
-    "DecidiousWallGreen": 189.5,
-    "GalavaTownWall": 11.0,
+    "CaveWall2": 16.7,
+    "DecidiousWallGreen": 6.0,
+    "DecidiousWallRed": 2.0,
     "InvisibleWallSet": 36.0,
     "IronFence": 10.0,
     "Log": 17.0,
-    "StuccoDarkWood": 26.0
+    "StuccoDarkWood": 26.0,
+    "StuccoLightWood": 6.0
    },
    "maps_all": 24,
    "role": {
-    "boundary": 0.833,
-    "partition": 0.167
+    "boundary": 0.831,
+    "partition": 0.169
    },
    "secret": 0,
-   "sp_maps": 20,
-   "sp_weight": 2493.8,
+   "sp_maps": 16,
+   "sp_weight": 2169.3,
    "windows": 0
   },
   "CrystalCyan": {
@@ -1456,65 +1271,63 @@
   },
   "DecidiousWallBrown": {
    "context": {
-    "cave": 0.004,
-    "interior": 0.022,
-    "masonry": 0.006,
-    "natural": 0.967,
+    "interior": 0.001,
+    "natural": 0.999,
     "water": 0.0
    },
    "count_all": 4440,
    "destructible": 0,
    "invisible": false,
    "joins": {
-    "Coni-Wall1": 40.5,
-    "DecidiousWallGreen": 324.5,
+    "CaveWall2": 3.3,
+    "Cobblestone": 3.0,
+    "DecidiousWall": 3.0,
+    "DecidiousWallGreen": 223.0,
     "DecidiousWallRed": 285.3,
-    "Dilapidated": 23.0,
-    "DungeonStone": 36.0,
-    "IronFence": 7.0,
-    "OgreWall": 8.0,
-    "RootLight": 24.0
+    "IronFence": 5.0,
+    "RootLight": 18.0,
+    "Shrub": 3.0
    },
    "maps_all": 32,
    "role": {
-    "boundary": 0.85,
-    "partition": 0.15
+    "boundary": 0.872,
+    "partition": 0.128
    },
    "secret": 0,
-   "sp_maps": 20,
-   "sp_weight": 1592.8,
+   "sp_maps": 11,
+   "sp_weight": 1103.3,
    "windows": 0
   },
   "DecidiousWallGreen": {
    "context": {
-    "cave": 0.006,
-    "interior": 0.016,
-    "masonry": 0.064,
-    "natural": 0.839,
-    "water": 0.075
+    "cave": 0.001,
+    "interior": 0.001,
+    "masonry": 0.078,
+    "natural": 0.867,
+    "water": 0.054
    },
    "count_all": 17569,
    "destructible": 0,
    "invisible": false,
    "joins": {
-    "AncientRuin": 56.0,
-    "CaveWall2": 83.8,
-    "Coni-Wall1": 189.5,
-    "DecidiousWallBrown": 324.5,
-    "Dilapidated": 118.5,
-    "InvisibleWallSet": 98.0,
-    "Log": 53.5,
-    "RootLight": 725.0
+    "CaveWall2": 30.8,
+    "Cobblestone": 24.5,
+    "DecidiousWallBrown": 223.0,
+    "Dilapidated": 31.5,
+    "InvisibleBlockingWallSet": 21.3,
+    "InvisibleWallSet": 35.0,
+    "IronFence": 23.2,
+    "Log": 38.5
    },
    "maps_all": 48,
    "role": {
-    "boundary": 0.843,
+    "boundary": 0.851,
     "isolated": 0.0,
-    "partition": 0.157
+    "partition": 0.149
    },
    "secret": 0,
-   "sp_maps": 34,
-   "sp_weight": 8427.7,
+   "sp_maps": 23,
+   "sp_weight": 6132.7,
    "windows": 0
   },
   "DecidiousWallRed": {
@@ -1545,95 +1358,92 @@
   },
   "Dilapidated": {
    "context": {
-    "cave": 0.019,
-    "interior": 0.528,
-    "masonry": 0.021,
-    "natural": 0.424,
-    "water": 0.008
+    "cave": 0.039,
+    "interior": 0.439,
+    "masonry": 0.013,
+    "natural": 0.492,
+    "water": 0.018
    },
    "count_all": 1941,
-   "destructible": 5.0,
+   "destructible": 0,
    "invisible": false,
    "joins": {
     "Cobblestone": 5.0,
-    "DecidiousWallBrown": 23.0,
-    "DecidiousWallGreen": 118.5,
-    "DungeonCobble": 138.0,
+    "DecidiousWallGreen": 31.5,
     "InvisibleBlockingWallSet": 3.0,
+    "InvisibleWallSet": 2.0,
     "IronFence": 15.0,
-    "Log": 5.0,
-    "RootLight": 15.0
+    "Log": 3.0,
+    "RootLight": 14.0,
+    "StuccoDarkWood": 2.0
    },
    "maps_all": 27,
    "role": {
-    "boundary": 0.314,
-    "partition": 0.686
+    "boundary": 0.1,
+    "partition": 0.9
    },
-   "secret": 31.0,
-   "sp_maps": 24,
-   "sp_weight": 730.3,
-   "windows": 38.0
+   "secret": 0,
+   "sp_maps": 19,
+   "sp_weight": 330.2,
+   "windows": 25.0
   },
   "DilapidatedShort": {
    "context": {
-    "cave": 0.001,
-    "interior": 0.091,
-    "masonry": 0.187,
-    "natural": 0.721
+    "cave": 0.002,
+    "interior": 0.01,
+    "masonry": 0.007,
+    "natural": 0.981
    },
    "count_all": 685,
    "destructible": 0,
    "invisible": false,
    "joins": {
-    "DecidiousWallGreen": 23.2,
-    "DungeonStone": 4.0,
-    "GalavaTownWall": 6.0,
-    "InvisibleWallSet": 2.0,
-    "IronFence": 10.2,
-    "Log": 11.0,
-    "ManaMineWall": 10.0,
+    "CaveWall2": 0.7,
+    "DecidiousWallGreen": 21.2,
+    "Dilapidated": 1.5,
+    "IronFence": 9.2,
     "StuccoLightWood": 8.0
    },
    "maps_all": 18,
    "role": {
     "partition": 1.0
    },
-   "secret": 3.5,
-   "sp_maps": 14,
-   "sp_weight": 349.3,
+   "secret": 2.5,
+   "sp_maps": 8,
+   "sp_weight": 148.3,
    "windows": 0
   },
   "Dirt": {
    "context": {
-    "cave": 0.055,
+    "cave": 0.005,
     "interior": 0.0,
     "lava": 0.002,
     "masonry": 0.001,
-    "natural": 0.934,
-    "water": 0.008
+    "natural": 0.988,
+    "water": 0.003
    },
    "count_all": 7970,
-   "destructible": 72.0,
+   "destructible": 30.0,
    "invisible": false,
    "joins": {
     "BrickBlue": 4.0,
     "CaveWall2": 2.0,
-    "Cobblestone": 20.0,
+    "Cobblestone": 4.0,
     "Dilapidated": 2.0,
     "InvisibleWallSet": 4.0,
-    "ManaMineWall": 19.0,
+    "ManaMineWall": 4.0,
     "Rock": 13.0,
     "Shrub": 2.0
    },
    "maps_all": 9,
    "role": {
-    "boundary": 0.831,
-    "partition": 0.169
+    "boundary": 0.84,
+    "partition": 0.16
    },
    "secret": 4.0,
-   "sp_maps": 9,
-   "sp_weight": 7191.0,
-   "windows": 32.0
+   "sp_maps": 6,
+   "sp_weight": 6343.0,
+   "windows": 12.0
   },
   "DunMirCathedral": {
    "context": {
@@ -1668,95 +1478,70 @@
    "windows": 102.0
   },
   "DungeonCobble": {
-   "context": {
-    "cave": 0.054,
-    "interior": 0.033,
-    "masonry": 0.123,
-    "natural": 0.79
-   },
+   "context": {},
    "count_all": 1710,
-   "destructible": 14.0,
+   "destructible": 0,
    "invisible": false,
-   "joins": {
-    "CathedralBlueFace": 4.0,
-    "CaveWall2": 2.0,
-    "Dilapidated": 138.0,
-    "IceWall": 2.0,
-    "IronFence": 4.0,
-    "IxTempleWall": 10.0,
-    "LOTDMagicOrnate": 2.0,
-    "StoneBlue": 8.0
-   },
+   "joins": {},
    "maps_all": 9,
-   "role": {
-    "boundary": 0.672,
-    "partition": 0.328
-   },
-   "secret": 2.0,
-   "sp_maps": 9,
-   "sp_weight": 871.0,
-   "windows": 12.0
+   "role": {},
+   "secret": 0,
+   "sp_maps": 0,
+   "sp_weight": 0,
+   "windows": 0
   },
   "DungeonStone": {
    "context": {
-    "cave": 0.084,
-    "interior": 0.046,
-    "masonry": 0.574,
-    "natural": 0.286,
-    "water": 0.011
+    "cave": 0.041,
+    "interior": 0.059,
+    "masonry": 0.511,
+    "natural": 0.388
    },
    "count_all": 37077,
-   "destructible": 204.7,
+   "destructible": 97.7,
    "invisible": false,
    "joins": {
     "CaveWall": 20.7,
-    "CaveWall2": 64.3,
+    "CaveWall2": 5.3,
     "Cobblestone": 239.7,
-    "DecidiousWallBrown": 36.0,
+    "InvisibleBlockingWallSet": 2.7,
     "InvisibleWallSet": 13.0,
-    "IronFence": 123.0,
-    "ManaMineWall": 15.0,
+    "IronFence": 81.0,
+    "LOTDBrick": 2.0,
     "RootLight": 8.0
    },
    "maps_all": 38,
    "role": {
-    "boundary": 0.775,
-    "partition": 0.225
+    "boundary": 0.826,
+    "partition": 0.174
    },
-   "secret": 151.0,
-   "sp_maps": 33,
-   "sp_weight": 15084.3,
-   "windows": 175.3
+   "secret": 31.0,
+   "sp_maps": 25,
+   "sp_weight": 8983.3,
+   "windows": 33.3
   },
   "FieldStoneShort": {
    "context": {
-    "cave": 0.085,
-    "interior": 0.15,
-    "masonry": 0.341,
-    "natural": 0.422,
-    "water": 0.002
+    "interior": 0.061,
+    "masonry": 0.738,
+    "natural": 0.201
    },
    "count_all": 822,
    "destructible": 0,
    "invisible": false,
    "joins": {
-    "CaveWall2": 6.0,
-    "Cobblestone": 2.0,
-    "DecidiousWallGreen": 17.0,
-    "DungeonStone": 5.0,
-    "GalavaTownWall": 2.0,
-    "InvisibleWallSet": 14.7,
-    "LOTDBrick": 5.0
+    "DecidiousWallGreen": 6.0,
+    "InvisibleWallSet": 9.7
    },
    "maps_all": 17,
    "role": {
-    "boundary": 0.126,
-    "partition": 0.874
+    "boundary": 0.378,
+    "partition": 0.622
    },
    "secret": 0,
-   "sp_maps": 15,
-   "sp_weight": 327.3,
-   "windows": 41.0
+   "sp_maps": 10,
+   "sp_weight": 109.3,
+   "windows": 0
   },
   "GalavaTowerWall": {
    "context": {
@@ -1791,35 +1576,33 @@
   },
   "GalavaTownWall": {
    "context": {
-    "cave": 0.064,
-    "interior": 0.089,
-    "lava": 0.035,
-    "masonry": 0.612,
-    "natural": 0.199
+    "cave": 0.002,
+    "interior": 0.144,
+    "lava": 0.024,
+    "masonry": 0.689,
+    "natural": 0.141
    },
    "count_all": 5758,
-   "destructible": 155.7,
+   "destructible": 83.7,
    "invisible": false,
    "joins": {
-    "Coni-Wall1": 11.0,
-    "DecidiousWallGreen": 9.0,
+    "DecidiousWallGreen": 4.0,
     "GalavaTowerWall": 89.0,
-    "IronFence": 21.0,
-    "LOTDMagicOrnate": 16.0,
+    "IronFence": 4.0,
     "Shard": 28.0,
     "StoneGray": 28.0,
-    "Volcano": 64.0
+    "Volcano": 4.0
    },
    "maps_all": 19,
    "role": {
-    "boundary": 0.483,
-    "isolated": 0.0,
-    "partition": 0.517
+    "boundary": 0.422,
+    "isolated": 0.001,
+    "partition": 0.577
    },
-   "secret": 192.7,
-   "sp_maps": 16,
-   "sp_weight": 3947.0,
-   "windows": 72.3
+   "secret": 2.7,
+   "sp_maps": 12,
+   "sp_weight": 1535.0,
+   "windows": 36.3
   },
   "Hedge1": {
    "context": {
@@ -1842,32 +1625,30 @@
   },
   "IceWall": {
    "context": {
-    "cave": 0.0,
-    "interior": 0.001,
-    "masonry": 0.005,
-    "natural": 0.993
+    "cave": 0.001,
+    "interior": 0.002,
+    "masonry": 0.002,
+    "natural": 0.996
    },
    "count_all": 7824,
-   "destructible": 7.0,
+   "destructible": 0,
    "invisible": false,
    "joins": {
     "BlackWall": 10.0,
     "CaveWall": 19.0,
-    "CaveWall2": 55.0,
     "InvisibleBlockingWallSet": 4.0,
-    "IronFence": 4.0,
-    "LOTDBrick": 29.0,
+    "InvisibleStoneWallSet": 2.0,
     "LOTDMagicOrnate": 7.0,
-    "LOTDOrnate": 65.0
+    "ManaMineWall": 2.0
    },
    "maps_all": 8,
    "role": {
-    "boundary": 0.809,
-    "partition": 0.191
+    "boundary": 0.811,
+    "partition": 0.189
    },
    "secret": 0,
-   "sp_maps": 6,
-   "sp_weight": 2927.3,
+   "sp_maps": 4,
+   "sp_weight": 1985.3,
    "windows": 7.0
   },
   "InvisibleBlockingWallSet": {
@@ -1905,15 +1686,14 @@
   },
   "InvisibleStoneWallSet": {
    "context": {
-    "interior": 0.005,
-    "masonry": 0.994,
+    "interior": 0.004,
+    "masonry": 0.995,
     "natural": 0.001
    },
    "count_all": 1415,
    "destructible": 0,
    "invisible": true,
    "joins": {
-    "BlackWall": 3.0,
     "CaveWall2": 0.7,
     "DecidiousWallGreen": 8.0,
     "IceWall": 2.0,
@@ -1921,312 +1701,288 @@
    },
    "maps_all": 14,
    "role": {
-    "boundary": 0.005,
-    "partition": 0.995
+    "partition": 1.0
    },
    "secret": 13.3,
-   "sp_maps": 14,
-   "sp_weight": 622.3,
-   "windows": 66.0
+   "sp_maps": 12,
+   "sp_weight": 478.3,
+   "windows": 0
   },
   "InvisibleWallSet": {
    "context": {
-    "cave": 0.039,
-    "interior": 0.062,
-    "lava": 0.011,
-    "masonry": 0.065,
-    "natural": 0.322,
-    "water": 0.5
+    "cave": 0.069,
+    "interior": 0.045,
+    "lava": 0.02,
+    "masonry": 0.113,
+    "natural": 0.237,
+    "water": 0.516
    },
    "count_all": 9985,
    "destructible": 0,
    "invisible": true,
    "joins": {
-    "CaveWall2": 30.8,
+    "CaveWall2": 28.8,
     "Coni-Wall1": 36.0,
-    "DecidiousWallGreen": 98.0,
-    "FieldStoneShort": 14.7,
+    "DecidiousWallGreen": 35.0,
+    "DungeonStone": 13.0,
     "InvisibleBlockingWallSet": 15.3,
-    "ManaMineWall": 30.0,
-    "RootLight": 118.0,
+    "ManaMineWall": 14.0,
+    "RootLight": 64.0,
     "Shard": 25.0
    },
    "maps_all": 63,
    "role": {
-    "boundary": 0.011,
-    "isolated": 0.0,
-    "partition": 0.989
+    "boundary": 0.016,
+    "isolated": 0.001,
+    "partition": 0.984
    },
    "secret": 35.3,
-   "sp_maps": 57,
-   "sp_weight": 4866.7,
-   "windows": 1964.0
+   "sp_maps": 53,
+   "sp_weight": 2786.7,
+   "windows": 0
   },
   "IronFence": {
    "context": {
-    "cave": 0.1,
-    "interior": 0.123,
-    "lava": 0.058,
-    "masonry": 0.442,
-    "natural": 0.271,
-    "water": 0.005
+    "cave": 0.106,
+    "interior": 0.131,
+    "lava": 0.074,
+    "masonry": 0.421,
+    "natural": 0.264,
+    "water": 0.004
    },
    "count_all": 5727,
    "destructible": 22.0,
    "invisible": false,
    "joins": {
     "Cobblestone": 41.5,
-    "DungeonStone": 123.0,
-    "IronFenceDamaged": 167.5,
-    "IxTempleWall": 57.0,
-    "LOTDBrick": 42.0,
+    "DungeonStone": 81.0,
+    "GalavaTowerWall": 27.0,
+    "IronFenceDamaged": 147.5,
+    "IxTempleWall": 49.0,
     "Rock": 34.0,
     "SewerWall": 57.0,
     "StoneGray": 129.0
    },
    "maps_all": 98,
    "role": {
-    "boundary": 0.01,
-    "partition": 0.99
+    "boundary": 0.013,
+    "partition": 0.987
    },
-   "secret": 487.3,
-   "sp_maps": 93,
-   "sp_weight": 3309.5,
-   "windows": 2.0
+   "secret": 230.3,
+   "sp_maps": 80,
+   "sp_weight": 2565.5,
+   "windows": 0
   },
   "IronFenceDamaged": {
    "context": {
-    "cave": 0.081,
-    "interior": 0.037,
-    "lava": 0.092,
-    "masonry": 0.595,
-    "natural": 0.187,
-    "water": 0.007
+    "cave": 0.045,
+    "interior": 0.045,
+    "lava": 0.111,
+    "masonry": 0.664,
+    "natural": 0.136
    },
    "count_all": 200,
-   "destructible": 49.0,
+   "destructible": 45.0,
    "invisible": false,
    "joins": {
     "CaveWall": 1.0,
-    "CaveWall2": 1.0,
-    "DecidiousWallBrown": 1.0,
-    "DilapidatedShort": 1.0,
-    "DungeonStone": 4.0,
-    "IronFence": 167.5,
-    "IxTempleWall": 6.0,
-    "SewerWall": 4.0
+    "InvisibleWallSet": 1.0,
+    "IronFence": 147.5,
+    "IxTempleWall": 5.0,
+    "SewerWall": 4.0,
+    "StoneGray": 1.0
    },
    "maps_all": 26,
    "role": {
-    "boundary": 0.022,
-    "partition": 0.978
+    "boundary": 0.027,
+    "partition": 0.973
    },
    "secret": 0,
-   "sp_maps": 25,
-   "sp_weight": 135.3,
+   "sp_maps": 16,
+   "sp_weight": 112.2,
    "windows": 0
   },
   "IxTempleWall": {
    "context": {
-    "masonry": 0.648,
-    "natural": 0.35,
-    "water": 0.002
+    "masonry": 0.527,
+    "natural": 0.47,
+    "water": 0.003
    },
    "count_all": 11732,
-   "destructible": 17.0,
+   "destructible": 8.0,
    "invisible": false,
    "joins": {
-    "AncientRuin": 5.0,
     "BlackWall": 2.0,
-    "DungeonCobble": 10.0,
     "InvisibleBlockingWallSet": 4.0,
-    "IronFence": 57.0,
-    "IronFenceDamaged": 6.0,
+    "IronFence": 49.0,
+    "IronFenceDamaged": 5.0,
     "Rock": 6.0,
-    "Shard": 45.0
+    "Shard": 20.0
    },
    "maps_all": 12,
    "role": {
-    "boundary": 0.832,
-    "partition": 0.168
+    "boundary": 0.852,
+    "partition": 0.148
    },
-   "secret": 38.0,
-   "sp_maps": 11,
-   "sp_weight": 4298.0,
-   "windows": 17.0
+   "secret": 10.0,
+   "sp_maps": 9,
+   "sp_weight": 3110.0,
+   "windows": 11.0
   },
   "LOTDBrick": {
    "context": {
     "cave": 0.009,
-    "interior": 0.179,
-    "lava": 0.002,
-    "masonry": 0.805,
-    "natural": 0.006
+    "interior": 0.104,
+    "masonry": 0.878,
+    "natural": 0.009
    },
    "count_all": 30578,
-   "destructible": 102.3,
+   "destructible": 22.3,
    "invisible": false,
    "joins": {
-    "CaveWall2": 31.0,
-    "FieldStoneShort": 5.0,
-    "IceWall": 29.0,
-    "IronFence": 42.0,
-    "LOTDMagicOrnate": 6.0,
-    "LOTDOrnate": 175.3,
+    "CaveWall": 1.0,
+    "DungeonStone": 2.0,
+    "LOTDMagicOrnate": 2.0,
+    "LOTDOrnate": 114.3,
     "ManaMineWall": 6.3,
     "TristoneBlue": 4.0
    },
    "maps_all": 19,
    "role": {
-    "boundary": 0.807,
-    "isolated": 0.003,
-    "partition": 0.19
+    "boundary": 0.872,
+    "isolated": 0.005,
+    "partition": 0.124
    },
-   "secret": 163.0,
-   "sp_maps": 16,
-   "sp_weight": 10960.7,
-   "windows": 84.0
+   "secret": 62.0,
+   "sp_maps": 14,
+   "sp_weight": 7284.7,
+   "windows": 63.0
   },
   "LOTDMagicOrnate": {
    "context": {
-    "cave": 0.007,
-    "interior": 0.14,
-    "lava": 0.001,
-    "masonry": 0.573,
-    "natural": 0.268,
-    "water": 0.012
+    "interior": 0.006,
+    "masonry": 0.787,
+    "natural": 0.15,
+    "water": 0.056
    },
    "count_all": 654,
    "destructible": 0,
    "invisible": false,
    "joins": {
-    "BrickBlue": 6.0,
-    "DungeonCobble": 2.0,
-    "GalavaTownWall": 16.0,
     "IceWall": 7.0,
-    "LOTDBrick": 6.0,
+    "LOTDBrick": 2.0,
     "LOTDOrnate": 6.0,
-    "ManaMineWall": 4.0,
     "SewerWall": 2.0
    },
    "maps_all": 18,
    "role": {
     "partition": 1.0
    },
-   "secret": 334.0,
-   "sp_maps": 18,
-   "sp_weight": 382.0,
+   "secret": 68.0,
+   "sp_maps": 12,
+   "sp_weight": 80.0,
    "windows": 0
   },
   "LOTDOrnate": {
    "context": {
     "cave": 0.001,
-    "interior": 0.091,
-    "masonry": 0.854,
-    "natural": 0.054
+    "interior": 0.132,
+    "masonry": 0.866,
+    "natural": 0.001
    },
    "count_all": 5391,
    "destructible": 3.3,
    "invisible": false,
    "joins": {
-    "CaveWall2": 15.0,
-    "IceWall": 65.0,
     "InvisibleWallSet": 2.0,
-    "IronFence": 9.0,
-    "LOTDBrick": 175.3,
+    "LOTDBrick": 114.3,
     "LOTDMagicOrnate": 6.0,
     "Shard": 2.0
    },
    "maps_all": 20,
    "role": {
-    "boundary": 0.555,
-    "isolated": 0.004,
-    "partition": 0.442
+    "boundary": 0.594,
+    "isolated": 0.005,
+    "partition": 0.401
    },
-   "secret": 426.7,
-   "sp_maps": 16,
-   "sp_weight": 2550.7,
-   "windows": 87.0
+   "secret": 397.7,
+   "sp_maps": 14,
+   "sp_weight": 1653.7,
+   "windows": 52.0
   },
   "Log": {
    "context": {
-    "cave": 0.227,
-    "interior": 0.271,
-    "masonry": 0.044,
-    "natural": 0.456,
-    "water": 0.002
+    "cave": 0.313,
+    "interior": 0.197,
+    "masonry": 0.051,
+    "natural": 0.439
    },
    "count_all": 4211,
-   "destructible": 1.0,
+   "destructible": 0,
    "invisible": false,
    "joins": {
-    "CaveWall2": 36.0,
+    "CaveWall2": 30.0,
+    "Cobblestone": 2.0,
     "Coni-Wall1": 17.0,
-    "DecidiousWallGreen": 53.5,
-    "DilapidatedShort": 11.0,
+    "DecidiousWallGreen": 38.5,
+    "Dilapidated": 3.0,
     "InvisibleBlockingWallSet": 13.7,
-    "InvisibleWallSet": 10.0,
     "ManaMineWall": 85.0,
     "StuccoLightWood": 49.0
    },
    "maps_all": 28,
    "role": {
-    "boundary": 0.425,
-    "partition": 0.575
+    "boundary": 0.518,
+    "partition": 0.482
    },
-   "secret": 4.5,
-   "sp_maps": 25,
-   "sp_weight": 2256.3,
-   "windows": 118.3
+   "secret": 3.5,
+   "sp_maps": 22,
+   "sp_weight": 1606.2,
+   "windows": 38.3
   },
   "MagicWall": {
-   "context": {
-    "masonry": 0.05,
-    "natural": 0.95
-   },
+   "context": {},
    "count_all": 20,
    "destructible": 0,
    "invisible": false,
    "joins": {},
    "maps_all": 2,
-   "role": {
-    "partition": 1.0
-   },
+   "role": {},
    "secret": 0,
-   "sp_maps": 2,
-   "sp_weight": 10.0,
+   "sp_maps": 0,
+   "sp_weight": 0,
    "windows": 0
   },
   "ManaMineWall": {
    "context": {
-    "cave": 0.412,
-    "interior": 0.002,
-    "masonry": 0.009,
-    "natural": 0.555,
-    "water": 0.022
+    "cave": 0.871,
+    "interior": 0.003,
+    "masonry": 0.001,
+    "natural": 0.092,
+    "water": 0.033
    },
    "count_all": 10294,
-   "destructible": 1169.0,
+   "destructible": 29.0,
    "invisible": false,
    "joins": {
-    "CaveWall2": 32.0,
-    "DilapidatedShort": 10.0,
-    "Dirt": 19.0,
-    "DungeonStone": 15.0,
-    "InvisibleWallSet": 30.0,
-    "IronFence": 25.0,
+    "CaveWall": 3.0,
+    "CaveWall2": 3.0,
+    "DecidiousWallGreen": 2.0,
+    "Dirt": 4.0,
+    "IceWall": 2.0,
+    "InvisibleWallSet": 14.0,
     "LOTDBrick": 6.3,
     "Log": 85.0
    },
    "maps_all": 15,
    "role": {
-    "boundary": 0.642,
-    "partition": 0.358
+    "boundary": 0.86,
+    "partition": 0.14
    },
-   "secret": 126.0,
-   "sp_maps": 12,
-   "sp_weight": 8762.3,
-   "windows": 27.0
+   "secret": 13.0,
+   "sp_maps": 9,
+   "sp_weight": 4129.3,
+   "windows": 0
   },
   "OgreCage": {
    "context": {
@@ -2239,47 +1995,42 @@
     "Coni-Wall1": 1.0,
     "DecidiousWallBrown": 1.0,
     "DecidiousWallRed": 9.0,
-    "OgreWall": 58.0,
-    "RootLight": 8.0
+    "OgreWall": 49.0,
+    "RootLight": 3.0
    },
    "maps_all": 8,
    "role": {
     "partition": 1.0
    },
    "secret": 0,
-   "sp_maps": 8,
-   "sp_weight": 523.0,
+   "sp_maps": 7,
+   "sp_weight": 400.0,
    "windows": 0
   },
   "OgreWall": {
    "context": {
-    "interior": 0.032,
-    "masonry": 0.037,
-    "natural": 0.93,
-    "water": 0.0
+    "interior": 0.051,
+    "masonry": 0.045,
+    "natural": 0.904
    },
    "count_all": 2859,
-   "destructible": 5.0,
+   "destructible": 0,
    "invisible": false,
    "joins": {
-    "DecidiousWallBrown": 8.0,
-    "DecidiousWallGreen": 2.0,
     "DecidiousWallRed": 3.0,
-    "DungeonStone": 2.0,
     "InvisibleBlockingWallSet": 2.0,
-    "InvisibleWallSet": 9.0,
-    "OgreCage": 58.0,
-    "RootLight": 36.0
+    "OgreCage": 49.0,
+    "RootLight": 5.0
    },
    "maps_all": 14,
    "role": {
-    "boundary": 0.087,
-    "partition": 0.913
+    "boundary": 0.013,
+    "partition": 0.987
    },
-   "secret": 21.0,
-   "sp_maps": 13,
-   "sp_weight": 1479.5,
-   "windows": 69.3
+   "secret": 1.0,
+   "sp_maps": 10,
+   "sp_weight": 694.0,
+   "windows": 13.3
   },
   "Rock": {
    "context": {
@@ -2342,32 +2093,32 @@
   },
   "RootLight": {
    "context": {
-    "cave": 0.001,
+    "cave": 0.0,
     "interior": 0.001,
-    "natural": 0.792,
-    "water": 0.206
+    "natural": 0.782,
+    "water": 0.217
    },
    "count_all": 16672,
-   "destructible": 34.0,
+   "destructible": 33.0,
    "invisible": false,
    "joins": {
-    "CaveWall2": 12.0,
     "Cobblestone": 16.0,
-    "DecidiousWallBrown": 24.0,
-    "DecidiousWallGreen": 725.0,
-    "Dilapidated": 15.0,
-    "InvisibleWallSet": 118.0,
-    "OgreWall": 36.0,
-    "Thorn": 20.0
+    "DecidiousWallBrown": 18.0,
+    "DecidiousWallRed": 10.0,
+    "Dilapidated": 14.0,
+    "DungeonStone": 8.0,
+    "InvisibleWallSet": 64.0,
+    "IronFence": 6.0,
+    "OgreWall": 5.0
    },
    "maps_all": 13,
    "role": {
-    "boundary": 0.804,
-    "partition": 0.196
+    "boundary": 0.812,
+    "partition": 0.188
    },
    "secret": 60.0,
-   "sp_maps": 11,
-   "sp_weight": 6629.0,
+   "sp_maps": 10,
+   "sp_weight": 5376.0,
    "windows": 3.0
   },
   "SewerWall": {
@@ -2401,32 +2152,31 @@
   },
   "Shard": {
    "context": {
-    "interior": 0.006,
-    "masonry": 0.139,
-    "natural": 0.72,
-    "water": 0.135
+    "interior": 0.007,
+    "masonry": 0.153,
+    "natural": 0.692,
+    "water": 0.148
    },
    "count_all": 10209,
-   "destructible": 4.0,
+   "destructible": 2.0,
    "invisible": false,
    "joins": {
-    "CaveWall2": 8.0,
-    "DungeonCobble": 2.0,
+    "CaveWall2": 6.0,
     "GalavaTownWall": 28.0,
     "InvisibleBlockingWallSet": 7.0,
     "InvisibleWallSet": 25.0,
-    "IxTempleWall": 45.0,
+    "IxTempleWall": 20.0,
     "LOTDOrnate": 2.0
    },
    "maps_all": 16,
    "role": {
-    "boundary": 0.817,
-    "isolated": 0.004,
-    "partition": 0.179
+    "boundary": 0.806,
+    "isolated": 0.005,
+    "partition": 0.189
    },
    "secret": 50.3,
-   "sp_maps": 14,
-   "sp_weight": 3533.0,
+   "sp_maps": 12,
+   "sp_weight": 3098.0,
    "windows": 0
   },
   "Shrub": {
@@ -2455,39 +2205,33 @@
   },
   "StoneBlue": {
    "context": {
-    "interior": 0.472,
-    "masonry": 0.152,
-    "natural": 0.376
+    "natural": 1.0
    },
    "count_all": 2283,
-   "destructible": 7.0,
+   "destructible": 0,
    "invisible": false,
    "joins": {
-    "BrickBlue": 18.0,
-    "BrickGray": 4.0,
-    "Coni-Wall1": 2.0,
-    "DecidiousWallGreen": 5.7,
-    "DungeonCobble": 8.0,
+    "DecidiousWallGreen": 2.7,
     "GalavaTowerWall": 0.7,
-    "IronFence": 1.5
+    "IronFence": 0.5
    },
    "maps_all": 7,
    "role": {
-    "boundary": 0.336,
-    "partition": 0.664
+    "boundary": 0.118,
+    "partition": 0.882
    },
-   "secret": 42.0,
-   "sp_maps": 5,
-   "sp_weight": 1042.7,
-   "windows": 11.0
+   "secret": 0,
+   "sp_maps": 3,
+   "sp_weight": 5.7,
+   "windows": 0
   },
   "StoneGray": {
    "context": {
-    "cave": 0.133,
-    "interior": 0.371,
-    "lava": 0.011,
-    "masonry": 0.422,
-    "natural": 0.062,
+    "cave": 0.14,
+    "interior": 0.39,
+    "lava": 0.012,
+    "masonry": 0.398,
+    "natural": 0.059,
     "water": 0.001
    },
    "count_all": 3575,
@@ -2498,19 +2242,19 @@
     "CathedralBlueFace": 2.0,
     "CaveWall2": 30.0,
     "Cobblestone": 8.0,
-    "DungeonStone": 2.0,
+    "DunMirCathedral": 2.0,
     "GalavaTownWall": 28.0,
     "InvisibleWallSet": 4.0,
     "IronFence": 129.0
    },
    "maps_all": 15,
    "role": {
-    "boundary": 0.309,
-    "partition": 0.691
+    "boundary": 0.326,
+    "partition": 0.674
    },
-   "secret": 31.0,
-   "sp_maps": 13,
-   "sp_weight": 1812.3,
+   "secret": 24.0,
+   "sp_maps": 9,
+   "sp_weight": 1715.3,
    "windows": 20.3
   },
   "StuccoDarkWood": {
@@ -2593,23 +2337,16 @@
    "windows": 0
   },
   "Thorn": {
-   "context": {
-    "natural": 1.0
-   },
+   "context": {},
    "count_all": 32,
-   "destructible": 32.0,
+   "destructible": 0,
    "invisible": false,
-   "joins": {
-    "DecidiousWallGreen": 3.0,
-    "RootLight": 20.0
-   },
+   "joins": {},
    "maps_all": 1,
-   "role": {
-    "partition": 1.0
-   },
+   "role": {},
    "secret": 0,
-   "sp_maps": 1,
-   "sp_weight": 32.0,
+   "sp_maps": 0,
+   "sp_weight": 0,
    "windows": 0
   },
   "TristoneBlue": {
@@ -2634,53 +2371,52 @@
   },
   "Volcano": {
    "context": {
-    "cave": 0.365,
-    "interior": 0.169,
-    "lava": 0.341,
-    "masonry": 0.125,
+    "cave": 0.461,
+    "interior": 0.144,
+    "lava": 0.367,
+    "masonry": 0.028,
     "natural": 0.0
    },
    "count_all": 7918,
-   "destructible": 101.0,
+   "destructible": 55.0,
    "invisible": false,
    "joins": {
     "CathedralRed": 24.0,
     "CaveWall2": 2.7,
     "GalavaTowerWall": 23.0,
-    "GalavaTownWall": 64.0,
-    "IronFence": 9.0,
-    "LOTDMagicOrnate": 1.0,
+    "GalavaTownWall": 4.0,
+    "IronFence": 8.0,
     "StoneGray": 2.0
    },
    "maps_all": 13,
    "role": {
-    "boundary": 0.706,
+    "boundary": 0.738,
     "isolated": 0.0,
-    "partition": 0.293
+    "partition": 0.262
    },
-   "secret": 22.0,
-   "sp_maps": 9,
-   "sp_weight": 6534.7,
-   "windows": 27.0
+   "secret": 1.0,
+   "sp_maps": 6,
+   "sp_weight": 4526.7,
+   "windows": 20.0
   }
  },
  "minimap": {
   "by_role": {
    "boundary": {
-    "100": 0.449,
-    "110": 0.039,
-    "70": 0.077,
-    "75": 0.031,
-    "80": 0.081,
-    "90": 0.157
+    "100": 0.52,
+    "110": 0.035,
+    "70": 0.082,
+    "75": 0.036,
+    "80": 0.082,
+    "90": 0.172
    },
    "interior": {
-    "100": 0.608,
-    "110": 0.078,
-    "40": 0.057,
-    "70": 0.018,
-    "90": 0.115,
-    "95": 0.056
+    "0": 0.013,
+    "100": 0.741,
+    "110": 0.091,
+    "200": 0.013,
+    "80": 0.019,
+    "90": 0.094
    },
    "isolated": {
     "10": 0.037,
@@ -2691,12 +2427,12 @@
     "99": 0.096
    },
    "other partition": {
-    "100": 0.502,
-    "110": 0.047,
-    "60": 0.034,
-    "70": 0.056,
-    "80": 0.07,
-    "90": 0.125
+    "100": 0.599,
+    "110": 0.05,
+    "200": 0.024,
+    "70": 0.057,
+    "80": 0.054,
+    "90": 0.141
    }
   },
   "matches_enclosing_polygon": {
@@ -2705,108 +2441,66 @@
    "no polygon": 0.024
   },
   "values": {
-   "0": 0.008,
-   "1": 0.003,
-   "10": 0.003,
-   "100": 0.473,
-   "101": 0.002,
-   "102": 0.002,
-   "105": 0.002,
-   "107": 0.001,
-   "108": 0.003,
-   "110": 0.044,
-   "112": 0.007,
-   "115": 0.0,
-   "118": 0.001,
-   "120": 0.003,
-   "125": 0.0,
-   "130": 0.001,
-   "133": 0.001,
-   "140": 0.001,
-   "163": 0.0,
-   "170": 0.002,
+   "0": 0.012,
+   "1": 0.002,
+   "10": 0.002,
+   "100": 0.551,
+   "110": 0.042,
+   "120": 0.001,
+   "130": 0.0,
    "2": 0.001,
    "20": 0.001,
-   "200": 0.011,
-   "210": 0.003,
-   "220": 0.002,
-   "25": 0.0,
-   "250": 0.0,
-   "3": 0.0,
-   "30": 0.001,
-   "35": 0.005,
+   "200": 0.015,
+   "3": 0.001,
    "4": 0.0,
-   "40": 0.009,
-   "5": 0.0,
-   "50": 0.017,
-   "51": 0.0,
-   "52": 0.0,
-   "55": 0.001,
+   "5": 0.001,
+   "50": 0.003,
    "6": 0.0,
-   "60": 0.027,
-   "65": 0.001,
-   "66": 0.001,
+   "60": 0.017,
+   "66": 0.002,
    "7": 0.001,
-   "70": 0.068,
-   "73": 0.001,
-   "75": 0.025,
-   "77": 0.002,
+   "70": 0.071,
+   "75": 0.031,
    "8": 0.001,
-   "80": 0.074,
-   "85": 0.01,
+   "80": 0.072,
+   "85": 0.009,
    "88": 0.0,
    "9": 0.001,
-   "90": 0.146,
-   "91": 0.001,
-   "92": 0.001,
-   "93": 0.0,
-   "94": 0.001,
-   "95": 0.024,
-   "97": 0.003,
-   "99": 0.002
+   "90": 0.16,
+   "95": 0.003,
+   "99": 0.0
   }
  },
  "secret_settings": {
   "scan_flags": {
-   "1": 0.871,
-   "2": 0.005,
+   "1": 0.837,
+   "2": 0.002,
    "240": 0.002,
-   "241": 0.0,
    "244": 0.001,
-   "246": 0.0,
-   "3": 0.01,
-   "4": 0.002,
-   "5": 0.001,
-   "6": 0.01,
-   "7": 0.006,
-   "8": 0.065,
-   "9": 0.025
+   "246": 0.001,
+   "3": 0.002,
+   "4": 0.005,
+   "5": 0.002,
+   "6": 0.019,
+   "7": 0.013,
+   "8": 0.084,
+   "9": 0.033
   },
   "wall_state": {
-   "1": 0.906,
-   "3": 0.094
+   "1": 0.882,
+   "3": 0.118
   }
  },
  "special_walls": {
   "destructible": {
    "by_material": {
-    "AncientRuin": {
-     "0": 10.0,
-     "1": 11.0,
-     "10": 1.0,
-     "8": 2.0,
-     "9": 1.0
-    },
+    "AncientRuin": {},
     "AncientRuinShort": {},
     "AspenSparse": {},
     "BlackWall": {},
     "BrickBlue": {
-     "0": 33.0,
-     "1": 6.0,
-     "10": 3.0,
-     "7": 3.0,
-     "8": 3.0,
-     "9": 3.0
+     "0": 4.0,
+     "1": 2.0
     },
     "BrickFancy": {},
     "BrickFancyBright": {},
@@ -2828,20 +2522,17 @@
      "9": 6.0
     },
     "CaveWall2": {
-     "0": 89.0,
-     "1": 78.3,
-     "10": 5.3,
-     "2": 35.0,
-     "3": 2.0,
-     "4": 3.0,
-     "5": 4.0,
-     "6": 3.0,
-     "7": 12.0,
+     "0": 31.0,
+     "1": 14.3,
+     "10": 4.3,
+     "4": 1.0,
+     "6": 1.0,
+     "7": 10.0,
      "8": 6.0,
      "9": 8.3
     },
     "Cobblestone": {
-     "0": 100.0,
+     "0": 98.0,
      "1": 78.0,
      "10": 1.0,
      "7": 1.0,
@@ -2859,34 +2550,25 @@
     "DecidiousWallBrown": {},
     "DecidiousWallGreen": {},
     "DecidiousWallRed": {},
-    "Dilapidated": {
-     "0": 2.0,
-     "1": 2.0,
-     "8": 1.0
-    },
+    "Dilapidated": {},
     "DilapidatedShort": {},
     "Dirt": {
-     "0": 22.0,
-     "1": 30.0,
+     "0": 10.0,
+     "1": 16.0,
+     "10": 1.0,
+     "7": 1.0,
+     "8": 1.0,
+     "9": 1.0
+    },
+    "DunMirCathedral": {},
+    "DungeonCobble": {},
+    "DungeonStone": {
+     "0": 50.0,
+     "1": 27.7,
      "10": 5.0,
      "7": 5.0,
      "8": 5.0,
      "9": 5.0
-    },
-    "DunMirCathedral": {},
-    "DungeonCobble": {
-     "0": 5.0,
-     "1": 6.0,
-     "8": 2.0,
-     "9": 1.0
-    },
-    "DungeonStone": {
-     "0": 100.0,
-     "1": 66.7,
-     "10": 9.0,
-     "7": 10.0,
-     "8": 10.0,
-     "9": 9.0
     },
     "FieldStoneShort": {},
     "GalavaTowerWall": {
@@ -2894,20 +2576,14 @@
      "1": 18.0
     },
     "GalavaTownWall": {
-     "0": 45.0,
-     "1": 60.7,
-     "10": 4.0,
+     "0": 15.0,
+     "1": 39.7,
      "4": 14.0,
      "6": 14.0,
-     "7": 5.0,
-     "8": 5.0,
-     "9": 8.0
+     "9": 1.0
     },
     "Hedge1": {},
-    "IceWall": {
-     "0": 3.0,
-     "1": 4.0
-    },
+    "IceWall": {},
     "InvisibleBlockingWallSet": {},
     "InvisibleStoneWallSet": {},
     "InvisibleWallSet": {},
@@ -2920,51 +2596,31 @@
      "9": 3.0
     },
     "IronFenceDamaged": {
-     "0": 21.0,
+     "0": 17.0,
      "1": 28.0
     },
     "IxTempleWall": {
-     "0": 6.0,
-     "1": 6.0,
-     "10": 2.0,
-     "8": 1.0,
-     "9": 2.0
+     "0": 4.0,
+     "1": 3.0,
+     "9": 1.0
     },
     "LOTDBrick": {
-     "0": 41.0,
-     "1": 42.3,
-     "10": 5.0,
-     "7": 6.0,
-     "8": 4.0,
-     "9": 4.0
+     "0": 12.0,
+     "1": 10.3
     },
     "LOTDMagicOrnate": {},
     "LOTDOrnate": {
      "0": 3.3
     },
-    "Log": {
-     "1": 1.0
-    },
+    "Log": {},
     "MagicWall": {},
     "ManaMineWall": {
-     "0": 400.0,
-     "1": 423.0,
-     "10": 8.0,
-     "2": 202.0,
-     "3": 34.0,
-     "4": 24.0,
-     "5": 30.0,
-     "6": 21.0,
-     "7": 11.0,
-     "8": 7.0,
-     "9": 9.0
+     "0": 5.0,
+     "1": 14.0,
+     "2": 10.0
     },
     "OgreCage": {},
-    "OgreWall": {
-     "0": 1.0,
-     "1": 3.0,
-     "8": 1.0
-    },
+    "OgreWall": {},
     "Rock": {
      "10": 2.0,
      "8": 1.0
@@ -2972,7 +2628,7 @@
     "RockDark": {},
     "RootDark": {},
     "RootLight": {
-     "0": 8.0,
+     "0": 7.0,
      "1": 22.0,
      "10": 1.0,
      "7": 1.0,
@@ -2987,76 +2643,52 @@
     },
     "Shard": {
      "0": 1.3,
-     "1": 1.7,
-     "9": 1.0
+     "1": 0.7
     },
     "Shrub": {},
-    "StoneBlue": {
-     "0": 3.0,
-     "1": 4.0
-    },
+    "StoneBlue": {},
     "StoneGray": {},
     "StuccoDarkWood": {},
     "StuccoLightWood": {},
     "StuccoLightWoodDamaged": {},
-    "Thorn": {
-     "0": 16.0,
-     "1": 6.0,
-     "7": 5.0,
-     "9": 5.0
-    },
+    "Thorn": {},
     "TristoneBlue": {},
     "Volcano": {
-     "0": 31.0,
-     "1": 43.0,
-     "10": 5.0,
-     "7": 9.0,
+     "0": 19.0,
+     "1": 12.0,
+     "10": 4.0,
+     "7": 7.0,
      "8": 4.0,
      "9": 9.0
     }
    },
    "role": {
-    "boundary": 0.023,
-    "partition": 0.977
+    "boundary": 0.067,
+    "partition": 0.933
    }
   },
   "secret": {
    "by_material": {
-    "AncientRuin": {
-     "0": 10.0,
-     "1": 19.0,
-     "8": 1.0,
-     "9": 1.0
-    },
-    "AncientRuinShort": {
-     "0": 1.0,
-     "8": 1.0,
-     "9": 1.0
-    },
+    "AncientRuin": {},
+    "AncientRuinShort": {},
     "AspenSparse": {},
     "BlackWall": {},
     "BrickBlue": {
-     "0": 57.3,
-     "1": 47.0,
-     "3": 2.0,
-     "5": 2.0
+     "0": 22.3,
+     "1": 22.0
     },
     "BrickFancy": {},
     "BrickFancyBright": {},
-    "BrickGray": {
-     "0": 1.0
-    },
+    "BrickGray": {},
     "BrickPlain": {},
     "BrickRed": {},
     "CathedralBlue": {},
     "CathedralBlueFace": {
      "0": 5.0,
-     "1": 4.5
+     "1": 2.5
     },
     "CathedralRed": {},
-    "CathedralRedFace": {
-     "1": 1.0
-    },
+    "CathedralRedFace": {},
     "CaveWall": {},
     "CaveWall2": {
      "0": 11.0,
@@ -3076,13 +2708,9 @@
     "DecidiousWallBrown": {},
     "DecidiousWallGreen": {},
     "DecidiousWallRed": {},
-    "Dilapidated": {
-     "0": 18.0,
-     "1": 12.0,
-     "9": 1.0
-    },
+    "Dilapidated": {},
     "DilapidatedShort": {
-     "0": 3.5
+     "0": 2.5
     },
     "Dirt": {
      "0": 4.0
@@ -3091,16 +2719,10 @@
      "0": 6.0,
      "1": 4.0
     },
-    "DungeonCobble": {
-     "1": 2.0
-    },
+    "DungeonCobble": {},
     "DungeonStone": {
-     "0": 61.0,
-     "1": 77.0,
-     "10": 3.0,
-     "7": 3.0,
-     "8": 4.0,
-     "9": 3.0
+     "0": 14.0,
+     "1": 17.0
     },
     "FieldStoneShort": {},
     "GalavaTowerWall": {
@@ -3108,12 +2730,7 @@
      "1": 7.5
     },
     "GalavaTownWall": {
-     "0": 105.0,
-     "1": 77.7,
-     "10": 4.0,
-     "7": 1.0,
-     "8": 2.0,
-     "9": 3.0
+     "1": 2.7
     },
     "Hedge1": {},
     "IceWall": {},
@@ -3144,72 +2761,53 @@
      "9": 1.3
     },
     "IronFence": {
-     "0": 200.3,
-     "1": 179.0,
-     "10": 28.0,
-     "5": 1.0,
-     "7": 28.0,
-     "8": 26.0,
-     "9": 25.0
+     "0": 76.3,
+     "1": 78.0,
+     "10": 19.0,
+     "7": 19.0,
+     "8": 19.0,
+     "9": 19.0
     },
     "IronFenceDamaged": {},
     "IxTempleWall": {
-     "0": 16.0,
-     "1": 6.0,
-     "10": 4.0,
-     "7": 4.0,
-     "8": 4.0,
-     "9": 4.0
+     "0": 6.0,
+     "1": 4.0
     },
     "LOTDBrick": {
-     "0": 93.0,
-     "1": 60.0,
-     "10": 1.0,
-     "2": 1.0,
-     "5": 2.0,
-     "7": 1.0,
-     "8": 3.0,
-     "9": 2.0
+     "0": 41.0,
+     "1": 19.0,
+     "8": 1.0,
+     "9": 1.0
     },
     "LOTDMagicOrnate": {
-     "0": 150.0,
-     "1": 148.0,
-     "10": 9.0,
-     "7": 9.0,
-     "8": 9.0,
-     "9": 9.0
+     "0": 4.0,
+     "1": 64.0
     },
     "LOTDOrnate": {
-     "0": 192.0,
-     "1": 157.7,
-     "10": 17.0,
+     "0": 176.0,
+     "1": 146.7,
+     "10": 16.0,
      "3": 1.0,
      "4": 2.0,
      "5": 2.0,
      "6": 2.0,
      "7": 17.0,
      "8": 18.0,
-     "9": 18.0
+     "9": 17.0
     },
     "Log": {
-     "0": 2.5,
+     "0": 1.5,
      "1": 2.0
     },
     "MagicWall": {},
     "ManaMineWall": {
-     "0": 82.0,
-     "1": 39.0,
-     "10": 1.0,
-     "7": 2.0,
-     "8": 1.0,
-     "9": 1.0
+     "0": 9.0,
+     "1": 3.0,
+     "7": 1.0
     },
     "OgreCage": {},
     "OgreWall": {
-     "0": 10.0,
-     "1": 9.0,
-     "10": 1.0,
-     "7": 1.0
+     "1": 1.0
     },
     "Rock": {
      "1": 7.0
@@ -3236,17 +2834,10 @@
      "9": 6.7
     },
     "Shrub": {},
-    "StoneBlue": {
-     "0": 26.0,
-     "1": 12.0,
-     "10": 1.0,
-     "7": 1.0,
-     "8": 1.0,
-     "9": 1.0
-    },
+    "StoneBlue": {},
     "StoneGray": {
      "0": 9.0,
-     "1": 19.0,
+     "1": 12.0,
      "10": 2.0,
      "8": 1.0
     },
@@ -3260,37 +2851,28 @@
     "Thorn": {},
     "TristoneBlue": {},
     "Volcano": {
-     "0": 9.0,
-     "1": 12.0,
-     "8": 1.0
+     "0": 1.0
     }
    },
    "role": {
-    "boundary": 0.008,
-    "partition": 0.992
+    "boundary": 0.016,
+    "partition": 0.984
    }
   },
   "window": {
    "by_material": {
-    "AncientRuin": {
-     "1": 5.0
-    },
+    "AncientRuin": {},
     "AncientRuinShort": {},
     "AspenSparse": {},
     "BlackWall": {},
     "BrickBlue": {
-     "0": 13.0,
-     "1": 5.0
+     "0": 3.0,
+     "1": 1.0
     },
     "BrickFancy": {},
-    "BrickFancyBright": {
-     "0": 3.0
-    },
+    "BrickFancyBright": {},
     "BrickGray": {},
-    "BrickPlain": {
-     "0": 1.0,
-     "1": 3.0
-    },
+    "BrickPlain": {},
     "BrickRed": {
      "0": 6.0,
      "1": 0.7
@@ -3302,9 +2884,7 @@
     "CaveWall": {
      "0": 1.0
     },
-    "CaveWall2": {
-     "0": 8.0
-    },
+    "CaveWall2": {},
     "Cobblestone": {
      "0": 101.0,
      "1": 83.0
@@ -3316,47 +2896,31 @@
     "DecidiousWallGreen": {},
     "DecidiousWallRed": {},
     "Dilapidated": {
-     "0": 19.0,
-     "1": 19.0
+     "0": 13.0,
+     "1": 12.0
     },
     "DilapidatedShort": {},
     "Dirt": {
-     "0": 8.0,
-     "1": 20.0,
-     "10": 1.0,
-     "7": 1.0,
-     "8": 1.0,
-     "9": 1.0
+     "0": 4.0,
+     "1": 8.0
     },
     "DunMirCathedral": {
      "0": 63.0,
      "1": 39.0
     },
-    "DungeonCobble": {
-     "0": 7.0,
-     "1": 5.0
-    },
+    "DungeonCobble": {},
     "DungeonStone": {
-     "0": 107.3,
-     "1": 68.0
+     "0": 18.3,
+     "1": 15.0
     },
-    "FieldStoneShort": {
-     "0": 19.0,
-     "1": 11.0,
-     "10": 1.0,
-     "3": 3.0,
-     "5": 1.0,
-     "7": 1.0,
-     "8": 4.0,
-     "9": 1.0
-    },
+    "FieldStoneShort": {},
     "GalavaTowerWall": {
      "0": 22.0,
      "1": 26.5
     },
     "GalavaTownWall": {
-     "0": 29.3,
-     "1": 43.0
+     "0": 11.3,
+     "1": 25.0
     },
     "Hedge1": {},
     "IceWall": {
@@ -3364,58 +2928,33 @@
      "1": 2.0
     },
     "InvisibleBlockingWallSet": {},
-    "InvisibleStoneWallSet": {
-     "0": 25.0,
-     "1": 11.0,
-     "10": 12.0,
-     "7": 3.0,
-     "8": 12.0,
-     "9": 3.0
-    },
-    "InvisibleWallSet": {
-     "0": 608.0,
-     "1": 567.0,
-     "10": 213.0,
-     "4": 1.0,
-     "6": 1.0,
-     "7": 177.0,
-     "8": 219.0,
-     "9": 178.0
-    },
-    "IronFence": {
-     "0": 2.0
-    },
+    "InvisibleStoneWallSet": {},
+    "InvisibleWallSet": {},
+    "IronFence": {},
     "IronFenceDamaged": {},
     "IxTempleWall": {
      "0": 6.0,
-     "1": 11.0
+     "1": 5.0
     },
     "LOTDBrick": {
-     "0": 50.0,
-     "1": 34.0
+     "0": 37.0,
+     "1": 26.0
     },
     "LOTDMagicOrnate": {},
     "LOTDOrnate": {
-     "0": 55.0,
-     "1": 32.0
+     "0": 36.0,
+     "1": 16.0
     },
     "Log": {
-     "0": 60.8,
-     "1": 53.5,
-     "10": 1.0,
-     "7": 1.0,
-     "8": 1.0,
-     "9": 1.0
+     "0": 16.8,
+     "1": 21.5
     },
     "MagicWall": {},
-    "ManaMineWall": {
-     "0": 22.0,
-     "1": 5.0
-    },
+    "ManaMineWall": {},
     "OgreCage": {},
     "OgreWall": {
-     "0": 41.7,
-     "1": 27.7
+     "0": 7.7,
+     "1": 5.7
     },
     "Rock": {},
     "RockDark": {},
@@ -3429,10 +2968,7 @@
     },
     "Shard": {},
     "Shrub": {},
-    "StoneBlue": {
-     "0": 2.0,
-     "1": 9.0
-    },
+    "StoneBlue": {},
     "StoneGray": {
      "0": 20.3
     },
@@ -3449,12 +2985,12 @@
     "TristoneBlue": {},
     "Volcano": {
      "0": 5.0,
-     "1": 22.0
+     "1": 15.0
     }
    },
    "role": {
-    "boundary": 0.014,
-    "partition": 0.986
+    "boundary": 0.054,
+    "partition": 0.946
    }
   }
  },
@@ -5555,94 +5091,6 @@
   }
  },
  "variation_weights": {
-  "AncientRuin": {
-   "0": {
-    "0": 0.289,
-    "1": 0.295,
-    "2": 0.311,
-    "3": 0.062,
-    "4": 0.023,
-    "5": 0.02
-   },
-   "1": {
-    "0": 0.296,
-    "1": 0.315,
-    "2": 0.305,
-    "3": 0.039,
-    "4": 0.024,
-    "5": 0.022
-   },
-   "10": {
-    "0": 1.0
-   },
-   "2": {
-    "0": 1.0
-   },
-   "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 0.898,
-    "1": 0.102
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
-   }
-  },
-  "AncientRuinShort": {
-   "0": {
-    "0": 0.162,
-    "1": 0.135,
-    "2": 0.243,
-    "3": 0.216,
-    "4": 0.135,
-    "5": 0.108
-   },
-   "1": {
-    "0": 0.213,
-    "1": 0.147,
-    "2": 0.267,
-    "3": 0.16,
-    "4": 0.093,
-    "5": 0.12
-   },
-   "10": {
-    "0": 1.0
-   },
-   "2": {
-    "0": 1.0
-   },
-   "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 1.0
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
-   }
-  },
   "AspenSparse": {
    "0": {
     "0": 0.393,
@@ -5669,16 +5117,16 @@
   },
   "BlackWall": {
    "0": {
-    "0": 0.679,
-    "1": 0.126,
-    "2": 0.088,
-    "3": 0.108
+    "0": 0.61,
+    "1": 0.153,
+    "2": 0.107,
+    "3": 0.131
    },
    "1": {
-    "0": 0.7,
-    "1": 0.099,
-    "2": 0.081,
-    "3": 0.121
+    "0": 0.635,
+    "1": 0.12,
+    "2": 0.098,
+    "3": 0.147
    },
    "10": {
     "0": 1.0
@@ -5701,14 +5149,14 @@
   },
   "BrickBlue": {
    "0": {
-    "0": 0.592,
-    "1": 0.212,
-    "2": 0.196
+    "0": 0.501,
+    "1": 0.258,
+    "2": 0.241
    },
    "1": {
-    "0": 0.6,
-    "1": 0.206,
-    "2": 0.195
+    "0": 0.57,
+    "1": 0.218,
+    "2": 0.212
    },
    "10": {
     "0": 1.0
@@ -5720,41 +5168,6 @@
     "0": 1.0
    },
    "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 1.0
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
-   }
-  },
-  "BrickFancy": {
-   "0": {
-    "0": 1.0
-   }
-  },
-  "BrickFancyBright": {
-   "0": {
-    "0": 0.429,
-    "1": 0.333,
-    "2": 0.238
-   },
-   "1": {
-    "0": 0.471,
-    "1": 0.294,
-    "2": 0.235
-   },
-   "10": {
     "0": 1.0
    },
    "5": {
@@ -5774,58 +5187,13 @@
    }
   },
   "BrickGray": {
-   "0": {
-    "0": 1.0
-   },
    "1": {
-    "0": 1.0
-   },
-   "10": {
     "0": 1.0
    },
    "4": {
     "0": 1.0
    },
    "8": {
-    "0": 1.0
-   }
-  },
-  "BrickPlain": {
-   "0": {
-    "0": 0.382,
-    "1": 0.327,
-    "2": 0.291
-   },
-   "1": {
-    "0": 0.452,
-    "1": 0.306,
-    "2": 0.242
-   },
-   "10": {
-    "0": 1.0
-   },
-   "2": {
-    "0": 1.0
-   },
-   "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 1.0
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
     "0": 1.0
    }
   },
@@ -5938,11 +5306,6 @@
     "0": 1.0
    }
   },
-  "CathedralRedFace": {
-   "1": {
-    "0": 1.0
-   }
-  },
   "CaveWall": {
    "0": {
     "0": 0.338,
@@ -5985,18 +5348,18 @@
   },
   "CaveWall2": {
    "0": {
-    "0": 0.272,
+    "0": 0.264,
     "1": 0.243,
-    "2": 0.238,
-    "3": 0.24,
-    "4": 0.007
+    "2": 0.236,
+    "3": 0.252,
+    "4": 0.005
    },
    "1": {
-    "0": 0.268,
-    "1": 0.245,
-    "2": 0.239,
-    "3": 0.242,
-    "4": 0.006
+    "0": 0.253,
+    "1": 0.246,
+    "2": 0.246,
+    "3": 0.25,
+    "4": 0.004
    },
    "10": {
     "0": 1.0
@@ -6017,8 +5380,8 @@
     "0": 1.0
    },
    "7": {
-    "0": 0.976,
-    "1": 0.024
+    "0": 0.974,
+    "1": 0.026
    },
    "8": {
     "0": 1.0
@@ -6030,13 +5393,13 @@
   "Cobblestone": {
    "0": {
     "0": 0.552,
-    "1": 0.259,
-    "2": 0.19
+    "1": 0.257,
+    "2": 0.192
    },
    "1": {
-    "0": 0.537,
+    "0": 0.538,
     "1": 0.243,
-    "2": 0.22
+    "2": 0.219
    },
    "10": {
     "0": 1.0
@@ -6068,14 +5431,14 @@
   },
   "Coni-Wall1": {
    "0": {
-    "0": 0.38,
-    "1": 0.303,
-    "2": 0.317
+    "0": 0.35,
+    "1": 0.325,
+    "2": 0.325
    },
    "1": {
-    "0": 0.389,
-    "1": 0.311,
-    "2": 0.3
+    "0": 0.376,
+    "1": 0.319,
+    "2": 0.305
    },
    "10": {
     "0": 0.996,
@@ -6088,8 +5451,8 @@
     "0": 1.0
    },
    "4": {
-    "0": 0.945,
-    "2": 0.055
+    "0": 0.939,
+    "2": 0.061
    },
    "5": {
     "0": 1.0
@@ -6128,17 +5491,17 @@
   },
   "DecidiousWallBrown": {
    "0": {
-    "0": 0.317,
-    "1": 0.259,
-    "2": 0.244,
-    "3": 0.18
+    "0": 0.288,
+    "1": 0.278,
+    "2": 0.27,
+    "3": 0.164
    },
    "1": {
-    "0": 0.353,
-    "1": 0.189,
-    "2": 0.244,
-    "3": 0.208,
-    "4": 0.005
+    "0": 0.347,
+    "1": 0.195,
+    "2": 0.252,
+    "3": 0.197,
+    "4": 0.008
    },
    "10": {
     "0": 1.0
@@ -6170,18 +5533,16 @@
   },
   "DecidiousWallGreen": {
    "0": {
-    "0": 0.273,
-    "1": 0.258,
-    "2": 0.232,
-    "3": 0.236,
-    "4": 0.001
+    "0": 0.246,
+    "1": 0.265,
+    "2": 0.239,
+    "3": 0.25
    },
    "1": {
-    "0": 0.278,
-    "1": 0.253,
-    "2": 0.231,
-    "3": 0.237,
-    "4": 0.001
+    "0": 0.253,
+    "1": 0.254,
+    "2": 0.234,
+    "3": 0.259
    },
    "10": {
     "0": 1.0
@@ -6190,9 +5551,9 @@
     "0": 1.0
    },
    "3": {
-    "0": 0.863,
-    "1": 0.03,
-    "2": 0.107
+    "0": 0.75,
+    "1": 0.054,
+    "2": 0.196
    },
    "4": {
     "0": 1.0
@@ -6252,14 +5613,14 @@
   },
   "Dilapidated": {
    "0": {
-    "0": 0.643,
-    "1": 0.154,
-    "2": 0.203
+    "0": 0.759,
+    "1": 0.064,
+    "2": 0.177
    },
    "1": {
-    "0": 0.63,
-    "1": 0.173,
-    "2": 0.197
+    "0": 0.788,
+    "1": 0.086,
+    "2": 0.127
    },
    "10": {
     "0": 1.0
@@ -6291,25 +5652,19 @@
   },
   "DilapidatedShort": {
    "0": {
-    "0": 0.668,
-    "1": 0.169,
-    "2": 0.163
+    "0": 0.609,
+    "1": 0.186,
+    "2": 0.205
    },
    "1": {
-    "0": 0.757,
-    "1": 0.121,
-    "2": 0.121
+    "0": 0.88,
+    "1": 0.04,
+    "2": 0.08
    },
    "10": {
     "0": 1.0
    },
-   "2": {
-    "0": 1.0
-   },
    "3": {
-    "0": 1.0
-   },
-   "4": {
     "0": 1.0
    },
    "5": {
@@ -6331,13 +5686,13 @@
   "Dirt": {
    "0": {
     "0": 0.326,
-    "1": 0.343,
-    "2": 0.331
+    "1": 0.346,
+    "2": 0.329
    },
    "1": {
-    "0": 0.351,
-    "1": 0.332,
-    "2": 0.317
+    "0": 0.348,
+    "1": 0.331,
+    "2": 0.321
    },
    "10": {
     "0": 1.0
@@ -6410,59 +5765,20 @@
     "0": 1.0
    }
   },
-  "DungeonCobble": {
-   "0": {
-    "0": 0.363,
-    "1": 0.341,
-    "2": 0.296
-   },
-   "1": {
-    "0": 0.363,
-    "1": 0.328,
-    "2": 0.309
-   },
-   "10": {
-    "0": 1.0
-   },
-   "2": {
-    "0": 1.0
-   },
-   "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 1.0
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
-   }
-  },
   "DungeonStone": {
    "0": {
-    "0": 0.263,
-    "1": 0.194,
-    "2": 0.185,
-    "3": 0.18,
-    "4": 0.177
+    "0": 0.254,
+    "1": 0.201,
+    "2": 0.18,
+    "3": 0.184,
+    "4": 0.18
    },
    "1": {
-    "0": 0.256,
-    "1": 0.193,
-    "2": 0.19,
-    "3": 0.186,
-    "4": 0.174
+    "0": 0.25,
+    "1": 0.198,
+    "2": 0.188,
+    "3": 0.196,
+    "4": 0.169
    },
    "10": {
     "0": 1.0
@@ -6494,28 +5810,19 @@
   },
   "FieldStoneShort": {
    "0": {
-    "0": 0.464,
-    "1": 0.28,
-    "2": 0.256
+    "0": 0.359,
+    "1": 0.312,
+    "2": 0.329
    },
    "1": {
-    "0": 0.5,
-    "1": 0.246,
-    "2": 0.254
+    "0": 0.312,
+    "1": 0.281,
+    "2": 0.406
    },
    "10": {
     "0": 1.0
    },
    "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
     "0": 1.0
    },
    "7": {
@@ -6569,19 +5876,16 @@
   },
   "GalavaTownWall": {
    "0": {
-    "0": 0.47,
-    "1": 0.275,
-    "2": 0.255
+    "0": 0.362,
+    "1": 0.323,
+    "2": 0.316
    },
    "1": {
-    "0": 0.496,
-    "1": 0.26,
-    "2": 0.244
+    "0": 0.417,
+    "1": 0.293,
+    "2": 0.29
    },
    "10": {
-    "0": 1.0
-   },
-   "2": {
     "0": 1.0
    },
    "3": {
@@ -6613,18 +5917,18 @@
   },
   "IceWall": {
    "0": {
-    "0": 0.335,
-    "1": 0.24,
-    "2": 0.225,
-    "3": 0.191,
-    "4": 0.009
+    "0": 0.388,
+    "1": 0.199,
+    "2": 0.211,
+    "3": 0.189,
+    "4": 0.013
    },
    "1": {
-    "0": 0.33,
-    "1": 0.213,
-    "2": 0.229,
-    "3": 0.209,
-    "4": 0.02
+    "0": 0.385,
+    "1": 0.165,
+    "2": 0.216,
+    "3": 0.198,
+    "4": 0.036
    },
    "10": {
     "0": 1.0
@@ -6699,15 +6003,6 @@
    "2": {
     "0": 1.0
    },
-   "3": {
-    "0": 1.0
-   },
-   "5": {
-    "0": 1.0
-   },
-   "6": {
-    "0": 1.0
-   },
    "7": {
     "0": 1.0
    },
@@ -6755,14 +6050,14 @@
   },
   "IronFence": {
    "0": {
-    "0": 0.815,
+    "0": 0.813,
     "1": 0.108,
-    "2": 0.077
+    "2": 0.079
    },
    "1": {
-    "0": 0.849,
-    "1": 0.08,
-    "2": 0.071
+    "0": 0.838,
+    "1": 0.083,
+    "2": 0.079
    },
    "10": {
     "0": 1.0
@@ -6791,22 +6086,22 @@
   },
   "IronFenceDamaged": {
    "0": {
-    "0": 0.784,
-    "1": 0.216
+    "0": 0.859,
+    "1": 0.141
    },
    "1": {
-    "0": 0.674,
-    "1": 0.326
+    "0": 0.713,
+    "1": 0.287
    }
   },
   "IxTempleWall": {
    "0": {
-    "0": 0.509,
-    "1": 0.491
+    "0": 0.506,
+    "1": 0.494
    },
    "1": {
-    "0": 0.507,
-    "1": 0.493
+    "0": 0.501,
+    "1": 0.499
    },
    "10": {
     "0": 1.0
@@ -6838,15 +6133,15 @@
   },
   "LOTDBrick": {
    "0": {
-    "0": 0.353,
-    "1": 0.336,
-    "2": 0.302,
-    "3": 0.009
+    "0": 0.357,
+    "1": 0.319,
+    "2": 0.311,
+    "3": 0.013
    },
    "1": {
-    "0": 0.355,
-    "1": 0.337,
-    "2": 0.303,
+    "0": 0.357,
+    "1": 0.321,
+    "2": 0.317,
     "3": 0.005
    },
    "10": {
@@ -6879,40 +6174,27 @@
   },
   "LOTDMagicOrnate": {
    "0": {
-    "0": 0.644,
-    "1": 0.144,
-    "2": 0.213
+    "0": 0.357,
+    "1": 0.643
    },
    "1": {
-    "0": 0.475,
-    "1": 0.222,
-    "2": 0.304
-   },
-   "10": {
-    "0": 1.0
-   },
-   "7": {
-    "0": 1.0
-   },
-   "8": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
+    "0": 0.47,
+    "1": 0.288,
+    "2": 0.242
    }
   },
   "LOTDOrnate": {
    "0": {
-    "0": 0.463,
-    "1": 0.276,
-    "2": 0.23,
-    "3": 0.031
+    "0": 0.522,
+    "1": 0.2,
+    "2": 0.233,
+    "3": 0.045
    },
    "1": {
-    "0": 0.464,
-    "1": 0.292,
-    "2": 0.234,
-    "3": 0.011
+    "0": 0.529,
+    "1": 0.219,
+    "2": 0.236,
+    "3": 0.016
    },
    "10": {
     "0": 1.0
@@ -6944,14 +6226,14 @@
   },
   "Log": {
    "0": {
-    "0": 0.639,
-    "1": 0.173,
-    "2": 0.188
+    "0": 0.711,
+    "1": 0.146,
+    "2": 0.143
    },
    "1": {
-    "0": 0.641,
-    "1": 0.177,
-    "2": 0.182
+    "0": 0.711,
+    "1": 0.146,
+    "2": 0.144
    },
    "10": {
     "0": 1.0
@@ -6981,34 +6263,28 @@
     "0": 1.0
    }
   },
-  "MagicWall": {
-   "1": {
-    "0": 1.0
-   }
-  },
   "ManaMineWall": {
    "0": {
-    "0": 0.292,
-    "1": 0.225,
-    "2": 0.24,
-    "3": 0.153,
-    "4": 0.051,
-    "5": 0.038,
+    "0": 0.279,
+    "1": 0.269,
+    "2": 0.282,
+    "3": 0.108,
+    "4": 0.014,
+    "5": 0.046,
     "6": 0.001
    },
    "1": {
-    "0": 0.298,
-    "1": 0.23,
-    "2": 0.25,
-    "3": 0.143,
-    "4": 0.041,
-    "5": 0.036,
-    "6": 0.002
+    "0": 0.278,
+    "1": 0.269,
+    "2": 0.283,
+    "3": 0.121,
+    "4": 0.014,
+    "5": 0.035
    },
    "10": {
-    "0": 0.97,
-    "1": 0.013,
-    "2": 0.017
+    "0": 0.96,
+    "1": 0.017,
+    "2": 0.023
    },
    "2": {
     "0": 1.0
@@ -7026,14 +6302,14 @@
     "0": 1.0
    },
    "7": {
-    "0": 0.977,
-    "1": 0.016,
-    "2": 0.008
+    "0": 0.981,
+    "1": 0.009,
+    "2": 0.011
    },
    "8": {
-    "0": 0.994,
-    "1": 0.003,
-    "2": 0.003
+    "0": 0.992,
+    "1": 0.004,
+    "2": 0.004
    },
    "9": {
     "0": 1.0
@@ -7041,16 +6317,12 @@
   },
   "OgreCage": {
    "0": {
-    "0": 0.76,
-    "1": 0.214,
-    "2": 0.01,
-    "3": 0.015
+    "0": 0.831,
+    "1": 0.169
    },
    "1": {
-    "0": 0.8,
-    "1": 0.165,
-    "2": 0.018,
-    "3": 0.018
+    "0": 0.902,
+    "1": 0.098
    },
    "10": {
     "0": 1.0
@@ -7067,21 +6339,18 @@
   },
   "OgreWall": {
    "0": {
-    "0": 0.433,
-    "1": 0.281,
-    "2": 0.257,
-    "3": 0.028
+    "0": 0.394,
+    "1": 0.31,
+    "2": 0.256,
+    "3": 0.039
    },
    "1": {
-    "0": 0.427,
-    "1": 0.293,
-    "2": 0.259,
-    "3": 0.021
+    "0": 0.378,
+    "1": 0.309,
+    "2": 0.286,
+    "3": 0.026
    },
    "10": {
-    "0": 1.0
-   },
-   "2": {
     "0": 1.0
    },
    "3": {
@@ -7156,14 +6425,14 @@
   },
   "RootLight": {
    "0": {
-    "0": 0.365,
-    "1": 0.303,
-    "2": 0.332
+    "0": 0.354,
+    "1": 0.317,
+    "2": 0.329
    },
    "1": {
-    "0": 0.384,
-    "1": 0.304,
-    "2": 0.312
+    "0": 0.38,
+    "1": 0.301,
+    "2": 0.32
    },
    "10": {
     "0": 1.0
@@ -7240,14 +6509,14 @@
   },
   "Shard": {
    "0": {
-    "0": 0.346,
-    "1": 0.342,
-    "2": 0.312
+    "0": 0.333,
+    "1": 0.346,
+    "2": 0.321
    },
    "1": {
-    "0": 0.364,
-    "1": 0.307,
-    "2": 0.329
+    "0": 0.365,
+    "1": 0.303,
+    "2": 0.332
    },
    "10": {
     "0": 1.0
@@ -7296,28 +6565,13 @@
   },
   "StoneBlue": {
    "0": {
-    "0": 0.351,
-    "1": 0.327,
-    "2": 0.322
+    "0": 1.0
    },
    "1": {
-    "0": 0.36,
-    "1": 0.33,
-    "2": 0.31
-   },
-   "10": {
-    "0": 1.0
-   },
-   "2": {
-    "0": 1.0
+    "0": 0.6,
+    "2": 0.4
    },
    "3": {
-    "0": 1.0
-   },
-   "4": {
-    "0": 1.0
-   },
-   "5": {
     "0": 1.0
    },
    "6": {
@@ -7335,14 +6589,14 @@
   },
   "StoneGray": {
    "0": {
-    "0": 0.545,
-    "1": 0.233,
-    "2": 0.222
+    "0": 0.534,
+    "1": 0.235,
+    "2": 0.232
    },
    "1": {
-    "0": 0.473,
-    "1": 0.273,
-    "2": 0.254
+    "0": 0.472,
+    "1": 0.271,
+    "2": 0.257
    },
    "10": {
     "0": 1.0
@@ -7479,23 +6733,6 @@
     "8": 0.122
    }
   },
-  "Thorn": {
-   "0": {
-    "0": 0.562,
-    "1": 0.25,
-    "2": 0.188
-   },
-   "1": {
-    "0": 0.833,
-    "1": 0.167
-   },
-   "7": {
-    "0": 1.0
-   },
-   "9": {
-    "0": 1.0
-   }
-  },
   "TristoneBlue": {
    "1": {
     "0": 0.667,
@@ -7507,14 +6744,14 @@
   },
   "Volcano": {
    "0": {
-    "0": 0.182,
-    "1": 0.434,
+    "0": 0.123,
+    "1": 0.493,
     "2": 0.384
    },
    "1": {
-    "0": 0.189,
-    "1": 0.444,
-    "2": 0.367
+    "0": 0.128,
+    "1": 0.528,
+    "2": 0.344
    },
    "10": {
     "0": 1.0

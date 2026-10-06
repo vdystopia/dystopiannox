@@ -33,14 +33,14 @@ The desk with its chair, centred on a back wall, bookcases either side of it to 
 
 ## Density and openness
 
-| | Westwood (2 studies; libraries 9) | Profile |
+| | Westwood's campaign (2 rooms, Con02a) | Profile |
 |---|---|---|
-| coverage | 0.07-0.10 | 0.09-0.30 (target 0.17) |
-| open floor | 0.70-0.78 | 0.32-0.85 |
-| pieces per tile | 0.21-0.31 | 0.25-0.90 |
-| distinct types | 7-9 | 12+ (fewer in a small room) |
-| most of one stand-alone piece | 4-5 | 3, or 1 per 25 tiles (chairs at their table not counted) |
-| walls with a purpose | 3-4 | 4; back walls lined 35%+ |
+| coverage | 0.07-0.10-0.10 | 0.09-0.30 (target 0.17) |
+| open floor | 0.70-0.78-0.78 | 0.32-0.85 |
+| pieces per tile | 0.21-0.31-0.31 | 0.25-0.90 |
+| distinct types | 7-9-9 | 12+ (fewer in a small room) |
+| most of one stand-alone piece | 4-5-5 | 3, or 1 per 25 tiles (chairs at their table not counted) |
+| walls with a purpose | 3-4-4 | 4; back walls lined 35%+ |
 
 ## Size
 

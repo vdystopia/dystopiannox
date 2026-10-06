@@ -65,8 +65,8 @@ Judges what the automatic checks can't: whether a map looks and plays like Westw
      Westwood's maps of the same environment (`--westwood` measures Westwood's);
    - `py review/catalog.py <name or regex>`: look up a thing's name in the game's catalogue.
 
-`py review/review.py --calibrate` re-measures Westwood's 51 outdoor single-player maps (25 distinct
-layouts) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for
+`py review/review.py --calibrate` re-measures Westwood's 41 outdoor campaign maps (19 distinct
+layouts; Con/War/Wiz only) and rewrites `baseline.json`. Maps with 5+ buildings are compared with Westwood's towns for
 the path and building measures.
 
 ## Calibration against the playtest

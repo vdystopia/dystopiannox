@@ -34,13 +34,13 @@ it. In the middle, the alchemist's work table.
 
 ## Density and openness
 
-| | Westwood (29) | Profile |
+| | Westwood's campaign (19 rooms, 12 maps) | Profile |
 |---|---|---|
-| coverage | 0.01-0.09-0.16 | 0.08-0.30 (target 0.17) |
-| open floor | 0.36-0.65-0.95 | 0.40-0.85 |
-| pieces per tile | 0.11-0.24-0.44 | 0.20-0.70 |
-| distinct types | 2-7-15 | 12+ |
-| most of one stand-alone piece | 1-4-12 | 2, or 1 per 60 tiles (showpieces once) |
+| coverage | 0.01-0.09-0.25 | 0.08-0.30 (target 0.17) |
+| open floor | 0.22-0.62-0.95 | 0.40-0.85 |
+| pieces per tile | 0.12-0.26-0.67 | 0.20-0.70 |
+| distinct types | 4-7-15 | 12+ |
+| most of one stand-alone piece | 1-2-12 | 2, or 1 per 60 tiles (showpieces once) |
 | caps | 1-9 lab pieces, a table in a quarter | lab pieces 1 per 12 tiles, at most 10; one table |
 
 ## Size

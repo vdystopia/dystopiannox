@@ -14,6 +14,23 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(os.path.dirname(HERE), "rules", "out")
 
 
+_CAMPAIGN_TYPES = None
+
+
+def campaign_types():
+    """The object types Westwood places in its campaign maps (Con/War/Wiz: rules/common.py is_campaign). Types seen
+    only in the quest (G_*) and multiplayer maps are other games' furniture: the kit picks decoration from statistics
+    only among these; a type outside them is placed only where a rule names it on purpose."""
+    global _CAMPAIGN_TYPES
+    if _CAMPAIGN_TYPES is None:
+        import sqlite3
+        db = os.path.join(os.path.dirname(HERE), "corpus", "out", "nox_corpus.db")
+        rx = re.compile(r"^(con|war|wiz)\d\d[a-z]$", re.I)
+        with sqlite3.connect(db) as con:
+            _CAMPAIGN_TYPES = frozenset(t for t, m in con.execute("SELECT DISTINCT type, map FROM objects") if rx.match(m))
+    return _CAMPAIGN_TYPES
+
+
 def load_rules(name):
     """Machine-readable rules mined from Westwood's maps (rules/out/<name>.json)."""
     with open(os.path.join(RULES, name + ".json"), encoding="utf-8") as f:

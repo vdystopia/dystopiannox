@@ -28,13 +28,13 @@ The hearth, centred on a back wall, shelves end to end either side of it, a rug 
 
 ## Density and openness
 
-| | Westwood (22) | Profile |
+| | Westwood's campaign (15 rooms, 9 maps) | Profile |
 |---|---|---|
 | coverage | 0.07-0.12-0.21 | 0.10-0.30 (target 0.17; dwelling 0.16) |
-| open floor | 0.23-0.52-0.80 | 0.30-0.80 (dwelling 0.22-0.80) |
+| open floor | 0.23-0.51-0.80 | 0.30-0.80 (dwelling 0.22-0.80) |
 | pieces per tile | 0.08-0.38-0.60 | 0.25-0.90 |
-| distinct types | 3-6-11 | 9+ (fewer in a small room) |
-| most of one stand-alone piece | 2-4-5 | 4, or 1 per 20 tiles |
+| distinct types | 3-5-10 | 9+ (fewer in a small room) |
+| most of one stand-alone piece | 2-3-4 | 4, or 1 per 20 tiles |
 
 ## Size
 

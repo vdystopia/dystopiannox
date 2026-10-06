@@ -143,7 +143,7 @@ class MineEntrance:
         put(CARTS_ALONG[self.axis][1], -1.6, lm + 0.55)
         put("PulleyGear1", -0.35, lm + half + 2.7)
         put("BarrelWithTools1", -0.4, lm - half - 2.5)
-        put("MiningPickAxeOnGround1", -0.6, lm - half - 3.6)
+        put("MiningPickAxeOnGround2", -0.6, lm - half - 3.6)
         for s in (self.sq(-1, lm), self.sq(-2, lm), self.sq(-1, lm + half + 2), self.sq(-1, lm - half - 2)):
             self.L.taken.add(s)
         spots = [(o, l) for o in range(-self.gap + 1, 1) for l in range(self.l0 + 1, self.l1)

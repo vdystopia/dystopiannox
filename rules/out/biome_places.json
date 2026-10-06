@@ -456,113 +456,113 @@
  },
  "lava": {
   "context_cells": {
-   "open": 61758,
-   "wall": 54635,
-   "liquid": 33345
+   "open": 48726,
+   "wall": 40687,
+   "liquid": 27962
   },
   "types": {
    "MineCrystalDown01": {
     "open": {
      "n": 5,
-     "per100": 0.032
+     "per100": 0.041
     },
     "wall": {
      "n": 7,
-     "per100": 0.051
+     "per100": 0.069
     }
    },
    "MineCrystal01": {
     "wall": {
      "n": 29,
-     "per100": 0.212
+     "per100": 0.285
     },
     "open": {
      "n": 6,
-     "per100": 0.039
+     "per100": 0.049
     }
    },
    "MineCrystal04": {
     "wall": {
      "n": 13,
-     "per100": 0.095
+     "per100": 0.128
     },
     "open": {
      "n": 5,
-     "per100": 0.032
+     "per100": 0.041
     }
    },
    "MineCrystal02": {
     "wall": {
      "n": 30,
-     "per100": 0.22
+     "per100": 0.295
     },
     "open": {
      "n": 8,
-     "per100": 0.052
+     "per100": 0.066
     }
    },
    "MineCrystal03": {
     "wall": {
      "n": 27,
-     "per100": 0.198
+     "per100": 0.265
     },
     "open": {
      "n": 4,
-     "per100": 0.026
+     "per100": 0.033
     }
    },
    "MineCrystalDown03": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     },
     "wall": {
      "n": 2,
-     "per100": 0.015
+     "per100": 0.02
     }
    },
    "MineCrystalDown05": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     },
     "wall": {
      "n": 4,
-     "per100": 0.029
+     "per100": 0.039
     }
    },
    "MineCrystalDown04": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     },
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     }
    },
    "MineCrystalUp02": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     },
     "wall": {
      "n": 2,
-     "per100": 0.015
+     "per100": 0.02
     }
    },
    "ColorLight": {
     "open": {
-     "n": 964,
-     "per100": 6.244
+     "n": 842,
+     "per100": 6.912
     },
     "wall": {
-     "n": 528,
-     "per100": 3.866
+     "n": 493,
+     "per100": 4.847
     },
     "liquid": {
-     "n": 747,
-     "per100": 8.961
+     "n": 695,
+     "per100": 9.942
     },
     "void": {
      "n": 51,
@@ -571,20 +571,20 @@
    },
    "DunMirTorchEast": {
     "wall": {
-     "n": 35,
-     "per100": 0.256
+     "n": 31,
+     "per100": 0.305
     }
    },
    "DunMirTorchNorth": {
     "wall": {
-     "n": 41,
-     "per100": 0.3
+     "n": 28,
+     "per100": 0.275
     }
    },
    "DunMirTorchWest": {
     "wall": {
      "n": 7,
-     "per100": 0.051
+     "per100": 0.069
     },
     "void": {
      "n": 12,
@@ -593,76 +593,72 @@
    },
    "DunMirTorchSouth": {
     "wall": {
-     "n": 3,
-     "per100": 0.022
+     "n": 1,
+     "per100": 0.01
     }
    },
    "Mushroom2": {
     "wall": {
      "n": 22,
-     "per100": 0.161
+     "per100": 0.216
     },
     "open": {
      "n": 39,
-     "per100": 0.253
+     "per100": 0.32
     }
    },
    "Mushroom5": {
     "open": {
-     "n": 39,
-     "per100": 0.253
+     "n": 35,
+     "per100": 0.287
     },
     "wall": {
-     "n": 15,
-     "per100": 0.11
+     "n": 6,
+     "per100": 0.059
     },
     "liquid": {
      "n": 1,
-     "per100": 0.012
-    },
-    "void": {
-     "n": 1,
-     "per100": 400.0
+     "per100": 0.014
     }
    },
    "Mushroom4": {
     "open": {
-     "n": 60,
-     "per100": 0.389
+     "n": 58,
+     "per100": 0.476
     },
     "wall": {
-     "n": 32,
-     "per100": 0.234
+     "n": 25,
+     "per100": 0.246
     }
    },
    "Mushroom3": {
     "wall": {
-     "n": 46,
-     "per100": 0.337
+     "n": 35,
+     "per100": 0.344
     },
     "open": {
-     "n": 54,
-     "per100": 0.35
+     "n": 49,
+     "per100": 0.402
     }
    },
    "MineCrystal05": {
     "wall": {
      "n": 6,
-     "per100": 0.044
+     "per100": 0.059
     },
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "CaveRocksLarge": {
     "wall": {
      "n": 34,
-     "per100": 0.249
+     "per100": 0.334
     },
     "open": {
      "n": 21,
-     "per100": 0.136
+     "per100": 0.172
     },
     "void": {
      "n": 1,
@@ -671,66 +667,66 @@
    },
    "CaveRockPillarTall1": {
     "wall": {
-     "n": 37,
-     "per100": 0.271
+     "n": 34,
+     "per100": 0.334
     },
     "open": {
      "n": 28,
-     "per100": 0.181
+     "per100": 0.23
     },
     "liquid": {
      "n": 1,
-     "per100": 0.012
+     "per100": 0.014
     }
    },
    "CaveBoulders": {
     "wall": {
      "n": 35,
-     "per100": 0.256
+     "per100": 0.344
     },
     "open": {
      "n": 11,
-     "per100": 0.071
+     "per100": 0.09
     }
    },
    "CaveRockPillarShort1": {
     "open": {
-     "n": 29,
-     "per100": 0.188
+     "n": 28,
+     "per100": 0.23
     },
     "wall": {
-     "n": 18,
-     "per100": 0.132
+     "n": 16,
+     "per100": 0.157
     }
    },
    "CaveRockPillarShort2": {
     "open": {
      "n": 23,
-     "per100": 0.149
+     "per100": 0.189
     },
     "wall": {
-     "n": 32,
-     "per100": 0.234
+     "n": 28,
+     "per100": 0.275
     }
    },
    "CaveRockPillarTall2": {
     "open": {
-     "n": 23,
-     "per100": 0.149
+     "n": 22,
+     "per100": 0.181
     },
     "wall": {
-     "n": 14,
-     "per100": 0.102
+     "n": 11,
+     "per100": 0.108
     }
    },
    "GrassTuft3": {
     "open": {
-     "n": 98,
-     "per100": 0.635
+     "n": 95,
+     "per100": 0.78
     },
     "wall": {
-     "n": 59,
-     "per100": 0.432
+     "n": 56,
+     "per100": 0.551
     },
     "void": {
      "n": 2,
@@ -739,268 +735,268 @@
    },
    "AmbLavaBubbles": {
     "liquid": {
-     "n": 138,
-     "per100": 1.655
+     "n": 115,
+     "per100": 1.645
     },
     "open": {
-     "n": 28,
-     "per100": 0.181
+     "n": 24,
+     "per100": 0.197
     },
     "wall": {
-     "n": 13,
-     "per100": 0.095
+     "n": 12,
+     "per100": 0.118
     }
    },
    "DunMirScaleTorch1": {
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     },
     "open": {
      "n": 5,
-     "per100": 0.032
+     "per100": 0.041
     }
    },
    "DunMirFlameBasinLit": {
     "wall": {
      "n": 18,
-     "per100": 0.132
+     "per100": 0.177
     },
     "open": {
      "n": 43,
-     "per100": 0.279
+     "per100": 0.353
     }
    },
    "LavaBubble9": {
     "liquid": {
-     "n": 79,
-     "per100": 0.948
+     "n": 72,
+     "per100": 1.03
     },
     "wall": {
-     "n": 4,
-     "per100": 0.029
+     "n": 2,
+     "per100": 0.02
     },
     "open": {
-     "n": 10,
-     "per100": 0.065
+     "n": 9,
+     "per100": 0.074
     }
    },
    "LavaBubble7": {
     "liquid": {
-     "n": 51,
-     "per100": 0.612
+     "n": 37,
+     "per100": 0.529
     },
     "open": {
-     "n": 7,
-     "per100": 0.045
+     "n": 4,
+     "per100": 0.033
     }
    },
    "LavaBubble8": {
     "liquid": {
-     "n": 59,
-     "per100": 0.708
+     "n": 52,
+     "per100": 0.744
     },
     "open": {
-     "n": 15,
-     "per100": 0.097
+     "n": 10,
+     "per100": 0.082
     },
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     }
    },
    "LavaBubble4": {
     "liquid": {
-     "n": 66,
-     "per100": 0.792
+     "n": 58,
+     "per100": 0.83
     },
     "open": {
-     "n": 13,
-     "per100": 0.084
+     "n": 10,
+     "per100": 0.082
     }
    },
    "LavaBubble5": {
     "liquid": {
-     "n": 67,
-     "per100": 0.804
+     "n": 49,
+     "per100": 0.701
     },
     "open": {
-     "n": 10,
-     "per100": 0.065
+     "n": 9,
+     "per100": 0.074
     },
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     }
    },
    "LavaBubble6": {
     "wall": {
-     "n": 3,
-     "per100": 0.022
+     "n": 2,
+     "per100": 0.02
     },
     "liquid": {
-     "n": 69,
-     "per100": 0.828
+     "n": 54,
+     "per100": 0.772
     },
     "open": {
-     "n": 23,
-     "per100": 0.149
+     "n": 17,
+     "per100": 0.14
     }
    },
    "SmallFlame": {
     "liquid": {
      "n": 935,
-     "per100": 11.216
+     "per100": 13.375
     },
     "open": {
      "n": 307,
-     "per100": 1.988
+     "per100": 2.52
     },
     "wall": {
      "n": 89,
-     "per100": 0.652
+     "per100": 0.875
     }
    },
    "MediumFlame": {
     "liquid": {
-     "n": 356,
-     "per100": 4.271
+     "n": 354,
+     "per100": 5.064
     },
     "open": {
-     "n": 111,
-     "per100": 0.719
+     "n": 108,
+     "per100": 0.887
     },
     "wall": {
      "n": 29,
-     "per100": 0.212
+     "per100": 0.285
     }
    },
    "Flame": {
     "liquid": {
      "n": 181,
-     "per100": 2.171
+     "per100": 2.589
     },
     "open": {
      "n": 50,
-     "per100": 0.324
+     "per100": 0.41
     },
     "wall": {
      "n": 11,
-     "per100": 0.081
+     "per100": 0.108
     }
    },
    "LavaHardened6": {
     "liquid": {
-     "n": 31,
-     "per100": 0.372
+     "n": 27,
+     "per100": 0.386
     }
    },
    "LavaHardened5": {
     "liquid": {
-     "n": 42,
-     "per100": 0.504
+     "n": 38,
+     "per100": 0.544
     },
     "open": {
      "n": 7,
-     "per100": 0.045
+     "per100": 0.057
     }
    },
    "LavaHardened8": {
     "liquid": {
-     "n": 15,
-     "per100": 0.18
+     "n": 13,
+     "per100": 0.186
     },
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "LavaHardened7": {
     "liquid": {
-     "n": 36,
-     "per100": 0.432
+     "n": 34,
+     "per100": 0.486
     },
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "LavaHardened3": {
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     },
     "liquid": {
-     "n": 24,
-     "per100": 0.288
+     "n": 18,
+     "per100": 0.257
     }
    },
    "LavaHardened2": {
     "liquid": {
-     "n": 33,
-     "per100": 0.396
+     "n": 26,
+     "per100": 0.372
     },
     "open": {
      "n": 3,
-     "per100": 0.019
+     "per100": 0.025
     }
    },
    "LavaHardened10": {
     "liquid": {
-     "n": 24,
-     "per100": 0.288
+     "n": 18,
+     "per100": 0.257
     }
    },
    "LavaHardened4": {
     "liquid": {
-     "n": 28,
-     "per100": 0.336
+     "n": 24,
+     "per100": 0.343
     }
    },
    "LavaHardened9": {
     "liquid": {
-     "n": 22,
-     "per100": 0.264
+     "n": 18,
+     "per100": 0.257
     }
    },
    "LavaHardened1": {
     "liquid": {
-     "n": 28,
-     "per100": 0.336
+     "n": 21,
+     "per100": 0.3
     }
    },
    "CaveRocksHuge": {
     "open": {
      "n": 20,
-     "per100": 0.13
+     "per100": 0.164
     },
     "wall": {
-     "n": 68,
-     "per100": 0.498
+     "n": 66,
+     "per100": 0.649
     }
    },
    "CaveRocksPebbles": {
     "open": {
      "n": 66,
-     "per100": 0.427
+     "per100": 0.542
     },
     "wall": {
      "n": 85,
-     "per100": 0.622
+     "per100": 0.836
     },
     "liquid": {
      "n": 1,
-     "per100": 0.012
+     "per100": 0.014
     }
    },
    "CaveRocksMedium": {
     "open": {
      "n": 85,
-     "per100": 0.551
+     "per100": 0.698
     },
     "wall": {
      "n": 46,
-     "per100": 0.337
+     "per100": 0.452
     },
     "void": {
      "n": 1,
@@ -1010,43 +1006,43 @@
    "ColorLightMovable": {
     "open": {
      "n": 3,
-     "per100": 0.019
+     "per100": 0.025
     }
    },
    "Torch": {
     "wall": {
-     "n": 70,
-     "per100": 0.512
+     "n": 62,
+     "per100": 0.61
     }
    },
    "SpiderWebEast": {
     "wall": {
      "n": 35,
-     "per100": 0.256
+     "per100": 0.344
     },
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "SpiderWebNorthEast": {
     "wall": {
      "n": 35,
-     "per100": 0.256
+     "per100": 0.344
     },
     "liquid": {
      "n": 1,
-     "per100": 0.012
+     "per100": 0.014
     }
    },
    "CaveRocksSmall": {
     "wall": {
      "n": 51,
-     "per100": 0.373
+     "per100": 0.501
     },
     "open": {
      "n": 39,
-     "per100": 0.253
+     "per100": 0.32
     },
     "void": {
      "n": 1,
@@ -1056,223 +1052,33 @@
    "Mushroom1": {
     "wall": {
      "n": 39,
-     "per100": 0.286
+     "per100": 0.383
     },
     "open": {
      "n": 33,
-     "per100": 0.214
+     "per100": 0.271
     }
    },
    "DunMirTorch1": {
     "wall": {
      "n": 15,
-     "per100": 0.11
+     "per100": 0.147
     }
    },
    "DunMirTorch2": {
     "wall": {
      "n": 8,
-     "per100": 0.059
-    }
-   },
-   "FlameImmobile": {
-    "liquid": {
-     "n": 53,
-     "per100": 0.636
-    },
-    "wall": {
-     "n": 4,
-     "per100": 0.029
-    },
-    "open": {
-     "n": 5,
-     "per100": 0.032
-    }
-   },
-   "CaveRocksSmallImmobile": {
-    "open": {
-     "n": 8,
-     "per100": 0.052
-    },
-    "wall": {
-     "n": 4,
-     "per100": 0.029
-    }
-   },
-   "CaveRocksPebblesImmobile": {
-    "open": {
-     "n": 22,
-     "per100": 0.142
-    },
-    "wall": {
-     "n": 7,
-     "per100": 0.051
-    }
-   },
-   "CaveRocksMediumImmobile": {
-    "wall": {
-     "n": 2,
-     "per100": 0.015
-    },
-    "open": {
-     "n": 4,
-     "per100": 0.026
-    }
-   },
-   "CaveRocksLargeImmobile": {
-    "wall": {
-     "n": 2,
-     "per100": 0.015
-    },
-    "open": {
-     "n": 1,
-     "per100": 0.006
-    }
-   },
-   "CaveRocksHugeImmobile": {
-    "open": {
-     "n": 1,
-     "per100": 0.006
-    }
-   },
-   "CaveRocksTinyImmobile": {
-    "open": {
-     "n": 14,
-     "per100": 0.091
-    },
-    "wall": {
-     "n": 7,
-     "per100": 0.051
+     "per100": 0.079
     }
    },
    "Spike": {
-    "liquid": {
-     "n": 6,
-     "per100": 0.072
-    },
-    "wall": {
-     "n": 112,
-     "per100": 0.82
-    },
-    "void": {
-     "n": 10,
-     "per100": 4000.0
-    },
     "open": {
-     "n": 71,
-     "per100": 0.46
-    }
-   },
-   "SmallFlameImmobile": {
-    "open": {
-     "n": 38,
-     "per100": 0.246
+     "n": 32,
+     "per100": 0.263
     },
-    "wall": {
-     "n": 25,
-     "per100": 0.183
-    },
-    "liquid": {
-     "n": 126,
-     "per100": 1.511
-    }
-   },
-   "MediumFlameImmobile": {
-    "wall": {
-     "n": 7,
-     "per100": 0.051
-    },
-    "open": {
-     "n": 14,
-     "per100": 0.091
-    },
-    "liquid": {
-     "n": 69,
-     "per100": 0.828
-    }
-   },
-   "FireGrate": {
-    "open": {
-     "n": 91,
-     "per100": 0.589
-    },
-    "wall": {
-     "n": 87,
-     "per100": 0.637
-    }
-   },
-   "SpikeBlock": {
-    "wall": {
-     "n": 83,
-     "per100": 0.608
-    },
-    "open": {
-     "n": 11,
-     "per100": 0.071
-    },
-    "liquid": {
-     "n": 4,
-     "per100": 0.048
-    }
-   },
-   "ObeliskPrimitive": {
-    "wall": {
-     "n": 181,
-     "per100": 1.325
-    },
-    "liquid": {
-     "n": 5,
-     "per100": 0.06
-    },
-    "open": {
-     "n": 18,
-     "per100": 0.117
-    }
-   },
-   "BlackPowderBarrel": {
-    "wall": {
-     "n": 20,
-     "per100": 0.146
-    },
-    "open": {
-     "n": 13,
-     "per100": 0.084
-    }
-   },
-   "LargeFlameImmobile": {
-    "liquid": {
-     "n": 1,
-     "per100": 0.012
-    }
-   },
-   "RotatingSpikes": {
     "wall": {
      "n": 8,
-     "per100": 0.059
-    },
-    "void": {
-     "n": 4,
-     "per100": 1600.0
-    },
-    "open": {
-     "n": 22,
-     "per100": 0.142
-    }
-   },
-   "Skull2": {
-    "void": {
-     "n": 1,
-     "per100": 400.0
-    },
-    "wall": {
-     "n": 1,
-     "per100": 0.007
-    }
-   },
-   "SpikeBlockImmobile": {
-    "wall": {
-     "n": 4,
-     "per100": 0.029
+     "per100": 0.079
     }
    },
    "TalkingSkull": {
@@ -1284,113 +1090,147 @@
    "OgreStraw1": {
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     },
     "open": {
      "n": 6,
-     "per100": 0.039
+     "per100": 0.049
     }
    },
    "OgreStraw5": {
     "open": {
      "n": 6,
-     "per100": 0.039
+     "per100": 0.049
     }
    },
    "LargeFlame": {
     "liquid": {
      "n": 71,
-     "per100": 0.852
+     "per100": 1.016
     },
     "open": {
      "n": 23,
-     "per100": 0.149
+     "per100": 0.189
     },
     "wall": {
      "n": 4,
-     "per100": 0.029
+     "per100": 0.039
     }
    },
    "LavaBubble1": {
     "liquid": {
      "n": 3,
-     "per100": 0.036
+     "per100": 0.043
     },
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     }
    },
    "OgreStraw3": {
     "open": {
      "n": 3,
-     "per100": 0.019
+     "per100": 0.025
     }
    },
    "OgreStraw2": {
     "open": {
      "n": 3,
-     "per100": 0.019
+     "per100": 0.025
     },
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     }
    },
    "OgreStraw4": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
+    }
+   },
+   "SpikeBlock": {
+    "wall": {
+     "n": 43,
+     "per100": 0.423
+    },
+    "liquid": {
+     "n": 4,
+     "per100": 0.057
+    },
+    "open": {
+     "n": 7,
+     "per100": 0.057
+    }
+   },
+   "RotatingSpikes": {
+    "wall": {
+     "n": 6,
+     "per100": 0.059
+    },
+    "open": {
+     "n": 20,
+     "per100": 0.164
     }
    },
    "Skull4": {
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
+    }
+   },
+   "FireGrate": {
+    "wall": {
+     "n": 69,
+     "per100": 0.678
+    },
+    "open": {
+     "n": 62,
+     "per100": 0.509
     }
    },
    "PitCrumblingFloor": {
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     },
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     }
    },
    "SpiderWebNorth": {
     "wall": {
      "n": 47,
-     "per100": 0.344
+     "per100": 0.462
     },
     "liquid": {
      "n": 3,
-     "per100": 0.036
+     "per100": 0.043
     }
    },
    "Brick": {
     "open": {
      "n": 30,
-     "per100": 0.194
+     "per100": 0.246
     },
     "wall": {
      "n": 112,
-     "per100": 0.82
+     "per100": 1.101
     },
     "liquid": {
      "n": 4,
-     "per100": 0.048
+     "per100": 0.057
     }
    },
    "TorchPole": {
     "wall": {
      "n": 32,
-     "per100": 0.234
+     "per100": 0.315
     },
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     },
     "void": {
      "n": 1,
@@ -1400,83 +1240,113 @@
    "CaveRocksTiny": {
     "wall": {
      "n": 12,
-     "per100": 0.088
+     "per100": 0.118
     },
     "open": {
      "n": 13,
-     "per100": 0.084
+     "per100": 0.107
     }
    },
    "CorpseSkullS": {
     "wall": {
      "n": 2,
-     "per100": 0.015
+     "per100": 0.02
     },
     "liquid": {
      "n": 1,
-     "per100": 0.012
+     "per100": 0.014
     },
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
+    }
+   },
+   "SmallFlameImmobile": {
+    "open": {
+     "n": 14,
+     "per100": 0.115
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.014
+    }
+   },
+   "MediumFlameImmobile": {
+    "liquid": {
+     "n": 1,
+     "per100": 0.014
+    },
+    "open": {
+     "n": 3,
+     "per100": 0.025
+    }
+   },
+   "FlameImmobile": {
+    "open": {
+     "n": 2,
+     "per100": 0.016
+    },
+    "liquid": {
+     "n": 1,
+     "per100": 0.014
     }
    },
    "SpikeBrazierImmobile": {
     "wall": {
      "n": 14,
-     "per100": 0.102
+     "per100": 0.138
     },
     "liquid": {
      "n": 2,
-     "per100": 0.024
+     "per100": 0.029
     }
    },
    "LOTDManaObelisk": {
     "liquid": {
      "n": 2,
-     "per100": 0.024
+     "per100": 0.029
     },
     "wall": {
      "n": 5,
-     "per100": 0.037
+     "per100": 0.049
     }
    },
    "SmallStalagmite": {
     "wall": {
      "n": 4,
-     "per100": 0.029
+     "per100": 0.039
     },
     "open": {
      "n": 28,
-     "per100": 0.181
+     "per100": 0.23
     },
     "liquid": {
      "n": 5,
-     "per100": 0.06
+     "per100": 0.072
     }
    },
    "LavaFountain3": {
     "open": {
      "n": 13,
-     "per100": 0.084
+     "per100": 0.107
     },
     "liquid": {
      "n": 45,
-     "per100": 0.54
+     "per100": 0.644
     },
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     }
    },
    "Skull": {
     "wall": {
      "n": 61,
-     "per100": 0.447
+     "per100": 0.6
     },
     "open": {
      "n": 113,
-     "per100": 0.732
+     "per100": 0.928
     },
     "void": {
      "n": 3,
@@ -1486,11 +1356,11 @@
    "LegBone": {
     "wall": {
      "n": 108,
-     "per100": 0.791
+     "per100": 1.062
     },
     "open": {
      "n": 189,
-     "per100": 1.224
+     "per100": 1.552
     },
     "void": {
      "n": 1,
@@ -1500,21 +1370,21 @@
    "LargeStalagmite": {
     "open": {
      "n": 20,
-     "per100": 0.13
+     "per100": 0.164
     },
     "liquid": {
      "n": 9,
-     "per100": 0.108
+     "per100": 0.129
     },
     "wall": {
      "n": 5,
-     "per100": 0.037
+     "per100": 0.049
     }
    },
    "PeriodicSpike": {
     "open": {
      "n": 44,
-     "per100": 0.285
+     "per100": 0.361
     }
    },
    "Rock4": {
@@ -1524,193 +1394,213 @@
     },
     "wall": {
      "n": 4,
-     "per100": 0.029
+     "per100": 0.039
     },
     "open": {
      "n": 27,
-     "per100": 0.175
+     "per100": 0.222
     }
    },
    "ArmBone": {
     "open": {
      "n": 80,
-     "per100": 0.518
+     "per100": 0.657
     },
     "wall": {
      "n": 42,
-     "per100": 0.307
+     "per100": 0.413
     }
    },
    "Rock3": {
     "open": {
      "n": 21,
-     "per100": 0.136
+     "per100": 0.172
     },
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     }
    },
    "Rock2": {
     "wall": {
      "n": 6,
-     "per100": 0.044
+     "per100": 0.059
     },
     "open": {
      "n": 9,
-     "per100": 0.058
+     "per100": 0.074
     }
    },
    "MineCrystalUp04": {
     "wall": {
      "n": 2,
-     "per100": 0.015
+     "per100": 0.02
     }
    },
    "DunMirScaleTorch2": {
     "liquid": {
      "n": 2,
-     "per100": 0.024
+     "per100": 0.029
     },
     "open": {
      "n": 3,
-     "per100": 0.019
+     "per100": 0.025
     },
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     }
    },
    "MineCrystalDown02": {
     "wall": {
      "n": 1,
-     "per100": 0.007
+     "per100": 0.01
     }
    },
    "SmallBlueFlame": {
     "wall": {
      "n": 24,
-     "per100": 0.176
+     "per100": 0.236
     }
    },
    "BlueFlame": {
     "wall": {
      "n": 8,
-     "per100": 0.059
+     "per100": 0.079
     }
    },
    "CorpseSkullNW": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "Rock8": {
     "wall": {
      "n": 15,
-     "per100": 0.11
+     "per100": 0.147
     },
     "open": {
      "n": 76,
-     "per100": 0.492
+     "per100": 0.624
     }
    },
    "Rock7": {
     "wall": {
      "n": 8,
-     "per100": 0.059
+     "per100": 0.079
     },
     "open": {
      "n": 28,
-     "per100": 0.181
+     "per100": 0.23
     }
    },
    "Rock5": {
     "open": {
      "n": 16,
-     "per100": 0.104
+     "per100": 0.131
     },
     "wall": {
      "n": 10,
-     "per100": 0.073
+     "per100": 0.098
     }
    },
    "Rock6": {
     "open": {
      "n": 40,
-     "per100": 0.259
+     "per100": 0.328
     },
     "wall": {
      "n": 5,
-     "per100": 0.037
+     "per100": 0.049
     }
    },
    "LavaFountain2": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "LavaFountain": {
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     }
    },
    "BlackPowder": {
     "wall": {
      "n": 30,
-     "per100": 0.22
+     "per100": 0.295
     },
     "open": {
      "n": 164,
-     "per100": 1.062
+     "per100": 1.346
+    }
+   },
+   "ObeliskPrimitive": {
+    "open": {
+     "n": 7,
+     "per100": 0.057
+    },
+    "wall": {
+     "n": 3,
+     "per100": 0.029
     }
    },
    "Rock1": {
     "open": {
      "n": 7,
-     "per100": 0.045
+     "per100": 0.057
     }
    },
    "Obelisk": {
     "wall": {
      "n": 4,
-     "per100": 0.029
+     "per100": 0.039
     },
     "open": {
      "n": 16,
-     "per100": 0.104
+     "per100": 0.131
+    }
+   },
+   "BlackPowderBarrel": {
+    "wall": {
+     "n": 19,
+     "per100": 0.187
+    },
+    "open": {
+     "n": 13,
+     "per100": 0.107
     }
    },
    "TorchUnlit2": {
     "wall": {
      "n": 3,
-     "per100": 0.022
+     "per100": 0.029
     }
    },
    "CorpseSkullW": {
     "open": {
      "n": 1,
-     "per100": 0.006
+     "per100": 0.008
     }
    },
    "TorchSpent": {
     "open": {
      "n": 2,
-     "per100": 0.013
+     "per100": 0.016
     }
    },
    "SpikedDoor": {
     "wall": {
      "n": 2,
-     "per100": 0.015
+     "per100": 0.02
     }
    },
    "TorchUnlit1": {
     "liquid": {
      "n": 1,
-     "per100": 0.012
+     "per100": 0.014
     }
    }
   }

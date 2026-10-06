@@ -3,7 +3,7 @@
 Schema of `rules/out/water.json`:
 - `water_materials{material: tiles_all, sp_weighted, maps, categories}`
 - `shore_structure{kind: distance_from_land_weighted percentiles, mean}`: kind = deep / shallow / plain / swamp_*; distance 1 = water tile touching land, counted in tile steps.
-- `bodies{}`: single-player water bodies; size, stream width (tiles and cells), lake depth, composition.
+- `bodies{}`: campaign water bodies; size, stream width (tiles and cells), lake depth, composition.
 - `walls_on_water{}`: walls whose cell is covered by water tiles; invisible vs visible; distance from land; shore fencing share.
 - `crossings{bridge|ford: count_sp, length_tiles, width_tiles, materials, end_materials, edges_on_crossing, water_beside, examples}`
 - `kits{kit: chains, maps, units_per_chain, sequences, step_offsets_px, front_back_offset_px, floor_under, walls_near}` and `kit_examples[]`.
@@ -20,46 +20,46 @@ Schema of `rules/out/water.json`:
 - WaterShallowNoTeleport: 2133 tiles in 4 maps, categories {'quest': 1499, 'multiplayer': 634}
 - WaterNoTeleport: 207 tiles in 1 maps, categories {'multiplayer': 207}
 
-## Shore structure (single-player, distance from land in tile steps)
+## Shore structure (campaign maps, distance from land in tile steps)
 
-- plain: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 2} (mean 1.41)
-- shallow: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 3} (mean 1.59)
-- deep: {'p10': 1, 'p25': 2, 'p50': 3, 'p75': 4, 'p90': 7} (mean 3.41)
-- swamp_shallow: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 3} (mean 1.55)
+- plain: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 3} (mean 1.46)
+- shallow: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 3} (mean 1.66)
+- deep: {'p10': 1, 'p25': 2, 'p50': 3, 'p75': 5, 'p90': 8} (mean 3.83)
+- swamp_shallow: {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 2} (mean 1.47)
 - swamp_deep: {'p10': 1, 'p25': 2, 'p50': 3, 'p75': 4, 'p90': 5} (mean 2.99)
 
 ## Water bodies
 
-- 631 single-player bodies: 30 streams, 601 pools/lakes. Size (tiles): {'p10': 5, 'p25': 7, 'p50': 16, 'p75': 45, 'p90': 168}.
-- Stream width: typical {'p10': 1.0, 'p25': 1.0, 'p50': 1, 'p75': 3, 'p90': 3} tiles = {'p10': 1.4, 'p25': 1.4, 'p50': 1.4, 'p75': 4.2, 'p90': 4.2} cells; widest point {'p10': 3, 'p25': 3, 'p50': 5, 'p75': 5, 'p90': 9} tiles; size {'p10': 88, 'p25': 162, 'p50': 169, 'p75': 319, 'p90': 641} tiles.
+- 534 campaign bodies: 17 streams, 517 pools/lakes. Size (tiles): {'p10': 5, 'p25': 7, 'p50': 17, 'p75': 45, 'p90': 167}.
+- Stream width: typical {'p10': 1.0, 'p25': 1.0, 'p50': 1.0, 'p75': 1.0, 'p90': 3.0} tiles = {'p10': 1.4, 'p25': 1.4, 'p50': 1.4, 'p75': 1.4, 'p90': 4.2} cells; widest point {'p10': 3, 'p25': 3, 'p50': 5, 'p75': 5, 'p90': 9} tiles; size {'p10': 88, 'p25': 91, 'p50': 162, 'p75': 200, 'p90': 1507} tiles.
 - Lake depth (max distance from shore, tiles): {'p10': 1, 'p25': 1, 'p50': 2, 'p75': 3, 'p90': 4}.
 
 ## Walls on water
 
 - Counts (all maps): {'visible:water_by_void': 4618, 'invisible:on_water': 3801, 'invisible:shore_edge': 2860, 'visible:on_water': 2536, 'visible:shore_edge': 684, 'invisible:water_by_void': 68}.
-- Distance of wall from land: {'visible': {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 1, 'p90': 1}, 'invisible': {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 1, 'p90': 2}}.
-- Wall materials on water (weighted): {'InvisibleWallSet': 3250.8, 'RootLight': 1069.0, 'CaveWall2': 712.0, 'DecidiousWallGreen': 444.5, 'Shard': 419.0, 'Coni-Wall1': 210.0, 'SewerWall': 188.7, 'ManaMineWall': 177.0}.
-- Share of shore tiles fenced by a wall: 68%.
+- Distance of wall from land: {'visible': {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 1, 'p90': 1}, 'invisible': {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 2}}.
+- Wall materials on water (weighted): {'InvisibleWallSet': 1715.8, 'RootLight': 892.0, 'CaveWall2': 460.0, 'Shard': 397.0, 'DecidiousWallGreen': 242.5, 'Coni-Wall1': 202.0, 'SewerWall': 188.7, 'Rock': 139.0}.
+- Share of shore tiles fenced by a wall: 58%.
 
 ## Crossings (floor)
 
-### bridge (131 in single-player maps)
+### bridge (106 in campaign maps)
 
-- Length {'p10': 1, 'p25': 3, 'p50': 4, 'p75': 6, 'p90': 10} tiles, width {'p10': 2, 'p25': 2, 'p50': 2, 'p75': 4, 'p90': 5} tiles.
-- Materials: {'GreenBrick': 0.216, 'WoodDark': 0.184, 'GalavaBrick3': 0.183, 'WoodDark2': 0.157, 'SwampGrass': 0.076, 'WoodGray': 0.047, 'DunMirBrick1': 0.032, 'DirtDark2': 0.021}.
-- Land at the ends: {'GreenBrick': 0.214, 'GalavaBrick3': 0.211, 'SwampGrass': 0.1, 'DunMirBrick1': 0.074, 'DirtDark2': 0.058, 'GalavaBrick2': 0.053}.
-- Edges on the crossing (overlay|type): {'Water|DirtRidge': 0.358, 'WaterShallow|BrickEdgeBrown': 0.276, 'WaterSwampShallowNoTeleport|SwampEdge': 0.074, 'DirtDark|BlendEdge': 0.058, 'WaterDeep|BlendEdge': 0.048, 'DirtDark2|BlendEdge': 0.044}.
-- Water beside: {'WaterShallow': 0.291, 'Water': 0.254, 'WaterSwampShallowNoTeleport': 0.235, 'WaterDeep': 0.071}.
-- Examples: G_Swamp 22x2 ['WoodDark', 'SwampGrass']; G_Swamp 20x2 ['WoodDark2', 'SwampGrass']; Con08e 13x2 ['WoodDark2', 'DirtDark2']; War08e 13x2 ['WoodDark2', 'DirtDark2']; Wiz08e 13x2 ['WoodDark2', 'DirtDark2']; G_ForesD 16x2 ['WoodDark']
+- Length {'p10': 1, 'p25': 2, 'p50': 4, 'p75': 5, 'p90': 6} tiles, width {'p10': 2, 'p25': 2, 'p50': 3, 'p75': 4, 'p90': 5} tiles.
+- Materials: {'GreenBrick': 0.326, 'GalavaBrick3': 0.276, 'WoodDark2': 0.08, 'WoodDark': 0.08, 'WoodGray': 0.053, 'DunMirBrick1': 0.048, 'DirtDark2': 0.024, 'WoodSlatFloor2': 0.023}.
+- Land at the ends: {'GreenBrick': 0.272, 'GalavaBrick3': 0.268, 'DunMirBrick1': 0.094, 'GalavaBrick2': 0.067, 'DirtDark2': 0.064, 'WoodDark': 0.044}.
+- Edges on the crossing (overlay|type): {'Water|DirtRidge': 0.418, 'WaterShallow|BrickEdgeBrown': 0.341, 'WaterDeep|BlendEdge': 0.059, 'DirtDark2|BlendEdge': 0.032, 'Water|BrickEdgeBrown': 0.031, 'WaterShallow|BlendEdge': 0.031}.
+- Water beside: {'WaterShallow': 0.439, 'Water': 0.363, 'WaterDeep': 0.107, 'WaterSwampShallow': 0.073}.
+- Examples: Con08e 13x2 ['WoodDark2', 'DirtDark2']; War08e 13x2 ['WoodDark2', 'DirtDark2']; Wiz08e 13x2 ['WoodDark2', 'DirtDark2']; Con06a 5x5 ['GalavaBrick3']; Con06a 5x5 ['GalavaBrick3']; Con06a 5x5 ['GalavaBrick3']
 
-### ford (696 in single-player maps)
+### ford (512 in campaign maps)
 
-- Length {'p10': 1, 'p25': 1, 'p50': 1, 'p75': 2, 'p90': 4} tiles, width {'p10': 2, 'p25': 3, 'p50': 4, 'p75': 5, 'p90': 6} tiles.
-- Materials: {'SwampGrass': 0.504, 'CaveHardBrown': 0.11, 'GrassNorm': 0.098, 'DirtDark2': 0.085, 'DirtCrackedLight': 0.065, 'DirtBlue': 0.024, 'WoodDark': 0.022, 'WoodDark2': 0.014}.
-- Land at the ends: {'SwampGrass': 0.42, 'CaveHardBrown': 0.155, 'DirtDark2': 0.104, 'GrassNorm': 0.089, 'DirtBlue': 0.04, 'DirtDark': 0.039}.
-- Edges on the crossing (overlay|type): {'WaterSwampShallow|SwampEdge': 0.294, 'WaterSwampShallowNoTeleport|SwampEdge': 0.162, 'Water|DirtRidge': 0.159, 'WaterShallowNoTeleport|ShallowWaterAndGrass': 0.084, 'DirtDark|BlendEdge': 0.059, 'WaterShallow|GrassEdge': 0.028}.
-- Water beside: {'WaterSwampShallow': 0.343, 'WaterSwampShallowNoTeleport': 0.218, 'Water': 0.215, 'WaterShallowNoTeleport': 0.104}.
-- Examples: Con09a 14x3 ['SwampGrass']; War09a 14x3 ['SwampGrass']; Wiz09a 14x3 ['SwampGrass']; G_Swamp 12x5 ['SwampGrass', 'DirtDark']; Con08e 13x3 ['DirtDark2', 'GreenBrick']; War08e 13x3 ['DirtDark2', 'GreenBrick']
+- Length {'p10': 1, 'p25': 1, 'p50': 2, 'p75': 2, 'p90': 4} tiles, width {'p10': 2, 'p25': 2, 'p50': 3, 'p75': 5, 'p90': 6} tiles.
+- Materials: {'SwampGrass': 0.572, 'DirtDark2': 0.149, 'CaveHardBrown': 0.101, 'DirtBlue': 0.047, 'DirtCrackedLight': 0.031, 'GrassSparse2': 0.022, 'GreenBrick': 0.021, 'ManaMineDirt': 0.019}.
+- Land at the ends: {'SwampGrass': 0.413, 'DirtDark2': 0.177, 'CaveHardBrown': 0.124, 'DirtBlue': 0.075, 'GreenBrick': 0.034, 'GrassNormYellow': 0.033}.
+- Edges on the crossing (overlay|type): {'WaterSwampShallow|SwampEdge': 0.533, 'Water|DirtRidge': 0.195, 'WaterShallow|GrassEdge': 0.051, 'WaterShallow|ShallowWaterAndGrass': 0.046, 'Water|BlendEdge': 0.043, 'GreenBrick|BlendEdge': 0.039}.
+- Water beside: {'WaterSwampShallow': 0.584, 'Water': 0.277, 'WaterShallow': 0.138, 'WaterDeep': 0.001}.
+- Examples: Con09a 14x3 ['SwampGrass']; War09a 14x3 ['SwampGrass']; Wiz09a 14x3 ['SwampGrass']; Con08e 13x3 ['DirtDark2', 'GreenBrick']; War08e 13x3 ['DirtDark2', 'GreenBrick']; Wiz08e 13x3 ['DirtDark2', 'GreenBrick']
 
 ## Crossing kits (objects)
 

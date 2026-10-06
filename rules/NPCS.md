@@ -1,7 +1,7 @@
 # Creatures and NPCs: placement, movement and behaviour
 
 **Sources.**
-- `py rules/npcs.py` measures every creature on Westwood's single-player maps, each layout once: 4,482 creatures, 2,942 of them hostile. It writes `rules/out/npcs.json`.
+- `py rules/npcs.py` measures every creature on Westwood's campaign maps (Con/War/Wiz), each layout once: 3,216 creatures, 2,869 of them hostile (with the quest maps it was 4,482 and 2,942). It writes `rules/out/npcs.json`.
 - The map scripts were decompiled with OpenNox's own tool. Build `noxtools` from opennox-lib (`go build ./cmd/noxtools`), then run `noxtools noxscript decomp <map>.map out.go`. That gave 136 maps of NoxScript as readable Go.
 
 **Building.**

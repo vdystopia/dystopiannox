@@ -4,7 +4,7 @@ dict(check, severity, msg, x, y) with x, y in world pixels (None when map-wide).
 Severities:
   error   - a defect the player will see or hit (black wall, see-through gap, hole to the void,
             broken door, misaligned kit, blocked doorway, ...). Westwood's maps have essentially none.
-  warning - outside the range Westwood's single-player maps stay within (density, sizes, blends).
+  warning - outside the range Westwood's campaign maps stay within (density, sizes, blends).
   info    - measurements, for the report.
 Thresholds come from validate/baseline.json (validate/calibrate.py measures Westwood's maps).
 """
@@ -529,24 +529,31 @@ def declared_rooms(m):
     return m._declared
 
 
-def find_rooms(m, max_tiles=400):
-    """Enclosed areas of 2..400 floor tiles (same definition as rules/rooms.py), with their objects. A
-    room the design declared (declared_rooms) carries its record as r["declared"]. rules/rooms/westwood.py reads
-    Westwood's grandest rooms with a larger max_tiles."""
+def find_rooms(m, max_tiles=400, void_bounds=False):
+    """Enclosed areas of 2..400 floor tiles, with their objects. A room the design declared (declared_rooms) carries
+    its record as r["declared"]. rules/rooms/westwood.py reads Westwood's grandest rooms with a larger max_tiles.
+    void_bounds: the void (no floor) bounds a room as a wall does, as in rules/rooms.py; Westwood's great rooms often
+    end in the void (Hecubah's throne hall in Con06b, the Lich's in Con10d), and without it they never count as
+    rooms. r["void_share"] is then the share of the room's edge that is void."""
     blocked = set(m.walls) | set(m.door_gaps)
     comp = {}; rooms = []
     for start in m.cover:
         if start in comp or start in blocked: continue
-        cid = len(rooms); comp[start] = cid; q = [start]; cells = []; enclosed = True
+        cid = len(rooms); comp[start] = cid; q = [start]; cells = []; enclosed = True; void = edge = 0
         while q:
             p = q.pop(); cells.append(p)
             for dx, dy in N4:
                 n = (p[0] + dx, p[1] + dy)
-                if not (0 <= n[0] < GRID and 0 <= n[1] < GRID) or n not in m.cover:
+                if not (0 <= n[0] < GRID and 0 <= n[1] < GRID):
                     enclosed = False; continue
+                if n not in m.cover:
+                    void += 1; edge += 1
+                    if not void_bounds: enclosed = False
+                    continue
+                if n in blocked: edge += 1
                 if n in blocked or n in comp: continue
                 comp[n] = cid; q.append(n)
-        rooms.append(dict(cells=cells, enclosed=enclosed, objects=[]))
+        rooms.append(dict(cells=cells, enclosed=enclosed, objects=[], void_share=void / max(1, edge)))
     for o in m.objects:
         c = m.cell_of(o["x"], o["y"])
         cid = comp.get(c)
@@ -1020,7 +1027,7 @@ def _half_uv(o):
 
 def room_arrangement(m):
     """Whether a room is laid out as a whole, from the TreePlace v0.1 playtest. Westwood never does the
-    first four (0 cases on its 120 single-player maps):
+    first four (0 cases on its 107 campaign maps):
     - food lying by a table (Nox draws items at floor level: it reads as dropped);
     - a long table seated only at its ends (75% of Westwood's chairs at long tables stand along the sides);
     - a bunk room of mixed bed kinds;

@@ -30,7 +30,8 @@ def run_miners():
 def assemble():
     parts = ["# Nox map-making rulebook\n",
              "Rules learned from Westwood's maps (`corpus/out/nox_corpus.db`). Each rule carries its "
-             "evidence. Style rules weight single-player maps so layouts shared by the three class "
+             "evidence. Style rules come from the 107 campaign maps only (Con/War/Wiz, never the quest maps G_* nor the "
+             "multiplayer maps), weighted so layouts shared by the three class "
              "campaigns count once; validity tables (what exists at all) use all 157 maps. "
              "Machine-readable versions are in `rules/out/*.json`.\n",
              "## Contents\n"]

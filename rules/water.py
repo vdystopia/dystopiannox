@@ -50,7 +50,7 @@ def wpct(pairs, ps=(10, 25, 50, 75, 90)):
 
 
 def mine_bodies():
-    W = C.sp_weights(); cats = C.map_categories()
+    W = C.campaign_weights(); cats = C.map_categories()
     mat_use = defaultdict(lambda: dict(all=0, sp_w=0.0, maps=set(), cats=Counter()))
     dist_by_kind = defaultdict(list)          # kind -> [(distance, weight)]
     bodies = []                                # dicts
@@ -134,7 +134,7 @@ def crossing_tiles(t, water, p, axis):
 
 
 def mine_crossings():
-    W = C.sp_weights()
+    W = C.campaign_weights()
     found = []
     for m in C.all_maps():
         t = C.tiles(m); w = W.get(m, 0.0)
@@ -319,19 +319,19 @@ def md(d):
          "- `water_materials{material: tiles_all, sp_weighted, maps, categories}`",
          "- `shore_structure{kind: distance_from_land_weighted percentiles, mean}`: kind = deep / shallow / plain / swamp_*; "
          "distance 1 = water tile touching land, counted in tile steps.",
-         "- `bodies{}`: single-player water bodies; size, stream width (tiles and cells), lake depth, composition.",
+         "- `bodies{}`: campaign water bodies; size, stream width (tiles and cells), lake depth, composition.",
          "- `walls_on_water{}`: walls whose cell is covered by water tiles; invisible vs visible; distance from land; shore fencing share.",
          "- `crossings{bridge|ford: count_sp, length_tiles, width_tiles, materials, end_materials, edges_on_crossing, water_beside, examples}`",
          "- `kits{kit: chains, maps, units_per_chain, sequences, step_offsets_px, front_back_offset_px, floor_under, walls_near}` and `kit_examples[]`.", ""]
     L += ["## Water materials", ""]
     for k, v in d["water_materials"].items():
         L.append(f"- {k}: {v['tiles_all']} tiles in {v['maps']} maps, categories {v['categories']}")
-    L += ["", "## Shore structure (single-player, distance from land in tile steps)", ""]
+    L += ["", "## Shore structure (campaign maps, distance from land in tile steps)", ""]
     for k, v in d["shore_structure"].items():
         L.append(f"- {k}: {v['distance_from_land_weighted']} (mean {v['mean']})")
     b = d["bodies"]
     L += ["", "## Water bodies", "",
-          f"- {b['sp_bodies']} single-player bodies: {b['streams']} streams, {b['pools_lakes']} pools/lakes. Size (tiles): {b['size_tiles']}.",
+          f"- {b['sp_bodies']} campaign bodies: {b['streams']} streams, {b['pools_lakes']} pools/lakes. Size (tiles): {b['size_tiles']}.",
           f"- Stream width: typical {b['stream_width_tiles']} tiles = {b['stream_width_cells']} cells; widest point {b['stream_max_width_tiles']} tiles; size {b['stream_sizes_tiles']} tiles.",
           f"- Lake depth (max distance from shore, tiles): {b['lake_max_depth_tiles']}.", ""]
     w = d["walls_on_water"]
@@ -342,7 +342,7 @@ def md(d):
           f"- Share of shore tiles fenced by a wall: {w['shore_tiles_with_wall_share_sp']:.0%}.", ""]
     L += ["## Crossings (floor)", ""]
     for kind, v in d["crossings"].items():
-        L += [f"### {kind} ({v['count_sp']} in single-player maps)", "",
+        L += [f"### {kind} ({v['count_sp']} in campaign maps)", "",
               f"- Length {v['length_tiles']} tiles, width {v['width_tiles']} tiles.",
               f"- Materials: {v['materials']}.", f"- Land at the ends: {v['end_materials']}.",
               f"- Edges on the crossing (overlay|type): {v['edges_on_crossing']}.", f"- Water beside: {v['water_beside']}.",

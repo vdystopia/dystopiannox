@@ -292,7 +292,7 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
         dy = 1 if oj < cj else -1
         for t, (a, b), room in (("Coffin1", (0.0, 1.05 * dy), 0.9), ("MiningShovelInGround", (0.7 * dx, -0.2 * dy), 0.4),
                                 ("CaveRocksMedium", (0.75 * dx, 0.3 * dy), 0.4), ("CaveRocksSmall", (0.55 * dx, 0.6 * dy), 0.3),
-                                ("MiningPickAxeOnGround1", (1.3 * dx, 0.6 * dy), 0.5),
+                                ("MiningPickAxeOnGround2", (1.3 * dx, 0.6 * dy), 0.5),
                                 ("BarrelWithTools1", (1.25 * dx, -0.45 * dy), 0.7)):
             si, sj = oi + a, oj + b
             if free_spot(si, sj, pad=0.6, lane_w=1.1, t=t):

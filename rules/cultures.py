@@ -1,5 +1,5 @@
 """The furnishing of Westwood's culture rooms: the Land of the Dead's temples (LOTD objects), the ogres' lairs (Ogre
-objects) and Dun Mir's halls (DunMir objects), measured room by room in the single-player maps (each layout once).
+objects) and Dun Mir's halls (DunMir objects), measured room by room in the campaign maps (each layout once).
 
 A room (validate/checks.py find_rooms) belongs to a culture when at least two of its pieces carry the culture's prefix.
 For each culture: how many rooms, their size, their wall materials and floors; for each object type that stands in
@@ -54,7 +54,9 @@ def rooms_of(name):
 def main():
     import sqlite3
     db = sqlite3.connect(os.path.join(REPO, "corpus", "out", "nox_corpus.db"))
-    sp = [n for (n,) in db.execute("SELECT name FROM maps WHERE type != 'multiplayer' OR type IS NULL")]
+    import common
+    sp = set(common.campaign_maps())                 # campaign maps only (Con/War/Wiz); maps.type is a number, so the
+                                                     # old filter "type != 'multiplayer'" let every map through
     has = {n for (n,) in db.execute("SELECT DISTINCT map FROM objects WHERE type LIKE 'LOTD%' OR type LIKE 'Ogre%' "
                                     "OR type LIKE 'DunMir%'")}
     seen, rooms = set(), []

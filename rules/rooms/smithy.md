@@ -29,11 +29,11 @@ The forge's glowing coals (a cinder bin) centred on a back wall, the bellows bes
 
 ## Density and openness
 
-| | Westwood (3 Dun Mir forges) | Profile |
+| | Westwood's campaign (2 rooms, Con06b, War06b) | Profile |
 |---|---|---|
-| coverage | 0.01-0.06 | 0.10-0.38 (target 0.24) |
-| open floor | 0.76-0.96 | 0.25-0.80 |
-| distinct types | 3-6 | 10+ |
+| coverage | 0.01-0.06-0.06 | 0.10-0.38 (target 0.24) |
+| open floor | 0.76-0.96-0.96 | 0.25-0.80 |
+| distinct types | 3-6-6 | 10+ |
 
 Westwood's forges are bare workshops; ours sell over a counter, so they hold more.
 

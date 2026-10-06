@@ -30,7 +30,9 @@ object's settings as JSON), `waypoints`, `waypoint_links`, `polygons`, `groups_`
 Categories: `campaign` (107 maps: con/war/wiz chapters 1-11), `quest` (13 `G_*` maps),
 `multiplayer` (22), `social` (15). The 120 single-player maps reduce to 62 distinct layouts
 (wall overlap above 60% counts as the same layout); weight statistics by `1 / size` from
-`layout_group` so shared maps are not counted three times.
+`layout_group` so shared maps are not counted three times. Style knowledge (every rule, baseline and calibration that
+says what Westwood does) comes from the 107 campaign maps alone (54 layouts: `rules/common.py campaign_weights`); the
+quest and multiplayer maps are other games' noise for the campaign maps we make and serve only validity tables.
 
 ## Example queries
 

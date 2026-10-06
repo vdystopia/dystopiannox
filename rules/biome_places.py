@@ -44,7 +44,7 @@ def one(name):
 
 def main():
     env = json.load(open(os.path.join(HERE, "out", "environments.json")))["maps"]
-    names = [n for n, _ in md.sp_corpus_maps()]
+    names = [n for n, _ in md.campaign_corpus_maps()]
     seen, chosen = set(), []
     for n in sorted(names):
         k = layout_key(n)

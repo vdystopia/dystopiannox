@@ -29,11 +29,11 @@ The racks, in rows down the middle, each row of one kind.
 
 ## Density and openness
 
-| | Westwood (29) | Profile |
+| | Westwood's campaign (16 rooms, 10 maps) | Profile |
 |---|---|---|
-| coverage | 0.00-0.10-0.23 | 0.12-0.34 (target 0.24) |
-| open floor | 0.34-0.64-1.0 | 0.25-0.70 |
-| pieces per tile | 0.04-0.19-0.40 | 0.20-0.80 |
+| coverage | 0.00-0.13-0.24 | 0.12-0.34 (target 0.24) |
+| open floor | 0.33-0.59-0.97 | 0.25-0.70 |
+| pieces per tile | 0.05-0.24-0.39 | 0.20-0.80 |
 | distinct types | 3-6-13 | 7+ |
 | caps | | racks 1 per 6 tiles, at most 16 |
 

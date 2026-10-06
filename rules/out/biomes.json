@@ -320,7 +320,7 @@
     "type": "Spike",
     "n": 486,
     "per100": 3.247,
-    "lift": 3.0,
+    "lift": 6.5,
     "maps": [
      "Con09d"
     ]
@@ -329,7 +329,7 @@
     "type": "BlackPowder",
     "n": 392,
     "per100": 2.619,
-    "lift": 15.9,
+    "lift": 11.8,
     "maps": [
      "Con09d"
     ]
@@ -338,7 +338,7 @@
     "type": "TreeSnowCovered3",
     "n": 95,
     "per100": 0.635,
-    "lift": 59.2,
+    "lift": null,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -348,7 +348,7 @@
     "type": "TreeSnowCovered6",
     "n": 69,
     "per100": 0.461,
-    "lift": 76.1,
+    "lift": null,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -358,7 +358,7 @@
     "type": "TreeSnowCovered5",
     "n": 66,
     "per100": 0.441,
-    "lift": 41.1,
+    "lift": null,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -368,7 +368,7 @@
     "type": "LOTDManaObelisk",
     "n": 52,
     "per100": 0.347,
-    "lift": 3.9,
+    "lift": 5.5,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -378,7 +378,7 @@
     "type": "TreeSnowCovered4",
     "n": 48,
     "per100": 0.321,
-    "lift": 29.3,
+    "lift": null,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -388,7 +388,7 @@
     "type": "TreeSnowCovered2",
     "n": 43,
     "per100": 0.287,
-    "lift": 28.0,
+    "lift": null,
     "maps": [
      "Con09d"
     ]
@@ -397,7 +397,7 @@
     "type": "LOTDColumn1",
     "n": 27,
     "per100": 0.18,
-    "lift": 6.2,
+    "lift": 7.0,
     "maps": [
      "Wiz11A"
     ]
@@ -406,7 +406,7 @@
     "type": "ExtentCylinderSmallStone",
     "n": 22,
     "per100": 0.147,
-    "lift": 78.8,
+    "lift": 58.4,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -416,7 +416,7 @@
     "type": "TreeSnowCovered1",
     "n": 19,
     "per100": 0.127,
-    "lift": 25.9,
+    "lift": null,
     "maps": [
      "Con09d"
     ]
@@ -425,7 +425,7 @@
     "type": "LOTDTapestry2",
     "n": 16,
     "per100": 0.107,
-    "lift": 6.0,
+    "lift": 6.4,
     "maps": [
      "Wiz11A"
     ]
@@ -444,7 +444,7 @@
     "type": "LOTDBanner1",
     "n": 8,
     "per100": 0.053,
-    "lift": 32.8,
+    "lift": null,
     "maps": [
      "Con09d",
      "Wiz11A"
@@ -454,7 +454,7 @@
     "type": "LOTDIncenseBasinLit",
     "n": 8,
     "per100": 0.053,
-    "lift": 7.9,
+    "lift": 7.7,
     "maps": [
      "Wiz11A"
     ]
@@ -463,7 +463,7 @@
     "type": "LOTDTombstone2",
     "n": 6,
     "per100": 0.04,
-    "lift": 57.3,
+    "lift": 127.5,
     "maps": [
      "Wiz11A"
     ]
@@ -472,7 +472,7 @@
     "type": "LOTDTombstone3",
     "n": 6,
     "per100": 0.04,
-    "lift": 17.2,
+    "lift": 31.9,
     "maps": [
      "Wiz11A"
     ]
@@ -481,7 +481,7 @@
     "type": "MineCrystal05",
     "n": 5,
     "per100": 0.033,
-    "lift": 4.9,
+    "lift": 5.6,
     "maps": [
      "Con09d"
     ]
@@ -714,7 +714,6 @@
  "lava": {
   "maps": [
    "Con06a",
-   "G_Lava",
    "War02A",
    "War02b",
    "War11a",
@@ -723,327 +722,343 @@
    "Wiz07B",
    "Wiz07C"
   ],
-  "tiles": 71201,
+  "tiles": 55720,
   "floors": [
    [
     "Lava",
-    0.196
-   ],
-   [
-    "VolcanicCraggy",
-    0.142
-   ],
-   [
-    "CaveHardBrown",
-    0.12
+    0.204
    ],
    [
     "GreenBrick",
-    0.12
+    0.153
    ],
    [
-    "LOTDBlackMarble",
-    0.043
+    "VolcanicCraggy",
+    0.144
    ],
    [
-    "LOTDPitted",
-    0.04
-   ],
-   [
-    "GalavaBrick2",
-    0.035
-   ],
-   [
-    "DirtDark2",
-    0.035
+    "CaveHardBrown",
+    0.142
    ],
    [
     "DunMirBrick1",
-    0.033
+    0.043
    ],
    [
-    "GalavaBrick",
-    0.032
+    "LOTDBlackMarble",
+    0.034
    ],
    [
     "Water",
-    0.025
+    0.032
    ],
    [
     "DirtDark",
-    0.023
+    0.029
    ],
    [
     "CaveHardDark",
-    0.019
+    0.024
    ],
    [
     "DunMirFacade",
-    0.018
+    0.023
+   ],
+   [
+    "DirtDark2",
+    0.023
+   ],
+   [
+    "GalavaBrick",
+    0.02
+   ],
+   [
+    "LOTDPitted",
+    0.013
    ],
    [
     "GrassNorm",
-    0.01
+    0.013
+   ],
+   [
+    "Black",
+    0.013
    ]
   ],
   "walls": [
    [
     "Volcano",
-    0.312
+    0.283
    ],
    [
     "CaveWall2",
-    0.193
-   ],
-   [
-    "GalavaTownWall",
-    0.119
+    0.245
    ],
    [
     "SewerWall",
-    0.113
+    0.147
    ],
    [
     "DunMirCathedral",
-    0.062
+    0.081
    ],
    [
     "StoneGray",
-    0.049
+    0.064
    ],
    [
     "IronFence",
-    0.048
+    0.057
    ],
    [
     "GalavaTowerWall",
-    0.016
+    0.02
    ],
    [
     "DungeonStone",
-    0.014
+    0.019
    ],
    [
     "InvisibleWallSet",
-    0.014
+    0.018
    ],
    [
     "Dirt",
-    0.01
+    0.013
    ],
    [
     "InvisibleBlockingWallSet",
+    0.011
+   ],
+   [
+    "CathedralRed",
     0.009
    ]
   ],
   "objects": [
    [
     "ColorLight",
-    2290,
-    3.216
+    2081,
+    3.735
    ],
    [
     "SmallFlame",
     1331,
-    1.869
+    2.389
    ],
    [
     "MediumFlame",
-    496,
-    0.697
+    491,
+    0.881
    ],
    [
     "LegBone",
     298,
-    0.419
+    0.535
    ],
    [
     "Flame",
     242,
-    0.34
-   ],
-   [
-    "ObeliskPrimitive",
-    204,
-    0.287
-   ],
-   [
-    "Spike",
-    199,
-    0.279
+    0.434
    ],
    [
     "BlackPowder",
     194,
-    0.272
-   ],
-   [
-    "SmallFlameImmobile",
-    189,
-    0.265
-   ],
-   [
-    "FireGrate",
-    178,
-    0.25
+    0.348
    ],
    [
     "Skull",
     177,
-    0.249
+    0.318
    ],
    [
     "ExtentShortBoxSmall",
     174,
-    0.244
+    0.312
    ],
    [
     "GrassTuft3",
-    159,
-    0.223
+    153,
+    0.275
    ],
    [
     "CaveRocksPebbles",
     152,
-    0.213
+    0.273
    ],
    [
     "Brick",
     146,
-    0.205
+    0.262
    ],
    [
     "CaveRocksMedium",
     132,
-    0.185
+    0.237
+   ],
+   [
+    "FireGrate",
+    131,
+    0.235
    ],
    [
     "ArmBone",
     122,
-    0.171
-   ],
-   [
-    "Mushroom3",
-    100,
-    0.14
-   ],
-   [
-    "SpikeBlock",
-    98,
-    0.138
+    0.219
    ],
    [
     "LargeFlame",
     98,
-    0.138
-   ],
-   [
-    "LavaBubble6",
-    95,
-    0.133
-   ],
-   [
-    "LavaBubble9",
-    93,
-    0.131
-   ],
-   [
-    "Mushroom4",
-    92,
-    0.129
+    0.176
    ],
    [
     "CaveRocksSmall",
     91,
-    0.128
+    0.163
    ],
    [
     "Rock8",
     91,
-    0.128
-   ],
-   [
-    "MediumFlameImmobile",
-    90,
-    0.126
+    0.163
    ],
    [
     "CaveRocksHuge",
-    88,
-    0.124
+    86,
+    0.154
    ],
    [
-    "LavaBubble4",
-    79,
-    0.111
+    "Mushroom3",
+    84,
+    0.151
    ],
    [
-    "LavaBubble5",
-    78,
-    0.11
+    "Mushroom4",
+    83,
+    0.149
    ],
    [
-    "LavaBubble8",
-    77,
-    0.108
+    "LavaBubble9",
+    83,
+    0.149
+   ],
+   [
+    "LavaBubble6",
+    73,
+    0.131
    ],
    [
     "Mushroom1",
     72,
-    0.101
+    0.129
    ],
    [
-    "Torch",
-    70,
-    0.098
+    "LavaBubble4",
+    68,
+    0.122
+   ],
+   [
+    "LavaBubble8",
+    65,
+    0.117
    ],
    [
     "CaveRockPillarTall1",
-    66,
-    0.093
+    63,
+    0.113
    ],
    [
-    "FlameImmobile",
+    "Torch",
     62,
-    0.087
+    0.111
    ],
    [
     "Mushroom2",
     61,
-    0.086
+    0.109
    ],
    [
     "DunMirFlameBasinLit",
     61,
-    0.086
+    0.109
+   ],
+   [
+    "LavaBubble5",
+    59,
+    0.106
    ],
    [
     "LavaFountain3",
     59,
-    0.083
-   ],
-   [
-    "LavaBubble7",
-    58,
-    0.081
-   ],
-   [
-    "Mushroom5",
-    56,
-    0.079
+    0.106
    ],
    [
     "CaveRocksLarge",
     56,
-    0.079
+    0.101
+   ],
+   [
+    "Barrel",
+    54,
+    0.097
+   ],
+   [
+    "SpikeBlock",
+    54,
+    0.097
+   ],
+   [
+    "ExtentCylinderLarge",
+    52,
+    0.093
+   ],
+   [
+    "CaveRockPillarShort2",
+    51,
+    0.092
+   ],
+   [
+    "SpiderWebNorth",
+    50,
+    0.09
+   ],
+   [
+    "CaveBoulders",
+    46,
+    0.083
+   ],
+   [
+    "LavaHardened5",
+    45,
+    0.081
+   ],
+   [
+    "Rock6",
+    45,
+    0.081
    ]
   ],
   "signature": [
    {
+    "type": "ColorLight",
+    "n": 2081,
+    "per100": 3.735,
+    "lift": 3.2,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
     "type": "SmallFlame",
     "n": 1331,
-    "per100": 1.869,
-    "lift": 30.2,
+    "per100": 2.389,
+    "lift": 28.7,
     "maps": [
      "Con06a",
      "War02A",
@@ -1057,12 +1072,11 @@
    },
    {
     "type": "MediumFlame",
-    "n": 496,
-    "per100": 0.697,
-    "lift": 18.4,
+    "n": 491,
+    "per100": 0.881,
+    "lift": 17.3,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
@@ -1075,8 +1089,8 @@
    {
     "type": "LegBone",
     "n": 298,
-    "per100": 0.419,
-    "lift": 3.7,
+    "per100": 0.535,
+    "lift": 3.5,
     "maps": [
      "War11a",
      "Wiz06a",
@@ -1087,8 +1101,8 @@
    {
     "type": "Flame",
     "n": 242,
-    "per100": 0.34,
-    "lift": 24.4,
+    "per100": 0.434,
+    "lift": 23.2,
     "maps": [
      "Con06a",
      "War02A",
@@ -1101,31 +1115,10 @@
     ]
    },
    {
-    "type": "SmallFlameImmobile",
-    "n": 189,
-    "per100": 0.265,
-    "lift": 16.5,
-    "maps": [
-     "G_Lava",
-     "War11a"
-    ]
-   },
-   {
-    "type": "FireGrate",
-    "n": 178,
-    "per100": 0.25,
-    "lift": 10.7,
-    "maps": [
-     "G_Lava",
-     "War02A",
-     "Wiz07C"
-    ]
-   },
-   {
     "type": "Skull",
     "n": 177,
-    "per100": 0.249,
-    "lift": 3.3,
+    "per100": 0.318,
+    "lift": 3.1,
     "maps": [
      "War11a",
      "Wiz07B",
@@ -1135,8 +1128,8 @@
    {
     "type": "ExtentShortBoxSmall",
     "n": 174,
-    "per100": 0.244,
-    "lift": 11.0,
+    "per100": 0.312,
+    "lift": 13.5,
     "maps": [
      "War11a",
      "Wiz06c"
@@ -1144,19 +1137,18 @@
    },
    {
     "type": "GrassTuft3",
-    "n": 159,
-    "per100": 0.223,
-    "lift": 6.2,
+    "n": 153,
+    "per100": 0.275,
+    "lift": 6.3,
     "maps": [
-     "Con06a",
-     "G_Lava"
+     "Con06a"
     ]
    },
    {
     "type": "Brick",
     "n": 146,
-    "per100": 0.205,
-    "lift": 6.6,
+    "per100": 0.262,
+    "lift": 6.3,
     "maps": [
      "War02b",
      "Wiz06a",
@@ -1164,57 +1156,23 @@
     ]
    },
    {
-    "type": "SpikeBlock",
-    "n": 98,
-    "per100": 0.138,
-    "lift": 3.1,
+    "type": "FireGrate",
+    "n": 131,
+    "per100": 0.235,
+    "lift": 10.0,
     "maps": [
-     "G_Lava",
      "War02A",
-     "War02b",
-     "Wiz06a",
-     "Wiz06c"
+     "Wiz07C"
     ]
    },
    {
     "type": "LargeFlame",
     "n": 98,
-    "per100": 0.138,
-    "lift": 64.2,
+    "per100": 0.176,
+    "lift": 61.0,
     "maps": [
      "War02A",
      "War11a",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
-    "type": "LavaBubble6",
-    "n": 95,
-    "per100": 0.133,
-    "lift": 17.2,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
-    "type": "LavaBubble9",
-    "n": 93,
-    "per100": 0.131,
-    "lift": 243.6,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02b",
-     "War11a",
-     "Wiz06a",
      "Wiz07B",
      "Wiz07C"
     ]
@@ -1222,32 +1180,34 @@
    {
     "type": "Rock8",
     "n": 91,
-    "per100": 0.128,
-    "lift": 6.4,
+    "per100": 0.163,
+    "lift": 6.1,
     "maps": [
      "Wiz07B",
      "Wiz07C"
     ]
    },
    {
-    "type": "MediumFlameImmobile",
-    "n": 90,
-    "per100": 0.126,
-    "lift": 7.1,
+    "type": "LavaBubble9",
+    "n": 83,
+    "per100": 0.149,
+    "lift": 413.1,
     "maps": [
-     "G_Lava",
-     "War11a"
+     "Con06a",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
     ]
    },
    {
-    "type": "LavaBubble4",
-    "n": 79,
-    "per100": 0.111,
-    "lift": 37.6,
+    "type": "LavaBubble6",
+    "n": 73,
+    "per100": 0.131,
+    "lift": 16.5,
     "maps": [
      "Con06a",
-     "G_Lava",
-     "War02A",
      "War02b",
      "War11a",
      "Wiz06a",
@@ -1257,13 +1217,13 @@
     ]
    },
    {
-    "type": "LavaBubble5",
-    "n": 78,
-    "per100": 0.11,
-    "lift": 21.5,
+    "type": "LavaBubble4",
+    "n": 68,
+    "per100": 0.122,
+    "lift": 33.8,
     "maps": [
      "Con06a",
-     "G_Lava",
+     "War02A",
      "War02b",
      "War11a",
      "Wiz06a",
@@ -1274,12 +1234,11 @@
    },
    {
     "type": "LavaBubble8",
-    "n": 77,
-    "per100": 0.108,
-    "lift": 100.8,
+    "n": 65,
+    "per100": 0.117,
+    "lift": 161.8,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02b",
      "War11a",
      "Wiz06a",
@@ -1288,20 +1247,10 @@
     ]
    },
    {
-    "type": "FlameImmobile",
-    "n": 62,
-    "per100": 0.087,
-    "lift": 9.3,
-    "maps": [
-     "G_Lava",
-     "War11a"
-    ]
-   },
-   {
     "type": "DunMirFlameBasinLit",
     "n": 61,
-    "per100": 0.086,
-    "lift": 5.1,
+    "per100": 0.109,
+    "lift": 4.8,
     "maps": [
      "Con06a",
      "War02A",
@@ -1309,9 +1258,24 @@
     ]
    },
    {
+    "type": "LavaBubble5",
+    "n": 59,
+    "per100": 0.106,
+    "lift": 18.4,
+    "maps": [
+     "Con06a",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
     "type": "LavaFountain3",
     "n": 59,
-    "per100": 0.083,
+    "per100": 0.106,
     "lift": null,
     "maps": [
      "War11a",
@@ -1320,39 +1284,22 @@
     ]
    },
    {
-    "type": "LavaBubble7",
-    "n": 58,
-    "per100": 0.081,
-    "lift": 151.9,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
     "type": "ExtentCylinderLarge",
-    "n": 53,
-    "per100": 0.074,
-    "lift": 9.9,
+    "n": 52,
+    "per100": 0.093,
+    "lift": 11.8,
     "maps": [
      "Con06a",
-     "G_Lava",
      "Wiz06c"
     ]
    },
    {
     "type": "LavaHardened5",
-    "n": 49,
-    "per100": 0.069,
-    "lift": 42.8,
+    "n": 45,
+    "per100": 0.081,
+    "lift": 37.3,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
@@ -1365,30 +1312,32 @@
    {
     "type": "Rock6",
     "n": 45,
-    "per100": 0.063,
-    "lift": 4.0,
+    "per100": 0.081,
+    "lift": 3.8,
     "maps": [
      "Wiz07B",
      "Wiz07C"
     ]
    },
    {
-    "type": "DunMirTorchNorth",
+    "type": "LavaBubble7",
     "n": 41,
-    "per100": 0.058,
-    "lift": 3.0,
+    "per100": 0.074,
+    "lift": null,
     "maps": [
      "Con06a",
-     "G_Lava",
-     "War02A",
-     "Wiz06c"
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz07B",
+     "Wiz07C"
     ]
    },
    {
     "type": "Rock4",
     "n": 40,
-    "per100": 0.056,
-    "lift": 9.1,
+    "per100": 0.072,
+    "lift": 8.7,
     "maps": [
      "Wiz06a",
      "Wiz07B",
@@ -1398,8 +1347,21 @@
    {
     "type": "MineCrystal02",
     "n": 38,
-    "per100": 0.053,
-    "lift": 5.2,
+    "per100": 0.068,
+    "lift": 5.3,
+    "maps": [
+     "Con06a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MineCrystal01",
+    "n": 35,
+    "per100": 0.063,
+    "lift": 4.2,
     "maps": [
      "Con06a",
      "Wiz06a",
@@ -1410,43 +1372,36 @@
    },
    {
     "type": "LavaHardened7",
-    "n": 37,
-    "per100": 0.052,
-    "lift": 48.5,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02A",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
-    "type": "LavaHardened2",
-    "n": 36,
-    "per100": 0.051,
-    "lift": 47.1,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02A",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
-    "type": "MineCrystal01",
     "n": 35,
-    "per100": 0.049,
-    "lift": 3.8,
+    "per100": 0.063,
+    "lift": 43.6,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LargeStalagmite",
+    "n": 34,
+    "per100": 0.061,
+    "lift": 3.0,
+    "maps": [
+     "War11a",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "MineCrystal03",
+    "n": 31,
+    "per100": 0.056,
+    "lift": 3.3,
     "maps": [
      "Con06a",
      "Wiz06a",
@@ -1457,62 +1412,32 @@
    },
    {
     "type": "DunMirTorchEast",
-    "n": 35,
-    "per100": 0.049,
-    "lift": 3.5,
+    "n": 31,
+    "per100": 0.056,
+    "lift": 15.4,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "Wiz06c"
-    ]
-   },
-   {
-    "type": "LargeStalagmite",
-    "n": 34,
-    "per100": 0.048,
-    "lift": 3.2,
-    "maps": [
-     "War11a",
-     "Wiz07B",
-     "Wiz07C"
-    ]
-   },
-   {
-    "type": "LavaHardened6",
-    "n": 31,
-    "per100": 0.044,
-    "lift": 81.2,
-    "maps": [
-     "Con06a",
-     "G_Lava",
-     "War02A",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
     ]
    },
    {
     "type": "Column7",
     "n": 30,
-    "per100": 0.042,
-    "lift": 5.6,
+    "per100": 0.054,
+    "lift": 7.5,
     "maps": [
      "War02A",
      "Wiz06c"
     ]
    },
    {
-    "type": "LavaHardened4",
-    "n": 28,
-    "per100": 0.039,
-    "lift": 48.9,
+    "type": "LavaHardened2",
+    "n": 29,
+    "per100": 0.052,
+    "lift": 48.1,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
@@ -1523,66 +1448,69 @@
     ]
    },
    {
-    "type": "LavaHardened1",
+    "type": "DunMirTorchNorth",
     "n": 28,
-    "per100": 0.039,
-    "lift": 48.9,
+    "per100": 0.05,
+    "lift": 5.4,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
+     "Wiz06c"
     ]
    },
    {
     "type": "Gear3",
     "n": 27,
-    "per100": 0.038,
-    "lift": 6.4,
+    "per100": 0.048,
+    "lift": 8.4,
     "maps": [
      "Con06a",
      "War02b",
      "Wiz06a",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened6",
+    "n": 27,
+    "per100": 0.048,
+    "lift": 67.2,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
      "Wiz07C"
     ]
    },
    {
     "type": "SewerPipe01",
     "n": 27,
-    "per100": 0.038,
-    "lift": 11.8,
+    "per100": 0.048,
+    "lift": 11.2,
     "maps": [
      "War02b",
      "Wiz06a"
     ]
    },
    {
-    "type": "LavaHardened3",
+    "type": "RotatingSpikes",
     "n": 26,
-    "per100": 0.037,
-    "lift": 68.1,
+    "per100": 0.047,
+    "lift": 4.6,
     "maps": [
-     "Con06a",
-     "G_Lava",
      "War02A",
-     "War02b",
-     "War11a",
-     "Wiz06a",
-     "Wiz06c",
-     "Wiz07B",
-     "Wiz07C"
+     "Wiz06c"
     ]
    },
    {
     "type": "Rock5",
     "n": 26,
-    "per100": 0.037,
-    "lift": 3.5,
+    "per100": 0.047,
+    "lift": 3.3,
     "maps": [
      "Wiz07B",
      "Wiz07C"
@@ -1591,8 +1519,8 @@
    {
     "type": "StatueVictory3SE",
     "n": 25,
-    "per100": 0.035,
-    "lift": 13.1,
+    "per100": 0.045,
+    "lift": 12.4,
     "maps": [
      "Con06a",
      "War02A",
@@ -1604,8 +1532,8 @@
    {
     "type": "Gear4",
     "n": 24,
-    "per100": 0.034,
-    "lift": 3.9,
+    "per100": 0.043,
+    "lift": 5.4,
     "maps": [
      "Con06a",
      "War02A",
@@ -1615,13 +1543,12 @@
     ]
    },
    {
-    "type": "LavaHardened10",
+    "type": "LavaHardened4",
     "n": 24,
-    "per100": 0.034,
-    "lift": 41.9,
+    "per100": 0.043,
+    "lift": 119.5,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
@@ -1634,8 +1561,8 @@
    {
     "type": "Brazier",
     "n": 24,
-    "per100": 0.034,
-    "lift": 41.9,
+    "per100": 0.043,
+    "lift": 39.8,
     "maps": [
      "War11a"
     ]
@@ -1643,8 +1570,8 @@
    {
     "type": "Rock3",
     "n": 24,
-    "per100": 0.034,
-    "lift": 41.9,
+    "per100": 0.043,
+    "lift": 39.8,
     "maps": [
      "Wiz06a",
      "Wiz07B",
@@ -1654,7 +1581,7 @@
    {
     "type": "SmallBlueFlame",
     "n": 24,
-    "per100": 0.034,
+    "per100": 0.043,
     "lift": null,
     "maps": [
      "Wiz06c"
@@ -1663,7 +1590,7 @@
    {
     "type": "SmallRock",
     "n": 23,
-    "per100": 0.032,
+    "per100": 0.041,
     "lift": null,
     "maps": [
      "Wiz07B",
@@ -1671,13 +1598,21 @@
     ]
    },
    {
-    "type": "LavaHardened9",
-    "n": 22,
-    "per100": 0.031,
-    "lift": 28.8,
+    "type": "DunMirRocksSmall3",
+    "n": 21,
+    "per100": 0.038,
+    "lift": null,
+    "maps": [
+     "Con06a"
+    ]
+   },
+   {
+    "type": "LavaHardened1",
+    "n": 21,
+    "per100": 0.038,
+    "lift": 34.8,
     "maps": [
      "Con06a",
-     "G_Lava",
      "War02A",
      "War02b",
      "War11a",
@@ -1688,29 +1623,48 @@
     ]
    },
    {
-    "type": "DunMirRocksSmall3",
+    "type": "TreeForest11",
     "n": 21,
-    "per100": 0.029,
-    "lift": null,
+    "per100": 0.038,
+    "lift": 4.0,
     "maps": [
      "Con06a"
     ]
    },
    {
-    "type": "TreeForest11",
+    "type": "Gear6",
     "n": 21,
-    "per100": 0.029,
-    "lift": 4.1,
+    "per100": 0.038,
+    "lift": 3.6,
     "maps": [
-     "Con06a"
+     "Con06a",
+     "War02A",
+     "War02b",
+     "Wiz06a"
     ]
    },
    {
     "type": "RockColumn",
     "n": 21,
-    "per100": 0.029,
-    "lift": 27.5,
+    "per100": 0.038,
+    "lift": 26.1,
     "maps": [
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened3",
+    "n": 20,
+    "per100": 0.036,
+    "lift": 49.8,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
      "Wiz07B",
      "Wiz07C"
     ]
@@ -1718,8 +1672,8 @@
    {
     "type": "StatueVictory3SW",
     "n": 20,
-    "per100": 0.028,
-    "lift": 52.4,
+    "per100": 0.036,
+    "lift": 49.8,
     "maps": [
      "Con06a",
      "War11a",
@@ -1729,8 +1683,8 @@
    {
     "type": "IronBlock",
     "n": 20,
-    "per100": 0.028,
-    "lift": 4.2,
+    "per100": 0.036,
+    "lift": 5.5,
     "maps": [
      "War02A"
     ]
@@ -1738,8 +1692,8 @@
    {
     "type": "DunMirTorchWest",
     "n": 19,
-    "per100": 0.027,
-    "lift": 4.1,
+    "per100": 0.034,
+    "lift": 15.8,
     "maps": [
      "Con06a",
      "War02A"
@@ -1748,8 +1702,8 @@
    {
     "type": "Gear2",
     "n": 19,
-    "per100": 0.027,
-    "lift": 11.1,
+    "per100": 0.034,
+    "lift": 13.5,
     "maps": [
      "Con06a",
      "War02b",
@@ -1759,8 +1713,8 @@
    {
     "type": "StatueVictory3NW",
     "n": 19,
-    "per100": 0.027,
-    "lift": 12.4,
+    "per100": 0.034,
+    "lift": 11.8,
     "maps": [
      "War02A",
      "War11a",
@@ -1770,8 +1724,8 @@
    {
     "type": "ChestSE",
     "n": 18,
-    "per100": 0.025,
-    "lift": 5.2,
+    "per100": 0.032,
+    "lift": 5.0,
     "maps": [
      "Con06a",
      "Wiz07B",
@@ -1779,10 +1733,42 @@
     ]
    },
    {
+    "type": "LavaHardened10",
+    "n": 18,
+    "per100": 0.032,
+    "lift": 44.8,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
+    "type": "LavaHardened9",
+    "n": 18,
+    "per100": 0.032,
+    "lift": 44.8,
+    "maps": [
+     "Con06a",
+     "War02A",
+     "War02b",
+     "War11a",
+     "Wiz06a",
+     "Wiz06c",
+     "Wiz07B",
+     "Wiz07C"
+    ]
+   },
+   {
     "type": "SewerPipe04",
     "n": 18,
-    "per100": 0.025,
-    "lift": 23.6,
+    "per100": 0.032,
+    "lift": 22.4,
     "maps": [
      "War02b",
      "Wiz06a"
@@ -1791,143 +1777,138 @@
   ],
   "creatures": [
    [
-    "MonsterGenerator",
-    116,
-    0.163
-   ],
-   [
     "NPC",
     65,
-    0.091
+    0.117
    ],
    [
     "MeleeDemon",
     35,
-    0.049
+    0.063
    ],
    [
     "EmberDemon",
     33,
-    0.046
+    0.059
    ],
    [
     "Zombie",
     28,
-    0.039
+    0.05
    ],
    [
     "Imp",
     26,
-    0.037
+    0.047
    ],
    [
     "Skeleton",
     24,
-    0.034
+    0.043
    ],
    [
     "Bat",
     13,
-    0.018
+    0.023
    ],
    [
     "GiantLeech",
     11,
-    0.015
+    0.02
    ],
    [
     "SmallSpider",
     11,
-    0.015
+    0.02
    ],
    [
     "SmallAlbinoSpider",
     8,
-    0.011
+    0.014
    ],
    [
     "SkeletonLord",
     7,
-    0.01
+    0.013
    ],
    [
     "Maiden",
     6,
-    0.008
+    0.011
    ],
    [
     "Necromancer",
     5,
-    0.007
-   ],
-   [
-    "Demon",
-    5,
-    0.007
+    0.009
    ],
    [
     "Urchin",
     5,
-    0.007
+    0.009
    ],
    [
     "Spider",
     5,
-    0.007
+    0.009
    ],
    [
     "AlbinoSpider",
     5,
-    0.007
+    0.009
    ],
    [
     "FishSmall",
     4,
-    0.006
+    0.007
    ],
    [
     "GreenFrog",
     4,
-    0.006
+    0.007
    ],
    [
     "FishBig",
     3,
-    0.004
+    0.005
    ],
    [
     "Troll",
     3,
-    0.004
+    0.005
    ],
    [
     "Scorpion",
     3,
-    0.004
+    0.005
    ],
    [
     "AirshipCaptain",
     2,
-    0.003
+    0.004
    ],
    [
     "Horrendous",
     2,
-    0.003
+    0.004
+   ],
+   [
+    "Hecubah",
+    2,
+    0.004
+   ],
+   [
+    "Demon",
+    2,
+    0.004
    ]
   ],
-  "creatures_per100": 0.62,
-  "lights_per100": 7.91,
+  "creatures_per100": 0.57,
+  "lights_per100": 8.72,
   "ambient": {
    "Con06a": [
     255,
     252,
     252
-   ],
-   "G_Lava": [
-    188,
-    133,
-    94
    ],
    "War02A": [
     255,
@@ -1984,14 +1965,6 @@
    ],
    [
     [
-     224,
-     224,
-     224
-    ],
-    244
-   ],
-   [
-    [
      64,
      0,
      0
@@ -2029,6 +2002,14 @@
      96
     ],
     88
+   ],
+   [
+    [
+     32,
+     32,
+     32
+    ],
+    72
    ]
   ],
   "region_ambient": [
@@ -2047,14 +2028,6 @@
      0
     ],
     57828
-   ],
-   [
-    [
-     112,
-     0,
-     0
-    ],
-    56140
    ],
    [
     [
@@ -2095,6 +2068,14 @@
      96
     ],
     15367
+   ],
+   [
+    [
+     208,
+     96,
+     0
+    ],
+    12355
    ]
   ]
  },
@@ -2426,7 +2407,7 @@
     "type": "Mushroom3",
     "n": 585,
     "per100": 1.793,
-    "lift": 6.4,
+    "lift": 5.9,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2438,7 +2419,7 @@
     "type": "PitCrumblingFloor",
     "n": 242,
     "per100": 0.742,
-    "lift": 8.1,
+    "lift": 12.9,
     "maps": [
      "Con01A",
      "Con06b",
@@ -2449,7 +2430,7 @@
     "type": "CaveRockPillarShort1",
     "n": 234,
     "per100": 0.717,
-    "lift": 6.8,
+    "lift": 6.5,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2462,7 +2443,7 @@
     "type": "CaveRockPillarShort2",
     "n": 213,
     "per100": 0.653,
-    "lift": 7.5,
+    "lift": 6.8,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2475,7 +2456,7 @@
     "type": "CaveRockPillarTall1",
     "n": 203,
     "per100": 0.622,
-    "lift": 4.4,
+    "lift": 4.0,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2488,33 +2469,7 @@
     "type": "CaveRockPillarTall2",
     "n": 148,
     "per100": 0.454,
-    "lift": 5.5,
-    "maps": [
-     "Con01A",
-     "Con05C",
-     "Con06b",
-     "Con09c",
-     "Wiz06b"
-    ]
-   },
-   {
-    "type": "CaveRocksMedium",
-    "n": 135,
-    "per100": 0.414,
-    "lift": 3.9,
-    "maps": [
-     "Con01A",
-     "Con05C",
-     "Con06b",
-     "Con09c",
-     "Wiz06b"
-    ]
-   },
-   {
-    "type": "CaveRocksHuge",
-    "n": 119,
-    "per100": 0.365,
-    "lift": 3.2,
+    "lift": 5.3,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2527,7 +2482,7 @@
     "type": "CaveBoulders",
     "n": 112,
     "per100": 0.343,
-    "lift": 5.6,
+    "lift": 4.1,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2540,7 +2495,7 @@
     "type": "Mushroom1",
     "n": 106,
     "per100": 0.325,
-    "lift": 6.2,
+    "lift": 7.9,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2552,7 +2507,7 @@
     "type": "Brick",
     "n": 99,
     "per100": 0.303,
-    "lift": 7.7,
+    "lift": 5.6,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2562,16 +2517,26 @@
     "type": "Straw2",
     "n": 81,
     "per100": 0.248,
-    "lift": 7.7,
+    "lift": 5.6,
     "maps": [
      "Con05C"
+    ]
+   },
+   {
+    "type": "Mushroom5",
+    "n": 68,
+    "per100": 0.208,
+    "lift": 4.1,
+    "maps": [
+     "Con01A",
+     "Wiz06b"
     ]
    },
    {
     "type": "Mushroom2",
     "n": 67,
     "per100": 0.205,
-    "lift": 3.8,
+    "lift": 3.4,
     "maps": [
      "Con01A",
      "Con06b",
@@ -2582,35 +2547,26 @@
     "type": "DunMirFlameBasinLit",
     "n": 59,
     "per100": 0.181,
-    "lift": 11.4,
+    "lift": 8.4,
     "maps": [
      "Con06b",
      "Wiz06b"
     ]
    },
    {
-    "type": "SmallStalagmite",
-    "n": 33,
-    "per100": 0.101,
-    "lift": 3.2,
+    "type": "Pit",
+    "n": 51,
+    "per100": 0.156,
+    "lift": 39.1,
     "maps": [
-     "Con05C"
+     "Con01A"
     ]
    },
    {
     "type": "LargeStalagmite",
     "n": 31,
     "per100": 0.095,
-    "lift": 6.6,
-    "maps": [
-     "Con05C"
-    ]
-   },
-   {
-    "type": "Straw1",
-    "n": 30,
-    "per100": 0.092,
-    "lift": 3.7,
+    "lift": 4.8,
     "maps": [
      "Con05C"
     ]
@@ -2619,7 +2575,7 @@
     "type": "RotatingSpikes",
     "n": 28,
     "per100": 0.086,
-    "lift": 4.7,
+    "lift": 9.9,
     "maps": [
      "Con05C",
      "Con06b",
@@ -2630,7 +2586,7 @@
     "type": "OgreHutMeat",
     "n": 27,
     "per100": 0.083,
-    "lift": 7.0,
+    "lift": 9.2,
     "maps": [
      "Con05C",
      "Con09c"
@@ -2640,7 +2596,7 @@
     "type": "DunMirTorchNorth",
     "n": 26,
     "per100": 0.08,
-    "lift": 3.8,
+    "lift": 8.6,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2650,7 +2606,7 @@
     "type": "TreeForest11",
     "n": 21,
     "per100": 0.064,
-    "lift": 9.8,
+    "lift": 7.4,
     "maps": [
      "Wiz06b"
     ]
@@ -2659,7 +2615,7 @@
     "type": "IronBlock",
     "n": 18,
     "per100": 0.055,
-    "lift": 8.4,
+    "lift": 8.3,
     "maps": [
      "Con05C",
      "Con09c"
@@ -2669,7 +2625,7 @@
     "type": "TraderAppleCrate",
     "n": 18,
     "per100": 0.055,
-    "lift": 6.7,
+    "lift": 4.9,
     "maps": [
      "Wiz06b"
     ]
@@ -2678,7 +2634,7 @@
     "type": "TreeForest12",
     "n": 17,
     "per100": 0.052,
-    "lift": 10.7,
+    "lift": 8.2,
     "maps": [
      "Wiz06b"
     ]
@@ -2687,23 +2643,10 @@
     "type": "Gear4",
     "n": 15,
     "per100": 0.046,
-    "lift": 4.6,
+    "lift": 4.5,
     "maps": [
      "Con01A",
      "Con05C",
-     "Con09c",
-     "Wiz06b"
-    ]
-   },
-   {
-    "type": "MineCrystal02",
-    "n": 15,
-    "per100": 0.046,
-    "lift": 3.1,
-    "maps": [
-     "Con01A",
-     "Con05C",
-     "Con06b",
      "Con09c",
      "Wiz06b"
     ]
@@ -2712,7 +2655,7 @@
     "type": "DunMirTorch1",
     "n": 14,
     "per100": 0.043,
-    "lift": 11.8,
+    "lift": 8.6,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2722,7 +2665,7 @@
     "type": "OgreStool1",
     "n": 12,
     "per100": 0.037,
-    "lift": 5.6,
+    "lift": 4.1,
     "maps": [
      "Con05C",
      "Con09c"
@@ -2732,20 +2675,9 @@
     "type": "SewerPipe01",
     "n": 12,
     "per100": 0.037,
-    "lift": 5.6,
+    "lift": 4.1,
     "maps": [
      "Con06b",
-     "Wiz06b"
-    ]
-   },
-   {
-    "type": "DarkCrate2",
-    "n": 12,
-    "per100": 0.037,
-    "lift": 3.0,
-    "maps": [
-     "Con06b",
-     "Con09c",
      "Wiz06b"
     ]
    },
@@ -2753,16 +2685,25 @@
     "type": "Bed3",
     "n": 12,
     "per100": 0.037,
-    "lift": 4.9,
+    "lift": 3.6,
     "maps": [
      "Con06b"
+    ]
+   },
+   {
+    "type": "PlantForest2",
+    "n": 11,
+    "per100": 0.034,
+    "lift": 7.2,
+    "maps": [
+     "Con01A"
     ]
    },
    {
     "type": "MineCrystalDown01",
     "n": 11,
     "per100": 0.034,
-    "lift": 3.0,
+    "lift": 4.6,
     "maps": [
      "Con05C",
      "Con06b",
@@ -2773,7 +2714,7 @@
     "type": "MineCrystalDown03",
     "n": 10,
     "per100": 0.031,
-    "lift": 3.2,
+    "lift": 6.6,
     "maps": [
      "Con01A",
      "Con06b",
@@ -2781,21 +2722,10 @@
     ]
    },
    {
-    "type": "Gear3",
-    "n": 10,
-    "per100": 0.031,
-    "lift": 3.2,
-    "maps": [
-     "Con01A",
-     "Con09c",
-     "Wiz06b"
-    ]
-   },
-   {
     "type": "PiledBarrels2",
     "n": 10,
     "per100": 0.031,
-    "lift": 5.0,
+    "lift": 3.7,
     "maps": [
      "Con05C",
      "Con09c",
@@ -2806,7 +2736,7 @@
     "type": "Cot1",
     "n": 10,
     "per100": 0.031,
-    "lift": 4.7,
+    "lift": 3.4,
     "maps": [
      "Con05C",
      "Con06b",
@@ -2817,35 +2747,16 @@
     "type": "Bench1",
     "n": 10,
     "per100": 0.031,
-    "lift": 4.2,
-    "maps": [
-     "Con06b"
-    ]
-   },
-   {
-    "type": "Bench5",
-    "n": 10,
-    "per100": 0.031,
     "lift": 3.1,
     "maps": [
      "Con06b"
     ]
    },
    {
-    "type": "Table1",
-    "n": 10,
-    "per100": 0.031,
-    "lift": 3.2,
-    "maps": [
-     "Con06b",
-     "Wiz06b"
-    ]
-   },
-   {
     "type": "DunMirColumn1",
     "n": 10,
     "per100": 0.031,
-    "lift": 12.6,
+    "lift": 9.2,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2855,7 +2766,7 @@
     "type": "ClothSign1",
     "n": 10,
     "per100": 0.031,
-    "lift": 12.6,
+    "lift": 9.2,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2865,7 +2776,7 @@
     "type": "MineCrystal05",
     "n": 9,
     "per100": 0.028,
-    "lift": 4.5,
+    "lift": 5.5,
     "maps": [
      "Con05C",
      "Con06b",
@@ -2876,7 +2787,7 @@
     "type": "Table3",
     "n": 9,
     "per100": 0.028,
-    "lift": 9.5,
+    "lift": 6.9,
     "maps": [
      "Con06b"
     ]
@@ -2885,20 +2796,9 @@
     "type": "MineCrystalDown05",
     "n": 9,
     "per100": 0.028,
-    "lift": 5.7,
+    "lift": 9.2,
     "maps": [
      "Con06b",
-     "Con09c",
-     "Wiz06b"
-    ]
-   },
-   {
-    "type": "Gear5",
-    "n": 8,
-    "per100": 0.025,
-    "lift": 3.2,
-    "maps": [
-     "Con01A",
      "Con09c",
      "Wiz06b"
     ]
@@ -2907,7 +2807,7 @@
     "type": "CorpseRibCageS",
     "n": 8,
     "per100": 0.025,
-    "lift": 9.2,
+    "lift": 6.7,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2919,7 +2819,7 @@
     "type": "OgreStool2",
     "n": 8,
     "per100": 0.025,
-    "lift": 7.2,
+    "lift": 5.3,
     "maps": [
      "Con05C",
      "Con09c"
@@ -2929,7 +2829,7 @@
     "type": "DunMirHangingShield14",
     "n": 8,
     "per100": 0.025,
-    "lift": 7.8,
+    "lift": 6.7,
     "maps": [
      "Con06b"
     ]
@@ -2938,7 +2838,7 @@
     "type": "OldDarkWoodenChair3",
     "n": 8,
     "per100": 0.025,
-    "lift": 8.4,
+    "lift": 6.1,
     "maps": [
      "Con06b"
     ]
@@ -2947,7 +2847,7 @@
     "type": "DunMirTorch2",
     "n": 8,
     "per100": 0.025,
-    "lift": 12.6,
+    "lift": 9.2,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2957,7 +2857,7 @@
     "type": "DunMirAltar1",
     "n": 8,
     "per100": 0.025,
-    "lift": 12.6,
+    "lift": 9.2,
     "maps": [
      "Wiz06b"
     ]
@@ -2966,7 +2866,7 @@
     "type": "MineOreCartWheel",
     "n": 7,
     "per100": 0.021,
-    "lift": 8.0,
+    "lift": 5.9,
     "maps": [
      "Con01A",
      "Wiz06b"
@@ -2976,7 +2876,7 @@
     "type": "CorpseRightUpperLegS",
     "n": 7,
     "per100": 0.021,
-    "lift": 8.0,
+    "lift": 5.9,
     "maps": [
      "Con01A",
      "Con05C",
@@ -2988,7 +2888,7 @@
     "type": "DunMirHangingShield13",
     "n": 7,
     "per100": 0.021,
-    "lift": 11.0,
+    "lift": 10.7,
     "maps": [
      "Con06b",
      "Wiz06b"
@@ -2998,7 +2898,7 @@
     "type": "OldDarkWoodenChair8",
     "n": 7,
     "per100": 0.021,
-    "lift": 17.7,
+    "lift": 12.9,
     "maps": [
      "Con06b"
     ]
@@ -3007,7 +2907,7 @@
     "type": "OldDarkWoodenChair1",
     "n": 7,
     "per100": 0.021,
-    "lift": 8.0,
+    "lift": 5.9,
     "maps": [
      "Con06b"
     ]
@@ -3016,7 +2916,7 @@
     "type": "CorpseRightLowerLegS",
     "n": 6,
     "per100": 0.018,
-    "lift": 9.5,
+    "lift": 6.9,
     "maps": [
      "Con01A",
      "Con05C",
@@ -3028,7 +2928,7 @@
     "type": "CorpseRightLowerArmS",
     "n": 6,
     "per100": 0.018,
-    "lift": 5.8,
+    "lift": 4.3,
     "maps": [
      "Con01A",
      "Con05C",
@@ -3040,7 +2940,7 @@
     "type": "CorpsePelvisS",
     "n": 6,
     "per100": 0.018,
-    "lift": 5.8,
+    "lift": 4.3,
     "maps": [
      "Con01A",
      "Con05C",
@@ -3052,12 +2952,91 @@
     "type": "CorpseLeftUpperLegS",
     "n": 6,
     "per100": 0.018,
-    "lift": 7.6,
+    "lift": 5.5,
     "maps": [
      "Con01A",
      "Con05C",
      "Con06b",
      "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseLeftUpperArmS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 5.5,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseLeftLowerLegS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 4.3,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseLeftLowerArmS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 5.0,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseSkullS",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 4.3,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "MineCrystalDown04",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 5.5,
+    "maps": [
+     "Con01A",
+     "Con05C",
+     "Con06b",
+     "Wiz06b"
+    ]
+   },
+   {
+    "type": "CorpseLeftUpperArmN",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 6.1,
+    "maps": [
+     "Con05C",
+     "Con09c"
+    ]
+   },
+   {
+    "type": "OgrePostShadowSkull2",
+    "n": 6,
+    "per100": 0.018,
+    "lift": 3.9,
+    "maps": [
+     "Con05C"
     ]
    }
   ],
@@ -3352,9 +3331,9 @@
  },
  "_contrast": {
   "town": {
-   "maps": 10,
-   "creatures_per100": 1.19,
-   "lights_per100": 2.79,
+   "maps": 8,
+   "creatures_per100": 1.07,
+   "lights_per100": 2.28,
    "ambient": [
     [
      [
@@ -3414,9 +3393,9 @@
    ]
   },
   "dungeon": {
-   "maps": 10,
-   "creatures_per100": 1.39,
-   "lights_per100": 4.58,
+   "maps": 7,
+   "creatures_per100": 1.73,
+   "lights_per100": 4.88,
    "ambient": [
     [
      [
@@ -3445,9 +3424,9 @@
    ]
   },
   "castle": {
-   "maps": 12,
-   "creatures_per100": 0.83,
-   "lights_per100": 4.42,
+   "maps": 11,
+   "creatures_per100": 0.75,
+   "lights_per100": 4.1,
    "ambient": [
     [
      [
@@ -3476,9 +3455,9 @@
    ]
   },
   "swamp": {
-   "maps": 5,
-   "creatures_per100": 1.16,
-   "lights_per100": 1.89,
+   "maps": 4,
+   "creatures_per100": 1.24,
+   "lights_per100": 1.83,
    "ambient": [
     [
      [

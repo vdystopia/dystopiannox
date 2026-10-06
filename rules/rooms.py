@@ -1,4 +1,4 @@
-"""Rooms and buildings in Westwood's single-player maps (phase 2 rule mining).
+"""Rooms and buildings in Westwood's campaign maps (phase 2 rule mining).
 
 Rooms are found by flood-filling every non-wall cell of the 256x256 grid (4-connected; diagonal wall
 chains block 4-connectivity); door gaps are closed with a virtual wall so each room is its own
@@ -198,14 +198,14 @@ def stats(rooms, W):
 
 
 def main():
-    weights = c.sp_weights()
+    weights = c.campaign_weights()
     W = lambda r: weights[r["map"]]
-    rooms = [r for m in c.sp_maps() for r in analyse_map(m)]
+    rooms = [r for m in c.campaign_maps() for r in analyse_map(m)]
     built = [r for r in rooms if r["kind"] == "building"]
     natural = [r for r in rooms if r["kind"] == "natural"]
     summary = dict(definition=f"enclosed 4-connected component, 2..{MAX_ROOM_TILES} floor tiles, door gaps closed; "
                               "building = >=60% of solid wall cells are built materials",
-                   maps=len(c.sp_maps()), building_rooms=stats(built, W), natural_rooms=stats(natural, W))
+                   maps=len(c.campaign_maps()), building_rooms=stats(built, W), natural_rooms=stats(natural, W))
     index = []
     for r in rooms:
         e = {k: r[k] for k in ("id", "map", "building", "kind", "tiles", "bbox", "u_extent", "v_extent", "floor",
@@ -230,7 +230,7 @@ def write_md(s):
     lines = [
         "# Rooms and buildings",
         "",
-        "Source: `rules/rooms.py` over the 120 single-player maps (campaign + quest); statistics weighted by",
+        "Source: `rules/rooms.py` over the 107 campaign maps (Con/War/Wiz); statistics weighted by",
         "`1 / layout group size` so a layout shared by the three class campaigns counts once. Quartiles are",
         "[25%, median, 75%].",
         "",

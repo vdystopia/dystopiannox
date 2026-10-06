@@ -39,12 +39,12 @@ wall; the building gives the room its door on the SE wall (`building._seat_thron
 
 ## Density and openness
 
-| | Westwood (1 throne room; halls 41) | Profile |
+| | Westwood's campaign (4 rooms, Con06b, Con10d, Con11a, Wiz11A) | Profile |
 |---|---|---|
-| coverage | 0.03 (halls 0.002-0.02-0.06) | 0.03-0.12 (target 0.06) |
-| open floor | 0.79 (halls 0.72-0.92-0.98) | 0.65-0.92 |
-| pieces per tile | 0.16 | 0.10-0.35 |
-| distinct types | 6 (halls 1-4-8) | 9+ (the user asked for character) |
+| coverage | 0.01-0.03-0.05 | 0.03-0.12 (target 0.06) |
+| open floor | 0.81-0.93-0.94 | 0.65-0.92 |
+| pieces per tile | 0.02-0.10-0.11 | 0.10-0.35 |
+| distinct types | 5-8-11 | 9+ (the user asked for character) |
 | caps | halls: 6 columns at the median | columns a pair per 26 tiles, at most 8; statues 1 per 14 tiles, at most 10; benches 2 |
 
 ## Size
@@ -54,8 +54,10 @@ wall; the building gives the room its door on the SE wall (`building._seat_thron
 ## Culture variants
 
 - Dun Mir (the kit's): DunMirThrone, Statue2 statues, Column5-8 or cathedral columns, tapestries.
-- Land of the Dead (G_LOTD at cell 190,146): the lich's throne with its base and shadow, tombstones, LOTD tapestries:
-  50 tiles, coverage 0.03, open 0.79.
+- Land of the Dead: the lich's throne with its base and shadow, mana obelisks, LOTD tapestries and columns, candelabras:
+  the Lich Lord's room in Con10d (356 tiles, coverage 0.03, open 0.85, with the judgement balances and arks), the
+  finale's in Con11a (296 tiles, 0.01, 0.93) and Wiz11A's niche (84 tiles, 0.05, 0.81). (The 50-tile G_LOTD room this
+  brief once stood on is a quest map's.)
 
 ## Common mistakes
 
@@ -71,9 +73,14 @@ wall; the building gives the room its door on the SE wall (`building._seat_thron
 
 ## Examples
 
-- Westwood: Hecubah's throne room in Con06b (open to the castle, so the room finder does not close it): the throne looks
-  down a runner to its doors, wolf statues flanking it, flame basins in pairs along the runner.
-- Westwood: G_LOTD, cell 190,146: the lich's throne in a 50-tile room, tombstones and two tapestries.
+- Westwood: Hecubah's throne room in Con06b, cell 55,144 (492 tiles; it ends in the void and its walls are half crystal,
+  so `rules/rooms/westwood.py` reads it by hand: `HAND`): the three-piece Dun Mir throne looks down a runner to its
+  doors, wolf statues flanking it, flame basins in pairs along the runner: coverage 0.01, open 0.94.
+- Westwood: the Lich Lord's throne room in Con10d (War10d, Wiz10d), cell 89,143: 356 tiles, the lich's throne on its
+  base, six LOTD columns, fourteen tapestries, obelisks, the judgement balances: coverage 0.03, open 0.85.
+- Westwood's campaign has 4 throne rooms (Con06b, Con10d, Con11a, Wiz11A), all read by hand; none is a town's. The
+  profile stays fuller than they are (the user's choice: character, a pair of columns and statues), and smaller
+  (60-260 tiles against their 84-492).
 - Ours: Starwell's Hall of the Star (seed 4, room 6, 170 tiles): the throne on the NW wall down a runner, statues and
   braziers, four pairs of columns, statues across the aisle, tapestries of one colour: coverage 0.04, open 0.81,
   13 types (`review/out/Starwell/rooms/06.png`).
