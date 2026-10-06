@@ -1,0 +1,33 @@
+{
+  "packet": "rumour/i3",
+  "judge": "Claude Code subagent, Claude Opus 5.5",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Short and plain, close to Nox, but two of three lines are quest hooks (kidnapped daughter, stolen bell) and the weather filler is a tidy contrast beat."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Generic, slightly wordy travel warnings ('preying on the trade routes', 'more brazen') with masked places and a 'Young [Class]!' address: campaign gossip."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse, almost random one-liners ('Beware of the rising undead.'), a tavern joke and a shop tip: the unpolished townsfolk filler of the original."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "The toad-student gag is good and Nox-like, but every line is engineered to point at a quest, and titles (the Archivist, Master [Person]) replace names."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Two crisp hooks with a reward promise and a busy-passerby line; the structure (hook, hook, brush-off) is too purposeful."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Meandering gossip with 'Hello.' openers, the 'old goat' jab and a self-undercutting 'who spreads these insane rumors': Westwood's voice."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A joke line (paid in turnips) followed by two hooks with stakes and reward ('He'll pay well'); neat and on-message in the way new texts are."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Lowercase 'ogres', '--' dash, 'Well good luck to ya' and the deadpan 'Maybe we shouldn't have built so close to the ogre village' are the campaign's humour."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Directions and civic news in a flat, slightly clunky register ('Breakdowns in the city have become more frequent'); points the player around, not at quests."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Complaint gag, then a monster hook and a missing-scout hook naming 'the Captain': the same hook-heavy, titled-NPC pattern."}
+  ],
+  "tells": [
+    "New rumour sets are built as quest hooks: two of three lines name a monster, a victim or stolen thing, and often a reward. Westwood's townsfolk mostly give vague warnings, directions or idle gossip.",
+    "New texts name NPCs by title (the Captain, the Foreman, the Archivist, the Mayor) where Westwood uses masked names and places.",
+    "A neat recurring shape in new sets: one comic complaint or brush-off plus two hooks. Westwood's lines are uneven in length and purpose.",
+    "Westwood's humour is deadpan and self-undercutting (rumour-mongers doubting rumours, building next to ogres); new humour is a one-off quip (turnips, toad student, snow in the soup).",
+    "Westwood shows small roughness: 'Hello.' openers, lowercase monster names, '--', wordy stock phrasing ('strange and disturbing stories'); new lines are cleaner and tighter."
+  ]
+}

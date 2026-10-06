@@ -1,0 +1,412 @@
+{
+ "scenario": "two_givers",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Halvard wants the stolen tithe chest back from Corwin's watchtower (pays a ChainTunic), Sly Wat wants it to flee the country (pays 150 gold).",
+   "names": {},
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "Have you heard? Red Corwin's bandits broke into the Moot Hall last night and made off with the tithe chest -- a whole season's tithes!\n\nThe villains will have carried it up to their watchtower on Crow Hill, north of town. Return that chest to me, and you shall be handsomely rewarded. Brackenford is counting on you, brave Adventurer!"
+    },
+    "offer_b": {
+     "speaker": "Sly Wat",
+     "text": "Heh. You're going after Corwin's chest, aren't you? Sit down a moment.\n\nI rode with Corwin till last week. The chest is in the tower cellar, under the floor behind the empty barrels. Bring it here to me, not to Halvard, and half of what's inside is yours. That's more than the old man will pay! Then I'm off out of this country before Corwin finds me."
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "The tithe chest, safe and whole! Splendid! Brackenford owes you a great debt. Please accept this coat of mail from the town stores, with our gratitude."
+    },
+    "outcome_b": {
+     "speaker": "Sly Wat",
+     "text": "Ha! Look at all that silver! Here's your half, like I said -- 150 in gold. By morning I'll be three valleys away."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the tithe chest from the watchtower and return it to Halvard."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the tithe chest to Sly Wat at the Drowned Lantern."
+    }
+   },
+   "reward": {
+    "gold": 150,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Cave town of miners: Foreman Brekka wants the Sunstone lamp-crystal back from the Urchins in the east shafts (pays a SteelShield), Silas the gem dealer wants to cut it up and sell it (pays 180 gold).",
+   "names": {
+    "Brekka": "person",
+    "Silas": "person",
+    "Sunstone": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brekka",
+     "text": "It's gone dark down the main gallery, and it's no accident! Urchins pried the Sunstone off its chain and dragged it into the flooded shafts to the east.\n\nWithout that crystal my miners are working by candle stubs. Fetch it back to me and there's a fine steel shield in it for you."
+    },
+    "offer_b": {
+     "speaker": "Silas",
+     "text": "Hmmm. The Sunstone, you say? What a waste, hanging a stone like that in a hole for miners to squint by. Bring it to me instead. I'll cut it into a hundred pretty pieces and sell them in the cities. Two hundred gold for you -- well, a hundred and eighty. I have expenses."
+    },
+    "outcome_a": {
+     "speaker": "Brekka",
+     "text": "Light! Look at that, lads, we can see our own boots again! You've done the whole mine a service. Here -- the shield, and welcome to it."
+    },
+    "outcome_b": {
+     "speaker": "Silas",
+     "text": "Oh, beautiful... beautiful. A hundred and eighty, counted out. Pleasure doing business. If the Foreman asks, you never met me."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Sunstone from the Urchins and return it to Foreman Brekka."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Sell the Sunstone to the gem dealer Silas."
+    }
+   },
+   "reward": {
+    "gold": 180,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Swamp hamlet on stilts: Old Sedge wants a Spider egg from the drowned boathouse for a brew against the Spiders (pays LeatherBoots), the boy Wim wants to hatch it as a pet (pays 22 gold and a button).",
+   "names": {
+    "Old Sedge": "person",
+    "Wim": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Old Sedge",
+     "text": "Every night more Spiders come climbing up the stilts. I can brew something to keep the nasty things off, but I need an egg from their nest.\n\nThe nest is in the old drowned boathouse, south past the reeds. Bring me one egg -- whole, mind you, not squashed -- and I'll give you a good pair of boots for your trouble. Well?"
+    },
+    "offer_b": {
+     "speaker": "Wim",
+     "text": "Are you getting an egg for Old Sedge? Don't! She'll only boil it!\n\nBring it to me. I'm going to hatch it and keep it in a box and teach it tricks. You can have all my savings. It's twenty-two gold and a button."
+    },
+    "outcome_a": {
+     "speaker": "Old Sedge",
+     "text": "Ahh, still warm! Lovely. Now the little horrors will get a taste of their own. Here, take the boots, and stay off the planks after dark."
+    },
+    "outcome_b": {
+     "speaker": "Wim",
+     "text": "It moved! It moved! Here's the twenty-two gold. And the button! Don't tell Old Sedge!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Bring Old Sedge an unbroken egg from the Spiders' nest."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take a Spider egg to the boy Wim."
+    }
+   },
+   "reward": {
+    "gold": 22,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Castle town with a garrison: Captain Aldous wants King Harl's War Horn from the crypt to rally the wall against the Ogres (pays a Longsword), Brother Mattias wants it destroyed because it wakes the dead (pays 120 gold).",
+   "names": {
+    "Aldous": "person",
+    "Mattias": "person",
+    "Harl": "person",
+    "War Horn": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Aldous",
+     "text": "You there -- yes, you. The Ogres will be at our gates before the month is out, and my garrison is half asleep.\n\nIn the crypt beneath the keep lies the War Horn of old King Harl. One blast and every man on this wall will stand. Retrieve it and bring it to me. You will be paid in good steel, I give you my word as Captain."
+    },
+    "offer_b": {
+     "speaker": "Mattias",
+     "text": "My son, a word, before you go down into that crypt. The Captain does not tell you everything.\n\nWhen that horn is blown, it is not only the living who answer. Bring it to the chapel and let me destroy it. The Church is not rich, but I can find you 120 gold. Please -- think of the town!"
+    },
+    "outcome_a": {
+     "speaker": "Aldous",
+     "text": "The War Horn! Splendid! Now let the Ogres come. Take this longsword from my own armoury -- you have earned it twice over."
+    },
+    "outcome_b": {
+     "speaker": "Mattias",
+     "text": "You brought it here... thank goodness. Into the fire it goes, and may it never sound again. Here is the gold I promised. Bless you, my son."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Retrieve the War Horn from the crypt beneath the keep for Captain Aldous."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take the War Horn to Brother Mattias at the chapel to be destroyed."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Lake village of fishermen: the brothers Nils and Arne both claim the Lucky Net the Urchins took to their island (Nils pays 60 gold, Arne his old ChainTunic).",
+   "names": {
+    "Nils": "person",
+    "Arne": "person",
+    "Lucky Net": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Nils",
+     "text": "Ever since the Urchins stole the Lucky Net, I haven't caught so much as a minnow! It always comes up full, that net. Always!\n\nThey've got it on the little island in the middle of the lake. Row out, take it back and bring it to me -- not to my brother. I'll pay you sixty gold. Arne owes me that much anyway."
+    },
+    "offer_b": {
+     "speaker": "Arne",
+     "text": "Did Nils send you after the Net? Course he did. That net was mine first, everyone knows it! Bring it here and you can have my old chain shirt from when I was a soldier. Better than Nils' sixty gold, eh? He hasn't got sixty gold."
+    },
+    "outcome_a": {
+     "speaker": "Nils",
+     "text": "You got it! Wait until Arne sees -- no, don't let Arne see. Here's sixty gold. Well... fifty. Fifty-five. Sixty! Take it!"
+    },
+    "outcome_b": {
+     "speaker": "Arne",
+     "text": "That's my net! Oh, it smells just right. The chain shirt is yours. And if Nils comes round shouting, I'm out fishing."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the Lucky Net from the Urchins' island for Nils."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the Lucky Net to Arne rather than his brother."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Wizards' college town: Archivist Venn wants the examination book back from the Imps in the west tower cellars (pays a BluePotion), the student Pim wants to copy it and sink it in the lake (pays 100 gold).",
+   "names": {
+    "Venn": "person",
+    "Pim": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Venn",
+     "text": "A calamity! A calamity of the first order! The Imps have broken into the vault and absconded with the examination book -- every question for this year's students!\n\nThe wretched creatures are hiding in the cellars beneath the west tower. Recover the book and deliver it into my hands, unread. The college will show its gratitude from its own stores.\n\nWill you undertake this?"
+    },
+    "offer_b": {
+     "speaker": "Pim",
+     "text": "Hey! Hey, you! Bring that examination book to me instead. A hundred gold, and I'll sink it in the lake after. Please! I've failed twice!"
+    },
+    "outcome_a": {
+     "speaker": "Venn",
+     "text": "Unopened? Truly? Then you have saved the honour of this college! Take this potion, with the Archivist's sincere thanks."
+    },
+    "outcome_b": {
+     "speaker": "Pim",
+     "text": "Yes! Yes yes yes! A hundred gold, here, take it, take it. I'm going to be top of the class!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the stolen examination book from the Imps and return it to the Archivist."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Give the examination book to the student Pim."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Frozen fort on a mountain pass: Warden Hjalmar wants the dead courier's satchel with his orders from the high trail (pays LeatherBoots), the gambler Ketil wants to burn it for the IOU inside (pays 80 gold).",
+   "names": {
+    "Hjalmar": "person",
+    "Ketil": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hjalmar",
+     "text": "The courier never arrived. Wolves took him on the high trail, west of the gate, and my orders with him. Find his satchel. You'll have boots fit for the pass."
+    },
+    "offer_b": {
+     "speaker": "Ketil",
+     "text": "Going for the courier's bag? Listen... There's a letter in there with my name on it. A small debt. A very small debt, to some very large men.\n\nBring the bag to me first. I'll burn the lot, to be safe, and you'll have eighty gold. The Warden never needs to know."
+    },
+    "outcome_a": {
+     "speaker": "Hjalmar",
+     "text": "My orders. Good. Very good. You have served this fort well, Wanderer. Here are the boots. Now go and get warm."
+    },
+    "outcome_b": {
+     "speaker": "Ketil",
+     "text": "There it is! Into the fire with the lot. Eighty gold, as agreed. Heh... I feel lighter already."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the courier's satchel on the high trail and bring it to Warden Hjalmar."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the courier's satchel to Ketil so he can burn it."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Lava-forge town of smiths: Master Brannoc wants the Heartcoal back from the Emberdemons in the fire-pits to relight the great forge (pays a Longsword), Odile the baker wants it for her oven (pays 120 gold and buns).",
+   "names": {
+    "Brannoc": "person",
+    "Odile": "person",
+    "Heartcoal": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannoc",
+     "text": "The great forge is cold! Cold! Some fool let the Heartcoal roll into the old fire-pits, and the Emberdemons down there won't give it up.\n\nGo down below the town, to the north, and bring that coal back to my forge. Do this, and I will hammer you a longsword with my own hands."
+    },
+    "offer_b": {
+     "speaker": "Odile",
+     "text": "Is it true? You're going after the Heartcoal? Oh, the bread I could bake with that! Never a cold oven again!\n\nBring it to my bakery. Brannoc has plenty of fire as it is. I'll give you a hundred and twenty gold and all the buns you can carry."
+    },
+    "outcome_a": {
+     "speaker": "Brannoc",
+     "text": "Ahhh, feel that heat! The forge lives! Here -- a longsword, fresh from my anvil. Swing it with pride, friend."
+    },
+    "outcome_b": {
+     "speaker": "Odile",
+     "text": "Mind your fingers! Oh, look at it glow... My oven will never go out now! Here's your gold, and a bag of buns. Eat them while they're hot!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Retrieve the Heartcoal from the fire-pits for Master Brannoc's forge."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take the Heartcoal to Odile's bakery instead."
+    }
+   },
+   "reward": {
+    "gold": 120,
+    "items": [
+     "Longsword"
+    ]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Crossroads inn and its hamlet: Hester the innkeeper wants Nimble Tom's purse from the ruined mill to pay his bill (pays a room and a RedPotion), Jasper the merchant says the purse is his (pays 100 gold).",
+   "names": {
+    "Hester": "person",
+    "Jasper": "person",
+    "Nimble Tom": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Hester",
+     "text": "That rat Nimble Tom ate my food, drank my ale, slept in my best bed, and ran off without paying a copper! He's hiding in the ruined mill west of the crossroads.\n\nGet me that fat purse of his and you'll have a free room and a healing potion besides. Fair, isn't it?"
+    },
+    "offer_b": {
+     "speaker": "Jasper",
+     "text": "Excuse me -- a moment. That purse the innkeeper wants? It is mine. Every coin of it. The scoundrel lifted it from my belt on the road. Return it to me, its rightful owner, and I shall pay you a hundred gold from it. The innkeeper's bill is no concern of mine."
+    },
+    "outcome_a": {
+     "speaker": "Hester",
+     "text": "Ha! Heavy, too! That's Tom's bill paid, and then some. Your room's upstairs, first on the left, and here's the potion. Drink up, love!"
+    },
+    "outcome_b": {
+     "speaker": "Jasper",
+     "text": "My purse! Intact, or nearly so. You are an honest soul, a rare thing on these roads. One hundred gold, as I said. Good day to you."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take Nimble Tom's purse from the ruined mill to Hester at the inn."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Return the stolen purse to the merchant Jasper."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Farming town troubled by Ogres: Wilm wants his prize sow Duchess back from the Ogre camp in the northeast hills (pays 90 gold), Grub the outcast Ogre wants her for supper (pays a SteelShield).",
+   "names": {
+    "Wilm": "person",
+    "Duchess": "thing",
+    "Grub": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Wilm",
+     "text": "Duchess! They took Duchess! Big ugly Ogres came in the night and carried her off under one arm!\n\nShe's the finest sow in the valley, kind sir. Their camp is up in the hills to the northeast. Bring her home safe and I'll give you every coin in my money box. Please! She'll be so frightened!"
+    },
+    "offer_b": {
+     "speaker": "Grub",
+     "text": "You. Small one. You go Ogre camp? You bring pig to Grub. Grub not go back. Chief kick Grub out.\n\nGrub very hungry. Grub give you shiny steel shield. Grub find it. Nobody using it."
+    },
+    "outcome_a": {
+     "speaker": "Wilm",
+     "text": "Duchess! Oh, my girl, my beautiful girl! You've brought her back to me! Here, it's all yours -- ninety gold, every coin in the box. Bless you, bless you!"
+    },
+    "outcome_b": {
+     "speaker": "Grub",
+     "text": "PIG! Grub happy! Here, shield. Grub eat now. You go away now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rescue the sow Duchess from the Ogre camp and bring her home to Wilm."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring the sow Duchess to the outcast Ogre, Grub."
+    }
+   },
+   "reward": {
+    "gold": 90,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  }
+ ]
+}

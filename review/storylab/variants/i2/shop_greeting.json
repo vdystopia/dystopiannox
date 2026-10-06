@@ -1,0 +1,118 @@
+{
+ "scenario": "shop_greeting",
+ "iter": "i2",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v2 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Ossian at the Drowned Lantern, Dunstan the smith (mentions the shut gate), Mabry the potion seller.",
+   "names": {},
+   "parts": {
+    "inn": {"speaker": "Ossian", "text": "Come in out of the wet! The Drowned Lantern has dry beds and the best eel stew on the Bracken. What'll it be?"},
+    "arms": {"speaker": "Dunstan", "text": "Steel costs dear since the north gate shut. Swords, shields, mail... buy now, before the price climbs again."},
+    "magic": {"speaker": "Mabry", "text": "Mabry's potions cure what ails you! Mostly. Scrolls and spell books are on the back shelf."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Cave town of miners under a mountain: Hilde at the Deep Kettle, Torvald the armourer, Nessa the potion seller. No trouble mentioned.",
+   "names": {"Hilde": "person", "Deep Kettle": "place", "Torvald": "person", "Nessa": "person"},
+   "parts": {
+    "inn": {"speaker": "Hilde", "text": "Mind your head on the beam -- everyone hits it once! Welcome to the Deep Kettle. Hot mushroom stew, two gold a bowl."},
+    "arms": {"speaker": "Torvald", "text": "Picks are for digging. If it's fighting you want, lad, I've axes and iron helms forged right here under the mountain."},
+    "magic": {"speaker": "Nessa", "text": "Scrolls of light, potions, spell books... all kept dry, and that's no small thing this deep. What do you need?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Swamp hamlet on stilts: Tilly keeps the inn, Fenwick sells spears, Granny Reed sells potions (mentions the swamp fever).",
+   "names": {"Tilly": "person", "Fenwick": "person", "Granny Reed": "person"},
+   "parts": {
+    "inn": {"speaker": "Tilly", "text": "Wipe yer feet, the floor's only planks! Hot frog pie and a hammock up out of the damp. Staying?"},
+    "arms": {"speaker": "Fenwick", "text": "Spears, mostly. Long ones. A short blade's no use against something that stays in the water. Have a look."},
+    "magic": {"speaker": "Granny Reed", "text": "Half the hamlet's down with swamp fever. Cure potions are by the door, and I'd thank you to leave me one!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Castle town with a garrison: Bertram's tavern splits soldiers from travellers, Hagen the armourer boasts of the Captain's inspection, Ilse sells scrolls. No trouble mentioned.",
+   "names": {"Bertram": "person", "Hagen": "person", "Ilse": "person"},
+   "parts": {
+    "inn": {"speaker": "Bertram", "text": "Soldiers drink on the left, travellers on the right. Keep it that way and we'll get on. Will you want a room?"},
+    "arms": {"speaker": "Hagen", "text": "Good day to you! Every blade on this wall has passed the Captain's own inspection. You will find none finer outside the armoury."},
+    "magic": {"speaker": "Ilse", "text": "A visitor who isn't in uniform! How refreshing. Do browse -- the scrolls came in from the capital only yesterday."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Lake village of fishermen: Dorran's Leaky Boat serves only fish, Sigrid sells harpoons, Pell sells potions (mentions the missing boats).",
+   "names": {"Dorran": "person", "Leaky Boat": "place", "Sigrid": "person", "Pell": "person"},
+   "parts": {
+    "inn": {"speaker": "Dorran", "text": "Fish soup, fish pie, or fried fish. That's the menu at the Leaky Boat, so don't ask for mutton."},
+    "arms": {"speaker": "Sigrid", "text": "Ho there! Harpoons, spears, a few swords off the trading barge. Fair prices, and I'll hear no haggling."},
+    "magic": {"speaker": "Pell", "text": "Red potions sell fast since the boats started going missing. Better buy while I've a few left!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Wizards' college town: Fenn's Inkpot hushes for the students, Rodric the lonely sword seller, Master Corvane sells the college's scrolls. No trouble mentioned.",
+   "names": {"Fenn": "person", "Inkpot": "place", "Rodric": "person", "Corvane": "person"},
+   "parts": {
+    "inn": {"speaker": "Fenn", "text": "Shhh! The students upstairs are studying. Or sleeping. Bed and supper at the Inkpot -- and no singing."},
+    "arms": {"speaker": "Rodric", "text": "A customer! For a sword! Do you know how long it's been? Everyone in this town just waves their hands at things."},
+    "magic": {"speaker": "Corvane", "text": "Greetings, seeker. Every scroll on these shelves was copied by the college's own scribes. Choose with care, for I do not take returns."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Frozen fort on a mountain pass: Ma Gruen's cookhouse, Ottar the shield seller (mentions the wolves on the pass), Yselde who keeps potions by the fire.",
+   "names": {"Ma Gruen": "person", "Ottar": "person", "Yselde": "person"},
+   "parts": {
+    "inn": {"speaker": "Ma Gruen", "text": "Shut the door! Shut it! ...There. Hot broth and a blanket, or did you only come in to let the cold through?"},
+    "arms": {"speaker": "Ottar", "text": "Wolves on the pass, and worse above the snowline. Get yourself a stout shield before you go up. I have three."},
+    "magic": {"speaker": "Yselde", "text": "Everything freezes up here, even the potions. I keep mine by the fire. Warm one, four gold?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Lava-forge town of smiths: Ragna's alehouse in the heat, Master Holt with blades still hot from the pits, Saffi with burn potions. No trouble mentioned.",
+   "names": {"Ragna": "person", "Holt": "person", "Saffi": "person"},
+   "parts": {
+    "inn": {"speaker": "Ragna", "text": "Ale! Ale and water, and in this heat you'll want both. Sit anywhere that isn't smoking."},
+    "arms": {"speaker": "Holt", "text": "Hammered in the fire-pits, quenched in the black spring! No harder steel exists in the land. Don't touch the red ones."},
+    "magic": {"speaker": "Saffi", "text": "Welcome, welcome. Potions against burns, scrolls, a few old spell books. Ask if you don't see it."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Crossroads inn and its hamlet: Barnaby of the Four Ways, Lukas the pedlar of shields (mentions highwaymen on the east road), Wynn with spell books under the counter.",
+   "names": {"Barnaby": "person", "Four Ways": "place", "Lukas": "person", "Wynn": "person"},
+   "parts": {
+    "inn": {"speaker": "Barnaby", "text": "Travellers off all four roads stop at the Four Ways, and every one leaves happy! Bed, board, or both, kind sir?"},
+    "arms": {"speaker": "Lukas", "text": "Highwaymen on the east road again. A shield costs less than a funeral, friend. Want to see one?"},
+    "magic": {"speaker": "Wynn", "text": "Psst... you there. You look like someone who reads. I've spell books nobody else in this hamlet would buy."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Farming town troubled by Ogres: Hob feeds travellers, Gerda sells axes (mentions last night's Ogre raid), Old Maudie sells potions and an unread spell book.",
+   "names": {"Hob": "person", "Gerda": "person", "Maudie": "person"},
+   "parts": {
+    "inn": {"speaker": "Hob", "text": "Cider from our own orchard, bread from our own wheat. Sit down and eat, you look half-starved!"},
+    "arms": {"speaker": "Gerda", "text": "Ogres again last night -- took two pigs! You'll want an axe, and a big one. I have just the thing."},
+    "magic": {"speaker": "Maudie", "text": "Hello, dearie! Potions for the belly, potions for the head, and a spell book my husband never opened. Care to see?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

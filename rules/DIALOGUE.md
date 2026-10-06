@@ -85,7 +85,7 @@ Words per line by situation (p10 / median / p90), and how the lines sound (share
     appreciation", a spell, a key, the way on. Do not itemise the payment ("gold, and this ankh, and two potions").
     A big quest's thanks point onward ("The Captain awaits you at the front gates.").
 
-## What gave our lines away (the lab's blind judges, i0-i1)
+## What gave our lines away (the lab's blind judges, i0-i2)
 
 - **One template, one map:** the same beats in every quest (hail, self-introduction, named beast leader,
   compass-precise place, sum plus item plus joke, "Will you...?"), the same village words (reeve, ford, north road,
@@ -96,9 +96,79 @@ Words per line by situation (p10 / median / p90), and how the lines sound (share
   semicoloned. Westwood swings between plain, bombast and stiff formality, and leaves its people odd.
 - **Crafted flourishes:** "I'll be plain about it", "I won't waste your time", "nothing comes in, and nothing goes
   out", similes ("white as milk", "wrapped up like parcels"). Westwood is cornier and less clever.
+- **Every line a character piece (i2):** each captive, keeper and reminder got its own comic line. Westwood's
+  captives say "I'll follow you." and "Hurry! Lead me to safety!"; its keepers "Welcome to X! How can I help you?";
+  its reminders "Get a move on." Give colour to two or three people a map and let the rest be functional.
+- **Dry wit (i2):** a price corrected mid-sentence, a wry sting at the end, an itemised odd reward. Westwood's humour
+  is broad: puns, anachronism ("only used it on weekends"), melodrama, crude similes ("fresher'n a monkey's butt").
+- **Too clean, too even (i2):** every line of a set in one polished register. Westwood's sets are uneven: one long
+  run-on exposition beside a two-word bark, a stiff formal line beside a slangy one.
+- **Titles for names (i3):** "see the Captain", "the Foreman decides", "ask the Elder". Westwood names its people
+  (Mayor Theogrin, Aldwyn the Conjurer, Gearhart, Morgan Lightfingers) and uses a bare title only for the Captain.
+- **Invented magic explained (i3):** "a fire-stone that burns without wood". Westwood names the thing and moves on
+  ("the Amulet of Teleportation", "my magic staff").
 - **Sentimental heirlooms:** Westwood's stolen things are useful or magic (spectacles, boots, a scepter, a staff, an
   amulet); its choices are odd or comic deals (a used bow, an inn for 50,000 gold, dead or alive), not moral forks
   with a stock turncoat.
+
+## Shapes: draw them, do not repeat one
+
+The judges caught our lines by their **one template**: every guard "the way is shut, X is beyond, see Y at Z, now it
+is open"; every offer "exclamation, what was stolen, why it matters, why I can't go, Will you...?"; every rumour set
+"a joke, a hook, someone paying gold". Westwood's lines of one situation take many shapes, and a map uses several.
+Pick a different shape for each person; on a map, no two quests or two people of one kind on the same shape.
+
+**Guards** (Westwood's 48 lines):
+- proud of the place or its lord: "The Fortress of Dün Mir is home of the legendary Fire Knights."
+- the rules of the place: "We keep a tidy city. No street brawls, foul language, or spitting is allowed."
+- curt: "Move on!", "Halt!", "Only proven warriors may enter here!"
+- refusal by order, with a reason: "Sorry. You can't leave without Mayor Theogrin's permission. It's meant for your
+  own good."
+- a warning about the road: "Take care on the way to Ix, there have been reports of bandits."
+- a welcome and a pointer: "A fine tavern is straight ahead! An excellent respite after so long a journey."
+- idle talk: "Beautiful weather today, don't you think?"
+- a jailer's threat: "Wanna see the inside of a cell?"
+- after the deed: "You did a great deed for our village. Thank you, Warrior." (one line, no news)
+
+**Quest offers** (108): the trouble shouted first ("It's a disaster!"); a cry for help from a victim ("Sir! Help me
+please!"); a stiff official who explains a duty ("Hello, young Mage. I surmise you might be here about the reward.");
+a bargain ("I'll tell you what, if you'll do me a favor I'll put in a good word for you. How about it?"); a mentor's
+order with no question at all ("Go into the cemetery located East of here and recover my scepter."); a grumbler
+("Oh, bah! Morgan's arrested again?!"). Not every offer explains why the thing matters, or why the speaker cannot go;
+not every one ends with a question.
+
+**Townsfolk** (131): a brush-off ("I'm late for an appointment, sorry."); a general warning ("Beware of the rising
+undead."); a tip about the game ("I've heard you can get enchanted boots for walking on fire."); gossip about the
+great ("Horrendous is the bravest of warriors! He once fended off 40 wizards with his bare hands!"); a complaint;
+a pointer to a place ("If you want the latest news, head over to Bing's Tavern."); a rumour of the quest; after the
+quest, praise ("Nice job with the spiders! I hear the Mayor is very impressed!"). Speak in general terms: "the trade
+routes", "the undead", "strange noises from the alleys", not "the ninth shaft" or "the third plank".
+
+**Reminders** (64): worry ("Oh why aren't you going? My sister is in the worst danger!"), impatience ("Why are you
+still here?"), the ask again ("What are you waiting for? I need my magical staff!"), a vague remark ("Those
+nettlesome urchins are causing too much trouble these days."), a hint ("Well, the rogues who took them have a hideout
+in the woods nearby."). Not a joke.
+
+**Completions** (57): joy and a handover ("Oh, thank you so much! Please accept this as a token of my
+appreciation!"); a sum ("And here's your reward -- 100 in gold!"); a title or the way on ("The guards will be informed
+that you are now free to come and go."); news for the next step. No quip about the item's condition.
+
+## Fewer particulars
+
+- **Counts and spots:** Westwood's lines carry a number in 3% of them. Do not count the monsters ("five Ogres") or
+  number the place ("past the third furnace", "the ninth shaft") unless the count is the quest ("Rescue the 6 trapped
+  mine workers.").
+- **The reward is said once:** promised vaguely in the offer ("I will offer a worthy reward", "I'll teach you a damn
+  fine spell") and named, if at all, at the handover. Not the same sum in both, and no extra trinket tacked on.
+- **No closing quip.** A line that ends on a crafted punchline ("Slimy, but mine!", "If he's sober.") is ours.
+  Westwood's jokes are whole lines from odd people, not tags at the end of everyone's.
+- **`--` sparingly:** one line in twenty has it in the campaign; "..." one in fourteen.
+- **Leave people stiff sometimes:** "valiant", "beloved", "legendary", "great deed", "strange and desperate times",
+  "Hail traveler" -- the campaign's stock civic phrases. Plain modern-casual turns ("Below's shut", "I just stand
+  here") are a tell.
+- **Tie the errand to the larger story** when the map has one: the giver names the main villain or sends the player on
+  to the main giver ("The Captain awaits you at the front gates."). A side quest may stand alone; most of Westwood's
+  people know what the chapter is about.
 
 ## The situations
 

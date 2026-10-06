@@ -376,6 +376,14 @@ def voice(fs):
         if ex > lim:
             p = min(3.0, 10 * (ex - lim)); pen += p
             out.append(f"-{p:.1f} voice: {ex:.0%} of the sentences exclaim (Westwood's 37%)")
+    dash = sum(1 for f in talk if f["dash"]) / n
+    if n >= 4 and dash > 0.05 + slack:
+        p = min(1.5, 5 * (dash - 0.05 - slack)); pen += p
+        out.append(f"-{p:.1f} voice: {dash:.0%} of the lines use ' -- ' (Westwood's 5%)")
+    num = sum(1 for f in talk if f["numbers"]) / n
+    if n >= 4 and num > st["numbers"]["mean"] + 0.1 + slack:
+        p = min(1.0, 4 * (num - st["numbers"]["mean"] - 0.1 - slack)); pen += p
+        out.append(f"-{p:.1f} voice: {num:.0%} of the lines count or number things")
     ad = sum(f["address"] for f in talk) / n
     if n >= 6 and ad < 0.04:
         pen += 1.0; out.append(f"-1.0 voice: no line addresses the player (lad, stranger, friend, kind sir; Westwood {st['address']['mean']:.0%})")

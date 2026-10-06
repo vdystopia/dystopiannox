@@ -1,0 +1,118 @@
+{
+ "scenario": "rumour",
+ "iter": "i3",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v3 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford townsfolk; shapes: rumour1 = quest rumour as a complaint (wolves, Ulric's bounty), rumour2 = general warning pointing at the barrow Urchins and the mill (Wenna's seal), rumour3 = ordinary brush-off",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The wolves have been at Ulric's sheep again! The old man says he'll pay good gold to see them dead."},
+    "rumour2": {"speaker": "Townswoman", "text": "Keep a hand on your purse. Those Urchins from the barrow robbed the mill in broad daylight!"},
+    "rumour3": {"speaker": "Townsman", "text": "Can't stop, the ferry won't wait for me."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 2,
+   "specifics": "Cave town of miners; shapes: rumour1 = ordinary complaint about the work, rumour2 = quest rumour as fear (Spiders in the lower gallery), rumour3 = tip about a paying job (the assayer's stolen magic lens)",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Down in the dark from dawn to dusk, and they pay us in turnips!"},
+    "rumour2": {"speaker": "Townswoman", "text": "The Foreman lost good men to the Spiders in the lower gallery. I'd not go down there for all the gold in the mountain."},
+    "rumour3": {"speaker": "Townsman", "text": "Somebody stole the assayer's magic lens right off his bench. He'll pay well to have it back, I hear."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 3,
+   "specifics": "Swamp hamlet on stilts; shapes: rumour1 = warning to the player (Wisps took the Elder's grandson, a rescue), rumour2 = ordinary comic complaint about the damp, rumour3 = tip about work (Maud the herb woman wants marsh-lily roots)",
+   "names": {"Maud": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Don't follow the lights in the bog, stranger! The Wisps led the Elder's grandson off that way."},
+    "rumour2": {"speaker": "Townswoman", "text": "Damp, damp, damp! My bread's gone green again."},
+    "rumour3": {"speaker": "Townsman", "text": "Old Maud the herb woman is paying for marsh-lily roots. Mind the leeches if you go picking."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 4,
+   "specifics": "Castle town with a garrison; shapes: rumour1 = gossip about the great (Sir Aldric beaten by the Undead, the Captain wants help), rumour2 = scandal pointing at a fetch (the Quartermaster's enchanted shield), rumour3 = ordinary brush-off on the Duke's business",
+   "names": {"Aldric": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Sir Aldric rode out against the Undead and came back alone! The Captain is looking for braver souls now."},
+    "rumour2": {"speaker": "Townswoman", "text": "A thief got into the armoury and took the Quartermaster's enchanted shield. Imagine the shame of it."},
+    "rumour3": {"speaker": "Townsman", "text": "Out of my way, I'm on the Duke's business!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 5,
+   "specifics": "Lake village of fishermen; shapes: rumour1 = ordinary gossip (the Harbourmaster's fish story), rumour2 = worry pointing at the beast (something in the lake tearing nets), rumour3 = plain news of a theft (Tobin's magic lantern taken by rogues on the far shore)",
+   "names": {"Tobin": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The Harbourmaster swears he once caught a pike the size of a rowboat. Nobody believes a word of it."},
+    "rumour2": {"speaker": "Townswoman", "text": "My husband's nets came back torn to ribbons. Something huge lives in the lake now, I tell you!"},
+    "rumour3": {"speaker": "Townsman", "text": "Rogues on the far shore stole Tobin's magic lantern. Without it, he can't fish at night."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 6,
+   "specifics": "Wizards' college town; shapes: rumour1 = alarm pointing at the main trouble (a Golem in the east wing, the Archivist), rumour2 = tip with a promise (Master Quill's spell book lost in the catacombs), rumour3 = ordinary odd humour (a lost toad that was a student)",
+   "names": {"Quill": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "A Golem smashed its way out of the workshop and into the east wing! The Archivist is in a terrible state."},
+    "rumour2": {"speaker": "Townswoman", "text": "Some student lost Master Quill's spell book in the catacombs. Find it and you'll be the toast of the College!"},
+    "rumour3": {"speaker": "Townsman", "text": "Hmmm. Have you seen a brown toad hopping about? He was my student. It's a long story."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 7,
+   "specifics": "Frozen fort on a mountain pass; shapes: rumour1 = ordinary complaint about the post, rumour2 = plain statement pointing at the Troll on the high bridge, rumour3 = worry pointing at a rescue (a lost scout, the Captain)",
+   "names": {},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Snow in the soup, snow in the bedroll... I hate this post!"},
+    "rumour2": {"speaker": "Townswoman", "text": "That Troll on the high bridge ate our supply mule. Rations will be short this winter."},
+    "rumour3": {"speaker": "Townsman", "text": "A scout went out after the lost sled and never came back. The Captain fears the worst."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 8,
+   "specifics": "Lava-forge town of smiths; shapes: rumour1 = general warning (Imps out of the vents), rumour2 = ordinary gossip about the great (Master Durn the smith), rumour3 = a reward heard of (the Guildmaster's stolen gauntlets)",
+   "names": {"Durn": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Stay clear of the vents after dark. The Imps come crawling out of them!"},
+    "rumour2": {"speaker": "Townswoman", "text": "Master Durn is the finest smith in all the land! Lords come from across the sea for his blades."},
+    "rumour3": {"speaker": "Townsman", "text": "The Guildmaster's enchanted gauntlets were stolen from the Hall. He'd give a good reward to see them again."}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 9,
+   "specifics": "Crossroads inn and its hamlet; shapes: rumour1 = a pointer to a person (Hulda at the inn wants the east road looked into), rumour2 = ordinary brush-off, rumour3 = fresh news of a beast (a great Bear wrecked a pedlar's cart on the south road)",
+   "names": {"Hulda": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "Looking for work? Ask Hulda at the inn. She wants somebody to see what walks the east road at night."},
+    "rumour2": {"speaker": "Townswoman", "text": "Leave me be, I've a wheel to mend."},
+    "rumour3": {"speaker": "Townsman", "text": "A pedlar came in raving last night. A great Bear tore his cart apart on the south road!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  {
+   "id": 10,
+   "specifics": "Farming town troubled by Ogres; shapes: rumour1 = shouted news of a captive (Hobb's daughter, the Mayor), rumour2 = ordinary complaint about the weather, rumour3 = lament pointing at a fetch (the chapel's harvest bell)",
+   "names": {"Hobb": "person"},
+   "parts": {
+    "rumour1": {"speaker": "Townsman", "text": "The Ogres carried off Hobb's daughter! The Mayor is beside himself."},
+    "rumour2": {"speaker": "Townswoman", "text": "Rain, rain and more rain. The barley's drowning in the field."},
+    "rumour3": {"speaker": "Townsman", "text": "The Ogres took the harvest bell from the chapel. No bell, no festival... What a disaster!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ ]
+}

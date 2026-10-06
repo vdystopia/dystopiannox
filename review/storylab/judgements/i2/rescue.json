@@ -1,0 +1,33 @@
+{
+  "packet": "rescue/i2",
+  "judge": "Claude Code subagent (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Fun ('if he isn't stew yet', the Troll trying to light a fire under the cook), but every line lands a joke on cue and the plea packs who/where/reward into two tight sentences. More polished than Westwood's rescues."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Jammed express elevator, 'really big bugs', 'circle back to the locked gate', 'Thank the stars... You'll make a fine [Class], lad.' Plainly functional with guidance and slightly clumsy flow; classic campaign text."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A pet frog in a burning house, 'Loads and loads of money?' and generic captive lines ('Fine! I will follow you!'). Westwood's goofy humour and slightly mismatched captive barks."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Horrific overgrown insects and airborne demons', 'vital interests', 'Charm or kill all the monsters', a numbered objective and a Captain hand-off. Overwrought and mechanical in Westwood's way."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Discreet steward, brat lord's son ('Carry my torch! No? Then at least walk in front.'), a cover-up ending. Well written, but the social irony and character comedy in every line are a newer register."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "The innkeeper who only wants his bill paid and 'These boots cost more than a horse!' are wry character comedy with a twist sting at the end. Too neat for Nox."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'That fool of a lamp-boy', 'I've got the lamps! Well, two of them.', '[Person], you little idiot!' Tight and punchy but too consistently quipping; Westwood's captives speak more generically."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A priest's plea in a measured, sentimental register ('may the light keep you'), with tidy direction ('old barrow east of the ford'). Competent, but it lacks Westwood's exclamatory overstatement and odd turns."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'A mob of foul Ogres', 'Oh why aren't you going?', 'Hail, brave Adventurer!' and 'tokens of my appreciation'. Breathless melodrama in the campaign's voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "'Damn! Where have you been, lad!?', a long expository captive speech about the demoness and mana, 'Time waits for no man!', and the awkward 'At happier other times'. Main-plot Westwood, clumsy and all."}
+  ],
+  "tells": [
+    "Westwood's captives speak generic follow-me barks ('Hurry! Lead me to safety!', 'I'll follow you.') or long exposition; the new captives each get a comic character line (vain merchant, spoiled heir, clumsy lamp-boy).",
+    "Westwood's pleas are breathless and overstated, with stacked exclamation marks, '!?', villain adjectives ('foul', 'horrific', 'ruthless') and stock phrases ('tokens of my appreciation', 'brave Adventurer'). The new ones are controlled and wry.",
+    "New texts end with an ironic sting (the bill, the cover-up, 'you little idiot!'); Westwood's endings are plain thanks plus a reward or a hand-off to the next quest-giver.",
+    "Westwood's journal lines are short and functional, sometimes with game mechanics ('Charm or kill all the monsters', 'Rescue the 6'); the new journals add descriptive tags ('the lamp-boy', 'at the old windmill').",
+    "Westwood text has small flaws (awkward word order, mismatched lines, run-on exposition); the new text is uniformly polished and tightly sized."
+  ]
+}

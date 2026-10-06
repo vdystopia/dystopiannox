@@ -1,0 +1,417 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i3",
+ "writer": "guided agent",
+ "guide": "rules/DIALOGUE.md v3 + rules/QUESTS.md",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Wenna, the miller's widow of Brackenford; her husband's silver seal, the mill's mark, stolen by the Urchins of the old barrow east of the ford. Shapes: offer = trouble shouted first; reminder = worry; completion = joy and handover.",
+   "names": {},
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Thieving little beasts! The Urchins broke into my mill and stole my husband's silver seal!\n\nEvery sack I sell carries its mark. Without it the flour merchants won't pay a fair price. Those Urchins have dug into the old barrow east of the ford, and that's where it will be.\n\nI'll pay what I can. Will you bring it back to me?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Then I'll grind for nothing. Good day to you."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "No seal yet? Oh, I fear they'll lose it down in all that dirt!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My seal! Oh, you found it! Now the merchants will pay me properly again! Please, take this for your trouble."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Thank you again! Now if only someone would deal with Red Corwin..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's seal from the Urchins in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's seal from the Urchins in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": ["RedPotion"]
+   }
+  },
+  {
+   "id": 2,
+   "specifics": "Brannoc, an old miner of a cave town under a mountain; his dowsing rod that finds silver, snatched by Imps into the old shaft behind the smelter. Shapes: offer = cry for help from the victim; reminder = impatience; completion = a sum.",
+   "names": {
+    "Brannoc": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brannoc",
+     "text": "Help! Help me, somebody! Imps came up out of the deep tunnels and snatched my dowsing rod right out of my hands!\n\nThat rod finds silver through solid rock. There's not another like it under this mountain. The little devils ran down the old shaft behind the smelter. Would you go after them, lad?"
+    },
+    "refusal": {
+     "speaker": "Brannoc",
+     "text": "Ah, well. I'll be digging blind like everyone else, then."
+    },
+    "reminder": {
+     "speaker": "Brannoc",
+     "text": "Why are you still standing about? Those Imps get further away every minute!"
+    },
+    "completion": {
+     "speaker": "Brannoc",
+     "text": "My rod! You got it away from those horrid Imps! Here's 80 gold for you, and well earned!"
+    },
+    "after": {
+     "speaker": "Brannoc",
+     "text": "A thousand thanks again, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Brannoc's dowsing rod from the Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Brannoc's dowsing rod from the Imps."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  {
+   "id": 3,
+   "specifics": "Isolde, the healer of a swamp hamlet on stilts; her amulet against the marsh fever, swallowed by a Giant Leech under the drying sheds. Shapes: offer = stiff official explaining a duty; reminder = the ask again; completion = the way on (free passage by boat) and a handover.",
+   "names": {
+    "Isolde": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Isolde",
+     "text": "Greetings, Wanderer. You arrive at an unfortunate hour.\n\nLast night my amulet slipped from the walkway into the black water, and a Giant Leech swallowed it whole. That amulet has kept the marsh fever from this hamlet for as long as anyone remembers.\n\nThe creature lairs in the mud beneath the old drying sheds, south of the boat landing. You shall not go unrewarded. Would you be so kind as to retrieve it?"
+    },
+    "refusal": {
+     "speaker": "Isolde",
+     "text": "A pity. I shall pray the fever does not find us before you reconsider."
+    },
+    "reminder": {
+     "speaker": "Isolde",
+     "text": "The amulet, Wanderer! The fever will not wait upon your leisure."
+    },
+    "completion": {
+     "speaker": "Isolde",
+     "text": "You have it! Splendid! The boatmen shall be told to carry you wherever you wish, without charge. And please, take this with my gratitude."
+    },
+    "after": {
+     "speaker": "Isolde",
+     "text": "The fever keeps its distance now. My gratitude, as ever."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Isolde's amulet from the Giant Leech beneath the drying sheds."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Isolde's amulet from the Giant Leech beneath the drying sheds."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": ["CurePoisonPotion"]
+   }
+  },
+  {
+   "id": 4,
+   "specifics": "Tobin, the old bugler of a castle town; the garrison's great horn that calls the soldiers to the walls, stolen by thieves through the sewers. Shapes: offer = greeting, then the trouble and a favour with the Captain; reminder = vague remark; completion = news for the next step (the Captain waits in the keep).",
+   "names": {
+    "Tobin": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tobin",
+     "text": "Greetings, young sir. Hear an old bugler out, if you would.\n\nThe great horn of this garrison is gone! Thieves crept up through the sewers and took it from the gatehouse. When raiders come, that horn calls every soldier to the walls.\n\nThey went back down the grate behind the barracks. Bring the horn home and the Captain will hear your name from me. What say you?"
+    },
+    "refusal": {
+     "speaker": "Tobin",
+     "text": "Too proud to crawl through the sewers, eh? Suit yourself."
+    },
+    "reminder": {
+     "speaker": "Tobin",
+     "text": "The watch is jumpy tonight. Every shadow on the wall looks like a raider."
+    },
+    "completion": {
+     "speaker": "Tobin",
+     "text": "The horn! Back on its hook where it belongs! Here, take this for your trouble. And the Captain wants a word with you in the keep, at once!"
+    },
+    "after": {
+     "speaker": "Tobin",
+     "text": "The horn sounds true again, young sir. Thanks to you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the garrison's horn from the thieves in the sewers."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the garrison's horn from the thieves in the sewers."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["WoodenShield"]
+   }
+  },
+  {
+   "id": 5,
+   "specifics": "Haskel, a fisherman of a lake village; his father's blessed net that never comes up empty, torn from his boat by a Ghost off the little island. Shapes: offer = grumbler; reminder = a hint; completion = joy and handover.",
+   "names": {
+    "Haskel": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Haskel",
+     "text": "Bah! The fish won't bite, my boat leaks, and now a Ghost has my net!\n\nIt rose out of the lake by the little island and tore the net right out of my hands. My father's net, that was. Blessed by a priest, and it never once came up empty.\n\nIf you're not scared of ghosts, row out to the island and get it back. Will you, or won't you?"
+    },
+    "refusal": {
+     "speaker": "Haskel",
+     "text": "Hmph... thought not. Nobody in this village will go near that island either."
+    },
+    "reminder": {
+     "speaker": "Haskel",
+     "text": "That Ghost only shows itself after dark, you know. Look near the old wreck."
+    },
+    "completion": {
+     "speaker": "Haskel",
+     "text": "Well, I'll be! My net! Maybe this is a good day after all! Take this, and don't you dare refuse it."
+    },
+    "after": {
+     "speaker": "Haskel",
+     "text": "The fish are biting again! Thanks to you, lad."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Haskel's blessed net from the Ghost on the island."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Haskel's blessed net from the Ghost on the island."
+    }
+   },
+   "reward": {
+    "gold": 45,
+    "items": ["RedPotion", "BluePotion"]
+   }
+  },
+  {
+   "id": 6,
+   "specifics": "Corvell, the Archivist of a wizards' college town; the Star Lens that reads faded scrolls, dragged off by the Spiders of the east tower. Shapes: offer = stiff official, formal and Latinate; reminder = worry; completion = news for the next step (the Archmage in the high tower) and a spell book.",
+   "names": {
+    "Corvell": "person",
+    "Star Lens": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Corvell",
+     "text": "Ah, a visitor. How very fortunate.\n\nI find myself in a most regrettable position. The Star Lens, entrusted to this archive by the college's founder, has been dragged off by the Spiders that infest the east tower. Without it the faded scrolls are unreadable to every scholar here.\n\nThe college does not forget its benefactors. Would you undertake to recover it?"
+    },
+    "refusal": {
+     "speaker": "Corvell",
+     "text": "Most disappointing. Should you reconsider, you know where the archive is."
+    },
+    "reminder": {
+     "speaker": "Corvell",
+     "text": "I dread to think what those Spiders have done to the Lens. Please, make haste!"
+    },
+    "completion": {
+     "speaker": "Corvell",
+     "text": "The Star Lens! Returned by your own hand! Remarkable! Please accept this spell book with the archive's thanks.\n\nAnd the Archmage asks to meet you. You will find him in the high tower."
+    },
+    "after": {
+     "speaker": "Corvell",
+     "text": "Ah, our benefactor. The scrolls read clearly again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Star Lens from the Spiders in the east tower."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Star Lens from the Spiders in the east tower."
+    }
+   },
+   "reward": {
+    "gold": 30,
+    "items": ["SpellBook"]
+   }
+  },
+  {
+   "id": 7,
+   "specifics": "Magda, the cook of a frozen fort on a mountain pass; the fire-stone that heats her hearth without wood, carried off by a Troll to the ice caves up the pass. Shapes: offer = trouble shouted first, short; reminder = the ask again; completion = a sum from the Captain.",
+   "names": {
+    "Magda": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Magda",
+     "text": "It's gone! The fire-stone is gone!\n\nA Troll came over the wall in the snow and took it from my hearth. That stone burns without wood. Without it this whole fort freezes! The brute lives in the ice caves up the pass, to the north. Please! Will you go after it?"
+    },
+    "refusal": {
+     "speaker": "Magda",
+     "text": "Then we'll freeze, and it'll be on your head!"
+    },
+    "reminder": {
+     "speaker": "Magda",
+     "text": "The stone! Have you got the stone? My fingers are going numb!"
+    },
+    "completion": {
+     "speaker": "Magda",
+     "text": "Ahhh, it's warm! Feel that! You've saved the whole fort! The Captain sends 100 gold from his own purse, and here it is."
+    },
+    "after": {
+     "speaker": "Magda",
+     "text": "Come warm yourself by my hearth any time!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve the fire-stone from the Troll in the ice caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve the fire-stone from the Troll in the ice caves."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  {
+   "id": 8,
+   "specifics": "Ondrey, a master smith of a lava-forge town; his tempering hammer, stolen by Fire Sprites into the slag caves south of the forges. Shapes: offer = mentor's order, one page, with a bare question at the end; reminder = a hint; completion = a standing (welcome at the forges, fair prices) and boots.",
+   "names": {
+    "Ondrey": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ondrey",
+     "text": "You. Go down to the slag caves south of the forges and bring me back my hammer. Fire Sprites took it while I slept. Will you go?"
+    },
+    "refusal": {
+     "speaker": "Ondrey",
+     "text": "Then don't come to my forge when your blade snaps."
+    },
+    "reminder": {
+     "speaker": "Ondrey",
+     "text": "Fire Sprites hate water. Keep that in mind down there."
+    },
+    "completion": {
+     "speaker": "Ondrey",
+     "text": "My hammer. Good work. From today my forge is open to you, and every smith in town will sell to you at a fair price. Take these boots as well."
+    },
+    "after": {
+     "speaker": "Ondrey",
+     "text": "Hmmm. You again. Good work on that hammer."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Master Ondrey's hammer back from the slag caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring Master Ondrey's hammer back from the slag caves."
+    }
+   },
+   "reward": {
+    "gold": 25,
+    "items": ["LeatherBoots"]
+   }
+  },
+  {
+   "id": 9,
+   "specifics": "Hilde, the innkeeper's wife at a crossroads inn; her enchanted honey crock that fills itself overnight, carried off by a Bear to its den in the woods west of the crossroads. Shapes: offer = cry for help from the victim; reminder = impatience; completion = joy and handover (and supper on the house).",
+   "names": {
+    "Hilde": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hilde",
+     "text": "Oh, help! Help! A Bear!\n\nIt broke into my cellar and ran off with my honey crock! It's an enchanted old thing -- scoop it empty at night and it's full again by morning. Half my cooking comes out of that crock! Its den is up in the woods west of the crossroads. Would you get it back for me, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Hilde",
+     "text": "Oh dear. Plain porridge for the guests again, then."
+    },
+    "reminder": {
+     "speaker": "Hilde",
+     "text": "Are you still here? That Bear will have it licked clean!"
+    },
+    "completion": {
+     "speaker": "Hilde",
+     "text": "My crock! Oh, you wonderful soul! Sit down, sit down, and take this. Your supper's on the house tonight!"
+    },
+    "after": {
+     "speaker": "Hilde",
+     "text": "Thanks again, kind sir! There's always a bowl for you here."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Hilde's honey crock from the Bear's den."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Hilde's honey crock from the Bear's den."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["RedPotion"]
+   }
+  },
+  {
+   "id": 10,
+   "specifics": "Tull, an old farmer of a farming town troubled by Ogres; the bronze rooster weather vane that turns before every storm, pulled off his barn by the Ogres and taken to their camp in the eastern hills. Shapes: offer = a bargain, one page; reminder = vague remark; completion = news for the next step (the Mayor wants Ogre fighters) and the pick of the storeroom.",
+   "names": {
+    "Tull": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Tull",
+     "text": "Here's a deal for you. The Ogres pulled the bronze rooster off my barn roof and carried it to their camp in the hills east of here. That rooster turns before every storm, and it's never been wrong. Bring it back, and you can have the pick of my storeroom. Do we have a deal?"
+    },
+    "refusal": {
+     "speaker": "Tull",
+     "text": "No? Well, the offer stands if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Tull",
+     "text": "Those Ogres were stamping about the fields again last night. Ugly brutes!"
+    },
+    "completion": {
+     "speaker": "Tull",
+     "text": "There's my rooster! Back on the roof by sundown! Go on, help yourself to the storeroom. And mind, the Mayor is asking for anyone who'll stand up to those Ogres!"
+    },
+    "after": {
+     "speaker": "Tull",
+     "text": "The rooster's turning. Rain by evening, mark my words!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring the bronze rooster back from the Ogre camp."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring the bronze rooster back from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 30,
+    "items": ["WoodenShield", "RedPotion"]
+   }
+  }
+ ]
+}

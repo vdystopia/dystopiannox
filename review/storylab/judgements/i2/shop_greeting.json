@@ -1,0 +1,33 @@
+{
+  "packet": "shop_greeting/i2",
+  "judge": "Claude Code subagent (claude-opus-5-5)",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Witty, characterful and socially observant (soldiers left, travellers right; 'How refreshing'). Nox's shopkeepers rarely build a little scene of the town's politics into a greeting; this is a later, more literary register."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Flat, generic, slightly awkward lines ('Your money is still good with me') with no place detail at all. That blandness and missing comma are very much Westwood's filler barks."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Fresher'n a monkey's butt' is the campaign's crude slapstick, and 'Welcome, Wanderer! ... finest wares in all of Nox!' is stock Westwood hype with exclamation marks."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Each line is built around a local economic detail (north gate shut, prices climbing, eel stew) plus a punchline ('Mostly.'). Competent, but the ellipsis lists and the world-building in every greeting are the giveaways."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Too crafted: the beam joke, a price per bowl, 'Picks are for digging', 'that's no small thing this deep'. Every shop restates the setting (under the mountain), which Westwood never bothered to do."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The fish-only menu joke is nice, but again every line carries setting and a rumour hook (boats going missing). The dry deadpan reads modern rather than Nox's broad cheer."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Named establishments, 'sir [Class]', a slightly clumsy rivalry jab at another innkeeper, and 'How can I help you?'. Plain, a bit stiff, typical Westwood."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Welcome to [Person]'s!', the hyphenated punning shop name and 'one stop shop for all your literary needs' are Westwood's ad-copy puns."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Lively ('Shut the door! Shut it! ...There.') but each line is a crafted vignette with weather, prices and wit ('I have three', 'Warm one, four gold?'). Too consistent and too clever to be Nox's shop barks."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'aye mate?', 'Ya need some new weapons and armor?' and an expository magic-shop line about a guild supplying a class: the odd, uneven dialect and tone switching are Westwood's."}
+  ],
+  "tells": [
+    "Westwood's shop greetings are generic and interchangeable: welcome, the shop's name, 'How can I help you?'. The new ones put the local setting (weather, depth, fish, a shut gate) into every line.",
+    "The new texts quote concrete prices and stock lists with ellipses ('Swords, shields, mail...'); Westwood rarely names a price in a greeting.",
+    "Westwood's humour is broad and crude or pun-based (monkey's butt, punning shop names, 'all your literary needs'); the new humour is dry and observational, with a deadpan turn ('Mostly.', 'I have three').",
+    "Westwood's three lines in a set are uneven in tone and quality, sometimes clumsy or missing commas; the new sets are polished and match each other in voice.",
+    "Westwood uses forms of address ('Wanderer', 'sir [Class]', 'lad', 'mate') plus exclamation marks; the new texts use more full stops and rhetorical questions."
+  ]
+}
