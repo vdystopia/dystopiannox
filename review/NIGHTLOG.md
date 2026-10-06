@@ -260,3 +260,23 @@ question for the user: room shapes are still measured on uncurated rooms (re-mea
 broke Thornwick's gate), kept frozen in rules/rooms/shells_shape.json.
 QA on Thornwick/Harrowby after the merge: builds clean, FAIL only on the long-standing composition.sparse warnings
 (13 rooms) plus one grammar_corners and one exterior.graveyard warning.
+
+## 03:02 shells2 sheets judged (independent)
+
+Built on the shells2 branch before the grammar merge, so the grammar's faults (plants, loose lights) still show.
+
+| Type | Fair baseline | sh3 (accuracy, generated / Westwood, confidence) |
+|---|---|---|
+| throne room | 10/10 | 10/10, 5.4 / 7.6, 0.81 |
+| great hall | 10/10 | 10/10, 4.8 / 7.2, 0.83 |
+| crypt | 9/10 | 9/10, 4.4 / 7.8, 0.71 |
+| chapel | 9/10 | 9/10, 4.6 / 7.2, 0.82 |
+| bedroom | 9/10 | see below |
+| living room | 8/10 | see below |
+
+Floors with a purpose don't move the needle on their own: every judge still names one template stamped across the
+batch (throne: one stepped throne + two braziers on NW + runner to SE; great hall: 2x2 table block on a centre carpet;
+chapel: aisle + lectern between two statues + a tomb slab; living room: bench square before the hearth flanked by
+bookcases). Crypts: tombs singly on walls or in corners, coffins edge to edge. Relayed to the variety (archetype) agent.
+    ../dystopiannox-wt/shells2/review/out/roomlab/bedroom/sh3: accuracy 10/10, generated 5.4 vs Westwood 7.6, confidence 0.64
+    ../dystopiannox-wt/shells2/review/out/roomlab/living_room/sh3: accuracy 8/10, generated 5.0 vs Westwood 6.0, confidence 0.6
