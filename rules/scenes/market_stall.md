@@ -41,3 +41,17 @@ barrels behind, a water barrel, one or two iron crates, sacks, the cart 50%), an
 different builds before the awning, helm poles, barrels behind, an iron crate, the cart 30%), a potion seller (a
 bubbling cauldron, a cushioned stool, a water barrel, an iron crate, an ore cart 50%, a stone). The awning is always
 Westwood's UP kind (purple and orange, green and red). 9-13 pieces.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's three campaign stalls:
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| provisioner | 2 of 3 (Con02a, Con09d) | the awning with barrels in twos and threes, water barrels, apple crates, a steel crate, torch poles, a cart; Con09d one armour rack among them |
+| potion seller | 1 of 3 (Con03A) | the awning, a cauldron and stool, an ore cart, a fairy jar, a crate, a water barrel |
+
+The kit's three trades (`scenes.THEMES["market_stall"]`: provisioner, armourer, potion seller). Round 6: the armourer is
+Con09d's: one armour rack (a second 50%, set off it), never three in a ruler line (the judge: "armour racks in a ruler-
+straight diagonal into the grass"), a knot of three or four barrels, a water barrel 60%; the stalls hold 9-13 pieces
+(Westwood 11-16). AUC 0.924 -> 0.804 (round6).

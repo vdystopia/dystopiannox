@@ -86,11 +86,14 @@ def plan_plots(scene, n, seed, rng):
     cols, rows = (TOWN_COLS, TOWN_ROWS) if town else (COLS, ROWS)
     for k in range(n):
         size, site = SCHEDULE[k % len(SCHEDULE)]
+        import recipes
+        site = recipes.RECIPES[scene].get("site_map", {}).get(site, site)    # the sites Westwood's scenes of the type stand in
         if town and site == "glade": site = "road"            # a hamlet's ground has its road
         prng = random.Random(E.seed_of("scenelab", scene, seed, k))
         c = (cols[k % len(cols)] + 0.5, rows[(k // len(cols)) % len(rows)] - 0.5)
         forest = FOREST_TURN[(k + seed) % len(FOREST_TURN)]
         p = Plot(k, c, size, site, forest, prng)
+        p.cliff = site == "cliff"                          # a glade walled by a cliff (rock) instead of the wood
         if town:
             p.town, p.r = True, TOWN_RADIUS[size]
             p.toward = (c[0] + p.dir[0] * p.r, c[1] + p.dir[1] * p.r)
@@ -99,6 +102,7 @@ def plan_plots(scene, n, seed, rng):
             p.cave, p.site, p.forest, p.r = True, "cave", "cave", CAVE_R[size]
             import recipes
             p.cave_wall = recipes.RECIPES[scene].get("cave_wall", CAVE["wall"])     # urchins dig in earth (Dirt)
+            p.cave_floor = recipes.RECIPES[scene].get("cave_floor", CAVE["floor"])  # the ogres' swamp grass
             p.r *= recipes.RECIPES[scene].get("cave_scale", 1.0)
             p.dir = (0.0, -1.0 if c[1] > 0 else 1.0)
             p.toward = (c[0], c[1] + p.dir[1] * (p.r + 2))
@@ -176,6 +180,15 @@ def lay_land(m, rng, plots, recipe):
         for p in plots:
             land.link(p.name, f"spine{cols.index(p.c[0])}", 6 if p.cave else 8, bend=0.3 if p.cave else 0.08, road=False,
                       pockets=(0, 0))            # (a winding passage: the judge read one straight corridor in every hideout)
+            # a warren: the den's neighbours, chambers dug either side of it off the same passage, each with its own
+            # mouth (Westwood's urchin dens are chambers of one warren, Con02a, War03c); the den keeps its one mouth
+            for q in range(recipe.get("warren", 0) if p.cave else 0):
+                sd = 1 if q % 2 else -1
+                cx_ = p.c[0] + sd * (p.r + p.rng.uniform(4.5, 5.5))
+                cy_ = p.c[1] - p.dir[1] * p.rng.uniform(0.5, 2.0)
+                nm = f"{p.name}w{q}"
+                land.area(nm, (2 * cx_, 2 * cy_), 2 * p.rng.uniform(2.4, 3.2), roughness=0.45, region=p.name)
+                land.link(nm, f"spine{cols.index(p.c[0])}", 4, bend=0.3, road=False, pockets=(0, 0))
     elif plots and plots[0].town:
         # a hamlet's paths join it at its edges, never through its middle (the dressing keeps a forest path's lane
         # clear, two squares either side: a path through the hamlet's middle had left a market no room for its
@@ -233,8 +246,9 @@ def carve_apply(m, land, plots):
     land.assign_regions()
     by = {p.name: p for p in plots}
     cave = lambda r: r in by and by[r].cave
-    land.apply(m, wall=lambda r: by[r].cave_wall if cave(r) else FORESTS[by[r].forest if r in by else "deciduous"]["wall"],
-               floor=lambda r: CAVE["floor"] if cave(r) else "GrassNorm")
+    land.apply(m, wall=lambda r: by[r].cave_wall if cave(r) else "CaveWall2" if r in by and by[r].cliff else
+               FORESTS[by[r].forest if r in by else "deciduous"]["wall"],
+               floor=lambda r: by[r].cave_floor if cave(r) else "GrassNorm")
 
 
 def lay_ponds(m, rng, land, plots, ww=None):
@@ -253,6 +267,11 @@ def lay_ponds(m, rng, land, plots, ww=None):
 def plant(m, rng, land, plots, keep=()):
     by = {p.name: p for p in plots}
     rock = {s for s in land.squares if land.region_of(s) in by and by[land.region_of(s)].cave}     # no tree in the rock
+    # (a cliff glade keeps its trees off the rock's foot: three squares from its edge)
+    for p in plots:
+        if not p.cliff: continue
+        rock |= {s for s in land.squares if land.region_of(s) == p.name and
+                 any((s[0] + a, s[1] + b) not in land.squares for a in range(-3, 4) for b in range(-3, 4))}
     planter = Planter(m, rng, land, "deciduous", keep_clear=set(keep) | rock,
                       forest_of=lambda s: by[land.region_of(s)].forest if land.region_of(s) in by and
                       not by[land.region_of(s)].cave else "deciduous",

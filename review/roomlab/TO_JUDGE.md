@@ -132,3 +132,21 @@ After judging, write `blind/judge.json` and run `py review/roomlab/blind.py scor
 | study | m10 | motifs | C:\GOG Games\Nox\dystopiannox-wt\motifs3\review\out\roomlab\study\m10\blind | general fixes: floor lights only against a wall, a pulled-out seat within 1.4 of its table, a culture's own kind for another culture's piece | recipe r0: AUC 0.994, template 0.407; motifs before (m0): AUC 0.993, template 0.455; now: AUC 0.973, template 0.334; Westwood template p50/p90 0.332/0.332 | |
 | dining_hall | m10 | motifs | C:\GOG Games\Nox\dystopiannox-wt\motifs3\review\out\roomlab\dining_hall\m10\blind | the halls' long boards; free table groups over the floor | recipe r0: AUC 0.971, template 0.302; motifs before (m0): AUC 0.997, template 0.319; now: AUC 0.955, template 0.236; Westwood template p50/p90 0.191/0.191 | |
 | bedroom | m11 | motifs (now the default) | C:\GOG Games\Nox\dystopiannox-wt\motifs3\review\out\roomlab\bedroom\m11\blind | no stamped bed set (the map's bed groups drawn by novelty, not the richest first); lights only against a wall; no lone chair; shelves never apart with bare wall between | recipe r0: AUC 0.845, template 0.287; motifs before (m0): -; now: AUC 0.868, template 0.263; Westwood template p50/p90 0.195/0.227 | |
+
+# Placement grammar round two (night-grammar2): the g3 judges' remaining placement faults
+
+Built with `py tests/roomlab.py <type> --iter q7 [--engine motifs]` (seed 1, n 10) on master after the layout
+archetypes (night-variety), the same engine per type as the judged g3 sheets. The builder has not judged them. After
+judging, write `blind/judge.json` and run `py review/roomlab/blind.py score <type> q7` from this worktree. Before (same
+seed and code, round two off: `NOX_GRAMMAR2=0`): iteration `r0` in the same folders.
+
+| Type | Iteration | Engine | Blind folder | What changed (the g3 judges' faults) | Result |
+|---|---|---|---|---|---|
+| bedroom | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\bedroom\q7\blind | no carpet floating mid-floor with the furniture rimming it (laid again at the bed's foot, or taken up); no candelabra by a front wall; no three singles at gaps along a wall | |
+| kitchen | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\kitchen\q7\blind | stock off the front walls (into heaps on the back walls); no strings of singles; no floating carpet | |
+| laboratory | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\laboratory\q7\blind | workstations and fairy jars not alone mid-floor (to a back wall beside their kind); no workstations alternating with candelabras at even gaps; statues off the front walls | |
+| shop | q7 | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\shop\q7\blind | one trade to a shop (one odd piece at most); no fairy-jar "lamp post" mid-floor; racks and stock off the front walls; no strings of singles | |
+| storeroom | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\storeroom\q7\blind | stock off the front walls where a back wall takes it; no three crates at gaps in a row | |
+| living_room | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\living_room\q7\blind | seats drawn up to bare tables; matching chairs not all one distance off the table (one pulled out); no strings of singles | |
+| tavern | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\tavern\q7\blind | table sets spread over the floor (a set moved onto a carpet laid in the widest bare stretch), no three in a row or diagonal, seats at every table, chairs pulled about | |
+| guardroom | q7 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar2\review\out\roomlab\guardroom\q7\blind | a table always has its chairs; four matching chairs not in a perfect cross; cots and stock off the front walls; no candelabra loose by the front wall | |

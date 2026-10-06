@@ -16,8 +16,9 @@ The headstones themselves, in rows; the yard's iron fence (IronFence) and its ga
 - **The graves**: rows on the grid's lines, 2.7-2.8 squares (~90 px) apart, a little out of true, an unused plot now
   and then; mixed headstones (Tombstone1 the most); a third of the plots dug earth (DirtDark2) for newer graves, a few
   with flowers.
-- **The gravedigger's corner** (most yards), the back corner away from the gate: the open grave (dark earth), the coffin
-  beside it, the spade in the ground, the bucket of tools (BarrelWithTools), a torch pole to work by.
+- **The gravedigger's corner** (most fields, some crypt yards), the back corner away from the gate and the crypt: the
+  fresh grave (dark earth) and its heap, the bucket of tools (BarrelWithTools), a torch pole to work by now and then;
+  no coffin, spade or pick since round 6 (Westwood's have none; the bucket is the user's ask, SW-9).
 - **The gate**: a stone pillar either side, just inside (Monument1, as War03b's).
 - **The ground**: sparse grass (GrassSparse2, Westwood's), a tree or two by the fence inside it (dead or old), never
   among the graves; the walk from the gate kept clear.
@@ -103,3 +104,25 @@ The judge: "a cobbled path straight from the gate down the middle, often ending 
 sides of the path, some on the fence line; monument pillars inside the yard instead of a gatepost pair; flower
 patches". The walk in 60% of yards with a crypt and 30% without; headstones 1.4 squares off the fence (1.1 in a small
 yard); the pillars a pair outside the gate (35%); no flowers.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's 13 campaign graveyards are three kinds, not one kit (`kit/yards.py` `GRAVE_ARCH`, `grave_arch`, `_graveyard`):
+
+| Archetype | Westwood | What it is | The kit |
+|---|---|---|---|
+| field | 6 of 13 (War03b x2, War03c x2, War03d x2) | a big yard, its back (and often a flank) a stone wall (Cobblestone) with the crypt cells built into it, iron fence on the rest; headstones in wide rough rows (100-130 px), a main kind and two or three others; a dead tree or two by the walls (TreeOgre08/10, TreeTrunk6), barren weeds | `field`: Cobblestone back, a flank 50%; crypt cells in the back wall 70%; rows 2.8-3.4 squares apart, 2.3-3.9 along; dead trees 60%; the digger's corner 60% |
+| crypt yard | 4 of 13 (Con07B x3, Con09b) | a fenced lawn by the street with a stone crypt in a corner and a knot of four to eight stones near it, the lawn by the gate open | `crypt_yard` (10 x 9 to 11 x 9): the crypt in a back corner, the five to eight nearest plots; a stone back wall 30%; the digger's corner 40% |
+| pen | 3 of 13 (Con04b, War03d x2) | a small court walled in stone (castle masonry), four to six stones of one kind, a wall torch | `pen` (6 x 6 to 7 x 7): Cobblestone all round, four to six stones of one kind, a wall torch 40%. Only where asked (`arch="pen"`): a design's graveyard drawn unasked is a field or a crypt yard (`GRAVE_ARCH_OPEN`; three of four story maps had drawn a pen alone in open ground) |
+
+**Never** a coffin, a spade or a pick (Westwood's have none; the judge, 2026-10-06). **The user's ask outranks Westwood's
+frequencies** (SW-9: "Maybe a bucket of tools"): the gravedigger's corner stays in most fields and some crypt yards, now
+the fresh grave (two squares of dark earth and its heap), the bucket of tools (BarrelWithTools1) and a torch pole now and
+then. The walk from the gate paved in 40% of yards with a crypt (20% without); the gateposts 35% / 25%.
+
+**Sites.** Westwood's stand against a stone wall or crypt row (the fields, the pens) or by the street (the crypt yards).
+The lab: four of ten clearings a town wall (`site_map` shore -> wall): the yard's back side Cobblestone, the wall running
+on seven squares past its corners (`recipes._town_wall`); the rest by the road (`by_road`). The batch follows Westwood's
+frequencies in a fixed order (`recipes.GRAVE_ORDER`: five fields, three crypt yards, two pens).
+
+AUC: 0.837 (round 5 code, reproducible baseline) -> 0.698 (round6).

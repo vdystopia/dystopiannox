@@ -118,7 +118,15 @@ class Village:
             knot = None
             dug = own_rng.random() < 0.4              # Westwood's beds are dug earth now and then, mostly grass
             step_ = own_rng.choice((0.52, 0.58, 0.62, 0.62))   # the plants' spacing along a row (Wiz01A close, Con09a apart)
-            kinds = [one] * len(beds) if one else ([crop] + own_rng.sample([c for c in CROPS if c != crop], 2))[:len(beds)]
+            # corn and tomatoes in every garden (Westwood's five campaign gardens all grow both: Con05A, Con07B, Con09a,
+            # Wiz01A, Wiz03b; the judge, 2026-10-06: "no tomatoes"), cabbage the third bed in three of five
+            # (from the beds' own generator, the garden's draws as before: the household round it is laid as it was)
+            own_rng.sample([c for c in CROPS if c != crop], 2)
+            crop_rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden-crops:{gi},{gj}".encode()))
+            pair_ = ["GardenCorn", "GardenTomatos"]
+            crop_rng.shuffle(pair_)
+            third_ = "GardenCabbage" if crop_rng.random() < 0.6 else crop_rng.choice(pair_)
+            kinds = [one] * len(beds) if one else (pair_ + [third_] + pair_)[:len(beds)]
             laid = 0
             for k, kind in zip(beds, kinds):
                 for s_ in range(n_long if dug else 0):
@@ -171,6 +179,10 @@ class Village:
                         r_ = SP_.gap("WaterBarrel", t) + 2
                         x_ = knot[0] + r_ * (ox_ * math.cos(a_) - oy_ * math.sin(a_))
                         y_ = knot[1] + r_ * (ox_ * math.sin(a_) + oy_ * math.cos(a_))
+                        sq_ = px_square(x_, y_)          # (on open ground: a knot's crate had stood on a house's floor)
+                        if sq_ not in self.land.squares or sq_ in self.land.taken_strict or sq_ in self.land.water or \
+                                not SP_.off_walls(self.spec.wallmap, t, x_, y_, margin=6):
+                            continue
                         if SP_.spaced(t, x_, y_, members):
                             self.spec.obj_px(t, x_, y_); members.append((t, x_, y_)); break
             if own_rng.random() < 0.0 and not fence:         # (the lone goods on a long side: now the knot above)

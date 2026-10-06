@@ -145,9 +145,13 @@ CATALOGUE = [
             P(("TorchPole",), 104, 36, p=0.7), P(("TorchPole",), -100, 52, p=0.4),
             P(("OutdoorTraderCart",), 150, -10, p=0.5), P(SACKS, 82, 104, n=(1, 2), step=(22, 10), p=0.6)],
            [P(("@tent",), 0, 0, must=True),
-            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3"), -60, 70, n=3,
-              step=(42, 2), must=True), P(("OutdoorTraderHelmPoles",), 70, 74, p=0.7),
-            P(("Barrel2",), -40, -84, n=2, step=(27, 3)), P(("CrateSteel3", "CrateSteel4"), 110, 30, p=0.7),
+            # (one rack, a second set off it, never three in a ruler line: the judge, 2026-10-06; Con09d's one rack
+            # among its barrels and apple crates)
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3"), -66, 64, must=True),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), -24, 104, p=0.5),
+            P(("OutdoorTraderHelmPoles",), 70, 74, p=0.7),
+            P(("Barrel2", "Barrel"), -40, -84, n=(3, 4), step=(26, 4)), P(("WaterBarrel",), -112, 18, p=0.6),
+            P(("CrateSteel3", "CrateSteel4"), 110, 30, p=0.7),
             P(("TorchPole",), -104, 40, p=0.7), P(("TorchPole",), 104, 36, p=0.4),
             P(("OutdoorTraderCart",), -150, 0, p=0.3)],
            [P(("@tent",), 0, 0, must=True), P(("CauldronAnimated",), -10, 70, must=True),
@@ -198,8 +202,12 @@ CATALOGUE = [
     # the well alone, clear on every side, a public landmark near a road (Westwood's four campaign wells, Con02a, Con07B,
     # Con09a, War07A: the well and at most a sign a little apart; no barrels, buckets, benches or troughs by it. Westwood's
     # well is the WishingWell; the kit keeps its Well, the user has not chosen: rules/scenes/well.md)
+    # (a sign a little apart in two of three: Con02a's SignIx, Con07B's and War07A's Sign1; the judge, 2026-10-06: "no
+    # road or path, no sign")
     Theme("well_side", "a draw well where water is fetched, standing clear", "open",
-          [[P(("Well",), 0, 0, must=True)]],
+          [[P(("Well",), 0, 0, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), 78, 30, must=True)],
+           [P(("Well",), 0, 0, must=True), P(("Sign1",), -70, 46, must=True)]],
           places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
           min_types=1, min_pieces=1, clear=60),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
@@ -303,7 +311,12 @@ CATALOGUE = [
               [P((f"Statue2{k}",), -80, 34, n=2, step=(160, 0), must=True), P(("TorchPole",), 0, 40, must=True),
                P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.4)],
               [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), must=True),
-               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])],
+               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])] +
+          # the crypt court (Con04b's six: three sarcophagi in a cluster, a stone cross or a statue among them, a pillar
+          # either side ~105 px out, torch poles by them)
+          [[P(("Crypt1",), -2, 92, must=True), P(("Crypt4",), 0, 40, must=True), P(("Crypt3",), 2, -12, p=0.7),
+            P(("Cross2", "Statue2b", "Statue2d"), 38, 44, must=True), P(("Monument1",), -110, 40, n=2, step=(220, 0), must=True),
+            P(("TorchPole",), -40, 80, p=0.6), P(("TorchPole",), 40, 10, p=0.5)]] * 3,
           # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
           # (masonry, a castle's walls, or a stone house: the judge, 2026-10-06, "set against wooden peasant cabins")
           walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),

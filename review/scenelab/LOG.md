@@ -456,3 +456,41 @@ two, a torch, a rock. The kit's hay_store had laid one or two heaps with sacks.
 
 The lab alternates hay_store with the kit's threshing floor and windmill, which Westwood has no counterpart for.
 Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings as before. Not queued (one round of small moves).
+
+## Round 6 (night-scenes6, 2026-10-06): archetypes and sites
+
+The independent judges on round 5 (NIGHTLOG 03:30): told apart 8-10 of 10, ours ~4.5 against Westwood's 7-8, two
+themes: one kit stamped per scene, and scenes set in open ground leaning on nothing. Round 6 clusters each type's
+Westwood campaign scenes into archetypes (each brief's "Archetypes" section has the table and frequencies), lays them by
+frequency, and gives the lab the sites Westwood's scenes of the type stand in.
+
+**Reproducibility fixed.** The lab map's name was drawn from the iteration's name, and the kit seeds its scenes' own
+generators from the map's name (`camps.own_rng`, the dressing, gardens, docks, yards): the same code and seed gave other
+scenes under another iteration name. `tests/scenelab.py` now names the map from the scene and seed only; two runs of the
+graveyard gave the same pieces (17, 15, 21, 28, 13, 12, 14, 10, 7, 11), and every scene's `round6` run reproduced its
+tuning run's AUC. `base6` is the round-5 code under the fixed naming (the baseline below).
+
+| Scene | Archetypes (Westwood) | What changed | AUC base6 -> round6 |
+|---|---|---|---|
+| graveyard | field 6, crypt yard 4, pen 3 of 13 | `yards.GRAVE_ARCH`: stone back wall with crypt cells built in, dead trees by the walls, wide rows (field); a corner crypt and a knot of stones (crypt yard); a stone-walled court of four to six stones (pen, opt-in for designs); no coffin, spade or pick, the bucket of tools kept (SW-9); one main headstone kind; at least four graves. Lab: a town wall in four clearings, the archetypes in Westwood's order | 0.837 -> 0.698 |
+| jail | cell row 9, guardhouse 2 of 11 | `yards._jail`: a torch beside every barred door outside, alike down the row; cells bare / cot / deep straw; two or three cells; the guardhouse with racks, table, water barrel, its own door. Lab: seven of ten against a town wall | 0.939 -> 0.889 |
+| ogre_camp | hut yard 3, bone pit 1, cave fire 1 of 5 | `camps.ogre_camp(arch=)`: meat racks and carcass, sack chests (never a chest), the bearskin bed; a dozen bones in drifts with boulders and pillars; barrels, water barrels and torch poles in a cave. Lab: SwampGrass pocket with a trodden path in | 0.997 -> 0.854 |
+| urchin_camp | hall 19, mixed den 17, dormitory 6 of 42 (all dens) | no fire anywhere (the open-air camp's middle a table ringed by stools); the lab: all ten dens. A warren of side chambers ran into the dens and was turned off | 0.696 -> 0.797 (the two open camps with fires had been the fullest scenes; dens too sparse) |
+| garden | household plot 2, walled kitchen garden 2, allotment 1 of 5 | corn and tomatoes in every garden (their own generator, so the household is laid as before); the household's knot on open ground only | 0.254 -> 0.254 |
+| pond_dock | town landing 3, fisher's jetty 1 of 4 | reeds in one to four clumps at the bank (`Waterworks._dress`), not strewn | 0.405 -> 0.372 |
+| market_stall | provisioner 2, potion seller 1 of 3 | the armourer as Con09d's: one rack (a second set off it), a knot of barrels, a water barrel; 9-13 pieces | 0.924 -> 0.804 |
+| shrine | statue row 13, crypt court 5, lone statue 5, chapel nave 3, milestone 2 of 28 | the crypt court layout (three sarcophagi, a cross or statue, pillars either side, torch poles) | 0.917 -> 0.874 |
+| well | with sign 2, bare 1, market 1 of 4 | a Sign1 beside the well in two of three layouts | 0.75 -> 0.75 |
+| bandit_camp | hideout 13, war camp 5, rough camp 2 of 20 | lab: four of five open camps in a glade walled by a cliff (CaveWall2) | 0.878 -> 0.892 |
+
+Not done: the war camp's own variety (the awning and pup tent still in every war camp), the urchin hall and dormitory
+compositions and denser dens, the walled kitchen garden and the allotment, a town-wall site for the shrine (the lab still
+builds the same stone shrine house).
+
+Story maps: Thornwick, Greywatch, Ambermere, Starwell, Harrowby 0 errors, warnings as on the base (checked against the
+base for Ambermere and Starwell). Two regressions found and fixed on the way: three of four maps drew a pen in open
+ground (Ambermere's walls then fell under Westwood's range: density.range), so a design's graveyard is a field or crypt
+yard unless it asks for a pen; and a garden's knot laid an apple crate on a Starwell house floor (rooms.stray), so the
+knot keeps to open ground. Greywatch's prisoners stand by `y.cell_mids`.
+
+Sheets: `round6` for all ten, copied to `review/out/scenelab/_judge/round6/<scene>/` and queued in TO_JUDGE.md.

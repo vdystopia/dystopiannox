@@ -128,3 +128,20 @@ where the pocket allows (a cot under the near rock is hidden); the lab's pockets
 winding.
 - Two kinds of open camp (round 5): a war camp (60%: pup tent and awning, armour racks 90%, no bedrolls) or a rough camp
   (bedrolls in pairs, racks 20%), as Westwood's open-air camps are one or the other.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's 20 campaign bandit camps:
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| hideout | 13 of 20 (Wiz03a x3, Wiz03b x4, Wiz03c x2, War03a x2, War05A, Wiz02C) | a pocket in the rock: cots against the rock, barrels and crates stacked, torches, rocks and pillars, a cold fire now and then |
+| war camp | 5 of 20 (Con03A x2, Con04a, Con05A, Con09d) | the awning and the pup tent, armour racks and helm poles, barrels and crates, a cart; Con03A's smith camp with an anvil and bellows |
+| rough camp | 2 of 20 (Con03A) | bedrolls or a cot, straw, barrels, stumps, rocks |
+
+The kit: `hideout_camp` where the site is a pocket of rock (`rock_pocket`), else `bandit_camp`'s war camp (60%) or rough
+camp (40%). **Sites.** Westwood's open camps back onto rock. The lab: five of ten in a rock pocket (hideouts), four of
+the five open camps in a glade walled by a cliff (CaveWall2; `site_map` glade/shore -> cliff, trees kept three squares
+off the rock's foot), one by a road; `camp_site` backs the camp onto the nearest wall. AUC 0.878 -> 0.892 (round6,
+noise). Not yet: the war camp's own variety (the awning and the pup tent still in every war camp; the judge: "the same
+awning + pup tent + three helmet racks").

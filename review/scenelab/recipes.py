@@ -11,6 +11,9 @@ from kit import camps, yards as Y
 from kit.layout import square_px, px_square, tile_square, square_tile, cell_square
 
 LOOT = [("Gold", {"Amount": 40}), "RedPotion"]
+# Westwood's five ogre fires: three hut yards, a bone pit, a cave fire (kit/camps.OGRE_ARCH), in a fixed order
+OGRE_ORDER = ("hut_yard", "bone_pit", "hut_yard", "cave_fire", "hut_yard", "hut_yard", "bone_pit", "hut_yard",
+              "cave_fire", "hut_yard")
 
 
 def _pop(ctx):
@@ -47,6 +50,10 @@ def _mean(objs):
 
 
 # ---------------------------------------------------------------------------------------------------- camps
+def ctx_rec(ctx):
+    return RECIPES[ctx["scene"]]
+
+
 def _camp_build(kind):
     def build(ctx):
         from kit.posts import camp_posts
@@ -69,7 +76,9 @@ def _camp_build(kind):
                 kinds = dict(leader="Swordsman", sit="Swordsman", tent="Swordsman", watch="Archer", work="Swordsman")
                 p.notes.update(trade=trade, sleepers=sleepers, tents=tents)
             elif kind == "ogre_camp":
-                camp = camps.ogre_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers)
+                camp = camps.ogre_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers,
+                                       arch=OGRE_ORDER[p.k % len(OGRE_ORDER)])
+                p.notes["arch"] = camp.get("arch")
                 posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=1, watch=2, work=0)
                 kinds = dict(leader="OgreWarlord", sit="GruntAxe", tent="GruntAxe", watch="OgreBrute", work="GruntAxe")
             else:
@@ -77,6 +86,19 @@ def _camp_build(kind):
                 posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=2, watch=1, work=0)
                 kinds = dict(leader="UrchinShaman", sit="Urchin", tent="Urchin", watch="Urchin", work="Urchin")
             fx, fy = camp["fire"]
+            if ctx_rec(ctx).get("path_in"):
+                if "SwampGrass" not in m.blend: m.blending("SwampGrass", 0, "BlendEdge")    # (the path's edges blended)
+                # the trodden path in from the mouth to the fire (Westwood's ogre fires lie on their paths: Con05B,
+                # Con09b, DirtLight2 through the swamp grass)
+                (ti, tj), (si, sj) = toward, px_square(fx, fy)
+                L_ = math.hypot(si - ti, sj - tj) or 1
+                for k in range(int(L_ / 0.4) + 1):
+                    f_ = k * 0.4 / L_
+                    if f_ > 1 - 1.5 / L_: break
+                    ci_, cj_ = ti + (si - ti) * f_, tj + (sj - tj) * f_
+                    for o in (-0.5, 0.5):
+                        sq = (int(math.floor(ci_ + o)), int(math.floor(cj_ - o)))
+                        if sq in land.squares: m.floor[square_tile(*sq)] = "DirtLight2"
             pop.creature(kinds["leader"], *posts["leader"], action="guard", face=square_px(*toward), aggr=0.5)
             for role in ("sit", "tent", "work", "watch"):
                 for x, y in posts[role]:
@@ -88,6 +110,31 @@ def _camp_build(kind):
 
 
 # ---------------------------------------------------------------------------------------------------- yards
+# a batch's graveyards by Westwood's archetypes (13 scenes: 6 fields, 4 crypt yards, 3 pens), in a fixed order so a
+# batch of ten follows the frequencies (as the room lab's door counts do, FAIRNESS 3)
+GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
+JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cell_row", "cell_row", "cell_row", "guardhouse",
+              "cell_row", "cell_row")      # Westwood's 11 jails: 9 rows of cells, 2 guardhouses
+WALL_RUN = 7                 # a town wall runs on this many squares past a yard's back corners (Westwood's War03 yards)
+
+
+def _back_ext(y):
+    """The wall points that carry a yard's back side on past its corners: the town wall it stands against."""
+    back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
+    pts = Y._fence_points(y)[back]
+    (p0, q0), (p1, q1) = pts[0], pts[-1]
+    di, dj = (p1 - p0) and (1 if p1 > p0 else -1), (q1 - q0) and (1 if q1 > q0 else -1)
+    out = []
+    for k in range(1, WALL_RUN + 1):
+        out.append((p0 - di * k, q0 - dj * k)); out.append((p1 + di * k, q1 + dj * k))
+    return back, out
+
+
+def _around(pt):
+    p_, q_ = pt
+    return [(p_ - 1, q_), (p_, q_), (p_ - 1, q_ + 1), (p_, q_ + 1)]
+
+
 def _yard_plan(kind):
     def plan(ctx):
         land = ctx["land"]
@@ -95,10 +142,35 @@ def _yard_plan(kind):
         for p in ctx["plots"]:
             ring = [(p.c[0] + r * math.cos(k * math.pi / 4), p.c[1] + r * math.sin(k * math.pi / 4))
                     for r in (3, 5) for k in range(8)]
-            y = Y.plan_any(land, p.rng, kind, [p.scene_c, p.c] + ring, toward=p.toward)      # as the designs plan
-            if y: ctx["yards"][p.k] = y; p.notes["scene_sq"] = list(y.centre)
+            arch = {"graveyard": GRAVE_ORDER, "jail": JAIL_ORDER}.get(kind)
+            arch = arch[p.k % len(arch)] if arch else None
+            y = Y.plan_any(land, p.rng, kind, [p.scene_c, p.c] + ring, toward=p.toward, arch=arch)  # as the designs plan
+            if y:
+                ctx["yards"][p.k] = y; p.notes["scene_sq"] = list(y.centre)
+                if getattr(y, "arch", None): p.notes["arch"] = y.arch
+                if p.site == "wall":
+                    # the town wall the yard stands against: its back side stone, the wall running on past its corners
+                    # (Westwood's graveyards along their crypt walls, its jails in castle masonry)
+                    back, ext = _back_ext(y)
+                    y.walls = dict(getattr(y, "walls", {}) or {}, **{back: "Cobblestone"})
+                    for pt in ext: land.taken.update(_around(pt))
             else: ctx["log"](f"  plot {p.k + 1}: no room for the {kind}")
     return plan
+
+
+def _town_wall(ctx, p, y):
+    """Lays the town wall on past the yard's back corners, where the ground is open."""
+    m, land = ctx["m"], ctx["land"]
+    from kit.layout import point_cell
+    _, ext = _back_ext(y)
+    done = 0
+    for pt in ext:
+        sqs = _around(pt)
+        if all(s in land.squares and s not in land.water and s not in land.roads for s in sqs):
+            m.wall(*point_cell(*pt), "Cobblestone")
+            done += 1
+            ctx.setdefault("keep", set()).update(sqs)
+    p.notes["town_wall"] = done
 
 
 def _yard_build(ctx):
@@ -107,6 +179,7 @@ def _yard_build(ctx):
         y = ctx["yards"].get(p.k)
         if not y or not y.plot <= land.squares: continue
         Y.build(m, p.rng, land, y)
+        if p.site == "wall": _town_wall(ctx, p, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
         out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
@@ -397,17 +470,26 @@ def _wolf_build(ctx):
 RECIPES = {
     # half the camps in a pocket of the rock (Westwood's hideouts: 10 of its 20 camps), the kit's own test (rock_pocket)
     # turns them into hideouts
-    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8)),
+    # (the open camps against a cliff in four of five clearings: Westwood's open camps back onto rock, Con03A, Con04a,
+    # Con05A; the judge, 2026-10-06: "mid-glade")
+    "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8),
+                        site_map={"glade": "cliff", "shore": "cliff"}),
     # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
     "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
-                      cave_scale=1.7),
+                      cave_scale=1.7, cave_floor="SwampGrass", path_in=True),
     # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
     # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens
-    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp"), caves=(1, 2, 3, 4, 5, 7, 8, 9),
+    # (every one: Westwood's 42 are all dens. A warren of side chambers off the passage, `warren=2`, was tried in round 6:
+    # the chambers ran into the den and it no longer read as one pocket, AUC 0.70 -> 0.81)
+    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp"), caves=tuple(range(10)),
                         cave_wall="Dirt", cave_scale=1.3),
-    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5),
+    # graveyards against a town wall in four of ten clearings (Westwood's fields and pens stand in stone walls, its
+    # crypt yards by the street), by the road in the rest
+    "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5, site_map={"shore": "wall"}),
     "quarry": dict(plan=_yard_plan("quarry"), build=_yard_build),
-    "jail": dict(plan=_yard_plan("jail"), build=lambda c: (_jail_court(c), _yard_build(c))),
+    # Westwood's jails are built into castle masonry or a guardhouse: seven of ten against a town wall
+    "jail": dict(plan=_yard_plan("jail"), build=lambda c: (_jail_court(c), _yard_build(c)),
+                 site_map={"shore": "wall", "glade": "wall"}),
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
     # the well by the road, a public landmark (the judge, 2026-10-06: "no road ... placed by geometry rather than use")

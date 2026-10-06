@@ -30,3 +30,20 @@ The judge: "one fire layout stamped every time; the torch pole a step from the f
 a bench; a chest (Westwood's ogre camps never have one)". The meat one of four sets; one to three seats from six places,
 each turned a little; bones none in two camps of five, else two to six mostly to one side; no bearskin by the fire; the
 chest 25%; without the gate the torch pole stands by the store at the camp's edge.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's five ogre fires (`kit/camps.py` `OGRE_ARCH`, `ogre_arch`, `ogre_camp(..., arch=)`):
+
+| Archetype | Westwood | What it is | The kit |
+|---|---|---|---|
+| hut yard | 3 of 5 (Con05B x2, Con09b) | the fire before the huts: two meat racks (OgreHutMeat) and a carcass on the cook's side, a log bench or two, the take in sack chests by the fire, the warlord's bearskin bed (OgreBed, OgreBearskin) at the back, a torch, a tusk mound at the yard's edge | `hut_yard`: two racks and a carcass 50%; one to three seats; one or two sack chests (the loot in the first); one or two OgreBeds with the bearskin before them 130-190 px back; a torch (OgreTorchUnlit or TorchPole); the tusk gate 40%, else a lone tusk mound 50% |
+| bone pit | 1 of 5 (Con05B's swamp hollow) | the fire ringed by a mess of bones (a dozen arm and leg bones and skulls), the meat and carcass, two stools, barrels, a big sack chest, boulders and rock pillars round the rim | `bone_pit`: nine to thirteen bones in two drifts 58-120 px out, two stools, two barrels, SackChestLarge2, two or three boulders, two to four pillars, small rocks |
+| cave fire | 1 of 5 (Wiz02C) | the fire in a cave, two log benches, a knot of barrels and water barrels, torch poles round the walls, rock pillars | `cave_fire`: two benches, three barrels and two water barrels in one knot, two or three torch poles, two pillars |
+
+Never a chest (the take is in sack chests, Con05B). **Sites.** Westwood's fires lie on their paths through swamp grass
+(Con05B, Con09b) or in a cave (Wiz02C). The lab: every camp in a RootLight pocket now floored with SwampGrass (blended),
+the trodden path in from the mouth to the fire (DirtLight2). The batch: six hut yards, two bone pits, two cave fires
+(`recipes.OGRE_ORDER`).
+
+AUC: 0.997 -> 0.854 (round6).

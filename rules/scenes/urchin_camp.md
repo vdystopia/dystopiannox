@@ -39,3 +39,26 @@ The judge: "far too sparse ... bare walls and empty floor; the table's stools sp
 intervals; almost no corner groups of barrels, no runs of mixed shelves or paintings". Two or three shelf runs, three
 to five pictures or scrolls, barrels in a corner knot (two against the rock, one or two before them; 75%), three to five
 stools packed 29 px round the table, straw in half the dens.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's 42 urchin scenes are all dens dug in the earth, of three kinds (by their pieces):
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| hall | 19 of 42 | a table (or two) ringed close by stools (four to eleven), shelves and pictures on the walls, a few beds |
+| mixed den | 17 of 42 | beds and hammocks along the walls, shelves in runs, a chest, barrels in a corner, a stool or two |
+| dormitory | 6 of 42 | beds and hammocks only (four to ten), side by side along the walls |
+
+None has a fire. The kit: `urchin_den` lays the mixed den (beds of one kind along the back, shelf runs, pictures, the
+table ringed by stools, barrels in a knot); the open-air `urchin_camp` (a design's urchins in open ground) now lays no fire
+either: its middle is the table ringed close by stools (30 px), barrels in a knot where the old flank table stood (the
+judge, 2026-10-06: "a fire in a glade"). Not yet: the hall and the dormitory as their own compositions.
+
+**Sites.** The lab: every one of ten in a Dirt pocket (Westwood's 42 of 42; it had been eight). A warren of side
+chambers off the passage was tried (`warren=2` in labgen): the chambers ran into the den, which no longer read as one
+pocket (AUC 0.70 -> 0.81), so it is off.
+
+AUC: 0.696 (eight dens and two open camps with fires) -> 0.797 (round6: ten dens, no fire). The open camps with fires had been
+the batch's two fullest scenes; the dens are sparser than Westwood's (median 13 pieces against 18): the next thing to
+fix.

@@ -84,3 +84,18 @@ Con03A's dock a few steps from the fisher's hut, the fisher on the bank, a cold 
 
 The judge: "the same pier with a lone crate squared on its last plank; two squeezed close together; a barrel on the
 cobbled road". No crate on a dock's tip (none, one or two barrels); docks 18 tiles apart; the bank's gear never on a road.
+
+## Archetypes (round 6, 2026-10-06)
+
+Westwood's four docks:
+
+| Archetype | Westwood | What it is |
+|---|---|---|
+| town landing | 3 of 4 (Con05A) | a long DockDown run out into a lake, three along the town's shore, a barrel or rocks at the root |
+| fisher's jetty | 1 of 4 (Con03A) | a short dock by the fisher's hut, barrels and a water barrel on the bank |
+
+The kit (`Waterworks.dock`, `_dock_gear`) lays both (the lab's town lake with one to three docks, the fisher's hut by the
+first). Round 6: the reeds stand in a few clumps at the bank (`Waterworks._dress`: one to four clump heads on the shore,
+the reeds within three tiles of one), not strewn over the shallows (the judge: "cattails strewn evenly over the water").
+
+AUC: 0.405 -> 0.372 (round6).
