@@ -64,3 +64,8 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   C (`night-tuneC`): storeroom, laboratory, shop, library, smithy, armoury, barracks, crypt, herbalist, cellar,
      treasury, workshop, torture chamber, mausoleum, ossuary, observatory, winch room, powder store.
   Still running: the scene lab (`night-scenes`) and dialogue round 2 (`night-dialogue2`).
+- 22:20 (Correction: the times on the entries above were estimates and ran ahead of the clock. The real time of this
+  entry is 22:20, so the entries stamped 21:50-23:20 all happened between 21:30 and 22:15.) Scene lab mid-run: garden
+  AUC 0.89 -> 0.16-0.42 (Westwood has only 5 gardens); graveyard 1.00 -> 0.87 (graves in Westwood's rows and spacing,
+  sparse grass, pillars at the gate; the blind judge still sees one small square box where Westwood's yards are long or
+  large and set against buildings); bandit camp r3 judged "much better: clear zones and the user's structure".
