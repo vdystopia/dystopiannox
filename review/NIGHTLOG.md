@@ -138,3 +138,10 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   living room r10 10/10 (4.6/6.6), guardroom r8 9/10 (5.4/5.4, equal scores). Judge: "one piece in each slot, large
   evenly empty floor round each group", and real clearance faults the knowledge base should have caught (barrels
   against the hearth, a second table set in a living room, chests loose on the floor).
+- 00:27 Scene rounds 2-3 merged (): camps cut to one tent with sleepers inside, armour racks in
+  a row, smaller bands; graveyards larger where the ground allows, crypts set in from the fence, a walk from the gate, no
+  trees inside; gardens open, with Westwood's low lattice fence only round large ones; docks prefer the long DockDown,
+  with varied gear on firm ground. The lab now generates scenes in a hamlet (road, houses, lake) except wild ones. Each
+  scene has its own random generator, so tuning one can't shift a design. Graveyard is the closest scene (judge 8/10).
+  Round 4 started (): a cave-hideout camp (Westwood's camps are mostly hideouts), a better lab setting,
+  then the 13 untuned scene types. Three new scene sheets are with a judge.
