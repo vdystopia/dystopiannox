@@ -59,3 +59,13 @@ The host at the hearth's side, else at a back wall facing the tables; never betw
 
 - Westwood: Con06a, cell 81,211 (55 tiles, 12 types); Con05C, cell 139,92 (110 tiles: the ogres' feast).
 - Ours: Starwell seed 4, room 15, the garrison's mess (99 tiles).
+
+## Learned in the room lab (2026-10-05, track B; review/roomlab/LOG_tuneB.md)
+
+Westwood's three: Con06a (55 tiles), Con03B's miners' mess (108), the ogres' Con05C (110).
+- **Two or three tables,** never a grid: a table piece per 26-32 tiles, at most one per 30; benches along them with a
+  chair or two; a table of food or a round table with chairs in a big hall.
+- **Crockery, not books:** two log shelves by the hearth at most (bookcases made it read as a library).
+- **Casks and barrels** in a cluster or two, never down the walls; **no plants, no statues,** no benches topped up along
+  the walls.
+- **The ogres' hall:** two to five crude tables ringed by stools, barrels heaped, a little meat; no straw on the floor.

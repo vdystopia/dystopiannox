@@ -269,7 +269,7 @@ TYPES = {
                                     cover=(0.12, 0.24, 0.34), open=(0.25, 0.80)),
                   "ogre_hall": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
                                     lined=None, walls_min=2, types_min=6, cover=(0.12, 0.17, 0.32), free_most=(6, 20),
-                                    caps={"table": (22, 8)})}),
+                                    caps={"table": (40, 5)})}),     # Con05C: two crude tables in 110 tiles
     # ---- ceremonial ----------------------------------------------------------------------------------------------
     "great_hall": dict(
         family="ceremonial", feel="open", kinds=("great_hall",), westwood=("great_hall", "hall"),

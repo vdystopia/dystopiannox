@@ -121,3 +121,36 @@ Pool: the ceremonial family.
 Still giving it away: the runner is a plain strip where Westwood's carpet is a cross (the shell's floor); a wide nave
 entered from its long side gets a one-sided set of pews (the shell's door); one tapestry colour where Westwood
 alternates two.
+
+## Merges from master
+
+- Curated Westwood references (`rules/rooms/curated.json`, applied after my dedup; my classify fixes and hand rooms
+  kept): 179 rooms, 48 excluded. Taverns 6 (Wiz05A's bar nook joins), dining halls 3, great halls 2, halls 3, chapel 1,
+  shrines 5, gallery 1, conservatory 0 (both gardens excluded: a cave pocket and a garden open to the sky).
+- The lab renderer's sunlit rim fixed (the cached Westwood galleries cleared and rebuilt).
+
+Independent judge (main session), first sheets: tavern ref 10/10 right (generated 5.0, Westwood 7.0); throne room ref
+10/10 (4.8 / 7.2), r5 10/10 (5.2 / 7.2); great hall r4 10/10 (4.8 / 6.0). Their critiques taken up below: the great
+hall's free hearth "dumped at the carpet's S corner before the door" and "twelve identical banners" (now toward a wall,
+six hangings at most); every recipe's `decor_max` now also caps the lining loop's hangings (furnish.py: it had hung
+banners until the back walls read lined).
+
+## Dining hall (and mess hall, ogre hall)
+
+Westwood: Con06a (55 tiles: two Table1s with benches and chairs before the hearth, a bookcase, a chest), Con03B's
+miners' mess (108: three long tables with benches on a carpet, the cooking hearth, casks), the ogres' Con05C (110: two
+crude tables ringed by stools, barrels heaped, skull posts, no straw). Pool now dining halls, taverns, great halls.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | (pool still shops) | 1.0 | 0.983 | 2 | - |
+| ref2 | r1's recipe on the curated pool: two or three tables (a piece per 32 tiles, cap a table per 30) with benches, casks, a bookcase at most, no plants or statues; mess halls a table per 22; the ogres' hall without straw, a third of the meat, tables a piece per 45 | 0.905 | 0.981 | 6 | - |
+| r2 | no bench top-up down the walls; ogre tables a piece per 50 | 0.925 | 0.986 | 10 (checker: sparse) | - |
+| r4 | a feast and dining set may join; shelves and ogre barrels fixed in number | 0.905 | 0.986 | 10 | - |
+| r6 | crockery shelves only (bookcases had made it read as a library), two of them | 0.916 | 0.985 | 10 | - |
+| r8 | the boards' ends seated; stores two clusters at most; hangings capped in the lining loop | 0.882 | 0.987 | 10 (sparse) | queued |
+
+The checker's "sparse" (coverage under its median 0.15 for dining halls, measured on its own older classification
+with Con07E's feast hall among them) now fires on every room at 0.08-0.13; the lab's Westwood dining halls cover
+0.06-0.15 (median 0.10). Left as it is: chasing it brought back the grid of eight tables. Still giving it away: seats
+0.2 units from their tables (Westwood's median gap to the nearest piece 0.58), rows aligned, few lights.

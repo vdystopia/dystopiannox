@@ -237,9 +237,9 @@ ROOMS = {
                         core={"table": (1, 4), "chair": (2, 12), "fireplace": (1, 1)},
                         per_tiles={"table": 26},
                         optional={"rug": (0.4, 1), "wall_decor": (1.0, 5), "shelves": (0.4, 2), "bench": (1.0, 6),
-                                  "storage": (0.7, 4)},
+                                  "storage": (0.5, 2)},
                         types={"table": r"^Table[1-4]$|^OvalTable[12]$|^RoundTableWithFood$|^RoundTable[123]$",
-                               "shelves": r"^LogShelvesFull\d$|^Bookcase\d(HalfFull)?$",
+                               "shelves": r"^LogShelvesFull\d$",      # crockery, not books (dining halls read as libraries)
                                "storage": CHEST + r"|^LargeBarrel[12]$|^Barrel2?$|^PiledBarrels[1-4]$",
                                "chair": r"Chair", "bench": r"^LightBench\d$|^Bench[1245]$"},
                         # Westwood's room statistics count hearths as lights, so a recipe names its own
@@ -252,9 +252,9 @@ ROOMS = {
                                  dict(fam="wall_decor", slot="decor")],
                         fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=160),
                               dict(fam="table", slot="group", group="dining", max=2, min_area=160),
-                              dict(fam="storage", slot="stock", coverage=0.25, kinds=("kegs",), pad=1.2, max=3,
-                                   per_wall=0.25),
-                              dict(fam="shelves", slot="line", near="fireplace", max=2, fixed=True)]),
+                              dict(fam="storage", slot="stock", coverage=0.2, kinds=("kegs",), pad=1.2, max=1,
+                                   per_wall=0.2, fixed=True),
+                              dict(fam="shelves", slot="line", near="fireplace", n=2, max=1, fixed=True)]),
     "shop": dict(purpose="a trader's shop: the counter set out before a back wall with the keeper's space behind it, "
                          "trader's shelves of goods lining the back walls, racks of arms and armour in rows down the "
                          "middle, crates of stock along the front walls",
@@ -524,6 +524,7 @@ ROOMS = {
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
                        group_seats={"hearth": (0, 0)},          # Westwood's free hearths stand alone (Con06b's three)
+                       by_walls=("hearth",), decor_max=6,       # toward a corner, not before the door; banners in a few places
                        top_up=(),
                        compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.6),
                                 dict(fam="table", slot="table_rows", seat="bench", joined=3),

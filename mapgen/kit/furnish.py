@@ -1121,7 +1121,8 @@ class Furnisher:
             self.complete_bookcase_walls()
             self.centre_by_doors()
             if self.kind in DECORATED: self.decorate_walls()
-            while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
+            dmax = ROOM_IDENTITY.get(self.kind, {}).get("decor_max", 99)       # a recipe's most hangings holds here too
+            while self.line_family() and self.back_lined() < LINED_GOAL and self._fam_n["wall_decor"] < dmax and                     self.place_decor(): pass
             self.audit_rugs()
             self.audit_tables()
             self.face_statues()
@@ -1810,9 +1811,10 @@ class Furnisher:
                 if not joined: laid = self._seat_row(laid, t, seat, seat_base, tables)
             if joined:                                  # a board's pieces first, then its benches: a pair at every
                 # other piece (Con06b: 16 benches down 12 joined tables), the pieces between seated by their neighbours'
-                self._seat_row(laid[::2], t, seat, seat_base, tables)
-                for o, uv in laid[1::2]:
-                    self._seated.add((uv, t)); tables.append((o, uv))
+                ends = [x for j, x in enumerate(laid) if j % 2 == 0 or j == len(laid) - 1]
+                self._seat_row(ends, t, seat, seat_base, tables)
+                for o, uv in laid:
+                    if all(o is not e[0] for e in ends): self._seated.add((uv, t)); tables.append((o, uv))
         return tables
 
     def _seat_row(self, laid, t, seat, seat_base, tables):
