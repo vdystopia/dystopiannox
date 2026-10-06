@@ -2158,6 +2158,53 @@ def check_pieces(m, ctx, base):
                          o["x"], o["y"], rule=f"pieces.{rule}"))
     return out
 
+# ---- Westwood's placement grammar (kit/grammar.py; rules/grammar.py measures it) ------------------------------------
+# The blind judges' faults (2026-10-06): lights loose on the floor, table sets floating, chairs drawn up to nothing, lone
+# stock and chests, even gaps and stepped rows, one piece per corner, rings, plants where Westwood has none, twin knots,
+# mixed bed or tomb kinds. Both engines fix every case (kit/grammar.py audit); the checker warns when a room holds as
+# many as GRAMMAR_MIN of one rule, which Westwood's own curated rooms reach in under 7% of rooms each
+# (rules/out/grammar.json westwood_fires; one fault of most rules is Westwood's habit too).
+GRAMMAR_MIN = {"light": 3, "lights": 2, "table": 2, "chair": 3, "lone": 3, "even": 2, "stepped": 1, "corners": 1,
+               "ring": 2, "twin": 2, "plant": 1, "mixed": 2}
+GRAMMAR_TEXT = {
+    "light": "floor lights out of place: Westwood stands a light by a wall, in a corner or beside what it lights",
+    "lights": "floor lights past Westwood's count for the room's type and size",
+    "table": "table sets floating or crowding: Westwood's stand by a wall, on a carpet or by the hearth",
+    "chair": "chairs drawn up to nothing",
+    "lone": "barrels, crates or chests alone in the open or on a front wall: Westwood heaps them or sets them by a wall",
+    "even": "rows at even gaps along a wall: Westwood's walls are irregular",
+    "stepped": "pieces in evenly stepped rows",
+    "corners": "one lone piece of a kind to each corner",
+    "ring": "pieces ringing a centre at even distance and angles",
+    "twin": "knots or table sets repeated in the same shape (a stamp)",
+    "plant": "plants, where Westwood's rooms of the type hold none",
+    "mixed": "beds or tombs of mixed kinds",
+}
+
+
+def grammar_flags(m, r, kind):
+    """kit/grammar.py faults of one room, as (rule, count, first fault) for the rules it breaks GRAMMAR_MIN times."""
+    from kit import grammar as G
+    from kit.roomtypes import KIND_TYPE
+    v = G.view_from_map(m, r, __import__("checks"), KIND_TYPE.get(kind, kind))
+    by = collections.defaultdict(list)
+    for f in G.faults(v): by[f["rule"]].append(f)
+    # (faced pieces on a front wall: composition.front_wall already says so)
+    return [(rule, len(fs), fs[0]) for rule, fs in by.items() if rule in GRAMMAR_TEXT and len(fs) >= GRAMMAR_MIN.get(rule, 2)]
+
+
+def check_grammar(m, ctx, base):
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        if not kind: continue
+        for rule, n, f in grammar_flags(m, r, kind):
+            o = f["p"]["o"]
+            out.append(F("composition", "warning", f"{kind.replace('_', ' ')} room: {n} {GRAMMAR_TEXT[rule]} ({o['type']} "
+                         f"{f['msg']}) [grammar {rule}].", o["x"], o["y"], rule=f"composition.grammar_{rule}"))
+    return out
+
+
 # ---- camps and outdoor groups (GW-2, GW-4, SW-1, SW-3, SW-9) ------------------------------------------------------
 STUMP_RE = re.compile(r"^Stump\d+$")
 FIRE_RE = re.compile(r"^(CampFire|CampFireUnused)$")
@@ -2316,6 +2363,18 @@ RULES = [
     ("composition.bridge_slant", "composition", r"crosses the water at a slant", "DV6-5"),
     ("composition.bridge_bend", "composition", r"sits on a bend", "DV6-5"),
     ("composition.bridge_landing", "composition", r"^A bridge ends against", "DV5-3"),
+    ("composition.grammar_light", "composition", r"\[grammar light]", ""),
+    ("composition.grammar_lights", "composition", r"\[grammar lights]", ""),
+    ("composition.grammar_table", "composition", r"\[grammar table]", ""),
+    ("composition.grammar_chair", "composition", r"\[grammar chair]", ""),
+    ("composition.grammar_lone", "composition", r"\[grammar lone]", ""),
+    ("composition.grammar_even", "composition", r"\[grammar even]", ""),
+    ("composition.grammar_stepped", "composition", r"\[grammar stepped]", ""),
+    ("composition.grammar_corners", "composition", r"\[grammar corners]", ""),
+    ("composition.grammar_ring", "composition", r"\[grammar ring]", ""),
+    ("composition.grammar_twin", "composition", r"\[grammar twin]", ""),
+    ("composition.grammar_plant", "composition", r"\[grammar plant]", ""),
+    ("composition.grammar_mixed", "composition", r"\[grammar mixed]", ""),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
@@ -2347,7 +2406,7 @@ def rule_of(f):
 
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds,
-       check_rooms, check_identity, check_pieces, check_density, check_exterior]
+       check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar]
 
 
 def run_all(m, base, only=None):

@@ -205,6 +205,15 @@ These hold whatever the type (PROCESS.md keeps their history):
 - **Each wall has a purpose; one group in the middle shows the use; the pieces keep to one theme** ("This room has no
   sense of identity or purpose. No continuity of theme or real feel", the Starwell laboratory). The room reads as its
   type and no other.
+- **Westwood's placement grammar** (2026-10-06, the fair blind judges; `rules/grammar.py` measures it on the curated
+  campaign rooms into `rules/out/grammar.json`, `mapgen/kit/grammar.py` holds it, both engines run its audit last, the
+  checker warns with `composition.grammar_*`): a floor light stands by a wall in a corner or beside what it lights,
+  never free, on a carpet, at a bed's foot, side by side or in a row; a table set stands by a wall, on a carpet or by the
+  hearth, never floating, at a bed's foot or square before the fire; chairs are drawn up to something; barrels, crates
+  and chests join a group (Westwood leaves 15% of its stock and 2% of its chests alone in the open or on a front wall);
+  no even gaps along a wall (or of hangings), no stepped rows, no piece one to a corner, no rings (four chairs at a
+  table's quarter points); no table or bench square before the hearth; no bench or column alone in the open; no plants
+  but in a gallery; no face on a front wall; no twin knots or table sets; beds and tombs of one kind.
 - **One palette per building** (seats, tables, carpets, hangings, plants), one hanging theme per room, one door family
   per building; candelabras indoors, never open torches.
 

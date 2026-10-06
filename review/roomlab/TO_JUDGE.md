@@ -49,3 +49,22 @@ After judging, write `blind/judge.json` and run `py review/roomlab/blind.py scor
 |---|---|---|---|---|
 | bedroom | c13 | C:\GOG Games\Nox\dystopiannox-wt\motifs2\review\out\roomlab\bedroom\c13\blind | Westwood's groups placed whole (bed with nightstands and chest, desk with its chair drawn up); the bed group on a back wall where Westwood's stand from the door (across from it or beside it), about 0.7 of the room's diagonal from it; no lone chairs; zones of Westwood's room size in large rooms; carpets as Westwood's larger bedrooms lay them; hangings at Westwood's rate | |
 | storeroom | s6 | C:\GOG Games\Nox\dystopiannox-wt\motifs2\review\out\roomlab\storeroom\s6\blind | stock on the back walls in heaps, front walls mostly bare, the way in kept clear 4 units deep, kinds of store mixed (no kind past 40%), free heaps only in rooms of 60+ tiles, the ore store's cart | |
+
+# Placement grammar (night-grammar): Westwood's placement rules, both engines' last pass
+
+Built with `py tests/roomlab.py <type> --iter g3 [--engine motifs]` (seed 1, n 10) with `mapgen/kit/grammar.py`'s audit
+on (the rules measured on the curated campaign rooms by `rules/grammar.py`). One sheet per type, the better engine of
+the final round. The builder has not judged them. After judging, write `blind/judge.json` and run
+`py review/roomlab/blind.py score <type> <iter>` from this worktree. Before (same seed, audit off): iterations `ref`
+(recipe) and `refm` (motifs) in the same folders.
+
+| Type | Iteration | Engine | Blind folder | What changed (the judges' faults) | Result |
+|---|---|---|---|---|---|
+| bedroom | g3m | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\bedroom\g3m\blind | lights beside the bed head, a desk or shelf, or in a corner, never loose or at the bed's foot; no lone chair; no plants | |
+| storeroom | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\storeroom\g3\blind | no stepped rows or even gaps of stock; lone stock joins a heap by a back wall | |
+| living_room | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\living_room\g3\blind | the way to the hearth open (a bench drawn up beside it, not square before it); table sets by a wall or on a carpet laid to them; no lone barrels or benches; no chairs at even quarter points; lights by walls | |
+| kitchen | g3m | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\kitchen\g3m\blind | placement only (contents untouched): no lone barrels in corners or open floor, no stock heaps mid-floor, lights by walls | |
+| laboratory | g3m | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\laboratory\g3m\blind | candelabras by the shelves and benches or in corners, not out in the room; no floating table | |
+| shop | g3m | motifs | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\shop\g3m\blind | lights by the counter or shelves, none loose; lone barrels and crates heaped | |
+| tavern | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\tavern\g3\blind | no plants; lights by walls (two to a wall at most, none side by side); table sets anchored; no twin sets, rings of stools or stepped rows | |
+| guardroom | g3 | recipe | C:\GOG Games\Nox\dystopiannox-wt\grammar\review\out\roomlab\guardroom\g3\blind | no barrel to each corner, no lights side by side on the floor, chairs drawn up, tables by a wall or rug | |
