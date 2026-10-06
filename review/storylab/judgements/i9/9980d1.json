@@ -1,0 +1,34 @@
+{
+  "packet": "9980d1",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The opening is one overloaded sentence (who, where, what was done, and the order) joined by 'and' and 'so', and 'ore-men' is a coined word. The trailing reminder imitates Westwood's ellipses but gives the player nothing to do."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The potion hand-off and the welcome copy Westwood's opening shape well, but 'old toll fort on [Place], north of the crossroads -- throw him out and open our roads again!' packs place, direction and goal into one line. 'As soon as you're set to go' sounds modern."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short enough, but 'is nothing without the old watchtower' and the gate-and-tower directions sound composed. It also mixes 'lad' and 'young sir' across two lines, as if it were reaching for Nox's markers."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Short, choppy hand-off lines ('I must hurry and so should you!', 'No more time for chit-chat. Better hurry!') that read like a hasty NPC. The journal entry is flat and functional."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff, slightly bureaucratic phrasing ('recent surge of violence in the local creatures') with practical shop and bridge directions spread over several pages. That plain clunkiness is very much Westwood's."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 4,
+     "critique": "Long chained sentences that speculate about where the Ogres came from, and a key handed over in the same breath. The quip 'Ogres love nothing better than a boat on the rocks!' is a non sequitur that tries too hard at humour."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A mentor's voice ('no time to rest on laurels', 'Now, off with you!'), with plot exposition that names a villain and a hand-off to an NPC in the village. The terse journal 'Retrieve the [Thing].' is typical."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Stacks 'young sir' and 'lad' in one speech, and runs on with 'because believe me, you'd rather not see them up close', which is too conversational and modern. The journal entry just repeats the order."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Clipped fragments ('You'll know. And careful.') and a redundant reminder that repeats itself ('Enter... Hurry! Go into the crypts...'). Westwood's unpolished repetition."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Grandiose, slightly cheesy proclamations ('timeless fortress home', 'glorious', 'the test of your life'), then the dry 'It weeds out the weak recruits.' A bare reminder and a bare journal entry."}
+  ],
+  "tells": [
+    "Generated openings cram the full quest briefing (villain, location with direction, past atrocity, order) into one or two long sentences joined by 'and', 'so', 'because' or dashes. Westwood spreads it across short pages or leaves pieces out.",
+    "Generated lines stack Nox's address markers ('lad', 'young sir') and often use both in one quest. Westwood uses one, sparingly.",
+    "Generated humour is an added punchline or aside ('believe me, you'd rather not see them up close', proverbs about Ogres). Westwood's humour comes from bluntness or bombast ('It weeds out the weak recruits').",
+    "Westwood's prose is clumsier and more redundant: repeated orders, fragments, stiff wording ('surge of violence in the local creatures'). Generated text is smoother and more evenly composed.",
+    "Generated journal entries restate the opening's full order with place and target. Westwood's are often terser and vaguer ('Retrieve the [Thing].', 'Find a way into [Place].').",
+    "Westwood's openings usually pass the player on (travel to someone, meet someone waiting) more often than they assign a fight with a set objective such as 'drive X out of Y'."
+  ]
+}

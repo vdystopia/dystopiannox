@@ -1,0 +1,34 @@
+{
+  "packet": "0fa39e",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The breathless opening ('What took you so long to get here!?'), the overblown 'Horrific overgrown insects and airborne demons' and the bare, list-like journal ('Charm or kill all the monsters... Rescue the 6 trapped mine workers') are Westwood's mine-quest voice."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "It packs who, where, the route and a door hint ('cookhouse door at the back should still be unlatched') into one plea, then ends on 'Bring him home! Good luck!'. The captive's 'under the big kettle' line is a built-up comic detail. The opener 'Please... The X dragged my [Person] off' repeats in J."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Short exclamatory lines, 'lad' and 'my boy', the blunt 'before the Ogres eat them!' and the 'other two groups of damsels' payoff all read as Westwood's broad, quick campaign writing."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The whimsy is too worked: the lunch pail, horns 'tooting all morning', 'half the town' and the savings jar. The thanks swerves into lore about '[Person]'s rotting servants', a new-writer habit of tying everything back to the villain."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The jammed express elevator, the Chief Engineer and the 'really big bugs' are Westwood's matter-of-fact plot-mechanic writing. The captive hands over a key and directions in clipped lines, and the slightly clunky 'We best go beneath the city' fits it."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The naive overstatement ('innocent victims, kidnapped from our village during a ruthless Ogre raid!'), 'brave Adventurer', loose comma use and the 'menfolk... cannot live without us' joke are Westwood's tone."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Nothing but bad news has come across the lake these last days, and not one scrap of good!' is a writerly framing. 'Grows weaker with every hour at those Ogre oars' is a crafted image, and 'Fight your way into... and free [Person] from the oars' follows the same journal template as H."},
+    {"label": "H", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "The plea is overloaded (the Necromancer, the ice-cutters, fear of the dark, the location, a key and the gate it opens). The thanks is jumbled and out of order, its 'beyond that' is awkward, and 'grows colder with every hour' duplicates G's device."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The absurd frog in the burning house, the frog's terse 'Fine! I will follow you!' and the deadpan 'What's that you say? Loads and loads of money?' joke are Westwood's comedy. The journal is plain and literal."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The plea is a fragment with the same 'Please... The X dragged my [Person] off' opener as B. 'You may consider me right on your heels until we see my mother's door' is stilted and over-composed, and the thanks runs long."}
+  ],
+  "tells": [
+    "The new texts reuse templates across quests: 'Please... The X dragged my [Person] off', 'bring him home', 'grows weaker/colder with every hour', and journals of the form 'Fight your way into X and free/bring [Person]'. Westwood's lines vary more and are blunter.",
+    "The new texts load homely, cozy detail (a lunch pail, a savings jar, a kettle, horns tooting, oars) to make a joke. Westwood's humour is broader and more absurd (a frog in a fire, 'loads and loads of money', menfolk who can't live without the maidens) and comes in fewer words.",
+    "Westwood's pleas are breathless and over the top, with many exclamation marks and stock words ('Horrific', 'ruthless', 'innocent victims'). The new pleas are measured, and each one carries the full set of route, door and key information.",
+    "The new texts tie the quest back to the chapter villain ('[Person]'s rotting servants', 'the Necromancer's wicked deeds'). Westwood's rescue quests stay local and plain.",
+    "The new captives speak in characterful, composed sentences ('You may consider me right on your heels', 'You'll have to lead me slow'). Westwood's captives are generic and short ('Help us!', 'I'll follow you.').",
+    "Westwood's journals are bare imperatives that sometimes give a count ('Rescue the 6 trapped mine workers'). The new journals add flavour ('free [Person] from the oars')."
+  ]
+}

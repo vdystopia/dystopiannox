@@ -1,0 +1,318 @@
+{
+ "iter": "i9",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Gorst",
+  "setting": "a castle town with a garrison",
+  "trouble": "The Necromancer Zarrow has raised the Undead and taken the old watchtower on Kell Moor, and each night they creep closer to the walls of Gorst.",
+  "names": {
+   "Gorst": "place",
+   "Kell Moor": "place",
+   "Great Hall": "place",
+   "Blades Galore": "place",
+   "Zarrow": "person",
+   "Pelgrim": "person",
+   "Lord Dravus": "person",
+   "Brunk": "person",
+   "Gribbin": "person",
+   "Hulda": "person",
+   "Bodkin": "person",
+   "Krugg": "person",
+   "Old Fenna": "person",
+   "Steward Oswin": "person",
+   "Lorkin": "person",
+   "Gubb": "person",
+   "Pell": "person",
+   "Orlo": "person",
+   "Hask": "person",
+   "Mirabel": "person",
+   "Undead": "group",
+   "Skeletons": "group",
+   "Scorpions": "group",
+   "Urchins": "group",
+   "Rats": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brunk keeps the east gate, shut until Lord Dravus gives his word to open it.",
+   "names": {
+    "Brunk": "person",
+    "Lord Dravus": "person",
+    "Great Hall": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brunk",
+     "text": "Only sworn soldiers may pass this gate!"
+    },
+    "again": {
+     "speaker": "Brunk",
+     "text": "What are you still standing here for? Lord Dravus is holding court in the Great Hall right now! You'd better see him if you hope to pass this gate. His word opens it."
+    },
+    "later": {
+     "speaker": "Brunk",
+     "text": "Pass, then."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gribbin the pedlar hauled a wagon of boots to the garrison and Scorpions have nested in every pair.",
+   "names": {
+    "Gribbin": "person",
+    "Scorpions": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gribbin",
+     "text": "Greetings, young sir. I've gone to great bother and my own expense, hauling a wagon of fine leather boots to these poor barefoot soldiers -- and now Scorpions have nested in every last pair, down in the stable yard west of the gate! Clear them out and I'll make it worth your while."
+    },
+    "reminder": {
+     "speaker": "Gribbin",
+     "text": "Off you go. Squash them!"
+    },
+    "completion": {
+     "speaker": "Gribbin",
+     "text": "Congratulations, brave Adventurer! Here, try a pair of these boots on the next Scorpion you meet."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the stable yard and drive the Scorpions out of Gribbin's wagon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hulda the laundress lost Lord Dravus' best cloak off her washing line to the Urchins.",
+   "names": {
+    "Hulda": "person",
+    "Lord Dravus": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Help! Lord Dravus' best cloak! Those thieving Urchins snatched it off my washing line and ran to their caves east of the wall. There is no hiding a thing like that from the Lord. Will you fetch it back for me, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Don't you turn your back on me, mister. You don't know Lord Dravus. He'll have my head for this, nothing less. Come back if you change your mind."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Please, find that cloak!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Oh, thank you, kind sir! This cloak will surely save my neck when Lord Dravus asks for it. Please take this as a token of my appreciation. Now, I'd better get it pressed."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "A hundred blessings on you, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Lord Dravus' cloak from the caves of the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Lord Dravus' cloak from the caves of the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Mirabel frets about the silent bell, Gribbin wonders about Zarrow, Hask praises the player after the Scorpions.",
+   "names": {
+    "Mirabel": "person",
+    "Gribbin": "person",
+    "Hask": "person",
+    "Zarrow": "person",
+    "Scorpions": "group"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Mirabel",
+     "text": "We're all to gather in the chapel when the bell rings, but who can ring a bell with no clapper? Good luck to you, brave Adventurer!"
+    },
+    "rumour2": {
+     "speaker": "Gribbin",
+     "text": "I wonder if Zarrow ever trims his beard?"
+    },
+    "rumour3": {
+     "speaker": "Hask",
+     "text": "So you're the one who squashed the Scorpions in Gribbin's wagon! Much obliged, stranger!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bodkin keeps the inn, Krugg the smith runs Blades Galore, Old Fenna sells potions and books.",
+   "names": {
+    "Bodkin": "person",
+    "Krugg": "person",
+    "Old Fenna": "person",
+    "Blades Galore": "place",
+    "Gorst": "place",
+    "Undead": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bodkin",
+     "text": "Well... Perhaps not the softest beds in Gorst... But damn cheap all the same!"
+    },
+    "arms": {
+     "speaker": "Krugg",
+     "text": "Welcome to Blades Galore. I reckon I may have a sword or two lying about."
+    },
+    "magic": {
+     "speaker": "Old Fenna",
+     "text": "You're a bold one, poking your nose into Gorst with the Undead at our gates."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Steward Oswin wants the clapper of the great bell back from the Skeletons; Lorkin wants his brother Gubb sprung from the castle dungeon.",
+   "names": {
+    "Steward Oswin": "person",
+    "Brunk": "person",
+    "Lorkin": "person",
+    "Gubb": "person",
+    "Lord Dravus": "person",
+    "Krugg": "person",
+    "Gorst": "place",
+    "Skeletons": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Steward Oswin",
+     "text": "Welcome to Gorst, the mightiest castle in all of Nox!\n\nSkeletons climbed the wall in the night and made off with the clapper of our great bell! Brunk at the gate knows where they went and will point you to it.\n\nA castle with a silent bell is most troublesome in these dark times. Bring back the clapper, and you'll find me generous."
+    },
+    "offer_b": {
+     "speaker": "Lorkin",
+     "text": "There's an old drain under the castle dungeon where the guards never bother to look. My brother Gubb is locked up down there, and our dice game is nothing without him. He's asked me to find somebody to get him out before Lord Dravus remembers he's there. I'll make it worth your trouble."
+    },
+    "outcome_a": {
+     "speaker": "Steward Oswin",
+     "text": "You must ring the first peal yourself, stranger! A reward? Why, of course! Here is the longsword I promised, though I'm afraid our coffers hold little else.\n\nI thought I'd never hear that old bell again."
+    },
+    "outcome_b": {
+     "speaker": "Lorkin",
+     "text": "Thank goodness, you got him out! You should go see Krugg the smith -- he owes me a chain tunic, and it's yours now."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Find the clapper of the great bell."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Spring Lorkin's brother Gubb from the castle dungeon."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Longsword",
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Pell's master Orlo the Stargazer climbed down the dry well to look at the stars and the Rats keep him there.",
+   "names": {
+    "Pell": "person",
+    "Orlo": "person",
+    "Pelgrim": "person",
+    "Zarrow": "person",
+    "Rats": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Pell",
+     "text": "Ah, so you're the brave stranger old Pelgrim wrote to us about. You must climb down the dry well behind the chapel and fetch Master Orlo before the Rats make a supper of him! Grrrrrrrrrr... that stubborn old goat!"
+    },
+    "reminder": {
+     "speaker": "Pell",
+     "text": "One of the night watch heard him calling for his supper. You just have to hurry!"
+    },
+    "found": {
+     "speaker": "Orlo",
+     "text": "I'm sorry young sir, but you're standing in my starlight. I'll must ask you kindly to step aside."
+    },
+    "following": {
+     "speaker": "Orlo",
+     "text": "I'm sorry, but I can't climb any faster unless somebody carries my star charts. Can't have a learned man scrambling about in the dirt, can I?"
+    },
+    "completion": {
+     "speaker": "Pell",
+     "text": "You did it, brave Adventurer! I wonder if that wicked Zarrow sent those Rats after him. Please, take this Ankh for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Orlo the Stargazer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hask points the player to Lord Dravus, who sends him to take the Kell Moor watchtower back from Zarrow's Undead.",
+   "names": {
+    "Hask": "person",
+    "Lord Dravus": "person",
+    "Great Hall": "place",
+    "Pelgrim": "person",
+    "Gorst": "place",
+    "Kell Moor": "place",
+    "Zarrow": "person",
+    "Undead": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hask",
+     "text": "Shouldn't you be off to see Lord Dravus in the Great Hall?"
+    },
+    "opening": {
+     "speaker": "Lord Dravus",
+     "text": "So, Pelgrim's friend has come at last. Gorst is nothing without the old watchtower on Kell Moor. Zarrow's Undead have taken it, and every night they creep closer to our walls! Go out by the east gate and drive them from that tower, lad."
+    },
+    "reminder": {
+     "speaker": "Lord Dravus",
+     "text": "Make haste, young sir! There's precious little time left to stop Zarrow!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Zarrow's Undead out of the watchtower on Kell Moor."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

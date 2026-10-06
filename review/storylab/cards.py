@@ -205,8 +205,8 @@ LONG = ("offer", "opening", "completion")
 def frames_card(dealer, scenarios, long=True):
     """The frames of one map: {scenario: {part: (key, text)}} and its markdown."""
     L = ["### Your frames: one Westwood line a part, to rewrite line for line", "",
-         ("Each part listed below is a rewrite of its frame (the offers, thanks and openings are not: write those from the "
-          "exemplars and your premise)." if not long else "Each part of your town is a rewrite of its frame.") + " Keep the frame's shape: about as many sentences, its "
+         ("Each part listed below is a rewrite of its frame (the offers, thanks and openings are built sentence by "
+          "sentence from the sentence frames that follow)." if not long else "Each part of your town is a rewrite of its frame.") + " Keep the frame's shape: about as many sentences, its "
          "punctuation where it falls (! ? ... -- / page breaks), how it opens and how it ends, its stock words, its "
          "quirks (a slip, a stiff word, a run-on, an afterthought, a flat statement). Change its matter to your town's: "
          "who, what, where, the beast, the thing, the reward. Never keep five words of a frame in a row (a stock phrase "
@@ -327,3 +327,81 @@ def sentence_frames_card(dealer, scenarios):
             L.append(f"- `{sid}.{part}` ({len(pages)} page{'s' if len(pages) > 1 else ''}, {n} sentences): " + " / ".join(out))
     L.append("")
     return "\n".join(L)
+
+
+# ---- a map's own frames (for map agents) --------------------------------------------------------------------------------
+DEFAULT_MAP_PARTS = ("main:opening,reminder,journal; "
+                     "quest1:offer,refusal,reminder,completion,after,journal; quest2:offer,reminder,completion,journal; "
+                     "quest3:offer,reminder,completion,journal; rescue:offer,reminder,found,following,completion,journal; "
+                     "guard1:first,again,later; guard2:first,later; shops:inn,arms,magic; "
+                     "townsfolk:rumour1,rumour2,rumour3,rumour1,rumour2,rumour3,rumour1,rumour2")
+
+
+def map_frames(seed, spec=DEFAULT_MAP_PARTS):
+    """The frames card of one map: `spec` is "who:part,part; who:part" (parts as in FRAME_OF_PART: offer, opening,
+    reminder, completion, after, refusal, rumour1, first/again/later, inn/arms/magic, journal, found, following)."""
+    dealer = FrameDealer(f"map|{seed}")
+    groups = []
+    for chunk in spec.split(";"):
+        if ":" not in chunk: continue
+        who, parts = chunk.split(":", 1)
+        groups.append((who.strip(), [(p.strip(), "") for p in parts.split(",") if p.strip()]))
+    short = frames_card(dealer, groups, long=False)[1]
+    return "\n".join([f"# Story frames for {seed}", "",
+                      "Write every line of the map from its frame (review/storylab/WRITER.md, rules/DIALOGUE.md). The "
+                      "frames are Westwood's own lines, dealt to this map; never keep five words of one in a row, "
+                      "never a Westwood name.", "", short, sentence_frames_card(dealer, groups)])
+
+
+# ---- quest frames (v10): a whole Westwood quest a quest ---------------------------------------------------------------
+# i7 (a line frame a part, from any situation) and i9 (a sentence frame a sentence) gave long lines that read as
+# assembled: objects never introduced, a tag in the wrong slot, a speaker who changes mid-speech. A quest frame is one
+# Westwood quest, all its parts by one speaker in one situation, rewritten part for part: the coherence comes with it.
+# Its units are those of the scenario pools (the round's packets leave out any Westwood unit a writer was dealt).
+
+QUEST_SCENARIOS = {"bounty_offer": ["bounty_offer", "heirloom_fetch"], "heirloom_fetch": ["heirloom_fetch", "bounty_offer"],
+                   "rescue": ["rescue", "bounty_offer"], "two_givers": ["two_givers"], "main_opening": ["main_opening"]}
+
+
+def _quest_units():
+    import json
+    import westwood
+    S = westwood.strings()
+    d = json.load(open(os.path.join(HERE, "scenarios.json"), encoding="utf-8"))
+    out = {}
+    for s in d["scenarios"]:
+        units = []
+        for u in s["westwood"] + s.get("control_extra", []):
+            parts = {}
+            for p, k in u:
+                ks = k if isinstance(k, list) else [k]
+                parts[p] = (ks, " / ".join(re.sub(r"\s*\n\s*\n\s*", " / ", S[x].strip()) for x in ks if x in S))
+            units.append(parts)
+        out[s["id"]] = units
+    return out
+
+
+def quest_frames_card(dealer, scenarios):
+    """One Westwood quest for each quest scenario of one map; returns (markdown, {scenario: [keys used]})."""
+    if not hasattr(dealer, "qunits"): dealer.qunits = _quest_units()
+    rng = dealer.rng
+    L = ["### Your quest frames: one Westwood quest a quest, rewritten part for part", "",
+         "Each quest below is dealt one of Westwood's own quests. Rewrite it part for part: the same shape (how many "
+         "pages and sentences, where the ! and ? fall), the same register and quirks, the same kind of trouble and of "
+         "reward, transposed to your town (spiders in the mayor's study -> another pest in another important person's "
+         "room; boots stolen while bathing -> another thing lost in another embarrassing way). Keep its coherence: one "
+         "speaker, one situation. Change every name and the matter; never five words of it in a row (stock phrases "
+         "excepted). Where your scenario has a part the frame lacks, write it in the manner of the frame's other "
+         "parts; where the frame has a part your scenario lacks, leave it out.", ""]
+    used = {}
+    for sid, parts in scenarios:
+        if sid not in QUEST_SCENARIOS: continue
+        deck = dealer.decks.setdefault(f"_q_{sid}", [])
+        if not deck:
+            for src in QUEST_SCENARIOS[sid]:
+                t = list(dealer.qunits.get(src, [])); rng.shuffle(t); deck += t
+        unit = deck.pop(0)
+        used[sid] = [k for ks, _ in unit.values() for k in ks]
+        L.append(f"- **{sid}**: " + " | ".join(f"*{p}*: \"{txt}\"" for p, (ks, txt) in unit.items()))
+    L.append("")
+    return "\n".join(L), used

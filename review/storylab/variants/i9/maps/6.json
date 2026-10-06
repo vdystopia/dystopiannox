@@ -1,0 +1,336 @@
+{
+ "iter": "i9",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Merinth",
+  "setting": "a wizards' college town",
+  "trouble": "Zorvan, a Wizard thrown out of the College of Merinth, has turned its Golems against the town and holds the Black Spire to the east.",
+  "names": {
+   "Merinth": "place",
+   "College": "place",
+   "Black Spire": "place",
+   "old kiln": "place",
+   "old foundry": "place",
+   "old quarry": "place",
+   "College lockup": "place",
+   "Zorvan": "person",
+   "Varrus": "person",
+   "Pellidor": "person",
+   "Brannock": "person",
+   "Fennick": "person",
+   "Oswick": "person",
+   "Hobbe": "person",
+   "Rusk": "person",
+   "Tilda": "person",
+   "Bartholo": "person",
+   "Gorm": "person",
+   "Zinnia": "person",
+   "Halvane": "person",
+   "Quib": "person",
+   "Pibb": "person",
+   "Hulda": "person",
+   "Merra": "person",
+   "Golems": "group",
+   "Mimics": "group",
+   "Imps": "group",
+   "Masters": "group",
+   "Orb of Merinth": "thing",
+   "Zorvan's Downfall": "thing",
+   "Push": "thing",
+   "Blink": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brannock keeps the College gate, shut while Zorvan's Golems roam the streets.",
+   "names": {
+    "Brannock": "person",
+    "College": "place",
+    "Golems": "group",
+    "Merinth": "place"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannock",
+     "text": "You want into the College with Golems loose in the streets!? You're mad! Now go away! You're a menace!"
+    },
+    "again": {
+     "speaker": "Brannock",
+     "text": "Ask me some other day."
+    },
+    "later": {
+     "speaker": "Brannock",
+     "text": "So you're the hero of Merinth now! The College gate is open to you! As its keeper, I have seen many a famous face pass through. I'm sure you'll be the finest of them."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, who keeps the College treasury, pays to have the Mimics cleared out of the College storeroom.",
+   "names": {
+    "Fennick": "person",
+    "College": "place",
+    "Mimics": "group",
+    "Oswick": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Hello there, would you care to earn a fat purse from the College treasury? Mimics have crept into our storeroom, which lies in the cellar under the north wing, and every chest down there could bite your arm off!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Now that you've heard about it, we need those Mimics out of the cellar!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "Marvelous! The College owes you a great debt for this. Here is your purse, as promised -- and please, go see Master Oswick. It would appear there's no job too big for you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lure the Mimics out of the College storeroom chests and destroy them."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Master Oswick, an old teacher of the College, wants his staff back from the Imps of the old kiln.",
+   "names": {
+    "Oswick": "person",
+    "Imps": "group",
+    "old kiln": "place",
+    "College": "place",
+    "Zorvan": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Oswick",
+     "text": "Good day, young sir! As those thieving Imps have run off with my teaching staff, I must beg a stranger's help to get it back from their den -- the old kiln west of town. Without it I'm no better than a first-year student, and a disgrace to the College.\n\nWill you bring it home to me?"
+    },
+    "refusal": {
+     "speaker": "Oswick",
+     "text": "You haven't got the nerve. Come back when you find some."
+    },
+    "reminder": {
+     "speaker": "Oswick",
+     "text": "Ah, it's you. Have you made up your mind about my staff?"
+    },
+    "completion": {
+     "speaker": "Oswick",
+     "text": "Thank you! Gold, and lots of it? Here, take what I can spare. I hope you live through this whole business with Zorvan.\n\nMany thanks for getting my staff away from those Imps!\n\nYou have done a great service for an old teacher, one I won't soon forget."
+    },
+    "after": {
+     "speaker": "Oswick",
+     "text": "Please, don't interrupt me now. I'm lecturing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Imps have run off with Master Oswick's staff -- find it and bring it back!"
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Imps have run off with Master Oswick's staff -- find it and bring it back!"
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk of Merinth: Hobbe the worrier, Rusk the drunk, Tilda the busybody.",
+   "names": {
+    "Hobbe": "person",
+    "Rusk": "person",
+    "Tilda": "person",
+    "Zorvan": "person",
+    "Golems": "group",
+    "College": "place"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Hobbe",
+     "text": "We must hold fast and see Zorvan's Golems broken before they reach the College!"
+    },
+    "rumour2": {
+     "speaker": "Rusk",
+     "text": "Help! Help! He's asking me questions!"
+    },
+    "rumour3": {
+     "speaker": "Tilda",
+     "text": "Shouldn't you be out smashing Golems?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Bartholo keeps the inn, Gorm the arms shop, Zinnia the magic shop.",
+   "names": {
+    "Bartholo": "person",
+    "Gorm": "person",
+    "Zinnia": "person",
+    "Masters": "group",
+    "College": "place",
+    "Zorvan's Downfall": "thing"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Bartholo",
+     "text": "A stranger, eh? The Masters up at the College look down on your kind, but they've never been past the town gate and I have! What do they know!? Ha! Heh, heh, heh...\n\nYour coin is welcome here anytime, sir."
+    },
+    "arms": {
+     "speaker": "Gorm",
+     "text": "Sorry, I don't sell to students."
+    },
+    "magic": {
+     "speaker": "Zinnia",
+     "text": "Wanna try a new potion?\n\nI call it 'Zorvan's Downfall.'"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Warden Halvane wants the Orb of Merinth back from the Golems of the old foundry; Quib the peddler wants his brother Pibb broken out of the College lockup.",
+   "names": {
+    "Halvane": "person",
+    "Quib": "person",
+    "Pibb": "person",
+    "Pellidor": "person",
+    "Brannock": "person",
+    "Zorvan": "person",
+    "Golems": "group",
+    "Masters": "group",
+    "Orb of Merinth": "thing",
+    "old foundry": "place",
+    "College": "place",
+    "College lockup": "place",
+    "Merinth": "place"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvane",
+     "text": "It's a catastrophe! Zorvan's Golems smashed the College vault and carried the Orb of Merinth off to the old foundry south of town! Guildmaster Pellidor is counting on you."
+    },
+    "offer_b": {
+     "speaker": "Quib",
+     "text": "Here's my trouble, lad -- my brother Pibb. And mind Brannock at the gate. You must get him out of the College lockup before the Masters turn him into a toad!"
+    },
+    "outcome_a": {
+     "speaker": "Halvane",
+     "text": "Thanks for your help! You have saved the College! Take this purse from the vault, then go see Guildmaster Pellidor -- his study is up in the north tower."
+    },
+    "outcome_b": {
+     "speaker": "Quib",
+     "text": "My humble thanks -- the shield is yours. Now Pibb and I had better slip out of Merinth before the Masters notice!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Take back the Orb of Merinth from Zorvan's Golems!"
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Free Quib's brother Pibb from the College lockup."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "SteelShield"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Hulda's daughter Merra, a student, was dragged off by the Golems to the old quarry.",
+   "names": {
+    "Hulda": "person",
+    "Merra": "person",
+    "Golems": "group",
+    "old quarry": "place",
+    "Push": "thing",
+    "Blink": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulda",
+     "text": "Please... The Golems dragged my Merra off to the old quarry north of town..."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Pardon me! Hello!? My girl is still out there. Did you forget her?"
+    },
+    "found": {
+     "speaker": "Merra",
+     "text": "Push and Blink spells are no use against these bars, so I'm glad somebody came!"
+    },
+    "following": {
+     "speaker": "Merra",
+     "text": "Lead on, and quickly! You may consider me right on your heels until we see my mother's door."
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Wonderful work! Thank you so very much, kind sir. With my Merra home, we can at last sleep without fear of those horrid Golems! I could never pay you back for my girl, but please accept this as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find a way to free Merra from the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Hobbe points the player to Guildmaster Pellidor, who sends him east after Zorvan at the Black Spire; Varrus sent the player.",
+   "names": {
+    "Hobbe": "person",
+    "Pellidor": "person",
+    "Varrus": "person",
+    "Zorvan": "person",
+    "Golems": "group",
+    "College": "place",
+    "Merinth": "place",
+    "Black Spire": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hobbe",
+     "text": "Merinth will not fall to Zorvan and his Golems. Get up to the College and stand with Guildmaster Pellidor!"
+    },
+    "opening": {
+     "speaker": "Pellidor",
+     "text": "I'm the one Varrus wrote to about you. Just follow the east road out of Merinth and you will come to the Black Spire, where Zorvan waits."
+    },
+    "reminder": {
+     "speaker": "Pellidor",
+     "text": "The ward is down! The ward is down! Um... After you."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rendezvous with Guildmaster Pellidor at the foot of the Black Spire."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

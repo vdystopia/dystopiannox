@@ -18,6 +18,7 @@ The loop (review/storylab/README.md):
     py tests/storylab.py control --iter NAME               the control packets (all Westwood) and their results
     py tests/storylab.py solo --iter NAME                  every text of the round alone (no side by side, no quota)
     py tests/storylab.py modes                             the phrases every writer reaches for -> review/storylab/modes.json
+    py tests/storylab.py frames --seed MAPNAME [--parts ...] a map's frames: a Westwood line for every line it will write
     py tests/storylab.py card --seed MAPNAME               a map's story card: its draw of Westwood's shapes and model lines
     py tests/storylab.py <scenario|all> --iter NAME [--n 10]   judge the variants, write the packet and scorecard
     py tests/storylab.py summary                           every scenario and iteration in one table
@@ -209,6 +210,11 @@ def packet(world, sc, it, vs, n_each=5):
     ours = rng.sample(ours, min(n_each, len(ours)))
     txt = lambda v: {p: (v["parts"][p]["text"] if isinstance(v["parts"][p], dict) else v["parts"][p]) for p in pp}
     pool = [u for u in ww_units(sc) if all(p in u["parts"] for p in pp)]
+    dp = os.path.join(OUT, f"dealt_{it}.json")             # v10: no Westwood unit beside a text written from it
+    if os.path.exists(dp):
+        dealt = json.load(open(dp))
+        banned = {k for v in ours for keys in (dealt.get(str(v.get("id"))) or {}).values() for k in keys}
+        pool = [u for u in pool if not any(k in banned for kk in u["keys"].values() for k in (kk if isinstance(kk, list) else [kk]))]
     rng.shuffle(pool)
     ww = []
     for v in sorted(ours, key=lambda v: -_words(txt(v))):    # the Westwood unit nearest in length to each of ours
@@ -529,10 +535,20 @@ def brief(it, baseline=False, writers=10):
             import cards
             if n == 1: dealer = cards.FrameDealer(it)
             L += [cards.premise_card(dealer), cards.frames_card(dealer, scen_parts, long=False)[1], ""]
-        elif it not in ("i4",):                         # v9 on: frames for the short lines, sentence frames for the long
+        elif it == "i9":                                # v9: frames for the short lines, sentence frames for the long
             import cards
             if n == 1: dealer = cards.FrameDealer(it)
             L += [cards.frames_card(dealer, scen_parts, long=False)[1], cards.sentence_frames_card(dealer, scen_parts), ""]
+        elif it not in ("i4",):                         # v10 on: frames for the short lines, a Westwood quest a quest
+            import cards
+            if n == 1: dealer, dealt = cards.FrameDealer(it), {}
+            qmd, used = cards.quest_frames_card(dealer, scen_parts)
+            dealt[n] = used
+            short = [(sid, ps) for sid, ps in scen_parts if sid not in cards.QUEST_SCENARIOS]
+            short += [(sid, [(p, st) for p, st in ps if p in ("herald",)])
+                      for sid, ps in scen_parts if sid in cards.QUEST_SCENARIOS]
+            L += [qmd, cards.frames_card(dealer, short, long=False)[1], ""]
+            json.dump(dealt, open(os.path.join(OUT, f"dealt_{it}.json"), "w"), indent=1)
         L += ["## What to write", "",
               "Every scenario below, as one town's lines, by you alone (do not look at other writers' files). "
               "Each scenario's people are this town's people; one person may appear in two scenarios.", ""]
@@ -778,7 +794,8 @@ def main():
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--baseline", action="store_true")
     ap.add_argument("--check", metavar="DESIGN")
-    ap.add_argument("--seed", help="card: the map's seed (its name)")
+    ap.add_argument("--seed", help="card, frames: the map's seed (its name)")
+    ap.add_argument("--parts", help='frames: "who:part,part; who:part" (default: a town with a main quest, three errands, a rescue, guards, shops, townsfolk)')
     a = ap.parse_args()
     if a.check: sys.exit(check(a.check))
     world, S = scenarios()
@@ -789,6 +806,12 @@ def main():
     elif a.what == "westwood": show_westwood()
     elif a.what == "merge": merge(a.iter)
     elif a.what == "solo": solo(a.iter)
+    elif a.what == "frames":
+        import cards
+        txt = cards.map_frames(a.seed or "map", a.parts or cards.DEFAULT_MAP_PARTS)
+        d = os.path.join(OUT, "frames"); os.makedirs(d, exist_ok=True)
+        p = os.path.join(d, f"{a.seed or 'map'}.md"); open(p, "w", encoding="utf-8").write(txt)
+        print(f"wrote {os.path.relpath(p, REPO)}")
     elif a.what == "modes": find_modes()
     elif a.what == "card":
         import cards

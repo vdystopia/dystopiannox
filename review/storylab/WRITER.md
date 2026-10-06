@@ -1,4 +1,4 @@
-# The story lab's writer brief (v9: frames for every line, sentence frames for the long ones)
+# The story lab's writer brief (v10: a Westwood quest frame for each quest, a line frame for each short line)
 
 You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
 Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
@@ -10,14 +10,13 @@ tell your town from one of Westwood's.
 1. **Read Westwood first.** Read every file in `review/storylab/exemplars/` (Westwood's own lines, 20-30 a
    situation) for the voice: short, loud, plain and corny, stock phrases used straight, flat functional people beside
    one or two odd ones, American-cartoonish, a little clumsy.
-2. **The premise of each quest: plain.** What the giver lost, fears or wants, said plainly. Westwood's errands are
-   mostly plain (spiders in the study, a stolen scepter, a lost apprentice, rogues who robbed an inn), its humour
-   incidental. In i8 a dealt "absurd premise" became the template: every quest a comic setup with a callback.
-3. **Offers, thanks and openings sentence by sentence.** Each has a plan below the brief: the pages and sentences of
-   one of Westwood's own lines of that kind, and for every sentence a frame (a Westwood sentence from that place in
-   such a speech). Write one sentence per frame in its manner, about your town's matter; merge or drop one if the
-   sense needs it, keep the pages. The plan gives the length and the unevenness: a two-sentence offer stays two
-   sentences, a seven-sentence one stays long.
+2. **Every quest from its quest frame.** Each quest of your town is dealt one of Westwood's own quests (its
+   offer, reminder, thanks, journal, all by one speaker in one situation). Rewrite it part for part: the same shape,
+   register and quirks, the same kind of trouble and of reward, transposed to your town. The coherence comes with
+   it. In i7 a frame a line from mixed situations and in i9 a frame a sentence gave speeches that read as
+   assembled (things never introduced, a tag in the wrong slot); in i8 a dealt "absurd premise" became the template.
+3. **Keep the frame's plainness.** Westwood's errands are plain, its humour incidental and broad; add no premise
+   twist, backstory, aside or punchline the frame does not have.
 4. **Every short line from its frame.** Reminders, afterwards, refusals, townsfolk, guards, shopkeepers, captives
    and journal entries each have a frame: one of Westwood's own lines, dealt to you alone. Rewrite it line for line:
    keep its shape (about as many sentences, its punctuation where it falls, its opening and ending, its stock words,
@@ -54,6 +53,10 @@ tell your town from one of Westwood's.
   callback punchline in the thanks; "X is worse than a plague!" similes; "My X! My poor X!"; thanks that open by
   naming the returned thing and close on a quip. Westwood's thanks are often generic ("Please accept this as a token
   of my appreciation!").
+- **(i9) Assembled speeches.** Built a sentence at a time from frames of different speeches, offers read as
+  spliced: stock beats ("How will I ever repay you", a cackle) that do not follow from what came before, objects and
+  people never introduced, two address words ("lad", "young sir") in one quest, a briefing crammed into one long
+  sentence joined by "and", "so", "because".
 - **(i7) Frames that do not fit.** Long offers rewritten from a frame of another situation came out with logic gaps
   (an offer that starts mid-thought, thanks that refer to things never said, a guard's frame in a giver's mouth); and
   Westwood's tics ("heh, heh, heh", "lad", "Adventurer") packed into one speech. Mundane premises and exact sums ("80

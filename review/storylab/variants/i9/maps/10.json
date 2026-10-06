@@ -1,0 +1,311 @@
+{
+ "iter": "i9",
+ "writer": "Claude agent (Claude Code), claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Vellin",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Gorlag and his Ogres from Krudd Hollow raid the farms of the valley, eat the cattle and carry off the farmers; Kaldor the Wayfarer sent the player to Mayor Bodrick.",
+  "names": {
+   "Vellin": "place",
+   "Kaldor": "person",
+   "Bodrick": "person",
+   "Tobber": "person",
+   "Kestrin": "person",
+   "Fennick": "person",
+   "Ysmay": "person",
+   "Marwold": "person",
+   "Snibb": "person",
+   "Ostra": "person",
+   "Grebb": "person",
+   "Brunna": "person",
+   "Grudd": "person",
+   "Ozzrik": "person",
+   "Wendle": "person",
+   "Prissa": "person",
+   "Pellow": "person",
+   "Gorlag": "person",
+   "Krudd Hollow": "place",
+   "Town Hall": "place",
+   "Harvest Amulet": "thing",
+   "Ogres": "group",
+   "Krudd Ogres": "group",
+   "Urchins": "group",
+   "Giant Bats": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Kestrin, the guard at the north gate, whose own barley the Ogres trampled.",
+   "names": {
+    "Kestrin": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Kestrin",
+     "text": "My barley... trampled... all trampled."
+    },
+    "again": {
+     "speaker": "Kestrin",
+     "text": "Phewwwww! Keep that Ogre stink away from me!"
+    },
+    "later": {
+     "speaker": "Kestrin",
+     "text": "Oh, you again. Are the Ogres gone, yet?"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Fennick, an old farmer, wants the Giant Bats cleared out of his barn west of town, because his cows have stopped giving milk.",
+   "names": {
+    "Fennick": "person",
+    "Giant Bats": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Bats have moved into my barn, west of town, and my cows won't give a single drop of milk! Clear them out... I hope you brought a good stout club.\n\nHeh, heh, heh... Rid my barn of those pests and this old farmer will open his purse and his pantry to you."
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "So many bats in so small a barn! Swat them if you can!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "No more bats! Thank you, kind sir! I can't pay you near what it's worth, but please take these boots as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Show Fennick that his barn is rid of the Giant Bats."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Ysmay, an old widow, lost her Harvest Amulet to Urchins who took it to their burrow south of the fields.",
+   "names": {
+    "Ysmay": "person",
+    "Harvest Amulet": "thing",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ysmay",
+     "text": "Urchins? In my kitchen?! I need someone to chase them to their burrow south of the fields and recover my precious Harvest Amulet. Would you help a poor old widow, kind sir?"
+    },
+    "refusal": {
+     "speaker": "Ysmay",
+     "text": "Please, just leave me be. I'm ruined."
+    },
+    "reminder": {
+     "speaker": "Ysmay",
+     "text": "No amulet yet. Hurry, please!"
+    },
+    "completion": {
+     "speaker": "Ysmay",
+     "text": "You found it!? Then I must hang it back over my door this very night. Please, take this gold for your trouble."
+    },
+    "after": {
+     "speaker": "Ysmay",
+     "text": "Bless you for helping a foolish old widow."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Ysmay's Harvest Amulet from the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Ysmay's Harvest Amulet from the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": []
+   }
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Wendle points the way, Prissa brushes the player off, Pellow praises the bat job afterwards.",
+   "names": {
+    "Wendle": "person",
+    "Prissa": "person",
+    "Pellow": "person",
+    "Vellin": "place",
+    "Town Hall": "place",
+    "Fennick": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Wendle",
+     "text": "Welcome to Vellin. The Town Hall is just up the road."
+    },
+    "rumour2": {
+     "speaker": "Prissa",
+     "text": "I've got cows to milk, sorry."
+    },
+    "rumour3": {
+     "speaker": "Pellow",
+     "text": "Good work with those bats, stranger! I hear Fennick is telling everybody!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Brunna at the inn takes the player for an Ogre in the dark, Grudd the smith grumbles about the harvest, Ozzrik the potion seller frets about the Ogres.",
+   "names": {
+    "Brunna": "person",
+    "Grudd": "person",
+    "Ozzrik": "person",
+    "Bodrick": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Brunna",
+     "text": "Stay back, you OGRE! Before I fetch my pitchfork!"
+    },
+    "arms": {
+     "speaker": "Grudd",
+     "text": "Trade's been poor this week, what with the harvest coming in and all."
+    },
+    "magic": {
+     "speaker": "Ozzrik",
+     "text": "Hard times, lad. I can't believe Mayor Bodrick let the Ogres get so close to town. Dark days indeed! Best buy your potions now, before they're gone!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Marwold, keeper of the town granary, needs help holding it against the Ogres; Snibb, locked up for stealing chickens, offers his sword for the key to his cell.",
+   "names": {
+    "Marwold": "person",
+    "Bodrick": "person",
+    "Snibb": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Marwold",
+     "text": "Mayor Bodrick told me you'd be coming. I can't keep these Ogres out of the granary much longer!"
+    },
+    "offer_b": {
+     "speaker": "Snibb",
+     "text": "Ooooh, all this over a few chickens? The key's in the guardhouse, west across the square, on a nail by the door. I'll give you my sword, just let me out of here!"
+    },
+    "outcome_a": {
+     "speaker": "Marwold",
+     "text": "You must keep a good shield up when fighting Ogres -- here, take mine! Now, let's haul this grain back to town."
+    },
+    "outcome_b": {
+     "speaker": "Snibb",
+     "text": "Hooray! I'm out of that cell and back in the sunshine at last! Here, the sword, as promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Fight your way to the granary and help Marwold hold it against the Ogres."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Go to the guardhouse and take the key to Snibb's cell."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SteelShield",
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Ostra begs the player to free her husband Grebb, carried off by Ogres from his plow and penned with the stolen cattle north of the fields.",
+   "names": {
+    "Ostra": "person",
+    "Grebb": "person",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Ostra",
+     "text": "Thank goodness you're here, stranger! My husband Grebb is held in the Ogre pens north of the fields, tied up with the cattle and kept for the Ogres' supper.\n\nThere you must hunt for him among the stolen oxen. You came all this way, lad, or should I say our savior! The brutes grabbed him right off his plow and won't let him go till they've fattened him up!\n\nYou must go to the pens and set him free. You'll find him."
+    },
+    "reminder": {
+     "speaker": "Ostra",
+     "text": "Go to him!"
+    },
+    "found": {
+     "speaker": "Grebb",
+     "text": "A rescuer at last. If you mean to get me out you must cut these ropes off my feet first.\n\nWill you hurry up?"
+    },
+    "following": {
+     "speaker": "Grebb",
+     "text": "Thanks, friend. Stay close. I know a back way home."
+    },
+    "completion": {
+     "speaker": "Ostra",
+     "text": "Bless you! Here, this ankh and a few potions will serve you well -- more than you know."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Lead Grebb out of the Ogre pens and back to Ostra."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable",
+     "RedPotion"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Tobber points the player to Mayor Bodrick in the Town Hall, who sends him to Krudd Hollow, north of town, to defeat Gorlag, chief of the Ogres raiding the valley.",
+   "names": {
+    "Tobber": "person",
+    "Bodrick": "person",
+    "Town Hall": "place",
+    "Gorlag": "person",
+    "Krudd Hollow": "place",
+    "Krudd Ogres": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Tobber",
+     "text": "Step lively, brave Adventurer. Mayor Bodrick in the Town Hall will know how to rout these foul brutes."
+    },
+    "opening": {
+     "speaker": "Bodrick",
+     "text": "You've come at last! Every farm in the valley has lost a crop to Gorlag and his Ogres from Krudd Hollow. Will you, can you, run them off for us?"
+    },
+    "reminder": {
+     "speaker": "Bodrick",
+     "text": "When you pass the north gate, you'll reach the Ogres' fence. Behind it waits Gorlag -- Chief of the Krudd Ogres."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Krudd Hollow and defeat Gorlag."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

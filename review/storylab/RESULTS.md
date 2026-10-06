@@ -192,3 +192,11 @@ lines, ours pass**: townsfolk 0 of 5 caught alone and scored like Westwood's (8.
 rumours and shops 80% side by side, the first packets below 90%. Every scenario with a long offer or thanks is still
 caught, and its tells are the dealt premise turned template: every quest a comic setup with a callback in the thanks,
 "X is worse than a plague!", "My X! My poor X!", "I'll make it worth your while".
+
+### i9: sentence frames for the long lines (WRITER.md v9)
+
+Each offer, thanks and opening got the page-and-sentence plan of a Westwood line of its kind and a Westwood sentence
+frame for every sentence. Side by side 98% (rumour 80%), ours 5.5 / Westwood 8.4; solo 86% (ours caught 78%,
+Westwood's taken for ours 7%). The short lines held (solo: shops 1 of 5 caught, rumours 2 of 5, guards 3 of 5) and
+the long ones got worse (two givers 4.4, bounty 5.0): sentences from different speeches read as assembled, with stock
+beats that do not follow, objects never introduced and a speaker who changes mid-speech.
