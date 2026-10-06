@@ -35,7 +35,7 @@ CAVE = dict(wall="CaveWall2", floor="DirtDark2")
 # empty forest glade, Westwood's sit in towns, among other yards, walls, paved walks, houses"). A town scene's
 # clearing is a hamlet's ground: a road through it, two or three houses round the scene with their walks to the road;
 # the glade is kept for the scenes that belong in the wild.
-WILD = {"bandit_camp", "ogre_camp", "urchin_camp", "wolf_den", "quarry", "shrine"}
+WILD = {"bandit_camp", "ogre_camp", "urchin_camp", "wolf_den", "quarry"}       # (Westwood's shrines stand against walls)
 TOWN_RADIUS = {"small": 12, "typical": 14, "large": 15}
 TOWN_COLS = [54, 90, 126, 162, 198]                          # 36 squares apart: a hamlet's ground and its wood
 TOWN_ROWS = [-18, 18]

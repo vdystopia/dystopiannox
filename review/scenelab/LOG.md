@@ -361,3 +361,16 @@ hideout's rock-pocket reading became a class (`Pocket`: rays, the mouth, points 
 Queued: r3-close. Note: the lab is not reproducible run to run (the same code and seed gave bandit camps of 24 and
 19 pieces in two runs; graveyard r2 and r3 0 and 1 missing): read single-round AUC moves of under ~0.1 as noise.
 Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings unchanged.
+
+### shrine: statues in rows against a wall (kit/scenes.py `shrine`, `waystone`)
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged (a statue with torch poles and flowers in a glade; a milestone with flowers and stones) | 1.00 | 0 / 0 |
+| r1-rows | Westwood's compositions: statues of one kind three in a row 49 px apart, a pair flanking, a lone one between pillars; the waystone a row of milestones with its altar; no flowers | 0.991 | 0 / 0 |
+| r2-wall | the shrine a wall scene (Westwood's: 0.94 of their pieces within two cells of a built wall); the lab lays shrines in the hamlet's ground among houses | 0.901 | 0 / 1 |
+| r3-lights | a second torch pole and the pillars more often (Westwood's median 5.5 pieces, ours 3) | 0.836 | 0 / 0 |
+
+Queued: r3-lights. Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors. (Thornwick's warnings now and then
+include "a study room holds OgreStraw4": a catalogue hay scene in a ruined room; it comes and goes between runs of the
+same code, as the lab's maps do, so it is not this change's.)

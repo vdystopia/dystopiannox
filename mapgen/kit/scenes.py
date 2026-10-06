@@ -266,19 +266,30 @@ CATALOGUE = [
           walls=("house",), roles=("inn", "store", "home", "barracks", "mess", "fisher", "townhall"), places=("town",),
           sides=("front", "side"), biomes=ALL, cap=3, spacing=24, family="bench", weight=1.5, min_pieces=3),
     # ---- the road and the wilds ------------------------------------------------------------------------------------
-    Theme("waystone", "a waystone by the road, travellers' offerings at its foot: flowers and a few stones", "open",
-          [[P(("DunMirMileStone",), 0, 0, must=True), P(FLOWERS, 22, 24, must=True),
-            P(("CaveRocksMedium", "CaveRocksSmall"), -26, 14, n=2, step=(-14, 16), must=True), P(FLOWERS, 26, -14),
-            P(("SackChestSmall1",), -10, 44, p=0.3)]],
+    # Westwood's waystones (Con03A, War03a): two to four milestones (DunMirMileStone) in a row along a screen diagonal,
+    # 30-45 px apart, an altar stone (DunMirAltar2) at the row's end, a second now and then; no offerings
+    Theme("waystone", "waystones in a row by the way, an altar stone at its end", "open",
+          [[P(("DunMirAltar2",), 0, 0, must=True), P(("DunMirMileStone",), 32, 0, n=(2, 4), step=(32, 1), must=True),
+            P(("DunMirAltar2",), 150, 2, p=0.3)],
+           [P(("DunMirMileStone",), 0, 0, n=2, step=(62, 0), must=True), P(("DunMirAltar2",), 31, -4, must=True)]],
           places=("road",), requires=("road", "wild"), biomes=("green", "swamp", "ice"), cap=2, spacing=50, family="stone", face="road",
-          weight=1.5, min_pieces=4),
-    # no candles outdoors: the player can pick them up (Starwell playtest, 2026-10-05); torch poles light a shrine
-    Theme("shrine", "a wayside shrine: a carved stone, torch poles either side of it, flowers left before it", "open",
-          [[P(("Statue2a", "Statue2c", "Statue2g", "Cross1", "Cross2"), 0, 0, must=True),
-            P(("TorchPole",), -40, 18, n=2, step=(80, 0), must=True), P(FLOWERS, -18, 34), P(FLOWERS, 20, 36, p=0.7),
-            P(("CaveRocksSmall",), 10, -26, p=0.5)]],
-          places=("wild", "town"), roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
-          family="shrine", weight=0.8),
+          weight=1.5, min_types=2, min_pieces=3),
+    # no candles outdoors: the player can pick them up (Starwell playtest, 2026-10-05); torch poles light a shrine.
+    # Westwood's (Con04b, Con05A, Con07C, War03c, War04b, Wiz02B, 28 scenes): statues of one kind, three in a row along a
+    # screen diagonal ~49 px apart (or two ~160 px apart flanking a way), a torch pole by them, a pair of stone pillars
+    # (Monument1) ~100 px either side of a lone statue; flowers never
+    Theme("shrine", "a shrine against a wall: statues of one kind in a row, a torch pole by them", "wall",
+          [lay for k in ("a", "b", "c", "e", "g", "h") for lay in (
+              [P((f"Statue2{k}",), -49, 34, n=3, step=(49, 0), must=True), P(("TorchPole",), -100, 36, p=0.7),
+               P(("TorchPole",), 100, 36, p=0.4), P(("Monument1",), 150, 36, p=0.4)],
+              [P((f"Statue2{k}",), -80, 34, n=2, step=(160, 0), must=True), P(("TorchPole",), 0, 40, must=True),
+               P(("Monument1",), -150, 36, n=2, step=(300, 0), p=0.4)],
+              [P((f"Statue2{k}",), 0, 36, must=True), P(("Monument1",), -100, 36, n=2, step=(200, 0), must=True),
+               P(("TorchPole",), -50, 44, p=0.6), P(("TorchPole",), 50, 44, p=0.4)])],
+          # (Westwood's stand against a castle's or a town's walls: 0.94 of their pieces within two cells of one)
+          walls=("house", "fence"), sides=("side", "back", "front"), places=("wild", "town"),
+          roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
+          family="shrine", weight=0.8, min_types=1, min_pieces=2, tall=True),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
           "torch pole at the end of the row", "open",
           [[P(GRAVES, -48, 0, n=3, step=(48, 0), must=True), P(FLOWERS, -48, 34, n=3, step=(48, 0), p=0.8),
