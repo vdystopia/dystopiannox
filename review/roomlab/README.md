@@ -89,21 +89,28 @@ Record each iteration's verdict in one line in the commit message (type, iterati
 | File | What it does |
 |---|---|
 | `tests/roomlab.py` | the harness: generate, render, measure, blind sheet, scorecard |
-| `review/roomlab/labgen.py` | the variants: size, shape, doors, culture, building style and seed, on a fixed schedule; each the main room of a building shell built by `kit/building.py _build` and furnished by `kit/originality.furnish_original` |
+| `review/roomlab/labgen.py` | the variants: size, shape, doors (Westwood's counts for the type), culture, building style and seed; each the main room of a building shell built by `kit/building.py _build` and furnished by `kit/originality.furnish_original` |
 | `review/roomlab/labrender.py` | the room pictures, drawn alike for Westwood and ours |
 | `review/roomlab/labref.py` | Westwood's campaign rooms from `rules/rooms/westwood.json`: measured (`westwood_features.json`, committed) and rendered (`review/out/roomlab/_westwood/<type>/`, cached) |
 | `review/roomlab/metrics.py` | the metric judge: features, comparison, critiques, hard rules, classifier |
-| `review/roomlab/blind.py`, `JUDGE.md` | the blind visual judge |
+| `review/roomlab/blind.py`, `JUDGE.md`, `judging/` | the blind visual judge, its protocol and what it reads (a judging description per type) |
+| `review/roomlab/FAIRNESS.md`, `fairness.py`, `nocreatures.ps1` | the known tells that are not design and how each is handled; before and after pictures of the fixes; the creature-free map copies |
 | `review/roomlab/scorecard.py` | the scorecard and the iteration history (`review/out/roomlab/<type>/iterations.json`) |
 | `review/roomlab/BASELINE.md` | the baseline iteration for every type |
+| `review/roomlab/MOTIFS.md`, `headtohead.py` | the experimental motif engine (`--engine motifs`: rooms composed from arrangements mined from Westwood's rooms, `kit/motifs.py`) and the head-to-head table of two iterations |
 
-How the renders are matched: the editor's full render (no lighting) for both; the room cropped by its own cells (the
-checker's room finder, for both) plus a margin and the rise of its walls; the front walls half see-through over the
-floor; everything outside the room darkened to near black (no grass field, no Westwood town round it); one scale per
-type (Westwood's median room of the type fits the 960 x 720 canvas with room for a room 1.25 times as long); the
-canvas fixed; no labels. Generated variants come in the type's Westwood cultures and the building styles of the roles
-that host the kind, whose walls, floors and doors are Westwood's (rules/out/buildings.json). What still differs: Westwood's
-rooms may hold monsters and NPCs, and Westwood's neighbouring rooms are furnished differently (both dimmed).
+How the renders are matched (review/roomlab/FAIRNESS.md lists every known tell that is not design and how it is
+handled): the editor's full render (no lighting) of a creature-free copy of the map (`nocreatures.ps1`: no monsters,
+NPCs or players in either) for both; the room cropped by its own cells (the checker's room finder, for both) plus a
+margin and the rise of its walls; the front walls half see-through over the floor; everything outside the room and its
+own walls blacked out (no grass field, no Westwood town, no furnished neighbours); one scale per type (Westwood's
+median room of the type fits the 960 x 720 canvas with room for a room 1.25 times as long), and on a blind sheet one
+scale for all ten pictures; the canvas fixed; no labels. Generated variants come in the type's Westwood cultures and
+the building styles of the roles that host the kind, whose walls, floors and doors are Westwood's
+(rules/out/buildings.json), with Westwood's door counts for the type. The blind sheet pairs each generated room with a
+Westwood room of its culture and about its size, rotating through Westwood's rooms from sheet to sheet
+(`review/out/roomlab/<type>/westwood_shown.json`). Judges read `review/roomlab/judging/` (what real rooms are like,
+from Westwood's evidence), never the design briefs.
 
 Westwood reference data comes only from the campaign maps (Con, War, Wiz; `rules/rooms/westwood.json`, each room once),
 with the verdicts by eye of `rules/rooms/curated.json` applied (misfiled rooms retyped, rooms not to learn from left

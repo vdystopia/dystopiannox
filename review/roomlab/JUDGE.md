@@ -6,25 +6,26 @@ judge it. Judge honestly: the loop only improves if the judge catches what gives
 
 ## Before you look
 
-1. Read the type's brief, `rules/rooms/<type>.md` (purpose, focal point, pieces, composition, mistakes), and the rules for
-   every room in `rules/rooms/README.md` ("Rules for every room").
-2. Read the user's past verdicts on rooms in `review/FEEDBACK.md` (DV5, TP1-TP3, TL, TW-8, GW-7, SW-6, SW-7, SWR): they
-   are the faults the user notices.
-3. Do **not** open `review/out/roomlab/<type>/<iter>/blind_key.json`, `variants.json`, `metrics.json` or the scorecard
-   until you have written your answers.
+1. Read what every real room is like, `review/roomlab/judging/README.md`, and what a real room of the type is like,
+   `review/roomlab/judging/<type>.md`. Both describe Westwood's own campaign rooms. Read nothing else about the type
+   or the lab: not the design briefs (`rules/rooms/`), not `review/FEEDBACK.md`, not the lab's code, logs or notes
+   (they describe how the generated rooms are made, which is not what you are judging).
+2. Do **not** open `review/out/roomlab/<type>/<iter>/blind_key.json`, `variants.json`, `metrics.json`, `renders/`, the
+   scorecard, `review/out/roomlab/<type>/westwood_shown.json` or other iterations' sheets until you have written your
+   answers.
 
 ## Looking
 
 Open each picture `review/out/roomlab/<type>/<iter>/blind/A.png` ... `J.png` with the Read tool, one at a time (the
-`sheet.png` overview is too small to judge by). The pictures are drawn alike on purpose: the same render, the same scale
-for the type, the room cropped with its walls, the walls in front of the room half see-through as the game draws them,
-everything outside the room darkened. So do not judge by:
+`sheet.png` overview is too small to judge by). The pictures are drawn alike on purpose (review/roomlab/FAIRNESS.md):
+the same render, one scale for every picture of the sheet, the room cropped with its walls, the walls in front of the
+room half see-through as the game draws them, everything outside the room blacked out, no creatures or people in any
+room, and Westwood's rooms chosen to be about the size of the generated ones. So do not judge by:
 
-- framing, darkness outside the room, the scale, or the room's size (ours are built 1.25 times Westwood's by the user's
-  choice);
+- framing, the black round the room, the scale, or the room's size;
 - wall or floor material alone (both come from Westwood's building styles);
-- creatures or people standing in a room (Westwood's maps have monsters and NPCs in them; the lab's rooms have none);
-- what lies outside the room (neighbouring rooms are dimmed in both).
+- the number of doors alone;
+- a room you think you have seen before (the sheets rotate through Westwood's rooms).
 
 Judge the room as a designed room: what is in it, where it stands, how it is spaced, whether it reads as its type.
 
@@ -36,20 +37,19 @@ room); judge those for "made by Westwood's designers" all the same.
 
 For each picture, ask:
 
-1. **Purpose and identity.** Does it read at once as this type and no other? Is the focal piece there, and where the brief
-   puts it (a bed headboard to a back wall; a throne facing the door down the room; the bar with its kegs; the hearth
-   centred on a back wall)? Is there one group in the middle that shows the use, or is it a scatter?
+1. **Purpose and identity.** Does it read at once as this type and no other? Is the focal piece there, and where a real
+   room of the type has it (the judging description says where)? Does a group show the use, or is it a scatter?
 2. **Walls.** Does each wall have a purpose? Are faced pieces (shelves, hearths, chests, desks, hangings) on the back
    walls (NE top right, NW top left) where the camera sees their fronts, not on the front walls (SE, SW) showing their
    backs? Are lined walls lined end to end, and only with pieces that repeat (bookcases, log shelves, workstations)?
    Do pieces sit snug and square against their walls, the right way round?
 3. **Spacing.** Pieces too close (touching, overlapping, chairs jammed), or each standing alone at equal distances (the
-   "evenly spaced" look the user dislikes, TP2-7)? Groups with open floor between them? A clear way in from each door?
+   "evenly spaced" look)? Groups with open floor between them? A clear way in from each door?
    Nothing in front of a chest, hearth or stove?
 4. **Repetition and variety.** A showpiece repeated, one kind filling the room, the same table set stamped again and
-   again (TW-8: "too many of the same object")? Or a believable mix, as a designer would choose?
-5. **Density for the type.** Cosy and full for private rooms, open and processional for ceremonial ones, stocked for
-   stores (rules/rooms/README.md "The families").
+   again? Or a believable mix, as a designer would choose?
+5. **Density for the type.** As the judging description says real rooms of the type are: cosy and full, open and
+   processional, stocked, bare.
 6. **The hand of a designer.** Westwood's rooms have small irregularities with intent (a chair pulled out, a rug a little
    off, one odd object that tells a story) and symmetry where it matters. Generated rooms tend to give themselves away
    by mechanical regularity (everything in rows, perfect spacing) or by randomness without intent (pieces scattered,

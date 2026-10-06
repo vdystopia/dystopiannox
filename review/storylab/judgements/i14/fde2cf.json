@@ -1,0 +1,34 @@
+{
+  "packet": "fde2cf",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Pure Nox: a comic premise (a pet frog in a burning house), the '?!' punctuation, and the player's unheard reply ('Loads and loads of money?') as the gag. The journal is short and plain."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Formal, breathless and full of exclamations, with a plain direction ('the Ogre village in the northeast') and a reward named as items. 'For the darkest purposes, indeed!' and 'foul demoness' are Westwood's melodrama."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The offer is a terse one-liner with the price up front, which Nox's givers rarely do. The thanks ties a cheer to a 'But first' warning, and the two sit badly together. The journal is more detailed than the lines spoken."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Pal' four times in one speech reads as a voice trait forced on the character. The structure is too neat: the hazard, the theft, the payment, then 'Will you?'. The thanks turns at once to a plot warning."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "It opens mid-conversation ('Good!'), uses plain errand logic (kill the urchin, get the petition signed) and hands over the ruby key there and then. The thanks is flat and functional, as Westwood's often are."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The reminder is atmospheric commentary rather than a pointer to the goal. The thanks is padded with stacked sentiments ('Simply wonderful! My heartfelt gratitude...'), a sentry framing device and a reward of '80 in gold' joined by a dash. Westwood's lines are leaner."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A slapstick opening ('Gahhhhhh! No! Don't kill me!'), the near-blind joke, the odd four-dot ellipsis, and a class-flavoured reward (a scroll for conjurers). This is Westwood's comic hermit voice."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "It is plain enough, but 'Folks call me [Person]' and the em-dash aside '-- with a nasty cackle --' feel modern. The closing warning about the villain is tacked onto the reward line, a pattern this packet's other new texts share."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "The offer is long and builds a scene (ferrymen with poles, the uproar, the crank making flour 'my smallest worry'), more crafted than Nox's bluntness. The thanks is good, but the journal adds a 'the widow' detail the dialogue never sets up."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "A town-official welcome ('We've been expecting you!'), the oddly capitalised 'East', and practical next steps (buy supplies, then see the Captain at the gates). This is Westwood's tutorial-style hand-holding."}
+  ],
+  "tells": [
+    "Westwood's offers open with an exclamation or a comic beat and run straight into a plain instruction. The new texts build scenes with more circumstantial detail (who ran in, what was nearly lost) and set-piece rhetoric.",
+    "Westwood's rewards are concrete and often oddly specific (a scroll about bats, a ruby key, potions plus a spell). The new texts reach for round sums of gold ('80 gold', '80 in gold') or name the payment in the offer.",
+    "The new thanks lines tend to pivot to a dramatic warning about the chapter villain ('But first...', 'stay clear of...', 'get after him'). Westwood's thanks are simpler: gratitude, the reward and a practical next step.",
+    "Repeated verbal tics given to a character ('pal' many times over), modern idioms ('Folks call me', 'Hold up') and em-dash asides are not Westwood's register.",
+    "Westwood's reminders point back at the goal or its location. The new reminders sometimes drift into atmosphere or commentary that does not help the player.",
+    "Westwood's humour comes from the absurd premise or a reaction to the player's unheard reply. The new texts are earnest and lack that comic beat."
+  ]
+}

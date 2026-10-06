@@ -1,0 +1,33 @@
+{
+  "packet": "1a1453",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Practical, mission-briefing plainness, with the spells handed over and a sneaking plan the player can act on. 'Good luck and good speed' and 'This may get very ugly, lad' sound like Westwood's mentor voice."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The clipped fragments ('You'll know. And careful.') feel written to be terse rather than spoken. The reminder repeats the opening's instruction almost word for word, as if padding a template."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Breathless exclamation with '!?', 'Damn!', a stakes-of-all-Nox line and a compass direction. This is Westwood's melodramatic, slightly clumsy urgency ('leaving rebuilding the village our smallest concern!')."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A mayor with comic petulance ('nettlesome urchins'), inconsistent capitals ('East', 'Urchins') and a reminder that gives no instruction at all. These are the loose edges of the shipped text."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Forest beasts will heed its bite should they threaten' and 'the closer we get by air' are a writer's flourishes, not Nox's plain speech. The reminder piles up three stock hurry-ups."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It ties the plot together too tidily ('with this as their prize, [Person] is most certainly behind it all'), and 'rest on laurels' and 'tested your mettle' are stock idioms. The opening sends the player both to recover the thing and to a person waiting, which muddies the task."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The self-introduction is stiff ('The Master for the [Place]'), and 'convey' and 'the beast is housed' read oddly. The caps on 'YOU' imitate Westwood's emphasis but feel bolted on."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Plain instructions in order: who to see, supplies and gold, the shop, the road over the bridges. The '--' and the 'I have nothing else to tell you' reminder are typical of the campaign's functional hand-offs."},
+    {"label": "I", "verdict": "westwood", "confidence": 3, "score": 9,
+     "critique": "Short, proud, exclamatory introduction to a place, ending on a dry jab ('It weeds out the weak recruits'). It is economical, and its reminder is minimal."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "It reuses the mentor's drop-off beat ('as far as I can safely take you') with a generic 'You remain our only hope'. The journal over-specifies who the brother is, compared with Westwood's terse journal lines."}
+  ],
+  "tells": [
+    "New texts lean harder on the mentor's 'lad' and the stock hurry-up reminder ('Go! Get a move on', 'No more time for chit-chat') as if ticking boxes; Westwood's reminders vary more, and some give no instruction at all.",
+    "New texts reach for literary idioms and imagery ('heed its bite', 'rest on laurels', 'tested your mettle'), where Westwood's lines are plainer and more functional, or clumsy in a spoken way.",
+    "Westwood's texts have loose edges: inconsistent capitals, '!?', run-on exclamations, a mayor's pettiness. Generated texts are cleaner and tie plot threads together more neatly.",
+    "Journals that over-explain relationships or carry extra clauses read as generated; Westwood's journal lines are a short imperative naming one place or one person.",
+    "Westwood's openings list concrete logistics in order (supplies, gold, shop, road, spells, guards); generated openings spend more words on mood and stakes."
+  ]
+}

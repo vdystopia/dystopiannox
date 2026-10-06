@@ -192,6 +192,7 @@ class Spec:
         self.edge_over = {}   # (overlay, base) -> edge type override
         self.local_blend = {}  # (x, y) -> priority for one tile whose material does not blend elsewhere
         self.local_from = {}   # (x, y) -> the only materials whose edge may spill onto that tile (a carpet's trim)
+        self.pattern_tiles = {}  # (x, y) -> {(overlay, base)}: a room's second floor spills onto that tile of its first
                                # (a doorway: the path outside spills onto the threshold tile)
         self.door_gaps = set()  # wall cells opened for doors (count as wall when shaping neighbours)
         self.indoor = {}        # floor tile of a building's room -> the room's floor (kit/building.py), for its thresholds
@@ -229,11 +230,15 @@ class Spec:
     def _edges(self):
         out = {}
         for (x, y), base in self.floor.items():
-            if base in self.blend: bp = self.blend[base][0]
+            # beside a room's second floor, which blends onto it (kit/shells.py), while the tile is that room's floor
+            pat = {o for o, b in self.pattern_tiles.get((x, y), ()) if b == base}
+            if pat: bp = -60
+            elif base in self.blend: bp = self.blend[base][0]
             elif (x, y) in self.local_blend: bp = self.local_blend[(x, y)]
             else: continue
             near = {}
             only = self.local_from.get((x, y))
+            if pat: only = (only or set()) | pat
             sheltered, indoor = (x, y) in self.sheltered, (x, y) in self.indoor
             for name, (dx, dy) in {**EDGE_SIDES, **EDGE_TIPS}.items():
                 m = self.floor.get((x + dx, y + dy))

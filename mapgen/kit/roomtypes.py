@@ -94,14 +94,16 @@ TYPES = {
     "living_room": dict(
         family="private", feel="full", fixed_top_up=("storage", "bench"), kinds=("living_room", "dwelling"), westwood=("living_room",),
         focal=dict(fam="fireplace", types=r"Fireplace", where="back"),
-        must={"fireplace": 1, "table": 1}, never=("counter_bar", "counter_shop", "smithy", "altar", "throne", "tomb",
-                                                  "shop_rack", "lab", "straw"),
+        must={"fireplace": 1, "table": 1}, never=("counter_bar", "counter_shop", "altar", "throne", "tomb",
+                                                  "shop_rack", "lab", "straw"),   # (bellows by the hearth: 7 of 14)
         never_types=r"PowderBarrel",
         walls=dict(back="the hearth centred, shelves end to end either side of it, a rug before it",
                    other_back="shelves end to end with trophies between, the chest",
                    front="a bench; plants in the corners", middle="the table with its chairs, on a carpet"),
-        cover=(0.10, 0.17, 0.30), open=(0.30, 0.80), per_tile=(0.25, 0.9), types_min=9, free_most=(4, 20),
-        caps={}, walls_min=3, lined=0.30, tiles=(20, 90),
+        # (room lab tuneA: Westwood's 15 living rooms hold 3-5-10 kinds and line their back walls 0.00-0.05-0.21; the
+        # round table and its chairs make them, not shelves: rules/rooms/living_room.md)
+        cover=(0.10, 0.17, 0.30), open=(0.30, 0.80), per_tile=(0.2, 0.9), types_min=6, free_most=(4, 20),
+        caps={}, walls_min=3, lined=0.08, tiles=(20, 90),
         signature={"fireplace": (3, 1), "table": (2, 1), "chair": (0.5, 4), "shelves": (0.2, 6), "bench": (0.5, 2)},
         needs=("fireplace", "table"), kin=("bedroom", "dining_hall", "kitchen"),
         variants={"dwelling": dict(must={"fireplace": 1, "table": 1, "bed": 1}, never=("counter_bar", "counter_shop",
@@ -124,8 +126,9 @@ TYPES = {
         kin=("storeroom", "herbalist", "living_room")),
     "laboratory": dict(
         family="work", feel="balanced", kinds=("laboratory",), westwood=("laboratory",),
-        focal=dict(fam="lab", types=r"^WizardWorkstation|^AlchemistDesk", where="back"),
-        must={"lab": 3, "shelves": 2, "desk": 1}, never=("bed", "counter_bar", "counter_shop", "smithy",
+        # the desk on its back wall (Westwood stands its workstations on every wall, the front walls the most)
+        focal=dict(fam="desk", types=r"^Desk\d$", where="back"),
+        must={"lab": 2, "shelves": 1, "desk": 1}, never=("bed", "counter_bar", "counter_shop", "smithy",
                                                          "altar", "throne", "tomb", "straw", "bench"),
         never_types=r"^RoundTableWithFood$|^RoundTable\d|^OvalTable|Barrel|Crate|Sack",
         walls=dict(back="the study end: the desk near a corner with bookcases either side",
@@ -133,8 +136,11 @@ TYPES = {
                               "alchemist's desk, a pair of potion shelves",
                    front="statues; a chest", middle="the alchemist's work table with stools and the cauldron; a "
                                                     "conjuring circle; generators apart"),
-        cover=(0.08, 0.17, 0.30), open=(0.40, 0.85), per_tile=(0.2, 0.7), types_min=12, free_most=(2, 60),
-        caps={"lab": (12, 10), "table": (1, 1)}, walls_min=3, lined=0.30, tiles=(30, 140),
+        # the room lab (2026-10-05): Westwood's 19 laboratories cover 0.01-0.09-0.25 with 4-15 types (median 7), the back
+        # walls lined 0.06-0.35, nothing in the middle; Con05A's 9-tile room holds four workstations
+        cover=(0.05, 0.14, 0.25), open=(0.40, 0.95), per_tile=(0.12, 0.7), types_min=5, free_most=(2, 60),
+        # (Westwood's Con05A: four workstations on 9 tiles; the kit counts its tiles as the checker does: cap_tiles)
+        caps={"lab": (7, 12), "table": (1, 1)}, walls_min=2, lined=0.12, tiles=(30, 140),
         signature={"lab": (3, 5), "^AlchemistDesk|^WizardWorkstation|^Vandegraf": (1, 3), "desk": (1, 1),
                    "shelves": (0.2, 8)}, needs=("lab",), kin=("study", "library", "herbalist")),
     "herbalist": dict(
@@ -145,7 +151,7 @@ TYPES = {
         never_types=r"PowderBarrel|^Crate",
         walls=dict(back="a pair of potion shelves; books of remedies end to end", other_back="the cauldron toward a corner",
                    front="sacks of herbs; pots of herbs in the corners", middle="the work table with its stool"),
-        cover=(0.12, 0.17, 0.30), open=(0.30, 0.80), per_tile=(0.25, 0.9), types_min=10, free_most=(3, 20),
+        cover=(0.07, 0.13, 0.28), open=(0.30, 0.90), per_tile=(0.15, 0.9), types_min=6, free_most=(3, 20),
         caps={}, walls_min=3, lined=0.35, tiles=(25, 90),
         signature={"^PotionShelves": (2, 2), "^Cauldron": (3, 1), "shelves": (0.2, 8), "plant": (0.3, 3),
                    "lab": (0.5, 2)}, needs=("stove", "shelves"), kin=("kitchen", "laboratory", "study")),
@@ -158,8 +164,10 @@ TYPES = {
         walls=dict(back="bookcases end to end, the desk among them", other_back="bookcases end to end",
                    front="a statue or a plant", middle="stacks of bookcases in rows in a big library; the reading "
                                                        "table on a carpet; a curio"),
-        cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.25, 0.9), types_min=8, free_most=(3, 40),
-        caps={}, walls_min=3, lined=0.50, tiles=(30, 200),
+        # the room lab: Westwood's 7 libraries cover 0.06-0.12-0.19, lined 0.04-0.29; the user's lined wall (HB-4) keeps
+        # one back wall lined end to end
+        cover=(0.07, 0.13, 0.28), open=(0.30, 0.85), per_tile=(0.12, 0.9), types_min=5, free_most=(3, 40),
+        caps={}, walls_min=2, lined=0.25, tiles=(30, 200),
         signature={"^Bookcase|^MovableBookcase": (0.6, 30), "table": (1, 2), "desk": (1, 1)}, needs=("shelves",),
         kin=("study", "laboratory")),
     "smithy": dict(
@@ -171,8 +179,9 @@ TYPES = {
         walls=dict(back="the forge's coals centred, the bellows beside them, the anvil before them",
                    other_back="swords and pole arms on racks", front="water and tool barrels, crates of iron",
                    middle="the counter out from a back wall with the smith behind it; a row of armour, a row of arms"),
-        cover=(0.10, 0.24, 0.38), open=(0.25, 0.80), per_tile=(0.2, 0.7), types_min=10, free_most=(3, 20),
-        caps={}, walls_min=3, lined=None, tiles=(30, 110),
+        # the room lab: Westwood's one curated smithy (Con06b) covers 0.06 with 6 types
+        cover=(0.05, 0.14, 0.30), open=(0.30, 0.90), per_tile=(0.1, 0.7), types_min=6, free_most=(3, 20),
+        caps={}, walls_min=2, lined=None, tiles=(30, 110),
         signature={"smithy": (4, 3), "^CinderBin": (4, 1), "counter_shop": (1, 1), "shop_rack": (0.2, 6)},
         needs=("smithy",), kin=("shop", "armoury")),
     # ---- stores --------------------------------------------------------------------------------------------------
@@ -184,14 +193,18 @@ TYPES = {
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="stocked log shelves end to end", other_back="crates side by side",
                    front="heaps of barrels and sacks in the corners", middle="clear, or one row of racks with aisles"),
-        cover=(0.15, 0.30, 0.42), open=(0.15, 0.65), per_tile=(0.3, 1.1), types_min=4, free_most=(4, 20),
-        # lined 0.10: log shelves stand alone or in pairs, never a whole wall of them (Harrowby playtest HB-5, kit/objects.py)
-        caps={"shop_rack": (10, 6)}, walls_min=3, lined=0.10, tiles=(15, 90),
+        # the room lab (2026-10-05): Westwood's 22 campaign storerooms cover 0.02-0.07-0.19 of their floor with 1-5 types
+        # (median 3), barrels the commonest, against two walls (p90 three), no shelf or rack in any of them; the user
+        # wants stores fuller than Westwood's median ("a store room holds more than any other room"), so the target
+        # sits at Westwood's p75, the limit past its p90
+        # (curated 2026-10-05 to Westwood's 7 true storerooms: coverage median 0.16, open 0.46, 0.38 pieces a tile)
+        cover=(0.08, 0.17, 0.30), open=(0.25, 0.80), per_tile=(0.15, 1.0), types_min=3, free_most=(4, 20),
+        caps={"shop_rack": (10, 6)}, walls_min=2, lined=None, tiles=(15, 90),
         signature={"storage": (0.8, 30), "^LogShelves": (0.5, 8)}, needs=("storage",),
-        kin=("kitchen", "armoury"),
-        variants={"ore_store": dict(must={"storage": 2, "shop_rack": 2}, cover=(0.15, 0.28, 0.42), focal=dict(fam=None, types=r"^Mine(Mana|Ore)Cart",
+        kin=("kitchen", "armoury", "cellar"),
+        variants={"ore_store": dict(must={"storage": 2}, cover=(0.06, 0.15, 0.28), focal=dict(fam=None, types=r"^Mine(Mana|Ore)Cart",
                                     where="any"), caps={"shop_rack": (8, 12)}),
-                  "ogre_hoard": dict(lined=None, walls_min=2, cover=(0.15, 0.26, 0.42), never=("bed", "desk", "altar",
+                  "ogre_hoard": dict(lined=None, walls_min=2, cover=(0.06, 0.14, 0.28), never=("bed", "desk", "altar",
                                      "throne", "lab", "counter_bar", "counter_shop"))}),
     # ---- martial -------------------------------------------------------------------------------------------------
     "barracks": dict(
@@ -205,34 +218,36 @@ TYPES = {
         cover=(0.12, 0.24, 0.34), open=(0.25, 0.75), per_tile=(0.2, 0.8), types_min=8, free_most=(4, 25),
         caps={"bed": (12, 12)}, walls_min=3, lined=0.30, tiles=(40, 200),
         signature={"bed": (2.5, 12), "straw": (1, 20), "nightstand": (0.3, 6)}, needs=("bed",),
-        kin=("bedroom", "armoury"),
-        variants={"ogre_den": dict(focal=dict(fam="fireplace", types=r"^OgreFirePit$", where="middle"),
-                                   must={"straw": 4, "fireplace": 1}, lined=None, walls_min=2, types_min=6,
-                                   cover=(0.10, 0.14, 0.30), needs=("straw",))}),
+        kin=("bedroom", "armoury", "cell", "guardroom"),   # an ogre den of straw is a pen's kin (Con11a); a crew's table
+        # the room lab: Westwood's 12 ogre barracks cover 0.03-0.06-0.20 and keep no fire pit
+        variants={"ogre_den": dict(focal=None, must={"straw": 4}, lined=None, walls_min=2, types_min=4,
+                                   cover=(0.04, 0.09, 0.25), needs=("straw",))}),
     "armoury": dict(
         family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),
-        must={"shop_rack": 3}, never=("bed", "desk", "table", "altar", "throne", "tomb", "lab", "counter_bar",
+        must={"shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
                                       "counter_shop", "stove", "fireplace"),
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="shelves end to end", other_back="helm shelves or hanging swords",
                    front="barrels, crates and tool barrels", middle="racks in rows of one kind each, at most five to a "
                                                                     "row, 1.2 apart, aisles of 2.2 between rows"),
-        cover=(0.12, 0.24, 0.34), open=(0.25, 0.70), per_tile=(0.2, 0.8), types_min=7, free_most=(4, 25),
-        caps={"shop_rack": (6, 16)}, walls_min=3, lined=0.10, tiles=(30, 120),      # racks stand apart (HB-5)
+        # the room lab: Westwood's 16 armouries cover 0.00-0.13-0.24 with 3-13 types (median 6)
+        cover=(0.06, 0.16, 0.28), open=(0.30, 0.90), per_tile=(0.08, 0.6), types_min=3, free_most=(4, 25),
+        caps={"shop_rack": (6, 16)}, walls_min=2, lined=None, tiles=(30, 120),      # racks stand apart (HB-5)
         signature={"shop_rack": (1.5, 12)}, needs=("shop_rack",), kin=("storeroom", "shop", "smithy")),
     # ---- public --------------------------------------------------------------------------------------------------
     "shop": dict(
         family="public", feel="balanced", kinds=("shop",), westwood=("shop",),
         focal=dict(fam="counter_shop", types=r"^TraderDesk", where="back", reach=3.6),
-        must={"counter_shop": 1, "shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "counter_bar",
-                                                         "stove", "smithy"),
+        must={"counter_shop": 1}, never=("bed", "desk", "altar", "throne", "tomb", "counter_bar",
+                                                         "smithy"),          # an apothecary brews (Con02a's cauldron)
         never_types=r"PowderBarrel",
         walls=dict(back="the counter set out from a back wall, the keeper's spot behind it; trader's shelves",
                    other_back="trader's shelves of goods", front="crates of stock",
                    middle="racks for show, three to a row, a row of each kind; the floor before the counter open"),
-        cover=(0.12, 0.24, 0.40), open=(0.30, 0.75), per_tile=(0.2, 0.8), types_min=9, free_most=(3, 20),
-        caps={}, walls_min=3, lined=0.15, tiles=(30, 140),          # racks stand apart, shelves of goods in rows (HB-5)
+        # the room lab: Westwood's 16 shops cover 0.06-0.13-0.28 with 5-16 types (median 7)
+        cover=(0.08, 0.18, 0.32), open=(0.30, 0.85), per_tile=(0.12, 0.8), types_min=5, free_most=(3, 20),
+        caps={}, walls_min=2, lined=0.10, tiles=(30, 140),          # racks stand apart, shelves of goods in rows (HB-5)
         signature={"counter_shop": (8, 1), "shop_rack": (0.4, 8)}, needs=("counter_shop",),
         kin=("armoury", "smithy")),
     "tavern": dict(
@@ -338,8 +353,9 @@ TYPES = {
         never_types=r"Barrel|Sack|^Bookcase",
         walls=dict(back="a tapestry or two; a crypt chest in a corner", other_back="statues of the dead",
                    front="bare", middle="sarcophagi and coffins side by side in rows with aisles between; columns"),
-        cover=(0.08, 0.16, 0.30), open=(0.40, 0.85), per_tile=(0.06, 0.40), types_min=3, free_most=(4, 30),
-        caps={"tomb": (7, 24)}, walls_min=1, lined=None, tiles=(30, 200),
+        cover=(0.04, 0.10, 0.25), open=(0.40, 0.95), per_tile=(0.04, 0.40), types_min=1, free_most=(4, 30),
+        # Westwood's 25 crypts: 0.31-0.67-1.16 tombs per 10 tiles (the room lab)
+        caps={"tomb": (12, 6)}, walls_min=1, lined=None, tiles=(30, 200),
         signature={"tomb": (1, 20), "statue": (0.2, 4)}, needs=("tomb",), kin=("chapel",),
         variants={"dark_crypt": dict(cover=(0.08, 0.16, 0.30))}),
 }
@@ -386,8 +402,9 @@ TYPES.update({
                    front="tool barrels, crates of timber and iron, heaped toward the corners",
                    middle="the work bench (a long table) with its stool and a crate or barrel at its end; parts and "
                           "wheels lying by it; a clear way round it"),
-        cover=(0.12, 0.20, 0.34), open=(0.30, 0.80), per_tile=(0.15, 0.9), types_min=5, free_most=(3, 15),
-        caps={"table": (30, 3)}, walls_min=3, lined=0.20, tiles=(25, 110),
+        # the room lab: no Westwood workshop; its pool (the work rooms) covers 0.03-0.08-0.13 with the middle bare
+        cover=(0.06, 0.12, 0.26), open=(0.40, 0.90), per_tile=(0.1, 0.9), types_min=5, free_most=(3, 15),
+        caps={"table": (40, 2)}, walls_min=2, lined=0.10, tiles=(25, 110),
         signature={"^BarrelWithTools": (1.5, 4), "^MineOreCartWheel|^MechGear": (1.5, 6), "^Table": (1, 3),
                    "^TraderShelves": (0.5, 6)},
         needs=("table", "storage"), kin=("smithy", "storeroom")),
@@ -403,7 +420,7 @@ TYPES.update({
                    other_back="a second gear train, or bare", front="tool barrels and crates of spare parts",
                    middle="the great winch (a pulley gear) standing free with room all round it to work it; small "
                           "gears and parts on the floor by it"),
-        cover=(0.02, 0.10, 0.25), open=(0.45, 0.98), per_tile=(0.0, 0.6), types_min=1, free_most=(4, 20),
+        cover=(0.01, 0.07, 0.20), open=(0.45, 0.99), per_tile=(0.0, 0.6), types_min=1, free_most=(4, 20),
         caps={}, walls_min=1, lined=None, tiles=(12, 180),
         signature={"^Gear|^PulleyGear": (2, 8), "^MechGear": (0.5, 4), "^BarrelWithTools": (0.5, 3)},
         needs=(), kin=("storeroom", "workshop")),
@@ -439,28 +456,33 @@ TYPES.update({
     "cellar": dict(
         family="stores", feel="full", supplies_line=True, kinds=("cellar",), westwood=(), monotony=0.9,
         evidence=(("Con07B", (132, 196)), ("Con06b", (56, 62)), ("War02b", (194, 194)), ("Con06a", (153, 212))),
-        focal=dict(fam="storage", types=r"^LargeBarrel", where="any"),
-        must={"storage": 6}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
+        focal=None,                 # Westwood's cellars have no great cask as a centrepiece (one in four holds one)
+        must={"storage": 5}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
                                     "counter_shop", "fireplace", "stove", "statue", "shelves", "shop_rack"),
         never_types=r"PowderBarrel|^Sack|^TraderAppleCrate",
         walls=dict(back="kegs in tight rows along the walls from the corners", other_back="kegs; a stack of piled barrels",
                    front="kegs and a few crates", middle="a great cask or two with kegs beside them, aisles all round"),
-        cover=(0.12, 0.22, 0.42), open=(0.15, 0.70), per_tile=(0.3, 1.2), types_min=3, free_most=(8, 6),
-        caps={}, walls_min=3, lined=None, tiles=(12, 80),
+        # the room lab: Westwood's 4 curated cellars cover 0.06-0.19-0.23 with 1-4 types
+        cover=(0.06, 0.17, 0.32), open=(0.20, 0.85), per_tile=(0.15, 1.2), types_min=1, free_most=(8, 6),
+        caps={}, walls_min=2, lined=None, tiles=(12, 80),
         signature={"^(Barrel|LargeBarrel|PiledBarrels)$": (0.8, 30)}, needs=("storage",), kin=("storeroom", "kitchen")),
     "treasury": dict(
         family="stores", feel="balanced", kinds=("treasury",), westwood=(),
         evidence=(("Con05B", (192, 58)), ("Wiz06c", (163, 93)), ("Con06b", (163, 93))),
         focal=dict(fam="storage", types=r"^Chest\d|^DunMirChest|^ChestOgre", where="back"),
         must={"storage": 3, "table": 1}, never=("bed", "stove", "smithy", "lab", "counter_bar", "counter_shop", "altar",
-                                                "throne", "tomb", "straw", "fireplace", "plant"),
-        never_types=r"PowderBarrel|^Bookcase|^Barrel|^Crate|^Sack",
+                                                "throne", "tomb", "straw", "fireplace", "plant", "shop_rack"),
+        never_types=r"PowderBarrel|^Bookcase|^Barrel|^Crate",
         walls=dict(back="strongboxes in a row along the back walls, each with room before it to open",
                    other_back="hanging shields and crossed arms; the tally shelves",
                    front="bare, or a pair of guardian statues by the door",
                    middle="the counting table with the treasurer's chair, open floor round it"),
-        cover=(0.03, 0.12, 0.24), open=(0.45, 0.90), per_tile=(0.08, 0.5), types_min=5, free_most=(3, 30),
-        caps={"storage": (10, 6), "table": (60, 1)}, walls_min=2, lined=None, tiles=(20, 120),
+        cover=(0.03, 0.12, 0.24), open=(0.40, 0.95), per_tile=(0.06, 0.5), types_min=4, free_most=(3, 30),
+        # Westwood's Con05B: two chests, two sacks and a cask on 54 tiles (the room lab)
+        # no cap on the stores: the knowledge base holds the strongboxes to three (chest_cap), and the sacks and casks
+        # heap as a store's (Westwood's Con05B: five stores on 54 tiles; its pool 2.9 a 10 tiles). A per-tile cap tripped
+        # the checker whatever its value: the kit's room counts 1.3-1.4 times the tiles the checker's finder measures
+        caps={"table": (60, 1)}, walls_min=2, lined=None, tiles=(20, 120),
         signature={"^Chest|^DunMirChest|^ChestOgre": (1.5, 8), "table": (1, 1)}, needs=("storage", "table"),
         kin=("storeroom", "study")),
     "powder_store": dict(
@@ -472,7 +494,8 @@ TYPES.update({
         never_types=r"^Sack|^Bookcase",
         walls=dict(back="powder kegs in tight rows from the corners", other_back="powder kegs",
                    front="a few plain barrels and crates by the door", middle="clear: a way to every row"),
-        cover=(0.15, 0.30, 0.45), open=(0.10, 0.70), per_tile=(0.3, 1.3), types_min=2, free_most=(60, 1),
+        # the room lab: Westwood's Con09c covers 0.17, a third of its kegs free of the walls
+        cover=(0.08, 0.18, 0.34), open=(0.20, 0.85), per_tile=(0.2, 1.3), types_min=1, free_most=(60, 1),
         caps={}, walls_min=2, lined=None, tiles=(12, 60),
         signature={"^BlackPowderBarrel": (2, 30)}, needs=("storage",), kin=("storeroom", "cellar")),
     # ---- martial -------------------------------------------------------------------------------------------------
@@ -489,7 +512,7 @@ TYPES.update({
                    front="a barrel or two of water and ale; a bench",
                    middle="the watch's table with its chairs (a meal on it), a clear way from the door past it"),
         cover=(0.10, 0.18, 0.32), open=(0.30, 0.80), per_tile=(0.15, 0.9), types_min=8, free_most=(3, 20),
-        caps={"bed": (12, 4), "table": (30, 2)}, walls_min=2, lined=0.20, tiles=(20, 90),
+        caps={"bed": (8, 4), "table": (30, 2)}, walls_min=2, lined=0.20, tiles=(20, 90),   # (Westwood: 2 cots in 12-63 tiles)
         signature={"shop_rack": (1, 6), "bed": (1.5, 3), "table": (2, 1), "chair": (0.3, 6)},
         needs=("bed", "table", "shop_rack"), kin=("barracks", "armoury", "bedroom", "living_room")),
     # ---- confinement ---------------------------------------------------------------------------------------------
@@ -506,8 +529,11 @@ TYPES.update({
         cover=(0.02, 0.10, 0.25), open=(0.25, 0.98), per_tile=(0.05, 1.0), types_min=2, free_most=(12, 2),
         caps={}, walls_min=1, lined=None, tiles=(8, 40),
         signature={"straw": (1, 10), "^Stocks": (3, 1), "bed": (1, 1)}, needs=("straw",), kin=("barracks", "bedroom"),
-        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^Stocks", where="any"), tiles=(20, 50),
-                                   cover=(0.0, 0.06, 0.25), walls_min=0)}),
+        # (room lab tuneA: Con11a's six pens hold straw heaped before the stocks (3 of 6) and a crude obelisk (4))
+        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^Stocks|^ObeliskPrimitive", where="any"), tiles=(20, 50),
+                                   cover=(0.0, 0.06, 0.25), walls_min=0,
+                                   never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne",
+                                          "tomb", "lab", "smithy", "stove", "fireplace", "rug", "plant", "wall_decor"))}),
     "torture_chamber": dict(
         family="confinement", feel="open", kinds=("torture_chamber",), westwood=(),
         evidence=(("Wiz07C", (132, 124)), ("Con08d", (151, 170))),
@@ -571,16 +597,17 @@ TYPES.update({
     "mausoleum": dict(
         family="dead", feel="open", kinds=("mausoleum",), westwood=(),
         evidence=(("Con04a", (148, 55)), ("Con04a", (230, 88)), ("Con04c", (220, 108)), ("Con04c", (75, 78))),
-        focal=dict(fam="tomb", types=r"^Crypt\d", where="any"),
-        must={"tomb": 1, "statue": 2}, never=("bed", "desk", "table", "chair", "stove", "smithy", "lab", "counter_bar",
+        focal=None,                 # Westwood's mausoleums have no one centrepiece: statues in pairs (the room lab)
+        must={"statue": 2}, never=("bed", "desk", "table", "chair", "stove", "smithy", "lab", "counter_bar",
                                               "counter_shop", "shop_rack", "fireplace", "straw", "bench"),
         never_types=r"Barrel|Sack|^Bookcase",
         walls=dict(back="monuments at the back corners; a tapestry", other_back="a tapestry, or bare",
                    front="bare", middle="the great tomb in the middle, statues of the dead in pairs facing it, a pair "
                                         "of columns in a big one"),
-        cover=(0.02, 0.10, 0.20), open=(0.50, 0.92), per_tile=(0.04, 0.4), types_min=4, free_most=(4, 30),
-        caps={"tomb": (40, 3), "statue": (14, 8), "column": (24, 6)}, walls_min=1, lined=None, tiles=(30, 160),
-        signature={"^Monument": (2, 4), "statue": (1, 6), "tomb": (2, 3)}, needs=("tomb", "statue"),
+        cover=(0.02, 0.08, 0.20), open=(0.50, 0.97), per_tile=(0.04, 0.4), types_min=2, free_most=(4, 30),
+        # Westwood's Con04a holds 12 statues on 58 tiles, 4 on 40 (the room lab)
+        caps={"tomb": (40, 3), "statue": (5, 12), "column": (20, 8)}, walls_min=1, lined=None, tiles=(30, 160),
+        signature={"^Monument": (2, 4), "statue": (1, 6), "tomb": (2, 3), "^CryptChest": (1, 2)}, needs=("statue",),
         kin=("crypt", "hall", "chapel")),
     "ossuary": dict(
         family="dead", feel="open", kinds=("ossuary",), westwood=(), monotony=0.95,

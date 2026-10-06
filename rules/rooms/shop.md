@@ -59,3 +59,18 @@ The keeper behind his counter, on the spot the furnisher keeps clear there (Furn
 
 - Westwood: Con02a / Con08a, cell 86,105 (125 tiles, 33-34 types); Con07E, cell 173,104 (154 tiles, 24 types).
 - Ours: Starwell seed 4, room 17, the shop floor (81 tiles, 13 types).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Each of Westwood's 16 campaign shops keeps one trade, so ours do (`ROOMS["shop"]["trades"]`): an armourer's (racks
+  three to a row, a row of armour stands and a row of pole arms; trader's shelves; swords and shields hung; steel
+  crates), an apothecary's (a pair of potion shelves, bookcases, glowing jars, no racks) or a general store (steel
+  crates and barrels, trader's shelves, no racks). No plants (Westwood's shops have none). Mixing every trade in every
+  shop was the first giveaway (AUC 0.91 -> 0.86).
+- Still a giveaway: everything in rows and the stock packed tight; Westwood's shops leave more floor between pieces.
+- The independent judge (r4, r8): runs of three at even gaps and grids of racks read as generated ("three armour racks
+  and three weapon racks" means variety, not three-and-three grids); a counter stranded in a corner; pieces of other
+  rooms (a cauldron, potion shelves by the door, barrels in runs). r9-r11: the counter the room's one strong idea, the
+  goods end to end on the other back wall, standing racks two or three against the walls, the stock in heaps as a
+  store's, no hangings of décor.
+

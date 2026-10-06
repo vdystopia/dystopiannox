@@ -1,0 +1,227 @@
+{
+ "iter": "i15",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Skarrow",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "The Troll shaman Grakkus has driven the Trolls of the high peaks down onto the pass, they hold the Northgate and want the Ember Stone kept in the fort.",
+  "names": {
+   "Fort Skarrow": "place",
+   "Northgate": "place",
+   "Hrimgar": "place",
+   "Warden Brolth": "person",
+   "Brolth": "person",
+   "Ottla": "person",
+   "Hildy": "person",
+   "Brisa": "person",
+   "Fennick": "person",
+   "Snivvet": "person",
+   "Vorna": "person",
+   "Elbin": "person",
+   "Master Elbin": "person",
+   "Grakkus": "person",
+   "Dobbe": "person",
+   "Ember Stone": "thing",
+   "White Wolves": "group",
+   "Urchins": "group",
+   "Trolls": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Ottla, the fort's cook, wants the White Wolves out of her cellar, where her goose Hildy is cornered.",
+   "names": {
+    "Ottla": "person",
+    "Hildy": "person",
+    "White Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "Stranger, please! My poor goose, Hildy, is down in the larder with White Wolves all around her! They dug their way in under the cellar wall!\n\nI'll owe you to the end of my days if you chase them out!"
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Hurry, get Hildy out of there! And anything down in that larder, you keep!"
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "She's safe! Bless you, she's safe! Such courage, and how am I ever to pay for it?!\n\nGold, you say? Lots of it? Well then, if that's your price, here, with my thanks."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Save Hildy the Singing Goose from the wolves in Ottla's cellar."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Brisa's brother's spyglass was snatched by the Urchins, who ran off to the old quarry.",
+   "names": {
+    "Brisa": "person",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Brisa",
+     "text": "My brother's spyglass is gone, the Urchins snatched it! He's due back from patrol any minute, and he'll never forgive me!\n\nThey scurried off toward the old quarry, kind sir, I saw them. Please help!\n\nCould you bring it home to us? Would you?"
+    },
+    "refusal": {
+     "speaker": "Brisa",
+     "text": "Oh.... Then I'll just have to tell him it's gone."
+    },
+    "reminder": {
+     "speaker": "Brisa",
+     "text": "He'll be back any time now! Oh, please hurry!"
+    },
+    "completion": {
+     "speaker": "Brisa",
+     "text": "My brother's spyglass, safe and sound! You're wonderful! This is for you, for all your trouble!"
+    },
+    "after": {
+     "speaker": "Brisa",
+     "text": "Thank you again! You're too kind!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Brisa's spyglass back from the Urchins at the old quarry."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring Brisa's spyglass back from the Urchins at the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "BluePotion"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Fennick the quartermaster wants the garrison's pay chest back from the Trolls, and Snivvet wants his master's magic lockpicks back before the master notices.",
+   "names": {
+    "Fennick": "person",
+    "Snivvet": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Fennick",
+     "text": "Sir! Trolls! A whole filthy pack of them fell on the supply sheds below the south wall and hauled off nearly every scrap of our winter stores! Even the garrison's pay chest is gone!\n\nThere's a fine reward in it if that chest comes back!"
+    },
+    "offer_b": {
+     "speaker": "Snivvet",
+     "text": "Those Trolls went and grabbed my master's magic lockpicks! He comes home from the tavern tonight, and if they aren't in his drawer, I'm done for!\n\nThe brutes went up to the old lookout, I'm pretty sure. Help a fellow out, sir?\n\nYou'd fetch them back for me... wouldn't you?"
+    },
+    "outcome_a": {
+     "speaker": "Fennick",
+     "text": "The pay chest, home again! These are yours, and the garrison thanks you!"
+    },
+    "outcome_b": {
+     "speaker": "Snivvet",
+     "text": "Ha! There they are! For your trouble, here!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the garrison's pay chest from the Trolls."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Fetch Snivvet's lockpicks from the Trolls at the old lookout."
+    }
+   },
+   "reward": {
+    "gold": 170,
+    "items": [
+     "SteelShield",
+     "RedPotion"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Sergeant Vorna begs the player to bring back Master Elbin, the fort's wizard, carried off by the Trolls to Hrimgar.",
+   "names": {
+    "Vorna": "person",
+    "Elbin": "person",
+    "Master Elbin": "person",
+    "Hrimgar": "place",
+    "Grakkus": "person",
+    "Ember Stone": "thing",
+    "Fort Skarrow": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Vorna",
+     "text": "Lad! At last! Where were you!? Last night the Trolls came over the north wall, and only Master Elbin's fire magic kept the fort from falling!\n\nThey took him, though. The brutes dragged Elbin off at the end of it all, and next to that a cracked wall is nothing! Without Elbin the whole pass is lost!\n\nThe Troll caves of Hrimgar are east, up the mountain, and that's where they've got him! Bring him home, or it's the end of us!"
+    },
+    "reminder": {
+     "speaker": "Vorna",
+     "text": "Don't just stand there! Every minute Elbin spends with those Trolls counts!"
+    },
+    "found": {
+     "speaker": "Elbin",
+     "text": "You there! Hurry, find some way to get me out of here! It's the shaman Grakkus who sent the Trolls down on the fort, and he wants the Ember Stone. I was taken when my magic was all spent, and I haven't the strength left to break free by myself. Grakkus has laid some foul spell on me, so not one charm of mine will get me out."
+    },
+    "following": {
+     "speaker": "Elbin",
+     "text": "Quickly, let's go! There's no time to lose!"
+    },
+    "completion": {
+     "speaker": "Vorna",
+     "text": "Good work, lad! In better days all of Fort Skarrow would feast over Elbin's return! But Grakkus still has to be stopped, once and for all.\n\nThese are yours, with our deepest thanks for so brave a deed!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Master Elbin from the Troll caves of Hrimgar."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "BluePotion",
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "Dobbe points the player to Warden Brolth, who sends him up to the Northgate to learn whether Grakkus leads the Trolls himself.",
+   "names": {
+    "Dobbe": "person",
+    "Warden Brolth": "person",
+    "Northgate": "place",
+    "Grakkus": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Dobbe",
+     "text": "No, Warden Brolth won't rest while the Trolls sit on the Northgate!"
+    },
+    "opening": {
+     "speaker": "Warden Brolth",
+     "text": "Find out whether Grakkus himself is up on the Northgate. If he is, you'll smell him before you see him! The stair behind the barracks takes you there, but watch your step, because the Trolls have rigged it with rockfalls."
+    },
+    "reminder": {
+     "speaker": "Warden Brolth",
+     "text": "Up to the Northgate, lad! We have to know whether Grakkus leads them himself. Go! Climb the stair and find out if the shaman's up there."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb to the Northgate and look for signs of Grakkus."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

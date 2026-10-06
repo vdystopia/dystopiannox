@@ -51,3 +51,9 @@ The herbwife beside her cauldron, else by the potion shelves; never between the 
 
 - Westwood: Con09a, cell 136,49 (66 tiles, 12 types); Con07D, cell 111,85 (49 tiles).
 - Ours: Starwell seed 4, room 1 (the herbwife's, 54 tiles, 13 types) and room 18 (the brewing room, 63 tiles).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's two herbalists (Con07D, Con09a): a desk with its chair, a pair of potion shelves, a few bookcases, glowing
+  jars, a square table with chairs, a crate; no plants, hangings or sacks down the walls. The recipe follows them and
+  keeps the cauldron (the brief's focal piece); pieces a step off the walls (`wall_gap`).

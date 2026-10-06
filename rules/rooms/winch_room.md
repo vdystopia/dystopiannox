@@ -63,3 +63,9 @@ wall.)
   barrels, crates); Con01A, cell 91,146 (82 tiles); War02A, cell 216,208 (12 tiles); Wiz03a, cell 240,22 (25 tiles: a
   lift pit and a gear).
 - Ours: the room lab's winch rooms.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 4 curated winch rooms (Con01A, Con06a, War02b, Wiz03a) are stores of the machinery's men: tool barrels,
+  steel crates and barrels in a knot or two over a bare floor (coverage 0.01-0.06); their gears are wall pieces. The
+  recipe keeps the gear trains and the winch and heaps the stores (`store_heaps`: tool barrels and steel).

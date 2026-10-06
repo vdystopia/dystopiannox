@@ -1,0 +1,225 @@
+{
+ "iter": "i13",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Fort Krell",
+  "setting": "a frozen fort on a mountain pass",
+  "trouble": "Ghrulg and his Trolls have seized the High Gate above Fort Krell and shut the pass to the north.",
+  "names": {
+   "Fort Krell": "place",
+   "High Gate": "place",
+   "Beacon Tower": "place",
+   "Ghrulg": "person",
+   "Brannoc": "person",
+   "Hadrik": "person",
+   "Ostrik": "person",
+   "Tobbe": "person",
+   "Pellim": "person",
+   "Gunda": "person",
+   "Ulvek": "person",
+   "Snibb": "person",
+   "Bodger": "person",
+   "Grimble": "person",
+   "Dagna": "person",
+   "Jeppo": "person",
+   "Fenn": "person",
+   "Trolls": "group",
+   "Imps": "group",
+   "Wolves": "group",
+   "Grey Hoods": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Ostrik, who keeps the fort's beacon, pays to have the Imps cleared out of the Beacon Tower.",
+   "names": {
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Beacon Tower": "place",
+    "Imps": "group",
+    "Ghrulg": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ostrik",
+     "text": "There you are. Good. What I need of you now cannot wait.\n\nImps have overrun the old Beacon Tower on the north wall. Nobody has lit the fire up there in days. If it isn't burning, they'll walk right past us. They're due any day!\n\nMy watchmen have gone up twice and come down twice. Not one of them will try it again. You may do better.\n\nTobbe the lamp-man is still up at the top. Look for him. Here's a bow, too. Imps don't care much for an arrow in the hide.\n\nClear those Imps out of my tower, quickly, and I will see you are well paid."
+    },
+    "reminder": {
+     "speaker": "Ostrik",
+     "text": "Still at it? Then back up those stairs with you! The fire must be lit before dark!"
+    },
+    "completion": {
+     "speaker": "Ostrik",
+     "text": "I hope those Imps never show their ugly faces on our wall again! I'm still not convinced Ghrulg sent them, though. Here's 100 in gold for your trouble."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear the Imps from the Beacon Tower."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": ["Bow"]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Pellim, the fort's old wizard, wants his staff back from the Trolls' ice caves, and pays with a free lesson.",
+   "names": {
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ghrulg": "person",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellim",
+     "text": "Trouble, and more trouble! I need you to go up to the ice caves west of the fort. The Trolls carried off my staff to their den there.\n\nThey caught me on the north road with a sled of firewood and took nothing else! Ghrulg must want it badly.\n\nTake this potion. Gunda's store has whatever else you need. Then hurry.\n\nMy lessons usually cost a pretty penny. Bring back my staff, and the next one is free! Will you go?"
+    },
+    "refusal": {
+     "speaker": "Pellim",
+     "text": "You'd rather not, then. Sorry, but my spells are not given away for nothing."
+    },
+    "reminder": {
+     "speaker": "Pellim",
+     "text": "I've told you all I know. Off with you, and bring my staff home!"
+    },
+    "completion": {
+     "speaker": "Pellim",
+     "text": "My staff! Well done! Here is the book I promised.\n\nRead the words slowly when you cast this spell. If you stumble before it takes hold, it fizzles away! Once a beast is slowed, you may cut it down, or simply walk on past it."
+    },
+    "after": {
+     "speaker": "Pellim",
+     "text": "Thanks to you, an old fool has his staff again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Pellim's staff."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Pellim's staff."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["RedPotion", "SpellBook"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Ulvek, keeper of the fort's keys, wants the stolen armory key back; Snibb the smuggler wants the Wolves off his sled trail and pays with gold and his back way past the High Gate.",
+   "names": {
+    "Ulvek": "person",
+    "Hadrik": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "High Gate": "place",
+    "Trolls": "group",
+    "Wolves": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Ulvek",
+     "text": "While you were coming up the road, some sneak knocked out both my guards -- and made off with the armory key! Commander Hadrik will be furious when he hears of it.\n\nGet after him, north toward the ice falls, and bring that key back. Take these boots. They won't slip. Who would dare do such a thing?"
+    },
+    "offer_b": {
+     "speaker": "Snibb",
+     "text": "Hey, you! About time somebody showed up!? I'm in a real fix!\n\nWolves have moved onto my sled trail under the east cliffs. My dogs won't set a paw on it, and the goods are piling up! Smuggling's hard enough with the Trolls about!\n\nPlease, I'm begging you! Run those Wolves off my trail and I'll make it worth your while.\n\nTake this whistle. My lead dog Bodger will come to it and show you the way.\n\nI've a blue potion here, too. You'll want it out on those cliffs."
+    },
+    "outcome_a": {
+     "speaker": "Ulvek",
+     "text": "The armory key! Back in my hand at last!\n\nHadrik will want the armory open before the Trolls come down. Take this sword off the rack, stranger, and go tell him yourself."
+    },
+    "outcome_b": {
+     "speaker": "Snibb",
+     "text": "Ha! Not a Wolf left on my trail! My dogs thank you, and so do I.\n\nWhile you were up on the cliffs, I had a word with my partner Grimble. He'll meet you at the top of my trail -- round the back of the High Gate. Not a word to the Commander!\n\nNow take your gold. I've got sleds to load!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Catch the thief of Ulvek's key."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Clear the Wolves from the sled trail to win Snibb's back way."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": ["LeatherBoots", "Longsword", "BluePotion"]
+   }
+  },
+  "rescue": {
+   "specifics": "Dagna the pedlar, packed to leave the fort, begs the player to bring back her boy Jeppo from the Grey Hood bandits.",
+   "names": {
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Grey Hoods": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Dagna",
+     "text": "Aaaagh! Get away! I've nothing left!\n\nOh. You're not a bandit?! Thank goodness. The Grey Hoods dragged my boy Jeppo off to their cave up the west slope! We were all packed to leave this fort for good.\n\nBring my Jeppo home and you'll have the best bargain of your life!"
+    },
+    "reminder": {
+     "speaker": "Dagna",
+     "text": "Is Jeppo with you?! Oh.... Well, those bandits are a nasty lot. Be careful up there."
+    },
+    "found": {
+     "speaker": "Jeppo",
+     "text": "Hey! The Grey Hoods took me! Now the door's frozen shut! I'll try to squeeze through the bars. Get me home!"
+    },
+    "following": {
+     "speaker": "Jeppo",
+     "text": "This way, quick."
+    },
+    "completion": {
+     "speaker": "Dagna",
+     "text": "Jeppo! You brought him back! May the stars smile on you!\n\nI've no gold left to give, so take this robe off my cart. It's the best piece I had! Now Jeppo and I are off down the mountain, and we won't be coming back. Watch yourself with those Trolls about!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Fight through the Grey Hood cave and bring Jeppo back to his mother Dagna."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["WizardRobe"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Fenn points the player to Commander Hadrik in the keep, who sends him to throw Ghrulg's Trolls off the High Gate.",
+   "names": {
+    "Fenn": "person",
+    "Hadrik": "person",
+    "Brannoc": "person",
+    "Ghrulg": "person",
+    "Trolls": "group",
+    "High Gate": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fenn",
+     "text": "Not me, sorry. Commander Hadrik is up in the keep."
+    },
+    "opening": {
+     "speaker": "Hadrik",
+     "text": "Hmph! Brannoc sent just one?! Well, it'll have to do. Ghrulg and his Trolls have taken the High Gate and shut the pass. Nobody gets north while they hold it. And Brannoc himself rides in before the week is out!\n\nGet up there and throw them off the gate, and I'll pay you whatever the fort can spare.\n\nTake this iron key. It opens the little door at the foot of the wall."
+    },
+    "reminder": {
+     "speaker": "Hadrik",
+     "text": "Trolls are big, but they're dim. Come back when the High Gate is ours."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Ghrulg and his Trolls off the High Gate."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

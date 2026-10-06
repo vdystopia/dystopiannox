@@ -1,0 +1,34 @@
+{
+  "packet": "0e397e",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Brisk and plain, but the thanks turns into a chain of short, flat setup sentences for the next leg (goat track, lookouts) that Westwood's thank-you lines never carry; 'Alright.' as an opener and 'slag pits' world-building feel written to brief."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Exclamation-heavy like Nox, but the local colour (punt, stilts, sluice gate, eel boats) is too dense and the 'sign the book first' mechanic plus the omen-and-potion foreshadowing reads as a designed quest beat, not Westwood's simpler offer-reward shape."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Good short sentences and a vivid frightened voice ('You'll smell it'), but the run of terse fragments is more literary than Nox, and the hurried-away exit after the reward is a modern characterisation touch."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stock Westwood: 'worse than the pox', 'Brave Adventurer, my deepest thanks!', 'I insist', a direct pointer 'through the double doors' and a reward framed as title plus free passage."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The silly stakes (a pet frog) and the deadpan 'Loads and loads of money?' gag with '?!' punctuation are exactly Nox's broad humour; plain, short, and done."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Chatty shopkeeper register ('Actually, business has been somewhat slow of late'), 'scoundrels... filthy paws', 'lad', 'young sir' and '100 in gold!' with ellipsis are characteristic; the journal is a bare imperative."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plausible voice and the throwaway 'Imps throw whatever they can lift' is nice, but the offer packs a route hint, a named helper and a gift item, and the journal uses a double-dash exclamation, unlike Westwood's plain journal lines."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Stiff, slightly odd diction ('I surmise', 'savage scum', 'single handedly') and the over-long gushing thanks with 'young sir' repeated and '500 in gold!' are Westwood's uneven, earnest style."},
+    {"label": "I", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Clumsy but authentic main-plot urgency ('Damn! Where have you been, lad!?', 'All Nox is now in peril', 'At happier other times') with awkward syntax a generator would smooth out."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "One long breathless offer paragraph with no page break, 'Greetings, Wanderer!', and a backstory (bribed turnkey) plus a mixed-feelings 'I'd hoped to see him back in irons' reaction that is more nuanced than Nox's thanks; the masking even slips ([Thing] for the villain)."}
+  ],
+  "tells": [
+    "Westwood's thank-you lines are short and reward-focused (praise, 'here is your reward', amount); the new texts use the thanks to set up the next leg, foreshadow omens, or hand extra hints and items.",
+    "New offers pack too many designed details at once: a route, a named helper, a gift item, a procedural step (sign the book), local trade colour; Westwood gives the problem, the place, and the ask.",
+    "Westwood's prose is uneven and slightly awkward (odd word choices, run-on gushing, '?!'), while the new texts are cleaner and more crafted, with clipped literary fragments and nuanced emotional beats.",
+    "Westwood journal entries are a bare imperative ('Bring [Person] to justice.'); the new ones add clauses, double dashes or exclamation marks.",
+    "Nox's humour is broad and deadpan (a frog in a fire, 'loads and loads of money'); the new texts are earnest or atmospheric and seldom joke.",
+    "Long speeches in Westwood are broken into pages with ' / '; a single unbroken long offer paragraph is a tell."
+  ]
+}

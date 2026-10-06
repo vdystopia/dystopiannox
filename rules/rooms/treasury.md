@@ -61,3 +61,11 @@ chests and the floor before them. (`STANDS["treasury"]`: behind the table, besid
   tiles: Dun Mir chests, six shield hangings); Con06b, cell 163,93 (116 tiles: three Dun Mir chests, a table of food
   and four chairs).
 - Ours: the room lab's treasuries.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's one curated strongroom (Con05B, the ogres', 54 tiles): two chests, sacks of two sizes and a great cask
+  over a bare floor. The object knowledge agent found ours read as armouries (trader's shelves and hung shields
+  dominating): the recipe now holds three strongboxes (the knowledge base's cap) on the back walls, sacks of coin and a
+  cask in heaps, the counting table and chair; no shelves of wares, no hung arms. The cap on stores rose to one per 6
+  tiles (Con05B: five on 54 tiles). The brief's Con06b and Wiz06c examples were corridors (curated out).

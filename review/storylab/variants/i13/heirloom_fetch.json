@@ -1,0 +1,665 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i13",
+ "writer": "one writer a town (variants/i13/maps)",
+ "guide": "WRITER.md + exemplars + frames",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, pays potions up front to get back the key to her sluice gate from the Urchins of the old barrow.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Here you are at last, stranger. Halvard says my mill can wait until Corwin's gone. My mill can't wait!\n\nThe Urchins from the old barrow east of the ford took the key to my sluice gate. The wheel hasn't turned since. Take these potions now, they're yours whatever you say!\n\nWill you get my key back from them?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Not ready to take on Urchins yet, eh? Never mind, the job will keep. If you change your mind, just knock at the mill."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Enough standing about. Go on, then!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My key -- good, I've no time to talk just now."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Oh, you're still about."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's sluice key from the Urchins in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's sluice key from the Urchins in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Druvak: Morva, a peddler packing up to leave, lost her enchanted lantern (already sold) to the Imps of the Old Shaft.",
+   "names": {
+    "Druvak": "place",
+    "Odrik": "person",
+    "Dalmor": "person",
+    "Grizzick": "person",
+    "Pudd": "person",
+    "Morva": "person",
+    "Tolbrek": "person",
+    "Krug": "person",
+    "Nessa": "person",
+    "Snib": "person",
+    "Brakka": "person",
+    "Ottar": "person",
+    "Skarn": "person",
+    "Yorvan": "person",
+    "Ore Hall": "place",
+    "Black Chasm": "place",
+    "North Drift": "place",
+    "Old Shaft": "place",
+    "Old Shrine": "place",
+    "Smelter": "place",
+    "Deep Gate": "place",
+    "Troll Warrens": "place",
+    "Sunken Hall": "place",
+    "Lower Mines": "place",
+    "Lift Key": "thing",
+    "Trolls": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Spider": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Morva",
+     "text": "While I was loading my cart, a pack of Imps came screeching up out of the Old Shaft -- and ran off with my enchanted lantern! It's already sold, and the buyer wants it tomorrow!\n\nOdrik calls me a swindler, but he's never sold a thing in his life. Will you go down after those Imps and get it back?"
+    },
+    "refusal": {
+     "speaker": "Morva",
+     "text": "Too scared of a few Imps? Then ask me again once you've grown a spine."
+    },
+    "reminder": {
+     "speaker": "Morva",
+     "text": "Still standing about? Those Imps could be smashing it to bits right now! My buyer won't wait forever!"
+    },
+    "completion": {
+     "speaker": "Morva",
+     "text": "Thank goodness, not a scratch on it! You'd make a fine peddler, lad. Take these boots, and I'm off before Skarn's Trolls come for the rest of my stock!"
+    },
+    "after": {
+     "speaker": "Morva",
+     "text": "Thanks again. A poor peddler won't soon forget a kindness like yours..."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Morva's enchanted lantern from the Imps in the Old Shaft."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Morva's enchanted lantern from the Imps in the Old Shaft."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Okkum: Moribel's Moon Amulet was carried off by the Imps that keep creeping into her hut; she hands over her storeroom key.",
+   "names": {
+    "Okkum": "place",
+    "Ghessa": "person",
+    "Gorvald": "person",
+    "Fennick": "person",
+    "Ebbin": "person",
+    "Moribel": "person",
+    "Dobbs": "person",
+    "Kelso": "person",
+    "Snell": "person",
+    "Quibb": "person",
+    "Grumm": "person",
+    "Dilla": "person",
+    "Ysmay": "person",
+    "Bodrick": "person",
+    "Pella": "person",
+    "Black Reeds": "place",
+    "Drowned Chapel": "place",
+    "Moon Amulet": "thing",
+    "Frog Horn": "thing",
+    "Troll": "group",
+    "Imps": "group",
+    "Zombies": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Moribel",
+     "text": "Good evening, young sir. I expect you have come about my trouble.\n\nImps! The wretched things got into my hut and made off with my Moon Amulet! Dobbs went after them with a broom, but they keep creeping back up the pilings!\n\nHere is the key to my storeroom -- they nest in there now. Will you go in and bring my amulet back?"
+    },
+    "refusal": {
+     "speaker": "Moribel",
+     "text": "Don't dawdle on my ladder then. You haven't the nerve for Imps, I see. My amulet is as good as lost. Come back when you've found some courage."
+    },
+    "reminder": {
+     "speaker": "Moribel",
+     "text": "Dobbs -- the great lump -- says he heard them squabbling under the floorboards. Maybe that's where they hide my amulet!"
+    },
+    "completion": {
+     "speaker": "Moribel",
+     "text": "Ah, there you are! I heard such squealing from the storeroom that I climbed down to look.\n\nYou have brought back the Moon Amulet! Remarkable! Those Imps have plagued this hut since the rains began! I shall hang it over my door tonight. We'll all sleep sounder with the little pests gone!\n\nAnd this is for your trouble -- 100 gold pieces!"
+    },
+    "after": {
+     "speaker": "Moribel",
+     "text": "Please, pull the hatch shut behind you. I'm still jumpy."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Moribel's storeroom and recover the Moon Amulet."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Find Moribel's storeroom and recover the Moon Amulet."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 4,
+   "specifics": "Thrane: Edda, the old woman who keeps watch from the east tower, wants her spyglass back from the Urchins of the Hollow.",
+   "names": {
+    "Thrane": "place",
+    "Lord Ostric": "person",
+    "Fennick": "person",
+    "Gruthak": "person",
+    "Dalric": "person",
+    "Warden Krell": "person",
+    "Skell the Poisoner": "person",
+    "Edda": "person",
+    "Steward Ambrel": "person",
+    "Harl": "person",
+    "Wizzle": "person",
+    "Dunk": "person",
+    "Maudra": "person",
+    "Tobin": "person",
+    "Brusk": "person",
+    "Gallow Hill": "place",
+    "the Beacon": "place",
+    "the Great Hall": "place",
+    "the Thornwood": "place",
+    "the Urchin Hollow": "place",
+    "Lowmarket": "place",
+    "the Bent Spoon": "place",
+    "Trolls": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Edda",
+     "text": "Ohh... is that another Urchin? No... a new face in Thrane, and a sturdy one.\n\nWhat brings a young sir up all these stairs to a cranky old woman? Hmm, don't tell me... Lord Ostric wants you counting Trolls on his walls.\n\nWell, I've no patience for Ostric and his walls, but you may as well make yourself useful. The Urchins of the Hollow crept in here last night and made off with my spyglass, and I'd wager my last tooth Gruthak paid them to do it!\n\nWill you fetch it back for me? Here, take these potions. The Hollow is no place to go without them."
+    },
+    "refusal": {
+     "speaker": "Edda",
+     "text": "You haven't the nerve for Urchins. Come back when you've found some."
+    },
+    "reminder": {
+     "speaker": "Edda",
+     "text": "That was the last of my potions, I'm afraid. Mind yourself in the Hollow. Those Urchins are quick and spiteful lot."
+    },
+    "completion": {
+     "speaker": "Edda",
+     "text": "My spyglass! Lord Ostric will be glad to know the east tower can see again. Here, a little gold for your trouble."
+    },
+    "after": {
+     "speaker": "Edda",
+     "text": "Brusk was up here asking after you. He said Lord Ostric would see you in the Great Hall."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Edda's spyglass from the Urchin Hollow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Edda's spyglass from the Urchin Hollow."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion",
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Skellow: Jebba the fisherwoman's lantern was stolen by the Urchins, and Harbor Master Pell lets no boat out at night without a light.",
+   "names": {
+    "Skellow": "place",
+    "Lake Ommel": "place",
+    "Gannet Rock": "place",
+    "Town Hall": "place",
+    "Guild Hall": "place",
+    "Reed Island": "place",
+    "Leech marsh": "place",
+    "Hulvo": "person",
+    "Mayor Oskelt": "person",
+    "Talboth": "person",
+    "Gorrick": "person",
+    "Jebba": "person",
+    "Harbor Master Pell": "person",
+    "Pell": "person",
+    "Guildmaster Fennick": "person",
+    "Grubbin": "person",
+    "Dorrin": "person",
+    "Kett": "person",
+    "Tamsin": "person",
+    "Nubb": "person",
+    "Urchins": "group",
+    "Leeches": "group",
+    "Fishers' Guild": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Jebba",
+     "text": "The Urchins have a cave behind the smokehouse. They stole my lantern last night! Pell says no boat goes out after dark without a light. Not mine, not anybody's. And watch yourself. The little pests bite.\n\nWill you bring it back?"
+    },
+    "refusal": {
+     "speaker": "Jebba",
+     "text": "You haven't the nerve for Urchins, then."
+    },
+    "reminder": {
+     "speaker": "Jebba",
+     "text": "Off to the cave, lad! I can't fish without that lantern. Hurry! Pell won't bend his rule, not for me, not for anybody."
+    },
+    "completion": {
+     "speaker": "Jebba",
+     "text": "My lantern!? From the Urchins? Truly? Take this, 60 in gold!"
+    },
+    "after": {
+     "speaker": "Jebba",
+     "text": "The best fishing is out past the reeds. Just keep clear of Gannet Rock."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the stolen lantern from the Urchin cave behind the smokehouse and return it to Jebba."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the stolen lantern from the Urchin cave behind the smokehouse and return it to Jebba."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ostrel: Master Quillan wants the Ward Stone back from the Urchins who broke into the College vault.",
+   "names": {
+    "Ostrel": "place",
+    "College": "place",
+    "Observatory": "place",
+    "Chapter House": "place",
+    "Proving Vaults": "place",
+    "Sinkholes": "place",
+    "Library": "place",
+    "Vorlath": "person",
+    "Yarrick": "person",
+    "Dorvanis": "person",
+    "Krumm": "person",
+    "Mabeth": "person",
+    "Gorwin": "person",
+    "Quillan": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Fennick": "person",
+    "Zabble": "person",
+    "Orlo": "person",
+    "Nimrel": "person",
+    "Ysolde": "person",
+    "Golems": "group",
+    "Imps": "group",
+    "Urchins": "group",
+    "Shades": "group",
+    "Bats": "group",
+    "Masters": "group",
+    "Ward Stone": "thing",
+    "Focus Crystal": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Quillan",
+     "text": "Thunder and blazes! Are you the help Yarrick promised us?! Urchins got into the College vault in the storm, and they'd have carried off the whole of it if old Hobb hadn't come down with his lamp and screamed the house awake!\n\nBut in all the noise the thieves made off with the Ward Stone! Without it every ward on this town is down, and Vorlath can walk right in!\n\nNever mind the silver they took, I want the Stone, and those Urchins made to pay! They've gone south, into the Sinkholes. Will you go after them, lad?"
+    },
+    "refusal": {
+     "speaker": "Quillan",
+     "text": "Then return when you've found your nerve."
+    },
+    "reminder": {
+     "speaker": "Quillan",
+     "text": "That Stone is all that stands between us and Vorlath! Hurry!"
+    },
+    "completion": {
+     "speaker": "Quillan",
+     "text": "In better times the bells of the College would ring all night for a deed like this! Well done! But Vorlath is still out there, and he won't wait for us.\n\nThis gold and this Spell Book are yours, with the thanks of the whole College! And the Library is open to you from now on. Tell the porter I said so."
+    },
+    "after": {
+     "speaker": "Quillan",
+     "text": "Fine work."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Ward Stone from the Urchins in the Sinkholes."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Ward Stone from the Urchins in the Sinkholes."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Krell: Pellim, the fort's old wizard, wants his staff back from the Trolls' ice caves, and pays with a free lesson.",
+   "names": {
+    "Fort Krell": "place",
+    "High Gate": "place",
+    "Beacon Tower": "place",
+    "Ghrulg": "person",
+    "Brannoc": "person",
+    "Hadrik": "person",
+    "Ostrik": "person",
+    "Tobbe": "person",
+    "Pellim": "person",
+    "Gunda": "person",
+    "Ulvek": "person",
+    "Snibb": "person",
+    "Bodger": "person",
+    "Grimble": "person",
+    "Dagna": "person",
+    "Jeppo": "person",
+    "Fenn": "person",
+    "Trolls": "group",
+    "Imps": "group",
+    "Wolves": "group",
+    "Grey Hoods": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Pellim",
+     "text": "Trouble, and more trouble! I need you to go up to the ice caves west of the fort. The Trolls carried off my staff to their den there.\n\nThey caught me on the north road with a sled of firewood and took nothing else! Ghrulg must want it badly.\n\nTake this potion. Gunda's store has whatever else you need. Then hurry.\n\nMy lessons usually cost a pretty penny. Bring back my staff, and the next one is free! Will you go?"
+    },
+    "refusal": {
+     "speaker": "Pellim",
+     "text": "You'd rather not, then. Sorry, but my spells are not given away for nothing."
+    },
+    "reminder": {
+     "speaker": "Pellim",
+     "text": "I've told you all I know. Off with you, and bring my staff home!"
+    },
+    "completion": {
+     "speaker": "Pellim",
+     "text": "My staff! Well done! Here is the book I promised.\n\nRead the words slowly when you cast this spell. If you stumble before it takes hold, it fizzles away! Once a beast is slowed, you may cut it down, or simply walk on past it."
+    },
+    "after": {
+     "speaker": "Pellim",
+     "text": "Thanks to you, an old fool has his staff again."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Pellim's staff."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Pellim's staff."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Varnok: Ottla the toolsmith wants the Frost Tongs back from the Ogres who broke into her shop.",
+   "names": {
+    "Varnok": "place",
+    "Gorlak": "person",
+    "Ogres": "group",
+    "Imps": "group",
+    "Old Smelter": "place",
+    "Slag Ridge": "place",
+    "Guildhall": "place",
+    "Guild": "group",
+    "Ozmand": "person",
+    "Dravic": "person",
+    "Pell": "person",
+    "Hask": "person",
+    "Tobb": "person",
+    "Ottla": "person",
+    "Frost Tongs": "thing",
+    "Brannoc": "person",
+    "Kessick": "person",
+    "Fennick": "person",
+    "Dobb": "person",
+    "Varga": "person",
+    "Nib": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ottla",
+     "text": "Gorlak's brutes kicked in my door, broke my apprentice's fingers one by one, and carried the Frost Tongs off to their camp west of town! Are you up to knocking some Ogre heads and getting them back?"
+    },
+    "refusal": {
+     "speaker": "Ottla",
+     "text": "Fine, the Tongs are lost then."
+    },
+    "reminder": {
+     "speaker": "Ottla",
+     "text": "Stranger! Get after those Ogres!"
+    },
+    "completion": {
+     "speaker": "Ottla",
+     "text": "Hmmm, the Frost Tongs, back where they belong. Take this ankh, it's the least I can do."
+    },
+    "after": {
+     "speaker": "Ottla",
+     "text": "Thank you. I suppose Dravic has found you work by now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover the Frost Tongs from the Ogre camp."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover the Frost Tongs from the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Tarrow: Widow Brisa of the mill; the Urchins of the Knobble caves ran off with her Warding Bell.",
+   "names": {
+    "Tarrow": "place",
+    "Town Hall": "place",
+    "Crooked Mule": "place",
+    "Rook Hill": "place",
+    "Thornwood": "place",
+    "Knobble caves": "place",
+    "Mayor Quillon": "person",
+    "Pellam": "person",
+    "Vosk": "person",
+    "Gammel": "person",
+    "Widow Brisa": "person",
+    "Skeff": "person",
+    "Dorrit": "person",
+    "Brother Fennick": "person",
+    "Odo": "person",
+    "Hobbe": "person",
+    "Warding Bell": "thing",
+    "Bears": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Widow Brisa",
+     "text": "Oh, please, help a poor widow!\n\nPlease, listen! Without my Warding Bell those Urchins will pick the mill clean, and me with it. Already the sacks are slit and the grain is all over the floor. Every night I hear them giggling down by the wheel, waiting for me to fall asleep.\n\nI was hanging out the washing when a pack of them ran off with it. They live in the Knobble caves, east across the river.\n\nPlease, if you bring my bell back, I'm sure I can find some way to repay you. Will you do it?"
+    },
+    "refusal": {
+     "speaker": "Widow Brisa",
+     "text": "I can see you've no time for a widow's bell! Off with you, then!"
+    },
+    "reminder": {
+     "speaker": "Widow Brisa",
+     "text": "Have you got my bell back?"
+    },
+    "completion": {
+     "speaker": "Widow Brisa",
+     "text": "Thanks for my bell, and good luck up on Rook Hill. Take these potions with you."
+    },
+    "after": {
+     "speaker": "Widow Brisa",
+     "text": "You know, I've been wondering... maybe I'll hang that bell a little higher this time!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back the bell the Urchins stole from Widow Brisa's mill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back the bell the Urchins stole from Widow Brisa's mill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Belvik: Hesta, the miller's widow, wants her Amulet of Warding back from the Urchins' den under the Cairn of Olm.",
+   "names": {
+    "Belvik": "place",
+    "Grimfell": "place",
+    "Krell": "place",
+    "Town Hall": "place",
+    "Bramble Gully": "place",
+    "Cairn of Olm": "place",
+    "Muddy Boot": "place",
+    "Gristle Hill": "place",
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Grenwold": "person",
+    "Hesta": "person",
+    "Gimble": "person",
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Orrick": "person",
+    "Amulet of Warding": "thing",
+    "Ogres": "group",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesta",
+     "text": "Are you going after the Urchins who robbed my mill? If so, bring your own torch. Their den under the Cairn of Olm is full of old traps, and there may be Ogres in there now too.\n\nWell? Will you fetch back my Amulet of Warding or won't you?"
+    },
+    "refusal": {
+     "speaker": "Hesta",
+     "text": "Oh well... maybe I'll get used to Urchins in my flour!"
+    },
+    "reminder": {
+     "speaker": "Hesta",
+     "text": "Why haven't you gone yet?"
+    },
+    "completion": {
+     "speaker": "Hesta",
+     "text": "Right. It's not even scratched. Some gold, for thanks. Oh! And a potion besides. Off you go now."
+    },
+    "after": {
+     "speaker": "Hesta",
+     "text": "My warmest thanks once more for finding my Amulet!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back Hesta's Amulet of Warding from the Cairn of Olm."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back Hesta's Amulet of Warding from the Cairn of Olm."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  }
+ ]
+}

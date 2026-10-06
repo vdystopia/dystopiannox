@@ -15,7 +15,7 @@ for wall-relative placement (one uv unit = 16.26 px). A '/' wall cell (x, y) lie
 u = x + y + 1 and runs along v; a '\\' wall cell lies on v = x - y and runs along u. A room's usable
 area is the set of grid cells reached by flood fill from its floor tiles without crossing walls.
 """
-import collections, math, random, re, zlib
+import collections, math, os, random, re, zlib
 from collections import Counter, deque
 
 from nox import load_rules, campaign_types, CELL
@@ -128,7 +128,13 @@ FACING_TYPES = re.compile(r"^(Chest\d|Chest[NS][EW]|DunMirChest\d|TraderShelves\
 # Pieces drawn facing one way, whose variant is fixed by the back wall they stand on (Westwood: LOTDLichGodStatue1 on
 # NW walls, facing SE, in 8 of 10 places; Statue2 on NE walls, facing SW, in 5 of 6. Ambermere's barrow had Statue1 on
 # a NE wall, looking sideways along it)
-WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"}}
+WALL_SIDE_TYPE = {"LOTDLichGodStatue": {"/|BR": "LOTDLichGodStatue1", "\\|BL": "LOTDLichGodStatue2"},
+                  # Westwood's crypt chests: CryptChest1 or 3 on the NE wall, CryptChest4 on the NW (rules/out
+                  # type_wall_sides); the numbering had laid them across the wall (the room lab's mausoleums)
+                  "CryptChest": {"\\|BL": "CryptChest1", "/|BR": "CryptChest4", "\\|TR": "CryptChest3", "/|TL": "CryptChest2"},
+                  # the iron stove as Westwood stands it on each wall (campaign kitchens: Stove05 on the NW wall 6 times,
+                  # Stove03 and Stove04 on the NE wall, Stove01 on the SE, Stove02 on the SW; room lab tuneA)
+                  "Stove": {"/|BR": "Stove05", "\\|BL": "Stove04", "/|TL": "Stove01", "\\|TR": "Stove02"}}
 FRONT_FAMS = {"bench", "storage", "shop_rack", "cart"}
 FRONT_WEIGHT = 1.8                # how strongly free-standing furniture leans toward the SE and SW walls
 # Pieces that stand tall against their wall: hangings never go above them (above a chest, a bed or a bench they may).
@@ -143,6 +149,10 @@ SNUG_GAP = {"shelves": 0.18, "storage": 0.22, "desk": 0.25, "fireplace": 0.15, "
 # floors only: Westwood never lets carpet touch dirt, grass or cobbles (floors.json never_touch).
 CARPET_EDGE = "RugTanLightEdge"
 CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone")
+# a carpet laid over a room's whole floor less a ring: Westwood's share of carpeted rooms whose carpet is that, by the
+# room's short side in squares (rules/rooms/shells.json: 4 across 19 of 26, 5 across 5 of 13, 6 across 6 of 19, 7
+# across 2 of 9, 8 or more 2 of 19); the others' carpets are 2-5 by 3-8 squares (lay_carpet)
+CARPET_FULL = {3: 0.75, 4: 0.75, 5: 0.4, 6: 0.3, 7: 0.2}
 # Gear racks that stand in rows down the middle of a storeroom, one kind to a row (TreePlace v0.3 room review).
 RACKS_PER_ROW = 5
 # a trader's or a smith's racks are wares on show, not a store: three to a row, a row of armour and a row of weapons
@@ -224,6 +234,10 @@ GROUPS = {
     "worktable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair",
                       beside=(r"^TraderAppleCrate$|^Barrel2?$|^SackChestMedium[12]$|^Crate[12]$", 2)),
     "sitting": dict(anchor=r"^SmallTable2$|^SquareTable[12]$|^RoundTable[12]$", seats=(2, 3), seat="chair", rug=0.8),
+    # a household's round table ringed by its chairs, its meal on it most often (Westwood's living rooms: 3-5 chairs)
+    "family_table": dict(anchor=r"^RoundTableWithFood$|^RoundTable[12]$", seats=(3, 4), seat="chair", rug=0.0, seat_gap=0.35),
+    # a bedroom's small table with a chair or two and no rug under it (Westwood's bedrooms: Con02a's, Con03A's)
+    "side_table": dict(anchor=r"^SquareTable[12]$|^RoundTable[12]$", seats=(1, 2), seat="chair", rug=0.0),
     "curio": dict(anchor=r"^Telescope2[a-g]$|^Orrery2$", clear=1.0),
     "statues": dict(anchor=r"^Statue2[aceg]$", pair=True, clear=1.0),
     "hearth": dict(anchor=r"^FreestandingFireplace$", seats=(2, 4), seat="bench", clear=1.0, seat_gap=1.1),   # fires draw wide
@@ -246,6 +260,17 @@ GROUPS = {
     "alchemy": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", seat_pat=r"Stool",
                     beside=[(r"^CauldronAnimated$", 1, 1.0), (r"^FairyJar$", 2)]),
     "conjuring": dict(anchor=r"^Orrery2$", ring=4, ring_r=1.9, clear=0.6),     # (SentryGlobeMovable: quest maps only)
+    # a big laboratory's table (Westwood's Con07C, Wiz02B: a table with chairs among the bookcases), a glowing jar by it
+    "labtable": dict(anchor=r"^Table[1-4]$", seats=(1, 2), seat="chair", beside=[(r"^FairyJar$", 1)]),
+    # a laboratory's work island (Westwood's Con07C: workstations and the alchemist's desk standing together on the floor,
+    # the room one working space; the independent judge of the lab: "pieces in separated clumps against the back walls,
+    # three quarters of the floor empty"): workstations side by side round one, a glowing jar by them
+    "workbench": dict(anchor=r"^WizardWorkstation\d[a-d]?$", clear=0.8,
+                      # (0.2 apart: fits() keeps 0.15 between pieces, so 0.12 had placed none of them)
+                      beside=[(r"^WizardWorkstation\d[a-d]?$", 1, 0.2), (r"^AlchemistDesk\d$", 1, 0.2)]),
+    # a crypt's sarcophagi as Westwood lays them: a mirrored pair across the room's middle (its 25 crypts: symmetry 1.0,
+    # every tomb in line with another, two to a room at the median)
+    "tombpair": dict(anchor=r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", pair=True, clear=0.8),
     "generators": dict(anchor=r"^Vandegraf(Small|Large)$", pair=True, clear=1.2),
 }
 # Pieces that need the space before them (the checker's NEEDS_FRONT): chests to open, hearths, stoves, cauldrons.
@@ -258,7 +283,8 @@ SUPPLIES = {"shelves": (r"^LogShelvesFull[1-4]$", 1, 2),
             "barrels": (r"^(Barrel|Barrel2|WaterBarrel|PiledBarrels[1-4]|LargeBarrel[12])$", 2, 3),
             "sacks": (r"^SackChest(Large|Medium|Small)[12]$", 2, 3),
             "apples": (r"^TraderAppleCrate$", 1, 2),
-            "tools": (r"^BarrelWithTools[12]$", 1, 2)}
+            "tools": (r"^BarrelWithTools[12]$", 1, 2),
+            "steel": (r"^(CrateSteel[1-4]|BarrelSteel[12])$", 1, 3)}      # a general store's (Westwood's Con03A, Con03B)
 PILE = r"^(Barrel|Barrel2|WaterBarrel|SackChest(Large|Medium)[12])$"     # round pieces that heap in a corner
 # Shelves and desks face one way and have no corner pieces: they stop at the corner, tight against the wall across
 # its end, whose line is 1 unit past the run's end (2026-10-04 review: "make sure bookcases and shelves fit tight
@@ -410,7 +436,16 @@ class _Room:
             for seg in segs:
                 self.runs.append(dict(line=line, coord=coord, lo=seg[0] - 1, hi=seg[-1] + 1, side=f"{line}|{side}",
                                       sign=1 if side in ("BR", "TR") else -1))
-        self.doors = [(g[0] + g[1] + 1, g[0] - g[1]) for g in (d.gap for d in room.doors)]
+        # both cells of a double door keep their clearance (room lab tuneA: barrels stood 0.3 units inside the second
+        # half of a double door, in its straight way in, because only the first cell was kept clear)
+        gaps_all = {d.gap for d in room.doors} | set(getattr(spec, "door_gaps", ()))
+        cells_ = []
+        for d in room.doors:
+            gx, gy = d.gap
+            step = (1, -1) if d.line == "/" else (1, 1)
+            cells_.append(d.gap)
+            cells_ += [c for c in ((gx + step[0], gy + step[1]), (gx - step[0], gy - step[1])) if c in gaps_all][:1]
+        self.doors = list(dict.fromkeys((g[0] + g[1] + 1, g[0] - g[1]) for g in cells_))
         mats = Counter(walls[c].get("material") for c in near)
         self.wall_material = mats.most_common(1)[0][0] if mats else ""
         self.placed = []          # (u, v, hu, hv, blocking, layer)
@@ -553,6 +588,10 @@ class Furnisher:
         # closer to one another than the clearances allow strangers (a work table's crates, a hearth's benches)
         self.rtype = KIND_TYPE.get(self.kind, WESTWOOD_KIND.get(self.kind, self.kind))
         self._group = None        # footprint records of the group being composed (None: no group)
+        # the room's trade, when its recipe has several (ROOMS[kind]["trades"]: a shop is an apothecary's, an armourer's
+        # or a general store, as each of Westwood's shops is one of them; the room lab): {"only": {fam: regex}, "skip":
+        # (fams or "slot:<slot>")}; drawn when the composition starts
+        self._trade = {}
         self._pairing = False     # a deliberate pair (statues flanking a throne) is being placed
         self.kb_refused = Counter()   # rule -> placements the knowledge base refused (for the lab's report)
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
@@ -873,6 +912,8 @@ class Furnisher:
         inv = self.T["inventory"].get(fam, {})
         allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(fam)
         ok = (lambda t: self.ok_type(t) and re.search(allow, t)) if allow else self.ok_type
+        tonly = self._trade.get("only", {}).get(fam)
+        if tonly: ok0 = ok; ok = lambda t: ok0(t) and bool(re.search(tonly, t))
         prefer = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam)
         if prefer:                                       # the identity's own choice (a kitchen table with food)
             chosen = {t: w for t, w in prefer.items() if ok(t)}
@@ -1054,7 +1095,10 @@ class Furnisher:
         if not rp: return None
         per, most = rp
         lo = ROOM_IDENTITY[self.kind].get("core", {}).get(fam, (0, 0))[0]
-        return max(lo, min(most, int(len(self.room.tiles) / per)))
+        # a kind may count its tiles as the checker's room finder does (ROOMS[kind]["cap_tiles"]: the kit's room holds
+        # 1.3-1.4 times the floor tiles the finder measures, so a cap met here was broken there; the room lab)
+        tiles = len(self.room.tiles) * ROOM_IDENTITY[self.kind].get("cap_tiles", 1.0)
+        return max(lo, min(most, int(tiles / per)))
 
     def identity_plan(self):
         """Families and counts from the room's identity (kit/identity.py ROOMS): every core family at
@@ -1106,11 +1150,16 @@ class Furnisher:
             # (an observatory's star charts among its bookcases)
             for _ in range(self._deferred_decor): self.place_decor()
             self.fill_room()
-            self.line_backs()
+            # a kind may line its back walls less than the house's goal (ROOMS[kind]["lined_goal"]: Westwood's
+            # laboratories 0.06-0.35), and say whether its walls take hangings (a bedroom: Westwood hangs something in
+            # 17% of its bedrooms and lines a quarter of their back walls; the room lab)
+            ident = ROOM_IDENTITY.get(self.kind, {})
+            goal = ident.get("lined_goal", LINED_GOAL)
+            self.line_backs(goal)
             self.complete_bookcase_walls()
             self.centre_by_doors()
-            if self.kind in DECORATED: self.decorate_walls()
-            while self.line_family() and self.back_lined() < LINED_GOAL and self.place_decor(): pass
+            if ident.get("decorate", self.kind in DECORATED): self.decorate_walls()
+            while self.line_family() and self.back_lined() < goal and self.place_decor(): pass
             self.audit_rugs()
             self.audit_tables()
             self.face_statues()
@@ -1271,16 +1320,25 @@ class Furnisher:
         the room), or None."""
         return min(self.openings, key=lambda op: (not op["outside"], not op["double"], -op["extent"]), default=None)
 
-    def wall_candidates(self, fam, t0, at, deep=False, door=False):
+    def wall_candidates(self, fam, t0, at, deep=False, door=False, far=False, back_only=False):
         """Positions for a piece against a wall, best first: a back wall, away from the pieces already
         composed (one anchor per wall where the room allows), centred on its free stretch (at="center")
         or toward an end of it (at="corner"). deep: the wall with the most room before it first (a chapel's altar at
         the end of a long nave, not halfway along its side). door: the wall straight across the room from the main
         door first, in line with it (a chapel's altar faces the way in down its aisle, as a throne does: Ambermere's
-        altar had stood on the NW wall of a nave entered through its SW wall, its pews side-on to the door)."""
+        altar had stood on the NW wall of a nave entered through its SW wall, its pews side-on to the door). far: the
+        spot farthest from every door first (a bed: Westwood's stand 0.7 of the room's diagonal from the door)."""
         op = self.main_door() if door else None
+        if far:
+            doors_uv = [(o["coord"], o["along"]) if o["line"] == "/" else (o["along"], o["coord"]) for o in self.openings]
+            us_ = [x + y + 1 for x, y in self.g.cells]; vs_ = [x - y for x, y in self.g.cells]
+            diag = max(1.0, math.hypot(max(us_) - min(us_), max(vs_) - min(vs_)))
         inv = self.T["inventory"].get(fam, {})
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
+        if fam in ROOM_IDENTITY.get(self.kind, {}).get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
+            facing = False
+        if fam in ROOM_IDENTITY.get(self.kind, {}).get("back_only", ()):  # a kind whose pieces Westwood shows on the back walls
+            facing = True
         depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
         out = []
         # a hanging takes bare wall, never a stretch any piece stands against (Westwood hangs nothing above a piece
@@ -1288,6 +1346,7 @@ class Furnisher:
         for r, lo, hi in self.segments():
             back = r["side"] in BACK_SIDES
             if facing and not back: continue                 # the camera would see only its back
+            if back_only and not back: continue              # (a recipe's own choice: a kitchen's barrels, as Westwood's)
             t = self.side_variant(t0, r, fam)
             if not t: continue
             hu, hv = self.half(t)
@@ -1295,6 +1354,12 @@ class Furnisher:
             if hi - lo < 2 * ha + 0.1: continue
             if fam == "wall_decor": d = self.perp_for(t, inv.get("perp_px"))
             else: d = hp + SNUG_GAP.get(fam, 0.3) + self.rng.uniform(0.0, 0.08)    # snug against the wall
+            # a kind whose pieces stand a step out from the wall: ROOMS[kind]["wall_gap"] is either {family: units}
+            # (Westwood's sarcophagi, 1-2.5 units off it) or one number for every wall piece (its kitchens: median gap
+            # 0.49 units against the furnisher's 0.24; the checker calls a piece floating from 0.9). The room lab.
+            wg = ROOM_IDENTITY.get(self.kind, {}).get("wall_gap", 0.0)
+            if isinstance(wg, dict): d += wg.get(fam, 0.0) * self.rng.uniform(0.7, 1.3)
+            elif fam != "wall_decor": d += wg
             side_score = (3.0 if back else 0.0) if facing else (0.0 if back else 3.0) if fam in FRONT_FAMS else (1.5 if back else 0.0)
             coord = r["coord"] + r["sign"] * d
             mid = (lo + hi) / 2
@@ -1312,7 +1377,10 @@ class Furnisher:
                 ends = [e for e in ends if lo + ha - 0.05 <= e <= hi - ha + 0.05]
                 if not ends: continue
             if fam in ("shelves", "desk", "shop_rack"):        # they face one way and are no corner pieces
-                ends = [max(lo, r["lo"] + CORNER_CLEAR) + ha, min(hi, r["hi"] - CORNER_CLEAR) - ha]
+                # a desk keeps the snug gap (0.1, fits) off the wall across its end: at CORNER_CLEAR its end stood 0.05
+                # from it, so a desk "toward the corner" never fitted (the room lab: small laboratories had no desk)
+                cc = CORNER_CLEAR + (0.1 if fam == "desk" else 0.0)
+                ends = [max(lo, r["lo"] + cc) + ha, min(hi, r["hi"] - cc) - ha]
                 if ends[0] > ends[1]: continue
                 mid = min(max(mid, ends[0]), ends[1])
             spots = [mid] if at == "center" else ends if at in ("corner", "room_corner") else [mid] + ends
@@ -1325,6 +1393,9 @@ class Furnisher:
                 score = side_score + 2.0 * min(spacing, 8.0) / 8.0 + 0.05 * (hi - lo) + self.rng.uniform(0, 0.4)
                 if at != "corner": score += 1.0 - abs(a - mid) / max(1.0, (hi - lo) / 2)
                 if deep: score += 0.4 * depth_of(r)
+                if far and doors_uv:                   # toward 0.7 of the diagonal from the doors, on a back wall
+                    score += 3.0 * min(1.0, min(math.hypot(u - du, v - dv) for du, dv in doors_uv) / (0.7 * diag))
+                    score -= 0.0 if back else 6.0
                 if facing_door: score += 20.0 - 0.5 * min(abs(a - op["along"]), 6.0)
                 out.append((score, t, r, u, v, a, ha, hp))
         out.sort(key=lambda c: -c[0])
@@ -1356,14 +1427,15 @@ class Furnisher:
                     if z[0] <= pu <= z[1] and z[2] <= pv <= z[3]: return True
         return False
 
-    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False, only=None):
+    def place_on_wall(self, fam, at="center", clear=1.6, t0=None, deep=False, door=False, only=None, far=False,
+                      back_only=False):
         """One piece against a wall at the best composed position, with `clear` uv units kept free in
         front of it (nothing blocking may stand there later; it must be free now). only: a pattern the piece matches."""
         types = self.types_of(fam)
         if only: types = {t: w for t, w in types.items() if re.search(only, t)}
         t0 = t0 or _pick(self.rng, types)
         if not t0: return None
-        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door):
+        for score, t, r, u, v, a, ha, hp in self.wall_candidates(fam, t0, at, deep, door, far, back_only):
             zone = self.front_zone(r, u, v, ha, hp, clear) if clear else None
             if zone and self.g.zone_blocked(zone): continue
             if NEEDS_FRONT.search(t) and self._front_crowded(r, u, v, ha, hp): continue
@@ -1437,6 +1509,12 @@ class Furnisher:
         """Open spots of the room, best first: farthest from the walls and from what already stands there,
         nearest the middle."""
         cu, cv = self.g.centroid
+        # a recipe may draw its middle group off the exact centre (`middle_jitter`: an independent judge picked out the
+        # lone table "dead centre" in every generated kitchen and living room; Westwood's stand off to one side)
+        jit = ROOM_IDENTITY.get(self.kind, {}).get("middle_jitter", 0.0)
+        if jit:
+            a = self.rng.uniform(0, 2 * math.pi); rr = self.rng.uniform(0.5, 1.0) * jit
+            cu, cv = cu + rr * math.cos(a), cv + rr * math.sin(a)
         blocks = [p for p in self.g.placed if p[4] and p[5] != "wall"]
         out = []
         for (x, y) in self.g.cells:
@@ -1444,7 +1522,7 @@ class Furnisher:
             if not self.g.fits(u, v, hu, hv): continue
             room = min([self.g.wall_dist(u, v) - max(hu, hv)] +
                        [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
-            out.append((min(room, 3.0) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
+            out.append((min(room, 3.0 if not jit else 0.6) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
         return [(u, v) for _, u, v in out]
 
@@ -1458,7 +1536,8 @@ class Furnisher:
         a rug or the room's density rules out the first). Tables come from the building's palette when the room
         allows them; `small`: the smallest type the room allows (a table its seats fit round in a small room)."""
         types = self.types_of(fam)
-        if fam == "table":
+        if fam == "table" and ROOM_IDENTITY.get(self.kind, {}).get("table_palette", True):
+            # (a recipe may take its own tables whatever the building's palette: a living room's table with its food)
             own = {t: w for t, w in types.items() if re.match(self.palette["table"], t)}
             types = own or types
         if small and types:
@@ -1704,7 +1783,7 @@ class Furnisher:
             self.beds.append((o, r, self._uv_on(r, hp + 0.3, a)))
             self.anchors.append(self._uv_on(r, hp + 0.3, a))
         ns = self.variant_for_side("Nightstand", r["side"])
-        if ns:
+        if ns and ROOM_IDENTITY.get(self.kind, {}).get("bed_nightstands", True):  # (Westwood's barracks have none)
             nhu, nhv = self.half(ns)
             na, nperp = (nhv, nhu) if r["line"] == "/" else (nhu, nhv)
             for (_, a1), (_, a2) in zip(beds, beds[1:]):
@@ -1901,7 +1980,8 @@ class Furnisher:
         def allowed(t):
             allow = types.get("shelves" if re.match(r"^(LogShelves|PotionShelves|Bookcase)", t) else "storage")
             return not allow or re.search(allow, t)
-        return [t for t in self.things if re.match(pat, t) and self.ok_type(t) and allowed(t)]
+        only = self._trade.get("only", {}).get("storage")
+        return [t for t in self.things if re.match(pat, t) and self.ok_type(t) and allowed(t) and (not only or re.search(only, t))]
 
     def stack_middle(self, n=4):
         """A stack of goods standing free in the middle of a big storeroom, with aisles all round: crates
@@ -1944,6 +2024,319 @@ class Furnisher:
             if self._clear_of_anchors(*uv_, th, th, pad) and self.try_put(t, *uv_): got += 1
         if row: self.wall_used.append(((r["line"], r["coord"]), a, edge))
         return got, edge
+
+    # ---- a store's heaps (the storeroom kinds' "heaps" slot; the room lab, 2026-10-05) ---------------------------------
+    # Westwood's 22 campaign storerooms hold 1-5 types of piece (a median of 3), the commonest kind over half of them
+    # (barrels in 17 of 22), against two walls (p90 three), the rest of the floor bare: a heap of barrels in a corner, crates
+    # side by side, a stack of crates standing free (Con06a, Con07B, War01A); never a shelf or a rack. The furnisher had
+    # stocked every wall with a cluster of every kind, so each room held 8-15 types spread evenly round all four walls.
+    STORE_POOLS = {"barrels": r"^(Barrel|Barrel2)$", "crates": r"^(DarkCrate|Crate)[12]$",
+                   "sacks": r"^SackChest(Large|Medium|Small)[12]$", "tools": r"^BarrelWithTools[12]$",
+                   "water": r"^WaterBarrel$", "piled": r"^PiledBarrels[1-4]$", "large": r"^LargeBarrel[12]$",
+                   "apples": r"^TraderAppleCrate$", "powder": r"^BlackPowderBarrel2?$", "ogre": r"^OgreSack\d$",
+                   "steel": r"^(CrateSteel[1-4]|BarrelSteel[12])$"}
+
+    def _store_palette(self):
+        """The room's few kinds of supply: (lead types, second types or [], accent types or []), each kind narrowed to one
+        or two types (one stem of crate, one size order of sacks), drawn by the recipe's `store` weights."""
+        if getattr(self, "_store_pal", None) is not None: return self._store_pal
+        st = ROOM_IDENTITY.get(self.kind, {}).get("store", {})
+
+        def pool(k):
+            ts = self.supply_types(self.STORE_POOLS[k])
+            if k == "barrels" and len(ts) > 1 and self.rng.random() < 0.7: ts = [self.rng.choice(ts)]
+            if k == "crates" and ts:
+                stem = self.rng.choice(sorted({re.sub(r"\d$", "", t) for t in ts}))
+                ts = [t for t in ts if t.startswith(stem)]
+            if k == "sacks" and ts:
+                n = self.rng.choice("12")
+                ts = [t for t in ts if t.endswith(n)] or ts
+            return ts
+
+        def draw(weights, avoid=()):
+            ks = [k for k, w in sorted(weights.items()) if w > 0 and k not in avoid and pool(k)]
+            if not ks: return None, []
+            k = self.rng.choices(ks, [weights[x] for x in ks])[0]
+            return k, pool(k)
+        lead_k, lead = draw(st.get("lead", {"barrels": 5, "crates": 2, "sacks": 2}))
+        second_k, second = (draw(st.get("second", {"crates": 3, "barrels": 3, "sacks": 2}), avoid=(lead_k,))
+                            if self.rng.random() < st.get("second_p", 0.95) else (None, []))
+        acc_k, accent = (draw(st.get("accent", {"piled": 2, "large": 2, "water": 1, "tools": 1, "apples": 1}),
+                              avoid=(lead_k, second_k)) if self.rng.random() < st.get("accent_p", 0.8) else (None, []))
+        self._store_pal = (lead, second, accent)
+        return self._store_pal
+
+    def _store_corners(self):
+        """The room's corners as (run, end along it, direction into the run), paired with the run meeting it there:
+        [((rA, aA, dA), (rB, aB, dB))], rA the longer of the two, the corners furthest from the doors first."""
+        ends = []
+        for r in self.g.runs:
+            for a, d in ((r["lo"], 1), (r["hi"], -1)):
+                ends.append((r, a, d, self._uv_on(r, 0.0, a)))
+        out = []
+        for i, (rA, aA, dA, pA) in enumerate(ends):
+            for rB, aB, dB, pB in ends[i + 1:]:
+                if rB["line"] == rA["line"] or math.hypot(pA[0] - pB[0], pA[1] - pB[1]) > 1.5: continue
+                door = min((math.hypot(pA[0] - du, pA[1] - dv) for du, dv in self.g.doors), default=99.0)
+                if door < DOOR_CLEAR + 2.0: continue
+                a, b = (rA, aA, dA), (rB, aB, dB)
+                if rB["hi"] - rB["lo"] > rA["hi"] - rA["lo"]: a, b = b, a
+                # the walls Westwood heaps the lead kind against (barrels: the back walls, 77% of them)
+                lead = (getattr(self, "_store_pal", None) or ((),))[0]
+                fit = sum(1 for r_ in (rA, rB) if any(self.orient(t, r_["side"]) for t in lead))
+                out.append((min(door, 8.0) + 4.0 * fit + self.rng.uniform(0, 5.0), a, b))
+        out.sort(key=lambda x: -x[0])
+        return [(a, b) for _, a, b in out]
+
+    def _heap_row(self, r, a, d, types, n, depth=0.0, pad=0.6, jitter=0.9):
+        """n supplies side by side along run r from `a` in direction d (+1 up the run, -1 down it), `depth` units out
+        from the wall (a second row before the first), each set out up to `jitter` units further (Westwood's heaps are
+        not ruled lines). Each type drawn from `types`, the knowledge base's run of one kind respected (a type it refuses
+        gives way to another of the list). Returns ([(object, along, half along)], the edge reached)."""
+        got, edge, tries = [], a, 0
+        while len(got) < n and tries < n + 4:
+            tries += 1
+            for t in sorted(types, key=lambda x: self.rng.random()):
+                t = self.orient(t, r["side"])
+                if not t: continue
+                hu, hv = self.half(t)
+                ta, tp = (hv, hu) if r["line"] == "/" else (hu, hv)
+                c = edge + d * ta
+                if not (r["lo"] + 0.3 < c - ta and c + ta < r["hi"] - 0.3):
+                    return got, edge
+                jit = 0.08 if re.search(self.STORE_POOLS["crates"], t) else jitter
+                uv_ = self._uv_on(r, depth + tp + 0.25 + self.rng.uniform(0, jit), c)
+                if self._clear_of_anchors(*uv_, hu, hv, pad) and self.try_put(t, *uv_):
+                    got.append((self.objects[-1], c, ta))
+                    if depth < 0.5: self.wall_used.append(((r["line"], r["coord"]), c - ta, c + ta))
+                    edge = c + d * (ta + self._heap_gap())
+                    break
+            else:
+                edge += d * 0.4                         # nothing fits here: a little further along
+        return got, edge
+
+    def _heap(self, r, a, d, types, n, round_):
+        """A heap against run r from `a` (toward d): the first piece snug in its place, each next one touching a piece of
+        the heap at a random bearing, kept within three units of the wall and near where it started, so the heap is a
+        clump, not a ruled row (the independent judge of the storeroom lab: "barrels strung in evenly stepped lines ...
+        a diagonal staircase"; "touching stacks of mixed kinds"). A piece in four is of the store's other kinds. Returns
+        (pieces placed, the furthest edge reached along the wall)."""
+        _, second, accent = self._store_palette()
+        others = [t for t in (second or []) + (accent or []) if t not in types]
+        line, sign, coord = r["line"], r["sign"], r["coord"]
+        along_of = lambda u, v: v if line == "/" else u
+        depth_of = lambda u, v: ((u if line == "/" else v) - coord) * sign
+        heap, edge, got = [], a, 0
+        for k in range(max(n, 1) + 5):
+            if got >= n: break
+            pool = others if others and k > 0 and self.rng.random() < 0.45 else types
+            # the odd piece stays odd: two of an accent kind (a great cask, a piled barrel) to a room at most
+            pool = [t for t in pool if t not in (accent or ()) or
+                    sum(1 for tt, _ in self._typed if OBJ.kind(tt) == OBJ.kind(t)) < 2] or types
+            cands = []
+            for t0 in sorted(pool, key=lambda x: self.rng.random())[:3]:
+                t = self.orient(t0, r["side"])
+                if not t: continue
+                hu, hv = self.half(t)
+                ta, tp = (hv, hu) if line == "/" else (hu, hv)
+                if not heap:
+                    c = a + d * ta
+                    if not (r["lo"] + 0.3 < c - ta and c + ta < r["hi"] - 0.3): continue
+                    cands.append((0.0, t, self._uv_on(r, tp + 0.25 + self.rng.uniform(0, 0.3), c), ta))
+                    continue
+                for _ in range(10):
+                    bu, bv, br = self.rng.choice(heap)
+                    ang = self.rng.uniform(0, 2 * math.pi)
+                    # (Westwood's stores keep a little air between their pieces: nearest gap 0.4-0.6, the curated rooms)
+                    dist = br + max(hu, hv) + self.rng.uniform(0.25, 0.65)
+                    u, v = bu + dist * math.cos(ang), bv + dist * math.sin(ang)
+                    dep, al = depth_of(u, v), along_of(u, v)
+                    if dep < tp + 0.2 or dep > 3.0 or not (r["lo"] + 0.3 < al - ta and al + ta < r["hi"] - 0.3): continue
+                    cands.append((0.5 * dep + 0.9 * abs(al - a) + self.rng.uniform(0, 1.2), t, (u, v), ta))
+            for _, t, (u, v), ta in sorted(cands, key=lambda c: c[0]):
+                hu, hv = self.half(t)
+                if self._clear_of_anchors(u, v, hu, hv, 0.6) and self.try_put(t, u, v):
+                    heap.append((u, v, max(hu, hv))); got += 1
+                    al = along_of(u, v)
+                    if depth_of(u, v) - (hv if line == "/" else hu) < 1.0:
+                        self.wall_used.append(((line, coord), al - ta, al + ta))
+                    edge = max(edge, al + ta + self._heap_gap()) if d > 0 else min(edge, al - ta - self._heap_gap())
+                    break
+            if not heap:                                # the first piece found no room here: a little further along
+                if k >= 3: break
+                a += d * 0.7
+        return got, edge
+
+    def store_heaps(self):
+        """The store's next group (_store_group); past the first four, the next that finds room."""
+        got = self._store_group()
+        while not got and 4 <= getattr(self, "_store_step", 0) <= 16:
+            got = self._store_group()
+        return got
+
+    def _store_group(self):
+        """One more of the store's groups, in the order Westwood's storerooms show them: the lead kind heaped two deep in
+        the corner furthest from the doors, on the longer of its two walls, sometimes spilling round the corner; the
+        second kind along the same wall toward its far end (stopping short of the far corner, so the room keeps two walls
+        bare); the odd piece by the heap; a stack of crates standing free in the middle of a room of 36 tiles or more;
+        then, while the room is under its share of floor, more of its kinds along the home walls, and last a heap on a
+        third wall. Returns the pieces placed."""
+        lead, second, accent = self._store_palette()
+        if not lead: return 0
+        if getattr(self, "_store_home", None) is None:
+            corners = self._store_corners()
+            if not corners: return 0
+            self._store_home, self._store_step = corners[0], 0
+            self._store_ends = {}
+        (rA, aA, dA), (rB, aB, dB) = self._store_home
+        step = self._store_step
+        self._store_step += 1
+        is_ = lambda pool, ts: bool(ts) and all(re.search(self.STORE_POOLS[pool], t) for t in ts)
+        round_ = not is_("crates", lead)
+        far = lambda r, d: (r["hi"] if d > 0 else r["lo"]) - d * 1.9      # short of the far corner: its wall stays bare
+        got = 0
+        if step == 0:                                   # the heap in the home corner
+            g, edge = self._heap(rA, aA + dA * 0.75, dA, lead, self.rng.randint(4, 6), round_)
+            got += g
+            self._store_ends[id(rA)] = edge
+            if g and self.rng.random() < 0.5:           # spilling round the corner onto the other wall
+                g2, e2 = self._heap(rB, aB + dB * 2.6, dB, lead, self.rng.randint(1, 2), round_)
+                got += g2
+                if g2: self._store_ends[id(rB)] = e2
+            return got
+        if step == 1 and second:                        # the second kind toward the far end of the long wall
+            r, a0, d = (rA, aA, dA) if self.rng.random() < 0.7 else (rB, aB, dB)
+            sacks = is_("sacks", second)
+            n = 3 if sacks else self.rng.randint(2, 3)
+            lo = self._store_ends.get(id(r), a0 + d * 2.6) + d * 1.0
+            # from the far end back toward the heap when the wall is long, so the stores spread along it
+            end = far(r, d)
+            t0 = second[0]
+            w0 = 2 * (self.half(t0)[1] if r["line"] == "/" else self.half(t0)[0])
+            span = (w0 + 0.35) * n
+            start = end - d * span if (end - lo) * d > span + 2.0 else lo + d * self.rng.uniform(0.0, 1.5)
+            if sacks:                                   # sacks in their three sizes, the biggest first
+                sizes = [z for z in ("Large", "Medium", "Small") if any(z in t for t in second)]
+                for z in sizes:
+                    row, e = self._heap_row(r, start, d, [t for t in second if z in t], 1)
+                    if row: got += 1; start = e
+            else:
+                g, start = self._heap(r, start, d, second, n, not is_("crates", second))
+                got += g
+            old = self._store_ends.get(id(r), start)
+            self._store_ends[id(r)] = max(start, old) if d > 0 else min(start, old)
+            return got
+        if step == 2 and accent:                        # the odd piece: by the heap
+            r, a0, d = (rA, aA, dA) if self.rng.random() < 0.5 else (rB, aB, dB)
+            start = self._store_ends.get(id(r), a0 + d * 2.6) + d * self._heap_gap()      # touching the heap
+            row, e = self._heap_row(r, start, d, accent, 1)
+            if row: self._store_ends[id(r)] = e
+            return len(row)
+        if step == 3 and self.g.area >= 36 and \
+                self.rng.random() < (0.8 if is_("crates", lead) or is_("crates", second) else 0.5):
+            crates = [t for t in (lead + second) if re.search(self.STORE_POOLS["crates"], t)]
+            if not crates and round_:                   # barrels standing free in a knot (Con06a, Con05C)
+                t = lead[0]; th = self.half(t)[0]
+                spot = self.free_middle(3 * th + 1.6, 3 * th + 1.6)
+                if spot:
+                    u, v = spot
+                    knot = []
+                    for k in range(self.rng.randint(3, 4)):
+                        ang = k * 2.1 + self.rng.uniform(-0.3, 0.3)
+                        rr = 0 if k == 0 else 2 * th + 0.15
+                        o = self.try_put(self.rng.choice(lead), u + rr * math.cos(ang), v + rr * math.sin(ang))
+                        if o: knot.append(o)
+                    if len(knot) < 2:                   # never one barrel alone in the middle of the floor
+                        for o in knot: self._remove(o)
+                        knot = []
+                    got = len(knot)
+                    if got: self.anchors.append(spot)
+                return got
+            crates = crates or self.supply_types(r"^(DarkCrate|Crate)[12]$")[:1]
+            if crates:                                  # a stack standing free
+                t = crates[0]; hu, hv = self.half(t)
+                # free of the walls with an aisle round it, as near the heaps as that allows (never dead centre of a
+                # bare floor: the independent judge)
+                sup = [rec for tt, rec in self._typed if rec[4] and rec[5] != "wall"]
+                spots = self.middle_spots(2 * hu + 1.6, 2 * hv + 1.6)[:40]
+                spot = min(spots, key=lambda p_: min([math.hypot(p_[0] - x[0], p_[1] - x[1]) for x in sup] or [0]) +
+                           self.rng.uniform(0, 1.0)) if spots else None
+                if spot:
+                    u, v = spot
+                    long_u = hu > hv
+                    k = self.rng.choice((2, 2, 3, 4))
+                    offs = [(0, -hv - 0.06), (0, hv + 0.06)] if long_u else [(-hu - 0.06, 0), (hu + 0.06, 0)]
+                    if k >= 3:
+                        offs += [((du + 2 * hu + 0.12, dv) if long_u else (du, dv + 2 * hv + 0.12)) for du, dv in offs][:k - 2]
+                    for du, dv in offs:
+                        if self.try_put(self.rng.choice(crates), u + du, v + dv): got += 1
+                    if got: self.anchors.append(spot)
+            return got
+        if 4 <= step < 17:                              # more where the room's stores are thinnest
+            return self._store_fill(rA, dA, rB, dB, lead, second)
+        return 0
+
+    def _store_fill(self, rA, dA, rB, dB, lead, second):
+        """A heap on the free stretch of the store's walls furthest from its stores so far (the checker's furniture
+        offset: a store heaped in one corner reads as bunched): the home walls first, short of their far corners, then
+        the wall across from the shorter home wall (a third wall, as Westwood's fullest storerooms use)."""
+        blocks = [(rec[0], rec[1]) for tt, rec in self._typed if rec[4] and rec[5] != "wall"]
+        if not blocks: return 0
+        fu = sum(b[0] for b in blocks) / len(blocks); fv = sum(b[1] for b in blocks) / len(blocks)
+        # most often a heap grows: the next pieces touch the end of one already standing (the independent judge of
+        # the storeroom lab: "clusters of sacks strung down a whole wall at regular gaps"; Westwood's stores pack stock
+        # into heaps and stacks that touch)
+        if self.rng.random() < 0.65:
+            sup = [rec for tt, rec in self._typed if rec[4] and rec[5] != "wall" and _family_of(tt) == "storage"]
+            grow = []
+            for r, lo, hi in self.segments(pad=0.0):
+                if not (r is rA or r is rB): continue
+                for end, d in ((lo, 1), (hi, -1)):
+                    pu, pv = self._uv_on(r, 0.9, end)
+                    if any(math.hypot(pu - x[0], pv - x[1]) < x[2] + 1.0 for x in sup) and hi - lo >= 1.6:
+                        grow.append((r, end, d))
+            self.rng.shuffle(grow)
+            for r, end, d in grow:
+                kinds = [t for t in (lead if self.rng.random() < 0.6 or not second else second) if self.orient(t, r["side"])]
+                if not kinds: continue
+                is_crates = all(re.search(self.STORE_POOLS["crates"], t) for t in kinds)
+                g, _ = self._heap(r, end + d * 0.1, d, kinds, self.rng.randint(2, 3), not is_crates)
+                if g: return g
+        rC = next((r for r in self.g.runs if r["line"] == rB["line"] and r is not rB and
+                   r["lo"] - 1.5 <= rA["coord"] <= r["hi"] + 1.5 and abs(r["coord"] - rB["coord"]) > 3), None)
+        cands = []
+        for r, lo, hi in self.segments(pad=1.6):       # heaps apart, never one line down the wall
+            if r is rA or r is rB:
+                d = dA if r is rA else dB
+                if d > 0: hi = min(hi, r["hi"] - 1.9)
+                else: lo = max(lo, r["lo"] + 1.9)
+                bonus = 0.0
+            elif r is rC:
+                # a third wall only where it balances the room (a small room heaped in one corner reads as bunched)
+                bonus = -5.0 if self.g.area >= 60 else 0.0
+            else:
+                continue
+            if hi - lo < 2.0: continue
+            if not any(self.orient(t, r["side"]) for t in lead + second): continue    # no kind of it stands there
+            a = (lo + hi) / 2
+            pu, pv = self._uv_on(r, 1.0, a)
+            cands.append((math.hypot(pu - fu, pv - fv) + bonus + self.rng.uniform(0, 1.5), r, lo, hi))
+        if not cands:                                   # no free stretch left: a clump against another corner's heap
+            for (r, a0, d), _ in self._store_corners()[:4]:
+                kinds = [t for t in lead + second if self.orient(t, r["side"])]
+                if not kinds: continue
+                g, _ = self._heap(r, a0 + d * 0.75, d, kinds, self.rng.randint(2, 3), True)
+                if g: return g
+            return 0
+        _, r, lo, hi = max(cands, key=lambda c: c[0])
+        kinds = lead if self.rng.random() < 0.5 or not second else second if self.rng.random() < 0.6 else lead + second
+        kinds = [t for t in kinds if self.orient(t, r["side"])] or [t for t in lead + second if self.orient(t, r["side"])]
+        is_crates = all(re.search(self.STORE_POOLS["crates"], t) for t in kinds)
+        span = 3.0 * (2 if is_crates else 3)
+        d = 1 if self.rng.random() < 0.5 else -1
+        a0 = (lo if d > 0 else hi) + d * self.rng.uniform(0.0, max(0.0, hi - lo - span))
+        g, _ = self._heap(r, a0, d, kinds, self.rng.randint(3, 4), not is_crates)
+        return g
 
     def line_wall(self, fam, near=None, max_n=None, decor_every=0, around=0.9, other=False, grow_only=False, only=None):
         """Shelves end to end along a NE or NW wall (TreePlace v0.3 room review: fill whole walls with bookshelves and
@@ -2288,6 +2681,24 @@ class Furnisher:
             if i0 > i1 or j0 > j1: return []
             rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
         if i1 - i0 < 1 or j1 - j0 < 1: return []        # at least 2 x 2 squares
+        from kit import shells as _SH
+        if not box and _SH.ENABLED:
+            # Westwood's carpets (rules/rooms/shells.json, 2026-10-05): a small room's carpet is its floor less a ring
+            # of one square (rooms 4 squares across: 3 in 4 of them), a larger room's a carpet of 2-5 by 3-8 squares
+            # in its middle (8 squares across or more: 1 in 10 carpeted wall to wall); a third of the floor at the
+            # median. Its own generator, so the furnisher draws as before.
+            crng = random.Random(zlib.crc32(f"carpet:{self.room.id}".encode()))
+            a, b = sorted((i1 - i0 + 1, j1 - j0 + 1))
+            if crng.random() >= CARPET_FULL.get(a + 2, 0.1):
+                cs = min(a, crng.choice((2, 3, 3, 4, 4, 5)))
+                cl = min(b, max(cs, cs + crng.choice((0, 1, 1, 2, 3))))
+                ci, cj = (cs, cl) if (i1 - i0) <= (j1 - j0) else (cl, cs)
+                oi = (i1 - i0 + 1 - ci) // 2 + crng.choice((-1, 0, 0, 1))
+                oj = (j1 - j0 + 1 - cj) // 2 + crng.choice((-1, 0, 0, 1))
+                oi = max(0, min(i1 - i0 + 1 - ci, oi)); oj = max(0, min(j1 - j0 + 1 - cj, oj))
+                i0, j0 = i0 + oi, j0 + oj
+                i1, j1 = i0 + ci - 1, j0 + cj - 1
+                rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
         ring = {(s[0] + a, s[1] + b) for s in rect for a, b in nb8} - rect
         if any(tile(s) in self.spec.local_blend for s in rect | ring): return []     # a door's threshold
         mat = material or self.rng.choice(self.palette["carpet"])
@@ -2795,6 +3206,8 @@ class Furnisher:
         ident = ROOM_IDENTITY.get(self.kind)
         if not ident: return True
         fam = _family_of(t)
+        if fam is None:                                 # a piece with no furniture family the recipe names (a cart)
+            return any(t in ident.get("prefer", {}).get(f, {}) for f in list(ident.get("core", {})) + list(ident.get("optional", {})))
         if not (fam in ident.get("core", {}) or fam in ident.get("optional", {}) or
                 (fam in ("chair", "bench") and "table" in ident.get("core", {}))): return False
         pat = ident.get("types", {}).get(fam)
@@ -2806,7 +3219,7 @@ class Furnisher:
         return min([self.g.wall_dist(u, v) - max(hu, hv)] +
                    [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
 
-    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3):
+    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3, by_bed=False):
         """Pieces of `fam` strewn over the floor in small heaps (straw in an ogre den, bones and skulls in the Land of
         the Dead: rules/out/cultures.json): about `per100` for every 100 floor tiles, `cluster` to a heap, `wall_gap`
         units clear of the walls and clear of the doors and the spaces kept clear. Returns the pieces placed."""
@@ -2815,6 +3228,9 @@ class Furnisher:
         n = max(1, int(round(per100 * len(self.room.tiles) / 100)))
         cells = sorted(self.g.cells)
         self.rng.shuffle(cells)
+        if by_bed and (self.beds or self.anchors):   # heaped by the cot (War07A) or the stocks (Con11a's pens)
+            bu, bv = self.beds[0][2] if self.beds else self.anchors[0]
+            cells.sort(key=lambda c: math.hypot(c[0] + c[1] + 1.0 - bu, c[0] - c[1] - bv) + self.rng.uniform(0, 1.5))
         got = 0
         for (x, y) in cells:
             if got >= n: break
@@ -2862,11 +3278,14 @@ class Furnisher:
                 n_seats = 0
                 if g.get("seats"):
                     lo, hi = g["seats"]
+                    n0 = len(self.objects)
                     n_seats = self.seats_around(spot, t, self.rng.randint(lo, hi), g["seat"], gap=g.get("seat_gap", 0.2),
                                                 pat=g.get("seat_pat"))
                     if n_seats < lo:
-                        for x in got: self._remove(x)
-                        continue                            # seats_around removes nothing: the seats it placed stay
+                        # the seats it did place go too: they had stood as stray chairs by the doors (room lab tuneA,
+                        # a guardroom's chair left alone in the way in)
+                        for x in self.objects[n0:] + got: self._remove(x)
+                        continue
                     self._seated.add((spot, t))
                 if g.get("ring"):                           # candelabras round it, on the four sides: all or none
                     lt, ring, rr = self.light_type(), [], g.get("ring_r", 1.9)
@@ -2913,11 +3332,16 @@ class Furnisher:
         cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 or st.get("fixed") or st["fam"] == "plant" else \
             int(math.ceil(st["max"] * grow - 0.25))           # `fixed`: a set piece (a pair of statues) does not multiply
         k, misses, done_once, added = 0, 0, set(), collections.Counter()
+        steps = [st for st in steps if not self._skipped(st)] or steps[:0]
+        if not steps: return
         while self.coverage() < self.cover_target and misses < 2 * len(steps):
             i = k % len(steps); st = steps[i]; k += 1
             if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
             if st.get("once"): done_once.add(i)
             if st.get("missing") and self._fam_n[st["fam"]]: misses += 1; continue     # only where none stands yet
+            # (a step a recipe skips where a carpet covers the floor: a table on a whole carpet can only stand at its
+            # centre, the "table dead centre of a huge empty carpet" an independent judge picked out in bedrooms)
+            if st.get("bare_floor") and self.carpet_plan: misses += 1; continue
             before = self.n_blocking
             fam = st["fam"]
             if st["slot"] == "stock":
@@ -2930,6 +3354,10 @@ class Furnisher:
                 self.rack_rows(st.get("kind", "gear"), st.get("aisle"), st.get("gap"), st.get("side_by_side", False))
             elif st["slot"] == "stack":
                 self.stack_middle(st.get("n", 4))
+            elif st["slot"] == "heaps":
+                self.store_heaps()
+            elif st["slot"] == "beside_bed":            # a second nightstand, the bed's other side
+                self.beside_bed()
             elif st["slot"] == "scatter":
                 self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
             elif st["slot"] == "group":                 # its `max` counts groups (a table and its chairs), not pieces
@@ -2943,7 +3371,8 @@ class Furnisher:
                     if self.seats_around(uv, o["type"], 2, "chair") < 2: self._remove(o)
                     elif st.get("rug"): self.rug_under(o, uv)
             else:
-                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2), only=st.get("only"))
+                p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.2), only=st.get("only"),
+                                       back_only=st.get("back", False))
                 if p and st.get("seats"): self.seats_around(p["uv"], p["obj"]["type"], 1)   # a desk and its chair
             added[i] += self.n_blocking - before
             misses = 0 if self.n_blocking > before else misses + 1
@@ -2972,7 +3401,8 @@ class Furnisher:
         limits = {f: int(math.ceil(rng_[1] * (1.0 if f in fixed else grow))) + 1
                   for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items())
                   if f in ident.get("top_up", TOP_UP_FAMS) and self.types_of(f)}
-        limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()}
+        limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()
+                  if f not in self._trade.get("skip", ())}
         have = Counter(_family_of(t) for t, _ in self._typed)
         # supplies top up in clusters, never one at a time in the middle of each free stretch: that spread them evenly
         # down whole walls (Harrowby: "a tendency to line walls with things like sacks and barrels. Very simple and
@@ -3069,6 +3499,7 @@ class Furnisher:
         self.decor_theme()
         free = sum(hi - lo for r, lo, hi in self.segments() if r["side"] in BACK_SIDES)
         n = max(1, min(8, int(free / 3.5)))
+        n = min(n, ROOM_IDENTITY.get(self.kind, {}).get("decor_max", 8))   # a kind hung more sparely (the room lab)
         for _ in range(n):
             if not self.place_decor(): break
 
@@ -3102,6 +3533,11 @@ class Furnisher:
             if rec and not self._rug_clear(rec, o["type"]): self._remove(o)
 
 
+    def _skipped(self, st):
+        """A composition step the room's trade leaves out (its family, or "slot:<slot>")."""
+        sk = self._trade.get("skip", ())
+        return st["fam"] in sk or ("slot:" + st["slot"]) in sk
+
     def compose(self, plan, need):
         """Furnish from the room's composition (kit/identity.py ROOMS[kind]["compose"]): anchors on
         their own wall stretches, a rug before the anchor that calls for it, the table set in the open
@@ -3110,11 +3546,18 @@ class Furnisher:
         done = collections.Counter()
         tables, placed = [], {}
         steps = ROOM_IDENTITY[self.kind]["compose"]
+        trades = ROOM_IDENTITY[self.kind].get("trades")
+        if trades:
+            self._trade = trades[self.rng.choice(sorted(trades))]
+        steps = [st for st in steps if not self._skipped(st)]
         cp = next((st for st in steps if st["slot"] == "carpet"), None)
         if cp and CARPET_FLOORS.search(self.room.floor or "") and self.rng.random() < cp.get("chance", 0.5):
             self.carpet_plan = cp                       # carpet tiles in this room, no rug objects
         for st in steps:
             fam = st["fam"]
+            # a step a recipe takes only sometimes (a living room's shelves by the hearth: Westwood's have none, the
+            # TreePlace review asked for them); a carpet's chance is its own (above)
+            if st["slot"] != "carpet" and "chance" in st and self.rng.random() >= st["chance"]: continue
             if st["slot"] == "carpet":
                 if self.carpet_plan:
                     box = self._table_box() if st.get("where") == "under" else None
@@ -3126,7 +3569,7 @@ class Furnisher:
                     if spot: self.try_put(t, *spot, blocking=False)
                 continue
             n = plan.get(fam, 0) - done[fam]
-            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights") and not st.get("extra"):
+            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights", "heaps") and not st.get("extra"):
                 continue                                # rows and lined walls are sized by the room; `extra` sets too
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
@@ -3175,7 +3618,8 @@ class Furnisher:
                     if spot and self.try_put(t, *spot, blocking=False): done["rug"] += 1
                 continue
             if st["slot"] == "scatter":               # strewn over the floor in heaps (straw, bones, meat)
-                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
+                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6),
+                                          st.get("spread", 1.3), st.get("by_bed", False))
                 continue
             if st["slot"] == "decor":                 # hangings go up last, once every wall is lined (fill_room)
                 self._deferred_decor += n
@@ -3190,6 +3634,9 @@ class Furnisher:
                 rows = self.table_rows(n, st.get("seat", "bench"))
                 done[fam] += len(rows)
                 done[st.get("seat", "bench")] += 2 * len(rows)
+                continue
+            if st["slot"] == "heaps":                  # a store's heaps (store_heaps), one group a step
+                for _ in range(st.get("n", 4)): done[fam] += self.store_heaps()
                 continue
             if st["slot"] == "stock":
                 done[fam] += self.stock_walls(st.get("coverage", 0.65), st.get("kinds", ("shelves", "crates", "barrels", "sacks")),
@@ -3243,7 +3690,8 @@ class Furnisher:
                     k += got
                     continue
                 p = self.place_on_wall(fam, st.get("at", "center"), st.get("clear", 1.6), deep=st.get("deep", False),
-                                       door=st.get("door", False), only=st.get("only"))
+                                       door=st.get("door", False), only=st.get("only"), far=st.get("far", False),
+                                       back_only=st.get("back", False))
                 if not p: break
                 k += 1
                 placed.setdefault(fam, p)
@@ -3403,6 +3851,8 @@ class Furnisher:
         return self._light_t
 
     def add_lights(self):
+        # a recipe may leave its room unlit (`dark`: Westwood's cells and pens hold no light of their own, 9 of 10)
+        if ROOM_IDENTITY.get(self.kind, {}).get("dark"): return
         vl = self.T.get("visible_lights", {})
         tiles = len(self.room.tiles)
         rate = _q(self.rng, vl.get("per100_tiles")) or 3.0          # learned lights per 100 tiles
@@ -3425,6 +3875,10 @@ class Furnisher:
         n = max(1 if tiles >= 12 and not lights else 0, n - len(lights) // 2)
         # never more than Westwood's rooms of the size hold (kit/objects.py light_cap; Harrowby: "Too many candelabras")
         n = min(n, max(0, OBJ.light_cap(tiles) - len(lights)))
+        # a kind lit more dimly than the house default (kit/identity.py ROOMS[kind]["lights_per100"]: Westwood's storerooms
+        # hold 0.03 lights a tile, one candelabra in a store of 40 tiles; the room lab, 2026-10-05)
+        lp = ROOM_IDENTITY.get(self.kind, {}).get("lights_per100")
+        if lp is not None: n = 0 if lp <= 0 else min(n, max(1 if tiles >= 12 else 0, int(round(tiles * lp / 100.0))))
         t = self._light_t or _pick(self.rng, types)   # one style of light per room
         base = _base(t)
         mounted = bool(base in self.dirvar and self.dirvar[base].get("use_variant_for_wall_side")

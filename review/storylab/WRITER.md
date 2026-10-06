@@ -1,4 +1,4 @@
-# The story lab's writer brief (v11: a Westwood quest frame for each quest, a line frame for each short line, nothing added)
+# The story lab's writer brief (v15: a Westwood quest frame for each quest, nothing added, then made your own)
 
 You write all the spoken text and the journal of **one small town** on a Nox single-player map (OpenNox; Westwood's
 Nox, 1999). Nine other writers each write another town, apart from you. Your lines will be masked, shuffled and set
@@ -32,6 +32,12 @@ tell your town from one of Westwood's.
    toads in every line; the town's look is the map's business.
 6. **Then check against `rules/DIALOGUE.md`** (no semicolons, no em dashes, the player never addressed by class,
    journal entries as short orders) and the tells below.
+7. **Then make it your own.** The map's lines must be our writing, not Westwood's with the nouns changed: run the
+   originality check your brief names. Where it flags a quest (its skeleton, the sentences with the content words
+   taken out, follows the frame more closely than any two of Westwood's own quests follow each other) or a line,
+   rework that part in your own words: put the frame's facts in another order, join two of its sentences or split
+   one, say the ask or the trouble another way, while keeping its size, register and plainness. Add nothing to do
+   it. Change nothing it does not flag.
 
 ## What gave earlier writers away (the judges' tells)
 

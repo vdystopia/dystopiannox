@@ -1,0 +1,34 @@
+{
+  "packet": "85bf58",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless '!?' and stacked exclamations, a clumsy but earnest clause ('leaving rebuilding the village our smallest concern'), and a bare 'Go to X and rescue Y' journal: pure Nox."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Plain, practical briefing with the item, the danger and the spells handed over; 'Good luck and good speed' and the flat 'Sneak into X through the sewers' journal are Westwood's register."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Fears nothing like the drowned dead', 'climb our stilts', 'besieged hamlet' are crafted atmospheric phrasing; the 'Oh....' reminder imitates Nox's comic beat a bit too knowingly."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and short, close to Nox, but the pastoral opener ('We were cutting barley') and the tidy 'open the north road' objective read like a careful pastiche; the reminder is the most Nox-like part."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Over-explained directions ('located East of here', 'I should be in my house at the center of town'), odd capitalisation of 'Urchins' and 'East', and a mild reminder that does not nag: unmistakably Westwood."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Inverted, writerly syntax ('Down from the hills came the Ogres'), a self-introduction mid-speech and a caravan reward hook feel assembled; 'Help Warden X drive Y from the fort' is wordier than Nox journals."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Stiff, functional briefing with the double-dash, 'Go to the shop for any other provisions' and the slightly redundant journal; flat but authentically Westwood."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Too much plotted motivation (why the captain cannot go himself, wounded garrison, the town left to fall) and long balanced sentences; 'in the nick of time' and 'pay you handsomely' are stock phrasing."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Fragmentary self-introduction ('The Master for the X.'), capitalised 'YOU' and terse plot-key handover are Westwood's late-campaign voice."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Wry, novelistic voice ('fat purse', 'by any means', 'rotting wretches') and a reminder built around a dark punchline is more polished and characterful than Nox's plainer quest givers."}
+  ],
+  "tells": [
+    "Westwood's openings are functional and sometimes clumsy: they over-explain directions and logistics (where the NPC will be, which shop to visit) rather than building atmosphere or motivation.",
+    "New texts favour crafted literary turns (inverted syntax, vivid metaphors, stock idioms like 'in the nick of time', 'fat purse') that Westwood rarely used.",
+    "New texts justify the quest giver's situation (why they cannot go themselves, what happens if they leave); Westwood simply states the problem and the order.",
+    "Westwood journals are bare imperatives ('Go to X and rescue Y'); new journals sometimes add a helper clause or extra noun phrase.",
+    "Westwood punctuation shows odd capitals (East, Urchins, YOU), '!?' and the double-dash; new texts use exclamations more evenly and deliberately.",
+    "New reminders tend to carry a joke or punchline; Westwood reminders are often flat restatements or mild grumbles."
+  ]
+}

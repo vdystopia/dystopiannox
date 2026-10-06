@@ -138,3 +138,57 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   living room r10 10/10 (4.6/6.6), guardroom r8 9/10 (5.4/5.4, equal scores). Judge: "one piece in each slot, large
   evenly empty floor round each group", and real clearance faults the knowledge base should have caught (barrels
   against the hearth, a second table set in a living room, chests loose on the floor).
+- 00:27 Scene rounds 2-3 merged (night-scenes3): camps cut to one tent with sleepers inside, armour racks in
+  a row, smaller bands; graveyards larger where the ground allows, crypts set in from the fence, a walk from the gate, no
+  trees inside; gardens open, with Westwood's low lattice fence only round large ones; docks prefer the long DockDown,
+  with varied gear on firm ground. The lab now generates scenes in a hamlet (road, houses, lake) except wild ones. Each
+  scene has its own random generator, so tuning one can't shift a design. Graveyard is the closest scene (judge 8/10).
+  Round 4 started (night-scenes4): a cave-hideout camp (Westwood's camps are mostly hideouts), a better lab setting,
+  then the 13 untuned scene types. Three new scene sheets are with a judge.
+- 00:29 Scene round 3's last sheets, judged independently: graveyard r8 10/10 (5.6/7.4), garden r6 10/10 (5.4/7.8,
+  up from 4.8), dock r4 9/9 (5.6/7.8, up from 4.6). Scores are rising and all are still told apart. Diagnosis: each
+  scene is an isolated stamp, where Westwood's are woven into walls, roads, houses and each other. Passed to round 4.
+- 00:39 Merged: room shells (night-shells: L-shapes, alcoves, partitions, second floors and carpets at Westwood's
+  rates; rooms now 41-83% rectangles per map against Westwood's 67%; shell AUC down for all five lab types, crypt
+  0.99->0.78), tuning tracks C (storeroom passed; 18 types tuned; shared heaps slot, steel stock, crypt-chest variants)
+  and A (8 types; guardroom matched Westwood's score; fixes for double-door clearance and stray chairs), and the motif
+  engine (night-motifs: 174 curated rooms mined into 1279 wall stretches, 239 corner and 457 centre motifs; experimental,
+  off by default; lower AUC in 4 of 6 types but more hard-rule rooms). Conflicts in furnish.py and identity.py were
+  additive and resolved keeping both sides. 22 new sheets sent to six fresh judges. Integration build running.
+  Track B and dialogue round 3 and scene round 4 still running.
+- 00:43 Integration build of the merged kit: 0 errors on every map, but warnings rose (Thornwick 0->7, Starwell 0->7,
+  Greywatch 1->8, Ambermere 0->7). Almost all are composition.sparse: the user's TreePlace house rule ("rooms at Westwood's
+  median and below read as empty") against the tuned rooms, which now match Westwood's real spread (10-11% cover against
+  the curated medians of 12-13%; half of Westwood's own rooms fall below its median). Kept as warnings: the user's call.
+  The rest are real: a hard OakWoodFloor/RedBrick seam from the new second floors, a dining hall of 29 WoodenChairs
+  (track B not merged yet), a bookcase gap in a library. Track A's third sheets: bedroom j6 9/10 (5.4/7.0), guardroom j3
+  9/10 (4.4/6.2), kitchen j2, living room j6, cell j1, infirmary j3, study r4, solar r4 all 10/10. Motif engine sheets
+  (independent): living room 10/10 (4.4/7.6), tavern 10/10 (3.6/7.6), laboratory 9/10 (4.6/7.4): worse than recipes. A
+  lab-fairness agent (night-labfair) removes the remaining non-design tells: creatures in Westwood's renders, briefs that
+  leak our rules to judges, the lab's 1-3 doors where Westwood has one, repeated Westwood pictures.
+- 00:43 Pushed the merged kit (integration: 0 errors on all five recent maps). Independent results: track C
+  laboratory r17 10/10 (5.4/6.2), shop r12 10/10 (4.6/6.8), crypt r7 10/10 (5.2/7.4), armoury c3 10/10 (4.8/6.6),
+  barracks c3 8/10 (4.8/7.2), cellar r2 10/10 (5.2/6.4), mausoleum r6 10/10 (3.8/7.4), library c1 10/10 (4.6/6.2).
+  **Motif engine: bedroom 6/10 (near chance; 4.8/6.8), storeroom 7/10 (5.2/5.6)**, kitchen 10/10. Learned
+  arrangements beat the tuned recipes on the two types with the most Westwood rooms (recipe bedroom best 8/10). The
+  judges' diagnosis of the recipe rooms is unanimous across 30 sheets: everything at even gaps along the back walls,
+  one template repeated, a token group in a bare middle; Westwood's are zoned, dense, irregular, with story details.
+- 00:51 Dialogue round 3 merged (night-dialogue3, i13-i15). An originality check (review/storylab/originality.py),
+  calibrated on Westwood against itself, shows the earlier best rounds (i10-i12) did better only by staying closer to
+  Westwood's own text (their quests 0.67-0.76 similar to the quest each was dealt, closer than any two Westwood quests are
+  to each other; 16-89 copied five-word runs per round). Within the originality limit, long quests are still caught 98-100%
+  side by side (5.7-5.9 vs 8.1-8.3); blends, quest parts from different quests, and deliberate roughness all failed.
+  Controls: 53%. Short lines pass. Map agents now must pass the originality section of --check. The dialogue lab pauses here:
+  original long quests that read as Westwood's are the user's call (pastiche vs closeness).
+- 00:52 Track B finished (night-tuneB, 42 commits): tavern AUC 0.99->0.877 (bar of 9-14 pieces in a back corner, stools,
+  kegs behind), throne room 0.999->0.86 (braziers in pairs down the runner, three compositions instead of one template),
+  great hall, chapel, dining hall, hall, shrine and gallery tuned; the classifier now finds 6 taverns and 3 dining halls
+  (Con02a's barman is a Shopkeeper object). Its merge with master conflicts in 7 furnish.py and 2 identity.py hunks, so the
+  merge was aborted and an agent is merging master into night-tuneB, resolving both sides and testing a sample of every
+  track's types before it comes to master. B's sheets wait for the lab-fairness fixes before judging.
+- 01:13 Lab fairness merged (night-labfair): renders without creatures (both kinds), black surroundings with only the
+  room's own walls, one scale per sheet with each generated room paired to a Westwood room of similar size and culture,
+  door counts from Westwood's rooms, Westwood pictures rotated across sheets, and judges read review/roomlab/judging/
+  and review/scenelab/judging/ (Westwood descriptions without our generator's rules). Found on the way: scale was a tell
+  (ours always drawn larger), and culture was (the lab built no Dun Mir bedrooms). All blind results before this point
+  were under less fair renders. From now on judges get the new protocol.

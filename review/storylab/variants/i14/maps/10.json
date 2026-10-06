@@ -1,0 +1,217 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code agent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Tarrow",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "The Ogre chief Gorlak and his band have taken the old fort on Blackstump Hill, raid the farms of Tarrow and keep the north road shut.",
+  "names": {
+   "Tarrow": "place",
+   "Kervan": "person",
+   "Gorlak": "person",
+   "Blackstump Hill": "place",
+   "Mott": "person",
+   "Grisk Hollow": "place",
+   "Marga": "person",
+   "Silver Sickle": "thing",
+   "Mossback Cave": "place",
+   "Brannoch": "person",
+   "Dorrin": "person",
+   "Nebbit": "person",
+   "Hobb": "person",
+   "Tam": "person",
+   "Pell": "person",
+   "Ogres": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Mott the goatherd, stuck up a haystack with a hurt leg, pays to be rid of the wolves denning in Grisk Hollow.",
+   "names": {
+    "Mott": "person",
+    "Grisk Hollow": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Mott",
+     "text": "Kind sir! You've got to hurry and drive off these wolves! The Ogres were indeed the ones who chased this pack into our valley, and the beasts have a taste for my goats. Sadly, I hurt my leg when they ran me up this haystack and I can't fight them off by myself. The pack has made its den in Grisk Hollow west of here, spoiling any hope of grazing in peace."
+    },
+    "reminder": {
+     "speaker": "Mott",
+     "text": "Hello again, lad."
+    },
+    "completion": {
+     "speaker": "Mott",
+     "text": "Here's 80 gold for the hero of Grisk Hollow!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Enter Grisk Hollow and slay the wolves."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Marga's Silver Sickle was stolen by the Urchins of Mossback Cave.",
+   "names": {
+    "Marga": "person",
+    "Silver Sickle": "thing",
+    "Mossback Cave": "place",
+    "Urchins": "group",
+    "Brannoch": "person"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Marga",
+     "text": "Oh, the harvest has gone badly this year. Three nights back, Urchins from Mossback Cave crept in and stole my Silver Sickle.\n\nI doubt I'll ever hold it again, but nothing would make me happier than to see those little thieves punished.\n\nWill you bring it back? I'll gladly reward you."
+    },
+    "refusal": {
+     "speaker": "Marga",
+     "text": "You'll be sorry. Go ask Mayor Brannoch how bold those Urchins have gotten. Then come back here quick -- my wheat won't wait forever."
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "With those Urchins holding my sickle, my wheat just stands there rotting!"
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wonderful! Thank you so much, young sir. I'm truly amazed by your courage!\n\nNow, take these boots for your trouble."
+    },
+    "after": {
+     "speaker": "Marga",
+     "text": "Fine boots."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Marga's sickle."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Marga's sickle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["LeatherBoots"]
+   }
+  },
+  "two_givers": {
+   "specifics": "Dorrin of the granary wants the seed chest the Ogres carried off to Blackstump Hill, and Nebbit sells a smelly Ogre-hide cloak to walk among the Ogres unseen.",
+   "names": {
+    "Dorrin": "person",
+    "Nebbit": "person",
+    "Blackstump Hill": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Dorrin",
+     "text": "Ah, it's you! You got past the Ogres!\n\nThose brutes have grown very bold of late. They broke into the granary while I was counting sacks and carried off our seed chest.\n\nPlease, go up to Blackstump Hill and bring that chest home."
+    },
+    "offer_b": {
+     "speaker": "Nebbit",
+     "text": "Evening, stranger. A small bargain if you are bound for the Ogre camp, I have a cloak here sewn from Ogre hide, yours for 50 gold. One sniff of it and those foul brutes will take you for one of their own..."
+    },
+    "outcome_a": {
+     "speaker": "Dorrin",
+     "text": "Thank goodness, our seed chest is back! How shall I ever reward such courage?! Eh, what was that? A big sharp sword? Well, if that's your wish, please accept this Longsword as a token of my thanks."
+    },
+    "outcome_b": {
+     "speaker": "Nebbit",
+     "text": "You must keep it on while walking among the Ogres. If you take it off before you leave their camp, they will sniff you out at once! Once you are past their guards, you may take back what they stole, or slip away unseen."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the seed chest from Blackstump Hill."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Wear Nebbit's Ogre-hide cloak into the Ogre camp."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": ["Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Hobb the swineherd's son Tam is locked by Ogres in the cellar of the burned farmhouse.",
+   "names": {
+    "Hobb": "person",
+    "Tam": "person",
+    "Tarrow": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hobb",
+     "text": "Good day to you. Hobb's my name, and I keep pigs on the edge of Tarrow. Last night the Ogres dragged my son Tam away from the sty. Those brutes have him shut in the cellar of the burned farmhouse, with a few of them standing watch.\n\nPlease, run to that farmhouse and bring my boy back to me. This key will open the cellar door."
+    },
+    "reminder": {
+     "speaker": "Hobb",
+     "text": "Hurry! You're wasting precious time. Off with you."
+    },
+    "found": {
+     "speaker": "Tam",
+     "text": "Back, you stinking Ogre! -- Yaaaaaiiieeee!!"
+    },
+    "following": {
+     "speaker": "Tam",
+     "text": "This cellar is the scariest place I've ever seen. Let's run for home!"
+    },
+    "completion": {
+     "speaker": "Hobb",
+     "text": "Bless you for bringing my boy home."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Hobb's son from the cellar of the burned farmhouse."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Pell sends the player to Mayor Brannoch, who sends him against Gorlak's Ogres in the old fort on Blackstump Hill.",
+   "names": {
+    "Pell": "person",
+    "Brannoch": "person",
+    "Kervan": "person",
+    "Gorlak": "person",
+    "Blackstump Hill": "place",
+    "Tarrow": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "Quick! Mayor Brannoch is waiting!"
+    },
+    "opening": {
+     "speaker": "Brannoch",
+     "text": "We were cutting barley when the Ogres came down from the hills. Kervan said you would come to fight their chief Gorlak, who holds the old fort on Blackstump Hill.\n\nPlease, if you drive Gorlak from that fort and open the north road, Tarrow will reward you as best it can."
+    },
+    "reminder": {
+     "speaker": "Brannoch",
+     "text": "You again! Still here!? Gorlak holds the fort. Why do you tarry?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Blackstump Hill and defeat Gorlak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

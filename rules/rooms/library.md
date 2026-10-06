@@ -56,3 +56,12 @@ The librarian beside his desk, else by the bookcases; never in the stacks' aisle
 
 - Westwood: War07A, cell 119,187 (72 tiles, 19 types); Wiz01A, cell 108,137 (128 tiles, 15 types).
 - Ours: Starwell seed 4, room 5, the star charts (48 tiles); room 7, the college library (162 tiles, stacks in rows).
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's 7 campaign libraries keep the middle bare, hold no plants or curios, warm themselves at a hearth (3 of
+  7) and seat their readers at round or oval tables; stacks of bookcases down the middle belong only to a great
+  library (Con07D's 494 tiles). The recipe now: the hearth sometimes, the desk among bookcases on one back wall, the
+  other back wall lined end to end (the user's HB-4), a reading table with chairs, a chest; stacks past 100 tiles.
+- Still a giveaway: back walls lined far more than Westwood's (0.65 against 0.11), a constraint of the house rules
+  (no bookcase on a front wall; a room at least as covered as Westwood's median).

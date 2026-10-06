@@ -1,0 +1,33 @@
+{
+  "packet": "a095eb",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "Short, breathless, with the drawn-out 'Ooooh' opener and a blunt journal naming the villain; the hand-off of two items to another person is Westwood's chained-errand shape."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The '!?' opener, 'Nox's vital interests', a key and a beast scroll handed over, the Captain waiting elsewhere and a numbered journal ('the 6 trapped mine workers') are all campaign-true; slightly overwritten monster list."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The frog in the burning house and the 'Loads and loads of money?' gag answering an unheard player is exactly Nox's dry humour; plain, short lines."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The panicked 'Don't kill me!' and the near-blind gag are Nox-like, but 'May all that is great bless you!' is an odd invented blessing and the reward's self-explaining line ('invaluable to any conjurer') reads like a writer justifying the item."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Welcome speech, stray capitals ('East', 'Urchins'), practical directions to the mayor's house and the 'buy supplies, then see the Captain' push are Westwood's tutorial-town voice."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Self-introduction by title, the found robe implying death, the 'Hmmm... Yes.' beat and the teleporter instructions are the campaign's chapter-opening shape."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Stacked exclamations and a reminder that tacks on 'for the darkest purposes, indeed!' feel like pastiche; 'thwart that foul demoness' plans once and for all' and the knowing 'sooner than you think' are stock fantasy phrasing."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The offer explains its own logic at length (why he cannot leave, where the staff is) and leans on 'brave and kind Adventurer', 'kind sir', 'worthy reward for its timely return' - more formal and padded than Nox's townsfolk."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Plain and short, but 'he'll be destroyed' is a mis-pitched word, the hesitant 'Could you... would you' is a borrowed tic, and the thanks is a generic token-of-appreciation line; journal adds a third location detail."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Good functional instructions and a sombre turn, but 'at whatever the cost!', 'Unsavory elements dwell in the shadows!' and 'no time for mourning' are slightly theatrical; could be Westwood, the weakest call."}
+  ],
+  "tells": [
+    "Westwood's quest-givers are blunt and situational: they state the problem, one direction, and the reward is often just 'take this'; the new texts more often explain their own reasoning (why the giver cannot go, why the item matters).",
+    "Westwood plants concrete game hooks in the dialogue (a key handed over, a scroll named by type, a Captain waiting at a named spot, a teleporter, a number in the journal); new texts lean on vaguer reward lines like 'a token of my appreciation' or 'a worthy reward'.",
+    "Stock fantasy flourishes ('once and for all', 'sooner than you think', 'for the darkest purposes, indeed', 'May all that is great bless you') mark pastiche; Westwood's humour is drier and situational (the frog, the money joke).",
+    "Repeated forms of address across several texts ('kind sir', 'brave and kind Adventurer') and a shared villain set-up (Ogres led by a demoness) suggest one generating template.",
+    "Westwood's punctuation has quirks the new texts rarely copy: '!?', drawn-out interjections ('Ooooh', 'Gahhhhhh'), odd capitals ('East', 'Urchins'), ' -- ' dashes."
+  ]
+}

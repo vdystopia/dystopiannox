@@ -1,0 +1,34 @@
+{
+  "packet": "bf8937",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless exclamatory plea ('What took you so long to get here!?'), bureaucratic 'Nox's vital interests', a hand-off to the Captain and a bare-bones captive line; the journal's 'Charm or kill' is pure Westwood mechanics-speak."},
+    {"label": "B", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short with a sequel hook, close to Nox, but the 'honest face, I'll give you 50 gold... You'll do it?' bargain and the parenthetical hint in the journal feel like a careful pastiche."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "Silly premise played straight, '?!' punctuation and the self-answering 'What's that you say? Loads and loads of money?' gag are Westwood's broad humour; the captive frog's grumpy 'Fine!' fits."},
+    {"label": "D", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Very terse, 'lad' and 'my boy', 'lovely women' and 'damsels' with no elaboration; the stub captive lines and the 'other two groups' chaining read as shipped campaign text."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Run-on exclamations missing commas, a long naive captive speech ('the menfolk cannot live without us!') and the 'Hail, brave Adventurer' formula are Westwood's tongue-in-cheek register."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 5,
+     "critique": "Dense with invented geography ('old barrow east of the ford'), a measured literary rhythm and a long reflective reminder; the captive's tidy instruction to 'stay close and fend off' is too composed for Nox."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The thanks runs long with several clauses stacked ('Now if you'll excuse us, we have plenty of catching up to do') and a tacked-on warning; 'old silver mine' detail and the template-like gold offer give it away."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Minimal and slightly odd in the Westwood way: 'Oh dear...' and 'I hate the dark. Do you?' as the captive's whole voice, with an impatient reminder; nothing over-explained."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Hey there. Name's [Person].' is a modern, folksy opener, and the captive narrates a route ('old ore lift... past the slag heaps') that Westwood never spells out; the 'not built for running' joke is too crafted."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Story-chaining plot exposition with '--' dashes, a captive who hands over a key and points at a secret passage, and 'You'll make a fine [Group], lad' are campaign-plot Westwood, slightly clunky ('We best go')."}
+  ],
+  "tells": [
+    "New texts add concrete invented geography to orient the player (by the ford, past the slag heaps, old silver mine); Westwood names a place and stops.",
+    "New texts have smoother, more literary sentence rhythm and full punctuation; Westwood runs exclamations together, drops commas and uses '!?' or '?!'.",
+    "Westwood's captive lines are often a stub ('Help us!', 'Oh dear...', 'I'll follow you.') or a burst of naive over-explanation; new captives give measured, sensible instructions.",
+    "Westwood's humour is broad and blunt (self-answering 'Loads and loads of money?'), while new humour is a crafted quip ('not built for running', 'catching up to do').",
+    "Repeated bargain template across new texts ('since you look X, I'll pay N gold... Will you do it?') reads as pastiche of one exemplar.",
+    "New thank-you speeches stack several clauses and an extra warning or aside; Westwood's are one or two exclamations plus the reward and maybe a hook to the next quest."
+  ]
+}

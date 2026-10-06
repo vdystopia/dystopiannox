@@ -1,0 +1,235 @@
+{
+ "iter": "i14",
+ "writer": "Claude Code agent, claude-opus-5-5",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Varnhold",
+  "setting": "a castle town with a garrison",
+  "trouble": "Skarn, a Troll chieftain, and his raiders hold the Old Gatehouse and have shut the North Pass.",
+  "names": {
+   "Varnhold": "place",
+   "Tobrin": "person",
+   "Jask": "person",
+   "Ostrik": "person",
+   "Skarn": "person",
+   "Hesk": "person",
+   "Sibba": "person",
+   "Brannock": "person",
+   "Wezzle": "person",
+   "Crull": "person",
+   "Hulda": "person",
+   "Tib": "person",
+   "Old Gatehouse": "place",
+   "North Pass": "place",
+   "Gloomwood": "place",
+   "Cistern": "place",
+   "Granary": "place",
+   "Blackrock Mine": "place",
+   "Grey Quarry": "place",
+   "Healing Stone": "thing",
+   "Trolls": "group",
+   "Wolves": "group",
+   "Imps": "group",
+   "Spiders": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Hesk, a goatherd below the castle walls, pays to be rid of the Wolves of the Gloomwood.",
+   "names": {
+    "Hesk": "person",
+    "Gloomwood": "place",
+    "Wolves": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesk",
+     "text": "There it is, lad, the Gloomwood. That's where the Wolves come from every night.\n\nA little ways into those trees you'll find their den, under the hill. They've taken half my herd. Get rid of them and I'll make it worth your while!\n\nYou're my last hope."
+    },
+    "reminder": {
+     "speaker": "Hesk",
+     "text": "You set to go hunt those Wolves now? Just the one den, and the whole pack inside!"
+    },
+    "completion": {
+     "speaker": "Hesk",
+     "text": "My goats! They're safe at last! Bless you a hundred times over! And here, take these boots. I've chased many a goat in them. They'd serve any traveler well."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Hunt down the Wolves in order to protect Hesk's goats.\n\nTheir den lies somewhere in the Gloomwood."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "LeatherBoots"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Sibba, the garrison's healer, wants her Healing Stone back from the Imps of the Cistern.",
+   "names": {
+    "Sibba": "person",
+    "Skarn": "person",
+    "Healing Stone": "thing",
+    "Cistern": "place",
+    "Imps": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Sibba",
+     "text": "Your road here must have been a hard one, lad. But I'm afraid you can't stop to catch your breath. You must bring back my Healing Stone, which the Imps carried off when they crept up from the Cistern last night!\n\nWith the Imps growing bold and Skarn's Trolls at the gate, I'm sure the two are in league. My wounded are waiting in the barracks. Now, will you fetch it for me?"
+    },
+    "refusal": {
+     "speaker": "Sibba",
+     "text": "So you'd leave the soldiers to suffer, young sir? Without that Stone, some of them will die. Shame on you! Think it over and come see me again."
+    },
+    "reminder": {
+     "speaker": "Sibba",
+     "text": "The Cistern? Head round behind the chapel and down the long stair.."
+    },
+    "completion": {
+     "speaker": "Sibba",
+     "text": "The Imps are beaten and my Stone is home! Good work, lad! The soldiers will heal all the faster now those wretches can't touch it!\n\nHere, 80 gold pieces... you've earned them! The barracks door is always open to you, young sir!"
+    },
+    "after": {
+     "speaker": "Sibba",
+     "text": "The sun's out at last, eh?"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Take back Sibba's Healing Stone from the Cistern Imps."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Take back Sibba's Healing Stone from the Cistern Imps."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Quartermaster Brannock wants the Granary cleared of rats and bats. Wezzle, a bandit turned deserter, wants Crull's buried silver dug up in Blackrock Mine.",
+   "names": {
+    "Brannock": "person",
+    "Wezzle": "person",
+    "Crull": "person",
+    "Granary": "place",
+    "Blackrock Mine": "place",
+    "Spiders": "group",
+    "Trolls": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Brannock",
+     "text": "At last! Did you stop for a nap on the way!? Something dreadful has happened!\n\nThe Granary is crawling with monstrous rats and bats come up from the deep tunnels. Brave soldiers gave their lives defending the winter stores of this castle!\n\nI beg of you, go down there! Kill every last one of the vermin, save the grain, and a rich reward is yours.\n\nTake this key. It fits the hatch to the lower cellars, where the nests must be.\n\nAnd here's a healing potion for the road."
+    },
+    "offer_b": {
+     "speaker": "Wezzle",
+     "text": "Well, well, a new face! I've had my eye on you. You look like you can handle trouble. I'd split a fortune with you, but you'll have to dig it up yourself once you reach Blackrock Mine.\n\nIn Blackrock Mine my partner Crull hid a sack of silver from our bandit days. The hole is close by the entrance as you go in. I'd dig there before anywhere else. I hope you've got a strong back. The Spiders down there get mighty hungry.\n\nWell, what are you waiting for? Half is yours!"
+    },
+    "outcome_a": {
+     "speaker": "Brannock",
+     "text": "The Granary is safe, thank goodness! Whatever can the garrison give you for such courage?!\n\nA sword, you say? A fine new one? Very well, it's yours. Please accept this Longsword as a token of my gratitude."
+    },
+    "outcome_b": {
+     "speaker": "Wezzle",
+     "text": "You dug up the silver! Splendid!\n\nPoor Crull, however, must have ended up as Spider food, just as I feared. I'll miss the old rascal, but there's no use weeping over him now. The Warden's men are hunting me and the Trolls up north are waiting on you.\n\nOff you go, partner!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Rid the Granary of rats and bats."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Dig up the sack of silver near the mouth of Blackrock Mine and bring it to Wezzle."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "Longsword"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Hulda, the castle cook, begs for her son Tib, carried off by the Trolls to their pen at Grey Quarry.",
+   "names": {
+    "Hulda": "person",
+    "Tib": "person",
+    "Grey Quarry": "place",
+    "Old Gatehouse": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulda",
+     "text": "Please, save my boy! If the Trolls at Grey Quarry don't beat him or eat him, the cold will finish him anyway. His friend came home alone last night and the tale he told is a grim and terrible warning of my son's fate."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "I've got his stew warming. You fetch the boy."
+    },
+    "found": {
+     "speaker": "Tib",
+     "text": "Oh, a friendly face! Over here!"
+    },
+    "following": {
+     "speaker": "Tib",
+     "text": "My feet are frozen, but my courage holds -- lead me home!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Tib! Have you lost your wits, chasing after Trolls? Kind sir, I can't thank you enough for bringing him back! Take this gold for your trouble. And good luck up at the Gatehouse!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring Tib home safe from the Troll pen at Grey Quarry."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Jask points the newcomer to Warden Ostrik in the keep, who sends him against Skarn's Trolls in the Old Gatehouse.",
+   "names": {
+    "Jask": "person",
+    "Tobrin": "person",
+    "Ostrik": "person",
+    "Skarn": "person",
+    "Varnhold": "place",
+    "Old Gatehouse": "place",
+    "North Pass": "place",
+    "Trolls": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Jask",
+     "text": "Tobrin sent you, eh? Then welcome to Varnhold, friend! We soldiers have our hands full with trouble these days. Go up to the keep and see our Warden."
+    },
+    "opening": {
+     "speaker": "Ostrik",
+     "text": "Stranger! You've come in the nick of time! Our garrison is in dire peril!\n\nA hulking Troll called Skarn came down from the hills only days ago with his raiders. The Old Gatehouse is theirs now, and the North Pass is shut! With more men I would drive them out myself, but half the garrison lies wounded in the barracks. Should I march out with the rest, Varnhold would be left to fall!\n\nWill you clear those brutes out of the Gatehouse, young sir? Do it and the garrison shall pay you handsomely."
+    },
+    "reminder": {
+     "speaker": "Ostrik",
+     "text": "Skarn still holds the Gatehouse! Beat him and your reward is waiting here."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Clear Skarn's Trolls from the Old Gatehouse."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

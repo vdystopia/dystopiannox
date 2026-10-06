@@ -1,0 +1,233 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Belvik",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Ogres out of the Grimfell hills raid the farms around Belvik and hold the old watchtower of Krell, shutting the north road.",
+  "names": {
+   "Belvik": "place",
+   "Grimfell": "place",
+   "Krell": "place",
+   "Town Hall": "place",
+   "Bramble Gully": "place",
+   "Cairn of Olm": "place",
+   "Muddy Boot": "place",
+   "Gristle Hill": "place",
+   "Mayor Pellandor": "person",
+   "Pellandor": "person",
+   "Ferrigan": "person",
+   "Grenwold": "person",
+   "Hesta": "person",
+   "Gimble": "person",
+   "Old Mabbet": "person",
+   "Granny": "person",
+   "Tibbo": "person",
+   "Orrick": "person",
+   "Amulet of Warding": "thing",
+   "Ogres": "group",
+   "Urchins": "group"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Grenwold, a herdsman leaving Belvik because of the Ogres, wants the bears of Bramble Gully killed before they eat his flock.",
+   "names": {
+    "Grenwold": "person",
+    "Bramble Gully": "place",
+    "Grimfell": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grenwold",
+     "text": "Ogres on every road and bears in my pens! There's no living left for a herdsman around here. I'm taking my flock south, but I need you to rid me of those bears first.\n\nThey've lost all fear of men, and they come for my ewes every night.\n\nTake this potion, and I'll pay the rest when they're dead. Hurry, lad! They'll have eaten every sheep I own before long!\n\nThe sheep track behind my pens goes straight up to Bramble Gully."
+    },
+    "reminder": {
+     "speaker": "Grenwold",
+     "text": "That's all I know. Now get up there and kill those bears!"
+    },
+    "completion": {
+     "speaker": "Grenwold",
+     "text": "Thank you! Now my flock and I can make it as far as the south road, but past that, we're on our own. Here's your gold and my old bow. The Ogres of the Grimfell hills have a big appetite for mutton and herdsmen alike."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the bears of Bramble Gully."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": [
+     "RedPotion",
+     "Bow"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hesta, the miller's widow, wants her Amulet of Warding back from the Urchins' den under the Cairn of Olm.",
+   "names": {
+    "Hesta": "person",
+    "Amulet of Warding": "thing",
+    "Cairn of Olm": "place",
+    "Urchins": "group",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hesta",
+     "text": "Are you going after the Urchins who robbed my mill? If so, bring your own torch. Their den under the Cairn of Olm is full of old traps, and there may be Ogres in there now too.\n\nWell? Will you fetch back my Amulet of Warding or won't you?"
+    },
+    "refusal": {
+     "speaker": "Hesta",
+     "text": "Oh well... maybe I'll get used to Urchins in my flour!"
+    },
+    "reminder": {
+     "speaker": "Hesta",
+     "text": "Why haven't you gone yet?"
+    },
+    "completion": {
+     "speaker": "Hesta",
+     "text": "Right. It's not even scratched. Some gold, for thanks. Oh! And a potion besides. Off you go now."
+    },
+    "after": {
+     "speaker": "Hesta",
+     "text": "My warmest thanks once more for finding my Amulet!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Bring back Hesta's Amulet of Warding from the Cairn of Olm."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Bring back Hesta's Amulet of Warding from the Cairn of Olm."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Mayor Pellandor wants the village strongbox saved from the granary the Ogres set alight. Gimble, who runs the Muddy Boot and deals with the Ogres on the side, wants the wasps out of his cellar.",
+   "names": {
+    "Mayor Pellandor": "person",
+    "Pellandor": "person",
+    "Ferrigan": "person",
+    "Gimble": "person",
+    "Belvik": "place",
+    "Muddy Boot": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Mayor Pellandor",
+     "text": "Ooooh, this cannot be happening! The Ogres beat my guards senseless and set the granary alight! The bucket line will never get there in time. Take this key, quick, and get the village strongbox out of there before it burns! Whatever else you find inside, keep it!"
+    },
+    "offer_b": {
+     "speaker": "Gimble",
+     "text": "Blast it all! What kept you!? Wasps got into my cellar and they're all over the barrels! I swatted 'em with a broom, and still they come back for more!\n\nNow I've shut myself in the pantry and I'm not coming out! If the Mayor ever sees what's stacked down there, I'm finished!\n\nGo down the trap door and drive those wasps out! Keep it quiet, and I'll see you get through the Ogre lines whenever you please! ... Hello? Is anybody still out there?"
+    },
+    "outcome_a": {
+     "speaker": "Mayor Pellandor",
+     "text": "The strongbox is saved! While you were in the smoke, a rider from Ferrigan came by asking for you. He's waiting at the south gate. Here, take this gold and the steel shield for your trouble."
+    },
+    "outcome_b": {
+     "speaker": "Gimble",
+     "text": "On a better night, I'd pour free ale for the whole of Belvik over this! Good work! But not one word to the Mayor about my cellar.\n\nTake these boots for your trouble. And from now on, the Ogre lookouts won't lay a hand on a friend of Gimble's!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Save the village strongbox from the burning granary."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Go down through the trap door in the Muddy Boot and drive the wasps out of Gimble's cellar."
+    }
+   },
+   "reward": {
+    "gold": 80,
+    "items": [
+     "SteelShield",
+     "LeatherBoots"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Old Mabbet, half blind, begs the player to bring home her grandson Tibbo, who went up to the Ogre camp on Gristle Hill after her goats.",
+   "names": {
+    "Old Mabbet": "person",
+    "Granny": "person",
+    "Tibbo": "person",
+    "Gristle Hill": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Old Mabbet",
+     "text": "Tibbo's a good boy. He went up to the Ogre camp on Gristle Hill after our goats and he never came back.\n\nNobody here will go up there. But you've got an honest sort of voice, so I'll give you every coin I've saved. Will you bring him home?"
+    },
+    "reminder": {
+     "speaker": "Old Mabbet",
+     "text": "Those Ogres fatten up their prisoners on stolen goat, which they take from every farm in the valley."
+    },
+    "found": {
+     "speaker": "Tibbo",
+     "text": "They were saving me for the cookpot, the big black kettle in the middle of their camp!"
+    },
+    "following": {
+     "speaker": "Tibbo",
+     "text": "Please, hurry and take me home to Granny!"
+    },
+    "completion": {
+     "speaker": "Old Mabbet",
+     "text": "Tibbo! I'd know that voice anywhere! Oh, you were made for this sort of work, stranger. I can't pay you what it's worth... But please, take this as a token of my appreciation!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Tibbo from Gristle Hill!"
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   }
+  },
+  "main_opening": {
+   "specifics": "Orrick points the player to Mayor Pellandor in the Town Hall, who sends him to drive the Ogres out of the old watchtower of Krell and open the north road.",
+   "names": {
+    "Orrick": "person",
+    "Mayor Pellandor": "person",
+    "Ferrigan": "person",
+    "Town Hall": "place",
+    "Krell": "place",
+    "Ogres": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Orrick",
+     "text": "Go on ahead, Wanderer. Mayor Pellandor at the Town Hall will know what to do with these filthy brutes."
+    },
+    "opening": {
+     "speaker": "Mayor Pellandor",
+     "text": "Oh... at last! I can't keep this village calm much longer!\n\nThe Ogres... they've shut... they've shut the north road. The harvest carts can't get out, and Ferrigan expects them any day! I think the brutes are dug in at the old watchtower of Krell.\n\nWill you... will you drive them out of there?"
+    },
+    "reminder": {
+     "speaker": "Mayor Pellandor",
+     "text": "The north road runs straight up to the tower, you won't miss it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the watchtower of Krell and drive out the Ogres."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

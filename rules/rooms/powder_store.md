@@ -62,3 +62,10 @@ back wall.)
 - Westwood: Con07C, cell 119,195 (31 tiles: 22 powder kegs among workstations); Con09c / War09c, cell 62,232 (30 tiles:
   11 powder kegs and 2 barrels).
 - Ours: the room lab's powder stores.
+
+## Learned in the room lab (2026-10-05, review/roomlab/LOG_tuneC.md)
+
+- Westwood's Con09c (30 tiles): 11 powder kegs in knots, a third of them free of the walls, two plain barrels;
+  coverage 0.17; no lights (an open flame by powder). Heaped as a store's (`store_heaps`, the "powder" pool).
+  Compared with its pool (one Westwood room), so the AUC says little; the kegs counting as the focal piece and as a
+  repeated stand-alone piece are the type itself.

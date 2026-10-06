@@ -1,0 +1,29 @@
+{
+  "packet": "d7e65b",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The bounty frame is plausible, but the reward line is muddled ('I rowed over to have a look when [Person] heard a racket') and the outcome piles up exclamations and stock phrases ('sincere admiration', 'wretched rogue in irons'). It shares a template with B: dead or alive, 'Watch yourself', 'shed a tear', 'in irons', two reward sizes."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "The pot-seller's grumble has a plain, Nox-like ring, but the lines are built from the same kit as A ('Watch yourself', 'shed a tear', 'in irons', 'Your bounty -- 100 gold!'). The thanks spells out its moral ('Every honest trader on the road can rest easy knowing...'), where Westwood would just say thanks."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Casual, offhand voice ('Hi there. Name's...', 'Oh, bah!', 'give ya'). The dry joke about him getting arrested to dodge his responsibilities is pure Nox, and each reward is stated simply alongside a short warning."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Short and plain, but 'tithe chest' and 'a mail shirt against the bandits' arrows' are a little ornate for Nox. The two asks don't connect, and the dialect ('doin'', 'do ya?') feels laid on rather than natural."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A used-car-salesman gag ('only used it on weekends', 'since I like your face') in short, flat sentences, with a plain price comparison. The pushy sign-off ('I've got someone else interested') is classic Westwood shopkeeper humour."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Earnest damsel lines with deadpan humour ('the menfolk... cannot live without us', 'I heard their stomachs grumbling'). The 'Hail, brave Adventurer' register and the follow-up step (the secret passage) match the shape of the campaign's escort quests."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The 9,000-gold anvil-and-mule joke aims at Nox's humour, but the outcome lines run long and pile up farewells ('Mind you keep clear... I hope you come through all this in one piece. Farewell!'). The sell-up-before-the-coast framing reads like a generated idea."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Breathless, slightly clumsy pleading ('the village north of here and kidnapped almost all of the maidens!', 'Could you... would you get it back for us?') and bare token-of-appreciation thanks, with the run-on comma slips typical of Westwood. Weak but authentic."}
+  ],
+  "tells": [
+    "Generated texts reuse one stock kit across quests ('Watch yourself', 'shed a tear', 'in irons', 'dead or alive', 'Your bounty -- N gold!'). Westwood's lines vary more and are more specific to the speaker.",
+    "Westwood's thanks are bare and brief ('Take these as tokens of my appreciation!'). Generated thanks explain what the deed achieved for the town and pile up exclamations.",
+    "Westwood's humour is deadpan and comes from the character (salesman patter, a smuggler who gets arrested on purpose, hungry Ogres). Generated humour is a single set-piece gag, such as an absurd price.",
+    "Generated texts use slightly literary or invented nouns ('tithe chest', 'flatboats', 'mail shirt against arrows') and decorative dialect spellings. Westwood keeps its vocabulary plain and modern-casual ('Hi there', 'Oh, bah!', 'check out').",
+    "Westwood's two-part quests link their asks into one plot (a jailbreak with two grateful parties, a bow offer and its alternative). Generated pairs are sometimes two unrelated vignettes, or contain muddled connective lines."
+  ]
+}

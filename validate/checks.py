@@ -433,6 +433,10 @@ def outdoor_on_floors(m):
     rooms = [r for r in find_rooms(m) if r.get("declared") and not r.get("yard")]
     if not rooms: return []
     blocked = set(m.walls) | set(m.door_gaps)
+    # only the tiles a doorway's ground could reach: within 4 cells of a door. A room's own second floor further in (a
+    # strip of dirt worn into the boards, a wing on its own floor: rules/rooms/shells.py) may share a material with the
+    # ground outside, as Westwood's do
+    near_door = {(g[0] + a, g[1] + b) for g in m.door_gaps for a in range(-4, 5) for b in range(-4, 5)}
     room_cells = set().union(*(set(r["cells"]) for r in rooms))
     cells = lambda t: ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
     inside, outdoor = [], set()
@@ -441,7 +445,7 @@ def outdoor_on_floors(m):
     for t, rec in m.tiles.items():
         cs = cells(t)
         if all(c in room_cells or c in blocked for c in cs) and any(c in room_cells for c in cs):
-            inside.append(t)
+            if any(c in near_door for c in cs): inside.append(t)
             per_room[next(room_of[c] for c in cs if c in room_of)][rec["material"]] += 1
         elif not any(c in room_cells for c in cs):
             outdoor.add(rec["material"])

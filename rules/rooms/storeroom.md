@@ -23,22 +23,34 @@ None: the stocked walls themselves. An ore store's loaded carts.
 
 ## Composition
 
-- **A back wall:** stocked log shelves end to end.
-- **The other back wall:** crates side by side.
-- **Front walls and corners:** heaps of barrels and sacks.
-- **The middle:** clear, or one row of racks (at most 5 to a row, 1.2 apart, aisles of 2.2), or a stack.
+The room lab (2026-10-05, review/roomlab/LOG_tuneC.md) read Westwood's 22 campaign storerooms again: no shelves and no
+racks in any of them; 1-5 types (median 3), the commonest kind over half the pieces (barrels in 17); stores against two
+walls (p90 three), the rest bare. The recipe follows them (`slot="heaps"`, kit/furnish.py `store_heaps`):
+
+- **A palette:** one lead kind (barrels mostly; a granary's sacks in three sizes; an ore store's crates), a second kind,
+  sometimes one odd piece (a piled barrel, a great cask, a water barrel). One stem of crate, one or two types of barrel.
+- **The home corner:** the lead kind heaped two deep in a corner clear of the doors, on walls Westwood stands it against
+  (barrels: the back walls, 77% of Westwood's), sometimes spilling round the corner.
+- **Along the same walls:** the second kind side by side toward the far end of the long wall, stopping short of the far
+  corner so the other walls stay bare.
+- **The middle:** a stack of crates standing free, or a knot of three or four barrels (Con06a, Con05C); never one alone.
+- **More**, while under the target: heaps on the free stretch furthest from the stores so far (the room must not read
+  as bunched), 1.6 units apart; a third wall only to balance the room.
+- **Lights:** three a hundred tiles (one candelabra in a store of 40 tiles).
 
 ## Density and openness
 
 | | Westwood's campaign (22 rooms, 17 maps) | Profile |
 |---|---|---|
-| coverage | 0.02-0.07-0.19 | 0.15-0.42 (target 0.30) |
-| open floor | 0.32-0.75-0.91 | 0.15-0.65 |
-| pieces per tile | 0.06-0.25-0.44 | 0.30-1.1 |
-| distinct types | 1-3-5 | 4+ |
-| caps | | racks 1 per 10 tiles, at most 6 (an ore store 1 per 8, at most 12) |
+| coverage | 0.02-0.07-0.19 | 0.06-0.26 (target 0.13) |
+| open floor | 0.32-0.75-0.91 | 0.30-0.92 |
+| pieces per tile | 0.06-0.25-0.44 | 0.10-0.8 |
+| distinct types | 1-3-5 | 2+ |
+| walls with a purpose | 1-2-3 | 2+ |
 
-The user wants stores fuller than Westwood's ("a store room holds more than any other room", TreePlace reviews).
+The user wants stores fuller than Westwood's ("a store room holds more than any other room", TreePlace reviews): the
+target sits at Westwood's p75, the limit past its p90. The old target (0.30, shelves and racks to reach it) made the
+stores read as generated at once (the lab's AUC 0.96).
 
 ## Size
 
@@ -69,3 +81,29 @@ The storekeeper by his shelves, else at a back wall clear of the stock; never in
 
 - Westwood: Con05C, cell 154,100 (42 tiles, coverage 0.17); Con06a, cell 153,212 (36 tiles, 0.19).
 - Ours: Starwell seed 4, room 20, iron and coal (25 tiles, coverage 0.22).
+
+## Learned in the room lab (2026-10-05)
+
+- Westwood's storerooms are sparse and few-kinded; what makes them read real is a heap of one kind in a corner and
+  a stack or a knot standing free, not a stocked wall. Every wall stocked with a cluster of every kind was the first
+  thing that gave ours away (AUC 0.96 -> 0.72 with the heaps).
+- Barrels and crates have walls: `orient()` refuses a type on a wall Westwood seldom stands it against (Barrel on the
+  SE and SW walls), so a heap's home corner is chosen where its kind may stand.
+- A store heaped in one corner trips the checker's furniture offset: the fill goes where the stores are thinnest.
+- What still gives them away: rows along a wall align more than Westwood's (0.71 against 0.45), three walls used
+  against two, and above all the shell (Westwood's stores are alcoves, cell blocks and caves).
+
+## What passed the blind test (2026-10-06, the independent judge of r16: 5/10, chance; generated 5.2, Westwood 5.8)
+
+The storeroom was the first type the independent judge could not tell from Westwood's. What made it work:
+- **touching clumps, not rows**: each heap grows by touching a piece already in it at a random bearing, within three
+  units of its wall, its pieces 0.25-0.65 apart (Westwood's nearest gaps 0.4-0.6);
+- **mixed kinds in one heap**: a lead kind, a second and an odd piece, a piece in two of the room's other kinds;
+  sacks in their three sizes; the odd kind twice a room at most;
+- **few kinds, two walls**: 3-5 types, the stores against the home walls, a third only to balance the room;
+- **nothing alone**: no single barrel mid-floor, a stack of crates standing free only near the heaps;
+- **no lights in the store** (Westwood's have none inside), the house's candelabras left out;
+- **fuller than the old target**: cover 0.17 (the curated median 0.16).
+The judge's remaining tells: single crates at even gaps along a front wall; crates in regular pairs and a 2x3 block of
+kegs mid-floor; great casks side by side along a wall; an ore store's racks crowding a door.
+

@@ -1,0 +1,33 @@
+{
+  "packet": "89f3fd",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The breathless '!?' opening, the bureaucratic 'Nox's vital interests', the key plus scroll handover and a journal with a hard count (6 workers) are Westwood through and through."},
+    {"label": "B", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "Opens mid-conversation ('Actually, business...'), plain reward line with the sum, and the odd capital in 'Rogues' in the journal; the 'filthy paws' flourish is just the sort of thing Westwood's merchants said."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The pet-frog setup and the 'Loads and loads of money?' joke feel like someone trying for Nox's humour on purpose; the journal is clean but a bit too neatly shaped."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Leans hard on 'young sir' (three times) and stacks exclamations and stock villain words ('savage scum', 'despicable scoundrel'); the 'I surmise' and the long thanks speech read like an imitation of the bounty pattern."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Starts with 'Good!' as if answering a prior line, is plain about who, where and what key, and the petition reward ties into a gate, which is how the campaign chains its quests."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Worse than the pox!', directions to the study 'through the double doors', a title plus gold and a journal that says 'Charm and banish' are authentic campaign mechanics and voice."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The 'Hmmm... Yes.' pause, the robe as proof of the apprentice's fate and the teleporter hand-off are story-driving Westwood beats, with a journal phrased as a mystery."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "Terse and vague: 'That evil one' and 'before the [Thing] is lost' say little about where to go; the thanks is functional but flat, with no gold and no warmth."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Mate' four times is a voice cranked too far, 'damn fine spell' slips register, and the journal is long and over-explained compared with Westwood's short imperatives."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "A stock damsel plea with an appositive ('[Place], the village north of here') and a vague reward ('these as tokens'); the thanks line is generic and adds no turn or detail."}
+  ],
+  "tells": [
+    "Westwood's offers carry concrete mechanics: a key, a scroll, a count of targets, a door or room to go to; the new texts are vaguer about where to go and what you get.",
+    "Westwood often opens mid-conversation ('Good!', 'Actually,...') as if answering an earlier line; the new texts open with a fresh greeting or a stock plea ('Sir! Help me please!').",
+    "The new texts overuse a single verbal tic (a dialect word like 'mate', or 'young sir') and stack stock villain insults; Westwood uses such words once and moves on.",
+    "Westwood's thanks lines often push the plot forward (someone is waiting for you, follow me to the teleporter, guards will let you pass); the new thanks lines tend to end at the reward.",
+    "Westwood's journals are short imperatives with a capitalised monster noun and sometimes a number; long journal entries that restate the whole setup read as new."
+  ]
+}

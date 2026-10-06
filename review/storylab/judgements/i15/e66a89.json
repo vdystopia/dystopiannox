@@ -1,0 +1,33 @@
+{
+  "packet": "e66a89",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Short, plain and urgent like Nox, but the drawn-out 'Ooooh' opener and the tidy hand-off ('take both items to him') feel like an imitation of the voice rather than the voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A mentor who rambles about pests, introduces himself mid-speech, muses 'Hmmm... Yes.', and gives concrete teleporter steps. The slightly clumsy, specific staging is very Westwood."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A mayor's welcome with a capitalised 'East', the house 'at the center of town', and a practical 'purchase any supplies' handoff to the Captain: the functional chapter-opening register of the campaign."},
+    {"label": "D", "verdict": "westwood", "confidence": 3, "score": 9,
+     "critique": "A pet frog in a burning house and the deadpan 'Loads and loads of money?' joke in reply to the player's silent answer. This is Nox's light, slightly absurd humour, done economically."},
+    {"label": "E", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It is long and over-explained (why he can't leave, where the staff is, a promised reward), and it stacks the stock phrases 'brave Adventurer', 'kind sir' and 'token of our appreciation'. It reads like a composite of Nox lines."},
+    {"label": "F", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Plain and short, as Nox is, but 'he'll be destroyed' is an odd overstatement and the thanks is a near copy of another text's 'token of appreciation'. It looks like a formula rather than a person."},
+    {"label": "G", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Brisk and quest-functional, but 'Have faith, one little urchin is no threat' and the neat petition, key and gate chain feel engineered. The orchard and bat setup gets more backstory than Westwood usually gives."},
+    {"label": "H", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "There is specific stage business (the bookcases open to a secret route), a double-dash aside, 'Unsavory elements dwell in the shadows!', and a curt dismissal of grief ('no time for mourning'). That is consistent with the campaign's pacing."},
+    {"label": "I", "verdict": "generated", "confidence": 2, "score": 6,
+     "critique": "The comic blind-hermit opening is lively, but 'May all that is great bless you!' is an off blessing. Saying a scroll is 'invaluable to any conjurer' explains the reward in a way Nox rarely bothers to."},
+    {"label": "J", "verdict": "westwood", "confidence": 3, "score": 8,
+     "critique": "The overwrought 'airborne demons from the underworld' and 'Nox's vital interests' are melodrama typical of Westwood. The journal is precise ('Charm or kill... Rescue the 6 trapped mine workers') and the Captain handoff is like the campaign's."}
+  ],
+  "tells": [
+    "Stock gratitude formulas ('Oh, thank you so much!', 'token of my/our appreciation', 'kind sir') repeated across texts read as a generator averaging Westwood rather than individual speakers.",
+    "Generated offers over-justify: they explain why the giver cannot go themselves, why the reward is useful, and how each item chains to the next. Westwood states the problem and the place and moves on.",
+    "Westwood's lines carry odd, concrete staging (bookcases opening, teleporter steps, 'buy supplies first') and abrupt tonal turns such as dismissing grief or a deadpan joke. Imitations are smoother and more evenly paced.",
+    "Elongated interjections ('Ooooh', 'Gahhhhhh') and invented blessings or idioms look like a pastiche of Nox's exclamatory style rather than its plainness.",
+    "Westwood's journal entries are terse imperative sentences, sometimes with exact counts. The new ones follow the same template closely and are hard to separate on the journal alone."
+  ]
+}

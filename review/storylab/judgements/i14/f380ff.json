@@ -1,0 +1,34 @@
+{
+  "packet": "f380ff",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 2, "score": 8,
+     "critique": "Idiosyncratic, slightly coarse voice ('mate' thrice, 'damn fine spell'), an odd comic detail (boots stolen while bathing) and a journal that spells out who, what and to whom; reads like Westwood's offhand bit-part NPCs."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The hesitant 'Could you... would you' and the musing 'I wonder if that mad witch bred the Leeches' are writerly characterisation; the thanks reflects on the cause instead of just paying, which Nox rarely bothers with."},
+    {"label": "C", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The curt 'Take your gold, I'm awfully busy today' is Nox-like, but the offer is a tidy three-beat brief (problem, side-detail of the missing stableboy, directions plus where to find me) that feels assembled to a template."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "'Oh, bah!' and 'Sometimes I think they come back just to spoil my mornings' are pleasant but chatty in a modern way; the reward is an oddly specific 'wooden shield off my boat' and the thanks narrates the plot back ('You've chased off the leeches!')."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Starts mid-conversation ('Actually, business has been somewhat slow'), stiff formal phrasing ('brought to justice', 'filthy paws on our belongings'), a hard number '100 in gold' and a self-plugging shopkeeper; classic Westwood."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 7,
+     "critique": "Breathless exclamation-heavy plot exposition with clumsy grammar ('At happier other times', 'leaving rebuilding the village our smallest concern') and 'All Nox is now in peril'; the rough edges are Westwood's own."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Purple-but-plain monster listing ('Horrific overgrown insects and airborne demons'), 'vital interests', a key plus 'beast scroll', a hand-off to the Captain with a '--' dash, and a mechanical journal with a count ('Rescue the 6 trapped mine workers')."},
+    {"label": "H", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The haystack gag and '80 gold for the hero' are Nox-like, but the offer is one unbroken paragraph of smoothly linked explanation ('indeed the ones who chased', 'spoiling any hope of grazing in peace') that reads like a writer bridging plot."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Absurd premise (a pet frog in a burning house) and the self-answering joke 'What's that you say? Loads and loads of money?' is Westwood's trademark deadpan humour; short, plain lines."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Warm, rounded thanks ('Bless you a hundred times over!', 'I've chased many a goat in them. They'd serve any traveler well') justifies the reward like a crafted item description; 'You're my last hope' is stock, and the two-part journal is wordier than Nox's."}
+  ],
+  "tells": [
+    "Westwood's NPCs drop straight into a situation, often mid-conversation or with campaign stakes, and their grammar is sometimes clumsy; the new texts are grammatically smooth and evenly paced.",
+    "Westwood's thanks lines just pay out (a number of gold, an item, 'as promised') or land one deadpan joke; new texts add reflection, justify the reward ('I've chased many a goat in them') or recap the deed.",
+    "New texts lean on cosy characterising asides (spoiled mornings, missing stableboy, the mad witch) and stock pleas ('You're my last hope'); Westwood's asides are stranger and blunter (boots stolen while bathing, the frog).",
+    "Westwood's journals are terse and mechanical, sometimes with counts or two imperative verbs ('Charm or kill...'); new journals add flavour verbs ('Wade out to') or a second descriptive sentence.",
+    "Westwood uses hard numbers and concrete game objects (keys, scrolls, '100 in gold'); new rewards are vaguer ('a bit of gold', 'make it worth your while') or oddly cosy items.",
+    "Several new texts share near-identical premises with each other (two leech quests, two wolf/goat quests), so their tone converges on a generic pastoral register."
+  ]
+}

@@ -8,6 +8,7 @@ measured (review/roomlab/westwood_features.json) and rendered as the lab renders
 import collections, json, os, sys
 import labenv as E
 C, MD = E.C, E.MD
+GALLERY_VERSION = 3          # 3: drawn without creatures, the surroundings blacked out (FAIRNESS.md)
 
 
 def index():
@@ -91,7 +92,7 @@ def gallery(typ, log=print):
     keys = {(r["map"], tuple(r["centre"])) for r in pool_rooms}
     if os.path.exists(meta_path):
         with open(meta_path, encoding="utf-8") as f: meta = json.load(f)
-        if meta.get("version") == 2 and meta.get("note") == note and \
+        if meta.get("version") == GALLERY_VERSION and meta.get("note") == note and \
                 {(x["map"], tuple(x["centre"])) for x in meta["rooms"]} <= keys and \
                 all(os.path.exists(os.path.join(d, x["file"])) for x in meta["rooms"]):
             return meta
@@ -117,11 +118,24 @@ def gallery(typ, log=print):
         pic.save(os.path.join(d, fn))
         rooms.append(dict(file=fn, map=e["map"], type=e["type"], culture=e["culture"], centre=e["centre"],
                           tiles=e["tiles"], fit=round(R.fit_scale(r["cells"]), 3), scale=round(s, 3),
-                          own=e["type"] == typ))
+                          own=e["type"] == typ, by_hand=bool(e.get("by_hand"))))
         log(f"  {fn}")
-    meta = dict(version=2, type=typ, scale=scale, note=note, rooms=rooms)
+    meta = dict(version=GALLERY_VERSION, type=typ, scale=scale, note=note, rooms=rooms)
     with open(meta_path, "w", encoding="utf-8") as f: json.dump(meta, f, indent=1)
     return meta
+
+
+def redraw(room, scale):
+    """A gallery room's picture drawn again at `scale` (blind.py: every picture of a sheet at one scale). Returns
+    (image, scale used)."""
+    import labrender as R
+    e = dict(map=room["map"], type=room["type"], culture=room["culture"], centre=room["centre"], tiles=room["tiles"],
+             by_hand=room.get("by_hand"))
+    hit = rooms_of_map(room["map"], [e])
+    if not hit: raise RuntimeError(f"Westwood room {room['file']} not found again")
+    _, m, r = hit[0]
+    full, bare = R.westwood_renders(m)
+    return R.picture(full, bare, r["cells"], scale)
 
 
 if __name__ == "__main__":
