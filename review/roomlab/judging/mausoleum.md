@@ -1,19 +1,19 @@
 # Mausoleum: what a real one is like
 
-For the blind judge: Westwood's campaign rooms of this type, described from the rooms themselves.
+For the blind judge: Westwood's campaign rooms of this type, described by their qualities, not room by room.
 
 ## What it is for
 
-A tomb house for one honoured dead, or a few, as opposed to a crypt's rows of the many. Westwood's six are statue tombs in catacombs, a fenced tomb and the Land of the Dead's tomb hall.
+A tomb house for one honoured dead, or a few, as opposed to a crypt's rows of the many.
 
 ## What you notice first
 
-The sarcophagus, centred in the room or a niche and sometimes raised on a dais, with statues of the dead standing round it. In one of the six, two sarcophagi stand against two walls instead of in the middle. In the Land of the Dead's hall, one great tomb sits between four blue flames.
+The sarcophagus, centred in the room or a niche and sometimes raised on a dais, with statues of the dead standing round it. Now and then the tombs stand against the walls instead, or one great tomb is framed by lights.
 
 ## What it holds
 
-- Common: the sarcophagus and statues, from two up to a dozen. Five of the six have a crypt chest.
-- Sometimes: monuments and a tombstone in the corners, a second, open crypt chest, a Dun Mir chest, a ring of columns (seven in one), standing stones, mana obelisks in the corners, the pit of a lift.
+- Common: the sarcophagus and statues, from a pair to a crowd of them. Nearly all have a crypt chest.
+- Sometimes: monuments and a tombstone in the corners, a second chest (one may stand open), a ring of columns, standing stones or obelisks in the corners, a pit or a lift cut into the floor.
 - Not seen: benches, tables, chairs, beds, shelves, barrels, straw, rugs, plants, rows of sarcophagi.
 
 ## How it is arranged
@@ -22,17 +22,15 @@ The room is arranged round its centre and mirrored across it. Statues stand in m
 
 ## Density and feel
 
-Solemn and spare. Between half and nine tenths of the floor is open. The small ones (24 to 58 tiles) feel full of statues, while the big Land of the Dead hall is almost empty. Some are well lit: one 40-tile tomb has about ten lights.
+Solemn and spare. Between half and nine tenths of the floor is open. The small ones feel full of statues, while a big one is almost empty. Some are well lit.
 
 ## Variants
 
-- Town (Galava's catacombs): grey statues, monuments, crypt chests.
-- Dun Mir: a Dun Mir chest beside the crypt chest, a colonnade.
-- Land of the Dead: mana obelisks, a dark tombstone, blue flames.
+Each culture brings its own statues, chests, columns and stones round the same centred tomb.
 
 ## What a designer's hand looks like here
 
-- Near-perfect mirror symmetry is Westwood's own here: five of the six fold exactly onto themselves.
-- An open crypt chest beside a closed one.
-- The lift pit cut into the floor, a dais under the sarcophagus.
-- Twelve statues crowded into a 58-tile room.
+- Near-perfect mirror symmetry is Westwood's own here: most fold exactly onto themselves.
+- An open chest beside a closed one.
+- A dais under the sarcophagus, or a pit cut into the floor.
+- Many statues crowded into a small room.

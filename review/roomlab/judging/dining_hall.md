@@ -1,36 +1,40 @@
 # Dining hall: what a real one is like
 
-For the blind judge: Westwood's campaign rooms of this type, described from the rooms themselves.
+For the blind judge: Westwood's campaign rooms of this type, described by their qualities, not room by room.
 
-Westwood's campaign has only two dining halls: a small one in Dun Mir (55 tiles) and an ogres' feasting hall (110 tiles). The Westwood rooms on the sheet will mostly be of the kin types, taverns and shops.
+Westwood's dining halls are few and unlike one another, from a homely, crowded room to a sparse, rough hall.
 
 ## What it is for
 
-Where a household or a crew eats together at tables, warmed by a hearth.
+Where a household or a crew eats together at tables, often warmed by a hearth.
 
 ## What you notice first
 
-In Dun Mir, the tables against one back wall with a fireplace on that same wall. In the ogres' hall, two crude tables ringed by stools, with a great deal of bare floor round them.
+The tables and the seats round them. In a household's room a hearth shares a back wall with the furniture; in a rougher hall crude tables ringed by stools stand in a lot of bare floor.
 
 ## What it holds
 
-- Dun Mir's: two tables and a round table, seven wooden chairs, three light benches, a fireplace, a bookcase, a desk, a chest.
-- The ogres': two crude tables, five stools, a cushioned bench, barrels and piled barrels, two primitive obelisks against one wall.
-- Not seen in either: hangings, statues, plants, rugs, shelves of crockery.
+- Common: two or three tables, often of different shapes (long, square, round); chairs, benches or stools round them, mixed in kind.
+- Sometimes: a fireplace on a back wall; a bookcase, a desk or a chest, as a household keeps them; barrels single and piled; a cushioned bench; an odd ritual or decorative piece against a wall.
+- Not seen: hangings, statues, plants, rugs, shelves of crockery.
 
 ## How it is arranged
 
-Dun Mir's room puts its tables, fireplace and bookcase along one back wall and the desk on the other; the chairs and benches sit out from them and in the middle. The ogres' hall keeps its barrels and obelisks against the walls and sets its tables near one side, with stools round them; the middle is mostly empty.
+The tables keep to one side or one back wall with the hearth, and the seats sit out from them toward the middle. Stores (barrels) and any other pieces stand against the walls. Real ones do not lay their tables out in long rows down the room, and the middle is left partly or mostly open.
 
 ## Density and feel
 
-Dun Mir's is half open, homely and a little crowded. The ogres' hall is sparse, three quarters bare floor. Neither shows long rows of tables.
+From homely and a little crowded, about half the floor open, to sparse with three quarters bare floor. Few long rows, no banquet grid.
 
-## The kin rooms on the sheet
+## Variants
 
-- Taverns: a bar of many pieces with casks behind it, many mixed seats round round and long tables, a hearth, spittoons, barrels, sometimes a bearskin rug.
+Each culture furnishes with its own tables and seats, fine or crude.
+
+## Kin rooms
+
+- Taverns: a bar of many pieces with casks behind it, many mixed seats round round and long tables, a hearth, spittoons, barrels, sometimes a rug.
 - Shops: a trader's desk near a back wall and goods along the walls (potion shelves, crates and barrels, or racks of arms), the middle mostly clear.
 
 ## What a designer's hand looks like here
 
-A desk and a bookcase in a dining room; a round table beside the long ones; chairs and benches mixed round them. The ogres' hall stands ritual obelisks beside its feast. Nothing is mirrored.
+A desk or a bookcase in an eating room; a round table beside the long ones; chairs and benches mixed round them; one odd piece stood against the wall beside the feast. Nothing is mirrored.

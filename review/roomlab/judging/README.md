@@ -2,7 +2,8 @@
 
 For the blind judge: what Westwood's campaign rooms (Con, War, Wiz) have in common, whatever their type. Read this,
 then the type's own description, `review/roomlab/judging/<type>.md`. These describe Westwood's rooms as they are; they
-are not anyone's rules.
+are not anyone's rules. They describe the qualities real rooms of a type share, never any one room: do not try to
+match a picture to a room you think a description is about.
 
 ## Reading the picture
 

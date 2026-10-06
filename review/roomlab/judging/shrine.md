@@ -1,21 +1,19 @@
 # Shrine: what a real one is like
 
-For the blind judge: Westwood's campaign rooms of this type, described from the rooms themselves.
-
-Westwood has five shrines. If the sheet needs more real rooms, they come from the kin types: a chapel, a gallery, great halls, halls and throne rooms.
+For the blind judge: Westwood's campaign rooms of this type, described by their qualities, not room by room.
 
 ## What it is for
 
-A small holy place built round one thing: a spellbook on a pedestal, a relic, an orb, or the Heart of Nox. It has no congregation.
+A small holy place built round one thing: a spellbook on a pedestal, a relic, an orb. It has no congregation.
 
 ## What you notice first
 
-The holy thing in the centre, framed by obelisks. Four obelisks usually stand round it at the corners of a square, or two flank it in a small niche. In one shrine the book sits on a stepped dais, and in another the holy thing rests on a carpet.
+The holy thing in the centre, framed by obelisks. Usually obelisks stand round it at the corners of a square, or a pair flanks it in a small niche. The holy thing may stand on a raised step or a carpet.
 
 ## What it holds
 
-- Common: the obelisks (plain stone in town, glowing mana obelisks in the Land of the Dead) and the holy object on its pedestal.
-- Sometimes: a chest, candelabras along the walls, bones lying about. Elsewhere in the campaign: incense basins burning, a pentagram on the floor, candles round an orb pool.
+- Common: the obelisks (plain or glowing, as the culture has them) and the holy object on its pedestal.
+- Sometimes: a chest, candelabras along the walls, bones lying about, burning basins, a mark drawn on the floor.
 - Not seen: pews or benches, tables, beds, shelves, barrels, crates, racks, and no altar set against a back wall with statues either side.
 
 ## How it is arranged
@@ -24,16 +22,15 @@ Everything centres on the holy thing, and the pieces are spread far apart. Most 
 
 ## Density and feel
 
-Very open and still. Three quarters or more of the floor is empty, and a room usually holds only two to five pieces. Size runs from 13-tile niches to a 42-tile room.
+Very open and still. Three quarters or more of the floor is empty, and a room usually holds only two to five pieces. They are small: niches and little rooms.
 
 ## Variants
 
-- Town: grey obelisks, candelabras, a chest, sometimes a carpet.
-- Land of the Dead: mana obelisks, incense basins, bones, darker stone.
+Each culture brings its own obelisks, lights and floor; the darker places add bones and burning basins.
 
 ## What a designer's hand looks like here
 
-- Strict mirror symmetry round the centre: in four of the five, the room folds exactly onto itself.
-- A stepped dais or a carpet under the holy object.
-- Twin niches in the same map, each a copy of the other.
+- Strict mirror symmetry round the centre: nearly every one folds exactly onto itself.
+- A raised step or a carpet under the holy object.
+- Twin niches in one place, each a copy of the other.
 - Bones lying round the pedestal, a lone chest against one wall.

@@ -115,7 +115,9 @@ the building styles of the roles that host the kind, whose walls, floors and doo
 (rules/out/buildings.json), with Westwood's door counts for the type. The blind sheet pairs each generated room with a
 Westwood room of its culture and about its size, rotating through Westwood's rooms from sheet to sheet
 (`review/out/roomlab/<type>/westwood_shown.json`). Judges read `review/roomlab/judging/` (what real rooms are like,
-from Westwood's evidence), never the design briefs.
+from Westwood's evidence), never the design briefs. The judging descriptions are written and kept by hand (no script
+generates them) and follow FAIRNESS.md's rule: **describe qualities, never identify rooms** (no map names, people or
+places, no culture paired with one room's pieces, no count or inventory that singles out a room; generalise, don't delete).
 
 Westwood reference data comes only from the campaign maps (Con, War, Wiz; `rules/rooms/westwood.json`, each room once),
 with the verdicts by eye of `rules/rooms/curated.json` applied (misfiled rooms retyped, rooms not to learn from left
