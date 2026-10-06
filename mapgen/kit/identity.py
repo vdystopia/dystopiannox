@@ -509,28 +509,25 @@ ROOMS = {
                          dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4)]),
     "crypt": dict(purpose="a crypt: sarcophagi and coffins in rows with aisles between, columns, statues of the dead, "
                           "crypt chests, tapestries",
-                  core={"tomb": (2, 30)},
-                  optional={"column": (0.8, 12), "statue": (0.6, 4), "storage": (0.6, 3), "wall_decor": (0.7, 4),
-                            "plant": (0.3, 3)},
-                  types={"tomb": r"^Crypt\d+$|^Coffin\d$", "column": r"^CathedralColumn\d|^Column\d$",
-                         "statue": r"^Statue2[a-h]$|^Gargoyle\d$", "storage": r"^Chest\d$|^CryptChest\d$",
-                         "plant": r"^PlantBarren\d$|^Plant[15]$"},
-                  compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.6, side_by_side=True, aisle=1.8),
-                           dict(fam="storage", slot="wall", at="corner", clear=1.2),
-                           # statues of the dead on a back wall (rules/rooms/crypt.md; Harrowby's crypt was a block of
-                           # sarcophagi and nothing else)
-                           dict(fam="statue", slot="wall", at="center", clear=1.0),
-                           dict(fam="wall_decor", slot="decor")],
-                  # an L-shaped or narrow crypt has no room for rows: its dead lie along the walls instead
-                  # (Thornwick v0.1: one sarcophagus in a 58-tile crypt, 5% covered)
-                  fill=[dict(fam="tomb", slot="wall", at="corner", clear=1.0, max=8),
-                        dict(fam="tomb", slot="wall", at="center", clear=1.0, max=4),
-                        dict(fam="column", slot="racks", kind="cathedral", gap=3.2, aisle=1.2, min_area=180),
-                        dict(fam="statue", slot="group", group="statues", max=1, min_area=150),
-                        # statues of the dead in the corners where the centre took none (Ambermere's 119-tile crypt
-                        # held tombs and one other kind)
-                        dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2),
-                        dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
+                  # the room lab (2026-10-05): Westwood's 25 campaign crypts (Con04a-c, War03b-d) hold 1-5 types
+                  # (median 2): two to six sarcophagi and tombstones against the walls (nothing free in the middle:
+                  # mid_share median 0), a crypt chest, an obelisk or statues in a few; 0.67 tombs per 10 tiles,
+                  # coverage 0.08. The old rows of sarcophagi and coffins down the middle with columns, statues,
+                  # tapestries and plants gave every one away (AUC 0.98-1.0)
+                  core={"tomb": (2, 12)},
+                  optional={"statue": (0.3, 2), "storage": (0.6, 1)},
+                  types={"tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$|^Coffin\d$",
+                         "statue": r"^Statue2[a-h]$", "storage": r"^CryptChest\d$"},
+                  top_up=(), lights_per100=2.0,
+                  # a step out from the walls (Westwood's: none against a wall, none further than 2.5 units from one):
+                  # sarcophagi along the walls a pace out, the chest in a corner, held to the type's cap
+                  wall_gap={"tomb": 1.1},
+                  # two rows of sarcophagi side by side with a wide aisle between (Westwood's stand in rows: align 1.0),
+                  # so each row keeps near its wall; a narrow crypt takes them along its walls a pace out
+                  compose=[dict(fam="tomb", slot="racks", kind="tombs", gap=0.5, side_by_side=True, aisle=3.6),
+                           dict(fam="storage", slot="wall", at="corner", clear=1.2)],
+                  fill=[dict(fam="tomb", slot="wall", at="any", clear=1.0, max=3),
+                        dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2, min_area=200, fixed=True)]),
     "hall": dict(purpose="a great hall: a colonnade down its length, statues facing each other, benches along the walls, "
                          "shields and banners on the back walls, plants in the corners",
                  core={"column": (4, 24)},

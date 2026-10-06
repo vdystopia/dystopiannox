@@ -348,8 +348,9 @@ TYPES = {
         never_types=r"Barrel|Sack|^Bookcase",
         walls=dict(back="a tapestry or two; a crypt chest in a corner", other_back="statues of the dead",
                    front="bare", middle="sarcophagi and coffins side by side in rows with aisles between; columns"),
-        cover=(0.08, 0.16, 0.30), open=(0.40, 0.85), per_tile=(0.06, 0.40), types_min=3, free_most=(4, 30),
-        caps={"tomb": (7, 24)}, walls_min=1, lined=None, tiles=(30, 200),
+        cover=(0.04, 0.10, 0.25), open=(0.40, 0.95), per_tile=(0.04, 0.40), types_min=1, free_most=(4, 30),
+        # Westwood's 25 crypts: 0.31-0.67-1.16 tombs per 10 tiles (the room lab)
+        caps={"tomb": (12, 6)}, walls_min=1, lined=None, tiles=(30, 200),
         signature={"tomb": (1, 20), "statue": (0.2, 4)}, needs=("tomb",), kin=("chapel",),
         variants={"dark_crypt": dict(cover=(0.08, 0.16, 0.30))}),
 }

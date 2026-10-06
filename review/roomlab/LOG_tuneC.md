@@ -154,3 +154,16 @@ in some, meat, a primitive obelisk; coverage 0.03-0.06-0.20.
 | r3 | straw 6 per 100 tiles (a big den was 2/3 straw: the checker's monotony); `cell` kin of the barracks (a den of straw reads as a pen) | 0.856 | 0.886 | 1 (a town barracks' bed cap) | - |
 
 Left: walls used 4 against 2, the town barracks (2 of 10 variants) untouched.
+
+## Crypt (Westwood: 25 curated rooms)
+
+What Westwood's look like (Con04a-c, War03b-d): 1-5 types (median 2), two to six sarcophagi in short rows, all aligned
+(align 1.0), none against a wall and none far from one, a crypt chest; 0.67 tombs per 10 tiles, coverage 0.08.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref2 | (after the curated references; as found: long rows of sarcophagi and coffins, columns, statues, tapestries, plants) | 0.999 | 0.965 | 2 | - |
+| r1 | sarcophagi and tombstones along the walls, a chest: wrong way (Westwood's stand free of the walls) | 0.982 | 0.859 | 8 | - |
+| r2 | rows again, capped at a tomb per 12 tiles (6 at most); no columns, tapestries, plants | 0.950 | 0.938 | 3 | - |
+| r3 | `wall_gap` (new recipe key): sarcophagi along the walls a pace out | 0.974 | 0.777 | 1 | - |
+| r4 | two rows with a wide aisle (3.6) so each keeps near its wall; the pace-out tombs only in the fill | 0.886 | 0.751 | 5 (2 chests across a wall, 2 sparse, 1 reads as mausoleum) | - |

@@ -1311,6 +1311,9 @@ class Furnisher:
             if hi - lo < 2 * ha + 0.1: continue
             if fam == "wall_decor": d = self.perp_for(t, inv.get("perp_px"))
             else: d = hp + SNUG_GAP.get(fam, 0.3) + self.rng.uniform(0.0, 0.08)    # snug against the wall
+            # a kind whose pieces stand a step out from the wall (ROOMS[kind]["wall_gap"]: Westwood's sarcophagi, 1-2.5
+            # units off it; the room lab)
+            d += ROOM_IDENTITY.get(self.kind, {}).get("wall_gap", {}).get(fam, 0.0) * self.rng.uniform(0.7, 1.3)
             side_score = (3.0 if back else 0.0) if facing else (0.0 if back else 3.0) if fam in FRONT_FAMS else (1.5 if back else 0.0)
             coord = r["coord"] + r["sign"] * d
             mid = (lo + hi) / 2
