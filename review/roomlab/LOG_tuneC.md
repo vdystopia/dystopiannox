@@ -121,3 +121,21 @@ The tension: Westwood's libraries line their back walls 0.11 and keep the middle
 bookcases stand on every wall, the front ones too); the checker forbids bookcases on the front walls and wants the room
 as covered as Westwood's median, and the user wants a lined wall lined end to end. What gives ours away: lined back
 walls (0.65), the desk on its back wall (Westwood's libraries have no desk), pieces touching end to end (nn 0.04).
+
+## Armoury (Westwood: 16 rooms; kit kind gear_store)
+
+What Westwood's look like: 3-13 types (median 6), supplies 0-0.73 per 10 tiles, no shelves; one or two racks, shown on
+a back wall (the focal piece on NE or NW in all 16); swords, crossbows and shields hung on the walls; Dun Mir chests;
+in 6 of 16 the guards' table with chairs (Con03A, Con05A, Con06a, Con06b, War03a/b).
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: log shelves, rows of racks, every wall stocked with sacks, tool barrels and crates; 11-18 types) | 1.000 | 0.992 | 1 | - |
+| r1 | racks against the walls and a row only in a big room, hangings of arms, a chest, one heap of barrels (`store_heaps`); no shelves or sacks; cover 0.24 -> 0.12 | 0.977 | 0.869 | 1 | - |
+| r2 | fewer racks: too sparse, racks on the front walls (FRONT_FAMS) | 0.997 | 0.944 | 5 | - |
+| r3 | `back_only` (new recipe key): racks shown on the back walls | 0.997 | 0.893 | 3 (bunched) | - |
+| r4 | one standing rack (two in all), two chests, the guards' table with chairs (the profile's never-table dropped: Westwood's evidence) | 0.942 | 0.877 | 4 (3 bunched, 1 sparse) | - |
+
+Left: runs of 3 of one kind (the hangings of arms side by side), the pieces bunched toward the home corner in big
+rooms, sparse big rooms. Shared: recipe key `back_only` (wall_candidates treats those families as faced), a no-op
+elsewhere.

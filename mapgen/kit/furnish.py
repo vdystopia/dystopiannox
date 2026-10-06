@@ -1295,6 +1295,8 @@ class Furnisher:
         facing = fam in FACING_FAMS or bool(FACING_TYPES.match(t0 or ""))
         if fam in ROOM_IDENTITY.get(self.kind, {}).get("front_ok", ()):   # a kind whose pieces Westwood stands on any wall
             facing = False
+        if fam in ROOM_IDENTITY.get(self.kind, {}).get("back_only", ()):  # a kind whose pieces Westwood shows on the back walls
+            facing = True
         depth_of = lambda r: max(abs((x + y + 1 if r["line"] == "/" else x - y) - r["coord"]) for x, y in self.g.cells)
         out = []
         # a hanging takes bare wall, never a stretch any piece stands against (Westwood hangs nothing above a piece

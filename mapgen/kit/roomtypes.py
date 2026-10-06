@@ -220,14 +220,15 @@ TYPES = {
     "armoury": dict(
         family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),
-        must={"shop_rack": 3}, never=("bed", "desk", "table", "altar", "throne", "tomb", "lab", "counter_bar",
+        must={"shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
                                       "counter_shop", "stove", "fireplace"),
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="shelves end to end", other_back="helm shelves or hanging swords",
                    front="barrels, crates and tool barrels", middle="racks in rows of one kind each, at most five to a "
                                                                     "row, 1.2 apart, aisles of 2.2 between rows"),
-        cover=(0.12, 0.24, 0.34), open=(0.25, 0.70), per_tile=(0.2, 0.8), types_min=7, free_most=(4, 25),
-        caps={"shop_rack": (6, 16)}, walls_min=3, lined=0.10, tiles=(30, 120),      # racks stand apart (HB-5)
+        # the room lab: Westwood's 16 armouries cover 0.00-0.13-0.24 with 3-13 types (median 6)
+        cover=(0.05, 0.12, 0.26), open=(0.30, 0.95), per_tile=(0.08, 0.6), types_min=4, free_most=(4, 25),
+        caps={"shop_rack": (6, 16)}, walls_min=2, lined=None, tiles=(30, 120),      # racks stand apart (HB-5)
         signature={"shop_rack": (1.5, 12)}, needs=("shop_rack",), kin=("storeroom", "shop", "smithy")),
     # ---- public --------------------------------------------------------------------------------------------------
     "shop": dict(

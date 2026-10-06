@@ -315,20 +315,35 @@ ROOMS = {
                     top_up=(), lights_per100=2.0,
                     compose=[dict(fam="storage", slot="heaps", n=4)],
                     fill=[dict(fam="storage", slot="heaps")]),
-    "gear_store": dict(purpose="a crew's gear in good order: armour stands and racks of pole arms, clothes and bows in "
-                               "rows down the middle, a back wall lined with shelves, barrels, crates and tool barrels "
-                               "along the front walls",
+    # the room lab (2026-10-05): Westwood's 16 campaign armouries hold 3-13 types (median 6), 0-0.73 supplies per 10 tiles
+    # (median 0.3), no shelves, a rack or a few against the walls rather than rows (most of one kind: 1-3), swords,
+    # crossbows and shields hung on the walls (Con03A, Con06a, Con06b, Wiz06c), a Dun Mir chest; the old recipe's log
+    # shelves, rows of racks and walls stocked with sacks and tool barrels gave every one away (AUC 1.0)
+    "gear_store": dict(purpose="a crew's arms in good order: pole arms, armour stands and bow racks standing against the "
+                               "walls, a short row of one kind in a big one, swords and shields hung on the back walls, a "
+                               "chest, a barrel or two",
                        base="storeroom",
-                       core={"storage": (4, 24), "shop_rack": (3, 16), "shelves": (2, 10)},
-                       optional={},
-                       types={"storage": SUPPLY, "shelves": r"^LogShelvesFull\d$", "shop_rack": RACKS},
-                       compose=[dict(fam="shelves", slot="line"),
-                                dict(fam="shop_rack", slot="racks", kind="gear"),
-                                # the stock by the front walls, the racks the show (rules/rooms/armoury.md: Greywatch's 28-tile
-                                # armoury stocked to 0.33 covered, 0.16 of its floor open)
-                                dict(fam="storage", slot="stock", coverage=0.5, kinds=("crates", "barrels", "tools", "sacks"))],
-                       fill=[dict(fam="storage", slot="stack", n=3, once=True),
-                             dict(fam="storage", slot="stock", coverage=0.7, kinds=("barrels", "crates", "tools"), pad=0.6)]),
+                       core={"shop_rack": (2, 12), "storage": (1, 6)},
+                       # the guards' table with its chairs (6 of Westwood's 16: Con03A, Con05A, Con06a, Con06b, War03a/b)
+                       optional={"table": (0.6, 1), "chair": (0.6, 4)},
+                       types={"storage": SUPPLY + r"|^Chest[1-4]$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
+                              r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$"},
+                       store=dict(lead={"barrels": 3, "crates": 1}, second={}, second_p=0.0, accent={"water": 1, "tools": 1},
+                                  accent_p=0.4),
+                       # Westwood's armouries show their racks on the back walls (the focal piece on NE or NW in all 16)
+                       top_up=(), lights_per100=2.5, back_only=("shop_rack",),
+                       compose=[dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
+                                     only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=1),
+                                dict(fam="shop_rack", slot="wall", at="center", clear=0,
+                                     only=r"^TraderHanging|^TraderShield|^TraderCrossed", n=2),
+                                dict(fam="storage", slot="wall", at="corner", clear=1.2, only=r"^Chest", n=2),
+                                dict(fam="table", slot="center", seats=True),
+                                dict(fam="storage", slot="heaps", n=1)],
+                       fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=300),
+                             dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
+                                  only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", max=1, fixed=True),
+                             dict(fam="shop_rack", slot="wall", at="center", clear=0,
+                                  only=r"^TraderHanging|^TraderShield|^TraderCrossed", max=2)]),
     # 2026-10-05, Starwell playtest: "The shopkeeper is standing in the middle of the shop, surrounded by a random scattering
     # of objects ... He needs to be standing somewhere that makes sense, like behind a desk. Instead of six armor racks,
     # use three armor racks and three weapon racks": the smith sells over a counter (the keeper's spot behind it,
