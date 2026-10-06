@@ -343,3 +343,21 @@ its Well. The landmark stays `Well` (the user has not chosen; rules/scenes/well.
 
 The classifier separates on zones (ours one piece: Westwood's four have their sign or a trader's pitch beside). By eye
 a lone well is Westwood's. No further round (4 Westwood wells).
+
+### urchin_camp: the den (mapgen/kit/camps.py `urchin_den`, the shared `Pocket`)
+
+Westwood's 42 urchin scenes are all dens in the earth (Dirt walls on DirtDark2: Con02a, War03c, War03d, Wiz01A). The
+hideout's rock-pocket reading became a class (`Pocket`: rays, the mouth, points off the rock, rows along it), used by
+`hideout_camp` and `urchin_den`; `urchin_camp` turns into a den in a pocket (`rock_pocket`, which knows Dirt walls).
+
+| Round | What changed | AUC | Hard / missing |
+|---|---|---|---|
+| (summary) | the kit as merged (open-air camps round a fire) | 1.00 | 0 / 0 |
+| r1-den | the den: beds of one kind in twos and threes against the back rock, their variant by the wall's side; shelves, paintings and scrolls on the upper walls; wall torches; the chest; barrels; a table ringed by stools; the lab: eight of ten in a Dirt pocket | 0.955 | 0 / 0 |
+| r2-walls | shelves in runs of two or three, more paintings, more beds, fewer stools, a table in 65%; the lab's dens 1.3 times larger | 0.914 | 0 / 1 |
+| r3-close | shelves 26 px apart, beds 42-48 | 0.75 | 0 / 0 |
+| r4-wide | dens 1.5 times larger, barrels 70%: worse (0.845), reverted to r3 | 0.845 | 0 / 0 |
+
+Queued: r3-close. Note: the lab is not reproducible run to run (the same code and seed gave bandit camps of 24 and
+19 pieces in two runs; graveyard r2 and r3 0 and 1 missing): read single-round AUC moves of under ~0.1 as noise.
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings unchanged.

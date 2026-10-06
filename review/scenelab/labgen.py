@@ -97,6 +97,9 @@ def plan_plots(scene, n, seed, rng):
         elif k % len(SCHEDULE) in recipe_caves(scene):
             # a hideout: a pocket in the rock, its mouth on the passage toward the middle of the map (the spine)
             p.cave, p.site, p.forest, p.r = True, "cave", "cave", CAVE_R[size]
+            import recipes
+            p.cave_wall = recipes.RECIPES[scene].get("cave_wall", CAVE["wall"])     # urchins dig in earth (Dirt)
+            p.r *= recipes.RECIPES[scene].get("cave_scale", 1.0)
             p.dir = (0.0, -1.0 if c[1] > 0 else 1.0)
             p.toward = (c[0], c[1] + p.dir[1] * (p.r + 2))
         plots.append(p)
@@ -171,6 +174,21 @@ def lay_land(m, rng, plots, recipe):
             if q: land.link(f"spine{q - 1}", f"spine{q}", 8, bend=0.05, road=False, pockets=(0, 0))
         for p in plots:
             land.link(p.name, f"spine{cols.index(p.c[0])}", 6 if p.cave else 8, bend=0.08, road=False, pockets=(0, 0))
+    elif plots and plots[0].town:
+        # a hamlet's paths join it at its edges, never through its middle (the dressing keeps a forest path's lane
+        # clear, two squares either side: a path through the hamlet's middle had left a market no room for its
+        # awning)
+        def gate(p, dx, dy):
+            nm = f"{p.name}g{dx}{dy}"
+            if nm not in land.areas:
+                land.area(nm, (2 * (p.c[0] + dx * (p.r - 2)), 2 * (p.c[1] + dy * (p.r - 2))), 4, region=p.name)
+            return nm
+        for a, b in zip(plots, plots[1:]):
+            if (a.k // len(TOWN_COLS)) == (b.k // len(TOWN_COLS)):
+                land.link(gate(a, 1, 0), gate(b, -1, 0), 8, bend=0.15, road=False, pockets=(0, 0))
+            elif b.k % len(TOWN_COLS) == 0:
+                a = plots[b.k - len(TOWN_COLS)]
+                land.link(gate(a, 0, 1), gate(b, 0, -1), 8, bend=0.15, road=False, pockets=(0, 0))
     else:
         # forest paths join the clearings in each row, and the rows at their west ends
         for a, b in zip(plots, plots[1:]):
@@ -213,7 +231,7 @@ def carve_apply(m, land, plots):
     land.assign_regions()
     by = {p.name: p for p in plots}
     cave = lambda r: r in by and by[r].cave
-    land.apply(m, wall=lambda r: CAVE["wall"] if cave(r) else FORESTS[by[r].forest if r in by else "deciduous"]["wall"],
+    land.apply(m, wall=lambda r: by[r].cave_wall if cave(r) else FORESTS[by[r].forest if r in by else "deciduous"]["wall"],
                floor=lambda r: CAVE["floor"] if cave(r) else "GrassNorm")
 
 

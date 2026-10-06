@@ -517,85 +517,89 @@ def rock_pocket(spec, centre, reach=330, rays=16, need=11):
     return hit >= need
 
 
-def hideout_camp(spec, rng, land, centre, toward, loot, sleepers=4):
-    """A band's hideout in a pocket of the rock (or a ruined room), laid as Westwood lays its own (the notes above),
-    open toward `toward` (squares: the mouth). Its own generator. Returns the record bandit_camp returns (fire, seats,
-    lookout, chest, goods, leader, posts, tents, work, zones, scale), for kit/posts.camp_posts."""
-    from kit.spacing import wall_clearance
-    rng = own_rng(spec, "hideout", centre)
-    sc = Camp(spec, rng, land, centre)
-    cx, cy = square_px(*centre)
-    tx, ty = square_px(*toward)
+def _hide_fam(t):
+    """A hideout piece's family, for its clearance from the rock (HIDE_OFF)."""
+    if t == "Torch": return "Torch"
+    if t.startswith("Cot"): return "cot"
+    if "Barrel" in t: return "barrel"
+    if "Crate" in t: return "crate"
+    if "Pillar" in t: return "pillar"
+    if t.startswith("Chest"): return "chest"
+    if t.startswith(("Rock", "CaveRocksSmall")): return "stone"
+    return "rock"
 
-    def ray_end(a, cap=420):
-        for r in range(12, cap, 6):
-            x, y = cx + r * math.cos(a), cy + r * math.sin(a)
-            if not sc.ok(*_sq(x, y), walls=False) or wall_clearance(spec.wallmap, x, y, reach=3) < 8: return r
-        return cap
+
+class Pocket:
+    """A pocket in the rock (a hideout, a den) read by rays from its middle: where the rock is in each of N directions,
+    the mouth (toward `toward`, or where no rock closes it), points a given clearance off the rock, rows along it.
+    `off(t)`: the clearance (px from the wall's line) a piece of type t keeps. Directions are claimed as zones take
+    them, so two zones never share a stretch of rock."""
     N = 48
-    A = lambda k: k * 2 * math.pi / N
-    ends = [ray_end(A(k)) for k in range(N)]
-    # the pocket's middle: halfway to the mean of the rays' ends (a camp_site square may sit off it)
-    mx = sum(cx + min(e, 300) * math.cos(A(k)) for k, e in enumerate(ends)) / N
-    my = sum(cy + min(e, 300) * math.sin(A(k)) for k, e in enumerate(ends)) / N
-    if sc.ok(*_sq((cx + mx) / 2, (cy + my) / 2)): cx, cy = (cx + mx) / 2, (cy + my) / 2
-    sc.fx, sc.fy = cx, cy
-    a_in = math.atan2(ty - cy, tx - cx)
-    ends = [ray_end(A(k)) for k in range(N)]
-    mouth = {k for k in range(N) if abs(_ang(A(k) - a_in)) < 0.55 or ends[k] >= 400}
 
-    def fam(t):
-        if t == "Torch": return "Torch"
-        if t.startswith("Cot"): return "cot"
-        if "Barrel" in t: return "barrel"
-        if "Crate" in t: return "crate"
-        if "Pillar" in t: return "pillar"
-        if t.startswith("Chest"): return "chest"
-        if t.startswith(("Rock", "CaveRocksSmall")): return "stone"
-        return "rock"
+    def __init__(self, spec, rng, land, centre, toward, off):
+        from kit.spacing import wall_clearance
+        self.spec, self.rng, self.off, self.clear = spec, rng, off, wall_clearance
+        self.sc = Camp(spec, rng, land, centre)
+        self.cx, self.cy = square_px(*centre)
+        tx, ty = square_px(*toward)
+        ends = [self.ray_end(self.A(k)) for k in range(self.N)]
+        # the pocket's middle: halfway to the mean of the rays' ends (a camp_site square may sit off it)
+        mx = sum(self.cx + min(e, 300) * math.cos(self.A(k)) for k, e in enumerate(ends)) / self.N
+        my = sum(self.cy + min(e, 300) * math.sin(self.A(k)) for k, e in enumerate(ends)) / self.N
+        if self.sc.ok(*_sq((self.cx + mx) / 2, (self.cy + my) / 2)):
+            self.cx, self.cy = (self.cx + mx) / 2, (self.cy + my) / 2
+        self.sc.fx, self.sc.fy = self.cx, self.cy
+        self.a_in = math.atan2(ty - self.cy, tx - self.cx)
+        self.ends = [self.ray_end(self.A(k)) for k in range(self.N)]
+        self.mouth = {k for k in range(self.N) if abs(_ang(self.A(k) - self.a_in)) < 0.55 or self.ends[k] >= 400}
+        self.used = set(self.mouth)
 
-    def wall_pt(a, off):
+    def A(self, k):
+        return k * 2 * math.pi / self.N
+
+    def ray_end(self, a, cap=420):
+        for r in range(12, cap, 6):
+            x, y = self.cx + r * math.cos(a), self.cy + r * math.sin(a)
+            if not self.sc.ok(*_sq(x, y), walls=False) or self.clear(self.spec.wallmap, x, y, reach=3) < 8: return r
+        return cap
+
+    def wall_pt(self, a, off):
         """The point on ray a whose clearance from the rock is about `off` px (None: no rock that way)."""
-        e = ray_end(a)
+        e = self.ray_end(a)
         if e >= 400: return None
         for r in range(e, 10, -3):
-            x, y = cx + r * math.cos(a), cy + r * math.sin(a)
-            if wall_clearance(spec.wallmap, x, y, reach=4) >= off and sc.ok(*_sq(x, y), walls=False): return (x, y)
+            x, y = self.cx + r * math.cos(a), self.cy + r * math.sin(a)
+            if self.clear(self.spec.wallmap, x, y, reach=4) >= off and self.sc.ok(*_sq(x, y), walls=False): return (x, y)
         return None
 
-    def can(t, x, y, gap=0.0, also=()):
-        return (sc.ok(*_sq(x, y), walls=False) and wall_clearance(spec.wallmap, x, y, reach=4) >= HIDE_OFF.get(fam(t), 20) - 6
+    def can(self, t, x, y, gap=0.0, also=()):
+        sc = self.sc
+        return (sc.ok(*_sq(x, y), walls=False) and self.clear(self.spec.wallmap, x, y, reach=4) >= self.off(t) - 6
                 and SP.spaced(t, x, y, list(sc.typed) + list(also))
                 and not any(math.hypot(x - a, y - b) < gap for a, b in sc.mine))
 
-    def put(t, x, y, gap=0.0, **extra):
-        if not can(t, x, y, gap): return None
-        o = sc.put(t, *_sq(x, y), walls=False, **extra)
+    def put(self, t, x, y, gap=0.0, **extra):
+        if not self.can(t, x, y, gap): return None
+        o = self.sc.put(t, *_sq(x, y), walls=False, **extra)
         if o is not None:
-            sc.mine.append((x, y)); sc.typed.append((t, x, y))
+            self.sc.mine.append((x, y)); self.sc.typed.append((t, x, y))
         return o
 
-    used = set(mouth)
+    def claim(self, k0, w):
+        for d in range(-w, w + 1): self.used.add((k0 + d) % self.N)
 
-    def claim(k0, w):
-        for d in range(-w, w + 1): used.add((k0 + d) % N)
+    def free_k(self, k0, w):
+        return all((k0 + d) % self.N not in self.used and self.ends[(k0 + d) % self.N] < 400 for d in range(-w, w + 1))
 
-    def free_k(k0, w):
-        return all((k0 + d) % N not in used and ends[(k0 + d) % N] < 400 for d in range(-w, w + 1))
-
-    b = a_in + math.pi
-    order = sorted(range(N), key=lambda k: abs(_ang(A(k) - b)))
-    zones, goods, posts = {}, [], []
-
-    def along(k0, step, off, n, sgn=1, jitter=4.0, most=999.0):
+    def along(self, k0, step, off, n, sgn=1, jitter=4.0, most=999.0):
         """n points along the rock from ray k0 in direction sgn, each about `step` px from the one before (never more
         than `most`), `off` px off the rock: [(k, (x, y))]; fewer where the rock turns away (the mouth) or a ray is
         taken."""
         out, k, near = [], k0, None
-        for _ in range(N):
-            if len(out) >= n or k % N in used: break
-            q = wall_pt(A(k), off + rng.uniform(-jitter, jitter))
-            if q and not out: out.append((k % N, q))
+        for _ in range(self.N):
+            if len(out) >= n or k % self.N in self.used: break
+            q = self.wall_pt(self.A(k), off + self.rng.uniform(-jitter, jitter))
+            if q and not out: out.append((k % self.N, q))
             elif q:
                 d = math.hypot(q[0] - out[-1][1][0], q[1] - out[-1][1][1])
                 if d > most:                                         # past the step: the nearest that fell short
@@ -603,10 +607,24 @@ def hideout_camp(spec, rng, land, centre, toward, loot, sleepers=4):
                     out.append(near); near = None
                     if len(out) >= n: break
                     d = math.hypot(q[0] - out[-1][1][0], q[1] - out[-1][1][1])
-                if d >= step: out.append((k % N, q)); near = None
-                elif d >= 0.8 * step: near = (k % N, q)
+                if d >= step: out.append((k % self.N, q)); near = None
+                elif d >= 0.8 * step: near = (k % self.N, q)
             k += sgn
         return out
+
+
+def hideout_camp(spec, rng, land, centre, toward, loot, sleepers=4):
+    """A band's hideout in a pocket of the rock (or a ruined room), laid as Westwood lays its own (the notes above),
+    open toward `toward` (squares: the mouth). Its own generator. Returns the record bandit_camp returns (fire, seats,
+    lookout, chest, goods, leader, posts, tents, work, zones, scale), for kit/posts.camp_posts."""
+    from kit.spacing import wall_clearance
+    rng = own_rng(spec, "hideout", centre)
+    P = Pocket(spec, rng, land, centre, toward, lambda t: HIDE_OFF.get(_hide_fam(t), 20))
+    sc, cx, cy, a_in, N, A, ends, mouth, used = P.sc, P.cx, P.cy, P.a_in, P.N, P.A, P.ends, P.mouth, P.used
+    ray_end, wall_pt, can, put, claim, free_k, along = P.ray_end, P.wall_pt, P.can, P.put, P.claim, P.free_k, P.along
+    b = a_in + math.pi
+    order = sorted(range(N), key=lambda k: abs(_ang(A(k) - b)))
+    zones, goods, posts = {}, [], []
 
     # ---- the beds: cots two (or three) together against the back rock, heads to it, a wall torch by each group
     n_cots = max(2, min(4, sleepers - rng.choice((1, 1, 2))))     # (Westwood's hideouts: two to five cots)
@@ -916,13 +934,165 @@ def camp_site(spec, land, near, reach=14, road_clear=4.5, room=7, avoid=()):
     return (s[0] + 0.5, s[1] - 0.5)
 
 
-def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5):
+# Westwood's urchin dens (the scene lab, 2026-10-06: 42 campaign scenes on Con02a, War03c, War03d, Wiz01A): pockets of
+# Dirt walls on DirtDark2, every bed and shelf against the earth (px from the wall's line: paintings and scrolls 2-4,
+# wall torches 6-11, shelves 13-23, beds and hammocks 22-32, chests 21-46, barrels 21-32), a round table ringed by
+# stools in the open (45-120); the variant of a bed, shelf, painting or chest by where the wall stands from it (a bed:
+# wall up-left UrchinBed1, up-right 2, down-right 3, down-left 4; a shelf, painting or hammock by its wall's line).
+DEN_OFF = dict(bed=27, hammock=27, shelf=17, painting=3, scroll=3, Torch=9, chest=26, barrel=24, table=60, stool=40,
+               straw=30)
+
+
+def _den_fam(t):
+    for k, f in (("UrchinBed", "bed"), ("UrchinHammock", "hammock"), ("Shelves", "shelf"), ("Painting", "painting"),
+                 ("Scroll", "scroll"), ("Torch", "Torch"), ("Chest", "chest"), ("Barrel", "barrel"),
+                 ("Table", "table"), ("Stool", "stool"), ("Straw", "straw")):
+        if k in t: return f
+    return "barrel"
+
+
+def _wall_side(a):
+    """Where the wall stands from a piece laid on ray a against the rock: (up, left) as booleans."""
+    return math.sin(a) < 0, math.cos(a) < 0
+
+
+def urchin_den(spec, rng, land, centre, toward, loot, sleepers=5):
+    """Urchins' den in a pocket of the earth, laid as Westwood lays its own (the notes above), open toward `toward`
+    (squares: the mouth). Its own generator. Returns the record urchin_camp returns, for kit/posts.camp_posts."""
+    rng = own_rng(spec, "urchin_den", centre)
+    P = Pocket(spec, rng, land, centre, toward, lambda t: DEN_OFF.get(_den_fam(t), 24))
+    cx, cy, N, A = P.cx, P.cy, P.N, P.A
+    b = P.a_in + math.pi
+    order = sorted(range(N), key=lambda k: abs(_ang(A(k) - b)))
+    upper = [k for k in order if math.sin(A(k)) < -0.2]          # the walls the camera sees: shelves, pictures
+
+    def bed_of(a, hammock):
+        up, left = _wall_side(a)
+        if hammock: return "UrchinHammock2" if up == left else "UrchinHammock1"      # "/" walls (up-left, down-right)
+        return {(True, True): "UrchinBed1", (True, False): "UrchinBed2", (False, False): "UrchinBed3",
+                (False, True): "UrchinBed4"}[(up, left)]
+
+    # ---- the beds: of one kind, side by side along the rock in twos and threes
+    hammocks = rng.random() < 0.3
+    n_beds = max(2, min(7, sleepers + rng.choice((0, 1, 1, 2))))
+    groups, left_ = [], n_beds
+    while left_ > 0:
+        g = min(left_, rng.choice((2, 2, 3)))
+        if left_ - g == 1: g += 1
+        groups.append(g); left_ -= g
+    beds = []
+    k_start, sgn = order[0], rng.choice((1, -1))
+    for gi, g in enumerate(groups):
+        if gi % 2 == 1: sgn = -sgn
+        k0 = next((k for k in [k_start] + [(k_start + sgn * d) % N for d in range(1, N // 3)] if P.free_k(k, 1)), None)
+        if k0 is None: break
+        pts = P.along(k0, 42 + rng.uniform(0, 6), DEN_OFF["bed"] + rng.uniform(-3, 4), g, sgn, most=64)
+        plan = []
+        for k, p in pts:
+            t = bed_of(A(k), hammocks)
+            if P.can(t, *p, also=plan): plan.append((t, p[0], p[1]))
+            else: break
+        if len(plan) < 2: continue
+        for (k, p), (t, _, _) in zip(pts, plan):
+            if P.put(t, *p): beds.append((k, p)); P.claim(k, 1)
+        k_start = (pts[0][0] - sgn * rng.randint(4, 6)) % N
+    # ---- the shelves of the den's stores on the upper walls, a picture or a hanging between them
+    log = rng.random() < 0.4
+
+    def shelf_of(a):
+        up, left = _wall_side(a)
+        t = (("LogShelvesFull3" if left else "LogShelvesFull4") if log else
+             ("UrchinShelvesFull2" if up == left else "UrchinShelvesFull1"))
+        return t.replace("Full", "Empty") if rng.random() < 0.15 else t
+    for _ in range(rng.choice((1, 2, 2))):        # shelves two or three side by side along the upper rock
+        k = next((k for k in upper if P.free_k(k, 1)), None)
+        if k is None: break
+        got = 0
+        for kk, p in P.along(k, 26, DEN_OFF["shelf"], rng.choice((2, 2, 3)), rng.choice((1, -1)), jitter=3, most=40):
+            if P.put(shelf_of(A(kk)), *p): got += 1; P.claim(kk, 1)
+        P.claim(k, 1 if got else 0)
+    for _ in range(rng.choice((2, 3, 3, 4))):
+        k = next((k for k in upper[rng.randint(0, 3):] if P.free_k(k, 0)), None)
+        if k is None: break
+        up, left = _wall_side(A(k))
+        t = (("UrchinPainting2" if left else "UrchinPainting1") if rng.random() < 0.7 else
+             ("UrchinHangingScroll1" if rng.random() < 0.5 else "UrchinHangingScroll2"))
+        p = P.wall_pt(A(k), DEN_OFF["painting"])
+        if p and P.put(t, *p): P.claim(k, 1)
+        else: P.claim(k, 0)
+    # ---- the wall torches
+    for _ in range(rng.choice((2, 2, 3))):
+        ks = [k for k in range(N) if P.free_k(k, 1)]
+        if not ks: break
+        k = rng.choice(ks)
+        p = P.wall_pt(A(k), DEN_OFF["Torch"])
+        if p and P.put("Torch", *p): P.claim(k, 2)
+        else: P.claim(k, 0)
+    # ---- the hoard: the chest against the upper rock, barrels in a knot now and then
+    chest = None
+    for k in upper:
+        if not P.free_k(k, 1): continue
+        up, left = _wall_side(A(k))
+        p = P.wall_pt(A(k), DEN_OFF["chest"])
+        if p:
+            chest = P.put("ChestUrchin4" if left else "ChestUrchin3", *p, items=loot)
+            if chest: P.claim(k, 2); break
+    goods = []
+    if rng.random() < 0.5:
+        k0 = next((k for k in reversed(order) if P.free_k(k, 2) and k not in P.mouth), None)
+        if k0 is not None:
+            bk = rng.choice(("Barrel", "Barrel2"))
+            for k, q in P.along(k0, 26, DEN_OFF["barrel"], rng.randint(2, 3), rng.choice((1, -1)), jitter=3):
+                if P.put(bk, *q): goods.append(bk); P.claim(k, 1)
+    # ---- the table in the open, stools round it
+    table, seats = None, []
+    for r, d in ((0, 0), (40, 1.0), (40, -1.0), (60, 2.4), (60, -2.4), (30, 3.1)) if rng.random() < 0.65 else ():
+        x, y = cx + r * math.cos(b + d), cy + r * math.sin(b + d)
+        t = "UrchinTableLarge" if rng.random() < 0.75 else "UrchinTableSmall"
+        if P.can(t, x, y, gap=50) and P.put(t, x, y):
+            table = (x, y)
+            ph, n = rng.uniform(0, 6.3), rng.randint(2, 4)
+            for j in range(n):
+                a = ph + j * 2 * math.pi / n + rng.uniform(-0.2, 0.2)
+                P.put(rng.choice(("UrchinStool1", "UrchinStool2")), x + 36 * math.cos(a), y + 36 * math.sin(a))
+            seats = [(x + 60 * math.cos(ph + 0.5), y + 60 * math.sin(ph + 0.5))]
+            break
+    if rng.random() < 0.3:
+        for _ in range(rng.randint(1, 2)):
+            a, r = rng.uniform(0, 6.3), rng.uniform(60, 140)
+            P.put(rng.choice(("Straw1", "Straw2")), cx + r * math.cos(a), cy + r * math.sin(a), gap=30)
+    sc = P.sc
+
+    def spot(p):
+        ring = [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4)) for r in (20, 36) for k in range(8)]
+        return sc.stand([p] + ring, clear=32) or p
+    e_in = P.ray_end(P.a_in, 300)
+    lookout = spot((cx + math.cos(P.a_in) * max(60, min(150, e_in - 40)), cy + math.sin(P.a_in) * max(60, min(150, e_in - 40))))
+    if chest:
+        L = math.hypot(cx - chest["x"], cy - chest["y"]) or 1
+        leader = spot((chest["x"] + (cx - chest["x"]) / L * 50, chest["y"] + (cy - chest["y"]) / L * 50))
+    else:
+        leader = spot((cx + math.cos(b) * 70, cy + math.sin(b) * 70))
+    tents = []
+    for k, p in beds:
+        L = math.hypot(cx - p[0], cy - p[1]) or 1
+        tents.append(spot((p[0] + (cx - p[0]) / L * 50, p[1] + (cy - p[1]) / L * 50)))
+    _hold_ground(land, centre, 4)
+    centre_px = table or (cx, cy)
+    return dict(fire=centre_px, seats=seats, lookout=lookout, chest=chest, goods=goods, leader=leader, posts=[],
+                tents=tents, work=[], zones={"hearth": (centre_px, 80.0)}, scale=1.0, hideout=True)
+
+
+def urchin_camp(spec, rng, land, centre, toward, loot, sleepers=5, hideout=None):
     """Urchins squatting in the open, composed as Westwood furnishes their dens (Con02a, War03c: beds and hammocks of
     one kind side by side, a table ringed by stools, their pickings heaped together) round a fire, open toward
     `toward` (squares: the way in). The beds in a row behind the fire, their feet to it; the table and stools on one
     flank; the pickings on the other: crates side by side, sacks, the hoard's chest (loot), the shaman's place before
     it; stools round the fire; a lookout's stool toward the way in. Returns dict(fire, seats, lookout, chest, goods,
-    leader, posts) in world px, as bandit_camp, for kit/posts.camp_posts."""
+    leader, posts) in world px, as bandit_camp, for kit/posts.camp_posts. In a pocket of the earth or the rock (rock_pocket)
+    it is a den, as Westwood's urchins live (urchin_den)."""
+    if hideout or (hideout is None and rock_pocket(spec, centre)):
+        return urchin_den(spec, rng, land, centre, toward, loot, sleepers=sleepers)
     rng = own_rng(spec, "urchin_camp", centre)
     fx, fy = square_px(*centre)
     tx, ty = square_px(*toward)

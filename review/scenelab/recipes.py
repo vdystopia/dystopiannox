@@ -297,7 +297,7 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
             done = None
             for name in names:
                 th = S.THEMES[name]
-                for s in cands[:160]:
+                for s in cands[:400]:
                     n0 = len(m.d["objects"])
                     if th.stand == "wall":
                         x, y = square_px(s[0] + 0.5, s[1] - 0.5)
@@ -325,7 +325,20 @@ def _house_plan(roles, square=0):
             # (a market's square before its store: the store at the clearing's side, the square kept open in the
             # middle; the store at 4.5 squares had stood on the square itself, and no awning found room by it)
             back = (p.r - 5.5) if (square and p.town) else 4.5
-            _house(ctx, p, role, (p.c[0] - ux * back, p.c[1] - uy * back))
+            side = None
+            if square:                                   # its door toward the clearing (the market square before it)
+                # (the building's u runs along the squares' i, its v along j)
+                side = ("u_max" if ux > 0 else "u_min") if abs(ux) >= abs(uy) else ("v_max" if uy > 0 else "v_min")
+            h = _house(ctx, p, role, (p.c[0] - ux * back, p.c[1] - uy * back), side=side)
+            if square and h and h[1].entrances:
+                # the market's square before the store's door, six and a half squares out
+                from kit.village import _squares_of
+                foot = _squares_of(h[1].footprint)
+                fi, fj = sum(i for i, _ in foot) / len(foot), sum(j for _, j in foot) / len(foot)
+                di, dj = px_square(*h[1].entrances[0].px)
+                L = math.hypot(di - fi, dj - fj) or 1
+                p.scene_c = (di + (di - fi) / L * 6.5, dj + (dj - fj) / L * 6.5)      # (a door keeps 3 squares clear)
+                p.notes["scene_sq"] = list(p.scene_c)
             if square: _keep(ctx, p.scene_c, square)
     return plan
 
@@ -371,7 +384,10 @@ RECIPES = {
     # turns them into hideouts
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8)),
     "ogre_camp": dict(plan=_nothing, build=_camp_build("ogre_camp")),
-    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp")),
+    # Westwood's urchins live in dens dug in the earth (42 of 42: Dirt walls on DirtDark2, Con02a, War03c, War03d,
+    # Wiz01A): eight of ten in a pocket, the kit's own test (rock_pocket) turns them into dens
+    "urchin_camp": dict(plan=_nothing, build=_camp_build("urchin_camp"), caves=(1, 2, 3, 4, 5, 7, 8, 9),
+                        cave_wall="Dirt", cave_scale=1.3),
     "graveyard": dict(plan=_yard_plan("graveyard"), build=_yard_build, by_road=8.5),
     "quarry": dict(plan=_yard_plan("quarry"), build=_yard_build),
     "jail": dict(plan=_yard_plan("jail"), build=_yard_build),
