@@ -42,7 +42,7 @@ def _camp_build(kind):
         pop = _pop(ctx)
         for p in ctx["plots"]:
             rng = p.rng
-            site = camps.camp_site(m, land, p.scene_c, reach=5, road_clear=3.0, room=7)
+            site = camps.camp_site(m, land, p.scene_c, reach=p.r - 3, road_clear=3.0, room=7)     # as the designs let it
             toward = p.toward
             sleepers = {"small": 3, "typical": 4, "large": 6}[p.size]
             tents = {"small": 1, "typical": 2, "large": 3}[p.size]
@@ -50,7 +50,8 @@ def _camp_build(kind):
                 trade = "dig" if p.k % 4 == 3 else "bandit"
                 camp = camps.bandit_camp(m, rng, land, site, toward, loot=LOOT, sleepers=sleepers, tents=tents,
                                          trade=trade, finds=("MineCrystal01", "MineCrystal03", "CaveRocksSmall"))
-                posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=min(2, tents), watch=1 + (p.size == "large"),
+                # the designs' bands: 4-7 people, median 5 (Thornwick, Greywatch, Harrowby, Ambermere, Starwell)
+                posts = camp_posts(m, camp, square_px(*toward), sit=1 + (p.size != "small"), tents=1, watch=1,
                                    work=2 if trade == "dig" else 0)
                 kinds = dict(leader="Swordsman", sit="Swordsman", tent="Swordsman", watch="Archer", work="Swordsman")
                 p.notes.update(trade=trade, sleepers=sleepers, tents=tents)
