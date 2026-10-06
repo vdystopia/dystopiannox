@@ -253,13 +253,13 @@ def features(m, s):
     cots = [(t, x, y) for t, x, y in pcs if t in COT_FOOT]
     if fires:
         near_f = lambda x, y: min(math.hypot(x - a, y - b) for a, b in fires)
-        f["seat_fire"] = round(sum(40 <= near_f(x, y) <= 95 for x, y in seats) / len(seats), 3) if seats else 0.0
+        f["seat_fire"] = round(sum(40 <= near_f(x, y) <= 95 for x, y in seats) / len(seats), 3) if seats else None
         good = 0
         for t, x, y in cots:
             fx, fy = min(fires, key=lambda p: math.hypot(p[0] - x, p[1] - y))
             ux, uy = COT_FOOT[t]; L = math.hypot(fx - x, fy - y) or 1
             good += ((fx - x) * ux + (fy - y) * uy) / (L * math.sqrt(2)) > 0.5
-        f["bed_fire"] = round(good / len(cots), 3) if cots else 0.0
+        f["bed_fire"] = round(good / len(cots), 3) if cots else None
     else:
         f["seat_fire"] = f["bed_fire"] = None
     pairs = collections.defaultdict(list)

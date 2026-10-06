@@ -27,8 +27,8 @@ FAMILIES = [
     ("tent", r"^(OutdoorTraderPupTent|TraderTent|OgreHut)"),
     ("bed", r"^(Cot\d|UrchinBed|UrchinHammock|OgreBed|Bed\d|BedRoll|OgreBearskin|WolfPelt)"),
     ("seat", r"^(Bench\d|LightBench|CushionedBench|OgreBench|Stool\d?|OgreStool|UrchinStool|CushionedStool|"
-             r"DarkWoodenChair|Chair)"),
-    ("table", r"^(UrchinTable|OgreTable|SquareTable|OvalTable|Table|TraderDesk|Desk)"),
+             r"DarkWoodenChair|OldDarkWoodenChair|WoodenChair|Chair)"),
+    ("table", r"^(UrchinTable|OgreTable|SquareTable|OvalTable|RoundTable|SmallTable|Table|TraderDesk|Desk)"),
     ("cart", r"^(OutdoorTraderCart|MineOreCart\d|MineOreCartBroken\d|MineManaCart|MineOreCartWheel)"),
     ("store", r"^(Barrel\d?$|BarrelLOTD|LargeBarrel|PiledBarrels|WaterBarrel|Crate\d|DarkCrate|CrateSteel|BarrelSteel|"
               r"SackChest|OgreSack|TraderAppleCrate|Chest|DunMirChest|ChestUrchin|ChestOgre|StumpChest|Spitoon)"),
@@ -61,7 +61,8 @@ def family(t):
 
 
 def base(t):
-    """A type without its number (Crate1 and Crate2 are one kind)."""
+    """A type without its number (Crate1 and Crate2 are one kind); a trader's awning's frame and cloths one kind."""
+    if (t or "").startswith("TraderTent"): return "TraderTent"
     return re.sub(r"(\d+[a-hA-H]?|NE|NW|SE|SW|N|S|E|W)$", "", (t or "").replace("Immobile", "")) or t
 
 

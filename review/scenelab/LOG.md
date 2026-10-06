@@ -34,3 +34,16 @@ a well, a market stall, a wagon by a road), a lab gap more than a kit fault; fix
 "Every generated camp stamps the same template in the middle of its glade (bench T and cauldron at the fire, tents with
 bedrolls packed in a block behind, crates in a touching row with a cart); Westwood's camps are sparse, use their walls
 and spread their beds one by one." One camp backed its cart into the pond.
+
+## bandit_camp
+
+| Round | What changed (mapgen/kit/camps.py unless said) | AUC | Blind acc. | Blind gen / WW | Hard |
+|---|---|---|---|---|---|
+| baseline | | 1.00 | 100% | 3.6 / 7.2 | 0 |
+| r1-hideout | Westwood's camp evidence widened (outdoor cots and pup tents are camps too: Wiz03a, Wiz03b); bedrolls in pairs with a gap (58 px), not blocks; one bench, an occasional stool, no cauldron at the fire's front (25%), no straw dummy; barrels clustered and crates paired against the wall (`_snug`); fewer racks | 0.996 | | | 0 |
+| r2-backed | `camp_site` prefers a site whose nearest wall is just beyond the camp (a camp backs onto the wood's edge or cliff); the back faces a wall 150-300 px off; typed pieces may stand snug to a wall by `spacing.off_walls` (they had kept a whole cell off); a rock outcrop it shelters by; the wood may come up to the beds (`_hold_ground` 8.5 -> 6 squares) | 0.98 | | | 0 |
+| r3-wallrow | the sleeping row runs along the back wall: tent, its bedrolls beside it, tent...; a lone sleeper's bedroll joins a pair (never alone, GW-4), pairs laid whole or not at all; one kind of barrel, crate, rack and boulder to a camp; the lookout nearer, mostly without stool and quiver; awning parts count as one kind in the lab (both sides) | 0.97-1.00 | 100% | 5.4 / 6.6 | 0 |
+
+r3 judge: "Much better: clear zones and the user's structure. Still given away by the sleeping row laid tent-pair-tent-pair
+in a perfectly even line, the bench and chest crowding the fire's back, and a lookout set far off across empty grass."
+The classifier's own floor (Westwood against Westwood, random halves) is 0.56 +/- 0.2 for camps.

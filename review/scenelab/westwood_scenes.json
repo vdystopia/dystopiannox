@@ -305,7 +305,7 @@
 ],
 "features": {
 "n": 29,
-"types": 18,
+"types": 15,
 "most_share": 0.172,
 "entropy": 2.022,
 "fam_fire": 0.034,
@@ -350,7 +350,7 @@
 "cr_rel": 0.763,
 "overlap": 0.292,
 "seat_fire": 0.0,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -382,10 +382,7 @@
 "TorchPole": 2,
 "Stool": 1,
 "CrateSteel": 1,
-"TraderTentYellow&GreenTop": 2,
-"TraderTentYellow&GreenFrontSide": 1,
-"TraderTentYellow&GreenBackSide": 1,
-"TraderTentPoleDN": 1,
+"TraderTent": 5,
 "OutdoorTraderCart": 1,
 "Stump": 1
 },
@@ -608,8 +605,8 @@
 ],
 "features": {
 "n": 35,
-"types": 17,
-"most_share": 0.171,
+"types": 10,
+"most_share": 0.343,
 "entropy": 1.622,
 "fam_fire": 0.029,
 "fam_light": 0.057,
@@ -652,8 +649,8 @@
 "cr_nn": 0.0,
 "cr_rel": 0.651,
 "overlap": 0.207,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -676,14 +673,7 @@
 "CrateSteel": 3,
 "OutdoorTraderArmorRack": 3,
 "OutdoorTraderHelmPoles": 1,
-"TraderTentPoleDN": 2,
-"TraderTentRed&BlueTop": 2,
-"TraderTentRed&BlueFrontSide": 1,
-"TraderTentRed&BlueBackSide": 1,
-"TraderTentPoleUP": 2,
-"TraderTentPurple&OrangeTop": 2,
-"TraderTentPurple&OrangeFrontSide": 1,
-"TraderTentPurple&OrangeBackSide": 1
+"TraderTent": 12
 },
 "families": {
 "store": 8,
@@ -852,7 +842,7 @@
 "cr_rel": 0.0,
 "overlap": 0.333,
 "seat_fire": 1.0,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -1039,7 +1029,7 @@
 ],
 "features": {
 "n": 27,
-"types": 15,
+"types": 12,
 "most_share": 0.296,
 "entropy": 1.68,
 "fam_fire": 0.037,
@@ -1083,8 +1073,8 @@
 "cr_nn": 0.0,
 "cr_rel": 0.589,
 "overlap": 0.211,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -1107,10 +1097,7 @@
 "OutdoorTraderCart": 1,
 "OutdoorTraderArmorRack": 3,
 "TraderAppleCrate": 1,
-"TraderTentPoleDN": 2,
-"TraderTentRed&BlueTop": 2,
-"TraderTentRed&BlueFrontSide": 1,
-"TraderTentRed&BlueBackSide": 1,
+"TraderTent": 6,
 "CaveRockPillarTall": 1,
 "Stump": 2
 },
@@ -1282,7 +1269,7 @@
 ],
 "features": {
 "n": 26,
-"types": 14,
+"types": 11,
 "most_share": 0.231,
 "entropy": 1.721,
 "fam_fire": 0.0,
@@ -1347,10 +1334,7 @@
 "OutdoorTraderHelmPoles": 1,
 "OgreStraw": 3,
 "CrossroadArrowBothWays": 1,
-"TraderTentPoleDN": 2,
-"TraderTentRed&BlueTop": 2,
-"TraderTentRed&BlueFrontSide": 1,
-"TraderTentRed&BlueBackSide": 1,
+"TraderTent": 6,
 "OutdoorTraderCart": 1,
 "Barrel": 3,
 "CaveRocksSmall": 2
@@ -1686,8 +1670,8 @@
 "cr_nn": 119.0,
 "cr_rel": 0.915,
 "overlap": 0.0,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -1851,8 +1835,8 @@
 "cr_nn": 0.0,
 "cr_rel": 0.657,
 "overlap": 0.2,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -1996,8 +1980,8 @@
 "cr_nn": 68.9,
 "cr_rel": 0.94,
 "overlap": 0.0,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -2323,7 +2307,7 @@
 "cr_rel": 1.134,
 "overlap": 0.206,
 "seat_fire": 0.0,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -2887,8 +2871,8 @@
 "fam_light": 0.158,
 "fam_tent": 0.0,
 "fam_bed": 0.053,
-"fam_seat": 0.053,
-"fam_table": 0.0,
+"fam_seat": 0.158,
+"fam_table": 0.053,
 "fam_cart": 0.0,
 "fam_store": 0.579,
 "fam_rack": 0.0,
@@ -2903,7 +2887,7 @@
 "fam_bones": 0.0,
 "fam_rock": 0.0,
 "fam_sign": 0.0,
-"fam_other": 0.158,
+"fam_other": 0.0,
 "reach": 132.2,
 "spread": 91.5,
 "aniso": 0.662,
@@ -2929,7 +2913,7 @@
 },
 "details": {
 "pairs": {
-"other-other": 31.2,
+"seat-table": 31.2,
 "store-store": 29.0,
 "seat-store": 24.4,
 "light-store": 45.1,
@@ -2948,10 +2932,10 @@
 "Torch": 3
 },
 "families": {
-"other": 3,
+"seat": 3,
+"table": 1,
 "store": 11,
 "bed": 1,
-"seat": 1,
 "light": 3
 },
 "centre": [
@@ -3069,8 +3053,8 @@
 "cr_nn": 0.0,
 "cr_rel": 1.16,
 "overlap": 0.0,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -3485,7 +3469,7 @@
 "fam_light": 0.16,
 "fam_tent": 0.0,
 "fam_bed": 0.2,
-"fam_seat": 0.0,
+"fam_seat": 0.08,
 "fam_table": 0.04,
 "fam_cart": 0.0,
 "fam_store": 0.28,
@@ -3501,7 +3485,7 @@
 "fam_bones": 0.0,
 "fam_rock": 0.24,
 "fam_sign": 0.0,
-"fam_other": 0.08,
+"fam_other": 0.0,
 "reach": 240.1,
 "spread": 177.4,
 "aniso": 0.624,
@@ -3530,7 +3514,7 @@
 "light-table": 36.1,
 "bed-light": 48.1,
 "bed-store": 35.7,
-"other-table": 39.5,
+"seat-table": 39.5,
 "light-store": 30.6,
 "bed-bed": 82.9,
 "rock-rock": 19.1,
@@ -3556,7 +3540,7 @@
 "families": {
 "light": 4,
 "store": 7,
-"other": 2,
+"seat": 2,
 "bed": 5,
 "rock": 6,
 "table": 1
@@ -3972,8 +3956,8 @@
 "cr_nn": 166.7,
 "cr_rel": 0.872,
 "overlap": 0.0,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -10167,7 +10151,7 @@
 "cr_rel": 0.582,
 "overlap": 0.062,
 "seat_fire": 1.0,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -10323,8 +10307,8 @@
 "cr_nn": 0.0,
 "cr_rel": 0.0,
 "overlap": 0.25,
-"seat_fire": 0.0,
-"bed_fire": 0.0
+"seat_fire": null,
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -10451,7 +10435,7 @@
 "cr_rel": 0.0,
 "overlap": 0.25,
 "seat_fire": 0.0,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -10609,7 +10593,7 @@
 "cr_rel": 0.972,
 "overlap": 0.0,
 "seat_fire": 0.333,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -10780,7 +10764,7 @@
 "cr_rel": 0.929,
 "overlap": 0.077,
 "seat_fire": 0.5,
-"bed_fire": 0.0
+"bed_fire": null
 },
 "details": {
 "pairs": {
@@ -11412,8 +11396,8 @@
 ],
 "features": {
 "n": 11,
-"types": 7,
-"most_share": 0.182,
+"types": 4,
+"most_share": 0.545,
 "entropy": 0.689,
 "fam_fire": 0.0,
 "fam_light": 0.0,
@@ -11469,10 +11453,7 @@
 "Barrel": 2,
 "CrateSteel": 1,
 "WaterBarrel": 2,
-"TraderTentPoleUP": 2,
-"TraderTentPurple&OrangeTop": 2,
-"TraderTentPurple&OrangeFrontSide": 1,
-"TraderTentPurple&OrangeBackSide": 1
+"TraderTent": 6
 },
 "families": {
 "store": 5,
@@ -11579,8 +11560,8 @@
 ],
 "features": {
 "n": 15,
-"types": 12,
-"most_share": 0.2,
+"types": 9,
+"most_share": 0.467,
 "entropy": 1.708,
 "fam_fire": 0.0,
 "fam_light": 0.0,
@@ -11641,10 +11622,7 @@
 "MineOreCart": 1,
 "Rock": 1,
 "CushionedStool": 1,
-"TraderTentPoleUP": 3,
-"TraderTentGreen&RedTop": 2,
-"TraderTentGreen&RedFrontSide": 1,
-"TraderTentGreen&RedBackSide": 1,
+"TraderTent": 7,
 "CrateSteel": 1,
 "WaterBarrel": 1,
 "FairyJar": 1,
@@ -11743,8 +11721,8 @@
 ],
 "features": {
 "n": 11,
-"types": 7,
-"most_share": 0.182,
+"types": 4,
+"most_share": 0.545,
 "entropy": 0.689,
 "fam_fire": 0.0,
 "fam_light": 0.0,
@@ -11800,10 +11778,7 @@
 "Barrel": 2,
 "CrateSteel": 1,
 "WaterBarrel": 2,
-"TraderTentPoleUP": 2,
-"TraderTentPurple&OrangeTop": 2,
-"TraderTentPurple&OrangeFrontSide": 1,
-"TraderTentPurple&OrangeBackSide": 1
+"TraderTent": 6
 },
 "families": {
 "store": 5,
@@ -11919,8 +11894,8 @@
 ],
 "features": {
 "n": 16,
-"types": 9,
-"most_share": 0.25,
+"types": 6,
+"most_share": 0.375,
 "entropy": 1.342,
 "fam_fire": 0.0,
 "fam_light": 0.125,
@@ -11978,10 +11953,7 @@
 },
 "kinds": {
 "Barrel": 4,
-"TraderTentPoleUP": 2,
-"TraderTentPurple&OrangeTop": 2,
-"TraderTentPurple&OrangeFrontSide": 1,
-"TraderTentPurple&OrangeBackSide": 1,
+"TraderTent": 6,
 "TraderAppleCrate": 2,
 "TraderArmorRack": 1,
 "TorchPole": 2,
