@@ -92,6 +92,19 @@ RETYPE = {
     ("Con03A", (142, 223)): ("guardroom", "an 8-tile post by a barred door: a table of food and two chairs"),
     ("Con03A", (152, 213)): ("guardroom", "an 8-tile post by a barred door: a table and two chairs"),
     ("Con09a", (54, 126)): ("other", "a palisade pen with a chest, a table and meat: an ogres' shack"),
+    # the guardroom's and the cell's evidence rooms (kit/roomtypes.py evidence), which the contents had filed as armouries
+    # and barracks (an armoury with cots and a table of food; a cell of straw and a cot)
+    ("Con03A", (110, 112)): ("guardroom", "the watch room: two cots, the table of food with chairs, swords hung, chests"),
+    ("Con06a", (69, 199)): ("guardroom", "the watch's tables with chairs and benches, shields and swords hung, barrels"),
+    ("Con06b", (179, 71)): ("guardroom", "a table ringed by six chairs under hanging shields, a barrel"),
+    ("Con03A", (81, 83)): ("guardroom", "two cots on straw, Dun Mir chests, a barrel: the watch's bunks"),
+    ("Con02a", (93, 175)): ("guardroom", "the gaoler's: a table under racked pole arms, swords, a crossbow and bows"),
+    ("War07A", (160, 230)): ("cell", "a cell: straw strewn round a cot"),
+    ("War07A", (164, 226)): ("cell", "a cell: straw strewn round a cot"),
+    ("Con11a", (174, 44)): ("cell", "the ogres' pen: straw"),
+    ("Con11a", (166, 52)): ("cell", "the ogres' pen: straw, a crude obelisk"),
+    ("Con11a", (194, 80)): ("cell", "the ogres' pen: straw, a crude obelisk"),
+    ("Con11a", (182, 36)): ("cell", "the ogres' pen: straw, a barrel, a crude obelisk"),
 }
 
 

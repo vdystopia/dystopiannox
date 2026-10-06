@@ -115,3 +115,40 @@ that are the solar's evidence), dropped 2 (Con07F's dais hall, Con09a's ogre sha
 tiles), living room 15 -> 9; guardroom now has 8 Westwood rooms of its own, cell 1, solar 4. `rules/rooms/westwood.json`
 and `review/roomlab/westwood_features.json` rebuilt (233 rooms; only these rooms and the kitchen's focal features
 changed). Galleries of bedroom and living room re-rendered.
+
+## study
+
+Thin: Westwood has two studies (Con02a's); the classifier compares with the pool (the two studies and 7 libraries),
+FALLBACK. The user's verdict leads here: Starwell's archmagister's study was "exceptional ... full, balanced, and
+themed" (SW-7), and it is this recipe's composition (the desk among bookcases, a meeting table on a carpet, a curio).
+
+| Round | Change | AUC (pool) | Cross | Blind | Hard | Roomscore |
+|---|---|---|---|---|---|---|
+| ref | - | 1.00 | 0.955 | queued | 4 (must: no chest 2; galava shell 2) | 0.98 |
+| r1 | the hearth in 0.6 (Westwood's studies and libraries: 5 of 9), curios, statues and plants occasional, book stacks only over 200 area | 0.990 | 0.985 | - | 7 (sparse 3, way in 3, reads as a living room 1) | - |
+| r2 | the fill back to ref's; the chest before the shelves; hearth 0.3 | 0.998 | 0.983 | - | 4 (galava shell 3, reads as a living room 1) | - |
+| r3 | no hearth (it made a study read as a living room); plants 0.4 x1 | 0.994 | 0.990 | queued | 4 (galava shell 3: an ArchedDoor on a wall piece and the way in it blocks; sparse 1) | 0.98 |
+
+Stopped at r3: the pool's measures say little (what tells our studies from Westwood's libraries is the meeting table
+and curio in the middle, which the user's praised study has), and every change that moved the measures cost a hard
+rule. Fixed: the chest every study must have. Left for the shells agent: the galava tower and town-house shells put
+an ArchedDoor on a wall piece in 3 of 10 studies; the checker then also finds the way in blocked.
+
+## solar
+
+Thin: Westwood's four lords' chambers (Con07D, Con06b's two, Wiz03b; 98-196 tiles), retyped from the bedroom set
+this session; the classifier compares with the pool (bedrooms, living rooms, studies: small rooms), so its AUC stays
+1.00 whatever the furniture does. Compared by hand with the four (`cmp.py solar <iter> solar`).
+
+| Round | Change | AUC (pool) | Cross | Blind | Hard | Roomscore |
+|---|---|---|---|---|---|---|
+| ref | - | 1.00 | 0.982 | queued | 0 | - |
+| r1 | no plants; one bench, a bearskin or red rug; whole carpet 0.6; no decoration pass; top-up chests only | 1.00 | 0.971 | - | 0 | - |
+| r2 | a second sitting group in the middle; hangings back (decorate) and rugs 1-2; wall pieces 0.2 off the wall | 1.00 | 0.973 | - | 0 | - |
+| r3 | a bench drawn up before the hearth; carpet 0.8 | 1.00 | 0.973 | queued | 0 | - |
+
+Against the four by hand, r3 is closer on kinds (no plants, rugs, tapestries) but not on the middle: Westwood's
+chambers are zoned by the shell (Con07D's hearth stands in a partition across the middle, the bed in its own end) and
+carpeted wall to wall, where ours are open squares of 120-220 tiles with two small table sets in a big bare floor.
+That is the shells agent's (a partition or an alcove for the bed end); the furniture cannot fill 200 tiles at
+Westwood's 0.05-0.09 cover without reading as empty.

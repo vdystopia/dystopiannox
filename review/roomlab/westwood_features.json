@@ -3,289 +3,6 @@
 "measured_by": "review/roomlab/metrics.py features()",
 "rooms": [
 {
-"map": "Con02a",
-"type": "armoury",
-"culture": "town",
-"centre": [
-93,
-175
-],
-"tiles": 25,
-"by_hand": false,
-"features": {
-"tiles": 25,
-"cover": 0.1339,
-"open": 0.5902,
-"middle": 0.059,
-"per_tile": 0.24,
-"types": 6,
-"most_share": 0.1667,
-"free_most": 1,
-"walls": 3,
-"lined": 0.1922,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.4,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 2.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 0.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 1.0,
-"wall_gap": 0.6487,
-"mid_share": 0.0,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.6937,
-"nn_med": 1.6253,
-"overlaps": 0.0,
-"doors": 3,
-"focal_n": 3,
-"focal_back": 1.0,
-"focal_door": 0.5927,
-"way_in": 5.3893,
-"way_in_frac": 0.4899,
-"sym": 0.1667,
-"align": 0.0,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"TraderPoleArm": 1,
-"TraderHangingSwords": 1,
-"TraderHangingCrossbow": 1,
-"TraderBowRack": 1,
-"TraderQuiverRack": 1,
-"Table": 1
-},
-"fam": {
-"shop_rack": 5,
-"table": 1
-},
-"wall_pieces": [
-[
-"TraderPoleArm3",
-"TraderPoleArm",
-"NW"
-],
-[
-"TraderHangingSwords1",
-"TraderHangingSwords",
-"NE"
-],
-[
-"TraderHangingCrossbow1",
-"TraderHangingCrossbow",
-"NE"
-],
-[
-"TraderBowRack2",
-"TraderBowRack",
-"NW"
-],
-[
-"TraderQuiverRack",
-"TraderQuiverRack",
-"SE"
-],
-[
-"Table1",
-"Table",
-"NE"
-]
-],
-"pairs": {
-"shop_rack|shop_rack": 0.694,
-"shop_rack|table": 2.557
-},
-"runs": [],
-"focal": "TraderPoleArm3",
-"doors": [
-"SW",
-"SW",
-"NW"
-],
-"overlap_pairs": []
-}
-},
-{
-"map": "Con03A",
-"type": "armoury",
-"culture": "dunmir",
-"centre": [
-110,
-112
-],
-"tiles": 63,
-"by_hand": false,
-"features": {
-"tiles": 63,
-"cover": 0.0984,
-"open": 0.5944,
-"middle": 0.0641,
-"per_tile": 0.254,
-"types": 13,
-"most_share": 0.25,
-"free_most": 4,
-"walls": 3,
-"lined": 0.1596,
-"fam_bed": 0.3175,
-"fam_nightstand": 0.0,
-"fam_storage": 0.7937,
-"fam_table": 0.1587,
-"fam_chair": 0.6349,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.3175,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 0.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.1587,
-"fam_rug": 0.0,
-"fam_clutter": 0.1587,
-"wall_share": 0.5,
-"wall_gap": 0.6925,
-"mid_share": 0.3333,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": -0.445,
-"nn_med": 1.1292,
-"overlaps": 0.8333,
-"doors": 1,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 11.4883,
-"way_in_frac": 0.7659,
-"sym": 0.2667,
-"align": 0.75,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0159
-},
-"details": {
-"kinds": {
-"WallTrophyBear": 1,
-"TraderHangingSwords": 2,
-"WaterBarrel": 1,
-"WoodenChair": 4,
-"Cot": 2,
-"DunMirChest": 4,
-"RoundTableWithFood": 1,
-"Spitoon": 1
-},
-"fam": {
-"wall_decor": 1,
-"shop_rack": 2,
-"storage": 5,
-"chair": 4,
-"bed": 2,
-"table": 1,
-"clutter": 1
-},
-"wall_pieces": [
-[
-"WallTrophyBear1",
-"WallTrophyBear",
-"NW"
-],
-[
-"TraderHangingSwords2",
-"TraderHangingSwords",
-"NW"
-],
-[
-"TraderHangingSwords1",
-"TraderHangingSwords",
-"NE"
-],
-[
-"Cot3",
-"Cot",
-"SE"
-],
-[
-"Cot3",
-"Cot",
-"SE"
-],
-[
-"DunMirChest3",
-"DunMirChest",
-"NE"
-],
-[
-"DunMirChest4",
-"DunMirChest",
-"NW"
-],
-[
-"DunMirChest3",
-"DunMirChest",
-"NE"
-],
-[
-"DunMirChest3",
-"DunMirChest",
-"NE"
-]
-],
-"pairs": {
-"bed|storage": 1.626,
-"chair|table": -0.178,
-"bed|bed": 0.822,
-"storage|storage": 1.437,
-"bed|chair": 1.656
-},
-"runs": [],
-"focal": null,
-"doors": [
-"NW"
-],
-"overlap_pairs": [
-[
-"WoodenChair1",
-"RoundTableWithFood",
--0.51
-]
-]
-}
-},
-{
 "map": "Con05A",
 "type": "armoury",
 "culture": "town",
@@ -436,153 +153,6 @@
 -0.34
 ]
 ]
-}
-},
-{
-"map": "Con06a",
-"type": "armoury",
-"culture": "dunmir",
-"centre": [
-69,
-199
-],
-"tiles": 55,
-"by_hand": false,
-"features": {
-"tiles": 55,
-"cover": 0.1036,
-"open": 0.5512,
-"middle": 0.063,
-"per_tile": 0.2909,
-"types": 13,
-"most_share": 0.1875,
-"free_most": 3,
-"walls": 2,
-"lined": 0.0332,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.5455,
-"fam_table": 0.5455,
-"fam_chair": 0.5455,
-"fam_bench": 0.7273,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.5455,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 0.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.3846,
-"wall_gap": 0.7837,
-"mid_share": 0.3846,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.5153,
-"nn_med": 0.7286,
-"overlaps": 0.0,
-"doors": 3,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 2.5387,
-"way_in_frac": 0.1104,
-"sym": 0.3125,
-"align": 0.1538,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0909
-},
-"details": {
-"kinds": {
-"WoodenChair": 3,
-"Barrel": 2,
-"DunMirChest": 1,
-"LightBench": 2,
-"TraderShieldWallHanging": 2,
-"TraderHangingSwords": 1,
-"CushionedBench": 2,
-"RoundTable": 1,
-"SquareTable": 1,
-"Table": 1
-},
-"fam": {
-"chair": 3,
-"storage": 3,
-"bench": 4,
-"shop_rack": 3,
-"table": 3
-},
-"wall_pieces": [
-[
-"Barrel",
-"Barrel",
-"NW"
-],
-[
-"Barrel",
-"Barrel",
-"NW"
-],
-[
-"DunMirChest4",
-"DunMirChest",
-"NW"
-],
-[
-"WoodenChair3",
-"WoodenChair",
-"NE"
-],
-[
-"TraderShieldWallHanging3",
-"TraderShieldWallHanging",
-"NE"
-],
-[
-"TraderShieldWallHanging3",
-"TraderShieldWallHanging",
-"NE"
-],
-[
-"TraderHangingSwords1",
-"TraderHangingSwords",
-"NE"
-],
-[
-"SquareTable1",
-"SquareTable",
-"NE"
-]
-],
-"pairs": {
-"chair|table": 0.7,
-"storage|storage": 1.622,
-"chair|storage": 0.832,
-"bench|table": 0.64,
-"bench|bench": 0.867
-},
-"runs": [],
-"focal": null,
-"doors": [
-"SE",
-"SW",
-"NE"
-],
-"overlap_pairs": []
 }
 },
 {
@@ -1005,123 +575,6 @@
 "SW",
 "SW",
 "SE"
-],
-"overlap_pairs": []
-}
-},
-{
-"map": "Con06b",
-"type": "armoury",
-"culture": "dunmir",
-"centre": [
-179,
-71
-],
-"tiles": 25,
-"by_hand": false,
-"features": {
-"tiles": 25,
-"cover": 0.1292,
-"open": 0.5738,
-"middle": 0.1077,
-"per_tile": 0.44,
-"types": 8,
-"most_share": 0.5455,
-"free_most": 6,
-"walls": 2,
-"lined": 0.0,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.4,
-"fam_table": 0.4,
-"fam_chair": 2.4,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 1.2,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 0.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.125,
-"wall_gap": 0.8018,
-"mid_share": 0.375,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.0108,
-"nn_med": 0.1438,
-"overlaps": 0.0,
-"doors": 3,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 3.3415,
-"way_in_frac": 0.3038,
-"sym": 0.6364,
-"align": 0.75,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.04
-},
-"details": {
-"kinds": {
-"Barrel": 1,
-"TraderShieldWallHanging": 3,
-"OldDarkWoodenChair": 6,
-"Table": 1
-},
-"fam": {
-"storage": 1,
-"shop_rack": 3,
-"chair": 6,
-"table": 1
-},
-"wall_pieces": [
-[
-"Barrel",
-"Barrel",
-"NW"
-],
-[
-"TraderShieldWallHanging6",
-"TraderShieldWallHanging",
-"NW"
-],
-[
-"TraderShieldWallHanging6",
-"TraderShieldWallHanging",
-"NW"
-],
-[
-"TraderShieldWallHanging1",
-"TraderShieldWallHanging",
-"NE"
-]
-],
-"pairs": {
-"chair|storage": 1.234,
-"chair|table": 0.122
-},
-"runs": [],
-"focal": null,
-"doors": [
-"SW",
-"SE",
-"NW"
 ],
 "overlap_pairs": []
 }
@@ -2112,137 +1565,6 @@
 }
 },
 {
-"map": "Con03A",
-"type": "barracks",
-"culture": "dunmir",
-"centre": [
-81,
-83
-],
-"tiles": 15,
-"by_hand": false,
-"features": {
-"tiles": 15,
-"cover": 0.2429,
-"open": 0.4103,
-"middle": 0.0,
-"per_tile": 0.4667,
-"types": 4,
-"most_share": 0.2857,
-"free_most": 2,
-"walls": 4,
-"lined": 0.2563,
-"fam_bed": 1.3333,
-"fam_nightstand": 0.0,
-"fam_storage": 2.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 1.3333,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 1.0,
-"wall_gap": 0.472,
-"mid_share": 0.0,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": -0.0996,
-"nn_med": 0.6799,
-"overlaps": 0.0,
-"doors": 1,
-"focal_n": 2,
-"focal_back": 0.0,
-"focal_door": 0.5662,
-"way_in": 6.736,
-"way_in_frac": 0.9623,
-"sym": 0.7143,
-"align": 0.5714,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"DunMirChest": 2,
-"Barrel": 1,
-"Straw": 2,
-"Cot": 2
-},
-"fam": {
-"storage": 3,
-"straw": 2,
-"bed": 2
-},
-"wall_pieces": [
-[
-"DunMirChest4",
-"DunMirChest",
-"NW"
-],
-[
-"DunMirChest4",
-"DunMirChest",
-"NW"
-],
-[
-"Barrel",
-"Barrel",
-"NW"
-],
-[
-"Straw1",
-"Straw",
-"SE"
-],
-[
-"Straw1",
-"Straw",
-"SW"
-],
-[
-"Cot1",
-"Cot",
-"SW"
-],
-[
-"Cot1",
-"Cot",
-"NE"
-]
-],
-"pairs": {
-"storage|storage": 1.074,
-"bed|storage": 0.68,
-"straw|straw": -0.1,
-"bed|straw": 0.801
-},
-"runs": [],
-"focal": "Cot1",
-"doors": [
-"SE"
-],
-"overlap_pairs": []
-}
-},
-{
 "map": "Con05C",
 "type": "barracks",
 "culture": "ogre",
@@ -3082,383 +2404,6 @@
 "type": "barracks",
 "culture": "ogre",
 "centre": [
-166,
-52
-],
-"tiles": 30,
-"by_hand": false,
-"features": {
-"tiles": 30,
-"cover": 0.06,
-"open": 0.6528,
-"middle": 0.0495,
-"per_tile": 0.2333,
-"types": 4,
-"most_share": 0.8571,
-"free_most": 1,
-"walls": 1,
-"lined": 0.0,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.3333,
-"fam_column": 0.0,
-"fam_straw": 2.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.0,
-"wall_gap": 0.25,
-"mid_share": 0.7143,
-"max_run": 0,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": -0.9257,
-"nn_med": -0.317,
-"overlaps": 2.8571,
-"doors": 1,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 7.6024,
-"way_in_frac": 0.6911,
-"sym": 0.1429,
-"align": 0.5714,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"OgreStraw": 6,
-"ObeliskPrimitive": 1
-},
-"fam": {
-"straw": 6,
-"statue": 1
-},
-"wall_pieces": [],
-"pairs": {
-"straw|straw": -0.317,
-"statue|straw": 2.723
-},
-"runs": [],
-"focal": null,
-"doors": [
-"NW"
-],
-"overlap_pairs": [
-[
-"OgreStraw1",
-"OgreStraw1",
--0.93
-],
-[
-"OgreStraw1",
-"OgreStraw3",
--0.32
-]
-]
-}
-},
-{
-"map": "Con11a",
-"type": "barracks",
-"culture": "ogre",
-"centre": [
-174,
-44
-],
-"tiles": 35,
-"by_hand": false,
-"features": {
-"tiles": 35,
-"cover": 0.0286,
-"open": 0.759,
-"middle": 0.0143,
-"per_tile": 0.1143,
-"types": 2,
-"most_share": 1.0,
-"free_most": 0,
-"walls": 0,
-"lined": 0.0,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 1.1429,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.0,
-"wall_gap": 0.25,
-"mid_share": 0.5,
-"max_run": 0,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.9968,
-"nn_med": 1.1523,
-"overlaps": 0.0,
-"doors": 1,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 11,
-"way_in_frac": 1.0,
-"sym": 0.75,
-"align": 0.5,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"OgreStraw": 4
-},
-"fam": {
-"straw": 4
-},
-"wall_pieces": [],
-"pairs": {
-"straw|straw": 1.152
-},
-"runs": [],
-"focal": null,
-"doors": [
-"NW"
-],
-"overlap_pairs": []
-}
-},
-{
-"map": "Con11a",
-"type": "barracks",
-"culture": "ogre",
-"centre": [
-182,
-36
-],
-"tiles": 30,
-"by_hand": false,
-"features": {
-"tiles": 30,
-"cover": 0.07,
-"open": 0.4722,
-"middle": 0.0413,
-"per_tile": 0.2667,
-"types": 5,
-"most_share": 0.75,
-"free_most": 1,
-"walls": 2,
-"lined": 0.0,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.3333,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.3333,
-"fam_column": 0.0,
-"fam_straw": 2.0,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.125,
-"wall_gap": 0.7148,
-"mid_share": 0.5,
-"max_run": 1,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.4656,
-"nn_med": 1.4181,
-"overlaps": 0.0,
-"doors": 1,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 2.1241,
-"way_in_frac": 0.1931,
-"sym": 0.5,
-"align": 0.25,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"Barrel": 1,
-"OgreStraw": 6,
-"ObeliskPrimitive": 1
-},
-"fam": {
-"storage": 1,
-"straw": 6,
-"statue": 1
-},
-"wall_pieces": [
-[
-"Barrel2",
-"Barrel",
-"NE"
-]
-],
-"pairs": {
-"storage|straw": 2.454,
-"straw|straw": 1.414,
-"statue|straw": 3.649
-},
-"runs": [],
-"focal": null,
-"doors": [
-"NW"
-],
-"overlap_pairs": []
-}
-},
-{
-"map": "Con11a",
-"type": "barracks",
-"culture": "ogre",
-"centre": [
-194,
-80
-],
-"tiles": 30,
-"by_hand": false,
-"features": {
-"tiles": 30,
-"cover": 0.0435,
-"open": 0.6667,
-"middle": 0.033,
-"per_tile": 0.1667,
-"types": 4,
-"most_share": 0.8,
-"free_most": 1,
-"walls": 1,
-"lined": 0.0,
-"fam_bed": 0.0,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.3333,
-"fam_column": 0.0,
-"fam_straw": 1.3333,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.0,
-"wall_gap": 0.25,
-"mid_share": 0.4,
-"max_run": 0,
-"runs3": 0,
-"showpiece_rep": 0,
-"nn_p10": 0.8039,
-"nn_med": 1.0889,
-"overlaps": 0.0,
-"doors": 1,
-"focal_n": 0,
-"focal_back": null,
-"focal_door": null,
-"way_in": 11,
-"way_in_frac": 1.0,
-"sym": 0.6,
-"align": 0.0,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"OgreStraw": 4,
-"ObeliskPrimitive": 1
-},
-"fam": {
-"straw": 4,
-"statue": 1
-},
-"wall_pieces": [],
-"pairs": {
-"straw|straw": 0.946,
-"statue|straw": 6.035
-},
-"runs": [],
-"focal": null,
-"doors": [
-"SE"
-],
-"overlap_pairs": []
-}
-},
-{
-"map": "Con11a",
-"type": "barracks",
-"culture": "ogre",
-"centre": [
 202,
 72
 ],
@@ -3745,367 +2690,6 @@
 "NW"
 ],
 "overlap_pairs": []
-}
-},
-{
-"map": "War07A",
-"type": "barracks",
-"culture": "town",
-"centre": [
-160,
-230
-],
-"tiles": 13,
-"by_hand": false,
-"features": {
-"tiles": 13,
-"cover": 0.25,
-"open": 0.5429,
-"middle": 0.0,
-"per_tile": 0.7692,
-"types": 2,
-"most_share": 0.9,
-"free_most": 9,
-"walls": 3,
-"lined": 0.1419,
-"fam_bed": 0.7692,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 6.9231,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.9,
-"wall_gap": 0.7328,
-"mid_share": 0.0,
-"max_run": 6,
-"runs3": 1,
-"showpiece_rep": 0,
-"nn_p10": -1.1431,
-"nn_med": -0.817,
-"overlaps": 16.0,
-"doors": 1,
-"focal_n": 1,
-"focal_back": 1.0,
-"focal_door": 0.7191,
-"way_in": 9.385,
-"way_in_frac": 0.8532,
-"sym": 0.0,
-"align": 0.9,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"Straw": 9,
-"Cot": 1
-},
-"fam": {
-"straw": 9,
-"bed": 1
-},
-"wall_pieces": [
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Straw2",
-"Straw",
-"NW"
-],
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Straw2",
-"Straw",
-"NW"
-],
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Straw2",
-"Straw",
-"SW"
-],
-[
-"Cot1",
-"Cot",
-"NE"
-]
-],
-"pairs": {
-"straw|straw": -0.882,
-"bed|straw": 2.202
-},
-"runs": [
-[
-6,
-"Straw",
-"SW"
-]
-],
-"focal": "Cot1",
-"doors": [
-"SE"
-],
-"overlap_pairs": [
-[
-"Straw2",
-"Straw2",
--0.97
-],
-[
-"Straw2",
-"Straw2",
--0.66
-],
-[
-"Straw2",
-"Straw2",
--0.36
-],
-[
-"Straw2",
-"Straw2",
--0.49
-],
-[
-"Straw2",
-"Straw2",
--0.4
-],
-[
-"Straw2",
-"Straw2",
--0.75
-],
-[
-"Straw2",
-"Straw2",
--0.75
-],
-[
-"Straw2",
-"Straw2",
--0.36
-]
-]
-}
-},
-{
-"map": "War07A",
-"type": "barracks",
-"culture": "town",
-"centre": [
-164,
-226
-],
-"tiles": 13,
-"by_hand": false,
-"features": {
-"tiles": 13,
-"cover": 0.3009,
-"open": 0.5429,
-"middle": 0.0,
-"per_tile": 1.0,
-"types": 3,
-"most_share": 0.9231,
-"free_most": 12,
-"walls": 3,
-"lined": 0.071,
-"fam_bed": 0.7692,
-"fam_nightstand": 0.0,
-"fam_storage": 0.0,
-"fam_table": 0.0,
-"fam_chair": 0.0,
-"fam_bench": 0.0,
-"fam_desk": 0.0,
-"fam_shelves": 0.0,
-"fam_fireplace": 0.0,
-"fam_stove": 0.0,
-"fam_lab": 0.0,
-"fam_smithy": 0.0,
-"fam_counter_bar": 0.0,
-"fam_counter_shop": 0.0,
-"fam_shop_rack": 0.0,
-"fam_altar": 0.0,
-"fam_throne": 0.0,
-"fam_tomb": 0.0,
-"fam_statue": 0.0,
-"fam_column": 0.0,
-"fam_straw": 9.2308,
-"fam_plant": 0.0,
-"fam_wall_decor": 0.0,
-"fam_rug": 0.0,
-"fam_clutter": 0.0,
-"wall_share": 0.6154,
-"wall_gap": 0.3415,
-"mid_share": 0.0,
-"max_run": 5,
-"runs3": 1,
-"showpiece_rep": 0,
-"nn_p10": -0.9083,
-"nn_med": -0.4909,
-"overlaps": 10.7692,
-"doors": 1,
-"focal_n": 1,
-"focal_back": 1.0,
-"focal_door": 0.7416,
-"way_in": 3.2546,
-"way_in_frac": 0.2959,
-"sym": 0.5385,
-"align": 0.9231,
-"statues_to_wall": 0,
-"front_faced": 0.0,
-"odd_facing": 0.0,
-"lights_per_tile": 0.0
-},
-"details": {
-"kinds": {
-"Straw": 12,
-"Cot": 1
-},
-"fam": {
-"straw": 12,
-"bed": 1
-},
-"wall_pieces": [
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Straw2",
-"Straw",
-"SE"
-],
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Straw2",
-"Straw",
-"NE"
-],
-[
-"Cot1",
-"Cot",
-"NW"
-]
-],
-"pairs": {
-"straw|straw": -0.491,
-"bed|straw": 0.192
-},
-"runs": [
-[
-5,
-"Straw",
-"NE"
-]
-],
-"focal": "Cot1",
-"doors": [
-"SE"
-],
-"overlap_pairs": [
-[
-"Straw1",
-"Straw2",
--0.58
-],
-[
-"Straw1",
-"Straw2",
--0.36
-],
-[
-"Straw1",
-"Straw2",
--0.45
-],
-[
-"Straw2",
-"Straw2",
--0.49
-],
-[
-"Straw2",
-"Straw2",
--0.97
-],
-[
-"Straw2",
-"Straw2",
--0.36
-],
-[
-"Straw2",
-"Straw2",
--0.49
-],
-[
-"Straw2",
-"Straw2",
--0.32
-]
-]
 }
 },
 {
@@ -8148,6 +6732,744 @@
 "NE"
 ],
 "overlap_pairs": []
+}
+},
+{
+"map": "Con11a",
+"type": "cell",
+"culture": "ogre",
+"centre": [
+166,
+52
+],
+"tiles": 30,
+"by_hand": true,
+"features": {
+"tiles": 30,
+"cover": 0.06,
+"open": 0.6528,
+"middle": 0.0495,
+"per_tile": 0.2333,
+"types": 4,
+"most_share": 0.8571,
+"free_most": 1,
+"walls": 1,
+"lined": 0.0,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.3333,
+"fam_column": 0.0,
+"fam_straw": 2.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.0,
+"wall_gap": 0.25,
+"mid_share": 0.7143,
+"max_run": 0,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": -0.9257,
+"nn_med": -0.317,
+"overlaps": 2.8571,
+"doors": 1,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
+"way_in": 7.6024,
+"way_in_frac": 0.6911,
+"sym": 0.1429,
+"align": 0.5714,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"OgreStraw": 6,
+"ObeliskPrimitive": 1
+},
+"fam": {
+"straw": 6,
+"statue": 1
+},
+"wall_pieces": [],
+"pairs": {
+"straw|straw": -0.317,
+"statue|straw": 2.723
+},
+"runs": [],
+"focal": null,
+"doors": [
+"NW"
+],
+"overlap_pairs": [
+[
+"OgreStraw1",
+"OgreStraw1",
+-0.93
+],
+[
+"OgreStraw1",
+"OgreStraw3",
+-0.32
+]
+]
+}
+},
+{
+"map": "Con11a",
+"type": "cell",
+"culture": "ogre",
+"centre": [
+174,
+44
+],
+"tiles": 35,
+"by_hand": true,
+"features": {
+"tiles": 35,
+"cover": 0.0286,
+"open": 0.759,
+"middle": 0.0143,
+"per_tile": 0.1143,
+"types": 2,
+"most_share": 1.0,
+"free_most": 0,
+"walls": 0,
+"lined": 0.0,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 1.1429,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.0,
+"wall_gap": 0.25,
+"mid_share": 0.5,
+"max_run": 0,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.9968,
+"nn_med": 1.1523,
+"overlaps": 0.0,
+"doors": 1,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
+"way_in": 11,
+"way_in_frac": 1.0,
+"sym": 0.75,
+"align": 0.5,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"OgreStraw": 4
+},
+"fam": {
+"straw": 4
+},
+"wall_pieces": [],
+"pairs": {
+"straw|straw": 1.152
+},
+"runs": [],
+"focal": null,
+"doors": [
+"NW"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "Con11a",
+"type": "cell",
+"culture": "ogre",
+"centre": [
+182,
+36
+],
+"tiles": 30,
+"by_hand": true,
+"features": {
+"tiles": 30,
+"cover": 0.07,
+"open": 0.4722,
+"middle": 0.0413,
+"per_tile": 0.2667,
+"types": 5,
+"most_share": 0.75,
+"free_most": 1,
+"walls": 2,
+"lined": 0.0,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.3333,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.3333,
+"fam_column": 0.0,
+"fam_straw": 2.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.125,
+"wall_gap": 0.7148,
+"mid_share": 0.5,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.4656,
+"nn_med": 1.4181,
+"overlaps": 0.0,
+"doors": 1,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
+"way_in": 2.1241,
+"way_in_frac": 0.1931,
+"sym": 0.5,
+"align": 0.25,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"Barrel": 1,
+"OgreStraw": 6,
+"ObeliskPrimitive": 1
+},
+"fam": {
+"storage": 1,
+"straw": 6,
+"statue": 1
+},
+"wall_pieces": [
+[
+"Barrel2",
+"Barrel",
+"NE"
+]
+],
+"pairs": {
+"storage|straw": 2.454,
+"straw|straw": 1.414,
+"statue|straw": 3.649
+},
+"runs": [],
+"focal": null,
+"doors": [
+"NW"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "Con11a",
+"type": "cell",
+"culture": "ogre",
+"centre": [
+194,
+80
+],
+"tiles": 30,
+"by_hand": true,
+"features": {
+"tiles": 30,
+"cover": 0.0435,
+"open": 0.6667,
+"middle": 0.033,
+"per_tile": 0.1667,
+"types": 4,
+"most_share": 0.8,
+"free_most": 1,
+"walls": 1,
+"lined": 0.0,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.3333,
+"fam_column": 0.0,
+"fam_straw": 1.3333,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.0,
+"wall_gap": 0.25,
+"mid_share": 0.4,
+"max_run": 0,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.8039,
+"nn_med": 1.0889,
+"overlaps": 0.0,
+"doors": 1,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
+"way_in": 11,
+"way_in_frac": 1.0,
+"sym": 0.6,
+"align": 0.0,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"OgreStraw": 4,
+"ObeliskPrimitive": 1
+},
+"fam": {
+"straw": 4,
+"statue": 1
+},
+"wall_pieces": [],
+"pairs": {
+"straw|straw": 0.946,
+"statue|straw": 6.035
+},
+"runs": [],
+"focal": null,
+"doors": [
+"SE"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "War07A",
+"type": "cell",
+"culture": "town",
+"centre": [
+160,
+230
+],
+"tiles": 13,
+"by_hand": true,
+"features": {
+"tiles": 13,
+"cover": 0.25,
+"open": 0.5429,
+"middle": 0.0,
+"per_tile": 0.7692,
+"types": 2,
+"most_share": 0.9,
+"free_most": 9,
+"walls": 3,
+"lined": 0.1419,
+"fam_bed": 0.7692,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 6.9231,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.9,
+"wall_gap": 0.7328,
+"mid_share": 0.0,
+"max_run": 6,
+"runs3": 1,
+"showpiece_rep": 0,
+"nn_p10": -1.1431,
+"nn_med": -0.817,
+"overlaps": 16.0,
+"doors": 1,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.7191,
+"way_in": 9.385,
+"way_in_frac": 0.8532,
+"sym": 0.0,
+"align": 0.9,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"Straw": 9,
+"Cot": 1
+},
+"fam": {
+"straw": 9,
+"bed": 1
+},
+"wall_pieces": [
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Straw2",
+"Straw",
+"NW"
+],
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Straw2",
+"Straw",
+"NW"
+],
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Straw2",
+"Straw",
+"SW"
+],
+[
+"Cot1",
+"Cot",
+"NE"
+]
+],
+"pairs": {
+"straw|straw": -0.882,
+"bed|straw": 2.202
+},
+"runs": [
+[
+6,
+"Straw",
+"SW"
+]
+],
+"focal": "Cot1",
+"doors": [
+"SE"
+],
+"overlap_pairs": [
+[
+"Straw2",
+"Straw2",
+-0.97
+],
+[
+"Straw2",
+"Straw2",
+-0.66
+],
+[
+"Straw2",
+"Straw2",
+-0.36
+],
+[
+"Straw2",
+"Straw2",
+-0.49
+],
+[
+"Straw2",
+"Straw2",
+-0.4
+],
+[
+"Straw2",
+"Straw2",
+-0.75
+],
+[
+"Straw2",
+"Straw2",
+-0.75
+],
+[
+"Straw2",
+"Straw2",
+-0.36
+]
+]
+}
+},
+{
+"map": "War07A",
+"type": "cell",
+"culture": "town",
+"centre": [
+164,
+226
+],
+"tiles": 13,
+"by_hand": true,
+"features": {
+"tiles": 13,
+"cover": 0.3009,
+"open": 0.5429,
+"middle": 0.0,
+"per_tile": 1.0,
+"types": 3,
+"most_share": 0.9231,
+"free_most": 12,
+"walls": 3,
+"lined": 0.071,
+"fam_bed": 0.7692,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 9.2308,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.6154,
+"wall_gap": 0.3415,
+"mid_share": 0.0,
+"max_run": 5,
+"runs3": 1,
+"showpiece_rep": 0,
+"nn_p10": -0.9083,
+"nn_med": -0.4909,
+"overlaps": 10.7692,
+"doors": 1,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.7416,
+"way_in": 3.2546,
+"way_in_frac": 0.2959,
+"sym": 0.5385,
+"align": 0.9231,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"Straw": 12,
+"Cot": 1
+},
+"fam": {
+"straw": 12,
+"bed": 1
+},
+"wall_pieces": [
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Straw2",
+"Straw",
+"SE"
+],
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Straw2",
+"Straw",
+"NE"
+],
+[
+"Cot1",
+"Cot",
+"NW"
+]
+],
+"pairs": {
+"straw|straw": -0.491,
+"bed|straw": 0.192
+},
+"runs": [
+[
+5,
+"Straw",
+"NE"
+]
+],
+"focal": "Cot1",
+"doors": [
+"SE"
+],
+"overlap_pairs": [
+[
+"Straw1",
+"Straw2",
+-0.58
+],
+[
+"Straw1",
+"Straw2",
+-0.36
+],
+[
+"Straw1",
+"Straw2",
+-0.45
+],
+[
+"Straw2",
+"Straw2",
+-0.49
+],
+[
+"Straw2",
+"Straw2",
+-0.97
+],
+[
+"Straw2",
+"Straw2",
+-0.36
+],
+[
+"Straw2",
+"Straw2",
+-0.49
+],
+[
+"Straw2",
+"Straw2",
+-0.32
+]
+]
 }
 },
 {
@@ -12470,6 +11792,133 @@
 }
 },
 {
+"map": "Con02a",
+"type": "guardroom",
+"culture": "town",
+"centre": [
+93,
+175
+],
+"tiles": 25,
+"by_hand": true,
+"features": {
+"tiles": 25,
+"cover": 0.1339,
+"open": 0.5902,
+"middle": 0.059,
+"per_tile": 0.24,
+"types": 6,
+"most_share": 0.1667,
+"free_most": 1,
+"walls": 3,
+"lined": 0.1922,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.0,
+"fam_table": 0.4,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 2.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 1.0,
+"wall_gap": 0.6487,
+"mid_share": 0.0,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.6937,
+"nn_med": 1.6253,
+"overlaps": 0.0,
+"doors": 3,
+"focal_n": 1,
+"focal_back": 1.0,
+"focal_door": 0.6264,
+"way_in": 5.3893,
+"way_in_frac": 0.4899,
+"sym": 0.1667,
+"align": 0.0,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"TraderPoleArm": 1,
+"TraderHangingSwords": 1,
+"TraderHangingCrossbow": 1,
+"TraderBowRack": 1,
+"TraderQuiverRack": 1,
+"Table": 1
+},
+"fam": {
+"shop_rack": 5,
+"table": 1
+},
+"wall_pieces": [
+[
+"TraderPoleArm3",
+"TraderPoleArm",
+"NW"
+],
+[
+"TraderHangingSwords1",
+"TraderHangingSwords",
+"NE"
+],
+[
+"TraderHangingCrossbow1",
+"TraderHangingCrossbow",
+"NE"
+],
+[
+"TraderBowRack2",
+"TraderBowRack",
+"NW"
+],
+[
+"TraderQuiverRack",
+"TraderQuiverRack",
+"SE"
+],
+[
+"Table1",
+"Table",
+"NE"
+]
+],
+"pairs": {
+"shop_rack|shop_rack": 0.694,
+"shop_rack|table": 2.557
+},
+"runs": [],
+"focal": "Table1",
+"doors": [
+"SW",
+"SW",
+"NW"
+],
+"overlap_pairs": []
+}
+},
+{
 "map": "Con03A",
 "type": "guardroom",
 "culture": "dunmir",
@@ -12567,6 +12016,293 @@
 "NE"
 ],
 "overlap_pairs": []
+}
+},
+{
+"map": "Con03A",
+"type": "guardroom",
+"culture": "dunmir",
+"centre": [
+81,
+83
+],
+"tiles": 15,
+"by_hand": true,
+"features": {
+"tiles": 15,
+"cover": 0.2429,
+"open": 0.4103,
+"middle": 0.0,
+"per_tile": 0.4667,
+"types": 4,
+"most_share": 0.2857,
+"free_most": 2,
+"walls": 4,
+"lined": 0.2563,
+"fam_bed": 1.3333,
+"fam_nightstand": 0.0,
+"fam_storage": 2.0,
+"fam_table": 0.0,
+"fam_chair": 0.0,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.0,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 1.3333,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 1.0,
+"wall_gap": 0.472,
+"mid_share": 0.0,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": -0.0996,
+"nn_med": 0.6799,
+"overlaps": 0.0,
+"doors": 1,
+"focal_n": 0,
+"focal_back": null,
+"focal_door": null,
+"way_in": 6.736,
+"way_in_frac": 0.9623,
+"sym": 0.7143,
+"align": 0.5714,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0
+},
+"details": {
+"kinds": {
+"DunMirChest": 2,
+"Barrel": 1,
+"Straw": 2,
+"Cot": 2
+},
+"fam": {
+"storage": 3,
+"straw": 2,
+"bed": 2
+},
+"wall_pieces": [
+[
+"DunMirChest4",
+"DunMirChest",
+"NW"
+],
+[
+"DunMirChest4",
+"DunMirChest",
+"NW"
+],
+[
+"Barrel",
+"Barrel",
+"NW"
+],
+[
+"Straw1",
+"Straw",
+"SE"
+],
+[
+"Straw1",
+"Straw",
+"SW"
+],
+[
+"Cot1",
+"Cot",
+"SW"
+],
+[
+"Cot1",
+"Cot",
+"NE"
+]
+],
+"pairs": {
+"storage|storage": 1.074,
+"bed|storage": 0.68,
+"straw|straw": -0.1,
+"bed|straw": 0.801
+},
+"runs": [],
+"focal": null,
+"doors": [
+"SE"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "Con03A",
+"type": "guardroom",
+"culture": "dunmir",
+"centre": [
+110,
+112
+],
+"tiles": 63,
+"by_hand": true,
+"features": {
+"tiles": 63,
+"cover": 0.0984,
+"open": 0.5944,
+"middle": 0.0641,
+"per_tile": 0.254,
+"types": 13,
+"most_share": 0.25,
+"free_most": 4,
+"walls": 3,
+"lined": 0.1596,
+"fam_bed": 0.3175,
+"fam_nightstand": 0.0,
+"fam_storage": 0.7937,
+"fam_table": 0.1587,
+"fam_chair": 0.6349,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.3175,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.1587,
+"fam_rug": 0.0,
+"fam_clutter": 0.1587,
+"wall_share": 0.5,
+"wall_gap": 0.6925,
+"mid_share": 0.3333,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": -0.445,
+"nn_med": 1.1292,
+"overlaps": 0.8333,
+"doors": 1,
+"focal_n": 1,
+"focal_back": 0.0,
+"focal_door": 0.3858,
+"way_in": 11.4883,
+"way_in_frac": 0.7659,
+"sym": 0.2667,
+"align": 0.75,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0159
+},
+"details": {
+"kinds": {
+"WallTrophyBear": 1,
+"TraderHangingSwords": 2,
+"WaterBarrel": 1,
+"WoodenChair": 4,
+"Cot": 2,
+"DunMirChest": 4,
+"RoundTableWithFood": 1,
+"Spitoon": 1
+},
+"fam": {
+"wall_decor": 1,
+"shop_rack": 2,
+"storage": 5,
+"chair": 4,
+"bed": 2,
+"table": 1,
+"clutter": 1
+},
+"wall_pieces": [
+[
+"WallTrophyBear1",
+"WallTrophyBear",
+"NW"
+],
+[
+"TraderHangingSwords2",
+"TraderHangingSwords",
+"NW"
+],
+[
+"TraderHangingSwords1",
+"TraderHangingSwords",
+"NE"
+],
+[
+"Cot3",
+"Cot",
+"SE"
+],
+[
+"Cot3",
+"Cot",
+"SE"
+],
+[
+"DunMirChest3",
+"DunMirChest",
+"NE"
+],
+[
+"DunMirChest4",
+"DunMirChest",
+"NW"
+],
+[
+"DunMirChest3",
+"DunMirChest",
+"NE"
+],
+[
+"DunMirChest3",
+"DunMirChest",
+"NE"
+]
+],
+"pairs": {
+"bed|storage": 1.626,
+"chair|table": -0.178,
+"bed|bed": 0.822,
+"storage|storage": 1.437,
+"bed|chair": 1.656
+},
+"runs": [],
+"focal": "RoundTableWithFood",
+"doors": [
+"NW"
+],
+"overlap_pairs": [
+[
+"WoodenChair1",
+"RoundTableWithFood",
+-0.51
+]
+]
 }
 },
 {
@@ -12908,6 +12644,153 @@
 }
 },
 {
+"map": "Con06a",
+"type": "guardroom",
+"culture": "dunmir",
+"centre": [
+69,
+199
+],
+"tiles": 55,
+"by_hand": true,
+"features": {
+"tiles": 55,
+"cover": 0.1036,
+"open": 0.5512,
+"middle": 0.063,
+"per_tile": 0.2909,
+"types": 13,
+"most_share": 0.1875,
+"free_most": 3,
+"walls": 2,
+"lined": 0.0332,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.5455,
+"fam_table": 0.5455,
+"fam_chair": 0.5455,
+"fam_bench": 0.7273,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 0.5455,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.3846,
+"wall_gap": 0.7837,
+"mid_share": 0.3846,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.5153,
+"nn_med": 0.7286,
+"overlaps": 0.0,
+"doors": 3,
+"focal_n": 3,
+"focal_back": 0.0,
+"focal_door": 0.3935,
+"way_in": 2.5387,
+"way_in_frac": 0.1104,
+"sym": 0.3125,
+"align": 0.1538,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.0909
+},
+"details": {
+"kinds": {
+"WoodenChair": 3,
+"Barrel": 2,
+"DunMirChest": 1,
+"LightBench": 2,
+"TraderShieldWallHanging": 2,
+"TraderHangingSwords": 1,
+"CushionedBench": 2,
+"RoundTable": 1,
+"SquareTable": 1,
+"Table": 1
+},
+"fam": {
+"chair": 3,
+"storage": 3,
+"bench": 4,
+"shop_rack": 3,
+"table": 3
+},
+"wall_pieces": [
+[
+"Barrel",
+"Barrel",
+"NW"
+],
+[
+"Barrel",
+"Barrel",
+"NW"
+],
+[
+"DunMirChest4",
+"DunMirChest",
+"NW"
+],
+[
+"WoodenChair3",
+"WoodenChair",
+"NE"
+],
+[
+"TraderShieldWallHanging3",
+"TraderShieldWallHanging",
+"NE"
+],
+[
+"TraderShieldWallHanging3",
+"TraderShieldWallHanging",
+"NE"
+],
+[
+"TraderHangingSwords1",
+"TraderHangingSwords",
+"NE"
+],
+[
+"SquareTable1",
+"SquareTable",
+"NE"
+]
+],
+"pairs": {
+"chair|table": 0.7,
+"storage|storage": 1.622,
+"chair|storage": 0.832,
+"bench|table": 0.64,
+"bench|bench": 0.867
+},
+"runs": [],
+"focal": "RoundTable1",
+"doors": [
+"SE",
+"SW",
+"NE"
+],
+"overlap_pairs": []
+}
+},
+{
 "map": "Con06b",
 "type": "guardroom",
 "culture": "town",
@@ -13008,6 +12891,123 @@
 "focal": "RoundTable1",
 "doors": [
 "SE"
+],
+"overlap_pairs": []
+}
+},
+{
+"map": "Con06b",
+"type": "guardroom",
+"culture": "dunmir",
+"centre": [
+179,
+71
+],
+"tiles": 25,
+"by_hand": true,
+"features": {
+"tiles": 25,
+"cover": 0.1292,
+"open": 0.5738,
+"middle": 0.1077,
+"per_tile": 0.44,
+"types": 8,
+"most_share": 0.5455,
+"free_most": 6,
+"walls": 2,
+"lined": 0.0,
+"fam_bed": 0.0,
+"fam_nightstand": 0.0,
+"fam_storage": 0.4,
+"fam_table": 0.4,
+"fam_chair": 2.4,
+"fam_bench": 0.0,
+"fam_desk": 0.0,
+"fam_shelves": 0.0,
+"fam_fireplace": 0.0,
+"fam_stove": 0.0,
+"fam_lab": 0.0,
+"fam_smithy": 0.0,
+"fam_counter_bar": 0.0,
+"fam_counter_shop": 0.0,
+"fam_shop_rack": 1.2,
+"fam_altar": 0.0,
+"fam_throne": 0.0,
+"fam_tomb": 0.0,
+"fam_statue": 0.0,
+"fam_column": 0.0,
+"fam_straw": 0.0,
+"fam_plant": 0.0,
+"fam_wall_decor": 0.0,
+"fam_rug": 0.0,
+"fam_clutter": 0.0,
+"wall_share": 0.125,
+"wall_gap": 0.8018,
+"mid_share": 0.375,
+"max_run": 1,
+"runs3": 0,
+"showpiece_rep": 0,
+"nn_p10": 0.0108,
+"nn_med": 0.1438,
+"overlaps": 0.0,
+"doors": 3,
+"focal_n": 1,
+"focal_back": 0.0,
+"focal_door": 0.5269,
+"way_in": 3.3415,
+"way_in_frac": 0.3038,
+"sym": 0.6364,
+"align": 0.75,
+"statues_to_wall": 0,
+"front_faced": 0.0,
+"odd_facing": 0.0,
+"lights_per_tile": 0.04
+},
+"details": {
+"kinds": {
+"Barrel": 1,
+"TraderShieldWallHanging": 3,
+"OldDarkWoodenChair": 6,
+"Table": 1
+},
+"fam": {
+"storage": 1,
+"shop_rack": 3,
+"chair": 6,
+"table": 1
+},
+"wall_pieces": [
+[
+"Barrel",
+"Barrel",
+"NW"
+],
+[
+"TraderShieldWallHanging6",
+"TraderShieldWallHanging",
+"NW"
+],
+[
+"TraderShieldWallHanging6",
+"TraderShieldWallHanging",
+"NW"
+],
+[
+"TraderShieldWallHanging1",
+"TraderShieldWallHanging",
+"NE"
+]
+],
+"pairs": {
+"chair|storage": 1.234,
+"chair|table": 0.122
+},
+"runs": [],
+"focal": "Table3",
+"doors": [
+"SW",
+"SE",
+"NW"
 ],
 "overlap_pairs": []
 }
