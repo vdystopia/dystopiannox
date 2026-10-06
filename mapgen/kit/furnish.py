@@ -1976,7 +1976,8 @@ class Furnisher:
     STORE_POOLS = {"barrels": r"^(Barrel|Barrel2)$", "crates": r"^(DarkCrate|Crate)[12]$",
                    "sacks": r"^SackChest(Large|Medium|Small)[12]$", "tools": r"^BarrelWithTools[12]$",
                    "water": r"^WaterBarrel$", "piled": r"^PiledBarrels[1-4]$", "large": r"^LargeBarrel[12]$",
-                   "apples": r"^TraderAppleCrate$", "powder": r"^BlackPowderBarrel2?$", "ogre": r"^OgreSack\d$"}
+                   "apples": r"^TraderAppleCrate$", "powder": r"^BlackPowderBarrel2?$", "ogre": r"^OgreSack\d$",
+                   "steel": r"^(CrateSteel[1-4]|BarrelSteel[12])$"}
 
     def _store_palette(self):
         """The room's few kinds of supply: (lead types, second types or [], accent types or []), each kind narrowed to one

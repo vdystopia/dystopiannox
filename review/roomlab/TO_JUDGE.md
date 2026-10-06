@@ -8,3 +8,4 @@ One line per round worth judging: type, iteration, the blind folder. The key sta
 - (judged) shop, r4, C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\shop\r4\blind\
 - storeroom, r16 (best, after the judge of r9), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\storeroom\r16\blind\
 - laboratory, r11 (best, after the judge of r8), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\laboratory\r11\blind\
+- shop, r8 (best, after the judge of r4), C:\GOG Games\Nox\dystopiannox-wt\tuneC\review\out\roomlab\shop\r8\blind\

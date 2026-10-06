@@ -199,3 +199,21 @@ bookcase-desk-bookcase formula; hangings of two colours.
 | r9 | (r8's recipe against the curated references) | 0.797 | 0.799 | 7 | - |
 | r10 | a bench of three workstations on a back wall (no `front_ok`), the desk with one bookcase, the alchemist's desk in a corner, the table and chairs against a wall | 0.830 | 0.898 | 9 (sparse) | - |
 | r11 | `wall_gap` for the lab's pieces (a little off the wall, as Westwood's) | 0.765 | 0.853 | 9 (5 sparse, 3 door shells, caps) | queued |
+
+## Shop, after the curated references and the independent judge
+
+Curated references: 8 shops (two former ones were taverns). Independent judge of r4: 10/10, generated 4.2 against 6.4;
+tells: three weapon racks and three armour stands in ruler-straight rows dead centre ("three and three" taken
+literally: the user meant variety), no keeper (the lab has no people), shelves missing or token, crates and barrels
+alternating one by one down the front walls, three hanging themes on one wall.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| r5 | (r4's recipe against the curated references) | 0.931 | 0.908 | 5 | - |
+| r6 | racks against the back walls (`back_only`), a short row only past 108 tiles; the stock in heaps (`store_heaps`, a steel pool); no decorative hangings (`decor_max` 0), only the trade's swords and shields | 0.938 | 0.793 | 6 (sparse) | - |
+| r7 | the apothecary's brewing cauldron (Con02a; Con09b's stove): the shop profile's never-stove dropped | 0.850 | 0.746 | 6 (5 sparse) | - |
+| r8 | cover target 0.15 -> 0.18 | 0.855 | 0.735 | 6 (5 sparse) | queued |
+
+The checker's sparse rule (a generated room at least Westwood's median 0.126) still trips: the fill runs out of steps
+in an apothecary's or a general store's trade. Left: pieces packed tight (median gap 0.2 against 1.0), rows (0.73
+against 0.42).
