@@ -77,3 +77,8 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   the key) is now judging them. From here on, every blind result in this log is marked "independent" or "self".
   Scene lab round 2 (`night-scenes3`) started: camp sub-types (hideout and fire camp), graveyards fitted to the site,
   then the other 13 scene types.
+- 22:55 First independent blind judgement (a fresh agent, pictures only, scored against the keys by the main session),
+  on scene lab round 1's last sheets: bandit camp 10/10 (generated 5.2 vs Westwood 6.8), graveyard 10/10 (4.2 vs 7.4),
+  garden 10/10 (4.8 vs 7.8), pond with dock 9/9 (5.2 vs 7.8). Self-judging had been too generous; these are the real
+  starting points. Its critique (stamped tent rows, the same 6x6 graveyard box, crops on fences again, the same dock gear
+  stamp in a small round pond) has been passed to scene round 2.
