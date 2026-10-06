@@ -152,3 +152,27 @@ chambers are zoned by the shell (Con07D's hearth stands in a partition across th
 carpeted wall to wall, where ours are open squares of 120-220 tiles with two small table sets in a big bare floor.
 That is the shells agent's (a partition or an alcove for the bed end); the furniture cannot fill 200 tiles at
 Westwood's 0.05-0.09 cover without reading as empty.
+
+## After the independent judge, the curated references and the renderer fix (master 2f07e4a and later)
+
+The independent judge found that rounds which improved the AUC often made rooms worse by eye (a stamp of Westwood's
+commonest layout in every room). Master's curated reference (`rules/rooms/curated.json`) replaces my RETYPE list
+(dropped in the merge). From here, each type restarts from the kit's own recipe and takes out the faults the judge
+named, checking every round by eye.
+
+| Type | Round | Change | AUC | Cross | Hard |
+|---|---|---|---|---|---|
+| bedroom | r8 | the kit's original recipe on the curated set (28 bedrooms) | 0.980 | 0.906 | 8 |
+| bedroom | r9 | + a single bookcase on a short stretch | 0.987 | 0.903 | 7 |
+| bedroom | r10 | + one rug (before the chest), the table set off the rug | 0.982 | 0.886 | 7 (sparse 5, galava door 1, way in 1) |
+| kitchen | r9 | the kit's kitchen with the judge's faults out: the pot beside the hearth in half, else on a wall of its own (a cauldron or an iron stove), stores heaped on half a wall at most, no stack in the middle, no paintings between shelves | 0.994 (pool) | 0.966 | 5 (way in 4) |
+| kitchen | r10 | both cells of a double door keep their clearance (shared fix: barrels had stood 0.3 units into a double door's second half) | 0.991 | 0.960 | 2 (sparse) |
+| kitchen | r11 | `middle_jitter`: the table off the exact centre | 0.993 | 0.974 | 2 (sparse) |
+| living_room | r7 | r6's recipe on the curated set (14 households, median 30 tiles, 10 kinds) | 0.899 | 0.893 | 4 |
+| living_room | r8-r9 | the bellows beside the hearth (7 of 14; `smithy` off the never list), an iron stove in a third, up to two tables, bookcases by the hearth in half, fewer benches | 0.873 | 0.888 | 4 |
+| living_room | r10 | the table off centre in dwellings too | 0.878 | 0.891 | 6 (sparse 5: 11-13% against the checker's 12.9%) |
+
+Shared changes in this stretch: `_Room.doors` holds both cells of a double door (every room type: storeroom hard
+rooms 5 -> 3, barracks 2 -> 1, tavern 10 -> 10; AUCs within 0.03); `place_group` removes the seats it placed when a
+group fails (every type: they had stood as stray chairs by the doors); `middle_spots` honours a recipe's
+`middle_jitter` (inert unless set).

@@ -94,8 +94,8 @@ TYPES = {
     "living_room": dict(
         family="private", feel="full", fixed_top_up=("storage", "bench"), kinds=("living_room", "dwelling"), westwood=("living_room",),
         focal=dict(fam="fireplace", types=r"Fireplace", where="back"),
-        must={"fireplace": 1, "table": 1}, never=("counter_bar", "counter_shop", "smithy", "altar", "throne", "tomb",
-                                                  "shop_rack", "lab", "straw"),
+        must={"fireplace": 1, "table": 1}, never=("counter_bar", "counter_shop", "altar", "throne", "tomb",
+                                                  "shop_rack", "lab", "straw"),   # (bellows by the hearth: 7 of 14)
         never_types=r"PowderBarrel",
         walls=dict(back="the hearth centred, shelves end to end either side of it, a rug before it",
                    other_back="shelves end to end with trophies between, the chest",
