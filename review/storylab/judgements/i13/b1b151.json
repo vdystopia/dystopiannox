@@ -1,0 +1,34 @@
+{
+  "packet": "b1b151",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Pure Nox: an absurd stake (a frog in a burning house), a gruff captive line, and the self-answering joke about 'loads and loads of money' that turns the reward into a gag. Short, loud, exclamation-heavy, and the journal is one flat imperative."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The bandit-scare opening and the 'best bargain of your life' feel a little written-at; the captive explains door, bars and plan in one breath, and the thanks piles on backstory (cart, leaving the mountain, a Troll warning) that Nox rarely bothers with."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and warm, close to the register, but the 'honest sort of voice' / 'I'd know that voice anywhere' device is a crafted through-line Westwood rarely builds, and the reminder reads as world-building rather than a nudge. The kettle detail is a touch literary."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Classic Westwood melodrama: 'mob of foul Ogres', 'sweet sister', the comma-light run-on, the impatient reminder, and the captive's vanity joke that the menfolk 'cannot live without us'. A bit stiff but unmistakably the campaign's voice."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Campaign plumbing (an express elevator, a Chief Engineer, a key to circle back, a secret passage to the surface), the double-dash, and 'You'll make a fine [Group], lad' all read as the shipped game's mid-chapter connective tissue."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Terse to the bone: 'Help us!', 'Well done, my boy!', 'lovely women', 'Now go find the other two groups of damsels!' The bare functional lines and the slightly dated gallantry are Westwood's, not a modern pastiche."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Too composed and too long: the priest's opening boast about novices, 'prayed over his name all night, but something dark hides him from me', and a journal entry with a parenthetical hint. The novice's following line is a planted character beat rather than a Nox bark."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "'Forgive my tears', 'Could you... would you', 'spirits of the deep rock' are a softer, more literary register; the captive's lines do not match the situation (a sermon when found, 'Well struck!' while following), and the journal explains cause and effect at length."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The overheated bureaucratic panic ('airborne demons from the underworld', 'Nox's vital interests'), the explicit counts ('the 6 trapped mine workers'), the double-dash and the Captain hand-off are the campaign's own quest-giver register."},
+    {"label": "J", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Lively opening ('Rotten wasps!') but the details stack up (eel traps, jetty, ferrymen who'll row you for free, potions 'for your stings. Go on, take them.'); the found and following lines are swapped in tone, and the local-colour reward reads composed rather than Westwood-blunt."}
+  ],
+  "tells": [
+    "Westwood's rescue lines are blunt and often comic or melodramatic (absurd stakes, a self-answering joke about money, vain or gallant asides); the new texts are earnest and rarely land a joke.",
+    "Westwood's captives bark short, generic lines ('Help us!', 'I'll follow you.', 'Hurry! Lead me to safety!'); the new captives deliver character beats, sermons or plans that sometimes do not fit the moment of being found or followed.",
+    "New texts stack concrete local detail (eel traps, jetties, carts, kettles, altars, novices) and causal chains (kill the spider so the bats calm down); Westwood states the goal and moves on.",
+    "Literary turns ('Forgive my tears', 'something dark hides him from me', 'spirits of the deep rock', 'an honest sort of voice') mark the new writing; Westwood's diction is pulpier ('foul Ogres', 'horrific overgrown insects', 'lovely women').",
+    "Westwood journals are one flat imperative, sometimes with an explicit count; new journals explain reasons or add parenthetical hints.",
+    "Westwood's texts carry campaign plumbing (elevators, the Captain waiting elsewhere, 'other two groups', double-dash asides) that ties the quest to a larger chapter; the new texts are self-contained village errands."
+  ]
+}

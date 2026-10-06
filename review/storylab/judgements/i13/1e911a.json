@@ -1,0 +1,33 @@
+{
+  "packet": "1e911a",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Short exclamatory lines are in the right key, but the clipped fragments ('Not mine, not anybody's.') and the side rule of a third person repeated in the reminder read as a crafted voice; 'Take this, 60 in gold!' is a precise number Westwood rarely states."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Plain, slightly stiff exposition ('Unfortunately, a foul little urchin has moved into the cave'), a key handed over with the quest and a petition as the reward: Westwood's practical, functional shape."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "The offer contradicts itself (a masked thing protecting the mill, washing stolen, then a bell) and piles up atmospheric detail ('giggling down by the wheel'); the thanks names a destination the offer never set up."},
+    {"label": "D", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Lively and close to Nox's comic townsfolk, but the double-hyphen dash, the jab at a rival and the closing joke about Trolls are a little too worked; Westwood's peddlers are flatter."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Opens as if mid-conversation, with clipped curt sentences ('Right. It's not even scratched.') and an offer that tells little about what was taken; the gruff minimalism is a modern tic, not Westwood's eager over-explanation."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Packs logistics (potion, store, lesson discount) and a spell tutorial into the dialogue; 'Read the words slowly... it fizzles away' is a designed mechanic explanation, and 'Trouble, and more trouble!' is a writerly opener."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "The frog in a burning house and the 'Loads and loads of money?' gag are Westwood's absurd humour; the doubled '?!' and breathless pleading are its punctuation."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Gahhhhhh! No! Don't kill me!', the trailing 'Oh....' with four dots and the scroll about bats 'invaluable to any conjurer' are pure Westwood: loose punctuation, broad comedy, reward named plainly."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Greetings, brave Adventurer!', a demoness leading the Ogres, the wife turned into a wolf and 'a token of our appreciation' are Westwood's earnest, slightly wordy register; the journal's masked possessive slip is typical of the source."},
+    {"label": "J", "verdict": "westwood", "confidence": 4, "score": 7,
+     "critique": "Formal plot-driving speech ('for we are in dire need', 'for the darkest purposes, indeed!', 'sooner than you think') ties to the main campaign; stilted but unmistakably Westwood's main-quest voice."}
+  ],
+  "tells": [
+    "Westwood's lines over-explain earnestly and stock phrases ('Greetings, brave Adventurer!', 'kind sir', 'a token of our appreciation'); the new texts lean on clipped, curt fragments and terse reminders as characterisation.",
+    "Westwood's punctuation is loose and excitable: '?!', '!?', four-dot ellipses, drawn-out cries like 'Gahhhhhh'. The new texts use tidier punctuation and the double-hyphen dash.",
+    "Westwood's humour is broad and absurd (a pet frog in a fire, 'Loads and loads of money?'); the new texts' humour is wry asides and jabs at an off-stage rival.",
+    "The new texts carry more continuity load: extra named third parties, rules, shop pointers, discounts and mechanic tutorials folded into the dialogue, sometimes contradicting themselves within one offer.",
+    "Westwood's quest shapes are simple and functional (go there, kill or fetch, get a key or petition or scroll); the new ones add atmospheric detail that does not tell the player where to go."
+  ]
+}

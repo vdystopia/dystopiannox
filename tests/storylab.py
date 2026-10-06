@@ -596,7 +596,17 @@ def brief(it, baseline=False, writers=10):
                   "this town's own (another beast, thing, captive, deal).", ""]
         scen_parts = [(sid, [(p, st) for p, st, _ in sc["parts"]]) for sid, sc in S.items() if sid != "town"
                       and (sid in LONG_SCEN or not is_blend(it))]
-        if is_blend(it):                                # v13: blended quests, line frames where the shape has no part
+        if is_blend(it) and it != "i13":                # v14: each quest part from another Westwood quest's line
+            import cards
+            if n == 1: dealer, dealt = cards.FrameDealer(it), {}
+            pmd, used, need = cards.part_frames_card(dealer, scen_parts)
+            dealt[n] = used
+            fmd = cards.frames_card(dealer, need)[1].replace(
+                "Each part of your town is a rewrite of its frame.",
+                "The other parts (journal entries, the captive, the townsman) each take their rhythm from a line frame.")
+            L += [pmd, fmd, ""]
+            json.dump(dealt, open(os.path.join(OUT, f"dealt_{it}.json"), "w"), indent=1)
+        elif is_blend(it):                              # v13: blended quests, line frames where the shape has no part
             import cards
             if n == 1: dealer, dealt, arms = cards.FrameDealer(it), {}, {}
             bmd, used, arm, need = cards.blend_card(dealer, scen_parts)

@@ -337,7 +337,7 @@ DEFAULT_MAP_PARTS = ("main:opening,reminder,journal; "
                      "townsfolk:rumour1,rumour2,rumour3,rumour1,rumour2,rumour3,rumour1,rumour2")
 
 
-def map_frames(seed, spec=DEFAULT_MAP_PARTS):
+def map_frames(seed, spec=DEFAULT_MAP_PARTS, blend=True):
     """The frames card of one map: `spec` is "who:part,part; who:part" (parts as in FRAME_OF_PART: offer, opening,
     reminder, completion, after, refusal, rumour1, first/again/later, inn/arms/magic, journal, found, following)."""
     dealer = FrameDealer(f"map|{seed}")
@@ -353,13 +353,23 @@ def map_frames(seed, spec=DEFAULT_MAP_PARTS):
         if "opening" in ps: qmap[who] = "main_opening"
         elif "found" in ps or "plea" in ps: qmap[who] = "rescue"
         elif "offer" in ps or "offer_a" in ps: qmap[who] = "heirloom_fetch" if "refusal" in ps else "bounty_offer"
-    qmd = quest_frames_card(dealer, [(qmap[w], ps) for w, ps in groups if w in qmap])[0]
-    for w, sid in qmap.items(): qmd = qmd.replace(f"**{sid}**", f"**{w}**", 1)
-    short = frames_card(dealer, [(w, ps) for w, ps in groups if w not in qmap], long=False)[1]
+    if not blend:
+        qmd = quest_frames_card(dealer, [(qmap[w], ps) for w, ps in groups if w in qmap])[0]
+        for w, sid in qmap.items(): qmd = qmd.replace(f"**{sid}**", f"**{w}**", 1)
+        short = frames_card(dealer, [(w, ps) for w, ps in groups if w not in qmap], long=False)[1]
+    else:                                   # (v13) each quest blended from two or three Westwood quests of other kinds
+        qmd, need = [], []
+        for i, (w, ps) in enumerate([(w, ps) for w, ps in groups if w in qmap]):
+            md, _, _, nd = blend_card(dealer, [(qmap[w], ps)], intro=(i == 0))
+            qmd.append(md.replace(f"#### {qmap[w]}\n", f"#### {w} ({qmap[w].replace('_', ' ')})\n", 1))
+            need += [(w, p) for _, p in nd]
+        qmd = "\n".join(qmd)
+        short = frames_card(dealer, need + [(w, ps) for w, ps in groups if w not in qmap])[1]
     return "\n".join([f"# Story frames for {seed}", "",
-                      "Write every line of the map from its frame (review/storylab/WRITER.md, rules/DIALOGUE.md). The "
-                      "frames are Westwood's own lines, dealt to this map; never keep five words of one in a row, "
-                      "never a Westwood name.", "", qmd, short])
+                      "Write every line of the map from its frames (review/storylab/WRITER.md, rules/DIALOGUE.md). The "
+                      "frames are Westwood's own lines, dealt to this map: take their shape and rhythm, never their "
+                      "words (no five in a row) or names; then `py tests/storylab.py --check` the design (originality).",
+                      "", qmd, short])
 
 
 # ---- quest frames (v10): a whole Westwood quest a quest ---------------------------------------------------------------
@@ -603,3 +613,88 @@ def blend_card(dealer, scenarios, intro=True):
                 qp = QUEST_PART_OF.get(p)
                 if qp is None or qp not in U[a]["parts"]: need.setdefault(sid, []).append((p, st))
     return "\n".join(L), used, arms, [(sid, ps) for sid, ps in need.items()]
+
+
+# ---- part frames (v14): each part of a quest from a different Westwood quest's line of the same kind -------------------
+# i13's blends (a shape, a trouble and a payoff from three Westwood quests, and a loose spot) were original but
+# overstuffed: every source added matter (backstory, helpers, logistics, a persona), and the loose spots read as
+# performed. i10's whole-quest frames kept Westwood's plainness but were Westwood's quests under new nouns. A part frame
+# gives each part of a quest (offer, refusal, reminder, thanks, afterwards) one Westwood line of that kind, each from a
+# different Westwood quest, never from the scenario's own packet pool: the size and rhythm are Westwood's part by part,
+# the quest as a whole is no one quest of Westwood's, and the matter is only the scenario's.
+
+PART_SIT = {"offer": "offer", "plea": "offer", "opening": "offer", "offer_a": "offer", "offer_b": "offer",
+            "reminder": "reminder", "completion": "completion", "outcome_a": "completion", "outcome_b": "completion",
+            "after": "after", "refusal": "refusal"}
+PART_WORDS = {"offer": (12, 130), "reminder": (3, 40), "completion": (6, 80), "after": (2, 30), "refusal": (3, 40)}
+
+
+def _part_pools():
+    """{situation: [(key, speaker id, text)]}: every distinct campaign line of a quest part, with its map and speaker."""
+    import westwood
+    out = collections.defaultdict(list)
+    for r in westwood.campaign():
+        if r["dup"] or r["situation"] not in PART_WORDS: continue
+        lo, hi = PART_WORDS[r["situation"]]
+        if not lo <= len(r["text"].split()) <= hi: continue
+        out[r["situation"]].append((r["key"], f"{r['map']}:{r['speaker']}",
+                                    re.sub(r"\s*\n\s*\n\s*", " / ", r["text"].strip()).replace("\n", " ")))
+    return out
+
+
+def part_frames_card(dealer, scenarios):
+    """Each quest part a Westwood line of its kind, every part of a quest from another Westwood speaker, none from the
+    scenario's own pool or near it. Returns (markdown, {scenario: [keys]}, [(scenario, parts left to line frames)])."""
+    import difflib, json
+    import westwood
+    if not hasattr(dealer, "ppools"):
+        dealer.ppools = _part_pools()
+        import originality as O                         # quest givers' offers (not shop pitches), but for the odd ask
+        dealer.qoffers = {k for q in O.ww_quests() for k in q["keys"]}
+        S = westwood.strings()
+        d = json.load(open(os.path.join(HERE, "scenarios.json"), encoding="utf-8"))
+        pooltexts = {}
+        for s in d["scenarios"]:
+            pooltexts[s["id"]] = [S[x] for u in s["westwood"] + s.get("control_extra", []) for _, k in u
+                                  for x in (k if isinstance(k, list) else [k]) if x in S]
+        dealer.pnear = {}
+        for sid, pts in pooltexts.items():
+            dealer.pnear[sid] = {k for xs in dealer.ppools.values() for k, _, t in xs
+                                 if sid in _pools_of_key(k) or any(difflib.SequenceMatcher(None, t, p).ratio() > 0.6 for p in pts)}
+    L = ["### Your quests: each part from its own Westwood line", "",
+         "Each part of each quest below is dealt one of Westwood's own lines of the same kind (an offer for your offer, "
+         "a reminder for your reminder, a thanks for your thanks), each from a different Westwood quest. Write each "
+         "part to its line's size and rhythm: the same number of pages and sentences, about as many words (never more "
+         "than a tenth over), its ! and ? where they fall, how it opens and ends, its register and its quirks, stock "
+         "phrases where it has them. The matter is your scenario's: each of the line's sentences becomes a sentence "
+         "about your quest that does the same job (an outcry stays an outcry, the trouble becomes your trouble, a place "
+         "your place, the ask your ask, a reward your reward, a stray remark a stray remark). Nothing the line has no "
+         "sentence for. Never five of its words in a row, never a Westwood name.", ""]
+    used, need = {}, []
+    for sid, parts in scenarios:
+        if sid not in SCEN_FAMILY: continue
+        speakers = set()
+        lines = []
+        for p, st in parts:
+            sit = PART_SIT.get(p)
+            if not sit:
+                need.append((sid, [(p, st)])); continue
+            deck = dealer.decks.setdefault(f"_part_{sit}", [])
+            pick = None
+            for _ in range(2):
+                for i, (k, spk, t) in enumerate(deck):
+                    if k not in dealer.pnear[sid] and spk not in speakers and (
+                            sit != "offer" or p == "offer_b" or k in dealer.qoffers):
+                        pick = deck.pop(i); break
+                if pick: break
+                fresh = list(dealer.ppools[sit]); dealer.rng.shuffle(fresh); deck += fresh
+            if not pick:
+                need.append((sid, [(p, st)])); continue
+            speakers.add(pick[1])
+            used.setdefault(sid, []).append(pick[0])
+            lines.append(f"- `{sid}.{p}`: \"{pick[2]}\"  ({pick[0]})")
+        L += lines
+    L.append("")
+    merged = collections.OrderedDict()
+    for sid, ps in need: merged.setdefault(sid, []).extend(ps)
+    return "\n".join(L), used, list(merged.items())

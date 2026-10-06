@@ -1,0 +1,32 @@
+{
+  "packet": "1410d4",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The deadpan 'Loads and loads of money?' gag and the '?!' feel like Nox, but a frog in a burning house is a neat set-piece built to imitate that humour, and the offer is cleaner than Westwood usually is."},
+    {"label": "B", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "It's plain and short, but 'he'll be destroyed' is an odd emotional overstatement. The stammered 'Could you... would you' and the stock 'token of my appreciation' thanks read like a careful pastiche."},
+    {"label": "C", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The startled opening and 'May all that is great bless you!' strain for character. A reward scroll explained at length ('all I have learned about bats') and a journal that names a role ('the hermit') instead of a person feel like another writer."},
+    {"label": "D", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Nox's demoness and Ogres and a 'worthy reward' line make it very close in register. Every beat is spelled out in order (cause, remedy, location, obstacle, reward), which is a little too tidy."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The redundant greeting, 'nettlesome urchins', a reminder that only complains, and a thanks that hands off to the Captain and tells you to buy supplies are all true Nox chapter plumbing."},
+    {"label": "F", "verdict": "westwood", "confidence": 3, "score": 7,
+     "critique": "It's terse and slightly clumsy ('That evil one defeated both of my novices') and ends by sending you on with both items, the way Nox's plot-carrying lines do."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "The over-emphatic exclamations ('for the darkest purposes, indeed!'), the 'sooner than you think' tease and the bare journal entry are typical of the campaign."},
+    {"label": "H", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A long, practical instruction about standing next to the bookcases, a death passed over in a sentence, and a repeated 'Good luck, Adventurer!' fit Westwood's mentor speeches."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "'Mine workers have died in defense of Nox's vital interests!' is Westwood's dry bureaucratic humour, and the counted journal objective ('the 6 trapped mine workers') and the hand-off to the Captain are characteristic."},
+    {"label": "J", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "The mentor-recruits-you ending with the teleporter is Nox-like. But 'Hmmm... Yes.' and 'Dark fortunes must have befallen him' feel composed, and the quest's shape (robe found as proof of death) is neatly engineered."}
+  ],
+  "tells": [
+    "Westwood's lines carry chapter plumbing: hand-offs to the next NPC, where to go next, buy supplies first. The new texts tend to be self-contained errands.",
+    "Westwood's journal entries are bare and functional, often a single verb plus object or a counted objective. The new ones name a role ('the hermit') or tidy the summary.",
+    "Westwood's humour is dry and institutional, and odd lines are left in. The new texts stage a set-piece gag or a characterful exclamation.",
+    "The new texts lean on stock thanks formulas ('token of my appreciation') and spell out each beat of the quest in order, while Westwood's reminders often just complain or repeat."
+  ]
+}

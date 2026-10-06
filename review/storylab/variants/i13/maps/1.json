@@ -1,0 +1,229 @@
+{
+ "iter": "i13",
+ "writer": "Claude Code subagent (claude-opus-5-5)",
+ "guide": "WRITER.md + exemplars + frames",
+ "map": {
+  "name": "Brackenford",
+  "setting": "Brackenford (the template map below)",
+  "trouble": "Red Corwin's bandits hold the old watchtower on Crow Hill and rob the north road, and the north gate stays shut until they are gone.",
+  "names": {
+   "Brackenford": "place",
+   "Ashwood": "place",
+   "Crow Hill": "place",
+   "Moot Hall": "place",
+   "Halvard": "person",
+   "Red Corwin": "person",
+   "Corwin": "person",
+   "Wenna": "person",
+   "Ulric": "person",
+   "Anselm": "person",
+   "Brother Anselm": "person",
+   "Pip": "person",
+   "Ossian": "person",
+   "Sly Wat": "person",
+   "Wat": "person",
+   "Urchins": "group",
+   "Chapel": "place"
+  }
+ },
+ "scenarios": {
+  "bounty_offer": {
+   "specifics": "Ulric, an old shepherd at the edge of the Ashwood, pays his bow and quiver to have the wolves cleared from his flock.",
+   "names": {
+    "Ulric": "person",
+    "Ashwood": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Ulric",
+     "text": "Who's that? Is somebody out there? Good. I don't dare leave the fold. The wolves from the Ashwood have been at my sheep every night!\n\nClear them off and my old bow and quiver are yours. Their den is east of here. You'll smell it. And mind yourself. They're bold and they're hungry."
+    },
+    "reminder": {
+     "speaker": "Ulric",
+     "text": "Get up into the Ashwood, lad! Every night I lose another one. Hurry! Find their den and finish them off before dark."
+    },
+    "completion": {
+     "speaker": "Ulric",
+     "text": "Wonderful! Every sheep I have left owes you its life.\n\nTake the bow and quiver, as promised! But I can't stand about now! The flock's scattered all over the hills! I must round them up before dark if I'm to keep any of them at all!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go into the Ashwood and kill the wolves raiding Ulric's flock."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "Bow",
+     "Quiver"
+    ]
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Wenna, the miller's widow, pays potions up front to get back the key to her sluice gate from the Urchins of the old barrow.",
+   "names": {
+    "Wenna": "person",
+    "Halvard": "person",
+    "Corwin": "person",
+    "Brackenford": "place",
+    "Urchins": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Here you are at last, stranger. Halvard says my mill can wait until Corwin's gone. My mill can't wait!\n\nThe Urchins from the old barrow east of the ford took the key to my sluice gate. The wheel hasn't turned since. Take these potions now, they're yours whatever you say!\n\nWill you get my key back from them?"
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Not ready to take on Urchins yet, eh? Never mind, the job will keep. If you change your mind, just knock at the mill."
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Enough standing about. Go on, then!"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My key -- good, I've no time to talk just now."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Oh, you're still about."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's sluice key from the Urchins in the old barrow."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's sluice key from the Urchins in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "RedPotion",
+     "CurePoisonPotion"
+    ]
+   }
+  },
+  "two_givers": {
+   "specifics": "Halvard wants the tithe chest Corwin's bandits took from the cart, and Sly Wat, who quit the gang, trades the key to the tower's back door for news of his brother Ossian.",
+   "names": {
+    "Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Brackenford": "place",
+    "Crow Hill": "place",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Ossian": "person"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Halvard",
+     "text": "You're back. Good. What I ask of you now is of great importance to this town.\n\nRed Corwin's men fell upon the tithe cart at the ford. The carters barely got away with their lives, and the chest is gone!\n\nI cannot spare a single guard from the north gate. That is where you come in.\n\nThe bandits will have carried it up to Crow Hill with the rest of their plunder. Recover the tithe chest, quickly, and you will be well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Wat",
+     "text": "Running errands for Halvard now, are you, friend? Forget his chest. When I walked out on Corwin, his lot grabbed my brother Ossian and hauled him up Crow Hill in my place!\n\nWith me gone and Ossian their prize, Corwin means to make an example of somebody. Ossian will be in the tower cellar, if he's still breathing. Bring him down and the key to Corwin's back door is yours. Now, off you go!"
+    },
+    "outcome_a": {
+     "speaker": "Halvard",
+     "text": "Well done, Adventurer! This tithe will see Brackenford through until the north road is open again. Take this chain tunic as a token of the town's gratitude. It seems there is no task you cannot manage!"
+    },
+    "outcome_b": {
+     "speaker": "Wat",
+     "text": "Ossian's cap. Well... thanks for going up there for him. Here's the key, like I promised."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Retrieve the tithe chest stolen by Red Corwin's bandits."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Find Ossian in Corwin's watchtower cellar."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "ChainTunic"
+    ]
+   }
+  },
+  "rescue": {
+   "specifics": "Brother Anselm's novice Pip went into the old barrow after the Urchins to prove himself; Anselm gives the key to the barrow gate.",
+   "names": {
+    "Brother Anselm": "person",
+    "Anselm": "person",
+    "Pip": "person",
+    "Urchins": "group",
+    "Chapel": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Pip, my novice, went down into the old barrow after the Urchins this morning. He was so set on proving himself worthy of the Chapel! He ought to have been back long before now.\n\nHere is the key to the barrow gate, east of the ford. Go in after him and see him safely home. Please hurry!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Bring Pip back to me -- whatever it takes! Mind the dark down there. The Urchins know every hole in that barrow!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Your filthy chattering doesn't scare me, Urchin! Come one step nearer and I'll crack you with my staff!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Hail, Brother Anselm, one novice home from the barrow!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "You found Pip! Thank goodness!\n\nI feared the worst when he missed supper. I shall scold him later, but tonight he needs his bed. Take this robe with the Chapel's blessing.\n\nGo safely, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Brother Anselm's novice in the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   }
+  },
+  "main_opening": {
+   "specifics": "A townsman points the player to Halvard in the Moot Hall, who sends him to drive Red Corwin's bandits from the watchtower on Crow Hill for passage through the north gate.",
+   "names": {
+    "Halvard": "person",
+    "Moot Hall": "place",
+    "Corwin": "person",
+    "Red Corwin": "person",
+    "Crow Hill": "place"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Don't lose heart now, stranger, Halvard in the Moot Hall still means to see Corwin beaten!"
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Ohhh, it gets worse by the day! Not one of the guards I sent up Crow Hill has come back whole. I have nobody else. You must get up there and drive Red Corwin's bandits out of the old watchtower, quickly, before more travelers are carried off! Clear that hill, and the north gate opens for you."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "What keeps you? Each day Corwin holds that tower, another cart is robbed on the north road! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin's bandits out of the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

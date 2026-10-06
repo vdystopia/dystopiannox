@@ -1,0 +1,34 @@
+{
+  "packet": "2e39fd",
+  "judge": "Claude Opus 5.5 subagent",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Brisk exclamatory plea with the double dash, a breezy captive ('Hey, it's you! ... really big bugs'), and a terse 'Rescue X from the Y of Z' journal; the jammed express elevator and Chief Engineer feel like set-piece campaign plumbing rather than invented colour."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless melodrama ('A mob of foul Ogres', 'my sweet sister'), the cheeky 'menfolk cannot live without us' joke, a missing comma or two and a flat 'tokens of my appreciation' thanks: unmistakably the shipped campaign's voice."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Five-page plea packed with set-up (forge, apprentice, Imp, bats, gate key) and a self-conscious 'Hmmm. I was sure I'd barred...' beat; the captive's potion hint and the ellipsis-laden journal ('...alive.') read as crafted rather than plain."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Too much incidental characterisation ('a fine singer too', 'lecture hall, as always', exact robe price) and a reminder that comments rather than urges; the journal even lacks a closing period."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Gatekeeping a boat on the rescue and the 'don't tell [Person] she took his punt' aside are clever but literary; the captive's lines are oddly placed (found says the way out, following greets you) and the thanks repeats shed/punt/key three ways."},
+    {"label": "F", "verdict": "generated", "confidence": 3, "score": 7,
+     "critique": "Plain and well paced, but the 'Hail, [Person], one novice home from the barrow!' following line is off-key, and 'I feared the worst when he missed supper. I shall scold him later' is gentler domestic texture than Westwood usually spends."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "The scolding opener ('What took you so long to get here!?'), the overblown 'Nox's vital interests' bureaucratese, the flat captive lines ('I'll follow you.') and the numeric two-sentence journal are pure campaign."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Good comic beat ('Yaaaaarrrrggghh!! ...Um. You go first.') and a Westwood-like two-part journal, but the shopkeeper's wry asides ('couldn't cut butter', 'nothing would make me happier') and the over-specified reward-plus-gate-pass are more polished than Nox's lines."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Very short, blunt urging ('before the Ogres eat them!'), 'Help us!' as the whole captive line, and 'lovely women ... damsels' in the faintly hokey register the campaign uses."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "A frog trapped in a burning house, the frog's own grumpy 'Fine! I will follow you!', and the 'Loads and loads of money?' put-down are the campaign's absurdist humour in its own punctuation (?!)."}
+  ],
+  "tells": [
+    "Westwood's pleas are short and urgent, built from exclamations; the new texts spend more pages on set-up (who was where, why, what was barred, which gate) and on incidental characterisation of the giver.",
+    "Westwood's captives speak in flat, functional one-liners ('I'll follow you.', 'Help us!'); the new captives are given witty or in-character lines that sometimes do not fit their slot (found vs following).",
+    "New texts favour wry, understated domestic humour and asides (scolding after supper, don't tell X, couldn't cut butter); Westwood's humour is broad and absurd (a frog, 'loads and loads of money', 'Nox's vital interests', 'menfolk cannot live without us').",
+    "Westwood's reminders simply urge haste; the new reminders sometimes comment, give directions, or restate menace.",
+    "New texts use deliberate stylistic devices (ellipsis in journals, 'Hmmm.', the em-dash style in a whole speech) and exact prices or named rewards more than Westwood, whose rewards are vague ('handsomely', 'these', 'this gold').",
+    "Westwood's punctuation is looser (missing commas, '!?', '?!', '--'), and its journals are terse imperative summaries with numbers where relevant."
+  ]
+}
