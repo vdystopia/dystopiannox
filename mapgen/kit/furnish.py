@@ -714,7 +714,9 @@ class Furnisher:
         if cap is not None:
             key = OBJ.cap_key(t)
             same = [rec for tt, rec in self._typed if OBJ.cap_key(tt) == key]
-            twice_near = cat != "chest" and any(math.hypot(u - r_[0], v - r_[1]) < OBJ.TWICE_GAP for r_ in same)
+            # a showpiece twice only 10 units apart; statues keep their own clearance (2 units, a deliberate pair closer:
+            # kit/objects.py clearance), or a throne could never be flanked nor an aisle lined (room lab, tuneB)
+            twice_near = cat not in ("chest", "statue") and                 any(math.hypot(u - r_[0], v - r_[1]) < OBJ.TWICE_GAP for r_ in same)
             if len(same) >= cap or twice_near:
                 self.kb_refused["cap " + key] += 1; return False
         if self.rtype == "bedroom" and cat in ("table", "desk") and \
@@ -2758,6 +2760,38 @@ class Furnisher:
                 if o1: self._remove(o1)
         return 0
 
+    def aisle_lights(self, n=2):
+        """Pairs of braziers (else the room's floor lights) lining the aisle, one each side of it just off the runner, at
+        depths between the pairs of columns (Hecubah's six flame basins line the runner to his throne in pairs, Con06b;
+        the Lich Lord's blue flames flank his dais, Con10d). Returns the pairs placed."""
+        if not self.aisle: return 0
+        r, mid, half = self.aisle["run"], self.aisle["mid"], self.aisle["half"]
+        lt = "Brazier" if self.ok_type("Brazier") else self.light_type()
+        h = max(self.half(lt))
+        depth_max = self._depth_of(r) - 3.0
+        depth = lambda rec: abs((rec[0] if r["line"] == "/" else rec[1]) - r["coord"])
+        taken = [depth(rec) for tt, rec in self._typed if _family_of(tt) in ("column", "statue")]
+        first = self.aisle["first"] + 2.5
+        if depth_max - first < 2: return 0
+        want = [first + (depth_max - first) * (k + 0.5) / n for k in range(n)]
+        got = 0
+        self.placing_light = True
+        try:
+            for d0 in want:
+                for d in sorted({d0 + s_ for s_ in (0.0, -1.0, 1.0, -2.0, 2.0)}, key=lambda x: abs(x - d0)):
+                    if d > depth_max or d < first or any(abs(d - d2) < 1.4 for d2 in taken): continue
+                    off = half + 0.5 + h
+                    a1, a2 = self._uv_on(r, d, mid - off), self._uv_on(r, d, mid + off)
+                    o1 = self.try_put(lt, *a1)
+                    o2 = o1 and self.try_put(lt, *a2)
+                    if o1 and o2:
+                        self.ring_lights += [a1, a2]; taken.append(d); got += 1
+                        break
+                    if o1: self._remove(o1)
+        finally:
+            self.placing_light = False
+        return got
+
     def flank_lights(self, p, gap=0.9):
         """A pair of braziers (else the room's candelabras) before an anchor (the throne), one at each front corner of it,
         beside the aisle (Hecubah's flame basins flank the way to his throne, Con06b). Both or neither. Returns the pieces
@@ -2798,6 +2832,13 @@ class Furnisher:
             if backs:
                 r = min(backs, key=lambda b: (b[0], b[1]))[2]
                 want = (r["sign"], 0) if r["line"] == "/" else (0, r["sign"])
+                if ROOM_IDENTITY.get(self.kind, {}).get("statues_along") and r["side"] in BACK_SIDES:
+                    # Westwood turns a statue on a NE or NW wall along it (Statue2c/2g on the NW wall, 19 of 20): toward
+                    # the throne or altar it flanks, else toward the wall's middle (a recipe's choice: statues_along)
+                    along = v if r["line"] == "/" else u
+                    mid = self.aisle["mid"] if self.aisle and self.aisle["run"] is r else (r["lo"] + r["hi"]) / 2
+                    s_ = 1 if mid > along else -1
+                    want = (0, s_) if r["line"] == "/" else (s_, 0)
             elif self.aisle:
                 r, mid = self.aisle["run"], self.aisle["mid"]
                 along = v if r["line"] == "/" else u
@@ -3102,7 +3143,9 @@ class Furnisher:
         NE wall)."""
         self.decor_theme()
         free = sum(hi - lo for r, lo, hi in self.segments() if r["side"] in BACK_SIDES)
-        n = max(1, min(8, int(free / 3.5)))
+        n = max(1, min(ROOM_IDENTITY.get(self.kind, {}).get("decor_max", 8), int(free / 3.5)))
+        if "decor_max" in ROOM_IDENTITY.get(self.kind, {}):     # the recipe's most hangings in all, the composed ones too
+            n = min(n, ROOM_IDENTITY[self.kind]["decor_max"] - self._fam_n["wall_decor"])
         for _ in range(n):
             if not self.place_decor(): break
 
@@ -3160,7 +3203,7 @@ class Furnisher:
                     if spot: self.try_put(t, *spot, blocking=False)
                 continue
             n = plan.get(fam, 0) - done[fam]
-            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights") and not st.get("extra"):
+            if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights", "aisle_lights")                     and not st.get("extra"):
                 continue                                # rows and lined walls are sized by the room; `extra` sets too
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
@@ -3192,6 +3235,9 @@ class Furnisher:
                 continue
             if st["slot"] == "flank":                  # a pair against the wall either side of an anchor (the throne)
                 if placed.get(st["of"]): done[fam] += self.flank(fam, placed[st["of"]], st.get("gap", 0.8))
+                continue
+            if st["slot"] == "aisle_lights":           # braziers in pairs down the aisle (a throne room's)
+                self.aisle_lights(st.get("n", 2))
                 continue
             if st["slot"] == "flank_lights":           # a pair of candelabras before it
                 if placed.get(st["of"]): self.flank_lights(placed[st["of"]], st.get("gap", 0.9))

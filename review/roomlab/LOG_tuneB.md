@@ -66,3 +66,23 @@ Self-judged r9: the generated taverns are big floors with small sets dotted at e
 lights per tile (0.028 against 0.049: Westwood lights its taverns with torch poles and colour lights, which the user's
 rule TP1-5 forbids indoors), the middle a little fuller than Westwood's, pieces nearer each other. Shell: every lab
 tavern is a plain rectangle; Westwood's have a dais (Con02a), an L (Con07B), a stair (Con07B).
+
+## Throne room
+
+Westwood: Hecubah's (Con06b, Dun Mir), the Lich Lord's (Con10d), the finale's (Con11a), Wiz11A's niche: three of four
+are the Land of the Dead's. The lab builds only the kit's Dun Mir throne in town styles (there is no Land of the Dead
+throne-room kind), so its pool is halls and throne rooms. Shell giveaways (not mine to change): every lab throne room
+is a plain rectangle on one floor; Westwood's are shaped (a cross, an apse) with a dais and an inlaid runner of another
+floor; the lab's door can sit at the end of the SE wall, so the throne in line with it stands off-centre.
+
+| round | change | AUC (pool) | cross AUC | hard-rule rooms | blind |
+|---|---|---|---|---|---|
+| ref | - | 0.999 | 0.991 | 6 (statues 2/4) | - |
+| r1 | recipe: no plants or benches, a chest at most, 4 hangings; braziers in pairs down the aisle (`aisle_lights`); statues in the back corners | 0.983 | 0.986 | 10 (statues) | - |
+| r2 | **shared:** the knowledge base's "a showpiece twice only 10 units apart" no longer applies to statues (they keep their 2-unit clearance, pairs closer): no throne could be flanked nor an aisle lined | 0.999 | 0.993 | 0 | - |
+| r3 | statues on a back wall turned along it toward the throne (`statues_along`: Westwood stands Statue2c/2g on NW walls, 19 of 20); `decor_max` caps all hangings | 0.965 | 0.996 | 0 | - |
+| r4 | columns a pair per 36 tiles, 3 pairs at most | 0.965 | 0.991 | 2 (bunched) | - |
+| r5 | a pair per 30 tiles | 0.965 | 0.992 | 1 (bunched, 121 tiles) | queued |
+
+What still gives it away (metrics): the dominant kind's share (Westwood's halls are mostly columns; ours mix columns,
+statues, braziers, hangings), a lone throne where Westwood's has its base, back and shadow plus a dais, the plain shell.

@@ -4,3 +4,5 @@
 |---|---|---|
 | tavern | r10 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\r10\blind |
 | tavern | ref (before) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\tavern\ref\blind |
+| throne_room | ref (before) | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\ref\blind |
+| throne_room | r5 | C:\GOG Games\Nox\dystopiannox-wt\tuneB\review\out\roomlab\throne_room\r5\blind |

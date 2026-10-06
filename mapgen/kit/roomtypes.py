@@ -311,7 +311,9 @@ TYPES = {
                    middle="a carpet runner and a clear aisle from the door to the throne; a few pairs of columns spread "
                           "down the length; pairs of statues between them facing across the aisle"),
         cover=(0.03, 0.06, 0.12), open=(0.65, 0.92), per_tile=(0.10, 0.35), types_min=9, free_most=(6, 30),
-        caps={"column": (26, 8), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
+        # Westwood: the Lich Lord's six columns in three pairs (356 tiles), Hecubah's one pair (492):
+        # a pair per 30 tiles, three pairs at most (room lab, tuneB: four pairs read as "tons of the same exact pillars")
+        caps={"column": (30, 6), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"throne": (12, 1)}, needs=("throne",), kin=("hall",)),
     "chapel": dict(
         family="ceremonial", feel="open", kinds=("chapel", "dark_chapel"), westwood=("chapel",),

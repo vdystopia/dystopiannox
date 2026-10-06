@@ -549,26 +549,28 @@ ROOMS = {
     # stood in the way of the throne's view of its door)
     "throne_room": dict(purpose="a throne room: the throne centred on the NW wall facing the door across the room, statues "
                                 "flanking it and braziers before it, a clear aisle and a carpet runner from the door to "
-                                "the throne, a few pairs of columns spread down its length with pairs of statues between "
-                                "them facing across the aisle, tapestries of one colour on the back walls, a bench or two "
-                                "for those who wait, plants in the corners",
+                                "the throne, a few pairs of columns spread down its length, a pair of statues facing "
+                                "across the aisle and braziers lining it, a few tapestries of one colour",
                         core={"throne": (1, 4), "column": (2, 8)},
-                        optional={"statue": (1.0, 6), "wall_decor": (1.0, 8), "storage": (0.5, 1), "plant": (0.6, 4),
-                                  "bench": (0.8, 2)},
+                        # room lab (tuneB): Westwood's four throne rooms hold no plants or benches, a chest at most
+                        # (Con11a's two), their hangings in a few places (Hecubah's war poles by the door, the Lich
+                        # Lord's tapestries in pairs), not evenly down every wall; flame basins line the runner in pairs
+                        optional={"statue": (1.0, 6), "wall_decor": (1.0, 4), "storage": (0.3, 1)},
                         types={"throne": r"^DunMirThrone", "column": r"^Column[5-8]$|^CathedralColumn\d",
-                               "statue": r"^Statue2[a-h]$", "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS,
-                               "bench": r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"},
+                               "statue": r"^Statue2[a-h]$", "storage": r"^DunMirChest\d|^Chest\d"},
                         decor_themes=("blue", "red", "white", "green"),
-                        top_up=("plant",),           # never chests or benches down the walls to fill the floor
+                        decor_max=4, statues_along=True,
+                        top_up=(),                   # never chests, benches or plants down the walls to fill the floor
                         compose=[dict(fam="throne", slot="throne"),
                                  dict(fam="statue", slot="flank", of="throne", gap=0.8),
                                  dict(fam="light", slot="flank_lights", of="throne", gap=0.9),
                                  dict(fam="column", slot="colonnade", gap=5.0, aisle=3.0),
-                                 dict(fam="statue", slot="groups", group="statues", n=2, extra=True, min_area=100),
-                                 dict(fam="bench", slot="wall", at="center", clear=0, n=2),
+                                 dict(fam="light", slot="aisle_lights", n=2),
+                                 dict(fam="statue", slot="groups", group="statues", n=1, extra=True, min_area=100),
+                                 # statues of the house in the back corners where the aisle took no pair
+                                 dict(fam="statue", slot="wall", at="corner", clear=0.6, n=2),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
-                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
+                        fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
     "barracks": dict(purpose="bunks for a crew: beds of one kind spaced along a front wall, a nightstand between "
                              "neighbours, a chest a step beyond each bed's foot, a rug before each bed, shelves for their "
                              "gear end to end on a back wall, shields and trophies on the back walls, a table with seats",
