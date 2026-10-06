@@ -225,16 +225,17 @@ ROOMS = {
                                dict(fam="wall_decor", slot="decor")],
                       # a mess too small for rows still eats at one long table (Greywatch's 32-tile mess had none:
                       # rules/rooms/dining_hall.md)
+                      top_up=(),
                       fill=[dict(fam="table", slot="group", group="longtable", max=1, fixed=True),
-                            dict(fam="bench", slot="wall", at="center", clear=0, max=3),
-                            dict(fam="shelves", slot="line", max=8)]),
+                            dict(fam="bench", slot="wall", at="room_corner", clear=0, max=1),
+                            dict(fam="shelves", slot="line", max=4)]),
     "dining_hall": dict(purpose="a household's dining hall: two or three long tables seated along both sides by benches "
                                 "and chairs, the hearth on a back wall, a cask or two, hangings above",
                         # room lab (tuneB): Westwood's dining halls (Con06a 55 tiles, Con03B's mess 108, the ogres'
                         # Con05C 110) hold two or three tables, never a grid of eight; benches with a chair or two at
                         # the ends; a bookcase at most; casks and barrels by the walls; no plants, no statues
                         core={"table": (1, 4), "chair": (2, 12), "fireplace": (1, 1)},
-                        per_tiles={"table": 32},
+                        per_tiles={"table": 26},
                         optional={"rug": (0.4, 1), "wall_decor": (1.0, 5), "shelves": (0.4, 2), "bench": (1.0, 6),
                                   "storage": (0.7, 4)},
                         types={"table": r"^Table[1-4]$|^OvalTable[12]$|^RoundTableWithFood$|^RoundTable[123]$",
@@ -244,14 +245,16 @@ ROOMS = {
                         # Westwood's room statistics count hearths as lights, so a recipe names its own
                         prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                         one_set=("dining", "feast"), group_rugs=False, statues_along=True, decor_max=5,
+                        top_up=(),                           # never benches or barrels down the walls to fill the floor
                         compose=[dict(fam="fireplace", slot="wall", at="center", clear=2.4),
                                  dict(fam="table", slot="table_rows", seat="bench"),
                                  dict(fam="carpet", slot="carpet", where="under", chance=0.5),
                                  dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=200),
+                        fill=[dict(fam="table", slot="group", group="feast", max=1, min_area=160),
+                              dict(fam="table", slot="group", group="dining", max=2, min_area=160),
                               dict(fam="storage", slot="stock", coverage=0.25, kinds=("kegs",), pad=1.2, max=3,
                                    per_wall=0.25),
-                              dict(fam="shelves", slot="line", near="fireplace", max=2)]),
+                              dict(fam="shelves", slot="line", near="fireplace", max=2, fixed=True)]),
     "shop": dict(purpose="a trader's shop: the counter set out before a back wall with the keeper's space behind it, "
                          "trader's shelves of goods lining the back walls, racks of arms and armour in rows down the "
                          "middle, crates of stock along the front walls",
@@ -636,8 +639,9 @@ ROOMS = {
                                dict(fam="table", slot="groups", group="ogre_table"),
                                dict(fam="storage", slot="wall", at="corner", clear=0.4, group=True),
                                dict(fam="clutter", slot="scatter", per100=1.5, cluster=(1, 2))],
-                      fill=[dict(fam="table", slot="group", group="ogre_table", max=2),
-                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=6)]),
+                      top_up=(),
+                      fill=[dict(fam="table", slot="group", group="ogre_table", max=3),
+                            dict(fam="storage", slot="wall", at="corner", clear=0.4, max=2, fixed=True)]),
     "ogre_hoard": dict(purpose="the ogres' hoard: barrels, sacks and crates heaped along the walls, a chest at the back, "
                                "carcasses hung to cure, bones about",
                        base="storeroom",
