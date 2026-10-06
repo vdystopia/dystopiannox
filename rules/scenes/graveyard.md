@@ -68,3 +68,10 @@ dug or empty, the digger's corner (65%), the trees' kind and place, the headston
 Round 1: every kit graveyard was a small square box in a glade. Round 2 (AUC 0.565): crypts, a walk and larger yards;
 still a yard alone in a glade (Westwood's stand against town walls and buildings), and the walk's bare earth reads
 faintly on sparse grass.
+
+## Round 3 (2026-10-06, the town setting)
+
+- No tree inside the yard. The crypt stands free, a square in from the back fence, about the back side's middle.
+- The walk two tiles wide in every yard; the gravedigger at work in 85% of yards; the rows on the grid's lines (Westwood's
+  headstones step along the screen diagonals: 0.96), their gaps uneven along a row (2.7-3.9 squares).
+- The graveyard draws from its own generator (map and plot), never the design's.

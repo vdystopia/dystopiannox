@@ -466,6 +466,9 @@ class Waterworks:
         def land_at(x, y):
             c = tile_at_uv((x + y) / CELL, (x - y) / CELL)
             cell = (int(x // CELL), int(y // CELL))
+            # on firm ground: the tiles a step round it land too (a barrel had stood half in the water)
+            if not all(self._land(tile_at_uv((x + dx + y + dy) / CELL, (x + dx - y - dy) / CELL))
+                       for dx, dy in ((18, 0), (-18, 0), (0, 18), (0, -18))): return False
             return self._land(c) and c not in lane and c not in self.no_walls and                 not any((cell[0] + a, cell[1] + b) in self.spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1))
 
         def put(t, x, y):
@@ -481,7 +484,7 @@ class Waterworks:
         # some a step apart; a rock with its stones; a crate; bones now and then; never the same stamp twice)
         side = rng.choice((1, -1))
         barrel = rng.choice(("Barrel", "Barrel2"))
-        n_b = rng.choice((1, 2, 2, 3, 3, 4))
+        n_b = rng.choice((2, 3, 3, 4, 4))
         got = 0
         for sd in (side, -side):
             for back in (40, 60, 85, 110):
@@ -499,7 +502,7 @@ class Waterworks:
             if got:
                 side = sd; break
         # the rock the bank is made of, on the other side or further back, its stones fallen round it (half the docks)
-        if rng.random() < 0.6:
+        if rng.random() < 0.75:
             for back in (50, 80, 120):
                 bx, by = x0 - ux * back - sx * side * rng.uniform(60, 110), y0 - uy * back - sy * side * rng.uniform(60, 110)
                 if put2(rng.choice(("CaveRocksLarge", "CaveRocksHuge", "CaveRocksMedium")), bx, by):
@@ -510,7 +513,7 @@ class Waterworks:
             for _ in range(6):
                 d_, e_ = rng.uniform(60, 140), rng.uniform(-120, 120)
                 if put2(rng.choice(("Crate1", "Crate2")), x0 - ux * d_ + sx * e_, y0 - uy * d_ + sy * e_): break
-        if rng.random() < 0.3:                              # what is left of a fisher (Con05A's bones on the bank)
+        if rng.random() < 0.4:                              # what is left of a fisher (Con05A's bones on the bank)
             for _ in range(6):
                 d_, e_ = rng.uniform(70, 150), rng.uniform(-130, 130)
                 if put2(rng.choice(("ArmBone", "LegBone", "Skull")), x0 - ux * d_ + sx * e_, y0 - uy * d_ + sy * e_): break
@@ -681,6 +684,9 @@ class Waterworks:
         pal = self.deco["palettes_by_material"]
         skip = ("Stalag", "Pillar", "Sewer", "Brick", "CaveRock", "Gargoyle", "Bridge", "Column")
         occupied = set(self.no_walls)
+        # no reed against a dock's sides or root (the blind judge, 2026-10-05): its lane and three tiles round it
+        occupied |= {(c[0] + a, c[1] + b) for ln in self.kit_lanes for c in ln
+                     for a in range(-3, 4) for b in range(-3, 4) if (a + b) % 2 == 0 and abs(a) + abs(b) <= 4}
         for b in self.bodies:
             tiles = [c for c in b.tiles if self.spec.floor.get(c) in WATER_MATERIALS | LAVA_MATERIALS and c not in occupied]
             if not tiles: continue

@@ -7,7 +7,9 @@ then `py review/scenelab/blind.py score <scene> <iter>`. Paths are under this wo
 
 | Scene | Iteration | Sheet | Previous independent verdict |
 |---|---|---|---|
-| bandit_camp | r5-edge | `bandit_camp/r5-edge/blind/` | r4-irregular: 10/10, 5.2 / 6.8 |
-| graveyard | r5-trees | `graveyard/r5-trees/blind/` | r3-spaced: 10/10, 4.2 / 7.4 |
-| garden | r5-household | `garden/r5-household/blind/` | r3-larger: 10/10, 4.8 / 7.8 |
-| pond_dock | r2-down | `pond_dock/r2-down/blind/` | r3-bank: 9/9, 5.2 / 7.8 |
+| graveyard | r8-own | `graveyard/r8-own/blind/` | r5-trees: 8/10, 5.6 / 7.0 |
+| garden | r6-town | `garden/r6-town/blind/` | r5-household: 10/10, 4.8 / 7.4 |
+| pond_dock | r4-shore | `pond_dock/r4-shore/blind/` | r2-down: 9/9, 4.6 / 7.8 |
+| bandit_camp | r5-edge (judged) | | r5-edge: 10/10, 4.6 / 6.2 |
+
+The setting changed between these and the previous sheets (a hamlet round the town scenes: README "The setting").

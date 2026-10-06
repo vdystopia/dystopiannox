@@ -39,7 +39,8 @@ class Village:
         of crops"). crop: one crop for every bed (a flower bed); fence: "auto" (a wooden fence now and then), a fence
         material, or None."""
         sizes, (w, h) = [], size
-        if crop is None: sizes.append((w + 1, h + 1))   # Westwood's gardens run larger: a size up first, where it fits
+        if crop is None:                                # Westwood's gardens run larger: two sizes up first, where it fits
+            sizes += [(w + 2, h + 1), (w + 1, h + 1)]       # (the blind judge, 2026-10-05: "token plots")
         while True:
             sizes.append((w, h))
             if w * h <= 6: break
@@ -47,8 +48,8 @@ class Village:
         # each size with two squares of open land round it first (no crop against the wood's edge or in a pond: the
         # blind judge, 2026-10-05, "rows running into the pine edge, corn touching the tree line"), then with one; the
         # two largest sizes before any smaller one
-        tries = [(s_, True) for s_ in sizes[:2]] + [(s_, False) for s_ in sizes[:2]]
-        for s_ in sizes[2:]: tries += [(s_, True), (s_, False)]
+        tries = [(s_, True) for s_ in sizes[:3]] + [(s_, False) for s_ in sizes[:3]]
+        for s_ in sizes[3:]: tries += [(s_, True), (s_, False)]
         for s_, wide in tries:
             if self._garden_at(building, s_, crop, fence, wide): return True
         return False
@@ -131,7 +132,8 @@ class Village:
                 if own_rng.random() < 0.5: ends = [(n_long - 0.35, "WaterBarrel", 0.85), (0.35, "MiningShovelInGround", 0.5)]
                 for a, t, p in ends:
                     if own_rng.random() >= p: continue
-                    si, sj = (gi + a, gj - 1.5 + path + 0.5) if long_i else (gi + path + 0.5, gj - 1.5 + a)
+                    a += own_rng.uniform(-0.15, 0.25) * (1 if a > 1 else -1)        # set down, not on a mark
+                    si, sj = (gi + a, gj - 1.5 + path + 0.5 + own_rng.uniform(-0.2, 0.2)) if long_i else                         (gi + path + 0.5 + own_rng.uniform(-0.2, 0.2), gj - 1.5 + a)
                     x, y = square_px(si, sj)
                     if not fence or off_walls(walls, t, x, y, margin=6): self.spec.obj_px(t, x, y)
             elif own_rng.random() < 0.85:              # a narrow plot: the barrel beside the bed's end, off the rows

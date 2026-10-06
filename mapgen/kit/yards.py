@@ -293,7 +293,10 @@ def _crypts(spec, rng, y, reserve, cells=1, depth=3, span=3):
     back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
     gi, gj, w, h = y.gi, y.gj, y.w, y.h
     U = h if back in ("i0", "i1") else w
-    if U < cells * span + 3 or (w if back in ("i0", "i1") else h) < depth + 5: return []
+    v0 = 1                              # a square in from the back fence, standing free (the blind judge, 2026-10-05:
+                                        # "the crypt jammed into the fence line or a fence corner"; Con07B's crypt
+                                        # stands in its yard)
+    if U < cells * span + 4 or (w if back in ("i0", "i1") else h) < depth + v0 + 5: return []
     def pt(u, v):                       # a wall point: u along the back side, v in from it
         if back == "i1": return (gi + w - v, gj - 1 + u)
         if back == "i0": return (gi + v, gj - 1 + u)
@@ -302,34 +305,35 @@ def _crypts(spec, rng, y, reserve, cells=1, depth=3, span=3):
     def sq(u, v):                       # the square whose corner nearest the back's low end is (u, v)
         p, q = pt(u + 0.5, v + 0.5)
         return int(math.floor(p)), int(math.floor(q)) + 1
-    end = rng.random() < 0.5
-    u0s = [0 + k * span for k in range(cells)] if not end else [U - (k + 1) * span for k in range(cells)]
+    start = (U - cells * span) // 2 + rng.choice((-1, 0, 0, 1))     # about the back side's middle, off its corners
+    start = max(2, min(U - cells * span - 2, start))
+    u0s = [start + k * span for k in range(cells)]
     steps = []
     for u0 in u0s:
         for u in range(u0, u0 + span + 1):
-            for v in (0, depth):
+            for v in (v0, v0 + depth):
                 spec.wall(*point_cell(*pt(u, v)), "Cobblestone")
-        for v in range(0, depth + 1):
+        for v in range(v0, v0 + depth + 1):
             for u in (u0, u0 + span):
                 spec.wall(*point_cell(*pt(u, v)), "Cobblestone")
         for u in range(u0, u0 + span):
-            for v in range(depth):
+            for v in range(v0, v0 + depth):
                 s_ = sq(u, v)
                 spec.floor[square_tile(*s_)] = "GreenBrick"
         # the door in the front wall's middle, into the yard
         um = u0 + span // 2
-        a, b = point_cell(*pt(um, depth)), point_cell(*pt(um + 1, depth))
+        a, b = point_cell(*pt(um, v0 + depth)), point_cell(*pt(um + 1, v0 + depth))
         line = "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/"
         spec.door("WoodAndSteelDoor", a, line)
         # the sarcophagus in the middle of the cell, long across the door's line
-        cu, cv = u0 + span / 2, depth * 0.45
+        cu, cv = u0 + span / 2, v0 + depth * 0.45
         ci_, cj_ = pt(cu, cv)
         spec.obj_px(rng.choice(("Crypt1", "Crypt3")), *square_px(ci_, cj_ - 0.5))
         for u in range(u0 - 1, u0 + span + 1):
-            for v in range(0, depth + 1):
+            for v in range(0, v0 + depth + 1):
                 p_, q_ = pt(u + 0.5, v + 0.5)
                 reserve(p_, q_ - 0.5, 0.75)
-        p_, q_ = pt(um + 0.5, depth + 0.7)
+        p_, q_ = pt(um + 0.5, v0 + depth + 0.7)
         steps.append((p_, q_ - 0.5))
     return steps
 
@@ -346,6 +350,10 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
     - the gravedigger's corner, away from the gate: a fresh open grave (dark earth) with the coffin waiting beside it,
       the spade stuck in the earth by it, the bucket of tools, a torch pole to work by;
     - a stone pillar either side of the gate; a dead tree or two."""
+    import random as _random, zlib
+    # the yard's own generator (the map and the plot): tuning a graveyard never shifts the rest of the map (a changed
+    # yard had moved Harrowby's planting until a bush stood in a ruin's doorway)
+    rng = _random.Random(zlib.crc32(f"{spec.d['name']}:graveyard:{y.gi},{y.gj}".encode()))
     I0, I1, J0, J1 = y.gi, y.gi + y.w, yj - 1, yj - 1 + y.h
     ci, cj = y.centre
     for s in y.plot:                                            # the yard's sparse grass (Westwood: GrassSparse2)
@@ -370,14 +378,14 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
             sqr = (int(math.floor(si_ + (o_ if abs(ey_) >= abs(ex_) else 0))),
                    int(math.floor(sj_ + 0.5 + (o_ if abs(ex_) > abs(ey_) else 0))) + 1)
             if sqr in y.plot: spec.floor[square_tile(*sqr)] = "DirtLight2"
-        reserve(si_, sj_, 1.2 if min(y.w, y.h) >= 12 else 0.75)     # a small yard's walk one tile wide
+        reserve(si_, sj_, 1.1)
     # the gravedigger's corner: the back corner on the side away from the gate's lane
     corners = [(I0 + 1.4, J0 + 1.4), (I1 - 1.4, J0 + 1.4), (I0 + 1.4, J1 - 1.4), (I1 - 1.4, J1 - 1.4)]
     far = max(corners, key=lambda c: math.hypot(c[0] - gm[0], c[1] - gm[1]))
     dug = None
     gi_, gj_ = int(math.floor(far[0])), int(math.floor(far[1])) + 1             # its square
     oi, oj = gi_ + 0.5, gj_ - 0.5                                               # the open grave's middle
-    if rng.random() < 0.65 and free_spot(oi, oj, pad=0.8, lane_w=1.2):         # most are digging a grave
+    if rng.random() < 0.85 and free_spot(oi, oj, pad=0.8, lane_w=1.2):         # most are digging a grave
         spec.floor[square_tile(gi_, gj_)] = "DirtDark2"
         dug = (oi, oj)
         dx = 1 if oi < ci else -1
@@ -408,12 +416,12 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
     k = 0
     r_ = A0 + 1.1
     while r_ <= A1 - 1.1:
-        c_ = B0 + 1.2
+        c_ = B0 + 1.2 + rng.uniform(0, 0.5)                               # rows a little out of step
         while c_ <= B1 - 0.9:
             hi, hj = (r_, c_) if rows_i else (c_, r_)
             hi += rng.uniform(-0.1, 0.1); hj += rng.uniform(-0.15, 0.15)     # a little out of true, as dug by hand
-            c_ += rng.uniform(2.9, 3.4) if big else rng.uniform(2.6, 2.9)    # Westwood: nearest 100-130 px
-            if rng.random() < 0.12: continue                                 # a plot not yet used
+            c_ += rng.uniform(2.7, 3.9) if big else rng.uniform(2.5, 3.2)    # Westwood: nearest 100-130 px, uneven
+            if rng.random() < 0.14: continue                                 # a plot not yet used
             lw = 0.5                                                         # (the walk is the way through)
             if not (free_spot(hi, hj, pad=1.1 if big else 0.85, lane_w=lw, t="Tombstone1") and
                     free_spot(hi + 0.45, hj, pad=0.9 if big else 0.7, lane_w=lw)):
@@ -427,13 +435,5 @@ def _graveyard(spec, rng, y, yj, free_spot, put, gm, reserve):
             reserve(hi + 0.45, hj, 0.8)                               # the plot stays clear
         r_ += rng.uniform(2.7, 3.1) if big else rng.uniform(2.4, 2.7)
         k += 1
-    # a tree or two by the fence, inside it: a dead one, or one grown old there (Westwood: TreeOgre08-10 and trunks in
-    # War03b-d, Galava's trees along its yard's fence), never in the middle among the graves
-    for _ in range(rng.randint(1, 2)):
-        for _try in range(30):
-            s_ = (rng.uniform(I0 + 0.9, I1 - 0.9), rng.uniform(J0 + 0.9, J1 - 0.9))
-            if min(s_[0] - I0, I1 - s_[0], s_[1] - J0, J1 - s_[1]) > 1.6: continue
-            # a trunk's spread is wide: 1.2 squares off the fence's line, never on it (the blind judge, 2026-10-05)
-            if free_spot(*s_, pad=1.2, lane_w=1.3, t="TreeOgre08"):
-                put(rng.choice(("TreeOgre08", "TreeOgre09", "TreeOgre10", "TreeTrunk6", "TreeForest01", "TreeForest03")),
-                    *s_, room=1.0); break
+    # no tree in the yard (the brief, and the blind judge 2026-10-05: a green tree by the gate, a dead one among the
+    # graves): the wood round it and the planting's trees outside its fence

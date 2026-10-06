@@ -196,6 +196,35 @@ AUC with 4 Westwood docks is noise. Ten of ten docks are DockDown now (three wer
 errors, no dock warnings. Still: one dock to a pond (Westwood's lake has three), the reeds' even spread (the water
 dressing, `_dress`, shared by every map: left alone), and no path or people in the lab's pond clearing.
 
+## The town setting (night-scenes3, 2026-10-06)
+
+The independent judge on the round-2 sheets (scored against the keys): graveyard r5-trees 8/10, 5.6 / 7.0; garden
+r5-household 10/10, 4.8 / 7.4; pond_dock r2-down 9/9, 4.6 / 7.8; bandit_camp r5-edge 10/10, 4.6 / 6.2. "The biggest tell
+is the lab's setting: ours stand alone in an empty forest glade, Westwood's sit in towns, among other yards, walls,
+paved walks, houses and crypt complexes."
+
+The lab (labgen.py): every scene not of the wild (`WILD`: bandit, ogre and urchin camps, wolf den, quarry, shrine) is
+now laid in a hamlet's ground: a larger clearing (12-15 squares), a road through it (the glade site becomes the road
+site), two or three houses of the kit's own generator (home, cottage, store, fisher, inn) round it away from the scene,
+furnished, each joined to the road by its walk (`plan_context`, `build_context`); a pond scene's water is a lake on one
+side of it (10-12 tiles), the hamlet on the other, the dock's landing kept clear of the planting. The scores before and
+after are not comparable (the setting changed), so each scene ran again in it.
+
+| Scene | Round | What changed in the kit | AUC | Hard |
+|---|---|---|---|---|
+| graveyard | t1-town | the town setting, the kit as r5 | 0.625 | 0 |
+| graveyard | r6-town | no tree in the yard (the judge: a green tree by the gate, a dead one among the graves); the crypt a square in from the back fence, about the back side's middle, never in a corner; the walk two tiles wide in every yard; the digger at work in 85% of yards; rows staggered | 0.81 | 0 |
+| graveyard | r7-town | rows back on the grid's lines (the stagger broke the screen-diagonal steps Westwood keeps: 0.58 against 0.96), the gaps along a row uneven instead (2.7-3.9 squares) | 0.635 | 1 (graves) |
+| graveyard | r8-own | the graveyard's own generator (a changed yard had shifted Harrowby's planting until a bush stood in a ruin's doorway, doorways.blocked); unused plots 14% | 0.644 | 0 |
+| garden | r6-town | two sizes up first (w + 2, h + 1: "token plots"); the barrel and spade set down off the beds' exact ends | 0.79 | 0 |
+| pond_dock | r3-lake | no reed within three tiles of a dock's lane ("reeds against the dock's sides"); the gear only on firm ground (a barrel had stood half in the water) | 0.48 | 0 |
+| pond_dock | r4-shore | the bank fuller: 2-4 barrels, the rock 75%, bones 40% | 0.64 | 0 |
+
+Thornwick, Greywatch, Ambermere, Starwell, Harrowby: 0 errors, warnings as at the start of the night; DysVale 0
+errors. The tuning agent looked at the renders: graveyard r8-own, garden r6-town and pond_dock r4-shore are queued in
+TO_JUDGE.md. The market stall still lays in none of ten clearings (the awning's poles and cloths find no free ground
+by the store even with a kept square, r1-square): left for the next round.
+
 ## Final summary (every type, the kit as committed)
 
 | Scene | Westwood scenes | AUC | Blind acc. | Blind gen/WW | Hard-rule scenes | Missing | Worst findings |

@@ -57,3 +57,8 @@ Kit (DockDown or DockUp by the shore), the bank side of the gear, two or three b
 ## What still gives it away
 
 The short DockUp in a small forest pond; Westwood's docks are long runs into a big lake.
+
+## Round 3 (2026-10-06, the town setting)
+
+- No reed within three tiles of a dock's lane; the bank's gear only where the ground a step round it is land too; 2-4
+  barrels, the rock 75%, bones 40%.

@@ -63,3 +63,8 @@ dug or grass, the barrel and spade, flowers, the fence.
 ## What still gives it away
 
 Size: Westwood's gardens are bigger and come with the household round them (a well, flowers, an apple tree, barrels).
+
+## Round 3 (2026-10-06, the town setting)
+
+- Sizes tried: two up (w + 2, h + 1), one up, the asked size, then smaller; the barrel and spade set down a little off
+  the beds' exact ends.
