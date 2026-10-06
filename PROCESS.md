@@ -150,6 +150,31 @@ Rules that hold for every type:
   emptiest corners, at least 3 units apart, never before a chest, hearth or stove however it was placed
   (`Furnisher._before_anchor`, measured as `composition.anchor_blocked` measures it) [DV5-4].
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
+- **Every piece by what Westwood does with it** [HB-1..HB-5] (2026-10-05, the Harrowby playtest: "Do a pass over all
+  objects and try to understand better how they fit in the world"). `py rules/objects.py` measures every kind of piece on
+  the campaign maps' rooms and walls (each layout once) into `rules/out/objects.json`: category, footprint, where it stands,
+  runs of one kind along a wall, counts per room by type, the nearest piece of every category, what never stands next to
+  it, what hangs above it. `kit/objects.py` turns it into rules and `Furnisher._kb_ok` holds every placement to them
+  (recipes, fill, top-up, groups, set pieces alike):
+  - *showpieces* stand once (a desk, an alchemist's desk, bellows, a telescope; a hearth twice only in a hall of 240
+    tiles); one cauldron a room; chests by the type's p90 (a bedroom 1, a chamber of 100 tiles 2); a bedroom one table
+    or desk with its chairs; tables in private and work rooms by the type's p90;
+  - *fabric* lines walls (bookcases, a bench of workstations, trader's shelves, straw); everything else stands alone or
+    in runs no longer than Westwood's (log shelves 2, barrels 3, chests and statues 1) and never down a whole wall
+    (shelves and racks 2 to a wall, supplies 3, statues 2);
+  - *clearances* by category pair: 0.8 of Westwood's p5 where it keeps a pair 0.9 units apart or more, and the
+    playtest's floors: a bed or a chest 2 units from any fire, a chest 3 from a hearth, a bench 1.2 from a bed, statues
+    2 apart unless a deliberate pair flanking something; and Westwood's "never next to" (a bed never beside supplies,
+    a table never beside a hearth);
+  - *hangings* take bare wall, never above a piece standing against it (Westwood: 0-3%), two of one trophy or painting
+    to a wall at most; *candelabras* by the room's size (2 under 40 tiles, 3 under 100, 4 under 200, then 5);
+  - *supplies in clusters*, not lines: 1-5 pieces of mixed kinds (sacks of three sizes, then a barrel, then a crate)
+    0.2-0.4 apart, 1-4 units of bare wall between clusters (the groups had been laid 0.12 apart, under the 0.15 a fit
+    keeps, so every second piece failed and walls took single sacks spread evenly);
+  - a chest on a wall between a door and the end of a row of shelves stands centred between them
+    (`Furnisher.centre_by_doors`).
+  Before and after on the playtest's own rooms: `py mapgen/designs/hbreplay.py` rebuilds them wall for wall from the
+  played map and furnishes them again.
 - **A room reads as what it is** [SW-6, SWR-1, TW-8, AMR-4] whatever its type: the checker's room-identity warnings
   (`check_identity`) catch a showpiece repeated, a stand-alone piece four or more times along one wall, supplies lining
   a wall outside a store, one kind filling a big room, more free tables than the type sets, a shopkeeper not behind his
@@ -366,6 +391,10 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every
   stop facing open ground, tours of 4+ stops of 15+ s, nobody's route through a person standing still;
+- `pieces.*` [HB-1..HB-5]: the object knowledge base (cauldrons, chests, showpieces, a bedroom's table sets, the
+  clearances the playtest set, runs of pieces that do not line walls, hangings above pieces, candelabras by size),
+  calibrated on one map of each campaign layout (6-15% of maps trip a rule; `sets` and `hung` are house rules over
+  Westwood's habit);
 - `exterior.*` [section 4-5]: overlapping pieces, pieces on a fence line, pickable lights, crowds and swarms, docks,
   stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves.
 

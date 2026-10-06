@@ -58,6 +58,7 @@ keeps': stone, banners, a carpet of floor tiles with the gold trim.
 - Benches along every wall and eight chests beside the tables' benches (Thornwick, 2026-10-05), and a top-up of 15
   plants and 15 statues once the benches were capped: a capped set must not hand its space to one other piece.
 - Bare walls: with little on the floor, the hangings carry the room (Ambermere's moot hall had one).
+- Harrowby playtest (2026-10-05, HB-2): "trophies on the wall with statues right on top of them. Double-placed objects. The two treasure chests are both too close to the hearth. It's also a little bit too empty ... along the southeast wall in the south corner." Hangings take bare wall only (Westwood hangs nothing above a piece against the wall), one chest at most and 3 units from any hearth, benches and plants in the front corners first (checker `pieces.hung`, `pieces.chests`, `pieces.clearance`).
 
 ## Examples
 

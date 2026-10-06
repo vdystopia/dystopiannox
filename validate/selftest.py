@@ -390,6 +390,45 @@ def person_in_the_way(m):
     Population(m, random.Random(2)).creature("Maiden", *px(190, -20.3), action="guard", scr="Ida", aggr=0.0)
 
 
+# ---- the object knowledge base (Harrowby playtest, HB-1..HB-5; validate/checks.py check_pieces) ------------------------
+def two_cauldrons(m):
+    for u, v in ((206, -6), (214, 3)): m.obj("CauldronAnimated", u, v)          # HB-1: "Why are there two cauldrons?"
+
+
+def four_chests(m):
+    _declare(m)                                                # HB-3: "Why are there four treasure chests?"
+    for u in (204, 208.5, 213): m.obj("Chest3", u, 9.2)
+    m.obj("Chest2", 207, -9.2)
+
+
+def bedroom_table_sets(m):
+    _declare(m)                                                # HB-3: a bedroom with three table sets
+    m.obj("RoundTable1", 206, -4); m.obj("SquareTable1", 210, 3)
+
+
+def chest_by_hearth(m):
+    m.obj("Fireplace3", 206, 9.0); m.obj("Chest3", 209.2, 9.2)  # HB-2: "chests ... too close to the hearth"
+
+
+def shelves_wall(m):
+    _declare(m, "storeroom")                                   # HB-5: a wall of identical log shelves
+    for k in range(5): m.obj("LogShelvesFull4", 205 + 1.25 * k, 9.15)
+
+
+def trophy_over_statue(m):
+    m.obj("Statue2g", 205, 9.2); m.obj("WallTrophyMoose1", 205, 9.4)   # HB-2: "trophies ... with statues right on top"
+
+
+def candelabras(m):
+    for u, v in ((201.5, -8.5), (201.5, 8.5), (220.5, -8.5), (220.5, 8.5), (206, -9), (212, -9), (206, 9), (212, 9.2),
+                 (216, -9)):
+        m.obj("Candleabra1", u, v)                             # HB-4: "Too many candelabras"
+
+
+def two_bellows(m):
+    for u in (205, 211): m.obj("Bellows1", u, 9.0)             # a showpiece twice (HB-1: one of a kind)
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -473,6 +512,14 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "beds scattered"),
     ("STstray", stray_in_bedroom, "rooms", "warning", "a powder barrel in a declared bedroom - TP1-4", "not belong"),
     ("STpers", person_in_the_way, "routes", "warning", "a person standing on a townsperson's way - AMR-7", "stands there"),
+    ("STcauld", two_cauldrons, "pieces", "warning", "two cauldrons in one room - HB-1", "cauldrons"),
+    ("STchst4", four_chests, "pieces", "warning", "four chests in a bedroom - HB-3", "chests by the room type"),
+    ("STsets", bedroom_table_sets, "pieces", "warning", "three table sets in a bedroom - HB-3", "table-and-chair"),
+    ("SThclr", chest_by_hearth, "pieces", "warning", "a chest beside the hearth - HB-2", "keeps off the fires"),
+    ("STlogw", shelves_wall, "pieces", "warning", "five log shelves end to end along a wall - HB-5", "short runs"),
+    ("SThung", trophy_over_statue, "pieces", "warning", "a trophy hung above a statue - HB-2", "bare wall"),
+    ("STcand", candelabras, "pieces", "warning", "nine candelabras in a small house - HB-4", "candelabras by"),
+    ("STshw2", two_bellows, "pieces", "warning", "two bellows in one room - HB-1", "showpiece stands once"),
 ]
 
 

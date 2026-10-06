@@ -70,7 +70,7 @@ TYPES = {
                    other_back="the chest snug and centred with a rug before it; hangings",
                    front="a desk or a small table and chair; a bench", middle="a rug, or a carpet; kept clear to walk"),
         cover=(0.08, 0.14, 0.28), open=(0.30, 0.80), per_tile=(0.25, 1.0), types_min=8, free_most=(3, 20),
-        caps={"table": (12, 3)}, walls_min=3, lined=0.25, tiles=(14, 60),
+        caps={"table": (12, 1)}, walls_min=3, lined=0.25, tiles=(14, 60),
         signature={"bed": (6, 2), "nightstand": (1, 2), "^Chest": (0.5, 1), "desk": (0.5, 1)}, needs=("bed",),
         kin=("living_room", "study", "library")),
     "study": dict(
@@ -115,7 +115,7 @@ TYPES = {
                    front="sacks, barrels, crates and apples in heaps and rows",
                    middle="a work table with its food and stools; a clear way from the hearth to the door"),
         cover=(0.15, 0.21, 0.32), open=(0.22, 0.65), per_tile=(0.3, 1.0), types_min=8, free_most=(3, 15),
-        caps={}, walls_min=3, lined=0.30, tiles=(20, 80),
+        caps={}, walls_min=3, lined=0.15, tiles=(20, 80),           # log shelves in ones and twos (HB-5)
         signature={"stove": (5, 2), "storage": (0.3, 12), "table": (0.5, 1), "fireplace": (1, 1)}, needs=("stove",),
         kin=("storeroom", "herbalist", "living_room")),
     "laboratory": dict(
@@ -181,7 +181,8 @@ TYPES = {
         walls=dict(back="stocked log shelves end to end", other_back="crates side by side",
                    front="heaps of barrels and sacks in the corners", middle="clear, or one row of racks with aisles"),
         cover=(0.15, 0.30, 0.42), open=(0.15, 0.65), per_tile=(0.3, 1.1), types_min=4, free_most=(4, 20),
-        caps={"shop_rack": (10, 6)}, walls_min=3, lined=0.30, tiles=(15, 90),
+        # lined 0.10: log shelves stand alone or in pairs, never a whole wall of them (Harrowby playtest HB-5, kit/objects.py)
+        caps={"shop_rack": (10, 6)}, walls_min=3, lined=0.10, tiles=(15, 90),
         signature={"storage": (0.8, 30), "^LogShelves": (0.5, 8)}, needs=("storage",),
         kin=("kitchen", "armoury"),
         variants={"ore_store": dict(must={"storage": 2, "shop_rack": 2}, cover=(0.15, 0.28, 0.42), focal=dict(fam=None, types=r"^Mine(Mana|Ore)Cart",
@@ -214,7 +215,7 @@ TYPES = {
                    front="barrels, crates and tool barrels", middle="racks in rows of one kind each, at most five to a "
                                                                     "row, 1.2 apart, aisles of 2.2 between rows"),
         cover=(0.12, 0.24, 0.34), open=(0.25, 0.70), per_tile=(0.2, 0.8), types_min=7, free_most=(4, 25),
-        caps={"shop_rack": (6, 16)}, walls_min=3, lined=0.30, tiles=(30, 120),
+        caps={"shop_rack": (6, 16)}, walls_min=3, lined=0.10, tiles=(30, 120),      # racks stand apart (HB-5)
         signature={"shop_rack": (1.5, 12)}, needs=("shop_rack",), kin=("storeroom", "shop", "smithy")),
     # ---- public --------------------------------------------------------------------------------------------------
     "shop": dict(
@@ -227,7 +228,7 @@ TYPES = {
                    other_back="trader's shelves of goods", front="crates of stock",
                    middle="racks for show, three to a row, a row of each kind; the floor before the counter open"),
         cover=(0.12, 0.24, 0.40), open=(0.30, 0.75), per_tile=(0.2, 0.8), types_min=9, free_most=(3, 20),
-        caps={}, walls_min=3, lined=0.30, tiles=(30, 140),
+        caps={}, walls_min=3, lined=0.15, tiles=(30, 140),          # racks stand apart, shelves of goods in rows (HB-5)
         signature={"counter_shop": (8, 1), "shop_rack": (0.4, 8)}, needs=("counter_shop",),
         kin=("armoury", "smithy")),
     "tavern": dict(

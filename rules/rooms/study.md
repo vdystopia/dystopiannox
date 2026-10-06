@@ -59,6 +59,7 @@ ledger desk, a chest, trophies or tapestries.
 - "Study: too small and empty" (DysVale review): too small a room for its kind, and too few pieces.
 - Single-instance shelves lining a wall: potion shelves and showpieces stand once.
 - A second table set beside the meeting table: it turns the study toward a dining room.
+- Harrowby playtest (2026-10-05, HB-4, the reeve's library): "There are two statues way too close to each other ... Too many candelabras. The treasure chest should be centered between the end of the bookcase and the door." Statues 2 units apart unless a pair flanking something, two to a wall at most; candelabras by the room's size (kit/objects.py light_cap: 4 in 100-200 tiles); a chest between a door and a row of shelves stands centred between them (Furnisher.centre_by_doors; checker `pieces.clearance`, `pieces.lights`).
 
 ## Examples
 

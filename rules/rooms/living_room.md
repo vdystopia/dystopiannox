@@ -52,6 +52,7 @@ its nets and salt in sacks by the wall.
 - Single shelves here and there instead of a wall lined end to end ("put bookshelves end to end for the entire length
   of the wall").
 - A back room with four table sets (DysVale v0.3): one table, one sitting group.
+- Harrowby playtest (2026-10-05, HB-1, a cottage): "Why are there two cauldrons? There should only be a maximum of one cauldron per room. bed is way too close to one of the cauldrons. The bench is too close to the bed. Chest is way too close to the other cauldron." One cauldron a room; a bed and a chest 2 units from any fire, a chest 3 from the hearth, a bench 1.2 from the bed (kit/objects.py HOUSE_CLEAR; checker `pieces.cauldrons`, `pieces.clearance`). "The table, chairs, fireplace, and bookshelves all look good."
 
 ## Examples
 

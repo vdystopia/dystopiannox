@@ -46,6 +46,7 @@ The lined back walls themselves, the desk among the bookcases.
 
 - "put bookshelves end to end for the entire length of the wall" (TreePlace v0.3): never a lone shelf on a long wall.
 - A study with two bookcases is not a library, and a library with few books reads as a study.
+- Harrowby playtest (2026-10-05, HB-4): "The shelves lining the northwest and northeast walls are the kind of objects that can be used to span an entire wall, lined up side by side." Bookcases are the fabric that lines walls (Westwood: 69% of them in runs of 3 or more); statues, candelabras and chests are not (kit/objects.py role).
 
 ## Examples
 

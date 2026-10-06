@@ -2012,6 +2012,146 @@ def check_identity(m, ctx, base):
     return out
 
 
+# ---- the object knowledge base (Harrowby playtest HB-1..HB-5; mapgen/kit/objects.py, rules/out/objects.json) ---------
+PIECE_REACH, HANG_REACH = 1.0, 2.6     # uv units from a wall line: a piece against the wall, a hanging on it
+COMPOSITE_GAP = 0.1                    # two statues this near are one statue of several pieces (Westwood's)
+# the checker's tolerances over the furnisher's rules, so Westwood's campaign rooms rarely trip them (calibrated on one map
+# of each campaign layout; the furnisher holds the rules themselves): a chest more than the type's p90, statues nearly
+# touching (Westwood stands a pair 1 unit apart flanking a door; the furnisher keeps 2), half as many candelabras again
+CHEST_SLACK, STATUE_CLOSE, LIGHT_SLACK, HANG_OVERLAP = 1, 0.6, 1.5, 0.4
+
+
+def _piece_walls(o, runs, cu, cv, reach):
+    """[(wall name, line, coord, gap, along, half-length along)] of every wall a piece stands against."""
+    u, v = uv_of(o)
+    hu, hv = _half_uv(o)
+    out = []
+    for (line, coord), (lo, hi) in runs.items():
+        along = v if line == "/" else u
+        if not (lo - 0.5 <= along <= hi + 0.5): continue
+        perp = abs(u - coord) if line == "/" else abs(v - coord)
+        depth, ha = (hu, hv) if line == "/" else (hv, hu)
+        if perp - depth <= reach: out.append((_wall_name(line, coord, cu, cv), line, coord, perp - depth, along, ha))
+    return out
+
+
+def _edge(a, b):
+    au, av = uv_of(a); bu, bv = uv_of(b)
+    ahu, ahv = _half_uv(a); bhu, bhv = _half_uv(b)
+    return max(abs(au - bu) - ahu - bhu, abs(av - bv) - ahv - bhv)
+
+
+def piece_flags(m, r, kind):
+    """What the object knowledge base faults in one room: (rule, text, object). Shared by check_pieces and the labs."""
+    from kit import objects as OBJ
+    from kit.roomtypes import KIND_TYPE
+    rtype = KIND_TYPE.get(kind, kind)
+    tiles = r["tiles"]
+    cells = r["cells"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    runs = room_runs(m, cells)
+    objs = [o for o in r["objects"] if "MONSTER" not in o["cls"]]
+    cat = {id(o): OBJ.category(o["type"]) for o in objs}
+    floor = [o for o in objs if cat[id(o)] not in (None, "hanging", "rug") and not m.is_door(o)]
+    flags = []
+    # caps: one cauldron, chests by the room type, a showpiece once
+    groups = collections.defaultdict(list)
+    for o in floor:
+        # (a second hearth in a big kitchen or hall is Westwood's own: the furnisher caps it, the checker leaves it)
+        if OBJ.room_cap(o["type"], rtype, tiles) is not None and cat[id(o)] not in ("table", "hearth"):
+            groups[OBJ.cap_key(o["type"])].append(o)
+    for key, os_ in groups.items():
+        cap = OBJ.room_cap(os_[0]["type"], rtype, tiles)
+        if len(os_) <= cap: continue
+        if key == "cauldron": flags.append(("cauldrons", f"{len(os_)} cauldrons", os_[0]))
+        elif key == "chest":
+            if len(os_) > cap + CHEST_SLACK:
+                flags.append(("chests", f"{len(os_)} chests (its type holds {cap} at most)", os_[0]))
+        else: flags.append(("showpiece", f"{len(os_)} {key}", os_[0]))
+    # a bedroom's one table-and-chair set
+    if rtype == "bedroom":
+        sets = [o for o in floor if cat[id(o)] in ("table", "desk")]
+        if len(sets) > 1: flags.append(("sets", f"{len(sets)} tables and desks", sets[0]))
+    # clearances the playtest set (a bed or a chest by a fire, a bench by a bed, two statues side by side)
+    seen = set()
+    for a in floor:
+        for b in floor:
+            if a is b or (id(b), id(a)) in seen: continue
+            ca, cb = cat[id(a)], cat[id(b)]
+            g = OBJ.HOUSE_CLEAR.get((ca, cb)) or OBJ.HOUSE_CLEAR.get((cb, ca))
+            if not g: continue
+            seen.add((id(a), id(b)))
+            gap = _edge(a, b)
+            if ca == cb == "statue":
+                if gap <= COMPOSITE_GAP: continue
+                g = STATUE_CLOSE
+            if gap < g - 0.15:
+                flags.append(("clearance", f"{a['type']} {max(0.0, gap):.1f} units from {b['type']} (they keep {g:.1f} apart)", a))
+    # runs of a piece that stands alone, along a wall
+    walls_of = {id(o): _piece_walls(o, runs, cu, cv, PIECE_REACH) for o in floor}
+    by = collections.defaultdict(list)
+    for o in floor:
+        for w in walls_of[id(o)][:1]:
+            by[(w[1], w[2], w[0], OBJ.kind(o["type"]))].append((w[4], o))
+    for (line, coord, name, k), lst in by.items():
+        mr = OBJ.max_run(lst[0][1]["type"])
+        if mr is None or len(lst) <= mr: continue
+        lst.sort(key=lambda x: x[0])
+        run = [lst[0][1]]; best = run
+        for (_, p0), (_, p1) in zip(lst, lst[1:]):
+            run = run + [p1] if _edge(p0, p1) <= OBJ.RUN_GAP else [p1]
+            if len(run) > len(best): best = run
+        if len(best) > mr + 1:
+            flags.append(("run", f"{len(best)} {k} side by side along the {name} wall (it stands {mr} at most so)", best[0]))
+    # a hanging above a piece standing against the same wall
+    for h in objs:
+        if cat[id(h)] != "hanging": continue
+        hw = _piece_walls(h, runs, cu, cv, HANG_REACH)
+        if not hw: continue
+        name, line, coord, _, along, ha = min(hw, key=lambda w: w[3])
+        ha = max(ha, 0.9)
+        for o in floor:
+            if cat[id(o)] == "light": continue
+            for w in walls_of[id(o)]:
+                if w[1] == line and w[2] == coord and w[0] == name and abs(w[4] - along) < ha + w[5] - HANG_OVERLAP:
+                    flags.append(("hung", f"{h['type']} hangs above {o['type']} on the {name} wall", h)); break
+            else:
+                continue
+            break
+    # candelabras by the room's size
+    lights = [o for o in floor if re.match(r"Candleabra|Candelabra", o["type"])]
+    cap = OBJ.light_cap(tiles)
+    if len(lights) > LIGHT_SLACK * cap + 1:
+        flags.append(("lights", f"{len(lights)} candelabras in {tiles} tiles (rooms of its size hold {cap})", lights[0]))
+    return flags
+
+
+PIECE_TEXT = {
+    "cauldrons": "a room holds one cauldron at most (kit/objects.py room_cap; HB-1)",
+    "chests": "chests by the room type's Westwood p90, a bedroom one (kit/objects.py chest_cap; HB-2, HB-3)",
+    "showpiece": "a showpiece stands once in a room (kit/objects.py role; HB-1)",
+    "sets": "a bedroom holds one table-and-chair set (kit/objects.py; HB-3)",
+    "clearance": "a bed or a chest keeps off the fires, a bench off the bed, statues apart unless a pair flanking "
+                 "something (kit/objects.py HOUSE_CLEAR; HB-1, HB-2, HB-4)",
+    "run": "only the pieces Westwood lines walls with line them; the others stand alone or in short runs (kit/objects.py "
+           "max_run; HB-1, HB-5)",
+    "hung": "a hanging takes bare wall, never above a piece against it (kit/objects.py hangs_over; HB-2)",
+    "lights": "candelabras by the room's size (kit/objects.py light_cap; HB-4)",
+}
+
+
+def check_pieces(m, ctx, base):
+    """How each piece fits its room, by the object knowledge base measured on Westwood's campaign rooms
+    (rules/objects.py): caps (one cauldron, chests by the room type, a showpiece once, a bedroom's one table set),
+    clearances between categories, runs only of the pieces that line walls, hangings on bare wall, candelabras by size."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        for rule, text, o in piece_flags(m, r, kind):
+            out.append(F("pieces", "warning", f"{kind.replace('_', ' ')} room: {text}: {PIECE_TEXT[rule]}.",
+                         o["x"], o["y"], rule=f"pieces.{rule}"))
+    return out
+
 # ---- camps and outdoor groups (GW-2, GW-4, SW-1, SW-3, SW-9) ------------------------------------------------------
 STUMP_RE = re.compile(r"^Stump\d+$")
 FIRE_RE = re.compile(r"^(CampFire|CampFireUnused)$")
@@ -2132,6 +2272,14 @@ RULES = [
     ("identity.monotony", "identity", r"one kind fills a big room", "TW-8 SW-6"),
     ("identity.keeper", "identity", r"stands behind his counter", "SWR-2"),
     ("identity.throne", "identity", r"throne does not face a door", "GW-7"),
+    ("pieces.cauldrons", "pieces", r"cauldrons", "HB-1"),
+    ("pieces.chests", "pieces", r"chests by the room type", "HB-2 HB-3"),
+    ("pieces.showpiece", "pieces", r"showpiece stands once", "HB-1"),
+    ("pieces.sets", "pieces", r"one table-and-chair set", "HB-3"),
+    ("pieces.clearance", "pieces", r"keeps off the fires", "HB-1 HB-2 HB-4"),
+    ("pieces.run", "pieces", r"stand alone or in short runs", "HB-1 HB-5"),
+    ("pieces.hung", "pieces", r"hanging takes bare wall", "HB-2"),
+    ("pieces.lights", "pieces", r"candelabras by the room's size", "HB-4"),
     ("density.range", "density", r"^(Few|Many) ", "DV3-5 TL-4"),
     ("composition.dock_puddle", "composition", r"dock ends .* from the far bank", "DV4-1"),
     ("composition.lights_pair", "composition", r"side by side in one room", "DV4-5 DV6-2"),
@@ -2193,7 +2341,7 @@ def rule_of(f):
 
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds,
-       check_rooms, check_identity, check_density, check_exterior]
+       check_rooms, check_identity, check_pieces, check_density, check_exterior]
 
 
 def run_all(m, base, only=None):

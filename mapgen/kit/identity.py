@@ -526,7 +526,12 @@ ROOMS = {
                              dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=300, fixed=True),
                              dict(fam="fireplace", slot="group", group="hearth", max=1, min_area=500, fixed=True),
                              # a few benches by the front walls, no more: the tables' benches already make up most of
-                             # the hall's pieces (Harrowby's moot hall: 20 of 32, identity.monotony)
+                             # the hall's pieces (Harrowby's moot hall: 20 of 32, identity.monotony); one in each front
+                             # corner first, where those who wait sit (Harrowby playtest, HB-2: "a little bit too empty.
+                             # It needs some more objects and fill along the southeast wall in the south corner")
+                             dict(fam="bench", slot="wall", at="room_corner", clear=0, max=2, fixed=True),
+                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
+                             dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, min_area=300, fixed=True),
                              dict(fam="bench", slot="wall", max=3),
                              dict(fam="plant", slot="wall", at="room_corner", clear=0, max=4),
                              dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),

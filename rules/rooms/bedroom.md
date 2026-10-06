@@ -55,6 +55,7 @@ Dun Mir bedrooms (23 of Westwood's 50) take Dun Mir chests and hangings; an ogre
 - A double door into a bedroom: "not believable".
 - Barrels in a bedroom (DysVale v0.3: the checker's first identity finding).
 - A big chamber filled with tables and chairs until it reads as a dining room: one sitting group, then open floor.
+- Harrowby playtest (2026-10-05, HB-3): "Too many treasure chests in this room. Let's be real. Why are there four treasure chests? ... Hard rule: A bedroom should never have more than one table and chair set." One chest (two in a chamber of 100 tiles or more: kit/objects.py chest_cap), one table or desk with its chairs (the furnisher's `sets` rule; checker `pieces.chests`, `pieces.sets`).
 
 ## Examples
 

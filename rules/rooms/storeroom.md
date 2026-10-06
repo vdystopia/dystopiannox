@@ -58,6 +58,8 @@ The user wants stores fuller than Westwood's ("a store room holds more than any 
 - "Bunkhouse storeroom: too evenly spaced; balance clusters and spaced objects" (TreePlace).
 - "Storeroom racks a little too dense and numerous: spread out, fewer" (2026-10-04 review).
 - Nothing lines a wall corner to corner but a store, and even a store keeps its aisle.
+- Harrowby playtest (2026-10-05, HB-5): "The entire northwest wall is lined with countless duplicates of that one object ... some objects are suitable for lining an entire wall, and some are not." Log shelves stand alone or in pairs (Westwood: 112 of 122 alone, never more than 2 side by side), at most two to a wall (kit/objects.py max_run, wall_cap; checker `pieces.run`).
+- Harrowby playtest (HB-1): supplies spread one by one down a whole wall. They stand in clusters of 1-5 of mixed kinds (sacks of three sizes, then a barrel, then a crate), 1-4 units of bare wall between clusters (Westwood's p25-p75 gaps), never more than 3 of one kind on a wall (Furnisher._cluster, _cluster_gap).
 
 ## Examples
 

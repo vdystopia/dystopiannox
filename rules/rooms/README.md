@@ -89,11 +89,18 @@ These hold whatever the type (PROCESS.md keeps their history):
 - **Spacing**: a cauldron 2 units from the hearth; supplies a unit from anything else and 2.4 from a fire; shelves and
   desks 2.2 out of corners; beds 0.9 apart; tables and desks off rugs (a rug centred under a round table is the one
   exception); plants only in real corners; nothing ever before a hearth, chest or stove.
-- **Single and repeatable pieces**: bookcases, log shelves, trader's shelves, workstations, racks, beds in a bunk room,
+- **Single and repeatable pieces**: bookcases, trader's shelves, workstations, beds in a bunk room,
   pews, columns, coffins and stores repeat and may line a wall end to end. Showpieces stand once (an alchemist's desk, a
   generator pair, a telescope, an orrery, a crystal ball, a desk; twice, 10 units apart, in a room of 120 tiles or
   more); potion shelves once, as a pair. "The shelves on the NE wall in this room are more of a single instance object.
   These are not repeatable shelves that should line a whole wall" (Starwell, 2026-10-05).
+- **Every piece by Westwood's measure** (Harrowby playtest, 2026-10-05, review/FEEDBACK.md HB-1..HB-5): the object
+  knowledge base (`rules/objects.py` -> `rules/out/objects.json`, read by `mapgen/kit/objects.py`) sets for every piece
+  how many a room holds (one cauldron; chests by the type, a bedroom one; a showpiece once; a bedroom one table set),
+  whether it lines walls (bookcases do; log shelves stand alone or in pairs: "some objects are suitable for lining an
+  entire wall, and some are not"), how close it stands to each other category (a bed and a chest off the fires, a bench
+  off the bed, statues apart), that hangings take bare wall, and that supplies stand in mixed clusters, not lines. The
+  furnisher holds every placement to it; the checker's `pieces.*` rules find what breaks it.
 - **Whole walls, not single pieces**: a lined wall is lined end to end ("put bookshelves end to end for the entire
   length of the wall", TreePlace v0.3), but nothing lines a wall from corner to corner unless it is a store.
 - **Large rooms mix their pieces**: a repeated set stops at the type's cap ("way too many benches and not enough object

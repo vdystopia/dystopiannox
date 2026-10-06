@@ -195,12 +195,23 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | AMR-6 | a flower patch grew in the west gate | P§4 gardens keep off doors | look:spots | review | review |
 | AMR-7 | Morwen at her door stood in Pip's walk home | P§6 a person waiting at a door; routes keep clear of people standing still by construction (`Ground.add_people`) | `routes.through_person` (STpers) | none | check |
 
+## Harrowby playtest (2026-10-05)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| HB-1 | "Why are there two cauldrons? There should only be a maximum of one cauldron per room. bed is way too close to one of the cauldrons. The bench is too close to the bed. Chest is way too close to the other cauldron. Do a pass over all objects ... a tendency to line walls with things like sacks and barrels ... try a cluster of sacks (three different sizes), and then a barrel, and then something else" | P§3 every piece by Westwood's measure (`rules/objects.py`, `kit/objects.py`); `rules/rooms/living_room.md`, `storeroom.md` | `pieces.cauldrons` (STcauld), `pieces.clearance` (SThclr), `pieces.showpiece` (STshw2), `pieces.run`; supplies in clusters: look:rooms | none | check |
+| HB-2 | "On the northwest wall, there are trophies on the wall with statues right on top of them. Double-placed objects. The two treasure chests are both too close to the hearth. It's also a little bit too empty" | P§3 hangings on bare wall, chests 3 units off a hearth; `rules/rooms/great_hall.md` | `pieces.hung` (SThung), `pieces.chests`, `pieces.clearance`; the hall's south corner: look:rooms | none | check |
+| HB-3 | "Why are there four treasure chests? For a bedroom, this room has way too many table and chair sets. Hard rule: A bedroom should never have more than one table and chair set." | P§3 chests by the type's p90, a bedroom one set; `rules/rooms/bedroom.md` | `pieces.chests` (STchst4), `pieces.sets` (STsets) | none | check |
+| HB-4 | "two statues way too close to each other ... Too many candelabras. The treasure chest should be centered between the end of the bookcase and the door. The shelves lining the northwest and northeast walls are the kind of objects that can be used to span an entire wall" | P§3 statues apart, candelabras by size, the chest by a door centred (`centre_by_doors`); `rules/rooms/study.md`, `library.md` | `pieces.clearance`, `pieces.lights` (STcand); the chest's place: look:rooms | none | check |
+| HB-5 | "The entire northwest wall is lined with countless duplicates of that one object ... some objects are suitable for lining an entire wall, and some are not." | P§3 only fabric lines walls (`kit/objects.py` role, max_run, wall_cap); `rules/rooms/storeroom.md` | `pieces.run` (STlogw) | none | check |
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |
 |---|---|---|---|---|
 | User feedback, before this pass | 92 | 52 | 28 | 12 |
 | User feedback, after | 92 | 68 | 21 | 3 |
+| Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 
