@@ -105,3 +105,8 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   iterations, so a judge seeing two sheets recognises them: one sheet per type per judge from now on; (3) rounds have
   often improved the metrics while making rooms worse by eye (stamps), so the tracks now check each round by eye
   against ref. `review/score_indep.py` scores a judgement against its key.
+- 23:55 A second furnishing engine started as an experiment (`night-motifs`): arrangements mined from the curated
+  campaign rooms (wall motifs with Westwood's real gaps and heaps, corner clusters, centre groups), recombined per room
+  without copying any one room (originality rule kept). It sits behind a switch; the lab compares it head to head with
+  the recipe engine, and its sheets go to independent judges. Reason: the judges' reasons repeat across every type
+  (evenly spaced singles, one stamp per type, a lone table dead centre), which tuning recipes hasn't cured.
