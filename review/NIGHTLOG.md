@@ -134,3 +134,7 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   garden r5 10/10 (4.8/7.4), pond and dock r2 9/9 (4.6/7.8). The scenes' main tell is partly the lab: ours stand alone
   in an empty forest glade, Westwood's among town walls, walks, yards and houses. The scene lab is asked to generate
   variants in a realistic town or shore context.
+- 00:04 Track A independent results: bedroom r10 8/10 (5.6/7.4; r7 was 9/10), kitchen r11 10/10 (5.0/4.2),
+  living room r10 10/10 (4.6/6.6), guardroom r8 9/10 (5.4/5.4, equal scores). Judge: "one piece in each slot, large
+  evenly empty floor round each group", and real clearance faults the knowledge base should have caught (barrels
+  against the hearth, a second table set in a living room, chests loose on the floor).
