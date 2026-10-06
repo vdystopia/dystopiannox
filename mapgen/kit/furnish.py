@@ -260,7 +260,8 @@ SUPPLIES = {"shelves": (r"^LogShelvesFull[1-4]$", 1, 2),
             "barrels": (r"^(Barrel|Barrel2|WaterBarrel|PiledBarrels[1-4]|LargeBarrel[12])$", 2, 3),
             "sacks": (r"^SackChest(Large|Medium|Small)[12]$", 2, 3),
             "apples": (r"^TraderAppleCrate$", 1, 2),
-            "tools": (r"^BarrelWithTools[12]$", 1, 2)}
+            "tools": (r"^BarrelWithTools[12]$", 1, 2),
+            "steel": (r"^(CrateSteel[1-4]|BarrelSteel[12])$", 1, 3)}      # a general store's (Westwood's Con03A, Con03B)
 PILE = r"^(Barrel|Barrel2|WaterBarrel|SackChest(Large|Medium)[12])$"     # round pieces that heap in a corner
 # Shelves and desks face one way and have no corner pieces: they stop at the corner, tight against the wall across
 # its end, whose line is 1 unit past the run's end (2026-10-04 review: "make sure bookcases and shelves fit tight
@@ -555,6 +556,10 @@ class Furnisher:
         # closer to one another than the clearances allow strangers (a work table's crates, a hearth's benches)
         self.rtype = KIND_TYPE.get(self.kind, WESTWOOD_KIND.get(self.kind, self.kind))
         self._group = None        # footprint records of the group being composed (None: no group)
+        # the room's trade, when its recipe has several (ROOMS[kind]["trades"]: a shop is an apothecary's, an armourer's
+        # or a general store, as each of Westwood's shops is one of them; the room lab): {"only": {fam: regex}, "skip":
+        # (fams or "slot:<slot>")}; drawn when the composition starts
+        self._trade = {}
         self._pairing = False     # a deliberate pair (statues flanking a throne) is being placed
         self.kb_refused = Counter()   # rule -> placements the knowledge base refused (for the lab's report)
         # the building's palette: the same for every room of one building (its id seeds it), differing between buildings
@@ -875,6 +880,8 @@ class Furnisher:
         inv = self.T["inventory"].get(fam, {})
         allow = ROOM_IDENTITY.get(self.kind, {}).get("types", {}).get(fam)
         ok = (lambda t: self.ok_type(t) and re.search(allow, t)) if allow else self.ok_type
+        tonly = self._trade.get("only", {}).get(fam)
+        if tonly: ok0 = ok; ok = lambda t: ok0(t) and bool(re.search(tonly, t))
         prefer = ROOM_IDENTITY.get(self.kind, {}).get("prefer", {}).get(fam)
         if prefer:                                       # the identity's own choice (a kitchen table with food)
             chosen = {t: w for t, w in prefer.items() if ok(t)}
@@ -1911,7 +1918,8 @@ class Furnisher:
         def allowed(t):
             allow = types.get("shelves" if re.match(r"^(LogShelves|PotionShelves|Bookcase)", t) else "storage")
             return not allow or re.search(allow, t)
-        return [t for t in self.things if re.match(pat, t) and self.ok_type(t) and allowed(t)]
+        only = self._trade.get("only", {}).get("storage")
+        return [t for t in self.things if re.match(pat, t) and self.ok_type(t) and allowed(t) and (not only or re.search(only, t))]
 
     def stack_middle(self, n=4):
         """A stack of goods standing free in the middle of a big storeroom, with aisles all round: crates
@@ -3189,6 +3197,8 @@ class Furnisher:
         cap = lambda st: st.get("max", 99) if st.get("max", 99) >= 99 or st.get("fixed") or st["fam"] == "plant" else \
             int(math.ceil(st["max"] * grow - 0.25))           # `fixed`: a set piece (a pair of statues) does not multiply
         k, misses, done_once, added = 0, 0, set(), collections.Counter()
+        steps = [st for st in steps if not self._skipped(st)] or steps[:0]
+        if not steps: return
         while self.coverage() < self.cover_target and misses < 2 * len(steps):
             i = k % len(steps); st = steps[i]; k += 1
             if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
@@ -3250,7 +3260,8 @@ class Furnisher:
         limits = {f: int(math.ceil(rng_[1] * (1.0 if f in fixed else grow))) + 1
                   for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items())
                   if f in ident.get("top_up", TOP_UP_FAMS) and self.types_of(f)}
-        limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()}
+        limits = {f: min(n, self.repeat_cap(f)) if self.repeat_cap(f) is not None else n for f, n in limits.items()
+                  if f not in self._trade.get("skip", ())}
         have = Counter(_family_of(t) for t, _ in self._typed)
         # supplies top up in clusters, never one at a time in the middle of each free stretch: that spread them evenly
         # down whole walls (Harrowby: "a tendency to line walls with things like sacks and barrels. Very simple and
@@ -3381,6 +3392,11 @@ class Furnisher:
             if rec and not self._rug_clear(rec, o["type"]): self._remove(o)
 
 
+    def _skipped(self, st):
+        """A composition step the room's trade leaves out (its family, or "slot:<slot>")."""
+        sk = self._trade.get("skip", ())
+        return st["fam"] in sk or ("slot:" + st["slot"]) in sk
+
     def compose(self, plan, need):
         """Furnish from the room's composition (kit/identity.py ROOMS[kind]["compose"]): anchors on
         their own wall stretches, a rug before the anchor that calls for it, the table set in the open
@@ -3389,6 +3405,10 @@ class Furnisher:
         done = collections.Counter()
         tables, placed = [], {}
         steps = ROOM_IDENTITY[self.kind]["compose"]
+        trades = ROOM_IDENTITY[self.kind].get("trades")
+        if trades:
+            self._trade = trades[self.rng.choice(sorted(trades))]
+        steps = [st for st in steps if not self._skipped(st)]
         cp = next((st for st in steps if st["slot"] == "carpet"), None)
         if cp and CARPET_FLOORS.search(self.room.floor or "") and self.rng.random() < cp.get("chance", 0.5):
             self.carpet_plan = cp                       # carpet tiles in this room, no rug objects

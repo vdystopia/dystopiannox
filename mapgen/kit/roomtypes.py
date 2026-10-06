@@ -231,14 +231,15 @@ TYPES = {
     "shop": dict(
         family="public", feel="balanced", kinds=("shop",), westwood=("shop",),
         focal=dict(fam="counter_shop", types=r"^TraderDesk", where="back", reach=3.6),
-        must={"counter_shop": 1, "shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "counter_bar",
+        must={"counter_shop": 1}, never=("bed", "desk", "altar", "throne", "tomb", "counter_bar",
                                                          "stove", "smithy"),
         never_types=r"PowderBarrel",
         walls=dict(back="the counter set out from a back wall, the keeper's spot behind it; trader's shelves",
                    other_back="trader's shelves of goods", front="crates of stock",
                    middle="racks for show, three to a row, a row of each kind; the floor before the counter open"),
-        cover=(0.12, 0.24, 0.40), open=(0.30, 0.75), per_tile=(0.2, 0.8), types_min=9, free_most=(3, 20),
-        caps={}, walls_min=3, lined=0.15, tiles=(30, 140),          # racks stand apart, shelves of goods in rows (HB-5)
+        # the room lab: Westwood's 16 shops cover 0.06-0.13-0.28 with 5-16 types (median 7)
+        cover=(0.08, 0.15, 0.32), open=(0.30, 0.85), per_tile=(0.12, 0.8), types_min=5, free_most=(3, 20),
+        caps={}, walls_min=2, lined=0.10, tiles=(30, 140),          # racks stand apart, shelves of goods in rows (HB-5)
         signature={"counter_shop": (8, 1), "shop_rack": (0.4, 8)}, needs=("counter_shop",),
         kin=("armoury", "smithy")),
     "tavern": dict(

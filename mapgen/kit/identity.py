@@ -256,19 +256,37 @@ ROOMS = {
     "shop": dict(purpose="a trader's shop: the counter set out before a back wall with the keeper's space behind it, "
                          "trader's shelves of goods lining the back walls, racks of arms and armour in rows down the "
                          "middle, crates of stock along the front walls",
-                 core={"counter_shop": (1, 1), "shop_rack": (2, 24)},
-                 optional={"storage": (0.9, 8), "shelves": (0.6, 8), "plant": (0.5, 2), "chair": (0.5, 1)},
-                 types={"storage": r"Crate|(?<!Powder)Barrel$|(?<!Powder)Barrel\d|Sack|Chest\d", "shop_rack": RACKS,
-                        "shelves": r"^PotionShelves\d$", "plant": PLANTS},
+                 # the room lab (2026-10-05): each of Westwood's 16 campaign shops keeps one trade: an apothecary's
+                 # (potion shelves, a glowing jar: Con02a, War03b, War07A), an armourer's (pole arms, armour stands,
+                 # trader's shelves, swords and shields hung: Con06a, War01A, War07A) or a general store (steel crates
+                 # and barrels by the counter: Con03A, Con03B); 5-16 types (median 7), no plants. The old recipe mixed
+                 # crates, barrels, sacks, racks, potion shelves and plants in every shop (AUC 0.91)
+                 core={"counter_shop": (1, 1), "shop_rack": (0, 24)},
+                 optional={"storage": (0.9, 8), "shelves": (0.9, 8), "chair": (0.5, 1), "lab": (0.8, 3)},
+                 types={"storage": r"Crate|(?<!Powder)Barrel$|(?<!Powder)Barrel\d|BarrelSteel\d|Sack|Chest\d",
+                        "shop_rack": RACKS + r"|^TraderHangingSwords\d$|^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$",
+                        "shelves": r"^PotionShelves\d$|^Bookcase\d(HalfFull)?$", "lab": r"^FairyJar$"},
                  prefer={"counter_shop": {f"TraderDesk{k}": 1 for k in range(1, 7)}},
+                 trades={"armourer": dict(only={"storage": r"Steel|^Barrel$|^Crate[12]$"}, skip=("shelves", "lab")),
+                         "apothecary": dict(only={"shop_rack": r"^TraderShelves\d$", "storage": r"^Barrel$|^Crate[12]$"},
+                                            skip=("slot:racks", "slot:stock")),
+                         "general": dict(only={"storage": r"Steel|^Barrel$",
+                                               "shop_rack": r"^TraderShelves\d$"}, skip=("shelves", "lab", "slot:racks"))},
+                 top_up=("storage",),
                  compose=[dict(fam="counter_shop", slot="counter", depth=2.2, clear=1.8),
-                          dict(fam="shop_rack", slot="line"),
-                          dict(fam="shop_rack", slot="line", other=True),
+                          dict(fam="shop_rack", slot="line", n=3),
+                          dict(fam="shelves", slot="line", other=True, n=4),
                           dict(fam="shop_rack", slot="racks", kind="gear"),
-                          dict(fam="storage", slot="stock", coverage=0.5, kinds=("crates", "barrels"), pad=1.2)],
-                 fill=[dict(fam="shelves", slot="line", other=True, max=6),
-                       dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2),
-                       dict(fam="storage", slot="stock", coverage=0.8, kinds=("crates", "sacks"), pad=1.0, max=4)]),
+                          dict(fam="lab", slot="wall", at="corner", clear=0.6, n=1),
+                          dict(fam="storage", slot="stock", coverage=0.35, kinds=("steel", "barrels", "crates"), pad=1.2,
+                               per_wall=0.5)],
+                 fill=[dict(fam="shop_rack", slot="wall", at="center", clear=0, only=r"^TraderHanging|^TraderShield",
+                            max=2),
+                       dict(fam="shop_rack", slot="line", other=True, n=2, max=4),
+                       dict(fam="shelves", slot="line", other=True, n=3, max=6, only=r"^Bookcase"),
+                       dict(fam="lab", slot="wall", at="center", clear=0.6, max=2),
+                       dict(fam="storage", slot="stock", coverage=0.5, kinds=("steel", "barrels", "crates"),
+                            pad=1.0, max=4, per_wall=0.5)]),
     # the room lab (2026-10-05): Westwood's 22 campaign storerooms hold 1-5 types (median 3), barrels the commonest, heaped
     # against two walls with the rest of the floor bare, crates side by side or stacked free; no shelves, no racks (the
     # user: "armor and weapon racks in storerooms are just a little bit too dense and numerous"; "Repeating the same item

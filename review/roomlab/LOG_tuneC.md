@@ -83,3 +83,24 @@ Shared changes in this round (kit/furnish.py):
   knowledge agent's "the small laboratory gets no desk"). Turns failures into fits for every type's desk at a corner.
 - Recipe keys, each a no-op unless a recipe sets it: `front_ok` (families a kind may stand on the front walls),
   `lined_goal` (instead of LINED_GOAL), `decor_max` (decorate_walls' count); GROUPS `labtable`.
+
+## Shop (Westwood: 16 rooms)
+
+What Westwood's look like: each shop keeps one trade, an apothecary's (potion shelves, a glowing jar, bookcases:
+Con02a, War03b, War07A), an armourer's (pole arms, armour stands, trader's shelves, swords and shields hung: Con06a,
+War01A, War07A) or a general store's (steel crates and barrels by the counter: Con03A, Con03B); 5-16 types (median 7),
+no plants; coverage 0.06-0.13-0.28.
+
+| Round | Change | AUC | Cross | Hard rooms | Blind |
+|---|---|---|---|---|---|
+| ref | (as found: every shop crates, barrels, sacks, racks, potion shelves and plants) | 0.907 | 0.962 | 2 | - |
+| r1 | `trades` (new recipe key, kit/furnish.py `_trade`): each shop draws one of armourer, apothecary, general store, which narrows its types and skips steps; no plants; steel crates and barrels (SUPPLIES "steel"); hung swords and shields; must is the counter only | 0.851 | 0.971 | 3 | - |
+| r2 | the top-up keeps to the trade (an apothecary had taken barrels) | 0.885 | 0.930 | 7 (sparse) | - |
+| r3 | the apothecary's bookcases and jars (War07A: 3 bookcases, 4 jars; the house rule keeps potion shelves to a pair) | 0.861 | 0.901 | 8 | - |
+| r4 | half-full bookcases allowed (the line completes with them) | 0.861 | 0.901 | 5 (2 way in, 1 bunched/sparse) | queued |
+
+Still giving them away: rows (align 0.79 against 0.43: racks three to a row, stock in rows), four walls used against
+three, the stock crowding (median gap 0.36 against 1.0).
+
+Shared (kit/furnish.py), a no-op unless a recipe sets `trades`: `Furnisher._trade` filters `types_of`,
+`supply_types` and the top-up and skips steps (`_skipped`); SUPPLIES gains "steel" (used only by the shop recipe).
