@@ -1,0 +1,32 @@
+{
+  "packet": "2ea38c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Gatekeeping by class, a direction-giving second line and 'Good luck in the mines, boy' - plain, functional, a little inconsistent, very Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'Halt! ... stays shut till [Person] says otherwise' then a thank-you bark: tidy and on template; '[Place] owes you a great deal, brave Adventurer' is too courtly for a gate guard."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Good gruff colour ('plenty of 'em', rotten planks), but the 'Halt! ... orders!' opening and the '--' warning line match the generated pattern."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 10,
+     "critique": "Deadpan bureaucratic humour (no spitting, don't even think about wizardry, 'Oh, I forgot to mention, no loitering') is Westwood's signature town joke."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'It's meant for your own good. The wilds hold far too many perils for the common man.' then a curt 'Move on!' - paternalistic and stiff in Westwood's way."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Halt! No one goes out the east gate. Mayor [Person]'s orders!' plus 'brave Adventurer -- you may pass. Watch yourself out there.' - the template and the double-dash."},
+    {"label": "G", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Over-eager welcome ('the great [Group] ... our beloved [Place]') and 'Delay no longer! The Mayor needs your help!' - Westwood's earnest, slightly clumsy cheer."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A boast that no Undead ever got in, then the same gate-stays-shut and 'Watch yourself out on the moor, lad!' closure; too complete an arc for a bark."},
+    {"label": "I", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "Lively ('would have you for supper', 'Go pester somebody else'), but built on the same Halt/orders/opened-the-road/watch-yourself frame with a '--' clause."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Lore-recital barks with no gate business and a dropped article ('can be dangerous place') - an unpolished Westwood guard."}
+  ],
+  "tells": [
+    "The new guards all follow one arc: 'Halt!' + who may not pass + '[Person]'s orders' + a threat, then a curt repeat, then 'the gate is open ... watch yourself out there'. Westwood's guards do varied jobs: welcome, lore, rules jokes, directions.",
+    "The new texts close the arc too neatly (blocked, then released with a warning); Westwood's 'later' lines often drift to another topic (bandits on the road, the challenge ahead).",
+    "Double hyphens '--' mark the new texts; Westwood's use plain sentences or ellipses.",
+    "Westwood's guard lines carry small grammar slips and deadpan civic humour; the new ones prefer folksy colour (supper, rotten planks, rocks) that is apt but generic."
+  ]
+}

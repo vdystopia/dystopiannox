@@ -1,0 +1,33 @@
+{
+  "packet": "191785",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Stiff, slightly pompous mentor voice with a grammar slip ('incursions ... is on a steady rise') and a blank page; the reminder names the book and amulet plainly. Pure Nox."},
+    {"label": "B", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Hits the beats, but 'growing fat on our harvest' and the cattle joke repeated in the reminder feel crafted; the gate-opening promise and 'The fate of [Place] is in your hands!' are a template ending."},
+    {"label": "C", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Odd capitalisation ('East', 'Urchins'), 'nettlesome', a reminder that says nothing useful, and the clumsy 'I should be in my house at the center of town' - Westwood's unpolished plainness."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "'The heavens have heard me at last', 'villainous rogue', 'cutthroats' and 'handsomely rewarded' are stock fantasy phrasing; too evenly built for Nox."},
+    {"label": "E", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Same skeleton as B, G and H: someone promised help, villain seized a place, caravans stopped, 'put an end to', a named person will open a gate, 'Go -- and go with my blessing!'. The double-dash is a tell."},
+    {"label": "F", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Flat expository speech with a sentence fragment ('The Master for the [Place].'), capitalised 'YOU' and a key handed over - Westwood's mid-campaign functional style."},
+    {"label": "G", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "A characterful 'Heh, heh' and 'dress warm' try for Nox humour, but the frozen dead and 'nothing stands between his dead and the valley below' are literary, and the shape matches the other templated openings."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6,
+     "critique": "Again the promised helper, the seized place, 'put an end to this vile Necromancer', 'I will tell [Person] to open the west gate'; competent but formulaic, with an overlong backstory clause."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Breathless, awkward syntax ('leaving rebuilding the village our smallest concern!'), '!?' and stacked exclamations - Westwood's urgent and slightly ungainly voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Practical briefing that hands out spells and explains them in the reminder, 'Good luck and good speed' - the way Nox's guides talk mid-mission; no template structure."}
+  ],
+  "tells": [
+    "The new texts reuse one skeleton: 'X promised/sent help at last', a villain 'has seized' a place, a nightly threat, 'put an end to [Person]', a named NPC 'will open the [direction] gate for you', 'Go now!'. Westwood's openings vary in shape and often hand over an item, key or spells instead.",
+    "Westwood's lines carry small flaws: grammar slips, sentence fragments, odd capitals (East, Urchins, YOU), and reminders that add little. The new ones are clean and evenly paced.",
+    "The new texts lean on stock fantasy phrasing (villainous rogue, cutthroats, abominable sorcery, handsomely rewarded, the fate of X is in your hands) and a running joke repeated into the reminder.",
+    "The double hyphen '--' appears in the new texts; Westwood's use '!?' and stacked exclamation marks instead.",
+    "Repeated 'lad' and 'Off with you' across several texts reads as a learned tic rather than one character's voice."
+  ]
+}

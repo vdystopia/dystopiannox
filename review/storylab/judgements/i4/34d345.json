@@ -1,0 +1,33 @@
+{
+  "packet": "34d345",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Gushing exclamations, 'for the darkest purposes, indeed!', 'that foul demoness' plans' and the teasing 'sooner than you think' - Westwood's campaign-arc voice."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "Plain, practical errand tied to a petition, a ruby key handed over, a capitalisation wobble ('urchin'/'Urchin') - classic town side quest."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 7,
+     "critique": "The crystal-ball irony is a nice joke, but the shape (thieves flew in the window, carried it to a named spot, 'I will make it worth your while', a thank-you with a gift) matches the other templated fetches."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 10,
+     "critique": "The pet frog in a burning house and 'What's that you say? Loads and loads of money?' is Westwood's goofy humour exactly."},
+    {"label": "E", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Thieves! Flying thieves!' and Imps stealing a lookout's [Thing], with the Undead threat explained and a near-identical thanks line to F - formula."},
+    {"label": "F", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "Twin of E: Imps, window, can't see the Undead coming, nest to the west, 'I'd make it worth your while', 'Ha, ha!' - template with a laugh dropped in."},
+    {"label": "G", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Nasty little thieves', Urchins in a barrow 'east of the ford', 'Bless you, bless you!' and 'token of my appreciation' - same frame as I, with crafted colour ('for all the flour in [Place]')."},
+    {"label": "H", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Gahhhhhh! No! Don't kill me!', '?!' and 'Oh....', and a scroll of everything he knows about bats - Westwood's absurd, uneven punctuation and comic reward."},
+    {"label": "I", "verdict": "generated", "confidence": 5, "score": 6,
+     "critique": "'Thieves! Nasty little thieves!' Urchins, an amulet, 'Bless you, bless you!' - the same template as G; the fishwife sign-off is a nice touch but the build is formulaic."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 8,
+     "critique": "Flustered, slightly odd stakes ('he'll be destroyed'), the hesitant 'Could you... would you', and a terse thanks - Westwood's quick errand."}
+  ],
+  "tells": [
+    "The new fetch quests share one script: an exclaimed theft ('Thieves! Nasty little thieves!'), small creatures (Imps, Urchins) who took it in the night, where they nest by compass direction, 'Would you get it back for me, kind sir?', and 'My X! You found it! Bless you ... take this as a token of my appreciation.'",
+    "Westwood's fetch quests vary in structure and bring absurd humour (a frog, money asked for outright, a scroll about bats) and odd punctuation ('?!', 'Oh....', 'Gahhhhhh!'); the new texts' humour is gentle and well-placed.",
+    "The new offers explain the stakes logically (why the item matters to the town's defence); Westwood's stakes are personal and often silly.",
+    "The new journal entries are uniform ('Recover [Person]'s [Thing] from the Imps in the [Place].'); Westwood's vary in verb and detail.",
+    "The same reward line repeated across several texts gives the new ones away; Westwood's rewards are often named items, spells or keys."
+  ]
+}

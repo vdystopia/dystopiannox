@@ -1,0 +1,32 @@
+{
+  "packet": "3e3d1c",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "The inn line duplicates E's word for word and the arms and magic lines are curt variations on a pattern ('This is X's', 'if you have the gold') with no colour of their own."},
+    {"label": "B", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Pig-headed armored sheep marching up and down, up and down' and the long 'Ahhhhhhhh...' are the idiosyncratic, character-driven voice of the campaign's shopkeepers."},
+    {"label": "C", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "A bare 'What can I get ya, stranger?' beside a rambling pitch with a dropped article ('during [Place] run') and a flat informational magic line: uneven in the way the original is."},
+    {"label": "D", "verdict": "generated", "confidence": 4, "score": 5,
+     "critique": "Generic retail courtesy ('Feel free to look around. I'm here if you need anything.') with no world, no humour and no flavour; could be any game."},
+    {"label": "E", "verdict": "westwood", "confidence": 4, "score": 8,
+     "critique": "Ties each shop to the plot (Ogres at the tower, colleagues needing their [Thing] reclaimed, lower prices for help) with the boastful 'finest assortment of arms in the South'."},
+    {"label": "F", "verdict": "westwood", "confidence": 4, "score": 9,
+     "critique": "'Let's get to know each other! Buy something!' and the offer of funerary services are the dry dark humour Nox's merchants have."},
+    {"label": "G", "verdict": "generated", "confidence": 2, "score": 7,
+     "critique": "Pleasant and Nox-adjacent, but 'aye mate' plus 'Ya' is dialect placed for colour, and the magic line copies the structure of a supplier line."},
+    {"label": "H", "verdict": "generated", "confidence": 3, "score": 6,
+     "critique": "Polite and serviceable but bland; 'I guarantee you a peaceful rest' and 'How can I help you?' are stock shop greetings without Nox's bite."},
+    {"label": "I", "verdict": "generated", "confidence": 3, "score": 5,
+     "critique": "Three neutral filler lines ('better prices', 'full range of needs') with no humour or plot hook; 'hallowed shop' is a touch ornate for the plain voice."},
+    {"label": "J", "verdict": "westwood", "confidence": 5, "score": 9,
+     "critique": "'Fresher'n a monkey's butt' is the crude, specific joke Westwood allowed itself, and the shop boasts are the plain, slightly ad-copy register of the original."}
+  ],
+  "tells": [
+    "Westwood's merchants have a personality in one line (a grudge, a crude joke, a morbid sideline); the new ones default to neutral customer-service phrasing.",
+    "Westwood's greetings often point at the plot or the player's situation; the new ones are context-free and could open any shop.",
+    "New texts copy a known line's structure or wording (the same inn greeting, the 'supplies X to Y' pattern) instead of inventing.",
+    "Dialect added as decoration (aye mate, ya) without a joke attached reads generated; Westwood's dialect lines carry a punchline."
+  ]
+}

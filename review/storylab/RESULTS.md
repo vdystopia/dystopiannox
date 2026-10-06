@@ -49,3 +49,60 @@ By scenario (blind score ours / Westwood's):
 - Map agents: `py tests/storylab.py --check` on the existing designs scores 6.9-8.2 (Westwood's own units 9.6): first-
   person narrative journals (11-14 a map), semicolons (15-16 a map), a third of the lines exclaiming or asking against
   Westwood's two thirds, and three times Westwood's share of rare words.
+
+## The second protocol (i4 on)
+
+From i4 the test was rebuilt to be fair (README "Making the test fair"): ten writers a round, one town each, so a
+packet's five texts of ours come from five writers; Westwood's five matched to them in length from pools of 10-13
+units per scenario; class words in Westwood's lines made class-free (no [Class] tell); opaque packet names; the
+writers' exemplars disjoint from the pools; a new scenario, `town`, a cross-section of one town.
+
+**How independent the judgements are.** Every packet from i4 on was judged by a fresh Claude Opus 5.5 subagent that
+was given only `JUDGE.md` and two or three packet paths, told to read nothing else (no keys, variants, exemplars,
+briefs, rules) and not to use the web. The agent that runs the lab (writes the briefs, builds packets, reads the
+results) wrote no variant and judged no packet. Writers were separate fresh agents that never saw a packet or a
+judgement. Judges share the writers' model, so a model-level habit can be invisible to both (or obvious to both).
+
+### The control (i4): what a judge does when nothing is ours
+
+Eight packets of ten Westwood units, five falsely keyed as ours, judged by four fresh judges who did not know:
+
+| packets | accuracy | confidence (1-5) | score of texts called generated | called Westwood | all |
+|---|---|---|---|---|---|
+| 8 | 55% (chance by construction: 50% +- 6 for 8 packets) | 3.3 | 6.3 | 8.4 | 7.4 |
+
+- A forced choice costs a text two points: Westwood's own lines score 6.3 when a judge has called them generated.
+  "Ours within a point of Westwood's" is out of reach while the judge can tell; when it cannot, both halves average
+  7.4.
+- The judges invent tells on pure Westwood text, in the same words they use on ours: "too clean", "smoother, stock
+  phrases", "the humour is set up", "repeat a direction across slots". Such tells are noise unless the accuracy says
+  otherwise; the confidence is the better sign (3.3 here against 4-5 on ours).
+
+### i4: writers imitate Westwood's lines (WRITER.md v4, exemplars), one writer a town
+
+| scenario | metric ours / WW | blind acc | blind ours / WW |
+|---|---|---|---|
+| guard_bark | 9.21 / 9.69 | 100% | 6.4 / 9.0 |
+| bounty_offer | 9.11 / 9.62 | 100% | 6.0 / 8.4 |
+| heirloom_fetch | 8.20 / 9.62 | 100% | 6.2 / 8.8 |
+| rumour | 9.06 / 9.71 | 100% | 6.0 / 8.4 |
+| shop_greeting | 8.35 / 9.79 | 100% | 6.4 / 8.4 |
+| two_givers | 8.76 / 9.47 | 100% | 6.0 / 8.6 |
+| rescue | 7.86 / 9.46 | 100% | 6.0 / 8.0 |
+| main_opening | 9.12 / 9.59 | 100% | 6.0 / 8.8 |
+| town | 8.43 / 9.59 | 100% | 6.0 / 8.6 |
+| **all** | **8.68** | **100%** | **6.1 / 8.6** |
+
+The lines read closer to Westwood (writer 1's Brackenford: "Halt! The north gate stays shut till Halvard says
+otherwise.", "Can't stop, dear, the bread's in the oven!") but every packet was still told apart at confidence 4-5,
+and the reason is new: **ten writers given one brief wrote one template.** "Bah! Scorpions!" / "Dead? All of 'em? Ha!"
+/ "You earned every piece"; "Psst! ... Heh, heh, heh... a deal's a deal"; "Did X send you?" / "I think they're coming
+back!"; "Halt! ... [Person]'s orders"; "Pull up a stool"; "hasn't slept a wink"; four rescues of a parent's lost boy
+(three named Wim). The metric judge's sameness measure saw it too (heirloom 13% of 3-grams in four or more variants).
+Imitation fixed the single line; the mode of the model across writers is now the tell. The other tells: exact gold
+sums where Westwood hands over items, spells, keys and passes; a joke in every line; one menace threaded through every
+voice of a town; clean punctuation (Westwood: "?!", "Oh....", run-ons, missing stops); wares listed in threes;
+decorative dialect spelling.
+
+Metric judge changes (all iterations rescored): a `COMPLETED:` journal entry is judged by its objective; a six-word
+phrase Westwood itself uses in two lines or more ("as a token of my appreciation") is house style, not a copy.

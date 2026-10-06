@@ -1,0 +1,686 @@
+{
+ "scenario": "rescue",
+ "iter": "i4",
+ "writer": "one writer a town (variants/i4/maps)",
+ "guide": "WRITER.md v4 + exemplars",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Brother Anselm begs the player to bring his novice Pip back out of the Urchins' barrow.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "tithe chest": "thing",
+    "Wenna's amulet": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Anselm",
+     "text": "Please, help me! My novice Pip went into the old barrow after those Urchins, and he has not come back!\n\nThe boy has the brains of a goose, may the heavens forgive me for saying so. Bring him home safe, my son. Go quickly!"
+    },
+    "reminder": {
+     "speaker": "Anselm",
+     "text": "Pip is still down there! Please, hurry!"
+    },
+    "found": {
+     "speaker": "Pip",
+     "text": "Who's there? Oh, thank goodness! Did Brother Anselm send you? Get me out of here, please!"
+    },
+    "following": {
+     "speaker": "Pip",
+     "text": "Hurry! I think they're coming back!"
+    },
+    "completion": {
+     "speaker": "Anselm",
+     "text": "Pip! You're safe! Heavens be praised!\n\nYou have done a noble deed this day, kind sir. Take this ankh, with the blessing of the Chapel of the Ford."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Pip, Brother Anselm's novice, from the old barrow."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Kroth: Wilna begs the player to find her husband Jory, who went down the Flooded Shaft and has not come back.",
+   "names": {
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Guild Hall": "place",
+    "Gloom Hole": "place",
+    "Shrine of Stone": "place",
+    "Rat Run": "place",
+    "Flooded Shaft": "place",
+    "Molehole": "place",
+    "Brakka's Armory": "place",
+    "Ulgrim": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Hask": "person",
+    "Grenda": "person",
+    "Edda": "person",
+    "Odo": "person",
+    "Snig": "person",
+    "Wilna": "person",
+    "Jory": "person",
+    "Grubb": "person",
+    "Brakka": "person",
+    "Yorla": "person",
+    "Olf": "person",
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Undead": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Zombies": "group",
+    "Dowsing Rod": "thing",
+    "Mountain Brew": "thing",
+    "Spell Book": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Wilna",
+     "text": "Help me, please! My Jory went down the Flooded Shaft this morning and he hasn't come back! The other men heard screaming and ran!\n\nPlease, brave Adventurer, find him and bring him home!"
+    },
+    "reminder": {
+     "speaker": "Wilna",
+     "text": "Please hurry! He's all I have!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Is somebody there? Help! I'm stuck back here!... Thank goodness! Did Wilna send you? Get me out of here!"
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "Hurry! I can hear them coming!"
+    },
+    "completion": {
+     "speaker": "Wilna",
+     "text": "Jory! You're home! Oh, thank you, thank you! Please, take this Ankh as a token of my appreciation."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Jory in the Flooded Shaft and bring him home to Wilna."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Gloam: Hessa's boy Wim took a boat to the Sunken Graves to see the Undead and has not come back.",
+   "names": {
+    "Gloam": "place",
+    "Plank Gate": "place",
+    "Sunken Graves": "place",
+    "Rotten Oak": "place",
+    "Healing House": "place",
+    "Town Hall": "place",
+    "Soggy Toad": "place",
+    "Hodd's Arms and Armor": "place",
+    "Ulgor": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Tobbin": "person",
+    "Haskin": "person",
+    "Fennick": "person",
+    "Ysolde the Healer": "person",
+    "Mudge": "person",
+    "Hessa": "person",
+    "Wim": "person",
+    "Bulmer": "person",
+    "Hodd": "person",
+    "Quorra": "person",
+    "Nell": "person",
+    "Hollis": "person",
+    "Spyglass": "thing",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hessa",
+     "text": "Oh, please help me! My boy Wim took the boat out to the Sunken Graves to see the Undead for himself. That was last night, and he hasn't come back!\n\nPlease, kind sir, find him and bring him home!"
+    },
+    "reminder": {
+     "speaker": "Hessa",
+     "text": "Please, hurry! I can't bear to think of him out there alone..."
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "Over here! Help! Please get me out of here!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Go on, I'm right behind you! Just get me home!"
+    },
+    "completion": {
+     "speaker": "Hessa",
+     "text": "Wim! Oh, my boy! You're safe!\n\nThank you, thank you, brave Adventurer! It isn't much, but please take this. May all that is great bless you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find Hessa's son Wim in the Sunken Graves and bring him home."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnhelm: Merriwen's husband Jory, a soldier of the night patrol, is trapped by Skeletons in the Old Chapel on the moor.",
+   "names": {
+    "Durnhelm": "place",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Old Chapel": "place",
+    "Rookery": "place",
+    "Broken Pike": "place",
+    "Brunwald's Arms and Armor": "place",
+    "Iron Watch": "group",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Giant Leeches": "group",
+    "Ogre": "group",
+    "Commander Holgrim": "person",
+    "Master Quell": "person",
+    "Malgrith": "person",
+    "Tobin": "person",
+    "Bodric": "person",
+    "Yorrin": "person",
+    "Mungo": "person",
+    "Brunwald": "person",
+    "Orsolya": "person",
+    "Lumpy Dorn": "person",
+    "Merriwen": "person",
+    "Jory": "person",
+    "Gaspar": "person",
+    "Agna": "person",
+    "Spyglass": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Merriwen",
+     "text": "Please, help me! My Jory went out with the night patrol and never came back!\n\nThe others say the Skeletons drove him into the Old Chapel out on the moor. Nobody will go after him!\n\nPlease, kind sir, bring my Jory home!"
+    },
+    "reminder": {
+     "speaker": "Merriwen",
+     "text": "Please hurry! I can't bear the waiting!"
+    },
+    "found": {
+     "speaker": "Jory",
+     "text": "Over here! Help!\n\nMerriwen sent you? Bless her! I'll follow you."
+    },
+    "following": {
+     "speaker": "Jory",
+     "text": "Hurry! More of them are crawling up out of the floor!"
+    },
+    "completion": {
+     "speaker": "Merriwen",
+     "text": "Jory! You're home! Oh, thank you, thank you, brave Adventurer! It isn't much, but please take this."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Jory from the Old Chapel and bring him home to Merriwen."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ostra: Agna's boy Wim rowed out to the Drowned Chapel on the north shore to see the ghosts and is trapped there.",
+   "names": {
+    "Ostra": "place",
+    "Lake Vell": "place",
+    "Gorm Isle": "place",
+    "Black Cliff": "place",
+    "Heron Point": "place",
+    "Drowned Chapel": "place",
+    "long pier": "place",
+    "Wet Herring": "place",
+    "Haldo's": "place",
+    "Skarn": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "Brannoc": "person",
+    "Gubby": "person",
+    "Hulda": "person",
+    "Pell": "person",
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Mag": "person",
+    "Haldo": "person",
+    "Zebulin": "person",
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Agna": "person",
+    "Wim": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Undead": "group",
+    "Hulda's amulet": "thing",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Agna",
+     "text": "Please, help me! My boy Wim took his little boat out to the Drowned Chapel on the north shore to look at the ghosts. That was yesterday morning, and he never came back!\n\nOh, that foolish, foolish boy! Please, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Agna",
+     "text": "Please hurry! My poor Wim!"
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "Help! Over here! Please don't leave me, they'll come back!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Stay close! I don't want to see any more ghosts!"
+    },
+    "completion": {
+     "speaker": "Agna",
+     "text": "Wim! Oh, my Wim! You're home!\n\nThank you, kind sir, thank you! You've saved my boy. Please take this. I wish it were more."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Agna's son Wim from the Drowned Chapel."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ardoth: Master Fenwold begs the player to bring back his apprentice Orrick from the catacombs under the old chapel.",
+   "names": {
+    "Ardoth": "place",
+    "College": "place",
+    "Star Tower": "place",
+    "Malgor": "person",
+    "Mazrel": "person",
+    "Quellan": "person",
+    "Brannoc": "person",
+    "Fennick": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Pim": "person",
+    "Grisella": "person",
+    "Bodkin": "person",
+    "Singed Owl": "place",
+    "Krell": "person",
+    "Krell's Arms and Armor": "place",
+    "Olwen": "person",
+    "Olwen's Potions and Scrolls": "place",
+    "Tullan": "person",
+    "Nubbin": "person",
+    "Fenwold": "person",
+    "Orrick": "person",
+    "west gate": "place",
+    "lily pond": "place",
+    "old quarry": "place",
+    "mill road": "place",
+    "lockup": "place",
+    "old well": "place",
+    "old chapel": "place",
+    "catacombs": "place",
+    "crystal ball": "thing",
+    "Skeletons": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Leeches": "group",
+    "watchmen": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Fenwold",
+     "text": "Oh, this is terrible! Terrible! My apprentice Orrick went down into the catacombs under the old chapel, east of town. He wanted to see a real Skeleton up close, the young fool!\n\nHe has not come back. Please, kind sir, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Fenwold",
+     "text": "Please, hurry! The poor boy must be terrified!"
+    },
+    "found": {
+     "speaker": "Orrick",
+     "text": "Help! I'm in here! Master Fenwold sent you? Please, get me out of this place!"
+    },
+    "following": {
+     "speaker": "Orrick",
+     "text": "Lead the way. I'll stay right behind you!"
+    },
+    "completion": {
+     "speaker": "Fenwold",
+     "text": "Orrick! You're safe! Oh, thank goodness!\n\nI am in your debt, brave Adventurer. Please, take this robe. It served me well when I was young."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Orrick from the catacombs beneath the old chapel."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "WizardRobe"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarn: Hulda begs for her husband Ansgar the woodcutter, chased into the old mine on the south slope by the Undead.",
+   "names": {
+    "Fort Skarn": "place",
+    "Kel Dorran": "place",
+    "East Gate": "place",
+    "Keep": "place",
+    "Iron Kettle": "place",
+    "Bodmar's Armory": "place",
+    "Ice Caves": "place",
+    "Kolgrath": "person",
+    "Ormund": "person",
+    "Warden Brannoc": "person",
+    "Tormod": "person",
+    "Fitch": "person",
+    "Dagny": "person",
+    "Elko": "person",
+    "Ulla": "person",
+    "Grindle": "person",
+    "Hobb": "person",
+    "Bodmar": "person",
+    "Ysmay": "person",
+    "Brother Ennick": "person",
+    "Nibbs": "person",
+    "Hulda": "person",
+    "Ansgar": "person",
+    "Undead": "group",
+    "Urchins": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Hulda",
+     "text": "Help! Please, somebody help me! My Ansgar went out for firewood this morning and never came back!\n\nOne of the soldiers saw him run into the old mine on the south slope with the Undead right behind him. Please, bring him home to me, kind stranger!"
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Please hurry! It will be dark soon, and so cold!"
+    },
+    "found": {
+     "speaker": "Ansgar",
+     "text": "Over here! I'm stuck behind these rocks! Did Hulda send you?"
+    },
+    "following": {
+     "speaker": "Ansgar",
+     "text": "Hurry, before those things come back!"
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "Ansgar! Oh, you're alive! Thank you, thank you, kind sir! Please, take this as a token of my thanks. May all good spirits watch over you!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Ansgar the woodcutter from the old mine."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulmar: Marga's boy Wim was dragged off by the Ogres to work the bellows of the Old Foundry.",
+   "names": {
+    "Vulmar": "place",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Thrugg": "person",
+    "Hulgar": "person",
+    "Mott": "person",
+    "Thessa": "person",
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Tobb": "person",
+    "Kraddock": "person",
+    "Sibba": "person",
+    "Guildmaster Orvald": "person",
+    "Grubb": "person",
+    "Marga": "person",
+    "Wim": "person",
+    "Old Foundry": "place",
+    "Slag Pits": "place",
+    "Cinder Caves": "place",
+    "Red Bucket": "place",
+    "Town Hall": "place",
+    "Guild": "group",
+    "Ogres": "group",
+    "Scorpions": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Marga",
+     "text": "Please, help me! The Ogres came down in the night and dragged off my boy Wim! They took him up to the Old Foundry to work their bellows!\n\nHe's only a lad. I haven't much, but it's yours if you bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Marga",
+     "text": "Why are you standing here? My Wim is up there with those brutes!"
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "You came for me! Get me out of here, before they come back!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Hurry! Don't let them catch us again!"
+    },
+    "completion": {
+     "speaker": "Marga",
+     "text": "Wim! My Wim! Oh, thank you, thank you, kind stranger! Here, it isn't much, but take it with my blessing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Wim from the Ogres in the Old Foundry."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Kesrin: Nell, cook at the Broken Wheel, begs the player to bring back her husband Gorm the carter, caught by Skeletons in the crypt under the old chapel west of town.",
+   "names": {
+    "Kesrin": "place",
+    "Broken Wheel": "place",
+    "Fort Karn": "place",
+    "Gallow Rock": "place",
+    "Ravek": "person",
+    "Ambrus": "person",
+    "Fennick": "person",
+    "Dalt": "person",
+    "Ossrik": "person",
+    "Thurl": "person",
+    "Wenzel": "person",
+    "Bettrin": "person",
+    "Lumm": "person",
+    "Ebb": "person",
+    "Bodger": "person",
+    "Hargis": "person",
+    "Hargis' Forge": "place",
+    "Fizwick": "person",
+    "Calvo": "person",
+    "Gimble": "person",
+    "Nell": "person",
+    "Gorm": "person",
+    "Undead": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Ogres": "group",
+    "Ghost": "thing"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Nell",
+     "text": "Please, help me! My Gorm took the cart out to the old chapel west of here for stone, and the Skeletons came up out of the crypt and dragged him down! He never came home!\n\nPlease, kind sir, bring him back to me!"
+    },
+    "reminder": {
+     "speaker": "Nell",
+     "text": "Hurry, please! He's been down there so long!"
+    },
+    "found": {
+     "speaker": "Gorm",
+     "text": "Over here! Help! Get me out before they come back!"
+    },
+    "following": {
+     "speaker": "Gorm",
+     "text": "Hurry, lad! I can hear them rattling!"
+    },
+    "completion": {
+     "speaker": "Nell",
+     "text": "Gorm! You great oaf, you're alive!\n\nThank you, thank you, kind sir! Here, take this, it's all we can spare. And there's always a hot bowl for you at the Broken Wheel!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Gorm the carter from the crypt beneath the old chapel."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Ostrel: Farmer Gedge begs the player to bring back his son Wil, dragged off by Ogres to their caves past the east fields.",
+   "names": {
+    "Ostrel": "place",
+    "Nox": "place",
+    "Kragmoor": "place",
+    "Ulgor": "person",
+    "Haskar": "person",
+    "Bellock": "person",
+    "Dobbs": "person",
+    "Gaffer Rudd": "person",
+    "Granny Orla": "person",
+    "Dalbrek": "person",
+    "Mungo": "person",
+    "Gedge": "person",
+    "Wil": "person",
+    "Harl": "person",
+    "Brask": "person",
+    "Yselda": "person",
+    "Nettie": "person",
+    "Bram": "person",
+    "Joss": "person",
+    "Rusty Plough": "place",
+    "Brask's Forge": "place",
+    "Dowsing Rod": "thing",
+    "Ankh": "thing",
+    "Chain Tunic": "thing",
+    "Longsword": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Gedge",
+     "text": "Help! Somebody help me! The Ogres took my boy Wil! They grabbed him right out of the barley field and dragged him off to their caves past the east fields.\n\nI'm too old to fight, and nobody else will go. Please, kind stranger, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Gedge",
+     "text": "Please hurry! Who knows what those brutes are doing to him!"
+    },
+    "found": {
+     "speaker": "Wil",
+     "text": "Thank goodness! Did my Pa send you? Get me out of here before they come back!"
+    },
+    "following": {
+     "speaker": "Wil",
+     "text": "Hurry! I think I hear them coming!"
+    },
+    "completion": {
+     "speaker": "Gedge",
+     "text": "Wil! My boy! You're safe! Oh, thank you, thank you, kind stranger! I haven't much, but take this, with my blessing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Farmer Gedge's son Wil from the Ogre caves."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

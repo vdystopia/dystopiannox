@@ -1,0 +1,242 @@
+{
+ "iter": "i4",
+ "writer": "Claude agent (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Ostrel",
+  "setting": "a farming town troubled by Ogres",
+  "trouble": "Ulgor the Ogre Lord and his brutes come down from Kragmoor to burn the farms, take the harvest and carry off the village folk.",
+  "names": {
+   "Ostrel": "place",
+   "Nox": "place",
+   "Kragmoor": "place",
+   "Ulgor": "person",
+   "Haskar": "person",
+   "Bellock": "person",
+   "Dobbs": "person",
+   "Gaffer Rudd": "person",
+   "Granny Orla": "person",
+   "Dalbrek": "person",
+   "Mungo": "person",
+   "Gedge": "person",
+   "Wil": "person",
+   "Harl": "person",
+   "Brask": "person",
+   "Yselda": "person",
+   "Nettie": "person",
+   "Bram": "person",
+   "Joss": "person",
+   "Rusty Plough": "place",
+   "Brask's Forge": "place",
+   "Dowsing Rod": "thing",
+   "Ankh": "thing",
+   "Chain Tunic": "thing",
+   "Longsword": "thing",
+   "Ogres": "group",
+   "Imps": "group",
+   "Leeches": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Dobbs keeps the north gate, shut by Mayor Bellock's order since the Ogres came.",
+   "names": {"Dobbs": "person", "Bellock": "person", "Ogres": "group"},
+   "parts": {
+    "first": {
+     "speaker": "Dobbs",
+     "text": "Halt! Nobody goes out the north gate. Mayor Bellock's orders. The Ogres would have you for supper before you got past the turnip fields!"
+    },
+    "again": {
+     "speaker": "Dobbs",
+     "text": "Move along, lad. The gate stays shut."
+    },
+    "later": {
+     "speaker": "Dobbs",
+     "text": "The Mayor says you may go. Open the gate! And good luck to you, brave Adventurer."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Gaffer Rudd, a cattle farmer, wants the Giant Leeches out of his cow pond south of the village.",
+   "names": {"Gaffer Rudd": "person", "Leeches": "group", "Ogres": "group"},
+   "parts": {
+    "offer": {
+     "speaker": "Gaffer Rudd",
+     "text": "First the Ogres, and now Leeches! Great big slimy Leeches, crawled up out of the bog and into my cow pond! The cows won't go near the water and they've gone and stopped giving milk.\n\nThe pond's just past my barn, south of the village. You kill them horrid things and I'll pay you good gold for it, lad."
+    },
+    "reminder": {
+     "speaker": "Gaffer Rudd",
+     "text": "My poor cows! Have you killed them Leeches yet?"
+    },
+    "completion": {
+     "speaker": "Gaffer Rudd",
+     "text": "They're dead? All of 'em? Ha! The cows will be glad to hear it! Here, take this gold. You earned it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches in Gaffer Rudd's cow pond."
+    }
+   },
+   "reward": {"gold": 80, "items": []}
+  },
+  "heirloom_fetch": {
+   "specifics": "Granny Orla's Dowsing Rod was stolen by the Imps living in the old windmill west of town.",
+   "names": {"Granny Orla": "person", "Dowsing Rod": "thing", "Imps": "group", "Ogres": "group", "Ankh": "thing"},
+   "parts": {
+    "offer": {
+     "speaker": "Granny Orla",
+     "text": "Oh, it's terrible, terrible! Those wretched Imps have been nesting in the old windmill west of town, and last night they crept in and stole my Dowsing Rod!\n\nWithout it I can't find water for the new wells, and the Ogres have fouled the old ones. Will you get it back for me, young sir? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Granny Orla",
+     "text": "Hmph! Young people these days..."
+    },
+    "reminder": {
+     "speaker": "Granny Orla",
+     "text": "Have you got my Dowsing Rod? Those Imps will break it, I just know it!"
+    },
+    "completion": {
+     "speaker": "Granny Orla",
+     "text": "My Dowsing Rod! Oh, bless you, bless you! Now we'll have water again. Please, take this Ankh as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Granny Orla",
+     "text": "Thanks again, young sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Granny Orla's Dowsing Rod from the Imps in the old windmill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Granny Orla's Dowsing Rod from the Imps in the old windmill."
+    }
+   },
+   "reward": {"gold": 0, "items": ["AnkhTradable"]}
+  },
+  "rumour": {
+   "specifics": "Three villagers: Nettie the milkmaid, old Bram, and Joss the farmhand.",
+   "names": {"Nettie": "person", "Bram": "person", "Joss": "person", "Bellock": "person", "Ogres": "group"},
+   "parts": {
+    "rumour1": {
+     "speaker": "Nettie",
+     "text": "The Ogres ate my best milking cow! I cried for a week."
+    },
+    "rumour2": {
+     "speaker": "Bram",
+     "text": "Mayor Bellock hasn't slept a wink since the Ogres came. They say he keeps a pitchfork under his bed!"
+    },
+    "rumour3": {
+     "speaker": "Joss",
+     "text": "Can't stop to chat, stranger. Those turnips won't pick themselves!"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Harl of the Rusty Plough, Brask the smith, Yselda who sells potions and spell books.",
+   "names": {"Harl": "person", "Rusty Plough": "place", "Brask": "person", "Brask's Forge": "place", "Yselda": "person", "Ogres": "group"},
+   "parts": {
+    "inn": {
+     "speaker": "Harl",
+     "text": "Ogres or no Ogres, the Rusty Plough stays open! What can I get fer ya?"
+    },
+    "arms": {
+     "speaker": "Brask",
+     "text": "Brask's Forge. Swords, axes, shields. Have a look."
+    },
+    "magic": {
+     "speaker": "Yselda",
+     "text": "Greetings, Wanderer! Potions, scrolls, spell books... I have a little of everything. How can I help you?"
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Warden Dalbrek wants the village's seed corn back from the Ogres; Mungo the scarecrow-maker wants an Ogre's helmet for his scarecrow.",
+   "names": {"Dalbrek": "person", "Mungo": "person", "Ostrel": "place", "Kragmoor": "place", "Ogres": "group", "Nox": "place", "Chain Tunic": "thing", "Longsword": "thing"},
+   "parts": {
+    "offer_a": {
+     "speaker": "Dalbrek",
+     "text": "Good day to you, kind sir. You have the look of one who can handle himself.\n\nThe Ogres have stolen the village's seed corn and carried it off toward Kragmoor. Without seed there can be no planting in the spring, and without planting, Ostrel will starve.\n\nRecover it, and the village will see you handsomely rewarded."
+    },
+    "offer_b": {
+     "speaker": "Mungo",
+     "text": "Psst! Hey! Over here! You want to be rid of them Ogres? I've built the scariest scarecrow in the whole valley. Only he needs a proper Ogre helmet on his head to finish him off.\n\nBring me a helmet off one of them Ogres and I'll give you this Longsword. Found it in a ditch. Hardly used! Heh, heh, heh..."
+    },
+    "outcome_a": {
+     "speaker": "Dalbrek",
+     "text": "The seed corn! Splendid! Ostrel is in your debt, brave Adventurer. Please, take this Chain Tunic from the village armory. You have more than earned it."
+    },
+    "outcome_b": {
+     "speaker": "Mungo",
+     "text": "Ha! A real Ogre helmet! Look at him now -- the meanest scarecrow in all of Nox! The Ogres will run home crying to their mothers! Here's your sword. A deal's a deal!"
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Recover the seed corn the Ogres stole and return it to Warden Dalbrek."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Bring Mungo a helmet taken from an Ogre."
+    }
+   },
+   "reward": {"gold": 0, "items": ["ChainTunic", "Longsword"]}
+  },
+  "rescue": {
+   "specifics": "Farmer Gedge begs the player to bring back his son Wil, dragged off by Ogres to their caves past the east fields.",
+   "names": {"Gedge": "person", "Wil": "person", "Ogres": "group"},
+   "parts": {
+    "plea": {
+     "speaker": "Gedge",
+     "text": "Help! Somebody help me! The Ogres took my boy Wil! They grabbed him right out of the barley field and dragged him off to their caves past the east fields.\n\nI'm too old to fight, and nobody else will go. Please, kind stranger, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Gedge",
+     "text": "Please hurry! Who knows what those brutes are doing to him!"
+    },
+    "found": {
+     "speaker": "Wil",
+     "text": "Thank goodness! Did my Pa send you? Get me out of here before they come back!"
+    },
+    "following": {
+     "speaker": "Wil",
+     "text": "Hurry! I think I hear them coming!"
+    },
+    "completion": {
+     "speaker": "Gedge",
+     "text": "Wil! My boy! You're safe! Oh, thank you, thank you, kind stranger! I haven't much, but take this, with my blessing."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Farmer Gedge's son Wil from the Ogre caves."
+    }
+   },
+   "reward": {"gold": 60, "items": []}
+  },
+  "main_opening": {
+   "specifics": "Joss points the player to Mayor Bellock, who sends him north to Kragmoor to defeat Ulgor the Ogre Lord.",
+   "names": {"Joss": "person", "Haskar": "person", "Bellock": "person", "Ulgor": "person", "Kragmoor": "place", "Ostrel": "place", "Dobbs": "person", "Ogres": "group"},
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "Are you the one Haskar sent? Thank goodness! Go and see Mayor Bellock. His house is the big one in the middle of town."
+    },
+    "opening": {
+     "speaker": "Bellock",
+     "text": "Welcome to Ostrel, brave Adventurer. Haskar wrote that you would come. I only pray you are not too late.\n\nThis valley has known peace for longer than anyone can remember. Then came Ulgor, the Ogre Lord! His brutes have burned the east fields, eaten half our cattle and carried off good honest folk. Now the scoundrel sits up in Kragmoor, north of the village, growing fat on our harvest!\n\nYou must go to Kragmoor and put an end to Ulgor. I will tell Dobbs to open the north gate for you. Go now! The fate of Ostrel is in your hands!"
+    },
+    "reminder": {
+     "speaker": "Bellock",
+     "text": "Why do you linger? Every day you wait, the Ogres grow fatter on our cattle!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Kragmoor and defeat Ulgor the Ogre Lord."
+    }
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

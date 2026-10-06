@@ -1,0 +1,22 @@
+{
+  "packet": "75c412",
+  "judge": "Claude Code subagent, Claude Opus 5.5, fresh",
+  "items": [
+    {"label": "A", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Opens on the same 'Bah! X! Great big slimy ones' exclamation template and closes on 'Dead? All of 'em? Ha!', a formula shared with three other texts here. The exact gold figure and 'good gold in it for you' are tidy but stock."},
+    {"label": "B", "verdict": "westwood", "confidence": 4, "score": 8, "critique": "Plain, slightly clumsy exposition ('a foul little urchin has moved into the cave'), a key handed over mid-offer and a plot-gate reward (the petition) rather than gold. Odd but true Westwood mechanics."},
+    {"label": "C", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Same 'Bah! Scorpions!' / 'Dead? All of 'em? Ha!' frame as A; the causal backstory (Ogres took the place, vermin coming down) is neater world-building than Westwood bothered with, and 'That's fair, isn't it?' feels added for colour."},
+    {"label": "D", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "Repeated 'mate', the bathing anecdote and 'a damn fine spell' have Westwood's offbeat humour; the long, literal journal line is typical of the original."},
+    {"label": "E", "verdict": "westwood", "confidence": 5, "score": 9, "critique": "The pet frog and the 'Loads and loads of money?' joke are classic Nox silliness, with the '?!' punctuation Westwood used freely."},
+    {"label": "F", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Exclamation opener, 'won't spare me a man' and 'Ha! My pigs can sleep easy' mirror J and the others too closely; every new text is built on the same beat sequence and grateful-but-poor sign-off."},
+    {"label": "G", "verdict": "westwood", "confidence": 4, "score": 8, "critique": "'Ooooh, how can this be?' and the terse, slightly stilted plot handoff with no gold reward fit Westwood's story-quest lines."},
+    {"label": "H", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Same leech template as A in a different setting; the 'Ever since that Necromancer came' causal clause and 'You earned every piece of it!' recur across the new texts."},
+    {"label": "I", "verdict": "westwood", "confidence": 5, "score": 8, "critique": "Missing comma ('north of here and kidnapped'), 'my sweet sister' and the vague 'tokens of my appreciation' reward are Westwood's slightly rough register."},
+    {"label": "J", "verdict": "generated", "confidence": 4, "score": 6, "critique": "Mirror of F (Bears, 'won't spare me a single man', Undead at the walls, 'just like I promised'), polished but formulaic."}
+  ],
+  "tells": [
+    "The new texts share one rigid template: an exclamation naming the pest ('Bah! Leeches!', 'Bears!'), a 'Great big ...' intensifier, a backstory clause tying the pest to the main villain, a promise of pay, then 'Dead? All of 'em? Ha!' / 'Ha! ...' and 'You earned every piece.' Repetition across texts gives them away more than any single line.",
+    "New texts pay an exact sum of gold (75, 80, 100); Westwood's rewards are often items, spells, keys or plot passes, or vague 'tokens of my appreciation'.",
+    "Westwood's lines carry odd jokes (pet frog, boots stolen while bathing, 'Loads and loads of money?'), small grammatical roughness and '?!' punctuation; the new ones are cleaner and more uniform.",
+    "New quest-givers explain why the trouble exists in world terms (since the Necromancer came, since the Ogres took the pass); Westwood rarely bothered."
+  ]
+}

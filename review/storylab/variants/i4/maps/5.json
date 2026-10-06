@@ -1,0 +1,317 @@
+{
+ "iter": "i4",
+ "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Ostra",
+  "setting": "a lake village of fishermen",
+  "trouble": "Skarn the Necromancer has taken the old lighthouse on Gorm Isle and calls the drowned dead up out of Lake Vell, so the fishermen of Ostra dare not put out their boats.",
+  "names": {
+   "Ostra": "place",
+   "Lake Vell": "place",
+   "Gorm Isle": "place",
+   "Black Cliff": "place",
+   "Heron Point": "place",
+   "Drowned Chapel": "place",
+   "long pier": "place",
+   "Wet Herring": "place",
+   "Haldo's": "place",
+   "Skarn": "person",
+   "Grimwald": "person",
+   "Mayor Odrick": "person",
+   "Brannoc": "person",
+   "Gubby": "person",
+   "Hulda": "person",
+   "Pell": "person",
+   "Dorrie": "person",
+   "Mungo": "person",
+   "Mag": "person",
+   "Haldo": "person",
+   "Zebulin": "person",
+   "Master Ferrin": "person",
+   "Snibbet": "person",
+   "Agna": "person",
+   "Wim": "person",
+   "Urchins": "group",
+   "Giant Leeches": "group",
+   "Undead": "group",
+   "Hulda's amulet": "thing",
+   "the beacon": "thing"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brannoc keeps the causeway gate out to Gorm Isle, shut by Mayor Odrick because the dead walk the causeway at night.",
+   "names": {
+    "Brannoc": "person",
+    "Mayor Odrick": "person"
+   },
+   "parts": {
+    "first": {
+     "speaker": "Brannoc",
+     "text": "Sorry, stranger. Nobody crosses the causeway without Mayor Odrick's say-so. The dead walk it after dark."
+    },
+    "again": {
+     "speaker": "Brannoc",
+     "text": "I said the gate's shut. Off with you!"
+    },
+    "later": {
+     "speaker": "Brannoc",
+     "text": "Mayor Odrick has given his word. The causeway is open to you. Good luck!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "bounty_offer": {
+   "specifics": "Gubby, an old fisherman, pays to have the Giant Leeches cleared out of the reed beds south of the village.",
+   "names": {
+    "Gubby": "person",
+    "Giant Leeches": "group",
+    "Gorm Isle": "place",
+    "Lake Vell": "place",
+    "Ostra": "place"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Gubby",
+     "text": "Leeches! Giant Leeches! They've moved into the reed beds south of the village and they eat every fish that goes in my nets. Ate half my net too, the greedy things.\n\nEver since that Necromancer came to Gorm Isle, every nasty thing in Lake Vell's been crawling up on our shore.\n\nKill them leeches for me and I'll make it worth your while, lad."
+    },
+    "reminder": {
+     "speaker": "Gubby",
+     "text": "Them leeches still out there? I can't fish with 'em about!"
+    },
+    "completion": {
+     "speaker": "Gubby",
+     "text": "Ha, ha! No more leeches! I'll have a full net by sundown! Here, take this gold. You earned every piece of it."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Kill the Giant Leeches in the reed beds south of Ostra."
+    }
+   },
+   "reward": {
+    "gold": 100,
+    "items": []
+   }
+  },
+  "heirloom_fetch": {
+   "specifics": "Hulda, an old fishwife, lost her magic amulet to the Urchins of the caves under Black Cliff.",
+   "names": {
+    "Hulda": "person",
+    "Urchins": "group",
+    "Black Cliff": "place",
+    "Undead": "group",
+    "Hulda's amulet": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Thieves! Nasty little thieves! The Urchins crept down from the caves under Black Cliff last night and took my magic amulet right off my neck while I slept!\n\nI can't go up there, not with my bad knees and the Undead about.\n\nWould you get it back for me, kind sir? I'd be ever so grateful."
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Well! I never! Some hero you are."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Have you got my amulet yet? Those Urchins are a sneaky lot, you know."
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "My amulet! Oh, you found it! Bless you, bless you! Here, take these. It isn't much, but it's all an old fishwife has to give."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "Bless you again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hulda's amulet from the Urchins of Black Cliff."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hulda's amulet from the Urchins of Black Cliff."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": ["CurePoisonPotion"]
+   }
+  },
+  "rumour": {
+   "specifics": "Three villagers of Ostra: Dorrie gutting eels, Mungo the fisherman, Pell on the pier.",
+   "names": {
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Pell": "person",
+    "Mayor Odrick": "person"
+   },
+   "parts": {
+    "rumour1": {
+     "speaker": "Dorrie",
+     "text": "Not now! I've got a whole basket of eels to skin."
+    },
+    "rumour2": {
+     "speaker": "Mungo",
+     "text": "I've seen dead men walking in the shallows! Dead men! Who's going to buy fish out of a lake full of dead men?"
+    },
+    "rumour3": {
+     "speaker": "Pell",
+     "text": "Mayor Odrick hasn't set foot outside his house since the dead came up. Some mayor!"
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "shop_greeting": {
+   "specifics": "Mag of the Wet Herring tavern, Haldo the armourer, Zebulin the potion seller.",
+   "names": {
+    "Mag": "person",
+    "Wet Herring": "place",
+    "Haldo": "person",
+    "Haldo's": "place",
+    "Zebulin": "person"
+   },
+   "parts": {
+    "inn": {
+     "speaker": "Mag",
+     "text": "Sit yerself down, dearie! We got fish stew, fish pie, or fish. Heh, heh..."
+    },
+    "arms": {
+     "speaker": "Haldo",
+     "text": "Welcome to Haldo's! Swords, axes and good stout shields. How can I help you?"
+    },
+    "magic": {
+     "speaker": "Zebulin",
+     "text": "Ahh, a customer! With the dead walking about, you'll be wanting potions. Lots of potions! Zebulin has plenty."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  },
+  "two_givers": {
+   "specifics": "Master Ferrin wants the old beacon on Heron Point lit so the boats can come home; Snibbet wants his taxed barrel of cider stolen back out of the storehouse.",
+   "names": {
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Ostra": "place",
+    "Gorm Isle": "place",
+    "Heron Point": "place",
+    "long pier": "place",
+    "Mayor Odrick": "person",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "offer_a": {
+     "speaker": "Master Ferrin",
+     "text": "Greetings, Wanderer. These are dark days for Ostra. Since the Necromancer seized the lighthouse on Gorm Isle, our boats come home blind in the fog, and the rocks have taken more than one.\n\nThere is an old beacon on Heron Point, along the shore west of here. If it were lit, our fishermen could find their way home.\n\nLight it, and I shall see that you are well rewarded."
+    },
+    "offer_b": {
+     "speaker": "Snibbet",
+     "text": "Psst! Hey! Over here, friend! You look like a fella who can keep his mouth shut.\n\nMaster Ferrin's men took a barrel of my best cider right off my boat. Taxes, he says! Ha! It's sitting in the storehouse on the long pier.\n\nFetch it back for me, quiet-like, and I'll give you a nice shiny sword. Deal?"
+    },
+    "outcome_a": {
+     "speaker": "Master Ferrin",
+     "text": "The beacon burns! Look there -- the boats are coming in! Ostra owes you a great debt, Wanderer. Take this shield as a token of our thanks.\n\nNow go and see Mayor Odrick. He has need of you."
+    },
+    "outcome_b": {
+     "speaker": "Snibbet",
+     "text": "Ha, ha! My cider! You're a true pal! Here's the sword, like I promised. Don't go telling Ferrin where you got it. Heh, heh, heh..."
+    },
+    "journal_a": {
+     "speaker": "",
+     "text": "Light the old beacon on Heron Point for Master Ferrin."
+    },
+    "journal_b": {
+     "speaker": "",
+     "text": "Take Snibbet's barrel of cider from the storehouse on the long pier."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": ["SteelShield", "Longsword"]
+   }
+  },
+  "rescue": {
+   "specifics": "Agna's boy Wim rowed out to the Drowned Chapel on the north shore to see the ghosts and is trapped there.",
+   "names": {
+    "Agna": "person",
+    "Wim": "person",
+    "Drowned Chapel": "place"
+   },
+   "parts": {
+    "plea": {
+     "speaker": "Agna",
+     "text": "Please, help me! My boy Wim took his little boat out to the Drowned Chapel on the north shore to look at the ghosts. That was yesterday morning, and he never came back!\n\nOh, that foolish, foolish boy! Please, bring him home to me!"
+    },
+    "reminder": {
+     "speaker": "Agna",
+     "text": "Please hurry! My poor Wim!"
+    },
+    "found": {
+     "speaker": "Wim",
+     "text": "Help! Over here! Please don't leave me, they'll come back!"
+    },
+    "following": {
+     "speaker": "Wim",
+     "text": "Stay close! I don't want to see any more ghosts!"
+    },
+    "completion": {
+     "speaker": "Agna",
+     "text": "Wim! Oh, my Wim! You're home!\n\nThank you, kind sir, thank you! You've saved my boy. Please take this. I wish it were more."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Rescue Agna's son Wim from the Drowned Chapel."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": ["RedPotion"]
+   }
+  },
+  "main_opening": {
+   "specifics": "Pell sends the player to Mayor Odrick, an old friend of Grimwald, who orders him out to Gorm Isle after Skarn the Necromancer.",
+   "names": {
+    "Pell": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "long pier": "place",
+    "Ostra": "place",
+    "Skarn": "person",
+    "Gorm Isle": "place",
+    "Lake Vell": "place",
+    "Brannoc": "person"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "You're the one Grimwald sent? Mayor Odrick's been waiting on you for days! His house is at the end of the long pier."
+    },
+    "opening": {
+     "speaker": "Mayor Odrick",
+     "text": "Ah, at last! Grimwald said you would come. Welcome to Ostra, lad, though I wish it were in better times.\n\nA Necromancer named Skarn has taken the old lighthouse on Gorm Isle. Every night he calls the drowned dead up out of Lake Vell, and every night more of them come ashore. Our fishermen dare not put out their boats. The village is starving!\n\nYou must cross the causeway to Gorm Isle and put an end to this foul sorcerer. Brannoc will open the gate on my word. Hurry! Ostra cannot hold out much longer."
+    },
+    "reminder": {
+     "speaker": "Mayor Odrick",
+     "text": "Why do you tarry? Every night that Necromancer raises more of our dead!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Gorm Isle and defeat Skarn the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   }
+  }
+ }
+}

@@ -1,0 +1,142 @@
+{
+ "iter": "i4",
+ "writer": "Claude Agent SDK subagent (claude-opus-5-5)",
+ "guide": "WRITER.md v4 + exemplars",
+ "map": {
+  "name": "Ardoth",
+  "setting": "a wizards' college town",
+  "trouble": "Malgor the Necromancer, a former student of the College, has taken the Star Tower west of town, and his Skeletons and Zombies prowl the roads while the wizards' spells grow weak.",
+  "names": {
+   "Ardoth": "place",
+   "College": "place",
+   "Star Tower": "place",
+   "Malgor": "person",
+   "Mazrel": "person",
+   "Quellan": "person",
+   "Brannoc": "person",
+   "Fennick": "person",
+   "Hobb": "person",
+   "Tessaly": "person",
+   "Pim": "person",
+   "Grisella": "person",
+   "Bodkin": "person",
+   "Singed Owl": "place",
+   "Krell": "person",
+   "Krell's Arms and Armor": "place",
+   "Olwen": "person",
+   "Olwen's Potions and Scrolls": "place",
+   "Tullan": "person",
+   "Nubbin": "person",
+   "Fenwold": "person",
+   "Orrick": "person",
+   "west gate": "place",
+   "lily pond": "place",
+   "old quarry": "place",
+   "mill road": "place",
+   "lockup": "place",
+   "old well": "place",
+   "old chapel": "place",
+   "catacombs": "place",
+   "crystal ball": "thing",
+   "Skeletons": "group",
+   "Zombies": "group",
+   "Imps": "group",
+   "Leeches": "group",
+   "watchmen": "group"
+  }
+ },
+ "scenarios": {
+  "guard_bark": {
+   "specifics": "Brannoc at the west gate, shut by Archmaster Quellan while Malgor's Skeletons walk the road.",
+   "names": {"Brannoc": "person", "Quellan": "person", "west gate": "place", "Skeletons": "group"},
+   "parts": {
+    "first": {"speaker": "Brannoc", "text": "Halt! The west gate is shut by order of Archmaster Quellan. Skeletons walk the road out there."},
+    "again": {"speaker": "Brannoc", "text": "Still here? Move along. Nobody passes."},
+    "later": {"speaker": "Brannoc", "text": "So you're the one the Archmaster was talking about! The gate is open. Off you go, and watch yourself on the road!"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "bounty_offer": {
+   "specifics": "Hobb, the College groundskeeper, wants the Leeches in his lily pond killed.",
+   "names": {"Hobb": "person", "College": "place", "lily pond": "place", "Leeches": "group"},
+   "parts": {
+    "offer": {"speaker": "Hobb", "text": "Leeches! Great big slimy Leeches, in my lily pond behind the College! Ever since that Necromancer came all kinds of nasty things crawl up out of the water.\n\nThey ate every last frog in there and bit one of the students on the leg. Kill 'em off for me and I'll pay you good gold, I promise you that."},
+    "reminder": {"speaker": "Hobb", "text": "Are they dead yet? Well, what are you standing around here for?"},
+    "completion": {"speaker": "Hobb", "text": "They're gone? Really? Ha! Now maybe I can get some sleep. Here, 75 gold. You earned every piece of it!"},
+    "journal": {"speaker": "", "text": "Kill the Leeches in Hobb's lily pond."}
+   },
+   "reward": {"gold": 75, "items": []}
+  },
+  "heirloom_fetch": {
+   "specifics": "Madame Grisella, the fortune teller, lost her crystal ball to Imps who carried it to the old quarry.",
+   "names": {"Grisella": "person", "crystal ball": "thing", "Imps": "group", "old quarry": "place"},
+   "parts": {
+    "offer": {"speaker": "Grisella", "text": "Ahhh! I knew you would come! I saw it in my crystal ball... before those wretched Imps stole it.\n\nThey flew in my window last night and carried it off to the old quarry north of town. I can't tell anybody's fortune without it!\n\nWill you bring back my crystal ball, kind stranger? I will make it worth your while."},
+    "refusal": {"speaker": "Grisella", "text": "Very well. But I see bad luck in your future, stranger. Very bad luck!"},
+    "reminder": {"speaker": "Grisella", "text": "Have you found my crystal ball? Hurry, before those Imps break it!"},
+    "completion": {"speaker": "Grisella", "text": "My crystal ball! Oh, you wonderful creature! I see great things ahead for you... great things! Please, take this spell book as a token of my appreciation."},
+    "after": {"speaker": "Grisella", "text": "Thanks again, kind stranger! The spirits are smiling on you today."},
+    "journal": {"speaker": "", "text": "Recover Madame Grisella's crystal ball from the Imps in the old quarry."},
+    "journal_done": {"speaker": "", "text": "COMPLETED: Recover Madame Grisella's crystal ball from the Imps in the old quarry."}
+   },
+   "reward": {"gold": 0, "items": ["SpellBook"]}
+  },
+  "rumour": {
+   "specifics": "Three townsfolk: Fennick brushes the player off, Tessaly gossips about Malgor, Pim frets about the Skeletons.",
+   "names": {"Fennick": "person", "Tessaly": "person", "Pim": "person", "Malgor": "person", "College": "place", "Skeletons": "group"},
+   "parts": {
+    "rumour1": {"speaker": "Fennick", "text": "Not now, stranger. I've got my own troubles."},
+    "rumour2": {"speaker": "Tessaly", "text": "Malgor was a student here once, you know. They threw him out of the College for raising the cook's cat from the dead!"},
+    "rumour3": {"speaker": "Pim", "text": "Every night there are more Skeletons on the road. How long can the College hold out?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "shop_greeting": {
+   "specifics": "Bodkin of the Singed Owl inn, Krell the armorer, Olwen of the potion and scroll shop.",
+   "names": {"Bodkin": "person", "Singed Owl": "place", "Krell": "person", "Krell's Arms and Armor": "place", "Olwen": "person", "Olwen's Potions and Scrolls": "place"},
+   "parts": {
+    "inn": {"speaker": "Bodkin", "text": "Welcome to the Singed Owl! Pull up a stool and I'll pour you somethin' warm."},
+    "arms": {"speaker": "Krell", "text": "Krell's Arms and Armor. Wizards don't buy from me much. Maybe you will?"},
+    "magic": {"speaker": "Olwen", "text": "Welcome to Olwen's Potions and Scrolls! How can I help you?"}
+   },
+   "reward": {"gold": 0, "items": []}
+  },
+  "two_givers": {
+   "specifics": "Magistrate Tullan wants to know what became of his watchmen on the mill road; Nubbin, locked in the lockup for turning Tullan's hat into a goose, trades a back way into the Star Tower for his freedom.",
+   "names": {"Tullan": "person", "Nubbin": "person", "Malgor": "person", "Quellan": "person", "Star Tower": "place", "mill road": "place", "lockup": "place", "old well": "place", "watchmen": "group"},
+   "parts": {
+    "offer_a": {"speaker": "Tullan", "text": "Good day, young sir. You look capable enough.\n\nIt is my unhappy duty to tell you that I sent a patrol of watchmen down the mill road, south of town, to see what the Necromancer's creatures were up to. Not one of them has returned.\n\nFind out what became of my men. Your assistance would be most appreciated, and the town will reward you handsomely."},
+    "offer_b": {"speaker": "Nubbin", "text": "Psst! Hey, you! Over here, by the bars!\n\nThey locked me up just for turning Magistrate Tullan's hat into a goose. It was a very small goose!\n\nGet the key off the hook by the jailer's desk and let me out. Do that, and I'll show you a back way into the Star Tower that Malgor doesn't know about. Heh, heh, heh... Deal?"},
+    "outcome_a": {"speaker": "Tullan", "text": "Dead? All of them? This is a black day for Ardoth... Malgor will answer for this!\n\nYou have done the town a great service, young sir. Please, accept this as a token of our gratitude. And go to Archmaster Quellan at once. He must hear of this."},
+    "outcome_b": {"speaker": "Nubbin", "text": "Free! Free at last! Thanks, friend. The back way into the Star Tower is through the old well behind it. Malgor never had it filled in. Now I'm off, before the jailer wakes up!"},
+    "journal_a": {"speaker": "", "text": "Find out what became of Magistrate Tullan's watchmen on the mill road."},
+    "journal_b": {"speaker": "", "text": "Get the jail key and free Nubbin from the lockup."}
+   },
+   "reward": {"gold": 100, "items": ["SteelShield"]}
+  },
+  "rescue": {
+   "specifics": "Master Fenwold begs the player to bring back his apprentice Orrick from the catacombs under the old chapel.",
+   "names": {"Fenwold": "person", "Orrick": "person", "old chapel": "place", "catacombs": "place", "Skeletons": "group"},
+   "parts": {
+    "plea": {"speaker": "Fenwold", "text": "Oh, this is terrible! Terrible! My apprentice Orrick went down into the catacombs under the old chapel, east of town. He wanted to see a real Skeleton up close, the young fool!\n\nHe has not come back. Please, kind sir, bring him home to me!"},
+    "reminder": {"speaker": "Fenwold", "text": "Please, hurry! The poor boy must be terrified!"},
+    "found": {"speaker": "Orrick", "text": "Help! I'm in here! Master Fenwold sent you? Please, get me out of this place!"},
+    "following": {"speaker": "Orrick", "text": "Lead the way. I'll stay right behind you!"},
+    "completion": {"speaker": "Fenwold", "text": "Orrick! You're safe! Oh, thank goodness!\n\nI am in your debt, brave Adventurer. Please, take this robe. It served me well when I was young."},
+    "journal": {"speaker": "", "text": "Rescue Orrick from the catacombs beneath the old chapel."}
+   },
+   "reward": {"gold": 0, "items": ["WizardRobe"]}
+  },
+  "main_opening": {
+   "specifics": "Fennick points the player to Archmaster Quellan, who sends him to the Star Tower after Malgor the Necromancer.",
+   "names": {"Fennick": "person", "Quellan": "person", "Mazrel": "person", "Malgor": "person", "Brannoc": "person", "College": "place", "Star Tower": "place", "Ardoth": "place", "west gate": "place", "Skeletons": "group", "Zombies": "group"},
+   "parts": {
+    "herald": {"speaker": "Fennick", "text": "You must be the one Mazrel sent! Archmaster Quellan is waiting for you up at the College. Big building with the towers. You can't miss it."},
+    "opening": {"speaker": "Quellan", "text": "Ah, at last! Mazrel told me he was sending someone, lad. I hope you are as good as he says.\n\nYou have seen the state of Ardoth. Malgor the Necromancer, once a student in these very halls, has seized the Star Tower west of town. His Skeletons and Zombies prowl our roads, and our spells grow weaker by the day!\n\nGo to the Star Tower and put an end to this vile Necromancer before there is no College left to save. I will tell Brannoc to open the west gate for you. Now go!"},
+    "reminder": {"speaker": "Quellan", "text": "Off with you, lad! Every day you dawdle, Malgor raises more of the dead!"},
+    "journal": {"speaker": "", "text": "Go to the Star Tower and defeat Malgor the Necromancer."}
+   },
+   "reward": {"gold": 0, "items": []}
+  }
+ }
+}

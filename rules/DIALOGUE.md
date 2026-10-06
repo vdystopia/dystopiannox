@@ -6,6 +6,21 @@ Measured 2026-10-05 on the campaign's own text (the string table `nox.csf`, keys
 decompiled scripts. Never the quest maps (G_*) or multiplayer. Check a map's story with
 `py tests/storylab.py --check mapgen/designs/<map>.py`; the lab that tunes this guide is `review/storylab/`.
 
+## Write from Westwood's lines, then check by the rules
+
+The lab's blind judges told our text from Westwood's in every packet for as long as writers followed rules alone
+(i0-i3). From i4 the writers imitate: `review/storylab/exemplars/<situation>.md` holds 20-30 of Westwood's own lines
+for each situation (offer, opening, reminder, completion, after, townsfolk, guard, shop, captive, journal), and
+`review/storylab/WRITER.md` is the brief. For every line of a map's story:
+
+1. Open the exemplars of its situation; pick two or three lines and write yours in their manner (length,
+   punctuation, register, how much it says) about your map's matter. Never copy or lightly reword a line; never reuse
+   a Westwood name.
+2. Then check it by the rules below (the numbers, the sixteen rules, the tells). Where a rule and the exemplars seem
+   to differ, follow the exemplars.
+3. Reread the map's whole story as one town: uneven (a two-word bark beside a three-page speech; a stiff mayor beside
+   a slangy barman), most people plain, one or two odd.
+
 ## The numbers
 
 Words per line by situation (p10 / median / p90), and how the lines sound (share of lines):

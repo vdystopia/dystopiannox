@@ -1,0 +1,588 @@
+{
+ "scenario": "main_opening",
+ "iter": "i4",
+ "writer": "one writer a town (variants/i4/maps)",
+ "guide": "WRITER.md v4 + exemplars",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: A townsman sends the player to Halvard at the Moot Hall, who orders him to drive Red Corwin out of the watchtower on Crow Hill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "tithe chest": "thing",
+    "Wenna's amulet": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Townsman",
+     "text": "Going north? Not today you're not! Halvard's shut the gate. If you want it opened, go and see him at the Moot Hall."
+    },
+    "opening": {
+     "speaker": "Halvard",
+     "text": "Ah, a traveller! And armed, too. The heavens have heard me at last.\n\nThat villainous rogue Red Corwin and his band of cutthroats have seized the old watchtower on Crow Hill. From there they rob every cart and pilgrim on the north road, and I have had no choice but to shut the gate.\n\nBrackenford cannot last long cut off like this. Go up Crow Hill and drive Corwin out of that tower! Do this, and I will see you handsomely rewarded."
+    },
+    "reminder": {
+     "speaker": "Halvard",
+     "text": "Every day that gate stays shut, Brackenford grows poorer. Go now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Red Corwin's bandits out of the watchtower on Crow Hill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Kroth: Olf points the player to Guildmaster Brummel in the Guild Hall, who sends him below the Deep Gate after Ulgrim the Necromancer.",
+   "names": {
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Guild Hall": "place",
+    "Gloom Hole": "place",
+    "Shrine of Stone": "place",
+    "Rat Run": "place",
+    "Flooded Shaft": "place",
+    "Molehole": "place",
+    "Brakka's Armory": "place",
+    "Ulgrim": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Hask": "person",
+    "Grenda": "person",
+    "Edda": "person",
+    "Odo": "person",
+    "Snig": "person",
+    "Wilna": "person",
+    "Jory": "person",
+    "Grubb": "person",
+    "Brakka": "person",
+    "Yorla": "person",
+    "Olf": "person",
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Undead": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Zombies": "group",
+    "Dowsing Rod": "thing",
+    "Mountain Brew": "thing",
+    "Spell Book": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Olf",
+     "text": "You must be the one Hobbart sent! Go see Guildmaster Brummel -- the Guild Hall is at the top of the big stairs."
+    },
+    "opening": {
+     "speaker": "Brummel",
+     "text": "Ahh, Hobbart's friend! Good. Good! I asked him for someone brave, and here you are.\n\nListen well, lad. A Necromancer called Ulgrim has crept into the Old Deeps beneath Kroth. Every miner ever buried under Mount Ghal, he's raising up again! They claw at the Deep Gate every night and my men are too frightened to swing a pick.\n\nGo below and put an end to that despicable sorcerer. Hask will open the gate for you. Kroth is counting on you!"
+    },
+    "reminder": {
+     "speaker": "Brummel",
+     "text": "Why are you still standing about? Ulgrim's dead won't wait for you, lad!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go down into the Old Deeps and stop Ulgrim the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Gloam: Hollis points the player up to Mayor Grimbol, who sends him into the Sunken Graves after Ulgor the Necromancer; Ostric sent the player.",
+   "names": {
+    "Gloam": "place",
+    "Plank Gate": "place",
+    "Sunken Graves": "place",
+    "Rotten Oak": "place",
+    "Healing House": "place",
+    "Town Hall": "place",
+    "Soggy Toad": "place",
+    "Hodd's Arms and Armor": "place",
+    "Ulgor": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Tobbin": "person",
+    "Haskin": "person",
+    "Fennick": "person",
+    "Ysolde the Healer": "person",
+    "Mudge": "person",
+    "Hessa": "person",
+    "Wim": "person",
+    "Bulmer": "person",
+    "Hodd": "person",
+    "Quorra": "person",
+    "Nell": "person",
+    "Hollis": "person",
+    "Spyglass": "thing",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Hollis",
+     "text": "You must be the one Master Ostric sent! Mayor Grimbol's been waiting on you for days. His hall's at the very top of the village -- just keep climbing!"
+    },
+    "opening": {
+     "speaker": "Mayor Grimbol",
+     "text": "At last! Ostric said he would send someone, and not a moment too soon.\n\nThe Necromancer Ulgor has taken the Sunken Graves north of the village. Every night he raises more of the dead, and every night they wade a little closer to Gloam. My guards can barely hold the ladders!\n\nYou must go into the Sunken Graves and put an end to Ulgor's nefarious work. I have told Tobbin to open the Plank Gate for you. Go, and may fortune favor you!"
+    },
+    "reminder": {
+     "speaker": "Mayor Grimbol",
+     "text": "What are you waiting for? The Undead will be at our ladders again tonight!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Sunken Graves and defeat Ulgor the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnhelm: Gaspar points the player to Commander Holgrim in the keep, who sends him east after the Necromancer Malgrith.",
+   "names": {
+    "Durnhelm": "place",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Old Chapel": "place",
+    "Rookery": "place",
+    "Broken Pike": "place",
+    "Brunwald's Arms and Armor": "place",
+    "Iron Watch": "group",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Giant Leeches": "group",
+    "Ogre": "group",
+    "Commander Holgrim": "person",
+    "Master Quell": "person",
+    "Malgrith": "person",
+    "Tobin": "person",
+    "Bodric": "person",
+    "Yorrin": "person",
+    "Mungo": "person",
+    "Brunwald": "person",
+    "Orsolya": "person",
+    "Lumpy Dorn": "person",
+    "Merriwen": "person",
+    "Jory": "person",
+    "Gaspar": "person",
+    "Agna": "person",
+    "Spyglass": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Gaspar",
+     "text": "You're the one Master Quell sent? Then you'd best see Commander Holgrim in the keep. He's been pacing the walls all morning."
+    },
+    "opening": {
+     "speaker": "Commander Holgrim",
+     "text": "Ah, there you are! Master Quell said you would come. Good. We need all the help we can get.\n\nThe Necromancer Malgrith has raised the dead of Kragmoor -- every soldier who ever fell on that cursed moor! Each night more of them crawl out of the mud, and each night they come closer to these walls.\n\nMy men can hold the castle, but they cannot end this. That is your task, lad. Go east across the moor and find Malgrith's lair in the Crypts of Kragmoor. Destroy him and the dead will lie down again.\n\nI'll tell Tobin to open the east gate. Good luck!"
+    },
+    "reminder": {
+     "speaker": "Commander Holgrim",
+     "text": "What are you waiting for? The gate is open! Go!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Find the Necromancer Malgrith in the Crypts of Kragmoor and destroy him."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ostra: Pell sends the player to Mayor Odrick, an old friend of Grimwald, who orders him out to Gorm Isle after Skarn the Necromancer.",
+   "names": {
+    "Ostra": "place",
+    "Lake Vell": "place",
+    "Gorm Isle": "place",
+    "Black Cliff": "place",
+    "Heron Point": "place",
+    "Drowned Chapel": "place",
+    "long pier": "place",
+    "Wet Herring": "place",
+    "Haldo's": "place",
+    "Skarn": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "Brannoc": "person",
+    "Gubby": "person",
+    "Hulda": "person",
+    "Pell": "person",
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Mag": "person",
+    "Haldo": "person",
+    "Zebulin": "person",
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Agna": "person",
+    "Wim": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Undead": "group",
+    "Hulda's amulet": "thing",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Pell",
+     "text": "You're the one Grimwald sent? Mayor Odrick's been waiting on you for days! His house is at the end of the long pier."
+    },
+    "opening": {
+     "speaker": "Mayor Odrick",
+     "text": "Ah, at last! Grimwald said you would come. Welcome to Ostra, lad, though I wish it were in better times.\n\nA Necromancer named Skarn has taken the old lighthouse on Gorm Isle. Every night he calls the drowned dead up out of Lake Vell, and every night more of them come ashore. Our fishermen dare not put out their boats. The village is starving!\n\nYou must cross the causeway to Gorm Isle and put an end to this foul sorcerer. Brannoc will open the gate on my word. Hurry! Ostra cannot hold out much longer."
+    },
+    "reminder": {
+     "speaker": "Mayor Odrick",
+     "text": "Why do you tarry? Every night that Necromancer raises more of our dead!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Gorm Isle and defeat Skarn the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ardoth: Fennick points the player to Archmaster Quellan, who sends him to the Star Tower after Malgor the Necromancer.",
+   "names": {
+    "Ardoth": "place",
+    "College": "place",
+    "Star Tower": "place",
+    "Malgor": "person",
+    "Mazrel": "person",
+    "Quellan": "person",
+    "Brannoc": "person",
+    "Fennick": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Pim": "person",
+    "Grisella": "person",
+    "Bodkin": "person",
+    "Singed Owl": "place",
+    "Krell": "person",
+    "Krell's Arms and Armor": "place",
+    "Olwen": "person",
+    "Olwen's Potions and Scrolls": "place",
+    "Tullan": "person",
+    "Nubbin": "person",
+    "Fenwold": "person",
+    "Orrick": "person",
+    "west gate": "place",
+    "lily pond": "place",
+    "old quarry": "place",
+    "mill road": "place",
+    "lockup": "place",
+    "old well": "place",
+    "old chapel": "place",
+    "catacombs": "place",
+    "crystal ball": "thing",
+    "Skeletons": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Leeches": "group",
+    "watchmen": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fennick",
+     "text": "You must be the one Mazrel sent! Archmaster Quellan is waiting for you up at the College. Big building with the towers. You can't miss it."
+    },
+    "opening": {
+     "speaker": "Quellan",
+     "text": "Ah, at last! Mazrel told me he was sending someone, lad. I hope you are as good as he says.\n\nYou have seen the state of Ardoth. Malgor the Necromancer, once a student in these very halls, has seized the Star Tower west of town. His Skeletons and Zombies prowl our roads, and our spells grow weaker by the day!\n\nGo to the Star Tower and put an end to this vile Necromancer before there is no College left to save. I will tell Brannoc to open the west gate for you. Now go!"
+    },
+    "reminder": {
+     "speaker": "Quellan",
+     "text": "Off with you, lad! Every day you dawdle, Malgor raises more of the dead!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to the Star Tower and defeat Malgor the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarn: Fitch points the player to Warden Brannoc in the Keep; Brannoc sends him up the pass against Kolgrath the Necromancer at Kel Dorran.",
+   "names": {
+    "Fort Skarn": "place",
+    "Kel Dorran": "place",
+    "East Gate": "place",
+    "Keep": "place",
+    "Iron Kettle": "place",
+    "Bodmar's Armory": "place",
+    "Ice Caves": "place",
+    "Kolgrath": "person",
+    "Ormund": "person",
+    "Warden Brannoc": "person",
+    "Tormod": "person",
+    "Fitch": "person",
+    "Dagny": "person",
+    "Elko": "person",
+    "Ulla": "person",
+    "Grindle": "person",
+    "Hobb": "person",
+    "Bodmar": "person",
+    "Ysmay": "person",
+    "Brother Ennick": "person",
+    "Nibbs": "person",
+    "Hulda": "person",
+    "Ansgar": "person",
+    "Undead": "group",
+    "Urchins": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Fitch",
+     "text": "So you're the one Ormund sent! Warden Brannoc has been asking for you all morning. He's up in the Keep."
+    },
+    "opening": {
+     "speaker": "Warden Brannoc",
+     "text": "So, Ormund has sent me help at last! Good. You look a bit thin for this weather, lad, but you'll have to do. Heh, heh.\n\nKolgrath the Necromancer has taken Kel Dorran, the old fortress at the top of the pass. Every night he raises more of the frozen dead out of the ice and sends them down against our walls. No caravan has come through since the first snow.\n\nGo up the pass to Kel Dorran and put an end to Kolgrath! If Fort Skarn falls, nothing stands between his dead and the valley below. Now off with you, and dress warm!"
+    },
+    "reminder": {
+     "speaker": "Warden Brannoc",
+     "text": "Off with you, lad! Every night you wait, Kolgrath raises more of them."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Climb the pass to Kel Dorran and defeat Kolgrath the Necromancer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulmar: Brom points the player to Mayor Dravik in the Town Hall, who sends him to drive Thrugg's Ogres out of the Old Foundry.",
+   "names": {
+    "Vulmar": "place",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Thrugg": "person",
+    "Hulgar": "person",
+    "Mott": "person",
+    "Thessa": "person",
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Tobb": "person",
+    "Kraddock": "person",
+    "Sibba": "person",
+    "Guildmaster Orvald": "person",
+    "Grubb": "person",
+    "Marga": "person",
+    "Wim": "person",
+    "Old Foundry": "place",
+    "Slag Pits": "place",
+    "Cinder Caves": "place",
+    "Red Bucket": "place",
+    "Town Hall": "place",
+    "Guild": "group",
+    "Ogres": "group",
+    "Scorpions": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Brom",
+     "text": "You must be the one Ezrin sent! Mayor Dravik's waiting for you in the Town Hall, up past the big furnace."
+    },
+    "opening": {
+     "speaker": "Mayor Dravik",
+     "text": "Ah, at last! Ezrin said he would send help, and not a moment too soon!\n\nThe Ogres have seized the Old Foundry up on the mountain, and that brute Thrugg leads them. They have dammed the lava and turned our own great forge to the making of Ogre weapons! If they are not stopped, Vulmar is finished, and every village in the valley after it.\n\nGo up the mountain road, lad, and drive Thrugg out of the Old Foundry. The gate guard will let you pass."
+    },
+    "reminder": {
+     "speaker": "Mayor Dravik",
+     "text": "Go, lad! Every hour you tarry, our forges grow colder!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Drive Thrugg and his Ogres out of the Old Foundry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Kesrin: Ebb points the player to Mayor Fennick, who sends him east to Fort Karn to put an end to Ravek the Sorcerer.",
+   "names": {
+    "Kesrin": "place",
+    "Broken Wheel": "place",
+    "Fort Karn": "place",
+    "Gallow Rock": "place",
+    "Ravek": "person",
+    "Ambrus": "person",
+    "Fennick": "person",
+    "Dalt": "person",
+    "Ossrik": "person",
+    "Thurl": "person",
+    "Wenzel": "person",
+    "Bettrin": "person",
+    "Lumm": "person",
+    "Ebb": "person",
+    "Bodger": "person",
+    "Hargis": "person",
+    "Hargis' Forge": "place",
+    "Fizwick": "person",
+    "Calvo": "person",
+    "Gimble": "person",
+    "Nell": "person",
+    "Gorm": "person",
+    "Undead": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Ogres": "group",
+    "Ghost": "thing"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Ebb",
+     "text": "You're the one Ambrus sent? Mayor Fennick's been waiting on you. His house is the big one across from the Broken Wheel."
+    },
+    "opening": {
+     "speaker": "Mayor Fennick",
+     "text": "At last! Ambrus promised me help, and not a moment too soon!\n\nRavek the Sorcerer has seized the old Fort of Karn, east of the crossroads. Every night his Undead come down the east road. The caravans have stopped coming. Kesrin is dying, lad!\n\nYou must go to Fort Karn and put an end to Ravek and his abominable sorcery. Dalt will open the east gate for you. Go -- and go with my blessing!"
+    },
+    "reminder": {
+     "speaker": "Mayor Fennick",
+     "text": "Why do you tarry, lad? Ravek grows stronger with every night that passes!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Fort Karn and defeat Ravek the Sorcerer."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Ostrel: Joss points the player to Mayor Bellock, who sends him north to Kragmoor to defeat Ulgor the Ogre Lord.",
+   "names": {
+    "Ostrel": "place",
+    "Nox": "place",
+    "Kragmoor": "place",
+    "Ulgor": "person",
+    "Haskar": "person",
+    "Bellock": "person",
+    "Dobbs": "person",
+    "Gaffer Rudd": "person",
+    "Granny Orla": "person",
+    "Dalbrek": "person",
+    "Mungo": "person",
+    "Gedge": "person",
+    "Wil": "person",
+    "Harl": "person",
+    "Brask": "person",
+    "Yselda": "person",
+    "Nettie": "person",
+    "Bram": "person",
+    "Joss": "person",
+    "Rusty Plough": "place",
+    "Brask's Forge": "place",
+    "Dowsing Rod": "thing",
+    "Ankh": "thing",
+    "Chain Tunic": "thing",
+    "Longsword": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "herald": {
+     "speaker": "Joss",
+     "text": "Are you the one Haskar sent? Thank goodness! Go and see Mayor Bellock. His house is the big one in the middle of town."
+    },
+    "opening": {
+     "speaker": "Bellock",
+     "text": "Welcome to Ostrel, brave Adventurer. Haskar wrote that you would come. I only pray you are not too late.\n\nThis valley has known peace for longer than anyone can remember. Then came Ulgor, the Ogre Lord! His brutes have burned the east fields, eaten half our cattle and carried off good honest folk. Now the scoundrel sits up in Kragmoor, north of the village, growing fat on our harvest!\n\nYou must go to Kragmoor and put an end to Ulgor. I will tell Dobbs to open the north gate for you. Go now! The fate of Ostrel is in your hands!"
+    },
+    "reminder": {
+     "speaker": "Bellock",
+     "text": "Why do you linger? Every day you wait, the Ogres grow fatter on our cattle!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Go to Kragmoor and defeat Ulgor the Ogre Lord."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": []
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

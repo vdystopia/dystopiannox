@@ -1,0 +1,728 @@
+{
+ "scenario": "heirloom_fetch",
+ "iter": "i4",
+ "writer": "one writer a town (variants/i4/maps)",
+ "guide": "WRITER.md v4 + exemplars",
+ "variants": [
+  {
+   "id": 1,
+   "specifics": "Brackenford: Wenna, the miller's widow, wants back the amulet the Urchins of the old barrow stole from the mill.",
+   "names": {
+    "Brackenford": "place",
+    "Ashwood": "place",
+    "Crow Hill": "place",
+    "Moot Hall": "place",
+    "Drowned Lantern": "place",
+    "Chapel of the Ford": "place",
+    "Halvard": "person",
+    "Reeve Halvard": "person",
+    "Red Corwin": "person",
+    "Corwin": "person",
+    "Garrick": "person",
+    "Wenna": "person",
+    "Ulric": "person",
+    "Anselm": "person",
+    "Brother Anselm": "person",
+    "Pip": "person",
+    "Ossian": "person",
+    "Dunstan": "person",
+    "Mabry": "person",
+    "Sly Wat": "person",
+    "Wat": "person",
+    "Urchins": "group",
+    "tithe chest": "thing",
+    "Wenna's amulet": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Wenna",
+     "text": "Have you seen them? Nasty little thieves, ran off toward the ford? No? Oh, bother!\n\nThe Urchins got into the mill last night and took my amulet, the one with the blue stone. They've a hole in the old barrow, east of the ford. I wouldn't set foot in there for all the flour in Brackenford!\n\nWould you get it back for me, kind sir? I'd pay you for your trouble."
+    },
+    "refusal": {
+     "speaker": "Wenna",
+     "text": "Well! I see how it is. Off with you, then!"
+    },
+    "reminder": {
+     "speaker": "Wenna",
+     "text": "Oh, those wretched Urchins! Have you got my amulet yet?"
+    },
+    "completion": {
+     "speaker": "Wenna",
+     "text": "My amulet! Oh, you found it! Bless you, bless you! Here, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Wenna",
+     "text": "Bless you again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Wenna's amulet from the Urchins."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Wenna's amulet from the Urchins."
+    }
+   },
+   "reward": {
+    "gold": 40,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 2,
+   "specifics": "Kroth: Edda the Dowser's magic Dowsing Rod was stolen by the Urchins of the Gloom Hole, up the east tunnel.",
+   "names": {
+    "Kroth": "place",
+    "Mount Ghal": "place",
+    "Old Deeps": "place",
+    "Deep Gate": "place",
+    "Guild Hall": "place",
+    "Gloom Hole": "place",
+    "Shrine of Stone": "place",
+    "Rat Run": "place",
+    "Flooded Shaft": "place",
+    "Molehole": "place",
+    "Brakka's Armory": "place",
+    "Ulgrim": "person",
+    "Hobbart": "person",
+    "Brummel": "person",
+    "Hask": "person",
+    "Grenda": "person",
+    "Edda": "person",
+    "Odo": "person",
+    "Snig": "person",
+    "Wilna": "person",
+    "Jory": "person",
+    "Grubb": "person",
+    "Brakka": "person",
+    "Yorla": "person",
+    "Olf": "person",
+    "Bettina": "person",
+    "Tamsin": "person",
+    "Undead": "group",
+    "Scorpions": "group",
+    "Urchins": "group",
+    "Zombies": "group",
+    "Dowsing Rod": "thing",
+    "Mountain Brew": "thing",
+    "Spell Book": "thing",
+    "Ankh": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Edda",
+     "text": "Thieves! Thieving little Urchins! They crept in while I was sleeping and took my Dowsing Rod right off the wall!\n\nWithout it I'm just an old woman poking at rocks. They live in the Gloom Hole, up the east tunnel past the slag heaps.\n\nWill you get my rod back for me, young sir? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Edda",
+     "text": "Hmph! Then go away and let me be miserable."
+    },
+    "reminder": {
+     "speaker": "Edda",
+     "text": "Did you get my Dowsing Rod back? Hurry, before those Urchins break it!"
+    },
+    "completion": {
+     "speaker": "Edda",
+     "text": "My rod! You found my rod! Bless you, bless you! Please, take this old Spell Book as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Edda",
+     "text": "Thank you again! I'm off to find some silver!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Edda's Dowsing Rod from the Urchins in the Gloom Hole."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Edda's Dowsing Rod from the Urchins in the Gloom Hole."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude agent (Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 3,
+   "specifics": "Gloam: Fennick, the village lookout; the Imps of the Rotten Oak flew off with his Spyglass.",
+   "names": {
+    "Gloam": "place",
+    "Plank Gate": "place",
+    "Sunken Graves": "place",
+    "Rotten Oak": "place",
+    "Healing House": "place",
+    "Town Hall": "place",
+    "Soggy Toad": "place",
+    "Hodd's Arms and Armor": "place",
+    "Ulgor": "person",
+    "Ostric": "person",
+    "Mayor Grimbol": "person",
+    "Tobbin": "person",
+    "Haskin": "person",
+    "Fennick": "person",
+    "Ysolde the Healer": "person",
+    "Mudge": "person",
+    "Hessa": "person",
+    "Wim": "person",
+    "Bulmer": "person",
+    "Hodd": "person",
+    "Quorra": "person",
+    "Nell": "person",
+    "Hollis": "person",
+    "Spyglass": "thing",
+    "Blackroot": "thing",
+    "Undead": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Giant Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Fennick",
+     "text": "Those wretched Imps! They flew right in my window and made off with my Spyglass!\n\nHow am I to keep watch now? Without it I can't see the Undead coming till they're halfway up the ladders! The Imps nest in the Rotten Oak, west across the bog.\n\nWould you get my Spyglass back for me, brave Adventurer? I'd make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Fennick",
+     "text": "Very well. But don't blame me when the Undead walk right in!"
+    },
+    "reminder": {
+     "speaker": "Fennick",
+     "text": "Have you got my Spyglass yet? I can't see a blessed thing out there!"
+    },
+    "completion": {
+     "speaker": "Fennick",
+     "text": "My Spyglass! You found it! Ha, ha! Now let those Undead try to sneak up on Gloam! Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Fennick",
+     "text": "Thanks again, kind sir! I can see clear across the swamp now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Fennick's Spyglass from the Imps in the Rotten Oak."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Fennick's Spyglass from the Imps in the Rotten Oak."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent, claude-opus-5-5"
+  },
+  {
+   "id": 4,
+   "specifics": "Durnhelm: Yorrin, the old lookout on the battlements, lost his Spyglass to the Imps of the Rookery.",
+   "names": {
+    "Durnhelm": "place",
+    "Kragmoor": "place",
+    "Crypts of Kragmoor": "place",
+    "Old Chapel": "place",
+    "Rookery": "place",
+    "Broken Pike": "place",
+    "Brunwald's Arms and Armor": "place",
+    "Iron Watch": "group",
+    "Undead": "group",
+    "Skeletons": "group",
+    "Imps": "group",
+    "Giant Leeches": "group",
+    "Ogre": "group",
+    "Commander Holgrim": "person",
+    "Master Quell": "person",
+    "Malgrith": "person",
+    "Tobin": "person",
+    "Bodric": "person",
+    "Yorrin": "person",
+    "Mungo": "person",
+    "Brunwald": "person",
+    "Orsolya": "person",
+    "Lumpy Dorn": "person",
+    "Merriwen": "person",
+    "Jory": "person",
+    "Gaspar": "person",
+    "Agna": "person",
+    "Spyglass": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Yorrin",
+     "text": "Thieves! Flying thieves! A pack of Imps swooped down on the battlements and snatched my Spyglass right out of my hands!\n\nWithout it I can't see the moor at all. If Malgrith's Undead march on us, nobody will know till they're knocking at the gate!\n\nThe Imps nest in the Rookery, the old tower west of the keep. Will you get my Spyglass back?"
+    },
+    "refusal": {
+     "speaker": "Yorrin",
+     "text": "Very well. I'll find someone braver, I suppose."
+    },
+    "reminder": {
+     "speaker": "Yorrin",
+     "text": "Have you got my Spyglass? Those Imps could drop it anywhere!"
+    },
+    "completion": {
+     "speaker": "Yorrin",
+     "text": "My Spyglass! You found it! Bless you, kind sir! Now I can keep watch on the moor again. Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Yorrin",
+     "text": "Thanks again, kind sir! I can see clear across Kragmoor now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Yorrin's Spyglass from the Imps in the Rookery."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Yorrin's Spyglass from the Imps in the Rookery."
+    }
+   },
+   "reward": {
+    "gold": 50,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 5,
+   "specifics": "Ostra: Hulda, an old fishwife, lost her magic amulet to the Urchins of the caves under Black Cliff.",
+   "names": {
+    "Ostra": "place",
+    "Lake Vell": "place",
+    "Gorm Isle": "place",
+    "Black Cliff": "place",
+    "Heron Point": "place",
+    "Drowned Chapel": "place",
+    "long pier": "place",
+    "Wet Herring": "place",
+    "Haldo's": "place",
+    "Skarn": "person",
+    "Grimwald": "person",
+    "Mayor Odrick": "person",
+    "Brannoc": "person",
+    "Gubby": "person",
+    "Hulda": "person",
+    "Pell": "person",
+    "Dorrie": "person",
+    "Mungo": "person",
+    "Mag": "person",
+    "Haldo": "person",
+    "Zebulin": "person",
+    "Master Ferrin": "person",
+    "Snibbet": "person",
+    "Agna": "person",
+    "Wim": "person",
+    "Urchins": "group",
+    "Giant Leeches": "group",
+    "Undead": "group",
+    "Hulda's amulet": "thing",
+    "the beacon": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Hulda",
+     "text": "Thieves! Nasty little thieves! The Urchins crept down from the caves under Black Cliff last night and took my magic amulet right off my neck while I slept!\n\nI can't go up there, not with my bad knees and the Undead about.\n\nWould you get it back for me, kind sir? I'd be ever so grateful."
+    },
+    "refusal": {
+     "speaker": "Hulda",
+     "text": "Well! I never! Some hero you are."
+    },
+    "reminder": {
+     "speaker": "Hulda",
+     "text": "Have you got my amulet yet? Those Urchins are a sneaky lot, you know."
+    },
+    "completion": {
+     "speaker": "Hulda",
+     "text": "My amulet! Oh, you found it! Bless you, bless you! Here, take these. It isn't much, but it's all an old fishwife has to give."
+    },
+    "after": {
+     "speaker": "Hulda",
+     "text": "Bless you again, kind sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Hulda's amulet from the Urchins of Black Cliff."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Hulda's amulet from the Urchins of Black Cliff."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "CurePoisonPotion"
+    ]
+   },
+   "writer": "Claude Code agent (Claude Opus 5.5, claude-opus-5-5)"
+  },
+  {
+   "id": 6,
+   "specifics": "Ardoth: Madame Grisella, the fortune teller, lost her crystal ball to Imps who carried it to the old quarry.",
+   "names": {
+    "Ardoth": "place",
+    "College": "place",
+    "Star Tower": "place",
+    "Malgor": "person",
+    "Mazrel": "person",
+    "Quellan": "person",
+    "Brannoc": "person",
+    "Fennick": "person",
+    "Hobb": "person",
+    "Tessaly": "person",
+    "Pim": "person",
+    "Grisella": "person",
+    "Bodkin": "person",
+    "Singed Owl": "place",
+    "Krell": "person",
+    "Krell's Arms and Armor": "place",
+    "Olwen": "person",
+    "Olwen's Potions and Scrolls": "place",
+    "Tullan": "person",
+    "Nubbin": "person",
+    "Fenwold": "person",
+    "Orrick": "person",
+    "west gate": "place",
+    "lily pond": "place",
+    "old quarry": "place",
+    "mill road": "place",
+    "lockup": "place",
+    "old well": "place",
+    "old chapel": "place",
+    "catacombs": "place",
+    "crystal ball": "thing",
+    "Skeletons": "group",
+    "Zombies": "group",
+    "Imps": "group",
+    "Leeches": "group",
+    "watchmen": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Grisella",
+     "text": "Ahhh! I knew you would come! I saw it in my crystal ball... before those wretched Imps stole it.\n\nThey flew in my window last night and carried it off to the old quarry north of town. I can't tell anybody's fortune without it!\n\nWill you bring back my crystal ball, kind stranger? I will make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Grisella",
+     "text": "Very well. But I see bad luck in your future, stranger. Very bad luck!"
+    },
+    "reminder": {
+     "speaker": "Grisella",
+     "text": "Have you found my crystal ball? Hurry, before those Imps break it!"
+    },
+    "completion": {
+     "speaker": "Grisella",
+     "text": "My crystal ball! Oh, you wonderful creature! I see great things ahead for you... great things! Please, take this spell book as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Grisella",
+     "text": "Thanks again, kind stranger! The spirits are smiling on you today."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Madame Grisella's crystal ball from the Imps in the old quarry."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Madame Grisella's crystal ball from the Imps in the old quarry."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "SpellBook"
+    ]
+   },
+   "writer": "Claude Agent SDK subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 7,
+   "specifics": "Fort Skarn: Elko the Lookout: Urchins from the Ice Caves stole his magic spyglass off the north wall.",
+   "names": {
+    "Fort Skarn": "place",
+    "Kel Dorran": "place",
+    "East Gate": "place",
+    "Keep": "place",
+    "Iron Kettle": "place",
+    "Bodmar's Armory": "place",
+    "Ice Caves": "place",
+    "Kolgrath": "person",
+    "Ormund": "person",
+    "Warden Brannoc": "person",
+    "Tormod": "person",
+    "Fitch": "person",
+    "Dagny": "person",
+    "Elko": "person",
+    "Ulla": "person",
+    "Grindle": "person",
+    "Hobb": "person",
+    "Bodmar": "person",
+    "Ysmay": "person",
+    "Brother Ennick": "person",
+    "Nibbs": "person",
+    "Hulda": "person",
+    "Ansgar": "person",
+    "Undead": "group",
+    "Urchins": "group",
+    "Bears": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Elko",
+     "text": "Blast it all! How am I supposed to watch the pass now?\n\nThe Urchins crept up the north wall last night and made off with my spyglass! A magic one, it is. They live down in the Ice Caves below the wall.\n\nWithout it, Kolgrath's Undead could be at the gate before anybody sees them! Will you get it back for me, young sir?"
+    },
+    "refusal": {
+     "speaker": "Elko",
+     "text": "Bah! Then we're as good as blind up here."
+    },
+    "reminder": {
+     "speaker": "Elko",
+     "text": "Did you find my spyglass? I can't see a thing up here!"
+    },
+    "completion": {
+     "speaker": "Elko",
+     "text": "My spyglass! Ha, ha! I can see all the way to Kel Dorran again! Thank you, lad. Here, take this for your trouble."
+    },
+    "after": {
+     "speaker": "Elko",
+     "text": "Thanks again, lad! Nothing gets past old Elko now."
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Elko's spyglass from the Urchins in the Ice Caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Elko's spyglass from the Urchins in the Ice Caves."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "BluePotion"
+    ]
+   },
+   "writer": "Claude Code subagent (claude-opus-5-5)"
+  },
+  {
+   "id": 8,
+   "specifics": "Vulmar: Thessa the smith's magic gloves were stolen down her chimney by Imps, who nest in the Cinder Caves north of town.",
+   "names": {
+    "Vulmar": "place",
+    "Ezrin": "person",
+    "Mayor Dravik": "person",
+    "Thrugg": "person",
+    "Hulgar": "person",
+    "Mott": "person",
+    "Thessa": "person",
+    "Pell": "person",
+    "Orla": "person",
+    "Brom": "person",
+    "Tobb": "person",
+    "Kraddock": "person",
+    "Sibba": "person",
+    "Guildmaster Orvald": "person",
+    "Grubb": "person",
+    "Marga": "person",
+    "Wim": "person",
+    "Old Foundry": "place",
+    "Slag Pits": "place",
+    "Cinder Caves": "place",
+    "Red Bucket": "place",
+    "Town Hall": "place",
+    "Guild": "group",
+    "Ogres": "group",
+    "Scorpions": "group",
+    "Imps": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thessa",
+     "text": "Thieves! Nasty little flying thieves! The Imps came down my chimney and stole my magic gloves right off the anvil!\n\nWithout them I can't touch the hot iron, and the whole town needs swords with the Ogres on the mountain. The Imps nest in the Cinder Caves, north of the town wall.\n\nWill you bring my gloves back, kind sir? I'll make it worth your trouble."
+    },
+    "refusal": {
+     "speaker": "Thessa",
+     "text": "Oh, fine! I'll just burn my fingers then!"
+    },
+    "reminder": {
+     "speaker": "Thessa",
+     "text": "My gloves! Have you got my gloves?"
+    },
+    "completion": {
+     "speaker": "Thessa",
+     "text": "My gloves! Oh, you found them! Now I can get back to work at last! Please, take this as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Thessa",
+     "text": "Thanks again for my gloves, brave Adventurer!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Thessa's magic gloves from the Imps in the Cinder Caves."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Thessa's magic gloves from the Imps in the Cinder Caves."
+    }
+   },
+   "reward": {
+    "gold": 75,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  },
+  {
+   "id": 9,
+   "specifics": "Kesrin: Old Thurl, deaf without it, lost his ear trumpet to the Imps of Gallow Rock south of town.",
+   "names": {
+    "Kesrin": "place",
+    "Broken Wheel": "place",
+    "Fort Karn": "place",
+    "Gallow Rock": "place",
+    "Ravek": "person",
+    "Ambrus": "person",
+    "Fennick": "person",
+    "Dalt": "person",
+    "Ossrik": "person",
+    "Thurl": "person",
+    "Wenzel": "person",
+    "Bettrin": "person",
+    "Lumm": "person",
+    "Ebb": "person",
+    "Bodger": "person",
+    "Hargis": "person",
+    "Hargis' Forge": "place",
+    "Fizwick": "person",
+    "Calvo": "person",
+    "Gimble": "person",
+    "Nell": "person",
+    "Gorm": "person",
+    "Undead": "group",
+    "Bears": "group",
+    "Imps": "group",
+    "Skeletons": "group",
+    "Ogres": "group",
+    "Ghost": "thing"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Thurl",
+     "text": "EH? Speak up! SPEAK UP!\n\nIt's no good, I can't hear a blessed thing. Those Imps flew down from Gallow Rock and snatched my ear trumpet right out of my hand!\n\nYou'll fetch it back for me, won't you, young sir? I'll make it worth your while!"
+    },
+    "refusal": {
+     "speaker": "Thurl",
+     "text": "WHAT? No? Bah! Nobody listens to me anymore!"
+    },
+    "reminder": {
+     "speaker": "Thurl",
+     "text": "Did you get it? My trumpet? EH?"
+    },
+    "completion": {
+     "speaker": "Thurl",
+     "text": "My trumpet! Ahhhh, I can hear the birds again! Thank you, young sir, thank you! Please, take this as a token of my appreciation!"
+    },
+    "after": {
+     "speaker": "Thurl",
+     "text": "No need to shout, I can hear you fine now!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Retrieve Thurl's ear trumpet from the Imps of Gallow Rock."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Retrieve Thurl's ear trumpet from the Imps of Gallow Rock."
+    }
+   },
+   "reward": {
+    "gold": 60,
+    "items": [
+     "RedPotion"
+    ]
+   },
+   "writer": "Claude Code subagent, Claude Opus 5.5 (claude-opus-5-5)"
+  },
+  {
+   "id": 10,
+   "specifics": "Ostrel: Granny Orla's Dowsing Rod was stolen by the Imps living in the old windmill west of town.",
+   "names": {
+    "Ostrel": "place",
+    "Nox": "place",
+    "Kragmoor": "place",
+    "Ulgor": "person",
+    "Haskar": "person",
+    "Bellock": "person",
+    "Dobbs": "person",
+    "Gaffer Rudd": "person",
+    "Granny Orla": "person",
+    "Dalbrek": "person",
+    "Mungo": "person",
+    "Gedge": "person",
+    "Wil": "person",
+    "Harl": "person",
+    "Brask": "person",
+    "Yselda": "person",
+    "Nettie": "person",
+    "Bram": "person",
+    "Joss": "person",
+    "Rusty Plough": "place",
+    "Brask's Forge": "place",
+    "Dowsing Rod": "thing",
+    "Ankh": "thing",
+    "Chain Tunic": "thing",
+    "Longsword": "thing",
+    "Ogres": "group",
+    "Imps": "group",
+    "Leeches": "group"
+   },
+   "parts": {
+    "offer": {
+     "speaker": "Granny Orla",
+     "text": "Oh, it's terrible, terrible! Those wretched Imps have been nesting in the old windmill west of town, and last night they crept in and stole my Dowsing Rod!\n\nWithout it I can't find water for the new wells, and the Ogres have fouled the old ones. Will you get it back for me, young sir? I'll make it worth your while."
+    },
+    "refusal": {
+     "speaker": "Granny Orla",
+     "text": "Hmph! Young people these days..."
+    },
+    "reminder": {
+     "speaker": "Granny Orla",
+     "text": "Have you got my Dowsing Rod? Those Imps will break it, I just know it!"
+    },
+    "completion": {
+     "speaker": "Granny Orla",
+     "text": "My Dowsing Rod! Oh, bless you, bless you! Now we'll have water again. Please, take this Ankh as a token of my appreciation."
+    },
+    "after": {
+     "speaker": "Granny Orla",
+     "text": "Thanks again, young sir!"
+    },
+    "journal": {
+     "speaker": "",
+     "text": "Recover Granny Orla's Dowsing Rod from the Imps in the old windmill."
+    },
+    "journal_done": {
+     "speaker": "",
+     "text": "COMPLETED: Recover Granny Orla's Dowsing Rod from the Imps in the old windmill."
+    }
+   },
+   "reward": {
+    "gold": 0,
+    "items": [
+     "AnkhTradable"
+    ]
+   },
+   "writer": "Claude agent (claude-opus-5-5)"
+  }
+ ]
+}

@@ -235,20 +235,25 @@ _NGRAMS = None
 
 
 def ww_ngrams(n=6):
+    """{6-gram: in how many of Westwood's distinct lines}."""
     global _NGRAMS
     if _NGRAMS is None:
         import westwood
-        g = set()
+        g = collections.Counter()
         for r in westwood.campaign():
+            if r["dup"]: continue
             w = [x.lower() for x in words(r["text"])]
-            g |= {tuple(w[i:i + n]) for i in range(len(w) - n + 1)}
+            g.update({tuple(w[i:i + n]) for i in range(len(w) - n + 1)})
         _NGRAMS = g
     return _NGRAMS
 
 
 def copied(t, n=6):
+    """Westwood's phrases a line repeats. A stock phrase Westwood itself uses in two lines or more ("as a token of my
+    appreciation", "thanks again for your help") is the house style the guide asks for, not a copy."""
     w = [x.lower() for x in words(t)]
-    return [" ".join(g) for g in (tuple(w[i:i + n]) for i in range(len(w) - n + 1)) if g in ww_ngrams(n)]
+    g6 = ww_ngrams(n)
+    return [" ".join(g) for g in (tuple(w[i:i + n]) for i in range(len(w) - n + 1)) if g6.get(g, 0) == 1]
 
 
 # ---- judging --------------------------------------------------------------------------------------------------------
@@ -304,6 +309,7 @@ def judge_line(t, situation, known=None, allowed=None, westwood=False):
         if unknown: hit(min(3.0, 1.0 * len(unknown)), "names not on the map: " + ", ".join(unknown))
     # what each situation must carry
     if sit == "journal":
+        t = re.sub(r"^COMPLETED:\s*", "", t)          # a done entry: the objective's own words (q.done)
         w0 = (words(t) or [""])[0].lower()
         if w0 not in IMPERATIVE and not t.startswith("NOTE"):
             hit(2.0, f"a journal entry starts with an order (Find, Retrieve, Rescue...), not {w0!r}")
