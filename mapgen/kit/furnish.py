@@ -2845,7 +2845,7 @@ class Furnisher:
         return min([self.g.wall_dist(u, v) - max(hu, hv)] +
                    [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
 
-    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3):
+    def scatter(self, fam, per100=6.0, cluster=(2, 4), wall_gap=0.6, spread=1.3, by_bed=False):
         """Pieces of `fam` strewn over the floor in small heaps (straw in an ogre den, bones and skulls in the Land of
         the Dead: rules/out/cultures.json): about `per100` for every 100 floor tiles, `cluster` to a heap, `wall_gap`
         units clear of the walls and clear of the doors and the spaces kept clear. Returns the pieces placed."""
@@ -2854,6 +2854,9 @@ class Furnisher:
         n = max(1, int(round(per100 * len(self.room.tiles) / 100)))
         cells = sorted(self.g.cells)
         self.rng.shuffle(cells)
+        if by_bed and self.beds:                     # heaped by the cot, as Westwood strews a cell's straw (War07A)
+            bu, bv = self.beds[0][2]
+            cells.sort(key=lambda c: math.hypot(c[0] + c[1] + 1.0 - bu, c[0] - c[1] - bv) + self.rng.uniform(0, 1.5))
         got = 0
         for (x, y) in cells:
             if got >= n: break
@@ -3223,7 +3226,8 @@ class Furnisher:
                     if spot and self.try_put(t, *spot, blocking=False): done["rug"] += 1
                 continue
             if st["slot"] == "scatter":               # strewn over the floor in heaps (straw, bones, meat)
-                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6))
+                done[fam] += self.scatter(fam, st.get("per100", 6.0), st.get("cluster", (2, 4)), st.get("wall_gap", 0.6),
+                                          st.get("spread", 1.3), st.get("by_bed", False))
                 continue
             if st["slot"] == "decor":                 # hangings go up last, once every wall is lined (fill_room)
                 self._deferred_decor += n
@@ -3452,6 +3456,8 @@ class Furnisher:
         return self._light_t
 
     def add_lights(self):
+        # a recipe may leave its room unlit (`dark`: Westwood's cells and pens hold no light of their own, 9 of 10)
+        if ROOM_IDENTITY.get(self.kind, {}).get("dark"): return
         vl = self.T.get("visible_lights", {})
         tiles = len(self.room.tiles)
         rate = _q(self.rng, vl.get("per100_tiles")) or 3.0          # learned lights per 100 tiles

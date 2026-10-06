@@ -509,8 +509,11 @@ TYPES.update({
         cover=(0.02, 0.10, 0.25), open=(0.25, 0.98), per_tile=(0.05, 1.0), types_min=2, free_most=(12, 2),
         caps={}, walls_min=1, lined=None, tiles=(8, 40),
         signature={"straw": (1, 10), "^Stocks": (3, 1), "bed": (1, 1)}, needs=("straw",), kin=("barracks", "bedroom"),
-        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^Stocks", where="any"), tiles=(20, 50),
-                                   cover=(0.0, 0.06, 0.25), walls_min=0)}),
+        # (room lab tuneA: Con11a's six pens hold straw, a crude obelisk in four, never the stocks)
+        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^ObeliskPrimitive", where="any"), tiles=(20, 50),
+                                   cover=(0.0, 0.06, 0.25), walls_min=0,
+                                   never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne",
+                                          "tomb", "lab", "smithy", "stove", "fireplace", "rug", "plant", "wall_decor"))}),
     "torture_chamber": dict(
         family="confinement", feel="open", kinds=("torture_chamber",), westwood=(),
         evidence=(("Wiz07C", (132, 124)), ("Con08d", (151, 170))),

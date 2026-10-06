@@ -81,3 +81,9 @@ Westwood's 15 campaign living rooms (8-40 tiles, one of 116) are **sitting rooms
 - **Profile**: lined 0.08, types_min 6 (were 0.30 and 9, above Westwood's p90).
 - **Still giving it away**: the hearth in every room (the brief's must; Westwood's in 6 of 15), the table dead centre and
   single barrels spaced along the walls; Westwood's heap the barrels in one corner and pull chairs round the hearth.
+
+**On the curated set** (14 households, median 30 tiles and 10 kinds; the earlier 15 held guard posts): the hearth with
+its bellows beside it in 7, bookcases in 7, an iron stove in 5, two tables, a spittoon in 4. The recipe adds the
+bellows (`smithy` is off the profile's never list), an iron stove in a third, up to two tables, bookcases by the hearth
+in half, fewer benches, and draws the table off the centre (an independent judge picked out "a round table of food,
+chairs evenly round it, dead centre").

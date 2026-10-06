@@ -76,3 +76,10 @@ The scholar at the side of his desk, else by his bookcases; never between the me
   wall 2. (`review/out/Starwell/rooms/09.png`)
 - "Many of the smaller office/bedroom-type rooms seem to be very good" (Starwell, 2026-10-05).
 - Westwood: Con02a, cells 69,161 and 71,132: a desk among a few bookcases, a hearth, chairs (32 and 48 tiles).
+
+## Learned in the room lab (tuneA, 2026-10-05)
+
+Westwood's studies are few (3 curated); the pool (libraries) puts the hearth with its bellows in 5 of 9 and no curio
+in the middle. Adding the hearth made a study read as a living room (the room score's reads-as rule): left out. The
+user's praised composition (SW-7) is kept; the chest now goes up before the bookcases take its wall (2 of 10 had
+none), plants fewer.

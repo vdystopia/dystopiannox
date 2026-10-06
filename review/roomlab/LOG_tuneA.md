@@ -176,3 +176,43 @@ Shared changes in this stretch: `_Room.doors` holds both cells of a double door 
 rooms 5 -> 3, barracks 2 -> 1, tavern 10 -> 10; AUCs within 0.03); `place_group` removes the seats it placed when a
 group fails (every type: they had stood as stray chairs by the doors); `middle_spots` honours a recipe's
 `middle_jitter` (inert unless set).
+
+## guardroom
+
+Westwood: 11 curated guard rooms (12-63 tiles, median 20). `ref2` is the kit's original recipe on the curated set.
+
+| Round | Change | AUC | Cross | Hard |
+|---|---|---|---|---|
+| ref (old set) | - | 0.961, then 0.882 once the evidence rooms joined | 0.876 | 6 |
+| r1-r2 (old set) | one cot in a small room, the table ringed by 3-6 chairs (`family_table`), racks 2, no trophies | 0.752-0.769 | 0.807-0.821 | 3-2 |
+| ref2 (curated) | the kit's original recipe | 0.867 | 0.874 | 4 (caps 2, must 2) |
+| r3-r6 | arms as single pieces centred on their stretches (not lined: Westwood lines 0.05 of its back walls), pieces 0.25 off the wall | 0.642-0.838 | 0.79-0.85 | 2-4 |
+| r7 | r6's recipe, new renderer | 0.651 | 0.836 | 2 |
+| r8 | one table (a rug sometimes; `dining` group), a second only over 110 tiles on its own stretch (two sets side by side read as a tavern) | 0.731 | 0.858 | 0 |
+
+## cell
+
+Westwood: 10 curated (War07A's three 13-tile cells, Con11a's six ogre pens, War03c's). Half of each batch is `ogre_pen`.
+
+| Round | Change | AUC | Cross | Hard |
+|---|---|---|---|---|
+| ref | - (the ogre pens came out empty: `ogre_pen` has no host role, so the lab built it in a town house whose style excludes every Ogre piece) | 0.983 | 0.960 | 6 (must 5) |
+| r1 | `ogre_pen`: `lift=("Ogre|",)`, a crude obelisk, a stool or a barrel sometimes, stocks rare; cells: straw denser | 0.835 | 0.973 | 7 (profile: focal stocks, never statue) |
+| r2 | the pen's profile: no stocks focal, statues allowed; `dark=True` (Westwood's cells hold no light); the cot far from the door | 0.872 | 0.976 | 2 |
+| r3 | the pen's obelisk always, as its focal | 0.839 | 0.980 | 1 |
+| r4 | straw heaped by the cot (`scatter by_bed`), not strewn evenly over a 36-tile cell | 0.826 | 0.981 | 2 (a cot on the SW wall of a 3-door cell; way in 3.9) |
+
+Shell note: our cells are 16-36 tiles with up to three doors; Westwood's are 13 tiles behind one barred door.
+
+## infirmary
+
+No Westwood rooms (design judgement); pool comparison only.
+
+| Round | Change | AUC (pool) | Cross | Hard |
+|---|---|---|---|---|
+| ref | - (reads as a bunk room: cots in a row, a tiny table alone in a bare middle) | 0.945 | 0.990 | 2 (caps 1, must 1) |
+| r1 | a work-table group in the fill: grew to three tables (a fill step's `max` scales with the room) and read as a mess hall | 0.961 | 0.981 | 2 |
+| r2 | one healer's work table with stools and sacks by it (compose `worktable` group), a chest of linen, the table off centre | 0.945 | 0.983 | 2 |
+
+Shared in this stretch: `add_lights` honours a recipe's `dark`; `scatter` takes `spread` and `by_bed` from a step
+(inert by default).

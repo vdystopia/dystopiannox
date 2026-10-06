@@ -79,3 +79,10 @@ Westwood's 10 campaign kitchens (20-80 tiles, median 30) are **the iron stove an
   with three or four chairs and a second table, two chests on the back walls, barrels on the back walls, bookcases in
   most, a spittoon now and then; wall pieces stand 0.2 units off the wall (Westwood's 0.49 gap against our 0.24).
 - **Still giving it away**: big kitchens with bare floor; stoves dotted round the walls rather than in a line.
+
+**After the independent judge** (the recipe above, r8, scored 3.4 against Westwood's 5.8 and "read as a study or a
+library"; the kit's own kitchen scored 5.0): the kit's kitchen is back, with the judge's faults out: the pot beside the
+hearth in half the rooms, else on a wall of its own (the cauldron or an iron stove), stores heaped on at most half a
+wall (no sacks in a line down a wall), no stack in the middle, no paintings between the shelves, the table drawn off
+the centre (`middle_jitter`). The curated Westwood set holds 3 kitchens (5 were living rooms): the lab compares with
+its pool.

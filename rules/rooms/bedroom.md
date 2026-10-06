@@ -96,3 +96,8 @@ Westwood's campaign bedrooms (40, then 31 once cells, guard posts and lords' cha
   Westwood's size: with Westwood's pieces they come out at 0.10-0.12 cover, just under the checker's sparse line
   (Westwood's median, 0.117). Westwood's bedrooms are shaped (L-rooms round an alcove, niches, a carpet laid to the
   shape) and carry an odd lived-in piece (a barrel, a crate, a spittoon) the brief forbids.
+
+**After the independent judge** (r7 9/10 and 4.8 against Westwood's 6.6): back to the kit's recipe, which the judge
+could hardly tell from Westwood's (ref 6/10), with only the faults it named taken out: one rug, before the chest (not
+"two identical rugs"); the table set on the bare floor (not on a rug in a corner); a single bookcase on a short stretch
+between doors. The curated Westwood set: 28 bedrooms, p90 42 tiles.
