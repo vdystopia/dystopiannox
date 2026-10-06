@@ -590,6 +590,19 @@ def _pieces_ok(U0, V0, point_mat):
     return True
 
 
+def _wall_points(labels, ext_mat, int_mat, spurs=None):
+    """{lattice point: wall material}: the exterior material on points touching the outside or a courtyard, else the
+    interior material; a partial partition's points (kit/shells.py spur_points) in the interior material."""
+    point_mat = {}
+    for e, (a, b) in _boundary(labels).items():
+        outer = a in (None, COURT) or b in (None, COURT)
+        for p in _edge_points(e):
+            if outer or p not in point_mat: point_mat[p] = ext_mat if outer else point_mat.get(p, int_mat)
+    for p, (_, foot) in (spurs or {}).items():
+        if not foot: point_mat[p] = int_mat
+    return point_mat
+
+
 def _cells_of(U0, V0, labels):
     """All grid cells covered by the units (walls on their edges included) plus a 1-cell margin."""
     cells = set()
@@ -606,25 +619,66 @@ def _xy(U0, V0, pt):
     return (u + v) // 2, (u - v) // 2
 
 
-def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, bid, cells, shp, strict=True):
-    edges = _boundary(labels)
-    deg = _point_degree(edges)
-    room_ids = sorted({v for v in labels.values() if v != COURT}, key=lambda r: -sum(1 for v in labels.values() if v == r))
+SHELL_KEEP = ("throne_room", "chapel", "dark_chapel")      # rooms whose axis the shell pass leaves alone
+
+
+def _shell(labels, program, entrance_side, bid, U0, V0, strict):
+    """The shell pass (kit/shells.py): bays, alcoves and L notches in the rooms and partial partitions, in proportion
+    to Westwood's campaign rooms of each room's type (rules/rooms/shells.json). Draws from its own generator, seeded by
+    the building, so the rest of the building (walls, doors, floors) draws as before. Returns (labels, spurs)."""
+    import random, zlib
+    from . import shells as SH
+    srng = random.Random(zlib.crc32(f"shell:{bid}:{U0}:{V0}".encode()))
+    ids0 = sorted({v for v in labels.values() if v != COURT}, key=lambda r: -sum(1 for v in labels.values() if v == r))
+    kinds = {r: (program[k] if program and k < len(program) else None) for k, r in enumerate(ids0)}
+    least = {r: int(math.ceil(_units_for(_kind_min_tiles(kinds[r], scaled=strict)))) if kinds[r] else 9 for r in ids0}
+    keep = {r for r in ids0 if kinds[r] in SHELL_KEEP}
+    if program and "throne_room" in program: keep = set(ids0)      # the throne room is seated by the plan's own walls
+    hall = ids0[0] if len(ids0) >= 5 else None
+    fixed = set()
+    if entrance_side and labels:                 # the facade on the entrance side stays whole
+        ii = [i for i, _ in labels]; jj = [j for _, j in labels]
+        edge = {"u_min": lambda i, j: i == min(ii), "u_max": lambda i, j: i == max(ii),
+                "v_min": lambda i, j: j == min(jj), "v_max": lambda i, j: j == max(jj)}[entrance_side]
+        fixed = {p for p in labels if edge(*p)}
+    shaped = SH.shape_rooms(srng, labels, kinds, least, keep=keep, fixed_side=fixed, hall=hall)
+    spurs = SH.spur_points(srng, shaped, kinds, None, hall=hall, keep=keep)
+    return shaped, spurs
+
+
+def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, bid, cells, shp, strict=True, shell=True):
+    from . import shells as SH
+    shell = shell and SH.ENABLED
     ext_mat = st["exterior_wall"]
     int_mat = _pick(rng, st["interior_wall_materials"], exclude=("Invisible", "IronFence", "Cage", "Damaged"), default=ext_mat)
     if int_mat != ext_mat and rng.random() < 0.7: int_mat = ext_mat
+    spurs = {}
+    if shell:
+        shaped, spurs = _shell(labels, program, entrance_side, bid, U0, V0, strict)
+        # the shaped plan only when its walls have every piece they need (else the plain plan, as before)
+        for lab_, sp in ((shaped, spurs), (shaped, {}), (labels, {})):
+            if _pieces_ok(U0, V0, _wall_points(lab_, ext_mat, int_mat, sp)):
+                labels, spurs = lab_, sp
+                break
+    edges = _boundary(labels)
+    deg = _point_degree(edges)
+    for p, (_, foot) in spurs.items():
+        if foot: deg[p] += 1                     # a partition's foot is a junction: no door there
+    room_ids = sorted({v for v in labels.values() if v != COURT}, key=lambda r: -sum(1 for v in labels.values() if v == r))
     floors = {k: v for k, v in st["room_floors"].items() if not any(b in k for b in NOT_ROOM_FLOOR)}
     # bare earth floors only a working room (Westwood's stone houses: 2.7% dirt, their barns and stores): a manor's
     # great hall on packed dirt reads as a barn
     clean = {k: v for k, v in floors.items() if not k.startswith("Dirt")} or floors
+    if shell:
+        # never a floor Westwood keeps apart from the ground (Harrowby: a chandlery on BrokenCobbleDirtWebs met the
+        # grass at its wall line): it reaches the doorstep and the wall line, where the ground meets it
+        from .shells import ground_shy
+        floors = {k: v for k, v in floors.items() if not ground_shy(k)} or floors
+        clean = {k: v for k, v in clean.items() if not ground_shy(k)} or clean
     main_floor = _pick(rng, clean, default="OakWoodFloor")
 
     # walls: exterior material on points touching the outside or a courtyard, else interior material
-    point_mat = {}
-    for e, (a, b) in edges.items():
-        outer = a in (None, COURT) or b in (None, COURT)
-        for p in _edge_points(e):
-            if outer or p not in point_mat: point_mat[p] = ext_mat if outer else point_mat.get(p, int_mat)
+    point_mat = _wall_points(labels, ext_mat, int_mat, spurs)
     if not _pieces_ok(U0, V0, point_mat):
         return None                      # a junction this material has no piece for: try another layout
     if program and entrance_side:
@@ -641,20 +695,34 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     # rooms and floors
     b = Building(id=bid, style=style, wall_material=ext_mat)
     rooms = {}
+    patterned = {}                       # room -> its tiles on a second floor (kit/shells.py floor_pattern)
     for k, r in enumerate(room_ids):
         units = [p for p, v in labels.items() if v == r]
         work = program and k < len(program) and program[k] in WORK_ROOMS
         floor = main_floor if (k == 0 or rng.random() < 0.65) else _pick(rng, floors if work else clean, default=main_floor)
+        kind = program[k] if program and k < len(program) else None
+        # Westwood mixes a third of its floors (kit/shells.py floor_pattern): a wing or one end on another floor, a
+        # border, worn patches, inlaid panels; from the shell's own generator, so the rest draws as before
+        pattern = {}
+        if shell:
+            import random as _r, zlib as _z
+            prng = _r.Random(_z.crc32(f"floor:{bid}:{U0}:{V0}:{k}".encode()))
+            pattern = SH.floor_pattern(prng, units, floor, kind, floors if work else clean, work)
         tiles = set()
         for (i, j) in units:
             t = _xy(U0, V0, (2 * i, 2 * j + 2))
-            spec.tile(*t, floor); tiles.add(t)
-            if hasattr(spec, "indoor"): spec.indoor[t] = floor    # its doorways' thresholds (nox.Spec._door_thresholds)
+            f = pattern.get((i, j), floor)
+            spec.tile(*t, f); tiles.add(t)
+            # its doorways' thresholds and the floor under its walls (nox.Spec._door_thresholds, _wall_line_floors): the
+            # room's own floor, so a second floor never meets the ground outside
+            if hasattr(spec, "indoor"): spec.indoor[t] = floor
+        if pattern: patterned[r] = {_xy(U0, V0, (2 * i, 2 * j + 2)) for (i, j) in pattern}
         walls = set()
         for e, pair in edges.items():
             if r in pair:
                 for p in _edge_points(e): walls.add(_xy(U0, V0, p))
-        kind = program[k] if program and k < len(program) else None
+        for p, (rr, _) in spurs.items():
+            if rr == r: walls.add(_xy(U0, V0, p))
         rooms[r] = Room(id=f"{bid}:r{k}", tiles=tiles, floor=floor, walls=walls, kind=kind, building=bid)
     court_floor = _pick(rng, st.get("outside_floors") or {}, exclude=("Water", "Lava"), default="GrassNorm")
     for (i, j), v in labels.items():
@@ -782,6 +850,13 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         cu = sum(x + y for x, y in rooms[tr].tiles) / len(rooms[tr].tiles)
         if any(d.line == "/" and d.gap[0] + d.gap[1] + 1 < cu and abs((d.gap[0] - d.gap[1]) - a0) < 5.5
                for d in rooms[tr].doors): return None
+    # a doorway's floor is the room's own: a second floor stays two tiles clear of every door, so it never meets the
+    # ground or the next room's floor through the opening
+    for r, ts in patterned.items():
+        gaps = [d.gap for d in rooms[r].doors]
+        for t in ts:
+            if any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 3 for g in gaps): spec.tile(*t, rooms[r].floor)
+        SH.blend_pattern(spec, {t: spec.floor.get(t, rooms[r].floor) for t in rooms[r].tiles}, gaps)
     b.rooms = [rooms[r] for r in room_ids]
     b.footprint = set().union(*(r.tiles for r in b.rooms))
     b.cells = cells
