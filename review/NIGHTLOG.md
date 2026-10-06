@@ -44,3 +44,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   still picks out all of ours (27/27), but its score for ours rose from 4.7 to 6.1 (Westwood about 8). Our maps under
   `--check` score 6.9-8.2 against Westwood's own 9.6 (first-person journal entries, semicolons, too few exclamations).
   Next: a control packet (Westwood only) to calibrate the judge, writing from real campaign lines, whole-map writers.
+- 22:45 16 new room types merged (`night-types2`), each with campaign evidence read by hand: guardroom, cell (and
+  ogre pen), torture chamber, cellar, treasury, powder store, solar, workshop, winch room, observatory, infirmary (no
+  campaign example: design judgement), shrine (and dark shrine), conservatory, gallery, mausoleum, ossuary. That makes 35
+  types. Every type now has "where people stand" (`STANDS`, `StoryMap.stand_px`, `person_in`). Six new building roles
+  (gaol, gatehouse, healer, wheelwright, mausoleum, shrine); roles take the new rooms with `extra=`. Existing maps are
+  unchanged.
