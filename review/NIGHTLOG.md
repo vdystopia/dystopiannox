@@ -38,3 +38,9 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   rule), laboratory, throne room (one template every time), library. Closest: shop and storeroom. Found: Westwood's
   room index misfiles Con02a's tavern as a shop and War07A's walled garden as a hall. Tuning rounds start once the
   object knowledge base lands, so they build on it.
+- 22:20 Dialogue and quest lab merged (`tests/storylab.py`, `review/storylab/`, `rules/DIALOGUE.md`, `rules/QUESTS.md`,
+  `q.errand`, `q.done`, `q.note`). Measured on 1,204 Westwood campaign strings: offers about 39 words, reminders 12,
+  completions 24; 56% of lines exclaim; a side quest is five lines plus one journal order. Four rounds: the blind judge
+  still picks out all of ours (27/27), but its score for ours rose from 4.7 to 6.1 (Westwood about 8). Our maps under
+  `--check` score 6.9-8.2 against Westwood's own 9.6 (first-person journal entries, semicolons, too few exclamations).
+  Next: a control packet (Westwood only) to calibrate the judge, writing from real campaign lines, whole-map writers.
