@@ -2963,6 +2963,9 @@ class Furnisher:
             if i in done_once or added[i] >= cap(st) or self.g.area < st.get("min_area", 0): misses += 1; continue
             if st.get("once"): done_once.add(i)
             if st.get("missing") and self._fam_n[st["fam"]]: misses += 1; continue     # only where none stands yet
+            # (a step a recipe skips where a carpet covers the floor: a table on a whole carpet can only stand at its
+            # centre, the "table dead centre of a huge empty carpet" an independent judge picked out in bedrooms)
+            if st.get("bare_floor") and self.carpet_plan: misses += 1; continue
             before = self.n_blocking
             fam = st["fam"]
             if st["slot"] == "stock":

@@ -238,3 +238,11 @@ most room, the dead centre, always won); inert for other kinds. Tavern and store
 
 Found: in a bedroom laid with a whole carpet the table can only stand centred on it (tables keep off carpets but for
 centred), so the judge's "table dead centre of the carpet" needs the carpet or the table dropped, not moved.
+
+| Type | Round | Change | AUC | Cross | Hard |
+|---|---|---|---|---|---|
+| bedroom | j4 | no table where a whole carpet is laid (`bare_floor`): the rooms read bare; reverted | 0.958 | 0.891 | 8 |
+| bedroom | j5-j6 | a second nightstand and bookcases on the other back wall from 30 tiles (curated Westwood cover 0.147 against ours 0.10) | 0.852-0.955 | 0.88-0.90 | 7-6 |
+| infirmary | j2-j3 | cots 2-5 by size (per 24 tiles), one pair of potion shelves and two bookcases, no lined wall; a fill bed step multiplied beds (fill `max` grows with the room): removed | 0.953-0.979 | 0.98 | 10 -> 1 |
+
+Shared: compose/fill steps may carry `bare_floor` (skipped where a carpet is laid; unused now).

@@ -55,7 +55,7 @@ ROOMS = {
                     # (room lab tuneA r10: one rug, before the chest; the table set stands on the bare floor: an
                     # independent judge picked out "two identical rugs" and "a table with chairs on a rug wedged into
                     # the S corner")
-                    optional={"rug": (1.0, 1), "nightstand": (1.0, 1), "shelves": (0.9, 3), "wall_decor": (1.0, 5),
+                    optional={"rug": (1.0, 1), "nightstand": (1.0, 2), "shelves": (0.9, 4), "wall_decor": (1.0, 5),
                               "desk": (0.5, 1), "bench": (0.6, 1), "plant": (0.7, 2), "table": (0.6, 1), "chair": (0.6, 2)},
                     types={"storage": CHEST, "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "plant": PLANTS,
                            "table": r"^RoundTable[12]$|^SquareTable[12]$"},
@@ -70,7 +70,10 @@ ROOMS = {
                              dict(fam="desk", slot="wall", at="center", clear=0, seats=True, back=True),
                              dict(fam="carpet", slot="carpet", where="whole", chance=0.4),
                              dict(fam="wall_decor", slot="decor")],
-                    fill=[dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=100), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=70), dict(fam="table", slot="group", group="sitting", max=1, min_area=90), dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
+                    # (curated Westwood bedrooms cover 0.147 of their floor at the median against our 0.10: the fill
+                    # had run out of steps; Westwood's own: a second nightstand, bookcases on the other back wall)
+                    fill=[dict(fam="nightstand", slot="beside_bed", max=1),
+                          dict(fam="shelves", slot="line", other=True, decor=2, max=8, min_area=30), dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, min_area=70), dict(fam="table", slot="group", group="sitting", max=1, min_area=90), dict(fam="desk", slot="wall", at="center", clear=0, seats=True, once=True),
                           dict(fam="table", slot="center", seats=True, once=True),
                           dict(fam="shelves", slot="line", n=3, max=3),
                           # a bookcase alone on a short stretch between doors (Westwood: one bookcase in half its
@@ -871,8 +874,10 @@ ROOMS = {
                       purpose="where the sick are nursed: a row of cots with a nightstand between neighbours, a pair of "
                               "potion shelves and books of remedies on a back wall, the cauldron toward a corner, the "
                               "healer's table with its stool, a chest of linen, hangings of one colour",
-                      core={"bed": (2, 8), "shelves": (2, 8), "stove": (1, 1), "table": (1, 1)},
-                      per_tiles={"bed": 15},
+                      # (independent judge r2: "identical cots stamped at equal gaps, ten on one wall"; "a NW wall lined
+                      # end to end with shelves where the brief wants one pair")
+                      core={"bed": (2, 5), "shelves": (2, 4), "stove": (1, 1), "table": (1, 1)},
+                      per_tiles={"bed": 24},
                       optional={"nightstand": (1.0, 6), "chair": (1.0, 2), "storage": (0.8, 2), "wall_decor": (1.0, 4),
                                 "plant": (0.5, 2)},
                       types={"bed": r"^Cot\d$|^WoodBed[12]$", "shelves": r"^PotionShelves[1-4]$|^Bookcase\d(HalfFull)?$",
@@ -886,7 +891,7 @@ ROOMS = {
                       compose=[dict(fam="bed", slot="bed_row"),
                                dict(fam="stove", slot="wall", at="corner", clear=1.6),
                                dict(fam="shelves", slot="line", n=2, only=r"^PotionShelves"),
-                               dict(fam="shelves", slot="line", n=3, only=r"^Bookcase"),
+                               dict(fam="shelves", slot="line", n=2, only=r"^Bookcase"),
                                dict(fam="table", slot="groups", group="worktable", n=1),
                                dict(fam="table", slot="center", seats=True),
                                dict(fam="wall_decor", slot="decor")],
@@ -895,7 +900,6 @@ ROOMS = {
                       # under the sick row's end, the walls hung)
                       fill=[                            dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1),
                             dict(fam="storage", slot="wall", at="center", clear=1.6, only=r"^Chest", max=1, min_area=90),
-                            dict(fam="shelves", slot="line", other=True, max=4, only=r"^Bookcase"),
                             dict(fam="plant", slot="wall", at="room_corner", clear=0, max=2)]),
     # a keg cellar (Con07B's 17 tiles: eight kegs and two crates; Con06b and War02b: five kegs; Con06a / War01A: seven
     # barrels, a great cask, piled barrels, crates)
