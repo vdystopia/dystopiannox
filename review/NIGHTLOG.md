@@ -480,3 +480,21 @@ and the QA's composition.sparse warnings say the same on the story maps. Next ro
 Fairness, found: for thin types (throne room 4 rooms, great hall 2), the judging description names Westwood's actual
 rooms, so a judge recognises them ("D, F and H match the campaign rooms described"). Descriptions for thin types must
 describe qualities, not the rooms.
+
+## Density wave (night-density): what separates ours, the density pass, sparse rule against Westwood
+
+Measured (review/roomlab/README.md Density; metrics.density): piece counts are **not** the tell (per-measure AUC
+0.54-0.76: ours hold Westwood's counts); our rooms are ~1.6x Westwood's floor (kit scale; the lab's sizes match the
+story maps': bedroom 24 checker tiles in both, the story maps' bigger for shop, storeroom, kitchen, laboratory, tavern),
+so the share of floor within 2 units of a piece (**reach**) falls (AUC 0.76-1.0) and the bare floor gathers at one end
+(largest bare rectangle AUC 0.70-0.89, offset 0.69-0.85). New: `mapgen/kit/density.py`, a pass at the end of both
+engines adding groups of the room's own at the heart of its bare floor until reach meets a draw from Westwood's p25-p75
+for the type (less its fall with size) and cover its median. Lab d0 -> d2 (default engines, AUC on the new feature set):
+bedroom reach 0.45 -> 0.55 (AUC 0.87 -> 0.86), laboratory 0.32 -> 0.53 (0.84 -> 0.76), storeroom 0.54 -> 0.72 (0.77 ->
+0.75), living room 0.44 -> 0.47 (0.89 -> 0.87), shop 0.32 -> 0.36 (0.97 -> 0.99), tavern 0.53 -> 0.53 (0.97 -> 0.98:
+its table cap holds). Bedrooms stay short: their bare floor is by the front walls, where faced pieces may not stand, and
+one table set is the rule. composition.sparse (cover < the baseline's uncurated median per kind) flags 46 of Westwood's
+own 129 curated rooms of those types (bedroom 10/28, living room 6/14, laboratory 5/6, crypt 15/25, dining hall 3/3):
+the user's open question. Sheets d2 queued in review/roomlab/TO_JUDGE.md.
+QA (five story maps, `--no-render`): 0 errors on all five; warnings 117 -> 110 (Thornwick 26 -> 26, Greywatch 17 -> 16,
+Ambermere 21 -> 18, Starwell 31 -> 30, Harrowby 22 -> 20); composition.sparse 77 -> 68, composition.bunched 12 -> 11.

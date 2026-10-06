@@ -281,7 +281,7 @@ def generate(typ, n=10, seed=1, out_dir=None, name="RoomLab", log=print, engine=
                                      doors=len(r.doors), floor_material=r.floor, engine=engine or "default",
                                      originality=dict(max_sim=orig[r.id]["max_sim"], nearest=orig[r.id]["nearest"],
                                                       ok=orig[r.id]["ok"]),
-                                     motif_log=getattr(r, "motif_log", None), grammar_log=getattr(r, "grammar_log", None),
+                                     motif_log=getattr(r, "motif_log", None), grammar_log=getattr(r, "grammar_log", None), density_log=getattr(r, "density_log", None),
                                      archetype=getattr(r, "archetype", None),
                                      centre=[round(sum(xs) / len(xs)), round(sum(ys) / len(ys))]))
         m.obj("PlayerStart", u0 + 3, v0 + 3)

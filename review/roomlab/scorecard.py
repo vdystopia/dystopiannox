@@ -44,7 +44,10 @@ def summarise(typ, it):
              blind_accuracy=b and b["accuracy"], blind_generated=b and b["score_generated"],
              blind_westwood=b and b["score_westwood"],
              template=(m.get("template") or {}).get("batch"), template_ww=(m.get("template") or {}).get("ww_p50"),
-             template_ww90=(m.get("template") or {}).get("ww_p90"), template_flag=(m.get("template") or {}).get("flag"))
+             template_ww90=(m.get("template") or {}).get("ww_p90"), template_flag=(m.get("template") or {}).get("flag"),
+             density_flags=(m.get("density") or {}).get("flags"),
+             reach=next((x["batch"] for x in (m.get("density") or {}).get("measures", []) if x["name"] == "reach"), None),
+             reach_ww=next((x["ww_p50"] for x in (m.get("density") or {}).get("measures", []) if x["name"] == "reach"), None))
     ok = dict(auc=s["auc"] is not None and s["auc"] <= STOP["auc"],
               blind_accuracy=b is not None and b["accuracy"] <= STOP["blind_accuracy"],
               blind_score=b is not None and None not in (b["score_generated"], b["score_westwood"]) and
@@ -105,12 +108,28 @@ def write(typ, it):
            f"<td>{s.get('template')} (Westwood p50 {s.get('template_ww')}, p90 {s.get('template_ww90')}; twins "
            f"{e(json.dumps((m.get('template') or {}).get('twins', [])))})</td><td>&le; Westwood's p90</td>"
            f"<td class={bad(not s.get('template_flag'))}>{'MORE ALIKE THAN WESTWOOD' if s.get('template_flag') else 'ok'}</td></tr>",
+           f"<tr><td>density: the batch's medians within Westwood's p10-p90 (metrics.density_table)</td>"
+           f"<td>{e(', '.join(s.get('density_flags') or []) or 'all within')}</td><td>none outside</td>"
+           f"<td class={bad(not s.get('density_flags'))}>{'OUTSIDE' if s.get('density_flags') else 'ok'}</td></tr>",
            "</table>", f"<p><small>{e(c['note'])}</small></p>"]
+    dn = m.get("density") or {}
+    if dn.get("measures"):
+        out.append("<h2>Density</h2><p><small>The batch's median of each density measure against Westwood's p10-p90 for "
+                   f"the type ({e(dn.get('note', ''))}); the measure's own AUC. reach: the share of the floor within 2 "
+                   "units of a piece; empty_rect: the largest bare rectangle over the floor; offset: the furniture's "
+                   "centre off the room's middle; groups_100: groups of pieces per 100 tiles; zones: the share of the "
+                   "room's 3 x 3 zones holding a piece.</small></p><table><tr><th>measure</th><th>batch median</th>"
+                   "<th>Westwood p10</th><th>p50</th><th>p90</th><th>AUC</th><th></th></tr>")
+        for x in dn["measures"]:
+            verdict = ("too " + x["side"]) if x["flag"] else ("(the kit's scale)" if x["side"] else "ok")
+            out.append(f"<tr><td>{e(x['name'])}</td><td>{x['batch']}</td><td>{x['ww_p10']}</td><td>{x['ww_p50']}</td>"
+                       f"<td>{x['ww_p90']}</td><td>{x['auc']}</td><td class={bad(not x['flag'])}>{verdict}</td></tr>")
+        out.append("</table>")
     if prev:
         out.append("<h2>Against the previous iteration</h2><table><tr><th></th><th>" + e(prev["iter"]) + "</th><th>"
                    + e(it) + "</th></tr>")
-        for k in ("auc", "cross_auc", "template", "rooms_with_hard", "findings_per_room", "blind_accuracy",
-                  "blind_generated", "blind_westwood"):
+        for k in ("auc", "cross_auc", "template", "reach", "density_flags", "rooms_with_hard", "findings_per_room",
+                  "blind_accuracy", "blind_generated", "blind_westwood"):
             out.append(f"<tr><td>{k}</td><td>{prev.get(k)}</td><td>{s.get(k)}</td></tr>")
         out.append("</table>")
     out.append("<h2>What gives the batch away</h2><p><small>Each feature's own AUC (1.0: it alone separates them), "

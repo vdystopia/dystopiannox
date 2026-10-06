@@ -113,6 +113,10 @@ SHOWPIECE_BIG, SHOWPIECE_GAP = 120, 10.0
 # what may top a room up to its coverage target, one piece at a time against a wall: never shelves (a lone shelf breaks
 # a lined wall) or tables (a table stands with its seats)
 TOP_UP_FAMS = ("storage", "bench", "plant", "lab", "statue")      # not stoves: a hearth or stove is an anchor with room round it
+DENSITY_FREE_FAMS = ("table", "lab", "statue", "bench")  # may stand free (kit/density.py), if the recipe has them
+DENSITY_WALL_MOST = {"storage": 2, "bench": 2, "plant": 2, "statue": 2}   # single pieces the density pass adds to walls
+DENSITY_ONCE = {"fireplace", "stove", "altar", "throne", "counter_bar", "counter_shop", "bed", "smithy"}   # a room's one
+NEAR_REACH = 3.5         # uv units: the density pass (kit/density.py) places a piece this close to its bare spot
 # The user's frame of reference (TreePlace v0.3 room review): the NE wall is the top right of a room on screen, the
 # NW wall the top left, the SE wall the bottom right and the SW wall the bottom left. In the code's terms
 # NW = '/|BR', NE = '\\|BL', SE = '/|TL', SW = '\\|TR'.
@@ -1193,6 +1197,7 @@ class Furnisher:
             # (an observatory's star charts among its bookcases)
             for _ in range(self._deferred_decor): self.place_decor()
             self.fill_room()
+            self.density_pass()                          # groups where the floor is still bare (kit/density.py)
             # a kind may line its back walls less than the house's goal (ROOMS[kind]["lined_goal"]: Westwood's
             # laboratories 0.06-0.35), and say whether its walls take hangings (a bedroom: Westwood hangs something in
             # 17% of its bedrooms and lines a quarter of their back walls; the room lab)
@@ -1255,6 +1260,7 @@ class Furnisher:
                         tables.append((res[1], res[0]["type"], fam))
                 if phase == "rest" and fam in ("table", "desk"): self.seat_tables(tables, plan)
         self.in_required = False
+        self.density_pass()                              # groups where the floor is still bare (kit/density.py)
         self.face_statues()
         self.placing_light = True
         self.add_lights()
@@ -1454,6 +1460,11 @@ class Furnisher:
                 if ends[0] > ends[1]: continue
                 mid = min(max(mid, ends[0]), ends[1])
             spots = [mid] if at == "center" else ends if at in ("corner", "room_corner") else [mid] + ends
+            near = getattr(self, "_near_spot", None)
+            if near is not None:                       # the density pass (kit/density.py): the wall by a bare spot
+                a_n = near[1] if r["line"] == "/" else near[0]
+                lo_a, hi_a = min(ends), max(ends)
+                if at != "room_corner": spots = [min(max(a_n, lo_a), hi_a)] if lo_a <= hi_a else []
             facing_door = op is not None and r["line"] == op["line"] and r["sign"] == -op["sign"]
             if facing_door and lo + ha + 0.1 <= op["along"] <= hi - ha - 0.1:
                 spots = [op["along"]] + spots
@@ -1467,6 +1478,10 @@ class Furnisher:
                     score += 3.0 * min(1.0, min(math.hypot(u - du, v - dv) for du, dv in doors_uv) / (0.7 * diag))
                     score -= 0.0 if back else 6.0
                 if facing_door: score += 20.0 - 0.5 * min(abs(a - op["along"]), 6.0)
+                if near is not None:
+                    dn = math.hypot(u - near[0], v - near[1])
+                    if dn > NEAR_REACH: continue
+                    score += 30.0 - 3.0 * dn
                 out.append((score, t, r, u, v, a, ha, hp))
         out.sort(key=lambda c: -c[0])
         return out
@@ -1594,7 +1609,14 @@ class Furnisher:
                        [max(abs(u - b[0]) - b[2] - hu, abs(v - b[1]) - b[3] - hv) for b in blocks])
             out.append((min(room, 3.0 if not jit else 0.6) - 0.25 * math.hypot(u - cu, v - cv) + FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
-        return [(u, v) for _, u, v in out]
+        return self._near_first([(u, v) for _, u, v in out])
+
+    def _near_first(self, spots):
+        """Spots within NEAR_REACH of the density pass's bare spot (kit/density.py), nearest first; else unchanged."""
+        near = getattr(self, "_near_spot", None)
+        if near is None: return spots
+        d = [(math.hypot(u - near[0], v - near[1]), u, v) for u, v in spots]
+        return [(u, v) for dd, u, v in sorted(d) if dd <= NEAR_REACH]
 
     def wall_spots(self, hu, hv):
         """Open spots near the walls, best first: as close to a wall as the piece and its seats fit, clear of what
@@ -1611,7 +1633,7 @@ class Furnisher:
             if room < 0.6: continue
             out.append((-wd + 0.4 * room + 0.5 * FRONT_WEIGHT * self.g.front(u, v), u, v))
         out.sort(key=lambda s: -s[0])
-        return [(u, v) for _, u, v in out]
+        return self._near_first([(u, v) for _, u, v in out])
 
     def free_middle(self, hu, hv):
         """The open spot of the room farthest from walls and from what already stands there."""
@@ -3584,6 +3606,121 @@ class Furnisher:
             self._group = None
         return 0
 
+    # ---- density (kit/density.py): groups where the room is bare, until its reach meets Westwood's ------------------
+    DENSITY_WALL_FAMS = ("storage", "bench", "plant", "lab", "statue", "desk", "column", "straw", "tomb",
+                         "shelves", "shop_rack")    # (not bellows: they stand by the hearth)
+
+    def density_pass(self):
+        from kit import density as DEN
+        try:
+            self._density_have = None
+            return DEN.fill(self, self.rng)
+        finally:
+            self._near_spot = None
+
+    def _density_limits(self):
+        """The recipe's own families a bare wall may take, each up to the recipe's most for the room's size (its range
+        grown with the room over Westwood's median, as the top-up grows it, plus one), within its repeat caps."""
+        ident = self.ident
+        p50 = (self.T.get("tiles") or {}).get("p50") or 30
+        grow = max(1.0, self.g.area / (2.4 * p50))
+        fixed = {"plant", "statue"} | set((room_profile(self.kind) or {}).get("fixed_top_up", ()))
+        out = {}
+        for f, rng_ in list(ident.get("optional", {}).items()) + list(ident.get("core", {}).items()):
+            if f not in self.DENSITY_WALL_FAMS or not self.types_of(f) or f in self._trade.get("skip", ()): continue
+            n = int(math.ceil(rng_[1] * (1.0 if f in fixed else grow))) + (0 if f in fixed else 1)
+            cap = self.repeat_cap(f)
+            out[f] = max(out.get(f, 0), min(n, cap) if cap is not None else n)
+        return out
+
+    def density_wall(self, spot):
+        """A piece of the recipe's own against the wall nearest a bare spot (kit/density.py). Returns the pieces placed."""
+        from kit import density as DEN
+        limits = self._density_limits()
+        have = Counter(_family_of(t) for t, _ in self._typed)
+        added = self.__dict__.setdefault("_density_added", Counter())
+        # (singles along the walls a few at most: "a tendency to line walls with things like sacks and barrels", HB-1)
+        fams = [f for f, n in limits.items() if have[f] < n and added[f] < DENSITY_WALL_MOST.get(f, DEN.group_most(self, f))]
+        if not fams:
+            self._density_why = f"recipe wall: every family at its limit {limits}"
+            return None
+        # the families Westwood's rooms of the type hold more of than this room does yet (its pieces per room, grown
+        # with the square root of the room's size over theirs, as Westwood's bigger rooms hold more)
+        ww = (DEN.stats(self.rtype) or {}).get("fams") or {}
+        g = DEN.grow(self)
+        weights = {f: max(0.03, ww.get(f, 0.0) * g - have[f]) for f in fams if DEN.family_ok(self, f, have[f], self.rng)}
+        self._density_why = f"recipe wall: limits {limits}, have {dict((f, have[f]) for f in limits)}, ok {sorted(weights)}"
+        order = []
+        while weights and len(order) < 4:
+            f = self.rng.choices(list(weights), list(weights.values()))[0]
+            order.append(f); weights.pop(f)
+        self._near_spot = spot
+        try:
+            for f in order:
+                n0 = len(self.objects)
+                p = self.place_on_wall(f, "room_corner" if f == "plant" else self.rng.choice(("center", "corner")),
+                                       1.4 if f in ("storage", "desk") else 1.0)
+                if not p: continue
+                if f in ("shelves", "shop_rack") and any(
+                        _family_of(t) == f and rec is not self._placed_of.get(id(p["obj"])) and
+                        abs((rec[0] if p["run"]["line"] == "/" else rec[1]) - (p["uv"][0] if p["run"]["line"] == "/" else p["uv"][1])) < 0.6
+                        for t, rec in self._typed):
+                    self._remove(p["obj"]); continue           # a second shelf on a lined wall leaves a gap: none
+                if f == "desk": self.seats_around(p["uv"], p["obj"]["type"], 1)
+                added[f] += 1
+                return self.objects[n0:]
+        finally:
+            self._near_spot = None
+        return None
+
+    def density_free(self, spot):
+        """One of the recipe's own free groups (a table set, a workbench) or middle pieces at a bare spot out in the
+        floor (kit/density.py). Returns the pieces placed."""
+        steps = (self.ident.get("compose") or []) + (self.ident.get("fill") or [])
+        groups = list(dict.fromkeys(st["group"] for st in steps if st.get("slot") in ("group", "groups") and st.get("group")))
+        centre = list(dict.fromkeys((st["fam"], bool(st.get("seats"))) for st in steps if st.get("slot") == "center"))
+        from kit import density as DEN
+        self.rng.shuffle(groups)
+        self._density_why = f"recipe free: groups {groups}, centre {centre}"
+        self._near_spot = spot
+        try:
+            fam_in = Counter(_family_of(t) for t, _ in self._typed)
+            added = self.__dict__.setdefault("_density_added", Counter())
+            for name in groups:
+                if name not in GROUPS: continue
+                lead = next((_family_of(t) for t in self.things if re.match(GROUPS[name]["anchor"], t)), None)
+                if (lead in DENSITY_ONCE and fam_in[lead]) or added[lead] >= DEN.group_most(self, lead): continue
+                n0 = len(self.objects)
+                if self.place_group(name):
+                    added[lead] += 1
+                    return self.objects[n0:]
+            # then the families Westwood's rooms of the type hold more of than this one, standing free (a workbench, a
+            # table with two chairs, a statue), within the recipe's limits
+            ww = (DEN.stats(self.rtype) or {}).get("fams") or {}
+            have = Counter(_family_of(t) for t, _ in self._typed)
+            limits = self._density_limits()
+            own = set(self.ident.get("core", {})) | set(self.ident.get("optional", {}))
+            free = [(f, f == "table") for f in DENSITY_FREE_FAMS if f in own and self.types_of(f) and ww.get(f, 0.0) > 0.1 and
+                    have[f] < limits.get(f, max(1, int(round(ww[f] * DEN.grow(self))) + 1)) and
+                    DEN.family_ok(self, f, have[f], self.rng)]
+            self.rng.shuffle(free)
+            for fam, seats in centre + [x for x in free if x not in centre]:
+                if (fam in DENSITY_ONCE and fam_in[fam]) or added[fam] >= DEN.group_most(self, fam): continue
+                n0 = len(self.objects)
+                res = self.place_center(fam)
+                if not res: continue
+                if not seats and self.footprint(res[0]["type"]) < DEN.LONE_AREA:
+                    self._remove(res[0]); continue             # a lone jar or cask out on the floor: no group
+                if seats:
+                    o, uv = res
+                    if self.seats_around(uv, o["type"], 2, "chair") < 2:
+                        self._remove(o); continue
+                added[fam] += 1
+                return self.objects[n0:]
+        finally:
+            self._near_spot = None
+        return None
+
     def fill_room(self):
         """Tops the room up toward the share of its floor its kind should cover (kit/identity.py ROOM_COVER) with what
         its identity says belongs there (ROOMS[kind]["fill"]), taking the steps in turn, each up to its own `max`
@@ -4372,6 +4509,7 @@ def furnish_room(spec, room: Room, kind=None, rng=None, style="town"):
     room.spots = f.spots
     room.kb_refused = dict(f.kb_refused)  # what the object knowledge base refused, by rule (the labs print it)
     room.grammar_log = dict(getattr(f, "grammar_log", None) or {})   # what kit/grammar.py's audit moved or dropped
+    room.density_log = list(getattr(f, "density_log", None) or [])   # kit/density.py: reach before and after
     room.archetype = (f.archetype or {}).get("name")   # the room's archetype (kit/archetypes.py)
     from kit import loot
     loot.tag(spec, objs, f.kind)          # where its containers stand: their loot (kit/loot.py)

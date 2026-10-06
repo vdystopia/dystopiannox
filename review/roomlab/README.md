@@ -122,3 +122,20 @@ with the verdicts by eye of `rules/rooms/curated.json` applied (misfiled rooms r
 out; `labenv.curate`, used by `labref.index` and `metrics.westwood`).
 Rebuild it after the index changes: `py review/roomlab/labref.py features`; re-render a gallery by deleting
 `review/out/roomlab/_westwood/<type>/`.
+
+## Density (2026-10-06)
+
+The independent judges' most common fault on every type and both engines was density ("a lone piece in a huge bare
+floor", "everything bunched in one corner"). `metrics.density()` measures, for Westwood's curated rooms and ours alike:
+`pieces`; `reach`, the share of the floor within 2 units of a piece (furniture, rugs and clutter; not lights or
+hangings); `empty_rect`, the largest bare rectangle over the floor; `zones`, the share of the room's 3 x 3 zones holding
+a piece; `groups_100`, groups of pieces 1.5 units apart per 100 tiles; `offset`, the furniture's centre off the floor's
+centre (as the checker's bunched rule). What separates ours (d0 batches, both engines) from Westwood's is **not the
+piece count** (per-measure AUC 0.54-0.76: our rooms hold Westwood's counts) but the floor they are spread over: our
+rooms are about 1.6 times Westwood's floor (the kit's scale) so `reach` falls (AUC 0.76-1.0: bedroom 0.45-0.51 against
+Westwood's median 0.68, living room 0.44-0.51 against 0.80, laboratory 0.32-0.35 against 0.59, shop 0.32 against 0.59,
+tavern 0.53 against 0.75), and the bare floor gathers at one end (`empty_rect` AUC 0.70-0.89, `offset` 0.69-0.85).
+`reach`, `empty_rect`, `offset` and `groups_100` are now classifier features and findings; the scorecard's density
+table puts the batch's median of each against Westwood's p10-p90 (`metrics.density_table`) and flags it outside.
+Westwood's numbers per type: `rules/out/density.json` (`py review/roomlab/labref.py density`), which the kit's density
+pass (`mapgen/kit/density.py`, both engines) fills toward.

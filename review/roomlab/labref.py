@@ -70,6 +70,56 @@ def build_features():
     return rooms
 
 
+DENSITY_OUT = os.path.join(E.REPO, "rules", "out", "density.json")
+DENSITY_FEATS = ("tiles", "pieces", "per_tile", "cover", "reach", "empty_rect", "zones", "groups_100", "offset", "mid_share")
+
+
+def build_density():
+    """Westwood's density per room type (rules/out/density.json, read by mapgen/kit/density.py): each type's p10-p90
+    of the density measures over its curated campaign rooms (metrics.pool: its own, or its pool's when it has under
+    metrics.MIN_WW), and the slope of reach with the room's size within a type (pooled over the types with 5 or more
+    rooms: Westwood's bigger rooms of a type are a little less reached)."""
+    import math
+    import metrics
+    from kit.roomtypes import TYPES
+    ww = metrics.westwood()
+    q = lambda vals: {f"p{p}": round(metrics._pct(vals, p), 4) for p in (10, 25, 50, 75, 90)}
+    by = collections.defaultdict(list)
+    for r in ww: by[r["type"]].append(r["features"])
+    xs, ys = [], []
+    for t, fs in by.items():
+        if len(fs) < 5: continue
+        lt = [math.log(max(1, f["tiles"])) for f in fs]
+        m_t = sum(lt) / len(lt); m_r = sum(f["reach"] for f in fs) / len(fs)
+        xs += [x - m_t for x in lt]; ys += [f["reach"] - m_r for f in fs]
+    slope = sum(x * y for x, y in zip(xs, ys)) / max(1e-9, sum(x * x for x in xs))
+    types = {}
+    for t in sorted(set(TYPES) | set(by)):
+        if t in TYPES:
+            rooms, note = metrics.pool(t)
+        else:
+            rooms, note = [r for r in ww if r["type"] == t], f"Westwood's {len(by[t])} {t} rooms"
+        if not rooms: continue
+        d = dict(n=len(rooms), own=len(by.get(t, [])), note=note.split(";")[0][:160])
+        for k in DENSITY_FEATS:
+            vals = [r["features"][k] for r in rooms if r["features"].get(k) is not None]
+            if vals: d[k] = q(vals)
+        # each family's pieces per room (the mean), what a bare stretch of the type's walls may take more of
+        fams = collections.Counter()
+        for r in rooms:
+            for fm, n in r["details"].get("fam", {}).items():
+                if fm: fams[fm] += n
+        d["fams"] = {fm: round(n / len(rooms), 3) for fm, n in sorted(fams.items())}
+        types[t] = d
+    out = dict(source="review/roomlab/westwood_features.json (Westwood's curated campaign rooms, Con/War/Wiz), "
+                      "measured by review/roomlab/metrics.py density()",
+               built_by="py review/roomlab/labref.py density", reach_slope=round(slope, 4), types=types)
+    with open(DENSITY_OUT, "w", encoding="utf-8") as f:
+        json.dump(out, f, indent=1)
+    print(f"density of {len(types)} types (reach slope {slope:.3f} per e-fold of size) -> {E.rel(DENSITY_OUT)}")
+    return out
+
+
 def gallery_dir(typ):
     return os.path.join(E.WW_OUT, typ)
 
@@ -141,6 +191,9 @@ def redraw(room, scale):
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "features":
         build_features()
+        build_density()
+    elif len(sys.argv) > 1 and sys.argv[1] == "density":
+        build_density()
     elif len(sys.argv) > 1 and sys.argv[1] == "gallery":
         for t in sys.argv[2:] or E.types():
             g = gallery(t)

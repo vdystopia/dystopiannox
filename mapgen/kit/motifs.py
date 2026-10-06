@@ -207,6 +207,7 @@ DRESS = {"supply", "chest", "clutter", "statue", "plant", "nightstand", "bench"}
 DRESS_TRIES = 12
 SUPPLY_SHARE = 0.4                   # no kind of store past this share of a room's stock
 GROUP_PAD = 0.9                      # a step of floor between the groups along a wall
+DENSITY_WIN = 6.0                    # the density pass's group stands within this stretch of wall (or box) round its spot
 WALLS_ONLY = {"storeroom", "armoury", "cellar"}    # stores keep their middle as the aisle (no free heaps under 60 tiles)
 DEBUG = os.environ.get("MOTIF_DEBUG") == "1"
 COMPOSE = "clusters"                 # "clusters" (round 2) or "motifs" (round 1: wall, corner and centre motifs)
@@ -1390,7 +1391,7 @@ class MotifFurnisher(F.Furnisher):
             placed = self._drop_lone_seats(placed)
         if not ok or not placed or (c["kind"] != "hang" and not any(
                 self._placed_of.get(id(o)) and self._placed_of[id(o)][4] for o in placed)
-                and not any(PELT.search(o["type"]) for o in placed)):
+                and not any(PELT.search(o["type"]) for o in placed) and not getattr(self, "_density_rug", False)):
             for o in placed:
                 if id(o) in self._placed_of:
                     if OBJ.category(o["type"]) == "light": self.lights_n -= 1
@@ -2012,6 +2013,100 @@ class MotifFurnisher(F.Furnisher):
             self.top_up_clusters(zones)
         if fo.get("types") and fo.get("where") not in ("back",) and                 not any(re.search(fo["types"], o["type"]) for o in self.objects):
             self._focal_alone(fo["types"])
+        self.density_pass()                          # clusters where the floor is still bare (kit/density.py)
+        self.log += getattr(self, "density_log", [])
+
+    # ---- density (kit/density.py): Westwood's clusters of the type where the room is still bare ---------------------
+    def density_wall(self, spot):
+        """A wall cluster of the type on the free part of the wall nearest a bare spot, within DENSITY_WIN units of it.
+        Returns the pieces placed."""
+        su, sv = spot
+        best = None
+        for st in self.stretches:
+            r = st["run"]
+            perp = abs((su if r["line"] == "/" else sv) - r["coord"])
+            a = sv if r["line"] == "/" else su
+            if perp > 4.0 or not st["s0"] - 1.0 <= a <= st["s1"] + 1.0: continue
+            for p in self.free_parts(st, pad=GROUP_PAD, least=1.6):
+                dd = max(0.0, p["s0"] - a, a - p["s1"])
+                if dd > 2.0: continue
+                if best is None or perp + dd < best[0]: best = (perp + dd, p, a)
+        if best is None:
+            self._density_why = "no free part of a wall near it"
+            return super().density_wall(spot)
+        _, part, a = best
+        if part["L"] > DENSITY_WIN:
+            c = (part["s1"] - a) if part["from_hi"] else (a - part["s0"])
+            c0 = min(max(0.0, c - DENSITY_WIN / 2), part["L"] - DENSITY_WIN)
+            part = self._sub(part, c0, c0 + DENSITY_WIN)
+        from kit import density as DEN
+        have = collections.Counter(OBJ.category(o["type"]) for o in self.objects)
+        kinds = collections.Counter(OBJ.kind(o["type"]) for o in self.objects)
+        fam_n = collections.Counter(F._family_of(o["type"]) for o in self.objects)
+        lead_fam = lambda c: F._family_of(max((x for x in c["items"] if x.get("blocking") and x["cat"] != "light"),
+                                              key=lambda x: self.footprint(x["t"]) if x["t"] in self.things else 0.0,
+                                              default=c["items"][0])["t"])
+        fam_ok = {}
+        cands = [(w * (1 + c["n_block"]) * 0.4 ** have[self._lead_of(c)] *
+                  0.6 ** sum(kinds[OBJ.kind(x["t"])] for x in c["items"] if x.get("blocking")) *
+                  (0.5 if self._lead_of(c) == "shelf" else 1.0), c)
+                 for back in ((True,) if part["back"] else (False, True))
+                 for w, c in self._slot_cands(None, None, "wall", back=back, max_span=part["L"] - 0.2,
+                                              run=part["run"]) if c["n_block"] >= 1 and
+                 fam_ok.setdefault(lead_fam(c), DEN.family_ok(self, lead_fam(c), fam_n[lead_fam(c)], self.rng))]
+        # (a front wall takes a back wall's cluster too, its faced pieces refused there by _kinds_ok: Westwood's rooms of
+        # its size seldom use their front walls, and our bigger rooms' bare floor lies along them)
+        self._density_why = f"part {part['name']} {part['L']:.1f}u, {len(cands)} clusters"
+        for _ in range(8):
+            c = self._choose(cands)
+            if not c: break
+            got = self._try_wall(c, [part])
+            if got: return got
+            cands = [(w, x) for w, x in cands if x is not c]
+        # none of Westwood's clusters of the type fits there: one of the recipe's own pieces for the wall (a chest, a
+        # bench, a plant in the corner), as the recipe engine's density pass places them
+        return super().density_wall(spot)
+
+    def _lead_type(self, c):
+        bl = [x for x in c["items"] if x.get("blocking") and x["cat"] != "light"] or c["items"]
+        return max(bl, key=lambda x: self.footprint(x["t"]) if x["t"] in self.things else 0.0)["t"]
+
+    def density_free(self, spot):
+        """A free group of the type (a table set, a workbench, a heap) standing at a bare spot out in the floor. Returns
+        the pieces placed."""
+        from kit import density as DEN
+        su, sv = spot
+        added = self.__dict__.setdefault("_density_added", collections.Counter())
+        cands = [(w * (1 + c["n_block"]), c) for w, c in self._slot_cands(None, None, "free") if c["n_block"] >= 1
+                 and (self._lead_of(c) in ("table", "desk", "bed", "bench") or self.rtype not in ("bedroom",))
+                 and added[self._lead_of(c)] < DEN.group_most(self, F._family_of(self._lead_type(c)) or "")
+                 and (c["n_block"] >= 2 or (self.footprint(self._lead_type(c)) >= DEN.LONE_AREA and
+                                            self._lead_of(c) not in ("column", "statue", "supply")))]
+        # (a lone bench, cask or jar out on the floor is what the judges call "a lone piece in the middle of a huge
+        # bare floor": a free group is a set, or one big piece, a table or a workbench)
+        # a rug laid alone on the bare floor, as Westwood lays one in its big chambers (a red rug or a bearskin before
+        # the bed in 4 of its 28 bedrooms), one to a room
+        rugs = sum(1 for o in self.objects if F._family_of(o["type"]) == "rug")
+        if not rugs and not self.carpet_boxes:
+            for c in self._pool_clusters():
+                if c["kind"] == "free" and c["n_block"] == 0 and self._lead_of(c) == "rug" and                         c["cid"] not in self.used_ids and self.pool.get(c["room"]) and self._kinds_ok(c, None):
+                    cands.append((0.6 * self.pool[c["room"]], c))
+        h = DENSITY_WIN / 2
+        inner = (max(self.U0, su - h), min(self.U1, su + h), max(self.V0, sv - h), min(self.V1, sv + h))
+        pos = ((su - inner[0]) / max(0.1, inner[1] - inner[0]), (sv - inner[2]) / max(0.1, inner[3] - inner[2]))
+        for _ in range(5):
+            c = self._choose(cands)
+            if not c: break
+            self._density_rug = c["n_block"] == 0
+            try:
+                got = self._try_free(c, inner, pos, self.rng.random() < 0.5)
+            finally:
+                self._density_rug = False
+            if got:
+                added[self._lead_of(c)] += 1
+                return got
+            cands = [(w, x) for w, x in cands if x is not c]
+        return super().density_free(spot)
 
     def _focal_alone(self, rx):
         """A kind's focal piece that no Westwood cluster of the type holds (an ore store's cart): against a wall, the
@@ -2395,6 +2490,7 @@ def furnish_room(spec, room, kind=None, rng=None, style="town"):
     room.kb_refused = dict(f.kb_refused)
     room.motif_log = list(f.log)
     room.grammar_log = dict(getattr(f, "grammar_log", None) or {})
+    room.density_log = list(getattr(f, "density_log", None) or [])   # kit/density.py: reach before and after
     room.archetype = (f.archetype or {}).get("name")   # the room's archetype (kit/archetypes.py)
     from kit import loot
     loot.tag(spec, objs, f.kind)
