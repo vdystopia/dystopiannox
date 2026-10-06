@@ -7,23 +7,50 @@ the picture itself:
   margin, with room above for the walls and tall pieces that rise up the screen;
 - the walls in front of the room drawn half see-through over its floor, as the game draws them in front of the player
   (the render without walls blended in, as review/rooms.py does);
-- everything outside the room and its walls darkened to near black, so neither the field round a lab building nor a
-  Westwood town gives the picture away;
+- everything outside the room and its walls blacked out (the canvas colour), so neither the field round a lab building
+  nor a Westwood town, nor the furnished neighbours round a Westwood room, gives the picture away;
+- no creatures: both renders are of a creature-free copy of the map (nocreatures.ps1: monsters, NPCs and players
+  removed with the editor's own library), since Westwood's rooms hold monsters and NPCs and the lab's none;
 - one scale per room type (from Westwood's rooms of the type: labref.type_scale), the room centred on a fixed canvas;
   a room too big for the canvas at that scale is shrunk to fit (its `scale` is recorded, never drawn);
 - no labels in the image.
 """
-import os, subprocess
+import os, subprocess, tempfile
 import labenv as E
 from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 CANVAS = (960, 720)
 BG = (12, 12, 14)
-OUTSIDE = 0.10          # brightness of everything outside the room and its walls
+OUTSIDE = 0.0           # brightness of everything outside the room and its walls (0: the canvas colour). It was 0.10:
+                        # Westwood's rooms then showed their furnished neighbours faintly round them, the lab's mostly
+                        # an empty field (a judge's tell, FAIRNESS.md)
 MARGIN = 30             # world px round the room's cells
 RISE = 60               # world px above the room for walls and tall pieces
+WALL_REACH = 17         # world px round the floor where the room's own walls are kept bright
 EDITOR = os.path.join(E.REPO, "MapEditor", "bin", "Release", "MapEditor.exe")
+NOXSHARED = os.path.join(E.REPO, "MapEditor", "bin", "Release", "NoxShared.dll")
+STRIP = os.path.join(E.HERE, "nocreatures.ps1")
+PS32 = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
+CLEAN = os.path.join(E.OUT, "_clean")          # creature-free copies of Westwood's maps and their renders
 _cache = {}
+
+
+def creature_free(src, dst):
+    """Writes `dst`, a copy of the map `src` with every creature (monsters, NPCs, players) removed, loaded and saved by
+    the editor's own library (nocreatures.ps1); re-made when `src` is newer. Returns `dst`."""
+    if os.path.exists(dst) and os.path.getmtime(dst) >= os.path.getmtime(src): return dst
+    os.makedirs(os.path.dirname(dst), exist_ok=True)
+    with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False, encoding="utf-8") as f:
+        f.write(f"{os.path.abspath(src)}\t{os.path.abspath(dst)}\n")
+        jobs = f.name
+    try:
+        res = subprocess.run([PS32, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", STRIP, "-Dll", NOXSHARED,
+                              "-JobList", jobs], capture_output=True, text=True, timeout=300)
+    finally:
+        os.remove(jobs)
+    if not res.stdout.startswith("OK") or not os.path.exists(dst):
+        raise RuntimeError(f"creature-free copy of {src} failed: {res.stdout.strip()} {res.stderr.strip()[:300]}")
+    return dst
 
 
 def render_full(map_path, png, walls=True):
@@ -41,15 +68,19 @@ def render_full(map_path, png, walls=True):
 
 
 def westwood_renders(m):
-    """(full, bare) renders of a Westwood map, cached with review/review.py's renders (review/out/renders)."""
-    d = os.path.join(E.REVIEW, "out", "renders")
-    return (render_full(m.file, os.path.join(d, m.name + ".png")),
-            render_full(m.file, os.path.join(d, m.name + ".nowalls.png"), walls=False))
+    """(full, bare) renders of a Westwood map without its creatures, cached in review/out/roomlab/_clean/."""
+    clean = creature_free(m.file, os.path.join(CLEAN, m.name + ".map"))
+    return (render_full(clean, os.path.join(CLEAN, m.name + ".png")),
+            render_full(clean, os.path.join(CLEAN, m.name + ".nowalls.png"), walls=False))
 
 
 def lab_renders(map_path):
-    base = os.path.splitext(map_path)[0]
-    return render_full(map_path, base + ".png"), render_full(map_path, base + ".nowalls.png", walls=False)
+    """(full, bare) renders of a lab map without creatures (a copy in its folder's clean/; the map itself, which the
+    metrics read, is untouched)."""
+    d, fn = os.path.split(map_path)
+    clean = creature_free(map_path, os.path.join(d, "clean", fn))
+    base = os.path.splitext(clean)[0]
+    return render_full(clean, base + ".png"), render_full(clean, base + ".nowalls.png", walls=False)
 
 
 def box_of(cells):
@@ -84,9 +115,12 @@ def picture(full, bare, cells, scale, canvas=CANVAS):
     up = Image.new("L", c.size, 0)
     up.paste(floor, (0, -42))                                    # tall pieces and back walls rise up the screen
     walls = ImageChops.difference(full.crop(box), b).convert("L").point(lambda p: 255 if p > 24 else 0)
-    walls = ImageChops.multiply(walls, floor.filter(ImageFilter.MaxFilter(61)))   # this room's walls only
+    # this room's walls only: within WALL_REACH of its floor. It was 30 px: the stubs of the walls running on past the
+    # room's corners showed, and Westwood's rooms, set in their buildings, had many more of them than the lab's
+    # (FAIRNESS.md)
+    walls = ImageChops.multiply(walls, floor.filter(ImageFilter.MaxFilter(2 * WALL_REACH + 1)))
     keep = ImageChops.lighter(ImageChops.lighter(floor, up), walls).filter(ImageFilter.GaussianBlur(1.5))
-    c = Image.composite(c, c.point(lambda p: int(p * OUTSIDE)), keep)
+    c = Image.composite(c, c.point(lambda p: int(p * OUTSIDE)) if OUTSIDE else Image.new("RGB", c.size, BG), keep)
     s = min(scale, canvas[0] / c.width, canvas[1] / c.height)
     c = c.resize((max(1, int(c.width * s)), max(1, int(c.height * s))), Image.LANCZOS)
     pic = Image.new("RGB", canvas, BG)

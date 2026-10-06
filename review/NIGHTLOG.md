@@ -180,3 +180,15 @@ Reference data: Westwood's campaign maps only (Con/War/Wiz), never quest (G_*) o
   side by side (5.7-5.9 vs 8.1-8.3); blends, quest parts from different quests, and deliberate roughness all failed.
   Controls: 53%. Short lines pass. Map agents now must pass the originality section of --check. The dialogue lab pauses here:
   original long quests that read as Westwood's are the user's call (pastiche vs closeness).
+- 00:52 Track B finished (night-tuneB, 42 commits): tavern AUC 0.99->0.877 (bar of 9-14 pieces in a back corner, stools,
+  kegs behind), throne room 0.999->0.86 (braziers in pairs down the runner, three compositions instead of one template),
+  great hall, chapel, dining hall, hall, shrine and gallery tuned; the classifier now finds 6 taverns and 3 dining halls
+  (Con02a's barman is a Shopkeeper object). Its merge with master conflicts in 7 furnish.py and 2 identity.py hunks, so the
+  merge was aborted and an agent is merging master into night-tuneB, resolving both sides and testing a sample of every
+  track's types before it comes to master. B's sheets wait for the lab-fairness fixes before judging.
+- 01:13 Lab fairness merged (night-labfair): renders without creatures (both kinds), black surroundings with only the
+  room's own walls, one scale per sheet with each generated room paired to a Westwood room of similar size and culture,
+  door counts from Westwood's rooms, Westwood pictures rotated across sheets, and judges read review/roomlab/judging/
+  and review/scenelab/judging/ (Westwood descriptions without our generator's rules). Found on the way: scale was a tell
+  (ours always drawn larger), and culture was (the lab built no Dun Mir bedrooms). All blind results before this point
+  were under less fair renders. From now on judges get the new protocol.
