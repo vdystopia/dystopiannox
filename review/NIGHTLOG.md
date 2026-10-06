@@ -350,3 +350,36 @@ width; shrine dead centre of an empty hall), tombs touching or on no axis, bench
 taverns, huge rooms with stock on one wall. Lesson: the motif engine (arrangements mined from Westwood's rooms) beats
 the recipe engine wherever both were judged; the next room wave should move the remaining types to motifs with
 archetype zone plans, rather than tune recipes further.
+
+## 04:39 Scene round 6 merged (night-scenes6) and judged (independent, neutral folders)
+
+Round 6: scene archetypes clustered from Westwood (graveyard field / crypt yard / pen; jail cell row / guardhouse; ogre
+hut yard / bone pit / cave fire...), the lab offers anchoring sites (town wall, road, cliff-walled glade, swamp pocket,
+market square), and the lab is now reproducible (the map was named after the iteration and the kit seeds from the map
+name). Graveyards lost coffins and spades (the user's digger corner and bucket of tools stay), jails a torch by every
+barred door and mixed cells, ogre camps meat racks/bearskin/bones and no chests, urchin dens no fire, gardens corn and
+tomatoes, ponds reed clumps, wells a sign.
+
+| Scene | Round 5 | Round 6 (accuracy, generated / Westwood, confidence) |
+|---|---|---|
+| bandit camp | 8/10 | **6/10, 5.6 / 6.4, 0.70** |
+| ogre camp | 10/10 | see below |
+| shrine | 10/10 | see below |
+| market stall | 7/8 | 7/8, 3.4 / 6.3, 0.76 |
+| garden | 8/10 | 9/10, 4.0 / 7.0, 0.70 |
+| well | 9/9 | 9/9, 5.4 / 7.8, 0.72 |
+| pond dock | 9/9 | 9/9, 3.8 / 7.2, 0.73 |
+| jail | 10/10 | 10/10, 4.4 / 8.0, 0.78 |
+| urchin camp | 10/10 | 10/10, 3.6 / 8.4, 0.80 |
+| graveyard | 10/10 | 10/10, 4.4 / 7.6, 0.76 |
+
+Bandit camp is near chance. The rest: the judges now name regularity inside the scene (headstones in a 4x3 lattice,
+doors and torches at exact even spacing, the cells bare/straw/cot in strict order, three piers of one length evenly
+spaced, goods mirrored at both ends of a pier, crop bands of equal length, the well and its sign at the same step every
+time, one stamped ring round the ogre fire) and still the setting: the lab's hamlet and glade give a well no square, a
+jail no castle. Too few pieces in stalls (4-5 vs 11-16) and urchin dens (a near-empty hollow vs a warren).
+Fairness question for the next round: Westwood's scenes stand in whole towns, the lab's in a hamlet - judge the
+arrangement with the setting cropped to the scene's own footprint (both sides alike), and judge the anchoring on whole
+maps instead.
+    ../dystopiannox-wt/scenes6/review/out/scenelab/shrine/round6: accuracy 10/10, generated 4.6 vs Westwood 7.6, confidence 0.74
+    ../dystopiannox-wt/scenes6/review/out/scenelab/ogre_camp/round6: accuracy 8/10, generated 4.8 vs Westwood 6.4, confidence 0.69
