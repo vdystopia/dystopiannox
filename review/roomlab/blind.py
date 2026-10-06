@@ -86,8 +86,13 @@ def make(typ, it, n_each=5):
     # spread over the batch: every other variant from a seeded start, so sizes and cultures mix
     start = rng.randrange(max(1, len(gens)))
     order = gens[start:] + gens[:start]
-    pick_g = (order[::2] + order[1::2])[:n_each]
     gal = labref.gallery(typ)
+    # A thin type (Westwood has 2-4 rooms of it) is judged against its own rooms only, as many of ours as of them: a
+    # sheet filled from kin types' rooms (a kitchen's labs and winch room) gives ours away for being of the type
+    # (independent judge, 2026-10-06 night, FAIRNESS.md)
+    own_n = sum(1 for r in gal["rooms"] if r["own"])
+    if 2 <= own_n < n_each: n_each = own_n
+    pick_g = (order[::2] + order[1::2])[:n_each]
     pick_w = pick_westwood(typ, it, pick_g, gal)
     items = [dict(source="generated", file=os.path.join(d, "renders", f"{v['index']:02d}.png"), variant=v["index"],
                   kind=v["kind"], culture=v["culture"], tiles=v["floor_tiles"], _v=v) for v in pick_g]

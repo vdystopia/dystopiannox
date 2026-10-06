@@ -29,9 +29,10 @@ room, and Westwood's rooms chosen to be about the size of the generated ones. So
 
 Judge the room as a designed room: what is in it, where it stands, how it is spaced, whether it reads as its type.
 
-About five of the ten are Westwood's and about five generated, but the split is not promised. When Westwood has fewer
-than five rooms of the type, the key fills the Westwood side from the type's pool (kin types: a hall beside a throne
-room); judge those for "made by Westwood's designers" all the same.
+About half the pictures are Westwood's and about half generated, but the split is not promised. A sheet usually holds
+ten; when Westwood has only two to four rooms of the type, it holds that many of each (four, six or eight pictures).
+Only when Westwood has a single room of the type does the key fill the Westwood side from the type's pool (kin types: a
+hall beside a throne room); judge those for "made by Westwood's designers" all the same.
 
 ## What to look for (the rubric)
 
