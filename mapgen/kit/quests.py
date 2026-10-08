@@ -18,8 +18,9 @@ Lines are tried in order and the first whose `when` holds is spoken, so later st
 line break is "\\n". Keys are "<Map>:<Name><n>" (n counts within the map).
 
 Every line said in a dialogue window is voiced (mapgen/voice.py, run by Spec.build): a talker's lines and what
-q.tell has a giver say after the talk. write_strings records who says each (<Map>.speech.json) with their portraits
-and any voice a design pins (q.talker(..., voice=)). Text over a head (A.chat) and on screen (A.print) has no key and
+q.tell has a giver say after the talk. write_strings records who says each (<Map>.speech.json) with their portraits,
+any voice a design pins (q.talker(..., voice=), q.voice) and how a line is said where it matters (q.say(..., spoken=
+"(sigh) ...", mood="...")). Text over a head (A.chat) and on screen (A.print) has no key and
 stays silent, as Westwood's does.
 """
 import json, os, re
@@ -101,6 +102,7 @@ class QuestBook:
         self.spoken = {}            # key -> who says it in a dialogue window (voiced by mapgen/voice.py)
         self.pics = {}              # talker -> portrait
         self.voices = {}            # talker -> the voice a design pins (mapgen/voice.py cast)
+        self.delivery = {}          # key -> how it is said: {"spoken": its words with vocal events, "mood": direction}
 
     # ---- text --------------------------------------------------------------------------------------------------
     def text(self, text, stem="Line"):
@@ -172,22 +174,51 @@ class QuestBook:
         return dict(Quest="", Stage=-1, Has=has, Flag=flag, Not=not_, Gold=gold)
 
     # ---- declarations ------------------------------------------------------------------------------------------
-    def say(self, text, when=None, do=(), ask=False, else_=(), who="Line"):
-        return dict(When=when or self.when(), Text=self.text(text, who), Ask=ask, Do=list(do), Else=list(else_))
+    def say(self, text, when=None, do=(), ask=False, else_=(), who="Line", spoken=None, mood=None):
+        """A talker's line. spoken, mood: how it is said (q.deliver)."""
+        key = self.text(text, who)
+        if spoken or mood: self.deliver(key, spoken, mood)
+        return dict(When=when or self.when(), Text=key, Ask=ask, Do=list(do), Else=list(else_))
 
-    def tell(self, giver, text):
+    def tell(self, giver, text, spoken=None, mood=None):
         """An action: when the talk ends, `giver` says `text` in a dialogue window of its own, voiced like its other
         lines (Westwood's refusal, War05A's "Fine then, don't return my magical staff!", is such a second TellStory).
         Only in a talker line's do= or else_= (it needs the talk's window); A.chat says a line over the head, silent."""
         key = self.text(text, giver)
         self.spoken[key] = giver
+        if spoken or mood: self.deliver(key, spoken, mood)
         return ("tell", key, giver, 0)
+
+    def deliver(self, key, spoken=None, mood=None):
+        """How a spoken line is said (mapgen/voice.py, Breeze): `spoken` is its text with inline vocal events where the
+        line warrants one ("(sigh) Gate's barred by order of the reeve." ; (laugh), (chuckle), (sigh), (scoff),
+        (cough), (clears throat), (gasp), (sniff), (groan)), the words exactly the line's; `mood` a few words of
+        direction for this line alone ("cold and bitter"). Use them where a line clearly calls for it, not on every
+        line. Returns the key."""
+        import sys
+        if os.path.dirname(HERE) not in sys.path: sys.path.insert(0, os.path.dirname(HERE))
+        import voice as _V
+        if spoken:
+            why = _V.delivery_problem(self.strings[key], spoken)
+            if why: raise ValueError(f"{key}: the delivery {spoken!r}: {why}")
+        d = self.delivery.setdefault(key, {})
+        if spoken: d["spoken"] = spoken
+        if mood: d["mood"] = mood
+        return key
+
+    def voice(self, who, voice):
+        """Pins the voice of a speaker who is not a q.talker of this design, or by one of its lines' keys (a
+        shopkeeper's greeting: q.voice(greet_key, {...})). The forms are q.talker's voice=."""
+        self.voices[who] = voice
 
     def talker(self, name, lines, pic=None, title=None, voice=None):
         """An NPC who talks: the first of `lines` whose condition holds. pic: its portrait (Westwood's names). title:
         the name over its dialogue window (default: from the script name, "NorthGuard" -> "North Guard"). voice: pins
-        its voice (mapgen/voice.py: a part such as "elder", a Kokoro voice such as "bm_george", or a recipe), for a
-        character who speaks on two maps; by default the voice is cast from its body, portrait and title."""
+        its voice (mapgen/voice.py cast_breeze): a part such as "elder", a description ("An old blacksmith in his
+        seventies. Deep, gravelly voice, a northern English accent. Slow and warm.") or {"desc": ..., "seed": n} for
+        that very voice (and "ref_text"/"ref_desc" to reproduce an auditioned take); a Kokoro voice ("bm_george") or
+        recipe ({"mix": ..., "speed": ...}) serves only the Kokoro engine; a dict may carry both. Pin a character who
+        speaks on two maps; by default the voice is cast from its body, portrait and title."""
         self.names.add(name)
         self.title(name, title or display_name(name))
         for l in lines: self.spoken.setdefault(l["Text"], name)
@@ -270,9 +301,10 @@ class QuestBook:
 
     def write_strings(self, out_dir):
         """<Map>.strings.json beside the map (install copies it into maps/<Map>/), and <Map>.speech.json: who says
-        each line in a dialogue window, their portraits and pinned voices (Spec.build's voice step reads it)."""
+        each line in a dialogue window, their portraits, pinned voices and deliveries (Spec.build's voice step reads it)."""
         p = os.path.join(out_dir, f"{self.map}.strings.json")
         with open(p, "w", encoding="utf-8") as f: json.dump(self.strings, f, ensure_ascii=False, indent=1)
         with open(os.path.join(out_dir, f"{self.map}.speech.json"), "w", encoding="utf-8") as f:
-            json.dump(dict(lines=self.spoken, pics=self.pics, voices=self.voices), f, ensure_ascii=False, indent=1)
+            json.dump(dict(lines=self.spoken, pics=self.pics, voices=self.voices, delivery=self.delivery), f,
+                      ensure_ascii=False, indent=1)
         return p

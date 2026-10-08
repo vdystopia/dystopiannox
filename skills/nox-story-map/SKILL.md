@@ -96,15 +96,26 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
     objective, done=q.when(has=item), reward=[A.give(...)], refusal=...) + other_lines)`; a quest's done entry is
     `q.done(objective)` (the same words, COMPLETED), news is `q.note(text)`. The text by `rules/DIALOGUE.md`.
     Every line said in a dialogue window is voiced by the build: a sulk after "no" is `else_=[q.tell(giver, text)]`
-    (a window of its own, voiced), never `A.chat` (over the head, silent). Voices are cast from the body, portrait and
-    title; pin one for a character who speaks on two maps: `q.talker(name, lines, voice="bm_george")`.
+    (a window of its own, voiced), never `A.chat` (over the head, silent). Voices (Breeze TTS 2) are cast from the
+    body, portrait and title: a description per speaker (age, timbre, an English accent, manner) and a seed. Pin the
+    main characters' voices in the design, as Thornwick's `AUDITION`: `q.talker(name, lines, voice={"desc": "An old
+    village blacksmith in his seventies. Deep, weathered, gravelly voice, a rural northern English accent. Speaks
+    slowly and warmly.", "seed": 7})`; a shopkeeper by its greeting's key, `q.voice(greet_key, {...})`. Audition a
+    description first (`voice.py say ... --voice "<description>" --seed n`). Where a line clearly calls for it, its
+    delivery: `q.say(text, spoken="(sigh) " + text)` ((laugh), (chuckle), (sigh), (scoff), (cough), (clears throat),
+    (gasp), (sniff), (groan); the words exactly the line's) or `mood="cold and bitter"`; a few lines a map, not all.
     `m.scripts.update(B.files(m.d["name"])); m.scripts.update(q.files())`.
 11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()` (`culture` may
     be a tuple: Harrowby's `("farm", "ogre")`). Add a theme
     to `kit/scenes.py` when a map needs one; never lay loose props by hand.
 12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)` (before the build: the voices read it),
     `m.build(OUT)`, which voices the spoken lines (`VOICE <Name>: n of n lines voiced`; `NOX_NOVOICE=1` skips it while
-    trying seeds). The TTS is installed once per PC with `py mapgen/voice.py fetch` (PROCESS.md "Voices").
+    trying seeds). The TTS is installed once per PC with `py mapgen/voice.py fetch` (PROCESS.md "Voices"). Voicing
+    renders on pc1's GPU unless the user is gaming (the pc1 AI guard's state file), then on pc2's 2080 Ti, back on pc1
+    once the game ends; it waits while Talk's pc1 model is loaded (`NOX_VOICE_GPU=skip` keeps the cached waves and goes
+    on; voice later with `voice.py voice <out> <Name>`; `--gpu pc1|pc2` pins it). The first voicing of a map takes
+    about half a minute of GPU per line, a rebuild seconds. A line that fails the quality gate
+    is named by the build and the QA voice step: rephrase it or change its delivery, or `voice.py voice ... --retry`.
 
 ## 3. Check, fix, repeat
 
@@ -120,7 +131,7 @@ py review/roomscore.py mapgen/out/<map>/<Name>.map            # each room scored
 py review/exteriors.py mapgen/out/<map>/<Name>.map --holes    # empty outdoor ground
 py tests/storylab.py --check mapgen/designs/<map>.py          # the story's lines against Westwood's (no build needed)
 py mapgen/voice.py cast mapgen/out/<map> <Name>               # who speaks with which voice
-py mapgen/voice.py say "Well met, stranger." --voice elder    # hear a voice before casting it
+py mapgen/voice.py say "Well met, stranger." --voice "<description>" --seed 7   # hear a voice before pinning it
 ```
 
 **The last step before handing a map over** is the QA gate:
