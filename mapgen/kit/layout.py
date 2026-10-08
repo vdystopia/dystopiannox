@@ -395,9 +395,113 @@ class Land:
     def region_of(self, s):
         return getattr(self, "region_map", {}).get(s)
 
-    def apply(self, spec, wall, floor):
+    def unlevel_edges(self, longest=2, depth=4, room=2):
+        """Breaks every long level stretch of the forest edge (one running straight across the screen) into a
+        row of V-shaped bays with 45-degree sides, Westwood's diagonal wall lines, by adding land below a south
+        edge or above a north edge (or, along a narrow band of forest, by taking open ground out of the land on
+        its side); returns the squares added and taken out. apply(unlevel=True) calls it first.
+
+        Why [CL-1]: a level edge is a saw of wall pieces whose teeth all sit on the same screen rows, and seen from
+        a few hundred pixels above or below, every valley of the saw is in sight. OpenNox (v1.9.0-alpha13) fills
+        the dark outside the player's sight one screen row at a time and panics when a row crosses the edge of
+        what he sees 31 times or more (client_draw.go sub_4C5500: "index out of range [1] with length 1"): the
+        client dies on the spot. Thornwick's straight roads east gave rows of 32-48 crossings (2026-10-08: the
+        game crashed as the map loaded, its start being in sight of one). A 45-degree line crosses a row once.
+
+        longest: level runs of more squares than this are broken; depth: how far (squares) a bay reaches into
+        the forest; room: squares of forest kept between a bay and any other land."""
+        sq = set(self.squares)
+        add, cut = set(), set()
+        fixed = set(self.roads) | self.plaza | self.water | self.taken | self.taken_strict | self.reserved
+        for ln in self.links:                                  # the passages' centre lines stay open
+            for si, sj in ln["path"]:
+                ci, cj = int(math.floor(si)), int(math.floor(sj)) + 1
+                fixed |= {(ci + a, cj + b) for a in range(-2, 3) for b in range(-2, 3)}
+        fixed |= {(i + a, j + b) for i, j in fixed for a, b in N8}
+        sqr = lambda x, y: ((x + y) // 2, (x - y) // 2)        # the square on cell (x, y), x + y even
+        for down in (1, -1):                                   # south edges (land above the forest), north edges
+            below = ((1, 0), (0, -1)) if down == 1 else ((-1, 0), (0, 1))
+            edge = {s for s in sq if all((s[0] + a, s[1] + b) not in sq for a, b in below)}
+            for s in sorted(edge):
+                if (s[0] - 1, s[1] - 1) in edge: continue      # not the west end of its run
+                run = [s]
+                while (run[-1][0] + 1, run[-1][1] + 1) in edge: run.append((run[-1][0] + 1, run[-1][1] + 1))
+                if len(run) <= longest: continue
+                x0, y0 = s[0] + s[1], s[0] - s[1]              # cells: the run goes east along row y0
+                span = 2 * (len(run) - 1)
+                land = sq | add
+
+                def free(x, y):
+                    """Cell (x, y) may become land: void, on the map, and the forest beyond it stays `room`
+                    squares deep toward any other land (the far side of a band of forest, another bay)."""
+                    n = sqr(x, y)
+                    return (n not in land and n not in self.forbidden and 3 <= x <= 250 and 3 <= y <= 250 and
+                            not any((x + a + y + down * b) % 2 == 0 and sqr(x + a, y + down * b) in land
+                                    for a in range(-2 * room, 2 * room + 1) for b in range(1, 2 * room + 1)))
+                room_at = []                                   # how deep a bay may go below each cell of the run
+                for t in range(span + 1):
+                    k = 0
+                    while k < depth and ((x0 + t + y0 + down * (k + 1)) % 2 or free(x0 + t, y0 + down * (k + 1))):
+                        k += 1
+                    room_at.append(k)
+                a_run = min(depth, sorted(room_at)[len(room_at) // 4])
+                inward = False
+                if a_run < depth // 2:
+                    # a narrow band of forest: the bays go into the land instead, where it is open ground deep
+                    # enough (never a road, the square, water, a building, a yard, a story place or a passage)
+                    def cuttable(x, y):
+                        n = sqr(x, y)
+                        return (n in sq and n not in cut and n not in fixed and
+                                all((x + a + y - down * b) % 2 or (sqr(x + a, y - down * b) in sq and
+                                                                   sqr(x + a, y - down * b) not in cut)
+                                    for a in range(-2, 3) for b in range(1, 2 * room + 2)))
+                    cut_at = []
+                    for t in range(span + 1):
+                        k = 0
+                        while k < depth and ((x0 + t + y0 - down * k) % 2 or cuttable(x0 + t, y0 - down * k)):
+                            k += 1
+                        cut_at.append(k)
+                    a_cut = min(depth, sorted(cut_at)[len(cut_at) // 4])
+                    if a_cut > a_run: inward, a_run, room_at = True, a_cut, cut_at
+                if a_run == 0: continue
+                for t in range(1, span):
+                    # V bays `depth` squares apart; a shallower one (a narrow band of forest) spends as long on
+                    # each of its levels, never lying level at its foot
+                    tri = depth - abs(t % (2 * depth) - depth)
+                    d = min(a_run, max(0, tri - (depth - a_run + 1) // 2), t, span - t, room_at[t])
+                    for k in range(1, d + 1):
+                        x, y = (x0 + t, y0 - down * (k - 1)) if inward else (x0 + t, y0 + down * k)
+                        if (x + y) % 2 == 0: (cut if inward else add).add(sqr(x, y))
+        # keep what joins the land through a whole side, in order from the land (each takes its neighbour's region)
+        rm = getattr(self, "region_map", None)
+        keep, q = set(), collections.deque()
+        for s in add:
+            for a, b in N4:
+                if (s[0] + a, s[1] + b) in sq: q.append((s, (s[0] + a, s[1] + b))); break
+        while q:
+            s, frm = q.popleft()
+            if s in keep: continue
+            keep.add(s)
+            if rm is not None and frm in rm: rm[s] = rm[frm]
+            q.extend(((s[0] + a, s[1] + b), s) for a, b in N4 if (s[0] + a, s[1] + b) in add)
+        if keep or cut:
+            new = self._fix_pinches((sq | keep) - cut, avoid=self.forbidden)
+            if len(self._largest(new)) < len(new):
+                new = self._fix_pinches(sq | keep, avoid=self.forbidden)        # a cut split the land: no cuts
+                cut = set()
+            self.squares = new
+            if rm is not None:
+                for s in self.squares - sq - set(rm):
+                    near = next(((s[0] + a, s[1] + b) for a, b in N8 if (s[0] + a, s[1] + b) in rm), None)
+                    if near is not None: rm[s] = rm[near]
+        return keep, cut
+
+    def apply(self, spec, wall, floor, unlevel=False):
         """Floor tiles on every land square and the forest wall around them. wall / floor: a material,
-        or a function of the region (each section has its own wall and ground)."""
+        or a function of the region (each section has its own wall and ground). unlevel: break up the forest
+        edge's long level runs first (`unlevel_edges`: the OpenNox client crashes in sight of one; the QA gate's
+        sight step finds a map that needs it)."""
+        if unlevel: self.unlevel_edges()
         wall_of = wall if callable(wall) else (lambda region: wall)
         floor_of = floor if callable(floor) else (lambda region: floor)
         for s in self.squares:

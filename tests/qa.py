@@ -26,6 +26,8 @@ Steps (each prints PASS, FAIL or LOOK):
   6. exterior    review/exteriors.py: the share of the open ground with no prop within 4 cells against Westwood's maps of
                  the map's environment (review/exteriors_baseline.json): over their 90th percentile fails, over the 75th
                  is a LOOK
+     sight       tests/sightrows.py: no point of the floor from which a screen row crosses the edge of the player's sight
+                 often enough to crash the OpenNox client (a long level forest edge in view; CL-1); a risk is a LOOK
   7. pictures    review/out/<Name>/qa/: the story map, the routes, close-ups of every named story place, every room,
                  the empty ground; index.md and index.html walk the reviewer through them, each with what to look for
 
@@ -361,6 +363,17 @@ def main():
                  f"tiles (Westwood median {made.get('p50', '?')})")
     else:
         gate.add("exterior", "LOOK", f"{e4:.0%} of the open ground has no prop within 4 cells (no Westwood reference for {env})")
+    # 6b. sight: where the OpenNox client would crash on the edge of the player's sight [CL-1]
+    import sightrows as SR
+    sr = SR.scan(map_path)
+    crash = [r for r in sr if r[2] >= SR.CRASH]
+    risk = [r for r in sr if SR.RISK <= r[2] < SR.CRASH]
+    gate.add("sight", "FAIL" if crash else "LOOK" if risk else "PASS",
+             f"most crossings of the sight's edge on one screen row: {max(r[2] for r in sr)} ({len(sr)} points; the "
+             f"client panics at 31; the estimate, tests/sightrows.py, fails at {SR.CRASH}+, {SR.RISK}-"
+             f"{SR.CRASH - 1} is a risk)", [f"({x}, {y}): {c} crossings on screen row {row}" +
+                                           (" CRASH" if c >= SR.CRASH else "")
+                                           for x, y, c, row in sorted(crash + risk, key=lambda r: -r[2])])
     # 7. pictures
     pics = {}
     qa_dir = os.path.join(REPO, "review", "out", name, "qa")
