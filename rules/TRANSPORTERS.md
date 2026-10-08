@@ -209,3 +209,9 @@ map's `transport.go`: the lift in 85 frames each way (2714, 1794) to (3289, 4600
 frames, the stairs and the passage both ways. The host of an `-autosrv` game starts NO_COLLIDE (it walks through
 objects, not walls), so a test driver clears that flag first: a player who does not collide never triggers a pad or
 rides a lift.
+
+The `-autosrv` host also joins as an **observer** (OpenNox `startServer`: `PlayerGoObserver` for a non-dedicated
+autosrv host): the script moves his unit, but the client's camera stays where he spawned. To photograph a transporter
+(Ironcrag, 2026-10-08) a click into the client's window takes him out of observer mode (as an observer clicking to join
+does), after which the camera follows him and `/nox/screenshot` (the client's `-pprof` server) gives the game's own frame
+at each end; the window must not be minimized, or the client stops drawing new frames.
