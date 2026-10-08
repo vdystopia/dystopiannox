@@ -564,6 +564,17 @@ The kit does all of this; know why before changing it.
   lays itself (Rimehold's ice cave), so no spot lies in two (`nox._world_polygon`). **Recurring** (Greywatch had none;
   Rimehold's cave polygon had left it a minimap only inside the cave): `check_minimap` errs when the start lies in no
   minimap polygon.
+- **A long level forest edge crashes the client** [CL-1] (2026-10-08: the voiced Thornwick crashed OpenNox as it
+  loaded; the voices were not the cause). OpenNox v1.9.0-alpha13 blacks out what the player cannot see one screen row
+  at a time; a row that crosses the edge of his sight 31 times or more panics the client on the spot (client_draw.go
+  sub_4C5500, "index out of range [1] with length 1", on stderr only: the log just stops). A forest edge running straight
+  across the screen is a saw of wall pieces whose valleys all sit on one row; seen from a few hundred pixels above or
+  below, a long one gives 40-48. Thornwick's roads east had them (the 10-05 build too, out of the start's sight); 4 of 5
+  such points crashed the client, none after the fix. `Land.apply(..., unlevel=True)` (`Land.unlevel_edges`) breaks
+  every level run of the edge longer than 2 squares into V bays with 45-degree sides, into the forest, or into open
+  ground along a narrow band of forest; Thornwick uses it. The gate's sight step (`tests/sightrows.py`) estimates the
+  worst row from every point of the floor and fails a map at 33 (the estimate over-counts; it is calibrated on the game).
+  To try a point in the client: `py tests/sightrows.py <map> --at X,Y --png out.png`.
 - **Clones** lose their donor map's script hooks (ScriptEvents naming its functions).
 - **Never place a `Zombie`**: OpenNox cannot read the map back. Map names are at most 9 characters.
 - OpenNox alpha13 leaves TellStoryStr, quest status, JournalEntryStr/Edit, MakeFriendly and GiveXp unimplemented; the
@@ -586,6 +597,8 @@ The kit does all of this; know why before changing it.
 5. the room score (`review/roomscore.py`, by room type): rooms that miss it are listed to look at;
 6. the exterior's empty ground (`review/exteriors.py`): over Westwood's 90th percentile for the map's environment fails
    (`review/exteriors_baseline.json`, from `py review/exteriors.py --westwood --save`), over the 75th is a look;
+   the sight [CL-1] (`tests/sightrows.py`): no point of the floor from which a screen row crosses the edge of the
+   player's sight often enough to crash the client (33 fails, 31-32 is a look);
 7. the pictures, in `review/out/<Name>/qa/` with `index.html`: the story map, the routes with each stop's facing,
    close-ups of every named story place, every room, the empty ground. Each comes with what to look for (the
    "review only" items of `review/FEEDBACK.md`); look at every one.

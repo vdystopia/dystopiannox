@@ -147,7 +147,7 @@ land.carve(margin=3.5)
 lane_ = sm.keep_open({"grove": 6, "camp": 8, "den": 5, "fork": 3, "tower": 7})
 clumps = land.thickets(160, size=(0.9, 1.8), clear=1, avoid=frozenset(lane_ & land.squares))
 land.open_links()
-land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
+land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm", unlevel=True)    # the roads east: CL-1
 built = []
 for y_ in yards:
     if not y_.plot <= land.squares:
