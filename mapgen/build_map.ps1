@@ -7,7 +7,11 @@
 #   ambient[r,g,b],
 #   walls[{x,y,facing,material[,variation][,window]}],
 #   tiles[{x,y,material[,edges[[overlayMaterial, edgeType, direction]]]}],
-#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}][,items[object...]]}],
+#   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}][,items[object...]]
+#            [,key][,link][,enabled]}],
+#     key: a name for the object within the spec; link: the key of the object this one names by extent (xfer
+#     ExtentLink: an elevator's pit, a teleport pad's target), resolved once every object has its extent;
+#     enabled: false writes the object disabled (create flags without ENABLED, stored with the extended fields).
 #   waypoints[{id,x,y[,name][,links[id...]]}],
 #   polygons[{name,ambient[r,g,b],minimap,points[[x,y]...]}]
 param(
@@ -124,6 +128,8 @@ function Set-Extents($obj) {
 }
 $things = [NoxShared.ThingDb]::Things
 $donors = @{}
+$byKey = @{}                                              # spec key -> object (for links)
+$linkTo = New-Object System.Collections.Generic.List[object]
 function New-SpecObject($o) {
     # One object of the spec, with what it holds (o.items: a chest's loot, a creature's carried things) as inventory
     # objects, the way Westwood stores them (each with the extended fields, a little off its holder's position).
@@ -159,6 +165,11 @@ function New-SpecObject($o) {
         $x.InitForMonsterName($o.type)
     }
     Set-XferFields $obj $o.xfer
+    if ($o.enabled -eq $false) {
+        # the create flags are written only with the extended fields; ENABLED (0x1000000) left out starts it off
+        $obj.CreateFlags = 0
+        $obj.Terminator = 0xFF
+    }
     if ($o.items) {
         $obj.Terminator = 0xFF                # the inventory is written with the extended fields
         foreach ($it in $o.items) {
@@ -193,6 +204,20 @@ foreach ($o in $s.objects) {
     if (-not $obj) { continue }
     Set-Extents $obj
     [void]$map.Objects.Add($obj)
+    if ($o.key) {
+        if ($byKey.ContainsKey([string]$o.key)) { $errors.Add("object key '$($o.key)' used twice") }
+        $byKey[[string]$o.key] = $obj
+    }
+    if ($o.link) { $linkTo.Add(@($obj, [string]$o.link)) }
+}
+
+# Links by extent (an elevator and its pit name each other; a teleport pad names where it sends the player)
+foreach ($pair in $linkTo) {
+    $obj, $key = $pair
+    if (-not $byKey.ContainsKey($key)) { $errors.Add("$($obj.Name) links to missing key '$key'"); continue }
+    $x = $xferField.GetValue($obj)
+    if (-not $x.GetType().GetField('ExtentLink')) { $errors.Add("$($obj.Name) has no ExtentLink to set"); continue }
+    $x.ExtentLink = [int]$byKey[$key].Extent
 }
 
 # Waypoints: ids are local to the spec; connections carry flag 128, which roaming NPCs follow.

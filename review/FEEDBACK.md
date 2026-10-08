@@ -211,6 +211,12 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | VO-1 | "investigate and implement a method for turning generated NPC dialogue into voiced audio that can be added to the game, so that new maps have fully voiced NPCs and quests" | P§7 Voices, P§8 Dialogue voices (`mapgen/voice.py`, run by `Spec.build`; `q.tell` for refusals) | `qa:voice` (every spoken line has a good wave from its present text; `tests/voice_test.py`); hearing it: the playtest | none | check |
 
+## Transporters (2026-10-08, a request)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| TR-1 | "The next feature we need to add is elevators, lifts, stairs and portals. They all function the exact same way. They basically teleport the player from one location to another. The second location is often an isolated part of the map (but not always)." | P§2 Transporters (`kit/transport.py`, one call for lift, stairs, portal, passage); `rules/TRANSPORTERS.md`; `skills/nox-transporters/SKILL.md` | `transport.link` (STtpLnk), `transport.landing` (STtpWal), `transport.bounce` (STtpBnc), `transport.serves` (STtpSrv), `transport.stranded` (STtpStr), `transport.wall`, `transport.pocket`, `transport.missing`, `transport.unreached`; look:spots (every named end) | none | check |
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |
@@ -219,6 +225,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | User feedback, after | 92 | 68 | 21 | 3 |
 | Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
 | Voiced dialogue (VO), after | 1 | 1 | 0 | 0 |
+| Transporters (TR), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 

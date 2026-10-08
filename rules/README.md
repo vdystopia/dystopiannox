@@ -31,6 +31,12 @@ Spot checks against independent measurements: the valid-wall table rejects exact
 rendered black in Mossford v0.1; outer boundaries are visible walls 98-99% of the time; every light
 preset carries all 70 settings of a real ColorLight.
 
+## Transporters
+
+`py rules/transporters.py [--scripts DIR]` measures every lift, teleport pad, stairs and scripted move of the player on
+the campaign maps (`out/transporters.json`: each link, each flight of stairs, the summary and the shapes the kit lays);
+`TRANSPORTERS.md` is the reference, with the engine's rules and examples.
+
 ## Biomes
 
 `py rules/biomes.py` and `py rules/biome_places.py` measure what sets Westwood's cave, ice and lava maps apart
