@@ -179,7 +179,7 @@ def main():
     ok(pin["B"]["part"] == "crone" and pin["C"]["mix"] == [["af_sky", 1.0]], "Kokoro: a pinned part and a pinned recipe")
 
     tmp = tempfile.mkdtemp(prefix="voice_test_")
-    real = (V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib)
+    real = (V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s)
     try:
         # the GPU: the pc1 AI guard's log says a game is running; other programs' load; skip keeps what is cached
         log = os.path.join(tmp, "guard.log")
@@ -187,6 +187,10 @@ def main():
         open(log, "w").write(f"2026-01-01 00:00:00 ai=True game=Old gpu_idle=True\n{now} ai=True game=nox gpu_idle=True "
                              f"server=False pc2=True (other gpu 3%)\n{now} stay-awake: True\n")
         os.environ["NOX_GPU_GUARD_LOG"] = log
+        V._win_gpu, V.vram_free_mib = (lambda: ({}, [])), (lambda: 20000)
+        V.user_idle_s = lambda: 20.0
+        ok("pc1 is in use" in (V.gpu_busy() or ""), f"the user at pc1 keeps the GPU: {V.gpu_busy()}")
+        V.user_idle_s = lambda: 3600.0
         ok(V._guard_game() == "nox", "the guard's log: a game is running (nox)")
         open(log, "w").write(f"{now} ai=True game= gpu_idle=False server=False\n")
         ok(V._guard_game() is None, "the guard's log: no game")
@@ -209,7 +213,7 @@ def main():
         os.environ["NOX_VOICE_GPU"] = "force"
         ok(V.wait_gpu() is None, "NOX_VOICE_GPU=force does not look")
         os.environ.pop("NOX_VOICE_GPU"); os.environ.pop("NOX_GPU_GUARD_LOG")
-        V.gpu_busy, V._win_gpu, V.vram_free_mib = real[4], real[5], real[6]
+        V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s = real[4], real[5], real[6], real[7]
 
         out = os.path.join(tmp, "out"); os.makedirs(out)
         q, objects, greet = story(out)
@@ -378,7 +382,7 @@ def main():
             refused = True
         ok(refused and os.path.getsize(os.path.join(nox, "Dialog", "C2HEN01E.WAV")) == 4, "Westwood's wave name is refused")
     finally:
-        V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib = real
+        V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s = real
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"\n{'FAILED: ' + str(len(FAILS)) if FAILS else 'all passed'}")
     return 1 if FAILS else 0

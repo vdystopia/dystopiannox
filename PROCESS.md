@@ -581,18 +581,23 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
   a second while speaking. A take that fails is rendered again with a new seed, up to 4 times; a line that never
   passes stays silent (its best take is kept as `<hash>.fail.wav` in the cache to listen to) and the voice check FAILs
   naming it; `py mapgen/voice.py voice <out> <Name> --retry` tries such lines again.
-- **The GPU, only while pc1 is not gaming**: before loading the model and every 30 s while rendering, `voice.gpu_busy`
-  looks for a game (the pc1 AI guard's log, `%LOCALAPPDATA%\dystopianentity\guard.log`, its latest `game=` line;
+- **The GPU, only while pc1 is idle and not gaming**: before loading the model and every 30 s while rendering,
+  `voice.gpu_busy` looks for the user at pc1 (keyboard or mouse used in the last 5 minutes, `NOX_VOICE_IDLE` seconds:
+  on 2026-10-08 two Breeze workers beside another GPU job put the 4090 at 100% and made the PC unusable), a game (the pc1 AI guard's log, `%LOCALAPPDATA%\dystopianentity\guard.log`, its latest `game=` line;
   Nox itself), other programs using the GPU (25% of its 3D and compute engines, ours and the desktop's left out) and
   free memory (10 GiB a worker). While busy the build waits, saying why, and polls every 30 s (`NOX_VOICE_WAIT`
   minutes, 120 by default, then gives up for this build); a game starting mid-run stops the workers (the model is
-  unloaded with them; what was made is cached) and the run goes on once it ends. `NOX_VOICE_GPU=skip` (or
-  `--gpu skip`) voices nothing new and keeps the cached waves; `force` does not look. Breeze runs in worker processes
-  (two when 20 GiB are free: about 1.6 times the throughput of one; `NOX_VOICE_WORKERS`) that end after the voice step.
+  unloaded with them; what was made is cached) and the run goes on once it ends; so does the user coming back. `NOX_VOICE_GPU=skip` (or
+  `--gpu skip`) voices nothing new and keeps the cached waves; `games` waits for the user, games and memory only (the GPU
+  shared with other programs' work); `force` does not look (never on the user's PC while they use it). Breeze runs in
+  one worker process at below-normal priority that ends after the voice step (`NOX_VOICE_WORKERS=2`: two when 20 GiB
+  are free, about 1.6 times the throughput, the GPU at 100%).
 - **Speed and cost** (the 4090, eager mode: Breeze's CUDA-graph path compiles with Triton, which Windows lacks):
   about 2.7 s of GPU per second of speech, 7.8 GiB a worker; a reference takes 1-2 takes, a line 1 take when it
-  passes. A Thornwick-sized map (58 lines, 22 speakers, about 7 min of speech) is about 30-40 min of first build with
-  two workers; a rebuild takes seconds: everything is cached.
+  passes. A Thornwick-sized map (58 lines, 22 speakers, about 7 min of speech) is an estimated 45-60 min of GPU for
+  its first voicing with one worker (measured per take, not yet on a whole map); a rebuild takes seconds: everything
+  is cached. A design built while the user is at pc1 therefore waits, or builds with `NOX_VOICE_GPU=skip` and is
+  voiced later with `py mapgen/voice.py voice <out> <Name>` once pc1 is idle.
 - **The cache** (`.tools/voice/cache/`): a line's key is its spoken text with its vocal events, the speaker's reference
   wave (its hash) and description, the line's mood, the model and source pins, the gate's version and the mastering;
   a reference's key its description, text, seed, part band and the gate. A changed line, delivery or voice re-makes

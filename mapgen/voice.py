@@ -43,7 +43,7 @@ The steps (Spec.build runs `build_step` after the scripts are written; NOX_NOVOI
 
     py mapgen/voice.py fetch [--engine kokoro] [--model-from DIR]  install the TTS (once per PC; see LOCK below)
     py mapgen/voice.py voice mapgen/out/thornwick Thornwick       voice a built map again (no rebuild)
-                       [--only KEY,SPEAKER,...] [--retry] [--gpu wait|skip|force]
+                       [--only KEY,SPEAKER,...] [--retry] [--gpu wait|games|skip|force]
     py mapgen/voice.py check mapgen/out/thornwick Thornwick       every spoken line has a good wave
     py mapgen/voice.py cast mapgen/out/thornwick Thornwick        who speaks with which voice, without synthesis
     py mapgen/voice.py say "Well met, stranger." --voice elder --out say.wav   (or --voice "<a description>" --seed 7)
@@ -133,6 +133,7 @@ TAGS = ("laugh", "chuckle", "sigh", "cough", "clears throat", "scoff", "gasp", "
 AUTO_TAGS = ((r"(?<![\w'])Ha!(?=\s|$)", "(laugh)"), (r"(?<![\w'])Hmph[.!]?(?=\s|$)", "(scoff)"))
 REF_DRIFT = 5.0                 # semitones a line's median pitch may stray from its reference's
 GPU_BUSY_PCT = 25               # other programs' GPU use that counts as busy (the pc1 AI guard's threshold)
+IDLE_S = 300                    # the user away from pc1 this long before the GPU is used (NOX_VOICE_IDLE, seconds)
 GAME_PROCS = {"opennox.exe", "nox.exe", "opennox-hd.exe"}
 
 # Fantasy village casting: who the part is, the timbre, an English accent, the manner. A speaker gets its part's
@@ -835,6 +836,18 @@ def _win_gpu():
     return {int(k): float(v) for k, v in (js.get("util") or {}).items()}, js.get("procs") or []
 
 
+def user_idle_s():
+    """Seconds since the user last touched pc1's keyboard or mouse (Windows), or None where it cannot be known."""
+    if os.name != "nt": return None
+    import ctypes
+
+    class LII(ctypes.Structure):
+        _fields_ = [("cbSize", ctypes.c_uint), ("dwTime", ctypes.c_uint)]
+    li = LII(); li.cbSize = ctypes.sizeof(LII)
+    if not ctypes.windll.user32.GetLastInputInfo(ctypes.byref(li)): return None
+    return ((ctypes.windll.kernel32.GetTickCount() - li.dwTime) & 0xFFFFFFFF) / 1000.0
+
+
 def vram_free_mib():
     try:
         r = subprocess.run(["nvidia-smi", "--query-gpu=memory.free", "--format=csv,noheader,nounits"],
@@ -844,10 +857,16 @@ def vram_free_mib():
         return None
 
 
-def gpu_busy(roots=(), need_mib=None):
-    """Why the GPU is not ours to use now, or None: a game running (the pc1 AI guard's log; Nox itself), other programs
-    using it (GPU_BUSY_PCT of its 3D and compute engines, ours and the desktop's left out: roots are our workers' pids)
-    or too little of its memory free (need_mib)."""
+def gpu_busy(roots=(), need_mib=None, others=None):
+    """Why the GPU is not ours to use now, or None: the user at pc1 (keyboard or mouse used in the last NOX_VOICE_IDLE
+    seconds, 300 by default: Breeze at full tilt makes the desktop unusable), a game running (the pc1 AI guard's log;
+    Nox itself), other programs using it (GPU_BUSY_PCT of its 3D and compute engines, ours and the desktop's left out: roots are our workers' pids)
+    or too little of its memory free (need_mib). others=False (NOX_VOICE_GPU=games): games and memory only, the GPU
+    shared with other programs' work."""
+    if others is None: others = os.environ.get("NOX_VOICE_GPU", "wait").lower() != "games"
+    idle, need_idle = user_idle_s(), float(os.environ.get("NOX_VOICE_IDLE", IDLE_S))
+    if idle is not None and idle < need_idle:
+        return f"pc1 is in use (last input {idle:.0f} s ago; voicing runs once it has been idle {need_idle / 60:.0f} min)"
     g = _guard_game()
     if g: return f"a game is running ({g}, says the pc1 AI guard)"
     st = _win_gpu()
@@ -863,10 +882,10 @@ def gpu_busy(roots=(), need_mib=None):
         for p in procs:
             if p["name"].lower() in GAME_PROCS or (p.get("path") or "").lower().startswith(NOX.lower() + "\\"):
                 return f"Nox is running ({p['name']})"
-        others = {q: u for q, u in util.items() if q not in mine and (byid.get(q) or {}).get("name", "").lower() != "dwm.exe"}
-        tot = sum(others.values())
-        if tot >= GPU_BUSY_PCT:
-            top = sorted(others.items(), key=lambda kv: -kv[1])[:3]
+        load = {q: u for q, u in util.items() if q not in mine and (byid.get(q) or {}).get("name", "").lower() != "dwm.exe"}
+        tot = sum(load.values())
+        if others and tot >= GPU_BUSY_PCT:
+            top = sorted(load.items(), key=lambda kv: -kv[1])[:3]
             return f"other programs use the GPU ({tot:.0f}%: " + ", ".join(
                 f"{(byid.get(q) or {}).get('name', q)} {u:.0f}%" for q, u in top) + ")"
     if need_mib:
@@ -878,7 +897,7 @@ def gpu_busy(roots=(), need_mib=None):
 
 def wait_gpu():
     """None once the GPU is free to use; else why voicing is skipped (NOX_VOICE_GPU=skip, or NOX_VOICE_WAIT minutes
-    passed, 120 by default). NOX_VOICE_GPU=force does not look."""
+    passed, 120 by default). NOX_VOICE_GPU=games waits for games and memory only; force does not look."""
     policy = os.environ.get("NOX_VOICE_GPU", "wait").lower()
     if policy == "force": return None
     t0, said_, limit = time.time(), None, float(os.environ.get("NOX_VOICE_WAIT", "120")) * 60
@@ -925,20 +944,20 @@ def _breeze_work(man, keys, retry, extra=()):
 
 def run_breeze(man, remaining, retry=False, extra=()):
     """Renders the Breeze lines `remaining()` names (keys still to make; called again after a pause) in worker processes
-    on the GPU: as many as its free memory holds (NOX_VOICE_WORKERS, 2 at most by default), each a share of the
-    speakers. Polls the GPU every 30 s while they run: a game or other GPU work stops them (the model unloads with
+    on the GPU at below-normal priority: one by default (NOX_VOICE_WORKERS=2 for two when its memory holds them: about
+    1.6 times the throughput, and the GPU at 100%), each a share of the speakers. Polls every 30 s while they run: the
+    user coming back to pc1, a game or other GPU work stops them (the model unloads with
     the process; every line made is in the cache) and the run waits, then goes on. Returns None, or why not all
     were made."""
-    first = True
     while True:
         keys = remaining()
-        if not keys and not (first and extra): return None
+        say = [s for s in extra if not os.path.exists(man["speakers"][s]["say_out"])]
+        if not keys and not say: return None
         why = wait_gpu()
         if why: return why
-        work = _breeze_work(man, keys, retry, extra if first else ())
-        first = False
+        work = _breeze_work(man, keys, retry, say)
         free = vram_free_mib() or VRAM_MIB
-        n = max(1, min(int(os.environ.get("NOX_VOICE_WORKERS", "2")), free // VRAM_MIB, len(work)))
+        n = max(1, min(int(os.environ.get("NOX_VOICE_WORKERS", "1")), free // VRAM_MIB, len(work)))
         shares = [[] for _ in range(n)]
         for w in sorted(work, key=lambda w: -sum(len(l["said"].split()) for l in w["lines"]) - len(w["ref_text"].split())):
             min(shares, key=lambda sh: sum(len(l["said"].split()) for x in sh for l in x["lines"]) + 25 * len(sh)).append(w)
@@ -955,7 +974,8 @@ def run_breeze(man, remaining, retry=False, extra=()):
                                names=man.get("names", []), worker=k + 1, speakers=share), f, ensure_ascii=False)
             specs.append(jp)
             p = subprocess.Popen([venv_python("breeze"), os.path.join(HERE, "voice_breeze.py"), jp], stdout=subprocess.PIPE,
-                                 stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", env=env)
+                                 stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", env=env,
+                                 creationflags=0x4000 if os.name == "nt" else 0)      # BELOW_NORMAL_PRIORITY_CLASS
             tail = collections.deque(maxlen=40)
 
             def relay(p=p, tail=tail, k=k):
@@ -1414,7 +1434,7 @@ def main():
         if c == "voice":
             s.add_argument("--only", help="render only these line keys or speakers (comma-separated)")
             s.add_argument("--retry", action="store_true", help="try again the lines that failed the gate")
-            s.add_argument("--gpu", choices=("wait", "skip", "force"))
+            s.add_argument("--gpu", choices=("wait", "games", "skip", "force"))
     s = sub.add_parser("say"); s.add_argument("text"); s.add_argument("--voice", default="man")
     s.add_argument("--seed", type=int); s.add_argument("--out", default="say.wav"); s.add_argument("--engine")
     a = ap.parse_args()
