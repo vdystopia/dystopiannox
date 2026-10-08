@@ -99,6 +99,228 @@ def fake_breeze(fail=(), calls=None):
     return run
 
 
+ENV_KEYS = ("NOX_PC1_STATE", "NOX_GPU_JOBS_DIR", "NOX_VOICE_REMOTE", "NOX_VOICE_PC1_URL", "NOX_VOICE_POLL",
+            "NOX_VOICE_STOP_GRACE", "NOX_VOICE_YIELD_GRACE", "NOX_VOICE_PYTHON", "NOX_VOICE_GPU", "NOX_VOICE_WAIT")
+
+
+def write_state(path, gaming, age=0.0, game="The Last Spell"):
+    """A pc1 AI guard state file as the guard writes it."""
+    js = dict(time=int(time.time() - age), ai_enabled=True, game_running=gaming, game=game if gaming else None,
+              gpu_idle=not gaming, gpu_util=40.0 if gaming else 1.0, idle_s=0, model_server=False)
+    with open(path + ".tmp", "w", encoding="utf-8") as f: json.dump(js, f)
+    os.replace(path + ".tmp", path)
+
+
+def registered(jobs):
+    """Our registration files in the gpu-jobs folder: [(pid, content)]."""
+    if not os.path.isdir(jobs): return []
+    return [(fn, open(os.path.join(jobs, fn), encoding="utf-8").read()) for fn in os.listdir(jobs)]
+
+
+class FakeGPU:
+    """A stand-in for a GPU service (pc2's API: /health, /breeze/synth, /asr), stdlib only: a take is a warbling tone
+    as long as its words would be said, and Whisper hears exactly the words of the last take."""
+    def __init__(self, label, jobs=None, n503=0):
+        import http.server, threading
+        self.label, self.jobs, self.n503 = label, jobs, n503
+        self.synths, self.served503, self.saw_jobs, self.on_synth, self.last = 0, 0, [], None, ""
+        me = self
+
+        class H(http.server.BaseHTTPRequestHandler):
+            def log_message(self, *a): pass
+
+            def reply(self, code, obj, headers=()):
+                b = json.dumps(obj).encode()
+                self.send_response(code)
+                for k, v in headers: self.send_header(k, v)
+                self.send_header("Content-Type", "application/json"); self.send_header("Content-Length", str(len(b)))
+                self.end_headers(); self.wfile.write(b)
+
+            def do_GET(self):
+                if self.path == "/health": return self.reply(200, dict(loaded=True, free_vram_mib=9000, busy=False))
+                self.reply(404, {})
+
+            def do_POST(self):
+                body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")
+                if self.path == "/asr": return self.reply(200, dict(text=me.last))
+                if self.path != "/breeze/synth": return self.reply(404, {})
+                if me.n503 > 0:
+                    me.n503 -= 1; me.served503 += 1
+                    return self.reply(503, dict(error="busy"), [("Retry-After", "1")])
+                me.synths += 1
+                if me.jobs is not None: me.saw_jobs.append(registered(me.jobs))
+                if me.on_synth: me.on_synth(me.synths)
+                me.last = V.untagged(body["text"])
+                secs = 0.15 + len(me.last.split()) / 2.9 + 0.15
+                import base64
+                b = io.BytesIO()
+                import wave
+                with wave.open(b, "wb") as w:
+                    w.setnchannels(1); w.setsampwidth(2); w.setframerate(24000)
+                    w.writeframes(b"".join(struct.pack("<h", int(8000 * math.sin(2 * math.pi * 160 * k / 24000)))
+                                           for k in range(int(secs * 24000))))     # 160 Hz: inside every part's band
+                self.reply(200, dict(audio_b64=base64.b64encode(b.getvalue()).decode(), sample_rate=24000,
+                                     seconds=round(secs, 2), gpu_s=0.1))
+        self.srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), H)
+        self.url = f"http://127.0.0.1:{self.srv.server_address[1]}"
+        threading.Thread(target=self.srv.serve_forever, daemon=True).start()
+
+    def close(self):
+        self.srv.shutdown(); self.srv.server_close()
+
+
+def gpu_rules(tmp, real):
+    """Where Breeze renders: the guard's state file, registration, Talk's model, the policies (no worker run)."""
+    st = os.path.join(tmp, "pc1-state.json")
+    jobs = os.path.join(tmp, "gpu-jobs")
+    os.environ["NOX_PC1_STATE"], os.environ["NOX_GPU_JOBS_DIR"] = st, jobs
+    os.environ.pop("NOX_VOICE_GPU", None)
+    # the state file: gaming, not gaming, stale, missing, unreadable (unknown = gaming)
+    write_state(st, False)
+    ok(V.pc1_gaming() == (False, None), "the guard's state: not gaming")
+    write_state(st, True)
+    g, why = V.pc1_gaming()
+    ok(g and "The Last Spell" in why, f"the guard's state: gaming ({why})")
+    write_state(st, False, age=V.STATE_STALE_S + 15)
+    g, why = V.pc1_gaming()
+    ok(g and "old" in why, f"a state older than {V.STATE_STALE_S} s is taken as gaming ({why})")
+    os.remove(st)
+    g, why = V.pc1_gaming()
+    ok(g and "unknown" in why, f"no state file is taken as gaming ({why})")
+    open(st, "w").write("{not json")
+    ok(V.pc1_gaming()[0], "an unreadable state file is taken as gaming")
+    open(st, "w", encoding="utf-8-sig").write(json.dumps(dict(time=int(time.time()), game_running=False)))
+    ok(V.pc1_gaming() == (False, None), "a state file with a BOM is read")
+    # registration with the guard: gpu-jobs/<pid> saying "nox voice", taken out again; never someone else's
+    rp = V.register_job(4242)
+    ok(registered(jobs) == [("4242", V.JOB_TAG)], "a pc1 worker registers: gpu-jobs/<pid> says 'nox voice'")
+    V.unregister_job(rp)
+    ok(registered(jobs) == [], "the registration is taken out when the worker ends")
+    open(os.path.join(jobs, "999999"), "w").write("someone else's job")
+    V.unregister_job(os.path.join(jobs, "999999"))
+    ok(registered(jobs) == [("999999", "someone else's job")], "another program's registration is never removed")
+    os.remove(os.path.join(jobs, "999999"))     # the test's own file
+    V.register_job(999999)                      # a dead PID (a killed build): cleaned before a run
+    V.register_job(os.getpid())
+    V.clean_jobs()
+    ok(registered(jobs) == [(str(os.getpid()), V.JOB_TAG)], "a stale registration of ours is cleaned, a live one kept")
+    V.unregister_job(os.path.join(jobs, str(os.getpid())))
+    # Talk's model and free memory
+    V.vram_free_mib = lambda: 20000
+    V.model_server_running = lambda: True
+    ok("llama-server" in (V.pc1_busy() or ""), "Talk's pc1 model loaded: Breeze is not loaded beside it")
+    V.model_server_running = lambda: False
+    ok(V.pc1_busy() is None, "pc1 free: nothing in the way")
+    V.vram_free_mib = lambda: 4000
+    ok("GiB" in (V.pc1_busy() or ""), "too little free GPU memory on pc1")
+    # the policies
+    gaming, up, busy = [False], [True], [None]
+    V.pc1_gaming = lambda now=None: (True, "gaming (The Last Spell)") if gaming[0] else (False, None)
+    V.remote_health = lambda timeout=10: {"loaded": True} if up[0] else None
+    V.pc1_busy = lambda need_mib=V.VRAM_MIB: busy[0]
+    ok(V.gpu_policy() == "auto" and V.choose_gpu("auto") == ("pc1", None), "auto, not gaming: pc1")
+    gaming[0] = True
+    ok(V.choose_gpu("auto") == ("pc2", "gaming (The Last Spell)"), "auto, gaming: pc2")
+    up[0] = False
+    w, why = V.choose_gpu("auto")
+    ok(w is None and "unreachable" in why, f"auto, gaming, pc2 unreachable: wait, never pc1 ({why})")
+    up[0] = True
+    w, why = V.choose_gpu("pc1")
+    ok(w is None and "pc1" in why, "pc1: waits while gaming")
+    ok(V.choose_gpu("pc2") == ("pc2", None), "pc2: pc2 only")
+    ok(V.choose_gpu("force") == ("pc1", None), "force: pc1 whatever the state")
+    gaming[0], busy[0] = False, "Talk's pc1 model is loaded (llama-server): yielding to it"
+    w, why = V.choose_gpu("auto")
+    ok(w is None and "llama-server" in why, "auto, Talk's model loaded: wait (not pc2)")
+    busy[0] = None
+    os.environ["NOX_VOICE_GPU"] = "bogus"
+    try:
+        V.gpu_policy(); refused = False
+    except SystemExit:
+        refused = True
+    ok(refused, "an unknown NOX_VOICE_GPU is refused")
+    started = []
+    V._run_worker = lambda *a: started.append(a[0]) or ("done", None)
+    man = dict(lines={"K": {}}, speakers={})
+    os.environ["NOX_VOICE_GPU"] = "skip"
+    r = V.run_breeze(man, lambda: ["K"])
+    ok("skip" in (r or "") and not started, f"skip: nothing new voiced ({r})")
+    os.environ["NOX_VOICE_GPU"], os.environ["NOX_VOICE_WAIT"], os.environ["NOX_VOICE_POLL"] = "auto", "0.001", "0.05"
+    gaming[0], up[0] = True, False
+    r = V.run_breeze(man, lambda: ["K"])
+    ok(r and "waited" in r and not started, f"gaming and pc2 unreachable: waits, then gives up; pc1 never used ({r})")
+    up[0] = True
+    ok(V.run_breeze(man, lambda: ["K"]) is None and started == ["pc2"], "gaming and pc2 up: the worker runs on pc2")
+    for k in ("NOX_VOICE_GPU", "NOX_VOICE_WAIT", "NOX_VOICE_POLL"): os.environ.pop(k)
+
+
+def gpu_switch(tmp, out, objects, worker_py):
+    """A whole run through the real worker with stand-in GPU services: Talk's model at the start (wait), pc1, a game
+    (on to pc2, through a 503), the game over (back to pc1), Talk's model mid-run (stop at a line, wait), done."""
+    import threading
+    st, jobs = os.environ["NOX_PC1_STATE"], os.environ["NOX_GPU_JOBS_DIR"]
+    gaming, llama, quit_ = [False], [True], [False]
+
+    def guard():                                # the pc1 AI guard: the state every 0.3 s
+        while not quit_[0]:
+            write_state(st, gaming[0]); time.sleep(0.3)
+    threading.Thread(target=guard, daemon=True).start()
+    threading.Timer(1.5, lambda: llama.__setitem__(0, False)).start()
+    pc1, pc2 = FakeGPU("pc1", jobs), FakeGPU("pc2", jobs, n503=1)
+    phase = {"pc1": 0}
+
+    def pc1_synth(n):
+        if n == 2: gaming[0] = True                                 # the user starts a game
+        if phase["pc1"] == 1 and not llama[0] and n == pc1.mark + 1:
+            llama[0] = True                                         # the user talks to Talk
+            threading.Timer(2.0, lambda: llama.__setitem__(0, False)).start()
+    pc1.on_synth, pc1.mark = pc1_synth, 0
+
+    def pc2_synth(n):
+        if n == 2:
+            gaming[0] = False                                       # the game ends
+            phase["pc1"], pc1.mark = 1, pc1.synths
+    pc2.on_synth = pc2_synth
+    os.environ.update(NOX_VOICE_REMOTE=pc2.url, NOX_VOICE_PC1_URL=pc1.url, NOX_VOICE_POLL="0.3",
+                      NOX_VOICE_STOP_GRACE="5", NOX_VOICE_YIELD_GRACE="30", NOX_VOICE_PYTHON=worker_py,
+                      NOX_VOICE_GPU="auto")
+    V.vram_free_mib = lambda: 20000
+    V.model_server_running = lambda: llama[0]
+    for d in ("cache", "refs"): shutil.rmtree(os.path.join(V.HOME, d), ignore_errors=True)
+    buf = io.StringIO()
+    t0 = time.time()
+    try:
+        with contextlib.redirect_stdout(buf):
+            man, made, cached, why = V.voice(out, "Testvale", objects)
+    finally:
+        quit_[0] = True
+        pc1.close(); pc2.close()
+    logtxt = buf.getvalue()
+    n0 = len(FAILS)
+    n = len(man["lines"])
+    ok(made == n and all(l["voiced"] for l in man["lines"].values()) and not why,
+       f"the switching run voices all {n} lines ({made} made, {time.time() - t0:.0f} s; {why})")
+    where = {}
+    for l in man["lines"].values():
+        where.setdefault((V.cache_meta(l["hash"]) or {}).get("gpu") if l["hash"] else None, []).append(l["wave"])
+    ok({"pc1", "pc2"} <= set(where), f"lines made on both: {dict((k, len(v)) for k, v in where.items())}")
+    ok("waiting: Talk's pc1 model" in logtxt and logtxt.index("waiting: Talk's pc1 model") < logtxt.index("on pc1's RTX 4090"),
+       "Talk's model loaded at the start: Breeze waits before loading")
+    ok("gaming (The Last Spell): continuing on pc2" in logtxt, "a game mid-run: 'continuing on pc2'")
+    ok("not gaming: back on pc1" in logtxt, "the game over: 'back on pc1'")
+    ok("stopping the pc1 worker at its next line" in logtxt and "Talk's pc1 model is loaded (llama-server)" in logtxt,
+       "Talk's model mid-run: the pc1 worker stops at the next line and waits")
+    ok(pc2.served503 == 1 and "busy (503)" in logtxt, "a 503 from pc2 is waited out and retried")
+    ok(pc1.saw_jobs and all(any(c == V.JOB_TAG and p.isdigit() for p, c in s) for s in pc1.saw_jobs),
+       f"every pc1 take ran registered with the guard ({len(pc1.saw_jobs)} takes)")
+    ok(pc2.saw_jobs and all(s == [] for s in pc2.saw_jobs), "pc2's takes run with no pc1 registration")
+    ok(registered(jobs) == [], "no registration left after the run")
+    ok(not glob.glob(os.path.join(V.HOME, "tmp", "*")), "the worker's spec and stop files are gone")
+    if os.environ.get("VOICE_TEST_LOG") or len(FAILS) > n0: print(logtxt)
+    for k in ("NOX_VOICE_REMOTE", "NOX_VOICE_PC1_URL", "NOX_VOICE_GPU"): os.environ.pop(k)
+
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--westwood", default="")
     a = ap.parse_args()
@@ -179,41 +401,13 @@ def main():
     ok(pin["B"]["part"] == "crone" and pin["C"]["mix"] == [["af_sky", 1.0]], "Kokoro: a pinned part and a pinned recipe")
 
     tmp = tempfile.mkdtemp(prefix="voice_test_")
-    real = (V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s)
+    real = (V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.pc1_gaming, V.remote_health, V.vram_free_mib,
+            V.model_server_running, V.pc1_busy, V._run_worker)
+    worker_py = V.venv_python("breeze")             # the real install's (librosa for the gate), before HOME moves
+    env0 = {k: os.environ.get(k) for k in ENV_KEYS}
     try:
-        # the GPU: the pc1 AI guard's log says a game is running; other programs' load; skip keeps what is cached
-        log = os.path.join(tmp, "guard.log")
-        now = time.strftime("%Y-%m-%d %H:%M:%S")
-        open(log, "w").write(f"2026-01-01 00:00:00 ai=True game=Old gpu_idle=True\n{now} ai=True game=nox gpu_idle=True "
-                             f"server=False pc2=True (other gpu 3%)\n{now} stay-awake: True\n")
-        os.environ["NOX_GPU_GUARD_LOG"] = log
-        V._win_gpu, V.vram_free_mib = (lambda: ({}, [])), (lambda: 20000)
-        V.user_idle_s = lambda: 20.0
-        ok("pc1 is in use" in (V.gpu_busy() or ""), f"the user at pc1 keeps the GPU: {V.gpu_busy()}")
-        V.user_idle_s = lambda: 3600.0
-        ok(V._guard_game() == "nox", "the guard's log: a game is running (nox)")
-        open(log, "w").write(f"{now} ai=True game= gpu_idle=False server=False\n")
-        ok(V._guard_game() is None, "the guard's log: no game")
-        open(log, "w").write("2026-01-01 00:00:00 ai=True game=nox gpu_idle=True\n")
-        ok(V._guard_game() is None, "a stale guard log is not believed")
-        V._win_gpu = lambda: ({100: 3.0, 200: 60.0, 300: 30.0, 400: 50.0},
-                              [dict(pid=100, ppid=1, name="dwm.exe", path=""), dict(pid=200, ppid=os.getpid(), name="python.exe", path=""),
-                               dict(pid=300, ppid=1, name="game.exe", path="D:\\Games\\x\\game.exe"),
-                               dict(pid=400, ppid=200, name="python.exe", path="")])
-        V.vram_free_mib = lambda: 20000
-        ok("game.exe 30%" in (V.gpu_busy() or ""), f"other programs' GPU use counts, ours and the desktop's not: {V.gpu_busy()}")
-        V._win_gpu = lambda: ({}, [dict(pid=5, ppid=1, name="opennox.exe", path="")])
-        ok("Nox is running" in (V.gpu_busy() or ""), "Nox running keeps the GPU")
-        V._win_gpu = lambda: ({}, [])
-        V.vram_free_mib = lambda: 4000
-        ok("GiB" in (V.gpu_busy(need_mib=V.VRAM_MIB) or ""), "too little free GPU memory")
-        V.gpu_busy = lambda roots=(), need_mib=None: "a game is running (nox, says the pc1 AI guard)"
-        os.environ["NOX_VOICE_GPU"] = "skip"
-        ok("NOX_VOICE_GPU=skip" in (V.wait_gpu() or ""), "NOX_VOICE_GPU=skip: not voiced now, cached waves kept")
-        os.environ["NOX_VOICE_GPU"] = "force"
-        ok(V.wait_gpu() is None, "NOX_VOICE_GPU=force does not look")
-        os.environ.pop("NOX_VOICE_GPU"); os.environ.pop("NOX_GPU_GUARD_LOG")
-        V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s = real[4], real[5], real[6], real[7]
+        gpu_rules(tmp, real)
+        V.pc1_gaming, V.remote_health, V.vram_free_mib, V.model_server_running, V.pc1_busy, V._run_worker = real[4:]
 
         out = os.path.join(tmp, "out"); os.makedirs(out)
         q, objects, greet = story(out)
@@ -303,6 +497,17 @@ def main():
         info = V.wave_info(os.path.join(out, "Testvale_dialog", man_b["lines"][greet]["wave"] + ".wav"))
         ok((info["tag"], info["channels"], info["rate"], info["bits"]) == (1, 1, V.RATE, 16), f"PCM 16-bit mono {V.RATE} Hz")
 
+        # the GPU rule end to end: the real worker against stand-in GPU services on pc1 and pc2
+        if os.path.exists(worker_py):
+            V.run_breeze = real[2]
+            gpu_switch(tmp, out, objects, worker_py)
+            V.vram_free_mib, V.model_server_running = real[6], real[7]
+            V.run_breeze = fake_breeze()
+            for d in ("cache", "refs"): shutil.rmtree(os.path.join(V.HOME, d), ignore_errors=True)
+            V.voice(out, "Testvale", objects)
+        else:
+            print(f"skip the switching run: no Breeze venv ({worker_py}; py mapgen/voice.py fetch)")
+
         # mastering: a Breeze take's silence trimmed, Westwood's loudness and peaks
         import numpy as np
         x = np.concatenate([np.zeros(24000), 0.3 * np.sin(np.arange(48000) * 2 * np.pi * 150 / 24000), np.zeros(24000)])
@@ -382,7 +587,11 @@ def main():
             refused = True
         ok(refused and os.path.getsize(os.path.join(nox, "Dialog", "C2HEN01E.WAV")) == 4, "Westwood's wave name is refused")
     finally:
-        V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.gpu_busy, V._win_gpu, V.vram_free_mib, V.user_idle_s = real
+        (V.tts_ready, V.synthesize, V.run_breeze, V.HOME, V.pc1_gaming, V.remote_health, V.vram_free_mib,
+         V.model_server_running, V.pc1_busy, V._run_worker) = real
+        for k, v in env0.items():
+            if v is None: os.environ.pop(k, None)
+            else: os.environ[k] = v
         shutil.rmtree(tmp, ignore_errors=True)
     print(f"\n{'FAILED: ' + str(len(FAILS)) if FAILS else 'all passed'}")
     return 1 if FAILS else 0
