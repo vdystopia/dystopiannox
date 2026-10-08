@@ -211,6 +211,12 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | VO-1 | "investigate and implement a method for turning generated NPC dialogue into voiced audio that can be added to the game, so that new maps have fully voiced NPCs and quests" | P§7 Voices, P§8 Dialogue voices (`mapgen/voice.py`, run by `Spec.build`; `q.tell` for refusals) | `qa:voice` (every spoken line has a good wave from its present text; `tests/voice_test.py`); hearing it: the playtest | none | check |
 
+## Thornwick screenshot (2026-10-08)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| TW-12 | "We've had some issues with blending tiles in the transition between interior and exterior. ... There does not need to be blending on a wall. The wall cuts off vision from the inside out and from the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used." (a soft grass edge along the outside of a building's wall) | P§3 No blending at a wall (`nox.wall_seams`, `Spec._edges`) | `floors.wall_blend` (STwallb) | none | check |
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |
@@ -219,6 +225,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | User feedback, after | 92 | 68 | 21 | 3 |
 | Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
 | Voiced dialogue (VO), after | 1 | 1 | 0 | 0 |
+| Thornwick screenshot (TW-12), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 
