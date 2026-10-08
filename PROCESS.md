@@ -544,7 +544,7 @@ registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, sign
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
 
-### Voices [VO-1, VO-2, VO-3, VO-4]
+### Voices [VO-1, VO-2, VO-3, VO-4, VO-5]
 Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
 shop greetings and refusals; never signs, journal entries, hints, dialogue titles or mission banners). `mapgen/voice.py`
 does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while trying seeds; a `VOICE` line reports it):
@@ -581,6 +581,10 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
   a second while speaking. A take that fails is rendered again with a new seed, up to 4 times; a line that never
   passes stays silent (its best take is kept as `<hash>.fail.wav` in the cache to listen to) and the voice check FAILs
   naming it; `py mapgen/voice.py voice <out> <Name> --retry` tries such lines again.
+  A line that keeps failing the pace or the pitch gets a delivery that fixes it, pinned in the design (a `mood`:
+  Thornwick's Mirela5, "Measured and deliberate, unhurried ...", went from 4.8-5.1 words a second in 4 takes to 3.6 in
+  one), then `--retry`; the gate is never loosened for it [VO-5] (pc1 Claude's default, 2026-10-08; the user may
+  override it).
 - **Where it renders: pc1 unless the user is gaming, then pc2** [VO-3] (user, 2026-10-08: "run the Nox renders on pc1
   unless im gaming - same rules as our previous processes. this should be the default for all work we do. when im
   gaming, reserve the 4090 and run it on the 2080ti"). `voice.run_breeze` runs one worker at a time at below-normal
