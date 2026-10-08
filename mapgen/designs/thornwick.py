@@ -427,7 +427,7 @@ q.talker("Mirela", [
           when=q.when(has="Emerald", not_="gem_done"), ask=True,
           do=[A.flag("gem_done"), A.take("Emerald"), A.gold(200), A.stage("gem", 3),
               q.journal("I gave the Varn emerald to Mirela. She paid 200 gold.", COMPLETED)],
-          else_=[A.chat("Mirela", "Then what good are you?")], who="Mirela"),
+          else_=[q.tell("Mirela", "Then what good are you?")], who="Mirela"),
     q.say("You had it, didn't you? I can see it in your face. Where is my grandmother's emerald?",
           when=q.at("gem", 2), who="Mirela"),
     q.say("The key fits the crypt door behind the nave. Grandmother lies at the back. Please, be quick, before Odo "
@@ -438,7 +438,7 @@ q.talker("Mirela", [
           ask=True, do=[A.stage("gem", 1), A.give("SilverKey"),
                         q.journal("Mirela at the Lantern gave me a copy of Father Odo's key to the Varn crypt behind "
                                   "the chapel. She will pay 200 gold for her grandmother's emerald.")],
-          else_=[A.chat("Mirela", "Then forget I asked.")], who="Mirela")])
+          else_=[q.tell("Mirela", "Then forget I asked.")], who="Mirela")])
 q.on_pickup("Emerald", [A.stage("gem", 2), q.journal("I have the Varn emerald. Mirela is waiting at the Lantern, but "
                                                      "Father Odo might want it back where it belongs.")],
             when=q.at("gem", 1))
@@ -450,7 +450,7 @@ q.talker("FatherOdo", [
           do=[A.flag("gem_done"), A.take("Emerald"), A.give("CurePoisonPotion", 2), A.give("RedPotion", 2), A.gold(80), A.stage("gem", 4),
               q.journal("I gave the Varn emerald to Father Odo, who laid it back in the crypt. He blessed me with "
                         "potions and the chapel's alms.", COMPLETED)],
-          else_=[A.chat("FatherOdo", "Then the dead will come for it.")], who="Odo"),
+          else_=[q.tell("FatherOdo", "Then the dead will come for it.")], who="Odo"),
     q.say("The Varn crypt is sealed, child. Since the spring the dead there have not rested. Stay out of it.",
           who="Odo")])
 
@@ -475,7 +475,7 @@ q.talker("Brannoc", [
           when=q.when(has="GreatSword", not_="sword_done"), ask=True,
           do=[A.flag("sword_done"), A.take("GreatSword"), A.give("Breastplate"), A.gold(150), A.stage("sword", 3),
               q.journal("I returned the Brannoc greatsword. Old Brannoc gave me a breastplate and 150 gold.", COMPLETED)],
-          else_=[A.chat("Brannoc", "Then keep it. Use it well.")], who="Brannoc"),
+          else_=[q.tell("Brannoc", "Then keep it. Use it well.")], who="Brannoc"),
     q.say("Every time I hear the forge ring I think of that sword. Thank you, friend.", when=q.at("sword", 3), who="Brannoc"),
     q.say("You found it and then lost it? Go back and look, friend. That sword has been lost once already.",
           when=q.at("sword", 2), who="Brannoc"),
@@ -546,7 +546,7 @@ if __name__ == "__main__":
     rooms_sidecar(placed, os.path.join(OUT, f"{NAME}.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
-    print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))
+    print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS", "VOICE"))))
     print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(sm.missed) or 'none'}) "
           f"| trees {n_trees} | plants {n_small} | rock piles {len(piles)} | shopkeepers {n_shops} | caches {len(caches)} "
           f"| lines {len(q.strings)} | yards {', '.join(built) or 'none'}")

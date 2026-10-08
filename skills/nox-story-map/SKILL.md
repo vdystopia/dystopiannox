@@ -95,11 +95,16 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
     A side quest's five beats in one call: `q.talker(giver, q.errand(giver, quest, offer, reminder, thanks, after,
     objective, done=q.when(has=item), reward=[A.give(...)], refusal=...) + other_lines)`; a quest's done entry is
     `q.done(objective)` (the same words, COMPLETED), news is `q.note(text)`. The text by `rules/DIALOGUE.md`.
+    Every line said in a dialogue window is voiced by the build: a sulk after "no" is `else_=[q.tell(giver, text)]`
+    (a window of its own, voiced), never `A.chat` (over the head, silent). Voices are cast from the body, portrait and
+    title; pin one for a character who speaks on two maps: `q.talker(name, lines, voice="bm_george")`.
     `m.scripts.update(B.files(m.d["name"])); m.scripts.update(q.files())`.
 11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()` (`culture` may
     be a tuple: Harrowby's `("farm", "ogre")`). Add a theme
     to `kit/scenes.py` when a map needs one; never lay loose props by hand.
-12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)`, `m.build(OUT)`.
+12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)` (before the build: the voices read it),
+    `m.build(OUT)`, which voices the spoken lines (`VOICE <Name>: n of n lines voiced`; `NOX_NOVOICE=1` skips it while
+    trying seeds). The TTS is installed once per PC with `py mapgen/voice.py fetch` (PROCESS.md "Voices").
 
 ## 3. Check, fix, repeat
 
@@ -114,6 +119,8 @@ py review/rooms.py mapgen/out/<map>/<Name>.map --each         # one picture per 
 py review/roomscore.py mapgen/out/<map>/<Name>.map            # each room scored for its type (rules/rooms/)
 py review/exteriors.py mapgen/out/<map>/<Name>.map --holes    # empty outdoor ground
 py tests/storylab.py --check mapgen/designs/<map>.py          # the story's lines against Westwood's (no build needed)
+py mapgen/voice.py cast mapgen/out/<map> <Name>               # who speaks with which voice
+py mapgen/voice.py say "Well met, stranger." --voice elder    # hear a voice before casting it
 ```
 
 **The last step before handing a map over** is the QA gate:
@@ -123,7 +130,7 @@ py tests/qa.py <design> [seed]
 ```
 
 It builds the design, runs the checker (0 errors; every warning listed as accepted or not), compiles the scripts,
-checks the story's strings and loot, runs the room score and the exterior-holes measure, renders the review pictures
+checks the story's strings and loot and that every spoken line is voiced, runs the room score and the exterior-holes measure, renders the review pictures
 (story map with routes, every named story place, every room, the empty-ground map) into `review/out/<Name>/qa/` with
 an `index.md`/`index.html` to walk through, and prints a PASS/FAIL summary. `--no-render` skips the pictures while
 fixing; `--no-build` re-checks the map already built. Look at every picture it lists (PROCESS.md
@@ -134,8 +141,8 @@ QA_ACCEPT = [("density", r"Few creatures", "a waystation: Westwood's waystations
 ```
 
 The gate never installs or starts the server. After it passes, the **main session** (not a building agent, since the
-user may be playing on this PC) installs the map (`py mapgen/install.py mapgen/out/<map> <Name>`, which also rebuilds
-`nox.csf.json`) and runs `py tests/server_smoke.py mapgen/designs/<map>.py` (the map loads; the self-checks find every
+user may be playing on this PC) installs the map (`py mapgen/install.py mapgen/out/<map> <Name>`, which also copies its
+waves into `Dialog\` and rebuilds `nox.csf.json`) and runs `py tests/server_smoke.py mapgen/designs/<map>.py` (the map loads; the self-checks find every
 creature, waypoint and story object). Report the gate's summary and leave the work uncommitted unless told otherwise;
 never push.
 

@@ -20,9 +20,10 @@ powershell -ExecutionPolicy Bypass -File build.ps1      # once, builds NoxShared
 py mapgen\designs\dyscrypt.py                            # writes mapgen\out\DysCrypt.map/.nxz
 ```
 
-To play or open it, copy both files to `<Nox>\maps\<Name>\`. Story maps (with scripts and text) are installed by
-`py mapgen/install.py mapgen/out/<map> <Name>`, which also rebuilds `nox.csf.json`; before that a map passes the QA
-gate, `py tests/qa.py <design>` (PROCESS.md section 9).
+To play or open it, copy both files to `<Nox>\maps\<Name>\`. Story maps (with scripts, text and voices) are installed
+by `py mapgen/install.py mapgen/out/<map> <Name>`, which also copies the map's waves into `<Nox>\Dialog\` and rebuilds
+`nox.csf.json`; before that a map passes the QA gate, `py tests/qa.py <design>` (PROCESS.md section 9). The voices
+need the local TTS once per PC: `py mapgen/voice.py fetch` (PROCESS.md section 7, "Voices").
 
 ## Maps
 
@@ -67,7 +68,8 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/mine.py` | `MineEntrance`: a rock face along a yard with a timbered tunnel blocked by a cave-in |
 | `kit/biome.py` | Cave, ice, lava and swamp palettes; `Dresser` (biome structures and their garrisons) |
 | `kit/story.py` | `StoryMap`: the steps every story map shares (buildings, people, tours, beats, journeys, gates, exits, shops, keepers); `Curtain` (a castle's walls) |
-| `kit/quests.py` | `QuestBook` and actions `A`: dialogue, quest stages, events, the map's text (run by `kit/behaviours/quests.go`) |
+| `kit/quests.py` | `QuestBook` and actions `A`: dialogue, quest stages, events, the map's text and who says it (run by `kit/behaviours/quests.go`) |
+| `voice.py` | Every line said in a dialogue window voiced: a cast voice per speaker, Kokoro TTS run locally, Westwood's wave format, run by `Spec.build`; `fetch`, `check`, `cast`, `say` |
 | `kit/npcs.py` | `Population` (creatures, spaced) and `Behaviours` (tours, patrols, journeys, sentries, packs; `kit/behaviours/behaviours.go`) |
 | `kit/walkways.py` | `Ground` and `Router`: where a body can walk, routes along roads, doorways square-on, each stop's facing |
 | `kit/camps.py` | Story places: bandit camps in zones, urchin camps, camp sites, wreck, den, cache, ruined tower, stone ring, training ground, signposts |

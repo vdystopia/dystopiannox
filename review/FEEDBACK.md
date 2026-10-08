@@ -205,6 +205,12 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | HB-4 | "two statues way too close to each other ... Too many candelabras. The treasure chest should be centered between the end of the bookcase and the door. The shelves lining the northwest and northeast walls are the kind of objects that can be used to span an entire wall" | P§3 statues apart, candelabras by size, the chest by a door centred (`centre_by_doors`); `rules/rooms/study.md`, `library.md` | `pieces.clearance`, `pieces.lights` (STcand); the chest's place: look:rooms | none | check |
 | HB-5 | "The entire northwest wall is lined with countless duplicates of that one object ... some objects are suitable for lining an entire wall, and some are not." | P§3 only fabric lines walls (`kit/objects.py` role, max_run, wall_cap); `rules/rooms/storeroom.md` | `pieces.run` (STlogw) | none | check |
 
+## Voiced dialogue (2026-10-08, a request)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| VO-1 | "investigate and implement a method for turning generated NPC dialogue into voiced audio that can be added to the game, so that new maps have fully voiced NPCs and quests" | P§7 Voices, P§8 Dialogue voices (`mapgen/voice.py`, run by `Spec.build`; `q.tell` for refusals) | `qa:voice` (every spoken line has a good wave from its present text; `tests/voice_test.py`); hearing it: the playtest | none | check |
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |
@@ -212,6 +218,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | User feedback, before this pass | 92 | 52 | 28 | 12 |
 | User feedback, after | 92 | 68 | 21 | 3 |
 | Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
+| Voiced dialogue (VO), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 

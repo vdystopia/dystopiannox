@@ -40,7 +40,10 @@ about 500 to 1500, and give items (armour, a weapon, potions) as the main reward
   TheogrinPic, AldwynPic, HorvathPic, GalavaPriestPic, UndertakerPic, WardenPic, IxGuard2Pic, AirshipCaptainPic...
 - Journal entries (`JournalEntry`): 99, a few per map, when a quest starts, turns and ends.
 - Westwood passes sound 0 to TellStory (the decompiler names it SwordsmanHurt); the voice comes from the string
-  table entry's own wave file. Our lines have none, so they are silent.
+  table entry's own wave file (Dialog\<wave>.wav). Voiced: 965 of the campaign's 1391 strings, every talk line, shop
+  greeting and refusal (War05A's FarmerHuffy, a second TellStory after "no"); never signs, journal entries, hints or
+  mission banners. Speech runs 2.5-3.3 words a second (p25-p75 of 399 lines). Ours are voiced the same way by
+  `mapgen/voice.py` (PROCESS.md "Voices").
 
 ## Quest patterns (measured 2026-10-05 on the campaign's text and scripts)
 

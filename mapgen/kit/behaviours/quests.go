@@ -3,8 +3,10 @@ package PKG
 // Quests for generated maps (dystopiannox mapgen/kit/quests.py writes this file, with the map's package name, into the
 // map's folder, beside quests_config.go which declares who says what and what happens).
 //
-// What the player hears is text from the game's string table, by key (TellStory, JournalEntry): mapgen/strings.py
-// puts each map's own lines into nox.csf.json, which OpenNox reads in place of nox.csf. No audio is recorded yet.
+// What the player reads is text from the game's string table, by key (TellStory, JournalEntry): mapgen/strings.py
+// puts each map's own lines into nox.csf.json, which OpenNox reads in place of nox.csf. What the player hears is the
+// wave that table entry names (Dialog\<wave>.wav, made by mapgen/voice.py): TellStory passes no sound of its own, as
+// Westwood's scripts pass none.
 //
 // OpenNox v1.9.0-alpha13 leaves some NoxScript calls unimplemented (they panic): GetQuestStatus/SetQuestStatus,
 // TellStoryStr, JournalEntryStr/JournalEdit, MakeFriendly/MakeEnemy, GiveXp. This file uses none of them: quest
@@ -18,7 +20,8 @@ package PKG
 //   OnAllDead: actions when every creature of a group is dead (the wolves are gone).
 //   Near:     actions when the player first comes within reach of a spot (a voice from the dark, a discovery).
 //   OnPickup: actions when the player first carries an item of a type (the emerald is found).
-//   Actions:  stage, flag, give, take, gold, journal, print, chat, unlock, lock, enable, disable, hunt, open.
+//   Actions:  stage, flag, give, take, gold, journal, print, chat, unlock, lock, enable, disable, hunt, open, and
+//             tell (a talker line's own: the giver says one more line when the talk ends, Westwood's refusal).
 
 import (
 	"strings"
@@ -217,8 +220,19 @@ func run(acts []Act, at ns.Positioner) {
 			if o, w := ns.Object(a.A), ns.Waypoint(a.B); o != nil && w != nil {
 				o.Move(w)
 			}
+		case "tell": // A string key talker B says when the talk ends: dialogEnd shows it (it needs the talk's window)
 		}
 	}
+}
+
+// toTell: the line a talk's actions have the talker say when it ends ("" for none).
+func toTell(acts []Act) string {
+	for _, a := range acts {
+		if a.Kind == "tell" {
+			return a.A
+		}
+	}
+	return ""
 }
 
 // ---- talkers -----------------------------------------------------------------------------------------------------
@@ -226,10 +240,14 @@ func run(acts []Act, at ns.Positioner) {
 type talker struct {
 	obj   ns.Obj
 	lines []Line
-	cur   int  // the line picked when the talk began
+	cur   int  // the line picked when the talk began; -1 none; telling: a told line's window is open
 	ask   bool // the dialog type set on the creature: yes/no or plain
 	set   bool
+	wait  int // ticks since a told line's window opened
 }
+
+// telling: talker.cur while the window of a line told after the talk is open (tell).
+const telling = -2
 
 var talkers = map[string]*talker{}
 
@@ -297,22 +315,41 @@ func dialogEnd() {
 	if t == nil {
 		t = talkerOf(ns.GetCaller())
 	}
+	if t != nil && t.cur == telling { // the told line's window closed: the talker's own dialog again
+		t.cur = -1
+		arm(t)
+		return
+	}
 	if t == nil || t.cur < 0 || t.cur >= len(t.lines) {
 		return
 	}
 	l := t.lines[t.cur]
 	t.cur = -1
-	if l.Ask {
-		switch ns.GetAnswer(t.obj) {
-		case ns.AnswerYes:
-			run(l.Do, t.obj)
-		case ns.AnswerNo:
-			run(l.Else, t.obj)
-		}
-	} else {
-		run(l.Do, t.obj)
+	var acts []Act
+	if !l.Ask {
+		acts = l.Do
+	} else if a := ns.GetAnswer(t.obj); a == ns.AnswerYes {
+		acts = l.Do
+	} else if a == ns.AnswerNo {
+		acts = l.Else
+	}
+	run(acts, t.obj)
+	if key := toTell(acts); key != "" {
+		tell(t, key)
+		return
 	}
 	arm(t)
+}
+
+// tell has the talker say one more line, in a plain window of its own, as Westwood's scripts do after a "no"
+// (War05A's farmer: "Fine then, don't return my magical staff!", a second TellStory): text and voice come from the
+// string table like every line's. The plain dialog is set first, so the line shows no yes/no; the talker's own dialog
+// is set again when that window closes (dialogEnd), or after half a minute if it never reports closing.
+func tell(t *talker, key string) {
+	ns.SetDialog(t.obj, ns.DialogNormal, dialogStart, dialogEnd)
+	t.ask, t.set = false, true
+	t.cur, t.wait = telling, 0
+	ns.TellStory(audio.Name(""), ns.StringID(key))
 }
 
 // Talker gives a named creature its lines (first match wins, so put the later stages first).
@@ -424,6 +461,12 @@ func Quests() {
 			run(w.acts, p)
 		}
 		for _, t := range talkers {
+			if t.cur == telling {
+				if t.wait++; t.wait < 60 {
+					continue
+				}
+				t.cur = -1
+			}
 			if t.cur < 0 {
 				arm(t)
 			}

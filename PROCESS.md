@@ -494,16 +494,49 @@ design's docstring before building, then plan the areas from it: each quest need
    at build time in Westwood's manner (`kit/loot.py`: every chest, about 40% of barrels, half the crates, coffins in
    crypts), within the map's gold budget of about 500-1500 (`rules/QUESTS.md`); the tally is `<map>.loot.json`.
 6. **Everyone talks**: givers, guards, the watch and every townsperson, each with a line pointing at a quest and a new
-   line once the main quest is done, with a Westwood portrait (`q.portrait`).
+   line once the main quest is done, with a Westwood portrait (`q.portrait`), in a voice of their own (below).
 
 The tools: `kit/quests.py` (`QuestBook`, actions `A`) declares it all and `kit/behaviours/quests.go` runs it. Lines are
 tried in order, later stages first. Conditions read the world where they can (`q.dead(names)`, `has=`), since a saved
 game loaded with fresh scripts loses the script's own flags. Text goes in the map's string table
 (`<Map>.strings.json`, written by `q.write_strings`), merged by `mapgen/strings.py` into `nox.csf.json`, which OpenNox
-reads in place of nox.csf; keys are at most 31 characters; no audio. Objects a script names must be ones the game
+reads in place of nox.csf; keys are at most 31 characters; every line said in a dialogue window is voiced (below).
+Objects a script names must be ones the game
 registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, signs; a `FireGrate` did not). Keep the
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
+
+### Voices [VO-1]
+Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
+shop greetings and refusals; never signs, journal entries, hints, dialogue titles or mission banners). `mapgen/voice.py`
+does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while trying seeds; a `VOICE` line reports it):
+- **What is spoken**: each talker's lines, each shopkeeper's greeting, and what `q.tell(giver, text)` has a giver say
+  when a talk ends. A refusal is `q.tell` (Westwood's "Fine then, don't return my magical staff!" is a second TellStory
+  in a window of its own; `q.errand` tells its refusal), never `A.chat`: text over a head or on screen (`A.chat`,
+  `A.print`) has no string key and stays silent, and the QA gate lists a refusal said over a head as a LOOK.
+- **Who speaks with which voice** (`voice.cast`, the same cast every build): a part from the body, the portrait and
+  what the title and the map's text call the speaker (a Maiden clone or a woman donor a woman; "Father Odo" or
+  GalavaPriestPic a priest; "Old Brannoc", "Reeve Aldric" or TheogrinPic an elder; Warrior and IxGuard portraits and the
+  watch guards; MorganPic a rogue; shopkeepers merchants; ogres brutes); then Kokoro's best voice for the part that the
+  map has used least, the speakers with most lines choosing first, blended 3:1 with a partner, at a pace of its own
+  (elders and priests 0.86-0.93, rogues to 1.1). A character on two maps keeps one voice when the designs pin it:
+  `q.talker(name, lines, voice="bm_george")` (a part, a Kokoro voice, or `{"mix": [[voice, weight], ...], "speed": s}`).
+- **The sound**: Kokoro v1.0 (82M parameters, Apache-2.0) through kokoro-onnx on the CPU: local, no paid API, no key.
+  It lives in its own venv, installed once per PC by `py mapgen/voice.py fetch`; `mapgen/voice.lock.json` pins the
+  packages pip resolved and the model files' SHA-256 (the first fetch writes it: commit it); the model, venv and
+  cache are build tools in `.tools/voice/` (`NOX_VOICE_HOME`), never committed, and so are the waves (`mapgen/out/`).
+  The text as spoken: line breaks run on, Westwood's " -- " is a pause, shouted words are not spelled out. Mastered as
+  Westwood's PCM dialogue measures: about -16 dBFS while speaking, peaks bent under -1 dBFS, a 30 ms lead and a 150 ms
+  tail; written PCM 16-bit mono at 22050 Hz. A cache keyed by text, voice, model and mastering makes a rebuild instant.
+- **Where it goes**: `<out>/<Name>_dialog/<wave>.wav` and `<Name>.voice.json` (key, wave, speaker, voice, the text as
+  spoken and its hash). Wave names are 8 characters as Westwood's 8.3 ones: two letters of the map, two of its crc32 in
+  base 36, the line's number and "e" (Thornwick's `th9a001e`). `mapgen/install.py` copies the waves into the game's one
+  `Dialog\` folder, takes out the map's old ones and refuses a name of Westwood's or another map's; `mapgen/strings.py`
+  gives a line its wave (`str2`) only while the installed wave was made from the line's present text. The scripts do
+  not change: TellStory passes no sound, the voice is the string's.
+- Try a voice: `py mapgen/voice.py say "Well met, stranger." --voice elder`; a built map's cast: `py mapgen/voice.py
+  cast mapgen/out/<map> <Name>`; voice a built map again without rebuilding it: `py mapgen/voice.py voice
+  mapgen/out/<map> <Name>`; the offline tests: `py tests/voice_test.py`.
 
 ## 8. What the engine needs
 
@@ -514,6 +547,16 @@ The kit does all of this; know why before changing it.
 - **Dialogue titles** [TW-6]: the dialogue window titles a creature with the string `NPC:<script name>`; every talker
   gets one (townsfolk get given names; `q.talker(..., title=)` overrides). The string table is shared by all maps, so a
   script name used in two maps carries one title (`mapgen/strings.py` refuses a clash).
+- **Dialogue voices** [VO-1] (verified 2026-10-08 on the GOG install and opennox.exe): a string of the table carries a
+  wave name beside its text (nox.csf's STRW entries, 1415 of Westwood's; `str2` in OpenNox's nox.csf.json), and when a
+  dialogue window shows the string the client streams `Dialog\<wave>.wav` (`"dialog\" + name + ".wav"`, AudDiag.c).
+  Westwood's scripts pass no sound to TellStory (the decompiler's "SwordsmanHurt" is sound 0). OpenNox replaces Miles
+  with its own stream reader, which decodes PCM, IMA ADPCM and MP3 in a WAV; Westwood's 1254 waves are 1246 MP3 at
+  22050 Hz mono and 8 PCM 16-bit mono at 44100 Hz (W1CAP12E, the wizards' airship captain), all 8.3 names of 7-8
+  characters (keep ours there). The Dialog folder is the game's, shared by every map: a map's voice cannot travel in
+  its own folder or its .map (a multiplayer client downloading a map would get no voice; our maps are solo). The
+  dedicated server plays no sound, so its smoke test proves the strings and scripts, not the voices: only a playtest
+  hears them.
 - **The minimap** [TW-5, GW-3]: the game draws only the walls of the group of the polygon the player stands in, found
   by counting edges crossed on a line to the map's corner (0, 0) or (5888, 5888); it keeps the player in the polygon he
   stands in while it still holds him, else takes the first that does. `Spec.build` gives each map one polygon over the
@@ -538,6 +581,8 @@ The kit does all of this; know why before changing it.
 3. the scripts' compile against the game's NoxScript (`tests/check_scripts.py`);
 4. the story: every talker's dialogue title, string keys of 31 characters or less, gifts picked up on a timer, the exit
    leading to a built map, every chest holding loot, the gold in budget, no Zombie, a name of 9 characters or less;
+   and the voices [VO-1]: every spoken line has its wave, made from its present text, PCM 16-bit mono, neither silent
+   nor clipped, at a speaking pace, under an 8-character name (`voice.check`; it fails until the TTS is fetched);
 5. the room score (`review/roomscore.py`, by room type): rooms that miss it are listed to look at;
 6. the exterior's empty ground (`review/exteriors.py`): over Westwood's 90th percentile for the map's environment fails
    (`review/exteriors_baseline.json`, from `py review/exteriors.py --westwood --save`), over the 75th is a look;
@@ -546,7 +591,8 @@ The kit does all of this; know why before changing it.
    "review only" items of `review/FEEDBACK.md`); look at every one.
 
 It never installs the map nor starts the game or the server. After it passes, the main session installs the map
-(`mapgen/install.py`) and runs the server smoke test (`tests/server_smoke.py`), then the user playtests.
+(`mapgen/install.py`: the map, scripts, text and waves) and runs the server smoke test (`tests/server_smoke.py`),
+then the user playtests, and hears the voices.
 
 **The checker's rules.** Every finding names its rule (`checks.RULES`: `exterior.camp_seat`, `routes.facing`,
 `identity.showpiece`, ...) and the feedback it answers. Errors are defects a player will see or hit; warnings are

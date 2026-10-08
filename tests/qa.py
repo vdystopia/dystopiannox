@@ -19,6 +19,9 @@ Steps (each prints PASS, FAIL or LOOK):
   4. story       every talker has its dialogue title (NPC:<name>), string keys fit (31 characters), a gift is picked up
                  on a timer (never at once), the exit leads to a map that is built, every chest holds loot and the gold
                  stays in Westwood's budget, no Zombie, the map's name fits (9 characters)
+     voice       every line said in a dialogue window (talkers' lines, told refusals, shop greetings) has its wave, made
+                 from its present text, PCM 16-bit mono, neither silent nor clipped, at a speaking pace, 8-character
+                 names (mapgen/voice.py check); a talker's refusal said over its head (A.chat) is a LOOK: it stays silent
   5. rooms       review/roomscore.py: rooms that miss their score are listed to LOOK at (the pictures show them)
   6. exterior    review/exteriors.py: the share of the open ground with no prop within 4 cells against Westwood's maps of
                  the map's environment (review/exteriors_baseline.json): over their 90th percentile fails, over the 75th
@@ -320,6 +323,17 @@ def main():
     sc = story_checks(map_path, name, m)
     gate.add("story", "PASS" if all(ok for ok, _ in sc) else "FAIL",
              f"{sum(ok for ok, _ in sc)} of {len(sc)} story checks pass", [("" if ok else "FAILED: ") + t for ok, t in sc])
+    import voice as VO
+    vc = VO.check(os.path.dirname(map_path), name)
+    silent = []
+    if os.path.isdir(sd):
+        cfg = os.path.join(sd, "quests_config.go")
+        for ln in (open(cfg, encoding="utf-8").read().splitlines() if os.path.exists(cfg) else []):   # a Line a line
+            if "Else: []Act{" in ln: silent += re.findall(r'\{Kind: "chat", A: "([^"]+)"', ln.split("Else: ", 1)[1])
+    gate.add("voice", "FAIL" if not all(ok for ok, _ in vc) else "LOOK" if silent else "PASS",
+             f"{sum(ok for ok, _ in vc)} of {len(vc)} voice checks pass" +
+             (f"; {len(silent)} refusals said over a head stay silent (q.tell voices them): {', '.join(silent)}" if silent else ""),
+             [("" if ok else "FAILED: ") + t for ok, t in vc])
     # 5. rooms
     room_rows = {}
     if os.path.exists(os.path.splitext(map_path)[0] + ".rooms.json"):

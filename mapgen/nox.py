@@ -53,7 +53,7 @@ def wall_rules():
     global _WALL_RULES
     if _WALL_RULES is None: _WALL_RULES = load_rules("walls")
     return _WALL_RULES
-PS32 = os.path.join(os.environ["WINDIR"], "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
+PS32 = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
 CELL = 23
 SOLO, ARENA = 0x1, 0x34
 
@@ -552,7 +552,8 @@ class Spec:
         check=True then runs the automatic checks (validate/validate.py) and adds their summary line;
         the full report is in validate/out/<name>/report.md.
         Containers left empty get Westwood's loot first (kit/loot.py; a test map sets `loot = False` to keep them
-        empty); the tally goes to <name>.loot.json beside the map."""
+        empty); the tally goes to <name>.loot.json beside the map. A map with a story then has its spoken lines voiced
+        (mapgen/voice.py; a "VOICE" line reports it)."""
         loot_lines = []
         if getattr(self, "loot", True):
             from kit import loot
@@ -585,6 +586,12 @@ class Spec:
             with open(rp, "w", encoding="utf-8") as f: json.dump(self.routes, f)
         elif os.path.exists(rp):
             os.remove(rp)
+        # every line said in a dialogue window voiced (mapgen/voice.py: <name>_dialog/ and <name>.voice.json beside the
+        # map, from the design's <name>.strings.json and .speech.json); NOX_NOVOICE=1 skips it (trying seeds)
+        if not os.environ.get("NOX_NOVOICE"):
+            if HERE not in sys.path: sys.path.insert(0, HERE)
+            import voice
+            lines += voice.build_step(self.d["objects"], out_dir, self.d["name"])
         if check and not os.environ.get("NOX_NOCHECK"):      # NOX_NOCHECK=1: skip the checker (trying seeds)
             chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
                                   os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)
