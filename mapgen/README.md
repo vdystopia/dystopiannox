@@ -70,7 +70,8 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/biome.py` | Cave, ice, lava and swamp palettes; `Dresser` (biome structures and their garrisons) |
 | `kit/story.py` | `StoryMap`: the steps every story map shares (buildings, people, tours, beats, journeys, gates, exits, shops, keepers); `Curtain` (a castle's walls) |
 | `kit/quests.py` | `QuestBook` and actions `A`: dialogue, quest stages, events, the map's text and who says it (run by `kit/behaviours/quests.go`) |
-| `voice.py` | Every line said in a dialogue window voiced: a cast voice per speaker, Kokoro TTS run locally, Westwood's wave format, run by `Spec.build`; `fetch`, `check`, `cast`, `say` |
+| `voice.py` | Every line said in a dialogue window voiced: a voice description per speaker, Breeze TTS 2 on the local GPU (a design take per speaker, every line directed from it, a Whisper quality gate; Kokoro as an explicit option), Westwood's wave format, run by `Spec.build`; `fetch`, `voice`, `check`, `cast`, `say` |
+| `voice_breeze.py` | The Breeze worker `voice.py` runs in the Breeze venv: design takes, lines by voice direction, the quality gate, into the cache |
 | `kit/npcs.py` | `Population` (creatures, spaced) and `Behaviours` (tours, patrols, journeys, sentries, packs; `kit/behaviours/behaviours.go`) |
 | `kit/walkways.py` | `Ground` and `Router`: where a body can walk, routes along roads, doorways square-on, each stop's facing |
 | `kit/camps.py` | Story places: bandit camps in zones, urchin camps, camp sites, wreck, den, cache, ruined tower, stone ring, training ground, signposts |

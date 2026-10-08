@@ -210,6 +210,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | ID | The user's words | Rule | Enforced by | Before | After |
 |---|---|---|---|---|---|
 | VO-1 | "investigate and implement a method for turning generated NPC dialogue into voiced audio that can be added to the game, so that new maps have fully voiced NPCs and quests" | P§7 Voices, P§8 Dialogue voices (`mapgen/voice.py`, run by `Spec.build`; `q.tell` for refusals) | `qa:voice` (every spoken line has a good wave from its present text; `tests/voice_test.py`); hearing it: the playtest | none | check |
+| VO-2 | "Breeze TTS 2 is exceptional, massive improvement! implement it." (after an audition of Kokoro, Breeze TTS 2, Qwen3-TTS, Maya1 and VoxCPM2 on six Thornwick characters) | P§7 Voices (Breeze the default engine; a description and seed per speaker, a design take as its reference, lines by voice direction, vocal events, the quality gate, the GPU only while not gaming; licence: non-commercial) | `qa:voice` (every line passed the gate: Whisper transcript, pitch band, pace; `tests/voice_test.py`); hearing it: the playtest | none | check |
 
 ## Thornwick screenshot (2026-10-08)
 

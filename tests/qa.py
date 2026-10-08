@@ -21,7 +21,8 @@ Steps (each prints PASS, FAIL or LOOK):
                  stays in Westwood's budget, no Zombie, the map's name fits (9 characters)
      voice       every line said in a dialogue window (talkers' lines, told refusals, shop greetings) has its wave, made
                  from its present text, PCM 16-bit mono, neither silent nor clipped, at a speaking pace, 8-character
-                 names (mapgen/voice.py check); a talker's refusal said over its head (A.chat) is a LOOK: it stays silent
+                 names, and (Breeze) passed the quality gate: Whisper's transcript, the part's pitch, the pace
+                 (mapgen/voice.py check); a talker's refusal said over its head (A.chat) is a LOOK: it stays silent
   5. rooms       review/roomscore.py: rooms that miss their score are listed to LOOK at (the pictures show them)
   6. exterior    review/exteriors.py: the share of the open ground with no prop within 4 cells against Westwood's maps of
                  the map's environment (review/exteriors_baseline.json): over their 90th percentile fails, over the 75th

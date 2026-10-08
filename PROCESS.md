@@ -544,7 +544,7 @@ registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, sign
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
 
-### Voices [VO-1]
+### Voices [VO-1, VO-2]
 Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
 shop greetings and refusals; never signs, journal entries, hints, dialogue titles or mission banners). `mapgen/voice.py`
 does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while trying seeds; a `VOICE` line reports it):
@@ -552,29 +552,75 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
   when a talk ends. A refusal is `q.tell` (Westwood's "Fine then, don't return my magical staff!" is a second TellStory
   in a window of its own; `q.errand` tells its refusal), never `A.chat`: text over a head or on screen (`A.chat`,
   `A.print`) has no string key and stays silent, and the QA gate lists a refusal said over a head as a LOOK.
-- **Who speaks with which voice** (`voice.cast`, the same cast every build): a part from the body, the portrait and
-  what the title and the map's text call the speaker (a Maiden clone or a woman donor a woman; "Father Odo" or
+- **The engine** [VO-2]: Breeze TTS 2 (BreezeBlue, open weights, on the GPU) by default; Kokoro v1.0 (VO-1, CPU) only
+  when asked for (`NOX_VOICE_ENGINE=kokoro` or `--engine kokoro`), never as a fallback: a map whose Breeze voicing
+  cannot run is reported not voiced and fails the voice check.
+- **Who speaks with which voice** (`voice.cast_breeze`, the same cast every build): a part from the body, the portrait
+  and what the title and the map's text call the speaker (a Maiden clone or a woman donor a woman; "Father Odo" or
   GalavaPriestPic a priest; "Old Brannoc", "Reeve Aldric" or TheogrinPic an elder; Warrior and IxGuard portraits and the
-  watch guards; MorganPic a rogue; shopkeepers merchants; ogres brutes); then Kokoro's best voice for the part that the
-  map has used least, the speakers with most lines choosing first, blended 3:1 with a partner, at a pace of its own
-  (elders and priests 0.86-0.93, rogues to 1.1). A character on two maps keeps one voice when the designs pin it:
-  `q.talker(name, lines, voice="bm_george")` (a part, a Kokoro voice, or `{"mix": [[voice, weight], ...], "speed": s}`).
-- **The sound**: Kokoro v1.0 (82M parameters, Apache-2.0) through kokoro-onnx on the CPU: local, no paid API, no key.
-  It lives in its own venv, installed once per PC by `py mapgen/voice.py fetch`; `mapgen/voice.lock.json` pins the
-  packages pip resolved and the model files' SHA-256 (the first fetch writes it: commit it); the model, venv and
-  cache are build tools in `.tools/voice/` (`NOX_VOICE_HOME`), never committed, and so are the waves (`mapgen/out/`).
-  The text as spoken: line breaks run on, Westwood's " -- " is a pause, shouted words are not spelled out. Mastered as
-  Westwood's PCM dialogue measures: about -16 dBFS while speaking, peaks bent under -1 dBFS, a 30 ms lead and a 150 ms
-  tail; written PCM 16-bit mono at 22050 Hz. A cache keyed by text, voice, model and mastering makes a rebuild instant.
-- **Where it goes**: `<out>/<Name>_dialog/<wave>.wav` and `<Name>.voice.json` (key, wave, speaker, voice, the text as
-  spoken and its hash). Wave names are 8 characters as Westwood's 8.3 ones: two letters of the map, two of its crc32 in
-  base 36, the line's number and "e" (Thornwick's `th9a001e`). `mapgen/install.py` copies the waves into the game's one
-  `Dialog\` folder, takes out the map's old ones and refuses a name of Westwood's or another map's; `mapgen/strings.py`
-  gives a line its wave (`str2`) only while the installed wave was made from the line's present text. The scripts do
-  not change: TellStory passes no sound, the voice is the string's.
-- Try a voice: `py mapgen/voice.py say "Well met, stranger." --voice elder`; a built map's cast: `py mapgen/voice.py
-  cast mapgen/out/<map> <Name>`; voice a built map again without rebuilding it: `py mapgen/voice.py voice
-  mapgen/out/<map> <Name>`; the offline tests: `py tests/voice_test.py`.
+  watch guards; MorganPic a rogue; shopkeepers merchants; ogres brutes); then the part's voice description the map has
+  used least (`voice.DESCRIPTIONS`: age, timbre, an English regional accent, manner; fantasy village casting, no
+  occupations that could contradict the story), the speakers with most lines choosing first, and a seed from the
+  speaker's name. A design pins a voice per speaker: `q.talker(name, lines, voice={"desc": "...", "seed": 7})` (or a
+  part, or a plain description), `q.voice(name or a line's key, ...)` for a speaker who is not a talker (a shopkeeper,
+  by its greeting's key). `"ref_text"`/`"ref_desc"` reproduce an auditioned take exactly: the same text, description
+  and seed give the same take (Thornwick's six auditioned characters are pinned so).
+- **One voice per character**: each speaker's reference is a design take of its description saying its reference
+  text (the pin's, else its line nearest 28 words), the best of 2 seeds that pass the quality gate (a pinned seed:
+  the first that passes); it is kept in `.tools/voice/refs/` and every line of the speaker is rendered from it by
+  voice direction (the reference wave and its text, the description as the instruction). A line whose words are the
+  reference's is the design take itself.
+- **Delivery**: where a line clearly calls for it, `q.say(text, ..., spoken="(sigh) Gate's barred ...")` gives its
+  inline vocal events ((laugh), (chuckle), (sigh), (scoff), (cough), (clears throat), (gasp), (sniff), (groan); the
+  words must be the line's, `q.deliver` refuses others) and `mood="cold and bitter"` a direction for that line alone
+  (also `q.tell(..., spoken=, mood=)`, `q.deliver(key, ...)`). Automatic ones only where the words say it: a lone
+  "Ha!" is a laugh, "Hmph" a scoff. Do not put them on every line.
+- **The quality gate** (every take, `voice.gate_verdict`): Whisper large-v3-turbo's transcript against the line within
+  max(1, 15%) word errors (names in the map's text are not counted, numbers and British spellings are matched); the
+  median pitch inside the part's band (`voice.BANDS`) and within 5 semitones of the speaker's reference; 1.5-4.8 words
+  a second while speaking. A take that fails is rendered again with a new seed, up to 4 times; a line that never
+  passes stays silent (its best take is kept as `<hash>.fail.wav` in the cache to listen to) and the voice check FAILs
+  naming it; `py mapgen/voice.py voice <out> <Name> --retry` tries such lines again.
+- **The GPU, only while pc1 is not gaming**: before loading the model and every 30 s while rendering, `voice.gpu_busy`
+  looks for a game (the pc1 AI guard's log, `%LOCALAPPDATA%\dystopianentity\guard.log`, its latest `game=` line;
+  Nox itself), other programs using the GPU (25% of its 3D and compute engines, ours and the desktop's left out) and
+  free memory (10 GiB a worker). While busy the build waits, saying why, and polls every 30 s (`NOX_VOICE_WAIT`
+  minutes, 120 by default, then gives up for this build); a game starting mid-run stops the workers (the model is
+  unloaded with them; what was made is cached) and the run goes on once it ends. `NOX_VOICE_GPU=skip` (or
+  `--gpu skip`) voices nothing new and keeps the cached waves; `force` does not look. Breeze runs in worker processes
+  (two when 20 GiB are free: about 1.6 times the throughput of one; `NOX_VOICE_WORKERS`) that end after the voice step.
+- **Speed and cost** (the 4090, eager mode: Breeze's CUDA-graph path compiles with Triton, which Windows lacks):
+  about 2.7 s of GPU per second of speech, 7.8 GiB a worker; a reference takes 1-2 takes, a line 1 take when it
+  passes. A Thornwick-sized map (58 lines, 22 speakers, about 7 min of speech) is about 30-40 min of first build with
+  two workers; a rebuild takes seconds: everything is cached.
+- **The cache** (`.tools/voice/cache/`): a line's key is its spoken text with its vocal events, the speaker's reference
+  wave (its hash) and description, the line's mood, the model and source pins, the gate's version and the mastering;
+  a reference's key its description, text, seed, part band and the gate. A changed line, delivery or voice re-makes
+  only what it touches.
+- **The install** (`py mapgen/voice.py fetch`): its own venv in `.tools/voice/breeze/` (`NOX_VOICE_HOME` moves it):
+  the breeze-tts source at a pinned commit (git), torch 2.9.1+cu128 and the packages pip resolved, Breeze TTS 2 and
+  Whisper at pinned Hugging Face revisions. `mapgen/voice.lock.json` (committed) pins all of it with each model
+  file's SHA-256 and the Python version; a later fetch installs exactly that and refuses a file whose hash differs.
+  Model files already in a Hugging Face cache are hard-linked, not downloaded again (`--model-from <HF_HOME or hub>`,
+  `NOX_VOICE_MODEL_FROM`, `HF_HUB_CACHE`, `HF_HOME`); else from huggingface.co (about 9 GB).
+- **The sound** in the game: mastered as Westwood's PCM dialogue measures (`voice._master`): the take's own silence
+  trimmed, about -16 dBFS while speaking, peaks bent under -1 dBFS, a 30 ms lead and a 150 ms tail; written PCM
+  16-bit mono at 22050 Hz. The install and the game are the same for both engines.
+- **Licence**: Breeze TTS 2's weights and what they make are under the BreezeBlue Research and Non-Commercial License
+  (v1.1): fine for the user's own maps, played at home. A map that is ever sold or used commercially must be re-voiced
+  (Kokoro is Apache-2.0) or its voices licensed from BreezeBlue. The breeze-tts source is Apache-2.0; Whisper is MIT.
+  Never clone a real person's voice: every voice is designed from a description.
+- **Where it goes**: `<out>/<Name>_dialog/<wave>.wav` and `<Name>.voice.json` (key, wave, speaker, the voice, the text
+  as spoken with its events, its hash, the gate's measures). Wave names are 8 characters as Westwood's 8.3 ones: two
+  letters of the map, two of its crc32 in base 36, the line's number and "e" (Thornwick's `th9a001e`).
+  `mapgen/install.py` copies the waves into the game's one `Dialog\` folder, takes out the map's old ones and refuses
+  a name of Westwood's or another map's; `mapgen/strings.py` gives a line its wave (`str2`) only while the installed
+  wave was made from the line's present text. The scripts do not change: TellStory passes no sound, the voice is the
+  string's.
+- Try a voice: `py mapgen/voice.py say "Well met, stranger." --voice "<a description>" --seed 7` (or `--voice elder`);
+  a built map's cast: `py mapgen/voice.py cast mapgen/out/<map> <Name>`; voice a built map again without rebuilding it,
+  or only some of it: `py mapgen/voice.py voice mapgen/out/<map> <Name> [--only Key1,Speaker2]`; the offline tests:
+  `py tests/voice_test.py`.
 
 ## 8. What the engine needs
 
@@ -638,8 +684,9 @@ The kit does all of this; know why before changing it.
 3. the scripts' compile against the game's NoxScript (`tests/check_scripts.py`);
 4. the story: every talker's dialogue title, string keys of 31 characters or less, gifts picked up on a timer, the exit
    leading to a built map, every chest holding loot, the gold in budget, no Zombie, a name of 9 characters or less;
-   and the voices [VO-1]: every spoken line has its wave, made from its present text, PCM 16-bit mono, neither silent
-   nor clipped, at a speaking pace, under an 8-character name (`voice.check`; it fails until the TTS is fetched);
+   and the voices [VO-1, VO-2]: every spoken line has its wave, made from its present text, PCM 16-bit mono, neither
+   silent nor clipped, at a speaking pace, under an 8-character name, and (Breeze) passed the quality gate
+   (`voice.check`; it fails until the TTS is fetched);
 5. the room score (`review/roomscore.py`, by room type): rooms that miss it are listed to look at;
 6. the exterior's empty ground (`review/exteriors.py`): over Westwood's 90th percentile for the map's environment fails
    (`review/exteriors_baseline.json`, from `py review/exteriors.py --westwood --save`), over the 75th is a look;
