@@ -16,8 +16,10 @@ For each speaker of its share:
                 reference's is the design take itself.
 
 The gate measures every take here, the same way whichever GPU made it (Whisper's transcript from the backend; the
-pitch and the pace by librosa in this process). A take made on pc2 may differ from the same seed's on pc1 (another
-GPU); each record says where it was made ("gpu"), and a cached take is never made again for that alone.
+pitch and the pace by librosa in this process). A take made on pc2 differs from the same seed's on pc1 (another GPU)
+and is not bit-identical from one pc2 render to the next: each render is its own take with its own gate result; each
+record says where it was made ("gpu"), and a cached take is never made again for that alone. A remote service must
+run the lock's pins (its GET /health "engine"), else its takes are refused.
 
 The parent asks it to stop by writing spec["stop"]: "take" (gaming: stop before the next take) or "line" (stop
 before the next line or reference). Exit codes: 0 done, 3 stopped on request, 75 pc2 unreachable for too long.
@@ -113,7 +115,13 @@ class RemoteBackend:
         self.wait_s = float(spec.get("wait_s", 7200))
         self.refs = {}
         h = self._call("GET", "/health", timeout=30)
-        log(f"{where}'s GPU service {self.url}: " + ", ".join(f"{k} {v}" for k, v in sorted(h.items())))
+        eng, pins = h.get("engine") or {}, spec.get("pins") or {}
+        off = [f"{k} {eng[k]} (the lock: {v})" for k, v in pins.items() if eng.get(k) and eng[k] != v]
+        if off:                 # its takes would be cached under the lock's pins: refuse them
+            raise RuntimeError(f"{where}'s GPU service runs other pins than mapgen/voice.lock.json: " + "; ".join(off))
+        log(f"{where}'s GPU service {self.url}: " + ", ".join(f"{k} {h[k]}" for k in ("device", "dtype", "fast",
+            "asr_device", "free_vram_mib") if k in h) + ("; pins match the lock" if eng and pins and all(
+                eng.get(k) == v for k, v in pins.items()) else "; WARNING: it does not report its pins"))
 
     def _call(self, method, path, body=None, timeout=900):
         import urllib.request, urllib.error
@@ -301,6 +309,9 @@ def main(path):
     except Unavailable as e:
         log(str(e))
         return V.EXIT_UNAVAILABLE
+    except RuntimeError as e:           # the service refused a request, or runs other pins: the parent reports it
+        print(f"{e}", flush=True)
+        return 1
     return 0
 
 

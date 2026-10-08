@@ -124,6 +124,7 @@ class FakeGPU:
         import http.server, threading
         self.label, self.jobs, self.n503 = label, jobs, n503
         self.synths, self.served503, self.saw_jobs, self.on_synth, self.last = 0, 0, [], None, ""
+        self.engine = V.breeze_pins()
         me = self
 
         class H(http.server.BaseHTTPRequestHandler):
@@ -137,7 +138,8 @@ class FakeGPU:
                 self.end_headers(); self.wfile.write(b)
 
             def do_GET(self):
-                if self.path == "/health": return self.reply(200, dict(loaded=True, free_vram_mib=9000, busy=False))
+                if self.path == "/health": return self.reply(200, dict(loaded=True, free_vram_mib=9000, busy=False,
+                                                                   engine=me.engine))
                 self.reply(404, {})
 
             def do_POST(self):
@@ -316,6 +318,18 @@ def gpu_switch(tmp, out, objects, worker_py):
     ok(pc2.saw_jobs and all(s == [] for s in pc2.saw_jobs), "pc2's takes run with no pc1 registration")
     ok(registered(jobs) == [], "no registration left after the run")
     ok(not glob.glob(os.path.join(V.HOME, "tmp", "*")), "the worker's spec and stop files are gone")
+    ok("pins match the lock" in logtxt, "the services' pins are checked against the lock")
+    # a service running other pins than the lock: its takes are refused (they would be cached as the lock's)
+    bad = FakeGPU("pc2")
+    bad.engine = dict(V.breeze_pins(), tts="BreezeBlue/Breeze-TTS-2@0000000")
+    os.environ.update(NOX_VOICE_REMOTE=bad.url, NOX_VOICE_GPU="pc2")
+    for d in ("cache", "refs"): shutil.rmtree(os.path.join(V.HOME, d), ignore_errors=True)
+    buf2 = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(buf2): _, made_b, _, why_b = V.voice(out, "Testvale", objects)
+    finally:
+        bad.close()
+    ok(made_b == 0 and bad.synths == 0 and "other pins" in (why_b or ""), f"other pins on the service: refused ({why_b})")
     if os.environ.get("VOICE_TEST_LOG") or len(FAILS) > n0: print(logtxt)
     for k in ("NOX_VOICE_REMOTE", "NOX_VOICE_PC1_URL", "NOX_VOICE_GPU"): os.environ.pop(k)
 

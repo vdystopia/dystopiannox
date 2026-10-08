@@ -614,6 +614,14 @@ def _engine(engine="kokoro"):
     return f"breeze-tts {commit[:12]} {BREEZE_MODELS['tts'][0]}@{ms['tts'][:12]} whisper@{ms['asr'][:12]} cfg{CFG:g}"
 
 
+def breeze_pins():
+    """What a remote GPU service must run for its takes to belong in this cache (its GET /health "engine")."""
+    lk = _lock("breeze")
+    ms = {k: ((lk.get("models") or {}).get(k) or {}).get("revision", v[1]) for k, v in BREEZE_MODELS.items()}
+    return {"breeze_tts": (lk.get("src") or {}).get("commit", BREEZE_COMMIT),
+            "tts": f"{BREEZE_MODELS['tts'][0]}@{ms['tts']}", "asr": f"{BREEZE_MODELS['asr'][0]}@{ms['asr']}"}
+
+
 def tts_ready(engine=None):
     """None when the engine's TTS is installed here, else what is missing."""
     engine = engine_name(engine)
@@ -998,6 +1006,7 @@ def _run_worker(where, man, keys, say, retry, policy):
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         json.dump(dict(src=breeze_src(), tts=breeze_model("tts"), asr=breeze_model("asr"), cfg=CFG, retry=retry,
                        names=man.get("names", []), speakers=work, backend=where, home=HOME, stop=stop, wait_s=wait_s,
+                       pins=breeze_pins(),
                        url=remote_url() if where == "pc2" else os.environ.get("NOX_VOICE_PC1_URL")), f, ensure_ascii=False)
     env = dict(os.environ, HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", PYTHONIOENCODING="utf-8",
                PYTHONUNBUFFERED="1", TOKENIZERS_PARALLELISM="false", HF_HUB_DISABLE_TELEMETRY="1")

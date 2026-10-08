@@ -602,8 +602,15 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
     cache are the same code wherever a take is made; only making and hearing a take differ (`LocalBackend`: Breeze and
     Whisper in the worker; `RemoteBackend`: the service, stdlib only). The gate's pitch and pace are measured by
     librosa in the worker for both, so the worker runs from the Breeze venv's Python (on pc2's GPU it imports no torch
-    and loads no model). A take made on pc2 may differ from the same seed's on pc1 (another GPU); the gate judges both
-    alike, each record says where it was made (`gpu`), and a cached take is never made again for that alone.
+    and loads no model). A take made on pc2 differs from the same seed's on pc1 (another GPU) and is not bit-identical
+    from one pc2 render to the next (same words and length): each render is its own take with its own gate result;
+    each record says where it was made (`gpu`), and a cached take is never made again for that alone. The service must
+    run the lock's pins (its `/health` reports them as `engine`), else its takes are refused: they would be cached as
+    the lock's.
+  - **pc2's speed** (2026-10-08, the 8-line Thornwick sample): Linux runs Breeze's fast path (Triton, CUDA graphs) in
+    fp16, about 0.7 s of GPU per second of speech on the 2080 Ti, faster than pc1's Windows eager path (~2.7); Whisper
+    runs on pc2's CPU (~5 s a take, the slow step). The service takes one request at a time (503 + Retry-After 60 when
+    busy or short of memory) and unloads its models after 5 idle minutes (the next take reloads them: 30-65 s).
   - **Policy** `NOX_VOICE_GPU` (or `--gpu`): `auto` (the default: the rule above), `pc1` (pc1 only, waits while gaming),
     `pc2` (pc2 only), `skip` (nothing new voiced, the cached waves kept), `force` (pc1 without looking: never while the
     user is gaming). While neither GPU may be used the run waits, saying why (`NOX_VOICE_WAIT` minutes at a time, 120 by
