@@ -1,0 +1,65 @@
+diff --git a/src/client_draw.go b/src/client_draw.go
+index 0668f7c92..04173a05e 100644
+--- a/src/client_draw.go
++++ b/src/client_draw.go
+@@ -331,17 +331,19 @@ func (c *Client) sub_4C5500(vp *noxrender.Viewport) {
+ 	}
+ 
+ 	for yval := c.tiles.dword_5d4594_3679320; yval < c.tiles.dword_5d4594_3798156; yval++ {
++		// Fill the unseen parts of the row: everything outside the visible spans [arr[2k], arr[2k+1]).
++		//
++		// The original loop (ported from C) also read the element after the last crossing (the start of
++		// a "next" span that does not exist, never used). For a row with 31 or 32 crossings that index is
++		// past the end of the array and panicked: "index out of range [1] with length 1". Only complete
++		// pairs are read now; an unpaired last crossing (only possible when a row overflowed) is ignored,
++		// so the rest of that row stays dark. Output for normal (even, in-range) rows is unchanged.
+ 		cur := &c.tiles.nox_arr_957820[yval]
++		n := min(c.tiles.nox_arr_956A00[yval], len(cur.arr)) &^ 1
+ 		lxs := sxmin
+-		lxe := cur.arr[0]
+-		ptr2i := cur.arr[1:]
+-		if pv := c.tiles.nox_arr_956A00[yval]; pv > 0 {
+-			for i := 0; i < (pv+1)/2; i++ {
+-				c.r.DrawLineHorizontal(lxs, yval, lxe, nox_color_black_2650656)
+-				lxs = ptr2i[0]
+-				lxe = ptr2i[1]
+-				ptr2i = ptr2i[2:]
+-			}
++		for i := 0; i < n; i += 2 {
++			c.r.DrawLineHorizontal(lxs, yval, cur.arr[i], nox_color_black_2650656)
++			lxs = cur.arr[i+1]
+ 		}
+ 		c.r.DrawLineHorizontal(lxs, yval, sxmin+vp.Size.X, nox_color_black_2650656)
+ 	}
+@@ -835,7 +837,7 @@ func (c *Client) sub_4C5430(px int, py int) {
+ 		return
+ 	}
+ 	v2 := c.tiles.nox_arr_956A00[py]
+-	if v2 >= 32 {
++	if v2 >= len(c.tiles.nox_arr_957820[py].arr) { // row full: drop the crossing (was a hard-coded 32)
+ 		return
+ 	}
+ 	v3 := 0
+diff --git a/src/draw.go b/src/draw.go
+index ef62e71cb..6984539b6 100644
+--- a/src/draw.go
++++ b/src/draw.go
+@@ -38,8 +38,17 @@ var (
+ 	partViewportOff                      image.Point
+ )
+ 
++// tileRowMaxCrossings is the capacity of one screen row's list of sight-polygon edge crossings
++// (sorted X coordinates; pairs [arr[2k], arr[2k+1]) are the visible spans of the row).
++//
++// The original engine used 32. A row crosses the sight polygon once per edge, and the polygon can have
++// up to sightPointsMax (1024) points, so long jagged sight edges (e.g. a level forest edge seen side-on)
++// exceed 32 easily: the extra crossings were dropped (wrong fog of war on that row) and sub_4C5500 then
++// read past the end of the array and panicked. 256 covers any realistic view at ~2.4 MB for the HD build.
++const tileRowMaxCrossings = 256
++
+ type tileMapXxx struct {
+-	arr [32]int
++	arr [tileRowMaxCrossings]int
+ }
+ 
+ type nox_arr_84EB20_t struct {
