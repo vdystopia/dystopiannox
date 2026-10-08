@@ -235,6 +235,30 @@ the outside in. It's also a natural transition point in itself. Therefore, this 
   had laid a strip of boards half a tile wide along the outside of every SW wall (Thornwick's inn).
 - Checked by `floors.wall_blend` (an error; planted case STwallb): a map with an edge piece across a wall fails the gate.
 
+### Iron fences: cut or blend [FN-1]
+The user (2026-10-08, after TW-12 made iron fences hard cuts too): "Try iron fences with and without blending. If no
+blending is used, then must be put precisely on the line between two tiles." One switch, `Spec.fence_policy`
+(`nox.FENCE_POLICY`, default `"cut"` until the user picks; the build writes it to `<Name>.fences.json` for the checker):
+- **On the line, geometrically.** Walls and tiles share the even lattice (x + y even), and the client's sight pass visits
+  only those cells, so no wall can sit elsewhere. A tile's sides run along the lines x + y odd and x - y odd. A / piece
+  (facing 0) runs along x + y odd: it lies exactly on the seam between the tile behind it and the tile in front. A \
+  piece (facing 1) runs along x - y even, through the centres of the tiles on its line: the nearest seams lie half a
+  tile behind and in front of it, so a floor change across a \ piece always shows a strip of the wrong floor through the
+  bars. Corners have one arm of each kind; a gate's opening counts as a piece of its line.
+- **`cut`**: no edge piece across a fence or its gate (TW-12), and a floor change under a fence only on its / pieces.
+  Under a \ piece the line tile and the tiles behind and in front of it take one floor, the ground (lowest blend
+  priority: grass between grass and cobble, dirt between dirt and stone; else the floor in front)
+  (`Spec._fence_line_floors`): a yard's own floor stops a tile inside its \ sides and meets the ground there as ground
+  meets ground. Westwood does the same outdoors: one floor under 93% of its / fence pieces and 78% of its \ pieces over
+  outdoor ground (`rules/fences.py`).
+- **`blend`**: floors blend across iron fences as Westwood's do (about two thirds of all its fence seams, most of them
+  in dungeons); every other wall stays a hard cut (TW-12 unchanged). A \ line tile takes the floor in front (Westwood:
+  72%).
+- Checked by `floors.fence_line` (cut: a floor change under a \ fence piece is an error; planted case STfence) and
+  `floors.wall_blend` (an edge across any wall, and across a fence under the cut policy; STfncbl: the blend policy
+  still fails an edge across a house's wall). `mapgen/designs/fencelab.py cut|blend` builds the comparison map
+  (FenceCut, FenceBlnd).
+
 ### Rooms: per type in `rules/rooms/`
 There is no one-size-fits-all room: each room type has its own rules, Westwood's measures and good examples in
 `rules/rooms/<type>.md`, indexed by `rules/rooms/README.md` (the room recipes are `ROOMS` in `kit/identity.py`, the
@@ -658,6 +682,7 @@ then the user playtests, and hears the voices.
 departures from Westwood's range or from a house rule the playtests set. The rules by topic:
 - walls, doors, kits, floors, the boundary, reachability and the story's gates (the engine and Westwood's construction);
 - `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4]; `floors.wall_blend` [TW-12] (no edge piece across a wall);
+  `floors.fence_line` [FN-1] (cut policy: no floor change under a \ fence piece);
 - `rooms.*` (size, cover, identity strays), `composition.*` (the cross-type room rules, bridges, docks across puddles)
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every

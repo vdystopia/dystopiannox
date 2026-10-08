@@ -106,6 +106,61 @@ TIP_BLOCKERS = {"NE": ("E", "N"), "NW": ("N", "W"), "SE": ("E", "S"), "SW": ("S"
 WALL_ARMS = {f: arms for arms, f in FACING_BY_ARMS.items() if len(arms) >= 2}   # the arms each facing draws
 _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 
+# Iron fences: blend or cut [FN-1] (user, 2026-10-08: "Try iron fences with and without blending. If no blending is
+# used, then must be put precisely on the line between two tiles."). Westwood blends about two thirds of the floor
+# seams along its iron fences (42 campaign layouts: 69% of the 393 differing seams across a / piece; across a \ piece
+# 66% of the 463 behind its line tile and 81% of the 233 in front), against 1-10% across its solid walls. Its \ line
+# tile takes the floor in front 72% of the time (377 of 524). The two policies (Spec.fence_policy, default FENCE_POLICY):
+# - "cut": a fence is a hard cut like any wall (TW-12), and the cut lies exactly on the fence line. Walls and tiles
+#   both sit on the even lattice (x + y even; the client's sight pass, client/sight.go, visits only those cells, so a
+#   wall cannot be moved off it), and a tile's sides run along the lines x + y odd and x - y odd. A / piece (facing 0,
+#   from its cell's corner (x, y+1) to (x+1, y), on x + y = odd) therefore lies exactly on the seam between tiles
+#   (x-1, y-1) and (x, y): a floor change there is on the line. A \ piece (facing 1, from (x, y) to (x+1, y+1), on
+#   x - y = even) runs through the centres of the tiles on its line: the nearest seams lie half a tile behind and
+#   in front of it, and a floor changed there shows a strip of the wrong floor through the bars. So under a \ piece
+#   (and the \ arm of a corner, and a gate's \ opening) the floor is one floor on the line tile and on both tiles
+#   across it (Spec._fence_line_floors gives them the ground, the floor of lowest blend priority); the change moves
+#   one tile off the fence, where it is ordinary ground and blends as ground does.
+# - "blend": floors blend across iron fences (Westwood's way); every other wall stays a hard cut (TW-12).
+# validate/checks.py: floors.fence_line (cut: a floor change under a \ fence is an error) and floors.wall_blend (an
+# edge across any wall, or across a fence under the cut policy, is an error). The policy goes to <name>.fences.json
+# beside the map for the checker.
+FENCE_POLICY = "cut"
+FENCE_POLICIES = ("cut", "blend")
+FENCES = ("IronFence", "IronFenceDamaged")
+BACKSLASH_ARMS = {TL: (-1, -1), BR: (0, 0)}         # a \ arm -> the tile it runs through, relative to its cell
+
+
+def is_fence(material):
+    return material in FENCES
+
+
+def fence_line_tiles(facings):
+    """For {fence cell: facing}: each \\ arm's line tile -> (the tile behind it (E, up the screen), the tile in front of
+    it (W)) [FN-1]. Under the cut policy those three are one floor."""
+    out = {}
+    for (x, y), f in facings.items():
+        for arm in WALL_ARMS.get(f, ()):
+            if arm in BACKSLASH_ARMS:
+                t = (x + BACKSLASH_ARMS[arm][0], y + BACKSLASH_ARMS[arm][1])
+                out[t] = ((t[0] + 1, t[1] - 1), (t[0] - 1, t[1] + 1))
+    return out
+
+
+def fence_facings(walls, gaps=()):
+    """{cell: facing} of the iron fence pieces among `walls` ({cell: (facing, material)}), with each door opening
+    (`gaps`) in a fence line (a gate) as a straight piece of that line."""
+    out = {c: f for c, (f, mat) in walls.items() if is_fence(mat)}
+    gaps = set(gaps)
+    for g in sorted(gaps):
+        for facing, d in ((1, (1, 1)), (0, (1, -1))):
+            run = [(g[0] + s * k * d[0], g[1] + s * k * d[1]) for s in (1, -1) for k in (1, 2)]
+            if any(c in walls and is_fence(walls[c][1]) for c in run) and \
+                    any(c in walls or c in gaps for c in run[:1] + run[2:3]):
+                out[g] = facing
+                break
+    return out
+
 
 def _orient(p, q, r):
     return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
@@ -247,6 +302,7 @@ class Spec:
         self.scripts = {}       # filename -> Go source: the map's script (OpenNox runs the .go files in maps/<Name>/)
         self.routes = []        # routes the scripts walk (kit/npcs.Behaviours): <map>.routes.json for the checker
         self.rng = random.Random(1)
+        self.fence_policy = FENCE_POLICY  # iron fences: "cut" (a hard cut on the fence line) or "blend" [FN-1]
 
     # ---- walls -------------------------------------------------------------------------
     def wall(self, x, y, material, variation=None, window=False, facing=None):
@@ -430,12 +486,19 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+        assert self.fence_policy in FENCE_POLICIES, self.fence_policy
+        fences = fence_facings({(w["x"], w["y"]): (w["facing"], w["material"]) for w in walls}, self.door_gaps)
         self._wall_line_floors()
         self._door_thresholds()
+        if self.fence_policy == "cut": self._fence_line_floors(fences)
         for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
         self._blend_thresholds()
-        edges = self._edges(wall_seams({(w["x"], w["y"]): w["facing"] for w in walls
-                                        if not w["material"].startswith("Invisible")}))
+        # the walls no edge is drawn across [TW-12]; iron fences too under the cut policy, their gates with them, and
+        # under the blend policy not iron fences [FN-1]
+        hard = {(w["x"], w["y"]): w["facing"] for w in walls if not w["material"].startswith("Invisible")}
+        if self.fence_policy == "cut": hard.update(fences)
+        else: hard = {c: f for c, f in hard.items() if c not in fences}
+        edges = self._edges(wall_seams(hard))
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         polygons = list(self.d["polygons"])
@@ -456,6 +519,28 @@ class Spec:
             polygons.append(dict(name=f"{self.d['name']}:World", ambient=list(self.d["ambient"]), minimap=100,
                                  points=_world_polygon([p["points"] for p in polygons])))
         return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
+
+    def _fence_line_floors(self, fences):
+        """Under the cut policy a floor change under an iron fence lies exactly on the fence line [FN-1]: a / piece is
+        on a seam between tiles and may stand between two floors; a \\ piece runs through the middle of the tiles on its
+        line, so the line tile and the tiles behind and in front of it take one floor, the ground (the floor of lowest
+        blend priority among them: grass under a fence between grass and cobble, dirt between dirt and stone; else the
+        floor in front, as Westwood lays a \\ line tile). A yard's own floor then stops one tile inside its \\ sides,
+        where it meets the ground as ground meets ground, away from the fence."""
+        if getattr(self, "raw_floors", False): return
+        lines = fence_line_tiles(fences)
+        for _ in range(4):                               # a corner's tiles serve two arms: settle until nothing moves
+            moved = False
+            for t, (e, w) in sorted(lines.items()):
+                trio = [c for c in (t, e, w) if c in self.floor and c not in self.indoor]
+                mats = {self.floor[c] for c in trio}
+                if len(mats) < 2: continue
+                prio = lambda m_: self.blend[m_][0] if m_ in self.blend else 99
+                front = self.floor.get(w) or self.floor.get(t)
+                ground = min(sorted(mats), key=lambda m_: (prio(m_), m_ != front))
+                for c in trio:
+                    if self.floor[c] != ground: self.floor[c] = ground; moved = True
+            if not moved: break
 
     def _wall_line_floors(self):
         """The room's floor runs under its walls, out to the wall line on the side in front of the wall (Starwell
@@ -650,6 +735,9 @@ class Spec:
             for fn, src in self.scripts.items():
                 with open(os.path.join(sd, fn), "w", encoding="utf-8", newline="\n") as f: f.write(src)
             lines.append(f"SCRIPTS\t{sd}\t{len(self.scripts)} file(s)")
+        # the fence policy the floors were laid by, for the checker (validate check_wall_blends, check_fence_lines) [FN-1]
+        with open(os.path.join(out_dir, self.d["name"] + ".fences.json"), "w", encoding="utf-8") as f:
+            json.dump({"policy": self.fence_policy}, f)
         # the routes the scripts walk, waypoint by waypoint, for the checker's leg check (validate check_routes)
         rp = os.path.join(out_dir, self.d["name"] + ".routes.json")
         if self.routes:

@@ -281,6 +281,26 @@ def blend_across_wall(m):
     m._edges = edges
 
 
+def _fenced_pen(m):
+    # an iron-fenced pen of cobble in the meadow, its \ sides (v = -36, v = -24) across a floor change
+    m.room(184, 196, -36, -24, wall="IronFence", floor="RoughCobble")
+    m.blending("GrassNorm", 0); m.blending("RoughCobble", 5, "BrickEdgeBrown")
+
+
+def fence_off_line(m):
+    # the cobble's edge laid under the pen's \ fences, half a tile off the fence line (FN-1, 2026-10-08: "If no
+    # blending is used, then must be put precisely on the line between two tiles"); the generator moves it off now
+    _fenced_pen(m)
+    m._fence_line_floors = lambda fences: None
+
+
+def blend_policy_wall(m):
+    # the blend policy lets floors blend across iron fences only: an edge across the house's wall stays an error (FN-1)
+    _fenced_pen(m)
+    m.fence_policy = "blend"
+    blend_across_wall(m)
+
+
 def ground_in_room(m):
     # a tile of the meadow's grass laid on the boards just inside the door (SW-4: "Tile blending on the inside of doors
     # seems consistently off")
@@ -619,6 +639,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
     ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
     ("STwallb", blend_across_wall, "floors", "error", "grass blended onto a house's boards across its wall - TW-12",
+     "across a wall"),
+    ("STfence", fence_off_line, "floors", "error", "a pen's cobble ending under its \\ fence, off the line - FN-1",
+     "under an iron fence"),
+    ("STfncbl", blend_policy_wall, "floors", "error", "blend policy: grass blended across a house's wall - FN-1",
      "across a wall"),
     ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
     ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),
