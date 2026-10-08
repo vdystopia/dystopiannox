@@ -98,9 +98,14 @@ class MapData:
         self.objects = []
         for o in d["objects"]:
             t = self.things.get(o["t"], {})
+            # extent: the object's number in the map, which links name (an elevator's pit, a pentagram's target:
+            # xfer ExtentLink). enabled: the create flags (ENABLED, 0x1000000) are stored only with the extended
+            # fields (term != 0); without them the object starts enabled.
             self.objects.append(dict(type=o["t"], x=o["x"], y=o["y"], xtype=o["xtype"], xfer=o["xfer"] or {},
                                      scr=o["scr"], cls=t.get("class") or "", flags=t.get("flags") or "",
-                                     ext=t.get("ext"), ex=t.get("ex") or 0, ey=t.get("ey") or 0, id=len(self.objects)))
+                                     ext=t.get("ext"), ex=t.get("ex") or 0, ey=t.get("ey") or 0, id=len(self.objects),
+                                     extent=o.get("ext"),
+                                     enabled=not o.get("term") or bool((o.get("cflags") or 0) & 0x1000000)))
         self.waypoints, self.polygons, self.groups = d["waypoints"], d["polygons"], d["groups"]
         self.script_funcs = d["script"]["funcs"]
         self.cover = set()                       # cells covered by a floor tile

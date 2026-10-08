@@ -217,6 +217,12 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | TW-12 | "We've had some issues with blending tiles in the transition between interior and exterior. ... There does not need to be blending on a wall. The wall cuts off vision from the inside out and from the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used." (a soft grass edge along the outside of a building's wall) | P§3 No blending at a wall (`nox.wall_seams`, `Spec._edges`) | `floors.wall_blend` (STwallb) | none | check |
 
+## Transporters (2026-10-08, a request)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| TR-1 | "The next feature we need to add is elevators, lifts, stairs and portals. They all function the exact same way. They basically teleport the player from one location to another. The second location is often an isolated part of the map (but not always)." | P§2 Transporters (`kit/transport.py`, one call for lift, stairs, portal, passage); `rules/TRANSPORTERS.md`; `skills/nox-transporters/SKILL.md` | `transport.link` (STtpLnk), `transport.landing` (STtpWal), `transport.bounce` (STtpBnc), `transport.serves` (STtpSrv), `transport.stranded` (STtpStr), `transport.wall`, `transport.pocket`, `transport.missing`, `transport.unreached`; look:spots (every named end) | none | check |
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |
@@ -226,6 +232,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
 | Voiced dialogue (VO), after | 1 | 1 | 0 | 0 |
 | Thornwick screenshot (TW-12), after | 1 | 1 | 0 | 0 |
+| Transporters (TR), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 

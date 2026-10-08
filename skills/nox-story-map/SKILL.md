@@ -161,6 +161,9 @@ cause in the kit if it recurs.
   `yard.cells`.
 - A sealed building: `sm.seal_entrance(building, prefix)` locks its entrance to a mechanism; `A.unlock` breaks it.
 - A light the story relights: a named `ColorLight` disabled in `q.start` and enabled by the story.
+- A cellar, a mine level, a tower floor, an island, a crypt reached by a lift, stairs, a portal or a passage (the far
+  place drawn walled off elsewhere on the grid): `kit/transport.Transporters`, by `skills/nox-transporters/SKILL.md`;
+  one that opens with the quest is laid `enabled=False` and turned on by `A.enable` of each of `t.sources`.
 - A culture's own scenes and roles: `culture=` themes in `kit/scenes.py` with `Exterior(..., culture=)`; roles
   `college`, `apothecary`, `observatory`.
 - In a cave or other biome, house floors meet the cave floor under the walls: `m.blending(mat, -1)` on the house floors.

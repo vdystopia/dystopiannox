@@ -639,6 +639,11 @@ class Spec:
         if res.returncode or not any(l.startswith("OK") for l in lines):
             sys.exit("map build failed:\n" + "\n".join(lines))
         lines += loot_lines
+        # the transporters (kit/transport.py): <name>.transport.json for the checker, transport.go for the scripts
+        if getattr(self, "transporters", None) is not None:
+            self.transporters.finish(self, out_dir)
+        elif os.path.exists(os.path.join(out_dir, self.d["name"] + ".transport.json")):
+            os.remove(os.path.join(out_dir, self.d["name"] + ".transport.json"))
         if self.scripts:                        # beside the map: install copies them into maps/<Name>/ with it
             sd = os.path.join(out_dir, self.d["name"] + "_scripts")
             os.makedirs(sd, exist_ok=True)

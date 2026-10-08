@@ -81,6 +81,24 @@ A town is a web of forest corridors, not a clearing (`rules/TOWNS.md`): give it 
 roads joined to both by forest paths 11 uv wide or more (`Land.link(..., road=False)`), so paths loop round blocks of
 forest; put clumps of forest in the open meadows.
 
+### Transporters: lifts, stairs, portals, passages [TR-1]
+Every transporter moves the player from a spot A to a spot B, and B is most often a place that cannot be walked to: a
+Nox map has one floor, so a cellar, a mine level, an island or a tower floor is a walled-off area drawn in an empty part
+of the grid (Westwood: 98% of its lifts, 86% of its pads; `rules/TRANSPORTERS.md`). The process is
+`skills/nox-transporters/SKILL.md`; one call lays any kind (`kit/transport.Transporters.add(kind, a, b, name)`):
+- **The kind by the setting**: a lift in mines, caves, sewers and pits (CaveElevator with its base, Elevator in the
+  mines, GreenElevator in Ix and swamps, WhiteElevator in a castle, LOTDElevator, RedElevator at the volcano); stairs
+  between a castle's, Dun Mir's or a crypt's floors; a pentagram for magic places and islands; a passage (the screen
+  fades out and in) for a door or tunnel mouth into an inside drawn elsewhere.
+- **The far place first**: its own walls, floor, light and purpose (`serves=`: the chest, the boss), then both ends on
+  open floor, 23 px or more from a wall; stairs down in a room's west corner, stairs up against its NE wall, as
+  Westwood's.
+- **Never land the player on a pad that leads on**: a lift is two-way by itself; a two-way portal or stairs is two
+  one-way pads, each landing 59 px (Westwood's median) beside the other's pad (Westwood links no two pads both ways).
+- **A way back or the map's exit** from every landing, unless the story leads on from there; a transporter that opens
+  with the quest is laid `enabled=False` and turned on by `A.enable` (Westwood's exit lifts, Con01A).
+  The checker's `transport.*` rules catch the rest (section 9).
+
 ### Yards [AM-1, SW-9]
 Yards with a purpose (`kit/yards.py`: graveyard, quarry, orchard, park, field, monument, jail) are planned before the
 land is carved (`yards.plan`, `yards.plan_any`) and built after its walls (`yards.build`), each fenced in Westwood's
@@ -595,6 +613,14 @@ The kit does all of this; know why before changing it.
   ground along a narrow band of forest; Thornwick uses it. The gate's sight step (`tests/sightrows.py`) estimates the
   worst row from every point of the floor and fails a map at 33 (the estimate over-counts; it is calibrated on the game).
   To try a point in the client: `py tests/sightrows.py <map> --at X,Y --png out.png`.
+- **Transporters** [TR-1] (`rules/TRANSPORTERS.md`, read from OpenNox's source and proved in the client): a lift's
+  platform and pit name each other by extent (xfer ExtentLink, joined at load); an enabled platform cycles by itself
+  (a second's wait at each end), carrying whoever stands on it to the pit and back; a teleport pad sends whoever
+  stands on it to the TRANSPORTER it names (a pentagram after its glow, an invisible one at once) and does nothing
+  when it names none (an arrival marker). The create flags (ENABLED) are stored only with an object's extended fields:
+  `build_map.ps1` writes `enabled: false` that way, and `key` / `link` resolve one object's extent into another's
+  ExtentLink. Stairs are pictures with an invisible pad on them. An `-autosrv` host starts NO_COLLIDE and triggers
+  no pad: a client test clears that flag first.
 - **Clones** lose their donor map's script hooks (ScriptEvents naming its functions).
 - **Never place a `Zombie`**: OpenNox cannot read the map back. Map names are at most 9 characters.
 - OpenNox alpha13 leaves TellStoryStr, quest status, JournalEntryStr/Edit, MakeFriendly and GiveXp unimplemented; the
@@ -642,6 +668,11 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   Westwood's habit);
 - `exterior.*` [section 4-5]: overlapping pieces, pieces on a fence line, pickable lights, crowds and swarms, docks,
   stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves.
+- `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
+  or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
+  `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter
+  serves reachable from its landing, a way back or the exit from every landing, every start reachable. Reachability
+  follows transporters (a lift both ways, a pad one way, a passage from the sidecar).
 
 **Keeping the checks honest.**
 - A new rule gets a planted defect in `validate/selftest.py` (`py validate/selftest.py [case ...]`); a finding no rule

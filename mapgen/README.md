@@ -45,7 +45,8 @@ game: start a Solo game, press F1, type `racoiaws` (enables cheats), then `load 
 
 Walls of any shape (facing derived from neighbours), windows, floor tiles with soft edge blending
 (rules learned from all stock maps), doors placed in wall gaps, objects, objects copied from a stock
-map by script name (e.g. configured townsfolk; their script names are cleared), waypoints with
+map by script name (e.g. configured townsfolk; their script names are cleared), objects that name another by extent
+(`key=`, `link=`: an elevator's pit, a teleport pad's target) or start disabled (`enabled=False`), waypoints with
 roaming links (flag 128), and room polygons.
 
 ## Kit (phase 3): original structures, not copies
@@ -78,11 +79,13 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/dressing.py` | `Exterior`: the outdoor ground dressed with whole scenes from the catalogue |
 | `kit/spacing.py` | Westwood's closest gaps between outdoor pieces; wall-line clearance |
 | `kit/loot.py` | Container loot in Westwood's shares, filled at build time |
+| `kit/transport.py` | `Transporters`: lifts, stairs, portals and scripted passages by one call (`add(kind, a, b, name)`); writes `<Name>.transport.json` and `transport.go` at build (`rules/TRANSPORTERS.md`, `skills/nox-transporters/SKILL.md`) |
 
 The process (which rule each module carries out) is `PROCESS.md`; the recipe for a story map is
 `skills/nox-story-map/SKILL.md`.
 
-Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, and
+Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, `designs/test_transport.py`
+(TestTrans: one transporter of each kind), and
 `designs/dysvale.py`, a village combining all of them.
 
 ## Rules the generator follows (verified against stock maps and the game engine)

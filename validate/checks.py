@@ -11,6 +11,7 @@ Thresholds come from validate/baseline.json (validate/calibrate.py measures West
 import collections, json, math, os, re
 import mapdata as md
 import room_types as RT
+import transport as TR
 from mapdata import CELL, GRID, N4, DIAG, ARMS_OF, LINE_STEP, rules
 
 LIGHT_NAME = re.compile(r"ColorLight|Torch|Candle|Lantern|Lamp|Sconse|Sconce|Flame|Fireplace|Brazier|Basin.*Lit|Chandelier|Lights?$", re.I)
@@ -18,7 +19,6 @@ KIT_RE = re.compile(r"^(DockDown|DockUp|RopeBridgeBroken[12]|RopeBridge[12]|Lava
 MP_ONLY = re.compile(r"^(Flag|GameBall|Crown|TeamBase|.*FlagBase)$")
 NATURAL_WALL = re.compile(r"Cave|Rock|Dirt|Root|Tree|Decidious|Coni-|Aspen|Hedge|Shrub|Thorn|Volcano|IceWall|Shard|Mine", re.I)
 WATER_RE = re.compile(r"Water", re.I)
-TRAVEL = ("TRANSPORTER", "ELEVATOR", "ELEVATOR_SHAFT")
 FLOOR_FURNITURE = {"bed", "nightstand", "counter_shop", "table", "chair", "bench", "desk", "stove", "storage"}   # bar counters meet walls by design
 
 
@@ -56,7 +56,8 @@ class Context:
 
     walk: cells a player can reach from the start points (for reachability). Walls block, except
           secret walls and walls a script removes (wall groups); doors and destructible walls are
-          passable. Teleports and elevators connect every area they stand in.
+          passable. Transporters carry the player where they lead (validate/transport.py): a lift both ways, a
+          teleport pad to the object it names, a scripted passage (the design's <map>.transport.json) to its far end.
     closed: the same with every wall shut, as the map looks before anything opens (for holes).
     sight: cells visible from `closed`. Visible walls (windows included) and closed doors block
           sight; invisible walls do not.
@@ -74,16 +75,36 @@ class Context:
         sight_block = {c for c, w in m.walls.items() if not w.invisible} | set(m.door_gaps)
         self.sight, self.sight_leaks = self._flood(list(self.closed), sight_block - self.closed)
 
+    def hops(self):
+        """[(from cell, to cell)]: where each transporter takes a player who steps on it."""
+        if getattr(self, "_hops", None) is None:
+            m, out = self.m, []
+            for l in TR.links(m):
+                if l.problem or l.dst is None: continue
+                a, b = m.cell_of(l.src["x"], l.src["y"]), m.cell_of(l.dst["x"], l.dst["y"])
+                out.append((a, b))
+                if l.kind == TR.LIFT: out.append((b, a))
+            for t in transport_sidecar(m) or []:
+                if t["kind"] != "passage": continue
+                out.append((m.cell_of(*t["a"]), m.cell_of(*t["arrive_b"])))
+                if t["two_way"] and t.get("arrive_a"): out.append((m.cell_of(*t["b"]), m.cell_of(*t["arrive_a"])))
+            self._hops = out
+        return self._hops
+
     def _reach(self, blocked):
         cells, leaks = self._flood(self.starts, blocked)
-        # elevators and teleports join the areas they stand in (the object itself blocks its cell,
-        # so "reached" means the player can get next to it)
-        travel = [self.m.cell_of(o["x"], o["y"]) for o in self.m.objects if any(t in o["cls"] for t in TRAVEL)]
+        # transporters carry the player across (the pad or platform is walked onto: never a blocker); follow them until
+        # nothing new is reached
         around = lambda c: [c] + [(c[0] + dx, c[1] + dy) for dx, dy in N4]   # beside it, never across a wall
-        if any(n in cells for t in travel for n in around(t)):
-            seeds = [n for t in travel for n in around(t) if n not in blocked and n in self.m.cover]
-            more, more_leaks = self._flood(seeds, blocked, cells)
-            cells |= more; leaks |= more_leaks
+        changed = True
+        while changed:
+            changed = False
+            for a, b in self.hops():
+                if b in cells or not any(n in cells for n in around(a)): continue
+                seeds = [n for n in around(b) if n not in blocked and n in self.m.cover]
+                more, more_leaks = self._flood(seeds, blocked, cells)
+                if more:
+                    cells |= more; leaks |= more_leaks; changed = True
         return cells, leaks
 
     def object_cells(self):
@@ -91,7 +112,7 @@ class Context:
         Westwood sometimes closes an edge with these instead of walls."""
         m, out = self.m, set()
         for o in m.objects:
-            if not m.blocking(o) or "TRIGGER" in o["cls"]: continue
+            if not m.blocking(o) or "TRIGGER" in o["cls"] or TR.kind(o): continue    # a transporter is walked onto
             r = m.radius(o)
             if r < 10: continue
             cx, cy = m.cell_of(o["x"], o["y"])
@@ -393,7 +414,8 @@ def check_story_gates(m, ctx, base):
     whole road). Doors locked to a key are left open here: the key is in the map."""
     out = []
     sealed = {d["gap"] for d in m.doors if (d["obj"].get("xfer") or {}).get("LockType") == "Mechanism"}
-    exits = [o for o in m.objects if "EXIT" in o["cls"]]
+    # an exit that names no map does nothing in a solo game (Westwood's crypt stairs are such pieces)
+    exits = [o for o in m.objects if "EXIT" in o["cls"] and (o["xfer"] or {}).get("MapName")]
     if not sealed or not exits or not ctx.starts: return out
     walk_block = {c for c, w in m.walls.items() if not (w.secret or w.destructible or c in m.scripted_walls)}
     cells, _ = ctx._reach(walk_block | ctx.object_cells() | sealed)
@@ -2328,6 +2350,131 @@ def outdoor_groups(m):
     return out
 
 
+# ---- transporters: lifts, stairs, portals, passages (rules/TRANSPORTERS.md) ------------------------------------------
+TP_WALL_PX = 23          # an end under this far from a wall cell's centre: Westwood's lifts and landings keep 23 px or more
+TP_POCKET = 12           # cells: a landing area smaller than this, with no way on, traps the player
+TP_BOUNCE = 40           # px: a landing this near a pad or passage spot that leads elsewhere sends him on at once
+
+
+def transport_sidecar(m):
+    """The design's transporters as meant (<map>.transport.json beside a generated map, kit/transport.py), or None."""
+    side = os.path.splitext(m.file or "")[0] + ".transport.json"
+    if not m.file or not os.path.exists(side): return None
+    with open(side, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _landing_faults(m, x, y, what, skip=()):
+    """What is wrong with a spot the player lands on: in the void, in a wall, on a blocking object, against a wall."""
+    c = m.cell_of(x, y)
+    if c not in m.cover: return "error", f"{what} lies in the void (no floor)"
+    w = m.walls.get(c)
+    if w is not None and not w.invisible and not (w.secret or w.destructible): return "error", f"{what} lies in a wall"
+    for o in m.objects:
+        if o["id"] in skip or TR.kind(o) or not m.blocking(o) or "TRIGGER" in o["cls"]: continue
+        dx, dy = abs(o["x"] - x), abs(o["y"] - y)
+        if dx > 80 or dy > 80: continue
+        inside = (dx <= o["ex"] / 2 and dy <= o["ey"] / 2) if o["ext"] == "BOX" else math.hypot(dx, dy) <= m.radius(o)
+        if inside and m.radius(o) >= 6: return "error", f"{what} lies on a {o['type']}"
+    gap = TR.wall_clearance(m, x, y, radius=2)
+    if gap < TP_WALL_PX: return "warning", f"{what} lies {gap:.1f} px from a wall (Westwood's keep 23 px or more)"
+    return None
+
+
+def check_transport(m, ctx, base):
+    """Lifts, teleport pads and stairs as the engine runs them (validate/transport.py), and, on a generated map, the
+    transporters as the design meant them (<map>.transport.json): every end linked, every landing on open floor with
+    a way on, the far end's places reachable from the landing, a way back or the map's exit from wherever a transporter
+    leaves the player, nobody landing on a pad that sends him on."""
+    out = []
+    lks = TR.links(m)
+    for l in lks:
+        if not l.problem or l.kind == TR.EXIT: continue
+        # a lone pit or a switched-off platform with no pit is a prop (Westwood's maps hold 41 such)
+        if l.kind == TR.LIFT and not (l.enabled and TR.kind(l.src) == TR.LIFT): continue
+        out.append(F("transport", "error", f"{l.src['type']} {l.problem}: it moves nobody.", l.src["x"], l.src["y"]))
+    walk_cells = ctx.object_cells()
+    label, size = TR.regions(m, TR.walk_blocked(m, walk_cells))
+    sources = [(l.src, l) for l in lks if l.kind in (TR.LIFT, TR.PAD) and not l.problem and l.enabled]
+    side = transport_sidecar(m)
+    passages = [t for t in side or [] if t["kind"] == "passage"]
+
+    def way_on(r, here):
+        """Another transporter starts in region r (a chain), or a passage's spot does."""
+        for o, l in sources:
+            if o is here: continue
+            if T_region(o["x"], o["y"]) == r: return True
+        return any(T_region(*t["a"]) == r for t in passages)
+
+    T_region = lambda x, y: TR.region_at(m, label, size, x, y)
+    for l in lks:
+        if l.problem or l.dst is None: continue
+        lands = [(l.dst, l.src)] + ([(l.src, l.dst)] if l.kind == TR.LIFT else [])
+        for end, frm in lands:
+            what = f"Where the {frm['type']} at ({frm['x']:.0f}, {frm['y']:.0f}) lands the player"
+            fault = _landing_faults(m, end["x"], end["y"], what, skip={l.src["id"], l.dst["id"]})
+            if fault:
+                out.append(F("transport", fault[0], fault[1] + ".", end["x"], end["y"]))
+                if fault[0] == "error": continue
+            r = T_region(end["x"], end["y"])
+            if r is not None and size[r] < TP_POCKET and not way_on(r, end):
+                out.append(F("transport", "error", f"{what} is a pocket of {size[r]} cells with no way on.",
+                             end["x"], end["y"]))
+    if side is None: return out
+
+    # ---- the design's intent ----
+    by_spot = {(o["type"], round(o["x"]), round(o["y"])) for o in m.objects}
+    g = TR.graph(m, lks, label, size)
+    for t in passages:
+        a, b = T_region(*t["a"]), T_region(*t["arrive_b"])
+        if a is not None and b is not None and a != b: g[a].add(b)
+        if t["two_way"] and t.get("arrive_a"):
+            a2, b2 = T_region(*t["b"]), T_region(*t["arrive_a"])
+            if a2 is not None and b2 is not None and a2 != b2: g[a2].add(b2)
+    start = T_region(*cell_px(ctx.starts[0])) if ctx.starts else None
+    exits = [o for o in m.objects if "EXIT" in o["cls"] and (o["xfer"] or {}).get("MapName")]
+    exit_regions = {T_region(o["x"], o["y"]) for o in exits} - {None}
+    pad_spots = [(o, l) for o, l in sources if l.kind == TR.PAD] + \
+                [({"x": t["a"][0], "y": t["a"][1], "type": "passage " + t["name"]}, None) for t in passages]
+    for t in side:
+        nm = f"The {t['kind']} {t['name']}"
+        missing = [o for o in t["objects"] if (o["type"], round(o["x"]), round(o["y"])) not in by_spot]
+        if missing:
+            out.append(F("transport", "error", f"{nm} is missing its {missing[0]['role']} ({missing[0]['type']}) on the "
+                         f"map.", *t["a"]))
+            continue
+        legs = [("b", t["a"], t["arrive_b"])] + ([("a", t["b"], t["arrive_a"])] if t["two_way"] and t.get("arrive_a") else [])
+        for end, _, land in legs:
+            if t["kind"] == "passage":
+                fault = _landing_faults(m, *land, f"Where {nm} lands the player")
+                if fault: out.append(F("transport", fault[0], fault[1] + ".", *land))
+            for o, _ in pad_spots:
+                gap = math.hypot(o["x"] - land[0], o["y"] - land[1])
+                if gap < TP_BOUNCE:
+                    out.append(F("transport", "error", f"{nm} lands the player {gap:.0f} px from the {o['type']} at "
+                                 f"({o['x']:.0f}, {o['y']:.0f}), which sends him on at once.", *land))
+                    break
+        # its places, on foot from where it lands the player (at either end of a two-way one)
+        land_r = T_region(*t["arrive_b"])
+        lands = {T_region(*land) for _, _, land in legs}
+        for sx, sy in t.get("serves") or []:
+            if T_region(sx, sy) not in lands:
+                out.append(F("transport", "error", f"{nm} serves ({sx:.0f}, {sy:.0f}), which cannot be walked to from where it "
+                             f"lands the player.", sx, sy))
+        # a way back, or the map's exit, from where it leaves the player
+        if land_r is not None and start is not None:
+            onward = TR.reach(g, land_r)
+            if start not in onward and not (exit_regions & onward):
+                out.append(F("transport", "error", f"{nm} strands the player: from where it lands him neither the start nor "
+                             f"an exit can be reached (lay it two-way, or a way back).", *t["arrive_b"]))
+        # nobody can reach where it starts
+        cells = ctx.walk
+        a_cell = m.cell_of(*t["a"])
+        if ctx.starts and not any((a_cell[0] + dx, a_cell[1] + dy) in cells for dx in (-1, 0, 1) for dy in (-1, 0, 1)):
+            out.append(F("transport", "warning", f"{nm} starts where the player cannot get from the start.", *t["a"]))
+    return out
+
+
 # ---- every finding has a rule: (rule, check, message pattern, feedback it answers) ----------------------------------
 # Feedback IDs are those of review/FEEDBACK.md. A finding whose message matches no pattern is "<check>.other": the
 # self-test fails on one, so a new message gets its rule here.
@@ -2443,6 +2590,15 @@ RULES = [
     ("exterior.bedroll", "exterior", r"lies alone in the open", "GW-4 SW-1"),
     ("exterior.pile", "exterior", r"heaped with nothing else", "GW-2"),
     ("exterior.graveyard", "exterior", r"The graveyard holds", "SW-9"),
+    ("transport.link", "transport", r"it moves nobody", "TR-1"),
+    ("transport.landing", "transport", r"lands the player.* lies (in the void|in a wall|on a )", "TR-1"),
+    ("transport.wall", "transport", r"lands the player.* px from a wall", "TR-1"),
+    ("transport.pocket", "transport", r"is a pocket of", "TR-1"),
+    ("transport.missing", "transport", r"is missing its", "TR-1"),
+    ("transport.bounce", "transport", r"which sends him on at once", "TR-1"),
+    ("transport.serves", "transport", r"cannot be walked to from where it", "TR-1"),
+    ("transport.stranded", "transport", r"strands the player", "TR-1"),
+    ("transport.unreached", "transport", r"starts where the player cannot get", "TR-1"),
 ]
 _RULE_RX = [(r, c, re.compile(p), fb) for r, c, p, fb in RULES]
 
@@ -2457,7 +2613,8 @@ def rule_of(f):
 
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
-       check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar]
+       check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
+       check_transport]
 
 
 def run_all(m, base, only=None):
