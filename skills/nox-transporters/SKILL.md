@@ -17,7 +17,8 @@ t = tp.add(kind, a, b, name, style=, two_way=, enabled=, arrive_a=, arrive_b=, i
 
 **Read first:** `rules/TRANSPORTERS.md` (what Westwood does, measured on its 107 campaign maps, with the engine's
 rules and examples), then this recipe. The story map recipe is `skills/nox-story-map/SKILL.md`; this skill slots into
-its steps (section 4). Template: `mapgen/designs/test_transport.py` (one of each kind, every far place isolated).
+its steps (section 4). Template: `mapgen/designs/test_transport.py` (one of each kind, every far place isolated); in a story map,
+`mapgen/designs/ironcrag.py` (each transporter the way to a quest's place, two switched on by the story).
 
 ## 1. Decide what the transporter is for (in the design's docstring)
 
@@ -49,7 +50,13 @@ portal or a passage); stairs and lifts read as "up" and "down" by where their en
 3. **Its content**: what it is there for (the chest, the boss, the lever), furnished by its room type
    (`rules/rooms/`). Pass those spots as `serves=[...]`: the checker proves each is reachable on foot from where the
    player lands.
-4. A far place in the same area (a shortcut across a garden, a portal over a chasm) is fine: say so in the docstring.
+4. A far place of any shape (a cave level, a crag top) is a `Land` of its own: its squares from circles and capsules,
+   `Land._fix_pinches`, then `L.apply(m, wall=, floor=, unlevel=True)`; keep the town's land out of that part of the
+   grid with `land.forbidden` (`mapgen/designs/ironcrag.py` `cave()`). A far room of a building (a tower's upper floor)
+   is an `m.room` furnished by its type (`furnish_original` on a `kit.model.Room`) and declared in the rooms sidecar;
+   take out the furniture round the stairs and their landing afterwards. Camps and scenes (`camps.urchin_camp`,
+   `camps.stone_ring`, `camps.Scene`) work on a far place's own `Land`.
+5. A far place in the same area (a shortcut across a garden, a portal over a chasm) is fine: say so in the docstring.
 
 ## 3. Place both ends
 
