@@ -27,6 +27,7 @@ Two engines (NOX_VOICE_ENGINE or --engine; never a silent fallback from one to t
              of the reference; a speaking pace), else it is rendered again with a new seed, up to LINE_TRIES times.
              Where (run_breeze, NOX_VOICE_GPU): pc1's 4090 unless the user is gaming (the pc1 AI guard's state file),
              then pc2's 2080 Ti through its GPU service, back to pc1 once the game ends; never pc1 while gaming.
+             pc2 also while Talk's model is loaded on pc1 (or too little GPU memory is free there), not waiting.
     kokoro   the first engine (VO-1), kept as an explicit option only: Kokoro v1.0 on the CPU, voice blends per part.
 
 The steps (Spec.build runs `build_step` after the scripts are written; NOX_NOVOICE=1 skips it while trying seeds):
@@ -888,7 +889,7 @@ def vram_free_mib():
 
 def pc1_busy(need_mib=VRAM_MIB):
     """Why pc1's GPU cannot take Breeze now apart from gaming, or None: Talk's model loaded, too little memory free."""
-    if model_server_running(): return "Talk's pc1 model is loaded (llama-server): yielding to it"
+    if model_server_running(): return "Talk's pc1 model is loaded (llama-server)"
     free = vram_free_mib() if need_mib else None
     if free is not None and free < need_mib:
         return f"only {free / 1024:.1f} GiB of pc1's GPU memory is free ({need_mib / 1024:.0f} GiB needed)"
@@ -907,17 +908,19 @@ def remote_health(timeout=10):
 
 
 def choose_gpu(policy):
-    """(where, why): where to render now, "pc1" or "pc2", or None and why to wait."""
+    """(where, why): where to render now, "pc1" or "pc2", or None and why to wait. auto: pc1 when it is free; pc2 while
+    the user is gaming, and also while pc1 is busy otherwise (Talk's model loaded, too little GPU memory free: pc1 is
+    serving the user, pc2 is free; pc1 Claude's default of 2026-10-08, VO-4), rather than waiting for pc1."""
     if policy == "force": return "pc1", None
     if policy == "pc2":
         return ("pc2", None) if remote_health() is not None else (None, f"pc2's GPU service ({remote_url()}) is unreachable")
     gaming, why = pc1_gaming()
-    if gaming:
-        if policy == "pc1": return None, f"{why}; NOX_VOICE_GPU=pc1 waits for pc1"
-        if remote_health() is None: return None, f"{why}, and pc2's GPU service ({remote_url()}) is unreachable"
-        return "pc2", why
-    why = pc1_busy()
-    return (None, why) if why else ("pc1", None)
+    if not gaming:
+        why = pc1_busy()
+        if not why: return "pc1", None
+    if policy == "pc1": return None, f"{why}; NOX_VOICE_GPU=pc1 waits for pc1"
+    if remote_health() is None: return None, f"{why}, and pc2's GPU service ({remote_url()}) is unreachable"
+    return "pc2", why
 
 
 def register_job(pid):
@@ -1042,9 +1045,9 @@ def _run_worker(where, man, keys, say, retry, policy):
                 elif model_server_running():
                     stopping, mode = "Talk's pc1 model is loaded (llama-server)", "line"
                     grace = time.time() + _env_s("NOX_VOICE_YIELD_GRACE", YIELD_GRACE_S)
-            elif policy == "auto":                  # on pc2 while gaming: back to pc1 once it is free twice in a row
+            elif policy == "auto":                  # on pc2 (gaming or pc1 busy): back to pc1 once free twice in a row
                 clean = clean + 1 if not gaming and not pc1_busy() else 0
-                if clean >= 2: stopping, mode = "the game ended", "line"
+                if clean >= 2: stopping, mode = "pc1 is free again", "line"
             if stopping:
                 with open(stop, "w") as f: f.write(mode)
                 print(f"VOICE: {stopping}: stopping the {where} worker at its next {mode}", flush=True)
@@ -1066,8 +1069,9 @@ def _run_worker(where, man, keys, say, retry, policy):
 def run_breeze(man, remaining, retry=False, extra=()):
     """Renders the Breeze lines `remaining()` names (keys still to make; called again after each stop) by the policy
     (gpu_policy): one worker at a time at below-normal priority, on pc1's GPU (registered with the AI guard) unless the
-    user is gaming, then on pc2's through its GPU service; it moves back to pc1 at a line boundary once the game ends.
-    Waits while neither may be used (Talk's model loaded on pc1, pc2 unreachable while gaming), NOX_VOICE_WAIT minutes
+    user is gaming or pc1 is busy (Talk's model loaded, too little memory free), then on pc2's through its GPU service;
+    it moves back to pc1 at a line boundary once pc1 is free again. Waits while neither may be used (pc2 unreachable
+    while pc1 may not be used; NOX_VOICE_GPU=pc1 while pc1 may not be used), NOX_VOICE_WAIT minutes
     (120) at most at a time. Every line made is in the cache whatever stops a worker. Returns None, or why not all
     were made."""
     policy = gpu_policy()
@@ -1095,7 +1099,7 @@ def run_breeze(man, remaining, retry=False, extra=()):
         if where == "pc2" and where0 != "pc2" and why:
             print(f"VOICE: {why}: continuing on pc2" if where0 else f"VOICE: {why}: rendering on pc2", flush=True)
         elif where == "pc1" and where0 == "pc2":
-            print("VOICE: not gaming: back on pc1", flush=True)
+            print("VOICE: pc1 is free again (not gaming, Talk's model not loaded): back on pc1", flush=True)
         where0 = where
         status, why = _run_worker(where, man, keys, say, retry, policy)
         if status == "done": return None            # each line's own record says whether it passed the gate
