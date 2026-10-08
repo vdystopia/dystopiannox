@@ -111,9 +111,10 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
 12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)` (before the build: the voices read it),
     `m.build(OUT)`, which voices the spoken lines (`VOICE <Name>: n of n lines voiced`; `NOX_NOVOICE=1` skips it while
     trying seeds). The TTS is installed once per PC with `py mapgen/voice.py fetch` (PROCESS.md "Voices"). Voicing
-    uses the GPU only while pc1 is idle (no input for 5 min) and not gaming, and waits otherwise (`NOX_VOICE_GPU=skip`
-    keeps the cached waves and goes on; voice later with `voice.py voice <out> <Name>`); the first voicing of a map
-    takes about half a minute of GPU per line, a rebuild seconds. A line that fails the quality gate
+    renders on pc1's GPU unless the user is gaming (the pc1 AI guard's state file), then on pc2's 2080 Ti, back on pc1
+    once the game ends; it waits while Talk's pc1 model is loaded (`NOX_VOICE_GPU=skip` keeps the cached waves and goes
+    on; voice later with `voice.py voice <out> <Name>`; `--gpu pc1|pc2` pins it). The first voicing of a map takes
+    about half a minute of GPU per line, a rebuild seconds. A line that fails the quality gate
     is named by the build and the QA voice step: rephrase it or change its delivery, or `voice.py voice ... --retry`.
 
 ## 3. Check, fix, repeat
