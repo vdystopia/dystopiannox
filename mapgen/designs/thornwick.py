@@ -20,6 +20,10 @@ The story
 
     py mapgen/designs/thornwick.py [seed]
 """
+QA_ACCEPT = [   # (tests/qa.py)
+    ("density", r"^Many share of floor seams with edge pieces",
+     "every open seam blended, as the kit always blends them; the seams at walls are hard by rule (TW-12)"),
+]
 import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, CELL

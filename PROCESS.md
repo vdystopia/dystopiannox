@@ -191,11 +191,31 @@ to 41-83% (Westwood 67%), a quarter to two fifths with a second floor. The check
 within 4 cells of a door (a room's own second floor further in may share a material with the ground).
 
 ### Thresholds [SW-4]
-A room's floor runs under its walls and out onto the doorstep; the ground blends onto the doorstep, never onto a tile
-that reaches into the room (`Spec._wall_line_floors`, `Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are
-`Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
+A room's floor runs under its walls (to the wall line on a SW wall: TW-12 below) and out onto the doorstep; the ground
+blends onto the doorstep, never onto a tile that reaches into the room (`Spec._wall_line_floors`,
+`Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are `Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
 (`Spec._may_take`). Door paths use Westwood's buffer floor where a path may not touch the room's floor
 (`Land.connect_door`).
+
+### No blending at a wall [TW-12]
+A wall is a hard cut between floors: no edge piece is drawn across it, on either side, whatever the wall (a house, a
+yard's fence, a town wall, the forest wall). The user (Thornwick, 2026-10-08, of a soft grass edge along the outside of
+a house's wall): "There does not need to be blending on a wall. The wall cuts off vision from the inside out and from
+the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used."
+- A / wall lies on the seam between two tiles: the cut is at the wall. A \ wall runs through the middle of the tiles
+  on its line: the cut falls half a tile from it, between the line tile and the tile beside it, and stays hard.
+- `nox.wall_seams` finds every pair of tiles (side or tip neighbours) whose centres' line a visible wall piece touches
+  (not merely runs along); `Spec._edges` draws no edge across them. Invisible walls (the water's shoreline) are not
+  walls here, and a doorway is an opening: the ground still blends onto the doorstep [SW-4].
+- Westwood agrees for solid walls: across a Cobblestone, Log, StuccoLightWood, StoneGray, Dilapidated or GalavaTownWall
+  wall it blends 1-9% of the seams on a / line and 7-10% on a \ line; across natural walls (forest, cave) and iron
+  fences it blends about half, which this house rule overrides (the check fires on every one of Westwood's campaign
+  maps: a stated house rule, the user's word over Westwood's habit).
+- A \ wall's line tile takes the floor in front of the wall (below it on screen), as Westwood's do: the ground on a
+  room's SW wall, the room's floor on its NE wall (`Spec._wall_line_floors`). Each side's floor then runs up to the wall
+  as seen, and the wall's picture covers the half tile behind it; giving the line tile the room's floor on both walls
+  had laid a strip of boards half a tile wide along the outside of every SW wall (Thornwick's inn).
+- Checked by `floors.wall_blend` (an error; planted case STwallb): a map with an edge piece across a wall fails the gate.
 
 ### Rooms: per type in `rules/rooms/`
 There is no one-size-fits-all room: each room type has its own rules, Westwood's measures and good examples in
@@ -611,7 +631,7 @@ then the user playtests, and hears the voices.
 `identity.showpiece`, ...) and the feedback it answers. Errors are defects a player will see or hit; warnings are
 departures from Westwood's range or from a house rule the playtests set. The rules by topic:
 - walls, doors, kits, floors, the boundary, reachability and the story's gates (the engine and Westwood's construction);
-- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4];
+- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4]; `floors.wall_blend` [TW-12] (no edge piece across a wall);
 - `rooms.*` (size, cover, identity strays), `composition.*` (the cross-type room rules, bridges, docks across puddles)
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every

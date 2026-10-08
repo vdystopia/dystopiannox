@@ -473,6 +473,52 @@ def check_thresholds(m, ctx, base):
     return out
 
 
+# the neighbour each edge piece draws from (mapgen/nox.py SIDE_PIECES, CORNER_PIECES, TIP_PIECES)
+EDGE_FROM = {}
+for _d, _ps in {"E": (12, 13, 14), "N": (6, 8, 10), "S": (5, 7, 9), "W": (1, 2, 3)}.items():
+    for _p in _ps: EDGE_FROM[_p] = (_d,)
+EDGE_FROM.update({18: ("E", "N"), 19: ("E", "S"), 17: ("N", "W"), 16: ("S", "W"), 15: ("NE",), 4: ("NW",), 11: ("SE",),
+                  0: ("SW",)})
+EDGE_STEP = {"E": (1, -1), "N": (-1, -1), "S": (1, 1), "W": (-1, 1), "NE": (0, -2), "NW": (-2, 0), "SE": (2, 0),
+             "SW": (0, 2)}
+
+
+def seams_at_walls(m):
+    """The tile pairs that meet at a visible wall (mapgen/nox.py wall_seams) [TW-12]."""
+    if not hasattr(m, "_wall_seams"):
+        from nox import wall_seams
+        m._wall_seams = wall_seams({c: w.facing for c, w in m.walls.items() if not w.invisible})
+    return m._wall_seams
+
+
+def wall_blends(m):
+    """Edge pieces drawn across a wall [TW-12]: [(tile, overlay, the wall's material)]. The wall hides the floor beyond
+    it and is itself the place where one floor gives way to the next: no edge piece on either side of it."""
+    seams, out = seams_at_walls(m), []
+    for t, rec in m.tiles.items():
+        for ov, _var, piece, _et in rec["edges"]:
+            for d in EDGE_FROM.get(piece, ()):
+                n = (t[0] + EDGE_STEP[d][0], t[1] + EDGE_STEP[d][1])
+                if (t, n) in seams:
+                    out.append((t, ov)); break
+    return out
+
+
+def check_wall_blends(m, ctx, base):
+    """No floor blends across a wall [TW-12]: the user (2026-10-08, of Thornwick): "There does not need to be blending
+    on a wall. The wall cuts off vision from the inside out and from the outside in. It's also a natural transition
+    point in itself. Therefore, this kind of transition must never be used." Westwood's own building walls agree: a
+    seam across a Cobblestone, Log, StuccoLightWood or Dilapidated wall is hard 91-99% of the time."""
+    found = wall_blends(m)
+    out = []
+    for g in clusters([(t[0] + 1, t[1] + 1) for t, _ in found], 3):
+        gs = set(g)
+        mats = sorted({ov for t, ov in found if (t[0] + 1, t[1] + 1) in gs})
+        out.append(F("floors", "error", f"Floor edges blend across a wall ({len(g)} tile{'s' if len(g) > 1 else ''}; {', '.join(mats)}): a wall is "
+                     f"a hard cut between floors, no edge piece on either side of it.", *centre(g)))
+    return out
+
+
 def edge_between(m, a, b):
     ta, tb = m.tiles[a], m.tiles[b]
     return any(e[0] == tb["material"] for e in ta["edges"]) or any(e[0] == ta["material"] for e in tb["edges"])
@@ -484,6 +530,7 @@ def check_floors(m, ctx, base):
     blended = {frozenset((r["a"], r["b"])): r for r in fl["blend"]}
     min_share = base.get("blend_share_required", 0.9)
     harsh, bad_touch, contacts = collections.defaultdict(list), collections.defaultdict(list), collections.Counter()
+    seams = seams_at_walls(m)
     for (x, y), t in m.tiles.items():
         for d in ((1, -1), (1, 1)):                           # E and S sides; each pair once
             n = (x + d[0], y + d[1])
@@ -496,6 +543,7 @@ def check_floors(m, ctx, base):
             if shared in m.walls and m.walls[shared].opaque: continue
             pair = frozenset((a, b))
             if pair in never: bad_touch[pair].append((x + 1, y + 1))
+            if ((x, y), n) in seams: continue                 # a seam at a wall is hard by rule [TW-12]
             r = blended.get(pair)
             if r and (r["edge_share_sp"] or 0) >= min_share and (r["maps_sp"] or 0) >= 3:
                 contacts[pair] += 1
@@ -721,11 +769,13 @@ def metrics(m, ctx):
         cat = D.classify({"type": o["type"], "class": o["cls"], "xtype": o["xtype"]})
         if cat in D.STYLE_CATS: decor += 1
     creatures = sum(1 for o in m.objects if "MONSTER" in o["cls"])
+    # the open seams only: a seam at a wall is a hard cut by rule [TW-12], so it says nothing of how a map blends
     seams = edged = 0
+    at_walls = seams_at_walls(m)
     for (x, y), t in m.tiles.items():
         for d in ((1, -1), (1, 1)):
             n = (x + d[0], y + d[1])
-            if n in m.tiles and m.tiles[n]["material"] != t["material"]:
+            if n in m.tiles and m.tiles[n]["material"] != t["material"] and ((x, y), n) not in at_walls:
                 seams += 1; edged += edge_between(m, (x, y), n)
     # crowded transitions: a tile where three or more floor materials meet (itself and its sides)
     junctions = sum(1 for (x, y), t in m.tiles.items()
@@ -752,7 +802,7 @@ def check_density(m, ctx, base):
     ranges = base.get("metrics_by_env", {}).get(env) or base.get("metrics", {})
     mt = metrics(m, ctx)
     names = dict(lights_per100="lights per 100 floor tiles", colorlights_per100="coloured lights per 100 floor tiles",
-                 decor_per100="decorations per 100 floor tiles", edge_coverage="share of floor seams with edge pieces",
+                 decor_per100="decorations per 100 floor tiles", edge_coverage="share of floor seams with edge pieces",   # open seams (TW-12)
                  creatures_per100="creatures per 100 floor tiles", walls_per100="wall pieces per 100 floor tiles",
                  junctions_per100="crowded floor junctions (3+ materials meeting) per 100 floor tiles")
     for k, label in names.items():
@@ -2312,6 +2362,7 @@ RULES = [
     ("floors.never_touch", "floors", r"touch directly", "MF-3"),
     ("floors.hard_seam", "floors", r"^Hard seam", "DV3-2"),
     ("floors.unblended", "floors", r"of floor seams that Westwood blends", "DV3-2"),
+    ("floors.wall_blend", "floors", r"^Floor edges blend across a wall", "TW-12"),
     ("rooms.crammed", "rooms", r"is crammed", "DV1-4"),
     ("rooms.count", "rooms", r"pieces of furniture; Westwood", "DV1-4"),
     ("rooms.bare", "rooms", r"is nearly bare", "TP2-1"),
@@ -2405,8 +2456,8 @@ def rule_of(f):
 
 
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
-       check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_thresholds,
-       check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar]
+       check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
+       check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar]
 
 
 def run_all(m, base, only=None):

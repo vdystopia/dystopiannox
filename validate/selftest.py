@@ -266,6 +266,21 @@ def _declare(m, kind="bedroom", extra=()):
                             floor=[list(t) for t in rect_tiles(200, 222, -10, 10)])] + list(extra)
 
 
+def blend_across_wall(m):
+    # the meadow's grass blended onto the house's boards across its wall (TW-12, Thornwick 2026-10-08: "There does not
+    # need to be blending on a wall"); the generator draws none there now, so the edge is planted after it
+    from nox import EDGE_SIDES, SIDE_PIECES
+    orig = m._edges
+    def edges(seams=frozenset()):
+        out = orig(seams)
+        step = {v: k for k, v in EDGE_SIDES.items()}
+        t, n = min((t, n) for t, n in seams if m.floor.get(t) == "WoodLight2" and m.floor.get(n) == "GrassNorm"
+                   and (n[0] - t[0], n[1] - t[1]) in step)
+        out.setdefault(t, []).append(["GrassNorm", "BlendEdge", SIDE_PIECES[step[(n[0] - t[0], n[1] - t[1])]][0]])
+        return out
+    m._edges = edges
+
+
 def ground_in_room(m):
     # a tile of the meadow's grass laid on the boards just inside the door (SW-4: "Tile blending on the inside of doors
     # seems consistently off")
@@ -546,6 +561,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STcandl", candle_outdoors, "exterior", "warning", "a candle as an outdoor light - Starwell playtest", "pick it up"),
     ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
     ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
+    ("STwallb", blend_across_wall, "floors", "error", "grass blended onto a house's boards across its wall - TW-12",
+     "across a wall"),
     ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
     ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),
     ("STshare", shared_stop, "routes", "error", "two walkers' stops 14 px apart - GW-6", "one spot for two"),
