@@ -231,9 +231,17 @@ def gpu_rules(tmp, real):
     ok(w is None and "pc1" in why, "pc1: waits while gaming")
     ok(V.choose_gpu("pc2") == ("pc2", None), "pc2: pc2 only")
     ok(V.choose_gpu("force") == ("pc1", None), "force: pc1 whatever the state")
-    gaming[0], busy[0] = False, "Talk's pc1 model is loaded (llama-server): yielding to it"
+    gaming[0], busy[0] = False, "Talk's pc1 model is loaded (llama-server)"
     w, why = V.choose_gpu("auto")
-    ok(w is None and "llama-server" in why, "auto, Talk's model loaded: wait (not pc2)")
+    ok(w == "pc2" and "llama-server" in why, "auto, not gaming, Talk's model loaded: pc2, not waiting (VO-4)")
+    up[0] = False
+    w, why = V.choose_gpu("auto")
+    ok(w is None and "llama-server" in why and "unreachable" in why, "auto, Talk's model loaded, pc2 unreachable: wait")
+    up[0] = True
+    w, why = V.choose_gpu("pc1")
+    ok(w is None and "llama-server" in why, "pc1: waits while Talk's model is loaded")
+    busy[0] = "only 4.0 GiB of pc1's GPU memory is free (10 GiB needed)"
+    ok(V.choose_gpu("auto")[0] == "pc2", "auto, too little memory free on pc1: pc2")
     busy[0] = None
     os.environ["NOX_VOICE_GPU"] = "bogus"
     try:
@@ -257,8 +265,9 @@ def gpu_rules(tmp, real):
 
 
 def gpu_switch(tmp, out, objects, worker_py):
-    """A whole run through the real worker with stand-in GPU services: Talk's model at the start (wait), pc1, a game
-    (on to pc2, through a 503), the game over (back to pc1), Talk's model mid-run (stop at a line, wait), done."""
+    """A whole run through the real worker with stand-in GPU services: Talk's model at the start (pc2, through a 503),
+    Talk's model gone (back to pc1), a game (on to pc2), the game over (back to pc1), Talk's model mid-run (the pc1
+    worker stops at a line, on to pc2), Talk's model gone again (back to pc1 if lines are left), done."""
     import threading
     st, jobs = os.environ["NOX_PC1_STATE"], os.environ["NOX_GPU_JOBS_DIR"]
     gaming, llama, quit_ = [False], [True], [False]
@@ -267,22 +276,28 @@ def gpu_switch(tmp, out, objects, worker_py):
         while not quit_[0]:
             write_state(st, gaming[0]); time.sleep(0.3)
     threading.Thread(target=guard, daemon=True).start()
-    threading.Timer(1.5, lambda: llama.__setitem__(0, False)).start()
     pc1, pc2 = FakeGPU("pc1", jobs), FakeGPU("pc2", jobs, n503=1)
-    phase = {"pc1": 0}
-
-    def pc1_synth(n):
-        if n == 2: gaming[0] = True                                 # the user starts a game
-        if phase["pc1"] == 1 and not llama[0] and n == pc1.mark + 1:
-            llama[0] = True                                         # the user talks to Talk
-            threading.Timer(2.0, lambda: llama.__setitem__(0, False)).start()
-    pc1.on_synth, pc1.mark = pc1_synth, 0
+    stage = {"n": 0, "mark1": 0, "mark2": 0}
 
     def pc2_synth(n):
-        if n == 2:
+        if stage["n"] == 0:
+            llama[0], stage["n"] = False, 1                          # Talk's model unloads after pc2's first take
+        elif stage["n"] == 2 and n == stage["mark2"] + 1:
             gaming[0] = False                                       # the game ends
-            phase["pc1"], pc1.mark = 1, pc1.synths
+            stage["n"], stage["mark1"] = 3, pc1.synths
+            time.sleep(1.0)                                         # this take long enough for the guard to see it
+        elif stage["n"] == 4:
+            llama[0], stage["n"] = False, 5                          # Talk's model unloads again
     pc2.on_synth = pc2_synth
+
+    def pc1_synth(n):
+        if stage["n"] == 1 and n == 2:
+            gaming[0] = True                                        # the user starts a game
+            stage["n"], stage["mark2"] = 2, pc2.synths
+        elif stage["n"] == 3 and n == stage["mark1"] + 1:
+            llama[0], stage["n"] = True, 4                          # the user talks to Talk
+            time.sleep(1.0)
+    pc1.on_synth = pc1_synth
     os.environ.update(NOX_VOICE_REMOTE=pc2.url, NOX_VOICE_PC1_URL=pc1.url, NOX_VOICE_POLL="0.3",
                       NOX_VOICE_STOP_GRACE="5", NOX_VOICE_YIELD_GRACE="30", NOX_VOICE_PYTHON=worker_py,
                       NOX_VOICE_GPU="auto")
@@ -306,12 +321,15 @@ def gpu_switch(tmp, out, objects, worker_py):
     for l in man["lines"].values():
         where.setdefault((V.cache_meta(l["hash"]) or {}).get("gpu") if l["hash"] else None, []).append(l["wave"])
     ok({"pc1", "pc2"} <= set(where), f"lines made on both: {dict((k, len(v)) for k, v in where.items())}")
-    ok("waiting: Talk's pc1 model" in logtxt and logtxt.index("waiting: Talk's pc1 model") < logtxt.index("on pc1's RTX 4090"),
-       "Talk's model loaded at the start: Breeze waits before loading")
+    start = "Talk's pc1 model is loaded (llama-server): rendering on pc2"
+    ok(start in logtxt and "waiting" not in logtxt and logtxt.index(start) < logtxt.index("on pc1's RTX 4090"),
+       "Talk's model loaded at the start: pc2 renders, nothing waits (VO-4)")
+    ok(logtxt.count("back on pc1") >= 2, "Talk's model gone, then the game over: 'back on pc1' each time")
     ok("gaming (The Last Spell): continuing on pc2" in logtxt, "a game mid-run: 'continuing on pc2'")
-    ok("not gaming: back on pc1" in logtxt, "the game over: 'back on pc1'")
-    ok("stopping the pc1 worker at its next line" in logtxt and "Talk's pc1 model is loaded (llama-server)" in logtxt,
-       "Talk's model mid-run: the pc1 worker stops at the next line and waits")
+    ok("Talk's pc1 model is loaded (llama-server): stopping the pc1 worker at its next line" in logtxt
+       and "Talk's pc1 model is loaded (llama-server): continuing on pc2" in logtxt,
+       "Talk's model mid-run: the pc1 worker stops at the next line and the run continues on pc2")
+    ok(stage["n"] == 5, f"every stage of the run was reached ({stage['n']} of 5)")
     ok(pc2.served503 == 1 and "busy (503)" in logtxt, "a 503 from pc2 is waited out and retried")
     ok(pc1.saw_jobs and all(any(c == V.JOB_TAG and p.isdigit() for p, c in s) for s in pc1.saw_jobs),
        f"every pc1 take ran registered with the guard ({len(pc1.saw_jobs)} takes)")

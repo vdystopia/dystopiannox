@@ -469,8 +469,9 @@ RUMOURS = [
     "Out of the way! This ore won't haul itself!",
     "There's a ring of old stones by Wren's hut in the east pines. They say it once carried the shrine-keepers up to "
     "the Eyrie!",
-    "What're y' starin' at? Never seen a miner?",
-    "The Urchins have been at the company strongroom again! Corwin's looking for help!",
+    "What you staring at? Never seen a miner?",           # Whisper hears "What're y' starin'" as this [VO-5]
+    "The Urchins have been at the miners' pay again! Corwin's looking for help!",     # "strongroom": one word or two
+                                                                                     # by the take, never both [VO-5]
     "Mother says strangers are trouble. Are you trouble?",
 ]
 ring = sm.townsfolk(FOLK, vc, q=q, rumours=RUMOURS,
@@ -480,6 +481,16 @@ ring = sm.townsfolk(FOLK, vc, q=q, rumours=RUMOURS,
 # the watch, on a beat round the yard
 wx2, wy2 = ring[0]
 person("Con01A", "Contest_Guard", wx2, wy2, "Watch1", action=0)
+# the townsman who says the ore line (its first voicing failed the gate: "ore" and "haul" heard as "all", from a design
+# take far higher than his lines): his own voice, a rhotic accent, and that line said clearly [VO-5]
+_ore = next(k for k, v in q.strings.items() if v == "Out of the way! This ore won't haul itself!")
+q.voice(q.spoken[_ore], {"desc": "A brawny miner in his forties. Deep, gravelly baritone, a Scottish accent. Blunt and "
+                                 "impatient, always busy.", "seed": 12921})
+q.deliver(_ore, mood="Gruff but clear, every word distinct.")
+# the townsman who asks what you're staring at: his cast voice's design takes all ran above a man's pitch band
+_stare = next(k for k, v in q.strings.items() if v.startswith("What you staring at?"))
+q.voice(q.spoken[_stare], {"desc": "A cheerful countryman in his fifties. Warm, deep, round bass-baritone, a broad West "
+                                   "Country accent. Friendly, chatty and unhurried.", "seed": 1033})
 sm.beat("Watch1", vc, radius=7.0, stops=7)
 
 # ---- 9. the fights ----------------------------------------------------------------------------------------------------
@@ -575,7 +586,8 @@ q.on_death("Gnash", [A.flag("gnash_dead"), A.print("The Troll crashes down among
 q.talker("Bram", [
     q.say("You came back up! Most days that's all I ask of a man.", when=q.when(flag="gnash_dead"), who="Bram"),
     q.say("She's running. Step on the cage when you're ready. She brings you back the same way.",
-          when=q.when(flag="lift_on"), who="Bram"),
+          when=q.when(flag="lift_on"), who="Bram",      # his eager tenor ran above a man's pitch band [VO-5]
+          mood="Calm and steady, low in his voice, matter-of-fact."),
     q.say("The Warden sent you? Then stand back from the cage. I'll take the brake off.\n\nShe runs on her own once "
           "she's going. Keep your blade out down there.",
           when=q.when(flag="main_given", not_="lift_on"),
@@ -617,13 +629,13 @@ q.on_pickup("AnkhTradable", [q.note("NOTE: The Ankh of the Eyrie. Wren waits by 
 q.talker("Corwin", q.errand(
     "Corwin", "urchins",
     offer="These thieving Urchins are worse than rats! The watch has run them off twice, but back they come! They take "
-          "the miners' pay right out of the strongroom!\n\nThey come and go by a crawl-hole in the rockfall, at the end "
-          "of the old tunnel by the pithead. Clear them out of the old workings and the company will pay. Will you?",
+          "the miners' pay right out of the strong room!\n\nThey come and go by a crawl-hole in the rockfall, at the "
+          "end of the old tunnel by the pithead. Clear them out of the old workings and the company will pay. Will you?",
     reminder="I'll not sleep till those Urchins are gone! Kill their shaman and the rest are nothing! Hurry, before "
              "pay day!",
     thanks="Brave Adventurer, the company is in your debt! The miners get paid this week after all.\n\nTake this "
            "gold for your trouble. I insist.",
-    after="The strongroom's quiet. I count the pay twice anyway.",
+    after="The strong room's quiet. I count the pay twice anyway.",     # two words, as Whisper writes it [VO-5]
     objective="Drive the Urchins out of the old workings beyond the rockfall.",
     done=q.when(flag=q.dead(*all_urchins)), reward=[A.gold(120), A.give("RedPotion", 2)],
     refusal="Then the company will find someone who wants the money."))

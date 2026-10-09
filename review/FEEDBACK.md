@@ -212,6 +212,8 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | VO-1 | "investigate and implement a method for turning generated NPC dialogue into voiced audio that can be added to the game, so that new maps have fully voiced NPCs and quests" | P§7 Voices, P§8 Dialogue voices (`mapgen/voice.py`, run by `Spec.build`; `q.tell` for refusals) | `qa:voice` (every spoken line has a good wave from its present text; `tests/voice_test.py`); hearing it: the playtest | none | check |
 | VO-2 | "Breeze TTS 2 is exceptional, massive improvement! implement it." (after an audition of Kokoro, Breeze TTS 2, Qwen3-TTS, Maya1 and VoxCPM2 on six Thornwick characters) | P§7 Voices (Breeze the default engine; a description and seed per speaker, a design take as its reference, lines by voice direction, vocal events, the quality gate, the GPU only while not gaming; licence: non-commercial) | `qa:voice` (every line passed the gate: Whisper transcript, pitch band, pace; `tests/voice_test.py`); hearing it: the playtest | none | check |
 | VO-3 | "run the Nox renders on pc1 unless im gaming - same rules as our previous processes. this should be the default for all work we do. when im gaming, reserve the 4090 and run it on the 2080ti" | P§7 Voices "Where it renders" (the pc1 AI guard's state file decides; registered in gpu-jobs; Talk's model yielded to; pc2's GPU service while gaming, back to pc1 after; replaces the idle-only rule of 5651dea) | `tests/voice_test.py` (state file, registration, policies, a whole pc1 -> pc2 -> pc1 run against stand-in services) | none | check |
+| VO-4 | (a default pc1 Claude chose, 2026-10-08; the user may override it) Talk's model loaded on pc1 and the user not gaming: render on pc2 rather than wait (pc1 is serving the user, pc2 is free) | P§7 Voices "Where it renders" (`voice.choose_gpu`: `auto` goes to pc2 while pc1 is busy; the pc1 worker stops at a line when Talk's model loads and the run continues on pc2) | `tests/voice_test.py` (the policies; the switching run: Talk's model at the start and mid-run, on pc2 both times, back to pc1 after) | none | check |
+| VO-5 | (a default pc1 Claude chose, 2026-10-08; the user may override it) a line that fails the pace gate (Thornwick:Mirela5, 4.8-5.1 words a second against 4.8): keep the gate strict and give the line a slower delivery, then `--retry` it | P§7 Voices "Delivery" and "The quality gate" (a `mood` pinned in the design, e.g. "Measured and deliberate, unhurried."; never a looser gate) | `qa:voice` (the line must pass the unchanged gate) | none | check |
 
 ## Thornwick screenshot (2026-10-08)
 
@@ -232,7 +234,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | User feedback, before this pass | 92 | 52 | 28 | 12 |
 | User feedback, after | 92 | 68 | 21 | 3 |
 | Harrowby playtest (HB), after | 5 | 5 | 0 | 0 |
-| Voiced dialogue (VO), after | 1 | 1 | 0 | 0 |
+| Voiced dialogue (VO), after | 5 | 5 | 0 | 0 |
 | Thornwick screenshot (TW-12), after | 1 | 1 | 0 | 0 |
 | Transporters (TR), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |

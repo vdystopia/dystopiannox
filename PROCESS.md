@@ -544,7 +544,7 @@ registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, sign
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
 
-### Voices [VO-1, VO-2, VO-3]
+### Voices [VO-1, VO-2, VO-3, VO-4, VO-5]
 Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
 shop greetings and refusals; never signs, journal entries, hints, dialogue titles or mission banners). `mapgen/voice.py`
 does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while trying seeds; a `VOICE` line reports it):
@@ -581,6 +581,10 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
   a second while speaking. A take that fails is rendered again with a new seed, up to 4 times; a line that never
   passes stays silent (its best take is kept as `<hash>.fail.wav` in the cache to listen to) and the voice check FAILs
   naming it; `py mapgen/voice.py voice <out> <Name> --retry` tries such lines again.
+  A line that keeps failing the pace or the pitch gets a delivery that fixes it, pinned in the design (a `mood`:
+  Thornwick's Mirela5, "Measured and deliberate, unhurried ...", went from 4.8-5.1 words a second in 4 takes to 3.6 in
+  one), then `--retry`; the gate is never loosened for it [VO-5] (pc1 Claude's default, 2026-10-08; the user may
+  override it).
 - **Where it renders: pc1 unless the user is gaming, then pc2** [VO-3] (user, 2026-10-08: "run the Nox renders on pc1
   unless im gaming - same rules as our previous processes. this should be the default for all work we do. when im
   gaming, reserve the 4090 and run it on the 2080ti"). `voice.run_breeze` runs one worker at a time at below-normal
@@ -597,7 +601,13 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
     (`https://dystopia.taile9156a.ts.net:8453`, Tailscale identity, plain HTTPS: `GET /health`, `POST /breeze/synth`,
     `POST /asr`; a 503 with Retry-After is waited out). When the game ends (free twice in a row) the pc2 worker stops at
     its next line and the run moves back to pc1. pc2 unreachable while gaming: the run waits; pc1 is never used while
-    gaming. Talk's model loading mid-run: the pc1 worker stops at its next line (killed after 60 s) and the run waits.
+    gaming.
+  - **Talk's model loaded on pc1, not gaming** [VO-4] (pc1 Claude's default, 2026-10-08; the user may override it):
+    pc1 is busy serving the user and pc2 is free, so `auto` renders on pc2 rather than waiting; the same while too
+    little of the 4090's memory is free. At the start the run goes straight to pc2; loading mid-run, the pc1 worker
+    stops at its next line (killed after 60 s) and the run continues on pc2; once pc1 is free again (not gaming,
+    Talk's model not loaded, twice in a row) the pc2 worker stops at its next line and the run moves back to pc1.
+    pc2 unreachable then: the run waits.
   - **One orchestration, two backends** (`mapgen/voice_breeze.py`): references, the gate, re-rolls, mastering and the
     cache are the same code wherever a take is made; only making and hearing a take differ (`LocalBackend`: Breeze and
     Whisper in the worker; `RemoteBackend`: the service, stdlib only). The gate's pitch and pace are measured by
@@ -611,11 +621,13 @@ does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while t
     fp16, about 0.7 s of GPU per second of speech on the 2080 Ti, faster than pc1's Windows eager path (~2.7); Whisper
     runs on pc2's CPU (~5 s a take, the slow step). The service takes one request at a time (503 + Retry-After 60 when
     busy or short of memory) and unloads its models after 5 idle minutes (the next take reloads them: 30-65 s).
-  - **Policy** `NOX_VOICE_GPU` (or `--gpu`): `auto` (the default: the rule above), `pc1` (pc1 only, waits while gaming),
+  - **Policy** `NOX_VOICE_GPU` (or `--gpu`): `auto` (the default: the rule above), `pc1` (pc1 only, waits while gaming
+    or while Talk's model is loaded),
     `pc2` (pc2 only), `skip` (nothing new voiced, the cached waves kept), `force` (pc1 without looking: never while the
     user is gaming). While neither GPU may be used the run waits, saying why (`NOX_VOICE_WAIT` minutes at a time, 120 by
     default, then gives up for this build); each switch is logged (`VOICE: gaming (...): continuing on pc2`,
-    `VOICE: not gaming: back on pc1`).
+    `VOICE: Talk's pc1 model is loaded (llama-server): continuing on pc2`,
+    `VOICE: pc1 is free again (not gaming, Talk's model not loaded): back on pc1`).
 - **Speed and cost** (the 4090, eager mode: Breeze's CUDA-graph path compiles with Triton, which Windows lacks):
   about 2.7 s of GPU per second of speech, 7.8 GiB for the worker; a reference takes 1-2 takes, a line 1 take when it
   passes. A Thornwick-sized map (58 lines, 22 speakers, about 7 min of speech) is an estimated 45-60 min of GPU for

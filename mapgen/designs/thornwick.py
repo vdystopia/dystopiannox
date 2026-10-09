@@ -489,7 +489,8 @@ q.talker("Mirela", [
               q.journal("I gave the Varn emerald to Mirela. She paid 200 gold.", COMPLETED)],
           else_=[q.tell("Mirela", "Then what good are you?")], who="Mirela"),
     q.say("You had it, didn't you? I can see it in your face. Where is my grandmother's emerald?",
-          when=q.at("gem", 2), who="Mirela"),
+          when=q.at("gem", 2), who="Mirela",       # said slower: her quick voice ran past the gate's pace [VO-5]
+          mood="Measured and deliberate, unhurried: suspicious and accusing, a pause between the sentences."),
     q.say("The key fits the crypt door behind the nave. Grandmother lies at the back. Please, be quick, before Odo "
           "notices it's gone.", when=q.at("gem", 1), who="Mirela"),
     q.say("You look like someone who can handle themselves. My grandmother was a Varn. She was buried with the family "
