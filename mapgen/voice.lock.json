@@ -1,52 +1,265 @@
 {
- "pip": [
-  "attrs==26.1.0",
-  "babel==2.18.0",
-  "cloudpickle==3.1.2",
-  "colorama==0.4.6",
-  "colorlog==6.12.0",
-  "csvw==4.1.0",
-  "dlinfo==2.0.0",
-  "espeakng-loader==0.2.4",
-  "flatbuffers==25.12.19",
-  "isodate==0.7.2",
-  "joblib==1.6.0",
-  "jsonschema-specifications==2025.9.1",
-  "jsonschema==4.26.0",
-  "kokoro-onnx==0.4.9",
-  "language-tags==1.3.1",
-  "numpy==2.5.3",
-  "onnxruntime==1.30.0",
-  "packaging==26.3",
-  "phonemizer-fork==3.3.2",
-  "protobuf==7.36.2",
-  "pyparsing==3.3.3",
-  "python-dateutil==2.9.0.post0",
-  "rdflib==7.6.0",
-  "referencing==0.37.0",
-  "regex==2026.9.29",
-  "rfc3986==1.5.0",
-  "rpds-py==2026.9.1",
-  "segments==2.4.0",
-  "six==1.17.0",
-  "termcolor==3.3.0",
-  "typing_extensions==4.16.0",
-  "uritemplate==4.2.0"
- ],
- "python": "3.12.10",
- "files": {
-  "kokoro-v1.0.onnx": {
-   "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx",
-   "sha256": "7d5df8ecf7d4b1878015a32686053fd0eebe2bc377234608764cc0ef3636a6c5",
-   "bytes": 325532387
+ "kokoro": {
+  "pip": [
+   "attrs==26.1.0",
+   "babel==2.18.0",
+   "cloudpickle==3.1.2",
+   "colorama==0.4.6",
+   "colorlog==6.12.0",
+   "csvw==4.1.0",
+   "dlinfo==2.0.0",
+   "espeakng-loader==0.2.4",
+   "flatbuffers==25.12.19",
+   "isodate==0.7.2",
+   "joblib==1.6.0",
+   "jsonschema-specifications==2025.9.1",
+   "jsonschema==4.26.0",
+   "kokoro-onnx==0.4.9",
+   "language-tags==1.3.1",
+   "numpy==2.5.3",
+   "onnxruntime==1.30.0",
+   "packaging==26.3",
+   "phonemizer-fork==3.3.2",
+   "protobuf==7.36.2",
+   "pyparsing==3.3.3",
+   "python-dateutil==2.9.0.post0",
+   "rdflib==7.6.0",
+   "referencing==0.37.0",
+   "regex==2026.9.29",
+   "rfc3986==1.5.0",
+   "rpds-py==2026.9.1",
+   "segments==2.4.0",
+   "six==1.17.0",
+   "termcolor==3.3.0",
+   "typing_extensions==4.16.0",
+   "uritemplate==4.2.0"
+  ],
+  "python": "3.12.10",
+  "files": {
+   "kokoro-v1.0.onnx": {
+    "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx",
+    "sha256": "7d5df8ecf7d4b1878015a32686053fd0eebe2bc377234608764cc0ef3636a6c5",
+    "bytes": 325532387
+   },
+   "voices-v1.0.bin": {
+    "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin",
+    "sha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
+    "bytes": 28214398
+   }
   },
-  "voices-v1.0.bin": {
-   "url": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin",
-   "sha256": "bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d",
-   "bytes": 28214398
-  }
+  "kokoro_onnx": "0.4.9",
+  "model": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/",
+  "note": "written by py mapgen/voice.py fetch --engine kokoro; commit it"
  },
- "kokoro_onnx": "0.4.9",
- "model": "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/",
- "note": "written by py mapgen/voice.py fetch; commit it"
+ "breeze": {
+  "src": {
+   "url": "https://github.com/breezeblue-ai/breeze-tts.git",
+   "commit": "58ec70ce5fa4cc361bdebf77ec40d1365da00ab2"
+  },
+  "pip": [
+   "accelerate==1.12.0",
+   "annotated-doc==0.0.5",
+   "annotated-types==0.8.0",
+   "anyio==4.15.1",
+   "brotli==1.2.0",
+   "certifi==2026.7.22",
+   "cffi==2.1.1",
+   "charset-normalizer==3.5.2",
+   "click==8.5.0",
+   "cloudpickle==3.1.2",
+   "colorama==0.4.6",
+   "decorator==5.3.1",
+   "einops==0.8.2",
+   "fastapi==0.143.0",
+   "filelock==3.32.3",
+   "flatbuffers==25.12.19",
+   "fsspec==2026.7.0",
+   "gradio==6.17.3",
+   "gradio_client==2.5.0",
+   "groovy==0.1.2",
+   "h11==0.16.0",
+   "hf-gradio==0.4.1",
+   "httpcore==1.0.9",
+   "httpx==0.28.1",
+   "huggingface_hub==0.36.2",
+   "idna==3.20",
+   "Jinja2==3.1.6",
+   "joblib==1.6.0",
+   "lazy-loader==0.6",
+   "librosa==1.0.0",
+   "llvmlite==0.50.0",
+   "markdown-it-py==4.2.0",
+   "MarkupSafe==3.0.3",
+   "mdurl==0.1.2",
+   "mpmath==1.3.0",
+   "msgpack==1.2.3",
+   "narwhals==2.26.0",
+   "networkx==3.6.1",
+   "numba==0.68.0",
+   "numpy==2.5.3",
+   "onnxruntime==1.30.0",
+   "opentelemetry-api==1.45.1",
+   "orjson==3.13.0",
+   "packaging==26.3",
+   "pandas==3.0.6",
+   "pillow==12.3.0",
+   "platformdirs==4.12.4",
+   "pooch==1.9.0",
+   "protobuf==7.36.2",
+   "psutil==7.2.2",
+   "pycparser==3.1",
+   "pydantic==2.14.0",
+   "pydantic_core==2.50.0",
+   "pydub==0.25.1",
+   "Pygments==2.21.0",
+   "python-dateutil==2.9.0.post0",
+   "python-multipart==0.0.32",
+   "pytz==2026.5",
+   "PyYAML==6.0.3",
+   "qwen-tts==0.1.1",
+   "regex==2026.9.29",
+   "requests==2.34.2",
+   "rich==15.0.0",
+   "safehttpx==0.1.7",
+   "safetensors==0.8.0",
+   "scikit-learn==1.9.1",
+   "scipy==1.18.1",
+   "semantic-version==2.10.0",
+   "setuptools==78.1.0",
+   "shellingham==1.5.4",
+   "six==1.17.0",
+   "soundfile==0.14.0",
+   "sox==1.5.0",
+   "soxr==1.1.0",
+   "starlette==1.7.0",
+   "sympy==1.14.0",
+   "threadpoolctl==3.7.0",
+   "tokenizers==0.22.2",
+   "tomlkit==0.14.0",
+   "torch==2.9.1+cu128",
+   "torchaudio==2.9.1+cu128",
+   "tqdm==4.70.1",
+   "transformers==4.57.3",
+   "typer==0.27.3",
+   "typing-inspection==0.4.4",
+   "typing_extensions==4.16.0",
+   "tzdata==2026.5",
+   "urllib3==2.8.0",
+   "uvicorn==0.54.0"
+  ],
+  "python": "3.12.10",
+  "torch_index": "https://download.pytorch.org/whl/cu128",
+  "models": {
+   "tts": {
+    "repo": "BreezeBlue/Breeze-TTS-2",
+    "revision": "3e28c5151381a722f1d8661b4118c298caa77aa4",
+    "files": {
+     "LICENSE": {
+      "bytes": 18719,
+      "sha256": "f158b88cd51473925e1ce8c39f4c7c9e419304ad71371896c4ff18fa1351dca2"
+     },
+     "audio_tokenizer/config.json": {
+      "bytes": 2336,
+      "sha256": "ee65bb901c876664ab8707c487157aa1a6ee57c65969b28fb5ec9dc211e68167"
+     },
+     "audio_tokenizer/configuration.json": {
+      "bytes": 76,
+      "sha256": "6bc26d64eb5024b4d1dab5a52371958b429256d6c9d59787f1f5294a54e0cebd"
+     },
+     "audio_tokenizer/model.safetensors": {
+      "bytes": 682293092,
+      "sha256": "836b7b357f5ea43e889936a3709af68dfe3751881acefe4ecf0dbd30ba571258"
+     },
+     "audio_tokenizer/preprocessor_config.json": {
+      "bytes": 234,
+      "sha256": "fcb3805e597e786d4067706e602f6688524640f8d3396790e2e09b5942fcbdfb"
+     },
+     "config.json": {
+      "bytes": 10161,
+      "sha256": "57849eb756ca1602efe89afcc5c70379dd127f8deeb9f655204d4340190ea929"
+     },
+     "generation_config.json": {
+      "bytes": 251,
+      "sha256": "2ef3f2c0ab8d9ad241059138a795433c5410fd9954efb9625674ecd2a9529434"
+     },
+     "model-00001-of-00002.safetensors": {
+      "bytes": 4961989890,
+      "sha256": "abf813781256e10cbe81f2dbb415f897556225d4dfa0282d67aa8ea164e114a9"
+     },
+     "model-00002-of-00002.safetensors": {
+      "bytes": 2004567152,
+      "sha256": "36aa73b1a11361e1774db90d9c63c63303b294c022de112aa51904d940edcef1"
+     },
+     "model.safetensors.index.json": {
+      "bytes": 109004,
+      "sha256": "19977e3d96bb502ed3165b48adff094f6bd71ec3d349940d1a3ba6a0060bd5e3"
+     },
+     "special_tokens_map.json": {
+      "bytes": 886,
+      "sha256": "194f265bb588d142a16f27d9576104eb3dab3d7ba9961541d2d6e3d5e77e6470"
+     },
+     "tokenizer.json": {
+      "bytes": 33386945,
+      "sha256": "d3ec9ac3eb2392389b9f5112e85d8b43316494addb587ba7b7a9d61eac23af96"
+     },
+     "tokenizer_config.json": {
+      "bytes": 1157960,
+      "sha256": "2c084fd6725c2284e8aa6da095a8d036d48fe79665595bfcd50371821b620e44"
+     }
+    }
+   },
+   "asr": {
+    "repo": "openai/whisper-large-v3-turbo",
+    "revision": "41f01f3fe87f28c78e2fbf8b568835947dd65ed9",
+    "files": {
+     "added_tokens.json": {
+      "bytes": 34648,
+      "sha256": "3c51f66c4c21f9e126970078f11ae77a78c74aee8df606ee9daba86e467108e0"
+     },
+     "config.json": {
+      "bytes": 1256,
+      "sha256": "c5b526b3e3cd64cd8940dabb45e8ba726629e22d8ed389c29b552f9140daf04a"
+     },
+     "generation_config.json": {
+      "bytes": 3772,
+      "sha256": "cce11bfe3aaa6ae9e072ea2637caaec8795e68d9b67e655a5af16ee509681a4c"
+     },
+     "merges.txt": {
+      "bytes": 493869,
+      "sha256": "2df2990a395e35e8dfbc7511e08c12d56018d8d04691e0133e5d63b21e154dc6"
+     },
+     "model.safetensors": {
+      "bytes": 1617824864,
+      "sha256": "542566a422ae4f3fd23f1ba11add198fca01bbf82e66e6a2857b3f608b1eb9d1"
+     },
+     "normalizer.json": {
+      "bytes": 52666,
+      "sha256": "bf1c507dc8724ca9cf9903640dacfb69dae2f00edee4f21ceba106a7392f26dd"
+     },
+     "preprocessor_config.json": {
+      "bytes": 340,
+      "sha256": "7ccc62c6f2765af1f3b46c00c9b5894426835a05021c8b9c01eecb6dfb542711"
+     },
+     "special_tokens_map.json": {
+      "bytes": 2186,
+      "sha256": "baea4ea09372eb4fca86b4e4346139fd73cb807d5087e9de0948e971739c3e74"
+     },
+     "tokenizer.json": {
+      "bytes": 2710337,
+      "sha256": "297b13372ac43916285644fb9687add3cc62ee2a1adb60da3dc25cc94c1871fd"
+     },
+     "tokenizer_config.json": {
+      "bytes": 282843,
+      "sha256": "844b642c73a91359722f47b35705f7174686df33d252695d8572cf9ac03a6389"
+     },
+     "vocab.json": {
+      "bytes": 1036558,
+      "sha256": "e2aa043ef015641d363d8288e7c241c85e36a5c761fb303598e0710233344387"
+     }
+    }
+   }
+  },
+  "licence": "Breeze TTS 2 weights and their outputs: BreezeBlue Research and Non-Commercial License 1.1 (fine for the user's own maps; re-voice or license before any commercial use). breeze-tts source: Apache-2.0. Whisper large-v3-turbo: MIT.",
+  "note": "written by py mapgen/voice.py fetch; commit it"
+ }
 }
