@@ -25,7 +25,7 @@ m = Spec(NAME, summary=f"Iron fences ({POLICY})", description="Iron fences over 
          "runs both ways, corners, gates.", author="generated", version="0.1", date="Thursday, October 8 2026",
          type=SOLO, minPlayers=1, maxPlayers=1)
 m.d["nxz"] = False
-m.d["ambient"] = [170, 170, 160]
+m.d["ambient"] = [230, 230, 220]          # bright, so the floors under the fences read in the frames
 m.fence_policy = POLICY
 
 # ---- the meadow -----------------------------------------------------------------------------------------------------
