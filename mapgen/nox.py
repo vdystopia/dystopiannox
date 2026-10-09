@@ -110,7 +110,7 @@ _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 # used, then must be put precisely on the line between two tiles."). Westwood blends about two thirds of the floor
 # seams along its iron fences (42 campaign layouts: 69% of the 393 differing seams across a / piece; across a \ piece
 # 66% of the 463 behind its line tile and 81% of the 233 in front), against 1-10% across its solid walls. Its \ line
-# tile takes the floor in front 72% of the time (377 of 524). The two policies (Spec.fence_policy, default FENCE_POLICY):
+# tile takes the floor in front 72% of the time (377 of 524). The two policies (Spec.fence_policy, default FENCE_POLICY = "blend", the user's pick):
 # - "cut": a fence is a hard cut like any wall (TW-12), and the cut lies exactly on the fence line. Walls and tiles
 #   both sit on the even lattice (x + y even; the client's sight pass, client/sight.go, visits only those cells, so a
 #   wall cannot be moved off it), and a tile's sides run along the lines x + y odd and x - y odd. A / piece (facing 0,
@@ -125,7 +125,10 @@ _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 # validate/checks.py: floors.fence_line (cut: a floor change under a \ fence is an error) and floors.wall_blend (an
 # edge across any wall, or across a fence under the cut policy, is an error). The policy goes to <name>.fences.json
 # beside the map for the checker.
-FENCE_POLICY = "cut"
+# The user's pick (2026-10-08, after FenceCut and FenceBlnd side by side in the game): "In every single case, blend is
+# the right choice. Additionally, I must say each of these blends looks very good." So "blend" is the default; "cut"
+# stays available (a design sets Spec.fence_policy = "cut").
+FENCE_POLICY = "blend"
 FENCE_POLICIES = ("cut", "blend")
 FENCES = ("IronFence", "IronFenceDamaged")
 BACKSLASH_ARMS = {TL: (-1, -1), BR: (0, 0)}         # a \ arm -> the tile it runs through, relative to its cell
@@ -302,7 +305,7 @@ class Spec:
         self.scripts = {}       # filename -> Go source: the map's script (OpenNox runs the .go files in maps/<Name>/)
         self.routes = []        # routes the scripts walk (kit/npcs.Behaviours): <map>.routes.json for the checker
         self.rng = random.Random(1)
-        self.fence_policy = FENCE_POLICY  # iron fences: "cut" (a hard cut on the fence line) or "blend" [FN-1]
+        self.fence_policy = FENCE_POLICY  # iron fences: "blend" (the default) or "cut" (a hard cut on the fence line) [FN-1]
 
     # ---- walls -------------------------------------------------------------------------
     def wall(self, x, y, material, variation=None, window=False, facing=None):

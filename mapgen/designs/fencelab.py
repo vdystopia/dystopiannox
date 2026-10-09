@@ -1,8 +1,8 @@
 """Fence lab: iron fences in their common situations, built under either fence policy (FN-1) so the two can be compared
 in the game.
 
-    py mapgen/designs/fencelab.py cut      # FenceCut: no blending at a fence (the default policy, TW-12)
-    py mapgen/designs/fencelab.py blend    # FenceBlnd: floors blend across iron fences as Westwood's do
+    py mapgen/designs/fencelab.py cut      # FenceCut: no blending at a fence, the cut on the fence line
+    py mapgen/designs/fencelab.py blend    # FenceBlnd: floors blend across iron fences (the default)
 
 A walled meadow of plain grass (GrassNorm) holding, laid as the kit lays a yard's fence (kit/yards.py: wall points
 round a plot of squares; the gate a two-cell opening in the middle of a side):

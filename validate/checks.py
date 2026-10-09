@@ -507,7 +507,8 @@ EDGE_STEP = {"E": (1, -1), "N": (-1, -1), "S": (1, 1), "W": (-1, 1), "NE": (0, -
 
 def fence_policy(m):
     """The fence policy a generated map was laid by (<map>.fences.json beside it, mapgen/nox.py FENCE_POLICY) [FN-1]:
-    "cut" (the default, and for a map without one: Westwood's) or "blend"."""
+    "blend" (the generator's default since the user's pick) or "cut". A map without one (Westwood's, or one built before
+    the switch) is read as "cut", the hard cut every wall had under TW-12."""
     if not hasattr(m, "_fence_policy"):
         side = os.path.splitext(m.file or "")[0] + ".fences.json"
         m._fence_policy = json.load(open(side, encoding="utf-8")).get("policy", "cut") \

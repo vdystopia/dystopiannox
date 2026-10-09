@@ -291,13 +291,14 @@ def fence_off_line(m):
     # the cobble's edge laid under the pen's \ fences, half a tile off the fence line (FN-1, 2026-10-08: "If no
     # blending is used, then must be put precisely on the line between two tiles"); the generator moves it off now
     _fenced_pen(m)
+    m.fence_policy = "cut"
     m._fence_line_floors = lambda fences: None
 
 
 def blend_policy_wall(m):
     # the blend policy lets floors blend across iron fences only: an edge across the house's wall stays an error (FN-1)
     _fenced_pen(m)
-    m.fence_policy = "blend"
+    m.fence_policy = "blend"                    # (the default since the user's pick)
     blend_across_wall(m)
 
 

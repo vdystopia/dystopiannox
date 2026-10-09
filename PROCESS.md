@@ -238,20 +238,22 @@ the outside in. It's also a natural transition point in itself. Therefore, this 
 ### Iron fences: cut or blend [FN-1]
 The user (2026-10-08, after TW-12 made iron fences hard cuts too): "Try iron fences with and without blending. If no
 blending is used, then must be put precisely on the line between two tiles." One switch, `Spec.fence_policy`
-(`nox.FENCE_POLICY`, default `"cut"` until the user picks; the build writes it to `<Name>.fences.json` for the checker):
+(`nox.FENCE_POLICY`; the build writes it to `<Name>.fences.json` for the checker). **The default is `"blend"`**: the
+user compared FenceCut and FenceBlnd in the game's frames (2026-10-08) and picked it: "In every single case, blend is the
+right choice. Additionally, I must say each of these blends looks very good." `"cut"` stays available to a design.
 - **On the line, geometrically.** Walls and tiles share the even lattice (x + y even), and the client's sight pass visits
   only those cells, so no wall can sit elsewhere. A tile's sides run along the lines x + y odd and x - y odd. A / piece
   (facing 0) runs along x + y odd: it lies exactly on the seam between the tile behind it and the tile in front. A \
   piece (facing 1) runs along x - y even, through the centres of the tiles on its line: the nearest seams lie half a
   tile behind and in front of it, so a floor change across a \ piece always shows a strip of the wrong floor through the
   bars. Corners have one arm of each kind; a gate's opening counts as a piece of its line.
-- **`cut`**: no edge piece across a fence or its gate (TW-12), and a floor change under a fence only on its / pieces.
+- **`cut`** (an option): no edge piece across a fence or its gate (TW-12), and a floor change under a fence only on its / pieces.
   Under a \ piece the line tile and the tiles behind and in front of it take one floor, the ground (lowest blend
   priority: grass between grass and cobble, dirt between dirt and stone; else the floor in front)
   (`Spec._fence_line_floors`): a yard's own floor stops a tile inside its \ sides and meets the ground there as ground
   meets ground. Westwood does the same outdoors: one floor under 93% of its / fence pieces and 78% of its \ pieces over
   outdoor ground (`rules/fences.py`).
-- **`blend`**: floors blend across iron fences as Westwood's do (about two thirds of all its fence seams, most of them
+- **`blend`** (the default): floors blend across iron fences as Westwood's do (about two thirds of all its fence seams, most of them
   in dungeons); every other wall stays a hard cut (TW-12 unchanged). A \ line tile takes the floor in front (Westwood:
   72%).
 - Checked by `floors.fence_line` (cut: a floor change under a \ fence piece is an error; planted case STfence) and

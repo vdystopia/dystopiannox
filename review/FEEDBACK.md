@@ -221,7 +221,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 
 | ID | The user's words | Rule | Enforced by | Before | After |
 |---|---|---|---|---|---|
-| FN-1 | "Try iron fences with and without blending. If no blending is used, then must be put precisely on the line between two tiles." | P§3 Iron fences: cut or blend (`Spec.fence_policy`, `nox.fence_line_tiles`, `Spec._fence_line_floors`); `rules/fences.py`; comparison map `mapgen/designs/fencelab.py` | `floors.fence_line` (STfence), `floors.wall_blend` (STfncbl) | none | check |
+| FN-1 | "Try iron fences with and without blending. If no blending is used, then must be put precisely on the line between two tiles." Then, of FenceCut and FenceBlnd side by side: "In every single case, blend is the right choice. Additionally, I must say each of these blends looks very good." (decision: `blend` is the default, `cut` an option) | P§3 Iron fences: cut or blend (`Spec.fence_policy`, `nox.fence_line_tiles`, `Spec._fence_line_floors`); `rules/fences.py`; comparison map `mapgen/designs/fencelab.py` | `floors.fence_line` (STfence), `floors.wall_blend` (STfncbl) | none | check |
 
 ## Transporters (2026-10-08, a request)
 
