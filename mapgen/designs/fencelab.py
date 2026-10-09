@@ -1,8 +1,7 @@
-"""Fence lab: iron fences in their common situations, built under either fence policy (FN-1) so the two can be compared
-in the game.
+"""Fence lab (FenceBlnd): iron fences in their common situations, the floors blending across them (FN-1: "Always
+blending for fences"). Built for the user's comparison of blended and cut fences; the cut variant is gone.
 
-    py mapgen/designs/fencelab.py cut      # FenceCut: no blending at a fence, the cut on the fence line
-    py mapgen/designs/fencelab.py blend    # FenceBlnd: floors blend across iron fences (the default)
+    py mapgen/designs/fencelab.py
 
 A walled meadow of plain grass (GrassNorm) holding, laid as the kit lays a yard's fence (kit/yards.py: wall points
 round a plot of squares; the gate a two-cell opening in the middle of a side):
@@ -10,23 +9,19 @@ round a plot of squares; the gate a two-cell opening in the middle of a side):
 - pen B: dark dirt (DirtDark2) inside the grass, its gate in its SW side (a \\ line);
 - pen C: light stone (StoneLight) inside a patch of dark dirt (dirt | stone);
 - an L of fence over the same grass on both sides, a / run and a \\ run joined by a corner.
-Each pen has both diagonals, all four corners and the floor change under its fence. Under the cut policy a pen's own
-floor stops a tile inside its \\ sides (a \\ fence runs through the middle of its tiles, so a cut cannot lie on its
-line: PROCESS.md "Iron fences: cut or blend"); under the blend policy it runs to the fence and blends across it.
+Each pen has both diagonals, all four corners and its floor blending across its fence.
 """
 import os, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO
 from kit.layout import square_tile, point_cell, square_px, OUTDOOR_BLENDS
 
-POLICY = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] in ("cut", "blend") else "cut"
-NAME = {"cut": "FenceCut", "blend": "FenceBlnd"}[POLICY]
-m = Spec(NAME, summary=f"Iron fences ({POLICY})", description="Iron fences over grass, dirt, cobble and stone: straight "
+NAME = "FenceBlnd"
+m = Spec(NAME, summary="Iron fences", description="Iron fences over grass, dirt, cobble and stone: straight "
          "runs both ways, corners, gates.", author="generated", version="0.1", date="Thursday, October 8 2026",
          type=SOLO, minPlayers=1, maxPlayers=1)
 m.d["nxz"] = False
 m.d["ambient"] = [230, 230, 220]          # bright, so the floors under the fences read in the frames
-m.fence_policy = POLICY
 
 # ---- the meadow -----------------------------------------------------------------------------------------------------
 I0, I1, J0, J1 = 104, 152, -22, 22                 # squares; the room's walls on their outline
@@ -77,5 +72,5 @@ QA_ACCEPT = [
 ]
 
 if __name__ == "__main__":
-    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "out", "fencelab_" + POLICY)
+    out = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "out", "fencelab")
     print("\n".join(l for l in m.build(os.path.abspath(out)) if not l.startswith("XFER")))

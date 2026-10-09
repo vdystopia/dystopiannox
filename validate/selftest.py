@@ -287,18 +287,10 @@ def _fenced_pen(m):
     m.blending("GrassNorm", 0); m.blending("RoughCobble", 5, "BrickEdgeBrown")
 
 
-def fence_off_line(m):
-    # the cobble's edge laid under the pen's \ fences, half a tile off the fence line (FN-1, 2026-10-08: "If no
-    # blending is used, then must be put precisely on the line between two tiles"); the generator moves it off now
+def blend_beside_fence(m):
+    # floors blend across iron fences (FN-1, "Always blending for fences"), never across any other wall: with a fenced
+    # pen blending in the meadow, an edge across the house's wall is still an error
     _fenced_pen(m)
-    m.fence_policy = "cut"
-    m._fence_line_floors = lambda fences: None
-
-
-def blend_policy_wall(m):
-    # the blend policy lets floors blend across iron fences only: an edge across the house's wall stays an error (FN-1)
-    _fenced_pen(m)
-    m.fence_policy = "blend"                    # (the default since the user's pick)
     blend_across_wall(m)
 
 
@@ -641,9 +633,7 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
     ("STwallb", blend_across_wall, "floors", "error", "grass blended onto a house's boards across its wall - TW-12",
      "across a wall"),
-    ("STfence", fence_off_line, "floors", "error", "a pen's cobble ending under its \\ fence, off the line - FN-1",
-     "under an iron fence"),
-    ("STfncbl", blend_policy_wall, "floors", "error", "blend policy: grass blended across a house's wall - FN-1",
+    ("STfncbl", blend_beside_fence, "floors", "error", "fences blend, a house's wall does not - FN-1",
      "across a wall"),
     ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
     ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),

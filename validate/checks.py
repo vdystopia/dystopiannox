@@ -505,34 +505,21 @@ EDGE_STEP = {"E": (1, -1), "N": (-1, -1), "S": (1, 1), "W": (-1, 1), "NE": (0, -
              "SW": (0, 2)}
 
 
-def fence_policy(m):
-    """The fence policy a generated map was laid by (<map>.fences.json beside it, mapgen/nox.py FENCE_POLICY) [FN-1]:
-    "blend" (the generator's default since the user's pick) or "cut". A map without one (Westwood's, or one built before
-    the switch) is read as "cut", the hard cut every wall had under TW-12."""
-    if not hasattr(m, "_fence_policy"):
-        side = os.path.splitext(m.file or "")[0] + ".fences.json"
-        m._fence_policy = json.load(open(side, encoding="utf-8")).get("policy", "cut") \
-            if m.file and os.path.exists(side) else "cut"
-    return m._fence_policy
-
-
 def map_fences(m):
-    """{cell: facing} of the map's iron fence pieces, a gate's opening in a fence line as a piece of that line [FN-1]."""
+    """{cell: facing} of the map's iron fence pieces [FN-1]."""
     if not hasattr(m, "_fences"):
         from nox import fence_facings
-        m._fences = fence_facings({c: (w.facing, w.material) for c, w in m.walls.items()}, m.door_gaps)
+        m._fences = fence_facings({c: (w.facing, w.material) for c, w in m.walls.items()})
     return m._fences
 
 
 def seams_at_walls(m):
-    """The tile pairs that meet at a visible wall (mapgen/nox.py wall_seams) [TW-12]: iron fences and their gates too
-    under the cut policy, not iron fences under the blend policy [FN-1]."""
+    """The tile pairs that meet at a visible wall (mapgen/nox.py wall_seams) [TW-12], iron fences excepted: floors blend
+    across them [FN-1]."""
     if not hasattr(m, "_wall_seams"):
         from nox import wall_seams
-        hard = {c: w.facing for c, w in m.walls.items() if not w.invisible}
-        if fence_policy(m) == "cut": hard.update(map_fences(m))
-        else: hard = {c: f for c, f in hard.items() if c not in map_fences(m)}
-        m._wall_seams = wall_seams(hard)
+        fences = map_fences(m)
+        m._wall_seams = wall_seams({c: w.facing for c, w in m.walls.items() if not w.invisible and c not in fences})
     return m._wall_seams
 
 
@@ -561,28 +548,6 @@ def check_wall_blends(m, ctx, base):
         mats = sorted({ov for t, ov in found if (t[0] + 1, t[1] + 1) in gs})
         out.append(F("floors", "error", f"Floor edges blend across a wall ({len(g)} tile{'s' if len(g) > 1 else ''}; {', '.join(mats)}): a wall is "
                      f"a hard cut between floors, no edge piece on either side of it.", *centre(g)))
-    return out
-
-
-def check_fence_lines(m, ctx, base):
-    """Under the cut policy a floor change under an iron fence lies exactly on the fence line [FN-1] (user, 2026-10-08:
-    "If no blending is used, then must be put precisely on the line between two tiles"). A / piece lies on the seam
-    between two tiles; a \\ piece runs through the middle of the tiles on its line, so a floor change across it falls
-    half a tile off the fence, a strip of the wrong floor seen through the bars: under a \\ piece the line tile and
-    the tiles behind and in front of it must be one floor (mapgen/nox.py fence_line_tiles, Spec._fence_line_floors)."""
-    if fence_policy(m) != "cut": return []
-    from nox import fence_line_tiles
-    bad = []
-    for t, (e, w) in fence_line_tiles(map_fences(m)).items():
-        mats = {m.tiles[c]["material"] for c in (t, e, w) if c in m.tiles}
-        if len(mats) > 1: bad.append(((t[0] + 1, t[1] + 1), mats))
-    out = []
-    for g in clusters([c for c, _ in bad], 3):
-        gs = set(g)
-        mats = sorted(set().union(*(ms for c, ms in bad if c in gs)))
-        out.append(F("floors", "error", f"A floor changes under an iron fence's \\ run ({len(g)} tile{'s' if len(g) > 1 else ''}; "
-                     f"{', '.join(mats)}): a \\ fence runs through the middle of its tiles, so the cut cannot lie on the "
-                     f"fence line; keep one floor under it and move the change a tile away.", *centre(g)))
     return out
 
 
@@ -2555,7 +2520,6 @@ RULES = [
     ("floors.hard_seam", "floors", r"^Hard seam", "DV3-2"),
     ("floors.unblended", "floors", r"of floor seams that Westwood blends", "DV3-2"),
     ("floors.wall_blend", "floors", r"^Floor edges blend across a wall", "TW-12"),
-    ("floors.fence_line", "floors", r"^A floor changes under an iron fence", "FN-1"),
     ("rooms.crammed", "rooms", r"is crammed", "DV1-4"),
     ("rooms.count", "rooms", r"pieces of furniture; Westwood", "DV1-4"),
     ("rooms.bare", "rooms", r"is nearly bare", "TP2-1"),
@@ -2659,7 +2623,6 @@ def rule_of(f):
 
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
-       check_fence_lines,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
        check_transport]
 
