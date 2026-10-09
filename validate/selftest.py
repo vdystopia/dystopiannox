@@ -281,6 +281,19 @@ def blend_across_wall(m):
     m._edges = edges
 
 
+def _fenced_pen(m):
+    # an iron-fenced pen of cobble in the meadow, its \ sides (v = -36, v = -24) across a floor change
+    m.room(184, 196, -36, -24, wall="IronFence", floor="RoughCobble")
+    m.blending("GrassNorm", 0); m.blending("RoughCobble", 5, "BrickEdgeBrown")
+
+
+def blend_beside_fence(m):
+    # floors blend across iron fences (FN-1, "Always blending for fences"), never across any other wall: with a fenced
+    # pen blending in the meadow, an edge across the house's wall is still an error
+    _fenced_pen(m)
+    blend_across_wall(m)
+
+
 def ground_in_room(m):
     # a tile of the meadow's grass laid on the boards just inside the door (SW-4: "Tile blending on the inside of doors
     # seems consistently off")
@@ -619,6 +632,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
     ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
     ("STwallb", blend_across_wall, "floors", "error", "grass blended onto a house's boards across its wall - TW-12",
+     "across a wall"),
+    ("STfncbl", blend_beside_fence, "floors", "error", "fences blend, a house's wall does not - FN-1",
      "across a wall"),
     ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
     ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),

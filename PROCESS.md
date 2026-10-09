@@ -217,7 +217,8 @@ blends onto the doorstep, never onto a tile that reaches into the room (`Spec._w
 
 ### No blending at a wall [TW-12]
 A wall is a hard cut between floors: no edge piece is drawn across it, on either side, whatever the wall (a house, a
-yard's fence, a town wall, the forest wall). The user (Thornwick, 2026-10-08, of a soft grass edge along the outside of
+yard's wooden or stone fence, a town wall, the forest wall), except an iron fence, across which floors always blend
+(FN-1, below). The user (Thornwick, 2026-10-08, of a soft grass edge along the outside of
 a house's wall): "There does not need to be blending on a wall. The wall cuts off vision from the inside out and from
 the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used."
 - A / wall lies on the seam between two tiles: the cut is at the wall. A \ wall runs through the middle of the tiles
@@ -226,14 +227,30 @@ the outside in. It's also a natural transition point in itself. Therefore, this 
   (not merely runs along); `Spec._edges` draws no edge across them. Invisible walls (the water's shoreline) are not
   walls here, and a doorway is an opening: the ground still blends onto the doorstep [SW-4].
 - Westwood agrees for solid walls: across a Cobblestone, Log, StuccoLightWood, StoneGray, Dilapidated or GalavaTownWall
-  wall it blends 1-9% of the seams on a / line and 7-10% on a \ line; across natural walls (forest, cave) and iron
-  fences it blends about half, which this house rule overrides (the check fires on every one of Westwood's campaign
+  wall it blends 1-9% of the seams on a / line and 7-10% on a \ line; across natural walls (forest, cave) it blends about
+  half, which this house rule overrides (iron fences, which it blends about two thirds of the time, blend: FN-1) (the check fires on every one of Westwood's campaign
   maps: a stated house rule, the user's word over Westwood's habit).
 - A \ wall's line tile takes the floor in front of the wall (below it on screen), as Westwood's do: the ground on a
   room's SW wall, the room's floor on its NE wall (`Spec._wall_line_floors`). Each side's floor then runs up to the wall
   as seen, and the wall's picture covers the half tile behind it; giving the line tile the room's floor on both walls
   had laid a strip of boards half a tile wide along the outside of every SW wall (Thornwick's inn).
 - Checked by `floors.wall_blend` (an error; planted case STwallb): a map with an edge piece across a wall fails the gate.
+
+### Iron fences always blend [FN-1]
+Floors blend across iron fences (`IronFence`, `IronFenceDamaged`) as Westwood's do; every other wall stays a hard cut
+(TW-12). The user (2026-10-08): "Try iron fences with and without blending. If no blending is used, then must be put
+precisely on the line between two tiles"; then, of the two side by side in the game's frames: "In every single case,
+blend is the right choice. Additionally, I must say each of these blends looks very good", and: "No, no, blending is not
+an option. Always blending for fences."
+- `Spec._finalize` leaves the fence pieces out of the walls no edge is drawn across (`nox.fence_facings`); a \ fence's
+  line tile takes the floor in front, as the kit already lays it (Westwood: 72%).
+- Westwood (`rules/fences.py`, 42 campaign layouts): 69% of the differing seams across a / fence piece blend, 67% behind
+  and 81% in front of a \ piece. The geometry, for the record: walls and tiles share the even lattice (the client's
+  sight pass visits only it), a / piece lies on the seam between two tiles and a \ piece runs through the middle of the
+  tiles on its line, so a cut under a \ fence could never lie on the fence line.
+- Checked by `floors.wall_blend` (an edge across any wall but a fence is an error; planted case STfncbl: a pen blending
+  in the meadow, an edge across the house's wall still caught). `mapgen/designs/fencelab.py` builds FenceBlnd, the
+  comparison map.
 
 ### Rooms: per type in `rules/rooms/`
 There is no one-size-fits-all room: each room type has its own rules, Westwood's measures and good examples in
@@ -745,7 +762,7 @@ then the user playtests, and hears the voices.
 `identity.showpiece`, ...) and the feedback it answers. Errors are defects a player will see or hit; warnings are
 departures from Westwood's range or from a house rule the playtests set. The rules by topic:
 - walls, doors, kits, floors, the boundary, reachability and the story's gates (the engine and Westwood's construction);
-- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4]; `floors.wall_blend` [TW-12] (no edge piece across a wall);
+- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4]; `floors.wall_blend` [TW-12] (no edge piece across a wall; iron fences blend, FN-1);
 - `rooms.*` (size, cover, identity strays), `composition.*` (the cross-type room rules, bridges, docks across puddles)
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every

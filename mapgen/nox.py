@@ -106,6 +106,27 @@ TIP_BLOCKERS = {"NE": ("E", "N"), "NW": ("N", "W"), "SE": ("E", "S"), "SW": ("S"
 WALL_ARMS = {f: arms for arms, f in FACING_BY_ARMS.items() if len(arms) >= 2}   # the arms each facing draws
 _NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
 
+# Iron fences always blend [FN-1]. The user (2026-10-08): "Try iron fences with and without blending. If no blending is
+# used, then must be put precisely on the line between two tiles"; then, of the two side by side in the game: "In every
+# single case, blend is the right choice. Additionally, I must say each of these blends looks very good", and: "No, no,
+# blending is not an option. Always blending for fences". So floors blend across iron fences as Westwood's do, and every
+# other wall stays a hard cut (TW-12): Spec._finalize leaves the fences out of the walls no edge is drawn across, and
+# validate/checks.py floors.wall_blend fails an edge across any other wall. Westwood (rules/fences.py, 42 campaign
+# layouts): 69% of the differing seams across a / fence piece blend, 67% behind and 81% in front of a \ piece; a \ line
+# tile takes the floor in front 72% of the time, as the kit lays it. (Geometry, for the record: walls and tiles share
+# the even lattice; a / piece lies on the seam between two tiles, a \ piece runs through the middle of the tiles on its
+# line, so no cut under a \ fence can lie on the fence line.)
+FENCES = ("IronFence", "IronFenceDamaged")
+
+
+def is_fence(material):
+    return material in FENCES
+
+
+def fence_facings(walls):
+    """{cell: facing} of the iron fence pieces among `walls` ({cell: (facing, material)}) [FN-1]."""
+    return {c: f for c, (f, mat) in walls.items() if is_fence(mat)}
+
 
 def _orient(p, q, r):
     return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
@@ -430,12 +451,15 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+        fences = fence_facings({(w["x"], w["y"]): (w["facing"], w["material"]) for w in walls})
         self._wall_line_floors()
         self._door_thresholds()
         for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
         self._blend_thresholds()
-        edges = self._edges(wall_seams({(w["x"], w["y"]): w["facing"] for w in walls
-                                        if not w["material"].startswith("Invisible")}))
+        # the walls no edge is drawn across [TW-12], all but the iron fences, across which floors blend [FN-1]
+        hard = {(w["x"], w["y"]): w["facing"] for w in walls
+                if not w["material"].startswith("Invisible") and (w["x"], w["y"]) not in fences}
+        edges = self._edges(wall_seams(hard))
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         polygons = list(self.d["polygons"])

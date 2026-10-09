@@ -221,6 +221,12 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | TW-12 | "We've had some issues with blending tiles in the transition between interior and exterior. ... There does not need to be blending on a wall. The wall cuts off vision from the inside out and from the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used." (a soft grass edge along the outside of a building's wall) | P§3 No blending at a wall (`nox.wall_seams`, `Spec._edges`) | `floors.wall_blend` (STwallb) | none | check |
 
+## Iron fences (2026-10-08, a request)
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| FN-1 | "Try iron fences with and without blending. If no blending is used, then must be put precisely on the line between two tiles." Then, of FenceCut and FenceBlnd side by side: "In every single case, blend is the right choice. Additionally, I must say each of these blends looks very good." And: "No, no, blending is not an option. Always blending for fences." | P§3 Iron fences always blend (`nox.fence_facings`, `Spec._finalize`); `rules/fences.py`; `mapgen/designs/fencelab.py` (FenceBlnd) | `floors.wall_blend` (STfncbl: still an error across any other wall) | none | check |
+
 ## Transporters (2026-10-08, a request)
 
 | ID | The user's words | Rule | Enforced by | Before | After |
@@ -237,6 +243,7 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 | Voiced dialogue (VO), after | 5 | 5 | 0 | 0 |
 | Thornwick screenshot (TW-12), after | 1 | 1 | 0 | 0 |
 | Transporters (TR), after | 1 | 1 | 0 | 0 |
+| Iron fences (FN), after | 1 | 1 | 0 | 0 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 

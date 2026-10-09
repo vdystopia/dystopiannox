@@ -505,11 +505,21 @@ EDGE_STEP = {"E": (1, -1), "N": (-1, -1), "S": (1, 1), "W": (-1, 1), "NE": (0, -
              "SW": (0, 2)}
 
 
+def map_fences(m):
+    """{cell: facing} of the map's iron fence pieces [FN-1]."""
+    if not hasattr(m, "_fences"):
+        from nox import fence_facings
+        m._fences = fence_facings({c: (w.facing, w.material) for c, w in m.walls.items()})
+    return m._fences
+
+
 def seams_at_walls(m):
-    """The tile pairs that meet at a visible wall (mapgen/nox.py wall_seams) [TW-12]."""
+    """The tile pairs that meet at a visible wall (mapgen/nox.py wall_seams) [TW-12], iron fences excepted: floors blend
+    across them [FN-1]."""
     if not hasattr(m, "_wall_seams"):
         from nox import wall_seams
-        m._wall_seams = wall_seams({c: w.facing for c, w in m.walls.items() if not w.invisible})
+        fences = map_fences(m)
+        m._wall_seams = wall_seams({c: w.facing for c, w in m.walls.items() if not w.invisible and c not in fences})
     return m._wall_seams
 
 
