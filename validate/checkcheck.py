@@ -85,7 +85,8 @@ def main(argv):
     text = "\n".join(lines) + "\n"
     os.makedirs(md.OUT, exist_ok=True)
     open(os.path.join(md.OUT, "checkcheck.md"), "w", encoding="utf-8").write(text)
-    json.dump(dict(ours=ours, west=west, rows=rows), open(os.path.join(md.OUT, "checkcheck.json"), "w"), indent=1)
+    flat = lambda ms: [(n, {"|".join(map(str, k)): v for k, v in c.items()}, e) for n, c, e in ms]   # tuple keys
+    json.dump(dict(ours=flat(ours), west=flat(west), rows=rows), open(os.path.join(md.OUT, "checkcheck.json"), "w"), indent=1)
     print(text)
     print(f"Written: {os.path.join(md.OUT, 'checkcheck.md')}")
 

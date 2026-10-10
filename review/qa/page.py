@@ -9,14 +9,16 @@ from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
-CATS = [("room", "Rooms"), ("exterior", "Exteriors"), ("bridge", "Bridges"), ("dock", "Docks")]
+CATS = [("room", "Rooms"), ("exterior", "Exteriors"), ("bridge", "Bridges"), ("dock", "Docks"), ("gauntlet", "Gauntlets"),
+        ("mod", "Mods")]
 COLS, TW, TH, HEAD = 5, 640, 540, 60
 
 
 def main(rnd):
     base = os.path.join(REPO, "review", "out", "qa", rnd)
     items = []
-    for f in ("items_rooms.json", "items_exteriors.json", "items_bridges.json", "items_docks.json", "items.json"):
+    for f in ("items_rooms.json", "items_exteriors.json", "items_bridges.json", "items_docks.json", "items_gauntlets.json", "items_mods.json",
+              "items.json"):
         p = os.path.join(base, f)
         if os.path.exists(p): items += json.load(open(p, encoding="utf-8"))
     seen, uniq = set(), []
