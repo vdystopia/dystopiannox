@@ -475,7 +475,7 @@ for n_, dmg_ in (("Ilsa", 7), ("SpireWatch1", 10), ("SpireWatch2", 10)):
     hc.ally(n_, ALL_FOES, follow=True, dmg=dmg_)
 for n_ in ["Rusk"] + crew:
     hc.ally(n_, bone_foes, follow=False, home=(bx_, by_), hold=430, dmg=12)
-hc.ally("Vess", top_foes, follow=True, dmg=14, blink=True)
+hc.ally("Vess", top_foes, follow=True, dmg=14, blink=True, hp=FOES["Vess"]["hp"])
 WATCH, CREW = ["Ilsa", "SpireWatch1", "SpireWatch2"], ["Rusk"] + crew
 hc.on_flag("watch_go", hc.allies_go(*WATCH))
 hc.on_flag("rusk_go", hc.allies_go(*CREW))

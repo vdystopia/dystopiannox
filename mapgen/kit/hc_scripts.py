@@ -46,7 +46,9 @@ import (
 )
 
 func hcAlive(o ns.Obj) bool {
-	return o != nil && o.CurrentHealth() > 0 && !o.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
+	// a cloned person has no health at all (max 0, immortal): alive while it exists (the play test, 2026-10-10:
+	// Ilsa's watch counted as dead and never moved)
+	return o != nil && (o.MaxHealth() == 0 || o.CurrentHealth() > 0) && !o.Flags().HasAny(object.FlagDead|object.FlagDestroyed)
 }
 
 func hcDist(a, b ns.Pointf) float32 {
@@ -188,6 +190,15 @@ func HcAlly(name string, follow bool, hx, hy, hold float32, dmg int, blink bool,
 		blink: blink, foes: foes})
 }
 
+// HcAllyHealth: an ally fighter's health set by script (a creature's HealthMultiplier in the map is not reliable:
+// act 9's Vess, a Swordsman, came out with 64 of the 320 she was given, 2026-10-10)
+func HcAllyHealth(name string, hp int) {
+	if o := ns.Object(name); o != nil && hp > 0 {
+		o.SetMaxHealth(hp)
+		o.SetHealth(hp)
+	}
+}
+
 func hcAllyOf(name string) *hcAllyT {
 	for _, a := range hcAllies {
 		if a.name == name {
@@ -252,8 +263,13 @@ func (a *hcAllyT) isFoe(o ns.Obj) bool {
 func (a *hcAllyT) pick(from ns.Pointf, r float32) ns.Obj {
 	var best ns.Obj
 	bd := r
+	live := a.foes[:0]
 	for _, n := range a.foes {
 		f := ns.Object(n)
+		if f == nil {
+			continue // gone for good (a body removed): dropped, not looked up every frame again
+		}
+		live = append(live, n)
 		if !a.isFoe(f) {
 			continue
 		}
@@ -261,6 +277,7 @@ func (a *hcAllyT) pick(from ns.Pointf, r float32) ns.Obj {
 			best, bd = f, d
 		}
 	}
+	a.foes = live
 	for _, f := range ns.FindAllObjects(ns.InCirclef{Center: from, R: float64(r)}, hcFoeTypes) {
 		if !a.isFoe(f) {
 			continue
@@ -490,12 +507,13 @@ class HcScript:
         body = "; ".join(x for part in stmts for x in part)
         return [f"ns.NewTimer(ns.Seconds({float(secs)}), func() {{ {body} }})"]
 
-    def ally(self, name, foes, follow=True, home=(0.0, 0.0), hold=400.0, dmg=9, blink=False):
+    def ally(self, name, foes, follow=True, home=(0.0, 0.0), hold=400.0, dmg=9, blink=False, hp=0):
         """An ally (started by allies_go): follow=True goes with the player (through transporters too); else it holds
         the floor round `home` (world px) within `hold` px, fighting there off-screen while the player is away."""
         self.names.add(name)
         self.calls.append(f"HcAlly({_go(name)}, {'true' if follow else 'false'}, {home[0]:.1f}, {home[1]:.1f}, "
                           f"{float(hold):.1f}, {int(dmg)}, {'true' if blink else 'false'}, []string{{{', '.join(_go(f) for f in foes)}}})")
+        if hp: self.calls.append(f"HcAllyHealth({_go(name)}, {int(hp)})")
 
     def files(self):
         if not self.calls: return {}
