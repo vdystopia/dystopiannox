@@ -248,14 +248,14 @@ class Mods:
                # on MapInitialize, or after a second of frames if it never fires (the dedicated server: kit/quests.py)
                "func init() {\n\tns.OnMapEvent(ns.MapInitialize, setUpMods)\n\tmframes := 0\n"
                "\tns.OnEachFrame(1, func() {\n\t\tif mframes++; mframes == 30 {\n\t\t\tsetUpMods()\n\t\t}\n\t})\n}\n")
-        return {"mods.go": lib, "mods_config.go": cfg}
+        from kit.quests import events_go
+        return {"mods.go": lib, "mods_config.go": cfg, "events.go": events_go(pkg)}
 
     def attach(self, behaviours=None):
         """The map's script files into spec.scripts (call once everything is placed, after kit.npcs Behaviours have
         all their calls). behaviours: that map's kit.npcs Behaviours, whose creatures keep their own event callbacks
         (an object has one callback per event: mods.go leaves them alone, so melee powers do not fire on them)."""
-        if behaviours is not None:
-            objs, _ = behaviours.names()
-            if objs: self.calls.insert(0, f"ModLeaveAlone({_s(objs)})")
+        # (behaviours: kept for callers; since events.go every script shares a creature's events, so the mods watch
+        # the behaviours' creatures too and nothing needs leaving alone)
         if self.calls:
             self.spec.scripts.update(self.files(self.spec.d["name"]))

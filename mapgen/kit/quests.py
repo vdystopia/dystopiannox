@@ -29,6 +29,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 QUEST, COMPLETED, HINT, NOTE = 2, 4, 8, 1       # journal entry types (ns.EntryType: red quest, grey completed, ...)
 
 
+def events_go(pkg):
+    """kit/behaviours/events.go for a map's package: the creature events every script shares (OnObjEvent)."""
+    return open(os.path.join(HERE, "behaviours", "events.go"), encoding="utf-8").read().replace("package PKG", f"package {pkg}", 1)
+
+
 def _go(s):
     return json.dumps(s, ensure_ascii=False)
 
@@ -297,7 +302,7 @@ class QuestBook:
                "\tframes := 0\n\tns.OnEachFrame(1, func() {\n\t\tif frames++; frames == 30 {\n\t\t\tsetUpStory()\n\t\t}\n\t})\n"
                f"\tlineKeys = []string{{{', '.join(_go(k) for k in self.strings)}}}\n"
                f"\tQuestCheck([]string{{{', '.join(_go(n) for n in sorted(self.names))}}})\n}}\n")
-        return {"quests.go": lib, "quests_config.go": cfg}
+        return {"quests.go": lib, "quests_config.go": cfg, "events.go": events_go(pkg)}
 
     def write_strings(self, out_dir):
         """<Map>.strings.json beside the map (install copies it into maps/<Map>/), and <Map>.speech.json: who says

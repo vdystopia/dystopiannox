@@ -129,7 +129,7 @@ func Sentry(name string, faceX, faceY float32, rouse []string, shout string) {
 	face := ns.Ptf(faceX, faceY)
 	o.Guard(post, face, 160)
 	alerted := false
-	o.OnEvent(ns.EventEnemySighted, func() {
+	OnObjEvent(o, ns.EventEnemySighted, func() {
 		if alerted {
 			return
 		}
@@ -145,7 +145,7 @@ func Sentry(name string, faceX, faceY float32, rouse []string, shout string) {
 		}
 		spreadOn(group, ns.GetHost())
 	})
-	o.OnEvent(ns.EventLostEnemy, func() {
+	OnObjEvent(o, ns.EventLostEnemy, func() {
 		alerted = false
 		o.WalkTo(post)
 		ns.NewTimer(ns.Seconds(4), func() { o.Guard(post, face, 160) })
@@ -204,11 +204,11 @@ func Pack(leader string, members []string) {
 		ns.NewTimer(ns.Seconds(5), settle)
 	}
 	for _, o := range all {
-		o.OnEvent(ns.EventEnemySighted, rouse)
-		o.OnEvent(ns.EventIsHit, rouse)
+		OnObjEvent(o, ns.EventEnemySighted, rouse)
+		OnObjEvent(o, ns.EventIsHit, rouse)
 	}
-	l.OnEvent(ns.EventLostEnemy, func() { ns.NewTimer(ns.Seconds(5), calm) })
-	l.OnEvent(ns.EventDeath, func() {
+	OnObjEvent(l, ns.EventLostEnemy, func() { ns.NewTimer(ns.Seconds(5), calm) })
+	OnObjEvent(l, ns.EventDeath, func() {
 		h := ns.GetHost()
 		for _, o := range all[1:] {
 			if o == nil || o.CurrentHealth() <= 0 {
@@ -231,7 +231,7 @@ func Skittish(name string, fleeSec float64) {
 		return
 	}
 	o.Wander()
-	o.OnEvent(ns.EventIsHit, func() {
+	OnObjEvent(o, ns.EventIsHit, func() {
 		if h := ns.GetHost(); h != nil {
 			o.Flee(h, ns.Seconds(fleeSec))
 		}
@@ -343,7 +343,7 @@ func newWalker(name string, route []string, pause []float32, look []float32, loo
 	if len(walkers) == 1 {
 		ns.OnEachFrame(15, tickWalkers)
 	}
-	o.OnEvent(ns.EventEndOfWaypoint, w.arrived)
+	OnObjEvent(o, ns.EventEndOfWaypoint, w.arrived)
 	return w
 }
 
@@ -648,9 +648,9 @@ func Patrol(name string, route []string, pause []float32, look []float32, loop b
 			w.hold()
 		}
 	}
-	w.o.OnEvent(ns.EventEnemySighted, fight)
-	w.o.OnEvent(ns.EventIsHit, fight)
-	w.o.OnEvent(ns.EventLostEnemy, func() { w.resume(ns.Seconds(2)) })
+	OnObjEvent(w.o, ns.EventEnemySighted, fight)
+	OnObjEvent(w.o, ns.EventIsHit, fight)
+	OnObjEvent(w.o, ns.EventLostEnemy, func() { w.resume(ns.Seconds(2)) })
 	w.walk()
 }
 
