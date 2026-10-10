@@ -479,7 +479,7 @@ hc.ally("Vess", top_foes, follow=True, dmg=14, blink=True, hp=FOES["Vess"]["hp"]
 WATCH, CREW = ["Ilsa", "SpireWatch1", "SpireWatch2"], ["Rusk"] + crew
 hc.on_flag("watch_go", hc.allies_go(*WATCH))
 hc.on_flag("rusk_go", hc.allies_go(*CREW))
-hc.on_flag("vess_go", hc.allies_go("Vess"))
+hc.on_flag("vess_go", hc.allies_go("Vess") + hc.wake("Morvaine"))     # he wakes to her blade
 hc.on_flag("morvaine_dead", hc.allies_release(*WATCH, *CREW, "Vess"), hc.later(2, hc.swap("Vess", "VessTalk")))
 hc.on_flag("vess_farewell", hc.later(2, hc.vanish("VessTalk")))
 hc.on_flag("ansel_free", hc.later(1, [f'flags["ansel_home"] = true']))

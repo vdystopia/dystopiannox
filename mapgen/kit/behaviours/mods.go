@@ -569,6 +569,16 @@ func (b *modBoss) adopt(o ns.Obj) {
 	}
 }
 
+// ModWake wakes the named boss now, as if the player had come near (a frozen unit takes no damage: an ally striking a
+// sleeping boss did nothing, act 9's Vess at Morvaine, 2026-10-10)
+func ModWake(name string) {
+	for _, b := range modBosses {
+		if b.name == name {
+			b.engage()
+		}
+	}
+}
+
 func (b *modBoss) engage() {
 	if b.o == nil || b.engaged {
 		return

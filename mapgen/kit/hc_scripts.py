@@ -324,6 +324,11 @@ func (a *hcAllyT) tick() {
 		}
 		a.farT = 0
 	}
+	// an ally holding a floor fights there once the player comes near it, not the moment the map loads: the player
+	// should see the fight (the play test, 2026-10-10: the south landing cleared in 5 s, unseen)
+	if !a.follow && hcDist(h.Pos(), a.home) > a.hold+450 {
+		return
+	}
 	// where it fights: round the player it goes with, or on the floor it holds
 	from, reach := a.home, a.hold
 	if a.follow {
@@ -476,6 +481,10 @@ class HcScript:
     def allies_go(self, *names):
         self.names |= set(names)
         return [f"hcAllyGo({', '.join(_go(n) for n in names)})"]
+
+    def wake(self, *bosses):
+        """Wake new monsters (kit/mods) now, as if the player had come near: a frozen boss takes no damage."""
+        return [f"ModWake({_go(n)})" for n in bosses]
 
     def allies_release(self, *names):
         return [f"hcAllyRelease({', '.join(_go(n) for n in names)})"]

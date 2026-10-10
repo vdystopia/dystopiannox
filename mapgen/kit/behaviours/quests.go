@@ -108,10 +108,22 @@ func holds(c Cond) bool {
 
 // flagOn: a flag set by the story, or "dead:Name1,Name2", true when every one of those creatures is dead. Deaths are
 // read from the world, not remembered, so they hold after a saved game is loaded and the script starts afresh.
+// goneForGood: creatures whose bodies the game removed (a skeleton's, an imp's): dead, and never looked up again (each
+// failed lookup logs "cannot find object", every half second: the Hollow Choir play test, 2026-10-10)
+var goneForGood = map[string]bool{}
+
 func flagOn(f string) bool {
 	if strings.HasPrefix(f, "dead:") {
 		for _, n := range strings.Split(f[5:], ",") {
-			if o := ns.Object(n); o != nil && o.CurrentHealth() > 0 {
+			if goneForGood[n] {
+				continue
+			}
+			o := ns.Object(n)
+			if o == nil {
+				goneForGood[n] = true
+				continue
+			}
+			if o.CurrentHealth() > 0 {
 				return false
 			}
 		}
