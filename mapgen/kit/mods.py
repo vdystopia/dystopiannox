@@ -87,11 +87,9 @@ FORGE_LINES = {
                              ["WeaponPower6", "Material6", "Vampirism4", "Stun2"]]),
 }
 
-# Creatures that cannot stand placed in a map on OpenNox v1.9.0-alpha13: the server stops reading the map's objects
-# ("cannot read next section: EOF", then a panic). Zombies (kit/npcs.UNPLACEABLE), and Skeleton and Wolf, found
-# by tests/server_smoke.py on ModLab 2026-10-09 (each alone in an otherwise loading map). Scripts may still create
-# them (the Bone Caller raises Skeletons).
-UNSAFE_PLACED = {"Zombie", "VileZombie", "Skeleton", "Wolf"}
+# Creatures that cannot be placed: none (see kit/npcs.UNPLACEABLE). The Skeleton and Wolf failures found on ModLab
+# 2026-10-09 were the map writer's missing spare block (Shared/Map.cs, checker rule setup.file_tail), not the creatures.
+UNSAFE_PLACED = set()
 
 KINDS = {w["kind"] for w in WEAPONS.values()}
 MONSTER_KINDS = {m["kind"] for m in MONSTERS.values()} | {"trainee"}
