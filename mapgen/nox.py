@@ -360,6 +360,11 @@ class Spec:
         """Inventory objects for a holder at (x, y), set a little off it as Westwood's are (about 25 px)."""
         out = []
         for k, it in enumerate(items):
+            if isinstance(it, dict):              # a whole object (kit/mods.py: a named weapon with its enchantments)
+                o = self.item(it["type"], x + 18 + 3 * (k % 4), y + 20 + 2 * (k // 4),
+                              **{a: b for a, b in it.items() if a not in ("type", "x", "y")})
+                out.append(o)
+                continue
             t, xfer, n = (it, None, 1) if isinstance(it, str) else (tuple(it) + (None, 1))[:3]
             for _ in range(n or 1):
                 o = self.item(t, x + 18 + 3 * (k % 4), y + 20 + 2 * (k // 4))
