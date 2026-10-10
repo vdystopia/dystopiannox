@@ -68,7 +68,9 @@ def main():
     loaded = f'map script(s) loaded: "{name.lower()}"' in text
     bad = [l for l in text.splitlines() if any(w in l.lower() for w in ("panic", "error:", "undefined", "cannot", "failed"))
            and "registry" not in l and "CRC check failed" not in l            # every map, stock ones too
-           and "Failed to load compressed file" not in l]                      # no .nxz: the .map is read
+           and "Failed to load compressed file" not in l                       # no .nxz: the .map is read
+           and "failed to start pprof" not in l]                               # the profiler's port held by another
+                                                                               # OpenNox process: harmless
     print(f"{name}: server loaded={loaded} problems={len(bad)}")
     for l in bad[:30]: print("  !", l.strip())
     for l in text.splitlines():

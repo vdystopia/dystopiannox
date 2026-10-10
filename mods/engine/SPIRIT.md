@@ -8,7 +8,7 @@ The normal game (`opennox-hd.exe`) is unchanged and still works as before.
 
 | File | What it is |
 |---|---|
-| `C:\GOG Games\Nox\opennox-spirit-hd.exe` | the modded game (HD client), built from OpenNox **v1.9.0-alpha13** (the version installed) plus `spirit.patch` |
+| `C:\GOG Games\Nox\opennox-spirit-hd.exe` | the modded game (HD client), built from OpenNox **v1.9.0-alpha13** plus the project's sight-row crash fix (`engine/opennox/sight-row-overflow.patch`, which the installed `opennox-hd.exe` "alpha13-sightfix" also has) plus `spirit.patch`; reports `v1.9.0-alpha13-sightfix-spirit` |
 | `C:\GOG Games\Nox\opennox-spirit-server.exe` | the same mod as a dedicated server (only needed to host a multiplayer server with no game window) |
 | `C:\GOG Games\Nox\Nox Spirit Test.ps1` and `Nox Spirit Test.lnk` | launcher (works like `Nox Map Test`) |
 | `mods/engine/spirit.patch` | the source change (`git diff` against the v1.9.0-alpha13 tag) |
@@ -97,7 +97,7 @@ It then runs full-screen with your usual settings (the launcher instead uses the
 
 * The toolchain builds an unmodified `opennox-hd.exe` from the v1.9.0-alpha13 tag (60.6 MB; it needs the same DLLs as
   the installed one: `SDL2.dll`, `OpenAL32.dll`, `OPENGL32.DLL`, `WS2_32.dll`, `KERNEL32.dll`, `msvcrt.dll`).
-* The Spirit build starts, reports `v1.9.0-alpha13 (57827e6)` like the installed game, loads maps as client and as
+* The Spirit build starts, reports `v1.9.0-alpha13-sightfix-spirit (57827e6)`, loads maps as client and as
   dedicated server, with the game folder's existing DLLs.
 * **Cyan bar**: screenshots `review/out/qa/spirit/tubes_mana_vs_spirit.png` (left: same build with `-spirit off`,
   blue; right: Mystic, cyan, with cyan bubbles), `spirit_on_full.png`, `spirit_off_full.png`. Pixel check of the tube:
@@ -156,6 +156,7 @@ Steps:
 # 1. get the source and apply the mod
 git clone --depth 1 --branch v1.9.0-alpha13 https://github.com/noxworld-dev/opennox.git opennox
 cd opennox
+git apply "/c/GOG Games/Nox/dystopiannox/engine/opennox/sight-row-overflow.patch"   # crash fix the installed exe has
 git apply "/c/GOG Games/Nox/dystopiannox/mods/engine/spirit.patch"
 
 # 2. say where the unzipped tools are (forward slashes; SDL2/OpenAL paths must not contain spaces,
@@ -166,7 +167,7 @@ export SDL2_DIR=C:/tools/SDL2-2.32.10
 export OPENAL_DIR=C:/tools/openal-soft-1.25.2-bin
 
 # 3. build (first build about 5 minutes: it compiles all the C code; later builds take seconds)
-NAME_HD=opennox-spirit-hd NAME_SRV=opennox-spirit-server \
+NOX_VERSION=v1.9.0-alpha13-sightfix-spirit NAME_HD=opennox-spirit-hd NAME_SRV=opennox-spirit-server \
   bash "/c/GOG Games/Nox/dystopiannox/mods/engine/build-spirit.sh" "$PWD" "$PWD/build" client-hd server
 
 # 4. copy build/opennox-spirit-hd.exe (and the server) into C:\GOG Games\Nox. Never overwrite opennox*.exe.

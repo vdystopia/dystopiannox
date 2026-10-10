@@ -1066,10 +1066,18 @@ class StoryMap:
         objs = [(o["x"], o["y"]) for o in m.d["objects"]]
         names = []
         for k, t in enumerate(types):
-            p = next((p for p in pts if all((p[0] - a) ** 2 + (p[1] - b) ** 2 > spacing ** 2 for a, b in objs)
-                      and not any((int(p[0] // CELL) + a, int(p[1] // CELL) + b) in m.wallmap
-                                  for a in (-1, 0, 1) for b in (-1, 0, 1))), None)
-            if not p: break
+            # a full room (the density pass fills bare floor) may leave no spot at the full spacing: closer, then
+            # anywhere off the walls, never silently none (Mirefen's necromancer vanished so, 2026-10-09: no boss, no
+            # way to finish the main quest)
+            p = None
+            for sp, wall in ((spacing, 1), (spacing * 0.6, 1), (14, 1), (14, 0)):
+                p = next((p for p in pts if all((p[0] - a) ** 2 + (p[1] - b) ** 2 > sp ** 2 for a, b in objs)
+                          and not any((int(p[0] // CELL) + a, int(p[1] // CELL) + b) in m.wallmap
+                                      for a in range(-wall, wall + 1) for b in range(-wall, wall + 1))), None)
+                if p: break
+            if not p:
+                print(f"KEEPERS: no room for {prefix}{k + 1} ({t}) in the {getattr(room, 'kind', 'room')}: not placed")
+                break
             objs.append(p)
             self.pop.creature(t, *p, action="guard", scr=f"{prefix}{k + 1}", aggr=aggr)
             names.append(f"{prefix}{k + 1}")

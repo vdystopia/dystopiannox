@@ -401,7 +401,9 @@ class Dresser:
             tx, ty = L.areas[toward]["c"]
             dx, dy = tx - cx, ty - cy
             side = ("u_max" if dx > 0 else "u_min") if abs(dx) >= abs(dy) else ("v_max" if dy > 0 else "v_min")
-        for k in shrink:
+        # smaller first; then bigger: a role's min_units (room shells) can be out of reach at a design's old scale
+        # (Mirefen's chapel at 1.0 never fitted, 2026-10-09: no chapel, no boss, the main quest unfinishable)
+        for k in tuple(shrink) + (1.15, 1.3, 1.45):
             W, H = 2 * round(r["size"][0] * scale * k / 2), 2 * round(r["size"][1] * scale * k / 2)
             origin = (2 * round(cx - W / 4), 2 * round(cy - H / 4))
             b = generate_building(self.spec, self.rng, origin, (W, H), r["style"], program=[kd for kd, _ in r["rooms"]],
@@ -411,6 +413,7 @@ class Dresser:
                                   shape=r.get("shape"), min_units=int(r.get("min_units", 0) * (scale * k) ** 2))
             if b: break
         else:
+            print(f"STRUCTURE: no {role} fits in {area} at scale {scale} (tried {len(shrink) + 3} sizes)")
             return None
         L.take_cells(b.cells, margin=1)
         L.taken_strict |= {tile_square(x, y) for x, y in b.footprint}

@@ -38,25 +38,33 @@ def act(n):
 # type: the item that carries it (verified to survive a map change; never consumed by use; see VERIFIED below);
 # what: how the story names it when it is handed over; given/read: the acts.
 TOKENS = {
-    "WATCH_SEAL":   dict(type="BlueOrb", what="the seal of the Brackwater watch", given=[1], read=[5, 9, 10]),
-    "RUSK_KNIFE":   dict(type="RedOrb", what="Rusk's promise (he presses a red stone into your hand)", given=[1], read=[5, 6, 9, 10]),
-    "RELIQUARY":    dict(type="WhiteOrb", what="the Choir's bone reliquary", given=[2], read=[7, 10]),
-    "VESS_OATH":    dict(type="GreenOrb", what="Vess's oath-stone", given=[4], read=[9, 10]),
-    "DORAN_LETTER": dict(type="BlueOrbKeyOfTheLich", what="Doran's letter", given=[1], read=[3, 8, 10]),
-    "STARSTEEL":    dict(type="RedOrbKeyOfTheLich", what="a lump of starsteel", given=[3], read=[8]),
-    "WENNA_ASK":    dict(type="Orb", what="Wenna's charm", given=[1], read=[2, 5, 10]),
+    # choices: the game's own quest items (a hard-coded list in the engine: never sold, dropped or used)
+    "WATCH_SEAL":   dict(type="SponsorshipLetter", what="the watch's warrant, sealed by Captain Ilsa", given=[1], read=[5, 9, 10]),
+    "RUSK_KNIFE":   dict(type="AmuletOfClarity", what="Rusk's lucky charm, his promise to repay you", given=[1], read=[5, 6, 9, 10]),
+    "RELIQUARY":    dict(type="MayorsScepter", what="the Choir's bone reliquary, a rod of yellowed bone", given=[2], read=[7, 10]),
+    "VESS_OATH":    dict(type="Spectacles", what="Vess's silvered eyeglass, the Choir's mark of rank, given as her oath", given=[4], read=[9, 10]),
+    # the stones: quest items that cannot be sold (they can be dropped and picked up again); counted
+    "SPIRIT_STONE": dict(type="RedOrbKeyOfTheLich", what="a Spirit Stone, a bell's clapper (a red stone that hums)", given=[3, 6, 7, 9], read=[10], counted=True),
+    "VERSE_STONE":  dict(type="BlueOrbKeyOfTheLich", what="a verse of the bells, a blue stone rubbed with a founder's words", given=[3, 4, 7], read=[10], counted=True),
+    # side-quest progress: plain items (worth nothing; a player could sell one for a gold piece)
+    "DORAN_LETTER": dict(type="AmuletofCombat", what="Doran's guild medallion: any smith of his guild will know it", given=[1], read=[3, 8, 10]),
+    "STARSTEEL":    dict(type="RedOrb", what="a lump of starsteel, red-glinting", given=[3], read=[8]),
+    "WENNA_ASK":    dict(type="GreenOrb", what="Wenna's charm, a green stone Tam will know", given=[1], read=[2, 5, 10]),
     "TAM_SATCHEL":  dict(type="TreasureBag", what="Tam's satchel", given=[2], read=[5]),
-    "TAM_FREED":    dict(type="Orb", what="(Tam is free: Wenna's charm stays with you)", given=[5], read=[10]),
-    "EDRIC_ASK":    dict(type="SpellScroll", what="Brother Edric's rubbing paper", given=[1], read=[3, 4, 7, 10]),
-    "VERSE_STONE":  dict(type="SilverKey", what="a verse of the bells, rubbed from a founder's tablet", given=[3, 4, 7], read=[10], counted=True),
-    "SPIRIT_STONE": dict(type="GoldKey", what="a Spirit Stone, a bell's clapper", given=[3, 6, 7, 9], read=[10], counted=True),
+    "TAM_FREED":    dict(type="BlueOrb", what="Tam's bell-token, given in thanks", given=[5], read=[10]),
 }
-# The item types above are provisional until the continuity test (mods/engine or tests: an item carried across a map
-# change in a hosted game) confirms each survives; VERIFIED lists the confirmed ones.
-VERIFIED = set()
+# Brother Edric's request (act 1) is not carried: the verses themselves (VERSE_STONE) are what later acts read.
+# Verified 2026-10-09 (review/out/qa/tokens/evidence.txt): every type above survives a map change and a save and load
+# in a real solo game on opennox-hd.exe, named items keep their names. Never use: the coloured keys (a matching door
+# eats them), potions, SpellScroll (learned on pickup), Orb and WhiteOrb (cannot be picked up again once dropped).
+# A script must not create several items and pick them all up in one frame (it hung the game): kit/quests gives
+# gifts a few frames after making them.
+VERIFIED = {t["type"] for t in TOKENS.values()}
 
 
 def token(name):
+    if name == "EDRIC_ASK":
+        raise KeyError("EDRIC_ASK is not carried (kit/campaign.py): read VERSE_STONE instead")
     return TOKENS[name]["type"]
 
 

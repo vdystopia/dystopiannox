@@ -60,7 +60,7 @@ with a closing sign and the shrine's peal.
 The game keeps the player's inventory from map to map (and in saved games) but forgets script variables, so every
 choice and every side quest's progress is an **item the player carries**: a **token** (`campaign.TOKENS`). A later
 act reads it with a condition (`q.when(has=TOKEN)`), and a token is given (`A.give`) or taken (`A.take`) by the story.
-Tokens are items the player cannot use up or sell by accident; the dialogue always says what the item *is* in the
+Tokens are items the player cannot use up by accident (the choices and the stones are the game's own quest items, which cannot be sold; see kit/campaign.py for each token's item, verified to survive a map change and a save); the dialogue always says what the item *is* in the
 story ("Take this blue orb: it is the watch's seal"). Every act gives the player what a later act reads, and every act
 that reads a token still works without it (a different line, a different way, never a dead end).
 
@@ -105,7 +105,7 @@ Beaten in her duel at the glacier shrine, Vess yields.
 
 ### Side quest: The Last Verse (Brother Edric; acts 1, 3, 4, 7, 10)
 The bells' founders carved the words of the ringing on stone tablets in three places.
-1. Act 1: Edric asks the player to bring the verses: **EDRIC_ASK**.
+1. Act 1: Edric asks the player to bring the verses (no token: the verses themselves are what later acts read).
 2. Act 3, 4 and 7: a tablet in each (the deep bell chamber, the glacier shrine, the founders' crypt) gives a
    **VERSE_STONE** each (the same type: the count matters, 0-3).
 3. Act 10: with all three verses (or two, and Tam to read the third), Edric rings the bells true: the Brood is cut
