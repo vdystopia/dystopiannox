@@ -78,35 +78,39 @@ def has(name):
 # donor: (stock map, script name) the person is cloned from (kit/story StoryMap.person), the same in every act; voice:
 # Breeze TTS 2 description and seed (q.talker(..., voice=)), the same in every act.
 CAST = {
-    "Ilsa": dict(donor=("War01A", "Evelyn"), title="Captain Ilsa Rook",
+    "Ilsa": dict(donor=("War01A", "Evelyn"), pic="IngridPic", title="Ilsa",
                  voice={"desc": "A woman in her forties, captain of a town watch. Low, dry, tired voice with a flat northern "
                                 "English accent. Speaks briskly, few words.", "seed": 41}),
-    "Doran": dict(donor=("Con02a", "Bryan"), title="Doran Ashforge",
+    "Doran": dict(donor=("Con02a", "Bryan"), pic="QuarterMasterPic", title="Doran Ashforge",
                   voice={"desc": "An old blacksmith in his sixties. Deep, rough, warm voice, a rural West Country English "
                                  "accent. Speaks slowly.", "seed": 42}),
-    "Wenna": dict(donor=("Con02a", "Gretchen"), title="Wenna Fell",
+    "Wenna": dict(donor=("Con02a", "Gretchen"), pic="MaidenPic4", title="Wenna",
                   voice={"desc": "A young woman, a village herbalist, in her twenties. Soft, clear, anxious voice with a "
                                  "gentle Yorkshire accent.", "seed": 43}),
-    "Tam": dict(donor=("Con03B", "Dudley"), title="Tam Fell",
+    "Tam": dict(donor=("Con03B", "Dudley"), pic="WoundedApprenticePic", title="Tam",
                 voice={"desc": "A youth of sixteen, a bell-ringer's apprentice. Light, quick, eager voice, a Yorkshire "
                                "accent, a little breathless.", "seed": 44}),
-    "Rusk": dict(donor=("Con03A", "Rastur"), title="Rusk",
+    "Rusk": dict(donor=("Con03A", "Rastur"), pic="MalePic9", title="Rusk",
                  voice={"desc": "A wiry man in his thirties, a bandit and a coward. Nasal, wheedling voice with a London "
                                 "street accent. Talks fast.", "seed": 45}),
-    "Edric": dict(donor=("Wiz02A", "TowerNPC"), title="Brother Edric",
+    "Edric": dict(donor=("Wiz02A", "TowerNPC"), pic="ArchivistPic", title="Brother Edric",
                   voice={"desc": "An old monk in his seventies, keeper of old lore. Thin, gentle, precise voice, a "
                                  "received pronunciation English accent. Speaks slowly and carefully.", "seed": 46}),
-    "Baron": dict(donor=("Con02a", "Mayor_Theogrin"), title="Baron Aldric Thorne",
+    "Baron": dict(donor=("Con02a", "Mayor_Theogrin"), pic="TheogrinPic", title="Baron Aldric Thorne",
                   voice={"desc": "A proud nobleman in his fifties. Full, resonant, haughty voice, an upper-class English "
                                  "accent.", "seed": 47}),
-    "Severin": dict(donor=("Con02a", "Morgan"), title="Chancellor Severin",
+    "Severin": dict(donor=("Con02a", "Morgan"), pic="MorganPic", title="Chancellor Severin",
                     voice={"desc": "A thin courtier in his forties. Smooth, quiet, silky voice, a polished English accent. "
                                    "Every word chosen.", "seed": 48}),
 }
 # Vess appears as a person only where she yields or helps (acts 4 and 9); in a fight she is the M5 monster (FOES)
-CAST["Vess"] = dict(donor=("War01A", "Jennifer"), title="Vess",
-                    voice={"desc": "A woman in her late twenties, an assassin. Low, cool, clipped voice with a faint "
-                                   "Eastern European accent. Speaks quietly, never hurried.", "seed": 49})
+CAST["Vess"] = dict(donor=("Con07B", "Shari"), pic="MaidenPic6", title="Vess",
+                    voice={"desc": "A woman in her thirties, a hired blade. Low, cool, clipped voice with a soft Scottish "
+                                   "accent. Speaks quietly and precisely, never wasting a word.", "seed": 49})
+
+# Titles are the dialogue window's "NPC:<script name>" strings, one table for every installed map: a name another
+# map's creature already has must read the same there (mapgen/strings.py refuses a clash). Emberhol has an Ilsa,
+# Harrowby a Tam, Mirefen a Wenna: ours are titled by first name too; their surnames are in the dialogue.
 
 # Foes with names (kit/mods MONSTERS give their abilities; their name comes from a sign or a shout, not over the head)
 FOES = {
@@ -121,6 +125,11 @@ def cast_person(sm, who, x, y, face=None, **kw):
     """A recurring character placed in an act: cloned from the same donor, named as the cast names them."""
     c = CAST[who]
     return sm.person(c["donor"][0], c["donor"][1], x, y, who, face=face, **kw)
+
+
+def pic(who):
+    """The character's portrait in the dialogue window, the same in every act: q.portrait(name, pic(who))."""
+    return CAST[who]["pic"]
 
 
 def voice(who):
