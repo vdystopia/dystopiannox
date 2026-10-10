@@ -83,7 +83,9 @@ func HarpoonStaff(staffName string, speed, reach float32, dmg int, reelFrames in
 				}
 				f.reel--
 				f.bolt.SetPos(f.target.Pos())
-				f.target.PushTo(h, pull)
+				// PushTo pushes AWAY from the point for a positive force (OpenNox server/object.go Push: obj.Pos() - p),
+				// whatever the ns doc says: a negative force reels the creature in toward the wielder
+				f.target.PushTo(h, -pull)
 			}
 			alive = append(alive, f)
 		}

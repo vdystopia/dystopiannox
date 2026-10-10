@@ -19,8 +19,12 @@ Movement beyond that is scripted: Move along waypoints, Wander, Guard, Hunt, Fol
 import json, math, os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-UNPLACEABLE = {"Zombie": "OpenNox cannot read the map back; Westwood keeps zombies inside coffins",
-               "VileZombie": "as Zombie"}
+# Creatures that cannot be placed. Empty since 2026-10-09: the "Zombie crashes the server" finding (and ModLab's Skeleton
+# and Wolf) was the map writer, not the creature: a map whose object data ended in its last crypt block failed to load
+# ("cannot read next section: EOF") whatever it held, about one size in eight; Shared/Map.cs now writes a spare block
+# (checker rule setup.file_tail). Zombies, Skeletons and Wolves placed in maps load in the server. Westwood still keeps
+# its zombies in coffins: a design habit, not a limit.
+UNPLACEABLE = {}
 ACTION = dict(idle=0, wait=1, escort=3, guard=4, hunt=5, roam=10)
 # DirectionId: the editor's names for the 8 facings (MonsterXfer.NOX_DIRECT_NAMES), by screen direction
 DIRECTION = dict(N=0, S=1, E=2, NW=3, SW=4, W=5, NE=6, SE=7)

@@ -2663,6 +2663,11 @@ namespace NoxShared
             // no more data is going to be written,
             // so the null bytes are not written implicitly by 'Seek()'ing
             wtr.Write(new byte[(8 - wtr.BaseStream.Position % 8) % 8]);
+            // and one more block of zeros (dystopiannox, 2026-10-09): OpenNox reads the next section name in whole crypt
+            // blocks, so a map whose object data ended in the last block failed with "cannot read next section: EOF"
+            // and a panic (about one map size in eight; once blamed on Zombies, Skeletons and Wolves). A zero byte is
+            // the end-of-sections marker, so the extra block is never read as data
+            wtr.Write(new byte[8]);
 
             //go back and write header again, with a proper checksum
             Header.GenerateChecksum(((MemoryStream)wtr.BaseStream).ToArray());
