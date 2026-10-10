@@ -1,0 +1,231 @@
+<title>Nox QA Round ROUND_NAME</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Source+Sans+3:wght@400;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a sticky tab bar over one gallery per category; each type is a section of rating cards cut from its sheet.
+   Single dark look on purpose: the pictures are dark game renders. */
+:root {
+  --bg: #121315; --panel: #1b1d21; --line: #2d3036; --fg: #e8e4d8; --muted: #9a978d;
+  --gold: #d9b45a; --keep: #5fae6e; --fix: #d39a3a; --drop: #c4554d; --focus: #f0d68a;
+  --display: "Cinzel", "Trajan Pro", Georgia, serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono: "JetBrains Mono", Consolas, monospace;
+  color-scheme: dark;
+}
+html, body { background: var(--bg); color: var(--fg); }
+body { font: 15px/1.5 var(--body); padding-inline: 16px; padding-block: 0 48px; }
+.wrap { max-width: 1500px; margin: 0 auto; }
+header.top { padding-block: 24px 8px; display: grid; gap: 6px; }
+h1 { font: 700 clamp(22px, 3vw, 32px)/1.15 var(--display); letter-spacing: .04em; margin: 0; color: var(--gold); text-wrap: balance; }
+.lede { color: var(--muted); max-width: 70ch; margin: 0; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding-block: 10px; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tab { font: 600 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px;
+  padding: 6px 12px; cursor: pointer; }
+.tab[aria-selected="true"] { border-color: var(--gold); color: var(--gold); }
+.tab .n { font: 500 12px var(--mono); color: var(--muted); margin-left: 6px; }
+select, input[type=text], textarea { font: 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line);
+  border-radius: 6px; padding: 6px 8px; }
+.prog { font: 500 13px var(--mono); color: var(--muted); margin-left: auto; font-variant-numeric: tabular-nums; }
+.status { font: 500 12px var(--mono); color: var(--muted); }
+.status.err { color: var(--drop); }
+section.type { padding-block: 22px 6px; display: grid; gap: 12px; }
+section.type h2 { font: 600 20px/1.2 var(--display); letter-spacing: .03em; margin: 0; display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+section.type h2 code { font: 500 13px var(--mono); color: var(--muted); }
+.tnote { display: grid; gap: 4px; max-width: 900px; }
+.tnote label { font: 600 12px var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.tnote textarea { min-height: 44px; resize: vertical; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 14px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; display: grid; min-width: 0; }
+.card.r-keep { box-shadow: inset 4px 0 0 var(--keep); }
+.card.r-fix { box-shadow: inset 4px 0 0 var(--fix); }
+.card.r-drop { box-shadow: inset 4px 0 0 var(--drop); }
+.pic { aspect-ratio: 640 / 540; max-width: 100%; background-color: #000; background-repeat: no-repeat; cursor: zoom-in; border: 0; padding: 0; display: block; width: 100%; }
+.meta { padding: 10px 12px 12px; display: grid; gap: 8px; min-width: 0; }
+.id { font: 700 15px var(--mono); color: var(--gold); letter-spacing: .02em; }
+.cap { font-size: 13px; color: var(--muted); overflow-wrap: anywhere; }
+.row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.stars button, .verdict button { font: 600 13px var(--mono); min-width: 32px; height: 30px; border-radius: 5px; border: 1px solid var(--line);
+  background: transparent; color: var(--fg); cursor: pointer; }
+.stars button[aria-pressed="true"] { background: var(--gold); color: #1a1405; border-color: var(--gold); }
+.verdict button { font-family: var(--body); padding: 0 10px; }
+.verdict button[data-v="keep"][aria-pressed="true"] { background: var(--keep); border-color: var(--keep); color: #0d1a10; }
+.verdict button[data-v="fix"][aria-pressed="true"] { background: var(--fix); border-color: var(--fix); color: #1d1205; }
+.verdict button[data-v="drop"][aria-pressed="true"] { background: var(--drop); border-color: var(--drop); color: #1d0907; }
+.meta input[type=text] { width: 100%; min-width: 0; }
+button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.lb { position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 20; display: grid; place-items: center; padding: 16px; }
+.lb .big { width: min(96vw, calc(88vh * 640 / 540)); aspect-ratio: 640 / 540; background-repeat: no-repeat; }
+.lb .lbcap { font: 600 15px var(--mono); color: var(--gold); text-align: center; padding-top: 8px; }
+.lb .nav { display: flex; gap: 10px; justify-content: center; padding-top: 8px; }
+.lb .nav button { font: 600 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+.empty { color: var(--muted); padding: 40px 0; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Nox QA Round ROUND_NAME</h1>
+    <p class="lede">Every picture has its own ID. Rate it 1-5, mark it Keep, Fix or Drop, and add a note if you like.
+      Each type also has a box for notes on the whole set. Everything saves as you go, and Claude reads it back from here.
+      Click a picture to see it larger (arrow keys step through).</p>
+  </header>
+  <div class="bar">
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <select id="typeSel" aria-label="Jump to type"></select>
+    <span class="status" id="status">Connecting...</span>
+    <span class="prog" id="prog"></span>
+  </div>
+  <main id="main"></main>
+</div>
+<div class="lb" id="lb" hidden>
+  <div>
+    <div class="big" id="lbImg"></div>
+    <div class="lbcap" id="lbCap"></div>
+    <div class="nav"><button id="lbPrev">Previous</button><button id="lbClose">Close</button><button id="lbNext">Next</button></div>
+  </div>
+</div>
+
+<script>
+const ITEMS = /*ITEMS*/[];
+const CATS = [["room","Rooms"],["exterior","Exteriors"],["bridge","Bridges"],["dock","Docks"]];
+const ratings = {}, typenotes = {};
+let db = null, writable = true, cat = "room";
+try { const c = localStorage.getItem("qa-cat"); if (c) cat = c; } catch (e) {}
+const $ = s => document.querySelector(s);
+const statusEl = $("#status");
+function setStatus(t, err) { statusEl.textContent = t; statusEl.classList.toggle("err", !!err); }
+function picStyle(el, it) {
+  el.style.backgroundImage = `url("${it.sheet}")`;
+  el.style.backgroundSize = `${it.bs}% auto`;
+  el.style.backgroundPosition = `${it.bx}% ${it.by}%`;
+}
+const typeKey = it => it.cat + "-" + it.type;
+function visible() { return ITEMS.filter(i => i.cat === cat); }
+
+function renderTabs() {
+  const t = $("#tabs"); t.textContent = "";
+  for (const [k, name] of CATS) {
+    const n = ITEMS.filter(i => i.cat === k).length;
+    if (!n) continue;
+    const b = document.createElement("button");
+    b.className = "tab"; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", k === cat);
+    b.innerHTML = `${name}<span class="n">${n}</span>`;
+    b.onclick = () => { cat = k; try { localStorage.setItem("qa-cat", k); } catch (e) {} renderAll(); window.scrollTo(0, 0); };
+    t.appendChild(b);
+  }
+}
+function renderProgress() {
+  const all = ITEMS.length, done = ITEMS.filter(i => ratings[i.id] && (ratings[i.id].rating || ratings[i.id].verdict)).length;
+  const v = visible(), vd = v.filter(i => ratings[i.id] && (ratings[i.id].rating || ratings[i.id].verdict)).length;
+  $("#prog").textContent = `this tab ${vd}/${v.length} · all ${done}/${all} rated`;
+}
+
+async function save(id, patch) {
+  const cur = Object.assign({}, ratings[id] || {}, patch, { updatedAt: new Date().toISOString() });
+  ratings[id] = cur;
+  applyCard(id); renderProgress();
+  if (!db || !writable) return;
+  setStatus("Saving...");
+  try { await db.doc("ratings/" + id).set(cur); setStatus("Saved"); }
+  catch (e) { if (e && e.code === "invalid_argument") { writable = false; setStatus("Read-only: your changes are not saved", true); }
+              else setStatus("Not saved (" + (e && e.code || "error") + "), try again", true); }
+}
+async function saveType(key, note) {
+  typenotes[key] = { note, updatedAt: new Date().toISOString() };
+  if (!db || !writable) return;
+  setStatus("Saving...");
+  try { await db.doc("typenotes/" + key).set(typenotes[key]); setStatus("Saved"); }
+  catch (e) { setStatus("Not saved (" + (e && e.code || "error") + ")", true); }
+}
+const timers = {};
+function debounce(key, fn, ms = 700) { clearTimeout(timers[key]); timers[key] = setTimeout(fn, ms); }
+
+function card(it) {
+  const c = document.createElement("article"); c.className = "card"; c.id = "c-" + it.id;
+  const pic = document.createElement("button"); pic.className = "pic"; pic.setAttribute("aria-label", "Enlarge " + it.id);
+  pic.dataset.bg = "1"; pic.onclick = () => openLb(it.id);
+  const meta = document.createElement("div"); meta.className = "meta";
+  meta.innerHTML = `<div class="id"></div><div class="cap"></div>
+    <div class="row stars" role="group" aria-label="Rating"></div>
+    <div class="row verdict" role="group" aria-label="Verdict"></div>`;
+  meta.querySelector(".id").textContent = it.id;
+  meta.querySelector(".cap").textContent = it.cap;
+  const stars = meta.querySelector(".stars");
+  for (let n = 1; n <= 5; n++) { const b = document.createElement("button"); b.textContent = n; b.dataset.n = n;
+    b.onclick = () => save(it.id, { rating: (ratings[it.id] || {}).rating === n ? null : n }); stars.appendChild(b); }
+  const ver = meta.querySelector(".verdict");
+  for (const [v, l] of [["keep","Keep"],["fix","Fix"],["drop","Drop"]]) { const b = document.createElement("button"); b.textContent = l; b.dataset.v = v;
+    b.onclick = () => save(it.id, { verdict: (ratings[it.id] || {}).verdict === v ? null : v }); ver.appendChild(b); }
+  const note = document.createElement("input"); note.type = "text"; note.id = "n-" + it.id; note.placeholder = "Note on " + it.id;
+  note.oninput = () => debounce(it.id, () => save(it.id, { note: note.value }));
+  meta.appendChild(note);
+  c.append(pic, meta);
+  c._pic = pic; c._it = it;
+  return c;
+}
+function applyCard(id) {
+  const c = document.getElementById("c-" + id); if (!c) return;
+  const r = ratings[id] || {};
+  c.querySelectorAll(".stars button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.n === r.rating));
+  c.querySelectorAll(".verdict button").forEach(b => b.setAttribute("aria-pressed", b.dataset.v === r.verdict));
+  c.classList.remove("r-keep", "r-fix", "r-drop"); if (r.verdict) c.classList.add("r-" + r.verdict);
+  const n = c.querySelector("input[type=text]"); if (document.activeElement !== n && (r.note || "") !== n.value) n.value = r.note || "";
+}
+let io = null;
+function renderAll() {
+  renderTabs(); renderProgress();
+  const main = $("#main"); main.textContent = "";
+  const sel = $("#typeSel"); sel.textContent = "";
+  const groups = {};
+  for (const it of visible()) (groups[it.type] = groups[it.type] || []).push(it);
+  const keys = Object.keys(groups);
+  if (!keys.length) { main.innerHTML = '<p class="empty">Nothing in this tab yet.</p>'; return; }
+  if (io) io.disconnect();
+  io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const c = e.target; picStyle(c._pic, c._it); io.unobserve(c); } }), { rootMargin: "600px" });
+  for (const t of keys) {
+    const g = groups[t], key = typeKey(g[0]);
+    const s = document.createElement("section"); s.className = "type"; s.id = "t-" + key;
+    const pref = g[0].id.replace(/-\d+$/, "");
+    s.innerHTML = `<h2><span></span><code></code></h2><div class="tnote"><label for="tn-${key}">Notes on the whole set</label><textarea id="tn-${key}"></textarea></div><div class="grid"></div>`;
+    s.querySelector("h2 span").textContent = t.replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase());
+    s.querySelector("h2 code").textContent = `${pref}-01 … ${g[g.length - 1].id.match(/\d+$/)[0]}`;
+    const ta = s.querySelector("textarea"); ta.value = (typenotes[key] || {}).note || "";
+    ta.oninput = () => debounce("t" + key, () => saveType(key, ta.value), 900);
+    const grid = s.querySelector(".grid");
+    for (const it of g) { const c = card(it); grid.appendChild(c); applyCard(it.id); io.observe(c); }
+    main.appendChild(s);
+    const o = document.createElement("option"); o.value = s.id; o.textContent = s.querySelector("h2 span").textContent + ` (${g.length})`; sel.appendChild(o);
+  }
+  sel.onchange = () => document.getElementById(sel.value).scrollIntoView({ block: "start" });
+}
+
+let lbIdx = -1;
+function openLb(id) { const v = visible(); lbIdx = v.findIndex(i => i.id === id); showLb(); $("#lb").hidden = false; $("#lbClose").focus(); }
+function showLb() { const v = visible(), it = v[lbIdx]; if (!it) return; picStyle($("#lbImg"), it); $("#lbCap").textContent = it.id + " · " + it.cap; }
+function step(d) { const v = visible(); lbIdx = (lbIdx + d + v.length) % v.length; showLb(); }
+$("#lbPrev").onclick = () => step(-1); $("#lbNext").onclick = () => step(1); $("#lbClose").onclick = () => { $("#lb").hidden = true; };
+$("#lb").onclick = e => { if (e.target.id === "lb") $("#lb").hidden = true; };
+document.addEventListener("keydown", e => { if ($("#lb").hidden) return;
+  if (e.key === "Escape") $("#lb").hidden = true; if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); });
+
+renderAll();
+(async () => {
+  try { db = window.claude && await window.claude.use("db"); } catch (e) { db = null; }
+  if (!db) { setStatus("Not connected: ratings will not be saved", true); return; }
+  try {
+    const user = await window.claude.use("user");
+    if (user && user.can) { const w = await user.can("data.write"); if (w === false) { writable = false; setStatus("View only", true); } }
+  } catch (e) {}
+  if (writable) setStatus("Connected");
+  db.collection("ratings").limit(1000).onSnapshot(snap => {
+    for (const d of snap.docs) { ratings[d.id] = d.data(); applyCard(d.id); }
+    renderProgress();
+  }, e => setStatus("Live updates stopped (" + e.code + ")", true));
+  db.collection("typenotes").onSnapshot(snap => {
+    for (const d of snap.docs) { typenotes[d.id] = d.data(); const ta = document.getElementById("tn-" + d.id);
+      if (ta && document.activeElement !== ta) ta.value = d.data().note || ""; }
+  }, () => {});
+})();
+</script>
