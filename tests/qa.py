@@ -162,7 +162,10 @@ def story_checks(map_path, name, m):
     for fn, s in src.items():
         lines = s.splitlines()
         for i, l in enumerate(lines):
-            if re.search(r"\.Pickup\(", l) and not any("NewTimer" in x for x in lines[max(0, i - 4):i]):
+            # the hazard is picking up an object made a moment before (TW-11; several in one frame hung the game,
+            # 2026-10-09): a Pickup of something that already existed (the forge handing over a vault copy) is fine
+            before = lines[max(0, i - 8):i]
+            if re.search(r"\.Pickup\(", l) and any("CreateObject" in x for x in before) and not any("NewTimer" in x for x in before[-4:]):
                 bad_pick.append(f"{fn}:{i + 1}")
     out.append((not bad_pick, "gifts are picked up on a timer after they are made" if not bad_pick else
                 f"Pickup at once after CreateObject freezes the game (TW-11): {', '.join(bad_pick)}"))

@@ -103,6 +103,11 @@ CAST = {
                     voice={"desc": "A thin courtier in his forties. Smooth, quiet, silky voice, a polished English accent. "
                                    "Every word chosen.", "seed": 48}),
 }
+# Vess appears as a person only where she yields or helps (acts 4 and 9); in a fight she is the M5 monster (FOES)
+CAST["Vess"] = dict(donor=("War01A", "Jennifer"), title="Vess",
+                    voice={"desc": "A woman in her late twenties, an assassin. Low, cool, clipped voice with a faint "
+                                   "Eastern European accent. Speaks quietly, never hurried.", "seed": 49})
+
 # Foes with names (kit/mods MONSTERS give their abilities; their name comes from a sign or a shout, not over the head)
 FOES = {
     "Vess": dict(mod="M5", hp=320, title="Vess, the Choir's blade"),
