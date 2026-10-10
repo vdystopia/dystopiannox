@@ -112,3 +112,19 @@ def cast_person(sm, who, x, y, face=None, **kw):
 
 def voice(who):
     return CAST[who]["voice"]
+
+
+def exit_next(sm, area, n, prefix="Exit"):
+    """Act n's exit to act n+1 (kit/story StoryMap.exit_to), arriving at the next act's PlayerStart once that act is
+    built. Acts are built in parallel, so while the next act is not built yet the exit points at a provisional spot
+    and says so; tests/campaign.py rebuilds the chain from act 10 back to act 1, which fixes every arrival."""
+    nxt = act(n)["next"]
+    if not nxt: return []
+    try:
+        return sm.exit_to(area, nxt, prefix=prefix)
+    except AssertionError:
+        print(f"CAMPAIGN: {nxt} is not built yet: the exit to it arrives at a provisional spot until the chain rebuild")
+        return sm.exit_to(area, nxt, prefix=prefix, arrive=(2944.0, 2944.0))
+
+
+CHAIN = [a["design"] for a in ACTS]       # tests/campaign.py --hollowchoir builds these, act 10 first

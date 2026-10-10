@@ -28,8 +28,13 @@ def main():
     ap.add_argument("--go", default=GO)
     ap.add_argument("--no-smoke", action="store_true")
     ap.add_argument("--all-installed", action="store_true")
+    ap.add_argument("--hollowchoir", action="store_true", help="The Hollow Choir's ten acts (kit/campaign.py)")
     a = ap.parse_args()
     ok = True
+    if a.hollowchoir:
+        sys.path.insert(0, os.path.join(REPO, "mapgen"))
+        from kit.campaign import CHAIN as HC
+        a.designs = HC                                  # run reversed below: act 10 first
     if a.all_installed:
         a.designs = CHAIN + EXTRA                       # run reversed below: the chain's end first, as before
     for d in reversed(a.designs or CHAIN):
