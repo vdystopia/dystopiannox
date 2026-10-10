@@ -10,6 +10,9 @@ per map: the checker's result, the scripts' compile, the server's load and self-
 import argparse, os, re, subprocess, sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# other installed generated maps (TreePlace and DysVale are retired; gauntlets: mapgen/designs/gauntlet.py all)
+EXTRA = ["starwell", "ambermere", "harrowby", "ironcrag", "townlab", "frostfang", "darkdelve", "emberdeep", "npclab",
+         "harpoonlab", "modlab"]
 CHAIN = ["thornwick", "tnorth", "rimehold", "rimepass", "emberhollow", "ashroad", "deepvault", "mirefen", "greywatch"]
 GO = os.environ.get("GO", r"C:/Users/DYSTOP~1/AppData/Local/Temp/claude/C--GOG-Games-Nox/2ef10e66-3ba1-4500-9040-634cb857884d/scratchpad/tools/go/bin/go.exe")
 
@@ -24,8 +27,11 @@ def main():
     ap.add_argument("designs", nargs="*")
     ap.add_argument("--go", default=GO)
     ap.add_argument("--no-smoke", action="store_true")
+    ap.add_argument("--all-installed", action="store_true")
     a = ap.parse_args()
     ok = True
+    if a.all_installed:
+        a.designs = CHAIN + EXTRA                       # run reversed below: the chain's end first, as before
     for d in reversed(a.designs or CHAIN):
         design = os.path.join("mapgen", "designs", d + ".py")
         _, out = run([design])
@@ -34,6 +40,8 @@ def main():
             print(f"{d}: BUILD FAILED\n{out[-800:]}"); ok = False; continue
         name, errs, warns = chk.group(1), int(chk.group(2)), int(chk.group(3))
         out_dir = os.path.join("mapgen", "out", d)
+        if not os.path.exists(os.path.join(out_dir, name + ".map")):     # designs that build into mapgen/out itself
+            out_dir = os.path.join("mapgen", "out")
         line = f"{name:10} check {errs} err {warns} warn"
         sd = os.path.join(out_dir, name + "_scripts")
         if os.path.isdir(sd):

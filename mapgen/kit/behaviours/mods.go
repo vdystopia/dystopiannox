@@ -98,7 +98,7 @@ func modWatchObj(o ns.Obj) *modWatched {
 	}
 	w := &modWatched{o: o, id: id}
 	modWatch[id] = w
-	o.OnEvent(ns.EventIsHit, func() {
+	OnObjEvent(o, ns.EventIsHit, func() {
 		if w.dead {
 			return
 		}
@@ -107,7 +107,7 @@ func modWatchObj(o ns.Obj) *modWatched {
 			f(a)
 		}
 	})
-	o.OnEvent(ns.EventDeath, func() {
+	OnObjEvent(o, ns.EventDeath, func() {
 		if w.dead {
 			return
 		}

@@ -374,7 +374,7 @@ func OnDeath(name string, acts []Act) {
 		return
 	}
 	done := false
-	o.OnEvent(ns.EventDeath, func() {
+	OnObjEvent(o, ns.EventDeath, func() {
 		if done {
 			return
 		}
@@ -393,7 +393,7 @@ func OnAllDead(names []string, acts []Act) {
 		}
 		left++
 		dead := false
-		o.OnEvent(ns.EventDeath, func() {
+		OnObjEvent(o, ns.EventDeath, func() {
 			if dead {
 				return
 			}

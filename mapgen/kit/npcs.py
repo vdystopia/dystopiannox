@@ -345,7 +345,8 @@ class Behaviours:
                "\tprintln(\"behaviours: started\")\n}\n\nfunc init() {\n\tns.OnMapEvent(ns.MapInitialize, setUpBehaviours)\n"
                "\tbframes := 0\n\tns.OnEachFrame(1, func() {\n\t\tif bframes++; bframes == 30 {\n\t\t\tsetUpBehaviours()\n\t\t}\n\t})\n"
                f"\tDiagnose({self._s(objs)}, {self._s(wps)})\n}}\n")
-        out = {"behaviours.go": lib, "config.go": cfg}
+        from kit.quests import events_go
+        out = {"behaviours.go": lib, "config.go": cfg, "events.go": events_go(pkg)}
         if getattr(self, "weapons", False):
             out["weapons.go"] = open(os.path.join(HERE, "behaviours", "weapons.go"), encoding="utf-8").read().replace(
                 "package PKG", f"package {pkg}", 1)
