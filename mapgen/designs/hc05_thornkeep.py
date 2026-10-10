@@ -869,6 +869,8 @@ if __name__ == "__main__":
                             (BuildingIdentity("gaol", "town", "the Chancellor's dungeon", "the Chancellor's men"),
                              _Far([hall_room, corr_room, cell1_room, cell2_room, quest_room]))],
                   os.path.join(OUT, f"{NAME}.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])
+    from kit.campaign import apply_deliveries
+    apply_deliveries(q)            # voice-gate deliveries (kit/campaign.py DELIVERIES)
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS", "VOICE"))))

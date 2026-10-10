@@ -592,6 +592,8 @@ if __name__ == "__main__":
     rooms_sidecar(placed + [(BuildingIdentity("ice_temple", "crypt", "the founders' crypt", "the founders, and the "
                                               "Choir's Cantor"), crypt_b)],
                   os.path.join(OUT, f"{NAME}.rooms.json"), yards=built)
+    from kit.campaign import apply_deliveries
+    apply_deliveries(q)            # voice-gate deliveries (kit/campaign.py DELIVERIES)
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS", "VOICE"))))

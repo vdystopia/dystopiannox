@@ -606,6 +606,8 @@ if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     rooms_sidecar([(BuildingIdentity("tower", "court", "the Hollow Spire", "High Caller Morvaine"), _Far(FLOORS))],
                   os.path.join(OUT, f"{NAME}.rooms.json"), yards=[graveyard] if graveyard else [])
+    from kit.campaign import apply_deliveries
+    apply_deliveries(q)            # voice-gate deliveries (kit/campaign.py DELIVERIES)
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS", "VOICE"))))

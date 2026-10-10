@@ -88,8 +88,8 @@ CAST = {
                   voice={"desc": "A young woman, a village herbalist, in her twenties. Soft, clear, anxious voice with a "
                                  "gentle Yorkshire accent.", "seed": 43}),
     "Tam": dict(donor=("Con03B", "Dudley"), pic="WoundedApprenticePic", title="Tam",
-                voice={"desc": "A youth of sixteen, a bell-ringer's apprentice. Light, quick, eager voice, a Yorkshire "
-                               "accent, a little breathless.", "seed": 44}),
+                voice={"desc": "A young man of eighteen, a bell-ringer's apprentice. A clear, light tenor, a Yorkshire "
+                               "accent, eager and a little breathless.", "seed": 44}),
     "Rusk": dict(donor=("Con03A", "Rastur"), pic="MalePic9", title="Rusk",
                  voice={"desc": "A wiry man in his thirties, a bandit and a coward. Nasal, wheedling voice with a London "
                                 "street accent. Talks fast.", "seed": 45}),
@@ -150,3 +150,34 @@ def exit_next(sm, area, n, prefix="Exit"):
 
 
 CHAIN = [a["design"] for a in ACTS]       # tests/campaign.py --hollowchoir builds these, act 10 first
+
+
+# ---- deliveries for lines that failed the voice gate (VO-5: never a looser gate, a delivery instead) ---------------
+# From the first voicing (2026-10-10): men's lines that came out above their part's pitch, women's below theirs, lines
+# spoken too fast, and lines whose words Whisper misheard. Each act's design calls apply_deliveries(q) before
+# q.write_strings, and the next voicing retries them (voice.py voice ... --retry).
+_LOW = "Low and gruff, a deep chest voice, unhurried."
+_LIGHT = "Light and bright, a higher, clear voice."
+_SLOW = "Slow and measured, unhurried."
+_CLEAR = "Slow, clear, careful diction, every word distinct."
+_STEADY = "Steady, in the speaker's usual voice, not strained."
+DELIVERIES = {
+    "Brackwatr:Doran4": _CLEAR, "Brackwatr:Nell2": _LIGHT,
+    "Mirewood:Wat1": _SLOW, "Mirewood:Wat4": _LOW,
+    "Greycrag:Folk2": _LOW, "Greycrag:Tull1": _STEADY, "Greycrag:Nim2": _STEADY, "Greycrag:Watch1": _LOW,
+    "Frosthol:Folk6": _STEADY, "Frosthol:Gudrun1": _CLEAR, "Frosthol:Ulla4": _LIGHT, "Frosthol:Ulla5": _LIGHT,
+    "Frosthol:Asa4": _STEADY,
+    "Thornkeep:Dobbin1": _SLOW, "Thornkeep:Dobbin2": _LOW, "Thornkeep:Dobbin5": _STEADY, "Thornkeep:Watch3": _LOW,
+    "Thornkeep:Nettle1": _LOW, "Thornkeep:Nettle2": _LOW,
+    "OgreMarch:Folk10": _CLEAR, "OgreMarch:Tull1": _CLEAR, "OgreMarch:Jory1": _SLOW + " " + _LOW,
+    "AshBarrow:Wystan1": _CLEAR + " " + _LOW, "AshBarrow:Wystan7": _CLEAR,
+    "Emberforg:Doran3": _CLEAR, "Emberforg:Odda4": _STEADY, "Emberforg:Galt3": _STEADY,
+    "LastBell:Edric5": "Low and gentle, unhurried.", "LastBell:Watch4": _STEADY, "LastBell:Folk1": _SLOW,
+}
+
+
+def apply_deliveries(q):
+    """The deliveries above for this act's lines (keys that exist in its string table)."""
+    for k, mood in DELIVERIES.items():
+        if k.split(":")[0] == q.map and k in q.strings:
+            q.deliver(k, mood=mood)
