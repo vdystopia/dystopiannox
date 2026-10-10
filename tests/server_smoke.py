@@ -49,8 +49,9 @@ def main():
         if os.path.exists(p):
             keep[p] = p + ".smoke_keep"; shutil.move(p, keep[p])
     shutil.copy2(os.path.join(tmp, name + ".map"), dst)
-    if not any(f.endswith(".go") for f in os.listdir(dst)):              # not installed yet: the scripts too
-        for f in os.listdir(os.path.join(tmp, name + "_scripts")): shutil.copy2(os.path.join(tmp, name + "_scripts", f), dst)
+    sd = os.path.join(tmp, name + "_scripts")
+    if os.path.isdir(sd) and not any(f.endswith(".go") for f in os.listdir(dst)):   # not installed yet: the scripts too
+        for f in os.listdir(sd): shutil.copy2(os.path.join(sd, f), dst)
     cfg = os.path.join(tmp, "smoke.yml")
     open(cfg, "w").write(CFG.format(nox=NOX))
     log = os.path.join(tmp, "server.log")
