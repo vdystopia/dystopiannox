@@ -1,0 +1,532 @@
+diff --git a/src/game.go b/src/game.go
+index 4b0aba1..899a450 100644
+--- a/src/game.go
++++ b/src/game.go
+@@ -597,7 +597,7 @@ func initGameSession435CC0() error {
+ 	if !isServer {
+ 		legacy.Nox_xxx_plrLoad_41A480(getString10984())
+ 	}
+-	if isServer && !isDedicatedServer {
++	if isServer && !isDedicatedServer && !autoClassSet { // -autoclass: the host plays instead of observing
+ 		noxServer.PlayerGoObserver(noxServer.Players.List()[0], false, true)
+ 	}
+ 	execConsoleCmdAuthed(ctx, "execrul autoexec.rul")
+diff --git a/src/legacy/GAME2_1.c b/src/legacy/GAME2_1.c
+index 56a2f9c..62b1a0b 100644
+--- a/src/legacy/GAME2_1.c
++++ b/src/legacy/GAME2_1.c
+@@ -4227,6 +4227,16 @@ void nox_xxx_cliShowHideTubes_470AA0(int a1) {
+ }
+ 
+ //----- (00470B00) --------------------------------------------------------
++int nox_spirit_isClass(int cl);
++extern uint32_t dword_8531A0_2576;
++// nox_spirit_hudActive reports if the local player's class uses Spirit (Spirit mod).
++int nox_spirit_hudActive() {
++	if (!dword_8531A0_2576) {
++		return 0;
++	}
++	return nox_spirit_isClass(*(uint8_t*)(dword_8531A0_2576 + 2251));
++}
++
+ unsigned char* nox_xxx_guiHealthManaColorInit_470B00() {
+ 	unsigned char* result; // eax
+ 
+@@ -4238,8 +4248,14 @@ unsigned char* nox_xxx_guiHealthManaColorInit_470B00() {
+ 	nox_windows_arr_1093036[0].color_1 = dword_5d4594_1090284;
+ 	nox_windows_arr_1093036[0].color_2 = dword_5d4594_1090280;
+ 
+-	nox_windows_arr_1093036[1].color_1 = nox_color_rgb_4344A0(0, 0, 255);
+-	nox_windows_arr_1093036[1].color_2 = nox_color_rgb_4344A0(0, 0, 100);
++	if (nox_spirit_hudActive()) {
++		// Spirit mod: cyan Spirit tube instead of the blue mana tube
++		nox_windows_arr_1093036[1].color_1 = nox_color_rgb_4344A0(0, 255, 255);
++		nox_windows_arr_1093036[1].color_2 = nox_color_rgb_4344A0(0, 100, 100);
++	} else {
++		nox_windows_arr_1093036[1].color_1 = nox_color_rgb_4344A0(0, 0, 255);
++		nox_windows_arr_1093036[1].color_2 = nox_color_rgb_4344A0(0, 0, 100);
++	}
+ 
+ 	nox_windows_arr_1093036[4].color_1 = nox_color_rgb_4344A0(240, 0, 240);
+ 	nox_windows_arr_1093036[4].color_2 = nox_color_rgb_4344A0(50, 0, 50);
+diff --git a/src/legacy/GAME2_1.h b/src/legacy/GAME2_1.h
+index b80a9ca..9ccd55c 100644
+--- a/src/legacy/GAME2_1.h
++++ b/src/legacy/GAME2_1.h
+@@ -175,6 +175,7 @@ int sub_4706A0();
+ int nox_xxx_playerGet_470A90();
+ void nox_xxx_cliShowHideTubes_470AA0(int a1);
+ unsigned char* nox_xxx_guiHealthManaColorInit_470B00();
++int nox_spirit_hudActive();
+ int sub_470C40(int a1);
+ int nox_xxx_cliSetTotalHealth_470C80(int a1, int a2);
+ int sub_470CB0(int a1);
+diff --git a/src/legacy/GAME3_2.c b/src/legacy/GAME3_2.c
+index 7165c4f..3f49c79 100644
+--- a/src/legacy/GAME3_2.c
++++ b/src/legacy/GAME3_2.c
+@@ -7107,6 +7107,7 @@ int nox_xxx_projectileReflect_4E0A70(int a1, int a2) {
+ }
+ 
+ //----- (004E0B30) --------------------------------------------------------
++void nox_spirit_onPhysicalHit(nox_object_t* attacker, nox_object_t* victim, nox_object_t* weapon, int dmg, int typ);
+ int nox_xxx_damageDefaultProc_4E0B30(int a1, int a2, int a3, int a4, int a5) {
+ 	int v6;                // edi
+ 	int v7;                // eax
+@@ -7419,6 +7420,7 @@ LABEL_137:
+ 			return 0;
+ 		}
+ 	}
++	nox_spirit_onPhysicalHit((nox_object_t*)v10, (nox_object_t*)a1, (nox_object_t*)a3, a4, a5); // Spirit mod
+ 	nox_xxx_unitDamageClear_4EE5E0(a1, a4);
+ 	return 1;
+ }
+diff --git a/src/legacy/GAME4_3.c b/src/legacy/GAME4_3.c
+index 5c65b22..c9c1b27 100644
+--- a/src/legacy/GAME4_3.c
++++ b/src/legacy/GAME4_3.c
+@@ -6318,6 +6318,7 @@ int nox_xxx_rechargeItem_53C520(int a1, int a2) {
+ float get_nox_xxx_warriorMaxMana_587000_312788();
+ float get_nox_xxx_wizardMaximumMana_587000_312820();
+ float get_nox_xxx_conjurerMaxMana_587000_312804();
++int nox_spirit_unitIsSpirit(nox_object_t* unit);
+ signed int nox_xxx_updateObelisk_53C580(int a1) {
+ 	int v1;             // edi
+ 	signed int* v2;     // esi
+@@ -6409,7 +6410,8 @@ signed int nox_xxx_updateObelisk_53C580(int a1) {
+ 			goto LABEL_25;
+ 		}
+ 	LABEL_25:
+-		if ((int)*v24 < 1 || *(uint16_t*)(v5 + 4) >= *(uint16_t*)(v5 + 8) || (int)*v24 <= 0) {
++		if ((int)*v24 < 1 || *(uint16_t*)(v5 + 4) >= *(uint16_t*)(v5 + 8) || (int)*v24 <= 0 ||
++			nox_spirit_unitIsSpirit((nox_object_t*)v3)) { // Spirit mod: crystals don't refill Spirit
+ 			if (!v22) {
+ 				goto LABEL_47;
+ 			}
+diff --git a/src/legacy/client__gui__guimeter.c b/src/legacy/client__gui__guimeter.c
+index 75b57a7..aad6b23 100644
+--- a/src/legacy/client__gui__guimeter.c
++++ b/src/legacy/client__gui__guimeter.c
+@@ -351,7 +351,9 @@ int nox_xxx_guiHealthManaTubeDraw_471D10(int xLeft) {
+ 						*((uint32_t*)v9 + 2) = 1;
+ 						LOBYTE(v19) =
+ 							nox_common_randomIntMinMax_415FF0(0, 64, "C:\\NoxPost\\src\\Client\\Gui\\guimeter.c", 688);
+-						if (v18) {
++						if (v18 && nox_spirit_hudActive()) {
++							v14 = nox_color_rgb_4344A0(v19, 255, 255); // Spirit mod: cyan bubbles
++						} else if (v18) {
+ 							v14 = nox_color_rgb_4344A0(v19, v19, 255);
+ 						} else {
+ 							v14 = nox_color_rgb_4344A0(255, v19, v19);
+diff --git a/src/legacy/spirit.go b/src/legacy/spirit.go
+new file mode 100644
+index 0000000..73f1aa9
+--- /dev/null
++++ b/src/legacy/spirit.go
+@@ -0,0 +1,71 @@
++package legacy
++
++/*
++#include "defs.h"
++#include "GAME3_3.h"
++*/
++import "C"
++
++import (
++	"github.com/noxworld-dev/opennox-lib/object"
++
++	"github.com/noxworld-dev/opennox/v1/spirit"
++)
++
++// nox_spirit_isClass reports if a player class index uses Spirit instead of mana (used by the HUD).
++//
++//export nox_spirit_isClass
++func nox_spirit_isClass(cl C.int) C.int {
++	if spirit.IsClass(int(cl)) {
++		return 1
++	}
++	return 0
++}
++
++// nox_spirit_unitIsSpirit reports if a unit is a player of the Spirit class.
++//
++//export nox_spirit_unitIsSpirit
++func nox_spirit_unitIsSpirit(cobj *nox_object_t) C.int {
++	if !spirit.Enabled() || cobj == nil {
++		return 0
++	}
++	u := asObjectS(cobj)
++	if !u.Class().Has(object.ClassPlayer) {
++		return 0
++	}
++	ud := u.UpdateDataPlayer()
++	if ud == nil || ud.Player == nil {
++		return 0
++	}
++	if spirit.IsClass(int(ud.Player.PlayerClass())) {
++		return 1
++	}
++	return 0
++}
++
++// nox_spirit_onPhysicalHit is called by the default damage handler after the final damage is known.
++// A Spirit class player regains Spirit by landing physical hits (melee, arrows, fists) on creatures.
++//
++//export nox_spirit_onPhysicalHit
++func nox_spirit_onPhysicalHit(attacker, victim, weapon *nox_object_t, dmg C.int, typ C.int) {
++	if nox_spirit_unitIsSpirit(attacker) == 0 || victim == nil || attacker == victim {
++		return
++	}
++	switch object.DamageType(typ) {
++	case object.DamageBlade, object.DamageCrush, object.DamageImpale, object.DamageClaw:
++	default:
++		return
++	}
++	if weapon != nil && weapon != attacker {
++		w := asObjectS(weapon)
++		if w.Class().Has(object.ClassWand) {
++			return
++		}
++	}
++	if v := asObjectS(victim); !v.Class().HasAny(object.ClassMonster | object.ClassPlayer) {
++		return
++	}
++	if gain := spirit.HitGain(int(dmg)); gain > 0 {
++		C.nox_xxx_playerManaAdd_4EEB80(attacker, C.short(gain))
++	}
++}
+diff --git a/src/main.go b/src/main.go
+index f7fb288..5e6283c 100644
+--- a/src/main.go
++++ b/src/main.go
+@@ -36,6 +36,7 @@ import (
+ 	"github.com/noxworld-dev/opennox/v1/legacy"
+ 	"github.com/noxworld-dev/opennox/v1/legacy/client/audio/ail"
+ 	"github.com/noxworld-dev/opennox/v1/legacy/common/alloc/handles"
++	"github.com/noxworld-dev/opennox/v1/spirit"
+ )
+ 
+ func init() {
+@@ -55,6 +56,7 @@ const (
+ 
+ var (
+ 	isServer      bool
++	autoClassSet  bool // -autoclass was given (Spirit mod test helper)
+ 	isServerQuest bool
+ 	serverExec    []string
+ 	onDataPathSet []func()
+@@ -136,6 +138,9 @@ func RunArgs(args []string) (gerr error) {
+ 		fRcon       = flags.String("rcon", rconDefHost, "enable remote console")
+ 		fRconPass   = flags.String("rcon-pass", "", "remote console password")
+ 		fLogs       = flags.String("logs", "", "directory for logs")
++		fSpirit     = flags.String("spirit", spiritFlagDefault(args[0]), "Spirit class mod: replace this class with a Spirit user (conjurer|wizard|off)")
++		fSpiritName = flags.String("spirit-name", "Mystic", "display name of the Spirit class")
++		fAutoClass  = flags.String("autoclass", "", "player class for -autosrv games: warrior|wizard|conjurer (Spirit mod test helper)")
+ 	)
+ 	if err := flags.Parse(args[1:]); err != nil {
+ 		return err
+@@ -150,6 +155,12 @@ func RunArgs(args []string) (gerr error) {
+ 		defer e2eStop()
+ 	}
+ 	version.LogVersion()
++	if !spirit.Enable(*fSpirit, *fSpiritName) {
++		return fmt.Errorf("invalid -spirit value: %q (use conjurer, wizard or off)", *fSpirit)
++	}
++	if spirit.Enabled() {
++		log.Printf("spirit: Spirit class mod enabled: %s -> %s", spirit.BaseName(), spirit.Name())
++	}
+ 
+ 	handles.Init()
+ 	defer handles.Release()
+@@ -229,9 +240,20 @@ func RunArgs(args []string) (gerr error) {
+ 	isServer = *fAutoServer
+ 	isServerQuest = *fAutoQuest
+ 	serverExec = strings.Split(*fAutoExec, ";")
++	if *fAutoClass != "" {
++		cl, ok := map[string]uint8{"warrior": 0, "wizard": 1, "conjurer": 2, "mystic": 2}[strings.ToLower(*fAutoClass)]
++		if !ok {
++			return fmt.Errorf("invalid -autoclass value: %q", *fAutoClass)
++		}
++		*memmap.PtrUint8(0x85B3FC, 12254) = cl
++		autoClassSet = true
++	}
+ 	if err := noxServer.Strings().ReadFile("nox.str"); err != nil {
+ 		return fmt.Errorf("failed to load strings file: %w", err)
+ 	}
++	if err := spiritPatchStrings(noxServer.Strings()); err != nil {
++		log.Printf("spirit: cannot patch strings: %v", err)
++	}
+ 	if !*fServer && !*fNoDraw {
+ 		err = noxClient.initSeat(image.Point{X: noxDefaultWidth, Y: noxDefaultHeight})
+ 		if err != nil {
+diff --git a/src/object_update.go b/src/object_update.go
+index f49bde2..d4ca83c 100644
+--- a/src/object_update.go
++++ b/src/object_update.go
+@@ -14,6 +14,7 @@ import (
+ 	"github.com/noxworld-dev/opennox/v1/common/sound"
+ 	"github.com/noxworld-dev/opennox/v1/legacy"
+ 	"github.com/noxworld-dev/opennox/v1/server"
++	"github.com/noxworld-dev/opennox/v1/spirit"
+ )
+ 
+ var (
+@@ -684,6 +685,10 @@ func sub_4F9ED0(u *server.Object) {
+ 		if div == 0 {
+ 			div = 1
+ 		}
++		if spirit.IsClass(int(ud.Player.PlayerClass())) {
++			// Spirit mod: Spirit is not drawn from the air as easily as mana.
++			div *= spirit.PassiveSlowdown
++		}
+ 		if s.Frame()%div == 0 {
+ 			legacy.Nox_xxx_playerManaAdd_4EEB80(u, 1)
+ 		}
+diff --git a/src/spirit/spirit.go b/src/spirit/spirit.go
+new file mode 100644
+index 0000000..fcb4a80
+--- /dev/null
++++ b/src/spirit/spirit.go
+@@ -0,0 +1,83 @@
++// Package spirit implements the "Spirit" class variant (dystopiannox mod).
++//
++// Nox hardcodes exactly three player classes (Warrior=0, Wizard=1, Conjurer=2) in the
++// network protocol, save files, gamedata.bin stat tables, spell tables and GUI art.
++// Instead of adding a 4th enum value (which would break saves, multiplayer and every
++// class-indexed table), the Spirit mod re-skins one caster class slot as a new class
++// (default: Conjurer -> "Mystic") whose mana pool becomes "Spirit":
++//
++//   - the HUD tube, the small bar next to the player and the bubbles are drawn cyan;
++//   - all "Mana" texts read "Spirit" and the class name reads "Mystic";
++//   - Spirit regenerates 3x slower than mana over time;
++//   - mana obelisks / crystals do not refill Spirit;
++//   - Spirit is gained by landing physical hits (melee weapons, arrows, fists):
++//     HitPercent% of the damage dealt.
++//
++// The package is a leaf so that both the legacy (cgo) and the main package can use it.
++package spirit
++
++import (
++	"strings"
++)
++
++const (
++	// PassiveSlowdown divides the passive (over time) regeneration rate.
++	PassiveSlowdown = 3
++	// HitPercent is the share of physical damage dealt that is converted to Spirit.
++	HitPercent = 50
++)
++
++var (
++	enabled   bool
++	class     = 2 // player.Conjurer
++	className = "Mystic"
++	baseName  = "Conjurer"
++)
++
++// Enable turns the Spirit variant on for a given base class ("conjurer" or "wizard").
++// An empty or "off" value disables it. It returns false if the value is invalid.
++func Enable(base string, name string) bool {
++	switch strings.ToLower(strings.TrimSpace(base)) {
++	case "", "off", "no", "false", "0":
++		enabled = false
++		return true
++	case "conjurer", "con", "2", "on", "yes", "true", "1":
++		class, baseName = 2, "Conjurer"
++	case "wizard", "wiz":
++		class, baseName = 1, "Wizard"
++	default:
++		return false
++	}
++	enabled = true
++	if name = strings.TrimSpace(name); name != "" {
++		className = name
++	}
++	return true
++}
++
++// Enabled reports if the Spirit variant is active in this process.
++func Enabled() bool { return enabled }
++
++// Class returns the player class index that is replaced by the Spirit class.
++func Class() int { return class }
++
++// BaseName returns the original name of the replaced class ("Conjurer").
++func BaseName() string { return baseName }
++
++// Name returns the display name of the Spirit class ("Mystic").
++func Name() string { return className }
++
++// IsClass reports if a given player class uses Spirit instead of mana.
++func IsClass(c int) bool { return enabled && c == class }
++
++// HitGain returns how much Spirit is gained for dealing dmg physical damage.
++func HitGain(dmg int) int {
++	if dmg <= 0 {
++		return 0
++	}
++	v := dmg * HitPercent / 100
++	if v < 1 {
++		v = 1
++	}
++	return v
++}
+diff --git a/src/spirit_strings.go b/src/spirit_strings.go
+new file mode 100644
+index 0000000..07716a2
+--- /dev/null
++++ b/src/spirit_strings.go
+@@ -0,0 +1,153 @@
++package opennox
++
++import (
++	"encoding/json"
++	"os"
++	"path/filepath"
++	"strings"
++
++	"github.com/noxworld-dev/opennox-lib/log"
++	"github.com/noxworld-dev/opennox-lib/strman"
++
++	"github.com/noxworld-dev/opennox/v1/spirit"
++)
++
++// spiritFlagDefault returns the default value of the -spirit flag: builds named
++// "*spirit*" (e.g. opennox-spirit-hd.exe) enable the Spirit class by default.
++func spiritFlagDefault(exe string) string {
++	if strings.Contains(strings.ToLower(filepath.Base(exe)), "spirit") {
++		return "conjurer"
++	}
++	return ""
++}
++
++// spiritClassFiles lists string tables where the class name is replaced.
++var spiritClassFiles = []string{"selchar.c:", "selclass.c:", "client.c:", "guisave.c:", "nox.str:", "experience:", "access.c:"}
++
++// spiritClassText returns the patched text of a class-name string (lid is the lower-case string ID).
++func spiritClassText(lid, s string) string {
++	base, name := spirit.BaseName(), spirit.Name()
++	lbase := strings.ToLower(base)
++	switch lid {
++	case "guirank.c:" + lbase: // scoreboard abbreviation: "CON"
++		return strings.ToUpper(name[:min(3, len(name))])
++	case "spelllst.c:spell" + lbase: // spell list abbreviation: "Conj"
++		return name[:min(4, len(name))]
++	case "selclass.c:" + lbase: // class description on the new character screen
++		s = strings.ReplaceAll(s, base, name)
++		s = strings.Replace(s, "Magic:", "Spirit:", 1)
++		return s + " Their spells are fuelled by Spirit, not mana: it returns slowly, is won back by striking foes, and crystals cannot restore it."
++	}
++	s = strings.ReplaceAll(s, base, name)
++	return strings.ReplaceAll(s, strings.ToUpper(base), strings.ToUpper(name))
++}
++
++// spiritManaIDs lists string IDs (lower case) or ID prefixes (ending with '*') where "mana" becomes "spirit".
++var spiritManaIDs = []string{
++	"guimeter.c:tooltipmana",
++	"guiinv.c:statsmana",
++	"guibook.c:manacost*",
++	"plyrspel.c:notenoughmana*",
++	"spell.c:notenoughmana*",
++	"glyph.c:notenoughmana*",
++	"thing.db:bluepotion*",
++	"generalprint:bluepotion",
++}
++
++func spiritIsManaID(id string) bool {
++	id = strings.ToLower(id)
++	for _, p := range spiritManaIDs {
++		if strings.HasSuffix(p, "*") {
++			if strings.HasPrefix(id, p[:len(p)-1]) {
++				return true
++			}
++		} else if id == p {
++			return true
++		}
++	}
++	return false
++}
++
++func spiritReplaceMana(s string) string {
++	r := strings.NewReplacer("magic source (mana)", "Spirit", "Mana", "Spirit", "mana", "spirit", "MANA", "SPIRIT")
++	return r.Replace(s)
++}
++
++// spiritPatchStrings rewrites the loaded string table: class name -> Spirit class name, Mana -> Spirit.
++// strman has no API to edit entries, so the table is round-tripped through a temporary JSON file.
++func spiritPatchStrings(sm *strman.StringManager) error {
++	if !spirit.Enabled() {
++		return nil
++	}
++	dir, err := os.MkdirTemp("", "opennox-spirit-")
++	if err != nil {
++		return err
++	}
++	defer os.RemoveAll(dir)
++	path := filepath.Join(dir, "strings.csf.json")
++	if err := sm.WriteJSON(path, false); err != nil {
++		return err
++	}
++	data, err := os.ReadFile(path)
++	if err != nil {
++		return err
++	}
++	var file struct {
++		Lang    int            `json:"lang,omitempty"`
++		Entries []strman.Entry `json:"entries"`
++	}
++	if err := json.Unmarshal(data, &file); err != nil {
++		return err
++	}
++	base, name := spirit.BaseName(), spirit.Name()
++	nClass, nMana := 0, 0
++	for i := range file.Entries {
++		e := &file.Entries[i]
++		lid := strings.ToLower(string(e.ID))
++		isClass := lid == "guirank.c:"+strings.ToLower(base) || lid == "spelllst.c:spell"+strings.ToLower(base)
++		for _, f := range spiritClassFiles {
++			if strings.HasPrefix(lid, f) && strings.Contains(lid, strings.ToLower(base)) {
++				isClass = true
++				break
++			}
++		}
++		isMana := spiritIsManaID(lid)
++		if !isClass && !isMana {
++			continue
++		}
++		for j := range e.Vals {
++			v := &e.Vals[j]
++			if isClass {
++				v.Str = spiritClassText(lid, v.Str)
++				if v.Str2 != "" {
++					v.Str2 = strings.ReplaceAll(v.Str2, base, name)
++				}
++			}
++			if isMana {
++				v.Str = spiritReplaceMana(v.Str)
++				v.Str2 = spiritReplaceMana(v.Str2)
++			}
++		}
++		if isClass {
++			nClass++
++		}
++		if isMana {
++			nMana++
++		}
++	}
++	data, err = json.Marshal(file)
++	if err != nil {
++		return err
++	}
++	if err := os.WriteFile(path, data, 0644); err != nil {
++		return err
++	}
++	if err := sm.ReadJSON(path); err != nil {
++		return err
++	}
++	log.Printf("spirit: %s is now %s (Spirit instead of mana); patched %d class and %d mana strings", base, name, nClass, nMana)
++	for _, id := range []strman.ID{"SelChar.c:" + strman.ID(base), "experience:" + strman.ID(base) + "9", "guirank.c:" + strman.ID(base), "guimeter.c:ToolTipMana", "GuiInv.c:StatsMana", "guibook.c:ManaCostHigh", "thing.db:BluePotionDescription"} {
++		log.Printf("spirit: string %s = %q", id, sm.GetString(id))
++	}
++	return nil
++}
