@@ -266,6 +266,34 @@ def _declare(m, kind="bedroom", extra=()):
                             floor=[list(t) for t in rect_tiles(200, 222, -10, 10)])] + list(extra)
 
 
+def blend_across_wall(m):
+    # the meadow's grass blended onto the house's boards across its wall (TW-12, Thornwick 2026-10-08: "There does not
+    # need to be blending on a wall"); the generator draws none there now, so the edge is planted after it
+    from nox import EDGE_SIDES, SIDE_PIECES
+    orig = m._edges
+    def edges(seams=frozenset()):
+        out = orig(seams)
+        step = {v: k for k, v in EDGE_SIDES.items()}
+        t, n = min((t, n) for t, n in seams if m.floor.get(t) == "WoodLight2" and m.floor.get(n) == "GrassNorm"
+                   and (n[0] - t[0], n[1] - t[1]) in step)
+        out.setdefault(t, []).append(["GrassNorm", "BlendEdge", SIDE_PIECES[step[(n[0] - t[0], n[1] - t[1])]][0]])
+        return out
+    m._edges = edges
+
+
+def _fenced_pen(m):
+    # an iron-fenced pen of cobble in the meadow, its \ sides (v = -36, v = -24) across a floor change
+    m.room(184, 196, -36, -24, wall="IronFence", floor="RoughCobble")
+    m.blending("GrassNorm", 0); m.blending("RoughCobble", 5, "BrickEdgeBrown")
+
+
+def blend_beside_fence(m):
+    # floors blend across iron fences (FN-1, "Always blending for fences"), never across any other wall: with a fenced
+    # pen blending in the meadow, an edge across the house's wall is still an error
+    _fenced_pen(m)
+    blend_across_wall(m)
+
+
 def ground_in_room(m):
     # a tile of the meadow's grass laid on the boards just inside the door (SW-4: "Tile blending on the inside of doors
     # seems consistently off")
@@ -489,6 +517,63 @@ def g_mixed_beds(m):
     for k, t in enumerate(("Cot1", "WoodBed1", "Cot1", "WoodBed1", "Cot1")): m.obj(t, 203 + 3.6 * k, 8.4)   # two kinds
 
 
+def _cellar(m):
+    """A walled cellar away from the meadow (no way in on foot)."""
+    m.room(280, 300, -10, 10, wall="BrickPlain", floor="GreenBrick")
+    return px(290, 0)
+
+
+def tp_unlinked(m):
+    m.obj("CaveElevator", 196, 20)                            # a working platform that names no pit
+
+
+def tp_in_wall(m):
+    m.obj_px("TeleportPentagram", *px(196, 20), key="P", link="M")
+    m.obj_px("InvisibleTeleportPentagram", 91 * CELL + 11.5, 89 * CELL + 11.5, key="M")   # the landing in the outer wall
+
+
+def tp_stranded(m):
+    from kit.transport import Transporters
+    Transporters(m).add("portal", px(196, 20), _cellar(m), "TpOne", two_way=False)
+
+
+def tp_bounce(m):
+    from kit.transport import Transporters
+    tp = Transporters(m)
+    tp.add("portal", px(196, 20), _cellar(m), "TpBack")
+    tp.add("portal", px(190, -24), px(196, 20), "TpOnto", two_way=False, arrive_b=px(197, 21))
+
+
+def tp_serves(m):
+    from kit.transport import Transporters
+    far = _cellar(m)
+    m.room(304, 316, -6, 6, wall="BrickPlain", floor="GreenBrick")      # a second cellar beside it, sealed off
+    Transporters(m).add("lift", px(196, 20), far, "TpLift", serves=[px(310, 0)])
+
+
+def tp_near_wall(m):
+    m.obj_px("TeleportPentagram", *px(196, 20), key="P", link="M")
+    m.obj_px("InvisibleTeleportPentagram", 91 * CELL + 3, 90 * CELL + 3, key="M")     # a landing against the outer wall
+
+
+def tp_pocket(m):
+    from kit.transport import Transporters
+    m.room(282, 286, -2, 2, wall="BrickPlain", floor="GreenBrick")        # a closet of a few cells
+    Transporters(m).add("portal", px(196, 20), px(284, 0), "TpPkt", two_way=False)
+
+
+def tp_missing(m):
+    from kit.transport import Transporters
+    t = Transporters(m).add("portal", px(196, 20), _cellar(m), "TpMis")
+    x, y = px(200, 24)                                    # the sidecar names a pad the map does not hold
+    t.objects.append(("pad", dict(type="TeleportPentagram", x=x, y=y, scr="TpMisGone")))
+
+
+def tp_unreached(m):
+    from kit.transport import Transporters
+    Transporters(m).add("portal", _cellar(m), px(196, 20), "TpUnr", two_way=False)   # starts in the sealed cellar
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -546,6 +631,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STcandl", candle_outdoors, "exterior", "warning", "a candle as an outdoor light - Starwell playtest", "pick it up"),
     ("STswarm", camp_swarm, "exterior", "warning", "five men round one spot - Starwell playtest", "swarm"),
     ("STthrsh", ground_in_room, "floors", "warning", "the meadow's grass on a room's floor by the door - SW-4", "a room's"),
+    ("STwallb", blend_across_wall, "floors", "error", "grass blended onto a house's boards across its wall - TW-12",
+     "across a wall"),
+    ("STfncbl", blend_beside_fence, "floors", "error", "fences blend, a house's wall does not - FN-1",
+     "across a wall"),
     ("STwayin", piece_in_way, "composition", "warning", "a table straight in from the door - GW-7", "way in"),
     ("STstatw", statue_at_wall, "composition", "warning", "a statue facing the wall a unit away - GW-7", "a statue faces"),
     ("STshare", shared_stop, "routes", "error", "two walkers' stops 14 px apart - GW-6", "one spot for two"),
@@ -591,6 +680,16 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STgCorn", g_corners, "composition", "warning", "one barrel to a corner - judges 10-06", "[grammar corners]"),
     ("STgStep", g_stepped, "composition", "warning", "barrels in an evenly stepped row - judges 10-06", "[grammar stepped]"),
     ("STgMix", g_mixed_beds, "composition", "warning", "cots and wooden beds in one room - judges 10-06", "[grammar mixed]"),
+    ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
+    ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
+    ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),
+    ("STtpBnc", tp_bounce, "transport", "error", "a portal landing the player on another pad - TR-1", "sends him on"),
+    ("STtpSrv", tp_serves, "transport", "error", "a lift whose far end cannot reach what it serves - TR-1",
+     "cannot be walked to"),
+    ("STtpNWl", tp_near_wall, "transport", "warning", "a pentagram landing the player against a wall - TR-1", "from a wall"),
+    ("STtpPkt", tp_pocket, "transport", "error", "a portal into a closet of a few cells - TR-1", "pocket"),
+    ("STtpMis", tp_missing, "transport", "error", "a declared portal whose pad is missing from the map - TR-1", "missing"),
+    ("STtpUnr", tp_unreached, "transport", "warning", "a portal that starts in a sealed room - TR-1", "cannot get"),
 ]
 
 

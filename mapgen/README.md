@@ -20,9 +20,10 @@ powershell -ExecutionPolicy Bypass -File build.ps1      # once, builds NoxShared
 py mapgen\designs\dyscrypt.py                            # writes mapgen\out\DysCrypt.map/.nxz
 ```
 
-To play or open it, copy both files to `<Nox>\maps\<Name>\`. Story maps (with scripts and text) are installed by
-`py mapgen/install.py mapgen/out/<map> <Name>`, which also rebuilds `nox.csf.json`; before that a map passes the QA
-gate, `py tests/qa.py <design>` (PROCESS.md section 9).
+To play or open it, copy both files to `<Nox>\maps\<Name>\`. Story maps (with scripts, text and voices) are installed
+by `py mapgen/install.py mapgen/out/<map> <Name>`, which also copies the map's waves into `<Nox>\Dialog\` and rebuilds
+`nox.csf.json`; before that a map passes the QA gate, `py tests/qa.py <design>` (PROCESS.md section 9). The voices
+need the local TTS once per PC: `py mapgen/voice.py fetch` (PROCESS.md section 7, "Voices").
 
 ## Maps
 
@@ -44,7 +45,8 @@ game: start a Solo game, press F1, type `racoiaws` (enables cheats), then `load 
 
 Walls of any shape (facing derived from neighbours), windows, floor tiles with soft edge blending
 (rules learned from all stock maps), doors placed in wall gaps, objects, objects copied from a stock
-map by script name (e.g. configured townsfolk; their script names are cleared), waypoints with
+map by script name (e.g. configured townsfolk; their script names are cleared), objects that name another by extent
+(`key=`, `link=`: an elevator's pit, a teleport pad's target) or start disabled (`enabled=False`), waypoints with
 roaming links (flag 128), and room polygons.
 
 ## Kit (phase 3): original structures, not copies
@@ -67,7 +69,9 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/mine.py` | `MineEntrance`: a rock face along a yard with a timbered tunnel blocked by a cave-in |
 | `kit/biome.py` | Cave, ice, lava and swamp palettes; `Dresser` (biome structures and their garrisons) |
 | `kit/story.py` | `StoryMap`: the steps every story map shares (buildings, people, tours, beats, journeys, gates, exits, shops, keepers); `Curtain` (a castle's walls) |
-| `kit/quests.py` | `QuestBook` and actions `A`: dialogue, quest stages, events, the map's text (run by `kit/behaviours/quests.go`) |
+| `kit/quests.py` | `QuestBook` and actions `A`: dialogue, quest stages, events, the map's text and who says it (run by `kit/behaviours/quests.go`) |
+| `voice.py` | Every line said in a dialogue window voiced: a voice description per speaker, Breeze TTS 2 on the local GPU (a design take per speaker, every line directed from it, a Whisper quality gate; Kokoro as an explicit option), Westwood's wave format, run by `Spec.build`; `fetch`, `voice`, `check`, `cast`, `say` |
+| `voice_breeze.py` | The Breeze worker `voice.py` runs in the Breeze venv: design takes, lines by voice direction, the quality gate, into the cache |
 | `kit/npcs.py` | `Population` (creatures, spaced) and `Behaviours` (tours, patrols, journeys, sentries, packs; `kit/behaviours/behaviours.go`) |
 | `kit/walkways.py` | `Ground` and `Router`: where a body can walk, routes along roads, doorways square-on, each stop's facing |
 | `kit/camps.py` | Story places: bandit camps in zones, urchin camps, camp sites, wreck, den, cache, ruined tower, stone ring, training ground, signposts |
@@ -76,11 +80,13 @@ Generators in `mapgen/kit/` build new structures from rules learned from Westwoo
 | `kit/dressing.py` | `Exterior`: the outdoor ground dressed with whole scenes from the catalogue |
 | `kit/spacing.py` | Westwood's closest gaps between outdoor pieces; wall-line clearance |
 | `kit/loot.py` | Container loot in Westwood's shares, filled at build time |
+| `kit/transport.py` | `Transporters`: lifts, stairs, portals and scripted passages by one call (`add(kind, a, b, name)`); writes `<Name>.transport.json` and `transport.go` at build (`rules/TRANSPORTERS.md`, `skills/nox-transporters/SKILL.md`) |
 
 The process (which rule each module carries out) is `PROCESS.md`; the recipe for a story map is
 `skills/nox-story-map/SKILL.md`.
 
-Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, and
+Demos: `designs/test_buildings.py`, `designs/test_rooms.py`, `designs/test_water.py`, `designs/test_transport.py`
+(TestTrans: one transporter of each kind), and
 `designs/dysvale.py`, a village combining all of them.
 
 ## Rules the generator follows (verified against stock maps and the game engine)

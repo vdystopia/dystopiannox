@@ -770,6 +770,9 @@ def extract_design(path):
                 if t: out.append(dict(kind="say", talker=giver, text=t, role=role, line=n.lineno, n=0))
             t = _strval(args["objective"]) if "objective" in args else None
             if t: out.append(dict(kind="journal", talker="", text=t, role="journal", line=n.lineno, type="QUEST"))
+        elif cn.endswith(".tell") and len(n.args) > 1 and _strval(n.args[1]):        # a told line: the refusal
+            out.append(dict(kind="say", talker=_strval(n.args[0]) or "?", text=_strval(n.args[1]), role="refusal",
+                            line=n.lineno, n=0))
         elif cn.endswith((".done", ".note")) and n.args and _strval(n.args[0]):
             out.append(dict(kind="journal", talker="", text=_strval(n.args[0]), role="journal", line=n.lineno,
                             type="COMPLETED" if cn.endswith(".done") else "NOTE"))

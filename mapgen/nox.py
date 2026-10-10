@@ -53,7 +53,7 @@ def wall_rules():
     global _WALL_RULES
     if _WALL_RULES is None: _WALL_RULES = load_rules("walls")
     return _WALL_RULES
-PS32 = os.path.join(os.environ["WINDIR"], "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
+PS32 = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "SysWOW64", "WindowsPowerShell", "v1.0", "powershell.exe")
 CELL = 23
 SOLO, ARENA = 0x1, 0x34
 
@@ -94,6 +94,74 @@ SIDE_PIECES = {"E": (12, 13, 14), "N": (6, 8, 10), "S": (5, 7, 9), "W": (1, 2, 3
 CORNER_PIECES = {("E", "N"): 18, ("E", "S"): 19, ("N", "W"): 17, ("S", "W"): 16}
 TIP_PIECES = {"NE": 15, "NW": 4, "SE": 11, "SW": 0}
 TIP_BLOCKERS = {"NE": ("E", "N"), "NW": ("N", "W"), "SE": ("E", "S"), "SW": ("S", "W")}
+
+# No floor blending at a wall [TW-12] (user, 2026-10-08, of Thornwick: "There does not need to be blending on a wall.
+# The wall cuts off vision from the inside out and from the outside in. It's also a natural transition point in itself.
+# Therefore, this kind of transition must never be used."). A wall piece is drawn from its cell's centre toward each
+# wall it joins (its arms; a straight piece across the whole cell). A floor tile (x, y) is centred on grid corner
+# (x+1, y+1); a tile and its neighbour (side or tip) meet *at a wall* when a visible wall piece touches the line between
+# their centres anywhere (not merely running along it): a / wall lies on the seam between two tiles, a \ wall runs
+# through the middle of the tiles on its line, half a tile from their seams with the tiles either side. No edge piece
+# is drawn across such a seam (Spec._edges); validate/checks.py check_wall_blends fails a map that has one.
+WALL_ARMS = {f: arms for arms, f in FACING_BY_ARMS.items() if len(arms) >= 2}   # the arms each facing draws
+_NEIGHBOURS = list(EDGE_SIDES.values()) + list(EDGE_TIPS.values())
+
+# Iron fences always blend [FN-1]. The user (2026-10-08): "Try iron fences with and without blending. If no blending is
+# used, then must be put precisely on the line between two tiles"; then, of the two side by side in the game: "In every
+# single case, blend is the right choice. Additionally, I must say each of these blends looks very good", and: "No, no,
+# blending is not an option. Always blending for fences". So floors blend across iron fences as Westwood's do, and every
+# other wall stays a hard cut (TW-12): Spec._finalize leaves the fences out of the walls no edge is drawn across, and
+# validate/checks.py floors.wall_blend fails an edge across any other wall. Westwood (rules/fences.py, 42 campaign
+# layouts): 69% of the differing seams across a / fence piece blend, 67% behind and 81% in front of a \ piece; a \ line
+# tile takes the floor in front 72% of the time, as the kit lays it. (Geometry, for the record: walls and tiles share
+# the even lattice; a / piece lies on the seam between two tiles, a \ piece runs through the middle of the tiles on its
+# line, so no cut under a \ fence can lie on the fence line.)
+FENCES = ("IronFence", "IronFenceDamaged")
+
+
+def is_fence(material):
+    return material in FENCES
+
+
+def fence_facings(walls):
+    """{cell: facing} of the iron fence pieces among `walls` ({cell: (facing, material)}) [FN-1]."""
+    return {c: f for c, (f, mat) in walls.items() if is_fence(mat)}
+
+
+def _orient(p, q, r):
+    return (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+
+
+def _touches(p, q, a, b):
+    """Segment a-b (a wall arm) touches segment p-q (between two tile centres) other than by running along it. The
+    points lie on a half-cell grid, so the arithmetic is exact."""
+    d1, d2 = _orient(a, b, p), _orient(a, b, q)
+    if d1 == 0 and d2 == 0: return False
+    return d1 * d2 <= 0 and _orient(p, q, a) * _orient(p, q, b) <= 0
+
+
+def _seam_template():
+    """For a wall cell at (0, 0) (walls and tiles both sit where x + y is even, so one template serves every wall):
+    arm -> the ordered tile pairs (t, n), relative to the cell, whose centres' line that arm touches."""
+    out = {}
+    for arm in (TL, TR, BL, BR):
+        a, b = (0.5, 0.5), (0.5 + arm[0] / 2, 0.5 + arm[1] / 2)
+        out[arm] = [((tx, ty), (tx + dx, ty + dy)) for tx in range(-4, 4) for ty in range(-4, 4) if (tx + ty) % 2 == 0
+                    for dx, dy in _NEIGHBOURS if _touches((tx + 1, ty + 1), (tx + dx + 1, ty + dy + 1), a, b)]
+    return out
+
+
+_SEAMS = _seam_template()
+
+
+def wall_seams(facings):
+    """The ordered tile pairs (t, n) that meet at a wall [TW-12], given {wall cell: facing} of the visible walls."""
+    out = set()
+    for (x, y), f in facings.items():
+        for arm in WALL_ARMS.get(f, ()):
+            for (tx, ty), (nx, ny) in _SEAMS[arm]:
+                out.add(((x + tx, y + ty), (x + nx, y + ny)))
+    return out
 
 
 def uv_to_xy(u, v):
@@ -227,7 +295,9 @@ class Spec:
         """Let `material` spill soft edges onto neighbouring materials of lower priority."""
         self.blend[material] = (priority, edge)
 
-    def _edges(self):
+    def _edges(self, seams=frozenset()):
+        """The edge pieces of every tile. `seams`: the tile pairs that meet at a wall (wall_seams), where no edge is drawn
+        [TW-12]."""
         out = {}
         for (x, y), base in self.floor.items():
             # beside a room's second floor, which blends onto it (kit/shells.py), while the tile is that room's floor
@@ -245,9 +315,10 @@ class Spec:
                 if (x + dx, y + dy) not in self.indoor:
                     # the outdoor ground stops at the wall line (Starwell playtest, 2026-10-05): a room's tile takes no
                     # edge from outside across its wall (the wall hides that seam; a tip always lies across it), nor in
-                    # a doorway (_door_thresholds); a tile on the wall line still takes the ground's edge on its outer side
+                    # a doorway (_door_thresholds)
                     if sheltered: continue
                     if indoor and (name in EDGE_TIPS or (x + max(dx, 0), y + max(dy, 0)) in self.wallmap): continue
+                if ((x, y), (x + dx, y + dy)) in seams: continue          # never across a wall [TW-12]
                 if m in self.blend and self.blend[m][0] > bp and (only is None or m in only):
                     near.setdefault(m, set()).add(name)
             edges = []
@@ -380,11 +451,15 @@ class Spec:
             mat = self._wall_material(w["material"], facing)
             walls.append(dict(x=x, y=y, facing=facing, material=mat,
                               variation=self._wall_variation(mat, facing, w["variation"]), window=w["window"]))
+        fences = fence_facings({(w["x"], w["y"]): (w["facing"], w["material"]) for w in walls})
         self._wall_line_floors()
         self._door_thresholds()
         for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
         self._blend_thresholds()
-        edges = self._edges()
+        # the walls no edge is drawn across [TW-12], all but the iron fences, across which floors blend [FN-1]
+        hard = {(w["x"], w["y"]): w["facing"] for w in walls
+                if not w["material"].startswith("Invisible") and (w["x"], w["y"]) not in fences}
+        edges = self._edges(wall_seams(hard))
         tiles = [dict(x=x, y=y, material=m, **({"edges": edges[(x, y)]} if (x, y) in edges else {}))
                  for (x, y), m in sorted(self.floor.items())]
         polygons = list(self.d["polygons"])
@@ -407,11 +482,16 @@ class Spec:
         return dict(self.d, walls=walls, tiles=tiles, polygons=polygons)
 
     def _wall_line_floors(self):
-        """The room's floor runs under its walls (Starwell playtest, 2026-10-05: the grass and the path's dirt showed on
-        the boards inside). In a NW-SE wall the floor tiles sit on the wall line, half in the room; where the house left
-        such a tile to the land (one wall of each room), the ground lay half a tile into the room along the whole wall
-        and blended onto the boards. Each tile that meets a room's tile through an open cell by a wall takes that room's
-        floor; the ground then meets it outside the wall line, as in Westwood's houses."""
+        """The room's floor runs under its walls, out to the wall line on the side in front of the wall (Starwell
+        playtest, 2026-10-05: the grass and the path's dirt showed on the boards inside; TW-12, Thornwick 2026-10-08:
+        no blending at a wall). Each tile that meets a room's tile through an open cell by a wall takes that room's
+        floor, except a tile on a NW-SE (\\) wall line with the room behind it, up the screen (a room's SW wall). A \\
+        wall runs through the middle of the tiles on its line, and Westwood gives such a tile the floor in front of the
+        wall, below it on screen (StuccoLightWood, Log, Cobblestone, StoneGray, Dilapidated walls: the front floor or a
+        third floor, the floor behind 0-4%), so each side's floor runs up to the wall as seen and the wall's own
+        picture covers the half tile behind it. Giving it the room's floor had laid a strip of boards half a tile wide
+        along the outside of every such wall (Thornwick's inn, TW-12). No edge is drawn across the wall either way
+        (_edges)."""
         if getattr(self, "raw_floors", False) or not self.indoor: return
         for (x, y) in sorted(self.indoor):
             f = self.indoor[(x, y)]                      # the room's own floor, never a carpet laid on it
@@ -419,10 +499,19 @@ class Spec:
             for (dx, dy) in EDGE_SIDES.values():
                 n = (x + dx, y + dy)
                 if n in self.indoor or n not in self.floor: continue
+                if (dx, dy) == EDGE_SIDES["W"] and self._on_backslash_line(n): continue    # the ground in front [TW-12]
                 shared = (x + max(dx, 0), y + max(dy, 0))
                 if shared in self.wallmap or shared in self.door_gaps: continue
-                if any((shared[0] + a, shared[1] + b) in self.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)) and                         self._may_take(n, f):
+                if any((shared[0] + a, shared[1] + b) in self.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1)) and \
+                        self._may_take(n, f):
                     self.floor[n] = f
+
+    def _on_backslash_line(self, t):
+        """Tile t lies on a visible NW-SE (\\) wall's line: the wall piece of one of its two cells on that line reaches
+        through its centre (toward the other, a wall or a door opening)."""
+        a, b = (t[0], t[1]), (t[0] + 1, t[1] + 1)
+        wall = lambda c: c in self.wallmap and not self.wallmap[c]["material"].startswith("Invisible")
+        return (wall(a) and (b in self.wallmap or b in self.door_gaps)) or (wall(b) and (a in self.wallmap or a in self.door_gaps))
 
     def _may_take(self, t, floor):
         """Whether tile t may take a room's floor: no neighbour of a floor Westwood never lets touch it that the buffer
@@ -552,7 +641,8 @@ class Spec:
         check=True then runs the automatic checks (validate/validate.py) and adds their summary line;
         the full report is in validate/out/<name>/report.md.
         Containers left empty get Westwood's loot first (kit/loot.py; a test map sets `loot = False` to keep them
-        empty); the tally goes to <name>.loot.json beside the map."""
+        empty); the tally goes to <name>.loot.json beside the map. A map with a story then has its spoken lines voiced
+        (mapgen/voice.py; a "VOICE" line reports it)."""
         loot_lines = []
         if getattr(self, "loot", True):
             from kit import loot
@@ -573,6 +663,11 @@ class Spec:
         if res.returncode or not any(l.startswith("OK") for l in lines):
             sys.exit("map build failed:\n" + "\n".join(lines))
         lines += loot_lines
+        # the transporters (kit/transport.py): <name>.transport.json for the checker, transport.go for the scripts
+        if getattr(self, "transporters", None) is not None:
+            self.transporters.finish(self, out_dir)
+        elif os.path.exists(os.path.join(out_dir, self.d["name"] + ".transport.json")):
+            os.remove(os.path.join(out_dir, self.d["name"] + ".transport.json"))
         if self.scripts:                        # beside the map: install copies them into maps/<Name>/ with it
             sd = os.path.join(out_dir, self.d["name"] + "_scripts")
             os.makedirs(sd, exist_ok=True)
@@ -585,6 +680,12 @@ class Spec:
             with open(rp, "w", encoding="utf-8") as f: json.dump(self.routes, f)
         elif os.path.exists(rp):
             os.remove(rp)
+        # every line said in a dialogue window voiced (mapgen/voice.py: <name>_dialog/ and <name>.voice.json beside the
+        # map, from the design's <name>.strings.json and .speech.json); NOX_NOVOICE=1 skips it (trying seeds)
+        if not os.environ.get("NOX_NOVOICE"):
+            if HERE not in sys.path: sys.path.insert(0, HERE)
+            import voice
+            lines += voice.build_step(self.d["objects"], out_dir, self.d["name"])
         if check and not os.environ.get("NOX_NOCHECK"):      # NOX_NOCHECK=1: skip the checker (trying seeds)
             chk = subprocess.run([sys.executable, os.path.join(os.path.dirname(HERE), "validate", "validate.py"),
                                   os.path.join(out_dir, self.d["name"] + ".map"), "--quiet"], capture_output=True, text=True)

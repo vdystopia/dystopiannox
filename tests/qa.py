@@ -19,10 +19,16 @@ Steps (each prints PASS, FAIL or LOOK):
   4. story       every talker has its dialogue title (NPC:<name>), string keys fit (31 characters), a gift is picked up
                  on a timer (never at once), the exit leads to a map that is built, every chest holds loot and the gold
                  stays in Westwood's budget, no Zombie, the map's name fits (9 characters)
+     voice       every line said in a dialogue window (talkers' lines, told refusals, shop greetings) has its wave, made
+                 from its present text, PCM 16-bit mono, neither silent nor clipped, at a speaking pace, 8-character
+                 names, and (Breeze) passed the quality gate: Whisper's transcript, the part's pitch, the pace
+                 (mapgen/voice.py check); a talker's refusal said over its head (A.chat) is a LOOK: it stays silent
   5. rooms       review/roomscore.py: rooms that miss their score are listed to LOOK at (the pictures show them)
   6. exterior    review/exteriors.py: the share of the open ground with no prop within 4 cells against Westwood's maps of
                  the map's environment (review/exteriors_baseline.json): over their 90th percentile fails, over the 75th
                  is a LOOK
+     sight       tests/sightrows.py: no point of the floor from which a screen row crosses the edge of the player's sight
+                 often enough to crash the OpenNox client (a long level forest edge in view; CL-1); a risk is a LOOK
   7. pictures    review/out/<Name>/qa/: the story map, the routes, close-ups of every named story place, every room,
                  the empty ground; index.md and index.html walk the reviewer through them, each with what to look for
 
@@ -320,6 +326,17 @@ def main():
     sc = story_checks(map_path, name, m)
     gate.add("story", "PASS" if all(ok for ok, _ in sc) else "FAIL",
              f"{sum(ok for ok, _ in sc)} of {len(sc)} story checks pass", [("" if ok else "FAILED: ") + t for ok, t in sc])
+    import voice as VO
+    vc = VO.check(os.path.dirname(map_path), name)
+    silent = []
+    if os.path.isdir(sd):
+        cfg = os.path.join(sd, "quests_config.go")
+        for ln in (open(cfg, encoding="utf-8").read().splitlines() if os.path.exists(cfg) else []):   # a Line a line
+            if "Else: []Act{" in ln: silent += re.findall(r'\{Kind: "chat", A: "([^"]+)"', ln.split("Else: ", 1)[1])
+    gate.add("voice", "FAIL" if not all(ok for ok, _ in vc) else "LOOK" if silent else "PASS",
+             f"{sum(ok for ok, _ in vc)} of {len(vc)} voice checks pass" +
+             (f"; {len(silent)} refusals said over a head stay silent (q.tell voices them): {', '.join(silent)}" if silent else ""),
+             [("" if ok else "FAILED: ") + t for ok, t in vc])
     # 5. rooms
     room_rows = {}
     if os.path.exists(os.path.splitext(map_path)[0] + ".rooms.json"):
@@ -347,6 +364,17 @@ def main():
                  f"tiles (Westwood median {made.get('p50', '?')})")
     else:
         gate.add("exterior", "LOOK", f"{e4:.0%} of the open ground has no prop within 4 cells (no Westwood reference for {env})")
+    # 6b. sight: where the OpenNox client would crash on the edge of the player's sight [CL-1]
+    import sightrows as SR
+    sr = SR.scan(map_path)
+    crash = [r for r in sr if r[2] >= SR.CRASH]
+    risk = [r for r in sr if SR.RISK <= r[2] < SR.CRASH]
+    gate.add("sight", "FAIL" if crash else "LOOK" if risk else "PASS",
+             f"most crossings of the sight's edge on one screen row: {max(r[2] for r in sr)} ({len(sr)} points; the "
+             f"client panics at 31; the estimate, tests/sightrows.py, fails at {SR.CRASH}+, {SR.RISK}-"
+             f"{SR.CRASH - 1} is a risk)", [f"({x}, {y}): {c} crossings on screen row {row}" +
+                                           (" CRASH" if c >= SR.CRASH else "")
+                                           for x, y, c, row in sorted(crash + risk, key=lambda r: -r[2])])
     # 7. pictures
     pics = {}
     qa_dir = os.path.join(REPO, "review", "out", name, "qa")

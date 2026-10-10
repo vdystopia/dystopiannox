@@ -20,6 +20,10 @@ The story
 
     py mapgen/designs/thornwick.py [seed]
 """
+QA_ACCEPT = [   # (tests/qa.py)
+    ("density", r"^Many share of floor seams with edge pieces",
+     "every open seam blended, as the kit always blends them; the seams at walls are hard by rule (TW-12)"),
+]
 import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, CELL
@@ -89,6 +93,57 @@ m = Spec(NAME, summary="Thornwick", description=f"[env:{ID.environment}] {ID.the
 m.d["nxz"] = False
 m.d["ambient"] = [140, 136, 118]
 q = QuestBook(NAME)
+# Breeze voices (VO-2): the six the user heard in the 2026-10-08 audition, kept as heard: each reference is that
+# audition's design take (its line, description and seed); `desc` directs every other line of the character.
+AUDITION = {
+    "Brannoc": dict(
+        desc="An old village blacksmith in his seventies. Deep, weathered, gravelly bass-baritone voice with a slight "
+             "rasp, a rural northern English accent. Speaks slowly and warmly.",
+        seed=7, ref_text="My grandfather's sword, back in the forge where it was made. (sigh) You've given an old man his "
+                         "family back. Take this breastplate. My son made it; he'd want it worn by someone who earned it.",
+        ref_desc="An old village blacksmith in his seventies. Deep, weathered, gravelly bass-baritone voice with a slight "
+                 "rasp, a rural northern English accent. Speaks slowly and warmly, deeply moved and grateful, his voice "
+                 "catching with emotion."),
+    "GateGuard": dict(
+        desc="A gruff middle-aged town gate guard. Rough, low, gravelly voice, a coarse English working-class accent. "
+             "Curt, bored and firm, speaking flatly as if he has said this a hundred times.",
+        seed=7, ref_text="(sigh) Gate's barred by order of the reeve. Nobody goes north while the Red Hand holds the road. "
+                         "Talk to Aldric in his hall if you don't like it.",
+        ref_desc="A gruff middle-aged town gate guard. Rough, low, gravelly voice, a coarse English working-class accent. "
+                 "Curt, bored and irritated, firm and unfriendly, speaking flatly as if he has said this a hundred "
+                 "times."),
+    "store": dict(
+        desc="A cheerful, plump middle-aged village shopkeeper. Bright, friendly, slightly nasal tenor voice with a "
+             "warm English accent. Quick, chatty salesman's patter, welcoming.",
+        seed=1234, ref_text="Welcome to my shop! Potions, food and gear for the road. Since the Red Hand took the road, "
+                            "(laugh) I sell more arrows than apples.",
+        ref_desc="A cheerful, plump middle-aged village shopkeeper. Bright, friendly, slightly nasal tenor voice with a "
+                 "warm English accent. Quick, chatty salesman's patter, welcoming, with a wry rueful chuckle at the end."),
+    "FatherOdo": dict(
+        desc="An elderly village priest in his sixties. Solemn, resonant, measured baritone with a refined English "
+             "accent. Speaks quietly and gravely, slow and deliberate.",
+        seed=42, ref_text="The Varn crypt is sealed, child. Since the spring the dead there have not rested. Stay out of it.",
+        ref_desc="An elderly village priest in his sixties. Solemn, resonant, measured baritone with a refined English "
+                 "accent. Speaks quietly and gravely, slow and deliberate, with a hint of dread and a stern warning at "
+                 "the end."),
+    "Mirela": dict(
+        desc="A young woman in her twenties, the innkeeper's proud granddaughter. Clear, lively alto voice with a soft "
+             "English accent. Sharp and quick-witted, proud, speaking low and quickly when she wants something.",
+        seed=1234, ref_text="You look like someone who can handle themselves. My grandmother was a Varn. She was buried "
+                            "with the family emerald, and now Father Odo has sealed the crypt and says the dead walk "
+                            "there. (scoff) Walk! I have a copy of his key. Bring me the emerald and I will give you two "
+                            "hundred gold. Will you do it?",
+        ref_desc="A young woman in her twenties, the innkeeper's proud granddaughter. Clear, lively alto voice with a soft "
+                 "English accent. Sharp and conspiratorial, speaking low and quickly, scornful and indignant on the word "
+                 "'Walk!', then urgent and pleading."),
+    "Randal": dict(
+        desc="A sly young rogue in his late twenties. Smooth, husky, slightly raspy voice with a London street accent. "
+             "Playful and knowing, as if sharing a secret, with a smirk in his voice.",
+        seed=42, ref_text="Old Brannoc sits outside the forge all day, staring east. (chuckle) Ask him about his "
+                          "grandfather's sword.",
+        ref_desc="A sly young rogue in his late twenties. Smooth, husky, slightly raspy voice with a London street accent. "
+                 "Playful and knowing, half-whispered as if sharing a secret, with a smirk in his voice."),
+}
 
 # ---- 1. the plan: the road from the south through the town to the north gate, the side ways off it ----------------
 land = Land(rng, u_range=(24, 488), v_range=(-232, 232))
@@ -147,7 +202,7 @@ land.carve(margin=3.5)
 lane_ = sm.keep_open({"grove": 6, "camp": 8, "den": 5, "fork": 3, "tower": 7})
 clumps = land.thickets(160, size=(0.9, 1.8), clear=1, avoid=frozenset(lane_ & land.squares))
 land.open_links()
-land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm")
+land.apply(m, wall=FORESTS[FOREST]["wall"], floor="GrassNorm", unlevel=True)    # the roads east: CL-1
 built = []
 for y_ in yards:
     if not y_.plot <= land.squares:
@@ -294,6 +349,8 @@ GREET = {"store": q.text("Welcome to my shop! Potions, food and gear for the roa
                          "I sell more arrows than apples.", "Shop"),
          "inn": q.text("Welcome to the Lantern. Sit, eat. If you are going north you'll have a long wait.", "Shop"),
          "smithy": q.text("Steel for sale. Good steel, too: you'll want it if you mean to go after the Red Hand.", "Shop")}
+q.voice(GREET["store"], AUDITION["store"])
+q.deliver(GREET["store"], spoken=AUDITION["store"]["ref_text"])
 n_shops = sm.shops(WARES, GREET, keeper={"smithy": "ShopkeeperWarriorsRealm"})
 
 # townsfolk on their rounds between the square and the doorsteps
@@ -415,30 +472,34 @@ for g_ in ("GateGuard", "GateGuard2"):
     q.talker(g_, [
         q.say("The reeve's word came down. Gate's open. Safe travels, friend.", when=q.when(flag="bounty_paid"), who="Guard"),
         q.say("Gate's barred by order of the reeve. Nobody goes north while the Red Hand holds the road. Talk to "
-              "Aldric in his hall if you don't like it.", who="Guard")])
+              "Aldric in his hall if you don't like it.", who="Guard",
+              spoken="(sigh) Gate's barred by order of the reeve. Nobody goes north while the Red Hand holds the road. "
+                     "Talk to Aldric in his hall if you don't like it.")],
+        voice=AUDITION["GateGuard"] if g_ == "GateGuard" else None)
 
 # Mirela and the Varn emerald
 q.talker("Mirela", [
     q.say("You gave it to the priest? My grandmother's emerald, back in the ground? ...Get out of my sight.",
-          when=q.at("gem", 4), who="Mirela"),
+          when=q.at("gem", 4), who="Mirela", mood="Hurt, then cold and bitter."),
     q.say("It's beautiful. Just as she wore it. You've done me a kindness I can't repay. But I'll try.",
           when=q.at("gem", 3), who="Mirela"),
     q.say("You have it! The Varn emerald! Give it to me and the two hundred gold is yours. Will you?",
           when=q.when(has="Emerald", not_="gem_done"), ask=True,
           do=[A.flag("gem_done"), A.take("Emerald"), A.gold(200), A.stage("gem", 3),
               q.journal("I gave the Varn emerald to Mirela. She paid 200 gold.", COMPLETED)],
-          else_=[A.chat("Mirela", "Then what good are you?")], who="Mirela"),
+          else_=[q.tell("Mirela", "Then what good are you?")], who="Mirela"),
     q.say("You had it, didn't you? I can see it in your face. Where is my grandmother's emerald?",
-          when=q.at("gem", 2), who="Mirela"),
+          when=q.at("gem", 2), who="Mirela",       # said slower: her quick voice ran past the gate's pace [VO-5]
+          mood="Measured and deliberate, unhurried: suspicious and accusing, a pause between the sentences."),
     q.say("The key fits the crypt door behind the nave. Grandmother lies at the back. Please, be quick, before Odo "
           "notices it's gone.", when=q.at("gem", 1), who="Mirela"),
     q.say("You look like someone who can handle themselves. My grandmother was a Varn. She was buried with the family "
           "emerald, and now Father Odo has sealed the crypt and says the dead walk there. Walk! I have a copy of his "
           "key. Bring me the emerald and I will give you two hundred gold. Will you do it?",
-          ask=True, do=[A.stage("gem", 1), A.give("SilverKey"),
+          ask=True, spoken=AUDITION["Mirela"]["ref_text"], do=[A.stage("gem", 1), A.give("SilverKey"),
                         q.journal("Mirela at the Lantern gave me a copy of Father Odo's key to the Varn crypt behind "
                                   "the chapel. She will pay 200 gold for her grandmother's emerald.")],
-          else_=[A.chat("Mirela", "Then forget I asked.")], who="Mirela")])
+          else_=[q.tell("Mirela", "Then forget I asked.")], who="Mirela")], voice=AUDITION["Mirela"])
 q.on_pickup("Emerald", [A.stage("gem", 2), q.journal("I have the Varn emerald. Mirela is waiting at the Lantern, but "
                                                      "Father Odo might want it back where it belongs.")],
             when=q.at("gem", 1))
@@ -450,9 +511,9 @@ q.talker("FatherOdo", [
           do=[A.flag("gem_done"), A.take("Emerald"), A.give("CurePoisonPotion", 2), A.give("RedPotion", 2), A.gold(80), A.stage("gem", 4),
               q.journal("I gave the Varn emerald to Father Odo, who laid it back in the crypt. He blessed me with "
                         "potions and the chapel's alms.", COMPLETED)],
-          else_=[A.chat("FatherOdo", "Then the dead will come for it.")], who="Odo"),
+          else_=[q.tell("FatherOdo", "Then the dead will come for it.", mood="A grave, quiet warning.")], who="Odo"),
     q.say("The Varn crypt is sealed, child. Since the spring the dead there have not rested. Stay out of it.",
-          who="Odo")])
+          who="Odo")], voice=AUDITION["FatherOdo"])
 
 # Hobb and the wolves
 q.on_all_dead(wolves, [A.flag("wolves_dead"), A.print("The last of the wolf pack lies dead.")])
@@ -472,10 +533,10 @@ q.talker("Hobb", [
 q.talker("Brannoc", [
     q.say("My grandfather's sword, back in the forge where it was made. You've given an old man his family back. "
           "Take this breastplate. My son made it; he'd want it worn by someone who earned it.",
-          when=q.when(has="GreatSword", not_="sword_done"), ask=True,
+          when=q.when(has="GreatSword", not_="sword_done"), ask=True, spoken=AUDITION["Brannoc"]["ref_text"],
           do=[A.flag("sword_done"), A.take("GreatSword"), A.give("Breastplate"), A.gold(150), A.stage("sword", 3),
               q.journal("I returned the Brannoc greatsword. Old Brannoc gave me a breastplate and 150 gold.", COMPLETED)],
-          else_=[A.chat("Brannoc", "Then keep it. Use it well.")], who="Brannoc"),
+          else_=[q.tell("Brannoc", "Then keep it. Use it well.")], who="Brannoc"),
     q.say("Every time I hear the forge ring I think of that sword. Thank you, friend.", when=q.at("sword", 3), who="Brannoc"),
     q.say("You found it and then lost it? Go back and look, friend. That sword has been lost once already.",
           when=q.at("sword", 2), who="Brannoc"),
@@ -486,7 +547,7 @@ q.talker("Brannoc", [
           "folk hear it bellow at night. If you bring that sword home, the Brannocs will make it worth your while.",
           do=[A.stage("sword", 1), q.journal("Old Brannoc's family greatsword was lost at the old watchtower in the "
                                              "east wood, past the wolves' den. An ogre lairs there now.")],
-          who="Brannoc")])
+          who="Brannoc")], voice=AUDITION["Brannoc"])
 q.on_pickup("GreatSword", [A.stage("sword", 2), q.journal("I found a fine old greatsword in the watchtower ruin. "
                                                           "Old Brannoc will want to see it.")])
 q.on_death("TowerOgre", [A.print("The ogre warlord crashes down among the old stones.")])
@@ -518,7 +579,8 @@ RUMOURS = [
 for k_, text_ in enumerate(RUMOURS):
     q.talker(sm.folk_names[k_], [q.say("The Red Hand's finished? Then the road's open again. Thank you!",
                                      when=q.when(flag="bounty_paid"), who="Folk"),
-                               q.say(text_, who="Folk")])
+                               q.say(text_, who="Folk", spoken=AUDITION["Randal"]["ref_text"] if k_ == 4 else None)],
+             voice=AUDITION["Randal"] if k_ == 4 else None)
 for k_, pic_ in enumerate(("MaidenPic", "MaidenPic3", "MaidenPic2", "MalePic1", "MorganPic", "Townsman3Pic",
                            "MalePic7", "MaidenPic")):
     q.portrait(sm.folk_names[k_], pic_)
@@ -546,7 +608,7 @@ if __name__ == "__main__":
     rooms_sidecar(placed, os.path.join(OUT, f"{NAME}.rooms.json"), yards=[y_ for y_ in yards if y_.kind in built])
     q.write_strings(OUT)
     lines = m.build(os.path.abspath(OUT))
-    print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))
+    print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS", "VOICE"))))
     print(f"land {len(land.squares)} squares | buildings {len(placed)}/{len(ID.buildings)} (missed: {', '.join(sm.missed) or 'none'}) "
           f"| trees {n_trees} | plants {n_small} | rock piles {len(piles)} | shopkeepers {n_shops} | caches {len(caches)} "
           f"| lines {len(q.strings)} | yards {', '.join(built) or 'none'}")

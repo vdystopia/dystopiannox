@@ -1,14 +1,17 @@
 """Installs a built map into the game: maps/<Name>/<Name>.map (and .nxz), its scripts (<Name>_scripts/*.go, which
-OpenNox runs from the map's folder) and its own text (<Name>.strings.json), then rebuilds the game's string table
-with every installed map's text (mapgen/strings.py writes nox.csf.json).
+OpenNox runs from the map's folder), its own text (<Name>.strings.json) and its voice (the waves of <Name>_dialog/
+into the game's Dialog folder, where the dialogue window streams them, and <Name>.voice.json beside the map), then
+rebuilds the game's string table with every installed map's text and waves (mapgen/strings.py writes nox.csf.json).
 
     py mapgen/install.py <out dir> <Name> [--nox "C:\\GOG Games\\Nox"]
 
-Old script files in the map's folder are removed first, so a script dropped from the design does not linger.
+Old script files in the map's folder are removed first, so a script dropped from the design does not linger; so are
+the waves the map's last install put in Dialog that this build no longer has (mapgen/voice.py install). Safe to repeat.
 """
 import argparse, glob, os, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, HERE)
 
 
 def install(out_dir, name, nox=r"C:\GOG Games\Nox"):
@@ -25,8 +28,11 @@ def install(out_dir, name, nox=r"C:\GOG Games\Nox"):
     sd = os.path.join(out_dir, name + "_scripts")
     for f in glob.glob(os.path.join(sd, "*.go")):
         shutil.copy2(f, dst); done.append(os.path.basename(f))
+    import voice
+    said = voice.install(out_dir, name, nox)
     r = subprocess.run([sys.executable, os.path.join(HERE, "strings.py"), "--nox", nox], capture_output=True, text=True)
     print(f"installed {name}: {', '.join(done)}")
+    print(said)
     print((r.stdout + r.stderr).strip())
     if r.returncode: sys.exit(r.returncode)
 

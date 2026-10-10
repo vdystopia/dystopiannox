@@ -16,6 +16,12 @@ into the game's by mapgen/strings.py), so it shows in Nox's own dialogue window 
 
 Lines are tried in order and the first whose `when` holds is spoken, so later stages go first. Text is plain: a
 line break is "\\n". Keys are "<Map>:<Name><n>" (n counts within the map).
+
+Every line said in a dialogue window is voiced (mapgen/voice.py, run by Spec.build): a talker's lines and what
+q.tell has a giver say after the talk. write_strings records who says each (<Map>.speech.json) with their portraits,
+any voice a design pins (q.talker(..., voice=), q.voice) and how a line is said where it matters (q.say(..., spoken=
+"(sigh) ...", mood="...")). Text over a head (A.chat) and on screen (A.print) has no key and
+stays silent, as Westwood's does.
 """
 import json, os, re
 
@@ -93,6 +99,10 @@ class QuestBook:
         self.names = set()          # creatures and objects the calls name (the self-check)
         self._n = {}
         self.quests = {}            # quest -> its title, for the report
+        self.spoken = {}            # key -> who says it in a dialogue window (voiced by mapgen/voice.py)
+        self.pics = {}              # talker -> portrait
+        self.voices = {}            # talker -> the voice a design pins (mapgen/voice.py cast)
+        self.delivery = {}          # key -> how it is said: {"spoken": its words with vocal events, "mood": direction}
 
     # ---- text --------------------------------------------------------------------------------------------------
     def text(self, text, stem="Line"):
@@ -127,7 +137,8 @@ class QuestBook:
 
         offer      the trouble, where, the ask and the reward, ending in a yes/no question (it is asked: yes takes
                    the quest and writes `objective` in the journal; no runs `refusal`)
-        refusal    the sulk on "no", said over the giver's head; the next talk asks `again` (default: the offer)
+        refusal    the sulk on "no", in a window of its own as Westwood's (q.tell); the next talk asks `again`
+                   (default: the offer)
         reminder   while the quest is open; thanks: when `done` holds (a condition: q.when(has="SilverSeal"),
                    q.when(flag=q.dead("Greyjaw")), q.at(quest, 2) set by an event), with `reward` (A.give, A.gold),
                    the item taken back (`take`, when `done` is carrying something) and the objective done
@@ -137,7 +148,7 @@ class QuestBook:
         if not done.get("Quest"): done = dict(done, Quest=quest, Stage=1)
         refused = f"{quest}_refused"
         yes = [A.stage(quest, 1), A.unflag(refused), self.journal(objective)] + list(on_take)
-        no = [A.flag(refused)] + ([A.chat(giver, refusal)] if refusal else [])
+        no = [A.flag(refused)] + ([self.tell(giver, refusal)] if refusal else [])
         lines = [
             self.say(after, when=self.at(quest, 3), who=giver),
             self.say(thanks, when=done, do=list(reward) + take_it + [A.stage(quest, 3), self.done(objective)], who=giver),
@@ -163,15 +174,58 @@ class QuestBook:
         return dict(Quest="", Stage=-1, Has=has, Flag=flag, Not=not_, Gold=gold)
 
     # ---- declarations ------------------------------------------------------------------------------------------
-    def say(self, text, when=None, do=(), ask=False, else_=(), who="Line"):
-        return dict(When=when or self.when(), Text=self.text(text, who), Ask=ask, Do=list(do), Else=list(else_))
+    def say(self, text, when=None, do=(), ask=False, else_=(), who="Line", spoken=None, mood=None):
+        """A talker's line. spoken, mood: how it is said (q.deliver)."""
+        key = self.text(text, who)
+        if spoken or mood: self.deliver(key, spoken, mood)
+        return dict(When=when or self.when(), Text=key, Ask=ask, Do=list(do), Else=list(else_))
 
-    def talker(self, name, lines, pic=None, title=None):
+    def tell(self, giver, text, spoken=None, mood=None):
+        """An action: when the talk ends, `giver` says `text` in a dialogue window of its own, voiced like its other
+        lines (Westwood's refusal, War05A's "Fine then, don't return my magical staff!", is such a second TellStory).
+        Only in a talker line's do= or else_= (it needs the talk's window); A.chat says a line over the head, silent."""
+        key = self.text(text, giver)
+        self.spoken[key] = giver
+        if spoken or mood: self.deliver(key, spoken, mood)
+        return ("tell", key, giver, 0)
+
+    def deliver(self, key, spoken=None, mood=None):
+        """How a spoken line is said (mapgen/voice.py, Breeze): `spoken` is its text with inline vocal events where the
+        line warrants one ("(sigh) Gate's barred by order of the reeve." ; (laugh), (chuckle), (sigh), (scoff),
+        (cough), (clears throat), (gasp), (sniff), (groan)), the words exactly the line's; `mood` a few words of
+        direction for this line alone ("cold and bitter"). Use them where a line clearly calls for it, not on every
+        line. Returns the key."""
+        import sys
+        if os.path.dirname(HERE) not in sys.path: sys.path.insert(0, os.path.dirname(HERE))
+        import voice as _V
+        if spoken:
+            why = _V.delivery_problem(self.strings[key], spoken)
+            if why: raise ValueError(f"{key}: the delivery {spoken!r}: {why}")
+        d = self.delivery.setdefault(key, {})
+        if spoken: d["spoken"] = spoken
+        if mood: d["mood"] = mood
+        return key
+
+    def voice(self, who, voice):
+        """Pins the voice of a speaker who is not a q.talker of this design, or by one of its lines' keys (a
+        shopkeeper's greeting: q.voice(greet_key, {...})). The forms are q.talker's voice=."""
+        self.voices[who] = voice
+
+    def talker(self, name, lines, pic=None, title=None, voice=None):
         """An NPC who talks: the first of `lines` whose condition holds. pic: its portrait (Westwood's names). title:
-        the name over its dialogue window (default: from the script name, "NorthGuard" -> "North Guard")."""
+        the name over its dialogue window (default: from the script name, "NorthGuard" -> "North Guard"). voice: pins
+        its voice (mapgen/voice.py cast_breeze): a part such as "elder", a description ("An old blacksmith in his
+        seventies. Deep, gravelly voice, a northern English accent. Slow and warm.") or {"desc": ..., "seed": n} for
+        that very voice (and "ref_text"/"ref_desc" to reproduce an auditioned take); a Kokoro voice ("bm_george") or
+        recipe ({"mix": ..., "speed": ...}) serves only the Kokoro engine; a dict may carry both. Pin a character who
+        speaks on two maps; by default the voice is cast from its body, portrait and title."""
         self.names.add(name)
         self.title(name, title or display_name(name))
-        if pic: self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
+        for l in lines: self.spoken.setdefault(l["Text"], name)
+        if voice: self.voices[name] = voice
+        if pic:
+            self.pics[name] = pic
+            self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
         body = ",\n\t\t\t".join(self._line(l) for l in lines)
         self.calls.append(f"Talker({_go(name)}, []Line{{\n\t\t\t{body},\n\t\t}})")
 
@@ -185,6 +239,7 @@ class QuestBook:
     def portrait(self, name, pic):
         """The face in an NPC's dialogue window (Westwood's portraits: TheogrinPic, MaidenPic2, GalavaPriestPic...)."""
         self.names.add(name)
+        self.pics[name] = pic
         self.calls.append(f"Portrait({_go(name)}, {_go(pic)})")
 
     def on_death(self, name, acts):
@@ -245,7 +300,11 @@ class QuestBook:
         return {"quests.go": lib, "quests_config.go": cfg}
 
     def write_strings(self, out_dir):
-        """<Map>.strings.json beside the map (install copies it into maps/<Map>/)."""
+        """<Map>.strings.json beside the map (install copies it into maps/<Map>/), and <Map>.speech.json: who says
+        each line in a dialogue window, their portraits, pinned voices and deliveries (Spec.build's voice step reads it)."""
         p = os.path.join(out_dir, f"{self.map}.strings.json")
         with open(p, "w", encoding="utf-8") as f: json.dump(self.strings, f, ensure_ascii=False, indent=1)
+        with open(os.path.join(out_dir, f"{self.map}.speech.json"), "w", encoding="utf-8") as f:
+            json.dump(dict(lines=self.spoken, pics=self.pics, voices=self.voices, delivery=self.delivery), f,
+                      ensure_ascii=False, indent=1)
         return p

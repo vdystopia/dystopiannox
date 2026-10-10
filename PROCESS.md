@@ -81,6 +81,24 @@ A town is a web of forest corridors, not a clearing (`rules/TOWNS.md`): give it 
 roads joined to both by forest paths 11 uv wide or more (`Land.link(..., road=False)`), so paths loop round blocks of
 forest; put clumps of forest in the open meadows.
 
+### Transporters: lifts, stairs, portals, passages [TR-1]
+Every transporter moves the player from a spot A to a spot B, and B is most often a place that cannot be walked to: a
+Nox map has one floor, so a cellar, a mine level, an island or a tower floor is a walled-off area drawn in an empty part
+of the grid (Westwood: 98% of its lifts, 86% of its pads; `rules/TRANSPORTERS.md`). The process is
+`skills/nox-transporters/SKILL.md`; one call lays any kind (`kit/transport.Transporters.add(kind, a, b, name)`):
+- **The kind by the setting**: a lift in mines, caves, sewers and pits (CaveElevator with its base, Elevator in the
+  mines, GreenElevator in Ix and swamps, WhiteElevator in a castle, LOTDElevator, RedElevator at the volcano); stairs
+  between a castle's, Dun Mir's or a crypt's floors; a pentagram for magic places and islands; a passage (the screen
+  fades out and in) for a door or tunnel mouth into an inside drawn elsewhere.
+- **The far place first**: its own walls, floor, light and purpose (`serves=`: the chest, the boss), then both ends on
+  open floor, 23 px or more from a wall; stairs down in a room's west corner, stairs up against its NE wall, as
+  Westwood's.
+- **Never land the player on a pad that leads on**: a lift is two-way by itself; a two-way portal or stairs is two
+  one-way pads, each landing 59 px (Westwood's median) beside the other's pad (Westwood links no two pads both ways).
+- **A way back or the map's exit** from every landing, unless the story leads on from there; a transporter that opens
+  with the quest is laid `enabled=False` and turned on by `A.enable` (Westwood's exit lifts, Con01A).
+  The checker's `transport.*` rules catch the rest (section 9).
+
 ### Yards [AM-1, SW-9]
 Yards with a purpose (`kit/yards.py`: graveyard, quarry, orchard, park, field, monument, jail) are planned before the
 land is carved (`yards.plan`, `yards.plan_any`) and built after its walls (`yards.build`), each fenced in Westwood's
@@ -191,11 +209,48 @@ to 41-83% (Westwood 67%), a quarter to two fifths with a second floor. The check
 within 4 cells of a door (a room's own second floor further in may share a material with the ground).
 
 ### Thresholds [SW-4]
-A room's floor runs under its walls and out onto the doorstep; the ground blends onto the doorstep, never onto a tile
-that reaches into the room (`Spec._wall_line_floors`, `Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are
-`Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
+A room's floor runs under its walls (to the wall line on a SW wall: TW-12 below) and out onto the doorstep; the ground
+blends onto the doorstep, never onto a tile that reaches into the room (`Spec._wall_line_floors`,
+`Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are `Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
 (`Spec._may_take`). Door paths use Westwood's buffer floor where a path may not touch the room's floor
 (`Land.connect_door`).
+
+### No blending at a wall [TW-12]
+A wall is a hard cut between floors: no edge piece is drawn across it, on either side, whatever the wall (a house, a
+yard's wooden or stone fence, a town wall, the forest wall), except an iron fence, across which floors always blend
+(FN-1, below). The user (Thornwick, 2026-10-08, of a soft grass edge along the outside of
+a house's wall): "There does not need to be blending on a wall. The wall cuts off vision from the inside out and from
+the outside in. It's also a natural transition point in itself. Therefore, this kind of transition must never be used."
+- A / wall lies on the seam between two tiles: the cut is at the wall. A \ wall runs through the middle of the tiles
+  on its line: the cut falls half a tile from it, between the line tile and the tile beside it, and stays hard.
+- `nox.wall_seams` finds every pair of tiles (side or tip neighbours) whose centres' line a visible wall piece touches
+  (not merely runs along); `Spec._edges` draws no edge across them. Invisible walls (the water's shoreline) are not
+  walls here, and a doorway is an opening: the ground still blends onto the doorstep [SW-4].
+- Westwood agrees for solid walls: across a Cobblestone, Log, StuccoLightWood, StoneGray, Dilapidated or GalavaTownWall
+  wall it blends 1-9% of the seams on a / line and 7-10% on a \ line; across natural walls (forest, cave) it blends about
+  half, which this house rule overrides (iron fences, which it blends about two thirds of the time, blend: FN-1) (the check fires on every one of Westwood's campaign
+  maps: a stated house rule, the user's word over Westwood's habit).
+- A \ wall's line tile takes the floor in front of the wall (below it on screen), as Westwood's do: the ground on a
+  room's SW wall, the room's floor on its NE wall (`Spec._wall_line_floors`). Each side's floor then runs up to the wall
+  as seen, and the wall's picture covers the half tile behind it; giving the line tile the room's floor on both walls
+  had laid a strip of boards half a tile wide along the outside of every SW wall (Thornwick's inn).
+- Checked by `floors.wall_blend` (an error; planted case STwallb): a map with an edge piece across a wall fails the gate.
+
+### Iron fences always blend [FN-1]
+Floors blend across iron fences (`IronFence`, `IronFenceDamaged`) as Westwood's do; every other wall stays a hard cut
+(TW-12). The user (2026-10-08): "Try iron fences with and without blending. If no blending is used, then must be put
+precisely on the line between two tiles"; then, of the two side by side in the game's frames: "In every single case,
+blend is the right choice. Additionally, I must say each of these blends looks very good", and: "No, no, blending is not
+an option. Always blending for fences."
+- `Spec._finalize` leaves the fence pieces out of the walls no edge is drawn across (`nox.fence_facings`); a \ fence's
+  line tile takes the floor in front, as the kit already lays it (Westwood: 72%).
+- Westwood (`rules/fences.py`, 42 campaign layouts): 69% of the differing seams across a / fence piece blend, 67% behind
+  and 81% in front of a \ piece. The geometry, for the record: walls and tiles share the even lattice (the client's
+  sight pass visits only it), a / piece lies on the seam between two tiles and a \ piece runs through the middle of the
+  tiles on its line, so a cut under a \ fence could never lie on the fence line.
+- Checked by `floors.wall_blend` (an edge across any wall but a fence is an error; planted case STfncbl: a pen blending
+  in the meadow, an edge across the house's wall still caught). `mapgen/designs/fencelab.py` builds FenceBlnd, the
+  comparison map.
 
 ### Rooms: per type in `rules/rooms/`
 There is no one-size-fits-all room: each room type has its own rules, Westwood's measures and good examples in
@@ -494,16 +549,136 @@ design's docstring before building, then plan the areas from it: each quest need
    at build time in Westwood's manner (`kit/loot.py`: every chest, about 40% of barrels, half the crates, coffins in
    crypts), within the map's gold budget of about 500-1500 (`rules/QUESTS.md`); the tally is `<map>.loot.json`.
 6. **Everyone talks**: givers, guards, the watch and every townsperson, each with a line pointing at a quest and a new
-   line once the main quest is done, with a Westwood portrait (`q.portrait`).
+   line once the main quest is done, with a Westwood portrait (`q.portrait`), in a voice of their own (below).
 
 The tools: `kit/quests.py` (`QuestBook`, actions `A`) declares it all and `kit/behaviours/quests.go` runs it. Lines are
 tried in order, later stages first. Conditions read the world where they can (`q.dead(names)`, `has=`), since a saved
 game loaded with fresh scripts loses the script's own flags. Text goes in the map's string table
 (`<Map>.strings.json`, written by `q.write_strings`), merged by `mapgen/strings.py` into `nox.csf.json`, which OpenNox
-reads in place of nox.csf; keys are at most 31 characters; no audio. Objects a script names must be ones the game
+reads in place of nox.csf; keys are at most 31 characters; every line said in a dialogue window is voiced (below).
+Objects a script names must be ones the game
 registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, signs; a `FireGrate` did not). Keep the
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
+
+### Voices [VO-1, VO-2, VO-3, VO-4, VO-5]
+Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
+shop greetings and refusals; never signs, journal entries, hints, dialogue titles or mission banners). `mapgen/voice.py`
+does it, run by `Spec.build` after the scripts (`NOX_NOVOICE=1` skips it while trying seeds; a `VOICE` line reports it):
+- **What is spoken**: each talker's lines, each shopkeeper's greeting, and what `q.tell(giver, text)` has a giver say
+  when a talk ends. A refusal is `q.tell` (Westwood's "Fine then, don't return my magical staff!" is a second TellStory
+  in a window of its own; `q.errand` tells its refusal), never `A.chat`: text over a head or on screen (`A.chat`,
+  `A.print`) has no string key and stays silent, and the QA gate lists a refusal said over a head as a LOOK.
+- **The engine** [VO-2]: Breeze TTS 2 (BreezeBlue, open weights, on the GPU) by default; Kokoro v1.0 (VO-1, CPU) only
+  when asked for (`NOX_VOICE_ENGINE=kokoro` or `--engine kokoro`), never as a fallback: a map whose Breeze voicing
+  cannot run is reported not voiced and fails the voice check.
+- **Who speaks with which voice** (`voice.cast_breeze`, the same cast every build): a part from the body, the portrait
+  and what the title and the map's text call the speaker (a Maiden clone or a woman donor a woman; "Father Odo" or
+  GalavaPriestPic a priest; "Old Brannoc", "Reeve Aldric" or TheogrinPic an elder; Warrior and IxGuard portraits and the
+  watch guards; MorganPic a rogue; shopkeepers merchants; ogres brutes); then the part's voice description the map has
+  used least (`voice.DESCRIPTIONS`: age, timbre, an English regional accent, manner; fantasy village casting, no
+  occupations that could contradict the story), the speakers with most lines choosing first, and a seed from the
+  speaker's name. A design pins a voice per speaker: `q.talker(name, lines, voice={"desc": "...", "seed": 7})` (or a
+  part, or a plain description), `q.voice(name or a line's key, ...)` for a speaker who is not a talker (a shopkeeper,
+  by its greeting's key). `"ref_text"`/`"ref_desc"` reproduce an auditioned take exactly: the same text, description
+  and seed give the same take (Thornwick's six auditioned characters are pinned so).
+- **One voice per character**: each speaker's reference is a design take of its description saying its reference
+  text (the pin's, else its line nearest 28 words), the best of 2 seeds that pass the quality gate (a pinned seed:
+  the first that passes); it is kept in `.tools/voice/refs/` and every line of the speaker is rendered from it by
+  voice direction (the reference wave and its text, the description as the instruction). A line whose words are the
+  reference's is the design take itself.
+- **Delivery**: where a line clearly calls for it, `q.say(text, ..., spoken="(sigh) Gate's barred ...")` gives its
+  inline vocal events ((laugh), (chuckle), (sigh), (scoff), (cough), (clears throat), (gasp), (sniff), (groan); the
+  words must be the line's, `q.deliver` refuses others) and `mood="cold and bitter"` a direction for that line alone
+  (also `q.tell(..., spoken=, mood=)`, `q.deliver(key, ...)`). Automatic ones only where the words say it: a lone
+  "Ha!" is a laugh, "Hmph" a scoff. Do not put them on every line.
+- **The quality gate** (every take, `voice.gate_verdict`): Whisper large-v3-turbo's transcript against the line within
+  max(1, 15%) word errors (names in the map's text are not counted, numbers and British spellings are matched); the
+  median pitch inside the part's band (`voice.BANDS`) and within 5 semitones of the speaker's reference; 1.5-4.8 words
+  a second while speaking. A take that fails is rendered again with a new seed, up to 4 times; a line that never
+  passes stays silent (its best take is kept as `<hash>.fail.wav` in the cache to listen to) and the voice check FAILs
+  naming it; `py mapgen/voice.py voice <out> <Name> --retry` tries such lines again.
+  A line that keeps failing the pace or the pitch gets a delivery that fixes it, pinned in the design (a `mood`:
+  Thornwick's Mirela5, "Measured and deliberate, unhurried ...", went from 4.8-5.1 words a second in 4 takes to 3.6 in
+  one), then `--retry`; the gate is never loosened for it [VO-5] (pc1 Claude's default, 2026-10-08; the user may
+  override it).
+- **Where it renders: pc1 unless the user is gaming, then pc2** [VO-3] (user, 2026-10-08: "run the Nox renders on pc1
+  unless im gaming - same rules as our previous processes. this should be the default for all work we do. when im
+  gaming, reserve the 4090 and run it on the 2080ti"). `voice.run_breeze` runs one worker at a time at below-normal
+  priority:
+  - **Gaming** is what the pc1 AI guard says: its state file `%LOCALAPPDATA%\dystopianentity\pc1-state.json`
+    (rewritten every ~3.5 s; `game_running`). A state file that is missing, unreadable or older than 30 s is unknown and
+    taken as gaming. The guard is the single source: it already counts Nox and unknown GPU-heavy programs as games.
+  - **pc1** (not gaming): the worker loads Breeze and Whisper on the 4090 when 10 GiB are free and Talk's pc1 model is
+    not loaded (a `llama-server` process, ~21 GB: the user's voice assistant stays fast). The worker registers with the
+    guard, a file named by its PID saying `nox voice` in `%LOCALAPPDATA%\dystopianentity\gpu-jobs\`, so the guard
+    does not take the render for a game; the file goes when the worker ends (stale ones of ours are cleaned first).
+  - **A game starts mid-run**: the state is read every 5 s; the pc1 worker stops before its next take or is killed 10 s
+    later (every finished line is cached), and the run continues on **pc2's RTX 2080 Ti** through its GPU service
+    (`https://dystopia.taile9156a.ts.net:8453`, Tailscale identity, plain HTTPS: `GET /health`, `POST /breeze/synth`,
+    `POST /asr`; a 503 with Retry-After is waited out). When the game ends (free twice in a row) the pc2 worker stops at
+    its next line and the run moves back to pc1. pc2 unreachable while gaming: the run waits; pc1 is never used while
+    gaming.
+  - **Talk's model loaded on pc1, not gaming** [VO-4] (pc1 Claude's default, 2026-10-08; the user may override it):
+    pc1 is busy serving the user and pc2 is free, so `auto` renders on pc2 rather than waiting; the same while too
+    little of the 4090's memory is free. At the start the run goes straight to pc2; loading mid-run, the pc1 worker
+    stops at its next line (killed after 60 s) and the run continues on pc2; once pc1 is free again (not gaming,
+    Talk's model not loaded, twice in a row) the pc2 worker stops at its next line and the run moves back to pc1.
+    pc2 unreachable then: the run waits.
+  - **One orchestration, two backends** (`mapgen/voice_breeze.py`): references, the gate, re-rolls, mastering and the
+    cache are the same code wherever a take is made; only making and hearing a take differ (`LocalBackend`: Breeze and
+    Whisper in the worker; `RemoteBackend`: the service, stdlib only). The gate's pitch and pace are measured by
+    librosa in the worker for both, so the worker runs from the Breeze venv's Python (on pc2's GPU it imports no torch
+    and loads no model). A take made on pc2 differs from the same seed's on pc1 (another GPU) and is not bit-identical
+    from one pc2 render to the next (same words and length): each render is its own take with its own gate result;
+    each record says where it was made (`gpu`), and a cached take is never made again for that alone. The service must
+    run the lock's pins (its `/health` reports them as `engine`), else its takes are refused: they would be cached as
+    the lock's.
+  - **pc2's speed** (2026-10-08, the 8-line Thornwick sample): Linux runs Breeze's fast path (Triton, CUDA graphs) in
+    fp16, about 0.7 s of GPU per second of speech on the 2080 Ti, faster than pc1's Windows eager path (~2.7); Whisper
+    runs on pc2's CPU (~5 s a take, the slow step). The service takes one request at a time (503 + Retry-After 60 when
+    busy or short of memory) and unloads its models after 5 idle minutes (the next take reloads them: 30-65 s).
+  - **Policy** `NOX_VOICE_GPU` (or `--gpu`): `auto` (the default: the rule above), `pc1` (pc1 only, waits while gaming
+    or while Talk's model is loaded),
+    `pc2` (pc2 only), `skip` (nothing new voiced, the cached waves kept), `force` (pc1 without looking: never while the
+    user is gaming). While neither GPU may be used the run waits, saying why (`NOX_VOICE_WAIT` minutes at a time, 120 by
+    default, then gives up for this build); each switch is logged (`VOICE: gaming (...): continuing on pc2`,
+    `VOICE: Talk's pc1 model is loaded (llama-server): continuing on pc2`,
+    `VOICE: pc1 is free again (not gaming, Talk's model not loaded): back on pc1`).
+- **Speed and cost** (the 4090, eager mode: Breeze's CUDA-graph path compiles with Triton, which Windows lacks):
+  about 2.7 s of GPU per second of speech, 7.8 GiB for the worker; a reference takes 1-2 takes, a line 1 take when it
+  passes. A Thornwick-sized map (58 lines, 22 speakers, about 7 min of speech) is an estimated 45-60 min of GPU for
+  its first voicing (measured per take, not yet on a whole map); the 2080 Ti is slower. A rebuild takes seconds:
+  everything is cached. A design built while trying seeds can build with `NOX_VOICE_GPU=skip` and be voiced later with
+  `py mapgen/voice.py voice <out> <Name>`.
+- **The cache** (`.tools/voice/cache/`): a line's key is its spoken text with its vocal events, the speaker's reference
+  wave (its hash) and description, the line's mood, the model and source pins, the gate's version and the mastering;
+  a reference's key its description, text, seed, part band and the gate. A changed line, delivery or voice re-makes
+  only what it touches. Not in the key: which GPU made it (pc1 or pc2, recorded in the line's record).
+- **The install** (`py mapgen/voice.py fetch`): its own venv in `.tools/voice/breeze/` (`NOX_VOICE_HOME` moves it):
+  the breeze-tts source at a pinned commit (git), torch 2.9.1+cu128 and the packages pip resolved, Breeze TTS 2 and
+  Whisper at pinned Hugging Face revisions. `mapgen/voice.lock.json` (committed) pins all of it with each model
+  file's SHA-256 and the Python version; a later fetch installs exactly that and refuses a file whose hash differs.
+  Model files already in a Hugging Face cache are hard-linked, not downloaded again (`--model-from <HF_HOME or hub>`,
+  `NOX_VOICE_MODEL_FROM`, `HF_HUB_CACHE`, `HF_HOME`); else from huggingface.co (about 9 GB).
+- **The sound** in the game: mastered as Westwood's PCM dialogue measures (`voice._master`): the take's own silence
+  trimmed, about -16 dBFS while speaking, peaks bent under -1 dBFS, a 30 ms lead and a 150 ms tail; written PCM
+  16-bit mono at 22050 Hz. The install and the game are the same for both engines.
+- **Licence**: Breeze TTS 2's weights and what they make are under the BreezeBlue Research and Non-Commercial License
+  (v1.1): fine for the user's own maps, played at home. A map that is ever sold or used commercially must be re-voiced
+  (Kokoro is Apache-2.0) or its voices licensed from BreezeBlue. The breeze-tts source is Apache-2.0; Whisper is MIT.
+  Never clone a real person's voice: every voice is designed from a description.
+- **Where it goes**: `<out>/<Name>_dialog/<wave>.wav` and `<Name>.voice.json` (key, wave, speaker, the voice, the text
+  as spoken with its events, its hash, the gate's measures). Wave names are 8 characters as Westwood's 8.3 ones: two
+  letters of the map, two of its crc32 in base 36, the line's number and "e" (Thornwick's `th9a001e`).
+  `mapgen/install.py` copies the waves into the game's one `Dialog\` folder, takes out the map's old ones and refuses
+  a name of Westwood's or another map's; `mapgen/strings.py` gives a line its wave (`str2`) only while the installed
+  wave was made from the line's present text. The scripts do not change: TellStory passes no sound, the voice is the
+  string's.
+- Try a voice: `py mapgen/voice.py say "Well met, stranger." --voice "<a description>" --seed 7` (or `--voice elder`);
+  a built map's cast: `py mapgen/voice.py cast mapgen/out/<map> <Name>`; voice a built map again without rebuilding it,
+  or only some of it: `py mapgen/voice.py voice mapgen/out/<map> <Name> [--only Key1,Speaker2]`; the offline tests:
+  `py tests/voice_test.py`.
 
 ## 8. What the engine needs
 
@@ -514,6 +689,16 @@ The kit does all of this; know why before changing it.
 - **Dialogue titles** [TW-6]: the dialogue window titles a creature with the string `NPC:<script name>`; every talker
   gets one (townsfolk get given names; `q.talker(..., title=)` overrides). The string table is shared by all maps, so a
   script name used in two maps carries one title (`mapgen/strings.py` refuses a clash).
+- **Dialogue voices** [VO-1] (verified 2026-10-08 on the GOG install and opennox.exe): a string of the table carries a
+  wave name beside its text (nox.csf's STRW entries, 1415 of Westwood's; `str2` in OpenNox's nox.csf.json), and when a
+  dialogue window shows the string the client streams `Dialog\<wave>.wav` (`"dialog\" + name + ".wav"`, AudDiag.c).
+  Westwood's scripts pass no sound to TellStory (the decompiler's "SwordsmanHurt" is sound 0). OpenNox replaces Miles
+  with its own stream reader, which decodes PCM, IMA ADPCM and MP3 in a WAV; Westwood's 1254 waves are 1246 MP3 at
+  22050 Hz mono and 8 PCM 16-bit mono at 44100 Hz (W1CAP12E, the wizards' airship captain), all 8.3 names of 7-8
+  characters (keep ours there). The Dialog folder is the game's, shared by every map: a map's voice cannot travel in
+  its own folder or its .map (a multiplayer client downloading a map would get no voice; our maps are solo). The
+  dedicated server plays no sound, so its smoke test proves the strings and scripts, not the voices: only a playtest
+  hears them.
 - **The minimap** [TW-5, GW-3]: the game draws only the walls of the group of the polygon the player stands in, found
   by counting edges crossed on a line to the map's corner (0, 0) or (5888, 5888); it keeps the player in the polygon he
   stands in while it still holds him, else takes the first that does. `Spec.build` gives each map one polygon over the
@@ -521,6 +706,25 @@ The kit does all of this; know why before changing it.
   lays itself (Rimehold's ice cave), so no spot lies in two (`nox._world_polygon`). **Recurring** (Greywatch had none;
   Rimehold's cave polygon had left it a minimap only inside the cave): `check_minimap` errs when the start lies in no
   minimap polygon.
+- **A long level forest edge crashes the client** [CL-1] (2026-10-08: the voiced Thornwick crashed OpenNox as it
+  loaded; the voices were not the cause). OpenNox v1.9.0-alpha13 blacks out what the player cannot see one screen row
+  at a time; a row that crosses the edge of his sight 31 times or more panics the client on the spot (client_draw.go
+  sub_4C5500, "index out of range [1] with length 1", on stderr only: the log just stops). A forest edge running straight
+  across the screen is a saw of wall pieces whose valleys all sit on one row; seen from a few hundred pixels above or
+  below, a long one gives 40-48. Thornwick's roads east had them (the 10-05 build too, out of the start's sight); 4 of 5
+  such points crashed the client, none after the fix. `Land.apply(..., unlevel=True)` (`Land.unlevel_edges`) breaks
+  every level run of the edge longer than 2 squares into V bays with 45-degree sides, into the forest, or into open
+  ground along a narrow band of forest; Thornwick uses it. The gate's sight step (`tests/sightrows.py`) estimates the
+  worst row from every point of the floor and fails a map at 33 (the estimate over-counts; it is calibrated on the game).
+  To try a point in the client: `py tests/sightrows.py <map> --at X,Y --png out.png`.
+- **Transporters** [TR-1] (`rules/TRANSPORTERS.md`, read from OpenNox's source and proved in the client): a lift's
+  platform and pit name each other by extent (xfer ExtentLink, joined at load); an enabled platform cycles by itself
+  (a second's wait at each end), carrying whoever stands on it to the pit and back; a teleport pad sends whoever
+  stands on it to the TRANSPORTER it names (a pentagram after its glow, an invisible one at once) and does nothing
+  when it names none (an arrival marker). The create flags (ENABLED) are stored only with an object's extended fields:
+  `build_map.ps1` writes `enabled: false` that way, and `key` / `link` resolve one object's extent into another's
+  ExtentLink. Stairs are pictures with an invisible pad on them. An `-autosrv` host starts NO_COLLIDE and triggers
+  no pad: a client test clears that flag first.
 - **Clones** lose their donor map's script hooks (ScriptEvents naming its functions).
 - **Never place a `Zombie`**: OpenNox cannot read the map back. Map names are at most 9 characters.
 - OpenNox alpha13 leaves TellStoryStr, quest status, JournalEntryStr/Edit, MakeFriendly and GiveXp unimplemented; the
@@ -538,21 +742,27 @@ The kit does all of this; know why before changing it.
 3. the scripts' compile against the game's NoxScript (`tests/check_scripts.py`);
 4. the story: every talker's dialogue title, string keys of 31 characters or less, gifts picked up on a timer, the exit
    leading to a built map, every chest holding loot, the gold in budget, no Zombie, a name of 9 characters or less;
+   and the voices [VO-1, VO-2]: every spoken line has its wave, made from its present text, PCM 16-bit mono, neither
+   silent nor clipped, at a speaking pace, under an 8-character name, and (Breeze) passed the quality gate
+   (`voice.check`; it fails until the TTS is fetched);
 5. the room score (`review/roomscore.py`, by room type): rooms that miss it are listed to look at;
 6. the exterior's empty ground (`review/exteriors.py`): over Westwood's 90th percentile for the map's environment fails
    (`review/exteriors_baseline.json`, from `py review/exteriors.py --westwood --save`), over the 75th is a look;
+   the sight [CL-1] (`tests/sightrows.py`): no point of the floor from which a screen row crosses the edge of the
+   player's sight often enough to crash the client (33 fails, 31-32 is a look);
 7. the pictures, in `review/out/<Name>/qa/` with `index.html`: the story map, the routes with each stop's facing,
    close-ups of every named story place, every room, the empty ground. Each comes with what to look for (the
    "review only" items of `review/FEEDBACK.md`); look at every one.
 
 It never installs the map nor starts the game or the server. After it passes, the main session installs the map
-(`mapgen/install.py`) and runs the server smoke test (`tests/server_smoke.py`), then the user playtests.
+(`mapgen/install.py`: the map, scripts, text and waves) and runs the server smoke test (`tests/server_smoke.py`),
+then the user playtests, and hears the voices.
 
 **The checker's rules.** Every finding names its rule (`checks.RULES`: `exterior.camp_seat`, `routes.facing`,
 `identity.showpiece`, ...) and the feedback it answers. Errors are defects a player will see or hit; warnings are
 departures from Westwood's range or from a house rule the playtests set. The rules by topic:
 - walls, doors, kits, floors, the boundary, reachability and the story's gates (the engine and Westwood's construction);
-- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4];
+- `minimap.*` [TW-5, GW-3]; `floors.threshold` [SW-4]; `floors.wall_blend` [TW-12] (no edge piece across a wall; iron fences blend, FN-1);
 - `rooms.*` (size, cover, identity strays), `composition.*` (the cross-type room rules, bridges, docks across puddles)
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every
@@ -563,6 +773,11 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   Westwood's habit);
 - `exterior.*` [section 4-5]: overlapping pieces, pieces on a fence line, pickable lights, crowds and swarms, docks,
   stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves.
+- `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
+  or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
+  `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter
+  serves reachable from its landing, a way back or the exit from every landing, every start reachable. Reachability
+  follows transporters (a lift both ways, a pad one way, a passage from the sidecar).
 
 **Keeping the checks honest.**
 - A new rule gets a planted defect in `validate/selftest.py` (`py validate/selftest.py [case ...]`); a finding no rule

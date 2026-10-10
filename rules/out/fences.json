@@ -1,0 +1,27 @@
+{
+ "layouts": 42,
+ "counts": {
+  "/ on the line blended": 272,
+  "/ on the line ground blended": 16,
+  "/ on the line ground seams": 18,
+  "/ on the line seams": 393,
+  "/ pieces": 1048,
+  "/ pieces over outdoor ground": 265,
+  "/ pieces over outdoor ground, one floor under them": 247,
+  "\\ floor changes across": 607,
+  "\\ half a tile behind blended": 308,
+  "\\ half a tile behind ground blended": 13,
+  "\\ half a tile behind ground seams": 45,
+  "\\ half a tile behind seams": 463,
+  "\\ half a tile in front blended": 188,
+  "\\ half a tile in front ground blended": 15,
+  "\\ half a tile in front ground seams": 27,
+  "\\ half a tile in front seams": 233,
+  "\\ line tile a third floor": 83,
+  "\\ line tile takes the floor behind": 147,
+  "\\ line tile takes the floor in front": 377,
+  "\\ pieces": 1085,
+  "\\ pieces over outdoor ground": 220,
+  "\\ pieces over outdoor ground, one floor under them": 171
+ }
+}

@@ -1,11 +1,15 @@
-"""The game's text table with our maps' own lines in it: dialogue, journal entries and shop greetings, without
-recorded audio.
+"""The game's text table with our maps' own lines in it: dialogue, journal entries and shop greetings, and the voice
+of each line said in a dialogue window.
 
 Nox scripts show text by key (TellStory, JournalEntry, a shopkeeper's greeting: "Con02:BarkeeperDefault"), looked up
 in the game's string table nox.csf. OpenNox reads nox.csf.json instead when that file is beside it
 (opennox-lib strman.ReadFile tries "<name>.csf.json" first), in its own JSON form. This tool writes that file: every
 string of nox.csf, read the way OpenNox reads it (strman/csf.go: UTF-16 inverted bit by bit, runs of spaces folded),
 plus the lines of each installed generated map (maps/<Name>/<Name>.strings.json: {"<Name>:Key": "text"}).
+
+A string's wave is its "str2" (nox.csf's STRW entries: the dialogue window streams Dialog\\<wave>.wav). Westwood's keep
+theirs; one of ours gets the wave its map's manifest names (maps/<Name>/<Name>.voice.json, mapgen/voice.py) when that
+wave is installed in Dialog\\ and was made from the line's present text, so a stale or missing wave never speaks.
 
     py mapgen/strings.py [--nox "C:\\GOG Games\\Nox"] [--check]       write nox.csf.json (--check: only report)
     py mapgen/strings.py --remove                                      delete it: the game reads nox.csf again
@@ -73,6 +77,19 @@ def map_lines(nox):
     return out
 
 
+def map_waves(nox, texts):
+    """{key: wave} for our lines whose wave is installed in Dialog\\ and was made from the text the line has now."""
+    from voice import text_sha
+    dialog = os.path.join(nox, "Dialog")
+    have = {f.lower() for f in os.listdir(dialog)} if os.path.isdir(dialog) else set()
+    out = {}
+    for p in sorted(glob.glob(os.path.join(nox, "maps", "*", "*.voice.json"))):
+        for k, l in json.load(open(p, encoding="utf-8")).get("lines", {}).items():
+            if l.get("voiced") and (l["wave"] + ".wav").lower() in have and k in texts and l["text_sha"] == text_sha(texts[k]):
+                out[k] = l["wave"]
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--nox", default=NOX)
@@ -90,8 +107,9 @@ def main():
     ours = {k: v for k, v in ours.items() if not (k.lower().startswith("npc:") and k.lower() in have)}
     clash = [k for k in ours if k.lower() in have]
     if clash: sys.exit(f"keys already in nox.csf: {clash[:5]}")
-    entries += [{"id": k, "vals": [{"str": v}]} for k, v in ours.items()]
-    print(f"nox.csf: {len(entries) - len(ours)} strings (language {lang}); maps' lines: {len(ours)}")
+    waves = map_waves(a.nox, ours)
+    entries += [{"id": k, "vals": [dict(str=v, **({"str2": waves[k]} if k in waves else {}))]} for k, v in ours.items()]
+    print(f"nox.csf: {len(entries) - len(ours)} strings (language {lang}); maps' lines: {len(ours)}, voiced: {len(waves)}")
     if a.check: return
     tmp = dst + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f: json.dump({"lang": lang, "entries": entries}, f, ensure_ascii=False)

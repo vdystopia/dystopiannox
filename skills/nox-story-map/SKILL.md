@@ -95,11 +95,28 @@ m = Spec(NAME, ..., type=SOLO, minPlayers=1, maxPlayers=1); m.d["nxz"] = False; 
     A side quest's five beats in one call: `q.talker(giver, q.errand(giver, quest, offer, reminder, thanks, after,
     objective, done=q.when(has=item), reward=[A.give(...)], refusal=...) + other_lines)`; a quest's done entry is
     `q.done(objective)` (the same words, COMPLETED), news is `q.note(text)`. The text by `rules/DIALOGUE.md`.
+    Every line said in a dialogue window is voiced by the build: a sulk after "no" is `else_=[q.tell(giver, text)]`
+    (a window of its own, voiced), never `A.chat` (over the head, silent). Voices (Breeze TTS 2) are cast from the
+    body, portrait and title: a description per speaker (age, timbre, an English accent, manner) and a seed. Pin the
+    main characters' voices in the design, as Thornwick's `AUDITION`: `q.talker(name, lines, voice={"desc": "An old
+    village blacksmith in his seventies. Deep, weathered, gravelly voice, a rural northern English accent. Speaks
+    slowly and warmly.", "seed": 7})`; a shopkeeper by its greeting's key, `q.voice(greet_key, {...})`. Audition a
+    description first (`voice.py say ... --voice "<description>" --seed n`). Where a line clearly calls for it, its
+    delivery: `q.say(text, spoken="(sigh) " + text)` ((laugh), (chuckle), (sigh), (scoff), (cough), (clears throat),
+    (gasp), (sniff), (groan); the words exactly the line's) or `mood="cold and bitter"`; a few lines a map, not all.
     `m.scripts.update(B.files(m.d["name"])); m.scripts.update(q.files())`.
 11. **Last, the outdoor dressing**: `Exterior(m, land, biome, placed=placed, culture=, martial=).dress()` (`culture` may
     be a tuple: Harrowby's `("farm", "ogre")`). Add a theme
     to `kit/scenes.py` when a map needs one; never lay loose props by hand.
-12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)`, `m.build(OUT)`.
+12. **Write**: `rooms_sidecar(placed, path, yards=)`, `q.write_strings(OUT)` (before the build: the voices read it),
+    `m.build(OUT)`, which voices the spoken lines (`VOICE <Name>: n of n lines voiced`; `NOX_NOVOICE=1` skips it while
+    trying seeds). The TTS is installed once per PC with `py mapgen/voice.py fetch` (PROCESS.md "Voices"). Voicing
+    renders on pc1's GPU unless the user is gaming (the pc1 AI guard's state file) or Talk's pc1 model is loaded, then
+    on pc2's 2080 Ti, back on pc1 once pc1 is free; it waits only while pc2 is needed and unreachable
+    (`NOX_VOICE_GPU=skip` keeps the cached waves and goes on; voice later with `voice.py voice <out> <Name>`;
+    `--gpu pc1|pc2` pins it). The first voicing of a map takes about half a minute of GPU per line, a rebuild
+    seconds. A line that fails the quality gate
+    is named by the build and the QA voice step: rephrase it or change its delivery, or `voice.py voice ... --retry`.
 
 ## 3. Check, fix, repeat
 
@@ -114,6 +131,8 @@ py review/rooms.py mapgen/out/<map>/<Name>.map --each         # one picture per 
 py review/roomscore.py mapgen/out/<map>/<Name>.map            # each room scored for its type (rules/rooms/)
 py review/exteriors.py mapgen/out/<map>/<Name>.map --holes    # empty outdoor ground
 py tests/storylab.py --check mapgen/designs/<map>.py          # the story's lines against Westwood's (no build needed)
+py mapgen/voice.py cast mapgen/out/<map> <Name>               # who speaks with which voice
+py mapgen/voice.py say "Well met, stranger." --voice "<description>" --seed 7   # hear a voice before pinning it
 ```
 
 **The last step before handing a map over** is the QA gate:
@@ -123,7 +142,7 @@ py tests/qa.py <design> [seed]
 ```
 
 It builds the design, runs the checker (0 errors; every warning listed as accepted or not), compiles the scripts,
-checks the story's strings and loot, runs the room score and the exterior-holes measure, renders the review pictures
+checks the story's strings and loot and that every spoken line is voiced, runs the room score and the exterior-holes measure, renders the review pictures
 (story map with routes, every named story place, every room, the empty-ground map) into `review/out/<Name>/qa/` with
 an `index.md`/`index.html` to walk through, and prints a PASS/FAIL summary. `--no-render` skips the pictures while
 fixing; `--no-build` re-checks the map already built. Look at every picture it lists (PROCESS.md
@@ -134,8 +153,8 @@ QA_ACCEPT = [("density", r"Few creatures", "a waystation: Westwood's waystations
 ```
 
 The gate never installs or starts the server. After it passes, the **main session** (not a building agent, since the
-user may be playing on this PC) installs the map (`py mapgen/install.py mapgen/out/<map> <Name>`, which also rebuilds
-`nox.csf.json`) and runs `py tests/server_smoke.py mapgen/designs/<map>.py` (the map loads; the self-checks find every
+user may be playing on this PC) installs the map (`py mapgen/install.py mapgen/out/<map> <Name>`, which also copies its
+waves into `Dialog\` and rebuilds `nox.csf.json`) and runs `py tests/server_smoke.py mapgen/designs/<map>.py` (the map loads; the self-checks find every
 creature, waypoint and story object). Report the gate's summary and leave the work uncommitted unless told otherwise;
 never push.
 
@@ -154,6 +173,9 @@ cause in the kit if it recurs.
   `yard.cells`.
 - A sealed building: `sm.seal_entrance(building, prefix)` locks its entrance to a mechanism; `A.unlock` breaks it.
 - A light the story relights: a named `ColorLight` disabled in `q.start` and enabled by the story.
+- A cellar, a mine level, a tower floor, an island, a crypt reached by a lift, stairs, a portal or a passage (the far
+  place drawn walled off elsewhere on the grid): `kit/transport.Transporters`, by `skills/nox-transporters/SKILL.md`;
+  one that opens with the quest is laid `enabled=False` and turned on by `A.enable` of each of `t.sources`.
 - A culture's own scenes and roles: `culture=` themes in `kit/scenes.py` with `Exterior(..., culture=)`; roles
   `college`, `apothecary`, `observatory`.
 - In a cave or other biome, house floors meet the cave floor under the walls: `m.blending(mat, -1)` on the house floors.
