@@ -501,6 +501,16 @@ Rules that hold for every type:
   The recipe's hangings go up right after its composition, before the fill lines the walls, so they keep their bare
   stretch. Before and after on the playtest's own rooms: `py mapgen/designs/hbreplay.py` rebuilds them wall for wall from the
   played map and furnishes them again.
+- **The civic rooms are composed whole** [Q1A-1..14] (QA round 1, 2026-10-13: the user's two themes, "too empty, not
+  enough object diversity" and "no balance or symmetry", applied to the types they did not rate: dining hall, gallery,
+  hall, kitchen, living room, solar, study, library, tavern, throne room, shop, infirmary, herbalist).
+  `kit/civic.py` composes these kinds (`ROOMS[kind]["civic"]`, `identity.CIVIC`) in place of the generic fill,
+  density, lining, lighting and grammar passes: the focal piece centred on its wall or across from the door, mirrored
+  pairs either side of it, ceremonial rooms on the axis from the door with mirrored stations down the walk, table sets
+  centred on their carpets in even grids, the S corner and the front walls given groups of their own, heaps of mixed
+  stock, the back walls hung at even steps, lights in matching corners, groups mirrored where the floor is still bare.
+  Every piece still goes through `Furnisher.try_put`. Checked by `civic.s_corner`, `civic.bare_wall`, `civic.kinds`
+  (declared civic rooms only); ledger `review/qa1/civic.md`; type rules in each `rules/rooms/<type>.md`.
 - **A room reads as what it is** [SW-6, SWR-1, TW-8, AMR-4] whatever its type: the checker's room-identity warnings
   (`check_identity`) catch a showpiece repeated, a stand-alone piece four or more times along one wall, supplies lining
   a wall outside a store, one kind filling a big room, more free tables than the type sets, a shopkeeper not behind his

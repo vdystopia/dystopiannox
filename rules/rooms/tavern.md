@@ -98,3 +98,32 @@ the W corner, long tables round a woven carpet), Wiz05A (25, a tap room). Lab po
 - A tavern reads as a living room too (hearth, tables, benches): Westwood's Con02a does; the living room is its kin.
 - Still giving it away: fewer lights than Westwood (its taverns burn torch poles, which the house rule forbids), a plain
   rectangle where Westwood's have a dais, an L or a stair (the shell).
+
+## QA round 1 (2026-10-13): the round's lessons as rules
+
+The user rated other types in round 1 and asked that the round's themes apply to this one too: "Much of the feedback
+boiled down to" rooms too empty with too little diversity, and no balance or symmetry ("things placed randomly, not
+lined up with each other"). Composed by `kit/civic.py` (`civic.tavern`); ledger `review/qa1/civic.md` (Q1A-n).
+These rules come before Westwood's statistics above wherever they disagree (the user's word over Westwood's habit).
+
+Every room of the type:
+- **The dead space is used** (Q1A-1, Q1A-7): the S corner takes a group of its own; the front corners and the SE and
+  SW walls take mixed stock, benches or urns, mirrored; where the floor is still bare a group goes there, bigger rooms
+  more. Checked: `civic.s_corner`.
+- **Diversity** (Q1A-2): several kinds of piece, more in a bigger room; heaps mix their kinds (never one family alone,
+  never the same piece side by side). Checked: `civic.kinds`.
+- **The back walls dressed** (Q1A-3): the NE and NW walls hung at even steps, mirrored about each stretch, one
+  tapestry colour to a room; a bare stretch takes a pair of the type's wall piece. Checked: `civic.bare_wall`.
+- **Balance** (Q1A-4, Q1A-13): pieces centred on their wall or between a piece and a wall; mirrored pairs; one kind of
+  table, column, statue to a room; lights in matching corners or flanking the focal piece.
+- **Carpets** (Q1A-10): a table set at its carpet's exact middle; a carpet only where its whole rectangle and trim
+  lie on the room's floor.
+
+For this type:
+- The bar in a back corner with kegs behind it (unchanged).
+- The hearth centred on the other back wall, a rug before it, log shelves of crockery mirrored either side.
+- The round tables in an even grid (2x2 to 3x3, within the type's table cap less two) centred on one carpet, each with
+  four stools at the same distance.
+- A pair of long tables with benches mirrored by a front wall.
+- Kegs heaped in the S corner and mirrored on the front walls; round sets mirrored where the floor is still bare.
+- Trophies and shields at even steps along both back walls.

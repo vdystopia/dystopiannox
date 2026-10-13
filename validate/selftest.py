@@ -370,6 +370,13 @@ def keeper_off_counter(m):
     Population(m, random.Random(1)).shopkeeper("ShopkeeperYellow", *px(214, -4), [(1, "RedApple")])   # ...keeper mid-room
 
 
+def civic_room(m):
+    # the test house declared a living room (a kind kit/civic.py composes): its bed, table and lantern leave the S corner
+    # bare, the NW wall bare and only three kinds of piece (QA round 1: "Much of the feedback boiled down to" too empty,
+    # not enough diversity; "Dead spaces in the south corner are too common"; "more wall objects ... are needed")
+    _declare(m, "living_room")
+
+
 def throne_from_door(m):
     m.obj("DunMirThroneBase", 219.5, -2)                      # by the SE wall, its back to the room's doors (GW-7)
 
@@ -1025,6 +1032,9 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
      "supplies line"),
     ("STmono", one_kind_fills, "identity", "warning", "a room filled with benches - TW-8", "one kind fills"),
     ("STkeep", keeper_off_counter, "identity", "warning", "a shopkeeper in the middle of his shop - SWR-2", "counter"),
+    ("STcivS", civic_room, "civic", "warning", "a declared living room with a bare S corner - Q1A-1", "S corner"),
+    ("STcivW", civic_room, "civic", "warning", "a declared living room with a bare NW wall - Q1A-3", "stand bare"),
+    ("STcivK", civic_room, "civic", "warning", "a declared living room of three kinds of piece - Q1A-2", "kinds of piece"),
     ("STthron", throne_from_door, "identity", "warning", "a throne with its back to the doors - GW-7", "throne"),
     ("STseat", stump_by_fire, "exterior", "warning", "a stump as a seat by a camp fire - SW-3", "never stumps"),
     ("STroll", lone_bedroll, "exterior", "warning", "a bedroll alone in the open - GW-4", "alone in the open"),

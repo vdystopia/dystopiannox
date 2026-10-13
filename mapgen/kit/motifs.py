@@ -53,7 +53,8 @@ MOTIFS_PATH = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rules", "out
 # 2026-10-06 (night-motifs3, review/roomlab/MOTIFS.md round 3) where the motif rooms were at least as good as the
 # recipe's by eye and by the lab's numbers. NOX_MOTIF_TYPES (comma-separated, "" for none) overrides it, for comparison.
 # (the crypt left it in QA round 1, 2026-10-13: laid out as a symmetric set piece by kit/sacred.py, Q1C-13)
-ENGINE_TYPES = {"bedroom", "throne_room", "storeroom"}
+# (the throne room is composed by kit/civic.py since QA round 1: its axis, mirrored pairs and full walls)
+ENGINE_TYPES = {"bedroom", "storeroom"}
 if os.environ.get("NOX_MOTIF_TYPES") is not None:
     ENGINE_TYPES = {t for t in os.environ["NOX_MOTIF_TYPES"].split(",") if t}
 # Kin types whose motifs a thin type borrows (at KIN_WEIGHT), filtered by the type's never pieces.

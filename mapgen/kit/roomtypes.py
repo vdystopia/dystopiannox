@@ -292,7 +292,7 @@ TYPES = {
                                                                                          "sideboard of food",
                    front="benches; plants in the corners", middle="long tables in rows, seated along both sides"),
         cover=(0.10, 0.17, 0.32), open=(0.30, 0.80), per_tile=(0.2, 0.7), types_min=8, free_most=(4, 30), free_skip=("chair", "bench"),
-        caps={"table": (30, 6)}, walls_min=3, lined=0.25, tiles=(50, 220),
+        caps={"table": (24, 8)}, walls_min=3, lined=0.25, tiles=(50, 220),
         signature={"table": (1.5, 12), "chair": (0.3, 40), "bench": (0.3, 20)}, needs=("table",),
         kin=("great_hall", "tavern", "living_room"),
         variants={"mess_hall": dict(caps={"table": (22, 8)}, never_types=r"PowderBarrel|^RoundTable",
@@ -324,10 +324,11 @@ TYPES = {
         walls=dict(back="hangings: shields, banners, tapestries", other_back="hangings",
                    front="benches by the walls; plants in the corners",
                    middle="a colonnade in pairs either side of a clear aisle; statues facing each other across it"),
-        cover=(0.02, 0.04, 0.14), open=(0.65, 0.97), per_tile=(0.05, 0.30), types_min=6, free_most=(4, 30),
+        # (QA round 1: rooms this open read as empty to the user; the colonnade's stations, benches and urns now fill it)
+        cover=(0.03, 0.08, 0.22), open=(0.45, 0.97), per_tile=(0.05, 0.40), types_min=6, free_most=(4, 30),
         # Westwood's halls: Con04c 22 columns and 24 statues in 128 tiles, Con10c 4 columns and 6 obelisks in 209 (room
         # lab, tuneB): statues are the hall's own repeated piece, capped here rather than by free_most
-        caps={"column": (14, 12), "statue": (18, 8)}, walls_min=2, lined=None, tiles=(50, 260),
+        caps={"column": (10, 16), "statue": (12, 12), "bench": (20, 8)}, walls_min=2, lined=None, tiles=(50, 260),
         signature={"column": (0.6, 10), "statue": (0.6, 6)}, needs=("column", "statue"),
         kin=("throne_room", "great_hall", "chapel")),
     "throne_room": dict(
@@ -343,10 +344,11 @@ TYPES = {
                                                                    "two for those who wait; plants in the corners",
                    middle="a carpet runner and a clear aisle from the door to the throne; a few pairs of columns spread "
                           "down the length; pairs of statues between them facing across the aisle"),
-        cover=(0.03, 0.06, 0.12), open=(0.65, 0.92), per_tile=(0.10, 0.35), types_min=9, free_most=(6, 30),
+        # (QA round 1: the throne's axis lined with mirrored pairs, benches by the side walls: fuller than Westwood's)
+        cover=(0.03, 0.08, 0.20), open=(0.45, 0.92), per_tile=(0.10, 0.40), types_min=9, free_most=(6, 30),
         # Westwood: the Lich Lord's six columns in three pairs (356 tiles), Hecubah's one pair (492):
         # a pair per 30 tiles, three pairs at most (room lab, tuneB: four pairs read as "tons of the same exact pillars")
-        caps={"column": (30, 6), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
+        caps={"column": (20, 10), "statue": (12, 12), "bench": (25, 8)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"throne": (12, 1)}, needs=("throne",), kin=("hall",)),
     # QA round 1 (2026-10-13, review/qa1/sacred.md Q1C): the chapel set is three types now: the chapel (a town's nave),
     # the coven (the dead worshipped, RM-CHAPEL-10's dark chapel its basis) and the mana room (the rings of obelisks of
@@ -455,7 +457,7 @@ TYPES.update({
                    front="a bench; plants in the corners",
                    middle="a small table with two or three chairs on a carpet before the sitting end; open between the ends"),
         cover=(0.05, 0.15, 0.28), open=(0.35, 0.85), per_tile=(0.15, 0.8), types_min=12, free_most=(3, 30),
-        caps={"table": (40, 2), "bed": (200, 1)}, walls_min=3, lined=0.30, tiles=(60, 220),
+        caps={"table": (40, 5), "bed": (200, 1)}, walls_min=3, lined=0.30, tiles=(60, 220),
         signature={"bed": (3, 1), "fireplace": (3, 1), "desk": (2, 1), "shelves": (0.3, 8), "table": (1, 1)},
         needs=("bed", "fireplace", "desk"), kin=("bedroom", "living_room", "study", "library")),
     # ---- work ----------------------------------------------------------------------------------------------------
@@ -665,8 +667,9 @@ TYPES.update({
                    other_back="paintings", front="plants in the corners; a statue",
                    middle="a bench or two facing the paintings, a pair of statues, one curio (an orrery); open floor "
                           "to walk the walls"),
-        cover=(0.0, 0.04, 0.14), open=(0.65, 0.97), per_tile=(0.04, 0.35), types_min=5, free_most=(4, 30),
-        caps={"bench": (30, 6), "statue": (25, 8)}, walls_min=2, lined=None, tiles=(60, 260),
+        # (QA round 1: statues, basins, benches and urns in mirrored pairs down the walk; still open floor to walk)
+        cover=(0.0, 0.06, 0.20), open=(0.45, 0.97), per_tile=(0.04, 0.40), types_min=5, free_most=(4, 30),
+        caps={"bench": (20, 8), "statue": (14, 12)}, walls_min=2, lined=None, tiles=(60, 260),
         signature={"^Painting": (2, 10), "statue": (0.5, 4), "bench": (0.3, 4)}, needs=("wall_decor",),
         kin=("hall", "great_hall")),
     "conservatory": dict(

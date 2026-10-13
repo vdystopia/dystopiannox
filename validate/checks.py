@@ -3601,6 +3601,98 @@ def check_transport(m, ctx, base):
 # ---- every finding has a rule: (rule, check, message pattern, feedback it answers) ----------------------------------
 # Feedback IDs are those of review/FEEDBACK.md. A finding whose message matches no pattern is "<check>.other": the
 # self-test fails on one, so a new message gets its rule here.
+# ---- the civic rooms (QA round 1, 2026-10-13: review/qa1/civic.md, kit/civic.py) -------------------------------------
+# The user, closing round 1: "Much of the feedback boiled down to" rooms too empty, with too little diversity, and no
+# balance. For the room kinds kit/civic.py composes (the types the user did not rate, which inherit the round's verdict),
+# three of the lessons are checkable: the S corner, the dead space nearest the camera, holds something; a back wall the
+# camera sees is not left bare; a big room holds several kinds of piece, not one family. Declared rooms only (Westwood's
+# rooms are not held to it: a house rule from the round's feedback).
+CIVIC_S_REACH = 3.6         # uv units from the room's S corner: something stands, lies or hangs there
+CIVIC_S_MIN_TILES = 36      # rooms smaller than this may leave a corner for walking
+CIVIC_BARE_WALL = 9.0       # a back wall run this long (uv units) with nothing on it or before it
+CIVIC_KINDS_PER = 25        # the least kinds of piece: one per this many floor tiles, at least CIVIC_KINDS_MIN
+CIVIC_KINDS_MIN = 5
+CIVIC_TINY = re.compile(r"^(OgreHutMeat|ArmBone|LegBone|Skull\d?|CorpseSkull\w*|Candle\d(Unlit)?|BottleCandle\w*|"
+                        r"FoilCandle\w*|Cobweb\w*|Spitoon|RedApple|Bread|Cheese|Meat|Ham|Drumstick|Mushroom\w*|\w*Potion|"
+                        r"\w*Book|Scroll\w*|Gold\w*)$")
+
+
+def civic_flags(m, r, kind):
+    """(rule, text, object or None, (x, y)) for a declared civic room: s_corner, bare_wall, kinds."""
+    from kit.identity import ROOMS
+    if not ROOMS.get(kind, {}).get("civic") or not r.get("declared"): return []
+    cells = r["cells"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    # every piece the room holds: furniture, lights, hangings (an ogre's skulls have no furniture family), rugs; not
+    # doors, creatures, triggers or colour lights
+    objs = [o for o in r["objects"] if not m.is_door(o) and "MONSTER" not in o.get("cls", "") and
+            not re.search(r"Door|Trigger|NPC|PlayerStart|ColorLight|Shadow$", o["type"])]
+    pts = [(uv_of(o), _half_uv(o), o) for o in objs]
+    out = []
+    # the S corner: the room's cell farthest toward the camera (greatest u - v)
+    sx, sy = max(cells, key=lambda c: (c[0] + c[1] + 1) - (c[0] - c[1]))
+    su, sv = sx + sy + 1, sx - sy
+    if r["tiles"] >= CIVIC_S_MIN_TILES:
+        near = [o for (u, v), (hu, hv), o in pts if not CIVIC_TINY.match(o["type"]) and
+                max(abs(u - su) - hu, 0) ** 2 + max(abs(v - sv) - hv, 0) ** 2 <= CIVIC_S_REACH ** 2]
+        if not near:
+            out.append(("s_corner", "nothing stands in its S corner", None, cell_px((sx, sy))))
+    # bare back walls (a doorway is no bare wall: nothing may stand or hang in it)
+    runs = room_runs(m, cells)
+    cs = set(cells)
+    door_uv = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors
+               if any((d["gap"][0] + a, d["gap"][1] + b) in cs for a, b in N4)]
+    for (line, coord), (lo, hi) in runs.items():
+        name = _wall_name(line, coord, cu, cv)
+        if name not in ("NE", "NW") or hi - lo < CIVIC_BARE_WALL + 2: continue
+        spans = []
+        for (u, v), (hu, hv), o in pts:
+            perp = abs(u - coord) if line == "/" else abs(v - coord)
+            along, ha, hp = (v, hv, hu) if line == "/" else (u, hu, hv)
+            if perp - hp <= 2.0 and lo - 0.5 <= along <= hi + 0.5: spans.append((along - ha - 0.5, along + ha + 0.5))
+        for du, dv in door_uv:
+            perp, along = (abs(du - coord), dv) if line == "/" else (abs(dv - coord), du)
+            if perp <= 1.6: spans.append((along - 2.4, along + 2.4))
+        spans.sort()
+        free, end, best = 0.0, lo + 1.0, 0.0
+        for a, b in spans + [(hi - 1.0, hi - 1.0)]:
+            best = max(best, a - end); end = max(end, b)
+        if best >= CIVIC_BARE_WALL:
+            mid = (lo + hi) / 2
+            u, v = (coord, mid) if line == "/" else (mid, coord)
+            out.append(("bare_wall", f"{best:.0f} units of its {name} wall stand bare",
+                        None, ((u + v) * CELL / 2, (u - v) * CELL / 2)))
+    # diversity: kinds of piece (lights, hangings and rugs count: they are what the room holds; tiny pieces, food, bones,
+    # candles, cobwebs, loose items, count as one kind at most: a room is not full of them)
+    big = [o for o in objs if not CIVIC_TINY.match(o["type"])]
+    stems = {_kind_stem(o["type"]) for o in big} | ({"tiny"} if len(big) < len(objs) else set())
+    want = max(CIVIC_KINDS_MIN, min(10, r["tiles"] // CIVIC_KINDS_PER))
+    if len(stems) < want:
+        out.append(("kinds", f"{len(stems)} kinds of piece (its size wants {want})", objs[0] if objs else None,
+                    centre(cells)))
+    return out
+
+
+CIVIC_TEXT = {
+    "s_corner": "the dead space nearest the camera takes a group of its own: a small table with two chairs, a heap of "
+                "mixed stock, a bench, a rug (QA round 1: \"Dead spaces in the south corner are too common\")",
+    "bare_wall": "the NE and NW walls the camera sees are hung or lined (QA round 1: \"more wall objects (banners, "
+                 "trophies, bookshelves, etc) are needed\")",
+    "kinds": "a room holds several kinds of piece, scaled by its size (QA round 1: \"Too empty, not enough object "
+             "diversity\")"}
+
+
+def check_civic(m, ctx, base):
+    """The civic rooms' house rules from QA round 1 (kit/civic.py): civic_flags."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        for rule, text, o, (x, y) in civic_flags(m, r, kind):
+            out.append(F("civic", "warning", f"{kind.replace('_', ' ')} room: {text}: {CIVIC_TEXT[rule]}.",
+                         o["x"] if o else x, o["y"] if o else y, rule=f"civic.{rule}"))
+    return out
+
+
 RULES = [
     ("setup.no_start", "setup", r"^No PlayerStart", ""),
     ("setup.mp_object", "setup", r"^Multiplayer-only", ""),
@@ -3719,6 +3811,9 @@ RULES = [
     ("sacred.altar_kind", "sacred", r"end in the same altar", "Q1C-4"),
     ("sacred.dead", "sacred", r"the dead lie here", "Q1C-14 Q1C-17"),
     ("sacred.fullness", "sacred", r"kinds of piece and covers", "Q1C-19"),
+    ("civic.s_corner", "civic", r"nothing stands in its S corner", "Q1A-1"),
+    ("civic.bare_wall", "civic", r"wall stand bare", "Q1A-3"),
+    ("civic.kinds", "civic", r"kinds of piece \(its size wants", "Q1A-2"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
@@ -3783,7 +3878,7 @@ def rule_of(f):
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
-       check_transport, check_water, check_sacred, check_qa1_rooms]
+       check_transport, check_water, check_sacred, check_qa1_rooms, check_civic]
 
 
 def run_all(m, base, only=None):
