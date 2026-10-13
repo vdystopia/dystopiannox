@@ -2408,7 +2408,7 @@ CAMP_R = 320.0
 # kinds at the least (a house rule over Westwood's sparse camps: the user's word, QA round 1)
 CAMP_PIECES_MIN, CAMP_KINDS_MIN = 16, 8
 CAMP_SKIP = re.compile(r"^(Tree|Bush|Plant|Flowers|Fern|Foliage|Weed|Grass|Mushroom|CaveRocks(Small|Pebbles|Tiny)|Rock\d|"
-                       r"Amb|ColorLight|Torch$|.*Shadow)")
+                       r"Amb|ColorLight|Torch$|.*Shadow|Water|Dock|Bridge|Puddle|Lily|Reed|Fish|Duck|Ripple|Splash)")
 # "Way too many beds. And they're all clustered right next to each other" (Q1K-4): BEDS_BLOCK beds or more, each within
 # BED_LINK px of the next, by a camp's fire
 BED_LINK, BEDS_BLOCK = 50.0, 3
@@ -2449,7 +2449,7 @@ def camp_rules(m):
     signs = [o for o in outdoor if CAMP_SIGN_RE.match(o["type"])]
     seen = []
     for c in centres:
-        if not c["type"].startswith("OgreFirePit") and                 not any(math.hypot(s_["x"] - c["x"], s_["y"] - c["y"]) < CAMP_R for s_ in signs): continue
+        if not c["type"].startswith("OgreFirePit") and not any(math.hypot(s_["x"] - c["x"], s_["y"] - c["y"]) < CAMP_R for s_ in signs): continue
         if any(math.hypot(c["x"] - x, c["y"] - y) < CAMP_R for x, y in seen): continue
         seen.append((c["x"], c["y"]))
         near = [o for o in outdoor if math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < CAMP_R and not CAMP_SKIP.match(o["type"])
