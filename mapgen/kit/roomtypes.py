@@ -349,10 +349,11 @@ TYPES = {
                           "toward the doors"),
         cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
         # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch, 46 pews wall to
-        # wall); then "needs more pillars, benches, and statues" (QA round 1, nox14): a pew per 10 tiles in rows, at most 16
-        caps={"bench": (10, 16), "tomb": (60, 2), "column": (16, 12), "statue": (16, 10)}, walls_min=3, lined=None,
+        # wall); then "needs more pillars, benches, and statues" (QA round 1, nox14): a pew per 10 tiles in rows, at most 20
+        caps={"bench": (10, 20), "tomb": (60, 2), "column": (16, 12), "statue": (16, 10)}, walls_min=3, lined=None,
         tiles=(60, 260),
-        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine", "coven")),
+        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine", "coven"),
+        monotony=0.7),                   # (rows of pews either side of the runner are the nave: QA round 1, Q1C-1)
     "coven": dict(
         family="ceremonial", feel="balanced", kinds=("coven", "dark_chapel"), westwood=(),
         # (RM-CHAPEL-10, the Land of the Dead's dark chapel, is its basis: the user, QA round 1)
@@ -368,7 +369,7 @@ TYPES = {
                           "and sarcophagi in pairs with bones heaped by them"),
         cover=(0.06, 0.12, 0.24), open=(0.45, 0.88), per_tile=(0.10, 0.50), types_min=9, free_most=(4, 30),
         caps={"statue": (8, 30), "tomb": (25, 10), "column": (25, 8), "bench": (20, 12)}, walls_min=3, lined=None,
-        tiles=(60, 260), monotony=0.75,
+        tiles=(60, 260), monotony=0.85,          # (many mana obelisks lining the walls: the user's word)
         signature={"tomb": (1, 8), "statue": (0.3, 20), "^LOTDLichGodStatue|^LOTDFlamingSkulls": (6, 1),
                    "^Cauldron": (2, 1), "bench": (0.3, 12)},
         needs=("tomb",), kin=("chapel", "crypt", "hall", "mausoleum", "shrine")),
@@ -386,7 +387,7 @@ TYPES = {
                    middle="one to four rings of four mana obelisks round a centrepiece, each on its carpet centred under "
                           "it, evenly spaced and symmetric; crystal clusters in the corners"),
         cover=(0.04, 0.10, 0.22), open=(0.50, 0.92), per_tile=(0.08, 0.50), types_min=8, free_most=(4, 30),
-        caps={"statue": (8, 16)}, walls_min=2, lined=None, tiles=(50, 280),
+        caps={"statue": (8, 16)}, walls_min=2, lined=None, tiles=(50, 280), monotony=0.75,    # (the rings are the room)
         signature={"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$": (1.5, 16), "lab": (0.5, 8)},
         needs=("statue",), kin=("shrine", "laboratory", "study", "chapel")),
     # ---- the dead ------------------------------------------------------------------------------------------------

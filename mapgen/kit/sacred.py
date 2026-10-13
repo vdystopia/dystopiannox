@@ -279,7 +279,7 @@ def _runner(f, ax, d0, d1, want=(3, 2)):
     return 0.0
 
 
-def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types):
+def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types, most=None):
     """Rows of pews either side of the aisle: each half-row k pews from s0 outward, the rows from depth d_hi back toward
     d_lo every 2.4 units. Returns (rows laid, k, outer lateral edge of the pews)."""
     f, ax = sp.f, sp.ax
@@ -297,9 +297,14 @@ def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types):
     for kk in range(k_max, 0, -1):
         if s0 + kk * pitch - 0.2 <= s_wall: k = kk; break
     if not k: return 0, 0, s0, t
+    if most:                                     # the room's most pews (TW-8: 46 pews wall to wall), in more rows of
+        while k > 1 and most // (2 * k) < 4: k -= 1                   # fewer pews rather than two rows of many
+        rows_max = min(rows_max, max(1, most // (2 * k)))
     rows = 0
     d = d_hi - hd
     sp.pew_rows = []
+    # the rows spread down the nave when the room's pews run out before it does (at most 3.6 apart: still one congregation)
+    step = 2.5 if rows_max < 2 else max(2.5, min(3.6, (d_hi - d_lo - 2 * hd) / (rows_max - 1)))
     while rows < rows_max and d - hd >= d_lo:
         placed = 0
         for i in range(k):                       # a row whose half-rows do not fit (a side door's way in) is left out
@@ -308,7 +313,7 @@ def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types):
         if placed:
             rows += 1
             sp.pew_rows.append(d)
-        d -= 2.5
+        d -= step if placed else 1.0
     return rows, k, s0 + k * pitch - 0.2, t
 
 
@@ -367,35 +372,37 @@ def chapel(f):
     ct = _pick(f, cols) if cols else None
     ch = max(f.half(ct)) if ct else 0.0
     tiles = len(f.room.tiles)
-    cap = max(4, min(16, int(tiles / 10)))
+    cap = max(4, min(20, int(tiles / 10)))
     bench = _types(f, "bench")
     s0 = s_run + 0.6
     s_wall = W - 1.7 - (2 * ch + 0.7 if ct else 0.0)
     k_max = 3 if W >= 11 else 2
     colonnade = (f.archetype or {}).get("name") == "colonnade_chapel"    # (kit/archetypes.py: fewer pews, more columns)
     if colonnade: k_max = max(1, k_max - 1)
-    rows_max = max(1, cap // 2)
+    rows_max = max(1, cap // 2)                  # (and at most `cap` pews: _pews)
     d_hi = front - 3.0
     d_lo = max(4.5, 0.28 * D)
-    rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, bench)
+    rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, bench, most=cap)
     if not rows and ct:                      # a narrow nave: its pews before its columns, the columns against the walls
-        rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, k_max, W - 1.5, bench)
+        rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, k_max, W - 1.5, bench, most=cap)
         if not rows:                         # the runner is the aisle: the pews may meet the side walls
-            rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, 1, W - 0.45, bench)
+            rows, k, s_out, pt = _pews(sp, d_hi, d_lo, s0, rows_max, 1, W - 0.45, bench, most=cap)
         if W - 0.35 - ch < s_out + 0.4 + ch: ct = None
         else: s_out = W - 0.35 - 2 * ch - 0.7
     # columns: a pair at the outer end of each row (every other row in a long nave), and a pair before the sanctuary
     col_s = s_out + 0.7 + ch
     if ct and rows:
         pd = ax.halves(pt)[0]
-        step = 1 if rows <= 3 or colonnade else 2
+        step = 1 if rows <= 2 else 2
         # one even pitch down the whole nave, lined up with the rows and on past them to the door (RM-CHAPEL-08:
         # "Balance and line up the pillars and benches better")
         col_d = list(sp.pew_rows[::step])
-        d = col_d[-1] - step * 2.5
+        pitch_r = (sp.pew_rows[0] - sp.pew_rows[1]) if len(sp.pew_rows) > 1 else 2.5
+        d = col_d[-1] - step * pitch_r
         while d >= 2.4:
-            col_d.append(d); d -= step * 2.5
-        for d_c in col_d:
+            col_d.append(d); d -= step * pitch_r
+        # a few pairs, never a wall of columns (SW-6 "tons of the same exact pillars"): the type's cap, a column per 16 tiles
+        for d_c in col_d[:max(2, min(12, tiles // 16) // 2)]:
             sp.pair(ct, d_c, col_s)
     # the side aisles: statues against the side walls between the column pairs, tapestries on the back side wall
     pew_rows_d = list(getattr(sp, "pew_rows", []))
@@ -661,8 +668,8 @@ def mana_room(f):
     mat = mats[0]
     rings = 0
     snap = _snapshot(f)
-    show = bool(SHOWPIECES.match(cen))
-    alt = next((c for c in ("MineManaCrystal9", "CrystalColumn", "DunMirAltar1") if c != cen and f.ok_type(c)), "CrystalColumn")
+    show = bool(SHOWPIECES.match(cen)) or cen.startswith("DunMirAltar")     # (an altar stands once too: pieces.showpiece)
+    alt = next((c for c in ("MineManaCrystal9", "CrystalColumn") if c != cen and f.ok_type(c)), "CrystalColumn")
 
     def foot(c):
         return 2 * (max(2.0, math.ceil(max(f.half(c)) + max(f.half(ob)) + 1.0)) + max(f.half(ob)) + 0.5)
@@ -801,7 +808,7 @@ def crypt(f):
     sp = SetPiece(f, ax)
     D = ax.D
     W = ax.half_width(1.5, D - 1.5)
-    if W < 3.6 or D < 9: return False
+    if W < 3.0 or D < 7: return False
     lotd = f.style == "lotd"
     rng = f.rng
     obel = "LOTDManaObelisk" if lotd and f.ok_type("LOTDManaObelisk") else "Obelisk"
@@ -866,8 +873,10 @@ def crypt(f):
             dd = d - hd
             if dd - hd < 3.2: break
             pitch = 2 * hs + 0.5
-            k = 2 if W - aisle - 2 * pitch - 1.2 >= 0 and W >= 9 else 1
             a_row = max(0.9, min(aisle, W - 0.8 - 2 * hs))     # a narrow crypt's aisle narrows to a pace
+            # as many to a half-row as the width holds, four at most (a shallow crypt entered on its long side)
+            k = max(1, min(4, int((W - 0.9 - a_row + 0.5) / pitch)))
+            if k >= 3: pitch += 0.4                  # (a walk between the tombs of a long row)
             ok = 0
             for i in range(k):
                 s = a_row + hs + i * pitch
@@ -876,7 +885,7 @@ def crypt(f):
             if ok:                               # (a row a side door's way crosses is left out, the next tried)
                 heads.append((dd, a_row + k * pitch - 0.5 + 0.8))
                 rows += 1
-                d = dd - hd - 1.3
+                d = dd - hd - 1.1
             else:
                 d -= 1.0
             if rows >= 6: break
@@ -910,10 +919,14 @@ def crypt(f):
             if W - gh - 0.4 > s + gh + 0.3: sp.pair(g_t, dd, W - gh - 0.4)
     sp.bones(D / 2.0, 0.6, n=1)
     # statues of the dead (or gargoyles) in pairs along the side walls, tombstones flanking the aisle's foot
-    if W >= 6.5 and D >= 14:
+    if W >= 5.0 and D >= 10:                     # (Q1C-14: more kinds; the LOTD's own statues are its obelisks)
         st = _pick(f, _types(f, "statue", r"^Statue2[a-h]$") or {"Statue2a": 1})
-        if f.ok_type(st) and not lotd:
-            sp.pair(st, D * 0.5, W - 0.95)
+        if not lotd and f.ok_type(st):
+            for dd in (D * 0.5, D * 0.5 - 3.0, D * 0.5 + 3.0):
+                if sp.pair(st, dd, W - 0.95): break
+        elif lotd and f.ok_type("LOTDManaObelisk"):
+            for dd in (D * 0.5, D * 0.5 - 3.0):
+                if sp.pair("LOTDManaObelisk", dd, W - 0.95): break
     stones = [t for t in ("Tombstone2", "Tombstone4", "Tombstone7", "DunMirTombstone1") if f.ok_type(t)] if not lotd \
         else lotd_stones
     if stones and d > 3.2:

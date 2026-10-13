@@ -37,7 +37,7 @@ the axis (`ALTAR_AXIS`); the shell pass never reshapes the room (`SHELL_KEEP`).
   odd coordinates).
 - **The pews**: rows either side of the runner, one to three to a half-row, from three units before the altar toward the
   door every 2.5 units, the back quarter of the nave open; a row a side door's way crosses is left out on both sides. A
-  pew per 10 tiles, 16 at most (the cap rose from Westwood's 8: "needs more ... benches").
+  pew per 10 tiles, 20 at most (the cap rose from Westwood's 8: "needs more ... benches"), in more rows of fewer pews, the rows spread down a long nave up to 3.6 units apart.
 - **The columns**: a pair at the outer end of the rows at one even pitch down the whole nave (every row in a short nave,
   every other in a long one) and on past the rows to the door; in a narrow nave against the side walls.
 - **The side aisles**: statues against the side walls between the column pairs; tapestries of one colour on the back
@@ -105,7 +105,7 @@ Westwood's 1 curated campaign chapel room differ in structure, not just in detai
 | open floor | 0.62 | 0.55-0.88 |
 | pieces per tile | 0.20 | 0.08-0.35 |
 | distinct types | 7 | 8+ (6 in the Land of the Dead) |
-| caps | Wiz07F: 8 benches in 123 tiles | pews 1 per 10 tiles, at most 16; columns 1 per 16 tiles, at most 12; statues 1 per 16, at most 10; sarcophagi 2 |
+| caps | Wiz07F: 8 benches in 123 tiles | pews 1 per 10 tiles, at most 20; columns 1 per 16 tiles, at most 12; statues 1 per 16, at most 10; sarcophagi 2 |
 
 ## Size
 
