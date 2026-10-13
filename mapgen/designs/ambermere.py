@@ -40,6 +40,7 @@ The story
 import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, CELL
+from kit.setpieces import healing_well      # the well that heals (QA round 1, nox13)
 from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS, rooms_sidecar
 from kit.layout import Land, square_tile, square_px, px_square, cell_square
 from kit.water import Waterworks
@@ -221,7 +222,7 @@ for bid, b in placed:
     role = BUILDINGS[bid.role]
     for sc in role["scenes"]: vil.scene(b, sc, role=bid.role)
     if rng.random() < role["garden"]: vil.garden(b, size=(rng.randint(3, 5), rng.randint(2, 4)))
-m.obj_px("Well", *square_px(vc[0] + 0.5, vc[1] - 0.5))
+healing_well(m, *square_px(vc[0] + 0.5, vc[1] - 0.5))
 
 
 def lamp(si, sj):

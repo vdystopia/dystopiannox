@@ -43,8 +43,11 @@ class Village:
             sizes += [(w + 2, h + 1), (w + 1, h + 1)]       # (the blind judge, 2026-10-05: "token plots")
         while True:
             sizes.append((w, h))
-            if w * h <= 6: break
-            w, h = (max(3, w - 1), max(2, h - 1)) if w >= h else (max(2, w - 1), max(3, h - 1))
+            if w * h <= 15: break
+            w, h = (max(5, w - 1), max(3, h - 1)) if w >= h else (max(3, w - 1), max(5, h - 1))
+        # (never a token bed of a few plants: QA round 1, EX-GARDEN-02 "A couple random plants and items tossed
+        # together"; a garden is three squares across and five along at the least, else none)
+        sizes = [s_ for s_ in sizes if min(s_) >= 3 and max(s_) >= 5] or [(5, 3)]
         # each size with two squares of open land round it first (no crop against the wood's edge or in a pond: the
         # blind judge, 2026-10-05, "rows running into the pine edge, corn touching the tree line"), then with one; the
         # two largest sizes before any smaller one
@@ -98,126 +101,45 @@ class Village:
             if wide and not all((s_ in L.squares and s_ not in L.water) or s_ in foot for s_ in ring2): continue
             if not wide: L.taken |= {s_ for s_ in ring2 if s_ in L.squares}     # the planting keeps two squares off
             one = crop
-            crop = crop or rng.choice(CROPS)
-            pts = [(p, q) for p in range(gi, gi + w + 1) for q in range(gj - 1, gj + h)
-                   if p in (gi, gi + w) or q in (gj - 1, gj + h - 1)]
-            gap = rng.choice([p for p in pts if p[0] == gi + w // 2 or p[1] == gj - 1 + h // 2] or pts)
+            # (QA round 1, the garden, 2026-10-13: "Plants in gardens should generally grow on dirt, not grass ... use
+            # garden fences more often. Use a wider variety of objects as well. A barrel of tools ... space rows of crops
+            # out and make them even and balanced"; nox2's garden, "more or less perfect": a low wooden fence and its
+            # gate round dark earth, straight parallel rows. So: the whole plot dug earth, most behind the low fence
+            # with a gate centred on the side toward the house's door, the crops in even rows mirrored about the gate's
+            # axis (kit/yards.lay_crop_rows), the water barrel and the tool barrel either side of the way in)
+            from kit.yards import Yard, Frame, _fence_points, door_between, yard_ground, lay_crop_rows
             own_rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden:{gi},{gj}".encode()))
-            if fence == "auto": fence = "DilapidatedShort" if own_rng.random() < 0.3 else None    # Wiz03b's low fence
-            if fence and w * h < 20: fence = None          # (a little bed is never penned: its rows lost to the fence)
-            from kit.spacing import off_walls
-            fence_cells = {point_cell(p, q) for p, q in pts} if fence else set()
-            walls = dict(self.spec.wallmap); walls.update({c: {} for c in fence_cells})
-            # the beds: every other row of squares across the plot's short side, a strip of grass between; the plants
-            # in two rows along each bed (the fence's points (p, q) are drawn at square coordinates (p, q - 0.5), so
-            # the fenced ground runs gi..gi + w across i and gj - 1.5..gj + h - 1.5 across j: kit/yards Yard.centre)
-            long_i = w >= h
-            n_long, n_short = (w, h) if long_i else (h, w)
-            beds = list(range(0, n_short, 2)) if n_short > 2 else list(range(n_short))     # narrow: a row to a bed
-            rows = (0.3, 0.7) if n_short > 2 else (0.5,)
-            knot = None
-            dug = own_rng.random() < 0.4              # Westwood's beds are dug earth now and then, mostly grass
-            step_ = own_rng.choice((0.52, 0.58, 0.62, 0.62))   # the plants' spacing along a row (Wiz01A close, Con09a apart)
-            # corn and tomatoes in every garden (Westwood's five campaign gardens all grow both: Con05A, Con07B, Con09a,
-            # Wiz01A, Wiz03b; the judge, 2026-10-06: "no tomatoes"), cabbage the third bed in three of five
-            # (from the beds' own generator, the garden's draws as before: the household round it is laid as it was)
-            own_rng.sample([c for c in CROPS if c != crop], 2)
-            crop_rng = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden-crops:{gi},{gj}".encode()))
-            pair_ = ["GardenCorn", "GardenTomatos"]
-            crop_rng.shuffle(pair_)
-            third_ = "GardenCabbage" if crop_rng.random() < 0.6 else crop_rng.choice(pair_)
-            kinds = [one] * len(beds) if one else (pair_ + [third_] + pair_)[:len(beds)]
-            laid = 0
-            # the rows as a hand plants them (scene lab round 7, the judges: "bands of equal length with squared ends,
-            # sparse"; Westwood's run lengths vary widely, CV 0.5): one bed in two cut short (a third to a half of it
-            # not yet sown), each row its own ends, the plants closer and a little out of line, now and then a gap
-            # where one failed; from the rows' own generator, so the garden's other draws are as before
-            hand = _random.Random(zlib.crc32(f"{self.spec.d['name']}:garden-rows:{gi},{gj}".encode()))
-            step_h = step_ * hand.uniform(0.78, 0.9)
-            for k, kind in zip(beds, kinds):
-                for s_ in range(n_long if dug else 0):
-                    sq = (gi + s_, gj + k) if long_i else (gi + k, gj + s_)
-                    self.spec.floor[square_tile(*sq)] = "DirtDark2"
-                start, end = 0.42 + own_rng.uniform(0, 0.7), n_long - 0.42 - own_rng.uniform(0, 0.7)
-                if len(beds) > 1 and hand.random() < 0.5:            # a bed cut short at one end
-                    cut = (end - start) * hand.uniform(0.25, 0.5)
-                    if hand.random() < 0.5: start += cut
-                    else: end -= cut
-                for row in rows:
-                    s0 = start + hand.uniform(0, 0.45); e0 = end - hand.uniform(0, 0.45)
-                    n = max(2, int((e0 - s0) / step_h) + 1)
-                    drift = hand.uniform(-0.06, 0.06)                 # the row wanders a little off its line
-                    for q in range(n):
-                        a = s0 + (e0 - s0) * q / (n - 1) + own_rng.uniform(-0.04, 0.04) + hand.uniform(-0.07, 0.07)
-                        if 0 < q < n - 1 and hand.random() < 0.06: continue          # a plant that failed
-                        off = drift * (q / max(1, n - 1) - 0.5) * 2 + hand.uniform(-0.05, 0.05)
-                        si, sj = (gi + a, gj - 1.5 + k + row + off) if long_i else (gi + k + row + off, gj - 1.5 + a)
-                        x, y = square_px(si, sj)
-                        if not fence or off_walls(walls, kind, x, y, margin=12):
-                            self.spec.obj_px(kind, x, y); laid += 1
-            # the water barrel at a path's end, a spade left in the ground at the other
-            path = beds[0] + 1 if n_short > 2 else None
-            if path is not None and path < n_short:
-                # (no spade: Westwood's gardens keep no tools, the judge 2026-10-06; the draws kept)
-                ends = [(0.35, "WaterBarrel", 0.85), (n_long - 0.35, "MiningShovelInGround", 0.0)]
-                if own_rng.random() < 0.5: ends = [(n_long - 0.35, "WaterBarrel", 0.85), (0.35, "MiningShovelInGround", 0.0)]
-                for a, t, p in ends:
-                    if own_rng.random() >= p: continue
-                    a += own_rng.uniform(-0.15, 0.25) * (1 if a > 1 else -1)        # set down, not on a mark
-                    si, sj = (gi + a, gj - 1.5 + path + 0.5 + own_rng.uniform(-0.2, 0.2)) if long_i else                         (gi + path + 0.5 + own_rng.uniform(-0.2, 0.2), gj - 1.5 + a)
-                    x, y = square_px(si, sj)
-                    if not fence or off_walls(walls, t, x, y, margin=6):
-                        self.spec.obj_px(t, x, y)
-                        knot = (x, y)
-            elif own_rng.random() < 0.85:              # a narrow plot: the barrel beside the bed's end, off the rows
-                si, sj = (gi + n_long + 0.35, gj - 1.5 + n_short / 2) if long_i else (gi + n_short / 2, gj - 1.5 + n_long + 0.35)
-                x, y = square_px(si, sj)
-                if not fence:
-                    self.spec.obj_px("WaterBarrel", x, y)
-                    knot = (x, y)
-            # the household round it (Westwood's gardens come with a crate of the crop, sacks, barrels: Con05A, Con09a):
-            # a crate, a barrel or a sack on the long side now and then (flowers beyond a bed's end stood where a
-            # townsman's walk stops to tend it: Ambermere, routes.facing)
-            if knot and not fence and own_rng.random() < 0.6:
-                # the household's goods in a knot by the water barrel (the judge: "barrels, apple crates, a sack ...
-                # each alone round the beds instead of a knot at one corner")
-                gc_ = square_px(gi + w / 2, gj - 1.5 + h / 2)
-                ox_, oy_ = knot[0] - gc_[0], knot[1] - gc_[1]
-                L_ = math.hypot(ox_, oy_) or 1
-                ox_, oy_ = ox_ / L_, oy_ / L_
-                from kit import spacing as SP_
-                members = [("WaterBarrel", knot[0], knot[1])]
-                for t in own_rng.sample(("Barrel", "TraderAppleCrate", "SackChestLarge1", "TraderAppleCrate"),
-                                        own_rng.randint(1, 3)):
-                    for a_ in (0.0, 1.1, -1.1, 2.0, -2.0):          # each its Westwood gap from the knot's others
-                        r_ = SP_.gap("WaterBarrel", t) + 2
-                        x_ = knot[0] + r_ * (ox_ * math.cos(a_) - oy_ * math.sin(a_))
-                        y_ = knot[1] + r_ * (ox_ * math.sin(a_) + oy_ * math.cos(a_))
-                        sq_ = px_square(x_, y_)          # (on open ground: a knot's crate had stood on a house's floor)
-                        if sq_ not in self.land.squares or sq_ in self.land.taken_strict or sq_ in self.land.water or \
-                                not SP_.off_walls(self.spec.wallmap, t, x_, y_, margin=6):
-                            continue
-                        if SP_.spaced(t, x_, y_, members):
-                            self.spec.obj_px(t, x_, y_); members.append((t, x_, y_)); break
-            if own_rng.random() < 0.0 and not fence:         # (the lone goods on a long side: now the knot above)
-                u_ = n_long * own_rng.uniform(0.35, 0.65)                  # mid-way along a long side, off the ends
-                # on the long side away from the house (the blind judge, 2026-10-06: "a sack leaning on a cabin corner")
-                hi_ = sum(i for i, _ in foot) / len(foot); hj_ = sum(j for _, j in foot) / len(foot)
-                if long_i:
-                    far_ = gj - 1.5 - 0.45 if hj_ > gj + h / 2 else gj - 1.5 + n_short + 0.45
-                    si, sj = gi + u_, far_
-                else:
-                    far_ = gi - 0.45 if hi_ > gi + w / 2 else gi + n_short + 0.45
-                    si, sj = far_, gj - 1.5 + u_
-                self.spec.obj_px(own_rng.choice(("TraderAppleCrate", "Barrel", "SackChestLarge1")), *square_px(si, sj))
-            if fence:                                # a low fence round it, a gap for the gardener
-                for p in pts:
-                    if p == gap: continue
-                    x, y = point_cell(*p)
-                    if (x, y) not in self.spec.wallmap: self.spec.wall(x, y, fence)
+            if fence == "auto": fence = "DilapidatedShort" if own_rng.random() < 0.75 else None
+            if fence and w * h < 12: fence = None          # (a little bed is never penned: its rows lost to the fence)
+            if w % 2 == 0 and h % 2 == 0:                  # (a side of odd length for the gate, centred)
+                if w > h: w -= 1
+                else: h -= 1
+            doors_ = [px_square(*d.px) for d in building.entrances] or [((i0 + i1) / 2, (j0 + j1) / 2)]
+            mids = {"i0": (gi, gj - 1 + h / 2), "i1": (gi + w, gj - 1 + h / 2),
+                    "j0": (gi + w / 2, gj - 1), "j1": (gi + w / 2, gj + h - 1)}
+            odd = [s_ for s_ in mids if (w if s_ in ("j0", "j1") else h) % 2 == 1]
+            # never the side against the house's wall (its gate would open onto the wall)
+            far_ = [s_ for s_ in odd if min(abs(mids[s_][0] - (i + 0.5)) + abs(mids[s_][1] - (j - 0.5)) for i, j in foot) > 1.6]
+            side = min(far_ or odd, key=lambda s_: min(math.hypot(mids[s_][0] - d[0], mids[s_][1] - d[1]) for d in doors_))
+            y_ = Yard("garden", gi, gj, w, h, side)
+            pts_ = _fence_points(y_)
+            if fence:
+                for side_, ps in pts_.items():
+                    for p in ps:
+                        x, y = point_cell(*p)
+                        if (x, y) not in self.spec.wallmap: self.spec.wall(x, y, fence)
+            ps = pts_[side]
+            k_ = len(ps) // 2
+            if fence: door_between(self.spec, None, ps[k_ - 1], ps[k_])
+            y_.gate_mid = ((ps[k_ - 1][0] + ps[k_][0]) / 2, (ps[k_ - 1][1] + ps[k_][1]) / 2 - 0.5)
+            fr = Frame(y_)
+            for s_ in yard_ground(y_, L):                  # the whole plot dug earth, to the fence on every side
+                self.spec.floor[square_tile(*s_)] = "DirtDark2"
+            laid = lay_crop_rows(self.spec, fr, own_rng, walk=fr.half >= 3.4, crops=(one,) if one else None)
             self.used |= ring
             L.taken |= ring
-            if laid: self._household(building, foot, gi, gj, w, h, long_i, own_rng)
+            self.gardens = getattr(self, "gardens", []) + [y_]
+            if laid: self._household(building, foot, gi, gj, w, h, w >= h, own_rng)
             return laid > 0
         return False
 
@@ -250,14 +172,17 @@ class Village:
             self.used.add(s_); L.taken.add(s_)
         free = lambda s_, r: ok(s_) and all(abs(s_[0] - t[0]) > r or abs(s_[1] - t[1]) > r for t in taken)
         # the apple trees at the end of the beds away from the house, a crate of apples under one
-        if rng.random() < 0.5:
+        # (QA round 1, the farmyard: "An apple tree with apples on the ground (the item that players can pick up)":
+        # an apple tree, TreeApple, with RedApples fallen under it, in most households now)
+        if rng.random() < 0.7:
+            from kit.setpieces import apple_tree
             ends = sorted((s_ for s_ in band if free(s_, 1)), key=lambda s_: -far(s_))
             trees = []
             for s_ in ends[:40]:
                 if len(trees) >= rng.choice((1, 2, 2)): break
                 if all(abs(s_[0] - t[0]) + abs(s_[1] - t[1]) >= 3 for t in trees) and \
                         all((s_[0] + a, s_[1] + b) not in ring for a in (-1, 0, 1) for b in (-1, 0, 1)):
-                    put_at(rng.choice(("TreeForest11", "TreeForest12")), s_, rng.uniform(-0.1, 0.1), rng.uniform(-0.1, 0.1))
+                    apple_tree(self.spec, *square_px(s_[0] + 0.5, s_[1] - 0.5), rng)
                     trees.append(s_); take(s_)
             for t_ in trees[:1]:
                 for a, b in ((1, 0), (0, 1), (-1, 0), (0, -1)):
@@ -370,6 +295,17 @@ class Village:
         benches on the four sides facing the centre, `per_side` to a side, and four lights on the
         diagonals, all symmetric. `pole(si, sj)` places a light (e.g. a torch pole with its glow)."""
         ci, cj = centre
+        # a second ring of cobblestone right round the well, the middle of the square (QA round 1, nox13: "This town
+        # square is excellent ... add a second layer of cobblestone immediately around the well"): the three by three
+        # squares round the centre's square in grey cobbles (setpieces.PAD) set in the square's RoughCobble with a
+        # brick kerb (BrickEdgeBrown, Westwood's edge between its two cobbles)
+        from kit.setpieces import ensure_blends, PAD
+        ensure_blends(self.spec)
+        c0 = (int(math.floor(ci)), int(math.floor(cj)) + 1)
+        for a in (-1, 0, 1):
+            for b in (-1, 0, 1):
+                s_ = (c0[0] + a, c0[1] + b)
+                if s_ in self.land.squares: self.spec.floor[square_tile(*s_)] = PAD
         d_bench = 0.68 * r_squares                     # benches inside the paving, facing in
         spread = (0.0,) if per_side == 1 else (-0.75, 0.75)
         for (du, dv), face in (((-1, 0), "+u"), ((1, 0), "-u"), ((0, -1), "+v"), ((0, 1), "-v")):

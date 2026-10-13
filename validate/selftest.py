@@ -418,6 +418,81 @@ def person_in_the_way(m):
     Population(m, random.Random(2)).creature("Maiden", *px(190, -20.3), action="guard", scr="Ida", aggr=0.0)
 
 
+# ---- QA round 1's set pieces (review/qa1/setpieces.md, Q1X; validate/checks.py setpiece_faults) ---------------------
+def _sqobj(m, t, si, sj, **extra):
+    from kit.layout import square_px
+    return m.obj_px(t, *square_px(si, sj), **extra)
+
+
+def plain_well(m): m.obj("Well", 190, -30)                    # Q1X-4: a well that does not heal
+
+
+def bare_well(m): _sqobj(m, "WishingWell", 95.5, -15.5, scr="HealWell1")   # Q1X-5: a well alone on the grass
+
+
+def scattered_graves(m):
+    for a, b in ((0, 0), (1.6, 0.7), (2.9, -0.4), (0.8, 2.1), (2.4, 1.6), (3.7, 1.2)):   # Q1X-8: graves at random
+        _sqobj(m, "Tombstone1", 115.5 + a, -15.5 + b)
+
+
+def graves_alone(m):
+    for a in (0, 2, 4, 6):                                     # Q1X-11: graves in rows, mirrored, and nothing else
+        for b in (0, 2):
+            _sqobj(m, "Tombstone1", 113.5 + a, -15.5 + b)
+
+
+def path_off_gate(m):
+    # Q1X-10 (EX-GRAVEYARD-10, nox7): an iron fence with its gate centred on its side, the cobbled path through it a
+    # square off the gate's middle
+    from kit import yards as Y
+    from kit.layout import point_cell, square_tile
+    y = Y.Yard("graveyard", 92, -17, 5, 5, "j0")
+    for side, ps in Y._fence_points(y).items():
+        for p in ps: m.wall(*point_cell(*p), "IronFence")
+    ps = Y._fence_points(y)["j0"]
+    Y.door_between(m, "Gate", ps[2], ps[3])                    # its middle at i = 94.5
+    for i in (94, 95, 96):                                     # the path's middle at 95.5
+        for j in (-19, -18, -17, -16, -15):
+            m.floor[square_tile(i, j)] = "RoughCobble"
+
+
+def crops_on_grass(m):
+    for r in (0, 1.2):                                         # Q1X-13: even rows of crops on the meadow's grass
+        for k in range(5): _sqobj(m, "GardenCorn", 113.5 + 0.7 * k, -15.5 + r)
+
+
+def crops_scattered(m):
+    from kit.layout import square_tile
+    for i in range(112, 118):
+        for j in range(-17, -12): m.floor[square_tile(i, j)] = "DirtDark2"
+    for a, b in ((0, 0), (0.9, 0.3), (1.5, -0.4), (2.6, 0.2), (0.4, 1.3), (1.7, 1.0), (2.2, 1.9), (3.1, 1.4)):
+        _sqobj(m, "GardenTomatos", 113.2 + a, -15.8 + b)      # Q1X-14: crops strewn, not in rows
+
+
+def _yard_rec(kind, side, gate, i0, i1, j0, j1):
+    tiles = [[i + j, i - j] for i in range(i0, i1) for j in range(j0, j1)]
+    return dict(number=2, building="", kind=kind, purpose="", tiles=len(tiles), box=[0, 0, 0, 0], yard=True,
+                floor=tiles, side=side, gate=gate)
+
+
+def shrine_of_one_kind(m):
+    # Q1X-1: a shrine court of mana obelisks and nothing else
+    _declare(m, "bedroom", [_yard_rec("shrine", "j0", [114.5, -18.5], 112, 117, -18, -12)])
+    for a in (-2, 2):
+        for b in (1, 4): _sqobj(m, "Obelisk", 114.5 + a, -18.5 + b)
+
+
+def lopsided_well(m):
+    # Q1X-2: a well yard whose barrels and bench all stand on one side of its axis
+    _declare(m, "bedroom", [_yard_rec("well", "j0", [114.5, -18.5], 112, 117, -18, -12)])
+    _sqobj(m, "WishingWell", 114.5, -16.0, scr="HealWell1")
+    for t, a, b in (("WaterBarrel", 1.4, 2.5), ("Barrel", 1.6, 3.6), ("BarrelWithTools1", 2.0, 1.4), ("Bench1", 1.5, 4.4)):
+        _sqobj(m, t, 114.5 + a, -18.5 + b)
+    from kit.layout import square_tile
+    for i in range(113, 117):
+        for j in range(-18, -13): m.floor[square_tile(i, j)] = "CobblestoneGrayLight"
+
+
 # ---- the object knowledge base (Harrowby playtest, HB-1..HB-5; validate/checks.py check_pieces) ------------------------
 def two_cauldrons(m):
     for u, v in ((206, -6), (214, 3)): m.obj("CauldronAnimated", u, v)          # HB-1: "Why are there two cauldrons?"
@@ -654,6 +729,15 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STroll", lone_bedroll, "exterior", "warning", "a bedroll alone in the open - GW-4", "alone in the open"),
     ("STheap", heap_of_crates, "exterior", "warning", "a heap of crates and barrels with no purpose - GW-2", "heaped"),
     ("STgrave", empty_graveyard, "exterior", "warning", "a graveyard of one headstone - SW-9", "graveyard"),
+    ("STwellh", plain_well, "exterior", "warning", "a Well that does not heal - Q1X-4", "not the healing well"),
+    ("STwellf", bare_well, "exterior", "warning", "a well alone on the grass - Q1X-5", "not a feature"),
+    ("STgrows", scattered_graves, "exterior", "warning", "six headstones at random - Q1X-8", "in rows"),
+    ("STgvar", graves_alone, "exterior", "warning", "graves in rows and nothing else - Q1X-11", "has graves and"),
+    ("STgatep", path_off_gate, "exterior", "warning", "a cobbled path a square off its gate - Q1X-10", "off the gate"),
+    ("STcropg", crops_on_grass, "exterior", "warning", "crops growing in grass - Q1X-13", "grow in grass"),
+    ("STcropr", crops_scattered, "exterior", "warning", "crops strewn, not in rows - Q1X-14", "straight rows"),
+    ("STsetv", shrine_of_one_kind, "exterior", "warning", "a shrine of obelisks alone - Q1X-1", "a set piece is never"),
+    ("STsetm", lopsided_well, "exterior", "warning", "a well yard with everything on one side - Q1X-2", "mirrored about"),
     ("STmpobj", mp_object, "setup", "warning", "an arena's crown in a single-player map", "Multiplayer-only"),
     ("STcram", crammed_room, "rooms", "warning", "a declared room furnished past its cover - DysVale playtest", "crammed"),
     ("STtabl", tavern_tables, "identity", "warning", "a tavern of 30 tables - TW-8", "free-standing tables"),

@@ -21,8 +21,9 @@ exit, the start, a creature or a waypoint route, and never cut the walkable grou
 the dressing draws from its own generator (zlib.crc32 of the map's name), so the rest of the map is unchanged.
 """
 import collections, math, os, random, re, sqlite3, zlib
-from kit.layout import N4, N8, square_px, px_square, cell_square
+from kit.layout import N4, N8, square_px, px_square, cell_square, square_tile
 from kit import scenes as S
+from kit import setpieces as SETP
 from kit import spacing as SP
 from nox import CELL
 
@@ -485,11 +486,20 @@ class Exterior:
         if self._cuts(F):
             why[(th.name, "cuts")] += 1; return None
         for t, x, y in plan:
-            spec.obj_px(t, x, y)
+            if t == SETP.HEAL_WELL: SETP.healing_well(spec, x, y)        # (named for the healing script, QA round 1)
+            else: spec.obj_px(t, x, y)
             self.cgrid[(int(x // 92), int(y // 92))].append((x, y))
             self.tgrid[(int(x // 92), int(y // 92))].append((t, x, y))
         self._typed = []
         self.walk -= F
+        if th.pave:                                # a well's pad of cobblestone under it (QA round 1)
+            SETP.ensure_blends(spec)
+            si, sj = px_square(ox, oy)
+            for a in range(-th.pave, th.pave + 1):
+                for b in range(-th.pave, th.pave + 1):
+                    sq = (si + a, sj + b)
+                    if sq in self.land.squares and sq not in self.land.roads and sq not in self.land.water:
+                        spec.floor[square_tile(*sq)] = SETP.PAD
         if th.keep_layout: self.__dict__.get("_kept_layout", {}).pop(th.name, None)
         return plan
 

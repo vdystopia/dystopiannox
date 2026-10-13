@@ -309,6 +309,12 @@ def generate(scene, n=10, seed=1, out_dir=None, name="SceneLab", log=print):
     m.obj_px("PlayerStart", *square_px(plots[0].c[0], plots[0].c[1] - plots[0].r + 2))
     if ctx.get("pop"): m.scripts.update(ctx["pop"].behaviours.files(m.d["name"]))
     lines = m.build(out_dir, check=False)
+    # the yards as a map declares them (<map>.rooms.json): the checker reads a yard's kind and axis from it (QA round 1)
+    from kit.identity import rooms_sidecar
+    ys = []
+    for v_ in (ctx.get("yards") or {}).values():
+        ys += [y_ for y_ in (v_ if isinstance(v_, (list, tuple)) else [v_]) if getattr(y_, "gate_mid", None)]
+    rooms_sidecar([], os.path.join(out_dir, name + ".rooms.json"), yards=ys)
     bad = [l for l in lines if l.startswith("ERROR")]
     if bad: log("\n".join(bad[:10]))
     variants = []

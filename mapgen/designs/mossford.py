@@ -11,6 +11,7 @@ Single player only: map type Solo, one PlayerStart, no teams/crowns/flags, no .n
 import math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, CELL, uv_to_xy, px, rect_wall_cells, rect_tiles
+from kit.setpieces import healing_well      # the well that heals (QA round 1, nox13)
 
 DONOR = r"C:\GOG Games\Nox\maps\con07b\Con07B.map"
 rng = random.Random(7)
@@ -187,7 +188,7 @@ for h in HOUSES:
 
 # ---------------------------------------------------------------- town features
 pu, pv, pr = PLAZA
-m.obj("Well", pu, pv)
+healing_well(m, *px(pu, pv))
 m.obj("TorchPole", pu + 6, pv + 6); m.obj("TorchPole", pu - 6, pv - 6)
 m.obj("Bench5", pu - 6, pv + 5); m.obj("Bench5", pu + 6, pv - 5)
 m.obj("FlowersYellowDense", pu + 7, pv - 1); m.obj("FlowersPurpleDense", pu - 7, pv + 1)
