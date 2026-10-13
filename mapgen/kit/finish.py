@@ -1219,10 +1219,159 @@ def lay_band(f, rng):
     return SH.lay_patch(spec, room, tiles, rng.choice(mats))
 
 
+# ---- conservatory (Q1R-14), composed whole --------------------------------------------------------------------------
+GARDEN_GROUND = "GrassNorm"
+GARDEN_BED = "DirtDark2"
+GARDEN_PAVING = ("CobbleStone", "RoughCobble")
+CROPS = ("GardenCorn", "GardenTomatos", "GardenCabbage")
+CONS_PLANTS = r"^(Plant[1-5]|Plant2Flowered|PlantFern[1-4])$"
+APPLE_TREES = ("TreeApple",)
+
+
+def force_put(f, t, u, v, blocking=True):
+    """A piece placed where its footprint fits (the doors' ways, the room's walls and the pieces already there), the
+    object knowledge base's caps aside (a second fountain set as a symmetric pair)."""
+    if not f.ok_type(t): return None
+    hu, hv = f.half(t)
+    if not f.g.fits(u, v, hu, hv, blocking, False, 0.1): return None
+    return f.put(t, u, v, blocking)
+
+
+def _conservatory(f, rng):
+    """A garden indoors (QA round 1: "Make the floors grass/dirt/outdoor. Occasionally include small patches of
+    cobblestone or tile floor in sections with proper borders. Make sure plants are situated on dirt or grass ...
+    Limit these rooms to a maximum of one well. When there are multiple fountains, organize them so that they have a
+    balanced, symmetrical layout ... Add some different trees, especially apple trees with apples on the ground ...
+    occasional rows of crops ... barrels of tools ... a few crates and barrels rarely. Make sure benches are against the
+    walls"). The floor grass; beds of dirt along the NE and NW walls planted in clumps; the fountain in the middle (two,
+    mirrored along the room's length, in a big one; or the one well), now and then on a bordered square of paving;
+    benches against the long walls facing each fountain; apple trees in the side corners on their own dirt, apples
+    fallen round them; in a larger room two beds of crops mirrored at its ends; a barrel of tools by the beds."""
+    from kit import shells as SH
+    spec, room = f.spec, f.room
+    tiles_all = sorted(room.tiles)
+    sq = {((x + y) // 2, (x - y) // 2) for (x, y) in tiles_all}
+    tile = lambda s: (s[0] + s[1], s[0] - s[1])
+    gaps = [d.gap for d in room.doors]
+    near_door = lambda t, k=3: any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= k for g in gaps)
+    # the ground
+    for t in tiles_all:
+        spec.tile(*t, GARDEN_GROUND)
+        if hasattr(spec, "indoor"): spec.indoor[t] = GARDEN_GROUND
+    room.floor = GARDEN_GROUND
+    u0, u1, v0, v1 = box(f)
+    long_u = (u1 - u0) >= (v1 - v0)
+    cu, cv = (u0 + u1) / 2, (v0 + v1) / 2
+    L = (u1 - u0) if long_u else (v1 - v0)
+    n_tiles = len(tiles_all)
+    # the fountains (or the one well), symmetric
+    two = n_tiles >= 140 and rng.random() < 0.6
+    spots = [(cu - L / 4, cv), (cu + L / 4, cv)] if two and long_u else \
+        [(cu, cv - L / 4), (cu, cv + L / 4)] if two else [(cu, cv)]
+    feat = "WishingWell" if (not two and rng.random() < 0.25 and f.ok_type("WishingWell")) else "Fountain"
+    placed_f = [force_put(f, feat, u, v) for u, v in spots]
+    if not all(placed_f):
+        remove(f, [o for o in placed_f if o])
+        spots = [(cu, cv)]
+        placed_f = [force_put(f, feat, cu, cv)]
+        for alt in ("WishingWell", "Well"):              # a narrow room: the well, which takes less floor
+            if placed_f[0]: break
+            placed_f = [force_put(f, alt, cu, cv)]
+    feats = [f._placed_of[id(o)] for o in placed_f if o]
+    pave = rng.random() < 0.4
+    for rec in feats if pave else ():                  # a square of paving under it, bordered
+        i, j = round((rec[0] - 2) / 2), round(rec[1] / 2)
+        ps = {(i + a, j + b) for a in (-1, 0, 1) for b in (-1, 0, 1)} & sq
+        ts = {tile(s) for s in ps if not near_door(tile(s))}
+        SH.lay_patch(spec, room, ts, rng.choice(GARDEN_PAVING), edge="BlendEdge")
+    # apple trees in the side corners, on their own dirt, apples fallen round them
+    trees = [t for t in APPLE_TREES if f.ok_type(t)]
+    if trees and n_tiles >= 60:
+        pts = corner_points(f, 2.6)
+        side = ("W", "E")
+        got = []
+        for k in side:
+            tu, tv = pts[k]
+            if not f.g.inside(tu, tv) or not _no_door(f, tu, tv, 3.5): continue
+            o = force_put(f, trees[0], tu, tv)
+            if not o: continue
+            got.append((tu, tv))
+            i, j = round((tu - 2) / 2), round(tv / 2)
+            ts = {tile((i + a, j + b)) for a in (0, -1, 1) for b in (0, -1, 1) if (i + a, j + b) in sq and abs(a) + abs(b) <= 1}
+            SH.lay_patch(spec, room, {t for t in ts if not near_door(t)}, GARDEN_BED, edge="BlendEdge")
+            for n in range(rng.choice((2, 3))):
+                ang = rng.uniform(0, 2 * math.pi); rad = rng.uniform(1.3, 1.8)
+                put(f, "RedApple", tu + rad * math.cos(ang), tv + rad * math.sin(ang), blocking=False)
+    # beds of dirt along the back walls, planted in clumps
+    beds = set()
+    for s in sq:
+        ne = (s[0], s[1] + 1) not in sq
+        nw = (s[0] - 1, s[1]) not in sq
+        if (ne or nw) and not near_door(tile(s)): beds.add(s)
+    plants = _types(f, CONS_PLANTS) or ["Plant1"]
+    for s in sorted(beds):
+        spec.tile(*tile(s), GARDEN_BED)
+    SH.lay_patch(spec, room, {tile(s) for s in beds}, GARDEN_BED, edge="BlendEdge")
+    # the plants in clumps along the beds, a step off the wall, gaps between the clumps
+    pblock = F._family_of(plants[0]) in F._blocking()
+    for r in f.g.runs:
+        if r["side"] not in BACK: continue
+        a = r["lo"] + 1.0 + 1.2
+        while a < r["hi"] - 1.0 - 1.0:
+            uu, vv = uv_on(r, 1.0, a)
+            if _no_door(f, uu, vv, 3.2):
+                for _ in range(rng.choice((2, 3, 3))):
+                    force_put(f, rng.choice(plants), *uv_on(r, rng.uniform(0.7, 1.4), a + rng.uniform(-0.5, 0.5)),
+                              blocking=pblock)
+            a += rng.uniform(2.0, 2.6)
+    # benches against the long walls, facing each fountain
+    for (fu, fv) in spots:
+        for r in f.g.runs:
+            if r["line"] != ("\\" if long_u else "/"): continue
+            a = fu if long_u else fv
+            if not r["lo"] + 1.5 <= a <= r["hi"] - 1.5: continue
+            bt = f.along_variant("Bench1", r["side"]) or f.along_variant("Bench2", r["side"])
+            if not bt: continue
+            hp = halves_on(r, (0, 0) + f.half(bt))[1]
+            d = hp + 0.3 + (1.9 if r["side"] in BACK else 0.0)      # (before the bed of dirt on a back wall)
+            put(f, bt, *uv_on(r, d, a))
+    # two beds of crops mirrored at the room's ends (a larger room with one fountain)
+    if not two and n_tiles >= 90:
+        for sgn in (-1, 1):
+            if long_u:
+                ci = round(((cu + sgn * L * 0.32) - 2) / 2)
+                js = sorted(j for (i, j) in sq if i == ci)
+                if not js: continue
+                rows = [(ci + d, js[0] + 2, js[-1] - 2) for d in (-1, 1)]
+            else:
+                cj = round((cv + sgn * L * 0.32) / 2)
+                is_ = sorted(i for (i, j) in sq if j == cj)
+                if not is_: continue
+                rows = [(cj + d, is_[0] + 2, is_[-1] - 2) for d in (-1, 1)]
+            crop = rng.choice(CROPS)
+            for c, lo, hi in rows:
+                if hi - lo < 2: continue
+                row_sq = [(c, x) if long_u else (x, c) for x in range(lo, hi + 1)]
+                row_sq = [s for s in row_sq if s in sq and not near_door(tile(s)) and
+                          clear_at(f, 2 * s[0] + 2, 2 * s[1], 0.6)]
+                if len(row_sq) < 3: continue
+                SH.lay_patch(spec, room, {tile(s) for s in row_sq}, GARDEN_BED, edge="BlendEdge")
+                for s in row_sq:
+                    bu, bv = 2 * s[0] + 2, 2 * s[1]
+                    for off in (-0.5, 0.5):
+                        pu, pv = (bu, bv + off) if long_u else (bu + off, bv)
+                        put(f, crop, pu, pv, blocking=False)
+    # a barrel of tools by the beds, now and then a crate or a barrel
+    tools = _types(f, r"^BarrelWithTools[12]$")
+    extra = _types(f, r"^(Barrel|Crate1|Crate2|WaterBarrel)$")
+    fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, tools, 1)] +
+                 ([lambda u, v: knot(f, rng, u, v, extra, 1)] if rng.random() < 0.35 else []), inset=1.3, rad=1.2)
+
+
 # ---- dispatch ------------------------------------------------------------------------------------------------------
 PASSES = {"bedroom": _bedroom, "barracks": _barracks, "ogre_den": _ogre_den, "cell": _cell, "ogre_pen": _ogre_pen,
           "cellar": _cellar, "gear_store": _gear_store, "great_hall": _great_hall}
-COMPOSERS = {}
+COMPOSERS = {"conservatory": _conservatory}
 
 
 def finish(f):

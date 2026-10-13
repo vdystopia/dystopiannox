@@ -624,7 +624,8 @@ TYPES.update({
         focal=None,                    # the fountain or the well where the room has the floor for it (24+ tiles open)
         must={"plant": 6, "bench": 1}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
                                               "counter_shop", "shop_rack", "straw", "tomb", "shelves", "fireplace"),
-        never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
+        # (QA round 1, Q1R-14: barrels of tools, now and then a crate or a barrel, are a garden's)
+        never_types=r"PowderBarrel|Sack|^Bookcase|Trophy",
         walls=dict(back="plants massed along the back walls", other_back="plants; a pair of columns",
                    front="plants in the corners", middle="the fountain or the well, benches facing it, clumps of plants "
                                                          "with paths between"),

@@ -1313,12 +1313,17 @@ ROOMS = {
                          purpose="a garden room: the fountain or the well in the middle with benches facing it, plants "
                                  "massed along the back walls and in clumps on the floor with paths between, a pair of "
                                  "statues, plants in every corner",
+                         # (QA round 1, Q1R-14: composed whole by kit/finish.py _conservatory: a garden on grass and dirt,
+                         # apple trees, crops, barrels of tools; these are the pieces it may hold)
                          core={"plant": (6, 40), "bench": (1, 4)},
-                         optional={"feature": (1.0, 1), "statue": (0.6, 4)},
+                         optional={"feature": (1.0, 2), "statue": (0.6, 4), "storage": (0.0, 2), "clutter": (0.0, 8)},
                          types={"plant": r"^Plant[1-5]$|^Plant2Flowered$|^PlantFern[1-4]$", "bench": r"^Bench[1-4]$|^LightBench\d$",
-                                "feature": r"^Fountain$|^WishingWell$", "statue": r"^Statue2[aceg]$"},
+                                "feature": r"^Fountain$|^WishingWell$", "statue": r"^Statue2[aceg]$",
+                                "storage": r"^BarrelWithTools[12]$|^Barrel$|^Crate[12]$|^WaterBarrel$",
+                                "clutter": r"^TreeApple$|^RedApple$"},
                          prefer={"plant": {"Plant4": 3, "Plant5": 3, "Plant3": 2, "Plant1": 1, "Plant2Flowered": 1,
-                                           "PlantFern2": 1}, "feature": {"Fountain": 2, "WishingWell": 1}},
+                                           "PlantFern2": 1}, "feature": {"Fountain": 2, "WishingWell": 1},
+                                 "crops": {"GardenCorn": 1, "GardenTomatos": 1, "GardenCabbage": 1, "TreeApple": 1}},
                          top_up=("plant",),
                          compose=[dict(fam="feature", slot="center"),
                                   dict(fam="bench", slot="center", n=2),
