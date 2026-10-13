@@ -2186,7 +2186,7 @@ def piece_flags(m, r, kind):
         # (a chamber of 45 tiles or more, as the checker counts them, may keep a desk and one table set: kit/furnish.py
         # BEDROOM_DESK_AND_TABLE, Q1R-5)
         kinds = collections.Counter(cat[id(o)] for o in sets)
-        if (len(sets) > 1 and tiles < 45) or max(kinds.values(), default=0) > 1:
+        if (len(sets) > 1 and tiles < 40) or max(kinds.values(), default=0) > 1:
             flags.append(("sets", f"{len(sets)} tables and desks", sets[0]))
     # clearances the playtest set (a bed or a chest by a fire, a bench by a bed, two statues side by side)
     seen = set()
@@ -2323,6 +2323,40 @@ def qa1_fullness(m, r, rtype=None):
     return dict(tiles=tiles, cover=round(room_coverage(m, r), 3), pieces=len(pcs), kinds=len(kinds), floor=floor)
 
 
+QA1_RUG_DESIGN = {"RedRug1": "a", "RedRug2": "a", "RedRug3": "b", "RedRug4": "b"}   # one design drawn two ways round
+BEDROOM_ZONES = ((40, 8), (80, 11))     # (tiles as counted here, visible kinds) from which a bedroom needs the work and
+                                        # storage zones, then the hearth (the coordinator's round 3, Q1R-23)
+
+
+def bedroom_zones(m, objs, tiles, kinds):
+    """What a bedroom of its size lacks (round 3): a seating group (a table with two chairs drawn up, two benches or two
+    chairs facing each other; a closet under 16 tiles keeps its desk chair), from 40 tiles a work zone (a desk) and a storage zone (a second chest, a clothes rack, a barrel
+    or a crate), from 80 a hearth; 8 visible kinds from 40 tiles, 11 from 80; no rug design or table set repeated."""
+    out = []
+    of = lambda rx: [o for o in objs if re.match(rx, o["type"])]
+    near = lambda a, b, d: _edge(a, b) < d
+    tables = of(r"^(Table\d|RoundTable\d|SquareTable\d|OvalTable\d|SmallTable\d)$")
+    chairs = of(r".*(Chair|Stool)\d*$")
+    benches = of(r"^(Bench\d|LightBench\d|CushionedBench\d)$")
+    close = lambda xs, d: any(a is not b and math.hypot(uv_of(a)[0] - uv_of(b)[0], uv_of(a)[1] - uv_of(b)[1]) < d
+                              for a in xs for b in xs)
+    seated = any(sum(1 for c in chairs if near(t, c, 0.8)) >= 2 for t in tables) or close(benches, 4.0) or \
+        close([c for c in chairs if not any(near(t, c, 0.8) for t in tables + of(r"^Desk\d$"))], 2.4)
+    if not seated and tiles >= 16: out.append("no seating group (a table with two chairs, two benches or two chairs facing)")
+    if tiles >= BEDROOM_ZONES[0][0]:
+        if not of(r"^Desk\d$"): out.append("no work zone (a desk)")
+        if len(of(QA1_CHEST.pattern)) < 2 and not of(r"^(TraderClothesRack\d|Barrel\d?|Crate\d|WaterBarrel)$"):
+            out.append("no storage zone (a second chest, a clothes rack, a barrel)")
+        if kinds < BEDROOM_ZONES[0][1]: out.append(f"{kinds} kinds (a bedroom of {tiles} tiles asks {BEDROOM_ZONES[0][1]})")
+    if tiles >= BEDROOM_ZONES[1][0]:
+        if not of(r"^Fireplace\d$"): out.append("no third zone (a hearth)")
+        if kinds < BEDROOM_ZONES[1][1]: out.append(f"{kinds} kinds (a bedroom of {tiles} tiles asks {BEDROOM_ZONES[1][1]})")
+    rugs = [QA1_RUG_DESIGN.get(o["type"], o["type"]) for o in of(r"^(RedRug\d|BearskinRug\d)$")]
+    if len(rugs) > len(set(rugs)): out.append("one rug repeated")
+    if len(tables) > len({o["type"] for o in tables}): out.append("one table set repeated")
+    return out
+
+
 def qa1_flags(m, r, kind):
     """What QA round 1's room rules fault in one room: (rule, text, object). Shared by check_qa1_rooms and the labs."""
     from kit.roomtypes import KIND_TYPE
@@ -2357,6 +2391,7 @@ def qa1_flags(m, r, kind):
     fu = qa1_fullness(m, r, rtype)
     if fu["floor"]:
         short = [f"{fu[k]} {k} (its type and size ask {fu['floor'][k]})" for k in ("kinds", "pieces") if fu[k] < fu["floor"][k]]
+        if rtype == "bedroom": short += bedroom_zones(m, objs, tiles, fu["kinds"])
         if short: flags.append(("fullness", "too empty: " + ", ".join(short), None))
     # a dead S corner
     if rtype in SOUTH_TYPES and tiles >= 30:

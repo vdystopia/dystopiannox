@@ -316,7 +316,7 @@ ORDER = ["rug", "counter_shop", "counter_bar", "bed", "fireplace", "stove", "smi
          "shelves", "shop_rack", "lab", "table", "bench", "chair", "nightstand", "storage", "straw", "statue",
          "column", "plant", "wall_decor", "clutter"]
 NON_BLOCKING = {"rug", "wall_decor"}
-BEDROOM_DESK_AND_TABLE = 62   # tiles (its room.tiles, wall lines included; the checker counts some 45): a bedroom this big may
+BEDROOM_DESK_AND_TABLE = 50   # tiles (its room.tiles, wall lines included; the checker counts some 40): a bedroom this big may
 #                               hold a desk and a table set (one of each; QA round 1, Q1R-5)
 WALL_ONLY = {"wall_decor", "shelves", "shop_rack", "fireplace"}
 SEAT_FAMILIES = {"chair", "bench"}

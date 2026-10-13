@@ -55,10 +55,13 @@ ROOMS = {
                     # (room lab tuneA r10: one rug, before the chest; the table set stands on the bare floor: an
                     # independent judge picked out "two identical rugs" and "a table with chairs on a rug wedged into
                     # the S corner")
+                    # (QA round 1, round 3: a clothes rack in the storage zone, a hearth in a big chamber: kit/finish.py)
                     optional={"rug": (1.0, 1), "nightstand": (1.0, 2), "shelves": (0.9, 4), "wall_decor": (1.0, 5),
-                              "desk": (0.5, 1), "bench": (0.6, 1), "plant": (0.7, 2), "table": (0.6, 1), "chair": (0.6, 2)},
+                              "desk": (0.5, 1), "bench": (0.6, 1), "plant": (0.7, 2), "table": (0.6, 1), "chair": (0.6, 2),
+                              "shop_rack": (0.0, 1), "fireplace": (0.0, 1)},
                     types={"storage": CHEST, "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "plant": PLANTS,
-                           "table": r"^RoundTable[12]$|^SquareTable[12]$"},
+                           "table": r"^RoundTable[12]$|^SquareTable[12]$", "shop_rack": r"^TraderClothesRack[12]$",
+                           "fireplace": r"^Fireplace[1-4]$"},
                     # three tables at most, however big the chamber (kit/roomtypes.py caps: Thornwick's 105-tile lord's chamber
                     # took five round tables with their chairs and read as a dining room: rules/rooms/bedroom.md)
                     # (independent judge r10: "the bed pushed into the N corner, so it is not the focus", "a round

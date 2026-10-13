@@ -67,8 +67,9 @@ TYPES = {
     "bedroom": dict(
         family="private", feel="full", fixed_top_up=("storage", "bench"), kinds=("bedroom",), westwood=("bedroom",),
         focal=dict(fam="bed", types=r"^(Bed\d|WoodBed\d|Cot\d)", where="back"),
+        # (QA round 1, round 3: a clothes rack is a bedroom's storage)
         must={"bed": 1, "storage": 1}, never=("counter_bar", "counter_shop", "stove", "smithy", "altar",
-                                              "throne", "tomb", "shop_rack", "straw"),
+                                              "throne", "tomb", "straw"),
         never_types=r"Barrel|Crate|Sack",
         walls=dict(back="the bed, headboard to a back wall, its nightstand beside it; a run of shelves end to end",
                    other_back="the chest snug and centred with a rug before it; hangings",

@@ -320,7 +320,9 @@ def _bedroom(f, rng):
     bed = max(beds, key=lambda b: b[2][2] * b[2][3])
     before = [(t, rec[0], rec[1]) for _, t, rec in items(f, r"^Nightstand\d")]
     head = head_wall(f, bed)
+    f._fin_bed = None
     got = _nightstands(f, bed, head, rng, pair_only=True) if head else None
+    if not got and f._fin_bed: bed = f._fin_bed
     # (round 2: a bed pushed toward the end of its wall, its nightstands squeezed in, is set again centred: RM-BEDROOM-08,
     # whose bed stood 1.5 units from the E corner, still read "away" from its wall's middle)
     hw = head_wall(f, got) if got else None
@@ -342,9 +344,27 @@ def _bedroom(f, rng):
     if len(f.room.tiles) >= BEDROOM_ZONE2: _second_zone(f, rng, bed)
     _south_corner(f, rng, sitting=True)
     _centre_rugs(f, bed)
-    _dress_backs(f, rng, shelves=True, most=5 if len(f.room.tiles) >= 40 else 3)
-    if len(f.room.tiles) >= 20: _second_rug(f, rng, bed)
+    # round 3 (the coordinator's zones by size): the seating group in every bedroom, the work and storage zones from 50
+    # room tiles (40 as the checker counts), a hearth zone from 100 (80)
+    _seating(f, rng, bed)
+    tiles = len(f.room.tiles)
+    if tiles >= BEDROOM_WORK: _work_zone(f, rng, bed); _storage_zone(f, rng, bed)
+    if tiles >= BEDROOM_HEARTH: _hearth_zone(f, rng, bed)
+    _dress_backs(f, rng, shelves=True, most=5 if tiles >= 40 else 3)
+    _dress_each_back(f, rng)
+    if tiles >= 20: _second_rug(f, rng, bed)
     _front_wall_piece(f, rng)
+    _no_twin_rugs(f, rng)
+    _kinds_goal(f, rng, BEDROOM_KINDS[2] if tiles >= BEDROOM_HEARTH else BEDROOM_KINDS[1] if tiles >= BEDROOM_WORK
+                else BEDROOM_KINDS[0])
+    if not items(f, CHEST) and head_wall(f, bed):  # the chest at the bed's foot, a little further out if need be
+        r, a, _ = head_wall(f, bed)
+        t = variant(f, "Chest", r["side"])
+        if t and f.ok_type(t):
+            _, bhp = halves_on(r, bed[2]); chp = halves_on(r, (0, 0) + f.half(t))[1]
+            foot = perp_of(r, bed[2][0], bed[2][1]) + bhp
+            for gap in (0.8, 1.0, 1.3, 1.6):
+                if force_put(f, t, *uv_on(r, foot + gap + chp, along_of(r, bed[2][0], bed[2][1]))): break
     if not items(f, CHEST):                       # never a bedroom without its chest (round 2: one lost in a bed's move)
         if not centre_on_back(f, rng, "Chest", min_len=2.0) and not centre_on_back(f, rng, "Chest", min_len=1.6,
                                                                                     sides=tuple(WALL_NAME)):
@@ -356,6 +376,266 @@ def _bedroom(f, rng):
 
 
 BEDROOM_ZONE2 = 40         # room tiles (wall lines included; about 30 as the checker counts): a second zone from here
+BEDROOM_WORK = 50          # room tiles (40 as the checker counts): a work zone and a storage zone (round 3)
+BEDROOM_HEARTH = 100       # room tiles (80 as the checker counts): a third zone, the hearth (round 3)
+BEDROOM_KINDS = (6, 8, 11)  # visible kinds a bedroom holds: under 40 tiles, 40+, 80+ as the checker counts (round 3)
+RUG_KINDS = ("RedRug1", "RedRug2", "RedRug3", "RedRug4", "BearskinRug1", "BearskinRug2")
+
+
+def visible_kinds(f):
+    """The room's visible kinds of thing, as checks.qa1_fullness counts them (type stems; tiny pieces one kind)."""
+    tiny = re.compile(r"Skull|Bone|Cobweb|Candle|RedApple|Meat|Bread|Cheese|Mushroom|Potion$|Cider")
+    out = set()
+    for o in f.objects:
+        t = o["type"]
+        if re.search(r"ColorLight|Candleabra|Candelabra|TorchPole|Lantern|Door", t): continue
+        out.add("tiny" if tiny.search(t) else re.sub(r"(\d+[a-h]?|NE|NW|SE|SW)$", "", t))
+    return out
+
+
+def _seating(f, rng, bed):
+    """Every bedroom's seating group: a table with two chairs drawn up, else (a small room whose one set is its desk)
+    two benches facing each other across a rug, in the half of the room without the bed."""
+    for o, t, rec in items(f, TABLE):
+        k = len([x for x in items(f, SEAT) if max(abs(x[2][0] - rec[0]) - x[2][2] - rec[2],
+                                                   abs(x[2][1] - rec[1]) - x[2][3] - rec[3]) < 0.8])
+        if k < 2: k += f.seats_around((rec[0], rec[1]), t, 2 - k, "chair")    # a second chair drawn up
+        if k >= 2: return
+    _, other = _halves(f, bed)
+    cu, cv = (other[0] + other[1]) / 2, (other[2] + other[3]) / 2
+    spot = _near_spot(f, cu, cv, rad=1.8)
+    if spot and table_set(f, *spot): return
+    # the bench pair across a rug: the first spot of the bed-less half (nearest its middle) where both benches stand,
+    # either way round
+    U0, U1, V0, V1 = box(f)
+    cands = sorted(((U0 + 1.5 + 0.5 * i, V0 + 1.5 + 0.5 * j)
+                    for i in range(int((U1 - U0 - 3) / 0.5) + 1)
+                    for j in range(int((V1 - V0 - 3) / 0.5) + 1)),
+                   key=lambda p_: (p_[0] - cu) ** 2 + (p_[1] - cv) ** 2)
+    if not cands: cands = [(cu, cv)]
+    for su, sv in cands[:80]:
+        if not f.g.inside(su, sv) or not clear_at(f, su, sv, 0.6): continue
+        for long_u in (True, False):
+            b = next((x for x in (("Bench2", "Bench3") if long_u else ("Bench1", "Bench4")) if f.ok_type(x)), None)
+            if not b: continue
+            hb = f.half(b)
+            d = (hb[1] if long_u else hb[0]) + 0.9
+            pts = [(su, sv - d), (su, sv + d)] if long_u else [(su - d, sv), (su + d, sv)]
+            got = [force_put(f, b, u, v) for u, v in pts]
+            if all(got):
+                rug = _rug_type(f, rng, avoid=[t for _, t, _ in items(f, RUG)])
+                ok = False
+                if rug and not on_carpet(f, su, sv, pad=1.0):
+                    rh = f.half(rug)                 # the rug under the pair: inside the room, on no other rug
+                    if all(f.g.inside(su + a * rh[0], sv + b * rh[1]) for a in (-1, 1) for b in (-1, 1)) and                             not any(F.Furnisher._overlap(su, sv, rh[0], rh[1], rr) for _, _, rr in items(f, RUG)):
+                        ok = f.put(rug, su, sv, False)
+                if os.environ.get("NOX_FINISH_DEBUG"): print("benchrug", f.room.id, rug, bool(ok), [t for _, t, _ in items(f, RUG)])
+                return
+            remove(f, [g for g in got if g])
+    # a small room: two chairs facing each other across a small rug, drawn up to each other (a sitting pair)
+    seats = f.types_of("chair") or {"WoodenChair1": 1}
+    base = f.palette_seat("chair", seats) or "WoodenChair"
+    for su, sv in cands[:120]:
+        if not f.g.inside(su, sv) or not clear_at(f, su, sv, 0.4): continue
+        # (clear of the bed, the chest and the door: the pair had crowded a bed's foot)
+        if any(max(abs(su - rr[0]) - rr[2], abs(sv - rr[1]) - rr[3]) < 2.0 for _, _, rr in items(f, BED + "|" + CHEST)):
+            continue
+        if not _no_door(f, su, sv, 3.0): continue
+        for ax in ("u", "v"):
+            pts = [(su - 0.9, sv), (su + 0.9, sv)] if ax == "u" else [(su, sv - 0.9), (su, sv + 0.9)]
+            dirs = ["+u", "-u"] if ax == "u" else ["+v", "-v"]
+            got = []
+            for (u, v), d in zip(pts, dirs):
+                ct = ((f.chair_facing.get(base, {}) or {}).get(d) or {}).get("variant")
+                ct = ct if ct and f.ok_type(ct) else next((c for c in sorted(seats) if c.startswith(base)), "WoodenChair1")
+                got.append(force_put(f, ct, u, v))
+            if all(got):
+                rug = _rug_type(f, rng, avoid=[t for _, t, _ in items(f, RUG)])
+                if rug and not on_carpet(f, su, sv, pad=0.8):
+                    rh = f.half(rug)
+                    if all(f.g.inside(su + a * rh[0], sv + b * rh[1]) for a in (-1, 1) for b in (-1, 1)) and                             not any(F.Furnisher._overlap(su, sv, rh[0], rh[1], rr) for _, _, rr in items(f, RUG)):
+                        f.put(rug, su, sv, False)
+                return
+            remove(f, [g for g in got if g])
+    if os.environ.get("NOX_FINISH_DEBUG"): print("seating none", f.room.id, len(cands), [round(x, 1) for x in other])
+
+
+def _work_zone(f, rng, bed):
+    """The work zone (40+ tiles as the checker counts): the desk with its chair centred on a back wall of the half
+    without the bed, a bookcase beside it (one stands in the room already: one beside the desk all the same)."""
+    desks = items(f, r"^Desk\d$")
+    if desks:
+        o, t, rec = desks[0]
+        w = run_of(f, rec)
+        if w and not items(f, r"^Bookcase") or w:
+            r, a, _ = w
+            ha, _ = halves_on(r, rec)
+            bt = f.along_variant("Bookcase1", r["side"])
+            if bt and f.ok_type(bt) and not any(math.hypot(x[2][0] - rec[0], x[2][1] - rec[1]) < 2.4
+                                                for x in items(f, r"^Bookcase")):
+                bha, bhp = halves_on(r, (0, 0) + f.half(bt))
+                for s in rng.sample((-1, 1), 2):
+                    if f.try_put(bt, *uv_on(r, bhp + 0.18, a + s * (ha + bha + 0.3)), snug=True): break
+        return
+    _, other = _halves(f, bed)
+    u0, u1, v0, v1 = box(f)
+    for area in (other, (u0, u1, v0, v1)):            # the bed-less half first, else any back-wall stretch
+        for r in sorted((r for r in f.g.runs if r["side"] in BACK), key=lambda r: -(r["hi"] - r["lo"])):
+            lo, hi = (area[2], area[3]) if r["line"] == "/" else (area[0], area[1])
+            t = f.along_variant("Desk1", r["side"])
+            if not t or not f.ok_type(t): continue
+            ha, hp = halves_on(r, (0, 0) + f.half(t))
+            for a0, a1 in free_stretches(f, r):
+                a0, a1 = max(a0, lo, r["lo"] + 1.4), min(a1, hi, r["hi"] - 1.4)
+                if a1 - a0 < 2 * ha + 0.2: continue
+                o = scan_put(f, t, r, a0, a1, hp + 0.25)
+                if not o: continue
+                rec = f._placed_of[id(o)]
+                mid = along_of(r, rec[0], rec[1])
+                f.seats_around((rec[0], rec[1]), t, 1)
+                bt = f.along_variant("Bookcase1", r["side"])
+                if bt and f.ok_type(bt):
+                    bha, bhp = halves_on(r, (0, 0) + f.half(bt))
+                    for s_ in rng.sample((-1, 1), 2):
+                        if f.try_put(bt, *uv_on(r, bhp + 0.18, mid + s_ * (ha + bha + 0.3)), snug=True): break
+                return
+
+
+def scan_put(f, t, r, a0, a1, depth, force=False):
+    """`t` against wall run r at `depth` from its line, at the first spot from the middle of [a0, a1] outward that takes
+    it. Returns the piece or None."""
+    ha = halves_on(r, (0, 0) + f.half(t))[0]
+    mid = (a0 + a1) / 2
+    for k in range(0, 24):
+        a = mid + (k // 2) * 0.35 * (1 if k % 2 else -1)
+        if a - ha < a0 or a + ha > a1: continue
+        u, v = uv_on(r, depth, a)
+        hu, hv = f.half(t)
+        if any(F.Furnisher._overlap(u, v, hu, hv, rr) for _, _, rr in items(f, RUG)): continue   # never on a rug
+        if on_carpet(f, u, v, pad=max(hu, hv) + 0.3): continue                                  # nor on the carpet
+        o = force_put(f, t, u, v) if force else put(f, t, u, v)
+        if o: return o
+    return None
+
+
+def _storage_zone(f, rng, bed):
+    """The storage zone (40+ tiles as the checker counts): a clothes rack and a second chest, each on the longest free
+    stretch of a wall that takes it (the back walls first)."""
+    want = []
+    if not items(f, r"^TraderClothesRack"):
+        want.append(("rack", [t for t in ("TraderClothesRack1", "TraderClothesRack2") if f.ok_type(t)]))
+    if len(items(f, CHEST)) < 2: want.append(("chest", ["Chest"]))
+    _, other = _halves(f, bed)
+    oc = ((other[0] + other[1]) / 2, (other[2] + other[3]) / 2)
+    def near_other(r, a0, a1):                       # stretches in the bed-less half first
+        u, v = uv_on(r, 1.0, (a0 + a1) / 2)
+        return math.hypot(u - oc[0], v - oc[1]) - 0.3 * (a1 - a0)
+    for what, types in want:
+        done = False
+        # (a rack stands on a front wall first: the SE and SW walls of a big bedroom stood bare, its back walls dressed)
+        order = (BACK,) if what == "chest" else (tuple(x for x in WALL_NAME if x not in BACK), tuple(WALL_NAME))
+        for sides in order:
+            if done: break
+            for r in sorted((r for r in f.g.runs if r["side"] in sides), key=lambda r: -(r["hi"] - r["lo"])):
+                if done: break
+                t = (variant(f, "Chest", r["side"]) if what == "chest" else
+                     next((f.side_variant(x, r, "shop_rack") or x for x in types), None))
+                if not t or not f.ok_type(t): continue
+                hp = halves_on(r, (0, 0) + f.half(t))[1]
+                for a0, a1 in sorted(free_stretches(f, r), key=lambda s_: near_other(r, *s_)):
+                    a0, a1 = max(a0, r["lo"] + 1.2), min(a1, r["hi"] - 1.2)
+                    if a1 - a0 < 1.4: continue
+                    if scan_put(f, t, r, a0, a1, hp + 0.3, force=(what == "chest")):
+                        done = True; break
+
+
+def _hearth_zone(f, rng, bed):
+    """The third zone (80+ tiles as the checker counts): a hearth centred on a free back-wall stretch, a pair of chairs
+    drawn up before it on a rug, mirrored."""
+    if items(f, r"Fireplace"): return
+    for r in sorted((r for r in f.g.runs if r["side"] in BACK), key=lambda r: -(r["hi"] - r["lo"])):
+        t = f.side_variant("Fireplace1", r, "fireplace") or f.along_variant("Fireplace1", r["side"])
+        if not t or not f.ok_type(t): continue
+        ha, hp = halves_on(r, (0, 0) + f.half(t))
+        for a0, a1 in free_stretches(f, r):
+            a0, a1 = max(a0, r["lo"] + 2.0), min(a1, r["hi"] - 2.0)
+            if a1 - a0 < 4.0: continue
+            mid = (a0 + a1) / 2
+            o = put(f, t, *uv_on(r, hp + 0.15, mid))
+            if not o: continue
+            ru, rv = uv_on(r, hp + 2.6, mid)
+            rug = _rug_type(f, rng, avoid=[x for _, x, _ in items(f, RUG)])
+            if rug and not on_carpet(f, ru, rv, pad=1.0): put(f, rug, ru, rv, blocking=False)
+            ch = f.types_of("chair") or {"WoodenChair1": 1}
+            c = sorted(ch)[0]
+            for s in (-1, 1):
+                force_put(f, c, *uv_on(r, hp + 2.6, mid + s * 1.4))
+            return
+
+
+def _dress_each_back(f, rng):
+    """Both back walls dressed: a back wall with no shelf and no hanging takes a hanging centred on its longest bare
+    stretch (a painting or a trophy when the room's theme cannot)."""
+    for r in f.g.runs:
+        if r["side"] not in BACK or r["hi"] - r["lo"] < 4: continue
+        has = any(True for _ in wall_pieces(f, r, layer="wall")) or any(
+            re.match(r"^(Bookcase|PotionShelves)", t) and (w := run_of(f, rec)) and w[0] is r for _, t, rec in items(f, r"^(Bookcase|PotionShelves)"))
+        if has: continue
+        types = dict(getattr(f, "_decor_types", None) or {})
+        for t in sorted(f.things):
+            if re.match(r"^(Painting[12]|WallTrophy(Bear|Moose)[12])$", t) and f.ok_type(t): types.setdefault(t, 1)
+        inv = f.T["inventory"].get("wall_decor", {})
+        best = None
+        for a0, a1 in free_stretches(f, r):
+            a0, a1 = max(a0, r["lo"] + 2.1), min(a1, r["hi"] - 2.1)
+            if a1 - a0 > 0 and (best is None or a1 - a0 > best[1] - best[0]): best = (a0, a1)
+        if not best: continue
+        mid = (best[0] + best[1]) / 2
+        for t0 in sorted(types, key=lambda x: rng.random()):
+            t = f.side_variant(t0, r, "wall_decor") or t0
+            if f.ok_type(t) and wall_at(f, r, mid) and \
+                    f.try_put(t, *uv_on(r, f.perp_for(t, inv.get("perp_px")), mid), blocking=False, wall_ok=True, layer="wall"):
+                break
+
+
+RUG_DESIGN = {"RedRug1": "a", "RedRug2": "a", "RedRug3": "b", "RedRug4": "b"}   # one design, two turns (round 3)
+
+
+def rug_design(t):
+    return RUG_DESIGN.get(t, re.sub(r"\d$", "", t))
+
+
+def _no_twin_rugs(f, rng):
+    """No rug design repeated in one room (round 3: "the two rugs are the same piece repeated"): a second rug of one
+    design becomes another design, else goes."""
+    seen = set()
+    for o, t, rec in items(f, RUG):
+        d = rug_design(t)
+        if d not in seen:
+            seen.add(d); continue
+        f._remove(o)
+        alt = next((x for x in sorted(RUG_KINDS, key=lambda _: rng.random()) if f.ok_type(x) and rug_design(x) not in seen
+                    and abs(f.half(x)[0] - rec[2]) + abs(f.half(x)[1] - rec[3]) < 1.0), None)
+        if alt and put(f, alt, rec[0], rec[1], blocking=False): seen.add(rug_design(alt))
+
+
+def _kinds_goal(f, rng, goal):
+    """Pieces of further kinds until the room holds `goal` visible kinds: a bench on a bare front wall, potion shelves
+    on a back wall, a painting, a trophy, a stool by the desk."""
+    adds = [lambda: _front_wall_piece(f, rng, force=True),
+            lambda: centre_on_back(f, rng, "PotionShelves", min_len=2.0),
+            lambda: _hang_kind(f, rng, r"^Painting[12]$"),
+            lambda: _hang_kind(f, rng, r"^WallTrophy(Bear|Moose|MountainLion)[12]$"),
+            lambda: _hang_kind(f, rng, r"^(Red|Blue|Green)Tapestry\d$")]
+    for add in adds:
+        if len(visible_kinds(f)) >= goal: return
+        try: add()
+        except Exception: pass
+
+
+def _hang_kind(f, rng, rx):
+    types = {t: 1 for t in f.things if re.match(rx, t) and f.ok_type(t)}
+    if types and not any(re.match(rx, o["type"]) for o in f.objects): hang_backs(f, rng, most=1, types=types)
 
 
 def _halves(f, bed):
@@ -461,14 +741,13 @@ def _seat_bare_tables(f):
     for o, t, rec in items(f, TABLE):
         if any(max(abs(sr[0] - rec[0]) - sr[2] - rec[2], abs(sr[1] - rec[1]) - sr[3] - rec[3]) < 0.8
                for _, _, sr in items(f, SEAT)): continue
-        if f.seats_around((rec[0], rec[1]), t, 2, "chair") == 0:
-            f._remove(o)
+        f.seats_around((rec[0], rec[1]), t, 2, "chair")   # (round 3: the table stays even with no chair: it is a set)
 
 
-def _front_wall_piece(f, rng):
+def _front_wall_piece(f, rng, force=False):
     """A bench centred on the longest bare front wall (SE or SW) of a bedroom of 30 tiles or more: those walls stood bare
     (round 2: "the SE/SW walls bare"; the brief: "Front walls: a desk or a small table with its chair; a bench")."""
-    if len(f.room.tiles) < 30 or items(f, r"^(Bench\d|LightBench\d|CushionedBench\d)$"): return
+    if not force and (len(f.room.tiles) < 30 or items(f, r"^(Bench\d|LightBench\d|CushionedBench\d)$")): return
     best = None
     for r in f.g.runs:
         if r["side"] in BACK: continue
@@ -553,9 +832,10 @@ def _replace_bed(f, bed, rng):
         o2 = put(f, tt, u, v)
         if o2:
             nb = (o2, tt, f._placed_of[id(o2)])
+            f._fin_bed = None
             got = _nightstands(f, nb, (r, a, 0.28), rng, pair_only=True)
             if got: return got
-            f._remove(o2)
+            f._remove(f._fin_bed[0] if f._fin_bed else o2)
         if id(o) not in f._placed_of: o = restore(f, t, rec[0], rec[1])        # back as it was
         near = [(x[0] if id(x[0]) in f._placed_of else restore(f, x[1], x[2][0], x[2][1]), x[1], x[2]) for x in near]
         near = [(x[0], x[1], f._placed_of[id(x[0])]) for x in near]
@@ -600,6 +880,9 @@ def _nightstands(f, bed, w, rng, pair_only=False):
             u, v = uv_on(r, bperp, a)
             o_bed = put(f, tb, u, v) or o_bed
     if pair_only:
+        # (the bed may stand again as a new piece where it stood: the caller's record of it is stale, so the current one
+        # is kept here; round 3 found a bed laid twice over itself when the old record was "removed" again)
+        f._fin_bed = (o_bed, tb, f._placed_of[id(o_bed)]) if id(o_bed) in f._placed_of else None
         return None
     # no room for the pair anywhere along the wall: one nightstand, on the side with room
     for s in rng.sample((-1, 1), 2):
@@ -621,7 +904,7 @@ def _second_rug(f, rng, bed):
             cu, cv = (u0 + u1) / 2, v0 + (v1 - v0) * (half[0] + half[1]) / 2
         if any(math.hypot(rr[0] - cu, rr[1] - cv) < 4 for _, _, rr in items(f, RUG)): continue
         if on_carpet(f, cu, cv, pad=1.8) or not clear_at(f, cu, cv, 1.4): continue
-        t = _rug_type(f, rng)
+        t = _rug_type(f, rng, avoid=[x for _, x, _ in items(f, RUG)])
         if t and put(f, t, cu, cv, blocking=False): return
 
 
@@ -769,10 +1052,14 @@ def _south_corner(f, rng, sitting=True):
     return None
 
 
-def _rug_type(f, rng):
+def _rug_type(f, rng, avoid=()):
     types = [t for t in (f.types_of("rug") or {}) if re.match(RUG, t)] or \
         [t for t in ("RedRug1", "RedRug2", "BearskinRug1") if f.ok_type(t)]
-    return rng.choice(sorted(types)) if types else None
+    # never the rug the room already has (round 3: "the two rugs are the same piece repeated")
+    bad = {rug_design(t) for t in avoid}
+    fresh = [t for t in sorted(set(types) | {t for t in RUG_KINDS if f.ok_type(t)}) if rug_design(t) not in bad]
+    pool = [t for t in sorted(types) if rug_design(t) not in bad] or fresh
+    return rng.choice(pool) if pool else None
 
 
 def _centre_rugs(f, bed):

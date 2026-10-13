@@ -573,6 +573,12 @@ def q1_empty(m):
     for u in (204, 206, 208): m.obj("Barrel", u, 9.2)
 
 
+def q1_bare_bedroom(m):
+    _declare(m)                                                # Q1R-23 round 3: a bed, a lone table, two identical rugs
+    m.obj("Chest3", 210, 9.2); m.obj("SquareTable1", 206, -6); m.obj("WoodenChair1", 207.6, -6)
+    for u in (205, 215): m.obj("RedRug4", u, 2)
+
+
 def q1_hearth(m):
     _declare(m, "living_room"); m.obj("Fireplace3", 206, 9.1)  # Q1R-19: a hearth on the bare boards
 
@@ -753,6 +759,7 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1Rck", q1_racks, "rooms", "warning", "a barracks with no racks - Q1R-9", "no racks"),
     ("STq1Hth", q1_hearth, "rooms", "warning", "a hearth on the bare boards - Q1R-19", "no hearth of brick"),
     ("STq1Emp", q1_empty, "rooms", "warning", "a big cellar of three barrels - Q1R-23", "too empty"),
+    ("STq1Bed", q1_bare_bedroom, "rooms", "warning", "a bare bedroom with a twin rug - Q1R-23", "one rug repeated"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),

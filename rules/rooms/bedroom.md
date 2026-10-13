@@ -150,3 +150,21 @@ else a pair of bookcases. A bench centred on the longest bare front wall (30+ ti
 A bed not centred on its wall's stretch and within 2.6 units of a corner is set again centred (RM-BEDROOM-08). A rug
 object on a carpet is taken up. A small bedroom's bare half takes a rug. No wardrobe or dresser exists among the
 game's objects. Never a bedroom without its chest. Checked by `rooms.qa1_fullness` too.
+
+**Round 3 (2026-10-13): zones by size.** The coordinator at full size: "bedrooms are still too bare". What a full bedroom
+holds (`kit/finish.py _bedroom`; sizes as the checker counts tiles, the kit's room tiles about a quarter more):
+- **every bedroom:** the bed zone (bed, nightstands, the chest at the foot: set there even when the bed's move took it);
+  both back walls dressed (a bookcase pair, a hanging on a back wall left bare: `_dress_each_back`); a **seating group**:
+  a table with two chairs drawn up (a second chair added to a lone one), else two benches facing each other across a
+  rug, else (a small room) two chairs facing across a small rug, clear of the bed, the chest and the doors (`_seating`);
+- **40+ tiles:** a **work zone** (the desk with its chair on a back wall of the bed-less half, a bookcase beside it:
+  `_work_zone`) and a **storage zone** (a clothes rack on a front wall, a second chest on a back wall: `_storage_zone`;
+  the knowledge base allows a bedroom of 50 room tiles a desk and one table set);
+- **80+ tiles:** a third zone, a **hearth** centred on a back wall with a rug and a pair of chairs before it
+  (`_hearth_zone`);
+- **kinds:** 8 visible kinds from 40 tiles, 11 from 80 (`_kinds_goal` adds a bench, potion shelves, a painting, a
+  trophy, a tapestry until it does); **no rug design repeated** (RedRug1/2 and 3/4 are one design each, `_no_twin_rugs`)
+  and no table set repeated.
+- Checked by `rooms.qa1_fullness` (`checks.bedroom_zones`; planted STq1Bed): a seating group from 16 tiles (a closet
+  keeps its desk chair), the work and storage zones from 40, the hearth from 80, the kinds, no repeated rug or table.
+  Round 2's 06 (no storage zone) and 10 (no seating group, a rug repeated) fail it; round 3's pass but for 02 (15 tiles).
