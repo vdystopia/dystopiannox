@@ -238,8 +238,9 @@ TYPES = {
     "armoury": dict(
         family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),
+        # (QA round 1, Q1R-1: the quartermaster's counter, the merchant behind it: no longer a never piece)
         must={"shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
-                                      "counter_shop", "stove", "fireplace"),
+                                      "stove", "fireplace"),
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="shelves end to end", other_back="helm shelves or hanging swords",
                    front="barrels, crates and tool barrels", middle="racks in rows of one kind each, at most five to a "
@@ -303,7 +304,7 @@ TYPES = {
         family="ceremonial", feel="open", kinds=("great_hall",), westwood=("great_hall", "hall"),
         focal=dict(fam="fireplace", types=r"Fireplace", where="back"),
         must={"table": 2, "fireplace": 1, "wall_decor": 2}, never=("bed", "desk", "stove", "smithy", "lab", "tomb",
-                                                                    "counter_bar", "counter_shop", "shop_rack", "altar"),
+                                                                    "counter_bar", "counter_shop", "altar"),
         never_types=r"Barrel|Crate|Sack|^Bookcase",
         walls=dict(back="the hearth centred; banners and trophies", other_back="banners; a second hearth in a long hall",
                    front="a few benches; plants in the corners",
@@ -747,7 +748,7 @@ def reads_as(fam, kinds, kind=None):
         if t == "library" and sum(n for k, n in kinds.items() if k.startswith(("Bookcase", "MovableBookcase"))) < 6: s = 0.0
         if t == "laboratory" and fam.get("lab", 0) < 2: s = 0.0
         if t == "storeroom" and fam.get("storage", 0) < 4: s = 0.0
-        if t == "armoury" and (fam.get("shop_rack", 0) < 2 or fam.get("counter_shop")): s = 0.0
+        if t == "armoury" and fam.get("shop_rack", 0) < 2: s = 0.0
         if t in ("dining_hall", "great_hall") and (fam.get("table", 0) < 2 or fam.get("chair", 0) + fam.get("bench", 0) < 4):
             s = 0.0
         if t == "crypt" and fam.get("tomb", 0) < 2: s = 0.0

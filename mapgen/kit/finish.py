@@ -1055,9 +1055,173 @@ def row_from_corner(f, rng, types, n, ok=None, avoid=(), sides=None):
     return []
 
 
+# ---- armoury / gear store (Q1R-1, Q1R-2) ----------------------------------------------------------------------------
+def _gear_store(f, rng):
+    """The quartermaster's counter is the recipe's; here the walls: a row of racks of arms and armour along each back
+    wall with room for it, a second along a front wall in a larger room, arms hung on the bare back wall, stock in the
+    bare corners, a bench by the counter's wall (QA round 1: "Larger rooms need to have things like weapon racks along
+    their walls"; RM-ARMOURY-03, -07, -08 "too empty", -06 "more decorations on the walls")."""
+    tiles = len(f.room.tiles)
+    n = max(2, min(6, tiles // 18))
+    wall_row(f, rng, RACK_KINDS, n, sides=BACK)
+    if tiles >= 60: wall_row(f, rng, RACK_KINDS, n, sides=BACK)
+    if tiles >= 90: wall_row(f, rng, RACK_KINDS, n, sides=tuple(WALL_NAME))
+    hang_backs(f, rng, most=2 + tiles // 40, types={t: 1 for t in _types(f, ARMS_HUNG)})
+    barrels = _types(f, r"^(Barrel|BarrelSteel[12]|BarrelWithTools[12])$")
+    crates = _types(f, r"^(Crate[12]|CrateSteel[1-4])$")
+    fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, barrels, 3),
+                          lambda u, v: knot(f, rng, u, v, crates + barrels, 2)])
+
+
+# ---- great hall (Q1R-15..18) ---------------------------------------------------------------------------------------
+BAND = ("RoughCobble", "RedBrick", "CobbleStone")     # the band round a great hall (RM-GREATHALL-07's brick and cobble)
+BAND_RATE = 0.75
+
+
+def _with_seats(f, rec, reach=0.9):
+    return [x for x in items(f, SEAT) if max(abs(x[2][0] - rec[0]) - x[2][2] - rec[2],
+                                             abs(x[2][1] - rec[1]) - x[2][3] - rec[3]) < reach]
+
+
+def _great_hall(f, rng):
+    """The tables kept to their carpet and centred on it, a stray table or bench taken up, the tables clear of the
+    hearth; then pieces of more kinds, placed in pairs and centred (statues flanking the hearth, suits of armour on the
+    other back wall, plants in the side corners, a chest), the back walls hung, and a band of brick or cobble round the
+    whole room (QA round 1: "The layouts, tables, and chairs are generally pretty good, but the spaces are universally too
+    empty. We need much more diversity of objects"; RM-GREATHALL-01 "the six tables on the carpet ... need to be centered
+    more. The seventh table should be removed"; -02 "fix the table randomly placed in the south corner"; -04 "the table
+    next to the hearth is too close to it"; -07 "build this perimeter around the entire room ... more objects, especially
+    along the northeast wall")."""
+    fires = items(f, r"Fireplace")
+    tables = items(f, TABLE)
+    boxes = list(f.carpet_boxes)
+    def on_carpet_box(rec):
+        return any(b[0] <= rec[0] <= b[1] and b[2] <= rec[1] <= b[3] for b in boxes)
+    # strays: a table off the carpet when the others are on it, a table crowding the hearth
+    on = [x for x in tables if on_carpet_box(x[2])]
+    for o, t, rec in tables:
+        near_fire = any(max(abs(rec[0] - fr[0]) - rec[2] - fr[2], abs(rec[1] - fr[1]) - rec[3] - fr[3]) < 2.6
+                        for _, _, fr in fires)
+        if near_fire or (boxes and len(on) >= 2 and not on_carpet_box(rec)):
+            remove(f, [x[0] for x in _with_seats(f, rec)] + [o])
+    # a bench standing alone: no table at it, not against a wall
+    for o, t, rec in items(f, r"^(Bench\d|CushionedBench\d)$"):
+        if any(max(abs(rec[0] - tr[0]) - rec[2] - tr[2], abs(rec[1] - tr[1]) - rec[3] - tr[3]) < 0.9
+               for _, _, tr in items(f, TABLE)): continue
+        if f.g.wall_dist(rec[0], rec[1]) - max(rec[2], rec[3]) < 0.8: continue
+        f._remove(o)
+    # the boards centred on their carpet
+    if boxes:
+        b = max(boxes, key=lambda b: (b[1] - b[0]) * (b[3] - b[2]))
+        grp = [x for x in items(f, TABLE) if b[0] <= x[2][0] <= b[1] and b[2] <= x[2][1] <= b[3]]
+        allp = {id(x[0]): x for g in grp for x in [g] + _with_seats(f, g[2])}
+        if allp:
+            recs = [x[2] for x in allp.values()]
+            gu = (min(r_[0] - r_[2] for r_ in recs) + max(r_[0] + r_[2] for r_ in recs)) / 2
+            gv = (min(r_[1] - r_[3] for r_ in recs) + max(r_[1] + r_[3] for r_ in recs)) / 2
+            du, dv = (b[0] + b[1]) / 2 - gu, (b[2] + b[3]) / 2 - gv
+            if math.hypot(du, dv) > 0.3:
+                was = [(x[1], x[2][0], x[2][1]) for x in allp.values()]
+                remove(f, [x[0] for x in allp.values()])
+                order = sorted(was, key=lambda w: F._family_of(w[0]) != "table")
+                got = [put(f, t, u + du, v + dv) for t, u, v in order]
+                if not all(got):
+                    remove(f, [g for g in got if g])
+                    for t, u, v in order: restore(f, t, u, v)
+    # pieces of more kinds, in pairs
+    for o, t, fr in fires[:1]:
+        w = run_of(f, fr, reach=1.0)
+        if not w: continue
+        r, a, _ = w
+        ha, _ = halves_on(r, fr)
+        sts = _types(f, r"^Statue[12][a-h]$") or _types(f, r"^Statue")
+        if sts:
+            st = rng.choice(sorted({re.sub(r"[a-h]$", "", x) for x in sts}))
+            pair = []
+            for s in (-1, 1):
+                tt = next((x for x in sts if x.startswith(st)), sts[0])
+                o2 = put(f, tt, *uv_on(r, 0.9, a + s * (ha + 1.9)))
+                if o2: pair.append(o2)
+            if len(pair) < 2: remove(f, pair)
+    armour = _types(f, r"^TraderArmorRack[12]$")
+    if armour and len(f.room.tiles) >= 120:
+        fire_runs = [run_of(f, fr, reach=1.0) for _, _, fr in fires]
+        skip = [w[0] for w in fire_runs if w]
+        pair_on_wall(f, rng, armour[0], sides=BACK, skip_runs=skip)
+    plants = _types(f, r"^(Plant1|Plant3|Plant4|Plant5)$")
+    if plants:
+        p = rng.choice(plants)
+        pts = corner_points(f, 1.2)
+        got = [put_corner(f, p, *pts[k]) for k in ("W", "E") if f.g.inside(*pts[k])]
+        if len([g for g in got if g]) < 2: remove(f, [g for g in got if g])
+    if not items(f, CHEST): centre_on_back(f, rng, "Chest", min_len=3.0)
+    hang_backs(f, rng, most=6)
+    hang_backs(f, rng, most=3, types={t: 1 for t in _types(f, ARMS_HUNG)})
+    f.face_statues()
+    _south_corner_bench(f, rng)
+    if rng.random() < BAND_RATE: lay_band(f, rng)
+
+
+def pair_on_wall(f, rng, t, sides=BACK, skip_runs=()):
+    """Two of `t` against the longest free stretch of a wall, symmetric about its middle. Returns them."""
+    best = None
+    for r in f.g.runs:
+        if r["side"] not in sides or any(r is s for s in skip_runs): continue
+        for a0, a1 in free_stretches(f, r):
+            a0, a1 = max(a0, r["lo"] + 1.5), min(a1, r["hi"] - 1.5)
+            if a1 - a0 > 4.0 and (best is None or a1 - a0 > best[0]): best = (a1 - a0, r, a0, a1)
+    if not best: return []
+    L, r, a0, a1 = best
+    tt = f.side_variant(t, r, F._family_of(t)) or t
+    hp = halves_on(r, (0, 0) + f.half(tt))[1]
+    mid, off = (a0 + a1) / 2, min(L / 4, 3.0)
+    got = [put(f, tt, *uv_on(r, hp + 0.3, mid + s * off)) for s in (-1, 1)]
+    if not all(got): remove(f, [g for g in got if g]); return []
+    return got
+
+
+def _south_corner_bench(f, rng):
+    """A bench along each front wall at the S corner, where those who wait sit (HB-2), when the corner is bare."""
+    u0, u1, v0, v1 = box(f)
+    if not clear_at(f, u1 - 2.4, v0 + 2.4, 2.0): return
+    for r in f.g.runs:
+        if r["side"] in BACK: continue
+        bt = f.along_variant("Bench1", r["side"]) or f.along_variant("Bench2", r["side"])
+        if not bt or not f.ok_type(bt): continue
+        ha, hp = halves_on(r, (0, 0) + f.half(bt))
+        end = r["hi"] - 1.0 - 1.4 - ha if r["line"] == "/" else r["lo"] + 1.0 + 1.4 + ha
+        # (the S corner is the high-u end of a SW wall run and the low-v end of a SE wall run)
+        end = (r["lo"] + 1.0 + 1.4 + ha) if r["line"] == "/" else (r["hi"] - 1.0 - 1.4 - ha)
+        put(f, bt, *uv_on(r, hp + 0.3, end))
+
+
+def lay_band(f, rng):
+    """A band of brick or cobble one square wide round the whole room, unbroken but for the doorways' own squares
+    (RM-GREATHALL-07: "I really like the brick cobblestone tiling around the outside of this room. It is interrupted on
+    the northeast wall ... build this perimeter around the entire room"), bordered where it meets the floor."""
+    from kit import shells as SH
+    room, spec = f.room, f.spec
+    main = room.floor
+    sq = {((x + y) // 2, (x - y) // 2) for (x, y) in room.tiles}
+    ring = {s for s in sq if any((s[0] + a, s[1] + b) not in sq for a in (-1, 0, 1) for b in (-1, 0, 1))}
+    gaps = [d.gap for d in room.doors]
+    tile = lambda s: (s[0] + s[1], s[0] - s[1])
+    tiles = set()
+    for s in ring:
+        t = tile(s)
+        if any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 1 for g in gaps): continue
+        if (spec.floor.get(t) or main).startswith("Rug") or t in spec.local_blend: continue
+        tiles.add(t)
+    if len(tiles) < 0.6 * len(ring): return set()
+    mats = [m for m in BAND if m != main and frozenset((m, main)) not in SH._never()]
+    if not mats: return set()
+    for t in tiles: spec.tile(*t, main)                 # (a band laid before furnishing goes under this one)
+    return SH.lay_patch(spec, room, tiles, rng.choice(mats))
+
+
 # ---- dispatch ------------------------------------------------------------------------------------------------------
 PASSES = {"bedroom": _bedroom, "barracks": _barracks, "ogre_den": _ogre_den, "cell": _cell, "ogre_pen": _ogre_pen,
-          "cellar": _cellar}
+          "cellar": _cellar, "gear_store": _gear_store, "great_hall": _great_hall}
 COMPOSERS = {}
 
 

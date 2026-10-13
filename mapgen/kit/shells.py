@@ -593,7 +593,7 @@ def lay_zones(spec, room, objs, kind=None):
     for o in objs or ():
         f = focal_family(o.get("type"))
         if f and "x" in o: by_fam.setdefault(f, []).append(o)
-    rates = stats().get("focal_rate") or {}
+    rates = dict(stats().get("focal_rate") or {}, hearth=HEARTH_RATE)
     want = {}                                          # square -> family
     for fam in sorted(by_fam):
         if rng.random() >= rates.get(fam, FOCAL_RATE[fam]): continue
@@ -601,25 +601,9 @@ def lay_zones(spec, room, objs, kind=None):
         if fam == "tomb":                              # a plinth under each tomb (a band under a row of them)
             for o in os_:
                 for s in _squares_under(o, sq, things)[0]: want[s] = fam
-        elif fam == "hearth":                          # 1-3 squares along the wall at the fireplace
-            for o in os_[:2]:
-                under, (u, v) = _squares_under(o, sq, things, least=0.3)
-                s0 = _nearest_square(under or sq, u, v)
-                if s0 is None: continue
-                # the fireplace stands on the ring (Westwood's in the wall line): its hearthstone is the square before
-                # it, where Westwood's lies, with the square under it, and one along the wall more often than not
-                pad = {s0}
-                key = lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - v) ** 2, s)
-                inward = sorted((s for s in sq - ring if abs(s[0] - s0[0]) + abs(s[1] - s0[1]) == 1), key=key)
-                if inward: pad.add(inward[0])
-                if rng.random() < 0.6:
-                    d = (inward[0][0] - s0[0], inward[0][1] - s0[1]) if inward else (0, 0)
-                    side = sorted((s for s in sq if abs(s[0] - s0[0]) + abs(s[1] - s0[1]) == 1 and s not in pad
-                                   and (s[0] - s0[0], s[1] - s0[1]) != (-d[0], -d[1])), key=key)[:1]
-                    for s in side:
-                        pad.add(s)
-                        if inward and (s[0] + d[0], s[1] + d[1]) in sq: pad.add((s[0] + d[0], s[1] + d[1]))
-                for s in pad: want[s] = fam
+        elif fam == "hearth":                          # a patch centred on each fire (QA round 1: hearth_squares)
+            for o in os_[:4]:
+                for s in hearth_squares(o, sq, ring, things): want[s] = fam
         else:                                          # the throne's dais, the floor under the bar: one square round
             under = set()
             for o in os_: under |= _squares_under(o, sq, things, least=0.3)[0]
@@ -629,11 +613,18 @@ def lay_zones(spec, room, objs, kind=None):
                 under = {s0} if s0 else set()
             for s in {(a + x, b + y) for a, b in under for x in (-1, 0, 1) for y in (-1, 0, 1)} & sq: want[s] = fam
     if not want: return {}
-    mats = {fam: zone_material(rng, fam, main, have) for fam in sorted(set(want.values()))}
+    # (a hearth's patch is its own brick, never the band or wing the room already has: Q1R-19)
+    mats = {fam: zone_material(rng, fam, main, None if fam == "hearth" else have) for fam in sorted(set(want.values()))}
+    if mats.get("hearth") and mats["hearth"] == have:
+        mats["hearth"] = next((m for m in ("RedBrick", "Redbrick3", "GreenBrick") if m not in (have, main)), None)
+    if "hearth" in mats and not mats["hearth"]:       # a brick Westwood lays by a fire, whatever the main floor
+        mats["hearth"] = "RedBrick" if floor_family(main) != "stone" or "Red" not in main else "GreenBrick"
     out = {}
     for s, fam in sorted(want.items()):
         t, mat = tile(s), mats.get(fam)
-        if not mat or floor.get(t, main) != main or t in local: continue
+        cur = floor.get(t, main)
+        # (a hearth's patch goes under a fire standing on a carpet too: nox17's furnaces on the green carpet)
+        if not mat or (cur != main and not (fam == "hearth" and cur.startswith("Rug"))) or t in local: continue
         if any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 3 for g in gaps): continue
         # never beside a floor Westwood keeps from it (a carpet, the next room's floor through a wall)
         if any(frozenset((mat, floor.get((t[0] + a, t[1] + b)))) in _never()
@@ -641,9 +632,69 @@ def lay_zones(spec, room, objs, kind=None):
         out[t] = mat
     # a zone too broken by the doors and carpets to read as one is left out
     if len(out) < max(1, 0.5 * len(want)): return {}
-    for t, mat in out.items(): spec.tile(*t, mat)
-    blend_pattern(spec, {t: floor.get(t, main) for t in room.tiles}, gaps)
+    hearth = {t for t, mat in out.items() if want.get(((t[0] + t[1]) // 2, (t[0] - t[1]) // 2)) == "hearth"}
+    for t, mat in out.items():
+        if t not in hearth: spec.tile(*t, mat)
+    for mat in sorted({out[t] for t in hearth}):          # bordered all round (Q1R-19)
+        lay_patch(spec, room, {t for t in hearth if out[t] == mat}, mat)
+    blend_pattern(spec, {t: floor.get(t, main) for t in room.tiles if t not in hearth}, gaps)
     return out
+
+
+# QA round 1 (2026-10-13, Q1R-19): "hearth/oven/furnace/stove always on a properly bordered brick patch; carpets and floor
+# patches always blended at their edges" (nox17: "place furnaces on a small brick square. Put a small brick hearth around
+# the fireplace on the northeast wall"; nox21: "The brick hearth around the stove is not properly bordered"; RM-GREATHALL-02
+# "add some brick cobblestone tiling underneath the oven"; RM-GREATHALL-04 / EX-FARMYARD-04 "the hearth floor tiles are
+# not centered with the actual fireplace"). Every hearth takes its patch (HEARTH_RATE), centred on it: a wall hearth three
+# squares along its wall by two deep, a free-standing fire three by three (or two by two when it stands on a square's
+# corner); laid over a carpet when the fire stands on one; its edges drawn (PATCH_EDGE) whatever Westwood blends.
+HEARTH_RATE = 1.0
+PATCH_EDGE = "BrickEdgeBrown"
+
+
+def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
+    """Lays `mat` on `tiles` of a room and draws its edge onto every room tile beside it (sides and tips), so the patch
+    is bordered all round, never a hard seam (nox.Spec.pattern_tiles). Returns the tiles laid."""
+    if not tiles or not hasattr(spec, "pattern_tiles"): return set()
+    rt = set(getattr(room, "tiles", ()) or ())
+    for t in tiles: spec.tile(*t, mat)
+    if mat not in spec.blend: spec.blending(mat, -50, edge=edge)
+    for t in tiles:
+        for a, b in SIDES_TIPS:
+            n = (t[0] + a, t[1] + b)
+            if n in tiles or n not in rt: continue
+            nb = spec.floor.get(n)
+            if not nb or nb == mat: continue
+            spec.edge_over[(mat, nb)] = edge
+            spec.pattern_tiles.setdefault(n, set()).add((mat, nb))
+    return set(tiles)
+
+
+def hearth_squares(o, sq, ring, things):
+    """The squares of a hearth's patch, centred on it: a hearth on the room's ring (against its wall) three along the
+    wall by two deep; a free-standing one three by three, or two by two when it stands at a square's corner."""
+    under, (u, v) = _squares_under(o, sq, things, least=0.3)
+    s0 = _nearest_square(under or sq, u, v)
+    if s0 is None: return set()
+    if s0 in ring:
+        inward = [(s0[0] + a, s0[1] + b) for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))
+                  if (s0[0] + a, s0[1] + b) in sq - ring]
+        if not inward: return {s0}
+        d = (inward[0][0] - s0[0], inward[0][1] - s0[1])
+        side = (d[1], d[0])
+        out = set()
+        for k in (-1, 0, 1):
+            a = (s0[0] + k * side[0], s0[1] + k * side[1])
+            for m in (0, 1):
+                s = (a[0] + m * d[0], a[1] + m * d[1])
+                if s in sq: out.add(s)
+        return out
+    ci, cj = (u - 2) / 2, v / 2                       # the fire's place in square coordinates
+    fi, fj = ci - math.floor(ci), cj - math.floor(cj)
+    if 0.3 < fi < 0.7 and 0.3 < fj < 0.7:              # at a square's corner: two by two round it
+        i0, j0 = math.floor(ci), math.floor(cj)
+        return {(i0 + a, j0 + b) for a in (0, 1) for b in (0, 1)} & sq
+    return {(s0[0] + a, s0[1] + b) for a in (-1, 0, 1) for b in (-1, 0, 1)} & sq
 
 
 def carpet_target(kind, typed):

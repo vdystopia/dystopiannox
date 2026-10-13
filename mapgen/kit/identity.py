@@ -419,25 +419,31 @@ ROOMS = {
                                "walls, a short row of one kind in a big one, swords and shields hung on the back walls, a "
                                "chest, a barrel or two",
                        base="storeroom",
-                       core={"shop_rack": (2, 12), "storage": (1, 6)},
+                       # (QA round 1, Q1R-1: "If this is intended to be a gear store with a merchant ... It should be
+                       # anchored to a desk or table in a place that makes sense in the room. Facing the door": the
+                       # quartermaster's counter, set out from the back wall across from the door, his place behind it)
+                       core={"shop_rack": (2, 12), "storage": (1, 6), "counter_shop": (1, 1)},
                        # the guards' table with its chairs (6 of Westwood's 16: Con03A, Con05A, Con06a, Con06b, War03a/b;
                        # after the curation those are guardrooms, but the lab compares a 4-room type with its martial pool,
                        # and the pool holds them: without the table the AUC rose from 0.87 to 0.99)
                        optional={"table": (0.6, 1), "chair": (0.6, 4)},
                        types={"storage": SUPPLY + r"|^Chest[1-4]$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
-                              r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$"},
+                              r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$",
+                              "counter_shop": r"^TraderDesk\d$"},
+                       prefer={"counter_shop": {f"TraderDesk{k}": 1 for k in range(1, 7)}},
                        store=dict(lead={"barrels": 3, "crates": 1}, second={}, second_p=0.0, accent={"water": 1, "tools": 1},
                                   accent_p=0.4),
                        # Westwood's armouries show their racks on the back walls (the focal piece on NE or NW in all 16)
                        top_up=(), lights_per100=2.5, back_only=("shop_rack",),
-                       compose=[dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
+                       compose=[dict(fam="counter_shop", slot="counter", depth=2.2, clear=1.8, door=True),
+                                dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
                                      only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=2),
                                 dict(fam="shop_rack", slot="wall", at="center", clear=0,
                                      only=r"^TraderHanging|^TraderShield|^TraderCrossed|^TraderHelmShelf", n=1),
                                 dict(fam="storage", slot="wall", at="corner", clear=1.2, only=r"^Chest", n=1),
                                 dict(fam="table", slot="center", seats=True),
                                 dict(fam="storage", slot="heaps", n=1)],
-                       fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=300),
+                       fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=180),
                              dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
                                   only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", max=1, fixed=True),
                              dict(fam="shop_rack", slot="wall", at="center", clear=0,
@@ -676,9 +682,13 @@ ROOMS = {
                        # table piece per 24 tiles reads as two or three boards (2026-10-04: "4-6 sets fewer")
                        core={"table": (2, 12), "bench": (4, 24), "fireplace": (1, 2)},
                        per_tiles={"table": 24},
-                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4)},
+                       # (QA round 1, Q1R-15: "It can't just be a room full of tables and chairs": statues in pairs, suits
+                       # of armour, plants in the front corners, a chest; kit/finish.py lays them symmetrically)
+                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4), "statue": (0.0, 4),
+                                 "plant": (0.0, 2), "shop_rack": (0.0, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
-                              "storage": CHEST},
+                              "storage": CHEST, "statue": r"^Statue[12][a-h]$", "plant": PLANTS,
+                              "shop_rack": r"^TraderArmorRack[12]$"},
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
