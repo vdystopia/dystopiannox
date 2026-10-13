@@ -435,11 +435,13 @@ def chapel(f):
     _hangings(f, ax, sp, s_stat)
     vase = f.rng.choice(("StatueVase1", "StatueVase2"))
     victory = f.rng.choice(("StatueVictory1", "StatueVictory3", "StatueVictory4"))
-    dress(f, ax, sp, "chapel", [("basins", lambda sg: "DunMirFlameBasinLit"), ("statues", lambda sg: st),
-                                ("urns", lambda sg: vase + _facing(ax, sg)), ("monuments", lambda sg: "Monument1"),
-                                ("gargoyles", lambda sg: "Gargoyle2"), ("victors", lambda sg: victory + _facing(ax, sg)),
-                                ("pedestals", lambda sg: "OrbPoolEnd1"),
-                                ("wallbench", lambda sg: (_oriented(f, ax, r"^LightBench\d$", across=False) or [None])[0])])
+    dress(f, ax, sp, "chapel", [("basins", lambda sg: "DunMirFlameBasinLit", False), ("statues", lambda sg: st, True),
+                                ("urns", lambda sg: vase + _facing(ax, sg), False), ("monuments", lambda sg: "Monument1", True),
+                                ("gargoyles", lambda sg: "Gargoyle2", True),
+                                ("victors", lambda sg: victory + _facing(ax, sg), True),
+                                ("pedestals", lambda sg: "OrbPoolEnd1", False),
+                                ("wallbench", lambda sg: (_oriented(f, ax, r"^LightBench\d$", across=False) or [None])[0],
+                                 False)])
     return True
 
 
@@ -588,7 +590,7 @@ def coven(f):
     cu, cv = ax.uv(D / 2.0, 0.0)
     _colour_light(f, cu, cv)
     _hangings(f, ax, sp, wide + 1.6, max_n=6)
-    dress(f, ax, sp, "coven", crypt_pieces(f, ax, True))
+    dress(f, ax, sp, "coven", [p for p in crypt_pieces(f, ax, True) if p[0] != "crates"])     # (no stores in a coven)
     return True
 
 
@@ -722,7 +724,12 @@ def _mana_walls(f, ax, sp, rings):
     cl = f.rng.choice([t for t in ("MineManaCrystal1", "MineManaCrystal2", "MineManaCrystal5", "MineManaCrystal6",
                                    "MineManaCrystal9") if f.ok_type(t)] or ["CrystalColumn"])
     ch = max(f.half(cl))
-    for d in (ch + 1.0, L - ch - 1.0):
+    # (mana crystals already round the rings, as their centrepieces or the second centrepieces, leave the corners by the
+    # door bare of them: the room score counts every MineManaCrystal as one kind, at most 4, or a piece per 30 of its
+    # floor tiles, fewer than the kit's; the qa1d mana rooms 08, 17, 19 and 22 held 5-6)
+    n_mc = sum(1 for o in f.objects if re.match(r"^MineManaCrystal\d", o["type"]))
+    ends = (L - ch - 1.0,) if cl.startswith("MineManaCrystal") and n_mc else (ch + 1.0, L - ch - 1.0)
+    for d in ends:
         sp.pair(cl, d, min(ax.sides_at(d)) - ch - 1.0)
     # the back walls: a centrepiece (workstation, potion shelves, a chest) mirrored about its wall's middle, bookcases
     # either side of it
@@ -827,28 +834,40 @@ def crypt(f):
     obel = "LOTDManaObelisk" if lotd and f.ok_type("LOTDManaObelisk") else "Obelisk"
     has_ob = rng.random() < 0.8 and f.ok_type(obel)
     oh = max(f.half(obel))
-    # the centrepiece
+    # the centrepiece on a back wall the camera sees (QA round 1, third pass: crypt 05's stood against its front walls):
+    # the far wall in line with the door when it is a back wall, else the middle of the back side wall
+    from kit.furnish import WALL_SIDE_TYPE
     centre = _spread(f, "crypt_centre", (("chest", 2.0), ("tomb", 2.0), ("monument", 1.5)))
     wide = 0.0
+    on_far = ax.far_back
+    side_run = None if on_far else ax.side_run(ax.back_s, D / 2.0)
+    if not on_far and side_run is None: on_far = True
+    run = ax.far if on_far else side_run
+    dc = D / 2.0
+
+    def put_centre(t, out):
+        """t against the centrepiece's wall `out` units off it (from its back), on the axis or at the side wall's middle."""
+        hd, hs = ax.halves(t)
+        if on_far:
+            return hs if sp.put(t, D - hd - out, 0.0, snug=out < 0.4) else 0.0
+        w_ = ax.sides_at(dc)[0 if ax.back_s < 0 else 1]
+        return hd if sp.put(t, dc, ax.back_s * (w_ - hs - out), snug=out < 0.4) else 0.0
     if centre == "chest":
-        from kit.furnish import WALL_SIDE_TYPE
-        t = WALL_SIDE_TYPE["CryptChest"].get(ax.far["side"])
-        if t and f.ok_type(t):
-            hd, hs = ax.halves(t)
-            if sp.put(t, D - hd - 0.25, 0.0, snug=True): wide = hs
+        t = WALL_SIDE_TYPE["CryptChest"].get(run["side"])
+        if t and f.ok_type(t): wide = put_centre(t, 0.25)
     if centre == "tomb" or (centre == "chest" and not wide):
         t = next((x for x in ("Crypt2", "Crypt4") if f.ok_type(x)), None)
-        if t:
-            hd, hs = ax.halves(t)
-            if sp.put(t, D - hd - 1.0, 0.0): wide = hs
-    if not wide:
-        if sp.put("Monument1", D - 1.2, 0.0): wide = 0.5
+        if t: wide = put_centre(t, 1.0)
+    if not wide: wide = 0.5 if put_centre("Monument1", 0.6) else 0.0
     s_flank = wide + 1.2 + oh
-    if has_ob:
-        sp.pair(obel, D - oh - 0.5, s_flank)
-    else:
-        st = _pick(f, _types(f, "statue", r"^Statue2[a-h]$") or {"Statue2a": 1})
-        if f.ok_type(st): sp.pair(st, D - 0.95, s_flank)
+    flank = obel if (has_ob or lotd) else _pick(f, _types(f, "statue", r"^Statue2[a-h]$") or {"Statue2a": 1})
+    if f.ok_type(flank):
+        if on_far: sp.pair(flank, D - oh - 0.5, s_flank)
+        else:                                    # either side of it along the back side wall
+            w_ = ax.sides_at(dc)[0 if ax.back_s < 0 else 1]
+            o1 = sp.put(flank, dc - s_flank, ax.back_s * (w_ - oh - 0.45))
+            o2 = o1 and sp.put(flank, dc + s_flank, ax.back_s * (w_ - oh - 0.45))
+            if o1 and not o2: f._remove(o1)
     # the rows of the dead either side of the aisle
     kind = rng.random()
     sarcs = _oriented(f, ax, r"^Crypt(1|3)$", across=True) + _oriented(f, ax, r"^Crypt(5|6|7|8|9|10|11|12)$", across=True)
@@ -856,11 +875,14 @@ def crypt(f):
     lotd_stones = [t for t in ("LOTDTombstone2", "LOTDTombstone3", "LOTDTombstone4", "LOTDTombstoneSkulls1",
                                "LOTDTombstoneScroll1") if f.ok_type(t)]
     if False: rows_of = ["stones"]           # (RM-CRYPT-10 read its LOTD stones as no graves: coffins or sarcophagi)
+    # a long narrow crypt lays two long lines of coffins, three or more to a line (QA round 1, third pass: crypt 02's four
+    # sarcophagi took its cover to the type's most, 0.25, with the floor still bare)
+    elif coffins and D >= 3.5 * W: rows_of = ["coffins"]
     elif kind < 0.4 and coffins: rows_of = ["coffins"]
     elif kind < 0.65 and coffins and sarcs: rows_of = ["sarcs", "coffins"]       # the old dead nearest the far wall
     else: rows_of = ["sarcs"] if sarcs else (["coffins"] if coffins else [])
     aisle = 1.5 if W < 6 else 1.8
-    d = D - 3.4 - (1.0 if has_ob else 0.4)            # a walk round the far end, before its centrepiece
+    d = (D - 3.4 - (1.0 if has_ob else 0.4)) if on_far else D - 1.6   # a walk round the far end before its centrepiece
     rows = 0
     t_sarc = rng.choice(sarcs) if sarcs else None
     t_coff = rng.choice(coffins) if coffins else None
@@ -876,18 +898,18 @@ def crypt(f):
               if not stem.startswith("Crypt") or x in ("Crypt1", "Crypt3") or t not in ("Crypt1", "Crypt3")]
         return min(al, key=lambda x: ax.halves(x)[1]) if al else None
 
-    def row(t, d, a_row, k_most=4):
+    def row(t, d, a_row, k_most=4, edge=0.75):
         """A mirrored row of t at depth d (its far edge there), from a_row out: (pieces, depth, half depth, outer s)."""
         hd, hs = ax.halves(t)
         dd = d - hd
-        if dd - hd < 2.6: return 0, dd, hd, 0.0
+        if dd - hd < 1.6: return 0, dd, hd, 0.0          # (the near door's own clearance keeps its way in)
         pitch = 2 * hs + 0.5
         k = max(1, min(k_most, int((W - 0.9 - a_row + 0.5) / pitch)))
         if k >= 3: pitch += 0.4                  # (a walk between the tombs of a long row)
         ok, s_out = 0, a_row
         for i in range(k):
             s_ = a_row + hs + i * pitch
-            if s_ + hs > W - 0.75: break
+            if s_ + hs > W - edge or f._fam_n["tomb"] + 2 > tomb_cap: break
             got = sp.pair(t, dd, s_)
             if not got: break
             ok += got; s_out = s_ + hs
@@ -896,29 +918,32 @@ def crypt(f):
     # the rows down the whole floor, from the far end to the door: across the aisle where they fit, else along it a pace
     # out, else against the side walls; a depth where none fits (a side door's way) is stepped over, not the end of the
     # rows (RM-CRYPT-10: its two rows lay at one end of the floor)
-    while d > 2.6 and rows < 14:
+    tomb_all = f.repeat_cap("tomb") or 99         # (the type's most tombs: a tomb per 6 tiles, 16 at most; gravestones
+    tomb_cap = tomb_all - 4 if tomb_all >= 10 else tomb_all     # count with them, four kept for the graves)
+    while d > 1.8 and rows < 14 and f._fam_n["tomb"] + 2 <= tomb_cap:
         what = rows_of[min(len(rows_of) - 1, rows // 2)] if rows_of else None
         t = {"sarcs": t_sarc, "coffins": t_coff, "stones": t_stone}.get(what)
         if not t: break
         hd0, hs0 = ax.halves(t)
         tal = along_of(t) if hs0 > hd0 else None
         tries = []
-        if aisle + 2 * hs0 <= W - 0.9: tries.append((t, max(0.9, min(aisle, W - 0.8 - 2 * hs0)), 4))
-        if tal: tries.append((tal, max(0.9, min(aisle, W - 0.8 - 2 * ax.halves(tal)[1])), 2))
-        if tal: tries.append((tal, W - 2 * ax.halves(tal)[1] - 0.35, 1))
+        if aisle + 2 * hs0 <= W - 0.9: tries.append((t, max(0.9, min(aisle, W - 0.8 - 2 * hs0)), 4, 0.75))
+        if tal: tries.append((tal, max(0.9, min(aisle, W - 0.8 - 2 * ax.halves(tal)[1])), 2, 0.75))
+        if tal: tries.append((tal, W - 2 * ax.halves(tal)[1] - 0.35, 1, 0.3))
         done = False
-        for tt, a_row, km in tries:
+        for tt, a_row, km, edge in tries:
             if a_row is None:
                 hd = ax.halves(tt)[0]
                 dd = d - hd
                 ok = 1 if dd - hd >= 2.6 and sp.put(tt, dd, 0.0) else 0
                 s_out = ax.halves(tt)[1]
             else:
-                ok, dd, hd, s_out = row(tt, d, a_row, km)
+                ok, dd, hd, s_out = row(tt, d, a_row, km, edge)
             if ok:
                 heads.append((dd, min(W - 0.9, s_out + 0.8)))
                 rows += 1
-                d = dd - hd - (2.4 if a_row is None else 1.1)      # (single tombs on the line stand apart)
+                d = dd - hd - (2.4 if a_row is None else (0.8 if hd > ax.halves(tt)[1] else 1.1))   # (tombs along the
+                # aisle lie end to end in two lines down a long crypt, a pace between; single tombs on the line apart)
                 done = True
                 break
         if not done: d -= 1.0
@@ -928,7 +953,7 @@ def crypt(f):
         hd_m = ax.halves(t_mid)[0]
         d = D - 3.4 - hd_m
         while d - hd_m > 2.6:
-            if all(abs(d - dd) > hd_m + 2.6 for dd, _ in heads) and sp.put(t_mid, d, 0.0):
+            if f._fam_n["tomb"] < tomb_cap and all(abs(d - dd) > hd_m + 2.6 for dd, _ in heads) and sp.put(t_mid, d, 0.0):
                 heads.append((d, ax.halves(t_mid)[1] + 0.9)); rows += 1
                 d -= 2 * hd_m + 2.4
             else: d -= 0.8
@@ -949,31 +974,17 @@ def crypt(f):
         g_t = rng.choice(gst)
         gh = max(ax.halves(g_t))
         for dd, s in heads[::2]:
+            if f._fam_n["tomb"] + 2 > tomb_all: break
             if W - gh - 0.4 > s + gh + 0.3: sp.pair(g_t, dd, W - gh - 0.4)
     sp.bones(D / 2.0, 0.6, n=1)
-    # statues of the dead (or gargoyles) in pairs along the side walls, tombstones flanking the aisle's foot
-    if W >= 5.0 and D >= 10:                     # (Q1C-14: more kinds; the LOTD's own statues are its obelisks)
-        st = _pick(f, _types(f, "statue", r"^Statue2[a-h]$") or {"Statue2a": 1})
-        if not lotd and f.ok_type(st):
-            for dd in (D * 0.5, D * 0.5 - 3.0, D * 0.5 + 3.0):
-                if sp.pair(st, dd, W - 0.95): break
-        elif lotd and f.ok_type("LOTDManaObelisk"):
-            for dd in (D * 0.5, D * 0.5 - 3.0):
-                if sp.pair("LOTDManaObelisk", dd, W - 0.95): break
+    # (statues, obelisks and lights go to the dressing below, which stands what is tall on the back walls only: the
+    # front walls, SE and SW, hold low pieces, TP3-a; QA round 1, third pass)
     stones = [t for t in ("Tombstone2", "Tombstone4", "Tombstone7", "DunMirTombstone1") if f.ok_type(t)] if not lotd \
         else lotd_stones
-    if stones and d > 3.2:
+    if stones and d > 3.2 and f._fam_n["tomb"] + 2 <= tomb_all:
         sp.pair(rng.choice(stones), min(d, 3.4), aisle + 0.9)
-    # mana obelisks by the door in a big crypt
-    if has_ob and len(f.room.tiles) >= 90:
-        sp.pair(obel, 1.6 + oh, W - oh - 0.5)
-    # lights in pairs
-    from kit import objects as OBJ
-    lcap = OBJ.light_cap(len(f.room.tiles))
     lt = "LOTDCandleabra1" if lotd and f.ok_type("LOTDCandleabra1") else f.light_type()
-    n_l = 0
-    if sp.light_pair(D - 0.9, s_flank + oh + 1.2, t=lt): n_l += 2
-    if n_l + 2 <= lcap and sp.light_pair(1.4, min(W - 1.0, aisle + 2.4), t=lt): n_l += 2
+    if on_far: sp.light_pair(D - 0.9, s_flank + oh + 1.2, t=lt)
     f.aisle = dict(run=ax.far, mid=ax.mid, half=aisle, first=2.0, far=D, door=None)
     # a tapestry pair on the far wall when it is a back wall
     if ax.far_back:
@@ -981,40 +992,64 @@ def crypt(f):
         s = s_flank + 2.4
         if s < W - 1.2:
             f._hang(ax.far, ax.mid - s); f._hang(ax.far, ax.mid + s)
-    # the walls and corners dressed until the crypt is full enough (urns, rubble, graves, candles, bones, cobwebs)
+    # the walls and corners dressed until the crypt is full enough in visible pieces, the back walls first
     dress(f, ax, sp, "crypt", crypt_pieces(f, ax, lotd))
     return bool(rows) or bool(wide)
 
 
-# ---- fullness: the walls and corners dressed until the room is full enough (QA round 1, second pass) -----------------
-# The coordinator's read of the first pass (2026-10-13): small and two-door crypts and mana rooms with doors on several
+# ---- fullness: the walls and corners dressed until the room is full enough (QA round 1, second and third passes) -----
+# The coordinator's reads of the first passes (2026-10-13): small and two-door crypts and mana rooms with doors on several
 # walls came out nearly bare (RM-CRYPT-09's fault again: "Worst one in the set, very empty"), against the user's first
-# theme of the round, "spaces are too empty and lack object diversity". Each type has a floor of distinct kinds of piece
-# (scaled by its floor tiles) and of covered floor; the set piece dresses its walls and corners in mirrored pairs until
-# it reaches both. validate/checks.py sacred.fullness holds the same numbers.
+# theme of the round, "spaces are too empty and lack object diversity" (Q1T); then, of the second pass, that crypts 02 and
+# 05 still read as empty at full size: the count had taken skulls, cobwebs and candles a few pixels wide as kinds, and
+# crypt 05's pieces stood against its front walls. So:
+# - only pieces a person sees count: a piece at least an urn's size on screen (a circle of 7 px, a box of 11), with a
+#   furniture family or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles and the like count
+#   together as one kind at most, and never toward the covered floor;
+# - each type holds a least number of those kinds by its floor tiles and covers a least share of its floor;
+# - the dressing fills the back walls (NE, NW) first; a front wall (SE, SW) takes only low pieces (validate/checks.py
+#   sacred.fullness holds the same numbers).
 FULL_COVER = {"chapel": 0.07, "coven": 0.10, "mana_room": 0.07, "crypt": 0.10}
-FULL_KINDS = {"chapel": (8, 12), "coven": (8, 12), "mana_room": (8, 12), "crypt": (6, 10)}     # (least, most)
-BONES_RX = re.compile(r"^(Skull|ArmBone|LegBone)$|^Corpse|^SpiderWeb")
+FULL_KINDS = {"chapel": (8, 12), "coven": (8, 12), "mana_room": (8, 12), "crypt": (7, 11)}     # (least, most)
+TINY_RX = re.compile(r"^(Skull|ArmBone|LegBone)$|^Skull\d$|^Corpse|^SpiderWeb|^Candle\d|CandleGroup|^LOTDCandle(Large|Small)$|"
+                     r"Bottle|Potion|^Book|Book\d$")
+STANDING_LIGHT_RX = re.compile(r"^(Candleabra\d|LOTDCandleabra\d|Brazier|SpikeBrazier|HandBrazier|DunMirFlameBasin|"
+                               r"LOTDIncenseBasin)")
+
+
+def visible_size(ext, ex, ey):
+    """True when a piece's footprint is at least an urn's on screen (StatueVase: a circle of 7 px, a box of 11)."""
+    if ext == "CIRCLE": return (ex or 0) >= 7
+    if ext == "BOX": return max(ex or 0, ey or 0) >= 11
+    return False
 
 
 def fullness_goal(rtype, tiles):
-    """(distinct kinds of piece, covered share of the floor) a sacred room of the type and size holds at least: a kind
-    more for every 45 tiles past 30, within the type's (least, most)."""
+    """(distinct visible kinds of piece, covered share of the floor) a sacred room of the type and size holds at least: a
+    kind more for every 45 tiles past 30, within the type's (least, most)."""
     lo, hi = FULL_KINDS.get(rtype, (5, 9))
     return max(lo, min(hi, lo + int(max(0, tiles - 30) // 45))), FULL_COVER.get(rtype, 0.06)
 
 
-def counted_kind(t, family):
-    """The kind a piece counts as in the room's diversity, or None: pieces with a furniture family (rules/room_types.py,
-    the relics included), bones and cobwebs; never lights other than the relics, nor doors."""
-    if family: return re.sub(r"(\d+[a-z]?|NE|NW|SE|SW|N|S|E|W)$", "", t)
-    if BONES_RX.search(t): return "bones" if not t.startswith("SpiderWeb") else "cobweb"
+def counted_kind(t, family, ext=None, ex=0, ey=0):
+    """The kind a piece counts as in the room's diversity, or None: "small" for every tiny piece together (bones, skulls,
+    cobwebs, candles, anything under an urn's size); a visible piece with a furniture family (rules/room_types.py, the
+    relics included) or a standing light by its stem; nothing else (doors, colour lights)."""
+    if TINY_RX.search(t) or (ext is not None and not visible_size(ext, ex, ey)):
+        return "small" if (family or TINY_RX.search(t) or STANDING_LIGHT_RX.match(t)) else None
+    if family or STANDING_LIGHT_RX.match(t): return re.sub(r"(\d+[a-z]?|NE|NW|SE|SW|N|S|E|W)$", "", t)
     return None
 
 
 def kinds_of(f):
     from kit.furnish import _family_of
-    return {k for o in f.objects for k in [counted_kind(o["type"], _family_of(o["type"]))] if k}
+    out = set()
+    for o in f.objects:
+        t = o["type"]
+        ext, ex, ey, _ = f.things.get(t, ("NULL", 0, 0, ""))
+        k = counted_kind(t, _family_of(t), ext, ex, ey)
+        if k: out.add(k)
+    return out
 
 
 def _facing(ax, sign):
@@ -1023,74 +1058,89 @@ def _facing(ax, sign):
     return "NW" if sign > 0 else "SE"                           # lateral is u: +u is SE
 
 
-def _spots(ax, r_, inner=False):
-    """Mirrored wall and corner spots for a piece of radius r_: [(depth, lateral >= 0)], corners first, then the side walls
-    from the far end, then the far and near walls either side of the axis."""
+def _end_back(ax):
+    """Which end wall is a back wall: "far", "near" or None."""
+    if ax.far_back: return "far"
+    if ax.near and ax.near["side"] in BACK_SIDES: return "near"
+    return None
+
+
+def _spots(ax, r_, tall, inner=False):
+    """Wall and corner spots for a pair of pieces of radius r_, the back walls first: [(mode, depth, lateral)]. mode "x":
+    the pair mirrored across the axis at (d, -s) and (d, +s); "a": the pair on the back side wall mirrored about the
+    room's middle along the axis, at (d, b*s) and (D - d, b*s). A tall piece takes the back walls only (the end wall the
+    camera sees, both of a pair on it, and the back side wall); a low one the side and front walls too."""
     D = ax.D
     out = []
-    for d in (D - r_ - 0.5, r_ + 0.7):
-        out.append((d, min(ax.sides_at(d)) - r_ - 0.45))
-    d = D - r_ - 2.6
-    while d > r_ + 1.6:
-        out.append((d, min(ax.sides_at(d)) - r_ - 0.35))
-        d -= 2.3
-    w = ax.half_width(max(1.0, D - 2.0), D - 0.6)
-    a = 2.6
-    while a < w - 1.4:
-        out.append((D - r_ - 0.4, a)); out.append((r_ + 0.7, a))
-        a += 2.4
+    w_end = ax.half_width(max(1.0, D - 2.0), D - 0.6)
+    eb = _end_back(ax)
+    if eb:                                       # the back end wall, either side of the axis (the corners last)
+        d = D - r_ - 0.45 if eb == "far" else r_ + 0.7
+        a = 2.4 + r_
+        while a < w_end - r_ - 0.35:
+            out.append(("x", d, a)); a += 2.3
+        out.append(("x", d, w_end - r_ - 0.45))
+    d = D - r_ - 0.6                             # the back side wall, mirrored about the middle along the axis
+    while d > D / 2.0 + r_ + 0.4:
+        out.append(("a", d, min(ax.sides_at(d)) - r_ - 0.35)); d -= 2.3
+    if not tall:
+        d = D - r_ - 2.6                         # both side walls, mirrored across the axis
+        while d > r_ + 1.6:
+            out.append(("x", d, min(ax.sides_at(d)) - r_ - 0.35)); d -= 2.3
+        fronts = ([D - r_ - 0.45] if eb != "far" else []) + ([r_ + 0.7] if eb != "near" else [])
+        for dd in fronts:                        # the front end wall(s)
+            a = 2.4 + r_
+            while a < w_end - r_ - 0.35:
+                out.append(("x", dd, a)); a += 2.3
     if inner:                                    # (a mana room: the open floor between its rings and its walls too)
         d = 2.6
         while d < D - 2.6:
             w_ = min(ax.sides_at(d))
-            out += [(d, w_ * 0.55), (d, w_ * 0.75)]
+            out += [("x", d, w_ * 0.55), ("x", d, w_ * 0.75)]
             d += 2.8
     return out
 
 
-def dress(f, ax, sp, rtype, pieces, both_ways=False, max_pairs=24):
-    """Mirrored pairs of `pieces` [(name, chooser(sign) -> type)] against the walls and in the corners, round robin, a
-    kind not yet in the room first, until the room reaches its fullness_goal; where the mirror across the axis is taken
-    (a door's way), with both_ways the pair is mirrored about the room's middle along the axis instead (a mana room).
-    Returns the pairs placed."""
+def dress(f, ax, sp, rtype, pieces, both_ways=False, max_pairs=26):
+    """Pairs of `pieces` [(name, chooser(sign) -> type, tall)] against the walls and in the corners, the back walls first
+    (_spots), a kind the room lacks before another of one it has, until the room reaches its fullness_goal in visible
+    kinds and covered floor. Each kind two pairs at most (one when the set piece placed it already, a showpiece once), the
+    type's caps held, 0.7 units clear of every piece, never under a hanging. Returns the pairs placed."""
+    from kit.furnish import _family_of as _fo, SHOWPIECES
     goal_k, goal_c = fullness_goal(rtype, len(f.room.tiles))
     placed, tried, per_kind = 0, set(), Counter()
-    present0 = kinds_of(f)                       # (a kind the set piece placed already takes one more pair at most)
-    first = True                                 # every kind of the dressing once (the corners and walls filled), then
-    while placed < max_pairs:                    # more pairs until the room is full enough
+    present0 = kinds_of(f)
+    b = ax.back_s
+    first = True                                 # every kind once (the walls filled), then more until full enough
+    while placed < max_pairs:
         have = kinds_of(f)
         if not first and len(have) >= goal_k and f.coverage() >= goal_c: break
-        # a kind the room lacks before more of one it has, then the rest in turn
-        from kit.furnish import _family_of
-        order = sorted(pieces, key=lambda p: (counted_kind(p[1](1) or "", _family_of(p[1](1) or "")) in have, p[0]))
+        order = sorted(pieces, key=lambda p: (counted_kind(p[1](1) or "", _fo(p[1](1) or "")) in have, not p[2], p[0]))
         progress = False
-        for name, choose in order:
+        for name, choose, tall in order:
             t1, t2 = choose(-1), choose(1)
             if not (t1 and t2 and f.ok_type(t1) and f.ok_type(t2)): continue
-            r_ = max(f.half(t1))
-            # each kind two pairs at most (no stand-alone piece repeated along a wall: identity.repeat_wall), a showpiece
-            # once (pieces.showpiece)
-            from kit.furnish import SHOWPIECES
-            from kit.furnish import _family_of as _fo
             if per_kind[name] >= (1 if SHOWPIECES.match(t1) or counted_kind(t1, _fo(t1)) in present0 else 2): continue
-            cap = f.repeat_cap(_fo(t1))              # the type's caps (a chapel's statues: a statue per 16 tiles)
+            cap = f.repeat_cap(_fo(t1))
             if cap is not None and f._fam_n[_fo(t1)] + 2 > cap: continue
-            soft = name.startswith(("bones", "cobweb"))
-            for d, s in _spots(ax, r_, inner=both_ways):
-                key = (name, round(d, 1), round(s, 1))
+            r_ = max(f.half(t1))
+            light = STANDING_LIGHT_RX.match(t1) is not None
+            for mode, d, s in _spots(ax, r_, tall, inner=both_ways):
+                key = (name, mode, round(d, 1), round(s, 1))
                 if key in tried or s < 1.0: continue
                 tried.add(key)
-                if not soft and not all(_clear_spot(f, t_, *ax.uv(d, sg * s)) for t_, sg in ((t1, -1), (t2, 1))):
-                    continue
-                light = name in ("candles", "candelabra")
+                at = [(t1, d, -s), (t2, d, s)] if mode == "x" else [(t2, d, b * s), (t2, ax.D - d, b * s)]
+                if not all(_clear_spot(f, t_, *ax.uv(d_, s_)) for t_, d_, s_ in at): continue
                 if light: f.placing_light = True
                 try:
-                    got = sp.pair(t1, d, s, t2, blocking=not name.startswith(("bones", "cobweb")))
-                    if not got and both_ways and abs(ax.D - 2 * d) > 2.0:
-                        o1 = sp.put(t2, d, s, blocking=True)
-                        o2 = o1 and sp.put(t2, ax.D - d, s, blocking=True)
+                    o1 = sp.put(at[0][0], at[0][1], at[0][2])
+                    o2 = o1 and sp.put(at[1][0], at[1][1], at[1][2])
+                    if o1 and not o2: f._remove(o1)
+                    got = bool(o1 and o2)
+                    if not got and both_ways and mode == "x" and abs(ax.D - 2 * d) > 2.0:
+                        o1 = sp.put(t2, d, s); o2 = o1 and sp.put(t2, ax.D - d, s)
                         if o1 and not o2: f._remove(o1)
-                        got = 2 if o1 and o2 else 0
+                        got = bool(o1 and o2)
                 finally:
                     f.placing_light = False
                 if got:
@@ -1115,37 +1165,46 @@ def _clear_spot(f, t, u, v):
 
 
 def crypt_pieces(f, ax, lotd):
-    """The crypt's dressing: urns, rubble, gravestones, a small statue pair, candles, skulls and bones, cobwebs."""
+    """The crypt's dressing, visible pieces (QA round 1, third pass): statue pairs, urns, candelabras, monuments,
+    gravestones, coffins stacked against the walls, crates of burial goods, a bone heap, braziers, rubble; (name,
+    chooser, tall)."""
     rng = f.rng
     vase = rng.choice(("StatueVase1", "StatueVase2"))
     rub = rng.choice(["RuinsColumnIndoorRubble%02d" % k for k in (1, 3, 5, 7, 9, 11)])
-    stone = rng.choice(("LOTDTombstoneHorns3", "LOTDTombstoneScroll3", "LOTDTombstone1") if lotd else
-                       ("Tombstone2", "Tombstone4", "Tombstone7", "DunMirTombstone1"))
+    stone = rng.choice(("LOTDTombstone2", "LOTDTombstone3", "LOTDTombstone4") if lotd else
+                       ("Tombstone2", "Tombstone4", "Tombstone7"))
     statue = rng.choice(("Statue2a", "Statue2c")) if not lotd else "LOTDManaObelisk"
-    out = [("urns", lambda sg: vase + _facing(ax, sg)),
-           ("rubble", lambda sg: rub),
-           ("graves", lambda sg: stone),
-           ("statues", lambda sg: statue),
-           ("candles", lambda sg: "LOTDCandleGroupSmall1"),
-           ("monuments", lambda sg: "Monument1"),
-           ("bones_skull", lambda sg: "Skull"),
-           ("bones_rib", lambda sg: "CorpseRibCage" + _facing(ax, sg)),
-           ("cobweb", lambda sg: "SpiderWebNorth" if sg < 0 else "SpiderWebEast")]
-    return out
+    gar = rng.choice(("Gargoyle2", "Gargoyle4", "Gargoyle5"))
+    crate = rng.choice(("DarkCrate1", "DarkCrate2", "Crate1", "Crate2"))
+    coffin_along = (_oriented(f, ax, r"^Coffin[1-4]$", across=False) or [None])[0]
+    lt = "LOTDCandleabra1" if lotd and f.ok_type("LOTDCandleabra1") else f.light_type()
+    return [("statues", lambda sg: statue, True),
+            ("gargoyles", lambda sg: gar, True),
+            ("monuments", lambda sg: "Monument1", True),
+            ("candelabra", lambda sg: lt, True),
+            ("boneheap", lambda sg: "LOTDFlamingSkullsStatic", True),
+            ("braziers", lambda sg: "Brazier", True),
+            ("urns", lambda sg: vase + _facing(ax, sg), False),
+            ("graves", lambda sg: stone, False),
+            ("coffins", lambda sg: coffin_along, False),
+            ("crates", lambda sg: crate, False),
+            ("rubble", lambda sg: rub, False)]
 
 
 def mana_pieces(f, ax):
-    """The mana room's dressing: crystal clusters, glowing jars, crystal pillars, generators, candelabras, urns."""
+    """The mana room's dressing: crystals, glowing jars, crystal pillars, generators, obelisks, candelabras, urns, orb
+    pedestals, mana carts, fire basins, stalagmites; (name, chooser, tall)."""
     rng = f.rng
     cls = [t for t in ("MineCrystal01", "MineCrystal02", "MineCrystal03", "MineCrystal04", "MineCrystal05") if f.ok_type(t)]
     c1 = rng.choice(cls) if cls else "CrystalColumn"
-    c2 = "ObeliskPrimitive"
     lt = f.light_type()
-    return [("crystals", lambda sg: c1), ("jars", lambda sg: "FairyJar"), ("pillars", lambda sg: "CrystalColumn"),
-            ("generators", lambda sg: "VandegrafSmall"), ("crystals2", lambda sg: c2),
-            ("candelabra", lambda sg: lt), ("urns", lambda sg: "StatueVase2" + _facing(ax, sg)),
-            ("pedestals", lambda sg: "OrbPoolEnd1"), ("carts", lambda sg: "MineManaCart1" if ax.line == "/" else "MineManaCart2"),
-            ("basins", lambda sg: "DunMirFlameBasinLit"), ("stalagmites", lambda sg: "CrystalBlueLargeStalagmite")]
+    return [("pillars", lambda sg: "CrystalColumn", True), ("generators", lambda sg: "VandegrafSmall", True),
+            ("obelisks", lambda sg: "ObeliskPrimitive", True), ("candelabra", lambda sg: lt, True),
+            ("stalagmites", lambda sg: "CrystalBlueLargeStalagmite", True),
+            ("crystals", lambda sg: c1, False), ("jars", lambda sg: "FairyJar", False),
+            ("urns", lambda sg: "StatueVase2" + _facing(ax, sg), False), ("pedestals", lambda sg: "OrbPoolEnd1", False),
+            ("carts", lambda sg: "MineManaCart1" if ax.line == "/" else "MineManaCart2", False),
+            ("basins", lambda sg: "DunMirFlameBasinLit", False)]
 
 
 COMPOSERS = {"nave": chapel, "coven": coven, "mana": mana_room, "crypt": crypt}

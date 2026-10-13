@@ -47,9 +47,10 @@ FAMILIES = [  # (family, regex on object type); first match wins
     ("tomb", r"Coffin|^Crypt\d|Tombstone|Sarcophag"),
     # the holy and arcane things a sacred room is dressed with (QA round 1, review/qa1/sacred.md: the type counter had
     # missed them, so a mana room of crystals or a chapel's font counted as bare): pools, fountains, fire and incense
-    # basins, crystal pillars and clusters, burning skulls, monuments, candle groups
+    # basins, crystal pillars and clusters, burning skulls, monuments, orb pedestals, mana carts (candle groups are too small
+    # to count: QA round 1, third pass)
     ("relic", r"^OrbPoolWith(out)?Orb$|^Fountain$|FlameBasin|IncenseBasin|^CrystalColumn$|^MineManaCrystal\d+$|"
-              r"^MineCrystal|^CrystalBlue|FlamingSkulls|^Monument\d|CandleGroup|^OrbPoolEnd\d$|^MineManaCart\d$"),
+              r"^MineCrystal|^CrystalBlue|FlamingSkulls|^Monument\d|^OrbPoolEnd\d$|^MineManaCart\d$"),
     ("statue", r"Statue|Gargoyle|ManaObelisk|^Obelisk|JudgementBalance|^LOTDArk\d"),
     ("column", r"Column|Pillar"),
     ("wall_decor", r"Tapestry|Painting|Trophy|HangingShield|Banner|Mirror|ClothSign|WallHanging|CrossedWeapons|HangingSwords|HangingCrossbow"),

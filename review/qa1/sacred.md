@@ -29,6 +29,7 @@ doors.lotd, each with its planted case in validate/selftest.py.
 
 | Q1C-19 | (the coordinator's read of the first pass, against the round's first theme "spaces are too empty and lack object diversity") crypt 05 "almost bare", crypt 02 "3 sarcophagi and little else", the dark crypt 10 "mostly empty floor", small mana rooms with several doors about 2% wall dressing | P§3 sacred set pieces (fullness); `crypt.md`, `mana_room.md`, `chapel.md`, `coven.md` (kit/sacred.py dress: urns, rubble, graves, a small statue pair, candles, skulls and bones, cobwebs in a crypt; crystals, jars, pillars, generators, pedestals, carts, basins in a mana room; mirrored pairs on the walls and in the corners, each kind once, then until the room's goal; the crypt's rows down the whole floor, single tombs on the middle line where the side doors' ways take a band) | `sacred.fullness` (STsFull): distinct kinds by floor tiles (kit/sacred.py fullness_goal) and covered floor by type | none | check |
 | Q1C-20 | (the coordinator) dress the walls of mana rooms with several doors using the wall stretches between the doors, mirrored about the room's axis where possible | `mana_room.md` (dress both_ways: a pair across the axis, else about the room's middle along it; the open floor between the rings and the walls too) | `sacred.fullness`, `sacred.symmetry` | none | check |
+| Q1C-21 | (the coordinator's read of the second pass) "crypts 02 and 05 still read as empty at full size, so the fullness rule is counting the wrong things"; "Back walls first in crypts too"; "Fill crypt 02's floor"; "Set the open minimum to 0.30 for chapel, coven, mana room and crypt, citing Q1T" | P§3; `crypt.md` "Third pass", `chapel.md`, `coven.md`, `mana_room.md` (visible pieces only: an urn's size on screen or a standing light, the tiny pieces one kind at most and off the coverage; back walls first, tall pieces there only; a crypt's centrepiece on a back wall on the door's line; a long crypt's two coffin lines; open from 0.30) | `sacred.fullness` (visible kinds), `sacred.symmetry` (both ways), room score `open` | none | check |
 
 The room profiles' thresholds loosened in the first pass (chapel types 7 and monotony 0.7, coven open 0.30 and
 monotony 0.85, mana room types 6 and monotony 0.75) are back where they were; the type counter counts the relics now (a
@@ -37,13 +38,17 @@ and clusters, burning skulls, monuments, candle groups, pedestals, mana carts). 
 placement grammar stay only where symmetry itself conflicts (even gaps, stepped rows, rings, corner singles, mixed
 tombs, lone columns in a pair, the runner, lights by the aisle).
 
-Totals: 20 items; after: 15 check, 5 review only (the fullness and variety a room score or the eye judges, the priest's
+The third pass (Q1C-21) lowers the open floor's least to 0.30 in the four types, by the coordinator's decision citing the
+round's first theme (Q1T); the other thresholds stay as above.
+
+Totals: 21 items; after: 16 check, 5 review only (the fullness and variety a room score or the eye judges, the priest's
 place the playtest shows), 0 not covered.
 
 ## Pictures
 
 Before: review/out/qa/round1/rooms/chapel/RM-CHAPEL-NN.png and .../crypt/RM-CRYPT-NN.png (round 1, iteration qa1).
-After (second pass): iteration qa1c, review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1c/renders/NN.png, sheets in
+After (third pass): iteration qa1d, review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1d/renders/NN.png, sheets in
+review/out/qa/qa1-sacred-d/. After (second pass): iteration qa1c, review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1c/renders/NN.png, sheets in
 review/out/qa/qa1-sacred-c/. After (first pass): the room lab's iteration qa1b, seed 11 (`py tests/roomlab.py <type> --n 10 --seed 11 --iter qa1b`):
 review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1b/renders/NN.png, and the before/after contact sheets in
 review/out/qa/qa1-sacred/.

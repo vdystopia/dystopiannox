@@ -102,7 +102,7 @@ Westwood's 1 curated campaign chapel room differ in structure, not just in detai
 | | Westwood's campaign (1 room, Con07B) | Profile |
 |---|---|---|
 | coverage | 0.06 | 0.05-0.18 (target 0.10) |
-| open floor | 0.62 | 0.55-0.88 |
+| open floor | 0.62 | 0.30-0.88 (Q1T; below) |
 | pieces per tile | 0.20 | 0.08-0.35 |
 | distinct types | 7 | 8+ (6 in the Land of the Dead) |
 | caps | Wiz07F: 8 benches in 123 tiles | pews 1 per 10 tiles, at most 20; columns 1 per 16 tiles, at most 12; statues 1 per 16, at most 10; sarcophagi 2 |
@@ -162,3 +162,7 @@ After the set piece the nave's walls and corners are dressed in mirrored pairs u
 kind more every 45 tiles past 30) and covers 7%: fire basins, statues, urns, monuments, gargoyles, victory statues, orb
 pedestals, light benches along the side walls; the statue cap (a statue per 16 tiles) held. Checked by
 `sacred.fullness`.
+
+Only pieces a person sees count (QA round 1, third pass: crypts 02 and 05 still read as empty at full size, the count having taken skulls and candles a few pixels wide as kinds): a piece at least an urn's size on screen (a circle of 7 px, a box of 11) with a furniture family, or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles, bottles and books count together as one kind at most and never toward the covered floor (`kit/sacred.py counted_kind`). The dressing fills the back walls (NE, NW) first and stands what is tall there only; a front wall (SE, SW) takes low pieces.
+
+Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear.

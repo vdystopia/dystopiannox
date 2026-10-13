@@ -65,4 +65,10 @@ the wall stretches between the doors and the open floor between rings and walls 
 urns, orb pedestals, mana carts, fire basins, crystal stalagmites; a pair across the axis, else about the room's middle
 along it; until the room holds `fullness_goal` kinds (8, a kind more every 45 tiles past 30, 12 at most) and covers 7%.
 Each placement takes its own kind of crystal (corners mana crystal clusters, the rings' flanks blue stalagmites, the
-dressing mine crystals), so no one kind repeats past the room score's most. Checked by `sacred.fullness`.
+dressing mine crystals), so no one kind repeats past the room score's most; where mana crystals already stand round
+the rings (as centrepieces), the corner clusters stand only at the far end (qa1d's mana rooms 08, 17, 19 and 22 held 5-6
+of them). Checked by `sacred.fullness`.
+
+Only pieces a person sees count (QA round 1, third pass: crypts 02 and 05 still read as empty at full size, the count having taken skulls and candles a few pixels wide as kinds): a piece at least an urn's size on screen (a circle of 7 px, a box of 11) with a furniture family, or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles, bottles and books count together as one kind at most and never toward the covered floor (`kit/sacred.py counted_kind`). The dressing fills the back walls (NE, NW) first and stands what is tall there only; a front wall (SE, SW) takes low pieces.
+
+Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear. (`kit/roomtypes.py TYPES["mana_room"]`: open 0.30-0.92.)

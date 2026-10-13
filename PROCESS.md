@@ -386,7 +386,13 @@ Rules that hold for every type:
     mana room's pair about its middle along the axis where a door takes the mirror across it. Small and two-door crypts
     fill too: rows across, else along the aisle, else against the walls, the floor's whole length, single tombs on the
     middle line where the side doors' ways leave a band. The relics a sacred room is dressed with have a furniture family
-    (`rules/room_types.py relic`), so the room score and the checker count them.
+    (`rules/room_types.py relic`), so the room score and the checker count them. Only visible pieces count [Q1C-21]:
+    a piece at least an urn's size on screen or a standing light; bones, skulls, cobwebs and candles together one kind
+    at most, never toward the covered floor (`sacred.counted_kind`). The dressing fills the back walls (NE, NW) first and
+    stands tall pieces there only, the front walls (SE, SW) low pieces; a crypt's centrepiece stands on a back wall on
+    the door's line, never a front one; a long crypt lies in two full coffin lines down its length. The four types' open
+    floor runs from 0.30 (Q1T, the user's "too empty" theme over Westwood's emptier rooms), the way in and reachability
+    checked as before.
   Checked by `sacred.axis`, `sacred.symmetry`, `sacred.carpet`, `sacred.altar_kind`, `sacred.dead` and `doors.lotd`
   (section 9). Briefs: `rules/rooms/chapel.md`, `coven.md`, `mana_room.md`, `crypt.md`.
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).

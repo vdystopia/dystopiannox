@@ -46,7 +46,7 @@ main door in the middle of its wall, inner doors off the axis, the room never re
 
 ## Density
 
-Cover 0.06-0.12-0.24; open 0.45-0.88; types 9+ (the relics counted: a furniture family of their own since the second pass).
+Cover 0.06-0.12-0.24; open 0.30-0.88 (Q1T: below); types 9+ (the relics counted: a furniture family of their own since the second pass).
 
 ## Checked by
 
@@ -62,3 +62,8 @@ The priest at his spot beside the altar; the faithful in the pews; the restless 
 
 Dressed as a crypt is (urns, rubble, LOTD gravestones, obelisks, candle groups, monuments, bones, cobwebs) until it holds
 `fullness_goal` kinds (8, a kind more every 45 tiles past 30) and covers 10%. Checked by `sacred.fullness`.
+Since the third pass the dressing also takes gargoyles and burning skull heaps, never crates (no stores in a coven).
+
+Only pieces a person sees count (QA round 1, third pass: crypts 02 and 05 still read as empty at full size, the count having taken skulls and candles a few pixels wide as kinds): a piece at least an urn's size on screen (a circle of 7 px, a box of 11) with a furniture family, or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles, bottles and books count together as one kind at most and never toward the covered floor (`kit/sacred.py counted_kind`). The dressing fills the back walls (NE, NW) first and stands what is tall there only; a front wall (SE, SW) takes low pieces.
+
+Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear.

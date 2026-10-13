@@ -173,7 +173,7 @@ def plan(typ, n=10, seed=1):
         # a chapel or a coven runs from its main door to its altar along its long axis, entered through a front wall
         # (SE or SW) so the altar stands on a back wall the camera sees, the side walls free for the neighbours' doors
         # (QA round 1, Q1C-2: "Chapels should always be aligned with the main door")
-        nave = profile(kind)["type"] in ("chapel", "coven")
+        nave = profile(kind)["type"] in ("chapel", "coven", "crypt")       # (a crypt too: its centrepiece on a back wall, Q1T)
         nave_u = nave and i % 2 == 0
         W, H = spans(tiles, shape, rng, long_u=True if (throne or nave_u) else (False if nave else None))
         st = KB.styles()[style]

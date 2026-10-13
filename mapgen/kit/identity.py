@@ -650,9 +650,9 @@ ROOMS = {
                   # breakable coffins either side of the aisle, bones heaped at their heads, statues and tombstones in pairs
                   composer="crypt", lift=("DunMir|", "LOTD|"),
                   types={"tomb": r"^Crypt\d+$|^Coffin\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
-                         "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$",
-                         "storage": r"^CryptChest\d$", "column": r"^RuinsColumnIndoorRubble\d+$",
-                         "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$"},
+                         "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$|^Gargoyle\d$",
+                         "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "column": r"^RuinsColumnIndoorRubble\d+$",
+                         "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                   top_up=(), lights_per100=2.0,
                   # a step out from the walls (Westwood's: none against a wall, none further than 2.5 units from one):
                   # sarcophagi along the walls a pace out, the chest in a corner, held to the type's cap
@@ -884,7 +884,7 @@ ROOMS = {
                         optional={"wall_decor": (1.0, 6), "tomb": (0.5, 8), "bones": (1.0, 30), "column": (0.6, 8),
                                   "bench": (1.0, 12), "stove": (1.0, 1), "relic": (1.0, 8)},
                         types={"altar": r"^LOTDLichGodStatue[12]$",
-                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]",
+                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|^Gargoyle\d$",
                                "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
                                "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$",
                                "tomb": r"^LOTDTombstone[1-4]$|^Crypt\d+$|^Coffin\d$",
@@ -918,9 +918,11 @@ ROOMS = {
                        # QA round 1 (Q1C-17: RM-CRYPT-10 "needs coffins or graves or something to give it a crypt
                        # identity"): the crypt's set piece, its rows of the dead coffins, sarcophagi or LOTD gravestones
                        composer="crypt",
-                       types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$", "statue": r"^LOTDManaObelisk$|^StatueVase[12]",
-                              "storage": r"^CryptChest\d$", "wall_decor": r"^LOTDTapestry[12]$",
-                              "column": r"^RuinsColumnIndoorRubble\d+$", "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$"},
+                       types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$",
+                              "statue": r"^LOTDManaObelisk$|^StatueVase[12]|^Gargoyle\d$",
+                              "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "wall_decor": r"^LOTDTapestry[12]$",
+                              "column": r"^RuinsColumnIndoorRubble\d+$",
+                              "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                        prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
@@ -946,7 +948,7 @@ ROOMS = {
                   types={"altar": r"^LOTDLichGodStatue[12]$|^DunMirAltar\d$",
                          "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
                          "statue": r"^LOTDManaObelisk$|^Obelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|"
-                                   r"^Statue2[a-h]$",
+                                   r"^Statue2[a-h]$|^Gargoyle\d$",
                          "tomb": r"^Crypt\d+$|^Coffin\d$|^LOTDTombstone", "bench": r"^Bench\d$|^LightBench\d$",
                          "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "stove": r"^Cauldron(Animated)?$",
                          "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$"},

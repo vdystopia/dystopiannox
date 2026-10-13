@@ -2455,7 +2455,9 @@ def check_sacred(m, ctx, base):
                 out.append(F("sacred", "warning", f"{name} room: its main door stands {abs((min(ss) + max(ss)) / 2.0 - fr['mid']):.1f} "
                              f"units off the middle of its wall: the door, the runner and the altar share the room's middle "
                              f"line (RM-CHAPEL-09; Q1C-2).", o["x"], o["y"], rule="sacred.axis"))
-        unpaired, off = sacred_symmetry(m, r, fr, both=kind == "mana_room")
+        # (either way: a back side wall's pieces mirror about the room's middle along the axis, the back walls dressed
+        # first and the front walls kept low: QA round 1, third pass)
+        unpaired, off = sacred_symmetry(m, r, fr, both=True)
         if len(unpaired) >= 3 and len(unpaired) > SACRED_SYM_SHARE * max(1, len(off)):
             o = unpaired[0]
             out.append(F("sacred", "warning", f"{name} room: {len(unpaired)} of its {len(off)} pieces off the middle line "
@@ -2474,8 +2476,10 @@ def check_sacred(m, ctx, base):
         from kit.roomtypes import KIND_TYPE as _KT
         rtype = _KT.get(kind, kind)
         want_k, want_c = SAC.fullness_goal(rtype, r["tiles"])
+        # (only what a person sees counts: bones, skulls, cobwebs, candles and anything under an urn's size count
+        # together as one kind at most, and the covered floor is the blocking furniture's: QA round 1, third pass)
         have = {k for o in r["objects"] if not m.is_door(o) and "MONSTER" not in o["cls"]
-                for k in [SAC.counted_kind(o["type"], RT.family(o["type"]))] if k}
+                for k in [SAC.counted_kind(o["type"], RT.family(o["type"]), o.get("ext"), o.get("ex"), o.get("ey"))] if k}
         cov = room_coverage(m, r)
         if len(have) < want_k or cov < want_c:
             out.append(F("sacred", "warning", f"{name} room ({r['tiles']} tiles): {len(have)} kinds of piece and covers "
