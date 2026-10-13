@@ -1742,7 +1742,7 @@ CIVIC = {"living_room": dict(kb_caps={"table": _more_tables}), "dwelling": dict(
          "mess_hall": dict(), "ogre_hall": dict(), "throne_room": dict(kb_caps={"statue": _more_statues}),
          "gallery": dict(kb_caps={"statue": _more_statues}), "hall": dict(kb_caps={"statue": _more_statues}),
          "solar": dict(kb_caps={"table": _more_tables}), "study": dict(kb_caps={"table": _more_tables, "statue": 4}),
-         "library": dict(kb_caps={"table": _more_tables}), "infirmary": dict(kb_caps={"table": _more_tables}),
+         "library": dict(kb_caps={"table": _more_tables, "statue": 4}), "infirmary": dict(kb_caps={"table": _more_tables}),
          "herbalist": dict(kb_caps={"table": _more_tables})}
 for _k, _v in CIVIC.items():
     ROOMS[_k].update(civic=True, compose=[dict(fam="civic", slot="civic", extra=True)], fill=[], top_up=(), **_v)

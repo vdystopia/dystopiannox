@@ -4162,6 +4162,7 @@ class Furnisher:
         if plan.get("nightstand") and self.beds and not done["nightstand"]:
             self.beside_bed(); done["nightstand"] += 1
         for f, n in need.items():                     # core pieces the composition could not fit
+            if self.ident.get("civic") and done[f] > 0: continue    # kit/civic.py placed them as a mirrored whole
             for _ in range(max(0, n - done[f])):
                 if f in SEAT_FAMILIES: break
                 if f in FRONT_CLEAR:                      # a piece that is tended keeps the space before it clear

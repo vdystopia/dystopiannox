@@ -2523,6 +2523,9 @@ CIVIC_S_MIN_TILES = 36      # rooms smaller than this may leave a corner for wal
 CIVIC_BARE_WALL = 9.0       # a back wall run this long (uv units) with nothing on it or before it
 CIVIC_KINDS_PER = 25        # the least kinds of piece: one per this many floor tiles, at least CIVIC_KINDS_MIN
 CIVIC_KINDS_MIN = 5
+CIVIC_TINY = re.compile(r"^(OgreHutMeat|ArmBone|LegBone|Skull\d?|CorpseSkull\w*|Candle\d(Unlit)?|BottleCandle\w*|"
+                        r"FoilCandle\w*|Cobweb\w*|Spitoon|RedApple|Bread|Cheese|Meat|Ham|Drumstick|Mushroom\w*|\w*Potion|"
+                        r"\w*Book|Scroll\w*|Gold\w*)$")
 
 
 def civic_flags(m, r, kind):
@@ -2541,12 +2544,15 @@ def civic_flags(m, r, kind):
     sx, sy = max(cells, key=lambda c: (c[0] + c[1] + 1) - (c[0] - c[1]))
     su, sv = sx + sy + 1, sx - sy
     if r["tiles"] >= CIVIC_S_MIN_TILES:
-        near = [o for (u, v), (hu, hv), o in pts
-                if max(abs(u - su) - hu, 0) ** 2 + max(abs(v - sv) - hv, 0) ** 2 <= CIVIC_S_REACH ** 2]
+        near = [o for (u, v), (hu, hv), o in pts if not CIVIC_TINY.match(o["type"]) and
+                max(abs(u - su) - hu, 0) ** 2 + max(abs(v - sv) - hv, 0) ** 2 <= CIVIC_S_REACH ** 2]
         if not near:
             out.append(("s_corner", "nothing stands in its S corner", None, cell_px((sx, sy))))
-    # bare back walls
+    # bare back walls (a doorway is no bare wall: nothing may stand or hang in it)
     runs = room_runs(m, cells)
+    cs = set(cells)
+    door_uv = [(d["gap"][0] + d["gap"][1] + 1, d["gap"][0] - d["gap"][1]) for d in m.doors
+               if any((d["gap"][0] + a, d["gap"][1] + b) in cs for a, b in N4)]
     for (line, coord), (lo, hi) in runs.items():
         name = _wall_name(line, coord, cu, cv)
         if name not in ("NE", "NW") or hi - lo < CIVIC_BARE_WALL + 2: continue
@@ -2555,6 +2561,9 @@ def civic_flags(m, r, kind):
             perp = abs(u - coord) if line == "/" else abs(v - coord)
             along, ha, hp = (v, hv, hu) if line == "/" else (u, hu, hv)
             if perp - hp <= 2.0 and lo - 0.5 <= along <= hi + 0.5: spans.append((along - ha - 0.5, along + ha + 0.5))
+        for du, dv in door_uv:
+            perp, along = (abs(du - coord), dv) if line == "/" else (abs(dv - coord), du)
+            if perp <= 1.6: spans.append((along - 2.4, along + 2.4))
         spans.sort()
         free, end, best = 0.0, lo + 1.0, 0.0
         for a, b in spans + [(hi - 1.0, hi - 1.0)]:
@@ -2564,8 +2573,10 @@ def civic_flags(m, r, kind):
             u, v = (coord, mid) if line == "/" else (mid, coord)
             out.append(("bare_wall", f"{best:.0f} units of its {name} wall stand bare",
                         None, ((u + v) * CELL / 2, (u - v) * CELL / 2)))
-    # diversity: kinds of piece (lights, hangings and rugs count: they are what the room holds)
-    stems = {_kind_stem(o["type"]) for o in objs if not o["type"].startswith("ColorLight")}
+    # diversity: kinds of piece (lights, hangings and rugs count: they are what the room holds; tiny pieces, food, bones,
+    # candles, cobwebs, loose items, count as one kind at most: a room is not full of them)
+    big = [o for o in objs if not CIVIC_TINY.match(o["type"])]
+    stems = {_kind_stem(o["type"]) for o in big} | ({"tiny"} if len(big) < len(objs) else set())
     want = max(CIVIC_KINDS_MIN, min(10, r["tiles"] // CIVIC_KINDS_PER))
     if len(stems) < want:
         out.append(("kinds", f"{len(stems)} kinds of piece (its size wants {want})", objs[0] if objs else None,

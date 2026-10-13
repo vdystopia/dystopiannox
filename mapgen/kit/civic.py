@@ -263,16 +263,18 @@ class Ctx:
         types = self.types(pat, fam)
         if not types: return 0
         t0 = self.rng.choice(types)
+        half_full = t0 + "HalfFull" if re.match(r"^Bookcase\d$", t0) and self.f.ok_type(t0 + "HalfFull") else None
         got = 0
         for k in range(n_each):
             done = False
+            tk = half_full if half_full and k % 2 == 1 else t0     # full and half-full books in turn, mirrored
             for extra in (0.0, 0.5, 1.0):
-                t = self.f.side_variant(t0, r, fam or F._family_of(t0)) or t0
+                t = self.f.side_variant(tk, r, fam or F._family_of(tk)) or tk
                 hu, hv = self.f.half(t)
                 ha = hv if r["line"] == "/" else hu
                 off = p["ha"] + gap + extra + ha + k * (2 * ha + 0.05)
-                a1 = self.on_wall(t0, r, p["along"] - off, fam, pairing=pairing, blocking=blocking, touch=k > 0)
-                a2 = a1 and self.on_wall(t0, r, p["along"] + off, fam, pairing=pairing, blocking=blocking, touch=k > 0)
+                a1 = self.on_wall(tk, r, p["along"] - off, fam, pairing=pairing, blocking=blocking, touch=k > 0)
+                a2 = a1 and self.on_wall(tk, r, p["along"] + off, fam, pairing=pairing, blocking=blocking, touch=k > 0)
                 if a1 and a2:
                     got += 2; done = True; break
                 if a1: self.drop(a1[0])
@@ -359,6 +361,7 @@ class Ctx:
         if not types: return 0
         # tapestries of one colour to a room (a wall of mixed colours reads as random)
         cols = sorted({m.group(1) for t in types for m in [re.match(r"^(Blue|Red|Green|White)Tapestry", t)] if m})
+        if len(cols) == 1: self.set_type.setdefault("tapestry colour", cols[0])
         if len(cols) > 1:
             col = self.set_type.setdefault("tapestry colour", self.rng.choice(cols))
             types = [t for t in types if not re.match(r"^(Blue|Red|Green|White)Tapestry", t) or t.startswith(col)]
@@ -714,6 +717,12 @@ def mk_one(pat, name=None):
     return mk
 
 
+def mk_rug(c, uv):
+    """A rug on its own where the floor is bare (a bearskin or a woven rug)."""
+    t = c.pick(r"^BearskinRug\d$|^RedRug\d$")
+    return 1 if t and c.put(t, *uv, blocking=False) else 0
+
+
 def mk_worktable(c, uv):
     """A work table with two stools and a crate of apples or a sack by it."""
     n = c.table_set(uv, r"^Table4$|^RoundTableWithFood$", 2, seat_pat=r"Stool", reach=1.2)
@@ -810,6 +819,7 @@ def solar(c, plan):
     mirrored on the front walls; the S corner's set; groups where the floor is still bare; tapestries."""
     f = c.f
     c.wall_pat = r"^Bookcase\d$"
+    c.s_makers = [lambda c_, uv: c_.corner_set("S", TABLE_SMALL, 2), lambda c_, uv: c_.corner_heap("S", [VASE], n=1, d=1.2)]
     walls = list(BACK); c.rng.shuffle(walls)
     hearth = c.focal("fireplace", clear=2.8, wall=walls[0])
     if hearth:
@@ -826,11 +836,12 @@ def solar(c, plan):
             break
     c.lights_balanced(4)
     c.corner_set("S", TABLE_SMALL, 2)
-    c.corner_heap("W", S("sack_m", "crate"), n=2)
-    c.corner_heap("E", S("crate", "sack_s"), n=2)
+    t = c.pick(VASE)
+    if t: c.put_all([(t, *c.corner_uv("W", 1.3)), (t, *c.corner_uv("E", 1.3))], pairing=True)
     wall_pair(c, "SE", r"^Bench\d$|^CushionedBench\d$", 0.25, "bench")
     wall_pair(c, "SW", VASE, 0.2)
-    c.fill_bare([mk_dining, mk_sitting, mk_round4], most=max(2, c.tiles // 50), over=3.0, mirror=True)
+    c.fill_bare([mk_sitting, mk_round4, mk_one(r"^Statue2[aceg]$", "statue")], most=max(3, c.tiles // 35), over=2.8,
+                mirror=True)
     c.hangings(r"^(Blue|Red|White|Green)Tapestry\d$|^Painting[12]$", most=4)
 
 
@@ -840,29 +851,43 @@ def study(c, plan):
     S corner's reading set; lights flanking the desk; groups where the floor is still bare."""
     f = c.f
     c.wall_pat = r"^Bookcase\d$"
+    c.s_makers = [lambda c_, uv: c_.corner_set("S", TABLE_SMALL, 2), lambda c_, uv: c_.corner_heap("S", [VASE], n=1, d=1.2)]
     walls = list(BACK); c.rng.shuffle(walls)
     desk = c.focal("desk", clear=1.6, wall=walls[0])
     if desk:
         f.seats_around(desk["uv"], desk["obj"]["type"], 1)
-        c.run_pair_from(desk, r"^Bookcase\d$", fam="shelves", most=6)
+        n = c.run_pair_from(desk, r"^Bookcase\d$", fam="shelves", most=2) // 2
+        if n:                     # a scholar's workstations mirrored beyond the books
+            bt = f.side_variant(c.pick(r"^Bookcase\d$") or "Bookcase1", desk["run"], "shelves") or "Bookcase1"
+            bw = 2 * (f.half(bt)[1] if desk["run"]["line"] == "/" else f.half(bt)[0]) + 0.05
+            c.flank(dict(desk, ha=desk["ha"] + 0.15 + n * bw), r"^WizardWorkstation\d[a-d]?$", gap=1.1, fam="lab")
+        if not c.run_pair_from(desk, r"^Bookcase\d$", fam="shelves", most=6) and not n:
+            c.line(desk["run"], r"^Bookcase\d$", "shelves", most=4)       # no room both sides: the longer stretch
         c.flank_lights(desk, gap=0.4, before=0.8)
     ch = c.centred_on(walls[1], r"^Chest\d$", "storage")
     if ch:
+        f.rug_before(anchor_of(c, ch, c.wall(walls[1])))
         c.flank(anchor_of(c, ch, c.wall(walls[1])), r"^Bookcase\d$", gap=1.2, fam="shelves", n_each=5)
     else:
         c.line(c.wall(walls[1]), r"^Bookcase\d$", "shelves", most=8)
+    if c.tiles >= 110: stacks(c)                     # a big study keeps stacks of its books, as a library does
     mb = c.middle_box()
     cu, cv = (mb[0] + mb[1]) / 2, (mb[2] + mb[3]) / 2
     c.table_set((cu, cv), r"^RoundTable[12]$|^OvalTable[12]$", 4, carpet=(3, 3) if c.tiles >= 60 else (2, 2)) or \
         c.table_set((cu, cv), TABLE_SMALL, 2, rug=True, reach=4.0)
     c.lights_balanced(2)
     c.corner_set("S", TABLE_SMALL, 2)
-    if c.tiles >= 60:
-        t = c.pick(VASE)
-        if t: c.put_all([(t, *c.corner_uv("W", 1.3)), (t, *c.corner_uv("E", 1.3))], pairing=True)
+    t = c.pick(r"^Plant[1345]$")
+    if t and not c.put_all([(t, *c.corner_uv("W", 1.2)), (t, *c.corner_uv("E", 1.2))], pairing=True):
+        for d_ in (1.1, 1.6):
+            if c.put_all([(t, *c.corner_uv("N", d_))]): break
+    if c.tiles >= 60: wall_pair(c, "SW", VASE, 0.3)
     if c.tiles >= 90: wall_pair(c, "SE", r"^Statue2[aceg]$", 0.3, "statue")
-    c.fill_bare([mk_sitting], most=c.tiles // 50, over=3.0, mirror=True)
-    c.hangings(r"^Painting[12]$|^(Blue|Red|Green)Tapestry\d$", most=3)
+    if c.tiles >= 70 and not wall_pair(c, "SE", r"^CushionedBench\d$|^Bench\d$", 0.12, "bench"):
+        wall_pair(c, "SW", r"^CushionedBench\d$|^Bench\d$", 0.12, "bench")
+    c.fill_bare([mk_one(r"^Orrery2$|^Telescope2[a-g]$", "curio")], most=1, over=1.8)
+    c.fill_bare([mk_sitting, mk_round4], most=max(2, c.tiles // 45), over=2.8, mirror=True)
+    c.hangings(r"^Painting[12]$|^(Blue|Red|Green)Tapestry\d$|^WallTrophy(Bear|Moose|MountainLion)[12]$", most=3)
 
 
 def library(c, plan):
@@ -871,6 +896,7 @@ def library(c, plan):
     desk centred with its chair; lights in matching corners; reading sets where the floor is still bare."""
     f = c.f
     c.wall_pat = r"^Bookcase\d$"
+    c.s_makers = [lambda c_, uv: c_.corner_set("S", TABLE_SMALL, 2), lambda c_, uv: c_.corner_heap("S", [VASE], n=1, d=1.2)]
     walls = list(BACK); c.rng.shuffle(walls)
     desk = None
     r = c.wall(walls[0])
@@ -884,7 +910,12 @@ def library(c, plan):
         c.run_pair_from(desk, r"^Bookcase\d$", fam="shelves", most=10)
     else:
         c.line(r, r"^Bookcase\d$", "shelves", most=14)
-    c.line(c.wall(walls[1]), r"^Bookcase\d$", "shelves", most=14)
+    ch = c.centred_on(walls[1], r"^Chest\d$", "storage") if c.tiles >= 100 else None
+    if ch: c.flank(anchor_of(c, ch, c.wall(walls[1])), r"^Bookcase\d$", gap=1.2, fam="shelves", n_each=7)
+    else: c.line(c.wall(walls[1]), r"^Bookcase\d$", "shelves", most=14)
+    if f._fam_n["shelves"] < 8:                     # books on every wall that has room (a library's exception)
+        for w in list(BACK) + list(FRONT): c.line(c.wall(w), r"^Bookcase\d$", "shelves", most=6)
+    if c.tiles >= 90: wall_pair(c, "SE", r"^Statue2[aceg]$", 0.3, "statue")
     c.lights_balanced(4 if c.tiles >= 120 else 2)
     if c.tiles >= 140:
         for w in FRONT: c.line(c.wall(w), r"^Bookcase\d$", "shelves", most=8)
@@ -894,7 +925,12 @@ def library(c, plan):
     c.table_set((cu, cv), r"^OvalTable[12]$|^RoundTable[12]$", 4, carpet=(3, 3)) or \
         c.table_set((cu, cv), TABLE_SMALL, 2, rug=True, reach=4.0)
     c.corner_set("S", TABLE_SMALL, 2)
-    c.fill_bare([mk_sitting, mk_round4], most=c.tiles // 50, over=3.0, mirror=True)
+    if c.tiles >= 150: c.fill_bare([mk_sitting], most=c.tiles // 90, over=3.4, mirror=True)
+    if c.tiles >= 100:                               # urns mirrored in the side corners
+        t = c.pick(VASE)
+        if t and not c.put_all([(t, *c.corner_uv("W", 1.3)), (t, *c.corner_uv("E", 1.3))], pairing=True):
+            wall_pair(c, "SW", VASE, 0.2) or wall_pair(c, "SE", VASE, 0.2)
+        c.fill_bare([mk_one(r"^Orrery2$|^Telescope2[a-g]$", "curio")], most=1, over=1.8)   # a scholar's curio
     c.hangings(r"^Painting[12]$|^(Blue|Red|Green)Tapestry\d$", most=2)
 
 
@@ -1094,14 +1130,14 @@ def infirmary(c, plan):
     clear of the beds; supplies heaped in the corners; hangings of one colour."""
     f = c.f
     c.wall_pat = r"^Bookcase\d$"
-    c.s_makers = [lambda c_, uv: c_.corner_heap("S", S("sack_m", "crate"), n=2)]
+    c.s_makers = [lambda c_, uv: c_.corner_heap("S", S("sack_m", "dcrate"), n=2)]
     fronts = sorted((w for w in FRONT if c.wall(w)), key=lambda w: c.wall(w)["lo"] - c.wall(w)["hi"])
     for w in fronts[:2 if c.tiles >= 120 else 1]:
         r = c.wall(w)
         for lo, hi in sorted(c.free(r, pad=0.4), key=lambda s: s[0] - s[1])[:1]:
             # keep the S corner for the other row: the stretch starts two units off it
             cot_row(c, r, lo + 0.6, hi - 0.6)
-    desk = counter_for(c, r"^Table[14]$|^SquareTable[12]$|^TraderDesk[1-6]$")
+    desk = counter_for(c, r"^Table[14]$|^SquareTable[12]$")
     if desk:
         c.flank_lights(desk, gap=0.4, before=0.2)
     ow = [w for w in BACK if not desk or c.wall(w) is not desk["run"]]
@@ -1129,10 +1165,17 @@ def infirmary(c, plan):
             for lo, hi in sorted(c.free(r, pad=1.0), key=lambda s: s[0] - s[1])[:1]:
                 if c.on_wall(caul, r, (lo + hi) / 2, "stove", extra=0.5): done = True
     c.lights_balanced(2 if c.tiles < 120 else 4)
-    c.corner_heap("W", S("sack_m", "crate", "sack_s"), n=3)
-    c.corner_heap("E", S("crate", "water", "sack_m"), n=3)
-    c.corner_heap("N", S("crate", "sack_s"), n=2)
-    c.fill_bare([mk_heap("crate", "sack_m", "sack_s", n=3), mk_sitting], most=c.tiles // 60, over=3.2, mirror=True)
+    for w in list(BACK) + list(FRONT):              # the linen chest centred on a stretch of its own
+        if c.centred_on(w, r"^Chest\d$", "storage"): break
+    mb = c.middle_box()
+    c.table_set(((mb[0] + mb[1]) / 2, (mb[2] + mb[3]) / 2), r"^Table[14]$|^SquareTable[12]$", 2,
+                seat_pat=r"Stool", rug=True, reach=3.0)
+    t = c.pick(r"^Plant[1345]$")
+    if t: c.put_all([(t, *c.corner_uv("N", 1.1))])
+    c.corner_heap("W", S("sack_m", "dcrate", "sack_s"), n=3)
+    c.corner_heap("E", S("dcrate", "water", "sack_m"), n=3)
+    c.corner_heap("N", S("dcrate", "sack_s"), n=2)
+    c.fill_bare([mk_sitting], most=c.tiles // 60, over=3.2, mirror=True)
     c.hangings(r"^(White|Blue|Green)Tapestry\d$", most=3)
 
 
@@ -1143,11 +1186,16 @@ def herbalist(c, plan):
     on the front walls."""
     f = c.f
     c.wall_pat = r"^Bookcase\d$"
-    desk = counter_for(c, r"^TraderDesk[1-6]$|^Table[14]$")
+    desk = counter_for(c, r"^Table[14]$|^SquareTable[12]$")
     if desk:
         r = desk["run"]
         back = dict(obj=None, run=r, uv=f._uv_on(r, 0.5, desk["along"]), along=desk["along"], ha=desk["ha"] * 0.5, hp=0.5)
-        c.flank(back, r"^PotionShelves\d$", gap=0.1, fam="shelves", n_each=4)
+        n = c.flank(back, r"^PotionShelves\d$", gap=0.1, fam="shelves", n_each=4) // 2
+        # the potions in their pair or two (kit/objects.py: never a wall of them), then books of remedies on to the
+        # corners, mirrored: the whole wall behind her lined
+        pt = f.side_variant(c.pick(r"^PotionShelves\d$") or "PotionShelves1", r, "shelves") or "PotionShelves1"
+        pw = 2 * (f.half(pt)[1] if r["line"] == "/" else f.half(pt)[0]) + 0.05
+        c.flank(dict(back, ha=back["ha"] + 0.1 + n * pw), r"^Bookcase\d$", gap=0.1, fam="shelves", n_each=4)
         c.flank_lights(desk, gap=0.4, before=0.2)
     ow = [w for w in BACK if not desk or c.wall(w) is not desk["run"]]
     if ow:
@@ -1158,19 +1206,33 @@ def herbalist(c, plan):
             for lo, hi in sorted(c.free(r), key=lambda s: s[0] - s[1])[:1]:
                 res = c.on_wall(caul, r, (lo + hi) / 2, "stove", extra=0.5)
         if res:
-            c.flank(anchor_of(c, res, r), r"^Bookcase\d$", gap=1.4, fam="shelves", n_each=3)
+            c.flank(anchor_of(c, res, r), r"^Bookcase\d$", gap=2.0, fam="shelves", n_each=3)
         elif r:
             c.line(r, r"^Bookcase\d$", "shelves", most=6)
+    if not desk:                                       # no counter fitted: her potions line a back wall all the same
+        c.line(c.wall(BACK[0]), r"^PotionShelves\d$", "shelves", most=4)
+    if f._fam_n["stove"] < 1:                          # the cauldron is the room: any free stretch, else the floor
+        caul = c.pick(r"^CauldronAnimated$")
+        done = False
+        for w in list(BACK) + list(FRONT):
+            r = c.wall(w)
+            if done or not r or not caul: continue
+            for lo, hi in sorted(c.free(r, pad=0.6), key=lambda s_: s_[0] - s_[1])[:2]:
+                if hi - lo >= 3.0 and c.on_wall(caul, r, (lo + hi) / 2, "stove", extra=0.5): done = True; break
+        if not done and caul:
+            mb = c.middle_box(walk=1.6)
+            c.fill_bare([mk_one(r"^CauldronAnimated$", "cauldron")], most=1, over=1.6)
+    if f._fam_n["shelves"] < 4:                        # her books of remedies along what back wall is left
+        for w in BACK: c.line(c.wall(w), r"^Bookcase\d$", "shelves", most=4)
     c.lights_balanced(2)
     c.front_pair(r"^FairyJar$", None, wall="SW")
     mb = c.middle_box()
     c.table_set(((mb[0] + mb[1]) / 2, (mb[2] + mb[3]) / 2), r"^Table4$|^SquareTable[12]$", 2, seat_pat=r"Stool",
                 rug=True, reach=3.0)
     c.corner_heap("S", S("sack_l", "sack_m", "sack_s", "apples"), n=4)
-    c.corner_heap("W", S("crate", "dcrate", "barrel"), n=3)
-    c.corner_heap("E", S("apples", "sack_m", "crate"), n=3)
-    front_heaps(c, ("SE",), [S("sack_m", "sack_s", "apples")], n=3)
-    c.fill_bare([mk_heap("sack_l", "sack_m", "apples", n=3), mk_sitting], most=c.tiles // 45, over=2.8)
+    c.corner_heap("W", S("dcrate", "barrel", "sack_m"), n=3)
+    c.corner_heap("E", S("apples", "sack_m", "dcrate"), n=3)
+    c.fill_bare([mk_sitting, mk_heap("sack_l", "sack_m", "apples", n=3)], most=c.tiles // 50, over=3.0, mirror=True)
     c.hangings(r"^Painting[12]$|^GreenTapestry\d$", most=2)
 
 
@@ -1319,7 +1381,7 @@ def tavern(c, plan):
     hearth = c.focal("fireplace", clear=2.8)
     if hearth:
         f.rug_before(hearth)
-        c.flank(hearth, r"^LogShelvesFull\d$", gap=1.4, fam="shelves")
+        c.flank(hearth, r"^LogShelvesFull\d$", gap=1.4, fam="shelves", n_each=2)
     c.lights_balanced(4)
     mb = c.middle_box(walk=1.4)
     mk = exact_set(r"^RoundTable[12]$", 4, seat_pat=r"Stool", gap=0.45)
@@ -1356,7 +1418,7 @@ def tavern(c, plan):
     c.corner_heap("S", S("barrel", "piled", "barrel"), n=3)
     front_heaps(c, ("SE", "SW"), [S("barrel", "piled"), S("barrel", "water")], n=2)
     c.fill_bare([mk_round4, mk_sitting], most=3, over=3.2, mirror=True)
-    c.hangings(r"^WallTrophy(Bear|Moose|MountainLion)[12]$|^TraderShieldWallHanging\d$", most=5)
+    c.hangings(r"^WallTrophy(Bear|Moose|MountainLion)[12]$", most=5)
 
 
 def dining_hall(c, plan):
@@ -1410,7 +1472,7 @@ def dining_hall(c, plan):
     if t: c.put_all([(t, *c.corner_uv("N", 1.3))])
     c.fill_bare([mk_sitting, mk_heap("barrel", "water", n=2)], most=c.tiles // 60, over=3.2)
     c.hangings(r"^(Red|Blue|Green|White)Tapestry\d$" if f.kind != "mess_hall" else
-               r"^WallTrophy(Bear|Moose|MountainLion)[12]$|^TraderShieldWallHanging\d$", most=5)
+               r"^WallTrophy(Bear|Moose|MountainLion)[12]$", most=5)
 
 
 def ogre_hall(c, plan):
@@ -1467,16 +1529,16 @@ def stations(c, ax, inner, outer, first=4.0, step=4.2, inner_off=None, light_inn
     if DEBUG: c.log.append(f"   stations: run {c.name_of(r)} mid {mid:.1f} reach {reach:.1f} depth {ax['depth']:.1f}")
     while d <= depth_max:
         if inner:
-            pat = inner[k % len(inner)]
-            t = c.pick_once(pat)
-            if t:
+            done = False
+            for j in range(len(inner)):              # the station's own kind first, else the next that fits there
+                pat = inner[(k + j) % len(inner)]
+                t = c.pick_once(pat)
+                if not t: continue
                 io = inner_off or (half + 0.9 + max(f.half(t)))
-                for o in (io, io + 0.5, io + 1.0):
+                for o in (io, io + 0.5, io + 1.0, io + 1.6):
                     n = mirrored(c, ax, t, d, o, light=light_inner and pat == inner[-1])
-                    if n: got += n; break
-                    if DEBUG:
-                        pa, pb = on_axis(c, ax, d, -o), on_axis(c, ax, d, o)
-                        c.log.append(f"   station {t} d={d:.1f} o={o:.1f}: {why(f, t, *pa)} / {why(f, t, *pb)}")
+                    if n: got += n; done = True; break
+                if done: break
         if outer and reach >= 6.0:
             pat = outer[k % len(outer)]
             t = c.pick_once(pat)
@@ -1530,19 +1592,24 @@ def hall(c, plan):
     ax = axis(c)
     if ax:
         f.aisle = dict(run=ax["run"], mid=ax["mid"], half=1.6, first=2.4, far=ax["depth"], door=c.door)
-        stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Brazier$"], [r"^Bench[1-4]$|^CushionedBench\d$", VASE],
+        stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Brazier$"], [r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", VASE],
                  first=3.4, step=4.0, light_inner=True)
         r = ax["run"]
         far = dict(obj=None, run=r, uv=f._uv_on(r, 0.5, ax["mid"]), along=ax["mid"], ha=1.2, hp=0.4)
-        if c.flank(far, r"^Statue2[a-h]$", gap=1.2, fam="statue"):
-            # the house's chest centred between them, flame basins before them
-            res = c.on_wall(c.pick(r"^DunMirChest\d$|^Chest\d$", "storage") or "Chest1", r, ax["mid"], "storage")
-            mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, 3.2)
+        c.flank(far, r"^Statue2[a-h]$", gap=1.2, fam="statue")
+        # the house's chest centred on the far wall between them, lights flanking it, flame basins before them
+        for a_ in (ax["mid"], ax["mid"] - 1.0, ax["mid"] + 1.0):
+            res = c.on_wall(c.pick(r"^DunMirChest\d$|^Chest\d$", "storage") or "Chest1", r, a_, "storage")
+            if res:
+                c.flank_lights(anchor_of(c, res, r), gap=0.4, before=0.4)
+                break
+        mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, 3.2)
     else:
         f.colonnade(gap=4.2, aisle=3.2)
+    c.corner_lights(("W", "E"), 1.0)
     c.lights_balanced(4 if c.tiles >= 150 else 2)
     col = c.rng.choice(("Blue", "Red", "Green", "White"))
-    c.hangings(rf"^{col}Tapestry\d$|^TraderShieldWallHanging\d$" if c.f.style != "dunmir" else r"^DunMirHangingShield\d+$",
+    c.hangings(rf"^{col}Tapestry\d$" if c.f.style != "dunmir" else r"^DunMirHangingShield\d+$",
                step=3.6, most=6)
 
 
@@ -1606,7 +1673,30 @@ def dress_walls(c):
     for name in BACK:
         for r in c.runs.get(name, [])[:2]:
             for lo, hi in sorted(c.bare(r, reach=2.0), key=lambda s: s[0] - s[1]):
+                if DEBUG: c.log.append(f"   dress {name} bare {lo:.1f}..{hi:.1f} run {r['lo']}..{r['hi']}")
                 if hi - lo >= 6.0: c.row(r, c.wall_pat, 2 if hi - lo >= 9 else 1, lo=lo + 0.6, hi=hi - 0.6)
+
+
+FRONT_PIECES = {"living_room": r"^Bench\d$|^CushionedBench\d$", "dwelling": r"^Bench\d$",
+                "solar": r"^CushionedBench\d$|^Bench\d$", "study": r"^Bench\d$|^CushionedBench\d$", "library": r"^Bench\d$|^CushionedBench\d$",
+                "infirmary": r"^Bench\d$", "herbalist": r"^TraderAppleCrate$", "kitchen": r"^WaterBarrel$|^Barrel2?$",
+                "shop": r"^Barrel2?$|^Crate[12]$", "tavern": r"^Bench\d$|^LightBench\d$",
+                "dining_hall": r"^Bench\d$|^LightBench\d$", "mess_hall": r"^Bench\d$", "ogre_hall": r"^Barrel2?$",
+                "gallery": r"^Bench[1-4]$", "hall": VASE, "throne_room": VASE}
+
+
+def front_dress(c):
+    """A front wall left bare along most of its length takes a mirrored pair of the type's front piece (benches, urns,
+    barrels), a quarter of the way in from each end (the SE and SW walls were chronically bare: Q1A-1)."""
+    pat = FRONT_PIECES.get(c.f.kind)
+    if not pat: return 0
+    got = 0
+    for name in FRONT:
+        r = c.wall(name)
+        if not r or r["hi"] - r["lo"] < 10: continue
+        bare = sum(hi - lo for lo, hi in c.bare(r, reach=2.0))
+        if bare >= 0.6 * (r["hi"] - r["lo"] - 1.2): got += wall_pair(c, name, pat, 0.25)
+    return got
 
 
 def finish(f, need):
@@ -1615,6 +1705,7 @@ def finish(f, need):
     tiles, at least two, never past kit/objects.py light_cap)."""
     c = getattr(f, "_civic", None) or Ctx(f)
     dress_walls(c)
+    front_dress(c)
     if c.tiles >= 36 and s_corner_bare(c):
         for mk in (c.s_makers or [lambda c_, uv: c_.corner_set("S", TABLE_SMALL, 2),
                                   lambda c_, uv: c_.corner_heap("S", S("barrel", "crate", "sack_m"), n=3)]):
