@@ -144,6 +144,10 @@ def plan(land, rng, kind, centre, toward=None, margin=2, arch=None):
     if rec.get("cells", 1) > 1:                  # cells side by side: their doors are on a long side
         mids = {s: p for s, p in mids.items() if (s in ("j0", "j1")) == (w >= h)}
     side = min(mids, key=lambda s: math.hypot(mids[s][0] - tx, mids[s][1] - ty))
+    if kind == "jail" and arch in ("guardhouse", "cell_row"):
+        # the jail's front on the side toward the camera (SE or SW), its cells behind on the far side: a cell's cot
+        # against a wall the camera looks over had been hidden behind it (QA round 1, Q1K-10)
+        side = next(s_ for s_ in ("i1", "j0") if s_ in mids)
     y = Yard(kind, gi, gj, w, h, side)
     if kind == "jail":
         y.arch = arch
@@ -292,27 +296,89 @@ def build(spec, rng, land, y):
                 s = (gm[0] + (ci - gm[0]) * f + d * dx / n, gm[1] + (cj - gm[1]) * f + d * dy / n)
                 if free_spot(*s, pad=0.8, lane_w=1.1): put("TorchPole", *s, room=0.8)
     elif y.kind == "quarry":
-        # the rock face at the back: big rocks and pillars along the walls away from the gate, rubble in the open
-        back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
-        bx = {"i0": y.gi + 1.2, "i1": y.gi + y.w - 1.2}.get(back)
-        by_ = {"j0": yj - 1 + 1.2, "j1": yj + y.h - 2.2}.get(back)
-        along = [yj - 1 + 1.3 + 1.6 * k for k in range(int((y.h - 2) / 1.6) + 1)] if bx is not None else \
-                [y.gi + 1.3 + 1.6 * k for k in range(int((y.w - 2) / 1.6) + 1)]
-        for t in along:
-            s = (bx + jit(), t + jit()) if bx is not None else (t + jit(), by_ + jit())
-            big = rng.choices(("CaveRocksHuge", "CaveRockPillarShort2", "CaveRocksLarge", "CaveRocksMedium"), (3, 2, 2, 2))[0]
-            if free_spot(*s, pad=0.9, lane_w=1.3): put(big, *s, room=1.3)
-        # in the open, as many as Westwood's quarry yards hold (Con02a, War03b, War08a: 17-24 pebbles, 6-9 medium
-        # rocks, 4-6 huge ones, 3-4 short pillars, 2-4 barren plants)
-        for t, n in (("CaveRocksHuge", 2), ("CaveRockPillarShort1", 1), ("CaveRocksMedium", 7), ("CaveRocksSmall", 4),
-                     ("CaveRocksPebbles", 18), ("PlantBarren1", 3), ("MiningPickAxeInGround1", 1),
-                     ("MiningShovelInGround", 1)):
-            for _ in range(n):
-                for _try in range(15):
-                    s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.uniform(yj - 0.2, yj + y.h - 1.8))
-                    if free_spot(*s, pad=0.7, lane_w=1.2): put(t, *s, room=0.6 if "Pebbles" in t else 0.9); break
+        _quarry(spec, rng, y, yj, free_spot, put, jit)
     return placed
 
+
+
+def _side_line(y, yj, f, inset):
+    """A function t (0..1) -> (si, sj) along the inside of side f of the yard's fence, `inset` squares in from it."""
+    I0, I1, J0, J1 = y.gi, y.gi + y.w, yj - 1, yj - 1 + y.h
+    if f == "i0": return lambda t: (I0 + inset, J0 + 1.2 + (J1 - J0 - 2.4) * t)
+    if f == "i1": return lambda t: (I1 - inset, J0 + 1.2 + (J1 - J0 - 2.4) * t)
+    if f == "j0": return lambda t: (I0 + 1.2 + (I1 - I0 - 2.4) * t, J0 + inset)
+    return lambda t: (I0 + 1.2 + (I1 - I0 - 2.4) * t, J1 - inset)
+
+
+def _quarry(spec, rng, y, yj, free_spot, put, jit):
+    """The quarry: the rock face at the back; the works along one flank's fence (QA round 1, 2026-10-13 [Q1K-8]: "Add
+    more object diversity. Mining carts, pickaxes, bones, mana crystals. Explosives, crates, barrels. They all look good
+    in terms of layout and there isn't much differentiation"): an ore cart with its spare wheel, the steel crates and
+    barrels, the powder kegs set apart at the row's end, the tool barrels, the picks laid down, in a row against the
+    fence; on the other flank the crystals the cutting turned up, in the rock by the back corner, with the bones of what
+    was buried in it; the rubble and the tools in the open as before, fewer pebbles. Each quarry draws its own share of
+    these, so no two read alike."""
+    back = {"i0": "i1", "i1": "i0", "j0": "j1", "j1": "j0"}[y.side]
+    flanks = [f for f in ("i0", "i1", "j0", "j1") if f not in (y.side, back)]
+    rng.shuffle(flanks)
+    bx = {"i0": y.gi + 1.2, "i1": y.gi + y.w - 1.2}.get(back)
+    by_ = {"j0": yj - 1 + 1.2, "j1": yj + y.h - 2.2}.get(back)
+    along = [yj - 1 + 1.3 + 1.6 * k for k in range(int((y.h - 2) / 1.6) + 1)] if bx is not None else \
+            [y.gi + 1.3 + 1.6 * k for k in range(int((y.w - 2) / 1.6) + 1)]
+    for t in along:                                   # the rock face at the back
+        s = (bx + jit(), t + jit()) if bx is not None else (t + jit(), by_ + jit())
+        big = rng.choices(("CaveRocksHuge", "CaveRockPillarShort2", "CaveRocksLarge", "CaveRocksMedium"), (3, 2, 2, 2))[0]
+        if free_spot(*s, pad=0.9, lane_w=1.3): put(big, *s, room=1.3)
+    # ---- the works against the first flank's fence: one row, its pieces drawn from the quarry's own share
+    line = _side_line(y, yj, flanks[0], 1.1)
+    cart_axis = "\\" if flanks[0] in ("j0", "j1") else "/"
+    cart = rng.choice(("MineOreCart1", "MineOreCartBroken1")) if cart_axis == "\\" else \
+        rng.choice(("MineOreCart2", "MineOreCartBroken2"))
+    works = [cart, rng.choice(("CrateSteel1", "CrateSteel2")), rng.choice(("BarrelSteel1", "BarrelSteel2")),
+             rng.choice(("BarrelWithTools1", "BarrelWithTools2")), "BlackPowderBarrel",
+             rng.choice(("MiningPickAxeOnGround1", "MiningPickAxeOnGround2", "MineOreCartWheel"))]
+    if rng.random() < 0.5: works[1], works[2] = works[2], works[1]
+    n = len(works)
+    for k, t in enumerate(works):
+        for dt in (0.0, 0.05, -0.05, 0.1, -0.1):
+            si, sj = line(min(1.0, max(0.0, k / max(1, n - 1) + dt)))
+            if free_spot(si, sj, pad=0.6, lane_w=1.2, t=t):
+                put(t, si, sj, room=1.0 if "Cart" in t and "Wheel" not in t else (0.9 if "Crate" in t else 0.6))
+                break
+    # ---- the crystals in the rock by the back corner of the other flank, the bones the cutting turned up
+    line2 = _side_line(y, yj, flanks[1], 0.95)
+    end = 1.0 if (back in ("i1", "j1")) == (flanks[1] in ("i0", "i1")) else 0.0
+    for k, t in enumerate([rng.choice(("MineCrystal01", "MineCrystal02", "MineCrystal03")),
+                           rng.choice(("MineCrystal04", "MineCrystal05")), rng.choice(("MineCrystal01", "MineCrystal03")),
+                           "CaveRocksLarge", "Skull", "LegBone", "ArmBone"]):
+        tt = abs(end - (0.05 + 0.11 * k + rng.uniform(-0.02, 0.02)))
+        si, sj = line2(tt)
+        if "Bone" in t or t == "Skull": sj += rng.uniform(-0.5, 0.5); si += rng.uniform(-0.5, 0.5)
+        if free_spot(si, sj, pad=0.7, lane_w=1.2): put(t, si, sj, room=0.5 if "Bone" in t or t == "Skull" else 0.9)
+    # ---- in the open: the rubble and the tools (Westwood's quarry yards: Con02a, War03b, War08a), fewer pebbles
+    for t, n in (("CaveRocksHuge", 2), ("CaveRockPillarShort1", 1), ("CaveRocksMedium", 6), ("CaveRocksSmall", 4),
+                 ("CaveRocksPebbles", 9), ("PlantBarren1", 2), ("MiningPickAxeInGround1", 1),
+                 ("MiningShovelInGround", 1), ("MiningPickAxeInGround2", 1 if rng.random() < 0.5 else 0)):
+        for _ in range(n):
+            for _try in range(15):
+                s = (rng.uniform(y.gi + 0.8, y.gi + y.w - 0.8), rng.uniform(yj - 0.2, yj + y.h - 1.8))
+                if free_spot(*s, pad=0.7, lane_w=1.2): put(t, *s, room=0.6 if "Pebbles" in t else 0.9); break
+
+
+def connect_gate(spec, land, y, material="DirtDark2"):
+    """The walk from a yard's gate to the road network, routed round the yard: never along or under its fence (QA round
+    1, 2026-10-13 [Q1K-9]: "The southeast wall of the quarry runs clear across the path": the walk had hugged the
+    fence's outside, a square off its line, and read as a path the wall stood across). The fence's ring of squares is
+    blocked but for the squares before the gate. Returns the walk's squares, or None."""
+    out = gate_outside(y)
+    if not out or out not in land.squares: return None
+    ring = {(y.gi + a, y.gj + b) for a in range(-2, y.w + 2) for b in range(-2, y.h + 2)}
+    gm = y.gate_mid
+    ci, cj = y.centre
+    dx, dy = gm[0] - ci, gm[1] - cj
+    d = (int(math.copysign(1, dx)), 0) if abs(dx) >= abs(dy) else (0, int(math.copysign(1, dy)))
+    keep = {(out[0] + d[0] * k, out[1] + d[1] * k) for k in range(0, 4)}       # straight out from the gate
+    return land.connect(spec, out, footprint=frozenset(ring - keep - {out}), material=material)
 
 
 # Westwood's eleven campaign jails, by structure (rules/scenes/jail.md "Structures", round 8; the judges on round 7:
@@ -327,25 +393,37 @@ def build(spec, rng, land, y):
 #   guards' racks against its walls, a table and a water barrel, its own door.
 # (A corridor needs five squares' depth: a jail planned smaller is the open row of rounds 6-7. A cave cell is laid only
 # where it is asked for, `arch="cave_cell"`: one cell holds one prisoner, and Westwood's is in a cave.)
-JAIL_ARCH = (("cell_row", 9), ("guardhouse", 2))
-JAIL_SIZE = {"cell_row": [(6, 5), (9, 5), (8, 5)], "cave_cell": [(4, 3), (3, 3)], "guardhouse": [(6, 6)]}
+# (QA round 1, 2026-10-13 [Q1K-10], every jail rated 2: "At least 80% of cells should have either a cot, a bench. Needs
+# many more objects and much more object diversity. Almost no cell should have 0 objects in it. Bones, barrels of
+# tools, a piece of meat, a cot, etc. Jails in towns should always have a large entry /guard room with a desk and some
+# decor. Entry/guard rooms need to be significantly bigger so they don't feel too crowded"): a town's jail is a
+# guardhouse, its guard room across the whole front, four squares deep or more (the round's was two by six, "way too
+# concentrated and cluttered"), the cells behind it; the castle's cell row and the cave cell are laid only where a design
+# asks for them.
+JAIL_ARCH = (("guardhouse", 1),)
+JAIL_SIZE = {"cell_row": [(6, 5), (9, 5), (8, 5)], "cave_cell": [(4, 3), (3, 3)],
+             "guardhouse": [(11, 8), (12, 8), (10, 8), (9, 8)]}
+GUARD_DEPTH = 4                 # squares, the guard room's depth at the least (the cells take the rest, three or four)
+CELL_FURNISHED = 0.8            # of a jail's cells, at the least, have a cot or a bench [Q1K-10]
+CELL_EXTRAS = (("bones", 3), ("straw", 3), ("meat", 2), ("tools", 2), ("stool", 2), ("bucket", 1))
 GUARD_RACKS = ("TraderBowRack2", "TraderQuiverRack", "TraderPoleArm1", "TraderPoleArm2")
 
 
 def jail_arch(centre, weights=JAIL_ARCH):
-    """A jail's archetype by Westwood's frequencies, from its own generator (its place)."""
+    """A jail's archetype (a town's: the guardhouse), from its own generator (its place)."""
     import random as _random, zlib
     r = _random.Random(zlib.crc32(f"jail:arch:{centre[0]:.1f},{centre[1]:.1f}".encode()))
     return r.choices([a for a, _ in weights], [w for _, w in weights])[0]
 
 
 def _jail(spec, rng, y, rec, pts):
-    """The jail's cells (and a guardhouse's guardroom) inside the stone walls `build` laid: the dividing walls, a
-    JailDoor into each cell, a torch beside each door outside it (Westwood's: one to every barred door), the cells
-    furnished each its own way (bare, a cot, deep straw). Sets y.gate, y.cells (the doors) and y.cell_mids (each cell's
-    middle, px). The design's generator draws what the first jails drew, so a map round it is laid as before."""
+    """The jail's cells (and a guardhouse's guard room) inside the stone walls `build` laid: the dividing walls, a
+    JailDoor into each cell, a torch beside each door, the guard room furnished as a room (kit/furnish, kind guardroom)
+    with the warden's desk, every cell furnished (kind cell) and given a cot or a bench and a prisoner's leavings.
+    Sets y.gate, y.cells (the doors), y.cell_mids (each cell's middle, px), y.rooms (the Rooms laid). The design's
+    generator draws what the first jails drew, so a map round it is laid as before."""
     import random as _random, zlib
-    from kit import scenes as S
+    from kit.model import Room, Door
     arch = getattr(y, "arch", "cell_row")
     along_i = y.side in ("j0", "j1")
     L = y.w if along_i else y.h                    # along the front
@@ -361,109 +439,172 @@ def _jail(spec, rng, y, rec, pts):
         p, q = pt(u, v)
         return p, q - 0.5
 
-    def door(u, v, kind):
+    def uv_of(s):                                  # a square's (u, v) of its middle
+        si, sj = s[0] + 0.5, s[1] - 0.5
+        if y.side == "j0": return si - y.gi, sj + 0.5 - (y.gj - 1)
+        if y.side == "j1": return si - y.gi, y.gj + y.h - 1.5 - sj
+        if y.side == "i0": return sj + 0.5 - (y.gj - 1), si - y.gi
+        return sj + 0.5 - (y.gj - 1), y.gi + y.w - si
+
+    doors_made = []
+
+    def door(u, v, kind, connects):
         a, b = point_cell(*pt(u, v)), point_cell(*pt(u + 1, v))
-        return spec.door(kind, a, "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/")
+        line = "\\" if (b[0] - a[0], b[1] - a[1]) == (1, 1) else "/"
+        o = spec.door(kind, a, line)
+        doors_made.append((Door(gap=a, line=line, type=kind, connects=connects, px=(o["x"], o["y"])), connects))
+        return o
 
     for c in range(rec.get("cells", 2)):           # (the draws the first jails made)
         for _ in range(rng.randint(1, 2)): rng.uniform(0, 1); rng.uniform(0, 1)
     own = _random.Random(zlib.crc32(f"{spec.d['name']}:jail:{y.gi},{y.gj}".encode()))
-    n = 2 if arch == "guardhouse" else 1 if arch == "cave_cell" else max(2, L // 3)
-    # where the cells' front wall stands: a guardroom before them, a corridor (a castle's cell row, five squares deep)
-    v_cells = 3 if arch == "guardhouse" else 2 if (arch == "cell_row" and D >= 5) else 0
+    hand = _random.Random(zlib.crc32(f"{spec.d['name']}:jail-hand:{y.gi},{y.gj}".encode()))
+    if arch == "guardhouse":
+        v_cells = max(GUARD_DEPTH, D - 4)
+        n = max(2, min(4, L // 3))
+    elif arch == "cave_cell":
+        v_cells, n = 0, 1
+    else:
+        v_cells = 2 if D >= 5 else 0
+        n = max(2, L // 3)
     if v_cells:
         for u in range(0, L + 1): spec.wall(*point_cell(*pt(u, v_cells)), rec["fence"])
     if arch == "cave_cell":                        # (War03c: a cell dug in the earth)
         for s_ in y.plot: spec.floor[square_tile(*s_)] = "DirtDark2"
-    # (round 7, the judges: "doors and torches at exact even spacing; the cells bare, straw, cot in strict order"):
-    # the cells of uneven widths, each door where it falls in its cell, the torch on either side of it a step or so off
-    # (one door in six without), the cells furnished each by its own draw (two alike now and then), from the jail's
-    # own hand-generator so its other draws are as before
-    hand = _random.Random(zlib.crc32(f"{spec.d['name']}:jail-hand:{y.gi},{y.gj}".encode()))
-    widths = [2] * n
-    for _ in range(L - 2 * n): widths[hand.randrange(n)] += 1
-    if arch == "guardhouse": widths = [L // 2, L - L // 2]
+    # the cells of even widths in a guardhouse (QA round 1: balance), uneven in a castle's row (round 7's judges)
+    widths = [L // n] * n
+    for k in range(L - sum(widths)):
+        widths[(k * 2 + (n % 2)) % n if arch == "guardhouse" else hand.randrange(n)] += 1
     if arch == "cave_cell": widths = [L]
     bounds = [sum(widths[:k]) for k in range(n + 1)]
     for u_k in bounds[1:-1]:                       # the walls between the cells
         for v in range(v_cells, D + 1): spec.wall(*point_cell(*pt(u_k, v)), rec["fence"])
     doors, mids = [], []
-    side_t = 1 if own.random() < 0.5 else -1       # (the draw the first jails made)
     for c in range(n):
         lo, hi = bounds[c], bounds[c + 1]
-        du_ = hand.randint(lo + 1, max(lo + 1, hi - 2))
-        doors.append(door(du_, v_cells, rec["gate"]))
+        # a guardhouse's cell door in its cell's middle (the row reads even from the guard room), a castle's where it falls
+        du_ = lo + (hi - lo - 1) // 2 if arch == "guardhouse" else hand.randint(lo + 1, max(lo + 1, hi - 2))
+        doors.append(door(du_, v_cells, rec["gate"], ("guard" if arch == "guardhouse" else "outside", f"cell{c}")))
         mids.append(square_px(*at((lo + hi) / 2, (v_cells + D) / 2)))
-        sd_ = hand.choice((1, -1))
-        tu = du_ + 0.5 + sd_ * hand.uniform(0.85, 1.35)
-        if not (lo + 0.3 < tu < hi - 0.3) and arch != "cell_row":
-            tu = du_ + 0.5 - sd_ * hand.uniform(0.85, 1.1)
-        if (lo + 0.3 < tu < hi - 0.3 or arch != "guardhouse") and (c == 0 or hand.random() >= 1 / 6):
-            spec.obj_px("Torch", *square_px(*at(tu, v_cells - 0.3 - hand.uniform(0, 0.12))))
+        sd_ = 1                                    # (each torch on the same side of its door: never two side by side)
+        tu = du_ + 0.5 + sd_ * (1.1 if arch == "guardhouse" else hand.uniform(0.85, 1.35))
+        if not (lo + 0.3 < tu < hi - 0.3): tu = du_ + 0.5 - sd_ * 1.0
+        if lo + 0.3 < tu < hi - 0.3 or arch == "cell_row":
+            spec.obj_px("Torch", *square_px(*at(tu, v_cells - 0.3)))
     y.gate, y.cells, y.cell_mids = doors[0], doors, mids
     if arch == "cell_row" and v_cells:
         # the corridor's own wooden door near one end of its outer wall (Con07B, War07A: ThickWoodenDoor)
-        y.gate = door(hand.choice((1, L - 2)), 0, "ThickWoodenDoor")
-    # the cells' furnishing, each cell its own draw, never all alike (Westwood's: Con07B's cells mostly bare or a few
-    # straws; a cot in a back corner with a mat of straw reaching out from it, Con07B, War07A; straw alone; War03c's
-    # heap of ogre straw)
-    kinds = ["bare", "cot", "straw"]
-    own.shuffle(kinds)
-    kinds = [hand.choices(("bare", "cot", "straw"), (0.4, 0.35, 0.25))[0] for _ in range(n)]
-    if len(set(kinds)) == 1 and n > 1: kinds[hand.randrange(n)] = hand.choice([k for k in ("straw", "cot", "bare")
-                                                                              if k != kinds[0]])
-    if arch == "guardhouse": kinds = ["cot", own.choice(("straw", "cot"))]       # (Con02a, War03b: a cot in each)
-    elif arch == "cave_cell": kinds = ["ogre"]
-    else: own.choice(("bare", "straw"))
-    for c, kind in enumerate(kinds):
-        lo, hi = bounds[c], bounds[c + 1]
-        laid = []
-        back_u = hand.choice((lo + 0.75, hi - 0.75))          # the cot's back corner
-        if kind == "cot":
-            cu = back_u + hand.uniform(-0.15, 0.15)
-            spec.obj_px(own.choice(("Cot2", "Cot2", "Cot1")), *square_px(*at(cu, D - 0.8)))
-            laid.append((cu, D - 0.8))
-            if hand.random() < 0.3:                            # a candelabrum by the far wall (Con07B)
-                spec.obj_px("Candleabra3", *square_px(*at(lo + hi - back_u, D - 0.55)))
-        n_s = {"cot": hand.randint(5, 10), "straw": hand.randint(6, 10), "bare": hand.choice((0, 0, 0, 2)),
-               "ogre": 4}.get(kind, 0)
-        if kind == "cot" and own.random() < 0.15: n_s = 0
-        # a mat: from the cot (or a back corner) out toward the door, each straw 8-16 px on from the last, a little to
-        # either side: a streak or a blob, not a clump in the cell's middle
-        su, sv = (laid[0][0], D - 1.5) if laid else (hand.uniform(lo + 0.6, hi - 0.6), D - hand.uniform(0.6, 1.2))
-        ang = math.atan2(v_cells + 0.8 - sv, (lo + hi) / 2 - su) + hand.uniform(-0.7, 0.7)
-        for k in range(n_s):
-            for _try in range(8):
-                step_ = hand.uniform(0.25, 0.5) if k else 0.0
-                a_ = ang + hand.uniform(-1.1, 1.1)
-                nu = min(hi - 0.45, max(lo + 0.45, su + step_ * math.cos(a_)))
-                nv = min(D - 0.4, max(v_cells + 0.55, sv + step_ * math.sin(a_)))
-                if not laid or kind != "cot" or math.hypot(nu - laid[0][0], nv - laid[0][1]) >= 0.8:
-                    t = "OgreStraw1" if kind == "ogre" else ("Straw2" if own.random() < 0.85 else "Straw1")
-                    spec.obj_px(t, *square_px(*at(nu, nv)))
-                    su, sv = nu, nv
-                    break
+        y.gate = door(hand.choice((1, L - 2)), 0, "ThickWoodenDoor", ("outside", "corridor"))
+    elif arch == "guardhouse":
+        # the guard room's door in the middle of the front, the way in straight on to the cells (QA round 1: balance)
+        y.gate = door((L - 1) // 2, 0, "WoodenDoor", ("outside", "guard"))
+    y.rooms = []
+
+    def room_of(name, us, vs, floor):
+        sqs = {s for s in y.plot if us[0] < uv_of(s)[0] < us[1] and vs[0] < uv_of(s)[1] < vs[1]}
+        tiles = {square_tile(*s) for s in sqs}
+        walls = {c for c in spec.wallmap if any((c[0] + a, c[1] + b) in tiles for a in (-1, 0, 1) for b in (-1, 0, 1))}
+        ds = [d for d, con in doors_made if name in con]
+        return Room(id=f"jail{y.gi},{y.gj}:{name}", tiles=tiles, floor=floor, walls=walls, doors=ds,
+                    kind="guardroom" if name == "guard" else "cell", building="the jail"), sqs
+
+    floor = rec.get("floor") or "RoughCobble"
     if arch == "guardhouse":
-        # the guardroom: its door in the front wall off the middle, the racks along its side walls, the table, the
-        # water barrel in a corner (Con02a, War03b)
-        du = own.choice((1, L - 2))
-        door(du, 0, "WoodenDoor")
-        y.gate = doors[0]
-        ex, ey = square_px(*at(1, 0)); fx, fy = square_px(*at(0, 0))
-        line_u = S.line_of(ex - fx, ey - fy)                      # the screen line the front wall runs along
-        line_v = "/" if line_u == "\\" else "\\"
-        racks = list(GUARD_RACKS)
-        own.shuffle(racks)
-        # (round 8, "racks standing off the wall": snug to the side walls, 16 px, as Westwood's 16-27; the bow rack the
-        # variant for its wall's line, S.ALONG, as the pole arms were)
-        spots = [(0.5, 1.0, line_v), (0.5, 2.2, line_v), (L - 0.5, 1.0, line_v), (L - 0.5, 2.2, line_v)]
-        for (u, v, ln), t in zip(spots[:own.randint(3, 4)], racks):
-            t = S.ALONG[ln].get(t, t)
-            spec.obj_px(t, *square_px(*at(u, v)))
-        spec.obj_px("Table1", *square_px(*at(L / 2 + own.uniform(-0.4, 0.4), 1.6)))
-        wu = L - 0.7 if du == 1 else 0.7
-        spec.obj_px("WaterBarrel", *square_px(*at(wu, 0.6)))
+        guard, gsq = room_of("guard", (0, L), (0, v_cells), floor)
+        _guard_room(spec, own, guard)
+        y.rooms.append(guard)
+    if arch != "cave_cell":
+        for c in range(n):
+            cell, csq = room_of(f"cell{c}", (bounds[c], bounds[c + 1]), (v_cells, D), floor)
+            _cell(spec, own, cell, csq, (bounds[c], bounds[c + 1]), v_cells, D, at, k=c)
+            y.rooms.append(cell)
+    else:
+        for k in range(4):                           # War03c's heap of ogre straw
+            spec.obj_px("OgreStraw1", *square_px(*at(L / 2 + own.uniform(-0.8, 0.8), D - 1.0 + own.uniform(-0.3, 0.3))))
     return []
+
+
+def _guard_room(spec, rng, room):
+    """The guard room furnished as a room (kit/furnish, kind guardroom: the watch's table, cots for the off watch, the
+    racks and hangings), the warden's desk laid first against a back wall with his chair before it (QA round 1
+    [Q1K-10]: "a large entry/guard room with a desk and some decor")."""
+    from kit.furnish import Furnisher
+    from kit import loot
+    f = Furnisher(spec, room, "guardroom", rng, "town")
+    f.in_required = True
+    for t, side in (("Desk2", "\\|TR"), ("Desk1", "/|TL"), ("Desk4", "/|BR"), ("Desk3", "\\|BL")):
+        got = f.against_wall("desk", t_choice=t, side_pref=side, role="wall")
+        if got:
+            o, r_, uv = got
+            f.seats_around(uv, t, 1)
+            break
+    f.in_required = False
+    objs = f.furnish()
+    # the decor the round asked for: hangings on its back walls (arms, shields), the watch's water and ale in a knot
+    for _ in range(3):
+        try: f.place_decor()
+        except Exception: break
+    for t in ("WaterBarrel", "Barrel", "Barrel2"):
+        try: f.against_wall("storage", t_choice=t, role="corner", tries=12)
+        except Exception: break
+    for t in ("TraderQuiverRack", "OutdoorTraderArmorRack1", "TraderArmorRack1"):     # the watch's arms by the walls
+        try: f.against_wall("shop_rack", t_choice=t, tries=12)
+        except Exception: break
+    objs = f.objects
+    room.kind = f.kind
+    loot.tag(spec, objs, f.kind)
+    return objs
+
+
+def _cell(spec, rng, room, sqs, us, v0, D, at, k=0):
+    """One cell furnished as a room (kit/furnish, kind cell), then made sure of its cot or bench (CELL_FURNISHED) and
+    given a prisoner's leavings: bones, straw, a scrap of meat, a barrel of tools, a stool (QA round 1 [Q1K-10]). Each
+    piece keeps 30 px off the rest; the doorway's square stays clear."""
+    from kit.furnish import furnish_room
+    import re as _re
+    n0 = len(spec.d["objects"])
+    try:
+        furnish_room(spec, room, kind="cell", rng=rng, style="town")
+    except Exception:                                # (a cell too small for the room furnisher: laid by hand below)
+        del spec.d["objects"][n0:]
+    mine = [o for o in spec.d["objects"][n0:] if "type" in o]
+    lo, hi = us
+
+    def free(x, y_, clear=30.0):
+        return all(math.hypot(x - o["x"], y_ - o["y"]) >= clear for o in mine)
+
+    def put(t, u, v, clear=30.0):
+        x, y_ = square_px(*at(u, v))
+        if not free(x, y_, clear): return None
+        o = spec.obj_px(t, x, y_)
+        mine.append(o)
+        return o
+
+    # the cot or the bench: in every cell but one in five (whole jails hold to CELL_FURNISHED), along the back wall
+    has_bed = any(_re.match(r"^(Cot\d|Bench\d|LightBench\d|WoodBed|Bed\d)", o["type"]) for o in mine)
+    if not has_bed and (k % 5 != 4):
+        for t, u in (("Cot2", lo + 0.9), ("Cot2", hi - 0.9), ("Cot1", (lo + hi) / 2)):
+            if put(t, u, D - 0.8, 34): break
+        else:
+            put("Bench4", (lo + hi) / 2, D - 0.6, 30)
+    # the leavings, two or three of them
+    picks = [n for n, w in CELL_EXTRAS for _ in range(w)]
+    rng.shuffle(picks)
+    got = set()
+    for name in picks:
+        if len(got) >= rng.randint(2, 3): break
+        if name in got: continue
+        u, v = rng.uniform(lo + 0.6, hi - 0.6), rng.uniform(v0 + 1.4, D - 0.5)
+        if name == "bones":
+            ok = put(rng.choice(("LegBone", "ArmBone")), u, v, 14) and put("Skull", u + 0.35, v - 0.2, 12)
+        elif name == "straw":
+            ok = put("Straw2", u, v, 22) and put("Straw1", u + 0.3, v + 0.25, 10)
+        elif name == "meat": ok = put("RottenMeat", u, v, 20)
+        elif name == "tools": ok = put("BarrelWithTools1", hi - 0.6 if rng.random() < 0.5 else lo + 0.6, D - 0.6, 30)
+        elif name == "stool": ok = put("Stool1", u, v, 28)
+        else: ok = put("WaterBarrel", lo + 0.6, D - 0.6, 30)
+        if ok: got.add(name)
+
 
 def _crypts(spec, rng, y, reserve, cells=1, depth=3, span=3, v0=1, corner=False):
     """Crypt cells along the yard's back side, as Westwood sets its graveyards against their crypts (War03b, War03c,

@@ -115,8 +115,10 @@ def _camp_build(kind):
 # a batch's graveyards by Westwood's archetypes (13 scenes: 6 fields, 4 crypt yards, 3 pens), in a fixed order so a
 # batch of ten follows the frequencies (as the room lab's door counts do, FAIRNESS 3)
 GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
-JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cave_cell", "cell_row", "cell_row", "guardhouse",
-              "cell_row", "cell_row")      # Westwood's 11 jails: 8 castle cell rows, a cave cell, 2 guardhouses
+# a batch's jails (QA round 1, Q1K-10: a town's jail is a guardhouse with a large guard room): eight guardhouses, the
+# castle's cell row and the cave cell once each (a design asks for those)
+JAIL_ORDER = ("guardhouse", "guardhouse", "cell_row", "guardhouse", "cave_cell", "guardhouse", "guardhouse",
+              "guardhouse", "guardhouse", "guardhouse")
 WALL_RUN = 7                 # a town wall runs on this many squares past a yard's back corners (Westwood's War03 yards)
 
 
@@ -184,10 +186,8 @@ def _yard_build(ctx):
         if p.site == "wall": _town_wall(ctx, p, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
-        out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
-        if out and out in land.squares:
-            got = land.connect(m, out, footprint=frozenset(y.plot), material="DirtDark2")
-            p.notes["walk"] = len(got) if got else 0
+        got = Y.connect_gate(m, land, y)              # the walk from the gate to the road, round the fence (Q1K-9)
+        p.notes["walk"] = len(got) if got else 0
         for k_, (donor, (x, yy), face) in enumerate(getattr(y, "people", ())):   # the yard's people at work (the digger)
             _person(ctx, donor, x, yy, face, f"Yard{p.k}_{k_}")
 
