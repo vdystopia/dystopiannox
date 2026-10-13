@@ -413,6 +413,14 @@ class Exterior:
                 way = "DN" if line == "\\" else "UP"
                 if th.name == "market_stall": way = "UP"      # (Westwood's three stalls: UP awnings, purple and orange
                 #                                              or green and red; the judge read red/blue as not theirs)
+                if th.stand == "wall":
+                    # an awning backed onto a wall (QA round 1, Q1K-11: three of ten markets had found no ground for
+                    # their stall in the open): its closed side to the wall, open toward the street, its middle `o` px
+                    # out; an UP awning before a wall to its north-west, a DN one before a wall to its north-east
+                    if n[0] > 0.5 and n[1] > 0.5: way = "UP"
+                    elif n[0] < -0.5 and n[1] > 0.5: way = "DN"
+                    else: return None
+                    ox, oy = ox + n[0] * pc["o"], oy + n[1] * pc["o"]
                 # the awning's open side faces the camera: its wares go before it (DN: south-west, UP: south-east)
                 n = (-1 / math.sqrt(2), 1 / math.sqrt(2)) if way == "DN" else (1 / math.sqrt(2), 1 / math.sqrt(2))
                 tdir = (-n[1], n[0])

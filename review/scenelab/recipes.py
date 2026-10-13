@@ -373,7 +373,7 @@ def _pond_build(ctx):
 
 
 # ---------------------------------------------------------------------------------------------------- the catalogue
-def _theme_after(themes, role=None, culture=None, biome="green"):
+def _theme_after(themes, role=None, culture=None, biome="green", rotate=True):
     """Scenes of kit/scenes.py's catalogue, laid by the dressing's own code (kit/dressing.Exterior: _try_wall,
     _try_open with only=the theme), one to a clearing, near the clearing's scene point."""
     def after(ctx):
@@ -391,7 +391,7 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
             R = p.r * 32.5
             ex.signs = {f: [q for q in pts if math.hypot(q[0] - cx, q[1] - cy) < R] for f, pts in ex.signs.items()}
             if ctx["scene"] == "shrine": ex.want_arch = {"shrine": SHRINE_ARCH[p.k % len(SHRINE_ARCH)]}
-            names = [themes[(p.k + q) % len(themes)] for q in range(len(themes))]
+            names = [themes[(p.k + q) % len(themes)] for q in range(len(themes))] if rotate else list(themes)
             cands = sorted((s for s in ex.free if math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]) < p.r - 1),
                            key=lambda s: (math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]), s))
             done = None
@@ -591,7 +591,7 @@ RECIPES = {
     "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"]),
                  by_road=3.5),
     "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
-                         after_plant=_theme_after(["market_stall"])),
+                         after_plant=_theme_after(["market_stall", "market_stall_wall"], rotate=False)),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
                   after_plant=_theme_after(["wagon_verge", "unhitched_cart", "broken_wagon"])),
     "smithy_yard": dict(plan=_house_plan(["smithy"]), build=_house_build, after_plant=_theme_after(["smithy_yard"])),
