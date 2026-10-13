@@ -433,6 +433,44 @@ Rules that hold for every type:
   almost never reach (`checks.GRAMMAR_MIN`; each rule fires on 0.6-6.8% of Westwood's 176 rooms, any of them on 22%);
   planted cases `STg*` in `validate/selftest.py`. Not covered here: one template repeated across variants of a type
   (a recipe's or the motif library's matter), and the shells' floor patches.
+- **Sacred and dark rooms are symmetric set pieces** [Q1C-1..Q1C-18] (QA round 1, 2026-10-13; `review/qa1/sacred.md`).
+  "Generally, chapels should have a much more symmetric layout. The carpet that runs down the middle with benches and /
+  or pillars and pews evenly and symmetrically placed on either side and an altar at the end, centered"; "Chapels should
+  always be aligned with the main door"; covens follow the chapel's rules; the mana rooms' rings are "evenly and
+  symmetrically placed" with "the carpet underneath them made even and symmetrical"; crypts want "organization,
+  arrangement, and balance". The chapel set is three types now: the **chapel**, the **coven** (the dead worshipped; the
+  Land of the Dead's chapel is one) and the **mana room** (one to four rings of mana obelisks); with the **crypt** they
+  are composed whole by `kit/sacred.py` (the recipe's `composer`), not piece by piece:
+  - an **axis**: the line from the main door straight across (chapel, coven, crypt) or down the room's middle (mana
+    room); the building puts an altar room's or a crypt's main door in the middle of its wall and keeps inner doors off
+    the axis (`building.CENTRE_DOOR_ROOMS`, `ALTAR_AXIS`), and never reshapes these rooms (`SHELL_KEEP`); the room lab
+    enters chapels and covens through a front wall so the altar stands on a back wall;
+  - the focal piece on the axis against the far wall (the altar end varied over a map's rooms: `CHAPEL_ALTARS`,
+    `COVEN_ALTARS`, `MANA_CENTRES`), the priest's spot beside it (`Furnisher.spots` role `priest`, read first by
+    `STANDS`), a carpet runner centred exactly on the axis (its edges on the squares' seams);
+  - every other floor piece in a **mirrored pair** across the axis (pews in rows, columns at one pitch lined up with the
+    rows, statues, coffins, obelisks, lights); a pair that does not fit (a side door's way) is left out on both sides;
+  - hangings and faced pieces still on the back walls only [TP3-a], mirrored about their wall's own middle;
+  - the knowledge base's single-piece caps stand aside for the set piece (`Furnisher.set_piece`), and the placement
+    grammar's irregularity rules (even gaps, stepped rows, rings, corner singles, lone columns, mixed tombs, the runner
+    as a floating carpet) stand aside in these types (`kit/grammar.py SYMMETRIC`): the user's word over Westwood's habit;
+  - the Land of the Dead's halls hang its double door in every doorway (`building.DOUBLE_DOOR_STYLES`) [Q1C-18];
+  - **full enough** [Q1C-19, Q1C-20]: each type holds a least number of distinct kinds of piece, rising with its floor
+    (`sacred.fullness_goal`: a kind more every 45 tiles past 30), and covers a least share of its floor; after its set
+    piece the composer dresses the walls and corners in mirrored pairs (`sacred.dress`: each dressing kind once, then
+    more until the goal; each kind two pairs at most, the type's caps held, 0.7 units clear, never under a hanging), a
+    mana room's pair about its middle along the axis where a door takes the mirror across it. Small and two-door crypts
+    fill too: rows across, else along the aisle, else against the walls, the floor's whole length, single tombs on the
+    middle line where the side doors' ways leave a band. The relics a sacred room is dressed with have a furniture family
+    (`rules/room_types.py relic`), so the room score and the checker count them. Only visible pieces count [Q1C-21]:
+    a piece at least an urn's size on screen or a standing light; bones, skulls, cobwebs and candles together one kind
+    at most, never toward the covered floor (`sacred.counted_kind`). The dressing fills the back walls (NE, NW) first and
+    stands tall pieces there only, the front walls (SE, SW) low pieces; a crypt's centrepiece stands on a back wall on
+    the door's line, never a front one; a long crypt lies in two full coffin lines down its length. The four types' open
+    floor runs from 0.30 (Q1T, the user's "too empty" theme over Westwood's emptier rooms), the way in and reachability
+    checked as before.
+  Checked by `sacred.axis`, `sacred.symmetry`, `sacred.carpet`, `sacred.altar_kind`, `sacred.dead` and `doors.lotd`
+  (section 9). Briefs: `rules/rooms/chapel.md`, `coven.md`, `mana_room.md`, `crypt.md`.
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
 - **Every piece by what Westwood does with it** [HB-1..HB-5] (2026-10-05, the Harrowby playtest: "Do a pass over all
   objects and try to understand better how they fit in the world"). `py rules/objects.py` measures every kind of piece on
@@ -981,6 +1019,12 @@ departures from Westwood's range or from a house rule the playtests set. The rul
 - `exterior.*` from QA round 1's camps [Q1K]: a large crate too near another piece (`crate_clear`), a camp too bare
   to be lived in (`camp_bare`), a camp's beds in one block (`beds_block`), a row of racks or targets in the open away
   from every wall (`row_float`), a jail whose cells lack cots or benches (`jail_cells`).
+- `sacred.*` [Q1C] (`check_sacred`): a chapel's or coven's altar on its main door's line and that door in its wall's
+  middle (`axis`), floor pieces off the axis each with a twin mirrored across it (`symmetry`; a mana room's about its
+  middle either way), carpet squares mirrored (`carpet`), no one altar end in over 60% of a map's 3+ chapels or covens
+  (`altar_kind`), a crypt's or coven's dead in coffins, sarcophagi or graves with 4+ kinds of piece (`dead`), the room
+  full enough for its type and size (`fullness`: distinct kinds and covered floor, `kit/sacred.py fullness_goal`);
+  `doors.lotd`: no plain door in the Land of the Dead's walls.
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
   `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter

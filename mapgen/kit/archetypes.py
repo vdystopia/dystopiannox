@@ -216,10 +216,8 @@ ARCHETYPES = {
         dict(name="pewed_nave", cover=1.0, focal="opposite",
              desc="pews in short rows either side of a carpeted aisle, columns ringing the nave among them, tapestries "
                   "of one colour, candelabras in pairs, a statue by the altar", rooms=("Con07B@143,201",)),
-        dict(name="sanctum", cover=0.8, focal="free", weight=0.75,      # three shrines, not three chapels
-             desc="the holy thing in the middle ringed by four obelisks on a carpet, candelabras along the walls, a "
-                  "few pews facing it (kin: the shrines)", rooms=(), kin=("Con07D@118,78", "Wiz02B@120,120",
-                                                                       "Wiz11A@50,215")),
+        # (the sanctum, the holy thing ringed by four obelisks, is a room type of its own since QA round 1: the mana room,
+        # kit/roomtypes.py; "they do not fit in with the identity of a chapel")
         dict(name="colonnade_chapel", cover=1.0, focal="opposite",
              desc="the altar at the end of a colonnade, statues in pairs facing across the aisle, a few pews near the "
                   "altar (kin: Con04c's colonnade hall)", rooms=(), kin=("Con04c@75,78",)),

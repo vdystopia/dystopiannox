@@ -333,9 +333,13 @@ TYPES = {
         # a pair per 30 tiles, three pairs at most (room lab, tuneB: four pairs read as "tons of the same exact pillars")
         caps={"column": (30, 6), "statue": (14, 10), "bench": (60, 2)}, walls_min=3, lined=None, tiles=(60, 260),
         signature={"throne": (12, 1)}, needs=("throne",), kin=("hall",)),
+    # QA round 1 (2026-10-13, review/qa1/sacred.md Q1C): the chapel set is three types now: the chapel (a town's nave),
+    # the coven (the dead worshipped, RM-CHAPEL-10's dark chapel its basis) and the mana room (the rings of obelisks of
+    # RM-CHAPEL-02, 06 and 07); all three are one symmetric set piece (kit/sacred.py)
     "chapel": dict(
-        family="ceremonial", feel="open", kinds=("chapel", "dark_chapel"), westwood=("chapel",),
-        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="door"),
+        family="ceremonial", feel="open", kinds=("chapel",), westwood=("chapel",),
+        # (reach: the altar stands a pace out before a saint's statue: kit/sacred.py)
+        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="door", reach=4.5),
         must={"altar": 1, "bench": 4, "statue": 2}, never=("bed", "desk", "stove", "smithy", "lab", "counter_bar",
                                                            "counter_shop", "shop_rack", "table", "straw"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
@@ -344,13 +348,54 @@ TYPES = {
                    middle="a carpeted aisle from the door to the altar; a few rows of pews either side of it, nearest "
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
-        cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
-        # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch)
-        caps={"bench": (15, 8), "tomb": (60, 2), "column": (24, 8), "statue": (24, 6)}, walls_min=3, lined=None, tiles=(60, 260),
-        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine"),
-        variants={"dark_chapel": dict(must={"altar": 1, "statue": 4}, types_min=6,
-                                      caps={"statue": (18, 15), "tomb": (28, 10), "column": (30, 8)},
-                                      signature={"altar": (8, 1), "statue": (0.3, 12)})}),
+        # (open from 0.30, not Westwood's 0.55: the user's first theme of QA round 1, "spaces are too empty and lack
+        # object diversity" (Q1T), over Westwood's emptier rooms; the coordinator's decision, 2026-10-13. The way in
+        # and reachability are checked as before, so the paths stay clear)
+        cover=(0.05, 0.10, 0.18), open=(0.30, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
+        # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch, 46 pews wall to
+        # wall); then "needs more pillars, benches, and statues" (QA round 1, nox14): a pew per 10 tiles in rows, at most 20
+        caps={"bench": (10, 20), "tomb": (60, 2), "column": (16, 12), "statue": (16, 10)}, walls_min=3, lined=None,
+        tiles=(60, 260),
+        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine", "coven")),
+    "coven": dict(
+        family="ceremonial", feel="balanced", kinds=("coven", "dark_chapel"), westwood=(),
+        # (RM-CHAPEL-10, the Land of the Dead's dark chapel, is its basis: the user, QA round 1)
+        evidence=(),
+        focal=dict(fam="altar", types=r"^LOTDLichGodStatue|^LOTDFlamingSkulls|^Crypt(1|3|5|6|7|8|9|10|11|12)$",
+                   where="door"),
+        must={"tomb": 2, "statue": 4}, never=("bed", "desk", "smithy", "counter_bar", "counter_shop", "shop_rack",
+                                              "table", "straw", "plant"),
+        never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
+        walls=dict(back="the dark altar on the wall across from the main door, in line with it; tapestries and banners",
+                   other_back="mana obelisks lining it", front="mana obelisks lining it; monuments by the door",
+                   middle="a runner from the door to the altar, a cauldron before the altar, pews either side, coffins "
+                          "and sarcophagi in pairs with bones heaped by them"),
+        # (open from 0.30: Q1T, the user's "too empty" theme over Westwood's open floor; the coordinator, 2026-10-13)
+        cover=(0.06, 0.12, 0.24), open=(0.30, 0.88), per_tile=(0.10, 0.50), types_min=9, free_most=(4, 30),
+        caps={"statue": (8, 30), "tomb": (25, 10), "column": (25, 8), "bench": (20, 12)}, walls_min=3, lined=None,
+        tiles=(60, 260),
+        signature={"tomb": (1, 8), "statue": (0.3, 20), "^LOTDLichGodStatue|^LOTDFlamingSkulls": (6, 1),
+                   "^Cauldron": (2, 1), "bench": (0.3, 12)},
+        needs=("tomb",), kin=("chapel", "crypt", "hall", "mausoleum", "shrine", "mana_room")),
+    "mana_room": dict(
+        family="ceremonial", feel="balanced", kinds=("mana_room",), westwood=(),
+        # (the chapel lab's sanctums, RM-CHAPEL-02, 06, 07: "The square mana obelisk arrangements with the altar in the
+        # middle ... are excellent"; kin: Westwood's shrines Con07D, Wiz02B, Wiz11A, four obelisks round the holy thing)
+        evidence=(("Con07D", (118, 78)), ("Wiz02B", (120, 120)), ("Wiz11A", (50, 215))),
+        focal=dict(fam="statue", types=r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$", where="any"),
+        must={"statue": 4}, never=("bed", "desk", "stove", "smithy", "counter_bar", "counter_shop", "shop_rack",
+                                   "table", "straw", "tomb", "plant", "fireplace"),
+        never_types=r"Barrel|Crate|Sack|Trophy",
+        walls=dict(back="bookcases mirrored about a workstation, potion shelves or a chest centred on the wall; star "
+                        "charts", other_back="the same, mirrored", front="glowing jars and generators in pairs",
+                   middle="one to four rings of four mana obelisks round a centrepiece, each on its carpet centred under "
+                          "it, evenly spaced and symmetric; crystal clusters in the corners"),
+        # (open from 0.30: Q1T, the user's "too empty" theme over Westwood's open floor; the coordinator, 2026-10-13)
+        cover=(0.04, 0.10, 0.22), open=(0.30, 0.92), per_tile=(0.08, 0.50), types_min=8, free_most=(4, 30),
+        caps={"statue": (8, 16)}, walls_min=2, lined=None, tiles=(50, 280),
+        signature={"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$": (1.5, 16), "lab": (0.5, 8),
+                   "^MineManaCrystal|^Crystal": (0.5, 8)},
+        needs=("statue",), kin=("shrine", "laboratory", "study", "chapel")),
     # ---- the dead ------------------------------------------------------------------------------------------------
     "crypt": dict(
         family="dead", feel="open", kinds=("crypt", "dark_crypt"), westwood=("crypt",),
@@ -360,10 +405,12 @@ TYPES = {
         never_types=r"Barrel|Sack|^Bookcase",
         walls=dict(back="a tapestry or two; a crypt chest in a corner", other_back="statues of the dead",
                    front="bare", middle="sarcophagi and coffins side by side in rows with aisles between; columns"),
-        cover=(0.04, 0.10, 0.25), open=(0.40, 0.95), per_tile=(0.04, 0.40), types_min=1, free_most=(4, 30),
+        # (open from 0.30: Q1T, the user's "too empty" theme over Westwood's open floor; the coordinator, 2026-10-13)
+        cover=(0.04, 0.10, 0.25), open=(0.30, 0.95), per_tile=(0.04, 0.40), types_min=4, free_most=(4, 30),
         # Westwood's 25 crypts: 0.31-0.67-1.16 tombs per 10 tiles (the room lab)
-        caps={"tomb": (12, 6)}, walls_min=1, lined=None, tiles=(30, 200),
-        signature={"tomb": (1, 20), "statue": (0.2, 4)}, needs=("tomb",), kin=("chapel",),
+        # QA round 1 (Q1C-13..16): rows either side of the aisle, a tomb per 6 tiles at most, 4 to 16; more kinds
+        caps={"tomb": (6, 16)}, walls_min=1, lined=None, tiles=(30, 200),
+        signature={"tomb": (1, 20), "statue": (0.2, 4)}, needs=("tomb",), kin=("chapel", "coven"),
         variants={"dark_crypt": dict(cover=(0.08, 0.16, 0.30))}),
 }
 
@@ -663,7 +710,11 @@ STANDS = {
     "dining_hall": (("beside", r"Fireplace|^OgreFirePit$"), ("back",)),
     "great_hall": (("beside", r"Fireplace"), ("beside", r"^Statue"), ("back",)),
     "hall": (("beside", r"^Statue|^LOTDManaObelisk"), ("back",)),
-    "chapel": (("beside", r"^DunMirAltar|^LOTDLichGodStatue"), ("back",)),
+    # the priest at the spot the set piece keeps for him beside the altar (kit/sacred.py; QA round 1, nox14: "Give the
+    # priest a better location instead of being behind a random pillar. Have the priest stand closer to the altar")
+    "chapel": (("spot", "priest"), ("beside", r"^DunMirAltar|^LOTDLichGodStatue"), ("back",)),
+    "coven": (("spot", "priest"), ("beside", r"^LOTDLichGodStatue|^LOTDFlamingSkulls|^Cauldron"), ("back",)),
+    "mana_room": (("beside", r"^WizardWorkstation|^Obelisk$|^LOTDManaObelisk$"), ("back",)),
     "throne_room": (("beside", r"^DunMirThrone|^LOTDLichThrone"), ("back",)),
     "crypt": (("beside", r"^CryptChest|^Statue|^LOTDManaObelisk"), ("back",)),
     "solar": (("beside", r"Fireplace"), ("beside", r"^Desk\d$"), ("back",)),
@@ -743,6 +794,11 @@ def reads_as(fam, kinds, kind=None):
         if t == "cell" and (fam.get("fireplace") or fam.get("table") or fam.get("chair", 0) > 1): s = 0.0
         if t == "torture_chamber" and k(r"^TortureRack|^IronMaiden|^Stocks") < 2: s = 0.0
         if t == "shrine" and fam.get("bench", 0) >= 4: s = 0.0
+        if t == "coven" and not (k(r"^LOTDLichGodStatue|^LOTDFlamingSkulls|^Cauldron") and k(r"^Coffin|^Crypt\d")):
+            s = 0.0
+        # (a coven's walls are lined with mana obelisks too: the dead in it make it no mana room)
+        if t == "mana_room" and (k(r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$") < 4 or fam.get("tomb", 0) >= 2):
+            s = 0.0
         # (three: the knowledge base hangs two paintings to a wall, and a back wall broken by a door holds one)
         if t == "gallery" and (k(r"^Painting") < 3 or any(fam.get(f) for f in ("bed", "desk", "shelves", "table", "stove"))):
             s = 0.0

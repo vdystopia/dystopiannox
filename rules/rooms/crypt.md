@@ -1,7 +1,44 @@
 # Crypt
 
-Family: the dead. Feel: **sparse, quiet, ordered**. Kit kinds: `crypt` (a chapel's family crypt), `dark_crypt` (the
-Land of the Dead's tombs). Profile: `kit/roomtypes.py TYPES["crypt"]`.
+Family: the dead. Feel: **quiet, ordered, symmetric**. Kit kinds: `crypt` (a chapel's family crypt), `dark_crypt` (the
+Land of the Dead's tombs). Profile: `kit/roomtypes.py TYPES["crypt"]`. Composed by `kit/sacred.py crypt` (the recipes'
+`composer="crypt"`; until QA round 1 by the motif engine, kit/motifs.py).
+
+## The user's rules (QA round 1, 2026-10-13; review/qa1/sacred.md Q1C-13..Q1C-18)
+
+- "The objects in these rooms need better organization, arrangement, and balance. Add more object diversity, like
+  bones. Use the breakable coffin objects sometimes. Add a high chance for these rooms to contain mana obelisks."
+- RM-CRYPT-09 (49 tiles, two sarcophagi): "Worst one in the set, very empty."
+- RM-CRYPT-10 (dark crypt, LOTD walls): "The wooden doors mismatch with the double doors. Generally, the double door style
+  should be used for all doors with this tile set. This room also needs coffins or graves or something to give it a crypt
+  identity" (its rows of tall LOTD tombstones did not read as graves).
+
+## The set piece (kit/sacred.py crypt)
+
+Laid about the axis from the main door to the far wall (the door in the middle of its wall when it is the building's
+entrance, `building.CENTRE_DOOR_ROOMS`; never reshaped, `SHELL_KEEP`):
+- **The centrepiece** on the far wall in line with the door, spread over a map's crypts: a crypt chest, a great square
+  sarcophagus or a monument; **mana obelisks** flanking it in 4 crypts of 5 (else statues of the dead), and a second
+  pair by the door in a crypt of 90 tiles or more.
+- **The rows of the dead** either side of a middle aisle, mirrored: sarcophagi of one model (40%) or the breakable
+  coffins (40%), or the old dead's sarcophagi nearest the far wall and coffins nearer the door (25%); across the aisle,
+  one or two to a half-row, a walk round the far end; along the aisle in a narrow crypt (the aisle narrows to a pace);
+  a row a side door's way crosses left out on both sides, the next tried; else tombs along the side walls, else a bier
+  on the axis. The Land of the Dead's crypts lie in coffins and sarcophagi too, with its own gravestones at the heads.
+- **Bones** heaped at the rows' heads, mirrored; **graves** (tombstones; LOTD gravestones in the Land of the Dead) at the
+  heads against the side walls; statues of the dead in pairs along the side walls in a big crypt; a pair of tombstones
+  flanking the aisle's foot.
+- Candelabras in pairs (LOTD candelabras in the Land of the Dead); a tapestry pair on the far wall when it is a back wall.
+- The LOTD styles hang their double door in every doorway (`building.DOUBLE_DOOR_STYLES`; RM-CRYPT-10), checked by
+  `doors.lotd`.
+
+## Checked by
+
+`sacred.symmetry` (floor pieces paired across the door's line), `sacred.dead` (two coffins, sarcophagi or graves at
+least, and 4+ kinds of piece; LOTD gravestones alone are not graves), `doors.lotd`; planted cases STsDead, STdLotd. The
+grammar's irregularity and mixed-tomb rules stand aside (`kit/grammar.py SYMMETRIC`).
+
+## Before QA round 1 (kept for the record)
 
 ## Purpose and feel
 
@@ -14,7 +51,7 @@ The rows of tombs.
 ## Pieces
 
 - Must: tombs (2+: sarcophagi, coffins, tombstones).
-- May: columns, statues of the dead or gargoyles, crypt chests, a tapestry or two, barren plants.
+- May: mana obelisks, monuments, statues of the dead, crypt chests, tombstones, bones, a tapestry or two.
 - Never: beds, desks, tables, chairs, stoves, forges, lab pieces, bars, counters, racks, hearths, straw, barrels, sacks,
   bookcases.
 
@@ -43,7 +80,7 @@ Westwood's 25 curated campaign crypt rooms differ in structure, not just in deta
 | | Westwood's campaign (30 rooms, 8 maps) | Profile |
 |---|---|---|
 | coverage | 0.01-0.08-0.23 | 0.08-0.30 (target 0.16) |
-| open floor | 0.46-0.74-0.91 | 0.40-0.85 |
+| open floor | 0.46-0.74-0.91 | 0.30-0.95 (Q1T; below) |
 | pieces per tile | 0.04-0.07-0.20 | 0.06-0.40 |
 | distinct types | 1-2-11 | 3+ |
 | caps | | tombs 1 per 5 tiles, at most 30 |
@@ -82,3 +119,29 @@ The keeper beside a crypt chest or a statue of the dead; never in an aisle betwe
   wall and none far from one, a crypt chest; 0.67 tombs per 10 tiles. Two rows with a wide aisle (3.6), so each keeps
   near its wall, capped at a tomb per 12 tiles; no columns, tapestries or plants (AUC 1.0 -> 0.89). Tombs along the walls
   (`wall_gap`) read worse: Westwood's stand free of them.
+
+## Full enough (QA round 1, second pass; Q1C-19)
+
+The coordinator found crypt 05 "almost bare", crypt 02 "3 sarcophagi and little else" and the dark crypt 10 "mostly empty
+floor". After its rows the crypt dresses its walls and corners in mirrored pairs (`kit/sacred.py dress`, `crypt_pieces`):
+urns (StatueVase, facing the axis), rubble, gravestones, a small statue pair (LOTD obelisks in the Land of the Dead),
+candle groups, monuments, skulls and rib cages, cobwebs in the far corners; each kind once, then more until it holds
+`fullness_goal` kinds (6, a kind more every 45 tiles past 30, 10 at most) and covers 10% of its floor. The rows run the
+floor's whole length (a depth a side door's way takes is stepped over), and where a band is left without a row single
+tombs lie on the middle line. Checked by `sacred.fullness` (STsFull).
+
+### Third pass (Q1C-21)
+
+The coordinator: "crypts 02 and 05 still read as empty at full size, so the fullness rule is counting the wrong things."
+
+- Only pieces a person sees count (QA round 1, third pass: crypts 02 and 05 still read as empty at full size, the count having taken skulls and candles a few pixels wide as kinds): a piece at least an urn's size on screen (a circle of 7 px, a box of 11) with a furniture family, or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles, bottles and books count together as one kind at most and never toward the covered floor (`kit/sacred.py counted_kind`). The dressing fills the back walls (NE, NW) first and stands what is tall there only; a front wall (SE, SW) takes low pieces.
+- The crypt's least is 7 visible kinds (11 at most) and 10% of its floor. Its dressing (`crypt_pieces`): statue or
+  gargoyle pairs, LOTD obelisks, monuments, candelabra pairs, a burning skull heap (the ossuary's bone pile), braziers
+  (tall, back walls only); urn pairs, gravestones, coffins along a wall, crates of burial goods, rubble (low, any wall).
+- **Back walls first**: the centrepiece (a chest, a sarcophagus or a monument, flanked by obelisks or statues) stands on
+  the far wall in line with the door when that is a back wall, else at the middle of the back side wall with its flanks
+  along it; never on a front wall. The front walls hold only low pieces.
+- **A long crypt** (its depth 3.5 times its half width or more, like crypt 02) lies in two full lines of coffins end to
+  end down its length either side of the aisle, a pace between, the centrepiece at the far end; tombs are capped by the
+  type's repeat cap (a tomb per 6 tiles, 16 at most), the gravestones within it.
+- Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear.

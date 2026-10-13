@@ -591,9 +591,18 @@ ROOMS = {
                    core={"altar": (1, 1), "bench": (4, 16), "statue": (2, 4)},
                    # room lab (tuneB): Westwood's chapel (Con07B) holds 8 pews, 6 columns ringing the nave near its
                    # walls, tapestries, candelabras, statues by the altar: no plants, no tombs in the nave
-                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1)},
+                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1),
+                             "relic": (1.0, 4)},
                    columns_by_walls=True, statues_along=True, decor_max=6,
-                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$", "bench": r"^Bench\d$|^LightBench\d$",
+                   # QA round 1 (Q1C-1..Q1C-12): the nave is one set piece, symmetric about the line from the main door
+                   # to the altar (kit/sacred.py chapel): the runner up the middle, pews in rows either side, columns
+                   # lined up with the rows, statues and lights in pairs, the altar end one of four (Dun Mir's altar, a
+                   # holy font or a fountain before it, a saint's great statue behind it), the priest beside the altar
+                   composer="nave", lift=("Horrendous|",),
+                   types={"altar": r"^DunMirAltar\d$",
+                          "statue": r"^Statue2[a-h]$|^HorrendousStatue[12]$|^StatueVase[12]|^StatueVictory\d|^Gargoyle\d$",
+                          "relic": r"^OrbPoolWithOrb$|^Fountain$|^DunMirFlameBasinLit$|^Monument1$|^OrbPoolEnd\d$",
+                          "bench": r"^Bench\d$|^LightBench\d$|^CushionedBench\d$",
                           "column": r"^CathedralColumn[123]$|^Column[5-8]$", "tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$",
                           "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
                    # tapestries of one colour, never hunting trophies (rules/rooms/chapel.md; Ambermere's chapel held a bear's head)
@@ -603,7 +612,11 @@ ROOMS = {
                    top_up=(),
                    # the game's altars (Westwood stands them outside its rooms, so the room statistics hold none)
                    prefer={"altar": {"DunMirAltar1": 3, "DunMirAltar2": 1},
-                           "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "LightBench1": 1, "LightBench2": 1}},
+                           "bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "Bench5": 1, "LightBench1": 1, "LightBench2": 1,
+                                     "CushionedBench1": 1, "CushionedBench2": 1},
+                           # the altar end's other pieces (kit/sacred.py CHAPEL_ALTARS): the holy font, the fountain,
+                           # the fire basins framing the approach
+                           "feature": {"OrbPoolWithOrb": 1, "Fountain": 1, "DunMirFlameBasinLit": 1}},
                    compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
                             dict(fam="statue", slot="wall", beside="altar", gap=0.8, clear=0),
@@ -629,9 +642,17 @@ ROOMS = {
                   # coverage 0.08. The old rows of sarcophagi and coffins down the middle with columns, statues,
                   # tapestries and plants gave every one away (AUC 0.98-1.0)
                   core={"tomb": (2, 12)},
-                  optional={"statue": (0.3, 2), "storage": (0.4, 1)},
-                  types={"tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$|^Coffin\d$",
-                         "statue": r"^Statue2[a-h]$", "storage": r"^CryptChest\d$"},
+                  optional={"statue": (0.3, 2), "storage": (0.4, 1), "column": (1.0, 4), "relic": (1.0, 6)},
+                  # QA round 1 (Q1C-13..Q1C-16: "The objects in these rooms need better organization, arrangement, and
+                  # balance. Add more object diversity, like bones. Use the breakable coffin objects sometimes. Add a high
+                  # chance for these rooms to contain mana obelisks"): one set piece about the door's line (kit/sacred.py
+                  # crypt): a centrepiece on the far wall between mana obelisks (4 in 5 crypts), rows of sarcophagi or
+                  # breakable coffins either side of the aisle, bones heaped at their heads, statues and tombstones in pairs
+                  composer="crypt", lift=("DunMir|", "LOTD|"),
+                  types={"tomb": r"^Crypt\d+$|^Coffin\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
+                         "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$|^Gargoyle\d$",
+                         "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "column": r"^RuinsColumnIndoorRubble\d+$",
+                         "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                   top_up=(), lights_per100=2.0,
                   # a step out from the walls (Westwood's: none against a wall, none further than 2.5 units from one):
                   # sarcophagi along the walls a pace out, the chest in a corner, held to the type's cap
@@ -854,14 +875,21 @@ ROOMS = {
                                 "arks along the walls, judgement balances standing in a pair, tapestries and sconces on "
                                 "the back walls, bones and skulls strewn about",
                         base="chapel",
-                        core={"altar": (1, 1), "statue": (4, 14)},
+                        # QA round 1 (Q1C-9): the Land of the Dead's chapel is the coven's basis (RM-CHAPEL-10): a coven
+                        # in the LOTD's own pieces, laid out by the same set piece (kit/sacred.py coven)
+                        composer="coven", grand=True, lift=("Crypt|",),
+                        core={"altar": (1, 1), "statue": (4, 24)},
                         # 2026-10-05 playtest rule (large rooms mix their pieces): Ambermere's 300-tile barrow hall held
                         # a block of 20 obelisks and arks down its middle
-                        optional={"wall_decor": (1.0, 6), "tomb": (0.5, 4), "bones": (1.0, 30), "column": (0.6, 8)},
+                        optional={"wall_decor": (1.0, 6), "tomb": (0.5, 8), "bones": (1.0, 30), "column": (0.6, 8),
+                                  "bench": (1.0, 12), "stove": (1.0, 1), "relic": (1.0, 8)},
                         types={"altar": r"^LOTDLichGodStatue[12]$",
-                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$",
-                               "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$", "tomb": r"^LOTDTombstone[1-4]$",
-                               "column": r"^LOTDColumn1$"},
+                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|^Gargoyle\d$",
+                               "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
+                               "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$",
+                               "tomb": r"^LOTDTombstone[1-4]$|^Crypt\d+$|^Coffin\d$",
+                               "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "bench": r"^Bench\d$|^LightBench\d$",
+                               "stove": r"^Cauldron(Animated)?$"},
                         prefer={"altar": {"LOTDLichGodStatue1": 1, "LOTDLichGodStatue2": 1},
                                 "statue": {"LOTDManaObelisk": 3, "LOTDArk1": 1, "LOTDArk2": 1},
                                 "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1},
@@ -885,9 +913,16 @@ ROOMS = {
                                "walls, sconces and candles, bones and skulls strewn over the floor",
                        base="crypt",
                        core={"tomb": (4, 40)},
-                       optional={"statue": (0.8, 4), "wall_decor": (0.6, 3), "bones": (1.0, 40)},
-                       types={"tomb": r"^LOTDTombstone[1-4]$", "statue": r"^LOTDManaObelisk$",
-                              "wall_decor": r"^LOTDTapestry[12]$"},
+                       optional={"statue": (0.8, 4), "wall_decor": (0.6, 3), "bones": (1.0, 40), "storage": (0.6, 1),
+                                 "column": (1.0, 4), "relic": (1.0, 6)},
+                       # QA round 1 (Q1C-17: RM-CRYPT-10 "needs coffins or graves or something to give it a crypt
+                       # identity"): the crypt's set piece, its rows of the dead coffins, sarcophagi or LOTD gravestones
+                       composer="crypt",
+                       types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$",
+                              "statue": r"^LOTDManaObelisk$|^StatueVase[12]|^Gargoyle\d$",
+                              "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "wall_decor": r"^LOTDTapestry[12]$",
+                              "column": r"^RuinsColumnIndoorRubble\d+$",
+                              "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
                        prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
@@ -898,6 +933,55 @@ ROOMS = {
                        fill=[dict(fam="tomb", slot="racks", kind="lotd_tombs", gap=1.0, aisle=1.8, max=24),
                              dict(fam="tomb", slot="wall", at="center", clear=0.6, max=8),
                              dict(fam="statue", slot="wall", at="corner", clear=0.8, max=4)]),
+    # ---- QA round 1 (2026-10-13): the chapel set split three ways (review/qa1/sacred.md, Q1C) -----------------------
+    # the coven: "a separate chapel category for necromancy ... This is a place where the dead are worshipped and dark
+    # necromancy is practiced" (rules/rooms/coven.md): the chapel's set piece (kit/sacred.py coven) in the dead's pieces
+    "coven": dict(purpose="a coven where the dead are worshipped: the dark altar centred on the far wall in line with the "
+                          "door, a cauldron before it, pews either side of the runner, coffins and sarcophagi in pairs "
+                          "with bones heaped by them, monuments by the door, mana obelisks lining the walls",
+                  base="chapel", composer="coven", grand=True,
+                  # its own pieces in any building: the Land of the Dead's, the crypt's coffins, Dun Mir's altar
+                  lift=("LOTD|", "Lich|", "Crypt|", "DunMir|", "|Coffin", "|Tomb"),
+                  core={"statue": (4, 30), "tomb": (2, 10)},
+                  optional={"altar": (1.0, 1), "bench": (1.0, 12), "column": (1.0, 8), "stove": (1.0, 1),
+                            "wall_decor": (1.0, 6), "bones": (1.0, 30), "relic": (1.0, 8)},
+                  types={"altar": r"^LOTDLichGodStatue[12]$|^DunMirAltar\d$",
+                         "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
+                         "statue": r"^LOTDManaObelisk$|^Obelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|"
+                                   r"^Statue2[a-h]$|^Gargoyle\d$",
+                         "tomb": r"^Crypt\d+$|^Coffin\d$|^LOTDTombstone", "bench": r"^Bench\d$|^LightBench\d$",
+                         "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "stove": r"^Cauldron(Animated)?$",
+                         "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$"},
+                  prefer={"bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "Bench5": 1},
+                          "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1, "LOTDBanner2": 1},
+                          "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2},
+                          "feature": {"LOTDFlamingSkullsStatic": 1, "LOTDFlamingSkullsAnimated": 1,
+                                      "LOTDCandleGroupSmall1": 1}},
+                  lights={"LOTDCandleabra1": 2, "LOTDWallSconse1": 1},
+                  top_up=(), compose=[], fill=[]),
+    # the mana room: "define them by 1-4 arrangements of mana crystals evenly and symmetrically placed and a wide selection
+    # of other arcane objects" (rules/rooms/mana_room.md; RM-CHAPEL-02, 06, 07, the chapel lab's sanctums, its basis)
+    "mana_room": dict(purpose="a mana chamber: one to four rings of mana obelisks round centrepieces, evenly and "
+                              "symmetrically placed, each on its carpet; bookcases and wizards' workstations on the back "
+                              "walls, crystal clusters in the corners, glowing jars and generators, star charts",
+                      base="laboratory", composer="mana", grand=True,
+                      lift=("DunMir|", "Mine|", "LOTD|"),
+                      core={"statue": (4, 16)},
+                      optional={"lab": (1.0, 10), "shelves": (1.0, 10), "storage": (1.0, 2), "altar": (0.5, 4), "column": (1.0, 4),
+                                "relic": (1.0, 16),
+                                "wall_decor": (1.0, 6)},
+                      types={"statue": r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$|^StatueVase[12]",
+                             "relic": r"^OrbPoolWithOrb$|^CrystalColumn$|^MineManaCrystal\d+$|^CrystalBlue|^OrbPoolEnd\d$|^MineCrystal\d+$|"
+                                      r"^MineManaCart\d$|^DunMirFlameBasinLit$",
+                             "lab": r"^WizardWorkstation\d[a-d]?$|^FairyJar$|^Orrery[12]$|^Vandegraf(Small|Large)$|^Telescope2[a-g]$",
+                             "shelves": r"^Bookcase\d$|^PotionShelves\d$", "storage": r"^DunMirChest\d$|^Chest\d$",
+                             "altar": r"^DunMirAltar\d$", "wall_decor": r"^(StarChart|Zodiac)\d[a-d]$",
+                             "column": r"^CrystalColumn$"},
+                      prefer={"feature": {"CrystalColumn": 1, "MineManaCrystal9": 1, "MineManaCrystal11": 1,
+                                          "CrystalBlueLargeStalagmite": 1, "OrbPoolWithOrb": 1, "MineManaCrystal1": 1,
+                                          "MineManaCrystal2": 1, "MineManaCrystal5": 1, "MineManaCrystal6": 1,
+                                          "CrystalBlueSmallStalagmite": 1}},
+                      top_up=(), compose=[], fill=[]),
     # ---- more types for variety (2026-10-05; kit/roomtypes.py, rules/rooms/<type>.md). Each is composed from the
     # furnisher's existing steps. `lift`: the furnishing style's excluded prefixes a kind takes back (a torture chamber's
     # racks in a town keep: kit/furnish.py STYLE_EXCLUDE drops Torture, Pulley, Mine, Crypt, Coffin and DunMir from a
@@ -1711,13 +1795,8 @@ ARCHETYPE_RECIPES = {
                                     _DECOR],
                            fill=[dict(fam="statue", slot="wall", at="corner", clear=0.6, max=2, fixed=True),
                                  dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
-        # the holy thing in the middle ringed by obelisks, a few pews facing it (kin: the shrines Con07D, Wiz02B)
-        "sanctum": dict(core={"bench": (2, 6), "statue": (4, 4)}, optional={"tomb": (0.0, 0), "column": (0.0, 0)},
-                        types={"statue": r"^Obelisk$"},
-                        compose=[dict(fam="altar", slot="relic_ring", ring="statue", d=1.9),
-                                 dict(fam="bench", slot="pews", runner=False, columns=False),
-                                 _DECOR],
-                        fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1)]),
+        # (the sanctum, the holy thing ringed by four obelisks, is the mana room's now: QA round 1, Q1C-5 "they do not fit
+        # in with the identity of a chapel ... separate these rooms into their own category - mana rooms")
         # the altar at the end of a colonnade, statues facing across it, a few pews (kin: Con04c's colonnade hall)
         "colonnade_chapel": dict(core={"bench": (2, 8), "column": (4, 8)}, optional={"tomb": (0.0, 0)},
                                  compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
@@ -1896,6 +1975,15 @@ BUILDINGS.update({
                       scenes=[], garden=0.0, faces="road"),
     "shrine": dict(purpose="a wayside shrine: one small holy room", style="stone_house", size=(18, 16), min_units=50,
                    rooms=[("shrine", "the shrine")], scenes=[], garden=0.3, faces="road"),
+    # QA round 1 (2026-10-13, Q1C): the coven and the mana room, split from the chapel set
+    "coven": dict(purpose="a necromancers' coven: the hall where the dead are worshipped and dark necromancy practised, "
+                          "and the crypt of its dead", style="stone_house", size=(40, 30), min_units=220,
+                  rooms=[("coven", "the coven's hall of the dead"), ("crypt", "the coven's crypt")],
+                  scenes=[], garden=0.0, faces="road"),
+    "mana_sanctum": dict(purpose="a wizards' mana sanctum: the chamber of the mana crystals and its keeper's study",
+                         style="stone_house", size=(36, 28), min_units=200,
+                         rooms=[("mana_room", "the mana chamber"), ("study", "the keeper's study")],
+                         scenes=[], garden=0.0, faces="road"),
 })
 
 # Rooms a role may add to its program (BuildingIdentity.extra), each with its purpose: the program above stays each role's
@@ -1908,20 +1996,21 @@ ROLE_OPTIONS = {
                  ("cellar", "the cellar")],
     "keep": [("solar", "the lord's solar"), ("guardroom", "the guard room"), ("treasury", "the strongroom"),
              ("cell", "a cell"), ("torture_chamber", "the question room"), ("cellar", "the buttery"),
-             ("shrine", "the keep's shrine"), ("powder_store", "the powder store"), ("winch_room", "the winch room")],
+             ("shrine", "the keep's shrine"), ("powder_store", "the powder store"), ("winch_room", "the winch room"),
+             ("mana_room", "the keep's mana chamber")],
     "barracks": [("guardroom", "the guard room"), ("cell", "the lock-up"), ("powder_store", "the powder store"),
                  ("infirmary", "the infirmary")],
     "chapel": [("ossuary", "the bone room"), ("shrine", "the side shrine"), ("mausoleum", "the founder's tomb")],
     "village_chapel": [("ossuary", "the bone room"), ("shrine", "the side shrine")],
     "college": [("observatory", "the observatory"), ("gallery", "the gallery of the archmagisters"),
-                ("conservatory", "the garden hall"), ("shrine", "the shrine")],
+                ("conservatory", "the garden hall"), ("shrine", "the shrine"), ("mana_room", "the mana chamber")],
     "observatory": [("observatory", "the telescope room")],
     "apothecary": [("infirmary", "the sick room")],
     "smithy": [("workshop", "the workshop")],
     "mill": [("winch_room", "the mill's gear room")],
     "ore_shed": [("powder_store", "the blasting powder")],
     "foreman": [("treasury", "the strongroom of the mine's pay")],
-    "grovelord": [("shrine", "the grove's shrine")],
+    "grovelord": [("shrine", "the grove's shrine"), ("mana_room", "the grove's mana chamber")],
     "demon_forge": [("winch_room", "the forge's gear room"), ("powder_store", "the powder store")],
     "ice_temple": [("dark_shrine", "the lich god's shrine"), ("ossuary", "the bones of the frozen dead")],
     "barrow": [("dark_shrine", "the old god's shrine"), ("ossuary", "the bone room")],
@@ -1991,7 +2080,8 @@ class BuildingIdentity:
 # The Westwood room kind each generated kind is measured against (validate/baseline.json room_kinds).
 WESTWOOD_KIND = {"herbalist": "laboratory", "mess_hall": "dining_hall", "ore_store": "storeroom", "study": "library",
                  "dwelling": "living_room", "gear_store": "storeroom", "ogre_den": "barracks", "ogre_hall": "dining_hall",
-                 "ogre_hoard": "storeroom", "granary": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt", "great_hall": "hall"}
+                 "ogre_hoard": "storeroom", "granary": "storeroom", "dark_chapel": "chapel", "dark_crypt": "crypt", "great_hall": "hall",
+                 "coven": "chapel", "mana_room": "chapel"}
 # How much of a room's floor its furniture covers: (target, limit). The furnisher fills toward the target and never
 # past the limit, which the checker holds generated rooms to (TreePlace room reviews: rooms furnished to Westwood's
 # typical counts read as empty, and a store room holds more than any other room). Coverage grows with the room, so

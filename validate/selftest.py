@@ -830,6 +830,58 @@ def hard_patch(m):
     m._ground_blend = lambda: None                           # the kit's blending of every ground left out
     for t in ((104, 124), (105, 125), (105, 123), (106, 124)):     # u 228, v -20: open meadow
         m.floor[t] = "DirtLight2"
+# ---- the sacred rooms (QA round 1, review/qa1/sacred.md Q1C): the test house declared a chapel, its double door in the
+# middle of its NW wall (v = 0), so the altar belongs at the SE wall's middle (u ~ 220.5, v = 0)
+def _chapel(m, kind="chapel"):
+    _declare(m, kind)
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+
+
+def altar_off_axis(m):
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 6.5)                          # Q1C-2: the altar off the door's line
+
+
+def pews_one_side(m):
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 0)
+    for u in (210, 213, 216): m.obj("Bench1", u, 4.5)          # Q1C-1: pews on one side of the aisle only
+
+
+def carpet_one_side(m):
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 0)
+    m.raw_floors = True
+    for t in rect_tiles(206, 216, 2, 8): m.tile(t[0], t[1], "RugRed")     # Q1C-3: the runner off the middle line
+
+
+def same_altars(m):
+    # Q1C-4: three chapels, each ending in the same Dun Mir altar
+    m.room(204, 222, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.room(228, 246, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
+    m.door("WoodenDoor", (88, 116), "/"); m.door("WoodenDoor", (100, 128), "/")
+    extra = [dict(number=k + 2, building=f"chapel {k}", kind="chapel", purpose="", tiles=0, box=[0, 0, 0, 0],
+                  floor=[list(t) for t in rect_tiles(u0, u0 + 18, -36, -20)]) for k, u0 in enumerate((204, 228))]
+    _declare(m, "chapel", extra)
+    m.d["objects"] = [o for o in m.d["objects"] if o.get("type") not in ("WoodBed2", "Table1", "Wolf")]
+    for u, v in ((220.4, 0), (220.4, -28), (244.4, -28)): m.obj("DunMirAltar1", u, v)
+
+
+def bare_chapel(m):
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 0)                             # Q1C-19: an altar and one pair of pews, nothing else
+    for v in (-3.5, 3.5): m.obj("Bench1", 214, v)
+
+
+def crypt_without_dead(m):
+    _chapel(m, "crypt")
+    m.obj("Coffin1", 214, 0)                                   # Q1C-14, Q1C-17: one coffin and nothing else
+
+
+def wooden_door_in_lotd(m):
+    for c, w in m.wallmap.items():                            # Q1C-18: the house in the Land of the Dead's walls...
+        if w.get("material") == "StuccoLightWood": w["material"] = "LOTDOrnate"
+    # (...its corner door a plain wooden one)
 
 
 CASES = [  # (map name, defect, expected check, expected severity, description)
@@ -952,6 +1004,14 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STgCorn", g_corners, "composition", "warning", "one barrel to a corner - judges 10-06", "[grammar corners]"),
     ("STgStep", g_stepped, "composition", "warning", "barrels in an evenly stepped row - judges 10-06", "[grammar stepped]"),
     ("STgMix", g_mixed_beds, "composition", "warning", "cots and wooden beds in one room - judges 10-06", "[grammar mixed]"),
+    ("STsAxis", altar_off_axis, "sacred", "warning", "a chapel's altar off its main door's line - Q1C-2", "main door's line"),
+    ("STsSym", pews_one_side, "sacred", "warning", "a chapel's pews on one side of the aisle only - Q1C-1", "no twin"),
+    ("STsCarp", carpet_one_side, "sacred", "warning", "a chapel's carpet off its middle line - Q1C-3", "carpet squares"),
+    ("STsAltr", same_altars, "sacred", "warning", "three chapels ending in the same altar - Q1C-4", "same altar"),
+    ("STsFull", bare_chapel, "sacred", "warning", "a chapel of an altar and two pews - Q1C-19", "kinds of piece"),
+    ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
+    ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",
+     "Land of the Dead"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),

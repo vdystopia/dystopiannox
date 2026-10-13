@@ -61,13 +61,15 @@ marked * (rooms read by hand from every campaign room the finder leaves untyped 
 | public | [tavern](tavern.md) | 2 | 8 | tavern | the bar with kegs behind it, the hearth, tables of three kinds of set with open floor between, lively but not packed |
 | public | [dining hall](dining_hall.md) | 3 | 4 | dining_hall, mess_hall, ogre_hall | long tables in rows seated both sides, the hearth on a back wall flanked by crockery |
 | ceremonial | [hall](hall.md) | 17 | 2 | hall | a colonnade in pairs either side of a clear aisle, statues facing across it, hangings: open and stately |
-| ceremonial | [chapel](chapel.md) | 1 | 5 | chapel, dark_chapel | the altar across from the door in line with it, a carpeted aisle, a few rows of pews nearest the altar, open floor toward the door |
+| ceremonial | [chapel](chapel.md) | 1 | 5 | chapel | symmetric about the door's line: the altar centred across from the main door, a runner up the middle, pews in rows either side, columns lined up with the rows, statues and lights in pairs |
+| ceremonial | [coven](coven.md) | 0 | - | coven, dark_chapel | the chapel's set piece for the dead: the dark altar (the lich god, a bier, a pyre of skulls) with a cauldron before it, pews, coffins and sarcophagi in pairs with bones, mana obelisks lining the walls |
+| ceremonial | [mana room](mana_room.md) | 0 (kin 3*) | - | mana_room | one to four rings of four mana obelisks round centrepieces, each on its own centred carpet, evenly and symmetrically placed; arcane pieces mirrored round the walls |
 | ceremonial | [great hall](great_hall.md) | 2 | 3 | great_hall | the house's heart: the hearth, a few long tables on a great carpet, banners, and a lot of open floor |
 | ceremonial | [throne room](throne_room.md) | 4 | 2 | throne_room | the throne facing the door down a runner, statues and braziers about it, a few pairs of columns, tapestries of one colour: open, processional, with character |
 | ceremonial | [shrine](shrine.md) | 6* | - | shrine, dark_shrine | one holy thing across from the door, statues flanking it, candles and basins of fire, a kneeling bench, open |
 | ceremonial | [conservatory](conservatory.md) | 3* | - | conservatory | a fountain or a well, benches facing it, plants massed along the walls and in clumps with paths |
 | ceremonial | [gallery](gallery.md) | 1* | - | gallery | paintings at even spacing along both back walls, benches facing them, statues in pairs, open floor |
-| dead | [crypt](crypt.md) | 30 | 5 | crypt, dark_crypt | sarcophagi in rows with aisles between, statues of the dead, a chest, quiet and sparse |
+| dead | [crypt](crypt.md) | 30 | 5 | crypt, dark_crypt | symmetric about the door's line: a centrepiece between mana obelisks on the far wall, rows of sarcophagi or breakable coffins either side of the aisle, bones and graves at their heads |
 | dead | [ossuary](ossuary.md) | 4* | - | ossuary | bones in heaps, crypt chests in the corners, a monument; no rows of tombs |
 | dead | [mausoleum](mausoleum.md) | 4* | - | mausoleum | one great tomb in the middle, statues of the dead in pairs facing it, monuments in the corners |
 
@@ -75,7 +77,9 @@ Westwood also has 9 **passages** (bare halls under 40 tiles, a statue or two): w
 
 Merged and split: the dwelling is a one-room living room with a bed (a variant); mess halls and the ogres' feasting halls
 are dining halls; ore stores and the ogres' hoards are storerooms; the ogres' den is a barracks of straw; the Land of the
-Dead's chapel and crypt are variants of the chapel and the crypt. The **armoury** is split from the storeroom: a store
+Dead's crypt is a variant of the crypt; its chapel is a variant of the **coven**, split from the chapel with the **mana
+room** in QA round 1 (2026-10-13: "separate these rooms into their own category - mana rooms"; "Create an additional
+separate chapel category for necromancy. call them Covens"; review/qa1/sacred.md). The **armoury** is split from the storeroom: a store
 keeps supplies, an armoury shows arms on racks (Westwood: 29 rooms of racks with no counter or keeper, against 28 of
 supplies). The **throne room** is split from the hall: a hall has no seat to face.
 

@@ -619,7 +619,11 @@ def _xy(U0, V0, pt):
     return (u + v) // 2, (u - v) // 2
 
 
-SHELL_KEEP = ("throne_room", "chapel", "dark_chapel")      # rooms whose axis the shell pass leaves alone
+# rooms whose axis the shell pass leaves alone: the throne room's walk, and the sacred rooms laid out as one symmetric set
+# piece about their door's line or their middle (kit/sacred.py; QA round 1, Q1C: "Chapels should always be aligned
+# with the main door", crypts' "organization, arrangement, and balance", the mana rooms' arrangements "evenly and
+# symmetrically placed")
+SHELL_KEEP = ("throne_room", "chapel", "dark_chapel", "coven", "mana_room", "crypt", "dark_crypt")
 
 
 def _shell(labels, program, entrance_side, bid, U0, V0, strict):
@@ -737,6 +741,11 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     int_type = SINGLE_OF.get(ext_type, ext_type)
     if door_rules()["types"].get(int_type, {}).get("kind") == "double":
         int_type = "WoodenDoor"
+    if style in DOUBLE_DOOR_STYLES:
+        # the Land of the Dead's halls hang its double door in every doorway, inside too (QA round 1, RM-CRYPT-10: "The
+        # wooden doors mismatch with the double doors. Generally, the double door style should be used for all doors
+        # with this tile set"; Q1C-18); where a wall has no room for two halves, nox.Spec.door hangs its single door
+        ext_type = int_type = DOUBLE_DOOR_STYLES[style]
     used_points = set()
 
     def along(gap, line):                # a door's place along its wall line, in the furnisher's units
@@ -780,7 +789,11 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         if len(b.entrances) >= n_entr: break
         if b.entrances and run_room(rn) == b.entrances[0].connects[0].split(":r")[-1]: continue
         rid = run_room(rn)
-        d = place_door(rn, ext_type, (rooms[rid].id, "outside"))
+        centred = None
+        if not b.entrances and program and program[0] in CENTRE_DOOR_ROOMS and room_ids.index(rid) == 0:
+            # the room's whole wall on this side (one wall may come out as several runs: _wall_middle)
+            centred = [r2 for r2 in ext_runs if r2[0] == rn[0] and r2[1] == rn[1] and run_room(r2) == rid] or [rn]
+        d = place_door(rn, ext_type, (rooms[rid].id, "outside"), centre=centred)
         if d:
             rooms[rid].doors.append(d); b.entrances.append(d)
             if len(b.entrances) == 1: b.entrance_side = _side_of_run(rn, W, H) if _on_outer_side(rn, W, H, _side_of_run(rn, W, H)) else "inner"
@@ -806,7 +819,7 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     axes = {}
     for d in b.entrances:
         rr = next((r for r in room_ids if rooms[r].id == d.connects[0]), None)
-        if rr is not None and rooms[rr].kind in ALTAR_ROOMS and rr not in axes: axes[rr] = (d.line, along(d.gap, d.line))
+        if rr is not None and rooms[rr].kind in CENTRE_DOOR_ROOMS and rr not in axes: axes[rr] = (d.line, along(d.gap, d.line))
     # interior doors: spanning tree from the entrance room, plus occasional extra loops
     int_runs = _runs(edges, lambda pr: pr[0] not in (None, COURT) and pr[1] not in (None, COURT))
     throne_wall = throne and [rn for rn in int_runs if rn[0] == "u" and rn[1] == throne[1] and frozenset(rn[3]) == throne[0]]
@@ -890,7 +903,12 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
     return b
 
 
-ALTAR_ROOMS = ("chapel", "dark_chapel")
+ALTAR_ROOMS = ("chapel", "dark_chapel", "coven")
+# the main door of a room laid out about its door's line stands in the middle of its wall (QA round 1, RM-CHAPEL-09:
+# "Center the door, altar, benches and pillars in the room"; Q1C-2): the altar rooms and the crypts
+CENTRE_DOOR_ROOMS = ALTAR_ROOMS + ("crypt", "dark_crypt")
+# building styles whose every door is the culture's double door (QA round 1, RM-CRYPT-10)
+DOUBLE_DOOR_STYLES = {"lotd_ornate": "LOTDHalfDoor", "lotd_crypt": "LOTDHalfDoor"}
 ALTAR_AXIS = 6.0         # units an inner door keeps from the line of an altar room's main door
 
 
@@ -942,10 +960,13 @@ def _wall_middle(runs, deg):
     wall comes out as several runs (the keep's wall between its hall and the throne room as six runs of 1-3 edges, and
     the door near the room's end, 2026-10-05 playtest)."""
     if not runs: return None
-    line = runs[0][1]
+    kind, line = runs[0][0], runs[0][1]
     ps = sorted(p for rn in runs for p in rn[2])
     if ps != list(range(ps[0], ps[-1] + 1)) or len(ps) < 2: return None
-    cands = [(abs(k - len(ps) / 2), k, (2 * line, 2 * ps[k])) for k in range(1, len(ps)) if deg[(2 * line, 2 * ps[k])] == 2]
+    # (a run along v, kind "v", holds its points the other way round: _door_points; QA round 1 found it placing a v-wall's
+    # door in the middle of the room)
+    pt = (lambda p: (2 * line, 2 * p)) if kind == "u" else (lambda p: (2 * p, 2 * line))
+    cands = [(abs(k - len(ps) / 2), k, pt(ps[k])) for k in range(1, len(ps)) if deg.get(pt(ps[k])) == 2]
     return min(cands)[2] if cands else None
 
 
