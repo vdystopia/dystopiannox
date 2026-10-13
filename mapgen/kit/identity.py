@@ -1069,7 +1069,9 @@ ROOMS = {
                            "them, a great cask or a piled barrel, aisles to walk",
                    core={"storage": (5, 30)},
                    optional={},
-                   types={"storage": r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12])$"},
+                   # (QA round 1, Q1R-13: metal barrels, barrels of tools and steel crates beside the kegs: kit/finish.py)
+                   types={"storage": r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12]|"
+                                     r"BarrelSteel[12]|BarrelWithTools[12]|CrateSteel[1-4])$"},
                    store=dict(lead={"barrels": 1}, second={"crates": 1}, second_p=0.4, accent={"piled": 1, "large": 1},
                               accent_p=0.7),
                    top_up=(), lights_per100=0,

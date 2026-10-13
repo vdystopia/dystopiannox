@@ -943,8 +943,121 @@ def _ogre_pen(f, rng):
                           lambda u, v: knot(f, rng, u, v, stores, 1)], inset=1.4, rad=1.3)
 
 
+# ---- cellar (Q1R-13) -----------------------------------------------------------------------------------------------
+CASK_CLEAR = 1.1           # units a great cask keeps from every other piece (RM-CELLAR-01: "the gigantic wine barrels are
+                           # way too close to each other and to the other barrels"; -08, -09 "need more space")
+CASK_DRAWN = (2.0, 1.3)    # half-length and half-depth of a great cask as the game draws it (its footprint is half that)
+# each group a row along a wall: the kinds of its pieces in order (one kind never more than three side by side: HB-5)
+CELLAR_GROUPS = (("kegs", (r"^Barrel$", r"^Barrel$", r"^Barrel2$", r"^PiledBarrels[1-4]$"), 4),
+                 ("steel", (r"^BarrelSteel[12]$", r"^BarrelSteel[12]$", r"^BarrelWithTools[12]$"), 3),
+                 ("crates", (r"^(Crate[12]|DarkCrate[12])$", r"^Barrel2?$", r"^Barrel2?$"), 3),
+                 ("tools", (r"^BarrelWithTools[12]$", r"^Barrel$", r"^BarrelSteel[12]$"), 3),
+                 ("steelcrates", (r"^CrateSteel[1-4]$", r"^BarrelSteel[12]$"), 2))
+
+
+def _cellar(f, rng):
+    """The cellar stocked again in organised groups of several kinds (QA round 1: "Many of these include only barrels.
+    Improve the diversity. Add metal barrels and tools. Use crates more often alongside the barrels"; RM-CELLAR-08 "the
+    diversity of objects is better ... It just needs to be organized a little bit better. The giant wine barrel needs
+    more space"): the great casks centred on a back wall with CASK_CLEAR round them (two, symmetric, in a cellar of 45
+    tiles or more), then a row of each kind from a corner along the walls (wooden kegs, metal barrels, crates, barrels of
+    tools), each group of one kind, the middle an aisle; what the old heaps held beyond that goes."""
+    old = items(f, r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12]|BarrelSteel[12]|"
+                   r"BarrelWithTools[12]|CrateSteel[1-4]|WaterBarrel)$")
+    keep = [(t, rec[0], rec[1]) for _, t, rec in old]
+    remove(f, [o for o, _, _ in old])
+    tiles = len(f.room.tiles)
+    casks = []
+    n_casks = 0 if tiles < 20 else 1 if tiles < 45 else 2
+    for _ in range(1):
+        if not n_casks: break
+        best = None
+        for r in f.g.runs:
+            if r["side"] not in BACK: continue
+            t = "LargeBarrel2" if r["line"] == "/" else "LargeBarrel1"
+            if not f.ok_type(t): continue
+            for a0, a1 in free_stretches(f, r):
+                a0, a1 = max(a0, r["lo"] + 1.5), min(a1, r["hi"] - 1.5)
+                if best is None or a1 - a0 > best[0]: best = (a1 - a0, r, t, a0, a1)
+        if not best: break
+        L, r, t, a0, a1 = best
+        ha, hp = halves_on(r, (0, 0) + f.half(t))
+        va = CASK_DRAWN[0]                          # its picture is twice its footprint
+        spots = [(a0 + a1) / 2] if n_casks == 1 or L < 4 * va + CASK_CLEAR + 1.0 else \
+            [(a0 + a1) / 2 - va - CASK_CLEAR / 2, (a0 + a1) / 2 + va + CASK_CLEAR / 2]
+        for a in spots:
+            o = put(f, t, *uv_on(r, hp + 0.35, a))
+            if o: casks.append(f._placed_of[id(o)])
+    def cask_ok(t, u, v):
+        hu, hv = f.half(t)
+        for c in casks:                              # the cask as drawn, its long side along its wall
+            cu_, cv_ = (CASK_DRAWN[0], CASK_DRAWN[1]) if c[2] >= c[3] else (CASK_DRAWN[1], CASK_DRAWN[0])
+            if max(abs(u - c[0]) - hu - cu_, abs(v - c[1]) - hv - cv_) < CASK_CLEAR: return False
+        return True
+    placed = 0
+    used = []
+    groups = list(CELLAR_GROUPS) + (list(CELLAR_GROUPS[:3]) if tiles >= 30 else [])
+    for name, rxs, n in groups:
+        types = [_types(f, rx) for rx in rxs]
+        if not all(types): continue
+        if name in ("steelcrates",) and tiles < 40: continue
+        got = row_from_corner(f, rng, types, n if tiles >= 30 else max(1, n - 1), ok=cask_ok, avoid=used)
+        if got:
+            placed += len(got)
+            used += [f._placed_of[id(o)] for o in got]
+    if placed + len(casks) < 3:                    # nothing fitted: as it was
+        remove(f, [o for o, _, _ in items(f, r"^(LargeBarrel|Barrel|Crate|PiledBarrels|BarrelSteel|BarrelWithTools)")])
+        for t, u, v in keep: restore(f, t, u, v)
+
+
+def row_from_corner(f, rng, types, n, ok=None, avoid=(), sides=None):
+    """A row of up to `n` pieces of `types` side by side against a wall, from the end of a free stretch at a room corner
+    (the corner farthest from the doors first), touching, mixed within the kind. Returns the pieces."""
+    cands = []
+    doors = f.g.doors or [f.g.centroid]
+    for r in f.g.runs:
+        if sides and r["side"] not in sides: continue
+        for a0, a1 in free_stretches(f, r):
+            for end, a in ((0, a0), (1, a1)):
+                at_corner = (a - (r["lo"] + 1.0)) < 0.6 if end == 0 else ((r["hi"] - 1.0) - a) < 0.6
+                if a1 - a0 < 2.0: continue
+                u, v = uv_on(r, 1.0, a)
+                if any(math.hypot(u - x[0], v - x[1]) < 2.2 for x in avoid): continue
+                far = min(math.hypot(u - du, v - dv) for du, dv in doors)
+                cands.append((min(far, 8) + (4 if at_corner else 0) + (2.5 if r["side"] in BACK else 0) +
+                              rng.uniform(0, 1), r, end, a0, a1))
+    for _, r, end, a0, a1 in sorted(cands, key=lambda c: -c[0]):
+        got = []
+        a = a0 + 0.15 if end == 0 else a1 - 0.15
+        step = 1 if end == 0 else -1
+        for k in range(n):
+            pool = types[k % len(types)] if types and isinstance(types[0], (list, tuple)) else types
+            t0 = rng.choice(pool)
+            t = t0
+            h = f.half(t0)
+            if abs(h[0] - h[1]) > 0.05:                 # a long piece lies along its wall
+                t = next((x for x in pool if (f.half(x)[1] >= f.half(x)[0]) == (r["line"] == "/")), t0)
+            ha, hp = halves_on(r, (0, 0) + f.half(t))
+            c = a + step * ha
+            if not (a0 - 0.05 <= c - ha and c + ha <= a1 + 0.05): break
+            u, v = uv_on(r, hp + 0.25, c)
+            if ok and not ok(t, u, v): break
+            o = f.try_put(t, u, v, snug=True, touch=True)
+            if not o:
+                if os.environ.get("NOX_FINISH_DEBUG"):
+                    hu, hv = f.half(t)
+                    print("row stop", t, len(got), f.g.fits(u, v, hu, hv, True, False, 0.1, True), dict(f.kb_refused))
+                break
+            got.append(o)
+            a = c + step * (ha + 0.05)
+        if len(got) >= min(2, n): return got
+        remove(f, got)
+    return []
+
+
 # ---- dispatch ------------------------------------------------------------------------------------------------------
-PASSES = {"bedroom": _bedroom, "barracks": _barracks, "ogre_den": _ogre_den, "cell": _cell, "ogre_pen": _ogre_pen}
+PASSES = {"bedroom": _bedroom, "barracks": _barracks, "ogre_den": _ogre_den, "cell": _cell, "ogre_pen": _ogre_pen,
+          "cellar": _cellar}
 COMPOSERS = {}
 
 
