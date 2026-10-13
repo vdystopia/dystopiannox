@@ -113,7 +113,15 @@ def plan(m, identity, wall_of, floor_of, seed=SEED, regions=None, furnish_seed=N
         if (RIVER_E_END[0] - C_[0]) * fu + (RIVER_E_END[1] - C_[1]) * fv < 0: fu, fv = -fu, -fv   # toward the east end
         pts += [(C_[0] - 16 * fu, C_[1] - 16 * fv), C_, (C_[0] + 16 * fu, C_[1] + 16 * fv)]
     pts += [(POOL[0] - 30, POOL[1]), POOL, (POOL[0] + 30, POOL[1]), RIVER_E_END]
-    land.reserve_band(pts, 3.6)
+    # (the band reserved round the river where it lay before QA round 1 snapped the crossings onto the tiles, so the
+    # land and the thickets carved round it stay as they were)
+    band = [RIVER_W_END]
+    for cr in (cross_mill, cross_town):
+        C0, C_ = cr["uv0"], cr["uv"]
+        fu, fv = cr["flow"]
+        if (RIVER_E_END[0] - C_[0]) * fu + (RIVER_E_END[1] - C_[1]) * fv < 0: fu, fv = -fu, -fv
+        band += [(C0[0] - 16 * fu, C0[1] - 16 * fv), C0, (C0[0] + 16 * fu, C0[1] + 16 * fv)]
+    land.reserve_band(band + pts[len(band):], 3.6)
     land.reserve_band([POOL], LAKE_R * 1.35 + 1.5)
     P.river, P.crossings = pts, (cross_town, cross_mill)
 
@@ -192,8 +200,7 @@ def plan(m, identity, wall_of, floor_of, seed=SEED, regions=None, furnish_seed=N
     for length_, beyond_ in ((2, 3), (1, 2)):
         d_ = ww.dock(lake, "best", length=length_, beyond=beyond_, near=(2 * docks_c[0], 2 * docks_c[1]))
         if d_:
-            du_, dv_ = d_["start"]
-            land.connect(m, px_square((du_ + dv_) / 2 * CELL, (du_ - dv_) / 2 * CELL))
+            land.connect_dock(m, d_)          # a path straight onto the dock (QA round 1)
             docks.append(d_)
     for c in list(ww.no_walls): land.taken.add(cell_square(*c))
 

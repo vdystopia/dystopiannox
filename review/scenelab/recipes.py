@@ -354,7 +354,7 @@ def _pond_build(ctx):
         if dock and pcs:
             p.notes.update(anchor=_mean(pcs), kit=dock["kind"])
             du, dv = dock["start"]
-            land.connect(m, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23))
+            land.connect_dock(m, dock)                 # a path straight onto the dock (QA round 1, DK-12, DK-19)
             # a bank to reach it with no tree on it (the blind judge, 2026-10-06: "the root jammed against the tree line")
             _keep(ctx, px_square((du + dv) / 2 * 23, (du - dv) / 2 * 23), 5)
             # more docks along the town's shore (Con05A: three), each its own landing and walk
@@ -367,7 +367,7 @@ def _pond_build(ctx):
                                    dv + p.rng.uniform(6, 16) * (1 if q % 2 else -1)))
                 if not d2: continue
                 eu, ev = d2["start"]
-                land.connect(m, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23))
+                land.connect_dock(m, d2)
                 _keep(ctx, px_square((eu + ev) / 2 * 23, (eu - ev) / 2 * 23), 5)
             # a fisher at work on the first dock's landing, looking out over the water
             x_, y_ = (du + dv) / 2 * 23, (du - dv) / 2 * 23
@@ -383,7 +383,7 @@ def _pond_build(ctx):
                         _person(ctx, FISHERS[p.k % len(FISHERS)], fx_, fy_, tip, f"Fisher{p.k}")
                         break
         else:
-            ctx["log"](f"  plot {p.k + 1}: no room for the dock")
+            ctx["log"](f"  plot {p.k + 1}: no room for the dock ({dict(ww.rejects)})")
             (ci, cj), _ = p.pond
             p.notes["anchor"] = list(square_px(ci, cj))
     for c in list(ww.no_walls): land.taken.add(cell_square(*c))

@@ -306,7 +306,13 @@ def generate(scene, n=10, seed=1, out_dir=None, name="SceneLab", log=print):
     if ctx.get("ww"): ctx["ww"].finish()
     plant(m, rng, land, plots, set(ctx.get("keep", ())))
     if rec.get("after_plant"): rec["after_plant"](ctx)  # the catalogue's scenes are dressed last, as in a map
-    m.obj_px("PlayerStart", *square_px(plots[0].c[0], plots[0].c[1] - plots[0].r + 2))
+    # the start on dry land near the first clearing's edge (a lake filling it had put the player in the water, walled in
+    # by its shore since QA round 1's shore walls)
+    s0 = (plots[0].c[0], plots[0].c[1] - plots[0].r + 2)
+    wet = lambda s: "Water" in m.floor.get(square_tile(*s), "Water")
+    dry = [s for s in land.squares if not any(wet((s[0] + a, s[1] + b)) for a in (-1, 0, 1) for b in (-1, 0, 1))]
+    s0 = min(dry, key=lambda s: ((s[0] + 0.5 - s0[0]) ** 2 + (s[1] - 0.5 - s0[1]) ** 2, s)) if dry else s0
+    m.obj_px("PlayerStart", *square_px(s0[0] + 0.5, s0[1] - 0.5))
     if ctx.get("pop"): m.scripts.update(ctx["pop"].behaviours.files(m.d["name"]))
     lines = m.build(out_dir, check=False)
     bad = [l for l in lines if l.startswith("ERROR")]

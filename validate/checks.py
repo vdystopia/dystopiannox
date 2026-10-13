@@ -509,9 +509,46 @@ def outdoor_on_floors(m):
     return out
 
 
-def check_thresholds(m, ctx, base):
-    """No outdoor ground lies on a room's floor, nor blends onto it (outdoor_on_floors)."""
+DOOR_GROUND = re.compile(r"Grass|Dirt|Sand|Weeds|RoughCobble|Mud|Leaves")
+
+
+def doorsteps(m):
+    """Exterior doors whose doorstep carries the room's floor (QA round 1, Brackwater nox1 and nox16: "The ground tiling
+    immediately outside of the door ... is off, and this is a recurring theme in the entryway of many buildings": a mat of
+    the room's boards or flagstones two tiles to one side of the door, hard-edged on the grass). A door with ground three
+    cells out on one side and a room's floor on the other; the doorstep is the tiles covering the door's cell and the
+    next one out that lie wholly outside the wall line. Westwood's campaign doors: 33 of 475 such tiles on a NW-SE wall,
+    107 of 717 on a / wall carry the room's floor. [(door object, tiles)]."""
+    cov = lambda c: [t for t in ((c[0], c[1]), (c[0] - 1, c[1] - 1), (c[0] - 1, c[1]), (c[0], c[1] - 1)) if t in m.tiles]
+    cells = lambda t: ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
     out = []
+    for d in m.doors:
+        g = d["gap"]
+        p = (1, -1) if d["line"] == "\\" else (1, 1)
+        sides = [[m.tiles[t]["material"] for t in cov((g[0] + 3 * s_ * p[0], g[1] + 3 * s_ * p[1]))] for s_ in (1, -1)]
+        gr = [bool(x) and all(DOOR_GROUND.search(k) for k in x) for x in sides]
+        if gr[0] == gr[1]: continue
+        o = p if gr[0] else (-p[0], -p[1])
+        inside = [k for k in (sides[1] if gr[0] else sides[0]) if not DOOR_GROUND.search(k)]
+        if not inside: continue
+        bad = []
+        for k in (0, 1):
+            for t in cov((g[0] + k * o[0], g[1] + k * o[1])):
+                if min((cx - g[0]) * o[0] + (cy - g[1]) * o[1] for cx, cy in cells(t)) >= 0 and                         m.tiles[t]["material"] == inside[0] and t not in bad:
+                    bad.append(t)
+        # two or more: a patch of the room's floor (a single tile is Westwood's at 35 of 107 campaign maps; a patch at 15)
+        if len(bad) >= 2: out.append((d["obj"], bad))
+    return out
+
+
+def check_thresholds(m, ctx, base):
+    """No outdoor ground lies on a room's floor, nor blends onto it (outdoor_on_floors); the ground runs up to an
+    exterior door, the room's floor stops at the wall line (doorsteps)."""
+    out = []
+    for o, ts in doorsteps(m):
+        out.append(F("floors", "warning", f"The room's floor runs out onto the doorstep of the {o['type']} ({len(ts)} "
+                     f"tile(s) outside the wall line): the ground runs up to the door, as at Westwood's doors.",
+                     o["x"], o["y"]))
     for t, mat, how in outdoor_on_floors(m):
         out.append(F("floors", "warning", f"The outdoor {mat} {'lies on' if how == 'floor' else 'blends onto'} a room's "
                      f"floor: a doorway's ground stops at the wall line (Westwood's doorstep takes the room's floor).",
@@ -580,6 +617,48 @@ def edge_between(m, a, b):
     return any(e[0] == tb["material"] for e in ta["edges"]) or any(e[0] == ta["material"] for e in tb["edges"])
 
 
+PATCH_GROUND = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor|Cave|Mud|Swamp|Leaves|Gravel|RoughCobble|Snow")
+PATCH_SKIP = re.compile(r"Water|Lava|^Black$|^WoodSlat|^WoodDark|^WoodGray|^Rug")
+
+
+def hard_patches(m):
+    """Patches of floor laid with hard edges in a floor that surrounds them (QA round 1: "Unblended ground northeast of
+    the fire" in the ogre camps; nox18, "The tiling underneath the bar is not blended with the tiling surrounding it"):
+    a patch of 2-40 tiles of one floor inside one other floor, three quarters or more of its sides with no edge piece
+    (seams at a wall left out), where both floors are outdoor ground or the patch lies in a room the design declared.
+    Westwood's campaign maps: 14 of 107 have a ground patch so (65 of 107 any patch, their mosaics and rugs: a house rule,
+    the user's word). [(tile, patch material, surrounding material, size)]."""
+    seams = seams_at_walls(m)
+    rooms = declared_rooms(m)
+    seen, out = set(), []
+    for st, rec in m.tiles.items():
+        if st in seen or PATCH_SKIP.search(rec["material"]): continue
+        mat = rec["material"]; comp = {st}; q = [st]
+        while q:
+            a = q.pop()
+            for d in ((1, 1), (-1, -1), (1, -1), (-1, 1)):
+                n = (a[0] + d[0], a[1] + d[1])
+                if n not in comp and n in m.tiles and m.tiles[n]["material"] == mat: comp.add(n); q.append(n)
+        seen |= comp
+        if not 2 <= len(comp) <= 40: continue
+        border, hard, tot = collections.Counter(), 0, 0
+        for a in comp:
+            for d in ((1, 1), (-1, -1), (1, -1), (-1, 1)):
+                n = (a[0] + d[0], a[1] + d[1])
+                if n in comp or n not in m.tiles: continue
+                shared = (a[0] + max(d[0], 0), a[1] + max(d[1], 0))
+                if shared in m.walls and m.walls[shared].opaque: continue
+                if (a, n) in seams or (n, a) in seams: continue
+                border[m.tiles[n]["material"]] += 1; tot += 1
+                if not edge_between(m, a, n): hard += 1
+        if tot < 4 or len(border) != 1 or hard / tot < 0.75: continue
+        other = next(iter(border))
+        if PATCH_SKIP.search(other): continue
+        if (PATCH_GROUND.search(mat) and PATCH_GROUND.search(other)) or any(t in rooms for t in comp):
+            out.append((min(comp), mat, other, len(comp)))
+    return out
+
+
 def check_floors(m, ctx, base):
     fl = rules("floors")
     never = {frozenset((r["a"], r["b"])) for r in fl["never_touch"]}
@@ -616,6 +695,10 @@ def check_floors(m, ctx, base):
         for g in clusters(cells, 3):
             out.append(F("floors", "warning", f"Hard seam between {' and '.join(sorted(pair))} ({len(g)} tile sides): "
                          f"Westwood blends this pair with edge pieces.", *centre(g)))
+    for t, mat, other, n in hard_patches(m):
+        out.append(F("floors", "warning", f"A patch of {mat} ({n} tiles) lies in the {other} with hard edges: blend a "
+                     f"floor patch into the floor round it (nox.Spec._ground_blend, shells.blend_pattern).",
+                     (t[0] + 1) * CELL, (t[1] + 1) * CELL))
     tot, bad = sum(contacts.values()), sum(len(v) for v in harsh.values())
     lim = base.get("unblended_share_p95", 0.055)
     if tot >= 20 and bad / tot > lim:
@@ -1934,6 +2017,259 @@ def dock_reach(m):
     return out
 
 
+# ---- water: banks, wading, crossings and docks (QA round 1, 2026-10-12) --------------------------------------------------
+SIDE4 = ((1, 1), (-1, -1), (1, -1), (-1, 1))          # a tile's four side neighbours (S, N, E, W)
+PATH_RE = re.compile(r"^(Dirt|RoughCobble|Cobble|BrokenCobble)")
+DECK_RE = re.compile(r"^(WoodSlatFloor|WoodDark|WoodGray)")      # plank decks, rope-bridge and dock floor strips
+WADE_MIN = 3           # cells out in the water a player reaches in one place before it is a way in (calibrated on Westwood)
+# fingers per shore tile over which a map's banks read as ragged: Westwood's campaign maps with water (49) p50 0.019, p75
+# 0.055, p90 0.110; the user's word (QA round 1) holds ours to the p75
+FINGER_P90 = 0.055
+
+
+def _uv(t): return t[0] + t[1] + 2, t[0] - t[1]
+
+
+def _tile_uv(U, V):
+    return (U - 2 + V) // 2, (U - 2 - V) // 2
+
+
+def _water(m):
+    return {t for t, d in m.tiles.items() if WATER_RE.search(d["material"])}
+
+
+def bank_fingers(m):
+    """[(tile, 'bank'|'water')]: the "little fingers sticking out into the river" of QA round 1 (Brackwater, nox3): a tile
+    of bank with water on three or four of its sides, or a tile of water with bank on three or four (the tip of a spit).
+    Bridge decks, dock strips and the void are left out (a deck crosses the water on purpose; a ford is bank with water
+    on two opposite sides, not a finger)."""
+    water = _water(m)
+    if not water: return []
+    land = lambda t: t in m.tiles and t not in water and not DECK_RE.match(m.tiles[t]["material"]) and \
+        m.tiles[t]["material"] not in md.VOID_FLOORS
+    out = []
+    for t in {(x + a, y + b) for x, y in water for a, b in SIDE4} - water:
+        if land(t) and sum((t[0] + a, t[1] + b) in water for a, b in SIDE4) >= 3: out.append((t, "bank"))
+    for t in water:
+        if sum(land((t[0] + a, t[1] + b)) for a, b in SIDE4) >= 3: out.append((t, "water"))
+    return out
+
+
+def shore_tiles(m):
+    water = _water(m)
+    return len({(x + a, y + b) for x, y in water for a, b in SIDE4} - water)
+
+
+def wading(m, ctx):
+    """Clusters of floor cells wholly over water that a player can walk to from the start (QA round 1, nox4: "The player
+    can walk on water"). A cell is over water when every tile covering it is water."""
+    water = _water(m)
+    if not water or not ctx.starts: return []
+    def over(c):
+        x, y = c
+        ts = [t for t in ((x, y), (x - 1, y - 1), (x - 1, y), (x, y - 1)) if t in m.tiles]
+        return bool(ts) and all(t in water for t in ts)
+    # out in the water, not at its edge: every cell round it over water too (the shore's invisible walls stand on the
+    # water's edge tiles, Westwood's as ours, so a player may put a foot on a bank's last half tile)
+    cells = [c for c in ctx.walk if over(c) and all(over((c[0] + a, c[1] + b)) for a in (-1, 0, 1) for b in (-1, 0, 1))]
+    return [g for g in clusters(cells, 2) if len(g) >= WADE_MIN]
+
+
+def _decks(m):
+    """Bridge decks over water as tile sets: plank decks (WoodSlatFloor touching water) and the floor strips under rope
+    bridges (the WoodDark tiles round a RopeBridge chain). [(kind, tiles)]."""
+    water = _water(m)
+    out = []
+    planks = {t for t, d in m.tiles.items() if PLANK.match(d["material"])}
+    seen = set()
+    for st in sorted(planks):
+        if st in seen: continue
+        comp, q = {st}, [st]
+        while q:
+            a = q.pop()
+            for dx, dy in SIDE4:
+                n = (a[0] + dx, a[1] + dy)
+                if n in planks and n not in comp: comp.add(n); q.append(n)
+        seen |= comp
+        if sum(any((t[0] + a, t[1] + b) in water for a, b in SIDE4) for t in comp) >= 3: out.append(("plank", comp))
+    left = [o for o in m.objects if re.match(r"^RopeBridge[12]", o["type"]) and "Back" not in o["type"]]
+    while left:
+        ch = [left.pop()]; grew = True
+        while grew:
+            grew = False
+            for o in list(left):
+                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < 120 for c in ch):
+                    ch.append(o); left.remove(o); grew = True
+        if len(ch) < 3: continue
+        strip = set()
+        for o in ch:
+            cx, cy = m.cell_of(o["x"], o["y"])
+            for a in range(-3, 4):
+                for b in range(-3, 4):
+                    t = (cx + a, cy + b)
+                    if t in m.tiles and m.tiles[t]["material"].startswith("WoodDark"): strip.add(t)
+        if len(strip) >= 4: out.append(("rope", strip))
+    return out
+
+
+def crossing_faults(m):
+    """A bridge and its road (QA round 1, the bridges: "the path should be the same width as the bridge or wider. The
+    path must be lined up more consistently with the bridge"; "It also extends farther to the southeast bank than it
+    does to the northwest bank"): [(x, y, fault)]. At each end of a deck with a road running onto it, the road's rows
+    (path tiles one and two tiles beyond the end) cover the deck's rows and share its centre line within half a tile;
+    a deck reaches as far onto one bank as onto the other within a tile."""
+    water = _water(m)
+    path = lambda t: t in m.tiles and PATH_RE.match(m.tiles[t]["material"])
+    px_of = lambda U, V: ((U + V) / 2 * CELL, (U - V) / 2 * CELL)
+    out = []
+    for kind, comp in _decks(m):
+        uv = [_uv(t) for t in comp]
+        us, vs = [u for u, _ in uv], [v for _, v in uv]
+        axis_u = (max(us) - min(us)) >= (max(vs) - min(vs))
+        along = us if axis_u else vs
+        rows = sorted(set(vs if axis_u else us))
+        if len(rows) > 4: continue
+        a0, a1 = min(along), max(along)
+        mid_r = sum(rows) / len(rows)
+        tile = (lambda a, r: _tile_uv(a, r)) if axis_u else (lambda a, r: _tile_uv(r, a))
+        at = (lambda a, r: px_of(a, r)) if axis_u else (lambda a, r: px_of(r, a))
+        r0 = int(mid_r) - 10
+        r0 -= r0 % 2
+        for end, step in ((a0, -2), (a1, 2)):
+            q = [r for r in range(r0, int(mid_r) + 12, 2) if path(tile(end + step, r)) and path(tile(end + 2 * step, r))]
+            if not q: continue
+            runs, cur = [], [q[0]]
+            for r in q[1:]:
+                if r == cur[-1] + 2: cur.append(r)
+                else: runs.append(cur); cur = [r]
+            runs.append(cur)
+            run = min(runs, key=lambda rr: min(abs(r - mid_r) for r in rr))
+            ex, ey = at(end + step, mid_r)
+            if not set(rows) <= set(run):
+                out.append((ex, ey, f"The road meeting the {kind} bridge is narrower than the bridge ({len(run)} rows "
+                                    f"against its {len(rows)}): a road runs onto a bridge at its width or wider."))
+            elif abs(sum(run) / len(run) - mid_r) > 1.01:
+                out.append((ex, ey, f"The road meets the {kind} bridge {abs(sum(run) / len(run) - mid_r) / 2:.1f} tiles "
+                                    f"off its centre line: line the road up with the bridge."))
+        # how far the deck reaches onto each bank: the water beside it, in the rows next to its own
+        reach = []
+        b0 = int(a0) - 6
+        b0 -= b0 % 2
+        for r in (min(rows) - 2, max(rows) + 2):
+            wet = [a for a in range(b0, int(a1) + 8, 2) if tile(a, r) in water]
+            if wet: reach.append((min(wet) - a0, a1 - max(wet)))
+        if reach:
+            lo, hi = sum(r[0] for r in reach) / len(reach), sum(r[1] for r in reach) / len(reach)
+            if abs(lo - hi) > 2.01:
+                x, y = at((a0 + a1) / 2, mid_r)
+                out.append((x, y, f"The {kind} bridge reaches {abs(lo - hi) / 2:.1f} tiles farther onto one bank than "
+                                  f"the other: centre it across the stream."))
+    return out
+
+
+def dock_faults(m):
+    """Docks on their pond (QA round 1, the docks): one to a pond, a second only on a lake of 1200 tiles or more; no
+    longer than a third of the pond along its line; centred, open water even to either side; never out of a wall (the
+    map's edge or the forest). [(x, y, fault)]."""
+    water = _water(m)
+    if not water: return []
+    wet = water | {t for t, d in m.tiles.items() if re.match(r"^WoodGray2?$", d["material"])}
+    body_of, bodies = {}, []
+    for st in sorted(wet):
+        if st in body_of: continue
+        comp, q = {st}, [st]
+        body_of[st] = len(bodies)
+        while q:
+            a = q.pop()
+            for dx, dy in SIDE4:
+                n = (a[0] + dx, a[1] + dy)
+                if n in wet and n not in body_of: body_of[n] = len(bodies); comp.add(n); q.append(n)
+        bodies.append(comp)
+    pieces = collections.defaultdict(list)
+    for o in m.objects:
+        mt = re.match(r"^(DockDown|DockUp)", o["type"])
+        if mt: pieces[mt.group(1)].append(o)
+    tile_at = lambda x, y: m.tile_at_cell(m.cell_of(x, y))
+    per_body, out = collections.defaultdict(list), []
+    for kit, ps in sorted(pieces.items()):
+        left = list(ps)
+        while left:
+            ch = [left.pop()]; grew = True
+            while grew:
+                grew = False
+                for o in list(left):
+                    if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < 120 for c in ch):
+                        ch.append(o); left.remove(o); grew = True
+            dx, dy = DOCK_DIR[kit]; L = math.hypot(dx, dy); ux, uy = dx / L, dy / L
+            root = min(ch, key=lambda o: o["x"] * ux + o["y"] * uy)
+            tip = max(ch, key=lambda o: o["x"] * ux + o["y"] * uy)
+            b = next((body_of[t] for f in (1.0, 0.75, 0.5, 0.25) for t in [tile_at(root["x"] + (tip["x"] - root["x"]) * f,
+                                                                             root["y"] + (tip["y"] - root["y"]) * f)]
+                      if t in body_of), None)                  # the pond under it (a dock longer than its pond ends ashore)
+            if b is None: continue
+            per_body[b].append((root, tip))
+            length = math.hypot(tip["x"] - root["x"], tip["y"] - root["y"]) + 40       # the end pieces' own reach
+            k = 1                    # the pond on the dock's line: from the root out to the far bank, 16 px a step
+            while k < 400 and (16 * k <= length or tile_at(root["x"] + ux * 16 * k, root["y"] + uy * 16 * k) in wet):
+                k += 1
+            span = 16 * k
+            if length > span / 3 + 33:
+                out.append((tip["x"], tip["y"], f"The {kit} dock is {length / 33:.1f} tiles long on a pond {span / 33:.1f} "
+                                                f"tiles across its line: a dock reaches a third of the way at most."))
+            # the open water to either side of the dock's middle, tile by tile across it (as Waterworks._shore_start
+            # reads it), past the dock's own deck strip
+            side = ((1, -1), (-1, 1)) if kit == "DockDown" else ((1, 1), (-1, -1))
+            def across(t0, sd):
+                t, k_ = t0, 0
+                while k_ < 8 and (t[0] + sd[0], t[1] + sd[1]) in wet - water: t = (t[0] + sd[0], t[1] + sd[1]); k_ += 1
+                n_ = 0
+                while n_ < 60 and (t[0] + sd[0], t[1] + sd[1]) in water: t = (t[0] + sd[0], t[1] + sd[1]); n_ += 1
+                return n_
+            mx, my = (root["x"] + tip["x"]) / 2, (root["y"] + tip["y"]) / 2
+            t0 = tile_at(mx, my)
+            l_, r_ = (across(t0, side[0]), across(t0, side[1])) if t0 else (0, 0)
+            if abs(l_ - r_) / max(1, l_ + r_) > 0.5 and min(l_, r_) < 6:
+                out.append((mx, my, f"The {kit} dock runs close along one bank ({min(l_, r_)} tiles of water on one "
+                                    f"side, {max(l_, r_)} on the other): set it out toward the middle of the pond."))
+            rc = m.cell_of(root["x"] - ux * 23, root["y"] - uy * 23)
+            if any((rc[0] + a, rc[1] + b_) in m.walls and m.walls[(rc[0] + a, rc[1] + b_)].opaque
+                   for a in range(-3, 4) for b_ in range(-3, 4)):
+                out.append((root["x"], root["y"], f"The {kit} dock starts against a wall (the map's edge or the forest): a "
+                                                  f"dock leaves an open bank."))
+    for b, ds in per_body.items():
+        allowed = 1 + (len(bodies[b]) >= 1200) + (len(bodies[b]) >= 2400)
+        if len(ds) > allowed:
+            r, t = ds[-1]
+            out.append((t["x"], t["y"], f"{len(ds)} docks on one pond of {len(bodies[b])} tiles: one dock to a pond, a "
+                                        f"second only on a very large lake."))
+    return out
+
+
+def check_water(m, ctx, base):
+    """Water as QA round 1 read it (2026-10-12): banks without fingers, water a player cannot walk on, bridges whose road
+    runs straight onto them at their width and that reach evenly onto both banks, docks one to a pond, short, centred
+    and off an open bank."""
+    out = []
+    for g in wading(m, ctx):
+        out.append(F("water", "error", f"The player can walk on the water here ({len(g)} cells): the shore needs its "
+                     f"invisible walls (Waterworks.finish).", *centre(g)))
+    fingers = bank_fingers(m)
+    if fingers:
+        share = len(fingers) / max(1, shore_tiles(m))
+        lim = base.get("bank_fingers_p90", FINGER_P90)
+        if share > lim and len(fingers) >= 4:
+            for g in sorted(clusters([t for t, _ in fingers], 4), key=len, reverse=True)[:12]:
+                x, y = centre(g)
+                out.append(F("water", "warning", f"A ragged bank: {len(g)} tile(s) of bank or water sticking out as fingers "
+                             f"({share:.0%} of the map's shore; Westwood's maps: {lim:.0%} at most). Smooth the shore "
+                             f"(Waterworks._smooth).", x + CELL, y + CELL))
+    for x, y, msg in crossing_faults(m):
+        out.append(F("water", "warning", msg, x, y))
+    for x, y, msg in dock_faults(m):
+        out.append(F("water", "warning", msg, x, y))
+    return out
+
+
 # ---- the minimap (TW-5, GW-3) -----------------------------------------------------------------------------------------
 MAP_EDGE = 5888.0
 
@@ -2541,6 +2877,8 @@ RULES = [
     ("story.gate", "story", r"story's gates locked", ""),
     ("doorways.blocked", "doorways", r"blocks the doorway", ""),
     ("floors.threshold", "floors", r"^The outdoor .* a room's", "SW-4"),
+    ("floors.doorstep", "floors", r"runs out onto the doorstep", "Q1W-13"),
+    ("floors.hard_patch", "floors", r"^A patch of .* with hard edges", "Q1W-14"),
     ("floors.never_touch", "floors", r"touch directly", "MF-3"),
     ("floors.hard_seam", "floors", r"^Hard seam", "DV3-2"),
     ("floors.unblended", "floors", r"of floor seams that Westwood blends", "DV3-2"),
@@ -2625,6 +2963,15 @@ RULES = [
     ("exterior.bedroll", "exterior", r"lies alone in the open", "GW-4 SW-1"),
     ("exterior.pile", "exterior", r"heaped with nothing else", "GW-2"),
     ("exterior.graveyard", "exterior", r"The graveyard holds", "SW-9"),
+    ("water.wade", "water", r"can walk on the water", "Q1W-12"),
+    ("water.finger", "water", r"^A ragged bank", "Q1W-11"),
+    ("water.bridge_narrow", "water", r"is narrower than the bridge", "Q1W-1"),
+    ("water.bridge_off", "water", r"off its centre line", "Q1W-1"),
+    ("water.bridge_even", "water", r"farther onto one bank", "Q1W-2"),
+    ("water.dock_long", "water", r"a third of the way at most", "Q1W-6"),
+    ("water.dock_side", "water", r"runs close along one bank", "Q1W-7"),
+    ("water.dock_wall", "water", r"dock starts against a wall", "Q1W-9"),
+    ("water.dock_count", "water", r"docks on one pond", "Q1W-5"),
     ("transport.link", "transport", r"it moves nobody", "TR-1"),
     ("transport.landing", "transport", r"lands the player.* lies (in the void|in a wall|on a )", "TR-1"),
     ("transport.wall", "transport", r"lands the player.* px from a wall", "TR-1"),
@@ -2649,7 +2996,7 @@ def rule_of(f):
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
-       check_transport]
+       check_transport, check_water]
 
 
 def run_all(m, base, only=None):

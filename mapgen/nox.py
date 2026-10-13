@@ -8,7 +8,7 @@ Grid facts (verified against stock maps, the editor, and the engine):
 - Wall facing is derived from which diagonal neighbours are walls (see FACING_BY_ARMS).
 - Objects, waypoints and polygons use world pixels: 23 px per grid cell.
 """
-import json, os, random, re, subprocess, sys, tempfile
+import collections, json, os, random, re, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(os.path.dirname(HERE), "rules", "out")
@@ -460,6 +460,7 @@ class Spec:
         self._wall_line_floors()
         self._door_thresholds()
         for _ in range(3): self._buffer_never_touch()      # a buffer tile can meet a new pair (weeds by the water)
+        self._ground_blend()
         self._blend_thresholds()
         # the walls no edge is drawn across [TW-12], all but the iron fences, across which floors blend [FN-1]
         hard = {(w["x"], w["y"]): w["facing"] for w in walls
@@ -548,8 +549,20 @@ class Spec:
         So for each door between a room's floor (`indoor`) and the ground: the tiles covering the opening or the cell
         straight out from it that lie wholly outside the wall line take the room's floor (the doorstep: two tiles in a
         NW-SE (backslash) wall, where the floor tiles sit on the wall line; one in a NE-SW (/) wall, where they straddle it) and
-        let the ground spill onto them; the tiles that reach inside take no outdoor edge at all (`sheltered`)."""
+        let the ground spill onto them; the tiles that reach inside take no outdoor edge at all (`sheltered`).
+
+        QA round 1 (2026-10-12, Brackwater, nox1 and nox16: "The ground tiling immediately outside of the door ... is off,
+        and this is a recurring theme in the entryway of many buildings"): the doorstep patch read as a mat of boards or
+        flagstones stuck on the grass, two tiles to one side of the door with hard edges. Measured again on the
+        campaign's exterior doors (every door with ground three cells out on one side and a room's floor on the other):
+        the tiles wholly outside the wall line carry the room's floor at 33 of 475 doorstep tiles on a \\ wall and 107
+        of 717 on a / wall; the ground runs right up to the door. So the doorstep now keeps the outdoor ground (the
+        door's path reaches the door); only a tile that reaches into the room takes the room's floor, sheltered from the
+        ground's edges, and on a \\ wall line the tile under the door follows the wall line [TW-12]: the floor in front of
+        the wall, the ground on a room's SW wall (Westwood's straddling tiles: ground or a third floor 300, the room's
+        148). `doorstep_floor = True` restores the old doorstep."""
         if getattr(self, "raw_floors", False) or not self.indoor: return
+        if not getattr(self, "doorstep_floor", False): return self._door_ground()
         def covering(c):
             return [t for t in ((c[0], c[1]), (c[0] - 1, c[1] - 1), (c[0] - 1, c[1]), (c[0], c[1] - 1)) if t in self.floor]
         def cells(t):
@@ -578,6 +591,95 @@ class Spec:
                     elif t not in self.indoor and self._may_take(t, floor):
                         self.floor[t] = floor
                         if floor not in self.blend: self.local_blend[t] = -50
+
+    def _door_ground(self):
+        """The doorway as Westwood draws it (QA round 1, _door_thresholds): the outdoor ground runs up to the door. For
+        each door between a room's floor (`indoor`) and the ground: the tiles wholly outside the wall line keep the
+        ground (a doorstep the wall-line pass gave the room's floor gets the ground back); a tile that reaches into the
+        room takes the room's floor and no outdoor edge (`sheltered`), except a \\ wall line's tile with the ground in
+        front of it (a door in a room's SW wall), which takes the ground as the rest of that wall line does [TW-12]."""
+        def covering(c):
+            return [t for t in ((c[0], c[1]), (c[0] - 1, c[1] - 1), (c[0] - 1, c[1]), (c[0], c[1] - 1)) if t in self.floor]
+        def cells(t):
+            return ((t[0], t[1]), (t[0] + 1, t[1]), (t[0], t[1] + 1), (t[0] + 1, t[1] + 1))
+        for g in sorted(self.door_gaps):
+            along = {(1, 1), (-1, -1)}
+            ln = "\\" if any((g[0] + a, g[1] + b) in self.wallmap or (g[0] + a, g[1] + b) in self.door_gaps
+                              for a, b in along) else "/"
+            p = (1, -1) if ln == "\\" else (1, 1)
+            sides = []
+            for sgn in (1, -1):
+                ts = covering((g[0] + 3 * sgn * p[0], g[1] + 3 * sgn * p[1]))
+                sides.append((any(t in self.indoor for t in ts), ts))
+            if sides[0][0] == sides[1][0]: continue                         # between two rooms, or two yards (a gate)
+            o = p if sides[1][0] else (-p[0], -p[1])                       # toward the outside
+            inside = next(t for t in sides[0 if sides[0][0] else 1][1] if t in self.indoor)
+            floor = self.indoor[inside]                  # the room's own floor (a carpet stops inside the door)
+            out = collections.Counter(self.floor[t] for k in (2, 3) for t in covering((g[0] + k * o[0], g[1] + k * o[1]))
+                                      if t not in self.indoor and self.floor[t] != floor)
+            # the door's path where it comes up to the door (Land.connect_door lays it from the doorstep out), else the
+            # ground round the door
+            paths = [m for m, _ in out.most_common() if re.match(r"Dirt|RoughCobble|Cobble", m)]
+            ground = paths[0] if paths else out.most_common(1)[0][0] if out else None
+            front_out = o == (-1, 1)                     # a \\ wall with the ground below it on screen: a room's SW wall
+            for c in ((g[0] - o[0], g[1] - o[1]), g, (g[0] + o[0], g[1] + o[1])):
+                for t in covering(c):
+                    side = [(cx - g[0]) * o[0] + (cy - g[1]) * o[1] for cx, cy in cells(t)]
+                    if min(side) >= 0:                                     # the doorstep: the ground's
+                        if t not in self.indoor and self.floor[t] == floor and ground: self.floor[t] = ground
+                        continue
+                    if t in self.indoor: self.sheltered.add(t); continue
+                    if max(side) > 0 and front_out and ground:              # the \\ wall line, the ground in front
+                        self.floor[t] = ground
+                        self.local_blend.pop(t, None)
+                        continue
+                    self.sheltered.add(t)                                  # reaches into the room: the room's floor
+                    self.local_blend.pop(t, None)
+                    if self._may_take(t, floor): self.floor[t] = floor
+
+    def _ground_blend(self):
+        """Every outdoor ground blends (QA round 1, the ogre camps: "Unblended ground northeast of the fire", a strip of
+        light dirt laid in a cave's hard dirt with hard edges all round): a ground material laid with no blending
+        registered (a camp's trodden floor, a lab's road in a cave, a biome's own ground) received no edge from anything
+        and spilt none. Each one present gets a priority from Westwood's blend table (rules/out/floors.json): above the
+        blending neighbours Westwood draws it over, below those it lies under, by their contacts; with no record, below
+        every ground (its neighbours spill onto it). Its edge type is the one Westwood draws it with, else BlendEdge.
+        Rooms' floors are left alone (their thresholds: _blend_thresholds)."""
+        if getattr(self, "raw_floors", False): return
+        ground = re.compile(r"Grass|Dirt|Sand|Weeds|Volcanic|IceFloor|Cave|Mud|Swamp|Leaves|Gravel|Rough|Rock|Snow")
+        todo = sorted({m for t, m in self.floor.items() if m not in self.blend and ground.search(m) and t not in self.indoor})
+        if not todo: return
+        recs = {}
+        for r in load_rules("floors")["blend"]:
+            if (r.get("edge_share_sp") or r.get("edge_share_all") or 0) >= 0.5 and r.get("overlay"):
+                recs[frozenset((r["a"], r["b"]))] = r
+        contacts = collections.defaultdict(collections.Counter)
+        for (x, y), a in self.floor.items():
+            for d in ((1, -1), (1, 1)):
+                b = self.floor.get((x + d[0], y + d[1]))
+                if b and b != a:
+                    contacts[a][b] += 1; contacts[b][a] += 1
+        low = min([p for p, _ in self.blend.values()] + [0]) - 1
+        for m in todo:
+            above, below = collections.Counter(), collections.Counter()
+            for n, k in contacts[m].items():
+                if n not in self.blend: continue
+                r = recs.get(frozenset((m, n)))
+                if not r: continue
+                (above if r["overlay"] == m else below)[n] += k
+            if sum(above.values()) > sum(below.values()):
+                prio = max(self.blend[n][0] for n in above) + 0.25
+            elif below:
+                prio = min(self.blend[n][0] for n in below) - 0.25
+            else:
+                prio = low
+            edges = collections.Counter(r.get("preferred_edge_type") for r in recs.values() if r["overlay"] == m and
+                                        r.get("preferred_edge_type"))
+            self.blending(m, prio, edges.most_common(1)[0][0] if edges else "BlendEdge")
+            for n in contacts[m]:
+                r = recs.get(frozenset((m, n)))
+                if r and r.get("preferred_edge_type") and (r["overlay"], n if r["overlay"] == m else m) not in self.edge_over:
+                    self.edge_over[(r["overlay"], n if r["overlay"] == m else m)] = r["preferred_edge_type"]
 
     def _blend_thresholds(self):
         """Where an outdoor ground that blends (a dirt path, grass) meets a building's floor that blends with nothing

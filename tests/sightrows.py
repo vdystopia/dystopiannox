@@ -9,7 +9,7 @@ level forest edge (one running straight across the screen) is a saw whose valley
 hundred pixels above or below, a long one gives 40 or more (Thornwick 2026-10-08 crashed as it loaded). Westwood's
 maps stay under it almost everywhere; mapgen's Land.unlevel_edges breaks such edges into 45-degree bays.
 
-This approximates the client's sight (every wall blocks it, as the forest does; doors and windows are left out) on the
+This approximates the client's sight (every wall that blocks it in the game, as the forest does; invisible walls and fences do not, SEE_THROUGH; doors and windows are left out) on the
 1920x1080 view of the user's map-test launcher, from a point every `step` pixels on the map's floor, and counts each
 row's changes between seen and unseen. It over-counts: measured against the game (the map loaded with its start moved
 to the point, 2026-10-08, Thornwick builds of 10-05 and 10-08) points of 34, 40, 44, 44, 48 and 48 crashed the client;
@@ -31,9 +31,19 @@ HALVES = {0: 1 | 8, 1: 2 | 4, 2: 15, 3: 1 | 2 | 8, 4: 2 | 4 | 8, 5: 1 | 2 | 4, 6
           9: 4 | 8, 10: 1 | 4}
 
 
+# the wall materials whose definition does not block the client's sight (thing.bin WALL flags, bit 1 clear: client/sight.go
+# walks such a wall without making it an edge of the sight), by their index in the game's wall table (the map stores the
+# index): IronFence, MagicWall, InvisibleWallSet, DilapidatedShort, InvisibleBlockingWallSet, OgreCage,
+# InvisibleStoneWallSet, IronFenceDamaged, StuccoLightWoodDamaged, LOTDMagicOrnate, FieldStoneShort,
+# MagicWallSystemUseOnly, AncientRuinShort. Counting the water's invisible shore walls as sight edges had kept them off the
+# rivers (QA sweep 2026-10-09; QA round 1, walking on water).
+SEE_THROUGH = {12, 28, 45, 47, 49, 50, 52, 53, 54, 57, 66, 67, 73}
+
+
 def segments(walls):
     out = []
-    for x, y, d, *_ in walls:
+    for x, y, d, mat, *_ in walls:
+        if mat in SEE_THROUGH: continue
         X, Y = x * G, y * G
         cx, cy = X + 11, Y + 11
         h = HALVES.get(d & 0x7F, 15)
