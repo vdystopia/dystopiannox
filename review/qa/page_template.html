@@ -214,18 +214,39 @@ renderAll();
 (async () => {
   try { db = window.claude && await window.claude.use("db"); } catch (e) { db = null; }
   if (!db) { setStatus("Not connected: ratings will not be saved", true); return; }
+  // Each collection loads once up front, then stays live; a dropped subscription falls back to a
+  // one-off read and resubscribes with backoff, so cards never sit blank while data exists
+  // (round 1 showed the set notes but no ratings after one dropped).
+  const sources = {
+    ratings: { q: () => db.collection("ratings").limit(1000), apply: snap => {
+      for (const d of snap.docs) { ratings[d.id] = d.data(); applyCard(d.id); }
+      renderProgress(); } },
+    typenotes: { q: () => db.collection("typenotes").limit(1000), apply: snap => {
+      for (const d of snap.docs) { typenotes[d.id] = d.data(); const ta = document.getElementById("tn-" + d.id);
+        if (ta && document.activeElement !== ta) ta.value = d.data().note || ""; } } },
+  };
+  const broken = new Set();
+  function okStatus() { if (!broken.size) setStatus(writable ? "Connected" : "View only", !writable); }
+  async function loadOnce(name) {
+    try { sources[name].apply(await sources[name].q().get()); return true; } catch (e) { return false; }
+  }
+  function subscribe(name, attempt = 0) {
+    sources[name].q().onSnapshot(snap => { sources[name].apply(snap); broken.delete(name); okStatus(); }, e => {
+      const code = (e && e.code) || "error";
+      broken.add(name);
+      if (code === "revoked" || code === "invalid_argument") { setStatus("Live updates stopped (" + code + "), reload the page", true); return; }
+      setStatus("Reconnecting " + name + " (" + code + ")...", true);
+      loadOnce(name);
+      setTimeout(() => subscribe(name, attempt + 1), Math.min(30000, 2000 * 2 ** attempt) + Math.random() * 1000);
+    });
+  }
+  setStatus("Loading...");
+  await Promise.all(Object.keys(sources).map(loadOnce));
+  for (const name of Object.keys(sources)) subscribe(name);
   try {
     const user = await window.claude.use("user");
-    if (user && user.can) { const w = await user.can("data.write"); if (w === false) { writable = false; setStatus("View only", true); } }
+    if (user && user.can) { const w = await user.can("data.write"); if (w === false) writable = false; }
   } catch (e) {}
-  if (writable) setStatus("Connected");
-  db.collection("ratings").limit(1000).onSnapshot(snap => {
-    for (const d of snap.docs) { ratings[d.id] = d.data(); applyCard(d.id); }
-    renderProgress();
-  }, e => setStatus("Live updates stopped (" + e.code + ")", true));
-  db.collection("typenotes").onSnapshot(snap => {
-    for (const d of snap.docs) { typenotes[d.id] = d.data(); const ta = document.getElementById("tn-" + d.id);
-      if (ta && document.activeElement !== ta) ta.value = d.data().note || ""; }
-  }, () => {});
+  okStatus();
 })();
 </script>
