@@ -1,0 +1,6 @@
+{
+  "note": "This already exists. There is a property that melee weapons can have called \"collision\" or \"impact\" that knocks enemies back.  This functions the exact same way. Change it to a warp hammer. Make it teleport the player a short distance away when it hits an enemy.  ",
+  "rating": 2,
+  "updatedAt": "2026-10-13T18:49:22.344Z",
+  "verdict": "fix"
+}

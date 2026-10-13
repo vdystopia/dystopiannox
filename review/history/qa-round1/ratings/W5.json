@@ -1,0 +1,6 @@
+{
+  "note": "This seems like it only steals enemies' life if they survive the hit. No life steal on kill. Either way, this already exists in nox. Melee weapons can have life steal, such as vampirism or of the leech. Focus on the buffs on kill aspect - the haste on kill doesn't seem to work. Create three tiers. Tier 1 gives haste for 5 seconds. Tier 2 gives haste and invisibility for 5 seconds.  Tier 3 gives a force field that can absorb 50 damage before it breaks and lasts up to 15 seconds.  ",
+  "rating": 3,
+  "updatedAt": "2026-10-13T18:29:51.460Z",
+  "verdict": "fix"
+}
