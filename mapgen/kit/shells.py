@@ -15,7 +15,7 @@ Used by kit/building.py _build on the unit labels of a building (unit (i, j) -> 
     tiles = floor_pattern(rng, units, main, kind, floors, work)  # {unit: material} for the units not on `main`
 """
 import collections
-import json, math, os
+import json, math, os, re
 from collections import Counter, deque
 
 SHELLS = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "rules", "rooms",
@@ -623,7 +623,9 @@ def lay_zones(spec, room, objs, kind=None):
     if not want: return {}
     # (a hearth's patch is its own brick, never the band or wing the room already has: Q1R-19)
     mats = {fam: zone_material(rng, fam, main, None if fam == "hearth" else have) for fam in sorted(set(want.values()))}
-    if mats.get("hearth") and mats["hearth"] == have:
+    # always a brick (the user: "a bordered brick patch"); a hearth of grey cobbles had read as the outdoor paving the
+    # well yards and town squares are laid in (QA round 1 merge: floors.threshold by Brackwater's hearths)
+    if mats.get("hearth") and (mats["hearth"] == have or not re.search(r"[Bb]rick", mats["hearth"])):
         mats["hearth"] = next((m for m in ("RedBrick", "Redbrick3", "GreenBrick") if m not in (have, main)), None)
     if "hearth" in mats and not mats["hearth"]:       # a brick Westwood lays by a fire, whatever the main floor
         mats["hearth"] = "RedBrick" if floor_family(main) != "stone" or "Red" not in main else "GreenBrick"
