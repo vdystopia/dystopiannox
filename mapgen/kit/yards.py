@@ -583,10 +583,17 @@ def _cell(spec, rng, room, sqs, us, v0, D, at, k=0):
     # the cot or the bench: in every cell but one in five (whole jails hold to CELL_FURNISHED), along the back wall
     has_bed = any(_re.match(r"^(Cot\d|Bench\d|LightBench\d|WoodBed|Bed\d)", o["type"]) for o in mine)
     if not has_bed and (k % 5 != 4):
-        for t, u in (("Cot2", lo + 0.9), ("Cot2", hi - 0.9), ("Cot1", (lo + hi) / 2)):
-            if put(t, u, D - 0.8, 34): break
-        else:
-            put("Bench4", (lo + hi) / 2, D - 0.6, 30)
+        for t, u in (("Cot2", lo + 0.9), ("Cot2", hi - 0.9), ("Cot1", (lo + hi) / 2), ("Bench4", (lo + hi) / 2)):
+            x, y_ = square_px(*at(u, D - 0.8))
+            # (straw and bones strewn where the cot goes are cleared for it: the cot comes first)
+            loose = [o for o in mine if _re.match(r"^(Straw|ArmBone|LegBone|Skull|RottenMeat)", o["type"])
+                     and math.hypot(x - o["x"], y_ - o["y"]) < 34]
+            if all(math.hypot(x - o["x"], y_ - o["y"]) >= 34 for o in mine if o not in loose):
+                for o in loose:
+                    mine.remove(o)
+                    objs_ = spec.d["objects"]
+                    del objs_[next(i for i, q in enumerate(objs_) if q is o)]
+                if put(t, u, D - 0.8, 34): break
     # the leavings, two or three of them
     picks = [n for n, w in CELL_EXTRAS for _ in range(w)]
     rng.shuffle(picks)

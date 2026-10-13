@@ -357,7 +357,23 @@ class Village:
             t = rng.choice(names)
             prev = t
             text = self.SIGN_TEXT.get(role) if name == "sign" else None
-            self.spec.obj_px(t, *square_px(si, sj), **({"xfer": {"Text": text}} if text else {}))
+            qx, qy = square_px(si, sj)
+            if sc["where"] in ("door_side", "side_wall") and name != "sign":
+                # set back against the house's wall, out of the street (QA round 1, 2026-10-13 [Q1K-16], nox9.png:
+                # "The crates of apples and the larger crate look out of place here. Move them up against the wall so
+                # they're out of the street"): slid toward the wall till it stands its half-width and a margin off it,
+                # never into a doorway
+                from kit.spacing import off_walls
+                wi, wj = (-oi, -oj) if sc["where"] == "door_side" else (lambda f: ((f[0] + 0.5 - si), (f[1] - 0.5 - sj)))(
+                    min(foot, key=lambda f: (f[0] + 0.5 - si) ** 2 + (f[1] - 0.5 - sj) ** 2))
+                L_ = math.hypot(wi, wj) or 1
+                for k_ in range(1, 25):
+                    nx_, ny_ = square_px(si + wi / L_ * 0.08 * k_, sj + wj / L_ * 0.08 * k_)
+                    if not off_walls(self.spec.wallmap, t, nx_, ny_, margin=4): break
+                    if any(math.hypot(o["x"] - nx_, o["y"] - ny_) < 56 for o in self.spec.d["objects"]
+                           if "Door" in (o.get("type") or "")): break
+                    qx, qy = nx_, ny_
+            self.spec.obj_px(t, qx, qy, **({"xfer": {"Text": text}} if text else {}))
             self.used.add((int(si), int(sj) + 1))
         self.used.add(s0); L.taken.add(s0)
         return True

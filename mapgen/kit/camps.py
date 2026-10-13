@@ -212,6 +212,7 @@ def camp_ground(spec, land, centre, r_px, material="DirtDark2", rng=None):
             spec.floor[t] = material
             out.add(s)
     if material not in spec.blend: spec.blending(material, 4, "BlendEdge")
+    land.taken |= out                                  # (the camp holds its trodden ground: no tree grows on it)
     return out
 
 
@@ -265,7 +266,8 @@ def _wall_row(sc, rows, ang, r0, spot_out=50, step=46):
     row a step in front of it, every row centred on the same line (QA round 1 [Q1K-2]: "rows go against a wall, never
     floating randomly"). rows: [[(type, extra)], ...]. Returns ((x, y) of the first row's middle, the spot before it,
     [(type, x, y) laid])."""
-    (x0, y0), _ = _snug(sc, *sc.p(r0, ang), math.cos(ang), math.sin(ang), want=40, reach=110)
+    # (out as far as the wall where it lies within reach: a row left short of a far wall stood in the open, Q1K-13)
+    (x0, y0), _ = _snug(sc, *sc.p(r0, ang), math.cos(ang), math.sin(ang), want=40, reach=210)
     ux_, uy_ = -math.sin(ang), math.cos(ang)
     wx_, wy_ = math.cos(ang), math.sin(ang)
     laid, back = [], 0.0
@@ -521,7 +523,7 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
 
     # ---- the arms corner, or the dig, on the other flank ---------------------------------------------------------------
     ar = b - left * flank
-    (ax, ay), _ = _snug(sc, *sc.p(R["arms"] * 0.85, ar), math.cos(ar), math.sin(ar), want=40, reach=110)
+    (ax, ay), _ = _snug(sc, *sc.p(R["arms"] * 0.85, ar), math.cos(ar), math.sin(ar), want=40, reach=210)
     ux, uy = -math.sin(ar), math.cos(ar)
     wx, wy = math.cos(ar), math.sin(ar)
     work = []
