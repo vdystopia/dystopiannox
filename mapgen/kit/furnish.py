@@ -1274,7 +1274,7 @@ class Furnisher:
         Westwood has none, no twin knots; each fault moved into place or dropped (must pieces stay). Its own
         generator, so the composition before it draws as it did."""
         from kit import grammar as GR
-        if not GRAMMAR: return
+        if not GRAMMAR: return self.qa1_finish()
         self._need = dict(need or {})
         grng = random.Random(zlib.crc32(f"grammar:{self.spec.d.get('name')}:{self.room.id}".encode()))
         before = self.coverage()
@@ -1289,6 +1289,13 @@ class Furnisher:
                 self.composing, self.in_required, self.rng = saved
             self.grammar_log.update(GR.audit(self, grng))
             self.grammar_log["refilled"] += 1
+        self.qa1_finish()
+
+    def qa1_finish(self):
+        """QA round 1's themes for the unrated works, stores and sacred rooms (kit/finish.py; review/qa1/works.md): after
+        the audit, so the deliberate symmetry stands."""
+        from kit import finish as QA1
+        QA1.apply(self)
 
     # ---- composition: one plan for the whole room (kit/identity.py ROOMS[kind]["compose"]) ----------
     def segments(self, pad=0.0, tall_only=False):

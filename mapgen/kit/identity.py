@@ -1235,13 +1235,13 @@ ROOMS = {
                    decor_themes=("blue", "red", "white", "green"),
                    lift=("DunMir|",),
                    top_up=(),
-                   compose=[dict(fam="altar", slot="relic_ring", ring="statue", d=1.9, **{"else": ("basin", "none")}),
-                            # a room too small for the ring: the altar on the wall across from the door, obelisks by it
-                            dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
-                            dict(fam="statue", slot="flank", of="altar", gap=0.8),
-                            dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
-                            dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
+                   # QA round 1 (review/qa1/works.md Q1B): the altar on the axis from the door, across from it, the
+                   # statues flanking it; the rest composed on that axis by kit/finish.py (a runner, an avenue of
+                   # obelisks in mirrored pairs, a ring round a basin in the middle of a big shrine, basins and
+                   # tapestries in pairs): the relic ring had stood its carpet off the ring and off the door's line
+                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                            dict(fam="statue", slot="flank", of="altar", gap=0.8)],
+                   fill=[]),
     "dark_shrine": dict(base="study", grand=True,
                         purpose="the Land of the Dead's shrine: the lich god's statue on the wall across from the door, "
                                 "mana obelisks either side, incense basins burning, tapestries and sconces, bones",
@@ -1256,12 +1256,10 @@ ROOMS = {
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
                         lift=("LOTD|", "Lich|"),     # its own pieces in any building (a town house had shown none)
                         top_up=(),
+                        # (QA round 1: the rest on the door's axis in mirrored pairs, kit/finish.py)
                         compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
-                                 dict(fam="statue", slot="flank", of="altar", gap=0.8),
-                                 dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
-                                 dict(fam="bones", slot="scatter", per100=8, cluster=(1, 3)),
-                                 dict(fam="wall_decor", slot="decor")],
-                        fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2)]),
+                                 dict(fam="statue", slot="flank", of="altar", gap=0.8)],
+                        fill=[]),
     # a gallery (Con07E / War07D, 208-210 tiles: seven paintings, sixteen lanterns, nine plants, an orrery, tapestries,
     # two flame basins, a statue)
     "gallery": dict(base="hall", grand=True,
@@ -1732,6 +1730,10 @@ for _k, _v in ARCHETYPE_RECIPES.items():
     ROOMS[_k]["archetypes"] = _v
 ROOMS["throne_room"].pop("compose_alts", None)    # its three compositions are archetypes now
 ROOMS["great_hall"].pop("compose_alts", None)
+# QA round 1 (review/qa1/works.md): the pieces kit/finish.py composes into the unrated works, stores and sacred rooms
+# (steel barrels, tool barrels, target barrels, coffins, obelisks...) taken into their kinds' identities
+from kit import finish as _QA1
+_QA1.extend_identity(ROOMS)
 
 # ---- buildings ---------------------------------------------------------------------------------------
 # rooms: (kind, purpose) in order, the first is the largest and takes the entrance;

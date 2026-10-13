@@ -574,6 +574,28 @@ def tp_unreached(m):
     Transporters(m).add("portal", _cellar(m), px(196, 20), "TpUnr", two_way=False)   # starts in the sealed cellar
 
 
+# ---- QA round 1, the unrated works rooms (validate/checks.py qa1_flags; review/qa1/works.md Q1B) ----------------------
+def q1_shrine_off_axis(m):
+    _declare(m, "shrine")                                      # the main door at (201, 0): the axis runs along v = 0
+    m.obj("DunMirAltar1", 219, 0)
+    for u, v in ((206, -5), (212, 3), (216, -7)): m.obj("Obelisk", u, v)     # obelisks with no partner across it
+
+
+def q1_store_of_barrels(m):
+    _declare(m, "storeroom")                                   # a storeroom of one kind of barrel
+    for k in range(8): m.obj("Barrel", 204 + 1.3 * (k % 4), -8.5 + 1.3 * (k // 4))
+
+
+def q1_forge_on_boards(m):
+    _declare(m, "smithy")                                      # the forge on the bare boards
+    m.obj("CinderBin1", 210, 8.8)
+
+
+def q1_bare_s_corner(m):
+    _declare(m, "guardroom")                                   # everything at the N end, the S corner (222, -10) bare
+    for u, v in ((204, 6), (204, -6), (206, 0)): m.obj("Barrel", u, v)
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -690,6 +712,12 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STtpPkt", tp_pocket, "transport", "error", "a portal into a closet of a few cells - TR-1", "pocket"),
     ("STtpMis", tp_missing, "transport", "error", "a declared portal whose pad is missing from the map - TR-1", "missing"),
     ("STtpUnr", tp_unreached, "transport", "warning", "a portal that starts in a sealed room - TR-1", "cannot get"),
+    ("STq1axs", q1_shrine_off_axis, "composition", "warning", "a shrine's obelisks off the door's axis - QA1 Q1B",
+     "no mirrored partner"),
+    ("STq1sto", q1_store_of_barrels, "composition", "warning", "a storeroom of barrels only - QA1 Q1B", "its stock is"),
+    ("STq1frg", q1_forge_on_boards, "composition", "warning", "a forge on the bare floor - QA1 Q1B (nox17)",
+     "bare floor"),
+    ("STq1scr", q1_bare_s_corner, "composition", "warning", "a guardroom's bare S corner - QA1 Q1B", "S corner is bare"),
 ]
 
 
