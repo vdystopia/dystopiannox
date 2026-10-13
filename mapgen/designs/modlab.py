@@ -12,7 +12,7 @@ scripts: kit/behaviours/mods.go, wired by kit/mods.py). Every feature has a sign
 
     py mapgen/designs/modlab.py [out_dir|-]
 """
-import json, os, random, sys
+import json, os, random, re, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, px, uv_to_xy
 from kit.npcs import Population
@@ -38,8 +38,26 @@ def text(key, s):
     return k
 
 
-def sign(key, s, u, v, kind="Sign1"):
-    return m.obj_px(kind, *P(u, v), xfer={"Text": text(key, s)})
+def sign(key, s, u, v, kind="Sign1", step=(0, -3)):
+    """A small sign, or a short row of them: a sign prints its text on one line and a long one crashes the client
+    (QA round 1, M2: the Giant Crab's sign, 274 characters, crashed the game to the desktop; kit/signs.py). A text past
+    SIGN_WARN characters is cut at its sentences onto signs `step` uv units apart, "W1 (2 of 3): ..." on the next."""
+    from kit.signs import one_line, SIGN_WARN
+    s = one_line(s)
+    room = SIGN_WARN - 14                               # room for "W1 (2 of 3): "
+    parts, cur = ([s], []) if len(s) <= SIGN_WARN else ([], [])
+    for w in ([] if parts else s.split(" ")):           # wrapped by words, at a sentence's end where one falls late
+        if cur and len(" ".join(cur + [w])) > room:
+            ends = [i for i, c in enumerate(cur) if c[-1] in ".!?" and len(" ".join(cur[:i + 1])) >= room * 0.45]
+            cut = ends[-1] + 1 if ends else len(cur)
+            parts.append(" ".join(cur[:cut])); cur = cur[cut:]
+        cur.append(w)
+    if cur: parts.append(" ".join(cur))
+    tag = s.split(" ", 1)[0]
+    for k, part in enumerate(parts):
+        if k: part = f"{tag} ({k + 1} of {len(parts)}): {part}"
+        assert len(part) <= SIGN_WARN, (key, part)
+        m.obj_px(kind, *P(u + step[0] * k, v + step[1] * k), xfer={"Text": text(key if not k else f"{key}_{k + 1}", part)})
 
 
 def gate(u_mid, v):
@@ -75,7 +93,7 @@ sign("Welcome", "MODLAB - creative additions to Nox.\nArmoury here (W1-W6), trai
 for k, wid in enumerate(WEAPONS):                                               # W1-W6 on the floor, a sign by each
     v = -15 + 6 * k
     mods.weapon(wid, *P(224, v), name=f"{wid}_{WEAPONS[wid]['name'].replace(' ', '')}")
-    sign(wid, WEAPONS[wid]["text"], 220, v)
+    sign(wid, WEAPONS[wid]["text"], 220, v, step=(-3, 0))
 # a chest of spares by the door: a second Chakram Storm and Bloodthirst, and potions (power weapons work from chests)
 m.obj_px("Chest4", *P(204, 12), items=[mods.weapon_item("W2"), mods.weapon_item("W5"), "RedPotion", "RedPotion",
                                        "RedPotion", "BluePotion"])
@@ -92,14 +110,18 @@ for k, mid in enumerate(MONSTERS):                                              
     mid_u = 218 + 36 * k
     mods.monster(mid, *P(mid_u, 40), name=f"{mid}_{MONSTERS[mid]['name'][4:].replace(' ', '')}", wait=230.0,
                  respawn=20.0, face=P(mid_u, 20))
-    sign(mid, MONSTERS[mid]["text"], mid_u + 5, 15)
+    sign(mid, MONSTERS[mid]["text"], mid_u + 5, 15, step=(4, 0))
 
 # ---- the forge: S1 -------------------------------------------------------------------------------------------
-sign("S1", "S1 THE FORGE (smithing)\nLay a weapon beside the anvil and step on the forge plate (the grey stone "
-     "patch south-east of the anvil). A longsword, battle axe, the Flamebrand (W1) or the Quake Hammer (W3) becomes fine, superb, then masterwork: the game's own "
-     "enchantments, stronger each tier (cost 100 / 200 / 400 gold). Any other weapon is melted down for 20 gold. Each "
-     "piece raises the smith's level: tier N needs level N, and each level takes 8% off the price. Gold is in the "
-     "west corner; talk to the smith (walk up) for his level.", 236, -24)
+# the forge explained where it is used (QA round 1, S1: "I'm not sure how this works"): one short sign at each part
+sign("S1", "S1 THE FORGE: lay a weapon by the anvil, then step onto the grey stone patch beside this sign.", 241, -31)
+sign("S1Tiers", "S1: a longsword, battle axe, Flamebrand (W1) or Quake Hammer (W3) is raised to fine, superb, then "
+     "masterwork.", 246, -36)
+sign("S1Price", "S1: a tier costs 100, 200 then 400 gold. Any other weapon laid by the anvil is melted down for 20 gold.",
+     236, -45)
+sign("S1Smith", "S1: each piece raises the smith's level. Tier N needs level N; each level takes 8% off. Ask him his level.",
+     225, -37)
+sign("S1Gold", "S1: gold for the forge lies in the west corner; spare weapons by the far wall.", 212, -44)
 mods.forge(anvil=P(230, -40), smith=P(228, -42), plate=P(237, -36), vault_uv=(400, -12),
            tier0={"flamebrand": ["W1_Flamebrand"], "quake": ["W3_QuakeHammer"]})
 m.obj_px("Bellows1", *P(222, -53))
@@ -107,7 +129,9 @@ for k in range(6):                                                    # 1,800 go
     m.obj_px("Gold", *P(205 + 3 * (k % 3), -48 - 4 * (k // 3)), xfer={"Amount": 300})
 for k, t in enumerate(("Longsword", "Longsword", "BattleAxe", "BattleAxe")):   # spare weapons to work
     weapon(t, 252, -52 + 5 * k)
-for k, t in enumerate(("Sword", "Sword", "Sword", "Staff", "OgreAxe")):        # and to melt down
+# and to melt down (no Staff: the editor draws it as a flat brown square, which the QA pictures showed as a pressure
+# plate that is not in the game: QA round 1, S1)
+for k, t in enumerate(("Sword", "Sword", "Sword", "MorningStar", "OgreAxe")):
     weapon(t, 246 + 3 * (k % 3), -27 - 3 * (k // 3))
 
 m.obj_px("PlayerStart", *P(206, 0))

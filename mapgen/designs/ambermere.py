@@ -539,16 +539,11 @@ story_xy = [(o["x"], o["y"]) for o in pop.placed + [o for o in m.d["objects"] if
            [(c["x"], c["y"]) for c in caches if c]
 opened = sm.open_ways(story_xy)
 # fish in the mere (Westwood's lakes and streams carry them)
-fish = 0
-for k in range(40):
-    if fish >= 8: break
-    a, r = rng.uniform(0, 6.28), rng.uniform(2.0, LAKE_R * 0.75)
-    s_ = (int(mere_c[0] + r * math.cos(a)), int(mere_c[1] + r * math.sin(a)) + 1)
-    if s_ not in land.water or any((s_[0] + a2, s_[1] + b2) not in land.water for a2 in (-1, 0, 1) for b2 in (-1, 0, 1)):
-        continue
-    pop.creature("FishBig" if fish % 3 == 0 else "FishSmall", *square_px(s_[0] + 0.5, s_[1] - 0.5), action=0,
-                 roamflag=255)
-    fish += 1
+# the fish and the loop they swim (QA round 1, nox4: fish with no linked waypoints stand still: Population.fish)
+deep_ = [square_px(s_[0] + 0.5, s_[1] - 0.5) for s_ in land.water
+         if math.hypot(s_[0] - mere_c[0], s_[1] - mere_c[1]) <= LAKE_R * 0.75
+         and all((s_[0] + a2, s_[1] + b2) in land.water for a2 in (-1, 0, 1) for b2 in (-1, 0, 1))]
+fish = len(pop.fish(deep_, n=8))
 
 # ---- 10. the story ----------------------------------------------------------------------------------------------------
 q.start([A.lock("WestGate1"), A.lock("WestGate2"), A.disable("WestExit1"), A.disable("WestExit2"),

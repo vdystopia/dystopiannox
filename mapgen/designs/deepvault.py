@@ -180,7 +180,7 @@ far_sc.put("CampFire", far_sc.ci, far_sc.cj)
 for k, (t, r, da) in enumerate((("Cot1", 2.2, 2.4), ("Cot3", 2.3, 3.4), ("Crate1", 3.0, 4.4), ("DarkCrate2", 3.4, 4.9),
                                  ("MineOreCart1", 3.6, 1.6), ("BarrelWithTools1", 3.0, 3.9), ("MiningPickAxeOnGround1", 2.6, 5.4))):
     far_sc.put(t, *far_sc.at(r, a_lake + da))
-camps.signpost(m, land, far_sc.at(3.0, a_lake - 1.2), q.text("FAR CAMP\nGunnar's crew. Mind the shore.", "Sign"), kind="PlankSign2")
+camps.signpost(m, land, far_sc.at(3.0, a_lake - 1.2), q.text("FAR CAMP\nGunnar's crew. Mind the shore.", "Sign"), kind="Sign2")
 # the urchins' warren: their beds, hammocks and shelves round a fire, the shaman's chest at the back
 war_sc = camps.Scene(m, rng, land, (war_c[0], war_c[1]))
 a_in = math.atan2(vc[1] - war_c[1], vc[0] - war_c[0])

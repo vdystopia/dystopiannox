@@ -287,12 +287,16 @@ rusk_away = sm.journey("Rusk", "RuskAway", square_px(far_[0] + 0.5, far_[1] - 0.
 # Abel's walk home over the old bridge
 abel_home = sm.journey("Abel", "AbelHome", mill_door, look=square_px(*lane_c))
 # shopkeepers: the inn, the river store, the herb shop (the smithy's floor is the forge's)
+# (QA round 1, nox12: every ware a real item at a price in Westwood's range for its chapter, kit/items.py: Brackwater
+# stands with Ix, chapter 2, whose shops sell nothing dearer than about 550 gold: no long sword, battle axe, chain or
+# crossbow yet; a spell book teaches a named spell; the Amulet of Nature, which has no price, is a gift, not a ware)
 WARES = {"inn": [(6, "Bread"), (5, "Meat"), (4, "Cider"), (4, "RedApple"), (2, "RedPotion")],
-         "store": [(3, "RedPotion"), (2, "BluePotion"), (3, "Quiver"), (1, "Bow"), (1, "CrossBow"), (2, "Longsword"),
-                   (1, "BattleAxe"), (1, "Sword"), (1, "WoodenShield"), (1, "LeatherBoots"), (1, "LeatherHelm"),
-                   (1, "LeatherArmor"), (1, "LeatherLeggings"), (1, "ChainCoif")],
-         "apothecary": [(6, "RedPotion"), (4, "BluePotion"), (3, "CurePoisonPotion"), (1, "LesserFireballWand"),
-                        (2, "SpellBook"), (1, "AmuletofNature")]}
+         "store": [(3, "RedPotion"), (2, "BluePotion"), (3, "Quiver"), (1, "Bow"), (2, "Sword"), (1, "StaffWooden"),
+                   (1, "WoodenShield"), (1, "LeatherBoots"), (1, "LeatherHelm"), (1, "LeatherArmor"),
+                   (1, "LeatherLeggings"), (1, "MedievalCloak")],
+         "apothecary": [(6, "RedPotion"), (4, "BluePotion"), (3, "CurePoisonPotion"), (2, "Mushroom"),
+                        (1, "SulphorousFlareWand"), (1, "SpellBook", "SPELL_LESSER_HEAL"),
+                        (1, "SpellBook", "SPELL_CURE_POISON")]}
 GREET = {"inn": q.text("Bad business tonight, lad. Who robs a shrine at midnight? Strange times indeed! Eat while "
                        "there's still bread in the house!", "Shop"),
          "store": q.text("I can tell we'll get on famously! As long as you buy something, that is!", "Shop"),
@@ -372,16 +376,11 @@ story_xy = [(o["x"], o["y"]) for o in pop.placed + [o for o in m.d["objects"] if
            [(c["x"], c["y"]) for c in caches if c]
 opened = sm.open_ways(story_xy)
 # fish in the pool
-fish = 0
-for k in range(40):
-    if fish >= 6: break
-    a, r = rng.uniform(0, 6.28), rng.uniform(2.0, HB.LAKE_R * 0.7)
-    s_ = (int(pool_c[0] + r * math.cos(a)), int(pool_c[1] + r * math.sin(a)) + 1)
-    if s_ not in land.water or any((s_[0] + a2, s_[1] + b2) not in land.water for a2 in (-1, 0, 1) for b2 in (-1, 0, 1)):
-        continue
-    pop.creature("FishBig" if fish % 3 == 0 else "FishSmall", *square_px(s_[0] + 0.5, s_[1] - 0.5), action=0,
-                 roamflag=255)
-    fish += 1
+# the fish and the loop they swim (QA round 1, nox4: fish with no linked waypoints stand still: Population.fish)
+deep_ = [square_px(s_[0] + 0.5, s_[1] - 0.5) for s_ in land.water
+         if math.hypot(s_[0] - pool_c[0], s_[1] - pool_c[1]) <= HB.LAKE_R * 0.7
+         and all((s_[0] + a2, s_[1] + b2) in land.water for a2 in (-1, 0, 1) for b2 in (-1, 0, 1))]
+fish = len(pop.fish(deep_, n=6))
 
 # ---- 10. the story ----------------------------------------------------------------------------------------------------
 SEAL, KNIFE = token("WATCH_SEAL"), token("RUSK_KNIFE")

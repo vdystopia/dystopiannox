@@ -290,7 +290,7 @@ camps.signpost(m, land, (gs_[0] + 2.0, gs_[1] - 1.5),
                q.text("THE FORGE GATE\nNo one passes but the Wardens.", "Sign"))
 ps_ = sm.road_near(((pens_c[0] + vc[0]) / 2, (pens_c[1] + vc[1]) / 2))
 camps.signpost(m, land, (ps_[0] + 1.5, ps_[1] + 1.5), q.text("SLAG PENS\nThis way to the old diggings.", "Sign"),
-               kind="PlankSign2")
+               kind="Sign2")
 # the Wardens' cairns: heaps of black stone over the Wardens' dead in an arc, torn open by the Choir, bones strewn
 cairn_sq = off_road(cairns_c, clear=2.0, reach=6, room=3)
 csc = camps.Scene(m, rng, land, cairn_sq)

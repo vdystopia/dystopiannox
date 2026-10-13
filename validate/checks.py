@@ -1673,7 +1673,9 @@ def check_routes(m, ctx, base):
     sev = "error" if routes or "mapgen" in (m.file or "").replace("\\", "/").lower() else "info"
     short = lambda n: (n or "").split(":")[-1]
     bad = []
+    from kit.npcs import is_swim               # a fish's loop lies on the water by design (validate checks_game fish.swim)
     for w in m.waypoints:
+        if is_swim(w.get("name")): continue
         why = g.point_problem(w["x"], w["y"], wall_clear=11, obj_clear=9)
         if why: bad.append(F("routes", sev, f"Waypoint {short(w['name']) or w.get('n')} stands {why}.", w["x"], w["y"]))
     by_n = {w.get("n"): w for w in m.waypoints}
@@ -1682,7 +1684,8 @@ def check_routes(m, ctx, base):
     for w in m.waypoints:
         for l in w.get("links") or []:
             o = by_n.get(l if isinstance(l, int) else (l.get("n") if isinstance(l, dict) else None))
-            if o is not None and (id(o), id(w)) not in legs: legs[(id(w), id(o))] = (w, o, "link")
+            if o is not None and (id(o), id(w)) not in legs and not (is_swim(w.get("name")) or is_swim(o.get("name"))):
+                legs[(id(w), id(o))] = (w, o, "link")
     for r in routes:
         ws = [by_name.get(n) for n in r["waypoints"]]
         ws = [w for w in ws if w is not None]
@@ -2003,7 +2006,10 @@ MONOTONY_MIN_PIECES, MONOTONY_SHARE = 16, 0.6
 MONOTONY_EXEMPT = re.compile(r"^(Bookcase|MovableBookcase|LogShelves|PotionShelves|TraderShelves|LOTDTombstone|Coffin|"
                              r"Sarcophagus|Crypt)")     # a room of 16+ pieces of furniture where one kind is 60%+ of them
 COUNTER_RE = re.compile(r"^(TraderDesk|BarPiece|BarCorner|BarHingedTop)")
-KEEPER_REACH = 90.0          # px from a keeper to the counter he stands behind (Westwood: 25-49 px for 54 of 94 keepers)
+# px from a keeper to the counter he stands behind (Westwood's campaign keepers with a counter in reach: 28 px at the 10th
+# percentile, 32 the median, 34 the 75th; QA round 1, nox18: "The shopkeeper should be standing closer to the bar", the
+# innkeeper 90 px from it had passed at 90)
+KEEPER_REACH = 56.0
 THRONE_RE = re.compile(r"^DunMirThroneBase")
 
 
@@ -2556,7 +2562,7 @@ RULES = [
     ("identity.tables", "identity", r"free-standing tables than", "SW-6 TW-8"),
     ("identity.supplies_wall", "identity", r"supplies line a wall", "AMR-4"),
     ("identity.monotony", "identity", r"one kind fills a big room", "TW-8 SW-6"),
-    ("identity.keeper", "identity", r"stands behind his counter", "SWR-2"),
+    ("identity.keeper", "identity", r"stands behind his counter", "SWR-2 Q1G-6"),
     ("identity.throne", "identity", r"throne does not face a door", "GW-7"),
     ("pieces.cauldrons", "pieces", r"cauldrons", "HB-1"),
     ("pieces.chests", "pieces", r"chests by the room type", "HB-2 HB-3"),
@@ -2661,3 +2667,10 @@ def run_all(m, base, only=None):
     for f in findings:
         if f["severity"] != "info": f["rule"] = rule_of(f)
     return findings, ctx
+
+
+# ---- in-game behaviour (QA round 1, 2026-10-13): signs, wells, fish, people at doors, items -> checks_game.py ----------
+import checks_game as _game
+RULES += _game.RULES
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in _game.RULES]
+ALL += _game.ALL

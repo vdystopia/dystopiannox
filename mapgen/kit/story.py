@@ -24,6 +24,7 @@ from kit.npcs import Population, facing
 from kit.walkways import Ground, Router, CELL as WCELL
 
 STOCK = r"C:\GOG Games\Nox\maps"
+COUNTER = r"^(TraderDesk|BarPiece|BarCorner|BarHingedTop|AlchemistDesk|Desk\d)"   # what a keeper stands behind
 
 # Townsfolk's given names: the dialogue window titles a creature with the string "NPC:<script name>". None of these
 # is in Westwood's table (nox.csf NPC:...) or given to a story character in a design. The donor's body picks the
@@ -54,6 +55,9 @@ class StoryMap:
         self.pop = Population(spec, rng)
         self.B = self.pop.behaviours
         self.unsafe = []                     # [(world px, radius px)]: places townsfolk and the watch never stop at
+        # people standing still are settled off the doorways and turned from the walls once the map stands, before any
+        # route is laid round them (QA round 1, nox9/nox10: settle_people)
+        self.B.later(self.settle_people)
 
     def keep_folk_away(self, centre, r):
         """No townsperson's or watchman's stop within `r` squares of `centre` (squares): a camp of foes at the town's
@@ -196,12 +200,23 @@ class StoryMap:
         sides = (1, -1)
         if toward:
             sides = sorted(sides, key=lambda k: math.hypot(dx + tx * k * 50 - toward[0], dy + ty * k * 50 - toward[1]))
-        for d, l in ((30, 50), (40, 56), (24, 62), (50, 48), (36, 72), (56, 64)):
+        # beside the doorstep, a body's width off the door's way and PERSON_DOOR from its middle, SPOT_GAP from anyone
+        # standing there already (QA round 1, nox10: Nell waited in her door's frame, the doorstep being the fallback,
+        # and two more of the town stood at the same door)
+        people = [(o["x"], o["y"]) for o in m.d["objects"] if "DefaultAction" in (o.get("xfer") or {})]
+        for d, l in ((30, 50), (40, 56), (24, 62), (50, 48), (36, 72), (56, 64), (64, 80), (80, 60), (48, 96), (90, 90)):
             for k in sides:
                 p = (dx + nx * d + tx * k * l, dy + ny * d + ty * k * l)
-                if land_ok(p) and off_wall(p) and all(math.hypot(p[0] - a_, p[1] - b_) >= 30 for a_, b_ in objs):
+                if land_ok(p) and off_wall(p) and all(math.hypot(p[0] - a_, p[1] - b_) >= 30 for a_, b_ in objs) and \
+                        all(math.hypot(p[0] - a_, p[1] - b_) >= self.SPOT_GAP for a_, b_ in people) and \
+                        math.hypot(p[0] - dx, p[1] - dy) >= self.PERSON_DOOR:
                     return p
-        return out
+        # nowhere beside it: a step further out along the door's way, never on the doorstep or in the door
+        for d in (70, 90, 110):
+            p = (dx + nx * d, dy + ny * d)
+            if land_ok(p) and off_wall(p) and all(math.hypot(p[0] - a_, p[1] - b_) >= 30 for a_, b_ in objs):
+                return p
+        return None
 
     def free_px(self, room, prefer=None, clear=30.0):
         """A floor point of the room off the walls with nothing within `clear` px, nearest `prefer` (default the
@@ -459,6 +474,9 @@ class StoryMap:
                 spots = [sp for sp in (getattr(room, "spots", []) or []) if sp.get("role") in ("shopkeeper", "barkeep")]
                 if not spots and room.kind != "smithy": continue
                 at = spots[0]["px"] if spots else self.stand_px(room)     # by the anvil, never among the wares
+                # close behind the counter (QA round 1, nox18: the innkeeper stood in the middle of the space behind
+                # his bar, 90 px from it; Westwood's keepers stand 28-34 px from theirs)
+                at = self.near_anchor(room, at, COUNTER) or at
                 xs = [(x + 1) * CELL for x, _ in room.tiles]; ys = [(y + 1) * CELL for _, y in room.tiles]
                 self.pop.shopkeeper(keeper.get(bid.role, "ShopkeeperYellow"), *at, wares[bid.role],
                                     greeting=greet.get(bid.role, ""), face=(sum(xs) / len(xs), sum(ys) / len(ys)))
@@ -601,6 +619,9 @@ class StoryMap:
                 if not ps or not ps[0]: continue
                 out, mid, inn = ps
                 kind = "home" if bid.role in self.HOMES else "shop" if bid.role in self.VISIT else "door"
+                # someone waits at this door (a giver at her door): it is nobody else's stop (QA round 1, nox10: two
+                # women and a man at one hut's door)
+                if any(math.dist(dd[0], q_) < self.DOOR_TAKEN for q_ in self.standing()): continue
                 visit = None
                 if bid.role in self.VISIT and inn and not any(math.dist(dd[0], q_) < 50 for q_ in locked) and \
                         g.leg_problem(out, inn) is None:
@@ -657,9 +678,15 @@ class StoryMap:
         sq = [s for s in stops if s["kind"] == "square" and id(s) not in used] or [s for s in stops if s["kind"] == "square"]
         if sq:
             s = rng.choice(sq); used.add(id(s)); pick.append(s)
-        shops = [s for s in stops if s["kind"] == "shop"]
-        if shops: pick.append(rng.choice(shops))
-        others = [s for s in stops if s not in pick and s["kind"] != "square"]
+        # a shop's door serves two tours at most, so three of the town never gather at it (QA round 1, nox10)
+        shop_used = self.__dict__.setdefault("_shop_used", {})
+        shops = [s for s in stops if s["kind"] == "shop" and shop_used.get(id(s), 0) < 2]
+        if shops:
+            s = rng.choice(shops); pick.append(s); shop_used[id(s)] = shop_used.get(id(s), 0) + 1
+        # a doorstep is one tour's stop, not two (QA round 1, nox10: three of the town stood at one door)
+        door_used = self.__dict__.setdefault("_door_used", set())
+        others = [s for s in stops if s not in pick and s["kind"] != "square"
+                  and not (s["kind"] in ("door", "home") and id(s) in door_used)]
         rng.shuffle(others)
         others.sort(key=lambda s: s["kind"] not in ("landmark", "gate"))      # the town's features before doorsteps
         k = 0
@@ -667,6 +694,7 @@ class StoryMap:
             if rng.random() < 0.8: pick.append(others[k])
             k += 1
         if not pick: return []
+        door_used |= {id(s) for s in pick if s["kind"] in ("door", "home")}
         order = self._order(pick, pick[0])
         return [dict(s, visit=s["visit"] if indoors and s["visit"] and rng.random() < 0.6 else None) for s in order]
 
@@ -715,6 +743,125 @@ class StoryMap:
     # ---- standing spots: nobody shares one (playtest 2026-10-05: two people pushing each other off one stop) ---------
     SPOT_GAP = 40.0       # px between any two standing spots: a body is 24 px across
     DOORWAY_CLEAR = 26.0  # px a standing spot keeps from a doorway's passage points (out in front, middle, in behind)
+    PERSON_DOOR = 46.0    # px a person standing still keeps from a door's middle (QA round 1, nox10: one in the frame)
+    DOOR_TAKEN = 90.0     # px: a person standing this near a door is waiting at it; it is no one else's stop
+    ANCHOR_REACH = 40.0   # px from his counter (or the altar) a keeper (or a priest) stands (Westwood's keepers: 28-34)
+
+    def in_door(self, p, doors=None):
+        """The door (its middle, world px) whose way p stands in: within PERSON_DOOR px of its middle, or within 60 px
+        straight out in front of (or behind) it and no further aside than its half-width; else None. The checker's
+        people.doorway is a little looser (40 px)."""
+        if doors is None:
+            doors = sorted({v[0]: v for v in self._world()[0].gap_door.values()}.values())
+        for (cx, cy), (nx, ny), half in doors:
+            dx, dy = p[0] - cx, p[1] - cy
+            if math.hypot(dx, dy) < self.PERSON_DOOR: return (cx, cy)
+            if abs(dx * nx + dy * ny) < 60 and abs(-dx * ny + dy * nx) < half + 4: return (cx, cy)
+        return None
+
+    def still_people(self):
+        """The objects of everyone standing still where they were placed (as standing(), shopkeepers too)."""
+        out = []
+        for o in self.m.d["objects"]:
+            xf = o.get("xfer") or {}
+            if "DefaultAction" not in xf or o.get("scr") in self._movers: continue
+            if "clone" in o or o.get("type") in ("NPC", "Maiden") or xf.get("Aggressiveness", 1) < 0.1:
+                out.append(o)
+        return out
+
+    def settle_people(self):
+        """Everyone standing still (a giver at a door, a guard, a keeper), once the map stands (QA round 1, 2026-10-13:
+        nox10 "two female NPCs clustered at the entrance of a door, one of them stuck in the frame of the door. The male
+        NPC is also facing the door. He should be facing away from the building with his back to the wall"; nox9 "the
+        female NPC is ... looking at the door in front of a door"):
+        - nobody stands within PERSON_DOOR px of a door's middle nor in its way (straight out in front of it within 60
+          px): moved to the nearest clear spot beside it, SPOT_GAP from every other creature;
+        - nobody faces a wall, a building or a door from close range, and one standing beside a wall has his back to it
+          (kit/walkways stop_facing: within AWAY_SLACK degrees of straight away; a door within 90 px straight ahead is
+          turned from). Shopkeepers keep their place behind the counter (near_anchor) and only turn.
+        Returns the number moved."""
+        from kit.walkways import stop_facing
+        m, g = self.m, self._plain_ground()
+        doors = sorted({v[0]: v for v in g.gap_door.values()}.values())
+
+        in_door = lambda p: self.in_door(p, doors)
+        moved = 0
+        # a priest stands by his altar (QA round 1, nox14: "Give the priest a better location instead of being behind a
+        # random pillar. Have the priest stand closer to the altar"): anyone standing in a chapel or shrine that has its
+        # altar (the room type's "beside" piece, kit/roomtypes STANDS) is brought to within ANCHOR_REACH of it
+        from kit.roomtypes import profile
+        for bid, b in self.placed:
+            for room in b.rooms:
+                if room.kind not in ("chapel", "shrine"): continue
+                rules = [r for r in (profile(room.kind) or {}).get("stands", ()) if r[0] == "beside"]
+                cells = set(room.tiles)
+                inside = lambda q: (int(q[0] // CELL), int(q[1] // CELL)) in cells or                     (int(q[0] // CELL) - 1, int(q[1] // CELL)) in cells or (int(q[0] // CELL), int(q[1] // CELL) - 1) in cells
+                for o in self.still_people():
+                    if not inside((o["x"], o["y"])): continue
+                    for r in rules:
+                        alt = [a for a in m.d["objects"] if re.search(r[1], str(a.get("type", ""))) and inside((a["x"], a["y"]))]
+                        if not alt or min(math.dist((o["x"], o["y"]), (a["x"], a["y"])) for a in alt) <= self.ANCHOR_REACH + 16:
+                            break
+                        q = self.near_anchor(room, (o["x"], o["y"]), r[1], reach=self.ANCHOR_REACH + 8)
+                        if q:
+                            o["x"], o["y"] = round(q[0], 1), round(q[1], 1); moved += 1
+                            a = min(alt, key=lambda a: math.dist(q, (a["x"], a["y"])))
+                            room_c = (sum((x + 1) * CELL for x, _ in cells) / len(cells), sum((y + 1) * CELL for _, y in cells) / len(cells))
+                            o["xfer"]["DirectionId"] = facing(room_c[0] - q[0], room_c[1] - q[1])   # facing the nave
+                        break
+        for o in self.still_people():
+            xf = o.setdefault("xfer", {})
+            p = (o["x"], o["y"])
+            keeper = "ShopkeeperInfo" in xf
+            if not keeper and in_door(p):
+                others = [(q["x"], q["y"]) for q in m.d["objects"] if q is not o and "DefaultAction" in (q.get("xfer") or {})]
+                cands = sorted(((p[0] + r * math.cos(a * math.pi / 12), p[1] + r * math.sin(a * math.pi / 12))
+                                for r in range(16, 121, 8) for a in range(24)), key=lambda q: math.dist(q, p))
+                for q in cands:
+                    if in_door(q) or not g.point_ok(q[0], q[1], wall_clear=15, obj_clear=12): continue
+                    if any(math.dist(q, r_) < self.SPOT_GAP for r_ in others): continue
+                    o["x"], o["y"] = round(q[0], 1), round(q[1], 1)
+                    p = q
+                    moved += 1
+                    break
+            if keeper or xf.get("Aggressiveness", 1) >= 0.1: continue     # a keeper faces over his counter; a foe as posted
+            # the facing: the way it was set (or the most open way), turned off walls, buildings and doors
+            d = xf.get("DirectionId")
+            pref = None
+            if d is not None:
+                a = {0: -90, 1: 90, 2: 0, 3: -135, 4: 135, 5: 180, 6: -45, 7: 45}.get(int(d), 0)
+                pref = (p[0] + 100 * math.cos(math.radians(a)), p[1] + 100 * math.sin(math.radians(a)))
+            look = stop_facing(g, p, prefer=pref)
+            dm = min(doors, key=lambda v: math.dist(v[0], p), default=None)
+            if dm and math.dist(dm[0], p) < 90:
+                ang = lambda q: math.atan2(q[1] - p[1], q[0] - p[0])
+                off = abs((ang(look) - ang(dm[0]) + math.pi) % (2 * math.pi) - math.pi)
+                if math.degrees(off) < 45:            # facing the door close by: turned the other way, to open ground
+                    look = stop_facing(g, p, prefer=(2 * p[0] - dm[0][0], 2 * p[1] - dm[0][1]))
+            xf["DirectionId"] = facing(look[0] - p[0], look[1] - p[1])
+        return moved
+
+    def near_anchor(self, room, at, rx, reach=None):
+        """A standing point within `reach` (ANCHOR_REACH) px of the room's nearest piece matching `rx` (a counter, a
+        bar, an altar), clear of the furniture and the walls, the one nearest `at` (the furnisher's spot behind the
+        counter: so the keeper keeps his side of it). None when the room has no such piece or no clear point."""
+        reach = reach or self.ANCHOR_REACH
+        m, g = self.m, Ground.from_spec(self.m)          # as the room stands now (a shop is set while the map is built)
+        cells = set(room.tiles)
+        on_floor = lambda p: any((int(p[0] // CELL) + a, int(p[1] // CELL) + b) in cells
+                                 for a, b in ((0, 0), (1, 0), (-1, 0), (0, 1), (0, -1)))
+        rxc = re.compile(rx)
+        anchors = [o for o in m.d["objects"] if rxc.search(str(o.get("type", ""))) and on_floor((o["x"], o["y"]))]
+        if not anchors: return None
+        best = None
+        for o in anchors:
+            for r in range(14, int(reach) + 1, 3):
+                for k in range(24):
+                    q = (o["x"] + r * math.cos(k * math.pi / 12), o["y"] + r * math.sin(k * math.pi / 12))
+                    if not on_floor(q) or not g.point_ok(q[0], q[1], wall_clear=13, obj_clear=8): continue
+                    key = math.dist(q, at)
+                    if best is None or key < best[0]: best = (key, q)
+        return best and best[1]
 
     def _world(self):
         """(Ground, Router along the roads, locked doors' points): the map as it stands once everything is placed,
@@ -763,9 +910,10 @@ class StoryMap:
             g = self._world()[0]
             c = self._claims_ = [(o["x"], o["y"]) for o in self.m.d["objects"]
                                  if "DefaultAction" in (o.get("xfer") or {}) and o.get("scr") not in self._movers]
-            self._doorways = []
+            self._doorways, self._door_mids = [], []
             for (cx, cy), (nx, ny), half in sorted({v[0]: v for v in g.gap_door.values()}.values()):
                 self._doorways += [(cx, cy), (cx + nx * 40, cy + ny * 40), (cx - nx * 40, cy - ny * 40)]
+                self._door_mids.append((cx, cy))
         return c
 
     def _free_spot(self, cands, clear):
@@ -776,6 +924,7 @@ class StoryMap:
             if not clear(p): continue
             if any(math.dist(p, q) < self.SPOT_GAP for q in claims): continue
             if any(math.dist(p, q) < self.DOORWAY_CLEAR for q in self._doorways): continue
+            if any(math.dist(p, q) < self.PERSON_DOOR for q in self._door_mids) or self.in_door(p): continue
             claims.append(p)
             return p
         return None
@@ -817,9 +966,11 @@ class StoryMap:
             elif s["kind"] in ("home", "door", "shop"):
                 L = math.dist(p, look) or 1.0
                 n = ((p[0] - look[0]) / L, (p[1] - look[1]) / L); t = (-n[1], n[0])
+                # beside the doorstep, never straight in front of the door (QA round 1, nox9: a woman stood facing a
+                # door from in front of it): _free_spot keeps PERSON_DOOR from the door's middle
                 cands = [(p[0] + n[0] * d + t[0] * l, p[1] + n[1] * d + t[1] * l)
-                         for d, l in ((0, 0), (0, 34), (0, -34), (12, 46), (12, -46), (26, 30), (26, -30), (30, 0),
-                                      (14, 64), (14, -64), (40, 46), (40, -46))]
+                         for d, l in ((0, 40), (0, -40), (12, 46), (12, -46), (26, 36), (26, -36), (14, 64), (14, -64),
+                                      (40, 46), (40, -46), (6, 80), (6, -80))]
             else:
                 cands = [p] + [(p[0] + r * math.cos(k * math.pi / 4), p[1] + r * math.sin(k * math.pi / 4))
                                for r in (22, 36, 50) for k in range(8)]

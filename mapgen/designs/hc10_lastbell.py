@@ -262,9 +262,9 @@ m.obj_px("Chest2", wx_, wy_, scr="WennasChest", items=["RedPotion", "RedPotion",
 # the closing sign, in the nave by the door: it appears when the bells have rung and the Matriarch is dead
 sdx, sdy = shrine_b.entrances[0].px
 sgn_ = free_px(nave, prefer=((sdx + nx_) / 2, (sdy + ny_) / 2), clear=34)
-CLOSING = q.text("THE LAST BELL\nHere the five bells were rung again.\nThe stones were carried home from the Mirewood, "
-                 "the Greycrag deep, Frosthollow, the Marches, the Barrow, the Emberforge and the Spire.\nThe Brood "
-                 "sleeps. Brackwater stands.", "Sign")
+# (a sign prints on one line, 120 characters at most: kit/signs.py)
+CLOSING = q.text("THE LAST BELL\nHere the five bells rang again, their stones carried home.\nThe Brood sleeps. "
+                 "Brackwater stands.", "Sign")
 m.obj_px("Sign1", *sgn_, scr="ClosingSign", xfer={"Text": CLOSING})
 # caches in the woods, off the ways
 caches = []

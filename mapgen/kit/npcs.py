@@ -30,6 +30,11 @@ ACTION = dict(idle=0, wait=1, escort=3, guard=4, hunt=5, roam=10)
 DIRECTION = dict(N=0, S=1, E=2, NW=3, SW=4, W=5, NE=6, SE=7)
 
 
+def is_swim(name):
+    """A waypoint of a fish's loop (Population.fish): on the water by design, never walked by a body."""
+    return bool(name) and str(name).split(":")[-1].startswith("Swim")
+
+
 def facing(dx, dy):
     """DirectionId for facing along (dx, dy) in world pixels (y grows down the screen)."""
     a = math.degrees(math.atan2(-dy, dx)) % 360          # 0 = east, 90 = north (up the screen)
@@ -135,9 +140,18 @@ class Population:
         """A shopkeeper selling `items` ([(count, type)]) as Westwood sets one up (MonsterXfer ShopkeeperInfo, read from
         its town maps: Con02a's mystic sells potions and a spell book, its barkeeper apples, meat and cider): immortal,
         on guard behind the counter, buying at full value and paying a third when it buys."""
+        # every ware a real item: a name, a description, a price, a use, a spell for a spell book (QA round 1, nox12:
+        # kit/items.py). A ware is (count, type) or (count, "SpellBook", "SPELL_LESSER_HEAL"), one book per entry as
+        # Westwood lists them.
+        from kit.items import problems
+        wares = []
+        for it in items:
+            c, n, spell = (tuple(it) + ("",))[:3]
+            bad = [why for sev, why in problems(n, sold=True, spell=spell) if sev == "error"]
+            assert not bad, f"shop ware {n}: " + "; ".join(bad)
+            wares.append(dict(Name=n, Count=int(c), SpellID=spell, Ench1="", Ench2="", Ench3="", Ench4=""))
         info = dict(BuyValueMultiplier=float(buy), SellValueMultiplier=float(sell), ShopkeeperGreetingText=greeting,
-                    ShopItems=[dict(Name=n, Count=int(c), SpellID="", Ench1="", Ench2="", Ench3="", Ench4="")
-                               for c, n in items])
+                    ShopItems=wares)
         return self.creature(t, x, y, action="guard", face=face, scr=scr, aggr=0.0, Immortal=True, ShopkeeperInfo=info)
 
     def waypoint_path(self, prefix, pts, link=False, loop=False):
@@ -159,6 +173,7 @@ class Population:
         g = Ground.from_spec(self.spec)
         moved = 0
         for w in wps:
+            if is_swim(w.get("name")): continue              # a fish's loop lies on the water by design (fish())
             if g.point_ok(w["x"], w["y"], wall_clear=14, obj_clear=12): continue
             cx, cy = int(w["x"] // C_), int(w["y"] // C_)
             cand = [((cx + a) * C_ + C_ / 2, (cy + b) * C_ + C_ / 2) for a in range(-reach, reach + 1) for b in range(-reach, reach + 1)]
@@ -168,6 +183,38 @@ class Population:
             w["x"], w["y"] = round(x, 1), round(y, 1)
             moved += 1
         return moved
+
+    def fish(self, spots, n=6, loop=8, prefix="Swim", big_every=3):
+        """Fish in a pool and the loop they swim (QA round 1, nox4: "the fish do not swim around. They are stationary
+        until the player approaches very close"). spots: world px points in open water (water all round each), the
+        pool's. The game gives every fish the roam action at its first update (OpenNox unit_monster.go: ACTION_ROAM,
+        flags 0xff), and roam walks to the nearest linked waypoint in sight and on round the links; with none in reach
+        it gives up ("Cannot find any waypoints") and the fish wait until a player frightens them. Westwood lays linked
+        waypoints in its fish water: 239 of its 240 campaign fish have one within 250 px. So: `n` fish 46 px apart
+        (every `big_every`-th a FishBig) and a loop of `loop` linked waypoints round the pool's middle, named
+        <prefix>N_k (the checker's routes skip them: they lie on water by design; validate fish.swim checks them).
+        Returns the fish placed."""
+        if not spots: return []
+        rng = self.rng
+        cx, cy = sum(p[0] for p in spots) / len(spots), sum(p[1] for p in spots) / len(spots)
+        far = sorted(spots, key=lambda p: math.hypot(p[0] - cx, p[1] - cy))
+        r = math.hypot(far[-1][0] - cx, far[-1][1] - cy)
+        # the loop: of the spots between a third and three quarters of the way out, one per sector round the middle
+        ring = [p for p in spots if r * 0.3 <= math.hypot(p[0] - cx, p[1] - cy) <= r * 0.75] or spots
+        pts = []
+        for k in range(loop):
+            a0 = 2 * math.pi * k / loop
+            sec = [p for p in ring if (math.atan2(p[1] - cy, p[0] - cx) - a0) % (2 * math.pi) < 2 * math.pi / loop]
+            if sec: pts.append(rng.choice(sec))
+        if len(pts) >= 3:
+            self.waypoint_path(self.name(prefix), pts, link=True, loop=True)
+        out = []
+        for p in rng.sample(spots, len(spots)):
+            if len(out) >= n: break
+            if any(math.hypot(p[0] - o["x"], p[1] - o["y"]) < 46 for o in out): continue
+            t = "FishBig" if len(out) % big_every == 0 else "FishSmall"
+            out.append(self.creature(t, p[0], p[1], action="roam", roamflag=255, spread=False))
+        return out
 
     def roam_loop(self, pts, t, n=1, prefix=None):
         """Westwood's unscripted patrol: creatures with the roam action on a loop of linked waypoints (4% of its

@@ -1390,8 +1390,11 @@ def cache(spec, rng, land, centre, loot, stump=False):
     return o
 
 
-def signpost(spec, land, at_sq, key, kind="PlankSign1"):
-    """A plank sign at a square whose text is `key` in the map's string table."""
+def signpost(spec, land, at_sq, key, kind="Sign1"):
+    """A small sign at a square whose text is `key` in the map's string table (never the tall plank boards: QA round 1,
+    nox1 and nox10, kit/signs.py)."""
+    from kit.signs import LARGE
+    assert not LARGE.match(kind), f"{kind}: the kit stands small signs (Sign1, Sign2), never the plank boards"
     sc = Scene(spec, None, land, at_sq)
     return sc.put(kind, sc.ci, sc.cj, xfer={"Text": key})
 
