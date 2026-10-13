@@ -14,6 +14,7 @@
 import math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, px, uv_to_xy
+from kit.setpieces import healing_well      # the well that heals (QA round 1, nox13)
 from kit.npcs import Population
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -79,7 +80,7 @@ B.ambush(names, chest, reach=160)
 
 # 8. townsfolk round a little square in the south
 spots = pop.waypoint_path("Square", [P(300, -74), P(318, -66), P(306, -62), P(292, -68)])
-m.obj_px("Fountain" if False else "Well", *P(305, -68))
+healing_well(m, *P(305, -68))
 for k, t in enumerate(("Maiden", "Maiden", "Maiden")):
     pop.creature(t, *P(300 + 4 * k, -70), scr=f"Folk{k + 1}", aggr=0.0)
     B.townsfolk(f"Folk{k + 1}", spots, linger=4.0)

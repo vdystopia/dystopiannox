@@ -4,6 +4,33 @@ Kit: `kit/village.py Village.garden` (a household's garden beside its house); th
 "field". Lab: `py tests/scenelab.py garden`. Westwood's evidence: 5 campaign gardens (Con05A, Con07B, Con09a, Wiz01A,
 Wiz03b).
 
+## QA round 1 (2026-10-13): dirt, fences, even rows [Q1X-13 .. Q1X-16]
+
+**This section overrides the rounds below wherever they differ** (beds on grass, hand-planted rows, most gardens
+unfenced). The user: "Plants in gardens should generally grow on dirt, not grass ... use garden fences more often. Use a
+wider variety of objects as well. A barrel of tools a wheelbarrow etc. space rows of crops out and make them even and
+balanced"; EX-GARDEN-03 "Use fewer plants per row and space them out a little bit more, and keep them even"; EX-GARDEN-05
+and 06: "The garden being directly next to one of the walls of the structure ... This is an excellent orientation". And
+of nox2's garden (Brackwater's field, `kit/yards` "field"): "more or less perfect": a low wooden fence and its gate
+round dark earth, straight parallel rows.
+
+What nox2's garden did that the lab's gardens did not: its whole ground inside the fence is dug earth; it is fenced, with
+a gate; its rows are straight, parallel and evenly spread across the plot (`_spread`), with no hand jitter, no cut beds,
+no failed plants. Both now follow it:
+- `Village.garden` (a household's) and the field lay the same rows (`kit/yards.lay_crop_rows`) in a `Frame` from the
+  way in: the rows run away from the gate, a walk up the middle of a wide plot, a row and its mirror of one crop, the
+  plants 0.7 squares (23 px) apart, the rows 1.1-1.15 squares apart; the water barrel and the bucket of tools either side
+  of the way in.
+- The whole plot is dug earth (DirtDark2, `yards.yard_ground`, to the fence on every side); three gardens in four are
+  fenced (DilapidatedShort, Westwood's low wooden fence) with a gate centred on the side toward the house's door, never
+  the side against its wall; the plot keeps a side of odd length for it. The garden still stands beside its house, a
+  square off its wall (05, 06).
+- The household round it: an apple tree (TreeApple) with apples fallen under it (RedApple, which the player picks up) in
+  seven of ten.
+- Nox has no wheelbarrow; the cart (OutdoorTraderCart) is too big for a garden.
+- Checks: `exterior.crop_ground` (over 30% of a garden's crops on grass), `exterior.crop_rows` (85% in straight rows of
+  three, the gaps along a row even within 25%).
+
 ## Purpose
 
 The household's kitchen garden: vegetables grown beside the house, tended, watered.

@@ -106,6 +106,8 @@ class Theme:
                                                  # easily: drawn afresh at every spot tried they win out of turn)
     screen: bool = False                         # an open scene drawn in the screen's own frame (o: down the screen,
                                                  # a: to the left), as Westwood's stand toward the camera (a well's sign)
+    pave: int = 0                                # squares of paving (kit/setpieces.PAD) round its origin's square, each
+                                                 # way: a well's pad of cobblestone (QA round 1)
 
     def __post_init__(self):
         self.family = self.family or self.name
@@ -262,19 +264,21 @@ CATALOGUE = [
     # well is the WishingWell; the kit keeps its Well, the user has not chosen: rules/scenes/well.md)
     # (a sign a little apart in two of three: Con02a's SignIx, Con07B's and War07A's Sign1; the judge, 2026-10-06: "no
     # road or path, no sign")
-    Theme("well_side", "a draw well where water is fetched, standing clear", "open",
-          # (round 8: Westwood's four wells, rules/scenes/well.md, measured in the screen's own frame: the sign 50-56 px
-          # before the well, straight down the screen (Con07B, War07A: -2, 56) or down and to the right (Con02a: 35,
-          # 36), never behind it; one well bare (Con09a); one a market well (Con07B: the sign, and a street lamp 190 px
-          # before it; its trader's racks stand inside the shop beside it, not round the well). Round 7's sign anywhere
-          # round the well at 60-110 px read as "the same pair" with no reason to it; the layouts in Westwood's
-          # frequencies)
-          [[P(("Well",), 0, 0, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), 2, 56, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), -35, 36, must=True)],
-           [P(("Well",), 0, 0, must=True), P(("Sign1",), 2, 56, must=True), P(("StreetLampOrnate3",), -4, 190, p=0.8)]],
+    Theme("well_side", "a draw well where water is fetched and the weary are healed, on its own paving, the water "
+          "barrels and the bucket of tools by it", "open",
+          # (QA round 1, the well, all ten rated 1: "This isn't so much a feature as it is just a well ± a sign. Try to
+          # make the well a larger feature. Give it a small area of cobblestone beneath it. Add more objects like
+          # buckets"): the healing well (kit/setpieces.HEAL_WELL; the dressing names it) on three by three squares of
+          # cobblestone (`pave`), its pieces mirrored across it in the screen's frame: water barrels either side, the
+          # bucket of tools (BarrelWithTools: Nox has no bucket) and a barrel behind, a bench before it or torch poles
+          # at its back corners. A well yard of its own (kit/yards kind "well") is the larger set piece.
+          [[P(("WishingWell",), 0, 0, must=True), P(("WaterBarrel",), -40, -4, must=True), P(("WaterBarrel",), 40, -4),
+            P(("BarrelWithTools1",), -30, -38, must=True), P(("Barrel",), 30, -38),
+            P(("Bench2",), 0, 50, p=0.7, orient="face")],
+           [P(("WishingWell",), 0, 0, must=True), P(("WaterBarrel",), -38, 18, must=True), P(("WaterBarrel",), 38, 18),
+            P(("TorchPole",), -46, -40, must=True), P(("TorchPole",), 46, -40), P(("BarrelWithTools2",), 0, -48)]],
           places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="well", weight=0.8,
-          min_types=1, min_pieces=1, clear=60, loose=4, screen=True),
+          min_types=3, min_pieces=4, clear=60, screen=True, mirror=False, pave=1),
     Theme("washing_place", "linen hung to dry by the water, the tub and baskets", "open",
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],
@@ -388,7 +392,11 @@ CATALOGUE = [
           walls=("masonry", "martial", "house"), sides=("side", "back", "front"), places=("wild", "town"),
           house_roles=("chapel", "village_chapel", "shrine", "mausoleum", "keep", "manor", "townhall", "barracks", "tower",
                        "gatehouse", "gaol", "observatory"),
-          roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=1, spacing=50,
+          # (retired, QA round 1: all ten of the lab's wall shrines rated 1, "drop": "These are all awful. Change
+          # shrines drastically ... a square or rectangular shape defined by obelisks and mana pillars or parallel
+          # statues that lead to a grand centerpiece". A shrine is now a court of its own, kit/yards kind "shrine"
+          # laid by kit/setpieces; cap 0: the dressing never lays this one)
+          roles=("chapel", "village_chapel"), biomes=("green", "swamp", "ice"), cap=0, spacing=50,
           family="shrine", weight=0.8, min_types=2, min_pieces=2, tall=True, loose=2, loose_step=0.04,
           keep_layout=True),
     Theme("graveside", "a few graves at the wood's edge, headstones in a row, flowers laid before them, an urn, a "
@@ -554,8 +562,8 @@ ROLE_SCENES = {
     "home": [("woodpile", 0.3), ("supply_corner", 0.3)],
     "cottage": [("hay_store", 0.3), ("supply_corner", 0.3)],
     "grovelord": [("chopping_yard", 0.5), ("hay_store", 0.4)],
-    "chapel": [("graveside", 0.5), ("shrine", 0.5)],
-    "village_chapel": [("graveside", 0.5), ("shrine", 0.5)],
+    "chapel": [("graveside", 0.5)],             # (a shrine: a court of its own, kit/yards "shrine", QA round 1)
+    "village_chapel": [("graveside", 0.5)],
     "mess": [("midden", 0.7), ("cart_loading", 0.5)],
     "bunkhouse": [("woodpile", 0.5), ("mine_stores", 0.5)],
     "ore_shed": [("mine_cache", 0.9)],
@@ -579,7 +587,7 @@ FAMILY_CAP = {"cart": 3, "arms": 3, "wood": 3, "stores": 5, "bones": 6}
 # families whose things already on the map (a camp's cart, the training ground's targets, a woodpile by a door)
 # count as one of the family for spacing
 FAMILY_SIGNS = {"cart": ("OutdoorTraderCart", "MineOreCart"), "arms": ("TargetBarrel", "OutdoorTraderArmorRack"),
-                "wood": ("ForestLog03",), "fire": ("CampFire",), "well": ("Well",), "stall": ("TraderTent",),
+                "wood": ("ForestLog03",), "fire": ("CampFire",), "well": ("Well", "WishingWell"), "stall": ("TraderTent",),
                 "stone": ("DunMirMileStone",), "grave": ("Tombstone", "Cross"), "post": ("Brazier",)}
 
 # a trader's awning (Westwood's TraderTent kit, measured on Con02a, Con03A, Con04a and War05A): the pieces' offsets

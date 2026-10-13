@@ -41,7 +41,9 @@ Write a `MapIdentity` (`kit/identity.py`) before anything is built [DV3-6]:
 Place the central feature at the heart of the main area (the square and its well or fountain, a grove's crystal, a
 work yard), then the streets leaving it toward the other areas. A town square is a set piece
 (`Village.fountain_square` or `Village.square_piece`): symmetric round its feature, benches facing in, lights in
-balanced positions [DV4-3]. Street lights keep a steady rhythm along each street, on one side. Public buildings face it across a clear margin; roads stop at its edge.
+balanced positions [DV4-3]; a second ring of grey cobbles (`setpieces.PAD`) right round its well, set in the square's
+rough cobbles with a brick kerb [Q1X-20]. Every well is the healing well (`setpieces.healing_well`: the WishingWell,
+named `HealWell<n>` for the scripts that heal the player) [Q1X-4]. Street lights keep a steady rhythm along each street, on one side. Public buildings face it across a clear margin; roads stop at its edge.
 
 Features that shape the land round a centre are planned with it, before any building: a mine entrance
 (`kit/mine.MineEntrance.plan()`) reserves its forecourt and tunnel and forbids the land behind its rock face
@@ -99,22 +101,46 @@ of the grid (Westwood: 98% of its lifts, 86% of its pads; `rules/TRANSPORTERS.md
   with the quest is laid `enabled=False` and turned on by `A.enable` (Westwood's exit lifts, Con01A).
   The checker's `transport.*` rules catch the rest (section 9).
 
-### Yards [AM-1, SW-9]
-Yards with a purpose (`kit/yards.py`: graveyard, quarry, orchard, park, field, monument, jail) are planned before the
-land is carved (`yards.plan`, `yards.plan_any`) and built after its walls (`yards.build`), each fenced in Westwood's
-material for it with a gate facing the town.
+### Yards [AM-1, SW-9, Q1X-1..Q1X-19]
+Yards with a purpose (`kit/yards.py`: graveyard, quarry, orchard, park, field, monument, jail, and QA round 1's well and
+shrine) are planned before the land is carved (`yards.plan`, `yards.plan_any`) and built after its walls
+(`yards.build`), each fenced in Westwood's material for it with a gate facing the town (the well and shrine are open
+courts, a well now and then fenced).
+- **Composed as a whole, symmetric about the way in** (QA round 1: "lack of balance and symmetry: things placed
+  randomly, not lined up with each other"). The gate is centred on its side (`plan` makes that side an odd number of
+  squares; `yards.door_between` hangs it in the two middle cells), and the yard is laid in its `yards.Frame` (u across,
+  mirrored about the gate's axis; v from the gate to the back): pieces in mirrored pairs, rows evenly spread, paths of
+  whole squares centred on the gate. Its ground (`yards.yard_ground`) runs to the fence on every side, and no walk
+  crosses it (`land.reserved`).
+- **Several kinds of thing in every yard** ("spaces are too empty and lack object diversity"): never one kind alone
+  (graves, crops, trees); the checker wants three kinds at least.
 - A fence point (p, q) is drawn at square (p, q - 0.5): a plot's fence runs gi..gi + w across i and
   gj - 1.5..gj + h - 1.5 across j (`Yard.centre` is its middle). Everything in a yard or garden stands inside that,
   its drawn half-width plus a margin off the line (`spacing.off_walls`); crop rows are centred with a walkable strip
   to the fence all round. Nothing stands on a fence or wall line, ground bits included.
-- A household's garden (`Village.garden`, `rules/scenes/garden.md`) is two or three beds side by side, a different crop
-  in each, two rows to a bed ~20 px apart, a grass strip between, on grass or dug earth; the water barrel and a spade
-  at the path's ends; mostly unfenced, a few behind Westwood's low wooden fence (Dilapidated), never Log (a cabin wall).
-- A graveyard has graves (`yards._graveyard`, `rules/scenes/graveyard.md`): its ground sparse grass (GrassSparse2);
-  headstones in rows on the grid's lines ~90 px apart (Westwood's nearest), a third of the plots dug earth, flowers on
-  some; the gravedigger's corner away from the gate in most yards (an open grave, the coffin, the spade, a bucket of
-  tools, a torch pole); a stone pillar either side of the gate; a tree or two by the fence, never among the graves; no
-  bench. Westwood has no grave-mound object: its headstones stand on grass and bare earth (War03b-d).
+- A household's garden (`Village.garden`, `rules/scenes/garden.md`) and the town's field follow nox2's garden, the
+  user's "more or less perfect" [Q1X-13..Q1X-16]: the whole plot dug earth (DirtDark2) inside, three in four behind the
+  low wooden fence (DilapidatedShort, never Log) with a gate centred on the side toward the house's door; the crops in
+  straight, even rows mirrored about the gate's axis (`yards.lay_crop_rows`: a walk up a wide plot's middle, a row and
+  its mirror of one crop, plants 23 px apart, rows 36 px apart); the water barrel and the bucket of tools either side
+  of the way in; beside its house, a square off its wall; an apple tree with apples under it by most.
+- A graveyard (`yards._graveyard`, `rules/scenes/graveyard.md`) is organised and balanced [SW-9, Q1X-8..Q1X-12]: an
+  iron fence, stone only for the back wall opposite the gate and the mausoleums; stone pillars either side of the gate
+  outside; a cobbled path up the axis to the mausoleum, centred on the back wall (built into it, or free-standing off
+  it, never touching the fence), torch poles at its door; headstones in even rows both sides of the path, mirrored, one
+  kind to a row, a pair of fresh graves on dug earth now and then; the gravedigger's corner (open grave, spade, heap,
+  coffin, bucket of tools, skull and bone) mirrored by the keeper's stores (barrels, a tool barrel, a coffin); dead
+  trees in the other corners; its ground sparse grass (GrassSparse2).
+- A well is a feature (`kit/setpieces._well`, `rules/scenes/well.md`) [Q1X-5..Q1X-7]: the healing well on its own
+  grey cobbles, water barrels, the bucket of tools, a barrel and a bench round it, torch poles at the paving's corners;
+  now and then behind a low fence and gate, or a market well with benches on four sides and lamps at its corners.
+- A shrine is a court (`kit/setpieces._shrine`, `rules/scenes/shrine.md`) [Q1X-1..Q1X-3]: a rectangle of paving
+  entered from the screen's bottom, its shape set by obelisks, mana pillars, columns or statues at its corners and in
+  parallel rows down both long sides, an aisle up its axis to the grand centrepiece at the back (the great statue, the
+  gold wolf, a ring of mana crystals, an altar with benches in rows facing it). The catalogue's wall shrine is retired.
+- An orchard (`yards._orchard`) [Q1X-18]: apple trees in even mirrored rows, apples on the ground to pick up, crates of
+  apples outside the gate, the tool barrel and a barrel in the corners. A farm's ground holds a well yard, two gardens and
+  an orchard round the farmhouse, its harvest scenes laid last [Q1X-17].
 
 ## 3. Buildings and rooms
 
@@ -418,6 +444,9 @@ the iteration log `review/scenelab/LOG.md`). Change a scene's code with the lab 
 ### Scenes with a purpose, not piles [DV3-3, GW-2, TW-10]
 The outdoor ground is dressed last, after the people and their routes: `kit/dressing.Exterior(m, land, biome,
 placed=placed, culture=, martial=).dress()`.
+- Set pieces with their own ground (a well, a shrine, a graveyard, a garden, an orchard) are yards (section 2), planned
+  before the land is carved so they are never dropped for want of room (EX-WELL-05 had no well); the catalogue's themes
+  are the smaller groups.
 - Every outdoor group is a theme from the catalogue (`kit/scenes.py CATALOGUE`): a purpose, where it belongs (against a
   house, fence, masonry, curtain or the wild wall; in the open by a road, the square, a gate, water, the garrison's
   ground; beside which buildings and on which side; the biomes), its anchor, must-have and may-have pieces at set
@@ -772,7 +801,10 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   calibrated on one map of each campaign layout (6-15% of maps trip a rule; `sets` and `hung` are house rules over
   Westwood's habit);
 - `exterior.*` [section 4-5]: overlapping pieces, pieces on a fence line, pickable lights, crowds and swarms, docks,
-  stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves.
+  stumps as seats, strewn bedrolls, purposeless heaps, graveyards without graves; and QA round 1's set pieces
+  (`setpiece_faults`, house rules over Westwood's habit [Q1X]): a well that does not heal or is not a feature, graves
+  out of row or unbalanced, a graveyard of graves alone, a path off its gate's middle, crops in grass or out of row, a
+  yard of fewer than three kinds, a shrine's or well's pieces not mirrored about its axis.
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
   `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter

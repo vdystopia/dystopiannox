@@ -4,6 +4,31 @@ Kit: the catalogue's `well_side` (`kit/scenes.py`, laid by `kit/dressing.Exterio
 `py tests/scenelab.py well`. Westwood's evidence: four campaign wells (Con02a, Con07B, Con09a, War07A), the same
 place reused across the three campaigns' versions of a town.
 
+## QA round 1 (2026-10-13): a feature, and the healing well [Q1X-4, Q1X-5, Q1X-6, Q1X-7]
+
+**This section overrides the rounds below.** All ten of the lab's wells were rated 1: "This isn't so much a feature as
+it is just a well ± a sign. Try to make the well a larger feature. Give it a small area of cobblestone beneath it. Add
+more objects like buckets. Surround some wells by a fence or a gate. Make sure that when wells appear in maps, the
+player can interact with them to fully heal health and mana, like in the original nox campaign." EX-WELL-05 had no well
+at all: the dressing's `well_side` had found no room in its clearing, and the lab laid nothing.
+
+- The well is the `WishingWell` everywhere (`kit/setpieces.healing_well`): Westwood's campaign well, a TRIGGER the
+  player uses (Con02a's runs the script MakeAWish); the plain `Well` is a prop that does nothing. Each is named
+  `HealWell<n>` (`setpieces.HEAL_PREFIX`) so the map's behaviour scripts can make it heal health and mana fully. The
+  designs' square wells, the dressing's `well_side` and the well yard all lay it.
+- A well yard (`kit/yards` kind `"well"`, `kit/setpieces._well`) is planned before the land is carved, so it is never
+  dropped for want of room. The well stands on whole squares of grey cobbles (CobblestoneGrayLight, Westwood's on grass,
+  blended BlendEdge; CobbleStone reads as bare earth). Nox has no bucket: the bucket of tools (BarrelWithTools) and
+  water barrels stand for them. Archetypes: plain (5 x 5 squares of paving, water barrels either side, the bucket of
+  tools and a barrel behind, a bench before it facing it, a torch pole at each corner); fenced (a low wooden fence and
+  a gate centred on its side, lamps or torch poles flanking the gate, the same pieces round the well inside, barrels in
+  a bigger yard's corners); market (7 x 7 paving, benches on its four sides facing it, street lamps at the corners,
+  water barrels and the tool barrel on the diagonals). No sign (a sign needs its text; the big signs read badly, nox1).
+- The dressing's `well_side` lays the healing well on 3 x 3 squares of the same paving (`Theme.pave`) with water
+  barrels, the bucket of tools, a barrel and a bench or torch poles, mirrored.
+- Checks: `exterior.well_heals` (a `Well` outdoors, or a WishingWell not named for the script), `exterior.well_feature`
+  (no paving under it, or under two kinds of thing within 130 px), `exterior.set_symmetry`, `exterior.set_variety`.
+
 ## What Westwood uses
 
 **Westwood's well is the `WishingWell`** (the round stone wishing well), in every one of its campaign wells. The kit

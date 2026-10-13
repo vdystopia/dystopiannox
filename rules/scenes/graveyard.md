@@ -3,6 +3,43 @@
 Kit: `kit/yards.py` (`YARDS["graveyard"]`, `plan`, `build`, `_graveyard`). Lab: `py tests/scenelab.py graveyard`.
 Westwood's evidence: 13 campaign scenes (War03b, War03c, War03d, Con04b, Con07B/War07A, Con09b).
 
+## QA round 1 (2026-10-13): organisation and balance [Q1X-8 .. Q1X-12]
+
+**This section overrides the rounds below wherever they differ** (Westwood's rough rows, its stone pens and its crypts
+in a corner). The user: "In most graveyards, the graves just look very scattered and random. The most important thing
+with a graveyard is organization and balance. The graves/headstones should be in symmetrical, even rows. Stone walls
+don't make sense for the graveyard perimeter itself. Stone walls should only be used for smaller mausoleum-type
+buildings within the graveyard and the back wall (opposite of the gate). EX-GRAVEYARD-05 does this PERFECTLY ... Try
+combining headstones with patches of dirt to make fresh-looking graves once in a while. Use more item variety, like
+coffins, more dead / spooky trees, buckets of tools, barrels, torches, bones, skulls, etc. A graveyard should never have
+exclusively graves and no other objects." And: "Center the mausoleum on the southwest wall", "the obelisks on either
+side of the entrance look excellent" (02), "better if the mausoleum was not connected to the fence perimeter" (06), "the
+graves are all on one side and not balanced. very large space with very little in it" (07), "the cobblestone path
+really adds a lot to the aesthetic. The gate is slightly off-center with the cobblestone path" (10); nox7: "the
+alignment on the cobblestone path is way off with the mausoleum and the gate".
+
+The kit (`kit/yards._graveyard`, laid in the yard's `Frame`, mirrored about the gate's axis):
+- the perimeter an iron fence; stone (Cobblestone) only for the back wall opposite the gate and the mausoleums; a pen is
+  a small fenced yard now, never walled in stone all round;
+- the gate centred on its side (`plan` makes that side an odd number of squares; `yards.door_between` hangs the gate in
+  exactly the two middle cells), stone pillars (Monument1) either side of it outside, else torch poles;
+- a cobbled path (RoughCobble, whole squares, 3 wide on a gate in a j side, 2 in an i side, 1 in a narrow yard) from
+  outside the gate straight up the axis to the mausoleum's door;
+- the mausoleum centred on the back wall: built into the stone back wall (one cell, a wide one with two sarcophagi,
+  three side by side, or a pair flanking the path's end with a statue between) or, in a crypt yard, free-standing two
+  squares in from the back wall, never touching the fence; torch poles either side of its door; a pen has a memorial
+  (Monument1) at the path's end between two open-air sarcophagi;
+- the headstones in even rows filling the yard both sides of the path, mirrored, one kind to a row (a main kind and two
+  others), at least 49 px across and 55 px along (Westwood's closest 39); a mirrored pair of fresh graves on dug earth
+  (DirtDark2, the square before the stone) in four yards of five;
+- the back corners (or the front ones when the mausoleum fills the back): the gravedigger at work (an open grave of two
+  squares of dug earth, the spade in the ground, the heap, a coffin, the bucket of tools, a skull and a bone) and,
+  mirrored, the keeper's stores (two barrels, a tool barrel, a coffin waiting); dead trees in the other two corners; a
+  small yard keeps to its path, mausoleum and graves.
+- Checks: `exterior.grave_rows` (headstones 75% in rows of three and 75% mirrored), `exterior.grave_variety` (three
+  kinds of thing besides the graves), `exterior.gate_path` (a 1-4 square path through a gate centred on it within 0.3
+  squares).
+
 ## Purpose
 
 Where the town buries its dead, and a place that is used: graves, and someone digging the next one (SW-9).

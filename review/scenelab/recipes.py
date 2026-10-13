@@ -134,6 +134,10 @@ def _camp_build(kind):
 GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
 JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cave_cell", "cell_row", "cell_row", "guardhouse",
               "cell_row", "cell_row")      # Westwood's 11 jails: 8 castle cell rows, a cave cell, 2 guardhouses
+# QA round 1's set pieces (kit/setpieces): a batch's wells and shrines in a fixed order of their archetypes
+WELL_ORDER = ("plain", "fenced", "market", "plain", "fenced", "market", "plain", "fenced", "market", "plain")
+SHRINE_ORDER = ("obelisk_court", "statue_avenue", "mana_court", "open_chapel", "obelisk_court", "statue_avenue",
+                "mana_court", "open_chapel", "obelisk_court", "statue_avenue")
 WALL_RUN = 7                 # a town wall runs on this many squares past a yard's back corners (Westwood's War03 yards)
 
 
@@ -161,13 +165,13 @@ def _yard_plan(kind):
         for p in ctx["plots"]:
             ring = [(p.c[0] + r * math.cos(k * math.pi / 4), p.c[1] + r * math.sin(k * math.pi / 4))
                     for r in (3, 5) for k in range(8)]
-            arch = {"graveyard": GRAVE_ORDER, "jail": JAIL_ORDER}.get(kind)
+            arch = {"graveyard": GRAVE_ORDER, "jail": JAIL_ORDER, "well": WELL_ORDER, "shrine": SHRINE_ORDER}.get(kind)
             arch = arch[p.k % len(arch)] if arch else None
             y = Y.plan_any(land, p.rng, kind, [p.scene_c, p.c] + ring, toward=p.toward, arch=arch)  # as the designs plan
             if y:
                 ctx["yards"][p.k] = y; p.notes["scene_sq"] = list(y.centre)
                 if getattr(y, "arch", None): p.notes["arch"] = y.arch
-                if p.site == "wall":
+                if p.site == "wall" and kind not in ("well", "shrine"):
                     # the town wall the yard stands against: its back side stone, the wall running on past its corners
                     # (Westwood's graveyards along their crypt walls, its jails in castle masonry)
                     back, ext = _back_ext(y)
@@ -198,7 +202,7 @@ def _yard_build(ctx):
         y = ctx["yards"].get(p.k)
         if not y or not y.plot <= land.squares: continue
         Y.build(m, p.rng, land, y)
-        if p.site == "wall": _town_wall(ctx, p, y)
+        if p.site == "wall" and y.kind not in ("well", "shrine"): _town_wall(ctx, p, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
         out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
@@ -551,6 +555,52 @@ def _shrine_build(ctx):
         _keep(ctx, p.scene_c, 4)
 
 
+def _farm_plan(ctx):
+    """A farmstead (QA round 1, the farmyard: "the exteriors are too empty ... Add some more variety. An apple tree with
+    apples on the ground (the item that players can pick up), a well, multiple gardens"): the farmhouse at the
+    clearing's side as before, a well yard of its own across the yard from it (kit/yards "well"), and in the larger
+    clearings an orchard (kit/yards "orchard") to one side; the gardens and the harvest scenes are laid after."""
+    _house_plan(["mill", "home", "cottage"])(ctx)
+    land = ctx["land"]
+    ctx["yards"] = {}
+    for p in ctx["plots"]:
+        ux, uy = p.dir
+        ys = []
+        # (across the yard from the house first, then anywhere round the clearing's middle: four farmsteads in ten had
+        # found no room for their well on the first five spots)
+        ring = [(p.c[0] + r * math.cos(k * math.pi / 6), p.c[1] + r * math.sin(k * math.pi / 6)) for r in (3, 5, 7)
+                for k in range(12)]
+        yw = Y.plan_any(land, p.rng, "well", [(p.c[0] + ux * a + uy * b, p.c[1] + uy * a - ux * b)
+                                             for a, b in ((2.5, 0), (3.5, 2), (3.5, -2), (1.5, 3), (1.5, -3))] + ring,
+                        toward=p.c, arch="plain")
+        if yw: ys.append(yw)
+        if p.size != "small":
+            yo = Y.plan_any(land, p.rng, "orchard", [(p.c[0] - uy * d + ux * e, p.c[1] + ux * d + uy * e)
+                                                     for d in (6.5, -6.5, 7.5, -7.5) for e in (0, 2, -2)], toward=p.c)
+            if yo: ys.append(yo)
+        ctx["yards"][p.k] = ys
+
+
+def _farm_build(ctx):
+    from kit.village import Village
+    m, land = ctx["m"], ctx["land"]
+    _house_build(ctx)
+    for p in ctx["plots"]:
+        for y in ctx["yards"].get(p.k, ()):
+            if y.plot <= land.squares: Y.build(m, p.rng, land, y)
+    # the household's gardens, two where they fit (the user: "multiple gardens")
+    for bid, b in ctx.get("placed", []):
+        vil = Village(m, random.Random(E.seed_of("farm-garden", bid.name, ctx["seed"])), land)
+        for size in ((5, 3), (5, 3)):
+            vil.garden(b, size=size)
+
+
+def _farm_after(ctx):
+    _theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")(ctx)
+    for p in ctx["plots"]:                               # the picture on the whole farmstead, not one heap
+        p.notes["anchor"] = list(square_px(*p.c))
+
+
 def _nothing(ctx):
     pass
 
@@ -602,8 +652,10 @@ RECIPES = {
     "garden": dict(plan=_garden_plan, build=_garden_build),
     "pond_dock": dict(plan=_pond_plan, build=_pond_build, pond=True),
     # the well by the road, a public landmark (the judge, 2026-10-06: "no road ... placed by geometry rather than use")
-    "well": dict(plan=_house_plan(["home", "inn", "cottage"]), build=_house_build, after_plant=_theme_after(["well_side"]),
-                 by_road=3.5),
+    # (QA round 1: a well yard of its own, kit/yards "well": the well on its cobblestone pad with barrels, the bucket
+    # of tools, a bench, now and then fenced with a gate; EX-WELL-05's clearing had found no room for the dressing's
+    # well, so the lab had laid none: a yard is planned before the land is carved)
+    "well": dict(plan=_yard_plan("well"), build=_yard_build, by_road=4.5, site_map={"wall": "road"}),
     "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
                          after_plant=_theme_after(["market_stall"])),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
@@ -616,8 +668,9 @@ RECIPES = {
     # the shrine by the village's chapel: masonry to stand against (the judge, 2026-10-06: "shrines set against wooden
     # peasant cabins")
     # (since round 8 against a run of Westwood's own shrine walls, not the lab's shrine house: _shrine_plan)
-    "shrine": dict(plan=_shrine_plan, build=_shrine_build, after_plant=_theme_after(["shrine"])),
-    "farmyard": dict(plan=_house_plan(["mill", "home", "cottage"]), build=_house_build,
-                     after_plant=_theme_after(["hay_store", "threshing_floor", "windmill"], culture="farm")),
+    # (QA round 1: a court of its own, kit/yards "shrine" laid by kit/setpieces, in the clearing's open ground; the
+    # wall shrines of rounds 1-8, _shrine_plan and _shrine_build, all rated 1 and dropped)
+    "shrine": dict(plan=_yard_plan("shrine"), build=_yard_build, site_map={"wall": "road"}),
+    "farmyard": dict(plan=_farm_plan, build=_farm_build, after_plant=_farm_after),
     "wolf_den": dict(plan=_nothing, build=_wolf_build),
 }

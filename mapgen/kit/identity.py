@@ -2033,12 +2033,14 @@ def rooms_sidecar(placed, path, yards=()):
                             tiles=len(r.tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3],
                             floor=sorted([x, y] for x, y in r.tiles)))
     for y in yards:
-        from kit.yards import YARDS
-        tiles = sorted([i + j, i - j] for i, j in y.plot)
+        from kit.yards import YARDS, ODD_GATE, yard_ground
+        # (a set piece's ground as laid, symmetric about its gate: kit/yards.yard_ground, QA round 1)
+        tiles = sorted([i + j, i - j] for i, j in (yard_ground(y) if y.kind in ODD_GATE else y.plot))
         xs = [x for x, _ in tiles]; ys = [y_ for _, y_ in tiles]
         out.append(dict(number=len(out) + 1, building="", kind=y.kind, purpose=YARDS[y.kind].get("purpose", ""),
                         tiles=len(tiles), box=[min(xs) - 1, min(ys) - 1, max(xs) + 3, max(ys) + 3], floor=tiles,
-                        yard=True))
+                        yard=True, arch=getattr(y, "arch", None), side=y.side,     # (its axis: the checker's mirror,
+                        gate=list(getattr(y, "gate_mid", None) or ()) or None))      # QA round 1)
     with open(path, "w", encoding="utf-8") as f: json.dump(out, f, indent=1)
     return out
 

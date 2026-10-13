@@ -17,6 +17,7 @@ Single player (Solo), one PlayerStart (the west gate), no .nxz.
 import json, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO
+from kit.setpieces import healing_well      # the well that heals (QA round 1, nox13)
 from kit.identity import MapIdentity, AreaIdentity, BuildingIdentity, BUILDINGS
 from kit.layout import Land, square_tile, square_px, px_square, cell_square
 from kit.vegetation import Planter, FORESTS
@@ -108,7 +109,7 @@ land.reserve_band([LAKE[0], (LAKE[0][0] + 0.1, LAKE[0][1])], LAKE[1] * 1.35 + 2)
 # ---- 2. the centre: the square and its well, and the streets leaving it -----------------------------------
 land.paint_square(m, "village", 10, "RoughCobble")
 vc = land.areas["village"]["c"]
-m.obj_px("Well", *square_px(vc[0], vc[1]))
+healing_well(m, *square_px(vc[0], vc[1]))
 land.taken |= {(int(vc[0]) + a, int(vc[1]) + 1 + b) for a in (-1, 0, 1) for b in (-1, 0, 1)}
 land.paint_roads(m, "DirtDark2", width_squares=2.6, skip=land.reserved)
 

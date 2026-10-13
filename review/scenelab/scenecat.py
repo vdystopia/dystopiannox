@@ -62,7 +62,10 @@ SCENES = {
         sig=r"^Brazier$", link=80, radius=170, min_pieces=2),
     "shrine": dict(
         title="shrine or waystone", rank=14, purpose="a carved stone by the way, torch poles, offerings",
-        sig=r"^(Statue2[a-h]|Statue1[a-h]|Cross\d|DunMirMileStone|DunMirWolfStatue)$", link=90, radius=200,
+        # (QA round 1: the shrine a court of obelisks, pillars or statues round a centrepiece: its stones are signs too,
+        # and it reaches further)
+        sig=r"^(Statue2[a-h]|Statue1[a-h]|Cross\d|DunMirMileStone|DunMirWolfStatue|Obelisk|LOTDManaObelisk|Monument1|"
+            r"HorrendousStatue1|DunMirAltar2|StatueVictory\d[NSEW]{1,2})$", link=140, radius=420,
         min_pieces=2),
     "farmyard": dict(
         title="farmyard", rank=15, purpose="hay and straw heaped by a farmstead, sacks of feed, the wind-mill",

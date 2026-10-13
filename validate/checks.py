@@ -1778,7 +1778,7 @@ SKIP_PROP = re.compile(r"^(Dock|RopeBridge|LavaBridge|TraderTent|ColorLight|Invi
                        r"DunMirTorch|LOTDWallSconse|Sconse|Sign|Plank|Waypoint)|Shadow|Door|Gate|Window")
 # (calibrated on Westwood's maps: plants, bushes, torch poles and statues stand at a wall's or fence's foot there, 553
 # findings on 66 maps; what the playtest saw was crops and goods on the line)
-ON_LINE = re.compile(r"^(Garden|Tombstone|Cross\d|Well$|Anvil|Cauldron|CampFire|MiningShovel|MiningPickAxe|"
+ON_LINE = re.compile(r"^(Garden|Tombstone|Cross\d|Well$|WishingWell$|Anvil|Cauldron|CampFire|MiningShovel|MiningPickAxe|"
                      r"SmallStoneBlock|Brazier)")
 # (calibrated a second time: goods and racks stand snug to building and dungeon walls in Westwood's maps, 147 findings
 # on 45 maps, most where find_rooms sees no room; what the playtest saw was a crop row under a fence)
@@ -1876,6 +1876,7 @@ def check_exterior(m, ctx, base):
                          f"Give each its own post (kit/posts.camp_posts).", a["x"], a["y"]))
     out += outdoor_groups(m)
     out += dock_reach(m)
+    out += setpiece_faults(m, outdoor)          # QA round 1's set pieces (Q1X)
     return out
 
 
@@ -2384,6 +2385,221 @@ def outdoor_groups(m):
     return out
 
 
+# ---- set pieces: QA round 1 (review/qa1/setpieces.md, Q1X-*) --------------------------------------------------------
+# The user's QA round 1 on the exteriors: "spaces are too empty and lack object diversity" and "lack of balance and
+# symmetry: things placed randomly, not lined up with each other". House rules over Westwood's habit (its graveyards'
+# rough rows, its bare wells, its gardens on grass): the user's word.
+GRAVE_RE = re.compile(r"^(Tombstone\d+|TombstoneReadable\d+|LOTDTombstone\d)$")
+CROP_RE = re.compile(r"^Garden(Corn|Tomatos|Cabbage)$")
+WELL_RE = re.compile(r"^(Well|WishingWell)$")
+GATE_RE = re.compile(r"^(Gate|IronFenceGate|BarredGate)$")
+PAVED_RE = re.compile(r"Cobble|Brick|Stone(?!.*Wall)|Marble|Tile")
+DECOR_SKIP = re.compile(r"Shadow$|^(Flowers|Grass|Plant|Bush|Fern|Weeds|PlayerStart)|Lilly|^CaveRocks(Pebbles|Tiny)")
+HEAL_SCRIPT = "HealWell"                 # kit/setpieces.HEAL_PREFIX
+ROW_TOL, MIRROR_TOL = 0.15, 0.25        # squares
+SET_MIN_KINDS = 3                        # a yard's kinds of thing besides its ground (Q1X: "never exclusively graves")
+
+
+def _sq(o):
+    """An object's place in continuous square coordinates (kit/layout.square_px inverted)."""
+    u, v = (o["x"] + o["y"]) / CELL, (o["x"] - o["y"]) / CELL
+    return (u - 1) / 2, (v - 1) / 2
+
+
+def _floor_sq(m, si, sj):
+    i, j = int(math.floor(si)), int(math.floor(sj)) + 1
+    t = m.tiles.get((i + j, i - j))
+    return t["material"] if t else None
+
+
+def _groups(objs, link):
+    left, out = list(objs), []
+    while left:
+        g = [left.pop()]; grew = True
+        while grew:
+            grew = False
+            for o in list(left):
+                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < link for c in g):
+                    g.append(o); left.remove(o); grew = True
+        out.append(g)
+    return out
+
+
+def _rows_share(pts, tol=ROW_TOL):
+    """The share of points standing in a row of three or more along a square axis (either axis, point by point)."""
+    n = sum(1 for p in pts if any(sum(1 for q in pts if abs(q[a] - p[a]) <= tol) >= 3 for a in (0, 1)))
+    return n / len(pts)
+
+
+def _mirror_share(pts, axis=None, tol=MIRROR_TOL):
+    """The share of points with a mirror partner across a line along a square axis: `axis` (a, c), the coordinate a
+    mirrored about c, or the better of the two axes through the points' middle."""
+    opts = [axis] if axis else [(a, (min(p[a] for p in pts) + max(p[a] for p in pts)) / 2) for a in (0, 1)]
+    best = 0.0
+    for a, c in opts:
+        b = 1 - a
+        n = sum(1 for p in pts if any(abs(q[a] - (2 * c - p[a])) <= tol and abs(q[b] - p[b]) <= tol for q in pts))
+        best = max(best, n / len(pts))
+    return best
+
+
+def _yards(m):
+    side = os.path.splitext(m.file or "")[0] + ".rooms.json"
+    if not (m.file and os.path.exists(side)): return []
+    return [r for r in json.load(open(side, encoding="utf-8")) if r.get("yard")]
+
+
+def _in_yard(rec, objs, pad=1):
+    """The objects on a yard's ground (its floor tiles, `pad` tiles round them)."""
+    fl = {tuple(c) for c in rec.get("floor", [])}
+    near = {(x + a, y + b) for x, y in fl for a in range(-pad, pad + 1) for b in range(-pad, pad + 1)}
+    out = []
+    for o in objs:
+        si, sj = _sq(o)
+        i, j = int(math.floor(si)), int(math.floor(sj)) + 1
+        if (i + j, i - j) in near: out.append(o)
+    return out
+
+
+def _yard_axis(rec):
+    """(a, c): the coordinate mirrored about c, from a yard's recorded gate (kit/yards Yard.side, gate_mid)."""
+    side, gm = rec.get("side"), rec.get("gate")
+    if not side or not gm: return None
+    return (0, gm[0]) if side in ("j0", "j1") else (1, gm[1])
+
+
+def setpiece_faults(m, outdoor):
+    out = []
+    # ---- the wells: the healing well, a feature on its own paving with things about it [Q1X-4, Q1X-5] -------------
+    for o in outdoor:
+        if not WELL_RE.match(o["type"]): continue
+        if o["type"] == "Well":
+            out.append(F("exterior", "warning", "A Well stands outdoors: it is not the healing well. A map's wells are the "
+                         "WishingWell, which heals the player as in the Nox campaign (kit/setpieces.healing_well; QA "
+                         "round 1).", o["x"], o["y"], rule="exterior.well_heals"))
+        elif not (o.get("scr") or "").split(":")[-1].startswith(HEAL_SCRIPT):
+            out.append(F("exterior", "warning", f"A WishingWell is not named for the healing script ({HEAL_SCRIPT}<n>): "
+                         f"the map's scripts cannot make it heal (kit/setpieces.healing_well).", o["x"], o["y"],
+                         rule="exterior.well_heals"))
+        si, sj = _sq(o)
+        paved = PAVED_RE.search(_floor_sq(m, si, sj) or "")
+        kinds = {_kind_stem(p["type"]) for p in outdoor if p is not o and not DECOR_SKIP.search(p["type"]) and
+                 "MONSTER" not in p["cls"] and math.hypot(p["x"] - o["x"], p["y"] - o["y"]) < 130}
+        if not paved or len(kinds) < 2:
+            out.append(F("exterior", "warning", f"The well is not a feature: {'no paving under it' if not paved else 'paved'}"
+                         f", {len(kinds)} kind(s) of thing by it. A well stands on its own cobblestone with barrels, the "
+                         f"bucket of tools, a bench by it (kit/yards 'well', scenes well_side; QA round 1).", o["x"], o["y"],
+                         rule="exterior.well_feature"))
+    # ---- the graveyards: graves in even rows, balanced either side of the path; never graves alone [Q1X-8..Q1X-11] -
+    yards = _yards(m)
+    gy = [r for r in yards if "grave" in (r.get("kind") or "")]
+    # (every headstone and crop, indoors or out: a fenced yard no map declares reads as a room to _indoor_cells)
+    graves = [o for o in m.objects if GRAVE_RE.match(o["type"])]
+    # (a yard's own headstones where the map declares its yards, else the stones within 200 px of each other: Westwood's
+    # graveyards' link, review/scenelab/scenecat.py)
+    sets = [(r, _in_yard(r, graves)) for r in gy] if gy else [(None, g) for g in _groups(graves, 200)]
+    for rec, g in sets:
+        if len(g) < 5: continue
+        pts = [_sq(o) for o in g]
+        rows, mir = _rows_share(pts), _mirror_share(pts, _yard_axis(rec) if rec else None)
+        x, y = sum(o["x"] for o in g) / len(g), sum(o["y"] for o in g) / len(g)
+        if rows < 0.75 or mir < 0.75:
+            out.append(F("exterior", "warning", f"{len(g)} headstones stand {rows:.0%} in rows and {mir:.0%} mirrored: a "
+                         f"graveyard's graves stand in even rows, balanced either side of its path (kit/yards._graveyard; "
+                         f"QA round 1).", x, y, rule="exterior.grave_rows"))
+        near = _in_yard(rec, m.objects) if rec else [o for o in m.objects if math.hypot(o["x"] - x, o["y"] - y) < 260]
+        kinds = {_kind_stem(o["type"]) for o in near if not GRAVE_RE.match(o["type"]) and not DECOR_SKIP.search(o["type"])
+                 and not m.is_door(o) and "MONSTER" not in o["cls"]}
+        if len(kinds) < SET_MIN_KINDS:
+            out.append(F("exterior", "warning", f"The graveyard has graves and {len(kinds)} other kind(s) of thing: never "
+                         f"graves alone (a coffin, dead trees, the bucket of tools, barrels, torches, bones; QA round 1).",
+                         x, y, rule="exterior.grave_variety"))
+    # ---- a gate's path centred on the gate [Q1X-10] ---------------------------------------------------------------
+    gates = [o for o in m.objects if GATE_RE.match(o["type"])]
+    seen = set()
+    for a in gates:
+        if a["id"] in seen: continue
+        b = min((g for g in gates if g is not a and g["id"] not in seen), default=None,
+                key=lambda g: math.hypot(g["x"] - a["x"], g["y"] - a["y"]))
+        if b is None or math.hypot(b["x"] - a["x"], b["y"] - a["y"]) > 75: continue
+        seen |= {a["id"], b["id"]}
+        (ai, aj), (bi, bj) = _sq(a), _sq(b)
+        mi, mj = (ai + bi) / 2, (aj + bj) / 2
+        along = 0 if abs(bi - ai) > abs(bj - aj) else 1          # the gate's line runs along this square axis
+        worst = 0.0
+        # the paved squares across the gate's line, a square or so either side of it: the run nearest the gate's
+        # middle, its extent against the middle (square i spans i..i + 1 across i, square j spans j - 1..j across j)
+        mid = mi if along == 0 else mj
+        k0 = int(math.floor(mid))
+        span = (lambda k: (k, k + 1)) if along == 0 else (lambda k: (k - 1, k))
+        for n in (-1.5, -1.0, -0.5, 0.5, 1.0, 1.5):
+            w = (mj if along == 0 else mi) + n
+            def paved(k):
+                i, j = (k, int(math.floor(w)) + 1) if along == 0 else (int(math.floor(w)), k)
+                t = m.tiles.get((i + j, i - j))
+                return bool(t and PAVED_RE.search(t["material"]))
+            # (a path through the gate: paved where the gate opens, its middle's square or one beside the middle; paving
+            # that only passes near a gate, a well's pad beside a garden's, is not its path)
+            ks = [k for k in range(k0 - 2, k0 + 4) if paved(k) and span(k)[0] - 1e-6 <= mid <= span(k)[1] + 1e-6]
+            if not ks: continue
+            c = ks[0]
+            lo = hi = c
+            while lo > k0 - 8 and paved(lo - 1): lo -= 1
+            while hi < k0 + 8 and paved(hi + 1): hi += 1
+            if hi - lo + 1 > 4: continue                      # a paved yard or road, not a path (1-4 squares)
+            worst = max(worst, abs((span(lo)[0] + span(hi)[1]) / 2 - mid))
+        if worst > 0.3:
+            out.append(F("exterior", "warning", f"The path through the gate is {worst:.1f} squares off the gate's middle: a "
+                         f"path runs centred on its gate (kit/yards.Frame; QA round 1, EX-GRAVEYARD-10, nox7).",
+                         (a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2, rule="exterior.gate_path"))
+    # ---- the gardens: crops on dug earth, in even straight rows [Q1X-13, Q1X-14] -----------------------------------
+    crops = [o for o in m.objects if CROP_RE.match(o["type"])]
+    for g in _groups(crops, 70):
+        if len(g) < 6: continue
+        x, y = sum(o["x"] for o in g) / len(g), sum(o["y"] for o in g) / len(g)
+        grass = sum(1 for o in g if re.match(r"^Grass", _floor_sq(m, *_sq(o)) or ""))
+        if grass > 0.3 * len(g):
+            out.append(F("exterior", "warning", f"{grass} of {len(g)} crops grow in grass: a garden's plants grow on dug "
+                         f"earth inside its fence (kit/yards.lay_crop_rows; QA round 1).", x, y, rule="exterior.crop_ground"))
+        pts = [_sq(o) for o in g]
+        rows = _rows_share(pts, 0.1)
+        # the gaps along each row even
+        uneven = 0.0
+        for a in (0, 1):
+            byrow = collections.defaultdict(list)
+            for p in pts: byrow[round(p[a] / 0.1)].append(p[1 - a])
+            for vs in byrow.values():
+                if len(vs) < 4: continue
+                vs.sort()
+                gaps = [q - p for p, q in zip(vs, vs[1:])]
+                mu = sum(gaps) / len(gaps)
+                if mu > 0: uneven = max(uneven, (sum((x_ - mu) ** 2 for x_ in gaps) / len(gaps)) ** 0.5 / mu)
+        if rows < 0.85 or uneven > 0.25:
+            out.append(F("exterior", "warning", f"{len(g)} crops stand {rows:.0%} in straight rows, their gaps uneven by "
+                         f"{uneven:.0%}: a garden's rows run straight and even (kit/yards.lay_crop_rows; QA round 1).", x, y,
+                         rule="exterior.crop_rows"))
+    # ---- every yard holds several kinds of thing; a shrine's or a well's pieces mirror each other [Q1X-1, Q1X-2] ------
+    for rec in yards:
+        k = rec.get("kind") or ""
+        if "grave" in k or k == "jail": continue
+        objs = [o for o in _in_yard(rec, outdoor, pad=0) if not DECOR_SKIP.search(o["type"]) and not m.is_door(o) and
+                "MONSTER" not in o["cls"] and not o["type"].startswith("RedApple")]
+        if not objs: continue
+        x, y = sum(o["x"] for o in objs) / len(objs), sum(o["y"] for o in objs) / len(objs)
+        kinds = {_kind_stem(o["type"]) for o in objs}
+        if len(kinds) < SET_MIN_KINDS:
+            out.append(F("exterior", "warning", f"The {k} holds {len(kinds)} kind(s) of thing: a set piece is never one or "
+                         f"two kinds alone (kit/setpieces; QA round 1).", x, y, rule="exterior.set_variety"))
+        ax = _yard_axis(rec)
+        if k in ("shrine", "well") and ax and len(objs) >= 4:
+            mir = _mirror_share([_sq(o) for o in objs if m.blocking(o) or WELL_RE.match(o["type"])] or [(0, 0)], ax)
+            if mir < 0.8:
+                out.append(F("exterior", "warning", f"The {k}'s pieces stand {mir:.0%} mirrored about its axis: a set "
+                             f"piece's pieces stand in pairs, balanced either side of its way in (kit/setpieces; QA round "
+                             f"1).", x, y, rule="exterior.set_symmetry"))
+    return out
+
+
 # ---- transporters: lifts, stairs, portals, passages (rules/TRANSPORTERS.md) ------------------------------------------
 TP_WALL_PX = 23          # an end under this far from a wall cell's centre: Westwood's lifts and landings keep 23 px or more
 TP_POCKET = 12           # cells: a landing area smaller than this, with no way on, traps the player
@@ -2625,6 +2841,15 @@ RULES = [
     ("exterior.bedroll", "exterior", r"lies alone in the open", "GW-4 SW-1"),
     ("exterior.pile", "exterior", r"heaped with nothing else", "GW-2"),
     ("exterior.graveyard", "exterior", r"The graveyard holds", "SW-9"),
+    ("exterior.well_heals", "exterior", r"not the healing well|not named for the healing script", "Q1X-4"),
+    ("exterior.well_feature", "exterior", r"^The well is not a feature", "Q1X-5"),
+    ("exterior.grave_rows", "exterior", r"headstones stand .* in rows", "Q1X-8"),
+    ("exterior.grave_variety", "exterior", r"has graves and", "Q1X-11"),
+    ("exterior.gate_path", "exterior", r"off the gate's middle", "Q1X-10"),
+    ("exterior.crop_ground", "exterior", r"crops grow in grass", "Q1X-13"),
+    ("exterior.crop_rows", "exterior", r"crops stand .* in straight rows", "Q1X-14"),
+    ("exterior.set_variety", "exterior", r"kind\(s\) of thing: a set piece", "Q1X-1"),
+    ("exterior.set_symmetry", "exterior", r"pieces stand .* mirrored about its axis", "Q1X-2"),
     ("transport.link", "transport", r"it moves nobody", "TR-1"),
     ("transport.landing", "transport", r"lands the player.* lies (in the void|in a wall|on a )", "TR-1"),
     ("transport.wall", "transport", r"lands the player.* px from a wall", "TR-1"),

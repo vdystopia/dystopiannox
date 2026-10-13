@@ -4,6 +4,31 @@ Kit: the catalogue's `shrine` (a wall scene) and `waystone` (open, by a road in 
 `kit/dressing.Exterior`. Lab: `py tests/scenelab.py shrine` (since round 4 in the hamlet's ground, among houses).
 Westwood's evidence: 28 campaign scenes (Con04b's castle garden, Con05A, Con07B-E, War03a-c, War04a-b, War07A, Wiz02B).
 
+## QA round 1 (2026-10-13): a court, not a wall [Q1X-1, Q1X-2, Q1X-3]
+
+**This section overrides the rounds below.** The user rated all ten of the lab's wall shrines 1, "drop": "These are all
+awful. Change shrines drastically. Give them a square or rectangular shape defined by obelisks and mana pillars or
+parallel statues that lead to a grand centerpiece. Needs much more structure." Westwood's shrines against a wall are no
+longer the model.
+
+- Kit: a shrine is a court of its own, `kit/yards` kind `"shrine"` (planned before the land is carved, `yards.plan` /
+  `plan_any`; built after its walls, `yards.build`), laid by `kit/setpieces._shrine` in the yard's `Frame`. The
+  catalogue's wall `shrine` theme is retired (cap 0; no role calls for it).
+- The court: 9 x 11 to 11 x 15 squares of paving (RoughCobble with an aisle of grey cobbles, or the reverse), entered
+  from the screen's bottom (its south-east or south-west side, `yards.FRONT_ENTRY`), so its centrepiece stands at the
+  back, seen over the court.
+- Its shape is set by its pieces: one at each corner, a row down each long side evenly spaced between them, all in
+  mirrored pairs; an aisle up the axis to a dais and the grand centrepiece; braziers or flame basins either side of
+  the way in.
+- Archetypes (`yards.SET_ARCHS`): obelisk court (mana obelisks at the corners, stone obelisks down the sides, urns
+  lining the aisle, the great seated statue or the gold wolf between flame basins); statue avenue (victory statues
+  facing each other across the aisle, torch poles down the sides, stone obelisks at the corners); mana court (dark mana
+  obelisks at the corners, blue mana obelisks down the sides, stone obelisks lining the aisle, a ring of mana crystals
+  round a blue obelisk); open-air chapel (columns at the corners and down the sides, benches in rows facing the altar,
+  a statue behind it, flame basins and urns).
+- Checks: `exterior.set_variety` (three kinds of thing at least), `exterior.set_symmetry` (its pieces mirrored about
+  its axis, 80%); look at the lab's pictures for the shape and the centrepiece.
+
 ## What Westwood's are
 
 Statues, not offerings. Statues of one kind, three in a row along a screen diagonal ~49 px apart (Con04b, Con07C,

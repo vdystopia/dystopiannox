@@ -44,6 +44,7 @@ is not carried: kit/campaign.py.)
 import json, math, os, random, sys
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO, CELL
+from kit.setpieces import healing_well      # the well that heals (QA round 1, nox13)
 from kit.identity import MapIdentity, AreaIdentity, BUILDINGS, rooms_sidecar
 from kit.layout import square_px, px_square, bfs_distance
 from kit.vegetation import Planter, FORESTS, TOWN_PLANTING
@@ -138,7 +139,7 @@ for bid, b in placed:
     for sc in role["scenes"]: vil.scene(b, sc, role=bid.role)
     if rng.random() < role["garden"]: vil.garden(b, size=(rng.randint(3, 5), rng.randint(2, 4)))
 well_xy = square_px(vc[0] + 0.5, vc[1] - 0.5)
-m.obj_px("Well", *well_xy)
+healing_well(m, *well_xy)
 
 
 def lamp(si, sj):
