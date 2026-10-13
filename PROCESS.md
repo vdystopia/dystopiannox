@@ -588,7 +588,8 @@ the fewest trees or rocks that wall a target off.
   (`PlankSign1-4`: "this large style sign does not look good. Use the smaller ones instead, always"); `camps.signpost`
   stands `Sign1`. A sign's text is one line: `q.text(..., "Sign")` joins the lines ("THE OLD BRIDGE - To the mill.");
   120 characters at most (Westwood's longest is 99); past 200 is an error and past 239 crashes the client. A longer
-  text goes on a short row of signs (ModLab's `sign()`). A sign that reads nothing is not stood.
+  text goes on a short row of signs (`signs.wrap`: ModLab's `sign()`, the gauntlets' `sign_row`). A sign that reads
+  nothing is not stood.
 - **Every well heals** (`kit/wells.py`; nox13 and the well set: "the player can interact with them to fully heal health
   and mana, like in the original nox campaign"). Westwood's well is a WishingWell running MakeAWish: health to full,
   "You feel refreshed after drinking from the well.", the RestoreHealth sound, and a "Magical Well" sign beside it.

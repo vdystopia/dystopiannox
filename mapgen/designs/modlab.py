@@ -42,20 +42,9 @@ def sign(key, s, u, v, kind="Sign1", step=(0, -3)):
     """A small sign, or a short row of them: a sign prints its text on one line and a long one crashes the client
     (QA round 1, M2: the Giant Crab's sign, 274 characters, crashed the game to the desktop; kit/signs.py). A text past
     SIGN_WARN characters is cut at its sentences onto signs `step` uv units apart, "W1 (2 of 3): ..." on the next."""
-    from kit.signs import one_line, SIGN_WARN
-    s = one_line(s)
-    room = SIGN_WARN - 14                               # room for "W1 (2 of 3): "
-    parts, cur = ([s], []) if len(s) <= SIGN_WARN else ([], [])
-    for w in ([] if parts else s.split(" ")):           # wrapped by words, at a sentence's end where one falls late
-        if cur and len(" ".join(cur + [w])) > room:
-            ends = [i for i, c in enumerate(cur) if c[-1] in ".!?" and len(" ".join(cur[:i + 1])) >= room * 0.45]
-            cut = ends[-1] + 1 if ends else len(cur)
-            parts.append(" ".join(cur[:cut])); cur = cur[cut:]
-        cur.append(w)
-    if cur: parts.append(" ".join(cur))
-    tag = s.split(" ", 1)[0]
+    from kit.signs import wrap, SIGN_WARN
+    parts = wrap(s)
     for k, part in enumerate(parts):
-        if k: part = f"{tag} ({k + 1} of {len(parts)}): {part}"
         assert len(part) <= SIGN_WARN, (key, part)
         m.obj_px(kind, *P(u + step[0] * k, v + step[1] * k), xfer={"Text": text(key if not k else f"{key}_{k + 1}", part)})
 
@@ -139,8 +128,9 @@ mods.attach()
 
 out_dir = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "out")
 if out_dir != "-":
-    lines = m.build(out_dir)
+    os.makedirs(out_dir, exist_ok=True)       # the text first: the build's checker reads the signs' text beside the map
     with open(os.path.join(out_dir, f"{NAME}.strings.json"), "w", encoding="utf-8") as f:
         json.dump(TEXT, f, ensure_ascii=False, indent=1)
+    lines = m.build(out_dir)
     print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))
 print(f"creatures {len(pop.placed)} | signs {len(TEXT)} | mod calls {len(mods.calls)}")

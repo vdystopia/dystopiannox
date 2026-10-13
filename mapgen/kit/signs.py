@@ -49,3 +49,22 @@ def problem(text):
     if len(text) > SIGN_WARN:
         return "warning", f"reads {len(text)} characters: Westwood's longest is 99 (keep a sign to a line, {SIGN_WARN} at most)"
     return None
+
+
+def wrap(text, limit=SIGN_WARN):
+    """A text too long for one sign, on a short row of signs: [part, ...], each one line of `limit` characters at most,
+    cut at a sentence's end where one falls late enough, else between words; the second and later parts start with the
+    first word of the text and "(k of n):" ("W1 (2 of 3): ..."). A short text is one part."""
+    s = one_line(text)
+    if len(s) <= limit: return [s]
+    room = limit - len(s.split(" ", 1)[0]) - 13      # room left after "W1 (2 of 3): "
+    parts, cur = [], []
+    for w in s.split(" "):
+        if cur and len(" ".join(cur + [w])) > room:
+            ends = [i for i, c in enumerate(cur) if c[-1] in ".!?" and len(" ".join(cur[:i + 1])) >= room * 0.45]
+            cut = ends[-1] + 1 if ends else len(cur)
+            parts.append(" ".join(cur[:cut])); cur = cur[cut:]
+        cur.append(w)
+    if cur: parts.append(" ".join(cur))
+    tag = s.split(" ", 1)[0]
+    return [p if k == 0 else f"{tag} ({k + 1} of {len(parts)}): {p}" for k, p in enumerate(parts)]

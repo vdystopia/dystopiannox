@@ -155,7 +155,7 @@ def check_people(m, ctx, base):
         for k, n in enumerate(r.get("waypoints") or []):
             w = by_name.get(n)
             if w is not None and k < len(r.get("pauses") or []) and r["pauses"][k] > 0:
-                stops.append((w, r.get("who", "?")))
+                stops.append((w, r.get("who", "?"), r.get("kind")))
     if not people and not stops: return []
     gen = generated(m)
     sev = lambda s: s if gen else "info"
@@ -170,7 +170,7 @@ def check_people(m, ctx, base):
             out.append(F("people", sev("error"), f"{who(o)} stands in a doorway, {math.dist(d, (o['x'], o['y'])):.0f} px "
                          f"from the door's middle: a person waits beside a door, never in it or in its way "
                          f"(StoryMap.doorside, settle_people).", o["x"], o["y"]))
-    for w, name in stops:
+    for w, name, _ in stops:
         d = _in_door((w["x"], w["y"]), doors)
         if d:
             out.append(F("people", sev("error"), f"{name}'s stop {(w.get('name') or '').split(':')[-1]} stands in a "
@@ -179,7 +179,8 @@ def check_people(m, ctx, base):
     # crowding: the people who stand at each door
     for (c, n, half) in doors:
         still = {who(o) for o in people if math.dist(c, (o["x"], o["y"])) < DOOR_CROWD}
-        near = still | {name for w, name in stops if math.dist(c, (w["x"], w["y"])) < DOOR_CROWD}
+        # (a journey's end at a door is a homecoming: the rescued boy walks home to his mother waiting there)
+        near = still | {name for w, name, kind in stops if kind != "journey" and math.dist(c, (w["x"], w["y"])) < DOOR_CROWD}
         # someone waits at the door and another comes to stand there, or three walkers' stops share it
         if (still and len(near) >= 2) or len(near) >= 3:
             out.append(F("people", sev("warning"), f"{len(near)} people stand at one door ({', '.join(sorted(near))}): "
