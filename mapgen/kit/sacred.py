@@ -414,7 +414,7 @@ def chapel(f):
     # the narthex by the door: founders' tombs in a big nave, else a pair of statues flanking the runner's foot
     d_n = (d_lo - 0.8 + 2.4) / 2.0
     tomb = None
-    if tiles >= 150:
+    if tiles >= 110:
         tombs = [t for t in _oriented(f, ax, r"^Crypt(1|3|5|6|7|8|9|10|11|12)$", across=False)]
         tomb = f.rng.choice(tombs) if tombs else None
     if tomb and d_lo - 2.4 >= 2 * ax.halves(tomb)[0] + 1.0:
@@ -728,10 +728,12 @@ def _mana_walls(f, ax, sp, rings):
             t = f.side_variant("PotionShelves1", r, "shelves")
         else:
             t = f.side_variant("DunMirChest1" if f.ok_type("DunMirChest1") else "Chest1", r, "storage")
+        a0 = 2.6                                 # where the bookcases start either side of the wall's middle
         if t:
             hu, hv = f.half(t)
-            hp = hu if r["line"] == "/" else hv
-            f.try_put(t, *f._uv_on(r, hp + 0.22, mid), snug=True)
+            hp, hl = (hu, hv) if r["line"] == "/" else (hv, hu)
+            if f.try_put(t, *f._uv_on(r, hp + 0.22, mid), snug=True) and choice != "chest":
+                a0 = hl + 0.05                   # end to end with the shelves or the workstation (no bare gap: TP3-b)
         # bookcases end to end either side, mirrored about the wall's middle
         bc = f.side_variant("Bookcase1", r, "shelves")
         if bc:
@@ -739,7 +741,7 @@ def _mana_walls(f, ax, sp, rings):
             hp, ha = (hu, hv) if r["line"] == "/" else (hv, hu)
             n_bc = max(2, min(4, int((r["hi"] - r["lo"]) * 0.18 / (2 * ha))))
             for k in range(n_bc):
-                a = 2.6 + ha + k * (2 * ha + 0.05)
+                a = a0 + ha + k * (2 * ha + 0.05)
                 o1 = f.try_put(bc, *f._uv_on(r, hp + 0.18, mid - a), snug=True, touch=True)
                 o2 = o1 and f.try_put(bc, *f._uv_on(r, hp + 0.18, mid + a), snug=True, touch=True)
                 if o1 and not o2: f._remove(o1)
