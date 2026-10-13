@@ -95,11 +95,14 @@ ARCHETYPES = {
                   "round table, barrels and a chest",
              rooms=("Con02a@93,175", "Con06a@69,199")),
     ],
-    "cell": [
+    # (QA round 1, Q1R-11: the ogres' pens are a type of their own, ogre_pen)
+    "ogre_pen": [
         dict(name="straw_pen", cover=1.0,
              desc="an ogre pen: straw heaped over the floor, a primitive obelisk in a corner, a stool or a bench",
              rooms=("Con11a@166,52", "Con11a@174,44", "Con11a@182,36", "Con11a@194,80", "Con11a@202,72",
                     "Con11a@210,64")),
+    ],
+    "cell": [
         dict(name="gaol_cell", cover=1.0, focal="opposite",
              desc="a gaol cell: one cot on a back wall, straw lining the walls and strewn, nothing else",
              rooms=("War07A@160,230", "War07A@164,226", "War07A@174,236")),
@@ -121,6 +124,9 @@ ARCHETYPES = {
         dict(name="bunk_row", cover=1.0, focal="opposite",
              desc="bunks of one kind in a row on one wall with chests, the crew's tables and chairs free before them, "
                   "arms hung", rooms=("Con06b@160,48", "Con06b@106,192", "Con05A@48,66")),
+    ],
+    # (QA round 1, Q1R-8: the ogres' barracks are a type of their own, ogre_den)
+    "ogre_den": [
         dict(name="ogre_den", cover=1.0,
              desc="the ogres' den: straw heaped over the floor, crude beds on the back walls, a table with stools, "
                   "barrels in a knot, meat", rooms=("Con05C@122,91", "Con05C@140,109", "Con09c@50,210", "Con09c@62,206")),

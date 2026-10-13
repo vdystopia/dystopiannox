@@ -1825,14 +1825,15 @@ class Furnisher:
         tws = _RT.get("type_wall_sides", {})
         return max(ok, key=lambda s: (tws.get(s) or {}).get(r["side"], 0))
 
-    def bed_row(self, n):
+    def bed_row(self, n, single=False):
         """Bunks for a crew: up to n beds of one kind, headboards against the wall, evenly spaced with room
         between them (TreePlace v0.2 playtest: beds too close together). One row on the wall that holds the
         most, a SE or SW wall first (the NE and NW walls are kept for the shelves and hangings that face the
         camera, TreePlace v0.3 room review); when one wall holds too few, two
         rows facing each other across an aisle. A single row gets a chest at each bed's foot and rugs before
         them; nightstands stand between neighbours. Westwood's rooms with 3 or more beds all use one bed
-        kind, lined up. Returns the beds placed."""
+        kind, lined up. single: one row only, whatever it holds (a barracks: "one wall of beds and one wall of weapon
+        and armor racks", QA round 1, Q1R-9). Returns the beds placed."""
         stems = Counter()
         for t, w in self.types_of("bed").items(): stems[re.sub(r"\d+$", "", t)] += w
         if not stems: return []
@@ -1845,7 +1846,7 @@ class Furnisher:
         back = lambda r: r["side"] in BACK_SIDES
         best1 = max(rows.values(), key=lambda x: (len(x[2]), not back(x[0]), x[0]["hi"] - x[0]["lo"]))
         choice = [best1]
-        if len(best1[2]) < n:                          # two rows facing each other across an aisle
+        if len(best1[2]) < n and not single:           # two rows facing each other across an aisle
             hp_of = lambda r, t: self.half(t)[0] if r["line"] == "/" else self.half(t)[1]
             best2 = None
             for r1, t1, p1 in rows.values():
@@ -4082,7 +4083,7 @@ class Furnisher:
                 done[fam] += n
                 continue
             if st["slot"] == "bed_row":
-                beds = self.bed_row(n)
+                beds = self.bed_row(n, single=st.get("single", False))
                 done[fam] += len(beds)
                 if beds: placed[fam] = True
                 continue

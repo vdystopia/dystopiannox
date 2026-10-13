@@ -768,7 +768,8 @@ ROOMS = {
                             "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$"},
                      prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1}},
                      top_up=(), decor_max=0, lined_goal=0.0, bed_nightstands=False,
-                     compose=[dict(fam="bed", slot="bed_row"),
+                     # (QA round 1, Q1R-9: one wall of beds, the racks of arms and armour on another: kit/finish.py)
+                     compose=[dict(fam="bed", slot="bed_row", single=True),
                               dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                               dict(fam="table", slot="center", seats=True),
                               dict(fam="shop_rack", slot="wall", at="center", clear=1.0, n=1)],

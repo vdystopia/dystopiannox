@@ -58,4 +58,15 @@ def apply(rooms, excluded=None):
         if v.get("retype") and r["type"] != v["retype"]:
             r = dict(r, type=v["retype"], classed=r.get("classed", r["type"]))
         out.append(r)
-    return out
+    return [_split(r) for r in out]
+
+
+# QA round 1 (2026-10-13, Q1R-8, Q1R-11): "Ogre barracks are completely different than regular barracks ... Separate
+# these two categories out"; "Create a separate category for ogre cells and human cells". The ogres' rooms of a type are
+# a type of their own (kit/roomtypes.py ogre_den, ogre_pen), judged against the ogres' rooms only.
+CULTURE_SPLIT = {("barracks", "ogre"): "ogre_den", ("cell", "ogre"): "ogre_pen"}
+
+
+def _split(r):
+    t = CULTURE_SPLIT.get((r.get("type"), r.get("culture")))
+    return dict(r, type=t, classed=r.get("classed", r["type"])) if t else r
