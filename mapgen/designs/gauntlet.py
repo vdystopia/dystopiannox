@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 from nox import Spec, SOLO
 from kit.layout import Land, square_px, square_tile
 from kit.npcs import Population
-from kit.mods import Mods, WEAPONS, MONSTERS
+from kit.mods import Mods, WEAPONS, MONSTERS, BASE_WEAPONS
 from kit.vegetation import Planter, FORESTS, TOWN_PLANTING
 from kit.biome import Dresser
 
@@ -224,7 +224,7 @@ def build(k, out_dir=None):
              f"caster's kit, supplies. Then fight through {n} arenas ({gid}-A1 to A{n}) to the boss ({gid}-B: "
              f"{', '.join(MONSTERS[b]['name'][4:] for b in T['boss'])}).")
     sign_row("Sign1", lambda k: at(-3.0 - 0.8 * k, 2.2), "Intro", intro)
-    for i, wid in enumerate(WEAPONS):                              # the row of power weapons, a sign by each
+    for i, wid in enumerate(BASE_WEAPONS):                         # the row of power weapons, a sign by each
         b = -6.25 + 2.5 * i
         mods.weapon(wid, *at(-1.0, b))
         sign_row("Sign2" if i % 2 else "Sign1", lambda k: at(-2.0 - 0.8 * k, b), wid, WEAPONS[wid]["text"])

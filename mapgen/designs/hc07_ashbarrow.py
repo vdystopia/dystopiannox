@@ -33,7 +33,7 @@ The story
   barrow-field and kept the old dead quiet; the priests put them out and sang the ash-wardens up out of their graves.
   Wystan asks the player to lay his three risen brothers to rest, one at each fire (north-west, east and south): each
   one's death relights his fire, and when all three are dead Wystan pays.
-- The Stormcaller (W4), the bell-founders' storm-staff, for wizards and conjurers, lies in the bell-keepers' library.
+- The Stormcaller (W4), the bell-founders' storm-staff (a lightning staff, so wizards only since QA round 1), lies in the bell-keepers' library.
 - Loot: the library's chest, the founders' chests, caches in the hills and the lodge's stores.
 
 Tokens: reads RELIQUARY (the outer wardens stand aside; Wystan's line); gives SPIRIT_STONE (the Cantor's, dropped once)

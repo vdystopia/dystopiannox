@@ -1,7 +1,10 @@
 """ModLab: creative additions to the base game, laid out to try one by one (dystopiannox/mods/MODLAB.md;
 scripts: kit/behaviours/mods.go, wired by kit/mods.py). Every feature has a sign with its ID.
 
-- the armoury (west end of the long gallery, by the start): six power weapons W1-W6 on the floor, a sign by each;
+- the armoury (west end of the long gallery, by the start): the power weapons on the floor, a row per weapon with
+  its sign at the row's west end and its tiers or variants left to right (QA round 1: the Flamebrand's three variants
+  W1, W1B, W1C in small, medium and large; the Chakram Storm, Bloodthirst and Frostbite in tiers 1-3), and two
+  signs (SP1) on how the Spirit class plays;
 - the training yard (middle of the gallery, T1): creatures that wait frozen until you come near or strike them,
   and come back six seconds after they die, to try the weapons on;
 - five pens along the north side of the gallery, M1-M5: a new monster in each, frozen until you step into its pen,
@@ -76,16 +79,31 @@ mods = Mods(m, pop)
 mods.test_cell(400, -48)                                                        # sealed: the self-test's stand-ins
 
 # ---- the armoury: W1-W6 --------------------------------------------------------------------------------------
-sign("Welcome", "MODLAB - creative additions to Nox.\nArmoury here (W1-W6), training yard east (T1), monster pens "
-     "north (M1-M5), the forge south (S1). Read the sign beside each thing. Warriors use W1, W2, W3, W5, W6; "
-     "wizards and conjurers use W4.", 210, -6)
-for k, wid in enumerate(WEAPONS):                                               # W1-W6 on the floor, a sign by each
-    v = -15 + 6 * k
-    mods.weapon(wid, *P(224, v), name=f"{wid}_{WEAPONS[wid]['name'].replace(' ', '')}")
-    sign(wid, WEAPONS[wid]["text"], 220, v, step=(-3, 0))
+# One row per weapon family (QA round 1: W1 in three variants, the tiers of W2, W5 and W6), its sign at the west
+# end of the row (a long text runs on westward onto a second sign), its tiers lying left to right (u 217, 222, 227)
+# in the order the sign gives.
+sign("Welcome", "MODLAB: creative additions to Nox. Armoury here: a row per weapon, its sign at the west end, its "
+     "tiers left to right. Training yard east (T1), monster pens north (M1-M5), the forge south (S1).", 207, -6)
+ARMOURY = [("W1", (0, 2, 3)), ("W1B", (0, 2, 3)), ("W1C", (0, 2, 3)), ("W2", (1, 2, 3)), ("W3", (0,)), ("W4", (0,)),
+           ("W5", (1, 2, 3)), ("W6", (1, 2, 3))]
+for k, (wid, tiers) in enumerate(ARMOURY):
+    v = -17 + 4.4 * k
+    order = {3: "small, medium, large"}.get(len(tiers)) if wid.startswith("W1") else "tiers 1, 2, 3"
+    sign(wid, WEAPONS[wid]["text"] + (f" Here, left to right: {order}." if len(tiers) > 1 else ""), 212, v,
+         step=(-3, 0))
+    for j, tier in enumerate(tiers):
+        stem = WEAPONS[wid]["name"].replace(" ", "")
+        # the first W1 and W3 keep the names the forge's lines start from (mods.forge tier0 below)
+        name = {("W1", 0): "W1_Flamebrand", ("W3", 0): "W3_QuakeHammer"}.get((wid, tier), f"{wid}_{stem}_T{tier}")
+        mods.weapon(wid, *P(217 + 5 * j, v), tier=tier, name=name)
 # a chest of spares by the door: a second Chakram Storm and Bloodthirst, and potions (power weapons work from chests)
-m.obj_px("Chest4", *P(204, 12), items=[mods.weapon_item("W2"), mods.weapon_item("W5"), "RedPotion", "RedPotion",
-                                       "RedPotion", "BluePotion"])
+m.obj_px("Chest4", *P(204, 12), items=[mods.weapon_item("W2", tier=2), mods.weapon_item("W5", tier=1), "RedPotion",
+                                       "RedPotion", "RedPotion", "BluePotion"])
+# SP1: the Spirit class is an engine mod (mods/engine/SPIRIT.md), not part of this map; two signs say how it plays
+sign("SP1a", "SP1 THE MYSTIC (Spirit class). Play opennox-spirit-hd.exe and pick the class once called Conjurer. Its "
+     "magic is Spirit, the cyan bar, not mana. Spirit refills three times slower than mana.", 203, -11)
+sign("SP1b", "SP1 HOW SPIRIT FILLS. Half the damage of every blow you land with staff, bow or fist becomes Spirit. "
+     "Mana crystals give none; blue potions still do. Fight close to keep casting.", 203, -15)
 
 # ---- the training yard: T1 -----------------------------------------------------------------------------------
 sign("T1", "T1 TRAINING YARD\nTry the weapons here. The creatures wait until you come near or strike them, and "
@@ -104,7 +122,7 @@ for k, mid in enumerate(MONSTERS):                                              
 # ---- the forge: S1 -------------------------------------------------------------------------------------------
 # the forge explained where it is used (QA round 1, S1: "I'm not sure how this works"): one short sign at each part
 sign("S1", "S1 THE FORGE: lay a weapon by the anvil, then step onto the grey stone patch beside this sign.", 241, -31)
-sign("S1Tiers", "S1: a longsword, battle axe, Flamebrand (W1) or Quake Hammer (W3) is raised to fine, superb, then "
+sign("S1Tiers", "S1: a longsword, battle axe, Flamebrand (W1) or Warp Hammer (W3) is raised to fine, superb, then "
      "masterwork.", 246, -36)
 sign("S1Price", "S1: a tier costs 100, 200 then 400 gold. Any other weapon laid by the anvil is melted down for 20 gold.",
      236, -45)
