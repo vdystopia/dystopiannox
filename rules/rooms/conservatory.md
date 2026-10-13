@@ -90,3 +90,6 @@ The room is composed whole now (`kit/finish.py _conservatory`; the recipe above 
 - A barrel of tools by the beds; a third of the rooms a barrel or a crate. No wheelbarrow exists among the game's
   objects (none in `corpus/out/nox_corpus.db`): the barrel of tools stands for the gardener's gear.
 - Checked: `rooms.qa1_garden_floor`, `rooms.qa1_wells` (planted STq1Grd, STq1Wel).
+- Round 2 (fullness): a pair of statues flanking the first fountain along the room's length, facing it; four clumps of
+  plants on dirt at each fountain's diagonals in a room of 90+ tiles or with two fountains, mirrored; a small room
+  (under 80 tiles) plants its front walls' ends as well. Checked by `rooms.qa1_fullness`.

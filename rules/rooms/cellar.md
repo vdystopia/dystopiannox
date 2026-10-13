@@ -81,3 +81,13 @@ This overrides Westwood's 1-4 kinds: the user's word over Westwood's habit.
   the middle an aisle. One kind never more than three side by side (HB-5). The recipe's types take metal barrels,
   barrels of tools and steel crates.
 - Checked: `rooms.qa1_cellar_kinds`, `rooms.qa1_cask_space` (planted STq1Clr, STq1Csk).
+
+**Round 2 (2026-10-13).** The first pass came out emptier than the round's cellars: "the user didn't want fewer things,
+they wanted more kinds of thing, laid out in order". Now (`kit/finish.py cellar_walls`, `cellar_corners`,
+`cellar_stack`): every wall's free length stocked about half (`CELLAR_WALL_SHARE` 0.55) from its ends, in groups of
+one kind (two or three pieces touching) with the kinds cycling: wooden kegs, metal barrels, crates, barrels of tools,
+sacks, steel crates, water barrels; two log shelves of jars and food on a big cellar's back wall; a piled barrel in each
+bare corner; a stack of four kegs in the middle from 32 tiles. Westwood's run caps are lifted for cellars as a house
+rule (`Furnisher.lift_runs`; the checker's `pieces.run` skips cellars; the grammar lets a cellar heap stock in the open
+from 30 tiles). The great casks keep 0.8 units as drawn. A cellar reads as a cellar by its kegs of every kind and its
+casks (`kit/roomtypes.py` signature). Checked by `rooms.qa1_fullness` too.

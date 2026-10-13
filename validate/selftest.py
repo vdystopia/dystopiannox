@@ -568,6 +568,11 @@ def q1_racks(m):
     for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
 
 
+def q1_empty(m):
+    _declare(m, "cellar")                                      # Q1R-23: "spaces are too empty": a cellar of three barrels
+    for u in (204, 206, 208): m.obj("Barrel", u, 9.2)
+
+
 def q1_hearth(m):
     _declare(m, "living_room"); m.obj("Fireplace3", 206, 9.1)  # Q1R-19: a hearth on the bare boards
 
@@ -747,6 +752,7 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1Ctr", q1_counter, "rooms", "warning", "an armoury with no counter - Q1R-1", "no counter"),
     ("STq1Rck", q1_racks, "rooms", "warning", "a barracks with no racks - Q1R-9", "no racks"),
     ("STq1Hth", q1_hearth, "rooms", "warning", "a hearth on the bare boards - Q1R-19", "no hearth of brick"),
+    ("STq1Emp", q1_empty, "rooms", "warning", "a big cellar of three barrels - Q1R-23", "too empty"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),

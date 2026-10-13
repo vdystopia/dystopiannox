@@ -21,6 +21,9 @@ Where the ogres keep a captive: straw, the stocks, a crude obelisk glowing in a 
 - **No bare corner** (RM-CELL-02: "the E corner being bare here doesnt look good"): a barrel or a sack, bones, a stool in
   the corners left.
 
+- **Round 2 (fullness):** a full heap (9-16 bundles), a second heap at the other end of a pen of 36+ tiles, a crude
+  bench centred on a wall, bones and a skull before the stocks. Checked by `rooms.qa1_fullness`.
+
 ## Pieces
 
 - Must: straw (2+), the stocks or the obelisk.

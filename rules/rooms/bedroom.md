@@ -141,3 +141,12 @@ The rug fills the space in the south corner. The chest is perfectly placed at th
   behind them (-01, -02, -09: "banners or trophies").
 - Checked: `rooms.qa1_nightstands`, `rooms.qa1_chest_corner`, `rooms.qa1_south_corner` (planted STq1Nst, STq1Chc,
   STq1Sth).
+
+**Round 2 (2026-10-13).** Bigger bedrooms were still a bed and a big bare floor. A bedroom of 40+ tiles (room tiles;
+about 30 as the checker counts) takes a **second zone** in the half of the room without the bed: a sitting group (a
+small table with a chair either side) centred there, on the carpet's middle when a carpet lies there, else on a rug
+(a table set standing off to one side moves there whole); the desk with its chair centred on that half's back wall,
+else a pair of bookcases. A bench centred on the longest bare front wall (30+ tiles). A table with no chair gets two.
+A bed not centred on its wall's stretch and within 2.6 units of a corner is set again centred (RM-BEDROOM-08). A rug
+object on a carpet is taken up. A small bedroom's bare half takes a rug. No wardrobe or dresser exists among the
+game's objects. Never a bedroom without its chest. Checked by `rooms.qa1_fullness` too.

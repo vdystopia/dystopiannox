@@ -2284,7 +2284,9 @@ SOUTH_TYPES = {"bedroom", "barracks", "armoury", "great_hall", "ogre_den"}   # t
 # QA round 1's fullness floor (theme 1: "the spaces are too empty and lack object diversity"), for the nine room types
 # kit/finish.py finishes: (kinds at 50 tiles, kinds' growth with the square root of the floor over 50 tiles, pieces per
 # 50 tiles, pieces besides); calibrated on the round's own rooms so its emptiest fail (review/qa1/rooms.md Q1R-23)
-QA1_FULL = {}
+QA1_FULL = {"bedroom": (0, 8.0, 11.0, 0), "barracks": (0, 4.5, 8.0, 0), "ogre_den": (0, 4.0, 8.0, 0),
+            "cell": (0, 4.0, 15.0, 0), "ogre_pen": (0, 3.5, 9.0, 0), "cellar": (0, 6.0, 16.0, 0),
+            "armoury": (0, 5.0, 9.0, 0), "conservatory": (0, 4.0, 10.0, 0), "great_hall": (0, 3.5, 5.5, 0)}
 
 
 def _floor_at(m, u, v):
@@ -2294,6 +2296,8 @@ def _floor_at(m, u, v):
     return t["material"] if t else None
 
 
+QA1_TINY = re.compile(r"Skull|Bone|Cobweb|Web\d|Candle|RedApple|Apple$|^Meat|OgreHutMeat|Bread|Cheese|Mushroom|Potion|"
+                      r"Ham|Drumstick|Cider|Wine$|Mead|Rat$|Gold|Coin|Key$|Book$|Scroll|Gem")
 QA1_SKIP = re.compile(r"ColorLight|Candleabra|Candelabra|^TorchPole|Lantern|Door|^PlayerStart|Invisible|Waypoint")
 
 
@@ -2305,7 +2309,11 @@ def qa1_fullness(m, r, rtype=None):
     objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o) and not QA1_SKIP.search(o["type"])]
     pcs = [o for o in objs if RT.family(o["type"]) or QA1_SUPPLY.match(o["type"]) or QA1_GARDEN.match(o["type"])
            or re.match(r"^(Stocks|ObeliskPrimitive|OgreStraw|Straw|Fountain|Well|WishingWell|RedApple|Garden)", o["type"])]
-    kinds = {re.sub(r"(\d+[a-h]?|NE|NW|SE|SW)$", "", o["type"]) for o in pcs}
+    # (only what reads on screen: tiny pieces, bones, skulls, cobwebs, candles, apples and other small food or loose
+    # items, count as one kind together and not as pieces; the coordinator, from the sacred rooms' crypts)
+    tiny = [o for o in pcs if QA1_TINY.search(o["type"])]
+    pcs = [o for o in pcs if not QA1_TINY.search(o["type"])]
+    kinds = {re.sub(r"(\d+[a-h]?|NE|NW|SE|SW)$", "", o["type"]) for o in pcs} | ({"tiny"} if tiny else set())
     tiles = r["tiles"]
     fl = QA1_FULL.get(rtype)
     floor = None
@@ -2345,6 +2353,11 @@ def qa1_flags(m, r, kind):
                     if lo - 0.5 <= (cv if line == "/" else cu) <= hi + 0.5 and abs((cu if line == "/" else cv) - coord) - (1 if line == "/" else 0) < 1.5}
             if len(near) == 2:
                 flags.append(("chest_corner", "a chest pushed into a corner", c))
+    # too empty, or too few kinds of thing, for its type and size (theme 1)
+    fu = qa1_fullness(m, r, rtype)
+    if fu["floor"]:
+        short = [f"{fu[k]} {k} (its type and size ask {fu['floor'][k]})" for k in ("kinds", "pieces") if fu[k] < fu["floor"][k]]
+        if short: flags.append(("fullness", "too empty: " + ", ".join(short), None))
     # a dead S corner
     if rtype in SOUTH_TYPES and tiles >= 30:
         su, sv = u1 - 2.6, v0 + 2.6
@@ -2395,6 +2408,8 @@ def qa1_flags(m, r, kind):
 
 
 QA1_TEXT = {
+    "fullness": "a room holds its type's share of pieces and kinds of thing for its size, more in a bigger room (QA round "
+                "1's first theme; checks.QA1_FULL; Q1R-23)",
     "nightstands": "a nightstand either side of the bed, at one distance (RM-BEDROOM-10; kit/finish.py; Q1R-3)",
     "chest_corner": "a chest centred at the bed's foot or on a wall, never in a corner (Q1R-4)",
     "south_corner": "no dead space in the S corner (QA round 1; Q1R-6)",
@@ -2712,6 +2727,7 @@ RULES = [
     ("rooms.stray", "rooms", r"not belong in a", "DV3-4 TP1-4"),
     ("rooms.small", "rooms", r"is small for its kind", "DV1-4"),
     ("rooms.large", "rooms", r"is large for its kind", ""),
+    ("rooms.qa1_fullness", "rooms", r"share of pieces and kinds", "Q1R-23"),
     ("rooms.qa1_nightstands", "rooms", r"nightstand either side", "Q1R-3"),
     ("rooms.qa1_chest_corner", "rooms", r"never in a corner", "Q1R-4"),
     ("rooms.qa1_south_corner", "rooms", r"dead space in the S corner", "Q1R-6"),

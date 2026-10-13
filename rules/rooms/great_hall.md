@@ -114,3 +114,6 @@ overrides Westwood's "no plants, no statues" (its two great halls): the user's w
 - **The hearth** on its own patch of brick, centred on it (-02 "brick cobblestone tiling underneath the oven"; -04 "the
   floor tiling around the hearth is a little bit off-center"): `kit/shells.py hearth_squares`, every hearth.
 - Checked: `rooms.qa1_hearth_patch`, `rooms.qa1_south_corner`.
+- Round 2 (fullness): a table taken up (a stray, or by the hearth) is set again with two seats on the open floor
+  nearest the middle; a hall of 220+ tiles takes four table sets mirrored about its middle. Checked by
+  `rooms.qa1_fullness`.

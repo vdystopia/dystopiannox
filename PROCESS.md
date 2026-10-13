@@ -415,6 +415,12 @@ Rules that hold for every type:
   - *floors*: every hearth, stove, oven or furnace on a patch of brick centred on it and bordered all round, laid over a
     carpet when the fire stands on one (`kit/shells.py hearth_squares`, `lay_patch`); a carpet never runs under a bed;
     a great hall's band of brick or cobble runs round the whole room; a conservatory is grass and dirt.
+  - *full before balanced* (round 2, Q1R-23): the first theme comes first: a finishing pass never leaves a room
+    emptier than it found it; what it takes up it sets again in order. Each of the nine types holds its share of
+    pieces and of kinds of thing for its size (`checks.QA1_FULL`, kinds growing with the square root of the floor,
+    pieces with the floor: the bigger-scale principle), counting only pieces that read on screen (tiny bones, skulls,
+    candles, apples and food together count as one kind and as no piece). Westwood's habits give way where the user
+    asks for fullness (a cellar's walls stocked end to end: run caps lifted).
   The per-type rules are in each brief's "QA round 1" section (bedroom, barracks, ogre den, armoury, cell, ogre pen,
   cellar, conservatory, great hall). Checked by `rooms.qa1_*` (`check_qa1_rooms`, warnings; planted cases `STq1*`).
 
@@ -794,7 +800,8 @@ departures from Westwood's range or from a house rule the playtests set. The rul
 - `rooms.qa1_*` [Q1R-*] (`check_qa1_rooms`): QA round 1's room rules: a bed's nightstands either side at one distance,
   a chest out of the corners, no dead S corner, an ogre den's obelisks in pairs, two cots in a cell of 36+ tiles, a cellar
   of several kinds with room round its great casks, a garden's plants on grass or dirt and one well, an armoury's
-  counter, a barracks' racks, every hearth on brick;
+  counter, a barracks' racks, every hearth on brick, and every room of the nine types at its fullness floor
+  (`rooms.qa1_fullness`);
 - `pieces.*` [HB-1..HB-5]: the object knowledge base (cauldrons, chests, showpieces, a bedroom's table sets, the
   clearances the playtest set, runs of pieces that do not line walls, hangings above pieces, candelabras by size),
   calibrated on one map of each campaign layout (6-15% of maps trip a rule; `sets` and `hung` are house rules over

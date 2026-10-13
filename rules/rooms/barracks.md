@@ -98,3 +98,6 @@ walls and a few more objects."
 - Arms hung on the bare back walls; the crew's table in a big room's middle with its chairs; knots of barrels in bare
   corners.
 - Checked: `rooms.qa1_racks` (planted STq1Rck).
+- Round 2: a barracks of 110+ tiles takes the crew's boards down its middle along its length (two long tables end on,
+  benches both sides) with a pair of armour stands at the row's ends, mirrored; a small room whose back walls are
+  taken puts its racks on any wall. Checked by `rooms.qa1_fullness`.

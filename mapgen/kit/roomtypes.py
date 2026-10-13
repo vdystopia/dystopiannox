@@ -487,7 +487,9 @@ TYPES.update({
         # the room lab: Westwood's 4 curated cellars cover 0.06-0.19-0.23 with 1-4 types
         cover=(0.06, 0.17, 0.32), open=(0.20, 0.85), per_tile=(0.15, 1.2), types_min=1, free_most=(8, 6),
         caps={}, walls_min=2, lined=None, tiles=(12, 80),
-        signature={"^(Barrel|LargeBarrel|PiledBarrels)$": (0.8, 30)}, needs=("storage",), kin=("storeroom", "kitchen")),
+        # (QA round 1: a cellar's metal barrels and barrels of tools are its kegs too; its great casks say "cellar")
+        signature={"^(Barrel|LargeBarrel|PiledBarrels|BarrelSteel|BarrelWithTools|WaterBarrel)$": (1.0, 30),
+                   "^LargeBarrel": (3.0, 2)}, needs=("storage",), kin=("storeroom", "kitchen")),
     "treasury": dict(
         family="stores", feel="balanced", kinds=("treasury",), westwood=(),
         evidence=(("Con05B", (192, 58)), ("Wiz06c", (163, 93)), ("Con06b", (163, 93))),
@@ -764,8 +766,10 @@ def reads_as(fam, kinds, kind=None):
         if t == "observatory" and not (k(r"^Telescope") >= 2 or (k(r"^Telescope") and k(r"^StarChart|^Zodiac") >= 2)):
             s = 0.0
         if t == "infirmary" and not k(r"^PotionShelves|^Cauldron"): s = 0.0
-        kegs = k(r"^(Barrel|LargeBarrel|PiledBarrels)$")
-        if t == "cellar" and (kegs < 6 or fam.get("shelves") or fam.get("table") or kegs < 0.7 * fam.get("storage", 0)):
+        # (QA round 1, round 2: a cellar's kegs are of several kinds, with crates and sacks among them, a shelf of jars;
+        # its great casks and kegs, not one kind, say "cellar")
+        kegs = k(r"^(Barrel|LargeBarrel|PiledBarrels|BarrelSteel|BarrelWithTools|WaterBarrel)\d?$")
+        if t == "cellar" and (kegs < 6 or fam.get("table") or kegs < 0.5 * fam.get("storage", 0)):
             s = 0.0
         if t == "treasury" and (k(r"^Chest|^DunMirChest|^ChestOgre") < 3 or fam.get("bed")): s = 0.0
         if t == "powder_store" and k(r"^BlackPowderBarrel") < 4: s = 0.0
