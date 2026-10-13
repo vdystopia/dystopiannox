@@ -52,7 +52,8 @@ MOTIFS_PATH = os.path.join(os.path.dirname(os.path.dirname(HERE)), "rules", "out
 # every other type keeps the recipe engine unless a caller (the room lab's --engine motifs) asks for motifs. Chosen
 # 2026-10-06 (night-motifs3, review/roomlab/MOTIFS.md round 3) where the motif rooms were at least as good as the
 # recipe's by eye and by the lab's numbers. NOX_MOTIF_TYPES (comma-separated, "" for none) overrides it, for comparison.
-ENGINE_TYPES = {"bedroom", "throne_room", "crypt", "storeroom"}
+# (the throne room is composed by kit/civic.py since QA round 1: its axis, mirrored pairs and full walls)
+ENGINE_TYPES = {"bedroom", "crypt", "storeroom"}
 if os.environ.get("NOX_MOTIF_TYPES") is not None:
     ENGINE_TYPES = {t for t in os.environ["NOX_MOTIF_TYPES"].split(",") if t}
 # Kin types whose motifs a thin type borrows (at KIN_WEIGHT), filtered by the type's never pieces.

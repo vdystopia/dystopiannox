@@ -763,12 +763,15 @@ class Furnisher:
             return True
         tiles = len(self.room.tiles)
         cap = OBJ.room_cap(t, self.rtype, tiles)
+        own = self.ident.get("kb_caps", {}).get(cat)       # a recipe's own cap (kit/civic.py rooms: a sitting set by
+        if own is not None and cap is not None:            # the S corner beside the household's table)
+            cap = max(cap, own(tiles) if callable(own) else own)
         if cap is not None:
             key = OBJ.cap_key(t)
             same = [rec for tt, rec in self._typed if OBJ.cap_key(tt) == key]
             # a showpiece twice only 10 units apart; statues keep their own clearance (2 units, a deliberate pair closer:
             # kit/objects.py clearance), or a throne could never be flanked nor an aisle lined (room lab, tuneB)
-            twice_near = cat not in ("chest", "statue") and                 any(math.hypot(u - r_[0], v - r_[1]) < OBJ.TWICE_GAP for r_ in same)
+            twice_near = cat not in ("chest", "statue") and own is None and                 any(math.hypot(u - r_[0], v - r_[1]) < OBJ.TWICE_GAP for r_ in same)
             if len(same) >= cap or twice_near:
                 self.kb_refused["cap " + key] += 1; return False
         if self.rtype == "bedroom" and cat in ("table", "desk") and \
@@ -1192,6 +1195,13 @@ class Furnisher:
             self.in_required = True                      # the plan is already within the room's density
             self.composing = True                        # the room's coverage limit holds instead (ROOM_COVER)
             self.compose(plan, need)
+            if self.ident.get("civic"):
+                # the civic rooms (QA round 1: kit/civic.py) are composed whole, balanced and full: the generic fill,
+                # density, lining, lighting and grammar passes below would scatter pieces through that composition
+                from kit import civic as CIV
+                CIV.finish(self, need)
+                self.in_required = self.composing = False
+                return self.objects
             # the hangings the recipe calls for claim their bare wall before the fill and the rows of shelves grow to the
             # corners: a hanging never goes above a piece (kit/objects.py hangs_over), so hung last it found no wall left
             # (an observatory's star charts among its bookcases)
@@ -3983,6 +3993,10 @@ class Furnisher:
             n = plan.get(fam, 0) - done[fam]
             if n <= 0 and st["slot"] not in ("racks", "line", "pews", "colonnade", "flank_lights", "aisle_lights", "heaps")                     and not st.get("extra"):
                 continue                                # rows and lined walls are sized by the room; `extra` sets too
+            if st["slot"] == "civic":                   # the room composed by kit/civic.py (QA round 1)
+                from kit import civic as CIV
+                for k, v in CIV.compose(self, plan, need).items(): done[k] += v
+                continue
             if st["slot"] == "line":
                 done[fam] += self.line_wall(fam, near=placed.get(st.get("near")), max_n=st.get("n"),
                                             decor_every=st.get("decor", 0), other=st.get("other", False),

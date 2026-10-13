@@ -1730,6 +1730,24 @@ ARCHETYPE_RECIPES = {
 }
 for _k, _v in ARCHETYPE_RECIPES.items():
     ROOMS[_k]["archetypes"] = _v
+# ---- the civic rooms (QA round 1, 2026-10-13: kit/civic.py composes them whole) -----------------------------------------
+# The user rated only part of the room types and asked that the round's two themes (too empty and undiverse; no balance
+# or symmetry) and the rated rooms' lessons apply to the rest. These kinds are composed by kit/civic.py: full, mixed,
+# mirrored and centred, the S corner and the front walls used, the back walls hung (review/qa1/civic.md). Their core
+# families still say what the room must hold (compose's fallback places any the composer could not fit).
+_more_tables = lambda tiles: 2 + tiles // 60           # the household's table, the S corner's set, one per 60 tiles more
+_more_statues = lambda tiles: 4 + tiles // 50          # mirrored pairs down a ceremonial room's axis
+CIVIC = {"living_room": dict(kb_caps={"table": _more_tables}), "dwelling": dict(kb_caps={"table": _more_tables}),
+         "kitchen": dict(kb_caps={"table": 2}), "shop": dict(), "tavern": dict(), "dining_hall": dict(),
+         "mess_hall": dict(), "ogre_hall": dict(), "throne_room": dict(kb_caps={"statue": _more_statues}),
+         "gallery": dict(kb_caps={"statue": _more_statues}), "hall": dict(kb_caps={"statue": _more_statues}),
+         "solar": dict(kb_caps={"table": _more_tables}), "study": dict(kb_caps={"table": _more_tables, "statue": 4}),
+         "library": dict(kb_caps={"table": _more_tables}), "infirmary": dict(kb_caps={"table": _more_tables}),
+         "herbalist": dict(kb_caps={"table": _more_tables})}
+for _k, _v in CIVIC.items():
+    ROOMS[_k].update(civic=True, compose=[dict(fam="civic", slot="civic", extra=True)], fill=[], top_up=(), **_v)
+    ROOMS[_k].pop("archetypes", None)
+    ROOMS[_k].pop("compose_alts", None)
 ROOMS["throne_room"].pop("compose_alts", None)    # its three compositions are archetypes now
 ROOMS["great_hall"].pop("compose_alts", None)
 
