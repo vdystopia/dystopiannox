@@ -55,10 +55,13 @@ ROOMS = {
                     # (room lab tuneA r10: one rug, before the chest; the table set stands on the bare floor: an
                     # independent judge picked out "two identical rugs" and "a table with chairs on a rug wedged into
                     # the S corner")
+                    # (QA round 1, round 3: a clothes rack in the storage zone, a hearth in a big chamber: kit/finish.py)
                     optional={"rug": (1.0, 1), "nightstand": (1.0, 2), "shelves": (0.9, 4), "wall_decor": (1.0, 5),
-                              "desk": (0.5, 1), "bench": (0.6, 1), "plant": (0.7, 2), "table": (0.6, 1), "chair": (0.6, 2)},
+                              "desk": (0.5, 1), "bench": (0.6, 1), "plant": (0.7, 2), "table": (0.6, 1), "chair": (0.6, 2),
+                              "shop_rack": (0.0, 1), "fireplace": (0.0, 1)},
                     types={"storage": CHEST, "shelves": r"^Bookcase\d(HalfFull)?$|^PotionShelves\d$", "plant": PLANTS,
-                           "table": r"^RoundTable[12]$|^SquareTable[12]$"},
+                           "table": r"^RoundTable[12]$|^SquareTable[12]$", "shop_rack": r"^TraderClothesRack[12]$",
+                           "fireplace": r"^Fireplace[1-4]$"},
                     # three tables at most, however big the chamber (kit/roomtypes.py caps: Thornwick's 105-tile lord's chamber
                     # took five round tables with their chairs and read as a dining room: rules/rooms/bedroom.md)
                     # (independent judge r10: "the bed pushed into the N corner, so it is not the focus", "a round
@@ -419,25 +422,31 @@ ROOMS = {
                                "walls, a short row of one kind in a big one, swords and shields hung on the back walls, a "
                                "chest, a barrel or two",
                        base="storeroom",
-                       core={"shop_rack": (2, 12), "storage": (1, 6)},
+                       # (QA round 1, Q1R-1: "If this is intended to be a gear store with a merchant ... It should be
+                       # anchored to a desk or table in a place that makes sense in the room. Facing the door": the
+                       # quartermaster's counter, set out from the back wall across from the door, his place behind it)
+                       core={"shop_rack": (2, 12), "storage": (1, 6), "counter_shop": (1, 1)},
                        # the guards' table with its chairs (6 of Westwood's 16: Con03A, Con05A, Con06a, Con06b, War03a/b;
                        # after the curation those are guardrooms, but the lab compares a 4-room type with its martial pool,
                        # and the pool holds them: without the table the AUC rose from 0.87 to 0.99)
                        optional={"table": (0.6, 1), "chair": (0.6, 4)},
-                       types={"storage": SUPPLY + r"|^Chest[1-4]$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
-                              r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$"},
+                       types={"storage": SUPPLY + r"|^Chest[1-4]$|^BarrelSteel\d$|^CrateSteel\d$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
+                              r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$",
+                              "counter_shop": r"^TraderDesk\d$"},
+                       prefer={"counter_shop": {f"TraderDesk{k}": 1 for k in range(1, 7)}},
                        store=dict(lead={"barrels": 3, "crates": 1}, second={}, second_p=0.0, accent={"water": 1, "tools": 1},
                                   accent_p=0.4),
                        # Westwood's armouries show their racks on the back walls (the focal piece on NE or NW in all 16)
                        top_up=(), lights_per100=2.5, back_only=("shop_rack",),
-                       compose=[dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
+                       compose=[dict(fam="counter_shop", slot="counter", depth=2.2, clear=1.8, door=True),
+                                dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
                                      only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", n=2),
                                 dict(fam="shop_rack", slot="wall", at="center", clear=0,
                                      only=r"^TraderHanging|^TraderShield|^TraderCrossed|^TraderHelmShelf", n=1),
                                 dict(fam="storage", slot="wall", at="corner", clear=1.2, only=r"^Chest", n=1),
                                 dict(fam="table", slot="center", seats=True),
                                 dict(fam="storage", slot="heaps", n=1)],
-                       fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=300),
+                       fill=[dict(fam="shop_rack", slot="racks", kind="gear", max=3, min_area=180),
                              dict(fam="shop_rack", slot="wall", at="corner", clear=1.0,
                                   only=r"^Trader(PoleArm|ArmorRack|BowRack|ClothesRack|QuiverRack)", max=1, fixed=True),
                              dict(fam="shop_rack", slot="wall", at="center", clear=0,
@@ -697,9 +706,14 @@ ROOMS = {
                        # table piece per 24 tiles reads as two or three boards (2026-10-04: "4-6 sets fewer")
                        core={"table": (2, 12), "bench": (4, 24), "fireplace": (1, 2)},
                        per_tiles={"table": 24},
-                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4)},
+                       # (QA round 1, Q1R-15: "It can't just be a room full of tables and chairs": statues in pairs, suits
+                       # of armour, plants in the front corners, a chest; kit/finish.py lays them symmetrically)
+                       optional={"wall_decor": (1.0, 12), "storage": (0.5, 1), "chair": (0.5, 4), "statue": (0.0, 4),
+                                 "plant": (0.0, 2), "shop_rack": (0.0, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
-                              "storage": CHEST},
+                              "storage": CHEST, "statue": r"^Statue[12][a-h]$", "plant": PLANTS,
+                              "shop_rack": r"^TraderArmorRack[12]$|^TraderShieldWallHanging\d$|^TraderCrossedWeapons\d$|"
+                                           r"^TraderHangingSwords\d$|^TraderHangingCrossbow\d$"},
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
@@ -784,12 +798,18 @@ ROOMS = {
                              "a rack or two of their arms",
                      core={"bed": (2, 8), "storage": (1, 4), "table": (1, 2), "chair": (2, 6)}, per_tiles={"bed": 15},
                      optional={"shop_rack": (0.7, 2)},
-                     types={"storage": r"^Chest\d$", "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
+                     # (QA round 1, Q1R-9: the racks of arms and armour on their wall, arms hung, knots of barrels and
+                     # crates in the bare corners: kit/finish.py _barracks)
+                     types={"storage": r"^Chest\d$|^Barrel2?$|^BarrelWithTools[12]$|^Crate[12]$",
+                            "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
                             "table": r"^RoundTable[12]$|^Table[1-4]$|^SquareTable[12]$", "chair": r"Chair|Stool",
-                            "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$"},
+                            "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$|"
+                                         r"^TraderArmorRack[12]$|^TraderQuiverRack$|^TraderShieldWallHanging\d$|"
+                                         r"^TraderCrossedWeapons\d$|^TraderHangingCrossbow\d$"},
                      prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1}},
                      top_up=(), decor_max=0, lined_goal=0.0, bed_nightstands=False,
-                     compose=[dict(fam="bed", slot="bed_row"),
+                     # (QA round 1, Q1R-9: one wall of beds, the racks of arms and armour on another: kit/finish.py)
+                     compose=[dict(fam="bed", slot="bed_row", single=True),
                               dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                               dict(fam="table", slot="center", seats=True),
                               dict(fam="shop_rack", slot="wall", at="center", clear=1.0, n=1)],
@@ -1151,8 +1171,11 @@ ROOMS = {
                    purpose="a cellar of kegs and casks: barrels in knots in the corners and along the walls, dark crates by "
                            "them, a great cask or a piled barrel, aisles to walk",
                    core={"storage": (5, 30)},
-                   optional={},
-                   types={"storage": r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12])$"},
+                   optional={"shelves": (0.0, 2)},
+                   # (QA round 1, Q1R-13: metal barrels, barrels of tools and steel crates beside the kegs: kit/finish.py)
+                   types={"storage": r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12]|"
+                                     r"BarrelSteel[12]|BarrelWithTools[12]|CrateSteel[1-4]|SackChest(Large|Medium)[12]|"
+                                     r"WaterBarrel)$", "shelves": r"^LogShelvesFull[1-4]$"},
                    store=dict(lead={"barrels": 1}, second={"crates": 1}, second_p=0.4, accent={"piled": 1, "large": 1},
                               accent_p=0.7),
                    top_up=(), lights_per100=0,
@@ -1384,12 +1407,17 @@ ROOMS = {
                          purpose="a garden room: the fountain or the well in the middle with benches facing it, plants "
                                  "massed along the back walls and in clumps on the floor with paths between, a pair of "
                                  "statues, plants in every corner",
+                         # (QA round 1, Q1R-14: composed whole by kit/finish.py _conservatory: a garden on grass and dirt,
+                         # apple trees, crops, barrels of tools; these are the pieces it may hold)
                          core={"plant": (6, 40), "bench": (1, 4)},
-                         optional={"feature": (1.0, 1), "statue": (0.6, 4)},
+                         optional={"feature": (1.0, 2), "statue": (0.6, 4), "storage": (0.0, 2), "clutter": (0.0, 8)},
                          types={"plant": r"^Plant[1-5]$|^Plant2Flowered$|^PlantFern[1-4]$", "bench": r"^Bench[1-4]$|^LightBench\d$",
-                                "feature": r"^Fountain$|^WishingWell$", "statue": r"^Statue2[aceg]$"},
+                                "feature": r"^Fountain$|^WishingWell$", "statue": r"^Statue2[aceg]$",
+                                "storage": r"^BarrelWithTools[12]$|^Barrel$|^Crate[12]$|^WaterBarrel$",
+                                "clutter": r"^TreeApple$|^RedApple$"},
                          prefer={"plant": {"Plant4": 3, "Plant5": 3, "Plant3": 2, "Plant1": 1, "Plant2Flowered": 1,
-                                           "PlantFern2": 1}, "feature": {"Fountain": 2, "WishingWell": 1}},
+                                           "PlantFern2": 1}, "feature": {"Fountain": 2, "WishingWell": 1},
+                                 "crops": {"GardenCorn": 1, "GardenTomatos": 1, "GardenCabbage": 1, "TreeApple": 1}},
                          top_up=("plant",),
                          compose=[dict(fam="feature", slot="center"),
                                   dict(fam="bench", slot="center", n=2),

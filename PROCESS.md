@@ -507,6 +507,36 @@ Rules that hold for every type:
   counter and a throne that does not face its door.
   **Recurring:** repeated pieces lining walls came back after a fix; these warnings now fail the QA gate unless the
   design accepts them with a reason.
+- **QA round 1: full and balanced** [Q1R-1..Q1R-19] (2026-10-13, the user's labelled round of ten rooms a type,
+  `review/reviews/QA-round1.md`; the ledger rows in `review/qa1/rooms.md`). Two themes over every type: "the spaces are
+  too empty and lack object diversity", and "a lack of balance and symmetry: things are placed randomly and not lined up
+  with each other". Both engines now end with a finishing pass per room kind (`kit/finish.py finish`, after the grammar
+  audit; `NOX_FINISH=0` turns it off for a before), and a kind may be composed whole there (`kit/finish.py compose`: the
+  conservatory). What it holds to, in every room it touches:
+  - *pairs and centres*: a piece that comes in a pair stands as a symmetric pair (nightstands either side of the bed at
+    one distance, mana obelisks in the two corners of a wall, statues flanking the hearth, suits of armour, fountains
+    mirrored along the room's length); a single piece stands centred on its stretch of wall or on its carpet (the bed,
+    a chest, a row of racks or bookcases, the quartermaster's counter, the tables on their carpet); never in a corner
+    (a chest);
+  - *rows of a group*: what lines a wall goes as one row of one group (bunks on one wall, racks of arms on another; a
+    cellar's kegs, metal barrels, tools and crates each a row), the kinds alternating where one kind may not stand side
+    by side (HB-5);
+  - *no dead corner*: the S corner and the front corners are filled when bare (a small table with two chairs, a rug
+    clear of the front walls, a knot of barrels), and the bare stretches of the NE and NW walls hung (one hanging
+    centred, or two symmetric, only where wall stands behind it);
+  - *one kind of room, one set of rules*: the ogres' barracks and pens are types of their own (`ogre_den`, `ogre_pen`;
+    their Westwood rooms split by culture in `rules/rooms/curated.py`), judged by their own briefs;
+  - *floors*: every hearth, stove, oven or furnace on a patch of brick centred on it and bordered all round, laid over a
+    carpet when the fire stands on one (`kit/shells.py hearth_squares`, `lay_patch`); a carpet never runs under a bed;
+    a great hall's band of brick or cobble runs round the whole room; a conservatory is grass and dirt.
+  - *full before balanced* (round 2, Q1R-23): the first theme comes first: a finishing pass never leaves a room
+    emptier than it found it; what it takes up it sets again in order. Each of the nine types holds its share of
+    pieces and of kinds of thing for its size (`checks.QA1_FULL`, kinds growing with the square root of the floor,
+    pieces with the floor: the bigger-scale principle), counting only pieces that read on screen (tiny bones, skulls,
+    candles, apples and food together count as one kind and as no piece). Westwood's habits give way where the user
+    asks for fullness (a cellar's walls stocked end to end: run caps lifted).
+  The per-type rules are in each brief's "QA round 1" section (bedroom, barracks, ogre den, armoury, cell, ogre pen,
+  cellar, conservatory, great hall). Checked by `rooms.qa1_*` (`check_qa1_rooms`, warnings; planted cases `STq1*`).
 
 ## 4. Outdoors and scenes
 
@@ -996,6 +1026,11 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   and `identity.*` (a room reads as what it is) [section 3];
 - `routes.*` [TW-1, TW-9, GW-1, GW-6, SW-2, AMR-7]: waypoints and legs clear, doorways square-on, no shared stops, every
   stop facing open ground, tours of 4+ stops of 15+ s, nobody's route through a person standing still;
+- `rooms.qa1_*` [Q1R-*] (`check_qa1_rooms`): QA round 1's room rules: a bed's nightstands either side at one distance,
+  a chest out of the corners, no dead S corner, an ogre den's obelisks in pairs, two cots in a cell of 36+ tiles, a cellar
+  of several kinds with room round its great casks, a garden's plants on grass or dirt and one well, an armoury's
+  counter, a barracks' racks, every hearth on brick, and every room of the nine types at its fullness floor
+  (`rooms.qa1_fullness`);
 - `pieces.*` [HB-1..HB-5]: the object knowledge base (cauldrons, chests, showpieces, a bedroom's table sets, the
   clearances the playtest set, runs of pieces that do not line walls, hangings above pieces, candelabras by size),
   calibrated on one map of each campaign layout (6-15% of maps trip a rule; `sets` and `hung` are house rules over

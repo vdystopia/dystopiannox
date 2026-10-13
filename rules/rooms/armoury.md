@@ -66,3 +66,19 @@ The armourer beside a rack at the end of a row, else at a back wall; never in an
   and shields hung, Dun Mir chests, a few barrels, and in a guards' armoury a table with chairs; no log shelves, no rows
   of racks but in a big room, no walls stocked with sacks. Rows of racks and stocked walls gave every room away
   (AUC 1.0 -> 0.94).
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-1, Q1R-2)
+
+The user read the gear store as a shop: "there needs to be specific consideration given to where the merchant will
+stand. It should be anchored to a desk or table in a place that makes sense in the room. Facing the door or the entrance
+of the shop ... Larger rooms need to have things like weapon racks along their walls." Rated 2-5 (mean 3.2); -03, -07,
+-08 "too empty"; -06 "more decorations on the walls".
+
+- **The quartermaster's counter** (TraderDesk) is the recipe's first piece: set out from the back wall across from the
+  main door, centred on the door's line where it can be, the keeper close behind it (0.55 units off its back) facing the
+  way in (`kit/furnish.py place_counter(door=True)`; a shop's keeper stands as close). No longer a never piece.
+- **Racks along the walls:** a row of racks of arms and armour (armour stands, pole arms, bow racks, alternating, never
+  one kind side by side) centred on each back wall with room, a third row along any wall from 90 tiles; free-standing
+  rows of racks from 90 tiles (`fill` racks min_area 180 cells).
+- Arms hung on the bare back-wall stretches (swords, shields, crossed weapons, crossbows), stock in the bare corners.
+- Checked: `rooms.qa1_counter` (planted STq1Ctr).

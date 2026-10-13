@@ -81,3 +81,16 @@ two, a barrel; **never the stocks**, and no light of their own. The recipe now: 
 door, straw heaped by it (`scatter by_bed`); pens lift the Ogre pieces whatever the building's style (`lift`; the lab
 had built them empty), the obelisk always (the pen's focal now), stocks rare. AUC 0.98 -> 0.83, hard rooms 6 -> 2.
 Shell: our cells are 16-36 tiles with up to three doors; Westwood's are 13 tiles behind one barred door.
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-11)
+
+"Create a separate category for ogre cells and human cells ... Cells with stockades look really good because the extra
+object really helps establish an identity. Try some other objects that would make sense in a cell too. a bench or a
+stool. Make larger cells double occupancy." The ogres' pen is a type of its own now (`ogre_pen.md`); this brief is the
+human cell. Rated 3-5 (mean 4.0): the cells were liked.
+
+- **Two cots** in a cell of 36 tiles or more, side by side on the same wall 1.1-1.8 apart, else on another back wall
+  (RM-CELL-07, 49 tiles: "Adding another bed would make this better").
+- **The stocks** in every cell of 16 tiles or more, centred on a wall; **a bench** centred on a wall (a back wall first),
+  else a stool in a corner.
+- Checked: `rooms.qa1_cell_double` (planted STq1Cel).

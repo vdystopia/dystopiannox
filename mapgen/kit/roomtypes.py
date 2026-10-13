@@ -67,8 +67,9 @@ TYPES = {
     "bedroom": dict(
         family="private", feel="full", fixed_top_up=("storage", "bench"), kinds=("bedroom",), westwood=("bedroom",),
         focal=dict(fam="bed", types=r"^(Bed\d|WoodBed\d|Cot\d)", where="back"),
+        # (QA round 1, round 3: a clothes rack is a bedroom's storage)
         must={"bed": 1, "storage": 1}, never=("counter_bar", "counter_shop", "stove", "smithy", "altar",
-                                              "throne", "tomb", "shop_rack", "straw"),
+                                              "throne", "tomb", "straw"),
         never_types=r"Barrel|Crate|Sack",
         walls=dict(back="the bed, headboard to a back wall, its nightstand beside it; a run of shelves end to end",
                    other_back="the chest snug and centred with a rug before it; hangings",
@@ -208,7 +209,7 @@ TYPES = {
                                      "throne", "lab", "counter_bar", "counter_shop"))}),
     # ---- martial -------------------------------------------------------------------------------------------------
     "barracks": dict(
-        family="martial", feel="full", kinds=("barracks", "ogre_den"), westwood=("barracks",),
+        family="martial", feel="full", kinds=("barracks",), westwood=("barracks",),
         focal=dict(fam="bed", types=r"^(Cot\d|WoodBed\d|Bed\d)$", where="row"),
         must={"bed": 2}, never=("counter_bar", "counter_shop", "altar", "throne", "tomb", "lab", "smithy", "stove"),
         never_types=r"PowderBarrel",
@@ -218,15 +219,29 @@ TYPES = {
         cover=(0.12, 0.24, 0.34), open=(0.25, 0.75), per_tile=(0.2, 0.8), types_min=8, free_most=(4, 25),
         caps={"bed": (12, 12)}, walls_min=3, lined=0.30, tiles=(40, 200),
         signature={"bed": (2.5, 12), "straw": (1, 20), "nightstand": (0.3, 6)}, needs=("bed",),
-        kin=("bedroom", "armoury", "cell", "guardroom"),   # an ogre den of straw is a pen's kin (Con11a); a crew's table
+        kin=("bedroom", "armoury", "cell", "guardroom")),
+    # QA round 1 (Q1R-8): the ogres' barracks are a type of their own, judged by their own rules: minimal, straw heaped
+    # over the floor, crude beds, mana obelisks in symmetric pairs, no bare front corner (rules/rooms/ogre_den.md)
+    "ogre_den": dict(
+        family="martial", feel="balanced", kinds=("ogre_den",), westwood=("ogre_den", "barracks"),
+        focal=None,
+        must={"straw": 4}, never=("counter_bar", "counter_shop", "altar", "throne", "tomb", "lab", "smithy", "stove",
+                                  "shelves", "desk", "rug"),
+        never_types=r"^Bookcase|^Chest\d",
+        walls=dict(back="crude beds against the back walls; mana obelisks in a pair", other_back="skulls nailed up",
+                   front="barrels and sacks in a knot, meat; nothing bare in the S corner",
+                   middle="straw heaped over the floor; the crude table with its stools"),
         # the room lab: Westwood's 12 ogre barracks cover 0.03-0.06-0.20 and keep no fire pit
-        variants={"ogre_den": dict(focal=None, must={"straw": 4}, lined=None, walls_min=2, types_min=4,
-                                   cover=(0.04, 0.09, 0.25), needs=("straw",))}),
+        cover=(0.04, 0.10, 0.25), open=(0.25, 0.90), per_tile=(0.15, 0.9), types_min=5, free_most=(30, 4),
+        caps={"bed": (20, 6)}, walls_min=2, lined=None, tiles=(40, 200),
+        signature={"straw": (1, 20), "^OgreBed": (2, 6), "^ObeliskPrimitive": (1, 4)}, needs=("straw",),
+        kin=("barracks", "ogre_pen", "cell")),
     "armoury": dict(
         family="martial", feel="balanced", supplies_line=True, kinds=("gear_store",), westwood=("armoury",),
         focal=dict(fam="shop_rack", types=r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)", where="rows"),
+        # (QA round 1, Q1R-1: the quartermaster's counter, the merchant behind it: no longer a never piece)
         must={"shop_rack": 2}, never=("bed", "desk", "altar", "throne", "tomb", "lab", "counter_bar",
-                                      "counter_shop", "stove", "fireplace"),
+                                      "stove", "fireplace"),
         never_types=r"^Bookcase|PowderBarrel",
         walls=dict(back="shelves end to end", other_back="helm shelves or hanging swords",
                    front="barrels, crates and tool barrels", middle="racks in rows of one kind each, at most five to a "
@@ -290,7 +305,7 @@ TYPES = {
         family="ceremonial", feel="open", kinds=("great_hall",), westwood=("great_hall", "hall"),
         focal=dict(fam="fireplace", types=r"Fireplace", where="back"),
         must={"table": 2, "fireplace": 1, "wall_decor": 2}, never=("bed", "desk", "stove", "smithy", "lab", "tomb",
-                                                                    "counter_bar", "counter_shop", "shop_rack", "altar"),
+                                                                    "counter_bar", "counter_shop", "altar"),
         never_types=r"Barrel|Crate|Sack|^Bookcase",
         walls=dict(back="the hearth centred; banners and trophies", other_back="banners; a second hearth in a long hall",
                    front="a few benches; plants in the corners",
@@ -511,15 +526,18 @@ TYPES.update({
         family="stores", feel="full", supplies_line=True, kinds=("cellar",), westwood=(), monotony=0.9,
         evidence=(("Con07B", (132, 196)), ("Con06b", (56, 62)), ("War02b", (194, 194)), ("Con06a", (153, 212))),
         focal=None,                 # Westwood's cellars have no great cask as a centrepiece (one in four holds one)
+        # (QA round 1, Q1R-13: sacks and shelves of jars and food beside the kegs, the user's word over Westwood's habit)
         must={"storage": 5}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
-                                    "counter_shop", "fireplace", "stove", "statue", "shelves", "shop_rack"),
-        never_types=r"PowderBarrel|^Sack|^TraderAppleCrate",
+                                    "counter_shop", "fireplace", "stove", "statue", "shop_rack"),
+        never_types=r"PowderBarrel|^TraderAppleCrate",
         walls=dict(back="kegs in tight rows along the walls from the corners", other_back="kegs; a stack of piled barrels",
                    front="kegs and a few crates", middle="a great cask or two with kegs beside them, aisles all round"),
         # the room lab: Westwood's 4 curated cellars cover 0.06-0.19-0.23 with 1-4 types
         cover=(0.06, 0.17, 0.32), open=(0.20, 0.85), per_tile=(0.15, 1.2), types_min=1, free_most=(8, 6),
         caps={}, walls_min=2, lined=None, tiles=(12, 80),
-        signature={"^(Barrel|LargeBarrel|PiledBarrels)$": (0.8, 30)}, needs=("storage",), kin=("storeroom", "kitchen")),
+        # (QA round 1: a cellar's metal barrels and barrels of tools are its kegs too; its great casks say "cellar")
+        signature={"^(Barrel|LargeBarrel|PiledBarrels|BarrelSteel|BarrelWithTools|WaterBarrel)$": (1.0, 30),
+                   "^LargeBarrel": (3.0, 2)}, needs=("storage",), kin=("storeroom", "kitchen")),
     "treasury": dict(
         family="stores", feel="balanced", kinds=("treasury",), westwood=(),
         evidence=(("Con05B", (192, 58)), ("Wiz06c", (163, 93)), ("Con06b", (163, 93))),
@@ -571,9 +589,8 @@ TYPES.update({
         needs=("bed", "table", "shop_rack"), kin=("barracks", "armoury", "bedroom", "living_room")),
     # ---- confinement ---------------------------------------------------------------------------------------------
     "cell": dict(
-        family="confinement", feel="open", kinds=("cell", "ogre_pen"), westwood=(), monotony=1.01,
-        evidence=(("War07A", (174, 236)), ("War07A", (160, 230)), ("War07A", (164, 226)), ("Con11a", (174, 44)),
-                  ("Con11a", (166, 52)), ("Con11a", (194, 80)), ("Con11a", (182, 36))),
+        family="confinement", feel="open", kinds=("cell",), westwood=(), monotony=1.01,
+        evidence=(("War07A", (174, 236)), ("War07A", (160, 230)), ("War07A", (164, 226))),
         focal=dict(fam="bed", types=r"^Cot\d$|^OgreBed\d$", where="back"),
         must={"straw": 2}, never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne", "tomb",
                                   "lab", "smithy", "stove", "fireplace", "rug", "plant", "statue", "wall_decor"),
@@ -582,12 +599,23 @@ TYPES.update({
                    front="bare: the door, barred", middle="straw strewn, a few bones; open"),
         cover=(0.02, 0.10, 0.25), open=(0.25, 0.98), per_tile=(0.05, 1.0), types_min=2, free_most=(12, 2),
         caps={}, walls_min=1, lined=None, tiles=(8, 40),
-        signature={"straw": (1, 10), "^Stocks": (3, 1), "bed": (1, 1)}, needs=("straw",), kin=("barracks", "bedroom"),
-        # (room lab tuneA: Con11a's six pens hold straw heaped before the stocks (3 of 6) and a crude obelisk (4))
-        variants={"ogre_pen": dict(focal=dict(fam=None, types=r"^Stocks|^ObeliskPrimitive", where="any"), tiles=(20, 50),
-                                   cover=(0.0, 0.06, 0.25), walls_min=0,
-                                   never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne",
-                                          "tomb", "lab", "smithy", "stove", "fireplace", "rug", "plant", "wall_decor"))}),
+        signature={"straw": (1, 10), "^Stocks": (3, 1), "bed": (1, 2)}, needs=("straw",),
+        kin=("barracks", "bedroom", "ogre_pen")),
+    # QA round 1 (Q1R-11, Q1R-12): the ogres' pens are a type of their own with their own rules (rules/rooms/ogre_pen.md)
+    # (room lab tuneA: Con11a's six pens hold straw heaped before the stocks (3 of 6) and a crude obelisk (4))
+    "ogre_pen": dict(
+        family="confinement", feel="open", kinds=("ogre_pen",), westwood=("ogre_pen", "cell"), monotony=1.01,
+        evidence=(("Con11a", (174, 44)), ("Con11a", (166, 52)), ("Con11a", (194, 80)), ("Con11a", (182, 36))),
+        focal=dict(fam=None, types=r"^Stocks|^ObeliskPrimitive", where="any"),
+        must={"straw": 2}, never=("table", "desk", "shelves", "counter_bar", "counter_shop", "altar", "throne",
+                                  "tomb", "lab", "smithy", "stove", "fireplace", "rug", "plant", "wall_decor"),
+        never_types=r"PowderBarrel|^Chest\d|^Bookcase",
+        walls=dict(back="the obelisk; the stocks", other_back="straw heaped in the corner or at one end",
+                   front="a barrel, bones; no bare corner", middle="open"),
+        cover=(0.0, 0.06, 0.25), open=(0.25, 0.98), per_tile=(0.05, 1.0), types_min=2, free_most=(12, 2),
+        caps={}, walls_min=0, lined=None, tiles=(20, 60),
+        signature={"straw": (1, 10), "^Stocks": (3, 1), "^ObeliskPrimitive": (2, 1)}, needs=("straw",),
+        kin=("cell", "ogre_den")),
     "torture_chamber": dict(
         family="confinement", feel="open", kinds=("torture_chamber",), westwood=(),
         evidence=(("Wiz07C", (132, 124)), ("Con08d", (151, 170))),
@@ -647,11 +675,13 @@ TYPES.update({
         focal=None,                    # the fountain or the well where the room has the floor for it (24+ tiles open)
         must={"plant": 6, "bench": 1}, never=("bed", "desk", "table", "stove", "smithy", "lab", "counter_bar",
                                               "counter_shop", "shop_rack", "straw", "tomb", "shelves", "fireplace"),
-        never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
+        # (QA round 1, Q1R-14: barrels of tools, now and then a crate or a barrel, are a garden's)
+        never_types=r"PowderBarrel|Sack|^Bookcase|Trophy",
         walls=dict(back="plants massed along the back walls", other_back="plants; a pair of columns",
                    front="plants in the corners", middle="the fountain or the well, benches facing it, clumps of plants "
                                                          "with paths between"),
-        cover=(0.0, 0.06, 0.25), open=(0.40, 0.95), per_tile=(0.08, 0.6), types_min=5, free_most=(40, 4),
+        # (QA round 1: a garden indoors, its plants not solid: nearly all of its floor is open)
+        cover=(0.0, 0.06, 0.25), open=(0.40, 1.0), per_tile=(0.08, 0.8), types_min=5, free_most=(40, 4),
         caps={"bench": (25, 6)}, walls_min=2, lined=None, tiles=(24, 220),
         signature={"plant": (0.5, 30), "^Fountain|^WishingWell": (4, 1)}, needs=("plant",), kin=("hall",)),
     # ---- the dead ------------------------------------------------------------------------------------------------
@@ -727,6 +757,8 @@ STANDS = {
     "powder_store": (("back",),),
     "guardroom": (("beside", r"^Trader(HangingSwords|PoleArm|BowRack|QuiverRack)"), ("behind", r"Table"), ("back",)),
     "cell": (("beside", r"^Cot\d$|^OgreBed\d$"), ("beside", r"^Stocks"), ("back",)),
+    "ogre_pen": (("beside", r"^Stocks"), ("beside", r"^ObeliskPrimitive"), ("back",)),
+    "ogre_den": (("beside", r"^OgreBed\d$"), ("beside", r"^OgreTable"), ("back",)),
     "torture_chamber": (("beside", r"^TortureRack"), ("beside", r"^Desk\d$"), ("back",)),
     "shrine": (("beside", r"^DunMirAltar|^LOTDLichGodStatue"), ("back",)),
     "gallery": (("beside", r"^Statue"), ("back",)),
@@ -773,7 +805,7 @@ def reads_as(fam, kinds, kind=None):
         if t == "library" and sum(n for k, n in kinds.items() if k.startswith(("Bookcase", "MovableBookcase"))) < 6: s = 0.0
         if t == "laboratory" and fam.get("lab", 0) < 2: s = 0.0
         if t == "storeroom" and fam.get("storage", 0) < 4: s = 0.0
-        if t == "armoury" and (fam.get("shop_rack", 0) < 2 or fam.get("counter_shop")): s = 0.0
+        if t == "armoury" and fam.get("shop_rack", 0) < 2: s = 0.0
         if t in ("dining_hall", "great_hall") and (fam.get("table", 0) < 2 or fam.get("chair", 0) + fam.get("bench", 0) < 4):
             s = 0.0
         if t == "crypt" and fam.get("tomb", 0) < 2: s = 0.0
@@ -786,8 +818,10 @@ def reads_as(fam, kinds, kind=None):
         if t == "observatory" and not (k(r"^Telescope") >= 2 or (k(r"^Telescope") and k(r"^StarChart|^Zodiac") >= 2)):
             s = 0.0
         if t == "infirmary" and not k(r"^PotionShelves|^Cauldron"): s = 0.0
-        kegs = k(r"^(Barrel|LargeBarrel|PiledBarrels)$")
-        if t == "cellar" and (kegs < 6 or fam.get("shelves") or fam.get("table") or kegs < 0.7 * fam.get("storage", 0)):
+        # (QA round 1, round 2: a cellar's kegs are of several kinds, with crates and sacks among them, a shelf of jars;
+        # its great casks and kegs, not one kind, say "cellar")
+        kegs = k(r"^(Barrel|LargeBarrel|PiledBarrels|BarrelSteel|BarrelWithTools|WaterBarrel)\d?$")
+        if t == "cellar" and (kegs < 6 or fam.get("table") or kegs < 0.5 * fam.get("storage", 0)):
             s = 0.0
         if t == "treasury" and (k(r"^Chest|^DunMirChest|^ChestOgre") < 3 or fam.get("bed")): s = 0.0
         if t == "powder_store" and k(r"^BlackPowderBarrel") < 4: s = 0.0

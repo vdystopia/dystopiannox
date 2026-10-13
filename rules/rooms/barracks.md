@@ -82,3 +82,22 @@ A soldier beside his bunk (at its side, not at its foot where the chest is), an 
   and a rack or two of arms; no nightstands, shelves, rugs or hangings (`bed_nightstands=False`, `decor_max` 0,
   `lined_goal` 0). The ogre den takes the crude table with its bench and stools in all but the smallest.
 
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-8, Q1R-9)
+
+"In general, too empty and not enough objects to complement the beds. instead of having two walls lined with beds, try
+one wall of beds and one wall of weapon and armor racks. Transform the barracks from a giant room with beds to a place
+where warriors sleep and keep their combat gear." The ogres' den is a type of its own now (`ogre_den.md`); this brief is
+the human barracks. RM-BARRACKS-09 (56 tiles, a log cabin) is the best example: "It just needs more decorations on the
+walls and a few more objects."
+
+- **One wall of bunks:** the bunks of one kind headboard to one wall, evenly spaced 1.0-1.6 apart, the wall holding the
+  most (a front wall before a back wall), a chest at each foot; never two walls of beds (`bed_row(single=True)`;
+  `kit/finish.py bunk_wall`).
+- **One back wall of racks:** a row of racks of arms and armour, the kinds alternating; a second row from 110 tiles.
+- Arms hung on the bare back walls; the crew's table in a big room's middle with its chairs; knots of barrels in bare
+  corners.
+- Checked: `rooms.qa1_racks` (planted STq1Rck).
+- Round 2: a barracks of 110+ tiles takes the crew's boards down its middle along its length (two long tables end on,
+  benches both sides) with a pair of armour stands at the row's ends, mirrored; a small room whose back walls are
+  taken puts its racks on any wall. Checked by `rooms.qa1_fullness`.

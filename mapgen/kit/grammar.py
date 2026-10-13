@@ -366,11 +366,14 @@ def lone_where(view, p):
 
 
 OPEN_HEAP_TILES = 60    # stock heaped in the open floor only in stores this big (Westwood's Con07B store)
+OPEN_HEAP_CELLAR = 30   # a cellar's stack, from this size (QA round 1, round 2: house rule)
 
 
 def open_heaps(view):
     """Knots of stock (barrels, crates, sacks) standing wholly off the walls in a room under OPEN_HEAP_TILES."""
-    if view.tiles >= OPEN_HEAP_TILES: return []
+    # (a cellar's stack in its middle from 32 tiles: QA round 1, round 2, the user's fullness over Westwood's habit;
+    # kit/finish.py cellar_stack)
+    if view.tiles >= (OPEN_HEAP_CELLAR if view.rtype == "cellar" else OPEN_HEAP_TILES): return []
     out = []
     for k in knots(view):
         st = [p for p in k if p["cat"] == "supply"]

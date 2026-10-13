@@ -113,3 +113,58 @@ Westwood's campaign bedrooms (40, then 31 once cells, guard posts and lords' cha
 could hardly tell from Westwood's (ref 6/10), with only the faults it named taken out: one rug, before the chest (not
 "two identical rugs"); the table set on the bare floor (not on a rug in a corner); a single bookcase on a short stretch
 between doors. The curated Westwood set: 28 bedrooms, p90 42 tiles.
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-3..Q1R-7)
+
+"overall very good - table and chest spacing and placement need improvement. more wall objects (banners, trophies,
+bookshelves, etc) are needed. Dead spaces in the south corner are too common." RM-BEDROOM-10 is the gold standard: "The
+tables on either side of the bed are well spaced and symmetric. The number of candelabras is realistic for the room.
+The rug fills the space in the south corner. The chest is perfectly placed at the foot of the bed."
+
+- **Nightstands:** one either side of the bed's head, one kind, 0.45 units off the bed's side (RM-BEDROOM-10: 0.28-0.40;
+  -02's 0.22 "too close to the bed"), their centres 0.76 from the wall line (-01's 0.96 "too far from the wall"). The bed
+  slides along its wall to make room; a bed in a corner, or sideways along a wall (-06: "attached to the northwest wall"),
+  is set again headboard to a back wall, centred on its widest free stretch.
+- **The chest** centred at the bed's foot (0.8 units off it) or centred on a wall, never in a corner (-03: "Center the
+  chest on the northwest wall").
+- **The S corner** never bare: a small table with two chairs when the room has no table (-08: "A small table with two
+  chairs would be perfect here"), else a rug, far enough from the front walls to be seen (its edge 1.7 units off them).
+  A bedroom of 62 tiles or more (45 as the checker counts them) may keep a desk and one table set
+  (`kit/furnish.py BEDROOM_DESK_AND_TABLE`; still one of
+  each, HB-3).
+- **No table floating** in the middle (-08: "The table in the middle of the room looks out of place"): it goes, and the
+  S corner takes the set.
+- **Rugs** centred in their half of the room (-07: "more centered in the southeastern volume"); a big bedroom's other half
+  its own small rug; never a rug on a carpet; a carpet never runs under the bed (nox20: "clipped and not blended").
+- **Walls:** a pair of bookcases end to end on a long bare back-wall stretch (or in a room of 50+ tiles), then hangings
+  on the bare stretches of the NE and NW walls, one centred or two symmetric on a stretch, only where there is wall
+  behind them (-01, -02, -09: "banners or trophies").
+- Checked: `rooms.qa1_nightstands`, `rooms.qa1_chest_corner`, `rooms.qa1_south_corner` (planted STq1Nst, STq1Chc,
+  STq1Sth).
+
+**Round 2 (2026-10-13).** Bigger bedrooms were still a bed and a big bare floor. A bedroom of 40+ tiles (room tiles;
+about 30 as the checker counts) takes a **second zone** in the half of the room without the bed: a sitting group (a
+small table with a chair either side) centred there, on the carpet's middle when a carpet lies there, else on a rug
+(a table set standing off to one side moves there whole); the desk with its chair centred on that half's back wall,
+else a pair of bookcases. A bench centred on the longest bare front wall (30+ tiles). A table with no chair gets two.
+A bed not centred on its wall's stretch and within 2.6 units of a corner is set again centred (RM-BEDROOM-08). A rug
+object on a carpet is taken up. A small bedroom's bare half takes a rug. No wardrobe or dresser exists among the
+game's objects. Never a bedroom without its chest. Checked by `rooms.qa1_fullness` too.
+
+**Round 3 (2026-10-13): zones by size.** The coordinator at full size: "bedrooms are still too bare". What a full bedroom
+holds (`kit/finish.py _bedroom`; sizes as the checker counts tiles, the kit's room tiles about a quarter more):
+- **every bedroom:** the bed zone (bed, nightstands, the chest at the foot: set there even when the bed's move took it);
+  both back walls dressed (a bookcase pair, a hanging on a back wall left bare: `_dress_each_back`); a **seating group**:
+  a table with two chairs drawn up (a second chair added to a lone one), else two benches facing each other across a
+  rug, else (a small room) two chairs facing across a small rug, clear of the bed, the chest and the doors (`_seating`);
+- **40+ tiles:** a **work zone** (the desk with its chair on a back wall of the bed-less half, a bookcase beside it:
+  `_work_zone`) and a **storage zone** (a clothes rack on a front wall, a second chest on a back wall: `_storage_zone`;
+  the knowledge base allows a bedroom of 50 room tiles a desk and one table set);
+- **80+ tiles:** a third zone, a **hearth** centred on a back wall with a rug and a pair of chairs before it
+  (`_hearth_zone`);
+- **kinds:** 8 visible kinds from 40 tiles, 11 from 80 (`_kinds_goal` adds a bench, potion shelves, a painting, a
+  trophy, a tapestry until it does); **no rug design repeated** (RedRug1/2 and 3/4 are one design each, `_no_twin_rugs`)
+  and no table set repeated.
+- Checked by `rooms.qa1_fullness` (`checks.bedroom_zones`; planted STq1Bed): a seating group from 16 tiles (a closet
+  keeps its desk chair), the work and storage zones from 40, the hearth from 80, the kinds, no repeated rug or table.
+  Round 2's 06 (no storage zone) and 10 (no seating group, a rug repeated) fail it; round 3's pass but for 02 (15 tiles).

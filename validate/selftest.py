@@ -618,6 +618,72 @@ def g_mixed_beds(m):
     for k, t in enumerate(("Cot1", "WoodBed1", "Cot1", "WoodBed1", "Cot1")): m.obj(t, 203 + 3.6 * k, 8.4)   # two kinds
 
 
+# ---- QA round 1, rooms (review/qa1/rooms.md Q1R-*; validate/checks.py check_qa1_rooms) --------------------------------
+def q1_nightstand(m):
+    _declare(m); m.obj("Nightstand3", 216.6, 6.8)              # Q1R-3: a nightstand on one side of the bed only
+
+
+def q1_chest_corner(m):
+    _declare(m); m.obj("Chest3", 220.8, 9.0)                   # Q1R-4: "the chest in the north corner looks out of place"
+
+
+def q1_south(m):
+    _declare(m)                                                # Q1R-6: "dead spaces in the south corner are too common"
+
+
+def q1_obelisks(m):
+    _declare(m, "ogre_den")                                    # Q1R-10: three obelisks, no symmetric pair
+    for u, v in ((202, 8), (220, 8), (210, -8)): m.obj("ObeliskPrimitive", u, v)
+
+
+def q1_cell(m):
+    _declare(m, "cell"); m.obj("Cot1", 203, 8.4)               # Q1R-11: "very large for a single cell with one bed"
+
+
+def q1_cellar_kinds(m):
+    _declare(m, "cellar")                                      # Q1R-13: "This entire room includes only barrels"
+    for k in range(6): m.obj("Barrel", 202 + 1.4 * k, 9.2)
+
+
+def q1_cask(m):
+    _declare(m, "cellar")                                      # Q1R-13: "the gigantic wine barrels are way too close"
+    m.obj("LargeBarrel2", 212, 0); m.obj("Barrel", 213.2, 1.6)
+
+
+def q1_garden_floor(m):
+    _declare(m, "conservatory"); m.obj("Plant4", 208, 2)       # Q1R-14: "Plants coming out of the floor tile"
+
+
+def q1_wells(m):
+    _declare(m, "conservatory")                                # Q1R-14: "a maximum of one well"
+    for u in (205, 212): m.obj("Well", u, 2)
+
+
+def q1_counter(m):
+    _declare(m, "gear_store")                                  # Q1R-1: "I don't see where the merchant would fit"
+    for u in (203, 206): m.obj("TraderArmorRack1", u, 8.6)
+
+
+def q1_racks(m):
+    _declare(m, "barracks")                                    # Q1R-9: a wall of beds and nothing of a soldier's gear
+    for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
+
+
+def q1_empty(m):
+    _declare(m, "cellar")                                      # Q1R-23: "spaces are too empty": a cellar of three barrels
+    for u in (204, 206, 208): m.obj("Barrel", u, 9.2)
+
+
+def q1_bare_bedroom(m):
+    _declare(m)                                                # Q1R-23 round 3: a bed, a lone table, two identical rugs
+    m.obj("Chest3", 210, 9.2); m.obj("SquareTable1", 206, -6); m.obj("WoodenChair1", 207.6, -6)
+    for u in (205, 215): m.obj("RedRug4", u, 2)
+
+
+def q1_hearth(m):
+    _declare(m, "living_room"); m.obj("Fireplace3", 206, 9.1)  # Q1R-19: a hearth on the bare boards
+
+
 def _cellar(m):
     """A walled cellar away from the meadow (no way in on foot)."""
     m.room(280, 300, -10, 10, wall="BrickPlain", floor="GreenBrick")
@@ -1012,6 +1078,20 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
     ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",
      "Land of the Dead"),
+    ("STq1Nst", q1_nightstand, "rooms", "warning", "a bed with a nightstand on one side - Q1R-3", "one side only"),
+    ("STq1Chc", q1_chest_corner, "rooms", "warning", "a bedroom chest in a corner - Q1R-4", "into a corner"),
+    ("STq1Sth", q1_south, "rooms", "warning", "a bedroom's bare S corner - Q1R-6", "S corner"),
+    ("STq1Obl", q1_obelisks, "rooms", "warning", "three mana obelisks in an ogre den - Q1R-10", "symmetric pair"),
+    ("STq1Cel", q1_cell, "rooms", "warning", "one cot in a big cell - Q1R-11", "one cot"),
+    ("STq1Clr", q1_cellar_kinds, "rooms", "warning", "a cellar of barrels only - Q1R-13", "kinds"),
+    ("STq1Csk", q1_cask, "rooms", "warning", "a barrel against a great cask - Q1R-13", "crowds a great cask"),
+    ("STq1Grd", q1_garden_floor, "rooms", "warning", "a conservatory plant on floorboards - Q1R-14", "grows out of"),
+    ("STq1Wel", q1_wells, "rooms", "warning", "two wells in a conservatory - Q1R-14", "2 wells"),
+    ("STq1Ctr", q1_counter, "rooms", "warning", "an armoury with no counter - Q1R-1", "no counter"),
+    ("STq1Rck", q1_racks, "rooms", "warning", "a barracks with no racks - Q1R-9", "no racks"),
+    ("STq1Hth", q1_hearth, "rooms", "warning", "a hearth on the bare boards - Q1R-19", "no hearth of brick"),
+    ("STq1Emp", q1_empty, "rooms", "warning", "a big cellar of three barrels - Q1R-23", "too empty"),
+    ("STq1Bed", q1_bare_bedroom, "rooms", "warning", "a bare bedroom with a twin rug - Q1R-23", "one rug repeated"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),
