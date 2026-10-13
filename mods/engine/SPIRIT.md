@@ -18,6 +18,37 @@ The normal game (`opennox-hd.exe`) is unchanged and still works as before.
 
 ---
 
+## How the Mystic plays (for the player; QA round 1, SP1: "It looks good, but how does it function?")
+
+The Mystic is the Conjurer with a different kind of magic. Everything a Conjurer has, the Mystic has: the same
+spells (summons, charm, the Conjurer's spell book), the same armour and the same weapons (staffs, bows and crossbows).
+Only the magic pool is different: **Spirit** (the cyan bar on the right) instead of mana (the blue one).
+
+**Spending Spirit.** Every spell costs Spirit exactly as it would cost mana. When you are out of Spirit, you cannot cast.
+
+**Getting Spirit back.** This is where the Mystic differs:
+1. **Fighting fills it.** Half the damage of every physical blow you land becomes Spirit: a staff blow, a bow or
+   crossbow arrow, your fists. It counts against creatures and players alike. Spells and wand shots do not count.
+   Example: five staff hits of 10 on a troll took a Mystic with 125 maximum Spirit from 0 to 26.
+2. **It refills by itself, but three times slower than mana.** From empty, 30 seconds of standing still gave
+   4 Spirit; a normal Conjurer gets 12 in the same time.
+3. **Mana crystals and obelisks give a Mystic nothing.** You cannot stand beside a crystal to refill.
+4. **Blue potions still work.** In the Spirit build they are called "Potion of Restore Spirit".
+
+**So the way to play it:** a Mystic cannot hang back and wait to refill. Open with a summon or a charm. Then
+fight with your staff or bow beside your creatures: every hit banks Spirit for the next spell. The harder you
+hit, the sooner you can cast again.
+
+**How to play one:**
+1. Start the Spirit build: `Nox Spirit Test.lnk` in `C:\GOG Games\Nox`, or `opennox-spirit-hd.exe`.
+2. Make a new character and pick the class that used to be the Conjurer. Its texts now say Mystic; its portrait is
+   still the Conjurer's picture.
+3. Play any map. ModLab works too: turn the cheats on, then type `load ModLab`.
+
+The save is an ordinary Conjurer save: opened in the normal `opennox-hd.exe`, it plays as a plain Conjurer.
+
+---
+
 ## 1. What the Mystic is
 
 Nox has exactly three classes, and the number three is built into everything: the save files, the network messages,

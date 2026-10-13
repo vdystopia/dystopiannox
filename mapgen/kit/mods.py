@@ -3,7 +3,7 @@ power weapons (W1-W6), new monsters (M1-M5), respawning training targets, and th
 
     from kit.mods import Mods, WEAPONS, MONSTERS
     mods = Mods(spec)                                   # or Mods(spec, pop) to share a kit.npcs Population
-    mods.weapon("W3", x, y)                             # a Quake Hammer on the floor
+    mods.weapon("W3", x, y)                             # a Warp Hammer on the floor
     chest = spec.obj_px("Chest4", x, y, items=[mods.weapon_item("W5"), "RedPotion"])   # or in a chest
     mods.monster("M1", x, y)                            # the Ogre Lord: frozen until the player is within 230 px
     mods.monster("M5", x, y, wait=0, respawn=0)         # the Blink Duelist, awake from the start, never back
@@ -27,58 +27,75 @@ SMITH_DONOR = (r"C:\GOG Games\Nox\maps\Con02a\Con02a.map", "Con02a:Bryan")
 # own enchantments, slot order WeaponPower, Material, effect, effect: tier 0 is what weapon() places by default), and
 # the text for its sign.
 WEAPONS = {
+    # W1 Flamebrand, three variants, each in power levels (QA round 1, Q1M-1): tier 0 small flames, 2 medium, 3 large
+    # (tier 1 sits between). W1 is the game's own FireRing enchantment (no script); W1B its BlueFireRing (blue mana
+    # flames) plus the script's slow; W1C has no ring: every blow that lands sends the script's double wave of
+    # flames over the quarter circle facing the creature struck (kit/behaviours/mods.go says why not every swing).
     "W1": dict(name="Flamebrand", kind="flame", base="Longsword", who="warrior",
                tiers=[["WeaponPower1", "Material1", "FireRing1"], ["WeaponPower2", "Material2", "FireRing2"],
-                      ["WeaponPower4", "Material4", "FireRing3"], ["WeaponPower6", "Material6", "FireRing4", "Vampirism1"]],
-               text="W1 FLAMEBRAND (longsword, warrior)\nEvery swing throws a ring of fire round you, hit or miss. This "
-                    "is the game's own FireRing enchantment, hidden in Nox's data and almost unused by Westwood, so it is "
-                    "fully reliable. Forge it at S1 for a bigger ring (FireRing 2, 3, 4)."),
+                      ["WeaponPower4", "Material4", "FireRing3"], ["WeaponPower6", "Material6", "FireRing4"]],
+               text="W1 FLAMEBRAND (longsword, warrior). Every swing throws a ring of fire round you, hit or miss. Its "
+                    "tier sets the flames: small, medium or large."),
+    "W1B": dict(name="Flamebrand of Mana", kind="manaflame", base="Longsword", who="warrior",
+                tiers=[["WeaponPower1", "Material1", "BlueFireRing1"], ["WeaponPower2", "Material2", "BlueFireRing2"],
+                       ["WeaponPower4", "Material4", "BlueFireRing3"], ["WeaponPower6", "Material6", "BlueFireRing4"]],
+                text="W1B FLAMEBRAND OF MANA (longsword, warrior). Every swing throws a ring of blue mana flames. A "
+                     "creature they touch is slowed 3 seconds and loses a little life; a player loses mana."),
+    "W1C": dict(name="Flamebrand Wave", kind="flamewave", base="Longsword", who="warrior",
+                tiers=[["WeaponPower1", "Material1"], ["WeaponPower2", "Material2"],
+                       ["WeaponPower4", "Material4"], ["WeaponPower6", "Material6"]],
+                text="W1C FLAMEBRAND WAVE (longsword, warrior). Every blow that lands sends two waves of fire over a "
+                     "quarter circle toward the creature struck. Two can burn at once."),
+    # W2: tier 1 two more chakrams, tier 2 four, tier 3 six in a wider fan (tier 0: four, the first version)
     "W2": dict(name="Chakram Storm", kind="chakram", base="RoundChakram", who="warrior", tiers=[[]],
-               text="W2 CHAKRAM STORM (chakram, warrior)\nThrow it: four more chakrams fan out beside it (30 and 15 "
-                    "degrees either side), cut every creature they pass and fly back to you."),
-    "W3": dict(name="Quake Hammer", kind="quake", base="WarHammer", who="warrior",
+               text="W2 CHAKRAM STORM (chakram, warrior). Throw it: more chakrams fan out beside it, cut every creature "
+                    "they pass and fly back. Tier 1 throws 2 more, tier 2 four, tier 3 six in a wider fan."),
+    # W3: was the Quake Hammer (a shockwave that threw creatures back: the game's own Impact enchantment does that)
+    "W3": dict(name="Warp Hammer", kind="warp", base="WarHammer", who="warrior",
                tiers=[["WeaponPower1", "Material1"], ["WeaponPower2", "Material2"],
-                      ["WeaponPower4", "Material4", "Impact1"], ["WeaponPower6", "Material6", "Impact2", "Stun1"]],
-               text="W3 QUAKE HAMMER (war hammer, warrior)\nEvery blow that lands sends a shockwave from the creature "
-                    "struck: the ground shakes, everything near it is hurt and thrown back. Forge it at S1 for a wider, "
-                    "harder quake."),
-    "W4": dict(name="Stormcaller", kind="storm", base="LesserFireballWand", who="wizard or conjurer", tiers=[[]],
-               xfer=dict(WandChargesCurrent=200, WandChargesLimit=200),
-               text="W4 STORMCALLER (staff, wizard or conjurer)\nInstead of a fireball it calls chain lightning: the "
-                    "first creature in front of you, then up to three more nearby, each strike weaker."),
+                      ["WeaponPower4", "Material4"], ["WeaponPower6", "Material6", "Stun1"]],
+               text="W3 WARP HAMMER (war hammer, warrior). A blow that lands warps you a short way back from the "
+                    "creature you struck. Forge it at S1 for a longer warp."),
+    # W4: the Lightning Staff's own chain lightning, turned green and poisonous (the staff is the game's ForceWand)
+    "W4": dict(name="Stormcaller", kind="storm", base="ForceWand", who="wizard",
+               tiers=[[]], xfer=dict(WandChargesCurrent=200, WandChargesLimit=200),
+               text="W4 STORMCALLER (lightning staff, wizard). Its chain lightning burns green and poisons every "
+                    "creature it strikes."),
+    # W5: buffs on a kill, by tier (tier 0 as tier 1): haste; haste and invisibility; a force field
     "W5": dict(name="Bloodthirst", kind="blood", base="GreatSword", who="warrior", tiers=[[]],
-               text="W5 BLOODTHIRST (great sword, warrior)\nEvery blow that lands drinks 3 health. A kill feasts: 15 "
-                    "health and three seconds of haste."),
+               text="W5 BLOODTHIRST (great sword, warrior). A kill feeds you. Tier 1: 5 seconds of haste. Tier 2: haste "
+                    "and invisibility. Tier 3: a force field that soaks 50 damage for up to 15 seconds."),
+    # W6: every blow slows; the third in five seconds stuns 3 s; tier 2 adds a mana flame under the creature, tier 3 a fire
     "W6": dict(name="Frostbite", kind="frost", base="MorningStar", who="warrior", tiers=[[]],
-               text="W6 FROSTBITE (morning star, warrior)\nEvery blow slows the creature for 4 seconds. Three blows on "
-                    "one creature within 5 seconds freeze it solid for 2.5 seconds."),
+               text="W6 FROSTBITE (morning star, warrior). Every blow slows. The third blow in 5 seconds freezes the "
+                    "creature for 3 seconds. Tier 2 adds a mana flame under it, tier 3 a fire."),
 }
 
 # Monsters: kind (the script ability set), base creature, health, difficulty for a warrior of the early chapters with
 # a power weapon (easy < medium < hard < boss), and the sign text.
 MONSTERS = {
     "M1": dict(name="The Ogre Lord", kind="ogrelord", base="OgreWarlord", hp=700, difficulty="boss",
-               text="M1 OGRE LORD (an ogre warlord)\nHurls boomerang chakrams that cut you going out and coming back; "
-                    "below half health he throws three at once. Catch him between throws."),
+               text="M1 OGRE LORD (an ogre warlord). Hurls boomerang chakrams, three at once when hurt. His harpoon "
+                    "hooks you from afar and drags you to his axe, far harder than a warrior's."),
     "M2": dict(name="The Giant Crab", kind="crab", base="Scorpion", hp=450, difficulty="hard",
                text="M2 GIANT CRAB (a scorpion: Nox has no crab art; the scorpion is the armoured, pincered creature "
                     "closest to one)\nIts shell turns two thirds of every blow. It scuttles sideways round you; its snap "
                     "pins you for a moment and leaves the shell gaping for two seconds: strike then."),
     "M3": dict(name="The Bone Caller", kind="bonecaller", base="Necromancer", hp=320, difficulty="hard",
-               text="M3 BONE CALLER (a necromancer)\nRaises skeletons two at a time, four at most. While two or more "
-                    "stand, a bone ward turns half of every blow. Kill him and they crumble."),
+               text="M3 BONE CALLER (a necromancer). Raises two skeletons or a skeleton lord, six at most. Runs from you "
+                    "casting slow and magic missiles, and teleports away, leaving a ghost behind."),
     "M4": dict(name="The Ember Matriarch", kind="embermother", base="EmberDemon", hp=380, difficulty="hard",
-               text="M4 EMBER MATRIARCH (an ember demon)\nBirths imps, five at most, and mends a little for every imp "
-                    "alive. Each imp bursts into flame when it dies: do not stand on it. Her brood bursts when she falls."),
+               text="M4 EMBER MATRIARCH (an ember demon). Births imps that burst into flame. Her blows burn and drink your "
+                    "life; fire cannot hurt her. When she falls, a great ring of fire bursts from her."),
     "M5": dict(name="The Blink Duelist", kind="duelist", base="Swordsman", hp=280, difficulty="medium",
-               text="M5 BLINK DUELIST (a swordsman)\nSteps through space to stand behind you and strike. Once, when badly "
-                    "hurt, a ward makes him untouchable for two seconds."),
+               text="M5 BLINK DUELIST (a swordsman). Hasted, sees in the dark, steps through space behind you. Each cut "
+                    "slows you for 3 seconds, and a second blade follows it."),
 }
 
 # The forge's lines: what the anvil knows how to raise, a tier at a time (vault copies carry the tiers' enchantments).
 FORGE_LINES = {
     "flamebrand": dict(label="Flamebrand", weapon="W1"),
-    "quake": dict(label="Quake Hammer", weapon="W3"),
+    "quake": dict(label="Warp Hammer", weapon="W3"),
     "longsword": dict(label="Longsword", base="Longsword",
                       tiers=[[], ["WeaponPower2", "Material2"], ["WeaponPower4", "Material4", "Fire2"],
                              ["WeaponPower6", "Material6", "Fire4", "Lightning2"]]),
@@ -92,6 +109,7 @@ FORGE_LINES = {
 UNSAFE_PLACED = set()
 
 KINDS = {w["kind"] for w in WEAPONS.values()}
+BASE_WEAPONS = ("W1", "W2", "W3", "W4", "W5", "W6")   # one of each power (W1B and W1C are the Flamebrand's variants)
 MONSTER_KINDS = {m["kind"] for m in MONSTERS.values()} | {"trainee"}
 
 
