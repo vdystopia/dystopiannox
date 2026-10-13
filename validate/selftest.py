@@ -399,13 +399,13 @@ def crate_by_apples(m):
 
 
 def bare_camp(m):
-    m.obj("CampFire", 236, 26)                                 # a camp of a fire and two bedrolls (Q1K-3)
-    for v in (30, 34): m.obj("Cot2", 230, v)
+    m.obj("CampFire", 236, -26)                                # a camp of a fire and two bedrolls (Q1K-3)
+    for v in (-22, -18): m.obj("Cot2", 230, v)                 # (on the meadow: (236, 26) is in the walled pond)
 
 
 def beds_in_block(m):
-    m.obj("CampFire", 236, 26)                                 # three urchin beds side by side by their fire (Q1K-4)
-    for k in range(3): m.obj("UrchinBed1", 226 + 2.5 * k, 20)
+    m.obj("CampFire", 236, -26)                                # three urchin beds side by side by their fire (Q1K-4)
+    for k in range(3): m.obj("UrchinBed1", 226 + 2.5 * k, -32)
 
 
 def racks_floating(m):
