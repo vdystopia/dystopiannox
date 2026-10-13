@@ -606,6 +606,8 @@ class Furnisher:
         # (fams or "slot:<slot>")}; drawn when the composition starts
         self._trade = {}
         self._pairing = False     # a deliberate pair (statues flanking a throne) is being placed
+        self.set_piece = False    # a sacred room's symmetric set piece is being laid (kit/sacred.py): the knowledge base's
+                                  # caps and clearances for single pieces stand aside
         self.kb_refused = Counter()   # rule -> placements the knowledge base refused (for the lab's report)
         self._set_type = {}       # GROUPS name -> the one anchor type a room of a one_set kind uses for it
         self._set_seat = {}       # GROUPS name -> the one seat (base) such a room's sets of that name take
@@ -715,7 +717,7 @@ class Furnisher:
         if not self._kb_ok(t, u, v, hu, hv, blocking, layer): return None
         if blocking and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.runner_boxes):
             return None
-        if blocking and _family_of(t) in WAY_TALL and \
+        if blocking and _family_of(t) in WAY_TALL and not self.set_piece and \
                 any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.far_ways):
             return None                                 # never a column or statue in line with a door
         if not self.g.fits(u, v, hu, hv, blocking, wall_ok, wall_min=0.1 if snug else 0.25, touch=touch): return None
@@ -761,6 +763,7 @@ class Furnisher:
                 if rec[4] and rec[5] != "wall" and OBJ.category(tt) in never and                         max(abs(u - rec[0]) - hu - rec[2], abs(v - rec[1]) - hv - rec[3]) < OBJ.NEXT_GAP:
                     self.kb_refused["never light"] += 1; return False
             return True
+        if self.set_piece: return True          # a set piece's pairs and rows are placed whole (kit/sacred.py)
         tiles = len(self.room.tiles)
         cap = OBJ.room_cap(t, self.rtype, tiles)
         if cap is not None:
@@ -1168,6 +1171,11 @@ class Furnisher:
 
     def furnish(self):
         self.draw_archetype()
+        # the sacred rooms are laid out whole, symmetric about their axis (kit/sacred.py; QA round 1, Q1C): their own
+        # path, the furnisher's below only when the set piece does not fit
+        if self.ident.get("composer"):
+            from kit import sacred
+            if sacred.compose(self): return self.objects
         inv_all = self.T["inventory"]
         ip = self.identity_plan()
         if ip:

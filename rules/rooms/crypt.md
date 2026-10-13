@@ -1,7 +1,44 @@
 # Crypt
 
-Family: the dead. Feel: **sparse, quiet, ordered**. Kit kinds: `crypt` (a chapel's family crypt), `dark_crypt` (the
-Land of the Dead's tombs). Profile: `kit/roomtypes.py TYPES["crypt"]`.
+Family: the dead. Feel: **quiet, ordered, symmetric**. Kit kinds: `crypt` (a chapel's family crypt), `dark_crypt` (the
+Land of the Dead's tombs). Profile: `kit/roomtypes.py TYPES["crypt"]`. Composed by `kit/sacred.py crypt` (the recipes'
+`composer="crypt"`; until QA round 1 by the motif engine, kit/motifs.py).
+
+## The user's rules (QA round 1, 2026-10-13; review/qa1/sacred.md Q1C-13..Q1C-18)
+
+- "The objects in these rooms need better organization, arrangement, and balance. Add more object diversity, like
+  bones. Use the breakable coffin objects sometimes. Add a high chance for these rooms to contain mana obelisks."
+- RM-CRYPT-09 (49 tiles, two sarcophagi): "Worst one in the set, very empty."
+- RM-CRYPT-10 (dark crypt, LOTD walls): "The wooden doors mismatch with the double doors. Generally, the double door style
+  should be used for all doors with this tile set. This room also needs coffins or graves or something to give it a crypt
+  identity" (its rows of tall LOTD tombstones did not read as graves).
+
+## The set piece (kit/sacred.py crypt)
+
+Laid about the axis from the main door to the far wall (the door in the middle of its wall when it is the building's
+entrance, `building.CENTRE_DOOR_ROOMS`; never reshaped, `SHELL_KEEP`):
+- **The centrepiece** on the far wall in line with the door, spread over a map's crypts: a crypt chest, a great square
+  sarcophagus or a monument; **mana obelisks** flanking it in 4 crypts of 5 (else statues of the dead), and a second
+  pair by the door in a crypt of 90 tiles or more.
+- **The rows of the dead** either side of a middle aisle, mirrored: sarcophagi of one model (40%) or the breakable
+  coffins (40%), or the old dead's sarcophagi nearest the far wall and coffins nearer the door (25%); across the aisle,
+  one or two to a half-row, a walk round the far end; along the aisle in a narrow crypt (the aisle narrows to a pace);
+  a row a side door's way crosses left out on both sides, the next tried; else tombs along the side walls, else a bier
+  on the axis. The Land of the Dead's crypts lie in coffins and sarcophagi too, with its own gravestones at the heads.
+- **Bones** heaped at the rows' heads, mirrored; **graves** (tombstones; LOTD gravestones in the Land of the Dead) at the
+  heads against the side walls; statues of the dead in pairs along the side walls in a big crypt; a pair of tombstones
+  flanking the aisle's foot.
+- Candelabras in pairs (LOTD candelabras in the Land of the Dead); a tapestry pair on the far wall when it is a back wall.
+- The LOTD styles hang their double door in every doorway (`building.DOUBLE_DOOR_STYLES`; RM-CRYPT-10), checked by
+  `doors.lotd`.
+
+## Checked by
+
+`sacred.symmetry` (floor pieces paired across the door's line), `sacred.dead` (two coffins, sarcophagi or graves at
+least, and 4+ kinds of piece; LOTD gravestones alone are not graves), `doors.lotd`; planted cases STsDead, STdLotd. The
+grammar's irregularity and mixed-tomb rules stand aside (`kit/grammar.py SYMMETRIC`).
+
+## Before QA round 1 (kept for the record)
 
 ## Purpose and feel
 
@@ -14,7 +51,7 @@ The rows of tombs.
 ## Pieces
 
 - Must: tombs (2+: sarcophagi, coffins, tombstones).
-- May: columns, statues of the dead or gargoyles, crypt chests, a tapestry or two, barren plants.
+- May: mana obelisks, monuments, statues of the dead, crypt chests, tombstones, bones, a tapestry or two.
 - Never: beds, desks, tables, chairs, stoves, forges, lab pieces, bars, counters, racks, hearths, straw, barrels, sacks,
   bookcases.
 

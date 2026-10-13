@@ -170,11 +170,19 @@ def plan(typ, n=10, seed=1):
         role, style, furnish = hs[t % len(hs)]
         tiles = target_tiles(typ, size, ww, rng)
         throne = profile(kind)["type"] == "throne_room"
-        W, H = spans(tiles, shape, rng, long_u=True if throne else None)
+        # a chapel or a coven runs from its main door to its altar along its long axis, entered through a front wall
+        # (SE or SW) so the altar stands on a back wall the camera sees, the side walls free for the neighbours' doors
+        # (QA round 1, Q1C-2: "Chapels should always be aligned with the main door")
+        nave = profile(kind)["type"] in ("chapel", "coven")
+        nave_u = nave and i % 2 == 0
+        W, H = spans(tiles, shape, rng, long_u=True if (throne or nave_u) else (False if nave else None))
         st = KB.styles()[style]
-        if throne:
+        if throne or nave_u:
             entrance = "u_max"
             free = ["v_min", "v_max"]
+        elif nave:
+            entrance = "v_min"
+            free = ["u_min", "u_max"]
         else:
             ent = {k: v for k, v in (st.get("entrance_sides") or {"v_min": 1}).items() if v > 0} or {"v_min": 1}
             keys = sorted(ent)

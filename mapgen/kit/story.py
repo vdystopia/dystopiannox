@@ -278,6 +278,13 @@ class StoryMap:
                         if k == 0: return p
                         k -= 1
                 continue
+            if rule[0] == "spot":               # a spot the furnisher kept for this role (the priest beside his altar:
+                for sp in getattr(room, "spots", []) or []:        # kit/sacred.py; QA round 1, Q1C-12)
+                    p = tuple(sp["px"])
+                    if sp.get("role") == rule[1] and all(math.dist(p, q) >= self.SPOT_GAP for q in people):
+                        if k == 0: return p
+                        k -= 1
+                continue
             if rule[0] == "back":               # the NW wall (lowest u) and the NE wall (highest v), mid-wall first
                 row = [(umin + 2.5, v) for v in range(int(vmin) + 3, int(vmax) - 2)] + \
                       [(u, vmax - 2.5) for u in range(int(umin) + 3, int(umax) - 2)]

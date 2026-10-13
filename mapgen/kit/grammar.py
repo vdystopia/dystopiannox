@@ -81,7 +81,16 @@ UNIFY = ("bed", "tomb")
 FACED = {"hearth", "stove", "shelf", "desk", "chest", "lab", "counter_shop", "nightstand"}   # drawn facing the camera                                    # one kind of each to a room (Westwood's vaults, dormitories)
 BED_OK = {"chest", "nightstand", "rug", "hanging", "bed"}     # what may stand at a bed's foot
 # rooms whose lights flank an aisle, a throne, an altar or the dead (Westwood's free-standing lights are theirs)
-CEREMONIAL = {"throne_room", "chapel", "hall", "great_hall", "shrine", "mausoleum", "crypt", "ossuary", "gallery"}
+CEREMONIAL = {"throne_room", "chapel", "hall", "great_hall", "shrine", "mausoleum", "crypt", "ossuary", "gallery",
+              "coven", "mana_room"}
+# rooms laid out as one symmetric set piece (kit/sacred.py): the user asked for their evenness (QA round 1, 2026-10-13:
+# "chapels should have a much more symmetric layout ... benches and / or pillars and pews evenly and symmetrically placed";
+# the mana rooms' arrangements "evenly and symmetrically placed"; the crypts' "organization, arrangement, and balance"),
+# so Westwood's irregularity rules stand aside there: even gaps, stepped rows, rings, one piece to each corner, twin knots,
+# mixed tombs, a column or bench alone (a pair across the aisle), lights by the aisle, the runner up the middle (the
+# user's word over Westwood's habit)
+SYMMETRIC = {"chapel", "coven", "mana_room", "crypt"}
+SYMMETRIC_EXEMPT = {"even", "stepped", "ring", "corners", "twin", "mixed", "lone", "string", "light", "front", "carpet"}
 # rooms whose tables stand in rows by design
 TABLE_ROWS = {"great_hall", "dining_hall", "barracks", "tavern", "library"}
 FRONT = {"SE", "SW"}
@@ -1036,6 +1045,12 @@ def fix_halls(f, view, log, rng):
 
 def faults(view):
     """Every grammar fault of a furnished room, worst first: dict(rule, p (the piece), msg)."""
+    out = _faults(view)
+    if view.rtype in SYMMETRIC: out = [x for x in out if x["rule"] not in SYMMETRIC_EXEMPT]
+    return out
+
+
+def _faults(view):
     if not ROUND2:
         return (light_faults(view) + group_faults(view) + lone_faults(view) + spacing_faults(view) + plant_faults(view)
                 + twin_faults(view) + mixed_faults(view) + facing_faults(view))
