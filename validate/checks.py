@@ -2782,44 +2782,6 @@ def _groups(objs, link):
     return out
 
 
-# ---- QA round 1 (2026-10-13): camps, rows and jails (review/qa1/camps.md, Q1K-*) -------------------------------------
-# A camp: a fire (or an urchins' table) with a bed, straw or a tent within CAMP_R of it: its pieces within CAMP_R
-CAMP_CENTRE_RE = re.compile(r"^(CampFire|CampFireUnused|OgreFirePit|OgreFirePitUnlit|UrchinTableLarge)$")
-CAMP_SIGN_RE = re.compile(r"^(Cot\d|UrchinBed(Flat)?\d|UrchinHammock\d|OgreStraw\d|OutdoorTraderPupTent|TraderTent)")
-CAMP_R = 320.0
-# "Needs drastically more objects" (Q1K-3, Q1K-4, Q1K-5): a camp holds CAMP_PIECES_MIN solid pieces of CAMP_KINDS_MIN
-# kinds at the least (a house rule over Westwood's sparse camps: the user's word, QA round 1)
-CAMP_PIECES_MIN, CAMP_KINDS_MIN = 16, 8
-CAMP_SKIP = re.compile(r"^(Tree|Bush|Plant|Flowers|Fern|Foliage|Weed|Grass|Mushroom|CaveRocks(Small|Pebbles|Tiny)|Rock\d|"
-                       r"Amb|ColorLight|Torch$|.*Shadow|Water|Dock|Bridge|Puddle|Lily|Reed|Fish|Duck|Ripple|Splash)")
-# "Way too many beds. And they're all clustered right next to each other" (Q1K-4): BEDS_BLOCK beds or more, each within
-# BED_LINK px of the next, by a camp's fire
-BED_LINK, BEDS_BLOCK = 50.0, 3
-# "when using rows ... place them against a wall so they dont look so random. racks can also be in a row perpendicular to
-# a wall" (Q1K-13): ROW_MIN racks or targets in a row (each within ROW_LINK px of the next) with none of them within
-# ROW_WALL px of a wall's line
-ROW_RE = re.compile(r"^(OutdoorTraderArmorRack\d|TraderPoleArm\d|TraderBowRack\d|TraderQuiverRack|OutdoorTraderHelmPoles|"
-                    r"TargetBarrel\d)$")
-ROW_LINK, ROW_MIN, ROW_WALL = 52.0, 3, 70.0
-# "At least 80% of cells should have either a cot, a bench ... Almost no cell should have 0 objects in it" (Q1K-10)
-CELL_BED_RE = re.compile(r"^(Cot\d|Bench\d|LightBench\d|WoodBed\d?|Bed\d|Stocks\d|UrchinBed\d|OgreStraw\d)")
-CELL_FURNISHED = 0.8
-
-
-def _chains(objs, link):
-    """Groups of objects each within `link` px of another of the group."""
-    left, out = list(objs), []
-    while left:
-        g = [left.pop()]; grew = True
-        while grew:
-            grew = False
-            for o in list(left):
-                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < link for c in g):
-                    g.append(o); left.remove(o); grew = True
-        out.append(g)
-    return out
-
-
 def _rows_share(pts, tol=ROW_TOL):
     """The share of points standing in a row of three or more along a square axis (either axis, point by point)."""
     n = sum(1 for p in pts if any(sum(1 for q in pts if abs(q[a] - p[a]) <= tol) >= 3 for a in (0, 1)))
@@ -2992,6 +2954,47 @@ def setpiece_faults(m, outdoor):
                 out.append(F("exterior", "warning", f"The {k}'s pieces stand {mir:.0%} mirrored about its axis: a set "
                              f"piece's pieces stand in pairs, balanced either side of its way in (kit/setpieces; QA round "
                              f"1).", x, y, rule="exterior.set_symmetry"))
+    return out
+
+
+# ---- QA round 1 (2026-10-13): camps, rows and jails (review/qa1/camps.md, Q1K-*) -------------------------------------
+# A camp: a fire (or an urchins' table) with a bed, straw or a tent within CAMP_R of it: its pieces within CAMP_R
+CAMP_CENTRE_RE = re.compile(r"^(CampFire|CampFireUnused|OgreFirePit|OgreFirePitUnlit|UrchinTableLarge)$")
+CAMP_SIGN_RE = re.compile(r"^(Cot\d|UrchinBed(Flat)?\d|UrchinHammock\d|OgreStraw\d|OutdoorTraderPupTent|TraderTent)")
+CAMP_R = 320.0
+# "Needs drastically more objects" (Q1K-3, Q1K-4, Q1K-5): a camp holds CAMP_PIECES_MIN solid pieces of CAMP_KINDS_MIN
+# kinds at the least (a house rule over Westwood's sparse camps: the user's word, QA round 1)
+CAMP_PIECES_MIN, CAMP_KINDS_MIN = 16, 8
+CAMP_SKIP = re.compile(r"^(Tree|Bush|Plant|Flowers|Fern|Foliage|Weed|Grass|Mushroom|CaveRocks(Small|Pebbles|Tiny)|Rock\d|"
+                       r"Amb|ColorLight|Torch$|.*Shadow|Water|Dock|Bridge|Puddle|Lily|Reed|Fish|Duck|Ripple|Splash)")
+# "Way too many beds. And they're all clustered right next to each other" (Q1K-4): BEDS_BLOCK beds or more, each within
+# BED_LINK px of the next, by a camp's fire
+BED_LINK, BEDS_BLOCK = 50.0, 3
+# "when using rows ... place them against a wall so they dont look so random. racks can also be in a row perpendicular to
+# a wall" (Q1K-13): ROW_MIN racks or targets in a row (each within ROW_LINK px of the next) with none of them within
+# ROW_WALL px of a wall's line
+ROW_RE = re.compile(r"^(OutdoorTraderArmorRack\d|TraderPoleArm\d|TraderBowRack\d|TraderQuiverRack|OutdoorTraderHelmPoles|"
+                    r"TargetBarrel\d)$")
+ROW_LINK, ROW_MIN, ROW_WALL = 52.0, 3, 70.0
+# "At least 80% of cells should have either a cot, a bench ... Almost no cell should have 0 objects in it" (Q1K-10)
+CELL_BED_RE = re.compile(r"^(Cot\d|Bench\d|LightBench\d|WoodBed\d?|Bed\d|Stocks\d|UrchinBed\d|OgreStraw\d)")
+CELL_FURNISHED = 0.8
+
+
+def _chains(objs, link):
+    """Groups of objects each within `link` px of another of the group."""
+    left, out = list(objs), []
+    while left:
+        g = [left.pop()]; grew = True
+        while grew:
+            grew = False
+            for o in list(left):
+                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < link for c in g):
+                    g.append(o); left.remove(o); grew = True
+        out.append(g)
+    return out
+
+
 def camp_rules(m):
     """QA round 1's camp and row faults: a camp too bare to be lived in (exterior.camp_bare), a camp's beds in one
     block (exterior.beds_block), a row of racks or targets standing in the open away from every wall (exterior.row_float).
