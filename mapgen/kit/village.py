@@ -363,15 +363,20 @@ class Village:
                 # "The crates of apples and the larger crate look out of place here. Move them up against the wall so
                 # they're out of the street"): slid toward the wall till it stands its half-width and a margin off it,
                 # never into a doorway
-                from kit.spacing import off_walls
-                wi, wj = (-oi, -oj) if sc["where"] == "door_side" else (lambda f: ((f[0] + 0.5 - si), (f[1] - 0.5 - sj)))(
-                    min(foot, key=lambda f: (f[0] + 0.5 - si) ** 2 + (f[1] - 0.5 - sj) ** 2))
+                from kit.spacing import off_walls, spaced
+                # straight in toward the wall, square to it (every piece of the group the same way, so the row keeps
+                # its spacing), and never nearer another piece than kit/spacing allows
+                wi, wj = (-oi, -oj) if sc["where"] == "door_side" else next(
+                    ((a, b) for a, b in N4 if (s0[0] + a, s0[1] + b) in foot), (0, 0))
                 L_ = math.hypot(wi, wj) or 1
-                for k_ in range(1, 25):
+                near_ = [(o.get("type"), o["x"], o["y"]) for o in self.spec.d["objects"]
+                         if "type" in o and abs(o["x"] - qx) < 120 and abs(o["y"] - qy) < 120]
+                for k_ in range(1, 25 if (wi or wj) else 0):
                     nx_, ny_ = square_px(si + wi / L_ * 0.08 * k_, sj + wj / L_ * 0.08 * k_)
                     if not off_walls(self.spec.wallmap, t, nx_, ny_, margin=4): break
                     if any(math.hypot(o["x"] - nx_, o["y"] - ny_) < 56 for o in self.spec.d["objects"]
                            if "Door" in (o.get("type") or "")): break
+                    if not spaced(t, nx_, ny_, near_): break
                     qx, qy = nx_, ny_
             self.spec.obj_px(t, qx, qy, **({"xfer": {"Text": text}} if text else {}))
             self.used.add((int(si), int(sj) + 1))

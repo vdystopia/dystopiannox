@@ -339,11 +339,14 @@ def _quarry(spec, rng, y, yj, free_spot, put, jit):
              rng.choice(("MiningPickAxeOnGround1", "MiningPickAxeOnGround2", "MineOreCartWheel"))]
     if rng.random() < 0.5: works[1], works[2] = works[2], works[1]
     n = len(works)
+    typed = []                                       # (each its kit/spacing gap from the row's others: Q1K-1)
     for k, t in enumerate(works):
-        for dt in (0.0, 0.05, -0.05, 0.1, -0.1):
+        for dt in (0.0, 0.05, -0.05, 0.1, -0.1, 0.15, -0.15):
             si, sj = line(min(1.0, max(0.0, k / max(1, n - 1) + dt)))
-            if free_spot(si, sj, pad=0.6, lane_w=1.2, t=t):
+            x_, y_ = square_px(si, sj)
+            if free_spot(si, sj, pad=0.6, lane_w=1.2, t=t) and SP.spaced(t, x_, y_, typed):
                 put(t, si, sj, room=1.0 if "Cart" in t and "Wheel" not in t else (0.9 if "Crate" in t else 0.6))
+                typed.append((t, x_, y_))
                 break
     # ---- the crystals in the rock by the back corner of the other flank, the bones the cutting turned up
     line2 = _side_line(y, yj, flanks[1], 0.95)
@@ -550,6 +553,13 @@ def _guard_room(spec, rng, room):
     for t in ("TraderQuiverRack", "OutdoorTraderArmorRack1", "TraderArmorRack1"):     # the watch's arms by the walls
         try: f.against_wall("shop_rack", t_choice=t, tries=12)
         except Exception: break
+    objs = f.objects
+    # (the torches by the cell doors light the room: no candelabra stands by one, composition.lights_pair)
+    torches = [o for o in spec.d["objects"] if o.get("type") == "Torch" and
+               any(math.hypot(o["x"] - q["x"], o["y"] - q["y"]) < 400 for q in objs)]
+    for o in [o for o in objs if o.get("type", "").startswith("Candleabra") and
+              any(math.hypot(o["x"] - t_["x"], o["y"] - t_["y"]) < 90 for t_ in torches)]:
+        f._remove(o)
     objs = f.objects
     room.kind = f.kind
     loot.tag(spec, objs, f.kind)
