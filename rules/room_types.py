@@ -45,6 +45,11 @@ FAMILIES = [  # (family, regex on object type); first match wins
     ("altar", r"Altar|LichGodStatue|Shrine"),
     ("throne", r"Throne"),
     ("tomb", r"Coffin|^Crypt\d|Tombstone|Sarcophag"),
+    # the holy and arcane things a sacred room is dressed with (QA round 1, review/qa1/sacred.md: the type counter had
+    # missed them, so a mana room of crystals or a chapel's font counted as bare): pools, fountains, fire and incense
+    # basins, crystal pillars and clusters, burning skulls, monuments, candle groups
+    ("relic", r"^OrbPoolWith(out)?Orb$|^Fountain$|FlameBasin|IncenseBasin|^CrystalColumn$|^MineManaCrystal\d+$|"
+              r"^MineCrystal|^CrystalBlue|FlamingSkulls|^Monument\d|CandleGroup|^OrbPoolEnd\d$|^MineManaCart\d$"),
     ("statue", r"Statue|Gargoyle|ManaObelisk|^Obelisk|JudgementBalance|^LOTDArk\d"),
     ("column", r"Column|Pillar"),
     ("wall_decor", r"Tapestry|Painting|Trophy|HangingShield|Banner|Mirror|ClothSign|WallHanging|CrossedWeapons|HangingSwords|HangingCrossbow"),
@@ -55,7 +60,7 @@ FAMILIES = [  # (family, regex on object type); first match wins
 FAMILY_RE = [(f, re.compile(p)) for f, p in FAMILIES]
 DUNGEON = re.compile(r"Spike|Bone|Skull|MonsterGenerator|Pit|Trap|Corpse|SpiderWeb|Rubble|Glyph|PressurePlate", re.I)
 BLOCKING_FAMILIES = {"bed", "nightstand", "counter_bar", "counter_shop", "shop_rack", "table", "chair", "bench", "desk",
-                     "shelves", "fireplace", "stove", "smithy", "lab", "altar", "throne", "tomb", "statue", "column",
+                     "shelves", "fireplace", "stove", "smithy", "lab", "altar", "throne", "tomb", "statue", "column", "relic",
                      "storage", "straw", "plant"}
 SHOPKEEPER = re.compile(r"^Shopkeeper")
 

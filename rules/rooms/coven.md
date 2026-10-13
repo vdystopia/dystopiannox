@@ -46,7 +46,7 @@ main door in the middle of its wall, inner doors off the axis, the room never re
 
 ## Density
 
-Cover 0.06-0.12-0.24; open 0.45-0.88; types 9+; obelisks may be three quarters of its pieces (monotony 0.75).
+Cover 0.06-0.12-0.24; open 0.45-0.88; types 9+ (the relics counted: a furniture family of their own since the second pass).
 
 ## Checked by
 
@@ -57,3 +57,8 @@ Cover 0.06-0.12-0.24; open 0.45-0.88; types 9+; obelisks may be three quarters o
 ## Where people stand
 
 The priest at his spot beside the altar; the faithful in the pews; the restless dead about the nave.
+
+## Full enough (QA round 1, second pass; Q1C-19)
+
+Dressed as a crypt is (urns, rubble, LOTD gravestones, obelisks, candle groups, monuments, bones, cobwebs) until it holds
+`fullness_goal` kinds (8, a kind more every 45 tiles past 30) and covers 10%. Checked by `sacred.fullness`.

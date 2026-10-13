@@ -155,3 +155,10 @@ The priest at his spot beside the altar, between it and the statue that flanks i
 - **Sarcophagi rarely** (a quarter of naves), never by default behind every set of pews; **no plants.**
 - At most six hangings.
 - Still missing: the cross-shaped carpet of Westwood's temple (the shell's floor), a lectern by the altar.
+
+## Full enough (QA round 1, second pass; Q1C-19)
+
+After the set piece the nave's walls and corners are dressed in mirrored pairs until it holds `fullness_goal` kinds (8, a
+kind more every 45 tiles past 30) and covers 7%: fire basins, statues, urns, monuments, gargoyles, victory statues, orb
+pedestals, light benches along the side walls; the statue cap (a statue per 16 tiles) held. Checked by
+`sacred.fullness`.

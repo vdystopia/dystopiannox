@@ -591,14 +591,17 @@ ROOMS = {
                    core={"altar": (1, 1), "bench": (4, 16), "statue": (2, 4)},
                    # room lab (tuneB): Westwood's chapel (Con07B) holds 8 pews, 6 columns ringing the nave near its
                    # walls, tapestries, candelabras, statues by the altar: no plants, no tombs in the nave
-                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1)},
+                   optional={"column": (1.0, 8), "tomb": (0.25, 2), "wall_decor": (1.0, 6), "storage": (0.4, 1),
+                             "relic": (1.0, 4)},
                    columns_by_walls=True, statues_along=True, decor_max=6,
                    # QA round 1 (Q1C-1..Q1C-12): the nave is one set piece, symmetric about the line from the main door
                    # to the altar (kit/sacred.py chapel): the runner up the middle, pews in rows either side, columns
                    # lined up with the rows, statues and lights in pairs, the altar end one of four (Dun Mir's altar, a
                    # holy font or a fountain before it, a saint's great statue behind it), the priest beside the altar
                    composer="nave", lift=("Horrendous|",),
-                   types={"altar": r"^DunMirAltar\d$", "statue": r"^Statue2[a-h]$|^HorrendousStatue[12]$",
+                   types={"altar": r"^DunMirAltar\d$",
+                          "statue": r"^Statue2[a-h]$|^HorrendousStatue[12]$|^StatueVase[12]|^StatueVictory\d|^Gargoyle\d$",
+                          "relic": r"^OrbPoolWithOrb$|^Fountain$|^DunMirFlameBasinLit$|^Monument1$|^OrbPoolEnd\d$",
                           "bench": r"^Bench\d$|^LightBench\d$|^CushionedBench\d$",
                           "column": r"^CathedralColumn[123]$|^Column[5-8]$", "tomb": r"^Crypt(1|3|5|6|7|8|9|10|11|12)$",
                           "storage": r"^DunMirChest\d|^Chest\d", "plant": PLANTS},
@@ -639,15 +642,17 @@ ROOMS = {
                   # coverage 0.08. The old rows of sarcophagi and coffins down the middle with columns, statues,
                   # tapestries and plants gave every one away (AUC 0.98-1.0)
                   core={"tomb": (2, 12)},
-                  optional={"statue": (0.3, 2), "storage": (0.4, 1)},
+                  optional={"statue": (0.3, 2), "storage": (0.4, 1), "column": (1.0, 4), "relic": (1.0, 6)},
                   # QA round 1 (Q1C-13..Q1C-16: "The objects in these rooms need better organization, arrangement, and
                   # balance. Add more object diversity, like bones. Use the breakable coffin objects sometimes. Add a high
                   # chance for these rooms to contain mana obelisks"): one set piece about the door's line (kit/sacred.py
                   # crypt): a centrepiece on the far wall between mana obelisks (4 in 5 crypts), rows of sarcophagi or
                   # breakable coffins either side of the aisle, bones heaped at their heads, statues and tombstones in pairs
-                  composer="crypt", lift=("DunMir|",),
-                  types={"tomb": r"^Crypt\d+$|^Coffin\d$|^Tombstone\d+$|^DunMirTombstone\d$",
-                         "statue": r"^Statue2[a-h]$|^Obelisk$|^Monument1$", "storage": r"^CryptChest\d$"},
+                  composer="crypt", lift=("DunMir|", "LOTD|"),
+                  types={"tomb": r"^Crypt\d+$|^Coffin\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
+                         "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$",
+                         "storage": r"^CryptChest\d$", "column": r"^RuinsColumnIndoorRubble\d+$",
+                         "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$"},
                   top_up=(), lights_per100=2.0,
                   # a step out from the walls (Westwood's: none against a wall, none further than 2.5 units from one):
                   # sarcophagi along the walls a pace out, the chest in a corner, held to the type's cap
@@ -877,12 +882,13 @@ ROOMS = {
                         # 2026-10-05 playtest rule (large rooms mix their pieces): Ambermere's 300-tile barrow hall held
                         # a block of 20 obelisks and arks down its middle
                         optional={"wall_decor": (1.0, 6), "tomb": (0.5, 8), "bones": (1.0, 30), "column": (0.6, 8),
-                                  "bench": (1.0, 12), "stove": (1.0, 1)},
+                                  "bench": (1.0, 12), "stove": (1.0, 1), "relic": (1.0, 8)},
                         types={"altar": r"^LOTDLichGodStatue[12]$",
-                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^Monument1$",
+                               "statue": r"^LOTDManaObelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]",
+                               "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
                                "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$",
                                "tomb": r"^LOTDTombstone[1-4]$|^Crypt\d+$|^Coffin\d$",
-                               "column": r"^LOTDColumn1$", "bench": r"^Bench\d$|^LightBench\d$",
+                               "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "bench": r"^Bench\d$|^LightBench\d$",
                                "stove": r"^Cauldron(Animated)?$"},
                         prefer={"altar": {"LOTDLichGodStatue1": 1, "LOTDLichGodStatue2": 1},
                                 "statue": {"LOTDManaObelisk": 3, "LOTDArk1": 1, "LOTDArk2": 1},
@@ -907,12 +913,14 @@ ROOMS = {
                                "walls, sconces and candles, bones and skulls strewn over the floor",
                        base="crypt",
                        core={"tomb": (4, 40)},
-                       optional={"statue": (0.8, 4), "wall_decor": (0.6, 3), "bones": (1.0, 40), "storage": (0.6, 1)},
+                       optional={"statue": (0.8, 4), "wall_decor": (0.6, 3), "bones": (1.0, 40), "storage": (0.6, 1),
+                                 "column": (1.0, 4), "relic": (1.0, 6)},
                        # QA round 1 (Q1C-17: RM-CRYPT-10 "needs coffins or graves or something to give it a crypt
                        # identity"): the crypt's set piece, its rows of the dead coffins, sarcophagi or LOTD gravestones
                        composer="crypt",
-                       types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$", "statue": r"^LOTDManaObelisk$|^Monument1$",
-                              "storage": r"^CryptChest\d$", "wall_decor": r"^LOTDTapestry[12]$"},
+                       types={"tomb": r"^LOTDTombstone|^Crypt\d+$|^Coffin\d$", "statue": r"^LOTDManaObelisk$|^StatueVase[12]",
+                              "storage": r"^CryptChest\d$", "wall_decor": r"^LOTDTapestry[12]$",
+                              "column": r"^RuinsColumnIndoorRubble\d+$", "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$"},
                        prefer={"statue": {"LOTDManaObelisk": 1}, "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                        lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
@@ -934,12 +942,13 @@ ROOMS = {
                   lift=("LOTD|", "Lich|", "Crypt|", "DunMir|", "|Coffin", "|Tomb"),
                   core={"statue": (4, 30), "tomb": (2, 10)},
                   optional={"altar": (1.0, 1), "bench": (1.0, 12), "column": (1.0, 8), "stove": (1.0, 1),
-                            "wall_decor": (1.0, 6), "bones": (1.0, 30)},
+                            "wall_decor": (1.0, 6), "bones": (1.0, 30), "relic": (1.0, 8)},
                   types={"altar": r"^LOTDLichGodStatue[12]$|^DunMirAltar\d$",
-                         "statue": r"^LOTDManaObelisk$|^Obelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^Monument1$|"
+                         "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
+                         "statue": r"^LOTDManaObelisk$|^Obelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|"
                                    r"^Statue2[a-h]$",
                          "tomb": r"^Crypt\d+$|^Coffin\d$|^LOTDTombstone", "bench": r"^Bench\d$|^LightBench\d$",
-                         "column": r"^LOTDColumn1$", "stove": r"^Cauldron(Animated)?$",
+                         "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "stove": r"^Cauldron(Animated)?$",
                          "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$"},
                   prefer={"bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "Bench5": 1},
                           "wall_decor": {"LOTDTapestry1": 2, "LOTDTapestry2": 2, "LOTDBanner1": 1, "LOTDBanner2": 1},
@@ -957,9 +966,12 @@ ROOMS = {
                       lift=("DunMir|", "Mine|", "LOTD|"),
                       core={"statue": (4, 16)},
                       optional={"lab": (1.0, 10), "shelves": (1.0, 10), "storage": (1.0, 2), "altar": (0.5, 4), "column": (1.0, 4),
+                                "relic": (1.0, 16),
                                 "wall_decor": (1.0, 6)},
-                      types={"statue": r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$",
-                             "lab": r"^WizardWorkstation\d[a-d]?$|^FairyJar$|^Orrery[12]$|^Vandegraf(Small|Large)$",
+                      types={"statue": r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$|^StatueVase[12]",
+                             "relic": r"^OrbPoolWithOrb$|^CrystalColumn$|^MineManaCrystal\d+$|^CrystalBlue|^OrbPoolEnd\d$|^MineCrystal\d+$|"
+                                      r"^MineManaCart\d$|^DunMirFlameBasinLit$",
+                             "lab": r"^WizardWorkstation\d[a-d]?$|^FairyJar$|^Orrery[12]$|^Vandegraf(Small|Large)$|^Telescope2[a-g]$",
                              "shelves": r"^Bookcase\d$|^PotionShelves\d$", "storage": r"^DunMirChest\d$|^Chest\d$",
                              "altar": r"^DunMirAltar\d$", "wall_decor": r"^(StarChart|Zodiac)\d[a-d]$",
                              "column": r"^CrystalColumn$"},

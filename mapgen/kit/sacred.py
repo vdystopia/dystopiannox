@@ -433,6 +433,13 @@ def chapel(f):
     cu, cv = ax.uv(D / 2.0, 0.0)
     _colour_light(f, cu, cv)
     _hangings(f, ax, sp, s_stat)
+    vase = f.rng.choice(("StatueVase1", "StatueVase2"))
+    victory = f.rng.choice(("StatueVictory1", "StatueVictory3", "StatueVictory4"))
+    dress(f, ax, sp, "chapel", [("basins", lambda sg: "DunMirFlameBasinLit"), ("statues", lambda sg: st),
+                                ("urns", lambda sg: vase + _facing(ax, sg)), ("monuments", lambda sg: "Monument1"),
+                                ("gargoyles", lambda sg: "Gargoyle2"), ("victors", lambda sg: victory + _facing(ax, sg)),
+                                ("pedestals", lambda sg: "OrbPoolEnd1"),
+                                ("wallbench", lambda sg: (_oriented(f, ax, r"^LightBench\d$", across=False) or [None])[0])])
     return True
 
 
@@ -581,6 +588,7 @@ def coven(f):
     cu, cv = ax.uv(D / 2.0, 0.0)
     _colour_light(f, cu, cv)
     _hangings(f, ax, sp, wide + 1.6, max_n=6)
+    dress(f, ax, sp, "coven", crypt_pieces(f, ax, True))
     return True
 
 
@@ -709,8 +717,10 @@ def _mana_walls(f, ax, sp, rings):
     L = ax.D
     W = ax.half_width(1.0, L - 1.0)
     # the corners: crystal clusters, four of a kind
+    # (each placement takes its own kind of crystal, so no one kind repeats past the room score's most: the corners mana
+    # crystal clusters, the rings' flanks blue stalagmites, the dressing mine crystals and crystal pillars)
     cl = f.rng.choice([t for t in ("MineManaCrystal1", "MineManaCrystal2", "MineManaCrystal5", "MineManaCrystal6",
-                                   "CrystalBlueSmallStalagmite", "MineManaCrystal9") if f.ok_type(t)] or ["CrystalColumn"])
+                                   "MineManaCrystal9") if f.ok_type(t)] or ["CrystalColumn"])
     ch = max(f.half(cl))
     for d in (ch + 1.0, L - ch - 1.0):
         sp.pair(cl, d, min(ax.sides_at(d)) - ch - 1.0)
@@ -778,8 +788,7 @@ def _mana_walls(f, ax, sp, rings):
         if not (f.ok_type("Orrery2") and f.try_put("Orrery2", *ax.uv(L / 2.0, 0.0))):
             f.try_put("CrystalBlueLargeStalagmite", *ax.uv(L / 2.0, 0.0))
     # each ring flanked across the room by a pair of crystal clusters (or candelabras), its carpet's width out
-    small = [t for t in ("MineManaCrystal1", "MineManaCrystal2", "MineManaCrystal5", "MineManaCrystal6",
-                         "CrystalBlueSmallStalagmite") if f.ok_type(t) and t != cl]
+    small = [t for t in ("CrystalBlueSmallStalagmite",) if f.ok_type(t)]
     for d, s in getattr(f, "ring_pos", []):
         if s < -0.1 or not small: continue
         t = f.rng.choice(small)
@@ -798,6 +807,8 @@ def _mana_walls(f, ax, sp, rings):
         if sp.light_pair(d, W / 2.0): n_l += 2
     cu, cv = ax.uv(L / 2.0, 0.0)
     _colour_light(f, cu, cv)
+    # the wall stretches between the doors dressed in pairs, mirrored across the axis or else along it
+    dress(f, ax, sp, "mana_room", mana_pieces(f, ax), both_ways=True)
 
 
 # ---- the crypt ------------------------------------------------------------------------------------------------------
@@ -856,59 +867,79 @@ def crypt(f):
     t_stone = rng.choice(lotd_stones) if lotd_stones else None
     heads = []
     if os.environ.get("NOX_SACRED_DEBUG"): print("  crypt rows", f.room.id, rows_of, t_sarc, t_coff, round(W, 1), round(D, 1), round(d, 1))
-    d_start = d
     heads = []
-    for orient in ("across", "along"):           # tombs across the aisle; where a side door's way keeps them out, along it
-        d = d_start
-        while True:
-            what = rows_of[min(len(rows_of) - 1, rows // 2)] if rows_of else None
-            t = {"sarcs": t_sarc, "coffins": t_coff, "stones": t_stone}.get(what)
-            if not t: break
-            hd, hs = ax.halves(t)
-            if (orient == "along" or aisle + 2 * hs > W - 0.9) and hs > hd:   # along the aisle (a narrow crypt)
-                stem = re.sub(r"\d+$", "", t)
-                along_ = [x for x in _oriented(f, ax, "^" + stem + r"\d+$", across=False)
-                          if not stem.startswith("Crypt") or x in ("Crypt1", "Crypt3") or t not in ("Crypt1", "Crypt3")]
-                if along_:
-                    t = min(along_, key=lambda x: ax.halves(x)[1])
-                    hd, hs = ax.halves(t)
-            dd = d - hd
-            if dd - hd < 3.2: break
-            pitch = 2 * hs + 0.5
-            a_row = max(0.9, min(aisle, W - 0.8 - 2 * hs))     # a narrow crypt's aisle narrows to a pace
-            # as many to a half-row as the width holds, four at most (a shallow crypt entered on its long side)
-            k = max(1, min(4, int((W - 0.9 - a_row + 0.5) / pitch)))
-            if k >= 3: pitch += 0.4                  # (a walk between the tombs of a long row)
-            ok = 0
-            for i in range(k):
-                s = a_row + hs + i * pitch
-                if s + hs > W - 0.75: break
-                ok += sp.pair(t, dd, s)
-            if ok:                               # (a row a side door's way crosses is left out, the next tried)
-                heads.append((dd, a_row + k * pitch - 0.5 + 0.8))
-                rows += 1
-                d = dd - hd - 1.1
+
+    def along_of(t):
+        """t's sibling lying along the aisle (the narrowest), or None."""
+        stem = re.sub(r"\d+$", "", t)
+        al = [x for x in _oriented(f, ax, "^" + stem + r"\d+$", across=False)
+              if not stem.startswith("Crypt") or x in ("Crypt1", "Crypt3") or t not in ("Crypt1", "Crypt3")]
+        return min(al, key=lambda x: ax.halves(x)[1]) if al else None
+
+    def row(t, d, a_row, k_most=4):
+        """A mirrored row of t at depth d (its far edge there), from a_row out: (pieces, depth, half depth, outer s)."""
+        hd, hs = ax.halves(t)
+        dd = d - hd
+        if dd - hd < 2.6: return 0, dd, hd, 0.0
+        pitch = 2 * hs + 0.5
+        k = max(1, min(k_most, int((W - 0.9 - a_row + 0.5) / pitch)))
+        if k >= 3: pitch += 0.4                  # (a walk between the tombs of a long row)
+        ok, s_out = 0, a_row
+        for i in range(k):
+            s_ = a_row + hs + i * pitch
+            if s_ + hs > W - 0.75: break
+            got = sp.pair(t, dd, s_)
+            if not got: break
+            ok += got; s_out = s_ + hs
+        return ok, dd, hd, s_out
+
+    # the rows down the whole floor, from the far end to the door: across the aisle where they fit, else along it a pace
+    # out, else against the side walls; a depth where none fits (a side door's way) is stepped over, not the end of the
+    # rows (RM-CRYPT-10: its two rows lay at one end of the floor)
+    while d > 2.6 and rows < 14:
+        what = rows_of[min(len(rows_of) - 1, rows // 2)] if rows_of else None
+        t = {"sarcs": t_sarc, "coffins": t_coff, "stones": t_stone}.get(what)
+        if not t: break
+        hd0, hs0 = ax.halves(t)
+        tal = along_of(t) if hs0 > hd0 else None
+        tries = []
+        if aisle + 2 * hs0 <= W - 0.9: tries.append((t, max(0.9, min(aisle, W - 0.8 - 2 * hs0)), 4))
+        if tal: tries.append((tal, max(0.9, min(aisle, W - 0.8 - 2 * ax.halves(tal)[1])), 2))
+        if tal: tries.append((tal, W - 2 * ax.halves(tal)[1] - 0.35, 1))
+        done = False
+        for tt, a_row, km in tries:
+            if a_row is None:
+                hd = ax.halves(tt)[0]
+                dd = d - hd
+                ok = 1 if dd - hd >= 2.6 and sp.put(tt, dd, 0.0) else 0
+                s_out = ax.halves(tt)[1]
             else:
-                d -= 1.0
-            if rows >= 6: break
-        if rows: break
-    if not rows and (t_sarc or t_coff):          # no room for rows (a small crypt's side door): tombs along the side walls
-        base = t_coff or t_sarc
-        stem = re.sub(r"\d+$", "", base)
-        along_ = _oriented(f, ax, "^" + stem + r"\d+$", across=False)
-        if along_:
-            t = along_[0]
-            hd, hs = ax.halves(t)
-            d = D - 2.4 - hd
-            while d - hd > 2.0 and rows < 2:
-                if sp.pair(t, d, W - hs - 0.35):
-                    heads.append((d, W - 2 * hs - 1.0)); rows += 1; d -= 2 * hd + 1.4
-                else: d -= 0.8
-            d = D - 3.4 - hd
-            while not rows and d - hd > 4.6:     # else the dead laid in the middle, on the line from the door
-                if sp.put(t, d, 0.0):
-                    heads.append((d, hs + 0.9)); rows += 1
-                else: d -= 0.8
+                ok, dd, hd, s_out = row(tt, d, a_row, km)
+            if ok:
+                heads.append((dd, min(W - 0.9, s_out + 0.8)))
+                rows += 1
+                d = dd - hd - (2.4 if a_row is None else 1.1)      # (single tombs on the line stand apart)
+                done = True
+                break
+        if not done: d -= 1.0
+    # where the side doors' ways left a stretch of the floor without a row, single tombs on the middle line fill it
+    t_mid = (lambda t0: along_of(t0) or t0)(t_coff or t_sarc) if (t_coff or t_sarc) else None
+    if t_mid and heads:
+        hd_m = ax.halves(t_mid)[0]
+        d = D - 3.4 - hd_m
+        while d - hd_m > 2.6:
+            if all(abs(d - dd) > hd_m + 2.6 for dd, _ in heads) and sp.put(t_mid, d, 0.0):
+                heads.append((d, ax.halves(t_mid)[1] + 0.9)); rows += 1
+                d -= 2 * hd_m + 2.4
+            else: d -= 0.8
+    if not rows and (t_sarc or t_coff):          # else the dead laid in the middle, on the line from the door
+        t = along_of(t_coff or t_sarc) or (t_coff or t_sarc)
+        hd, hs = ax.halves(t)
+        d = D - 3.4 - hd
+        while not rows and d - hd > 2.6:
+            if sp.put(t, d, 0.0):
+                heads.append((d, hs + 0.9)); rows += 1
+            else: d -= 0.8
     # bones heaped at the rows' heads, mirrored
     for i, (dd, s) in enumerate(heads):
         if s < W - 0.8: sp.bones(dd, s, n=2 if (lotd or i % 2 == 0) else 1)
@@ -950,7 +981,171 @@ def crypt(f):
         s = s_flank + 2.4
         if s < W - 1.2:
             f._hang(ax.far, ax.mid - s); f._hang(ax.far, ax.mid + s)
+    # the walls and corners dressed until the crypt is full enough (urns, rubble, graves, candles, bones, cobwebs)
+    dress(f, ax, sp, "crypt", crypt_pieces(f, ax, lotd))
     return bool(rows) or bool(wide)
+
+
+# ---- fullness: the walls and corners dressed until the room is full enough (QA round 1, second pass) -----------------
+# The coordinator's read of the first pass (2026-10-13): small and two-door crypts and mana rooms with doors on several
+# walls came out nearly bare (RM-CRYPT-09's fault again: "Worst one in the set, very empty"), against the user's first
+# theme of the round, "spaces are too empty and lack object diversity". Each type has a floor of distinct kinds of piece
+# (scaled by its floor tiles) and of covered floor; the set piece dresses its walls and corners in mirrored pairs until
+# it reaches both. validate/checks.py sacred.fullness holds the same numbers.
+FULL_COVER = {"chapel": 0.07, "coven": 0.10, "mana_room": 0.07, "crypt": 0.10}
+FULL_KINDS = {"chapel": (8, 12), "coven": (8, 12), "mana_room": (8, 12), "crypt": (6, 10)}     # (least, most)
+BONES_RX = re.compile(r"^(Skull|ArmBone|LegBone)$|^Corpse|^SpiderWeb")
+
+
+def fullness_goal(rtype, tiles):
+    """(distinct kinds of piece, covered share of the floor) a sacred room of the type and size holds at least: a kind
+    more for every 45 tiles past 30, within the type's (least, most)."""
+    lo, hi = FULL_KINDS.get(rtype, (5, 9))
+    return max(lo, min(hi, lo + int(max(0, tiles - 30) // 45))), FULL_COVER.get(rtype, 0.06)
+
+
+def counted_kind(t, family):
+    """The kind a piece counts as in the room's diversity, or None: pieces with a furniture family (rules/room_types.py,
+    the relics included), bones and cobwebs; never lights other than the relics, nor doors."""
+    if family: return re.sub(r"(\d+[a-z]?|NE|NW|SE|SW|N|S|E|W)$", "", t)
+    if BONES_RX.search(t): return "bones" if not t.startswith("SpiderWeb") else "cobweb"
+    return None
+
+
+def kinds_of(f):
+    from kit.furnish import _family_of
+    return {k for o in f.objects for k in [counted_kind(o["type"], _family_of(o["type"]))] if k}
+
+
+def _facing(ax, sign):
+    """The compass name a piece on the sign side of the axis looks toward the axis by (StatueVase's variants)."""
+    if ax.line == "/": return "SW" if sign > 0 else "NE"      # lateral is v: +v is NE
+    return "NW" if sign > 0 else "SE"                           # lateral is u: +u is SE
+
+
+def _spots(ax, r_, inner=False):
+    """Mirrored wall and corner spots for a piece of radius r_: [(depth, lateral >= 0)], corners first, then the side walls
+    from the far end, then the far and near walls either side of the axis."""
+    D = ax.D
+    out = []
+    for d in (D - r_ - 0.5, r_ + 0.7):
+        out.append((d, min(ax.sides_at(d)) - r_ - 0.45))
+    d = D - r_ - 2.6
+    while d > r_ + 1.6:
+        out.append((d, min(ax.sides_at(d)) - r_ - 0.35))
+        d -= 2.3
+    w = ax.half_width(max(1.0, D - 2.0), D - 0.6)
+    a = 2.6
+    while a < w - 1.4:
+        out.append((D - r_ - 0.4, a)); out.append((r_ + 0.7, a))
+        a += 2.4
+    if inner:                                    # (a mana room: the open floor between its rings and its walls too)
+        d = 2.6
+        while d < D - 2.6:
+            w_ = min(ax.sides_at(d))
+            out += [(d, w_ * 0.55), (d, w_ * 0.75)]
+            d += 2.8
+    return out
+
+
+def dress(f, ax, sp, rtype, pieces, both_ways=False, max_pairs=24):
+    """Mirrored pairs of `pieces` [(name, chooser(sign) -> type)] against the walls and in the corners, round robin, a
+    kind not yet in the room first, until the room reaches its fullness_goal; where the mirror across the axis is taken
+    (a door's way), with both_ways the pair is mirrored about the room's middle along the axis instead (a mana room).
+    Returns the pairs placed."""
+    goal_k, goal_c = fullness_goal(rtype, len(f.room.tiles))
+    placed, tried, per_kind = 0, set(), Counter()
+    present0 = kinds_of(f)                       # (a kind the set piece placed already takes one more pair at most)
+    first = True                                 # every kind of the dressing once (the corners and walls filled), then
+    while placed < max_pairs:                    # more pairs until the room is full enough
+        have = kinds_of(f)
+        if not first and len(have) >= goal_k and f.coverage() >= goal_c: break
+        # a kind the room lacks before more of one it has, then the rest in turn
+        from kit.furnish import _family_of
+        order = sorted(pieces, key=lambda p: (counted_kind(p[1](1) or "", _family_of(p[1](1) or "")) in have, p[0]))
+        progress = False
+        for name, choose in order:
+            t1, t2 = choose(-1), choose(1)
+            if not (t1 and t2 and f.ok_type(t1) and f.ok_type(t2)): continue
+            r_ = max(f.half(t1))
+            # each kind two pairs at most (no stand-alone piece repeated along a wall: identity.repeat_wall), a showpiece
+            # once (pieces.showpiece)
+            from kit.furnish import SHOWPIECES
+            from kit.furnish import _family_of as _fo
+            if per_kind[name] >= (1 if SHOWPIECES.match(t1) or counted_kind(t1, _fo(t1)) in present0 else 2): continue
+            cap = f.repeat_cap(_fo(t1))              # the type's caps (a chapel's statues: a statue per 16 tiles)
+            if cap is not None and f._fam_n[_fo(t1)] + 2 > cap: continue
+            soft = name.startswith(("bones", "cobweb"))
+            for d, s in _spots(ax, r_, inner=both_ways):
+                key = (name, round(d, 1), round(s, 1))
+                if key in tried or s < 1.0: continue
+                tried.add(key)
+                if not soft and not all(_clear_spot(f, t_, *ax.uv(d, sg * s)) for t_, sg in ((t1, -1), (t2, 1))):
+                    continue
+                light = name in ("candles", "candelabra")
+                if light: f.placing_light = True
+                try:
+                    got = sp.pair(t1, d, s, t2, blocking=not name.startswith(("bones", "cobweb")))
+                    if not got and both_ways and abs(ax.D - 2 * d) > 2.0:
+                        o1 = sp.put(t2, d, s, blocking=True)
+                        o2 = o1 and sp.put(t2, ax.D - d, s, blocking=True)
+                        if o1 and not o2: f._remove(o1)
+                        got = 2 if o1 and o2 else 0
+                finally:
+                    f.placing_light = False
+                if got:
+                    placed += 1; progress = True; per_kind[name] += 1
+                    break
+            if placed >= max_pairs: break
+            have = kinds_of(f)
+            if not first and len(have) >= goal_k and f.coverage() >= goal_c: break
+        if not progress and not first: break
+        first = False
+    return placed
+
+
+def _clear_spot(f, t, u, v):
+    """A dressing piece at (u, v) keeps 0.7 units from every standing piece (statues apart: pieces.clearance) and never
+    stands under a hanging (pieces.hung), as the knowledge base holds single pieces (the set piece's pairs skip it)."""
+    hu, hv = f.half(t)
+    for tt, rec in f._typed:
+        if not rec[4] or rec[5] == "wall": continue
+        if max(abs(u - rec[0]) - hu - rec[2], abs(v - rec[1]) - hv - rec[3]) < 0.7: return False
+    return not f._under(u, v, hu, hv, hanging=False)
+
+
+def crypt_pieces(f, ax, lotd):
+    """The crypt's dressing: urns, rubble, gravestones, a small statue pair, candles, skulls and bones, cobwebs."""
+    rng = f.rng
+    vase = rng.choice(("StatueVase1", "StatueVase2"))
+    rub = rng.choice(["RuinsColumnIndoorRubble%02d" % k for k in (1, 3, 5, 7, 9, 11)])
+    stone = rng.choice(("LOTDTombstoneHorns3", "LOTDTombstoneScroll3", "LOTDTombstone1") if lotd else
+                       ("Tombstone2", "Tombstone4", "Tombstone7", "DunMirTombstone1"))
+    statue = rng.choice(("Statue2a", "Statue2c")) if not lotd else "LOTDManaObelisk"
+    out = [("urns", lambda sg: vase + _facing(ax, sg)),
+           ("rubble", lambda sg: rub),
+           ("graves", lambda sg: stone),
+           ("statues", lambda sg: statue),
+           ("candles", lambda sg: "LOTDCandleGroupSmall1"),
+           ("monuments", lambda sg: "Monument1"),
+           ("bones_skull", lambda sg: "Skull"),
+           ("bones_rib", lambda sg: "CorpseRibCage" + _facing(ax, sg)),
+           ("cobweb", lambda sg: "SpiderWebNorth" if sg < 0 else "SpiderWebEast")]
+    return out
+
+
+def mana_pieces(f, ax):
+    """The mana room's dressing: crystal clusters, glowing jars, crystal pillars, generators, candelabras, urns."""
+    rng = f.rng
+    cls = [t for t in ("MineCrystal01", "MineCrystal02", "MineCrystal03", "MineCrystal04", "MineCrystal05") if f.ok_type(t)]
+    c1 = rng.choice(cls) if cls else "CrystalColumn"
+    c2 = "ObeliskPrimitive"
+    lt = f.light_type()
+    return [("crystals", lambda sg: c1), ("jars", lambda sg: "FairyJar"), ("pillars", lambda sg: "CrystalColumn"),
+            ("generators", lambda sg: "VandegrafSmall"), ("crystals2", lambda sg: c2),
+            ("candelabra", lambda sg: lt), ("urns", lambda sg: "StatueVase2" + _facing(ax, sg)),
+            ("pedestals", lambda sg: "OrbPoolEnd1"), ("carts", lambda sg: "MineManaCart1" if ax.line == "/" else "MineManaCart2"),
+            ("basins", lambda sg: "DunMirFlameBasinLit"), ("stalagmites", lambda sg: "CrystalBlueLargeStalagmite")]
 
 
 COMPOSERS = {"nave": chapel, "coven": coven, "mana": mana_room, "crypt": crypt}

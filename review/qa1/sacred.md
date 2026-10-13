@@ -27,12 +27,23 @@ doors.lotd, each with its planted case in validate/selftest.py.
 | Q1C-17 | RM-CRYPT-10: "This room also needs coffins or graves or something to give it a crypt identity." | `crypt.md` (the Land of the Dead's crypts lie in coffins and sarcophagi, LOTD gravestones at their heads) | `sacred.dead` (LOTD gravestones alone are no graves; STsDead) | none | check |
 | Q1C-18 | RM-CRYPT-10: "The wooden doors mismatch with the double doors. Generally, the double door style should be used for all doors with this tile set." | P§3; building.DOUBLE_DOOR_STYLES (the LOTD styles' every door their double door) | `doors.lotd` (STdLotd) | none | check |
 
-Totals: 18 items; after: 13 check, 5 review only (the fullness and variety a room score or the eye judges, the priest's
+| Q1C-19 | (the coordinator's read of the first pass, against the round's first theme "spaces are too empty and lack object diversity") crypt 05 "almost bare", crypt 02 "3 sarcophagi and little else", the dark crypt 10 "mostly empty floor", small mana rooms with several doors about 2% wall dressing | P§3 sacred set pieces (fullness); `crypt.md`, `mana_room.md`, `chapel.md`, `coven.md` (kit/sacred.py dress: urns, rubble, graves, a small statue pair, candles, skulls and bones, cobwebs in a crypt; crystals, jars, pillars, generators, pedestals, carts, basins in a mana room; mirrored pairs on the walls and in the corners, each kind once, then until the room's goal; the crypt's rows down the whole floor, single tombs on the middle line where the side doors' ways take a band) | `sacred.fullness` (STsFull): distinct kinds by floor tiles (kit/sacred.py fullness_goal) and covered floor by type | none | check |
+| Q1C-20 | (the coordinator) dress the walls of mana rooms with several doors using the wall stretches between the doors, mirrored about the room's axis where possible | `mana_room.md` (dress both_ways: a pair across the axis, else about the room's middle along it; the open floor between the rings and the walls too) | `sacred.fullness`, `sacred.symmetry` | none | check |
+
+The room profiles' thresholds loosened in the first pass (chapel types 7 and monotony 0.7, coven open 0.30 and
+monotony 0.85, mana room types 6 and monotony 0.75) are back where they were; the type counter counts the relics now (a
+furniture family of their own, rules/room_types.py `relic`: pools, fountains, fire and incense basins, crystal pillars
+and clusters, burning skulls, monuments, candle groups, pedestals, mana carts). The symmetric types' exemptions from the
+placement grammar stay only where symmetry itself conflicts (even gaps, stepped rows, rings, corner singles, mixed
+tombs, lone columns in a pair, the runner, lights by the aisle).
+
+Totals: 20 items; after: 15 check, 5 review only (the fullness and variety a room score or the eye judges, the priest's
 place the playtest shows), 0 not covered.
 
 ## Pictures
 
 Before: review/out/qa/round1/rooms/chapel/RM-CHAPEL-NN.png and .../crypt/RM-CRYPT-NN.png (round 1, iteration qa1).
-After: the room lab's iteration qa1b, seed 11 (`py tests/roomlab.py <type> --n 10 --seed 11 --iter qa1b`):
+After (second pass): iteration qa1c, review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1c/renders/NN.png, sheets in
+review/out/qa/qa1-sacred-c/. After (first pass): the room lab's iteration qa1b, seed 11 (`py tests/roomlab.py <type> --n 10 --seed 11 --iter qa1b`):
 review/out/roomlab/{chapel,coven,mana_room,crypt}/qa1b/renders/NN.png, and the before/after contact sheets in
 review/out/qa/qa1-sacred/.

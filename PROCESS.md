@@ -378,7 +378,15 @@ Rules that hold for every type:
   - the knowledge base's single-piece caps stand aside for the set piece (`Furnisher.set_piece`), and the placement
     grammar's irregularity rules (even gaps, stepped rows, rings, corner singles, lone columns, mixed tombs, the runner
     as a floating carpet) stand aside in these types (`kit/grammar.py SYMMETRIC`): the user's word over Westwood's habit;
-  - the Land of the Dead's halls hang its double door in every doorway (`building.DOUBLE_DOOR_STYLES`) [Q1C-18].
+  - the Land of the Dead's halls hang its double door in every doorway (`building.DOUBLE_DOOR_STYLES`) [Q1C-18];
+  - **full enough** [Q1C-19, Q1C-20]: each type holds a least number of distinct kinds of piece, rising with its floor
+    (`sacred.fullness_goal`: a kind more every 45 tiles past 30), and covers a least share of its floor; after its set
+    piece the composer dresses the walls and corners in mirrored pairs (`sacred.dress`: each dressing kind once, then
+    more until the goal; each kind two pairs at most, the type's caps held, 0.7 units clear, never under a hanging), a
+    mana room's pair about its middle along the axis where a door takes the mirror across it. Small and two-door crypts
+    fill too: rows across, else along the aisle, else against the walls, the floor's whole length, single tombs on the
+    middle line where the side doors' ways leave a band. The relics a sacred room is dressed with have a furniture family
+    (`rules/room_types.py relic`), so the room score and the checker count them.
   Checked by `sacred.axis`, `sacred.symmetry`, `sacred.carpet`, `sacred.altar_kind`, `sacred.dead` and `doors.lotd`
   (section 9). Briefs: `rules/rooms/chapel.md`, `coven.md`, `mana_room.md`, `crypt.md`.
 - **No loose food** [TP1-1]: Nox draws items at floor level; a table that carries its food (`RoundTableWithFood`).
@@ -800,7 +808,8 @@ departures from Westwood's range or from a house rule the playtests set. The rul
 - `sacred.*` [Q1C] (`check_sacred`): a chapel's or coven's altar on its main door's line and that door in its wall's
   middle (`axis`), floor pieces off the axis each with a twin mirrored across it (`symmetry`; a mana room's about its
   middle either way), carpet squares mirrored (`carpet`), no one altar end in over 60% of a map's 3+ chapels or covens
-  (`altar_kind`), a crypt's or coven's dead in coffins, sarcophagi or graves with 4+ kinds of piece (`dead`);
+  (`altar_kind`), a crypt's or coven's dead in coffins, sarcophagi or graves with 4+ kinds of piece (`dead`), the room
+  full enough for its type and size (`fullness`: distinct kinds and covered floor, `kit/sacred.py fullness_goal`);
   `doors.lotd`: no plain door in the Land of the Dead's walls.
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's

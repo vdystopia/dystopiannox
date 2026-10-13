@@ -119,3 +119,13 @@ The keeper beside a crypt chest or a statue of the dead; never in an aisle betwe
   wall and none far from one, a crypt chest; 0.67 tombs per 10 tiles. Two rows with a wide aisle (3.6), so each keeps
   near its wall, capped at a tomb per 12 tiles; no columns, tapestries or plants (AUC 1.0 -> 0.89). Tombs along the walls
   (`wall_gap`) read worse: Westwood's stand free of them.
+
+## Full enough (QA round 1, second pass; Q1C-19)
+
+The coordinator found crypt 05 "almost bare", crypt 02 "3 sarcophagi and little else" and the dark crypt 10 "mostly empty
+floor". After its rows the crypt dresses its walls and corners in mirrored pairs (`kit/sacred.py dress`, `crypt_pieces`):
+urns (StatueVase, facing the axis), rubble, gravestones, a small statue pair (LOTD obelisks in the Land of the Dead),
+candle groups, monuments, skulls and rib cages, cobwebs in the far corners; each kind once, then more until it holds
+`fullness_goal` kinds (6, a kind more every 45 tiles past 30, 10 at most) and covers 10% of its floor. The rows run the
+floor's whole length (a depth a side door's way takes is stepped over), and where a band is left without a row single
+tombs lie on the middle line. Checked by `sacred.fullness` (STsFull).

@@ -611,6 +611,12 @@ def same_altars(m):
     for u, v in ((220.4, 0), (220.4, -28), (244.4, -28)): m.obj("DunMirAltar1", u, v)
 
 
+def bare_chapel(m):
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 0)                             # Q1C-19: an altar and one pair of pews, nothing else
+    for v in (-3.5, 3.5): m.obj("Bench1", 214, v)
+
+
 def crypt_without_dead(m):
     _chapel(m, "crypt")
     m.obj("Coffin1", 214, 0)                                   # Q1C-14, Q1C-17: one coffin and nothing else
@@ -732,6 +738,7 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STsSym", pews_one_side, "sacred", "warning", "a chapel's pews on one side of the aisle only - Q1C-1", "no twin"),
     ("STsCarp", carpet_one_side, "sacred", "warning", "a chapel's carpet off its middle line - Q1C-3", "carpet squares"),
     ("STsAltr", same_altars, "sacred", "warning", "three chapels ending in the same altar - Q1C-4", "same altar"),
+    ("STsFull", bare_chapel, "sacred", "warning", "a chapel of an altar and two pews - Q1C-19", "kinds of piece"),
     ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
     ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",
      "Land of the Dead"),

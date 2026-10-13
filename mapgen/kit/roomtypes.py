@@ -348,13 +348,12 @@ TYPES = {
                    middle="a carpeted aisle from the door to the altar; a few rows of pews either side of it, nearest "
                           "the altar; a colonnade down the nave; a pair of sarcophagi behind the pews; open floor "
                           "toward the doors"),
-        cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=7, free_most=(4, 30),
+        cover=(0.05, 0.10, 0.18), open=(0.55, 0.88), per_tile=(0.08, 0.35), types_min=8, free_most=(4, 30),
         # Westwood's chapel: 8 pews in 123 tiles (Con07B); the user: "way too many benches" (Greywatch, 46 pews wall to
         # wall); then "needs more pillars, benches, and statues" (QA round 1, nox14): a pew per 10 tiles in rows, at most 20
         caps={"bench": (10, 20), "tomb": (60, 2), "column": (16, 12), "statue": (16, 10)}, walls_min=3, lined=None,
         tiles=(60, 260),
-        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine", "coven"),
-        monotony=0.7),                   # (rows of pews either side of the runner are the nave: QA round 1, Q1C-1)
+        signature={"altar": (8, 1), "bench": (0.4, 16)}, needs=("altar",), kin=("hall", "shrine", "coven")),
     "coven": dict(
         family="ceremonial", feel="balanced", kinds=("coven", "dark_chapel"), westwood=(),
         # (RM-CHAPEL-10, the Land of the Dead's dark chapel, is its basis: the user, QA round 1)
@@ -368,10 +367,9 @@ TYPES = {
                    other_back="mana obelisks lining it", front="mana obelisks lining it; monuments by the door",
                    middle="a runner from the door to the altar, a cauldron before the altar, pews either side, coffins "
                           "and sarcophagi in pairs with bones heaped by them"),
-        # (fuller than a chapel: the walls lined with obelisks, the dead in the nave)
-        cover=(0.06, 0.12, 0.24), open=(0.30, 0.88), per_tile=(0.10, 0.50), types_min=8, free_most=(4, 30),
-        caps={"statue": (6, 40), "tomb": (25, 10), "column": (25, 8), "bench": (20, 12)}, walls_min=2, lined=None,
-        tiles=(60, 260), monotony=0.85,          # (many mana obelisks lining the walls: the user's word)
+        cover=(0.06, 0.12, 0.24), open=(0.45, 0.88), per_tile=(0.10, 0.50), types_min=9, free_most=(4, 30),
+        caps={"statue": (8, 30), "tomb": (25, 10), "column": (25, 8), "bench": (20, 12)}, walls_min=3, lined=None,
+        tiles=(60, 260),
         signature={"tomb": (1, 8), "statue": (0.3, 20), "^LOTDLichGodStatue|^LOTDFlamingSkulls": (6, 1),
                    "^Cauldron": (2, 1), "bench": (0.3, 12)},
         needs=("tomb",), kin=("chapel", "crypt", "hall", "mausoleum", "shrine", "mana_room")),
@@ -388,8 +386,8 @@ TYPES = {
                         "charts", other_back="the same, mirrored", front="glowing jars and generators in pairs",
                    middle="one to four rings of four mana obelisks round a centrepiece, each on its carpet centred under "
                           "it, evenly spaced and symmetric; crystal clusters in the corners"),
-        cover=(0.04, 0.10, 0.22), open=(0.50, 0.92), per_tile=(0.08, 0.50), types_min=6, free_most=(4, 30),      # (crystals, pools and the orb have no furniture family: the count misses them)
-        caps={"statue": (8, 16)}, walls_min=2, lined=None, tiles=(50, 280), monotony=0.75,    # (the rings are the room)
+        cover=(0.04, 0.10, 0.22), open=(0.50, 0.92), per_tile=(0.08, 0.50), types_min=8, free_most=(4, 30),
+        caps={"statue": (8, 16)}, walls_min=2, lined=None, tiles=(50, 280),
         signature={"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$": (1.5, 16), "lab": (0.5, 8),
                    "^MineManaCrystal|^Crystal": (0.5, 8)},
         needs=("statue",), kin=("shrine", "laboratory", "study", "chapel")),
@@ -402,7 +400,7 @@ TYPES = {
         never_types=r"Barrel|Sack|^Bookcase",
         walls=dict(back="a tapestry or two; a crypt chest in a corner", other_back="statues of the dead",
                    front="bare", middle="sarcophagi and coffins side by side in rows with aisles between; columns"),
-        cover=(0.04, 0.10, 0.25), open=(0.40, 0.95), per_tile=(0.04, 0.50), types_min=4, free_most=(4, 30),
+        cover=(0.04, 0.10, 0.25), open=(0.40, 0.95), per_tile=(0.04, 0.40), types_min=4, free_most=(4, 30),
         # Westwood's 25 crypts: 0.31-0.67-1.16 tombs per 10 tiles (the room lab)
         # QA round 1 (Q1C-13..16): rows either side of the aisle, a tomb per 6 tiles at most, 4 to 16; more kinds
         caps={"tomb": (6, 16)}, walls_min=1, lined=None, tiles=(30, 200),

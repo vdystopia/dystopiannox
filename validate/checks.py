@@ -2467,6 +2467,21 @@ def check_sacred(m, ctx, base):
             out.append(F("sacred", "warning", f"{name} room: {len(lop)} of its {len(rug)} carpet squares have no mirror "
                          f"image across the middle line: a carpet lies centred, as wide on either side (RM-CHAPEL-02; "
                          f"Q1C-3).", x, y, rule="sacred.carpet"))
+        # full enough (QA round 1, second pass: small and two-door crypts and mana rooms came out nearly bare, against
+        # the round's first theme, "spaces are too empty and lack object diversity"): distinct kinds of piece by the
+        # floor's size and covered floor by the type (kit/sacred.py fullness_goal, which the set piece fills toward)
+        from kit import sacred as SAC
+        from kit.roomtypes import KIND_TYPE as _KT
+        rtype = _KT.get(kind, kind)
+        want_k, want_c = SAC.fullness_goal(rtype, r["tiles"])
+        have = {k for o in r["objects"] if not m.is_door(o) and "MONSTER" not in o["cls"]
+                for k in [SAC.counted_kind(o["type"], RT.family(o["type"]))] if k}
+        cov = room_coverage(m, r)
+        if len(have) < want_k or cov < want_c:
+            out.append(F("sacred", "warning", f"{name} room ({r['tiles']} tiles): {len(have)} kinds of piece and covers "
+                         f"{cov:.0%} of its floor; a {rtype.replace('_', ' ')} of its size holds {want_k} kinds and covers "
+                         f"{want_c:.0%} (\"spaces are too empty and lack object diversity\"; Q1C-19).", x, y,
+                         rule="sacred.fullness"))
         if kind in SACRED_DEAD_KINDS:
             dead = [o for o in r["objects"] if SACRED_TOMB_RE.match(o["type"])]
             kinds = {_kind_stem(o["type"]) for o in r["objects"] if not m.is_door(o) and "MONSTER" not in o["cls"]
@@ -2788,6 +2803,7 @@ RULES = [
     ("sacred.carpet", "sacred", r"carpet squares have no mirror", "Q1C-3"),
     ("sacred.altar_kind", "sacred", r"end in the same altar", "Q1C-4"),
     ("sacred.dead", "sacred", r"the dead lie here", "Q1C-14 Q1C-17"),
+    ("sacred.fullness", "sacred", r"kinds of piece and covers", "Q1C-19"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),

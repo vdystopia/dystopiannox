@@ -56,3 +56,13 @@ stands aside in the sacred rooms: a ring in the middle is the room.
 ## Where people stand
 
 A keeper beside a workstation or an obelisk (`STANDS["mana_room"]`), never inside a ring.
+
+## Full enough (QA round 1, second pass; Q1C-19, Q1C-20)
+
+A mana room with doors on several walls had come out about 2% dressed. After the rings and the walls the composer dresses
+the wall stretches between the doors and the open floor between rings and walls in mirrored pairs (`kit/sacred.py dress`,
+`mana_pieces`): mine crystals, glowing jars, crystal pillars, small generators (once), primitive obelisks, candelabras,
+urns, orb pedestals, mana carts, fire basins, crystal stalagmites; a pair across the axis, else about the room's middle
+along it; until the room holds `fullness_goal` kinds (8, a kind more every 45 tiles past 30, 12 at most) and covers 7%.
+Each placement takes its own kind of crystal (corners mana crystal clusters, the rings' flanks blue stalagmites, the
+dressing mine crystals), so no one kind repeats past the room score's most. Checked by `sacred.fullness`.
