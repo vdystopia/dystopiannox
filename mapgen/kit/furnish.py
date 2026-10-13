@@ -316,6 +316,7 @@ ORDER = ["rug", "counter_shop", "counter_bar", "bed", "fireplace", "stove", "smi
          "shelves", "shop_rack", "lab", "table", "bench", "chair", "nightstand", "storage", "straw", "statue",
          "column", "plant", "wall_decor", "clutter"]
 NON_BLOCKING = {"rug", "wall_decor"}
+BEDROOM_DESK_AND_TABLE = 50   # tiles: a bedroom this big may hold a desk and a table set (one of each; QA round 1, Q1R-5)
 WALL_ONLY = {"wall_decor", "shelves", "shop_rack", "fireplace"}
 SEAT_FAMILIES = {"chair", "bench"}
 # Anchors a room of each kind must contain (minimum counts); Westwood's rooms of the kind always have them.
@@ -771,8 +772,12 @@ class Furnisher:
             twice_near = cat not in ("chest", "statue") and                 any(math.hypot(u - r_[0], v - r_[1]) < OBJ.TWICE_GAP for r_ in same)
             if len(same) >= cap or twice_near:
                 self.kb_refused["cap " + key] += 1; return False
+        # (a lord's chamber of BEDROOM_DESK_AND_TABLE tiles or more may keep the desk at its work wall and one small table
+        # set in its S corner: QA round 1, RM-BEDROOM-06/08 "very empty ... a small table with two chairs would be
+        # perfect here"; still one of each)
         if self.rtype == "bedroom" and cat in ("table", "desk") and \
-                any(OBJ.category(tt) in ("table", "desk") for tt, _ in self._typed):
+                any(OBJ.category(tt) in (("table", "desk") if len(self.room.tiles) < BEDROOM_DESK_AND_TABLE else (cat,))
+                    for tt, _ in self._typed):
             self.kb_refused["sets"] += 1; return False          # a bedroom: one table-and-chair set (HB-3)
         exempt = {id(r_) for r_ in (self._group or ())}
         never = OBJ.never_next(t)
@@ -1167,6 +1172,12 @@ class Furnisher:
         return a
 
     def furnish(self):
+        from kit import finish as FIN
+        if FIN.compose(self):                            # a kind composed whole by kit/finish.py (the conservatory)
+            self.placing_light = True
+            self.add_lights()
+            self.placing_light = False
+            return self.objects
         self.draw_archetype()
         inv_all = self.T["inventory"]
         ip = self.identity_plan()
@@ -1219,6 +1230,7 @@ class Furnisher:
             self.add_lights()
             self.placing_light = False
             self.grammar_audit(need)
+            FIN.finish(self)                             # the user's QA round 1 per kind (kit/finish.py)
             return self.objects
         tables, done = [], collections.Counter()
         # required anchors first (in ORDER), with more tries and role fallbacks; then everything else
@@ -1266,6 +1278,7 @@ class Furnisher:
         self.add_lights()
         self.placing_light = False
         self.grammar_audit(need)
+        FIN.finish(self)                                 # the user's QA round 1 per kind (kit/finish.py)
         return self.objects
 
     def grammar_audit(self, need=None):

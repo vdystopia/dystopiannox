@@ -2183,7 +2183,10 @@ def piece_flags(m, r, kind):
     # a bedroom's one table-and-chair set
     if rtype == "bedroom":
         sets = [o for o in floor if cat[id(o)] in ("table", "desk")]
-        if len(sets) > 1: flags.append(("sets", f"{len(sets)} tables and desks", sets[0]))
+        # (a chamber of 50 tiles or more may keep a desk and one table set: kit/furnish.py BEDROOM_DESK_AND_TABLE, Q1R-5)
+        kinds = collections.Counter(cat[id(o)] for o in sets)
+        if (len(sets) > 1 and tiles < 50) or max(kinds.values(), default=0) > 1:
+            flags.append(("sets", f"{len(sets)} tables and desks", sets[0]))
     # clearances the playtest set (a bed or a chest by a fire, a bench by a bed, two statues side by side)
     seen = set()
     for a in floor:

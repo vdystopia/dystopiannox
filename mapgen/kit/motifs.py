@@ -2464,6 +2464,8 @@ class MotifFurnisher(F.Furnisher):
         self.composing = False
         self.face_statues()
         self.grammar_audit(self.prof.get("must", {}))
+        from kit import finish as FIN
+        FIN.finish(self)                                 # the user's QA round 1 per kind (kit/finish.py)
         # the room's ambient light, as the recipe engine adds it (not drawn; it lights what is there)
         self.placing_light = True
         cl = self.T.get("colorlights", {})
