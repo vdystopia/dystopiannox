@@ -828,7 +828,7 @@ def solar(c, plan):
         uv = f._uv_on(r, 6.0, hearth["along"])
         c.table_set(uv, TABLE_SMALL, 2, carpet=(3, 3), reach=1.5) or c.table_set(uv, TABLE_SMALL, 2, rug=True)
     bed_set(c, walls[1])
-    for w in list(FRONT) + walls:
+    for w in walls:                                  # a desk faces the camera: back walls only
         if not c.wall(w): continue
         d = c.centred_on(w, r"^Desk[12]$", "desk")
         if d:
@@ -1006,7 +1006,7 @@ def kitchen(c, plan):
     c.corner_heap("S", S("sack_l", "sack_m", "apples", "sack_s"), n=4)
     c.corner_heap("W", S("barrel", "water", "crate"), n=3 if c.tiles < 60 else 4)
     c.corner_heap("E", S("crate", "apples", "barrel"), n=3)
-    front_heaps(c, ("SE", "SW"), [S("tools", "dcrate", "sack_m"), S("water", "barrel", "sack_s")], n=3)
+    front_heaps(c, ("SE", "SW"), [S("dcrate", "dcrate", "sack_m"), S("water", "barrel", "sack_s")], n=3)
     c.fill_bare([mk_worktable, mk_heap("barrel", "sack_l", "crate", "sack_s")], most=c.tiles // 35, over=2.8)
     c.hangings(r"^WallTrophy(Bear|Moose|MountainLion)[12]$|^Painting1$", walls=tuple(other) or BACK, most=2)
 
@@ -1481,7 +1481,7 @@ def ogre_hall(c, plan):
     corner, skulls on the back walls."""
     f = c.f
     c.wall_pat = r"^Barrel2?$"
-    c.s_makers = [lambda c_, uv: c_.corner_heap("S", S("barrel", "sack_l"), n=3)]
+    c.s_makers = [lambda c_, uv: c_.corner_heap("S", [r"^Barrel2?$", r"^OgreSack\d$"], n=3)]
     mb = c.middle_box(walk=1.0)
     cu, cv = (mb[0] + mb[1]) / 2, (mb[2] + mb[3]) / 2
     for du in (0, 0.5, -0.5, 1.0, -1.0, 1.5):
@@ -1504,10 +1504,10 @@ def ogre_hall(c, plan):
             for x in f.objects[n0:]: f._remove(x)
     c.lights_balanced(4 if c.tiles >= 150 else 2)
     for corner in ("W", "E"):
-        c.corner_heap(corner, S("barrel", "sack_l", "piled", "sack_m"), n=4)
-    c.corner_heap("S", S("barrel", "sack_m"), n=2)
+        c.corner_heap(corner, [r"^Barrel2?$", r"^OgreSack\d$", r"^PiledBarrels\d$", r"^OgreSack\d$"], n=4)
+    c.corner_heap("S", [r"^Barrel2?$", r"^OgreSack\d$"], n=2)
     c.corner_heap("N", [r"^OgreHutCarcassBig$|^OgreHutCarcass$"], n=1, d=1.4)
-    front_heaps(c, ("SE", "SW"), [S("barrel", "sack_s")], n=2)
+    front_heaps(c, ("SE", "SW"), [[r"^Barrel2?$", r"^OgreSack\d$"]], n=2)
     for off in (3.4, 3.0, 3.8):
         pts = [(cu, cv - off), (cu, cv + off)] if long_u else [(cu - off, cv), (cu + off, cv)]
         if c.put_all([("OgreHutMeat", *p) for p in pts]): break

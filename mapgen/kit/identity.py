@@ -1855,6 +1855,52 @@ for _k, _v in CIVIC.items():
     ROOMS[_k].update(civic=True, compose=[dict(fam="civic", slot="civic", extra=True)], fill=[], top_up=(), **_v)
     ROOMS[_k].pop("archetypes", None)
     ROOMS[_k].pop("compose_alts", None)
+# What the civic composer places that these kinds' identities had not allowed (Brackwater, 2026-10-13: 11 rooms.stray
+# warnings after the merge), widened only where the piece reads right in the room (QA round 1: "more kinds of object").
+# (family, regex, most): the family joins the kind's optional families at chance 0 (the generic planner adds none of
+# them; the composer places them), its types pattern grows by the regex. Pieces that do not read right in a kind are
+# not widened here: kit/civic.py no longer places them (tool barrels in a kitchen, plain sacks in the ogres' hall, a
+# desk against a front wall in a solar).
+_VASE = r"^StatueVase[1-5](N|S|E|W|NE|NW|SE|SW)$"
+CIVIC_WIDEN = {
+    # a household keeps its stores in sacks, crates and barrels; the S corner's sitting set is a square table
+    "living_room": [("storage", r"^Crate[12]$|^SackChest(Large|Medium|Small)[12]$|^Barrel2?$|^WaterBarrel$", 6),
+                    ("table", r"^SquareTable[12]$|^RoundTable[12]$", 2)],
+    "dwelling": [("storage", r"^Crate[12]$|^SackChest(Large|Medium|Small)[12]$|^Barrel2?$|^WaterBarrel$", 6),
+                 ("table", r"^SquareTable[12]$|^RoundTable[12]$", 2), ("nightstand", r"^Nightstand\d$", 2)],
+    # a general store sells tools and apples, an armourer hangs crossed arms
+    "shop": [("storage", r"^BarrelWithTools[12]$", 3), ("shop_rack", r"^TraderAppleCrate$|^TraderCrossedWeapons\d$", 6)],
+    # herbs in sacks and apple crates; the reading set's round table
+    "herbalist": [("storage", r"^SackChest(Large|Medium|Small)[12]$", 8), ("shop_rack", r"^TraderAppleCrate$", 4),
+                  ("table", r"^RoundTable[12]$", 2)],
+    # water for the sick, linen in dark crates; the healer's and the visitors' tables
+    "infirmary": [("storage", r"^DarkCrate[12]$|^Crate[12]$|^WaterBarrel$", 6),
+                  ("table", r"^Table[1-4]$|^RoundTable[12]$|^SquareTable[12]$", 4)],
+    # water and urns in a dining hall; a mess's barrels and casks of ale
+    "dining_hall": [("storage", r"^WaterBarrel$", 2), ("statue", _VASE, 2)],
+    "mess_hall": [("storage", r"^Barrel2?$|^WaterBarrel$|^LargeBarrel[12]$|^PiledBarrels[1-4]$", 6), ("statue", _VASE, 2),
+                  ("table", r"^SquareTable[12]$", 2)],
+    # a lord's statues and urns; the bed's other wall variants
+    "solar": [("statue", r"^Statue2[a-h]$|" + _VASE, 6), ("bed", r"^WoodBed[1-4]$|^Bed[1-4]$", 1)],
+    "study": [("statue", _VASE, 4)],
+    # a scholar's curio among the books, urns
+    "library": [("lab", r"^Orrery2$|^Telescope2[a-g]$", 1), ("statue", r"^Statue2[a-h]$|" + _VASE, 4)],
+    # benches facing the show, urns on plinths
+    "gallery": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
+    "hall": [("statue", _VASE, 6), ("relic", r"^DunMirFlameBasinLit$", 2), ("bench", r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", 8)],
+    "throne_room": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
+}
+for _k, _ws in CIVIC_WIDEN.items():
+    _r = ROOMS[_k]
+    _r["optional"] = dict(_r.get("optional") or {})
+    _r["types"] = dict(_r.get("types") or {})
+    for _fam, _rx, _most in _ws:
+        if _fam not in _r.get("core", {}) and _fam not in _r["optional"]:
+            _r["optional"][_fam] = (0.0, _most)
+        _old = _r["types"].get(_fam)
+        if _old: _r["types"][_fam] = _old + "|" + _rx
+        elif _fam in _r.get("core", {}) or _r["optional"].get(_fam, (0, 0))[0] > 0: pass   # no pattern: any piece
+        else: _r["types"][_fam] = _rx
 ROOMS["throne_room"].pop("compose_alts", None)    # its three compositions are archetypes now
 ROOMS["great_hall"].pop("compose_alts", None)
 
