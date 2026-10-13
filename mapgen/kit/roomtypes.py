@@ -478,9 +478,10 @@ TYPES.update({
         family="stores", feel="full", supplies_line=True, kinds=("cellar",), westwood=(), monotony=0.9,
         evidence=(("Con07B", (132, 196)), ("Con06b", (56, 62)), ("War02b", (194, 194)), ("Con06a", (153, 212))),
         focal=None,                 # Westwood's cellars have no great cask as a centrepiece (one in four holds one)
+        # (QA round 1, Q1R-13: sacks and shelves of jars and food beside the kegs, the user's word over Westwood's habit)
         must={"storage": 5}, never=("bed", "desk", "table", "chair", "altar", "throne", "tomb", "lab", "counter_bar",
-                                    "counter_shop", "fireplace", "stove", "statue", "shelves", "shop_rack"),
-        never_types=r"PowderBarrel|^Sack|^TraderAppleCrate",
+                                    "counter_shop", "fireplace", "stove", "statue", "shop_rack"),
+        never_types=r"PowderBarrel|^TraderAppleCrate",
         walls=dict(back="kegs in tight rows along the walls from the corners", other_back="kegs; a stack of piled barrels",
                    front="kegs and a few crates", middle="a great cask or two with kegs beside them, aisles all round"),
         # the room lab: Westwood's 4 curated cellars cover 0.06-0.19-0.23 with 1-4 types

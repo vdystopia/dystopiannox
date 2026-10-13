@@ -2210,6 +2210,7 @@ def piece_flags(m, r, kind):
         for w in walls_of[id(o)][:1]:
             by[(w[1], w[2], w[0], OBJ.kind(o["type"]))].append((w[4], o))
     for (line, coord, name, k), lst in by.items():
+        if rtype == "cellar": continue                # (a cellar's walls stocked end to end: QA round 1, Q1R-13, house rule)
         mr = OBJ.max_run(lst[0][1]["type"])
         if mr is None or len(lst) <= mr: continue
         lst.sort(key=lambda x: x[0])
@@ -2280,6 +2281,10 @@ CELL_DOUBLE_TILES = 36       # kit/finish.py CELL_DOUBLE
 CASK_GAP = 0.9               # units a great cask keeps from every other piece (kit/finish.py CASK_CLEAR, less slack)
 SOUTH_EMPTY = 3.2            # units round the S corner's inner point with no piece: a dead S corner
 SOUTH_TYPES = {"bedroom", "barracks", "armoury", "great_hall", "ogre_den"}   # the types kit/finish.py fills the corner of
+# QA round 1's fullness floor (theme 1: "the spaces are too empty and lack object diversity"), for the nine room types
+# kit/finish.py finishes: (kinds at 50 tiles, kinds' growth with the square root of the floor over 50 tiles, pieces per
+# 50 tiles, pieces besides); calibrated on the round's own rooms so its emptiest fail (review/qa1/rooms.md Q1R-23)
+QA1_FULL = {}
 
 
 def _floor_at(m, u, v):
@@ -2287,6 +2292,27 @@ def _floor_at(m, u, v):
     i, j = round((u - 2) / 2), round(v / 2)
     t = m.tiles.get((i + j, i - j))
     return t["material"] if t else None
+
+
+QA1_SKIP = re.compile(r"ColorLight|Candleabra|Candelabra|^TorchPole|Lantern|Door|^PlayerStart|Invisible|Waypoint")
+
+
+def qa1_fullness(m, r, rtype=None):
+    """How full a room is (QA round 1's first theme, "the spaces are too empty and lack object diversity"): its tiles,
+    the share of its floor its furniture covers, its pieces (furniture, stores, garden, hangings, rugs; not lights or
+    doors) and their distinct kinds (type stems), and the floor its type and size ask (QA1_FULL: kinds and pieces grow
+    with the square root of the floor, the bigger-scale principle)."""
+    objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o) and not QA1_SKIP.search(o["type"])]
+    pcs = [o for o in objs if RT.family(o["type"]) or QA1_SUPPLY.match(o["type"]) or QA1_GARDEN.match(o["type"])
+           or re.match(r"^(Stocks|ObeliskPrimitive|OgreStraw|Straw|Fountain|Well|WishingWell|RedApple|Garden)", o["type"])]
+    kinds = {re.sub(r"(\d+[a-h]?|NE|NW|SE|SW)$", "", o["type"]) for o in pcs}
+    tiles = r["tiles"]
+    fl = QA1_FULL.get(rtype)
+    floor = None
+    if fl:
+        k0, kn, p0, pn = fl
+        floor = dict(kinds=int(round(k0 + kn * math.sqrt(tiles / 50.0))), pieces=int(round(p0 * tiles / 50.0 + pn)))
+    return dict(tiles=tiles, cover=round(room_coverage(m, r), 3), pieces=len(pcs), kinds=len(kinds), floor=floor)
 
 
 def qa1_flags(m, r, kind):

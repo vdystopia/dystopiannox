@@ -946,9 +946,9 @@ def _ogre_pen(f, rng):
 
 
 # ---- cellar (Q1R-13) -----------------------------------------------------------------------------------------------
-CASK_CLEAR = 1.1           # units a great cask keeps from every other piece (RM-CELLAR-01: "the gigantic wine barrels are
+CASK_CLEAR = 0.8           # units a great cask keeps from every other piece (RM-CELLAR-01: "the gigantic wine barrels are
                            # way too close to each other and to the other barrels"; -08, -09 "need more space")
-CASK_DRAWN = (2.0, 1.3)    # half-length and half-depth of a great cask as the game draws it (its footprint is half that)
+CASK_DRAWN = (1.8, 1.1)    # half-length and half-depth of a great cask as the game draws it (its footprint is half that)
 # each group a row along a wall: the kinds of its pieces in order (one kind never more than three side by side: HB-5)
 CELLAR_GROUPS = (("kegs", (r"^Barrel$", r"^Barrel$", r"^Barrel2$", r"^PiledBarrels[1-4]$"), 4),
                  ("steel", (r"^BarrelSteel[12]$", r"^BarrelSteel[12]$", r"^BarrelWithTools[12]$"), 3),
@@ -996,20 +996,109 @@ def _cellar(f, rng):
             cu_, cv_ = (CASK_DRAWN[0], CASK_DRAWN[1]) if c[2] >= c[3] else (CASK_DRAWN[1], CASK_DRAWN[0])
             if max(abs(u - c[0]) - hu - cu_, abs(v - c[1]) - hv - cv_) < CASK_CLEAR: return False
         return True
+    # (round 2 of the QA, the coordinator's reading of the pictures: the first pass left cellars emptier than before;
+    # "the user didn't want fewer things, they wanted more kinds of thing, laid out in order": Westwood's run caps lifted
+    # here as a house rule, every wall stocked about half its length in groups of one kind each, the kinds cycling)
+    f.lift_runs = True
     placed = 0
-    used = []
-    groups = list(CELLAR_GROUPS) + (list(CELLAR_GROUPS[:3]) if tiles >= 30 else [])
-    for name, rxs, n in groups:
-        types = [_types(f, rx) for rx in rxs]
-        if not all(types): continue
-        if name in ("steelcrates",) and tiles < 40: continue
-        got = row_from_corner(f, rng, types, n if tiles >= 30 else max(1, n - 1), ok=cask_ok, avoid=used)
-        if got:
-            placed += len(got)
-            used += [f._placed_of[id(o)] for o in got]
+    try:
+        placed += cellar_corners(f, rng, cask_ok)
+        placed += cellar_walls(f, rng, cask_ok, share=CELLAR_WALL_SHARE)
+        if tiles >= 32: placed += cellar_stack(f, rng, cask_ok)
+    finally:
+        f.lift_runs = False
     if placed + len(casks) < 3:                    # nothing fitted: as it was
         remove(f, [o for o, _, _ in items(f, r"^(LargeBarrel|Barrel|Crate|PiledBarrels|BarrelSteel|BarrelWithTools)")])
         for t, u, v in keep: restore(f, t, u, v)
+
+
+CELLAR_WALL_SHARE = 0.55   # of each wall's free length stocked (the coordinator: "roughly half the wall length is used")
+CELLAR_KINDS = (r"^(Barrel|Barrel2)$", r"^BarrelSteel[12]$", r"^(Crate[12]|DarkCrate[12])$", r"^BarrelWithTools[12]$",
+                r"^SackChest(Large|Medium)[12]$", r"^CrateSteel[1-4]$", r"^WaterBarrel$")
+
+
+def cellar_corners(f, rng, ok):
+    """A piled barrel (a stack of kegs) in each bare corner. Returns the pieces."""
+    piled = _types(f, r"^PiledBarrels[1-4]$")
+    if not piled: return 0
+    n = 0
+    for name, u, v in free_corners(f, 1.3, 1.2):
+        t = rng.choice(piled)
+        if ok(t, u, v) and put_corner(f, t, u, v): n += 1
+    return n
+
+
+def cellar_walls(f, rng, ok, share=0.55):
+    """Every wall's free stretches stocked from their ends toward the middle, `share` of each, in groups of one kind (two
+    or three pieces touching, 0.35 units between groups), the kinds cycling so no two groups beside each other are of
+    one kind (a long piece only where it lies along its wall); a spot that takes nothing is stepped over. The back walls
+    take a pair of shelves of jars and food in a big cellar. Returns the pieces."""
+    kinds = [k for k in (_types(f, rx) for rx in CELLAR_KINDS) if k]
+    if not kinds: return 0
+    order = list(range(len(kinds))); rng.shuffle(order)
+    n, ki = 0, 0
+    runs = sorted(f.g.runs, key=lambda r: (r["side"] not in BACK, -(r["hi"] - r["lo"])))
+    shelves = _types(f, r"^LogShelvesFull[1-4]$")
+    if shelves and len(f.room.tiles) >= 40:      # shelves of jars and food first, on the longest bare back wall
+        n += len(line_pair(f, rng, "LogShelvesFull", 2, min_len=3.0))
+
+    def along(t, r):
+        h = f.half(t)
+        return abs(h[0] - h[1]) < 0.05 or (h[1] >= h[0]) == (r["line"] == "/")
+    for r in runs:
+        for a0, a1 in free_stretches(f, r):
+            a0, a1 = max(a0, r["lo"] + 1.1), min(a1, r["hi"] - 1.1)
+            L = a1 - a0
+            if L < 1.6: continue
+            # (the length stocked is counted, not the distance walked: a stretch's end by a cask or a door is stepped over)
+            ends = [(a0, 1, a1, share * L)] if L < 6.0 else [(a0, 1, (a0 + a1) / 2, share * L / 2), (a1, -1, (a0 + a1) / 2, share * L / 2)]
+            for start, step, stop, want in ends:
+                a, misses, done = start, 0, 0.0
+                while (stop - a) * step > 0.5 and done < want - 0.4:
+                    kind = [t for t in kinds[order[ki % len(order)]] if along(t, r)]; ki += 1
+                    if not kind: misses += 1; continue
+                    got = 0
+                    for _ in range(rng.choice((2, 3, 3))):
+                        t = rng.choice(kind)
+                        ha, hp = halves_on(r, (0, 0) + f.half(t))
+                        c = a + step * ha
+                        if (c + step * ha - stop) * step > 0.1 or not (a0 - 0.05 <= c - ha and c + ha <= a1 + 0.05): break
+                        u, v = uv_on(r, hp + 0.25, c)
+                        o = f.try_put(t, u, v, snug=True, touch=True) if ok(t, u, v) else None
+                        if not o: break
+                        n += 1; got += 1; done += 2 * ha
+                        a = c + step * (ha + 0.04)
+                    if got: misses = 0; a += step * 0.35
+                    else:
+                        misses += 1; a += step * 0.25
+                        if os.environ.get("NOX_FINISH_DEBUG") and kind:
+                            t = kind[0]; ha, hp = halves_on(r, (0, 0) + f.half(t)); u, v = uv_on(r, hp + 0.25, a)
+                            hu, hv = f.half(t)
+                            print("miss", f.room.id, WALL_NAME[r["side"]], round(L, 1), t, round(a, 1), "ok", ok(t, u, v),
+                                  "fits", f.g.fits(u, v, hu, hv, True, False, 0.1, True), "in", f.g.inside(u, v),
+                                  "wd", round(f.g.wall_dist(u, v), 2), "bbw", f.g.before_back_wall(u, v),
+                                  "zone", any(u + hu > z[0] and u - hu < z[1] and v + hv > z[2] and v - hv < z[3] for z in f.g.zones),
+                                  "door", round(min([math.hypot(u - du, v - dv) for du, dv in f.g.doors] or [99]), 1),
+                                  "near", [(tt, round(rr[0], 1), round(rr[1], 1)) for tt, rr in f._typed
+                                           if abs(rr[0] - u) < 1.6 and abs(rr[1] - v) < 1.6 and rr[4]][:3])
+    return n
+
+
+def cellar_stack(f, rng, ok):
+    """A stack in a big cellar's middle: four kegs or crates, two by two, touching. Returns the pieces."""
+    cu, cv = f.g.centroid
+    if os.environ.get("NOX_FINISH_DEBUG"):
+        print("stack", f.room.id, round(cu, 1), round(cv, 1), clear_at(f, cu, cv, 2.6),
+              [z for z in f.g.zones if z[0] - 1 < cu < z[1] + 1 and z[2] - 1 < cv < z[3] + 1])
+    if not clear_at(f, cu, cv, 2.6): return 0
+    types = _types(f, r"^(Barrel|Barrel2|BarrelSteel[12])$")
+    if not types: return 0
+    t = rng.choice(types)
+    h = f.half(t)[0] + 0.09                     # (0.18 apart: the fit keeps 0.15 between pieces)
+    got = [force_put(f, t, cu + a * h, cv + b * h) for a in (-1, 1) for b in (-1, 1)]
+    if sum(1 for g in got if g) < 4:
+        remove(f, [g for g in got if g]); return 0
+    return 4
 
 
 def row_from_corner(f, rng, types, n, ok=None, avoid=(), sides=None):

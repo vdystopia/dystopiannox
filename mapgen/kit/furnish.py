@@ -793,7 +793,9 @@ class Furnisher:
             if gap < g:
                 self.kb_refused[f"clear {min(cat, c2)}-{max(cat, c2)}"] += 1; return False
         walls = self._walls_at(u, v, hu, hv)
-        if walls:
+        # (lift_runs: a kind whose walls the user wants stocked end to end, Westwood's run caps aside: a cellar's rows of
+        # mixed kegs, barrels and crates; QA round 1, Q1R-13, kit/finish.py)
+        if walls and not getattr(self, "lift_runs", False):
             mr = OBJ.max_run(t)
             if mr is not None and not self._pairing:
                 if self._run_len(t, u, v, hu, hv, walls) > mr:
