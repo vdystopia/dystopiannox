@@ -115,3 +115,31 @@ The lord beside his throne (on the dais, at its side), never on the runner or in
 - Still missing: the dais and inlaid runner (a different floor under the throne and down the aisle) and a shaped hall
   (the shell); a Land of the Dead throne room (the lich's throne with its base and shadow, obelisks, LOTD tapestries)
   for Westwood's three of four.
+
+## QA round 1 (2026-10-13): the round's lessons as rules
+
+The user rated other types in round 1 and asked that the round's themes apply to this one too: "Much of the feedback
+boiled down to" rooms too empty with too little diversity, and no balance or symmetry ("things placed randomly, not
+lined up with each other"). Composed by `kit/civic.py` (`civic.throne_room`); ledger `review/qa1/civic.md` (Q1A-n).
+These rules come before Westwood's statistics above wherever they disagree (the user's word over Westwood's habit).
+
+Every room of the type:
+- **The dead space is used** (Q1A-1, Q1A-7): the S corner takes a group of its own; the front corners and the SE and
+  SW walls take mixed stock, benches or urns, mirrored; where the floor is still bare a group goes there, bigger rooms
+  more. Checked: `civic.s_corner`.
+- **Diversity** (Q1A-2): several kinds of piece, more in a bigger room; heaps mix their kinds (never one family alone,
+  never the same piece side by side). Checked: `civic.kinds`.
+- **The back walls dressed** (Q1A-3): the NE and NW walls hung at even steps, mirrored about each stretch, one
+  tapestry colour to a room; a bare stretch takes a pair of the type's wall piece. Checked: `civic.bare_wall`.
+- **Balance** (Q1A-4, Q1A-13): pieces centred on their wall or between a piece and a wall; mirrored pairs; one kind of
+  table, column, statue to a room; lights in matching corners or flanking the focal piece.
+- **Carpets** (Q1A-10): a table set at its carpet's exact middle; a carpet only where its whole rectangle and trim
+  lie on the room's floor.
+
+For this type:
+- The throne on the NW wall across from the door, facing it down a runner (unchanged), statues and braziers flanking
+  it.
+- Columns and braziers in mirrored pairs at even steps down the aisle (one kind of column to the room); benches,
+  statues and urns mirrored by the side walls; urns flanking the way in (the S and E corners).
+- Tapestries of one colour at even steps on the back walls; lights in matching corners.
+- Composed by the recipe engine now (`kit/motifs.py ENGINE_TYPES` no longer lists it).

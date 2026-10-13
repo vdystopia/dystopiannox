@@ -69,3 +69,36 @@ Westwood's three: Con06a (55 tiles), Con03B's miners' mess (108), the ogres' Con
 - **Casks and barrels** in a cluster or two, never down the walls; **no plants, no statues,** no benches topped up along
   the walls.
 - **The ogres' hall:** two to five crude tables ringed by stools, barrels heaped, a little meat; no straw on the floor.
+
+## QA round 1 (2026-10-13): the round's lessons as rules
+
+The user rated other types in round 1 and asked that the round's themes apply to this one too: "Much of the feedback
+boiled down to" rooms too empty with too little diversity, and no balance or symmetry ("things placed randomly, not
+lined up with each other"). Composed by `kit/civic.py` (`civic.dining_hall, civic.ogre_hall`); ledger `review/qa1/civic.md` (Q1A-n).
+These rules come before Westwood's statistics above wherever they disagree (the user's word over Westwood's habit).
+
+Every room of the type:
+- **The dead space is used** (Q1A-1, Q1A-7): the S corner takes a group of its own; the front corners and the SE and
+  SW walls take mixed stock, benches or urns, mirrored; where the floor is still bare a group goes there, bigger rooms
+  more. Checked: `civic.s_corner`.
+- **Diversity** (Q1A-2): several kinds of piece, more in a bigger room; heaps mix their kinds (never one family alone,
+  never the same piece side by side). Checked: `civic.kinds`.
+- **The back walls dressed** (Q1A-3): the NE and NW walls hung at even steps, mirrored about each stretch, one
+  tapestry colour to a room; a bare stretch takes a pair of the type's wall piece. Checked: `civic.bare_wall`.
+- **Balance** (Q1A-4, Q1A-13): pieces centred on their wall or between a piece and a wall; mirrored pairs; one kind of
+  table, column, statue to a room; lights in matching corners or flanking the focal piece.
+- **Carpets** (Q1A-10): a table set at its carpet's exact middle; a carpet only where its whole rectangle and trim
+  lie on the room's floor.
+
+For this type:
+- Composed on the axis from the door (Q1A-5): the high table across the far end, seated, a pair of lights
+  flanking it, sideboards of crockery mirrored on that wall.
+- The long tables in rows down the axis, evenly spaced, on one carpet centred under them (a mess hall's on the bare
+  floor, benches both sides).
+- The hearth centred on a side back wall between crockery shelves.
+- Casks heaped in the W and E corners, barrels in the S corner, a pair of benches mirrored on a front wall, an urn in
+  the N corner; tapestries of one colour (a mess hall's trophies) at even steps.
+- **The ogres' feasting hall is its own category** (Q1A-12, the barracks set: "Ogre barracks are completely different"):
+  minimal but balanced: the fire pit in the middle, crude tables with their stools mirrored about it (a second pair
+  across the other axis in a hall of 150 tiles), meat between them, sacks and barrels heaped in matching corners, a
+  carcass in the N corner, skulls hung on the back walls; never a bare corner.
