@@ -14,6 +14,7 @@ Used by kit/building.py _build on the unit labels of a building (unit (i, j) -> 
     spurs = spur_points(rng, labels, kinds, edges)             # partial partitions: {lattice point}
     tiles = floor_pattern(rng, units, main, kind, floors, work)  # {unit: material} for the units not on `main`
 """
+import collections
 import json, math, os
 from collections import Counter, deque
 
@@ -415,12 +416,19 @@ def blend_pattern(spec, tiles, doors=()):
     doorway's floor is the room's own. tiles: {tile: material} of one room; doors: the door gaps."""
     mats = set(tiles.values())
     if len(mats) < 2 or not hasattr(spec, "pattern_tiles"): return
+    count = collections.Counter(tiles.values())
     for pair in sorted({tuple(sorted((a, b))) for a in mats for b in mats if a != b}):
         rec = _blend_rules().get(frozenset(pair))
-        if not rec or (rec.get("edge_share_sp") or 0) < 0.5 or not rec.get("preferred_edge_type"): continue
-        over = rec["overlay"]; base = next(m for m in pair if m != over)
-        if over not in spec.blend: spec.blending(over, -50, edge=rec["preferred_edge_type"])
-        spec.edge_over[(over, base)] = rec["preferred_edge_type"]
+        if rec and (rec.get("edge_share_sp") or 0) >= 0.5 and rec.get("preferred_edge_type"):
+            over, edge = rec["overlay"], rec["preferred_edge_type"]
+        else:
+            # a pair Westwood leaves hard or never lays together: blended all the same, the smaller floor (the patch: the
+            # floor under the bar, a hearthstone) spilling onto the room's own (QA round 1, nox18: "The tiling underneath
+            # the bar is not blended with the tiling surrounding it"; the camp fires' ground, a hard patch in the dirt)
+            over, edge = min(pair, key=lambda m_: (count[m_], m_)), "BlendEdge"
+        base = next(m for m in pair if m != over)
+        if over not in spec.blend: spec.blending(over, -50, edge=edge)
+        spec.edge_over[(over, base)] = edge
         for t, m in tiles.items():
             if m != over: continue
             for a, b in SIDES_TIPS:

@@ -233,6 +233,13 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | TR-1 | "The next feature we need to add is elevators, lifts, stairs and portals. They all function the exact same way. They basically teleport the player from one location to another. The second location is often an isolated part of the map (but not always)." | P§2 Transporters (`kit/transport.py`, one call for lift, stairs, portal, passage); `rules/TRANSPORTERS.md`; `skills/nox-transporters/SKILL.md` | `transport.link` (STtpLnk), `transport.landing` (STtpWal), `transport.bounce` (STtpBnc), `transport.serves` (STtpSrv), `transport.stranded` (STtpStr), `transport.wall`, `transport.pocket`, `transport.missing`, `transport.unreached`; look:spots (every named end) | none | check |
 
+## QA round 1: water, crossings, docks, thresholds (2026-10-12)
+
+Fifteen rows, Q1W-1..15, in `review/qa1/water.md` (bridges to their roads, banks without fingers, no walking on water,
+docks one to a pond and centred, doorsteps of the ground, every ground blended): 11 checked (`water.*`,
+`floors.doorstep`, `floors.hard_patch`), three by picture (Q1W-3, 8, 10), one not covered (Q1W-15, carpets: the rooms
+track).
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |

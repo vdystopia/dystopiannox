@@ -59,6 +59,27 @@ the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face
   deck lands on the road at both ends.
 - Stream bridges are Westwood's rope-bridge kits (`Waterworks.rope_bridge`, the crossing's `kit`) over a 2-row deck.
   A plank deck is never more than 2 tiles wide. Kit pieces stand at Westwood's exact step offsets (`KIT_STEPS`) [DV1-1].
+- **The road, the bridge and the stream share their rows** [Q1W-1, Q1W-2] (QA round 1: "the path should be the same
+  width as the bridge or wider. The path must be lined up more consistently with the bridge"; "It also extends farther
+  to the southeast bank"): `Land.plan_crossing(..., width=)` snaps the crossing onto the tile lattice and gives it its
+  rows (2 for a rope bridge, whose rails stand about two tiles apart over its two-row strip, and for a plank deck; a
+  ford's own width); `paint_roads` lays exactly those rows on the straight stretch, without its wobble;
+  `Waterworks.stream(calm=...)` digs whole rows of water symmetric about the crossing there (3 or 2 for a stream of
+  2-3.9 tiles), banks straight and square to the road; the plank deck and the ford take the road's rows and reach as
+  far onto one bank as onto the other (`plank_bridge(body, cross=)`, `ford(body, cross=)`), and a rope bridge's chain
+  is centred between its ends on the same rows. Paint each road once (a lab painting every road once per plot had left
+  a stray tile of another plot's road by each bridge [Q1W-3]). **Checked by** `water.bridge_narrow`, `water.bridge_off`,
+  `water.bridge_even`; look at `py review/qa/bridgelab.py --render`.
+- **Banks without fingers** [Q1W-11] (Brackwater, nox3: "little fingers sticking out into the river with hard edges"):
+  no per-tile jitter on a stream's edge; `Waterworks._smooth` takes every finger of bank (water on three sides) into
+  the water and every spit of water (bank on three sides) into the bank, on streams, ponds and round a dock's landing.
+  A ground Westwood never lets touch the water (GrassDense) gives way to one it does (`Waterworks._bank_ground`).
+  **Checked by** `water.finger` (over Westwood's p75, 5.5% of the shore).
+- **Nobody walks on the water** [Q1W-12] (nox4): every tile a body dug gets its invisible shore wall whatever the
+  design's `inside` says of its floor, and so does one touching the bank only at a tip (`Waterworks.finish`). The client
+  draws no sight edge at InvisibleWallSet (thing.bin flag 1 clear; OpenNox client/sight.go), so `tests/sightrows.py`
+  leaves the shore walls out of its count (`SEE_THROUGH`). Bridges, fords and docks stay walkable (their lanes are in
+  `no_walls`). **Checked by** `water.wade` (an error: cells out in the water a player can walk to).
 - A lake belongs in its own dead-end area, its radius well under the area's.
 - **Docks** [DV4-1, AM-2] (`rules/scenes/pond_dock.md`): a dock stands on a lake, on the shore nearest the road, and
   runs out square to the shore (within 20 degrees of the shore's normal read over ten cells, the checker's ring) into
@@ -66,6 +87,13 @@ the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face
   `dock(body, "best")` prefers the long DockDown run, DockUp only where it lands much nearer the road). The fishers'
   gear on the bank by its root (`_dock_gear`: barrels touching, a crate or a rock). Reeds grow only in the shallows.
   **Recurring:** caught by `checks.dock_reach` (run by `check_exterior`).
+  QA round 1 [Q1W-5..10]: one dock to a pond (a second only on a lake of 1200 tiles or more, a third from 2400); no
+  longer than a third of the water on its line; set out where the open water is even to either side of it, not along a
+  side bank; never out of a wall (a bank four tiles deep behind the landing, two where the shore has nothing deeper, and
+  no visible wall within two cells of it); the shore straight and square across its root (`Waterworks._square_shore`:
+  the landing's row and the one behind it bank, the row in front water); a path straight onto it, as wide as its two
+  rows, three squares back from the landing (`Land.connect_dock`). **Checked by** `water.dock_count`, `water.dock_long`,
+  `water.dock_side`, `water.dock_wall`; look at the dock pictures (scene lab `pond_dock`).
 
 ### The land grows round what was placed [DV1-5, DV1-6]
 Only now draw the map's shape (`Land.carve`): open ground with an irregular edge round the square, buildings, roads,
@@ -234,12 +262,19 @@ Westwood's irregular halls (rooms run together through openings). The five desig
 to 41-83% (Westwood 67%), a quarter to two fifths with a second floor. The checker's threshold rule now looks only
 within 4 cells of a door (a room's own second floor further in may share a material with the ground).
 
-### Thresholds [SW-4]
-A room's floor runs under its walls (to the wall line on a SW wall: TW-12 below) and out onto the doorstep; the ground
-blends onto the doorstep, never onto a tile that reaches into the room (`Spec._wall_line_floors`,
-`Spec._door_thresholds`, `Spec._edges`; the rooms' tiles are `Spec.indoor`). The room's own floor, never a carpet laid on it, and never next to a floor Westwood keeps from it
-(`Spec._may_take`). Door paths use Westwood's buffer floor where a path may not touch the room's floor
-(`Land.connect_door`).
+### Thresholds [SW-4, Q1W-13]
+A room's floor runs under its walls (to the wall line on a SW wall: TW-12 below) and stops there: the outdoor ground
+(the door's path where it comes up to the door) runs right up to an exterior door, and never onto a tile that reaches
+into the room (`Spec._wall_line_floors`, `Spec._door_thresholds` and `_door_ground`, `Spec._edges`; the rooms' tiles
+are `Spec.indoor`). The user (QA round 1, Brackwater, nox1 and nox16): "The ground tiling immediately outside of the
+door ... is off, and this is a recurring theme in the entryway of many buildings": the doorstep we laid of the room's
+floor read as a mat of boards or flagstones on the grass, two tiles to one side of the door, hard-edged. Westwood's
+campaign doorsteps carry the room's floor at 33 of 475 tiles on a \ wall and 107 of 717 on a / wall. The tile under a
+door in a \ wall follows its wall line (the floor in front: the ground on a room's SW wall, the room's floor on its NE
+wall); a tile reaching into the room takes the room's own floor, never a carpet laid on it, and never next to a floor
+Westwood keeps from it (`Spec._may_take`). Door paths use Westwood's buffer floor where a path may not touch the room's
+floor (`Land.connect_door`). **Checked by** `floors.doorstep` (the room's floor outside the wall line) and
+`floors.threshold` (the ground inside).
 
 ### No blending at a wall [TW-12]
 A wall is a hard cut between floors: no edge piece is drawn across it, on either side, whatever the wall (a house, a
@@ -432,6 +467,12 @@ the iteration log `review/scenelab/LOG.md`). Change a scene's code with the lab 
 - Route a path from each door's doorstep to the streets (`Land.connect_door`); streets keep clear of walls and never
   run into the side of a building.
 - Grass variety patches (`Land.ground_variety`) kept clear of roads, banks and buildings.
+- **Every ground blends** [Q1W-14] (QA round 1: "Unblended ground northeast of the fire" in the ogre camps; nox18, "The
+  tiling underneath the bar is not blended with the tiling surrounding it"): a ground laid with no blending registered
+  (a camp's trodden floor, a road in a cave, a biome's ground) gets a priority from Westwood's blend table when the map
+  is written (`Spec._ground_blend`); a room's second floor (the floor under the bar, a hearthstone) blends into the
+  room's own floor even where Westwood leaves the pair hard (`shells.blend_pattern`). **Checked by** `floors.hard_patch`
+  (a patch of 2-40 tiles with hard edges on three quarters of its sides, outdoor ground or in a declared room).
 - Vegetation from the forest edge inward (`Planter.plant_all`): tree lines, groves outside settled areas, undergrowth
   and flowers in single-type patches; landmarks keep a clear space. A town is planted as Westwood plants one
   (`TOWN_PLANTING`: about 2 trees per 100 floor tiles by the forest wall, plants at the wall's foot and in the open,
@@ -871,6 +912,11 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   [Q1G-5] (nobody in a doorway, one person to a door, faces open ground with his back to the wall); `identity.keeper`
   [Q1G-6] (56 px); `items.name`, `items.ware`, `items.price` [Q1G-7] (the map's own string table beside it, the
   game's, kit/items.py TEXT and FACTS).
+- `water.*` [Q1W, `check_water`]: water a player can walk on (an error), ragged banks, a road narrower than or off its
+  bridge, a deck reaching further onto one bank, docks too many to a pond, too long, along a side bank or out of a wall;
+  `floors.doorstep` and `floors.hard_patch` [Q1W-13, Q1W-14]. Westwood's maps let a player wade in places (caves,
+  swamps) and have hard patches (mosaics, rugs): these are house rules, the user's word. The ledger rows are in
+  `review/qa1/water.md`.
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
   `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter

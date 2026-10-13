@@ -28,7 +28,7 @@ Usage:
     ww.dock(p, direction="down")
     ww.finish()            # once, after all features: bank edges, shore walls, dressing
 """
-import math, re
+import collections, math, re
 from dataclasses import dataclass, field
 from typing import List, Optional, Set, Tuple
 
@@ -142,6 +142,8 @@ class Waterworks:
         self.kit_walls: Set[Cell] = set()
         self.kit_lanes: List[List[Cell]] = []
         self.bridge_materials = set()
+        self.rejects = collections.Counter()  # why shore spots were turned down for a dock (_shore_start), for the labs' logs
+        self._last_balance = 0.0              # how uneven the open water is either side of the last dock spot found
         self.floors = load_rules("floors")
         self.water_rules = load_rules("water")
         self.deco = load_rules("decoration")
@@ -153,6 +155,12 @@ class Waterworks:
 
     def _ok(self, cell):
         if cell not in self.spec.floor: return False
+        # never in a doorway or on its step (a lake dug up to a house's door had let the player walk out of the door
+        # into the water, between the house's wall and the shore's)
+        if getattr(self, "_doors", None) is None or len(self._doors[0]) != len(getattr(self.spec, "door_gaps", ())):
+            gaps = set(getattr(self.spec, "door_gaps", ()))
+            self._doors = (gaps, {(g[0] + a, g[1] + b) for g in gaps for a in range(-4, 5) for b in range(-4, 5)})
+        if cell in self._doors[1]: return False
         return self.inside(*cell) if self.inside else True
 
     @staticmethod
@@ -213,22 +221,85 @@ class Waterworks:
         body = Body("stream", family, path_xy=line, widths=half)
         xs, ys = [p[0] for p in line], [p[1] for p in line]
         pad = max(half) + 2
+        # at a planned crossing the stream runs square across the road in whole tile rows, symmetric about the
+        # crossing's centre (QA round 1, the bridges: "It also extends farther to the southeast bank than it does to the
+        # northwest bank"): whole rows across `a`, the road's way, all along the calm stretch `b`, the water's way: an odd
+        # number round a crossing on a tile row (3 for a stream of 2-3.9 tiles, 5 from 4), an even one round a seam (2
+        # under 3 tiles, 4 from 3)
+        crossings = []
+        for (cu, cv), r_uv in calm:
+            k = min(range(len(line)), key=lambda i: (line[i][0] - uv_to_xy(cu, cv)[0]) ** 2 + (line[i][1] - uv_to_xy(cu, cv)[1]) ** 2)
+            (ax, ay), (bx, by) = line[max(0, k - 2)], line[min(len(line) - 1, k + 2)]
+            tu, tv = (bx - ax) + (by - ay), (bx - ax) - (by - ay)
+            ax_ = "u" if abs(tv) >= abs(tu) else "v"
+            ac = cu if ax_ == "u" else cv
+            if round(ac) % 2 == 0:                       # the crossing on a tile row: an odd number of rows round it
+                n = max(3, 2 * int(math.floor((width - 1) / 2 + 0.5)) + 1)
+            else:                                        # on a seam between two rows: an even number
+                n = max(2, 2 * int(math.floor(width / 2 + 0.5)))
+            crossings.append((ax_, (cu, cv), r_uv, n))
+        body.crossing_rows = crossings
+        def at_crossing(x, y):
+            U, V = x + y + 2, x - y
+            for ax_, (cu, cv), r_uv, n in crossings:
+                a, b, ac, bc = (U, V, cu, cv) if ax_ == "u" else (V, U, cv, cu)
+                if abs(b - bc) <= r_uv and abs(a - ac) <= n - 1 + 8:
+                    return abs(a - ac) <= n - 1 + 0.01, n - 1 - abs(a - ac)
+            return None
         for (x, y) in list(self.spec.floor):
             cx, cy = tile_centre_xy(x, y)
             if not (min(xs) - pad <= cx <= max(xs) + pad and min(ys) - pad <= cy <= max(ys) + pad): continue
             if not self._ok((x, y)): continue
+            at = at_crossing(x, y)
+            if at is not None:
+                if at[0]: body.tiles.add((x, y))
+                continue
             d, h = self._dist_to_line(cx, cy, line, half)
-            jitter = 0.25 * math.sin(x * 1.7 + y * 2.3)
-            if d <= h + jitter:
+            # (no jitter per tile: a tile's own wobble left single tiles of water or bank sticking out, the "little
+            # fingers sticking out into the river with hard edges" of QA round 1; the bank's wander comes from the width
+            # noise along the stream)
+            if d <= h:
                 body.tiles.add((x, y))
+        self._smooth(body, keep=lambda t: at_crossing(*t) is not None)
         for (x, y) in body.tiles:
             cx, cy = tile_centre_xy(x, y)
-            d, h = self._dist_to_line(cx, cy, line, half)
-            from_bank = h - d
+            at = at_crossing(x, y)
+            if at is not None:
+                from_bank = at[1] / SQ2
+            else:
+                d, h = self._dist_to_line(cx, cy, line, half)
+                from_bank = h - d
             is_deep = (deep is True or (deep is None and width >= 3.5)) and from_bank >= 2 * TILE - 0.2
             self.spec.floor[(x, y)] = deep_m if is_deep else shallow_m
         self.bodies.append(body)
         return body
+
+    def _smooth(self, body, keep=lambda t: False):
+        """No fingers on a bank (QA round 1, Brackwater: "The riverbank tiling/borders have many small errors. They look
+        like little fingers sticking out into the river with hard edges"): a tile of bank with water on two opposite
+        sides or on three joins the water; a tile of water
+        with bank on three sides (the tip of a spit of water) becomes bank; a stream one tile wide stays. Repeated until
+        nothing changes. `keep(tile)`: tiles left as they are (a crossing's rows). The checker's `water.finger` reads the
+        same shapes."""
+        sides = ((1, 1), (-1, -1), (1, -1), (-1, 1))         # S, N, E, W in tile terms (side neighbours)
+        fluid = WATER_MATERIALS | LAVA_MATERIALS
+        for _ in range(8):
+            changed = False
+            for t in sorted({(x + a, y + b) for x, y in body.tiles for a in range(-2, 3) for b in range(-2, 3)
+                             if (a + b) % 2 == 0}):
+                if keep(t) or t not in self.spec.floor or not self._ok(t) and t not in body.tiles: continue
+                if t not in body.tiles and self.spec.floor[t] in fluid: continue      # another body's water
+                # (another body's water counts as water: the river running into a pool is no bank to the pool)
+                wet = [((t[0] + a, t[1] + b) in body.tiles or self.spec.floor.get((t[0] + a, t[1] + b)) in fluid)
+                       for a, b in sides]
+                me = t in body.tiles
+                other = [w != me for w in wet]
+                opposite = (other[0] and other[1]) or (other[2] and other[3])
+                if (opposite and not me) or sum(other) >= 3:
+                    if me: body.tiles.discard(t)
+                    else: body.tiles.add(t)
+                    changed = True
+            if not changed: break
 
     def pond(self, centre_uv, radius=6.0, family="clear", roughness=0.35):
         """Pond or lake with an irregular round shore. radius in tiles."""
@@ -246,7 +317,13 @@ class Waterworks:
             rr = r_cells * (1 + roughness * (0.7 * nz(ang * 2.0) + 0.3 * math.sin(ang * 7 + 1.3)))
             if d <= rr:
                 body.tiles.add((x, y))
-                self.spec.floor[(x, y)] = deep_m if rr - d >= 2 * TILE - 0.2 else shallow_m
+        self._smooth(body)                                  # no fingers on the shore (QA round 1)
+        for (x, y) in body.tiles:
+            cx, cy = tile_centre_xy(x, y)
+            dx, dy = cx - cx0, cy - cy0
+            d, ang = math.hypot(dx, dy), math.atan2(dy, dx)
+            rr = r_cells * (1 + roughness * (0.7 * nz(ang * 2.0) + 0.3 * math.sin(ang * 7 + 1.3)))
+            self.spec.floor[(x, y)] = deep_m if rr - d >= 2 * TILE - 0.2 else shallow_m
         self.bodies.append(body)
         return body
 
@@ -319,12 +396,43 @@ class Waterworks:
                     out.append((int(x), int(y)))
         return out
 
-    def plank_bridge(self, body, t=0.5, deck_width=2, landing=1, material="WoodSlatFloor", at=None, along=None):
+    def _crossing_tiles(self, body, cross, landing):
+        """The tiles of a crossing planned with its road (Land.plan_crossing): the crossing's own rows (the road's rows,
+        `cross["rows"]`), along the road over the water and `landing` tiles onto each bank, symmetric about the
+        crossing's centre (QA round 1: the deck "extends farther to the southeast bank than it does to the northwest
+        bank"; "the bridge is wider than the path"). Returns (axis the deck runs along, tiles, uv rectangle)."""
+        axis, rows = cross["axis"], cross["rows"]
+        cu, cv = cross["uv"]
+        ac = cu if axis == "u" else cv
+        # tile centres sit at even visual u and v: tile (x, y) at (x + y + 2, x - y)
+        def tile(a, r):
+            U, V = (a, r) if axis == "u" else (r, a)
+            return (U - 2 + V) // 2, (U - 2 - V) // 2
+        a0 = int(ac) - 24
+        a0 -= a0 % 2
+        reach = 0
+        for r in rows:
+            for a in range(a0, int(ac) + 25, 2):
+                t = tile(a, r)
+                if t in body.tiles and self.spec.floor.get(t) in WATER_MATERIALS:
+                    reach = max(reach, abs(a - ac))
+        half = reach + 2 * landing
+        lo, hi = int(round(ac - half)), int(round(ac + half))
+        tiles = sorted({tile(a, r) for r in rows for a in range(lo - lo % 2, hi + 1, 2)} & set(self.spec.floor))
+        rect = (lo, hi, min(rows), max(rows)) if axis == "u" else (min(rows), max(rows), lo, hi)
+        return axis, tiles, rect
+
+    def plank_bridge(self, body, t=0.5, deck_width=2, landing=1, material="WoodSlatFloor", at=None, along=None, cross=None):
         """Square plank deck across a stream (Con05A style): planks spill onto the water and banks
         around them (WoodSlatEdge); shore walls beside the deck act as railings. at/along: a crossing
-        planned with the road (Land.plan_crossing), so the deck runs in the road's direction."""
-        across, u0, u1, v0, v1 = self._crossing_rect(body, t, deck_width, landing, at, along)
-        tiles = self._rect_tiles(u0, u1, v0, v1)
+        planned with the road (Land.plan_crossing), so the deck runs in the road's direction. cross: the planned
+        crossing itself (plan_crossing(..., width=2)): the deck takes the road's two rows and reaches the same distance
+        onto both banks (QA round 1: a deck never wider than its road, never three planks wide)."""
+        if cross is not None and cross.get("rows"):
+            across, tiles, (u0, u1, v0, v1) = self._crossing_tiles(body, cross, landing)
+        else:
+            across, u0, u1, v0, v1 = self._crossing_rect(body, t, deck_width, landing, at, along)
+            tiles = self._rect_tiles(u0, u1, v0, v1)
         for c in tiles:
             self.spec.floor[c] = material
             # clear shore walls only: a visible wall here is the map's boundary and must stay
@@ -334,10 +442,16 @@ class Waterworks:
         self.bridge_materials.add(material)
         return dict(kind="plank_bridge", tiles=tiles, rect=(u0, u1, v0, v1), across=across)
 
-    def ford(self, body, t=0.5, width=3, material="DirtDark2"):
-        """Natural ford: a short land strip across shallow water (water spills onto it)."""
-        across, u0, u1, v0, v1 = self._crossing_rect(body, t, width, 0)
-        tiles = [c for c in self._rect_tiles(u0, u1, v0, v1) if c in body.tiles]
+    def ford(self, body, t=0.5, width=3, material="DirtDark2", cross=None):
+        """Natural ford: a short land strip across shallow water (water spills onto it). cross: the crossing planned
+        with the road (plan_crossing(..., width=the ford's width)): the ford takes the road's rows, so the road runs
+        straight through it at its own width (QA round 1, BR-18: "The bridge is wider than the path")."""
+        if cross is not None and cross.get("rows"):
+            _, tiles, _ = self._crossing_tiles(body, cross, 0)
+            tiles = [c for c in tiles if c in body.tiles]
+        else:
+            across, u0, u1, v0, v1 = self._crossing_rect(body, t, width, 0)
+            tiles = [c for c in self._rect_tiles(u0, u1, v0, v1) if c in body.tiles]
         shallow_m = FAMILIES[body.family][0]
         for c in tiles:
             self.spec.floor[c] = material
@@ -389,7 +503,13 @@ class Waterworks:
     def dock(self, body, direction="down", length=2, at=None, barrels=True, beyond=0, near=None):
         """Dock into a pond/lake. direction 'down' = DockDown running down-right (along '\\'),
         'up' = DockUp running down-left (along '/'). length = number of centre pieces.
-        at: land tile-centre (uv) on the shore to start from; default: picked on the shore."""
+        at: land tile-centre (uv) on the shore to start from; default: picked on the shore.
+        One dock to a pond, a second only on a lake of 1200 tiles or more (a radius of about 20 tiles), a third from 2400
+        (QA round 1, docks: "Limit docks to one per pond, except with very large ponds"): None when the body has its
+        share."""
+        allowed = 1 + (len(body.tiles) >= 1200) + (len(body.tiles) >= 2400)
+        if len(getattr(body, "docks", ())) >= allowed:
+            return None
         if direction in ("best", "any"):
             # either kit, whichever starts nearest `near` (or the first that fits) square to its own stretch of shore
             opts = []
@@ -402,6 +522,8 @@ class Waterworks:
                 # shorter DockDown before the DockUp in a small pond (the blind judge, 2026-10-05: "short DockUp docks
                 # in small round ponds, the tips about 1.5 tiles out"); DockUp only when it lands much nearer the road
                 pen = 0 if (d_, n_) == ("down", length) else 30 ** 2 if d_ == "down" else 60 ** 2
+                # (QA round 1: a kit that can only stand along a side bank gives way to one set out evenly)
+                pen += 0 if self._last_balance <= 0.34 else 200 ** 2
                 if c_: opts.append(((((c_[0] - near[0]) ** 2 + (c_[1] - near[1]) ** 2) if near else 0) + pen, d_, n_, c_))
             if not opts: return None
             _, direction, length, at = min(opts)
@@ -413,6 +535,9 @@ class Waterworks:
         if start is None:
             return None
         su, sv = start
+        self._square_shore(body, tile_at_uv(su, sv), (1, 1) if kit == "DockDown" else (-1, 1),
+                           (1, -1) if kit == "DockDown" else (1, 1))
+        body.docks = list(getattr(body, "docks", ())) + [start]
         if kit == "DockDown":
             lane = int(round((sv - k["piece_side"]) / 2.0)) * 2
             pos, sign = su + 1.0, 1                    # ramp sits on the waterline
@@ -448,6 +573,36 @@ class Waterworks:
         if cx == int(cx):
             self.kit_walls.add((int(cx), int(cy)))
         return dict(kind=kit, start=start, pieces=pieces, lane=lane)
+
+    def _square_shore(self, body, root, step, side, reach=2):
+        """The bank straight and square across a dock's root (QA round 1, docks: "The connection to the shore is off",
+        DK-04, 06, 08, 15-20: the root stood on a corner of the bank, water lapping round one side of it): the landing's
+        row across the dock and the row behind it are bank `reach` tiles to each side, the row in front of it water, so
+        the dock leaves a straight shore at a right angle. The bank takes the landing's own ground; no tile under a wall
+        changes."""
+        ground = self.spec.floor.get(root)
+        if ground is None or ground in WATER_MATERIALS: return
+        water = FAMILIES[body.family][0]
+        fl, walls = self.spec.floor, self.spec.wallmap
+        fixed = set()
+        for k_ in range(-reach, reach + 1):
+            for back in (0, 1):                                       # the landing's row and the one behind: bank
+                t = (root[0] - step[0] * back + side[0] * k_, root[1] - step[1] * back + side[1] * k_)
+                if t in fl and fl[t] in WATER_MATERIALS and t not in walls:
+                    fl[t] = ground; body.tiles.discard(t)
+                fixed.add(t)
+            t = (root[0] + step[0] + side[0] * k_, root[1] + step[1] + side[1] * k_)   # the row in front: water
+            if k_ and t in fl and fl[t] not in WATER_MATERIALS and t not in walls and t not in self.no_walls and \
+                    fl[t] not in KIT_FLOORS and not any((t[0] + a, t[1] + b) in walls for a in (-1, 0, 1) for b in (-1, 0, 1)):
+                fl[t] = water; body.tiles.add(t)
+            fixed.add(t)
+        before = set(body.tiles)
+        self._smooth(body, keep=lambda t: t in fixed or t in self.no_walls or fl.get(t) in KIT_FLOORS or
+                     fl.get(t) in self.bridge_materials or t in walls)
+        for t in body.tiles - before:                                 # what the smoothing gave the water
+            fl[t] = water
+        for t in before - body.tiles:                                 # what it took from the water
+            fl[t] = ground
 
     def _dock_gear(self, kit, pts, tip_load=0):
         """The fishers' gear on the bank by a dock's root (the scene lab, review/scenelab: Westwood's docks on Con03A and
@@ -591,13 +746,50 @@ class Waterworks:
                 continue                               # keep docks well apart
             # a bank behind the landing to stand on: land five tiles back and two to each side (the blind judge,
             # 2026-10-06: "the root jammed against the tree line")
+            # (QA round 1: required now, four tiles back, where it had been a preference five back)
             deep = all(self._land((land[0] - step[0] * i + sx * k_, land[1] - step[1] * i + sy * k_))
-                       for i in range(1, 6) for sx, sy in side[:1] for k_ in (-2, 0, 2))
-            cands.append((0 if deep else 1, xy_to_uv(*tile_centre_xy(*land))))
+                       for i in range(1, 5) for sx, sy in side[:1] for k_ in (-2, 0, 2))
+            # (a narrow bank, two tiles of it behind the landing, where the shore has nothing deeper: ranked last)
+            shallow = deep or all(self._land((land[0] - step[0] * i + sx * k_, land[1] - step[1] * i + sy * k_))
+                                  for i in range(1, 3) for sx, sy in side[:1] for k_ in (-2, 0, 2))
+            # never out of the map's edge or the forest wall (QA round 1, DK-11: "the dock is coming out from a map
+            # boundary wall"): open bank, no visible wall within three cells of the landing and the walk behind it
+            if not shallow:
+                self.rejects["no bank behind"] += 1
+                continue
+            if any((c[0] + a_, c[1] + b_) in self.spec.wallmap and
+                   not self.spec.wallmap[(c[0] + a_, c[1] + b_)]["material"].startswith("Invisible")
+                   for i in range(0, 3) for c in [(land[0] - step[0] * i, land[1] - step[1] * i)]
+                   for a_ in range(-2, 3) for b_ in range(-2, 3)):
+                self.rejects["a wall by the landing"] += 1
+                continue
+            # no longer than a third of the pond along its line (QA round 1, docks: "Dock length should not exceed
+            # one-third of the length of the pond"): the water from the landing to the far bank on the dock's line
+            span = 0
+            while span < 80 and wet((land[0] + step[0] * (span + 1), land[1] + step[1] * (span + 1))): span += 1
+            if reach / 2.0 + 1 > span / 3.0 + 0.5:            # the kit's end pieces reach about a tile past `reach`
+                self.rejects["a third of the pond"] += 1
+                continue
+            # centred on the pond, not along a side bank (QA round 1: "Too close to the southwest bank and not well
+            # centered"): the open water to either side of the dock's middle and tip as even as the shore allows
+            def across(c, sd):
+                k_ = 0
+                while k_ < 60 and wet((c[0] + sd[0] * (k_ + 1), c[1] + sd[1] * (k_ + 1))): k_ += 1
+                return k_
+            bal = 0.0
+            # (all along it, from its root to its tip: the checker's water.dock_side reads its middle, where a bulge of
+            # the bank beside the root had stood a tile off a Brackwater dock)
+            for c in path[1:min(len(path), int(reach / 2) + 2)]:
+                l_, r_ = across(c, side[0]), across(c, side[1])
+                bal = max(bal, abs(l_ - r_) / max(1, l_ + r_))
+            cands.append((bal + (0 if deep else 10), xy_to_uv(*tile_centre_xy(*land))))
         if not cands:
             return None
-        best_ = min(c[0] for c in cands)                # a landing with a bank behind it where there is one
-        cands = [c for d_, c in cands if d_ == best_]
+        # a deep bank first; the most even placements (within a fifth of the best), then the one nearest the road
+        best_ = min(c[0] for c in cands)
+        floor_ = 10 if best_ >= 10 else 0
+        self._last_balance = best_ - floor_
+        cands = [c for b_, c in cands if b_ - floor_ <= max(0.2, best_ - floor_ + 0.1) and b_ >= floor_]
         if near:
             return min(cands, key=lambda c: (c[0] - near[0]) ** 2 + (c[1] - near[1]) ** 2)
         cands.sort()
@@ -626,6 +818,11 @@ class Waterworks:
             line = (au + bu) / 2
             lane = int(round((line - k["piece_side"]) / 2.0)) * 2
             a0, a1 = max(av, bv), min(av, bv)
+        # a crossing planned on the seam between two rows (Land.plan_crossing(width=2)): the deck's two-row strip on
+        # those two rows, the road's (QA round 1: the deck's rails stand about two tiles apart, their middle within a
+        # quarter of a tile of the strip's middle on both kits, measured on the bridge lab's renders)
+        if abs(line - round(line)) < 0.26 and round(line) % 2:
+            lane = round(line) - 1 if k["axis"] == "u" else round(line) + 1
         length = abs(a1 - a0)
         if "steps_px" in k:
             sp = k["steps_px"]; f, m, l = (sp["first"] / CELL * 2, sp["mid"] / CELL * 2, sp["last"] / CELL * 2)
@@ -640,6 +837,15 @@ class Waterworks:
         sgn = 1 if k["axis"] == "u" else -1
         u0, v0 = (a0, lane + k["piece_side"]) if k["axis"] == "u" else (lane + k["piece_side"], a0)
         pts = chain_positions(kit, px_of_uv(u0, v0), len(names) - 2)
+        # centred between the two ends asked for (QA round 1: a bridge reaches as far onto one bank as onto the other):
+        # Westwood's fixed steps rarely add up to the span, so the chain is slid half the difference along its axis
+        lx, ly = pts[-1]
+        end = (lx + ly) / CELL if k["axis"] == "u" else (lx - ly) / CELL
+        s = (a1 - end) / 2.0
+        if abs(s) > 0.01:
+            a0 += s
+            u0, v0 = (a0, lane + k["piece_side"]) if k["axis"] == "u" else (lane + k["piece_side"], a0)
+            pts = chain_positions(kit, px_of_uv(u0, v0), len(names) - 2)
         bx, by = KIT_STEPS[kit]["back"]
         for name, (x, y) in zip(names, pts):
             self.spec.obj_px(f"{kit}{name}Front", x, y)
@@ -652,26 +858,61 @@ class Waterworks:
     # ------------------------------------------------------------------ finishing
     def finish(self, dress=True, shore_wall_material="InvisibleWallSet"):
         """Bank edge blending, shore walls, kit walls and (optionally) water dressing."""
+        self._bank_ground()
         self._register_blending()
         fluid = WATER_MATERIALS | LAVA_MATERIALS
+        dug = set().union(*(b.tiles for b in self.bodies)) if self.bodies else set()
         for (x, y), m in list(self.spec.floor.items()):
             if m not in fluid or (x, y) in self.no_walls or (x, y) in self.spec.wallmap: continue
             nbrs = [(x + a, y + b) for a, b in ((1, 1), (1, -1), (-1, 1), (-1, -1))]
+            tips = [(x + 2, y), (x - 2, y), (x, y + 2), (x, y - 2)]
             if any(n not in self.spec.floor for n in nbrs + [(x + 2, y), (x - 2, y), (x, y + 2), (x, y - 2)]):
                 # next to the void: the outer boundary must be a visible wall (Westwood places the
                 # boundary material on water cells by the void), never an invisible one
                 near = [(abs(wx - x) + abs(wy - y), w["material"]) for (wx, wy), w in self.spec.wallmap.items()
                         if abs(wx - x) <= 3 and abs(wy - y) <= 3 and not w["material"].startswith("Invisible")]
-                if near and any(self.spec.floor.get(n) not in fluid and n in self.spec.floor for n in nbrs):
+                # (every water tile by the void, not only those beside the bank: one left open where the forest's wall
+                # met the water had let the player round the end of the shore's walls into a lake, QA round 1)
+                if near:
                     self.spec.wall(x, y, min(near)[1])
                 continue
-            if self.inside and not self.inside(x, y): continue
-            if any(self.spec.floor.get(n) not in fluid for n in nbrs):
+            # (a tile a body dug is the playable area's whatever the design's `inside` says of its floor: a floor-based
+            # `inside`, Grass or Dirt, had left Brackwater's and Thornwick's rivers with 22 shore walls for 804 tiles of
+            # water, and the player walked on the river (QA round 1, nox4: "The player can walk on water"))
+            if self.inside and not self.inside(x, y) and (x, y) not in dug: continue
+            # every water tile touching the bank by a side or a tip: a tip-only touch (a corner of the bank pointing
+            # into the water) left the chain of walls broken there, a way into the water between two walls
+            if any(self.spec.floor.get(n) not in fluid for n in nbrs + tips):
                 self.spec.wall(x, y, shore_wall_material)
         for c in self.kit_walls:
             if c not in self.spec.wallmap and c not in self.no_walls:
                 self.spec.wall(c[0], c[1], shore_wall_material)
         if dress: self._dress()
+
+    def _bank_ground(self):
+        """A bank tile of a ground Westwood never lets touch the water (rules/out/floors.json never_touch: GrassDense,
+        DirtHard, GrassSparseYellow against shallow water) takes the floor Westwood puts between them, else the ground
+        round it that may touch the water (a dense-grass patch laid before the stream, or a bank the smoothing moved)."""
+        nt = {}
+        for r in self.floors["never_touch"]:
+            bm = r.get("buffer_materials") or {}
+            nt[frozenset((r["a"], r["b"]))] = max(bm, key=bm.get) if bm else None
+        fluid = WATER_MATERIALS | LAVA_MATERIALS
+        near8 = ((1, 1), (1, -1), (-1, 1), (-1, -1), (2, 0), (-2, 0), (0, 2), (0, -2))
+        fl = self.spec.floor
+        for _ in range(2):
+            for (x, y), m in sorted(fl.items()):
+                if m in fluid or m in KIT_FLOORS: continue
+                wet = {fl.get((x + a, y + b)) for a, b in near8} & fluid
+                bad = [w for w in wet if frozenset((m, w)) in nt]
+                if not bad: continue
+                buf = nt[frozenset((m, bad[0]))]
+                if buf is None or any(frozenset((buf, w)) in nt for w in wet):
+                    ok = collections.Counter(fl.get((x + a, y + b)) for a in range(-4, 5) for b in range(-4, 5)
+                                             if (a + b) % 2 == 0)
+                    buf = next((g for g, _ in ok.most_common() if g and g not in fluid and g not in KIT_FLOORS and
+                                g not in self.bridge_materials and not any(frozenset((g, w)) in nt for w in wet)), None)
+                if buf: fl[(x, y)] = buf
 
     def _register_blending(self):
         """Water/lava/plank materials spill onto what they touch, with the edge type Westwood uses

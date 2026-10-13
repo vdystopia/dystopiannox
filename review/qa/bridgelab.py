@@ -25,8 +25,10 @@ from kit.water import Waterworks, px_of_uv                                 # noq
 from kit.vegetation import Planter, FORESTS, TOWN_PLANTING                 # noqa: E402
 
 # (kind, deck width) on a fixed turn: Westwood's stream bridges are mostly rope-bridge kits
-KINDS = [("rope", 0), ("plank", 2), ("rope", 0), ("ford", 3), ("plank", 3), ("rope", 0), ("plank", 2), ("ford", 4),
-         ("rope", 0), ("plank", 3)]
+# (QA round 1: "plank decks 3 wide" read as "unreasonably wide for a simple crossing": a plank deck is 2 wide, its road
+# too; a rope bridge's road its strip's 2 rows, a ford's road its own width)
+KINDS = [("rope", 0), ("plank", 2), ("rope", 0), ("ford", 3), ("plank", 2), ("rope", 0), ("plank", 2), ("ford", 4),
+         ("rope", 0), ("plank", 2)]
 WIDTHS = [2.2, 2.8, 3.4, 2.0, 3.0, 4.0, 2.4, 2.6, 3.6, 2.2, 3.2]
 WATERS = ["clear", "clear", "clear", "swamp", "clear", "clear", "swamp", "clear"]
 ROADS = ["DirtDark2", "DirtDark2", "RoughCobble", "DirtLight2", "DirtDark2"]
@@ -68,7 +70,10 @@ def generate(n=20, seed=1, out_dir=None, name="BridgeLab", log=print):
         a_, b_ = f"b{k}a", f"b{k}b"
         land.area(a_, uv(*A), 2 * prng.uniform(6.5, 8.0), region=f"p{k}")
         land.area(b_, uv(*B), 2 * prng.uniform(6.5, 8.0), region=f"p{k}")
-        land.link(a_, b_, 10, bend=0.05, road=True, pockets=(0, 0))
+        # each plot's road in its own material, painted once (QA round 1, "a random cobblestone tile": painting every
+        # road once per plot, each time in that plot's material and with a fresh wobble, had left a stray tile of an
+        # earlier plot's road by each crossing)
+        land.link(a_, b_, 10, bend=0.05, road=True, pockets=(0, 0), road_material=p["road"])
         p["areas"] = (a_, b_)
         plots.append(p)
     # the plots joined by forest paths (Land.carve keeps one connected piece of land): a spine below each row, each plot
@@ -85,7 +90,8 @@ def generate(n=20, seed=1, out_dir=None, name="BridgeLab", log=print):
             prev = nm
         if r: land.link(f"sp{r - 1}w", f"sp{r}w", 7, bend=0.1, road=False, pockets=(0, 0))
     for p in plots:
-        cross = land.plan_crossing(*p["areas"], t=0.5, approach=6)
+        width = 2 if p["kind"] == "rope" else p["deck"]          # the road's rows through the crossing
+        cross = land.plan_crossing(*p["areas"], t=0.5, approach=6, width=width)
         C = cross["uv"]
         fu, fv = cross["flow"]
         L = 26                                            # uv: the stream runs on into the forest at both ends
@@ -97,8 +103,7 @@ def generate(n=20, seed=1, out_dir=None, name="BridgeLab", log=print):
         # the stream's banks are open ground a little way up and down from the crossing
         land.area(f"b{p['k']}s", C, 2 * 6.0, region=f"p{p['k']}")
     land.blends(m)
-    for p in plots:
-        land.paint_roads(m, p["road"], width_squares=2.4, skip=land.reserved)
+    land.paint_roads(m, "DirtDark2", width_squares=2.4, skip=land.reserved)
     land.carve(margin=3.0)
     land.assign_regions()
     land.open_links()
@@ -115,9 +120,9 @@ def generate(n=20, seed=1, out_dir=None, name="BridgeLab", log=print):
                           ((C[0], C[1] + span), (C[0], C[1] - span)))
             res = ww.rope_bridge(a_uv, b_uv, kit=cross["kit"])
         elif p["kind"] == "plank":
-            res = ww.plank_bridge(body, at=C, along=cross["axis"], deck_width=p["deck"])
+            res = ww.plank_bridge(body, cross=cross)
         else:
-            res = ww.ford(body, t=0.5, width=p["deck"])
+            res = ww.ford(body, cross=cross, material=p["road"])
         p["result"] = res["kind"] if res else None
         for t in body.tiles:
             if "Water" in m.floor.get(t, ""): land.water.add(cell_square(*t))

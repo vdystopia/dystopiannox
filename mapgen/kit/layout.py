@@ -138,6 +138,8 @@ class Land:
         self.roads, self.plaza, self.water, self.taken = set(), set(), set(), set()
         self.taken_strict = set()             # building footprints only (taken also holds margins)
         self.road_paths = []
+        self.road_extent = set()              # road squares left unpainted at a crossing (paint_roads), for carve
+        self.road_exact = set()               # the crossings' road rows as painted (paint_roads)
 
     # ---- planning ------------------------------------------------------------------------------------
     def area(self, name, centre_uv, radius_uv, stretch=1.0, angle=0.0, roughness=0.26, clearing=True, region=None):
@@ -185,13 +187,22 @@ class Land:
         R = ar["r"] * (1 + sum(a * math.sin(k * th + p) for k, p, a in ar["waves"]))
         return d <= R
 
-    def plan_crossing(self, a, b, t=0.5, approach=7.0):
+    def plan_crossing(self, a, b, t=0.5, approach=7.0, width=2):
         """Plans where the road between areas a and b crosses water, before anything is built: a bridge
         fitted onto an existing stream ends up jammed against the forest. The road is straightened
         through the crossing along the nearest grid axis for `approach` squares on each side, so the deck
         runs in the road's direction and lands on the road at both ends. Returns the crossing: centre
         (square coordinates), uv centre, axis ('u' or 'v': the way the deck runs) and the direction the
-        water must flow there (across the road)."""
+        water must flow there (across the road).
+
+        width: the tile rows the road takes through the crossing, the crossing's own width (QA round 1, the bridges:
+        "the path should be the same width as the bridge or wider. The path must be lined up more consistently with
+        the bridge"): 2 for a rope bridge (its rails stand about two tiles apart over the kit's two-row strip, which
+        Waterworks.rope_bridge lays on these rows) and for a plank deck, a ford's own width. The centre is snapped to the tile lattice, across the road onto a tile
+        row (odd widths) or the seam between two (even), along it onto a row or a seam, so the road's rows (`rows`, the
+        visual across-coordinates, 2 per tile), the deck's and the stream's rows (Waterworks.stream's calm stretch:
+        whole rows of water symmetric about the crossing) share one centre line. paint_roads lays exactly these rows on
+        the straight stretch, without its usual wobble."""
         ln = next(l for l in self.links if (l["a"], l["b"]) == (a, b))
         path = ln["path"]
         k = int(t * (len(path) - 1))
@@ -199,9 +210,20 @@ class Land:
         pa, pb = path[max(0, k - 4)], path[min(len(path) - 1, k + 4)]
         ti, tj = pb[0] - pa[0], pb[1] - pa[1]
         axis = "u" if abs(ti) >= abs(tj) else "v"
+        # visual uv of a square coordinate s is 2s + 1; a tile row sits at an even value (square i: u = 2i + 2,
+        # square j: v = 2j), a seam between two at an odd one. Across the road the centre goes onto a row (odd widths)
+        # or a seam (even); along it onto the nearest row or seam (Waterworks.stream then lays an odd or an even number
+        # of rows of water round it), a quarter of a square at most: a half-square move had cost Brackwater a cottage
+        on_row = lambda s: round(s + 0.5) - 0.5                                                  # 2s + 1 even
+        on_seam = lambda s: float(round(s))                                                      # 2s + 1 odd
+        on_lattice = lambda s: (round(2 * s + 1) - 1) / 2.0                                       # 2s + 1 whole
+        snap_across = on_row if width % 2 else on_seam
+        # (the link's own path, and so the land carved round it, stays where it was: only the crossing's centre, its rows
+        # and the road painted on them move onto the lattice; moving the passage had redrawn a town's thickets)
+        P0, P = P, ((on_lattice(P[0]), snap_across(P[1])) if axis == "u" else (snap_across(P[0]), on_lattice(P[1])))
         d = (1.0 if ti >= 0 else -1.0, 0.0) if axis == "u" else (0.0, 1.0 if tj >= 0 else -1.0)
-        A = (P[0] - d[0] * approach, P[1] - d[1] * approach)
-        B = (P[0] + d[0] * approach, P[1] + d[1] * approach)
+        A = (P0[0] - d[0] * approach, P0[1] - d[1] * approach)
+        B = (P0[0] + d[0] * approach, P0[1] + d[1] * approach)
         near = lambda pt, lo, hi: min(range(lo, hi), key=lambda i: (path[i][0] - pt[0]) ** 2 + (path[i][1] - pt[1]) ** 2)
         i0, i1 = near(A, 0, k + 1), near(B, k, len(path))
         ln["path"] = (path[:i0] + _densify([path[i0], A], 0.5)[:-1] + _densify([A, B], 0.5) +
@@ -211,9 +233,24 @@ class Land:
             for i in range(int(s_[0]) - 2, int(s_[0]) + 3):
                 for j in range(int(s_[1]) - 2, int(s_[1]) + 4):
                     corridor.add((i, j))
-        cross = dict(link=(a, b), centre=P, uv=(2 * P[0] + 1, 2 * P[1] + 1), axis=axis,
-                     flow=(0.0, 1.0) if axis == "u" else (1.0, 0.0), corridor=corridor,
-                     kit="RopeBridge1" if axis == "u" else "RopeBridge2")
+        # the road's own squares on the straight stretch: `width` rows centred on the crossing (exact), and the band
+        # round them that the road's usual wobble must leave alone (strip)
+        c_across = 2 * (P[1] if axis == "u" else P[0]) + 1
+        rows = [round(c_across - (width - 1) + 2 * k) for k in range(width)]
+        lo, hi = sorted((P[0] - approach, P[0] + approach) if axis == "u" else (P[1] - approach, P[1] + approach))
+        exact, strip = set(), set()
+        for al in range(int(lo) - 1, int(hi) + 2):
+            if not lo - 0.01 <= al + 0.5 <= hi + 0.01: continue        # the square's middle along the road
+            start = int(c_across) - width - 8
+            for ac in range(start - start % 2, int(c_across) + width + 9, 2):           # tile rows: even values
+                # a square's tile sits at visual u = 2i + 2 (axis v: across is u), v = 2j (axis u: across is v)
+                sq = (al, ac // 2) if axis == "u" else ((ac - 2) // 2, al)
+                if abs(ac - c_across) <= width - 1 + 6: strip.add(sq)
+                if ac in rows: exact.add(sq)
+        cross = dict(link=(a, b), centre=P, uv=(2 * P[0] + 1, 2 * P[1] + 1), uv0=(2 * P0[0] + 1, 2 * P0[1] + 1), axis=axis,
+                     flow=(0.0, 1.0) if axis == "u" else (1.0, 0.0), corridor=corridor | exact,
+                     kit="RopeBridge1" if axis == "u" else "RopeBridge2", width=width, rows=rows,
+                     road_exact=exact, road_strip=strip)
         self.crossings.append(cross)
         return cross
 
@@ -232,7 +269,10 @@ class Land:
         props, plus the clearing areas. Then smooths the outline so every wall line is continuous and
         no passage is narrower than 3 squares; placed content is never cut away."""
         canvas = self.squares
-        content = (set(self.roads) | self.plaza | self.taken | self.water | self.reserved) & canvas
+        # (the land grows round the road as its usual wobble would have painted it: a crossing's own rows, which the
+        # wobble would not have reached, leave the land and everything planned after it as it was)
+        roads = (set(self.roads) - (self.road_exact - self.road_extent)) | self.road_extent
+        content = (roads | self.plaza | self.taken | self.water | self.reserved) & canvas
         r = self.rng
         ph = [r.uniform(0, 6.3) for _ in range(6)]
         noise = lambda i, j: (math.sin(i * 0.23 + ph[0]) + math.sin(j * 0.19 + ph[1]) + math.sin((i + j) * 0.11 + ph[2])
@@ -553,11 +593,27 @@ class Land:
             nz = (self.rng.uniform(0, 6.3), self.rng.uniform(0.2, 0.5))
             mat = ln.get("road_material") or material
             width = ln.get("road_width") or width_squares
+            # through a planned crossing the road takes exactly the crossing's rows, centred on its bridge (QA round 1)
+            exact, strip = set(), set()
+            for c in self.crossings:
+                if c.get("link") == (ln["a"], ln["b"]) and c.get("road_exact"):
+                    exact |= c["road_exact"]; strip |= c["road_strip"]
+            for s in sorted(exact):
+                if s not in self.squares or s in self.plaza: continue
+                t = square_tile(*s)
+                if "Water" in spec.floor.get(t, "") or "WoodSlat" in spec.floor.get(t, ""): continue
+                spec.floor[t] = mat
+                self.roads.add(s)
+                self.road_exact.add(s)
             for k, (si, sj) in enumerate(path):
                 half = width / 2 * (1 + 0.15 * math.sin(k * nz[1] + nz[0]))
                 for i in range(int(si - half - 1), int(si + half + 2)):
                     for j in range(int(sj - half - 1), int(sj + half + 2)):
                         if (i, j) not in self.squares or (i, j) in skip or (i, j) in self.plaza: continue
+                        if (i, j) in strip:
+                            # not painted (the crossing's rows are), but the land grows round it as round any road
+                            if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half: self.road_extent.add((i, j))
+                            continue
                         if math.hypot(i + 0.5 - si, j - 0.5 - sj) <= half:
                             t = square_tile(i, j)
                             if "Water" in spec.floor.get(t, "") or "WoodSlat" in spec.floor.get(t, ""): continue
@@ -634,6 +690,29 @@ class Land:
         # never on the floor inside (nox.Spec._door_thresholds; Starwell playtest, 2026-10-05: this had laid the dirt's
         # edge on the boards just inside every door)
         return path
+
+    def connect_dock(self, spec, dock, material="DirtDark2", lead=3):
+        """A path that leads straight onto a dock (QA round 1, DK-12 and DK-19: "I like the path that leads directly to
+        the dock very much"): `lead` squares straight back from the landing along the dock's line, as wide as the dock's
+        two rows, then the shortest way to the road (connect). dock: Waterworks.dock's result."""
+        su, sv = dock["start"]
+        lane = dock["lane"]
+        if dock["kind"] == "DockDown":            # runs along u: back is -i; the dock's rows v = lane, lane + 2
+            i0 = int(round((su - 2) / 2)); rows = (lane // 2, lane // 2 + 1)
+            sq = [(i0 - k, j) for k in range(0, lead + 1) for j in rows]
+            end = (i0 - lead, rows[0])
+        else:                                     # DockUp runs along -v: back is +j; its rows u = lane, lane - 2
+            j0 = int(round(sv / 2)); rows = ((lane - 2) // 2, (lane - 4) // 2)
+            sq = [(i, j0 + k) for k in range(0, lead + 1) for i in rows]
+            end = (rows[0], j0 + lead)
+        for s in sq:
+            t = square_tile(*s)
+            m = spec.floor.get(t, "")
+            if s not in self.squares or not m or "Water" in m or not m.startswith(("Grass", "Dirt", "Swamp", "Weeds")):
+                continue
+            spec.floor[t] = material
+            self.roads.add(s)
+        return self.connect(spec, end, material=material)
 
     def clear_walls(self, spec):
         """Streets keep a strip of ground along building walls (call once the buildings stand,

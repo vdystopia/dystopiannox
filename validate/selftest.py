@@ -37,7 +37,7 @@ def clean(name, **info):
     m.door("ArchedDoor", CORNER_GAP, "/")
     ww = Waterworks(m, random.Random(3))
     pond = ww.pond((240, 22), radius=8)
-    ww.dock(pond, "down", length=2)
+    ww.dock(pond, "down", length=1)          # (a third of this pond, clipped by the meadow: QA round 1)
     ww.finish()
     m.obj("PlayerStart", 190, 0)
     m.obj("Wolf", 212, 0)
@@ -379,7 +379,8 @@ def stump_by_fire(m):
 
 
 def lone_bedroll(m):
-    m.obj("CampFire", 236, 26); m.obj("Cot2", 230, 32)         # a bedroll strewn in a camp, no tent, no row (GW-4)
+    m.obj("CampFire", 236, -26); m.obj("Cot2", 230, -20)       # a bedroll strewn in a camp, no tent, no row (GW-4)
+    # (on the meadow: at (236, 26) it had stood in the pond, open while the player could wade in, QA round 1)
 
 
 def heap_of_crates(m):
@@ -720,6 +721,90 @@ def useless_ware(m):
 def dear_ware(m):
     m.d["info"]["description"] += " [act:1]"        # the Hollow Choir's first act: Westwood's chapter 2 shops, 550 at most
     _shop(m, ["BattleAxe"])
+# ---- QA round 1 (2026-10-12): water, crossings, docks, doorsteps, floor patches -----------------------------------------
+def _water(m, c):
+    return "Water" in m.floor.get(c, "")
+
+
+def wade(m):
+    for c in [c for c, w in m.wallmap.items() if w["material"].startswith("Invisible") and _water(m, c)]:
+        m.remove_wall(*c)                                     # the pond's shore walls gone: the player walks in
+
+
+def fingers(m):
+    shore = sorted(c for c in m.floor if _water(m, c) and c not in m.wallmap or (_water(m, c) and any(
+        not _water(m, (c[0] + a, c[1] + b)) for a, b in ((1, 1), (-1, -1), (1, -1), (-1, 1)))))
+    shore = [c for c in shore if sum(not _water(m, (c[0] + a, c[1] + b)) for a, b in ((1, 1), (-1, -1), (1, -1), (-1, 1))) == 1]
+    for c in shore[::3][:12]:
+        m.floor[c] = "GrassNorm"                              # a tile of bank poking into the water, three sides wet
+        m.remove_wall(*c)
+
+
+def _brook_bridge(m):
+    ww = Waterworks(m, random.Random(9))
+    brook = ww.stream([(184, -30), (256, -30)], width=2.2, wiggle=0.0)
+    res = ww.plank_bridge(brook, at=(236.0, -30.0), along="v", deck_width=2)
+    ww.finish()
+    return res
+
+
+def road_off_bridge(m):
+    res = _brook_bridge(m)
+    vs = [x - y for x, y in res["tiles"]]
+    for v in (min(vs) - 2, min(vs) - 4, max(vs) + 2, max(vs) + 4):
+        u = 240                                               # one row of road, beside the deck's rows
+        x, y = (u - 2 + v) // 2, (u - 2 - v) // 2
+        m.floor[(x, y)] = "DirtDark2"
+
+
+def bridge_uneven(m):
+    res = _brook_bridge(m)
+    us = sorted({x + y + 2 for x, y in res["tiles"]}); vs = [x - y for x, y in res["tiles"]]
+    for u in us:
+        for v in (max(vs) + 2, max(vs) + 4, max(vs) + 6):    # the deck runs three tiles more onto one bank
+            m.floor[((u - 2 + v) // 2, (u - 2 - v) // 2)] = "WoodSlatFloor"
+
+
+def dock_too_long(m):
+    ww = Waterworks(m, random.Random(11))
+    pond = ww.pond((196, -26), radius=5, roughness=0.0)
+    ww.dock(pond, "down", length=3, at=(184.0, -26.0))        # forced: the kit itself keeps a dock to a third
+    ww.finish()
+
+
+def dock_on_wall(m):
+    ww = Waterworks(m, random.Random(5))
+    puddle = ww.pond((190, -24), radius=3)
+    ww.dock(puddle, "down", length=1, at=(183.0, -24.0))     # forced: its landing against the meadow's west wall
+    ww.finish()
+
+
+def two_docks(m):
+    ww = Waterworks(m, random.Random(11))
+    pond = ww.pond((196, -26), radius=6, roughness=0.0)
+    ww.dock(pond, "down", length=1, at=(182.0, -26.0))
+    pond.docks = []                                           # forced: the kit allows one to a pond this size
+    ww.dock(pond, "up", length=1, at=(196.0, -12.0))
+    ww.finish()
+
+
+def dock_by_bank(m):
+    ww = Waterworks(m, random.Random(13))
+    brook = ww.stream([(190, -30), (256, -30)], width=5.0, wiggle=0.0)
+    ww.dock(brook, "down", length=2, at=(186.0, -26.0))       # forced: along the stream, a tile off its bank
+    ww.finish()
+
+
+def doorstep(m):
+    # the house's floor laid out onto the doorstep of its west door (the old _door_thresholds)
+    for t in ((98, 98), (99, 99), (97, 99), (99, 97), (98, 100), (100, 98)):
+        m.floor[t] = "WoodLight2"
+
+
+def hard_patch(m):
+    m._ground_blend = lambda: None                           # the kit's blending of every ground left out
+    for t in ((104, 124), (105, 125), (105, 123), (106, 124)):     # u 228, v -20: open meadow
+        m.floor[t] = "DirtLight2"
 
 
 CASES = [  # (map name, defect, expected check, expected severity, description)
@@ -858,6 +943,18 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STiname", nameless_item, "items", "error", "an item with no name - nox19", "has no name"),
     ("STiware", useless_ware, "items", "error", "a shop selling an item with no price or use - nox12", "has no price"),
     ("STiprce", dear_ware, "items", "warning", "a battle axe sold in act 1 - nox12", "the dearest"),
+    ("STwade", wade, "water", "error", "a pond without its shore walls: the player walks on it - Q1W-12", "walk on the water"),
+    ("STfingr", fingers, "water", "warning", "tiles of bank poking into a pond - Q1W-11", "ragged bank"),
+    ("STbrrd", road_off_bridge, "water", "warning", "a one-row road beside a plank deck's rows - Q1W-1", "narrower than"),
+    ("STbreven", bridge_uneven, "water", "warning", "a deck reaching three tiles more onto one bank - Q1W-2",
+     "farther onto one bank"),
+    ("STdklong", dock_too_long, "water", "warning", "a long dock in a small pond - Q1W-6", "a third of the way"),
+    ("STdkwall", dock_on_wall, "water", "warning", "a dock out of the meadow's wall - Q1W-9", "starts against a wall"),
+    ("STdk2", two_docks, "water", "warning", "two docks in one small pond - Q1W-5", "docks on one pond"),
+    ("STdkside", dock_by_bank, "water", "warning", "a dock along a stream a tile off its bank - Q1W-7",
+     "close along one bank"),
+    ("STdoorst", doorstep, "floors", "warning", "the house's boards out on its doorstep - Q1W-13", "doorstep"),
+    ("STpatch", hard_patch, "floors", "warning", "a patch of dirt in the meadow with hard edges - Q1W-14", "hard edges"),
 ]
 
 
