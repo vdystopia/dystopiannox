@@ -2183,9 +2183,10 @@ def piece_flags(m, r, kind):
     # a bedroom's one table-and-chair set
     if rtype == "bedroom":
         sets = [o for o in floor if cat[id(o)] in ("table", "desk")]
-        # (a chamber of 50 tiles or more may keep a desk and one table set: kit/furnish.py BEDROOM_DESK_AND_TABLE, Q1R-5)
+        # (a chamber of 45 tiles or more, as the checker counts them, may keep a desk and one table set: kit/furnish.py
+        # BEDROOM_DESK_AND_TABLE, Q1R-5)
         kinds = collections.Counter(cat[id(o)] for o in sets)
-        if (len(sets) > 1 and tiles < 50) or max(kinds.values(), default=0) > 1:
+        if (len(sets) > 1 and tiles < 45) or max(kinds.values(), default=0) > 1:
             flags.append(("sets", f"{len(sets)} tables and desks", sets[0]))
     # clearances the playtest set (a bed or a chest by a fire, a bench by a bed, two statues side by side)
     seen = set()
@@ -2266,6 +2267,137 @@ def check_pieces(m, ctx, base):
             out.append(F("pieces", "warning", f"{kind.replace('_', ' ')} room: {text}: {PIECE_TEXT[rule]}.",
                          o["x"], o["y"], rule=f"pieces.{rule}"))
     return out
+
+# ---- QA round 1, rooms (2026-10-13, review/qa1/rooms.md Q1R-*; kit/finish.py puts each right) -----------------------
+QA1_BED = re.compile(r"^(Bed\d|WoodBed\d|Cot\d)$")
+QA1_CHEST = re.compile(r"^(Chest\d|Chest[NS][EW]|DunMirChest\d)$")
+QA1_FIRE = re.compile(r"^(Fireplace\d|FreestandingFireplace|OgreFirePit|Stove0\d)$")
+QA1_GARDEN = re.compile(r"^(Plant[1-5]|Plant2Flowered|PlantFern\d|Garden(Corn|Tomatos|Cabbage)|TreeApple|TreeForest1[12])$")
+QA1_SUPPLY = re.compile(r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels\d|BarrelSteel[12]|BarrelWithTools[12]|"
+                        r"Crate[12]|DarkCrate[12]|CrateSteel\d|WaterBarrel)$")
+QA1_RACK = re.compile(r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack|ClothesRack)\d*$")
+CELL_DOUBLE_TILES = 36       # kit/finish.py CELL_DOUBLE
+CASK_GAP = 0.9               # units a great cask keeps from every other piece (kit/finish.py CASK_CLEAR, less slack)
+SOUTH_EMPTY = 3.2            # units round the S corner's inner point with no piece: a dead S corner
+SOUTH_TYPES = {"bedroom", "barracks", "armoury", "great_hall", "ogre_den"}   # the types kit/finish.py fills the corner of
+
+
+def _floor_at(m, u, v):
+    """The floor material under uv point (u, v): the room's square (i, j) is the tile (i + j, i - j)."""
+    i, j = round((u - 2) / 2), round(v / 2)
+    t = m.tiles.get((i + j, i - j))
+    return t["material"] if t else None
+
+
+def qa1_flags(m, r, kind):
+    """What QA round 1's room rules fault in one room: (rule, text, object). Shared by check_qa1_rooms and the labs."""
+    from kit.roomtypes import KIND_TYPE
+    rtype = KIND_TYPE.get(kind, kind)
+    tiles = r["tiles"]
+    cells = r["cells"]
+    objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o)]
+    us = [x + y + 1 for x, y in cells]; vs = [x - y for x, y in cells]
+    u0, u1, v0, v1 = min(us) - 1, max(us) + 1, min(vs) - 1, max(vs) + 1
+    uv = {id(o): uv_of(o) for o in objs}
+    flags = []
+    of = lambda rx: [o for o in objs if rx.match(o["type"])]
+    # a bed's nightstands either side of its head, at one distance (RM-BEDROOM-10)
+    if rtype == "bedroom":
+        for b in of(QA1_BED)[:1]:
+            bu, bv = uv[id(b)]
+            near = [o for o in of(re.compile(r"^Nightstand\d")) if math.hypot(uv[id(o)][0] - bu, uv[id(o)][1] - bv) < 3.0]
+            if len(near) == 1:
+                flags.append(("nightstands", "a bed with a nightstand on one side only", near[0]))
+            elif len(near) == 2:
+                d = [math.hypot(uv[id(o)][0] - bu, uv[id(o)][1] - bv) for o in near]
+                if abs(d[0] - d[1]) > 0.5:
+                    flags.append(("nightstands", f"a bed's nightstands {d[0]:.1f} and {d[1]:.1f} units from it", near[0]))
+        runs = room_runs(m, cells)
+        for c in of(QA1_CHEST):
+            cu, cv = uv[id(c)]
+            near = {line for (line, coord), (lo, hi) in runs.items()
+                    if lo - 0.5 <= (cv if line == "/" else cu) <= hi + 0.5 and abs((cu if line == "/" else cv) - coord) - (1 if line == "/" else 0) < 1.5}
+            if len(near) == 2:
+                flags.append(("chest_corner", "a chest pushed into a corner", c))
+    # a dead S corner
+    if rtype in SOUTH_TYPES and tiles >= 30:
+        su, sv = u1 - 2.6, v0 + 2.6
+        if math.hypot(su - (u0 + u1) / 2, sv - (v0 + v1) / 2) > 3.0 and \
+                not any(max(abs(uv[id(o)][0] - su), abs(uv[id(o)][1] - sv)) < SOUTH_EMPTY for o in objs
+                        if RT.family(o["type"]) or QA1_SUPPLY.match(o["type"])):
+            flags.append(("south_corner", "nothing stands in the S corner", None))
+    # the ogres' obelisks in pairs
+    if rtype == "ogre_den":
+        ob = of(re.compile(r"^ObeliskPrimitive$"))
+        if len(ob) % 2:
+            flags.append(("obelisks", f"{len(ob)} mana obelisks: not a symmetric pair", ob[0]))
+    # a human cell big enough for two
+    if rtype == "cell" and tiles >= CELL_DOUBLE_TILES and len(of(re.compile(r"^Cot\d$"))) == 1:
+        flags.append(("cell_double", f"one cot in a cell of {tiles} tiles", of(re.compile(r"^Cot\d$"))[0]))
+    # a cellar of one kind; a great cask crowded
+    if rtype == "cellar":
+        sup = of(QA1_SUPPLY)
+        stems = {re.sub(r"\d+$", "", o["type"]) for o in sup}
+        if len(sup) >= 6 and len(stems) < 3:
+            flags.append(("cellar_kinds", f"{len(sup)} stores of {len(stems)} kinds", sup[0]))
+        for c in of(re.compile(r"^LargeBarrel[12]$")):
+            for o in sup:
+                if o is c: continue
+                if _edge(c, o) < CASK_GAP - (1.0 if o["type"].startswith("LargeBarrel") else 0.6):
+                    flags.append(("cask_space", f"{o['type']} crowds a great cask", c)); break
+    # a garden's plants on its ground, one well at most
+    if rtype == "conservatory":
+        for o in of(QA1_GARDEN):
+            mat = _floor_at(m, *uv[id(o)]) or ""
+            if not re.search(r"Grass|Dirt|Weeds", mat):
+                flags.append(("garden_floor", f"{o['type']} grows out of {mat or 'no'} floor", o)); break
+        wells = of(re.compile(r"^(Well|WishingWell)$"))
+        if len(wells) > 1: flags.append(("wells", f"{len(wells)} wells", wells[1]))
+    # the quartermaster's counter; a barracks' racks
+    if rtype == "armoury" and not of(re.compile(r"^TraderDesk\d$")):
+        flags.append(("counter", "no counter for the quartermaster to stand behind", None))
+    if rtype == "barracks" and of(QA1_BED) and not of(QA1_RACK):
+        flags.append(("racks", "bunks and no racks of arms or armour", None))
+    # every fire on its patch of brick
+    for o in of(QA1_FIRE):
+        fu, fv = uv[id(o)]
+        mats = {_floor_at(m, fu + a, fv + b) for a in (-1.2, 0, 1.2) for b in (-1.2, 0, 1.2)}
+        main = collections.Counter(_floor_at(m, x + y + 1, x - y) for x, y in cells).most_common(1)[0][0]
+        if mats <= {main, None} or all((x or "").startswith("Rug") or x == main for x in mats):
+            flags.append(("hearth_patch", f"{o['type']} stands on the bare floor, no hearth of brick under it", o))
+    return flags
+
+
+QA1_TEXT = {
+    "nightstands": "a nightstand either side of the bed, at one distance (RM-BEDROOM-10; kit/finish.py; Q1R-3)",
+    "chest_corner": "a chest centred at the bed's foot or on a wall, never in a corner (Q1R-4)",
+    "south_corner": "no dead space in the S corner (QA round 1; Q1R-6)",
+    "obelisks": "an ogre den's mana obelisks in symmetric pairs (Q1R-10)",
+    "cell_double": "a cell of 36 tiles or more holds two cots (Q1R-11)",
+    "cellar_kinds": "a cellar holds kegs, metal barrels, tools and crates, not one kind (Q1R-13)",
+    "cask_space": "a great cask keeps room round it (Q1R-13)",
+    "garden_floor": "plants grow on grass or dirt, never out of floor tiles (Q1R-14)",
+    "wells": "one well to a room at most (Q1R-14)",
+    "counter": "an armoury's quartermaster stands behind a counter (Q1R-1)",
+    "racks": "a barracks keeps its arms and armour on racks (Q1R-9)",
+    "hearth_patch": "every hearth, stove, oven or furnace on a bordered patch of brick (Q1R-19)",
+}
+
+
+def check_qa1_rooms(m, ctx, base):
+    """QA round 1's room rules (review/qa1/rooms.md): nightstands either side of the bed, a chest out of the corners,
+    no dead S corner, an ogre den's obelisks in pairs, two cots in a big cell, a cellar of several kinds with room round
+    its casks, a garden's plants on earth and one well, an armoury's counter, a barracks' racks, a hearth on brick."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        if not kind: continue
+        for rule, text, o in qa1_flags(m, r, kind):
+            x, y = (o["x"], o["y"]) if o else cell_px(next(iter(r["cells"])))
+            out.append(F("rooms", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA1_TEXT[rule]}.", x, y,
+                         rule=f"rooms.qa1_{rule}"))
+    return out
+
 
 # ---- Westwood's placement grammar (kit/grammar.py; rules/grammar.py measures it) ------------------------------------
 # The blind judges' faults (2026-10-06): lights loose on the floor, table sets floating, chairs drawn up to nothing, lone
@@ -2554,6 +2686,18 @@ RULES = [
     ("rooms.stray", "rooms", r"not belong in a", "DV3-4 TP1-4"),
     ("rooms.small", "rooms", r"is small for its kind", "DV1-4"),
     ("rooms.large", "rooms", r"is large for its kind", ""),
+    ("rooms.qa1_nightstands", "rooms", r"nightstand either side", "Q1R-3"),
+    ("rooms.qa1_chest_corner", "rooms", r"never in a corner", "Q1R-4"),
+    ("rooms.qa1_south_corner", "rooms", r"dead space in the S corner", "Q1R-6"),
+    ("rooms.qa1_obelisks", "rooms", r"obelisks in symmetric pairs", "Q1R-10"),
+    ("rooms.qa1_cell_double", "rooms", r"holds two cots", "Q1R-11"),
+    ("rooms.qa1_cellar_kinds", "rooms", r"not one kind", "Q1R-13"),
+    ("rooms.qa1_cask_space", "rooms", r"keeps room round it", "Q1R-13"),
+    ("rooms.qa1_garden_floor", "rooms", r"never out of floor tiles", "Q1R-14"),
+    ("rooms.qa1_wells", "rooms", r"one well to a room", "Q1R-14"),
+    ("rooms.qa1_counter", "rooms", r"stands behind a counter", "Q1R-1"),
+    ("rooms.qa1_racks", "rooms", r"arms and armour on racks", "Q1R-9"),
+    ("rooms.qa1_hearth_patch", "rooms", r"bordered patch of brick", "Q1R-19"),
     ("identity.showpiece", "identity", r"a showpiece stands once", "SWR-1"),
     ("identity.repeat_wall", "identity", r"is not repeated along a wall", "SW-6 SWR-1"),
     ("identity.tables", "identity", r"free-standing tables than", "SW-6 TW-8"),
@@ -2652,7 +2796,7 @@ def rule_of(f):
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
-       check_transport]
+       check_transport, check_qa1_rooms]
 
 
 def run_all(m, base, only=None):

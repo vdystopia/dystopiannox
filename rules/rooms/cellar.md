@@ -65,3 +65,19 @@ The cellarer beside the great cask; else at a back wall clear of the rows. Never
   heaps them as a store's (`slot="heaps"`, kit/furnish.py `store_heaps`): barrels lead, crates second in 40% of
   cellars (the type's reading wants kegs at 70% of the stores), a piled barrel or a cask as the odd piece; no
   centrepiece cask (one cellar in four has one).
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-13)
+
+"Many of these include only barrels. Improve the diversity. Add metal barrels and tools. Use crates more often alongside
+the barrels." Rated 2-4 (mean 2.5); RM-CELLAR-01 "the gigantic wine barrels are way too close to each other and to the
+other barrels"; -08 "the diversity of objects is better ... two variants of wood barrel, giant wine barrel, and crates.
+It just needs to be organized a little bit better. The giant wine barrel needs more space".
+
+This overrides Westwood's 1-4 kinds: the user's word over Westwood's habit.
+- **The great casks** centred on the longest back wall, two from 45 tiles set symmetrically about its middle, 1.1 units
+  clear of every other piece as the game draws them (a cask's picture is about twice its footprint: `CASK_DRAWN`).
+- **Organised groups:** rows along the walls from the corners, each a group: wooden kegs and a piled barrel; metal
+  barrels with a barrel of tools; crates with kegs; tools with kegs and a metal barrel; steel crates in a big cellar;
+  the middle an aisle. One kind never more than three side by side (HB-5). The recipe's types take metal barrels,
+  barrels of tools and steel crates.
+- Checked: `rooms.qa1_cellar_kinds`, `rooms.qa1_cask_space` (planted STq1Clr, STq1Csk).

@@ -427,7 +427,7 @@ ROOMS = {
                        # after the curation those are guardrooms, but the lab compares a 4-room type with its martial pool,
                        # and the pool holds them: without the table the AUC rose from 0.87 to 0.99)
                        optional={"table": (0.6, 1), "chair": (0.6, 4)},
-                       types={"storage": SUPPLY + r"|^Chest[1-4]$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
+                       types={"storage": SUPPLY + r"|^Chest[1-4]$|^BarrelSteel\d$|^CrateSteel\d$", "table": r"^Table[1-4]$|^SquareTable[12]$|^RoundTable[12]$", "shop_rack": RACKS + r"|^TraderHangingSwords\d$|"
                               r"^TraderShieldWallHanging\d$|^TraderHangingCrossbow\d$|^TraderCrossedWeapons\d$",
                               "counter_shop": r"^TraderDesk\d$"},
                        prefer={"counter_shop": {f"TraderDesk{k}": 1 for k in range(1, 7)}},
@@ -688,7 +688,8 @@ ROOMS = {
                                  "plant": (0.0, 2), "shop_rack": (0.0, 4)},
                        types={"table": r"^Table[1-4]$|^OvalTable[12]$", "bench": r"^Bench\d$|^CushionedBench\d$",
                               "storage": CHEST, "statue": r"^Statue[12][a-h]$", "plant": PLANTS,
-                              "shop_rack": r"^TraderArmorRack[12]$"},
+                              "shop_rack": r"^TraderArmorRack[12]$|^TraderShieldWallHanging\d$|^TraderCrossedWeapons\d$|"
+                                           r"^TraderHangingSwords\d$|^TraderHangingCrossbow\d$"},
                        prefer={"fireplace": {"Fireplace1": 1, "Fireplace2": 1, "Fireplace3": 2, "Fireplace4": 1}},
                        # shields and crossed arms, banners of one colour, or trophies of the hunt (rules/rooms/great_hall.md)
                        decor_themes=("arms", "red", "blue", "green", "trophies"),
@@ -773,9 +774,14 @@ ROOMS = {
                              "a rack or two of their arms",
                      core={"bed": (2, 8), "storage": (1, 4), "table": (1, 2), "chair": (2, 6)}, per_tiles={"bed": 15},
                      optional={"shop_rack": (0.7, 2)},
-                     types={"storage": r"^Chest\d$", "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
+                     # (QA round 1, Q1R-9: the racks of arms and armour on their wall, arms hung, knots of barrels and
+                     # crates in the bare corners: kit/finish.py _barracks)
+                     types={"storage": r"^Chest\d$|^Barrel2?$|^BarrelWithTools[12]$|^Crate[12]$",
+                            "bed": r"^Cot\d|^WoodBed\d|^Bed\d",
                             "table": r"^RoundTable[12]$|^Table[1-4]$|^SquareTable[12]$", "chair": r"Chair|Stool",
-                            "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$"},
+                            "shop_rack": r"^TraderPoleArm[1-4]$|^TraderBowRack[12]$|^TraderHangingSwords\d$|"
+                                         r"^TraderArmorRack[12]$|^TraderQuiverRack$|^TraderShieldWallHanging\d$|"
+                                         r"^TraderCrossedWeapons\d$|^TraderHangingCrossbow\d$"},
                      prefer={"bed": {"Cot1": 2, "Cot4": 1, "WoodBed2": 1}},
                      top_up=(), decor_max=0, lined_goal=0.0, bed_nightstands=False,
                      # (QA round 1, Q1R-9: one wall of beds, the racks of arms and armour on another: kit/finish.py)

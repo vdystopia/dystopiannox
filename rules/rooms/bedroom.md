@@ -113,3 +113,31 @@ Westwood's campaign bedrooms (40, then 31 once cells, guard posts and lords' cha
 could hardly tell from Westwood's (ref 6/10), with only the faults it named taken out: one rug, before the chest (not
 "two identical rugs"); the table set on the bare floor (not on a rug in a corner); a single bookcase on a short stretch
 between doors. The curated Westwood set: 28 bedrooms, p90 42 tiles.
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-3..Q1R-7)
+
+"overall very good - table and chest spacing and placement need improvement. more wall objects (banners, trophies,
+bookshelves, etc) are needed. Dead spaces in the south corner are too common." RM-BEDROOM-10 is the gold standard: "The
+tables on either side of the bed are well spaced and symmetric. The number of candelabras is realistic for the room.
+The rug fills the space in the south corner. The chest is perfectly placed at the foot of the bed."
+
+- **Nightstands:** one either side of the bed's head, one kind, 0.45 units off the bed's side (RM-BEDROOM-10: 0.28-0.40;
+  -02's 0.22 "too close to the bed"), their centres 0.76 from the wall line (-01's 0.96 "too far from the wall"). The bed
+  slides along its wall to make room; a bed in a corner, or sideways along a wall (-06: "attached to the northwest wall"),
+  is set again headboard to a back wall, centred on its widest free stretch.
+- **The chest** centred at the bed's foot (0.8 units off it) or centred on a wall, never in a corner (-03: "Center the
+  chest on the northwest wall").
+- **The S corner** never bare: a small table with two chairs when the room has no table (-08: "A small table with two
+  chairs would be perfect here"), else a rug, far enough from the front walls to be seen (its edge 1.7 units off them).
+  A bedroom of 62 tiles or more (45 as the checker counts them) may keep a desk and one table set
+  (`kit/furnish.py BEDROOM_DESK_AND_TABLE`; still one of
+  each, HB-3).
+- **No table floating** in the middle (-08: "The table in the middle of the room looks out of place"): it goes, and the
+  S corner takes the set.
+- **Rugs** centred in their half of the room (-07: "more centered in the southeastern volume"); a big bedroom's other half
+  its own small rug; never a rug on a carpet; a carpet never runs under the bed (nox20: "clipped and not blended").
+- **Walls:** a pair of bookcases end to end on a long bare back-wall stretch (or in a room of 50+ tiles), then hangings
+  on the bare stretches of the NE and NW walls, one centred or two symmetric on a stretch, only where there is wall
+  behind them (-01, -02, -09: "banners or trophies").
+- Checked: `rooms.qa1_nightstands`, `rooms.qa1_chest_corner`, `rooms.qa1_south_corner` (planted STq1Nst, STq1Chc,
+  STq1Sth).

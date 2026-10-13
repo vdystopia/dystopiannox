@@ -629,7 +629,8 @@ TYPES.update({
         walls=dict(back="plants massed along the back walls", other_back="plants; a pair of columns",
                    front="plants in the corners", middle="the fountain or the well, benches facing it, clumps of plants "
                                                          "with paths between"),
-        cover=(0.0, 0.06, 0.25), open=(0.40, 0.95), per_tile=(0.08, 0.6), types_min=5, free_most=(40, 4),
+        # (QA round 1: a garden indoors, its plants not solid: nearly all of its floor is open)
+        cover=(0.0, 0.06, 0.25), open=(0.40, 1.0), per_tile=(0.08, 0.8), types_min=5, free_most=(40, 4),
         caps={"bench": (25, 6)}, walls_min=2, lined=None, tiles=(24, 220),
         signature={"plant": (0.5, 30), "^Fountain|^WishingWell": (4, 1)}, needs=("plant",), kin=("hall",)),
     # ---- the dead ------------------------------------------------------------------------------------------------

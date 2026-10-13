@@ -94,3 +94,23 @@ The lord at the hearth's side, else by a statue or at a back wall facing the tab
 - **Walls:** shields, banners or trophies of one theme along the back walls; a bench in each front corner (HB-2).
 - **Nothing else:** no plants, no statues (Westwood's great halls hold neither).
 - Still missing: the boards in a U round a free hearth (Con06b), and the shell's shape.
+
+## QA round 1 (2026-10-13; review/qa1/rooms.md Q1R-15..Q1R-18)
+
+"The layouts, tables, and chairs are generally pretty good, but the spaces are universally too empty. We need much more
+diversity of objects and to fill some of the dead space. It can't just be a room full of tables and chairs." This
+overrides Westwood's "no plants, no statues" (its two great halls): the user's word.
+
+- **The tables:** the boards centred on their carpet (RM-GREATHALL-01: "they just need to be centered more"); a table
+  off the carpet when the others are on it goes ("the seventh table should be removed"; -02 "the table randomly placed
+  in the south corner"; -07 "the fifth one looks out of place"), and a table within 2.2 units of a wall hearth (-04 "too close
+  to it"); a bench with no table at it, standing off the walls, goes (-07 "a bench that is out of place").
+- **More kinds, in pairs:** statues flanking the hearth, a pair of suits of armour on the other back wall (120+ tiles),
+  plants in the two side corners, a chest centred on a back wall, the back walls hung (banners, then arms), a bench along
+  each front wall at a bare S corner.
+- **The band:** three halls in four a band of brick or cobble one square wide round the whole room, broken only by the
+  doorways' own squares, bordered where it meets the floor (-07: "I really like the brick cobblestone tiling around the
+  outside of this room ... build this perimeter around the entire room").
+- **The hearth** on its own patch of brick, centred on it (-02 "brick cobblestone tiling underneath the oven"; -04 "the
+  floor tiling around the hearth is a little bit off-center"): `kit/shells.py hearth_squares`, every hearth.
+- Checked: `rooms.qa1_hearth_patch`, `rooms.qa1_south_corner`.

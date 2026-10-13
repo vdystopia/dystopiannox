@@ -316,7 +316,8 @@ ORDER = ["rug", "counter_shop", "counter_bar", "bed", "fireplace", "stove", "smi
          "shelves", "shop_rack", "lab", "table", "bench", "chair", "nightstand", "storage", "straw", "statue",
          "column", "plant", "wall_decor", "clutter"]
 NON_BLOCKING = {"rug", "wall_decor"}
-BEDROOM_DESK_AND_TABLE = 50   # tiles: a bedroom this big may hold a desk and a table set (one of each; QA round 1, Q1R-5)
+BEDROOM_DESK_AND_TABLE = 62   # tiles (its room.tiles, wall lines included; the checker counts some 45): a bedroom this big may
+#                               hold a desk and a table set (one of each; QA round 1, Q1R-5)
 WALL_ONLY = {"wall_decor", "shelves", "shop_rack", "fireplace"}
 SEAT_FAMILIES = {"chair", "bench"}
 # Anchors a room of each kind must contain (minimum counts); Westwood's rooms of the kind always have them.
@@ -1177,6 +1178,11 @@ class Furnisher:
             self.placing_light = True
             self.add_lights()
             self.placing_light = False
+            # its floor lights by the walls only (nothing loose among the beds and fountains: the grammar's light rule)
+            for t, rec in list(self._typed):
+                if rec[5] != "wall" and re.search(r"Candleabra|Candelabra|^TorchPole|Lantern\d$", t) and                         self.g.wall_dist(rec[0], rec[1]) > 1.2:
+                    o = next((x for x in self.objects if self._placed_of.get(id(x)) is rec), None)
+                    if o is not None: self._remove(o)
             return self.objects
         self.draw_archetype()
         inv_all = self.T["inventory"]
@@ -2843,6 +2849,25 @@ class Furnisher:
                 i0, j0 = i0 + oi, j0 + oj
                 i1, j1 = i0 + ci - 1, j0 + cj - 1
                 rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
+        # never under a bed: its trim would run under the bed against the wall and read as clipped (QA round 1, nox20:
+        # "The northeast side of the carpet is clipped and not blended in with the surrounding floor"); the side
+        # nearest the bed is taken in until the carpet stops short of it
+        beds = [rec for t, rec in self._typed if _family_of(t) == "bed"]
+        def under_bed():
+            return [b for b in beds for (i, j) in rect
+                    if min(b[0] + b[2], 2 * i + 3.6) - max(b[0] - b[2], 2 * i + 0.4) > 0 and
+                    min(b[1] + b[3], 2 * j + 1.6) - max(b[1] - b[3], 2 * j - 1.6) > 0]
+        while rect and under_bed():
+            b = under_bed()[0]
+            cand = {"i0": abs(b[0] - (2 * i0 + 2)), "i1": abs(b[0] - (2 * i1 + 2)),
+                    "j0": abs(b[1] - 2 * j0), "j1": abs(b[1] - 2 * j1)}
+            side = min(cand, key=cand.get)
+            if side == "i0": i0 += 1
+            elif side == "i1": i1 -= 1
+            elif side == "j0": j0 += 1
+            else: j1 -= 1
+            if i1 - i0 < 1 or j1 - j0 < 1: return []
+            rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
         ring = {(s[0] + a, s[1] + b) for s in rect for a, b in nb8} - rect
         if any(tile(s) in self.spec.local_blend for s in rect | ring): return []     # a door's threshold
         mat = material or self.rng.choice(self.palette["carpet"])

@@ -740,14 +740,16 @@ def _barracks(f, rng):
     keep = [(o["type"], f._placed_of[id(o)][0], f._placed_of[id(o)][1]) for o in old if id(o) in f._placed_of]
     remove(f, old)
     row = bunk_wall(f, rng, stem, want=max(3, min(10, len(f.room.tiles) // 13)))
-    if len(row) < 2:                            # no wall holds a row: as it was
+    if len(row) < 2:                            # no wall holds a row: as it was (the racks and the rest still go up)
         remove(f, row)
         for t, u, v in keep: restore(f, t, u, v)
-        return
-    bed_run = run_of(f, f._placed_of[id(row[0])], reach=1.6)
+        row = [o for o, _, _ in items(f, BED)]
+    bed_run = run_of(f, f._placed_of[id(row[0])], reach=1.6) if row else None
     skip = [bed_run[0]] if bed_run else []
     n = max(3, min(7, len(f.room.tiles) // 20))
-    wall_row(f, rng, RACK_KINDS[:3], n, sides=BACK, skip_runs=skip)
+    if not wall_row(f, rng, RACK_KINDS[:3], n, sides=BACK, skip_runs=skip):
+        # a small room whose back walls are taken: the racks on any wall with room, two or even one
+        wall_row(f, rng, RACK_KINDS[:3], n, sides=tuple(WALL_NAME), skip_runs=skip, min_n=1)
     if len(f.room.tiles) >= 110:               # a big room: a second row of racks on another wall
         wall_row(f, rng, RACK_KINDS[:3], n, sides=tuple(WALL_NAME), skip_runs=skip)
     hang_backs(f, rng, most=4 if len(f.room.tiles) >= 80 else 2, types={t: 1 for t in _types(f, ARMS_HUNG)})
@@ -1100,8 +1102,9 @@ def _great_hall(f, rng):
     # strays: a table off the carpet when the others are on it, a table crowding the hearth
     on = [x for x in tables if on_carpet_box(x[2])]
     for o, t, rec in tables:
-        near_fire = any(max(abs(rec[0] - fr[0]) - rec[2] - fr[2], abs(rec[1] - fr[1]) - rec[3] - fr[3]) < 2.6
-                        for _, _, fr in fires)
+        # (a wall hearth's front: RM-GREATHALL-04; a free hearth in the middle keeps its own ring of tables)
+        near_fire = any(max(abs(rec[0] - fr[0]) - rec[2] - fr[2], abs(rec[1] - fr[1]) - rec[3] - fr[3]) <
+                        (2.2 if run_of(f, fr, reach=1.0) else 0.9) for _, _, fr in fires)
         if near_fire or (boxes and len(on) >= 2 and not on_carpet_box(rec)):
             remove(f, [x[0] for x in _with_seats(f, rec)] + [o])
     # a bench standing alone: no table at it, not against a wall
@@ -1143,11 +1146,13 @@ def _great_hall(f, rng):
                 o2 = put(f, tt, *uv_on(r, 0.9, a + s * (ha + 1.9)))
                 if o2: pair.append(o2)
             if len(pair) < 2: remove(f, pair)
-    armour = _types(f, r"^TraderArmorRack[12]$")
-    if armour and len(f.room.tiles) >= 120:
+    # a second pair of statues on the other back wall of a big hall (suits of armour and hung arms read as an
+    # armoury: the room score's reads-as)
+    sts = _types(f, r"^Statue[12][a-h]$")
+    if sts and len(f.room.tiles) >= 120:
         fire_runs = [run_of(f, fr, reach=1.0) for _, _, fr in fires]
         skip = [w[0] for w in fire_runs if w]
-        pair_on_wall(f, rng, armour[0], sides=BACK, skip_runs=skip)
+        pair_on_wall(f, rng, sts[0], sides=BACK, skip_runs=skip)
     plants = _types(f, r"^(Plant1|Plant3|Plant4|Plant5)$")
     if plants:
         p = rng.choice(plants)
@@ -1155,8 +1160,10 @@ def _great_hall(f, rng):
         got = [put_corner(f, p, *pts[k]) for k in ("W", "E") if f.g.inside(*pts[k])]
         if len([g for g in got if g]) < 2: remove(f, [g for g in got if g])
     if not items(f, CHEST): centre_on_back(f, rng, "Chest", min_len=3.0)
-    hang_backs(f, rng, most=6)
-    hang_backs(f, rng, most=3, types={t: 1 for t in _types(f, ARMS_HUNG)})
+    banners = {t: 1 for t in f.things if re.match(r"^(Red|Blue|Green|White)Tapestry\d$|^WallTrophy", t) and f.ok_type(t)}
+    theme = {t: w for t, w in (getattr(f, "_decor_types", None) or {}).items() if not re.match(ARMS_HUNG, t)}
+    hang_backs(f, rng, most=6, types=theme or banners)
+    hang_backs(f, rng, most=3, types=banners)
     f.face_statues()
     _south_corner_bench(f, rng)
     if rng.random() < BAND_RATE: lay_band(f, rng)
@@ -1284,6 +1291,8 @@ def _conservatory(f, rng):
         ps = {(i + a, j + b) for a in (-1, 0, 1) for b in (-1, 0, 1)} & sq
         ts = {tile(s) for s in ps if not near_door(tile(s))}
         SH.lay_patch(spec, room, ts, rng.choice(GARDEN_PAVING), edge="BlendEdge")
+    if not items(f, r"^(Bench\d|LightBench\d)$"):           # a bench centred on whatever wall has room
+        centre_on_back(f, rng, "Bench", min_len=3.0, sides=tuple(WALL_NAME))
     # apple trees in the side corners, on their own dirt, apples fallen round them
     trees = [t for t in APPLE_TREES if f.ok_type(t)]
     if trees and n_tiles >= 60:
@@ -1323,7 +1332,7 @@ def _conservatory(f, rng):
                 for _ in range(rng.choice((2, 3, 3))):
                     force_put(f, rng.choice(plants), *uv_on(r, rng.uniform(0.7, 1.4), a + rng.uniform(-0.5, 0.5)),
                               blocking=pblock)
-            a += rng.uniform(2.0, 2.6)
+            a += rng.uniform(2.0, 2.6) if n_tiles >= 80 else rng.uniform(1.5, 1.9)
     # benches against the long walls, facing each fountain
     for (fu, fv) in spots:
         for r in f.g.runs:

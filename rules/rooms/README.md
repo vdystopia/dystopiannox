@@ -52,10 +52,12 @@ marked * (rooms read by hand from every campaign room the finder leaves untyped 
 | stores | [cellar](cellar.md) | 4* | - | cellar | kegs in tight rows from the corners, a great cask standing free, aisles; never shelves or sacks |
 | stores | [treasury](treasury.md) | 3* | - | treasury | a row of strongboxes on a back wall, the counting table, shields hung; open floor before the boxes |
 | stores | [powder store](powder_store.md) | 2* | - | powder_store | powder kegs in rows along the walls, the middle clear: the one room black powder belongs in |
-| martial | [barracks](barracks.md) | 16 | 5 | barracks, ogre_den | bunks of one kind in a row, a chest at each foot, gear shelves end to end, a table: orderly |
-| martial | [armoury](armoury.md) | 16 | 4 | gear_store | racks in rows of one kind each with aisles between, shelves on the back wall, the stock by the front walls |
+| martial | [barracks](barracks.md) | 16 | 5 | barracks | one wall of bunks of one kind, a chest at each foot, one wall of racks of arms and armour, a table: orderly (the ogres' den split off, QA round 1) |
+| martial | [ogre den](ogre_den.md) | 4* | - | ogre_den | the ogres' den: straw heaped over the floor, crude beds, mana obelisks in a symmetric pair, no bare front corner (split from the barracks, QA round 1) |
+| martial | [armoury](armoury.md) | 16 | 4 | gear_store | racks in rows of one kind each with aisles between, shelves on the back wall, the stock by the front walls; the quartermaster's counter facing the door (QA round 1) |
 | martial | [guardroom](guardroom.md) | 5* | - | guardroom | the watch's table with a meal on it, two or three cots, arms on the walls within reach |
-| confinement | [cell](cell.md) | 7* | - | cell, ogre_pen | bare: a cot, straw in heaps, the stocks in a bigger cell, a bone or two; nothing else |
+| confinement | [cell](cell.md) | 7* | - | cell | bare: a cot (two from 36 tiles), the stocks, a bench or a stool, straw in heaps, a bone or two (the ogres' pen split off, QA round 1) |
+| confinement | [ogre pen](ogre_pen.md) | 6* | - | ogre_pen | straw heaped in one corner, the obelisk across from it, the stocks, no bare corner (split from the cell, QA round 1) |
 | confinement | [torture chamber](torture_chamber.md) | 2* | - | torture_chamber | the rack free in the middle, the iron maiden and the stocks at the walls, the questioner's desk, a brazier |
 | public | [shop](shop.md) | 16 | 8 | shop | the counter out from a back wall with the keeper behind it, goods lining the walls, racks for show three to a row, open floor before the counter |
 | public | [tavern](tavern.md) | 2 | 8 | tavern | the bar with kegs behind it, the hearth, tables of three kinds of set with open floor between, lively but not packed |
