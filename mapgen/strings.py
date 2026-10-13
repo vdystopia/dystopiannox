@@ -107,6 +107,15 @@ def main():
     ours = {k: v for k, v in ours.items() if not (k.lower().startswith("npc:") and k.lower() in have)}
     clash = [k for k in ours if k.lower() in have]
     if clash: sys.exit(f"keys already in nox.csf: {clash[:5]}")
+    # item names and descriptions the game's table lacks or leaves as placeholders ("BreadPrettyName": QA round 1,
+    # nox19): kit/items.py TEXT, laid over Westwood's entry or added
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from kit.items import csf_entries
+    fix = {k.lower(): (k, v) for k, v in csf_entries().items()}
+    for e in entries:
+        if e["id"].lower() in fix:
+            e["vals"] = [dict(e["vals"][0] if e["vals"] else {}, str=fix.pop(e["id"].lower())[1])]
+    entries += [{"id": k, "vals": [{"str": v}]} for k, v in fix.values()]
     waves = map_waves(a.nox, ours)
     entries += [{"id": k, "vals": [dict(str=v, **({"str2": waves[k]} if k in waves else {}))]} for k, v in ours.items()]
     print(f"nox.csf: {len(entries) - len(ours)} strings (language {lang}); maps' lines: {len(ours)}, voiced: {len(waves)}")

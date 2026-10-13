@@ -105,6 +105,8 @@ class MapData:
                                      scr=o["scr"], cls=t.get("class") or "", flags=t.get("flags") or "",
                                      ext=t.get("ext"), ex=t.get("ex") or 0, ey=t.get("ey") or 0, id=len(self.objects),
                                      extent=o.get("ext"),
+                                     # what it holds (a chest's loot): [{type, xfer}] (validate checks_game items.*)
+                                     inv=[dict(type=i["t"], xfer=i.get("xfer") or {}) for i in o.get("inv") or []],
                                      enabled=not o.get("term") or bool((o.get("cflags") or 0) & 0x1000000)))
         self.waypoints, self.polygons, self.groups = d["waypoints"], d["polygons"], d["groups"]
         self.script_funcs = d["script"]["funcs"]

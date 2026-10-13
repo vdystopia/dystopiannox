@@ -16,7 +16,8 @@ Steps (each prints PASS, FAIL or LOOK):
                  room identity, the minimap and the rest (validate/README.md; review/FEEDBACK.md says which feedback
                  each answers)
   3. scripts     the map's Go scripts compile against the game's NoxScript (tests/check_scripts.py)
-  4. story       every talker has its dialogue title (NPC:<name>), string keys fit (31 characters), a gift is picked up
+  4. story       every talker has its dialogue title (NPC:<name>), string keys fit (31 characters), every gift a named
+                 item (kit/items.py), a gift is picked up
                  on a timer (never at once), the exit leads to a map that is built, every chest holds loot and the gold
                  stays in Westwood's budget, no Zombie, the map's name fits (9 characters)
      voice       every line said in a dialogue window (talkers' lines, told refusals, shop greetings) has its wave, made
@@ -169,6 +170,15 @@ def story_checks(map_path, name, m):
                 bad_pick.append(f"{fn}:{i + 1}")
     out.append((not bad_pick, "gifts are picked up on a timer after they are made" if not bad_pick else
                 f"Pickup at once after CreateObject freezes the game (TW-11): {', '.join(bad_pick)}"))
+    # every gift a real item (QA round 1, nox12/nox19: kit/items.py): a name, and no spell book (a script-made book
+    # teaches no spell: give one through a shop ware or a placed book with its SpellName)
+    sys.path.insert(0, os.path.join(REPO, "mapgen"))
+    from kit.items import problems as item_problems, SPELL_BOOKS
+    gifts = sorted({t for s in src.values() for t in re.findall(r'"give", A: "(\w+)"', s)})
+    bad_gift = [f"{t}: {why}" for t in gifts for sev, why in item_problems(t) if sev == "error"]
+    bad_gift += [f"{t}: a spell book made by a script teaches nothing" for t in gifts if SPELL_BOOKS.search(t)]
+    out.append((not bad_gift, f"{len(gifts)} kinds of gift, each a named item" if not bad_gift else
+                "gifts that are no proper item: " + "; ".join(bad_gift[:5])))
     exits = [o for o in m.objects if o["type"] == "InvisibleExitArea"]
     targets = sorted({os.path.splitext(str((o["xfer"] or {}).get("MapName") or (o["xfer"] or {}).get("Map") or ""))[0]
                       for o in exits})

@@ -649,6 +649,79 @@ def tp_unreached(m):
     Transporters(m).add("portal", _cellar(m), px(196, 20), "TpUnr", two_way=False)   # starts in the sealed cellar
 
 
+# ---- in-game behaviour (QA round 1, 2026-10-13: validate/checks_game.py) ------------------------------------------
+def _strings(m, table):
+    """The map's string table beside where the self-test builds it (a design's q.write_strings)."""
+    import json
+    d = os.path.join(OUT, m.d["name"])
+    os.makedirs(d, exist_ok=True)
+    json.dump(table, open(os.path.join(d, m.d["name"] + ".strings.json"), "w", encoding="utf-8"))
+
+
+def plank_sign(m):
+    m.obj_px("PlankSign1", *px(190, 6), xfer={"Text": "GeneralPrint:WellSign"})
+
+
+def sign_two_lines(m):
+    key = m.d["name"] + ":Sign1"
+    _strings(m, {key: "THE OLD BRIDGE\nTo the mill."})
+    m.obj_px("Sign1", *px(190, 6), xfer={"Text": key})
+
+
+def dry_well(m):
+    m.obj("Well", 190, -20)
+    m.heal_wells = False                      # as if the build had not written wells.go
+
+
+def still_fish(m):
+    m.obj_px("FishSmall", *px(240, 22), xfer={"DefaultAction": 10, "ActionRoamPathFlag": 255})
+
+
+def _villager(m, x, y, face=None, name=None):
+    from kit.npcs import facing
+    xf = {"DefaultAction": 4, "Aggressiveness": 0.0}
+    if face: xf["DirectionId"] = facing(face[0] - x, face[1] - y)
+    return m.clone(r"C:\GOG Games\Nox\maps\Con02a\Con02a.map", "Con02a:Lydia", x, y, name=name or "", xfer=xf)
+
+
+def villager_in_door(m):
+    _villager(m, DOOR_GAP[0] * CELL + 2, DOOR_GAP[1] * CELL + 25, name="Doorman")
+
+
+def villagers_at_door(m):
+    import math
+    c = (CORNER_GAP[0] * CELL + CELL / 2, CORNER_GAP[1] * CELL + CELL / 2)
+    t = (-1 / math.sqrt(2), 1 / math.sqrt(2)); n = (1 / math.sqrt(2), 1 / math.sqrt(2))
+    for k, side in enumerate((1, -1)):
+        _villager(m, c[0] - n[0] * 20 + t[0] * 50 * side, c[1] - n[1] * 20 + t[1] * 50 * side, name=f"Waiter{k + 1}")
+
+
+def villager_faces_wall(m):
+    x, y = px(198.6, -4)                      # outside the house's NW wall (u = 200), facing it
+    _villager(m, x, y, face=px(201, -4), name="WallStarer")
+
+
+def nameless_item(m):
+    m.obj("BlackPotion", 214, 0)              # Westwood's placeholder name "BlackPotionPrettyName"
+
+
+def _shop(m, wares):
+    m.obj_px("ShopkeeperYellow", *px(212, 4), xfer={"DefaultAction": 4, "Aggressiveness": 0.0, "Immortal": True,
+                                             "ShopkeeperInfo": {"BuyValueMultiplier": 1.0, "SellValueMultiplier": 0.33,
+                                                                "ShopkeeperGreetingText": "", "ShopItems": [
+                                                                    {"Name": n, "Count": 1, "SpellID": "", "Ench1": "",
+                                                                     "Ench2": "", "Ench3": "", "Ench4": ""} for n in wares]}})
+
+
+def useless_ware(m):
+    _shop(m, ["AmuletofCombat"])              # no price, no use: a shop sells it for nothing and it does nothing
+
+
+def dear_ware(m):
+    m.d["info"]["description"] += " [act:1]"        # the Hollow Choir's first act: Westwood's chapter 2 shops, 550 at most
+    _shop(m, ["BattleAxe"])
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -774,6 +847,17 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STtpPkt", tp_pocket, "transport", "error", "a portal into a closet of a few cells - TR-1", "pocket"),
     ("STtpMis", tp_missing, "transport", "error", "a declared portal whose pad is missing from the map - TR-1", "missing"),
     ("STtpUnr", tp_unreached, "transport", "warning", "a portal that starts in a sealed room - TR-1", "cannot get"),
+    ("STsignL", plank_sign, "signs", "error", "a tall plank sign - QA round 1, nox1/nox10", "plank sign"),
+    ("STsignT", sign_two_lines, "signs", "error", "a sign of two lines, which the game runs together - nox1", "line break"),
+    ("STwell", dry_well, "wells", "error", "a well that does not heal - nox13", "does not heal"),
+    ("STfish", still_fish, "fish", "error", "a fish with no loop to swim - nox4", "no linked waypoint"),
+    ("STdoorp", villager_in_door, "people", "error", "a villager standing in a doorway - nox10", "in a doorway"),
+    ("STcrowd", villagers_at_door, "people", "warning", "two villagers waiting at one door - nox10", "at one door"),
+    ("STfacew", villager_faces_wall, "people", "warning", "a villager facing the house wall beside him - nox10",
+     "faces open ground"),
+    ("STiname", nameless_item, "items", "error", "an item with no name - nox19", "has no name"),
+    ("STiware", useless_ware, "items", "error", "a shop selling an item with no price or use - nox12", "has no price"),
+    ("STiprce", dear_ware, "items", "warning", "a battle axe sold in act 1 - nox12", "the dearest"),
 ]
 
 

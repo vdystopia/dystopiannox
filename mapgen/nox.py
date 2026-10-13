@@ -649,6 +649,11 @@ class Spec:
         empty); the tally goes to <name>.loot.json beside the map. A map with a story then has its spoken lines voiced
         (mapgen/voice.py; a "VOICE" line reports it)."""
         loot_lines = []
+        # every well heals, as Westwood's do (QA round 1, nox13: kit/wells.py writes wells.go into the scripts)
+        from kit import wells as _wells
+        if _wells.apply(self): loot_lines.append(f"WELLS\t{len(_wells.spots(self))} heal (wells.go)")
+        from kit import items as _items          # a charm carried in from another act keeps its power (kit/items.py)
+        _items.apply(self)
         if getattr(self, "loot", True):
             from kit import loot
             rep = loot.fill(self)

@@ -369,7 +369,7 @@ for k, ((x, y), donor_, foe_) in enumerate(zip(dig_posts["sit"] + dig_posts["wor
     diggers.append(n); digger_foes.append(f"DiggerFoe{k + 1}")
 # shopkeepers
 WARES = {"apothecary": [(5, "RedPotion"), (4, "BluePotion"), (3, "CurePoisonPotion"), (1, "LesserFireballWand"),
-                        (1, "ForceWand"), (2, "SpellBook"), (1, "WizardRobe"), (1, "WizardHelm")],
+                        (1, "ForceWand"), (1, "SpellBook", "SPELL_LESSER_HEAL"), (1, "SpellBook", "SPELL_CHARM"), (1, "WizardRobe"), (1, "WizardHelm")],
          "inn": [(6, "RedApple"), (5, "Meat"), (4, "Cider"), (4, "Bread"), (2, "RedPotion")],
          "smithy": [(2, "Sword"), (1, "Longsword"), (1, "BattleAxe"), (1, "WarHammer"), (1, "WoodenShield"),
                     (1, "SteelShield"), (1, "ChainCoif"), (1, "ChainTunic"), (1, "ChainLeggings"), (1, "LeatherBoots")]}

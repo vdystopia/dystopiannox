@@ -179,7 +179,7 @@ d.clusters({"LavaHardened5": 1, "Rock8": 2, "CaveRocksMedium": 2},
            [s for s in land.squares if math.hypot(s[0] - mine_c[0], s[1] - mine_c[1]) < 10 and s not in land.taken],
            4, size=(2, 4), radius=1.3, gap=0.9, spacing=4.0)
 camps.signpost(m, land, (mine_c[0] - 5, mine_c[1] - 2), q.text("OBSIDIAN DIGGINGS\nKeep out unless you're Brin.", "Sign"),
-               kind="PlankSign2")
+               kind="Sign2")
 # the arrival: a milestone and a sign; the imps' rocks below it
 camps.signpost(m, land, (north_c[0] + 2.5, north_c[1] + 1.5),
                q.text("EMBERHOLLOW\nThe road down from the Rime Pass. Mind the ash.", "Sign"))

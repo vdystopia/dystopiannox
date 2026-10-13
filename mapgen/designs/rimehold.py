@@ -150,7 +150,7 @@ d.clusters({"MineCrystal05": 4, "MineCrystal02": 2, "MineCrystal04": 2},
 rc_ = land.areas["icecave"]["r"] * 1.15
 m.polygon(f"{NAME}:IceCave", (35, 35, 71),
           [square_px(cc[0] + rc_ * math.cos(a), cc[1] + rc_ * math.sin(a)) for a in (k * math.pi / 8 for k in range(16))])
-camps.signpost(m, land, (cc[0] - 5, cc[1] + 1), q.text("Crystal here. Good seam. Back before dark. - O.", "Sign"), kind="PlankSign2")
+camps.signpost(m, land, (cc[0] - 5, cc[1] + 1), q.text("Crystal here. Good seam. Back before dark. - O.", "Sign"), kind="Sign2")
 # the bear's ground in the pines: a den of rock and bones
 pc = land.areas["pines"]["c"]
 bear_spots = camps.wolf_den(m, rng, land, (pc[0] - 2, pc[1]), vc)

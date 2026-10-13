@@ -559,6 +559,28 @@ pictures show every camp for the rest.
   from their own sides, fanned 50 degrees apart, archers holding their ground (`spreadOn`); a pack lies up spread about
   its den.
 - Townsfolk names follow the donor's body: Maiden clones are women (`story.is_woman`).
+- **Nobody stands in a doorway; one person to a door** [Q1G-5] (QA round 1, nox9 and nox10: a giver "stuck in the
+  frame of the door", two women and a man at one hut's door, a woman "looking at the door in front of a door"). Nobody
+  standing still, and no stop of a tour or beat, stands within 46 px of a door's middle or in its way (40-60 px straight
+  out in front of it): `StoryMap.doorside` waits beside the doorstep or a step further out, never on it (it returns None
+  rather than the doorstep); a doorstep stop stands beside the door (`_spots`, `_free_spot`: `PERSON_DOOR`); a door
+  someone waits at is nobody else's stop (`_town`: `DOOR_TAKEN`, 90 px). `StoryMap.settle_people` runs first when the
+  scripts are written: it moves anyone left in a doorway to the nearest clear spot beside it.
+- **Backs to the wall** [Q1G-5]: a friendly person standing still faces open ground, with his back to a wall or building
+  he stands beside, never a door close ahead: `settle_people` turns each one's facing with `walkways.stop_facing` (as
+  the stops are turned) and away from a door within 90 px straight ahead. Walkers turn toward the player within 110 px
+  (`walker.face`), by design.
+- **Keepers by their counters, priests by their altars** [Q1G-6] (nox18: "The shopkeeper should be standing closer to
+  the bar"; nox14: the priest "behind a random pillar"; nox8's keeper behind his desk was right). `StoryMap.shops`
+  brings the keeper to within `ANCHOR_REACH` (40 px) of his counter (`COUNTER`: trader desks, bar pieces, desks), on
+  the furnisher's side of it (`near_anchor`); Westwood's keepers stand 28-34 px from theirs. Anyone standing in a
+  chapel or shrine that has its altar (the room type's `beside` piece, `kit/roomtypes.py` STANDS) is brought beside it,
+  facing the nave (`settle_people`). The checker's `identity.keeper` now wants a keeper within 56 px.
+- **Fish swim** [Q1G-4] (nox4: "stationary until the player approaches very close"). The game gives every fish the roam
+  action, and roam walks the nearest linked waypoint in sight; with none it gives up. Westwood lays a linked loop in its
+  fish water (239 of 240 campaign fish have one within 250 px): `Population.fish(spots, n)` places the fish and a loop
+  of 8 linked waypoints round the pool (`Swim...`, on the water by design: the route checks and `settle_waypoints` leave
+  them be).
 
 ## 7. Story and scripts
 
@@ -589,6 +611,28 @@ Objects a script names must be ones the game
 registers by name (creatures, doors, exits, `ColorLight`, crystals, chests, signs; a `FireGrate` did not). Keep the
 story's places open before the forest is placed (`StoryMap.keep_open`); after planting, `StoryMap.open_ways` takes out
 the fewest trees or rocks that wall a target off.
+
+### Signs, wells and items [Q1G-1, Q1G-2, Q1G-3, Q1G-7, Q1G-8, Q1G-9]
+- **Signs** (`kit/signs.py`; nox1, nox10, ModLab M2): a small sign, `Sign1` or `Sign2`, never the tall plank boards
+  (`PlankSign1-4`: "this large style sign does not look good. Use the smaller ones instead, always"); `camps.signpost`
+  stands `Sign1`. A sign's text is one line: `q.text(..., "Sign")` joins the lines ("THE OLD BRIDGE - To the mill.");
+  120 characters at most (Westwood's longest is 99); past 200 is an error and past 239 crashes the client. A longer
+  text goes on a short row of signs (`signs.wrap`: ModLab's `sign()`, the gauntlets' `sign_row`). A sign that reads
+  nothing is not stood.
+- **Every well heals** (`kit/wells.py`; nox13 and the well set: "the player can interact with them to fully heal health
+  and mana, like in the original nox campaign"). Westwood's well is a WishingWell running MakeAWish: health to full,
+  "You feel refreshed after drinking from the well.", the RestoreHealth sound, and a "Magical Well" sign beside it.
+  `Spec.build` writes `wells.go` for every map with a `Well` or `WishingWell`: a player walking up against one drinks
+  once per visit, health and mana to full, with Westwood's line and sound; a textless sign beside a well reads "Magical
+  Well".
+- **Items** (`kit/items.py`; nox12: "Most of the new items don't seem to actually have a function. They don't have a
+  correct name or description. And their prices are not correct"; nox19: the loaf of bread). Every item placed, held
+  or given has a name (`thing.db:<Type>PrettyName`); every ware a description, a price (thing.bin WORTH), a use (food,
+  potion, weapon, armour, wand, or a charm the kit's `charms.go` powers) and, for a spell book, its spell (a ware
+  `(1, "SpellBook", "SPELL_LESSER_HEAL")`); and a price within Westwood's for the act's chapter (`items.CAP`: act 1
+  stands with Ix's chapter 2, whose shops sell nothing over about 550 gold). `items.TEXT` names what the game leaves
+  nameless (Bread was "BreadPrettyName") and the Hollow Choir's tokens Westwood never places; `mapgen/strings.py` writes
+  them into `nox.csf.json`. `Population.shopkeeper` refuses a ware that breaks this.
 
 ### Voices [VO-1, VO-2, VO-3, VO-4, VO-5]
 Every line said in a dialogue window is voiced, as Westwood's are (965 of its 1391 campaign strings: the talk lines,
@@ -761,6 +805,22 @@ The kit does all of this; know why before changing it.
 - The dedicated server never fires MapInitialize without a player, so a map's setup runs once, from MapInitialize or
   the 30th frame.
 - When the game stops responding in a playtest build it saves a dump to `logs\freezes\<time>\` in the Nox folder.
+- **Signs** [Q1G-1, Q1G-8] (read from OpenNox's client, legacy/client__network__inform.c): a sign's text is printed
+  centred on one line as "The sign reads: %s" (use.c:SignSays); a line break is dropped, not drawn, and the line is
+  formatted into a 256-character buffer with no bound, so a text past 239 characters overwrites the stack and the client
+  crashes to the desktop (ModLab's M2 sign, 274 characters).
+- **Wells** [Q1G-3]: the `Well` object is no trigger (IMMOBILE, no xfer): nothing fires when a player bumps it, so the
+  healing is a script's (`wells.go` watches the players' distance). Westwood's `WishingWell` is a trigger whose
+  `ScriptOnPressed` names a map function; OpenNox resolves such names to the Go scripts' functions too
+  (NoxScriptVM.ScriptIndexByName).
+- **Roaming creatures** [Q1G-4]: OpenNox gives every FishSmall and FishBig ACTION_ROAM with flags 0xff at its first
+  update (unit_monster.go objectMonsterInit), whatever the map sets; roam (nox_xxx_mobActionRoam_5457E0) walks to the
+  nearest waypoint whose links carry a matching flag (Waypoint.Flags2, the OR of its links' flags) and in sight, and
+  pops itself when there is none. Our links carry 128; an unlinked waypoint (a tour's) is never roamed to.
+- **Item names** [Q1G-7]: the client names every item from `thing.db:<Type>PrettyName` and describes it from
+  `thing.db:<Type>Description` (client/object_type.go), so our `nox.csf.json` can mend them; price and use are
+  thing.bin's (WORTH, USE) and cannot be changed by a map. A shop's spell book teaches its entry's SpellID; one sold
+  without one teaches nothing.
 
 ## 9. Checks and review
 
@@ -805,6 +865,12 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   (`setpiece_faults`, house rules over Westwood's habit [Q1X]): a well that does not heal or is not a feature, graves
   out of row or unbalanced, a graveyard of graves alone, a path off its gate's middle, crops in grass or out of row, a
   yard of fewer than three kinds, a shrine's or well's pieces not mirrored about its axis.
+- in-game behaviour (`validate/checks_game.py`, QA round 1): `signs.large`, `signs.text` [Q1G-1, Q1G-2, Q1G-8] (one line, 120
+  characters, small signs); `wells.heal` [Q1G-3] (every well in `wells.go` or a WishingWell with its script);
+  `fish.swim` [Q1G-4] (a linked waypoint within 250 px in sight); `people.doorway`, `people.crowd`, `people.facing`
+  [Q1G-5] (nobody in a doorway, one person to a door, faces open ground with his back to the wall); `identity.keeper`
+  [Q1G-6] (56 px); `items.name`, `items.ware`, `items.price` [Q1G-7] (the map's own string table beside it, the
+  game's, kit/items.py TEXT and FACTS).
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
   `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter

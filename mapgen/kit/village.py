@@ -282,6 +282,7 @@ class Village:
             t = rng.choice(names)
             prev = t
             text = self.SIGN_TEXT.get(role) if name == "sign" else None
+            if name == "sign" and not text: break            # a sign that reads nothing is not stood (kit/signs.py)
             self.spec.obj_px(t, *square_px(si, sj), **({"xfer": {"Text": text}} if text else {}))
             self.used.add((int(si), int(sj) + 1))
         self.used.add(s0); L.taken.add(s0)

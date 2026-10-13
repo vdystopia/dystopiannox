@@ -118,6 +118,10 @@ class QuestBook:
         key = f"{self.map}:{stem}{self._n[stem]}"
         # the dialogue message carries the key in 32 bytes (opennox nox_xxx_startShopDialog_548DE0)
         assert len(key) <= 31, f"string key too long for the game's dialogue message: {key}"
+        if stem.startswith("Sign"):
+            # a sign prints its text on one line and drops line breaks (QA round 1, nox1: "THE OLD BRIDGETo the mill.")
+            from kit.signs import one_line
+            text = one_line(text)
         self.strings[key] = text
         return key
 

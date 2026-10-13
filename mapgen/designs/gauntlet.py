@@ -145,6 +145,13 @@ def build(k, out_dir=None):
         TEXT[kk] = s
         return kk
 
+    def sign_row(kind, place, key, s):
+        """A sign, or a short row of them (place(k): world px of the k-th): a sign prints one line, and a text past 239
+        characters crashes the client (QA round 1, ModLab M2; kit/signs.py wrap)."""
+        from kit.signs import wrap
+        for k, part in enumerate(wrap(s)):
+            m.obj_px(kind, *place(k), xfer={"Text": text(key if not k else f"{key}_{k + 1}", part)})
+
     # ---- the land: the start, the arenas and the boss's, joined by passages -----------------------------------
     n = T["arenas"]
     P, E = layout(T["layout"], n, rng)
@@ -216,11 +223,11 @@ def build(k, out_dir=None):
              f"{' and '.join(WEAPONS[w]['name'] for w in arms)} lie forged a tier up beside them. Chests: warrior's kit, "
              f"caster's kit, supplies. Then fight through {n} arenas ({gid}-A1 to A{n}) to the boss ({gid}-B: "
              f"{', '.join(MONSTERS[b]['name'][4:] for b in T['boss'])}).")
-    m.obj_px("Sign1", *at(-3.0, 2.2), xfer={"Text": text("Intro", intro)})
+    sign_row("Sign1", lambda k: at(-3.0 - 0.8 * k, 2.2), "Intro", intro)
     for i, wid in enumerate(WEAPONS):                              # the row of power weapons, a sign by each
         b = -6.25 + 2.5 * i
         mods.weapon(wid, *at(-1.0, b))
-        m.obj_px("Sign2" if i % 2 else "Sign1", *at(-2.0, b), xfer={"Text": text(wid, WEAPONS[wid]["text"])})
+        sign_row("Sign2" if i % 2 else "Sign1", lambda k: at(-2.0 - 0.8 * k, b), wid, WEAPONS[wid]["text"])
     for i, wid in enumerate(arms):                                # the featured weapons, forged a tier or two up
         tier = 2 if i == 0 else 1
         if len(WEAPONS[wid]["tiers"]) > 1:
@@ -289,7 +296,7 @@ def build(k, out_dir=None):
         Lp = math.hypot(cx - px_, cy - py_) or 1
         rr = land.areas[nm]["r"]
         sgn = (cx - (cx - px_) / Lp * (rr * 0.8), cy - (cy - py_) / Lp * (rr * 0.8))
-        m.obj_px("Sign1", *square_px(*sgn), xfer={"Text": text(nm, msg)})
+        sign_row("Sign1", lambda k: square_px(sgn[0] + 0.8 * k, sgn[1]), nm, msg)
         if nm != "B":                                              # red potions at the far side
             fx2, fy2 = cx + (cx - px_) / Lp * rr * 0.6, cy + (cy - py_) / Lp * rr * 0.6
             for q in range(2):
@@ -297,9 +304,9 @@ def build(k, out_dir=None):
         plan[nm] = (mons, seen)
     bx, by = centre["B"]
     m.obj_px("Chest4", *square_px(bx + 3, by - 3), items=[("Gold", {"Amount": 500}), "RedPotion", "BluePotion"])
-    m.obj_px("Sign2", *square_px(bx + 2, by - 4.5),
-             xfer={"Text": text("End", f"{gid} {T['title'].upper()} - THE END\nIf the boss is down, the gauntlet is "
-                                       f"won. Rate it as {gid}; each arena by its sign ({gid}-A1 ... {gid}-B).")})
+    sign_row("Sign2", lambda k: square_px(bx + 2 + 0.8 * k, by - 4.5), "End",
+             f"{gid} {T['title'].upper()} - THE END\nIf the boss is down, the gauntlet is won. Rate it as {gid}; each "
+             f"arena by its sign ({gid}-A1 ... {gid}-B).")
     mods.attach(pop.behaviours)
     m.scripts.update(pop.behaviours.files(name))
 
@@ -308,9 +315,10 @@ def build(k, out_dir=None):
                 new_monsters_met=sorted(set(met)), plan={k_: dict(new=v[0], stock=v[1]) for k_, v in plan.items()},
                 centres={k_: list(square_px(*v)) for k_, v in centre.items()})
     if out_dir and out_dir != "-":
-        lines = m.build(out_dir)
+        os.makedirs(out_dir, exist_ok=True)   # the text first: the build's checker reads the signs' text beside the map
         with open(os.path.join(out_dir, f"{name}.strings.json"), "w", encoding="utf-8") as f:
             json.dump(TEXT, f, ensure_ascii=False, indent=1)
+        lines = m.build(out_dir)
         with open(os.path.join(out_dir, f"{name}.gauntlet.json"), "w", encoding="utf-8") as f:
             json.dump(info, f, indent=1)
         print("\n".join(l for l in lines if l.startswith(("OK", "ERROR", "CHECK", "SCRIPTS"))))

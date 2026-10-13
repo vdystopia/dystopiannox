@@ -67,6 +67,11 @@ Nox has no crab, ogre lord or similar art, so each monster is an existing creatu
 2. Step onto the **forge plate**, the grey stone patch south-east of the anvil, and stand on it for about 2/3 of a second.
 3. The smith reforges the weapon. It vanishes from the anvil, and the smith drops the new piece at his feet.
 
+Five short signs in the forge say this where it happens: at the plate (S1), at the anvil (what it raises), by the
+smith (his levels), by the spare weapons (prices and melting) and by the gold. The plate is only the grey floor patch:
+there is no pressure-plate object. (The QA picture's "brown pressure plate" was the editor drawing a spare Staff, which
+has no picture in the editor; the spare is a Morning Star now. QA round 1, S1.)
+
 What the forge can do:
 - **Upgrade.** It knows four lines: Longsword, Battle Axe, the Flamebrand (W1) and the Quake Hammer (W3). Each goes plain → fine → superb → masterwork.
   - Each tier uses the game's own enchantments. WeaponPower and Material rise 2 → 4 → 6. Longsword adds Fire then Lightning; Battle Axe adds Vampirism then Stun; Flamebrand adds bigger FireRings; Quake Hammer adds Impact then Stun.
@@ -179,6 +184,8 @@ mods.attach(pop.behaviours)                         # LAST: writes mods.go + mod
 **Low-level calls** (for things placed some other way): `weapon_call(kind, name, tier)`, `monster_call(kind, name, label, hp, wait, respawn)` and `forge_line(...)`.
 
 **Text.** Sign text goes through the map's `<Name>.strings.json`. ModLab's design shows the pattern: a `sign()` helper with keys `ModLab:W1` and so on, and each sign's text from the catalogue.
+
+**A sign is one line of 120 characters at most** (`mapgen/kit/signs.py`). The game prints a sign as "The sign reads: ..." on one line, drops line breaks, and crashes to the desktop on a text past 239 characters (QA round 1: M2's sign, 274 characters). ModLab's `sign()` joins the lines and lays a longer text on a short row of signs ("M2 (2 of 4): ..."); the checker's `signs.text` errs past 200.
 
 ### Composing gauntlets: limits
 
