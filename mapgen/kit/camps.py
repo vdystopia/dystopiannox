@@ -266,8 +266,15 @@ def _wall_row(sc, rows, ang, r0, spot_out=50, step=46):
     row a step in front of it, every row centred on the same line (QA round 1 [Q1K-2]: "rows go against a wall, never
     floating randomly"). rows: [[(type, extra)], ...]. Returns ((x, y) of the first row's middle, the spot before it,
     [(type, x, y) laid])."""
-    # (out as far as the wall where it lies within reach: a row left short of a far wall stood in the open, Q1K-13)
-    (x0, y0), _ = _snug(sc, *sc.p(r0, ang), math.cos(ang), math.sin(ang), want=40, reach=210)
+    # (out as far as the wall where it lies within reach: a row left short of a far wall stood in the open, Q1K-13;
+    # swung a little either way where no wall lies straight out)
+    for d_ in (0.0, 0.35, -0.35, 0.7, -0.7):
+        (x0, y0), met = _snug(sc, *sc.p(r0, ang + d_), math.cos(ang + d_), math.sin(ang + d_), want=40, reach=210)
+        if met:
+            ang += d_
+            break
+    else:
+        (x0, y0), _ = _snug(sc, *sc.p(r0, ang), math.cos(ang), math.sin(ang), want=40, reach=210)
     ux_, uy_ = -math.sin(ang), math.cos(ang)
     wx_, wy_ = math.cos(ang), math.sin(ang)
     laid, back = [], 0.0
@@ -523,7 +530,14 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
 
     # ---- the arms corner, or the dig, on the other flank ---------------------------------------------------------------
     ar = b - left * flank
-    (ax, ay), _ = _snug(sc, *sc.p(R["arms"] * 0.85, ar), math.cos(ar), math.sin(ar), want=40, reach=210)
+    for d_ in (0.0, -left * 0.35, left * 0.35, -left * 0.7, -left * 1.05):     # (to a wall, as the store's rows)
+        (ax, ay), met = _snug(sc, *sc.p(R["arms"] * 0.85, ar + d_), math.cos(ar + d_), math.sin(ar + d_), want=40,
+                              reach=210)
+        if met and abs(_ang(ar + d_ - a_in)) > 0.6:
+            ar += d_
+            break
+    else:
+        (ax, ay), _ = _snug(sc, *sc.p(R["arms"] * 0.85, ar), math.cos(ar), math.sin(ar), want=40, reach=210)
     ux, uy = -math.sin(ar), math.cos(ar)
     wx, wy = math.cos(ar), math.sin(ar)
     work = []
@@ -1860,8 +1874,42 @@ def training_ground(spec, rng, land, centre, toward, r=4.5, floor="DirtLight2"):
     roads and buildings; lay it after land.apply. Returns dict(centre, spots: four points on the open sand where
     fighters stand, watch: by the benches, all world px)."""
     ci, cj = centre
-    sc = Scene(spec, rng, land, centre)
     from kit.layout import square_tile
+    # (QA round 1 [Q1K-13]: "when using rows ... place them against a wall so they dont look so random"): the ground
+    # backs onto the nearest wall along a square axis within reach, slid toward it till its back edge is a step off
+    # the wall, where its squares are free; its back (the targets' row) is then that wall's side
+    def wall_at(i, j):
+        x, y = square_px(i + 0.5, j - 0.5)
+        cx, cy = int(x // 23), int(y // 23)
+        return any((cx + a, cy + b) in spec.wallmap for a in (-1, 0, 1) for b in (-1, 0, 1))
+    home = {(i, j) for i in range(int(ci - r) - 2, int(ci + r) + 3) for j in range(int(cj - r) - 1, int(cj + r) + 4)}
+    best_ = None
+    for ax in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+        for d in range(int(r) + 1, int(r) + 8):
+            if wall_at(int(ci + ax[0] * d), int(cj + ax[1] * d) + 1):
+                if best_ is None or d < best_[1]: best_ = (ax, d)
+                break
+    wall_ax = None
+    if best_:
+        from kit.spacing import wall_clearance
+        ax, _ = best_
+
+        def fits(ni, nj):
+            sqs = {(i, j) for i in range(int(ni - r) - 1, int(ni + r) + 2) for j in range(int(nj - r), int(nj + r) + 3)
+                   if max(abs(i + 0.5 - ni), abs(j - 0.5 - nj)) <= r}
+            return all(q in land.squares and q not in land.taken_strict and q not in land.roads and q not in land.water and
+                       (q not in land.taken or q in home) for q in sqs)
+        # slid a quarter square at a time till the targets' row (r - 0.4 out) stands within 50 px of the wall's line
+        k = 0.0
+        while k <= 6:
+            ti, tj = ci + ax[0] * (k + r - 0.4), cj + ax[1] * (k + r - 0.4)
+            if wall_clearance(spec.wallmap, *square_px(ti, tj), reach=4) <= 50: break
+            if not fits(ci + ax[0] * (k + 0.25), cj + ax[1] * (k + 0.25)): break
+            k += 0.25
+        ti, tj = ci + ax[0] * (k + r - 0.4), cj + ax[1] * (k + r - 0.4)
+        if wall_clearance(spec.wallmap, *square_px(ti, tj), reach=4) <= 70 and fits(ci + ax[0] * k, cj + ax[1] * k):
+            ci, cj, wall_ax = ci + ax[0] * k, cj + ax[1] * k, ax
+    sc = Scene(spec, rng, land, (ci, cj))
     for i in range(int(ci - r) - 1, int(ci + r) + 2):
         for j in range(int(cj - r), int(cj + r) + 3):
             if max(abs(i + 0.5 - ci), abs(j - 0.5 - cj)) > r: continue
@@ -1871,15 +1919,23 @@ def training_ground(spec, rng, land, centre, toward, r=4.5, floor="DirtLight2"):
                 land.taken.add(s)
     a_in = math.atan2(toward[1] - cj, toward[0] - ci)
     back = a_in + math.pi
-    # the targets: a row across the back, square to the way in
+    if wall_ax: back = math.atan2(wall_ax[1], wall_ax[0]); a_in = back + math.pi      # (the wall's side is its back)
+    # the targets: a row across the back, square to the way in, against the wall where there is one
     ux, uy = math.cos(back), math.sin(back)
     px_, py_ = -uy, ux
+    t_off = r - 0.4 if wall_ax else r - 1.2
     for k in (-1.5, -0.5, 0.5, 1.5):
-        sc.put(rng.choice(("TargetBarrel1", "TargetBarrel2")), ci + ux * (r - 1.2) + px_ * k * 1.3,
-               cj + uy * (r - 1.2) + py_ * k * 1.3)
-    for k in (-1, 1):                                          # racks at the back corners, straw beside the targets
+        sc.put(rng.choice(("TargetBarrel1", "TargetBarrel2")), ci + ux * t_off + px_ * k * 1.3,
+               cj + uy * t_off + py_ * k * 1.3)
+    # the practice arms in a row along the back beside the targets, a weapon rack at each end (more of the garrison's
+    # gear, Q1K-13 and the round's "too empty")
+    for k in (-1, 1):
+        from kit import scenes as S_
+        t_ = S_.ALONG[S_.line_of(px_, py_)].get("TraderPoleArm1", "TraderPoleArm1")
+        sc.put(t_, ci + ux * t_off + px_ * k * 2.95, cj + uy * t_off + py_ * k * 2.95)
+    for k in (-1, 1):                    # racks at the row's two ends (the back corners), straw beside the targets
         sc.put(rng.choice(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3", "OutdoorTraderArmorRack5")),
-               ci + ux * (r - 1.0) + px_ * k * (r - 0.8), cj + uy * (r - 1.0) + py_ * k * (r - 0.8))
+               ci + ux * t_off + px_ * k * (r - 0.75), cj + uy * t_off + py_ * k * (r - 0.75))
         sc.put(rng.choice(("Straw1", "Straw2")), ci + ux * (r - 2.4) + px_ * k * 3.4, cj + uy * (r - 2.4) + py_ * k * 3.4)
     # benches for the watchers either side of the way in, facing across the sand
     for k in (-1, 1):

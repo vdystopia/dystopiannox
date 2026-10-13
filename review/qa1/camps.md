@@ -31,7 +31,34 @@ Before and after pictures: round 1's are `review/out/qa/round1/exteriors/<type>/
 | Q1K-15 | woodpile: "These are all pretty good. They are small and subtle. They don't draw a lot of attention. They can be placed in areas that need to have their space filled." | P§4 scenes: the woodpile scales with the open ground as the fill pass's filler (cap 4 scaled, family cap 6, weight 3) | look:empty (the QA gate's empty-ground picture) | none | review |
 | Q1K-16 | nox9.png: "The crates of apples and the larger crate look out of place here. Move them up against the wall so they're out of the street." | P§4 scenes: a door scene's props slid against the house's wall (`Village.scene`) | look: a town map's spots pictures | none | review |
 
+Objects and kinds before and after (the scene lab's ten variants of each type, seed 11: round 1's iteration `qa1`
+against `qa1k`; the scene's own pieces round its anchor, no trees, plants, creatures, shadows or lights; a town scene's
+outdoor pieces only). Mean objects and mean distinct kinds per scene; in brackets the fewest objects / kinds in one
+variant. No type lost objects or kinds (the woodpile was kept as it was: "all good"):
+
+| Type | Objects before | after | Kinds before | after | Fewest (before -> after) |
+|---|---|---|---|---|---|
+| bandit camp | 20.9 | 31.4 | 10.1 | 15.9 | 9/7 -> 19/10 |
+| ogre camp | 10.7 | 37.3 | 7.3 | 16.7 | 5/4 -> 27/14 |
+| urchin camp | 15.4 | 41.6 | 6.9 | 19.4 | 10/4 -> 27/15 |
+| wolf den | 18.9 | 36.3 | 7.2 | 16.8 | 18/6 -> 32/16 |
+| quarry | 31.8 | 33.9 | 6.7 | 13.5 | 27/5 -> 29/11 |
+| jail | 14.1 | 28.9 | 3.7 | 13.4 | 5/2 -> 5/2 (the cave cell) |
+| training ground | 5.5 | 7.6 | 4.3 | 4.7 | 4/3 -> 5/3 |
+| smithy yard | 7.3 | 10.1 | 6.1 | 7.8 | 3/3 -> 7/4 |
+| market stall | 9.4 | 12.8 | 6.2 | 8.7 | 0/0 -> 2/2 (the lab's plot 9) |
+| wagon | 6.7 | 7.5 | 5.6 | 6.7 | 3/3 -> 3/3 |
+| woodpile | 7.5 | 7.5 | 5.4 | 5.4 | 4/3 -> 4/3 |
+
+Designs rebuilt against this branch's base (b005f84), voices off (NOX_NOVOICE=1): TownLab 36 errors (base 41, all
+`routes.leg`, none new) and 38 warnings (base 38); Greywatch 0 errors, 15 warnings (base 15; its castle jail now asks
+for the cell row, `arch="cell_row"`, the guardhouse having taken its training ground's room); Harrowby 0 errors, 21
+warnings (base 21: one `exterior.row_float` is new, its bandit camp's arms row in a glade with no wall within reach,
+and one `rooms.stray` fewer).
+
 Not done, and why:
+- Harrowby's bandit camp stands in a wide glade with no wall within 210 px of its arms: the row still stands in the open
+  and `exterior.row_float` says so; `camps.camp_site` could weigh a wall nearer the flanks.
 - The secret escape hole in a cell (Q1K-10): Nox's `Pit` and `ForestPit` objects are DANGEROUS holes a player falls into
   (the engine, not a map, decides what a fall does), so the kit lays none in a cell. A design can make the escape with
   kit/transport.py: a lift whose pit stands in a cell and whose platform waits in a tunnel the design lays elsewhere

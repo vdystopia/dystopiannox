@@ -2449,7 +2449,7 @@ def camp_rules(m):
     signs = [o for o in outdoor if CAMP_SIGN_RE.match(o["type"])]
     seen = []
     for c in centres:
-        if not c["type"].startswith("OgreFirePit") and not any(math.hypot(s_["x"] - c["x"], s_["y"] - c["y"]) < CAMP_R for s_ in signs): continue
+        if c["type"] != "OgreFirePit" and not any(math.hypot(s_["x"] - c["x"], s_["y"] - c["y"]) < CAMP_R for s_ in signs): continue
         if any(math.hypot(c["x"] - x, c["y"] - y) < CAMP_R for x, y in seen): continue
         seen.append((c["x"], c["y"]))
         near = [o for o in outdoor if math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < CAMP_R and not CAMP_SKIP.match(o["type"])

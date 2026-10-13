@@ -358,9 +358,10 @@ def _quarry(spec, rng, y, yj, free_spot, put, jit):
         si, sj = line2(tt)
         if "Bone" in t or t == "Skull": sj += rng.uniform(-0.5, 0.5); si += rng.uniform(-0.5, 0.5)
         if free_spot(si, sj, pad=0.7, lane_w=1.2): put(t, si, sj, room=0.5 if "Bone" in t or t == "Skull" else 0.9)
-    # ---- in the open: the rubble and the tools (Westwood's quarry yards: Con02a, War03b, War08a), fewer pebbles
-    for t, n in (("CaveRocksHuge", 2), ("CaveRockPillarShort1", 1), ("CaveRocksMedium", 6), ("CaveRocksSmall", 4),
-                 ("CaveRocksPebbles", 9), ("PlantBarren1", 2), ("MiningPickAxeInGround1", 1),
+    # ---- in the open: the rubble and the tools, as many as Westwood's quarry yards hold (Con02a, War03b, War08a: 17-24
+    # pebbles, 6-9 medium rocks, 4-6 huge ones, 3-4 short pillars, 2-4 barren plants), never fewer than before
+    for t, n in (("CaveRocksHuge", 2), ("CaveRockPillarShort1", 1), ("CaveRocksMedium", 7), ("CaveRocksSmall", 4),
+                 ("CaveRocksPebbles", 18), ("PlantBarren1", 3), ("MiningPickAxeInGround1", 1),
                  ("MiningShovelInGround", 1), ("MiningPickAxeInGround2", 1 if rng.random() < 0.5 else 0)):
         for _ in range(n):
             for _try in range(15):
@@ -489,7 +490,8 @@ def _jail(spec, rng, y, rec, pts):
         du_ = lo + (hi - lo - 1) // 2 if arch == "guardhouse" else hand.randint(lo + 1, max(lo + 1, hi - 2))
         doors.append(door(du_, v_cells, rec["gate"], ("guard" if arch == "guardhouse" else "outside", f"cell{c}")))
         mids.append(square_px(*at((lo + hi) / 2, (v_cells + D) / 2)))
-        sd_ = 1                                    # (each torch on the same side of its door: never two side by side)
+        # (a guardhouse's torches each on the same side of its door, never two side by side; a castle row's as it falls)
+        sd_ = 1 if arch == "guardhouse" else hand.choice((1, -1))
         tu = du_ + 0.5 + sd_ * (1.1 if arch == "guardhouse" else hand.uniform(0.85, 1.35))
         if not (lo + 0.3 < tu < hi - 0.3): tu = du_ + 0.5 - sd_ * 1.0
         if lo + 0.3 < tu < hi - 0.3 or arch == "cell_row":
