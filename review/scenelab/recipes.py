@@ -96,28 +96,11 @@ def _camp_build(kind):
                 posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=2, watch=1, work=0)
                 kinds = dict(leader="UrchinShaman", sit="Urchin", tent="Urchin", watch="Urchin", work="Urchin")
             fx, fy = camp["fire"]
-            if ctx_rec(ctx).get("path_in"):
-                if "SwampGrass" not in m.blend: m.blending("SwampGrass", 0, "BlendEdge")    # (the path's edges blended)
-                # the trodden path in from the mouth to the fire (Westwood's ogre fires lie on their paths: Con05B,
-                # Con09b, DirtLight2 through the swamp grass)
-                (ti, tj), (si, sj) = toward, px_square(fx, fy)
-                L_ = math.hypot(si - ti, sj - tj) or 1
-                for k in range(int(L_ / 0.4) + 1):
-                    f_ = k * 0.4 / L_
-                    if f_ > 1 - 1.5 / L_: break
-                    ci_, cj_ = ti + (si - ti) * f_, tj + (sj - tj) * f_
-                    for o in (-0.5, 0.5):
-                        sq = (int(math.floor(ci_ + o)), int(math.floor(cj_ - o)))
-                        if sq in land.squares: m.floor[square_tile(*sq)] = "DirtLight2"
-            if kind == "ogre_camp" and camp.get("arch") in ("cage_yard", "cold_pit"):
-                # (the ground round the fire trodden bare: DirtLight2, 2.5-3.5 squares out, Con05B)
-                ci_, cj_ = px_square(fx, fy)
-                R_ = rng.uniform(2.5, 3.5)
-                for a_ in range(-4, 5):
-                    for b_ in range(-4, 5):
-                        sq = (ci_ + a_, cj_ + b_)
-                        if sq in land.squares and math.hypot(a_, b_) <= R_ * (1 + 0.15 * math.sin(3 * a_ + b_)):
-                            m.floor[square_tile(*sq)] = "DirtLight2"
+            if ctx_rec(ctx).get("path_in") and kind == "ogre_camp":
+                # the trodden path in from the mouth to the fire and, at a cage yard or a cold pit, the bare earth round
+                # it, laid by the kit with its edges blended on whatever ground it crosses (QA round 1, Q1K-6)
+                camps.ogre_ground(m, land, camp, toward, floor=getattr(p, "cave_floor", None),
+                                  trodden=camp.get("arch") in ("cage_yard", "cold_pit"), rng=rng)
             pop.creature(kinds["leader"], *posts["leader"], action="guard", face=square_px(*toward), aggr=0.5)
             for role in ("sit", "tent", "work", "watch"):
                 for x, y in posts[role]:
@@ -570,7 +553,10 @@ def _wolf_build(ctx):
     pop = _pop(ctx)
     for p in ctx["plots"]:
         c = (int(p.scene_c[0]) + 0.5, int(p.scene_c[1]) - 0.5)
-        spots = camps.wolf_den(m, p.rng, land, c, p.toward)
+        if "ww" not in ctx:                          # (the dens' drinking ponds, finished with the map's water)
+            from kit.water import Waterworks
+            ctx["ww"] = Waterworks(m, p.rng, inside=lambda x, y: tile_square(x, y) in land.squares)
+        spots = camps.wolf_den(m, p.rng, land, c, p.toward, forest=p.forest, water=ctx["ww"])
         for x, y in spots[:3 + (p.size == "large")]:
             pop.creature("Wolf", x, y, action="idle", aggr=0.5)
         p.notes["anchor"] = list(square_px(*c))

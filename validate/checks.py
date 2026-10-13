@@ -1819,7 +1819,7 @@ def check_exterior(m, ctx, base):
              not SP.LOOSE.match(o["type"]) and (SP.family(o["type"]) or (m.blocking(o) and "OBSTACLE" in o["cls"]))]
     grid = collections.defaultdict(list)
     for o in props: grid[(int(o["x"] // 80), int(o["y"] // 80))].append(o)
-    bad = []
+    bad, crates = [], []
     for o in props:
         gx, gy = int(o["x"] // 80), int(o["y"] // 80)
         for a in (-1, 0, 1):
@@ -1830,12 +1830,25 @@ def check_exterior(m, ctx, base):
                     d = math.hypot(o["x"] - p["x"], o["y"] - p["y"])
                     # pieces of the spacing families only (a bench at its table, a bench of workstations stand close
                     # by design: calibrated, 147 findings on 38 Westwood maps)
+                    big = SP.large_crate(o["type"]) or SP.large_crate(p["type"])
+                    if big and d < SP.gap(o["type"], p["type"]) * 0.9 and (SP.family(o["type"]) or SP.family(p["type"])):
+                        # a large crate's own clearance (QA round 1, Q1K-1: "large crates overall are too close to other
+                        # objects"), from any piece of a spacing family or any other obstacle
+                        crates.append(F("exterior", "warning", f"A large crate ({o['type'] if SP.large_crate(o['type']) else p['type']}) "
+                                        f"stands {d:.0f} px from {p['type'] if SP.large_crate(o['type']) else o['type']}: a "
+                                        f"large crate keeps {SP.gap(o['type'], p['type']):.0f} px clear of other pieces "
+                                        f"(kit/spacing LARGE_CRATE_GAP).", (o["x"] + p["x"]) / 2, (o["y"] + p["y"]) / 2,
+                                        rule="exterior.crate_clear"))
+                        continue
                     if g and d < g and SP.family(o["type"]) and SP.family(p["type"]):
                         bad.append(F("exterior", "warning", f"{o['type']} and {p['type']} stand {d:.0f} px apart (Westwood "
                                      f"keeps them {g / 0.85:.0f}): outdoor pieces overlap.", (o["x"] + p["x"]) / 2,
                                      (o["y"] + p["y"]) / 2))
     out += bad[:25]
     if len(bad) > 25: out.append(F("exterior", "warning", f"... and {len(bad) - 25} more overlapping outdoor pieces."))
+    out += crates[:25]
+    if len(crates) > 25: out.append(F("exterior", "warning", f"... and {len(crates) - 25} more large crates too near other "
+                                      f"pieces.", rule="exterior.crate_clear"))
     # pieces on a fence or a built wall's line
     built = {c: w for c, w in m.walls.items() if not w.invisible and not NATURAL_WALL.search(w.material)}
     online = []
@@ -2617,6 +2630,7 @@ RULES = [
     ("routes.more", "routes", r"more waypoint and route problems", ""),
     ("exterior.overlap", "exterior", r"outdoor pieces overlap|more overlapping outdoor", "SW-5"),
     ("exterior.on_fence", "exterior", r"fence or wall line", "AM-1"),
+    ("exterior.crate_clear", "exterior", r"large crate keeps|large crates too near", "Q1K-1"),
     ("exterior.pickable", "exterior", r"lies outdoors as decor", "SW-8"),
     ("exterior.two_bodies", "exterior", r"two bodies on one", "GW-5 SW-1"),
     ("exterior.swarm", "exterior", r"a swarm", "GW-5 SW-1"),
