@@ -169,19 +169,27 @@ CATALOGUE = [
             P(SMALL_SACKS, 96, 32, p=0.7)]],
           walls=("house",), roles=("store", "mill", "inn", "keep", "manor", "mess", "barracks", "townhall"), sides=("side", "back"),
           cap=2, spacing=30, size=100, family="cart", tall=True, weight=2.5),
-    Theme("wagon_verge", "a wagon pulled off the road to rest the horse: barrels and a crate down at its tail, the "
-          "carter's spear stood by, straw for the horse", "open",
-          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(BARRELS, -34, 44, n=2, step=(28, 8), must=True),
-            P(CRATES, 34, 40, must=True, orient="line"), P(("TraderAppleCrate",), 70, 14, p=0.8),
-            P(RACKS + POLEARMS, -66, 20, p=0.6, orient="line"), P(STRAW, 70, -10, p=0.6),
-            P(("WaterBarrel",), 10, 80, p=0.4)]],
-          places=("road",), size=100, cap=2, spacing=34, family="cart", face="road", weight=2.0),
+    # the carts in the screen's own frame (QA round 1, 2026-10-13 [Q1K-12]: EX-WAGON-02, "The placement of the hay right
+    # next to the open side of the wagon is perfect. It really looks like it belongs together"): Nox draws its cart one
+    # way only, its open side to the screen's left, so the hay stands there, 50 px left of the cart, whatever way the
+    # road runs (a: px to the screen's left, o: px down the screen); the large crates keep their clearance from the cart
+    # and from everything else (kit/spacing LARGE_CRATE_GAP, Q1K-1: "Wagon is too close to the crate")
+    Theme("wagon_verge", "a wagon pulled off the road to rest the horse: hay at its open side, barrels and a crate down "
+          "beside it, the carter's spear stood by", "open",
+          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(HAY, 52, 4, must=True), P(HAY, 78, -16, p=0.5),
+            P(BARRELS, 6, 62, n=2, step=(-28, 0), must=True), P(("TraderAppleCrate",), 52, 66, p=0.8),
+            P(CRATES, -86, 52, must=True, orient="line"), P(RACKS + POLEARMS, -70, -40, p=0.6, orient="line"),
+            P(("WaterBarrel",), 100, 44, p=0.7), P(SACKS, 80, 86, n=(1, 2), step=(24, 6), p=0.8),
+            P(STRAW, 30, -30, p=0.6), P(("TraderAppleCrate",), -40, 96, p=0.6)]],
+          places=("road",), size=100, cap=2, spacing=34, family="cart", face="road", weight=2.0, screen=True,
+          mirror=False),
     Theme("broken_wagon", "a wagon broken down by the road: a wheel off, its goods unloaded and left", "open",
-          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(("MineOreCartWheel",), -52, 14, must=True),
-            P(CRATES, 36, 40, n=(1, 2), step=(32, 10), must=True, orient="line"),
-            P(BARRELS, -24, 58, n=(1, 2), step=(-30, 16)), P(SACKS, 70, 84, n=(1, 2), step=(22, 14)),
-            P(STRAW, -64, 46, p=0.5), P(("TraderAppleCrate",), 8, 80, p=0.5)]],
-          places=("road",), requires=("road", "wild"), size=100, cap=1, spacing=60, family="cart", face="road", weight=1.5),
+          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(("MineOreCartWheel",), -44, 26, must=True),
+            P(HAY, 52, 4, p=0.7), P(CRATES, -96, 30, n=(1, 2), step=(0, 50), must=True, orient="line"),
+            P(BARRELS, 20, 64, n=(1, 2), step=(-28, 0)), P(SACKS, 66, 70, n=(1, 2), step=(22, 6)),
+            P(("TraderAppleCrate",), -30, 86, p=0.7), P(STRAW, 40, -34, p=0.6), P(("BarrelWithTools1",), 100, 40, p=0.5)]],
+          places=("road",), requires=("road", "wild"), size=100, cap=1, spacing=60, family="cart", face="road", weight=1.5,
+          screen=True, mirror=False),
     Theme("market_stall", "a trader's awning with the wares set out before it", "open",
           # (the wares: the apple crates must stand, the rest where they fit: with every piece a must, the stall had laid
           # in none of the scene lab's market squares, 2026-10-06)
@@ -191,35 +199,53 @@ CATALOGUE = [
           # three trades (the judge, 2026-10-06: "near-empty ... nothing says what is sold"): a provisioner (apples, a
           # knot of barrels, sacks, the cart), an armourer (racks and helm poles), a potion seller (Con03A's cauldron,
           # stool and ore cart); each with its stock in knots, not singles
+          # (QA round 1 [Q1K-11]: the optional wares more often, EX-MARKETSTALL-07's count the least: "a few more objects would
+          # still be ok, but no less than this")
           # (round 7, the judges: "four to seven pieces each standing alone a tile apart": Westwood's stalls hold five to
           # ten wares besides the awning, packed: barrels touching in a knot with the water barrel, apple crates side by
           # side and a second row, the steel crates together; every stock piece more often, set down by hand)
-          [[P(("@tent",), 0, 0, must=True), P(("TraderAppleCrate",), -24, 60, n=(2, 3), step=(29, 4), must=True),
-            P(("TraderAppleCrate",), -8, 90, n=(1, 2), step=(29, 3), p=0.6),
+          # (QA round 1 [Q1K-11]: "it must be obvious where the shopkeeper stands": his stool under the awning, the
+          # wares laid before him as a counter along its open side; EX-MARKETSTALL-07's number and mix of wares the least)
+          [[P(("@tent",), 0, 0, must=True), P(("Stool1", "Stool2"), 0, 4),
+            P(("TraderAppleCrate",), -29, 46, n=3, step=(29, 0), must=True),
+            P(("TraderAppleCrate",), -8, 90, n=(1, 2), step=(29, 3), p=0.8),
             P(("Barrel2", "Barrel"), -44, -80, n=(2, 3), step=(26, 4)),
             P(("Barrel2", "Barrel"), -31, -56, n=(1, 2), step=(26, -2), p=0.8), P(("WaterBarrel",), -76, -50, p=0.8),
             P(("CrateSteel3", "CrateSteel4"), 56, 66, n=(1, 2), step=(28, 6)),
-            P(SACKS, 82, 98, n=(1, 3), step=(22, 8), p=0.7),
-            P(("TorchPole",), 104, 30, p=0.7), P(("TorchPole",), -100, 52, p=0.3),
-            P(("OutdoorTraderCart",), 150, -10, p=0.5)],
-           [P(("@tent",), 0, 0, must=True),
+            P(SACKS, 82, 98, n=(1, 3), step=(22, 8), p=0.85),
+            P(("TorchPole",), 104, 30, p=0.85), P(("TorchPole",), -100, 52, p=0.6),
+            P(("BarrelWithTools1", "SackChestSmall2"), 128, 62, p=0.6),
+            P(("OutdoorTraderCart",), 150, -10, p=0.75)],
+           [P(("@tent",), 0, 0, must=True), P(("Stool1", "Stool2"), 0, 4),
+            P(("TraderAppleCrate", "SackChestSmall1"), -22, 46, n=2, step=(44, 0)),
             # (one rack, a second set off it, never three in a ruler line: the judge, 2026-10-06; Con09d's one rack
             # among its barrels and apple crates)
             P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack2", "OutdoorTraderArmorRack3"), -66, 64, must=True),
-            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), -28, 100, p=0.6),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), -28, 100, p=0.8),
             P(("OutdoorTraderHelmPoles",), 70, 74, p=0.8),
-            P(("Barrel2", "Barrel"), -40, -84, n=(3, 4), step=(26, 4)), P(("WaterBarrel",), -72, -58, p=0.7),
+            P(("Barrel2", "Barrel"), -40, -84, n=(3, 4), step=(26, 4)), P(("WaterBarrel",), -72, -58, p=0.85),
             P(("CrateSteel3", "CrateSteel4"), 98, 40, n=(1, 2), step=(26, 6), p=0.8),
-            P(POLEARMS, 30, 104, p=0.4, orient="line"),
-            P(("TorchPole",), -104, 40, p=0.7), P(("TorchPole",), 104, 36, p=0.3),
-            P(("OutdoorTraderCart",), -150, 0, p=0.3)],
-           [P(("@tent",), 0, 0, must=True), P(("CauldronAnimated",), -10, 70, must=True),
+            P(POLEARMS, 30, 104, p=0.7, orient="line"),
+            P(("TorchPole",), -104, 40, p=0.85), P(("TorchPole",), 104, 36, p=0.6),
+            P(("OutdoorTraderCart",), -150, 0, p=0.6)],
+           [P(("@tent",), 0, 0, must=True), P(("CauldronAnimated",), -10, 70, must=True), P(("Stool1",), 30, 6),
             P(("CushionedStool2",), 36, 92), P(("WaterBarrel",), -58, 58, p=0.8),
-            P(("CrateSteel3", "CrateSteel4"), 60, 60, n=(1, 2), step=(26, 6)), P(SMALL_SACKS, 88, 36, p=0.5),
-            P(("MineOreCart2",), -130, 20, p=0.6), P(("Barrel2", "Barrel"), -40, -84, n=(2, 3), step=(27, 3)),
-            P(("TorchPole",), 104, 36, p=0.6), P(("Rock6",), 110, 100, p=0.4)]],
+            P(("CrateSteel3", "CrateSteel4"), 60, 60, n=(1, 2), step=(26, 6)), P(SMALL_SACKS, 88, 36, p=0.75),
+            P(("MineOreCart2",), -130, 20, p=0.8), P(("Barrel2", "Barrel"), -40, -84, n=(2, 3), step=(27, 3)),
+            P(("TorchPole",), 104, 36, p=0.8), P(("Rock6",), 110, 100, p=0.7)]],
           roles=("store", "inn"), need=True, near=12, cap=1, spacing=40, family="stall", weight=1.2, size=170,
           min_types=3, loose=10, loose_step=0.15),
+    Theme("market_stall_wall", "a trader's awning set up against the shop's wall, the trader on his stool under it "
+          "behind the wares laid out as a counter", "wall",
+          # (QA round 1, 2026-10-13 [Q1K-11]: EX-MARKETSTALL-02, 09, 10 "I don't see any market stall": the open stall
+          # had found no square of open ground; the stall stands against its shop's wall where the street is too tight)
+          [[P(("@tent",), 0, 64, must=True), P(("Stool1", "Stool2"), 0, 4),
+            P(("TraderAppleCrate",), -29, 46, n=3, step=(29, 0), must=True),
+            P(("Barrel2", "Barrel"), 110, -10, n=(2, 3), step=(26, 4)), P(("WaterBarrel",), 120, 24, p=0.8),
+            P(("CrateSteel3", "CrateSteel4"), -112, 20, p=0.8), P(SACKS, -84, 66, n=(1, 2), step=(-22, 8), p=0.8),
+            P(("TorchPole",), 96, 62, p=0.6), P(("TraderAppleCrate",), 2, 80, p=0.5)]],
+          walls=("house",), roles=("store", "inn"), need=True, near=8, sides=("front", "side"), cap=1, spacing=40,
+          family="stall", weight=1.0, size=170, min_types=3, loose=6, loose_step=0.1),
     Theme("supply_corner", "a household's stores kept outside the back door: barrels, a crate, sacks", "wall",
           [[P(BIG_BARRELS, -40, 30, must=True), P(CRATES, 2, 28, must=True, orient="line"), P(SACKS, 36, 30, must=True),
             P(BARRELS, 10, 68, p=0.6), P(TOOLS + ("TraderAppleCrate",), 72, 30, p=0.5)],
@@ -230,10 +256,13 @@ CATALOGUE = [
     Theme("woodpile", "split logs stacked along the wall for the hearth, the block before them", "wall",
           [[P(LOGS, -30, 30, n=3, step=(30, 0), must=True), P(STUMPS, 6, 70, must=True),
             P(TOOLS + ("Barrel", "SackChestMedium1"), 66, 30, must=True), P(STRAW, -30, 64, p=0.4)]],
+          # (QA round 1, 2026-10-13 [Q1K-15]: "These are all pretty good. They are small and subtle ... They can be
+          # placed in areas that need to have their space filled": the fill pass's own filler, by any house or fence in
+          # a town, as many as the map's open ground allows)
           walls=("house", "fence"), roles=("home", "cottage", "woodcutter", "inn", "mess", "bunkhouse", "grovelord",
                                            "barracks", "smithy", "fisher", "herbwife"),
-          sides=("side", "back"), places=("town",), biomes=("green", "swamp", "ice"), cap=3, spacing=18, family="wood",
-          tall=True, weight=2.0),
+          sides=("side", "back"), places=("town",), biomes=("green", "swamp", "ice"), cap=4, spacing=14, family="wood",
+          tall=True, weight=3.0, scales=True),
     Theme("chopping_yard", "where wood is split: the block, logs waiting, the tools", "open",
           [[P(STUMPS, 0, 0, must=True), P(LOGS, -46, 14, n=2, step=(0, 26), must=True), P(("ForestLog03",), 46, 24),
             P(TOOLS, 20, -40, must=True), P(STRAW, -14, 46, p=0.4)]],
@@ -254,11 +283,26 @@ CATALOGUE = [
           walls=("house",), roles=("inn", "mess", "barracks", "bunkhouse", "keep", "home"), need=True, near=6,
           sides=("back", "side"), biomes=ALL, cap=2, spacing=40, family="midden", weight=2.0),
     Theme("smithy_yard", "the smith's yard: an anvil, the quench barrel, ore heaped, finished work racked", "wall",
+          # (QA round 1, 2026-10-13 [Q1K-14]: "pretty good. More object diversity and layout balance would improve
+          # them": the anvil centred on the wall, its quench barrel and tool barrel either side of it, the ore and the
+          # finished work at the yard's two ends, each in a row along the wall)
           [[P(("Anvil1", "Anvil2"), 0, 58, must=True), P(("WaterBarrel",), 40, 40, must=True),
             P(("CaveRocksMedium", "CaveRocksLarge"), -42, 32, n=2, step=(-22, 10), must=True),
-            P(TOOLS, 70, 30), P(POLEARMS, -88, 32, p=0.6, orient="line"), P(STOOLS, 26, 86, p=0.5)]],
+            P(TOOLS, 70, 30), P(POLEARMS, -88, 32, p=0.6, orient="line"), P(STOOLS, 26, 86, p=0.5),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), 120, 34, n=2, step=(36, 0), p=0.8, orient="line"),
+            P(("CrateSteel1", "CrateSteel2"), -150, 40, p=0.7, orient="line"), P(("BarrelSteel1",), 64, 76, p=0.5)],
+           [P(("Anvil1", "Anvil2"), 0, 62, must=True), P(("WaterBarrel",), -44, 34, must=True), P(TOOLS, 44, 34, must=True),
+            P(("CaveRocksMedium", "CaveRocksLarge", "CaveRocksSmall"), -120, 34, n=3, step=(-22, 6), must=True),
+            P(("CrateSteel1", "CrateSteel2"), -150, 84, orient="line", p=0.7),
+            P(("OutdoorTraderArmorRack1", "OutdoorTraderArmorRack3"), 112, 34, n=2, step=(36, 0), orient="line"),
+            P(POLEARMS + ("TraderBowRack1",), 190, 34, orient="line", p=0.7), P(STOOLS, 0, 104, p=0.6)],
+           [P(("Anvil1", "Anvil2"), -40, 62, must=True), P(("Anvil1", "Anvil2"), 40, 62, p=0.6),
+            P(("WaterBarrel",), 0, 34, must=True), P(("BarrelSteel1", "BarrelSteel2"), -96, 34, n=2, step=(-26, 0)),
+            P(("MineOreCart1", "MineOreCartBroken1"), -110, 96, p=0.5),
+            P(("OutdoorTraderArmorRack2", "OutdoorTraderArmorRack4"), 96, 34, n=2, step=(36, 0), must=True, orient="line"),
+            P(TOOLS, 170, 36), P(STOOLS, 0, 110, p=0.5)]],
           walls=("house",), roles=("smithy", "demon_forge"), need=True, near=6, sides=("side", "front", "back"),
-          biomes=ALL, cap=2, spacing=30, family="smith", tall=True, weight=6.0),
+          biomes=ALL, cap=2, spacing=30, family="smith", tall=True, weight=6.0, size=110, min_types=4),
     # the well alone, clear on every side, a public landmark near a road (Westwood's four campaign wells, Con02a, Con07B,
     # Con09a, War07A: the well and at most a sign a little apart; no barrels, buckets, benches or troughs by it. Westwood's
     # well is the WishingWell; the kit keeps its Well, the user has not chosen: rules/scenes/well.md)
@@ -283,28 +327,39 @@ CATALOGUE = [
           [[P(("TraderClothesRack1", "TraderClothesRack2"), 0, 0, must=True), P(("WaterBarrel",), 42, 22, must=True),
             P(SMALL_SACKS, -36, 24, n=(1, 2), step=(-20, 14), must=True), P(STOOLS, 20, 48), P(("Barrel2",), -56, -6, p=0.5)]],
           places=("water",), biomes=("green", "swamp"), cap=1, spacing=40, family="wash", weight=3.0),
-    Theme("unhitched_cart", "a cart left for the night, the horse's hay and water by it, a sack of oats", "open",
-          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(HAY, -50, 34, must=True), P(("WaterBarrel",), 46, 30, must=True),
-            P(("SackChestLarge1", "SackChestLarge2"), 10, 58, must=True), P(STRAW, -20, -44, p=0.5)]],
-          places=("town",), biomes=("green", "swamp", "ice"), cap=2, spacing=30, family="cart", size=95, weight=1.2),
+    Theme("unhitched_cart", "a cart left for the night, the horse's hay at its open side, water and a sack of oats "
+          "by it", "open",
+          [[P(("OutdoorTraderCart",), 0, 0, must=True), P(HAY, 52, 4, must=True), P(("WaterBarrel",), -6, 56, must=True),
+            P(("SackChestLarge1", "SackChestLarge2"), 40, 58, must=True), P(HAY, 80, -14, p=0.7),
+            P(("TraderAppleCrate",), -48, 50, p=0.7), P(STRAW, 34, -34, p=0.6), P(("Barrel",), -8, 88, p=0.6),
+            P(("SackChestSmall1",), 70, 64, p=0.6)]],
+          places=("town",), biomes=("green", "swamp", "ice"), cap=2, spacing=30, family="cart", size=95, weight=1.2,
+          screen=True, mirror=False),
     Theme("timber_stack", "timber stacked for building work: trunks in a row, the saw-horse stump, the tool barrel",
           "open",
           [[P(LOGS, -30, 0, n=3, step=(30, 0), must=True), P(("ForestLog03",), -10, -40), P(STUMPS, 20, 40, must=True),
             P(TOOLS, 60, 34, must=True)]],
           places=("town",), biomes=("green", "swamp", "ice"), cap=1, spacing=50, family="timber", weight=1.0),
     # ---- the garrison --------------------------------------------------------------------------------------------
-    Theme("sparring_ring", "the guards' sparring ground: dummies to strike, racks of practice arms, a bench for the "
-          "watchers and their water", "open",
-          [[P(TARGETS, -36, 40, must=True), P(TARGETS, 36, 40, must=True),
-            P(RACKS, -44, 86, n=2, step=(40, 0), must=True), P(POLEARMS, 58, 86, orient="line"),
-            P(("Bench1", "Bench2", "Bench4", "Bench5"), 0, -80, orient="face"), P(("WaterBarrel",), 40, -74),
-            P(("TraderQuiverRack",), -46, -70, p=0.5), P(STRAW, -80, 20, p=0.4)],
-           [P(TARGETS, -34, 50, n=3, step=(34, 0), must=True), P(RACKS, -82, 30, must=True),
-            P(RACKS + POLEARMS, 82, 30, must=True, orient="line"), P(("Bench1", "Bench2", "Bench4", "Bench5"), -20, -76,
-                                                                      orient="face"),
-            P(("WaterBarrel", "Barrel"), 24, -78)]],
-          places=("martial",), roles=("barracks", "keep"), biomes=ALL, cap=2, spacing=34, size=110, family="arms", clear=40,
-          weight=4.0, min_pieces=5),
+    # (QA round 1, 2026-10-13 [Q1K-13]: "These are all pretty poor. They need much improved balance and layout. When using
+    # rows (i.e. rows of barrels or weapon / armor racks), place them against a wall so they dont look so random. Racks
+    # can also be in a row perpendicular to a wall"; EX-TRAININGGROUND-07: "much better if the objects were simply lined
+    # up closer to the exterior wall"): the sparring ground stands against the barracks' wall, its racks in a row along
+    # the wall and its targets in a row square to it, the watchers' bench at the wall's other end; each row even, its
+    # ends level
+    Theme("sparring_ring", "the guards' sparring ground against their barracks' wall: the racks of practice arms in a "
+          "row along the wall, the dummies in a row out from it, a bench for the watchers and their water", "wall",
+          [[P(RACKS, -40, 32, n=3, step=(40, 0), must=True, orient="line"), P(POLEARMS, 80, 32, orient="line"),
+            P(TARGETS, -100, 74, n=3, step=(0, 44), must=True), P(STRAW, -60, 120, p=0.8), P(STRAW, -140, 150, p=0.6),
+            P(("Bench1", "Bench2", "Bench4", "Bench5"), 150, 40, orient="out"), P(("WaterBarrel",), 190, 32),
+            P(("TraderQuiverRack",), 116, 32, p=0.9), P(("Barrel",), 214, 56, p=0.7)],
+           [P(TARGETS, -34, 34, n=3, step=(34, 0), must=True),
+            P(RACKS, -110, 34, n=3, step=(0, 40), must=True, orient="line"),
+            P(RACKS + POLEARMS, 110, 34, n=3, step=(0, 40), must=True, orient="line"),
+            P(STRAW, 0, 74, p=0.8), P(("WaterBarrel", "Barrel"), 160, 32), P(("TraderQuiverRack",), -160, 34, p=0.8),
+            P(("Bench1", "Bench2", "Bench4", "Bench5"), 0, 150, orient="face", p=0.7)]],
+          walls=("house", "martial", "masonry"), places=("martial", "town"), roles=("barracks", "keep"), sides=("side", "back"),
+          biomes=ALL, cap=2, spacing=34, size=130, family="arms", weight=4.0, min_pieces=6, min_types=3, tall=True),
     Theme("watch_fire", "a brazier in the open where the off-watch warm themselves, benches drawn up to it", "open",
           [[P(("Brazier",), 0, 0, must=True), P(("Bench1", "Bench2", "Bench4", "Bench5"), -50, 20, orient="face",
                                                  must=True),
@@ -312,12 +367,13 @@ CATALOGUE = [
                                                                                     must=True),
             P(POLEARMS, 4, -54, orient="line", p=0.6)]],
           places=("martial",), biomes=ALL, cap=2, spacing=36, family="watchfire", weight=1.5, min_pieces=3),
-    Theme("archers_mark", "a straw mark set up for the bowmen, their bows racked and quivers ready", "open",
-          [[P(TARGETS, 0, 0, must=True), P(STRAW + HAY, 0, 30, must=True), P(("TraderBowRack2", "TraderBowRack1"), -30,
-                                                                              -96, must=True),
-            P(("TraderQuiverRack",), 14, -98, must=True), P(TARGETS, 40, 6, p=0.5)]],
-          places=("martial",), roles=("barracks", "keep"), biomes=ALL, cap=1, spacing=40, family="archery", size=100,
-          weight=1.2),
+    Theme("archers_mark", "the bowmen's mark against a wall: the straw targets in a row at the wall's foot, the bows "
+          "racked and the quivers ready in a row square to the wall at its end", "wall",
+          [[P(TARGETS, -34, 34, n=3, step=(34, 0), must=True), P(STRAW + HAY, -78, 40, p=0.7),
+            P(("TraderBowRack2", "TraderBowRack1"), 110, 34, must=True, orient="line"),
+            P(("TraderQuiverRack",), 110, 74, must=True), P(("Barrel",), 110, 112, p=0.6)]],
+          walls=("house", "martial", "masonry"), places=("martial", "town"), roles=("barracks", "keep"), sides=("side", "back"),
+          biomes=ALL, cap=1, spacing=40, family="archery", size=120, weight=1.2, tall=True),
     Theme("guard_post", "a sentry's post: the brazier he warms his hands at, his stool, his spear, his water", "wall",
           [[P(("Brazier",), 0, 36, must=True), P(STOOLS, -30, 34, must=True), P(POLEARMS, -64, 30, orient="line"),
             P(("WaterBarrel", "Barrel"), 34, 30, must=True), P(("TraderQuiverRack",), 58, 36, p=0.5),
@@ -556,7 +612,7 @@ ROLE_SCENES = {
     "smithy": [("smithy_yard", 1.0)],
     "demon_forge": [("smithy_yard", 0.8)],
     "inn": [("midden", 0.8), ("cart_loading", 0.6), ("market_stall", 0.3)],
-    "store": [("market_stall", 0.6), ("cart_loading", 0.5)],
+    "store": [("market_stall", 0.6), ("market_stall_wall", 0.6), ("cart_loading", 0.5)],
     "mill": [("hay_store", 0.8), ("cart_loading", 0.6), ("threshing_floor", 0.6), ("windmill", 0.5)],
     "woodcutter": [("chopping_yard", 0.9)],
     "home": [("woodpile", 0.3), ("supply_corner", 0.3)],
@@ -582,7 +638,7 @@ ROLE_SCENES = {
 }
 
 # at most so many scenes of a family to a map, whatever their themes (carts are memorable: a few to a map)
-FAMILY_CAP = {"cart": 3, "arms": 3, "wood": 3, "stores": 5, "bones": 6}
+FAMILY_CAP = {"cart": 3, "arms": 3, "wood": 6, "stores": 5, "bones": 6}
 
 # families whose things already on the map (a camp's cart, the training ground's targets, a woodpile by a door)
 # count as one of the family for spacing

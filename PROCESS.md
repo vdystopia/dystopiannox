@@ -169,6 +169,21 @@ courts, a well now and then fenced).
 - An orchard (`yards._orchard`) [Q1X-18]: apple trees in even mirrored rows, apples on the ground to pick up, crates of
   apples outside the gate, the tool barrel and a barrel in the corners. A farm's ground holds a well yard, two gardens and
   an orchard round the farmhouse, its harvest scenes laid last [Q1X-17].
+- A quarry (`yards._quarry`) [Q1K-8, Q1K-9]: the rock face at the back; the works in a row against one flank's fence
+  (an ore cart, steel crates and barrels, the tool barrel, a powder keg at the row's end, a pick laid down); the
+  crystals the cutting turned up in the rock by the other flank's back corner, with bones; rubble and tools in the open.
+  The gate's walk to the road goes round the yard, never along or under its fence (`yards.connect_gate`: the fence's
+  ring of squares is blocked but straight out from the gate).
+- A town's jail is a guardhouse (`yards._jail`, `JAIL_ARCH`) [Q1K-10]: the guard room across the whole front, four
+  squares deep or more (`GUARD_DEPTH`), its door in the middle; the cells behind it, of even widths, each JailDoor in
+  its cell's middle with a torch on the same side of every door; the front toward the camera (SE or SW) so the cells'
+  cots are seen. The guard room is furnished as a room (kit/furnish, kind guardroom) with the warden's desk laid first
+  against a back wall and his chair at it, hangings, the watch's water and ale, racks by the walls; every cell as a room
+  (kind cell), then sure of a cot or a bench (four in five at the least, `CELL_FURNISHED`) and given two or three of a
+  prisoner's leavings (bones, straw, a scrap of meat, a barrel of tools, a stool). The castle's cell row and the cave
+  cell are laid only where a design asks for them. A hole a prisoner escapes by: the kit has no falling hole (the
+  engine's Pit is a DANGEROUS hole a player falls into); a design that wants one lays a lift (kit/transport.py) whose
+  pit stands in a cell and whose platform waits in the tunnel below.
 
 ## 3. Buildings and rooms
 
@@ -507,18 +522,46 @@ placed=placed, culture=, martial=).dress()`.
   town, the ogres' middens and cooking pits only within 24 squares of their keep, `ROLE_SCENES["ogre_keep"]`);
   each theme still keeps to its own places and buildings.
 
+- QA round 1 (2026-10-13) [Q1K-11..16]:
+  - Rows of racks, barrels or targets stand against a wall, or in a row square to one from it, never floating in the
+    open: the training ground (`sparring_ring`, `archers_mark`) is a wall scene against the barracks, its racks along
+    the wall and its targets out from it, every row even, its ends level.
+  - A market stall shows where its trader stands: his stool under the awning, the wares laid before it as a counter
+    along its open side; EX-MARKETSTALL-07's count and mix of wares is the least a stall holds. Where the street has no
+    ground for the open stall, `market_stall_wall` backs the awning onto the shop's own wall (its closed side to it).
+  - A cart's scene is laid in the screen's frame (`screen=True, mirror=False`): Nox draws its cart one way only, its
+    open side to the screen's left, so the hay stands there, 50 px left of the cart (EX-WAGON-02).
+  - The smithy's yard is balanced on its anvil: the quench and the tool barrel either side, the ore and the finished
+    work in rows at the two ends.
+  - The woodpile is the fill pass's filler by houses and fences (it scales with the open ground, `FAMILY_CAP` wood 6).
+  - A door scene's props stand against the house's wall, out of the street (`Village.scene` slides them to the wall,
+    never into a doorway) [Q1K-16, nox9].
+
 ### Spacing outdoors [SW-5]
 Outdoor pieces keep Westwood's closest gaps (`kit/spacing.py`, p05 of each family's nearest; `py rules/spacing.py` re-measures
 them on the campaign maps alone: every pair the kit names is at or under the campaign's p05 but sacks, 20 against 17): barrels 25 px, big
 barrels 31, barrel and big barrel 33, crates 31, barrel and crate 38, sacks 20, sack and crate 33, sack and barrel 30,
 racks 27, bedrolls 35, benches 45, headstones 39, a cart 48 from anything, a fire 50; other pairs 0.8 of both
 footprints. The dressing, camps, wreck, door scenes and yards all place by it.
+A large crate (the 48 x 24 wooden, dark or steel crate) keeps 48 px from any other piece and 72 from a cart, a house
+rule over Westwood's 31 px stacks (QA round 1 [Q1K-1]: "Large crates overall are too close to other objects. This
+seems consistent across every feature"): `spacing.LARGE_CRATE_GAP`, checked by `exterior.crate_clear`. A camp's
+pieces keep 1.15 of the pairs and every solid piece 26 px from every other (`Camp.SPACE`, `Camp.SOLID_CLEAR`) [Q1K-2].
 
 ### Outdoor lights [SW-8]
 Outdoors a light is a torch pole, a brazier, a street lamp or a fire (Westwood: TorchPole 497, wall Torch 974; no
 candles). Nothing the player can pick up lies outdoors as decor (candles, lanterns, loose food without a script name).
 
 ## 5. Camps
+
+**QA round 1 (2026-10-13)** [Q1K-2..7]: "not enough objects and not enough diversity ... a bandit camp is where
+multiple humans are hiding out and living for at least a short time"; urchins "more and more and more objects", "way too
+many beds ... all clustered"; ogres "very heavy on barrels (including explosives) and sacks"; wolf dens "TREES, bones,
+skulls, meat, corpses, rocks, boulders". A camp is lived in: `exterior.camp_bare` warns under 16 pieces of 8 kinds
+within 320 px of its fire (a house rule over Westwood's sparse camps). Every row in a camp stands against a wall
+(`camps._wall_row`: snug to the wall within 210 px, a second row a step before the first, each row slid along its line
+where more of it stands); the camp's seats are balanced round the fire (two benches facing across it, or a bench behind
+with a stool either side); the sleeping row is evenly spaced and centred behind the fire, a torch pole at each end.
 
 **Recurring:** "a scattered mess" three rounds running [GW-4, SW-1, SW-3, AMR-1, AMR-2]. Never strew a camp's pieces by
 hand in a design: use `kit/camps.py`. The checker's camp warnings (`check_exterior`: `exterior.camp_seat`, a stump by
@@ -541,6 +584,24 @@ pictures show every camp for the rest.
   `room - 1` squares and, among those, the one whose nearest wall is nearest (a camp backs onto the wood or the cliff,
   never floats in a wide glade), near the place, off its road; lay the camp open toward the road beside it (`StoryMap.road_near(site)`). A camp
   holds its ground: planting and dressing keep off it.
+- **The bandit camp** [Q1K-3]: besides the zones below, every camp has the band's arms in a row against the wall
+  (pole arms, two or three armour racks, the bow rack, a quiver), the store in two rows (barrels with the water barrel
+  and a large crate, then crates of apples and sacks), a bedroll pair at the least with each sleeper's bundle, the
+  awning with a band of four or more, a board (a table and stools), a woodpile, a cook pot now and then with its stores;
+  on grass its ground trodden to dirt (`camps.camp_ground`, the roads' DirtDark2, blended, held from the planting). A
+  pocket in the rock is laid in the same zones against the rock, its band on bedrolls (`hideout="westwood"` still lays
+  Westwood's sparse hideout).
+- **Urchins** [Q1K-4]: one bed to two urchins at most, each its own place with a stool or straw by it, BEDS_APART (90
+  px) between any two (`exterior.beds_block` warns at three side by side); the den filled from its rock round: crates of
+  stolen apples, barrels, shelves, mushrooms at the rock's foot, straw, bones, a pelt before the table, pebbles, and
+  more knots in a big den (`Pocket.row_along`).
+- **Ogres** [Q1K-5, Q1K-6]: `camps.ogre_stores` (two yards of barrels with powder kegs, their sacks in a row before
+  them, the straw bedding with a pelt and a carcass, bones strewn) and `camps.ogre_tunnel` (tusk pillars in facing
+  pairs down the way in, the right-hooked tusk on the screen's left, a skull post either side of its inner end);
+  `camps.ogre_ground` lays the trodden path and ground and registers the ground under it for blending.
+- **Wolf dens** [Q1K-7]: `camps.wolf_den` (the heap of rock, no two neighbours alike; a kill or two picked clean, skulls
+  and bones, rotten meat, a pelt; a wood of the forest's trees close round it but for its mouth; a small pond without a
+  dock when the map's Waterworks is passed and no water is near).
 - **Urchins** squat as Westwood furnishes their dens (Con02a, War03c): `camps.urchin_camp` (beds of one kind side by
   side, a table ringed by stools, the pickings heaped) [AMR-2].
 - **Ogres** lay their village as Westwood's Con05B: `camps.ogre_camp` (the fire pit with meat and a carcass, log
@@ -917,6 +978,9 @@ departures from Westwood's range or from a house rule the playtests set. The rul
   `floors.doorstep` and `floors.hard_patch` [Q1W-13, Q1W-14]. Westwood's maps let a player wade in places (caves,
   swamps) and have hard patches (mosaics, rugs): these are house rules, the user's word. The ledger rows are in
   `review/qa1/water.md`.
+- `exterior.*` from QA round 1's camps [Q1K]: a large crate too near another piece (`crate_clear`), a camp too bare
+  to be lived in (`camp_bare`), a camp's beds in one block (`beds_block`), a row of racks or targets in the open away
+  from every wall (`row_float`), a jail whose cells lack cots or benches (`jail_cells`).
 - `transport.*` [TR-1] (`check_transport`): every lift and pad linked, every landing on open floor (not void, wall
   or a blocking object; 23 px from a wall) with room to move or a way on, and, from the design's
   `<map>.transport.json`, every end on the map, nobody landing on a pad that leads on, the places a transporter

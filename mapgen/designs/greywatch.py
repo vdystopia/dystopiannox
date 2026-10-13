@@ -158,13 +158,13 @@ inner = {s for s in cw.plot if min(s[0] - cw.gi, cw.gi + cw.w - 1 - s[0], s[1] -
 yards = []
 
 
-def inner_yard(kind, radii=(8, 11, 14, 17, 20)):
+def inner_yard(kind, radii=(8, 11, 14, 17, 20), arch=None):
     """A yard of `kind` inside the walls, as near the well as it fits, its gate toward the well."""
     for r_ in radii:
         for a_ in range(12):
             c_ = (castle_c[0] + r_ * math.cos(a_ * math.pi / 6), castle_c[1] + r_ * math.sin(a_ * math.pi / 6))
             before = set(land.taken)
-            y_ = Y.plan(land, rng, kind, c_, toward=castle_c)
+            y_ = Y.plan(land, rng, kind, c_, toward=castle_c, arch=arch)
             if y_ and {(y_.gi + a, y_.gj + b) for a in range(-1, y_.w + 1) for b in range(-1, y_.h + 1)} <= inner:
                 yards.append(y_); return y_
             land.taken = before
@@ -172,7 +172,7 @@ def inner_yard(kind, radii=(8, 11, 14, 17, 20)):
     return None
 
 
-jail = inner_yard("jail")
+jail = inner_yard("jail", arch="cell_row")     # a castle's cells off their corridor (Con07B; a town's jail is a guardhouse)
 tg_c = free_block(castle_c, 4, inner)
 assert tg_c, "no room for the training ground"
 land.taken |= {(tg_c[0] + a, tg_c[1] + b) for a in range(-5, 6) for b in range(-5, 6)}

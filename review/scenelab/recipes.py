@@ -96,28 +96,11 @@ def _camp_build(kind):
                 posts = camp_posts(m, camp, square_px(*toward), sit=2, tents=2, watch=1, work=0)
                 kinds = dict(leader="UrchinShaman", sit="Urchin", tent="Urchin", watch="Urchin", work="Urchin")
             fx, fy = camp["fire"]
-            if ctx_rec(ctx).get("path_in"):
-                if "SwampGrass" not in m.blend: m.blending("SwampGrass", 0, "BlendEdge")    # (the path's edges blended)
-                # the trodden path in from the mouth to the fire (Westwood's ogre fires lie on their paths: Con05B,
-                # Con09b, DirtLight2 through the swamp grass)
-                (ti, tj), (si, sj) = toward, px_square(fx, fy)
-                L_ = math.hypot(si - ti, sj - tj) or 1
-                for k in range(int(L_ / 0.4) + 1):
-                    f_ = k * 0.4 / L_
-                    if f_ > 1 - 1.5 / L_: break
-                    ci_, cj_ = ti + (si - ti) * f_, tj + (sj - tj) * f_
-                    for o in (-0.5, 0.5):
-                        sq = (int(math.floor(ci_ + o)), int(math.floor(cj_ - o)))
-                        if sq in land.squares: m.floor[square_tile(*sq)] = "DirtLight2"
-            if kind == "ogre_camp" and camp.get("arch") in ("cage_yard", "cold_pit"):
-                # (the ground round the fire trodden bare: DirtLight2, 2.5-3.5 squares out, Con05B)
-                ci_, cj_ = px_square(fx, fy)
-                R_ = rng.uniform(2.5, 3.5)
-                for a_ in range(-4, 5):
-                    for b_ in range(-4, 5):
-                        sq = (ci_ + a_, cj_ + b_)
-                        if sq in land.squares and math.hypot(a_, b_) <= R_ * (1 + 0.15 * math.sin(3 * a_ + b_)):
-                            m.floor[square_tile(*sq)] = "DirtLight2"
+            if ctx_rec(ctx).get("path_in") and kind == "ogre_camp":
+                # the trodden path in from the mouth to the fire and, at a cage yard or a cold pit, the bare earth round
+                # it, laid by the kit with its edges blended on whatever ground it crosses (QA round 1, Q1K-6)
+                camps.ogre_ground(m, land, camp, toward, floor=getattr(p, "cave_floor", None),
+                                  trodden=camp.get("arch") in ("cage_yard", "cold_pit"), rng=rng)
             pop.creature(kinds["leader"], *posts["leader"], action="guard", face=square_px(*toward), aggr=0.5)
             for role in ("sit", "tent", "work", "watch"):
                 for x, y in posts[role]:
@@ -132,8 +115,10 @@ def _camp_build(kind):
 # a batch's graveyards by Westwood's archetypes (13 scenes: 6 fields, 4 crypt yards, 3 pens), in a fixed order so a
 # batch of ten follows the frequencies (as the room lab's door counts do, FAIRNESS 3)
 GRAVE_ORDER = ("field", "crypt_yard", "field", "pen", "field", "crypt_yard", "field", "pen", "crypt_yard", "field")
-JAIL_ORDER = ("cell_row", "cell_row", "guardhouse", "cell_row", "cave_cell", "cell_row", "cell_row", "guardhouse",
-              "cell_row", "cell_row")      # Westwood's 11 jails: 8 castle cell rows, a cave cell, 2 guardhouses
+# a batch's jails (QA round 1, Q1K-10: a town's jail is a guardhouse with a large guard room): eight guardhouses, the
+# castle's cell row and the cave cell once each (a design asks for those)
+JAIL_ORDER = ("guardhouse", "guardhouse", "cell_row", "guardhouse", "cave_cell", "guardhouse", "guardhouse",
+              "guardhouse", "guardhouse", "guardhouse")
 # QA round 1's set pieces (kit/setpieces): a batch's wells and shrines in a fixed order of their archetypes
 WELL_ORDER = ("plain", "fenced", "market", "plain", "fenced", "market", "plain", "fenced", "market", "plain")
 SHRINE_ORDER = ("obelisk_court", "statue_avenue", "mana_court", "open_chapel", "obelisk_court", "statue_avenue",
@@ -205,10 +190,8 @@ def _yard_build(ctx):
         if p.site == "wall" and y.kind not in ("well", "shrine"): _town_wall(ctx, p, y)
         p.notes["anchor"] = list(square_px(*y.centre))
         p.notes["yard"] = dict(w=y.w, h=y.h, side=y.side)
-        out = Y.gate_outside(y)                       # the walk from the gate to the road, as a map's yards have
-        if out and out in land.squares:
-            got = land.connect(m, out, footprint=frozenset(y.plot), material="DirtDark2")
-            p.notes["walk"] = len(got) if got else 0
+        got = Y.connect_gate(m, land, y)              # the walk from the gate to the road, round the fence (Q1K-9)
+        p.notes["walk"] = len(got) if got else 0
         for k_, (donor, (x, yy), face) in enumerate(getattr(y, "people", ())):   # the yard's people at work (the digger)
             _person(ctx, donor, x, yy, face, f"Yard{p.k}_{k_}")
 
@@ -394,7 +377,7 @@ def _pond_build(ctx):
 
 
 # ---------------------------------------------------------------------------------------------------- the catalogue
-def _theme_after(themes, role=None, culture=None, biome="green"):
+def _theme_after(themes, role=None, culture=None, biome="green", rotate=True):
     """Scenes of kit/scenes.py's catalogue, laid by the dressing's own code (kit/dressing.Exterior: _try_wall,
     _try_open with only=the theme), one to a clearing, near the clearing's scene point."""
     def after(ctx):
@@ -412,7 +395,7 @@ def _theme_after(themes, role=None, culture=None, biome="green"):
             R = p.r * 32.5
             ex.signs = {f: [q for q in pts if math.hypot(q[0] - cx, q[1] - cy) < R] for f, pts in ex.signs.items()}
             if ctx["scene"] == "shrine": ex.want_arch = {"shrine": SHRINE_ARCH[p.k % len(SHRINE_ARCH)]}
-            names = [themes[(p.k + q) % len(themes)] for q in range(len(themes))]
+            names = [themes[(p.k + q) % len(themes)] for q in range(len(themes))] if rotate else list(themes)
             cands = sorted((s for s in ex.free if math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]) < p.r - 1),
                            key=lambda s: (math.hypot(s[0] + 0.5 - p.scene_c[0], s[1] - 0.5 - p.scene_c[1]), s))
             done = None
@@ -620,7 +603,10 @@ def _wolf_build(ctx):
     pop = _pop(ctx)
     for p in ctx["plots"]:
         c = (int(p.scene_c[0]) + 0.5, int(p.scene_c[1]) - 0.5)
-        spots = camps.wolf_den(m, p.rng, land, c, p.toward)
+        if "ww" not in ctx:                          # (the dens' drinking ponds, finished with the map's water)
+            from kit.water import Waterworks
+            ctx["ww"] = Waterworks(m, p.rng, inside=lambda x, y: tile_square(x, y) in land.squares)
+        spots = camps.wolf_den(m, p.rng, land, c, p.toward, forest=p.forest, water=ctx["ww"])
         for x, y in spots[:3 + (p.size == "large")]:
             pop.creature("Wolf", x, y, action="idle", aggr=0.5)
         p.notes["anchor"] = list(square_px(*c))
@@ -657,7 +643,7 @@ RECIPES = {
     # well, so the lab had laid none: a yard is planned before the land is carved)
     "well": dict(plan=_yard_plan("well"), build=_yard_build, by_road=4.5, site_map={"wall": "road"}),
     "market_stall": dict(plan=_house_plan(["store", "inn"], square=5), build=_house_build,
-                         after_plant=_theme_after(["market_stall"])),
+                         after_plant=_theme_after(["market_stall", "market_stall_wall"], rotate=False)),
     "wagon": dict(plan=_house_plan(["store", "mill", "home"]), build=lambda c: (_house_build(c), _wreck_build(c)),
                   after_plant=_theme_after(["wagon_verge", "unhitched_cart", "broken_wagon"])),
     "smithy_yard": dict(plan=_house_plan(["smithy"]), build=_house_build, after_plant=_theme_after(["smithy_yard"])),

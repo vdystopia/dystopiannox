@@ -394,6 +394,31 @@ def empty_graveyard(m):
     m.obj("Tombstone1", 240, 26)                               # one headstone in a graveyard (SW-9)
 
 
+def crate_by_apples(m):
+    m.obj("Crate1", 186, -36); m.obj("TraderAppleCrate", 187.8, -36)     # a large crate 29 px off an apple crate (Q1K-1)
+
+
+def bare_camp(m):
+    m.obj("CampFire", 236, 26)                                 # a camp of a fire and two bedrolls (Q1K-3)
+    for v in (30, 34): m.obj("Cot2", 230, v)
+
+
+def beds_in_block(m):
+    m.obj("CampFire", 236, 26)                                 # three urchin beds side by side by their fire (Q1K-4)
+    for k in range(3): m.obj("UrchinBed1", 226 + 2.5 * k, 20)
+
+
+def racks_floating(m):
+    for k in range(3): m.obj("OutdoorTraderArmorRack1", 190 + 2.5 * k, -20)     # a row of racks mid-meadow (Q1K-13)
+
+
+def bare_jail(m):
+    # two cells of a jail, each behind its JailDoor, both empty (Q1K-10)
+    for v0, gap in ((-32, (101, 129)), (-22, (106, 124))):
+        m.room(230, 240, v0, v0 + 8, wall="Cobblestone", floor="RoughCobble")
+        m.door("JailDoor", gap, "/")
+
+
 def mp_object(m): m.obj("Crown", 190, 10)                      # an arena's crown in a single-player map
 
 
@@ -896,6 +921,11 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STcropr", crops_scattered, "exterior", "warning", "crops strewn, not in rows - Q1X-14", "straight rows"),
     ("STsetv", shrine_of_one_kind, "exterior", "warning", "a shrine of obelisks alone - Q1X-1", "a set piece is never"),
     ("STsetm", lopsided_well, "exterior", "warning", "a well yard with everything on one side - Q1X-2", "mirrored about"),
+    ("STcrate", crate_by_apples, "exterior", "warning", "a large crate 29 px from an apple crate - Q1K-1", "large crate"),
+    ("STcampb", bare_camp, "exterior", "warning", "a camp of a fire and two bedrolls - Q1K-3", "lived in"),
+    ("STbedsb", beds_in_block, "exterior", "warning", "three urchin beds side by side - Q1K-4", "one block"),
+    ("STrowf", racks_floating, "exterior", "warning", "a row of racks in the middle of a meadow - Q1K-13", "away from every wall"),
+    ("STjailc", bare_jail, "exterior", "warning", "a jail of two bare cells - Q1K-10", "cells have no cot"),
     ("STmpobj", mp_object, "setup", "warning", "an arena's crown in a single-player map", "Multiplayer-only"),
     ("STcram", crammed_room, "rooms", "warning", "a declared room furnished past its cover - DysVale playtest", "crammed"),
     ("STtabl", tavern_tables, "identity", "warning", "a tavern of 30 tables - TW-8", "free-standing tables"),

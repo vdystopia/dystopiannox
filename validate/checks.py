@@ -1905,7 +1905,7 @@ def check_exterior(m, ctx, base):
              not SP.LOOSE.match(o["type"]) and (SP.family(o["type"]) or (m.blocking(o) and "OBSTACLE" in o["cls"]))]
     grid = collections.defaultdict(list)
     for o in props: grid[(int(o["x"] // 80), int(o["y"] // 80))].append(o)
-    bad = []
+    bad, crates = [], []
     for o in props:
         gx, gy = int(o["x"] // 80), int(o["y"] // 80)
         for a in (-1, 0, 1):
@@ -1916,12 +1916,25 @@ def check_exterior(m, ctx, base):
                     d = math.hypot(o["x"] - p["x"], o["y"] - p["y"])
                     # pieces of the spacing families only (a bench at its table, a bench of workstations stand close
                     # by design: calibrated, 147 findings on 38 Westwood maps)
+                    big = SP.large_crate(o["type"]) or SP.large_crate(p["type"])
+                    if big and d < SP.gap(o["type"], p["type"]) * 0.9 and (SP.family(o["type"]) or SP.family(p["type"])):
+                        # a large crate's own clearance (QA round 1, Q1K-1: "large crates overall are too close to other
+                        # objects"), from any piece of a spacing family or any other obstacle
+                        crates.append(F("exterior", "warning", f"A large crate ({o['type'] if SP.large_crate(o['type']) else p['type']}) "
+                                        f"stands {d:.0f} px from {p['type'] if SP.large_crate(o['type']) else o['type']}: a "
+                                        f"large crate keeps {SP.gap(o['type'], p['type']):.0f} px clear of other pieces "
+                                        f"(kit/spacing LARGE_CRATE_GAP).", (o["x"] + p["x"]) / 2, (o["y"] + p["y"]) / 2,
+                                        rule="exterior.crate_clear"))
+                        continue
                     if g and d < g and SP.family(o["type"]) and SP.family(p["type"]):
                         bad.append(F("exterior", "warning", f"{o['type']} and {p['type']} stand {d:.0f} px apart (Westwood "
                                      f"keeps them {g / 0.85:.0f}): outdoor pieces overlap.", (o["x"] + p["x"]) / 2,
                                      (o["y"] + p["y"]) / 2))
     out += bad[:25]
     if len(bad) > 25: out.append(F("exterior", "warning", f"... and {len(bad) - 25} more overlapping outdoor pieces."))
+    out += crates[:25]
+    if len(crates) > 25: out.append(F("exterior", "warning", f"... and {len(crates) - 25} more large crates too near other "
+                                      f"pieces.", rule="exterior.crate_clear"))
     # pieces on a fence or a built wall's line
     built = {c: w for c, w in m.walls.items() if not w.invisible and not NATURAL_WALL.search(w.material)}
     online = []
@@ -1961,6 +1974,8 @@ def check_exterior(m, ctx, base):
             out.append(F("exterior", "warning", f"{len(near)} creatures stand within {CROWD_R:.0f} px of one spot: a swarm. "
                          f"Give each its own post (kit/posts.camp_posts).", a["x"], a["y"]))
     out += outdoor_groups(m)
+    out += camp_rules(m)
+    out += jail_cells(m)
     out += dock_reach(m)
     out += setpiece_faults(m, outdoor)          # QA round 1's set pieces (Q1X)
     return out
@@ -2767,6 +2782,44 @@ def _groups(objs, link):
     return out
 
 
+# ---- QA round 1 (2026-10-13): camps, rows and jails (review/qa1/camps.md, Q1K-*) -------------------------------------
+# A camp: a fire (or an urchins' table) with a bed, straw or a tent within CAMP_R of it: its pieces within CAMP_R
+CAMP_CENTRE_RE = re.compile(r"^(CampFire|CampFireUnused|OgreFirePit|OgreFirePitUnlit|UrchinTableLarge)$")
+CAMP_SIGN_RE = re.compile(r"^(Cot\d|UrchinBed(Flat)?\d|UrchinHammock\d|OgreStraw\d|OutdoorTraderPupTent|TraderTent)")
+CAMP_R = 320.0
+# "Needs drastically more objects" (Q1K-3, Q1K-4, Q1K-5): a camp holds CAMP_PIECES_MIN solid pieces of CAMP_KINDS_MIN
+# kinds at the least (a house rule over Westwood's sparse camps: the user's word, QA round 1)
+CAMP_PIECES_MIN, CAMP_KINDS_MIN = 16, 8
+CAMP_SKIP = re.compile(r"^(Tree|Bush|Plant|Flowers|Fern|Foliage|Weed|Grass|Mushroom|CaveRocks(Small|Pebbles|Tiny)|Rock\d|"
+                       r"Amb|ColorLight|Torch$|.*Shadow|Water|Dock|Bridge|Puddle|Lily|Reed|Fish|Duck|Ripple|Splash)")
+# "Way too many beds. And they're all clustered right next to each other" (Q1K-4): BEDS_BLOCK beds or more, each within
+# BED_LINK px of the next, by a camp's fire
+BED_LINK, BEDS_BLOCK = 50.0, 3
+# "when using rows ... place them against a wall so they dont look so random. racks can also be in a row perpendicular to
+# a wall" (Q1K-13): ROW_MIN racks or targets in a row (each within ROW_LINK px of the next) with none of them within
+# ROW_WALL px of a wall's line
+ROW_RE = re.compile(r"^(OutdoorTraderArmorRack\d|TraderPoleArm\d|TraderBowRack\d|TraderQuiverRack|OutdoorTraderHelmPoles|"
+                    r"TargetBarrel\d)$")
+ROW_LINK, ROW_MIN, ROW_WALL = 52.0, 3, 70.0
+# "At least 80% of cells should have either a cot, a bench ... Almost no cell should have 0 objects in it" (Q1K-10)
+CELL_BED_RE = re.compile(r"^(Cot\d|Bench\d|LightBench\d|WoodBed\d?|Bed\d|Stocks\d|UrchinBed\d|OgreStraw\d)")
+CELL_FURNISHED = 0.8
+
+
+def _chains(objs, link):
+    """Groups of objects each within `link` px of another of the group."""
+    left, out = list(objs), []
+    while left:
+        g = [left.pop()]; grew = True
+        while grew:
+            grew = False
+            for o in list(left):
+                if any(math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < link for c in g):
+                    g.append(o); left.remove(o); grew = True
+        out.append(g)
+    return out
+
+
 def _rows_share(pts, tol=ROW_TOL):
     """The share of points standing in a row of three or more along a square axis (either axis, point by point)."""
     n = sum(1 for p in pts if any(sum(1 for q in pts if abs(q[a] - p[a]) <= tol) >= 3 for a in (0, 1)))
@@ -2939,6 +2992,77 @@ def setpiece_faults(m, outdoor):
                 out.append(F("exterior", "warning", f"The {k}'s pieces stand {mir:.0%} mirrored about its axis: a set "
                              f"piece's pieces stand in pairs, balanced either side of its way in (kit/setpieces; QA round "
                              f"1).", x, y, rule="exterior.set_symmetry"))
+def camp_rules(m):
+    """QA round 1's camp and row faults: a camp too bare to be lived in (exterior.camp_bare), a camp's beds in one
+    block (exterior.beds_block), a row of racks or targets standing in the open away from every wall (exterior.row_float).
+    """
+    from kit import spacing as SP
+    out = []
+    indoor = _indoor_cells(m)
+    outdoor = [o for o in m.objects if m.cell_of(o["x"], o["y"]) not in indoor and "MONSTER" not in o["cls"]]
+    centres = [o for o in outdoor if CAMP_CENTRE_RE.match(o["type"])]
+    signs = [o for o in outdoor if CAMP_SIGN_RE.match(o["type"])]
+    seen = []
+    for c in centres:
+        if c["type"] != "OgreFirePit" and not any(math.hypot(s_["x"] - c["x"], s_["y"] - c["y"]) < CAMP_R for s_ in signs): continue
+        if any(math.hypot(c["x"] - x, c["y"] - y) < CAMP_R for x, y in seen): continue
+        seen.append((c["x"], c["y"]))
+        near = [o for o in outdoor if math.hypot(o["x"] - c["x"], o["y"] - c["y"]) < CAMP_R and not CAMP_SKIP.match(o["type"])
+                and o["type"] not in ("PlayerStart",)]
+        kinds = {_kind_stem(o["type"]) for o in near}
+        if len(near) < CAMP_PIECES_MIN or len(kinds) < CAMP_KINDS_MIN:
+            out.append(F("exterior", "warning", f"A camp of {len(near)} pieces of {len(kinds)} kinds: a camp is lived in "
+                         f"({CAMP_PIECES_MIN} pieces of {CAMP_KINDS_MIN} kinds at the least: beds, barrels, crates of "
+                         f"apples, sacks, seats at the fire, arms; kit/camps.py; Q1K-3).", c["x"], c["y"],
+                         rule="exterior.camp_bare"))
+    fires = [o for o in outdoor if FIRE_RE.match(o["type"]) or CAMP_CENTRE_RE.match(o["type"])]
+    beds = [o for o in outdoor if COT_RE.match(o["type"]) and
+            any(math.hypot(f["x"] - o["x"], f["y"] - o["y"]) < CAMP_REACH for f in fires)]
+    for g in _chains(beds, BED_LINK):
+        if len(g) >= BEDS_BLOCK:
+            gx, gy = sum(o["x"] for o in g) / len(g), sum(o["y"] for o in g) / len(g)
+            out.append(F("exterior", "warning", f"{len(g)} beds lie side by side in one block by the camp: a camp's beds "
+                         f"are few and spread, each its own place (camps.urchin_camp BEDS_APART; Q1K-4).", gx, gy,
+                         rule="exterior.beds_block"))
+    rows = [o for o in outdoor if ROW_RE.match(o["type"])]
+    for g in _chains(rows, ROW_LINK):
+        if len(g) < ROW_MIN: continue
+        if min(SP.wall_clearance(m.walls, o["x"], o["y"], reach=4) for o in g) <= ROW_WALL: continue
+        gx, gy = sum(o["x"] for o in g) / len(g), sum(o["y"] for o in g) / len(g)
+        out.append(F("exterior", "warning", f"A row of {len(g)} racks and targets stands in the open, away from every "
+                     f"wall: a row stands against a wall, or square to one from it (scenes.py sparring_ring; Q1K-13).",
+                     gx, gy, rule="exterior.row_float"))
+    return out
+
+
+def jail_cells(m):
+    """A jail's cells (the rooms behind its JailDoors) with no cot or bench in more than one of five, or bare
+    (exterior.jail_cells, Q1K-10)."""
+    doors = [o for o in m.objects if o["type"] == "JailDoor"]
+    if len(doors) < 2: return []
+    rooms = find_rooms(m, max_tiles=120)
+    by_cell = {}
+    for k, r in enumerate(rooms):
+        for c in r["cells"]: by_cell[c] = k
+    out = []
+    for jail in _chains(doors, 260.0):                     # each jail's doors (two jails on a map are two jails)
+        cells = {}
+        for d in jail:
+            c = m.cell_of(d["x"], d["y"])
+            near = {by_cell[(c[0] + a, c[1] + b)] for a in range(-2, 3) for b in range(-2, 3)
+                    if (c[0] + a, c[1] + b) in by_cell}
+            if not near: continue
+            k = min(near, key=lambda k_: len(rooms[k_]["cells"]))       # the cell: the smaller room by its door
+            cells.setdefault(k, d)
+        if len(cells) < 2: continue
+        bare = [k for k in cells if not any(CELL_BED_RE.match(o["type"]) for o in rooms[k]["objects"])]
+        empty = [k for k in cells if not [o for o in rooms[k]["objects"] if "Door" not in o["type"] and o["type"] != "Torch"]]
+        if len(bare) > (1 - CELL_FURNISHED) * len(cells) or empty:
+            d = cells[(empty or bare)[0]]
+            out.append(F("exterior", "warning", f"{len(bare)} of the jail's {len(cells)} cells have no cot or bench"
+                         f"{f' and {len(empty)} hold nothing at all' if empty else ''}: four cells in five have a cot or "
+                         f"a bench, and almost none is bare (yards._jail; Q1K-10).", d["x"], d["y"],
+                         rule="exterior.jail_cells"))
     return out
 
 
@@ -3177,6 +3301,11 @@ RULES = [
     ("routes.more", "routes", r"more waypoint and route problems", ""),
     ("exterior.overlap", "exterior", r"outdoor pieces overlap|more overlapping outdoor", "SW-5"),
     ("exterior.on_fence", "exterior", r"fence or wall line", "AM-1"),
+    ("exterior.crate_clear", "exterior", r"large crate keeps|large crates too near", "Q1K-1"),
+    ("exterior.camp_bare", "exterior", r"a camp is lived in", "Q1K-3 Q1K-4 Q1K-5"),
+    ("exterior.beds_block", "exterior", r"beds lie side by side in one block", "Q1K-4"),
+    ("exterior.row_float", "exterior", r"stands in the open, away from every wall", "Q1K-13"),
+    ("exterior.jail_cells", "exterior", r"cells have no cot or bench", "Q1K-10"),
     ("exterior.pickable", "exterior", r"lies outdoors as decor", "SW-8"),
     ("exterior.two_bodies", "exterior", r"two bodies on one", "GW-5 SW-1"),
     ("exterior.swarm", "exterior", r"a swarm", "GW-5 SW-1"),

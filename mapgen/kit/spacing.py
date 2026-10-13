@@ -43,6 +43,11 @@ PAIR = {("barrel", "barrel"): 25, ("bigbarrel", "bigbarrel"): 31, ("barrel", "bi
         ("bench", "bench"): 45, ("stool", "stool"): 20, ("tomb", "tomb"): 39, ("log", "log"): 16, ("ubed", "ubed"): 28}
 LOG_GAP = 30          # a log and anything else: logs are long and narrow, their footprint's radius overstates them
 CART_GAP, FIRE_GAP = 48, 50
+# a large crate's clearance (px between centres) from any other piece, and from a cart [Q1K-1]: its 48 px box drawn
+# end on had run into a crate beside it at Westwood's 31 px, and a sack, an apple crate or a cart beside it read as
+# one heap
+LARGE_CRATE = re.compile(r"^(Crate[12]|DarkCrate[12]|CrateSteel[1-4])$")
+LARGE_CRATE_GAP, LARGE_CRATE_CART = 48, 72
 # things that may touch: a fire's ring of stones, small stuff strewn on the ground
 LOOSE = re.compile(r"^(CaveRocks(Small|Pebbles|Tiny)|Rock\d|Flowers|Mushroom|Straw|Skull|ArmBone|LegBone|Brick\d|"
                    r"Corpse|Plant|Garden|IceCrack|Puddle|Weed|Grass|Foliage|Mining|MineOreCartWheel|SpiderWeb)")
@@ -71,11 +76,21 @@ def radius(t):
     return max(6.0, max(ex, ey) / 2 if ext == "BOX" else ex)
 
 
+def large_crate(t):
+    """A large crate: the 48 x 24 wooden, dark or steel crate (not a crate of apples)."""
+    return bool(LARGE_CRATE.match(t or ""))
+
+
 def gap(a, b):
     """The least distance (px) between the centres of two outdoor pieces of types a and b; 0: they may touch."""
     if LOOSE.match(a or "") or LOOSE.match(b or ""): return 0.0
     fa, fb = family(a), family(b)
     if "fire" in (fa, fb): return FIRE_GAP
+    # a large crate keeps its own clearance from everything (QA round 1, 2026-10-13 [Q1K-1]: "Large crates overall are
+    # too close to other objects. This seems consistent across every feature"; "the crates are on top of each other";
+    # "large crate too close to apple crate"; "crate too close to cart"): a house rule over Westwood's stacks (31 px)
+    if large_crate(a) or large_crate(b):
+        return LARGE_CRATE_CART if "cart" in (fa, fb) else LARGE_CRATE_GAP
     if "cart" in (fa, fb): return CART_GAP
     if fa and fb:
         g = PAIR.get((fa, fb)) or PAIR.get((fb, fa))
