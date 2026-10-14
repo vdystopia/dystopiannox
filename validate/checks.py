@@ -4346,7 +4346,7 @@ def shop_way_flags(m, r, kind):
     return []
 
 
-QA2_TEXT = {
+QA2_AXIS_TEXT = {
     "centre": "a composition is centred on the room's own middle, its pairs as far from their walls (QA round 2, "
               "Q2T-1: \"Center the hall in the room. There's a large gap on the northeast side\")",
     "facing": "a statue faces the entrance along the axis, a bench the aisle or the centrepiece (QA round 2, Q2T-3: "
@@ -4362,7 +4362,7 @@ def check_qa2(m, ctx, base):
         kind, _ = room_kind(r)
         for rule, text, o in qa2_axis_flags(m, r, kind) + shop_way_flags(m, r, kind):
             x, y = (o["x"], o["y"]) if o else centre(r["cells"])
-            out.append(F("qa2", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA2_TEXT[rule]}.", x, y,
+            out.append(F("qa2", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA2_AXIS_TEXT[rule]}.", x, y,
                          rule=f"qa2.{rule}"))
     return out
 
