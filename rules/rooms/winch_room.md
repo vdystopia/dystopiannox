@@ -42,6 +42,23 @@ composes the room by them after the recipe (its loose pieces are taken up first:
   average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
   and small gears are one kind at most and never count as pieces.
 
+## QA round 2 (2026-10-14, ledger `review/qa2/ledger.md` Q2V-4)
+
+The user, on the whole set (all five Fix, mean 3.0): "This whole set is pretty good, but overall, too cluttered with
+crates and barrels. Keep all of the gears and winch-themed objects. Lower the number of crates and barrels across all
+of these by 25%."
+
+- **Crates and barrels capped** (Q2T-8): at most 0.19 a floor tile (spec `sig`; round 2's rooms held 0.23-0.27), so the
+  five lab rooms hold 120 where round 2 held 163 (a quarter fewer); the top-up never adds them (its extras are cart
+  wheels). **Checked by** `composition.signature_cap` (`checks.SIGNATURE_CAPS["winch_room"]`: 0.24 a tile as the checker
+  counts tiles, at least 8; round 2's rooms held 0.29-0.33; STq2sig).
+- **The gears kept**: the winches (PulleyGear) as the recipe set them, the gear trains on the back walls, at least two big
+  gears (three from 100 tiles: `least`), small gears in a mirrored pair by every winch (`around ... every`), the lever
+  and wheels by the great winch; every kind of crate and barrel round 2 had kept (wood, dark and steel crates, steel and
+  tool barrels: `keep_kinds`), the S corner's heap led by a wood crate.
+- **Clear gaps** (Q2T-4): crates and barrels keep 0.9 units from a winch; where a winch stands by the S corner, the heap
+  moves a little along the wall.
+
 ## Density and openness
 
 | | Westwood's campaign (6 rooms, 6 maps) | Profile |

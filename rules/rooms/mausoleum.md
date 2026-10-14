@@ -46,6 +46,29 @@ composes the room by them after the recipe (its loose pieces are taken up first:
   average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
   and small gears are one kind at most and never count as pieces.
 
+## QA round 2 (2026-10-14, ledger `review/qa2/ledger.md` Q2V-1)
+
+The user (mean 3.2): RM-MAUSOLEUM-01/02: "Center the room." 02: "The iron casket is way too close to the two coffins."
+03: "Scattered mess. The coffins on the northeast wall are overlapping each other." 05: "Very poor layout. Everything
+clustered in the south corner. No flow." (04, rated 5, kept as it was.)
+
+- **Centred on the room** (Q2T-1): the axis is the room's middle across the line from the main door, not the door's
+  own line (`works.axis_along`); the outside door stands in its wall's middle (`building.CENTRE_DOOR_ROOMS`), so the
+  way in, the runner, the tomb and the statues share one line. A room whose middle falls between two units takes the
+  nearer whole unit (a carpet can only be centred on a square's middle or a seam).
+- **The runner centred as drawn** (Q2T-2): three squares across when the axis falls on a square's middle, two on a
+  seam, its trim whole (`Finish.carpet`, `SQUARE_V`); nothing stands on it (no coffin or statue pairs on the axis
+  itself: spec middle `on_axis` False).
+- **Clear gaps** (Q2T-4): a big piece (the tomb, a coffin, a statue, an obelisk, a monument, a crypt chest) keeps 0.9
+  units from every other piece (`works.BIG`, `BIG_GAP`); the coffins along the side walls move along until they clear
+  the tomb. Breakable coffins are placed by a coffin's box, not the small circle thing.bin gives them, so two never
+  overlap and each lies along its row (Q2T-3).
+- **A small mausoleum keeps the plan**: the tomb in the middle with its guard of statues in mirrored pairs at its near
+  and far ends (`tomb guard`), coffins mirrored on the side walls, obelisks and lights in mirrored corner pairs: never
+  everything beyond the tomb.
+- **No scatter**: bone heaps one unit (mirrored) for the whole room, never repeated by the top-up (walls `fixed`); no
+  single coffins among the extras (the extras are monuments).
+
 ## Density and openness
 
 | | Westwood's campaign (4 rooms, 2 maps) | Profile |
