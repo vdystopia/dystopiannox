@@ -85,10 +85,17 @@ namespace MapEditor
         public MainWindow(string[] args)
         {
             Instance = this;
+            // Headless rendering (--render-image, below) runs once per picture from the review tools: no splash, and
+            // the hidden window never takes focus from whatever the user is doing
+            headless = args.Length >= 3 && args[1] == "--render-image";
             // Show the loading splash screen
-            Splash spl = new Splash();
-            spl.Show();
-            spl.Refresh();
+            Splash spl = null;
+            if (!headless)
+            {
+                spl = new Splash();
+                spl.Show();
+                spl.Refresh();
+            }
             // Setup locales
             cultures = GetSupportedCultures();
             minimap = new Minimap();
@@ -139,8 +146,11 @@ namespace MapEditor
                 bool noWalls = args.Length > 4 && args[4] == "nowalls";
                 Shown += (s, e) => RenderImageAndExit(args[2], size, full, noWalls);
             }
-            spl.Close();
+            if (spl != null) spl.Close();
         }
+
+        private readonly bool headless;
+        protected override bool ShowWithoutActivation => headless;
 
         private void MainWindow_KeyDown(object sender, KeyEventArgs e)
         {
