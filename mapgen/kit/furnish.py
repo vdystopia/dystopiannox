@@ -3211,7 +3211,7 @@ class Furnisher:
     # pieces; the fourth, DunMirThroneFront, stands only in the multiplayer map Kingdoms, which the kit once copied
     THRONE = (("DunMirThroneShadow", -61, -29), ("DunMirThroneBack", -5, -26), ("DunMirThroneBase", 0, 0))
 
-    def place_throne(self, depth=2.9, clear=3.0, aisle=2.0, runner=True):
+    def place_throne(self, depth=2.9, clear=3.0, aisle=2.0, runner=True, at=None):
         """The throne of a throne room: Westwood's Dun Mir throne in its three pieces at Con06b's offsets. Its
         picture faces one way only, SE (Hecubah's throne in Con06b looks down a runner to the doors on its SE; the back
         piece lies along a NW wall), so it stands against the NW wall, straight across the room from the main door in
@@ -3226,7 +3226,10 @@ class Furnisher:
         for r in runs:
             lo, hi = r["lo"] + 2.6, r["hi"] - 2.6
             cands = []                                  # in line with the door, else as near it as the wall allows
-            for op in doors + [None]:
+            if at is not None:                          # the room's own middle (kit/civic.py; QA round 2, Q2T-1), else
+                op0 = next((op for op in doors if abs(op["along"] - at) <= 1.0), None)     # two squares to a side
+                cands = [(a, op0) for a in (at, at - 2, at + 2) if lo <= a <= hi]
+            for op in (doors + [None]) if at is None else ():
                 a0 = op["along"] if op else (r["lo"] + r["hi"]) / 2
                 if not lo - 3.0 <= a0 <= hi + 3.0: continue
                 cands += [(a, op if abs(a - a0) <= 1.0 else None) for k in range(13)
@@ -4274,7 +4277,12 @@ class Furnisher:
         A = _RT["assemblies"]["bar_counter"]
         series = A["side_series"]
         letters = A["letters"]
-        runs = {r["side"]: r for r in self.g.runs if r["hi"] - r["lo"] >= 6}
+        # every run of each side, not one per side: a wall with a notch comes out as two runs on one side, and keeping
+        # whichever came last had stood the bar's arms against a notch's short wall, both ends in the open (QA round 2,
+        # RM-TAVERN-04/05: "The bar must be connected to the wall at both ends")
+        runs_of = {}
+        for r in self.g.runs:
+            if r["hi"] - r["lo"] >= 6: runs_of.setdefault(r["side"], []).append(r)
         # corner of the room -> (wall sides, inner-corner direction signs, corner piece, u-run side, v-run side)
         corners = [("/|BR", "\\|BL", +1, -1, "BarCorner2", "low_v", "high_u"),   # back corner (top of screen)
                    ("/|BR", "\\|TR", +1, +1, "BarCorner3", "high_v", "high_u"),
@@ -4298,9 +4306,11 @@ class Furnisher:
         first = (self.rng.choice(arms), self.rng.choice(arms))
         sizes = [first] + [(a, b) for a, b in ((first[0] - 2, first[1]), (first[0], first[1] - 2),
                                                (first[0] - 2, first[1] - 2), (5, 7), (5, 5)) if a >= 5 and b >= 5]
-        for (us, vs, su, sv, corner, urun_side, vrun_side), (du, dv) in [(c, z) for c in corners for z in sizes]:
-            if us not in runs or vs not in runs: continue
-            ru, rv = runs[us], runs[vs]          # '/' wall (constant u) and '\' wall (constant v)
+        combos = [(c, z, a, b) for c in corners for z in sizes
+                  for a in sorted(runs_of.get(c[0], ()), key=lambda r: r["lo"] - r["hi"])
+                  for b in sorted(runs_of.get(c[1], ()), key=lambda r: r["lo"] - r["hi"])]
+        for (us, vs, su, sv, corner, urun_side, vrun_side), (du, dv), ru, rv in combos:
+            # ru: the '/' wall (constant u), rv: the '\' wall (constant v)
             # each run is anchored on its own wall line ('/' walls lie on odd u, '' walls on even v), so
             # with odd offsets the last piece always sits 1 unit from the wall
             U = ru["coord"] + su * du; V = rv["coord"] + sv * dv
@@ -4312,6 +4322,12 @@ class Furnisher:
             while (v - rv["coord"]) * sv >= 0.9:
                 pieces.append((series[vrun_side], U, v)); v -= sv * 2
             if len(pieces) < 4: continue
+            # each arm ends against its own wall: the u-run meets ru where ru runs (V within its stretch), the v-run
+            # meets rv (U within its stretch), and the floor the bar encloses is all the room's (no notch inside it)
+            if not (ru["lo"] + 1.0 <= V <= ru["hi"] - 1.0 and rv["lo"] + 1.0 <= U <= rv["hi"] - 1.0): continue
+            lo_u, hi_u = sorted((ru["coord"] + su * 0.6, U)); lo_v, hi_v = sorted((rv["coord"] + sv * 0.6, V))
+            if not all(self.g.inside(lo_u + (hi_u - lo_u) * a / 4, lo_v + (hi_v - lo_v) * b / 4)
+                       for a in range(5) for b in range(5)): continue
             # the pass-through flap sits mid-run with counter on both sides (Westwood: 2-6 units from
             # the corner, never at an end), on the v-run, the only axis Westwood uses for it
             vrun = [i for i, p in enumerate(pieces) if p[0] == series[vrun_side]]
@@ -4347,6 +4363,7 @@ class Furnisher:
             self.wall_used.append((("\\", rv["coord"]), min(ru["coord"], U) - 0.5, max(ru["coord"], U) + 0.5))
             self.bar_stools(typed, U, V, su, sv, series[urun_side], series[vrun_side])
             self.bar_casks(ru, rv, U, V, su, sv)
+            self.bar_frame = dict(ru=ru, rv=rv, U=U, V=V, su=su, sv=sv)    # (kit/civic.py lays the floor behind it)
             # kegs behind the bar, against the back walls
             # (barrels and piles: the great casks stand outside it, bar_casks; Con07B's five Barrel2 behind its bar)
             kegs = [t for t in ("Barrel", "Barrel2", "PiledBarrels1") if self.ok_type(t)] or ["Barrel"]
@@ -4405,7 +4422,7 @@ class Furnisher:
             for wall, end in ((ru, V), (rv, U)):
                 pts = []
                 for k in range(2):
-                    off = k0 + hc + 2 * hc * k + 0.1 * k
+                    off = k0 + hc + 2 * hc * k + 0.8 * k     # apart, never touching (RM-TAVERN-04, Q2T-4)
                     if wall is ru: pts.append((ru["coord"] + su * (hc + 0.15), end + sv * off))
                     else: pts.append((end + su * off, rv["coord"] + sv * (hc + 0.15)))
                 got = []

@@ -907,6 +907,9 @@ ALTAR_ROOMS = ("chapel", "dark_chapel", "coven")
 # the main door of a room laid out about its door's line stands in the middle of its wall (QA round 1, RM-CHAPEL-09:
 # "Center the door, altar, benches and pillars in the room"; Q1C-2): the altar rooms and the crypts
 CENTRE_DOOR_ROOMS = ALTAR_ROOMS + ("crypt", "dark_crypt")
+# and the civic rooms composed on an axis (QA round 2, Q2T-1: "Center the hall in the room"; "The room is not centered"):
+# their composition takes the room's middle (kit/civic.py axis), and the door that sets it stands there too
+CENTRE_DOOR_ROOMS += ("throne_room", "gallery", "hall", "great_hall")
 # building styles whose every door is the culture's double door (QA round 1, RM-CRYPT-10)
 DOUBLE_DOOR_STYLES = {"lotd_ornate": "LOTDHalfDoor", "lotd_crypt": "LOTDHalfDoor"}
 ALTAR_AXIS = 6.0         # units an inner door keeps from the line of an altar room's main door
