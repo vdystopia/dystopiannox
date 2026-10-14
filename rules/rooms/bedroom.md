@@ -168,3 +168,22 @@ holds (`kit/finish.py _bedroom`; sizes as the checker counts tiles, the kit's ro
 - Checked by `rooms.qa1_fullness` (`checks.bedroom_zones`; planted STq1Bed): a seating group from 16 tiles (a closet
   keeps its desk chair), the work and storage zones from 40, the hearth from 80, the kinds, no repeated rug or table.
   Round 2's 06 (no storage zone) and 10 (no seating group, a rug repeated) fail it; round 3's pass but for 02 (15 tiles).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2F-3, Q2T-5)
+
+Rated 4.0, all five Fix. RM-BEDROOM-01/04/05: "Limit bedrooms to one of the benches ... and make sure they are always
+against the wall not in the middle of the room" (two benches had faced each other across a rug mid-floor). -02: "two
+chairs facing each other ... But no table. Make sure that there is a table in between two chairs". -03: "the one on the
+right is sticking out too far. Move the one on the right back towards the wall a little bit so that it's lined up with
+the one on the left." Now (`kit/finish.py _bedroom`):
+- **One bench at most, flush against a wall** (`_one_bench`, `_wall_bench`): the bench pair across a rug and the chairs
+  facing across a rug are gone from the seating group; a bench off its wall is taken up and one set flush on the
+  longest free stretch (a front wall first); `_front_wall_piece` never adds a second.
+- **The seating group is always a table with two chairs** (`_seating`, `set_on_rug`): in the bed-less half, else
+  anywhere clear of the bed, chest and doors; in a small bedroom whose one set is its desk, the desk gives way and a
+  bookcase takes a back wall (`_shelf_for_desk`), so the room keeps its count. Two chairs facing with no table between
+  are taken up.
+- **Chests flush and lined up**: a chest standing more than 0.4 off its wall is set again (`_chest`); the storage
+  zone's second chest stands at the depth of a chest already on that wall, never in a corner (`_storage_zone`).
+- Checked: `rooms.qa2_wall` (planted STq2Wal: a chest off its wall; STq2Mid: a bench mid-floor; STq2Lin: two chests at
+  two depths).

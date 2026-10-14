@@ -93,3 +93,17 @@ The room is composed whole now (`kit/finish.py _conservatory`; the recipe above 
 - Round 2 (fullness): a pair of statues flanking the first fountain along the room's length, facing it; four clumps of
   plants on dirt at each fountain's diagonals in a room of 90+ tiles or with two fountains, mirrored; a small room
   (under 80 tiles) plants its front walls' ends as well. Checked by `rooms.qa1_fullness`.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2F-4)
+
+Rated 4.2. RM-CONSERVATORY-04/05: "The two benches are in a strange configuration, with one in front of the other" (a
+bench set 1.9 units out from a back wall before its dirt bed, the other flush across from it but off its line). -01:
+"The blending of the cobblestone around the northwest well is excellent. Very, very good" (kept: the paving square and
+its BlendEdge are unchanged). Now (`kit/finish.py conservatory_benches`):
+- **Benches flush against the two long walls, facing each other across the fountain**, both or neither, shifted
+  together along the walls when the fountain's line is taken; else two side by side on one long wall; else one centred
+  on a wall. Laid after the apple trees and before the plants, which keep clear of them; a plant at either end of each
+  bench, mirrored.
+- The statues flanking the fountain stand 3.6 units off it (0.7 clear, Q2T-4); the two crop beds take two crops; a
+  barrel of tools that no corner took stands flush on a wall (two in a room of 140 tiles).
+- Checked: `rooms.qa2_wall` (a bench off its wall).

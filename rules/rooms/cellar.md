@@ -91,3 +91,16 @@ bare corner; a stack of four kegs in the middle from 32 tiles. Westwood's run ca
 rule (`Furnisher.lift_runs`; the checker's `pieces.run` skips cellars; the grammar lets a cellar heap stock in the open
 from 30 tiles). The great casks keep 0.8 units as drawn. A cellar reads as a cellar by its kegs of every kind and its
 casks (`kit/roomtypes.py` signature). Checked by `rooms.qa1_fullness` too.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2F-1, Q2T-4)
+
+Rated 4.4; RM-CELLAR-01/05 "The steel crate in the north corner is too close to the stack of barrels"; -04 "The two
+crates on the south side of the southeast wall are too close to each other and touching". Now:
+- **Crates stand apart** (`kit/gaps.py`, the furnisher's own rule for every room): a crate keeps 0.5 units from any other
+  piece and 0.8 from another crate; a crate group on a wall is two at most, spaced, and starts a gap off the stack at
+  its stretch's end (`kit/finish.py cellar_walls`). Kegs of a heap may still touch (a heap is one piece).
+- **The great casks** of a two-cask cellar keep a full CASK_CLEAR (0.8) between them as drawn.
+- **Never emptier:** a kind the gaps cost comes back flush on a free stretch (`cellar_kinds`), and kegs in pairs top the
+  cellar up to 0.5 stores per tile (`cellar_fill`); a narrower middle takes a pair of kegs along the room's length
+  (`cellar_stack`).
+- Checked: `rooms.qa2_gap` (planted STq2Gap).

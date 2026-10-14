@@ -48,11 +48,17 @@ def _ww_types():
         return json.load(f)["types"]
 
 
+# kinds only a culture's building holds, among its options (kit/identity.py ROLE_OPTIONS), never a town house: the ogres'
+# pen in their keep (QA round 2, Q2F-6: "The ogre pen should be on an ogre tile set. This is using human buildings and
+# floors"; Westwood's pens, Con11a: DungeonStone walls, GreenBrick floors with patches of DirtDark2)
+OPTION_HOSTED = {"ogre_pen"}
+
+
 def hosts(kind):
     """[(role, building style, furnishing style)] of every building role whose program holds the kind."""
     out = []
     for role, r in BUILDINGS.items():
-        if any(k == kind for k, _ in r["rooms"]):
+        if any(k == kind for k, _ in r["rooms"]) or                 kind in OPTION_HOSTED and any(k == kind for k, _ in r.get("options", ())):
             st = r["style"]
             out.append((role, st, r.get("furnish") or STYLE_FURNISH.get(st, "town")))
     return out or [("lab", "stone_house", "town")]

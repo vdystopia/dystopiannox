@@ -23,6 +23,7 @@ from kit.model import Room
 from kit.identity import WESTWOOD_KIND, ROOMS as ROOM_IDENTITY, ROOM_COVER, ROOM_COVER_DEFAULT
 from kit.roomtypes import profile as room_profile, KIND_TYPE
 from kit import objects as OBJ
+from kit import gaps as GP
 
 K = CELL / math.sqrt(2)            # px per uv unit
 AGENT = 0.75                       # uv radius kept free for walking (~12 px)
@@ -743,6 +744,7 @@ class Furnisher:
                 any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in self.far_ways):
             return None                                 # never a column or statue in line with a door
         if not self.g.fits(u, v, hu, hv, blocking, wall_ok, wall_min=0.1 if snug else 0.25, touch=touch): return None
+        if not self._gaps_ok(t, u, v, hu, hv, blocking, layer): return None
         fam = _family_of(t)
         if fam in RUG_WHOLE or fam == "rug":           # tables, desks and beds stay off rugs
             for tt, rec in self._typed:
@@ -755,6 +757,22 @@ class Furnisher:
         o = self.put(t, u, v, blocking, layer, **extra)
         if self._group is not None: self._group.append(self._placed_of[id(o)])
         return o
+
+    def _gaps_ok(self, t, u, v, hu, hv, blocking, layer):
+        """QA round 2 (Q2T-4, kit/gaps.py): separate pieces keep a clear gap (a crate, a chest or a heap's member 0.35
+        units from what is not of its heap or set, a big piece 0.7), a rug clear of a fireplace; a heap's members, a
+        seat at its table and the pieces of the group being composed may stand closer. Lights and set pieces are
+        placed as their composers set them."""
+        if self.placing_light or self.set_piece or layer == "wall": return True
+        exempt = {id(r_) for r_ in (self._group or ())}
+        me = (u, v, hu, hv)
+        for tt, rec in self._typed:
+            if rec[5] == "wall" or id(rec) in exempt: continue
+            if not (blocking and rec[4]) and not (GP.RUG.match(t) or GP.RUG.match(tt)): continue
+            need = GP.need(t, tt)
+            if need and GP.box_gap(me, rec) < need:
+                self.kb_refused["gap"] += 1; return False
+        return True
 
     # ---- the object knowledge base (kit/objects.py; Harrowby playtest, review/FEEDBACK.md HB-1..HB-5) -------------
     def _kb_ok(self, t, u, v, hu, hv, blocking, layer):

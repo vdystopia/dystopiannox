@@ -101,3 +101,21 @@ walls and a few more objects."
 - Round 2: a barracks of 110+ tiles takes the crew's boards down its middle along its length (two long tables end on,
   benches both sides) with a pair of armour stands at the row's ends, mirrored; a small room whose back walls are
   taken puts its racks on any wall. Checked by `rooms.qa1_fullness`.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2F-2)
+
+Rated 3.8. The user's chest rule for the set: "if there is one treasure chest, put it against the wall. If there are 6
+or fewer beds, multiple treasure chests can be placed, put them at the foot of every bed facing away from the bed"
+(RM-BARRACKS-01/03/05 "fix chest"). -02 "Needs more banners or trophies on the northwest wall, especially the north
+corner"; -03 "Slightly too much armor and weaponry in the south corner". Now (`kit/finish.py _barracks`):
+- **Chests, two arrangements only** (`_barracks_chests`, placed right after the bunks): with six beds or fewer
+  (`BARRACKS_FOOT_CHESTS`), a chest at every bed's foot, 0.5 units off it, its back to the bed (the variant for the bed's
+  head wall), all or none; otherwise (or when a foot has no room) one chest flush against a wall, centred on its free
+  stretch. Nothing else.
+- **Racks** take at most 0.7 of their wall's stretch, centred (`RACK_SHARE`), and a big room's second row is half as
+  long, on another wall, kept 3 units clear of the first row's ends, so two rows never meet in a corner.
+- **Back walls dressed to their corners:** hangings (arms, tapestries, trophies) on every bare stretch of the NE and NW
+  walls, 0.6 units from the corners (`hang_backs(edge=0.6)`).
+- A heap of kegs and barrels of tools flush on the wall the racks left bare (a front wall first), kept off the racks:
+  the room's fullness from other kinds than arms (Q2T-8).
+- Checked: `rooms.qa2_gap`, `rooms.qa2_wall` (a chest flush; planted STq2Wal, STq2Mid).

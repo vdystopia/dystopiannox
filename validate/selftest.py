@@ -754,6 +754,46 @@ def q1_hearth(m):
     _declare(m, "living_room"); m.obj("Fireplace3", 206, 9.1)  # Q1R-19: a hearth on the bare boards
 
 
+# ---- QA round 2's shared room rules (review/qa2/ledger.md Q2T-4, Q2T-5; validate/checks.py check_qa2_space) --------
+def q2_crates_touch(m):
+    _declare(m, "cellar")                                      # Q2T-4: RM-CELLAR-04 "two crates ... touching"
+    for u in (206, 209): m.obj("Crate1", u, 9.1)
+
+
+def q2_big_close(m):
+    _declare(m, "shrine")                                      # Q2T-4: RM-SHRINE-02 "The mana obelisk is too close to the statue"
+    m.obj("Statue2a", 210, 0); m.obj("ObeliskPrimitive", 211.4, 0)
+
+
+def q2_rug_fire(m):
+    _declare(m, "living_room")                                 # Q2T-4: RM-TAVERN-01 "the bearskin rug ... too close to the fireplace"
+    m.obj("Fireplace3", 206, 9.1); m.obj("BearskinRug1", 206, 6.24)
+
+
+def q2_chest_out(m):
+    _declare(m); m.obj("Chest3", 210, 8.6)                     # Q2T-5: RM-BEDROOM-03 a chest "sticking out too far"
+
+
+def q2_bench_mid(m):
+    _declare(m); m.obj("Bench1", 208, 0)                       # Q2T-5: RM-BEDROOM-01 a bench "in the middle of the room"
+
+
+def q2_chests_unlined(m):
+    _declare(m)                                                # Q2T-5: RM-BEDROOM-03 "lined up with the one on the left"
+    m.obj("Chest3", 205, 9.5); m.obj("Chest3", 209, 9.2)
+
+
+def q2_chests_scattered(m):
+    _declare(m, "barracks")                                    # Q2F-2: "fix chest": three beds, two chests anywhere
+    for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
+    m.obj("Chest3", 206, -9.2); m.obj("Chest3", 214, -9.2)
+
+
+def q2_ogre_pen_in_house(m):
+    _declare(m, "ogre_pen")                                    # Q2F-6: "This is using human buildings and floors"
+    m.obj("OgreStraw1", 204, 6)
+
+
 def _cellar(m):
     """A walled cellar away from the meadow (no way in on foot)."""
     m.room(280, 300, -10, 10, wall="BrickPlain", floor="GreenBrick")
@@ -1232,6 +1272,14 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1Hth", q1_hearth, "rooms", "warning", "a hearth on the bare boards - Q1R-19", "no hearth of brick"),
     ("STq1Emp", q1_empty, "rooms", "warning", "a big cellar of three barrels - Q1R-23", "too empty"),
     ("STq1Bed", q1_bare_bedroom, "rooms", "warning", "a bare bedroom with a twin rug - Q1R-23", "one rug repeated"),
+    ("STq2Gap", q2_crates_touch, "rooms", "warning", "two crates touching in a cellar - Q2T-4", "units apart (separate"),
+    ("STq2Big", q2_big_close, "rooms", "warning", "an obelisk by a statue - Q2T-4", "a big piece keeps"),
+    ("STq2Rug", q2_rug_fire, "rooms", "warning", "a rug against a fireplace - Q2T-4", "clear of a fire"),
+    ("STq2Wal", q2_chest_out, "rooms", "warning", "a chest standing out from its wall - Q2T-5", "units off the"),
+    ("STq2Mid", q2_bench_mid, "rooms", "warning", "a bench alone mid-floor - Q2T-5", "alone in the middle"),
+    ("STq2Lin", q2_chests_unlined, "rooms", "warning", "two chests at two depths on one wall - Q2T-5", "not lined up"),
+    ("STq2Chs", q2_chests_scattered, "rooms", "warning", "a barracks' chests off the beds' feet - Q2F-2", "at a bed's foot"),
+    ("STq2Ogr", q2_ogre_pen_in_house, "rooms", "warning", "an ogre pen in a town house - Q2F-6", "a town house's"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),

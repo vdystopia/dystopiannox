@@ -240,7 +240,8 @@ def line_pair(f, rng, base="Bookcase", n=2, min_len=None, sides=BACK):
         ha, hp = (hv, hu) if r["line"] == "/" else (hu, hv)
         need = 2 * ha * n + 0.4
         for a0, a1 in free_stretches(f, r):
-            a0, a1 = max(a0, r["lo"] + 1.3), min(a1, r["hi"] - 1.3)
+            # (0.25 more off what stands at its ends: separate pieces keep a gap, kit/gaps.py, Q2T-4)
+            a0, a1 = max(a0 + 0.25, r["lo"] + 1.3), min(a1 - 0.25, r["hi"] - 1.3)
             if a1 - a0 >= max(need, min_len or 0) and (best is None or a1 - a0 > best[0]):
                 best = (a1 - a0, r, t, (a0 + a1) / 2, ha, hp)
     if not best: return []
@@ -310,6 +311,7 @@ class _State:
 
 
 from kit import furnish as F  # noqa: E402  (after the helpers: furnish imports this module lazily)
+from kit import gaps as GP  # noqa: E402
 
 
 # ---- bedroom (Q1R-3..7) ------------------------------------------------------------------------------------------
@@ -357,6 +359,7 @@ def _bedroom(f, rng):
     _no_twin_rugs(f, rng)
     _kinds_goal(f, rng, BEDROOM_KINDS[2] if tiles >= BEDROOM_HEARTH else BEDROOM_KINDS[1] if tiles >= BEDROOM_WORK
                 else BEDROOM_KINDS[0])
+    _one_bench(f, rng)
     if not items(f, CHEST) and head_wall(f, bed):  # the chest at the bed's foot, a little further out if need be
         r, a, _ = head_wall(f, bed)
         t = variant(f, "Chest", r["side"])
@@ -394,70 +397,144 @@ def visible_kinds(f):
 
 
 def _seating(f, rng, bed):
-    """Every bedroom's seating group: a table with two chairs drawn up, else (a small room whose one set is its desk)
-    two benches facing each other across a rug, in the half of the room without the bed."""
+    """Every bedroom's seating group: a table with two chairs drawn up, in the half of the room without the bed, else on
+    any spot of the room that takes it; a small bedroom whose one set is its desk lets the desk give way to it (one set
+    to a bedroom, HB-3). Never two benches facing across a rug in the middle of the room, nor two chairs facing with no
+    table between (QA round 2, Q2F-3: "Limit bedrooms to one of the benches ... always against the wall not in the
+    middle of the room"; RM-BEDROOM-02 "two chairs facing each other ... But no table")."""
+    lost = []
     for o, t, rec in items(f, TABLE):
         k = len([x for x in items(f, SEAT) if max(abs(x[2][0] - rec[0]) - x[2][2] - rec[2],
                                                    abs(x[2][1] - rec[1]) - x[2][3] - rec[3]) < 0.8])
         if k < 2: k += f.seats_around((rec[0], rec[1]), t, 2 - k, "chair")    # a second chair drawn up
         if k >= 2: return
+        seats = _with_seats(f, rec)                                         # a table that seats one: set again
+        lost += [(t, rec[0], rec[1])] + [(x[1], x[2][0], x[2][1]) for x in seats]
+        remove(f, [x[0] for x in seats] + [o])
+    if _seat_group(f, bed): return
+    for tt, u, v in lost: restore(f, tt, u, v)                               # nowhere: as it was
+    if os.environ.get("NOX_FINISH_DEBUG"): print("seating none", f.room.id)
+
+
+def _seat_group(f, bed):
     _, other = _halves(f, bed)
     cu, cv = (other[0] + other[1]) / 2, (other[2] + other[3]) / 2
     spot = _near_spot(f, cu, cv, rad=1.8)
-    if spot and table_set(f, *spot): return
-    # the bench pair across a rug: the first spot of the bed-less half (nearest its middle) where both benches stand,
-    # either way round
+    if spot and set_on_rug(f, *spot): return True
     U0, U1, V0, V1 = box(f)
     cands = sorted(((U0 + 1.5 + 0.5 * i, V0 + 1.5 + 0.5 * j)
                     for i in range(int((U1 - U0 - 3) / 0.5) + 1)
                     for j in range(int((V1 - V0 - 3) / 0.5) + 1)),
                    key=lambda p_: (p_[0] - cu) ** 2 + (p_[1] - cv) ** 2)
-    if not cands: cands = [(cu, cv)]
-    for su, sv in cands[:80]:
-        if not f.g.inside(su, sv) or not clear_at(f, su, sv, 0.6): continue
-        for long_u in (True, False):
-            b = next((x for x in (("Bench2", "Bench3") if long_u else ("Bench1", "Bench4")) if f.ok_type(x)), None)
-            if not b: continue
-            hb = f.half(b)
-            d = (hb[1] if long_u else hb[0]) + 0.9
-            pts = [(su, sv - d), (su, sv + d)] if long_u else [(su - d, sv), (su + d, sv)]
-            got = [force_put(f, b, u, v) for u, v in pts]
-            if all(got):
-                rug = _rug_type(f, rng, avoid=[t for _, t, _ in items(f, RUG)])
-                ok = False
-                if rug and not on_carpet(f, su, sv, pad=1.0):
-                    rh = f.half(rug)                 # the rug under the pair: inside the room, on no other rug
-                    if all(f.g.inside(su + a * rh[0], sv + b * rh[1]) for a in (-1, 1) for b in (-1, 1)) and                             not any(F.Furnisher._overlap(su, sv, rh[0], rh[1], rr) for _, _, rr in items(f, RUG)):
-                        ok = f.put(rug, su, sv, False)
-                if os.environ.get("NOX_FINISH_DEBUG"): print("benchrug", f.room.id, rug, bool(ok), [t for _, t, _ in items(f, RUG)])
-                return
-            remove(f, [g for g in got if g])
-    # a small room: two chairs facing each other across a small rug, drawn up to each other (a sitting pair)
-    seats = f.types_of("chair") or {"WoodenChair1": 1}
-    base = f.palette_seat("chair", seats) or "WoodenChair"
-    for su, sv in cands[:120]:
-        if not f.g.inside(su, sv) or not clear_at(f, su, sv, 0.4): continue
-        # (clear of the bed, the chest and the door: the pair had crowded a bed's foot)
-        if any(max(abs(su - rr[0]) - rr[2], abs(sv - rr[1]) - rr[3]) < 2.0 for _, _, rr in items(f, BED + "|" + CHEST)):
-            continue
-        if not _no_door(f, su, sv, 3.0): continue
-        for ax in ("u", "v"):
-            pts = [(su - 0.9, sv), (su + 0.9, sv)] if ax == "u" else [(su, sv - 0.9), (su, sv + 0.9)]
-            dirs = ["+u", "-u"] if ax == "u" else ["+v", "-v"]
-            got = []
-            for (u, v), d in zip(pts, dirs):
-                ct = ((f.chair_facing.get(base, {}) or {}).get(d) or {}).get("variant")
-                ct = ct if ct and f.ok_type(ct) else next((c for c in sorted(seats) if c.startswith(base)), "WoodenChair1")
-                got.append(force_put(f, ct, u, v))
-            if all(got):
-                rug = _rug_type(f, rng, avoid=[t for _, t, _ in items(f, RUG)])
-                if rug and not on_carpet(f, su, sv, pad=0.8):
-                    rh = f.half(rug)
-                    if all(f.g.inside(su + a * rh[0], sv + b * rh[1]) for a in (-1, 1) for b in (-1, 1)) and                             not any(F.Furnisher._overlap(su, sv, rh[0], rh[1], rr) for _, _, rr in items(f, RUG)):
-                        f.put(rug, su, sv, False)
-                return
-            remove(f, [g for g in got if g])
-    if os.environ.get("NOX_FINISH_DEBUG"): print("seating none", f.room.id, len(cands), [round(x, 1) for x in other])
+    def anywhere():
+        for su, sv in cands[:160]:
+            if not f.g.inside(su, sv) or not clear_at(f, su, sv, 1.0): continue
+            # (clear of the bed, the chest and the door)
+            if any(max(abs(su - rr[0]) - rr[2], abs(sv - rr[1]) - rr[3]) < 1.6 for _, _, rr in items(f, BED + "|" + CHEST)):
+                continue
+            if not _no_door(f, su, sv, 2.8): continue
+            if set_on_rug(f, su, sv): return True
+        return False
+    if anywhere(): return True
+    # the desk gives way: a table set where it stood, else anywhere; the desk back when none fits
+    for o, t, rec in items(f, r"^Desk\d$")[:1]:
+        seats = _with_seats(f, rec)
+        keep = [(t, rec[0], rec[1])] + [(x[1], x[2][0], x[2][1]) for x in seats]
+        remove(f, [o] + [x[0] for x in seats])
+        w = run_of(f, rec)
+        if w:                                     # where it stood: a step further out, its chairs along the wall
+            r = w[0]
+            th = halves_on(r, (0, 0) + f.half("SquareTable1"))[1]
+            sp = uv_on(r, th + 0.35, along_of(r, rec[0], rec[1]))
+            if table_set(f, *sp, axis="v" if r["line"] == "/" else "u"): return _shelf_for_desk(f)
+        if anywhere(): return _shelf_for_desk(f)
+        for tt, u, v in keep: restore(f, tt, u, v)
+    return False
+
+
+def _shelf_for_desk(f):
+    """The desk gave way to the seating group: a back wall takes a pair of bookcases (else one, at the first spot of
+    its stretch that takes it) instead, so the room keeps its count and kinds of pieces. Returns True."""
+    rng = _rng(f, "deskshelf")
+    if line_pair(f, rng, "Bookcase", 2, min_len=2.4): return True
+    for r in sorted((r for r in f.g.runs if r["side"] in BACK), key=lambda r: -(r["hi"] - r["lo"])):
+        t = variant(f, "Bookcase", r["side"])
+        if not t or not f.ok_type(t): continue
+        hp = halves_on(r, (0, 0) + f.half(t))[1]
+        for a0, a1 in sorted(free_stretches(f, r), key=lambda s_: s_[0] - s_[1]):
+            a0, a1 = max(a0, r["lo"] + 1.3), min(a1, r["hi"] - 1.3)
+            ha = halves_on(r, (0, 0) + f.half(t))[0]
+            mid = (a0 + a1) / 2
+            for k in range(24):                       # from the stretch's middle outward (a carpet's edge may take it)
+                a = mid + (k // 2) * 0.35 * (1 if k % 2 else -1)
+                if a - ha >= a0 and a + ha <= a1 and put(f, t, *uv_on(r, hp + F.SNUG_GAP["shelves"], a)): return True
+    return True
+
+
+def set_on_rug(f, u, v, axis=None):
+    """A small table with two chairs drawn up at (u, v), on a rug of its own when the floor there is bare and the room
+    has a rug design to spare (the sitting group that took the place of round 2's chairs facing across a rug).
+    Returns the pieces, or []."""
+    got = table_set(f, u, v, axis=axis)
+    if not got or on_carpet(f, u, v, pad=1.2) or items(f, RUG) and len(items(f, RUG)) >= 2: return got
+    rug = _rug_type(f, random.Random(zlib.crc32(f"setrug:{f.room.id}".encode())), avoid=[t for _, t, _ in items(f, RUG)])
+    if not rug: return got
+    rh = f.half(rug)
+    if not all(f.g.inside(u + a * rh[0], v + b * rh[1]) for a in (-1, 1) for b in (-1, 1)) or \
+            any(F.Furnisher._overlap(u, v, rh[0], rh[1], rr) for _, _, rr in items(f, RUG)):
+        return got
+    keep = [(o["type"], f._placed_of[id(o)][0], f._placed_of[id(o)][1]) for o in got]
+    remove(f, got)                                   # the rug first, the set on it
+    r_ = put(f, rug, u, v, blocking=False)
+    again = table_set(f, u, v, axis=axis)
+    if again: return again
+    if r_: f._remove(r_)
+    for t, uu, vv in keep: restore(f, t, uu, vv)
+    return [o for o, _, _ in items(f, TABLE)][:1]
+
+
+def _wall_bench(f):
+    """One bench flush against the longest free stretch of a wall (a front wall first), when the room has none."""
+    if items(f, BENCH_RX): return None
+    cands = []
+    for r in f.g.runs:
+        for b in ("Bench1", "Bench2", "LightBench1", "LightBench2"):
+            t = f.along_variant(b, r["side"])
+            if not t or not f.ok_type(t): continue
+            ha, hp = halves_on(r, (0, 0) + f.half(t))
+            for a0, a1 in free_stretches(f, r):
+                a0, a1 = max(a0, r["lo"] + 1.2), min(a1, r["hi"] - 1.2)
+                if a1 - a0 >= 2 * ha + 0.3: cands.append(((r["side"] not in BACK, a1 - a0), r, t, (a0 + a1) / 2, hp))
+    for _, r, t, a, hp in sorted(cands, key=lambda c: c[0], reverse=True):
+        for d in (F.SNUG_GAP["bench"], 0.45):
+            o = put(f, t, *uv_on(r, hp + d, a))
+            if o: return o
+    return None
+
+
+BENCH_RX = r"^(Bench\d|LightBench\d|CushionedBench\d)$"
+
+
+def _one_bench(f, rng):
+    """At most one bench in a bedroom, flush against a wall (QA round 2, Q2F-3, Q2T-5: "Limit bedrooms to one of the
+    benches ... and make sure they are always against the wall not in the middle of the room"); two chairs facing each
+    other with no table between go (RM-BEDROOM-02)."""
+    from kit import gaps as GP
+    benches = items(f, BENCH_RX)
+    flush = []
+    for o, t, rec in benches:
+        w = run_of(f, rec, reach=GP.FLUSH)
+        if w: flush.append((w[2], o))
+    keep = min(flush, key=lambda x: x[0])[1] if flush else None
+    remove(f, [o for o, _, _ in benches if o is not keep])
+    if keep is None: _wall_bench(f)                  # (the bench kind kept: round 2's rooms had one or two)
+    sets = items(f, TABLE + r"|^Desk\d$|^Fireplace\d")
+    lone = [x for x in items(f, r"Chair\d*$") if not any(
+        max(abs(x[2][0] - s_[2][0]) - x[2][2] - s_[2][2], abs(x[2][1] - s_[2][1]) - x[2][3] - s_[2][3]) <
+        (2.6 if s_[1].startswith("Fireplace") else 0.8) for s_ in sets)]
+    pairs = [(a, b) for i, a in enumerate(lone) for b in lone[i + 1:]
+             if math.hypot(a[2][0] - b[2][0], a[2][1] - b[2][1]) < 2.6]
+    remove(f, list({id(x[0]): x[0] for p_ in pairs for x in p_}.values()))
 
 
 def _work_zone(f, rng, bed):
@@ -542,10 +619,19 @@ def _storage_zone(f, rng, bed):
                      next((f.side_variant(x, r, "shop_rack") or x for x in types), None))
                 if not t or not f.ok_type(t): continue
                 hp = halves_on(r, (0, 0) + f.half(t))[1]
+                depth = hp + 0.3
+                if what == "chest":
+                    # flush, at the depth of a chest already on this wall (RM-BEDROOM-03: "the one on the right is
+                    # sticking out too far ... lined up with the one on the left"; Q2F-3, Q2T-5)
+                    depth = hp + F.SNUG_GAP["storage"]
+                    for _, _, crec in items(f, CHEST):
+                        cw = run_of(f, crec, reach=0.6)
+                        if cw and cw[0] is r: depth = perp_of(r, crec[0], crec[1]); break
+                end = 2.2 if what == "chest" else 1.2          # (a chest never in a corner, Q1R-4)
                 for a0, a1 in sorted(free_stretches(f, r), key=lambda s_: near_other(r, *s_)):
-                    a0, a1 = max(a0, r["lo"] + 1.2), min(a1, r["hi"] - 1.2)
+                    a0, a1 = max(a0, r["lo"] + end), min(a1, r["hi"] - end)
                     if a1 - a0 < 1.4: continue
-                    if scan_put(f, t, r, a0, a1, hp + 0.3, force=(what == "chest")):
+                    if scan_put(f, t, r, a0, a1, depth, force=(what == "chest")):
                         done = True; break
 
 
@@ -747,7 +833,8 @@ def _seat_bare_tables(f):
 def _front_wall_piece(f, rng, force=False):
     """A bench centred on the longest bare front wall (SE or SW) of a bedroom of 30 tiles or more: those walls stood bare
     (round 2: "the SE/SW walls bare"; the brief: "Front walls: a desk or a small table with its chair; a bench")."""
-    if not force and (len(f.room.tiles) < 30 or items(f, r"^(Bench\d|LightBench\d|CushionedBench\d)$")): return
+    if items(f, r"^(Bench\d|LightBench\d|CushionedBench\d)$"): return          # one bench at most (Q2F-3)
+    if not force and len(f.room.tiles) < 30: return
     best = None
     for r in f.g.runs:
         if r["side"] in BACK: continue
@@ -950,7 +1037,8 @@ def _chest(f, bed, w, rng):
     def good(c):
         if _at_foot(f, c[2], bed_rec, r): return True
         cw = run_of(f, c[2])
-        return bool(cw) and not _in_corner(f, c[2], cw) and _centred_on_stretch(f, c[2], cw)
+        # (flush against its wall: RM-BEDROOM-03 "sticking out too far", Q2F-3, Q2T-5)
+        return bool(cw) and cw[2] <= 0.4 and not _in_corner(f, c[2], cw) and _centred_on_stretch(f, c[2], cw)
     if chests and all(good(c) for c in chests): return
     t0 = chests[0][1] if chests else "Chest1"
     remove(f, [c[0] for c in chests])
@@ -1103,7 +1191,7 @@ def _types(f, rx):
     return sorted(t for t in f.things if re.match(rx, t) and f.ok_type(t))
 
 
-def wall_row(f, rng, kinds, n, sides=BACK, skip_runs=(), gap=0.5, min_n=2, near_end=False):
+def wall_row(f, rng, kinds, n, sides=BACK, skip_runs=(), gap=0.5, min_n=2, near_end=False, share=1.0, avoid=(), keep=3.0):
     """A row of up to `n` pieces against one wall, centred on its longest free stretch, the kinds alternating (one kind
     never side by side: kit/objects.py runs, HB-5), even gaps: a row reads as one deliberate group (QA round 1, barracks:
     "one wall of beds and one wall of weapon and armor racks"). kinds: [regex] cycled. Returns the pieces."""
@@ -1115,6 +1203,11 @@ def wall_row(f, rng, kinds, n, sides=BACK, skip_runs=(), gap=0.5, min_n=2, near_
         if r["side"] not in sides or any(r is s for s in skip_runs): continue
         for a0, a1 in free_stretches(f, r):
             a0, a1 = max(a0, r["lo"] + 1.4), min(a1, r["hi"] - 1.4)
+            for p in avoid:                       # (`keep` units clear of the pieces of `avoid` near this wall)
+                if perp_of(r, p[0], p[1]) - halves_on(r, p)[1] > keep: continue
+                pa, pha = along_of(r, p[0], p[1]), halves_on(r, p)[0]
+                if pa < (a0 + a1) / 2: a0 = max(a0, pa + pha + keep)
+                else: a1 = min(a1, pa - pha - keep)
             if a1 - a0 > 2.0 and (best is None or a1 - a0 > best[0]): best = (a1 - a0, r, a0, a1)
     if not best: return []
     _, r, a0, a1 = best
@@ -1127,7 +1220,7 @@ def wall_row(f, rng, kinds, n, sides=BACK, skip_runs=(), gap=0.5, min_n=2, near_
     while seq:
         widths = [2 * halves_on(r, (0, 0) + f.half(t))[0] for t in seq]
         total = sum(widths) + gap * (len(seq) - 1)
-        if total <= a1 - a0: break
+        if total <= share * (a1 - a0): break      # (share < 1: the row keeps clear of its stretch's ends)
         seq.pop()
     if len(seq) < min_n: return []
     widths = [2 * halves_on(r, (0, 0) + f.half(t))[0] for t in seq]
@@ -1203,14 +1296,35 @@ def _barracks(f, rng):
         remove(f, row)
         for t, u, v in keep: restore(f, t, u, v)
         row = [o for o, _, _ in items(f, BED)]
+    _barracks_chests(f, rng)                    # (before the racks, which keep clear of the beds' feet: Q2F-2)
     bed_run = run_of(f, f._placed_of[id(row[0])], reach=1.6) if row else None
     skip = [bed_run[0]] if bed_run else []
     n = max(3, min(7, len(f.room.tiles) // 20))
-    if not wall_row(f, rng, RACK_KINDS[:3], n, sides=BACK, skip_runs=skip):
+    # (a row keeps clear of its wall's corners, RACK_SHARE of its stretch: RM-BARRACKS-03 "Slightly too much armor and
+    # weaponry in the south corner")
+    first = wall_row(f, rng, RACK_KINDS[:3], n, sides=BACK, skip_runs=skip, share=RACK_SHARE)
+    if not first:
         # a small room whose back walls are taken: the racks on any wall with room, two or even one
-        wall_row(f, rng, RACK_KINDS[:3], n, sides=tuple(WALL_NAME), skip_runs=skip, min_n=1)
+        first = wall_row(f, rng, RACK_KINDS[:3], n, sides=tuple(WALL_NAME), skip_runs=skip, min_n=1, share=RACK_SHARE)
     if len(f.room.tiles) >= 110:               # a big room: a second row of racks on another wall
-        wall_row(f, rng, RACK_KINDS[:3], n, sides=tuple(WALL_NAME), skip_runs=skip)
+        # (half as many, on a wall of its own, never meeting the first row in a corner: RM-BARRACKS-03 "Slightly too
+        # much armor and weaponry in the south corner", where two full rows met; Q2F-2, Q2T-8)
+        recs = [f._placed_of[id(o)] for o in first if id(o) in f._placed_of]
+        runs2 = list(skip) + ([run_of(f, recs[0], reach=1.6)[0]] if recs and run_of(f, recs[0], reach=1.6) else [])
+        for _ in range(3):
+            second = wall_row(f, rng, RACK_KINDS[:3], max(2, n // 2), sides=tuple(WALL_NAME), skip_runs=runs2,
+                              share=RACK_SHARE, avoid=recs)
+            if not second: break
+            near = any(max(abs(a[0] - b[0]) - a[2] - b[2], abs(a[1] - b[1]) - a[3] - b[3]) < 3.0
+                       for a in (f._placed_of[id(o)] for o in second) for b in recs)
+            if os.environ.get("NOX_FINISH_DEBUG"):
+                print("second", f.room.id, near, [(round(f._placed_of[id(o)][0], 1), round(f._placed_of[id(o)][1], 1)) for o in second],
+                      [(round(b[0], 1), round(b[1], 1)) for b in recs])
+            if not near: break
+            w2 = run_of(f, f._placed_of[id(second[0])], reach=1.6)
+            remove(f, second)
+            if not w2: break
+            runs2.append(w2[0])
     hang_backs(f, rng, most=4 if len(f.room.tiles) >= 80 else 2, types={t: 1 for t in _types(f, ARMS_HUNG)})
     tables = items(f, TABLE)
     cu, cv = f.g.centroid
@@ -1246,6 +1360,74 @@ def _barracks(f, rng):
     fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, barrels, 3),
                           lambda u, v: knot(f, rng, u, v, _types(f, r"^(Crate[12]|Barrel)$"), 2)])
     hang_backs(f, rng, most=2)
+    if not items(f, CHEST): _barracks_chests(f, rng)
+    # every bare stretch of the back walls dressed, to their corners (RM-BARRACKS-02: "Needs more banners or trophies
+    # on the northwest wall, especially the north corner"; Q2F-2)
+    hang_backs(f, rng, most=8, edge=0.6,
+               types={t: 1 for t in _types(f, ARMS_HUNG + r"|^(Red|Blue|Green)Tapestry\d$|^WallTrophy(Bear|Moose|Bull)[12]$")})
+    # (the wall the shorter rows of racks left bare: the crew's kegs and tools in a heap; round 2's fullness kept with
+    # other kinds than arms, Q2T-8)
+    racks = [rec for _, _, rec in items(f, r"^Trader(ArmorRack|PoleArm|BowRack|QuiverRack)")]
+    tiles = len(f.room.tiles)
+    for sides in (tuple(x for x in WALL_NAME if x not in BACK), tuple(WALL_NAME)):      # (a front wall first)
+        if wall_row(f, rng, [r"^(Barrel|Barrel2)$", r"^BarrelWithTools[12]$"],
+                    4 if tiles >= 110 else 3 if tiles >= 80 else 2, sides=sides, gap=0.2, share=0.6, avoid=racks,
+                    keep=1.0): break
+
+
+RACK_SHARE = 0.7          # of its wall's free stretch a barracks' row of racks takes at most, centred (Q2F-2)
+BARRACKS_FOOT_CHESTS = 6   # beds: up to this many, a chest at every bed's foot; more, one chest against a wall (Q2F-2)
+
+
+def _barracks_chests(f, rng):
+    """The barracks' chests in one of the user's two arrangements (QA round 2, the barracks set: "if there is one
+    treasure chest, put it against the wall. If there are 6 or fewer beds, multiple treasure chests can be placed, put
+    them at the foot of every bed facing away from the bed"; RM-BARRACKS-01/03/05 "fix chest"): with BARRACKS_FOOT_CHESTS
+    beds or fewer, a chest at every bed's foot, its back to the bed (the variant for the bed's head wall), all or none;
+    else (or when a foot has no room) one chest flush against a wall, centred on its free stretch."""
+    remove(f, [o for o, _, _ in items(f, CHEST)])
+    beds = items(f, BED)
+    if beds and len(beds) <= BARRACKS_FOOT_CHESTS:
+        got = []
+        for bed in beds:
+            w = head_wall(f, bed)
+            if not w: break
+            r, a, _ = w
+            c = variant(f, "Chest", r["side"])
+            if not c or not f.ok_type(c): break
+            rec = bed[2]
+            bhp = halves_on(r, rec)[1]
+            chp = halves_on(r, (0, 0) + f.half(c))[1]
+            foot = perp_of(r, rec[0], rec[1]) + bhp
+            o = None
+            for gap in (0.5, 0.6, 0.8):
+                o = free_put(f, c, *uv_on(r, foot + gap + chp, along_of(r, rec[0], rec[1])))
+                if o: break
+            if not o:
+                if os.environ.get("NOX_FINISH_DEBUG"):
+                    u, v = uv_on(r, foot + 0.5 + chp, along_of(r, rec[0], rec[1])); hu, hv = f.half(c)
+                    print("footchest", f.room.id, len(beds), c, "fits", f.g.fits(u, v, hu, hv, True, False, 0.1),
+                          "gaps", f._gaps_ok(c, u, v, hu, hv, True, "floor"), "reach", f.g.reachable_ok((u, v, hu, hv, True, "floor")),
+                          [(tt, round(rr[0] - u, 1), round(rr[1] - v, 1)) for tt, rr in f._typed if abs(rr[0] - u) < 2 and abs(rr[1] - v) < 2])
+                break
+            got.append(o)
+        if os.environ.get("NOX_FINISH_DEBUG"): print("footchests", f.room.id, len(beds), len(got))
+        if beds and len(got) == len(beds): return got
+        remove(f, got)
+    for sides in (BACK, tuple(WALL_NAME)):
+        o = centre_on_back(f, rng, "Chest", min_len=2.0, sides=sides)
+        if o: return [o]
+    return []
+
+
+def free_put(f, t, u, v):
+    """A piece placed where its footprint fits, keeps its gaps (kit/gaps.py) and leaves the room walkable, the
+    knowledge base's room caps aside (a barracks' chest at every bed's foot, Q2F-2)."""
+    if not f.ok_type(t): return None
+    hu, hv = f.half(t)
+    if not f.g.fits(u, v, hu, hv, True, False, 0.1) or not f._gaps_ok(t, u, v, hu, hv, True, "floor"): return None
+    if not f.g.reachable_ok((u, v, hu, hv, True, "floor")): return None
+    return f.put(t, u, v, True)
 
 
 def _barracks_middle(f, rng):
@@ -1323,12 +1505,65 @@ def _ogre_den(f, rng):
     ob = items(f, r"^ObeliskPrimitive$")
     remove(f, [o for o, _, _ in ob])
     obelisk_pair(f, rng, "ObeliskPrimitive", inset=1.3, four=len(f.room.tiles) >= 150)
-    stores = _types(f, r"^(Barrel|Barrel2|OgreSack[12])$")
+    # (the knots in the corners of barrels: a sack there stood off its wall, Q2T-5; the sacks go in the heap below)
+    stores = _types(f, r"^(Barrel|Barrel2)$") or _types(f, r"^(Barrel|Barrel2|OgreSack[12])$")
     meat = _types(f, r"^OgreHutMeat$")
     fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, stores, 3),
                           lambda u, v: knot(f, rng, u, v, stores + meat, 2),
                           lambda u, v: knot(f, rng, u, v, meat or stores, 1)], inset=1.6, rad=1.6)
+    # (QA round 2, Q2F-5: "All of them need a couple more sacks or barrels"): a heap of barrels and sacks flush against
+    # the longest bare stretch of a wall, a back wall first (the dungeon's front walls are drawn over what stands by them)
+    sacks = _types(f, r"^OgreSack[12]$")
+    kegs = _types(f, r"^(Barrel|Barrel2)$")
+    n = 4 if len(f.room.tiles) >= 90 else 3
+    got = []
+    for sides in (BACK, tuple(WALL_NAME)):
+        got = ogre_stores(f, rng, kegs, sacks, n, sides)
+        if got: break
+    if len(got) < n:                                  # the rest a second heap on another wall, a back wall first
+        for sides in (BACK, tuple(WALL_NAME)):
+            if ogre_stores(f, rng, kegs, sacks, max(2, n - len(got)), sides): break
+    # (the skulls nailed up after: the knowledge base keeps a floor piece from under a hanging)
     hang_backs(f, rng, most=2, types={t: 1 for t in _types(f, r"^OgreHutWallSkull[1-4]$")})
+
+
+def ogre_stores(f, rng, kegs, sacks, n, sides):
+    """A heap of `n` sacks and barrels side by side, flush against a wall of `sides`, centred on the longest free
+    stretch that takes it (straw heaped there is cleared from under it: straw is the den's bedding, not a wall piece),
+    the kinds alternating, a sack first. Returns the pieces."""
+    pools = [p for p in (sacks, kegs) if p]
+    if not pools: return []
+    straw = [x for x in items(f, r"^OgreStraw\d$") if x[2][4]]      # (blocking straw: a pen's lies under everything)
+    skip = [rec for _, _, rec in straw]
+    cands = sorted(((a1 - a0, r, a0, a1) for r in f.g.runs if r["side"] in sides
+                    for a0, a1 in free_stretches(f, r, skip=skip)), key=lambda c: -c[0])
+    for _, r, a0, a1 in cands:
+        a0, a1 = max(a0, r["lo"] + 1.4), min(a1, r["hi"] - 1.4)
+        seq = [rng.choice(pools[k % len(pools)]) for k in range(n)]
+        while seq and sum(2 * halves_on(r, (0, 0) + f.half(t))[0] for t in seq) + 0.2 * (len(seq) - 1) > a1 - a0:
+            seq.pop()
+        if len(seq) < 2: continue
+        total = sum(2 * halves_on(r, (0, 0) + f.half(t))[0] for t in seq) + 0.2 * (len(seq) - 1)
+        a = (a0 + a1) / 2 - total / 2
+        got, cleared = [], []
+        for t in seq:
+            ha, hp = halves_on(r, (0, 0) + f.half(t))
+            u, v = uv_on(r, hp + 0.25, a + ha)
+            hu, hv = f.half(t)
+            for o, tt, rec in items(f, r"^OgreStraw\d$"):
+                if rec[4] and max(abs(rec[0] - u) - rec[2] - hu, abs(rec[1] - v) - rec[3] - hv) < 0.2:
+                    cleared.append((tt, rec[0], rec[1])); f._remove(o)
+            o = put(f, t, u, v)
+            if o: got.append(o)
+            elif os.environ.get("NOX_FINISH_DEBUG"):
+                print("  ostore fail", f.room.id, t, WALL_NAME[r["side"]], round(a, 1), "fits", f.g.fits(u, v, hu, hv, True, False, 0.1),
+                      dict(f.kb_refused), [(tt, round(rr[0] - u, 1), round(rr[1] - v, 1)) for tt, rr in f._typed if abs(rr[0] - u) < 2 and abs(rr[1] - v) < 2])
+            a += 2 * ha + 0.2
+        if os.environ.get("NOX_FINISH_DEBUG"): print("ostores", f.room.id, WALL_NAME[r["side"]], round(a1 - a0, 1), len(seq), len(got))
+        if len(got) >= 2: return got
+        remove(f, got)
+        for tt, uu, vv in cleared: restore(f, tt, uu, vv)
+    return []
 
 
 def obelisk_pair(f, rng, t, inset=1.3, four=False):
@@ -1403,10 +1638,17 @@ def _cell(f, rng):
                 put(f, rng.choice(_types(f, r"^Stool[1-4]?$") or ["Stool"]), u, v)
 
 
+PEN_EARTH = "DirtDark2"      # the earth under an ogre pen's straw (Westwood's pens, Con11a: GreenBrick with DirtDark2)
+
+
 def _ogre_pen(f, rng):
-    """An ogre pen: its straw heaped in one corner (the one farthest from the door), the obelisk in another, the stocks
-    against a wall, the other corners never bare (RM-CELL-02: "The ogre straw looks better when it's in a corner or end
-    of the room. the E corner being bare here doesn't look good")."""
+    """An ogre pen: its straw heaped in one corner (the one farthest from the door) on a patch of earth, the obelisk in
+    another, the stocks against a wall framed by a pair of tusks, the other corners never bare (RM-CELL-02: "The ogre
+    straw looks better when it's in a corner or end of the room. the E corner being bare here doesn't look good"). QA
+    round 2 (Q2F-6): "In order to make an actual ogre pen, you have to use an ogre/cave/outdoor/rock-themed base and
+    then layer in ogre features like straw, sacks, and tusks": the room lab builds it in the ogres' keep (dungeon
+    stone, review/roomlab/labgen.py OPTION_HOSTED); here the earth under the heaps, the tusks, a skull post, sacks
+    flush against a wall, a carcass by the heap."""
     straw = items(f, r"^OgreStraw\d$")
     kinds = sorted({t for _, t, _ in straw}) or _types(f, r"^OgreStraw[1-3]$")
     remove(f, [o for o, _, _ in straw])
@@ -1417,6 +1659,7 @@ def _ogre_pen(f, rng):
     heap = order[0]
     hu, hv = pts[heap]
     n = max(9, min(16, len(f.room.tiles) // 3))      # (round 2: a full heap, not a handful)
+    heaps = [(hu, hv)]
     got = 0
     for k in range(40):
         if got >= n: break
@@ -1436,21 +1679,119 @@ def _ogre_pen(f, rng):
                       not any(math.hypot(pts[k][0] - r_[0], pts[k][1] - r_[1]) < 2.0 for _, _, r_ in items(f, r"^ObeliskPrimitive$"))), None)
         if other:
             ou, ov = pts[other]
+            heaps.append((ou, ov))
             got = 0
             for k in range(30):
                 if got >= n // 2: break
                 ang = k * 2.4; rad = 0.25 + 0.3 * math.sqrt(k)
                 if put(f, rng.choice(kinds), ou + rad * math.cos(ang), ov + rad * math.sin(ang), blocking=False): got += 1
-        centre_on_back(f, rng, "OgreBench", min_len=3.0, sides=tuple(WALL_NAME))
+        b = ogre_bench(f)
+        st = _types(f, r"^OgreStool[12]$")
+        if b and st:                                  # a stool at the bench's end (round 2's stool kept)
+            w = run_of(f, f._placed_of[id(b)], reach=0.8)
+            if w:
+                r, a, _ = w
+                ha = halves_on(r, f._placed_of[id(b)])[0]
+                for s_ in (1, -1):
+                    t = rng.choice(st); th = halves_on(r, (0, 0) + f.half(t))
+                    if put(f, t, *uv_on(r, th[1] + 0.3, a + s_ * (ha + th[0] + 0.35))): break
+    pen_earth(f, heaps)
     bones = _types(f, r"^(Skull[1-4]?|ArmBone|LegBone|OgreHutMeat)$")
     for o_, t_, r_ in items(f, r"^Stocks\d$")[:1]:       # bones and a skull before the stocks
         for k in range(3):
             ang = rng.uniform(0, 2 * math.pi)
             if bones: put(f, rng.choice(bones), r_[0] + 1.3 * math.cos(ang), r_[1] + 1.3 * math.sin(ang), blocking=False)
+    pen_tusks(f, rng)
+    # sacks and a barrel flush against a wall (a back wall first, where they are seen), then the corners left bare
+    sacks = _types(f, r"^OgreSack[12]$")
+    kegs = _types(f, r"^Barrel$")
+    if not ogre_stores(f, rng, kegs, sacks, 3, BACK):
+        ogre_stores(f, rng, kegs, sacks, 3, tuple(WALL_NAME))
+    for (u, v) in heaps[:1]:                              # a carcass by the heap
+        for t in _types(f, r"^OgreHutCarcass$")[:1]:
+            for ang in (0.8, 2.4, 3.9, 5.5):
+                if put(f, t, u + 2.2 * math.cos(ang), v + 2.2 * math.sin(ang), blocking=False): break
     stores = _types(f, r"^(Barrel|OgreSack[12]|OgreStool[12])$")
-    fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, stores, 2),
+    post = [t for t in ("OgrePostSkull1", "OgrePostSkull2") if f.ok_type(t)]
+    fill_corners(f, rng, [lambda u, v: _skull_post(f, rng, post, u, v),
                           lambda u, v: knot(f, rng, u, v, bones or stores, 2),
                           lambda u, v: knot(f, rng, u, v, stores, 1)], inset=1.4, rad=1.3)
+
+
+def ogre_bench(f):
+    """A crude bench flush against the longest free stretch of a wall, lying along it (OgreBench1 along a NE or SW wall,
+    OgreBench2 along a NW or SE one: the round OgreBench3/4 read as standing out from the wall; Q2T-5)."""
+    best = None
+    for r in f.g.runs:
+        t = "OgreBench2" if r["line"] == "/" else "OgreBench1"
+        if not f.ok_type(t): continue
+        ha, hp = halves_on(r, (0, 0) + f.half(t))
+        for a0, a1 in free_stretches(f, r):
+            a0, a1 = max(a0, r["lo"] + 1.4), min(a1, r["hi"] - 1.4)
+            if a1 - a0 >= 2 * ha + 0.6 and (best is None or a1 - a0 > best[0]): best = (a1 - a0, r, t, (a0 + a1) / 2, hp)
+    if not best: return None
+    _, r, t, a, hp = best
+    for d in (0.25, 0.45):
+        o = put(f, t, *uv_on(r, hp + d, a))
+        if o: return o
+    return None
+
+
+def pen_earth(f, heaps):
+    """A patch of earth (PEN_EARTH) under each heap of straw and round it, blended into the floor: the squares within two
+    of its middle, none by a door (Westwood's pens lay 4-6 tiles of it under the straw; the user asked for an
+    "ogre/cave/outdoor/rock-themed base", so the earth shows round the heaps)."""
+    from kit import shells as SH
+    sq = {((x + y) // 2, (x - y) // 2) for (x, y) in f.room.tiles}
+    gaps = [d.gap for d in f.room.doors]
+    tiles = set()
+    for (u, v) in heaps:
+        i, j = round((u - 2) / 2), round(v / 2)
+        for a, b in [(a_, b_) for a_ in range(-2, 3) for b_ in range(-2, 3) if abs(a_) + abs(b_) <= 2]:
+            s_ = (i + a, j + b)
+            t = (s_[0] + s_[1], s_[0] - s_[1])
+            if s_ in sq and not any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 2 for g in gaps): tiles.add(t)
+    if tiles: SH.lay_patch(f.spec, f.room, tiles, PEN_EARTH, edge="BlendEdge")
+
+
+def pen_tusks(f, rng):
+    """A pair of tusks framing the stocks on their wall (else the obelisk), mirrored about it, each with its shadow
+    at Westwood's offset (kit/camps.py TUSK_SHADOW; of the pair the one on the screen's left is hooked to the right).
+    Returns the tusks."""
+    from kit.camps import TUSK_SHADOW, TUSK_FACE
+    if not all(f.ok_type(t) for t in TUSK_FACE): return []
+    for rx in (r"^Stocks\d$", r"^ObeliskPrimitive$"):
+        for o, t, rec in items(f, rx)[:1]:
+            w = run_of(f, rec, reach=1.0)
+            if not w: continue
+            r, a, _ = w
+            ha = halves_on(r, rec)[0]
+            th = f.half(TUSK_FACE[0])[0]
+            for off in (0.5, 0.8, 1.1):
+                pts = [uv_on(r, th + 0.25, a + s_ * (ha + th + off)) for s_ in (-1, 1)]
+                pts.sort(key=lambda p_: F._px(*p_)[0])           # screen left first
+                got = [put(f, tt, *p_) for tt, p_ in zip(TUSK_FACE, pts)]
+                if all(got):
+                    for tt, g in zip(TUSK_FACE, got):
+                        sh = TUSK_SHADOW[tt]
+                        f.spec.obj_px(tt.replace("Tusk", "TuskShadow"), g["x"] + sh[0], g["y"] + sh[1])
+                    return got
+                remove(f, [g for g in got if g])
+    return []
+
+
+def _skull_post(f, rng, post, u, v):
+    """A skull post with its shadow (kit/camps.py POST_SHADOW) in a bare corner."""
+    from kit.camps import POST_SHADOW
+    # (off the straw: its shadow is drawn over a heap as a black cross)
+    if any(math.hypot(rr[0] - u, rr[1] - v) < 2.2 for _, _, rr in items(f, r"^OgreStraw\d$")): return []
+    for t in post:
+        o = put_corner(f, t, u, v)
+        if o:
+            sh, (dx, dy) = POST_SHADOW[t]
+            f.spec.obj_px(sh, o["x"] + dx, o["y"] + dy)
+            return [o]
+    return []
 
 
 # ---- cellar (Q1R-13) -----------------------------------------------------------------------------------------------
@@ -1493,8 +1834,10 @@ def _cellar(f, rng):
         L, r, t, a0, a1 = best
         ha, hp = halves_on(r, (0, 0) + f.half(t))
         va = CASK_DRAWN[0]                          # its picture is twice its footprint
-        spots = [(a0 + a1) / 2] if n_casks == 1 or L < 4 * va + CASK_CLEAR + 1.0 else \
-            [(a0 + a1) / 2 - va - CASK_CLEAR / 2, (a0 + a1) / 2 + va + CASK_CLEAR / 2]
+        # (two casks a full CASK_CLEAR apart as drawn, and more: RM-CELLAR-04's pair read as touching at 0.8; Q2T-4
+        # "giant barrels ... keep a wider gap")
+        spots = [(a0 + a1) / 2] if n_casks == 1 or L < 4 * va + 2 * CASK_CLEAR + 1.0 else \
+            [(a0 + a1) / 2 - va - CASK_CLEAR, (a0 + a1) / 2 + va + CASK_CLEAR]
         for a in spots:
             o = put(f, t, *uv_on(r, hp + 0.35, a))
             if o: casks.append(f._placed_of[id(o)])
@@ -1513,6 +1856,8 @@ def _cellar(f, rng):
         placed += cellar_corners(f, rng, cask_ok)
         placed += cellar_walls(f, rng, cask_ok, share=CELLAR_WALL_SHARE)
         if tiles >= 32: placed += cellar_stack(f, rng, cask_ok)
+        placed += cellar_kinds(f, rng, cask_ok)
+        placed += cellar_fill(f, rng, cask_ok)
     finally:
         f.lift_runs = False
     if placed + len(casks) < 3:                    # nothing fitted: as it was
@@ -1564,9 +1909,16 @@ def cellar_walls(f, rng, ok, share=0.55):
                 a, misses, done = start, 0, 0.0
                 while (stop - a) * step > 0.5 and done < want - 0.4:
                     kind = [t for t in kinds[order[ki % len(order)]] if along(t, r)]; ki += 1
-                    if not kind: misses += 1; continue
+                    if not kind:
+                        misses += 1
+                        if misses > 3 * len(order): break
+                        continue
+                    # (crates stand apart, from each other and from the stack at the stretch's end: RM-CELLAR-01/05
+                    # "too close to the stack of barrels", -04 "two crates ... touching"; Q2F-1, Q2T-4)
+                    crate = all(GP.CRATE.match(t) for t in kind)
+                    if crate and a == start: a += step * (GP.GAP_CRATE - 0.1)
                     got = 0
-                    for _ in range(rng.choice((2, 3, 3))):
+                    for _ in range(min(rng.choice((2, 3, 3)), 2 if crate else 3)):     # (crates, being big: two)
                         t = rng.choice(kind)
                         ha, hp = halves_on(r, (0, 0) + f.half(t))
                         c = a + step * ha
@@ -1575,7 +1927,7 @@ def cellar_walls(f, rng, ok, share=0.55):
                         o = f.try_put(t, u, v, snug=True, touch=True) if ok(t, u, v) else None
                         if not o: break
                         n += 1; got += 1; done += 2 * ha
-                        a = c + step * (ha + 0.04)
+                        a = c + step * (ha + (GP.GAP_CRATES + 0.05 if crate else 0.04))
                     if got: misses = 0; a += step * 0.35
                     else:
                         misses += 1; a += step * 0.25
@@ -1592,21 +1944,111 @@ def cellar_walls(f, rng, ok, share=0.55):
     return n
 
 
+def cellar_kinds(f, rng, ok):
+    """Each of the cellar's kinds (CELLAR_KINDS) it does not hold yet, a piece or two of it flush against a wall where a
+    free stretch takes it, apart from its neighbours (QA round 2: the crates kept clear of the kegs, Q2F-1, must not
+    cost the room its kinds; the standing theme: full, and of many kinds). Returns the pieces."""
+    n = 0
+    have = {o["type"] for o in f.objects}
+    for rx in CELLAR_KINDS:
+        types = _types(f, rx)
+        if not types or any(re.match(rx, t) for t in have): continue
+        crate = all(GP.CRATE.match(t) for t in types)
+        done = False
+        for r in sorted(f.g.runs, key=lambda r_: (r_["side"] not in BACK, -(r_["hi"] - r_["lo"]))):
+            if done: break
+            kind = [t for t in types if abs(f.half(t)[0] - f.half(t)[1]) < 0.05 or (f.half(t)[1] >= f.half(t)[0]) == (r["line"] == "/")]
+            if not kind: continue
+            trim = GP.GAP_CRATE - 0.1 if crate else 0.25    # (free_stretches keep 0.15 off what stands there)
+            for a0, a1 in free_stretches(f, r):
+                a0, a1 = max(a0 + trim, r["lo"] + 1.1), min(a1 - trim, r["hi"] - 1.1)
+                t = rng.choice(kind)
+                ha, hp = halves_on(r, (0, 0) + f.half(t))
+                k = 1 if crate or a1 - a0 < 4 * ha + 0.4 else 2
+                if a1 - a0 < 2 * ha * k + 0.1: continue
+                a = (a0 + a1) / 2 - ha * (k - 1)
+                got = []
+                for _ in range(k):
+                    u, v = uv_on(r, hp + 0.25, a)
+                    o = f.try_put(t, u, v, snug=True, touch=True) if ok(t, u, v) else None
+                    if o: got.append(o)
+                    a += 2 * ha + 0.04
+                if got:
+                    n += len(got); done = True; break
+    return n
+
+
+CELLAR_GOAL = 0.5          # stores per room tile a cellar holds (round 2's cellars, rated 4.4: 0.5-0.67 per tile as
+                           # the checker counts them): the free stretches left take kegs in pairs until it does
+
+
+def cellar_fill(f, rng, ok):
+    """Kegs in pairs (wooden or metal, one kind to a pair) flush against the free stretches left, the longest first,
+    until the cellar holds CELLAR_GOAL stores per tile: the gaps round the crates (Q2F-1) never leave it emptier than
+    round 2's. Returns the pieces."""
+    goal = int(CELLAR_GOAL * len(f.room.tiles))
+    stores = lambda: len(items(f, r"^(Barrel|Barrel2|LargeBarrel[12]|PiledBarrels[1-4]|DarkCrate[12]|Crate[12]|"
+                                  r"BarrelSteel[12]|BarrelWithTools[12]|CrateSteel[1-4]|WaterBarrel|SackChest\w+|LogShelvesFull\d)$"))
+    pools = [p for p in (_types(f, r"^(Barrel|Barrel2)$"), _types(f, r"^BarrelSteel[12]$"),
+                         _types(f, r"^SackChest(Medium|Small)[12]$")) if p]
+    n = 0
+    if not pools: return 0
+    stretches = sorted(((a1 - a0, r, a0, a1) for r in f.g.runs for a0, a1 in free_stretches(f, r)),
+                       key=lambda x: -x[0])
+    if os.environ.get("NOX_FINISH_DEBUG"):
+        print("cfill", f.room.id, len(f.room.tiles), goal, stores(), [(WALL_NAME[r["side"]], round(L, 1)) for L, r, _, _ in stretches[:6]])
+    for k, (_, r, a0, a1) in enumerate(stretches):
+        if stores() >= goal: break
+        a0, a1 = max(a0, r["lo"] + 1.1), min(a1, r["hi"] - 1.1)
+        fit = [p for p in pools if 2 * halves_on(r, (0, 0) + f.half(p[0]))[0] <= a1 - a0]
+        if not fit: continue
+        t = rng.choice(fit[k % len(fit)])
+        ha, hp = halves_on(r, (0, 0) + f.half(t))
+        # a pair in the middle of a long stretch; on a short one a keg or two from its end, joining the heap there (a
+        # heap's members may touch: kit/gaps.py; beside a crate the furnisher refuses it)
+        starts = [(a0 + a1) / 2 - ha] if a1 - a0 >= 4 * ha + 1.0 else             [a0 + ha, a1 - ha - (2 * ha + 0.04), a0 + ha + 0.25, a1 - ha - 0.25 - (2 * ha + 0.04)]   # (a crate's gap)
+        got = []
+        for a in starts:
+            got = []
+            for _ in range(2):
+                if a - ha < a0 - 0.01 or a + ha > a1 + 0.01: break
+                u, v = uv_on(r, hp + 0.25, a)
+                before = dict(f.kb_refused)
+                o = f.try_put(t, u, v, snug=True, touch=True) if ok(t, u, v) else None
+                if o: got.append(o)
+                elif os.environ.get("NOX_FINISH_DEBUG"):
+                    hu, hv = f.half(t)
+                    print("  cfail", t, WALL_NAME[r["side"]], round(a, 1), "ok", ok(t, u, v), "fits", f.g.fits(u, v, hu, hv, True, False, 0.1, True),
+                          {kk: nn - before.get(kk, 0) for kk, nn in f.kb_refused.items() if nn != before.get(kk, 0)},
+                          [(tt, round(rr[0] - u, 1), round(rr[1] - v, 1)) for tt, rr in f._typed if abs(rr[0] - u) < 2 and abs(rr[1] - v) < 2 and rr[4]])
+                a += 2 * ha + 0.04
+            if got: break
+        n += len(got)
+    return n
+
+
 def cellar_stack(f, rng, ok):
     """A stack in a big cellar's middle: four kegs or crates, two by two, touching. Returns the pieces."""
     cu, cv = f.g.centroid
     if os.environ.get("NOX_FINISH_DEBUG"):
         print("stack", f.room.id, round(cu, 1), round(cv, 1), clear_at(f, cu, cv, 2.6),
               [z for z in f.g.zones if z[0] - 1 < cu < z[1] + 1 and z[2] - 1 < cv < z[3] + 1])
-    if not clear_at(f, cu, cv, 2.6): return 0
     types = _types(f, r"^(Barrel|Barrel2|BarrelSteel[12])$")
     if not types: return 0
     t = rng.choice(types)
     h = f.half(t)[0] + 0.09                     # (0.18 apart: the fit keeps 0.15 between pieces)
-    got = [force_put(f, t, cu + a * h, cv + b * h) for a in (-1, 1) for b in (-1, 1)]
-    if sum(1 for g in got if g) < 4:
-        remove(f, [g for g in got if g]); return 0
-    return 4
+    if clear_at(f, cu, cv, 2.6):
+        got = [force_put(f, t, cu + a * h, cv + b * h) for a in (-1, 1) for b in (-1, 1)]
+        if sum(1 for g in got if g) == 4: return 4
+        remove(f, [g for g in got if g])
+    # (round 2: a narrower middle takes a pair along the room's length, aisles kept either side)
+    u0, u1, v0, v1 = box(f)
+    long_u = (u1 - u0) >= (v1 - v0)
+    if not clear_at(f, cu, cv, 2.0): return 0
+    pts = [(cu - h, cv), (cu + h, cv)] if long_u else [(cu, cv - h), (cu, cv + h)]
+    got = [force_put(f, t, u, v) for u, v in pts]
+    if all(got) and f.g.reachable_ok((cu, cv, 0.0, 0.0, False, "floor")): return 2
+    remove(f, [g for g in got if g]); return 0
 
 
 def row_from_corner(f, rng, types, n, ok=None, avoid=(), sides=None):
@@ -1868,7 +2310,41 @@ def force_put(f, t, u, v, blocking=True):
     if not f.ok_type(t): return None
     hu, hv = f.half(t)
     if not f.g.fits(u, v, hu, hv, blocking, False, 0.1): return None
+    if not f._gaps_ok(t, u, v, hu, hv, blocking, "floor"): return None     # (QA round 2, Q2T-4: never touching)
     return f.put(t, u, v, blocking)
+
+
+def conservatory_benches(f, rng, fu, fv, long_u):
+    """The benches of one fountain at (fu, fv): a pair flush against the two long walls, facing each other across it
+    (both or neither, shifted together along the walls when its line is taken); else two side by side on one long wall
+    before it, a back wall first; else none. Returns the benches."""
+    a0 = fu if long_u else fv
+    runs = [r for r in f.g.runs if r["line"] == ("\\" if long_u else "/")]
+    def bench_on(r, a):
+        bt = f.along_variant("Bench1", r["side"]) or f.along_variant("Bench2", r["side"])
+        if not bt or not r["lo"] + 1.5 <= a <= r["hi"] - 1.5: return None
+        hp = halves_on(r, (0, 0) + f.half(bt))[1]
+        for d in (F.SNUG_GAP["bench"], 0.45):          # (a front wall's cell hides a piece whose middle is in it)
+            o = put(f, bt, *uv_on(r, hp + d, a))
+            if o: return o
+        return None
+    shifts = (0.0, 0.5, -0.5, 1.0, -1.0, 1.5, -1.5, 2.0, -2.0)
+    for back in (r_ for r_ in runs if r_["side"] in BACK):
+        for front in (r_ for r_ in runs if r_["side"] not in BACK):
+            for da in shifts:
+                a = bench_on(back, a0 + da)
+                b = bench_on(front, a0 + da) if a else None
+                if a and b: return [a, b]
+                remove(f, [x for x in (a, b) if x])
+    for r in sorted(runs, key=lambda r_: r_["side"] not in BACK):
+        bt = f.along_variant("Bench1", r["side"]) or f.along_variant("Bench2", r["side"])
+        if not bt: continue
+        ha = halves_on(r, (0, 0) + f.half(bt))[0]
+        for da in shifts:
+            got = [bench_on(r, a0 + da + s_ * (ha + 0.3)) for s_ in (-1, 1)]
+            if all(got): return got
+            remove(f, [x for x in got if x])
+    return []
 
 
 def _conservatory(f, rng):
@@ -1918,8 +2394,6 @@ def _conservatory(f, rng):
         ps = {(i + a, j + b) for a in (-1, 0, 1) for b in (-1, 0, 1)} & sq
         ts = {tile(s) for s in ps if not near_door(tile(s))}
         SH.lay_patch(spec, room, ts, rng.choice(GARDEN_PAVING), edge="BlendEdge")
-    if not items(f, r"^(Bench\d|LightBench\d)$"):           # a bench centred on whatever wall has room
-        centre_on_back(f, rng, "Bench", min_len=3.0, sides=tuple(WALL_NAME))
     # apple trees in the side corners, on their own dirt, apples fallen round them
     trees = [t for t in APPLE_TREES if f.ok_type(t)]
     if trees and n_tiles >= 60:
@@ -1938,6 +2412,26 @@ def _conservatory(f, rng):
             for n in range(rng.choice((2, 3))):
                 ang = rng.uniform(0, 2 * math.pi); rad = rng.uniform(1.3, 1.8)
                 put(f, "RedApple", tu + rad * math.cos(ang), tv + rad * math.sin(ang), blocking=False)
+    # benches flush against the long walls, a pair facing each other across each fountain, else side by side on one
+    # wall before it, else one centred on a wall (QA round 2, Q2F-4: "The two benches are in a strange configuration,
+    # with one in front of the other"; round 1: "Make sure benches are against the walls"; Q2T-3, Q2T-5). Laid before
+    # the plants, which keep clear of them.
+    remove(f, [o for o, _, _ in items(f, r"^(Bench\d|LightBench\d)$")])
+    for (fu, fv) in spots:
+        conservatory_benches(f, rng, fu, fv, long_u)
+    if not items(f, r"^(Bench\d|LightBench\d)$"):
+        centre_on_back(f, rng, "Bench", min_len=3.0, sides=tuple(WALL_NAME))
+    flank = _types(f, CONS_PLANTS)
+    for o, t, rec in items(f, r"^(Bench\d|LightBench\d)$"):      # a plant at either end of each bench, mirrored
+        w = run_of(f, rec, reach=0.8)
+        if not w or not flank: continue
+        r, a, _ = w
+        ha = halves_on(r, rec)[0]
+        pt = rng.choice(flank)
+        for s_ in (-1, 1):
+            pu, pv = uv_on(r, 0.9, a + s_ * (ha + 0.55))
+            if _no_door(f, pu, pv, 3.0) and re.search(r"Grass|Dirt", spec.floor.get(tile((round((pu - 2) / 2), round(pv / 2)))) or ""):
+                force_put(f, pt, pu, pv, blocking=F._family_of(pt) in F._blocking())
     # beds of dirt along the back walls, planted in clumps
     beds = set()
     for s in sq:
@@ -1962,18 +2456,8 @@ def _conservatory(f, rng):
                     force_put(f, rng.choice(plants), *uv_on(r, rng.uniform(0.7, 1.4), a + rng.uniform(-0.5, 0.5)),
                               blocking=pblock)
             a += rng.uniform(2.0, 2.6) if n_tiles >= 80 else rng.uniform(1.5, 1.9)
-    # benches against the long walls, facing each fountain
-    for (fu, fv) in spots:
-        for r in f.g.runs:
-            if r["line"] != ("\\" if long_u else "/"): continue
-            a = fu if long_u else fv
-            if not r["lo"] + 1.5 <= a <= r["hi"] - 1.5: continue
-            bt = f.along_variant("Bench1", r["side"]) or f.along_variant("Bench2", r["side"])
-            if not bt: continue
-            hp = halves_on(r, (0, 0) + f.half(bt))[1]
-            d = hp + 0.3 + (1.9 if r["side"] in BACK else 0.0)      # (before the bed of dirt on a back wall)
-            put(f, bt, *uv_on(r, d, a))
     # two beds of crops mirrored at the room's ends (a larger room with one fountain)
+    crops_used = []
     if not two and n_tiles >= 90:
         for sgn in (-1, 1):
             if long_u:
@@ -1986,7 +2470,8 @@ def _conservatory(f, rng):
                 is_ = sorted(i for (i, j) in sq if j == cj)
                 if not is_: continue
                 rows = [(cj + d, is_[0] + 2, is_[-1] - 2) for d in (-1, 1)]
-            crop = rng.choice(CROPS)
+            crop = rng.choice([c for c in CROPS if c not in crops_used] or CROPS)    # (the two beds of two crops)
+            crops_used.append(crop)
             for c, lo, hi in rows:
                 if hi - lo < 2: continue
                 row_sq = [(c, x) if long_u else (x, c) for x in range(lo, hi + 1)]
@@ -2000,7 +2485,7 @@ def _conservatory(f, rng):
                         pu, pv = (bu, bv + off) if long_u else (bu + off, bv)
                         put(f, crop, pu, pv, blocking=False)
     # four clumps of plants on dirt at each fountain's diagonals, mirrored (round 2: the fullness floor, in order)
-    if n_tiles >= 90 or len(spots) > 1:
+    if n_tiles >= 60 or len(spots) > 1:      # (from 60 tiles: round 2's plants beside the benches kept, Q2F-4)
         for (fu, fv) in spots:
             for du, dv in ((3.6, 3.6), (3.6, -3.6), (-3.6, 3.6), (-3.6, -3.6)):
                 pu, pv = fu + du, fv + dv
@@ -2015,7 +2500,7 @@ def _conservatory(f, rng):
     sts = _types(f, r"^Statue2[aceg]$")
     if sts and spots:
         fu, fv = spots[0]
-        off = 3.4
+        off = 3.6                                     # (0.7 clear of the fountain: Q2T-4)
         pair = [force_put(f, sts[0], fu + off, fv) if not long_u else force_put(f, sts[0], fu, fv + off),
                 force_put(f, sts[0], fu - off, fv) if not long_u else force_put(f, sts[0], fu, fv - off)]
         if not all(pair): remove(f, [p_ for p_ in pair if p_])
@@ -2024,7 +2509,11 @@ def _conservatory(f, rng):
     tools = _types(f, r"^BarrelWithTools[12]$")
     extra = _types(f, r"^(Barrel|Crate1|Crate2|WaterBarrel)$")
     fill_corners(f, rng, [lambda u, v: knot(f, rng, u, v, tools, 1)] +
-                 ([lambda u, v: knot(f, rng, u, v, extra, 1)] if rng.random() < 0.35 else []), inset=1.3, rad=1.2)
+                 ([lambda u, v: knot(f, rng, u, v, extra, 1)] if rng.random() < 0.35 else []) +
+                 ([lambda u, v: knot(f, rng, u, v, tools, 1)] if n_tiles >= 140 else []), inset=1.3, rad=1.2)
+    for _ in range(2):                                        # no bare corner took it: flush on a wall (round 2's kinds)
+        if tools and len(items(f, r"^BarrelWithTools[12]$")) < (2 if n_tiles >= 140 else 1):
+            wall_row(f, rng, [r"^BarrelWithTools[12]$"], 1, sides=tuple(WALL_NAME), min_n=1)
 
 
 # ---- dispatch ------------------------------------------------------------------------------------------------------

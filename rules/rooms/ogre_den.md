@@ -42,3 +42,12 @@ None: the straw over the floor, the crude beds against the back walls.
 
 - Ours: QA round 1 RM-BARRACKS-01, -02, -07 (kept as they were), -04, -05, -08, -10 (the notes above).
 - Westwood: War09c / Con09c, cell 62,206 (56 tiles); Con05C, cell 122,91 (136 tiles).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2F-5)
+
+Rated 4.0, all five Fix: "All of them need a couple more sacks or barrels." Now (`kit/finish.py _ogre_den`,
+`ogre_stores`): a heap of sacks and barrels side by side (three, four from 90 tiles), flush against the longest free
+stretch of a back wall (the dungeon's front walls are drawn over what stands by them), blocking straw cleared from under
+it; when the first heap is short, a second on another wall. Laid before the skulls are nailed up (the knowledge base
+keeps a floor piece from under a hanging). The corner knots are barrels only (a sack in a knot stood off its wall,
+Q2T-5). Every den holds 2-4 more stores than in round 2.
