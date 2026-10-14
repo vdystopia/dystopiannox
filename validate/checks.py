@@ -763,7 +763,7 @@ def identity_strays(kind, objects):
             if fam in ident["core"] or fam in ident["optional"] or (fam in ("chair", "bench") and "table" in ident["core"]):
                 pat = ident.get("types", {}).get(fam)
                 if not pat or _re.search(pat, o["type"]): ok = True
-            # the pieces a kind's composition takes in beyond its recipe's plan (kit/finish.py ALLOW, QA round 1)
+            # the pieces a kind's composition takes in beyond its recipe's plan (kit/works.py ALLOW, QA round 1)
             more = ident.get("allow", {}).get(fam)
             if more and _re.search(more, o["type"]): ok = True
         if not ok: out.add(o["type"])
@@ -2316,7 +2316,7 @@ def check_grammar(m, ctx, base):
 
 # ---- QA round 1, the unrated works, stores and sacred rooms (review/qa1/works.md Q1B) -------------------------------
 # The user's two themes ("too empty, not enough object diversity"; "no balance or symmetry") as checks for the room kinds
-# kit/finish.py composes. Narrow on purpose: the generic versions (a dead S corner in any room, stock variety in any
+# kit/works.py composes. Narrow on purpose: the generic versions (a dead S corner in any room, stock variety in any
 # store) may come from the other QA round 1 helpers; these name the works kinds only.
 QA1_AXIS_KINDS = {"shrine", "dark_shrine", "mausoleum", "ossuary", "treasury"}
 QA1_STORE_KINDS = {"storeroom", "granary", "ore_store", "powder_store"}
@@ -2362,7 +2362,7 @@ def qa1_flags(m, r, kind):
                     out_.append(o)
             return out_
         if doors:
-            # the axis: a doorway's line, or the middle of the room across it (kit/finish.py axis_along), whichever the
+            # the axis: a doorway's line, or the middle of the room across it (kit/works.py axis_along), whichever the
             # room is composed on
             cands = []
             for line, coord, along in doors:
@@ -2381,7 +2381,7 @@ def qa1_flags(m, r, kind):
                 out.append(("composition.qa1_axis", f"{kind.replace('_', ' ')} room: {len(lone)} statues, obelisks, "
                             f"basins or coffins have no mirrored partner across the axis from the main door ("
                             f"{lone[0]['type']}): the user: \"chapels should have a much more symmetric layout\" "
-                            f"(kit/finish.py step_axis; Q1B)", lone[0]))
+                            f"(kit/works.py step_axis; Q1B)", lone[0]))
     if kind in QA1_STORE_KINDS and tiles >= 30:
         stock = [o for o in objs if QA1_SUPPLY.search(o["type"])]
         kinds = collections.Counter(re.sub(r"\d+$", "", o["type"]) for o in stock)
@@ -2389,7 +2389,7 @@ def qa1_flags(m, r, kind):
             out.append(("composition.qa1_store_variety", f"{kind.replace('_', ' ')} room: its stock is "
                         f"{kinds.most_common(1)[0][0]} for the most part ({len(kinds)} kinds in {len(stock)} pieces): "
                         f"the user: \"Improve the diversity. Add metal barrels and tools. Use crates more often "
-                        f"alongside the barrels\" (kit/finish.py; Q1B)", stock[0]))
+                        f"alongside the barrels\" (kit/works.py; Q1B)", stock[0]))
     if kind == "smithy":
         main_mat = collections.Counter(m.tiles[c].get("material") for c in r["cells"] if c in m.tiles).most_common(1)
         main_mat = main_mat[0][0] if main_mat else None
@@ -2400,7 +2400,7 @@ def qa1_flags(m, r, kind):
                      for b in (-1, 0, 1)]
             if sum(1 for t in under if t and t != main_mat) < 2:
                 out.append(("composition.qa1_forge_floor", f"smithy room: {o['type']} stands on the bare floor: the "
-                            f"user: \"place furnaces on a small brick square\" (kit/finish.py brick_square; Q1B)", o))
+                            f"user: \"place furnaces on a small brick square\" (kit/works.py brick_square; Q1B)", o))
     if kind in QA1_S_CORNER_KINDS and tiles >= 30:
         cells = r["cells"]
         su = max(x + y + 1 for x, y in cells); sv = min(x - y for x, y in cells)
@@ -2409,7 +2409,7 @@ def qa1_flags(m, r, kind):
                 math.hypot(uv_of(o)[0] - cu, uv_of(o)[1] - cv) < 4.0]
         if not near:
             out.append(("composition.qa1_s_corner", f"{kind.replace('_', ' ')} room: its S corner is bare (nothing within "
-                        f"4 units): the user: \"Dead spaces in the south corner are too common\" (kit/finish.py; Q1B)",
+                        f"4 units): the user: \"Dead spaces in the south corner are too common\" (kit/works.py; Q1B)",
                         None))
     return out
 

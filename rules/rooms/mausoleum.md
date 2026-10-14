@@ -30,7 +30,7 @@ The great tomb (a sarcophagus) in the middle.
 
 The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
 boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
-with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
 composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
 `review/qa1/works.md` (Q1B-n).
 

@@ -1292,9 +1292,9 @@ class Furnisher:
         self.qa1_finish()
 
     def qa1_finish(self):
-        """QA round 1's themes for the unrated works, stores and sacred rooms (kit/finish.py; review/qa1/works.md): after
+        """QA round 1's themes for the unrated works, stores and sacred rooms (kit/works.py; review/qa1/works.md): after
         the audit, so the deliberate symmetry stands."""
-        from kit import finish as QA1
+        from kit import works as QA1
         QA1.apply(self)
 
     # ---- composition: one plan for the whole room (kit/identity.py ROOMS[kind]["compose"]) ----------

@@ -12,7 +12,7 @@ powder_store, shrine (shrine, dark_shrine), smithy, storeroom (storeroom, granar
 torture_chamber, treasury, winch_room, workshop. The user's words are quoted from the theme statement or from the rated
 room's note the lesson came from; none of these types was rated, so every row is an *applied theme*.
 
-How: `mapgen/kit/finish.py` (the furnishing engines' last step, after the placement grammar's audit) takes up the
+How: `mapgen/kit/works.py` (the furnishing engines' last step, after the placement grammar's audit) takes up the
 loose pieces a recipe scattered and composes each of these rooms as a whole: the type's programme (rows, lined walls,
 corner heaps, the ceremonial axis), lights in mirrored pairs, the walls topped up to the type's share with its own units,
 the middle's groups on the room's long axis. Each type's rules are in `rules/rooms/<type>.md`, section *QA round 1*.

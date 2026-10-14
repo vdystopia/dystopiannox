@@ -1236,7 +1236,7 @@ ROOMS = {
                    lift=("DunMir|",),
                    top_up=(),
                    # QA round 1 (review/qa1/works.md Q1B): the altar on the axis from the door, across from it, the
-                   # statues flanking it; the rest composed on that axis by kit/finish.py (a runner, an avenue of
+                   # statues flanking it; the rest composed on that axis by kit/works.py (a runner, an avenue of
                    # obelisks in mirrored pairs, a ring round a basin in the middle of a big shrine, basins and
                    # tapestries in pairs): the relic ring had stood its carpet off the ring and off the door's line
                    compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
@@ -1327,7 +1327,7 @@ ROOMS = {
                       optional={"column": (0.5, 4)},
                       types={"statue": r"^Statue2[aceg]$", "storage": r"^CryptChest[1-4]$", "column": r"^Column[5-8]$"},
                       prefer={"storage": {"CryptChest1": 1, "CryptChest2": 1, "CryptChest3": 1, "CryptChest4": 1}},
-                      lift=("Crypt|", "Coffin|"),      # (QA round 1: its breakable coffins, kit/finish.py)
+                      lift=("Crypt|", "Coffin|"),      # (QA round 1: its breakable coffins, kit/works.py)
                       # Westwood's are symmetric (mirror symmetry 0.85-1) and lit (0.06 lights a tile): the statues
                       # stand in mirrored pairs (GROUPS statues), the chest centred on a back wall
                       top_up=(), lights_per100=6.0, decor_max=0,
@@ -1349,7 +1349,7 @@ ROOMS = {
                     optional={"monument": (0.8, 2), "tomb": (0.4, 1)},
                     types={"storage": r"^CryptChest[1-4]$", "monument": r"^Monument1$", "tomb": r"^Coffin[1-4]$"},
                     prefer={"bones": {"Skull": 3, "ArmBone": 3, "LegBone": 3}, "monument": {"Monument1": 1}},
-                    lift=("Crypt|", "Coffin|", "|Tomb"),     # (QA round 1: its graves among the bones, kit/finish.py)
+                    lift=("Crypt|", "Coffin|", "|Tomb"),     # (QA round 1: its graves among the bones, kit/works.py)
                     top_up=(),
                     compose=[dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                              dict(fam="monument", slot="wall", at="center", clear=0.8, n=2),
@@ -1732,9 +1732,9 @@ for _k, _v in ARCHETYPE_RECIPES.items():
     ROOMS[_k]["archetypes"] = _v
 ROOMS["throne_room"].pop("compose_alts", None)    # its three compositions are archetypes now
 ROOMS["great_hall"].pop("compose_alts", None)
-# QA round 1 (review/qa1/works.md): the pieces kit/finish.py composes into the unrated works, stores and sacred rooms
+# QA round 1 (review/qa1/works.md): the pieces kit/works.py composes into the unrated works, stores and sacred rooms
 # (steel barrels, tool barrels, target barrels, coffins, obelisks...) taken into their kinds' identities
-from kit import finish as _QA1
+from kit import works as _QA1
 _QA1.extend_identity(ROOMS)
 
 # ---- buildings ---------------------------------------------------------------------------------------
