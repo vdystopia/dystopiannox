@@ -39,8 +39,22 @@ def render(scene, it, log=print):
     os.makedirs(rd, exist_ok=True)
     full, bare = labrender.lab_render(os.path.abspath(os.path.join(d, "map", batch["variants"][0]["map"] + ".map")))
     for r in m["scenes"]:
-        s = r.get("scene") or dict(anchor=r["variant"]["anchor"], pieces=[])
-        labrender.picture(full, bare, s, win).save(os.path.join(rd, f"{r['index']:02d}.png"))
+        out = os.path.join(rd, f"{r['index']:02d}.png")
+        if r.get("missing"):
+            # a scene that failed to place is an error, never an empty picture (QA round 2 [Q2T-7]: EX-GARDEN-02 "There
+            # is no garden", EX-MARKETSTALL-02, DK-04): no picture, and the run fails (missing_error)
+            if os.path.exists(out): os.remove(out)
+            continue
+        labrender.picture(full, bare, r["scene"], win).save(out)
+
+
+def missing_error(scene, it):
+    """The variants of an iteration with none of the scene's own pieces (metrics.judge_batch: none of the type's
+    signature pieces within the variant's reach): a list of error lines, empty when every variant stands."""
+    with open(os.path.join(E.iter_dir(scene, it), "metrics.json"), encoding="utf-8") as f: m = json.load(f)
+    return [f"ERROR {scene} [{it}] variant {r['index']:02d} ({r['variant'].get('size')}, site {r['variant'].get('site')}): "
+            f"no {scene} was laid there: a scene that failed to place is an error, never an empty picture (Q2T-7)"
+            for r in m["scenes"] if r.get("missing")]
 
 
 def rejudge(scene, it, log=print):
@@ -127,13 +141,15 @@ def main():
     todo = types if a.scene == "all" else [a.scene]
     for t in todo:
         if t not in types: sys.exit(f"unknown scene {t}; one of: {', '.join(types)}")
-    rows = []
+    rows, errors = [], []
     for t in todo:
         try:
             rows.append(rejudge(t, a.iter) if a.rejudge else run(t, a.n, a.seed, a.iter))
+            errors += missing_error(t, a.iter)
         except Exception as ex:
             import traceback; traceback.print_exc()
             print(f"{t}: failed: {ex}")
+            errors.append(f"ERROR {t}: {ex}")
     if len(todo) > 1:
         import scorecard
         rows = [scorecard.summarise(t, a.iter) for t in todo if os.path.exists(os.path.join(E.iter_dir(t, a.iter), "metrics.json"))]
@@ -142,6 +158,9 @@ def main():
         with open(p, "w", encoding="utf-8") as f: f.write(text)
         print(text)
         print(E.rel(p))
+    if errors:
+        for line in errors: print(line)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

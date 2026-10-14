@@ -61,6 +61,14 @@ def exteriors(rnd, it, items, only=None, prefix=None, iters=None):
             vf = os.path.join(d, "variants.json")
             if not os.path.exists(vf): continue
             data = json.load(open(vf, encoding="utf-8"))
+            # a variant the scene lab found empty is an error, never packaged as a picture of nothing (QA round 2
+            # [Q2T-7]: EX-GARDEN-02 "There is no garden", EX-MARKETSTALL-02, DK-04 "There is no dock")
+            mf = os.path.join(d, "metrics.json")
+            gone = [r["index"] for r in json.load(open(mf, encoding="utf-8"))["scenes"] if r.get("missing")] \
+                if os.path.exists(mf) else []
+            if gone:
+                sys.exit(f"package: {t} [{it_}] variant(s) {gone} hold no {t}: fix the kit and run the lab again "
+                         f"(a scene that failed to place is an error, Q2T-7)")
             mp = os.path.join(REPO, data["maps"][0]) if "maps" in data else None
             mname = os.path.splitext(os.path.basename(mp))[0]
             clean = os.path.join(os.path.dirname(mp), "clean", mname + ".png")
