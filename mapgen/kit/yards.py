@@ -89,6 +89,11 @@ GRAVE_ARCH_OPEN = (("field", 6), ("crypt_yard", 4))
 # (a pen fenced now, not walled in stone, and big enough for two rows of graves either side of its path: QA round 1)
 GRAVE_SIZE = {"crypt_yard": [(11, 11), (12, 11), (11, 12)], "pen": [(9, 8), (9, 9), (8, 9)]}
 DEAD_TREES = ("TreeOgre08", "TreeOgre10", "TreeTrunk6")          # War03b-d's dead trees by the yard's walls
+# a statue's letter by the square axis it faces (Statue1x and Statue2x alike: a faces SE (+i), c NE (+j), e NW (-i), g
+# SW (-j); kit/furnish.STATUE_FACING), and the great seated statue's facing (HorrendousStatue1 faces SE, 2 SW: the
+# scene lab's renders, 2026-10-14; the gold wolf faces SE only)
+STATUE_LETTER = {"+i": "a", "+j": "c", "-i": "e", "-j": "g"}
+GREAT_STATUE = {"+i": "HorrendousStatue1", "-j": "HorrendousStatue2"}
 
 
 def grave_arch(centre, weights=GRAVE_ARCH_OPEN):
@@ -231,13 +236,31 @@ def _fence_points(y):
 
 
 def yard_ground(y, land=None):
-    """The squares under a yard's fenced ground, symmetric about its gate: i across gi..gi + w - 1, j across
-    gj - 1..gj + h - 1. Along j the fence runs through the middle of a row of squares (its points are drawn half a
-    square off the squares, Yard.centre), so the ground reaches half a square past the fence on both j sides alike; the
-    plot's own squares (gj..) had left a strip of grass inside one fence and dirt outside the other (QA round 1, the
-    garden: "the ground inside of the garden fence is just regular grass")."""
-    out = {(y.gi + a, y.gj - 1 + b) for a in range(y.w) for b in range(y.h + 1)}
+    """The squares under a yard's fenced ground: i across gi..gi + w - 1, j across gj..gj + h - 1, the plot's own
+    squares, every one of them inside the fence and the fence's line their outer edge on every side (QA round 2,
+    2026-10-14 [Q2T-6, Q2X-1]: "The brick extends outside of the enclosure to the southwest"). A square's tile is drawn
+    half a square toward -j of where kit/layout.square_px puts the square's middle (TILE_DJ: the scene lab's renders,
+    a fence of points round paved squares, 2026-10-14), while walls and objects agree with square_px: so a tile row
+    meets a fence's j line at its edge, as it does an i line. QA round 1's ground (gj - 1..gj + h - 1, read as half a
+    square past the fence on both j sides) had in truth laid a whole row outside the fence on its j0 (south-west) side
+    and none on its j1 side."""
+    out = set(y.plot)
     return {s for s in out if land is None or (s in land.squares and s not in land.water)}
+
+
+# where a square's tile is drawn, in kit/layout.square_px's square coordinates (which walls and objects follow): its
+# middle at (i + 0.5, j + TILE_DJ), half a square toward -j of square_px's (i + 0.5, j - 0.5) (yard_ground)
+TILE_DJ = -1.0
+
+
+def tile_centre(s):
+    """The drawn middle of square s's tile, in square_px's coordinates (TILE_DJ)."""
+    return s[0] + 0.5, s[1] + TILE_DJ
+
+
+def tile_at(si, sj):
+    """The square whose drawn tile holds the point (si, sj) of square_px's coordinates (TILE_DJ)."""
+    return int(math.floor(si + 1e-6)), int(math.floor(sj - TILE_DJ + 0.5 + 1e-6))
 
 
 def door_between(spec, kind, pa, pb):
@@ -278,8 +301,9 @@ class Frame:
         return square_px(*self.sq(u, v))
 
     def square(self, u, v):
-        si, sj = self.sq(u, v)
-        return int(math.floor(si + 1e-6)), int(math.floor(sj + 1e-6)) + 1
+        """The square whose drawn tile holds the frame point (u, v) (tile_at: a tile is drawn half a square toward -j
+        of square_px's middle)."""
+        return tile_at(*self.sq(u, v))
 
     def point(self, u, v):
         si, sj = self.sq(u, v)
@@ -291,17 +315,24 @@ class Frame:
         return self.AXIS[d]
 
     def uv_of_square(self, s):
-        """(u, v) of a square's centre."""
-        si, sj = s[0] + 0.5 - self.gm[0], s[1] - 0.5 - self.gm[1]
+        """(u, v) of a square's drawn tile middle (tile_centre)."""
+        ci, cj = tile_centre(s)
+        si, sj = ci - self.gm[0], cj - self.gm[1]
         return si * self.r[0] + sj * self.r[1], si * self.f[0] + sj * self.f[1]
 
     def squares(self, u0, u1, v0, v1):
-        """The squares whose centres lie in u0..u1, v0..v1 (symmetric when u0 = -u1)."""
+        """The squares whose drawn tiles' middles lie in u0..u1, v0..v1 (symmetric when u0 = -u1). The tiles' middles
+        lie on whole u either side of the gate's middle, on a gate in any side, and half a square into the yard along v
+        (QA round 2 [Q2X-2, Q2X-3]: on a gate in an i side the path and the aisle had been laid half a square off the
+        gate, the mausoleum and the statue: "The cobblestone path is not aligned correctly with the gate and
+        mausoleum")."""
         out = set()
-        for a in range(-int(self.L) - 3, int(self.L) + 4):
-            for b in range(-4, int(self.D) + 5):
-                u, v = a + self.lat, b + (0.0 if self.y.side in ("j0", "j1") else 0.5)
-                if u0 - 1e-6 <= u <= u1 + 1e-6 and v0 - 1e-6 <= v <= v1 + 1e-6: out.add(self.square(u, v))
+        ci, cj = self.sq(0, (v0 + v1) / 2)
+        R = int(max(abs(u0), abs(u1)) + abs(v1 - v0) / 2) + 3
+        for i in range(int(ci) - R, int(ci) + R + 2):
+            for j in range(int(cj) - R, int(cj) + R + 3):
+                u, v = self.uv_of_square((i, j))
+                if u0 - 1e-6 <= u <= u1 + 1e-6 and v0 - 1e-6 <= v <= v1 + 1e-6: out.add((i, j))
         return out
 
 
@@ -764,7 +795,6 @@ def _graveyard(spec, land, y, fr):
     arch = getattr(y, "arch", "field")
     lay = _Lay(spec, fr)
     half, D = fr.half, fr.D
-    vlat = 0.0 if y.side in ("j0", "j1") else 0.5
     for s in yard_ground(y, land): spec.floor[square_tile(*s)] = "GrassSparse2"
     keep = []                                            # (u0, u1, v0, v1) boxes kept from the graves, mirrored
 
@@ -772,9 +802,10 @@ def _graveyard(spec, land, y, fr):
         keep.append((u0, u1, v0, v1))
         keep.append((-u1, -u0, v0, v1))
 
-    # ---- the path's width: three squares on a gate in a j side (its axis on the squares' centres), two in an i side;
-    # a narrow yard's path one square, so a column of graves fits each side of it
-    ph = fr.path_half if (fr.lat == 0.5 or half >= 6) else 0.5
+    # ---- the path's width: three squares, its middle one on the gate's axis (the tiles lie on whole u on a gate in any
+    # side: Frame.squares); a narrow yard's path one square, so a column of graves fits each side of it (a gate in an i
+    # side had a path of two squares, laid half a square off its gate: QA round 2 [Q2X-2])
+    ph = 1.5 if half >= (6 if y.side in ("j0", "j1") else 5) else 0.5
     # ---- the mausoleum ------------------------------------------------------------------------------------------
     styles = []
     if arch != "pen" and D >= 9:
@@ -801,7 +832,10 @@ def _graveyard(spec, land, y, fr):
         for s in fr.squares(Ua + 0.2, Ub - 0.2, Vf + 0.2, Vb - 0.2):
             spec.floor[square_tile(*s)] = "GreenBrick"
         um = (Ua + Ub) / 2
-        door_between(spec, "WoodAndSteelDoor", fr.point(um - 0.5, Vf), fr.point(um + 0.5, Vf))
+        # a crypt's double door, its two halves either side of the axis (a single door had filled one of the two
+        # middle cells, half a cell off the path: QA round 2 [Q2X-2], "one straight line from the gate's middle to the
+        # mausoleum's door")
+        door_between(spec, "CryptDoor", fr.point(um - 0.5, Vf), fr.point(um + 0.5, Vf))
         if n_ >= 5:                                       # a wide mausoleum: two sarcophagi side by side
             for d_ in (-1.0, 1.0): lay.put(crypt, um + d_, Vf + depth * 0.58, room=1.0)
         else:
@@ -810,18 +844,23 @@ def _graveyard(spec, land, y, fr):
         Umax = max(Ub for _, Ub in cells)
         keep_box(0, Umax + 0.85, Vf - 1.3, D + 1)
         if style != "pair":                               # torch poles either side of the door
-            for sd in (1, -1): lay.put("TorchPole", sd * (ph + 0.6), Vf - 0.8, room=0.7)
+            # (a square before the door wall: the brick floor of the mausoleum runs to its wall line, QA round 2)
+            for sd in (1, -1): lay.put("TorchPole", sd * (ph + 0.6), Vf - 1.05, room=0.7)
     crypt_box = list(keep[:2])
     # ---- the path ----------------------------------------------------------------------------------------------
     # (to the mausoleum's door: on a gate in a j side the walls run through the squares' middles, so the path takes the
     # square under the door's wall too, else half a square of grass is left before the door)
+    # (from the gate's line, never out past it: a yard's paving stays inside its enclosure, QA round 2 [Q2T-6]; the
+    # walk to the road, kit/yards.connect_gate, starts outside the gate)
     v_end = Vf if style in ("single", "wide", "row3") else (D - 0.6) if style == "pair" else (D - 2.4)
-    for s in fr.squares(-ph + 0.05, ph - 0.05, -1.6, v_end):
+    for s in fr.squares(-ph + 0.05, ph - 0.05, 0.0, v_end):
         if land is None or (s in land.squares and s not in land.water): spec.floor[square_tile(*s)] = "RoughCobble"
     keep_box(0, ph + 0.4, -2, D + 1)
     # ---- what stands at the path's end -----------------------------------------------------------------------------
     if style == "pair":                                  # a statue between the two mausoleums
-        lay.put(rng.choice(("Statue1a", "Statue1c", "Statue1e")), 0, D - 1.2, room=0.8)
+        # (facing the gate down the path: Statue1a faces +i, c +j, e -i, g -j, as Statue2's letters, kit/furnish
+        # STATUE_FACING; QA round 2 [Q2T-3])
+        lay.put("Statue1" + STATUE_LETTER[fr.axis(0, -1)], 0, D - 1.2, room=0.8)
     elif not cells:                                      # a memorial between two open-air sarcophagi
         lay.put("Monument1", 0, D - 1.5, room=0.9)
         for sd in (1, -1): lay.put(crypt, sd * (ph + 1.3), D - 1.6, room=1.2)

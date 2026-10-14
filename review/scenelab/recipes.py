@@ -217,6 +217,7 @@ def _jail_court(ctx):
 
 # ---------------------------------------------------------------------------------------------------- gardens
 HOME_ROLES = ("home", "cottage", "home", "fisher", "herbwife")
+GARDEN_SIZE = {"small": (4, 3), "typical": (5, 4), "large": (6, 5)}     # (Westwood's run 6-9 squares)
 GARDENERS = (("Con02a", "Gretchen"), ("Con03A", "Kenneth"), ("Con02a", "Julie"))
 
 
@@ -235,6 +236,11 @@ def _house(ctx, p, role, at, side=None, quiet=False):
             for dj in (0, -2, 2, -4, 4):
                 o = (2 * int(at[0] + di - size[0] / 4), 2 * int(at[1] + dj - size[1] / 4))
                 if not land.lot_free(o, size, margin=1): continue
+                # (a scene's planned ground, a garden's site, keeps the neighbours' lots off it: Q2X-5)
+                keep_ = ctx.get("keep_out", {}).get(p.k)
+                if keep_ and any((o[0] // 2 + a, o[1] // 2 + 1 + b) in keep_
+                                 for a in range(-1, size[0] // 2 + 1) for b in range(-1, size[1] // 2 + 1)):
+                    continue
                 b = generate_building(m, p.rng, o, size, r["style"], program=program, entrance_side=side,
                                       building_id=f"H{p.k}", occupied={square_tile(*s) for s in land.taken}, tries=10,
                                       shape="rect", min_units=int(min_units * shrink * shrink))
@@ -265,7 +271,22 @@ def _garden_plan(ctx):
         role = HOME_ROLES[p.k % len(HOME_ROLES)] if p.size != "small" else "cottage"     # a small clearing: a cottage
         at = (p.c[0] - ux * 3.5, p.c[1] - uy * 3.5)
         h = _house(ctx, p, role, at, quiet=True) or _house(ctx, p, role, p.c)
-        if h: ctx["houses"][p.k] = h; p.notes["scene_sq"] = [at[0], at[1]]
+        if h:
+            ctx["houses"][p.k] = h; p.notes["scene_sq"] = [at[0], at[1]]
+            # the garden's site, on ground the clearing will hold, kept from the neighbours' lots planned next (QA
+            # round 2 [Q2X-5, Q2T-7]: EX-GARDEN-02 "There is no garden": two neighbours had been built over the
+            # strip beside the cottage where its garden fitted)
+            from kit.village import Village
+            site = Village(ctx["m"], random.Random(0), land).garden(
+                h[1], size=GARDEN_SIZE[p.size], dry=True,
+                inside=lambda s_: math.hypot(s_[0] + 0.5 - p.c[0], s_[1] - 0.5 - p.c[1]) <= p.r - 2)
+            # (only where nothing but the least garden fits by the house, and from that clearing's own neighbours: a
+            # house with room for more keeps its neighbours as before, so the gardens rated well in round 2 are laid
+            # as they were)
+            if site and site[2] * site[3] <= 15:
+                gi, gj, w, h_ = site
+                ctx.setdefault("keep_out", {}).setdefault(p.k, set()).update(
+                    (gi + a, gj + b) for a in range(-1, w + 1) for b in range(-1, h_ + 1))
 
 
 def _garden_build(ctx):
@@ -286,7 +307,7 @@ def _garden_build(ctx):
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
         vil = Village(m, p.rng, land)
         n0 = len(m.d["objects"])
-        size = {"small": (4, 3), "typical": (5, 4), "large": (6, 5)}[p.size]     # (Westwood's run 6-9 squares)
+        size = GARDEN_SIZE[p.size]
         if vil.garden(b, size=size):
             crops = _new_objects(m, n0, r"^Garden")
             if crops:
@@ -314,7 +335,13 @@ def _pond_plan(ctx):
         pr = (LAKE_R if p.town else POND_R)[p.size]
         ux, uy = p.dir
         pc = p.c if p.site != "wall" else (p.c[0] + ux * 2.5, p.c[1] + uy * 2.5)
-        if p.town: pc = (p.c[0] - ux * p.r * 0.3, p.c[1] - uy * p.r * 0.3)
+        if p.town:
+            # the lake toward the clearing's side away from where its dock is walked to: the road's side (the lake off
+            # it), or, by a wall, the wall's (the lake against the wood); by a wall it had lain on the side the dock
+            # came from, filling the clearing to the wood with no bank behind any landing (QA round 2 [Q2N-1, Q2T-7]:
+            # DK-04 "There is no dock")
+            sg = -1 if p.site != "wall" else 1
+            pc = (p.c[0] + sg * ux * p.r * 0.3, p.c[1] + sg * uy * p.r * 0.3)
         p.pond = (pc, pr)
         p.notes["scene_sq"] = [pc[0], pc[1]]
         land.reserve_band([(2 * pc[0], 2 * pc[1]), (2 * pc[0] + 0.1, 2 * pc[1])], pr + 1.0)
@@ -431,6 +458,14 @@ def _house_plan(roles, square=0):
             # (a market's square before its store: the store at the clearing's side, the square kept open in the
             # middle; the store at 4.5 squares had stood on the square itself, and no awning found room by it)
             back = (p.r - 5.5) if (square and p.town) else 4.5
+            if square and p.town and p.road:
+                # the market's square between the store's door and the road, the door ten squares and more from the
+                # road (QA round 2 [Q2N-2, Q2T-7]: EX-MARKETSTALL-02 "There is no market stall": a big inn in a small
+                # clearing had its door five squares from the road, its square out on the road, no stall fitted)
+                from kit.identity import BUILDINGS, role_size
+                (sw, sh), _ = role_size(BUILDINGS[role])
+                ext = 0.85 * (abs(ux) * sw + abs(uy) * sh) / 4          # the house's half depth toward the road, squares
+                back = max(back, ext + 10.5 - (p.r - 3.0))
             side = None
             if square:                                   # its door toward the clearing (the market square before it)
                 # (the building's u runs along the squares' i, its v along j)
@@ -445,6 +480,17 @@ def _house_plan(roles, square=0):
                 L = math.hypot(di - fi, dj - fj) or 1
                 p.scene_c = (di + (di - fi) / L * 6.5, dj + (dj - fj) / L * 6.5)      # (a door keeps 3 squares clear)
                 p.notes["scene_sq"] = list(p.scene_c)
+                # the square kept from the house's walk to the road, which goes round it (QA round 2 [Q2N-2]: the walk
+                # had cut a small clearing's square in two, and no awning found room either side of it)
+                sq_ = {(int(p.scene_c[0]) + a, int(p.scene_c[1]) + 1 + b) for a in range(-4, 5) for b in range(-4, 5)
+                       if a * a + b * b <= 12} - ctx["land"].reserved
+                ctx["land"].reserved |= sq_
+                ctx.setdefault("square_keep", set()).update(sq_)
+                # and from the neighbours' lots: a cottage built at the square's edge had been the nearest house to
+                # half of it, where a stall must stand by its store (kit/scenes market_stall, need)
+                ctx.setdefault("keep_out", {}).setdefault(p.k, set()).update(
+                    (int(p.scene_c[0]) + a, int(p.scene_c[1]) + 1 + b) for a in range(-7, 8) for b in range(-7, 8)
+                    if a * a + b * b <= 49)
             if square: _keep(ctx, p.scene_c, square)
     return plan
 
@@ -458,6 +504,7 @@ def _house_build(ctx):
         if id(b) in done: continue
         done.add(id(b))
         for d in b.entrances: land.connect_door(m, d, _squares_of(b.footprint))
+    land.reserved -= ctx.get("square_keep", set())
 
 
 # ---------------------------------------------------------------------------------------------------- shrines
@@ -617,8 +664,10 @@ RECIPES = {
     # turns them into hideouts
     # (the open camps against a cliff in four of five clearings: Westwood's open camps back onto rock, Con03A, Con04a,
     # Con05A; the judge, 2026-10-06: "mid-glade")
+    # (a hideout a little roomier than the first pockets, 1.2: a band's beds, store and arms each against the rock with
+    # a clear stride between them; the small pocket had laid its barrels against the fire's bench, QA round 2, Q2X-4)
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8),
-                        site_map={"glade": "cliff", "shore": "cliff"}),
+                        site_map={"glade": "cliff", "shore": "cliff"}, cave_scale=1.2),
     # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
     "ogre_camp": dict(plan=_ogre_plan, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
                       cave_scale=1.7, cave_floor="SwampGrass", path_in=True),

@@ -96,6 +96,10 @@ the bottom of the screen. After the walls, `MineEntrance.ground()` lays the face
   is centred between its ends on the same rows. Paint each road once (a lab painting every road once per plot had left
   a stray tile of another plot's road by each bridge [Q1W-3]). **Checked by** `water.bridge_narrow`, `water.bridge_off`,
   `water.bridge_even`; look at `py review/qa/bridgelab.py --render`.
+- **A paved road ends where the bridge starts** [Q2X-6] (BR-01, BR-11: "have that cobblestone path terminate where the
+  bridge starts. Do not bring the cobblestone all the way up to the bank of the river"): under a chain bridge's span the
+  road's paving gives way to trodden earth (`Waterworks._unpave_span`), the paving stopping at the end pieces. **Checked
+  by** `water.bridge_paved`.
 - **Banks without fingers** [Q1W-11] (Brackwater, nox3: "little fingers sticking out into the river with hard edges"):
   no per-tile jitter on a stream's edge; `Waterworks._smooth` takes every finger of bank (water on three sides) into
   the water and every spit of water (bank on three sides) into the bank, on streams, ponds and round a dock's landing.
@@ -185,9 +189,13 @@ courts, a well now and then fenced).
   kind to a row, a pair of fresh graves on dug earth now and then; the gravedigger's corner (open grave, spade, heap,
   coffin, bucket of tools, skull and bone) mirrored by the keeper's stores (barrels, a tool barrel, a coffin); dead
   trees in the other corners; its ground sparse grass (GrassSparse2).
-- A well is a feature (`kit/setpieces._well`, `rules/scenes/well.md`) [Q1X-5..Q1X-7]: the healing well on its own
-  grey cobbles, water barrels, the bucket of tools, a barrel and a bench round it, torch poles at the paving's corners;
-  now and then behind a low fence and gate, or a market well with benches on four sides and lamps at its corners.
+- A well is a feature (`kit/setpieces._well`, `rules/scenes/well.md`) [Q1X-5..Q1X-7, Q2X-1]: the healing well on its own
+  grey cobbles ending at a stone curb (CobbleStoneTrim, never blended into the grass) or at its fence, urns, benches
+  beside or behind it (never in the way in), stone posts and torch poles at the paving's corners, a statue facing the
+  way in; barrels in one well of four; now and then behind a low fence and gate, its paving the ground inside the fence
+  and no more, or a market well with benches on three sides and lamps at its corners. A tile is drawn half a square
+  toward -j of its square's middle (`yards.TILE_DJ`): a yard's ground is its plot's squares (`yards.yard_ground`), and
+  its paths and aisles are chosen where their tiles are drawn (`yards.Frame.squares`), centred on the gate [Q2X-2, Q2X-3].
 - A shrine is a court (`kit/setpieces._shrine`, `rules/scenes/shrine.md`) [Q1X-1..Q1X-3]: a rectangle of paving
   entered from the screen's bottom, its shape set by obelisks, mana pillars, columns or statues at its corners and in
   parallel rows down both long sides, an aisle up its axis to the grand centrepiece at the back (the great statue, the
@@ -688,7 +696,9 @@ pictures show every camp for the rest.
   `room - 1` squares and, among those, the one whose nearest wall is nearest (a camp backs onto the wood or the cliff,
   never floats in a wide glade), near the place, off its road; lay the camp open toward the road beside it (`StoryMap.road_near(site)`). A camp
   holds its ground: planting and dressing keep off it.
-- **The bandit camp** [Q1K-3]: besides the zones below, every camp has the band's arms in a row against the wall
+- **The bandit camp** [Q1K-3, Q2X-4]: every camp keeps a water barrel; a hideout's bedrolls lie in one row along the
+  rock; the chest's back is to a wall (`camps.CHEST_BACK`); seats keep a stride from the stores (`camps.SEAT_CLEAR`).
+  Besides the zones below, every camp has the band's arms in a row against the wall
   (pole arms, two or three armour racks, the bow rack, a quiver), the store in two rows (barrels with the water barrel
   and a large crate, then crates of apples and sacks), a bedroll pair at the least with each sleeper's bundle, the
   awning with a band of four or more, a board (a table and stools), a woodpile, a cook pot now and then with its stores;

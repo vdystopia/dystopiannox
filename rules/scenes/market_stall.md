@@ -4,6 +4,14 @@ Kit: the catalogue's `market_stall` (`kit/scenes.py`, laid by `kit/dressing.Exte
 a store or an inn within 12 squares). Lab: `py tests/scenelab.py market_stall`. Westwood's evidence: three campaign
 stalls (Con02a, Con03A, Con09d).
 
+## QA round 2 (2026-10-14): a stall that cannot be laid is an error [Q2N-2, Q2T-7]
+
+EX-MARKETSTALL-02: "There is no market stall." In the small road clearing the inn stood five squares from the road, its
+market square out on the road, and the store's walk cut the square in two: no awning found room. The scene lab now sets
+the store back ten squares and more from a clearing's road (`recipes._house_plan`), keeps its square from the house's
+walk and from the neighbours' lots; every variant stands (iteration `verify`, seed 11). A variant with no stall fails
+the lab run (`tests/scenelab.missing_error`).
+
 ## Purpose
 
 A trader's pitch: a striped awning (TraderTent, purple and orange or green and red) on its poles, the stock set out

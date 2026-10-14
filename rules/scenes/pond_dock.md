@@ -3,6 +3,14 @@
 Kit: `kit/water.py Waterworks.pond`, `dock` (`_shore_start`, `_dock_gear`). Lab: `py tests/scenelab.py pond_dock`.
 Westwood's evidence: 4 campaign docks (Con05A's three DockDown runs into the lake, Con03A's DockUp; War03a's DockUp).
 
+## QA round 2 (2026-10-14): a dock that cannot be laid is an error [Q2N-1, Q2T-7]
+
+DK-04: "There is no dock." The town lake of the clearing against the wall lay toward the side the dock is walked to,
+filling the clearing to the wood: no landing had a bank behind it or kept clear of the wall (`Waterworks` rejects: "a
+wall by the landing", "no bank behind"), and the lab rendered the bare lake. A lake by a wall now lies toward the wall,
+its shore toward the hamlet open (`recipes._pond_plan`); every variant has its dock (iteration `verify`, seed 11). A
+variant with no dock fails the lab run (`tests/scenelab.missing_error`).
+
 ## Purpose
 
 Where boats tie up and the fishers work: a dock run out from the bank into open water, their gear on the bank.

@@ -2150,6 +2150,45 @@ def _decks(m):
     return out
 
 
+CHAIN_END = re.compile(r"^(RopeBridgeBroken[12]|RopeBridge[12]|LavaBridge[12])(FarEnd|NearEnd)Front$")
+
+
+def bridge_span_paving(m):
+    """A paved road under a chain bridge's span, between its two end pieces (QA round 2 [Q2X-6, Q2T-6]: BR-01, BR-11
+    "If the path leading up to the bridge is going to be cobblestone, have that cobblestone path terminate where the
+    bridge starts. Do not bring the cobblestone all the way up to the bank of the river"): [(x, y, fault)]. The tiles
+    whose middles lie along the span, a fifth of it in from either end and within 40 px of its line, paved."""
+    ends = [o for o in m.objects if CHAIN_END.match(o["type"])]
+    out, used = [], set()
+    for a in ends:
+        ka = CHAIN_END.match(a["type"])
+        if ka.group(2) != "FarEnd" or a["id"] in used: continue
+        b = min((o for o in ends if CHAIN_END.match(o["type"]).group(1) == ka.group(1) and
+                 CHAIN_END.match(o["type"]).group(2) == "NearEnd" and o["id"] not in used),
+                key=lambda o: math.hypot(o["x"] - a["x"], o["y"] - a["y"]), default=None)
+        if b is None: continue
+        L = math.hypot(b["x"] - a["x"], b["y"] - a["y"])
+        if not 60 <= L <= 1200: continue
+        used |= {a["id"], b["id"]}
+        ux, uy = (b["x"] - a["x"]) / L, (b["y"] - a["y"]) / L
+        paved = []
+        X0, X1 = int(min(a["x"], b["x"]) // CELL) - 3, int(max(a["x"], b["x"]) // CELL) + 3
+        Y0, Y1 = int(min(a["y"], b["y"]) // CELL) - 3, int(max(a["y"], b["y"]) // CELL) + 3
+        for X in range(X0, X1 + 1):
+            for Y in range(Y0, Y1 + 1):
+                t = m.tiles.get((X, Y))
+                if not t or not PAVED_RE.search(t["material"]): continue
+                px_, py_ = (X + 1) * CELL - a["x"], (Y + 1) * CELL - a["y"]
+                along, off = px_ * ux + py_ * uy, abs(-px_ * uy + py_ * ux)
+                if 0.2 * L < along < 0.8 * L and off <= 40: paved.append((X, Y))
+        if len(paved) >= 2:
+            out.append(((a["x"] + b["x"]) / 2, (a["y"] + b["y"]) / 2,
+                        f"A paved road runs under the bridge toward the bank ({len(paved)} tiles between its ends): a "
+                        f"paved road ends where the bridge starts, the bank under the bridge its own ground "
+                        f"(kit/water.Waterworks._unpave_span)."))
+    return out
+
+
 def crossing_faults(m):
     """A bridge and its road (QA round 1, the bridges: "the path should be the same width as the bridge or wider. The
     path must be lined up more consistently with the bridge"; "It also extends farther to the southeast bank than it
@@ -2303,6 +2342,8 @@ def check_water(m, ctx, base):
                              f"(Waterworks._smooth).", x + CELL, y + CELL))
     for x, y, msg in crossing_faults(m):
         out.append(F("water", "warning", msg, x, y))
+    for x, y, msg in bridge_span_paving(m):
+        out.append(F("water", "warning", msg, x, y, rule="water.bridge_paved"))
     for x, y, msg in dock_faults(m):
         out.append(F("water", "warning", msg, x, y))
     return out
@@ -3352,8 +3393,13 @@ def _sq(o):
     return (u - 1) / 2, (v - 1) / 2
 
 
+# where a square's tile is drawn, in the objects' square coordinates (_sq): its middle at (i + 0.5, j + TILE_DJ), half a
+# square toward -j of (i + 0.5, j - 0.5) (kit/yards.TILE_DJ; QA round 2, the scene lab's renders)
+TILE_DJ = -1.0
+
+
 def _floor_sq(m, si, sj):
-    i, j = int(math.floor(si)), int(math.floor(sj)) + 1
+    i, j = int(math.floor(si)), int(math.floor(sj - TILE_DJ + 0.5))
     t = m.tiles.get((i + j, i - j))
     return t["material"] if t else None
 
@@ -3477,11 +3523,14 @@ def setpiece_faults(m, outdoor):
         # middle, its extent against the middle (square i spans i..i + 1 across i, square j spans j - 1..j across j)
         mid = mi if along == 0 else mj
         k0 = int(math.floor(mid))
-        span = (lambda k: (k, k + 1)) if along == 0 else (lambda k: (k - 1, k))
+        # (a tile is drawn half a square toward -j of the objects' square middle, TILE_DJ: on a gate across j its
+        # squares had read half a square off where they are drawn, and a path laid half a square off its gate passed,
+        # QA round 2, EX-GRAVEYARD-03/04)
+        span = (lambda k: (k, k + 1)) if along == 0 else (lambda k: (k + TILE_DJ - 0.5, k + TILE_DJ + 0.5))
         for n in (-1.5, -1.0, -0.5, 0.5, 1.0, 1.5):
             w = (mj if along == 0 else mi) + n
             def paved(k):
-                i, j = (k, int(math.floor(w)) + 1) if along == 0 else (int(math.floor(w)), k)
+                i, j = (k, int(math.floor(w - TILE_DJ + 0.5))) if along == 0 else (int(math.floor(w)), k)
                 t = m.tiles.get((i + j, i - j))
                 return bool(t and PAVED_RE.search(t["material"]))
             # (a path through the gate: paved where the gate opens, its middle's square or one beside the middle; paving
@@ -3543,6 +3592,88 @@ def setpiece_faults(m, outdoor):
                 out.append(F("exterior", "warning", f"The {k}'s pieces stand {mir:.0%} mirrored about its axis: a set "
                              f"piece's pieces stand in pairs, balanced either side of its way in (kit/setpieces; QA round "
                              f"1).", x, y, rule="exterior.set_symmetry"))
+    for rec in yards:
+        out += yard_floor_faults(m, rec, outdoor)
+    return out
+
+
+# ---- QA round 2 (2026-10-14): a yard's floor ends at a hard line, and a yard is never empty [Q2T-6, Q2T-7] ----------
+# The user: EX-WELL set "Instead of blending the stone floor with the surrounding grass and dirt, use a hard edge like a
+# curb. or surround it with a short wall / fence"; EX-WELL-02/05 "The brick extends outside of the enclosure";
+# EX-GARDEN-02 "There is no garden". A declared yard's own pieces (`YARD_OWN`, else any piece of a scene) and its paving:
+# the paving grown from its ground through tiles of the same materials, never past a fence round it, never blended
+# (BlendEdge) into the ground round it.
+YARD_OWN = {"well": WELL_RE, "graveyard": GRAVE_RE, "field": CROP_RE, "garden": CROP_RE,
+            "orchard": re.compile(r"^TreeApple")}
+YARD_FENCED = 0.6            # of a yard's fence line's wall points walled: a fenced yard
+YARD_BLEND_MAX = 2           # tile sides of a yard's paving blended into the ground round it, at most
+
+
+def _yard_box(m, sq):
+    """(fenced, inside): whether a yard's ground (squares `sq`) stands in a fence, and the squares inside the fence's
+    line. The fence's points run (p, q) round the plot, p from its first i to its last + 1, q from its first j - 1 to its
+    last j (kit/yards._fence_points); a square's tile lies inside when i is within the p's and j within q + 1..q's last
+    (its tile drawn half a square toward -j, kit/yards.TILE_DJ). A declared ground of QA round 1 ran a row further
+    toward -j than the fence (gj - 1): both readings are tried, the better walled kept."""
+    i0, i1 = min(i for i, _ in sq), max(i for i, _ in sq)
+    j0, j1 = min(j for _, j in sq), max(j for _, j in sq)
+    best = (0.0, None)
+    for qa in (j0 - 1, j0):
+        pts = [(p, q) for p in (i0, i1 + 1) for q in range(qa, j1 + 1)] + \
+              [(p, q) for q in (qa, j1) for p in range(i0, i1 + 2)]
+        share = sum(1 for p, q in set(pts) if (p + q, p - q) in m.walls) / len(set(pts))
+        if share > best[0]:
+            best = (share, {(i, j) for i in range(i0, i1 + 1) for j in range(qa + 1, j1 + 1)})
+    return best[0] >= YARD_FENCED, best[1]
+
+
+def yard_floor_faults(m, rec, outdoor):
+    """A declared yard's faults of QA round 2: none of its own pieces in it (exterior.set_empty, an error: Q2T-7);
+    its paving past its fence (exterior.yard_spill) or blended into the ground round it (exterior.yard_blend: Q2T-6)."""
+    out = []
+    k = rec.get("kind") or ""
+    fl = {tuple(t) for t in rec.get("floor", [])}
+    if not fl: return out
+    sq = {((x + y) // 2, (x - y) // 2) for x, y in fl}
+    cx = sum((x + 1) * CELL for x, _ in fl) / len(fl)
+    cy = sum((y + 1) * CELL for _, y in fl) / len(fl)
+    own = YARD_OWN.get(k)
+    mine = [o for o in _in_yard(rec, outdoor, pad=0) if (own.match(o["type"]) if own else
+            not DECOR_SKIP.search(o["type"]) and not m.is_door(o) and "MONSTER" not in o["cls"])]
+    if not mine:
+        out.append(F("exterior", "error", f"The {k} holds none of its own pieces: a scene that failed to place is an "
+                     f"error, never an empty yard in the map (QA round 2, EX-GARDEN-02 \"There is no garden\").", cx, cy,
+                     rule="exterior.set_empty"))
+    paved = {t for t in fl if t in m.tiles and PAVED_RE.search(m.tiles[t]["material"])}
+    if not paved: return out
+    mats = {m.tiles[t]["material"] for t in paved}
+    near = {(i + a, j + b) for i, j in sq for a in range(-4, 5) for b in range(-4, 5)}
+    comp, q = set(paved), list(paved)
+    while q:
+        a = q.pop()
+        for d in ((1, 1), (-1, -1), (1, -1), (-1, 1)):
+            n = (a[0] + d[0], a[1] + d[1])
+            if n in comp or n not in m.tiles or m.tiles[n]["material"] not in mats: continue
+            if ((n[0] + n[1]) // 2, (n[0] - n[1]) // 2) not in near: continue
+            comp.add(n); q.append(n)
+    fenced, inside = _yard_box(m, sq)
+    if fenced:
+        spill = [t for t in comp if ((t[0] + t[1]) // 2, (t[0] - t[1]) // 2) not in inside]
+        if spill:
+            x, y = sum((t[0] + 1) * CELL for t in spill) / len(spill), sum((t[1] + 1) * CELL for t in spill) / len(spill)
+            out.append(F("exterior", "warning", f"The {k}'s paving runs {len(spill)} tile(s) past its fence: a yard's "
+                         f"paving stays inside its enclosure (kit/yards.yard_ground; QA round 2, EX-WELL-02/05 \"The brick "
+                         f"extends outside of the enclosure\").", x, y, rule="exterior.yard_spill"))
+    blend = []
+    for a in comp:
+        for d in ((1, 1), (-1, -1), (1, -1), (-1, 1)):
+            n = (a[0] + d[0], a[1] + d[1])
+            if n in comp or n not in m.tiles: continue
+            if any(e[0] in mats and e[3] == "BlendEdge" for e in m.tiles[n]["edges"]): blend.append(n)
+    if len(blend) > YARD_BLEND_MAX:
+        out.append(F("exterior", "warning", f"The {k}'s paving blends into the ground round it ({len(blend)} tile sides "
+                     f"of BlendEdge): a yard's paving ends at a hard line, a curb, a fence or a wall (kit/setpieces.CURB; "
+                     f"QA round 2, the well set \"use a hard edge like a curb\").", cx, cy, rule="exterior.yard_blend"))
     return out
 
 
@@ -4036,11 +4167,15 @@ RULES = [
     ("exterior.crop_rows", "exterior", r"crops stand .* in straight rows", "Q1X-14"),
     ("exterior.set_variety", "exterior", r"kind\(s\) of thing: a set piece", "Q1X-1"),
     ("exterior.set_symmetry", "exterior", r"pieces stand .* mirrored about its axis", "Q1X-2"),
+    ("exterior.set_empty", "exterior", r"holds none of its own pieces", "Q2T-7 Q2X-5"),
+    ("exterior.yard_spill", "exterior", r"paving runs .* past its fence", "Q2T-6 Q2X-1"),
+    ("exterior.yard_blend", "exterior", r"paving blends into the ground round it", "Q2T-6 Q2X-1"),
     ("water.wade", "water", r"can walk on the water", "Q1W-12"),
     ("water.finger", "water", r"^A ragged bank", "Q1W-11"),
     ("water.bridge_narrow", "water", r"is narrower than the bridge", "Q1W-1"),
     ("water.bridge_off", "water", r"off its centre line", "Q1W-1"),
     ("water.bridge_even", "water", r"farther onto one bank", "Q1W-2"),
+    ("water.bridge_paved", "water", r"paved road runs under the bridge", "Q2T-6 Q2X-6"),
     ("water.dock_long", "water", r"a third of the way at most", "Q1W-6"),
     ("water.dock_side", "water", r"runs close along one bank", "Q1W-7"),
     ("water.dock_wall", "water", r"dock starts against a wall", "Q1W-9"),

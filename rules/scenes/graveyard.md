@@ -3,6 +3,21 @@
 Kit: `kit/yards.py` (`YARDS["graveyard"]`, `plan`, `build`, `_graveyard`). Lab: `py tests/scenelab.py graveyard`.
 Westwood's evidence: 13 campaign scenes (War03b, War03c, War03d, Con04b, Con07B/War07A, Con09b).
 
+## QA round 2 (2026-10-14): one straight line from the gate to the door [Q2X-2, Q2T-1]
+
+**This section overrides the rounds below.** EX-GRAVEYARD-03: "The cobblestone path is not aligned correctly with the
+gate and mausoleum." EX-GRAVEYARD-04: the same.
+
+- The cobbled path is three squares wide (one in a narrow yard), its middle square on the line from the gate's middle
+  to the mausoleum's door; it starts at the gate's line, never outside it. Both faulty yards had their gate in an i side:
+  the path's tiles had been chosen on the squares' lattice, half a square off where they are drawn (`yards.TILE_DJ`,
+  `Frame.squares`).
+- The mausoleum's door is a double CryptDoor, its two halves either side of the axis (a single WoodAndSteelDoor had
+  filled one of the two middle cells, half a cell off the path). Its torch poles stand a square before the door.
+- The statue between a pair of mausoleums faces the gate (`yards.STATUE_LETTER`).
+- Checks: `exterior.gate_path` reads the tiles where they are drawn (it had passed EX-GRAVEYARD-03/04; planted case
+  STgatei); `exterior.yard_spill`.
+
 ## QA round 1 (2026-10-13): organisation and balance [Q1X-8 .. Q1X-12]
 
 **This section overrides the rounds below wherever they differ** (Westwood's rough rows, its stone pens and its crypts

@@ -29,7 +29,7 @@ class Village:
         return s in L.squares and s not in L.roads and s not in L.plaza and s not in L.water and \
             s not in L.taken and s not in self.used
 
-    def garden(self, building, size=(4, 3), crop=None, fence="auto"):
+    def garden(self, building, size=(4, 3), crop=None, fence="auto", dry=False, inside=None):
         """A household's vegetable garden beside the building, on the side away from its entrance, laid as Westwood
         lays its gardens (the scene lab, review/scenelab: Con05A, Con07B, Con09a, Wiz01A, Wiz03b): two or three beds
         side by side (on grass, or dug earth now and then), a different crop in each (corn, tomatoes, cabbage), two rows to a bed, the plants about
@@ -37,7 +37,10 @@ class Village:
         left in the ground; most unfenced, a few behind a low wooden fence (Dilapidated, Wiz01A's) with a gap for the gardener. Every plant stands
         clear of a fence's line (Ambermere playtest, 2026-10-05: "the northeast stretch of fence overlaps with the row
         of crops"). crop: one crop for every bed (a flower bed); fence: "auto" (a wooden fence now and then), a fence
-        material, or None."""
+        material, or None. dry: lay nothing, return the site the garden would take (gi, gj, w, h) or None, so a plan
+        can keep its ground before the land round the house fills (QA round 2 [Q2X-5, Q2T-7]: EX-GARDEN-02 "There is no
+        garden": the scene lab's neighbours had been built over its site); inside: a test every square of a dry run's
+        site and its ring passes (the ground the land will hold there)."""
         sizes, (w, h) = [], size
         if crop is None:                                # Westwood's gardens run larger: two sizes up first, where it fits
             sizes += [(w + 2, h + 1), (w + 1, h + 1)]       # (the blind judge, 2026-10-05: "token plots")
@@ -48,17 +51,26 @@ class Village:
         # (never a token bed of a few plants: QA round 1, EX-GARDEN-02 "A couple random plants and items tossed
         # together"; a garden is three squares across and five along at the least, else none)
         sizes = [s_ for s_ in sizes if min(s_) >= 3 and max(s_) >= 5] or [(5, 3)]
+        # (and that least garden itself, either way round, where no bigger one fits: it had never been tried, so a house
+        # with a strip three or four squares wide beside it had no garden at all, QA round 2 [Q2X-5, Q2T-7]:
+        # EX-GARDEN-02 "There is no garden")
+        sizes += [s_ for s_ in ((5, 3), (3, 5)) if s_ not in sizes]
+        # (and that least garden itself, either way round, where no bigger one fits: it had never been tried, so a house
+        # with a strip three or four squares wide beside it had no garden at all, QA round 2 [Q2X-5, Q2T-7]:
+        # EX-GARDEN-02 "There is no garden")
+        sizes += [s_ for s_ in ((5, 3), (3, 5)) if s_ not in sizes]
         # each size with two squares of open land round it first (no crop against the wood's edge or in a pond: the
         # blind judge, 2026-10-05, "rows running into the pine edge, corn touching the tree line"), then with one; the
         # two largest sizes before any smaller one
         tries = [(s_, True) for s_ in sizes[:3]] + [(s_, False) for s_ in sizes[:3]]
         for s_ in sizes[3:]: tries += [(s_, True), (s_, False)]
         for s_, wide in tries:
-            if self._garden_at(building, s_, crop, fence, wide): return True
-        return False
+            got = self._garden_at(building, s_, crop, fence, wide, dry=dry, inside=inside)
+            if got: return got
+        return None if dry else False
 
-    def _garden_at(self, building, size, crop, fence, wide):
-        """One try of garden() at one size: True if laid."""
+    def _garden_at(self, building, size, crop, fence, wide, dry=False, inside=None):
+        """One try of garden() at one size: True if laid (dry: the site (gi, gj, w, h) it would take, laying nothing)."""
         import zlib, random as _random
         L = self.land
         foot = {L_sq for L_sq in _squares_of(building.footprint)}
@@ -99,6 +111,9 @@ class Village:
             if not all(clear(s) for s in ring): continue
             ring2 = {(gi + a, gj + b) for a in range(-2, w + 2) for b in range(-2, h + 2)} - ring
             if wide and not all((s_ in L.squares and s_ not in L.water) or s_ in foot for s_ in ring2): continue
+            if dry:
+                if inside and not all(inside(s_) for s_ in ring): continue
+                return (gi, gj, w, h)
             if not wide: L.taken |= {s_ for s_ in ring2 if s_ in L.squares}     # the planting keeps two squares off
             one = crop
             # (QA round 1, the garden, 2026-10-13: "Plants in gardens should generally grow on dirt, not grass ... use

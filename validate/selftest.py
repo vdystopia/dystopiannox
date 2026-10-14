@@ -526,6 +526,69 @@ def lopsided_well(m):
         for j in range(-18, -13): m.floor[square_tile(i, j)] = "CobblestoneGrayLight"
 
 
+# ---- QA round 2 (2026-10-14): floors end at a hard line, a missing scene is an error [Q2T-6, Q2T-7] -------------------
+def path_off_gate_i(m):
+    # Q2X-2 (EX-GRAVEYARD-03/04: "The cobblestone path is not aligned correctly with the gate and mausoleum"): a gate in
+    # an i side, its path of two squares laid where QA round 1's frame put them, half a square toward -j of the gate's
+    # middle as the tiles are drawn (kit/yards.TILE_DJ)
+    from kit import yards as Y
+    from kit.layout import point_cell, square_tile
+    y = Y.Yard("graveyard", 92, -17, 5, 5, "i1")
+    for side, ps in Y._fence_points(y).items():
+        for p in ps: m.wall(*point_cell(*p), "IronFence")
+    ps = Y._fence_points(y)["i1"]
+    Y.door_between(m, "Gate", ps[2], ps[3])                    # its middle at j = -16.0
+    for i in range(93, 97):
+        for j in (-16, -15):                                   # drawn over j -17.5..-15.5: their middle at -16.5
+            m.floor[square_tile(i, j)] = "RoughCobble"
+
+
+def empty_yard(m):
+    # Q2T-7 (EX-GARDEN-02 "There is no garden"): a well yard declared, with nothing laid in it
+    _declare(m, "bedroom", [_yard_rec("well", "j0", [114.5, -18.5], 112, 117, -17, -12)])
+
+
+def paving_past_fence(m):
+    # Q2T-6 (EX-WELL-02/05 "The brick extends outside of the enclosure"): a fenced well yard paved a row past its j0
+    # fence, as QA round 1's ground (gj - 1..) had laid it
+    from kit import yards as Y
+    from kit.layout import point_cell, square_tile
+    y = Y.Yard("well", 112, -17, 5, 5, "j0")
+    for side, ps in Y._fence_points(y).items():
+        for p in ps: m.wall(*point_cell(*p), "DilapidatedShort")
+    _declare(m, "bedroom", [_yard_rec("well", "j0", [114.5, -18.5], 112, 117, -17, -12)])
+    _sqobj(m, "WishingWell", 114.5, -15.0, scr="HealWell1")
+    for i in range(112, 117):
+        for j in range(-18, -12): m.floor[square_tile(i, j)] = "CobblestoneGrayLight"
+
+
+def blended_pad(m):
+    # Q2T-6 (the well set: "Instead of blending the stone floor with the surrounding grass and dirt, use a hard edge like
+    # a curb"): an open well yard's grey cobbles blended into the meadow's grass
+    from kit.layout import square_tile
+    m.blending("GrassNorm", 0, "BlendEdge")
+    m.blending("CobblestoneGrayLight", 6, "BlendEdge")
+    _declare(m, "bedroom", [_yard_rec("well", "j0", [114.5, -18.5], 112, 117, -17, -12)])
+    _sqobj(m, "WishingWell", 114.5, -15.0, scr="HealWell1")
+    for i in range(113, 116):
+        for j in range(-16, -13): m.floor[square_tile(i, j)] = "CobblestoneGrayLight"
+
+
+def cobbles_under_bridge(m):
+    # Q2T-6, Q2X-6 (BR-01, BR-11: "have that cobblestone path terminate where the bridge starts. Do not bring the
+    # cobblestone all the way up to the bank of the river"): a rope bridge's span paved down to the water
+    from kit.water import tile_at_uv, WATER_MATERIALS
+    ww = Waterworks(m, random.Random(5))
+    ww.stream([(184, -24), (256, -24)], width=2.2, wiggle=0.0)
+    ww.rope_bridge((236, -36), (236, -12))
+    for u in (234, 236, 238):
+        for v in range(-36, -10, 2):
+            t = tile_at_uv(u, v)
+            if m.floor.get(t) and m.floor[t] not in WATER_MATERIALS and not m.floor[t].startswith("Wood"):
+                m.floor[t] = "RoughCobble"
+    ww.finish()
+
+
 # ---- the object knowledge base (Harrowby playtest, HB-1..HB-5; validate/checks.py check_pieces) ------------------------
 def two_cauldrons(m):
     for u, v in ((206, -6), (214, 3)): m.obj("CauldronAnimated", u, v)          # HB-1: "Why are there two cauldrons?"
@@ -1080,6 +1143,12 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STcropr", crops_scattered, "exterior", "warning", "crops strewn, not in rows - Q1X-14", "straight rows"),
     ("STsetv", shrine_of_one_kind, "exterior", "warning", "a shrine of obelisks alone - Q1X-1", "a set piece is never"),
     ("STsetm", lopsided_well, "exterior", "warning", "a well yard with everything on one side - Q1X-2", "mirrored about"),
+    ("STgatei", path_off_gate_i, "exterior", "warning", "a path half a square off a gate in an i side - Q2X-2",
+     "off the gate"),
+    ("STsetE", empty_yard, "exterior", "error", "a declared well yard with nothing in it - Q2T-7", "none of its own"),
+    ("STyspil", paving_past_fence, "exterior", "warning", "a fenced well's paving a row past its fence - Q2T-6",
+     "past its fence"),
+    ("STyblnd", blended_pad, "exterior", "warning", "a well's cobbles blended into the grass - Q2T-6", "blends into"),
     ("STcrate", crate_by_apples, "exterior", "warning", "a large crate 29 px from an apple crate - Q1K-1", "large crate"),
     ("STcampb", bare_camp, "exterior", "warning", "a camp of a fire and two bedrolls - Q1K-3", "lived in"),
     ("STbedsb", beds_in_block, "exterior", "warning", "three urchin beds side by side - Q1K-4", "one block"),
@@ -1157,6 +1226,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STwade", wade, "water", "error", "a pond without its shore walls: the player walks on it - Q1W-12", "walk on the water"),
     ("STfingr", fingers, "water", "warning", "tiles of bank poking into a pond - Q1W-11", "ragged bank"),
     ("STbrrd", road_off_bridge, "water", "warning", "a one-row road beside a plank deck's rows - Q1W-1", "narrower than"),
+    ("STbrpav", cobbles_under_bridge, "water", "warning", "a rope bridge's span paved to the water - Q2T-6",
+     "runs under the bridge"),
     ("STbreven", bridge_uneven, "water", "warning", "a deck reaching three tiles more onto one bank - Q1W-2",
      "farther onto one bank"),
     ("STdklong", dock_too_long, "water", "warning", "a long dock in a small pond - Q1W-6", "a third of the way"),

@@ -5,6 +5,24 @@ Kit: `kit/camps.py bandit_camp` (the site: `camp_site`; the people: `kit/posts.p
 the hideouts with cots and no fire (Wiz03a, Wiz03b), the fire rings of the towns and woods (Con03A, War03a, War05A,
 Wiz03c), the camps with a pup tent (Con03A, Con04a, Con05A, Con09d).
 
+## QA round 2 (2026-10-14): water, beds and chest against the wall, seats clear [Q2X-4, Q2T-4, Q2T-5]
+
+The set: "Make sure Bandit Camps always have at least 1 water barrel." EX-BANDITCAMP-02: "two barrels that are way too
+close to the bench near the fire. Fix the position of the chest so that its back is against the wall." EX-BANDITCAMP-04:
+"Add a water barrel and fix the configuration of the beds. One of the beds is kind of in the middle. Move it back
+against the wall next to the others."
+
+- Every bandit camp has a water barrel: in the store's back row, else against a wall by the store, else on the store's
+  side in the open (`camps.bandit_camp`).
+- A hideout's band sleeps in one row of bedrolls along the rock behind the fire, each head to the rock, every bed beside
+  another (`camps._wall_beds`); a small pocket (under 36 open squares round the fire) a pair.
+- The chest stands with its back to a wall, its variant by the wall's side (`camps.CHEST_BACK`: Chest3 on a north-east
+  wall, Chest4 north-west, Chest1 south-east, Chest2 south-west).
+- A seat (log bench, stool) keeps a stride (58 px, `camps.SEAT_CLEAR`) from the stores, chests, racks and logs; what the
+  store's and the arms' rows lose to it is set along the camp's walls (`camps._rehome`), so no camp is barer than in
+  round 2 (lab, seed 11: 27.8 pieces of 14.0 kinds before, 31.0 of 16.2 after). The scene lab's hideouts are a fifth
+  roomier (recipes `cave_scale=1.2`).
+
 ## Purpose
 
 A band living rough: where they sleep, eat, keep their take and watch the way in. It must read at once as people's
