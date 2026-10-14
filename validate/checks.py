@@ -3086,7 +3086,7 @@ QA1_S_CORNER_KINDS = {"guardroom", "laboratory", "observatory", "smithy", "works
                       "storeroom", "granary", "ore_store", "powder_store", "treasury"}
 QA1_PAIRED = re.compile(r"^(Obelisk|LOTDManaObelisk|Statue2[a-h]|DunMirFlameBasinLit|LOTDIncenseBasinLit|Coffin|"
                         r"CoffinBreaking|Monument1)")
-QA1_SUPPLY = re.compile(r"Barrel|Crate|Sack|PiledBarrels")
+WORKS_SUPPLY = re.compile(r"Barrel|Crate|Sack|PiledBarrels")
 
 
 def _room_doors_uv(m, r):
@@ -3100,7 +3100,7 @@ def _room_doors_uv(m, r):
     return out
 
 
-def qa1_flags(m, r, kind):
+def works_flags(m, r, kind):
     """[(rule, message, object)] of one room of a works kind: a ceremonial room's pairs off the door's axis, a store of
     one kind of stock, a forge on the bare floor, a bare S corner."""
     out = []
@@ -3145,7 +3145,7 @@ def qa1_flags(m, r, kind):
                             f"{lone[0]['type']}): the user: \"chapels should have a much more symmetric layout\" "
                             f"(kit/works.py step_axis; Q1B)", lone[0]))
     if kind in QA1_STORE_KINDS and tiles >= 30:
-        stock = [o for o in objs if QA1_SUPPLY.search(o["type"])]
+        stock = [o for o in objs if WORKS_SUPPLY.search(o["type"])]
         kinds = collections.Counter(re.sub(r"\d+$", "", o["type"]) for o in stock)
         if len(stock) >= 6 and (len(kinds) < 3 or kinds.most_common(1)[0][1] > 0.7 * len(stock)):
             out.append(("composition.qa1_store_variety", f"{kind.replace('_', ' ')} room: its stock is "
@@ -3181,7 +3181,7 @@ def check_qa1_works(m, ctx, base):
     for r in indoor_rooms(m):
         kind, _ = room_kind(r)
         if not kind: continue
-        for rule, msg, o in qa1_flags(m, r, kind):
+        for rule, msg, o in works_flags(m, r, kind):
             x, y = (o["x"], o["y"]) if o else cell_px(r["cells"][0])
             out.append(F("composition", "warning", msg, x, y, rule=rule))
     return out

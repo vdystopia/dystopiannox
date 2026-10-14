@@ -955,7 +955,7 @@ def wooden_door_in_lotd(m):
     for c, w in m.wallmap.items():                            # Q1C-18: the house in the Land of the Dead's walls...
         if w.get("material") == "StuccoLightWood": w["material"] = "LOTDOrnate"
     # (...its corner door a plain wooden one)
-# ---- QA round 1, the unrated works rooms (validate/checks.py qa1_flags; review/qa1/works.md Q1B) ----------------------
+# ---- QA round 1, the unrated works rooms (validate/checks.py works_flags; review/qa1/works.md Q1B) ----------------------
 def q1_shrine_off_axis(m):
     _declare(m, "shrine")                                      # the main door at (201, 0): the axis runs along v = 0
     m.obj("DunMirAltar1", 219, 0)
