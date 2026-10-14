@@ -127,3 +127,28 @@ For this type:
 - A pair of long tables with benches mirrored by a front wall.
 - Kegs heaped in the S corner and mirrored on the front walls; round sets mirrored where the floor is still bare.
 - Trophies and shields at even steps along both back walls.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-6)
+
+The user, the whole set: "Make the floor behind the bars solid brick consistent with no blending ... Terminate the bricks
+at the bar ... Four out of five of these taverns have the exact same table and stool configuration, add a little
+variance. Overall, they feel just a little bit too empty." RM-TAVERN-04/05: "The bar must be connected to the wall at
+both ends." (**Recurring**, DV4-6.) -01: "The brick hearth is not centered on the fireplace"; -01/03/04/05: "The
+bearskin rug is just slightly too close to the fireplace"; -03: a table "way too close to the bar"; -04: "The two giant
+barrels are too close to each other"; -05: "too empty, especially the east side". Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **The bar meets both walls:** `furnish.build_bar` takes every wall run of a side (a wall with a notch is two runs; it
+  had kept whichever came last and stood both arms against a notch's short wall, ending in the open) and checks each arm
+  ends against its own wall with the floor it encloses all the room's. **Recurring, caught now:** `composition.bar_gap`
+  also flags a run ending with no wall within six units (it had looked for a wall near the end only).
+- **Solid brick behind the bar** to the bar's line as drawn, the bar covering its edge, never blended
+  (`civic.bar_floor`; `kit/shells.py lay_zones` leaves it alone); the floor before the bar and inside it kept clear of
+  tables (`civic.bar_front`).
+- **The hearth on a square's middle** (its patch centred), **the rug a step clear of the fire** (`civic.hearth_rug`),
+  **the great casks apart** (`furnish.bar_casks`).
+- **Four table layouts**, one drawn per room (`civic.TAVERN_LAYOUTS`): round tables in a grid on a carpet; long tables
+  with benches in two mirrored rows, a stool at each end; mirrored clusters of a round table with stools and a square
+  table with chairs; a table of food on a carpet flanked by round tables.
+- **Fuller:** a table per 22 tiles (was 28, `kit/roomtypes.py`), kegs in all three front corners and in rows on the front
+  walls, benches on a front wall, great casks on a front wall where the bar had no room for them, more light, tapestries
+  besides the trophies.

@@ -103,3 +103,15 @@ For this type:
   the hearth's carpet, sitting sets mirrored either side of it along the room's long line, a statue pair mirrored
   across it; a rug before the bed's foot. A rug never overlaps a carpet (`civic.table_set`), and the groups filling
   bare floor keep 3 units off every carpet.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-4)
+
+The user: "Center the tables and chairs on the carpet" (RM-SOLAR-03, -04, -05). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **Carpets chosen as drawn:** the editor draws a floor square a unit further SW than the kit counts it, so a carpet's
+  squares are chosen about (u, v + 1) (`civic.SQUARE_V`, `Ctx.carpet_rect`): the set stands on the carpet's middle as the
+  user sees it. A carpet's trim stays clear of the walls.
+- **Carpets apart, nothing crowding them:** the middle set's carpet three squares clear of the hearth's (the two had
+  blended into one, each set off its middle), else a rug; the mirrored sitting sets 4.2 units and the statue pair 2.4
+  units clear of every carpet; the fill keeps 4.4 units off them.
+- Checked by eye (the carpet-centring check is Q2T-2's, shared).

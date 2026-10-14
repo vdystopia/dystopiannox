@@ -923,6 +923,9 @@ CENTRE_DOOR_ROOMS = ALTAR_ROOMS + ("crypt", "dark_crypt")
 # the works helper's axis rooms too (QA round 2, RM-MAUSOLEUM-01/02: "Center the room"; RM-SHRINE-03: the obelisks
 # off the carpet; Q2T-1, Q2V-1, Q2V-2): kit/works.py composes them on the room's middle, their door in it
 CENTRE_DOOR_ROOMS += ("mausoleum", "shrine")
+# and the civic rooms composed on an axis (QA round 2, Q2T-1: "Center the hall in the room"; "The room is not centered"):
+# their composition takes the room's middle (kit/civic.py axis), and the door that sets it stands there too
+CENTRE_DOOR_ROOMS += ("throne_room", "gallery", "hall", "great_hall")
 # building styles whose every door is the culture's double door (QA round 1, RM-CRYPT-10)
 DOUBLE_DOOR_STYLES = {"lotd_ornate": "LOTDHalfDoor", "lotd_crypt": "LOTDHalfDoor"}
 ALTAR_AXIS = 6.0         # units an inner door keeps from the line of an altar room's main door

@@ -1891,7 +1891,9 @@ CIVIC_WIDEN = {
     "library": [("lab", r"^Orrery2$|^Telescope2[a-g]$", 1), ("statue", r"^Statue2[a-h]$|" + _VASE, 4)],
     # benches facing the show, urns on plinths
     "gallery": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
-    "hall": [("statue", _VASE, 6), ("relic", r"^DunMirFlameBasinLit$", 2), ("bench", r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", 8)],
+    "hall": [("statue", _VASE, 6), ("relic", r"^DunMirFlameBasinLit$", 2), ("bench", r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", 8),
+             # plants in the far corners (rules/rooms/hall.md "May: ... plants in the corners"; QA round 2, Q2C-2)
+             ("plant", r"^(Plant1|Plant3|Plant4|Plant5)$", 2)],
     "throne_room": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
     # the lord's high table and its chairs, casks in the corners, urns and statues down the hall
     "great_hall": [("chair", r"Chair", 6), ("storage", r"^LargeBarrel[12]$|^Barrel2?$", 6),

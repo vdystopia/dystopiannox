@@ -279,7 +279,8 @@ TYPES = {
                    middle="tables in three kinds of set (round tables with stools, a long table with benches, a "
                           "table of food), open floor between to walk to the bar"),
         cover=(0.10, 0.18, 0.30), open=(0.40, 0.80), per_tile=(0.15, 0.6), types_min=18, free_most=(12, 14), free_skip=(),
-        caps={"table": (28, 12)}, walls_min=3, lined=0.20, tiles=(180, 360),
+        # (a table per 22 tiles, was 28: QA round 2, the tavern set "Overall, they feel just a little bit too empty")
+        caps={"table": (22, 12)}, walls_min=3, lined=0.20, tiles=(180, 360),
         signature={"counter_bar": (1, 10), "table": (0.5, 10), "chair": (0.1, 30), "storage": (0.2, 8)},
         # a hearth, tables and benches read as a living room too: Westwood's Con02a tavern does (13.7 against 8.4)
         needs=("counter_bar",), kin=("dining_hall", "great_hall", "living_room")),

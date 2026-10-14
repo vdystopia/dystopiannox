@@ -1037,6 +1037,11 @@ def check_composition(m, ctx, base):
         if dist and 1.6 < min(dist) < 4.5:
             out.append(F("composition", "warning", f"The bar counter stops {min(dist) * 16:.0f} px short of the wall: "
                          f"a bar run meets the wall.", o["x"], o["y"]))
+        elif not dist:
+            # no wall within 6 units ahead: the run ends in the open (QA round 2, RM-TAVERN-04: "The bar must be connected
+            # to the wall at both ends"; the gap rule above had looked for a wall near the end only)
+            out.append(F("composition", "warning", f"The bar counter stops in the open, no wall within "
+                         f"{6 * 16} px of its end: a bar run meets the wall.", o["x"], o["y"]))
 
     out += check_room_composition(m, ctx, base)
 
@@ -4113,6 +4118,255 @@ def check_civic(m, ctx, base):
     return out
 
 
+# ---- QA round 2 (2026-10-14, review/qa2/ledger.md): centred compositions, designed facing, the shop's clear way --------
+# Q2T-1, the user: "Center the hall in the room. There's a large gap on the northeast side" (RM-HALL-02); "The gallery is
+# not centered in the room" (RM-GALLERY-01/02); "The room is not centered" (RM-THRONEROOM-02/05); "The two rows of
+# coffins are not equally spaced in the room" (RM-CRYPT-02). A room composed on an axis stands its pairs (statues,
+# columns, braziers, benches, urns, obelisks, coffins) mirrored about the room's own middle: the two pieces of a pair as
+# far from their walls, and the composition's axis on the room's middle line.
+# Q2T-3, the user: "The benches are facing the wrong way. They are facing south, but they should face southwest"
+# (RM-HALL-01); "The statue is facing the wrong way. Have it face the direction of the entrance, aligned with the path"
+# (EX-SHRINE-05). A statue on the axis faces the entrance; a statue or bench of a pair beside it faces the aisle, the
+# entrance (statues) or the centrepiece (benches), never away from the aisle.
+# Q2C-7, the user: "Consider the path from the door to the shopkeeper's desk. Don't block it with objects" (shop set).
+AXIS_KINDS = {"gallery", "hall", "throne_room", "great_hall", "dining_hall", "chapel", "dark_chapel", "coven", "crypt",
+              "dark_crypt", "mausoleum", "shrine"}
+AXIS_PIECES = re.compile(r"^(Statue2[a-h]|StatueVase\d\w*|Column\d+|LOTDColumn\w*|Brazier|DunMirFlameBasin\w*|"
+                         r"Candleabra\d|CandleabraLit\d?|Bench\d|CushionedBench\d|LightBench\d|DunMirBench\d?|"
+                         r"ManaObelisk\w*|Obelisk\w*|Coffin\w*|Sarcophag\w*|Plant\d|ArmorSuit\w*|Mannequin\w*)$")
+CENTRE_TOL = 0.5            # uv units: a pair's two gaps to their walls, the axis to the room's middle line
+CENTRE_NEAR = 2.6           # a pair whose middle lies further than this off the room's middle belongs to another group
+STATUE_DIR = {"a": (1, 0), "c": (0, 1), "e": (-1, 0), "g": (0, -1)}            # kit/furnish.py STATUE_FACING
+BENCH_DIR = {"Bench1": (1, 0), "Bench5": (-1, 0), "Bench2": (0, -1), "Bench4": (0, 1)}   # backs to NW, SE, NE, SW walls
+SHOP_WAY_HALF = 0.8         # half the width of the clear way from the shop's door to its counter (uv units)
+
+
+def _side_walls(runs, axis_u, at):
+    """For an axis along u (axis_u: its pairs share u and mirror in v) the wall lines either side of a point `at`
+    (u, v): the nearest '\\' run below v and above v that spans u (else the '/' runs that span v). (lo, hi) or None."""
+    u, v = at
+    # (a stub of wall under 6 units, a pillar or a corner's return, is no side wall)
+    if axis_u:
+        lines = [(coord, lo_hi) for (line, coord), lo_hi in runs.items() if line == "\\" and lo_hi[1] - lo_hi[0] >= 6
+                 and lo_hi[0] - 0.5 <= u <= lo_hi[1] + 0.5]
+        x = v
+    else:
+        lines = [(coord, lo_hi) for (line, coord), lo_hi in runs.items() if line == "/" and lo_hi[1] - lo_hi[0] >= 6
+                 and lo_hi[0] - 0.5 <= v <= lo_hi[1] + 0.5]
+        x = u
+    lo = [c for c, _ in lines if c < x]; hi = [c for c, _ in lines if c > x]
+    return (max(lo), min(hi)) if lo and hi else None
+
+
+def axis_pairs(m, r):
+    """The room's mirrored pairs of axis pieces: {True: [...], False: [...]} for the axis along u (pairs share u, mirror
+    in v) and along v, each pair (o1, o2, middle, local middle of the room, gap1, gap2)."""
+    runs = room_runs(m, r["cells"])
+    pieces = [(o, uv_of(o)) for o in r["objects"] if AXIS_PIECES.match(o["type"])]
+    by_stem = collections.defaultdict(list)
+    for o, uv in pieces: by_stem[_kind_stem(o["type"])].append((o, uv))
+    out = {True: [], False: []}
+    for stem, ps in by_stem.items():
+        for axis_u in (True, False):
+            k_same, k_mirror = (0, 1) if axis_u else (1, 0)
+            rows = collections.defaultdict(list)
+            for o, uv in ps: rows[round(uv[k_same] / 0.4)].append((o, uv))
+            seen = set()
+            for key in sorted(rows):
+                row = [p for k in (key - 1, key, key + 1) for p in rows.get(k, ()) if id(p[0]) not in seen]
+                row.sort(key=lambda p: p[1][k_mirror])
+                # the row's pairs: the middle most of its pieces mirror about (three lights in a row are a pair flanking
+                # a chest and a corner's light, not the outermost two)
+                cands = sorted({round((a[1][k_mirror] + b[1][k_mirror]) / 2, 1) for i, a in enumerate(row) for b in row[i + 1:]})
+                def matched(mm):
+                    got, used = [], set()
+                    for i, a in enumerate(row):
+                        for b in row[i + 1:]:
+                            if id(a[0]) in used or id(b[0]) in used: continue
+                            if abs(a[1][k_mirror] + b[1][k_mirror] - 2 * mm) < 0.3 and abs(a[1][k_same] - b[1][k_same]) <= 0.4 \
+                                    and b[1][k_mirror] - a[1][k_mirror] >= 1.5:
+                                got.append((a, b)); used |= {id(a[0]), id(b[0])}
+                    return got
+                best_pairs = max((matched(mm) for mm in cands), key=len, default=[])
+                for a, b in best_pairs:
+                    seen |= {id(a[0]), id(b[0])}
+                    mid = (a[1][k_mirror] + b[1][k_mirror]) / 2
+                    at = ((a[1][0] + b[1][0]) / 2, mid) if axis_u else (mid, (a[1][1] + b[1][1]) / 2)
+                    walls = _side_walls(runs, axis_u, at)
+                    if not walls: continue
+                    lm = (walls[0] + walls[1]) / 2
+                    out[axis_u].append((a[0], b[0], mid, lm, a[1][k_mirror] - walls[0], walls[1] - b[1][k_mirror]))
+    return out
+
+
+def composition_axis(m, r):
+    """(axis_u, axis value, room middle, [pairs]) of a room composed on an axis: the orientation whose pairs stand about
+    the room's middle (CENTRE_NEAR), the composition's axis their median middle; None with fewer than two such pairs."""
+    pairs = axis_pairs(m, r)
+    best = None
+    for axis_u in (True, False):
+        near = [p for p in pairs[axis_u] if abs(p[2] - p[3]) <= CENTRE_NEAR]
+        if len(near) < 2: continue
+        mids = sorted(p[2] for p in near); lms = sorted(p[3] for p in near)
+        ax = mids[len(mids) // 2]
+        # a composed axis stands its pairs on one line: the orientation whose pairs share their middle (stations down
+        # an axis are evenly spaced from its far wall, so their rows can look like pairs mirrored the other way)
+        score = sum(1 for p in near if abs(p[2] - ax) <= 0.3)
+        if best is None or score > best[0]:
+            best = (score, axis_u, ax, lms[len(lms) // 2], near)
+    return best[1:] if best else None
+
+
+def _entrance(m, r, axis_u, centre):
+    """+1 or -1: the end of the axis the room's main way in lies toward (its doors' mean along the axis), or 0."""
+    ds = _room_doors_uv(m, r)
+    if not ds: return 0
+    k = 0 if axis_u else 1
+    al = [(c if (line == "/") == axis_u else a) for line, c, a in ds]
+    # a door in an end wall decides; else the doors' mean along the axis
+    ends = [x for (line, c, a), x in zip(ds, al) if (line == "/") == axis_u]
+    pick = ends or al
+    mean = sum(pick) / len(pick)
+    return 0 if abs(mean - centre[k]) < 1.5 else (1 if mean > centre[k] else -1)
+
+
+def qa2_axis_flags(m, r, kind):
+    """(rule, text, object) of a room composed on an axis (AXIS_KINDS): pairs off the room's middle (Q2T-1), statues and
+    benches facing away from the aisle or the entrance (Q2T-3)."""
+    if kind not in AXIS_KINDS or not r.get("declared"): return []
+    ca = composition_axis(m, r)
+    if not ca: return []
+    axis_u, ax, lm, pairs = ca
+    out = []
+    if abs(ax - lm) > CENTRE_TOL:
+        out.append(("centre", f"its composition's axis lies {abs(ax - lm):.1f} units off the room's middle line",
+                    pairs[0][0]))
+    for a, b, mid, lmid, g1, g2 in pairs:
+        if abs(g1 - g2) > CENTRE_TOL and abs(mid - ax) > 0.25:
+            out.append(("centre", f"a pair of {_kind_stem(a['type'])} stands {g1:.1f} and {g2:.1f} units from its walls",
+                        a))
+    # facing: the axis line is v = ax (axis along u) or u = ax
+    cells = r["cells"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    ent = _entrance(m, r, axis_u, (cu, cv))
+    along = (1, 0) if axis_u else (0, 1)
+    tables = [(uv_of(o), _half_uv(o)) for o in r["objects"] if re.search(r"Table", o["type"])]
+    for o in r["objects"]:
+        t = o["type"]
+        mt = re.fullmatch(r"Statue2([aceg])", t)
+        d = STATUE_DIR[mt.group(1)] if mt else BENCH_DIR.get(t)
+        if not d: continue
+        u, v = uv_of(o)
+        hu, hv = _half_uv(o)
+        if not mt and any(max(abs(u - tu) - hu - thu, abs(v - tv) - hv - thv) < 1.0 for (tu, tv), (thu, thv) in tables):
+            continue                                               # a bench at a table faces the table
+        off = (v - ax) if axis_u else (u - ax)
+        to_axis = ((0, -1 if off > 0 else 1) if axis_u else (-1 if off > 0 else 1, 0))
+        if abs(off) <= 1.0:                                        # on the axis: a statue faces the way in
+            if mt and ent and (d[0] * along[0] + d[1] * along[1]) != ent:
+                out.append(("facing", f"{t} stands on the axis and does not face the entrance", o))
+            continue
+        if not any(abs(off) > 1.0 and (o is p[0] or o is p[1]) for p in pairs): continue
+        if d == (-to_axis[0], -to_axis[1]):
+            out.append(("facing", f"{t} turns its back to the aisle", o))
+        elif d == to_axis:
+            continue
+        elif ent:                                                  # along the axis: statues to the way in, benches on
+            toward_in = (d[0] * along[0] + d[1] * along[1]) == ent  # to the centrepiece
+            if (mt and not toward_in) or (not mt and toward_in):
+                out.append(("facing", f"{t} faces {'away from the entrance' if mt else 'the entrance, not the aisle'}", o))
+    return out
+
+
+def _outside_door(m, r):
+    """The room's doorway to the outside (no other room beyond it), else its first doorway: (line, coord, along) or
+    None."""
+    ds = _room_doors_uv(m, r)
+    if not ds: return None
+    inside = set()
+    for rr in find_rooms(m):
+        if rr is not r and rr.get("enclosed"): inside |= set(rr["cells"])
+    cells = set(r["cells"])
+    for line, c, a in ds:
+        u, v = (c, a) if line == "/" else (a, c)
+        beyond = []
+        for s in (-1.5, 1.5):
+            uu, vv = (u + s, v) if line == "/" else (u, v + s)
+            beyond.append((round((uu + vv - 1) / 2), round((uu - vv - 1) / 2)))
+        if not any(p in inside and p not in cells for p in beyond):
+            leaves = [a2 for l2, c2, a2 in ds if l2 == line and c2 == c and abs(a2 - a) <= 2.5]   # a double door's middle
+            return line, c, sum(leaves) / len(leaves)
+    return ds[0]
+
+
+def shop_way_flags(m, r, kind):
+    """(rule, text, object) of a shop whose way from the main door to the keeper's counter is blocked: neither of the two
+    straight L-shaped walks (in from the door, then along to the counter, or the other way round), SHOP_WAY_HALF either
+    side, is clear of every standing piece."""
+    if kind != "shop" or not r.get("declared"): return []
+    counters = [o for o in r["objects"] if re.match(r"^TraderDesk\d", o["type"])]
+    door = _outside_door(m, r)
+    if not counters or not door: return []
+    k = counters[0]
+    ku, kv = uv_of(k)
+    khu, khv = _half_uv(k)
+    runs = room_runs(m, r["cells"])
+    # the counter's wall: the nearest run line it stands before; the customer stands on the other side
+    best = None
+    for (line, coord), (lo, hi) in runs.items():
+        perp, al = (ku - coord, kv) if line == "/" else (kv - coord, ku)
+        if lo <= al <= hi and (best is None or abs(perp) < abs(best[0])): best = (perp, line)
+    if not best: return []
+    sgn = 1 if best[0] > 0 else -1
+    P = (ku + sgn * (khu + 1.4), kv) if best[1] == "/" else (ku, kv + sgn * (khv + 1.4))
+    line, coord, al = door
+    cells = r["cells"]
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    if line == "/":
+        s = 1 if cu > coord else -1
+        D = (coord + s * 1.2, al)
+    else:
+        s = 1 if cv > coord else -1
+        D = (al, coord + s * 1.2)
+    w = SHOP_WAY_HALF
+    blockers = [(o, uv_of(o), _half_uv(o)) for o in r["objects"] if o is not k and m.blocking(o) and not m.is_door(o)]
+
+    def seg_box(a, b):
+        return (min(a[0], b[0]) - w, max(a[0], b[0]) + w, min(a[1], b[1]) - w, max(a[1], b[1]) + w)
+
+    def hits(box):
+        return [o for o, (u, v), (hu, hv) in blockers
+                if u + hu > box[0] and u - hu < box[1] and v + hv > box[2] and v - hv < box[3]]
+    walks = []
+    for corner in ((P[0], D[1]), (D[0], P[1])):
+        walks.append(hits(seg_box(D, corner)) + hits(seg_box(corner, P)))
+    if all(walks):
+        o = min(walks, key=len)[0]
+        return [("shop_way", f"{o['type']} stands in the way from the door to the counter", o)]
+    return []
+
+
+QA2_TEXT = {
+    "centre": "a composition is centred on the room's own middle, its pairs as far from their walls (QA round 2, "
+              "Q2T-1: \"Center the hall in the room. There's a large gap on the northeast side\")",
+    "facing": "a statue faces the entrance along the axis, a bench the aisle or the centrepiece (QA round 2, Q2T-3: "
+              "\"The benches are facing the wrong way ... they should face southwest\")",
+    "shop_way": "a clear walk from the shop's door to the keeper's counter (QA round 2, Q2C-7: \"Consider the path from "
+                "the door to the shopkeeper's desk. Don't block it with objects\")"}
+
+
+def check_qa2(m, ctx, base):
+    """QA round 2's checks on declared rooms: qa2_axis_flags (Q2T-1, Q2T-3) and shop_way_flags (Q2C-7)."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        for rule, text, o in qa2_axis_flags(m, r, kind) + shop_way_flags(m, r, kind):
+            x, y = (o["x"], o["y"]) if o else centre(r["cells"])
+            out.append(F("qa2", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA2_TEXT[rule]}.", x, y,
+                         rule=f"qa2.{rule}"))
+    return out
+
+
 RULES = [
     ("setup.no_start", "setup", r"^No PlayerStart", ""),
     ("setup.mp_object", "setup", r"^Multiplayer-only", ""),
@@ -4234,6 +4488,10 @@ RULES = [
     ("civic.s_corner", "civic", r"nothing stands in its S corner", "Q1A-1"),
     ("civic.bare_wall", "civic", r"wall stand bare", "Q1A-3"),
     ("civic.kinds", "civic", r"kinds of piece \(its size wants", "Q1A-2"),
+    ("qa2.centre", "qa2", r"off the room's middle line|units from its walls", "Q2T-1"),
+    ("qa2.facing", "qa2", r"does not face the entrance|turns its back to the aisle|faces away from the entrance|"
+                          r"faces the entrance, not the aisle", "Q2T-3"),
+    ("qa2.shop_way", "qa2", r"in the way from the door to the counter", "Q2C-7"),
     ("composition.qa1_axis", "composition", r"no mirrored partner across the axis", "Q1B"),
     ("composition.qa1_store_variety", "composition", r"its stock is .* for the most part", "Q1B"),
     ("composition.qa1_forge_floor", "composition", r"stands on the bare floor", "Q1B"),
@@ -4308,7 +4566,7 @@ def rule_of(f):
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
-       check_transport, check_water, check_sacred, check_qa1_rooms, check_civic, check_qa1_works]
+       check_transport, check_water, check_sacred, check_qa1_rooms, check_civic, check_qa1_works, check_qa2]
 
 
 def run_all(m, base, only=None):

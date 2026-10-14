@@ -138,3 +138,18 @@ table on it, round tables dotted between. The great hall is now composed like th
   corners, a side table in the S corner, a plant in the N corner, the house's chest centred on a back wall; tapestries
   of one colour and trophies at even steps; the perimeter band of brick or cobble in three halls of four (the finish
   pass's `lay_band`, RM-GREATHALL-07).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-5)
+
+The user: "The brick hearth around the oven must connect to the wall on both sides" (RM-GREATHALL-02); "The brick hearth
+around the oven conflicts with the brick cobblestone around the border of the room" (-03). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **The hearth's patch one with the band:** where the hall takes its band (three halls in four), the hearth's three
+  squares by two are laid in the band's own brick and join it, so the patch runs to the wall and never meets a second
+  patch (`civic.band_with_hearth`); a hall with a hearth takes a brick band. Without a band the patch is the hearth's
+  own, from the wall (`kit/shells.py hearth_squares`, chosen as drawn).
+- **The hearth on a square's middle as drawn** (`Ctx.focal`, `snap_hearth`, `civic.sq_mid`), so its patch is centred
+  on it; a rug before it clear of the fire (`civic.hearth_rug`).
+- **Centred on the room** (`civic.axis`); the side stations two units off the walls (the back walls keep their
+  hangings), a middle ring in halls of 300 tiles, suits of armour on a back wall, urns flanking the way in, more
+  lights in a big hall. Checked: `qa2.centre`, `qa2.facing`.

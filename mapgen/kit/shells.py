@@ -605,8 +605,12 @@ def lay_zones(spec, room, objs, kind=None):
         if f and "x" in o: by_fam.setdefault(f, []).append(o)
     rates = dict(stats().get("focal_rate") or {}, hearth=HEARTH_RATE)
     want = {}                                          # square -> family
+    # a tavern whose floor behind the bar is laid already (kit/civic.py bar_floor: solid brick to the bar line, never
+    # blended, QA round 2 Q2C-6) takes no second floor round the bar, and nothing blends onto its brick
+    bar_floor = set(getattr(room, "bar_floor", None) or ())
     for fam in sorted(by_fam):
         if rng.random() >= rates.get(fam, FOCAL_RATE[fam]): continue
+        if fam == "bar" and bar_floor: continue
         os_ = by_fam[fam]
         if fam == "tomb":                              # a plinth under each tomb (a band under a row of them)
             for o in os_:
@@ -649,7 +653,7 @@ def lay_zones(spec, room, objs, kind=None):
         if t not in hearth: spec.tile(*t, mat)
     for mat in sorted({out[t] for t in hearth}):          # bordered all round (Q1R-19)
         lay_patch(spec, room, {t for t in hearth if out[t] == mat}, mat)
-    blend_pattern(spec, {t: floor.get(t, main) for t in room.tiles if t not in hearth}, gaps)
+    blend_pattern(spec, {t: floor.get(t, main) for t in room.tiles if t not in hearth and t not in bar_floor}, gaps)
     return out
 
 
@@ -682,11 +686,22 @@ def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
     return set(tiles)
 
 
+# The editor draws a floor square a unit further toward the SW than the kit counts it (QA round 2, measured by the works
+# helper on a lone RugGreen tile: square (i, j) shows centred at uv (2i + 2, 2j - 1)): a hearth's patch is centred on
+# the fire as the user sees it (RM-TAVERN-01: "The brick hearth is not centered on the fireplace"; kit/civic.py and
+# kit/works.py SQUARE_V)
+SQUARE_V = 1.0
+
+
 def hearth_squares(o, sq, ring, things):
-    """The squares of a hearth's patch, centred on it: a hearth on the room's ring (against its wall) three along the
-    wall by two deep; a free-standing one three by three, or two by two when it stands at a square's corner."""
+    """The squares of a hearth's patch, centred on it as drawn (SQUARE_V): a hearth on the room's ring (against its wall)
+    three along the wall by two deep; a free-standing one three by three, or two by two when it stands at a square's
+    corner."""
     under, (u, v) = _squares_under(o, sq, things, least=0.3)
-    s0 = _nearest_square(under or sq, u, v)
+    # _nearest_square already measures squares where they are drawn (the sacred helper's fix); the shift is only for
+    # the square coordinates below (merge of qa2-civic and qa2-sacred: applying it twice put the patch a square off)
+    s0 = _nearest_square(sq, u, v)
+    v = v + SQUARE_V
     if s0 is None: return set()
     if s0 in ring:
         inward = [(s0[0] + a, s0[1] + b) for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))

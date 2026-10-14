@@ -127,3 +127,15 @@ For this type:
 - Stores heaped in the S, W and E corners, each a mix (sacks of three sizes and apples; barrels, a water barrel and
   crates); mirrored heaps on the front walls (tools, dark crates, sacks); more work tables and heaps where the floor is
   still bare (a kitchen is used end to end).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-8)
+
+The user: "The crate and sack are awkwardly in the middle of the room. Move them against the wall" (RM-KITCHEN-02); "The
+apple crate is too close to the rectangular crate in the northeast" (-04, -05). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **Stores against the walls:** corner heaps grow only along the walls, two deep at most (`Ctx.heap(flush=True)`), the
+  front walls take rows of stores flush against them (`civic.wall_stock`), a kind of store the room lacks goes against
+  any bare stretch; no heap where the floor is bare and no loose crate or sack beside the work table (`mk_worktable`).
+- **Never a crate against the apple crate:** the E corner heaps a crate, a barrel and a sack; apples stay with the sacks
+  in the S corner; heap pieces a hand's width apart.
+- More work tables where the floor is still bare; trophies first on the back walls.
