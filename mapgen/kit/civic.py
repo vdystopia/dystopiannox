@@ -1155,6 +1155,14 @@ def wall_stock(c, wall, pats, n=4, gap=0.5, at=None, most_share=0.6):
     f = c.f
     types = [t for t in (c.pick(p) for p in pats) if t]
     if not types: return 0
+    # a crate keeps GAP_CRATE from anything (kit/gaps.py, QA round 2 Q2T-4): a row with a crate in it is spaced to clear
+    # it, else the furnisher refuses every crate and the wall stays bare (round 3's shops and kitchens: front walls
+    # left empty after the gap rule merged)
+    from kit import gaps as GP
+    if any(GP.CRATE.match(GP.base(t)) for t in types):
+        gap = max(gap, GP.GAP_CRATE + 0.05)
+        if sum(1 for t in types if GP.CRATE.match(GP.base(t))) > 1 and len(types) <= 2:
+            gap = max(gap, GP.GAP_CRATES + 0.05)
     # (the wall's stretches with nothing standing before them: free() knows only what is set against the wall)
     if DEBUG: c.log.append(f"   wall_stock {wall} bare {[(round(a_, 1), round(b_, 1)) for a_, b_ in c.bare(r, reach=1.6)]} types {types}")
     for lo, hi in sorted(c.bare(r, reach=1.6), key=lambda s_: s_[0] - s_[1])[:2]:
@@ -1428,11 +1436,12 @@ def shop(c, plan):
             front = T["front"][k:] + T["front"][:k]
             wall_stock(c, w, front, n=4 if c.tiles >= 60 else 3, gap=0.4, most_share=0.45)
     # the wares on show in rows standing free, clear of the walk (a pair of short rows in a small shop)
-    if c.tiles >= 40:
-        # (more blocks where the walk to the counter splits the floor, each starting on the next kind; short rows last)
-        for k_, per_ in enumerate(((4 if c.tiles >= 110 else 3), (4 if c.tiles >= 110 else 3), 2)):
-            display_rows(c, T["display"], most_rows=4 if c.tiles >= 130 else 3 if c.tiles >= 80 else 2, per=per_,
-                         start=k_)
+    # wares on show standing free as the armoury's racks (rated 4.8): one mirrored pair of short rows of mixed goods,
+    # clear of the walk, in a shop of 80 tiles or more. Three blocks of up to four rows had filled big shops' floors with
+    # rows of apple crates (RM-SHOP-03 round 3: one kind repeated, Q2T-8; "Way too many objects in the middle of the
+    # floor", Q2C-7); none at all left a big shop's floor bare (Q1T-1), its walls lined only with small crates and sacks
+    if c.tiles >= 80:
+        display_rows(c, T["display"], most_rows=2, per=3 if c.tiles >= 110 else 2)
     # a ware of the trade on any back-wall stretch still bare; a kind of the trade's stock the shop lacks yet against any
     # wall stretch still bare (several kinds, never one family alone: Q1A-2); then the walls hung
     for w in BACK:

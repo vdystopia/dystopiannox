@@ -861,6 +861,8 @@ class Waterworks:
         self._unpave_span(kit, lane, a0, end)
         return dict(kind=kit, pieces=list(zip(names, offs)), lane=lane)
 
+    END_CLEAR = 3.0     # uv beyond each end piece kept unpaved (the end piece's own footprint and a step past it)
+
     def _unpave_span(self, kit, lane, a0, a1, ground=SPAN_GROUND):
         """A paved road ends where the bridge starts (QA round 2, 2026-10-14 [Q2X-6, Q2T-6]: BR-01, BR-11 "If the path
         leading up to the bridge is going to be cobblestone, have that cobblestone path terminate where the bridge
@@ -873,10 +875,13 @@ class Waterworks:
         second = lane + (2 if axis == "u" else -2)
         lo, hi = min(a0, a1), max(a0, a1)
         fluid = WATER_MATERIALS | LAVA_MATERIALS
-        a_ = int(math.ceil(lo + 1.5))
+        # past both end pieces too: the bridge's feet stand on the bank's earth, as on the dirt-road crossings rated 5
+        # (BR-03, 09, 13), and the cobbles begin landward of them. Stopping 1.5 short of each end piece (the first fix)
+        # had left a kerbed cobble pad under each end running out to the water (the user, 2026-10-14: "it is not fixed")
+        a_ = int(math.ceil(lo - self.END_CLEAR))
         a_ += a_ % 2
-        for a in range(a_, int(math.floor(hi - 1.5)) + 1, 2):
-            for r in range(min(lane, second) - 2, max(lane, second) + 3, 2):
+        for a in range(a_, int(math.floor(hi + self.END_CLEAR)) + 1, 2):
+            for r in range(min(lane, second) - 4, max(lane, second) + 5, 2):
                 c = tile_at_uv(a, r) if axis == "u" else tile_at_uv(r, a)
                 f = self.spec.floor.get(c)
                 if f and f not in fluid and f != k["floor"] and PAVED_GROUND.search(f):

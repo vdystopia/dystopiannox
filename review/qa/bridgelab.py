@@ -91,7 +91,10 @@ def generate(n=20, seed=1, out_dir=None, name="BridgeLab", log=print):
         if r: land.link(f"sp{r - 1}w", f"sp{r}w", 7, bend=0.1, road=False, pockets=(0, 0))
     for p in plots:
         width = 2 if p["kind"] == "rope" else p["deck"]          # the road's rows through the crossing
-        cross = land.plan_crossing(*p["areas"], t=0.5, approach=6, width=width)
+        # a rope bridge's road runs in from the land and stops at the bridge's foot (water.py _unpave_span clears the
+        # paving under and just past each end piece): its approach is long enough to read as a road, not a stub
+        # (QA round 2, BR-01/06/11; the user, 2026-10-14)
+        cross = land.plan_crossing(*p["areas"], t=0.5, approach=16 if p["kind"] == "rope" else 6, width=width)
         C = cross["uv"]
         fu, fv = cross["flow"]
         L = 26                                            # uv: the stream runs on into the forest at both ends

@@ -346,6 +346,9 @@ def _runner(f, ax, d0, d1, want=(3, 2)):
     return 0.0
 
 
+PEW_BACK = {"/|BR": "Bench1", "/|TL": "Bench5", "\\|BL": "Bench2", "\\|TR": "Bench4"}
+
+
 def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types, most=None):
     """Rows of pews either side of the aisle: each half-row k pews from s0 outward, the rows from depth d_hi back toward
     d_lo every 2.4 units. Returns (rows laid, k, outer lateral edge of the pews)."""
@@ -353,7 +356,15 @@ def _pews(sp, d_hi, d_lo, s0, rows_max, k_max, s_wall, types, most=None):
     if not types: return 0, 0, s0, None
     t0 = _pick(f, types)
     door_run = ax.near or ax.far
-    t = f.side_variant(t0, door_run, "bench") if door_run else t0          # facing the altar (away from the door wall)
+    # the pew backed onto the door's wall, so it faces the altar: Westwood's own bench per wall side (rules/out/
+    # decoration.json directional_variants: Bench1 on NW walls, Bench2 NE, Bench4 SW, Bench5 SE). Furnisher.side_variant
+    # had handed back a round seat (Bench3) for an SE door wall, and the fallback, the first pick, faced the door
+    # (QA round 2, Q2T-3; checks qa2.facing)
+    pew = PEW_BACK.get(ax.near["side"]) if ax.near else None
+    if pew and f.ok_type(pew) and _across(ax, pew):
+        t = pew
+    else:
+        t = f.side_variant(t0, door_run, "bench") if door_run else t0      # facing the altar (away from the door wall)
     if not t or not _across(ax, t): t = t0
     if not _across(ax, t):
         t = next((x for x in sorted(types) if _across(ax, x)), None)
