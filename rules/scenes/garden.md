@@ -4,6 +4,21 @@ Kit: `kit/village.py Village.garden` (a household's garden beside its house); th
 "field". Lab: `py tests/scenelab.py garden`. Westwood's evidence: 5 campaign gardens (Con05A, Con07B, Con09a, Wiz01A,
 Wiz03b).
 
+## QA round 2 (2026-10-14): a garden that cannot be laid is an error [Q2X-5, Q2T-7]
+
+EX-GARDEN-01: "Absolutely perfect." EX-GARDEN-02: "There is no garden." The cottage of the small road clearing had two
+neighbours built over the strip beside it, the garden found no site at its sizes and laid nothing, and the scene lab
+rendered the empty clearing.
+
+- `Village.garden` tries the least garden its rule allows (5 x 3, either way round) after every larger one; it had never
+  been tried. `garden(..., dry=True)` returns the site a garden would take without laying it.
+- The scene lab keeps a garden's site from its own clearing's neighbours where nothing but the least garden fits
+  (`recipes._garden_plan`), so the gardens of round 2 that fitted are laid where they were.
+- A variant with none of its scene's pieces gets no picture and fails the lab run (`tests/scenelab.missing_error`);
+  `review/qa/package.py` refuses to package it; a declared yard with none of its own pieces is the checker's error
+  `exterior.set_empty`.
+- The ground inside a garden's fence is its plot's squares, flush with the fence (`yards.yard_ground`, `TILE_DJ`).
+
 ## QA round 1 (2026-10-13): dirt, fences, even rows [Q1X-13 .. Q1X-16]
 
 **This section overrides the rounds below wherever they differ** (beds on grass, hand-planted rows, most gardens

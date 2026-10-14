@@ -4,6 +4,22 @@ Kit: the catalogue's `shrine` (a wall scene) and `waystone` (open, by a road in 
 `kit/dressing.Exterior`. Lab: `py tests/scenelab.py shrine` (since round 4 in the hamlet's ground, among houses).
 Westwood's evidence: 28 campaign scenes (Con04b's castle garden, Con05A, Con07B-E, War03a-c, War04a-b, War07A, Wiz02B).
 
+## QA round 2 (2026-10-14): the aisle on the axis, the statue facing the way in [Q2X-3, Q2T-1, Q2T-3]
+
+**This section overrides the rounds below.** EX-SHRINE-01/02/04: "The path down the center of the shrine is not lined
+up with the middle and the statue." EX-SHRINE-05: "The statue is facing the wrong way. Have it face the direction of the
+entrance, aligned with the path."
+
+- The aisle is three squares wide (one in a narrow court), its middle square on the court's axis and the centrepiece's
+  line. On a way in from an i side (south-east) the aisle had been two squares laid on the wrong lattice, half a square
+  off the axis: the tiles are drawn half a square toward -j of the squares' middles (`yards.TILE_DJ`), and
+  `yards.Frame.squares` now picks tiles by where they are drawn.
+- The great statue faces the way in down the aisle: HorrendousStatue1 faces south-east (a way in from the i1 side),
+  HorrendousStatue2 south-west (the j0 side) (`yards.GREAT_STATUE`); the gold wolf faces south-east only, so a court
+  entered from the south-west takes the seated statue. The open chapel's statue behind its altar is the Statue1 letter
+  that faces the way in (`yards.STATUE_LETTER`).
+- The paving ends at a curb (CobbleStoneTrim), never blended into the grass (`setpieces.CURB`).
+
 ## QA round 1 (2026-10-13): a court, not a wall [Q1X-1, Q1X-2, Q1X-3]
 
 **This section overrides the rounds below.** The user rated all ten of the lab's wall shrines 1, "drop": "These are all

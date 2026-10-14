@@ -4,6 +4,28 @@ Kit: the catalogue's `well_side` (`kit/scenes.py`, laid by `kit/dressing.Exterio
 `py tests/scenelab.py well`. Westwood's evidence: four campaign wells (Con02a, Con07B, Con09a, War07A), the same
 place reused across the three campaigns' versions of a town.
 
+## QA round 2 (2026-10-14): a hard edge, no barrels by habit, the gate clear [Q2X-1, Q2T-6]
+
+**This section overrides the rounds below.** All five wells were rated 4, Fix: "Instead of blending the stone floor
+with the surrounding grass and dirt, use a hard edge like a curb. or surround it with a short wall / fence. They do not
+always need to have barrels." EX-WELL-02: "The bench is sitting directly in front of the gate ... The brick tile extends
+too far to the southwest, outside of the enclosure." EX-WELL-03: "better without the barrels." EX-WELL-05: "The brick
+extends outside of the enclosure to the southwest."
+
+- The paving ends at a curb: CobbleStoneTrim, Westwood's curb round paving on grass (`setpieces.CURB`, laid by
+  `ensure_blends` for every set piece's grey cobbles), never BlendEdge into the grass or dirt. A fenced well's paving is
+  the ground inside its fence and no more.
+- Cause of the spill: a tile is drawn half a square toward -j (south-west) of where `kit/layout.square_px` puts its
+  square's middle (`yards.TILE_DJ`; walls and objects follow square_px). `yards.yard_ground` is now the plot's own
+  squares, flush with the fence on all four sides; it had laid a row past the south-west fence.
+- Barrels in one well of four (`setpieces.WELL_BARRELS`); the others take urns (StatueVase), stone posts (Monument1),
+  benches and a statue facing the way in; the market well its crates of apples and sacks. No fewer pieces or kinds than
+  round 2 (lab, seed 11: 10.2 pieces of 5.8 kinds before, 11.6 of 6.8 after).
+- Nothing in the way in: the benches stand beside or behind the well, never on the line from the gate (or the open
+  side) to it; the market well's open side has an urn either side instead of a bench.
+- Checks: `exterior.yard_blend` (a yard's paving blended into the ground round it), `exterior.yard_spill` (a fenced
+  yard's paving past its fence), `exterior.set_empty` (a yard with none of its own pieces: an error).
+
 ## QA round 1 (2026-10-13): a feature, and the healing well [Q1X-4, Q1X-5, Q1X-6, Q1X-7]
 
 **This section overrides the rounds below.** All ten of the lab's wells were rated 1: "This isn't so much a feature as
