@@ -671,6 +671,34 @@ def q1_counter(m):
     for u in (203, 206): m.obj("TraderArmorRack1", u, 8.6)
 
 
+def q2_off_centre(m):
+    # QA round 2, Q2T-1 (RM-GALLERY-01/02: "The gallery is not centered in the room"): a declared gallery whose three
+    # statue pairs are mirrored about v = -1, the room's middle being v = 0 (walls at -10 and 10)
+    _declare(m, "gallery")
+    for u in (205, 210, 216): m.obj("Statue2c", u, -6); m.obj("Statue2g", u, 4)
+
+
+def q2_benches_away(m):
+    # QA round 2, Q2T-3 (RM-HALL-01: "The benches are facing the wrong way ... they should face southwest"): a declared
+    # hall whose benches by the side walls turn their backs to the aisle (Bench2 faces -v, Bench4 +v)
+    _declare(m, "hall")
+    for u in (204, 209): m.obj("Bench2", u, -6.5); m.obj("Bench4", u, 6.5)
+
+
+def q2_shop_blocked(m):
+    # QA round 2, Q2C-7 (RM-SHOP-05: "No path from the door to the shopkeeper's desk"): the counter across the shop from
+    # its door, a steel crate in the walk between them
+    _declare(m, "shop")
+    m.obj("TraderDesk1", 218, 0)
+    m.obj("CrateSteel1", 208, 0)
+
+
+def bar_in_open(m):
+    # QA round 2, RM-TAVERN-04: "The bar must be connected to the wall at both ends": a run of bar standing in the middle
+    # of the room, more than six units from any wall at either end (the gap rule had looked for a wall near the end only)
+    for u in (207, 209, 211): m.obj("BarPiece4A", u, 0)
+
+
 def q1_racks(m):
     _declare(m, "barracks")                                    # Q1R-9: a wall of beds and nothing of a soldier's gear
     for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
@@ -1119,6 +1147,13 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1Wel", q1_wells, "rooms", "warning", "two wells in a conservatory - Q1R-14", "2 wells"),
     ("STq1Ctr", q1_counter, "rooms", "warning", "an armoury with no counter - Q1R-1", "no counter"),
     ("STq1Rck", q1_racks, "rooms", "warning", "a barracks with no racks - Q1R-9", "no racks"),
+    ("STq2Ctr", q2_off_centre, "qa2", "warning", "a gallery's statue pairs a unit off the room's middle - Q2T-1",
+     "off the room's middle line"),
+    ("STq2Fac", q2_benches_away, "qa2", "warning", "a hall's benches turning their backs to the aisle - Q2T-3",
+     "back to the aisle"),
+    ("STq2Way", q2_shop_blocked, "qa2", "warning", "a crate in the walk from a shop's door to its counter - Q2C-7",
+     "in the way from the door to the counter"),
+    ("STbarOp", bar_in_open, "composition", "warning", "a bar run ending in the open - RM-TAVERN-04", "stops in the open"),
     ("STq1Hth", q1_hearth, "rooms", "warning", "a hearth on the bare boards - Q1R-19", "no hearth of brick"),
     ("STq1Emp", q1_empty, "rooms", "warning", "a big cellar of three barrels - Q1R-23", "too empty"),
     ("STq1Bed", q1_bare_bedroom, "rooms", "warning", "a bare bedroom with a twin rug - Q1R-23", "one rug repeated"),

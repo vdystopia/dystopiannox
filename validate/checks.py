@@ -3987,7 +3987,9 @@ def _outside_door(m, r):
         for s in (-1.5, 1.5):
             uu, vv = (u + s, v) if line == "/" else (u, v + s)
             beyond.append((round((uu + vv - 1) / 2), round((uu - vv - 1) / 2)))
-        if not any(p in inside and p not in cells for p in beyond): return line, c, a
+        if not any(p in inside and p not in cells for p in beyond):
+            leaves = [a2 for l2, c2, a2 in ds if l2 == line and c2 == c and abs(a2 - a) <= 2.5]   # a double door's middle
+            return line, c, sum(leaves) / len(leaves)
     return ds[0]
 
 
