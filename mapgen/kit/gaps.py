@@ -6,7 +6,8 @@ close to the rectangular crate", RM-MAUSOLEUM-02 "The iron casket is way too clo
 "The mana obelisk is too close to the statue", RM-TAVERN-04 "The two giant barrels are too close to each other",
 RM-TAVERN-01/03/04/05 "The bearskin rug is just slightly too close to the fireplace". The rule:
 - separate pieces keep a clear gap (GAP units between their footprints): what the eye reads as touching at the
-  furnisher's old 0.15 (a crate beside a stack of barrels) or 0.02 (crates end to end);
+  furnisher's old 0.15 (a crate beside a stack of barrels) or 0.02 (crates end to end); a crate, drawn tall, keeps
+  GAP_CRATE from anything and GAP_CRATES from another crate;
 - big pieces (great casks, coffins and caskets, obelisks, statues, tables, fountains and wells) keep a wider one
   (GAP_BIG);
 - a heap is one piece: its members (kegs, metal barrels, barrels of tools, water barrels, piled barrels, sacks, straw)
@@ -32,6 +33,8 @@ import re
 
 GAP = 0.35            # uv units between the footprints of two separate pieces
 GAP_BIG = 0.7         # ... when one of them is a big piece
+GAP_CRATES = 0.8      # ... between two crates: a crate's box is drawn tall, and at 0.5 two read as touching (RM-CELLAR-04)
+GAP_CRATE = 0.5       # ... between a crate and anything else (a stack of kegs is drawn tall: RM-CELLAR-01/05 "too close")
 RUG_FIRE = 0.5        # a rug's footprint from a fireplace's
 FLUSH = 0.5           # a wall piece's back this near its wall line stands against it (the furnisher sets them 0.22-0.3)
 LINE_TOL = 0.2        # two wall pieces of one kind on one wall stand at one depth within this
@@ -46,9 +49,11 @@ BIG = re.compile(r"^(LargeBarrel\d|Coffin\d|Obelisk|ObeliskPrimitive|LOTDManaObe
                  r"OvalTable\d|RoundTableWithFood|SmallTable\d|OgreTable\d|Fountain|WishingWell|Well)$")
 SEAT = re.compile(r"Chair|Stool|Bench")
 SEAT_TO = re.compile(r"Table|^Desk\d|^TraderDesk|^Bar(Piece|Corner|HingedTop)|^Fireplace|^OgreFirePit")
-# never held to a gap: lights (a candelabra stands by what it lights), ground cover (straw, bones), a throne's own
+# never held to a gap: lights (a candelabra stands by what it lights), ground cover (straw, bones), plants and crops
+# (they grow in clumps), a throne's own
 # flanking pieces (kit/civic.py composes the throne whole)
-FREE = re.compile(r"Candleabra|Candelabra|^TorchPole|Brazier|Lantern|^OgreStraw|^Straw\d|Skull|Bone|^DunMirThrone")
+FREE = re.compile(r"Candleabra|Candelabra|^TorchPole|Brazier|Lantern|^OgreStraw|^Straw\d|Skull|Bone|^DunMirThrone|"
+                  r"^Plant|^Garden|^Tree|^Bush|^Flower|^Mushroom")
 RUG = re.compile(r"^(RedRug\d|BearskinRug\d|OgreBearskin\d)$")
 FIRE = re.compile(r"^Fireplace\d")
 SACK = re.compile(r"^(SackChest(Large|Medium|Small)\d|OgreSack\d)$")
@@ -78,6 +83,8 @@ def need(a, b):
     if HEAP.match(a) and HEAP.match(b): return 0.0                          # one heap
     if SEAT.search(a) and SEAT_TO.search(b) or SEAT.search(b) and SEAT_TO.search(a): return 0.0   # one set
     if a == b and re.search(r"Table", a): return 0.0                         # tables end on: one long table
+    if CRATE.match(a) and CRATE.match(b): return GAP_CRATES
+    if CRATE.match(a) or CRATE.match(b): return max(GAP_CRATE, GAP_BIG if (BIG.match(a) or BIG.match(b)) else 0)
     return GAP_BIG if (BIG.match(a) or BIG.match(b)) else GAP
 
 
