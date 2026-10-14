@@ -1,7 +1,7 @@
 """Packages a QA round for the user's review: every room, exterior scene, bridge and dock picture labelled with a stable
 ID, one contact sheet per type, and items.json (every ID with its type, sheet, picture and caption).
 
-    py review/qa/package.py <round> [--room-iter qa1] [--scene-iter qa1] [--dock-iters qa1,qa1b]
+    py review/qa/package.py <round> [--room-iter qa1] [--scene-iter qa1] [--dock-iters qa1,qa1b] [--bridge-dir bridges]
 
 Labels: RM-<TYPE>-NN (rooms), EX-<TYPE>-NN (exteriors), BR-NN (bridges), DK-NN (docks), e.g. RM-LIBRARY-03.
 Writes review/out/qa/<round>/{rooms,exteriors,bridges,docks}/<label>.png, sheets/<group>.jpg and items.json.
@@ -85,8 +85,8 @@ def exteriors(rnd, it, items, only=None, prefix=None, iters=None):
                              f"Exteriors: {t.replace('_', ' ')} ({key}-01..{len(group):02d})"), group)
 
 
-def bridges(rnd, items):
-    d = os.path.join(OUT, "qa", "bridges")
+def bridges(rnd, items, src_dir="bridges"):
+    d = os.path.join(OUT, "qa", src_dir)
     data = json.load(open(os.path.join(d, "variants.json"), encoding="utf-8"))
     sys.path.insert(0, HERE)
     import bridgelab
@@ -113,12 +113,13 @@ def main():
     ap.add_argument("--room-iter", default="qa1")
     ap.add_argument("--scene-iter", default="qa1")
     ap.add_argument("--dock-iters", default="qa1,qa1b")
+    ap.add_argument("--bridge-dir", default="bridges", help="the bridge lab's --out under review/out/qa")
     ap.add_argument("--only", choices=("rooms", "exteriors", "bridges", "docks"))
     a = ap.parse_args()
     items = []
     if a.only in (None, "rooms"): rooms(a.round, a.room_iter, items)
     if a.only in (None, "exteriors"): exteriors(a.round, a.scene_iter, items, prefix="")
-    if a.only in (None, "bridges"): bridges(a.round, items)
+    if a.only in (None, "bridges"): bridges(a.round, items, a.bridge_dir)
     if a.only in (None, "docks"): exteriors(a.round, None, items, only="pond_dock", prefix="DK", iters=a.dock_iters.split(","))
     for i in items:
         i["png"] = os.path.relpath(i["png"], os.path.join(OUT, "qa", a.round)).replace("\\", "/")
