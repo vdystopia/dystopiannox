@@ -4015,3 +4015,92 @@ import checks_game as _game
 RULES += _game.RULES
 _RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in _game.RULES]
 ALL += _game.ALL
+
+
+# ---- QA round 2's shared room rules (review/qa2/ledger.md Q2T-4, Q2T-5; kit/gaps.py) --------------------------------
+def qa2_space_flags(m, r, kind):
+    """What QA round 2's spacing rules fault in one room: (rule, text, object). Q2T-4: separate pieces keep a clear gap
+    (a heap's members and a set's seats may touch; big pieces keep a wider one; a rug keeps clear of a fireplace).
+    Q2T-5: crates, sacks, chests and benches that belong to a wall stand flush against it, at one depth with their kind
+    on that wall, never alone mid-floor. Shared by check_qa2_space and the labs."""
+    from kit import gaps as GP
+    from kit.roomtypes import KIND_TYPE
+    rtype = KIND_TYPE.get(kind, kind)
+    objs = [o for o in r["objects"] if "MONSTER" not in o["cls"] and not m.is_door(o)]
+    solid = [o for o in objs if m.blocking(o)]
+    flags = []
+    # Q2T-4: gaps (each piece faulted once, at its closest offender)
+    seen = set()
+    for i, a in enumerate(solid):
+        for b in solid[i + 1:]:
+            need = GP.need(a["type"], b["type"])
+            if not need or id(a) in seen and id(b) in seen: continue
+            g = _edge(a, b)
+            if g < need - 0.05:
+                big = need >= GP.GAP_BIG
+                flags.append(("qa2_gap", f"{a['type']} and {b['type']} stand {max(0.0, g):.2f} units apart "
+                              f"({'a big piece keeps' if big else 'separate pieces keep'} {need:.2f})", a))
+                seen.update((id(a), id(b)))
+    for rug in [o for o in objs if GP.RUG.match(o["type"])]:
+        for f_ in [o for o in objs if GP.FIRE.match(o["type"])]:
+            if _edge(rug, f_) < GP.RUG_FIRE - 0.05:
+                flags.append(("qa2_gap", f"{rug['type']} lies {max(0.0, _edge(rug, f_)):.2f} units from {f_['type']} "
+                              f"(a rug keeps {GP.RUG_FIRE:.2f} clear of a fire)", rug))
+    # Q2T-5: storage and seating against the wall
+    cells = r["cells"]
+    runs = room_runs(m, cells)
+    if not runs: return flags
+    cu = sum(x + y + 1 for x, y in cells) / len(cells); cv = sum(x - y for x, y in cells) / len(cells)
+    beds = [o for o in solid if QA1_BED.match(o["type"])]
+    sets = [o for o in solid if GP.SEAT_TO.search(o["type"])]
+    heap = [o for o in solid if GP.HEAP.match(GP.base(o["type"]))]
+    on_wall = collections.defaultdict(list)
+    for o in solid:
+        k = GP.kind(o["type"])
+        if not k: continue
+        if k == "bench" and (rtype in GP.PEW_TYPES or any(_edge(o, s) < 0.9 for s in sets)): continue
+        if k == "chest" and any(_edge(o, b) < 1.6 for b in beds): continue      # at a bed's foot or side
+        if k in ("crate", "sack") and any(_edge(o, h) < 0.6 for h in heap if h is not o): continue   # a heap's
+        w = _against(o, runs, cu, cv, m, reach=GP.MID_FLOOR, prefer_back=True)
+        if not w:
+            flags.append(("qa2_wall", f"{o['type']} stands alone in the middle of the floor", o)); continue
+        name, gap, along, line, coord = w
+        if gap > GP.FLUSH:
+            flags.append(("qa2_wall", f"{o['type']} stands {gap:.2f} units off the {name} wall", o)); continue
+        on_wall[(line, coord, k)].append((gap, o))
+    for (line, coord, k), ps in on_wall.items():
+        if len(ps) < 2: continue
+        gs = [g for g, _ in ps]
+        if max(gs) - min(gs) > GP.LINE_TOL:
+            o = max(ps, key=lambda p: p[0])[1]
+            flags.append(("qa2_wall", f"{len(ps)} {k}s on one wall at depths {min(gs):.2f}-{max(gs):.2f}: not lined up",
+                          o))
+    return flags
+
+
+QA2_TEXT = {
+    "qa2_gap": "separate pieces never touch: a clear gap between them, wider by a big piece; a heap or a set is one "
+               "piece (Q2T-4)",
+    "qa2_wall": "storage and seating stand flush against their wall, lined up with their kind, never alone mid-floor "
+                "(Q2T-5)",
+}
+
+
+def check_qa2_space(m, ctx, base):
+    """QA round 2's spacing rules (review/qa2/ledger.md Q2T-4, Q2T-5; kit/gaps.py): gaps between pieces, storage and
+    seating against the wall."""
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        if not kind: continue
+        for rule, text, o in qa2_space_flags(m, r, kind):
+            x, y = (o["x"], o["y"]) if o else cell_px(next(iter(r["cells"])))
+            out.append(F("rooms", "warning", f"{kind.replace('_', ' ')} room: {text}: {QA2_TEXT[rule]}.", x, y,
+                         rule=f"rooms.{rule}"))
+    return out
+
+
+RULES += [("rooms.qa2_gap", "rooms", r"separate pieces never touch", "Q2T-4"),
+          ("rooms.qa2_wall", "rooms", r"stand flush against their wall", "Q2T-5")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-2:]]
+ALL.append(check_qa2_space)
