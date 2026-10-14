@@ -4037,7 +4037,7 @@ def qa2_space_flags(m, r, kind):
             if not need or id(a) in seen and id(b) in seen: continue
             g = _edge(a, b)
             if g < need - 0.05:
-                big = need >= GP.GAP_BIG
+                big = GP.BIG.match(GP.base(a["type"])) or GP.BIG.match(GP.base(b["type"]))
                 flags.append(("qa2_gap", f"{a['type']} and {b['type']} stand {max(0.0, g):.2f} units apart "
                               f"({'a big piece keeps' if big else 'separate pieces keep'} {need:.2f})", a))
                 seen.update((id(a), id(b)))
@@ -4061,7 +4061,8 @@ def qa2_space_flags(m, r, kind):
         if k == "bench" and (rtype in GP.PEW_TYPES or any(_edge(o, s) < 0.9 for s in sets)): continue
         if k == "chest" and any(_edge(o, b) < 1.6 for b in beds): continue      # at a bed's foot or side
         if k in ("crate", "sack") and any(_edge(o, h) < 0.6 for h in heap if h is not o): continue   # a heap's
-        w = _against(o, runs, cu, cv, m, reach=GP.MID_FLOOR, prefer_back=True)
+        # (across: a chest's footprint is drawn across a front wall in Westwood's own variants, kit/furnish.py dirvar)
+        w = _against(o, runs, cu, cv, m, reach=GP.MID_FLOOR, across=True)
         if not w:
             flags.append(("qa2_wall", f"{o['type']} stands alone in the middle of the floor", o)); continue
         name, gap, along, line, coord = w
@@ -4075,7 +4076,33 @@ def qa2_space_flags(m, r, kind):
             o = max(ps, key=lambda p: p[0])[1]
             flags.append(("qa2_wall", f"{len(ps)} {k}s on one wall at depths {min(gs):.2f}-{max(gs):.2f}: not lined up",
                           o))
+    # Q2F-2: a barracks' chests in one of the user's two arrangements
+    if rtype == "barracks":
+        chests = [o for o in solid if QA1_CHEST.match(o["type"])]
+        if len(chests) == 1:
+            w = _against(chests[0], runs, cu, cv, m, reach=GP.MID_FLOOR, across=True)
+            if not w or w[1] > GP.FLUSH:
+                flags.append(("qa2_chests", "its one chest stands " + (f"{w[1]:.2f} units off the {w[0]} wall" if w else
+                              "in the open") + ", not against a wall", chests[0]))
+        if len(chests) > 1:
+            foot = [c for c in chests if any(_edge(c, b) < 1.0 for b in beds)]
+            if len(beds) > QA2_FOOT_CHESTS:
+                flags.append(("qa2_chests", f"{len(chests)} chests and {len(beds)} beds: more than "
+                              f"{QA2_FOOT_CHESTS} beds keep one chest", chests[0]))
+            elif len(foot) < len(chests) or len(chests) != len(beds):
+                flags.append(("qa2_chests", f"{len(chests)} chests for {len(beds)} beds, {len(foot)} at a bed's foot",
+                              next((c for c in chests if c not in foot), chests[0])))
+    # Q2F-6: an ogre room in the ogres' own shell, never a town house's walls
+    if rtype in ("ogre_pen", "ogre_den"):
+        near = {(x + a, y + b) for x, y in cells for a, b in N4} & set(m.walls)
+        mats = collections.Counter(m.walls[c].material for c in near)
+        house = sum(n for mat, n in mats.items() if HOUSE_WALL.match(mat or ""))
+        if mats and house * 2 > sum(mats.values()):
+            flags.append(("qa2_ogre_shell", f"its walls are a town house's ({mats.most_common(1)[0][0]})", None))
     return flags
+
+
+QA2_FOOT_CHESTS = 6          # kit/finish.py BARRACKS_FOOT_CHESTS
 
 
 QA2_TEXT = {
@@ -4083,6 +4110,8 @@ QA2_TEXT = {
                "piece (Q2T-4)",
     "qa2_wall": "storage and seating stand flush against their wall, lined up with their kind, never alone mid-floor "
                 "(Q2T-5)",
+    "qa2_chests": "a barracks keeps one chest against a wall, or (six beds or fewer) one at every bed's foot (Q2F-2)",
+    "qa2_ogre_shell": "an ogre room stands in the ogres' own walls and floors, never a town house's (Q2F-6)",
 }
 
 
@@ -4101,6 +4130,8 @@ def check_qa2_space(m, ctx, base):
 
 
 RULES += [("rooms.qa2_gap", "rooms", r"separate pieces never touch", "Q2T-4"),
-          ("rooms.qa2_wall", "rooms", r"stand flush against their wall", "Q2T-5")]
-_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-2:]]
+          ("rooms.qa2_wall", "rooms", r"stand flush against their wall", "Q2T-5"),
+          ("rooms.qa2_chests", "rooms", r"keeps one chest against a wall", "Q2F-2"),
+          ("rooms.qa2_ogre_shell", "rooms", r"the ogres' own walls and floors", "Q2F-6")]
+_RULE_RX += [(r, c, re.compile(p), fb) for r, c, p, fb in RULES[-4:]]
 ALL.append(check_qa2_space)

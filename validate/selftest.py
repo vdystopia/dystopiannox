@@ -720,6 +720,17 @@ def q2_chests_unlined(m):
     m.obj("Chest3", 205, 9.5); m.obj("Chest3", 209, 9.2)
 
 
+def q2_chests_scattered(m):
+    _declare(m, "barracks")                                    # Q2F-2: "fix chest": three beds, two chests anywhere
+    for k in range(3): m.obj("Cot2", 203 + 3.0 * k, 8.4)
+    m.obj("Chest3", 206, -9.2); m.obj("Chest3", 214, -9.2)
+
+
+def q2_ogre_pen_in_house(m):
+    _declare(m, "ogre_pen")                                    # Q2F-6: "This is using human buildings and floors"
+    m.obj("OgreStraw1", 204, 6)
+
+
 def _cellar(m):
     """A walled cellar away from the meadow (no way in on foot)."""
     m.room(280, 300, -10, 10, wall="BrickPlain", floor="GreenBrick")
@@ -1157,6 +1168,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq2Wal", q2_chest_out, "rooms", "warning", "a chest standing out from its wall - Q2T-5", "units off the"),
     ("STq2Mid", q2_bench_mid, "rooms", "warning", "a bench alone mid-floor - Q2T-5", "alone in the middle"),
     ("STq2Lin", q2_chests_unlined, "rooms", "warning", "two chests at two depths on one wall - Q2T-5", "not lined up"),
+    ("STq2Chs", q2_chests_scattered, "rooms", "warning", "a barracks' chests off the beds' feet - Q2F-2", "at a bed's foot"),
+    ("STq2Ogr", q2_ogre_pen_in_house, "rooms", "warning", "an ogre pen in a town house - Q2F-6", "a town house's"),
     ("STtpLnk", tp_unlinked, "transport", "error", "a lift platform that names no pit - TR-1", "moves nobody"),
     ("STtpWal", tp_in_wall, "transport", "error", "a pentagram landing the player in a wall - TR-1", "in a wall"),
     ("STtpStr", tp_stranded, "transport", "error", "a one-way portal into a sealed cellar - TR-1", "strands"),
