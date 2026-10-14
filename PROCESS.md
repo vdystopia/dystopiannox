@@ -21,6 +21,21 @@ room, scene and map is checked against before the user sees it, rated type or no
    the room's or set piece's axis; ceremonial rooms and set pieces (chapels, halls, throne rooms, shrines, graveyards,
    wells) are composed whole on the line from their door to their centrepiece. Nothing is placed at random.
 
+**Round 2's refinements [Q2T-1..8]** (QA round 2, 2026-10-14, 295 ratings; `review/qa2/ledger.md`):
+1. **Centred on the room, not the door.** A composition is centred on the room's own middle; the door that sets the
+   axis stands in its wall's middle. Carpets are whole tiles, so the axis falls on a tile seam or middle and the
+   carpet's width matches it; what stands on a carpet is centred on the carpet.
+2. **Facing is designed.** Statues face the entrance along the path, benches face the aisle or the centrepiece,
+   coffins lie along their row; nothing keeps an object's default facing by accident.
+3. **Pieces never touch.** Separate pieces keep a clear gap (a heap is one piece); big pieces keep a wider one; a rug
+   keeps clear of a fire.
+4. **Storage and seating sit against the wall**, flush and lined up with their neighbours, never alone mid-floor.
+5. **Floors end at a hard line.** A patch stops at its bar, curb, fence, wall or bridgehead, never blended past it;
+   hearth patches run wall to wall; every carpet and forge square has its whole border.
+6. **A missing scene is an error**, never an empty picture.
+7. **Fullness from kinds, not repetition.** A room's signature piece (obelisks, racks, crates, barrels) has a cap;
+   filling adds other kinds.
+
 Work from identity to detail and from the centre outwards. Builds are reproducible: a design and its seed always give
 the same map. Never use Python's `hash()` on strings (it changes from run to run); use `zlib.crc32`.
 

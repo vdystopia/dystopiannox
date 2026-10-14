@@ -30,7 +30,7 @@ def main():
     a = ap.parse_args()
     rdir = os.path.join(ROOT, "review", "out", "qa", a.round)
     items = []
-    for f in sorted(glob.glob(os.path.join(rdir, "items_*.json"))):
+    for f in sorted(glob.glob(os.path.join(rdir, "items*.json"))):
         items += load(f)
     by_id = {it["id"]: it for it in items}
     ratings = {os.path.splitext(os.path.basename(f))[0]: load(f) for f in glob.glob(os.path.join(a.db_dir, "ratings", "*.json"))}

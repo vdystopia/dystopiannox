@@ -266,6 +266,17 @@ and 3 marked not covered in their own ledger, each answered in another: Q1W-15 (
 and Q1R-22 (nox15's crypt: Q1C-19..21; nox17's tavern: Q1A, the civic tavern composer). Nox has no wardrobe, dresser,
 bucket or wheelbarrow object: chests, clothes racks, water barrels and the bucket of tools stand in.
 
+## QA round 2 (2026-10-14)
+
+The user's second rating round: 295 items (five per type, seed 11), 10 set notes; scores rose from round 1's means of
+1.0-4.2 to 3.0-5.0. Report `review/reviews/QA-round2.md`, raw database `review/history/qa-round2/`, every row in
+`review/qa2/ledger.md`: eight themes (Q2T-1..8: centred on the room, carpets centred, facing, gaps between pieces,
+storage against the wall, hard-edged floors, no missing scenes, signature pieces capped), then Q2S (sacred), Q2V
+(works), Q2C (civic), Q2F (finished rooms), Q2X (exteriors) and Q2N (single notes on types not re-rendered). The user
+scoped the pass: only types with a set note or several fixes or notes are reworked and re-rendered (iteration `qa3`).
+Recurring after round 1: chapel altars all alike (Q1C-4 -> Q2S-1), carpets off the axis (Q1C-3 -> Q2T-2), bars not
+meeting the wall (DV4 -> Q2C-6).
+
 ## Totals
 
 | | Items | Check | Review only | Not covered |

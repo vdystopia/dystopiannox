@@ -1,0 +1,6 @@
+{
+  "note": "There are two chairs facing each other in the south corner. But no table. Make sure that there is a table in between two chairs in cases like this. ",
+  "rating": 4,
+  "updatedAt": "2026-10-14T13:16:06.678Z",
+  "verdict": "fix"
+}
