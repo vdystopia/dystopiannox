@@ -977,6 +977,17 @@ def q1_bare_s_corner(m):
     for u, v in ((204, 6), (204, -6), (206, 0)): m.obj("Barrel", u, v)
 
 
+# ---- QA round 2, the works rooms (validate/checks.py qa2_works_flags; review/qa2/ledger.md Q2V-3, Q2V-4, Q2T-8) ----------
+def q2_winch_crates(m):
+    _declare(m, "winch_room")                                  # Q2V-4: "too cluttered with crates and barrels"
+    for k in range(30): m.obj("Barrel" if k % 2 else "CrateSteel1", 203.5 + 3.2 * (k % 5), -8 + 3.2 * (k // 5))
+
+
+def q2_keeper_space(m):
+    _declare(m, "smithy")                                      # Q2V-3: "a barrel and a mannequin behind the desk"
+    m.obj("TraderDesk1", 211, 7.0); m.obj("Barrel", 211, 9.0)
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -1161,6 +1172,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1frg", q1_forge_on_boards, "composition", "warning", "a forge on the bare floor - QA1 Q1B (nox17)",
      "bare floor"),
     ("STq1scr", q1_bare_s_corner, "composition", "warning", "a guardroom's bare S corner - QA1 Q1B", "S corner is bare"),
+    ("STq2sig", q2_winch_crates, "composition", "warning", "a winch room of 30 crates and barrels - Q2T-8 Q2V-4",
+     "past its cap of"),
+    ("STq2kpr", q2_keeper_space, "composition", "warning", "a barrel behind a smithy's counter - Q2V-3",
+     "where the keeper stands"),
 ]
 
 

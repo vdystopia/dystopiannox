@@ -69,6 +69,21 @@ TAPESTRY = r"^(Red|Blue|Green|White)Tapestry[1-4]$"
 CASED = re.compile(r"^(?!Sack).*Chest|^Desk|Shelves|Bookcase")
 TINY = re.compile(r"^(Skull|ArmBone|LegBone|Corpse|Candle\d|BottleCandle|FoilCandle|MechGear|MiningPickAxe|MiningHammer|"
                   r"Cobweb|Web|RedApple|Meat$|Bread|Cheese|.*Potion\d?$|Mushroom)")
+# QA round 2 (Q2T-4: "The iron casket is way too close to the two coffins", RM-MAUSOLEUM-02; "The mana obelisk is too
+# close to the statue", RM-SHRINE-02): separate pieces keep a clear gap; a big piece (a tomb, a coffin, an obelisk, a
+# statue, an altar, a winch, a counter, a forge) keeps a wider one from every other piece. A heap's own members touch.
+BIG = re.compile(r"^(Crypt\d|Coffin|CoffinBreaking|Obelisk|LOTDManaObelisk|Statue|LOTDLichGodStatue|DunMirAltar|Monument|"
+                 r"PulleyGear|TraderDesk|CinderBin|LargeBarrel|PiledBarrels|MineManaCart|MineOreCart\d|CryptChest)")
+GAP, BIG_GAP = 0.35, 0.9
+# the kinds round 2 reworked (the works helper's five types); the other kinds keep round 1's spacing until they are seen
+GAP_KINDS = {"mausoleum", "shrine", "dark_shrine", "smithy", "winch_room", "storeroom"}
+# A floor square (i, j) is the tile (i + j, i - j), centred at uv (2i + 2, 2j) as the kit counts (Furnisher.lay_carpet),
+# but the editor draws it half a square further toward the SW (measured 2026-10-14 on a lone RugGreen tile: its pixels
+# centre 11 px left of and 10 px below the tile's point, uv (0, -0.9); Westwood's own tables on 9-square rugs sit the
+# same way off the tile points). A carpet or brick square is centred on a piece as the user sees it, so its squares are
+# chosen about (u, v + SQUARE_V) (QA round 2, RM-SHRINE-03: "The mana obelisk arrangement is not centered on the carpet";
+# Q2T-2). Squares along u show where the kit counts them.
+SQUARE_V = 1.0
 UNIT_MOST = {"bench": 2, "chest": 2, "statue": 4, "piece": 3, "coffin": 4, "monument": 2, "restraint": 3, "basin": 2,
              "bones": 4, "rack": 4, "shelves": 4}
 
@@ -98,7 +113,8 @@ ALLOW = {
                              r"^WaterBarrel$|^BarrelSteel[12]$",
                      bench=r"^Bench[12]$", table=r"^Table[1-4]$"),
     "winch_room": dict(storage=r"^CrateSteel[1-4]$|^BarrelSteel[12]$|^BarrelWithTools[12]$|^(Dark)?Crate[12]$"),
-    "storeroom": dict(storage=r"^BarrelSteel[12]$|^CrateSteel[1-4]$|^WaterBarrel$", shelves=r"^LogShelvesFull[1-4]$"),
+    "storeroom": dict(storage=r"^BarrelSteel[12]$|^CrateSteel[1-4]$|^WaterBarrel$|^Chest[1-4]$",
+                      shelves=r"^LogShelvesFull[1-4]$"),
     "granary": dict(storage=r"^BarrelSteel[12]$|^WaterBarrel$", shop_rack=r"^TraderAppleCrate$",
                     shelves=r"^LogShelvesFull[1-4]$"),
     "ore_store": dict(storage=r"^BarrelSteel[12]$|^CrateSteel[1-4]$", shop_rack=r"^TraderShelves[12]$"),
@@ -141,14 +157,15 @@ _spec(("guardroom",), least=(0.21, 8), extra=["TargetBarrel1", "WaterBarrel", "C
 
 STORE_WALLS = dict(back=["shelves", "heap"], front=["heap"], fill=(0.75, 0.6), most={"shelves": 2})
 _spec(("storeroom",), least=(0.22, 5), extra=["SackChestSmall1", "BarrelWithTools2", "CrateSteel4", "WaterBarrel"],
-      goal=0.8, cover=0.38, keep=r"^$",
-      program=[("corner_heap", dict(corner="S", types=STORE, n=5)),
+      goal=0.8, cover=0.38, keep=r"^$", plain_floor=True,
+      program=[("hidden_chest", dict()),
+               ("corner_heap", dict(corner="S", types=STORE, n=5)),
                ("corner_heap", dict(corner="N", types=STORE, n=4)),
                ("corner_pair", dict(corners=("W", "E"), types=STORE, heap=3))],
       walls=STORE_WALLS, pal=dict(heap=STORE, shelf=LOGSHELVES, shelf_n=2),
       middle=dict(centre=["stack"], pairs=["stack", "piled"], most={"piled": 2}, centre_from=60, pairs_from=60))
 _spec(("granary",), least=(0.22, 5), extra=["SackChestSmall1", "SackChestSmall2", "TraderAppleCrate", "Barrel2"],
-      goal=0.8, cover=0.38, keep=r"^$",
+      goal=0.8, cover=0.38, keep=r"^$", plain_floor=True,
       program=[("corner_heap", dict(corner="S", types=SACKS + ["TraderAppleCrate", "Barrel"], n=5)),
                ("corner_heap", dict(corner="N", types=SACKS + ["Barrel2", "Crate2"], n=4)),
                ("corner_pair", dict(corners=("W", "E"), types=SACKS + ["Crate1", "TraderAppleCrate"], heap=3))],
@@ -157,7 +174,7 @@ _spec(("granary",), least=(0.22, 5), extra=["SackChestSmall1", "SackChestSmall2"
                shelf=LOGSHELVES, shelf_n=2),
       middle=dict(centre=["sackpile"], pairs=["stack", "sackpile"], centre_from=60, pairs_from=60))
 _spec(("ore_store",), least=(0.22, 5), extra=["MiningPickAxeOnGround1", "MiningHammer1", "CrateSteel4", "BarrelWithTools2"],
-      goal=0.78, cover=0.38, keep=r"^Mine(Mana|Ore)Cart",
+      goal=0.78, cover=0.38, keep=r"^Mine(Mana|Ore)Cart", plain_floor=True,
       program=[("corner_heap", dict(corner="S", types=STEEL + TOOLS + ["DarkCrate1"], n=5)),
                ("corner_heap", dict(corner="N", types=STEEL + TOOLS, n=4)),
                ("corner_pair", dict(corners=("W", "E"), types=STEEL + TOOLS, heap=3))],
@@ -212,7 +229,13 @@ _spec(("torture_chamber",), least=(0.12, 8), extra=["Skull", "ArmBone", "LegBone
                heap=["Barrel", "WaterBarrel", "DarkCrate1", "BarrelWithTools1", "Barrel2"]),
       middle=dict(centre=["rack"], pairs=["bones"]))
 
-_spec(("smithy",), least=(0.16, 9), extra=["WaterBarrel", "BarrelWithTools2", "CrateSteel3", "MechGear", "DarkCrate2", "Barrel2"],
+# (QA round 2: never emptier than round 2's smithies, 0.28-0.36 pieces a tile, now the keeper's space is kept clear; a
+# big one a little less full, RM-SMITHY-03: "Just slightly overcrowded"; the top-up fills the walls, never groups at
+# bare spots mid-floor: no_bare)
+_spec(("smithy",), least=(0.32, 10), least_big=(100, 0.27), no_bare=True,
+      keep_kinds=["TraderPoleArm1", "TraderPoleArm3", "TraderHangingSwords1", "TraderHangingSwords2", "TraderArmorRack1",
+                  "TraderArmorRack2", "WaterBarrel", "BarrelSteel1", "BarrelWithTools1", "CrateSteel1", "DarkCrate1"],
+      extra=["WaterBarrel", "BarrelWithTools2", "CrateSteel3", "DarkCrate2", "Barrel2"],
       goal=0.76, cover=0.34, relight=True,
       keep=r"^(CinderBin\d|Bellows\d|Anvil\d|TraderDesk\d|.*Chair\d|.*Stool\d)$",
       program=[("brick_square", dict(pat=r"^CinderBin")),
@@ -221,11 +244,14 @@ _spec(("smithy",), least=(0.16, 9), extra=["WaterBarrel", "BarrelWithTools2", "C
                ("corner_heap", dict(corner="S", types=["WaterBarrel", "CrateSteel1", "BarrelWithTools1", "DarkCrate1",
                                                        "BarrelSteel1", "BarrelWithTools2"], n=4)),
                ("corner_pair", dict(corners=("W", "E"), types=["WaterBarrel", "CrateSteel2", "BarrelSteel2"], heap=2))],
-      walls=dict(back=["racks", "heap"], front=["heap"], fill=(0.6, 0.45)),
-      pal=dict(rack=["TraderHangingSwords1", "TraderHangingSwords2", "TraderPoleArm1", "TraderPoleArm3"], rack_ends=ARMOUR,
+      walls=dict(back=["racks", "heap"], front=["heap"], fill=(0.6, 0.55)),
+      pal=dict(rack=["TraderHangingSwords1", "TraderHangingSwords2", "TraderPoleArm1", "TraderPoleArm3"] + ARMOUR,
+               rack_ends=ARMOUR,
                heap=["WaterBarrel", "CrateSteel1", "CrateSteel2", "BarrelSteel1", "BarrelSteel2", "BarrelWithTools1",
                      "BarrelWithTools2", "DarkCrate1", "DarkCrate2"]),
-      middle=dict(centre=[], pairs=["stack"], pairs_from=80))
+      # (QA round 2, RM-SMITHY-03: "Just slightly overcrowded. Remove an object or two from the middle of the room and
+      # move a few objects closer to the southwest wall": the middle's stacks smaller, the front walls a share more)
+      middle=dict(centre=[], pairs=["stack"], pairs_from=80, stack_n=(2, 3), most={"stack": 4}), extras_walls=100)
 
 _spec(("workshop",), least=(0.32, 13), extra=["MineOreCartWheel", "MechGear", "Anvil2", "Gear1", "SackChestSmall1", "BarrelWithTools2", "WaterBarrel", "DarkCrate2", "BarrelSteel1", "Crate2", "CrateSteel1"],
       goal=0.78, cover=0.34, relight=True, keep=r"^$",
@@ -243,18 +269,27 @@ _spec(("workshop",), least=(0.32, 13), extra=["MineOreCartWheel", "MechGear", "A
       middle=dict(centre=["workbench"], pairs=["parts", "stack"], most={"workbench": 1}, pairs_from=60),
       hang=dict(pat=TAPESTRY, most=2))
 
-_spec(("winch_room",), least=(0.25, 8), extra=["MechGear", "MineOreCartWheel", "BarrelWithTools1", "CrateSteel1", "DarkCrate2", "Crate2", "BarrelSteel2", "MechGear"],
-      goal=0.7, cover=0.3, relight=True, keep=r"^PulleyGear\d$",
-      program=[("row", dict(wall="back_free", types=["Gear1", "Gear2", "Gear3", "Gear4", "Gear5", "Gear6"], spacing=2.4,
+# (QA round 2, the winch room set: "too cluttered with crates and barrels. Keep all of the gears and winch-themed objects.
+# Lower the number of crates and barrels across all of these by 25%" (Q2V-4, Q2T-8): crates and barrels capped at 0.18 a
+# floor tile, three quarters of round 2's 0.23-0.27; the gears, winches and wheels as before, a gear more on the walls)
+_spec(("winch_room",), least=(0.24, 8), extra=["MineOreCartWheel"],
+      sig=(r"Barrel|Crate", 0.19, 4),
+      keep_kinds=["Crate2", "DarkCrate2", "CrateSteel2", "BarrelSteel1", "BarrelWithTools1", "Crate1", "DarkCrate1",
+             "CrateSteel1", "CrateSteel3", "CrateSteel4", "BarrelSteel2", "BarrelWithTools2"],
+      goal=0.66, cover=0.3, relight=True, keep=r"^PulleyGear\d$",
+      # (the S corner's heap first: a gear the row's fallback stood on a front wall had left it bare)
+      program=[("corner_heap", dict(corner="S", types=["BarrelWithTools1", "CrateSteel1", "BarrelSteel1", "DarkCrate1",
+                                                       "BarrelWithTools2"], n=4, first=["Crate1", "Crate2"])),
+               ("row", dict(wall="back_free", types=["Gear1", "Gear2", "Gear3", "Gear4", "Gear5", "Gear6"], spacing=2.4,
                             least=2, walls=2)),
                ("around", dict(pat=r"^PulleyGear", types=["MechGear", "MineOreCartWheel"], d=2.2)),
-               ("corner_heap", dict(corner="S", types=["BarrelWithTools1", "CrateSteel1", "BarrelSteel1", "DarkCrate1",
-                                                       "BarrelWithTools2"], n=4)),
                ("corner_pair", dict(corners=("W", "E"), types=["CrateSteel2", "BarrelWithTools2", "BarrelSteel2"],
-                                    heap=2))],
-      walls=dict(back=["heap"], front=["heap"], fill=(0.55, 0.42)),
+                                    heap=2)),
+               ("least", dict(types=["Gear1", "Gear3", "Gear5", "Gear2"], n=2, n_big=3)),
+               ("around", dict(pat=r"^PulleyGear", types=["MechGear"], d=1.4, every=True))],
+      walls=dict(back=["heap", "piece"], front=["heap"], fill=(0.55, 0.42), most={"piece": 2}),
       pal=dict(heap=["BarrelWithTools1", "BarrelWithTools2", "CrateSteel1", "CrateSteel2", "CrateSteel3", "BarrelSteel1",
-                     "BarrelSteel2", "DarkCrate1", "DarkCrate2"]),
+                     "BarrelSteel2", "DarkCrate1", "DarkCrate2", "Crate2"], piece=["Gear1", "Gear3", "Gear5"]),
       middle=dict(centre=["winch"], pairs=["parts", "stack"]))
 
 _spec(("laboratory",), least=(0.19, 8), extra=["FairyJar", "SackChestSmall1", "SackChestSmall2"],
@@ -309,14 +344,16 @@ _spec(("dark_shrine",), least=(0.17, 5), extra=["CoffinBreaking2", "Skull", "Arm
       pal=dict(statue=["LOTDManaObelisk"], coffin=COFFINS),
       middle=dict(centre=["dark_square"], pairs=["bones"], most={"dark_square": 1}),
       hang=dict(pat=r"^LOTDTapestry[12]$|^LOTDBanner[12]$", most=2))
-_spec(("mausoleum",), least=(0.16, 4), extra=["CoffinBreaking1", "Skull", "ArmBone"],
+# (QA round 2, Q2V-1: no single coffins among the extras and the bones a few heaps, mirrored: RM-MAUSOLEUM-03's 84
+# bones and stray coffins read as a "Scattered mess"; the room's fullness from its statues, monuments, coffins, obelisks)
+_spec(("mausoleum",), least=(0.16, 4), extra=["Monument1", "Skull"],
       goal=0.62, cover=0.26, mirror=True, relight=True, keep=r"^$",
       program=[("axis", dict(runner=True, benches=[], flank=["Statue2a", "Statue2c", "Statue2e", "Statue2g"],
                              avenue=["Statue2a", "Statue2c", "Statue2e", "Statue2g"], pairs=["Obelisk"],
                              hang=TAPESTRY, coffins=True, tomb=True, chest=True))],
-      walls=dict(back=["bones", "monument"], front=["bones"], fill=(0.35, 0.2)),
+      walls=dict(back=["monument", "bones"], front=["bones"], fill=(0.35, 0.2), most={"bones": 1}, fixed=("bones",)),
       pal=dict(monument=["Monument1"]),
-      middle=dict(centre=["tomb"], pairs=["coffin", "statue", "bones"], most={"tomb": 1, "coffin": 4}))
+      middle=dict(centre=["tomb"], pairs=["coffin", "statue"], most={"tomb": 1, "coffin": 4, "statue": 4}, on_axis=False))
 _spec(("ossuary",), least=(0.09, 5), repeat=4, extra=["OpenCryptChest1", "Tombstone1", "Skull"],
       goal=0.62, cover=0.26, mirror=True, relight=True, keep=r"^$",
       program=[("axis", dict(runner=False, benches=[], flank=[], avenue=[], pairs=["Candleabra3"], hang=None,
@@ -347,12 +384,17 @@ def apply(f):
     """Applies the QA round 1 themes to a furnished room of a kind in SPEC (the furnishing engines' last step)."""
     if not ENABLED or f.kind not in SPEC: return None
     x = Finish(f, SPEC[f.kind])
-    saved = (f.in_required, f.composing, f.placing_light, f.ceiling, f._pairing)
+    saved = (f.in_required, f.composing, f.placing_light, f.ceiling, f._pairing, f.things)
     f.in_required, f.composing, f.placing_light, f.ceiling = True, False, False, None
+    # a breakable coffin is drawn as long as a coffin, but thing.bin gives it a small round footprint: the pass places
+    # it by the coffin's box, so two never overlap and it lies along its row (QA round 2, RM-MAUSOLEUM-03: "The coffins on
+    # the northeast wall are overlapping each other"; Q2T-3, Q2T-4)
+    f.things = dict(f.things, **{f"CoffinBreaking{k}": f.things[f"Coffin{k}"] for k in range(1, 5)
+                                 if f"Coffin{k}" in f.things and f"CoffinBreaking{k}" in f.things})
     try:
         x.run()
     finally:
-        f.in_required, f.composing, f.placing_light, f.ceiling, f._pairing = saved
+        f.in_required, f.composing, f.placing_light, f.ceiling, f._pairing, f.things = saved
     f.qa1_log = dict(x.log)
     # recorded with the audit's log, so the labs' variants.json carry it (grammar_log)
     gl = getattr(f, "grammar_log", None)
@@ -379,9 +421,12 @@ class Finish:
         self.axis_long = "u" if (self.box[1] - self.box[0]) >= (self.box[3] - self.box[2]) else "v"
         self.cur = ""
         self.mcount = Counter()        # the middle's groups placed, by name (their `most`)
+        self.ucount = Counter()        # the walls' units placed over the whole pass (spec walls `fixed`)
         # one kind of coffin to a room (the grammar's "beds or tombs of one kind"): breakable ones more often (the user,
         # of crypts: "Use the breakable coffin objects sometimes")
         self.coffin = "CoffinBreaking" if self.rng.random() < 0.6 else "Coffin"
+        self.displaced = []            # kept pieces strip took off a big piece and could not move: set again (rehome)
+        self.keeper = []               # the keeper's space behind each counter (keeper_zones), kept clear of every piece
 
     # ---- small helpers ---------------------------------------------------------------------------------------------
     def ok(self, t):
@@ -409,9 +454,45 @@ class Finish:
         have = sum(1 for tt, _ in self.f._typed if self.fam(tt) == fam)
         return have >= min(most, max(1, int(self.tiles / per)))
 
+    def sig_capped(self, t):
+        """Whether one more piece of the type's signature kind passes its cap (spec `sig`: (regex, pieces a floor tile,
+        at least); QA round 2, Q2T-8: fullness from more kinds, never more of the signature piece; the winch rooms' crates
+        and barrels a quarter fewer, Q2V-4). The checker's own table: validate/checks.py SIGNATURE_CAPS."""
+        sig = self.s.get("sig")
+        if not sig or not re.search(sig[0], t): return False
+        cap = max(sig[2], int(sig[1] * self.tiles))
+        return sum(1 for tt, _ in self.f._typed if re.search(sig[0], tt)) >= cap
+
+    def gap_ok(self, t, u, v, touch):
+        """The clear gap round a piece (Q2T-4): GAP from every blocking floor piece (a heap's members, `touch`, may meet),
+        BIG_GAP when either is a big piece, whatever the heap."""
+        hu, hv = self.half(t)
+        big = bool(BIG.match(t))
+        for tt, rec in self.f._typed:
+            pu, pv, phu, phv, pb, layer = rec
+            if not pb or layer == "wall": continue
+            other_big = bool(BIG.match(tt))
+            need = BIG_GAP if (big or other_big) else (0.0 if touch else GAP)
+            if need <= 0: continue
+            du = abs(u - pu) - hu - phu; dv = abs(v - pv) - hv - phv
+            if max(du, dv) < need:
+                if DEBUG: self.log[f"gap by {tt}"] += 1
+                return False
+        return True
+
     def put(self, t, u, v, touch=False, blocking=True, **kw):
         if self.capped(t):
             if DEBUG: self.log["why cap " + (self.fam(t) or "")] += 1
+            return None
+        if self.sig_capped(t):
+            self.log["sig cap"] += 1
+            return None
+        if blocking and not self.f.placing_light and self.f.kind in GAP_KINDS and not self.gap_ok(t, u, v, touch):
+            if DEBUG: self.log["why gap " + self.cur] += 1
+            return None
+        if blocking and any(u + self.half(t)[0] > z[0] and u - self.half(t)[0] < z[1] and v + self.half(t)[1] > z[2]
+                            and v - self.half(t)[1] < z[3] for z in self.keeper):
+            if DEBUG: self.log["why keeper"] += 1
             return None
         if blocking and not self.cover_ok(t):
             if DEBUG: self.log["why cover"] += 1
@@ -527,7 +608,8 @@ class Finish:
 
     def free_stretches(self, r, pad=0.25, hang=False):
         free = list(self.interior(r))
-        for c0, c1 in [(a - pad, b + pad) for a, b in self.wall_pieces(r, hang=hang)] + self.door_cuts(r):
+        kc = [(a, b) for k, a, b in getattr(self, "keeper_cuts", ()) if k == (r["line"], r["coord"])] if not hang else []
+        for c0, c1 in [(a - pad, b + pad) for a, b in self.wall_pieces(r, hang=hang)] + self.door_cuts(r) + kc:
             nxt = []
             for f0, f1 in free:
                 if c1 <= f0 or c0 >= f1: nxt.append((f0, f1)); continue
@@ -606,10 +688,11 @@ class Finish:
         return None
 
     # ---- groups ----------------------------------------------------------------------------------------------------
-    def heap_at(self, u0, v0, su, sv, types, n, first_gap=0.3, swap=False):
+    def heap_at(self, u0, v0, su, sv, types, n, first_gap=0.3, swap=False, first=None):
         """A tight heap of mixed pieces from the corner (u0, v0) into the room (su, sv): the first snug in the corner,
         then along both walls and one before them; swap: along the other wall first (a mirrored corner)."""
         seq = self.pick_seq(types, n * 2)
+        if first and self.oks(first): seq.insert(0, self.rng.choice(self.oks(first)))
         got, used, cell = [], set(), None
         slots = [(0, 0), (1, 0), (0, 1), (2, 0), (1, 1), (0, 2), (3, 0), (2, 1), (1, 2)]
         if swap: slots = [(b, a) for a, b in slots]
@@ -707,6 +790,73 @@ class Finish:
                     self.zone_tag[zs[-1]] = t
         return zs
 
+    def keep_kinds(self):
+        """Every kind of the spec's `keep_kinds` stands in the room (the winch rooms' wood, dark and steel crates, steel and tool
+        barrels: round 2's kinds, now there are a quarter fewer of them, Q2V-4): a piece of the most common kind takes a
+        missing kind's look where the two have the same footprint (a crate for a crate, a barrel for a barrel)."""
+        from kit import objects as _O
+        f = self.f
+        for want in self.s.get("keep_kinds") or ():
+            have = Counter(_O.kind(o["type"]) for o in f.objects)
+            if have[_O.kind(want)]: continue
+            if not self.ok(want): continue
+            hw = self.half(want)
+            cands = [o for o in f.objects if have[_O.kind(o["type"])] >= 2 and o["type"] in self.s.get("keep_kinds", ())
+                     and all(abs(a - b) < 0.05 for a, b in zip(self.half(o["type"]), hw))]
+            if not cands: continue
+            o = max(cands, key=lambda o: have[_O.kind(o["type"])])
+            rec = f._placed_of.get(id(o))
+            f._typed = [(want if r_ is rec else tt, r_) for tt, r_ in f._typed]
+            o["type"] = want
+            self.log["kind kept " + want] += 1
+
+    def rehome(self):
+        """The kept pieces strip took off a big piece and found no clear spot for (a dark shrine's obelisk against its
+        statue, RM-SHRINE-02): each centred on a bare stretch of wall, back walls first, so the room keeps its pieces."""
+        for t0 in self.displaced:
+            done_ = False
+            for r_ in sorted(self.f.g.runs, key=lambda r_: (self.name_of(r_) not in BACK, r_["lo"] - r_["hi"])):
+                for lo_, hi_ in self.free_stretches(r_, pad=0.4):
+                    if hi_ - lo_ < 2 * max(self.half(t0)) + 0.4: continue
+                    if self.put_wall(t0, r_, (lo_ + hi_) / 2, gap=0.4): done_ = True; break
+                if done_: break
+            for cn in ("W", "E", "N", "S"):             # else in a corner
+                c = None if done_ else self.corner(cn)
+                if not c: continue
+                for ins in (0.45, 0.9, 1.4):
+                    hu, hv = self.half(t0)
+                    if self.put(t0, c[0] + c[2] * (ins + hu), c[1] + c[3] * (ins + hv)): done_ = True; break
+                    if DEBUG: self.log["why rehome " + self.why(t0, c[0] + c[2] * (ins + hu), c[1] + c[3] * (ins + hv), True, False, False)] += 1
+            self.log["rehomed" if done_ else "lost " + t0] += 1
+        self.displaced = []
+
+    def keeper_zones(self):
+        """The keeper's space behind every trader's counter: from the counter's back to its wall, its length and a little
+        (QA round 2, RM-SMITHY-01/02/05: "There is a barrel and a mannequin behind the desk where the shopkeeper would be
+        standing. There needs to be room for the shopkeeper"; Q2V-3). The furnisher keeps it when it sets the counter
+        (Furnisher.place_counter); this pass had started from the doors' zones alone and filled it."""
+        f, out = self.f, []
+        for t, rec in f._typed:
+            if not re.match(r"^TraderDesk\d", t): continue
+            u, v, hu, hv = rec[:4]
+            best = None
+            for r in f.g.runs:
+                hp, ha = (hu, hv) if r["line"] == "/" else (hv, hu)
+                if ha < hp: continue                        # the counter lies along this wall
+                off = ((u if r["line"] == "/" else v) - r["coord"]) * r["sign"]
+                along = v if r["line"] == "/" else u
+                if 0 < off - hp <= 3.6 and r["lo"] - 0.5 <= along <= r["hi"] + 0.5 and (best is None or off < best[0]):
+                    best = (off, r, hp, ha, along)
+            if best is None: continue
+            off, r, hp, ha, along = best
+            back = off - hp                                  # the depth of the space behind it
+            wu, wv = self.uv(r, 0.0, along)
+            out.append(f.front_zone(r, wu, wv, ha + 0.4, 0.0, back))
+            self.keeper_cuts = getattr(self, "keeper_cuts", []) + [((r["line"], r["coord"]), along - ha - 0.4,
+                                                                    along + ha + 0.4)]
+            self.log["keeper space"] += 1
+        return out
+
     def walk(self, extra=None):
         """(doors reached from the first, share of the walkable grid reached) of the room, as _Room.reachable_ok walks it."""
         from collections import deque
@@ -756,7 +906,9 @@ class Finish:
         try:
             self.cur = "strip"
             self.strip()
-            g.zones[:] = self.essential_zones()
+            self.keeper = self.keeper_zones()
+            if self.s.get("plain_floor"): self.plain_floor()
+            g.zones[:] = self.essential_zones() + self.keeper
             self._run()
         finally:
             g.zones[:] = saved + [z for z in g.zones if z not in saved]
@@ -768,6 +920,7 @@ class Finish:
         self.middle_fill(part="centre")
         for name, kw in self.s.get("program", ()):
             self.step(name, kw)
+        self.rehome()
         if self.s.get("relight"):
             self.cur = "lights"
             self.light_pairs()
@@ -781,6 +934,7 @@ class Finish:
         self.top_up()
         if self.s.get("hang"):
             self.step("hang_row", self.s["hang"])
+        self.keep_kinds()
         self.cur = "face"
         self.f.face_statues()                       # every statue faces into the room (GW-7)
         self.log["reach x100"] = int(100 * self.reach()[0])
@@ -828,6 +982,40 @@ class Finish:
             if r is not None and self.name_of(r) in FRONT and f.g.wall_dist(rec[0], rec[1]) < max(rec[2], rec[3]) + 0.8:
                 o = by_rec.get(id(rec))
                 if o is not None: f._remove(o); self.log["stripped front"] += 1
+        # a kept piece the recipe set hard by a big one (the dark shrine's obelisk against the lich's statue, RM-SHRINE-02:
+        # "The mana obelisk is too close to the statue"; Q2T-4) goes: the composition sets its own with a clear gap
+        for t, rec in list(f._typed):
+            if not re.match(r"^(Obelisk|LOTDManaObelisk|Statue)", t) or not rec[4]: continue
+            for t2, q in f._typed:
+                if q is rec or not q[4] or not BIG.match(t2): continue
+                du_, dv_ = abs(rec[0] - q[0]) - rec[2] - q[2], abs(rec[1] - q[1]) - rec[3] - q[3]
+                if max(du_, dv_) < BIG_GAP:
+                    o = by_rec.get(id(rec))
+                    if o is None: break
+                    # moved out to the clear gap, straight away from the big piece, else taken up
+                    t0, u0, v0 = o["type"], rec[0], rec[1]
+                    f._remove(o)
+                    su = 1 if u0 >= q[0] else -1; sv = 1 if v0 >= q[1] else -1
+                    moved = None
+                    f._pairing = True                   # (it flanks the big piece: a deliberate pair, a set piece)
+                    sp0 = getattr(f, "set_piece", False); f.set_piece = True
+                    try:
+                        spots = [(u0 + (su * (BIG_GAP - du_ + 0.05 + k) if du_ >= dv_ else 0.0),
+                                  v0 + (sv * (BIG_GAP - dv_ + 0.05 + k) if dv_ > du_ else 0.0)) for k in (0.0, 0.3, 0.6, 1.0, 1.4)]
+                        # else beside it, at either end of its long side (flanking it)
+                        for k in (0.7, 0.4, 0.05):
+                            for s_ in (1, -1):
+                                if q[2] >= q[3]: spots.append((q[0] + s_ * (q[2] + rec[2] + BIG_GAP + k), v0))
+                                else: spots.append((u0, q[1] + s_ * (q[3] + rec[3] + BIG_GAP + k)))
+                        for nu_, nv_ in spots:
+                            moved = self.f.try_put(t0, nu_, nv_)
+                            if moved: break
+                            if DEBUG: self.log["why move " + self.why(t0, nu_, nv_, True, False, False)] += 1
+                        if not moved: self.displaced.append(t0)     # set again once the room is composed (rehome)
+                    finally:
+                        f._pairing = False; f.set_piece = sp0
+                    self.log["moved off a big piece" if moved else "stripped crowding"] += 1
+                    break
         if relight: f.ring_lights = []
         if rx is not None and getattr(f, "carpet_undo", None):
             from kit import grammar as GR
@@ -855,10 +1043,20 @@ class Finish:
             got = self.row_on(r, lo, hi, types, spacing, least, ends, touch=touch, gap=gap)
             if got: done += 1; self.log["row"] += 1
         if not done:                     # the type's must: one at least, centred on the longest bare back stretch
-            for r in [self.main[n] for n in BACK if n in self.main]:
+            got_one = False
+            # (round 2's kinds: further along the back walls, then the front walls, so the type's must stands: the winch
+            # rooms' gear trains, "Keep all of the gears", Q2V-4)
+            more = self.f.kind in GAP_KINDS
+            walls_ = [self.main[n] for n in BACK if n in self.main] + \
+                ([self.main[n] for n in FRONT if n in self.main] if more else [])
+            for r in walls_:
                 s = self.longest(r, pad=0.3, least=1.4)
-                if s and self.put_wall(self.rng.choice(self.oks(types) or types), r, (s[0] + s[1]) / 2, gap=gap):
-                    self.log["row one"] += 1; break
+                if not s: continue
+                L = s[1] - s[0]
+                for a in ((s[0] + s[1]) / 2, s[0] + L / 4, s[1] - L / 4) if more else ((s[0] + s[1]) / 2,):
+                    if self.put_wall(self.rng.choice(self.oks(types) or types), r, a, gap=gap):
+                        self.log["row one"] += 1; got_one = True; break
+                if got_one: break
 
     def step_line(self, wall, types, mix=None):
         """Shelves lining a wall end to end on its longest bare stretch (a whole wall, never one shelf here and there);
@@ -913,6 +1111,17 @@ class Finish:
         pool = self.oks(types)
         if not pool: return
         have = next((o for o in self.f.objects if re.match(r"^(DunMirAltar|LOTDLichGodStatue)", o["type"])), None)
+        if have is not None:
+            # the recipe's on the far wall off the room's axis: set on it again (Q2T-1)
+            rec = self.f._placed_of.get(id(have))
+            far = self.axis_back_run()
+            if rec and far is not None and self.nearest_run(rec[0], rec[1]) is far:
+                al = rec[1] if far["line"] == "/" else rec[0]
+                if abs(al - self.axis_along()) > 0.3:
+                    t0, u0, v0 = have["type"], rec[0], rec[1]
+                    self.f._remove(have)
+                    have = self.put_wall(t0, far, self.axis_along(), gap=0.4) or self.put(t0, u0, v0)
+                    if have is not None: self.log["altar to the axis"] += 1
         if have is not None:                        # the recipe's: flanked where it stands, if nothing flanks it yet
             if sum(1 for t, _ in self.f._typed if self.fam(t) == "statue") >= 2: return
             rec = self.f._placed_of.get(id(have))
@@ -937,7 +1146,8 @@ class Finish:
             m = max(self.half(fl[0]))
             self.f._pairing = True
             try:
-                for off in (ah + m + 0.5, ah + m + 0.9, ah + m + 1.4):
+                # (a clear gap from the holy thing: RM-SHRINE-02, "The mana obelisk is too close to the statue"; Q2T-4)
+                for off in (ah + m + BIG_GAP + 0.3, ah + m + BIG_GAP + 0.7, ah + m + BIG_GAP + 1.2):
                     p1 = self.put_wall(fl[0], far, a - off, gap=0.4)
                     p2 = self.put_wall(fl[0], far, a + off, gap=0.4) if p1 else None
                     if p1 and p2: self.log["flank pair"] += 1; break
@@ -990,11 +1200,33 @@ class Finish:
             if self.free_group(group, c[0] + c[2] * k, c[1] + c[3] * k):
                 self.log["corner group"] += 1; return
 
-    def step_corner_heap(self, corner, types, n):
+    def step_corner_heap(self, corner, types, n, first=None):
+        """A heap in a corner; `first`: the kinds one of which it always holds (the winch room's wood crate)."""
         c = self.corner(corner)
         if not c: return
         n = n + (1 if self.tiles > 80 else 0) + (1 if self.tiles > 140 else 0)
-        if self.heap_at(*c, types, n): self.log["corner heap"] += 1
+        if self.heap_at(*c, types, n, first=first): self.log["corner heap"] += 1
+        elif self.f.kind in GAP_KINDS:
+            # a big piece by the corner (a winch the recipe stood there): the heap a little along either wall (Q1B-2)
+            u0, v0, su, sv = c
+            for k in (1.5, 3.0):
+                for cu_, cv_ in ((u0, v0 + sv * k), (u0 + su * k, v0)):
+                    if self.heap_at(cu_, cv_, su, sv, types, n, first=first):
+                        self.log["corner heap (along)"] += 1; return
+
+    def step_least(self, types, n, n_big=None, big=100):
+        """At least n pieces of the kinds (n_big from `big` tiles), each centred on a bare stretch of wall, back walls
+        first: the winch rooms' gears (QA round 2: "Keep all of the gears and winch-themed objects", Q2V-4)."""
+        want = n_big if (n_big is not None and self.tiles >= big) else n
+        rx = re.compile("|".join("^" + re.escape(t) + "$" for t in types))
+        walls_ = sorted([self.main[k] for k in BACK if k in self.main], key=lambda r: r["lo"] - r["hi"]) + \
+            [self.main[k] for k in FRONT if k in self.main]
+        for r in walls_:
+            if sum(1 for t, _ in self.f._typed if rx.match(t)) >= want: return
+            for lo, hi in sorted(self.free_stretches(r, pad=0.5), key=lambda s_: s_[0] - s_[1]):
+                if hi - lo < 1.8: continue
+                if self.put_wall(self.rng.choice(self.oks(types) or types), r, (lo + hi) / 2, gap=0.3):
+                    self.log["least " + types[0]] += 1; break
 
     def step_corner_pair(self, corners, types, heap=1, light=False):
         """The same piece (or heap, mirrored) in two matching corners: both or neither."""
@@ -1032,10 +1264,18 @@ class Finish:
         s = self.longest(r, pad=0.5, least=2.0)
         if s and self.put_wall(self.rng.choice(pool), r, (s[0] + s[1]) / 2, gap=0.25): self.log["centred"] += 1
 
-    def step_around(self, pat, types, d=2.0, heaps=False):
+    def step_around(self, pat, types, d=2.0, heaps=False, every=False):
         """Pieces about an anchor (bones by the rack, gears and a lever by the winch, meat by the hoard's chest) in a
-        mirrored pair along the room's long axis, else across it."""
+        mirrored pair along the room's long axis, else across it; `every`: about each anchor of the pattern (the small
+        gears by every winch: "Keep all of the gears and winch-themed objects", Q2V-4)."""
+        if every:
+            for rec in [rec for t, rec in self.f._typed if re.match(pat, t)]:
+                self._around(rec, types, d, heaps)
+            return
         anchor = next((rec for t, rec in self.f._typed if re.match(pat, t)), None)
+        self._around(anchor, types, d, heaps)
+
+    def _around(self, anchor, types, d, heaps):
         pool = self.oks(types)
         if anchor is None or not pool: return
         u, v = anchor[0], anchor[1]
@@ -1062,6 +1302,48 @@ class Finish:
             if o: got.append(o)
         if len(got) < 2: self.remove(got); return []
         return got
+
+    def step_hidden_chest(self, least=100, types=CHESTS, cover=("Crate1", "Crate2", "Barrel", "BarrelSteel1", "DarkCrate1")):
+        """A big store's treasure chest at its back, against the back wall furthest from the main door, a crate or a
+        barrel standing before it (QA round 2, RM-STOREROOM-03: "Make very large storerooms like this always have a
+        treasure chest in the back behind a crate or barrel"; Q2V-5)."""
+        if self.tiles < least: return
+        op = self.f.main_door()
+        backs = [self.main[n] for n in BACK if n in self.main]
+        if not backs: return
+        def dist(r):
+            if op is None: return r["hi"] - r["lo"]
+            du, dv = (op["coord"], op["along"]) if op["line"] == "/" else (op["along"], op["coord"])
+            mu, mv = self.uv(r, 0.0, (r["lo"] + r["hi"]) / 2)
+            return math.hypot(mu - du, mv - dv)
+        for r in sorted(backs, key=lambda r: -dist(r)):
+            st = self.longest(r, pad=0.4, least=3.0)
+            if not st: continue
+            for a in ((st[0] + st[1]) / 2, st[0] + 1.6, st[1] - 1.6):
+                c = self.put_wall(self.rng.choice(self.oks(types) or types), r, a, gap=0.25)
+                if not c: continue
+                rec = self.f._placed_of.get(id(c))
+                cd = (rec[2] if r["line"] == "/" else rec[3]) if rec else 0.6
+                for t0 in self.rng.sample(self.oks(cover), len(self.oks(cover))):
+                    t = self.variant(t0, r, "storage") or t0
+                    # (Westwood keeps a supply 0.74 units off a chest: kit/objects.py clearance)
+                    d = 0.25 + 2 * cd + 0.85 + self.depth(t, r)
+                    if self.put(t, *self.uv(r, d, a)):
+                        self.log["hidden chest"] += 1; return
+                self.remove([c])
+
+    def plain_floor(self):
+        """A store's floor is one floor: the shell's brick or cobble patches taken up (QA round 2, RM-STOREROOM-01: "The
+        brick cobblestone is out of place here. Remove it"; Q2V-5, Q2T-6: no patch without a reason)."""
+        room, spec = self.f.room, self.f.spec
+        main = room.floor
+        if not main or not hasattr(spec, "floor"): return
+        n = 0
+        for t in sorted(room.tiles):
+            m = spec.floor.get(t)
+            if m and m != main and re.search(r"Brick|Cobble", m) and not m.startswith("Rug"):
+                spec.tile(*t, main); n += 1
+        if n: self.log["plain floor"] += n
 
     def step_brick_square(self, pat):
         """The forge (a cinder bin) on a small bordered square of brick, centred under it ("place furnaces on a small
@@ -1132,25 +1414,26 @@ class Finish:
         return max(cands, key=lambda r: abs(r["coord"] - op["coord"]), default=None)
 
     def axis_along(self):
-        """The along coordinate of the room's axis: the main door's line (the user: "Chapels should always be aligned
-        with the main door. The character should walk in and be on the main path facing the altar"), the centrepiece's
-        when it stands within a unit of it."""
+        """The along coordinate of the room's axis: the middle of the room across the line from its main door (QA round
+        2, RM-MAUSOLEUM-01/02: "Center the room"; Q2T-1: a composition is centred on the room's own middle, not on a
+        door near it). The door stands in its wall's middle (kit/building.py CENTRE_DOOR_ROOMS), so the two agree; where
+        it cannot, the way in bends to the axis. Snapped to a whole unit (a floor square's middle or a seam between two,
+        which the carpets need: carpet_at)."""
         if hasattr(self, "_axis_a"): return self._axis_a
         op = self.f.main_door()
         a = self.cv if not op else op["along"]
         far = self.axis_back_run() if op else None
         if far:
-            # a door well off the middle of the room: the room is composed about its own middle (the door's line would
-            # leave it lopsided); the middle of the far wall's floor
+            # the middle of the far wall's floor (an L room's: its longest stretch)
             st = self.interior(far)
             if st:
                 lo, hi = max(st, key=lambda s_: s_[1] - s_[0])
-                mid = (lo + hi) / 2
-                if abs(mid - a) > 2.0: a = mid
-            for t, rec in self.f._typed:
-                if re.match(r"^(DunMirAltar|LOTDLichGodStatue)", t):
-                    al = rec[1] if far["line"] == "/" else rec[0]
-                    if abs(al - a) <= 1.0: a = al
+                a = (lo + hi) / 2
+            else:
+                cells = self.f.g.cells
+                al = [(x - y) if op["line"] == "/" else (x + y + 1) for x, y in cells]
+                a = (min(al) + max(al)) / 2
+        a = float(round(a))
         self._axis_a = a
         return a
 
@@ -1219,20 +1502,24 @@ class Finish:
         if chest:
             ct = self.oks(["CryptChest1", "CryptChest2", "CryptChest3", "CryptChest4"])
             if ct and self.put_wall(ct[0], far, a0, gap=0.3): self.log["axis chest"] += 1
-        # the runner from the door to the centrepiece, centred on the axis: a carpet of 2-unit squares is centred on a
-        # square's middle (even coordinates) with 3 squares, between two squares with 2
+        # the runner from the door to the centrepiece, centred on the axis as drawn (carpet: three squares on a square's
+        # middle, two on a seam), its trim whole (QA round 2, Q2T-2, Q2T-6)
         rw = 0.0
-        even = abs(a0 / 2 - round(a0 / 2)) < 0.26
-        if runner and W >= (7.0 if even else 4.5) and abs(a0 - op["along"]) < 0.6:
-            w = 2.2 if even else 1.6
-            p0 = op["coord"] + op["sign"] * 3.0
-            p1 = op["coord"] + op["sign"] * ((mid_d - 1.8) if tomb else (D - 2.6))
-            box = (min(p0, p1), max(p0, p1), a0 - w, a0 + w) if op["line"] == "/" else (a0 - w, a0 + w, min(p0, p1),
-                                                                                         max(p0, p1))
-            try:
-                if f.lay_carpet(box, margin=0.0): self.log["runner"] += 1; rw = 6.0 if even else 4.0   # its full width
-            except Exception:
-                pass
+        if runner and abs(a0 - op["along"]) < 1.6:
+            across_v = op["line"] == "/"                       # the axis runs along u from a "/" door wall
+            n = self.carpet_count(a0, 3 if W >= 7.0 else 2, across_v)
+            if n and W >= n + 2.5:
+                p0 = op["coord"] + op["sign"] * 3.0
+                p1 = op["coord"] + op["sign"] * ((mid_d - 1.8) if tomb else (D - 2.6))
+                lo, hi = min(p0, p1), max(p0, p1)
+                # the squares along it: whole squares between lo and hi (as drawn along v)
+                sh = 0.0 if across_v else SQUARE_V
+                first = 2 * math.ceil((lo + sh) / 2); last = 2 * math.floor((hi + sh) / 2)
+                m_ = int((last - first) // 2) + 1
+                if m_ >= 2:
+                    c = (first + last) / 2 - sh
+                    got = self.carpet(c, a0, m_, n) if across_v else self.carpet(a0, c, n, m_)
+                    if got: self.log["runner"] += 1; rw = 2.0 * n
         fl = self.oks(flank)
         if fl:                                    # the flanking pair beside the far wall's centrepiece
             t = self.rng.choice(fl)
@@ -1254,6 +1541,24 @@ class Finish:
                 if tomb:                          # and beyond the tomb, the same pillars
                     for d in (mid_d + 2.6,):
                         if d < D - 2.4 and self.pair_at(t, d, off): self.log["avenue pair"] += 1
+        tomb_rec = next((rec for tt, rec in f._typed if re.match(r"^Crypt\d", tt)), None)
+        if tomb and tomb_rec and av:
+            # the tomb's guard: statues in mirrored pairs at its four corners, a clear gap from it (QA round 2,
+            # RM-MAUSOLEUM-05: "Everything clustered in the south corner. No flow"; a small mausoleum gets the same plan,
+            # its statues about the tomb in the middle, not beyond it)
+            hl, hw = (tomb_rec[2], tomb_rec[3]) if op["line"] == "/" else (tomb_rec[3], tomb_rec[2])
+            near = sum(1 for tt, rec in f._typed if self.fam(tt) == "statue" and
+                       math.hypot(rec[0] - tomb_rec[0], rec[1] - tomb_rec[1]) < hl + 3.0)
+            if near < 2:
+                t = self.rng.choice(av)
+                m = max(self.half(t))
+                for s_ in (-1, 1):                    # the pair at its near end, the pair at its far end
+                    done_ = False
+                    for dd in (max(0.0, hl - m), hl + m + 0.3, max(0.0, hl - m - 0.8)):
+                        for off in (hw + BIG_GAP + m + 0.15, hw + BIG_GAP + m + 0.6):
+                            if off + m > W - 0.5: continue
+                            if self.pair_at(t, mid_d + s_ * dd, off): self.log["tomb guard"] += 1; done_ = True; break
+                        if done_: break
         bt = self.oks(benches)
         if bt and W >= 5.0:                       # benches in mirrored pairs further out
             t = self.bench_variant(self.rng.choice(bt), op)
@@ -1277,7 +1582,8 @@ class Finish:
                 t1, t2 = self.variant(base, lo_r, "tomb") or base, self.variant(base, hi_r, "tomb") or base
                 fracs = (0.38, 0.66) if D >= 12 and coffins != 1 else (0.55,)
                 for frac in fracs:
-                    for dd in (0.0, 0.6, -0.6):
+                    # (further along when the tomb's clear gap needs it: Q2T-4)
+                    for dd in (0.0, 0.6, -0.6, 1.2, -1.2, 1.8, -1.8):
                         perp = self.depth(t1, lo_r)
                         if self.pair_at(t1, D * frac + dd, W - perp - 0.4, t2=t2): self.log["coffin pair"] += 1; break
         if ring and self.tiles >= 60 and W >= 6.5:
@@ -1334,6 +1640,43 @@ class Finish:
             except Exception:
                 pass
         self.log["ring"] += 1
+
+    # ---- carpets centred as seen (Q2T-2) and bordered all round (Q2T-6) ------------------------------------------
+    def carpet_count(self, c, half, along_v):
+        """The squares a carpet centred on c (a whole unit) takes across one axis, at most `half` units each way: an odd
+        count when c falls on a square's middle as drawn, an even one on a seam (SQUARE_V on v). 0 if none of 2+ fits."""
+        c = round(c + (SQUARE_V if along_v else 0.0))
+        odd = c % 2 == 0                                     # square centres stand on even units
+        n = int(half)
+        if (n % 2 == 1) != odd: n -= 1
+        return n if n >= 2 else 0
+
+    def carpet(self, cu, cv, nu, nv):
+        """A carpet of nu x nv squares centred on (cu, cv) as drawn, whose trim falls whole on the room's floor (every
+        square of its ring stands clear of the walls: RM-SHRINE-04, "The northeast side of the carpet is not properly
+        bordered"). Returns the squares laid, [] (nothing laid) when it does not fit whole."""
+        f = self.f
+        if nu < 2 or nv < 2: return []
+        du = cu - (nu - 1); dv = cv + SQUARE_V - (nv - 1)       # the first square's centre, as the kit counts
+        if round(du) % 2 or round(dv) % 2: return []
+        I = [int(round(du)) // 2 - 1 + k for k in range(nu)]
+        J = [int(round(dv)) // 2 + k for k in range(nv)]
+        ring = [(i, j) for i in range(I[0] - 1, I[-1] + 2) for j in range(J[0] - 1, J[-1] + 2)
+                if not (I[0] <= i <= I[-1] and J[0] <= j <= J[-1])]
+        for i, j in ring:
+            if not f.g.inside(2 * i + 2, 2 * j) or f.g.wall_dist(2 * i + 2, 2 * j) < 0.9:
+                self.log["carpet: trim on a wall"] += 1; return []
+        box = (2 * I[0] + 1.5, 2 * I[-1] + 2.5, 2 * J[0] - 0.5, 2 * J[-1] + 0.5)
+        try:
+            got = f.lay_carpet(box, margin=0.0)
+        except Exception:
+            got = []
+        if got and len(got) != nu * nv:
+            from kit import grammar as GR
+            GR.lift_carpet(f, f.carpet_undo[-1])
+            self.log["carpet: trimmed"] += 1
+            return []
+        return got or []
 
     def bench_variant(self, t, op):
         """A bench turned to face the far wall (its long side across the axis)."""
@@ -1395,7 +1738,9 @@ class Finish:
             k0, got = turn[side], None
             for i in range(len(units)):
                 unit = units[(k0 + i) % len(units)]
-                if used[unit] >= most.get(unit, 99) * (2 if self.tiles >= 120 else 1): continue
+                fixed = unit in (w.get("fixed") or ())
+                if (self.ucount if fixed else used)[unit] >= most.get(unit, 99) * (2 if self.tiles >= 120 and not fixed
+                                                                                 else 1): continue
                 if self.over_repeat(unit): continue
                 if unit in ("heap", "filler") and not self.supplies_line and self.supply_share(r) >= 0.22: continue
                 L = hi - lo
@@ -1405,6 +1750,7 @@ class Finish:
                 if got:
                     turn[side] = k0 + i + 1
                     used[unit] += 1
+                    self.ucount[unit] += 1
                     self.log["wall " + unit] += 1
                     if self.s.get("mirror"): self.mirror_unit(unit, r, (lo + hi) / 2, got)
                     break
@@ -1447,6 +1793,7 @@ class Finish:
         # the floor: what the recipe left, and the lab's own average for the type on master (objects a tile, kinds a
         # room: spec `least`), a tenth more in a room of 80 tiles
         per, kinds = self.s.get("least", (0.0, 0))
+        if self.s.get("least_big") and self.tiles >= self.s["least_big"][0]: per = self.s["least_big"][1]
         big = 1.1 if self.tiles >= 80 else 1.0
         tn = int(max(n0, per * self.tiles) * big + 0.99)
         k0 = max(k0, kinds - (1 if self.tiles < 40 else 0))
@@ -1456,7 +1803,9 @@ class Finish:
             if n >= tn and k >= k0: break
             if w:
                 tb, tf = w.get("fill", (0.5, 0.3))
-                most = {u: m * (1 if self.s.get("repeat") else step + 1)       # (a repeat rule: as many as before)
+                # (a repeat rule: as many as before; `fixed` units never more than their `most`: a mausoleum's bone
+                # heaps, which had strewn 84 bones over RM-MAUSOLEUM-03, "Scattered mess")
+                most = {u: m * (1 if self.s.get("repeat") or u in (w.get("fixed") or ()) else step + 1)
                         for u, m in dict(UNIT_MOST, **(w.get("most") or {})).items()}
                 saved = self.s
                 self.s = dict(saved, walls=dict(w, fill=(min(0.95, tb + 0.12 * step), min(0.8, tf + 0.12 * step if tf
@@ -1467,7 +1816,7 @@ class Finish:
                     self.s = saved
             n, k = self.counts()
             if n < tn or k < k0: self.extras(tn - n)
-            if step >= 2 and (n < tn or k < k0):         # past the walls: the middle's groups at the bare spots too
+            if step >= 2 and (n < tn or k < k0) and not self.s.get("no_bare"):   # past the walls: the middle's groups at the bare spots too
                 saved = self.s
                 self.s = dict(saved, bare=True, goal=0.95)
                 try:
@@ -1509,23 +1858,39 @@ class Finish:
                     L = hi - lo
                     if L < 2 * max(self.half(t)) + 0.3: continue
                     for a in ((lo + hi) / 2, lo + L / 4, hi - L / 4) if L >= 3.0 else ((lo + hi) / 2,):
-                        if self.put_wall(t, r, a, gap=0.3):
+                        o = self.put_wall(t, r, a, gap=0.3)
+                        if o and self.s.get("mirror") and self.f.kind in GAP_KINDS and not TINY.match(t):
+                            # a ceremonial room's extra stands mirrored across its axis, both or neither (Q2T-1)
+                            mu, mv = self.mirror(*self.uv(r, 1.0, a))
+                            mr = self.nearest_run(mu, mv)
+                            o2 = None
+                            if mr is not None and not (mr is r and abs((mv if r["line"] == "/" else mu) - a) < 1.5):
+                                o2 = self.put_wall(t, mr, mv if mr["line"] == "/" else mu, gap=0.3)
+                            if not o2:
+                                self.remove([o]); o = None
+                            else: placed += 1
+                        if o:
                             placed += 1; rest = rest[1:] + rest[:1]; break
 
         # a chest or a case stands against a wall (a bare stretch, a back wall first), never loose on the floor
         on_walls([t for t in pool if CASED.search(t) and not TINY.match(t)], back=True)
         loose = [t for t in pool if not CASED.search(t) or TINY.match(t)]
-        anchors = [rec for t, rec in self.f._typed if rec[5] != "wall" and rec[4]]
+        # (spec extras_walls: from so many tiles on the walls only, never beside a piece mid-floor: RM-SMITHY-03,
+        # "Remove an object or two from the middle of the room and move a few objects closer to the southwest wall")
+        anchors = [] if self.tiles >= self.s.get("extras_walls", 9999) else \
+            [(t, rec) for t, rec in self.f._typed if rec[5] != "wall" and rec[4]]
         self.rng.shuffle(anchors)
         n = 0
-        for rec in anchors:
+        for ta, rec in anchors:
             cands = [t for t in loose if room_for(t)]
             if placed >= want or not cands: break
             t = cands[n % len(cands)]; n += 1
             hu, hv = self.half(t)
             bl = self.fam(t) not in (None, "rug")
+            # (past the clear gap round it, Q2T-4: a wider one by a big piece)
+            g_ = 0.25 if self.f.kind not in GAP_KINDS else (BIG_GAP if BIG.match(t) or BIG.match(ta) else GAP) + 0.05
             for du, dv in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                if self.put(t, rec[0] + du * (rec[2] + hu + 0.25), rec[1] + dv * (rec[3] + hv + 0.25), blocking=bl):
+                if self.put(t, rec[0] + du * (rec[2] + hu + g_), rec[1] + dv * (rec[3] + hv + g_), blocking=bl):
                     placed += 1; break
         # what found no room beside a piece: on a bare stretch of wall, new kinds first
         on_walls([t for t in pool if not CASED.search(t) or TINY.match(t)])
@@ -1567,7 +1932,11 @@ class Finish:
             t0 = self.rng.choice(p)
             ah = max(self.half(t0))
             if L < 2 * ah + 0.2: return []
-            a = min(max(a, lo + ah + 0.1), hi - ah - 0.1)
+            a1 = min(max(a, lo + ah + 0.1), hi - ah - 0.1)
+            # a mirrored twin stands where its pair's mirror is, or not at all (Q2T-1: RM-MAUSOLEUM-04's monuments 1.5
+            # units off each other's mirror, the far one pushed in by its wall's end)
+            if exact is not None and self.s.get("mirror") and self.f.kind in GAP_KINDS and abs(a1 - a) > 0.3: return []
+            a = a1
             gap = {"bench": 0.3, "restraint": 0.45, "statue": 0.5, "coffin": 0.35}.get(unit, 0.25)
             if unit == "statue": self.f._pairing = True
             try:
@@ -1673,7 +2042,9 @@ class Finish:
         centre = [p for p in (self.at(D / 2 + dd, 0) for dd in (0, 0.8, -0.8, 1.6, -1.6)) if ok(p)]
         pairs = []
         k = 1
-        while D / 2 + k * step <= D - 3.0:
+        # (pairs on the axis itself stand in the way down it: none where a runner leads to the centrepiece, spec middle
+        # `on_axis` False: RM-MAUSOLEUM-03's coffin lying on the runner before the tomb)
+        while (self.s.get("middle") or {}).get("on_axis", True) and D / 2 + k * step <= D - 3.0:
             a, b = self.at(D / 2 - k * step, 0), self.at(D / 2 + k * step, 0)
             if ok(a) and ok(b): pairs.append([(a, b)])
             k += 1
@@ -1885,7 +2256,7 @@ class Finish:
             step = 2 * max(hu, hv) + 0.06
             offs = [(0, 0), (step, 0), (0, step), (step, step)]
             got = 0
-            for i, (du, dv) in enumerate(offs[:self.rng.randint(3, 4)]):
+            for i, (du, dv) in enumerate(offs[:self.rng.randint(*((self.s.get("middle") or {}).get("stack_n", (3, 4))))]):
                 if self.put(seq[i], u + du - step / 2, v + dv - step / 2, touch=True): got += 1
                 elif i == 0: break
             return done(got >= 2)
@@ -1969,38 +2340,47 @@ class Finish:
             mid = self.oks(["LOTDIncenseBasinLit"] if dark else ["DunMirAltar1", "DunMirAltar2"])
             op = f.main_door()
             if not pil or not mid or not op: return []
-            m = max(self.half(pil[0]))
-            across = max(op["half"] + m + 0.3, 1.9)
             line_u = op["line"] == "/"                 # the axis runs along u from a "/" door wall
-            snap = lambda x: 2 * round(x / 2)
-            u_, v_ = (u, snap(v)) if not line_u else (u, v)
-            u_, v_ = (snap(u_), v_) if not line_u else (u_, v_)
-            for Rd in (2.4, 2.0):
-                for Ra in (across, across + 0.4):
+            a0 = self.axis_along()
+            # the square on the axis (the room's middle across it), its depth a whole unit near the spot: the carpet under
+            # it centred on it as drawn, the four pillars standing the same way in from its edges on every side (QA
+            # round 2, RM-SHRINE-03: "The mana obelisk arrangement is not centered on the carpet"; Q2T-2)
+            d0 = u if line_u else v
+            tries = []
+            for dd in (0, 1, -1, 2, -2):
+                dc = round(d0) + dd
+                cu, cv = (dc, a0) if line_u else (a0, dc)
+                if dark:
+                    tries.append((cu, cv, 0, 0)); continue
+                for n in (4, 3, 5):
+                    if self.carpet_count(cu, n, False) == n and self.carpet_count(cv, n, True) == n:
+                        tries.append((cu, cv, n, n))
+            if dark: tries = tries[:3]
+            # (a carpet whole and bordered where the room has room for it, else the square alone: RM-SHRINE-04)
+            tries = [x + (not dark,) for x in tries] + ([x + (False,) for x in tries] if not dark else [])
+            for cu, cv, nu, nv, rug in tries:
+                for inset in ((1.25, 0.85) if not dark else (None,)):
+                    if dark: Ru = Rv = 2.2
+                    else: Ru, Rv = nu - inset, nv - inset          # the pillars `inset` in from the carpet's edges
+                    if min(Ru, Rv) < 1.7: continue
                     n1 = len(f.objects)
                     f.placing_light = dark
                     try:
-                        c = self.put(mid[0], u_, v_)
+                        c = self.put(mid[0], cu, cv)
                     finally:
                         f.placing_light = False
                     ok = bool(c)
                     f._pairing = True
                     try:
-                        for sd in (-1, 1):
-                            for sa in (-1, 1):
+                        for su in (-1, 1):
+                            for sv in (-1, 1):
                                 if not ok: break
-                                du, dv = (sd * Rd, sa * Ra) if line_u else (sa * Ra, sd * Rd)
-                                ok = bool(self.put(pil[0], u_ + du, v_ + dv))
+                                ok = bool(self.put(pil[0], cu + su * Ru, cv + sv * Rv))
                     finally:
                         f._pairing = False
-                    if ok:
-                        if not dark and not f.carpet_boxes:
-                            hu_, hv_ = (Rd, Ra) if line_u else (Ra, Rd)
-                            try:
-                                f.lay_carpet((u_ - hu_ - 0.9, u_ + hu_ + 0.9, v_ - hv_ - 0.9, v_ + hv_ + 0.9), margin=0.0)
-                            except Exception:
-                                pass
-                        return done(True)
+                    if ok and rug:
+                        ok = bool(f.carpet_boxes) or bool(self.carpet(cu, cv, nu, nv))
+                    if ok: return done(True)
                     self.remove(list(f.objects[n1:]))
             return []
         if name == "tomb":                          # the great tomb, its length along the room's long axis
@@ -2057,10 +2437,16 @@ def op_run(op):
 
 
 def brick_square(f, u, v, size=1):
-    """A bordered square of brick floor under a piece at (u, v): the floor square under it and those round it, as far as
-    the room's floor goes (3 x 3 squares, or 3 x 2 against a wall), blended into the room's floor with an edge all round,
-    as Westwood lays a hearthstone (kit/shells.py lay_zones' material and blending). Returns the tiles laid. A generic
-    piece the hearths of other room types may share (the user, nox17: "place furnaces on a small brick square")."""
+    """A bordered square of brick floor under a piece at (u, v): the floor square under it as drawn (SQUARE_V) and those
+    round it, as far as the room's floor goes (3 x 3 squares, or 3 x 2 against a wall), blended into the room's floor
+    with an edge all round, as Westwood lays a hearthstone (kit/shells.py lay_zones' material and blending). Returns the
+    tiles laid. A generic piece the hearths of other room types may share (the user, nox17: "place furnaces on a small
+    brick square").
+
+    Its border is whole on every side that meets the room's floor (QA round 2, RM-SMITHY-02: "The floor border around
+    the northwest side of the brick surrounding the forge is missing"; Q2T-6): shells.blend_pattern draws no edge within
+    three cells of a door (a doorway's floor is the room's own), which had left the side toward a door bare; the
+    square's own edge is drawn there too, short of the doorway itself."""
     from kit import shells as SH
     room, spec = f.room, f.spec
     main = room.floor
@@ -2070,7 +2456,7 @@ def brick_square(f, u, v, size=1):
     if not mat: return {}
     sq = {((x + y) // 2, (x - y) // 2) for (x, y) in room.tiles}
     tile = lambda s: (s[0] + s[1], s[0] - s[1])
-    s0 = min(sq, key=lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - v) ** 2, s))
+    s0 = min(sq, key=lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - SQUARE_V - v) ** 2, s))
     want = {(s0[0] + a, s0[1] + b) for a in range(-size, size + 1) for b in range(-size, size + 1)} & sq
     gaps = [d.gap for d in (getattr(room, "doors", None) or ())]
     out = {}
@@ -2081,5 +2467,17 @@ def brick_square(f, u, v, size=1):
         out[t] = mat
     if len(out) < 2: return {}
     for t, m in out.items(): spec.tile(*t, m)
-    SH.blend_pattern(spec, {t: spec.floor.get(t, main) for t in room.tiles}, gaps)
+    tiles = {t: spec.floor.get(t, main) for t in room.tiles}
+    SH.blend_pattern(spec, tiles, gaps)
+    # the edge on the side toward a door too (blend_pattern keeps three cells clear of every door), short of the doorway
+    if hasattr(spec, "pattern_tiles"):
+        for t in out:
+            for a, b in SH.SIDES_TIPS:
+                n = (t[0] + a, t[1] + b)
+                if n in out or tiles.get(n) != main: continue
+                if any(max(abs(n[0] - g[0]), abs(n[1] - g[1])) <= 1 for g in gaps): continue
+                if (mat, main) in spec.edge_over:              # the brick spills onto the floor round it
+                    spec.pattern_tiles.setdefault(n, set()).add((mat, main))
+                elif (main, mat) in spec.edge_over:            # the floor spills onto the brick
+                    spec.pattern_tiles.setdefault(t, set()).add((main, mat))
     return out
