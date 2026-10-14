@@ -617,8 +617,10 @@ RECIPES = {
     # turns them into hideouts
     # (the open camps against a cliff in four of five clearings: Westwood's open camps back onto rock, Con03A, Con04a,
     # Con05A; the judge, 2026-10-06: "mid-glade")
+    # (a hideout a little roomier than the first pockets, 1.2: a band's beds, store and arms each against the rock with
+    # a clear stride between them; the small pocket had laid its barrels against the fire's bench, QA round 2, Q2X-4)
     "bandit_camp": dict(plan=_nothing, build=_camp_build("bandit_camp"), caves=(1, 3, 5, 7, 8),
-                        site_map={"glade": "cliff", "shore": "cliff"}),
+                        site_map={"glade": "cliff", "shore": "cliff"}, cave_scale=1.2),
     # Westwood's ogre fires burn in pockets of the swamp's root walls (Con05B, Con09b: RootLight)
     "ogre_camp": dict(plan=_ogre_plan, build=_camp_build("ogre_camp"), caves=tuple(range(10)), cave_wall="RootLight",
                       cave_scale=1.7, cave_floor="SwampGrass", path_in=True),

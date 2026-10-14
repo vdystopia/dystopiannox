@@ -108,6 +108,11 @@ def xy_to_uv(x, y):
     return x + y, x - y
 
 
+# a road's paving (kit/setpieces, the towns' cobbles) and the trodden earth under a chain bridge's span in its place
+PAVED_GROUND = re.compile(r"Cobble|Brick|Flagstone|Marble|^Stone|Tile")
+SPAN_GROUND = "DirtDark2"
+
+
 def tile_at_uv(u, v):
     """Tile cell whose visual centre is nearest to the uv point."""
     x, y = uv_to_xy(u - 2, v)
@@ -853,7 +858,29 @@ class Waterworks:
         lx, ly = pts[-1]
         end = (lx + ly) / CELL if k["axis"] == "u" else (lx - ly) / CELL
         self._strip(kit, lane, a0 - 2 * sgn, end + 2 * sgn)
+        self._unpave_span(kit, lane, a0, end)
         return dict(kind=kit, pieces=list(zip(names, offs)), lane=lane)
+
+    def _unpave_span(self, kit, lane, a0, a1, ground=SPAN_GROUND):
+        """A paved road ends where the bridge starts (QA round 2, 2026-10-14 [Q2X-6, Q2T-6]: BR-01, BR-11 "If the path
+        leading up to the bridge is going to be cobblestone, have that cobblestone path terminate where the bridge
+        starts. Do not bring the cobblestone all the way up to the bank of the river"; BR-06 the same, unnoted): under a
+        chain bridge, between its two end pieces, the bank is trodden earth (`ground`, the dirt roads' own, which the
+        dirt-road crossings rated 5 keep under their bridges), never the road's paving; the paving stops at each end
+        piece, a brick kerb against the earth (OUTDOOR_BLENDS)."""
+        k = KITS[kit]
+        axis = k["axis"]
+        second = lane + (2 if axis == "u" else -2)
+        lo, hi = min(a0, a1), max(a0, a1)
+        fluid = WATER_MATERIALS | LAVA_MATERIALS
+        a_ = int(math.ceil(lo + 1.5))
+        a_ += a_ % 2
+        for a in range(a_, int(math.floor(hi - 1.5)) + 1, 2):
+            for r in range(min(lane, second) - 2, max(lane, second) + 3, 2):
+                c = tile_at_uv(a, r) if axis == "u" else tile_at_uv(r, a)
+                f = self.spec.floor.get(c)
+                if f and f not in fluid and f != k["floor"] and PAVED_GROUND.search(f):
+                    self.spec.floor[c] = ground
 
     # ------------------------------------------------------------------ finishing
     def finish(self, dress=True, shore_wall_material="InvisibleWallSet"):

@@ -39,14 +39,22 @@ PAD = "CobblestoneGrayLight"
 # a victory statue facing each square axis (its type's suffix: the way it looks on screen)
 VICTORY_FACING = {"+i": "SE", "-i": "NW", "+j": "NE", "-j": "SW"}
 BENCH_FACING = {"+i": "Bench1", "-i": "Bench5", "+j": "Bench4", "-j": "Bench2"}     # kit/scenes.BENCH_FACING
+WELL_BARRELS = 0.25        # of the wells, those with their barrels (QA round 2: "They do not always need to have barrels")
 LAMP = ("StreetLampOrnate3", "StreetLampOrnate3Shadow", -15, 21)
 
 
+# the paving's hard edge where it meets grass or earth: a stone curb (QA round 2, the well set: "Instead of blending the
+# stone floor with the surrounding grass and dirt, use a hard edge like a curb"), Westwood's CobbleStoneTrim, its curb
+# round paving on grass (GalavaBrick2 over GrassNorm: 78% of the seams; rules/out/floors.json)
+CURB = "CobbleStoneTrim"
+
+
 def ensure_blends(spec):
-    """The paving's edges: soft over grass and dirt (BlendEdge, as Westwood blends CobblestoneGrayLight onto GrassNorm),
-    a brick kerb where it meets the rough cobbles of a square or a road (BrickEdgeBrown, Westwood's edge between its two
-    cobbles, rules/out/floors.json)."""
-    if PAD not in spec.blend: spec.blending(PAD, 6, "BlendEdge")
+    """The paving's edges: a stone curb over grass and dirt (CURB: a set piece's paving ends at a hard line, never
+    blended into the ground round it, QA round 2 [Q2T-6, Q2X-1]; it had been BlendEdge, as Westwood blends
+    CobblestoneGrayLight onto GrassNorm), a brick kerb where it meets the rough cobbles of a square or a road
+    (BrickEdgeBrown, Westwood's edge between its two cobbles, rules/out/floors.json)."""
+    if PAD not in spec.blend: spec.blending(PAD, 6, CURB)
     spec.edge_over.setdefault((PAD, "RoughCobble"), "BrickEdgeBrown")
     if "RoughCobble" not in spec.blend: spec.blending("RoughCobble", 5, "BrickEdgeBrown")
 
@@ -95,46 +103,76 @@ def _well(spec, land, y, fr, rng):
     """The well as a feature (QA round 1, the well: "This isn't so much a feature as it is just a well ± a sign. Try to
     make the well a larger feature. Give it a small area of cobblestone beneath it. Add more objects like buckets.
     Surround some wells by a fence or a gate"). Nox has no bucket: the bucket of tools (BarrelWithTools) and water
-    barrels stand for them."""
+    barrels stand for them.
+
+    QA round 2 (2026-10-14) [Q2X-1], all five Fix: "Instead of blending the stone floor with the surrounding grass and
+    dirt, use a hard edge like a curb. or surround it with a short wall / fence. They do not always need to have
+    barrels"; EX-WELL-02 "The bench is sitting directly in front of the gate ... The brick tile extends too far to the
+    southwest, outside of the enclosure"; EX-WELL-03 "better without the barrels". So: the open wells' paving ends at a
+    stone curb (ensure_blends, CURB), the fenced well's at its fence (a low wooden fence: no edge is drawn across it), its
+    paving the plot inside the fence and nothing past it (yards.yard_ground); nothing stands in the way in, the straight
+    line from the way in to the well (the benches at its sides or behind it); the barrels in one well of four
+    (WELL_BARRELS), the others' places taken by urns, benches, stone posts, a statue facing the way in, the market's
+    crates of apples and sacks: as many pieces and kinds of piece as before."""
+    from kit.yards import STATUE_LETTER
     arch = getattr(y, "arch", "plain")
     P = _Put(spec, fr)
     half, D = fr.half, fr.D
     c = D / 2                                            # the well at the yard's middle, on its axis
     R = {"plain": 2.0, "fenced": 1.5, "market": 3.0}.get(arch, 2.0)
-    _pave(spec, land, fr.squares(-R, R, c - R, c + R), PAD)
-    if arch == "fenced":                                 # the whole fenced ground paved
+    barrels = rng.random() < WELL_BARRELS
+    urn = rng.choice(("StatueVase1S", "StatueVase3S", "StatueVase2S"))
+    facing_in = fr.axis(0, -1)                           # toward the way in
+    if arch == "fenced":                                 # the whole fenced ground paved, to the fence and no further
         from kit.yards import yard_ground
         _pave(spec, land, yard_ground(y, land), PAD)
+    else:
+        _pave(spec, land, fr.squares(-R, R, c - R, c + R), PAD)
     healing_well(spec, *fr.px(0, c))
     P.placed.append((0, c, 1.2))
     if arch == "plain":
-        # the barrels the water is drawn into either side, the bucket of tools and a barrel behind, a bench before it
-        # facing it, a torch pole at each corner of the paving (no sign: a sign needs its text, and the big signs read
-        # badly, nox1)
-        P.pair("WaterBarrel", 1.35, c, 0.6)
-        P.pair("BarrelWithTools1", 1.25, c + 1.35, 0.6, t2="Barrel")
-        P.one(BENCH_FACING[fr.axis(0, 1)], 0, c - 1.7, 0.8)
-        for dv in (-1, 1):
-            P.pair("TorchPole", R + 0.15, c + dv * (R + 0.15), 0.6)
+        # either side of the well the water barrels, else a pair of urns; behind it the bucket of tools and a barrel,
+        # else two benches facing the way in; stone posts at the paving's front corners, torch poles at its back ones; a
+        # statue behind the well facing the way in (no sign: a sign needs its text, and the big signs read badly, nox1)
+        # (a clear gap between any two pieces, QA round 2 [Q2T-4]: the urns and the benches 1.9 squares apart)
+        P.pair("WaterBarrel" if barrels else urn, 1.45, c - 0.15, 0.6)
+        if barrels: P.pair("BarrelWithTools1", 1.0, c + 1.7, 0.6, t2="Barrel")
+        else: P.pair(BENCH_FACING[facing_in], 1.0, c + 1.7, 0.8)
+        P.pair("Monument1", R + 0.15, c - R - 0.15, 0.6)
+        P.pair("TorchPole", R + 0.15, c + R + 0.15, 0.6)
+        P.one("Statue2" + STATUE_LETTER[facing_in], 0, c + R + 0.75, 0.7)
     elif arch == "fenced":
         # a low fence and its gate round it (kit/yards: the yard's fence), street lamps or torch poles flanking the gate
-        # outside; inside, round the well as the plain well has them, the water barrels, the bucket of tools and a barrel,
-        # a bench before it facing it
+        # outside; inside, the water barrels or urns either side of the well, benches at its sides facing it (behind it
+        # in a narrow yard), never before it in the gate's way (EX-WELL-02); in a bigger yard barrels or stone posts in
+        # its back corners; a statue on the axis at the back, facing the gate
         P.pair("StreetLampOrnate3" if rng.random() < 0.5 else "TorchPole", 1.6, -0.75, 0.6)
-        P.pair("WaterBarrel", 1.35, c, 0.6)
-        P.pair("BarrelWithTools1", 1.25, c + 1.3, 0.6, t2="Barrel2")
-        P.one(BENCH_FACING[fr.axis(0, 1)], 0, c - 1.55, 0.8)
-        if half >= 3.4:                                  # a bigger yard: barrels in its back corners
-            P.pair("Barrel", half - 0.75, D - 0.75, 0.6)
+        P.pair("WaterBarrel" if barrels else urn, 1.35, c, 0.6)
+        if half >= 3.4:
+            P.one(BENCH_FACING[fr.axis(-1, 0)], half - 0.85, c, 0.8)
+            P.one(BENCH_FACING[fr.axis(1, 0)], -(half - 0.85), c, 0.8)
+            P.pair("Monument1", half - 0.75, D - 0.75, 0.6)
+        else:
+            P.pair(BENCH_FACING[facing_in], 1.05, c + 1.3, 0.8)
+        if barrels: P.pair("BarrelWithTools1", half - 0.75, 0.9, 0.6, t2="Barrel2")
+        P.one("Statue2" + STATUE_LETTER[facing_in], 0, D - 0.7, 0.7)
     else:
-        # the market well: benches facing it on its four sides, lamps at the paving's corners, water barrels and the
-        # bucket of tools on its diagonals
-        for (du, dv) in ((0, -1), (0, 1), (1, 0), (-1, 0)):
+        # the market well: benches facing it on three sides, the way in left open between two urns, lamps at the
+        # paving's corners; on its diagonals the water barrels and the bucket of tools, else the market's crates of
+        # apples and its sacks
+        for (du, dv) in ((0, 1), (1, 0), (-1, 0)):
             P.one(BENCH_FACING[fr.axis(-du, -dv)], 2.1 * du, c + 2.1 * dv, 0.8)
+        # (a clear gap between any two pieces, QA round 2 [Q2T-4]: the diagonals' pieces 1.6 squares from the benches,
+        # the lamps out at the paving's corners)
+        P.pair(urn, 0.95, c - 2.9, 0.5)
         for dv in (-1, 1):
-            P.pair("StreetLampOrnate3", 2.5, c + 2.5 * dv, 0.6)
-        P.pair("WaterBarrel", 1.0, c + 1.0, 0.5)
-        P.pair("BarrelWithTools1", 1.0, c - 1.0, 0.5, t2="Barrel")
+            P.pair("StreetLampOrnate3", 2.9, c + 2.9 * dv, 0.6)
+        if barrels:
+            P.pair("WaterBarrel", 1.55, c + 1.55, 0.5)
+            P.pair("BarrelWithTools1", 1.55, c - 1.55, 0.5, t2="Barrel")
+        else:
+            P.pair(rng.choice(("SackChestLarge1", "SackChestLarge2")), 1.55, c + 1.55, 0.5)
+            P.pair("TraderAppleCrate", 1.55, c - 1.55, 0.5)
     return P.placed
 
 
@@ -149,18 +187,27 @@ def _shrine(spec, land, y, fr, rng):
     an aisle up its axis to the grand centrepiece at the back, every piece mirrored (QA round 1, the shrine: all ten
     "awful": "Change shrines drastically. Give them a square or rectangular shape defined by obelisks and mana pillars
     or parallel statues that lead to a grand centerpiece. Needs much more structure")."""
-    from kit.yards import yard_ground
+    from kit.yards import yard_ground, STATUE_LETTER, GREAT_STATUE
     arch = getattr(y, "arch", "obelisk_court")
     P = _Put(spec, fr)
     half, D = fr.half, fr.D
     court, aisle = ("RoughCobble", PAD) if rng.random() < 0.6 else (PAD, "RoughCobble")
     _pave(spec, land, yard_ground(y, land), court)
-    ah = 1.0 if fr.lat == 0.5 else 0.5                   # the aisle 2 squares wide (1 on a j side's centred lattice)
-    if fr.lat == 0.0 and half >= 5: ah = 1.5
+    # the aisle three squares wide (one in a narrow court), its middle square on the axis: the tiles lie on whole u on a
+    # way in from any side (kit/yards.Frame.squares); on a way in from an i side the aisle had been two squares, half a
+    # square off the court's middle and its statue (QA round 2 [Q2X-3]: EX-SHRINE-01/02/04 "The path down the center
+    # of the shrine is not lined up with the middle and the statue")
+    ah = 1.5 if half >= 5 else 0.5
     cz = D - 2.4                                         # the centrepiece
-    _pave(spec, land, fr.squares(-ah + 0.05, ah - 0.05, -0.6, cz - 1.0), aisle)
+    _pave(spec, land, fr.squares(-ah + 0.05, ah - 0.05, 0.0, cz - 1.0), aisle)
     _pave(spec, land, fr.squares(-1.6, 1.6, cz - 1.6, cz + 1.6), aisle)            # its dais
     ci = rng.choice(SHRINE_CENTRE[arch])
+    # the statue faces the way in, down the aisle (QA round 2 [Q2X-3, Q2T-3]: EX-SHRINE-05 "The statue is facing the
+    # wrong way. Have it face the direction of the entrance, aligned with the path"): HorrendousStatue1 faces SE (a way
+    # in from the i1 side), 2 SW (the j0 side); the gold wolf faces SE only
+    face = fr.axis(0, -1)
+    if ci == "HorrendousStatue1" or (ci == "DunMirWolfStatue" and face != "+i"):
+        ci = GREAT_STATUE.get(face, ci)
     cu = half - 0.75                                     # the long sides' line, inside the paving's edge
     # the corners
     corner = {"obelisk_court": "Obelisk", "statue_avenue": "Monument1", "mana_court": "LOTDManaObelisk",
@@ -189,7 +236,7 @@ def _shrine(spec, land, y, fr, rng):
             v += 2.0
     elif arch == "open_chapel":
         P.one("DunMirAltar2", 0, cz, 0.9)
-        P.one("Statue1a", 0, cz + 1.3, 0.7)
+        P.one("Statue1" + STATUE_LETTER[face], 0, cz + 1.3, 0.7)
         P.pair("DunMirFlameBasinLit", 1.5, cz, 0.6)
         P.pair("StatueVase1S", 2.6, cz + 0.8, 0.6)
         # benches in rows facing the altar, both sides of the aisle

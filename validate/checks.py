@@ -3281,8 +3281,13 @@ def _sq(o):
     return (u - 1) / 2, (v - 1) / 2
 
 
+# where a square's tile is drawn, in the objects' square coordinates (_sq): its middle at (i + 0.5, j + TILE_DJ), half a
+# square toward -j of (i + 0.5, j - 0.5) (kit/yards.TILE_DJ; QA round 2, the scene lab's renders)
+TILE_DJ = -1.0
+
+
 def _floor_sq(m, si, sj):
-    i, j = int(math.floor(si)), int(math.floor(sj)) + 1
+    i, j = int(math.floor(si)), int(math.floor(sj - TILE_DJ + 0.5))
     t = m.tiles.get((i + j, i - j))
     return t["material"] if t else None
 
@@ -3406,11 +3411,14 @@ def setpiece_faults(m, outdoor):
         # middle, its extent against the middle (square i spans i..i + 1 across i, square j spans j - 1..j across j)
         mid = mi if along == 0 else mj
         k0 = int(math.floor(mid))
-        span = (lambda k: (k, k + 1)) if along == 0 else (lambda k: (k - 1, k))
+        # (a tile is drawn half a square toward -j of the objects' square middle, TILE_DJ: on a gate across j its
+        # squares had read half a square off where they are drawn, and a path laid half a square off its gate passed,
+        # QA round 2, EX-GRAVEYARD-03/04)
+        span = (lambda k: (k, k + 1)) if along == 0 else (lambda k: (k + TILE_DJ - 0.5, k + TILE_DJ + 0.5))
         for n in (-1.5, -1.0, -0.5, 0.5, 1.0, 1.5):
             w = (mj if along == 0 else mi) + n
             def paved(k):
-                i, j = (k, int(math.floor(w)) + 1) if along == 0 else (int(math.floor(w)), k)
+                i, j = (k, int(math.floor(w - TILE_DJ + 0.5))) if along == 0 else (int(math.floor(w)), k)
                 t = m.tiles.get((i + j, i - j))
                 return bool(t and PAVED_RE.search(t["material"]))
             # (a path through the gate: paved where the gate opens, its middle's square or one beside the middle; paving
