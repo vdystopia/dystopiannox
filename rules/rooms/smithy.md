@@ -45,6 +45,25 @@ composes the room by them after the recipe (its loose pieces are taken up first:
   average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
   and small gears are one kind at most and never count as pieces.
 
+## QA round 2 (2026-10-14, ledger `review/qa2/ledger.md` Q2V-3)
+
+The user (mean 3.6): RM-SMITHY-01/02/05: "There is a barrel and a mannequin behind the desk where the shopkeeper would
+be standing. There needs to be room for the shopkeeper." 02: "The floor border around the northwest side of the brick
+surrounding the forge is missing." 03: "Just slightly overcrowded. Remove an object or two from the middle of the room
+and move a few objects closer to the southwest wall." (04 kept.)
+
+- **The keeper's space** (as the shop and the armoury): the floor between the counter's back and its wall, the counter's
+  length and a little, holds nothing (`Finish.keeper_zones`: a zone every placement keeps out of, and the wall behind it
+  is no bare stretch for the walls' racks or heaps). **Checked by** `composition.keeper_space` (STq2kpr).
+- **The forge square bordered on every side that meets the floor** (Q2T-6): `works.brick_square` draws the square's
+  edge on the side toward a door too (`shells.blend_pattern` keeps three cells clear of every door, which had left the
+  NW side bare), short of the doorway itself; the square is chosen under the forge as drawn (`SQUARE_V`).
+- **Not crowded in the middle** (Q2T-8): the middle's stacks two or three pieces in mirrored pairs on the long axis, the
+  front walls a share more (`fill` 0.55); the top-up fills the walls, never groups at bare spots mid-floor (`no_bare`),
+  and in a smithy of 100 tiles or more its extra pieces go on the walls only (`extras_walls`); a big smithy is filled to
+  0.27 pieces a tile, a smaller one to 0.32 (round 2's own fullness, never emptier); big pieces (forge, counter) keep
+  0.9 units clear; round 2's kinds of rack, barrel and crate kept (`keep_kinds`).
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, Con06b, War06b) | Profile |

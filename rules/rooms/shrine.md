@@ -51,6 +51,26 @@ composes the room by them after the recipe (its loose pieces are taken up first:
   average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
   and small gears are one kind at most and never count as pieces.
 
+## QA round 2 (2026-10-14, ledger `review/qa2/ledger.md` Q2V-2)
+
+The user (mean 4.2): RM-SHRINE-02 (dark shrine): "The mana obelisk is too close to the statue." 03: "The mana obelisk
+arrangement is not centered on the carpet." 04: "The northeast side of the carpet is not properly bordered." (01, 05
+kept.)
+
+- **Centred on the room** (Q2T-1): the shrine is composed on the room's middle across the line from its main door
+  (`works.axis_along`); a shrine's outside door stands in its wall's middle (`building.CENTRE_DOOR_ROOMS`; not the dark
+  shrine's, whose small many-doored rooms the user rated 4 and 5 as they were). The recipe's altar or lich statue on
+  the far wall off that line is set on it again.
+- **The square centred on its carpet** (Q2T-2): the editor draws a floor square half a square (one unit) further to the
+  SW than the kit counts it (measured on a lone rug tile; `works.SQUARE_V`), so the carpet's squares are chosen about the
+  altar as drawn: 4 x 4 squares on a seam, 3 x 3 or 5 x 5 on a square's middle, the four obelisks the same 1.25 (or 0.85)
+  units in from its edges on every side.
+- **A carpet bordered all round** (Q2T-6): a carpet is laid only where every square of its trim stands on the room's
+  floor, clear of the walls (`Finish.carpet`); in a shrine too narrow for that the square of obelisks stands without a
+  carpet rather than with a trim missing along a wall.
+- **Clear gaps** (Q2T-4): the obelisks keep 0.9 units from the altar and from the lich statue (`BIG_GAP`); the flanking
+  pair stands that much further out; an obelisk the recipe set hard against the statue is taken up first.
+
 ## Density and openness
 
 | | Westwood's campaign (6 rooms, 6 maps) | Profile |

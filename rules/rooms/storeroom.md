@@ -71,6 +71,17 @@ Westwood's 7 curated campaign storeroom rooms differ in structure, not just in d
 | shelved store | 14% | Con05A@52,18 | shelves of stores on both back walls, water barrels free before them (recipe engine: the kind's own recipe) |
 | hall of stock | 29% | Con03B@203,115, Con07B@121,219 | a big store: crates and casks heaped free over the floor in knots, a desk, odd things put away (statues, telescopes, bookcases) (recipe engine: the kind's own recipe) |
 
+## QA round 2 (2026-10-14, ledger `review/qa2/ledger.md` Q2V-5)
+
+The user (mean 4.6): RM-STOREROOM-01: "The brick cobblestone is out of place here. Remove it." 03: "Make very large
+storerooms like this always have a treasure chest in the back behind a crate or barrel." (02, 04, 05 kept.)
+
+- **One floor** (Q2T-6: no patch without a reason): the shell's brick or cobble patches in a storeroom, granary or ore
+  store are taken up to the room's own floor (`Finish.plain_floor`, spec `plain_floor`).
+- **The treasure chest** (storerooms of 100 floor tiles or more): a chest against the back wall furthest from the main
+  door, a crate or barrel standing before it (`step_hidden_chest`); a store's crates and barrels are not front blockers,
+  so the chest's front rule (`composition.anchor_blocked`) allows it.
+
 ## Density and openness
 
 | | Westwood's campaign (22 rooms, 17 maps) | Profile |

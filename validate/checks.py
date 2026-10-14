@@ -3087,6 +3087,27 @@ QA1_S_CORNER_KINDS = {"guardroom", "laboratory", "observatory", "smithy", "works
 QA1_PAIRED = re.compile(r"^(Obelisk|LOTDManaObelisk|Statue2[a-h]|DunMirFlameBasinLit|LOTDIncenseBasinLit|Coffin|"
                         r"CoffinBreaking|Monument1)")
 WORKS_SUPPLY = re.compile(r"Barrel|Crate|Sack|PiledBarrels")
+# QA round 2 (Q2T-8: "fullness comes from more kinds, not more of the signature piece"): a room type's signature
+# repeated piece has a cap. room type (kit/roomtypes.py KIND_TYPE) -> (regex of the pieces, pieces a floor tile, at
+# least, what they are). Each helper adds its own types' rows; tiny pieces never count. The winch room's is round 2's
+# 0.23-0.27 crates and barrels a floor tile less a quarter, with a little slack (the kit caps itself at 0.18: kit/works.py
+# SPEC winch_room `sig`; the user: "Lower the number of crates and barrels across all of these by 25%", Q2V-4).
+SIGNATURE_CAPS = {
+    "winch_room": (r"Barrel|Crate", 0.24, 8, "crates and barrels"),
+    # first values for the other reworked types, from their round 2 lab rooms (seed 11, tiles as counted here) and the
+    # user's words; each owner tunes its own row. Mana room: 0.08-0.10 a tile, "Cut them in half". Coven: 0.075-0.15,
+    # "don't line the entire wall" (RM-COVEN-03, 22 on 252 tiles). Guardroom: RM-GUARDROOM-03, 9 racks on 72 tiles,
+    # "slightly too many armor racks, remove a few". Barracks: RM-BARRACKS-03, 14 on 169 tiles, "Slightly too much armor
+    # and weaponry".
+    "mana_room": (r"Obelisk|ManaCrystal", 0.05, 4, "obelisks and mana crystals"),
+    "coven": (r"Obelisk", 0.08, 6, "mana obelisks"),
+    "guardroom": (r"^Trader(ArmorRack|PoleArm|BowRack|HangingSwords|QuiverRack)", 0.1, 5, "racks and armour stands"),
+    "barracks": (r"^Trader(ArmorRack|PoleArm|BowRack|HangingSwords|QuiverRack)", 0.08, 4, "racks and armour stands"),
+}
+# the rooms whose trader's counter has a keeper behind it: nothing stands in his space between the counter and its wall
+# (QA round 2, RM-SMITHY-01/02/05: "There is a barrel and a mannequin behind the desk where the shopkeeper would be
+# standing. There needs to be room for the shopkeeper"; Q2V-3; as the shop and the armoury, Q1G-6)
+KEEPER_TYPES = {"shop", "armoury", "smithy"}
 
 
 def _room_doors_uv(m, r):
@@ -3163,16 +3184,66 @@ def works_flags(m, r, kind):
             if sum(1 for t in under if t and t != main_mat) < 2:
                 out.append(("composition.qa1_forge_floor", f"smithy room: {o['type']} stands on the bare floor: the "
                             f"user: \"place furnaces on a small brick square\" (kit/works.py brick_square; Q1B)", o))
+    out += qa2_works_flags(m, r, kind, objs, tiles)
     if kind in QA1_S_CORNER_KINDS and tiles >= 30:
         cells = r["cells"]
         su = max(x + y + 1 for x, y in cells); sv = min(x - y for x, y in cells)
         cu, cv = min(((x + y + 1, x - y) for x, y in cells), key=lambda p: (p[0] - su) ** 2 + (p[1] - sv) ** 2)
-        near = [o for o in objs if RT.family(o["type"]) in RT.BLOCKING_FAMILIES and
+        # (a winch's gears have no furniture family but fill a corner as well as a crate: QA round 2, Q2V-4)
+        near = [o for o in objs if (RT.family(o["type"]) in RT.BLOCKING_FAMILIES or
+                                    re.match(r"^(PulleyGear|Gear)\d", o["type"])) and
                 math.hypot(uv_of(o)[0] - cu, uv_of(o)[1] - cv) < 4.0]
         if not near:
             out.append(("composition.qa1_s_corner", f"{kind.replace('_', ' ')} room: its S corner is bare (nothing within "
                         f"4 units): the user: \"Dead spaces in the south corner are too common\" (kit/works.py; Q1B)",
                         None))
+    return out
+
+
+def qa2_works_flags(m, r, kind, objs, tiles):
+    """QA round 2's rows the works helper checks: a type's signature piece past its cap (SIGNATURE_CAPS, Q2T-8), a piece
+    standing in the keeper's space behind a trader's counter (KEEPER_TYPES, Q2V-3)."""
+    from kit.roomtypes import KIND_TYPE
+    out = []
+    rtype = KIND_TYPE.get(kind, kind)
+    name = kind.replace("_", " ") + ("" if kind.endswith("room") else " room")
+    cap = SIGNATURE_CAPS.get(rtype)
+    if cap:
+        rx, per, least, what = cap
+        sig = [o for o in objs if re.search(rx, o["type"]) and not QA1_TINY.search(o["type"])]
+        most = max(least, int(per * tiles))
+        if len(sig) > most:
+            out.append(("composition.signature_cap", f"{name}: {len(sig)} {what} on {tiles} "
+                        f"tiles, past its cap of {most}: fullness comes from more kinds, not more of the signature "
+                        f"piece (checks.SIGNATURE_CAPS; Q2T-8)", sig[-1]))
+    if rtype in KEEPER_TYPES:
+        runs = room_runs(m, r["cells"])
+        for c in objs:
+            if not re.match(r"^TraderDesk\d", c["type"]): continue
+            cu, cv = uv_of(c)
+            chu, chv = _half_uv(c)
+            best = None
+            for (line, coord), (lo, hi) in runs.items():
+                perp, along = (cu, cv) if line == "/" else (cv, cu)
+                hp, ha = (chu, chv) if line == "/" else (chv, chu)
+                if ha < hp or not lo - 0.5 <= along <= hi + 0.5: continue          # the counter lies along this wall
+                back = abs(perp - coord) - hp
+                if 0 < back <= 3.6 and (best is None or back < best[0]): best = (back, line, coord, perp, along, hp, ha)
+            if best is None: continue
+            back, line, coord, perp, along, hp, ha = best
+            face = perp - hp if perp > coord else perp + hp           # the counter's back, toward its wall
+            s0, s1 = sorted((coord, face))                              # the keeper's strip, across the wall
+            for o in objs:
+                if o is c or not m.blocking(o) or "MONSTER" in o["cls"] or QA1_TINY.search(o["type"]): continue
+                ou, ov = uv_of(o)
+                ohu, ohv = _half_uv(o)
+                op_, oa = (ou, ov) if line == "/" else (ov, ou)
+                ohp, oha = (ohu, ohv) if line == "/" else (ohv, ohu)
+                if min(op_ + ohp, s1) - max(op_ - ohp, s0) > 0.2 and abs(oa - along) < ha + oha - 0.1:
+                    out.append(("composition.keeper_space", f"{name}: {o['type']} stands behind "
+                                f"the counter, where the keeper stands: the space between a trader's counter and its "
+                                f"wall is kept clear (kit/works.py keeper_zones; Q2V-3)", o))
+                    break
     return out
 
 
@@ -3932,6 +4003,8 @@ RULES = [
     ("composition.qa1_store_variety", "composition", r"its stock is .* for the most part", "Q1B"),
     ("composition.qa1_forge_floor", "composition", r"stands on the bare floor", "Q1B"),
     ("composition.qa1_s_corner", "composition", r"its S corner is bare", "Q1B"),
+    ("composition.signature_cap", "composition", r"past its cap of", "Q2T-8 Q2V-4"),
+    ("composition.keeper_space", "composition", r"where the keeper stands", "Q2V-3"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
