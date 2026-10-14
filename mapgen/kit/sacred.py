@@ -726,7 +726,8 @@ def _ring(f, ax, sp, d, s, centre, ob, carpet_mat):
     # the carpet: squares are 2 units, their seams (as drawn) at odd u and even v (kit/furnish.py square_centre; QA round
     # 2, Q2T-2); centred under the ring when its edges lie as far either side of the middle, on seams
     from kit.furnish import seam_parity
-    m = r + oh + 0.5
+    m = r + oh + 0.3                                   # (the obelisks' outer edges and a step: QA round 2, the dressing
+    #                                                    keeps off the carpet, so it is no wider than the ring needs)
     box = []
     for c, axis in ((u, "u"), (v, "v")):
         n = int(math.ceil(m))                          # half width in units, whole
@@ -885,7 +886,9 @@ def _mana_walls(f, ax, sp, rings):
     cart = "MineManaCart1" if ax.line == "/" else "MineManaCart2"
     for d, s in getattr(f, "ring_pos", []):
         if s < -0.1 or not f.ok_type(cart): continue
-        for gap in (5.4, 4.6, 6.2):
+        ch_ = ax.halves(cart)[1]
+        edge = max([0.0] + [(b[3] - b[2]) / 2.0 if ax.line == "/" else (b[1] - b[0]) / 2.0 for b in f.carpet_boxes])
+        for gap in (edge + ch_ + 1.0, edge + ch_ + 1.6, 5.4):       # (off the ring's carpet: Q2T-2)
             if s + gap > W - 1.2: continue
             if sp.pair(cart, d, s + gap): break
     jar = "FairyJar" if f.ok_type("FairyJar") else None
@@ -1204,11 +1207,14 @@ def _spots(ax, r_, tall, inner=False, front_along=False):
         while d > D / 2.0 + r_ + 0.4:
             out.append(("f", d, min(ax.sides_at(d)) - r_ - 0.35)); d -= 2.3
     if inner:                                    # (a mana room: the open floor between its rings and its walls too)
-        d = 2.6
+        # from both ends toward the middle in turn, so the floor fills evenly at both ends (QA round 2: mana room 01's
+        # dressing had all stood by its near wall, the far half of the floor bare)
+        ds, d = [], 2.6
         while d < D - 2.6:
+            ds.append(d); d += 2.8
+        for d in sorted(ds, key=lambda x: (min(x, D - x), x)):
             w_ = min(ax.sides_at(d))
-            out += [("x", d, w_ * 0.55), ("x", d, w_ * 0.75)]
-            d += 2.8
+            out += [("i", d, w_ * 0.55), ("i", d, w_ * 0.75)]      # (mirrored across the axis only: QA round 2)
     return out
 
 
@@ -1242,7 +1248,9 @@ def dress(f, ax, sp, rtype, pieces, both_ways=False, max_pairs=26, extra=0, fron
                 key = (name, mode, round(d, 1), round(s, 1))
                 if key in tried or s < 1.0: continue
                 tried.add(key)
-                at = [(t1, d, -s), (t2, d, s)] if mode == "x" else                     [(t2, d, b * s), (t2, ax.D - d, b * s)] if mode == "a" else [(t1, d, -b * s), (t1, ax.D - d, -b * s)]
+                if mode in ("x", "i"): at = [(t1, d, -s), (t2, d, s)]
+                elif mode == "a": at = [(t2, d, b * s), (t2, ax.D - d, b * s)]
+                else: at = [(t1, d, -b * s), (t1, ax.D - d, -b * s)]
                 if not all(_clear_spot(f, t_, *ax.uv(d_, s_)) for t_, d_, s_ in at): continue
                 if light: f.placing_light = True
                 try:
@@ -1272,8 +1280,11 @@ def dress(f, ax, sp, rtype, pieces, both_ways=False, max_pairs=26, extra=0, fron
 
 def _clear_spot(f, t, u, v):
     """A dressing piece at (u, v) keeps 0.7 units from every standing piece (statues apart: pieces.clearance) and never
-    stands under a hanging (pieces.hung), as the knowledge base holds single pieces (the set piece's pairs skip it)."""
+    stands under a hanging (pieces.hung), as the knowledge base holds single pieces (the set piece's pairs skip it); nor
+    on a carpet, whose pieces are the set piece's, centred on it (QA round 2, Q2T-2: mana room 02's ring carpet took
+    pedestals at one end and statues at the other)."""
     hu, hv = f.half(t)
+    if any(b[0] - hu < u < b[1] + hu and b[2] - hv < v < b[3] + hv for b in f.carpet_boxes): return False
     for tt, rec in f._typed:
         if not rec[4] or rec[5] == "wall": continue
         if max(abs(u - rec[0]) - hu - rec[2], abs(v - rec[1]) - hv - rec[3]) < 0.7: return False
@@ -1324,8 +1335,7 @@ def mana_pieces(f, ax):
             ("jars", lambda sg: "FairyJar", False), ("urns", lambda sg: "StatueVase2" + _facing(ax, sg), False),
             ("pedestals", lambda sg: "OrbPoolEnd1", False), ("statues", lambda sg: statue, True),
             ("monuments", lambda sg: "Monument1", True), ("basins", lambda sg: "DunMirFlameBasinLit", False),
-            ("incense", lambda sg: "LOTDIncenseBasinLit", False),
-            ("orrery", lambda sg: None if any(o["type"].startswith("Orrery") for o in f.objects) else "Orrery2", True)]
+            ("incense", lambda sg: "LOTDIncenseBasinLit", False)]
 
 
 COMPOSERS = {"nave": chapel, "coven": coven, "mana": mana_room, "crypt": crypt}

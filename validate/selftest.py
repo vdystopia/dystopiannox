@@ -928,6 +928,32 @@ def carpet_one_side(m):
     for t in rect_tiles(206, 216, 2, 8): m.tile(t[0], t[1], "RugRed")     # Q1C-3: the runner off the middle line
 
 
+def runner_unit_off(m):
+    # QA round 2 (Q2T-2, recurring Q1C-3): "The carpet is slightly off-center with the door and altar" (RM-CHAPEL-01..03):
+    # a runner two squares wide, centred on the door's line (v = 1, between the double door's cells) as the kit read a
+    # tile (centre x - y), a unit off it as the editor draws one (x - y - 1): drawn, its middle stands at v = 0
+    _chapel(m)
+    m.obj("DunMirAltar1", 220.4, 1)
+    m.raw_floors = True
+    for x, y in [(x, y) for x in range(80, 120) for y in range(80, 120)
+                 if 204 <= x + y <= 216 and (x + y) % 2 == 0 and x - y in (0, 2)]:
+        m.tile(x, y, "RugRed")
+
+
+def ring_off_carpet(m):
+    # QA round 2 (Q2T-2): "The mana obelisk arrangement is not centered on the carpet" (RM-SHRINE-03; round 2's mana
+    # rooms likewise): a ring of four obelisks (2 units out) round an altar at (212, 0) on a carpet of three by three
+    # squares centred
+    # there as the kit read a tile, drawn a unit toward -v
+    _chapel(m, "mana_room")
+    m.obj("DunMirAltar1", 212, 0)
+    for du, dv in ((2, 2), (-2, -2), (2, -2), (-2, 2)): m.obj("Obelisk", 212 + du, dv)
+    m.raw_floors = True
+    for x, y in [(x, y) for x in range(80, 120) for y in range(80, 120)
+                 if 208 <= x + y <= 212 and (x + y) % 2 == 0 and x - y in (-2, 0, 2)]:
+        m.tile(x, y, "RugRed")
+
+
 def same_altars(m):
     # Q1C-4: three chapels, each ending in the same Dun Mir altar
     m.room(204, 222, -36, -20, wall="StuccoLightWood", floor="WoodLight2")
@@ -1104,6 +1130,10 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STsSym", pews_one_side, "sacred", "warning", "a chapel's pews on one side of the aisle only - Q1C-1", "no twin"),
     ("STsCarp", carpet_one_side, "sacred", "warning", "a chapel's carpet off its middle line - Q1C-3", "carpet squares"),
     ("STsAltr", same_altars, "sacred", "warning", "three chapels ending in the same altar - Q1C-4", "same altar"),
+    ("STcAxis", runner_unit_off, "sacred", "warning", "a runner a unit off the door's line as drawn - Q2T-2",
+     "the carpet's middle stands"),
+    ("STcOn", ring_off_carpet, "sacred", "warning", "a ring of obelisks a unit off its carpet as drawn - Q2T-2",
+     "the middle of what stands on it"),
     ("STsFull", bare_chapel, "sacred", "warning", "a chapel of an altar and two pews - Q1C-19", "kinds of piece"),
     ("STsDead", crypt_without_dead, "sacred", "warning", "a crypt of one coffin - Q1C-14", "the dead lie here"),
     ("STdLotd", wooden_door_in_lotd, "doors", "warning", "a plain door in the Land of the Dead's walls - Q1C-18",

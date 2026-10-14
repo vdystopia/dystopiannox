@@ -2918,7 +2918,34 @@ SACRED_DOOR_OFF = 1.6        # uv units the main door may stand off the middle o
 SACRED_PAIR_TOL = 0.9        # a piece's mirror image within this of a piece of its kind is its pair
 SACRED_SYM_SHARE = 0.2       # past this share of a room's floor pieces unpaired (and 3 at least) it is not symmetric
 SACRED_CARPET_SHARE = 0.1    # past this share of carpet squares with no mirror image the carpet is lopsided
-SACRED_ALTAR_SHARE = 0.6     # one altar end in more than this share of a map's chapels (3 or more): the same altar
+SACRED_ALTAR_SHARE = 0.6     # (round 1's share; since QA round 2 the altar object itself is compared: ALTAR_OPTIONS)
+# QA round 2 (Q2S-1, recurring Q1C-4: "Every single one of these chapels has the same square stone altar ... There are a
+# few examples where there are statues in or a well in addition to the altar, but they still use the same altar"):
+# round 1's signature was every altar-end piece on the axis together (a stone altar with a font read as another end
+# than a stone altar with a saint), so five chapels on one stone altar passed. The altar is the piece on the axis
+# nearest the far wall, read by its kind (DunMirAltar1 and 2 are one altar); a map's rooms of a type share an altar no
+# more than ceil(rooms / ALTAR_OPTIONS[type]) times (kit/sacred.py CHAPEL_ALTARS, COVEN_ALTARS)
+ALTAR_OBJ_RE = re.compile(r"^(DunMirAltar\d|LOTDLichGodStatue\d|LOTDFlamingSkulls(Static|Animated)|OrbPoolWithOrb|"
+                          r"Fountain|HorrendousStatue\d|Crypt\d+)$")
+ALTAR_OPTIONS = {"chapel": 5, "coven": 3}
+# QA round 2 (Q2T-2: "The carpet is slightly off-center with the door and altar" (RM-CHAPEL-01/02/03, RM-COVEN-01);
+# "Center the tables and chairs on the carpet" (RM-SOLAR-03/04/05); "The mana obelisk arrangement is not centered on
+# the carpet" (RM-SHRINE-03); "The statues and torches are not centered with the carpet" (RM-GALLERY-03)). Recurring
+# (Q1C-3): sacred.carpet compared the carpet's squares with their mirror images, both read where the kit reads a tile,
+# a unit off where the editor draws it (x - y, not x - y - 1: kit/furnish.py square_centre), so a carpet a unit off its
+# axis passed. Now a carpet's middle, as drawn, is measured against the axis of a room composed on its door's line
+# (CARPET_AXIS_KINDS, a runner the axis passes through) and against the middle of what stands on it
+# (CARPET_ON_KINDS: two blocking pieces or more), within CARPET_CENTRE_TOL.
+CARPET_AXIS_KINDS = {"chapel", "coven", "dark_chapel", "crypt", "dark_crypt", "throne_room", "hall", "gallery", "shrine",
+                     "dark_shrine", "mausoleum"}
+CARPET_ON_KINDS = CARPET_AXIS_KINDS | {"mana_room", "solar", "great_hall"}
+CARPET_CENTRE_TOL = 0.25
+
+
+def tile_uv(t):
+    """The drawn uv centre of floor tile t (MapEditor render/TileRenderer.cs: tile (x, y) at px (23x - 11, 23y + 11),
+    46 px square; kit/furnish.py square_centre)."""
+    return t[0] + t[1] + 2, t[0] - t[1] - 1
 
 
 def sacred_frame(m, r):
@@ -2988,10 +3015,65 @@ def sacred_carpet(m, r, fr):
     rug = {t for t, ti in m.tiles.items() if ti["material"].startswith("Rug") and "Edge" not in ti["material"]
            and ((t[0] + 1, t[1] + 1) in cells or t in cells)}
     pts = {}
-    for (x, y) in rug: pts[(x, y)] = _ds(fr, x + y + 2, x - y)
-    have = {(round(d * 2), round(s * 2)) for d, s in pts.values()}
+    for (x, y) in rug: pts[(x, y)] = _ds(fr, *tile_uv((x, y)))
+    have = {(round(d * 2), round(s * 2)) for d, s in pts.values()}       # (tile_uv: as drawn, QA round 2)
     lop = [t for t, (d, s) in pts.items() if (round(d * 2), round(-s * 2)) not in have]
     return lop, rug
+
+
+def carpet_parts(m, r):
+    """The room's carpets: [set of Rug tiles] connected (a tile's neighbours share a side: (x +- 1, y +- 1))."""
+    cells = set(r["cells"])
+    rug = {t for t, ti in m.tiles.items() if ti["material"].startswith("Rug") and "Edge" not in ti["material"]
+           and ((t[0] + 1, t[1] + 1) in cells or t in cells)}
+    parts, seen = [], set()
+    for t in sorted(rug):
+        if t in seen: continue
+        comp, todo = set(), [t]
+        while todo:
+            q = todo.pop()
+            if q in comp: continue
+            comp.add(q)
+            todo += [n for n in ((q[0] + 1, q[1] + 1), (q[0] - 1, q[1] - 1), (q[0] + 1, q[1] - 1), (q[0] - 1, q[1] + 1))
+                     if n in rug and n not in comp]
+        seen |= comp
+        parts.append(comp)
+    return parts
+
+
+def carpet_centring(m, r, kind, fr=None):
+    """[(what, off, carpet tiles, (u, v))] for the room's carpets whose middle (as drawn) stands more than
+    CARPET_CENTRE_TOL off the axis it runs on (what "axis": fr, the room's door frame) or off the middle of the blocking
+    pieces standing on it (what "pieces": across a runner, both ways on a carpet nearer square)."""
+    out = []
+    for part in carpet_parts(m, r):
+        if len(part) < 2: continue
+        us = [tile_uv(t)[0] for t in part]; vs = [tile_uv(t)[1] for t in part]
+        u0, u1, v0, v1 = min(us) - 1, max(us) + 1, min(vs) - 1, max(vs) + 1
+        cu, cv = (u0 + u1) / 2.0, (v0 + v1) / 2.0
+        lu, lv = u1 - u0, v1 - v0
+        if fr and kind in CARPET_AXIS_KINDS:
+            # a runner the axis passes through, long along the axis
+            s_c = _ds(fr, cu, cv)[1]
+            along, across = (lu, lv) if fr["line"] == "/" else (lv, lu)
+            if along > across and abs(s_c) < across / 2.0 and abs(s_c) > CARPET_CENTRE_TOL:
+                out.append(("axis", abs(s_c), part, (cu, cv)))
+        if kind in CARPET_ON_KINDS:
+            # (what stands on it: a blocking piece whose footprint reaches 0.3 units in over its edge; a piece by its
+            # centre alone missed the half of a ring a carpet a unit off had slid from under)
+            on = [o for o in r["objects"] if m.blocking(o) for (ou, ov), (hu, hv) in [(uv_of(o), _half_uv(o))]
+                  if ou + hu > u0 + 0.3 and ou - hu < u1 - 0.3 and ov + hv > v0 + 0.3 and ov - hv < v1 - 0.3]
+            if len(on) < 2: continue
+            ext = [(uv_of(o), _half_uv(o)) for o in on]
+            pu = (min(p[0] - h[0] for p, h in ext) + max(p[0] + h[0] for p, h in ext)) / 2.0
+            pv = (min(p[1] - h[1] for p, h in ext) + max(p[1] + h[1] for p, h in ext)) / 2.0
+            runner = max(lu, lv) >= 1.5 * min(lu, lv)
+            offs = []
+            if not runner or lv > lu: offs.append(abs(pu - cu))       # (across a runner only: what stands on
+            if not runner or lu > lv: offs.append(abs(pv - cv))       # it need not fill its length)
+            if offs and max(offs) > CARPET_CENTRE_TOL:
+                out.append(("pieces", max(offs), part, (cu, cv)))
+    return out
 
 
 def check_sacred(m, ctx, base):
@@ -3009,7 +3091,9 @@ def check_sacred(m, ctx, base):
         name = kind.replace("_", " ")
         if kind in SACRED_AXIS_KINDS:
             alts = [(o, _ds(fr, *uv_of(o))) for o in r["objects"] if ALTAR_RE.match(o["type"]) or
-                    (kind != "chapel" and re.match(r"^Crypt\d+$", o["type"]))]       # a coven's bier is its altar
+                    (kind != "chapel" and re.match(r"^Crypt\d+$", o["type"])) or       # a coven's bier is its altar
+                    (kind == "chapel" and re.match(r"^(HorrendousStatue\d|Crypt[13]|OrbPoolWithOrb|Fountain)$",
+                                                   o["type"]))]       # (a chapel's altar varies since QA round 2: Q2S-1)
             if alts:
                 o, (d, s) = min(alts, key=lambda a: abs(a[1][1]))
                 if abs(s) > SACRED_ALTAR_OFF or d < 0.55 * fr["depth"]:
@@ -3017,9 +3101,14 @@ def check_sacred(m, ctx, base):
                                  f"the main door's line, {d:.0f} of {fr['depth']:.0f} units in: the altar is centred across "
                                  f"the room from the main door, in line with it (Q1C-2).", o["x"], o["y"],
                                  rule="sacred.axis"))
-                ends[kind if kind != "dark_chapel" else "coven"].append(
-                    "+".join(sorted({p["type"] for p in r["objects"] if ALTAR_END_RE.match(p["type"]) and
-                                     abs(_ds(fr, *uv_of(p))[1]) < 1.5})))
+                # the altar itself: the altar piece on the axis nearest the far wall, by its kind (Q2S-1)
+                on_axis = [(d_, p) for p in r["objects"] if ALTAR_OBJ_RE.match(p["type"])
+                           for d_, s_ in [_ds(fr, *uv_of(p))] if abs(s_) < 1.0 and d_ >= 0.55 * fr["depth"]]
+                # (a chapel's every altar piece on the axis counts, the stone altar beside a font as much as alone; a
+                # coven's altar is the piece nearest its far wall: the lich god over his sarcophagus is not a bier)
+                sig = ({re.sub(r"\d+$", "", p["type"]) for _, p in on_axis} if kind == "chapel" else
+                       {re.sub(r"\d+$", "", max(on_axis, key=lambda a: a[0])[1]["type"])} if on_axis else set())
+                ends[kind if kind != "dark_chapel" else "coven"].append(sig or {""})
             ss = [(x_ - y_ if fr["line"] == "/" else x_ + y_ + 1) for x_, y_ in r["cells"]
                   if abs(((x_ + y_ + 1 if fr["line"] == "/" else x_ - y_) - fr["coord"]) * fr["sign"] - 1.5) < 1.6]
             if ss and abs((min(ss) + max(ss)) / 2.0 - fr["mid"]) > SACRED_DOOR_OFF:
@@ -3067,12 +3156,27 @@ def check_sacred(m, ctx, base):
                              f"kinds of piece: the dead lie here, in coffins or sarcophagi, with bones, statues, obelisks "
                              f"(RM-CRYPT-09, RM-CRYPT-10; Q1C-14, Q1C-17).", x, y, rule="sacred.dead"))
     for kind, sigs in ends.items():
-        if len(sigs) < 3: continue
-        top, n = collections.Counter(sigs).most_common(1)[0]
-        if n > SACRED_ALTAR_SHARE * len(sigs):
+        if len(sigs) < 2: continue
+        # (each altar kind counted in every room it stands on the axis of, beside another or alone)
+        top, n = collections.Counter(k for sig in sigs for k in sig).most_common(1)[0]
+        if n > math.ceil(len(sigs) / ALTAR_OPTIONS.get(kind, 3)):
             out.append(F("sacred", "warning", f"{n} of the map's {len(sigs)} {kind.replace('_', ' ')} rooms end in the same "
-                         f"altar ({top or 'none'}): vary the altar end (\"all rooms use the same altar - try different "
-                         f"objects\"; Q1C-4).", None, None, rule="sacred.altar_kind"))
+                         f"altar ({top or 'none'}): vary the altar itself, not what stands beside it (\"Every single one "
+                         f"of these chapels has the same square stone altar\"; Q1C-4, Q2S-1).", None, None,
+                         rule="sacred.altar_kind"))
+    # the carpets of every room composed on an axis or about its pieces, centred as drawn (Q2T-2; the sacred.carpet rule
+    # extended past the sacred rooms)
+    for r in indoor_rooms(m):
+        kind = (r.get("declared") or {}).get("kind")
+        if kind not in CARPET_ON_KINDS: continue
+        fr = (sacred_centre_frame(r) if kind == "mana_room" else sacred_frame(m, r)) if kind in CARPET_AXIS_KINDS else None
+        for what, off, part, (cu, cv) in carpet_centring(m, r, kind, fr):
+            x, y = (cu + cv) / 2 * CELL, (cu - cv) / 2 * CELL
+            out.append(F("sacred", "warning", f"{kind.replace('_', ' ')} room: the carpet's middle stands {off:.1f} units "
+                         f"off {'the line from its main door' if what == 'axis' else 'the middle of what stands on it'} "
+                         f"({len(part)} squares): a carpet lies centred on its axis and under its pieces, its width in "
+                         f"whole squares matched to the line (\"The carpet is slightly off-center with the door and "
+                         f"altar\"; Q2T-2, Q1C-3).", x, y, rule="sacred.carpet"))
     return out
 
 
@@ -3921,7 +4025,7 @@ RULES = [
     ("composition.grammar_mixed", "composition", r"\[grammar mixed]", ""),
     ("sacred.axis", "sacred", r"main door's line|off the middle of its wall", "Q1C-2"),
     ("sacred.symmetry", "sacred", r"no twin mirrored", "Q1C-1 Q1C-13"),
-    ("sacred.carpet", "sacred", r"carpet squares have no mirror", "Q1C-3"),
+    ("sacred.carpet", "sacred", r"carpet squares have no mirror|the carpet's middle stands", "Q1C-3 Q2T-2"),
     ("sacred.altar_kind", "sacred", r"end in the same altar", "Q1C-4"),
     ("sacred.dead", "sacred", r"the dead lie here", "Q1C-14 Q1C-17"),
     ("sacred.fullness", "sacred", r"kinds of piece and covers", "Q1C-19"),

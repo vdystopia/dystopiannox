@@ -145,3 +145,16 @@ The coordinator: "crypts 02 and 05 still read as empty at full size, so the full
   end down its length either side of the aisle, a pace between, the centrepiece at the far end; tombs are capped by the
   type's repeat cap (a tomb per 6 tiles, 16 at most), the gravestones within it.
 - Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2S-5)
+
+RM-CRYPT-02: "The coffin in between the mana obelisks is facing the wrong way. The two rows of coffins are not equally spaced in the room." RM-CRYPT-04: "Centering issues". RM-CRYPT-05 (dark crypt): "The steel coffin is not in the right orientation. The tile blending and the floor are wrong."
+
+- **The centrepiece tomb lies on the axis, its foot to the door**: Crypt1 (along v) or Crypt3 (along u); never Crypt2 or Crypt4, which are drawn square to the screen, at 45 degrees to every wall (a probe map's render).
+- **Rows equally spaced**: the axis on the room's middle (Q2T-1) and each side one line: a row laid along the aisle is never followed by one against the wall. The tombstones at the aisle's foot stand beside the main door's way.
+- **The Land of the Dead's crypt keeps one floor**: no plinth under its tombs (`room.no_zones`, read by `kit/shells.py lay_zones`); round 2's LOTDDark plinth had been blended into the LOTDPitted floor a unit off its tombs. Elsewhere the plinth squares are read as drawn (`shells._squares_under`).
+- **Centred on the room** (Q2T-1): the axis is the room's own middle between its side walls (kit/sacred.py `room_middle`, `door_axis`), and the building hangs the main door exactly on its wall's middle (`building._centre_door`: a single door on a wall cell's middle, the family's double door across two; the Land of the Dead keeps its double door). Round 2's rooms had stood a unit off: the door at the wall point nearest the middle, a double door's second half a cell to one side.
+- **Carpets as drawn** (Q2T-2, recurring Q1C-3): a floor tile (x, y) is drawn centred at uv (x + y + 2, x - y - 1) (MapEditor TileRenderer; `kit/furnish.py square_centre`), a unit toward -v of where the kit had read it; seams lie at odd u and even v. Runners and ring carpets are laid in those coordinates (`lay_carpet(true_uv=True)`), an even count of squares across a seam, an odd one across a square's middle; a one-square runner where only that fits (`narrow=True`). No dressing stands on a carpet (`_clear_spot`).
+- More low funerary kinds for walls the rows leave little room by: broken coffins, a second kind of urn (skull stones where they fit).
+
+Checked by `sacred.symmetry`, `sacred.dead`, `sacred.fullness`. Pictures: review/out/qa/qa3/rooms/crypt/.
