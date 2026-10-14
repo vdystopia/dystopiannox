@@ -2,9 +2,10 @@
  "_intro": [
   "Round 3 re-renders only the types your round 2 feedback asked to change: a set note, or several fixes or notes. The same seed as round 2 gives the same room shells, so each picture is the round 2 room redone.",
   "The cause behind most \"off-centre\" notes: the editor draws a floor tile half a square south-west of where the generator thought it was, and doors stood one square off the room's middle. Both are fixed at the root.",
-  "Ogre pens are on a new ogre shell, so those five rooms are new rooms, not the round 2 ones redone. EX-GARDEN-03 also moved."
+  "Ogre pens are on a new ogre shell, so those five rooms are new rooms, not the round 2 ones redone. EX-GARDEN-03 also moved.",
+  "BR-01's first round 3 fix was not right (you caught it): the cobble pads under the bridge ends are gone now."
  ],
- "chapel": "Every chapel has a different altar (stone altar, saint's tomb, saint's statue, holy font, fountain); door, runner and altar on one line; the saint faces the door.",
+ "chapel": "Every chapel has a different altar (stone altar, saint's tomb, saint's statue, holy font, fountain); door, runner and altar on one line; the saint faces the door. Pews now face the altar (they had faced the door, in round 2 as well).",
  "coven": "Obelisks along 60% of each side wall from the altar end, not the whole wall; rows the same distance from both walls; runner centred on door and altar.",
  "crypt": "The centre tomb lies along the axis facing the door; one line of coffins each side, equally spaced; the Land of the Dead crypt on one plain floor.",
  "mana_room": "Obelisks halved (one ring under 230 tiles, two above); no free-standing crystals mid-floor, two to four in corners; mana carts kept beside the rings.",
@@ -24,13 +25,13 @@
  "shrine__ext": "The aisle runs down the middle to the statue, and the statue faces the way in.",
  "bandit_camp": "Every camp has a water barrel; bedrolls in one row against the rock; the chest's back to a wall; seats kept clear of stores.",
  "garden": "The missing garden (02) is there now; the others are laid as before.",
- "bridge": "A paved road stops where the bridge starts; the ground under the span is trodden earth.",
+ "bridge": "A cobble road now ends at the bridge's foot: the bank under and beside each end is earth, as on the dirt-road bridges you rated 5. The lab's cobble roads are now long enough to read as roads.",
  "gallery": "Centred on the room's own middle line, running down its length; the runner exactly on the axis with statues and torches mirrored about it; benches face the aisle.",
  "hall": "Centred on the room; benches face the aisle; an aisle of columns, statue pairs and braziers to the far end, small halls included.",
  "throne_room": "The throne on the room's middle with the door centred; the south-west side filled with statues, urns and benches.",
  "solar": "Every table set exactly centred on its carpet; nothing crowding a carpet.",
  "great_hall": "The hearth's brick laid into the room's brick border, so it reaches the wall and never clashes with it; more pieces and lights.",
  "tavern": "Solid brick behind the bar up to the bar, unblended; the bar meets the wall at both ends; four different table layouts; fuller; the bearskin kept back from the fire.",
- "shop": "Rebuilt like the armoury: the counter on a back wall, a clear walk from the door to it, wares in rows along the walls, nothing loose mid-floor.",
+ "shop": "Rebuilt like the armoury: the counter on a back wall with a clear walk from the door, wares along the walls, one mirrored pair of display rows in big shops, nothing loose mid-floor. Small shops may still read open in the middle.",
  "kitchen": "Stock only along the walls, in rows and heaps that keep a gap; nothing mid-floor."
 }
