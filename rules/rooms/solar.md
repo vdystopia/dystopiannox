@@ -99,3 +99,7 @@ For this type:
 - The desk centred on a free stretch with its chair; a dining set and sitting sets mirrored where the floor is still
   bare; benches and urns mirrored on the front walls; the S corner's sitting set; sacks and crates in the W and E
   corners; tapestries of one colour.
+- (2026-10-13) A solar of 120+ tiles keeps no bare middle: a table of four centred on its own carpet, never touching
+  the hearth's carpet, sitting sets mirrored either side of it along the room's long line, a statue pair mirrored
+  across it; a rug before the bed's foot. A rug never overlaps a carpet (`civic.table_set`), and the groups filling
+  bare floor keep 3 units off every carpet.

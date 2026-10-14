@@ -32,3 +32,22 @@ moves had undone the balance asked for); the type rules are in each `rules/rooms
 
 Not covered here: the hearthstone's border and centring (Q1A-14) is laid by `kit/shells.py`, shared by every room type;
 the rated-rooms work owns it.
+
+## Follow-up (2026-10-13, branch qa1-greathall)
+
+| ID | The words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| Q1A-15 | "The layouts, tables, and chairs are generally pretty good, but the spaces are universally too empty"; RM-GREATHALL-01 "The six tables on the carpet look good. They just need to be centered more"; the coordinator: at the largest size "tables at random angles and spacings all over the floor, one tiny green carpet with one table on it" | `rules/rooms/great_hall.md` "Composed whole by kit/civic.py": high table on the door axis, mirrored boards on one centred carpet, mirrored stations, the hearth's statue pair, the band | look:rooms; `civic.*`, `rooms.qa1_*` | review | review |
+| Q1A-16 | the coordinator: large solars "keep a big bare middle"; "stop the rug overlapping the hearth carpet" | `rules/rooms/solar.md`: a centred table set on its own carpet, mirrored sitting sets and statues; no rug on a carpet | look:rooms | none | review |
+| Q1A-17 | the coordinator: Brackwater's 11 `rooms.stray` warnings from civic rooms | `kit/identity.py CIVIC_WIDEN` (per piece, below); `kit/civic.py` no longer places what does not read right | `rooms.stray` (Brackwater 11 -> 0) | check | check |
+
+Strays, decided per piece: **widened** (the piece reads right in the room): living room and dwelling, crates, sacks,
+barrels, a water barrel and square or round side tables (a household's stores; the S corner's sitting set), a
+dwelling's nightstands; shop, tool barrels, apple crates and crossed arms; herbalist, sacks of three sizes, apple
+crates, a round reading table; infirmary, dark crates, crates, water barrels, plain, round and square tables; dining
+hall, a water barrel and urns; mess hall, barrels, casks, piled barrels, square tables and urns; solar, statues, urns
+and the bed's other wall variants; study, urns; library, an orrery or telescope and statues or urns; gallery, hall and
+throne room, benches and urns (a hall a pair of flame basins); great hall, the high table's chairs, casks, statues,
+urns, side tables, a plant. **Composer changed** (the piece does not read right): a kitchen takes dark crates instead
+of tool barrels; the ogres' feasting hall takes ogre sacks instead of the town's sacks; a solar's desk stands on a back
+wall only.

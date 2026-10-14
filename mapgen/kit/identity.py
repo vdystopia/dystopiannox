@@ -1850,7 +1850,9 @@ CIVIC = {"living_room": dict(kb_caps={"table": _more_tables}), "dwelling": dict(
          "gallery": dict(kb_caps={"statue": _more_statues}), "hall": dict(kb_caps={"statue": _more_statues}),
          "solar": dict(kb_caps={"table": _more_tables}), "study": dict(kb_caps={"table": _more_tables, "statue": 4}),
          "library": dict(kb_caps={"table": _more_tables, "statue": 4}), "infirmary": dict(kb_caps={"table": _more_tables}),
-         "herbalist": dict(kb_caps={"table": _more_tables})}
+         "herbalist": dict(kb_caps={"table": _more_tables}),
+         # (2026-10-13, the coordinator: the great hall's boards at random angles over the floor at the largest size)
+         "great_hall": dict(kb_caps={"statue": _more_statues, "table": lambda tiles: 4 + tiles // 15})}
 for _k, _v in CIVIC.items():
     ROOMS[_k].update(civic=True, compose=[dict(fam="civic", slot="civic", extra=True)], fill=[], top_up=(), **_v)
     ROOMS[_k].pop("archetypes", None)
@@ -1889,6 +1891,10 @@ CIVIC_WIDEN = {
     "gallery": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
     "hall": [("statue", _VASE, 6), ("relic", r"^DunMirFlameBasinLit$", 2), ("bench", r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$", 8)],
     "throne_room": [("bench", r"^Bench[1-4]$|^CushionedBench\d$", 8), ("statue", _VASE, 6)],
+    # the lord's high table and its chairs, casks in the corners, urns and statues down the hall
+    "great_hall": [("chair", r"Chair", 6), ("storage", r"^LargeBarrel[12]$|^Barrel2?$", 6),
+                   ("statue", r"^Statue2[a-h]$|" + _VASE, 10), ("table", r"^SquareTable[12]$|^RoundTable[12]$", 4),
+                   ("plant", r"^(Plant1|Plant3|Plant4|Plant5)$", 1)],
 }
 for _k, _ws in CIVIC_WIDEN.items():
     _r = ROOMS[_k]

@@ -117,3 +117,24 @@ overrides Westwood's "no plants, no statues" (its two great halls): the user's w
 - Round 2 (fullness): a table taken up (a stray, or by the hearth) is set again with two seats on the open floor
   nearest the middle; a hall of 220+ tiles takes four table sets mirrored about its middle. Checked by
   `rooms.qa1_fullness`.
+
+## Composed whole by kit/civic.py (2026-10-13, after the QA round 1 merge)
+
+At the room lab's largest size (`py tests/roomlab.py great_hall --n 5 --seed 11`, room 03) the hall was still a
+balance failure after the finish pass: tables at random angles and spacings over the floor, one small carpet with one
+table on it, round tables dotted between. The great hall is now composed like the dining hall, but grander
+(`civic.great_hall`, `civic.hall_boards`; the finish pass's `_great_hall` no longer runs for it):
+- **Far end, on the axis from the door:** the high table across it, the lord's chair at its middle facing down the
+  hall with a chair either side, a pair of floor lights flanking it, a statue pair on the far wall (or the hearth
+  behind it when that is the only back wall free).
+- **The hearth** centred on a back wall on its brick patch (`kit/shells.py`), a statue pair flanking it; no table or
+  board within 2.2 units of it (RM-GREATHALL-04).
+- **The floor:** long boards of tables end to end, along the axis, in mirrored rows either side of a walk, a bench at
+  each side of every piece, the blocks spread evenly down the hall; one great carpet centred under the boards and the
+  high table. The boards share the type's table cap (the user, 2026-10-04: "4-6 sets fewer").
+- **Big halls (240+ tiles):** a pair of round tables with four chairs mirrored about the axis between the boards and
+  the side walls, clear of the hearth.
+- **The walls and corners:** statues, braziers and urns as mirrored stations by the side walls; casks in the W and E
+  corners, a side table in the S corner, a plant in the N corner, the house's chest centred on a back wall; tapestries
+  of one colour and trophies at even steps; the perimeter band of brick or cobble in three halls of four (the finish
+  pass's `lay_band`, RM-GREATHALL-07).

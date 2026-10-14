@@ -425,7 +425,7 @@ class Ctx:
         return self.f.lay_carpet(box, margin=0.0)
 
     def table_set(self, uv, table_pat, n_seats, seat="chair", seat_pat=None, carpet=None, rug=False, gap=0.3,
-                  reach=3.0):
+                  reach=3.0, need_carpet=False):
         """A table with its seats at uv, else as near it as it fits (within `reach`), centred on a carpet of
         carpet=(nu, nv) squares laid under it (the table at the carpet's exact middle). Returns the pieces placed, or 0
         (nothing left behind)."""
@@ -445,6 +445,7 @@ class Ctx:
                     (u, v), rect = cr
                     if (u, v) in tried: continue
                     tried.add((u, v))
+                elif need_carpet: continue
             o = self.put(t, u, v)
             if not o:
                 if DEBUG and (u, v) == cands[0]: self.log.append(f"   table {t} at {u:.1f},{v:.1f}: {why(f, t, u, v)}")
@@ -457,7 +458,9 @@ class Ctx:
                 continue
             f._seated.add(((u, v), t))
             if rect: self.lay(rect, *carpet)
-            elif rug: f.rug_under(o, (u, v))
+            elif rug and not any(u + 2.2 > bx[0] and u - 2.2 < bx[1] and v + 2.2 > bx[2] and v - 2.2 < bx[3]
+                                 for bx in f.carpet_boxes):
+                f.rug_under(o, (u, v))
             self.anchors_add((u, v))
             return 1 + n
         return 0
@@ -617,6 +620,7 @@ class Ctx:
             if dw < margin + 0.8: continue
             if any(abs(u - du) < 2.6 and abs(v - dv) < 2.6 for du, dv in f.g.doors): continue
             if any(math.hypot(u - a, v - b) < 2.5 for a, b in skip): continue
+            if any(b_[0] - 3.2 <= u <= b_[1] + 3.2 and b_[2] - 3.2 <= v <= b_[3] + 3.2 for b_ in f.carpet_boxes): continue
             dp = min([max(abs(u - a) - hu, abs(v - b) - hv, 0.0) for a, b, hu, hv in pieces] or [99.0])
             d = min(dp, dw - 0.6)
             if best is None or d > best[2]: best = (u, v, d)
@@ -827,7 +831,13 @@ def solar(c, plan):
         r = hearth["run"]
         uv = f._uv_on(r, 6.0, hearth["along"])
         c.table_set(uv, TABLE_SMALL, 2, carpet=(3, 3), reach=1.5) or c.table_set(uv, TABLE_SMALL, 2, rug=True)
-    bed_set(c, walls[1])
+    if bed_set(c, walls[1]):                         # a bearskin or a woven rug before the bed's foot
+        r_ = c.wall(walls[1])
+        if r_:
+            bed = f.beds[-1]
+            ba = bed[2][1] if r_["line"] == "/" else bed[2][0]
+            for dd in (5.2, 5.8, 6.4):
+                if mk_rug(c, f._uv_on(r_, dd, ba)): break
     for w in walls:                                  # a desk faces the camera: back walls only
         if not c.wall(w): continue
         d = c.centred_on(w, r"^Desk[12]$", "desk")
@@ -835,13 +845,49 @@ def solar(c, plan):
             f.seats_around(d[1], d[0]["type"], 1)
             break
     c.lights_balanced(4)
+    if c.tiles >= 120:
+        # the open middle (QA round 1: no large empty middle; the coordinator, 2026-10-13: large solars "keep a big bare
+        # middle"): a table of four centred on its own carpet, clear of the hearth's carpet, with sitting sets mirrored
+        # either side of it along the room's long line
+        mb = c.middle_box(walk=1.2)
+        cu, cv = (mb[0] + mb[1]) / 2, (mb[2] + mb[3]) / 2
+        long_u = (mb[1] - mb[0]) >= (mb[3] - mb[2])
+        def off_carpets(p, pad=3.4):
+            return not any(b_[0] - pad <= p[0] <= b_[1] + pad and b_[2] - pad <= p[1] <= b_[3] + pad for b_ in f.carpet_boxes)
+        cands = sorted({(cu + (0.5 * k if long_u else 0), cv + (0 if long_u else 0.5 * k)) for k in range(-16, 17)},
+                       key=lambda p: math.hypot(p[0] - cu, p[1] - cv))
+        placed_mid = None
+        for p_ in [q for q in cands if off_carpets(q, 4.6)][:14]:   # (a carpet of its own, never touching the hearth's)
+            for cs in ((3, 3), (4, 4)):
+                if c.table_set(p_, r"^RoundTable[12]$|^SquareTable[12]$", 4, carpet=cs, reach=1.5, need_carpet=True):
+                    placed_mid = p_; break
+            if placed_mid: break
+        if not placed_mid:                         # no carpet fits: the set on a rug in the middle all the same
+            for p_ in [q for q in cands if off_carpets(q)][:6]:
+                if c.table_set(p_, r"^RoundTable[12]$|^SquareTable[12]$", 4, rug=True, reach=0.6):
+                    placed_mid = p_; break
+        if placed_mid:
+            mu, mv = placed_mid
+            for off in (6.0, 5.2, 6.8, 4.6, 7.6):
+                pts = [(mu - off, mv), (mu + off, mv)] if long_u else [(mu, mv - off), (mu, mv + off)]
+                if not all(off_carpets(q, 1.6) for q in pts): continue
+                n0 = len(f.objects)
+                if mk_sitting(c, pts[0]) and mk_sitting(c, pts[1]): break
+                for x in f.objects[n0:]: f._remove(x)
+        # a statue pair mirrored across the long line, facing in (never a lone statue in the open)
+        t = c.pick_once(r"^Statue2[aceg]$")
+        if t and placed_mid:
+            mu, mv = placed_mid
+            for off in (4.6, 5.4, 6.2, 7.0):
+                pts = [(mu, mv - off), (mu, mv + off)] if long_u else [(mu - off, mv), (mu + off, mv)]
+                if not all(off_carpets(q, 0.9) for q in pts): continue
+                if c.put_all([(t, *q) for q in pts], pairing=True): break
     c.corner_set("S", TABLE_SMALL, 2)
     t = c.pick(VASE)
     if t: c.put_all([(t, *c.corner_uv("W", 1.3)), (t, *c.corner_uv("E", 1.3))], pairing=True)
     wall_pair(c, "SE", r"^Bench\d$|^CushionedBench\d$", 0.25, "bench")
     wall_pair(c, "SW", VASE, 0.2)
-    c.fill_bare([mk_sitting, mk_round4, mk_one(r"^Statue2[aceg]$", "statue")], most=max(3, c.tiles // 35), over=2.8,
-                mirror=True)
+    c.fill_bare([mk_sitting, mk_round4], most=max(3, c.tiles // 35), over=2.8, mirror=True)
     c.hangings(r"^(Blue|Red|White|Green)Tapestry\d$|^Painting[12]$", most=4)
 
 
@@ -1475,6 +1521,209 @@ def dining_hall(c, plan):
                r"^WallTrophy(Bear|Moose|MountainLion)[12]$", most=5)
 
 
+def great_hall(c, plan):
+    """A lord's great hall composed on the axis from the door, like a dining hall but grander (QA round 1, the great
+    hall set: "The layouts, tables, and chairs are generally pretty good, but the spaces are universally too empty";
+    RM-GREATHALL-01: "The six tables on the carpet look good. They just need to be centered more"; -07: the perimeter
+    band, "more objects, especially along the northeast wall"; -04: "the table next to the hearth is too close to it"):
+    - the far end: the high table across the axis, the lord's chair at its middle facing down the hall with a chair
+      either side, on its own carpet, a statue pair flanking it on the far wall (or the hearth behind it);
+    - the hearth centred on the other back wall on its brick patch (kit/shells.py), a statue pair flanking it, no table
+      within 2.2 units of it;
+    - the floor: long boards of tables in mirrored rows either side of the walk, benches down both sides, all on one
+      carpet centred under them;
+    - mirrored stations by the side walls (statues, braziers, urns), casks and side tables in matching corners, banners
+      and trophies at even steps, a band of brick or cobble round the room in three halls of four."""
+    f = c.f
+    c.wall_pat = VASE
+    c.s_makers = [lambda c_, uv: c_.corner_heap("S", S("cask", "barrel"), n=2),
+                  lambda c_, uv: c_.corner_lights(("S", "N"), 1.2)]
+    ax = axis(c)
+    if not ax: return dining_hall(c, plan)
+    r = ax["run"]
+    # the hearth: on a back wall other than the far wall, else on the far wall behind the high table
+    hearth = None
+    for w in BACK:
+        rr = c.wall(w)
+        if rr and rr is not r:
+            hearth = c.focal("fireplace", clear=3.0, wall=w)
+            if hearth: break
+    behind = False
+    if not hearth and c.name_of(r) in BACK:
+        hearth = c.focal("fireplace", clear=3.0, wall=c.name_of(r))
+        behind = bool(hearth)
+    fires = []
+    if hearth:
+        hr = f._placed_of.get(id(hearth["obj"]))
+        if hr: fires.append(hr)
+        c.flank(hearth, r"^Statue2[a-h]$", gap=1.2, fam="statue")         # the pair flanking the hearth (round 1)
+    def clear_of_fire(u, v, hu, hv, gap=2.2):
+        return all(max(abs(u - fr[0]) - hu - fr[2], abs(v - fr[1]) - hv - fr[3]) >= gap for fr in fires)
+    # the high table across the far end, on the axis
+    depth_far = ax["depth"]
+    tt = c.pick_once(r"^Table[1-4]$")
+    high = None
+    if tt:
+        t = f.along_variant(tt, r["side"]) or tt
+        hu, hv = f.half(t)
+        hp, ha = (hu, hv) if r["line"] == "/" else (hv, hu)
+        start = hp + (5.2 if behind else 2.6)
+        for d in (start, start + 0.6, start + 1.2, start + 2.0):
+            uv = on_axis(c, ax, d)
+            if not clear_of_fire(*uv, hu, hv): continue
+            n0 = len(f.objects)
+            o = c.put(t, *uv)
+            if not o: continue
+            # the lord's chair at the middle of the far side, facing down the hall, a chair either side of it
+            base = f.palette_seat("chair", f.types_of("chair")) or "WoodenChair"
+            to_table = ("+" if r["sign"] > 0 else "-") + ("u" if r["line"] == "/" else "v")
+            ct = (f.chair_facing.get(base, {}).get(to_table) or {}).get("variant")
+            if DEBUG: c.log.append(f"   high table {t} d={d:.1f}: chair base {base} to_table {to_table} -> {ct}; facing keys {list(f.chair_facing.get(base, {}))}")
+            if ct and f.ok_type(ct):
+                chu, chv = f.half(ct)
+                cp = chu if r["line"] == "/" else chv
+                seats = [ct for _ in range(3)]
+                ca = chv if r["line"] == "/" else chu       # the chair's half width along the wall
+                step_ = max(2 * ca + 0.35, ha * 0.62)
+                offs = (0.0, -step_, step_)
+                got = [c.put(ct, *on_axis(c, ax, d - hp - cp - 0.25, a_)) for a_ in offs]
+                if DEBUG: c.log.append(f"   lord's chairs {[bool(g) for g in got]}: {why(f, ct, *on_axis(c, ax, d - hp - cp - 0.25, 0.0))}")
+                if not got[0]:
+                    for x in f.objects[n0:]: f._remove(x)
+                    continue
+                if not (got[1] and got[2]):
+                    for x in got[1:]:
+                        if x: f._remove(x)
+            high = dict(obj=o, uv=uv, d=d, hp=hp, ha=ha)
+            f._seated.add((uv, t))
+            break
+    if high:
+        far = dict(obj=None, run=r, uv=f._uv_on(r, 0.5, ax["mid"]), along=ax["mid"], ha=max(2.0, high["ha"]), hp=0.4)
+        if not behind:
+            c.flank(far, r"^Statue2[a-h]$", gap=0.8, fam="statue")
+        c.flank_lights(dict(run=r, uv=high["uv"], along=ax["mid"], ha=high["ha"] + 0.8, hp=high["hp"]), gap=0.4,
+                       before=-0.4)
+    # the boards: long tables end to end in mirrored rows either side of the walk, benches down both sides
+    n0 = len(f.objects)
+    boards = hall_boards(c, ax, start=(high["d"] + high["hp"] + 2.6) if high else 4.0, clear_of_fire=clear_of_fire)
+    if boards:
+        # one great carpet under the boards and the high table, centred on them
+        recs = [f._placed_of.get(id(o)) for o in f.objects[n0:]] + ([f._placed_of.get(id(high["obj"]))] if high else [])
+        recs = [r_ for r_ in recs if r_ and r_[4]]
+        if recs:
+            carpet_box(c, (min(r_[0] - r_[2] for r_ in recs), max(r_[0] + r_[2] for r_ in recs),
+                           min(r_[1] - r_[3] for r_ in recs), max(r_[1] + r_[3] for r_ in recs)), pad=0.8)
+    # the side walls' stations: statues, braziers and urns mirrored down the hall
+    f.aisle = dict(run=r, mid=ax["mid"], half=1.6, first=2.0, far=depth_far, door=c.door)
+    stations(c, ax, [], [r"^Statue2[a-h]$", r"^Brazier$", VASE], first=(high["d"] + 1.0) if high else 3.0, step=4.4)
+    f.aisle = None
+    c.lights_balanced(4)
+    # casks and side tables in matching corners by the door end; the S corner
+    c.corner_heap("W", S("cask", "barrel"), n=2)
+    c.corner_heap("E", S("cask", "barrel"), n=2)
+    c.corner_set("S", r"^SquareTable[12]$|^RoundTable[12]$", 2)
+    # the house's chest centred on a back wall's free stretch; plants in the side corners; side sets mirrored where the
+    # floor is still bare (the hall holds as much as before, placed in order: QA round 1, "much more diversity")
+    for w in BACK:
+        if c.centred_on(w, r"^Chest\d$", "storage"): break
+    pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$")
+    if pl: c.put_all([(pl, *c.corner_uv("N", 1.2))])
+    # side sets mirrored about the axis between the boards and the side walls, at even depths down the hall
+    mk = exact_set(r"^RoundTable[12]$", 4, gap=0.35)
+    reach = min(ax["mid"] - (r["lo"] + 1), (r["hi"] - 1) - ax["mid"])
+    first = (high["d"] + high["hp"] + 3.0) if high else 4.0
+    depths = [first + (ax["depth"] - 3.0 - first) * fr_ for fr_ in (0.55, 0.8, 0.3)]
+    pairs = 0
+    for dd in (depths if c.tiles >= 240 else []):
+        if pairs >= max(1, c.tiles // 120): break
+        for off in (reach - 3.4, reach - 4.0, reach - 4.6, reach - 2.8):
+            if off < 5.0: continue
+            if not all(clear_of_fire(*on_axis(c, ax, dd, s_ * off), 2.5, 2.5, gap=3.4) for s_ in (-1, 1)): continue
+            n0 = len(f.objects)
+            if mk(c, on_axis(c, ax, dd, -off)) and mk(c, on_axis(c, ax, dd, off)):
+                pairs += 1; break
+            for x in f.objects[n0:]: f._remove(x)
+    col = c.set_type.setdefault("tapestry colour", c.rng.choice(("Blue", "Red", "Green", "White")))
+    c.hangings(rf"^{col}Tapestry\d$|^WallTrophy(Bear|Moose|MountainLion)[12]$", step=3.4, most=7)
+    # the perimeter band of brick or cobble (RM-GREATHALL-07), from the rated-rooms pass (kit/finish.py lay_band)
+    from kit import finish as FIN
+    brng = random.Random(zlib.crc32(f"band:{f.spec.d.get('name')}:{f.room.id}".encode()))
+    if brng.random() < FIN.BAND_RATE: FIN.lay_band(f, brng)
+
+
+def hall_boards(c, ax, start, clear_of_fire, gap_rows=None):
+    """Long boards (tables end to end, along the axis) in mirrored rows either side of the walk, a bench each side of
+    every piece. Rows in pairs, the outer pair only where the hall is wide; boards along the depth of the hall in
+    lengths of up to three pieces with an aisle between. Every pair placed both or neither. Returns the tables."""
+    f = c.f
+    r = ax["run"]
+    tt = c.pick_once(r"^Table[1-4]$")
+    if not tt: return 0
+    depth_dir_u = r["line"] == "/"                    # the depth runs along u for a NW/SE wall
+    stem = re.sub(r"\d+$", "", tt)
+    sibs = [s_ for s_ in (f"{stem}{d}" for d in "1234") if f.ok_type(s_)]
+    t = next((s_ for s_ in sibs if (f.half(s_)[0] > f.half(s_)[1]) == depth_dir_u), None)
+    if not t: return 0
+    hu, hv = f.half(t)
+    hl, hs = (hu, hv) if depth_dir_u else (hv, hu)
+    bench = c.pick_once(r"^Bench\d$|^CushionedBench\d$")
+    cell_w = 2 * hs + 2 * 1.2 + 1.6                     # a board, a bench each side, the way between rows
+    reach = min(ax["mid"] - (r["lo"] + 1), (r["hi"] - 1) - ax["mid"]) - 2.4
+    offs = []
+    o1 = 1.6 + 1.2 + hs                                 # the walk 3.2 wide, a bench, half a board
+    while o1 + hs + 1.2 <= reach and len(offs) < 2:
+        offs.append(o1); o1 += cell_w
+    if not offs: return 0
+    end = ax["depth"] - 3.0                             # clear of the door end
+    piece = 2 * hl + 0.04
+    # the boards share the room's table cap (kit/roomtypes.py great_hall: the user, 2026-10-04, "4-6 sets fewer"), one
+    # kept back for the S corner's side table: rows x sides x blocks x pieces within it, the blocks spread evenly down
+    # the hall (no bare far end, no bare door end)
+    cap = f.repeat_cap("table") or 12
+    # (the S corner's table besides, and in a hall of 240 tiles or more a mirrored pair of side sets)
+    budget = cap - f._fam_n["table"] - (3 if c.tiles >= 240 else 1)
+    L = end - start
+    best = None
+    for nr in range(len(offs), 0, -1):                 # rows of boards either side of the walk
+        per_row = budget // (2 * nr)
+        for nb in (3, 2, 1):                           # boards down the hall
+            k = min(3, per_row // nb)                  # pieces end to end in a board
+            if k < 1: continue
+            gap = (L - nb * k * piece) / (nb + 1)
+            if gap < 1.6: continue
+            # the most tables, in long boards (two pieces or more), spread so no stretch of the hall is bare
+            score = 2 * nr * nb * k * 10 + (25 if k >= 2 else 0) - 3 * max(0.0, gap - 5.0)
+            if best is None or score > best[0]: best = (score, nr, nb, k, gap)
+    if not best: return 0
+    _, nr, nb, k, gap = best
+    offs = offs[:nr]
+    if DEBUG: c.log.append(f"   boards: wall {c.name_of(r)} mid {ax['mid']:.1f} depth {ax['depth']:.1f} start {start:.1f} "
+                           f"offs {[round(o, 1) for o in offs]} blocks {nb}x{k} gap {gap:.1f} cap {cap} budget {budget}")
+    got = 0
+    for b_ in range(nb):
+        d0 = start + gap * (b_ + 1) + b_ * k * piece + hl
+        for off in offs:
+            pts = []
+            for j_ in range(k):
+                dd = d0 + j_ * piece
+                pts += [on_axis(c, ax, dd, -off), on_axis(c, ax, dd, off)]
+            if not all(clear_of_fire(u, v, hu, hv) for u, v in pts): continue
+            placed = c.put_all([(t, u, v, dict(touch=True)) for u, v in pts], pairing=True)
+            if DEBUG and not placed: c.log.append(f"   board {b_} off {off:.1f}: {[why(f, t, u, v, touch=True) for u, v in pts][:6]}")
+            if not placed: continue
+            n_before = len(f.objects)
+            ok = True
+            bpat = re.escape(re.sub(r"\d+$", "", bench)) + r"\d" if bench else None
+            for u, v in pts:
+                if f.seats_around((u, v), t, 2, "bench", gap=0.25, pat=bpat) < 1: ok = False
+            if not ok:
+                for x in f.objects[n_before:] + placed: f._remove(x)
+                continue
+            for u, v in pts: f._seated.add(((u, v), t))
+            got += len(pts)
+    return got
+
+
 def ogre_hall(c, plan):
     """The ogres' feast, minimal but balanced: the fire pit in the middle, crude tables mirrored either side of it
     with their stools, meat between them, sacks and barrels heaped in matching corners, a carcass hung in the N
@@ -1640,7 +1889,7 @@ def throne_room(c, plan):
 COMPOSERS = {"living_room": living_room, "dwelling": living_room, "kitchen": kitchen, "shop": shop, "tavern": tavern,
              "dining_hall": dining_hall, "mess_hall": dining_hall, "ogre_hall": ogre_hall, "gallery": gallery,
              "hall": hall, "throne_room": throne_room, "solar": solar, "study": study, "library": library,
-             "infirmary": infirmary, "herbalist": herbalist}
+             "infirmary": infirmary, "herbalist": herbalist, "great_hall": great_hall}
 
 
 def compose(f, plan, need):
@@ -1682,7 +1931,7 @@ FRONT_PIECES = {"living_room": r"^Bench\d$|^CushionedBench\d$", "dwelling": r"^B
                 "infirmary": r"^Bench\d$", "herbalist": r"^TraderAppleCrate$", "kitchen": r"^WaterBarrel$|^Barrel2?$",
                 "shop": r"^Barrel2?$|^Crate[12]$", "tavern": r"^Bench\d$|^LightBench\d$",
                 "dining_hall": r"^Bench\d$|^LightBench\d$", "mess_hall": r"^Bench\d$", "ogre_hall": r"^Barrel2?$",
-                "gallery": r"^Bench[1-4]$", "hall": VASE, "throne_room": VASE}
+                "gallery": r"^Bench[1-4]$", "hall": VASE, "throne_room": VASE, "great_hall": VASE}
 
 
 def front_dress(c):
@@ -1735,9 +1984,14 @@ if DEBUG:
         setattr(Ctx, _n, _traced(_n, getattr(Ctx, _n)))
 
 
-def why(f, t, u, v, blocking=True):
+def why(f, t, u, v, blocking=True, touch=False):
     """Debug: why try_put would refuse t at (u, v)."""
     hu, hv = f.half(t)
+    if touch and f.g.fits(u, v, hu, hv, blocking, False, touch=True):
+        if not f._kb_ok(t, u, v, hu, hv, blocking, "floor"): return "kb " + str(dict(f.kb_refused))
+        if blocking and not f.g.reachable_ok((u, v, hu, hv, True, "floor")): return "reach"
+        if f.coverage(f.footprint(t)) > f.cover_max: return "cover"
+        return "touch-ok?"
     if not f.g.fits(u, v, hu, hv, blocking, False):
         pts = [(u + a * hu, v + b * hv) for a in (-1, 0, 1) for b in (-1, 0, 1)]
         if not all(f.g.inside(*p) for p in pts): return "outside"
@@ -1747,6 +2001,9 @@ def why(f, t, u, v, blocking=True):
             if math.hypot(u - du, v - dv) < F.DOOR_CLEAR + max(hu, hv): return "door"
         for z in f.g.zones:
             if u + hu > z[0] and u - hu < z[1] and v + hv > z[2] and v - hv < z[3]: return f"zone{tuple(round(x,1) for x in z)}"
+        for tt, rec in f._typed:
+            if bool(rec[4]) == bool(blocking) and rec[5] != "wall" and abs(u - rec[0]) < hu + rec[2] + 0.15 and                     abs(v - rec[1]) < hv + rec[3] + 0.15:
+                return f"overlap {tt}"
         return "overlap"
     if any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3] for b in f.runner_boxes): return "runner"
     if F._family_of(t) in F.WAY_TALL and any(u + hu > b[0] and u - hu < b[1] and v + hv > b[2] and v - hv < b[3]
