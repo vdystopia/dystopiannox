@@ -28,6 +28,24 @@ The work bench (a long table) with its stool and a crate or barrel at its end.
 - **Front walls:** tool barrels, crates of timber and iron, heaped toward the corners.
 - **The middle:** the bench with its stool, a crate at its end; wheels and parts by it; a clear way round it.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Back walls:** the longer one lined with trader's shelves of tools on its longest stretch; gears in a centred row on
+  the other.
+- **The middle:** the work bench (a long table) with its stools, a tool barrel at one end and a crate at the other, on
+  the long axis; cart wheels and stacks in mirrored pairs either side in a big workshop.
+- **Corners and walls:** tool barrels and crates heaped in the S corner, the same small heap in the W and E corners; a
+  bench on a front wall; a tapestry or two on the bare back walls.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (1 room) | Profile |

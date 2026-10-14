@@ -1046,10 +1046,21 @@ def fix_halls(f, view, log, rng):
         return
 
 
+def symmetry_ok(view):
+    """The grammar rules a room type waives for the symmetry QA round 1 asked of it (kit/roomtypes.py TYPES[type]
+    ["symmetry_ok"]): "When placing two mana obelisks, place them with symmetry. For example, in the corners"; rows of
+    racks centred and evenly spaced; a ceremonial room's pairs mirrored. Westwood's irregularity rules (even gaps, one
+    to a corner, rings) stand for every other type."""
+    from kit.roomtypes import TYPES
+    return set((TYPES.get(view.rtype) or {}).get("symmetry_ok", ()))
+
+
 def faults(view):
     """Every grammar fault of a furnished room, worst first: dict(rule, p (the piece), msg)."""
     out = _faults(view)
     if view.rtype in SYMMETRIC: out = [x for x in out if x["rule"] not in SYMMETRIC_EXEMPT]
+    waived = symmetry_ok(view)                   # a kind's own waiver (roomtypes TYPES[type]["symmetry_ok"], Q1B)
+    if waived: out = [f for f in out if f["rule"] not in waived]
     return out
 
 

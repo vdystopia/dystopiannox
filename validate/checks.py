@@ -846,6 +846,9 @@ def identity_strays(kind, objects):
             if fam in ident["core"] or fam in ident["optional"] or (fam in ("chair", "bench") and "table" in ident["core"]):
                 pat = ident.get("types", {}).get(fam)
                 if not pat or _re.search(pat, o["type"]): ok = True
+            # the pieces a kind's composition takes in beyond its recipe's plan (kit/works.py ALLOW, QA round 1)
+            more = ident.get("allow", {}).get(fam)
+            if more and _re.search(more, o["type"]): ok = True
         if not ok: out.add(o["type"])
     return out
 
@@ -3073,6 +3076,117 @@ def check_sacred(m, ctx, base):
     return out
 
 
+# ---- QA round 1, the unrated works, stores and sacred rooms (review/qa1/works.md Q1B) -------------------------------
+# The user's two themes ("too empty, not enough object diversity"; "no balance or symmetry") as checks for the room kinds
+# kit/works.py composes. Narrow on purpose: the generic versions (a dead S corner in any room, stock variety in any
+# store) may come from the other QA round 1 helpers; these name the works kinds only.
+QA1_AXIS_KINDS = {"shrine", "dark_shrine", "mausoleum", "ossuary", "treasury"}
+QA1_STORE_KINDS = {"storeroom", "granary", "ore_store", "powder_store"}
+QA1_S_CORNER_KINDS = {"guardroom", "laboratory", "observatory", "smithy", "workshop", "winch_room", "torture_chamber",
+                      "storeroom", "granary", "ore_store", "powder_store", "treasury"}
+QA1_PAIRED = re.compile(r"^(Obelisk|LOTDManaObelisk|Statue2[a-h]|DunMirFlameBasinLit|LOTDIncenseBasinLit|Coffin|"
+                        r"CoffinBreaking|Monument1)")
+QA1_SUPPLY = re.compile(r"Barrel|Crate|Sack|PiledBarrels")
+
+
+def _room_doors_uv(m, r):
+    """[(line, coord, along)] of the room's doorways, in uv."""
+    cells = set(r["cells"])
+    out = []
+    for d in m.doors:
+        gx, gy = d["gap"]
+        if not any((gx + a, gy + b) in cells for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
+        out.append((d["line"], gx + gy + 1, gx - gy) if d["line"] == "/" else (d["line"], gx - gy, gx + gy + 1))
+    return out
+
+
+def qa1_flags(m, r, kind):
+    """[(rule, message, object)] of one room of a works kind: a ceremonial room's pairs off the door's axis, a store of
+    one kind of stock, a forge on the bare floor, a bare S corner."""
+    out = []
+    objs = [o for o in r["objects"] if not m.is_door(o) and not re.search(r"Door|Trigger|NPC|PlayerStart|ColorLight",
+                                                                        o["type"])]
+    tiles = r.get("tiles") or len(r["cells"])
+    if kind in QA1_AXIS_KINDS:
+        doors = _room_doors_uv(m, r)
+        paired = [o for o in objs if QA1_PAIRED.match(o["type"])]
+        cells = r["cells"]
+
+        def lone_about(line, a0):
+            al = (lambda o: uv_of(o)[1]) if line == "/" else (lambda o: uv_of(o)[0])
+            pe = (lambda o: uv_of(o)[0]) if line == "/" else (lambda o: uv_of(o)[1])
+            out_ = []
+            for o in paired:
+                if abs(al(o) - a0) < 0.6: continue                    # on the axis itself
+                k = re.sub(r"\d+[a-z]?$", "", o["type"])
+                if not any(q is not o and re.sub(r"\d+[a-z]?$", "", q["type"]) == k and abs(pe(q) - pe(o)) < 0.9
+                           and abs((al(q) - a0) + (al(o) - a0)) < 0.9 for q in paired):
+                    out_.append(o)
+            return out_
+        if doors:
+            # the axis: a doorway's line, or the middle of the room across it (kit/works.py axis_along), whichever the
+            # room is composed on
+            cands = []
+            for line, coord, along in doors:
+                alongs = [(x - y) if line == "/" else (x + y + 1) for x, y in cells]
+                axes = [along, (min(alongs) + max(alongs) + 1) / 2.0, (min(alongs) + max(alongs)) / 2.0]
+                # and the line the pieces themselves are mirrored about most often, near the door's or the middle's
+                al = (lambda o: uv_of(o)[1]) if line == "/" else (lambda o: uv_of(o)[0])
+                pe = (lambda o: uv_of(o)[0]) if line == "/" else (lambda o: uv_of(o)[1])
+                mids = collections.Counter(round((al(a) + al(b)) / 2 * 4) / 4 for i, a in enumerate(paired)
+                                           for b in paired[i + 1:] if abs(pe(a) - pe(b)) < 0.9)
+                axes += [x for x, _ in mids.most_common(3) if min(abs(x - y) for y in axes[:3]) <= 1.5]
+                for a in axes:
+                    cands.append(lone_about(line, a))
+            lone = min(cands, key=len)
+            if len(lone) >= 2:
+                out.append(("composition.qa1_axis", f"{kind.replace('_', ' ')} room: {len(lone)} statues, obelisks, "
+                            f"basins or coffins have no mirrored partner across the axis from the main door ("
+                            f"{lone[0]['type']}): the user: \"chapels should have a much more symmetric layout\" "
+                            f"(kit/works.py step_axis; Q1B)", lone[0]))
+    if kind in QA1_STORE_KINDS and tiles >= 30:
+        stock = [o for o in objs if QA1_SUPPLY.search(o["type"])]
+        kinds = collections.Counter(re.sub(r"\d+$", "", o["type"]) for o in stock)
+        if len(stock) >= 6 and (len(kinds) < 3 or kinds.most_common(1)[0][1] > 0.7 * len(stock)):
+            out.append(("composition.qa1_store_variety", f"{kind.replace('_', ' ')} room: its stock is "
+                        f"{kinds.most_common(1)[0][0]} for the most part ({len(kinds)} kinds in {len(stock)} pieces): "
+                        f"the user: \"Improve the diversity. Add metal barrels and tools. Use crates more often "
+                        f"alongside the barrels\" (kit/works.py; Q1B)", stock[0]))
+    if kind == "smithy":
+        main_mat = collections.Counter(m.tiles[c].get("material") for c in r["cells"] if c in m.tiles).most_common(1)
+        main_mat = main_mat[0][0] if main_mat else None
+        for o in objs:
+            if not o["type"].startswith("CinderBin"): continue
+            x, y = o["x"] / CELL, o["y"] / CELL
+            under = [m.tiles.get((math.floor(x) + a, math.floor(y) + b), {}).get("material") for a in (-1, 0, 1)
+                     for b in (-1, 0, 1)]
+            if sum(1 for t in under if t and t != main_mat) < 2:
+                out.append(("composition.qa1_forge_floor", f"smithy room: {o['type']} stands on the bare floor: the "
+                            f"user: \"place furnaces on a small brick square\" (kit/works.py brick_square; Q1B)", o))
+    if kind in QA1_S_CORNER_KINDS and tiles >= 30:
+        cells = r["cells"]
+        su = max(x + y + 1 for x, y in cells); sv = min(x - y for x, y in cells)
+        cu, cv = min(((x + y + 1, x - y) for x, y in cells), key=lambda p: (p[0] - su) ** 2 + (p[1] - sv) ** 2)
+        near = [o for o in objs if RT.family(o["type"]) in RT.BLOCKING_FAMILIES and
+                math.hypot(uv_of(o)[0] - cu, uv_of(o)[1] - cv) < 4.0]
+        if not near:
+            out.append(("composition.qa1_s_corner", f"{kind.replace('_', ' ')} room: its S corner is bare (nothing within "
+                        f"4 units): the user: \"Dead spaces in the south corner are too common\" (kit/works.py; Q1B)",
+                        None))
+    return out
+
+
+def check_qa1_works(m, ctx, base):
+    out = []
+    for r in indoor_rooms(m):
+        kind, _ = room_kind(r)
+        if not kind: continue
+        for rule, msg, o in qa1_flags(m, r, kind):
+            x, y = (o["x"], o["y"]) if o else cell_px(r["cells"][0])
+            out.append(F("composition", "warning", msg, x, y, rule=rule))
+    return out
+
+
 # ---- camps and outdoor groups (GW-2, GW-4, SW-1, SW-3, SW-9) ------------------------------------------------------
 STUMP_RE = re.compile(r"^Stump\d+$")
 FIRE_RE = re.compile(r"^(CampFire|CampFireUnused)$")
@@ -3814,6 +3928,10 @@ RULES = [
     ("civic.s_corner", "civic", r"nothing stands in its S corner", "Q1A-1"),
     ("civic.bare_wall", "civic", r"wall stand bare", "Q1A-3"),
     ("civic.kinds", "civic", r"kinds of piece \(its size wants", "Q1A-2"),
+    ("composition.qa1_axis", "composition", r"no mirrored partner across the axis", "Q1B"),
+    ("composition.qa1_store_variety", "composition", r"its stock is .* for the most part", "Q1B"),
+    ("composition.qa1_forge_floor", "composition", r"stands on the bare floor", "Q1B"),
+    ("composition.qa1_s_corner", "composition", r"its S corner is bare", "Q1B"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
@@ -3878,7 +3996,7 @@ def rule_of(f):
 ALL = [check_setup, check_minimap, check_composition, check_wall_pieces, check_wall_shapes, check_boundary, check_doors,
        check_kits, check_objects, check_doorways, check_routes, check_story_gates, check_floors, check_wall_blends,
        check_thresholds, check_rooms, check_identity, check_pieces, check_density, check_exterior, check_grammar,
-       check_transport, check_water, check_sacred, check_qa1_rooms, check_civic]
+       check_transport, check_water, check_sacred, check_qa1_rooms, check_civic, check_qa1_works]
 
 
 def run_all(m, base, only=None):

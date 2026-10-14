@@ -26,6 +26,26 @@ The row of strongboxes on a back wall.
 - **Front walls:** bare, or a second row of chests in a big strongroom.
 - **The middle:** the counting table and the treasurer's chair, open floor round it.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The strongboxes** in an even row centred on a back wall (the far one when the camera sees it), each with room before
+  it to open.
+- **The middle:** the counting table with its chairs centred on a carpet on the axis; sack piles in mirrored pairs
+  either side in a big strongroom.
+- **Corners and walls:** heaps of coin sacks of three sizes in the W and E corners, a great cask and sacks in the S
+  corner, a pair of guardian statues flanking the far wall's middle (past the row of chests when it stands there),
+  tapestries in a pair on it, else one on a bare back wall. No trophies of crossed weapons or shields: they are shop
+  racks, which the type's profile forbids.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (3 rooms, 3 maps) | Profile |

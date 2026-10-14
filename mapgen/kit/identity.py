@@ -1342,13 +1342,13 @@ ROOMS = {
                    decor_themes=("blue", "red", "white", "green"),
                    lift=("DunMir|",),
                    top_up=(),
-                   compose=[dict(fam="altar", slot="relic_ring", ring="statue", d=1.9, **{"else": ("basin", "none")}),
-                            # a room too small for the ring: the altar on the wall across from the door, obelisks by it
-                            dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
-                            dict(fam="statue", slot="flank", of="altar", gap=0.8),
-                            dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
-                            dict(fam="wall_decor", slot="decor")],
-                   fill=[dict(fam="storage", slot="wall", at="corner", clear=1.0, max=1, fixed=True)]),
+                   # QA round 1 (review/qa1/works.md Q1B): the altar on the axis from the door, across from it, the
+                   # statues flanking it; the rest composed on that axis by kit/works.py (a runner, an avenue of
+                   # obelisks in mirrored pairs, a ring round a basin in the middle of a big shrine, basins and
+                   # tapestries in pairs): the relic ring had stood its carpet off the ring and off the door's line
+                   compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
+                            dict(fam="statue", slot="flank", of="altar", gap=0.8)],
+                   fill=[]),
     "dark_shrine": dict(base="study", grand=True,
                         purpose="the Land of the Dead's shrine: the lich god's statue on the wall across from the door, "
                                 "mana obelisks either side, incense basins burning, tapestries and sconces, bones",
@@ -1361,7 +1361,7 @@ ROOMS = {
                                 "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                 "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
-                        lift=("LOTD|", "Lich|"),     # its own pieces in any building (a town house had shown none)
+                        lift=("LOTD|", "Lich|", "Coffin|"),     # its own pieces in any building (a town house had shown none)
                         top_up=(),
                         compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
                                  dict(fam="statue", slot="flank", of="altar", gap=0.8),
@@ -1439,7 +1439,7 @@ ROOMS = {
                       optional={"column": (0.5, 4)},
                       types={"statue": r"^Statue2[aceg]$", "storage": r"^CryptChest[1-4]$", "column": r"^Column[5-8]$"},
                       prefer={"storage": {"CryptChest1": 1, "CryptChest2": 1, "CryptChest3": 1, "CryptChest4": 1}},
-                      lift=("Crypt|",),
+                      lift=("Crypt|", "Coffin|"),      # (QA round 1: its breakable coffins, kit/works.py)
                       # Westwood's are symmetric (mirror symmetry 0.85-1) and lit (0.06 lights a tile): the statues
                       # stand in mirrored pairs (GROUPS statues), the chest centred on a back wall
                       top_up=(), lights_per100=6.0, decor_max=0,
@@ -1461,7 +1461,7 @@ ROOMS = {
                     optional={"monument": (0.8, 2), "tomb": (0.4, 1)},
                     types={"storage": r"^CryptChest[1-4]$", "monument": r"^Monument1$", "tomb": r"^Coffin[1-4]$"},
                     prefer={"bones": {"Skull": 3, "ArmBone": 3, "LegBone": 3}, "monument": {"Monument1": 1}},
-                    lift=("Crypt|", "Coffin|"),
+                    lift=("Crypt|", "Coffin|", "|Tomb"),     # (QA round 1: its graves among the bones, kit/works.py)
                     top_up=(),
                     compose=[dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                              dict(fam="monument", slot="wall", at="center", clear=0.8, n=2),
@@ -1857,6 +1857,10 @@ for _k, _v in CIVIC.items():
     ROOMS[_k].pop("compose_alts", None)
 ROOMS["throne_room"].pop("compose_alts", None)    # its three compositions are archetypes now
 ROOMS["great_hall"].pop("compose_alts", None)
+# QA round 1 (review/qa1/works.md): the pieces kit/works.py composes into the unrated works, stores and sacred rooms
+# (steel barrels, tool barrels, target barrels, coffins, obelisks...) taken into their kinds' identities
+from kit import works as _QA1
+_QA1.extend_identity(ROOMS)
 
 # ---- buildings ---------------------------------------------------------------------------------------
 # rooms: (kind, purpose) in order, the first is the largest and takes the entrance;

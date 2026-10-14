@@ -39,6 +39,28 @@ walls (p90 three), the rest bare. The recipe follows them (`slot="heaps"`, kit/f
 - **Lights:** three a hundred tiles (one candelabra in a store of 40 tiles).
 
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Stores stocked in tidy, varied groups** (Q1B-3): heaps of mixed barrels (wood and steel), crates (wood, dark,
+  steel), sacks of three sizes and tool barrels in the S and N corners and the same heap in the W and E corners; a pair
+  of log shelves on a back wall; heaps along the walls to their share; never the same piece twice in a row.
+- **The middle** clear in a store under 60 tiles (an aisle to walk); in a bigger one stacks and piled barrels in
+  mirrored pairs on the long axis.
+- **granary:** sacks lead, apple crates and barrels among them. **ore_store:** the mine carts on the axis, steel crates
+  and barrels and tool barrels, trader shelves of tools on a back wall.
+- **ogre_hoard** (an ogre room: minimal, but balanced, never bare in a corner): the hoard's chest centred on the longer
+  back wall, a heap of barrels and sacks in the S corner and the same heap in the W and E corners, meat and bones either
+  side of the chest, walls used lightly.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Archetypes
 
 Westwood's 7 curated campaign storeroom rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).

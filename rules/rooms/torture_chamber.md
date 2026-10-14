@@ -27,6 +27,22 @@ The rack (TortureRack4, 6 or 8) standing free in the middle, room all round it.
 - **Front walls:** the chest of instruments in a corner; the brazier.
 - **The middle:** the rack with room all round it; bones by it.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The rack** in the middle with bone heaps mirrored either side of it on the long axis.
+- **Back walls:** iron maidens and stocks in a centred row (both back walls in a big chamber), a chest centred on the
+  shorter one, the space before it clear.
+- **Corners:** flame basins in the W and E corners; a heap of barrels, a water barrel and a crate in the S corner.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, 2 maps) | Profile |

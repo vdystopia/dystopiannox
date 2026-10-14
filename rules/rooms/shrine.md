@@ -29,6 +29,28 @@ The altar (DunMirAltar; the lich god's statue in a dark shrine) on the wall acro
 - **The middle:** a runner from the door to the altar, a kneeling bench or two either side; open floor.
 - **Movement:** straight from the door to the altar.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The axis** from the main door to the altar on the far wall (the user: "Chapels should always be aligned with the
+  main door. The character should walk in and be on the main path facing the altar"): a runner down it, centred (three
+  floor squares on a square's middle, two between; only where the room is wide enough); an avenue of obelisks in
+  mirrored pairs at even steps lining the runner and the door's way in; a pair of kneeling benches either side in a wide
+  shrine (one pair: four or more is a chapel); flame basins in the two far corners (and the near ones in a big shrine);
+  a pair of tapestries on the far wall either side of the altar, else one on a bare back wall; a chest against a back
+  wall. Never a lone statue or bench outside the mirrored pairs.
+- **dark_shrine:** the same axis with the Land of the Dead's pieces: the lich god's statue, mana obelisks, incense
+  basins, coffins in mirrored pairs along the side walls, bone heaps mirrored, the Land of the Dead's tapestries or
+  banners on the bare back walls.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (6 rooms, 6 maps) | Profile |

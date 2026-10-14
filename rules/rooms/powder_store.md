@@ -26,6 +26,22 @@ The rows of powder kegs (BlackPowderBarrel, BlackPowderBarrel2).
 - **Front walls:** powder kegs; a plain barrel or a crate by the door.
 - **The middle:** clear: a way to every row.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Stock in heaps, never one kind:** powder kegs heaped in the N and S corners with steel crates and barrels among
+  them, the same mixed heap in the W and E corners, heaps along the walls ("Use crates more often alongside the
+  barrels", Q1B-3, Q1B-15). Never the same piece twice in a row.
+- **The middle** clear in a store under 60 tiles; stacks on the long axis in a bigger one. No lights.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, 2 maps) | Profile |

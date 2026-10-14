@@ -25,6 +25,23 @@ The great winch (PulleyGear) standing free.
 - **Front walls:** tool barrels and crates of spare parts.
 - **The middle:** the winch with room all round it to work it; small gears by it.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/works.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Back walls:** the gear trains: gears in a centred, even row on a back wall (both in a room of 90 tiles).
+- **The middle:** the great winch on the axis, small gears and a lever either side of it, mirrored; parts and stacks of
+  spare stock in mirrored pairs either side in a big room.
+- **Corners and walls:** tool barrels, steel crates and barrels heaped in the S corner, the same small heap in the W and
+  E corners; heaps never more than half a wall.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (6 rooms, 6 maps) | Profile |
