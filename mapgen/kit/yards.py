@@ -5,7 +5,7 @@
   wide rough rows of headstones, dead trees by the walls), a crypt yard (a fenced lawn, a crypt in a corner, a knot of
   stones by it) or a pen (a small stone-walled court, four to six stones); sparse grass; the gravedigger's corner (a
   fresh grave and the bucket of tools: the user's ask, SW-9) in most fields (`_graveyard`);
-- orchard: a log fence (Log, BarredGate) round 22-28 tiles of grass: fruit bushes (Plant5, Plant4), one tree,
+- orchard: a low wooden fence (DilapidatedShort, Gate) round 22-28 tiles of grass: fruit bushes (Plant5, Plant4), one tree,
   flowers, an apple on the ground;
 - park: low ruined walls (DilapidatedShort, Gate) round 92-112 tiles: eight benches facing in, bushes and flowers,
   a tree;
@@ -33,7 +33,9 @@ YARDS = {
                       purpose="where the town buries its dead"),
     # (QA round 1, nox6: "Good structure for an orchard, but too empty": rows of apple trees, crates of apples, apples
     # on the ground to pick up; larger, so the rows read as an orchard)
-    "orchard": dict(fence="Log", gate="BarredGate", floor=None, size=[(7, 7), (9, 7), (9, 8)],
+    # a low wooden fence, never Log (a cabin's wall): the tall log fence hid the apples, and the larger QA round 1
+    # orchard's log walls blocked the client's sight enough to crash it (Brackwater, 34 crossings on a screen row)
+    "orchard": dict(fence="DilapidatedShort", gate="Gate", floor=None, size=[(7, 7), (9, 7), (9, 8)],
                     purpose="the town's fruit trees"),
     "park": dict(fence="DilapidatedShort", gate="Gate", floor=None, size=[(9, 9), (10, 9)],
                  purpose="benches round a shade tree"),
