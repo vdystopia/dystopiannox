@@ -95,3 +95,17 @@ For this type:
   flanking the middle of the far wall.
 - Tapestries of one colour (or Dun Mir's shields) at even steps on the back walls; urns flanking the way in; lights in
   matching corners.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-2)
+
+The user: "The benches are facing the wrong way. They are facing south, but they should face southwest" (RM-HALL-01);
+"Center the hall in the room. There's a large gap on the northeast side" (-02); "This does not look like a hall at all"
+(-05, a small square Dun Mir hall). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **Centred on the room**, down its length in a long hall (`civic.axis(long_axis=True)`, `room_mid`); the door in its
+  wall's middle (`CENTRE_DOOR_ROOMS`), else a clear walk from it (`door_walk`).
+- **A hall at every size:** the far end first (a statue pair flanking the far wall's middle, the chest between them with
+  lights, flame basins before it), then a colonnade down the aisle, a column at every other station with statues and
+  braziers between (stations a step closer in a hall under 130 tiles), benches and urns mirrored by the side walls, a
+  middle ring of urns and statues in a wide hall, urns of another kind flanking the way in, plants in the far corners.
+- **Benches face the aisle** (`facing_pair`). Checked: `qa2.centre`, `qa2.facing`.

@@ -143,3 +143,15 @@ For this type:
   statues and urns mirrored by the side walls; urns flanking the way in (the S and E corners).
 - Tapestries of one colour at even steps on the back walls; lights in matching corners.
 - Composed by the recipe engine now (`kit/motifs.py ENGINE_TYPES` no longer lists it).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-3)
+
+The user: "The room is not centered" (RM-THRONEROOM-02, -05); "Fill the southwestern side of the room. It's too empty"
+(-03). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **The throne on the room's own middle** of the NW wall (`furnish.place_throne(at=)`, `civic.room_mid`), the door in
+  the SE wall's middle (`CENTRE_DOOR_ROOMS`), the runner centred under the aisle as drawn (`civic.runner`).
+- **Both sides filled alike:** the stations' outer pairs reach the side walls on the room's middle; a middle ring of
+  statues and urns between the colonnade and the side walls in a wide room; urns of another kind flanking the way in.
+  The SW wall is a front wall and takes no hangings, so its side is filled on the floor.
+- **Benches face the aisle** (`facing_pair`). Checked: `qa2.centre`, `qa2.facing`.

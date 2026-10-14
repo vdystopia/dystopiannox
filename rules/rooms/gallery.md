@@ -97,3 +97,18 @@ For this type:
   beside it, benches and urns mirrored by the side walls.
 - Paintings first, then blue tapestries, at even steps along both back walls, mirrored about each stretch.
 - Plants in matching corners (a gallery is the one type whose Westwood rooms hold plants); lights in matching corners.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-1)
+
+The user: "The benches are facing the wrong orientation. The gallery is not centered in the room" (RM-GALLERY-01); "The
+gallery is not centered in the room" (-02); "The statues and torches are not centered with the carpet" (-03); "Awkward
+shape for a gallery with a lot of open room and dead space on the north, west, and southeast sides" (-04). Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+- **Down its length, on its own middle:** a long gallery runs its axis from its back end wall whatever wall its door is
+  in (`civic.axis(long_axis=True)`), on the room's middle line, never the door's (`civic.room_mid`); the door that sets
+  it stands in its wall's middle (`kit/building.py CENTRE_DOOR_ROOMS`), and a door off the axis keeps a clear walk to
+  it (`civic.door_walk`).
+- **The runner centred as drawn:** two squares on a seam, three on a square's middle, chosen as the editor draws a
+  square (a unit further SW than the kit counts it: `civic.SQUARE_V`); statues and flame basins mirrored about it.
+- **Benches face the aisle:** each bench of a pair takes its own side wall's variant (`civic.facing_pair`).
+- Checked: `qa2.centre`, `qa2.facing` (validate/checks.py).

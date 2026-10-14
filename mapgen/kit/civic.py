@@ -502,7 +502,15 @@ class Ctx:
                 continue
             n0 = len(f.objects)
             n = f.seats_around((u, v), t, n_seats, seat, gap=gap, pat=seat_pat)
-            if n < min(2, n_seats) or (n_seats >= 4 and n < 3):
+            if rect and n % 2 == 1:
+                # on a carpet the set is centred on it: its seats in opposite pairs, an odd one taken out (QA round 2,
+                # RM-SOLAR-03/04/05 "Center the tables and chairs on the carpet")
+                seats = [(x, f._placed_of.get(id(x))) for x in f.objects[n0:]]
+                for x, rec in seats:
+                    if rec and not any(y is not x and r2 and abs(rec[0] + r2[0] - 2 * u) < 0.3 and abs(rec[1] + r2[1] - 2 * v) < 0.3
+                                       for y, r2 in seats):
+                        f._remove(x); n -= 1; break
+            if n < min(2, n_seats) or (n_seats >= 4 and n < 3 and not rect) or (rect and n < 2):
                 for x in f.objects[n0:]: f._remove(x)
                 f._remove(o)
                 continue
@@ -881,9 +889,9 @@ def solar(c, plan):
     walls = list(BACK); c.rng.shuffle(walls)
     hearth = c.focal("fireplace", clear=2.8, wall=walls[0])
     if hearth:
-        c.run_pair_from(hearth, r"^Bookcase\d$", fam="shelves", most=2 if c.tiles < 180 else 3)
+        c.run_pair_from(hearth, r"^Bookcase\d$", fam="shelves", most=3 if c.tiles < 180 else 4)   # (to the corners)
         r = hearth["run"]
-        uv = f._uv_on(r, 6.0, hearth["along"])
+        uv = f._uv_on(r, 8.0, hearth["along"])     # (its carpet two squares clear of the hearth's bricks)
         c.table_set(uv, TABLE_SMALL, 2, carpet=(3, 3), reach=1.5) or c.table_set(uv, TABLE_SMALL, 2, rug=True)
     if bed_set(c, walls[1]):                         # a bearskin or a woven rug before the bed's foot
         r_ = c.wall(walls[1])
@@ -936,18 +944,21 @@ def solar(c, plan):
         t = c.pick_once(r"^Statue2[aceg]$")
         if t and placed_mid:
             mu, mv = placed_mid
-            for off in (4.6, 5.4, 6.2, 7.0):
-                pts = [(mu, mv - off), (mu, mv + off)] if long_u else [(mu - off, mv), (mu + off, mv)]
-                if not all(off_carpets(q, 2.4) for q in pts): continue
-                if c.put_all([(t, *q) for q in pts], pairing=True): break
+            done_ = False
+            for across in (True, False):               # across the long line, else along it
+                for off in (4.6, 5.4, 6.2, 7.0, 7.8, 8.6, 9.4):
+                    pts = [(mu, mv - off), (mu, mv + off)] if long_u == across else [(mu - off, mv), (mu + off, mv)]
+                    if not all(off_carpets(q, 2.0) for q in pts): continue
+                    if c.put_all([(t, *q) for q in pts], pairing=True): done_ = True; break
+                if done_: break
     c.corner_set("S", TABLE_SMALL, 2)
     t = c.pick(VASE)
     if t:
         for d_ in (1.3, 1.9, 2.6):                     # urns in the side corners, a step further in where a piece stands
             if c.put_all([(t, *c.corner_uv("W", d_)), (t, *c.corner_uv("E", d_))], pairing=True): break
-    wall_pair(c, "SE", r"^Bench\d$|^CushionedBench\d$", 0.25, "bench")
+    wall_pair(c, "SE", r"^Bench\d$|^CushionedBench\d$", 0.25, "bench") or         wall_pair(c, "SW", r"^Bench\d$|^CushionedBench\d$", 0.3, "bench")
     wall_pair(c, "SW", VASE, 0.2) or wall_pair(c, "SE", VASE, 0.12)
-    c.fill_bare([mk_sitting, mk_round4], most=max(3, c.tiles // 35), over=2.8, mirror=True, carpet_pad=4.4)
+    c.fill_bare([mk_sitting, mk_round4], most=max(3, c.tiles // 35), over=2.8, mirror=True, carpet_pad=3.8)
     c.hangings(r"^(Blue|Red|White|Green)Tapestry\d$|^Painting[12]$", most=5)
 
 
@@ -1873,6 +1884,8 @@ def bar_front(c, depth=3.4):
     u_lo, u_hi = sorted((U, U + su * depth))
     v_lo, v_hi = sorted((rv["coord"], V + sv * depth))
     f.g.zones.append((u_lo, u_hi, v_lo, v_hi))            # before the v-run and round the corner
+    u_lo, u_hi = sorted((ru["coord"], U)); v_lo, v_hi = sorted((rv["coord"], V))
+    f.g.zones.append((u_lo, u_hi, v_lo, v_hi))            # and the barkeep's floor inside it: no table set behind the bar
 
 
 TAVERN_LAYOUTS = ("grid", "rows", "clusters", "mixed")
@@ -1939,6 +1952,15 @@ def tavern_rows(c, mb):
                     ok = False; break
                 f._seated.add(((u, v), t))
             if ok:
+                # a stool at each end of every table, mirrored (the head seats: a long table seated round, never only
+                # at its ends)
+                st = c.pick_once(r"^Stool\d$|^CushionedStool\d$")
+                if st:
+                    sh = max(f.half(st))
+                    for (u, v) in pts:
+                        e = hl + sh + 0.35
+                        ends = [(u - e, v), (u + e, v)] if along_u else [(u, v - e), (u, v + e)]
+                        c.put_all([(st, *q) for q in ends], pairing=True)
                 bx = pieces_box(c, n0)
                 if bx: carpet_box(c, bx, pad=0.6)
                 return len(pts)
@@ -2053,8 +2075,19 @@ def tavern(c, plan):
     c.corner_heap("W", S("barrel", "water", "piled"), n=3, flush=True)
     for w in FRONT:
         wall_stock(c, w, S("barrel", "piled", "water"), n=3, most_share=0.35)
+    # the great casks (by the bar where it has room: furnish.bar_casks), else a pair on a front wall
+    if not any(re.search(STOCK["cask"], t) for t, _ in f._typed):
+        for w in FRONT:
+            if wall_pair(c, w, STOCK["cask"], 0.15): break
+    # benches along a front wall for those who drink standing; more light in a big common room (QA round 2: "Overall,
+    # they feel just a little bit too empty")
+    for w in FRONT:
+        if wall_pair(c, w, r"^Bench\d$|^LightBench\d$|^CushionedBench\d$", 0.2, "bench"): break
     c.fill_bare([mk_round4, mk_sitting], most=4, over=3.0, mirror=True, carpet_pad=3.6)
+    if c.tiles >= 170: c.lights_balanced(6)
     c.hangings(r"^WallTrophy(Bear|Moose|MountainLion)[12]$", most=5)
+    col = c.set_type.setdefault("tapestry colour", c.rng.choice(("Blue", "Red", "Green", "White")))
+    c.hangings(rf"^{col}Tapestry\d$", most=4)
 
 
 def dining_hall(c, plan):
@@ -2508,8 +2541,10 @@ def gallery(c, plan):
         # the centrepiece at the far end of the walk, facing the way in: an orrery between a pair of flame basins
         r = ax["run"]
         cp = c.pick(r"^Orrery2$")
-        if cp and c.put(cp, *on_axis(c, ax, 2.4)):
-            mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.2, 2.6)
+        for d_ in (2.4, 3.0, 3.6, 4.2, 4.8, 5.4, 6.0):
+            if cp and c.put(cp, *on_axis(c, ax, d_)):
+                mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", d_ - 0.2, 2.6)
+                break
         runner(c, ax, 4.4, ax["depth"] - 1.0)
         f.aisle = dict(run=r, mid=ax["mid"], half=1.4 if runner_squares(ax) == 2 else 2.4, first=2.0, far=ax["depth"],
                        door=c.door)

@@ -4422,7 +4422,7 @@ class Furnisher:
             for wall, end in ((ru, V), (rv, U)):
                 pts = []
                 for k in range(2):
-                    off = k0 + hc + 2 * hc * k + 0.8 * k     # apart, never touching (RM-TAVERN-04, Q2T-4)
+                    off = k0 + hc + 2 * hc * k + 1.8 * k     # apart as drawn, never touching (RM-TAVERN-04, Q2T-4)
                     if wall is ru: pts.append((ru["coord"] + su * (hc + 0.15), end + sv * off))
                     else: pts.append((end + su * off, rv["coord"] + sv * (hc + 0.15)))
                 got = []

@@ -115,3 +115,24 @@ For this type:
   jars and apple crates, steel crates and barrels) in a shop of 60 tiles or more.
 - Stock heaped in the S corner and the front corners and mirrored on the front walls, each heap of mixed kinds (nox8:
   never a shop of barrels alone). The walls hung with the trade (shields and crossed arms, paintings, trophies).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2C-7)
+
+The user, the whole set: "These are very poor and need a lot of improvement. Consider the path from the door to the
+shopkeeper's desk. Don't block it with objects. Treat the shop less like a chapel and more like an armory." RM-SHOP-01:
+"Cluttered mess. Way too many objects in the middle of the floor. No path ... from the door to the shopkeeper's desk";
+-02: "too heavily concentrated in the south. Meanwhile, the north is very empty"; -03: "Awful scattered mess ... the
+random barrels, crates, and sacks need to be changed"; -05: "No path from the door to the shopkeeper's desk". Round 2's refinements (PROCESS.md top section) apply too: centred on the room, facing designed, pieces never touching, storage against the wall, floors ending at a hard line, fullness from kinds. Composed by `kit/civic.py`; ledger `review/qa2/ledger.md`.
+
+Composed as the armoury (rated 4.8): no axis, no display down the walk (the chapel look), nothing loose mid-floor.
+- **The counter** out from a back wall on a stretch long enough for the keeper's goods either side of him, across from
+  the main door where it can be (`civic.shop_counter`), his goods mirrored against its wall (`flank_goods`), lights
+  flanking it.
+- **The walk** from the door to the customer's side of the counter (in from the doorway, then along) kept clear
+  (`civic.shop_walk`). Checked: `qa2.shop_way`.
+- **The walls:** the other back wall lined with the trade's goods; the front walls lined with the trade's wares in rows
+  against them (`civic.wall_stock`: racks for an armourer, crates, barrels and apples for a store, apples and sacks for
+  an apothecary); stock heaped against the walls in the corners; a kind of stock the shop lacks against any bare
+  stretch; the back walls hung with the trade.
+- **Wares on show** in rows standing free, each row one kind, mirrored about the room's middle line, clear of the walk
+  (`civic.display_rows`).
