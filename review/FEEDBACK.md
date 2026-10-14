@@ -233,12 +233,38 @@ Sources: the user's messages of 2026-10-05 (verbatim quotes below), the ROADMAP 
 |---|---|---|---|---|---|
 | TR-1 | "The next feature we need to add is elevators, lifts, stairs and portals. They all function the exact same way. They basically teleport the player from one location to another. The second location is often an isolated part of the map (but not always)." | P§2 Transporters (`kit/transport.py`, one call for lift, stairs, portal, passage); `rules/TRANSPORTERS.md`; `skills/nox-transporters/SKILL.md` | `transport.link` (STtpLnk), `transport.landing` (STtpWal), `transport.bounce` (STtpBnc), `transport.serves` (STtpSrv), `transport.stranded` (STtpStr), `transport.wall`, `transport.pocket`, `transport.missing`, `transport.unreached`; look:spots (every named end) | none | check |
 
-## QA round 1: water, crossings, docks, thresholds (2026-10-12)
+## QA round 1 (2026-10-09 .. 2026-10-13)
 
-Fifteen rows, Q1W-1..15, in `review/qa1/water.md` (bridges to their roads, banks without fingers, no walking on water,
-docks one to a pond and centred, doorsteps of the ground, every ground blended): 11 checked (`water.*`,
-`floors.doorstep`, `floors.hard_patch`), three by picture (Q1W-3, 8, 10), one not covered (Q1W-15, carpets: the rooms
-track).
+The user's labelled rating round: 301 rated rooms, exteriors, bridges and docks, 26 notes on whole types and 21
+in-game screenshot notes (`review/reviews/QA-round1.md`, the raw ratings in `review/history/qa-round1/`). Closing it,
+the user named two themes that run through most of the low scores, and asked that they be applied to every room type
+they did not rate as well (the unrated types inherit the round's verdict).
+
+| ID | The user's words | Rule | Enforced by | Before | After |
+|---|---|---|---|---|---|
+| Q1T-1 | "The 2 major recurring themes to address: 1. spaces are too empty and do not have enough object diversity." | P§3, P§4; every `rules/rooms/<type>.md` and `rules/scenes/*.md` touched in the round; only pieces that read on screen count (bones, candles, cobwebs one kind at most, never coverage); Westwood's run caps and open-floor minimums yield to it (sacred rooms open >= 0.30) | `rooms.qa1_fullness` (STq1Emp, STq1Bed), `sacred.fullness` (STsFull), `civic.kinds` (STcivK), `composition.qa1_store_variety` (STq1sto), `exterior.camp_bare` (STcampb), `exterior.set_variety` (STsetv), `exterior.grave_variety` (STgvar), `rooms.qa1_cellar_kinds` (STq1Clr) | none | check |
+| Q1T-2 | "2. There is a lack of balance and symmetry. Things are randomly placed and not lined up with each other." | P§3, P§4; set pieces and ceremonial rooms composed whole on an axis (`kit/sacred.py`, `kit/civic.py`, `kit/works.py`, `kit/finish.py`, `kit/setpieces.py`) | `sacred.axis` (STsAxis), `sacred.symmetry` (STsSym), `sacred.carpet` (STsCarp), `composition.qa1_axis` (STq1axs), `exterior.set_symmetry` (STsetm), `exterior.grave_rows` (STgrows), `exterior.crop_rows` (STcropr), `exterior.gate_path` (STgatep), `exterior.row_float` (STrowf), `water.bridge_off`, `water.bridge_even` (STbreven), `water.dock_side` (STdkside), `civic.bare_wall` (STcivW) | none | check |
+
+The round's items, one ledger per area (the same columns; 151 rows):
+
+| Area | Rows | Ledger | Check | Review only | Not covered |
+|---|---|---|---|---|---|
+| Rated rooms: armoury, barracks/ogre den, bedroom, cell/ogre pen, cellar, conservatory, great hall | Q1R-1..24 | `review/qa1/rooms.md` | 12 | 11 | 1 |
+| Chapel, mana room, coven, crypt | Q1C-1..21 | `review/qa1/sacred.md` | 15 | 6 | 0 |
+| Shrine, well, graveyard, garden, farmyard and orchard, town square | Q1X-1..21 | `review/qa1/setpieces.md` | 12 | 8 | 1 |
+| Camps and yards (bandit, ogre, urchin, wolf den, quarry, jail, training, smithy, stall, wagon, woodpile) | Q1K-1..16 | `review/qa1/camps.md` | 7 | 9 | 0 |
+| Water: bridges, docks, banks, wading, doorsteps, blending | Q1W-1..15 | `review/qa1/water.md` | 11 | 3 | 1 |
+| In-game: signs, healing wells, fish, people at doors, keepers and priests, items, ModLab M2/S1 | Q1G-1..9 | `review/qa1/game.md` | 8 | 1 | 0 |
+| Mods: W1-W6, M1-M5, SP1 | Q1M-1..13 | `review/qa1/mods.md` | 12 | 1 | 0 |
+| The themes on the unrated civic rooms (dining hall .. herbalist; great hall and solar redone) | Q1A-1..17 | `review/qa1/civic.md` | 6 | 11 | 0 |
+| The themes on the unrated works, stores and dark rooms (guardroom .. workshop) | Q1B-1..15 | `review/qa1/works.md` | 6 | 9 | 0 |
+
+Before the round 3 of these 151 were checked and 40 reviewed by picture; after, 89 are checked, 59 reviewed by picture
+and 3 marked not covered in their own ledger, each answered in another: Q1W-15 (nox20, a carpet clipped: Q1R-20,
+`lay_carpet` pulls a carpet in where the bed comes first; the motif engine still lays some carpets first), Q1X-19
+(EX-FARMYARD-04's hearth tiles off the fire: Q1R-19, the hearth's brick patch centred on it, `rooms.qa1_hearth_patch`)
+and Q1R-22 (nox15's crypt: Q1C-19..21; nox17's tavern: Q1A, the civic tavern composer). Nox has no wardrobe, dresser,
+bucket or wheelbarrow object: chests, clothes racks, water barrels and the bucket of tools stand in.
 
 ## Totals
 
@@ -251,6 +277,9 @@ track).
 | Thornwick screenshot (TW-12), after | 1 | 1 | 0 | 0 |
 | Transporters (TR), after | 1 | 1 | 0 | 0 |
 | Iron fences (FN), after | 1 | 1 | 0 | 0 |
+| QA round 1 themes (Q1T), after | 2 | 2 | 0 | 0 |
+| QA round 1 items (Q1R/C/X/K/W/G/M/A/B), before | 151 | 3 | 40 | 108 |
+| QA round 1 items, after | 151 | 89 | 59 | 3 |
 | Internal reviews, before | 7 | 0 | 5 | 2 |
 | Internal reviews, after | 7 | 3 | 4 | 0 |
 

@@ -10,6 +10,17 @@ enforced are in `review/FEEDBACK.md`. **Recurring:** marks a fault that came bac
 catches it. The dated history of how each rule came about is kept verbatim in `review/history/PROCESS-2026-10-05.md`
 and in the ROADMAP's playtest log.
 
+**The two standing themes [Q1T-1, Q1T-2]** (QA round 1, 2026-10-13, the user's summary of 301 ratings), which every
+room, scene and map is checked against before the user sees it, rated type or not:
+1. **Full, and of many kinds.** A space is never left empty or filled with one kind of thing (barrels alone, rocks
+   alone, graves alone, tables and chairs alone). Fullness scales with size (bigger rooms hold more groups), and only
+   pieces that read on screen count: bones, candles, cobwebs and loose items are one kind at most and never coverage.
+   Westwood's sparser habits (run caps, open-floor minimums) yield to this. A rework that lines things up must never
+   leave a room emptier than before.
+2. **Balanced and lined up.** Pieces stand in even rows, centred on their walls, carpets and gates, pairs mirrored about
+   the room's or set piece's axis; ceremonial rooms and set pieces (chapels, halls, throne rooms, shrines, graveyards,
+   wells) are composed whole on the line from their door to their centrepiece. Nothing is placed at random.
+
 Work from identity to detail and from the centre outwards. Builds are reproducible: a design and its seed always give
 the same map. Never use Python's `hash()` on strings (it changes from run to run); use `zlib.crc32`.
 
