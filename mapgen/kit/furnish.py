@@ -157,6 +157,26 @@ CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone
 # room's short side in squares (rules/rooms/shells.json: 4 across 19 of 26, 5 across 5 of 13, 6 across 6 of 19, 7
 # across 2 of 9, 8 or more 2 of 19); the others' carpets are 2-5 by 3-8 squares (lay_carpet)
 CARPET_FULL = {3: 0.75, 4: 0.75, 5: 0.4, 6: 0.3, 7: 0.2}
+# Where a floor tile is drawn (QA round 2, Q2T-2: "The carpet is slightly off-center with the door and altar"): tile
+# (x, y) is drawn centred at uv (x + y + 2, x - y - 1) (MapEditor render/TileRenderer.cs draws it at px (23x - 11,
+# 23y + 11), 46 px square; the shells' floors agree: building.py lays a unit's floor at lattice (2i, 2j + 2), and every
+# wall stands at odd u and even v, on the tiles' seams). So the room's squares (i, j) = ((x + y) // 2, (x - y) // 2) sit
+# centred at (2i + 2, 2j - 1): their seams at odd u and even v. lay_carpet's box test (and civic.carpet_rect,
+# shells._squares_under, finish.carpet_box, water.py) read the centre as (2i + 2, 2j), a unit off in v: a carpet laid on
+# a computed v lands a unit toward the SW wall's side (-v) of where it was meant. lay_carpet(true_uv=True) reads boxes in
+# the drawn coordinates; TILE_V_DRAWN is the offset for code that maps tiles to uv.
+TILE_V_DRAWN = -1
+
+
+def square_centre(i, j):
+    """The drawn uv centre of the room square (i, j) (tile (i + j, i - j)): (2i + 2, 2j - 1)."""
+    return 2 * i + 2, 2 * j + TILE_V_DRAWN
+
+
+def seam_parity(axis):
+    """The parity of the squares' seams along uv axis "u" (odd) or "v" (even): a carpet centred on a seam has an even
+    count of squares across that way, one centred on a square's middle an odd count."""
+    return 1 if axis == "u" else 0
 # Gear racks that stand in rows down the middle of a storeroom, one kind to a row (TreePlace v0.3 room review).
 RACKS_PER_ROW = 5
 # a trader's or a smith's racks are wares on show, not a store: three to a row, a row of armour and a row of weapons
@@ -2828,12 +2848,14 @@ class Furnisher:
         """One back wall lined with shelves end to end (an herbalist's potions, a library's books)."""
         return self.line_wall(fam)
 
-    def lay_carpet(self, box=None, margin=0.8, material=None):
+    def lay_carpet(self, box=None, margin=0.8, material=None, true_uv=False, narrow=False):
         """Carpet floor tiles instead of a rug object (Con07B lays carpets in 13 of its 28 rooms). box: uv (u0, u1, v0,
         v1) to cover, grown by `margin`; None covers the whole room but its outer ring of tiles. The carpet is a
         rectangle of the room's squares whose ring of neighbouring squares is the room's own floor too (the gold
         trim is drawn on the ring) and clear of the doors' thresholds; built floors only. The material comes from the
-        building's palette. Returns the squares laid."""
+        building's palette. Returns the squares laid. true_uv: the box is in the drawn coordinates (square_centre, QA
+        round 2, Q2T-2), and so is the box recorded in carpet_boxes; else the old reading, a unit off in v. narrow: a
+        runner one square wide may be laid (two long at least)."""
         if not CARPET_FLOORS.search(self.room.floor or ""): return []
         sq = {((x + y) // 2, (x - y) // 2) for (x, y) in self.room.tiles}
         tile = lambda s: (s[0] + s[1], s[0] - s[1])
@@ -2841,7 +2863,8 @@ class Furnisher:
         inner = {s for s in sq if all((s[0] + a, s[1] + b) in sq for a, b in nb8)}
         if box:                                        # squares whose centre (2i + 2, 2j) lies in the box
             u0, u1, v0, v1 = box[0] - margin, box[1] + margin, box[2] - margin, box[3] + margin
-            inner = {(i, j) for (i, j) in inner if u0 <= 2 * i + 2 <= u1 and v0 <= 2 * j <= v1}
+            dv = TILE_V_DRAWN if true_uv else 0
+            inner = {(i, j) for (i, j) in inner if u0 <= 2 * i + 2 <= u1 and v0 <= 2 * j + dv <= v1}
         if not inner: return []
         i0, i1 = min(i for i, _ in inner), max(i for i, _ in inner)
         j0, j1 = min(j for _, j in inner), max(j for _, j in inner)
@@ -2856,7 +2879,7 @@ class Furnisher:
             else: j1 -= 1
             if i0 > i1 or j0 > j1: return []
             rect = {(i, j) for i in range(i0, i1 + 1) for j in range(j0, j1 + 1)}
-        if i1 - i0 < 1 or j1 - j0 < 1: return []        # at least 2 x 2 squares
+        if (i1 - i0 < 1 or j1 - j0 < 1) and not (narrow and max(i1 - i0, j1 - j0) >= 1): return []   # 2 x 2 at least
         from kit import shells as _SH
         if not box and _SH.ENABLED:
             # Westwood's carpets (rules/rooms/shells.json, 2026-10-05): a small room's carpet is its floor less a ring
@@ -2899,12 +2922,13 @@ class Furnisher:
         if any(tile(s) in self.spec.local_blend for s in rect | ring): return []     # a door's threshold
         mat = material or self.rng.choice(self.palette["carpet"])
         # what it covers, so kit/grammar.py can lift a carpet that relates to nothing and lay it again (lift_carpet)
-        self.carpet_undo.append(dict(box=(2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1, 2 * j1 + 1), mat=mat,
+        dv = TILE_V_DRAWN if true_uv else 0
+        self.carpet_undo.append(dict(box=(2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1 + dv, 2 * j1 + 1 + dv), mat=mat,
                                      floor={tile(s): self.spec.floor.get(tile(s)) for s in rect},
                                      blend={tile(s): self.spec.local_blend.get(tile(s)) for s in ring},
                                      frm={tile(s): set(self.spec.local_from.get(tile(s), ())) for s in ring}))
         for s in rect: self.spec.floor[tile(s)] = mat
-        self.carpet_boxes.append((2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1, 2 * j1 + 1))    # its uv box (rows stay off it)
+        self.carpet_boxes.append((2 * i0 + 1, 2 * i1 + 3, 2 * j0 - 1 + dv, 2 * j1 + 1 + dv))    # its uv box (rows stay off it)
         if mat not in self.spec.blend: self.spec.blending(mat, 40, edge=CARPET_EDGE)
         for s in ring:
             self.spec.local_blend[tile(s)] = -60

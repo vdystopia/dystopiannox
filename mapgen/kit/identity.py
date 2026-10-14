@@ -658,7 +658,7 @@ ROOMS = {
                   # crypt): a centrepiece on the far wall between mana obelisks (4 in 5 crypts), rows of sarcophagi or
                   # breakable coffins either side of the aisle, bones heaped at their heads, statues and tombstones in pairs
                   composer="crypt", lift=("DunMir|", "LOTD|"),
-                  types={"tomb": r"^Crypt\d+$|^Coffin\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
+                  types={"tomb": r"^Crypt\d+$|^Coffin\d$|^CoffinBreaking\d$|^Tombstone\d+$|^DunMirTombstone\d$|^LOTDTombstone",
                          "statue": r"^Statue2[a-h]$|^Obelisk$|^StatueVase[12]|^LOTDManaObelisk$|^Gargoyle\d$",
                          "storage": r"^CryptChest\d$|^DarkCrate[12]$|^Crate[12]$", "column": r"^RuinsColumnIndoorRubble\d+$",
                          "relic": r"^Monument1$|^LOTDCandleGroupSmall\d$|^LOTDFlamingSkulls"},
@@ -969,7 +969,7 @@ ROOMS = {
                          "relic": r"^Monument1$|^LOTDFlamingSkulls|^LOTDCandleGroupSmall\d$",
                          "statue": r"^LOTDManaObelisk$|^Obelisk$|^LOTDJudgementBalance[12]$|^LOTDArk[12]$|^StatueVase[12]|"
                                    r"^Statue2[a-h]$|^Gargoyle\d$",
-                         "tomb": r"^Crypt\d+$|^Coffin\d$|^LOTDTombstone", "bench": r"^Bench\d$|^LightBench\d$",
+                         "tomb": r"^Crypt\d+$|^Coffin\d$|^CoffinBreaking\d$|^LOTDTombstone", "bench": r"^Bench\d$|^LightBench\d$",
                          "column": r"^LOTDColumn1$|^RuinsColumnIndoorRubble\d+$", "stove": r"^Cauldron(Animated)?$",
                          "wall_decor": r"^LOTDTapestry[12]$|^LOTDBanner[12]$"},
                   prefer={"bench": {"Bench1": 1, "Bench2": 1, "Bench4": 1, "Bench5": 1},
@@ -990,9 +990,11 @@ ROOMS = {
                       optional={"lab": (1.0, 10), "shelves": (1.0, 10), "storage": (1.0, 2), "altar": (0.5, 4), "column": (1.0, 4),
                                 "relic": (1.0, 16),
                                 "wall_decor": (1.0, 6)},
-                      types={"statue": r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$|^StatueVase[12]",
+                      # (QA round 2, Q2S-3: fewer obelisks and crystals, the freed floor to other arcane kinds:
+                      # statues, monuments)
+                      types={"statue": r"^Obelisk$|^ObeliskPrimitive$|^LOTDManaObelisk$|^StatueVase[12]|^Statue2[a-h]$",
                              "relic": r"^OrbPoolWithOrb$|^CrystalColumn$|^MineManaCrystal\d+$|^CrystalBlue|^OrbPoolEnd\d$|^MineCrystal\d+$|"
-                                      r"^MineManaCart\d$|^DunMirFlameBasinLit$",
+                                      r"^MineManaCart\d$|^DunMirFlameBasinLit$|^Monument1$",
                              "lab": r"^WizardWorkstation\d[a-d]?$|^FairyJar$|^Orrery[12]$|^Vandegraf(Small|Large)$|^Telescope2[a-g]$",
                              "shelves": r"^Bookcase\d$|^PotionShelves\d$", "storage": r"^DunMirChest\d$|^Chest\d$",
                              "altar": r"^DunMirAltar\d$", "wall_decor": r"^(StarChart|Zodiac)\d[a-d]$",

@@ -536,7 +536,8 @@ def _things():
 
 def _squares_under(o, sq, things, least=0.5):
     """The room's squares (i, j) an object covers (each overlapped by `least` uv units both ways), and the object's uv;
-    a square's centre is uv (2i + 2, 2j), it spans 2 uv units."""
+    a square's centre is uv (2i + 2, 2j - 1) as drawn (kit/furnish.py square_centre; QA round 2, Q2T-2: read as
+    (2i + 2, 2j) the plinths and hearth patches had lain a unit off their pieces in v), it spans 2 uv units."""
     from nox import CELL
     K = CELL / math.sqrt(2)
     u, v = (o["x"] + o["y"]) / CELL, (o["x"] - o["y"]) / CELL
@@ -545,13 +546,13 @@ def _squares_under(o, sq, things, least=0.5):
     out = set()
     for (i, j) in sq:
         ou = min(u + hu, 2 * i + 3) - max(u - hu, 2 * i + 1)
-        ov = min(v + hv, 2 * j + 1) - max(v - hv, 2 * j - 1)
+        ov = min(v + hv, 2 * j) - max(v - hv, 2 * j - 2)
         if ou >= least and ov >= least: out.add((i, j))
     return out, (u, v)
 
 
 def _nearest_square(sq, u, v):
-    return min(sq, key=lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - v) ** 2, s)) if sq else None
+    return min(sq, key=lambda s: ((2 * s[0] + 2 - u) ** 2 + (2 * s[1] - 1 - v) ** 2, s)) if sq else None
 
 
 def zone_material(rng, fam, main, have=None):
@@ -585,6 +586,7 @@ def lay_zones(spec, room, objs, kind=None):
     carpet, a threshold or a carpet's trim), three cells clear of every door, never beside a floor Westwood keeps from
     it. Returns {tile: material} laid."""
     if not ENABLED or not room or not getattr(room, "tiles", None) or not hasattr(spec, "floor"): return {}
+    if getattr(room, "no_zones", False): return {}     # (a set piece that keeps its one floor: kit/sacred.py, Q2S-5)
     import random, zlib
     main = room.floor
     rng = random.Random(zlib.crc32(f"zones:{room.id}".encode()))

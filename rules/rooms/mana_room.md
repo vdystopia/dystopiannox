@@ -72,3 +72,14 @@ of them). Checked by `sacred.fullness`.
 Only pieces a person sees count (QA round 1, third pass: crypts 02 and 05 still read as empty at full size, the count having taken skulls and candles a few pixels wide as kinds): a piece at least an urn's size on screen (a circle of 7 px, a box of 11) with a furniture family, or a standing light (candelabra, brazier, basin); bones, skulls, cobwebs, candles, bottles and books count together as one kind at most and never toward the covered floor (`kit/sacred.py counted_kind`). The dressing fills the back walls (NE, NW) first and stands what is tall there only; a front wall (SE, SW) takes low pieces.
 
 Open floor from 0.30, not Westwood's emptier rooms' figure: the user's first theme of QA round 1, "spaces are too empty and lack object diversity" (Q1T), over Westwood's habit (the coordinator, 2026-10-13). The way in and the reachability checks stand as they were, so the paths stay clear. (`kit/roomtypes.py TYPES["mana_room"]`: open 0.30-0.92.)
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md Q2S-3)
+
+The set: "Way too many mana pillars, obelisks, crystals. Cut them in half. The mana carts look good, but the mana crystals look out of place in the middle of an interior floor. only use a few of them per room and concentrate them in corners." RM-MANAROOM-01..05: "If this room just had the square mana obelisk arrangements with no free standing mana crystals, it would be good."
+
+- **Half the rings**: one under `MANA_TWO_RINGS` (230) tiles, else two (round 1's 1-4); no primitive obelisks in the dressing.
+- **No crystal mid-floor**: the rings' centrepieces are the holy font, Dun Mir's altar, an orrery, the great generator or a fire basin (`MANA_CENTRES`, strict rotation over a map's rooms), the second ring beside a showpiece round a font, a basin or an altar; crystal clusters stand only in the far corners (the near ones too from 200 tiles); no stalagmites flanking the rings, no crystal pillars, no crystals in the dressing.
+- **Mana carts** flank each ring across the room, clear of its carpet; the freed floor takes other arcane kinds (carts, generators, braziers, incense basins, statues, monuments, urns, orb pedestals, jars, fire basins), never on a ring's carpet, filled from both ends of the room in turn and mirrored across the axis on the open floor.
+- **Ring carpets as drawn** (Q2T-2): a ring's carpet is centred under it on the drawn seams, its edge 0.3 past the obelisks.
+
+Checked by `sacred.carpet` (the carpet's middle within 0.25 of the ring on it), `sacred.symmetry`, `sacred.fullness`. Pictures: review/out/qa/qa3/rooms/mana_room/.

@@ -757,16 +757,29 @@ def _build(spec, rng, st, style, U0, V0, W, H, labels, program, entrance_side, b
         bad = lambda p: any(l_ == line_ and abs(along(_xy(U0, V0, p), line_) - a0) < ALTAR_AXIS for l_, a0 in avoid)
         if pt is not None and bad(pt):       # off the altar's axis (the draw is made all the same)
             pt = next((q for _, q in _door_points(run, deg) if not bad(q) and q not in used_points), None)
+        pair = None
         if pt is not None and centre:    # the middle of the whole wall instead (the random draw is made all the same,
-            c = _wall_middle(centre, deg)                # so the rest of the map comes out as before)
-            if c and c not in used_points and not any(abs(c[0] - q[0]) + abs(c[1] - q[1]) <= 4 for q in used_points):
-                pt = c
+            # so the rest of the map comes out as before): the opening centred on it exactly, a single door on a wall
+            # point, a double door across two (QA round 2, Q2T-1: _centre_door), else the point nearest the middle
+            cd = _centre_door(centre, deg, dtype, line_, style)
+            if cd and not any(abs(c[0] - q[0]) + abs(c[1] - q[1]) <= 4 for c in cd[0] for q in used_points):
+                pair, dtype = cd
+                pt = pair[0]
+            else:
+                c = _wall_middle(centre, deg)
+                if c and c not in used_points and not any(abs(c[0] - q[0]) + abs(c[1] - q[1]) <= 4 for q in used_points):
+                    pt = c
         if pt is None or pt in used_points: return None
         # keep doors apart and off points next to another door
         if any(abs(pt[0] - q[0]) + abs(pt[1] - q[1]) <= 4 for q in used_points): return None
         used_points.add(pt)
         gap = _xy(U0, V0, pt)
         line = "/" if run[0] == "u" else "\\"
+        if pair and len(pair) == 2:      # the double door's halves hang from its first cell along the line (nox.Spec.door)
+            used_points.add(pair[1])
+            a, b = _xy(U0, V0, pair[0]), _xy(U0, V0, pair[1])
+            step = (1, 1) if line == "\\" else (1, -1)
+            gap = a if (a[0] + step[0], a[1] + step[1]) == b else b
         o = spec.door(dtype, gap, line)
         d = Door(gap=gap, line=line, type=o["type"], connects=connects, px=(o["x"], o["y"]))
         return d
@@ -954,6 +967,46 @@ def _seat_throne(rooms, room_ids, program, labels, b):
     if any(k and len(rooms[r].tiles) < _kind_min_tiles(k, scaled=False) for r, k in plan.items()): return False
     for r, k in plan.items(): rooms[r].kind = k
     return frozenset((entry, best)), Counter(shared[best]).most_common(1)[0][0]
+
+
+# the double door of each single door's family (SINGLE_OF the other way; a plain wooden door's is the thin wooden pair)
+# (the banded plank pair is drawn as one leaf over one side of its opening, a door off its middle in the editor's render,
+# a probe map's, QA round 2: its single door's pair is the thin wooden pair)
+DOUBLE_OF = dict({single: double for double, single in SINGLE_OF.items()}, BandedWoodenDoor="ThinWoodenDoor")
+
+
+def _door_kind(dtype, line):
+    """"double" or "single": how nox.Spec.door hangs a door type in a wall of this line (rules/out/doors.json)."""
+    from nox import door_rules
+    rule = door_rules()["types"].get(dtype, {})
+    bl = rule.get("by_line", {}).get(line)
+    return bl["kind"] if bl and bl.get("weighted_count", 0) >= 5 else rule.get("kind")
+
+
+def _centre_door(runs, deg, dtype, line, style):
+    """([lattice points], door type) of a door whose opening is centred exactly on the wall the runs make together, or
+    None. QA round 2 (Q2T-1, review/qa2/ledger.md): the axis rooms' doors had stood a unit off their walls' middles in
+    nine of fifteen lab rooms (RM-COVEN-04 "not properly centered", RM-CRYPT-02/04, the chapels' and covens' carpets "off
+    center with the door"): _wall_middle takes the wall point nearest the middle, and a double door's second half hangs a
+    cell to one side of it. A wall point is a wall cell's middle: a single door's opening is centred on one, a double
+    door's between two. So the middle on a point takes the family's single door (the Land of the Dead's halls keep their
+    double door, Q1C-18: DOUBLE_DOOR_STYLES), the middle between two its double door across both."""
+    if not runs: return None
+    kind, ln = runs[0][0], runs[0][1]
+    ps = sorted(p for rn in runs for p in rn[2])
+    if ps != list(range(ps[0], ps[-1] + 1)) or len(ps) < 3: return None
+    pt = (lambda p: (2 * ln, 2 * p)) if kind == "u" else (lambda p: (2 * p, 2 * ln))
+    m2 = ps[0] + ps[-1] + 1                   # twice the middle, in points (edge p runs from point p to p + 1)
+    if m2 % 2 == 0:
+        q = pt(m2 // 2)
+        if deg.get(q) != 2: return None
+        t = dtype
+        if _door_kind(t, line) == "double" and style not in DOUBLE_DOOR_STYLES: t = SINGLE_OF.get(t, t)
+        return ([q], t) if _door_kind(t, line) != "double" else None
+    q0, q1 = pt((m2 - 1) // 2), pt((m2 + 1) // 2)
+    if deg.get(q0) != 2 or deg.get(q1) != 2: return None
+    t = dtype if _door_kind(dtype, line) == "double" else DOUBLE_OF.get(dtype)
+    return ([q0, q1], t) if t and _door_kind(t, line) == "double" else None
 
 
 def _wall_middle(runs, deg):

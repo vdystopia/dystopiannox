@@ -357,9 +357,14 @@ TYPES = {
     # RM-CHAPEL-02, 06 and 07); all three are one symmetric set piece (kit/sacred.py)
     "chapel": dict(
         family="ceremonial", feel="open", kinds=("chapel",), westwood=("chapel",),
-        # (reach: the altar stands a pace out before a saint's statue: kit/sacred.py)
-        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue", where="door", reach=4.5),
-        must={"altar": 1, "bench": 4, "statue": 2}, never=("bed", "desk", "stove", "smithy", "lab", "counter_bar",
+        # (QA round 2, Q2S-1, recurring: "Every single one of these chapels has the same square stone altar. Don't use
+        # that altar in every chapel. Try other objects as alter": the altar is the piece on the axis against the far
+        # wall, one of kit/sacred.py CHAPEL_ALTARS: Dun Mir's stone altar, a saint's tomb, a saint's great statue, the
+        # holy font, a fountain. So the altar the type must hold is its focal piece of any of those kinds, not the
+        # "altar" family, which names the stone altar alone)
+        focal=dict(fam="altar", types=r"^DunMirAltar|^LOTDLichGodStatue|^HorrendousStatue[12]$|^Crypt[13]$|"
+                                      r"^OrbPoolWithOrb$|^Fountain$", where="door", reach=4.5),
+        must={"bench": 4, "statue": 2}, never=("bed", "desk", "stove", "smithy", "lab", "counter_bar",
                                                            "counter_shop", "shop_rack", "table", "straw"),
         never_types=r"Barrel|Crate|Sack|^Bookcase|Trophy",
         walls=dict(back="the altar on the wall across from the main door, in line with it, statues either side",
