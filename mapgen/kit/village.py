@@ -55,6 +55,10 @@ class Village:
         # with a strip three or four squares wide beside it had no garden at all, QA round 2 [Q2X-5, Q2T-7]:
         # EX-GARDEN-02 "There is no garden")
         sizes += [s_ for s_ in ((5, 3), (3, 5)) if s_ not in sizes]
+        # (and that least garden itself, either way round, where no bigger one fits: it had never been tried, so a house
+        # with a strip three or four squares wide beside it had no garden at all, QA round 2 [Q2X-5, Q2T-7]:
+        # EX-GARDEN-02 "There is no garden")
+        sizes += [s_ for s_ in ((5, 3), (3, 5)) if s_ not in sizes]
         # each size with two squares of open land round it first (no crop against the wood's edge or in a pond: the
         # blind judge, 2026-10-05, "rows running into the pine edge, corn touching the tree line"), then with one; the
         # two largest sizes before any smaller one

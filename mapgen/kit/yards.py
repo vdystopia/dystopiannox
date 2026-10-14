@@ -844,7 +844,8 @@ def _graveyard(spec, land, y, fr):
         Umax = max(Ub for _, Ub in cells)
         keep_box(0, Umax + 0.85, Vf - 1.3, D + 1)
         if style != "pair":                               # torch poles either side of the door
-            for sd in (1, -1): lay.put("TorchPole", sd * (ph + 0.6), Vf - 0.8, room=0.7)
+            # (a square before the door wall: the brick floor of the mausoleum runs to its wall line, QA round 2)
+            for sd in (1, -1): lay.put("TorchPole", sd * (ph + 0.6), Vf - 1.05, room=0.7)
     crypt_box = list(keep[:2])
     # ---- the path ----------------------------------------------------------------------------------------------
     # (to the mausoleum's door: on a gate in a j side the walls run through the squares' middles, so the path takes the

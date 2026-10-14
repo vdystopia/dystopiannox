@@ -237,8 +237,9 @@ def _house(ctx, p, role, at, side=None, quiet=False):
                 o = (2 * int(at[0] + di - size[0] / 4), 2 * int(at[1] + dj - size[1] / 4))
                 if not land.lot_free(o, size, margin=1): continue
                 # (a scene's planned ground, a garden's site, keeps the neighbours' lots off it: Q2X-5)
-                if ctx.get("keep_out") and any((o[0] // 2 + a, o[1] // 2 + 1 + b) in ctx["keep_out"]
-                                               for a in range(-1, size[0] // 2 + 1) for b in range(-1, size[1] // 2 + 1)):
+                keep_ = ctx.get("keep_out", {}).get(p.k)
+                if keep_ and any((o[0] // 2 + a, o[1] // 2 + 1 + b) in keep_
+                                 for a in range(-1, size[0] // 2 + 1) for b in range(-1, size[1] // 2 + 1)):
                     continue
                 b = generate_building(m, p.rng, o, size, r["style"], program=program, entrance_side=side,
                                       building_id=f"H{p.k}", occupied={square_tile(*s) for s in land.taken}, tries=10,
@@ -279,10 +280,13 @@ def _garden_plan(ctx):
             site = Village(ctx["m"], random.Random(0), land).garden(
                 h[1], size=GARDEN_SIZE[p.size], dry=True,
                 inside=lambda s_: math.hypot(s_[0] + 0.5 - p.c[0], s_[1] - 0.5 - p.c[1]) <= p.r - 2)
-            if site:
+            # (only where nothing but the least garden fits by the house, and from that clearing's own neighbours: a
+            # house with room for more keeps its neighbours as before, so the gardens rated well in round 2 are laid
+            # as they were)
+            if site and site[2] * site[3] <= 15:
                 gi, gj, w, h_ = site
-                ctx.setdefault("keep_out", set()).update((gi + a, gj + b) for a in range(-1, w + 1)
-                                                         for b in range(-1, h_ + 1))
+                ctx.setdefault("keep_out", {}).setdefault(p.k, set()).update(
+                    (gi + a, gj + b) for a in range(-1, w + 1) for b in range(-1, h_ + 1))
 
 
 def _garden_build(ctx):
@@ -484,7 +488,7 @@ def _house_plan(roles, square=0):
                 ctx.setdefault("square_keep", set()).update(sq_)
                 # and from the neighbours' lots: a cottage built at the square's edge had been the nearest house to
                 # half of it, where a stall must stand by its store (kit/scenes market_stall, need)
-                ctx.setdefault("keep_out", set()).update(
+                ctx.setdefault("keep_out", {}).setdefault(p.k, set()).update(
                     (int(p.scene_c[0]) + a, int(p.scene_c[1]) + 1 + b) for a in range(-7, 8) for b in range(-7, 8)
                     if a * a + b * b <= 49)
             if square: _keep(ctx, p.scene_c, square)

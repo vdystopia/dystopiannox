@@ -742,7 +742,7 @@ def bandit_camp(spec, rng, land, centre, toward, loot, sleepers=4, tents=2, trad
     # so that its back is against the wall"), its variant by the wall's side (CHEST_BACK); in the open, its back to the
     # wood and its front to the fire
     sweep_ = tuple((r_, _ang(a_ - ca)) for r_ in (R["tent"] - 46, R["store"] * 0.6, 70) for a_ in _sweep(ca, a_in, n=16))
-    for reach_, spots_ in ((90, spots_), (0, spots_), (140, sweep_), (0, sweep_)):
+    for reach_, spots_ in ((90, spots_), (140, sweep_), (230, sweep_), (0, spots_), (0, sweep_)):
         for r, d in spots_:
             a_ = ca + d
             t_ = CHEST_BACK[(1 if math.cos(a_) >= 0 else -1, 1 if math.sin(a_) >= 0 else -1)]
