@@ -936,6 +936,14 @@ class Finish:
             self.step("hang_row", self.s["hang"])
         self.keep_kinds()
         self.cur = "face"
+        if getattr(self, "_axis_used", False) and self.f.aisle is None:
+            # a room composed on its axis tells the statue pass where the aisle is, so an avenue's statues face it (and
+            # one on the axis faces the way in) instead of their neighbour down the row (QA round 2, Q2T-3; checks
+            # qa2.facing). Set only now, after placing: the aisle would otherwise also hold placements off it
+            far = self.axis_back_run()
+            if far:
+                self.f.aisle = dict(run=far, mid=self.axis_along(), half=1.2, first=0.0, far=self.f._depth_of(far),
+                                    door=self.f.main_door())
         self.f.face_statues()                       # every statue faces into the room (GW-7)
         self.log["reach x100"] = int(100 * self.reach()[0])
         if DEBUG:
@@ -1472,6 +1480,7 @@ class Finish:
         it, benches in mirrored pairs, lights or basins in the two far corners (and the near ones in a big room), coffins
         in mirrored pairs along the side walls, hangings in a pair on the far wall; a ring of obelisks round a basin in
         the middle of a big shrine."""
+        self._axis_used = True
         f = self.f
         op = f.main_door()
         far = self.axis_back_run()

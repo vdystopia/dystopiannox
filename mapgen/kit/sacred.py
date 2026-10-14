@@ -120,6 +120,12 @@ class Axis:
         self.far = min(same, key=lambda r: abs(r["coord"] - coord), default=None)
         self.near = next((r for r in self.g.runs if r["line"] == line and abs(r["coord"] - coord) < 0.6
                           and r["lo"] - 0.5 <= mid <= r["hi"] + 0.5), None)
+        if self.near is None:
+            # the axis runs through the doorway itself (the main door centred on it since QA round 2): the door's wall
+            # is the run of that line either side of the gap. Without it the pews took the far (altar) wall's variant
+            # and faced the door (checks qa2.facing, Westwood's Bench1/2/4/5 per wall side)
+            self.near = min((r for r in self.g.runs if r["line"] == line and abs(r["coord"] - coord) < 0.6),
+                            key=lambda r: min(abs(r["lo"] - mid), abs(r["hi"] - mid)), default=None)
         self.D = abs(self.far["coord"] - coord) if self.far else 0.0
         # the back side across the axis: a / axis looks along u, its +v side is the NE wall (a back wall); a \ axis
         # looks along v, its -u side is the NW wall

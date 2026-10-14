@@ -767,7 +767,11 @@ class Furnisher:
         exempt = {id(r_) for r_ in (self._group or ())}
         me = (u, v, hu, hv)
         for tt, rec in self._typed:
-            if rec[5] == "wall" or id(rec) in exempt: continue
+            if rec[5] == "wall": continue
+            # a group's own pieces may stand close, but a crate is never a heap's member (kit/gaps.py): a composed heap's
+            # crate keeps its gap too (RM-KITCHEN-04/05: "The apple crate is too close to the rectangular crate"; the
+            # civic heaps had slipped it through as one group)
+            if id(rec) in exempt and not (GP.CRATE.match(GP.base(t)) or GP.CRATE.match(GP.base(tt))): continue
             if not (blocking and rec[4]) and not (GP.RUG.match(t) or GP.RUG.match(tt)): continue
             need = GP.need(t, tt)
             if need and GP.box_gap(me, rec) < need:
@@ -3522,8 +3526,11 @@ class Furnisher:
             elif self.aisle:
                 r, mid = self.aisle["run"], self.aisle["mid"]
                 along = v if r["line"] == "/" else u
-                s = 1 if mid > along else -1
-                want = (0, s) if r["line"] == "/" else (s, 0)
+                if abs(mid - along) < 0.5:             # on the axis itself: toward the way in, away from the far wall
+                    want = (r["sign"], 0) if r["line"] == "/" else (0, r["sign"])   # (QA round 2, EX-SHRINE-05, Q2T-3)
+                else:
+                    s = 1 if mid > along else -1
+                    want = (0, s) if r["line"] == "/" else (s, 0)
             else:
                 twins = [(p_rec[0], p_rec[1]) for p, p_rec in statues if p is not o and
                          (abs(p_rec[0] - u) < 0.6 or abs(p_rec[1] - v) < 0.6) and math.hypot(p_rec[0] - u, p_rec[1] - v) < 16]
