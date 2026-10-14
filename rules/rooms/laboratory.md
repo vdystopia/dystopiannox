@@ -33,6 +33,26 @@ it. In the middle, the alchemist's work table.
 - **Movement:** along the length between the zones.
 
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Back walls:** the desk with its chair centred on a back wall (placed if the recipe left none), that wall's longest
+  stretch lined with bookcases end to end, potion shelves at both ends; on the other back wall a work bench of two or
+  three workstations centred, potion shelves closing it, a chest; tapestries on what is bare.
+- **The middle:** the alchemist's table with its stools, the cauldron at one end and a fairy jar at the other, on the
+  room's long axis; in a big laboratory, workstation islands, back-to-back stacks of bookcases and generators in
+  mirrored pairs either side of it ("no large empty middle").
+- **Corners:** a generator in each of the W and E corners; reagent sacks and a dark crate heaped in the S corner.
+- **Lights:** candelabras in mirrored pairs.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Archetypes
 
 Westwood's 6 curated campaign laboratory rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).

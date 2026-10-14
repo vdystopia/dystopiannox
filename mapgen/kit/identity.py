@@ -1254,12 +1254,14 @@ ROOMS = {
                                 "wall_decor": {"LOTDTapestry1": 1, "LOTDTapestry2": 1},
                                 "bones": {"Skull": 3, "ArmBone": 3, "LegBone": 2}},
                         lights={"LOTDWallSconse1": 2, "LOTDCandleabra1": 1},
-                        lift=("LOTD|", "Lich|"),     # its own pieces in any building (a town house had shown none)
+                        lift=("LOTD|", "Lich|", "Coffin|"),     # its own pieces in any building (a town house had shown none)
                         top_up=(),
-                        # (QA round 1: the rest on the door's axis in mirrored pairs, kit/finish.py)
                         compose=[dict(fam="altar", slot="wall", at="center", clear=2.6, deep=True, door=True),
-                                 dict(fam="statue", slot="flank", of="altar", gap=0.8)],
-                        fill=[]),
+                                 dict(fam="statue", slot="flank", of="altar", gap=0.8),
+                                 dict(fam="basin", slot="wall", at="corner", clear=0.8, n=2),
+                                 dict(fam="bones", slot="scatter", per100=8, cluster=(1, 3)),
+                                 dict(fam="wall_decor", slot="decor")],
+                        fill=[dict(fam="statue", slot="wall", at="corner", clear=0.8, max=2)]),
     # a gallery (Con07E / War07D, 208-210 tiles: seven paintings, sixteen lanterns, nine plants, an orrery, tapestries,
     # two flame basins, a statue)
     "gallery": dict(base="hall", grand=True,
@@ -1325,7 +1327,7 @@ ROOMS = {
                       optional={"column": (0.5, 4)},
                       types={"statue": r"^Statue2[aceg]$", "storage": r"^CryptChest[1-4]$", "column": r"^Column[5-8]$"},
                       prefer={"storage": {"CryptChest1": 1, "CryptChest2": 1, "CryptChest3": 1, "CryptChest4": 1}},
-                      lift=("Crypt|",),
+                      lift=("Crypt|", "Coffin|"),      # (QA round 1: its breakable coffins, kit/finish.py)
                       # Westwood's are symmetric (mirror symmetry 0.85-1) and lit (0.06 lights a tile): the statues
                       # stand in mirrored pairs (GROUPS statues), the chest centred on a back wall
                       top_up=(), lights_per100=6.0, decor_max=0,
@@ -1347,7 +1349,7 @@ ROOMS = {
                     optional={"monument": (0.8, 2), "tomb": (0.4, 1)},
                     types={"storage": r"^CryptChest[1-4]$", "monument": r"^Monument1$", "tomb": r"^Coffin[1-4]$"},
                     prefer={"bones": {"Skull": 3, "ArmBone": 3, "LegBone": 3}, "monument": {"Monument1": 1}},
-                    lift=("Crypt|", "Coffin|"),
+                    lift=("Crypt|", "Coffin|", "|Tomb"),     # (QA round 1: its graves among the bones, kit/finish.py)
                     top_up=(),
                     compose=[dict(fam="storage", slot="wall", at="corner", clear=1.2, n=2),
                              dict(fam="monument", slot="wall", at="center", clear=0.8, n=2),

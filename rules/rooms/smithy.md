@@ -27,6 +27,24 @@ The forge's glowing coals (a cinder bin) centred on a back wall, the bellows bes
   weapon racks.
 - **Movement:** from the door to the counter; the forge behind.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The forge** stands on a bordered square of brick centred under it ("place furnaces on a small brick square", nox17;
+  Q1B-8).
+- **Back walls:** a row of hanging swords and pole arms centred on the other back wall, armour stands closing it.
+- **Corners and walls:** water barrels, steel crates and tool barrels heaped in the S corner, the same small heap in the
+  W and E corners; heaps of iron and tools along the walls, never one kind.
+- **The middle:** the counter the recipe set; in a big smithy stacks of stock in mirrored pairs on the axis.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (2 rooms, Con06b, War06b) | Profile |

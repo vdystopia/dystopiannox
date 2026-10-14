@@ -29,6 +29,29 @@ The watch's table in the middle, chairs round it, a meal on it (RoundTableWithFo
 - **Movement:** in at the door, past the table, to the cell door or the stair beyond.
 
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **Back walls:** the cots (one, two from 50 tiles) in a row on the shorter back wall; on the longer one a row of weapon
+  racks (hanging swords, pole arms, bow racks) centred on its bare stretch and evenly spaced, the kinds mirrored (A B
+  A), armour stands closing a row of three or more; both back walls in a room of 90 tiles ("Larger rooms need to have
+  things like weapon racks along their walls", Q1B-4). A chest centred on what is left, the space before it clear; a
+  bench; trophies or tapestries on the bare stretches last.
+- **The middle:** the watch's table with its chairs centred on a carpet in the middle of the room (snapped to the
+  floor's squares, so the carpet is even round it), placed before anything else; in a room of 60 tiles or more, armour
+  stands and target barrels in mirrored pairs on the long axis either side of it.
+- **Front walls and corners:** water and ale barrels with a crate heaped in the S corner, the same small heap in the W
+  and E corners; front heaps never more than half a wall (supplies do not line a guardroom's walls).
+- **Lights:** candelabras in mirrored pairs (the W and E corners, then N and S).
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Archetypes
 
 Westwood's 11 curated campaign guardroom rooms differ in structure, not just in details (clustered by where the focal stands, how the room is zoned, which walls are used, what the middle holds, density: `mapgen/kit/archetypes.py`). Each room draws one by these frequencies, spread over a map's rooms of the type; both engines compose from it (the recipe engine: `kit/identity.py ARCHETYPE_RECIPES`; the motif engine: its zone plans from the archetype's rooms).

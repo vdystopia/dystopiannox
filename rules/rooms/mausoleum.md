@@ -26,6 +26,26 @@ The great tomb (a sarcophagus) in the middle.
 - **Front walls:** bare.
 - **The middle:** the great tomb, statues of the dead in pairs facing it, a pair of columns in a big one.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The axis** from the main door (or the room's middle, when the door stands well off it): the great tomb on it in the
+  middle of the room, its length along it; a runner from the door to the tomb; an avenue of statues in mirrored pairs at
+  even steps either side of the runner and beyond the tomb; a crypt chest centred on the far wall with a statue either
+  side of it; obelisks in the two far corners (and the near ones in a big room); breakable coffins in mirrored pairs
+  along the side walls; a pair of tapestries on the far wall when it is a back wall (Q1B-7, Q1B-12: "Use the breakable
+  coffin objects sometimes", "bones", "a high chance ... to contain mana obelisks").
+- **Walls:** bone heaps and monuments, every unit mirrored across the axis; statues face into the room.
+- **Lights:** candelabras in mirrored pairs.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (4 rooms, 2 maps) | Profile |

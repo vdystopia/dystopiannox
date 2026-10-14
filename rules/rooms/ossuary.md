@@ -25,6 +25,27 @@ None: the heaps of bones.
 - **Front walls:** bones.
 - **The middle:** bones in heaps, a way kept through them to the chests.
 
+## QA round 1: the themes applied (2026-10-13)
+
+The user rated other types in QA round 1 and asked that the round's themes apply to this one ("Much of the feedback
+boiled down to": too empty, not enough object diversity; no balance or symmetry, things placed randomly, not lined up
+with each other). These rules override the Westwood-measured sparseness above where they differ; `kit/finish.py`
+composes the room by them after the recipe (its loose pieces are taken up first: `SPEC[kind]['keep']`), ledger
+`review/qa1/works.md` (Q1B-n).
+
+- **The axis** from the main door: a crypt chest centred on the far wall, a second on the long back wall;
+  candelabras in mirrored pairs. A pair of monuments in the side corners (Westwood's Con04a holds two), else one
+  monument in the middle on the axis: a showpiece stands twice only 10 units apart, so never as a pair across a
+  narrow room's axis. No coffins or obelisks out on the floor: they read as a crypt or a mausoleum.
+- **The bones are the room:** heaps of skulls and long bones along every wall, mirrored across the axis, with a
+  tombstone or two among them (the walls' `grave` unit); three heaps at most out on the middle's spots (more read as
+  strewn). A crypt chest at least (the profile's must); a chest stands against a back wall, never loose on the floor.
+- **At most four of a kind** (the profile's repeat rule; `SPEC[kind]['repeat']`): the walls' top-up and the extra
+  pieces stop at four tombstones.
+- **Never emptier:** the room ends with at least the visible pieces and kinds its recipe gave it, and master's lab
+  average for the type (a tenth more in a room of 80 tiles; `SPEC[kind]['least']`, `Finish.top_up`); bones, candles
+  and small gears are one kind at most and never count as pieces.
+
 ## Density and openness
 
 | | Westwood's campaign (4 rooms, 2 maps) | Profile |

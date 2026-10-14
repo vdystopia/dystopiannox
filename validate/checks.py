@@ -763,6 +763,9 @@ def identity_strays(kind, objects):
             if fam in ident["core"] or fam in ident["optional"] or (fam in ("chair", "bench") and "table" in ident["core"]):
                 pat = ident.get("types", {}).get(fam)
                 if not pat or _re.search(pat, o["type"]): ok = True
+            # the pieces a kind's composition takes in beyond its recipe's plan (kit/finish.py ALLOW, QA round 1)
+            more = ident.get("allow", {}).get(fam)
+            if more and _re.search(more, o["type"]): ok = True
         if not ok: out.add(o["type"])
     return out
 
@@ -2324,16 +2327,15 @@ QA1_PAIRED = re.compile(r"^(Obelisk|LOTDManaObelisk|Statue2[a-h]|DunMirFlameBasi
 QA1_SUPPLY = re.compile(r"Barrel|Crate|Sack|PiledBarrels")
 
 
-def _main_door_uv(m, r):
-    """(line, coord, along) of the room's main doorway (the one to the outside, else its first), in uv."""
+def _room_doors_uv(m, r):
+    """[(line, coord, along)] of the room's doorways, in uv."""
     cells = set(r["cells"])
-    best = None
+    out = []
     for d in m.doors:
         gx, gy = d["gap"]
         if not any((gx + a, gy + b) in cells for a in (-1, 0, 1) for b in (-1, 0, 1)): continue
-        coord, along = (gx + gy + 1, gx - gy) if d["line"] == "/" else (gx - gy, gx + gy + 1)
-        if best is None: best = (d["line"], coord, along)
-    return best
+        out.append((d["line"], gx + gy + 1, gx - gy) if d["line"] == "/" else (d["line"], gx - gy, gx + gy + 1))
+    return out
 
 
 def qa1_flags(m, r, kind):
@@ -2344,27 +2346,37 @@ def qa1_flags(m, r, kind):
                                                                         o["type"])]
     tiles = r.get("tiles") or len(r["cells"])
     if kind in QA1_AXIS_KINDS:
-        door = _main_door_uv(m, r)
-        if door:
-            line = door[0]
-            al = lambda o: uv_of(o)[1] if line == "/" else uv_of(o)[0]
-            pe = lambda o: uv_of(o)[0] if line == "/" else uv_of(o)[1]
-            paired = [o for o in objs if QA1_PAIRED.match(o["type"])]
+        doors = _room_doors_uv(m, r)
+        paired = [o for o in objs if QA1_PAIRED.match(o["type"])]
+        cells = r["cells"]
 
-            def lone_about(a0):
-                out_ = []
-                for o in paired:
-                    if abs(al(o) - a0) < 0.6: continue                    # on the axis itself
-                    k = re.sub(r"\d+[a-z]?$", "", o["type"])
-                    if not any(q is not o and re.sub(r"\d+[a-z]?$", "", q["type"]) == k and abs(pe(q) - pe(o)) < 0.9
-                               and abs((al(q) - a0) + (al(o) - a0)) < 0.9 for q in paired):
-                        out_.append(o)
-                return out_
-            # the axis is the main door's line, or the middle of the room across it (kit/finish.py axis_along)
-            cells = r["cells"]
-            alongs = [(x - y) if line == "/" else (x + y + 1) for x, y in cells]
-            lone = min((lone_about(a) for a in (door[2], (min(alongs) + max(alongs) + 1) / 2.0,
-                                                 (min(alongs) + max(alongs)) / 2.0)), key=len)
+        def lone_about(line, a0):
+            al = (lambda o: uv_of(o)[1]) if line == "/" else (lambda o: uv_of(o)[0])
+            pe = (lambda o: uv_of(o)[0]) if line == "/" else (lambda o: uv_of(o)[1])
+            out_ = []
+            for o in paired:
+                if abs(al(o) - a0) < 0.6: continue                    # on the axis itself
+                k = re.sub(r"\d+[a-z]?$", "", o["type"])
+                if not any(q is not o and re.sub(r"\d+[a-z]?$", "", q["type"]) == k and abs(pe(q) - pe(o)) < 0.9
+                           and abs((al(q) - a0) + (al(o) - a0)) < 0.9 for q in paired):
+                    out_.append(o)
+            return out_
+        if doors:
+            # the axis: a doorway's line, or the middle of the room across it (kit/finish.py axis_along), whichever the
+            # room is composed on
+            cands = []
+            for line, coord, along in doors:
+                alongs = [(x - y) if line == "/" else (x + y + 1) for x, y in cells]
+                axes = [along, (min(alongs) + max(alongs) + 1) / 2.0, (min(alongs) + max(alongs)) / 2.0]
+                # and the line the pieces themselves are mirrored about most often, near the door's or the middle's
+                al = (lambda o: uv_of(o)[1]) if line == "/" else (lambda o: uv_of(o)[0])
+                pe = (lambda o: uv_of(o)[0]) if line == "/" else (lambda o: uv_of(o)[1])
+                mids = collections.Counter(round((al(a) + al(b)) / 2 * 4) / 4 for i, a in enumerate(paired)
+                                           for b in paired[i + 1:] if abs(pe(a) - pe(b)) < 0.9)
+                axes += [x for x, _ in mids.most_common(3) if min(abs(x - y) for y in axes[:3]) <= 1.5]
+                for a in axes:
+                    cands.append(lone_about(line, a))
+            lone = min(cands, key=len)
             if len(lone) >= 2:
                 out.append(("composition.qa1_axis", f"{kind.replace('_', ' ')} room: {len(lone)} statues, obelisks, "
                             f"basins or coffins have no mirrored partner across the axis from the main door ("
