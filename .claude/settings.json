@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "py \"C:/GOG Games/Nox/dystopiannox/tools/hooks/no_old_rebuilds.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
