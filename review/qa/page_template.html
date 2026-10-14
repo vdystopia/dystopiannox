@@ -61,6 +61,28 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
 .lb .nav { display: flex; gap: 10px; justify-content: center; padding-top: 8px; }
 .lb .nav button { font: 600 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
 .empty { color: var(--muted); padding: 40px 0; }
+/* the previous round beside this one (context.json) */
+.intro { max-width: 80ch; margin: 0; padding: 10px 14px; border-left: 3px solid var(--gold); background: var(--panel); display: grid; gap: 6px; }
+.intro p { margin: 0; }
+.prev { display: grid; gap: 8px; max-width: 100%; min-width: 0; }
+.prev .head { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.pill { font: 500 12px var(--mono); padding: 2px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--fg); font-variant-numeric: tabular-nums; }
+.pill.quiet { color: var(--muted); }
+.change { margin: 0; max-width: 90ch; }
+.change b { font: 600 12px var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-right: 6px; }
+.prev details { max-width: 100%; min-width: 0; color: var(--muted); font-size: 14px; }
+.prev details summary { cursor: pointer; font-weight: 600; }
+.prev details p { margin: 6px 0 0; max-width: 90ch; white-space: pre-wrap; }
+.strip { margin-top: 6px; background: #0d0d10; border-radius: 6px; overflow-x: auto; }
+.strip button { display: block; width: max(100%, 900px); border: 0; padding: 0; background: none; cursor: zoom-in; }
+.strip img { display: block; width: 100%; height: auto; }
+.now { font: 600 12px var(--body); text-transform: uppercase; letter-spacing: .08em; color: var(--gold); margin: 4px 0 0; }
+.lbs { position: fixed; inset: 0; background: rgba(0,0,0,.94); z-index: 21; display: grid; place-items: center; padding: 16px; }
+.lbs > div { width: 100%; max-width: 2800px; display: grid; gap: 8px; }
+.lbs .wide { overflow-x: auto; }
+.lbs img { display: block; width: max(100%, 1400px); max-width: none; height: auto; }
+.lbs .nav { display: flex; justify-content: center; }
+.lbs .nav button { font: 600 14px var(--body); background: var(--panel); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 14px; cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 
@@ -70,6 +92,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
     <p class="lede">Every picture has its own ID. Rate it 1-5, mark it Keep, Fix or Drop, and add a note if you like.
       Each type also has a box for notes on the whole set. Everything saves as you go, and Claude reads it back from here.
       Click a picture to see it larger (arrow keys step through).</p>
+    <div class="intro" id="intro" hidden></div>
   </header>
   <div class="bar">
     <div class="tabs" role="tablist" id="tabs"></div>
@@ -86,9 +109,17 @@ button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-
     <div class="nav"><button id="lbPrev">Previous</button><button id="lbClose">Close</button><button id="lbNext">Next</button></div>
   </div>
 </div>
+<div class="lbs" id="lbs" hidden>
+  <div>
+    <div class="lbcap" id="lbsCap"></div>
+    <div class="wide"><img id="lbsImg" alt=""></div>
+    <div class="nav"><button id="lbsClose">Close</button></div>
+  </div>
+</div>
 
 <script>
 const ITEMS = /*ITEMS*/[];
+const CONTEXT = /*CONTEXT*/{};
 const CATS = [["room","Rooms"],["exterior","Exteriors"],["bridge","Bridges"],["dock","Docks"],["gauntlet","Gauntlets"],["mod","Mods"],["campaign","Campaign"]];
 const ratings = {}, typenotes = {};
 let db = null, writable = true, cat = "room";
@@ -191,6 +222,8 @@ function renderAll() {
     s.innerHTML = `<h2><span></span><code></code></h2><div class="tnote"><label for="tn-${key}">Notes on the whole set</label><textarea id="tn-${key}"></textarea></div><div class="grid"></div>`;
     s.querySelector("h2 span").textContent = t.replace(/_/g, " ").replace(/\b\w/g, m => m.toUpperCase());
     s.querySelector("h2 code").textContent = `${pref}-01 … ${g[g.length - 1].id.match(/\d+$/)[0]}`;
+    const cx = CONTEXT[key];
+    if (cx) s.querySelector(".tnote").before(prevBlock(cx));
     const ta = s.querySelector("textarea"); ta.value = (typenotes[key] || {}).note || "";
     ta.oninput = () => debounce("t" + key, () => saveType(key, ta.value), 900);
     const grid = s.querySelector(".grid");
@@ -199,6 +232,44 @@ function renderAll() {
     const o = document.createElement("option"); o.value = s.id; o.textContent = s.querySelector("h2 span").textContent + ` (${g.length})`; sel.appendChild(o);
   }
   sel.onchange = () => document.getElementById(sel.value).scrollIntoView({ block: "start" });
+}
+
+const nice = t => t.replace(/_/g, " ");
+function prevBlock(cx) {
+  const prev = (CONTEXT._prev || "previous round").replace(/^round(\d+)$/, "round $1");
+  const parent = cx.split ? nice(cx.split) : null;
+  const b = document.createElement("div"); b.className = "prev";
+  const head = document.createElement("div"); head.className = "head";
+  const pill = document.createElement("span"); pill.className = "pill" + (cx.avg == null ? " quiet" : "");
+  pill.textContent = cx.avg == null ? `Not rated in ${prev}`
+    : parent ? `Rated as part of ${parent} in ${prev}: ${cx.avg.toFixed(1)} / 5` : `${prev[0].toUpperCase() + prev.slice(1)}: ${cx.avg.toFixed(1)} / 5, ${cx.rated} rated`;
+  head.appendChild(pill); b.appendChild(head);
+  if (cx.change) { const p = document.createElement("p"); p.className = "change"; p.innerHTML = "<b>What changed</b>"; p.append(cx.change); b.appendChild(p); }
+  if (cx.note) {
+    const d = document.createElement("details"), sm = document.createElement("summary"), p = document.createElement("p");
+    sm.textContent = `Your ${prev} note on ${parent || "this set"}`; p.textContent = cx.note; d.append(sm, p); b.appendChild(d);
+  }
+  if (cx.before) {
+    const d = document.createElement("details"), sm = document.createElement("summary");
+    d.open = true;
+    sm.textContent = `Before: ${prev} pictures${parent ? " (" + parent + ")" : ""}`;
+    const w = document.createElement("div"); w.className = "strip";
+    const btn = document.createElement("button"); btn.setAttribute("aria-label", "Enlarge the " + prev + " pictures");
+    const img = document.createElement("img"); img.src = cx.before; img.loading = "lazy"; img.width = 2800; img.height = 440;
+    img.alt = prev + ": " + cx.ids_before.join(", ");
+    btn.appendChild(img); btn.onclick = () => { $("#lbsImg").src = cx.before; $("#lbsImg").alt = img.alt; $("#lbsCap").textContent = img.alt; $("#lbs").hidden = false; $("#lbsClose").focus(); };
+    w.appendChild(btn); d.append(sm, w); b.appendChild(d);
+  }
+  const now = document.createElement("p"); now.className = "now"; now.textContent = "This round: rate each picture"; b.appendChild(now);
+  return b;
+}
+$("#lbsClose").onclick = () => { $("#lbs").hidden = true; };
+$("#lbs").onclick = e => { if (e.target.id === "lbs" || e.target.parentElement && e.target.parentElement.id === "lbs") $("#lbs").hidden = true; };
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#lbs").hidden) $("#lbs").hidden = true; });
+if (CONTEXT._intro && CONTEXT._intro.length) {
+  const box = $("#intro");
+  for (const t of CONTEXT._intro) { const p = document.createElement("p"); p.textContent = t; box.appendChild(p); }
+  box.hidden = false;
 }
 
 let lbIdx = -1;

@@ -3,8 +3,11 @@
 item ID; `typenotes`, one per type) so Claude can read the feedback back.
 
     py review/qa/page.py <round>     -> review/out/qa/<round>/site/index.html + site/sheets/*.jpg
+
+When review/out/qa/<round>/context.json exists (review/qa/context.py), each type also shows the previous round:
+its pictures (site/before/*.jpg), mean rating, the user's set note and what changed.
 """
-import json, os, sys
+import json, os, re, shutil, sys
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -43,8 +46,19 @@ def main(rnd):
                              bx=round(c / (COLS - 1) * 100, 4),
                              by=round(y_off / (H - TH) * 100, 4) if H > TH else 0,
                              bs=round(W / TW * 100, 3)))
+    ctx = {}
+    cp = os.path.join(base, "context.json")
+    if os.path.exists(cp):
+        ctx = json.load(open(cp, encoding="utf-8"))
+        os.makedirs(os.path.join(site, "before"), exist_ok=True)
+        for k, v in ctx.items():
+            if not k.startswith("_") and v.get("before"):
+                shutil.copyfile(os.path.join(base, v["before"]), os.path.join(site, v["before"]))
+    m = re.fullmatch(r"round(\d+)", rnd)
     tpl = open(os.path.join(HERE, "page_template.html"), encoding="utf-8").read()
-    html = tpl.replace("/*ITEMS*/[]", json.dumps(data, separators=(",", ":"))).replace("ROUND_NAME", rnd)
+    html = (tpl.replace("/*ITEMS*/[]", json.dumps(data, separators=(",", ":")))
+               .replace("/*CONTEXT*/{}", json.dumps(ctx, separators=(",", ":"), ensure_ascii=False))
+               .replace("ROUND_NAME", m.group(1) if m else rnd))
     open(os.path.join(site, "index.html"), "w", encoding="utf-8").write(html)
     print(f"{len(data)} items, {len(by_sheet)} sheets -> {site}")
 
