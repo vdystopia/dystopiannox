@@ -79,3 +79,7 @@ The torturer beside the rack, the questioner behind his desk; never between the 
 - Westwood: Wiz07C, cell 132,124 (40 tiles: a rack, a body's remains, a chest, a candelabra, empty shelves); Con08d, cell
   151,170 (20 tiles: remains and a chest).
 - Ours: the room lab's torture chambers.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-TORTURECHAMBER-03 (99 tiles): "For a large torture chamber like this, add two torture racks instead of one." From about 90 tiles the chamber has two racks, mirrored about its axis. [Q2N-10] Not re-rendered this pass (a single note; the user's scope).

@@ -57,3 +57,7 @@ a stool along the wall), bone_pit (Con05B: the rack and carcass touching, bones 
 barrels, a big sack chest, rocks in one clump by the wall), cave_fire (Wiz02C: benches on opposite sides, barrels and
 water barrels in a knot at the wall, torch poles at the wall). The fire 108-212 px from the wall; never a gate, straw,
 bed or bearskin in the open (Con09b's beds are inside its hut). AUC 0.828 -> 0.558.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+EX-OGRECAMP-05: "The path runs directly into the wall instead of out of the camp. Otherwise, very good." A camp's path leads out through its opening to the road or passage, never into the rock. [Q2N-3] Not re-rendered this pass (a single note; the user's scope).

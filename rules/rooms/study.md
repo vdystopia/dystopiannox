@@ -110,3 +110,7 @@ For this type:
 - The chest centred on the other back wall between bookcases end to end.
 - The meeting table centred on its carpet; the S corner's reading set; urns in the W and E corners; a pair of statues
   on a front wall in a big study; reading sets mirrored where the floor is still bare.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-STUDY-05 (Galava tower): "It looks like the north corner has doors for walls." No door piece may stand in as wall at a corner; a corner is closed with the style's own corner wall pieces. [Q2N-9] Not re-rendered this pass (a single note; the user's scope).

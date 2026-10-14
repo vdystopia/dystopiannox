@@ -128,3 +128,7 @@ For this type:
 - The household's round table with four chairs centred on its carpet (2x2 to 4x4 squares by size) in the open middle.
 - The S corner: a small table with two chairs. The W and E corners: barrels, a water barrel, crates and sacks heaped.
 - 60 tiles or more: a pair of benches mirrored on a front wall; sitting sets where the floor is still bare.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-LIVINGROOM-05: "The positioning of the crate in the west corner is awkward. It sticks out into the room. Move it against a wall." Storage stands flush against its wall (Q2T-5). [Q2N-8] Not re-rendered this pass (a single note; the user's scope).

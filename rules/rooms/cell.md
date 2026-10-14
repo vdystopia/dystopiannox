@@ -94,3 +94,7 @@ human cell. Rated 3-5 (mean 4.0): the cells were liked.
 - **The stocks** in every cell of 16 tiles or more, centred on a wall; **a bench** centred on a wall (a back wall first),
   else a stool in a corner.
 - Checked: `rooms.qa1_cell_double` (planted STq1Cel).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-CELL-04 (55 tiles, one cot): "Too big and empty for a cell with one bed." Cells over about 40 tiles hold two cots and their furniture (round 1 already asked for double occupancy in larger cells); a large cell with one cot is a fault. RM-CELL-05: "Excellent." [Q2N-6] Not re-rendered this pass (a single note; the user's scope).

@@ -107,3 +107,7 @@ shields hung in 3-4, a single rack of pole arms or bows in 1-2; no trophies; bac
 side by side (a tavern). The recipe now: one cot under 120 tiles, the table group with a rug sometimes, one arms piece
 (two in a big room) centred on its stretch, a second table only over 110 tiles on its own stretch, pieces 0.25 off
 the wall. AUC 0.87 -> 0.73, hard rooms 4 -> 0.
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-GUARDROOM-03 (90 tiles): "The crates on the southern end of the southeastern wall are too close to each other. This room is very big for one guard bunk. Try 2-4 in a room this size. slightly too many armor racks, remove a few." Bunks scale with size: one under about 60 tiles, two to four from about 80; arms racks capped (a few, not a wall of them); crates keep a gap (Q2T-4). This overrides the room lab's "one cot under 120 tiles" above. [Q2N-7] Not re-rendered this pass (a single note; the user's scope).

@@ -89,3 +89,7 @@ chests and the floor before them. (`STANDS["treasury"]`: behind the table, besid
   dominating): the recipe now holds three strongboxes (the knowledge base's cap) on the back walls, sacks of coin and a
   cask in heaps, the counting table and chair; no shelves of wares, no hung arms. The cap on stores rose to one per 6
   tiles (Con05B: five on 54 tiles). The brief's Con06b and Wiz06c examples were corridors (curated out).
+
+## QA round 2 (2026-10-14; review/qa2/ledger.md)
+
+RM-TREASURY-03: "The giant barrels are too close to other objects." Giant barrels keep the wide gap of a big piece (Q2T-4). [Q2N-11] Not re-rendered this pass (a single note; the user's scope).
