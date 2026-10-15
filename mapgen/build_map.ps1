@@ -8,10 +8,11 @@
 #   walls[{x,y,facing,material[,variation][,window]}],
 #   tiles[{x,y,material[,edges[[overlayMaterial, edgeType, direction]]]}],
 #   objects[{type,x,y[,team][,durability][,door][,clone{map,scr}][,xfer{field: value}][,items[object...]]
-#            [,key][,link][,enabled]}],
+#            [,key][,link][,enabled][,create_flags]}],
 #     key: a name for the object within the spec; link: the key of the object this one names by extent (xfer
 #     ExtentLink: an elevator's pit, a teleport pad's target), resolved once every object has its extent;
 #     enabled: false writes the object disabled (create flags without ENABLED, stored with the extended fields).
+#     create_flags: the create flags written as given (an NPC's worn pieces: 0x1000100, ENABLED + EQUIPPED).
 #   waypoints[{id,x,y[,name][,links[id...]]}],
 #   polygons[{name,ambient[r,g,b],minimap,points[[x,y]...]}]
 param(
@@ -97,12 +98,21 @@ function Convert-XferValue($t, $v) {
         foreach ($e in $v) { $a.SetValue((Convert-XferValue $et $e), $i); $i++ }
         return ,$a
     }
+    if ($t.IsGenericType -and $t.GetGenericTypeDefinition() -eq [System.Collections.Generic.List`1]) {
+        # a list (an NPC's KnownSpells: MonsterXfer.SpellEntry {SpellName, UseFlags})
+        $et = $t.GetGenericArguments()[0]
+        $l = [Activator]::CreateInstance($t)
+        foreach ($e in @($v)) { if ($null -ne $e) { $l.Add((Convert-XferValue $et $e)) } }
+        return ,$l
+    }
     if ($v -is [System.Management.Automation.PSCustomObject]) {
         $inst = [Activator]::CreateInstance($t)          # boxed: SetValue on it fills the structure in place
         foreach ($q in $v.PSObject.Properties) {
             $g = $t.GetField($q.Name)
-            if (-not $g) { $errors.Add("no setting '$($q.Name)' on $($t.Name)"); continue }
-            $g.SetValue($inst, (Convert-XferValue $g.FieldType $q.Value))
+            if ($g) { $g.SetValue($inst, (Convert-XferValue $g.FieldType $q.Value)); continue }
+            $pr = $t.GetProperty($q.Name)                # (MonsterXfer.BuffEntry keeps its settings as properties)
+            if ($pr) { $pr.SetValue($inst, (Convert-XferValue $pr.PropertyType $q.Value)); continue }
+            $errors.Add("no setting '$($q.Name)' on $($t.Name)")
         }
         return $inst
     }
@@ -165,6 +175,12 @@ function New-SpecObject($o) {
         $x.InitForMonsterName($o.type)
     }
     Set-XferFields $obj $o.xfer
+    if ($null -ne $o.create_flags) {
+        # the create flags as given: an NPC's worn pieces are 0x1000100 (ENABLED + EQUIPPED), as Westwood writes them;
+        # the game puts on only the inventory items flagged EQUIPPED (legacy GAME4_2.c nox_xxx_XFerNPC_52ADE0)
+        $obj.CreateFlags = [uint32]$o.create_flags
+        $obj.Terminator = 0xFF
+    }
     if ($o.enabled -eq $false) {
         # the create flags are written only with the extended fields; ENABLED (0x1000000) left out starts it off
         $obj.CreateFlags = 0

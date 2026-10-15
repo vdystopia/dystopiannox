@@ -13,7 +13,8 @@
     "test_buildings": "BldTest",
     "test_rooms": "RoomTest",
     "test_transport": "TestTrans",
-    "test_water": "TestWatr"
+    "test_water": "TestWatr",
+    "bosslab": "BossLab"
   },
   "frozen": {
     "ambermere": "Ambermere",

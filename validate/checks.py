@@ -368,6 +368,10 @@ def check_objects(m, ctx, base):
     # Westwood opens areas with scripts (levers, keys, secret walls) and moves creatures in from
     # off the map; a map with no script functions can do neither, so there these are defects
     scripted = bool(set(m.script_funcs) - {"GLOBAL", "MapInitialize"})     # the blank template has these two
+    # a generated map's Go scripts (<map>_scripts beside it) move things too: BossLab's sealed vault of spare bosses,
+    # ModLab's forge vault, each brought out by its script
+    sd = os.path.splitext(m.file or "")[0] + "_scripts"
+    scripted = scripted or (os.path.isdir(sd) and any(f.endswith(".go") for f in os.listdir(sd)))
     for o in m.objects:
         c = m.cell_of(o["x"], o["y"])
         cls = o["cls"]
