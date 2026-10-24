@@ -95,14 +95,15 @@ def hold_row(st):
         zones = []
         for j, b in enumerate(PLATES):
             zones.append(st.plate(f"P{i}{j}", a, b, who="creature"))
-        start(st, f'TrigHold(trigHold{{Name: "{st.label}H{i}", Group: "{g}", Zones: {go_strs(zones)}, Delay: 8}})')
+        start(st, f'TrigHold(trigHold{{Name: "{st.label}H{i}", Group: "{g}", Zones: {go_strs(zones)}, Delay: 2}})')
         st.rest.append((a + 3.5, st.W / 2))
     return Meta(tier="standard", trigger="hold (on while anyone stands on the row)",
                 tells="two rows of plates wall to wall; arrow slits in the left wall beside each",
-                answer="the arrows fire from 0.25 s after anyone (or anything) steps on a row until the row is "
-                       "empty, once a second: run across in one go or jump the row; never stop or fight on it",
-                careless="walking across: 25-50 HP a row; standing on it: 25-75 HP a second",
-                mistake="a walk across one row: 25-50 HP")
+                answer="the arrows fire the moment anyone (or anything) stands on a row, and once a second while "
+                       "it is held, their lines covering the whole row: jump each row (a jump passes over plates); "
+                       "never stop or fight on it",
+                careless="walking or running across: 25-50 HP a row; standing on it: 25-75 HP a second",
+                mistake="a late jump onto a row's edge: 25 HP")
 
 
 @pattern("trigger", size=(22, 6), title="The hidden wire")
@@ -256,7 +257,7 @@ def guard_key_combination(st):
     # the arrows fire for 2 s before it opens again
     g2 = secret_line(st, 24, state="open")
     key = st.obj("SilverKey", 17.0, m)
-    k = st.group("K", _arrows_down(st, 23.6, [0.6 + 0.6 * i for i in range(9)]))
+    k = st.group("K", _arrows_down(st, 22.9, [0.6 + 0.6 * i for i in range(9)]))
     lift = [st.act("walls_close", walls=[c], delay=20 * (i + 1)) for i, c in enumerate(g2)]
     lift += [st.act("sound", text="GenerateTick", src=st.at(22.0, m), delay=d) for d in (0, 20, 40, 60, 80)]
     lift += [st.act("on", _short(st, k), delay=20 * len(g2) + 5), st.act("off", _short(st, k), delay=20 * len(g2) + 65),
@@ -268,7 +269,7 @@ def guard_key_combination(st):
     bands = [_short(st, _fire(st, n, a0, a0 + 1.5)) for n, a0 in (("BA", 30.5), ("BB", 32.5), ("BC", 34.5))]
     for bnd in bands:
         start(st, f'trapSetGroup("{st.label}{bnd}", true)')
-    for name, a, side, which in (("L1", 26.0, 0, (0, 1)), ("L2", 27.0, 1, (1, 2)), ("L3", 28.0, 0, (0,))):
+    for name, a, side, which in (("L1", 26.0, 0, (0, 1)), ("L2", 27.0, 1, (1, 2)), ("L3", 28.5, 0, (0,))):
         flip = [st.act("toggle", bands[w]) for w in which]
         st.lever(name, "FloorLever1", a, 0.55 if side == 0 else st.W - 0.55, acts=list(flip), release=list(flip))
     st.rest.append((29.0, m))

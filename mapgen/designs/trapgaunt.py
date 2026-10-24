@@ -22,7 +22,7 @@ Maps are named TrapGnt01..TrapGnt10 (9 characters).
 import json, math, os, random, sys, zlib
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from nox import Spec, SOLO
-from kit.dungeon import Dungeon
+from kit.dungeon import Dungeon, LIGHTS, glow
 from kit.traps import Traps
 from kit.trapkit import Station, PATTERNS, TITLES, tier_of
 from kit.signs import wrap
@@ -208,9 +208,9 @@ def build(k, out_dir=None):
                 o["xfer"].update(FallX=int(prev_room.centre[0]), FallY=int(prev_room.centre[1]))
         mx, my = part.at(0.4, 0.6)
         sign(f"S{s + 1}", f"{label} {p.title.upper()} ({tier}). {meta.get('tells', '')}", mx, my)
-        # torches down the side walls
+        # an unseen light down the passage every 6 squares (no torches indoors, nothing in a trap's lane)
         for a in range(3, part.length - 2, 6):
-            m.obj_px("Torch", *part.at(a, 0.25))
+            glow(m, *part.at(a, part.width / 2))
         T.label(label, p.title, [*part.at(0, 0), *part.at(part.length, part.width)], kind, tier, notes=json.dumps(meta))
         stations.append(dict(label=label, title=p.title, kind=kind, pattern=idx + 1, tier=tier, meta=meta,
                              L=part.length, W=part.width, start=list(part.at(0.5, part.width / 2)),
@@ -247,7 +247,8 @@ def build(k, out_dir=None):
                 m.obj_px("RedPotion", *room.at(1.5 + 0.7 * z, 1.5))
         if q % 4 == 0:
             m.obj_px("WishingWell", *room.at(ROOM / 2, ROOM - 2))
-        m.obj_px("Torch", *room.at(0.3, ROOM / 2))
+        for c in (0.8, ROOM - 0.8):                    # a light in two opposite corners, clear of the mouths
+            m.obj_px(LIGHTS[T_["setting"]], *room.at(c, c))
     m.obj_px("Chest4", *end.at(ROOM / 2, ROOM - 2), items=[("Gold", {"Amount": 300 + 60 * n}), "RedPotion", "BluePotion"])
     sign("End", f"{gid} {T_['title'].upper()} - THE END. The gauntlet is run. Rate it as {gid}, each stage by its sign.",
          *end.at(ROOM / 2 - 1, ROOM / 2))

@@ -14,9 +14,26 @@ opens into it), so the outline is always closed and the walls are shaped by Spec
 Each named part keeps its squares (d.parts[name]), its floor and its wall, and d.at(name, a, b) gives the world px of
 a point in the part's own frame: a along its length from its start, b across it from its left edge, in squares.
 """
-import math
+import json, math, os
 from nox import px
 from kit.layout import Land, square_px, square_tile, point_cell, N4
+
+# a room's standing light by setting: no open torches indoors (they never look fixed to the wall), candelabras and
+# braziers instead; a passage is lit by an unseen ColorLight (glow), which stands in no trap's way
+LIGHTS = {"crypt": "Candleabra3", "castle": "Candleabra3", "lotd": "LOTDCandleabra1", "forge": "Brazier",
+          "temple": "Brazier", "mine": "Brazier"}
+_GLOW = None
+
+
+def glow(spec, x, y):
+    """An unseen warm light at (x, y) px: Westwood's commonest steady orange or yellow ColorLight preset."""
+    global _GLOW
+    if _GLOW is None:
+        here = os.path.dirname(os.path.abspath(__file__))
+        presets = json.load(open(os.path.join(here, "..", "..", "rules", "out", "lighting.json")))["colorlight"]["presets"]
+        _GLOW = dict(max((p for p in presets if p["animation"] == "steady" and p["intensity_class"] == "full"
+                          and p["family"] in ("orange", "yellow")), key=lambda p: p["weighted_share"])["xfer"])
+    return spec.obj_px("ColorLight", x, y, xfer=dict(_GLOW))
 
 
 class Part:

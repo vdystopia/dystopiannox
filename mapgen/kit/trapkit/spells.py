@@ -166,22 +166,25 @@ def fireball_crossing(st):
 @pattern("spell", size=(24, 6), title="Falling stars")
 def falling_stars(st):
     _on(st)
-    shots = []
-    # each row's moment: a meteor falls ~32 frames, so a walker who comes in as the gate wakes meets the first row
-    # as it bursts and the other two at their quiet
-    for a, t in ((6.0, 18), (12.0, 33), (18.0, 3)):
+    # each row's two stars fall when someone comes at the row at a pace that brings him to it within their fall
+    # (~32 frames: a walker 3.2 squares off, a runner 6.8), so they burst as he arrives; then the row gathers 3.3 s
+    for k, a in enumerate((6.0, 12.0, 18.0)):
+        shots = []
         for b in (1.3, st.W - 1.3):
             lt = light(st, a, b, ORANGE, radius=52, intensity=55)
-            shots.append(_shot(t, spell="SPELL_METEOR", src=lt, frm=st.at(a, b), to=st.at(a, b), lvl=1))
-    v = _volley(st, "M", 90, shots)
-    _gate(st, "G", 1.0, st.L - 0.3, [v])
+            shots.append(_shot(0, spell="SPELL_METEOR", src=lt, frm=st.at(a, b), to=st.at(a, b), lvl=1))
+        a0 = max(0.5, a - 8.0)
+        start(st, f'SpellAhead(spellAhead{{Name: "{st.label}R{k}", {box_go(st, a0, a)}, Row: {(a - a0) / 2 * SQ:.1f}, '
+                  f'Fall: 32, Cool: 100, Shots: []spellShot{{' + ", ".join(shots) + "}})")
     for a in (9.0, 15.0):
         st.rest.append((a, st.W / 2))
-    return Meta(tier="standard", tells="three rows of orange-lit spots; a meteor falls on each row every 3 s (the rows "
-                                       "out of step) and bursts 2.5 squares around",
-                answer="wait between rows; when the row ahead bursts, walk through it at once (3 s until the next)",
-                careless="walking through on no beat: a burst or two close by, 20-45 HP each",
-                mistake="caught at a burst's edge: 15-45 HP")
+    return Meta(tier="standard", tells="three rows of orange-lit spots; a row's stars fall when you come at it and burst "
+                                       "2.5 squares around it as you would arrive",
+                answer="walk at a row and stop short when its stars fall (you hear them, 1 s before they land); when "
+                       "they burst, cross at once: the row gathers for 3 s. Standing or stepping sideways never "
+                       "wakes it",
+                careless="walking or running on: every row bursts round you, ~45 HP each",
+                mistake="one row: 20-45 HP")
 
 
 @pattern("spell", size=(22, 6), title="Gas plates")
@@ -274,20 +277,25 @@ def skull_gallery(st):
     st.group("G", guns)
     bs = (0.75, 2.25, 3.75, 5.25)
     gaps = (2, 0, 3, 1, 2)
+    # awake, the end also throws a fireball at where you stand every second (it bites at any moment; strafe)
+    _on(st)
+    eye = _hunt(st, "E", 2.0, st.L - 1.5, "SPELL_FIREBALL", st.at(st.L - 1.0, st.W / 2), period=30, delay=0, lvl=1,
+                sound="FireballCast", armed=False)
     wake = [st.act("on", "G"), st.act("sound", text="BigGong", src=st.at(3.0, st.W / 2)),
-            st.act("off", "G", delay=150)]
+            st.T.act("spell_arm", eye), st.act("off", "G", delay=150), st.T.act("spell_disarm", eye, delay=150)]
     for i, a in enumerate((5.5, 8.5, 11.5, 14.5, 17.5)):
         for j, b in enumerate(bs):
             if j != gaps[i]:
                 st.plate(f"P{i}{j}", a, b, who="creature", acts=list(wake))
     return Meta(tier="hard", tells="nine skull guns along the left wall and two at the end, asleep; five rows of "
                                    "plates, one gap in each",
-                answer="weave through the gaps without a single tread; if a plate wakes the guns (a gong), stand still "
-                       "between their lines (they shoot straight, all together once a second: across the hall every "
-                       "1.5 squares, and down it 1.5 squares from each side) for the 5 s they fire",
-                careless="treading a plate wakes eleven guns for 5 s: walking on meets a fireball most seconds, ~96 "
-                         "HP each",
-                mistake="one tread: 5 s of crossfire, one or two fireballs (96-190) unless you freeze off the lines")
+                answer="weave through the gaps without a single tread; if a plate wakes the guns (a gong), go sideways "
+                       "between their lines for the 5 s they fire: the side guns shoot straight across every 1.5 "
+                       "squares, all together once a second, and the end throws a fireball at where you stand each "
+                       "second (moving across its line makes it miss)",
+                careless="treading a plate wakes the gallery for 5 s: walking or running on toward the end takes its "
+                         "fireballs head on, ~64 each, and the side guns' (~96)",
+                mistake="one tread: 5 s of crossfire, 64-190 HP unless you strafe between the lines")
 
 
 @pattern("spell", size=(22, 6), tier="hard", title="The sealed fire room")
@@ -297,7 +305,7 @@ def sealed_room(st):
     front = secret_line(st, 19, state="open")
     v = _lanes(st, [(7.0, 0), (10.0, 11), (13.0, 22), (16.0, 33)], period=45, gaps=(0, 7), s="F", sides=(0, 1, 0, 1))
     across, down = st.across(), neg(st.along())
-    guns = [st.obj(shooter(st, SKULL, down), 18.6, b, enabled=False) for b in (1.0, st.W / 2, st.W - 1.0)]
+    guns = [st.obj(shooter(st, SKULL, down), 17.9, b, enabled=False) for b in (1.0, st.W / 2, st.W - 1.0)]
     guns += [st.obj(shooter(st, SKULL, across), a, 0.4, enabled=False) for a in (4.6, 8.5, 12.5)]
     st.group("G", guns)
     wires = [f"W{j}" for j in range(4)]

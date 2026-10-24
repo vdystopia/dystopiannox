@@ -79,20 +79,35 @@ def block(st, a, b, type_="SpikeBlock"):
 
 
 def mover(st, s, objs, path, speed, mode="pingpong", pause=0, armed=True, delay=0, crush=0, home_wait=0,
-          sound=True, impact=0):
+          sound=True, impact=0, far_wait=0):
     """A mover (kit/traps.py) carrying `objs` along `path` (station squares) at `speed` px a frame, watched by
     traps_push.go: armed `delay` frames after the start (then `armed` should be False), `crush` damage to whoever
     is pinned against its blocks when it reaches the far end, `home_wait` frames at the start of the path
     (pingpong; the far end keeps `pause`), `impact` damage to a player its moving blocks strike (once a contact),
-    its sounds."""
+    `far_wait` a loop mover's dwell at its second point, its sounds. A phase between movers is better set by a
+    wake() zone than by `delay`: a delay sits in the action queue, which a station's reset (the in-game tour) clears,
+    and the simulator does not read it."""
     name = f"{st.label}{s}"
     pts = [st.at(a, b) for a, b in path]
     st.T.mover(name, objs, pts, speed, mode=mode, pause=pause, armed=armed and not delay)
     st.T.movers[name].update(delay=int(delay), crush=int(crush), home_wait=int(home_wait), impact=int(impact),
-                             path_ab=[list(p) for p in path])
+                             far_wait=int(far_wait), path_ab=[list(p) for p in path])
     st.T.starts.append(f"TrapPushMover(pushMover{{Mover: {json.dumps(name)}, Crush: {int(crush)}, Delay: {int(delay)}, "
-                       f"HomeWait: {int(home_wait)}, Sound: {str(bool(sound)).lower()}, Impact: {int(impact)}}})")
+                       f"HomeWait: {int(home_wait)}, Sound: {str(bool(sound)).lower()}, Impact: {int(impact)}, "
+                       f"FarWait: {int(far_wait)}}})")
     return name
+
+
+def wake(st, a, b, half, phases, s="Wake"):
+    """An invisible zone across the way in (a square of `half` squares each side of (a, b)) that starts the
+    station's movers the first time the player steps in: each (mover, frames) of `phases` is reset and armed that
+    many frames later, so rows run as a wave in a known phase (movers made with armed=False)."""
+    acts = []
+    for mv, d in phases:
+        mv = mv.replace(st.label, "")
+        acts += [st.act("reset", mv), st.act("arm", mv, delay=max(0, int(d)))]
+    return st.T.zone(f"{st.label}{s}", st.at(a, b), half * SQ * 2 ** 0.5, shape="diamond", who="player", once=True,
+                     acts=acts)
 
 
 def travel(path, speed):
@@ -149,9 +164,15 @@ def pit(st, a, b, enabled=True):
     return st.obj("Pit", a, b, enabled=enabled, xfer=xf)
 
 
+PIT_SHIFT = 0.03               # squares (1 px) across: a Pit's 32 x 32 box leaves a 0.5 px seam between two squares, so
+                               # a line along a square edge (a hall's middle line when its width is even) would thread
+                               # between two rows of pits; shifted, that line runs inside one of them
+
+
 def pits(st, a0, a1, b0, b1, enabled=True, skip=()):
-    """A Pit on every square centre of a0..a1 x b0..b1 (integers, half open)."""
-    return [pit(st, a + 0.5, b + 0.5, enabled) for a in range(a0, a1) for b in range(b0, b1) if (a, b) not in skip]
+    """A Pit on every square centre of a0..a1 x b0..b1 (integers, half open), a pixel off centre across."""
+    return [pit(st, a + 0.5, b + 0.5 + PIT_SHIFT, enabled) for a in range(a0, a1) for b in range(b0, b1)
+            if (a, b) not in skip]
 
 
 def vec(st, da, db):
