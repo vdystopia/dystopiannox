@@ -7,13 +7,14 @@ QA rounds' page (review/qa/page_template.html: 1-5, keep/fix/drop, a note; a not
 Each built_dir holds a built trap map (<Name>.map, <Name>.lab.json, and if run <Name>.sim.json / <Name>.tour.json).
 Writes review/out/qa/<round>/ (renders/, sheets/, items_traps.json) and site/index.html; publish the site folder.
 """
-import json, os, re, subprocess, sys
-from PIL import Image, ImageDraw, ImageFont
+import json, math, os, re, subprocess, sys
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 EDITOR = os.path.join(REPO, "MapEditor", "bin", "Release", "MapEditor.exe")
 COLS, TW, TH, HEAD = 5, 640, 540, 60
+SCALE = {"TL": 1.5, "TG": 3, "TD": 3}    # a sheet's cells at this many times the page's cell: the zoomed view keeps detail
 CATS = [("traplab", "TrapLab"), ("trapgaunt", "TrapGaunt"), ("trapdemo", "TrapDemo")]
 Image.MAX_IMAGE_PIXELS = None
 
@@ -51,19 +52,39 @@ def station_corners(st):
     return [(ox + 32.5 * (a * ux + b * vx), oy + 32.5 * (a * uy + b * vy)) for a in (0, st["L"]) for b in (0, st["W"])]
 
 
-def sheet(cells, title, path):
+def sheet(cells, title, path, k=1.0):
+    tw, th, head = int(TW * k), int(TH * k), int(HEAD * k)
     rows = (len(cells) + COLS - 1) // COLS
-    S = Image.new("RGB", (COLS * TW, HEAD + rows * TH), (20, 20, 24))
+    S = Image.new("RGB", (COLS * tw, head + rows * th), (20, 20, 24))
     d = ImageDraw.Draw(S)
-    d.text((16, 14), title, fill=(235, 225, 200), font=font(30))
-    f = font(22)
-    for k, (label, im) in enumerate(cells):
-        c, r = k % COLS, k // COLS
-        x, y = c * TW, HEAD + r * TH
-        S.paste(fit(im, TW - 8, TH - 46), (x + 4, y + 42))
-        d.rectangle((x + 2, y + 2, x + TW - 3, y + 40), fill=(40, 34, 26))
-        d.text((x + 12, y + 8), label, fill=(250, 215, 140), font=f)
+    d.text((int(16 * k), int(14 * k)), title, fill=(235, 225, 200), font=font(int(30 * k)))
+    f = font(int(22 * k))
+    bar = int(40 * k)
+    for n, (label, im) in enumerate(cells):
+        c, r = n % COLS, n // COLS
+        x, y = c * tw, head + r * th
+        S.paste(fit(im, tw - 8, th - bar - 6), (x + 4, y + bar + 2))
+        d.rectangle((x + 2, y + 2, x + tw - 3, y + bar), fill=(40, 34, 26))
+        d.text((x + int(12 * k), y + int(8 * k)), label, fill=(250, 215, 140), font=f)
     S.save(path, quality=85)
+
+
+def focus(im, box, corners, pad=26):
+    """The crop with everything outside the station (its floor and walls, pad px round) dimmed: the neighbours that
+    the square crop takes in stay readable as context but do not compete."""
+    c = im.crop(box)
+    m = Image.new("L", c.size, 0)
+    cx = sum(p[0] for p in corners) / 4
+    cy = sum(p[1] for p in corners) / 4
+    pts = []
+    for x, y in (corners[0], corners[1], corners[3], corners[2]):      # round the quad in order
+        dx, dy = x - cx, y - cy
+        n = math.hypot(dx, dy) or 1
+        pts.append((x - box[0] + dx / n * pad, y - box[1] + dy / n * pad))
+    ImageDraw.Draw(m).polygon(pts, fill=255)
+    m = m.filter(ImageFilter.GaussianBlur(6))
+    dim = c.point(lambda v: int(v * 0.35))
+    return Image.composite(c, dim, m)
 
 
 def caption(st, sim, tour):
@@ -102,17 +123,25 @@ def main(rnd, dirs):
             kind = info["kind"]
             cells = []
             for st in info["stations"]:
-                box = crop_box(station_corners(st))
-                cells.append((f"{st['label']}  {st['title']}", im.crop(box)))
+                corners = station_corners(st)
+                box = crop_box(corners)
+                cells.append((f"{st['label']}  {st['title']}", focus(im, box, corners)))
                 items.append(dict(id=st["label"], cat="traplab", type=kind,
                                   caption=caption(st, sims.get(st["label"]), tours.get(st["label"])),
                                   sheet=f"sheets/TL-{kind}.jpg"))
-            sheet(cells, f"TrapLab {name}: {kind}", os.path.join(base, "sheets", f"TL-{kind}.jpg"))
+            sheet(cells, f"TrapLab {name}: {kind}", os.path.join(base, "sheets", f"TL-{kind}.jpg"), SCALE["TL"])
         else:
             cat = "trapgaunt" if name.startswith("TrapGnt") else "trapdemo"
             iid = info.get("id") or ("TD-" + name[-2:])
-            stages = "; ".join(f"{s['label'].split('-')[-1]} {s['title']} ({s['tier']}"
-                               f"{', ' + sims[s['label']]['verdict'] if s['label'] in sims else ''})" for s in info["stations"])
+            def stage(s):
+                g = (tours.get(s["label"]) or {}).get("game") or {}
+                out = f"{s['label'].split('-')[-1]} {s['title']} ({s['kind'] if 'kind' in s else ''}{', ' if 'kind' in s else ''}{s['tier']}"
+                if g.get("plan"):
+                    out += f"; in the game a careful pass cost {g['plan'][0]} HP ({g['plan'][1]})"
+                    if g.get("walk"): out += f", a careless walk {g['walk'][0]} HP ({g['walk'][1]})"
+                out += ")"
+                return out
+            stages = "; ".join(stage(s) for s in info["stations"])
             cap = f"{info.get('title', name)}: {len(info['stations'])} trap stages ({stages})"
             if info.get("creatures") is not None:
                 cap += f"; creatures {info['creatures']}"
@@ -123,7 +152,7 @@ def main(rnd, dirs):
                               sheet=f"sheets/{key}.jpg"))
     for key, cells in sheets.items():
         sheet(cells, "TrapGaunt: the gauntlets" if key == "TG" else "TrapDemo: the missions",
-              os.path.join(base, "sheets", f"{key}.jpg"))
+              os.path.join(base, "sheets", f"{key}.jpg"), SCALE[key])
     json.dump(items, open(os.path.join(base, "items_traps.json"), "w", encoding="utf-8"), indent=1, ensure_ascii=False)
     # the page: the QA template with the trap tabs
     sys.path.insert(0, os.path.join(REPO, "review", "qa"))
@@ -134,13 +163,15 @@ def main(rnd, dirs):
         src = os.path.join(base, sh)
         imx = Image.open(src).convert("RGB")
         W, H = imx.size
+        k = SCALE[os.path.basename(sh).split("-")[0].split(".")[0]]
+        tw, th, head = int(TW * k), int(TH * k), int(HEAD * k)
         imx.save(os.path.join(base, "site", "sheets", os.path.basename(sh)), quality=80, optimize=True)
-        for k, i in enumerate(group):
-            c, r = k % COLS, k // COLS
-            y_off = HEAD + r * TH
+        for n, i in enumerate(group):
+            c, r = n % COLS, n // COLS
+            y_off = head + r * th
             data.append(dict(id=i["id"], cat=i["cat"], type=i["type"], cap=i["caption"], sheet="sheets/" + os.path.basename(sh),
-                             bx=round(c / (COLS - 1) * 100, 4), by=round(y_off / (H - TH) * 100, 4) if H > TH else 0,
-                             bs=round(W / TW * 100, 3)))
+                             bx=round(c / (COLS - 1) * 100, 4), by=round(y_off / (H - th) * 100, 4) if H > th else 0,
+                             bs=round(W / tw * 100, 3)))
     tpl = open(os.path.join(REPO, "review", "qa", "page_template.html"), encoding="utf-8").read()
     cats_js = json.dumps([list(c) for c in CATS])
     tpl = re.sub(r"const CATS = \[.*?\];", f"const CATS = {cats_js};", tpl, count=1)

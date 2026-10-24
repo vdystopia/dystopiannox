@@ -51,6 +51,8 @@ def probe_source(name, bdir):
         grouped = {o for g in data["groups"].values() for o in g}
         on = sorted(o for o in names & grouped if data["objects"][o].get("enabled", True))
         off = sorted(o for o in names if not data["objects"][o].get("enabled", True))
+        sentries = sorted(o for o in names if data["objects"][o]["type"].startswith("SentryGlobe")
+                          and data["objects"][o].get("enabled", True))
         clocks = [c for c in data["clocks"] if c["name"].startswith(pre)]
         movers = [m for m in data["movers"] if m["name"].startswith(pre)]
         zones = [z for z in data["zones"] if z["name"].startswith(pre)]
@@ -66,6 +68,7 @@ def probe_source(name, bdir):
             f'moversOff: {go_list(m["name"] for m in movers if not m["armed"])}, '
             f'zones: {go_list(z["name"] for z in zones if z["armed"])}, '
             f'zonesOff: {go_list(z["name"] for z in zones if not z["armed"])}, on: {go_list(on)}, off: {go_list(off)}, '
+            f'sentries: {go_list(sentries)}, '
             f'closed: [][2]int{{{", ".join(f"{{{a}, {b}}}" for a, b in closed)}}}, '
             f'open: [][2]int{{{", ".join(f"{{{a}, {b}}}" for a, b in opened)}}}, watches: []ptWatch{{{ws}}}}},')
         for kind in ("plan", "walk", "run"):
