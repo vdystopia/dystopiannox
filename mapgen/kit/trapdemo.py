@@ -455,8 +455,11 @@ class Mission:
         m.scripts.update(self.pop.behaviours.files(self.name))
         if self.boss_calls: self.boss_calls.attach()
         m.scripts.update(self.q.files())
+        # where the trap tour parks the hero during a plan's jump: the player's start, a free spot (the camp's middle
+        # holds its fire: 54 HP a parked jump)
+        ps = next((o for o in m.d["objects"] if o["type"] == "PlayerStart"), None)
         info = dict(name=self.name, title=self.title, setting=self.setting, stations=self.stations,
-                    hub_start=list(self.parts[next(r for r, v in self.rooms.items() if v["start"])].centre),
+                    hub_start=[ps["x"], ps["y"]] if ps else list(self.parts[next(r for r, v in self.rooms.items() if v["start"])].centre),
                     walls=sorted(m.wallmap),
                     secret={f"{x},{y}": w["secret"] for (x, y), w in m.wallmap.items() if w.get("secret")},
                     rooms={rid: dict(role=v["role"], size=v["size"], centre=list(self.parts[rid].centre))
