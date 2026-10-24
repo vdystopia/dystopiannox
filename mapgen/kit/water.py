@@ -112,6 +112,27 @@ def xy_to_uv(x, y):
 PAVED_GROUND = re.compile(r"Cobble|Brick|Flagstone|Marble|^Stone|Tile")
 SPAN_GROUND = "DirtDark2"
 
+# Where a paved road meets a rope bridge, as the user sees it (QA round 3, 2026-10-23 [Q3X-1]: BR-01, BR-06, BR-11 "On
+# one side of the bridge, the cobblestone ends before the bridge with a small gap of dirt. On the other side of the
+# bridge, it ends on the cobblestone. Make sure both sides start/end just on the edge of the end of the cobblestone. And
+# make sure they're consistent with each other"). Three things the kit's own reckoning had missed, measured on the
+# bridge lab's round 3 render (review/out/qa/bridges_qa3, every rope bridge of both kits):
+# - DECK_REACH: the planks do not end at the end pieces. Along the axis, outward from each end piece, the FarEnd's planks
+#   reach two units (uv) past its piece and the NearEnd's stop at its piece (FarEnd +1.9..+2.1, NearEnd -0.1..+0.1 on six
+#   bridges), so a clearance even about the two pieces is two units uneven about the deck.
+# - TILE_V_DRAWN: a tile is drawn a unit toward -v (the SW) of its point (kit/furnish.TILE_V_DRAWN, yards.TILE_DJ,
+#   civic/works SQUARE_V): along a RopeBridge2 (its axis v) the paving shows a unit nearer the bridge at its NE end and a
+#   unit farther at its SW end than the kit counted.
+# - EDGE_REACH: the paving's kerb (RoughCobble's BrickEdgeBrown, an edge drawn on the first tile of earth) carries its
+#   look a unit on, half that tile (1.0 on both axes).
+# So the paving's visible edge can only stand on the middles of the tiles' drawn lattice (even u, odd v), and the
+# chain, whose planks run a whole number of tiles less a twentieth (its Westwood steps), is slid along its axis (a unit
+# at most) until both ends of its deck fall on such an edge; the paving then stops there on both banks.
+DECK_REACH = {"RopeBridge1": (2.0, 0.0), "RopeBridge2": (2.0, 0.0)}
+TILE_V_DRAWN = -1.0
+EDGE_REACH = 1.0
+ROAD_LOOK = 12.0     # uv out from a deck's end in which the road's paving is looked for (and gaps in it filled)
+
 
 def tile_at_uv(u, v):
     """Tile cell whose visual centre is nearest to the uv point."""
@@ -847,6 +868,10 @@ class Waterworks:
         lx, ly = pts[-1]
         end = (lx + ly) / CELL if k["axis"] == "u" else (lx - ly) / CELL
         s = (a1 - end) / 2.0
+        # on a paved road, slid on (a unit at most) until both of the deck's ends meet an edge the paving's tiles can draw
+        # (DECK_REACH; QA round 3 [Q3X-1]); a dirt road's bridge stays where it was
+        if kit in DECK_REACH:
+            s += self._road_fit(kit, lane, a0 + s, end + s)
         if abs(s) > 0.01:
             a0 += s
             u0, v0 = (a0, lane + k["piece_side"]) if k["axis"] == "u" else (lane + k["piece_side"], a0)
@@ -858,8 +883,106 @@ class Waterworks:
         lx, ly = pts[-1]
         end = (lx + ly) / CELL if k["axis"] == "u" else (lx - ly) / CELL
         self._strip(kit, lane, a0 - 2 * sgn, end + 2 * sgn)
-        self._unpave_span(kit, lane, a0, end)
+        if not (kit in DECK_REACH and self._road_to_deck(kit, lane, a0, end)):
+            self._unpave_span(kit, lane, a0, end)            # a dirt road's (or a lava bridge's) span, as before
         return dict(kind=kit, pieces=list(zip(names, offs)), lane=lane)
+
+    # ---- a paved road to a rope bridge's ends, as drawn (DECK_REACH, TILE_V_DRAWN, EDGE_REACH; QA round 3 [Q3X-1])
+    @staticmethod
+    def _drawn_lattice(axis):
+        """The along-axis offset of the tiles' drawn middles (0 along u, TILE_V_DRAWN along v): the paving's visible edge
+        stands on one of them (a tile's half plus its kerb's EDGE_REACH past the last paved tile's drawn middle)."""
+        return 0.0 if axis == "u" else TILE_V_DRAWN
+
+    def _snap_edge(self, axis, a):
+        off = self._drawn_lattice(axis)
+        return off + 2.0 * round((a - off) / 2.0)
+
+    def _deck_ends(self, kit, a0, a1):
+        """The deck's ends as drawn along its axis, (FarEnd's, NearEnd's), from the end pieces at a0 and a1."""
+        far, near = DECK_REACH[kit]
+        sgn = 1 if KITS[kit]["axis"] == "u" else -1
+        return a0 - sgn * far, a1 + sgn * near
+
+    def _road_row_tiles(self, kit, lane, a_lo, a_hi):
+        """{row: [(drawn along-axis middle, tile)]} of the road's rows round the deck's strip, tiles whose drawn middle
+        lies within [a_lo, a_hi] along the axis."""
+        axis = KITS[kit]["axis"]
+        second = lane + (2 if axis == "u" else -2)
+        off = self._drawn_lattice(axis)
+        rows = {}
+        for r in range(min(lane, second) - 4, max(lane, second) + 5, 2):
+            seq = []
+            for a in range(int(math.floor(a_lo - off)) - 2, int(math.ceil(a_hi - off)) + 3):
+                if a % 2: continue                    # tile points lie on even uv, both ways
+                d = a + off
+                if a_lo - 1e-6 <= d <= a_hi + 1e-6:
+                    seq.append((d, tile_at_uv(a, r) if axis == "u" else tile_at_uv(r, a)))
+            rows[r] = seq
+        return rows
+
+    def _paved(self, c):
+        f = self.spec.floor.get(c)
+        return bool(f) and f not in WATER_MATERIALS and f not in LAVA_MATERIALS and f not in KIT_FLOORS and \
+            bool(PAVED_GROUND.search(f))
+
+    def _road_paving(self, kit, lane, d_end, out):
+        """The paving of the road coming in to the deck's end at d_end from the side `out` (+1 / -1 along the axis), or
+        None: the most common paved floor in the road's rows within ROAD_LOOK of that end, landward."""
+        lo, hi = sorted((d_end, d_end + out * ROAD_LOOK))
+        seen = collections.Counter(self.spec.floor[c] for seq in self._road_row_tiles(kit, lane, lo, hi).values()
+                                   for _, c in seq if self._paved(c))
+        return seen.most_common(1)[0][0] if seen else None
+
+    def _road_fit(self, kit, lane, a0, a1):
+        """How far to slide the chain (FarEnd at a0, NearEnd at a1) along its axis so that the ends of its deck fall on
+        edges the paving's tiles can draw: both the same way (both ends paved: the edges a whole number of tiles apart,
+        as near the deck's own length as they come, the deck centred between them), or the one paved end. 0 on a dirt
+        road. At most a unit either way."""
+        axis = KITS[kit]["axis"]
+        sgn = 1 if axis == "u" else -1
+        df, dn = self._deck_ends(kit, a0, a1)
+        far, near = self._road_paving(kit, lane, df, -sgn), self._road_paving(kit, lane, dn, sgn)
+        if far and near:
+            G = 2.0 * round(abs(dn - df) / 2.0)
+            mid = (df + dn) / 2.0
+            e_far = self._snap_edge(axis, mid - sgn * G / 2.0)
+            return e_far + sgn * G / 2.0 - mid
+        if far or near:
+            d = df if far else dn
+            return self._snap_edge(axis, d) - d
+        return 0.0
+
+    def _road_to_deck(self, kit, lane, a0, a1, ground=SPAN_GROUND):
+        """A paved road runs exactly up to the deck's end on each bank, as the user sees it (QA round 3, 2026-10-23
+        [Q3X-1]: BR-01, BR-06, BR-11 "Make sure both sides start/end just on the edge of the end of the cobblestone. And
+        make sure they're consistent with each other"): between the deck's two ends as drawn the bank is trodden earth
+        (`ground`, as round 2 asked, Q2X-6: "Do not bring the cobblestone all the way up to the bank of the river"),
+        landward of each end the road's own paving, its last tile's kerb ending on the deck's end; a row's paving that
+        stopped short of it (the stream's reserved band) is carried on up to it. False (nothing done) when neither end's
+        road is paved: _unpave_span then clears the span as before."""
+        axis = KITS[kit]["axis"]
+        sgn = 1 if axis == "u" else -1
+        df, dn = self._deck_ends(kit, a0, a1)
+        mats = (self._road_paving(kit, lane, df, -sgn), self._road_paving(kit, lane, dn, sgn))
+        if not any(mats): return False
+        edges = [self._snap_edge(axis, d) if m else d for d, m in zip((df, dn), mats)]
+        lo, hi = sorted(edges)
+        fluid = WATER_MATERIALS | LAVA_MATERIALS
+        for seq in self._road_row_tiles(kit, lane, lo, hi).values():       # under the deck, its edge tiles included
+            for _, c in seq:
+                if self._paved(c): self.spec.floor[c] = ground
+        for e, out, mat in ((edges[0], -sgn, mats[0]), (edges[1], sgn, mats[1])):
+            if not mat: continue
+            a_lo, a_hi = sorted((e + out * 2.0, e + out * ROAD_LOOK))
+            for seq in self._road_row_tiles(kit, lane, a_lo, a_hi).values():
+                seq = sorted(seq, key=lambda t: out * (t[0] - e))             # from the deck's end out
+                k = next((i for i, (_, c) in enumerate(seq) if self._paved(c)), None)
+                if k is None: continue                                       # a row the road does not pave
+                for _, c in seq[:k]:
+                    f = self.spec.floor.get(c)
+                    if f and f not in fluid and f not in KIT_FLOORS: self.spec.floor[c] = self.spec.floor[seq[k][1]]
+        return True
 
     END_CLEAR = 3.0     # uv beyond each end piece kept unpaved (the end piece's own footprint and a step past it)
 
