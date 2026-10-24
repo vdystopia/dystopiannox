@@ -557,7 +557,7 @@ class StationModel:
                             oi, oj = round(di * s / JT), round(dj * s / JT)
                             acc = acc + A[t + s][si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
                             ok &= ~block[si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
-                        acc = acc + G[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST
+                        acc = acc + G[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj]                             + ground_pen[si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST     # landing on a plate presses it
                         land[si0 + di:si1 + di, sj0 + dj:sj1 + dj] = np.where(ok, acc, INF)
                         land = np.where(block, INF, land)
                         lc = max(C - 1 - JT, 0)
