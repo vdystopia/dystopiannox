@@ -170,3 +170,6 @@ bordered" (-02, -03). -04 and -05 kept (4 and 5).
   runs unbroken past it (`Ctx.carpet_inset`). The band, the hearth's patch and the carpets are never blended
   (`shells.blend_pattern` leaves a bordered patch and a carpet alone). Checked: `qa3.patch_border`, `qa3.carpet_blend`.
 - Kept as rated: the high table, the boards on one carpet, the hearth in the band's brick, the side stations.
+- **A trim that contrasts with its carpet** (the coordinator's look at the first qa4: -03's brown carpet in Westwood's
+  brown band, RugBrownEdge, read ragged, as if blended): the gold trim on a brown carpet, the brown band never on one
+  (`furnish.TRIM_CLASHES`).

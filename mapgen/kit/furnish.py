@@ -161,15 +161,21 @@ CARPET_FLOORS = re.compile(r"Wood|Oak|Redwood|Slat|Plank|Marble|Brick|Tile|Stone
 # solid trims: RugBrownEdge (02's band) and the gold RugTanLightEdge (the great halls' carpets); Westwood's RugTanEdge
 # is a ragged fringe (tried on RugGreen in the qa4 lab), so a pair Westwood draws with it takes the gold trim.
 CARPET_TRIMS = re.compile(r"^(RugBrownEdge|RugTanLightEdge)$")
+# A trim contrasts with its carpet (the coordinator's look at the qa4 great halls: RM-GREATHALL-03's brown carpet in
+# Westwood's RugBrownEdge read ragged, as if blended): the brown band never on a brown carpet, the gold trim never on a
+# tan one.
+TRIM_CLASHES = {"RugBrownEdge": re.compile(r"^RugBrown"), "RugTanLightEdge": re.compile(r"^RugTan")}
 
 
 def carpet_trim(mat, base):
-    """The trim a carpet of `mat` draws onto `base`: the carpet edge Westwood draws for the pair (rules/out/floors.json),
-    else the gold trim (CARPET_EDGE)."""
+    """The trim a carpet of `mat` draws onto `base`: the solid carpet edge Westwood draws for the pair
+    (rules/out/floors.json) where it contrasts with the carpet, else the gold trim (CARPET_EDGE), else (a tan carpet)
+    the brown band."""
     from kit import shells as _SH
     rec = _SH._blend_rules().get(frozenset((mat, base))) or {}
-    e = rec.get("preferred_edge_type")
-    return e if e and CARPET_TRIMS.match(e) else CARPET_EDGE
+    for e in (rec.get("preferred_edge_type"), CARPET_EDGE, "RugBrownEdge"):
+        if e and CARPET_TRIMS.match(e) and not TRIM_CLASHES[e].match(mat or ""): return e
+    return CARPET_EDGE
 # a carpet laid over a room's whole floor less a ring: Westwood's share of carpeted rooms whose carpet is that, by the
 # room's short side in squares (rules/rooms/shells.json: 4 across 19 of 26, 5 across 5 of 13, 6 across 6 of 19, 7
 # across 2 of 9, 8 or more 2 of 19); the others' carpets are 2-5 by 3-8 squares (lay_carpet)

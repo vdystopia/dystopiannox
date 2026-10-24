@@ -167,8 +167,9 @@ transition on the rest of it is obscured by the bar."
   RugBrownEdge for RugRed on WoodSlatFloor2; 01, 03 and 04 had been blended (BlendEdge) because `kit/shells.py
   blend_pattern` took the carpet for the room's second floor and blended it onto the boards. Now `blend_pattern` never
   touches a carpet, and `furnish.lay_carpet` sets the trim for each floor round it (`furnish.carpet_trim`): Westwood's
-  solid carpet edge for the pair (RugBrownEdge, the gold RugTanLightEdge), else the gold trim. Westwood's RugTanEdge, a
-  ragged fringe, is not used. Rug objects (05's) stay as they are. Checked: `qa3.carpet_blend`.
+  solid carpet edge for the pair (RugBrownEdge, the gold RugTanLightEdge) where it contrasts with the carpet (never the
+  brown band on a brown carpet, nor the gold on a tan one: `furnish.TRIM_CLASHES`), else the gold trim. Westwood's
+  RugTanEdge, a ragged fringe, is not used. Rug objects (05's) stay as they are. Checked: `qa3.carpet_blend`.
 - **The brick behind the bar is bordered where its edge shows** (Q3C-2): at the barkeep's flap (the counter's opening)
   and wherever no counter piece stands over the seam, its edge drawn onto the room's floor as a hearth's patch is
   bordered (the grey curb, `shells.PATCH_EDGE`), and on one seam either side under the counter's ends, so the curb runs
