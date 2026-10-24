@@ -1170,6 +1170,11 @@ def q2_keeper_space(m):
     m.obj("TraderDesk1", 211, 7.0); m.obj("Barrel", 211, 9.0)
 
 
+def q3_smithy_mid_stock(m):
+    _declare(m, "smithy")                                      # Q3R-9: RM-SMITHY-04 "A little overcrowded with objects"
+    for k in range(18): m.obj("Barrel2" if k % 2 else "BarrelSteel1", 205 + 1.4 * (k % 6), -4 + 3.0 * (k // 6))
+
+
 CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STclean", None, None, None, "clean map: no errors"),
     ("STwall", black_wall, "wall_pieces", "error", "black wall (wall style with no artwork) - Mossford playtest"),
@@ -1390,6 +1395,8 @@ CASES = [  # (map name, defect, expected check, expected severity, description)
     ("STq1scr", q1_bare_s_corner, "composition", "warning", "a guardroom's bare S corner - QA1 Q1B", "S corner is bare"),
     ("STq2sig", q2_winch_crates, "composition", "warning", "a winch room of 30 crates and barrels - Q2T-8 Q2V-4",
      "past its cap of"),
+    ("STq3mid", q3_smithy_mid_stock, "composition", "warning", "18 barrels out on a smithy's floor - Q3R-9",
+     "out on the floor"),
     ("STq2kpr", q2_keeper_space, "composition", "warning", "a barrel behind a smithy's counter - Q2V-3",
      "where the keeper stands"),
 ]

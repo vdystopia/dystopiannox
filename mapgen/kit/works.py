@@ -84,7 +84,10 @@ GAP_KINDS = {"mausoleum", "shrine", "dark_shrine", "smithy", "winch_room", "stor
 # chosen about (u, v + SQUARE_V) (QA round 2, RM-SHRINE-03: "The mana obelisk arrangement is not centered on the carpet";
 # Q2T-2). Squares along u show where the kit counts them.
 SQUARE_V = 1.0
-UNIT_MOST = {"bench": 2, "chest": 2, "statue": 4, "piece": 3, "coffin": 4, "monument": 2, "restraint": 3, "basin": 2,
+# spec extras_by_walls: an extra stands beside a piece whose footprint reaches within this many units of a wall, and
+# reaches as near the wall itself: by the walls' heaps and rows, never out on the middle's stacks (Q3R-10)
+EXTRA_WALL_REACH = 1.5
+UNIT_MOST ={"bench": 2, "chest": 2, "statue": 4, "piece": 3, "coffin": 4, "monument": 2, "restraint": 3, "basin": 2,
              "bones": 4, "rack": 4, "shelves": 4}
 
 # ---- what each kind's identity takes in (kit/identity.py extend_identity): family -> regex of the new pieces ---------
@@ -251,7 +254,18 @@ _spec(("smithy",), least=(0.32, 10), least_big=(100, 0.27), no_bare=True,
                      "BarrelWithTools2", "DarkCrate1", "DarkCrate2"]),
       # (QA round 2, RM-SMITHY-03: "Just slightly overcrowded. Remove an object or two from the middle of the room and
       # move a few objects closer to the southwest wall": the middle's stacks smaller, the front walls a share more)
-      middle=dict(centre=[], pairs=["stack"], pairs_from=80, stack_n=(2, 3), most={"stack": 4}), extras_walls=100)
+      # (QA round 3, RM-SMITHY-04: "A little overcrowded with objects reduced by 10%", and RM-SMITHY-01, Fix at 4 with no
+      # note, the same band: the smithies of 80-99 tiles were the fullest of the set, 0.36 pieces a tile against 0.33
+      # below and 0.31 above. The top-up's tenth more from 80 tiles asked 29 pieces of their 80 tiles, which the walls
+      # could not hold, so 12 of each room's pieces were extras set beside whatever stood, mid-floor stacks too: 01's
+      # barrels in rows down its middle, 22 of its 29 pieces barrels. So in that band no tenth more (bump_from: the 10%
+      # the user asked) and the extras only beside pieces against a wall, against it too (extras_by_walls); from 100
+      # tiles as round 3 (RM-SMITHY-03 kept at 5); Q3R-9, Q3R-10)
+      middle=dict(centre=[], pairs=["stack"], pairs_from=80, stack_n=(2, 3), most={"stack": 4}), extras_walls=100,
+      bump_from=100, extras_by_walls=80,
+      wall_extras=(80, 100, ["TraderArmorRack1", "TraderPoleArm1", "TraderHangingSwords2", "CrateSteel3", "TraderArmorRack2",
+                             "TraderPoleArm3"]),
+      band_group=(80, 100, "workbench", 4))
 
 _spec(("workshop",), least=(0.32, 13), extra=["MineOreCartWheel", "MechGear", "Anvil2", "Gear1", "SackChestSmall1", "BarrelWithTools2", "WaterBarrel", "DarkCrate2", "BarrelSteel1", "Crate2", "CrateSteel1"],
       goal=0.78, cover=0.34, relight=True, keep=r"^$",
@@ -1803,7 +1817,7 @@ class Finish:
         # room: spec `least`), a tenth more in a room of 80 tiles
         per, kinds = self.s.get("least", (0.0, 0))
         if self.s.get("least_big") and self.tiles >= self.s["least_big"][0]: per = self.s["least_big"][1]
-        big = 1.1 if self.tiles >= 80 else 1.0
+        big = 1.1 if self.tiles >= self.s.get("bump_from", 80) else 1.0     # (spec bump_from: a smithy's from 100, Q3R-9)
         tn = int(max(n0, per * self.tiles) * big + 0.99)
         k0 = max(k0, kinds - (1 if self.tiles < 40 else 0))
         w = self.s.get("walls")
@@ -1833,6 +1847,16 @@ class Finish:
                 finally:
                     self.s = saved
         n, k = self.counts()
+        # (spec band_group (lo, hi, group, short): a room of lo to hi tiles still `short` pieces or more below its floor
+        # takes one more group of its own where its floor is barest, clear of the walls: a smithy's work table with its
+        # stools and tools, where the walls held no more and the extras no longer go mid-floor; Q3R-10)
+        lo, hi, grp, short = self.s.get("band_group", (0, 0, None, 0))
+        if grp and lo <= self.tiles < hi and tn - n >= short:
+            for d, u, v, wd in self.reach()[1][:40]:
+                if wd < 2.2: continue
+                if self.free_group(grp, u, v):
+                    self.log["band " + grp] += 1; break
+            n, k = self.counts()
         self.log[f"count {n0}->{n} kinds {k0}->{k}"] += 1
 
     def extras(self, want):
@@ -1888,6 +1912,12 @@ class Finish:
         # "Remove an object or two from the middle of the room and move a few objects closer to the southwest wall")
         anchors = [] if self.tiles >= self.s.get("extras_walls", 9999) else \
             [(t, rec) for t, rec in self.f._typed if rec[5] != "wall" and rec[4]]
+        # (spec extras_by_walls: from so many tiles, only beside a piece against a wall and against it too, never beside
+        # a piece mid-floor: RM-SMITHY-01/04's rows of barrels down the middle, "A little overcrowded"; Q3R-10)
+        by_walls = self.tiles >= self.s.get("extras_by_walls", 9999)
+        if by_walls:
+            anchors = [(t, rec) for t, rec in anchors
+                       if self.f.g.wall_dist(rec[0], rec[1]) <= max(rec[2], rec[3]) + EXTRA_WALL_REACH]
         self.rng.shuffle(anchors)
         n = 0
         for ta, rec in anchors:
@@ -1899,10 +1929,18 @@ class Finish:
             # (past the clear gap round it, Q2T-4: a wider one by a big piece)
             g_ = 0.25 if self.f.kind not in GAP_KINDS else (BIG_GAP if BIG.match(t) or BIG.match(ta) else GAP) + 0.05
             for du, dv in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                if self.put(t, rec[0] + du * (rec[2] + hu + g_), rec[1] + dv * (rec[3] + hv + g_), blocking=bl):
+                nu, nv = rec[0] + du * (rec[2] + hu + g_), rec[1] + dv * (rec[3] + hv + g_)
+                if by_walls and self.f.g.wall_dist(nu, nv) > max(hu, hv) + EXTRA_WALL_REACH: continue
+                if self.put(t, nu, nv, blocking=bl):
                     placed += 1; break
         # what found no room beside a piece: on a bare stretch of wall, new kinds first
         on_walls([t for t in pool if not CASED.search(t) or TINY.match(t)])
+        # (spec wall_extras (lo, hi, types): a room of lo to hi tiles still short takes these on its bare walls, back or
+        # front, a new kind first: a smithy's racks and armour where the extras found no wall heap to join, instead of
+        # more barrels mid-floor; RM-SMITHY-01, 22 of its 29 pieces barrels; Q3R-10)
+        lo, hi, more = self.s.get("wall_extras", (0, 0, ()))
+        if lo <= self.tiles < hi and placed < want:
+            on_walls(self.oks(more))
         self.log["extras"] += placed
 
     def mirror_unit(self, unit, r, a, got):

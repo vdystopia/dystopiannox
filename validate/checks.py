@@ -3273,6 +3273,13 @@ SIGNATURE_CAPS = {
 # (QA round 2, RM-SMITHY-01/02/05: "There is a barrel and a mannequin behind the desk where the shopkeeper would be
 # standing. There needs to be room for the shopkeeper"; Q2V-3; as the shop and the armoury, Q1G-6)
 KEEPER_TYPES = {"shop", "armoury", "smithy"}
+# QA round 3 (Q3R-9, Q3R-10): RM-SMITHY-04 "A little overcrowded with objects reduced by 10%" (and RM-SMITHY-01, Fix with
+# no note, the same band): a smithy's barrels and crates out on the floor, more than MID_STOCK_WALL units from every
+# wall, at most MID_STOCK_SHARE a floor tile (3 at least). Round 3's 01 and 04 held 12 and 10 on 64 and 62 tiles (0.19,
+# 0.16), round 2's overcrowded 03 14 on 90 (0.16); the sets' kept rooms 2-8 (0.05-0.09)
+MID_STOCK_TYPES = {"smithy"}
+MID_STOCK_WALL = 2.0
+MID_STOCK_SHARE = 0.12
 
 
 def _room_doors_uv(m, r):
@@ -3409,6 +3416,22 @@ def qa2_works_flags(m, r, kind, objs, tiles):
                                 f"the counter, where the keeper stands: the space between a trader's counter and its "
                                 f"wall is kept clear (kit/works.py keeper_zones; Q2V-3)", o))
                     break
+    if rtype in MID_STOCK_TYPES:
+        runs = room_runs(m, r["cells"])
+        mid = []
+        for o in objs:
+            if not QA1_SUPPLY.match(o["type"]): continue
+            u, v = uv_of(o)
+            hu, hv = _half_uv(o)
+            d = min([(abs(u - coord) - hu if line == "/" else abs(v - coord) - hv)
+                     for (line, coord), (lo, hi) in runs.items() if lo - 0.5 <= (v if line == "/" else u) <= hi + 0.5]
+                    or [0.0])
+            if d > MID_STOCK_WALL: mid.append(o)
+        most = max(3, int(MID_STOCK_SHARE * tiles))
+        if len(mid) > most:
+            out.append(("composition.mid_stock", f"{name}: {len(mid)} barrels and crates out on the floor of {tiles} "
+                        f"tiles, past {most}: a smithy's stock stands by its walls, a stack or two in the middle "
+                        f"(\"A little overcrowded with objects\"; kit/works.py extras_by_walls; Q3R-9, Q3R-10)", mid[0]))
     return out
 
 
@@ -4514,6 +4537,7 @@ RULES = [
     ("composition.qa1_s_corner", "composition", r"its S corner is bare", "Q1B"),
     ("composition.signature_cap", "composition", r"past its cap of", "Q2T-8 Q2V-4"),
     ("composition.keeper_space", "composition", r"where the keeper stands", "Q2V-3"),
+    ("composition.mid_stock", "composition", r"barrels and crates out on the floor", "Q3R-9 Q3R-10"),
     ("routes.waypoint", "routes", r"^Waypoint ", "TW-1 TW-9"),
     ("routes.leg", "routes", r"^(Link|.*'s route) from", "TW-1 TW-9 GW-1"),
     ("routes.shared_stop", "routes", r"one spot for two", "GW-6"),
