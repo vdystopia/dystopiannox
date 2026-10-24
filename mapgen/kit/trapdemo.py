@@ -363,10 +363,13 @@ class Mission:
                 for d in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                     stack.append((c[0] + d[0], c[1] + d[1]))
             run.sort()
-            mid = run[len(run) // 2]
             line = "\\" if len({q_ for _, q_ in run}) == 1 else "/"
-            doors.append(Door(gap=point_cell(*mid), line=line, type="CryptDoor", connects=(rid, "passage"),
-                              px=px(2 * mid[0], 2 * mid[1])))
+            # a passage's mouth is as wide as the passage (4-12 squares): a door on every point of it, so the
+            # furnisher's flood stops at the mouth (one door in the middle let the room's floor run on into the
+            # passage and the next room) and its doorway clearance covers the whole width
+            for p_ in run:
+                doors.append(Door(gap=point_cell(*p_), line=line, type="CryptDoor", connects=(rid, "passage"),
+                                  px=px(2 * p_[0], 2 * p_[1])))
         room = Room(id=rid, tiles={square_tile(i, j) for i, j in sq}, floor=self.rooms[rid]["floor"], walls=walls,
                     doors=doors, kind=kind, building=rid)
         objs = furnish_room(self.m, room, kind, self.rng, style)
