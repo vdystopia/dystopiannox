@@ -2309,8 +2309,14 @@ def great_hall(c, plan):
         recs = [f._placed_of.get(id(o)) for o in f.objects[n0:]] + ([f._placed_of.get(id(high["obj"]))] if high else [])
         recs = [r_ for r_ in recs if r_ and r_[4]]
         if recs:
-            carpet_box(c, (min(r_[0] - r_[2] for r_ in recs), max(r_[0] + r_[2] for r_ in recs),
-                           min(r_[1] - r_[3] for r_ in recs), max(r_[1] + r_[3] for r_ in recs)), pad=0.8)
+            bx = (min(r_[0] - r_[2] for r_ in recs), max(r_[0] + r_[2] for r_ in recs),
+                  min(r_[1] - r_[3] for r_ in recs), max(r_[1] + r_[3] for r_ in recs))
+            if not carpet_box(c, bx, pad=0.8) and c.carpet_inset:
+                # too big to keep inside the band: the carpet as before, its trim then laid on the band's brick
+                # (band_with_hearth), never no carpet under the boards
+                c.carpet_inset = False
+                carpet_box(c, bx, pad=0.8)
+                c.carpet_inset = True
     c.corner_set("S", r"^SquareTable[12]$|^RoundTable[12]$", 2)
     hearth_rug(c, hearth, gap=1.6)                     # a rug before the hearth, clear of the fire (Q2T-4)
     # the side walls' stations: statues, braziers and urns mirrored down the hall
@@ -2375,11 +2381,17 @@ def band_with_hearth(f, rng, hearth=None):
     ring = {s for s in sq if any((s[0] + a, s[1] + b) not in sq for a in (-1, 0, 1) for b in (-1, 0, 1))}
     gaps = [d.gap for d in room.doors]
     tile = lambda s: (s[0] + s[1], s[0] - s[1])
-    tiles = set()
+    # a carpet's trim square on the ring takes the band's brick under the trim (QA round 3, RM-GREATHALL-01: the band had
+    # stopped wherever a carpet's trim lay on its squares): the band runs unbroken, the carpet's trim drawn on its brick
+    trim = lambda t: any(m_.startswith("Rug") for m_ in spec.local_from.get(t, ()))
+    tiles, trims = set(), {}
     for s in ring:
         t = tile(s)
         if any(max(abs(t[0] - g[0]), abs(t[1] - g[1])) <= 1 for g in gaps): continue
-        if (spec.floor.get(t) or main).startswith("Rug") or t in spec.local_blend: continue
+        if (spec.floor.get(t) or main).startswith("Rug"): continue
+        if t in spec.local_blend:
+            if not trim(t): continue
+            trims[t] = [m_ for m_ in spec.local_from[t] if m_.startswith("Rug")]
         tiles.add(t)
     if len(tiles) < 0.6 * len(ring): return set()
     mats = [m for m in FIN.BAND if m != main and frozenset((m, main)) not in SH._never()]
@@ -2395,7 +2407,10 @@ def band_with_hearth(f, rng, hearth=None):
             if (spec.floor.get(t) or main).startswith("Rug") or t in spec.local_blend: continue
             tiles.add(t)
     for t in tiles: spec.tile(*t, main)                 # (a band laid before furnishing goes under this one)
-    return SH.lay_patch(spec, room, tiles, mat)
+    out = SH.lay_patch(spec, room, tiles, mat)
+    for t, rugs in trims.items():
+        for rg in rugs: spec.edge_over[(rg, mat)] = F.carpet_trim(rg, mat)
+    return out
 
 
 def hall_boards(c, ax, start, clear_of_fire, gap_rows=None):

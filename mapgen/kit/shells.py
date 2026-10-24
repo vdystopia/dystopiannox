@@ -689,6 +689,7 @@ def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
             if n in tiles or n not in rt: continue
             nb = spec.floor.get(n)
             if not nb or nb == mat: continue
+            if nb.startswith("Rug"): continue                 # a carpet's own trim is that seam's edge (Q3C-1)
             spec.edge_over[(mat, nb)] = edge
             spec.pattern_tiles.setdefault(n, set()).add((mat, nb))
     return set(tiles)
