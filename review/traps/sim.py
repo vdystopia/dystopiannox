@@ -705,7 +705,20 @@ def analyse(map_dir, only=None, trace=False):
             d_, o_, _ = sm.replay(sm.straight(WALK if nm == "walk" else RUN), offset=0)
             row[f"careless_{nm}_0"] = [round(d_, 1), o_]
         row["slack"] = round(slack, 2)
+        # what this station does that the simulator does not model: its verdict is the game's (the tour)
+        known = {"on", "off", "toggle", "pulse", "arm", "disarm", "restart", "reset", "walls_open", "walls_close",
+                 "log", "sound", "say", "wake"}
+        pre = st.get("prefix") or ""
+        acts = [a for z in data["zones"] if z["name"].startswith(pre) or sm.inside(*z["c"]) for a in z["acts"] + z["release"]]
+        acts += [a for w in data.get("watches", []) if w["name"].startswith(pre) for a in w["acts"]]
+        blind = sorted({a["kind"] for a in acts if a["kind"] not in known})
+        blind += sorted({t for t in (v["type"] for v in sm.objs.values()) if t in ("Glyph", "PoisonGasTrap", "BearTrap")})
+        if any(m["name"].startswith(pre) for m in data["movers"]) and any(k.startswith("push") for k in blind):
+            pass
+        row["sim_blind"] = blind
         row["verdict"] = verdict(row)
+        if blind and row["verdict"] in ("TOO EASY", "TIER (easier than hard)", "PASS"):
+            row["verdict"] += f" [sim blind to {', '.join(blind)}: judged in the game]"
         rows.append(row)
         print(f"{row['label']:14s} {tier:8s} plan {row.get('plan')} t={row.get('time')}s jumps={row.get('jumps')} "
               f"lever={row.get('lever')} replay={row.get('replay')}/{row.get('replay_outcome')} "

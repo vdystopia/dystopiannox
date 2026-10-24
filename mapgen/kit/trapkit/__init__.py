@@ -131,13 +131,18 @@ class Station:
         return self.T.act(kind, target, **kw)
 
     def wall_cell(self, a, b):
-        """The grid cell of the wall point at station point (a, b) on the square corners (a and b whole squares).
-        Part.at draws (a, b) at uv (2 si + 1, 2 sj - 1) and wall point (p, q) stands at uv (2p, 2q), so the corner is
-        (floor(si + 0.5), floor(sj - 0.5)) (it was one square off along a before 2026-10-24: the blocks helper)."""
+        """The wall cell nearest station point (a, b) (a cell (X, Y), X + Y even, stands centred at ((X + .5) * 23,
+        (Y + .5) * 23)); between two, the one nearer the way in (a gate at a = L stands on the station's end wall)."""
         import math as _m
-        from kit.layout import point_cell
-        si, sj = self.part.sq(a, b)
-        return point_cell(int(_m.floor(si + 0.5 + 1e-9)), int(_m.floor(sj - 0.5 + 1e-9)))
+        x, y = self.at(a, b)
+        fx, fy = x / 23.0 - 0.5, y / 23.0 - 0.5
+        X0, Y0 = _m.floor(fx), _m.floor(fy)
+        cand = [(X, Y) for X in (X0 - 1, X0, X0 + 1, X0 + 2) for Y in (Y0 - 1, Y0, Y0 + 1, Y0 + 2) if (X + Y) % 2 == 0]
+
+        def key(c):
+            d = round((c[0] - fx) ** 2 + (c[1] - fy) ** 2, 3)
+            return d, self.ab((c[0] + 0.5) * 23.0, (c[1] + 0.5) * 23.0)[0]
+        return min(cand, key=key)
 
     def gate(self, a, state="closed", material=None):
         """A row of secret walls across the station at `a` (on the square corners): a gate the script opens

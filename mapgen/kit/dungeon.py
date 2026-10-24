@@ -43,8 +43,14 @@ class Part:
         return self.i0 + b, self.j0 + self.sign * a
 
     def at(self, a, b):
-        """World px of the point a along, b across (squares; the part spans a in [0, length], b in [0, width])."""
+        """World px of the point a along, b across (squares; the part spans a in [0, length], b in [0, width]).
+        The frame sits on the walls as Nox draws and collides them (a wall cell's line runs through the cell's middle):
+        in a part along i the side walls stand at b = 0 and b = width (before 2026-10-24 they stood at b = -0.5 and
+        width - 0.5 of this frame: things set by the far wall stood in it); in a part along j the side walls are at
+        b = 0 and width and the walls across it at a = -0.5 and length - 0.5 (its ends are open in the trap maps)."""
         si, sj = self.sq(a, b)
+        if self.axis == "i":
+            return square_px(si, sj - 1.5)
         return square_px(si, sj - 1)
 
     def square(self, a, b):
