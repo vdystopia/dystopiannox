@@ -74,7 +74,7 @@ def _segments(st):
     """World segments of the wall pieces round the station (each cell drawn from its centre toward the walls it joins,
     a straight piece when it joins fewer than two; open secret walls let a beam through)."""
     cx, cy = st.at(st.L / 2, st.W / 2)
-    r = (max(st.L, st.W) / 2 + 22) * SQ
+    r = (math.hypot(st.L, st.W) / 2 + 3) * SQ       # a beam that gets past these leaves the station: _record says so
     W = st.spec.wallmap
     out = []
     for (X, Y), w in W.items():
@@ -119,16 +119,18 @@ def _seg_dist(p, a, b):
     return math.hypot(p[0] - ax - t * dx, p[1] - ay - t * dy)
 
 
-def _record(st, name, kind, segs_):
-    """Keep a globe's traced beams (world px) and check none leaves the station."""
+def _record(st, name, kind, segs_, keep=1):
+    """Keep a globe's traced beams (world px): every one for the checks, every `keep`th for the Meta; check none
+    leaves the station."""
     for p, q in segs_:
         for x, y in (p, q):
             a, b = st.ab(x, y)
             assert 0.25 <= a <= st.L - 0.25 and -0.6 <= b <= st.W + 0.6, \
                 f"{st.label}: the beam of {name} leaves the station at a={a:.2f} b={b:.2f}"
+    st.__dict__.setdefault("dense", []).append((name, segs_))
     st.__dict__.setdefault("beams", []).append(
         dict(name=name, kind=kind, segs=[[[round(p[0], 1), round(p[1], 1)], [round(q[0], 1), round(q[1], 1)]]
-                                         for p, q in segs_]))
+                                         for p, q in segs_[::keep]]))
 
 
 # ---- globes -------------------------------------------------------------------------------------------------------
@@ -159,16 +161,16 @@ def _fixed(st, a, side, enabled=False, marks=True):
     return name
 
 
-def _sweep(st, name, a, b, base, spin, step=2.0):
-    """Record a turning globe's beams round a full turn, every `step` degrees."""
+def _sweep(st, name, a, b, base, spin, step=0.25, keep=8):
+    """Record a turning globe's beams round a full turn, every `step` degrees (every `keep`th in the Meta)."""
     segs = _segments(st)
     x, y = st.at(a, b)
-    n = int(360 / step)
+    n = int(round(360 / step))
     sign = 1 if spin * _turn(st) >= 0 else -1
-    _record(st, name, "turning", [((x, y), _ray(x, y, base + sign * TAU * k / n, segs)) for k in range(n)])
+    _record(st, name, "turning", [((x, y), _ray(x, y, base + sign * TAU * k / n, segs)) for k in range(n)], keep)
 
 
-def _carried(st, name, path, da, db, step=0.25):
+def _carried(st, name, path, da, db, step=0.1, keep=4):
     """Record a carried globe's beams along its path (station points), every `step` squares."""
     segs = _segments(st)
     ang = _ang(st, da, db)
@@ -178,7 +180,7 @@ def _carried(st, name, path, da, db, step=0.25):
         for k in range(n + 1):
             x, y = st.at(a0 + (a1 - a0) * k / n, b0 + (b1 - b0) * k / n)
             out.append(((x, y), _ray(x, y, ang, segs)))
-    _record(st, name, "carried", out)
+    _record(st, name, "carried", out, keep)
 
 
 def _cue(st, clock, sound, a, b, at):
@@ -207,10 +209,10 @@ def _meta(st, **kw):
     beams = st.__dict__.get("beams", [])
     for a, b in st.rest:
         p = st.at(a, b)
-        for bm in beams:
-            for s in bm["segs"]:
+        for name, segs_ in st.__dict__.get("dense", []):
+            for s in segs_:
                 d = _seg_dist(p, s[0], s[1]) / SQ
-                assert d >= CLEAR, f"{st.label}: rest spot ({a}, {b}) is {d:.2f} squares from {bm['name']}"
+                assert d >= CLEAR, f"{st.label}: rest spot ({a}, {b}) is {d:.2f} squares from {name}"
     return Meta(beams=beams, **kw)
 
 
@@ -266,7 +268,7 @@ def lighthouse(st):
     a, b = 10.0, IN
     g, base = _globe(st, a, b, 0, 1, spin=spin)
     _sweep(st, g, a, b, base, spin)
-    st.rest += [(2.5, 5.0), (10.0, 5.6), (10.0, 8.5), (6.0, 8.5), (14.0, 8.5), (17.5, 5.0), (4.0, 1.2), (16.0, 1.2)]
+    st.rest += [(2.5, 5.0), (10.0, 5.6), (10.0, 8.5), (5.0, 8.5), (15.0, 8.5), (17.5, 5.0), (4.0, 1.2), (16.0, 1.2)]
     out = 2 * math.atan(1.5 / (2.5 - IN))
     return _meta(st, tier="standard", tells="a globe in a niche, its beam turning slowly; once a turn it swings out "
                                             "across the room",
@@ -443,7 +445,7 @@ def courtyard(st):
     ca, cb = 10.0, 6.0
     for k, (da, db) in enumerate(((1, 0), (0, 1), (-1, 0), (0, -1))):
         g, base = _globe(st, ca, cb, da, db, spin=spin)
-        _sweep(st, g, ca, cb, base, spin, step=3.0 if k else 1.5)
+        _sweep(st, g, ca, cb, base, spin)
     st.rest += [(1.5, 6.0), (5.2, 1.5), (5.0, 7.0), (15.0, 5.0), (14.5, 10.6), (19.5, 6.0)]
     return _meta(st, tier="hard", tells="a courtyard with four beams turning slowly about its middle, a door at "
                                         "each far corner, short walls to stand behind",
