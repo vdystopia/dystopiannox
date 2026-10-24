@@ -654,7 +654,9 @@ def lay_zones(spec, room, objs, kind=None):
         out[t] = mat
     # a zone too broken by the doors and carpets to read as one is left out
     if len(out) < max(1, 0.5 * len(want)): return {}
-    hearth = {t for t, mat in out.items() if want.get(((t[0] + t[1]) // 2, (t[0] - t[1]) // 2)) == "hearth"}
+    # the hearth's patch and the throne's dais bordered all round (Q1R-19; QA round 3, Q3C-4: a floor patch ends at a
+    # hard, bordered edge, and a dais standing out from its wall shows its edge on every side)
+    hearth = {t for t, mat in out.items() if want.get(((t[0] + t[1]) // 2, (t[0] - t[1]) // 2)) in BORDERED_ZONES}
     for t, mat in out.items():
         if t not in hearth: spec.tile(*t, mat)
     for mat in sorted({out[t] for t in hearth}):          # bordered all round (Q1R-19)
@@ -672,6 +674,7 @@ def lay_zones(spec, room, objs, kind=None):
 # corner); laid over a carpet when the fire stands on one; its edges drawn (PATCH_EDGE) whatever Westwood blends.
 HEARTH_RATE = 1.0
 PATCH_EDGE = "BrickEdgeBrown"
+BORDERED_ZONES = ("hearth", "throne")      # lay_zones' patches laid bordered (lay_patch), never blended
 
 
 def lay_patch(spec, room, tiles, mat, edge=PATCH_EDGE, base=None):
