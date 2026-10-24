@@ -29,16 +29,20 @@ import argparse, json, math, os, sys
 import numpy as np
 
 SQ = 32.5
-FPT = 3                        # frames a tick
-CELL = 0.5                     # squares a grid cell
+FPT = 2                        # frames a tick
+CELL = 0.4                     # squares a grid cell: a step of one cell a tick is a run (6.5 units a frame)
 WALK, RUN = 3.3, 6.9           # units a frame
 JUMP_FRAMES, JUMP_COOL = 18, 30
+JT = JUMP_FRAMES // 2          # ticks airborne (set from FPT below)
 PLAYER_R = 10.0
 LETHAL = 1000.0
 SHOVE = 30.0                   # the planner's price for being touched by a moving block (it shoves: into pits too)
 PLATE_PENALTY = 15.0
 JUMP_COST = 2.0                # a jump is free in HP but costs stamina: the planner jumps only when it helps
-H_TICKS = 420                  # 42 s
+H_TICKS = 630                  # 42 s
+JT = JUMP_FRAMES // FPT        # a jump: ticks airborne, cells covered straight / diagonally (~124 units at run speed)
+JD = int(round(124 / (SQ * CELL)))
+JDD = int(round(JD / 1.414))
 PLAN_MARGIN = 5.0              # px: the planner keeps this much farther from contact than the replay needs
 WALL_GAP = 0.35                # squares: a player's centre stays this far from a wall line
 
@@ -239,7 +243,7 @@ class StationModel:
         sx, sy = st["start"]
         self.O = (sx - 0.5 * SQ * self.U[0] - self.W / 2 * SQ * self.V[0],
                   sy - 0.5 * SQ * self.U[1] - self.W / 2 * SQ * self.V[1])
-        self.NA = int(round((self.L + 1.0) / CELL))
+        self.NA = int(math.ceil((self.L + 1.1) / CELL))       # to half a square past the way out
         self.NB = int(round(self.W / CELL))
         self.objs = {k: v for k, v in data["objects"].items() if self.inside(v["x"], v["y"], 1.0)}
         movers = [m for m in data["movers"] if any(o in self.objs for o in m["objs"]) or
@@ -307,7 +311,7 @@ class StationModel:
     def fields(self, offset=0, events=(), ticks=H_TICKS):
         """ground[t], air[t]: damage a player standing in each cell takes over tick t (3 frames) on foot / in a jump."""
         w = World(self.data, offset, events)
-        G = np.zeros((ticks + 8, self.NA, self.NB), np.float32)
+        G = np.zeros((ticks + JT + 2, self.NA, self.NB), np.float32)
         A = np.zeros_like(G)
         static = {}                                     # object -> (cells, ground per frame, air per frame)
         for o, v in self.objs.items():
@@ -346,7 +350,7 @@ class StationModel:
                 base_g[i, j] += sign * LETHAL / FPT
                 base_a[i, j] += sign * LETHAL / FPT
         for wc in w.closed: wall(wc, +1)
-        for t in range(ticks + 8):
+        for t in range(ticks + JT + 2):
             vol = np.zeros_like(base_g)
             for k in range(FPT):
                 w.tick()
@@ -415,16 +419,16 @@ class StationModel:
 
     # ---- the plan --------------------------------------------------------------------------------------------
     MOVES = [(0, 0), (1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (1, -1), (-1, 1), (-1, -1)]
-    JUMPS = [(7, 0), (-7, 0), (0, 7), (0, -7), (5, 5), (5, -5), (-5, 5), (-5, -5)]
+    JUMPS = [(JD, 0), (-JD, 0), (0, JD), (0, -JD), (JDD, JDD), (JDD, -JDD), (-JDD, JDD), (-JDD, -JDD)]
 
     def plan(self, G, A, start_cells=None, t0=0, d0=0.0, goal=None, avoid_plates=True):
         """Least damage from start_cells at tick t0 to the goal (default: the way out). Returns
         (damage, arrival tick, path [(t, i, j, airborne)]) or None."""
-        NA, NB, T = self.NA, self.NB, G.shape[0] - 8
+        NA, NB, T = self.NA, self.NB, G.shape[0] - (JT + 2)
         INF = np.float32(1e9)
         C = JUMP_COOL // FPT + 1                      # cooldown states (0 = a jump is ready)
-        best = np.full((T + 8, C, NA, NB), INF, np.float32)
-        par = np.zeros((T + 8, C, NA, NB), np.int16)   # how the state was reached (move or jump index, from cooldown)
+        best = np.full((T + JT + 2, C, NA, NB), INF, np.float32)
+        par = np.zeros((T + JT + 2, C, NA, NB), np.int16)   # how the state was reached (move or jump index, from cooldown)
         ground_pen = np.zeros((NA, NB), np.float32)
         if avoid_plates:
             for z in self.zones:
@@ -481,17 +485,17 @@ class StationModel:
                         if si1 <= si0 or sj1 <= sj0: continue
                         acc = src[si0:si1, sj0:sj1].copy()
                         ok = np.ones_like(acc, bool)
-                        for s in range(1, 7):
-                            oi, oj = round(di * s / 6), round(dj * s / 6)
+                        for s in range(1, JT + 1):
+                            oi, oj = round(di * s / JT), round(dj * s / JT)
                             acc = acc + A[t + s][si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
                             ok &= ~block[si0 + oi:si1 + oi, sj0 + oj:sj1 + oj]
-                        acc = acc + G[t + 6][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + 6][si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST
+                        acc = acc + G[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] - A[t + JT][si0 + di:si1 + di, sj0 + dj:sj1 + dj] + JUMP_COST
                         land[si0 + di:si1 + di, sj0 + dj:sj1 + dj] = np.where(ok, acc, INF)
                         land = np.where(block, INF, land)
-                        lc = C - 1 - 6 if C - 1 - 6 > 0 else 0
-                        better = land < best[t + 6, lc]
-                        best[t + 6, lc] = np.where(better, land, best[t + 6, lc])
-                        par[t + 6, lc] = np.where(better, 1000 + k, par[t + 6, lc])
+                        lc = max(C - 1 - JT, 0)
+                        better = land < best[t + JT, lc]
+                        best[t + JT, lc] = np.where(better, land, best[t + JT, lc])
+                        par[t + JT, lc] = np.where(better, 1000 + k, par[t + JT, lc])
         if found is None:
             return None
         # the best arrival within 40 ticks of the first: least damage, then earliest
@@ -508,9 +512,9 @@ class StationModel:
             p = int(par[t, c, i, j])
             if p >= 1000:
                 di, dj = self.JUMPS[p - 1000]
-                for s in range(6, 0, -1):
-                    path.append((t - 6 + s, i - di + round(di * s / 6), j - dj + round(dj * s / 6), True))
-                i, j, t, c = i - di, j - dj, t - 6, 0
+                for s in range(JT, 0, -1):
+                    path.append((t - JT + s, i - di + round(di * s / JT), j - dj + round(dj * s / JT), True))
+                i, j, t, c = i - di, j - dj, t - JT, 0
             else:
                 k, pc = divmod(p, 16)
                 di, dj = self.MOVES[k]
