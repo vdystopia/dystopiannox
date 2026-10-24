@@ -12,8 +12,9 @@ The story
   presses. Hask gives fire-ward potions for it (useful against Varr).
 - The traps, in the order a player meets them: flame grates on a clock at the way in; the snapping presses before the
   cold store (taught in a side room); the pushers on the beat into the guild hall; two lanes of fire to the bunkhouse;
-  the runaway block to the furnace hall; belt and pistons before the armoury (a side room of loot). The powder store
-  off the guild hall is the rest before the hard half.
+  the block gauntlet to the furnace hall (the presses again, and a ram wave, a swept bridge and a vice); belt and
+  pistons before the armoury (a side room of loot). The powder store off the guild hall is the rest before the hard
+  half.
 
     py mapgen/designs/trapdemo02.py [out_dir|-]
 """
