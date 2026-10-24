@@ -57,6 +57,7 @@ BLADES = {"RotatingSpikes": (12, 4.0), "RotatingSpikesImmobile": (12, 4.0)}
 PITS = ("Pit", "ForestPit")
 CRUMBLE = ("PitCrumblingFloor",)
 SENTRIES = ("SentryGlobe", "SentryGlobeN", "SentryGlobeE", "SentryGlobeS", "SentryGlobeW", "SentryGlobeMovable")
+FIREBALL, BALL_R = 12.0, 18.0  # a skull gun's fireball: px a frame; it hits a player whose centre comes this close
 SHOOTERS = {"ArrowTrap1": ((1, 1), 25.0), "ArrowTrap2": ((-1, 1), 25.0), "Skull1": ((-1, -1), 90.0),
             "Skull2": ((1, -1), 90.0), "Skull3": ((-1, 1), 90.0), "Skull4": ((1, 1), 90.0)}
 
@@ -332,6 +333,8 @@ class StationModel:
         sentries = {o: v for o, v in self.objs.items() if v["type"] in SENTRIES}
         sentry_on = {o: 0 for o in sentries}
         dyn = [o for o, v in self.objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
+        skulls = [o for o, v in shooters.items() if v["type"].startswith("Skull")]
+        balls = []                                      # skull fireballs in flight: (gun, frame fired)
         base_g = np.zeros((self.NA, self.NB), np.float32)
         base_a = np.zeros_like(base_g)
 
@@ -354,6 +357,9 @@ class StationModel:
             vol = np.zeros_like(base_g)
             for k in range(FPT):
                 w.tick()
+                fr = t * FPT + k
+                for o in skulls:                        # held on, a skull fires once a second (its fireball flies)
+                    if w.en.get(o, True) and (fr + offset) % 30 == 0: balls.append((o, fr))
                 for o in w.changed:
                     apply(o, +1 if w.en[o] else -1)
                 for wc in w.wall_changed:
@@ -365,7 +371,15 @@ class StationModel:
                 for o in sentries:
                     sentry_on[o] = sentry_on[o] + 1 if w.en.get(o, True) else 0
             G[t] += vol; A[t] += vol
+            hot = set()
+            for o, f0 in balls:
+                for k in range(FPT):
+                    hot |= self.ball_cells(o, t * FPT + k - f0, (BALL_R + PLAN_MARGIN) / SQ)
+            for i, j in hot:
+                G[t, i, j] += 90.0; A[t, i, j] += 90.0
+            balls = [(o, f0) for o, f0 in balls if (t * FPT - f0) * FIREBALL <= self.ball_range(o)]
             for o, v in shooters.items():                # held on: a shot a second
+                if o in skulls: continue
                 if w.en.get(o, True) and o not in w.volleys:
                     for i, j in lanes[o]:
                         G[t, i, j] += SHOOTERS[v["type"]][1] * FPT / 30.0
@@ -409,6 +423,34 @@ class StationModel:
                 if self.blocked[i, j]: break
                 out |= set(self.cells_near(a, b, 14 / SQ))
         return out
+
+    def ball_range(self, o):
+        """How far a skull's fireball flies (px) before a wall or a pillar stops it."""
+        if not hasattr(self, "_range"): self._range = {}
+        if o not in self._range:
+            v = self.objs[o]
+            (dx, dy), _ = SHOOTERS[v["type"]]
+            n = math.hypot(dx, dy)
+            d = 0.0
+            while d < 900:
+                d += 8
+                a, b = self.ab(v["x"] + dx / n * d, v["y"] + dy / n * d)
+                if not (-0.5 <= a <= self.L + 0.5 and 0 <= b <= self.W): break
+                i, j = self.cell_of(a, b)
+                if 0 <= i < self.NA and 0 <= j < self.NB and self.blocked[i, j]: break
+            self._range[o] = d
+        return self._range[o]
+
+    def ball_xy(self, o, age):
+        v = self.objs[o]
+        (dx, dy), _ = SHOOTERS[v["type"]]
+        n = math.hypot(dx, dy)
+        return v["x"] + dx / n * FIREBALL * age, v["y"] + dy / n * FIREBALL * age
+
+    def ball_cells(self, o, age, r):
+        if age < 0 or age * FIREBALL > self.ball_range(o): return set()
+        a, b = self.ab(*self.ball_xy(o, age))
+        return set(self.cells_near(a, b, r))
 
     def beam(self, p, ang, pad=4.0):
         out = set()
@@ -543,6 +585,7 @@ class StationModel:
         shooters = [(o, v) for o, v in objs.items() if v["type"] in SHOOTERS]
         lanes = {o: [self.xy(*self.cell_ab(i, j)) for i, j in self.lane(v)] for o, v in shooters}
         cool = {o: 0 for o, _ in shooters}
+        balls = []
         sentries = [(o, v) for o, v in objs.items() if v["type"] in SENTRIES]
         on_for = {o: 0 for o, _ in sentries}
         dyn = [(o, v) for o, v in objs.items() if v["type"] in BLOCKS or v["type"] in BLADES]
@@ -575,9 +618,18 @@ class StationModel:
             for o, v in shooters:
                 cool[o] = max(0, cool[o] - 1)
                 if not w.en.get(o, True): continue
+                if v["type"].startswith("Skull"):       # a fireball a second, flying at 12 px a frame
+                    if (f + offset) % 30 == 0: balls.append((o, f))
+                    continue
                 hit = any(math.hypot(x - lx, y - ly) < 12 for lx, ly in lanes[o])
                 if hit and (o in w.volleys or cool[o] == 0):
                     dmg += SHOOTERS[v["type"]][1]; cool[o] = 30
+            left = []
+            for o, f0 in balls:
+                bx, by = self.ball_xy(o, f - f0)
+                if math.hypot(x - bx, y - by) < BALL_R: dmg += SHOOTERS[self.objs[o]["type"]][1]
+                elif (f - f0) * FIREBALL <= self.ball_range(o): left.append((o, f0))
+            balls = left
             for o, v in sentries:
                 on_for[o] = on_for[o] + 1 if w.en.get(o, True) else 0
                 if on_for[o]:
