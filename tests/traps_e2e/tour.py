@@ -29,12 +29,12 @@ def build(kind):
     sys.path.insert(0, os.path.join(REPO, "mapgen"))
     os.chdir(REPO)
     out = os.path.join(lab.WORK, "tourbuild")
-    shutil.rmtree(out, ignore_errors=True)
-    os.makedirs(out)
+    name = "TL" + kind.capitalize()
+    shutil.rmtree(os.path.join(out, name), ignore_errors=True)        # each lab keeps its own build (the page reads it)
+    os.makedirs(out, exist_ok=True)
     argv, sys.argv = sys.argv, ["traplab.py", kind, out]
     runpy.run_path(os.path.join(REPO, "mapgen", "designs", "traplab.py"), run_name="__main__")
     sys.argv = argv
-    name = "TL" + kind.capitalize()
     return name, os.path.join(out, name)
 
 
@@ -46,7 +46,7 @@ def probe_source(name, bdir):
     st_go, run_go = [], []
     for k, st in enumerate(labinfo["stations"]):
         sm = sim.StationModel(data, st, [tuple(w) for w in labinfo["walls"]], secret)
-        pre = f"S{k + 1:02d}"
+        pre = st.get("prefix") or f"S{k + 1:02d}"
         names = set(sm.objs)
         grouped = {o for g in data["groups"].values() for o in g}
         on = sorted(o for o in names & grouped if data["objects"][o].get("enabled", True))
@@ -81,8 +81,12 @@ def probe_source(name, bdir):
     return src, total
 
 
-def main(kind, max_s=None):
-    name, bdir = build(kind)
+def main(kind, max_s=None, built=None):
+    if built:                                   # an already built trap map (a gauntlet, a mission): tour its passages
+        bdir = built
+        name = json.load(open(next(os.path.join(bdir, f) for f in os.listdir(bdir) if f.endswith(".lab.json"))))["name"]
+    else:
+        name, bdir = build(kind)
     rows = sim.analyse(bdir)
     src, frames = probe_source(name, bdir)
     dst = os.path.join(lab.SH, "maps", name)
@@ -114,7 +118,7 @@ def main(kind, max_s=None):
     print(" / ".join(l for l in r.stdout.splitlines() if l.strip()))
     game = {}
     for l in open(log, encoding="utf-8", errors="replace"):
-        m = re.search(r"probe: (TL-\S+) (plan|walk|run) lost=(\d+) outcome=(\w+) frames=(\d+)", l)
+        m = re.search(r"probe: (T[LGD]-\S+) (plan|walk|run) lost=(\d+) outcome=(\w+) frames=(\d+)", l)
         if m:
             game.setdefault(m.group(1), {})[m.group(2)] = (int(m.group(3)), m.group(4))
         elif "panic" in l.lower():
@@ -141,7 +145,8 @@ def main(kind, max_s=None):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("kind")
+    ap.add_argument("kind", help="a TrapLab kind, or - with --built")
     ap.add_argument("--max", type=int)
+    ap.add_argument("--built", help="the folder of a built trap map (TrapGnt, TrapDem): tour it as built")
     a = ap.parse_args()
-    main(a.kind, a.max)
+    main(a.kind, a.max, a.built)

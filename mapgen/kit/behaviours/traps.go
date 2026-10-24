@@ -403,6 +403,9 @@ func trapMoverResolve(m *trapMover) {
 }
 
 func trapMoverPoint(m *trapMover) ns.Pointf {
+	if m.seg < 0 || m.seg >= len(m.Path) { // a mover sent back or retracted past its ends: keep it on its path
+		m.seg, m.along = 0, 0
+	}
 	a := m.Path[m.seg]
 	b := m.Path[(m.seg+1)%len(m.Path)]
 	L := trapDist(a, b)
@@ -436,8 +439,14 @@ func trapMoverStep(m *trapMover) {
 	if m.Mode == "loop" {
 		last = n
 	}
+	if m.seg < 0 || m.seg >= n {
+		m.seg, m.along = 0, 0
+	}
 	left := m.Speed
-	for left > 0 {
+	for guard := 0; left > 0 && guard < 64; guard++ {
+		if m.seg < 0 || m.seg >= n {
+			m.seg, m.along = 0, 0
+		}
 		a := m.Path[m.seg]
 		b := m.Path[(m.seg+1)%n]
 		L := trapDist(a, b)

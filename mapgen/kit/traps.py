@@ -141,7 +141,8 @@ class Traps:
         return dict(groups=self.groups, clocks=list(self.clocks.values()), movers=list(self.movers.values()),
                     zones=list(self.zones.values()), switches=self.switches, watches=self.watches,
                     labels=self.labels,
-                    objects={k: dict(type=v["type"], x=v["x"], y=v["y"], enabled=v.get("enabled", True))
+                    objects={k: dict(type=v["type"], x=v["x"], y=v["y"], enabled=v.get("enabled", True),
+                                     **({"xfer": v["xfer"]} if v.get("xfer") else {}))
                              for k, v in self.objects.items()})
 
     def _act_go(self, a):
