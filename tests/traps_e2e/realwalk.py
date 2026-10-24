@@ -46,6 +46,7 @@ var rwStations = []rwStation{
 
 var (
 	rwF, rwT, rwK, rwLost, rwLast int
+	rwBase, rwMin                 int // health as the walk starts, the lowest since
 	rwGo, rwDone, rwFell, rwOut   bool
 	rwHold                         = ns.Ptf(0, 0)
 )
@@ -95,8 +96,14 @@ func rwFrame() {
 		return
 	}
 	hp := h.CurrentHealth()
+	if rwT == s.t0 { // the walk starts: count from here
+		rwBase, rwMin, rwLost, rwLast = hp, hp, 0, hp
+	}
 	if hp < rwLast {
 		rwLost += rwLast - hp
+	}
+	if hp < rwMin {
+		rwMin = hp
 	}
 	rwLast = hp
 	p := h.Pos()
@@ -112,8 +119,10 @@ func rwFrame() {
 		outcome = fmt.Sprintf("stuck at %.1f", a)
 	}
 	if outcome != "" {
-		println(fmt.Sprintf("probe: %s lost=%d outcome=%s frames=%d", s.label, rwLost, outcome, rwT-s.t0))
+		println(fmt.Sprintf("probe: %s lost=%d outcome=%s frames=%d hp0=%d low=%d", s.label, rwLost, outcome, rwT-s.t0, rwBase, rwMin))
 		rwK++
+		rwLost = 0
+		h.SetHealth(3000)
 	}
 }
 '''
@@ -168,8 +177,10 @@ def main(bdir, run=False, max_s=None):
     res = {}
     for l in open(log, encoding="utf-8", errors="replace"):
         m = re.search(r"probe: (T[LGD]-\S+) lost=(\d+) outcome=(.+?) frames=(\d+)", l)
+        hm = re.search(r"hp0=(\d+) low=(\d+)", l)
         if m:
-            res[m.group(1)] = dict(lost=int(m.group(2)), outcome=m.group(3), frames=int(m.group(4)))
+            res[m.group(1)] = dict(lost=int(m.group(2)), outcome=m.group(3), frames=int(m.group(4)),
+                                   hp0=int(hm.group(1)) if hm else None, low=int(hm.group(2)) if hm else None)
         elif "panic" in l.lower():
             print("  ", l.strip()[:200])
     key = "run" if run else "walk"
@@ -180,7 +191,7 @@ def main(bdir, run=False, max_s=None):
     for st in info["stations"]:
         r_ = res.get(st["label"])
         print(f"  {st['label']:14s} {st.get('tier', ''):8s} careless {key}: " +
-              (f"{r_['lost']} HP, {r_['outcome']}" if r_ else "no result"))
+              (f"{r_['lost']} HP, {r_['outcome']} (health {r_.get('hp0')}, lowest {r_.get('low')})" if r_ else "no result"))
     return res
 
 
