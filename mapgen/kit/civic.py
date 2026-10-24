@@ -2527,7 +2527,7 @@ def ogre_hall(c, plan):
 
 # ---- the ceremonial rooms --------------------------------------------------------------------------------------------
 def stations(c, ax, inner, outer, first=4.0, step=4.2, inner_off=None, light_inner=False, end=2.4, middle=(),
-             wall_gap=0.4):
+             wall_gap=0.4, exact=False):
     """The ceremonial rooms' rhythm down the axis: at even steps from the far wall toward the door, a mirrored pair
     beside the aisle (inner: columns, statues, braziers in turn) and a mirrored pair by the side walls (outer: benches,
     urns, statues in turn; a bench facing the aisle), each pair both or neither; in a wide room a third pair half way
@@ -2545,12 +2545,12 @@ def stations(c, ax, inner, outer, first=4.0, step=4.2, inner_off=None, light_inn
     while d <= depth_max:
         if inner:
             done = False
-            for j in range(len(inner)):              # the station's own kind first, else the next that fits there
+            for j in range(1 if exact else len(inner)):   # the station's own kind first, else the next that fits there
                 pat = inner[(k + j) % len(inner)]
                 t = c.pick_once(pat)
                 if not t: continue
                 io = inner_off or (half + 0.9 + max(f.half(t)))
-                for o in (io, io + 0.5, io + 1.0, io + 1.6):
+                for o in ((io,) if exact else (io, io + 0.5, io + 1.0, io + 1.6)):   # (exact: one straight line)
                     n = mirrored(c, ax, t, d, o, light=light_inner and pat == inner[-1])
                     if n: got += n; done = True; break
                 if done: break
@@ -2650,6 +2650,32 @@ HALL_WIDE = 9.5       # a hall this many units or more from its axis to a side w
 HALL_NAVE = 0.45      # a wide hall's colonnade stands this share of the way out to its side walls (Q3C-7)
 
 
+def hall_nave(c, ax, side, first=5.4, step=4.0, end=2.4):
+    """A wide hall's colonnade offset from its axis: HALL_NAVE of the way out to the side walls, moved in or out a step
+    at a time to the line the doors' ways in (Furnisher.far_ways) cross at the fewest stations, so the colonnade runs
+    straight from end to end, a station left empty where a side door's way crosses it (QA round 3: RM-HALL-01's second
+    door had pushed its first pairs out, kinking the line; RM-HALL-03's side doors had put braziers in the columns'
+    places)."""
+    f = c.f
+    half = (f.aisle or {}).get("half", 1.6)
+    io0 = round(HALL_NAVE * (side - 1), 1)
+    step = max(step, (ax["depth"] - end - first) / 6.0)
+    def blocked(o):
+        n, d = 0, first
+        while d <= ax["depth"] - end:
+            for sg in (-1, 1):
+                u, v = on_axis(c, ax, d, sg * o)
+                if any(u + 1.0 > b[0] and u - 1.0 < b[1] and v + 1.0 > b[2] and v - 1.0 < b[3] for b in f.far_ways):
+                    n += 1; break
+            d += step
+        return n
+    cands = [round(io0 + 0.6 * k, 1) for k in (0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5)]
+    cands = [o for o in cands if half + 2.0 <= o <= side - 4.5] or [io0]
+    best = min(cands, key=lambda o: (blocked(o), abs(o - io0)))
+    if DEBUG: c.log.append(f"   hall nave {best:.1f} (first try {io0:.1f}, {blocked(best)} stations crossed by a door's way)")
+    return best
+
+
 def hall(c, plan):
     """A colonnade in mirrored pairs either side of the aisle from the door, statues and braziers between the columns,
     benches and urns mirrored by the side walls, a statue pair flanking the middle of the far wall, lights in matching
@@ -2685,11 +2711,11 @@ def hall(c, plan):
         # hall is), benches alone by the side walls, urns flanking the way in only in a narrow hall.
         side = min(ax["mid"] - (c.vW if r["line"] == "/" else c.uN), (c.vE if r["line"] == "/" else c.uS) - ax["mid"])
         wide = side - 1 >= HALL_WIDE
-        io = round(HALL_NAVE * (side - 1), 1) if wide else None
+        io = hall_nave(c, ax, side, step=4.0 if c.tiles >= 130 else 3.4) if wide else None
         mirrored(c, ax, c.pick_once(r"^DunMirFlameBasinLit$") or "Brazier", 2.6, (io - 0.4) if wide else 3.2)
         stations(c, ax, [r"^Column[5-8]$", r"^Statue2[a-h]$", r"^Column[5-8]$", r"^Brazier$"],
                  [r"^Bench[1-4]$|^LightBench\d$|^CushionedBench\d$"] + ([] if wide else [VASE]),
-                 first=5.4, step=4.0 if c.tiles >= 130 else 3.4, light_inner=True, inner_off=io)
+                 first=5.4, step=4.0 if c.tiles >= 130 else 3.4, light_inner=True, inner_off=io, exact=wide)
         if not wide: way_in_urns(c, ax)
         # plants in the far corners (rules/rooms/hall.md: "plants in the corners")
         pl = c.pick_once(r"^(Plant1|Plant3|Plant4|Plant5)$")

@@ -122,5 +122,10 @@ one, 4.
   the width with three ranks a side (the colonnade, a "middle ring" of urns and statues, then benches with urns between
   them), a grid of statue-like pieces (01: 4 columns, 4 statues, 6 urns; urns read as statues in the picture).
 - **A wide hall widens its nave instead of adding ranks:** where the floor runs 9.5 units or more from the axis to a
-  side wall, the colonnade stands 0.45 of the way out (`civic.HALL_WIDE`, `HALL_NAVE`), no middle ring, no urns among
-  the benches or flanking the way in (`civic.hall`). A narrow hall is laid as before (02, 04, 05 unchanged).
+  side wall, the colonnade stands about 0.45 of the way out (`civic.HALL_WIDE`, `HALL_NAVE`), no middle ring, no urns
+  among the benches or flanking the way in (`civic.hall`). A narrow hall is laid as before (02, 04, 05 unchanged).
+- **Each colonnade one straight line:** its offset is the one the doors' ways in cross at the fewest stations
+  (`civic.hall_nave`), every station at that offset (`stations(exact=True)`), each station its own kind (column,
+  statue, column, brazier); a station a door's way crosses stays empty rather than shifting out of line or taking
+  another kind (01's second door had pushed its first pairs two units out; 03's side doors had put braziers in the
+  columns' places). Checked: `qa3.hall_ranks` (more than one rank a side of columns, statues and urns).
